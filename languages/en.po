@@ -1,0 +1,218 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: rexbuilder\n"
+"POT-Creation-Date: 2015-10-09 11:50+0100\n"
+"PO-Revision-Date: 2015-10-09 11:52+0100\n"
+"Last-Translator: Stefano Panipucci <stefano.panipucci@gmail.com>\n"
+"Language-Team: \n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.10\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: _e;__\n"
+"X-Poedit-SearchPath-0: D:\\xampp\\htdocs\\rexpansive\\wp-content\\plugins"
+"\\rexbuilder\n"
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:169
+msgid "Insert content"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:176
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:250
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:262
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:304
+msgid "Cancel"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:177
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:251
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:263
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:306
+msgid "Save"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:184
+msgid "Background Options"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:188
+msgid "Transparent"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:194
+msgid "Image"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:197
+msgid "Select Image"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:201
+msgid "Full"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:205
+msgid "Natural"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:212
+msgid "Color"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:220
+msgid "Photo Zoom"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:226
+msgid "Link"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:232
+msgid "Classes"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:237
+msgid "Padding"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:241
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:285
+msgid "%"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:246
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:290
+msgid "px"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:257
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:360
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-meta-box.php:175
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-meta-box.php:498
+msgid "Section ID"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:269
+msgid "Config this section"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:271
+msgid "Block distance"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:276
+msgid "Insert custom class"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:281
+msgid "Section Width"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:293
+msgid "When text on a background image. (Recommended for mobile)"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:295
+msgid "Background color:"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:299
+msgid "Opacity:"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:305
+msgid "Reset"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:345
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-meta-box.php:160
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-meta-box.php:483
+msgid "Full width"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:346
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-meta-box.php:161
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-meta-box.php:484
+msgid "Boxed"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:349
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-meta-box.php:164
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-meta-box.php:487
+msgid "Fixed"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:350
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-meta-box.php:165
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-meta-box.php:488
+msgid "Masonry"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:352
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-meta-box.php:167
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-meta-box.php:490
+msgid "Background"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:357
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-meta-box.php:172
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-meta-box.php:495
+msgid "Move this section"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:363
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-meta-box.php:178
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-meta-box.php:501
+msgid "Config grid"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:369
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-meta-box.php:507
+msgid "+ Image"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:370
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-meta-box.php:508
+msgid "+ Text"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-admin.php:371
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-meta-box.php:186
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-meta-box.php:509
+msgid "+ Space"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-meta-box.php:184
+msgid " + Image"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/admin/class-rexbuilder-meta-box.php:185
+msgid " + Text"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/public/class-rexbuilder-public.php:143
+msgid "Close (Esc)"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/public/class-rexbuilder-public.php:144
+msgid "Share"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/public/class-rexbuilder-public.php:145
+msgid "Toggle fullscreen"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/public/class-rexbuilder-public.php:146
+msgid "Zoom in/out"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/public/class-rexbuilder-public.php:159
+msgid "Previous (arrow left)"
+msgstr ""
+
+#: D:\xampp\htdocs\rexpansive\wp-content\plugins\rexbuilder/public/class-rexbuilder-public.php:161
+msgid "Next (arrow right)"
+msgstr ""

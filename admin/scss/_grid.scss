@@ -1,0 +1,179 @@
+/* -------- BUILDING GRID --------------*/
+/* -------- Resize Handlers ------------*/
+.gs-resize-handle {
+	background-color: $builder-resizer-inactive;
+	border: 1px solid #fff;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	background-image: none;
+	-webkit-transition: all 0.3s ease-out;
+	-moz-transition: all 0.3s ease-out;
+	-o-transition: all 0.3s ease-out;
+	-ms-transition: all 0.3s ease-out;
+	transition: all 0.3s ease-out;
+	opacity: 1;
+	&:hover, &:active {
+		background-color: $builder-button-active;
+		@include hover-base-shadow;
+		-webkit-transform: scale(2);
+		transform: scale(2);
+	}
+}
+.gs-resize-handle-both {
+	bottom: -5px;
+	right: -5px;
+	&:hover {
+		box-shadow: 0 12px 15px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+	}
+}
+.gs-resize-handle-y {
+	left: 50%;
+	bottom: -5px;
+	margin-left: -5px;
+}
+.gs-resize-handle-x {
+	top: 50%;
+	right: -5px;
+	margin-top: -5px;
+}
+.item:hover {
+	.gs-resize-handle {
+		background-color: $builder-button-active;
+	}
+}
+/* -------------- Gridster --------------- */
+.gridster {
+	ul {
+		background-size: cover;
+		background-position: center center;
+		background-repeat: no-repeat;
+		li {
+			img {
+				height: auto;
+				max-width: 100%;
+				display: inline-block;
+			}
+		}
+	}
+	.preview-holder {
+		background-color: transparent!important;
+		border: none!important;
+	}
+}
+
+.#{$wrap-class} {
+	.copy-handler {
+		i {
+			font-size: 22px;
+		}
+	}
+}
+/* ------------- Items ---------------- */
+.item {
+	box-sizing: border-box;
+	&:hover {
+		z-index: 100;
+		cursor: -webkit-grab;
+		.element-actions {
+			opacity: 1;
+		}
+	}
+	&.with-border {
+		border: 1px dashed rgba(189,189,189,0.5);
+	}
+	&.no-border {
+		border: none;
+	}
+	.element-actions {
+		position: absolute;
+		top: 10px;
+		left: 10px;
+		width: calc(100% - 20px);
+		height: calc(100% - 20px);
+		box-sizing: border-box;
+		text-align: center;
+		background-color: transparent;
+		border-radius: 5px;
+		z-index: 10;
+		opacity: 0;
+		-webkit-transition: opacity 0.5s;
+		transition: opacity 0.5s;
+		.edit_handler {
+			i {
+				font-size: 31px;
+			}
+			&.hide-edit-handler {
+				display: none;
+				~ br {
+					display: none;
+				}
+				~ .background_handler {
+					margin-right: 15px;
+				}
+				~ .copy-handler {
+					margin-top: 0;
+				}
+			}
+		}
+		.copy-handler {
+			i {
+				font-size: 23px;
+			}
+		}
+		.delete_handler {
+			position: absolute;
+			width: 24px;
+			height: 24px;
+			top: -22px;
+			right: -22px;
+			opacity: 1;
+			visibility: visible;
+			padding: 0;
+			font-size: 0;
+		}
+		.actions-center-icons {
+			font-size: 0;
+			width: 100%;
+			position: absolute;
+			display: inline-block;
+			top: 50%;
+			left: 50%;
+			-webkit-transform: translate(-50%,-50%);
+			-ms-transform: translate(-50%,-50%);
+			transform: translate(-50%,-50%);
+			div {
+				&:first-child {
+					margin-right: 15px;
+				}
+				&:last-child {
+					margin-top: 5px;
+				}
+			}
+			&.builder-fab-row-widgets {
+				display: none;
+				white-space: nowrap;
+			}
+		}
+	}
+	&[data-sizex="2"] {
+		.element-actions {
+			.actions-center-icons {
+				div {
+					&:not(:last-child) {
+						margin-right: 9px;
+					}
+				}
+			}
+		}
+	}
+	&[data-sizex="1"],
+	&[data-sizex="2"] {
+		.actions-center-icons {
+			display: none;
+			&.builder-fab-row-widgets {
+				display: inline-block;
+			}
+		}
+	}
+}

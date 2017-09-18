@@ -1,0 +1,37 @@
+i.mce-i-icon.custom-icon { 
+	font: 400 20px/1 dashicons; 
+	padding: 0; 
+	vertical-align: top; 
+	speak: none; 
+	-webkit-font-smoothing: antialiased; 
+	-moz-osx-font-smoothing: grayscale; 
+	margin-left: -2px; 
+	padding-right: 2px;
+	width: 30px;
+	background-image:url('../img/text-perforated.png');
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+i.mce-i-icon.custom-icon-animation {
+    font: 400 20px/1 dashicons;
+    padding: 0;
+    vertical-align: top;
+    speak: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin-left: -2px;
+    padding-right: 2px
+}
+i.mce-i-icon.custom-icon-embed-video {
+    font: 400 20px/1 FontAwesome;
+    padding: 0;
+    vertical-align: top;
+    speak: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    margin-left: -2px;
+    padding-right: 2px
+}
+div[aria-label="Perforated Text"] button {
+	width: 50px;
+}

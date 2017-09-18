@@ -1,0 +1,457 @@
+$small: 767px;
+$medium-start: 768px;
+$medium-end: 1024px;
+$large: 1025px;
+
+@mixin backgroundCover {
+	background-size: cover;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+
+@mixin soft-shadow() {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: transparent;
+  background: -moz-linear-gradient(top, transparent 15%, transparent 85%);
+  background: -webkit-gradient(left top, color-stop(15%, transparent), color-stop(85%, transparent));
+  background: -webkit-linear-gradient(top, transparent 15%, transparent 85%);
+  background: -o-linear-gradient(top, transparent 15%, transparent 85%);
+  background: -ms-linear-gradient(top, rgba(0,0,0,0.6) 15%, transparent 85%);
+  background: linear-gradient(0deg, rgba(0,0,0,0.6) 15%, transparent 85%);
+}
+
+@mixin newsGradient {
+	background: rgba(0,0,0,0);
+	background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(0,0,0,0)), color-stop(100%, rgba(0,0,0,1)));
+	background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%);
+	background: -o-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%);
+	background: -ms-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%);
+	background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#000000', GradientType=0 );
+}
+@mixin newsGradient2 {
+	background: rgba(0,0,0,0);
+	background: -moz-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.7) 100%);
+	background: -webkit-gradient(left top, left bottom, color-stop(0%, rgba(0,0,0,0)), color-stop(30%, rgba(0,0,0,0)), color-stop(100%, rgba(0,0,0,0.7)));
+	background: -webkit-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.7) 100%);
+	background: -o-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.7) 100%);
+	background: -ms-linear-gradient(top, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.7) 100%);
+	background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0) 30%, rgba(0,0,0,0.7) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#000000', GradientType=0 );
+}
+
+$link-label-dim: 21px;
+
+@mixin hasVelocity {
+	opacity: 0;
+}
+
+.has-wow {
+	opacity: 0;
+}
+
+.has-rs-animation {
+	opacity: 0;
+}
+
+@mixin card {
+	margin: 1rem;
+}
+
+@mixin card-1 {
+	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+	transition: all 0.2s ease-in-out;
+	&:hover {
+		box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+	}
+}
+
+@mixin card-1-mod {
+	box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+	transition: all 0.2s ease-in-out;
+	&:hover {
+		box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+	}
+}
+
+@mixin card-2 {
+	box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+}
+
+@mixin card-3 {
+	box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+}
+
+@mixin card-4 {
+	box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+}
+
+@mixin card-5 {
+	box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+}
+
+@mixin card-transparent {
+	box-shadow: 0 1px 3px rgba(0,0,0,0), 0 1px 2px rgba(0,0,0,0);
+}
+
+// Dot color styles
+$dotlight: #fff;
+$dotdark: #000;
+$dotopacity: rgba(0,0,0,0.1);
+$dotborder: #777;
+
+//Colors
+$white: #ffffff;
+$transparent: rgba(255,255,255,0.3);
+$cyan: #60daaa;
+$yellow: #fbca67;
+$orange: #ff8a30;
+$red: #f45e61;
+$purple: #6477b9;
+$blue: #0eb7da;
+
+$drawdistance: 10px;
+@mixin box-distanced {
+	width: calc( 100% - 20px );
+	height: calc( 100% - 20px );
+}
+// Basic styles
+@mixin border-card {
+	//border: 0
+	box-sizing: border-box;
+	//box-shadow: inset 0 0 0 2px $transparent // Using inset box-shadow instead of border for sizing simplicity
+
+	// Required, since we're setting absolute on pseudo-elements
+	position: relative;
+	vertical-align: middle;
+
+	&::before,
+	&::after {
+		box-sizing: border-box;
+		content: '';
+		position: absolute;
+		@include box-distanced;
+	}
+}
+
+@mixin additonal-card {
+	&::after {
+		content: '';
+		box-shadow: inset 0 0 0 1px $transparent;
+		position: absolute;
+		display: block;
+		margin: $drawdistance;
+		@include box-distanced;
+	}
+}
+
+@mixin draw {
+	//transition: color 0.25s
+	&::before,
+	&::after {
+		margin: $drawdistance; 
+		border: 1px solid transparent; // Set border to invisible, so we don't see a 4px border on a 0x0 element before the transition starts
+		width: 0;
+		height: 0;
+	}
+	// This covers the top & right borders (expands right, then down)
+	&::before {
+		top: 0;
+		left: 0;
+	}
+	// And this the bottom & left borders (expands left, then up)
+	&::after {
+		bottom: 0;
+		right: 0;
+	}
+	// Hover styles
+	&:hover::before,
+	&:hover::after {
+		@include box-distanced;
+		z-index: 1;
+	}
+	&:hover::before {
+		border-top-color: $white; // Make borders visible
+		border-right-color: $white;
+		transition:	width 0.25s ease-out, height 0.25s ease-out 0.25s;
+	}
+	&:hover::after {
+		border-bottom-color: $white; // Make borders visible
+		border-left-color: $white;
+		transition: border-color 0s ease-out 0.5s, width 0.25s ease-out 0.5s, height 0.25s ease-out 0.75s; // And finally height
+	}
+}
+
+$tabs-bg-color: #ffffff;
+$tabs-text-color: rgb(115,115,115);
+$tabs-underline-color: #000;
+
+// Material design options
+$wrapclass: rexbuilder-materialize-wrap;
+
+// Box Sizing
+
+@mixin box-sizing($args) {
+    -webkit-box-sizing: $args;
+    -moz-box-sizing: $args;
+    box-sizing: $args;
+}
+@mixin border-box() {
+    @include box-sizing(border-box);
+}
+
+@mixin content-box() {
+    @include box-sizing(content-box);
+}
+
+// Flexbox
+@mixin flexbox() {
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+}
+
+@mixin flex($values) {
+	-webkit-box-flex: $values;
+	-moz-box-flex:  $values;
+	-webkit-flex:  $values;
+	-ms-flex:  $values;
+	flex:  $values;
+}
+
+@mixin order($val) {
+	-webkit-box-ordinal-group: $val;
+	-moz-box-ordinal-group: $val;
+	-ms-flex-order: $val;
+	-webkit-order: $val;
+	order: $val;
+}
+
+@mixin align($align) {
+	-webkit-flex-align: $align;
+	-ms-flex-align: $align;
+	-webkit-align-items: $align;
+	align-items: $align;
+}
+@mixin justify-content($val) {
+	-webkit-justify-content: $val;
+	justify-content: $val;
+}
+// Mixin valid for auto, center, baseline, stretch
+
+@mixin align-self($val) {
+	-webkit-align-self: $val;
+	-ms-flex-item-align: $val;
+	align-self: $val;
+}
+@mixin align-self-start() {
+	-webkit-align-self: flex-start;
+	-ms-flex-item-align: start;
+	align-self: flex-start;
+}
+@mixin align-self-end() {
+	-webkit-align-self: flex-end;
+	-ms-flex-item-align: end;
+	align-self: flex-end;
+}
+// Transitions
+
+@mixin transition($args:200ms) {
+	-webkit-transition: $args;
+	-moz-transition: $args;
+	-o-transition: $args;
+	-ms-transition: $args;
+	transition: $args;
+}
+@mixin transition-delay($delay:0) {
+	-webkit-transition-delay: $delay;
+	-moz-transition-delay: $delay;
+	-o-transition-delay: $delay;
+	-ms-transition-delay: $delay;
+	transition-delay: $delay;
+}
+@mixin transition-duration($duration:200ms){ 
+	-webkit-transition-duration: $duration;
+	-moz-transition-duration: $duration;
+	-o-transition-duration: $duration;
+	-ms-transition-duration: $duration;
+	transition-duration: $duration;
+}
+@mixin transition-property($property:all) {
+	-webkit-transition-property: $property;
+	-moz-transition-property: $property;
+	-o-transition-property: $property;
+	-ms-transition-property: $property;
+	transition-property: $property;
+}
+@mixin transition-timing-function($function:ease) {
+	-webkit-transition-timing-function: $function;
+	-moz-transition-timing-function: $function;
+	-o-transition-timing-function: $function;
+	-ms-transition-timing-function: $function;
+	transition-timing-function: $function;
+}
+@mixin keyframes($animation-name){
+	@-webkit-keyframes #{$animation-name}{
+		@content;
+	}
+	@-moz-keyframes #{$animation-name}{
+		@content;
+	}
+	@keyframes #{$animation-name}{
+		@content;
+	}
+}
+// Transforms
+
+@mixin transform($args){
+	-webkit-transform: $args;
+	-moz-transform: $args;
+	-ms-transform: $args;
+	-o-transform: $args;
+	transform: $args;
+}
+@mixin transform-origin($args) {
+    -webkit-transform-origin: $args;
+    -moz-transform-origin: $args;
+    -ms-transform-origin: $args;
+    -o-transform-origin: $args;
+    transform-origin: $args;
+}
+@mixin transform-style($style) {
+    -webkit-transform-style: $style;
+    -moz-transform-style: $style;
+    -ms-transform-style: $style;
+    -o-transform-style: $style;
+    transform-style: $style;
+}
+@mixin rotate($deg:45deg) {
+    @include transform(rotate($deg));
+}
+
+@mixin scale($factor:.5) {
+    @include transform(scale($factor));
+}
+
+@mixin translate($x,$y) {
+    @include transform(translate($x,$y));
+}
+
+@mixin translate3d($x,$y,$z)  {
+    @include transform(translate3d($x,$y,$z));
+}
+
+@mixin translateHardware($x,$y) {
+    @include translate($x,$y);
+    -webkit-transform: translate3d($x,$y,0);
+    -moz-transform: translate3d($x,$y,0);
+    -o-transform: translate3d($x,$y,0);
+    -ms-transform: translate3d($x,$y,0);
+    transform: translate3d($x,$y,0);
+}
+// Basic styles
+.block-effected{
+	background: none;
+	border: 0;
+	box-sizing: border-box;
+	box-shadow: inset 0 0 0 1px $transparent; // Using inset box-shadow instead of border for sizing simplicity
+	font-size: inherit;
+	font-weight: 700;
+	text-align: center;
+	text-transform: capitalize;
+
+	// Required, since we're setting absolute on pseudo-elements
+	position: relative;
+	vertical-align: middle;
+
+	&::before,
+	&::after{
+		box-sizing: border-box;
+		content: '';
+		position: absolute;
+		width: 100%;
+		height: 100%;
+	}
+}
+.draw {
+	transition: color 0.25s;
+
+	&::before,
+	&::after {
+		border: 1px solid transparent;// Set border to invisible, so we don't see a 4px border on a 0x0 element before the transition starts
+		width: 0;
+		height: 0;
+	}
+	// This covers the top & right borders (expands right, then down)
+	&::before{
+		top: 0;
+		left: 0;
+	}
+	// And this the bottom & left borders (expands left, then up)
+	&::after{
+		bottom: 0;
+		right: 0;
+	}
+	&:hover {
+		color: $white;
+	}
+
+	// Hover styles
+	&:hover::before,
+	&:hover::after {
+		width: 100%;
+		height: 100%;
+	}
+	&:hover::before {
+		border-top-color: $white; // Make borders visible
+		border-right-color: $white;
+		transition: width 0.25s ease-out, height 0.25s ease-out 0.25s;
+	}
+	&:hover::after {
+		border-bottom-color: $white; // Make borders visible
+		border-left-color: $white;
+		transition: border-color 0s ease-out 0.5s, width 0.25s ease-out 0.5s, height 0.25s ease-out 0.75s;
+	}
+}
+
+/** ------- UTILITY ----------- */
+@-webkit-keyframes fadeInAndOut {
+  0% {
+    opacity: 0;
+  }
+
+  20% {
+	  opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeInAndOut {
+  0% {
+    opacity: 0;
+  }
+
+  20% {
+	  opacity: 1;
+  }
+
+  to {
+    opacity: 0;
+  }
+}
+
+.fadeInAndOut {
+  -webkit-animation-name: fadeInAndOut;
+  animation-name: fadeInAndOut;
+}

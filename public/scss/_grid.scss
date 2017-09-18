@@ -1,0 +1,97 @@
+/* ----- Grid Flexbox content alignment ----------------*/
+
+.rex-flexbox{
+	@include flexbox;
+	.rex-custom-position {
+		@include flex(0 1 auto);
+	}
+}
+.perfect-grid-item {
+	&.rex-flex-top {
+		.rex-flexbox {
+			@include align(flex-start);
+		}
+	}
+	&.rex-flex-middle {
+		.rex-flexbox {
+			@include align(center);
+		}
+	}
+	&.rex-flex-bottom{ 
+		.rex-flexbox {
+			@include align(flex-end);
+		}
+	}
+	&.rex-flex-left {
+		.rex-flexbox {
+			@include justify-content(flex-start);
+		}
+		.natural-image-content,
+		.text-wrap {
+			text-align: left;
+		}
+	}
+	&.rex-flex-center {
+		.rex-flexbox {
+			@include justify-content(center);
+		}
+		.natural-image-content,
+		.text-wrap {
+			text-align: center;
+		}
+	}
+	&.rex-flex-right {
+		.rex-flexbox {
+			@include justify-content(flex-end);
+		}
+		.natural-image-content,
+		.text-wrap {
+			text-align: right;
+		}
+	}
+	&.rex-flex-left.rex-flex-top {
+		.grid-item-content {
+			background-position: left top;
+		}
+	}
+	&.rex-flex-left.rex-flex-middle {
+		.grid-item-content {
+			background-position: left center;
+		}
+	}
+	&.rex-flex-left.rex-flex-bottom {
+		.grid-item-content {
+			background-position: left bottom;
+		}
+	}
+	&.rex-flex-center.rex-flex-top {
+		.grid-item-content {
+			background-position: center top;
+		}
+	}
+	&.rex-flex-center.rex-flex-middle {
+		.grid-item-content {
+			background-position: center center;
+		}
+	}
+	&.rex-flex-center.rex-flex-bottom {
+		.grid-item-content {
+			background-position: center bottom;
+		}
+	}
+	&.rex-flex-right.rex-flex-top {
+		.grid-item-content {
+			background-position: right top;
+		}
+	}
+	&.rex-flex-right.rex-flex-middle {
+		.grid-item-content {
+			background-position: right center;
+		}
+	}
+	&.rex-flex-right.rex-flex-bottom {
+		.grid-item-content {
+			background-position: right bottom;
+		}
+	}
+}

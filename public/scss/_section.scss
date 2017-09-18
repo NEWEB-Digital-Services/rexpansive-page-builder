@@ -1,0 +1,35 @@
+/* ---- Section style --------------- */
+.rexpansive_section {
+	background-size: cover;
+	background-position: center center;
+	background-repeat: no-repeat;
+	position: relative;
+	.full-disposition,
+	.center-disposition {
+		margin: 0 auto;
+		overflow: hidden;
+		visibility: visible;
+	}
+	.full-disposition {
+		width: 100%;
+	}
+	.center-disposition {
+		width: 80%;
+	}
+	&.full-height-section {
+		min-height: 100vh;
+		.perfect-grid-gallery {
+			min-height: 100vh;
+			@media screen and (max-width: $small) {
+				.perfect-grid-item:nth-child(2) {
+				    min-height: 100vh!important;
+					height: auto!important;
+					.grid-item-content,
+					.responsive-block-overlay {
+					    min-height: 100vh!important;
+					}
+				}
+			}
+		}
+	}
+}

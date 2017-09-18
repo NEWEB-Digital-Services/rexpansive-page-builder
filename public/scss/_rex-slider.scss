@@ -1,0 +1,249 @@
+.rex-slider-wrap, .rex-box-slider-wrap {
+  .flickity-page-dots {
+    bottom: 30px;
+    .dot {
+      width: 7%;
+      max-width: 50px;
+      height: 2px;
+      padding: 10px 0;
+      margin: 0 5px;
+      border-radius: 0;
+      opacity: 1;
+      background: transparent;
+      position: relative;
+      &:after {
+        background: rgba(255,255,255,0.4);
+        width: 100%;
+        height: 2px;
+        position: absolute;
+        content: '';
+        top: 9px;
+        left: 0;
+      }
+      &.is-selected {
+        &:after {
+          background: white;
+        }
+      }
+    }
+  }
+
+  .flickity-prev-next-button {
+    box-shadow: none;
+    text-shadow: none;
+    svg {
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+    }
+    &.previous {
+      svg {
+        transform: rotate(90deg);
+        top: 5px;
+        left: -15px;
+      }
+    }
+    &.next {
+      svg {
+        top: -5px;
+        left: 15px;
+        transform: rotate(90deg);
+      }
+    }
+  }
+
+  &.is-dragging {
+    .rex-slider-element, .rex-box-slider-element {
+      pointer-events: none;
+    }
+  }
+
+  .flickity-prev-next-button, .flickity-prev-next-button:hover {
+    background: transparent;
+    .arrow {
+      fill: white;
+    }
+  }
+}
+
+.rex-slider-wrap {
+  width: 100%;
+  height: 100%;
+
+  .rex-slider-element {
+    width: 100%;
+    height: 100%;
+    @include backgroundCover();
+    &:after {
+      // @include soft-shadow();
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      bottom: 0;
+      max-height: 105px;
+      height: 100%;
+      left: 0;
+      @include linear-gradient(to bottom, rgba(34, 34, 34, 0) 0%, rgba(34, 34, 34, 0.6) 190%);
+    }
+
+    .youtube-player {
+      height: 100%;
+
+      @media screen and (max-width: $small) {
+        background-image: none!important;
+      }
+    }
+
+    .rex-video-vimeo-wrap.rex-video-vimeo-wrap--block {
+      z-index: 1;
+    }
+
+    .rex-video-toggle-audio {
+      z-index: 10;
+    }
+  }
+
+  .rex-slider-element-link {
+    display: block;
+    height: 100%;
+    position: relative;
+    z-index: 10;
+  }
+
+  .rex-slider-element-title {
+    position: relative;
+    top: 50%;
+    transform: translate(0,-50%);
+    display: block;
+    padding: 0 60px;
+    z-index: 10;
+    a {
+      font-size: inherit;
+      font-family: inherit;
+      color: inherit;
+      text-decoration: none;
+      font-weight: inherit;
+      &:hover {
+        color: inherit;
+      }
+    }
+  }
+}
+
+.rex-box-slider-wrap {
+  height: 485px;
+  // margin: 20px auto;
+  .rex-box-slider-element {
+    width: 250px;
+    height: 400px;
+    background-color: $white;
+    margin: 10px;
+    // box-shadow: 0px 1px 14px 0px rgba(0, 0, 0, 0.25);
+  }
+
+  .news-block {
+    // height: 400px;
+    .news-block-media {
+      height: 50%;
+    }
+    .grid-item-content {
+      height: 50%;
+    }
+  }
+  .flickity-page-dots {
+    bottom: 21px;
+    .dot {
+      width: 2%;
+      &:after {
+        background: rgba(0,0,0,0.2);
+      }
+      &.is-selected {
+        &:after {
+          background: #333;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: $small) {
+    height: 400px;
+    .rex-box-slider-element {
+      width: 200px;
+      height: 350px;
+    }
+    .flickity-prev-next-button {
+      display: none;
+    }
+    .flickity-page-dots {
+      bottom: 4px;
+      .dot {
+        width: 4%;
+      }
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    margin: 0 80px;
+    .flickity-prev-next-button {
+      width: 38px;
+      height: 38px;
+      top: calc(50% - 32px);
+      &.previous {
+        left: -45px;
+        svg {
+          top: 5px;
+          left: -13px;
+        }
+      }
+      &.next {
+        right: -45px;
+        svg {
+          top: -5px;
+          left: 13px;
+        }
+      }
+      .arrow {
+        fill: #333;
+      }
+      &:hover {
+        .arrow {
+          fill: #333;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width:$small) {
+  .full-height-section {
+    .perfect-grid-item {
+      &.block-has-slider {
+        .rex-slider-wrap {
+          min-height: 100vh;
+          .flickity-viewport {
+            min-height: 100vh;
+          }
+        }
+      }
+    }
+  }
+}
+
+.block-has-slider {
+  p {
+    margin: 0!important;
+  }
+  .rex-custom-scrollbar, .text-wrap {
+    height: 100%;
+  }
+}
+
+.full-height-section {
+  .block-has-slider { 
+    .mCSB_container {
+      height: inherit;
+    }
+  }
+}

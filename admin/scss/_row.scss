@@ -1,0 +1,220 @@
+/* ---------- ROW TOOLS --------- */
+.builder-edit-row-header {
+	position: relative;
+	.builder-delete-row {
+		position: absolute;
+		width: 24px;
+		height: 24px;
+		right: -12px;
+		top: -12px;
+		font-size: 0;
+		line-height: 1;
+		i {
+			font-size: 1rem;
+			line-height: 1;
+		}
+	}
+}
+
+.#{$wrap-class} {
+	.builder-row {
+		.section-visual-info {
+			display: none;
+			width: 100%;
+			height: 100%;
+			position: absolute;
+			top: 0;
+			left: 0;
+			&.active-section-visual-info {
+				display: block;
+			}
+		}
+	}
+	.builder-edit-row-wrap {
+		margin-bottom: 0;
+		border-bottom: 1px solid #e5e5e5;
+		padding: 18px 0px;
+		background-color: $builder-row-header;
+	}
+	.rex-edit-dimension-wrap {
+		> div:first-child {
+			margin-right: 1px;
+		}
+	}
+	.builder-edit-row-dimension {
+		&[type=radio] {
+			&:checked {
+				&+label {
+					padding-left: 19px;
+				}
+			}
+			&:not(:checked) {
+				&+label {
+					padding-left: 19px;
+				}
+			}
+		}
+	}
+	.builder-edit-row-wrap {
+		[type="radio"]+label {
+			&:after,
+			&:before {
+				width: 15px;
+				height: 15px;
+				top: 2px;
+			}
+		}
+	}
+
+	.builder-add {
+		width: 40px;
+		height: 40px;
+		i {
+			line-height: 40px;
+		}
+		&[value="empty"] {
+			i {
+				font-size: 24px;
+			}
+		}
+	}
+
+	.builder-setting-buttons {
+		.builder-section-config {
+			width: 20px;
+			height: 20px;
+			margin-left: 15px;
+			i {
+				font-size: 14px;
+				line-height: 20px;
+				vertical-align: top;
+			}
+		}
+		.builder-copy-row {
+			margin-left: 14px;
+		}
+		.builder-move-row {
+			margin-left: 7px;
+			&:hover {
+				cursor: move;
+			}
+		}
+	}
+
+	.background_section_preview {
+		&.btn-floating {
+			width: 20px;
+			height: 20px;
+			background-color: transparent;
+			background-position: center center;
+			background-size: cover;
+			background-image: url('../../img/colors-hd.png');
+		}
+	}
+
+	.builder-setting-buttons {
+		padding-right: 3px;
+		i {
+			font-size: 25px;
+		}
+		.builder-copy-row {
+			i {
+				font-size: 22px;
+			}
+		}
+	}
+
+	.builder-fab-row-widgets {
+		position: static;
+		display: inline-block;
+		height: 37px;
+		> .builder-add {
+			margin-right: 0;
+		}
+		&.horizontal {
+			padding: 0;
+			ul {
+				display: inline-block;
+				width: auto;
+				position: absolute;
+				transform: none;
+				top: auto;
+				right: auto;
+				bottom: auto;
+				left: auto;
+				height: auto;
+				li {
+					margin: 0 0 0 15px;
+				}
+			}
+		}
+		&.actions-center-icons.horizontal {
+			ul {
+				li {
+					margin: 0 0 0 15px;
+				}
+			}
+		}
+	}
+	.builder-buttons-new-row {
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		top: 0;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		text-align: center;
+		&:before {
+			content: '';
+			display: inline-block;
+			height: 100%;
+			vertical-align: middle;
+			margin-right: -0.35em;
+		}
+		> div {
+			display: inline-block;
+			vertical-align: middle;
+			font-size: 0;
+			> .builder-add {
+				margin: 0;
+				&:first-child {
+					margin-right: 15px;
+				}
+			}
+		}
+		.builder-fab-row-widgets {
+			margin-top: 5px;
+			height: $new-row-btn-dimension;
+		}
+		.btn, .btn-floating {
+			width: $new-row-btn-dimension;
+			height: $new-row-btn-dimension;
+			padding: 0;
+			border-radius: 50%;
+			text-align: center;
+			i {
+				font-size: 25px;
+				line-height: $new-row-btn-dimension;
+			}
+		}
+	}
+	.builder-add-row-wrap {
+		text-align: center;
+		clear: both;
+		float: none;
+		-webkit-box-sizing: border-box;
+		-moz-box-sizing: border-box;
+		box-sizing: border-box;
+		span {
+			margin-top: 5px;
+		}
+		#builder-add-row {
+			width: 40px;
+			height: 40px;
+			i {
+				line-height: 40px;
+			}
+		}
+	}
+}

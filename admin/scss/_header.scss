@@ -1,0 +1,48 @@
+/* ---------- BUILDER HEADER (WITH ACTIVATION SWITCH) -------- */
+.#{$wrap-class} {
+	&.builder-heading {
+		text-align: center;
+		margin: 20px 0;
+	}
+	.builder-switch-wrap {
+		display: inline-block;
+		vertical-align: super;
+	}
+	#post-body-content {
+		margin-bottom: 0;
+	}
+}
+/* ---------- BUILDER HEADER (WITH CSS BUTTON AND NEWEB LINK) ----- */
+.#{$wrap-class} {
+	#rexbuilder-header {
+		> .row {
+			margin-bottom: 0;
+			padding: 5px;
+		}
+		a {
+			display: inline-block;
+			&:focus {
+				box-shadow: none;
+			}
+		}
+	}
+
+	#rex-open-ace-css-editor {
+		white-space: nowrap;
+		width: auto;
+		border-radius: 20px;
+		height: 24px;
+		line-height: 24px;
+		i {
+			font-size: 22px;
+			line-height: 24px;
+		}
+		span {
+			display: inline-block;
+			vertical-align: top;
+			font-size: 10px;
+			margin: -1px -5px 0 -6px;
+		}
+	}
+
+}

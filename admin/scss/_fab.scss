@@ -1,0 +1,65 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:300,400);
+
+@import url(http://maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css);
+
+@mixin circleShadow($vertical) {
+	box-shadow:0 0 $vertical rgba(0,0,0,.14),0 $vertical $vertical*2 rgba(0,0,0,.28)
+}
+
+.floatingContainer {
+	position: absolute;
+	white-space: nowrap;
+	&:hover {
+		.subActionButton {
+			transition: opacity 1.2s;
+		}
+		.subActionButton + .subActionButton {
+			transition: opacity 0.8s;
+		}
+		.subActionButton + .subActionButton + .subActionButton {
+			transition: opacity 0.4s;
+		}
+	}
+}
+
+.actionButton {
+	position: relative;
+	z-index: 1000;
+	
+	@include circleShadow(4px);
+	
+	&.display {
+		display: inherit;
+	}
+	
+	&.open {
+		&::before {
+			transform: rotate3d(0, 0, 1, 0deg);
+			opacity: 0;
+		}
+		&::after {
+			transform: rotate3d(0, 0, 1, 0deg);
+			opacity: 1;
+		}
+	}
+	&:hover {
+		@include circleShadow(8px);
+	}
+}
+
+.subActionButton {
+	opacity: 0;
+	position: relative;
+	z-index: 1000;
+	&.btn-floating {
+		margin-left: 15px;
+	}
+
+	&.display {
+		opacity: 1;
+	}
+	
+	&:hover {
+		@include circleShadow(8px);
+	}
+}
