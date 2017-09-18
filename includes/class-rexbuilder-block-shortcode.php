@@ -407,7 +407,7 @@ class Rexbuilder_Block {
 					break;
 			endswitch;
 			
-			echo '</div>';
+			echo "</div>\n";
 
 		} else {
 
