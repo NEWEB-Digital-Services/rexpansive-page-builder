@@ -208,6 +208,7 @@ class Rexbuilder_Public {
 					'animations'	=>	$this->plugin_options['animation'],
 				) );
 				wp_enqueue_script( 'rexbuilder-public', plugin_dir_url( __FILE__ ) . 'js/public.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( 'builderLive', plugin_dir_url( __FILE__ ) . 'js/builderLive.js', array( 'jquery' ), $this->version, true );
 			endif;
 		endif;
 	}
