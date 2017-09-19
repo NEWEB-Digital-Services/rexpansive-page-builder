@@ -1,8 +1,15 @@
 .handle:hover{
-    background-color: green;
+    background-color: gray;
     transform: scale(2);
 }
 
+
+.perfect-grid-item:hover .handle {
+    display: block;
+} 
+.perfect-grid-item {
+    overflow: visible;
+}
 .handle {
     width: 10px;
     height: 10px;
@@ -12,6 +19,8 @@
     position: absolute;
     z-index: 1;
     box-sizing: inherit;
+    display: none;
+    overflow: visible;
 }
 
 .top-left {
@@ -66,4 +75,16 @@
     top: 100%;
     margin-left: -5px;
     margin-top: -5px;
+}
+
+.draggable{
+    /*position: relative; */
+    display: -moz-inline-stack;
+    display: inline-block;
+    vertical-align: top;
+    zoom: 1;
+    *display: inline;   
+
+    cursor: hand; 
+    cursor: pointer;       
 }
