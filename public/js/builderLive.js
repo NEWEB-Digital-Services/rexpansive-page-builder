@@ -1,5 +1,107 @@
 ; (function ($) {
     'use strict';
+    //If true table is split in 12 columns | if false table is split in width columns
+    var $modeMatrix = true;
+
+    function prepareMatrix($matrix, $rows, $columns) {
+        var $i, $j;
+        var $k = 1;
+        for ($i = 0; $i < $rows; $i++) {
+            for ($j = 0; $j < $columns; $j++) {
+                $matrix[$i][$j] = $k.toString();
+                $k++;
+            }
+        }
+    }
+
+    function create2DMatrix(rows) {
+        var arr = [];
+
+        for (var i = 0; i < rows; i++) {
+            arr[i] = [];
+        }
+
+        return arr;
+    }
+
+    function fillMatrix($matrix) {
+        $('.perfect-grid-item').each(function () {
+            var $i, $j;
+            var $x = parseInt(this['attributes']['data-col'].value),
+                $columns = parseInt(this['attributes']['data-width'].value),
+                $y = parseInt(this['attributes']['data-row'].value),
+                $rows = parseInt(this['attributes']['data-height'].value);
+            $x -=1;
+            $y -=1;
+            if(!$modeMatrix){
+                $x *= 12;
+                $columns *= 12;
+                $y *= 12;
+                $rows *= 12;
+            };
+            var $startX = $x;
+            var $endX = $startX + $columns;
+            var $startY = $y;
+            var $endY = $startY + $rows;
+            for ($i = $startY; $i < $endY; $i++) {
+                for ($j = $startX; $j < $endX; $j++) {
+                    $matrix[$i][$j] = this['attributes']['id'].value;
+                }
+            }
+        });
+    }
+
+    function createMatrix($elem) {
+        //console.log($elem);
+        var $elemWidth = $($elem).width();
+        var $elemHeight = $($elem).height();
+        var $cellSide;
+        var $rows;
+        var $columns;
+        if ($modeMatrix) {
+            $cellSide = Math.round($elemWidth / 12);
+        } else {
+            $cellSide = 1;
+        }
+        $rows = Math.floor($elemHeight / $cellSide);
+        $columns = Math.floor($elemWidth / $cellSide);
+        store.set("matrix", {
+            "properties": [
+                {
+                    "total width": $elemWidth
+                },
+                {
+                    "total height": $elemHeight
+                },
+                {
+                    "cell side": $cellSide
+                },
+                {
+                    "rows": $rows
+                },
+                {
+                    "columns": $columns
+                }
+            ]
+        });
+
+        var $matrix = create2DMatrix($rows);
+        prepareMatrix($matrix, $rows, $columns);
+        fillMatrix($matrix);
+        console.log($matrix);
+        return $matrix;
+    }
+    /*
+    Codice per muovere liberamente gli oggetti nella matrice:
+    this.options.drag.snap.targets = [
+        interact.createSnapGrid({
+            x :  <new value>,
+            y : <new value>
+        })
+        ];
+    */
+    var $dragType = false;
+
 
     function prepareElem($elem) {
         // adding draggable property to the elem
@@ -22,9 +124,53 @@
                 }
             ]
         });
-
         // adding handles to the elem
         addHandles($elem);
+    }
+
+    function makeDraggable() {
+        $('.draggable').each(function () {
+            var $w = $(this.parentNode).width();
+            var $h = $(this.parentNode).height();
+            console.log("w: " + $w + " h: " + $h);
+            var $wcell = Math.round($w / 12);
+            console.log("wcell: " + $wcell);
+            var $x = 0;
+            var $y = 0;
+            var $grid = interact.createSnapGrid({ x: $wcell, y: $wcell });
+            console.log($grid);
+            interact(this).draggable({
+                snap: {
+                    targets: [
+                        $grid
+                    ],
+                    range: Infinity,
+                    relativePoints: [{ x: 0, y: 0 }],
+                },
+                inertia: true,
+                restrict: {
+                    restriction: "parent",
+                    elementRect: { top: 0, left: 0, bottom: 1, right: 1 },
+                    endOnly: true
+                },
+                onmove: function ($event) {
+                    console.log('moving item');
+                    var $target = $event.target;
+
+                    // keep the dragged position in the data-x/data-y attributes
+                    $x += $event.dx;
+                    $y += $event.dy;
+                    console.log("x: " + $x + " $y: " + $y);
+                    // translate the element
+                    $target.style.webkitTransform =
+                        $target.style.transform =
+                        'translate(' + $x + 'px, ' + $y + 'px)';
+                },
+                onend: function ($event) {
+                    console.log('Ended drag');
+                }
+            })
+        });
     }
 
     function addHandles($elem) {
@@ -45,27 +191,6 @@
         for (var $i = 0; $i < 8; $i++) {
             $('#' + $elem['id']).append($handles[$i]);
         }
-    }
-
-    
-    function dragFreeMoveListener(event) {
-        console.log('moving item');
-        var target = event.target;
-
-        // keep the dragged position in the data-x/data-y attributes
-        var x = (parseFloat(target.getAttribute('data-x')) || 0) + event.dx;
-        var y = (parseFloat(target.getAttribute('data-y')) || 0) + event.dy;
-
-        // translate the element
-        target.style.webkitTransform =
-            target.style.transform =
-            'translate(' + x + 'px, ' + y + 'px)';
-
-        // update the posiion attributes
-        target.setAttribute('data-x', x);
-        target.setAttribute('data-y', y);
-
-        console.log(x + ' ' + y);
     }
 
     function addResizers() {
@@ -105,6 +230,13 @@
             console.log(this.parentNode);
         });
     }
+
+    function addToolBox($elem) {
+        var $div = document.createElement("div");
+        $div.setAttribute("id", "toolBox");
+        addCheckBox($div);
+        $elem.appendChild($div);
+    }
     // add a checkbox in the bottom of the elem
     function addCheckBox($elem) {
         var $input = document.createElement('input');
@@ -112,84 +244,32 @@
         $($labelBox).text("aabbcc");
         $input.setAttribute('type', 'checkbox');
         $input.setAttribute('id', 'tableDrag');
-        $input.setAttribute('checked', 'checked');
-        $($input).on('click', function () {
-            $('.draggable').each(function () {
-                interact(this).unset();
-                console.log('removing listeners');
-            });
+        //$input.setAttribute('checked', 'false');
 
+        $($input).on('click', function () {
             if (this.checked == true) {
                 console.log('first type');
-                $('.draggable').each(function () {
-                    var x = 0;
-                    var y = 0;
-                    var $w = $(this.parentNode).width();
-                    $w = Math.round($w / 12);
-                    interact(this)
-                        .draggable({
-                            snap: {
-                                targets: [
-                                    interact.createSnapGrid({ x: $w, y: $w })
-                                ],
-                                range: Infinity,
-                                relativePoints: [{ x: 0, y: 0 }]
-                            },
-                            inertia: true,
-                            restrict: {
-                                restriction: this.parentNode,
-                                elementRect: { top: 0, left: 0, bottom: 1, right: 1 },
-                                endOnly: true
-                            }
-                        })
-                        .on('dragmove', function (event) {
-                            console.log('check');
-                            x += event.dx;
-                            y += event.dy;
-
-                            event.target.style.webkitTransform =
-                                event.target.style.transform =
-                                'translate(' + x + 'px, ' + y + 'px)';
-                        });
-                }, this);
-                
+                $dragType = true;
             } else {
                 console.log('second type');
-                interact('.draggable')
-                    .draggable({
-                        // enable inertial throwing
-                        inertia: true,
-                        // keep the element within the area of it's parent
-                        restrict: {
-                            restriction: "parent",
-                            endOnly: true,
-                            elementRect: { top: 0, left: 0, bottom: 1, right: 1 }
-                        },
-                        // enable autoScroll
-                        autoScroll: true,
-
-                        // call this function on every dragmove event
-                        onmove: dragFreeMoveListener,
-                        // call this function on every dragend event
-                        onend: function (event) {
-                            console.log('Ended drag');
-                        }
-                    });
+                $dragType = false;
             }
         });
+
         var $div = document.createElement('div');
-        $div.setAttribute('class', 'test');
+        $div.setAttribute('id', 'dragging-mode');
         $div.appendChild($labelBox);
         $div.appendChild($input);
         $elem.appendChild($div);
     }
 
     $(function () {
-        $();
         $('.perfect-grid-item').each(function () {
             prepareElem(this);
         });
-        addCheckBox($('.entry-content')[0]);
+        addToolBox($('.entry-content')[0]);
+        createMatrix($('.entry-content')[0]);
+        //makeDraggable();
         //addResizers();
 
 

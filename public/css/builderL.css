@@ -88,3 +88,9 @@
     cursor: hand; 
     cursor: pointer;       
 }
+
+#toolBox {
+    position: fixed;
+    bottom: 20px;
+    background-color: green;
+}
