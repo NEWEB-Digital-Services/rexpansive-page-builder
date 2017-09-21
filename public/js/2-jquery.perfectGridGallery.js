@@ -93,7 +93,7 @@
             var that = this;
 
             this.$element.resize(function(e) {
-                console.log('che è sta cosa?');
+                // console.log('che è sta cosa?');
               if(that.properties.elementResizeEvent) {
                 that._defineDynamicPrivateProperties();
                 that._calculateBlockHeight();
