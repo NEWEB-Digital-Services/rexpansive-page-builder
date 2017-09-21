@@ -31,9 +31,9 @@
                 $columns = parseInt(this['attributes']['data-width'].value),
                 $y = parseInt(this['attributes']['data-row'].value),
                 $rows = parseInt(this['attributes']['data-height'].value);
-            $x -=1;
-            $y -=1;
-            if(!$modeMatrix){
+            $x -= 1;
+            $y -= 1;
+            if (!$modeMatrix) {
                 $x *= 12;
                 $columns *= 12;
                 $y *= 12;
@@ -88,7 +88,7 @@
         var $matrix = create2DMatrix($rows);
         prepareMatrix($matrix, $rows, $columns);
         fillMatrix($matrix);
-        console.log($matrix);
+        //console.log($matrix);
         return $matrix;
     }
     /*
@@ -269,6 +269,7 @@
         });
         addToolBox($('.entry-content')[0]);
         createMatrix($('.entry-content')[0]);
+
         //makeDraggable();
         //addResizers();
 
@@ -276,7 +277,21 @@
     }); // DOM Ready
 
     $(window).load(function () {
-        ;
+        var $item = $('#block_0_7');
+        console.log($item);
+        $item.draggable();
+        $item.resizable();
+        $().each();
+            /*{
+                drag: function () {
+                    var $offset = $(this).offset();
+                    var $xPos = $offset.left;
+                    var $yPos = $offset.top;
+                    console.log($xPos);
+                    console.log($yPos);
+                }
+            });
+            */
     }); // Entire content loaded
 
 })(jQuery);
