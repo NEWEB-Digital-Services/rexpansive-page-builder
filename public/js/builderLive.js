@@ -2,8 +2,9 @@
     'use strict';
     //If true table is split in 12 columns | if false table is split in width columns
     var $modeMatrix = true;
-
-    function prepareMatrix($matrix, $rows, $columns) {
+    var $cellSide;
+    var $matrix;
+    function prepareMatrix($rows, $columns) {
         var $i, $j;
         var $k = 1;
         for ($i = 0; $i < $rows; $i++) {
@@ -24,7 +25,7 @@
         return arr;
     }
 
-    function fillMatrix($matrix) {
+    function fillMatrix() {
         $('.perfect-grid-item').each(function () {
             var $i, $j;
             var $x = parseInt(this['attributes']['data-col'].value),
@@ -55,7 +56,6 @@
         //console.log($elem);
         var $elemWidth = $($elem).width();
         var $elemHeight = $($elem).height();
-        var $cellSide;
         var $rows;
         var $columns;
         if ($modeMatrix) {
@@ -85,27 +85,20 @@
             ]
         });
 
-        var $matrix = create2DMatrix($rows);
+        $matrix = create2DMatrix($rows);
         prepareMatrix($matrix, $rows, $columns);
         fillMatrix($matrix);
         //console.log($matrix);
         return $matrix;
     }
-    /*
-    Codice per muovere liberamente gli oggetti nella matrice:
-    this.options.drag.snap.targets = [
-        interact.createSnapGrid({
-            x :  <new value>,
-            y : <new value>
-        })
-        ];
-    */
     var $dragType = false;
 
+    /*
+    */
 
     function prepareElem($elem) {
         // adding draggable property to the elem
-        $elem.className += " draggable";
+        $elem.className += " draggable resizable";
 
         // Saving current properties of the item
         store.set($elem['id'], {
@@ -128,49 +121,71 @@
         addHandles($elem);
     }
 
-    function makeDraggable() {
-        $('.draggable').each(function () {
-            var $w = $(this.parentNode).width();
-            var $h = $(this.parentNode).height();
-            console.log("w: " + $w + " h: " + $h);
-            var $wcell = Math.round($w / 12);
-            console.log("wcell: " + $wcell);
-            var $x = 0;
-            var $y = 0;
-            var $grid = interact.createSnapGrid({ x: $wcell, y: $wcell });
-            console.log($grid);
-            interact(this).draggable({
-                snap: {
-                    targets: [
-                        $grid
-                    ],
-                    range: Infinity,
-                    relativePoints: [{ x: 0, y: 0 }],
-                },
-                inertia: true,
-                restrict: {
-                    restriction: "parent",
-                    elementRect: { top: 0, left: 0, bottom: 1, right: 1 },
-                    endOnly: true
-                },
-                onmove: function ($event) {
-                    console.log('moving item');
-                    var $target = $event.target;
-
-                    // keep the dragged position in the data-x/data-y attributes
-                    $x += $event.dx;
-                    $y += $event.dy;
-                    console.log("x: " + $x + " $y: " + $y);
-                    // translate the element
-                    $target.style.webkitTransform =
-                        $target.style.transform =
-                        'translate(' + $x + 'px, ' + $y + 'px)';
-                },
-                onend: function ($event) {
-                    console.log('Ended drag');
-                }
-            })
+    function makeResizable($elem, $data){
+        $($elem).resizable({
+            containment: "parent",
+            //grid: [$cellSide, $cellSide],
+            resize: function() {
+                var $offset = $(this).offset();
+                var $xPos = $offset.left;
+                var $yPos = $offset.top;
+                console.log($xPos);
+                console.log($yPos);
+                resizeElementsRow(this);
+                console.log($data.items[6].position);
+              },
         });
+    }
+
+    function getElementsRight($elem){
+        var $elemId =  $elem['attributes']['id'].value;
+        console.log($elemId);
+        var $elements = [];
+        var $k = 0;
+        var $i, $j;
+        var $start;
+        var $lastID = $elemId;
+        $i = store.get($elemId).properties[0]['x']-1;
+        $start = store.get($elemId).properties[1]['y']-1;
+        for($j = $start; $j < 12; $j++){
+            console.log("id: "+$lastID+" $i "+$i+" $j "+$j + " $matrix[i][j] "+$matrix[$i][$j]);
+            if($lastID != $matrix[$i][$j]){
+                $lastID = $matrix[$i][$j];
+                $elements[$k]=$lastID;
+                $k++;
+            }
+        }
+        console.log($elements);
+    }
+
+    function resizeElementsRow($elem){
+        //getElementsRight($elem);
+        //$('#block_0_7').css('width', '100px');
+    }
+
+    function makeDraggable($elem, $gallery, $data){
+
+        $($elem).draggable(
+            {
+                drag: function () {;
+                },
+                containment: "parent",
+                stop: function() {
+                    console.log("end drag");
+                    var $offset = $(this).offset();
+                    var $xPos = $offset.left;
+                    var $yPos = $offset.top;
+                    console.log($xPos);
+                    console.log($yPos);
+                    console.log($data.items[6].position);
+                    $data.items[6].position.x = $xPos;
+                    $data.items[6].position.y = $yPos;
+                    console.log($data.items[6].position);
+                    $gallery.relayoutGrid();
+                  }
+                //grid: [$cellSide, $cellSide]
+                //stack: '.draggable'
+            });
     }
 
     function addHandles($elem) {
@@ -267,31 +282,24 @@
         $('.perfect-grid-item').each(function () {
             prepareElem(this);
         });
+
         addToolBox($('.entry-content')[0]);
         createMatrix($('.entry-content')[0]);
 
-        //makeDraggable();
-        //addResizers();
-
+        var $gallery = $('.perfect-grid-gallery').data('plugin_perfectGridGallery');
+        console.log($gallery.$element.data('isotope'));
+        $('.draggable').each(function () {
+            makeDraggable(this, $gallery, $gallery.$element.data('isotope'));
+        });
+        $('.resizable').each(function () {
+            makeResizable(this, $gallery.$element.data('isotope'));
+        });
+        //console.log($gallery);
 
     }); // DOM Ready
 
     $(window).load(function () {
-        var $item = $('#block_0_7');
-        console.log($item);
-        $item.draggable();
-        $item.resizable();
-        $().each();
-            /*{
-                drag: function () {
-                    var $offset = $(this).offset();
-                    var $xPos = $offset.left;
-                    var $yPos = $offset.top;
-                    console.log($xPos);
-                    console.log($yPos);
-                }
-            });
-            */
+        ;
     }); // Entire content loaded
 
 })(jQuery);
