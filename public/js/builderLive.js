@@ -177,11 +177,11 @@
                     var $yPos = $offset.top;
                     console.log($xPos);
                     console.log($yPos);
-                    console.log($data.items[6].position);
+                    /* console.log($data.items[6].position);
                     $data.items[6].position.x = $xPos;
                     $data.items[6].position.y = $yPos;
                     console.log($data.items[6].position);
-                    $gallery.relayoutGrid();
+                    $gallery.relayoutGrid(); */
                   }
                 //grid: [$cellSide, $cellSide]
                 //stack: '.draggable'
@@ -279,22 +279,45 @@
     }
 
     $(function () {
-        $('.perfect-grid-item').each(function () {
-            prepareElem(this);
-        });
-
-        addToolBox($('.entry-content')[0]);
-        createMatrix($('.entry-content')[0]);
-
-        var $gallery = $('.perfect-grid-gallery').data('plugin_perfectGridGallery');
-        console.log($gallery.$element.data('isotope'));
-        $('.draggable').each(function () {
-            makeDraggable(this, $gallery, $gallery.$element.data('isotope'));
-        });
-        $('.resizable').each(function () {
-            makeResizable(this, $gallery.$element.data('isotope'));
-        });
+        /*         $('.perfect-grid-item').each(function () {
+                    prepareElem(this);
+                });
+        
+                //addToolBox($('.entry-content')[0]);
+                //createMatrix($('.entry-content')[0]);
+        
+                var $gallery = $('.perfect-grid-gallery').data('plugin_perfectGridGallery');
+                console.log($gallery.$element.data('isotope'));
+                $('.draggable').each(function () {
+                    makeDraggable(this, $gallery, $gallery.$element.data('isotope'));
+                });
+                $('.resizable').each(function () {
+                    makeResizable(this, $gallery.$element.data('isotope'));
+                }); */
         //console.log($gallery);
+        /* var $container = $('.perfect-grid-gallery');
+        $container.packery({
+            columnWidth: 80
+        });
+        // get item elements, jQuery-ify them
+        var $itemElems = $($container.packery('getItemElements'));
+        // make item elements draggable
+        //$itemElems.draggable();
+        // bind Draggable events to Packery
+        $container.packery('bindUIDraggableEvents', $itemElems);
+
+        // handle resizing
+        var resizeTimeout;
+        $itemElems.on('resize', function (event, ui) {
+            // debounce
+            if (resizeTimeout) {
+                clearTimeout(resizeTimeout);
+            }
+
+            resizeTimeout = setTimeout(function () {
+                $container.packery('fit', ui.element[0]);
+            }, 100);
+        }); */
 
     }); // DOM Ready
 

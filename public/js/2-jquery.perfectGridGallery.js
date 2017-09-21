@@ -142,38 +142,41 @@
         },
 
         reLaunchGrid: function() {
+            console.log('relaunch isotope 0');    
             this.$element.isotope( this.isotopeSettings );
         },
-
+        
         destroyGrid: function() {
             $(window).off('resize');
             this.$element.isotope('destroy');
         },
-
+        
         recalculateBlocks: function() {
-
+            
             this.properties.wrapWidth = Math.round( this.$element.width() );
             this.properties.singleWidth = Math.round( this.properties.wrapWidth * this.settings.gridItemWidth );
-
+            
             this._calculateBlockHeightFixed();
         },
-
+        
         relayoutGrid: function() {
             //console.log('parte relayout');
             // this.$element.isotope('reloadItems');
-            this.$element.isotope('layout');
-
+            console.log('relaunch packery 1');    
+            //this.$element.packery('layout');
+            
             this.$element.trigger('relayoutComplete');
         },
-
+        
         cleanLayoutGrid: function() {
-            this.$element.isotope('layout');
+            console.log('relaunch isotope 2');    
+            this.$element.packery('layout');
             // this.$element.trigger('rearrangeComplete');
         },
-
+        
         // insert elements in the isotope grid and reload the items according to perfectGridGallery
         insertInGrid: function(elems, callback) {
-
+            
           this.properties.setDesktopPadding = false;
           this.properties.setMobilePadding = false;
 
@@ -271,8 +274,21 @@
 
         // Launching isotope plugin
         _launchIsotope: function() {
-            this.$element.isotope(this.isotopeSettings);
-            this.properties.gridActive = true;
+            console.log('creating packery');
+            var $container= this.$element.packery(this.isotopeSettings);
+            var $items = this.$element.find('.perfect-grid-item');
+            $items.each(function () {
+                $(this).draggable({
+                    stop: function () {
+                        console.log('fitting');
+                        //$container.packery('layout');
+                    }
+                });
+            });
+            // bind drag events to Packery
+            this.$element.packery('bindUIDraggableEvents', $items);
+            //this.properties.gridActive = true;
+            
         },
 
         // setting the blocks and wrap padding

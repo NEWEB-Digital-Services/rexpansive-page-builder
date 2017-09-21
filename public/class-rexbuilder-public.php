@@ -205,7 +205,18 @@ class Rexbuilder_Public {
 
 			if( $this_post_type && array_key_exists( $this_post_type, $post_to_activate ) ) :
 				wp_enqueue_script( 'jquery' );
-				wp_enqueue_script( 'public-plugins', plugin_dir_url( __FILE__ ) . 'js/plugins.js', array( 'jquery' ), $this->version, true );
+				// wp_enqueue_script( 'public-plugins', plugin_dir_url( __FILE__ ) . 'js/plugins.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( '0-isotope', plugin_dir_url( __FILE__ ) . 'js/0-isotope.pkgd.min.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( '1-jquery', plugin_dir_url( __FILE__ ) . 'js/1-jquery.mCustomScrollbar.concat.min.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( '2-jquery', plugin_dir_url( __FILE__ ) . 'js/2-jquery.perfectGridGallery.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( '2-TextResize', plugin_dir_url( __FILE__ ) . 'js/2-TextResize.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( '3-velocity', plugin_dir_url( __FILE__ ) . 'js/3-velocity.min.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( '3-velocityui', plugin_dir_url( __FILE__ ) . 'js/3-velocity.ui.min.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( '4-jquery', plugin_dir_url( __FILE__ ) . 'js/4-jquery.rexScrollify.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( '5-flickity', plugin_dir_url( __FILE__ ) . 'js/5-flickity.pkgd.min.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( 'photoswipe-min', plugin_dir_url( __FILE__ ) . 'Photoswipe/photoswipe.min.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( 'photoswipeui', plugin_dir_url( __FILE__ ) . 'Photoswipe/photoswipe-ui-default.min.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( 'jquerymb', plugin_dir_url( __FILE__ ) . 'jquery.mb.YTPlayer/jquery.mb.YTPlayer.min.js', array( 'jquery' ), $this->version, true );
 				wp_localize_script( 'public-plugins', '_plugin_frontend_settings', array(
 					'animations'	=>	$this->plugin_options['animation'],
 				) );
@@ -214,6 +225,7 @@ class Rexbuilder_Public {
 				wp_enqueue_script( 'resizeElement', plugin_dir_url( __FILE__ ) . 'js/jquery-resizable.min.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( 'interact', plugin_dir_url( __FILE__ ) . 'js/interact.min.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( 'jqueryui', plugin_dir_url( __FILE__ ) . 'js/jquery-ui.min.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( 'packery', plugin_dir_url( __FILE__ ) . 'js/packery.pkgd.min.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( 'builderLive', plugin_dir_url( __FILE__ ) . 'js/builderLive.js', array( 'jquery' ), $this->version, true );
 			endif;
 		endif;
