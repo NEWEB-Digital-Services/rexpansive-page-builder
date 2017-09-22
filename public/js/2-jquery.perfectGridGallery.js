@@ -54,8 +54,6 @@
             itemSelector: '',
             masonry: null,
             percentPosition: false,
-            // transitionDuration: 0,
-            // animationEngine: 'jquery',
         };
         this.init();
     }
@@ -77,40 +75,8 @@
             
             this._launchPackery();
 
-            /*
-            $(window).on('resize', { Gallery: this }, function (event) {
-                console.log('resize Event');
-                var G = event.data.Gallery;
-                G._setGridPadding();
-
-                G._defineDynamicPrivateProperties();
-
-                G._calculateBlockHeight();
-                G._launchPackery();
-
-                setTimeout(function () {
-                    G.relayoutGrid();
-                    G.$element.trigger('rearrangeComplete');
-                }, 400);
-            });
-            
-            var that = this;
-
-            this.$element.resize(function (e) {
-                console.log('element resize');
-                if (that.properties.elementResizeEvent) {
-                    that._defineDynamicPrivateProperties();
-                    that._calculateBlockHeight();
-                    that.relayoutGrid();
-                }
-                // setTimeout(function() {
-                //     that.relayoutGrid();
-                //     that.$element.trigger('rearrangeComplete');
-                // }, 400);
-            }); */
-
             this.$element.on('layoutComplete', function () {
-                console.log('layout complete');
+                //console.log('layout complete');
             });
 
             $(window).on('load',
@@ -118,7 +84,7 @@
                 function (event) {
                     var G = event.data.Gallery;
                     setTimeout(function () {
-                        console.log('relayouting grid');
+                        //console.log('relayouting grid');
                         G.relayoutGrid();
                     }, 400);
                 });
@@ -127,11 +93,11 @@
         refreshGrid: function () {
             // console.log('refreshGrid');
             // console.log(this.$element);
-            console.log('refreshGrid');
+            // console.log('refreshGrid');
 
             this._defineDynamicPrivateProperties();
 
-            this._setGridPadding();
+            //this._setGridPadding();
 
             this._calculateBlockHeight();
             this._launchPackery();
@@ -141,7 +107,7 @@
             // this.$element.Packery('layout');
 
             setTimeout(function () {
-                console.log('refreshing grid');
+                //console.log('refreshing grid');
                 // G.$element.Packery('layout');
                 G.relayoutGrid();
                 G.$element.trigger('rearrangeComplete');
@@ -150,19 +116,19 @@
         },
 
         reLaunchGrid: function () {
-            console.log('relaunch packey 0');
-            console.log(this.packerySettings);
+            //console.log('relaunch packey 0');
+            //console.log(this.packerySettings);
             this.$element.packery(this.packerySettings);
         },
 
         destroyGrid: function () {
-            console.log('destroying packery');
+           // console.log('destroying packery');
             $(window).off('resize');
             this.$element.packery('destroy');
         },
 
         recalculateBlocks: function () {
-            console.log('recalculate block');
+            //console.log('recalculate block');
             this.properties.wrapWidth = Math.round(this.$element.width());
             this.properties.singleWidth = Math.round(this.properties.wrapWidth * this.settings.gridItemWidth);
 
@@ -172,23 +138,23 @@
         relayoutGrid: function () {
             //console.log('parte relayout');
             // this.$element.Packery('reloadItems');
-            console.log('relayoutGrid');
+            //console.log('relayoutGrid');
             //this.$element.packery('layout');
             //this.$element.trigger('relayoutComplete');
         },
 
         cleanLayoutGrid: function () {
-            console.log('cleanLayoutGrid');
+            //console.log('cleanLayoutGrid');
             //this.$element.packery('layout');
             // this.$element.trigger('rearrangeComplete');
         },
 
         // insert elements in the Packery grid and reload the items according to perfectGridGallery
         insertInGrid: function (elems, callback) {
-            console.log('InsertElement');
+            //console.log('InsertElement');
             this.properties.setDesktopPadding = false;
             this.properties.setMobilePadding = false;
-            console.log(elems);
+            //console.log(elems);
             // append items to grid
             $grid.append( $items );
 
@@ -208,18 +174,18 @@
 
         // Get methods
         getSingleWidth: function () {
-            console.log('getWidth');
+            //console.log('getWidth');
             return this.properties.singleWidth;
         },
 
         getSeparator: function () {
-            console.log('getSeparator');
+            //console.log('getSeparator');
             return this.settings.separator;
         },
 
         setProperty: function (definition) {
-            console.log('setting properties');
-            console.log(definition);
+            //console.log('setting properties');
+            //console.log(definition);
             this.properties[definition[0]] = definition[1];
         },
 
@@ -227,14 +193,14 @@
             var obj = {};
             obj[definition[0]] = definition[1];
 
-            console.log(definition);
-            console.log('defining properties');
+            //console.log(definition);
+            //console.log('defining properties');
             this.$element.packery(obj);
         },
 
         // Override options set by the jquery call with the html data attributes, if presents
         _defineDataSettings: function () {
-            console.log('defining data Settings');
+            //console.log('defining data Settings');
             if ('undefined' != typeof this.$element.data('separator')) {
                 this.settings.separator = parseInt(this.$element.data('separator'));
             }
@@ -251,12 +217,12 @@
 
         // Define usefull private properties
         _defineDynamicPrivateProperties: function () {
-            console.log('defining dynamic Properties');
+            //console.log('defining dynamic Properties');
             this.properties.wrapWidth = Math.round(this.$element.width());
-            console.log(this.properties.wrapWidth);
-            this.properties.wrapWidth = this.properties.wrapWidth - this.properties.gridRightSeparator - this.properties.gridLeftSeparator;
+            //console.log('wrap width');
+            //console.log(this.properties.wrapWidth);
             this.properties.singleWidth = Math.round(this.properties.wrapWidth * this.settings.gridItemWidth);
-            console.log(this.properties.singleWidth);
+            //console.log(this.properties.singleWidth);
 
             if (this.settings.fullHeight == 'true') {
                 this.properties.gridTotalArea = this._calculateArea();
@@ -264,7 +230,7 @@
         },
 
         _definePrivateProperties: function () {
-            console.log('defininfg private properties');
+            //console.log('defininfg private properties');
             this.properties.halfSeparator = Math.round(this.settings.separator / 2);
             this.properties.paddingTopBottom = this._check_parent_class('distance-block-top-bottom');
 
@@ -277,7 +243,7 @@
         // Calcualte viewport area to implement full height feature
         _calculateArea: function () {
             var temp_area = 0;
-            console.log('calculating area');
+            //console.log('calculating area');
             this.$element.find(this.settings.itemSelector).each(function () {
                 var $this = $(this);
                 temp_area += parseInt($this.attr('data-height')) * parseInt($this.attr('data-width'));
@@ -288,32 +254,37 @@
 
         // define Packery Settings
         _definepackerySettings: function () {
-            console.log('defining Packery settings');
+            //console.log('defining Packery settings');
             this.packerySettings.itemSelector = this.settings.itemSelector;
-            this.packerySettings.masonry = {
+            this.packerySettings.masonry = null
+            /*{
                 columnWidth: this.settings.gridSizerSelector
-            };
+            }*/;
         },
 
         // Launching Packery plugin
         _launchPackery: function () {
             console.log('creating packery');
-            console.log(this.packerySettings);
-            var $settings = this.packerySettings;
-            $settings['gutter'] = 0;
-            $settings['columnWidth'] = this.properties.singleWidth;
-            $settings['rowHeight'] = this.properties.singleWidth;
+            //console.log(this.packerySettings);
+            var $settings = [];// = this.packerySettings;
+            console.log('old settings');
+            console.log($settings);
+            $settings['gutter'] = 10;
+            $settings['columnWidth'] = 60;
+            $settings['rowHeight'] = 60;
+            console.log('new settings');
             console.log($settings);
             var $container = this.$element.packery($settings);
             var $items = this.$element.find('.perfect-grid-item');
 
             $items.each(function () {
+                console.log($settings['columnWidth']);
                 $(this).resizable({
                     grid: $settings['columnWidth'],
                     resize: function () {
                         console.log('resizing');
                     }
-                });
+                }); 
                 $(this).draggable({
                     stop: function () {
                         console.log('end dragging');
@@ -323,107 +294,25 @@
 
             var resizeTimeout;
             $items.on('resize', function( event, ui ) {
-                console.log('resizZzZzing');
+                //console.log('resizZzZzing');
               // debounce
               if ( resizeTimeout ) {
                 clearTimeout( resizeTimeout );
               }
             
               resizeTimeout = setTimeout( function() {
-                  console.log(event);
-                  console.log(ui);
                 $container.packery( 'fit', ui.element[0] );
               }, 100 );
             });
             // bind drag events to Packery
             this.$element.packery('bindUIDraggableEvents', $items);
+
             //this.properties.gridActive = true;
-
-            /* 
-            var $itemElems;
-            var $container;
-            var dragTimeout;
-                $( function() {
-                  $container = $('.packery');
-                  $container.packery({
-                    rowHeight: 100,
-                    columnHeight: 100,
-                    gutter: 0
-                  });
-                  // get item elements, jQuery-ify them
-                  $itemElems = $( $container.packery('getItemElements') );
-                  // make item elements draggable
-                  $itemElems
-                  .draggable({ 
-                      grid: [ 100, 100 ],
-                      start: function(event,ui){
-                          if(!$(event.target).hasClass('item'))
-                          return false;
-                      },
-                    cancel: '.stampitem',
-                      stop: function(event,ui){
-                        if ( dragTimeout ) {
-                          clearTimeout( dragTimeout );
-                        }
-                        dragTimeout = setTimeout( function() {
-                               $container.packery();
-                        }, 500 );
-                      }
-                  })
-                  .resizable({
-                    grid: 100,
-                    handles: { 
-                        'nw': '#nwgrip', 
-                        'ne': '#negrip', 
-                        'sw': '#swgrip', 
-                        'se': '#segrip', 
-                        'n': '#ngrip', 
-                        'e': '#egrip', 
-                        's': '#sgrip', 
-                        'w': '#wgrip' 
-                    },
-                    start: function(event,ui){
-                        if($(event.target).hasClass('item')){
-                            $(event.target).css('z-index', 1000);
-                        }
-                    },
-                    resize: function(event,ui){
-                          $container.packery( 'fit', event.target, ui.position.left, ui.position.top );
-                    },
-                    cancel: '.stampitem',
-                    stop: function(event,ui){
-                          $(event.target).css('z-index','auto');
-                          $container.packery();
-                    },
-                    maxWidth:800,          
-                    refreshPositions: true
-                  });
-                  // bind Draggable events to Packery
-                  $container.packery( 'bindUIDraggableEvents', $itemElems );
-    
-                $itemElems.on("dblclick",function(event){
-                    event.stopPropagation();
-                    var $target = $(event.target);
-                    if($target.hasClass('item')){
-                        $($target).addClass('stampitem').removeClass('item ui-draggable ui-resizable');
-                        $container.packery('stamp', event.target);
-                    }
-                    else{
-                        $($target).addClass('item ui-draggable ui-resizable').removeClass('stampitem');
-                        $container.packery('unstamp', event.target);
-                    }
-                })
-        
-                $itemElems.not('.item').on('dragstart', function(event){return false;})
-          
-                $('.ui-resizable-handle').on('dblclick', function(event){return false;})
-                }); */
-
         },
 
         // setting the blocks and wrap padding
         _setGridPadding: function () {
-            console.log('setting grid padding');
+            //console.log('setting grid padding');
             if (this._viewport().width >= 768 && !this.properties.setDesktopPadding || (!this.properties.setDesktopPadding && !this.properties.setMobilePadding && this._check_parent_class("rex-block-grid"))) {
                 this.properties.setDesktopPadding = true;
                 if (this._check_parent_class("rex-block-grid")) {
@@ -490,7 +379,7 @@
 
         // Calculate the height of the blocks, depending on viewport size, and gallery type
         _calculateBlockHeight: function () {
-            console.log('calculating height');
+            //console.log('calculating height');
             if (this.settings.galleryLayout == 'fixed') {
                 if (this._viewport().width >= 768 || this._check_parent_class("rex-block-grid")) {
                     if (this.settings.fullHeight == 'false') {
@@ -512,7 +401,7 @@
 
         // Calculate fixed blocks height
         _calculateBlockHeightFixed: function () {
-            console.log('calculating block height');
+            //console.log('calculating block height');
             var Gallery = this;
             this.$element.find(this.settings.itemSelector + ':not(.horizontal-carousel):not(.wrapper-expand-effect)')
                 .add(this.$element.find(this.settings.itemSelector + '.only-gallery'))
@@ -524,7 +413,7 @@
 
         // Calculate masonry blocks height
         _calculateBlockHeightMasonry: function () {
-            console.log('calculating block height masonry');
+            //console.log('calculating block height masonry');
             var Gallery = this;
             this.$element.find(this.settings.itemSelector + ' .empty-content')
                 .add(this.$element.find(this.settings.itemSelector + ' .image-content :not(.text-wrap)'))
