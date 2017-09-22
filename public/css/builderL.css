@@ -3,13 +3,6 @@
     transform: scale(2);
 }
 
-
-.perfect-grid-item:hover .handle {
-    display: block;
-} 
-.perfect-grid-item {
-    overflow: visible;
-}
 .handle {
     width: 10px;
     height: 10px;
@@ -77,8 +70,9 @@
     margin-top: -5px;
 }
 
+/*
 .draggable{
-    /*position: relative; */
+    position: relative;
     display: -moz-inline-stack;
     display: inline-block;
     vertical-align: top;
@@ -88,9 +82,27 @@
     cursor: hand; 
     cursor: pointer;       
 }
-
+*/
 #toolBox {
     position: fixed;
     bottom: 20px;
     background-color: green;
+}
+
+.packery-drop-placeholder {
+    outline: 3px dashed #444;
+    outline-offset: -6px;
+    /* transition position changing */
+    -webkit-transition: -webkit-transform 0.2s;
+            transition: transform 0.2s;
+  }
+
+  /* highlight drag & drop */
+
+/* jQuery UI Draggable adds ui-draggable-dragging */
+.grid-item.ui-draggable-dragging>.grid-item-content,
+/* Packery adds class while transitioning to drop position */
+.grid-item.is-positioning-post-drag>.grid-item-content {
+  background-color: #00CC0A;
+  z-index: 2; /* keep dragged item on top */
 }
