@@ -49,11 +49,13 @@
             gridBottomSeparator: null,
             gridLeftSeparator: null,
             elementResizeEvent: false,
+            gutter: 0
         };
         this.packerySettings = {
             itemSelector: '',
-            masonry: null,
-            percentPosition: false,
+            columnWidth: 0,
+            rowHeight: 0,
+            gutter: 0,
         };
         this.init();
     }
@@ -61,18 +63,20 @@
     // Avoid Plugin.prototype conflicts
     $.extend(perfectGridGallery.prototype, {
         init: function () {
-            this._defineDataSettings();
+            //this._defineDataSettings();
 
-            this._definePrivateProperties();
+            //this._definePrivateProperties();
 
-            this._setGridPadding();
+            //this._setGridPadding();
 
             this._defineDynamicPrivateProperties();
 
-            this._definepackerySettings();
+            this._definePackerySettings();
 
-            this._calculateBlockHeight();
+            //this._calculateBlockHeight();
             
+            this._fixSize();
+
             this._launchPackery();
 
             this.$element.on('layoutComplete', function () {
@@ -84,7 +88,7 @@
                 function (event) {
                     var G = event.data.Gallery;
                     setTimeout(function () {
-                        //console.log('relayouting grid');
+                        console.log('relayouting grid');
                         G.relayoutGrid();
                     }, 400);
                 });
@@ -156,7 +160,7 @@
             this.properties.setMobilePadding = false;
             //console.log(elems);
             // append items to grid
-            $grid.append( $items );
+            $grid.append( elems );
 
             this._defineDynamicPrivateProperties();
 
@@ -220,10 +224,7 @@
             //console.log('defining dynamic Properties');
             this.properties.wrapWidth = Math.round(this.$element.width());
             //console.log('wrap width');
-            //console.log(this.properties.wrapWidth);
             this.properties.singleWidth = Math.round(this.properties.wrapWidth * this.settings.gridItemWidth);
-            //console.log(this.properties.singleWidth);
-
             if (this.settings.fullHeight == 'true') {
                 this.properties.gridTotalArea = this._calculateArea();
             }
@@ -253,60 +254,139 @@
         },
 
         // define Packery Settings
-        _definepackerySettings: function () {
-            //console.log('defining Packery settings');
+        _definePackerySettings: function () {
+            console.log('defining Packery settings');
             this.packerySettings.itemSelector = this.settings.itemSelector;
-            this.packerySettings.masonry = null
+            this.packerySettings.columnWidth =  this.properties.singleWidth;
+            this.packerySettings.rowHeight =  this.properties.singleWidth;
+            this.packerySettings.gutter = 0;
+            this.properties.gutter = 5;
+            this.properties.halfSeparator = 0;
+            //this.packerySettings.masonry = null
             /*{
                 columnWidth: this.settings.gridSizerSelector
             }*/;
         },
 
+        _fixSize: function(){
+            var Gallery = this;
+            var k = Gallery.properties.gutter;
+            var h, w;
+            var g = Math.floor(Gallery.properties.gutter/2);
+            console.log("gutter: "+g);
+            Gallery.$element.find(Gallery.settings.itemSelector).each(function () {
+                h = Gallery.properties.singleWidth * parseInt($(this).attr('data-height')) - g*2;
+                w = Gallery.properties.singleWidth * parseInt($(this).attr('data-width')) - g*2;
+                $(this).height(h);
+                $(this).width(w);
+                if (g > 0) {
+                    console.log("adding padding");
+                    $(this).css('padding-left', g);
+                    $(this).css('padding-top', g);
+                }
+            });
+        },
+
+        // Calculate fixed blocks height
+        _calculateBlockHeightFixed: function () {
+            //console.log('calculating block height');
+            var Gallery = this;
+            this.$element.find(this.settings.itemSelector + ':not(.horizontal-carousel):not(.wrapper-expand-effect)')
+                .add(this.$element.find(this.settings.itemSelector + '.only-gallery'))
+                .each(function () {
+                    // console.log($(this).attr('id'), '->', $(this).attr('data-height'));
+                    $(this).height((Gallery.properties.singleWidth * $(this).attr('data-height')) - (Gallery.properties.halfSeparator * 2));
+                });
+        },
+
+        _saveSizes: function(){
+            var $items = this.$element.find('.perfect-grid-item');
+            $items.each(function(){
+                store.set(this['id'], {
+                    "properties": [
+                        {
+                            "x": this['attributes']['data-row'].value
+                        },
+                        {
+                            "y": this['attributes']['data-col'].value
+                        },
+                        {
+                            "w": this['attributes']['data-width'].value
+                        },
+                        {
+                            "h": this['attributes']['data-height'].value
+                        }
+                    ]
+                });
+            });
+            
+        },
+
         // Launching Packery plugin
         _launchPackery: function () {
             console.log('creating packery');
-            //console.log(this.packerySettings);
-            var $settings = [];// = this.packerySettings;
-            console.log('old settings');
-            console.log($settings);
-            $settings['gutter'] = 10;
-            $settings['columnWidth'] = 60;
-            $settings['rowHeight'] = 60;
-            console.log('new settings');
-            console.log($settings);
-            var $container = this.$element.packery($settings);
+            console.log(this.packerySettings);
+            this._saveSizes();
+            var Gallery = this;
+            var $container = this.$element.packery(this.packerySettings);
             var $items = this.$element.find('.perfect-grid-item');
 
+            var resizeTimeout;
+            
+            function saveSizes($elem) {
+                var width = Gallery.properties.singleWidth;
+                var gutter = Gallery.properties.gutter;
+                console.log($elem);
+                var block = $($elem)[0];
+                console.log($(block).position());
+                var x = block['attributes']['data-row'].value,
+                    y = block['attributes']['data-col'].value,
+                    w = block['attributes']['data-width'].value,
+                    h = block['attributes']['data-height'].value;
+                //console.log("old sizes: " + x + y + w + h);
+                var nx = parseInt($(block).position().left)/width,
+                    ny = parseInt($(block).position().top)/width,
+                    nw = parseInt($(block).width()+gutter*3)/width,
+                    nh = parseInt($(block).height()+gutter*3)/width;
+                
+                block['attributes']['data-row'].value = nx;
+                block['attributes']['data-col'].value = ny;
+                block['attributes']['data-width'].value = nw;
+                block['attributes']['data-height'].value = nh;
+                return;
+            }
+
             $items.each(function () {
-                console.log($settings['columnWidth']);
                 $(this).resizable({
-                    grid: $settings['columnWidth'],
-                    resize: function () {
-                        console.log('resizing');
+                    grid: Gallery.properties.singleWidth,
+                    resize: function (event, ui) {
+                        console.log('resizZzZzing');
+                        // debounce
+                        if (resizeTimeout) {
+                            clearTimeout(resizeTimeout);
+                        }
+
+                        resizeTimeout = setTimeout(function () {
+                            $container.packery('fit', ui.element[0]);
+                        }, 100);
+                    },
+                    stop: function () {
+                        console.log('end resizing');
+                        saveSizes(this);
+                        Gallery._fixSize();
                     }
-                }); 
+                });
                 $(this).draggable({
                     stop: function () {
-                        console.log('end dragging');
+                        ;
                     }
                 });
             });
 
-            var resizeTimeout;
-            $items.on('resize', function( event, ui ) {
-                //console.log('resizZzZzing');
-              // debounce
-              if ( resizeTimeout ) {
-                clearTimeout( resizeTimeout );
-              }
-            
-              resizeTimeout = setTimeout( function() {
-                $container.packery( 'fit', ui.element[0] );
-              }, 100 );
-            });
+
             // bind drag events to Packery
             this.$element.packery('bindUIDraggableEvents', $items);
-
+ 
             //this.properties.gridActive = true;
         },
 
@@ -382,17 +462,13 @@
             //console.log('calculating height');
             if (this.settings.galleryLayout == 'fixed') {
                 if (this._viewport().width >= 768 || this._check_parent_class("rex-block-grid")) {
-                    if (this.settings.fullHeight == 'false') {
-                        this._calculateBlockHeightFixed();
-                    } else {
-                        ;
+                    if (this.settings.fullHeight == 'true') {
                         // console.log('bbb');
                         var wrap_height = this._viewport().height;
-
-                        this.properties.singleWidth = wrap_height / (this.properties.gridTotalArea / 12);
-
-                        this._calculateBlockHeightFixed();
+                        //this.properties.singleWidth = wrap_height / (this.properties.gridTotalArea / 12);
+                        this.properties.singleWidth = (this.properties.gridTotalArea / wrap_height) / 12;
                     }
+                    this._calculateBlockHeightFixed();
                 }
             } else if (this.settings.galleryLayout == 'masonry') {
                 this._calculateBlockHeightMasonry();
