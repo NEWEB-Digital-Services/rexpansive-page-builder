@@ -13,6 +13,7 @@
         defaults = {
             itemSelector: '.perfect-grid-item',
             gridItemWidth: 0.0833333333,
+            numberCol: 12,
             gridSizerSelector: '.perfect-grid-sizer',
             galleryLayout: 'fixed',
             separator: 20,
@@ -23,7 +24,7 @@
 
     // The actual plugin constructor
     function perfectGridGallery(element, options) {
-        console.log('creating object');
+
         this.element = element;
         this.$element = $(element);
 
@@ -77,7 +78,7 @@
     $.extend(perfectGridGallery.prototype, {
         init: function () {
             
-            this._saveElementsState();
+            this._saveStateElements();
 
             this._defineDataSettings();
 
@@ -123,6 +124,7 @@
             this._setGridPadding();
 
             this._calculateBlockHeight();
+
             this._launchPackery();
 
             var G = this;
@@ -211,39 +213,58 @@
             return number % 2 == 0;
         },
 
+        updateAllElementNewProperties: function(){
+            var Gallery = this;
+            this.$element.find('.perfect-grid-item').each(function(){
+                Gallery.saveElementNewProperties(this);
+            });
+        },
+
         saveElementNewProperties: function($elem) {
+            
             var width = this.properties.singleWidth;
             var block = $($elem)[0];
-            var x = block['attributes']['data-row'].value,
-                y = block['attributes']['data-col'].value,
-                w = block['attributes']['data-width'].value,
-                h = block['attributes']['data-height'].value;
 
-            var nX = Math.round(parseInt($(block).position().left) / width),
-                nY = Math.round(parseInt($(block).position().top) / width),
-                nW = Math.round(parseInt($(block).outerWidth()) / width),
-                nH = Math.round(parseInt($(block).outerHeight()) / width);
+            // Getting old attributes
+            var x = parseInt(block['attributes']['data-row'].value),
+                y = parseInt(block['attributes']['data-col'].value),
+                w = parseInt(block['attributes']['data-width'].value),
+                h = parseInt(block['attributes']['data-height'].value);
 
-            if (nX === 0) {
-                nX = 1;
+            var nX = Math.round(parseInt($(block).position().top) / width),
+            nY = Math.round(parseInt($(block).position().left) / width),
+            nW = Math.round(parseInt($(block).outerWidth()) / width),
+            nH = Math.round(parseInt($(block).outerHeight()) / width);
+            
+            if (nX <= 0) {
+                nX = 0;
             }
-            if (nY === 0) {
-                nY = 1;
+
+            if (nY <= 0) {
+                nY = 0;
             }
             
-            if (nW === 0) {
+            if (nW <= 0) {
                 nW = 1;
             }
             
-            if (nH === 0) {
+            if (nH <= 0) {
                 nH = 1;
             }
-            
+
+            nX = nX+1;
+            nY = nY+1;
+
+            if(nY>12){
+                nY = 12;
+            }
+
+            // updating element attributes
             block['attributes']['data-row'].value = nX;
             block['attributes']['data-col'].value = nY;
             block['attributes']['data-width'].value = nW;
             block['attributes']['data-height'].value = nH;
-
+            
             // updating element class
             $(block).removeClass("w" + w);
             $(block).addClass("w" + nW);
@@ -269,9 +290,9 @@
         // Define usefull private properties
         _defineDynamicPrivateProperties: function () {
             //console.log('defining dynamic Properties');
-            this.properties.wrapWidth = Math.floor(this.$element.innerWidth());
+            this.properties.wrapWidth = Math.round(this.$element.innerWidth());
 
-            this.properties.singleWidth = Math.floor(this.properties.wrapWidth * this.settings.gridItemWidth);
+            this.properties.singleWidth = Math.round(this.properties.wrapWidth * this.settings.gridItemWidth);
 
             if (this.settings.fullHeight == 'true') {
                 this.properties.gridTotalArea = this._calculateArea();
@@ -354,9 +375,6 @@
                 $(this).css('padding-bottom', Gallery.properties.halfSeparatorElementBottom);
                 $(this).css('padding-right', Gallery.properties.halfSeparatorElementRight);
             });
-            if (this.properties.packeryReady) {
-                this.cleanLayoutGrid();
-            }
         },
 
         // Calculate fixed blocks height
@@ -371,7 +389,7 @@
                 });
         },
 
-        _saveElementsState: function () {
+        _saveStateElements: function () {
             var $items = this.$element.find('.perfect-grid-item');
             $items.each(function () {
                 store.set(this['id'], {
@@ -446,15 +464,8 @@
                         Gallery.elementIsResizing = true;
                         var width = Gallery.properties.singleWidth;
                         var block = $(this)[0];
-                        var x = parseInt(block['attributes']['data-row'].value),
-                            y = parseInt(block['attributes']['data-col'].value),
-                            w = parseInt(block['attributes']['data-width'].value),
-                            h = parseInt(block['attributes']['data-height'].value);
-                        console.log(x+" "+y+" "+w+" "+h+" "+width);
-                        var aa = (12-(y-1+w))*width;
-                        console.log(12-((y)+w));
-                        console.log(aa);
-                        $(this).resizable("option", "maxWidth", aa);
+                        var yStart = parseInt(block['attributes']['data-col'].value) - 1;
+                        $(this).resizable("option", "maxWidth", (Gallery.settings.numberCol-yStart)*width);
                     },
                     resize: function (event, ui) {
 
@@ -470,30 +481,32 @@
                     },
                     stop: function () {
                         Gallery.elementIsResizing = false;
-                        Gallery.saveElementNewProperties(this);
+                        Gallery.updateAllElementNewProperties();
                         Gallery._fixSize();
+                        Gallery.updateAllElementNewProperties();
                         Gallery._fixHandlesPosition(this, Gallery);
                     }
                 });
                 $(this).draggable({
                     stop: function() {
-                        ;
+                        Gallery._fixSize();
+                        Gallery.updateAllElementNewProperties();
                     }
                 });
             });
 
             // bind drag events to Packery
             this.$element.packery('bindUIDraggableEvents', $items);
-            console.log($container.data('packery') );
+            // console.log($container.data('packery') );
             // packery is ready
-            //Gallery.properties.packeryReady = true;
+            Gallery.properties.packeryReady = true;
         },
 
         // setting the blocks and wrap padding
         _setGridPadding: function () {
             //console.log('setting grid padding');
             if (this._viewport().width >= 768 && !this.properties.setDesktopPadding || (!this.properties.setDesktopPadding && !this.properties.setMobilePadding && this._check_parent_class("rex-block-grid"))) {
-                console.log('setting grid padding');
+                //console.log('setting grid padding');
                 this.properties.setDesktopPadding = true;
                 if (this._check_parent_class("rex-block-grid")) {
                     this.properties.setMobilePadding = true;
@@ -566,8 +579,8 @@
                     if (this.settings.fullHeight == 'true') {
                         // console.log('bbb');
                         var wrap_height = this._viewport().height;
-                        //this.properties.singleWidth = wrap_height / (this.properties.gridTotalArea / 12);
-                        this.properties.singleWidth = (this.properties.gridTotalArea / wrap_height) / 12;
+                        //this.properties.singleWidth = wrap_height / (this.properties.gridTotalArea / this.properties.numberCol);
+                        this.properties.singleWidth = (this.properties.gridTotalArea / wrap_height) / this.properties.numberCol;
                     }
                     this._calculateBlockHeightFixed();
                 }
