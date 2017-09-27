@@ -1,77 +1,26 @@
-.handle:hover{
+ .ui-resizable-handle:hover{
     background-color: gray;
-    transform: scale(2);
+/*     transform: scale(2); */
 }
 
-.handle {
+.perfect-grid-item:hover>.ui-resizable-handle{
+    visibility: visible;
+}
+
+.ui-resizable-handle {
     width: 10px;
     height: 10px;
+    visibility: hidden;
     background-color: white;
     border: 2px solid black;
-    border-radius: 50%;
+    border-radius: 50%; 
     position: absolute;
-    z-index: 1;
+    z-index: 3;
     box-sizing: inherit;
-    display: none;
     overflow: visible;
 }
 
-.top-left {
-    left: 0%;
-    top: 0%;
-    margin-top: -5px;
-    margin-left: -5px;
-}
-
-.top-center {
-    left: 50%;
-    top: 0%;
-    margin-top: -5px;
-    margin-left: -5px;
-}
-
-.top-right {
-    left: 100%;
-    top: 0%;
-    margin-top: -5px;
-    margin-left: -5px;
-}
-
-.mid-left {
-    top:50%;
-    left: 0%;
-    margin-left: -5px;
-}
-
-.mid-right {
-    left: 100%;
-    top: 50%;
-    margin-left: -5px;
-}
-
-.bottom-left {
-    left: 0%;
-    top: 100%;
-    margin-left: -5px;
-    margin-top: -5px;
-}
-
-.bottom-center {
-    left: 50%;
-    top: 100%;
-    margin-top: -5px;
-    margin-left: -5px;
-}
-
-.bottom-right {
-    left: 100%;
-    top: 100%;
-    margin-left: -5px;
-    margin-top: -5px;
-}
-
-/*
-.draggable{
+/* .draggable{
     position: relative;
     display: -moz-inline-stack;
     display: inline-block;
@@ -79,10 +28,9 @@
     zoom: 1;
     *display: inline;   
 
-    cursor: hand; 
     cursor: pointer;       
-}
-*/
+} */
+
 #toolBox {
     position: fixed;
     bottom: 20px;
@@ -105,4 +53,5 @@
 .grid-item.is-positioning-post-drag>.grid-item-content {
   background-color: #00CC0A;
   z-index: 2; /* keep dragged item on top */
+  cursor: hand; 
 }
