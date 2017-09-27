@@ -84,7 +84,7 @@ var public_js_src = [
 	'public/js/1-jquery.mCustomScrollbar.concat.min.js',
 	'public/js/2-jquery.perfectGridGallery.js',
 	'public/js/2-jquery.textFill.js',
-	'public/js/2-TextResize.js',
+	//'public/js/2-TextResize.js',
 	'public/js/3-velocity.min.js',
 	'public/js/3-velocity.ui.min.js',
 	'public/js/4-jquery.rexScrollify.js',

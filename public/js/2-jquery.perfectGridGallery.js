@@ -61,7 +61,8 @@
             setDesktopPadding: false,
             elementResizeEvent: false,
             gutter: 0,
-            packeryReady: false
+            packeryReady: false,
+            southHandleFlag: false
         };
         this.packerySettings = {
             itemSelector: '',
@@ -92,7 +93,7 @@
 
             this._defineDynamicPrivateProperties();
 
-            this._fixSize();
+            this._fixHeightElements();
 
             this._launchPackery();
 
@@ -102,18 +103,25 @@
             });
 
             $(window).on('resize', { Gallery: this }, function (event) {
-                
+                //Fixare le ancore
                 if (!event.data.Gallery.elementIsResizing) {
-                    event.data.Gallery._defineDynamicPrivateProperties();
-                    event.data.Gallery._fixSize();
+                    var G = event.data.Gallery;
+                    G._defineDynamicPrivateProperties();
+                    G._fixHeightElements();
+                    $(G).children('.perfect-grid-item').each(function (G){
+                        G._fixHandlesPosition(this);
+                    });
                 }
             });
 
             $(window).on('load', { Gallery: this }, function (event) {
-                var G = event.data.Gallery;
+                /* var G = event.data.Gallery;
                 setTimeout(function () {
-                    //G.relayoutGrid();
-                }, 400);
+                    $(G.$element).find('.perfect-grid-item').each(function(){
+                        console.log('ciao');
+                        //G.fitLayoutGrid(this);
+                    });
+                }, 10000); */
             });
         },
 
@@ -123,21 +131,70 @@
 
             this._setGridPadding();
 
-            this._calculateBlockHeight();
+            this._fixHeightElements();
 
-            this._launchPackery();
+            //this._launchPackery();
 
             var G = this;
-
-            // this.$element.Packery('layout');
-
+            this.$element.packery('layout');
+            $('.perfect-grid-item').each(function(){
+                console.log('refreshing item');
+                G.fitLayoutGrid(this);
+            });
+            /*
             setTimeout(function () {
                 //console.log('refreshing grid');
                 // G.$element.Packery('layout');
                 G.relayoutGrid();
                 G.$element.trigger('rearrangeComplete');
                 G.$element.trigger('refreshComplete');
-            }, 400);
+            }, 400); */
+        },
+
+        fixElementTextSize: function ($elem, $handler, $elemHasScrollbar) {
+            var $textElement = $('#' + $elem.id).find('.text-wrap');
+            if ($($textElement).innerHeight() != null) {
+                var block = $($elem)[0];
+                var hStep = this.properties.singleWidth;
+                var currentHeightBlock, maxBlockHeight, textHeight;
+                if($handler == 's'){
+                    var $elementContent = $($elem).children('.text-content');
+                    this.properties.southHandleFlag = true;
+                    console.log('south handler');
+                    currentHeightBlock = parseInt(block['attributes']['data-height'].value);
+                    maxBlockHeight = currentHeightBlock * hStep;
+                    textHeight = $($textElement).innerHeight();
+                    console.log(currentHeightBlock, maxBlockHeight, textHeight);
+                    if (textHeight >= maxBlockHeight) {
+                        if (!$elementContent.hasClass('.rex-custom-scrollbar')) {
+                            $elementContent.addClass('.rex-custom-scrollbar');
+                            $elementContent.mCustomScrollbar();
+                        }
+                    } else {
+                        if ($elementContent.hasClass('.rex-custom-scrollbar')) {
+                            $elementContent.removeClass('.rex-custom-scrollbar');
+                            $elementContent.mCustomScrollbar('destroy');
+                        }
+                    }
+                } else if($handler == 'e'){
+                    //if(l'elemento non ha il flag della scrollbar){
+                        if(this.elementIsResizing && $elemHasScrollbar){
+                            ;
+                        }
+                    do {
+                        currentHeightBlock = parseInt(block['attributes']['data-height'].value);
+                        maxBlockHeight = currentHeightBlock * hStep;
+                        textHeight = $($textElement).innerHeight();
+                        if (textHeight >= maxBlockHeight) {
+                            block['attributes']['data-height'].value = currentHeightBlock + 1;
+                            this._fixHeightElements();
+                        }
+                    } while (textHeight > maxBlockHeight);
+                    //}
+                } else{
+                    ;
+                }
+            }
         },
 
         reLaunchGrid: function () {
@@ -162,6 +219,10 @@
             //console.log('relayoutGrid');
             //this.$element.packery('layout');
             //this.$element.trigger('relayoutComplete');
+        },
+
+        fitLayoutGrid: function($elem){
+            this.$element.packery('fit', $elem);
         },
 
         cleanLayoutGrid: function () {
@@ -362,7 +423,7 @@
             }
         },
 
-        _fixSize: function () {
+        _fixHeightElements: function () {
             var Gallery = this;
             Gallery.$element.find(Gallery.settings.itemSelector).each(function () {
                 var h = Gallery.properties.singleWidth * parseInt($(this).attr('data-height'));
@@ -424,13 +485,13 @@
         },
 
         // fixes position of the handles of the element
-        _fixHandlesPosition: function ($elem, $gallery) {
-            var le = $($elem).outerWidth() - $gallery.properties.halfSeparatorElementLeft - 5,
-                te = $($elem).outerHeight() / 2 - $gallery.properties.halfSeparatorElementTop,
-                ls = $($elem).outerWidth() / 2 - $gallery.properties.halfSeparatorElementLeft,
-                ts = $($elem).outerHeight() - $gallery.properties.halfSeparatorElementTop - 5,
-                lse = $($elem).outerWidth() - $gallery.properties.halfSeparatorElementLeft - 5,
-                tse = $($elem).outerHeight() - $gallery.properties.halfSeparatorElementTop - 5;
+        _fixHandlesPosition: function ($elem) {
+            var le = $($elem).outerWidth() - this.properties.halfSeparatorElementLeft - 5,
+                te = $($elem).outerHeight() / 2 - this.properties.halfSeparatorElementTop,
+                ls = $($elem).outerWidth() / 2 - this.properties.halfSeparatorElementLeft,
+                ts = $($elem).outerHeight() - this.properties.halfSeparatorElementTop - 5,
+                lse = $($elem).outerWidth() - this.properties.halfSeparatorElementLeft - 5,
+                tse = $($elem).outerHeight() - this.properties.halfSeparatorElementTop - 5;
 
             $('#' + $elem.id.concat('e')).css('left', le + 'px');
             $('#' + $elem.id.concat('e')).css('top', te + 'px');
@@ -447,14 +508,14 @@
             var $container = this.$element.packery(this.packerySettings);
             var $items = this.$element.find('.perfect-grid-item');
 
-            var resizeTimeout;
-
             $items.each(function () {
+                var $elem = this;
                 Gallery._addHandles(this);
-                Gallery._fixHandlesPosition(this, Gallery);
+                Gallery._fixHandlesPosition(this);
 
                 $(this).resizable({
-                    //grid: Gallery.properties.singleWidth,
+                    minWidth: Gallery.properties.singleWidth,
+                    minHeight: Gallery.properties.singleWidth,
                     handles: {
                         'e': '.ui-resizable-e',
                         's': '.ui-resizable-s',
@@ -465,31 +526,31 @@
                         var width = Gallery.properties.singleWidth;
                         var block = $(this)[0];
                         var yStart = parseInt(block['attributes']['data-col'].value) - 1;
-                        $(this).resizable("option", "maxWidth", (Gallery.settings.numberCol-yStart)*width);
+                        $(this).resizable("option", "maxWidth", (Gallery.settings.numberCol - yStart) * width);
                     },
                     resize: function (event, ui) {
-
-                        Gallery._fixHandlesPosition(this, Gallery);
-
-                        if (resizeTimeout) {
-                            clearTimeout(resizeTimeout);
-                        }
-
-                        resizeTimeout = setTimeout(function () {
-                            $container.packery('fit', ui.element[0]);
-                        }, 100);
+                        var direction = $(this).data('ui-resizable').axis;
+                        Gallery.fixElementTextSize($elem, direction);
+                        Gallery._fixHandlesPosition(this);
+                        Gallery.fitLayoutGrid(this);
+                        Gallery.updateAllElementNewProperties();
                     },
                     stop: function () {
                         Gallery.elementIsResizing = false;
                         Gallery.updateAllElementNewProperties();
-                        Gallery._fixSize();
-                        Gallery.updateAllElementNewProperties();
-                        Gallery._fixHandlesPosition(this, Gallery);
+                        if(!Gallery.properties.southHandleFlag){
+                            Gallery.fixElementTextSize($elem);
+                            Gallery.updateAllElementNewProperties();
+                        }
+                        Gallery._fixHeightElements();
+                        Gallery._fixHandlesPosition(this);
+                        Gallery.fitLayoutGrid(this);
+                        Gallery.properties.southHandleFlag = false;
                     }
                 });
                 $(this).draggable({
-                    stop: function() {
-                        Gallery._fixSize();
+                    stop: function () {
+                        //Gallery._fixHeightElements();
                         Gallery.updateAllElementNewProperties();
                     }
                 });
@@ -497,9 +558,11 @@
 
             // bind drag events to Packery
             this.$element.packery('bindUIDraggableEvents', $items);
+
             // console.log($container.data('packery') );
             // packery is ready
             Gallery.properties.packeryReady = true;
+            //Gallery.refreshGrid();
         },
 
         // setting the blocks and wrap padding

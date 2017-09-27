@@ -478,7 +478,7 @@ var VimeoVideo = (function($){
 		}
 
 		/* -- Launching TextResize ------ */
-		$('.perfect-grid-gallery').textResize();
+		//$('.perfect-grid-gallery').textResize();
 
 		if(typeof _plugin_frontend_settings !== 'undefined') {
 			if( 1 == _plugin_frontend_settings.animations ) {
