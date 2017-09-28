@@ -6,8 +6,6 @@
 
     "use strict";
 
-    var elementIsResizing;
-
     // Create the defaults once
     var pluginName = "perfectGridGallery",
         defaults = {
@@ -62,7 +60,9 @@
             elementResizeEvent: false,
             gutter: 0,
             packeryReady: false,
-            southHandleFlag: false
+            elementIsResizing: false,
+            elementHasScrollBar: false,
+            elementStartingH: 0
         };
         this.packerySettings = {
             itemSelector: '',
@@ -71,7 +71,6 @@
             gutter: 0,
             percentPosition: false
         };
-        this.elementIsResizing = false;
         this.init();
     }
 
@@ -104,7 +103,7 @@
 
             $(window).on('resize', { Gallery: this }, function (event) {
                 //Fixare le ancore
-                if (!event.data.Gallery.elementIsResizing) {
+                if (!event.data.Gallery.properties.elementIsResizing) {
                     var G = event.data.Gallery;
                     G._defineDynamicPrivateProperties();
                     G._fixHeightElements();
@@ -157,42 +156,42 @@
                 var block = $($elem)[0];
                 var hStep = this.properties.singleWidth;
                 var currentHeightBlock, maxBlockHeight, textHeight;
-                if($handler == 's'){
-                    var $elementContent = $($elem).children('.text-content');
-                    this.properties.southHandleFlag = true;
-                    console.log('south handler');
-                    currentHeightBlock = parseInt(block['attributes']['data-height'].value);
-                    maxBlockHeight = currentHeightBlock * hStep;
-                    textHeight = $($textElement).innerHeight();
-                    console.log(currentHeightBlock, maxBlockHeight, textHeight);
-                    if (textHeight >= maxBlockHeight) {
-                        if (!$elementContent.hasClass('.rex-custom-scrollbar')) {
-                            $elementContent.addClass('.rex-custom-scrollbar');
-                            $elementContent.mCustomScrollbar();
-                        }
+                var $textContent = $($elem).children('.text-content');
+                currentHeightBlock = parseInt(block['attributes']['data-height'].value);
+                maxBlockHeight = currentHeightBlock * hStep;
+                textHeight = $($textElement).innerHeight();
+                if ($handler == 's' || $handler == 'se') {
+                    this.updateElementScrollBar($textContent, textHeight, maxBlockHeight);
+                } else if ($handler == 'e') {
+                    if (this.properties.elementHasScrollBar) {
+                        this.updateElementScrollBar($textContent, textHeight, maxBlockHeight);
                     } else {
-                        if ($elementContent.hasClass('.rex-custom-scrollbar')) {
-                            $elementContent.removeClass('.rex-custom-scrollbar');
-                            $elementContent.mCustomScrollbar('destroy');
-                        }
+                        do {
+                            this.updateElementProperty($elem, 'w');
+                            currentHeightBlock = parseInt(block['attributes']['data-height'].value);
+                            maxBlockHeight = currentHeightBlock * hStep;
+                            textHeight = $($textElement).innerHeight();
+                            if (textHeight >= maxBlockHeight) {
+                                block['attributes']['data-height'].value = currentHeightBlock + 1;
+                                this._fixHeightElements();
+                            }
+                        } while (textHeight > maxBlockHeight);
                     }
-                } else if($handler == 'e'){
-                    //if(l'elemento non ha il flag della scrollbar){
-                        if(this.elementIsResizing && $elemHasScrollbar){
-                            ;
-                        }
-                    do {
-                        currentHeightBlock = parseInt(block['attributes']['data-height'].value);
-                        maxBlockHeight = currentHeightBlock * hStep;
-                        textHeight = $($textElement).innerHeight();
-                        if (textHeight >= maxBlockHeight) {
-                            block['attributes']['data-height'].value = currentHeightBlock + 1;
-                            this._fixHeightElements();
-                        }
-                    } while (textHeight > maxBlockHeight);
-                    //}
-                } else{
+                } else {
                     ;
+                }
+            }
+        },
+        updateElementScrollBar: function($textContent, textHeight, maxBlockHeight){
+            if (textHeight >= maxBlockHeight) {
+                if (!$textContent.hasClass('.rex-custom-scrollbar')) {
+                    $textContent.addClass('.rex-custom-scrollbar');
+                    $textContent.mCustomScrollbar();
+                }
+            } else {
+                if ($textContent.hasClass('.rex-custom-scrollbar')) {
+                    $textContent.removeClass('.rex-custom-scrollbar');
+                    $textContent.mCustomScrollbar('destroy');
                 }
             }
         },
@@ -281,54 +280,68 @@
             });
         },
 
-        saveElementNewProperties: function($elem) {
-            
+        updateElementProperty: function ($elem, $case) {
             var width = this.properties.singleWidth;
             var block = $($elem)[0];
 
-            // Getting old attributes
-            var x = parseInt(block['attributes']['data-row'].value),
-                y = parseInt(block['attributes']['data-col'].value),
-                w = parseInt(block['attributes']['data-width'].value),
-                h = parseInt(block['attributes']['data-height'].value);
+            switch ($case) {
+                case 'x': {
+                    var x = parseInt(block['attributes']['data-row'].value);
+                    var nX = Math.round(parseInt($(block).position().top) / width);
+                    if (nX <= 0) {
+                        nX = 0;
+                    }
+                    nX = nX + 1;
+                    block['attributes']['data-row'].value = nX;
+                    break;
+                }
+                case 'y': {
+                    var y = parseInt(block['attributes']['data-col'].value);
+                    var nY = Math.round(parseInt($(block).position().left) / width);
+                    if (nY <= 0) {
+                        nY = 0;
+                    }
+                    nY = nY + 1;
 
-            var nX = Math.round(parseInt($(block).position().top) / width),
-            nY = Math.round(parseInt($(block).position().left) / width),
-            nW = Math.round(parseInt($(block).outerWidth()) / width),
-            nH = Math.round(parseInt($(block).outerHeight()) / width);
-            
-            if (nX <= 0) {
-                nX = 0;
+                    if (nY > 12) {
+                        nY = 12;
+                    }
+                    block['attributes']['data-col'].value = nY;
+                    break;
+                }
+                case 'w': {
+                    var w = parseInt(block['attributes']['data-width'].value);
+                    var nW = Math.round(parseInt($(block).outerWidth()) / width);
+                    if (nW <= 0) {
+                        nW = 1;
+                    }
+                    block['attributes']['data-width'].value = nW;
+                    // updating element class
+                    $(block).removeClass("w" + w);
+                    $(block).addClass("w" + nW);
+                    break;
+                }
+                case 'h': {
+                    var h = parseInt(block['attributes']['data-height'].value);
+                    var nH = Math.round(parseInt($(block).outerHeight()) / width);
+                    if (nH <= 0) {
+                        nH = 1;
+                    }
+                    block['attributes']['data-height'].value = nH;
+                    break;
+                }
+                default: {
+                    console.log('invalid choise!');
+                    break;
+                }
             }
+        },
 
-            if (nY <= 0) {
-                nY = 0;
-            }
-            
-            if (nW <= 0) {
-                nW = 1;
-            }
-            
-            if (nH <= 0) {
-                nH = 1;
-            }
-
-            nX = nX+1;
-            nY = nY+1;
-
-            if(nY>12){
-                nY = 12;
-            }
-
-            // updating element attributes
-            block['attributes']['data-row'].value = nX;
-            block['attributes']['data-col'].value = nY;
-            block['attributes']['data-width'].value = nW;
-            block['attributes']['data-height'].value = nH;
-            
-            // updating element class
-            $(block).removeClass("w" + w);
-            $(block).addClass("w" + nW);
+        saveElementNewProperties: function($elem) {
+            this.updateElementProperty($elem, 'x');
+            this.updateElementProperty($elem, 'y');
+            this.updateElementProperty($elem, 'w');
+            this.updateElementProperty($elem, 'h');
         },
 
         // Override options set by the jquery call with the html data attributes, if presents
@@ -522,11 +535,16 @@
                         'se': '.ui-resizable-se'
                     },
                     start: function () {
-                        Gallery.elementIsResizing = true;
+                        var $textContent = $($elem).children('.text-content');
+                        if($textContent.hasClass('.rex-custom-scrollbar')){
+                            Gallery.properties.elementHasScrollBar = true;
+                        }
+                        Gallery.properties.elementIsResizing = true;
                         var width = Gallery.properties.singleWidth;
                         var block = $(this)[0];
                         var yStart = parseInt(block['attributes']['data-col'].value) - 1;
                         $(this).resizable("option", "maxWidth", (Gallery.settings.numberCol - yStart) * width);
+
                     },
                     resize: function (event, ui) {
                         var direction = $(this).data('ui-resizable').axis;
@@ -536,7 +554,7 @@
                         Gallery.updateAllElementNewProperties();
                     },
                     stop: function () {
-                        Gallery.elementIsResizing = false;
+                        Gallery.properties.elementIsResizing = false;
                         Gallery.updateAllElementNewProperties();
                         if(!Gallery.properties.southHandleFlag){
                             Gallery.fixElementTextSize($elem);
@@ -545,7 +563,7 @@
                         Gallery._fixHeightElements();
                         Gallery._fixHandlesPosition(this);
                         Gallery.fitLayoutGrid(this);
-                        Gallery.properties.southHandleFlag = false;
+                        Gallery.properties.elementHasScrollBar = false;
                     }
                 });
                 $(this).draggable({
