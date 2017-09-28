@@ -1,23 +1,55 @@
- .ui-resizable-handle:hover{
-    background-color: gray;
-/*     transform: scale(2); */
+.circle-handle-e, .circle-handle-s, .circle-handle-se:hover{
+    box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+    -webkit-transform: scale(2);
+    transform: scale(2);
+}
+
+.perfect-grid-item:hover{
+    z-index: 2;
+    border: 1px dashed rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0px 0px 111px 1px rgba(0,0,0,0.8);
+    -moz-box-shadow: 0px 0px 111px 1px rgba(0,0,0,0.8);
+    box-shadow: 0px 0px 111px 1px rgba(0,0,0,0.8);
 }
 
 .perfect-grid-item:hover>.ui-resizable-handle{
     visibility: visible;
 }
 
-.ui-resizable-handle {
+.circle-handle-e, .circle-handle-s, .circle-handle-se{
     width: 10px;
     height: 10px;
-    visibility: hidden;
-    background-color: white;
-    border: 2px solid black;
-    border-radius: 50%; 
-    position: absolute;
-    z-index: 3;
-    box-sizing: inherit;
+    background-color: #039be5;
+    border: 1px solid white;
+    border-radius: 50%;
     overflow: visible;
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    -ms-transition: all 0.3s ease-out;
+    transition: all 0.3s ease-out;
+}
+
+.ui-resizable-se {
+    height: 30%;
+    width: 30%;
+}
+
+.ui-resizable-s {
+    height: 40px;
+    width: 85%;
+}
+
+.ui-resizable-e {
+    width: 40px;
+    height: 85%;
+}
+
+.ui-resizable-handle {
+    visibility: hidden;
+    position: absolute;
+    z-index: 2;
+    box-sizing: inherit;
 }
 
 /* .draggable{
@@ -37,6 +69,13 @@
     background-color: green;
 }
 
+.resizePlaceHolder{
+    outline: 3px dashed #444;
+    outline-offset: -6px;
+    -webkit-transition: -webkit-transform 0.2s;
+            transition: transform 0.2s;
+}
+
 .packery-drop-placeholder {
     outline: 3px dashed #444;
     outline-offset: -6px;
@@ -48,10 +87,14 @@
   /* highlight drag & drop */
 
 /* jQuery UI Draggable adds ui-draggable-dragging */
-.grid-item.ui-draggable-dragging>.grid-item-content,
+.ui-draggable-dragging{
+    z-index: 2;
+    cursor: pointer;
+}
+
+.grid-item-content:active {
+}
 /* Packery adds class while transitioning to drop position */
-.grid-item.is-positioning-post-drag>.grid-item-content {
-  background-color: #00CC0A;
-  z-index: 2; /* keep dragged item on top */
+.grid-item.is-positioning-post-drag:active {
   cursor: hand; 
 }

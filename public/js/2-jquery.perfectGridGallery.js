@@ -77,7 +77,7 @@
     // Avoid Plugin.prototype conflicts
     $.extend(perfectGridGallery.prototype, {
         init: function () {
-            
+
             this._saveStateElements();
 
             this._defineDataSettings();
@@ -88,11 +88,12 @@
 
             this._definePrivateProperties();
 
-            this._setGridPadding();
+            //this._setGridPadding();
+            this._setParentGridPadding();
 
             this._defineDynamicPrivateProperties();
 
-            this._fixHeightElements();
+            this._fixHeightAllElements();
 
             this._launchPackery();
 
@@ -106,8 +107,8 @@
                 if (!event.data.Gallery.properties.elementIsResizing) {
                     var G = event.data.Gallery;
                     G._defineDynamicPrivateProperties();
-                    G._fixHeightElements();
-                    $(G).children('.perfect-grid-item').each(function (G){
+                    G._fixHeightAllElements();
+                    $(G).children('.perfect-grid-item').each(function (G) {
                         G._fixHandlesPosition(this);
                     });
                 }
@@ -130,13 +131,13 @@
 
             this._setGridPadding();
 
-            this._fixHeightElements();
+            this._fixHeightAllElements();
 
             //this._launchPackery();
 
             var G = this;
             this.$element.packery('layout');
-            $('.perfect-grid-item').each(function(){
+            $('.perfect-grid-item').each(function () {
                 console.log('refreshing item');
                 G.fitLayoutGrid(this);
             });
@@ -152,7 +153,7 @@
 
         fixElementTextSize: function ($elem, $handler, $elemHasScrollbar) {
             var $textElement = $('#' + $elem.id).find('.text-wrap');
-            if ($($textElement).innerHeight() != null) {
+            if (!$($elem).hasClass('block-has-slider') && ($($textElement).innerHeight() != null)) {
                 var block = $($elem)[0];
                 var hStep = this.properties.singleWidth;
                 var currentHeightBlock, maxBlockHeight, textHeight;
@@ -160,9 +161,7 @@
                 currentHeightBlock = parseInt(block['attributes']['data-height'].value);
                 maxBlockHeight = currentHeightBlock * hStep;
                 textHeight = $($textElement).innerHeight();
-                if ($handler == 's' || $handler == 'se') {
-                    this.updateElementScrollBar($textContent, textHeight, maxBlockHeight);
-                } else if ($handler == 'e') {
+                if ($handler == 'e') {
                     if (this.properties.elementHasScrollBar) {
                         this.updateElementScrollBar($textContent, textHeight, maxBlockHeight);
                     } else {
@@ -173,16 +172,17 @@
                             textHeight = $($textElement).innerHeight();
                             if (textHeight >= maxBlockHeight) {
                                 block['attributes']['data-height'].value = currentHeightBlock + 1;
-                                this._fixHeightElements();
+                                this._fixHeightElement(block);
                             }
                         } while (textHeight > maxBlockHeight);
                     }
                 } else {
-                    ;
+                    this.updateElementScrollBar($textContent, textHeight, maxBlockHeight);
                 }
             }
         },
-        updateElementScrollBar: function($textContent, textHeight, maxBlockHeight){
+
+        updateElementScrollBar: function ($textContent, textHeight, maxBlockHeight) {
             if (textHeight >= maxBlockHeight) {
                 if (!$textContent.hasClass('.rex-custom-scrollbar')) {
                     $textContent.addClass('.rex-custom-scrollbar');
@@ -220,7 +220,7 @@
             //this.$element.trigger('relayoutComplete');
         },
 
-        fitLayoutGrid: function($elem){
+        fitLayoutGrid: function ($elem) {
             this.$element.packery('fit', $elem);
         },
 
@@ -273,10 +273,18 @@
             return number % 2 == 0;
         },
 
-        updateAllElementNewProperties: function(){
+        updateAllElementsAllNewProperties: function () {
             var Gallery = this;
-            this.$element.find('.perfect-grid-item').each(function(){
-                Gallery.saveElementNewProperties(this);
+            this.$element.find('.perfect-grid-item').each(function () {
+                Gallery.saveElementAllNewProperties(this);
+            });
+        },
+
+        updateAllElementsXYproperties: function () {
+            var Gallery = this;
+            this.$element.find('.perfect-grid-item').each(function () {
+                Gallery.updateElementProperty(this, 'x');
+                Gallery.updateElementProperty(this, 'y');
             });
         },
 
@@ -337,7 +345,7 @@
             }
         },
 
-        saveElementNewProperties: function($elem) {
+        saveElementAllNewProperties: function ($elem) {
             this.updateElementProperty($elem, 'x');
             this.updateElementProperty($elem, 'y');
             this.updateElementProperty($elem, 'w');
@@ -436,19 +444,26 @@
             }
         },
 
-        _fixHeightElements: function () {
+        _fixHeightAllElements: function () {
             var Gallery = this;
             Gallery.$element.find(Gallery.settings.itemSelector).each(function () {
-                var h = Gallery.properties.singleWidth * parseInt($(this).attr('data-height'));
-
-                $(this).outerHeight(h);
-
-                $(this).css('width', "");
-                $(this).css('padding-left', Gallery.properties.halfSeparatorElementLeft);
-                $(this).css('padding-top', Gallery.properties.halfSeparatorElementTop);
-                $(this).css('padding-bottom', Gallery.properties.halfSeparatorElementBottom);
-                $(this).css('padding-right', Gallery.properties.halfSeparatorElementRight);
+                Gallery._fixHeightElement(this);
             });
+        },
+
+        _updateElementPadding: function ($elem) {
+            $($elem).css('width', "");
+            $($elem).css('padding-left', this.properties.halfSeparatorElementLeft);
+            $($elem).css('padding-top', this.properties.halfSeparatorElementTop);
+            $($elem).css('padding-bottom', this.properties.halfSeparatorElementBottom);
+            $($elem).css('padding-right', this.properties.halfSeparatorElementRight);
+        },
+
+        _fixHeightElement: function ($elem) {
+            var h = this.properties.singleWidth * parseInt($($elem).attr('data-height'));
+            $($elem).outerHeight(h);
+
+            this._updateElementPadding($elem);
         },
 
         // Calculate fixed blocks height
@@ -480,31 +495,60 @@
         // add span elements that will be used as handles of the element
         _addHandles: function ($elem) {
             var $handles = [];
+            var $circles = [];
+            var $rects = [];
 
             for (var $i = 0; $i < 3; $i++) {
-                $handles[$i] = document.createElement('span');
+                $handles[$i] = document.createElement('div');
+            }
+            for (var $i = 0; $i < 3; $i++) {
+                $circles[$i] = document.createElement('span');
+            }
+            for (var $i = 0; $i < 3; $i++) {
+                $rects[$i] = document.createElement('span');
             }
 
             $handles[0].setAttribute('class', 'ui-resizable-handle ui-resizable-e');
             $handles[0].setAttribute('id', $elem.id.concat('e'));
-            $handles[1].setAttribute('class', 'ui-resizable-handle ui-resizable-se');
-            $handles[1].setAttribute('id', $elem.id.concat('se'));
-            $handles[2].setAttribute('class', 'ui-resizable-handle ui-resizable-s');
-            $handles[2].setAttribute('id', $elem.id.concat('s'));
+            $circles[0].setAttribute('class','circle-handle-e');
+            $rects[0].setAttribute('class','rect-handle-e');
+            $handles[1].setAttribute('class', 'ui-resizable-handle ui-resizable-s');
+            $handles[1].setAttribute('id', $elem.id.concat('s'));
+            $circles[1].setAttribute('class','circle-handle-s');
+            $rects[1].setAttribute('class','rect-handle-z');
+            $handles[2].setAttribute('class', 'ui-resizable-handle ui-resizable-se');
+            $handles[2].setAttribute('id', $elem.id.concat('se'));
+            $circles[2].setAttribute('class','circle-handle-se');
+            $rects[2].setAttribute('class','rect-handle-se');
+
+            // Listeners for the overflow
+            $($elem).mouseover(function () {
+                $($elem).css('overflow', 'visible');
+                $($elem).parent().css('overflow', 'visible');
+                $($elem).parent().parent().css('overflow', 'visible');
+            });
+
+            $($elem).mouseout(function () {
+                $($elem).css('overflow', 'hidden');
+                $($elem).parent().css('overflow', 'hidden');
+                $($elem).parent().parent().css('overflow', 'hidden');
+            });
 
             for (var $i = 0; $i < 3; $i++) {
+                $handles[$i].append($circles[$i]);
+                $handles[$i].append($rects[$i]);
                 $('#' + $elem.id).append($handles[$i]);
             }
         },
 
         // fixes position of the handles of the element
         _fixHandlesPosition: function ($elem) {
-            var le = $($elem).outerWidth() - this.properties.halfSeparatorElementLeft - 5,
-                te = $($elem).outerHeight() / 2 - this.properties.halfSeparatorElementTop,
-                ls = $($elem).outerWidth() / 2 - this.properties.halfSeparatorElementLeft,
-                ts = $($elem).outerHeight() - this.properties.halfSeparatorElementTop - 5,
-                lse = $($elem).outerWidth() - this.properties.halfSeparatorElementLeft - 5,
-                tse = $($elem).outerHeight() - this.properties.halfSeparatorElementTop - 5;
+            var le = $($elem).outerWidth() - this.properties.halfSeparatorElementLeft-20,
+                te = this.properties.halfSeparatorElementTop,
+                ls = this.properties.halfSeparatorElementLeft,
+                ts = $($elem).outerHeight() - this.properties.halfSeparatorElementTop-20,
+                lse = $($elem).outerWidth() - this.properties.halfSeparatorElementLeft-$($elem).outerWidth()*0.15,
+                tse = $($elem).outerHeight() - this.properties.halfSeparatorElementTop-$($elem).outerHeight()*0.15;
 
             $('#' + $elem.id.concat('e')).css('left', le + 'px');
             $('#' + $elem.id.concat('e')).css('top', te + 'px');
@@ -512,6 +556,41 @@
             $('#' + $elem.id.concat('se')).css('top', tse + 'px');
             $('#' + $elem.id.concat('s')).css('left', ls + 'px');
             $('#' + $elem.id.concat('s')).css('top', ts + 'px');
+        },
+
+        createResizePlaceHolder: function($elem){
+            var block = $($elem)[0];
+            var $placeholder = document.createElement('div');
+            $($elem).parent().append($placeholder);
+            $($placeholder).addClass('resizePlaceHolder');
+            $($placeholder).addClass('w'+parseInt(block['attributes']['data-width'].value));
+            var x = parseInt(block['attributes']['data-row'].value-1)*this.properties.singleWidth;
+            var y = parseInt(block['attributes']['data-col'].value-1)*this.properties.singleWidth;
+            $($placeholder).css('transform', 'translate('+y+'px, '+x+'px)');
+            $($placeholder).css('position', 'absolute');
+            return $placeholder;
+        },
+        
+        updateResizePlaceHolder: function($resizePlaceHolder, $elem){
+            var block = $($elem)[0];
+            var width = this.properties.singleWidth;
+            var w = parseInt(block['attributes']['data-width'].value);
+            
+            var nW = Math.round(parseInt($(block).outerWidth()) / width);
+            if (nW <= 0) {
+                nW = 1;
+            }
+            // updating element class
+            $($resizePlaceHolder).removeClass();
+            $($resizePlaceHolder).addClass('resizePlaceHolder');
+            $($resizePlaceHolder).addClass("w" + nW);
+            $($resizePlaceHolder).css('width', nW*width+"px");
+            var nH = Math.round(parseInt($(block).outerHeight()) / width);
+            if (nH <= 0) {
+                nH = 1;
+            }
+            $($resizePlaceHolder).css('height', nH*width+"px");
+
         },
 
         // Launching Packery plugin
@@ -525,7 +604,7 @@
                 var $elem = this;
                 Gallery._addHandles(this);
                 Gallery._fixHandlesPosition(this);
-
+                var $resizePlaceHolder;
                 $(this).resizable({
                     minWidth: Gallery.properties.singleWidth,
                     minHeight: Gallery.properties.singleWidth,
@@ -536,7 +615,7 @@
                     },
                     start: function () {
                         var $textContent = $($elem).children('.text-content');
-                        if($textContent.hasClass('.rex-custom-scrollbar')){
+                        if ($textContent.hasClass('.rex-custom-scrollbar')) {
                             Gallery.properties.elementHasScrollBar = true;
                         }
                         Gallery.properties.elementIsResizing = true;
@@ -544,32 +623,33 @@
                         var block = $(this)[0];
                         var yStart = parseInt(block['attributes']['data-col'].value) - 1;
                         $(this).resizable("option", "maxWidth", (Gallery.settings.numberCol - yStart) * width);
-
+                        $resizePlaceHolder = Gallery.createResizePlaceHolder(this);
                     },
                     resize: function (event, ui) {
                         var direction = $(this).data('ui-resizable').axis;
                         Gallery.fixElementTextSize($elem, direction);
                         Gallery._fixHandlesPosition(this);
                         Gallery.fitLayoutGrid(this);
-                        Gallery.updateAllElementNewProperties();
+                        Gallery.updateAllElementsAllNewProperties();
+                        Gallery.updateResizePlaceHolder($resizePlaceHolder, this);
                     },
                     stop: function () {
                         Gallery.properties.elementIsResizing = false;
-                        Gallery.updateAllElementNewProperties();
-                        if(!Gallery.properties.southHandleFlag){
+                        Gallery.updateAllElementsAllNewProperties();
+                        if (!Gallery.properties.southHandleFlag) {
                             Gallery.fixElementTextSize($elem);
-                            Gallery.updateAllElementNewProperties();
+                            Gallery.updateAllElementsXYproperties();
                         }
-                        Gallery._fixHeightElements();
+                        Gallery._fixHeightAllElements();
                         Gallery._fixHandlesPosition(this);
                         Gallery.fitLayoutGrid(this);
                         Gallery.properties.elementHasScrollBar = false;
+                        $($resizePlaceHolder).remove();
                     }
                 });
                 $(this).draggable({
                     stop: function () {
-                        //Gallery._fixHeightElements();
-                        Gallery.updateAllElementNewProperties();
+                        Gallery.updateAllElementsXYproperties();
                     }
                 });
             });
@@ -583,6 +663,46 @@
             //Gallery.refreshGrid();
         },
 
+        _setParentGridPadding: function () {
+            var $parent = $(this.$element.parent());
+            //console.log('setting grid padding');
+            if (this._viewport().width >= 768 && !this.properties.setDesktopPadding || (!this.properties.setDesktopPadding && !this.properties.setMobilePadding && this._check_parent_class("rex-block-grid"))) {
+                //console.log('setting grid padding');
+                this.properties.setDesktopPadding = true;
+                if (this._check_parent_class("rex-block-grid")) {
+                    this.properties.setMobilePadding = true;
+                } else {
+                    this.properties.setMobilePadding = false;
+                }
+
+                if (null !== this.properties.gridTopSeparator) {
+                    $parent.css('padding-top', this.properties.gridTopSeparator - this.properties.halfSeparatorTop);
+                } else {
+                    $parent.css('padding-top', this.properties.halfSeparatorTop);
+                }
+
+                if (null !== this.properties.gridBottomSeparator) {
+                    $parent.css('padding-bottom', this.properties.gridBottomSeparator - this.properties.halfSeparatorBottom);
+                } else {
+                    $parent.css('padding-bottom', this.properties.halfSeparatorBottom);
+                }
+
+                if (!this.properties.paddingTopBottom) {
+
+                    if (null !== this.properties.gridLeftSeparator) {
+                        $parent.css('padding-left', this.properties.gridLeftSeparator - this.properties.halfSeparatorLeft);
+                    } else {
+                        $parent.css('padding-left', this.properties.halfSeparatorLeft);
+                    }
+
+                    if (null !== this.properties.gridRightSeparator) {
+                        $parent.css('padding-right', this.properties.gridRightSeparator - this.properties.halfSeparatorRight);
+                    } else {
+                        $parent.css('padding-right', this.properties.halfSeparatorRight);
+                    }
+                }
+            }
+        },
         // setting the blocks and wrap padding
         _setGridPadding: function () {
             //console.log('setting grid padding');

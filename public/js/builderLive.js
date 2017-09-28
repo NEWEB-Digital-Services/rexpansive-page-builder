@@ -2,25 +2,6 @@
     'use strict';
     //If true table is split in 12 columns | if false table is split in width columns    
 
-    function addHandles($elem) {
-        var $handles = [];
-        var nomeElemento = '#'.concat($elem.id);
-        for (var $i = 0; $i < 3; $i++) {
-            $handles[$i] = document.createElement('span');
-        }
-        $handles[0].setAttribute('class', 'handle ui-resizable-handle ui-resizable-e');
-        $handles[0].setAttribute('id', nomeElemento.concat('e'));
-        $handles[1].setAttribute('class', 'handle ui-resizable-handle ui-resizable-se');
-        $handles[1].setAttribute('id', nomeElemento.concat('se'));
-        $handles[2].setAttribute('class', 'handle ui-resizable-handle ui-resizable-s');
-        $handles[2].setAttribute('id', nomeElemento.concat('s'));
-
-        // Appending span elements to the current elem
-        for (var $i = 0; $i < 3; $i++) {
-            $('#' + $elem['id']).append($handles[$i]);
-        }
-    }
-
     function addToolBox($elem) {
         var $div = document.createElement("div");
         $div.setAttribute("id", "toolBox");
