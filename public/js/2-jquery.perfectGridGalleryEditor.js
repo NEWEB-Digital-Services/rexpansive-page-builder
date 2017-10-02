@@ -64,7 +64,8 @@
             elementHasScrollBar: false,
             elementStartingH: 0,
             percentFactorHandlers: 0.15,
-            lostPixels: 0
+            lostPixels: 0,
+            elemHasFocus: false
         };
         this.packerySettings = {
             itemSelector: '',
@@ -88,9 +89,9 @@
 
             this._definePrivateProperties();
 
-            this._setGridPadding();
-/*             this._setParentGridPadding();
-
+            //this._setGridPadding();
+            this._setParentGridPadding();
+/*
             this._definePackerySettings();
             
             var $container = this.$element.packery(this.packerySettings);
@@ -284,12 +285,13 @@
         isEven: function (number) {
             return number % 2 == 0;
         },
+        
+        // Updating elements properties
 
         updateAllElementsAllNewProperties: function () {
             var Gallery = this;
             this.$element.find('.perfect-grid-item').each(function () {
-                Gallery.updateAllElementsXYproperties();
-                Gallery.updateAllElementsWHproperties();
+                Gallery.updateElementAllNewProperties(this);
             });
         },
 
@@ -299,19 +301,23 @@
                 Gallery.updateElementXYproperties(this);
             });
         },
+        
+        updateElementAllNewProperties: function ($elem) {
+            this.updateElementXYproperties($elem);
+            this.updateElementWHproperties($elem);
+        },
+        
+        updateElementXYproperties: function($elem){
+            this.updateElementProperty($elem, 'x');
+            this.updateElementProperty($elem, 'y');
+        },
 
         updateElementWHproperties: function($elem){
             this.updateElementProperty($elem, 'w');
             this.updateElementProperty($elem, 'h');
             var w = $($elem)[0]['attributes']['data-width'].value;
             var h = $($elem)[0]['attributes']['data-height'].value;
-            console.log(w,h);
             $('#'+$elem.id+' > .el-size-viewer').text(w+' x '+h);
-        },
-
-        updateElementXYproperties: function($elem){
-            this.updateElementProperty($elem, 'x');
-            this.updateElementProperty($elem, 'y');
         },
 
         updateElementProperty: function ($elem, $case) {
@@ -370,11 +376,6 @@
             }
         },
 
-        updateElementAllNewProperties: function ($elem) {
-            this.updateElementXYproperties($elem);
-            this.updateElementWHproperties($elem);
-        },
-
         // Override options set by the jquery call with the html data attributes, if presents
         _defineDataSettings: function () {
 
@@ -394,24 +395,11 @@
 
         // Define usefull private properties
         _defineDynamicPrivateProperties: function () {
-            //console.log('defining dynamic Properties');
-/*             
-            var data = $container.data('packery');
-            var gutter = this.properties.gutter;
-            
-            console.log('packery width: '+$(data)[0]['size'].width);
-            console.log('perfect grid width: '+$(this.element).outerWidth());
-            console.log('packery column-width: '+$(data)[0].columnWidth);
-            console.log('perfect grid column-width: '+$(this.element).outerWidth()/12);
- 
-             this.properties.wrapWidth =  $(data)[0]['size'].width;
-            this.properties.singleWidth = $(data)[0].columnWidth; */
 
             var startingWidth = $(this.$element).outerWidth();
             var n = Math.floor($(this.$element).outerWidth()/12);
             var newWidth = n*12;
             this.properties.lostPixels = startingWidth-newWidth;
-            console.log('lost pixels: '+this.properties.lostPixels);
             this.properties.wrapWidth =  newWidth;
             this.properties.singleWidth = n;
             $(this.$element).css('width', newWidth);
@@ -462,12 +450,7 @@
 
         // define Packery Settings
         _definePackerySettings: function () {
-            //console.log(this.settings.);
             this.packerySettings.itemSelector = this.settings.itemSelector;
-/*             this.packerySettings.columnWidth = this.settings.gridSizerSelector;
-            this.packerySettings.rowHeight = this.settings.gridSizerSelector; 
- */
-            //this.properties.wrapWidth
             this.packerySettings.columnWidth = this.properties.singleWidth;
             this.packerySettings.rowHeight = this.properties.singleWidth;
             this.packerySettings.percentPosition = true;
@@ -508,11 +491,6 @@
             var w = this.properties.singleWidth * parseInt($($elem).attr('data-width'));
             $($elem).outerHeight(h);
             $($elem).outerWidth(w);
-           /*  
-            $($elem).css('height', h);
-            $($elem).css('width', w); */
-            
-            //console.log(h, w);
             this._updateElementPadding($elem);
         },
 
@@ -553,9 +531,9 @@
 
         // add span elements that will be used as handles of the element
         _addHandles: function ($elem) {
+            var Gallery = this;
             var $handles = [];
             var $circles = [];
-
             for (var $i = 0; $i < 3; $i++) {
                 $handles[$i] = document.createElement('div');
             }
@@ -574,26 +552,87 @@
             $handles[1].setAttribute('class', 'ui-resizable-handle ui-resizable-s');
             $handles[1].setAttribute('id', $elem.id.concat('s'));
             $($handles[1]).css('height', '40px');
-            $circles[1].setAttribute('class','circle-handle circle-handle-s');
+            $circles[1].setAttribute('class', 'circle-handle circle-handle-s');
             $($circles[1]).css('position', 'absolute');
-            
+
             // south-est handler
             $handles[2].setAttribute('class', 'ui-resizable-handle ui-resizable-se');
             $handles[2].setAttribute('id', $elem.id.concat('se'));
-            $circles[2].setAttribute('class','circle-handle circle-handle-se');
+            $circles[2].setAttribute('class', 'circle-handle circle-handle-se');
             $($circles[2]).css('position', 'absolute');
-            
-            // Listeners for the overflow
-            $($elem).mouseover(function () {
-                $($elem).css('overflow', 'visible');
+
+            $($elem).mousedown(function () {
+                $($elem).css({
+                    'overflow': 'visible',
+                    'z-index': '2',
+                    'outline': '1px dashed rgba(0,0,0,0.5)',
+                    '-webkit-box-shadow': '0px 0px 111px 1px rgba(0,0,0,0.8)',
+                    '-moz-box-shadow': '0px 0px 111px 1px rgba(0,0,0,0.8)',
+                    'box-shadow': '0px 0px 111px 1px rgba(0,0,0,0.8)',
+                });
                 $($elem).parent().css('overflow', 'visible');
                 $($elem).parent().parent().css('overflow', 'visible');
+                $($elem).parent().parent().parent().css('overflow', 'visible');
+                $($elem).parent().parent().parent().parent().css('z-index', '31');
+                $('#' + $elem.id + ' > ' + ' .ui-resizable-handle').css('visibility', 'visible');
+                $('#' + $elem.id + ' > ' + ' .el-size-viewer').css('visibility', 'visible');
+                if (!$($elem).hasClass('elem-is-resizing')) {
+                    $($elem).addClass('elem-is-resizing');
+                }
             });
 
-            $($elem).mouseout(function () {
-                $($elem).css('overflow', 'hidden');
-                $($elem).parent().css('overflow', 'hidden');
-                $($elem).parent().parent().css('overflow', 'hidden');
+            $(document).mouseup(function (e) {
+                $('.elem-is-resizing').css({
+                    'overflow': 'hidden',
+                    'z-index': '',
+                    'outline': 'none',
+                    '-webkit-box-shadow': 'none',
+                    '-moz-box-shadow': 'none',
+                    'box-shadow': 'none',
+                });
+                $('.elem-is-resizing').parent().css('overflow', 'hidden');
+                $('.elem-is-resizing').parent().parent().css('overflow', 'hidden');
+                $('.elem-is-resizing').parent().parent().parent().css('overflow', 'hidden');
+                $('.elem-is-resizing').parent().parent().parent().parent().css('z-index', 'auto');
+                $('#' + $elem.id + ' > ' + ' .ui-resizable-handle').css('visibility', 'hidden');
+                $('#' + $elem.id + ' > ' + ' .el-size-viewer').css('visibility', 'hidden');
+                $('.elem-is-resizing').removeClass('elem-is-resizing');
+            });
+
+            $($elem).hover(function () {
+                if (!Gallery.properties.elementIsResizing) {
+                    $($elem).css({
+                        'overflow': 'visible',
+                        'z-index': '2',
+                        'outline': '1px dashed rgba(0,0,0,0.5)',
+                        '-webkit-box-shadow': '0px 0px 111px 1px rgba(0,0,0,0.8)',
+                        '-moz-box-shadow': '0px 0px 111px 1px rgba(0,0,0,0.8)',
+                        'box-shadow': '0px 0px 111px 1px rgba(0,0,0,0.8)',
+                    });
+                    $($elem).parent().css('overflow', 'visible');
+                    $($elem).parent().parent().css('overflow', 'visible');
+                    $($elem).parent().parent().parent().css('overflow', 'visible');
+                    $($elem).parent().parent().parent().parent().css('z-index', '31');
+                    $('#' + $elem.id + ' > ' + ' .ui-resizable-handle').css('visibility', 'visible');
+                    $('#' + $elem.id + ' > ' + ' .el-size-viewer').css('visibility', 'visible');
+                }
+            }, function () {
+                if (!Gallery.properties.elementIsResizing) {
+                    $($elem).css({
+                        'overflow': 'hidden',
+                        'z-index': '',
+                        'outline': 'none',
+                        '-webkit-box-shadow': 'none',
+                        '-moz-box-shadow': 'none',
+                        'box-shadow': 'none',
+                    });
+                    $($elem).parent().css('overflow', 'hidden');
+                    $($elem).parent().parent().css('overflow', 'hidden');
+                    $($elem).parent().parent().parent().css('overflow', 'hidden');
+                    $($elem).parent().parent().parent().parent().css('z-index', 'auto');
+                    $('#' + $elem.id + ' > ' + ' .ui-resizable-handle').css('visibility', 'hidden');
+                    $('#' + $elem.id + ' > ' + ' .el-size-viewer').css('visibility', 'hidden');
+                }
             });
 
             for (var $i = 0; $i < 3; $i++) {
@@ -605,22 +644,22 @@
         // fixes position of the handles of the element
         _fixHandlesPosition: function ($elem) {
             // variables for the east handler
-            var le = $($elem).outerWidth() - this.properties.halfSeparatorElementRight - 20,
-                te = this.properties.halfSeparatorElementTop,
-                he = ($($elem).outerHeight() - this.properties.gutter) * (1 - this.properties.percentFactorHandlers),
+            var le = $($elem).outerWidth() - 20,
+                te = 0,
+                he = ($($elem).outerHeight()) * (1 - this.properties.percentFactorHandlers),
                 leCircle = 15,
-                teCircle = $($elem).outerHeight() / 2 - this.properties.gutter;
+                teCircle = $($elem).outerHeight() / 2;
 
             // variables for the south handler
-            var ls = this.properties.halfSeparatorElementLeft,
-                ts = $($elem).outerHeight() - this.properties.halfSeparatorElementBottom - 20,
-                ws = ($($elem).outerWidth() - this.properties.gutter) * (1 - this.properties.percentFactorHandlers),
-                lsCircle = $($elem).outerWidth() / 2 - this.properties.gutter,
+            var ls = 0,
+                ts = $($elem).outerHeight() - 20,
+                ws = ($($elem).outerWidth()) * (1 - this.properties.percentFactorHandlers),
+                lsCircle = $($elem).outerWidth() / 2,
                 tsCircle = 15;
 
             // variables for the south-east handler
-            var lse = $($elem).outerWidth() * (1 - this.properties.percentFactorHandlers) - this.properties.halfSeparatorElementRight,
-                tse = $($elem).outerHeight() * (1 - this.properties.percentFactorHandlers) - this.properties.halfSeparatorElementBottom,
+            var lse = $($elem).outerWidth() * (1 - this.properties.percentFactorHandlers),
+                tse = $($elem).outerHeight() * (1 - this.properties.percentFactorHandlers),
                 wlse = $($elem).outerWidth() * (this.properties.percentFactorHandlers * 2),
                 hlse = $($elem).outerHeight() * (this.properties.percentFactorHandlers * 2),
                 lseCircle = $($elem).outerWidth() * this.properties.percentFactorHandlers-5,
