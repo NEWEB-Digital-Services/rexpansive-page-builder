@@ -209,6 +209,7 @@ class Rexbuilder_Public {
 				wp_enqueue_script( '0-isotope', plugin_dir_url( __FILE__ ) . 'js/0-isotope.pkgd.min.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( '1-jquery', plugin_dir_url( __FILE__ ) . 'js/1-jquery.mCustomScrollbar.concat.min.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( '2-jquery', plugin_dir_url( __FILE__ ) . 'js/2-jquery.perfectGridGallery.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( '2-jqueryEditor', plugin_dir_url( __FILE__ ) . 'js/2-jquery.perfectGridGalleryEditor.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( '2-TextResize', plugin_dir_url( __FILE__ ) . 'js/2-TextResize.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( '3-velocity', plugin_dir_url( __FILE__ ) . 'js/3-velocity.min.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( '3-velocityui', plugin_dir_url( __FILE__ ) . 'js/3-velocity.ui.min.js', array( 'jquery' ), $this->version, true );

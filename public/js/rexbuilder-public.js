@@ -122,8 +122,11 @@
 		Util.init();
 		_detect_mobile();
 		/* -- Launching the grid -- */
-		$('.perfect-grid-gallery').perfectGridGallery();
+		//if(modalità editor)
 		
+		//$('.perfect-grid-gallery').perfectGridGalleryEditor();
+		$('.perfect-grid-gallery').perfectGridGallery();
+
 		/* -- Launching Photoswipe -- */
 		initPhotoSwipeFromDOM('.photoswipe-gallery');
 

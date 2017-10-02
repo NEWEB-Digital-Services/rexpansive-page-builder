@@ -1,12 +1,13 @@
-.circle-handle-e, .circle-handle-s, .circle-handle-se:hover{
-    box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+.circle-handle:hover {
+    box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 
+                0 4px 15px 0 rgba(0, 0, 0, 0.15);
     -webkit-transform: scale(2);
     transform: scale(2);
 }
 
 .perfect-grid-item:hover{
     z-index: 2;
-    border: 1px dashed rgba(0,0,0,0.5);
+    outline: 1px dashed rgba(0,0,0,0.5);
     -webkit-box-shadow: 0px 0px 111px 1px rgba(0,0,0,0.8);
     -moz-box-shadow: 0px 0px 111px 1px rgba(0,0,0,0.8);
     box-shadow: 0px 0px 111px 1px rgba(0,0,0,0.8);
@@ -15,8 +16,23 @@
 .perfect-grid-item:hover>.ui-resizable-handle{
     visibility: visible;
 }
+.perfect-grid-item:hover>.el-size-viewer {
+    visibility: visible;
+}
 
-.circle-handle-e, .circle-handle-s, .circle-handle-se{
+.el-size-viewer {
+    visibility: hidden;
+    position: absolute;
+    padding: 4px;
+    font-family: 'Open Sans';
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    z-index: 20;
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+.circle-handle {
     width: 10px;
     height: 10px;
     background-color: #039be5;
@@ -30,38 +46,12 @@
     transition: all 0.3s ease-out;
 }
 
-.ui-resizable-se {
-    height: 30%;
-    width: 30%;
-}
-
-.ui-resizable-s {
-    height: 40px;
-    width: 85%;
-}
-
-.ui-resizable-e {
-    width: 40px;
-    height: 85%;
-}
-
 .ui-resizable-handle {
     visibility: hidden;
     position: absolute;
     z-index: 2;
     box-sizing: inherit;
 }
-
-/* .draggable{
-    position: relative;
-    display: -moz-inline-stack;
-    display: inline-block;
-    vertical-align: top;
-    zoom: 1;
-    *display: inline;   
-
-    cursor: pointer;       
-} */
 
 #toolBox {
     position: fixed;
@@ -93,7 +83,9 @@
 }
 
 .grid-item-content:active {
+    cursor: pointer;
 }
+
 /* Packery adds class while transitioning to drop position */
 .grid-item.is-positioning-post-drag:active {
   cursor: hand; 
