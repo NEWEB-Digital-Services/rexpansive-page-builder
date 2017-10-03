@@ -1,12 +1,78 @@
 .circle-handle:hover {
-    box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 
+    box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18),
                 0 4px 15px 0 rgba(0, 0, 0, 0.15);
-    transform: scale(2);
-    -webkit-transform: scale(2);
+}
+
+.ui-resizable-e:hover > .circle-handle {
+    -webkit-transform: scale(2) translateX(25%);
+    transform: scale(2) translateX(25%);
+}
+
+.ui-resizable-s:hover > .circle-handle {
+    -webkit-transform: scale(2) translateY(25%);
+    transform: scale(2) translateY(25%);
+}
+
+.ui-resizable-se:hover > .circle-handle{
+    -webkit-transform: scale(2) translate(25%, 25%);
+    transform: scale(2) translate(25%, 25%);
 }
 
 .perfect-grid-item{
     transition: box-shadow 0.3s;
+}
+
+.w1 .ui-resizable-e{
+    width: 20%;
+}
+
+.w1 .ui-resizable-se{
+    width: 20%;
+}
+
+.h1 .ui-resizable-s {
+    height: 20%;
+}
+
+.h1 .ui-resizable-se {
+    height: 20%;
+}
+
+.ui-resizable-e {
+    right: 0%;
+    width: 40px;
+    height: 100%;
+}
+
+.ui-resizable-s {
+    bottom: 0%;
+    width: 100%;
+    height: 40px;
+}
+
+.ui-resizable-se {
+    width: 40px;
+    height: 40px;
+    bottom: 0%;
+    right: 0%;
+}
+
+.circle-handle-e {
+    top: 50%;
+    right: 0%;
+    transform: translateX(50%);
+}
+
+.circle-handle-s {
+    left: 50%;
+    bottom: 0%;
+    transform: translateY(50%);
+}
+
+.circle-handle-se {
+    bottom: 0%;
+    right: 0%;
+    transform: translate(50%, 50%);
 }
 
 .el-size-viewer {
@@ -28,12 +94,13 @@
     border: 1px solid white;
     border-radius: 50%;
     overflow: visible;
-    -webkit-transition: scale 0.3s ease-out;
-    -moz-transition: scale 0.3s ease-out;
-    -o-transition: scale 0.3s ease-out;
-    -ms-transition: scale 0.3s ease-out;
-    transition: scale 0.3s ease-out;
+    -webkit-transition: all 0.3s ease-out;
+    -moz-transition: all 0.3s ease-out;
+    -o-transition: all 0.3s ease-out;
+    -ms-transition: all 0.3 sease-out;
+    transition: all 0.3s ease-out;
     z-index: 31;
+    position: absolute;
 }
 
 

@@ -3,6 +3,9 @@ var Util = (function($) {
 
 	var $window = $(window);
 
+	var fixSectionWidth = 0;
+	var elementIsResizing = false;
+
 	// function to detect if we are on a mobile device
 	var _detect_mobile = function() {
 		if (!("ontouchstart" in document.documentElement)) {
@@ -127,7 +130,9 @@ var Util = (function($) {
 		checkStaticPresentationPage : _checkStaticPresentationPage,
 		checkPost: _checkPost,
 		$window: $window,
-		scroll_timing: _scroll_timing
+		scroll_timing: _scroll_timing,
+		fixSectionWidth: fixSectionWidth,
+		elementIsResizing: elementIsResizing
 	};
 
 })(jQuery);
@@ -522,11 +527,45 @@ var VimeoVideo = (function($){
 		Util.init();
 		_detect_mobile();
 		/* -- Launching the grid -- */
-		//if(modalità editor)
+		//if(modalità editor){
 			$('.perfect-grid-gallery').perfectGridGalleryEditor();
-			//else
-			//$('.perfect-grid-gallery').perfectGridGallery();
-		
+			//fixing width of the sections removing pixel in excess
+			$('.perfect-grid-gallery').each(function(){
+					var startingWidth = $(this).outerWidth();
+					var singleWidth = Math.floor(startingWidth/12);
+					var wrapWidth = singleWidth*12;
+					var lostPixels = startingWidth - wrapWidth;
+					$(this).perfectGridGalleryEditor('setGridSize', wrapWidth);
+					var sectionWidth = $(this).parent().parent().parent().outerWidth();
+					if (Util.fixSectionWidth < sectionWidth - lostPixels) {
+						Util.fixSectionWidth = sectionWidth - lostPixels;
+					}
+					
+			});
+			$('.rexpansive_section').outerWidth(Util.fixSectionWidth);
+		/*} else {
+			$('.perfect-grid-gallery').perfectGridGallery();
+		}
+		*/
+		$(window).on('resize', function(){
+			if(!Util.elementIsResizing){
+				Util.fixSectionWidth = 0;
+				$('.perfect-grid-gallery').each(function(){
+					var startingWidth = $(this).outerWidth();
+					var singleWidth = Math.floor(startingWidth/12);
+					var wrapWidth = singleWidth*12;
+					var lostPixels = startingWidth - wrapWidth;
+
+					$(this).perfectGridGalleryEditor('setGridSize', wrapWidth)
+					var sectionWidth = $(this).parent().parent().parent().outerWidth();
+					if (Util.fixSectionWidth < sectionWidth - lostPixels) {
+						Util.fixSectionWidth = sectionWidth - lostPixels;
+					}
+				});
+				$('.rexpansive_section').outerWidth(Util.fixSectionWidth);
+			}
+		});
+
 		/* -- Launching Photoswipe -- */
 		initPhotoSwipeFromDOM('.photoswipe-gallery');
 

@@ -17,7 +17,7 @@
             separator: 20,
             fullHeight: 'false',
             gridParentWrap: '.rexpansive_section',
-            mobilePadding: 'false',
+            mobilePadding: 'false'
         };
 
     // The actual plugin constructor
@@ -59,7 +59,6 @@
             setDesktopPadding: false,
             elementResizeEvent: false,
             gutter: 0,
-            packeryReady: false,
             elementIsResizing: false,
             elementHasScrollBar: false,
             elementStartingH: 0,
@@ -80,7 +79,7 @@
     // Avoid Plugin.prototype conflicts
     $.extend(perfectGridGalleryEditor.prototype, {
         init: function () {
-
+            
             this._saveStateElements();
 
             this._defineDataSettings();
@@ -89,53 +88,33 @@
 
             this._definePrivateProperties();
 
-            //this._setGridPadding();
             this._setParentGridPadding();
-/*
-            this._definePackerySettings();
-            
-            var $container = this.$element.packery(this.packerySettings);
-
-            this._defineDynamicPrivateProperties($container); */
-            
-                        
-            //var $container = this.$element.packery(this.packerySettings);
 
             this._defineDynamicPrivateProperties();
 
-            this._definePackerySettings();
+            this._fixAllElementsSize();
 
-            this._fixHeightAllElements();
+            this._definePackerySettings();
             
             this._launchPackery();
 
-            console.log(this.properties.wrapWidth, this.properties.singleWidth);
-
-            this.$element.on('layoutComplete', function () {
-                //console.log('layout complete');
-            });
-
-            $(window).on('resize', { Gallery: this }, function (event) {
-                //Fixare le ancore
-                /* if (!event.data.Gallery.properties.elementIsResizing) {
+            $(window).on('resize', {Gallery: this, Util: Util}, function (event) {
+                if (!event.data.Util.elementIsResizing) {
                     var G = event.data.Gallery;
+                    G.$element.packery('destroy');
+                    $('.rexpansive_section').css('width','');                    
+                    $(this.$element).css('width','');
                     G._defineDynamicPrivateProperties();
-                    G._fixHeightAllElements();
-                    $(G).children('.perfect-grid-item').each(function (G) {
-                        G._fixHandlesPosition(this);
-                    });
-                } */
+                    G._definePackerySettings();
+                    G._fixAllElementsSize();
+                    G.updateAllElementsXYproperties();
+                    G._launchPackery();
+                }
             });
 
-            $(window).on('load', { Gallery: this }, function (event) {
-                /* var G = event.data.Gallery;
-                setTimeout(function () {
-                    $(G.$element).find('.perfect-grid-item').each(function(){
-                        console.log('ciao');
-                        //G.fitLayoutGrid(this);
-                    });
-                }, 10000); */
-            });
+            /* $(window).on('load', { Gallery: this }, function (event) {
+                ;
+            }); */
         },
 
         refreshGrid: function () {
@@ -174,21 +153,17 @@
                 currentHeightBlock = parseInt(block['attributes']['data-height'].value);
                 maxBlockHeight = currentHeightBlock * hStep;
                 textHeight = $($textElement).innerHeight();
-                if ($handler == 'e') {
-                    if (this.properties.elementHasScrollBar) {
-                        this.updateElementScrollBar($textContent, textHeight, maxBlockHeight);
-                    } else {
-                        do {
-                            this.updateElementProperty($elem, 'w');
-                            currentHeightBlock = parseInt(block['attributes']['data-height'].value);
-                            maxBlockHeight = currentHeightBlock * hStep;
-                            textHeight = $($textElement).innerHeight();
-                            if (textHeight >= maxBlockHeight) {
-                                block['attributes']['data-height'].value = currentHeightBlock + 1;
-                                this._fixHeightElement(block);
-                            }
-                        } while (textHeight > maxBlockHeight);
-                    }
+                if ($handler == 'e' && !this.properties.elementHasScrollBar) {
+                    do {
+                        this.updateElementProperty($elem, 'w');
+                        currentHeightBlock = parseInt(block['attributes']['data-height'].value);
+                        maxBlockHeight = currentHeightBlock * hStep;
+                        textHeight = $($textElement).innerHeight();
+                        if (textHeight >= maxBlockHeight) {
+                            block['attributes']['data-height'].value = currentHeightBlock + 1;
+                            this._fixElementSize(block);
+                        }
+                    } while (textHeight > maxBlockHeight);
                 } else {
                     this.updateElementScrollBar($textContent, textHeight, maxBlockHeight);
                 }
@@ -224,9 +199,16 @@
 
             this._calculateBlockHeightFixed(); */
         },
-
+        
+        getGridSize: function () {
+            return this.properties.wrapWidth;
+        },
+        
+        setGridSize: function (width) {
+            $(this.$element).outerWidth(width);
+        },
+        
         relayoutGrid: function () {
-            //console.log('parte relayout');
             // this.$element.Packery('reloadItems');
             //console.log('relayoutGrid');
             //this.$element.packery('layout');
@@ -367,10 +349,15 @@
                         nH = 1;
                     }
                     block['attributes']['data-height'].value = nH;
+                    if(h==1){
+                        $(block).removeClass('h1');
+                    }
+                    if(nH == 1){
+                        $(block).addClass('h1');
+                    }
                     break;
                 }
                 default: {
-                    console.log('invalid choise!');
                     break;
                 }
             }
@@ -395,15 +382,8 @@
 
         // Define usefull private properties
         _defineDynamicPrivateProperties: function () {
-
-            var startingWidth = $(this.$element).outerWidth();
-            var n = Math.floor($(this.$element).outerWidth()/12);
-            var newWidth = n*12;
-            this.properties.lostPixels = startingWidth-newWidth;
-            this.properties.wrapWidth =  newWidth;
-            this.properties.singleWidth = n;
-            $(this.$element).css('width', newWidth);
-            //this.$element.packery('destroy');
+            this.properties.singleWidth = Math.floor($(this.$element).outerWidth()/12);
+            this.properties.wrapWidth = this.properties.singleWidth*12;
             if (this.settings.fullHeight == 'true') {
                 this.properties.gridTotalArea = this._calculateArea();
             }
@@ -429,22 +409,15 @@
             this.properties.gridRightSeparator = ('undefined' !== typeof this.$element.attr('data-row-separator-right') ? parseInt(this.$element.attr('data-row-separator-right')) : null);
             this.properties.gridBottomSeparator = ('undefined' !== typeof this.$element.attr('data-row-separator-bottom') ? parseInt(this.$element.attr('data-row-separator-bottom')) : null);
             this.properties.gridLeftSeparator = ('undefined' !== typeof this.$element.attr('data-row-separator-left') ? parseInt(this.$element.attr('data-row-separator-left')) : null);
-            /* 
-            console.log("top: "+this.properties.gridTopSeparator);
-            console.log("left: "+this.properties.gridLeftSeparator);
-            console.log("right: "+this.properties.gridRightSeparator);
-            console.log("bottom: "+this.properties.gridBottomSeparator);  */
         },
 
         // Calcualte viewport area to implement full height feature
         _calculateArea: function () {
             var temp_area = 0;
-            //console.log('calculating area');
             this.$element.find(this.settings.itemSelector).each(function () {
                 var $this = $(this);
                 temp_area += parseInt($this.attr('data-height')) * parseInt($this.attr('data-width'));
             });
-
             return temp_area;
         },
 
@@ -453,7 +426,7 @@
             this.packerySettings.itemSelector = this.settings.itemSelector;
             this.packerySettings.columnWidth = this.properties.singleWidth;
             this.packerySettings.rowHeight = this.properties.singleWidth;
-            this.packerySettings.percentPosition = true;
+            this.packerySettings.percentPosition = false;
             this.packerySettings.gutter = 0;
         },
 
@@ -471,22 +444,21 @@
             }
         },
 
-        _fixHeightAllElements: function () {
+        _fixAllElementsSize: function () {
             var Gallery = this;
             Gallery.$element.find(Gallery.settings.itemSelector).each(function () {
-                Gallery._fixHeightElement(this);
+                Gallery._fixElementSize(this);
             });
         },
 
         _updateElementPadding: function ($elem) {
-            //$($elem).css('width', "");
             $($elem).css('padding-left', this.properties.halfSeparatorElementLeft);
             $($elem).css('padding-top', this.properties.halfSeparatorElementTop);
             $($elem).css('padding-bottom', this.properties.halfSeparatorElementBottom);
             $($elem).css('padding-right', this.properties.halfSeparatorElementRight);
         },
 
-        _fixHeightElement: function ($elem) {
+        _fixElementSize: function ($elem) {
             var h = this.properties.singleWidth * parseInt($($elem).attr('data-height'));
             var w = this.properties.singleWidth * parseInt($($elem).attr('data-width'));
             $($elem).outerHeight(h);
@@ -544,22 +516,17 @@
             // east handler
             $handles[0].setAttribute('class', 'ui-resizable-handle ui-resizable-e');
             $handles[0].setAttribute('id', $elem.id.concat('e'));
-            $($handles[0]).css('width', '40px');
             $circles[0].setAttribute('class','circle-handle circle-handle-e');
-            $($circles[0]).css('position', 'absolute');
 
             // south handler
             $handles[1].setAttribute('class', 'ui-resizable-handle ui-resizable-s');
             $handles[1].setAttribute('id', $elem.id.concat('s'));
-            $($handles[1]).css('height', '40px');
             $circles[1].setAttribute('class', 'circle-handle circle-handle-s');
-            $($circles[1]).css('position', 'absolute');
 
             // south-est handler
             $handles[2].setAttribute('class', 'ui-resizable-handle ui-resizable-se');
             $handles[2].setAttribute('id', $elem.id.concat('se'));
             $circles[2].setAttribute('class', 'circle-handle circle-handle-se');
-            $($circles[2]).css('position', 'absolute');
 
             $($elem).mousedown(function () {
                 $($elem).css({
@@ -600,7 +567,7 @@
             });
 
             $($elem).hover(function () {
-                if (!Gallery.properties.elementIsResizing) {
+                if (!Util.elementIsResizing) {
                     $($elem).css({
                         'overflow': 'visible',
                         'z-index': '2',
@@ -617,7 +584,7 @@
                     $('#' + $elem.id + ' > ' + ' .el-size-viewer').css('visibility', 'visible');
                 }
             }, function () {
-                if (!Gallery.properties.elementIsResizing) {
+                if (!Util.elementIsResizing) {
                     $($elem).css({
                         'overflow': 'hidden',
                         'z-index': '',
@@ -729,9 +696,12 @@
             $items.each(function () {
                 var $elem = this;
                 var $resizePlaceHolder;
-                Gallery._addHandles(this);
-                Gallery._fixHandlesPosition(this);
-                Gallery._addSizeViewer(this);
+                //if($(this).find('.ui-resizable-handle').length === 0){
+                    Gallery._addHandles(this);
+                //}
+                if($(this).find('.el-size-viewer').length === 0){
+                    Gallery._addSizeViewer(this);
+                }
                 $(this).resizable({
                     minWidth: Gallery.properties.singleWidth,
                     minHeight: Gallery.properties.singleWidth,
@@ -745,7 +715,7 @@
                         if ($textContent.hasClass('.rex-custom-scrollbar')) {
                             Gallery.properties.elementHasScrollBar = true;
                         }
-                        Gallery.properties.elementIsResizing = true;
+                        Util.elementIsResizing = true;
                         var width = Gallery.properties.singleWidth;
                         var block = $(this)[0];
                         var yStart = parseInt(block['attributes']['data-col'].value) - 1;
@@ -754,31 +724,26 @@
                     },
                     resize: function (event, ui) {
                         Gallery.fixElementTextSize($elem, $(this).data('ui-resizable').axis);
-                        Gallery._fixHandlesPosition(this);
                         Gallery.fitLayoutGrid(this);
                         Gallery.updateResizePlaceHolder($resizePlaceHolder, this);
                         Gallery.updateElementWHproperties(this);
                         Gallery.updateAllElementsXYproperties();
                     },
                     stop: function () {
-                        Gallery.properties.elementIsResizing = false;
+                        Util.elementIsResizing = false;
                         Gallery.updateAllElementsAllNewProperties();
                         if (!Gallery.properties.southHandleFlag) {
                             Gallery.fixElementTextSize($elem);
                             Gallery.updateAllElementsXYproperties();
                         }
-                        Gallery._fixHeightAllElements();
+                        Gallery._fixAllElementsSize();
                         Gallery.fitLayoutGrid(this);
                         Gallery.updateAllElementsXYproperties();
-                        Gallery._fixHandlesPosition(this);
                         Gallery.properties.elementHasScrollBar = false;
                         $($resizePlaceHolder).remove();
                     }
                 });
                 $(this).draggable({
-                    drag: function(){
-                        ;
-                    },
                     stop: function () {
                         Gallery.updateAllElementsXYproperties();
                     }
@@ -789,9 +754,7 @@
             this.$element.packery('bindUIDraggableEvents', $items);
             Gallery.updateAllElementsAllNewProperties();
             // packery is ready
-            Gallery.properties.packeryReady = true;
-            //Gallery.refreshGrid();
-            Gallery._fixHeightAllElements();
+            Gallery._fixAllElementsSize();
         },
 
         _setParentGridPadding: function () {
