@@ -208,8 +208,14 @@ class Rexbuilder_Public {
 				// wp_enqueue_script( 'public-plugins', plugin_dir_url( __FILE__ ) . 'js/plugins.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( '0-isotope', plugin_dir_url( __FILE__ ) . 'js/0-isotope.pkgd.min.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( '1-jquery', plugin_dir_url( __FILE__ ) . 'js/1-jquery.mCustomScrollbar.concat.min.js', array( 'jquery' ), $this->version, true );
-				wp_enqueue_script( '2-jquery', plugin_dir_url( __FILE__ ) . 'js/2-jquery.perfectGridGallery.js', array( 'jquery' ), $this->version, true );
-				wp_enqueue_script( '2-jqueryEditor', plugin_dir_url( __FILE__ ) . 'js/2-jquery.perfectGridGalleryEditor.js', array( 'jquery' ), $this->version, true );
+				if( is_page(126) ) {
+					wp_enqueue_script( '2-jqueryEditor', plugin_dir_url( __FILE__ ) . 'js/test/2-jquery.perfectGridGalleryEditor.js', array( 'jquery' ), $this->version, true );
+					wp_enqueue_script( 'rexbuilder-public', plugin_dir_url( __FILE__ ) . 'js/test/public.js', array( 'jquery' ), $this->version, true );
+				} else {
+					wp_enqueue_script( '2-jquery', plugin_dir_url( __FILE__ ) . 'js/2-jquery.perfectGridGallery.js', array( 'jquery' ), $this->version, true );
+					wp_enqueue_script( '2-jqueryEditor', plugin_dir_url( __FILE__ ) . 'js/2-jquery.perfectGridGalleryEditor.js', array( 'jquery' ), $this->version, true );
+					wp_enqueue_script( 'rexbuilder-public', plugin_dir_url( __FILE__ ) . 'js/public.js', array( 'jquery' ), $this->version, true );
+				}
 				wp_enqueue_script( '2-TextResize', plugin_dir_url( __FILE__ ) . 'js/2-TextResize.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( '3-velocity', plugin_dir_url( __FILE__ ) . 'js/3-velocity.min.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( '3-velocityui', plugin_dir_url( __FILE__ ) . 'js/3-velocity.ui.min.js', array( 'jquery' ), $this->version, true );
@@ -221,7 +227,6 @@ class Rexbuilder_Public {
 				wp_localize_script( 'public-plugins', '_plugin_frontend_settings', array(
 					'animations'	=>	$this->plugin_options['animation'],
 				) );
-				wp_enqueue_script( 'rexbuilder-public', plugin_dir_url( __FILE__ ) . 'js/public.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( 'storeVariables', plugin_dir_url( __FILE__ ) . 'js/store.legacy.min.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( 'resizeElement', plugin_dir_url( __FILE__ ) . 'js/jquery-resizable.min.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( 'interact', plugin_dir_url( __FILE__ ) . 'js/interact.min.js', array( 'jquery' ), $this->version, true );
