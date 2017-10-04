@@ -205,13 +205,13 @@ class Rexbuilder_Public {
 
 			if( $this_post_type && array_key_exists( $this_post_type, $post_to_activate ) ) :
 				wp_enqueue_script( 'jquery' );
-				// wp_enqueue_script( 'public-plugins', plugin_dir_url( __FILE__ ) . 'js/plugins.js', array( 'jquery' ), $this->version, true );
-				wp_enqueue_script( '0-isotope', plugin_dir_url( __FILE__ ) . 'js/0-isotope.pkgd.min.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( '1-jquery', plugin_dir_url( __FILE__ ) . 'js/1-jquery.mCustomScrollbar.concat.min.js', array( 'jquery' ), $this->version, true );
+				// wp_enqueue_script( 'public-plugins', plugin_dir_url( __FILE__ ) . 'js/plugins.js', array( 'jquery' ), $this->version, true );
 				if( is_page(126) ) {
-					wp_enqueue_script( '2-jqueryEditor', plugin_dir_url( __FILE__ ) . 'js/test/2-jquery.perfectGridGalleryEditor.js', array( 'jquery' ), $this->version, true );
+					wp_enqueue_script( '2-jqueryEditor', plugin_dir_url( __FILE__ ) . 'js/test/2-jquery.perfectGridGallery.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'rexbuilder-public', plugin_dir_url( __FILE__ ) . 'js/test/public.js', array( 'jquery' ), $this->version, true );
 				} else {
+					wp_enqueue_script( '0-isotope', plugin_dir_url( __FILE__ ) . 'js/0-isotope.pkgd.min.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( '2-jquery', plugin_dir_url( __FILE__ ) . 'js/2-jquery.perfectGridGallery.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( '2-jqueryEditor', plugin_dir_url( __FILE__ ) . 'js/2-jquery.perfectGridGalleryEditor.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'rexbuilder-public', plugin_dir_url( __FILE__ ) . 'js/public.js', array( 'jquery' ), $this->version, true );

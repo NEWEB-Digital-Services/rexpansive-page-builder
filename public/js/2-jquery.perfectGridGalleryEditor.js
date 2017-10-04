@@ -99,7 +99,7 @@
             this._launchPackery();
 
             $(window).on('resize', {Gallery: this, Util: Util}, function (event) {
-                /* if (!event.data.Util.elementIsResizing) {
+                if (!event.data.Util.elementIsResizing) {
                     var G = event.data.Gallery;
                     G.$element.packery('destroy');
                     $('.rexpansive_section').css('width','');                    
@@ -109,7 +109,7 @@
                     G._fixAllElementsSize();
                     G.updateAllElementsXYproperties();
                     G._launchPackery();
-                } */
+                }
             });
 
             /* $(window).on('load', { Gallery: this }, function (event) {
@@ -425,15 +425,9 @@
         _definePackerySettings: function () {
             this.packerySettings.itemSelector = this.settings.itemSelector;
             this.packerySettings.gutter = 0;
-            if($('body').hasClass('page-id-126')){
-                this.packerySettings.columnWidth = this.properties.gridSizerSelector;
-                this.packerySettings.rowHeight = this.properties.gridSizerSelector;
-                this.packerySettings.percentPosition = true;
-            } else {
-                this.packerySettings.columnWidth = this.properties.singleWidth;
-                  this.packerySettings.rowHeight = this.properties.singleWidth;
-                  this.packerySettings.percentPosition = false;
-            }
+            this.packerySettings.columnWidth = this.properties.singleWidth;
+            this.packerySettings.rowHeight = this.properties.singleWidth;
+            this.packerySettings.percentPosition = false;
         },
 
         _setGutter: function () {
@@ -468,8 +462,7 @@
             var h = this.properties.singleWidth * parseInt($($elem).attr('data-height'));
             var w = this.properties.singleWidth * parseInt($($elem).attr('data-width'));
             $($elem).outerHeight(h);
-            $($elem).css('width', '');
-            //$($elem).outerWidth(w);
+            $($elem).outerWidth(w);
             this._updateElementPadding($elem);
         },
 
@@ -699,18 +692,7 @@
             this.$element.packery(this.packerySettings);
             var Gallery = this;
             var $items = this.$element.find('.perfect-grid-item');
-
-            if($('body').hasClass('page-id-126')){
-                $items.each(function () {
-                    var $elem = this;
-                    $(this).draggable({
-                        stop: function () {
-                            Gallery.updateAllElementsXYproperties();
-                        }
-                    });
-                });
-            } else {
-                $items.each(function () {
+            $items.each(function () {
                     var $elem = this;
                     var $resizePlaceHolder;
                     //if($(this).find('.ui-resizable-handle').length === 0){
@@ -766,7 +748,7 @@
                         }
                     });
                 });
-            }
+            
 
             // bind drag events to Packery
             this.$element.packery('bindUIDraggableEvents', $items);

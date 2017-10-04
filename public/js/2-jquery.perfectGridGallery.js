@@ -85,7 +85,7 @@
 
                 G._calculateBlockHeight();
                 G._launchIsotope();
-
+            });
             $(window).on('load', { Gallery: this }, function (event) {
                 ;
             });
@@ -225,9 +225,6 @@
                     break;
                 }
             }
-        },
-
-          this.$element.isotope(obj);
         },
 
         // Override options set by the jquery call with the html data attributes, if presents
