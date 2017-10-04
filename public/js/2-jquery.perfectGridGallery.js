@@ -86,36 +86,8 @@
                 G._calculateBlockHeight();
                 G._launchIsotope();
 
-                setTimeout(function() {
-                    G.relayoutGrid();
-                    G.$element.trigger('rearrangeComplete');
-                }, 400);
-            });
-
-            var that = this;
-
-            this.$element.resize(function(e) {
-                console.log('che è sta cosa?');
-              if(that.properties.elementResizeEvent) {
-                that._defineDynamicPrivateProperties();
-                that._calculateBlockHeight();
-                that.relayoutGrid();
-              }
-              // setTimeout(function() {
-              //     that.relayoutGrid();
-              //     that.$element.trigger('rearrangeComplete');
-              // }, 400);
-            });
-
-            this.$element.on('layoutComplete', function() {
-
-            });
-
-            $(window).on('load', { Gallery: this }, function( event ) {
-                var G = event.data.Gallery;
-                setTimeout(function() {
-                    G.relayoutGrid();
-                }, 400);
+            $(window).on('load', { Gallery: this }, function (event) {
+                ;
             });
         },
 
@@ -131,20 +103,11 @@
             this._launchIsotope();
 
             var G = this;
-
-            // this.$element.isotope('layout');
-
-            setTimeout(function() {
-                // console.log(1);
-                // G.$element.isotope('layout');
-                G.relayoutGrid();
-                G.$element.trigger('rearrangeComplete');
-                G.$element.trigger('refreshComplete');
-            }, 400);
-        },
-
-        reLaunchGrid: function() {
-            this.$element.isotope( this.isotopeSettings );
+            this.$element.packery('layout');
+            $('.perfect-grid-item').each(function () {
+                console.log('refreshing item');
+                G.fitLayoutGrid(this);
+            });
         },
 
         destroyGrid: function() {
@@ -208,9 +171,61 @@
           this.properties[definition[0]] = definition[1];
         },
 
-        setIsotopeProperty: function(definition) {
-          var obj = {};
-          obj[definition[0]] = definition[1];
+        updateElementProperty: function ($elem, $case) {
+            var width = this.properties.singleWidth;
+            var block = $($elem)[0];
+
+            switch ($case) {
+                case 'x': {
+                    var x = parseInt(block['attributes']['data-row'].value);
+                    var nX = Math.round(parseInt($(block).position().top) / width);
+                    if (nX <= 0) {
+                        nX = 0;
+                    }
+                    nX = nX + 1;
+                    block['attributes']['data-row'].value = nX;
+                    break;
+                }
+                case 'y': {
+                    var y = parseInt(block['attributes']['data-col'].value);
+                    var nY = Math.round(parseInt($(block).position().left) / width);
+                    if (nY <= 0) {
+                        nY = 0;
+                    }
+                    nY = nY + 1;
+
+                    if (nY > 12) {
+                        nY = 12;
+                    }
+                    block['attributes']['data-col'].value = nY;
+                    break;
+                }
+                case 'w': {
+                    var w = parseInt(block['attributes']['data-width'].value);
+                    var nW = Math.round(parseInt($(block).outerWidth()) / width);
+                    if (nW <= 0) {
+                        nW = 1;
+                    }
+                    block['attributes']['data-width'].value = nW;
+                    // updating element class
+                    $(block).removeClass("w" + w);
+                    $(block).addClass("w" + nW);
+                    break;
+                }
+                case 'h': {
+                    var h = parseInt(block['attributes']['data-height'].value);
+                    var nH = Math.round(parseInt($(block).outerHeight()) / width);
+                    if (nH <= 0) {
+                        nH = 1;
+                    }
+                    block['attributes']['data-height'].value = nH;
+                    break;
+                }
+                default: {
+                    break;
+                }
+            }
+        },
 
           this.$element.isotope(obj);
         },
@@ -263,23 +278,102 @@
             return temp_area;
         },
 
-        // define Isotope Settings
-        _defineIsotopeSettings: function() {
-            this.isotopeSettings.itemSelector = this.settings.itemSelector;
-            this.isotopeSettings.masonry = {
-                columnWidth: this.settings.gridSizerSelector
-            };
+        // define Packery Settings
+        _definePackerySettings: function () {
+            this.packerySettings.itemSelector = this.settings.itemSelector;
+            this.packerySettings.columnWidth = this.settings.gridSizerSelector;
+            this.packerySettings.rowHeight = this.settings.gridSizerSelector;
+            this.packerySettings.percentPosition = true;
+            this.packerySettings.gutter = 0;
         },
 
-        // Launching isotope plugin
-        _launchIsotope: function() {
-            this.$element.isotope(this.isotopeSettings);
-            this.properties.gridActive = true;
+        _setGutter: function () {
+            if (this.isEven(this.properties.gutter)) {
+                this.properties.halfSeparatorElementTop = this.properties.gutter / 2;
+                this.properties.halfSeparatorElementRight = this.properties.gutter / 2;
+                this.properties.halfSeparatorElementBottom = this.properties.gutter / 2;
+                this.properties.halfSeparatorElementLeft = this.properties.gutter / 2;
+            } else {
+                this.properties.halfSeparatorElementTop = Math.floor(this.properties.gutter / 2);
+                this.properties.halfSeparatorElementRight = Math.ceil(this.properties.gutter / 2);
+                this.properties.halfSeparatorElementBottom = Math.floor(this.properties.gutter / 2);
+                this.properties.halfSeparatorElementLeft = Math.ceil(this.properties.gutter / 2);
+            }
         },
 
-        // setting the blocks and wrap padding
-        _setGridPadding: function() {
-            if( this._viewport().width >= 768 && !this.properties.setDesktopPadding || ( !this.properties.setDesktopPadding && !this.properties.setMobilePadding && this._check_parent_class("rex-block-grid") ) ) {
+        _fixHeightAllElements: function () {
+            var Gallery = this;
+            Gallery.$element.find(Gallery.settings.itemSelector).each(function () {
+                Gallery._fixHeightElement(this);
+            });
+        },
+
+        _updateElementPadding: function ($elem) {
+            $($elem).css('width', "");
+            $($elem).css('padding-left', this.properties.halfSeparatorElementLeft);
+            $($elem).css('padding-top', this.properties.halfSeparatorElementTop);
+            $($elem).css('padding-bottom', this.properties.halfSeparatorElementBottom);
+            $($elem).css('padding-right', this.properties.halfSeparatorElementRight);
+        },
+
+        _fixHeightElement: function ($elem) {
+            var h = this.properties.singleWidth * parseInt($($elem).attr('data-height'));
+            $($elem).outerHeight(h);
+            this._updateElementPadding($elem);
+        },
+
+        // Calculate fixed blocks height
+        _calculateBlockHeightFixed: function () {
+            //console.log('calculating block height');
+            var Gallery = this;
+            this.$element.find(this.settings.itemSelector + ':not(.horizontal-carousel):not(.wrapper-expand-effect)')
+                .add(this.$element.find(this.settings.itemSelector + '.only-gallery'))
+                .each(function () {
+                    // console.log($(this).attr('id'), '->', $(this).attr('data-height'));
+                    $(this).height((Gallery.properties.singleWidth * $(this).attr('data-height')) - (Gallery.properties.halfSeparator * 2));
+                });
+        },
+
+        _saveStateElements: function () {
+            var $items = this.$element.find('.perfect-grid-item');
+            $items.each(function () {
+                store.set(this['id'], {
+                    "properties": [
+                        { "x": this['attributes']['data-row'].value },
+                        { "y": this['attributes']['data-col'].value },
+                        { "w": this['attributes']['data-width'].value },
+                        { "h": this['attributes']['data-height'].value }
+                    ]
+                });
+            });
+        },
+
+        // Launching Packery plugin
+        _launchPackery: function () {
+
+            var Gallery = this;
+            var $container = this.$element.packery(this.packerySettings);
+            var $items = this.$element.find('.perfect-grid-item');
+
+            $items.each(function () {
+                $(this).draggable({
+                    stop: function () {
+                        Gallery.updateAllElementsXYproperties();
+                    }
+                });
+            });
+
+            // bind drag events to Packery
+            this.$element.packery('bindUIDraggableEvents', $items);
+            // packery is ready
+            Gallery.properties.packeryReady = true;
+        },
+
+        _setParentGridPadding: function () {
+            var $parent = $(this.$element.parent());
+            //console.log('setting grid padding');
+            if (this._viewport().width >= 768 && !this.properties.setDesktopPadding || (!this.properties.setDesktopPadding && !this.properties.setMobilePadding && this._check_parent_class("rex-block-grid"))) {
+                //console.log('setting grid padding');
                 this.properties.setDesktopPadding = true;
                 if( this._check_parent_class("rex-block-grid") ) {
                     this.properties.setMobilePadding = true;
