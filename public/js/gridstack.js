@@ -1609,13 +1609,13 @@
             return Math.ceil(o.outerHeight() / o.attr('data-gs-height'));
         }
         var heightData = Utils.parseHeight(val);
-
+        
         if (this.opts.cellHeightUnit === heightData.unit && this.opts.cellHeight === heightData.height) {
             return ;
         }
         this.opts.cellHeightUnit = heightData.unit;
         this.opts.cellHeight = heightData.height;
-
+        
         if (!noUpdate) {
             this._updateStyles();
         }

@@ -65,7 +65,8 @@
             percentFactorHandlers: 0.15,
             lostPixels: 0,
             elemHasFocus: false,
-            edgesElementsSetted: false
+            edgesElementsSetted: false,
+            windowIsReisized: false
         };
         this.packerySettings = {
             itemSelector: '',
@@ -96,24 +97,22 @@
             //this._definePackerySettings();
             
             this._launchGridStack();
-            
-            this._fixAllElementsContentSize();
+            /* var grid = this;
 
+            $(grid.$element).children('.grid-stack-item').each(function(){
+                grid._updateElementPadding($(this).children('.grid-stack-item-content'));
+            });
+             *///this._fixAllElementsContentSize();
+            
             $(window).on('resize', {Gallery: this, Util: Util}, function (event) {
                 if (!event.data.Util.elementIsResizing) {
+                    console.log('resized window');
                     var G = event.data.Gallery;
                     var grid = G.$element.data('gridstack');
                     G._defineDynamicPrivateProperties();
-                    //grid.destroy(false);
-                    //G._launchGridStack();
-                    //grid = G.$element.data('gridstack');
-                    //grid.enable();
-                    G.properties.edgesElementsSetted = false;
-                    console.log(G.properties.singleWidth);
-                    grid.cellHeight(G.properties.singleWidth);
-                    console.log(grid);
-                    G._fixAllElementsContentSize();
-                }
+                    grid.cellHeight(grid.cellWidth());
+                    grid._initStyles();
+                    grid._updateStyles(grid.cellHeight());                }
             });
 
             /* $(window).on('load', { Gallery: this }, function (event) {
@@ -147,7 +146,7 @@
             }, 400); */
         },
 
-        fixElementTextSize: function ($elem, $handler, $elemHasScrollbar) {
+        fixElementTextSize: function ($elem, $handler) {
             var $textElement = $('#' + $elem.id).find('.text-wrap');
             if (!$($elem).hasClass('block-has-slider') && ($($textElement).innerHeight() != null)) {
                 var block = $($elem)[0];
@@ -450,6 +449,11 @@
                 this.properties.halfSeparatorElementLeft = Math.ceil(this.properties.gutter / 2);
             }
         },
+        
+        _fixHeightGrid: function(){
+            var grid = $(this.$element)[0];
+            $(this.element).outerHeight(grid['attributes']['data-gs-current-height'].value*this.properties.singleWidth);
+        },
 
         _fixAllElementsContentSize: function () {
             var Gallery = this;
@@ -474,13 +478,12 @@
             } else {
                 h = this.properties.singleWidth * parseInt($($elem).attr('data-gs-height')) - this.properties.gutter;
             }
-            //var w = this.properties.singleWidth * parseInt($($elem).attr('data-width'));
             $(child).outerHeight(h);
-            if (!this.properties.edgesElementsSetted) {
-                var h2 = this.properties.singleWidth * parseInt($($elem).attr('data-gs-height'));
-                $($elem).outerHeight(h2);
-                this._updateElementPadding(child);
-            }
+                if (!this.properties.edgesElementsSetted) {
+                    var h2 = this.properties.singleWidth * parseInt($($elem).attr('data-gs-height'));
+                    $($elem).outerHeight(h2);
+                    this._updateElementPadding(child);
+                }
         },
 
         // Calculate fixed blocks height
@@ -534,6 +537,7 @@
             $handles[0].setAttribute('class', 'ui-resizable-handle ui-resizable-e');
             $handles[0].setAttribute('id', $elem.id.concat('e'));
             $circles[0].setAttribute('class','circle-handle circle-handle-e');
+            $circles[0].setAttribute('id', $elem.id+''+'e');
 
             // south handler
             $handles[1].setAttribute('class', 'ui-resizable-handle ui-resizable-s');
@@ -706,31 +710,58 @@
         // Launching Packery plugin
         _launchGridStack: function () {
             var gallery = this;
+            /*
+                        {
+                        'e': '.ui-resizable-e',
+                        's': '.ui-resizable-s',
+                        'se': '.ui-resizable-se'
+                    }
+            */
+           /*  $(gallery.$element).children('.grid-stack-item').each(function(){
+                //gallery._addHandles(this);
+                $('#'+this.id).attr("data-gs-min-width", "1");
+                $('#'+this.id).attr("data-gs-min-height", "1");
+                $('#'+this.id).attr("data-gs-max-width", "12");
+            }); */
             $(gallery.$element).gridstack({
                 cellHeight: gallery.properties.singleWidth,
                 resizable: {
-                    handles: "e, s, w, se, sw" 
+                    minWidth: gallery.properties.singleWidth,
+                    minHeight: gallery.properties.singleWidth,
+                    handles: 's, e, w, se, sw'
                 },
                 verticalMargin: 0,
+                width: gallery.settings.numberCol
             });
-
+/* 
             $(gallery.$element).on('dragstart', function (event, ui) {
-                ;
+                console.log($(event.target)[0].id);
             }).on('drag', function (event, ui) {
                 ;
             }).on('dragstop', function (event, ui) {
                 ;
             }).on('resizestart', function (event, ui) {
+                console.log(event);
+                var block = $(event.target)[0];
+                var $textContent = $(block).children('.text-content');
+                if ($textContent.hasClass('.rex-custom-scrollbar')) {
+                    gallery.properties.elementHasScrollBar = true;
+                    console.log('true!');
+                }
                 Util.elementIsResizing = true;
+                var xStart = parseInt(block['attributes']['data-gs-x'].value);
+                //$('#'+block.id).attr("data-gs-max-width", (gallery.settings.numberCol - xStart));
             }).on('resize', function (event, ui) {
-                gallery.updateElementWHproperties($('#'+event.target.id)[0]);
-                gallery._fixElementHeight($('#'+event.target.id)[0]);
-            }).on('resizestop', function (event, ui) {
+               // gallery.fixElementTextSize($(event.target)[0], event.data('ui-resizable').axis);
+               //console.log(event['srcElement'].id);
+            }).on('gsresizestop', function (event, elem) {
+                console.log(event, elem);
                 Util.elementIsResizing = false;
-                gallery.updateElementWHproperties($('#'+event.target.id)[0]);
-                gallery._fixElementHeight($('#'+event.target.id)[0]);
-            });
-
+                /* if (!Gallery.properties.southHandleFlag) {
+                    Gallery.fixElementTextSize($elem, event.data('ui-resizable').axis);
+                } 
+                gallery.properties.elementHasScrollBar = false;
+            }); */
             //$('.grid-stack-item').addTouch();
         },
 

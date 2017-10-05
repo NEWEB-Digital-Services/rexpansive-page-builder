@@ -7,7 +7,7 @@
     box-shadow: 0px 0px 111px 1px rgba(0,0,0,0.8);
 }
 
-/* .circle-handle:hover {
+.circle-handle:hover {
     box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18),
                 0 4px 15px 0 rgba(0, 0, 0, 0.15);
 }
@@ -64,6 +64,7 @@
     height: 40px;
     bottom: 0%;
     right: 0%;
+    background-image: none;
 }
 
 .circle-handle-e {
@@ -114,7 +115,7 @@
 
 
 .ui-resizable-handle {
-    visibility: hidden;
+    visibility: visible;
     position: absolute;
     z-index: 31;
     box-sizing: inherit;
@@ -132,7 +133,7 @@
    -webkit-transition: -webkit-transform 0.2s;
             transition: transform 0.2s;
 }
-*/
+
 .packery-drop-placeholder {
     outline: 3px dashed #444;
     outline-offset: -6px;
