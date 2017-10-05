@@ -142,6 +142,9 @@ class Rexbuilder_Block {
 			}
 
 			echo '<div id="' . $id . '" class="perfect-grid-item';
+			if( !is_page(126) ) {
+				echo ' grid-stack-item';
+			}
 			echo ( ( "" == $section_style && "" == $id_image_bg_block && "" == $content && ( empty($video_bg_id) || 'undefined' == $video_bg_id ) && ( empty($video_bg_url) || 'undefined' == $video_bg_url ) && ( empty($video_bg_url_vimeo) || 'undefined' == $video_bg_url_vimeo ) ) ? ' real-empty' : '' );
 			echo ( ( ('full' == $type_bg_block && "" != $id_image_bg_block && "" == $content  && $section_layout == 'fixed') || (!empty($video_bg_id) && "" == $content) || (!empty($video_bg_url) && "" == $content) || (!empty($video_bg_url_vimeo) && "" == $content) ) ? ' only-background' : '' );
 			echo ( ( 'full' == $type_bg_block && $section_layout == 'masonry' ) ? ' natural-fluid-image' : '' );
@@ -159,11 +162,23 @@ class Rexbuilder_Block {
 			if( has_shortcode( $content, 'RexLastWorks' ) ) :
 				echo ' horizontal-carousel';
 			endif;
-			
+
 			echo '" data-height="'.  $size_y . '"';
 			echo ' data-width="' . $size_x . '"';
 			echo ' data-row="' . $row . '"';
 			echo ' data-col="' . $col . '"';
+
+			if( !is_page(126) ) {
+
+			$gs_y = $row -1;
+			$gs_x = $col -1;
+			
+			echo ' data-gs-height="'.  $size_y . '"';
+			echo ' data-gs-width="' . $size_x . '"';
+			echo ' data-gs-y="' . $gs_y . '"';
+			echo ' data-gs-x="' . $gs_x . '"';
+
+			}
 
 			echo '>';
 
@@ -225,7 +240,7 @@ class Rexbuilder_Block {
 			switch( $type ) :
 				case 'image':
 					echo $block_link_before;
-					echo '<div class="grid-item-content image-content' . ( ('' != $video_bg_url && 'undefined' != $video_bg_url) ? ' youtube-player' : '' ) . ( ( '' != $video_bg_id && 'undefined' != $video_bg_id ) ? ' mp4-player' : '' ) . ( $bg_video_vimeo_markup ? ' vimeo-player' : '' ) . ( ($flex_positioned) ? ' rex-flexbox' : '' ) . '" ' . $section_style;
+					echo '<div class=" grid-item-content image-content' . ( ('' != $video_bg_url && 'undefined' != $video_bg_url) ? ' youtube-player' : '' ) . ( ( '' != $video_bg_id && 'undefined' != $video_bg_id ) ? ' mp4-player' : '' ) . ( $bg_video_vimeo_markup ? ' vimeo-player' : '' ) . ( ($flex_positioned) ? ' rex-flexbox' : '' ) . '" ' . $section_style;
 					//echo '<div class="rex-custom-position">';
 					echo $bg_youtube_video_markup;
 					echo '>';

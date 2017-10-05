@@ -143,7 +143,11 @@ class Rexbuilder_Section {
 				echo '<div class="full-disposition">';
 			}
 
-			echo '<div class="perfect-grid-gallery" data-separator="' . $block_distance . '" data-layout="' . $layout . '" data-full-height="' . ( ( 'true' == $full_height ) ? 'true' : 'false' ) . '"' . $row_separators . '>';
+			if( is_page(126) ) {
+				echo '<div class="perfect-grid-gallery" data-separator="' . $block_distance . '" data-layout="' . $layout . '" data-full-height="' . ( ( 'true' == $full_height ) ? 'true' : 'false' ) . '"' . $row_separators . '>';
+			} else {
+				echo '<div class="perfect-grid-gallery grid-stack grid-stack-row" data-separator="' . $block_distance . '" data-layout="' . $layout . '" data-full-height="' . ( ( 'true' == $full_height ) ? 'true' : 'false' ) . '"' . $row_separators . '>';
+			}
 			echo '<div class="perfect-grid-sizer"></div>';
 			echo do_shortcode( $content );
 			echo '</div>';

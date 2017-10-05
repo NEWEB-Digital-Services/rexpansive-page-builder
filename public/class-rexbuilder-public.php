@@ -132,6 +132,7 @@ class Rexbuilder_Public {
 				wp_enqueue_style( 'rexpansive-builder-style', plugin_dir_url( __FILE__ ) . 'css/public.css', array(), $this->version, 'all' );
 				wp_enqueue_style( 'jquery-style', plugin_dir_url( __FILE__ ) . 'css/jquery-ui.min.css', array(), $this->version, 'all' );
 				wp_enqueue_style( 'rexpansive-builderLive-style', plugin_dir_url( __FILE__ ) . 'css/builderL.css', array(), $this->version, 'all' );
+				wp_enqueue_style( 'gridstack-style', plugin_dir_url( __FILE__ ) . 'css/gridstack.css', array(), $this->version, 'all' );
 
 			endif;
 		endif;
@@ -204,15 +205,21 @@ class Rexbuilder_Public {
 			$this_post_type = get_post_type();
 
 			if( $this_post_type && array_key_exists( $this_post_type, $post_to_activate ) ) :
-				wp_enqueue_script( 'jquery' );
+				//wp_enqueue_script( 'jquery' );
 				wp_enqueue_script( '1-jquery', plugin_dir_url( __FILE__ ) . 'js/1-jquery.mCustomScrollbar.concat.min.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( 'jqueryui', plugin_dir_url( __FILE__ ) . 'js/jquery-ui.min.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( 'touchPunch', plugin_dir_url( __FILE__ ) . 'js/jquery.ui.touch-punch.js', array( 'jquery' ), $this->version, true );
 				// wp_enqueue_script( 'public-plugins', plugin_dir_url( __FILE__ ) . 'js/plugins.js', array( 'jquery' ), $this->version, true );
 				if( is_page(126) ) {
+					wp_enqueue_script( 'packery', plugin_dir_url( __FILE__ ) . 'js/packery.pkgd.min.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( '2-jqueryEditor', plugin_dir_url( __FILE__ ) . 'js/test/2-jquery.perfectGridGallery.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'rexbuilder-public', plugin_dir_url( __FILE__ ) . 'js/test/public.js', array( 'jquery' ), $this->version, true );
 				} else {
 					wp_enqueue_script( '0-isotope', plugin_dir_url( __FILE__ ) . 'js/0-isotope.pkgd.min.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( '2-jquery', plugin_dir_url( __FILE__ ) . 'js/2-jquery.perfectGridGallery.js', array( 'jquery' ), $this->version, true );
+					wp_enqueue_script( 'lodash', plugin_dir_url( __FILE__ ) . 'js/lodash.js', array( 'jquery' ), $this->version, true );
+					wp_enqueue_script( 'gridstack', plugin_dir_url( __FILE__ ) . 'js/gridstack.js', array( 'jquery' ), $this->version, true );
+					wp_enqueue_script( 'gridstackUI', plugin_dir_url( __FILE__ ) . 'js/gridstack.jQueryUI.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( '2-jqueryEditor', plugin_dir_url( __FILE__ ) . 'js/2-jquery.perfectGridGalleryEditor.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'rexbuilder-public', plugin_dir_url( __FILE__ ) . 'js/public.js', array( 'jquery' ), $this->version, true );
 				}
@@ -226,16 +233,14 @@ class Rexbuilder_Public {
 				wp_enqueue_script( 'jquerymb', plugin_dir_url( __FILE__ ) . 'jquery.mb.YTPlayer/jquery.mb.YTPlayer.min.js', array( 'jquery' ), $this->version, true );
 				wp_localize_script( 'public-plugins', '_plugin_frontend_settings', array(
 					'animations'	=>	$this->plugin_options['animation'],
-					) );
-					wp_enqueue_script( 'storeVariables', plugin_dir_url( __FILE__ ) . 'js/store.legacy.min.js', array( 'jquery' ), $this->version, true );
-					wp_enqueue_script( 'resizeElement', plugin_dir_url( __FILE__ ) . 'js/jquery-resizable.min.js', array( 'jquery' ), $this->version, true );
-					wp_enqueue_script( 'interact', plugin_dir_url( __FILE__ ) . 'js/interact.min.js', array( 'jquery' ), $this->version, true );
-					wp_enqueue_script( 'jqueryui', plugin_dir_url( __FILE__ ) . 'js/jquery-ui.min.js', array( 'jquery' ), $this->version, true );
-					wp_enqueue_script( 'packery', plugin_dir_url( __FILE__ ) . 'js/packery.pkgd.min.js', array( 'jquery' ), $this->version, true );
-				if( !is_page(126) ){
+					));
+				wp_enqueue_script( 'storeVariables', plugin_dir_url( __FILE__ ) . 'js/store.legacy.min.js', array( 'jquery' ), $this->version, true );
+				//wp_enqueue_script( 'resizeElement', plugin_dir_url( __FILE__ ) . 'js/jquery-resizable.min.js', array( 'jquery' ), $this->version, true );
+				//wp_enqueue_script( 'interact', plugin_dir_url( __FILE__ ) . 'js/interact.min.js', array( 'jquery' ), $this->version, true );
+				/* if( !is_page(126) ){
 					wp_enqueue_script( 'sectionBorder', plugin_dir_url( __FILE__ ) . 'js/0-border.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'builderLive', plugin_dir_url( __FILE__ ) . 'js/builderLive.js', array( 'jquery' ), $this->version, true );
-				}	
+				}	 */
 				endif;
 		endif;
 	}

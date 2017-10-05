@@ -530,7 +530,7 @@ var VimeoVideo = (function($){
 		//if(modalità editor){
 			$('.perfect-grid-gallery').perfectGridGalleryEditor();
 			//fixing width of the sections removing pixel in excess
-			$('.perfect-grid-gallery').each(function(){
+			/* $('.perfect-grid-gallery').each(function(){
 					var startingWidth = $(this).outerWidth();
 					var singleWidth = Math.floor(startingWidth/12);
 					var wrapWidth = singleWidth*12;
@@ -542,11 +542,11 @@ var VimeoVideo = (function($){
 					}
 					
 			});
-			$('.rexpansive_section').outerWidth(Util.fixSectionWidth);
+			$('.rexpansive_section').outerWidth(Util.fixSectionWidth); */
 		/*} else {
 			$('.perfect-grid-gallery').perfectGridGallery();
 		}
-		*/
+		*//* 
 		$(window).on('resize', function(){
 			if(!Util.elementIsResizing){
 				Util.fixSectionWidth = 0;
@@ -564,7 +564,7 @@ var VimeoVideo = (function($){
 				});
 				$('.rexpansive_section').outerWidth(Util.fixSectionWidth);
 			}
-		});
+		}); */
 
 		/* -- Launching Photoswipe -- */
 		initPhotoSwipeFromDOM('.photoswipe-gallery');

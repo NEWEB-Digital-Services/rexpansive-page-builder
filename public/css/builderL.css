@@ -1,4 +1,13 @@
-.circle-handle:hover {
+.grid-stack-item:hover{
+    overflow: visible;
+    z-index: 2;
+    outline: 1px dashed rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0px 0px 111px 1px rgba(0,0,0,0.8);
+    -moz-box-shadow: 0px 0px 111px 1px rgba(0,0,0,0.8);
+    box-shadow: 0px 0px 111px 1px rgba(0,0,0,0.8);
+}
+
+/* .circle-handle:hover {
     box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18),
                 0 4px 15px 0 rgba(0, 0, 0, 0.15);
 }
@@ -123,7 +132,7 @@
    -webkit-transition: -webkit-transform 0.2s;
             transition: transform 0.2s;
 }
-
+*/
 .packery-drop-placeholder {
     outline: 3px dashed #444;
     outline-offset: -6px;
@@ -131,8 +140,6 @@
     -webkit-transition: -webkit-transform 0.2s;
             transition: transform 0.2s;
   }
-
-  /* highlight drag & drop */
 
 /* jQuery UI Draggable adds ui-draggable-dragging */
 .ui-draggable-dragging{
@@ -143,8 +150,7 @@
 .grid-item-content:active {
     cursor: pointer;
 }
-
-/* Packery adds class while transitioning to drop position */
-.grid-item.is-positioning-post-drag:active {
+/* Packery adds class while transitioning to drop position*/
+ .grid-item.is-positioning-post-drag:active {
   cursor: hand; 
-}
+ }

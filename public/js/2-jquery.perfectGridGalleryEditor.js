@@ -64,14 +64,15 @@
             elementStartingH: 0,
             percentFactorHandlers: 0.15,
             lostPixels: 0,
-            elemHasFocus: false
+            elemHasFocus: false,
+            edgesElementsSetted: false
         };
         this.packerySettings = {
             itemSelector: '',
             columnWidth: 0,
             rowHeight: 0,
             gutter: 0,
-            percentPosition: false
+            percentPosition: false,
         };
         this.init();
     }
@@ -80,7 +81,7 @@
     $.extend(perfectGridGalleryEditor.prototype, {
         init: function () {
             
-            this._saveStateElements();
+             this._saveStateElements();
 
             this._defineDataSettings();
 
@@ -91,24 +92,27 @@
             this._setParentGridPadding();
 
             this._defineDynamicPrivateProperties();
-
-            this._fixAllElementsSize();
-
-            this._definePackerySettings();
             
-            this._launchPackery();
+            //this._definePackerySettings();
+            
+            this._launchGridStack();
+            
+            this._fixAllElementsContentSize();
 
             $(window).on('resize', {Gallery: this, Util: Util}, function (event) {
                 if (!event.data.Util.elementIsResizing) {
                     var G = event.data.Gallery;
-                    G.$element.packery('destroy');
-                    $('.rexpansive_section').css('width','');                    
-                    $(this.$element).css('width','');
+                    var grid = G.$element.data('gridstack');
                     G._defineDynamicPrivateProperties();
-                    G._definePackerySettings();
-                    G._fixAllElementsSize();
-                    G.updateAllElementsXYproperties();
-                    G._launchPackery();
+                    //grid.destroy(false);
+                    //G._launchGridStack();
+                    //grid = G.$element.data('gridstack');
+                    //grid.enable();
+                    G.properties.edgesElementsSetted = false;
+                    console.log(G.properties.singleWidth);
+                    grid.cellHeight(G.properties.singleWidth);
+                    console.log(grid);
+                    G._fixAllElementsContentSize();
                 }
             });
 
@@ -125,7 +129,7 @@
 
             this._fixHeightAllElements();
 
-            //this._launchPackery();
+            //this._launchGridStack();
 
             var G = this;
             this.$element.packery('layout');
@@ -161,7 +165,7 @@
                         textHeight = $($textElement).innerHeight();
                         if (textHeight >= maxBlockHeight) {
                             block['attributes']['data-height'].value = currentHeightBlock + 1;
-                            this._fixElementSize(block);
+                            this._fixElementHeight(block);
                         }
                     } while (textHeight > maxBlockHeight);
                 } else {
@@ -296,10 +300,10 @@
 
         updateElementWHproperties: function($elem){
             this.updateElementProperty($elem, 'w');
-            this.updateElementProperty($elem, 'h');
+            this.updateElementProperty($elem, 'h');/* 
             var w = $($elem)[0]['attributes']['data-width'].value;
             var h = $($elem)[0]['attributes']['data-height'].value;
-            $('#'+$elem.id+' > .el-size-viewer').text(w+' x '+h);
+            $('#'+$elem.id+' > .el-size-viewer').text(w+' x '+h); */
         },
 
         updateElementProperty: function ($elem, $case) {
@@ -331,24 +335,24 @@
                     break;
                 }
                 case 'w': {
-                    var w = parseInt(block['attributes']['data-width'].value);
+                    var w = parseInt(block['attributes']['data-gs-width'].value);
                     var nW = Math.round(parseInt($(block).outerWidth()) / width);
                     if (nW <= 0) {
                         nW = 1;
                     }
-                    block['attributes']['data-width'].value = nW;
+                    block['attributes']['data-gs-width'].value = nW;
                     // updating element class
                     $(block).removeClass("w" + w);
                     $(block).addClass("w" + nW);
                     break;
                 }
                 case 'h': {
-                    var h = parseInt(block['attributes']['data-height'].value);
+                    var h = parseInt(block['attributes']['data-gs-height'].value);
                     var nH = Math.round(parseInt($(block).outerHeight()) / width);
                     if (nH <= 0) {
                         nH = 1;
                     }
-                    block['attributes']['data-height'].value = nH;
+                    block['attributes']['data-gs-height'].value = nH;
                     if(h==1){
                         $(block).removeClass('h1');
                     }
@@ -382,11 +386,14 @@
 
         // Define usefull private properties
         _defineDynamicPrivateProperties: function () {
+            this.properties.wrapWidth = $(this.$element).outerWidth();
+            this.properties.singleWidth = $(this.$element).outerWidth()*this.settings.gridItemWidth;
+            /* 
             this.properties.singleWidth = Math.floor($(this.$element).outerWidth()/12);
-            this.properties.wrapWidth = this.properties.singleWidth*12;
-            if (this.settings.fullHeight == 'true') {
+            this.properties.wrapWidth = this.properties.singleWidth*12; */
+            /* if (this.settings.fullHeight == 'true') {
                 this.properties.gridTotalArea = this._calculateArea();
-            }
+            } */
         },
 
         _definePrivateProperties: function () {
@@ -444,26 +451,36 @@
             }
         },
 
-        _fixAllElementsSize: function () {
+        _fixAllElementsContentSize: function () {
             var Gallery = this;
             Gallery.$element.find(Gallery.settings.itemSelector).each(function () {
-                Gallery._fixElementSize(this);
+                Gallery._fixElementHeight(this);
             });
+            this.properties.edgesElementsSetted = true;
         },
 
         _updateElementPadding: function ($elem) {
-            $($elem).css('padding-left', this.properties.halfSeparatorElementLeft);
-            $($elem).css('padding-top', this.properties.halfSeparatorElementTop);
-            $($elem).css('padding-bottom', this.properties.halfSeparatorElementBottom);
-            $($elem).css('padding-right', this.properties.halfSeparatorElementRight);
+            $($elem).css('left', this.properties.halfSeparatorElementLeft);
+            $($elem).css('top', this.properties.halfSeparatorElementTop);
+            $($elem).css('bottom', this.properties.halfSeparatorElementBottom);
+            $($elem).css('right', this.properties.halfSeparatorElementRight);
         },
 
-        _fixElementSize: function ($elem) {
-            var h = this.properties.singleWidth * parseInt($($elem).attr('data-height'));
-            var w = this.properties.singleWidth * parseInt($($elem).attr('data-width'));
-            $($elem).outerHeight(h);
-            $($elem).outerWidth(w);
-            this._updateElementPadding($elem);
+        _fixElementHeight: function ($elem) {
+            var child = $($elem).children('.grid-stack-item-content');
+            var h;
+            if (Util.elementIsResizing) {
+                h = $($elem).outerHeight() - this.properties.gutter;
+            } else {
+                h = this.properties.singleWidth * parseInt($($elem).attr('data-gs-height')) - this.properties.gutter;
+            }
+            //var w = this.properties.singleWidth * parseInt($($elem).attr('data-width'));
+            $(child).outerHeight(h);
+            if (!this.properties.edgesElementsSetted) {
+                var h2 = this.properties.singleWidth * parseInt($($elem).attr('data-gs-height'));
+                $($elem).outerHeight(h2);
+                this._updateElementPadding(child);
+            }
         },
 
         // Calculate fixed blocks height
@@ -687,74 +704,34 @@
         },
 
         // Launching Packery plugin
-        _launchPackery: function () {
+        _launchGridStack: function () {
+            var gallery = this;
+            $(gallery.$element).gridstack({
+                cellHeight: gallery.properties.singleWidth,
+                resizable: {
+                    handles: "e, s, w, se, sw" 
+                },
+                verticalMargin: 0,
+            });
 
-            this.$element.packery(this.packerySettings);
-            var Gallery = this;
-            var $items = this.$element.find('.perfect-grid-item');
-            $items.each(function () {
-                    var $elem = this;
-                    var $resizePlaceHolder;
-                    //if($(this).find('.ui-resizable-handle').length === 0){
-                        Gallery._addHandles(this);
-                    //}
-                    if($(this).find('.el-size-viewer').length === 0){
-                        Gallery._addSizeViewer(this);
-                    }
-                    $(this).resizable({
-                        minWidth: Gallery.properties.singleWidth,
-                        minHeight: Gallery.properties.singleWidth,
-                        handles: {
-                            'e': '.ui-resizable-e',
-                            's': '.ui-resizable-s',
-                            'se': '.ui-resizable-se'
-                        },
-                        start: function () {
-                            var $textContent = $($elem).children('.text-content');
-                            if ($textContent.hasClass('.rex-custom-scrollbar')) {
-                                Gallery.properties.elementHasScrollBar = true;
-                            }
-                            Util.elementIsResizing = true;
-                            var width = Gallery.properties.singleWidth;
-                            var block = $(this)[0];
-                            var yStart = parseInt(block['attributes']['data-col'].value) - 1;
-                            $(this).resizable("option", "maxWidth", (Gallery.settings.numberCol - yStart) * width);
-                            $resizePlaceHolder = Gallery.createResizePlaceHolder(this);
-                        },
-                        resize: function (event, ui) {
-                            Gallery.fixElementTextSize($elem, $(this).data('ui-resizable').axis);
-                            Gallery.fitLayoutGrid(this);
-                            Gallery.updateResizePlaceHolder($resizePlaceHolder, this);
-                            Gallery.updateElementWHproperties(this);
-                            Gallery.updateAllElementsXYproperties();
-                        },
-                        stop: function () {
-                            Util.elementIsResizing = false;
-                            Gallery.updateAllElementsAllNewProperties();
-                            if (!Gallery.properties.southHandleFlag) {
-                                Gallery.fixElementTextSize($elem);
-                                Gallery.updateAllElementsXYproperties();
-                            }
-                            Gallery._fixAllElementsSize();
-                            Gallery.fitLayoutGrid(this);
-                            Gallery.updateAllElementsXYproperties();
-                            Gallery.properties.elementHasScrollBar = false;
-                            $($resizePlaceHolder).remove();
-                        }
-                    });
-                    $(this).draggable({
-                        stop: function () {
-                            Gallery.updateAllElementsXYproperties();
-                        }
-                    });
-                });
-            
+            $(gallery.$element).on('dragstart', function (event, ui) {
+                ;
+            }).on('drag', function (event, ui) {
+                ;
+            }).on('dragstop', function (event, ui) {
+                ;
+            }).on('resizestart', function (event, ui) {
+                Util.elementIsResizing = true;
+            }).on('resize', function (event, ui) {
+                gallery.updateElementWHproperties($('#'+event.target.id)[0]);
+                gallery._fixElementHeight($('#'+event.target.id)[0]);
+            }).on('resizestop', function (event, ui) {
+                Util.elementIsResizing = false;
+                gallery.updateElementWHproperties($('#'+event.target.id)[0]);
+                gallery._fixElementHeight($('#'+event.target.id)[0]);
+            });
 
-            // bind drag events to Packery
-            this.$element.packery('bindUIDraggableEvents', $items);
-            Gallery.updateAllElementsAllNewProperties();
-            // packery is ready
-            Gallery._fixAllElementsSize();
+            //$('.grid-stack-item').addTouch();
         },
 
         _setParentGridPadding: function () {
