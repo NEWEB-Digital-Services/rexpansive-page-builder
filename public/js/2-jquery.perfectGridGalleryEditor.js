@@ -66,7 +66,8 @@
             lostPixels: 0,
             elemHasFocus: false,
             edgesElementsSetted: false,
-            windowIsReisized: false
+            windowIsReisized: false,
+            resizeHandle: ''
         };
         this.packerySettings = {
             itemSelector: '',
@@ -81,8 +82,14 @@
     // Avoid Plugin.prototype conflicts
     $.extend(perfectGridGalleryEditor.prototype, {
         init: function () {
-            
-             this._saveStateElements();
+            var testDiv = document.createElement('div');
+            $(testDiv).attr({
+                'class': 'editable medium-editor-element',
+                'style': 'width: 100px; height: 100px; background-color: yellow;'
+            });
+            $($('.rexpansive_section').parent()).prepend(testDiv);
+
+            this._saveStateElements();
 
             this._defineDataSettings();
 
@@ -97,12 +104,29 @@
             //this._definePackerySettings();
             
             this._launchGridStack();
-            /* var grid = this;
-
+            
+            var grid = this;
             $(grid.$element).children('.grid-stack-item').each(function(){
                 grid._updateElementPadding($(this).children('.grid-stack-item-content'));
+                if (($(this).find('.text-wrap')).length != 0) {
+                    if ($(this).hasClass('block-has-slider')) {
+                        $($(this).find('.rex-slider-element-title')).addClass('editable medium-editor-element');
+                    } else {
+                        $($(this).find('.text-wrap')).addClass('editable medium-editor-element');
+                        //gallery.fixElementTextSize($elem, null);
+                    }
+                } else {
+                    var textEl = document.createElement('div');
+                    $(textEl).addClass('text-wrap editable medium-editor-element');
+                    $($(this).find('.rex-custom-scrollbar')).append(textEl);
+                }
             });
-             *///this._fixAllElementsContentSize();
+            
+            var editor = new MediumEditor('.editable', {
+                // options go here
+            });
+            
+            //this._fixAllElementsContentSize();
             
             $(window).on('resize', {Gallery: this, Util: Util}, function (event) {
                 if (!event.data.Util.elementIsResizing) {
@@ -147,42 +171,44 @@
         },
 
         fixElementTextSize: function ($elem, $handler) {
-            var $textElement = $('#' + $elem.id).find('.text-wrap');
-            if (!$($elem).hasClass('block-has-slider') && ($($textElement).innerHeight() != null)) {
-                var block = $($elem)[0];
-                var hStep = this.properties.singleWidth;
-                var currentHeightBlock, maxBlockHeight, textHeight;
-                var $textContent = $($elem).children('.text-content');
-                currentHeightBlock = parseInt(block['attributes']['data-height'].value);
-                maxBlockHeight = currentHeightBlock * hStep;
-                textHeight = $($textElement).innerHeight();
-                if ($handler == 'e' && !this.properties.elementHasScrollBar) {
-                    do {
-                        this.updateElementProperty($elem, 'w');
-                        currentHeightBlock = parseInt(block['attributes']['data-height'].value);
-                        maxBlockHeight = currentHeightBlock * hStep;
-                        textHeight = $($textElement).innerHeight();
+            var block = $($elem)[0];
+            if (($(block).find('.text-wrap')).length != 0) {
+                var $textWrap = $('#' + $elem.id).find('.text-wrap');
+                var $blockContent = $($textWrap).parents('.grid-stack-item-content')[0];
+                if (!$($blockContent).hasClass('scrollbar-enable') && ($($textWrap).innerHeight() != null)) {
+                    var maxBlockHeight, textHeight;
+                    maxBlockHeight = $($blockContent).innerHeight();
+                    textHeight = $($textWrap).innerHeight();
+                   /*  if (($handler == 'e' || $handler == 'w') && !this.properties.elementHasScrollBar) {
+                        maxBlockHeight = $($blockContent).innerHeight();
+                        textHeight = $($textWrap).innerHeight();
                         if (textHeight >= maxBlockHeight) {
-                            block['attributes']['data-height'].value = currentHeightBlock + 1;
-                            this._fixElementHeight(block);
+                            block['attributes']['data-gs-height'].value = parseInt(block['attributes']['data-gs-height'].value) + 1;
                         }
-                    } while (textHeight > maxBlockHeight);
-                } else {
-                    this.updateElementScrollBar($textContent, textHeight, maxBlockHeight);
+                        if (!Util.elementIsResizing) {
+                                maxBlockHeight = $($blockContent).innerHeight();
+                                textHeight = $($textWrap).innerHeight();
+                                if (textHeight >= maxBlockHeight) {
+                                    block['attributes']['data-gs-height'].value = parseInt(block['attributes']['data-gs-height'].value) + 1;
+                                }
+                        }
+                    } else {
+                    }*/
+                    this.updateElementScrollBar($($blockContent), textHeight, maxBlockHeight);
                 }
             }
         },
 
-        updateElementScrollBar: function ($textContent, textHeight, maxBlockHeight) {
+        updateElementScrollBar: function ($blockContent, textHeight, maxBlockHeight) {
             if (textHeight >= maxBlockHeight) {
-                if (!$textContent.hasClass('.rex-custom-scrollbar')) {
-                    $textContent.addClass('.rex-custom-scrollbar');
-                    $textContent.mCustomScrollbar();
+                if (!$blockContent.hasClass('scrollbar-enabled')) {
+                    $blockContent.addClass('scrollbar-enabled');
+                    $blockContent.mCustomScrollbar();
                 }
             } else {
-                if ($textContent.hasClass('.rex-custom-scrollbar')) {
-                    $textContent.removeClass('.rex-custom-scrollbar');
-                    $textContent.mCustomScrollbar('destroy');
+                if ($blockContent.hasClass('scrollbar-enabled')) {
+                    $blockContent.removeClass('scrollbar-enabled');
+                    $blockContent.mCustomScrollbar('destroy');
                 }
             }
         },
@@ -512,121 +538,139 @@
             });
         },
 
-        _addSizeViewer: function($elem){
+        _addSizeViewer: function ($elem) {
             var spanViewer = document.createElement('span');
             spanViewer.setAttribute('id', $elem.id.concat('-size-viewer'));
             $(spanViewer).addClass('el-size-viewer');
             $(spanViewer).css('left', this.properties.halfSeparatorElementLeft);
-            $(spanViewer).css('bottom', this.properties.halfSeparatorElementBottom);
+            $(spanViewer).css('top', this.properties.halfSeparatorElementTop);
             $elem.append(spanViewer);
         },
 
         // add span elements that will be used as handles of the element
         _addHandles: function ($elem) {
-            var Gallery = this;
-            var $handles = [];
-            var $circles = [];
-            for (var $i = 0; $i < 3; $i++) {
-                $handles[$i] = document.createElement('div');
-            }
-            for (var $i = 0; $i < 3; $i++) {
-                $circles[$i] = document.createElement('span');
-            }
+            var span;
+            var div;
 
-            // east handler
-            $handles[0].setAttribute('class', 'ui-resizable-handle ui-resizable-e');
-            $handles[0].setAttribute('id', $elem.id.concat('e'));
-            $circles[0].setAttribute('class','circle-handle circle-handle-e');
-            $circles[0].setAttribute('id', $elem.id+''+'e');
+            //east handle
+            span = $(document.createElement('span')).attr({
+                'class': 'circle-handle circle-handle-e',
+                'data-axis': 'e'
+            });
+            div = $(document.createElement('div')).attr({
+                'class': 'ui-resizable-handle ui-resizable-e',
+                'id': $elem.id.concat('e'),
+                'data-axis': 'e'
+            });
+            $(span).appendTo($(div));
+            $(div).appendTo($($elem));
 
-            // south handler
-            $handles[1].setAttribute('class', 'ui-resizable-handle ui-resizable-s');
-            $handles[1].setAttribute('id', $elem.id.concat('s'));
-            $circles[1].setAttribute('class', 'circle-handle circle-handle-s');
+            //south handle
+            span = $(document.createElement('span')).attr({
+                'class': 'circle-handle circle-handle-s',
+                'data-axis': 's'
+            });
+            div = $(document.createElement('div')).attr({
+                'class': 'ui-resizable-handle ui-resizable-s',
+                'id': $elem.id.concat('s'),
+                'data-axis': 's'
+            });
+            $(span).appendTo($(div));
+            $(div).appendTo($($elem));
 
-            // south-est handler
-            $handles[2].setAttribute('class', 'ui-resizable-handle ui-resizable-se');
-            $handles[2].setAttribute('id', $elem.id.concat('se'));
-            $circles[2].setAttribute('class', 'circle-handle circle-handle-se');
+            //west handle
+            span = $(document.createElement('span')).attr({
+                'class': 'circle-handle circle-handle-w',
+                'data-axis': 'w'
+            });
+            div = $(document.createElement('div')).attr({
+                'class': 'ui-resizable-handle ui-resizable-w',
+                'id': $elem.id.concat('w'),
+                'data-axis': 'w'
+            });
+            $(span).appendTo($(div));
+            $(div).appendTo($($elem));
 
-            $($elem).mousedown(function () {
-                $($elem).css({
-                    'overflow': 'visible',
-                    'z-index': '2',
-                    'outline': '1px dashed rgba(0,0,0,0.5)',
-                    '-webkit-box-shadow': '0px 0px 111px 1px rgba(0,0,0,0.8)',
-                    '-moz-box-shadow': '0px 0px 111px 1px rgba(0,0,0,0.8)',
-                    'box-shadow': '0px 0px 111px 1px rgba(0,0,0,0.8)',
-                });
-                $($elem).parent().css('overflow', 'visible');
-                $($elem).parent().parent().css('overflow', 'visible');
-                $($elem).parent().parent().parent().css('overflow', 'visible');
-                $($elem).parent().parent().parent().parent().css('z-index', '31');
-                $('#' + $elem.id + ' > ' + ' .ui-resizable-handle').css('visibility', 'visible');
-                $('#' + $elem.id + ' > ' + ' .el-size-viewer').css('visibility', 'visible');
-                if (!$($elem).hasClass('elem-is-resizing')) {
-                    $($elem).addClass('elem-is-resizing');
+            //south-east handle
+            span = $(document.createElement('span')).attr({
+                'class': 'circle-handle circle-handle-se',
+                'data-axis': 'se'
+            });
+            div = $(document.createElement('div')).attr({
+                'class': 'ui-resizable-handle ui-resizable-se',
+                'id': $elem.id.concat('se'),
+                'data-axis': 'e'
+            });
+            $(span).appendTo($(div));
+            $(div).appendTo($($elem));
+
+            //south-west handle
+            span = $(document.createElement('span')).attr({
+                'class': 'circle-handle circle-handle-sw',
+                'data-axis': 'sw'
+            });
+            div = $(document.createElement('div')).attr({
+                'class': 'ui-resizable-handle ui-resizable-sw',
+                'id': $elem.id.concat('e'),
+                'data-axis': 'sw'
+            });
+            $(span).appendTo($(div));
+            $(div).appendTo($($elem));
+
+            $($elem).mousedown(function (e) {
+                if (!$($elem).hasClass('focused')) {
+                    $($elem).children('.el-size-viewer').addClass('focused');
+                    $($elem).addClass('focused');
+                    $($elem).parent().addClass('focused');
+                    $($elem).parent().parent().addClass('focused');
+                    $($elem).parent().parent().parent().addClass('focused');
+                    $($elem).parent().parent().parent().parent().addClass('focused');
                 }
             });
 
             $(document).mouseup(function (e) {
-                $('.elem-is-resizing').css({
-                    'overflow': 'hidden',
-                    'z-index': '',
-                    'outline': 'none',
-                    '-webkit-box-shadow': 'none',
-                    '-moz-box-shadow': 'none',
-                    'box-shadow': 'none',
-                });
-                $('.elem-is-resizing').parent().css('overflow', 'hidden');
-                $('.elem-is-resizing').parent().parent().css('overflow', 'hidden');
-                $('.elem-is-resizing').parent().parent().parent().css('overflow', 'hidden');
-                $('.elem-is-resizing').parent().parent().parent().parent().css('z-index', 'auto');
-                $('#' + $elem.id + ' > ' + ' .ui-resizable-handle').css('visibility', 'hidden');
-                $('#' + $elem.id + ' > ' + ' .el-size-viewer').css('visibility', 'hidden');
-                $('.elem-is-resizing').removeClass('elem-is-resizing');
+                $($elem).children('.el-size-viewer').removeClass('focused');
+                $($elem).removeClass('focused');
+                $($elem).parent().removeClass('focused');
+                $($elem).parent().parent().removeClass('focused');
+                $($elem).parent().parent().parent().removeClass('focused');
+                $($elem).parent().parent().parent().parent().removeClass('focused');
             });
 
             $($elem).hover(function () {
                 if (!Util.elementIsResizing) {
-                    $($elem).css({
-                        'overflow': 'visible',
-                        'z-index': '2',
-                        'outline': '1px dashed rgba(0,0,0,0.5)',
-                        '-webkit-box-shadow': '0px 0px 111px 1px rgba(0,0,0,0.8)',
-                        '-moz-box-shadow': '0px 0px 111px 1px rgba(0,0,0,0.8)',
-                        'box-shadow': '0px 0px 111px 1px rgba(0,0,0,0.8)',
-                    });
-                    $($elem).parent().css('overflow', 'visible');
-                    $($elem).parent().parent().css('overflow', 'visible');
-                    $($elem).parent().parent().parent().css('overflow', 'visible');
-                    $($elem).parent().parent().parent().parent().css('z-index', '31');
-                    $('#' + $elem.id + ' > ' + ' .ui-resizable-handle').css('visibility', 'visible');
-                    $('#' + $elem.id + ' > ' + ' .el-size-viewer').css('visibility', 'visible');
+                    $($elem).children('.el-size-viewer').addClass('focused');
+                    $($elem).addClass('focused');
+                    $($elem).parent().addClass('focused');
+                    $($elem).parent().parent().addClass('focused');
+                    $($elem).parent().parent().parent().addClass('focused');
+                    $($elem).parent().parent().parent().parent().addClass('focused');
                 }
             }, function () {
                 if (!Util.elementIsResizing) {
-                    $($elem).css({
-                        'overflow': 'hidden',
-                        'z-index': '',
-                        'outline': 'none',
-                        '-webkit-box-shadow': 'none',
-                        '-moz-box-shadow': 'none',
-                        'box-shadow': 'none',
-                    });
-                    $($elem).parent().css('overflow', 'hidden');
-                    $($elem).parent().parent().css('overflow', 'hidden');
-                    $($elem).parent().parent().parent().css('overflow', 'hidden');
-                    $($elem).parent().parent().parent().parent().css('z-index', 'auto');
-                    $('#' + $elem.id + ' > ' + ' .ui-resizable-handle').css('visibility', 'hidden');
-                    $('#' + $elem.id + ' > ' + ' .el-size-viewer').css('visibility', 'hidden');
+                    $($elem).children('.el-size-viewer').removeClass('focused');
+                    $($elem).removeClass('focused');
+                    $($elem).parent().removeClass('focused');
+                    $($elem).parent().parent().removeClass('focused');
+                    $($elem).parent().parent().parent().removeClass('focused');
+                    $($elem).parent().parent().parent().parent().removeClass('focused');
                 }
             });
-
-            for (var $i = 0; $i < 3; $i++) {
-                $handles[$i].append($circles[$i]);
-                $('#' + $elem.id).append($handles[$i]);
-            }
+            
+            $($elem).dblclick(function () {
+                if (($($elem).find('.text-wrap')).length != 0) {
+                    if ($($elem).hasClass('block-has-slider')) {
+                        $($($elem).find('.rex-slider-element-title')).addClass('editable medium-editor-element');
+                    } else {
+                        $($($elem).find('.text-wrap')).addClass('editable medium-editor-element');
+                        //gallery.fixElementTextSize($elem, null);
+                    }
+                } else {
+                    var textEl = document.createElement('div');
+                    $(textEl).addClass('text-wrap editable medium-editor-element');
+                    $($($elem).find('.rex-custom-scrollbar')).append(textEl);
+                }
+            });
         },
 
         // fixes position of the handles of the element
@@ -714,55 +758,79 @@
                         {
                         'e': '.ui-resizable-e',
                         's': '.ui-resizable-s',
+                        'w': '.ui-resizable-w'
                         'se': '.ui-resizable-se'
+                        'sw': '.ui-resizable-sw'
+                        's, e, w, se, sw'
                     }
-            */
-           /*  $(gallery.$element).children('.grid-stack-item').each(function(){
-                //gallery._addHandles(this);
-                $('#'+this.id).attr("data-gs-min-width", "1");
-                $('#'+this.id).attr("data-gs-min-height", "1");
-                $('#'+this.id).attr("data-gs-max-width", "12");
-            }); */
+                    */
+            $(gallery.$element).children('.grid-stack-item').each(function () {
+                gallery._addHandles(this);
+                gallery._addSizeViewer(this);
+                $('#' + this.id + ' > .el-size-viewer').text($(this)[0]['attributes']['data-gs-width'].value + ' x ' + $(this)[0]['attributes']['data-gs-height'].value);
+                $('#' + this.id).attr("data-gs-min-width", "1");
+                $('#' + this.id).attr("data-gs-min-height", "1");
+                $('#' + this.id).attr("data-gs-max-width", "12");
+                if(($(this).find('.text-wrap')).length != 0){
+                    if (!$(this).hasClass('block-has-slider')) {
+                        gallery.fixElementTextSize(this, null);
+                    }
+                }
+            });
             $(gallery.$element).gridstack({
                 cellHeight: gallery.properties.singleWidth,
+                draggable: {
+                    containment: 'parent',
+                    handle: '.grid-stack-item-content',
+                    scroll: false,
+                },
                 resizable: {
                     minWidth: gallery.properties.singleWidth,
                     minHeight: gallery.properties.singleWidth,
-                    handles: 's, e, w, se, sw'
+                    handles: {
+                        'e': '.ui-resizable-e',
+                        's': '.ui-resizable-s',
+                        //'w': '.ui-resizable-w',
+                        'se': '.ui-resizable-se',
+                        //'sw': '.ui-resizable-sw'
+                    }
                 },
                 verticalMargin: 0,
                 width: gallery.settings.numberCol
             });
-/* 
             $(gallery.$element).on('dragstart', function (event, ui) {
-                console.log($(event.target)[0].id);
+                ;
             }).on('drag', function (event, ui) {
                 ;
             }).on('dragstop', function (event, ui) {
                 ;
             }).on('resizestart', function (event, ui) {
-                console.log(event);
+                gallery.properties.resizeHandle = $(event.toElement).attr('data-axis');
                 var block = $(event.target)[0];
-                var $textContent = $(block).children('.text-content');
-                if ($textContent.hasClass('.rex-custom-scrollbar')) {
-                    gallery.properties.elementHasScrollBar = true;
-                    console.log('true!');
+                if(!$(block).hasClass('block-has-slider') && ($(block).find('.text-wrap')).length!=0){
+                    var $textWrap = $(block).find('.text-wrap');
+                    var $blockContent = $($textWrap).parents('.grid-stack-item-content')[0];
+                    if ($($blockContent).hasClass('scrollbar-enable')) {
+                        gallery.properties.elementHasScrollBar = true;
+                    }
                 }
                 Util.elementIsResizing = true;
                 var xStart = parseInt(block['attributes']['data-gs-x'].value);
-                //$('#'+block.id).attr("data-gs-max-width", (gallery.settings.numberCol - xStart));
+                $('#'+block.id).attr("data-gs-max-width", (gallery.settings.numberCol - xStart));
             }).on('resize', function (event, ui) {
-               // gallery.fixElementTextSize($(event.target)[0], event.data('ui-resizable').axis);
-               //console.log(event['srcElement'].id);
+                if(!$($(event.target)[0]).hasClass('block-has-slider')){
+                    gallery.fixElementTextSize($(event.target)[0], gallery.properties.resizeHandle);
+                };
+                $('#'+$(event.target)[0].id+' > .el-size-viewer').text(Math.round($(event.target).outerWidth()/gallery.properties.singleWidth)+' x '+Math.round($(event.target).outerHeight()/gallery.properties.singleWidth));
             }).on('gsresizestop', function (event, elem) {
-                console.log(event, elem);
                 Util.elementIsResizing = false;
-                /* if (!Gallery.properties.southHandleFlag) {
-                    Gallery.fixElementTextSize($elem, event.data('ui-resizable').axis);
-                } 
                 gallery.properties.elementHasScrollBar = false;
-            }); */
+                $('#'+elem.id+' > .el-size-viewer').text($(elem)[0]['attributes']['data-gs-width'].value+' x '+$(elem)[0]['attributes']['data-gs-height'].value);
+            });
+            var grid = this.$element.data('gridstack');
+            grid.disable();
             //$('.grid-stack-item').addTouch();
+
         },
 
         _setParentGridPadding: function () {

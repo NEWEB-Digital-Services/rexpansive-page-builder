@@ -1,4 +1,14 @@
-.grid-stack-item:hover{
+.rexpansive_section .full-disposition.focused, .rexpansive_section .center-disposition.focused{
+    overflow: visible;
+}
+
+.rexpansive_section.focused {
+    z-index: 31;
+}
+.perfect-grid-gallery.focused {
+    overflow: visible;
+}
+.perfect-grid-item.focused, .grid-stack-item.focused{
     overflow: visible;
     z-index: 2;
     outline: 1px dashed rgba(0,0,0,0.5);
@@ -7,64 +17,89 @@
     box-shadow: 0px 0px 111px 1px rgba(0,0,0,0.8);
 }
 
-.circle-handle:hover {
-    box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18),
-                0 4px 15px 0 rgba(0, 0, 0, 0.15);
+.grid-stack > .grid-stack-item > .ui-resizable-handle {
+    visibility: hidden;
+    overflow: visible;
+    position: absolute;
+    z-index: 31;
+    box-sizing: inherit;
 }
 
-.ui-resizable-e:hover > .circle-handle {
-    -webkit-transform: scale(2) translateX(25%);
-    transform: scale(2) translateX(25%);
+.perfect-grid-item.focused>.ui-resizable-handle, .grid-stack-item.focused.ui-resizable-handle{
+    visibility: visible;
+}    
+
+.el-size-viewer.focused {
+    visibility: visible;
 }
 
-.ui-resizable-s:hover > .circle-handle {
-    -webkit-transform: scale(2) translateY(25%);
-    transform: scale(2) translateY(25%);
+.text-content {
+    width: 100%;
+    max-height: 100%;
 }
 
-.ui-resizable-se:hover > .circle-handle{
-    -webkit-transform: scale(2) translate(25%, 25%);
-    transform: scale(2) translate(25%, 25%);
+.grid-stack-item-content {
+    height: initial !important;
 }
 
 .perfect-grid-item{
     transition: box-shadow 0.3s;
 }
 
-.w1 .ui-resizable-e{
-    width: 20%;
+.grid-stack .grid-stack-placeholder > .placeholder-content {
+    left: 0px;
+    right: 0px;
 }
 
-.w1 .ui-resizable-se{
-    width: 20%;
-}
 
-.h1 .ui-resizable-s,  {
-    height: 20%;
-}
-
-.h1 .ui-resizable-se {
-    height: 20%;
-}
-
-.ui-resizable-e {
-    right: 0%;
+.grid-stack > .grid-stack-item > .ui-resizable-e {
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
     width: 40px;
     height: 100%;
 }
 
-.ui-resizable-s {
-    bottom: 0%;
+.grid-stack > .grid-stack-item > .ui-resizable-w {
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    width: 40px;
+    height: 100%;
+}
+
+.grid-stack > .grid-stack-item > .ui-resizable-s {
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
     width: 100%;
     height: 40px;
 }
 
-.ui-resizable-se {
+.grid-stack > .grid-stack-item > .ui-resizable-se {
     width: 40px;
     height: 40px;
-    bottom: 0%;
-    right: 0%;
+    bottom: 0px;
+    right: 0px;
     background-image: none;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+}
+
+.grid-stack > .grid-stack-item > .ui-resizable-sw {
+    width: 40px;
+    height: 40px;
+    bottom: 0px;
+    left: 0px;
+    background-image: none;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
 }
 
 .circle-handle-e {
@@ -73,16 +108,28 @@
     transform: translateX(50%);
 }
 
+.circle-handle-w {
+    top: 50%;
+    left: 0%;
+    transform: translateX(-50%);
+}
+
 .circle-handle-s {
     left: 50%;
     bottom: 0%;
-    transform: translateY(50%);
+    transform: translate(-50%, 50%);
 }
 
 .circle-handle-se {
     bottom: 0%;
     right: 0%;
     transform: translate(50%, 50%);
+}
+
+.circle-handle-sw {
+    bottom: 0%;
+    left: 0%;
+    transform: translate(-50%, 50%);
 }
 
 .el-size-viewer {
@@ -107,18 +154,49 @@
     -webkit-transition: all 0.3s ease-out;
     -moz-transition: all 0.3s ease-out;
     -o-transition: all 0.3s ease-out;
-    -ms-transition: all 0.3 sease-out;
+    -ms-transition: all 0.3 ease-out;
     transition: all 0.3s ease-out;
     z-index: 31;
     position: absolute;
 }
 
+.grid-stack-item:hover{
+    overflow: visible;
+    z-index: 2;
+    outline: 1px dashed rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0px 0px 111px 1px rgba(0,0,0,0.8);
+    -moz-box-shadow: 0px 0px 111px 1px rgba(0,0,0,0.8);
+    box-shadow: 0px 0px 111px 1px rgba(0,0,0,0.8);
+}
 
-.ui-resizable-handle {
-    visibility: visible;
-    position: absolute;
-    z-index: 31;
-    box-sizing: inherit;
+.circle-handle:hover {
+    box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18),
+                0 4px 15px 0 rgba(0, 0, 0, 0.15);
+}
+
+.ui-resizable-e:hover > .circle-handle {
+    -webkit-transform: scale(2) translateX(25%);
+    transform: scale(2) translateX(25%);
+}
+
+.ui-resizable-s:hover > .circle-handle {
+    -webkit-transform: scale(2) translate(-25%, 25%);
+    transform: scale(2) translate(-25%, 25%);
+}
+
+.ui-resizable-w:hover > .circle-handle{
+    -webkit-transform: scale(2) translateX(-25%);
+    transform: scale(2) translateX(-25%);
+}
+
+.ui-resizable-se:hover > .circle-handle{
+    -webkit-transform: scale(2) translate(25%, 25%);
+    transform: scale(2) translate(25%, 25%);
+}
+
+.ui-resizable-sw:hover > .circle-handle{
+    -webkit-transform: scale(2) translate(-25%, 25%);
+    transform: scale(2) translate(-25%, 25%);
 }
 
 #toolBox {
@@ -140,10 +218,10 @@
     /* transition position changing */
     -webkit-transition: -webkit-transform 0.2s;
             transition: transform 0.2s;
-  }
+}
 
 /* jQuery UI Draggable adds ui-draggable-dragging */
-.ui-draggable-dragging{
+ .ui-draggable-dragging{
     z-index: 2;
     cursor: pointer;
 }
