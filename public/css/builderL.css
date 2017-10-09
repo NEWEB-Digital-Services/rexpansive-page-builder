@@ -1,3 +1,7 @@
+.mCustomScrollBox {
+    max-height: none !important;
+}
+
 .rexpansive_section .full-disposition.focused, .rexpansive_section .center-disposition.focused{
     overflow: visible;
 }
