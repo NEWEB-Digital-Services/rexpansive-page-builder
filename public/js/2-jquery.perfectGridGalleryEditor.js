@@ -67,8 +67,11 @@
             elemHasFocus: false,
             edgesElementsSetted: false,
             windowIsReisized: false,
-            resizeHandle: ''
+            resizeHandle: '',
+            sectionNumber: null,
+            elementEdited: null
         };
+
         this.packerySettings = {
             itemSelector: '',
             columnWidth: 0,
@@ -83,6 +86,8 @@
     $.extend(perfectGridGalleryEditor.prototype, {
         init: function () {
 
+            this.properties.sectionNumber = ($(this.element).children('.grid-stack-item')[0].id).split('_')[1];
+            
             this._saveStateElements();
 
             this._defineDataSettings();
@@ -95,40 +100,37 @@
 
             this._defineDynamicPrivateProperties();
 
-            this.prepareElements();
+            this._prepareElements();
 
             this._launchGridStack();
 
-            this.linkResizeEvents();
+            this._linkResizeEvents();
 
-            /*
-            var grid = this;
-            var testDiv = document.createElement('div');
-            $(testDiv).attr({
-                'class': 'editable medium-editor-element',
-                'style': 'width: 100px; height: 100px; background-color: yellow;'
+            this._launchTextEditor();
+
+            $(window).on('keydown', { Gallery: this, Util: Util }, function(event){
+                if(event.keyCode == 27){
+                    var G = event.data.Gallery;
+                    var grid = G.$element.data('gridstack');
+                    //console.log('enable grid');
+                    grid.enable();
+                    G.properties.elementEdited = null;
+                }    
             });
-            $($('.rexpansive_section').parent()).prepend(testDiv);
-            $(grid.$element).children('.grid-stack-item').each(function(){
-        
-                if (($(this).find('.text-wrap')).length != 0) {
-                    if ($(this).hasClass('block-has-slider')) {
-                        $($(this).find('.rex-slider-element-title')).addClass('editable medium-editor-element');
-                    } else {
-                        $($(this).find('.text-wrap')).addClass('editable medium-editor-element');
-                        //gallery.fixElementTextSize($elem, null);
+            $(window).on('mousedown', { Gallery: this, Util: Util }, function(event){
+                var G = event.data.Gallery;
+                var target = event.target;
+                if(G.properties.elementEdited !== null && $(target).parents('.medium-editor-toolbar').length === 0){
+                    //console.log('element is editing');
+                    var $items = $($(target).parents('.grid-stack-item'));
+                    if(($items.length === 0) || $items[0].id !== G.properties.elementEdited.id){
+                        var grid = G.$element.data('gridstack');
+                        //console.log('enable grid');
+                        grid.enable();
+                        G.properties.elementEdited = null;
                     }
-                } else {
-                    var textEl = document.createElement('div');
-                    $(textEl).addClass('text-wrap editable medium-editor-element');
-                    $($(this).find('.rex-custom-scrollbar')).append(textEl);
                 }
             });
-            
-            var editor = new MediumEditor('.editable', { 
-                // options go here
-            });
-            */
 
             $(window).on('resize', { Gallery: this, Util: Util }, function (event) {
                 if (!event.data.Util.elementIsResizing) {
@@ -173,45 +175,43 @@
             }, 400); */
         },
 
-        fixElementTextSize: function ($elem, $handler) {
-            var block = $($elem)[0];
-            if (($(block).find('.text-wrap')).length != 0) {
-                var $textWrap = $(block).find('.text-wrap');
-                var $blockContent = $(block).find('.grid-stack-item-content')[0];
-                if (!$($blockContent).hasClass('scrollbar-enabled') && ($($textWrap).innerHeight() != null)) {
-                    var maxBlockHeight, textHeight;
-                    maxBlockHeight = $($blockContent).innerHeight();
-                    textHeight = $($textWrap).innerHeight();
-                    /*  if (($handler == 'e' || $handler == 'w') && !this.properties.elementHasScrollBar) {
-                         maxBlockHeight = $($blockContent).innerHeight();
-                         textHeight = $($textWrap).innerHeight();
-                         if (textHeight >= maxBlockHeight) {
-                             block['attributes']['data-gs-height'].value = parseInt(block['attributes']['data-gs-height'].value) + 1;
-                         }
-                         if (!Util.elementIsResizing) {
-                                 maxBlockHeight = $($blockContent).innerHeight();
-                                 textHeight = $($textWrap).innerHeight();
-                                 if (textHeight >= maxBlockHeight) {
-                                     block['attributes']['data-gs-height'].value = parseInt(block['attributes']['data-gs-height'].value) + 1;
-                                 }
-                         }
-                     } else {
-                     }*/
-                    this.updateElementScrollBar($($blockContent), textHeight, maxBlockHeight);
-                }
-            }
-        },
-
-        updateElementScrollBar: function ($blockContent, textHeight, maxBlockHeight) {
-            if (textHeight >= maxBlockHeight) {
-                if (!$blockContent.hasClass('scrollbar-enabled')) {
-                    $blockContent.addClass('scrollbar-enabled');
-                    $blockContent.mCustomScrollbar();
-                }
+        fixElementTextSize: function (block, $handler) {
+            var $textWrap = $($(block).find('.text-wrap'));
+            var $blockContent = $($(block).find('.grid-stack-item-content')[0]);
+            var maxBlockHeight, textHeight;
+            maxBlockHeight = $blockContent.innerHeight();
+            textHeight = $textWrap.innerHeight();
+            if($handler !== null){
+                $blockContent.mCustomScrollbar("update");
             } else {
-                if ($blockContent.hasClass('scrollbar-enabled')) {
-                    $blockContent.removeClass('scrollbar-enabled');
-                    $blockContent.mCustomScrollbar('destroy');
+                if ($(block).find('.mCustomScrollBox').length === 0) {
+                    $blockContent.mCustomScrollbar();
+                    if (textHeight < maxBlockHeight) {
+                        $blockContent.mCustomScrollbar('disable');
+                    }
+                } else {
+                    if ($blockContent.hasClass('mCS_no_scrollbar')) {
+                        var w = parseInt(block['attributes']['data-gs-width'].value);
+                        var h = parseInt(block['attributes']['data-gs-height'].value);
+                        var grid = this.$element.data('gridstack');
+                        var i=0;
+                        var n;
+                        if (textHeight >= maxBlockHeight) {
+                            n = Math.max(Math.floor((textHeight - maxBlockHeight) / this.properties.singleWidth), 1);
+                            while (i < n) {
+                                h = h + 1;
+                                i++;
+                            }
+                        } else {
+                            n = Math.floor((maxBlockHeight - textHeight) / this.properties.singleWidth);
+                            while (i < n) {
+                                h = h - 1;
+                                i++;
+                            }
+                            h = Math.max(h, this.properties.elementStartingH);
+                        }
+                        grid.update(block, null, null, w, h);
+                    }
                 }
             }
         },
@@ -545,7 +545,7 @@
             var spanViewer = document.createElement('span');
             spanViewer.setAttribute('id', $elem.id.concat('-size-viewer'));
             $(spanViewer).addClass('el-size-viewer');
-            $(spanViewer).css('left', this.properties.halfSeparatorElementLeft);
+            $(spanViewer).css('right', this.properties.halfSeparatorElementRight);
             $(spanViewer).css('top', this.properties.halfSeparatorElementTop);
             $elem.append(spanViewer);
         },
@@ -568,61 +568,6 @@
                 });
                 $(span).appendTo($(div));
                 $(div).appendTo($($elem));
-            });
-
-            $($elem).mousedown(function (e) {
-                if (!$($elem).hasClass('focused')) {
-                    $($elem).children('.el-size-viewer').addClass('focused');
-                    $($elem).addClass('focused');
-                    $($elem).parent().addClass('focused');
-                    $($elem).parent().parent().addClass('focused');
-                    $($elem).parent().parent().parent().addClass('focused');
-                    $($elem).parent().parent().parent().parent().addClass('focused');
-                }
-            });
-
-            $(document).mouseup(function (e) {
-                $($elem).children('.el-size-viewer').removeClass('focused');
-                $($elem).removeClass('focused');
-                $($elem).parent().removeClass('focused');
-                $($elem).parent().parent().removeClass('focused');
-                $($elem).parent().parent().parent().removeClass('focused');
-                $($elem).parent().parent().parent().parent().removeClass('focused');
-            });
-
-            $($elem).hover(function () {
-                if (!Util.elementIsResizing) {
-                    $($elem).children('.el-size-viewer').addClass('focused');
-                    $($elem).addClass('focused');
-                    $($elem).parent().addClass('focused');
-                    $($elem).parent().parent().addClass('focused');
-                    $($elem).parent().parent().parent().addClass('focused');
-                    $($elem).parent().parent().parent().parent().addClass('focused');
-                }
-            }, function () {
-                if (!Util.elementIsResizing) {
-                    $($elem).children('.el-size-viewer').removeClass('focused');
-                    $($elem).removeClass('focused');
-                    $($elem).parent().removeClass('focused');
-                    $($elem).parent().parent().removeClass('focused');
-                    $($elem).parent().parent().parent().removeClass('focused');
-                    $($elem).parent().parent().parent().parent().removeClass('focused');
-                }
-            });
-
-            $($elem).dblclick(function () {
-                if (($($elem).find('.text-wrap')).length != 0) {
-                    if ($($elem).hasClass('block-has-slider')) {
-                        $($($elem).find('.rex-slider-element-title')).addClass('editable medium-editor-element');
-                    } else {
-                        $($($elem).find('.text-wrap')).addClass('editable medium-editor-element');
-                        //gallery.fixElementTextSize($elem, null);
-                    }
-                } else {
-                    var textEl = document.createElement('div');
-                    $(textEl).addClass('text-wrap editable medium-editor-element');
-                    $($($elem).find('.rex-custom-scrollbar')).append(textEl);
-                }
             });
         },
 
@@ -712,27 +657,84 @@
             $('#' + $elem.id + ' > .el-size-viewer').text(x + ' x ' + y);
         },
 
-        prepareElements: function () {
+        _prepareElements: function () {
             var gallery = this;
             $(gallery.$element).children('.grid-stack-item').each(function () {
-                gallery._updateElementPadding($(this).children('.grid-stack-item-content'));
-                gallery._addHandles(this, 'e, s, se');
+                var $elem = $(this);
+                gallery._updateElementPadding($elem.children('.grid-stack-item-content'));
+                gallery._addHandles(this, 'e, s, w, se, sw');
                 gallery._addSizeViewer(this);
                 gallery.updateSizeViewerText(this);
                 $('#' + this.id).attr("data-gs-min-width", "1");
                 $('#' + this.id).attr("data-gs-min-height", "1");
                 $('#' + this.id).attr("data-gs-max-width", "12");
-                if (($(this).find('.text-wrap')).length != 0) {
-                    if (!$(this).hasClass('block-has-slider')) {
-                        gallery.fixElementTextSize(this, null);
+
+                $elem.mousedown(function (event) {
+                    if((gallery.properties.elementEdited === null) && !$elem.hasClass('focused')) {
+                        gallery._focusElement($elem)
                     }
-                }
+                });
+    
+                $(document).mouseup(function (e) {
+                    gallery._unFocusElement($elem);
+                });
+
+                $elem.hover(function (event) {
+                    if (!Util.elementIsResizing) {
+                        gallery._focusElement($elem)
+                    }
+                    if (gallery.properties.elementEdited != null) {
+                        var grid = gallery.$element.data('gridstack');
+                        if ($($elem)[0].id !== gallery.properties.elementEdited.id) {
+                            grid.enable();
+                            gallery._focusElement($elem);
+                        } else {
+                            grid.disable();
+                            gallery._unFocusElement($elem);
+                        }
+                    }
+                }, function () {
+                    if (!Util.elementIsResizing) {
+                        gallery._unFocusElement($elem);
+                    }
+                });
+    
+                $elem.keydown(function() {
+                    gallery.fixElementTextSize(this, null);
+                });
+
+                $elem.dblclick(function () {
+                    var grid = gallery.$element.data('gridstack');
+                    grid.disable();
+                    console.log('disable grid');
+                    gallery.properties.elementEdited = this;
+                    gallery.properties.elementStartingH = parseInt($elem[0]['attributes']['data-gs-height'].value);
+                    var $blockContent = $($elem.find('.grid-stack-item-content')[0]);
+                });
             });
         },
 
-        linkResizeEvents: function () {
+        _focusElement: function($elem){
+            $elem.children('.el-size-viewer').addClass('focused');
+            $elem.addClass('focused');
+            $elem.parent().addClass('focused');
+            $elem.parent().parent().addClass('focused');
+            $elem.parent().parent().parent().addClass('focused');
+            $elem.parent().parent().parent().parent().addClass('focused');
+        },
+
+        _unFocusElement: function($elem){
+            $elem.children('.el-size-viewer').removeClass('focused');
+            $elem.removeClass('focused');
+            $elem.parent().removeClass('focused');
+            $elem.parent().parent().removeClass('focused');
+            $elem.parent().parent().parent().removeClass('focused');
+            $elem.parent().parent().parent().parent().removeClass('focused');
+        },
+
+        _linkResizeEvents: function () {
             var gallery = this;
-            var block, $textWrap, $blockContent, xStart, xView, yView;
+            var block, $textWrap, $blockContent, xStart, wStart, xView, yView;
 
             $(gallery.$element).on('resizestart', function (event, ui) {
                 gallery.properties.resizeHandle = $(event.toElement).attr('data-axis');
@@ -740,7 +742,7 @@
                 if (!$(block).hasClass('block-has-slider') && ($(block).find('.text-wrap')).length != 0) {
                     $textWrap = $(block).find('.text-wrap');
                     $blockContent = $($textWrap).parents('.grid-stack-item-content')[0];
-                    if ($($blockContent).hasClass('scrollbar-enable')) {
+                    if (!$($blockContent).hasClass('mCS_no_scrollbar')) {
                         gallery.properties.elementHasScrollBar = true;
                     }
                 }
@@ -748,11 +750,14 @@
                 if(gallery.properties.resizeHandle == 'e' || gallery.properties.resizeHandle == 'se'){
                     xStart = parseInt(block['attributes']['data-gs-x'].value);
                     $('#' + block.id).attr("data-gs-max-width", (gallery.settings.numberCol - xStart));
+                } else {
+                    xStart = parseInt(block['attributes']['data-gs-x'].value);
+                    wStart = parseInt(block['attributes']['data-gs-width'].value);
+                    $('#' + block.id).attr("data-gs-max-width", (xStart+wStart));
                 }
             }).on('resize', function (event, ui) {
-                block = $(event.target)[0];
                 if (!$(block).hasClass('block-has-slider')) {
-                    gallery.fixElementTextSize(block, gallery.properties.resizeHandle);
+                    gallery.fixElementTextSize(block, gallery.properties.singleWidth);
                 };
                 xView = Math.round($(event.target).outerWidth() / gallery.properties.singleWidth);
                 yView = Math.round($(event.target).outerHeight() / gallery.properties.singleWidth);
@@ -783,9 +788,9 @@
                     handles: {
                         'e': '.ui-resizable-e',
                         's': '.ui-resizable-s',
-                        //'w': '.ui-resizable-w',
+                        'w': '.ui-resizable-w',
                         'se': '.ui-resizable-se',
-                        //'sw': '.ui-resizable-sw'
+                        'sw': '.ui-resizable-sw'
                     }
                 },
                 verticalMargin: 0,
@@ -806,6 +811,42 @@
             //$('.grid-stack-item').addTouch();
         },
 
+        _addElementToTextEditor: function($editor, $elem){
+            if (($($elem).find('.text-wrap')).length != 0) {
+                $editor.addElements($($elem).find('.text-wrap'));
+            } else {
+                var textEl = document.createElement('div');
+                $(textEl).addClass('text-wrap');
+                $($($elem).find('.rex-custom-scrollbar')).append(textEl);
+                $editor.addElements(textEl);     
+            }
+        },
+        
+        _launchTextEditor: function(){
+            var gallery = this;
+            var divToolbar = document.createElement('div');
+            
+            $(divToolbar).attr({
+                'id': this.properties.sectionNumber + '-SectionTextEditor',
+                'class': 'editable',
+                'style': 'display: none'
+            });
+            $($('.rexpansive_section').parent()).prepend(divToolbar);
+
+            var editor = new MediumEditor(divToolbar, {
+                placeholder: false,
+                toolbar: true
+            });
+
+            $(gallery.$element).children('.grid-stack-item').each(function(){
+                gallery._addElementToTextEditor(editor, this);
+                //fixing scrollbars
+                if (!$(this).hasClass('block-has-slider')) {
+                    gallery.fixElementTextSize(this, null);
+                }
+            });
+        },
+        
         _setParentGridPadding: function () {
             var $parent = $(this.$element.parent());
             //console.log('setting grid padding');
