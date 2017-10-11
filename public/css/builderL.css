@@ -3,14 +3,17 @@
     height: 100%;
 }
 
-.rex-custom-scrollbar > .text-wrap {
-    height: 100%;
-}
 
- .mCustomScrollBox > .mCSB_container {
+.mCustomScrollBox > .mCSB_container {
     height: 100%;
 }
- */
+*/
+.medium-editor-element:focus {
+    outline: none;
+}
+.gridActive>.grid-stack-item:hover {
+    cursor: move;
+}
 
 .mCustomScrollBox {
     max-height: none !important;
@@ -169,11 +172,11 @@
     border: 1px solid white;
     border-radius: 50%;
     overflow: visible;
-    -webkit-transition: all 0.3s ease-out;
-    -moz-transition: all 0.3s ease-out;
-    -o-transition: all 0.3s ease-out;
-    -ms-transition: all 0.3 ease-out;
-    transition: all 0.3s ease-out;
+    -webkit-transition: all 0.0s ease-out;
+    -moz-transition: all 0.0s ease-out;
+    -o-transition: all 0.0s ease-out;
+    -ms-transition: all 0.0 ease-out;
+    transition: all 0.0s ease-out;
     z-index: 31;
     position: absolute;
 }

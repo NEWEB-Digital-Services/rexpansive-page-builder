@@ -1,0 +1,41 @@
+.input-group.bootstrap-touchspin {
+  max-width: 80px;
+  min-width: 70px;
+  margin: 0 auto;
+}
+
+.input-group.bootstrap-touchspin input {
+  height: 20px;
+}
+
+.input-group.bootstrap-touchspin .input-group-btn > .btn {
+  padding: 2px 8px;
+  line-height: 1;
+  border-radius: 0;
+  font-family: serif;
+}
+
+.bootstrap-touchspin-up {
+  border-left-width: 0;
+}
+
+.bootstrap-touchspin-down {
+  border-right-width: 0;
+}
+
+.bootstrap-touchspin-up, .bootstrap-touchspin-down {
+  color: white;
+  background-color: #832749;
+  border-color: #832749;
+  box-shadow: none;
+}
+
+.bootstrap-touchspin-up:hover, .bootstrap-touchspin-down:hover {
+  color: #832749 !important;
+  background-color: white;
+  border-color: #832749;
+}
+
+.bootstrap-touchspin .input-group-btn > .btn {
+  box-shadow: none;
+}

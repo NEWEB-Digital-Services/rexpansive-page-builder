@@ -60,7 +60,6 @@
             elementResizeEvent: false,
             gutter: 0,
             elementIsResizing: false,
-            elementHasScrollBar: false,
             elementStartingH: 0,
             percentFactorHandlers: 0.15,
             lostPixels: 0,
@@ -84,10 +83,22 @@
 
     // Avoid Plugin.prototype conflicts
     $.extend(perfectGridGalleryEditor.prototype, {
-        init: function () {
+        init: function () {/* 
+            var div = document.createElement('div');
+            var input = document.createElement('input');
+            $(input).TouchSpin({
+                verticalbuttons: true
+            });
+            $(input).on('change', function(){
+                console.log(this.value);
+                console.log('value changed');
+            });
+            $(div).append(input);
+            this.$element.prepend(div);
+ */
 
             this.properties.sectionNumber = ($(this.element).children('.grid-stack-item')[0].id).split('_')[1];
-            
+
             this._saveStateElements();
 
             this._defineDataSettings();
@@ -106,27 +117,29 @@
 
             this._linkResizeEvents();
 
-            this._launchTextEditor();
+            //this._launchTextEditor();
 
-            $(window).on('keydown', { Gallery: this, Util: Util }, function(event){
-                if(event.keyCode == 27){
+            $(window).on('keydown', { Gallery: this, Util: Util }, function (event) {
+                if (event.keyCode == 27) {
                     var G = event.data.Gallery;
                     var grid = G.$element.data('gridstack');
                     //console.log('enable grid');
                     grid.enable();
+                    $(G.$element).addClass('gridActive');
                     G.properties.elementEdited = null;
-                }    
+                }
             });
-            $(window).on('mousedown', { Gallery: this, Util: Util }, function(event){
+            $(window).on('mousedown', { Gallery: this, Util: Util }, function (event) {
                 var G = event.data.Gallery;
                 var target = event.target;
-                if(G.properties.elementEdited !== null && $(target).parents('.medium-editor-toolbar').length === 0){
+                if (G.properties.elementEdited !== null && $(target).parents('.medium-editor-toolbar').length === 0) {
                     //console.log('element is editing');
                     var $items = $($(target).parents('.grid-stack-item'));
-                    if(($items.length === 0) || $items[0].id !== G.properties.elementEdited.id){
+                    if (($items.length === 0) || $items[0].id !== G.properties.elementEdited.id) {
                         var grid = G.$element.data('gridstack');
                         //console.log('enable grid');
                         grid.enable();
+                        $(G.$element).addClass('gridActive');
                         G.properties.elementEdited = null;
                     }
                 }
@@ -181,7 +194,7 @@
             var maxBlockHeight, textHeight;
             maxBlockHeight = $blockContent.innerHeight();
             textHeight = $textWrap.innerHeight();
-            if($handler !== null){
+            if ($handler !== null) {
                 $blockContent.mCustomScrollbar("update");
             } else {
                 if ($(block).find('.mCustomScrollBox').length === 0) {
@@ -194,7 +207,7 @@
                         var w = parseInt(block['attributes']['data-gs-width'].value);
                         var h = parseInt(block['attributes']['data-gs-height'].value);
                         var grid = this.$element.data('gridstack');
-                        var i=0;
+                        var i = 0;
                         var n;
                         if (textHeight >= maxBlockHeight) {
                             n = Math.max(Math.floor((textHeight - maxBlockHeight) / this.properties.singleWidth), 1);
@@ -667,29 +680,32 @@
                 gallery.updateSizeViewerText(this);
                 $('#' + this.id).attr("data-gs-min-width", "1");
                 $('#' + this.id).attr("data-gs-min-height", "1");
-                $('#' + this.id).attr("data-gs-max-width", "12");
+                $('#' + this.id).attr("data-gs-max-width", "500");
 
                 $elem.mousedown(function (event) {
-                    if((gallery.properties.elementEdited === null) && !$elem.hasClass('focused')) {
-                        gallery._focusElement($elem)
+                    if ((gallery.properties.elementEdited === null) && !$elem.hasClass('focused')) {
+                        gallery._focusElement($elem);
                     }
                 });
-    
+
                 $(document).mouseup(function (e) {
                     gallery._unFocusElement($elem);
+                    $($elem[0].id).trigger('hover');
                 });
 
                 $elem.hover(function (event) {
                     if (!Util.elementIsResizing) {
-                        gallery._focusElement($elem)
+                        gallery._focusElement($elem);
                     }
                     if (gallery.properties.elementEdited != null) {
                         var grid = gallery.$element.data('gridstack');
                         if ($($elem)[0].id !== gallery.properties.elementEdited.id) {
                             grid.enable();
+                            $(gallery.$element).addClass('gridActive');
                             gallery._focusElement($elem);
                         } else {
                             grid.disable();
+                            $(gallery.$element).removeClass('gridActive');
                             gallery._unFocusElement($elem);
                         }
                     }
@@ -698,23 +714,29 @@
                         gallery._unFocusElement($elem);
                     }
                 });
-    
-                $elem.keydown(function() {
+
+                $elem.keydown(function () {
                     gallery.fixElementTextSize(this, null);
                 });
 
                 $elem.dblclick(function () {
                     var grid = gallery.$element.data('gridstack');
                     grid.disable();
+                    $(gallery.$element).removeClass('gridActive');
                     console.log('disable grid');
                     gallery.properties.elementEdited = this;
                     gallery.properties.elementStartingH = parseInt($elem[0]['attributes']['data-gs-height'].value);
-                    var $blockContent = $($elem.find('.grid-stack-item-content')[0]);
+                    var textWrap = $elem.find('.text-wrap');
+                    console.log(textWrap);
+                    $(textWrap)[0].focus();
+                    //$(textWrap.lastChild)[0].focus();
+                    /* if()#mCSB_1_container > div > div
+                    $()[0].focus(); */
                 });
             });
         },
 
-        _focusElement: function($elem){
+        _focusElement: function ($elem) {
             $elem.children('.el-size-viewer').addClass('focused');
             $elem.addClass('focused');
             $elem.parent().addClass('focused');
@@ -723,7 +745,7 @@
             $elem.parent().parent().parent().parent().addClass('focused');
         },
 
-        _unFocusElement: function($elem){
+        _unFocusElement: function ($elem) {
             $elem.children('.el-size-viewer').removeClass('focused');
             $elem.removeClass('focused');
             $elem.parent().removeClass('focused');
@@ -734,41 +756,33 @@
 
         _linkResizeEvents: function () {
             var gallery = this;
-            var block, $textWrap, $blockContent, xStart, wStart, xView, yView;
+            var block, xStart, wStart, xView, yView;
 
             $(gallery.$element).on('resizestart', function (event, ui) {
                 gallery.properties.resizeHandle = $(event.toElement).attr('data-axis');
                 block = $(event.target)[0];
-                if (!$(block).hasClass('block-has-slider') && ($(block).find('.text-wrap')).length != 0) {
-                    $textWrap = $(block).find('.text-wrap');
-                    $blockContent = $($textWrap).parents('.grid-stack-item-content')[0];
-                    if (!$($blockContent).hasClass('mCS_no_scrollbar')) {
-                        gallery.properties.elementHasScrollBar = true;
-                    }
-                }
                 Util.elementIsResizing = true;
-                if(gallery.properties.resizeHandle == 'e' || gallery.properties.resizeHandle == 'se'){
-                    xStart = parseInt(block['attributes']['data-gs-x'].value);
+                xStart = parseInt(block['attributes']['data-gs-x'].value);
+                if (gallery.properties.resizeHandle == 'e' || gallery.properties.resizeHandle == 'se') {
                     $('#' + block.id).attr("data-gs-max-width", (gallery.settings.numberCol - xStart));
                 } else {
-                    xStart = parseInt(block['attributes']['data-gs-x'].value);
                     wStart = parseInt(block['attributes']['data-gs-width'].value);
-                    $('#' + block.id).attr("data-gs-max-width", (xStart+wStart));
+                    //$('#' + block.id).attr("data-gs-max-width", (xStart + wStart));
                 }
             }).on('resize', function (event, ui) {
                 if (!$(block).hasClass('block-has-slider')) {
                     gallery.fixElementTextSize(block, gallery.properties.singleWidth);
                 };
-                xView = Math.round($(event.target).outerWidth() / gallery.properties.singleWidth);
-                yView = Math.round($(event.target).outerHeight() / gallery.properties.singleWidth);
+                xView = Math.round($(block).outerWidth() / gallery.properties.singleWidth);
+                yView = Math.round($(block).outerHeight() / gallery.properties.singleWidth);
                 gallery.updateSizeViewerText(block, xView, yView);
-                if(gallery.properties.resizeHandle == 'w' || gallery.properties.resizeHandle == 'sw'){
-
+                if (gallery.properties.resizeHandle == 'w' || gallery.properties.resizeHandle == 'sw') {
+                    ;
                 }
             }).on('gsresizestop', function (event, elem) {
                 Util.elementIsResizing = false;
-                gallery.properties.elementHasScrollBar = false;
                 gallery.updateSizeViewerText(elem);
+                $('#' + block.id).attr("data-gs-max-width", "500");
             });
         },
 
@@ -776,12 +790,15 @@
         _launchGridStack: function () {
             var gallery = this;
             $(gallery.$element).gridstack({
-                cellHeight: gallery.properties.singleWidth,
+                acceptWidgets: true,
+                alwaysShowResizeHandle: true,
+                cellHeight: '1px',
                 draggable: {
                     containment: 'parent',
                     handle: '.grid-stack-item-content',
                     scroll: false,
                 },
+                float: true,
                 resizable: {
                     minWidth: gallery.properties.singleWidth,
                     minHeight: gallery.properties.singleWidth,
@@ -796,7 +813,8 @@
                 verticalMargin: 0,
                 width: gallery.settings.numberCol
             });
-
+ 
+            
             // eventi per il drag
             /* .on('dragstart', function (event, ui) {
                 ;
@@ -806,26 +824,34 @@
                 ;
             }) */
 
-            //var grid = this.$element.data('gridstack');
-
+            var grid = this.$element.data('gridstack');
+            console.log(grid);
             //$('.grid-stack-item').addTouch();
+            $(this.$element).addClass('gridActive');
         },
 
-        _addElementToTextEditor: function($editor, $elem){
+        _addElementToTextEditor: function ($editor, $elem) {
             if (($($elem).find('.text-wrap')).length != 0) {
                 $editor.addElements($($elem).find('.text-wrap'));
             } else {
                 var textEl = document.createElement('div');
                 $(textEl).addClass('text-wrap');
                 $($($elem).find('.rex-custom-scrollbar')).append(textEl);
-                $editor.addElements(textEl);     
+                $editor.addElements(textEl);
             }
+            var textWrap = $($elem).find('.text-wrap');
+            /*             if ($(textWrap.children()).length == 0) {
+                            var pElem = document.createElement('p');
+                            $(pElem).text($(textWrap[0]).text());
+                            $(textWrap[0]).text('');
+                            $(textWrap[0]).append(pElem);
+                        } */
         },
-        
-        _launchTextEditor: function(){
+
+        _launchTextEditor: function () {
             var gallery = this;
             var divToolbar = document.createElement('div');
-            
+
             $(divToolbar).attr({
                 'id': this.properties.sectionNumber + '-SectionTextEditor',
                 'class': 'editable',
@@ -833,20 +859,169 @@
             });
             $($('.rexpansive_section').parent()).prepend(divToolbar);
 
-            var editor = new MediumEditor(divToolbar, {
-                placeholder: false,
-                toolbar: true
+            rangy.init();
+ /*            var HighlighterButton = MediumEditor.Extension.extend({
+                name: 'highlighter',
+
+                init: function () {
+                    
+                    this.button = this.document.createElement('button');
+                    var input = this.document.createElement('input');
+                    this.button.classList.add('medium-editor-action');
+                    $(input).TouchSpin({
+                        verticalbuttons: true
+                    });
+                    this.button.append(input);
+                    this.button.title = 'Font Size';
+
+                    this.on(this.button, 'click', this.handleClick.bind(this));
+                },
+
+                getButton: function () {
+                    return this.button;
+                },
+
+                handleClick: function (event) {
+                    console.log(event);
+                    $(input).on('change', function () {
+                        console.log(this.value);
+                        console.log('value changed');
+                    });
+                    this.classApplier[].toggleSelection();
+
+                    // Ensure the editor knows about an html change so watchers are notified
+                    // ie: <textarea> elements depend on the editableInput event to stay synchronized
+                    this.base.checkContentChanged();
+                },
+
+                isActive: function () {
+                    return this.button.classList.contains('medium-editor-button-active');
+                },
+
+                setInactive: function () {
+                    this.button.classList.remove('medium-editor-button-active');
+                },
+
+                setActive: function () {
+                    this.button.classList.add('medium-editor-button-active');
+                }
+            }); */
+
+            var CompanyFontSizesButton = MediumEditor.Extension.extend({
+
+                name: 'companySizes',
+
+                fontSizes: ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7'],
+
+                init() {
+                    console.log('initializiting h1 menu');
+                    this.classApplier = {
+                        'h1': rangy.createClassApplier('highlight', {
+                            elementTagName: 'h1',
+                            normalize: true
+                        }),
+                        'h2': rangy.createClassApplier('highlight', {
+                            elementTagName: 'h2',
+                            normalize: true
+                        }),
+                        'h3': rangy.createClassApplier('highlight', {
+                            elementTagName: 'h3',
+                            normalize: true
+                        }),
+                        'h4': rangy.createClassApplier('highlight', {
+                            elementTagName: 'h4',
+                            normalize: true
+                        }),
+                        'h5': rangy.createClassApplier('highlight', {
+                            elementTagName: 'h5',
+                            normalize: true
+                        }),
+                        'h6': rangy.createClassApplier('highlight', {
+                            elementTagName: 'h6',
+                            normalize: true
+                        }),
+                    }
+                    console.log(this.classApplier);
+                    this.buttonContainer = this.document.createElement('div');
+                    this.buttonContainer.classList.add('medium-editor-button-container');
+
+                    // Font Name Form (div)
+                    const form = this.document.createElement('form');
+                    form.classList.add('medium-editor-fontsize-container');
+                    form.classList.add('medium-editor-form-container');
+                    form.id = 'medium-editor-toolbar-form-fontsize-' + this.getEditorId();
+                    this.buttonContainer.appendChild(form);
+
+                    const select = this.document.createElement('select');
+                    select.classList.add('medium-editor-form-select');
+                    form.appendChild(select);
+
+                    // Add font sizes
+                    this.fontSizes.forEach((item) => {
+                        const option = this.document.createElement('option');
+                        option.innerHTML = item;
+                        option.value = item;
+                        select.appendChild(option);
+                    });
+
+                    // Attach editor events to keep status updates
+                    this.attachToEditables();
+                    // Handle typing in the text box
+                    this.on(select, 'change', event => this.handleFontSizeChange(event));
+                },
+
+                getSelect() {
+                    return this.getButton().querySelector('select.medium-editor-form-select');
+                },
+
+                attachToEditables() {
+                    this.subscribe('positionedToolbar', event => this.handlePositionedToolbar(event));
+                },
+
+                deattachFromEditables() {
+                    this.base.unsubscribe('positionedToolbar', event => this.handlePositionedToolbar(event));
+                },
+
+                handlePositionedToolbar(event) {
+                    // get the current selection when toolbar appear so we can retrieve the font used
+                    // by this selection
+                    const fontSize = this.document.queryCommandValue('fontSize') + '';
+                    this.updateSelection(fontSize);
+                },
+
+                updateSelection(value) {
+                    const select = this.getSelect();
+                    select.value = value || '';
+                },
+
+                handleFontSizeChange(event) {
+                    console.log(event);
+                    this.classApplier[this.getSelect().value].toggleSelection();
+                },
+
+                getButton() {
+                    return this.buttonContainer;
+                },
+            });
+ 
+            var editor = new MediumEditor('.editable', {
+                toolbar: {
+                    buttons: ['bold', 'italic', 'underline', 'h2', 'companySizers']
+                },
+                extensions: {
+                    'companySizers': new CompanyFontSizesButton()
+                }
             });
 
-            $(gallery.$element).children('.grid-stack-item').each(function(){
-                gallery._addElementToTextEditor(editor, this);
+            $(gallery.$element).children('.grid-stack-item').each(function () {
                 //fixing scrollbars
                 if (!$(this).hasClass('block-has-slider')) {
+                    gallery._addElementToTextEditor(editor, this);
                     gallery.fixElementTextSize(this, null);
                 }
             });
         },
-        
+
         _setParentGridPadding: function () {
             var $parent = $(this.$element.parent());
             //console.log('setting grid padding');

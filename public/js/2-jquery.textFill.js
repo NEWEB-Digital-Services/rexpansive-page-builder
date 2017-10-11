@@ -8,14 +8,14 @@
 
   // Create the defaults once
   var pluginName = "textFill",
-      defaults = {
-        maxFontSize: 100,
-        textAlignment: 'center',
-        fontFamily: 'sans-serif',
-				fontWeight: 'bold',
-        relative: false,
-        relativeWrap: '',
-      };
+    defaults = {
+      maxFontSize: 100,
+      textAlignment: 'center',
+      fontFamily: 'sans-serif',
+      fontWeight: 'bold',
+      relative: false,
+      relativeWrap: '',
+    };
 
   // The actual plugin constructor
   function textFill ( element, options ) {
