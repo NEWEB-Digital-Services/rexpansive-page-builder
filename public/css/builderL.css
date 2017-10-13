@@ -8,6 +8,20 @@
     height: 100%;
 }
 */
+
+
+
+.tool-button{
+    display: block;
+    top: 0px;
+    right: 0px;
+}
+
+.toolBox{
+    width: 100%;
+    height: 20px;
+}
+
 .medium-editor-element:focus {
     outline: none;
 }
@@ -219,13 +233,13 @@
     -webkit-transform: scale(2) translate(-25%, 25%);
     transform: scale(2) translate(-25%, 25%);
 }
-
+/* 
 #toolBox {
     position: fixed;
     bottom: 20px;
     background-color: green;
 }
-
+ */
 .resizePlaceHolder{
     outline: 3px dashed #444;
     outline-offset: -6px;

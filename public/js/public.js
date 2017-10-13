@@ -526,45 +526,9 @@ var VimeoVideo = (function($){
 	$(function() {
 		Util.init();
 		_detect_mobile();
+		
 		/* -- Launching the grid -- */
-		//if(modalità editor){
-			$('.perfect-grid-gallery').perfectGridGalleryEditor();
-			//fixing width of the sections removing pixel in excess
-			/* $('.perfect-grid-gallery').each(function(){
-					var startingWidth = $(this).outerWidth();
-					var singleWidth = Math.floor(startingWidth/12);
-					var wrapWidth = singleWidth*12;
-					var lostPixels = startingWidth - wrapWidth;
-					$(this).perfectGridGalleryEditor('setGridSize', wrapWidth);
-					var sectionWidth = $(this).parent().parent().parent().outerWidth();
-					if (Util.fixSectionWidth < sectionWidth - lostPixels) {
-						Util.fixSectionWidth = sectionWidth - lostPixels;
-					}
-					
-			});
-			$('.rexpansive_section').outerWidth(Util.fixSectionWidth); */
-		/*} else {
-			$('.perfect-grid-gallery').perfectGridGallery();
-		}
-		*//* 
-		$(window).on('resize', function(){
-			if(!Util.elementIsResizing){
-				Util.fixSectionWidth = 0;
-				$('.perfect-grid-gallery').each(function(){
-					var startingWidth = $(this).outerWidth();
-					var singleWidth = Math.floor(startingWidth/12);
-					var wrapWidth = singleWidth*12;
-					var lostPixels = startingWidth - wrapWidth;
-
-					$(this).perfectGridGalleryEditor('setGridSize', wrapWidth)
-					var sectionWidth = $(this).parent().parent().parent().outerWidth();
-					if (Util.fixSectionWidth < sectionWidth - lostPixels) {
-						Util.fixSectionWidth = sectionWidth - lostPixels;
-					}
-				});
-				$('.rexpansive_section').outerWidth(Util.fixSectionWidth);
-			}
-		}); */
+		$('.perfect-grid-gallery').perfectGridGalleryEditor();
 
 		/* -- Launching Photoswipe -- */
 		initPhotoSwipeFromDOM('.photoswipe-gallery');

@@ -153,6 +153,7 @@ class Rexbuilder_Admin {
 					wp_enqueue_style( 'gridster-style', plugin_dir_url( __FILE__ ) . 'css/jquery.gridster.css', array(), $this->version, 'all' );
 					wp_enqueue_style( 'custom-editor-buttons-style', plugin_dir_url( __FILE__ ) . 'css/rex-custom-editor-buttons.css', array(), $this->version, 'all' );
 					wp_enqueue_style( 'rexbuilder-style', plugin_dir_url( __FILE__ ) . 'css/builder.css', array(), $this->version, 'all' );
+					
 				endif;
 			endif;
 		endif;

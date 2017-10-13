@@ -217,6 +217,8 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_photoswipe_template' );
 
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_vertical_dots' );
+
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'create_builder_modals' );
 	}
 
 	/**

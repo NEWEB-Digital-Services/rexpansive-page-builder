@@ -102,7 +102,7 @@ class Rexbuilder_Public {
 				wp_enqueue_style( 'photoswipe-skin', plugin_dir_url( __FILE__ ) . 'Photoswipe/default-skin/default-skin.css', array(), $this->version, 'all' );
 				wp_enqueue_style( 'jquery.mb.YTPlayer-style', plugin_dir_url( __FILE__ ) . 'jquery.mb.YTPlayer/css/jquery.mb.YTPlayer.min.css', array(), $this->version, 'all' );
 				wp_enqueue_style( 'rexpansive-builder-style', plugin_dir_url( __FILE__ ) . 'css/rexbuilder-public.css', array(), $this->version, 'all' );
-
+				
 			endif;
 		endif;
 	}
@@ -116,17 +116,29 @@ class Rexbuilder_Public {
 		if( isset( $this->plugin_options['post_types'] ) ) :
 			$post_to_activate = $this->plugin_options['post_types'];
 			$this_post_type = get_post_type();
-
+			
 			if( $this_post_type && array_key_exists( $this_post_type, $post_to_activate ) ) :
-
+				
 				if( !is_404() ) { // TODO
 					// if( Rexpansive_Classic_Utilities::find_property_inside_content( 'vimeo', $post->post_content ) > 0 || Rexpansive_Classic_Utilities::find_property_inside_content( 'vimeo_slide', $post->post_content ) > 0 ) {
 						wp_enqueue_script( 'vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), '20120206', true );
-					// }
+						// }
 				}
+					
+				wp_enqueue_style( 'material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $this->version, 'all' );
+				wp_enqueue_style( 'materialize', plugin_dir_url( __FILE__ ) . 'css/materialize.min.css', array(), $this->version, 'all' );
+					
+				wp_enqueue_style( 'spectrum-style', plugin_dir_url( __FILE__ ) . 'spectrum/spectrum.css', array(), $this->version, 'all' );
+
+				wp_enqueue_style( 'font-awesome', plugin_dir_url( __FILE__ ) . 'font-awesome-4.3.0/css/font-awesome.min.css', array(), $this->version, 'all' );
+				wp_enqueue_style( 'rex-custom-fonts', plugin_dir_url( __FILE__ ) . 'rexpansive-font/font.css', array(), $this->version, 'all' );
+
+				wp_enqueue_style( 'gridster-style', plugin_dir_url( __FILE__ ) . 'css/jquery.gridster.css', array(), $this->version, 'all' );
+				wp_enqueue_style( 'custom-editor-buttons-style', plugin_dir_url( __FILE__ ) . 'css/rex-custom-editor-buttons.css', array(), $this->version, 'all' );
+				wp_enqueue_style( 'rexbuilder-style', plugin_dir_url( __FILE__ ) . 'css/builder.css', array(), $this->version, 'all' );
 
 				wp_enqueue_style( 'photoswipe-skin', plugin_dir_url( __FILE__ ) . 'Photoswipe/default-skin/default-skin.css', array(), $this->version, 'all' );
-				wp_enqueue_style( 'bootstrap', plugin_dir_url( __FILE__ ) . 'css/bootstrap.min.css', array(), $this->version, 'all' );
+				//wp_enqueue_style( 'bootstrap', plugin_dir_url( __FILE__ ) . 'css/bootstrap.min.css', array(), $this->version, 'all' );
 
 				wp_enqueue_style( 'jquery.mb.YTPlayer-style', plugin_dir_url( __FILE__ ) . 'jquery.mb.YTPlayer/css/jquery.mb.YTPlayer.min.css', array(), $this->version, 'all' );
 				
@@ -134,7 +146,7 @@ class Rexbuilder_Public {
 				wp_enqueue_style( 'jquery-style', plugin_dir_url( __FILE__ ) . 'css/jquery-ui.min.css', array(), $this->version, 'all' );
 				wp_enqueue_style( 'gridstack-style', plugin_dir_url( __FILE__ ) . 'css/gridstack.css', array(), $this->version, 'all' );
 				wp_enqueue_style( 'medium-editor-style', plugin_dir_url( __FILE__ ) . 'css/medium-editor.min.css', array(), $this->version, 'all' );
-				wp_enqueue_style( 'bootstrap-touchspin', plugin_dir_url( __FILE__ ) . 'css/jquery.bootstrap-touchspin.min.css', array(), $this->version, 'all' );
+				//wp_enqueue_style( 'bootstrap-touchspin', plugin_dir_url( __FILE__ ) . 'css/jquery.bootstrap-touchspin.min.css', array(), $this->version, 'all' );
 				wp_enqueue_style( 'input-spinner', plugin_dir_url( __FILE__ ) . 'css/input-spinner.css', array(), $this->version, 'all' );
 				wp_enqueue_style( 'rexpansive-builderLive-style', plugin_dir_url( __FILE__ ) . 'css/builderL.css', array(), $this->version, 'all' );
 
@@ -222,14 +234,15 @@ class Rexbuilder_Public {
 					wp_enqueue_script( '0-isotope', plugin_dir_url( __FILE__ ) . 'js/0-isotope.pkgd.min.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'rangy-core', plugin_dir_url( __FILE__ ) . 'js/rangy-core.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'rangy-classapplier', plugin_dir_url( __FILE__ ) . 'js/rangy-classapplier.js', array( 'jquery' ), $this->version, true );
-					wp_enqueue_script( 'bootstrap', plugin_dir_url( __FILE__ ) . 'js/bootstrap.min.js', array( 'jquery' ), $this->version, true );
+					//wp_enqueue_script( 'bootstrap', plugin_dir_url( __FILE__ ) . 'js/bootstrap.min.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'lodash', plugin_dir_url( __FILE__ ) . 'js/lodash.js', array( 'jquery' ), $this->version, true );
-					wp_enqueue_script( 'gridstackUI', plugin_dir_url( __FILE__ ) . 'js/gridstack.jQueryUI.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'gridstack', plugin_dir_url( __FILE__ ) . 'js/gridstack.js', array( 'jquery' ), $this->version, true );
-					wp_enqueue_script( 'bootstrap-touchspin', plugin_dir_url( __FILE__ ) . 'js/jquery.bootstrap-touchspin.min.js', array( 'jquery' ), $this->version, true );
+					wp_enqueue_script( 'gridstackUI', plugin_dir_url( __FILE__ ) . 'js/gridstack.jQueryUI.js', array( 'jquery' ), $this->version, true );
+					//wp_enqueue_script( 'bootstrap-touchspin', plugin_dir_url( __FILE__ ) . 'js/jquery.bootstrap-touchspin.min.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'medium-editor', plugin_dir_url( __FILE__ ) . 'js/medium-editor.min.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'mediumEditorToolbarStates', plugin_dir_url( __FILE__ ) . 'js/medium-editor-toolbar-states.min.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( '2-jqueryEditor', plugin_dir_url( __FILE__ ) . 'js/2-jquery.perfectGridGalleryEditor.js', array( 'jquery' ), $this->version, true );
+					wp_enqueue_script( '4-modals', plugin_dir_url( __FILE__ ) . 'js/4-modals.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( '2-jquery', plugin_dir_url( __FILE__ ) . 'js/2-jquery.perfectGridGallery.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'rexbuilder-public', plugin_dir_url( __FILE__ ) . 'js/public.js', array( 'jquery' ), $this->version, true );
 				}
@@ -305,5 +318,35 @@ class Rexbuilder_Public {
 				include_once( 'partials/rexbuilder-vertical-dots-template.php' );
 			endif;
 		endif;
+	}
+
+	/**
+	 * Create the variuos modal editors of the builder.
+	 *
+	 * @since    1.0.0
+	 */
+	public function create_builder_modals() {
+		
+		//$page_info = get_current_screen();
+
+		if ( !current_user_can('edit_posts') &&  !current_user_can('edit_pages') ) { 
+			return; 
+		}
+		if( !isset( $this->plugin_options['post_types'] ) ) {
+			return;
+		}
+
+		include_once( 'partials/rexbuilder-modals-display.php' );
+ 
+/* 		if ( get_user_option('rich_editing') == 'true') { 
+			$post_to_activate = $this->plugin_options['post_types'];
+			if( isset( $post_to_activate[$page_info->id] ) ) : 
+				if( ( $post_to_activate[$page_info->id] == 1 ) && 
+					( $post_to_activate[$page_info->post_type] == 1 ) ) :
+
+
+				endif;
+			endif;
+		} */
 	}
 }

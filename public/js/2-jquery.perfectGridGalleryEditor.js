@@ -69,7 +69,8 @@
             windowIsReisized: false,
             resizeHandle: '',
             sectionNumber: null,
-            elementEdited: null
+            elementEdited: null,
+            gridstackInstanceID: null
         };
 
         this.init();
@@ -99,7 +100,25 @@
 
             this._linkResizeEvents();
 
-            //this._launchTextEditor();
+            var gallery = this;
+            var $elem;
+            $(gallery.element).children('.grid-stack-item').each(function () {
+                // if there is masonry layout
+                $elem = $(this);
+                if (gallery.settings.galleryLayout == 'masonry') {
+                    gallery._calculateBlockHeightMasonry($elem);
+                }
+                gallery.updateSizeViewerText($elem);
+            });
+
+            this.$element.addClass('grid-number-' + this.properties.sectionNumber);
+
+            this._launchTextEditor();
+
+            var gridReadyEvent = jQuery.Event("gridGalleryEditorReady");
+            gridReadyEvent.gallery = this;
+            $(document).trigger(gridReadyEvent);
+
 
             $(window).on('keydown', { Gallery: this, Util: Util }, function (event) {
                 if (event.keyCode == 27) {
@@ -140,7 +159,7 @@
                         grid._initStyles();
                         grid._updateStyles(G.properties.singleHeight);
                     } else {
-                        $(G.element).children('.grid-stack-item').each(function(){
+                        $(G.element).children('.grid-stack-item').each(function () {
                             // if there is masonry layout
                             $elem = $(this);
                             if (G.settings.galleryLayout == 'masonry') {
@@ -148,26 +167,15 @@
                             }
                             G.updateSizeViewerText($elem);
                         });
-            
                     }
                 }
-            });
-            var gallery = this;
-            var $elem;
-            $(gallery.element).children('.grid-stack-item').each(function(){
-                // if there is masonry layout
-                $elem = $(this);
-                if (gallery.settings.galleryLayout == 'masonry') {
-                    gallery._calculateBlockHeightMasonry($elem);
-                }
-                gallery.updateSizeViewerText($elem);
             });
 
             $(window).on('load', { Gallery: this }, function (event) {
                 // calculate block heights
                 var gallery = event.data.Gallery;
                 var $elem;
-                $(gallery.element).children('.grid-stack-item').each(function(){
+                $(gallery.element).children('.grid-stack-item').each(function () {
                     // if there is masonry layout
                     $elem = $(this);
                     if (gallery.settings.galleryLayout == 'masonry') {
@@ -205,29 +213,37 @@
             var maxBlockHeight, textHeight;
             maxBlockHeight = $blockContent.innerHeight();
             textHeight = $textWrap.innerHeight();
-            if ($handler !== null) {
+            if (this.settings.galleryLayout != 'masonry' && $handler !== null) {
                 $blockContent.mCustomScrollbar("update");
             } else {
-                if ($(block).find('.mCustomScrollBox').length === 0) {
+                if (this.settings.galleryLayout != 'masonry' && $(block).find('.mCustomScrollBox').length === 0) {
                     $blockContent.mCustomScrollbar();
                     if (textHeight < maxBlockHeight) {
                         $blockContent.mCustomScrollbar('disable');
                     }
                 } else {
-                    if ($blockContent.hasClass('mCS_no_scrollbar')) {
+                    if (this.settings.galleryLayout == 'masonry' || $blockContent.hasClass('mCS_no_scrollbar')) {
                         var w = parseInt(block['attributes']['data-gs-width'].value);
                         var h = parseInt(block['attributes']['data-gs-height'].value);
                         var grid = this.$element.data('gridstack');
                         var i = 0;
                         var n;
                         if (textHeight >= maxBlockHeight) {
-                            n = Math.max(Math.floor((textHeight - maxBlockHeight) / this.properties.singleWidth), 1);
+                            if (this.settings.galleryLayout == 'masonry') {
+                                n = textHeight - maxBlockHeight;
+                            } else {
+                                n = Math.max(Math.floor((textHeight - maxBlockHeight) / this.properties.singleWidth), 1);
+                            }
                             while (i < n) {
                                 h = h + 1;
                                 i++;
                             }
                         } else {
-                            n = Math.floor((maxBlockHeight - textHeight) / this.properties.singleWidth);
+                            if (this.settings.galleryLayout == 'masonry') {
+                                n = maxBlockHeight - textHeight;
+                            } else {
+                                n = Math.floor((maxBlockHeight - textHeight) / this.properties.singleWidth);
+                            }
                             while (i < n) {
                                 h = h - 1;
                                 i++;
@@ -240,8 +256,67 @@
             }
         },
 
-        reLaunchGrid: function () {
-            this.$element.packery(this.packerySettings);
+        copyHeights: function () {
+            var block;
+            var G = this;
+            $(this.element).children('.grid-stack-item').each(function () {
+                block = $(this)[0];
+                $(this).attr({
+                    'data-gs-x': block['attributes']['data-col'].value - 1,
+                    'data-gs-y': block['attributes']['data-row'].value - 1,
+                    'data-gs-width': block['attributes']['data-width'].value,
+                    'data-gs-height': block['attributes']['data-height'].value
+                });
+                G.updateSizeViewerText($(this));
+            });
+        },
+
+        reLaunchGrid: function (data) {
+            console.log(data['layout']);
+            var G = this;
+            var grid = G.$element.data('gridstack');
+            var oldLayout = G.settings.galleryLayout;
+            G.settings.galleryLayout = data['layout'];
+            G._defineDynamicPrivateProperties();
+            if (oldLayout != G.settings.galleryLayout) {
+                var $elem;
+                $(G.element).children('.grid-stack-item').each(function () {
+                    $elem = $(this);
+                    console.log($elem);
+                    console.log(jQuery._data(this, "events"));
+                });
+                grid.destroy(false);
+                $(G.element).children('.grid-stack-item').each(function () {
+                    $elem = $(this);
+                    console.log($elem);
+                    console.log(jQuery._data(this, "events"));
+                });
+                if (G.settings.galleryLayout == 'masonry') {
+                    G._launchGridStack();
+                    var $blockContent;
+                    $(G.element).children('.grid-stack-item').each(function () {
+                        $elem = $(this);
+                        if (!$elem.hasClass('block-has-slider')) {
+                            $blockContent = $($elem.find('.grid-stack-item-content')[0]);
+                            $blockContent.mCustomScrollbar('destroy');
+                        }
+                        G._calculateBlockHeightMasonry($(this));
+                        G.updateSizeViewerText($(this));
+                    });
+                } else {
+                    G.copyHeights();
+                    $(G.element).children('.grid-stack-item').each(function () {
+                        $elem = $(this);
+                        if (!$elem.hasClass('block-has-slider')) {
+                            G.fixElementTextSize($elem, null);
+                        }
+                    });
+                    G._launchGridStack();
+                }
+                // if there is masonry layout
+                grid = G.$element.data('gridstack');
+            }
+            return;
         },
 
         destroyGrid: function () {
@@ -649,7 +724,7 @@
                 $('#' + this.id).attr("data-gs-min-width", "1");
                 $('#' + this.id).attr("data-gs-min-height", "1");
                 $('#' + this.id).attr("data-gs-max-width", "500");
-                
+
                 // adding text wrap element if it's not there
                 if (($elem.find('.text-wrap')).length == 0) {
                     var textEl = document.createElement('div');
@@ -657,13 +732,13 @@
                     $($elem.find('.rex-custom-scrollbar')).append(textEl);
                 }
 
-                if (gallery.settings.galleryLayout != 'masonry') {
+                /* if (gallery.settings.galleryLayout != 'masonry') {
                     // if block hasn't slider, text has to be fixed
                     if (!$elem.hasClass('block-has-slider')) {
                         gallery.fixElementTextSize($elem, null);
                     }
                 }
-
+ */
                 $elem.mousedown(function (event) {
                     if ((gallery.properties.elementEdited === null) && !$elem.hasClass('focused')) {
                         gallery._focusElement($elem);
@@ -757,19 +832,19 @@
                     gallery.fixElementTextSize(block, gallery.properties.singleWidth);
                 };
                 xView = Math.round($(block).outerWidth() / gallery.properties.singleWidth);
-                if(gallery.settings.galleryLayout == 'masonry'){
+                if (gallery.settings.galleryLayout == 'masonry') {
                     yView = $(block).outerHeight();
-                } else{
+                } else {
                     yView = Math.round($(block).outerHeight() / gallery.properties.singleWidth);
-                }gallery.updateSizeViewerText(block, xView, yView);
+                } gallery.updateSizeViewerText(block, xView, yView);
                 if (gallery.properties.resizeHandle == 'w' || gallery.properties.resizeHandle == 'sw') {
                     ;
                 }
             }).on('gsresizestop', function (event, elem) {
                 Util.elementIsResizing = false;
                 gallery.updateSizeViewerText(elem);
-                if(gallery.settings.galleryLayout == 'masonry'){
-                    $('#'+block.id).attr("data-height", Math.round(($('#'+block.id).attr("data-gs-height"))/gallery.properties.singleWidth));
+                if (gallery.settings.galleryLayout == 'masonry') {
+                    $('#' + block.id).attr("data-height", Math.round(($('#' + block.id).attr("data-gs-height")) / gallery.properties.singleWidth));
                 }
                 $('#' + block.id).attr("data-gs-max-width", "500");
             });
@@ -841,19 +916,27 @@
             }) */
 
             var grid = this.$element.data('gridstack');
-            console.log(grid);
+            //console.log(grid);
+            var classList = this.$element.attr('class').split(/\s+/);
+            var classNameParts;
+            $.each(classList, function (index, item) {
+                classNameParts = item.split('-');
+                if (classNameParts[2] != undefined && classNameParts[2] == 'instance') {
+                    gallery.properties.gridstackInstanceID = classNameParts[3];
+                }
+            });
             //$('.grid-stack-item').addTouch();
             $(this.$element).addClass('gridActive');
         },
 
         _addElementToTextEditor: function ($editor, $elem) {
             if (($elem.find('.text-wrap')).length != 0) {
-                //$editor.addElements($($elem).find('.text-wrap'));
+                $editor.addElements($($elem).find('.text-wrap'));
             } else {
                 var textEl = document.createElement('div');
                 $(textEl).addClass('text-wrap');
                 $($elem.find('.rex-custom-scrollbar')).append(textEl);
-                //$editor.addElements(textEl);
+                $editor.addElements(textEl);
             }
             //var textWrap = $($elem).find('.text-wrap');
             /*             if ($(textWrap.children()).length == 0) {
@@ -1024,17 +1107,17 @@
 
             var editor = new MediumEditor('.editable', {
                 toolbar: {
-                    buttons: ['bold', 'italic', 'underline', 'h2', 'companySizers']
+                    buttons: ['bold', 'italic', 'underline', 'h2'],//, 'companySizers']
                 },
-                extensions: {
+                /* extensions: {
                     'companySizers': new CompanyFontSizesButton()
-                }
+                } */
             });
 
             $(gallery.$element).children('.grid-stack-item').each(function () {
                 //fixing scrollbars
                 if (!$(this).hasClass('block-has-slider')) {
-                    gallery._addElementToTextEditor(editor, this);
+                    gallery._addElementToTextEditor(editor, $(this));
                     gallery.fixElementTextSize(this, null);
                 }
             });
@@ -1211,26 +1294,26 @@
             grid.update($elem, null, null, w, h);
 
 
-/*             this.$element.find('.grid-stack-item-content').each(function(){
-                
-            });
-
-            this.$element.find(this.settings.itemSelector + ' .empty-content')
-                .add(this.$element.find(this.settings.itemSelector + ' .image-content :not(.text-wrap)'))
-                .add(this.$element.find(this.settings.itemSelector + '.only-background').children())
-                .add(this.$element.find(this.settings.itemSelector + '.block-has-slider').children())
-                .each(function () {
-                    var $this = $(this);
-                    if ($this.css('background-image') != 'none' ||
-                        $this.hasClass('empty-content') ||
-                        ($this.css('background-color') != 'none' && $this.find('img').length === 0) ||
-                        $this.hasClass('block-has-slider')) {
-                        var gridHeight =
-                            Gallery.properties.singleWidth *
-                            $this.parents(Gallery.settings.itemSelector).attr('data-height');
-                        $this.parents(Gallery.settings.itemSelector).attr('data-gs-height') = gridHeight;
-                    }
-                }); */
+            /*             this.$element.find('.grid-stack-item-content').each(function(){
+                            
+                        });
+            
+                        this.$element.find(this.settings.itemSelector + ' .empty-content')
+                            .add(this.$element.find(this.settings.itemSelector + ' .image-content :not(.text-wrap)'))
+                            .add(this.$element.find(this.settings.itemSelector + '.only-background').children())
+                            .add(this.$element.find(this.settings.itemSelector + '.block-has-slider').children())
+                            .each(function () {
+                                var $this = $(this);
+                                if ($this.css('background-image') != 'none' ||
+                                    $this.hasClass('empty-content') ||
+                                    ($this.css('background-color') != 'none' && $this.find('img').length === 0) ||
+                                    $this.hasClass('block-has-slider')) {
+                                    var gridHeight =
+                                        Gallery.properties.singleWidth *
+                                        $this.parents(Gallery.settings.itemSelector).attr('data-height');
+                                    $this.parents(Gallery.settings.itemSelector).attr('data-gs-height') = gridHeight;
+                                }
+                            }); */
         },
 
         // Calculate the viewport of the window
