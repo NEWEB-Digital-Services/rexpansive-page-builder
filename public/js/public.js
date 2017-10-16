@@ -5,6 +5,7 @@ var Util = (function($) {
 
 	var fixSectionWidth = 0;
 	var elementIsResizing = false;
+	var elementIsDragging = false;
 
 	// function to detect if we are on a mobile device
 	var _detect_mobile = function() {

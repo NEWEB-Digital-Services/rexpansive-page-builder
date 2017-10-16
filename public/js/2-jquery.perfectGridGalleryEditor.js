@@ -61,6 +61,7 @@
             elementResizeEvent: false,
             gutter: 0,
             elementIsResizing: false,
+            elementIsDragging: false,
             elementStartingH: 0,
             percentFactorHandlers: 0.15,
             lostPixels: 0,
@@ -70,17 +71,20 @@
             resizeHandle: '',
             sectionNumber: null,
             elementEdited: null,
-            gridstackInstanceID: null
+            gridstackInstanceID: null,
+            gridChanged: false
         };
 
         this.init();
     }
-
+    
     // Avoid Plugin.prototype conflicts
     $.extend(perfectGridGalleryEditor.prototype, {
         init: function () {
-
+            
+            // getting section number
             this.properties.sectionNumber = ($(this.element).children('.grid-stack-item')[0].id).split('_')[1];
+            this.$element.addClass('grid-number-' + this.properties.sectionNumber);
 
             this._saveStateElements();
 
@@ -100,8 +104,13 @@
 
             this._linkResizeEvents();
 
+            this._linkDragEvents();
+
             var gallery = this;
             var $elem;
+            Util.elementIsDragging = false;
+            Util.elementIsResizing = false;
+            
             $(gallery.element).children('.grid-stack-item').each(function () {
                 // if there is masonry layout
                 $elem = $(this);
@@ -111,20 +120,12 @@
                 gallery.updateSizeViewerText($elem);
             });
 
-            this.$element.addClass('grid-number-' + this.properties.sectionNumber);
-
             this._launchTextEditor();
-
-            var gridReadyEvent = jQuery.Event("gridGalleryEditorReady");
-            gridReadyEvent.gallery = this;
-            $(document).trigger(gridReadyEvent);
-
 
             $(window).on('keydown', { Gallery: this, Util: Util }, function (event) {
                 if (event.keyCode == 27) {
                     var G = event.data.Gallery;
                     var grid = G.$element.data('gridstack');
-                    //console.log('enable grid');
                     grid.enable();
                     $(G.$element).addClass('gridActive');
                     G.properties.elementEdited = null;
@@ -135,11 +136,9 @@
                 var G = event.data.Gallery;
                 var target = event.target;
                 if (G.properties.elementEdited !== null && $(target).parents('.medium-editor-toolbar').length === 0) {
-                    //console.log('element is editing');
                     var $items = $($(target).parents('.grid-stack-item'));
                     if (($items.length === 0) || $items[0].id !== G.properties.elementEdited.id) {
                         var grid = G.$element.data('gridstack');
-                        //console.log('enable grid');
                         grid.enable();
                         $(G.$element).addClass('gridActive');
                         G.properties.elementEdited = null;
@@ -153,7 +152,6 @@
                     var G = event.data.Gallery;
                     var grid = G.$element.data('gridstack');
                     G._defineDynamicPrivateProperties();
-                    //console.log(G.settings.galleryLayout);
                     if (!(G.settings.galleryLayout == 'masonry')) {
                         grid.cellHeight(G.properties.singleHeight);
                         grid._initStyles();
@@ -171,8 +169,7 @@
                 }
             });
 
-            $(window).on('load', { Gallery: this }, function (event) {
-                // calculate block heights
+            $(window).on('load', { Gallery: this, Util: Util }, function (event) {
                 var gallery = event.data.Gallery;
                 var $elem;
                 $(gallery.element).children('.grid-stack-item').each(function () {
@@ -183,8 +180,19 @@
                     }
                     gallery.updateSizeViewerText($elem);
                 });
-
+                event.data.Gallery.updateAllElementsProperties();
+                $(gallery.element).on('change', { Gallery: gallery, Util: Util }, function(event, items) {
+                    if(!Util.elementIsDragging && !Util.elementIsResizing){
+                        event.data.Gallery.updateAllElementsProperties();
+                    }
+                });
             });
+            
+
+            // launching event 'editor is ready'
+            var gridReadyEvent = jQuery.Event("gridGalleryEditorReady");
+            gridReadyEvent.gallery = this;
+            $(document).trigger(gridReadyEvent);
         },
 
         refreshGrid: function () {
@@ -256,14 +264,24 @@
             }
         },
 
-        copyHeights: function () {
+        restoreBackup: function () {
             var block;
             var G = this;
+            var h;
+            var nH;
             $(this.element).children('.grid-stack-item').each(function () {
                 block = $(this)[0];
+                /* h =  block['attributes']['data-gs-height'].value;
+                nH = Math.round(h/G.properties.singleWidth);
+                if(nH<=0){
+                    nH=1;
+                }
                 $(this).attr({
-                    'data-gs-x': block['attributes']['data-col'].value - 1,
-                    'data-gs-y': block['attributes']['data-row'].value - 1,
+                    'data-gs-height': nH
+                });  */
+                $(this).attr({
+                    'data-gs-x': block['attributes']['data-col'].value,
+                    'data-gs-y': block['attributes']['data-row'].value,
                     'data-gs-width': block['attributes']['data-width'].value,
                     'data-gs-height': block['attributes']['data-height'].value
                 });
@@ -279,17 +297,23 @@
             G.settings.galleryLayout = data['layout'];
             G._defineDynamicPrivateProperties();
             if (oldLayout != G.settings.galleryLayout) {
+                
+                Util.elementIsResizing = true;
+                Util.elementIsDragging = true;
+
+                // destroying gridstack & jquery ui
+                grid.destroy(false);
                 var $elem;
                 $(G.element).children('.grid-stack-item').each(function () {
                     $elem = $(this);
-                    console.log($elem);
-                    console.log(jQuery._data(this, "events"));
+                    $elem.draggable("destroy");
+                    $elem.resizable("destroy");
                 });
-                grid.destroy(false);
+                G.$element.removeClass('grid-stack-instance-'+this.properties.gridstackInstanceID);
+                
+                // adding back the handles for resizing
                 $(G.element).children('.grid-stack-item').each(function () {
-                    $elem = $(this);
-                    console.log($elem);
-                    console.log(jQuery._data(this, "events"));
+                    G._addHandles(this, 'e, s, w, se, sw');
                 });
                 if (G.settings.galleryLayout == 'masonry') {
                     G._launchGridStack();
@@ -304,7 +328,7 @@
                         G.updateSizeViewerText($(this));
                     });
                 } else {
-                    G.copyHeights();
+                    G.restoreBackup();
                     $(G.element).children('.grid-stack-item').each(function () {
                         $elem = $(this);
                         if (!$elem.hasClass('block-has-slider')) {
@@ -313,15 +337,21 @@
                     });
                     G._launchGridStack();
                 }
-                // if there is masonry layout
-                grid = G.$element.data('gridstack');
+                Util.elementIsResizing = false;
+                Util.elementIsDragging = false;
             }
             return;
         },
-
+        
         destroyGrid: function () {
-            $(window).off('resize');
-            this.$element.packery('destroy');
+            grid.destroy(false);
+            var $elem;
+            $(G.element).children('.grid-stack-item').each(function () {
+                $elem = $(this);
+                $elem.draggable("destroy");
+                $elem.resizable("destroy");
+            });
+            G.$element.removeClass('grid-stack-instance-'+this.properties.gridstackInstanceID);
         },
 
         recalculateBlocks: function () {
@@ -331,11 +361,11 @@
             this._calculateBlockHeightFixed(); */
         },
 
-        getGridSize: function () {
+        getGridWidth: function () {
             return this.properties.wrapWidth;
         },
 
-        setGridSize: function (width) {
+        setGridWidth: function (width) {
             $(this.$element).outerWidth(width);
         },
 
@@ -385,92 +415,59 @@
         },
 
         // Updating elements properties
-
-        updateAllElementsAllNewProperties: function () {
+        updateAllElementsProperties: function () {
             var Gallery = this;
             this.$element.find('.perfect-grid-item').each(function () {
-                Gallery.updateElementAllNewProperties(this);
+                console.log('updatinng '+this.id+' element');
+                Gallery.updateElementAllProperties($(this));
             });
         },
 
-        updateAllElementsXYproperties: function () {
-            var Gallery = this;
-            this.$element.find('.perfect-grid-item').each(function () {
-                Gallery.updateElementXYproperties(this);
-            });
-        },
-
-        updateElementAllNewProperties: function ($elem) {
-            this.updateElementXYproperties($elem);
-            this.updateElementWHproperties($elem);
-        },
-
-        updateElementXYproperties: function ($elem) {
+        updateElementAllProperties: function ($elem) {
             this.updateElementProperty($elem, 'x');
             this.updateElementProperty($elem, 'y');
-        },
-
-        updateElementWHproperties: function ($elem) {
             this.updateElementProperty($elem, 'w');
-            this.updateElementProperty($elem, 'h');/* 
-            var w = $($elem)[0]['attributes']['data-width'].value;
-            var h = $($elem)[0]['attributes']['data-height'].value;
-            $('#'+$elem.id+' > .el-size-viewer').text(w+' x '+h); */
+            this.updateElementProperty($elem, 'h');
         },
 
         updateElementProperty: function ($elem, $case) {
+            var block = $elem[0];
             var width = this.properties.singleWidth;
-            var block = $($elem)[0];
+            
             switch ($case) {
                 case 'x': {
-                    var x = parseInt(block['attributes']['data-row'].value);
-                    var nX = Math.round(parseInt($(block).position().top) / width);
-                    if (nX <= 0) {
-                        nX = 0;
-                    }
-                    nX = nX + 1;
-                    block['attributes']['data-row'].value = nX;
+                    block['attributes']['data-col'].value = parseInt(block['attributes']['data-gs-x'].value);
                     break;
                 }
                 case 'y': {
-                    var y = parseInt(block['attributes']['data-col'].value);
-                    var nY = Math.round(parseInt($(block).position().left) / width);
-                    if (nY <= 0) {
-                        nY = 0;
+                    if(this.settings.galleryLayout == 'masonry'){
+                        block['attributes']['data-row'].value = Math.round(parseInt(block['attributes']['data-gs-y'].value)/width);
+                    } else {
+                        block['attributes']['data-row'].value = parseInt(block['attributes']['data-gs-y'].value);
                     }
-                    nY = nY + 1;
-
-                    if (nY > 12) {
-                        nY = 12;
-                    }
-                    block['attributes']['data-col'].value = nY;
                     break;
                 }
                 case 'w': {
                     var w = parseInt(block['attributes']['data-gs-width'].value);
-                    var nW = Math.round(parseInt($(block).outerWidth()) / width);
-                    if (nW <= 0) {
-                        nW = 1;
-                    }
-                    block['attributes']['data-gs-width'].value = nW;
+                    var oldW = block['attributes']['data-width'].value;
+                    block['attributes']['data-width'].value = w;
                     // updating element class
-                    $(block).removeClass("w" + w);
-                    $(block).addClass("w" + nW);
+                    $(block).removeClass("w" + oldW);
+                    $(block).addClass("w" + w);
                     break;
                 }
                 case 'h': {
-                    var h = parseInt(block['attributes']['data-gs-height'].value);
-                    var nH = Math.round(parseInt($(block).outerHeight()) / width);
-                    if (nH <= 0) {
-                        nH = 1;
+                    var h = Math.round(parseInt(block['attributes']['data-gs-height'].value) / width);
+                    if (this.settings.galleryLayout == 'masonry') {
+                        h = Math.round(parseInt(block['attributes']['data-gs-height'].value) / width);
+                    } else {
+                        h = parseInt(block['attributes']['data-gs-height'].value);
                     }
-                    block['attributes']['data-gs-height'].value = nH;
-                    if (h == 1) {
-                        $(block).removeClass('h1');
-                    }
-                    if (nH == 1) {
-                        $(block).addClass('h1');
-                    }
+                    var oldH = block['attributes']['data-height'].value;
+                    block['attributes']['data-height'].value = h;
+                    // updating element class
+                    $(block).removeClass("h" + oldH);
+                    $(block).addClass("h" + h);
                     break;
                 }
                 default: {
@@ -732,13 +729,6 @@
                     $($elem.find('.rex-custom-scrollbar')).append(textEl);
                 }
 
-                /* if (gallery.settings.galleryLayout != 'masonry') {
-                    // if block hasn't slider, text has to be fixed
-                    if (!$elem.hasClass('block-has-slider')) {
-                        gallery.fixElementTextSize($elem, null);
-                    }
-                }
- */
                 $elem.mousedown(function (event) {
                     if ((gallery.properties.elementEdited === null) && !$elem.hasClass('focused')) {
                         gallery._focusElement($elem);
@@ -841,83 +831,67 @@
                     ;
                 }
             }).on('gsresizestop', function (event, elem) {
-                Util.elementIsResizing = false;
                 gallery.updateSizeViewerText(elem);
                 if (gallery.settings.galleryLayout == 'masonry') {
                     $('#' + block.id).attr("data-height", Math.round(($('#' + block.id).attr("data-gs-height")) / gallery.properties.singleWidth));
                 }
                 $('#' + block.id).attr("data-gs-max-width", "500");
+                gallery.updateAllElementsProperties();
+                Util.elementIsResizing = false;
             });
+        },
+        
+        _linkDragEvents: function(){
+            var gallery = this;
+            
+            // eventi per il drag
+            $(gallery.$element).on('dragstart', function (event, ui) {
+                Util.elementIsDragging = true;
+                console.log('drag start');
+            }).on('drag', function (event, ui) {
+                console.log('dragging');
+            }).on('dragstop', function (event, ui) {
+                console.log('drag end');
+                Util.elementIsDragging = false;
+            })
         },
 
         // Launching Packery plugin
         _launchGridStack: function () {
             var gallery = this;
+            var floating;
             if (gallery.settings.galleryLayout == 'masonry') {
-                $(gallery.$element).gridstack({
-                    acceptWidgets: false,
-                    alwaysShowResizeHandle: true,
-                    cellHeight: gallery.properties.singleHeight,
-                    draggable: {
-                        containment: 'parent',
-                        handle: '.grid-stack-item-content',
-                        scroll: false,
-                    },
-                    float: false,
-                    resizable: {
-                        minWidth: gallery.properties.singleWidth,
-                        minHeight: gallery.properties.singleWidth,
-                        handles: {
-                            'e': '.ui-resizable-e',
-                            's': '.ui-resizable-s',
-                            'w': '.ui-resizable-w',
-                            'se': '.ui-resizable-se',
-                            'sw': '.ui-resizable-sw'
-                        }
-                    },
-                    verticalMargin: 0,
-                    width: gallery.settings.numberCol
-                });
+                floating = false;
             } else {
-                $(gallery.$element).gridstack({
-                    acceptWidgets: false,
-                    alwaysShowResizeHandle: true,
-                    cellHeight: gallery.properties.singleHeight,
-                    draggable: {
-                        containment: 'parent',
-                        handle: '.grid-stack-item-content',
-                        scroll: false,
-                    },
-                    float: true,
-                    resizable: {
-                        minWidth: gallery.properties.singleWidth,
-                        minHeight: gallery.properties.singleWidth,
-                        handles: {
-                            'e': '.ui-resizable-e',
-                            's': '.ui-resizable-s',
-                            'w': '.ui-resizable-w',
-                            'se': '.ui-resizable-se',
-                            'sw': '.ui-resizable-sw'
-                        }
-                    },
-                    verticalMargin: 0,
-                    width: gallery.settings.numberCol
-                });
+                floating = true;
             }
 
+            $(gallery.$element).gridstack({
+                acceptWidgets: false,
+                alwaysShowResizeHandle: true,
+                cellHeight: gallery.properties.singleHeight,
+                draggable: {
+                    containment: 'parent',
+                    handle: '.grid-stack-item-content',
+                    scroll: false,
+                },
+                float: floating,
+                resizable: {
+                    minWidth: gallery.properties.singleWidth,
+                    minHeight: gallery.properties.singleWidth,
+                    handles: {
+                        'e': '.ui-resizable-e',
+                        's': '.ui-resizable-s',
+                        'w': '.ui-resizable-w',
+                        'se': '.ui-resizable-se',
+                        'sw': '.ui-resizable-sw'
+                    }
+                },
+                verticalMargin: 0,
+                width: gallery.settings.numberCol
+            });
 
-            // eventi per il drag
-            /* .on('dragstart', function (event, ui) {
-                ;
-            }).on('drag', function (event, ui) {
-                ;
-            }).on('dragstop', function (event, ui) {
-                ;
-            }) */
-
-            var grid = this.$element.data('gridstack');
-            //console.log(grid);
-            var classList = this.$element.attr('class').split(/\s+/);
+            var classList = gallery.$element.attr('class').split(/\s+/);
             var classNameParts;
             $.each(classList, function (index, item) {
                 classNameParts = item.split('-');
@@ -925,8 +899,10 @@
                     gallery.properties.gridstackInstanceID = classNameParts[3];
                 }
             });
+
             //$('.grid-stack-item').addTouch();
-            $(this.$element).addClass('gridActive');
+            
+            $(gallery.$element).addClass('gridActive');
         },
 
         _addElementToTextEditor: function ($editor, $elem) {
@@ -938,13 +914,6 @@
                 $($elem.find('.rex-custom-scrollbar')).append(textEl);
                 $editor.addElements(textEl);
             }
-            //var textWrap = $($elem).find('.text-wrap');
-            /*             if ($(textWrap.children()).length == 0) {
-                            var pElem = document.createElement('p');
-                            $(pElem).text($(textWrap[0]).text());
-                            $(textWrap[0]).text('');
-                            $(textWrap[0]).append(pElem);
-                        } */
         },
 
         _launchTextEditor: function () {
@@ -959,159 +928,11 @@
             $($('.rexpansive_section').parent()).prepend(divToolbar);
 
             rangy.init();
-            /*            
-            var HighlighterButton = MediumEditor.Extension.extend({
-                name: 'highlighter',
-
-                init: function () {
-                    
-                    this.button = this.document.createElement('button');
-                    var input = this.document.createElement('input');
-                    this.button.classList.add('medium-editor-action');
-                    $(input).TouchSpin({
-                        verticalbuttons: true
-                    });
-                    this.button.append(input);
-                    this.button.title = 'Font Size';
-
-                    this.on(this.button, 'click', this.handleClick.bind(this));
-                },
-
-                getButton: function () {
-                    return this.button;
-                },
-
-                handleClick: function (event) {
-                    console.log(event);
-                    $(input).on('change', function () {
-                        console.log(this.value);
-                        console.log('value changed');
-                    });
-                    this.classApplier[].toggleSelection();
-
-                    // Ensure the editor knows about an html change so watchers are notified
-                    // ie: <textarea> elements depend on the editableInput event to stay synchronized
-                    this.base.checkContentChanged();
-                },
-
-                isActive: function () {
-                    return this.button.classList.contains('medium-editor-button-active');
-                },
-
-                setInactive: function () {
-                    this.button.classList.remove('medium-editor-button-active');
-                },
-
-                setActive: function () {
-                    this.button.classList.add('medium-editor-button-active');
-                }
-            }); 
-            */
-
-            var CompanyFontSizesButton = MediumEditor.Extension.extend({
-
-                name: 'companySizes',
-
-                fontSizes: ['p', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'h7'],
-
-                init() {
-                    console.log('initializiting h1 menu');
-                    this.classApplier = {
-                        'h1': rangy.createClassApplier('highlight', {
-                            elementTagName: 'h1',
-                            normalize: true
-                        }),
-                        'h2': rangy.createClassApplier('highlight', {
-                            elementTagName: 'h2',
-                            normalize: true
-                        }),
-                        'h3': rangy.createClassApplier('highlight', {
-                            elementTagName: 'h3',
-                            normalize: true
-                        }),
-                        'h4': rangy.createClassApplier('highlight', {
-                            elementTagName: 'h4',
-                            normalize: true
-                        }),
-                        'h5': rangy.createClassApplier('highlight', {
-                            elementTagName: 'h5',
-                            normalize: true
-                        }),
-                        'h6': rangy.createClassApplier('highlight', {
-                            elementTagName: 'h6',
-                            normalize: true
-                        }),
-                    }
-                    console.log(this.classApplier);
-                    this.buttonContainer = this.document.createElement('div');
-                    this.buttonContainer.classList.add('medium-editor-button-container');
-
-                    // Font Name Form (div)
-                    const form = this.document.createElement('form');
-                    form.classList.add('medium-editor-fontsize-container');
-                    form.classList.add('medium-editor-form-container');
-                    form.id = 'medium-editor-toolbar-form-fontsize-' + this.getEditorId();
-                    this.buttonContainer.appendChild(form);
-
-                    const select = this.document.createElement('select');
-                    select.classList.add('medium-editor-form-select');
-                    form.appendChild(select);
-
-                    // Add font sizes
-                    this.fontSizes.forEach((item) => {
-                        const option = this.document.createElement('option');
-                        option.innerHTML = item;
-                        option.value = item;
-                        select.appendChild(option);
-                    });
-
-                    // Attach editor events to keep status updates
-                    this.attachToEditables();
-                    // Handle typing in the text box
-                    this.on(select, 'change', event => this.handleFontSizeChange(event));
-                },
-
-                getSelect() {
-                    return this.getButton().querySelector('select.medium-editor-form-select');
-                },
-
-                attachToEditables() {
-                    this.subscribe('positionedToolbar', event => this.handlePositionedToolbar(event));
-                },
-
-                deattachFromEditables() {
-                    this.base.unsubscribe('positionedToolbar', event => this.handlePositionedToolbar(event));
-                },
-
-                handlePositionedToolbar(event) {
-                    // get the current selection when toolbar appear so we can retrieve the font used
-                    // by this selection
-                    const fontSize = this.document.queryCommandValue('fontSize') + '';
-                    this.updateSelection(fontSize);
-                },
-
-                updateSelection(value) {
-                    const select = this.getSelect();
-                    select.value = value || '';
-                },
-
-                handleFontSizeChange(event) {
-                    console.log(event);
-                    this.classApplier[this.getSelect().value].toggleSelection();
-                },
-
-                getButton() {
-                    return this.buttonContainer;
-                },
-            });
 
             var editor = new MediumEditor('.editable', {
                 toolbar: {
-                    buttons: ['bold', 'italic', 'underline', 'h2'],//, 'companySizers']
+                    buttons: ['bold', 'italic', 'underline', 'h2']
                 },
-                /* extensions: {
-                    'companySizers': new CompanyFontSizesButton()
-                } */
             });
 
             $(gallery.$element).children('.grid-stack-item').each(function () {
