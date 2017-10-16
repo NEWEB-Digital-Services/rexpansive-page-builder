@@ -114,6 +114,8 @@ class Rexbuilder_Section {
 				( ( '' != $video_bg_url_section && 'undefined' != $video_bg_url_section ) ? ' data-property="{videoURL:\'' . $video_bg_url_section . '\',containment:\'self\',startAt:0,mute:true,autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"' : '' ) .
 				$section_style . '>';
 
+			$this->create_toolbox();
+
 			if( '' != $video_bg_url_vimeo_section && 'undefined' != $video_bg_url_vimeo_section ) {
 ?>
 <div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--section">
@@ -163,5 +165,27 @@ class Rexbuilder_Section {
 			echo do_shortcode( $content );
 
 		}
+	}
+
+	private function create_toolbox() {
+		?>
+		<div class="toolBox">
+			<button class="tool-button btn-floating builder-delete-row waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexspansive'); ?>">
+				<i class="material-icons white-text">&#xE5CD;</i>
+			</button>
+
+			<button class="tool-button btn-floating builder-section-config tooltipped waves-effect waves-light" data-position="bottom" data-tooltip="<?php _e('Row settings', 'rexpansive'); ?>">
+				<i class="material-icons">&#xE8B8;</i>
+			</button>
+
+			<div class="tool-button btn-flat builder-copy-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy row', 'rexpansive'); ?>">
+				<i class="material-icons grey-text text-darken-2">&#xE14D;</i>
+			</div>
+
+			<div class="tool-button btn-flat builder-move-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Move row', 'rexpansive'); ?>">
+				<i class="material-icons grey-text text-darken-2">&#xE8D5;</i>
+			</div>
+		</div>
+		<?php
 	}
 }

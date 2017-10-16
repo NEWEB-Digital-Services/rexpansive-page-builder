@@ -1091,6 +1091,7 @@
         var cellHeight;
 
         var dragOrResize = function (event, ui) {
+            
             var x = Math.round(ui.position.left / cellWidth);
             var y = Math.floor((ui.position.top + cellHeight / 2) / cellHeight);
             var width;

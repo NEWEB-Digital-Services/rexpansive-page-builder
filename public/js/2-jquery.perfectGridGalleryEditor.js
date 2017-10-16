@@ -72,7 +72,8 @@
             sectionNumber: null,
             elementEdited: null,
             gridstackInstanceID: null,
-            gridChanged: false
+            gridChanged: false,
+            gridHover: false
         };
 
         this.init();
@@ -122,6 +123,14 @@
 
             this._launchTextEditor();
 
+            gallery.$element.hover(function (event) {
+                console.log('over gallery');
+                gallery.showToolBox();
+            }, function () {
+                console.log('not over gallery');
+                gallery.hideToolBox();
+            });
+            
             $(window).on('keydown', { Gallery: this, Util: Util }, function (event) {
                 if (event.keyCode == 27) {
                     var G = event.data.Gallery;
@@ -267,18 +276,8 @@
         restoreBackup: function () {
             var block;
             var G = this;
-            var h;
-            var nH;
-            $(this.element).children('.grid-stack-item').each(function () {
+            $(G.element).children('.grid-stack-item').each(function () {
                 block = $(this)[0];
-                /* h =  block['attributes']['data-gs-height'].value;
-                nH = Math.round(h/G.properties.singleWidth);
-                if(nH<=0){
-                    nH=1;
-                }
-                $(this).attr({
-                    'data-gs-height': nH
-                });  */
                 $(this).attr({
                     'data-gs-x': block['attributes']['data-col'].value,
                     'data-gs-y': block['attributes']['data-row'].value,
@@ -406,6 +405,9 @@
             return this.properties.gutter;
         },
 
+        getSectionNumber: function(){
+            return this.properties.sectionNumber;
+        },
         setProperty: function (definition) {
             this.properties[definition[0]] = definition[1];
         },
@@ -596,9 +598,9 @@
             var spanViewer = document.createElement('span');
             spanViewer.setAttribute('id', $elem.id.concat('-size-viewer'));
             $(spanViewer).addClass('el-size-viewer');
-            //$(spanViewer).css('right', this.properties.halfSeparatorElementRight);
+            //$(spanViewer).css('left', this.properties.halfSeparatorElementRight);
             //$(spanViewer).css('top', this.properties.halfSeparatorElementTop);
-            $(spanViewer).css('right', 0);
+            $(spanViewer).css('left', 0);
             $(spanViewer).css('top', 0);
             $elem.append(spanViewer);
         },
@@ -711,6 +713,14 @@
             $('#' + name + ' > .el-size-viewer').text(x + ' x ' + y);
         },
 
+        showToolBox: function(){
+            this.$element.parents('.rexpansive_section').children('.toolBox').addClass('tool-box-active');
+        },
+
+        hideToolBox: function(){
+            this.$element.parents('.rexpansive_section').children('.toolBox').removeClass('tool-box-active');
+        },
+
         _prepareElements: function () {
             var gallery = this;
             $(gallery.$element).children('.grid-stack-item').each(function () {
@@ -729,6 +739,10 @@
                     $($elem.find('.rex-custom-scrollbar')).append(textEl);
                 }
 
+                $elem.click(function(event){
+                    gallery._focusElement($elem);
+                });
+
                 $elem.mousedown(function (event) {
                     if ((gallery.properties.elementEdited === null) && !$elem.hasClass('focused')) {
                         gallery._focusElement($elem);
@@ -742,6 +756,7 @@
                 });
 
                 $elem.hover(function (event) {
+                    gallery.showToolBox();
                     if (!Util.elementIsResizing) {
                         gallery._focusElement($elem);
                     }
@@ -758,6 +773,7 @@
                         }
                     }
                 }, function () {
+                    gallery.hideToolBox();
                     if (!Util.elementIsResizing) {
                         gallery._unFocusElement($elem);
                     }
@@ -768,6 +784,8 @@
                 });
 
                 $elem.dblclick(function () {
+                    console.log('double click event');
+                    gallery._hideSizeViewer($elem);
                     var grid = gallery.$element.data('gridstack');
                     grid.disable();
                     $(gallery.$element).removeClass('gridActive');
@@ -784,6 +802,10 @@
             });
         },
 
+        _hideSizeViewer: function($elem){
+            $elem.children('.el-size-viewer').removeClass('focused');
+        },
+        
         _focusElement: function ($elem) {
             $elem.children('.el-size-viewer').addClass('focused');
             $elem.addClass('focused');
@@ -869,6 +891,7 @@
             $(gallery.$element).gridstack({
                 acceptWidgets: false,
                 alwaysShowResizeHandle: true,
+                disableOneColumnMode: true,
                 cellHeight: gallery.properties.singleHeight,
                 draggable: {
                     containment: 'parent',
@@ -899,9 +922,7 @@
                     gallery.properties.gridstackInstanceID = classNameParts[3];
                 }
             });
-
-            //$('.grid-stack-item').addTouch();
-            
+            console.log(gallery.$element.data('gridstack'));
             $(gallery.$element).addClass('gridActive');
         },
 

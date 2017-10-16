@@ -221,11 +221,9 @@ class Rexbuilder_Public {
 			$this_post_type = get_post_type();
 
 			if( $this_post_type && array_key_exists( $this_post_type, $post_to_activate ) ) :
-				//wp_enqueue_script( 'jquery' );
 				wp_enqueue_script( 'custom-scrollbar', plugin_dir_url( __FILE__ ) . 'js/1-jquery.mCustomScrollbar.concat.min.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( 'jqueryui', plugin_dir_url( __FILE__ ) . 'js/jquery-ui.min.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( 'touchPunch', plugin_dir_url( __FILE__ ) . 'js/jquery.ui.touch-punch.js', array( 'jquery' ), $this->version, true );
-				// wp_enqueue_script( 'public-plugins', plugin_dir_url( __FILE__ ) . 'js/plugins.js', array( 'jquery' ), $this->version, true );
 				if( is_page(126) ) {
 					wp_enqueue_script( 'packery', plugin_dir_url( __FILE__ ) . 'js/packery.pkgd.min.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( '2-jqueryEditor', plugin_dir_url( __FILE__ ) . 'js/test/2-jquery.perfectGridGallery.js', array( 'jquery' ), $this->version, true );
@@ -234,11 +232,9 @@ class Rexbuilder_Public {
 					wp_enqueue_script( '0-isotope', plugin_dir_url( __FILE__ ) . 'js/0-isotope.pkgd.min.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'rangy-core', plugin_dir_url( __FILE__ ) . 'js/rangy-core.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'rangy-classapplier', plugin_dir_url( __FILE__ ) . 'js/rangy-classapplier.js', array( 'jquery' ), $this->version, true );
-					//wp_enqueue_script( 'bootstrap', plugin_dir_url( __FILE__ ) . 'js/bootstrap.min.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'lodash', plugin_dir_url( __FILE__ ) . 'js/lodash.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'gridstack', plugin_dir_url( __FILE__ ) . 'js/gridstack.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'gridstackUI', plugin_dir_url( __FILE__ ) . 'js/gridstack.jQueryUI.js', array( 'jquery' ), $this->version, true );
-					//wp_enqueue_script( 'bootstrap-touchspin', plugin_dir_url( __FILE__ ) . 'js/jquery.bootstrap-touchspin.min.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'medium-editor', plugin_dir_url( __FILE__ ) . 'js/medium-editor.min.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'mediumEditorToolbarStates', plugin_dir_url( __FILE__ ) . 'js/medium-editor-toolbar-states.min.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( '2-jqueryEditor', plugin_dir_url( __FILE__ ) . 'js/2-jquery.perfectGridGalleryEditor.js', array( 'jquery' ), $this->version, true );

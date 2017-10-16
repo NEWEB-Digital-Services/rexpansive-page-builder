@@ -1,25 +1,58 @@
-/* 
-.rex-custom-scrollbar {
-    height: 100%;
-}
-
-
-.mCustomScrollBox > .mCSB_container {
-    height: 100%;
-}
-*/
-
-
-
 .tool-button{
+    position: absolute;
     display: block;
-    top: 0px;
-    right: 0px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    overflow: visible;
+    visibility: visible;
+    z-index: 40;
+    padding: 0px;
+    transform: translate(0, -50%);
 }
+
+.builder-delete-row{
+    left: 100%;
+    transform: translate(-50%, -50%);
+}
+
+.builder-delete-row i{
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.builder-move-row{
+    left: 0%;
+}
+
+.builder-copy-row{
+    left: 10%;
+}
+
+.builder-section-config{
+    left: 20%;
+}
+
+.builder-section-config i{
+    font-size: 14px;
+    line-height: 20px;
+    vertical-align: top;
+    text-align: center;
+}
+
 
 .toolBox{
     width: 100%;
     height: 20px;
+    overflow: visible;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    display: none;
+}
+
+.tool-box-active {
+    display: block;
 }
 
 .medium-editor-element:focus {
@@ -233,13 +266,7 @@
     -webkit-transform: scale(2) translate(-25%, 25%);
     transform: scale(2) translate(-25%, 25%);
 }
-/* 
-#toolBox {
-    position: fixed;
-    bottom: 20px;
-    background-color: green;
-}
- */
+
 .resizePlaceHolder{
     outline: 3px dashed #444;
     outline-offset: -6px;
