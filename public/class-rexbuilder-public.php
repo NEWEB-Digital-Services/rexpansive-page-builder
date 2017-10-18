@@ -251,9 +251,14 @@ class Rexbuilder_Public {
 				wp_enqueue_script( 'photoswipe-min', plugin_dir_url( __FILE__ ) . 'Photoswipe/photoswipe.min.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( 'photoswipeui', plugin_dir_url( __FILE__ ) . 'Photoswipe/photoswipe-ui-default.min.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( 'jquerymb', plugin_dir_url( __FILE__ ) . 'jquery.mb.YTPlayer/jquery.mb.YTPlayer.min.js', array( 'jquery' ), $this->version, true );
-				wp_localize_script( 'public-plugins', '_plugin_frontend_settings', array(
-					'animations'	=>	$this->plugin_options['animation'],
-					));
+				wp_localize_script( 'rexbuilder-public', '_plugin_frontend_settings', array(
+					'animations'	=>	$this->plugin_options['animation']
+				));
+				wp_localize_script( 'rexbuilder-public', 'rexajax', array(
+					'ajaxurl'	=>	admin_url( 'admin-ajax.php' ),
+					'rexnonce'	=>	wp_create_nonce( 'rex-ajax-call-nonce' )
+				));
+				
 				//wp_enqueue_script( 'resizeElement', plugin_dir_url( __FILE__ ) . 'js/jquery-resizable.min.js', array( 'jquery' ), $this->version, true );
 				//wp_enqueue_script( 'interact', plugin_dir_url( __FILE__ ) . 'js/interact.min.js', array( 'jquery' ), $this->version, true );
 				/* if( !is_page(126) ){
@@ -333,7 +338,8 @@ class Rexbuilder_Public {
 		}
 
 		include_once( 'partials/rexbuilder-modals-display.php' );
- 
+		
+
 /* 		if ( get_user_option('rich_editing') == 'true') { 
 			$post_to_activate = $this->plugin_options['post_types'];
 			if( isset( $post_to_activate[$page_info->id] ) ) : 
@@ -344,5 +350,36 @@ class Rexbuilder_Public {
 				endif;
 			endif;
 		} */
+	}
+	public function create_rexlive_fixed_buttons(){
+		if ( !current_user_can('edit_posts') &&  !current_user_can('edit_pages') ) { 
+			return; 
+		}
+		if( !isset( $this->plugin_options['post_types'] ) ) {
+			return;
+		}
+		include_once('partials/rexlive-buttons-fixed.php');
+	}
+	/**
+	*	Ajax call to save sections status
+	*
+	*	@since 1.0.15
+	*/
+	public function rexlive_save_sections() {
+		$nonce = $_POST['nonce_param'];
+		$response = array(
+			'error' => false,
+			'msg' => '',
+		);
+
+		if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) :
+			$response['error'] = true;
+			$response['msg'] = 'Error!';
+			wp_send_json_error( $response );
+		endif;
+
+		$response['error'] = false;
+		$response['msg'] = 'Success!';
+		wp_send_json_success( $response );
 	}
 }

@@ -1146,7 +1146,6 @@
             this.$element.find(this.settings.itemSelector + ':not(.horizontal-carousel):not(.wrapper-expand-effect)')
                 .add(this.$element.find(this.settings.itemSelector + '.only-gallery'))
                 .each(function () {
-                    // console.log($(this).attr('id'), '->', $(this).attr('data-height'));
                     $(this).height((Gallery.properties.singleWidth * $(this).attr('data-height')) - (Gallery.properties.halfSeparator * 2));
                 });
         },
@@ -1163,7 +1162,7 @@
             var h, backgroundHeight, h2, hText;
             var $this;
             Util.elementIsResizing = true;
-            this.$element.find('.grid-stack-item-content').each(function(){
+            this.$element.find('.grid-stack-item-content').each(function () {
                 h = 0;
                 backgroundHeight = 0;
                 h2 = 0;
@@ -1171,11 +1170,17 @@
                 $this = $(this);
                 $elem = $this.parent();
                 w = $elem[0]['attributes']['data-width'].value;
-                if($this.hasClass('full-image-background') || $this.hasClass('natural-image-background')){
-                    backgroundHeight = ($this.attr('data-background-image-height')*(w*sw))/($this.attr('data-background-image-width'));
-                    //console.log('backgroundHeight: '+backgroundHeight);
+                if ($this.hasClass('full-image-background')) {
+                    backgroundHeight = (parseInt($this.attr('data-background-image-height')) * (w * sw)) / (parseInt($this.attr('data-background-image-width')));
+                } else if ($this.hasClass('natural-image-background')) {
+                    if ($this.hasClass('small-width')) {
+                        backgroundHeight = (parseInt($this.attr('data-background-image-height')) * (w * sw)) / (parseInt($this.attr('data-background-image-width')));
+                    } else {
+                        backgroundHeight = parseInt($this.attr('data-background-image-height')) + gutter;
+                    }
                 }
-                if($($this.find('.text-wrap')[0]).text().length !=0){
+
+                if ($($this.find('.text-wrap')[0]).text().length != 0) {
                     hText = $($this.find('.text-wrap')[0]).innerHeight() + gutter;
                 }
                 if ((backgroundHeight == 0 && hText == 0) || $this.hasClass('youtube-player') || $this.hasClass('empty-content') || $this.hasClass('block-has-slider') || $elem.hasClass('block-has-slider')) {
@@ -1183,11 +1188,11 @@
                     h2 = Math.ceil(sw * origH);
                 };
                 h = Math.max(backgroundHeight, h2, hText);
-                h = Math.ceil(h/gallery.properties.singleHeight);
+                h = Math.ceil(h / gallery.properties.singleHeight);
                 $elem.attr('data-gs-height', h);
                 grid.update($elem, null, null, w, h);
             });
-            Util.elementIsResizing=false;
+            Util.elementIsResizing = false;
             //gallery.updateAllElementsProperties();
             /*  else if($elem.hasClass('natural-fluid-image') || $elem.find('.natural-image-content').length != 0){
                 h = $($elem.find('.natural-image-content')[0]).innerHeight();

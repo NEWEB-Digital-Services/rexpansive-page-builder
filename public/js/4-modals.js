@@ -321,6 +321,33 @@
 	});
 	 */
 		//$('.builder-section-config').hover();
+		$(document).on('click', '#builder-save-grid-btn', function (e) {
+			// ajx call
+			// - clear previuos data
+			// - save new data
+			console.log(rexajax);
+			$.ajax({
+				type: 'POST',
+				dataType: 'json',
+				url: rexajax.ajaxurl,
+				data: {
+					action: 'rexlive_save_sections',
+					nonce_param: rexajax.rexnonce,
+				},
+				success: function (response) {
+					console.log(response);
+					if (response.success) {
+						console.log('chiama effettttuuuata con successo');
+					}
+					console.log('chiama effettuata con successo');
+				},
+				error: function (response) {
+					console.log('errore chiama ajax');
+				}
+			});
+
+		});
+
 		$(document).on('click', '.builder-section-config', function (e) {
 			e.preventDefault();
 			var $parent = $(this).parents('.rexpansive_section');

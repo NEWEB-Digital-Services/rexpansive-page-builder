@@ -1,3 +1,21 @@
+.rexlive-toolbox-fixed{
+    width: 200px;
+    height: 150px;
+    position: fixed;
+    bottom: 50%;
+    right: 0;
+    border: 3px solid #73AD21;
+    background-color: greenyellow;
+}
+
+#builder-save-grid-btn{
+    width: 100px;
+    height: 100px;
+    background-color: blue;
+    color: orange;
+    position: fixed;
+}
+
 .perfect-grid-item .full-image-background{
     background-repeat: no-repeat; 
     background-position: center; 
@@ -47,6 +65,10 @@
 
 .builder-section-config{
     left: 20%;
+}
+
+.builder-save-grid{
+    left: 30%;
 }
 
 .builder-section-config i{

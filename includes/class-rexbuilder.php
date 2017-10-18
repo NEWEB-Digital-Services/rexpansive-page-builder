@@ -191,13 +191,13 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_ajax_rex_edit_slider_from_builder', $plugin_admin, 'rex_edit_slider_from_builder' );
 		$this->loader->add_action( 'wp_ajax_rex_create_slider_from_builder', $plugin_admin, 'rex_create_slider_from_builder' );
 		$this->loader->add_action( 'wp_ajax_rex_create_rexslider_admin_markup', $plugin_admin, 'rex_create_rexslider_admin_markup' );
-
+		
 		// bundle ACF
 		$this->loader->add_filter( 'acf/settings/path', $plugin_admin, 'acf_settings_path' );
 		$this->loader->add_filter( 'acf/settings/dir', $plugin_admin, 'acf_settings_dir' );
 		$this->loader->add_filter( 'acf/settings/show_admin', $plugin_admin, 'acf_hide_menu' );
 	}
-
+	
 	/**
 	 * Register all of the hooks related to the public-facing functionality
 	 * of the plugin.
@@ -206,21 +206,22 @@ class Rexbuilder {
 	 * @access   private
 	 */
 	private function define_public_hooks() {
-
+		
 		$plugin_public = new Rexbuilder_Public( $this->get_plugin_name(), $this->get_version() );
-
+		
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles_production' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts_production' );
-
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'print_post_custom_styles' );
-
+		
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_photoswipe_template' );
-
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_vertical_dots' );
-
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'create_builder_modals' );
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'create_rexlive_fixed_buttons' );
+	
+		$this->loader->add_action( 'wp_ajax_rexlive_save_sections', $plugin_public, 'rexlive_save_sections' );
+		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_sections', $plugin_public, 'rexlive_save_sections' );
 	}
-
+	
 	/**
 	 * Register all of the shortcodes related to the public-facing functionality
 	 * of the plugin.
