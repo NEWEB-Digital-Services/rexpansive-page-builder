@@ -320,6 +320,7 @@
 		CloseModal( $('#modal-background-responsive-set').parent('.rex-modal-wrap') );
 	});
 	 */
+		//$('.builder-section-config').hover();
 		$(document).on('click', '.builder-section-config', function (e) {
 			e.preventDefault();
 			var $parent = $(this).parents('.rexpansive_section');

@@ -1,3 +1,19 @@
+.perfect-grid-item .full-image-background{
+    background-repeat: no-repeat; 
+    background-position: center; 
+    background-size: cover;
+}
+
+.perfect-grid-item .natural-image-background{
+    background-repeat: no-repeat; 
+    background-position: center;
+    background-size: initial;
+}
+
+.natural-image-background.small-width{
+    background-size: 100%;
+}
+
 .tool-button{
     position: absolute;
     display: block;

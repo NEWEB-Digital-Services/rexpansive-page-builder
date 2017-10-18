@@ -88,10 +88,10 @@ class Rexbuilder_Block {
 			if( "" != $id_image_bg_block ) {
 				$img_attrs = wp_get_attachment_image_src( $id_image_bg_block, $image_size );
 			}
-
-			if( !empty( $image_bg_block ) && 'full' == $type_bg_block && $section_layout == 'fixed' ) {
-				$section_style = ' style="background-image:url(\'' . $img_attrs[0] . '\');"';
-			} else if( !empty( $color_bg_block ) && 'full' != $type_bg_block ) {
+ 
+			if(!empty( $image_bg_block )){
+				$section_style = ' style="background-image:url(\'' . $img_attrs[0] . '\'"';
+			} else if( !empty( $color_bg_block )) {
 				$section_style = ' style="background-color:' . $color_bg_block . ';"';
 			}
 
@@ -162,7 +162,6 @@ class Rexbuilder_Block {
 			if( has_shortcode( $content, 'RexLastWorks' ) ) :
 				echo ' horizontal-carousel';
 			endif;
-
 			echo '" data-height="'.  $size_y . '"';
 			echo ' data-width="' . $size_x . '"';
 			echo ' data-row="' . $row . '"';
@@ -267,7 +266,18 @@ class Rexbuilder_Block {
 				case 'text':
 				case 'rexslider':
 					echo $block_link_before;
-					echo '<div class="grid-stack-item-content grid-item-content text-content' . ( ('' != $video_bg_url && 'undefined' != $video_bg_url) ? ' youtube-player' : '' ) . ( ( '' != $video_bg_id && 'undefined' != $video_bg_id ) ? ' mp4-player' : '' ) . ( $bg_video_vimeo_markup ? ' vimeo-player' : '' ) . ( ($flex_positioned) ? ' rex-flexbox' : '' ) . '" ' . $section_style;
+					echo '<div class="grid-stack-item-content grid-item-content text-content' . ( ('' != $video_bg_url && 'undefined' != $video_bg_url) ? ' youtube-player' : '' ) . ( ( '' != $video_bg_id && 'undefined' != $video_bg_id ) ? ' mp4-player' : '' ) . ( $bg_video_vimeo_markup ? ' vimeo-player' : '' ) . ( ($flex_positioned) ? ' rex-flexbox' : '' );
+					if("" != $id_image_bg_block){
+						if('full' == $type_bg_block){
+							echo ' full';
+						} else{
+							echo ' natural';
+						}
+						echo '-image-background"';
+						echo ' data-background-image-width="'.$img_attrs[1].'" ';
+						echo ' data-background-image-height="'.$img_attrs[2];
+					}
+					echo '" '.$section_style;
 					echo $bg_youtube_video_markup;
 					echo '>';
 					/*if($type_bg_block == 'full') {
@@ -290,19 +300,13 @@ class Rexbuilder_Block {
 					echo $bg_video_vimeo_markup;
 					echo ( ($block_has_overlay) ? '<div class="responsive-block-overlay" style="background-color:' . $overlay_block_color . ';">' : '' );
 					echo '<div class="rex-custom-scrollbar' . ( ($flex_positioned) ? ' rex-custom-position' : '' ) . '">';
-					if($type_bg_block == 'natural' || ( $type_bg_block == 'full' && $section_layout == 'masonry' )){
-						echo '<div class="natural-image-content"' . $block_style_padding . '>';
-						echo wp_get_attachment_image( $id_image_bg_block, $image_size );
+					if( "" != $content) :
+						echo '<div class="text-wrap"' . $block_style_padding . '>';
+						//echo wpautop(trim((do_shortcode( $content ))));
+						//echo '<p>' . do_shortcode( $content ) . '</p>';
+						echo do_shortcode( $content );
 						echo '</div>';
-					} else {
-						if( "" != $content ) :
-							echo '<div class="text-wrap"' . $block_style_padding . '>';
-							//echo wpautop(trim((do_shortcode( $content ))));
-							//echo '<p>' . do_shortcode( $content ) . '</p>';
-							echo do_shortcode( $content );
-							echo '</div>';
-						endif;
-					} 
+					endif;
 					echo '</div>';
 					echo ( ($block_has_overlay) ? '</div>' : '' );
 					echo $bg_video_toggle_audio_markup;
