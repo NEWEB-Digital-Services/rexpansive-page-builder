@@ -252,15 +252,16 @@
         
         fixElementTextSize: function (block, $handler) {
             var $textWrap = $($(block).find('.text-wrap'));
-            var $blockContent = $($(block).find('.grid-stack-item-content')[0]);
+            var $blockContent = $(block).find('.rex-custom-scrollbar');
             var maxBlockHeight, textHeight;
-            maxBlockHeight = $blockContent.innerHeight();
+            maxBlockHeight = $blockContent.parents('.grid-item-content').innerHeight();
             textHeight = $textWrap.innerHeight();
             if (this.settings.galleryLayout != 'masonry' && $handler !== null) {
                 $blockContent.mCustomScrollbar("update");
             } else {
                 if (this.settings.galleryLayout != 'masonry' && $(block).find('.mCustomScrollBox').length === 0) {
                     $blockContent.mCustomScrollbar();
+                    $blockContent.find('.mCustomScrollBox').css('max-height', maxBlockHeight);
                     if (textHeight < maxBlockHeight) {
                         $blockContent.mCustomScrollbar('disable');
                     }
@@ -304,9 +305,9 @@
             var $blockContent;
             $(this.element).children('.grid-stack-item').each(function () {
                 $elem = $(this);
-                $blockContent = $($elem.find('.grid-stack-item-content')[0]);
+                $blockContent = $($elem.find('.grid-item-content')[0]);
                 if (!$elem.hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
-                    $blockContent.mCustomScrollbar('destroy');
+                    $blockContent.find('.rex-custom-scrollbar').mCustomScrollbar('destroy');
                 }
             });
         },
@@ -356,17 +357,17 @@
                     });
                 } else {
                     G.restoreBackup();
+                    G._launchGridStack();
                     var $blockContent;
                     var $elem;
                     $(G.element).children('.grid-stack-item').each(function () {
                         $elem = $(this);
-                        $blockContent = $elem.find('.grid-stack-item-content');
+                        $blockContent = $elem.find('.grid-item-content');
                         if (!$elem.hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
                             G.fixElementTextSize($elem, null);
                         }
                     });
                     
-                    G._launchGridStack();
                 }
                 Util.elementIsResizing = false;
                 Util.elementIsDragging = false;
@@ -602,10 +603,12 @@
         },
 
         _updateElementPadding: function ($elem) {
-            $($elem).css('left', this.properties.halfSeparatorElementLeft);
-            $($elem).css('top', this.properties.halfSeparatorElementTop);
-            $($elem).css('bottom', this.properties.halfSeparatorElementBottom);
-            $($elem).css('right', this.properties.halfSeparatorElementRight);
+            $elem.css({
+                'padding-left': this.properties.halfSeparatorElementLeft,
+                'padding-right': this.properties.halfSeparatorElementRight,
+                'padding-top': this.properties.halfSeparatorElementTop,
+                'padding-bottom': this.properties.halfSeparatorElementBottom,
+            });
         },
 
         // Calculate fixed blocks height
@@ -775,7 +778,7 @@
                 gallery._addHandles(this, 'e, s, w, se, sw');
                 gallery._addSizeViewer(this);
 
-                blockContent = $elem.find('.grid-stack-item-content');
+                blockContent = $elem.find('.grid-item-content');
                 imageWidth = blockContent.attr('data-background-image-width');
                 if ($elem.outerWidth() < imageWidth) {
                     if (!blockContent.hasClass('small-width')) {
@@ -890,7 +893,7 @@
             $(gallery.$element).on('resizestart', function (event, ui) {
                 gallery.properties.resizeHandle = $(event.toElement).attr('data-axis');
                 block = $(event.target)[0];
-                $blockContent = $(block).find('.grid-stack-item-content');
+                $blockContent = $(block).find('.grid-item-content');
                 imageWidth = $blockContent.attr('data-background-image-width');
                 Util.elementIsResizing = true;
                 xStart = parseInt(block['attributes']['data-gs-x'].value);
@@ -1034,10 +1037,10 @@
             });
             var $elem;
             var $blockContent;
-            $(gallery.$element).children('.grid-stack-item').each(function () {
+            $(gallery.$element).find('.grid-stack-item').each(function () {
                 //fixing scrollbars
                 $elem = $(this);
-                $blockContent = $elem.find('.grid-stack-item-content');
+                $blockContent = $elem.find('.grid-item-content');
                 if (!$elem.hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
                     gallery._addElementToTextEditor(editor, $elem);
                     gallery.fixElementTextSize(this, null);
@@ -1195,7 +1198,7 @@
             var h, backgroundHeight, defaultHeight, textHeight;
             var $this;
             Util.elementIsResizing = true;
-            this.$element.find('.grid-stack-item-content').each(function () {
+            this.$element.find('.grid-item-content').each(function () {
                 h = 0;
                 backgroundHeight = 0;
                 defaultHeight = 0;
@@ -1207,21 +1210,22 @@
                     backgroundHeight = (parseInt($this.attr('data-background-image-height')) * (w * sw)) / (parseInt($this.attr('data-background-image-width')));
                 } else if ($this.hasClass('natural-image-background')) {
                     if ($this.hasClass('small-width')) {
-                        backgroundHeight = (parseInt($this.attr('data-background-image-height')) * (w * sw)) / (parseInt($this.attr('data-background-image-width')));
+                        backgroundHeight = (parseInt($this.attr('data-background-image-height')) * (w * sw)) / (parseInt($this.attr('data-background-image-width'))) -gutter;
                     } else {
-                        backgroundHeight = parseInt($this.attr('data-background-image-height')) + gutter;
+                        backgroundHeight = parseInt($this.attr('data-background-image-height'))+gutter;
                     }
                 }
 
                 if ($($this.find('.text-wrap')[0]).text().length != 0) {
                     textHeight = $($this.find('.text-wrap')[0]).innerHeight() + gutter;
                 }
+
                 if ((backgroundHeight == 0 && textHeight == 0) || $this.hasClass('youtube-player') || $this.hasClass('empty-content') || $this.hasClass('block-has-slider') || $elem.hasClass('block-has-slider')) {
                     origH = $elem.attr('data-height');
-                    defaultHeight = Math.ceil(sw * origH);
+                    defaultHeight = Math.round(sw * origH);
                 };
                 h = Math.max(backgroundHeight, defaultHeight, textHeight);
-                h = Math.ceil(h / gallery.properties.singleHeight);
+                h = Math.round(h / gallery.properties.singleHeight);
                 $elem.attr('data-gs-height', h);
                 grid.update($elem, null, null, w, h);
             });

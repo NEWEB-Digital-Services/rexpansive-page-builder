@@ -1,3 +1,8 @@
+.grid-stack > .grid-stack-item > .grid-stack-item-content {
+    left: 0px;
+    right: 0px;
+}
+
 .rexlive-toolbox-fixed{
     width: 200px;
     height: 150px;
@@ -98,10 +103,6 @@
 }
 .gridActive>.grid-stack-item:hover {
     cursor: move;
-}
-
-.mCustomScrollBox {
-    max-height: none !important;
 }
 
 .rexpansive_section .full-disposition.focused, .rexpansive_section .center-disposition.focused{

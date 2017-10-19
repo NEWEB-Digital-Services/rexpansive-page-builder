@@ -232,11 +232,11 @@ class Rexbuilder_Block {
 				$bg_video_vimeo_markup .= '<iframe src="' . $video_bg_url_vimeo . '?autoplay=1&loop=1&byline=0&title=0&autopause=0" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
 				$bg_video_vimeo_markup .= '</div>';
 			}
-
+			echo '<div class="grid-stack-item-content">';
 			switch( $type ) :
 				case 'image':
 					echo $block_link_before;
-					echo '<div class="grid-stack-item-content image-content' . ( ('' != $video_bg_url && 'undefined' != $video_bg_url) ? ' youtube-player' : '' ) . ( ( '' != $video_bg_id && 'undefined' != $video_bg_id ) ? ' mp4-player' : '' ) . ( $bg_video_vimeo_markup ? ' vimeo-player' : '' ) . ( ($flex_positioned) ? ' rex-flexbox' : '' ) . '" ' . $section_style;
+					echo '<div class="grid-item-content image-content' . ( ('' != $video_bg_url && 'undefined' != $video_bg_url) ? ' youtube-player' : '' ) . ( ( '' != $video_bg_id && 'undefined' != $video_bg_id ) ? ' mp4-player' : '' ) . ( $bg_video_vimeo_markup ? ' vimeo-player' : '' ) . ( ($flex_positioned) ? ' rex-flexbox' : '' ) . '" ' . $section_style;
 					//echo '<div class="rex-custom-position">';
 					echo $bg_youtube_video_markup;
 					echo '>';
@@ -244,18 +244,13 @@ class Rexbuilder_Block {
 					echo $bg_video_vimeo_markup;
 					echo ( ($block_has_overlay) ? '<div class="responsive-block-overlay" style="background-color:' . $overlay_block_color . ';">' : '' );
 					echo '<div class="rex-custom-scrollbar' . ( ($flex_positioned) ? ' rex-custom-position' : '' ) . '">';
-					if($type_bg_block == 'natural' || ( $type_bg_block == 'full' && $section_layout == 'masonry' )){
-						echo '<div class="natural-image-content"' . $block_style_padding . '>';
-						echo wp_get_attachment_image( $id_image_bg_block, $image_size );
-						echo '</div>';
-					} else {
-						if( "" != $content ) :
+					if( "" != $content ) :
 							echo '<div class="text-wrap"' . $block_style_padding . '>';
 							//echo '<p>' . do_shortcode( $content ) . '</p>';
 							echo do_shortcode( $content );
 							echo '</div>';
-						endif;
-					}
+					endif;
+					
 					echo '</div>';
 					echo ( ($block_has_overlay) ? '</div>' : '' );
 					echo $bg_video_toggle_audio_markup;
@@ -266,7 +261,7 @@ class Rexbuilder_Block {
 				case 'text':
 				case 'rexslider':
 					echo $block_link_before;
-					echo '<div class="grid-stack-item-content grid-item-content text-content' . ( ('' != $video_bg_url && 'undefined' != $video_bg_url) ? ' youtube-player' : '' ) . ( ( '' != $video_bg_id && 'undefined' != $video_bg_id ) ? ' mp4-player' : '' ) . ( $bg_video_vimeo_markup ? ' vimeo-player' : '' ) . ( ($flex_positioned) ? ' rex-flexbox' : '' );
+					echo '<div class="grid-item-content grid-item-content text-content' . ( ('' != $video_bg_url && 'undefined' != $video_bg_url) ? ' youtube-player' : '' ) . ( ( '' != $video_bg_id && 'undefined' != $video_bg_id ) ? ' mp4-player' : '' ) . ( $bg_video_vimeo_markup ? ' vimeo-player' : '' ) . ( ($flex_positioned) ? ' rex-flexbox' : '' );
 					if("" != $id_image_bg_block){
 						if('full' == $type_bg_block){
 							echo ' full';
@@ -316,18 +311,13 @@ class Rexbuilder_Block {
 					break;
 				case 'video':
 					echo $block_link_before;
-					echo '<div class="grid-stack-item-content grid-item-content text-content' . ( ('' != $video_bg_url && 'undefined' != $video_bg_url) ? ' youtube-player' : '' ) . ( ( '' != $video_bg_id && 'undefined' != $video_bg_id ) ? ' mp4-player' : '' ) . ( $bg_video_vimeo_markup ? ' vimeo-player' : '' ) . ( ($flex_positioned) ? ' rex-flexbox' : '' ) . '" ' . $section_style;
+					echo '<div class="grid-item-content grid-item-content text-content' . ( ('' != $video_bg_url && 'undefined' != $video_bg_url) ? ' youtube-player' : '' ) . ( ( '' != $video_bg_id && 'undefined' != $video_bg_id ) ? ' mp4-player' : '' ) . ( $bg_video_vimeo_markup ? ' vimeo-player' : '' ) . ( ($flex_positioned) ? ' rex-flexbox' : '' ) . '" ' . $section_style;
 					echo $bg_youtube_video_markup;
 					echo '>';
 					echo $bg_video_markup;
 					echo $bg_video_vimeo_markup;
 					echo ( ($block_has_overlay) ? '<div class="responsive-block-overlay" style="background-color:' . $overlay_block_color . ';">' : '' );
 					echo '<div class="rex-custom-scrollbar' . ( ($flex_positioned) ? ' rex-custom-position' : '' ) . '">';
-					if($type_bg_block == 'natural' || ( $type_bg_block == 'full' && $section_layout == 'masonry' )){
-						echo '<div class="natural-image-content"' . $block_style_padding . '>';
-						echo wp_get_attachment_image( $id_image_bg_block, $image_size );
-						echo '</div>';
-					} else {
 						if( "" != $content ) :
 							echo '<div class="text-wrap"' . $block_style_padding . '>';
 							//echo wpautop(trim((do_shortcode( $content ))));
@@ -335,7 +325,7 @@ class Rexbuilder_Block {
 							echo do_shortcode( $content );
 							echo '</div>';
 						endif;
-					} 
+					
 					echo '</div>';
 					echo ( ($block_has_overlay) ? '</div>' : '' );
 					echo $bg_video_toggle_audio_markup;
@@ -345,7 +335,7 @@ class Rexbuilder_Block {
 					break;
 				case 'empty':
 					echo $block_link_before;
-					echo '<div class="grid-stack-item-content grid-item-content empty-content';
+					echo '<div class="grid-item-content grid-item-content empty-content';
 					echo ( ( "" == $section_style && "" == $id_image_bg_block && "" == $content ) ? ' real-empty' : '' );
 					echo ( ('' != $video_bg_url && 'undefined' != $video_bg_url) ? ' youtube-player' : '' );
 					echo ( ( '' != $video_bg_id && 'undefined' != $video_bg_id ) ? ' mp4-player' : '' );
@@ -362,11 +352,6 @@ class Rexbuilder_Block {
 					echo $bg_video_vimeo_markup;
 					echo ( ($block_has_overlay) ? '<div class="responsive-block-overlay" style="background-color:' . $overlay_block_color . ';">' : '' );
 					echo '<div class="rex-custom-scrollbar' . ( ($flex_positioned) ? ' rex-custom-position' : '' ) . '">';
-					if($type_bg_block == 'natural' || ( $type_bg_block == 'full' && $section_layout == 'masonry' )) {
-						echo '<div class="natural-image-content"' . $block_style_padding . '>';
-						echo wp_get_attachment_image( $id_image_bg_block, $image_size );
-						echo '</div>';
-					}
 					if( "" != $content ) :
 						echo '<div class="text-wrap"' . $block_style_padding . '>';
 						//echo '<p>' . do_shortcode( $content ) . '</p>';
@@ -423,6 +408,7 @@ class Rexbuilder_Block {
 					break;
 			endswitch;
 			
+			echo "</div>\n";
 			echo "</div>\n";
 
 		} else {
