@@ -144,10 +144,6 @@
     max-height: 100%;
 }
 
-.grid-stack-item-content {
-    height: initial !important;
-}
-
 .perfect-grid-item{
     transition: box-shadow 0.3s;
 }

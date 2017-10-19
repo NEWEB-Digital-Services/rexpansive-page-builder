@@ -73,52 +73,55 @@
             elementEdited: null,
             gridstackInstanceID: null,
             gridChanged: false,
-            gridHover: false
+            gridHover: false,
+            serializedData: [],
+            firstStartGrid: false
         };
 
         this.init();
     }
-    
+
     // Avoid Plugin.prototype conflicts
     $.extend(perfectGridGalleryEditor.prototype, {
         init: function () {
             
+            this.properties.firstStartGrid = true;
             // getting section number
             this.properties.sectionNumber = ($(this.element).children('.grid-stack-item')[0].id).split('_')[1];
             this.$element.addClass('grid-number-' + this.properties.sectionNumber);
-
+            
             this._saveStateElements();
-
+            
             this._defineDataSettings();
-
+            
             this._setGutter();
-
+            
             this._definePrivateProperties();
-
+            
             this._setParentGridPadding();
-
+            
             this._defineDynamicPrivateProperties();
-
+            
             this._prepareElements();
-
+            
             this._launchGridStack();
-
+            
             this._linkResizeEvents();
-
+            
             this._linkDragEvents();
-
+            
             var gallery = this;
             var $elem;
             Util.elementIsDragging = false;
             Util.elementIsResizing = false;
             
             
-
+            
             $(gallery.element).children('.grid-stack-item').each(function () {
                 $elem = $(this);
                 gallery.updateSizeViewerText($elem);
             });
-
+            
             //this._launchTextEditor();
             (gallery.$element).parent().parent().hover(function (event) {
                 gallery.showToolBox();
@@ -135,7 +138,7 @@
                     G.properties.elementEdited = null;
                 }
             });
-
+            
             $(window).on('mousedown', { Gallery: this, Util: Util }, function (event) {
                 var G = event.data.Gallery;
                 var target = event.target;
@@ -149,7 +152,7 @@
                     }
                 }
             });
-
+            
             $(window).on('resize', { Gallery: this, Util: Util }, function (event) {
                 if (!event.data.Util.elementIsResizing) {
                     var G = event.data.Gallery;
@@ -171,7 +174,7 @@
                     }
                 }
             });
-
+            
             $(window).on('load', { Gallery: this, Util: Util }, function (event) {
                 var gallery = event.data.Gallery;
                 var $elem;
@@ -185,31 +188,39 @@
                     $elem = $(this);
                     gallery.updateSizeViewerText($elem);
                 });
-
-                $(gallery.element).on('change', { Gallery: gallery, Util: Util }, function(event, items) {
-                    if(!Util.elementIsDragging && !Util.elementIsResizing){
-                        event.data.Gallery.updateAllElementsProperties();
-                    } 
+                
+                $(gallery.element).on('change', { Gallery: gallery, Util: Util }, function (event, items) {
+                    if (event.data.Gallery.properties.firstStartGrid) {
+                        event.data.Gallery.saveGrid();
+                        console.log('First Start');
+                        event.data.Gallery.properties.firstStartGrid = false;
+                    } else {
+                        if (!Util.elementIsDragging && !Util.elementIsResizing) {
+                            event.data.Gallery.updateAllElementsProperties();
+                            event.data.Gallery.saveGrid();
+                        }
+                    }
                 });
+                gallery.$element.trigger('change');
             });
             
-
+            
             // launching event 'editor is ready'
             var gridReadyEvent = jQuery.Event("gridGalleryEditorReady");
             gridReadyEvent.gallery = this;
             $(document).trigger(gridReadyEvent);
         },
-
+        
         refreshGrid: function () {
-
+            
             this._defineDynamicPrivateProperties();
-
+            
             this._setGridPadding();
-
+            
             this._fixHeightAllElements();
-
+            
             //this._launchGridStack();
-
+            
             /*
             setTimeout(function () {
                 //console.log('refreshing grid');
@@ -219,7 +230,26 @@
                 G.$element.trigger('refreshComplete');
             }, 400); */
         },
-
+        saveGrid() {
+            var gallery = this;
+            var singleHeight = gallery.settings.galleryLayout == 'masonry' ? gallery.properties.singleHeight / gallery.properties.singleWidth : 1;
+            this.serializedData = _.map(gallery.$element.children('.grid-stack-item'), function (el) {
+                var $el = $(el);
+                var node = $el.data('_gridstack_node');
+                return {
+                    id: el.id,
+                    x: node.x,
+                    y: Math.round(node.y * singleHeight),
+                    width: node.width,
+                    height: Math.round(node.height * singleHeight)
+                };
+            }, this);
+        },
+        
+        getGridData: function () {
+            return JSON.stringify(this.serializedData, null, '    ');
+        },
+        
         fixElementTextSize: function (block, $handler) {
             var $textWrap = $($(block).find('.text-wrap'));
             var $blockContent = $($(block).find('.grid-stack-item-content')[0]);
@@ -268,19 +298,19 @@
                 }
             }
         },
-
-        _removeScrollbar: function(){
+        
+        _removeScrollbars: function () {
             var $elem;
             var $blockContent;
             $(this.element).children('.grid-stack-item').each(function () {
                 $elem = $(this);
                 $blockContent = $($elem.find('.grid-stack-item-content')[0]);
-                if (!$elem.hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') &&!$blockContent.hasClass('youtube-player')) {
+                if (!$elem.hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
                     $blockContent.mCustomScrollbar('destroy');
                 }
             });
         },
-
+        
         restoreBackup: function () {
             var block;
             var G = this;
@@ -295,7 +325,7 @@
                 G.updateSizeViewerText($(this));
             });
         },
-
+        
         reLaunchGrid: function (data) {
             //console.log('selected layout: '+data['layout']);
             var G = this;
@@ -307,24 +337,18 @@
                 
                 Util.elementIsResizing = true;
                 Util.elementIsDragging = true;
-
+                
                 // destroying gridstack & jquery ui
-                grid.destroy(false);
-                var $elem;
-                $(G.element).children('.grid-stack-item').each(function () {
-                    $elem = $(this);
-                    $elem.draggable("destroy");
-                    $elem.resizable("destroy");
-                });
-                G.$element.removeClass('grid-stack-instance-'+this.properties.gridstackInstanceID);
+                G.destroyGridstack();
+                
                 // adding back the handles for resizing
                 $(G.element).children('.grid-stack-item').each(function () {
                     G._addHandles(this, 'e, s, w, se, sw');
                 });
-
+                
                 // relaunching grid
                 if (G.settings.galleryLayout == 'masonry') {
-                    G._removeScrollbar();
+                    G._removeScrollbars();
                     G._launchGridStack();
                     G._calculateBlockHeightMasonry();
                     $(G.element).children('.grid-stack-item').each(function () {
@@ -333,10 +357,11 @@
                 } else {
                     G.restoreBackup();
                     var $blockContent;
+                    var $elem;
                     $(G.element).children('.grid-stack-item').each(function () {
                         $elem = $(this);
                         $blockContent = $elem.find('.grid-stack-item-content');
-                        if (!$elem.hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') &&!$blockContent.hasClass('youtube-player')) {
+                        if (!$elem.hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
                             G.fixElementTextSize($elem, null);
                         }
                     });
@@ -345,19 +370,26 @@
                 }
                 Util.elementIsResizing = false;
                 Util.elementIsDragging = false;
+                this.properties.firstStartGrid = true;
+                G.$element.trigger('change');
+                this.properties.firstStartGrid = false;
             }
             return;
         },
         
-        destroyGrid: function () {
-            grid.destroy(false);
+        destroyGridstack: function () {
+            var G = this;
+            var grid = this.$element.data('gridstack');
             var $elem;
+            grid.destroy(false);
+            
             $(G.element).children('.grid-stack-item').each(function () {
                 $elem = $(this);
                 $elem.draggable("destroy");
                 $elem.resizable("destroy");
             });
-            G.$element.removeClass('grid-stack-instance-'+this.properties.gridstackInstanceID);
+
+            G.$element.removeClass('grid-stack-instance-' + this.properties.gridstackInstanceID);
         },
 
         recalculateBlocks: function () {
@@ -412,7 +444,7 @@
             return this.properties.gutter;
         },
 
-        getSectionNumber: function(){
+        getSectionNumber: function () {
             return this.properties.sectionNumber;
         },
         setProperty: function (definition) {
@@ -442,15 +474,15 @@
         updateElementProperty: function ($elem, $case) {
             var block = $elem[0];
             var width = this.properties.singleWidth;
-            
+
             switch ($case) {
                 case 'x': {
                     block['attributes']['data-col'].value = parseInt(block['attributes']['data-gs-x'].value);
                     break;
                 }
                 case 'y': {
-                    if(this.settings.galleryLayout == 'masonry'){
-                        block['attributes']['data-row'].value = Math.round(parseInt(block['attributes']['data-gs-y'].value)*this.properties.singleHeight/width);
+                    if (this.settings.galleryLayout == 'masonry') {
+                        block['attributes']['data-row'].value = Math.round(parseInt(block['attributes']['data-gs-y'].value) * this.properties.singleHeight / width);
                     } else {
                         block['attributes']['data-row'].value = parseInt(block['attributes']['data-gs-y'].value);
                     }
@@ -469,7 +501,7 @@
                     var h;
                     var oldH = block['attributes']['data-height'].value;
                     if (this.settings.galleryLayout == 'masonry') {
-                        h = Math.round(parseInt(block['attributes']['data-gs-height'].value)*this.properties.singleHeight / width);
+                        h = Math.round(parseInt(block['attributes']['data-gs-height'].value) * this.properties.singleHeight / width);
                     } else {
                         h = parseInt(block['attributes']['data-gs-height'].value);
                     }
@@ -725,11 +757,11 @@
             $('#' + name + ' > .el-size-viewer').text(x + ' x ' + y);
         },
 
-        showToolBox: function(){
+        showToolBox: function () {
             this.$element.parents('.rexpansive_section').children('.toolBox').addClass('tool-box-active');
         },
 
-        hideToolBox: function(){
+        hideToolBox: function () {
             this.$element.parents('.rexpansive_section').children('.toolBox').removeClass('tool-box-active');
         },
 
@@ -739,34 +771,34 @@
             var imageWidth;
             $(gallery.$element).children('.grid-stack-item').each(function () {
                 var $elem = $(this);
-                gallery._updateElementPadding($elem.children('.grid-stack-item-content'));
+                gallery._updateElementPadding($elem.find('.grid-stack-item-content'));
                 gallery._addHandles(this, 'e, s, w, se, sw');
                 gallery._addSizeViewer(this);
-                
+
                 blockContent = $elem.find('.grid-stack-item-content');
                 imageWidth = blockContent.attr('data-background-image-width');
-                if($elem.outerWidth()<imageWidth){
-                    if(!blockContent.hasClass('small-width')){
+                if ($elem.outerWidth() < imageWidth) {
+                    if (!blockContent.hasClass('small-width')) {
                         blockContent.addClass('small-width');
                     }
                 } else {
                     blockContent.removeClass('small-width');
                 }
-                
+
                 $('#' + this.id).attr({
                     "data-gs-min-width": 1,
                     "data-gs-min-height": 1,
                     "data-gs-max-width": 500
                 });
-                
-                // adding text wrap element if it's not there
-               /*  if (($elem.find('.text-wrap')).length == 0) {
-                    var textEl = document.createElement('div');
-                    $(textEl).addClass('text-wrap');
-                    $($elem.find('.rex-custom-scrollbar')).append(textEl);
-                } */
 
-                $elem.click(function(event){
+                // adding text wrap element if it's not there
+                /*  if (($elem.find('.text-wrap')).length == 0) {
+                     var textEl = document.createElement('div');
+                     $(textEl).addClass('text-wrap');
+                     $($elem.find('.rex-custom-scrollbar')).append(textEl);
+                 } */
+
+                $elem.click(function (event) {
                     gallery._focusElement($elem);
                 });
 
@@ -828,10 +860,10 @@
             });
         },
 
-        _hideSizeViewer: function($elem){
+        _hideSizeViewer: function ($elem) {
             $elem.children('.el-size-viewer').removeClass('focused');
         },
-        
+
         _focusElement: function ($elem) {
             $elem.children('.el-size-viewer').addClass('focused');
             $elem.addClass('focused');
@@ -840,7 +872,7 @@
             $elem.parent().parent().parent().addClass('focused');
             $elem.parent().parent().parent().parent().addClass('focused');
         },
-        
+
         _unFocusElement: function ($elem) {
             $elem.children('.el-size-viewer').removeClass('focused');
             $elem.removeClass('focused');
@@ -869,8 +901,8 @@
                     //$('#' + block.id).attr("data-gs-max-width", (xStart + wStart));
                 }
             }).on('resize', function (event, ui) {
-                if($(block).outerWidth()<imageWidth){
-                    if(!$blockContent.hasClass('small-width')){
+                if ($(block).outerWidth() < imageWidth) {
+                    if (!$blockContent.hasClass('small-width')) {
                         $blockContent.addClass('small-width');
                     }
                 } else {
@@ -880,11 +912,11 @@
                 if (gallery.settings.galleryLayout == 'masonry') {
                     yView = $(block).outerHeight();
                 } else {
-                    if (! $(block).hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') &&!$blockContent.hasClass('youtube-player')) {
+                    if (!$(block).hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
                         gallery.fixElementTextSize(block, gallery.properties.singleWidth);
                     }
                     yView = Math.round($(block).outerHeight() / gallery.properties.singleWidth);
-                } 
+                }
                 gallery.updateSizeViewerText(block, xView, yView);
                 /* if (gallery.properties.resizeHandle == 'w' || gallery.properties.resizeHandle == 'sw') {
                     ;
@@ -897,12 +929,13 @@
                 $('#' + block.id).attr("data-gs-max-width", "500");
                 gallery.updateAllElementsProperties();
                 Util.elementIsResizing = false;
+                gallery.$element.trigger('change');
             });
         },
-        
-        _linkDragEvents: function(){
+
+        _linkDragEvents: function () {
             var gallery = this;
-            
+
             // eventi per il drag
             $(gallery.$element).on('dragstart', function (event, ui) {
                 Util.elementIsDragging = true;
@@ -1005,7 +1038,7 @@
                 //fixing scrollbars
                 $elem = $(this);
                 $blockContent = $elem.find('.grid-stack-item-content');
-                if (!$elem.hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') &&!$blockContent.hasClass('youtube-player')) {
+                if (!$elem.hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
                     gallery._addElementToTextEditor(editor, $elem);
                     gallery.fixElementTextSize(this, null);
                 }
@@ -1159,16 +1192,16 @@
             var gutter = gallery.properties.gutter;
             var sw = gallery.properties.singleWidth;
             var origH;
-            var h, backgroundHeight, h2, hText;
+            var h, backgroundHeight, defaultHeight, textHeight;
             var $this;
             Util.elementIsResizing = true;
             this.$element.find('.grid-stack-item-content').each(function () {
                 h = 0;
                 backgroundHeight = 0;
-                h2 = 0;
-                hText = 0;
+                defaultHeight = 0;
+                textHeight = 0;
                 $this = $(this);
-                $elem = $this.parent();
+                $elem = $this.parents('.grid-stack-item');
                 w = $elem[0]['attributes']['data-width'].value;
                 if ($this.hasClass('full-image-background')) {
                     backgroundHeight = (parseInt($this.attr('data-background-image-height')) * (w * sw)) / (parseInt($this.attr('data-background-image-width')));
@@ -1181,18 +1214,19 @@
                 }
 
                 if ($($this.find('.text-wrap')[0]).text().length != 0) {
-                    hText = $($this.find('.text-wrap')[0]).innerHeight() + gutter;
+                    textHeight = $($this.find('.text-wrap')[0]).innerHeight() + gutter;
                 }
-                if ((backgroundHeight == 0 && hText == 0) || $this.hasClass('youtube-player') || $this.hasClass('empty-content') || $this.hasClass('block-has-slider') || $elem.hasClass('block-has-slider')) {
+                if ((backgroundHeight == 0 && textHeight == 0) || $this.hasClass('youtube-player') || $this.hasClass('empty-content') || $this.hasClass('block-has-slider') || $elem.hasClass('block-has-slider')) {
                     origH = $elem.attr('data-height');
-                    h2 = Math.ceil(sw * origH);
+                    defaultHeight = Math.ceil(sw * origH);
                 };
-                h = Math.max(backgroundHeight, h2, hText);
+                h = Math.max(backgroundHeight, defaultHeight, textHeight);
                 h = Math.ceil(h / gallery.properties.singleHeight);
                 $elem.attr('data-gs-height', h);
                 grid.update($elem, null, null, w, h);
             });
             Util.elementIsResizing = false;
+
             //gallery.updateAllElementsProperties();
             /*  else if($elem.hasClass('natural-fluid-image') || $elem.find('.natural-image-content').length != 0){
                 h = $($elem.find('.natural-image-content')[0]).innerHeight();

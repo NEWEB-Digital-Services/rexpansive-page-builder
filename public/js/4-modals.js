@@ -325,7 +325,17 @@
 			// ajx call
 			// - clear previuos data
 			// - save new data
-			console.log(rexajax);
+
+			console.log('creating shortcode');
+
+			console.log('shortcode ready');
+			$('.grid-stack-row').each(function(){
+				var $this = $(this);
+				console.log($this.perfectGridGalleryEditor('getSectionNumber'));
+				console.log($this.perfectGridGalleryEditor('getGridData'));
+				console.log('endend grid');
+			});
+			
 			$.ajax({
 				type: 'POST',
 				dataType: 'json',
@@ -348,12 +358,101 @@
 
 		});
 
+		var createBlockShortcode = function($elem){
+			var id = $elem[0].id,
+				type,
+				size_x = 
+
+				var type = $w.attr("data-block_type"),
+					content = '',
+					bg_info = $w.attr('data-bg_settings'),
+					class_info = $w.attr('data-block-custom-classes'),
+					padding_info = $w.attr('data-content-padding'),
+					video_has_audio = $w.attr('data-video-has-audio');
+				switch(type) {
+					case 'text':
+						content = $w.find(".data-text-content").text();
+						break;
+					case 'rexslider':
+						content = $w.find(".data-text-content").text();
+						break;
+					case 'video':
+						content = $w.find(".data-text-content").text();
+						break;
+					case 'image':
+						content = $w.find(".data-text-content").text();
+						break;
+					case 'expand':
+						content = $w.find('.data-zak-content').attr('data-zak-content');
+						break;
+					case 'empty':
+						if($w.find(".data-text-content").length > 0) {
+							content = $w.find(".data-text-content").text();
+						}
+						break;
+					default:
+						break;
+				}
+				var output = '';
+				output += '[RexpansiveBlock id="' + $w.prop("id") + '" type="' + type +
+								'" col="' + wgd.col + '" row="' + wgd.row +
+								'" size_x="' + wgd.size_x + '" size_y="' + wgd.size_y + '"';
+				if( bg_info ) {
+					var bg_block_info = JSON.parse(bg_info);
+					output += ' color_bg_block="' + bg_block_info.color + '" image_bg_block="' + bg_block_info.url + 
+								'" id_image_bg_block="' + bg_block_info.image + 
+								'" type_bg_block="' + bg_block_info.bg_img_type + 
+								'" video_bg_id="' + bg_block_info.video +
+								'" video_bg_url="' + bg_block_info.youtube +
+								'" video_bg_url_vimeo="' + bg_block_info.vimeo +
+								'" photoswipe="' + bg_block_info.photoswipe + 
+								'" linkurl="' + bg_block_info.linkurl +
+								'" image_size="' + bg_block_info.image_size +
+								//'" block_custom_class="' + bg_block_info.block_custom_class +
+								'" overlay_block_color="' + bg_block_info.overlay_block_color + '"';
+				} else {
+					output += ' color_bg_block="" image_bg_block="" id_image_bg_block="" type_bg_block="" photoswipe="" linkurl=""';
+				}
+				if( class_info ) {
+					output += ' block_custom_class="' + class_info + '" ';
+				}
+				if( padding_info ) {
+					output += ' block_padding="' + padding_info + '" ';
+				}
+				if( video_has_audio && video_has_audio == '1' ) {
+					output += ' video_has_audio="1" ';
+				}
+				if( type == 'expand') {
+					var zak_content = JSON.parse(content);
+					output += ' zak_background="' + zak_content.background_id + '" zak_title="' + zak_content.title + 
+								'" zak_side="' + zak_content.side + '" zak_icon="' + zak_content.icon_id + '"' +
+								' zak_foreground="' + zak_content.foreground_id + '"';
+				} else {
+					//output += ' zak_background="" zak_title="" zak_side="" zak_icon=""';
+				}
+				output += ']';
+				if( type == 'expand' ) {
+					output += JSON.parse(content).content;
+				} else {
+					output += content;
+				}
+				output += '[/RexpansiveBlock]';
+				
+				return {
+					id: $w.prop("id"),
+					content: output,				 			
+					col: wgd.col,
+					row: wgd.row,
+					size_x: wgd.size_x,
+					size_y: wgd.size_y
+				};
+			},
+		};
 		$(document).on('click', '.builder-section-config', function (e) {
 			e.preventDefault();
 			var $parent = $(this).parents('.rexpansive_section');
 			var $row = $($parent.find('.perfect-grid-gallery'));
-			var sectionNumber;
-			sectionNumber = $row.perfectGridGalleryEditor('getSectionNumber');
+			var sectionNumber = $row.perfectGridGalleryEditor('getSectionNumber');
 			$('#backresponsive-set-save').attr('data-section_id', sectionNumber);
 			$('#backresponsive-set-reset').attr('data-section_id', sectionNumber);
 			OpenModal($('#modal-background-responsive-set').parent('.rex-modal-wrap'));

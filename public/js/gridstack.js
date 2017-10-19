@@ -1100,7 +1100,6 @@
             if (event.type != 'drag') {
                 width = Math.round(ui.size.width / cellWidth);
                 height = Math.round(ui.size.height / cellHeight);
-                console.log(width, height);
             }
 
             if (event.type == 'drag') {
