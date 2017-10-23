@@ -90,7 +90,7 @@ class Rexbuilder_Block {
 			}
  
 			if(!empty( $image_bg_block )){
-				$section_style = ' style="background-image:url(\'' . $img_attrs[0] . '\'"';
+				$section_style = ' style="background-image:url(\'' . $img_attrs[0] . '\')"';
 			} else if( !empty( $color_bg_block )) {
 				$section_style = ' style="background-color:' . $color_bg_block . ';"';
 			}
@@ -232,6 +232,15 @@ class Rexbuilder_Block {
 				$bg_video_vimeo_markup .= '<iframe src="' . $video_bg_url_vimeo . '?autoplay=1&loop=1&byline=0&title=0&autopause=0" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
 				$bg_video_vimeo_markup .= '</div>';
 			}
+			
+			echo '<div id="' . $id . '-builder-data" style="display: none;" ';
+			foreach ($atts as $property_name => $value_property) {
+				echo 'data-'.$property_name.'="'.$value_property.'" ';
+			}
+			unset($property_name);
+			unset($value_property);
+			echo '></div>';
+
 			echo '<div class="grid-stack-item-content">';
 			switch( $type ) :
 				case 'image':

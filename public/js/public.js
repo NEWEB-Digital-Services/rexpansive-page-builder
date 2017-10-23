@@ -508,7 +508,7 @@ var VimeoVideo = (function($){
 		//$(".perfect-grid-item:not(.horizontal-carousel) .rex-custom-scrollbar").mCustomScrollbar();
 
 		/* -- Launching scrollbar on full-height/boxed sections -- */
-		var $block_scrollable = $('.perfect-grid-gallery[data-layout=fixed][data-full-height=true] .text-content .rex-custom-scrollbar');
+		/* var $block_scrollable = $('.perfect-grid-gallery[data-layout=fixed][data-full-height=true] .text-content .rex-custom-scrollbar');
 
 		$block_scrollable.mCustomScrollbar();
 
@@ -520,7 +520,7 @@ var VimeoVideo = (function($){
 					$block_scrollable.mCustomScrollbar();
 				}
 			});
-		}
+		} */
 	});
 
 	// Waiting until the ready of the DOM

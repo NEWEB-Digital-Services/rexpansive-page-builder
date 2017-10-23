@@ -1095,7 +1095,6 @@
 				});
 
 			}
-
 			CloseModal(rexslider_modal_properties.$modal_wrap);
 		});
 

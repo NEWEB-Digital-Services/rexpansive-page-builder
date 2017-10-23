@@ -321,6 +321,15 @@
 	});
 	 */
 		//$('.builder-section-config').hover();
+
+		$(document).on('click', '#section-fixed', function (e) {
+			$('#bg-set-full-section').parent().removeClass('hide-full-height-option');
+		});
+
+		$(document).on('click', '#section-masonry', function (e) {
+			$('#bg-set-full-section').parent().addClass('hide-full-height-option');
+		});
+
 		$(document).on('click', '#builder-save-grid-btn', function (e) {
 			// ajx call
 			// - clear previuos data
@@ -328,14 +337,17 @@
 
 			console.log('creating shortcode');
 
-			console.log('shortcode ready');
-			$('.grid-stack-row').each(function(){
+			var shortcodePage = '';
+			$('.grid-stack-row').each(function () {
 				var $this = $(this);
-				console.log($this.perfectGridGalleryEditor('getSectionNumber'));
-				console.log($this.perfectGridGalleryEditor('getGridData'));
-				console.log('endend grid');
+				var $section = $this.parents('.rexpansive_section');
+				shortcodePage += createSectionShortcode($section);
+				console.log('section ended');
 			});
-			
+
+			console.log('shortcode ready');
+			console.log(shortcodePage);
+
 			$.ajax({
 				type: 'POST',
 				dataType: 'json',
@@ -343,6 +355,7 @@
 				data: {
 					action: 'rexlive_save_sections',
 					nonce_param: rexajax.rexnonce,
+					shortcode: shortcodePage
 				},
 				success: function (response) {
 					console.log(response);
@@ -358,96 +371,185 @@
 
 		});
 
-		var createBlockShortcode = function($elem){
-			var id = $elem[0].id,
-				type,
-				size_x = 
+		var createBlockShortcode = function ($elem) {
+			var id = "",
+				type = "text",
+				size_x = 1,
+				size_y = 1,
+				row = '',
+				col = '',
+				color_bg_block = "#ffffff",
+				image_bg_block = "",
+				id_image_bg_block = "",
+				video_bg_id = "",
+				video_bg_url = "",
+				video_bg_url_vimeo = "",
+				type_bg_block = "",
+				image_size = 'full',
+				photoswipe = '',
+				linkurl = '',
+				block_custom_class = '',
+				block_padding = '',
+				overlay_block_color = '',
+				zak_background = "",
+				zak_side = "",
+				zak_title = "",
+				zak_icon = "",
+				zak_foreground = "",
+				block_animation = "fadeInUpBig",
+				video_has_audio = '0';
+			var content = "";
+			var output;
+			var $itemContent = $elem.find('.grid-item-content');
+			var $itemData = $('#' + $elem.attr('id') + '-builder-data');
 
-				var type = $w.attr("data-block_type"),
-					content = '',
-					bg_info = $w.attr('data-bg_settings'),
-					class_info = $w.attr('data-block-custom-classes'),
-					padding_info = $w.attr('data-content-padding'),
-					video_has_audio = $w.attr('data-video-has-audio');
-				switch(type) {
-					case 'text':
-						content = $w.find(".data-text-content").text();
-						break;
-					case 'rexslider':
-						content = $w.find(".data-text-content").text();
-						break;
-					case 'video':
-						content = $w.find(".data-text-content").text();
-						break;
-					case 'image':
-						content = $w.find(".data-text-content").text();
-						break;
-					case 'expand':
-						content = $w.find('.data-zak-content').attr('data-zak-content');
-						break;
-					case 'empty':
-						if($w.find(".data-text-content").length > 0) {
-							content = $w.find(".data-text-content").text();
-						}
-						break;
-					default:
-						break;
+			id = $elem.attr('id');
+			type = $itemData.attr('data-type');
+			size_x = $elem.attr('data-width');
+			size_y = $elem.attr('data-height');
+			row = $elem.attr('data-row');
+			col = $elem.attr('data-col');
+			color_bg_block = $itemContent.css('background-color') != '' ? $itemContent.css('background-color') : '#ffffff';
+			image_bg_block = $itemData.attr('data-image_bg_block') === undefined ? "" : $itemData.attr('data-image_bg_block');
+			id_image_bg_block = $itemData.attr('data-id_image_bg_block') === undefined ? "" : $itemData.attr('data-id_image_bg_block');
+			video_bg_id = $itemData.attr('data-video_bg_id') === undefined ? "" : $itemData.attr('data-video_bg_id');
+			video_bg_url = $itemData.attr('data-video_bg_url') === undefined ? "" : $itemData.attr('data-video_bg_url');
+			video_bg_url_vimeo = $itemData.attr('data-video_bg_url_vimeo') === undefined ? "" : $itemData.attr('data-video_bg_url_vimeo');
+			type_bg_block = $itemData.attr('data-type_bg_block') === undefined ? "full" : $itemData.attr('data-type_bg_block');
+			image_size = $itemData.attr('data-image_size') === undefined ? "full" : $itemData.attr('data-image_size');
+			photoswipe = $itemData.attr('data-photoswipe') === undefined ? "" : $itemData.attr('data-photoswipe');
+			linkurl = $itemData.attr('data-linkurl') === undefined ? "" : $itemData.attr('data-linkurl');
+			block_custom_class = $itemData.attr('data-block_custom_class') === undefined ? "" : $itemData.attr('data-block_custom_class');
+			block_padding = $itemData.attr('data-block_padding') === undefined ? "" : $itemData.attr('data-block_padding');
+			overlay_block_color = $itemData.attr('data-overlay_block_color') === undefined ? "" : $itemData.attr('data-overlay_block_color');
+			zak_background = $itemData.attr('data-zak_background') === undefined ? "" : $itemData.attr('data-zak_background');
+			zak_side = $itemData.attr('data-zak_side') === undefined ? "" : $itemData.attr('data-zak_side');
+			zak_title = $itemData.attr('data-zak_title') === undefined ? "" : $itemData.attr('data-zak_title');
+			zak_icon = $itemData.attr('data-zak_icon') === undefined ? "" : $itemData.attr('data-zak_icon');
+			zak_foreground = $itemData.attr('data-zak_foreground') === undefined ? "" : $itemData.attr('data-zak_foreground');
+			block_animation = $itemData.attr('data-block_animation') === undefined ? "fadeInUpBig" : $itemData.attr('data-block_animation');
+			video_has_audio = $itemData.attr('data-video_has_audio') === undefined ? "0" : $itemData.attr('data-video_has_audio');
+
+			if (!$elem.hasClass('block-has-slider')) {
+				content = $itemContent.find('.text-wrap').html();
+				if (content === undefined) {
+					content = "";
 				}
-				var output = '';
-				output += '[RexpansiveBlock id="' + $w.prop("id") + '" type="' + type +
-								'" col="' + wgd.col + '" row="' + wgd.row +
-								'" size_x="' + wgd.size_x + '" size_y="' + wgd.size_y + '"';
-				if( bg_info ) {
-					var bg_block_info = JSON.parse(bg_info);
-					output += ' color_bg_block="' + bg_block_info.color + '" image_bg_block="' + bg_block_info.url + 
-								'" id_image_bg_block="' + bg_block_info.image + 
-								'" type_bg_block="' + bg_block_info.bg_img_type + 
-								'" video_bg_id="' + bg_block_info.video +
-								'" video_bg_url="' + bg_block_info.youtube +
-								'" video_bg_url_vimeo="' + bg_block_info.vimeo +
-								'" photoswipe="' + bg_block_info.photoswipe + 
-								'" linkurl="' + bg_block_info.linkurl +
-								'" image_size="' + bg_block_info.image_size +
-								//'" block_custom_class="' + bg_block_info.block_custom_class +
-								'" overlay_block_color="' + bg_block_info.overlay_block_color + '"';
-				} else {
-					output += ' color_bg_block="" image_bg_block="" id_image_bg_block="" type_bg_block="" photoswipe="" linkurl=""';
-				}
-				if( class_info ) {
-					output += ' block_custom_class="' + class_info + '" ';
-				}
-				if( padding_info ) {
-					output += ' block_padding="' + padding_info + '" ';
-				}
-				if( video_has_audio && video_has_audio == '1' ) {
-					output += ' video_has_audio="1" ';
-				}
-				if( type == 'expand') {
-					var zak_content = JSON.parse(content);
-					output += ' zak_background="' + zak_content.background_id + '" zak_title="' + zak_content.title + 
-								'" zak_side="' + zak_content.side + '" zak_icon="' + zak_content.icon_id + '"' +
-								' zak_foreground="' + zak_content.foreground_id + '"';
-				} else {
-					//output += ' zak_background="" zak_title="" zak_side="" zak_icon=""';
-				}
-				output += ']';
-				if( type == 'expand' ) {
-					output += JSON.parse(content).content;
-				} else {
-					output += content;
-				}
-				output += '[/RexpansiveBlock]';
-				
-				return {
-					id: $w.prop("id"),
-					content: output,				 			
-					col: wgd.col,
-					row: wgd.row,
-					size_x: wgd.size_x,
-					size_y: wgd.size_y
-				};
-			},
+			} else {
+				content = 'slider';
+			}
+
+			output = '[RexpansiveBlock' +
+				' id="' + id +
+				'" type="' + type +
+				'" size_x="' + size_x +
+				'" size_y="' + size_y +
+				'" row="' + row +
+				'" col="' + col +
+				'" color_bg_block="' + color_bg_block +
+				'" image_bg_block="' + image_bg_block +
+				'" id_image_bg_block="' + id_image_bg_block +
+				'" video_bg_id="' + video_bg_id +
+				'" video_bg_url="' + video_bg_url +
+				'" video_bg_url_vimeo="' + video_bg_url_vimeo +
+				'" type_bg_block="' + type_bg_block +
+				'" image_size="' + image_size +
+				'" photoswipe="' + photoswipe +
+				'" linkurl="' + linkurl +
+				'" block_custom_class="' + block_custom_class +
+				'" block_padding="' + block_padding +
+				'" overlay_block_color="' + overlay_block_color +
+				'" zak_background="' + zak_background +
+				'" zak_side="' + zak_side +
+				'" zak_title="' + zak_title +
+				'" zak_icon="' + zak_icon +
+				'" zak_foreground="' + zak_foreground +
+				'" block_animation="' + block_animation +
+				'" video_has_audio="' + video_has_audio + '"]' +
+				content + '[/RexpansiveBlock]';
+
+			return output;
 		};
+
+		var createSectionShortcode = function ($section) {
+			var section_name = "",
+				type = "perfect-grid",
+				color_bg_section = "#ffffff",
+				dimension = "full",
+				margin = "",
+				image_bg_section = "",
+				id_image_bg_section = "",
+				video_bg_url_section = '',
+				video_bg_id_section = '',
+				video_bg_url_vimeo_section = '',
+				full_height = '',
+				block_distance = 20,
+				layout = "fixed",
+				responsive_background = '',
+				custom_classes = '',
+				section_width = '',
+				row_separator_top = '',
+				row_separator_bottom = '',
+				row_separator_right = '',
+				row_separator_left = '';
+
+			var output = '';
+			var $gridGallery = $section.find('.perfect-grid-gallery');
+			var $sectionData = $section.find('.section-data');
+
+			section_name = $sectionData.attr('data-section_name') === undefined ? "" : $sectionData.attr('data-section_name');
+			type = $sectionData.attr('data-type') === undefined ? "perfect-grid" : $sectionData.attr('data-type');
+			color_bg_section = $sectionData.attr('data-color_bg_section') === undefined ? "#ffffff" : $sectionData.attr('data-color_bg_section');
+			dimension = $sectionData.attr('data-dimension') === undefined ? "full" : $sectionData.attr('data-dimension');
+			margin = $sectionData.attr('data-margin') === undefined ? "" : $sectionData.attr('data-margin');
+			image_bg_section = $sectionData.attr('data-image_bg_section') === undefined ? "" : $sectionData.attr('data-image_bg_section');
+			id_image_bg_section = $sectionData.attr('data-id_image_bg_section') === undefined ? "" : $sectionData.attr('data-id_image_bg_section');
+			video_bg_url_section = $sectionData.attr('data-video_bg_url_section') === undefined ? "" : $sectionData.attr('data-video_bg_url_section');
+			video_bg_id_section = $sectionData.attr('data-video_bg_id_section') === undefined ? "" : $sectionData.attr('data-video_bg_id_section');
+			video_bg_url_vimeo_section = $sectionData.attr('data-video_bg_url_vimeo_section') === undefined ? "" : $sectionData.attr('data-video_bg_url_vimeo_section');
+			video_bg_url_vimeo_section = video_bg_url_vimeo_section == 'undefined' ? "" : video_bg_url_vimeo_section;
+			full_height = $sectionData.attr('data-full_height') === undefined ? "" : $sectionData.attr('data-full_height');
+			block_distance = $sectionData.attr('data-block_distance') === undefined ? 20 : parseInt($sectionData.attr('data-block_distance'));
+			layout = $sectionData.attr('data-layout') === undefined ? "" : $sectionData.attr('data-layout');
+			responsive_background = $sectionData.attr('data-responsive_background') === undefined ? "fixed" : $sectionData.attr('data-responsive_background');
+			custom_classes = $sectionData.attr('data-custom_classes') === undefined ? "" : $sectionData.attr('data-custom_classes');
+			section_width = $sectionData.attr('data-section_width') === undefined ? "" : $sectionData.attr('data-section_width');
+			section_width = section_width == '%' ? "" : section_width;
+			row_separator_top = $sectionData.attr('data-row_separator_top') === undefined ? "" : $sectionData.attr('data-row_separator_top');
+			row_separator_bottom = $sectionData.attr('data-row_separator_bottom') === undefined ? "" : $sectionData.attr('data-row_separator_bottom');
+			row_separator_right = $sectionData.attr('row_separator_right') === undefined ? "" : $sectionData.attr('data-row_separator_right');
+			row_separator_left = $sectionData.attr('data-row_separator_left') === undefined ? "" : $sectionData.attr('data-row_separator_left');
+
+			output = '[RexpansiveSection' +
+				' section_name="' + section_name +
+				'" type="' + type +
+				'" color_bg_section="' + color_bg_section +
+				'" dimension="' + dimension +
+				'" margin="' + margin +
+				'" image_bg_section="' + image_bg_section +
+				'" id_image_bg_section="' + id_image_bg_section +
+				'" video_bg_url_section="' + video_bg_url_section +
+				'" video_bg_id_section="' + video_bg_id_section +
+				'" video_bg_url_vimeo_section="' + video_bg_url_vimeo_section +
+				'" full_height="' + full_height +
+				'" block_distance="' + block_distance +
+				'" layout="' + layout +
+				'" responsive_background="' + responsive_background +
+				'" custom_classes="' + custom_classes +
+				'" section_width="' + section_width +
+				'" row_separator_top="' + row_separator_top +
+				'" row_separator_bottom="' + row_separator_bottom +
+				'" row_separator_right="' + row_separator_right +
+				'" row_separator_left="' + row_separator_left + '"]';
+
+			$gridGallery.find('.grid-stack-item').each(function () {
+				output += createBlockShortcode($(this));
+			});
+
+			output += '[/RexpansiveSection]';
+			return output;
+		}
+
 		$(document).on('click', '.builder-section-config', function (e) {
 			e.preventDefault();
 			var $parent = $(this).parents('.rexpansive_section');

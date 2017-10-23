@@ -113,7 +113,15 @@ class Rexbuilder_Section {
 				'" itemscope itemtype="http://schema.org/ImageGallery"' .
 				( ( '' != $video_bg_url_section && 'undefined' != $video_bg_url_section ) ? ' data-property="{videoURL:\'' . $video_bg_url_section . '\',containment:\'self\',startAt:0,mute:true,autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"' : '' ) .
 				$section_style . '>';
-
+			
+			echo '<div class="section-data" style="display: none;" ';
+			foreach ($atts as $property_name => $value_property) {
+				echo 'data-'.$property_name.'="'.$value_property.'" ';
+			}
+			unset($property_name);
+			unset($value_property);
+			echo '></div>';
+	
 			$this->create_toolbox();
 
 			if( '' != $video_bg_url_vimeo_section && 'undefined' != $video_bg_url_vimeo_section ) {

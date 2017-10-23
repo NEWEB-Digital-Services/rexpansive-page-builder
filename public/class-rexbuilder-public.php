@@ -371,6 +371,8 @@ class Rexbuilder_Public {
 			'error' => false,
 			'msg' => '',
 		);
+		$shortcode = $_POST['shortcode'];
+		$shortcode .= ' received';
 
 		if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) :
 			$response['error'] = true;
@@ -379,7 +381,7 @@ class Rexbuilder_Public {
 		endif;
 
 		$response['error'] = false;
-		$response['msg'] = 'Success!';
+		$response['msg'] = $shortcode;
 		wp_send_json_success( $response );
 	}
 }
