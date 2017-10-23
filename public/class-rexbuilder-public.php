@@ -145,6 +145,7 @@ class Rexbuilder_Public {
 				wp_enqueue_style( 'rexpansive-builder-style', plugin_dir_url( __FILE__ ) . 'css/public.css', array(), $this->version, 'all' );
 				wp_enqueue_style( 'jquery-style', plugin_dir_url( __FILE__ ) . 'css/jquery-ui.min.css', array(), $this->version, 'all' );
 				wp_enqueue_style( 'gridstack-style', plugin_dir_url( __FILE__ ) . 'css/gridstack.css', array(), $this->version, 'all' );
+				wp_enqueue_style( 'spectrum-style', plugin_dir_url( __FILE__ ) . 'css/spectrum.css', array(), $this->version, 'all' );
 				wp_enqueue_style( 'medium-editor-style', plugin_dir_url( __FILE__ ) . 'css/medium-editor.min.css', array(), $this->version, 'all' );
 				//wp_enqueue_style( 'bootstrap-touchspin', plugin_dir_url( __FILE__ ) . 'css/jquery.bootstrap-touchspin.min.css', array(), $this->version, 'all' );
 				wp_enqueue_style( 'input-spinner', plugin_dir_url( __FILE__ ) . 'css/input-spinner.css', array(), $this->version, 'all' );
@@ -235,6 +236,7 @@ class Rexbuilder_Public {
 					wp_enqueue_script( 'lodash', plugin_dir_url( __FILE__ ) . 'js/lodash.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'gridstack', plugin_dir_url( __FILE__ ) . 'js/gridstack.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'gridstackUI', plugin_dir_url( __FILE__ ) . 'js/gridstack.jQueryUI.js', array( 'jquery' ), $this->version, true );
+					wp_enqueue_script( 'spectrumColor', plugin_dir_url( __FILE__ ) . 'js/spectrum.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'medium-editor', plugin_dir_url( __FILE__ ) . 'js/medium-editor.min.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'mediumEditorToolbarStates', plugin_dir_url( __FILE__ ) . 'js/medium-editor-toolbar-states.min.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( '2-jqueryEditor', plugin_dir_url( __FILE__ ) . 'js/2-jquery.perfectGridGalleryEditor.js', array( 'jquery' ), $this->version, true );

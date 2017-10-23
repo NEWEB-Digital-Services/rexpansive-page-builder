@@ -98,9 +98,12 @@ class Rexbuilder_Block {
 			$block_link_before = '';
 			$block_link_after = '';
 
-			if($linkurl != '' && $photoswipe == 'true')
+			if($linkurl != '' && $photoswipe == 'true'){
 				$photoswipe = 'false';
+			}
 
+			// Se non è nella modalità editor
+			/*
 			if($photoswipe == 'true' && '' == $video_bg_id && '' == $video_bg_url && '' != $img_attrs[0] ) :
 				$block_link_before .= '<figure class="pswp-figure" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">';
 				$block_link_before .= '<a class="pswp-item" href="' . $img_attrs[0] . '" itemprop="contentUrl" data-size="' . $img_attrs[1] . 'x' . $img_attrs[2] . '">';
@@ -110,13 +113,14 @@ class Rexbuilder_Block {
 				$block_link_after .= '<figcaption class="pswp-item-caption" itemprop="caption description"></figcaption>';
 				$block_link_after .= '</figure>';
 			endif;
-
+			
 			if($linkurl != '') :
 				$block_link_before .= '<a class="element-link hovered" href="' . $linkurl . '" title="' . trim(strip_tags($content)) . '">';
 				//$block_link_before .= '<div class="element-link-effect-before"></div>';
 				//$block_link_after .= '<div class="element-link-effect-after"></div>';
 				$block_link_after .= '</a>';
 			endif;
+			*/
 
 			$block_custom_class = trim( $block_custom_class );
 
@@ -141,10 +145,7 @@ class Rexbuilder_Block {
 				$block_has_slider = true;
 			}
 
-			echo '<div id="' . $id . '" class="perfect-grid-item';
-			if( !is_page(126) ) {
-				echo ' grid-stack-item';
-			}
+			echo '<div id="' . $id . '" class="perfect-grid-item grid-stack-item';
 			echo ( ( "" == $section_style && "" == $id_image_bg_block && "" == $content && ( empty($video_bg_id) || 'undefined' == $video_bg_id ) && ( empty($video_bg_url) || 'undefined' == $video_bg_url ) && ( empty($video_bg_url_vimeo) || 'undefined' == $video_bg_url_vimeo ) ) ? ' real-empty' : '' );
 			echo ( ( ('full' == $type_bg_block && "" != $id_image_bg_block && "" == $content  && $section_layout == 'fixed') || (!empty($video_bg_id) && "" == $content) || (!empty($video_bg_url) && "" == $content) || (!empty($video_bg_url_vimeo) && "" == $content) ) ? ' only-background' : '' );
 			echo ( ( 'full' == $type_bg_block && $section_layout == 'masonry' ) ? ' natural-fluid-image' : '' );
@@ -152,6 +153,10 @@ class Rexbuilder_Block {
 				echo ' ' . $block_animation . ' has-rs-animation rs-animation';
 			endif;
 			echo ' w' . $size_x;
+			
+			// Blocks with no text-editable
+			echo ($block_has_slider ? '' : ' rex-text-editable');
+
 			echo ( $block_has_slider ? ' block-has-slider' : '' );
 			echo ( '' != $block_custom_class ? ' ' . $block_custom_class : '' );
 			if( 'expand' == $type) : 
@@ -270,7 +275,7 @@ class Rexbuilder_Block {
 				case 'text':
 				case 'rexslider':
 					echo $block_link_before;
-					echo '<div class="grid-item-content grid-item-content text-content' . ( ('' != $video_bg_url && 'undefined' != $video_bg_url) ? ' youtube-player' : '' ) . ( ( '' != $video_bg_id && 'undefined' != $video_bg_id ) ? ' mp4-player' : '' ) . ( $bg_video_vimeo_markup ? ' vimeo-player' : '' ) . ( ($flex_positioned) ? ' rex-flexbox' : '' );
+					echo '<div class="grid-item-content text-content' . ( ('' != $video_bg_url && 'undefined' != $video_bg_url) ? ' youtube-player' : '' ) . ( ( '' != $video_bg_id && 'undefined' != $video_bg_id ) ? ' mp4-player' : '' ) . ( $bg_video_vimeo_markup ? ' vimeo-player' : '' ) . ( ($flex_positioned) ? ' rex-flexbox' : '' );
 					if("" != $id_image_bg_block){
 						if('full' == $type_bg_block){
 							echo ' full';
@@ -320,7 +325,7 @@ class Rexbuilder_Block {
 					break;
 				case 'video':
 					echo $block_link_before;
-					echo '<div class="grid-item-content grid-item-content text-content' . ( ('' != $video_bg_url && 'undefined' != $video_bg_url) ? ' youtube-player' : '' ) . ( ( '' != $video_bg_id && 'undefined' != $video_bg_id ) ? ' mp4-player' : '' ) . ( $bg_video_vimeo_markup ? ' vimeo-player' : '' ) . ( ($flex_positioned) ? ' rex-flexbox' : '' ) . '" ' . $section_style;
+					echo '<div class="grid-item-content text-content' . ( ('' != $video_bg_url && 'undefined' != $video_bg_url) ? ' youtube-player' : '' ) . ( ( '' != $video_bg_id && 'undefined' != $video_bg_id ) ? ' mp4-player' : '' ) . ( $bg_video_vimeo_markup ? ' vimeo-player' : '' ) . ( ($flex_positioned) ? ' rex-flexbox' : '' ) . '" ' . $section_style;
 					echo $bg_youtube_video_markup;
 					echo '>';
 					echo $bg_video_markup;
@@ -344,7 +349,7 @@ class Rexbuilder_Block {
 					break;
 				case 'empty':
 					echo $block_link_before;
-					echo '<div class="grid-item-content grid-item-content empty-content';
+					echo '<div class="grid-item-content empty-content';
 					echo ( ( "" == $section_style && "" == $id_image_bg_block && "" == $content ) ? ' real-empty' : '' );
 					echo ( ('' != $video_bg_url && 'undefined' != $video_bg_url) ? ' youtube-player' : '' );
 					echo ( ( '' != $video_bg_id && 'undefined' != $video_bg_id ) ? ' mp4-player' : '' );

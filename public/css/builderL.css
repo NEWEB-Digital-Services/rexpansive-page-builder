@@ -1,3 +1,8 @@
+::selection {
+    /*color: #000;*/
+}
+
+
 .hide-full-height-option{
     visibility: hidden;
 }

@@ -121,16 +121,21 @@
             $(gallery.element).children('.grid-stack-item').each(function () {
                 $elem = $(this);
                 gallery.updateSizeViewerText($elem);
+                // we need gridstack launched to calculate block heights
+                if (!$elem.hasClass('block-has-slider')) {
+                    gallery.fixElementTextSize($elem, null);
+                }
             });
 
-            //this._launchTextEditor();
+            this._launchTextEditor();
+
             (gallery.$element).parent().parent().hover(function (event) {
                 gallery.showToolBox();
             }, function () {
                 //gallery.hideToolBox();
             });
 
-            //this.createBlock(4, 3, 3, 5);
+
 
             $(window).on('keydown', { Gallery: this, Util: Util }, function (event) {
                 if (event.keyCode == 27) {
@@ -145,7 +150,7 @@
             $(window).on('mousedown', { Gallery: this, Util: Util }, function (event) {
                 var G = event.data.Gallery;
                 var target = event.target;
-                if (G.properties.elementEdited !== null && $(target).parents('.medium-editor-toolbar').length === 0) {
+                if (G.properties.elementEdited !== null && $(target).parents('.medium-editor-toolbar').length === 0 && $(target).parents('.sp-container').length === 0) {
                     var $items = $($(target).parents('.grid-stack-item'));
                     if (($items.length === 0) || $items[0].id !== G.properties.elementEdited.id) {
                         var grid = G.$element.data('gridstack');
@@ -298,6 +303,7 @@
                             } else {
                                 n = Math.max(Math.floor((textHeight - maxBlockHeight) / this.properties.singleWidth), 1);
                             }
+                            console.log(n, textHeight, maxBlockHeight);
                             while (i < n) {
                                 h = h + 1;
                                 i++;
@@ -338,8 +344,8 @@
             $(G.element).children('.grid-stack-item').each(function () {
                 block = $(this)[0];
                 $(this).attr({
-                    'data-gs-x': block['attributes']['data-col'].value-1,
-                    'data-gs-y': block['attributes']['data-row'].value-1,
+                    'data-gs-x': block['attributes']['data-col'].value - 1,
+                    'data-gs-y': block['attributes']['data-row'].value - 1,
                     'data-gs-width': block['attributes']['data-width'].value,
                     'data-gs-height': block['attributes']['data-height'].value
                 });
@@ -542,8 +548,8 @@
                 'class': 'perfect-grid-item grid-stack-item empty-block',
                 'data-height': h,
                 'data-width': w,
-                'data-row': y+1,
-                'data-col': x+1,
+                'data-row': y + 1,
+                'data-col': x + 1,
                 'data-gs-height': h,
                 'data-gs-width': w,
                 'data-gs-y': y,
@@ -578,11 +584,11 @@
             return divGridItem;
         },
 
-        createElementProperties: function(elem){
+        createElementProperties: function (elem) {
             var divProperties = document.createElement('div');
             var $elem = $(elem);
             $(divProperties).attr({
-                'id': elem.id+'-builder-data',
+                'id': elem.id + '-builder-data',
                 'style': 'display: none;',
                 'data-id': elem.id,
                 'data-type': 'empty',
@@ -631,22 +637,22 @@
             var size;
             switch ($case) {
                 case 'x': {
-                    size = parseInt(block['attributes']['data-gs-x'].value)+1;
+                    size = parseInt(block['attributes']['data-gs-x'].value) + 1;
                     block['attributes']['data-col'].value = size
-                    $('#'+block.id+'-builder-data').attr({
-                        'data-col' : size
+                    $('#' + block.id + '-builder-data').attr({
+                        'data-col': size
                     });
                     break;
                 }
                 case 'y': {
                     if (this.settings.galleryLayout == 'masonry') {
-                         size = Math.round(parseInt(block['attributes']['data-gs-y'].value) * this.properties.singleHeight / width)+1;
+                        size = Math.round(parseInt(block['attributes']['data-gs-y'].value) * this.properties.singleHeight / width) + 1;
                     } else {
-                        size = parseInt(block['attributes']['data-gs-y'].value)+1;
+                        size = parseInt(block['attributes']['data-gs-y'].value) + 1;
                     }
                     block['attributes']['data-row'].value = size;
-                    $('#'+block.id+'-builder-data').attr({
-                        'data-row' : size
+                    $('#' + block.id + '-builder-data').attr({
+                        'data-row': size
                     });
                     break;
                 }
@@ -657,8 +663,8 @@
                     // updating element class
                     $(block).removeClass("w" + oldW);
                     $(block).addClass("w" + w);
-                    $('#'+block.id+'-builder-data').attr({
-                        'data-size_x' : w
+                    $('#' + block.id + '-builder-data').attr({
+                        'data-size_x': w
                     });
                     break;
                 }
@@ -675,8 +681,8 @@
                     // updating element class
                     $(block).removeClass("h" + oldH);
                     $(block).addClass("h" + h);
-                    $('#'+block.id+'-builder-data').attr({
-                        'data-size_y' : h
+                    $('#' + block.id + '-builder-data').attr({
+                        'data-size_y': h
                     });
                     break;
                 }
@@ -1012,20 +1018,17 @@
 
             $elem.keydown(function () {
                 console.log('keydown');
-                //gallery.fixElementTextSize(elem, null);
+                gallery.fixElementTextSize(elem, null);
             });
 
             $elem.dblclick(function () {
-                console.log('double click event');
                 gallery._hideSizeViewer($elem);
                 var grid = gallery.$element.data('gridstack');
                 grid.disable();
                 $(gallery.$element).removeClass('gridActive');
-                console.log('disable grid');
                 gallery.properties.elementEdited = elem;
                 gallery.properties.elementStartingH = parseInt($elem[0]['attributes']['data-gs-height'].value);
                 var textWrap = $elem.find('.text-wrap');
-                console.log(textWrap);
                 $(textWrap)[0].focus();
                 //$(textWrap.lastChild)[0].focus();
                 /* if()#mCSB_1_container > div > div
@@ -1179,7 +1182,7 @@
 
         _addElementToTextEditor: function ($editor, $elem) {
             if (($elem.find('.text-wrap')).length != 0) {
-                $editor.addElements($($elem).find('.text-wrap'));
+                $editor.addElements($elem.find('.text-wrap'));
             } else {
                 var textEl = document.createElement('div');
                 $(textEl).addClass('text-wrap');
@@ -1197,13 +1200,112 @@
                 'class': 'editable',
                 'style': 'display: none'
             });
-            $($('.rexpansive_section').parent()).prepend(divToolbar);
+            $('.rexpansive_section').parent().prepend(divToolbar);
 
-            rangy.init();
+            var currentTextSelection;
+
+            /**
+            * Gets the color of the current text selection
+            */
+            function getCurrentTextColor() {
+                return $(editor.getSelectedParentElement()).css('color');
+            }
+
+            /**
+             * Custom `color picker` extension
+             */
+            var ColorPickerExtension = MediumEditor.extensions.button.extend({
+                name: "colorPicker",
+                action: "applyForeColor",
+                aria: "color picker",
+                contentDefault: "<span class='editor-color-picker'>Text Color<span>",
+
+                init: function () {
+                    this.button = this.document.createElement('button');
+                    this.button.classList.add('medium-editor-action');
+                    this.button.innerHTML = '<b>Text color</b>';
+
+                    //init spectrum color picker for this button
+                    initPicker(this.button);
+
+                    //use our own handleClick instead of the default one
+                    this.on(this.button, 'click', this.handleClick.bind(this));
+                },
+                handleClick: function (event) {
+                    //keeping record of the current text selection
+                    currentTextSelection = editor.exportSelection();
+
+                    //sets the color of the current selection on the color picker
+                    $(this.button).spectrum("set", getCurrentTextColor());
+
+                    //from here on, it was taken form the default handleClick
+                    event.preventDefault();
+                    event.stopPropagation();
+
+                    var action = this.getAction();
+
+                    if (action) {
+                        this.execAction(action);
+                    }
+                }
+            });
+
+            var pickerExtension = new ColorPickerExtension();
+
+            function setColor(color) {
+                var finalColor = color ? color.toRgbString() : 'rgba(0,0,0,0)';
+
+                pickerExtension.base.importSelection(currentTextSelection);
+                pickerExtension.document.execCommand("styleWithCSS", false, true);
+                pickerExtension.document.execCommand("foreColor", false, finalColor);
+            }
+
+            function initPicker(element) {
+                $(element).spectrum({
+                    allowEmpty: true,
+                    color: "#f00",
+                    showInput: true,
+                    showAlpha: true,
+                    showPalette: true,
+                    showInitial: true,
+                    hideAfterPaletteSelect: true,
+                    preferredFormat: "hex3",
+                    change: function (color) {
+                        setColor(color);
+                    },
+                    hide: function (color) {
+                        setColor(color);
+                    },
+                    palette: [
+                        ["#000", "#444", "#666", "#999", "#ccc", "#eee", "#f3f3f3", "#fff"],
+                        ["#f00", "#f90", "#ff0", "#0f0", "#0ff", "#00f", "#90f", "#f0f"],
+                        ["#f4cccc", "#fce5cd", "#fff2cc", "#d9ead3", "#d0e0e3", "#cfe2f3", "#d9d2e9", "#ead1dc"],
+                        ["#ea9999", "#f9cb9c", "#ffe599", "#b6d7a8", "#a2c4c9", "#9fc5e8", "#b4a7d6", "#d5a6bd"],
+                        ["#e06666", "#f6b26b", "#ffd966", "#93c47d", "#76a5af", "#6fa8dc", "#8e7cc3", "#c27ba0"],
+                        ["#c00", "#e69138", "#f1c232", "#6aa84f", "#45818e", "#3d85c6", "#674ea7", "#a64d79"],
+                        ["#900", "#b45f06", "#bf9000", "#38761d", "#134f5c", "#0b5394", "#351c75", "#741b47"],
+                        ["#600", "#783f04", "#7f6000", "#274e13", "#0c343d", "#073763", "#20124d", "#4c1130"]
+                    ]
+                });
+            }
 
             var editor = new MediumEditor('.editable', {
                 toolbar: {
-                    buttons: ['bold', 'italic', 'underline', 'h2']
+                    buttons: [
+                        'colorPicker',
+                        'bold',
+                        'italic',
+                        'underline',
+                        'anchor',
+                        'h2',
+                        'h3',
+                        'quote',
+                        'orderedlist',
+                        'unorderedlist'
+                    ]
+                },
+                extensions: {
+                    'colorPicker': pickerExtension
                 },
                 placeholder: {
                     /* This example includes the default options for placeholder,
@@ -1212,16 +1314,17 @@
                     hideOnClick: true
                 }
             });
+            
+            // handler da usare quando si inserisce testo per sistemare la scrollbar / il blocco
+            editor.subscribe('editableInput', function () {
+                console.log('contenuto cambiato');
+            });
+
             var $elem;
             var $blockContent;
-            $(gallery.$element).find('.grid-stack-item').each(function () {
-                //fixing scrollbars
+            $(gallery.$element).find('.rex-text-editable').each(function () {
                 $elem = $(this);
-                $blockContent = $elem.find('.grid-item-content');
-                if (!$elem.hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
-                    gallery._addElementToTextEditor(editor, $elem);
-                    gallery.fixElementTextSize(this, null);
-                }
+                gallery._addElementToTextEditor(editor, $elem);
             });
         },
 
