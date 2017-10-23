@@ -335,19 +335,16 @@
 			// - clear previuos data
 			// - save new data
 
-			console.log('creating shortcode');
-
 			var shortcodePage = '';
 			$('.grid-stack-row').each(function () {
 				var $this = $(this);
+				$this.perfectGridGalleryEditor('fillEmptySpaces');
+				$this.perfectGridGalleryEditor('updateAllElementsProperties');
 				var $section = $this.parents('.rexpansive_section');
 				shortcodePage += createSectionShortcode($section);
-				console.log('section ended');
 			});
 
-			console.log('shortcode ready');
-			console.log(shortcodePage);
-
+			var idPost = parseInt($('#id-post').attr('data-post-id'));
 			$.ajax({
 				type: 'POST',
 				dataType: 'json',
@@ -355,7 +352,8 @@
 				data: {
 					action: 'rexlive_save_sections',
 					nonce_param: rexajax.rexnonce,
-					shortcode: shortcodePage
+					shortcode: shortcodePage,
+					post_id_to_update: idPost
 				},
 				success: function (response) {
 					console.log(response);

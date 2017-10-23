@@ -21,7 +21,7 @@
  * @author     Neweb <info@neweb.info>
  */
 class Rexbuilder_Public {
-
+	
 	/**
 	 * The ID of this plugin.
 	 *
@@ -215,7 +215,7 @@ class Rexbuilder_Public {
 		 * between the defined hooks and the functions defined in this
 		 * class.
 		 */
-
+		
 		if( isset( $this->plugin_options['post_types'] ) ) :
 			$post_to_activate = $this->plugin_options['post_types'];
 			$this_post_type = get_post_type();
@@ -338,6 +338,10 @@ class Rexbuilder_Public {
 		}
 
 		include_once( 'partials/rexbuilder-modals-display.php' );
+
+		?>
+			<div id="id-post" data-post-id="<?php echo esc_attr( get_the_ID() ); ?>"></div>
+		<?php
 		
 
 /* 		if ( get_user_option('rich_editing') == 'true') { 
@@ -372,7 +376,7 @@ class Rexbuilder_Public {
 			'msg' => '',
 		);
 		$shortcode = $_POST['shortcode'];
-		$shortcode .= ' received';
+		$post_id_to_update = intval($_POST['post_id_to_update']);
 
 		if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) :
 			$response['error'] = true;
@@ -381,7 +385,17 @@ class Rexbuilder_Public {
 		endif;
 
 		$response['error'] = false;
-		$response['msg'] = $shortcode;
+		
+		$args = array(
+			'ID'           => $post_id_to_update,
+			'post_content' => $shortcode,
+		);
+		
+		$update = wp_update_post($args);
+
+		$response['update'] = $update;
+		$response['id_recived'] = $post_id_to_update;
+
 		wp_send_json_success( $response );
 	}
 }
