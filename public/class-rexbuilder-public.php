@@ -147,6 +147,8 @@ class Rexbuilder_Public {
 				wp_enqueue_style( 'gridstack-style', plugin_dir_url( __FILE__ ) . 'css/gridstack.css', array(), $this->version, 'all' );
 				wp_enqueue_style( 'spectrum-style', plugin_dir_url( __FILE__ ) . 'css/spectrum.css', array(), $this->version, 'all' );
 				wp_enqueue_style( 'medium-editor-style', plugin_dir_url( __FILE__ ) . 'css/medium-editor.min.css', array(), $this->version, 'all' );
+				wp_enqueue_style( 'medium-editor-instert-style', plugin_dir_url( __FILE__ ) . 'css/medium-editor-insert-plugin.min.css', array(), $this->version, 'all' );
+				wp_enqueue_style( 'medium-editor-insert-frontend-style', plugin_dir_url( __FILE__ ) . 'css/medium-editor-insert-plugin-frontend.min.css', array(), $this->version, 'all' );
 				//wp_enqueue_style( 'bootstrap-touchspin', plugin_dir_url( __FILE__ ) . 'css/jquery.bootstrap-touchspin.min.css', array(), $this->version, 'all' );
 				wp_enqueue_style( 'input-spinner', plugin_dir_url( __FILE__ ) . 'css/input-spinner.css', array(), $this->version, 'all' );
 				wp_enqueue_style( 'rexpansive-builderLive-style', plugin_dir_url( __FILE__ ) . 'css/builderL.css', array(), $this->version, 'all' );
@@ -239,6 +241,13 @@ class Rexbuilder_Public {
 					wp_enqueue_script( 'spectrumColor', plugin_dir_url( __FILE__ ) . 'js/spectrum.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'medium-editor', plugin_dir_url( __FILE__ ) . 'js/medium-editor.min.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'mediumEditorToolbarStates', plugin_dir_url( __FILE__ ) . 'js/medium-editor-toolbar-states.min.js', array( 'jquery' ), $this->version, true );
+					wp_enqueue_script( 'handlebars-runtime', plugin_dir_url( __FILE__ ) . 'js/handlebars.runtime.js', array( 'jquery' ), $this->version, true );
+					
+					wp_enqueue_script( 'jquery-fileupload', plugin_dir_url( __FILE__ ) . 'js/jquery.fileupload.js', array( 'jquery' ), $this->version, true );
+					wp_enqueue_script( 'jquery-cycle2', plugin_dir_url( __FILE__ ) . 'js/jquery.cycle2.min.js', array( 'jquery' ), $this->version, true );
+					wp_enqueue_script( 'cycle2-center', plugin_dir_url( __FILE__ ) . 'js/jquery.cycle2.center.min.js', array( 'jquery' ), $this->version, true );
+					
+					wp_enqueue_script( 'medium-editor-insert', plugin_dir_url( __FILE__ ) . 'js/medium-editor-insert-plugin.min.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( '2-jqueryEditor', plugin_dir_url( __FILE__ ) . 'js/2-jquery.perfectGridGalleryEditor.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( '4-modals', plugin_dir_url( __FILE__ ) . 'js/4-modals.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( '2-jquery', plugin_dir_url( __FILE__ ) . 'js/2-jquery.perfectGridGallery.js', array( 'jquery' ), $this->version, true );

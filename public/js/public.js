@@ -6,7 +6,8 @@ var Util = (function($) {
 	var fixSectionWidth = 0;
 	var elementIsResizing = false;
 	var elementIsDragging = false;
-
+	var editingElement = null;
+	
 	// function to detect if we are on a mobile device
 	var _detect_mobile = function() {
 		if (!("ontouchstart" in document.documentElement)) {

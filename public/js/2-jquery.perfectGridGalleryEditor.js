@@ -123,7 +123,7 @@
                 gallery.updateSizeViewerText($elem);
                 // we need gridstack launched to calculate block heights
                 if (!$elem.hasClass('block-has-slider')) {
-                    gallery.fixElementTextSize($elem, null);
+                    gallery.fixElementTextSize(this, null);
                 }
             });
 
@@ -138,12 +138,18 @@
 
 
             $(window).on('keydown', { Gallery: this, Util: Util }, function (event) {
-                if (event.keyCode == 27) {
+                if (event.keyCode == 27 && $(event.target).parents('.perfect-grid-item') != 0) {
+                    console.log(event);
                     var G = event.data.Gallery;
                     var grid = G.$element.data('gridstack');
                     grid.enable();
                     $(G.$element).addClass('gridActive');
                     G.properties.elementEdited = null;
+                    G._showSizeViewer($(event.target).parents('.perfect-grid-item'));
+                    if(typeof(Util.editingElement) !== null){
+                        Util.editingElement.blur();
+                        Util.editingElement = null;
+                    }
                 }
             });
 
@@ -291,7 +297,7 @@
                         $blockContent.mCustomScrollbar('disable');
                     }
                 } else {
-                    if (this.settings.galleryLayout == 'masonry' || $blockContent.hasClass('mCS_no_scrollbar')) {
+                    if (this.settings.galleryLayout == 'masonry' || $blockContent.hasClass('mCS_no_scrollbar') || $blockContent.hasClass('mCS_disabled')) {
                         var w = parseInt(block['attributes']['data-gs-width'].value);
                         var h = parseInt(block['attributes']['data-gs-height'].value);
                         var grid = this.$element.data('gridstack');
@@ -321,6 +327,7 @@
                             h = Math.max(h, this.properties.elementStartingH);
                         }
                         grid.update(block, null, null, w, h);
+                        $blockContent.mCustomScrollbar("update");
                     }
                 }
             }
@@ -972,12 +979,15 @@
             });
 
             // adding text wrap element if it's not there
-            /*  if (($elem.find('.text-wrap')).length == 0) {
-                 var textEl = document.createElement('div');
-                 $(textEl).addClass('text-wrap');
-                 $($elem.find('.rex-custom-scrollbar')).append(textEl);
-             } */
-
+            var textEl;
+            if (($elem.find('.text-wrap')).length == 0) {
+                textEl = document.createElement('div');
+                $(textEl).addClass('text-wrap');
+                $($elem.find('.rex-custom-scrollbar')).append(textEl);
+            }  else {
+                textEl =  $elem.find('.text-wrap');
+                console.log(textEl[0].childNodes);
+            }
             $elem.click(function (event) {
                 gallery._focusElement($elem);
             });
@@ -995,7 +1005,7 @@
             });
 
             $elem.hover(function (event) {
-                if (!Util.elementIsResizing) {
+                if (!Util.elementIsResizing && Util.editingElement === null) {
                     gallery._focusElement($elem);
                 }
                 if (gallery.properties.elementEdited != null) {
@@ -1016,20 +1026,18 @@
                 }
             });
 
-            $elem.keydown(function () {
-                console.log('keydown');
-                gallery.fixElementTextSize(elem, null);
-            });
-
             $elem.dblclick(function () {
                 gallery._hideSizeViewer($elem);
+                Util.editingElement = $elem;
                 var grid = gallery.$element.data('gridstack');
                 grid.disable();
                 $(gallery.$element).removeClass('gridActive');
                 gallery.properties.elementEdited = elem;
                 gallery.properties.elementStartingH = parseInt($elem[0]['attributes']['data-gs-height'].value);
                 var textWrap = $elem.find('.text-wrap');
-                $(textWrap)[0].focus();
+                if (!(textWrap.text().length) || textWrap.text() == '""') {
+                    $(textWrap)[0].focus();
+                }
                 //$(textWrap.lastChild)[0].focus();
                 /* if()#mCSB_1_container > div > div
                 $()[0].focus(); */
@@ -1045,6 +1053,12 @@
 
         _hideSizeViewer: function ($elem) {
             $elem.children('.el-size-viewer').removeClass('focused');
+            $elem.children('.el-size-viewer').addClass('size-viewer-hidden');
+        },
+
+        _showSizeViewer: function ($elem) {
+            $elem.children('.el-size-viewer').addClass('focused');
+            $elem.children('.el-size-viewer').removeClass('size-viewer-hidden');
         },
 
         _focusElement: function ($elem) {
@@ -1181,14 +1195,7 @@
         },
 
         _addElementToTextEditor: function ($editor, $elem) {
-            if (($elem.find('.text-wrap')).length != 0) {
-                $editor.addElements($elem.find('.text-wrap'));
-            } else {
-                var textEl = document.createElement('div');
-                $(textEl).addClass('text-wrap');
-                $($elem.find('.rex-custom-scrollbar')).append(textEl);
-                $editor.addElements(textEl);
-            }
+            $editor.addElements($elem.find('.text-wrap'));
         },
 
         _launchTextEditor: function () {
@@ -1314,10 +1321,39 @@
                     hideOnClick: true
                 }
             });
-            
-            // handler da usare quando si inserisce testo per sistemare la scrollbar / il blocco
-            editor.subscribe('editableInput', function () {
-                console.log('contenuto cambiato');
+
+            $('.text-wrap').each(function () {
+                $(this).mediumInsert({
+                    editor: editor,
+                    addons: {
+                        images: {
+                            uploadScript: null,
+                            deleteScript: null,
+                            captionPlaceholder: 'Type caption for image',
+                            styles: {
+                                slideshow: {
+                                    label: '<span class="fa fa-play"></span>',
+                                    added: function ($el) {
+                                        $el
+                                            .data('cycle-center-vert', true)
+                                            .cycle({
+                                                slides: 'figure'
+                                            });
+                                    },
+                                    removed: function ($el) {
+                                        $el.cycle('destroy');
+                                    }
+                                }
+                            },
+                            actions: null
+                        }
+                    }
+                });
+            });
+
+            editor.subscribe('editableInput', function (e) {
+                console.log(e);
+                gallery.fixElementTextSize($(e.target).parents('.perfect-grid-item')[0], null);
             });
 
             var $elem;
