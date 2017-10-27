@@ -1387,7 +1387,6 @@
                   },
                   imageDragging: false,
                   extensions: {
-                    table: new MediumEditorTable(),
                     colorPicker: pickerExtension,
                 },
                 placeholder: {
@@ -1408,7 +1407,11 @@
                             captions: false,
                             captionPlaceholder: false,
                             actions: null
-                        }
+                        },
+                        embeds: {
+                          oembedProxy: 'https://medium.iframe.ly/api/oembed?iframe=1'
+                        },
+                        //tables: {}
                     },
                 });
             });
