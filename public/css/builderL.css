@@ -2,6 +2,29 @@
     /*color: #000;*/
 }
 
+.medium-insert-images.medium-insert-images-left, .medium-insert-images-left.mediumInsert, .mediumInsert.small{
+    max-width: 100%;
+}
+
+.medium-insert-images.medium-insert-images-right, .medium-insert-images-right.mediumInsert, .mediumInsert.small{
+    max-width: 100%;
+}
+
+.medium-insert-images figure, .mediumInsert figure, .medium-insert-embeds figure, .mediumInsert-embeds figure{
+    display: inline-block;
+}
+
+.image-text-wrap{
+    width: 100%;
+    height: 100%;
+}
+
+.image-span-wrap{
+    /*serve per il debug*/
+    background-color: blue;
+    display: inline-block;      
+    position: static;
+}
 
 .hide-full-height-option{
     visibility: hidden;
@@ -10,6 +33,7 @@
 .grid-stack > .grid-stack-item > .grid-stack-item-content {
     left: 0px;
     right: 0px;
+    overflow: hidden;
 }
 
 .rexlive-toolbox-fixed{

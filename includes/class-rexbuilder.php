@@ -209,6 +209,7 @@ class Rexbuilder {
 		
 		$plugin_public = new Rexbuilder_Public( $this->get_plugin_name(), $this->get_version() );
 		
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_media_uploader' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles_production' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts_production' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'print_post_custom_styles' );
@@ -220,6 +221,9 @@ class Rexbuilder {
 	
 		$this->loader->add_action( 'wp_ajax_rexlive_save_sections', $plugin_public, 'rexlive_save_sections' );
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_sections', $plugin_public, 'rexlive_save_sections' );
+
+		$this->loader->add_filter( 'ajax_query_attachments_args', $plugin_public, 'filter_media' );
+		$this->loader->add_shortcode( 'frontend-button', $plugin_public, 'frontend_shortcode' );
 	}
 	
 	/**

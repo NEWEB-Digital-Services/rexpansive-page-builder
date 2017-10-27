@@ -149,6 +149,7 @@ class Rexbuilder_Public {
 				wp_enqueue_style( 'medium-editor-style', plugin_dir_url( __FILE__ ) . 'css/medium-editor.min.css', array(), $this->version, 'all' );
 				wp_enqueue_style( 'medium-editor-instert-style', plugin_dir_url( __FILE__ ) . 'css/medium-editor-insert-plugin.min.css', array(), $this->version, 'all' );
 				wp_enqueue_style( 'medium-editor-insert-frontend-style', plugin_dir_url( __FILE__ ) . 'css/medium-editor-insert-plugin-frontend.min.css', array(), $this->version, 'all' );
+				wp_enqueue_style( 'medium-editor-tables-style.css', plugin_dir_url( __FILE__ ) . 'css/medium-editor-tables.min.css', array(), $this->version, 'all' );
 				//wp_enqueue_style( 'bootstrap-touchspin', plugin_dir_url( __FILE__ ) . 'css/jquery.bootstrap-touchspin.min.css', array(), $this->version, 'all' );
 				wp_enqueue_style( 'input-spinner', plugin_dir_url( __FILE__ ) . 'css/input-spinner.css', array(), $this->version, 'all' );
 				wp_enqueue_style( 'rexpansive-builderLive-style', plugin_dir_url( __FILE__ ) . 'css/builderL.css', array(), $this->version, 'all' );
@@ -235,7 +236,7 @@ class Rexbuilder_Public {
 					wp_enqueue_script( '0-isotope', plugin_dir_url( __FILE__ ) . 'js/0-isotope.pkgd.min.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'rangy-core', plugin_dir_url( __FILE__ ) . 'js/rangy-core.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'rangy-classapplier', plugin_dir_url( __FILE__ ) . 'js/rangy-classapplier.js', array( 'jquery' ), $this->version, true );
-					wp_enqueue_script( 'lodash', plugin_dir_url( __FILE__ ) . 'js/lodash.js', array( 'jquery' ), $this->version, true );
+					// wp_enqueue_script( 'lodash', plugin_dir_url( __FILE__ ) . 'js/lodash.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'gridstack', plugin_dir_url( __FILE__ ) . 'js/gridstack.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'gridstackUI', plugin_dir_url( __FILE__ ) . 'js/gridstack.jQueryUI.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( 'spectrumColor', plugin_dir_url( __FILE__ ) . 'js/spectrum.js', array( 'jquery' ), $this->version, true );
@@ -248,6 +249,7 @@ class Rexbuilder_Public {
 					wp_enqueue_script( 'cycle2-center', plugin_dir_url( __FILE__ ) . 'js/jquery.cycle2.center.min.js', array( 'jquery' ), $this->version, true );
 					
 					wp_enqueue_script( 'medium-editor-insert', plugin_dir_url( __FILE__ ) . 'js/medium-editor-insert-plugin.min.js', array( 'jquery' ), $this->version, true );
+					wp_enqueue_script( 'medium-editor-tables', plugin_dir_url( __FILE__ ) . 'js/medium-editor-tables.min.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( '2-jqueryEditor', plugin_dir_url( __FILE__ ) . 'js/2-jquery.perfectGridGalleryEditor.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( '4-modals', plugin_dir_url( __FILE__ ) . 'js/4-modals.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( '2-jquery', plugin_dir_url( __FILE__ ) . 'js/2-jquery.perfectGridGallery.js', array( 'jquery' ), $this->version, true );
@@ -408,5 +410,37 @@ class Rexbuilder_Public {
 		$response['id_recived'] = $post_id_to_update;
 
 		wp_send_json_success( $response );
+	}
+
+
+		
+	/**
+	 * Call wp_enqueue_media() to load up all the scripts we need for media uploader
+	 */
+	function enqueue_media_uploader() {
+		wp_enqueue_media();
+		wp_enqueue_script(
+			'some-script',
+			plugins_url( '/', __FILE__ ) . 'js/frontend.js',
+			array( 'jquery' ),
+			'2015-05-07'
+		);
+	}
+	/**
+	 * This filter insures users only see their own media
+	 */
+	function filter_media( $query ) {
+		// admins get to see everything
+		if ( ! current_user_can( 'manage_options' ) )
+			$query['author'] = get_current_user_id();
+		return $query;
+	}
+	function frontend_shortcode( $args ) {
+		// check if user can upload files
+		if ( current_user_can( 'upload_files' ) ) {
+			$str = __( 'Select File', 'frontend-media' );
+			return '<input id="frontend-button" type="button" value="' . $str . '" class="button" style="position: relative; z-index: 1;"><img id="frontend-image" />';
+		}
+		return __( 'Please Login To Upload', 'frontend-media' );
 	}
 }
