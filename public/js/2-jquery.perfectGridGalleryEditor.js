@@ -89,6 +89,7 @@
         init: function () {
 
             this.properties.firstStartGrid = true;
+            
             // getting section number
             this.properties.sectionNumber = ($(this.element).children('.grid-stack-item')[0].id).split('_')[1];
             this.$element.addClass('grid-number-' + this.properties.sectionNumber);
@@ -114,13 +115,15 @@
             this._linkResizeEvents();
 
             this._linkDragEvents();
-            this.creaBottone();
+            
+            //this.creaBottone();
 
             var gallery = this;
             var $elem;
             Util.elementIsDragging = false;
             Util.elementIsResizing = false;
             Util.editingElement = null;
+            
             $(gallery.element).children('.grid-stack-item').each(function () {
                 $elem = $(this);
                 gallery.updateSizeViewerText($elem);
@@ -137,8 +140,6 @@
             }, function () {
                 //gallery.hideToolBox();
             });
-
-
 
             $(window).on('keydown', { Gallery: this, Util: Util }, function (event) {
                 if (event.keyCode == 27 && $(event.target).parents('.perfect-grid-item') != 0) {
@@ -291,29 +292,80 @@
         },
 
         fixElementTextSize: function (block, $handler, event) {
-            var $textWrap = $($(block).find('.text-wrap'));
+            var $textWrap = $(block).find('.text-wrap');
             var $blockContent = $(block).find('.rex-custom-scrollbar');
             var maxBlockHeight, textHeight;
             maxBlockHeight = $blockContent.parents('.grid-item-content').innerHeight();
             textHeight = $textWrap.innerHeight();
-            if (this.settings.galleryLayout != 'masonry' && $handler !== null) {
+            var dataBlockSelector = '#' + block.id + '-builder-data';
+            if ($handler !== null) {
+                //updating scrollbar
                 $blockContent.mCustomScrollbar("update");
+
+                // aggiornamento della scrollbar del blocco se il layout e' masonry
+                if (this.settings.galleryLayout == 'masonry') {
+                    if ($blockContent.hasClass('mCS_no_scrollbar') || $blockContent.hasClass('mCS_disabled')){
+                        if ($(dataBlockSelector).attr('data-block_has_scrollbar') != 'false') {
+                            $(dataBlockSelector).attr('data-block_has_scrollbar', 'false');
+                        }
+                    } else {
+                        if ($(dataBlockSelector).attr('data-block_has_scrollbar') != 'true'){
+                            $(dataBlockSelector).attr('data-block_has_scrollbar', 'true');
+                        }
+                        $(dataBlockSelector).attr('data-block_height_masonry', block['attributes']['data-gs-height'].value);
+                    }
+                }
+                
             } else {
-                if ((this.settings.galleryLayout != 'masonry') && ($(block).find('.mCustomScrollBox').length === 0)) {
+                // primo start della barra
+                if ($(block).find('.mCustomScrollBox').length === 0) {
+                    if (this.settings.galleryLayout == 'masonry') {
+                        console.log('setting '+block.id+' height');
+                        var grid = this.$element.data('gridstack');
+                        var w = parseInt(block['attributes']['data-gs-width'].value);
+                        var h;
+                        if ($(dataBlockSelector).attr('data-block_has_scrollbar') == 'true') {
+                            h = parseInt($(dataBlockSelector).attr('data-block_height_masonry'));
+                        } else {
+                            $(dataBlockSelector).attr('data-block_has_scrollbar','false');
+                            $(dataBlockSelector).attr('data-block_height_masonry', 0);
+                            h = parseInt(block['attributes']['data-gs-height'].value);
+                            var i = 0;
+                            // differenza da ottenere per l'altezza giusta del blocco
+                            var n;
+                            if (textHeight >= maxBlockHeight) {
+                                n = textHeight - maxBlockHeight;
+                                while (i < n) {
+                                    h = h + 1;
+                                    i++;
+                                }
+                            } else {
+                                n = maxBlockHeight - textHeight;
+                                while (i < n) {
+                                    h = h - 1;
+                                    i++;
+                                }
+                            }
+                        }
+                        grid.update(block, null, null, w, h);
+                        maxBlockHeight = h;
+                    }
                     $blockContent.mCustomScrollbar();
-                    $blockContent.find('.mCustomScrollBox').css('max-height', maxBlockHeight);
+                    //$blockContent.find('.mCustomScrollBox').css('max-height', maxBlockHeight);
+                    
                     if (textHeight < maxBlockHeight) {
                         $blockContent.mCustomScrollbar('disable');
                     }
                 } else {
-                    if (this.settings.galleryLayout == 'masonry' || $blockContent.hasClass('mCS_no_scrollbar') || $blockContent.hasClass('mCS_disabled')) {
+                    // successive modifiche dovute al cambiamento del contenuto
+                    if ($blockContent.hasClass('mCS_no_scrollbar') || $blockContent.hasClass('mCS_disabled')) {
                         var w = parseInt(block['attributes']['data-gs-width'].value);
                         var h = parseInt(block['attributes']['data-gs-height'].value);
                         var grid = this.$element.data('gridstack');
                         var i = 0;
                         var n;
                         h = this.properties.elementStartingH;
-                        console.log('textHeight', textHeight, 'maxBlockHeight', maxBlockHeight, 'h', h);
+                        console.log('textHeight', textHeight, 'maxBlockHeight', maxBlockHeight, 'Starting height', h);
                         if (textHeight >= maxBlockHeight) {
                             if (this.settings.galleryLayout == 'masonry') {
                                 n = textHeight - maxBlockHeight;
@@ -327,19 +379,23 @@
                         } else {
                             //console.log(event.inputType);
                             //if(event.inputType == 'deleteContentBackward' || event.inputType == 'deleteByCut'){
-                                if (this.settings.galleryLayout == 'masonry') {
-                                    n = maxBlockHeight - textHeight;
-                                } else {
-                                    n = Math.floor((maxBlockHeight - textHeight) / this.properties.singleWidth);
-                                }
-                                while (i < n) {
-                                    h = h - 1;
-                                    i++;
-                                }
-                                h = Math.max(h, this.properties.elementStartingH);
+                            if (this.settings.galleryLayout == 'masonry') {
+                                n = maxBlockHeight - textHeight;
+                            } else {
+                                n = Math.floor((maxBlockHeight - textHeight) / this.properties.singleWidth);
+                            }
+                            while (i < n) {
+                                h = h - 1;
+                                i++;
+                            }
+                            h = Math.max(h, this.properties.elementStartingH);
                             //}
                         }
                         grid.update(block, null, null, w, h);
+                        //$blockContent.find('.mCustomScrollBox').css('max-height', h*this.properties.singleHeight);
+                    }
+
+                    if (this.properties.firstStartGrid){
                         $blockContent.mCustomScrollbar("update");
                     }
                 }
@@ -379,8 +435,8 @@
             var grid = G.$element.data('gridstack');
             var oldLayout = G.settings.galleryLayout;
             G.settings.galleryLayout = data['layout'];
-            G._defineDynamicPrivateProperties();
             if (oldLayout != G.settings.galleryLayout) {
+                G._defineDynamicPrivateProperties();
                 $(G.element).parents('.rexpansive_section').find('.section-data').attr({
                     'data-layout': G.settings.galleryLayout
                 });
@@ -397,26 +453,24 @@
 
                 // relaunching grid
                 if (G.settings.galleryLayout == 'masonry') {
-                    G._removeScrollbars();
                     G._launchGridStack();
                     G._calculateBlockHeightMasonry();
-                    $(G.element).children('.grid-stack-item').each(function () {
-                        G.updateSizeViewerText($(this));
-                    });
                 } else {
                     G.restoreBackup();
                     G._launchGridStack();
-                    var $blockContent;
-                    var $elem;
-                    $(G.element).children('.grid-stack-item').each(function () {
-                        $elem = $(this);
-                        $blockContent = $elem.find('.grid-item-content');
-                        if (!$elem.hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
-                            G.fixElementTextSize($elem, null, null);
-                        }
-                    });
-
                 }
+
+                var $blockContent;
+                var $elem;
+                $(G.element).children('.grid-stack-item').each(function () {
+                    $elem = $(this);
+                    G.updateSizeViewerText($elem);
+                    $blockContent = $elem.find('.grid-item-content');
+                    if (!$elem.hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
+                        G.properties.elementStartingH = parseInt(this['attributes']['data-gs-height'].value);
+                        G.fixElementTextSize(this, null, null);
+                    }
+                });
                 Util.elementIsResizing = false;
                 Util.elementIsDragging = false;
                 this.properties.firstStartGrid = true;
@@ -700,11 +754,12 @@
             var block = $elem[0];
             var width = this.properties.singleWidth;
             var size;
+            var dataBlockSelector = '#' + block.id + '-builder-data';
             switch ($case) {
                 case 'x': {
                     size = parseInt(block['attributes']['data-gs-x'].value) + 1;
                     block['attributes']['data-col'].value = size
-                    $('#' + block.id + '-builder-data').attr({
+                    $(dataBlockSelector).attr({
                         'data-col': size
                     });
                     break;
@@ -716,7 +771,7 @@
                         size = parseInt(block['attributes']['data-gs-y'].value) + 1;
                     }
                     block['attributes']['data-row'].value = size;
-                    $('#' + block.id + '-builder-data').attr({
+                    $(dataBlockSelector).attr({
                         'data-row': size
                     });
                     break;
@@ -728,7 +783,7 @@
                     // updating element class
                     $(block).removeClass("w" + oldW);
                     $(block).addClass("w" + w);
-                    $('#' + block.id + '-builder-data').attr({
+                    $(dataBlockSelector).attr({
                         'data-size_x': w
                     });
                     break;
@@ -746,7 +801,7 @@
                     // updating element class
                     $(block).removeClass("h" + oldH);
                     $(block).addClass("h" + h);
-                    $('#' + block.id + '-builder-data').attr({
+                    $(dataBlockSelector).attr({
                         'data-size_y': h
                     });
                     break;
@@ -1021,7 +1076,7 @@
         _prepareElement: function (elem) {
             var gallery = this;
             var blockContent;
-            var imageWidth = 0;
+            var imageWidth = -1;
             var $elem = $(elem);
             gallery._updateElementPadding($elem.find('.grid-stack-item-content'));
             gallery._addHandles(elem, 'e, s, w, se, sw');
@@ -1029,12 +1084,14 @@
 
             blockContent = $elem.find('.grid-item-content');
             imageWidth = blockContent.attr('data-background-image-width');
-            if ($elem.outerWidth() < imageWidth) {
-                if (!blockContent.hasClass('small-width')) {
-                    blockContent.addClass('small-width');
+            if (imageWidth != -1) {
+                if ($elem.outerWidth() < imageWidth) {
+                    if (!blockContent.hasClass('small-width')) {
+                        blockContent.addClass('small-width');
+                    }
+                } else {
+                    blockContent.removeClass('small-width');
                 }
-            } else {
-                blockContent.removeClass('small-width');
             }
 
             $('#' + elem.id).attr({
@@ -1044,17 +1101,20 @@
             });
 
             // adding text wrap element if it's not there
-            var textEl;
+            var textWrapEl;
             if (($elem.find('.text-wrap')).length == 0) {
-                textEl = document.createElement('div');
-                $(textEl).addClass('text-wrap');
-                $($elem.find('.rex-custom-scrollbar')).append(textEl);
+                textWrapEl = document.createElement('div');
+                $(textWrapEl).addClass('text-wrap');
+                $($elem.find('.rex-custom-scrollbar')).append(textWrapEl);
             }  else {
-                textEl =  $elem.find('.text-wrap');
+                //if there is text wrap, adding a span element to fix the text editor
+                textWrapEl =  $elem.find('.text-wrap');
                 var spanEl = document.createElement('span');
                 $(spanEl).css('display', 'none');
-                textEl.append(spanEl);
+                textWrapEl.append(spanEl);
             }
+
+            // adding element listeners
             $elem.click(function (event) {
                 gallery._focusElement($elem);
             });
@@ -1131,7 +1191,7 @@
         },
 
         _focusElement: function ($elem) {
-            $elem.children('.el-size-viewer').addClass('focused');
+            $elem.find('.el-size-viewer').addClass('focused');
             $elem.addClass('focused');
             $elem.parent().addClass('focused');
             $elem.parent().parent().addClass('focused');
@@ -1140,7 +1200,7 @@
         },
 
         _unFocusElement: function ($elem) {
-            $elem.children('.el-size-viewer').removeClass('focused');
+            $elem.find('.el-size-viewer').removeClass('focused');
             $elem.removeClass('focused');
             $elem.parent().removeClass('focused');
             $elem.parent().parent().removeClass('focused');
@@ -1178,13 +1238,15 @@
                         $blockContent.removeClass('small-width');
                     }
                     xView = Math.round($(block).outerWidth() / gallery.properties.singleWidth);
+
                     if (gallery.settings.galleryLayout == 'masonry') {
                         yView = $(block).outerHeight();
                     } else {
-                        if (!$(block).hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
-                            gallery.fixElementTextSize(block, gallery.properties.resizeHandle, null);
-                        }
                         yView = Math.round($(block).outerHeight() / gallery.properties.singleWidth);
+                    }
+
+                    if (!$(block).hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
+                        gallery.fixElementTextSize(block, gallery.properties.resizeHandle, null);
                     }
                     gallery.updateSizeViewerText(block, xView, yView);
                     /* if (gallery.properties.resizeHandle == 'w' || gallery.properties.resizeHandle == 'sw') {
@@ -1199,6 +1261,9 @@
                 $('#' + block.id).attr("data-gs-max-width", "500");
                 gallery.updateAllElementsProperties();
                 Util.elementIsResizing = false;
+                if (!$(block).hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
+                    gallery.fixElementTextSize(block, gallery.properties.resizeHandle, null);
+                }
                 gallery.$element.trigger('change');
             });
         },
@@ -1416,7 +1481,7 @@
                 });
             });
 
-            editor.subscribe('editableInput', function (e) {
+             editor.subscribe('editableInput', function (e) {
                 console.log(e);
                 if ($('.medium-insert-images figure img, .mediumInsert figure img').length > 0) {
                     $('.medium-insert-images figure img, .mediumInsert figure img').each(function () {
@@ -1452,9 +1517,9 @@
                         }
                     });
                 }
-                //gallery.fixElementTextSize(gallery.properties.elementEdited, null, e);
+                gallery.fixElementTextSize(gallery.properties.elementEdited, null, e);
             });
-
+ 
             var $elem;
             var $blockContent;
             $(gallery.$element).find('.rex-text-editable').each(function () {

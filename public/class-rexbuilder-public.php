@@ -427,6 +427,7 @@ class Rexbuilder_Public {
 			'2015-05-07'
 		);
 	}
+	
 	/**
 	 * This filter insures users only see their own media
 	 */
