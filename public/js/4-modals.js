@@ -329,44 +329,63 @@
 		$(document).on('click', '#section-masonry', function (e) {
 			$('#bg-set-full-section').parent().addClass('hide-full-height-option');
 		});
+		//codice per il cambio live di editabile / non editabile
+		/*{
+			var grigliaEditabile = true;
+			if (grigliaEditabile) {
+				alert('disattivazione griglia');
+				$('.grid-stack-row').each(function () {
+					var $this = $(this);
+					$this.perfectGridGalleryEditor('frontEndMode');
+				});
+				grigliaEditabile = false;
+			} else {
+				alert('attivazione griglia');
+				$('.grid-stack-row').each(function () {
+					var $this = $(this);
+					$this.perfectGridGalleryEditor('editorMode');
+				});
+				grigliaEditabile = true;
+			}
+		} */
 
 		$(document).on('click', '#builder-save-grid-btn', function (e) {
 			// ajx call
 			// - clear previuos data
 			// - save new data
+			
+				var shortcodePage = '';
+				$('.grid-stack-row').each(function () {
+					var $this = $(this);
+					$this.perfectGridGalleryEditor('fillEmptySpaces');
+					$this.perfectGridGalleryEditor('updateAllElementsProperties');
+					var $section = $this.parents('.rexpansive_section');
+					shortcodePage += createSectionShortcode($section);
+				});
 
-			var shortcodePage = '';
-			$('.grid-stack-row').each(function () {
-				var $this = $(this);
-				$this.perfectGridGalleryEditor('fillEmptySpaces');
-				$this.perfectGridGalleryEditor('updateAllElementsProperties');
-				var $section = $this.parents('.rexpansive_section');
-				shortcodePage += createSectionShortcode($section);
-			});
-
-			var idPost = parseInt($('#id-post').attr('data-post-id'));
-			$.ajax({
-				type: 'POST',
-				dataType: 'json',
-				url: rexajax.ajaxurl,
-				data: {
-					action: 'rexlive_save_sections',
-					nonce_param: rexajax.rexnonce,
-					shortcode: shortcodePage,
-					post_id_to_update: idPost
-				},
-				success: function (response) {
-					console.log(response);
-					if (response.success) {
-						console.log('chiama effettttuuuata con successo');
+				var idPost = parseInt($('#id-post').attr('data-post-id'));
+				$.ajax({
+					type: 'POST',
+					dataType: 'json',
+					url: rexajax.ajaxurl,
+					data: {
+						action: 'rexlive_save_sections',
+						nonce_param: rexajax.rexnonce,
+						shortcode: shortcodePage,
+						post_id_to_update: idPost
+					},
+					success: function (response) {
+						console.log(response);
+						if (response.success) {
+							console.log('chiama effettttuuuata con successo');
+						}
+						console.log('chiama effettuata con successo');
+					},
+					error: function (response) {
+						console.log('errore chiama ajax');
 					}
-					console.log('chiama effettuata con successo');
-				},
-				error: function (response) {
-					console.log('errore chiama ajax');
-				}
-			});
-
+				});
+			
 		});
 
 		var createBlockShortcode = function ($elem) {

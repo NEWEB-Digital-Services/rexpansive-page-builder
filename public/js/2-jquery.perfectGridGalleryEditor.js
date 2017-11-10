@@ -23,7 +23,7 @@
 
     // The actual plugin constructor
     function perfectGridGalleryEditor(element, options) {
-        
+
         this.element = element;
         this.$element = $(element);
 
@@ -78,7 +78,9 @@
             serializedData: [],
             firstStartGrid: false,
             lastIDBlock: null,
-            textWrapEditing: null
+            textWrapEditing: null,
+            gridEditable: false,
+            mediumEditorIstance: null
         };
 
         this.init();
@@ -89,7 +91,7 @@
         init: function () {
 
             this.properties.firstStartGrid = true;
-            
+
             // getting section number
             this.properties.sectionNumber = ($(this.element).children('.grid-stack-item')[0].id).split('_')[1];
             this.$element.addClass('grid-number-' + this.properties.sectionNumber);
@@ -115,7 +117,7 @@
             this._linkResizeEvents();
 
             this._linkDragEvents();
-            
+
             //this.creaBottone();
 
             var gallery = this;
@@ -123,7 +125,7 @@
             Util.elementIsDragging = false;
             Util.elementIsResizing = false;
             Util.editingElement = null;
-            
+
             $(gallery.element).children('.grid-stack-item').each(function () {
                 $elem = $(this);
                 gallery.updateSizeViewerText($elem);
@@ -133,45 +135,53 @@
                 }
             });
 
-            this._launchTextEditor();
+            if(this.properties.gridEditable){
+                this._launchTextEditor();
+            }
 
             (gallery.$element).parent().parent().hover(function (event) {
-                gallery.showToolBox();
+                if (gallery.properties.gridEditable) {
+                    gallery.showToolBox();
+                }
             }, function () {
                 //gallery.hideToolBox();
             });
 
             $(window).on('keydown', { Gallery: this, Util: Util }, function (event) {
-                if (event.keyCode == 27 && $(event.target).parents('.perfect-grid-item') != 0) {
-                    console.log(event);
-                    var G = event.data.Gallery;
-                    var grid = G.$element.data('gridstack');
-                    grid.enable();
-                    $(G.$element).addClass('gridActive');
-                    G.properties.elementEdited = null;
-                    gallery.properties.textWrapEditing = null;
-                    G._showSizeViewer($(event.target).parents('.perfect-grid-item'));
-                    if(typeof(Util.editingElement) !== null){
-                        Util.editingElement.blur();
-                        Util.editingElement = null;
-                    }
-                }
-            });
-            
-            $(window).on('mousedown', { Gallery: this, Util: Util }, function (event) {
-                var G = event.data.Gallery;
-                var target = event.target;
-                if (G.properties.elementEdited !== null && $(target).parents('.medium-editor-toolbar').length === 0 && $(target).parents('.sp-container').length === 0) {
-                    var $items = $($(target).parents('.grid-stack-item'));
-                    if (($items.length === 0) || $items[0].id !== G.properties.elementEdited.id) {
+                if (event.data.Gallery.properties.gridEditable) {
+                    if (event.keyCode == 27 && $(event.target).parents('.perfect-grid-item') != 0) {
+                        console.log(event);
+                        var G = event.data.Gallery;
                         var grid = G.$element.data('gridstack');
                         grid.enable();
                         $(G.$element).addClass('gridActive');
                         G.properties.elementEdited = null;
                         gallery.properties.textWrapEditing = null;
-                        if(typeof(Util.editingElement) !== null){
+                        G._showSizeViewer($(event.target).parents('.perfect-grid-item'));
+                        if (typeof (Util.editingElement) !== null) {
                             Util.editingElement.blur();
                             Util.editingElement = null;
+                        }
+                    }
+                }
+            });
+
+            $(window).on('mousedown', { Gallery: this, Util: Util }, function (event) {
+                if (event.data.Gallery.properties.gridEditable) {
+                    var G = event.data.Gallery;
+                    var target = event.target;
+                    if (G.properties.elementEdited !== null && $(target).parents('.medium-editor-toolbar').length === 0 && $(target).parents('.sp-container').length === 0) {
+                        var $items = $($(target).parents('.grid-stack-item'));
+                        if (($items.length === 0) || $items[0].id !== G.properties.elementEdited.id) {
+                            var grid = G.$element.data('gridstack');
+                            grid.enable();
+                            $(G.$element).addClass('gridActive');
+                            G.properties.elementEdited = null;
+                            gallery.properties.textWrapEditing = null;
+                            if (typeof (Util.editingElement) !== null) {
+                                Util.editingElement.blur();
+                                Util.editingElement = null;
+                            }
                         }
                     }
                 }
@@ -197,6 +207,7 @@
                         });
                     }
                 }
+
             });
 
             $(window).on('load', { Gallery: this, Util: Util }, function (event) {
@@ -228,6 +239,10 @@
                 gallery.$element.trigger('change');
             });
 
+
+            if (!this.properties.gridEditable) {
+                this.frontEndMode();
+            }
 
             // launching event 'editor is ready'
             var gridReadyEvent = jQuery.Event("gridGalleryEditorReady");
@@ -304,30 +319,30 @@
 
                 // aggiornamento della scrollbar del blocco se il layout e' masonry
                 if (this.settings.galleryLayout == 'masonry') {
-                    if ($blockContent.hasClass('mCS_no_scrollbar') || $blockContent.hasClass('mCS_disabled')){
+                    if ($blockContent.hasClass('mCS_no_scrollbar') || $blockContent.hasClass('mCS_disabled')) {
                         if ($(dataBlockSelector).attr('data-block_has_scrollbar') != 'false') {
                             $(dataBlockSelector).attr('data-block_has_scrollbar', 'false');
                         }
                     } else {
-                        if ($(dataBlockSelector).attr('data-block_has_scrollbar') != 'true'){
+                        if ($(dataBlockSelector).attr('data-block_has_scrollbar') != 'true') {
                             $(dataBlockSelector).attr('data-block_has_scrollbar', 'true');
                         }
                         $(dataBlockSelector).attr('data-block_height_masonry', block['attributes']['data-gs-height'].value);
                     }
                 }
-                
+
             } else {
                 // primo start della barra
                 if ($(block).find('.mCustomScrollBox').length === 0) {
                     if (this.settings.galleryLayout == 'masonry') {
-                        console.log('setting '+block.id+' height');
+                        console.log('setting ' + block.id + ' height');
                         var grid = this.$element.data('gridstack');
                         var w = parseInt(block['attributes']['data-gs-width'].value);
                         var h;
                         if ($(dataBlockSelector).attr('data-block_has_scrollbar') == 'true') {
                             h = parseInt($(dataBlockSelector).attr('data-block_height_masonry'));
                         } else {
-                            $(dataBlockSelector).attr('data-block_has_scrollbar','false');
+                            $(dataBlockSelector).attr('data-block_has_scrollbar', 'false');
                             $(dataBlockSelector).attr('data-block_height_masonry', 0);
                             h = parseInt(block['attributes']['data-gs-height'].value);
                             var i = 0;
@@ -352,7 +367,7 @@
                     }
                     $blockContent.mCustomScrollbar();
                     //$blockContent.find('.mCustomScrollBox').css('max-height', maxBlockHeight);
-                    
+
                     if (textHeight < maxBlockHeight) {
                         $blockContent.mCustomScrollbar('disable');
                     }
@@ -395,7 +410,7 @@
                         //$blockContent.find('.mCustomScrollBox').css('max-height', h*this.properties.singleHeight);
                     }
 
-                    if (this.properties.firstStartGrid){
+                    if (this.properties.firstStartGrid) {
                         $blockContent.mCustomScrollbar("update");
                     }
                 }
@@ -698,7 +713,7 @@
             });
         },
 
-        creaBottone: function(){
+        creaBottone: function () {
 
             var bottone = document.createElement('button');
 
@@ -708,40 +723,40 @@
                 'id': 'frontend-button'
             });
             var file_frame; // variable for the wp.media file_frame
-            
+
             // attach a click event (or whatever you want) to some element on your page
-            $( '#frontend-button' ).on( 'click', function( event ) {
+            $('#frontend-button').on('click', function (event) {
                 event.preventDefault();
-        
+
                 // if the file_frame has already been created, just reuse it
-                if ( file_frame ) {
+                if (file_frame) {
                     file_frame.open();
                     return;
-                }  
-        
+                }
+
                 file_frame = wp.media.frames.file_frame = wp.media({
-                    title: $( this ).data( 'uploader_title' ),
+                    title: $(this).data('uploader_title'),
                     button: {
-                        text: $( this ).data( 'uploader_button_text' ),
+                        text: $(this).data('uploader_button_text'),
                     },
                     multiple: false // set this to true for multiple file selection
                 });
 
                 console.log(file_frame);
-        
-                file_frame.on( 'select', function() {
+
+                file_frame.on('select', function () {
                     var attachment = file_frame.state().get('selection').first().toJSON();
-        
+
                     // do something with the file here
-                    $( '#frontend-button' ).hide();
-                    $( '#frontend-image' ).attr('src', attachment.url);
+                    $('#frontend-button').hide();
+                    $('#frontend-image').attr('src', attachment.url);
                     console.log(attachment);
                 });
-        
+
                 file_frame.open();
             });
         },
-        
+
 
         updateElementAllProperties: function ($elem) {
             this.updateElementSize($elem, 'x');
@@ -1106,9 +1121,9 @@
                 textWrapEl = document.createElement('div');
                 $(textWrapEl).addClass('text-wrap');
                 $($elem.find('.rex-custom-scrollbar')).append(textWrapEl);
-            }  else {
+            } else {
                 //if there is text wrap, adding a span element to fix the text editor
-                textWrapEl =  $elem.find('.text-wrap');
+                textWrapEl = $elem.find('.text-wrap');
                 var spanEl = document.createElement('span');
                 $(spanEl).css('display', 'none');
                 textWrapEl.append(spanEl);
@@ -1116,60 +1131,72 @@
 
             // adding element listeners
             $elem.click(function (event) {
-                gallery._focusElement($elem);
+                if (gallery.properties.gridEditable) {
+                    gallery._focusElement($elem);
+                }
             });
 
             $elem.mousedown(function (event) {
-                if ((gallery.properties.elementEdited === null) && !$elem.hasClass('focused')) {
-                    gallery._focusElement($elem);
+                if (gallery.properties.gridEditable) {
+                    if ((gallery.properties.elementEdited === null) && !$elem.hasClass('focused')) {
+                        gallery._focusElement($elem);
+                    }
                 }
             });
 
             $(document).mouseup(function (e) {
-                gallery._unFocusElement($elem);
-                // FIXARE
-                /* $($elem[0].id).trigger('hover'); */
+                if (gallery.properties.gridEditable) {
+                    gallery._unFocusElement($elem);
+                    // FIXARE
+                    /* $($elem[0].id).trigger('hover'); */
+                }
             });
 
             $elem.hover(function (event) {
-                if (!Util.elementIsResizing && Util.editingElement === null) {
-                    gallery._focusElement($elem);
-                }
-                if (gallery.properties.elementEdited != null) {
-                    var grid = gallery.$element.data('gridstack');
-                    if ($($elem)[0].id !== gallery.properties.elementEdited.id) {
-                        grid.enable();
-                        $(gallery.$element).addClass('gridActive');
+                if (gallery.properties.gridEditable) {
+                    if (!Util.elementIsResizing && Util.editingElement === null) {
                         gallery._focusElement($elem);
-                    } else {
-                        grid.disable();
-                        $(gallery.$element).removeClass('gridActive');
-                        gallery._unFocusElement($elem);
+                    }
+                    if (gallery.properties.elementEdited != null) {
+                        var grid = gallery.$element.data('gridstack');
+                        if ($($elem)[0].id !== gallery.properties.elementEdited.id) {
+                            grid.enable();
+                            $(gallery.$element).addClass('gridActive');
+                            gallery._focusElement($elem);
+                        } else {
+                            grid.disable();
+                            $(gallery.$element).removeClass('gridActive');
+                            gallery._unFocusElement($elem);
+                        }
                     }
                 }
             }, function () {
-                if (!Util.elementIsResizing) {
-                    gallery._unFocusElement($elem);
+                if (gallery.properties.gridEditable) {
+                    if (!Util.elementIsResizing) {
+                        gallery._unFocusElement($elem);
+                    }
                 }
             });
 
             $elem.dblclick(function () {
-                gallery._hideSizeViewer($elem);
-                Util.editingElement = $elem;
-                var grid = gallery.$element.data('gridstack');
-                grid.disable();
-                $(gallery.$element).removeClass('gridActive');
-                gallery.properties.elementEdited = elem;
-                gallery.properties.elementStartingH = parseInt($elem[0]['attributes']['data-gs-height'].value);
-                var textWrap = $elem.find('.text-wrap');
-                textWrap.trigger('externalInteraction');
-                gallery.properties.textWrapEditing = textWrap;
-                if (!(textWrap.text().length) || textWrap.text() == '""') {
-                    $(textWrap)[0].focus();
+                if (gallery.properties.gridEditable) {
+                    gallery._hideSizeViewer($elem);
+                    Util.editingElement = $elem;
+                    var grid = gallery.$element.data('gridstack');
+                    grid.disable();
+                    $(gallery.$element).removeClass('gridActive');
+                    gallery.properties.elementEdited = elem;
+                    gallery.properties.elementStartingH = parseInt($elem[0]['attributes']['data-gs-height'].value);
+                    var textWrap = $elem.find('.text-wrap');
+                    textWrap.trigger('externalInteraction');
+                    gallery.properties.textWrapEditing = textWrap;
+                    if (!(textWrap.text().length) || textWrap.text() == '""') {
+                        $(textWrap)[0].focus();
+                    }
+                    //$(textWrap.lastChild)[0].focus();
+                    /* if()#mCSB_1_container > div > div
+                    $()[0].focus(); */
                 }
-                //$(textWrap.lastChild)[0].focus();
-                /* if()#mCSB_1_container > div > div
-                $()[0].focus(); */
             });
         },
 
@@ -1206,6 +1233,26 @@
             $elem.parent().parent().removeClass('focused');
             $elem.parent().parent().parent().removeClass('focused');
             $elem.parent().parent().parent().parent().removeClass('focused');
+        },
+
+        frontEndMode: function () {
+            this.properties.gridEditable = false;
+            var grid = this.$element.data('gridstack');
+            grid.disable();
+
+            //per adesso è nascosta così ma è da cambiare
+            $('.rexlive-toolbox-fixed').css('display', 'none');
+            //finire di fixare per riattivare l'editor di testo
+            //this.properties.mediumEditorIstance.destroy();
+            console.log('griglia disabilitata');
+        },
+
+        editorMode: function () {
+            this.properties.gridEditable = true;
+            var grid = this.$element.data('gridstack');
+            grid.enable();
+            //this.properties.mediumEditorIstance.setup();
+            console.log('griglia abilitata');
         },
 
         _linkResizeEvents: function () {
@@ -1449,9 +1496,9 @@
                         'unorderedlist',
                         'table'
                     ]
-                  },
-                  imageDragging: false,
-                  extensions: {
+                },
+                imageDragging: false,
+                extensions: {
                     colorPicker: pickerExtension,
                 },
                 placeholder: {
@@ -1474,14 +1521,14 @@
                             actions: null
                         },
                         embeds: {
-                          oembedProxy: 'https://medium.iframe.ly/api/oembed?iframe=1'
+                            oembedProxy: 'https://medium.iframe.ly/api/oembed?iframe=1'
                         },
                         //tables: {}
                     },
                 });
             });
 
-             editor.subscribe('editableInput', function (e) {
+            editor.subscribe('editableInput', function (e) {
                 console.log(e);
                 if ($('.medium-insert-images figure img, .mediumInsert figure img').length > 0) {
                     $('.medium-insert-images figure img, .mediumInsert figure img').each(function () {
@@ -1519,13 +1566,15 @@
                 }
                 gallery.fixElementTextSize(gallery.properties.elementEdited, null, e);
             });
- 
+
             var $elem;
             var $blockContent;
             $(gallery.$element).find('.rex-text-editable').each(function () {
                 $elem = $(this);
                 gallery._addElementToTextEditor(editor, $elem);
             });
+
+            this.properties.mediumEditorIstance = editor;
         },
 
         _setParentGridPadding: function () {
@@ -1699,7 +1748,7 @@
                 if ($($this.find('.text-wrap')[0]).text().length != 0) {
                     textHeight = $($this.find('.text-wrap')[0]).innerHeight() + gutter;
                 }
-                
+
                 if ((backgroundHeight == 0 && textHeight == 0) || $this.hasClass('youtube-player') || ($this.hasClass('empty-content') && textHeight == 0) || $this.hasClass('block-has-slider') || $elem.hasClass('block-has-slider')) {
                     origH = $elem.attr('data-height');
                     defaultHeight = Math.round(sw * origH);
