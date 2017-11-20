@@ -79,7 +79,7 @@
             firstStartGrid: false,
             lastIDBlock: null,
             textWrapEditing: null,
-            gridEditable: false,
+            gridEditable: true,
             mediumEditorIstance: null
         };
 
@@ -98,13 +98,13 @@
 
             this._saveStateElements();
 
-            this._loadIDsBlocks();
+            this._findLastIDBlock();
 
             this._defineDataSettings();
 
             this._setGutter();
 
-            this._definePrivateProperties();
+            this._defineSeparatorProperties();
 
             this._setParentGridPadding();
 
@@ -226,13 +226,13 @@
 
                 $(gallery.element).on('change', { Gallery: gallery, Util: Util }, function (event, items) {
                     if (event.data.Gallery.properties.firstStartGrid) {
-                        event.data.Gallery.saveGrid();
+                        //event.data.Gallery.saveGrid();
                         console.log('First Start');
                         event.data.Gallery.properties.firstStartGrid = false;
                     } else {
                         if (!Util.elementIsDragging && !Util.elementIsResizing) {
                             event.data.Gallery.updateAllElementsProperties();
-                            event.data.Gallery.saveGrid();
+                            //event.data.Gallery.saveGrid();
                         }
                     }
                 });
@@ -270,7 +270,7 @@
             }, 400); */
         },
 
-        _loadIDsBlocks: function () {
+        _findLastIDBlock: function () {
             var i = 0;
             var gallery = this;
             var max = -1;
@@ -630,7 +630,7 @@
             var gallery = this;
             var grid = this.$element.data('gridstack');
             var idNewBlock = "block_" + gallery.properties.sectionNumber + "_" + (gallery.properties.lastIDBlock + 1);
-            gallery.properties.lastIDBlock++;
+            gallery.properties.lastIDBlock = gallery.properties.lastIDBlock + 1;
 
             $(divGridItem).attr({
                 'id': idNewBlock,
@@ -666,10 +666,12 @@
             $(divBlockOverlay).appendTo(divGridItemContent);
             $(divGridItemContent).appendTo(divGridStackContent);
             $(divGridStackContent).appendTo(divGridItem);
+            
             this._prepareElement(divGridItem);
             this.createElementProperties(divGridItem);
             grid.addWidget(divGridItem, x, y, w, h, false);
             this.updateSizeViewerText($(divGridItem), w, h);
+
             return divGridItem;
         },
 
@@ -708,8 +710,7 @@
         updateAllElementsProperties: function () {
             var Gallery = this;
             this.$element.find('.perfect-grid-item').each(function () {
-                //console.log('updatinng '+this.id+' element');
-                Gallery.updateElementAllProperties($(this));
+                Gallery.updateElementAllProperties(this);
             });
         },
 
@@ -758,21 +759,25 @@
         },
 
 
-        updateElementAllProperties: function ($elem) {
-            this.updateElementSize($elem, 'x');
-            this.updateElementSize($elem, 'y');
-            this.updateElementSize($elem, 'w');
-            this.updateElementSize($elem, 'h');
+        updateElementAllProperties: function (elem) {
+            this._updateElementSize(elem, 'x');
+            this._updateElementSize(elem, 'y');
+            this._updateElementSize(elem, 'w');
+            this._updateElementSize(elem, 'h');
         },
 
-        updateElementSize: function ($elem, $case) {
-            var block = $elem[0];
+        _updateElementSize: function (elem, $case) {
+            var block = elem;
             var width = this.properties.singleWidth;
             var size;
             var dataBlockSelector = '#' + block.id + '-builder-data';
             switch ($case) {
                 case 'x': {
-                    size = parseInt(block['attributes']['data-gs-x'].value) + 1;
+                    size = parseInt(block['attributes']['data-gs-x'].value);
+                    
+                    // gridster works 1 to n not 0 to n-1
+                    size = size + 1;
+                    
                     block['attributes']['data-col'].value = size
                     $(dataBlockSelector).attr({
                         'data-col': size
@@ -781,10 +786,14 @@
                 }
                 case 'y': {
                     if (this.settings.galleryLayout == 'masonry') {
-                        size = Math.round(parseInt(block['attributes']['data-gs-y'].value) * this.properties.singleHeight / width) + 1;
+                        size = Math.round(parseInt(block['attributes']['data-gs-y'].value) * this.properties.singleHeight / width);
                     } else {
-                        size = parseInt(block['attributes']['data-gs-y'].value) + 1;
+                        size = parseInt(block['attributes']['data-gs-y'].value);
                     }
+
+                    // gridster works 1 to n not 0 to n-1
+                    size = size + 1;
+
                     block['attributes']['data-row'].value = size;
                     $(dataBlockSelector).attr({
                         'data-row': size
@@ -852,6 +861,7 @@
             if (this.settings.galleryLayout == 'masonry') {
                 this.properties.singleHeight = 5;
             } else {
+                // Layout is fixed
                 if (this.settings.fullHeight == 'true') {
                     this.properties.singleHeight = this._viewport().height / this._calculateGridHeight();
                 } else {
@@ -863,10 +873,10 @@
         _calculateGridHeight: function () {
             var heightTot = 0;
             var hTemp;
-            var $this;
+            var $gridItem;
             this.$element.find('.grid-stack-item').each(function () {
-                $this = $(this);
-                hTemp = parseInt($this.attr('data-gs-height')) + parseInt($this.attr('data-gs-y'));
+                $gridItem = $(this);
+                hTemp = parseInt($gridItem.attr('data-gs-height')) + parseInt($gridItem.attr('data-gs-y'));
                 if (hTemp > heightTot) {
                     heightTot = hTemp;
                 }
@@ -874,7 +884,7 @@
             return heightTot;
         },
 
-        _definePrivateProperties: function () {
+        _defineSeparatorProperties: function () {
             //console.log('defininfg private properties');
             if (this.isEven(this.properties.gutter)) {
                 this.properties.halfSeparatorTop = this.properties.gutter / 2;
@@ -915,6 +925,7 @@
             $(this.element).outerHeight(grid['attributes']['data-gs-current-height'].value * this.properties.singleWidth);
         },
 
+        // fixes gutter if there is, this function is applied on the div used by gridstack for the element
         _updateElementPadding: function ($elem) {
             $elem.css({
                 'padding-left': this.properties.halfSeparatorElementLeft,
@@ -1069,9 +1080,11 @@
 
         updateSizeViewerText: function ($elem, x, y) {
             if (x === undefined || y === undefined) {
+                var x, y;
                 x = $($elem)[0]['attributes']['data-gs-width'].value;
-                if (this.settings.layout == 'masonry') {
+                if (this.settings.galleryLayout == 'masonry') {
                     y = $($elem)[0]['attributes']['data-gs-height'].value * this.properties.singleHeight;
+                    y = Math.round(y);
                 } else {
                     y = $($elem)[0]['attributes']['data-gs-height'].value;
                 }
@@ -1088,11 +1101,15 @@
             this.$element.parents('.rexpansive_section').children('.toolBox').removeClass('tool-box-active');
         },
 
+        /**
+         * Receives the element to prepare, not jquery object
+         */
         _prepareElement: function (elem) {
             var gallery = this;
             var blockContent;
             var imageWidth = -1;
             var $elem = $(elem);
+
             gallery._updateElementPadding($elem.find('.grid-stack-item-content'));
             gallery._addHandles(elem, 'e, s, w, se, sw');
             gallery._addSizeViewer(elem);
@@ -1109,7 +1126,9 @@
                 }
             }
 
-            $('#' + elem.id).attr({
+            //$('#' + elem.id)
+            
+            $elem.attr({
                 "data-gs-min-width": 1,
                 "data-gs-min-height": 1,
                 "data-gs-max-width": 500
@@ -1284,34 +1303,38 @@
                     } else {
                         $blockContent.removeClass('small-width');
                     }
+
                     xView = Math.round($(block).outerWidth() / gallery.properties.singleWidth);
 
                     if (gallery.settings.galleryLayout == 'masonry') {
                         yView = $(block).outerHeight();
                     } else {
-                        yView = Math.round($(block).outerHeight() / gallery.properties.singleWidth);
+                        yView = Math.round($(block).outerHeight() / gallery.properties.singleHeight);
                     }
+
+                    gallery.updateSizeViewerText(block, xView, yView);
 
                     if (!$(block).hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
                         gallery.fixElementTextSize(block, gallery.properties.resizeHandle, null);
                     }
-                    gallery.updateSizeViewerText(block, xView, yView);
                     /* if (gallery.properties.resizeHandle == 'w' || gallery.properties.resizeHandle == 'sw') {
                         ;
                     } */
                 }
             }).on('gsresizestop', function (event, elem) {
-                gallery.updateSizeViewerText(elem);
-                if (gallery.settings.galleryLayout == 'masonry') {
-                    $('#' + block.id).attr("data-height", Math.round(($('#' + block.id).attr("data-gs-height")) / gallery.properties.singleWidth));
+                if (Util.elementIsResizing) {
+                    gallery.updateSizeViewerText(elem);
+                    if (gallery.settings.galleryLayout == 'masonry') {
+                        $('#' + block.id).attr("data-height", Math.round(($('#' + block.id).attr("data-gs-height")) / gallery.properties.singleWidth));
+                    }
+                    $('#' + block.id).attr("data-gs-max-width", "500");
+                    gallery.updateAllElementsProperties();
+                    Util.elementIsResizing = false;
+                    if (!$(block).hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
+                        gallery.fixElementTextSize(block, gallery.properties.resizeHandle, null);
+                    }
+                    gallery.$element.trigger('change');
                 }
-                $('#' + block.id).attr("data-gs-max-width", "500");
-                gallery.updateAllElementsProperties();
-                Util.elementIsResizing = false;
-                if (!$(block).hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
-                    gallery.fixElementTextSize(block, gallery.properties.resizeHandle, null);
-                }
-                gallery.$element.trigger('change');
             });
         },
 
@@ -1551,14 +1574,20 @@
                                     'sw': '.ui-resizable-sw'
                                 },
                                 start: function (event, ui) {
-                                    console.log('startResize image');
+                                    if ($(ui.element).is('span')) {
+                                        console.log('startResize image');
+                                    }
                                 },
                                 resize: function (event, ui) {
-                                    console.log('resizing image');
+                                    if ($(ui.element).is('span')) {
+                                        console.log('resizing image');
+                                    }
                                 },
                                 stop: function (event, ui) {
-                                    console.log($(ui.element).innerWidth(), $(ui.element).innerHeight());
-                                    console.log('stopResize image');
+                                    if ($(ui.element).is('span')) {
+                                        console.log($(ui.element).innerWidth(), $(ui.element).innerHeight());
+                                        console.log('stopResize image');
+                                    }
                                 }
                             });
                         }

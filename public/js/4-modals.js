@@ -353,39 +353,39 @@
 			// ajx call
 			// - clear previuos data
 			// - save new data
-			
-				var shortcodePage = '';
-				$('.grid-stack-row').each(function () {
-					var $this = $(this);
-					$this.perfectGridGalleryEditor('fillEmptySpaces');
-					$this.perfectGridGalleryEditor('updateAllElementsProperties');
-					var $section = $this.parents('.rexpansive_section');
-					shortcodePage += createSectionShortcode($section);
-				});
 
-				var idPost = parseInt($('#id-post').attr('data-post-id'));
-				$.ajax({
-					type: 'POST',
-					dataType: 'json',
-					url: rexajax.ajaxurl,
-					data: {
-						action: 'rexlive_save_sections',
-						nonce_param: rexajax.rexnonce,
-						shortcode: shortcodePage,
-						post_id_to_update: idPost
-					},
-					success: function (response) {
-						console.log(response);
-						if (response.success) {
-							console.log('chiama effettttuuuata con successo');
-						}
-						console.log('chiama effettuata con successo');
-					},
-					error: function (response) {
-						console.log('errore chiama ajax');
+			var shortcodePage = '';
+			$('.grid-stack-row').each(function () {
+				var $this = $(this);
+				$this.perfectGridGalleryEditor('fillEmptySpaces');
+				$this.perfectGridGalleryEditor('updateAllElementsProperties');
+				var $section = $this.parents('.rexpansive_section');
+				shortcodePage += createSectionShortcode($section);
+			});
+
+			var idPost = parseInt($('#id-post').attr('data-post-id'));
+			$.ajax({
+				type: 'POST',
+				dataType: 'json',
+				url: rexajax.ajaxurl,
+				data: {
+					action: 'rexlive_save_sections',
+					nonce_param: rexajax.rexnonce,
+					shortcode: shortcodePage,
+					post_id_to_update: idPost
+				},
+				success: function (response) {
+					console.log(response);
+					if (response.success) {
+						console.log('chiama effettttuuuata con successo');
 					}
-				});
-			
+					console.log('chiama effettuata con successo');
+				},
+				error: function (response) {
+					console.log('errore chiama ajax');
+				}
+			});
+
 		});
 
 		var createBlockShortcode = function ($elem) {
@@ -569,8 +569,8 @@
 
 		$(document).on('click', '.builder-section-config', function (e) {
 			e.preventDefault();
-			var $parent = $(this).parents('.rexpansive_section');
-			var $row = $($parent.find('.perfect-grid-gallery'));
+			var $rexpansiveSection = $(this).parents('.rexpansive_section');
+			var $row = $($rexpansiveSection.find('.perfect-grid-gallery'));
 			var sectionNumber = $row.perfectGridGalleryEditor('getSectionNumber');
 			$('#backresponsive-set-save').attr('data-section_id', sectionNumber);
 			$('#backresponsive-set-reset').attr('data-section_id', sectionNumber);

@@ -155,9 +155,10 @@ class Rexbuilder_Block {
 			echo ' w' . $size_x;
 			
 			// Blocks with no text-editable
-			echo ($block_has_slider ? '' : ' rex-text-editable');
+			echo ($block_has_slider ? ' block-has-slider' : ' rex-text-editable');
 
-			echo ( $block_has_slider ? ' block-has-slider' : '' );
+			//echo ( $block_has_slider ? '' : '' );
+
 			echo ( '' != $block_custom_class ? ' ' . $block_custom_class : '' );
 			if( 'expand' == $type) : 
 				echo ' wrapper-expand-effect'; 
