@@ -961,6 +961,8 @@
             });
         },
 
+        
+        
         _addSizeViewer: function ($elem) {
             var spanViewer = document.createElement('span');
             spanViewer.setAttribute('id', $elem.id.concat('-size-viewer'));
@@ -970,6 +972,21 @@
             $(spanViewer).css('left', 0);
             $(spanViewer).css('top', 0);
             $elem.append(spanViewer);
+        },
+        
+        //Bottone ingranaggio a comparsa -- PROVA -- 
+        _addSettingButton: function ($elem){
+            var div;
+            div = $(document.createElement('div')).attr({
+                'class': 'background_handler btn-floating waves-effect waves-light tooltipped',
+                'data-position': 'bottom',
+                'data-tooltip' : 'Block settings',
+            });
+            var buttonImage = document.createElement('i');
+            $(buttonImage).addClass('material-icons');
+            //$(buttonImage).css('left', 0);
+            $(buttonImage).append($(div));
+            $(div).appendTo($(elem));
         },
 
         // add span elements that will be used as handles of the element
@@ -1113,6 +1130,7 @@
             gallery._updateElementPadding($elem.find('.grid-stack-item-content'));
             gallery._addHandles(elem, 'e, s, w, se, sw');
             gallery._addSizeViewer(elem);
+            //gallery._addSettingButton(elem);
 
             blockContent = $elem.find('.grid-item-content');
             imageWidth = blockContent.attr('data-background-image-width');
@@ -1831,6 +1849,7 @@
             }
         }
     });
+    
 
     // A really lightweight plugin wrapper around the constructor,
     // preventing against multiple instantiations
