@@ -158,6 +158,8 @@
                         G.properties.elementEdited = null;
                         gallery.properties.textWrapEditing = null;
                         G._showSizeViewer($(event.target).parents('.perfect-grid-item'));
+                        G._showSettingButton($(event.target).parents('.perfect-grid-item'));
+
                         if (typeof (Util.editingElement) !== null) {
                             Util.editingElement.blur();
                             Util.editingElement = null;
@@ -974,19 +976,16 @@
             $elem.append(spanViewer);
         },
         
-        //Bottone ingranaggio a comparsa -- PROVA -- 
+        //Bottone ingranaggio a comparsa
         _addSettingButton: function ($elem){
-            var div;
-            div = $(document.createElement('div')).attr({
-                'class': 'background_handler btn-floating waves-effect waves-light tooltipped',
-                'data-position': 'bottom',
-                'data-tooltip' : 'Block settings',
-            });
-            var buttonImage = document.createElement('i');
-            $(buttonImage).addClass('material-icons');
-            //$(buttonImage).css('left', 0);
-            $(buttonImage).append($(div));
-            $(div).appendTo($(elem));
+            var elemDiv = document.createElement('div');
+            elemDiv.setAttribute('id', $elem.id.concat('-size-settingButton'));
+            $(elemDiv).addClass('el-size-settingButton');
+            $(elemDiv).css('right', 40);
+            $(elemDiv).css('top', 40);
+
+            $elem.append(elemDiv);
+            
         },
 
         // add span elements that will be used as handles of the element
@@ -1130,7 +1129,7 @@
             gallery._updateElementPadding($elem.find('.grid-stack-item-content'));
             gallery._addHandles(elem, 'e, s, w, se, sw');
             gallery._addSizeViewer(elem);
-            //gallery._addSettingButton(elem);
+            gallery._addSettingButton(elem);
 
             blockContent = $elem.find('.grid-item-content');
             imageWidth = blockContent.attr('data-background-image-width');
@@ -1218,6 +1217,7 @@
             $elem.dblclick(function () {
                 if (gallery.properties.gridEditable) {
                     gallery._hideSizeViewer($elem);
+                    gallery._hideSettingButton($elem);
                     Util.editingElement = $elem;
                     var grid = gallery.$element.data('gridstack');
                     grid.disable();
@@ -1254,8 +1254,18 @@
             $elem.children('.el-size-viewer').removeClass('size-viewer-hidden');
         },
 
+        _showSettingButton: function ($elem) {
+            $elem.children('.el-size-settingButton').addClass('focused');
+            $elem.children('.el-size-settingButton').removeClass('size-settingButton-hidden');
+        },
+        _hideSettingButton: function ($elem) {
+            $elem.children('.el-size-settingButton').removeClass('focused');
+            $elem.children('.el-size-settingButton').addClass('size-settingButton-hidden');
+        },
+
         _focusElement: function ($elem) {
             $elem.find('.el-size-viewer').addClass('focused');
+            $elem.find('.el-size-settingButton').addClass('focused');
             $elem.addClass('focused');
             $elem.parent().addClass('focused');
             $elem.parent().parent().addClass('focused');
@@ -1265,6 +1275,7 @@
 
         _unFocusElement: function ($elem) {
             $elem.find('.el-size-viewer').removeClass('focused');
+            $elem.find('.el-size-settingButton').removeClass('focused');
             $elem.removeClass('focused');
             $elem.parent().removeClass('focused');
             $elem.parent().parent().removeClass('focused');

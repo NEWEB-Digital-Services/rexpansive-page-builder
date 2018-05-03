@@ -1,5 +1,4 @@
 <?php
-
 /**
  * The plugin bootstrap file
  *
@@ -72,4 +71,4 @@ function run_rexbuilder() {
 }
 run_rexbuilder();
 
-echo 'prova';
+
