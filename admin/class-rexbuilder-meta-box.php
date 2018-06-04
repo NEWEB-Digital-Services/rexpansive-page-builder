@@ -946,7 +946,7 @@ class Rexbuilder_Meta_Box {
 	<div class="builder-fab-row-widgets actions-center-icons fixed-action-btn horizontal">
 		<button class="btn-floating builder-show-widgets waves-effect waves-light light-blue darken-3">
 			<i class="material-icons">add</i>
-		</button>
+		</button>	
 		<ul>
 			<li class="edit_handler text-handler btn-floating waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Text', 'rexpansive'); ?>">
 				<i class="material-icons rex-icon">u</i>
