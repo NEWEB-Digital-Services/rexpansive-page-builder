@@ -32,7 +32,7 @@
 
         // jQuery has an extend method which merges the contents of two or
         // more objects, storing the result in the first object. The first
-		// object
+        // object
         // is generally empty as we don't want to alter the default options for
         // future instances of the plugin
         this.settings = $.extend({}, defaults, options);
@@ -137,7 +137,7 @@
                 }
             });
 
-            if(this.properties.gridEditable){
+            if (this.properties.gridEditable) {
                 this._launchTextEditor();
             }
 
@@ -151,8 +151,8 @@
 
             $(window).on('keydown', { Gallery: this, Util: Util }, function (event) {
                 if (event.data.Gallery.properties.gridEditable) {
-                	// Se l'utente preme "Esc" mentre sta editando il testo
-					// contenuto nel blocco
+                    // Se l'utente preme "Esc" mentre sta editando il testo
+                    // contenuto nel blocco
                     if (event.keyCode == 27 && ($(event.target).parents('.perfect-grid-item') != 0)) {
                         console.log("->" + event);
                         var G = event.data.Gallery;
@@ -320,15 +320,15 @@
             var $textWrap = $(block).find('.text-wrap');
             var $blockContent = $(block).find('.rex-custom-scrollbar');
             var maxBlockHeight = $blockContent.parents('.grid-item-content').innerHeight();
-            var	textHeight = $textWrap.innerHeight();
+            var textHeight = $textWrap.innerHeight();
             var dataBlockSelector = '#' + block.id + '-builder-data';
-            
+
             // se il resize del blocco viene fatto tramite una maniglia
             if ($handler !== null) {
                 // updating scrollbar
-            	$blockContent.mCustomScrollbar("update");            		
+                $blockContent.mCustomScrollbar("update");
                 // aggiornamento della scrollbar del blocco se il layout e'
-				// masonry
+                // masonry
                 if (this.settings.galleryLayout == 'masonry') {
                     if ($blockContent.hasClass('mCS_no_scrollbar') || $blockContent.hasClass('mCS_disabled')) {
                         if ($(dataBlockSelector).attr('data-block_has_scrollbar') != 'false') {
@@ -339,110 +339,81 @@
                             $(dataBlockSelector).attr('data-block_has_scrollbar', 'true');
                         }
                         $(dataBlockSelector).attr('data-block_height_masonry', block['attributes']['data-gs-height'].value);
-                        // $blockContent.mCustomScrollbar("update");
                     }
-                } else {
-                	// $blockContent.mCustomScrollbar("update");
                 }
-
             } else {
-            	
-            	// TODO aggiungere il caso in cui il blocco e' nuovo
-            	// Il blocco non ha la barra
+
+                // TODO aggiungere il caso in cui il blocco e' nuovo
+                // Il blocco non ha la barra
                 if ($(block).find('.mCustomScrollBox').length === 0) {
-                	console.log(dataBlockSelector+" senza barra");
-                	// se il layout e' di tipo masonry
+                    // Primo avvio del blocco
+                    //console.log(dataBlockSelector + " senza barra");
+                    // se il layout e' di tipo masonry
                     if (this.settings.galleryLayout == 'masonry') {
-                        console.log('setting ' + block.id + ' height');
+                        //console.log('setting ' + block.id + ' height');
                         var grid = this.$element.data('gridstack');
                         var w = parseInt(block['attributes']['data-gs-width'].value);
-                        var h;
-                        
+                        var h = parseInt(block['attributes']['data-gs-width'].value);
+
                         if ($(dataBlockSelector).attr('data-block_has_scrollbar') == 'true') {
                             h = parseInt($(dataBlockSelector).attr('data-block_height_masonry'));
                         } else {
                             $(dataBlockSelector).attr('data-block_has_scrollbar', 'false');
-                            $(dataBlockSelector).attr('data-block_height_masonry', 0);
                             h = parseInt(block['attributes']['data-gs-height'].value);
-                            var i = 0;
-                            
                             // differenza da ottenere per l'altezza giusta del
-							// blocco
-                            var n;
+                            // blocco
+
                             if (textHeight >= maxBlockHeight) {
-                                n = textHeight - maxBlockHeight;
-                                while (i < n) {
-                                    h = h + 1;
-                                    i++;
-                                }
-                            } else {
-                                n = maxBlockHeight - textHeight;
-                                while (i < n) {
-                                    h = h - 1;
-                                    i++;
-                                }
+                                h = h + Math.ceil((textHeight - maxBlockHeight) / 5);
                             }
+                            $(dataBlockSelector).attr('data-block_height_masonry', h);
                         }
                         grid.update(block, null, null, w, h);
                         maxBlockHeight = h;
                         $blockContent.mCustomScrollbar();
                         $blockContent.mCustomScrollbar("disable");
                     } else {
-                    	$blockContent.mCustomScrollbar();
-                    	$blockContent.mCustomScrollbar("update");                         	
+                        $blockContent.mCustomScrollbar();
+                        $blockContent.mCustomScrollbar("update");
                     }
 
                     if (textHeight < maxBlockHeight) {
                         $blockContent.mCustomScrollbar("disable");
                     }
                 } else {
-                   console.log($blockContent.data());
-                // successive modifiche dovute al cambiamento del contenuto
+                    // successive modifiche dovute al cambiamento del contenuto
                     if ($blockContent.hasClass('mCS_no_scrollbar') || $blockContent.hasClass('mCS_disabled')) {
-                    	// se il layout della griglia e' masonry
-                    	if(this.settings.galleryLayout == 'masonry'){
+                        // se il layout della griglia e' masonry
+                        if (this.settings.galleryLayout == 'masonry') {
                             var w = parseInt(block['attributes']['data-gs-width'].value);
-                            var h = parseInt(block['attributes']['data-gs-height'].value);
+                            var h = this.properties.elementStartingH;
                             var grid = this.$element.data('gridstack');
-                            var n;
-                            
-                            h = this.properties.elementStartingH;
-                            
+
                             if (textHeight >= maxBlockHeight) {
-                                n = textHeight - maxBlockHeight;
-                                h = h + Math.ceil(n/5);
-                                grid.update(block, null, null, w, h);
-                                $blockContent.mCustomScrollbar("update");
+                                h = h + Math.ceil(textHeight - maxBlockHeight / 5);
                             } else {
-                            	// if(blocco_nuovo){
-                            		/*
-									 * // console.log(event.inputType); //
-									 * if(event.inputType ==
-									 * 'deleteContentBackward' || //
-									 * event.inputType == 'deleteByCut'){ if
-									 * (this.settings.galleryLayout ==
-									 * 'masonry') { n = maxBlockHeight -
-									 * textHeight; } else { n =
-									 * Math.floor((maxBlockHeight - textHeight) /
-									 * this.properties.singleWidth); } while (i <
-									 * n) { h = h - 1; i++; } h = Math.max(h,
-									 * this.properties.elementStartingH); } }
-									 */
+                                h = Math.max(h - Math.floor(maxBlockHeight - textHeight / 5), parseInt($(dataBlockSelector).attr('data-block_height_masonry')));
                             }
+
+                            grid.update(block, null, null, w, h);
                             this.properties.elementStartingH = h;
-                    	} else{
-                    		$blockContent.mCustomScrollbar("update");
-                    	}
+                        }
+                        $blockContent.mCustomScrollbar("update");
+
                     } else {
-                    	$blockContent.mCustomScrollbar('scrollTo','100%');
+                        $blockContent.mCustomScrollbar("scrollTo", "100%", {
+                            scrollInertia: 50
+                        });
                     }
                 }
             }
-            
+
             // updating sizeViewer Text
             this.updateSizeViewerSizes(this, block);
         },
-
+        /**
+         * Funzione che rimuove le scrollbar dai blocchi
+         */
         _removeScrollbars: function () {
             var $elem;
             var $blockContent;
@@ -471,30 +442,34 @@
         },
 
         reLaunchGrid: function (data) {
-            // console.log('selected layout: '+data['layout']);
             var G = this;
-            var grid = G.$element.data('gridstack');
             var oldLayout = G.settings.galleryLayout;
+
             G.settings.galleryLayout = data['layout'];
+
             if (oldLayout != G.settings.galleryLayout) {
+                
                 G._defineDynamicPrivateProperties();
+                
                 $(G.element).parents('.rexpansive_section').find('.section-data').attr({
                     'data-layout': G.settings.galleryLayout
                 });
+                
                 Util.elementIsResizing = true;
                 Util.elementIsDragging = true;
-
+                
                 // destroying gridstack & jquery ui
                 G.destroyGridstack();
-
+                
                 // destroy scrollbars
                 G._removeScrollbars();
-
+                
                 // adding back the handles for resizing
                 $(G.element).children('.grid-stack-item').each(function () {
                     G._addHandles(this, 'e, s, w, se, sw');
                 });
-
+                
+                var $elem;
                 // relaunching grid
                 if (G.settings.galleryLayout == 'masonry') {
                     G._launchGridStack();
@@ -502,10 +477,18 @@
                 } else {
                     G.restoreBackup();
                     G._launchGridStack();
-                }
+                    var grid = G.$element.data('gridstack');
+                    //grid.removeAll(false);
+                     $.fn.reverse = [].reverse;
+                    $(G.element).children('.grid-stack-item').reverse().each(function(){
+                        console.log(this.id + " x: " + (parseInt($(this).attr('data-col')) - 1) + " y: " + (parseInt($(this).attr('data-row')) - 1) + " w: " + parseInt($(this).attr('data-width')) + " h: " + parseInt($(this).attr('data-height')));
+                        grid.move(this, (parseInt($(this).attr('data-col')) - 1), (parseInt($(this).attr('data-row')) - 1));
+                        //grid.addWidget(this, (parseInt($(this).attr('data-col'))-1), (parseInt($(this).attr('data-row'))-1), parseInt($(this).attr('data-width')), parseInt($(this).attr('data-height')));
+                    });
 
+                }
+                
                 var $blockContent;
-                var $elem;
                 $(G.element).children('.grid-stack-item').each(function () {
                     $elem = $(this);
                     G.updateSizeViewerText($elem);
@@ -523,9 +506,9 @@
             }
             return;
         },
-
+        
         /**
-		 * Funzione chiamata per distruggere l'istanza di gridstack
+         * Funzione chiamata per distruggere l'istanza di gridstack
 		 */
         destroyGridstack: function () {
             var G = this;
@@ -570,7 +553,7 @@
         },
 
         // insert elements in the Packery grid and reload the items according to
-		// perfectGridGalleryEditor
+        // perfectGridGalleryEditor
         insertInGrid: function (elems, callback) {
 
             this.properties.setDesktopPadding = false;
@@ -658,7 +641,7 @@
         },
 
         // Function that creates a new empty block and returns it. The block is
-		// added to gridstack and gallery
+        // added to gridstack and gallery
         createBlock: function (x, y, w, h) {
             var divGridItem = document.createElement('div');
             var divGridStackContent = document.createElement('div');
@@ -705,7 +688,7 @@
             $(divBlockOverlay).appendTo(divGridItemContent);
             $(divGridItemContent).appendTo(divGridStackContent);
             $(divGridStackContent).appendTo(divGridItem);
-            
+
             this._prepareElement(divGridItem);
             this.createElementProperties(divGridItem);
             grid.addWidget(divGridItem, x, y, w, h, false);
@@ -748,6 +731,7 @@
         // Updating elements properties
         updateAllElementsProperties: function () {
             var Gallery = this;
+            console.log("Updating element properties");
             this.$element.find('.perfect-grid-item').each(function () {
                 Gallery.updateElementAllProperties(this);
             });
@@ -765,7 +749,7 @@
             var file_frame; // variable for the wp.media file_frame
 
             // attach a click event (or whatever you want) to some element on
-			// your page
+            // your page
             $('#frontend-button').on('click', function (event) {
                 event.preventDefault();
 
@@ -781,7 +765,7 @@
                         text: $(this).data('uploader_button_text'),
                     },
                     multiple: false // set this to true for multiple file
-									// selection
+                    // selection
                 });
 
                 console.log(file_frame);
@@ -805,6 +789,8 @@
             this._updateElementSize(elem, 'y');
             this._updateElementSize(elem, 'w');
             this._updateElementSize(elem, 'h');
+            //console.log("SAVING: " + elem.id + " x: " + parseInt($(elem).attr('data-gs-x')) + " y: " + parseInt($(elem).attr('data-gs-x')) + " w: " + parseInt($(elem).attr('data-gs-x')) + " h: " + parseInt($(elem).attr('data-gs-x')));
+
         },
 
         _updateElementSize: function (elem, $case) {
@@ -815,10 +801,10 @@
             switch ($case) {
                 case 'x': {
                     size = parseInt(block['attributes']['data-gs-x'].value);
-                    
+
                     // gridster works 1 to n not 0 to n-1
                     size = size + 1;
-                    
+
                     block['attributes']['data-col'].value = size
                     $(dataBlockSelector).attr({
                         'data-col': size
@@ -827,14 +813,14 @@
                 }
                 case 'y': {
                     if (this.settings.galleryLayout == 'masonry') {
-                        size = Math.round(parseInt(block['attributes']['data-gs-y'].value) * this.properties.singleHeight / width);
+                        var oldSize = block['attributes']['data-row'].value-1;
+                        size = Math.floor(parseInt(block['attributes']['data-gs-y'].value) * this.properties.singleHeight / width);
                     } else {
                         size = parseInt(block['attributes']['data-gs-y'].value);
                     }
-
+                    
                     // gridster works 1 to n not 0 to n-1
                     size = size + 1;
-
                     block['attributes']['data-row'].value = size;
                     $(dataBlockSelector).attr({
                         'data-row': size
@@ -858,6 +844,7 @@
                     var oldH = block['attributes']['data-height'].value;
                     if (this.settings.galleryLayout == 'masonry') {
                         h = Math.round(parseInt(block['attributes']['data-gs-height'].value) * this.properties.singleHeight / width);
+                        console.log(block['attributes']['data-gs-height'].value, h);
                     } else {
                         h = parseInt(block['attributes']['data-gs-height'].value);
                     }
@@ -878,7 +865,7 @@
         },
 
         // Override options set by the jquery call with the html data
-		// attributes, if presents
+        // attributes, if presents
         _defineDataSettings: function () {
 
             if ('undefined' != typeof this.$element.data('separator')) {
@@ -968,7 +955,7 @@
         },
 
         // fixes gutter if there is, this function is applied on the div used by
-		// gridstack for the element
+        // gridstack for the element
         _updateElementPadding: function ($elem) {
             $elem.css({
                 'padding-left': this.properties.halfSeparatorElementLeft,
@@ -986,7 +973,7 @@
                 .add(this.$element.find(this.settings.itemSelector + '.only-gallery'))
                 .each(function () {
                     // console.log($(this).attr('id'), '->',
-					// $(this).attr('data-height'));
+                    // $(this).attr('data-height'));
                     $(this).height((Gallery.properties.singleWidth * $(this).attr('data-height')) - (Gallery.properties.halfSeparator * 2));
                 });
         },
@@ -1005,30 +992,30 @@
             });
         },
 
-        
-        
+
+
         _addSizeViewer: function ($elem) {
             var spanViewer = document.createElement('span');
             spanViewer.setAttribute('id', $elem.id.concat('-size-viewer'));
             $(spanViewer).addClass('el-size-viewer');
             // $(spanViewer).css('left',
-			// this.properties.halfSeparatorElementRight);
+            // this.properties.halfSeparatorElementRight);
             // $(spanViewer).css('top',
-			// this.properties.halfSeparatorElementTop);
+            // this.properties.halfSeparatorElementTop);
             $(spanViewer).css('left', 0);
             $(spanViewer).css('top', 0);
             $elem.append(spanViewer);
         },
-        
+
         // Bottone ingranaggio a comparsa
-        _addSettingButton: function ($elem){
+        _addSettingButton: function ($elem) {
             var elemDiv = document.createElement('div');
             elemDiv.setAttribute('id', $elem.id.concat('-size-settingButton'));
             $(elemDiv).addClass('el-size-settingButton');
             $(elemDiv).css('right', 40);
             $(elemDiv).css('top', 40);
             $elem.append(elemDiv);
-            
+
         },
 
         // add span elements that will be used as handles of the element
@@ -1187,7 +1174,7 @@
             }
 
             // $('#' + elem.id)
-            
+
             $elem.attr({
                 "data-gs-min-width": 1,
                 "data-gs-min-height": 1,
@@ -1202,7 +1189,7 @@
                 $($elem.find('.rex-custom-scrollbar')).append(textWrapEl);
             } else {
                 // if there is text wrap, adding a span element to fix the text
-				// editor
+                // editor
                 textWrapEl = $elem.find('.text-wrap');
                 var spanEl = document.createElement('span');
                 $(spanEl).css('display', 'none');
@@ -1349,22 +1336,22 @@
         },
 
 
-        updateSizeViewerSizes: function(gallery, block){
-        	gallery.updateSizeViewerText(block, 
-        			Math.round($(block).outerWidth() / gallery.properties.singleWidth), 
-        			gallery.calculateHeightSizeViewer(block, gallery));        	
+        updateSizeViewerSizes: function (gallery, block) {
+            gallery.updateSizeViewerText(block,
+                Math.round($(block).outerWidth() / gallery.properties.singleWidth),
+                gallery.calculateHeightSizeViewer(block, gallery));
         },
-        
 
-        
-        calculateHeightSizeViewer: function(block, gallery){
-        	if (gallery.settings.galleryLayout == 'masonry') {
+
+
+        calculateHeightSizeViewer: function (block, gallery) {
+            if (gallery.settings.galleryLayout == 'masonry') {
                 return $(block).outerHeight();
             } else {
                 return Math.round($(block).outerHeight() / gallery.properties.singleHeight);
             }
         },
-        
+
         _linkResizeEvents: function () {
             var gallery = this;
             var block, xStart, wStart, xView, yView;
@@ -1383,7 +1370,7 @@
                     } else {
                         wStart = parseInt(block['attributes']['data-gs-width'].value);
                         // $('#' + block.id).attr("data-gs-max-width", (xStart +
-						// wStart));
+                        // wStart));
                     }
                 }
             }).on('resize', function (event, ui) {
@@ -1397,7 +1384,7 @@
                     }
 
                     gallery.updateSizeViewerSizes(gallery, block);
-                    
+
                     if (!$(block).hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
                         gallery.fixElementTextSize(block, gallery.properties.resizeHandle, null);
                     }
@@ -1414,11 +1401,11 @@
                     }
                     $('#' + block.id).attr("data-gs-max-width", "500");
                     gallery.updateAllElementsProperties();
-                    Util.elementIsResizing = false;
                     if (!$(block).hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
                         gallery.fixElementTextSize(block, gallery.properties.resizeHandle, null);
                     }
-                    gallery.$element.trigger('change');
+                    Util.elementIsResizing = false;
+//                    gallery.$element.trigger('change');
                 }
             });
         },
@@ -1440,7 +1427,7 @@
 
         /**
 		 * Launching Gridstack plugin
-		 */ 
+		 */
         _launchGridStack: function () {
             var gallery = this;
             var floating;
@@ -1538,7 +1525,7 @@
                     currentTextSelection = editor.exportSelection();
 
                     // sets the color of the current selection on the color
-					// picker
+                    // picker
                     $(this.button).spectrum("set", getCurrentTextColor());
 
                     // from here on, it was taken form the default handleClick
@@ -1813,7 +1800,7 @@
         },
 
         // Calculate the height of the blocks, depending on viewport size, and
-		// gallery type
+        // gallery type
         _calculateBlockHeight: function () {
             // console.log('calculating height');
             if (this.settings.galleryLayout == 'fixed') {
@@ -1822,8 +1809,8 @@
                         // console.log('bbb');
                         var wrap_height = this._viewport().height;
                         // this.properties.singleWidth = wrap_height /
-						// (this.properties.gridTotalArea /
-						// this.properties.numberCol);
+                        // (this.properties.gridTotalArea /
+                        // this.properties.numberCol);
                         this.properties.singleWidth = (this.properties.gridTotalArea / wrap_height) / this.properties.numberCol;
                     }
                     this._calculateBlockHeightFixed();
@@ -1855,6 +1842,7 @@
             var origH;
             var h, backgroundHeight, defaultHeight, textHeight;
             var $this;
+            //            var idBlock; 
             Util.elementIsResizing = true;
             this.$element.find('.grid-item-content').each(function () {
                 h = 0;
@@ -1885,6 +1873,7 @@
                 h = Math.max(backgroundHeight, defaultHeight, textHeight);
                 h = Math.round(h / gallery.properties.singleHeight);
                 $elem.attr('data-gs-height', h);
+                $("#" + $elem[0].id + "-builder-data").attr("data-block_height_masonry", h);
                 grid.update($elem, null, null, w, h);
             });
             Util.elementIsResizing = false;
@@ -1933,7 +1922,7 @@
             }
         }
     });
-    
+
 
     // A really lightweight plugin wrapper around the constructor,
     // preventing against multiple instantiations
