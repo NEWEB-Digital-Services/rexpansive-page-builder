@@ -14,7 +14,8 @@ var gulp = require('gulp'),
 	zip = require('gulp-zip'),
 	size = require('gulp-size'),
 	concat = require('gulp-concat'),
-	gulpUtil = require('gulp-util');
+	gulpUtil = require('gulp-util'),
+	sourcemaps = require('gulp-sourcemaps');
 
 var banner = ['/**',
 	' * <%= pkg.name %> v<%= pkg.version %>',
@@ -148,12 +149,12 @@ gulp.task('public-js-build', function() {
 
 /* ----- BUILD PLUGIN ------- */
 
-gulp.task('dev', ['admin-plugins-build', 'admin-css-build', 'builder-front', 'public-plugins-build', 'public-js-build'] ,function() {
+gulp.task('dev', ['admin-plugins-build', 'public-plugins-build', 'public-js-build'] ,function() {
 	//livereload.listen();
-	gulp.watch(admin_js_src, ['admin-plugins-build']);
-	gulp.watch('admin/css/builder.css', ['admin-css-build']);
-	gulp.watch('public/scss/**/*.scss', ['builder-front']);
-	gulp.watch(['public/css/**/*.css','public/scss/**/*.scss'], ['public-css-build']);
+	//gulp.watch(admin_js_src, ['admin-plugins-build']);
+	//gulp.watch('admin/css/builder.css', ['admin-css-build']);
+	//gulp.watch('public/scss/**/*.scss', ['builder-front']);
+	gulp.watch(['public/scss/**/*.scss'], ['public-css-build']);
 	gulp.watch(public_js_src, ['public-plugins-build']);
 	gulp.watch(public_js_logic_src, ['public-js-build']);
 	//gulp.watch('./**/*.php').on('change', function(file) {
