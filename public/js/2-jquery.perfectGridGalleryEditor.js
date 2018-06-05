@@ -288,6 +288,9 @@
             this.properties.lastIDBlock = max
         },
 
+        /**
+		 * Funzione chiamata per il salvataggio della griglia
+		 */
         saveGrid: function () {
             var gallery = this;
             var singleHeight = gallery.settings.galleryLayout == 'masonry' ? gallery.properties.singleHeight / gallery.properties.singleWidth : 1;
@@ -381,7 +384,6 @@
                     	$blockContent.mCustomScrollbar();
                     	$blockContent.mCustomScrollbar("update");                         	
                     }
-
 
                     if (textHeight < maxBlockHeight) {
                         $blockContent.mCustomScrollbar("disable");
@@ -519,6 +521,9 @@
             return;
         },
 
+        /**
+		 * Funzione chiamata per distruggere l'istanza di gridstack
+		 */
         destroyGridstack: function () {
             var G = this;
             var grid = this.$element.data('gridstack');
@@ -1430,7 +1435,9 @@
             })
         },
 
-        // Launching Packery plugin
+        /**
+		 * Launching Gridstack plugin
+		 */ 
         _launchGridStack: function () {
             var gallery = this;
             var floating;
