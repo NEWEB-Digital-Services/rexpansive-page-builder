@@ -119,7 +119,8 @@
 
             this._linkDragEvents();
 
-            // this.creaBottone();
+            //Bottone per aprire il loader delle immagini di WP
+            //this.creaBottone();
 
             var gallery = this;
             var $elem;
@@ -150,7 +151,7 @@
 
             $(window).on('keydown', { Gallery: this, Util: Util }, function (event) {
                 if (event.data.Gallery.properties.gridEditable) {
-                	// If key "esc"
+                	// Se l'utente preme "Esc" mentre sta editando il testo contenuto nel blocco
                     if (event.keyCode == 27 && ($(event.target).parents('.perfect-grid-item') != 0)) {
                         console.log("->" + event);
                         var G = event.data.Gallery;
@@ -311,8 +312,10 @@
             return JSON.stringify(this.serializedData, null, '    ');
         },
 
+        /**
+         * Funzione che aggiorna la scollbar all'interno del blocco
+         */
         fixElementTextSize: function (block, $handler, event) {
-        	// console.log(block);
             var $textWrap = $(block).find('.text-wrap');
             var $blockContent = $(block).find('.rex-custom-scrollbar');
             var maxBlockHeight = $blockContent.parents('.grid-item-content').innerHeight();
@@ -335,7 +338,10 @@
                             $(dataBlockSelector).attr('data-block_has_scrollbar', 'true');
                         }
                         $(dataBlockSelector).attr('data-block_height_masonry', block['attributes']['data-gs-height'].value);
+                        //$blockContent.mCustomScrollbar("update");     
                     }
+                } else {
+                	//$blockContent.mCustomScrollbar("update");     
                 }
 
             } else {
@@ -424,14 +430,11 @@
                             }
                             this.properties.elementStartingH = h;
                     	} else{
-                        	//$blockContent.mCustomScrollbar("disable", true);
                     		$blockContent.mCustomScrollbar("update");
                     	}
                     } else {    
                     	console.log("la barra e' presente");
-                    	$blockContent.trigger('onScrollStart');
-//                    	$blockContent.mCustomScrollbar("disable");
-                    	//$blockContent.mCustomScrollbar("update");
+                    	$blockContent.mCustomScrollbar('scrollTo','100%');
                     }
                 }
             }
