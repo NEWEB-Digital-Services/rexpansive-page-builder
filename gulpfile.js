@@ -1,9 +1,12 @@
 var gulp = require('gulp'),
-	sass = require('gulp-sass'),
+	// sass = require('gulp-sass'),
+	sass = require('gulp-ruby-sass'),
 	watch = require('gulp-watch'),
 	minifyCSS = require('gulp-minify-css'),
 	rename = require('gulp-rename'),
 	header = require('gulp-header'),
+	autoprefixer = require('gulp-autoprefixer'),
+	plumber = require('gulp-plumber'),
 	pkg = require('./package.json'),
 	jshint = require('gulp-jshint'),
 	uglify = require('gulp-uglify'),
@@ -36,9 +39,16 @@ gulp.task('jshint', function() {
 });
 
 gulp.task('builder-front', function() {
-	return gulp.src('public/scss/rexbuilder-public.scss')
-		.pipe(sass({outputStyle: 'expanded'}).on('error', sass.logError))
-		.pipe(gulp.dest('public/css/'));
+	sass('public/scss/rexbuilder-public.scss',{
+			style:'compressed'
+		})
+	.pipe(plumber())
+	.pipe(autoprefixer({
+		browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
+		}))
+	.pipe(plumber.stop())
+	.pipe(size({title: 'Front CSS'}))
+	.pipe(gulp.dest('public/css/'));
 });
 
 gulp.task('default', ['builder-front', 'watch:scss']);
@@ -51,9 +61,16 @@ gulp.task('admin-builder', function() {
 });
 
 gulp.task('admin-css-build', function() {
-	return gulp.src('admin/admin.scss')
-		.pipe(sass({outputStyle:'compressed'}).on('error', sass.logError))
-		.pipe(gulp.dest('admin/css'))
+	sass('admin/admin.scss',{
+		style:'compressed'
+	})
+	.pipe(plumber())
+    .pipe(autoprefixer({
+      browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
+  	}))
+    .pipe(plumber.stop())
+	.pipe(size({title: 'Admin CSS'}))
+    .pipe(gulp.dest('admin/css'));
 });
 
 var admin_js_src = [ 
@@ -74,9 +91,16 @@ gulp.task('admin-plugins-build', function() {
 /* --- BUILD PUBLIC SCRIPTS AND STYLES ------ */
 
 gulp.task('public-css-build', function() {
-	return gulp.src('public/public.scss')
-		.pipe(sass({outputStyle:'compressed'}).on('error', sass.logError))
-		.pipe(gulp.dest('public/css'))
+	sass('public/public.scss',{
+		style:'compressed'
+	})
+	.pipe(plumber())
+    .pipe(autoprefixer({
+      browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
+  	}))
+    .pipe(plumber.stop())
+	.pipe(size({title: 'Public CSS'}))
+    .pipe(gulp.dest('public/css'));
 });
 
 var public_js_src = [

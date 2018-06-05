@@ -1,0 +1,388 @@
+::selection {
+    /*color: #000;*/
+}
+
+.medium-insert-images.medium-insert-images-left, .medium-insert-images-left.mediumInsert, .mediumInsert.small{
+    max-width: 100%;
+}
+
+.medium-insert-images.medium-insert-images-right, .medium-insert-images-right.mediumInsert, .mediumInsert.small{
+    max-width: 100%;
+}
+
+.medium-insert-images figure, .mediumInsert figure, .medium-insert-embeds figure, .mediumInsert-embeds figure{
+    display: inline-block;
+}
+
+.image-text-wrap{
+    width: 100%;
+    height: 100%;
+}
+
+.image-span-wrap{
+    /*serve per il debug*/
+    background-color: blue;
+    display: inline-block;      
+    position: static;
+}
+
+.hide-full-height-option{
+    visibility: hidden;
+}
+
+.grid-stack > .grid-stack-item > .grid-stack-item-content {
+    left: 0px;
+    right: 0px;
+    overflow: hidden;
+}
+
+.rexlive-toolbox-fixed{
+    width: 200px;
+    height: 150px;
+    position: fixed;
+    bottom: 50%;
+    right: 0;
+    border: 3px solid #73AD21;
+    background-color: greenyellow;
+}
+
+#builder-save-grid-btn{
+    width: 100px;
+    height: 100px;
+    background-color: blue;
+    color: orange;
+    position: fixed;
+}
+
+.perfect-grid-item .full-image-background{
+    background-repeat: no-repeat; 
+    background-position: center; 
+    background-size: cover;
+}
+
+.perfect-grid-item .natural-image-background{
+    background-repeat: no-repeat; 
+    background-position: center;
+    background-size: initial;
+}
+
+.natural-image-background.small-width{
+    background-size: 100%;
+}
+
+.tool-button{
+    position: absolute;
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    overflow: visible;
+    visibility: visible;
+    z-index: 40;
+    padding: 0px;
+    transform: translate(0, -50%);
+}
+
+.builder-delete-row{
+    left: 100%;
+    transform: translate(-50%, -50%);
+}
+
+.builder-delete-row i{
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.builder-move-row{
+    left: 0%;
+}
+
+.builder-copy-row{
+    left: 10%;
+}
+
+.builder-section-config{
+    left: 20%;
+}
+
+.builder-save-grid{
+    left: 30%;
+}
+
+.builder-section-config i{
+    font-size: 14px;
+    line-height: 20px;
+    vertical-align: top;
+    text-align: center;
+}
+
+
+.toolBox{
+    width: 100%;
+    height: 20px;
+    overflow: visible;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    display: none;
+}
+
+.tool-box-active {
+    display: block;
+}
+
+.medium-editor-element:focus {
+    outline: none;
+}
+.gridActive>.grid-stack-item:hover {
+    cursor: move;
+}
+
+.rexpansive_section .full-disposition.focused, .rexpansive_section .center-disposition.focused{
+    overflow: visible;
+}
+
+.rexpansive_section.focused {
+    z-index: 31;
+}
+.perfect-grid-gallery.focused {
+    overflow: visible;
+}
+.perfect-grid-item.focused, .grid-stack-item.focused{
+    overflow: visible;
+    z-index: 2;
+    outline: 1px dashed rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0px 0px 111px 1px rgba(0,0,0,0.8);
+    -moz-box-shadow: 0px 0px 111px 1px rgba(0,0,0,0.8);
+    box-shadow: 0px 0px 111px 1px rgba(0,0,0,0.8);
+}
+
+.grid-stack > .grid-stack-item > .ui-resizable-handle {
+    visibility: hidden;
+    overflow: visible;
+    position: absolute;
+    z-index: 31;
+    box-sizing: inherit;
+}
+
+.perfect-grid-item.focused>.ui-resizable-handle, .grid-stack-item.focused.ui-resizable-handle{
+    visibility: visible;
+}    
+
+.el-size-viewer.focused {
+    visibility: visible;
+}
+
+.el-size-settingButton.focused {
+    visibility: visible;
+}
+
+.text-content {
+    width: 100%;
+    max-height: 100%;
+}
+
+.perfect-grid-item{
+    transition: box-shadow 0.3s;
+}
+
+.grid-stack .grid-stack-placeholder > .placeholder-content {
+    left: 0px;
+    right: 0px;
+}
+
+
+.grid-stack > .grid-stack-item > .ui-resizable-e {
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    width: 30px;
+    height: 100%;
+}
+
+.grid-stack > .grid-stack-item > .ui-resizable-w {
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    width: 30px;
+    height: 100%;
+}
+
+.grid-stack > .grid-stack-item > .ui-resizable-s {
+    bottom: 0px;
+    left: 0px;
+    right: 0px;
+    width: 100%;
+    height: 30px;
+}
+
+.grid-stack > .grid-stack-item > .ui-resizable-se {
+    width: 30px;
+    height: 30px;
+    bottom: 0px;
+    right: 0px;
+    background-image: none;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+}
+
+.grid-stack > .grid-stack-item > .ui-resizable-sw {
+    width: 30px;
+    height: 30px;
+    bottom: 0px;
+    left: 0px;
+    background-image: none;
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+}
+
+.circle-handle-e {
+    top: 50%;
+    right: 0%;
+    transform: translateX(50%);
+}
+
+.circle-handle-w {
+    top: 50%;
+    left: 0%;
+    transform: translateX(-50%);
+}
+
+.circle-handle-s {
+    left: 50%;
+    bottom: 0%;
+    transform: translate(-50%, 50%);
+}
+
+.circle-handle-se {
+    bottom: 0%;
+    right: 0%;
+    transform: translate(50%, 50%);
+}
+
+.circle-handle-sw {
+    bottom: 0%;
+    left: 0%;
+    transform: translate(-50%, 50%);
+}
+
+.el-size-viewer {
+    visibility: hidden;
+    position: absolute;
+    padding: 4px;
+    font-family: 'Open Sans';
+    background: rgba(0, 0, 0, 0.3);
+    color: white;
+    z-index: 20;
+    font-size: 10px;
+    letter-spacing: 2px;
+}
+
+.el-size-settingButton {
+    visibility: hidden;
+    position: absolute;
+    z-index: 20;
+    display: inline-block;
+    color: #fff;
+    overflow: hidden;
+    width: 37px;
+    height: 37px;
+    line-height: 37px;
+    padding: 0;
+    background-color: #039be5;
+    border-radius: 50%;
+    cursor: pointer;
+    vertical-align: middle;
+    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16), 0 2px 10px 0 rgba(0,0,0,0.12);
+}
+
+
+.circle-handle {
+    width: 10px;
+    height: 10px;
+    background-color: #039be5;
+    border: 1px solid white;
+    border-radius: 50%;
+    overflow: visible;
+    -webkit-transition: all 0.0s ease-out;
+    -moz-transition: all 0.0s ease-out;
+    -o-transition: all 0.0s ease-out;
+    -ms-transition: all 0.0 ease-out;
+    transition: all 0.0s ease-out;
+    z-index: 31;
+    position: absolute;
+}
+
+.grid-stack-item.focused{
+    overflow: visible;
+    z-index: 2;
+    outline: 1px dashed rgba(0,0,0,0.5);
+    -webkit-box-shadow: 0px 0px 111px 1px rgba(0,0,0,0.8);
+    -moz-box-shadow: 0px 0px 111px 1px rgba(0,0,0,0.8);
+    box-shadow: 0px 0px 111px 1px rgba(0,0,0,0.8);
+}
+
+.circle-handle:hover {
+    box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18),
+                0 4px 15px 0 rgba(0, 0, 0, 0.15);
+}
+
+.ui-resizable-e:hover > .circle-handle {
+    -webkit-transform: scale(2) translateX(25%);
+    transform: scale(2) translateX(25%);
+}
+
+.ui-resizable-s:hover > .circle-handle {
+    -webkit-transform: scale(2) translate(-25%, 25%);
+    transform: scale(2) translate(-25%, 25%);
+}
+
+.ui-resizable-w:hover > .circle-handle{
+    -webkit-transform: scale(2) translateX(-25%);
+    transform: scale(2) translateX(-25%);
+}
+
+.ui-resizable-se:hover > .circle-handle{
+    -webkit-transform: scale(2) translate(25%, 25%);
+    transform: scale(2) translate(25%, 25%);
+}
+
+.ui-resizable-sw:hover > .circle-handle{
+    -webkit-transform: scale(2) translate(-25%, 25%);
+    transform: scale(2) translate(-25%, 25%);
+}
+
+.resizePlaceHolder{
+    outline: 3px dashed #444;
+    outline-offset: -6px;
+   -webkit-transition: -webkit-transform 0.2s;
+            transition: transform 0.2s;
+}
+
+.packery-drop-placeholder {
+    outline: 3px dashed #444;
+    outline-offset: -6px;
+    /* transition position changing */
+    -webkit-transition: -webkit-transform 0.2s;
+            transition: transform 0.2s;
+}
+
+/* jQuery UI Draggable adds ui-draggable-dragging */
+ .ui-draggable-dragging{
+    z-index: 2;
+    cursor: pointer;
+}
+
+.grid-item-content:active {
+    cursor: pointer;
+}
+/* Packery adds class while transitioning to drop position*/
+ .grid-item.is-positioning-post-drag:active {
+  cursor: hand; 
+ }

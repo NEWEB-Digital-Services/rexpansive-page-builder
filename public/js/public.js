@@ -3,11 +3,6 @@ var Util = (function($) {
 
 	var $window = $(window);
 
-	var fixSectionWidth = 0;
-	var elementIsResizing = false;
-	var elementIsDragging = false;
-	var editingElement = null;
-	
 	// function to detect if we are on a mobile device
 	var _detect_mobile = function() {
 		if (!("ontouchstart" in document.documentElement)) {
@@ -132,9 +127,7 @@ var Util = (function($) {
 		checkStaticPresentationPage : _checkStaticPresentationPage,
 		checkPost: _checkPost,
 		$window: $window,
-		scroll_timing: _scroll_timing,
-		fixSectionWidth: fixSectionWidth,
-		elementIsResizing: elementIsResizing
+		scroll_timing: _scroll_timing
 	};
 
 })(jQuery);
@@ -485,7 +478,7 @@ var VimeoVideo = (function($){
 		}
 
 		/* -- Launching TextResize ------ */
-		//$('.perfect-grid-gallery').textResize();
+		$('.perfect-grid-gallery').textResize();
 
 		if(typeof _plugin_frontend_settings !== 'undefined') {
 			if( 1 == _plugin_frontend_settings.animations ) {
@@ -509,7 +502,7 @@ var VimeoVideo = (function($){
 		//$(".perfect-grid-item:not(.horizontal-carousel) .rex-custom-scrollbar").mCustomScrollbar();
 
 		/* -- Launching scrollbar on full-height/boxed sections -- */
-		/* var $block_scrollable = $('.perfect-grid-gallery[data-layout=fixed][data-full-height=true] .text-content .rex-custom-scrollbar');
+		var $block_scrollable = $('.perfect-grid-gallery[data-layout=fixed][data-full-height=true] .text-content .rex-custom-scrollbar');
 
 		$block_scrollable.mCustomScrollbar();
 
@@ -521,16 +514,18 @@ var VimeoVideo = (function($){
 					$block_scrollable.mCustomScrollbar();
 				}
 			});
-		} */
+		}
 	});
 
 	// Waiting until the ready of the DOM
 	$(function() {
 		Util.init();
 		_detect_mobile();
-		
 		/* -- Launching the grid -- */
-		$('.perfect-grid-gallery').perfectGridGalleryEditor();
+		//if(modalità editor)
+		
+		//$('.perfect-grid-gallery').perfectGridGalleryEditor();
+		$('.perfect-grid-gallery').perfectGridGallery();
 
 		/* -- Launching Photoswipe -- */
 		initPhotoSwipeFromDOM('.photoswipe-gallery');
