@@ -3,6 +3,10 @@ var Util = (function($) {
 
 	var $window = $(window);
 
+	var fixSectionWidth = 0;
+	var elementIsResizing = false;
+	var elementIsDragging = false;
+
 	// function to detect if we are on a mobile device
 	var _detect_mobile = function() {
 		if (!("ontouchstart" in document.documentElement)) {
@@ -127,7 +131,9 @@ var Util = (function($) {
 		checkStaticPresentationPage : _checkStaticPresentationPage,
 		checkPost: _checkPost,
 		$window: $window,
-		scroll_timing: _scroll_timing
+		scroll_timing: _scroll_timing,
+		fixSectionWidth: fixSectionWidth,
+		elementIsResizing: elementIsResizing
 	};
 
 })(jQuery);
@@ -398,7 +404,7 @@ var VimeoVideo = (function($){
         findVideo: _findVideo,
     }
 })(jQuery);
-(function( $ ) {
+(function ($) {
 	'use strict';
 
 	var $window = $(window);
@@ -431,8 +437,8 @@ var VimeoVideo = (function($){
 	 * be doing this, we should try to minimize doing that in our own work.
 	 */
 
-	 // function to detect if we are on a mobile device
-	var _detect_mobile = function() {
+	// function to detect if we are on a mobile device
+	var _detect_mobile = function () {
 		if (!("ontouchstart" in document.documentElement)) {
 			document.documentElement.className += " no-touch";
 		} else {
@@ -440,37 +446,37 @@ var VimeoVideo = (function($){
 		}
 	}
 
-	var getYotubeID = function( url ) {
+	var getYotubeID = function (url) {
 		var ID;
-		if( url.indexOf( "youtu.be" ) > 0 ) {
-				ID = url.substr( url.lastIndexOf( "/" ) + 1, url.length );
-		} else if( url.indexOf( "http" ) > -1 ) {
-				ID = url.match( /[\\?&]v=([^&#]*)/ )[ 1 ];				
+		if (url.indexOf("youtu.be") > 0) {
+			ID = url.substr(url.lastIndexOf("/") + 1, url.length);
+		} else if (url.indexOf("http") > -1) {
+			ID = url.match(/[\\?&]v=([^&#]*)/)[1];
 		} else {
-				ID = url.length > 15 ? null : url;
+			ID = url.length > 15 ? null : url;
 		}
 		return ID;
 	};
 
 	function viewport() {
 		var e = window, a = 'inner';
-		if (!('innerWidth' in window )) {
+		if (!('innerWidth' in window)) {
 			a = 'client';
 			e = document.documentElement || document.body;
 		}
-		return { width : e[ a+'Width' ] , height : e[ a+'Height' ] };
+		return { width: e[a + 'Width'], height: e[a + 'Height'] };
 	}
 
 	// Waiting for the complete load of the window
-	$window.load(function(){
+	$window.load(function () {
 		/* -- Launching the textfill -- */
 		var $textFillContainer = $(".text-fill-container-canvas");
-		if( $textFillContainer.length > 0 ) {
+		if ($textFillContainer.length > 0) {
 			$textFillContainer.textFill({
 				relative: true,
 				relativeWrap: '.perfect-grid-item',
 			});
-			$textFillContainer.on('textfill-render-complete', function() {
+			$textFillContainer.on('textfill-render-complete', function () {
 				//$(this).parents('.perfect-grid-gallery').isotope('layout');
 				$window.resize();
 				// $('.perfect-grid-gallery').perfectGridGallery('relayoutGrid');
@@ -478,10 +484,10 @@ var VimeoVideo = (function($){
 		}
 
 		/* -- Launching TextResize ------ */
-		$('.perfect-grid-gallery').textResize();
+		//$('.perfect-grid-gallery').textResize();
 
-		if(typeof _plugin_frontend_settings !== 'undefined') {
-			if( 1 == _plugin_frontend_settings.animations ) {
+		if (typeof _plugin_frontend_settings !== 'undefined') {
+			if (1 == _plugin_frontend_settings.animations) {
 				// Activate animations
 				// var wow = new WOW({
 				// 	mobile: false,
@@ -502,7 +508,7 @@ var VimeoVideo = (function($){
 		//$(".perfect-grid-item:not(.horizontal-carousel) .rex-custom-scrollbar").mCustomScrollbar();
 
 		/* -- Launching scrollbar on full-height/boxed sections -- */
-		var $block_scrollable = $('.perfect-grid-gallery[data-layout=fixed][data-full-height=true] .text-content .rex-custom-scrollbar');
+		/* var $block_scrollable = $('.perfect-grid-gallery[data-layout=fixed][data-full-height=true] .text-content .rex-custom-scrollbar');
 
 		$block_scrollable.mCustomScrollbar();
 
@@ -514,18 +520,17 @@ var VimeoVideo = (function($){
 					$block_scrollable.mCustomScrollbar();
 				}
 			});
-		}
+		} */
 	});
 
 	// Waiting until the ready of the DOM
-	$(function() {
+	$(function () {
 		Util.init();
 		_detect_mobile();
+
 		/* -- Launching the grid -- */
-		//if(modalità editor)
-		
-		//$('.perfect-grid-gallery').perfectGridGalleryEditor();
-		$('.perfect-grid-gallery').perfectGridGallery();
+		console.log("Launching grid");
+		$('.perfect-grid-gallery').perfectGridGalleryEditor();
 
 		/* -- Launching Photoswipe -- */
 		initPhotoSwipeFromDOM('.photoswipe-gallery');
@@ -539,18 +544,18 @@ var VimeoVideo = (function($){
 		if (!jQuery.browser.mobile) {
 			$(".youtube-player").YTPlayer();
 
-			$(".youtube-player").on("YTPReady", function() {
+			$(".youtube-player").on("YTPReady", function () {
 				$(this).optimizeDisplay();
 			});
 		} else {
-			$('.youtube-player').each(function(i, el) {
+			$('.youtube-player').each(function (i, el) {
 				var $this = $(el),
 					data_yt = eval('(' + $this.attr('data-property') + ')'),
 					url = data_yt.videoURL,
 					id = getYotubeID(url);
 
 				$this.css('background-image', 'url(http://img.youtube.com/vi/' + id + '/0.jpg)');
-				$this.click(function(e) {
+				$this.click(function (e) {
 					e.preventDefault();
 					window.location.href = url;
 				});
@@ -560,36 +565,36 @@ var VimeoVideo = (function($){
 		}
 
 		// Pause/Play video on block click
-		$(document).on("click", ".perfect-grid-item", function() {
-			if( !$(this).hasClass('block-has-slider') ) {
+		$(document).on("click", ".perfect-grid-item", function () {
+			if (!$(this).hasClass('block-has-slider')) {
 				var $ytvideo = $(this).find(".youtube-player");
 				var $mpvideo = $(this).find(".rex-video-container");
 
-				if($ytvideo.length > 0) {
+				if ($ytvideo.length > 0) {
 					var video_state = $ytvideo[0].state;
-					if(video_state == 1) {
+					if (video_state == 1) {
 						$ytvideo.YTPPause();
 					} else {
 						$ytvideo.YTPPlay();
 					}
 				}
-				if($mpvideo.length > 0) {
+				if ($mpvideo.length > 0) {
 					$mpvideo.get(0).paused ? $mpvideo.get(0).play() : $mpvideo.get(0).pause();
 				}
 			}
 		});
 
 		// Adding audio functionallity
-		$('.perfect-grid-item').on('click', '.rex-video-toggle-audio', function(e) {
+		$('.perfect-grid-item').on('click', '.rex-video-toggle-audio', function (e) {
 			e.stopPropagation();
 			var $ytvideo = $(this).parents(".youtube-player");
 			var $mpvideo = $(this).parents('.mp4-player').find('.rex-video-container');
 			var $vimvideo = $(this).parents('.vimeo-player').find('.rex-video-vimeo-wrap--block');
 			var $toggle = $(this);
 
-			if($ytvideo.length > 0) {
+			if ($ytvideo.length > 0) {
 				var isMuted = $ytvideo.get(0).player.isMuted();
-				if(isMuted) {
+				if (isMuted) {
 					$ytvideo.YTPUnmute();
 					$(this).removeClass('user-has-muted');
 				} else {
@@ -598,8 +603,8 @@ var VimeoVideo = (function($){
 				}
 			}
 
-			if($mpvideo.length > 0) {
-				if( $mpvideo.prop('muted') ) {
+			if ($mpvideo.length > 0) {
+				if ($mpvideo.prop('muted')) {
 					$mpvideo.prop('muted', false);
 					$(this).removeClass('user-has-muted');
 				} else {
@@ -608,12 +613,12 @@ var VimeoVideo = (function($){
 				}
 			}
 
-						// vimeo video
-			if($vimvideo.length > 0) {
-				var player = VimeoVideo.findVideo( $vimvideo.find('iframe')[0] );
-				if(player) {
-					player.getVolume().then(function(volume) {
-						if( 0 == volume ) {
+			// vimeo video
+			if ($vimvideo.length > 0) {
+				var player = VimeoVideo.findVideo($vimvideo.find('iframe')[0]);
+				if (player) {
+					player.getVolume().then(function (volume) {
+						if (0 == volume) {
 							player.setVolume(1);
 							$toggle.removeClass('user-has-muted');
 						} else {
@@ -621,7 +626,7 @@ var VimeoVideo = (function($){
 							$toggle.addClass('user-has-muted');
 						}
 						// volume = the volume level of the player
-					}).catch(function(error) {
+					}).catch(function (error) {
 						// an error occurred
 					});
 				}
@@ -629,10 +634,10 @@ var VimeoVideo = (function($){
 		});
 
 		// Smooth scroll on all internal links
-		$('a[href*="#"]:not([href="#"]):not(.rex-vertical-nav-link)').click(function() {
-			if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+		$('a[href*="#"]:not([href="#"]):not(.rex-vertical-nav-link)').click(function () {
+			if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
 				var target = $(this.hash);
-				target = target.length ? target : $('[name=' + this.hash.slice(1) +']');
+				target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
 				if (target.length) {
 					$('html, body').animate({
 						scrollTop: target.offset().top
@@ -645,42 +650,42 @@ var VimeoVideo = (function($){
 		/* -- Handle dot behaviour --- */
 
 		var contentSections = $('.rexpansive_section'),
-		navigationItems = $('#rex-vertical-nav a');
+			navigationItems = $('#rex-vertical-nav a');
 
 		updateNavigation();
-		$window.on('scroll', function(){
+		$window.on('scroll', function () {
 			updateNavigation();
 		});
 
 		//smooth scroll to the section
-		navigationItems.on('click', function(event){
-	        event.preventDefault();
-	        smoothScroll($(this.hash));
-	    });
-	    //smooth scroll to second section
+		navigationItems.on('click', function (event) {
+			event.preventDefault();
+			smoothScroll($(this.hash));
+		});
+		//smooth scroll to second section
 
-	    //open-close navigation on touch devices
-	    $('.touch .rex-nav-trigger').on('click', function(){
-	    	$('.touch #rex-vertical-nav').toggleClass('open');
-	  
-	    });
-	    //close navigation on touch devices when selectin an elemnt from the list
+		//open-close navigation on touch devices
+		$('.touch .rex-nav-trigger').on('click', function () {
+			$('.touch #rex-vertical-nav').toggleClass('open');
+
+		});
+		//close navigation on touch devices when selectin an elemnt from the list
 		var $touch_navigation_links = $('.touch #rex-vertical-nav a');
 
-	    $touch_navigation_links.on('click', function(){
+		$touch_navigation_links.on('click', function () {
 			$touch_navigation_links.find('.rex-label').removeClass('fadeInAndOut');
 			$(this).find('.rex-label').addClass('fadeInAndOut');
-	    	$('.touch #rex-vertical-nav').removeClass('open');
-	    });
+			$('.touch #rex-vertical-nav').removeClass('open');
+		});
 
 		function updateNavigation() {
-			contentSections.each(function(){
+			contentSections.each(function () {
 				var $this = $(this);
-				if(typeof $this.attr('id') != 'undefined' && $this.attr('id') != '') {
-					var activeSection = $('#rex-vertical-nav a[href="#'+$this.attr('id')+'"]').data('number') - 1;
-					if ( ( $this.offset().top - $window.height()/2 < $window.scrollTop() ) && ( $this.offset().top + $this.height() - $window.height()/2 > $window.scrollTop() ) ) {
+				if (typeof $this.attr('id') != 'undefined' && $this.attr('id') != '') {
+					var activeSection = $('#rex-vertical-nav a[href="#' + $this.attr('id') + '"]').data('number') - 1;
+					if (($this.offset().top - $window.height() / 2 < $window.scrollTop()) && ($this.offset().top + $this.height() - $window.height() / 2 > $window.scrollTop())) {
 						navigationItems.eq(activeSection).addClass('is-selected');
-					}else {
+					} else {
 						navigationItems.eq(activeSection).removeClass('is-selected');
 					}
 				}
@@ -688,261 +693,261 @@ var VimeoVideo = (function($){
 		}
 
 		function smoothScroll(target) {
-	        $('body,html').animate(
-	        	{'scrollTop':target.offset().top},
-	        	600
-	        );
+			$('body,html').animate(
+				{ 'scrollTop': target.offset().top },
+				600
+			);
 		}
 	});
 
 	// Launch Photoswipe
-	var initPhotoSwipeFromDOM = function(gallerySelector) {
+	var initPhotoSwipeFromDOM = function (gallerySelector) {
 
-	    // parse slide data (url, title, size ...) from DOM elements 
-	    // (children of gallerySelector)
-	    var parseThumbnailElements = function(el) {
-	        //var thumbElements = el.childNodes,
-	        
-	        var thumbElements = $(el).find('.pswp-figure').get(),
-	            numNodes = thumbElements.length,
-	            items = [],
-	            figureEl,
-	            linkEl,
-	            size,
-	            item;
+		// parse slide data (url, title, size ...) from DOM elements 
+		// (children of gallerySelector)
+		var parseThumbnailElements = function (el) {
+			//var thumbElements = el.childNodes,
 
-	        for(var i = 0; i < numNodes; i++) {
+			var thumbElements = $(el).find('.pswp-figure').get(),
+				numNodes = thumbElements.length,
+				items = [],
+				figureEl,
+				linkEl,
+				size,
+				item;
 
-	            figureEl = thumbElements[i]; // <figure> element
+			for (var i = 0; i < numNodes; i++) {
 
-	            // include only element nodes 
-	            if(figureEl.nodeType !== 1) {
-	                continue;
-	            }
+				figureEl = thumbElements[i]; // <figure> element
 
-	            linkEl = figureEl.children[0]; // <a> element
+				// include only element nodes 
+				if (figureEl.nodeType !== 1) {
+					continue;
+				}
 
-	            size = linkEl.getAttribute('data-size').split('x');
+				linkEl = figureEl.children[0]; // <a> element
 
-	            // create slide object
-	            item = {
-	                src: linkEl.getAttribute('href'),
-	                w: parseInt(size[0], 10),
-	                h: parseInt(size[1], 10)
-	            };
+				size = linkEl.getAttribute('data-size').split('x');
 
-	            if(figureEl.children.length > 1) {
-	                // <figcaption> content
-	                item.title = figureEl.children[1].innerHTML; 
-	            }
+				// create slide object
+				item = {
+					src: linkEl.getAttribute('href'),
+					w: parseInt(size[0], 10),
+					h: parseInt(size[1], 10)
+				};
 
-	            if(linkEl.children.length > 0) {
-	                // <img> thumbnail element, retrieving thumbnail url
-	                item.msrc = linkEl.children[0].getAttribute('data-thumburl');
-	            } 
+				if (figureEl.children.length > 1) {
+					// <figcaption> content
+					item.title = figureEl.children[1].innerHTML;
+				}
 
-	            item.el = figureEl; // save link to element for getThumbBoundsFn
-	            items.push(item);
-	        }
+				if (linkEl.children.length > 0) {
+					// <img> thumbnail element, retrieving thumbnail url
+					item.msrc = linkEl.children[0].getAttribute('data-thumburl');
+				}
 
-	        return items;
-	    };
+				item.el = figureEl; // save link to element for getThumbBoundsFn
+				items.push(item);
+			}
 
-	    // find nearest parent element
-	    var closest = function closest(el, fn) {
-	        return el && ( fn(el) ? el : closest(el.parentNode, fn) );
-	    };
-
-	    var collectionHas = function(a, b) { //helper function (see below)
-		    for(var i = 0, len = a.length; i < len; i ++) {
-		        if(a[i] == b) return true;
-		    }
-		    return false;
-		};
-		var findParentBySelector = function(elm, selector) {
-		    var all = document.querySelectorAll(selector);
-		    var cur = elm.parentNode;
-		    while(cur && !collectionHas(all, cur)) { //keep going up until you find a match
-		        cur = cur.parentNode; //go up
-		    }
-		    return cur; //will return null if not found
+			return items;
 		};
 
-	    // triggers when user clicks on thumbnail
-	    var onThumbnailsClick = function(e) {
-	    	e = e || window.event;
+		// find nearest parent element
+		var closest = function closest(el, fn) {
+			return el && (fn(el) ? el : closest(el.parentNode, fn));
+		};
 
-	    	// Bug fix for Block links and links inside blocks
-	    	if($(e.target).parents('.perfect-grid-item').find('.element-link').length > 0 || $(e.target).is('a') ) {
-	    		return;
-	    	}
+		var collectionHas = function (a, b) { //helper function (see below)
+			for (var i = 0, len = a.length; i < len; i++) {
+				if (a[i] == b) return true;
+			}
+			return false;
+		};
+		var findParentBySelector = function (elm, selector) {
+			var all = document.querySelectorAll(selector);
+			var cur = elm.parentNode;
+			while (cur && !collectionHas(all, cur)) { //keep going up until you find a match
+				cur = cur.parentNode; //go up
+			}
+			return cur; //will return null if not found
+		};
 
-	        e.preventDefault ? e.preventDefault() : e.returnValue = false;
+		// triggers when user clicks on thumbnail
+		var onThumbnailsClick = function (e) {
+			e = e || window.event;
 
-	        var eTarget = e.target || e.srcElement;
+			// Bug fix for Block links and links inside blocks
+			if ($(e.target).parents('.perfect-grid-item').find('.element-link').length > 0 || $(e.target).is('a')) {
+				return;
+			}
 
-	        // find root element of slide
-	        var clickedListItem = closest(eTarget, function(el) {
-	            return (el.tagName && el.tagName.toUpperCase() === 'FIGURE');
-	        });
+			e.preventDefault ? e.preventDefault() : e.returnValue = false;
 
-	        if(!clickedListItem) {
-	            return;
-	        }
+			var eTarget = e.target || e.srcElement;
 
-	        // find index of clicked item by looping through all child nodes
-	        // alternatively, you may define index via data- attribute
-	       // var clickedGallery = clickedListItem.parentNode,
-	        //var clickedGallery = findParentBySelector(clickedListItem, '.my-gallery'),
-	        var clickedGallery = $(clickedListItem).parents(gallerySelector)[0],
-	            //childNodes = clickedListItem.parentNode.childNodes,
-	            childNodes = $(clickedGallery).find('.pswp-figure').get(),
-	            numChildNodes = childNodes.length,
-	            nodeIndex = 0,
-	            index;
+			// find root element of slide
+			var clickedListItem = closest(eTarget, function (el) {
+				return (el.tagName && el.tagName.toUpperCase() === 'FIGURE');
+			});
 
-	        for (var i = 0; i < numChildNodes; i++) {
-	            if(childNodes[i].nodeType !== 1) { 
-	                continue; 
-	            }
+			if (!clickedListItem) {
+				return;
+			}
 
-	            if(childNodes[i] === clickedListItem) {
-	                index = nodeIndex;
-	                break;
-	            }
-	            nodeIndex++;
-	        }
+			// find index of clicked item by looping through all child nodes
+			// alternatively, you may define index via data- attribute
+			// var clickedGallery = clickedListItem.parentNode,
+			//var clickedGallery = findParentBySelector(clickedListItem, '.my-gallery'),
+			var clickedGallery = $(clickedListItem).parents(gallerySelector)[0],
+				//childNodes = clickedListItem.parentNode.childNodes,
+				childNodes = $(clickedGallery).find('.pswp-figure').get(),
+				numChildNodes = childNodes.length,
+				nodeIndex = 0,
+				index;
 
-	        if(index >= 0) {
-	            // open PhotoSwipe if valid index found
-	            openPhotoSwipe( index, clickedGallery );
-	        }
-	        return false;
-	    };
+			for (var i = 0; i < numChildNodes; i++) {
+				if (childNodes[i].nodeType !== 1) {
+					continue;
+				}
 
-	    // parse picture index and gallery index from URL (#&pid=1&gid=2)
-	    var photoswipeParseHash = function() {
-	        var hash = window.location.hash.substring(1),
-	        params = {};
+				if (childNodes[i] === clickedListItem) {
+					index = nodeIndex;
+					break;
+				}
+				nodeIndex++;
+			}
 
-	        if(hash.length < 5) {
-	            return params;
-	        }
+			if (index >= 0) {
+				// open PhotoSwipe if valid index found
+				openPhotoSwipe(index, clickedGallery);
+			}
+			return false;
+		};
 
-	        var vars = hash.split('&');
-	        for (var i = 0; i < vars.length; i++) {
-	            if(!vars[i]) {
-	                continue;
-	            }
-	            var pair = vars[i].split('=');  
-	            if(pair.length < 2) {
-	                continue;
-	            }           
-	            params[pair[0]] = pair[1];
-	        }
+		// parse picture index and gallery index from URL (#&pid=1&gid=2)
+		var photoswipeParseHash = function () {
+			var hash = window.location.hash.substring(1),
+				params = {};
 
-	        if(params.gid) {
-	            params.gid = parseInt(params.gid, 10);
-	        }
+			if (hash.length < 5) {
+				return params;
+			}
 
-	        return params;
-	    };
+			var vars = hash.split('&');
+			for (var i = 0; i < vars.length; i++) {
+				if (!vars[i]) {
+					continue;
+				}
+				var pair = vars[i].split('=');
+				if (pair.length < 2) {
+					continue;
+				}
+				params[pair[0]] = pair[1];
+			}
 
-	    var openPhotoSwipe = function(index, galleryElement, disableAnimation, fromURL) {
-	        var pswpElement = document.querySelectorAll('.pswp')[0],
-	            gallery,
-	            options,
-	            items;
+			if (params.gid) {
+				params.gid = parseInt(params.gid, 10);
+			}
 
-	        items = parseThumbnailElements(galleryElement);
+			return params;
+		};
 
-	        // define options (if needed)
-	        options = {
+		var openPhotoSwipe = function (index, galleryElement, disableAnimation, fromURL) {
+			var pswpElement = document.querySelectorAll('.pswp')[0],
+				gallery,
+				options,
+				items;
 
-	            // define gallery index (for URL)
-	            galleryUID: galleryElement.getAttribute('data-pswp-uid'),
+			items = parseThumbnailElements(galleryElement);
 
-	            getThumbBoundsFn: function(index) {
-	                // See Options -> getThumbBoundsFn section of documentation for more info
-	                var thumbnail = items[index].el.getElementsByClassName('pswp-item-thumb')[0], // find thumbnail
+			// define options (if needed)
+			options = {
+
+				// define gallery index (for URL)
+				galleryUID: galleryElement.getAttribute('data-pswp-uid'),
+
+				getThumbBoundsFn: function (index) {
+					// See Options -> getThumbBoundsFn section of documentation for more info
+					var thumbnail = items[index].el.getElementsByClassName('pswp-item-thumb')[0], // find thumbnail
 						image_content = items[index].el.getElementsByClassName('rex-custom-scrollbar')[0],
 						pageYScroll = window.pageYOffset || document.documentElement.scrollTop,
 						rect = image_content.getBoundingClientRect(),
 						image_type = thumbnail.getAttribute('data-thumb-image-type');
 
-					if(image_type == 'natural') {
+					if (image_type == 'natural') {
 
-	                	return {x:rect.left, y:rect.top + pageYScroll, w:rect.width};
-					} else  {
+						return { x: rect.left, y: rect.top + pageYScroll, w: rect.width };
+					} else {
 						// var full_rect = items[index].el.getBoundingClientRect();
 						// return {x:full_rect.left, y:full_rect.top + pageYScroll, w:full_rect.width};;
 						return null
 					}
-	            },
+				},
 
-	            closeOnScroll: false,
-	            showHideOpacity: true
-	        };
+				closeOnScroll: false,
+				showHideOpacity: true
+			};
 
-	        // PhotoSwipe opened from URL
-	        if(fromURL) {
-	            if(options.galleryPIDs) {
-	                // parse real index when custom PIDs are used 
-	                // http://photoswipe.com/documentation/faq.html#custom-pid-in-url
-	                for(var j = 0; j < items.length; j++) {
-	                    if(items[j].pid == index) {
-	                        options.index = j;
-	                        break;
-	                    }
-	                }
-	            } else {
-	                // in URL indexes start from 1
-	                options.index = parseInt(index, 10) - 1;
-	            }
-	        } else {
-	            options.index = parseInt(index, 10);
-	        }
+			// PhotoSwipe opened from URL
+			if (fromURL) {
+				if (options.galleryPIDs) {
+					// parse real index when custom PIDs are used 
+					// http://photoswipe.com/documentation/faq.html#custom-pid-in-url
+					for (var j = 0; j < items.length; j++) {
+						if (items[j].pid == index) {
+							options.index = j;
+							break;
+						}
+					}
+				} else {
+					// in URL indexes start from 1
+					options.index = parseInt(index, 10) - 1;
+				}
+			} else {
+				options.index = parseInt(index, 10);
+			}
 
-	        // exit if index not found
-	        if( isNaN(options.index) ) {
-	            return;
-	        }
+			// exit if index not found
+			if (isNaN(options.index)) {
+				return;
+			}
 
-	        if(disableAnimation) {
-	            options.showAnimationDuration = 0;
-	        }
+			if (disableAnimation) {
+				options.showAnimationDuration = 0;
+			}
 
-	        // Pass data to PhotoSwipe and initialize it
+			// Pass data to PhotoSwipe and initialize it
 
-	        gallery = new PhotoSwipe( pswpElement, PhotoSwipeUI_Default, items, options);
-	        gallery.init();
-	    };
+			gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+			gallery.init();
+		};
 
-	    // loop through all gallery elements and bind events
-	    var galleryElements = document.querySelectorAll( gallerySelector );
+		// loop through all gallery elements and bind events
+		var galleryElements = document.querySelectorAll(gallerySelector);
 
-	    for(var i = 0, l = galleryElements.length; i < l; i++) {
-	        galleryElements[i].setAttribute('data-pswp-uid', i+1);
-	        galleryElements[i].onclick = onThumbnailsClick;
-	    }
+		for (var i = 0, l = galleryElements.length; i < l; i++) {
+			galleryElements[i].setAttribute('data-pswp-uid', i + 1);
+			galleryElements[i].onclick = onThumbnailsClick;
+		}
 
-	    // Parse URL and open gallery if it contains #&pid=3&gid=1
-	    var hashData = photoswipeParseHash();
-	    if(hashData.pid && hashData.gid) {
-	        openPhotoSwipe( hashData.pid ,  galleryElements[ hashData.gid - 1 ], true, true );
-	    }
+		// Parse URL and open gallery if it contains #&pid=3&gid=1
+		var hashData = photoswipeParseHash();
+		if (hashData.pid && hashData.gid) {
+			openPhotoSwipe(hashData.pid, galleryElements[hashData.gid - 1], true, true);
+		}
 	};
 
 	// execute above function
 	var rexpansiveSections = document.getElementsByClassName('rexpansive_section'),
 		index = 0;
 
-	for(index=0; index<rexpansiveSections.length; index++) {
+	for (index = 0; index < rexpansiveSections.length; index++) {
 		var thisSection = rexpansiveSections[index],
 			pswchilds = thisSection.getElementsByClassName('pswp-figure');
-		if(pswchilds.length === 0) {
+		if (pswchilds.length === 0) {
 			$(thisSection).removeClass('photoswipe-gallery');
 		}
 	}
 
-})( jQuery );
+})(jQuery);

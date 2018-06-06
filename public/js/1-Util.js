@@ -3,6 +3,10 @@ var Util = (function($) {
 
 	var $window = $(window);
 
+	var fixSectionWidth = 0;
+	var elementIsResizing = false;
+	var elementIsDragging = false;
+
 	// function to detect if we are on a mobile device
 	var _detect_mobile = function() {
 		if (!("ontouchstart" in document.documentElement)) {
@@ -127,7 +131,9 @@ var Util = (function($) {
 		checkStaticPresentationPage : _checkStaticPresentationPage,
 		checkPost: _checkPost,
 		$window: $window,
-		scroll_timing: _scroll_timing
+		scroll_timing: _scroll_timing,
+		fixSectionWidth: fixSectionWidth,
+		elementIsResizing: elementIsResizing
 	};
 
 })(jQuery);
