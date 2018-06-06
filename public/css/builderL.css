@@ -48,9 +48,19 @@
 
 #builder-save-grid-btn{
     width: 100px;
-    height: 100px;
+    height: 40px;
+    margin-top: 0;
     background-color: blue;
     color: orange;
+    position: fixed;
+}
+
+#builder-undo-btn{
+    width: 100px;
+    height: 40px;
+    margin-top: 60px;
+    background-color: green;
+    color: red;
     position: fixed;
 }
 

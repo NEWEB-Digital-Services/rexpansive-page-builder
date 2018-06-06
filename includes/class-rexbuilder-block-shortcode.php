@@ -47,16 +47,16 @@ class Rexbuilder_Block {
 			"color_bg_block" => "#ffffff",
 			"image_bg_block" => "",
 			"id_image_bg_block" => "",
-			'video_bg_id' => "",
+			"video_bg_id" => "",
 			"video_bg_url"	=>	"",
 			"video_bg_url_vimeo" => "",
 			"type_bg_block" => "",
-			'image_size'	=>	'full',
+			"image_size"	=>	"full",
 			"photoswipe" => '',
 			"linkurl" => '',
-			'block_custom_class' => '',
-			'block_padding'	=>	'',
-			'overlay_block_color' => '',
+			"block_custom_class" => '',
+			"block_padding"	=>	'',
+			"overlay_block_color" => '',
 			"zak_background" => "",
 			"zak_side" => "",
 			"zak_title" => "",
@@ -156,8 +156,6 @@ class Rexbuilder_Block {
 			
 			// Blocks with no text-editable
 			echo ($block_has_slider ? ' block-has-slider' : ' rex-text-editable');
-
-			//echo ( $block_has_slider ? '' : '' );
 
 			echo ( '' != $block_custom_class ? ' ' . $block_custom_class : '' );
 			if( 'expand' == $type) : 

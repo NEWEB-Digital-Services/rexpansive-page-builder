@@ -1,8 +1,8 @@
 ;
-(function($) {
+(function ($) {
 	'use strict';
 
-	$(function() {
+	$(function () {
 
 		var $lean_overlay = $('.lean-overlay');
 
@@ -10,54 +10,54 @@
 		var image_uploader_frame, image_block_edit_frame, navigator_media_frame, video_uploader_frame, video_block_edit_frame, textfill_image_upload_frame;
 
 		var section_config_modal_properties = {
-			$section_layout_type : $('.builder-edit-row-layout'),
-			$section_fixed : $('#section-fixed'),
-			$section_masonry : $('#section-masonry'),
-			$section_full : $('#section-full-modal'),
-			$section_boxed : $('#section-boxed-modal'),
-			$section_boxed_width : $('.section-set-boxed-width'),
-			$section_boxed_width_type : $('.section-width-type'),
-			$has_overlay_small : $('#section-has-overlay-small'),
-			$has_overlay_medium : $('#section-has-overlay-medium'),
-			$has_overlay_large : $('#section-has-overlay-large'),
-			$color_value : $('.backresponsive-color-section'),
-			$color_palette_buttons : $('#bg-overlay-color-palette .bg-palette-selector'),
-			$color_preview_icon : $('#overlay-preview-icon'),
+			$section_layout_type: $('.builder-edit-row-layout'),
+			$section_fixed: $('#section-fixed'),
+			$section_masonry: $('#section-masonry'),
+			$section_full: $('#section-full-modal'),
+			$section_boxed: $('#section-boxed-modal'),
+			$section_boxed_width: $('.section-set-boxed-width'),
+			$section_boxed_width_type: $('.section-width-type'),
+			$has_overlay_small: $('#section-has-overlay-small'),
+			$has_overlay_medium: $('#section-has-overlay-medium'),
+			$has_overlay_large: $('#section-has-overlay-large'),
+			$color_value: $('.backresponsive-color-section'),
+			$color_palette_buttons: $('#bg-overlay-color-palette .bg-palette-selector'),
+			$color_preview_icon: $('#overlay-preview-icon'),
 			// $color_preview: $('#overlay-palette-preview'),
 			// FULL height configuration
-			$is_full : $('#section-is-full'),
+			$is_full: $('#section-is-full'),
 			// HOLD GRID config
-			$hold_grid : $("#rx-hold-grid"),
+			$hold_grid: $("#rx-hold-grid"),
 			// ID and navigator configuration
-			$section_id : $('#sectionid-container'),
-			$save_button : $('#backresponsive-set-save'),
+			$section_id: $('#sectionid-container'),
+			$save_button: $('#backresponsive-set-save'),
 
-			$block_gutter : $('.section-set-block-gutter'),
+			$block_gutter: $('.section-set-block-gutter'),
 			// Row separator
-			$row_separator_top : $('#row-separator-top'),
-			$row_separator_right : $('#row-separator-right'),
-			$row_separator_bottom : $('#row-separator-bottom'),
-			$row_separator_left : $('#row-separator-left'),
+			$row_separator_top: $('#row-separator-top'),
+			$row_separator_right: $('#row-separator-right'),
+			$row_separator_bottom: $('#row-separator-bottom'),
+			$row_separator_left: $('#row-separator-left'),
 
 			// Row zoom
-			$section_active_photoswipe : $('#section-active-photoswipe'),
-			section_photoswipe_changed : false,
+			$section_active_photoswipe: $('#section-active-photoswipe'),
+			section_photoswipe_changed: false,
 		};
 		/**
 		 * Open a modal dialog box
 		 * 
-		 * @param {jQuery
-		 *            Object} $target modal to open
+		 * @param {jQuery Object} $target modal to open
+		 * 
 		 * @param {boolean}
 		 *            target_only active only the modal not the overlay
 		 * @param {Array}
 		 *            additional_class Array of additional classes
 		 */
-		var OpenModal = function($target, target_only, additional_class) {
+		var OpenModal = function ($target, target_only, additional_class) {
 			target_only = typeof target_only !== 'undefined' ? target_only
-					: false;
+				: false;
 			additional_class = typeof additional_class !== 'undefined' ? additional_class
-					: [];
+				: [];
 
 			if (!target_only) {
 				$('body').addClass('rex-modal-open');
@@ -79,14 +79,13 @@
 		/**
 		 * Close a modal dialog box
 		 * 
-		 * @param {jQuery
-		 *            Object} $target modal to close
+		 * @param {jQuery Object} $target modal to close
 		 */
-		var CloseModal = function($target, target_only, additional_class) {
+		var CloseModal = function ($target, target_only, additional_class) {
 			target_only = typeof target_only !== 'undefined' ? target_only
-					: false;
+				: false;
 			additional_class = typeof additional_class !== 'undefined' ? additional_class
-					: [];
+				: [];
 
 			if (!target_only && !$target.hasClass('rex-in--up')) {
 				$('body').removeClass('rex-modal-open');
@@ -109,86 +108,85 @@
 		/**
 		 * reset a modal height to prevent dynamic content bugs
 		 * 
-		 * @param {jQuery
-		 *            Object} $target
+		 * @param {jQuery Object} $target
 		 */
-		var resetModalDimensions = function($target) {
+		var resetModalDimensions = function ($target) {
 			$target.css('height', 'auto');
 			$target.css('width', 'auto');
 		};
 
-		var setBuilderTimeStamp = function() {
+		var setBuilderTimeStamp = function () {
 			var timestamp = new Date();
 			console.log(timestamp);
 			// $('#_rexbuilder').val(Date.UTC(timestamp.getFullYear(),timestamp.getMonth(),timestamp.getDate()));
 		};
 
 		$(document).on(
-				'click',
-				'#backresponsive-set-cancel',
-				function(e) {
-					e.preventDefault();
-					CloseModal($('#modal-background-responsive-set').parent(
-							'.rex-modal-wrap'));
-				});
+			'click',
+			'#backresponsive-set-cancel',
+			function (e) {
+				e.preventDefault();
+				CloseModal($('#modal-background-responsive-set').parent(
+					'.rex-modal-wrap'));
+			});
 
 		$(document)
-				.on(
-						'click',
-						'#backresponsive-set-save',
-						function(e) {
-							e.preventDefault();
-							var gridID = $(this).attr('data-section_id');
-							var gallery = $('.grid-number-' + gridID);
-							// console.log(this);
-							var layout = section_config_modal_properties.$section_layout_type
-									.filter(':checked').val();
-							gallery.perfectGridGalleryEditor('reLaunchGrid', {
-								'layout' : layout
-							});
-							/*
-							 * var section_id = $(this).attr('data-section_id'),
-							 * color =
-							 * $('.backresponsive-color-section').spectrum('get'),
-							 * opacity =
-							 * $('.backresponsive-opacity-section').val(),
-							 * gutter = $('.section-set-block-gutter').val(),
-							 * custom_classes =
-							 * $('#section-set-custom-class').val(),
-							 * section_width = '', section_is_full_width = (true
-							 * ===
-							 * section_config_modal_properties.$section_full.prop('checked') ?
-							 * 'true' : 'false'), section_is_boxed_width = (true
-							 * ===
-							 * section_config_modal_properties.$section_boxed.prop('checked') ?
-							 * 'true' : 'false'), isFull = (true ===
-							 * section_config_modal_properties.$is_full.prop('checked') ?
-							 * 'true' : ''), holdGrid = (true ===
-							 * section_config_modal_properties.$hold_grid.prop('checked') ?
-							 * 'true' : 'false'), //has_small_overlay = ( true
-							 * ===
-							 * section_config_modal_properties.$has_overlay_small.prop('checked') ?
-							 * 'true' : '' ), //has_medium_overlay = ( true ===
-							 * section_config_modal_properties.$has_overlay_medium.prop('checked') ?
-							 * 'true' : '' ), //has_large_overlay = ( true ===
-							 * section_config_modal_properties.$has_overlay_large.prop('checked') ?
-							 * 'true' : '' ), section_custom_name =
-							 * section_config_modal_properties.$section_id.val();
-							 * 
-							 * var layout =
-							 * section_config_modal_properties.$section_layout_type.filter(':checked').val();
-							 * 
-							 * var $row = $('.builder-row[data-count=' +
-							 * section_id + ']'); $row.attr( 'data-layout',
-							 * layout );
-							 */
+			.on(
+				'click',
+				'#backresponsive-set-save',
+				function (e) {
+					e.preventDefault();
+					var gridID = $(this).attr('data-section_id');
+					var gallery = $('.grid-number-' + gridID);
+					// console.log(this);
+					var layout = section_config_modal_properties.$section_layout_type
+						.filter(':checked').val();
+					gallery.perfectGridGalleryEditor('reLaunchGrid', {
+						'layout': layout
+					});
+					/*
+					 * var section_id = $(this).attr('data-section_id'),
+					 * color =
+					 * $('.backresponsive-color-section').spectrum('get'),
+					 * opacity =
+					 * $('.backresponsive-opacity-section').val(),
+					 * gutter = $('.section-set-block-gutter').val(),
+					 * custom_classes =
+					 * $('#section-set-custom-class').val(),
+					 * section_width = '', section_is_full_width = (true
+					 * ===
+					 * section_config_modal_properties.$section_full.prop('checked') ?
+					 * 'true' : 'false'), section_is_boxed_width = (true
+					 * ===
+					 * section_config_modal_properties.$section_boxed.prop('checked') ?
+					 * 'true' : 'false'), isFull = (true ===
+					 * section_config_modal_properties.$is_full.prop('checked') ?
+					 * 'true' : ''), holdGrid = (true ===
+					 * section_config_modal_properties.$hold_grid.prop('checked') ?
+					 * 'true' : 'false'), //has_small_overlay = ( true
+					 * ===
+					 * section_config_modal_properties.$has_overlay_small.prop('checked') ?
+					 * 'true' : '' ), //has_medium_overlay = ( true ===
+					 * section_config_modal_properties.$has_overlay_medium.prop('checked') ?
+					 * 'true' : '' ), //has_large_overlay = ( true ===
+					 * section_config_modal_properties.$has_overlay_large.prop('checked') ?
+					 * 'true' : '' ), section_custom_name =
+					 * section_config_modal_properties.$section_id.val();
+					 * 
+					 * var layout =
+					 * section_config_modal_properties.$section_layout_type.filter(':checked').val();
+					 * 
+					 * var $row = $('.builder-row[data-count=' +
+					 * section_id + ']'); $row.attr( 'data-layout',
+					 * layout );
+					 */
 
-							setBuilderTimeStamp();
+					setBuilderTimeStamp();
 
-							CloseModal($('#modal-background-responsive-set')
-									.parent('.rex-modal-wrap'));
+					CloseModal($('#modal-background-responsive-set')
+						.parent('.rex-modal-wrap'));
 
-						});
+				});
 		/*
 		 * var section_id = $(this).attr('data-section_id'), color =
 		 * $('.backresponsive-color-section').spectrum('get'), opacity =
@@ -334,20 +332,20 @@
 		 */
 		// $('.builder-section-config').hover();
 		$(document).on(
-				'click',
-				'#section-fixed',
-				function(e) {
-					$('#bg-set-full-section').parent().removeClass(
-							'hide-full-height-option');
-				});
+			'click',
+			'#section-fixed',
+			function (e) {
+				$('#bg-set-full-section').parent().removeClass(
+					'hide-full-height-option');
+			});
 
 		$(document).on(
-				'click',
-				'#section-masonry',
-				function(e) {
-					$('#bg-set-full-section').parent().addClass(
-							'hide-full-height-option');
-				});
+			'click',
+			'#section-masonry',
+			function (e) {
+				$('#bg-set-full-section').parent().addClass(
+					'hide-full-height-option');
+			});
 		// codice per il cambio live di editabile / non editabile
 		/*
 		 * { var grigliaEditabile = true; if (grigliaEditabile) {
@@ -359,13 +357,17 @@
 		 * true; } }
 		 */
 
-		$(document).on('click', '#builder-save-grid-btn', function(e) {
+		$(document).on('click', '#builder-undo-btn', function (e) {
+			console.log('undo');
+		});
+
+		$(document).on('click', '#builder-save-grid-btn', function (e) {
 			// ajx call
 			// - clear previuos data
 			// - save new data
 
 			var shortcodePage = '';
-			$('.grid-stack-row').each(function() {
+			$('.grid-stack-row').each(function () {
 				var $this = $(this);
 				$this.perfectGridGalleryEditor('fillEmptySpaces');
 				$this.perfectGridGalleryEditor('updateAllElementsProperties');
@@ -375,32 +377,59 @@
 
 			var idPost = parseInt($('#id-post').attr('data-post-id'));
 			$.ajax({
-				type : 'POST',
-				dataType : 'json',
-				url : rexajax.ajaxurl,
-				data : {
-					action : 'rexlive_save_sections',
-					nonce_param : rexajax.rexnonce,
-					shortcode : shortcodePage,
-					post_id_to_update : idPost
+				type: 'POST',
+				dataType: 'json',
+				url: rexajax.ajaxurl,
+				data: {
+					action: 'rexlive_save_sections',
+					nonce_param: rexajax.rexnonce,
+					shortcode: shortcodePage,
+					post_id_to_update: idPost
 				},
-				success : function(response) {
+				success: function (response) {
 					console.log(response);
 					if (response.success) {
 						console.log('chiama effettttuuuata con successo');
 					}
 					console.log('chiama effettuata con successo');
 				},
-				error : function(response) {
+				error: function (response) {
 					console.log('errore chiama ajax');
 				}
 			});
 
 		});
 
-		var createBlockShortcode = function($elem) {
-			var id = "", type = "text", size_x = 1, size_y = 1, row = '', col = '', color_bg_block = "#ffffff", image_bg_block = "", id_image_bg_block = "", video_bg_id = "", video_bg_url = "", video_bg_url_vimeo = "", type_bg_block = "", image_size = 'full', photoswipe = '', linkurl = '', block_custom_class = '', block_padding = '', overlay_block_color = '', zak_background = "", zak_side = "", zak_title = "", zak_icon = "", zak_foreground = "", block_animation = "fadeInUpBig", video_has_audio = '0';
+		var createBlockShortcode = function ($elem) {
+			var id = "",
+				type = "text",
+				size_x = 1,
+				size_y = 1,
+				row = '',
+				col = '',
+				color_bg_block = "#ffffff",
+				image_bg_block = "",
+				id_image_bg_block = "",
+				video_bg_id = "",
+				video_bg_url = "",
+				video_bg_url_vimeo = "",
+				type_bg_block = "",
+				image_size = 'full',
+				photoswipe = '',
+				linkurl = '',
+				block_custom_class = '',
+				block_padding = '',
+				overlay_block_color = '',
+				zak_background = "",
+				zak_side = "",
+				zak_title = "",
+				zak_icon = "",
+				zak_foreground = "",
+				block_animation = "fadeInUpBig",
+				video_has_audio = '0';
+
 			var content = "";
+			var $block;
 			var output;
 			var $itemContent = $elem.find('.grid-item-content');
 			var $itemData = $('#' + $elem.attr('id') + '-builder-data');
@@ -412,80 +441,97 @@
 			row = $elem.attr('data-row');
 			col = $elem.attr('data-col');
 			color_bg_block = $itemContent.css('background-color') != '' ? $itemContent
-					.css('background-color')
-					: '#ffffff';
+				.css('background-color')
+				: '#ffffff';
 			image_bg_block = $itemData.attr('data-image_bg_block') === undefined ? ""
-					: $itemData.attr('data-image_bg_block');
+				: $itemData.attr('data-image_bg_block');
 			id_image_bg_block = $itemData.attr('data-id_image_bg_block') === undefined ? ""
-					: $itemData.attr('data-id_image_bg_block');
+				: $itemData.attr('data-id_image_bg_block');
 			video_bg_id = $itemData.attr('data-video_bg_id') === undefined ? ""
-					: $itemData.attr('data-video_bg_id');
+				: $itemData.attr('data-video_bg_id');
 			video_bg_url = $itemData.attr('data-video_bg_url') === undefined ? ""
-					: $itemData.attr('data-video_bg_url');
+				: $itemData.attr('data-video_bg_url');
 			video_bg_url_vimeo = $itemData.attr('data-video_bg_url_vimeo') === undefined ? ""
-					: $itemData.attr('data-video_bg_url_vimeo');
+				: $itemData.attr('data-video_bg_url_vimeo');
 			type_bg_block = $itemData.attr('data-type_bg_block') === undefined ? "full"
-					: $itemData.attr('data-type_bg_block');
+				: $itemData.attr('data-type_bg_block');
 			image_size = $itemData.attr('data-image_size') === undefined ? "full"
-					: $itemData.attr('data-image_size');
+				: $itemData.attr('data-image_size');
 			photoswipe = $itemData.attr('data-photoswipe') === undefined ? ""
-					: $itemData.attr('data-photoswipe');
+				: $itemData.attr('data-photoswipe');
 			linkurl = $itemData.attr('data-linkurl') === undefined ? ""
-					: $itemData.attr('data-linkurl');
+				: $itemData.attr('data-linkurl');
 			block_custom_class = $itemData.attr('data-block_custom_class') === undefined ? ""
-					: $itemData.attr('data-block_custom_class');
+				: $itemData.attr('data-block_custom_class');
 			block_padding = $itemData.attr('data-block_padding') === undefined ? ""
-					: $itemData.attr('data-block_padding');
+				: $itemData.attr('data-block_padding');
 			overlay_block_color = $itemData.attr('data-overlay_block_color') === undefined ? ""
-					: $itemData.attr('data-overlay_block_color');
+				: $itemData.attr('data-overlay_block_color');
 			zak_background = $itemData.attr('data-zak_background') === undefined ? ""
-					: $itemData.attr('data-zak_background');
+				: $itemData.attr('data-zak_background');
 			zak_side = $itemData.attr('data-zak_side') === undefined ? ""
-					: $itemData.attr('data-zak_side');
+				: $itemData.attr('data-zak_side');
 			zak_title = $itemData.attr('data-zak_title') === undefined ? ""
-					: $itemData.attr('data-zak_title');
+				: $itemData.attr('data-zak_title');
 			zak_icon = $itemData.attr('data-zak_icon') === undefined ? ""
-					: $itemData.attr('data-zak_icon');
+				: $itemData.attr('data-zak_icon');
 			zak_foreground = $itemData.attr('data-zak_foreground') === undefined ? ""
-					: $itemData.attr('data-zak_foreground');
+				: $itemData.attr('data-zak_foreground');
 			block_animation = $itemData.attr('data-block_animation') === undefined ? "fadeInUpBig"
-					: $itemData.attr('data-block_animation');
+				: $itemData.attr('data-block_animation');
 			video_has_audio = $itemData.attr('data-video_has_audio') === undefined ? "0"
-					: $itemData.attr('data-video_has_audio');
+				: $itemData.attr('data-video_has_audio');
 
 			if (!$elem.hasClass('block-has-slider')) {
-				content = $itemContent.find('.text-wrap').html();
-				if (content === undefined) {
+				$block = $itemContent.find('.text-wrap');
+				//TODO sistemare la copia, non deve eliminare dal dom gli oggetti, deve farlo solo nella copia
+				var $savingBlock = $block.clone();
+				$savingBlock.find('.medium-insert-buttons').remove();
+				$savingBlock.find('.text-editor-span-fix').remove();
+				if ($savingBlock.text() == "") {
 					content = "";
+				} else {
+					content = $savingBlock.html();
 				}
 			} else {
-				content = 'slider';
+				content = '[RexSlider slider_id="' + parseInt($elem.find(".rex-slider-wrap").attr("data-slider-id")) + '"]';
 			}
 
-			output = '[RexpansiveBlock' + ' id="' + id + '" type="' + type
-					+ '" size_x="' + size_x + '" size_y="' + size_y + '" row="'
-					+ row + '" col="' + col + '" color_bg_block="'
-					+ color_bg_block + '" image_bg_block="' + image_bg_block
-					+ '" id_image_bg_block="' + id_image_bg_block
-					+ '" video_bg_id="' + video_bg_id + '" video_bg_url="'
-					+ video_bg_url + '" video_bg_url_vimeo="'
-					+ video_bg_url_vimeo + '" type_bg_block="' + type_bg_block
-					+ '" image_size="' + image_size + '" photoswipe="'
-					+ photoswipe + '" linkurl="' + linkurl
-					+ '" block_custom_class="' + block_custom_class
-					+ '" block_padding="' + block_padding
-					+ '" overlay_block_color="' + overlay_block_color
-					+ '" zak_background="' + zak_background + '" zak_side="'
-					+ zak_side + '" zak_title="' + zak_title + '" zak_icon="'
-					+ zak_icon + '" zak_foreground="' + zak_foreground
-					+ '" block_animation="' + block_animation
-					+ '" video_has_audio="' + video_has_audio + '"]' + content
-					+ '[/RexpansiveBlock]';
+			console.log("Contenuto blocco " + id);
+			console.log(content);
+
+			output =
+				'[RexpansiveBlock' + ' id="' + id +
+				'" type="' + type +
+				'" size_x="' + size_x +
+				'" size_y="' + size_y +
+				'" row="' + row +
+				'" col="' + col +
+				'" color_bg_block="' + color_bg_block +
+				'" image_bg_block="' + image_bg_block +
+				'" id_image_bg_block="' + id_image_bg_block +
+				'" video_bg_id="' + video_bg_id +
+				'" video_bg_url="' + video_bg_url +
+				'" video_bg_url_vimeo="' + video_bg_url_vimeo +
+				'" type_bg_block="' + type_bg_block +
+				'" image_size="' + image_size +
+				'" photoswipe="'
+				+ photoswipe +
+				'" linkurl="' + linkurl
+				+ '" block_custom_class="' + block_custom_class
+				+ '" block_padding="' + block_padding
+				+ '" overlay_block_color="' + overlay_block_color
+				+ '" zak_background="' + zak_background + '" zak_side="'
+				+ zak_side + '" zak_title="' + zak_title + '" zak_icon="'
+				+ zak_icon + '" zak_foreground="' + zak_foreground
+				+ '" block_animation="' + block_animation
+				+ '" video_has_audio="' + video_has_audio + '"]' + content
+				+ '[/RexpansiveBlock]';
 
 			return output;
 		};
 
-		var createSectionShortcode = function($section) {
+		var createSectionShortcode = function ($section) {
 			var section_name = "", type = "perfect-grid", color_bg_section = "#ffffff", dimension = "full", margin = "", image_bg_section = "", id_image_bg_section = "", video_bg_url_section = '', video_bg_id_section = '', video_bg_url_vimeo_section = '', full_height = '', block_distance = 20, layout = "fixed", responsive_background = '', custom_classes = '', section_width = '', row_separator_top = '', row_separator_bottom = '', row_separator_right = '', row_separator_left = '';
 
 			var output = '';
@@ -493,72 +539,72 @@
 			var $sectionData = $section.find('.section-data');
 
 			section_name = $sectionData.attr('data-section_name') === undefined ? ""
-					: $sectionData.attr('data-section_name');
+				: $sectionData.attr('data-section_name');
 			type = $sectionData.attr('data-type') === undefined ? "perfect-grid"
-					: $sectionData.attr('data-type');
+				: $sectionData.attr('data-type');
 			color_bg_section = $sectionData.attr('data-color_bg_section') === undefined ? "#ffffff"
-					: $sectionData.attr('data-color_bg_section');
+				: $sectionData.attr('data-color_bg_section');
 			dimension = $sectionData.attr('data-dimension') === undefined ? "full"
-					: $sectionData.attr('data-dimension');
+				: $sectionData.attr('data-dimension');
 			margin = $sectionData.attr('data-margin') === undefined ? ""
-					: $sectionData.attr('data-margin');
+				: $sectionData.attr('data-margin');
 			image_bg_section = $sectionData.attr('data-image_bg_section') === undefined ? ""
-					: $sectionData.attr('data-image_bg_section');
+				: $sectionData.attr('data-image_bg_section');
 			id_image_bg_section = $sectionData.attr('data-id_image_bg_section') === undefined ? ""
-					: $sectionData.attr('data-id_image_bg_section');
+				: $sectionData.attr('data-id_image_bg_section');
 			video_bg_url_section = $sectionData
-					.attr('data-video_bg_url_section') === undefined ? ""
-					: $sectionData.attr('data-video_bg_url_section');
+				.attr('data-video_bg_url_section') === undefined ? ""
+				: $sectionData.attr('data-video_bg_url_section');
 			video_bg_id_section = $sectionData.attr('data-video_bg_id_section') === undefined ? ""
-					: $sectionData.attr('data-video_bg_id_section');
+				: $sectionData.attr('data-video_bg_id_section');
 			video_bg_url_vimeo_section = $sectionData
-					.attr('data-video_bg_url_vimeo_section') === undefined ? ""
-					: $sectionData.attr('data-video_bg_url_vimeo_section');
+				.attr('data-video_bg_url_vimeo_section') === undefined ? ""
+				: $sectionData.attr('data-video_bg_url_vimeo_section');
 			video_bg_url_vimeo_section = video_bg_url_vimeo_section == 'undefined' ? ""
-					: video_bg_url_vimeo_section;
+				: video_bg_url_vimeo_section;
 			full_height = $sectionData.attr('data-full_height') === undefined ? ""
-					: $sectionData.attr('data-full_height');
+				: $sectionData.attr('data-full_height');
 			block_distance = $sectionData.attr('data-block_distance') === undefined ? 20
-					: parseInt($sectionData.attr('data-block_distance'));
+				: parseInt($sectionData.attr('data-block_distance'));
 			layout = $sectionData.attr('data-layout') === undefined ? ""
-					: $sectionData.attr('data-layout');
+				: $sectionData.attr('data-layout');
 			responsive_background = $sectionData
-					.attr('data-responsive_background') === undefined ? "fixed"
-					: $sectionData.attr('data-responsive_background');
+				.attr('data-responsive_background') === undefined ? "fixed"
+				: $sectionData.attr('data-responsive_background');
 			custom_classes = $sectionData.attr('data-custom_classes') === undefined ? ""
-					: $sectionData.attr('data-custom_classes');
+				: $sectionData.attr('data-custom_classes');
 			section_width = $sectionData.attr('data-section_width') === undefined ? ""
-					: $sectionData.attr('data-section_width');
+				: $sectionData.attr('data-section_width');
 			section_width = section_width == '%' ? "" : section_width;
 			row_separator_top = $sectionData.attr('data-row_separator_top') === undefined ? ""
-					: $sectionData.attr('data-row_separator_top');
+				: $sectionData.attr('data-row_separator_top');
 			row_separator_bottom = $sectionData
-					.attr('data-row_separator_bottom') === undefined ? ""
-					: $sectionData.attr('data-row_separator_bottom');
+				.attr('data-row_separator_bottom') === undefined ? ""
+				: $sectionData.attr('data-row_separator_bottom');
 			row_separator_right = $sectionData.attr('row_separator_right') === undefined ? ""
-					: $sectionData.attr('data-row_separator_right');
+				: $sectionData.attr('data-row_separator_right');
 			row_separator_left = $sectionData.attr('data-row_separator_left') === undefined ? ""
-					: $sectionData.attr('data-row_separator_left');
+				: $sectionData.attr('data-row_separator_left');
 
 			output = '[RexpansiveSection' + ' section_name="' + section_name
-					+ '" type="' + type + '" color_bg_section="'
-					+ color_bg_section + '" dimension="' + dimension
-					+ '" margin="' + margin + '" image_bg_section="'
-					+ image_bg_section + '" id_image_bg_section="'
-					+ id_image_bg_section + '" video_bg_url_section="'
-					+ video_bg_url_section + '" video_bg_id_section="'
-					+ video_bg_id_section + '" video_bg_url_vimeo_section="'
-					+ video_bg_url_vimeo_section + '" full_height="'
-					+ full_height + '" block_distance="' + block_distance
-					+ '" layout="' + layout + '" responsive_background="'
-					+ responsive_background + '" custom_classes="'
-					+ custom_classes + '" section_width="' + section_width
-					+ '" row_separator_top="' + row_separator_top
-					+ '" row_separator_bottom="' + row_separator_bottom
-					+ '" row_separator_right="' + row_separator_right
-					+ '" row_separator_left="' + row_separator_left + '"]';
+				+ '" type="' + type + '" color_bg_section="'
+				+ color_bg_section + '" dimension="' + dimension
+				+ '" margin="' + margin + '" image_bg_section="'
+				+ image_bg_section + '" id_image_bg_section="'
+				+ id_image_bg_section + '" video_bg_url_section="'
+				+ video_bg_url_section + '" video_bg_id_section="'
+				+ video_bg_id_section + '" video_bg_url_vimeo_section="'
+				+ video_bg_url_vimeo_section + '" full_height="'
+				+ full_height + '" block_distance="' + block_distance
+				+ '" layout="' + layout + '" responsive_background="'
+				+ responsive_background + '" custom_classes="'
+				+ custom_classes + '" section_width="' + section_width
+				+ '" row_separator_top="' + row_separator_top
+				+ '" row_separator_bottom="' + row_separator_bottom
+				+ '" row_separator_right="' + row_separator_right
+				+ '" row_separator_left="' + row_separator_left + '"]';
 
-			$gridGallery.find('.grid-stack-item').each(function() {
+			$gridGallery.find('.grid-stack-item').each(function () {
 				output += createBlockShortcode($(this));
 			});
 
@@ -667,91 +713,90 @@
 		// attach a click event (or whatever you want) to some element on your
 		// page
 		$('#modal-setting-button').on(
-				'click',
-				'#background_up_img',
-				function(event) {
-					event.preventDefault();
+			'click',
+			'#background_up_img',
+			function (event) {
+				event.preventDefault();
 
-					// if the file_frame has already been created, just reuse it
-					if (file_frame) {
-						file_frame.open();
-						return;
-					}
+				// if the file_frame has already been created, just reuse it
+				if (file_frame) {
+					file_frame.open();
+					return;
+				}
 
-					file_frame = wp.media.frames.file_frame = wp.media({
+				file_frame = wp.media.frames.file_frame = wp.media({
 					/*
 					 * title: $( this ).data( 'uploader_title' ), button: {
 					 * text: $( this ).data( 'uploader_button_text' ), },
 					 * multiple: false // set this to true for multiple file
 					 * selection
 					 */
-					});
-
-					file_frame.on('select', function() {
-						attachment = file_frame.state().get('selection')
-								.first().toJSON();
-
-						// do something with the file here
-						$('#frontend-button').hide();
-						$('#frontend-image').attr('src', attachment.url);
-					});
-
-					file_frame.open();
 				});
+
+				file_frame.on('select', function () {
+					attachment = file_frame.state().get('selection')
+						.first().toJSON();
+
+					// do something with the file here
+					$('#frontend-button').hide();
+					$('#frontend-image').attr('src', attachment.url);
+				});
+
+				file_frame.open();
+			});
 		// ------------------------------------------
 
 		$(document)
-				.on(
-						'click',
-						'.el-size-settingButton',
-						function(c) { // c -> click del mouse
-							c.preventDefault(); // preventDef -> non fa andare
-												// in un evento di default
-							var $rexpansiveSection = $(this).parents(
-									'.rexpansive_section'); // this -> il div
-															// che crea evento
-							var $row = $($rexpansiveSection
-									.find('.perfect-grid-gallery'));
-							var sectionNumber = $row
-									.perfectGridGalleryEditor('getSectionNumber');
-							console.log(sectionNumber);
-							console.log(this);
-							// DA CONTROLLARE IL FATTO CHE SELEZIONI IL NUMERO
-							// DELLA ROW CORRETTA (sectionNumber)
+			.on(
+				'click',
+				'.el-size-settingButton',
+				function (c) { // c -> click del mouse
+					c.preventDefault(); // preventDef -> non fa andare
+					// in un evento di default
+					var $rexpansiveSection = $(this).parents(
+						'.rexpansive_section'); // this -> il div
+					// che crea evento
+					var $row = $($rexpansiveSection
+						.find('.perfect-grid-gallery'));
+					var sectionNumber = $row
+						.perfectGridGalleryEditor('getSectionNumber');
+					console.log(sectionNumber);
+					console.log(this);
+					// DA CONTROLLARE IL FATTO CHE SELEZIONI IL NUMERO
+					// DELLA ROW CORRETTA (sectionNumber)
 
-							$('#back-set-save').attr('data-section_id',
-									sectionNumber);
-							$('#back-set-reset').attr('data-section_id',
-									sectionNumber);
-							OpenModal($('#modal-setting-button').parent(
-									'.rex-modal-wrap'));
+					$('#back-set-save').attr('data-section_id',
+						sectionNumber);
+					$('#back-set-reset').attr('data-section_id',
+						sectionNumber);
+					//OpenModal($('#modal-setting-button').parent('.rex-modal-wrap'));
 
-						});
+				});
 
-		$(document).on('click', '#back-set-reset', function(c) {
+		$(document).on('click', '#back-set-reset', function (c) {
 			c.preventDefault();
 			CloseModal($('#modal-setting-button').parent('.rex-modal-wrap'));
 		});
 
 		$(document).on(
-				'click',
-				'.builder-section-config',
-				function(e) {
+			'click',
+			'.builder-section-config',
+			function (e) {
 
-					e.preventDefault();
-					var $rexpansiveSection = $(this).parents(
-							'.rexpansive_section');
-					var $row = $($rexpansiveSection
-							.find('.perfect-grid-gallery'));
-					var sectionNumber = $row
-							.perfectGridGalleryEditor('getSectionNumber');
-					$('#backresponsive-set-save').attr('data-section_id',
-							sectionNumber);
-					$('#backresponsive-set-reset').attr('data-section_id',
-							sectionNumber);
-					OpenModal($('#modal-background-responsive-set').parent(
-							'.rex-modal-wrap'));
-				});
+				e.preventDefault();
+				var $rexpansiveSection = $(this).parents(
+					'.rexpansive_section');
+				var $row = $($rexpansiveSection
+					.find('.perfect-grid-gallery'));
+				var sectionNumber = $row
+					.perfectGridGalleryEditor('getSectionNumber');
+				$('#backresponsive-set-save').attr('data-section_id',
+					sectionNumber);
+				$('#backresponsive-set-reset').attr('data-section_id',
+					sectionNumber);
+				OpenModal($('#modal-background-responsive-set').parent(
+					'.rex-modal-wrap'));
+			});
 	}); // End of the DOM ready
 
 })(jQuery);

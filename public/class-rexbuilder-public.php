@@ -251,6 +251,7 @@ class Rexbuilder_Public {
 					wp_enqueue_script( 'medium-editor-insert', plugin_dir_url( __FILE__ ) . 'js/medium-editor-insert-plugin.min.js', array( 'jquery' ), $this->version, true );
 					//wp_enqueue_script( 'medium-editor-tables', plugin_dir_url( __FILE__ ) . 'js/medium-editor-tables.min.js', array( 'jquery' ), $this->version, true );
 					//wp_enqueue_script( 'medium-editor-insert-tables', plugin_dir_url( __FILE__ ) . 'js/medium-editor-insert-tables.js', array( 'jquery' ), $this->version, true );
+					wp_enqueue_script( 'utilities', plugin_dir_url( __FILE__ ) . 'js/utilities.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( '2-jqueryEditor', plugin_dir_url( __FILE__ ) . 'js/2-jquery.perfectGridGalleryEditor.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( '4-modals', plugin_dir_url( __FILE__ ) . 'js/4-modals.js', array( 'jquery' ), $this->version, true );
 					wp_enqueue_script( '2-jquery', plugin_dir_url( __FILE__ ) . 'js/2-jquery.perfectGridGallery.js', array( 'jquery' ), $this->version, true );

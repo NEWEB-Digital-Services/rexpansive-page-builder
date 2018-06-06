@@ -17,5 +17,8 @@ defined( 'ABSPATH' ) or exit;
 		<button id="builder-save-grid-btn">
 			<i>SALVA</i>
 		</button>
+		<button id="builder-undo-btn">
+			<i>UNDO</i>
+		</button>
     </div>
 </div>

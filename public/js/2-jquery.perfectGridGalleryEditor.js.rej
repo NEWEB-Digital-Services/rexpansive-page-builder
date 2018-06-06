@@ -1,9 +1,0 @@
-diff a/public/js/2-jquery.perfectGridGalleryEditor.js b/public/js/2-jquery.perfectGridGalleryEditor.js	(rejected hunks)
-@@ -79,6 +79,7 @@
-             firstStartGrid: false,
-             lastIDBlock: null,
-             textWrapEditing: null,
-+            gridEditable: true,
-             mediumEditorIstance: null
-         };
- 
