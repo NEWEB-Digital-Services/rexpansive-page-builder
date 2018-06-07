@@ -36,31 +36,38 @@ class Rexbuilder_Section {
 	 * @param      string    $content    		The content passed.
 	 */
 	public function render_section( $atts, $content = null ) {
-		extract( shortcode_atts( array(
-			"section_name" => "",
-			"type" => "perfect-grid",
-			"color_bg_section" => "#ffffff",
-			"dimension" => "full",
-			"margin" => "",
-			"image_bg_section" => "",
-			"id_image_bg_section" => "",
-			'video_bg_url_section' => '',
-			'video_bg_id_section' => '',
-			'video_bg_url_vimeo_section' => '',
-			'full_height' => '',
-			"block_distance" => 20,
-			"layout" => "fixed",
-			'responsive_background' => '',
-			'custom_classes' =>	'',
-			'section_width' => '',
-			'row_separator_top'	=>	'',
-			'row_separator_bottom'	=>	'',
-			'row_separator_right'	=>	'',
+		$parsed_atts = shortcode_atts( array(
+            "section_name" => "",
+            "type" => "perfect-grid",
+            "color_bg_section" => "#ffffff",
+            "dimension" => "full",
+            "margin" => "",
+            "image_bg_section" => "",
+            "id_image_bg_section" => "",
+            'video_bg_url_section' => '',
+            'video_bg_id_section' => '',
+            'video_bg_url_vimeo_section' => '',
+            'full_height' => '',
+            "block_distance" => 20,
+            "layout" => "fixed",
+            'responsive_background' => '',
+            'custom_classes' =>	'',
+            'section_width' => '',
+            'row_separator_top'	=>	'',
+            'row_separator_bottom'	=>	'',
+            'row_separator_right'	=>	'',
 			'row_separator_left'	=>	'',
-		), $atts ) );
+			'section_model' => ''
+        ), $atts, 'RexpansiveSection' );
+
+		extract( $parsed_atts );
+		
+		// Applying a filter to the content
+        // Passing all the attributes as reference to edit them based on the content
+        $content = apply_filters( 'rexpansive_filter_section', $content, array( &$parsed_atts ) );
 
 		global $post;
-		$builder_active = get_post_meta( $post->ID, '_rexbuilder_active', true);
+		$builder_active = apply_filters( 'rexbuilder_post_active', get_post_meta( $post->ID, '_rexbuilder_active', true) );
 
 		if('true' == $builder_active) {
 			global $section_layout;
@@ -97,7 +104,7 @@ class Rexbuilder_Section {
 				$row_separators .= ' data-row-separator-left="' . $row_separator_left . '"';
 			}
 
-			$content_has_photoswipe = preg_match('/photoswipe="true"/', $content);
+			ob_start();
 
 			echo '<section';
 			if($section_name != '') :
@@ -105,15 +112,28 @@ class Rexbuilder_Section {
 				echo ' href="#' . $x . '" id="' . $x . '"';
 			endif;
 
+			$content_has_photoswipe = strpos( $content, 'photoswipe="true"' );
+    
+			$content_has_floating_blocks = strpos( $content, 'rex-floating-' );
+		
+			$content_has_static_block = strpos( $content, 'rex-static-block' );
+
+			$row_has_accordion = has_shortcode( $content, 'RexAccordion' );
+
 			echo ' class="rexpansive_section' .
 				( ( $content_has_photoswipe > 0 ) ? ' photoswipe-gallery' : '' ) . 
 				( ( '' != $custom_classes ) ? ' ' . $custom_classes : '' ) . 
 				( ( 'true' == $full_height ) ? ' full-height-section' : '' ) .
 				( ( '' != $video_bg_url_section && 'undefined' != $video_bg_url_section ) ? ' youtube-player' : '' ) .
-				'" itemscope itemtype="http://schema.org/ImageGallery"' .
+				( ( $content_has_floating_blocks !== false ) ? ' rex-section-has-floating-blocks' : '' ) .
+				( ( $content_has_static_block !== false ) ? ' rex-section-has-static-blocks' : '' ) .
+				( ( false !== $row_has_accordion ) ? ' rex-section-has-accordion' : '' ) .
+				apply_filters( 'rexpansive_builder_section_class', '', $parsed_atts ) .
+				'"' . 
+				( ( $content_has_photoswipe > 0 ) ? ' itemscope itemtype="http://schema.org/ImageGallery"' : '' ) .
 				( ( '' != $video_bg_url_section && 'undefined' != $video_bg_url_section ) ? ' data-property="{videoURL:\'' . $video_bg_url_section . '\',containment:\'self\',startAt:0,mute:true,autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"' : '' ) .
 				$section_style . '>';
-			
+
 			echo '<div class="section-data" style="display: none;" ';
 			foreach ($atts as $property_name => $value_property) {
 				echo 'data-'.$property_name.'="'.$value_property.'" ';
@@ -121,9 +141,9 @@ class Rexbuilder_Section {
 			unset($property_name);
 			unset($value_property);
 			echo '></div>';
-	
+		
 			$this->create_toolbox();
-
+	
 			if( '' != $video_bg_url_vimeo_section && 'undefined' != $video_bg_url_vimeo_section ) {
 ?>
 <div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--section">
@@ -132,9 +152,6 @@ class Rexbuilder_Section {
 <?php
 			}
 
-			if( "" != $responsive_background )
-				echo '<div class="responsive-overlay"' . $section_responsive_style . '">';
-
 			if( '' != $video_bg_id_section && 'undefined' != $video_bg_id_section ) :
 				echo '<div class="rex-video-section-wrap">';
 				echo '<video class="rex-video-container" preload muted autoplay loop>';
@@ -142,6 +159,10 @@ class Rexbuilder_Section {
 				echo '</video>';
 				echo '</div>';
 			endif;
+
+			if( "" != $responsive_background ) {
+				echo '<div class="responsive-overlay"' . $section_responsive_style . '">';
+			}
 
 			if( 'boxed' == $dimension ) {
 				echo '<div class="center-disposition"';
@@ -153,11 +174,9 @@ class Rexbuilder_Section {
 				echo '<div class="full-disposition">';
 			}
 
-			if( is_page(126) ) {
-				echo '<div class="perfect-grid-gallery" data-separator="' . $block_distance . '" data-layout="' . $layout . '" data-full-height="' . ( ( 'true' == $full_height ) ? 'true' : 'false' ) . '"' . $row_separators . '>';
-			} else {
-				echo '<div class="perfect-grid-gallery grid-stack grid-stack-row" data-separator="' . $block_distance . '" data-layout="' . $layout . '" data-full-height="' . ( ( 'true' == $full_height ) ? 'true' : 'false' ) . '"' . $row_separators . '>';
-			}
+			do_action( 'rexpansive_section_before_grid', array( &$parsed_atts ) );
+
+			echo '<div class="perfect-grid-gallery grid-stack grid-stack-row" data-separator="' . $block_distance . '" data-layout="' . $layout . '" data-full-height="' . ( ( 'true' == $full_height ) ? 'true' : 'false' ) . '"' . $row_separators . '>';
 			echo '<div class="perfect-grid-sizer"></div>';
 			echo do_shortcode( $content );
 			echo '</div>';
@@ -167,14 +186,13 @@ class Rexbuilder_Section {
 				echo '</div>';
 
 			echo '</section>';
-
+			return ob_get_clean();
 		} else {
-
+			ob_start();
 			echo do_shortcode( $content );
-
+			return ob_get_clean();
 		}
 	}
-
 	private function create_toolbox() {
 		?>
 		<div class="toolBox">

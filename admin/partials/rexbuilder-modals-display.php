@@ -4,6 +4,7 @@
  *
  * @link       htto://www.neweb.info
  * @since      1.0.10
+ * @version     1.1.2   Add Models windows
  *
  * @package    Rexbuilder
  * @subpackage Rexbuilder/admin/partials
@@ -901,7 +902,7 @@ defined( 'ABSPATH' ) or exit;
     <div id="rex-slider-block" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
         <div class="modal-content">
 
-            <?php include_once('rexbuilder-modal-loader.php'); ?>
+            <?php include('rexbuilder-modal-loader.php'); ?>
 
             <div class="rex-slider__slide-list rex-modal-content__modal-area">
                 <div class="col rex-slider__slide rex-modal-content__modal-area__row" data-slider-slide-id="0" data-block_type="slide">
@@ -1117,6 +1118,137 @@ defined( 'ABSPATH' ) or exit;
         </div>
     </div><!-- //.rex-slider__links-editor -->
 
+</div>
+
+<div class="rex-modal-wrap rex-fade">
+    <div id="rex-model-block" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
+        <div class="modal-content">
+
+            <?php include('rexbuilder-modal-loader.php'); ?>
+
+            <div class="rex-model__add-model__wrap rex-modal-content__modal-area--bordered rex-modal-content__modal-area" style="display:flex;">
+                <div id="rex-model__name__wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix" style="width:100%;">
+                    <span class="prefix"></span>
+                    <input type="text" id="rex-model__name" name="rex-model__name">
+                    <label for="rex-model__name" class=""><?php _e( 'Model name', 'rexpansive' ); ?></label>
+                    <span class="rex-material-bar"></span>
+                </div>
+                <button id="rex-model__add-new-model" class="builder-button btn-floating btn-no-shadow btn-bordered btn-bordered--inactive tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Add model', 'rexpansive-classic' ) ?>">
+                    <i class="material-icons">&#xE145;</i>
+                </button>
+            </div><!-- // .rex-model__add-model__wrap -->
+
+            <div class="rex-model__import--wrap rex-modal-content__modal-area">
+
+            <?php
+            // WP_Query arguments
+            $args = array(
+                'post_type'              => array( 'rex_model' ),
+                'post_status'            => array( 'publish', 'private' ),
+                'posts_per_page'         => '-1',
+            );
+
+            // The Query
+            $query = new WP_Query( $args );
+
+            ?><div class="rx__select-wrap">
+                <select id="rex-model__import" class="rx__form-input"><option value="0"><?php _e( 'New Model', 'rexpansive-classic' ); ?></option><?php
+            // The Loop
+            if ( $query->have_posts() ) {
+                while ( $query->have_posts() ) {
+                    $query->the_post();
+                    ?><option value="<?php the_ID(); ?>" data-preview-url="<?php echo get_permalink(); ?>"><?php the_title(); ?></option><?php
+                }
+            } else {
+                // no posts found
+            }
+
+            ?>
+                </select>
+                <div class="rx__form-input__select-arrow"></div>
+            </div>
+            <?php
+
+            // Restore original Post Data
+            wp_reset_postdata();
+            ?>
+
+            <div id="rex-model__open-preview">
+                <i class="rex-icon">g</i>
+            </div>
+
+            </div>
+        </div>
+
+        <div class="rex-modal-footer">
+            <button id="" class="waves-effect waves-light btn-flat grey rex-cancel-button" value="">
+                <i class="rex-icon">n</i>
+            </button>
+            <button id="" class="waves-effect waves-light btn-flat blue darken-1 rex-save-button" value="">
+                <i class="rex-icon">m</i>
+            </button>
+        </div>
+    </div>
+</div><!-- RexModel modal -->
+
+<div class="rex-lightbox" tabindex="-1" role="dialog" aria-hidden="true">
+	<div class="rex-lightbox__bg"></div>
+
+	<div class="rex-lightbox__scroll-wrap">
+		<div class="rex-lightbox__container">
+			<div class="rex-lightbox__item"></div>
+		</div>
+        <div class="rex-lightbox__ui rex-lightbox__ui--hidden">
+			<div class="rex-lightbox__top-bar">
+                <button class="rex-lightbox__button rex-lightbox__button--close" title="<?php _e( 'Close (Esc)', 'rexpansive-builder' ); ?>"><i class="material-icons white-text">&#xE5CD;</i></button>
+            </div>
+        </div>
+    </div>
+</div><!-- Lightbox -->
+
+<div class="rex-modal-wrap rex-fade">
+
+    <div id="rexeditor-expand-modal" class="rex-modal-draggable z-depth-4">
+        <div class="modal-wrap">
+            <header class="rexeditor-header clearfix">
+                <h2><?php _e('Insert content', 'rexpansive-classic'); ?></h2>
+                <div id="rexeditor-expand-close"><span class="dashicons dashicons-no-alt"></span></div>
+            </header>
+
+            <div class="expand-editor-fieldwrap">
+                <div class="expand-editor-topfields">
+                    <label for="expand-background"><?php _e( 'Background Image', 'rexpansive-classic' ); ?></label>
+                    <input type="text" name="expand-background" class="exp-back-holder" data-image_id=''>
+                    <button class="button button-primary button-large exp-back-upload"><?php _e( 'Select Background', 'rexpansive-classic' ); ?></button><br><br>
+                    <label for="expand-side"><?php _e( 'Choose Expand Side', 'rexpansive-classic' ); ?></label>
+                    <input type="radio" class="exp-side-holder" name="expand-side" value="left" checked><?php _e( 'Left', 'rexpansive-classic' ); ?>
+                    <input type="radio" class="exp-side-holder" name="expand-side" value="right"><?php _e( 'Right', 'rexpansive-classic' ); ?><br><br>
+                    <label for="expand-title"><?php _e( 'Title', 'rexpansive-classic' ); ?></label>
+                    <input type="text" name="expand-title" class="exp-title-holder"/>
+                    <input type="text" name="expand-icon" class="exp-icon-holder" data-icon_id=''/>
+                    <button class="button button-primary button-large exp-icon-upload"><?php _e( 'Select Icon', 'rexpansive-classic' ); ?></button>
+                    <br><br>
+                    <label for="expand-foreground"><?php _e( 'Foreground Image', 'rexpansive-classic' ); ?>
+                        <input type="text" name="expand-foreground" class="zak-foreground-holder" data-foreground-id=''/>
+                    </label>
+                    <button class="button button-primary button-large zak-foreground-upload"><?php _e( 'Select Foreground', 'rexpansive-classic' ); ?></button>
+                </div>
+                
+                <div class="modal-editor-editorarea">
+                    <?php wp_editor( '', 'rexbuilder_expand_editor', array( 'editor_height' => 150) ); ?>
+                </div>
+
+                <div class="expand-editor-bottomfields">
+                    
+                </div>
+            </div>
+
+            <div class="rexeditor_bottom">
+                <button id="expand-editor-cancel" class="button button-large" value="image"><?php _e('Cancel', 'rexpansive-classic'); ?></button>
+                <button id="expand-editor-save" class="button button-primary button-large" value=""><?php _e('Save', 'rexpansive-classic'); ?></button>
+            </div>
+        </div>
+    </div><!-- ZAK Editor -->
 </div>
 
 <div class="lean-overlay" style="display:none;"></div>

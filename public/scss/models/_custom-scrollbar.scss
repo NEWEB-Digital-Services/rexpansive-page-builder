@@ -4,13 +4,8 @@
 	width: 100%;
 	max-height: 100%;
 	overflow: hidden;
-	
-	.mCSB_container{
-		margin-right: 25px;
-	}
-
 	.mCSB_scrollTools {
-		right: 5px;
+		right: 30px;
 		// visibility: hidden;
 		.mCSB_draggerContainer {
 			margin: 20px 0;
@@ -33,7 +28,6 @@
 			background-color: #fbfbfb;
 		}
 	}
-	
 	@media screen and (max-width: $small) {
 		.mCSB_scrollTools {
 			right: 0px;

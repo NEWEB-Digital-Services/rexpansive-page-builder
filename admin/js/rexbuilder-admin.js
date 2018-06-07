@@ -29,28 +29,32 @@
 	 * be doing this, we should try to minimize doing that in our own work.
 	 */
 
+	
 	$(function() {
+		var $postdivrich = $('#postdivrich');
+		var $rexbuilder = $('#rexbuilder');
+		var $rexbuilder_active = $('#_rexbuilder_active');
+		var $builder_switch = $('#builder-switch');
+
 		if( ( 'true' == _plugin_backend_settings.activate_builder ) && 
-			( 'true' == $('#_rexbuilder_active').val() ) ) {	// Check this global variable to hide the default worpdress text editor
-			$('#postdivrich').hide();
-			$('#rexbuilder').show();
+			( 'true' == $rexbuilder_active.val() ) ) {	// Check this global variable to hide the default worpdress text editor
+			$postdivrich.hide();
+			$rexbuilder.show();
 		} else {
-			$('#postdivrich').show();
-			$('#rexbuilder').hide();
-			$('#builder-switch').prop('checked', false);
+			$postdivrich.show();
+			$rexbuilder.hide();
+			$builder_switch.prop('checked', false);
 		}
 
-		$('#builder-switch').on('change', function() {
+		$builder_switch.on('change', function() {
 			if( $(this).prop('checked') ) {
-				$('#postdivrich').hide();
-				$('#rexbuilder').show();
-				$('#_rexbuilder_active').val('true');
+				$postdivrich.hide();
+				$rexbuilder.show();
+				$rexbuilder_active.val('true');
 			} else {
-				$('#postdivrich').show();
-				$('#rexbuilder').hide();
-				$('#_rexbuilder_active').val('false');
-				//var ed = tinyMCE.get('content');
-				//console.log(ed);
+				$postdivrich.show();
+				$rexbuilder.hide();
+				$rexbuilder_active.val('false');
 				$(window).resize();
 			}
 		});

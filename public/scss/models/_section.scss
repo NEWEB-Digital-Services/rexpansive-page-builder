@@ -14,22 +14,25 @@
 		width: 100%;
 	}
 	.center-disposition {
-		width: 80%;
-	}
-	&.full-height-section {
-		min-height: 100vh;
-		.perfect-grid-gallery {
-			min-height: 100vh;
-			@media screen and (max-width: $small) {
-				.perfect-grid-item:nth-child(2) {
-				    min-height: 100vh!important;
-					height: auto!important;
-					.grid-item-content,
-					.responsive-block-overlay {
-					    min-height: 100vh!important;
-					}
-				}
-			}
+		max-width: 80%;
+		@media screen and (max-width: $small) {
+			max-width: 100%!important;
 		}
 	}
+	// &.full-height-section {
+	// 	min-height: 100vh;
+	// 	.perfect-grid-gallery {
+	// 		min-height: 100vh;
+	// 		@media screen and (max-width: $small) {
+	// 			.perfect-grid-item:nth-child(2) {
+	// 			    min-height: 100vh!important;
+	// 				height: auto!important;
+	// 				.grid-item-content,
+	// 				.responsive-block-overlay {
+	// 				    min-height: 100vh!important;
+	// 				}
+	// 			}
+	// 		}
+	// 	}
+	// }
 }

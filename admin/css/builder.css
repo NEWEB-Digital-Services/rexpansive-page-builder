@@ -2330,11 +2330,13 @@ input[id^="section-fixed"] + label i {
 #rex-css-editor {
   width: 40%;
   max-width: 40%;
+  background-color: #000;
   /*transform: none;*/
 }
 
 #rex-css-editor .modal-content {
   padding: 0;
+  border:15px solid #000;
 }
 
 .rex-modal .rex-ace-editor {
@@ -3049,23 +3051,23 @@ input[id^="section-fixed"] + label i {
   background-position: top center;
 }
 
-.item.block-is-natural .element-preview {
+.item.block-is-natural:not(.archive-item) .element-preview {
   display: none;
 }
 
-.item.block-is-natural .element-actions .edit_handler {
+.item.block-is-natural:not(.archive-item) .element-actions .edit_handler {
   display: none;
 }
 
-.item.block-is-natural .element-actions .edit_handler ~ br {
+.item.block-is-natural:not(.archive-item) .element-actions .edit_handler ~ br {
   display: none;
 }
 
-.item.block-is-natural .element-actions .actions-center-icons:not(.fixed-action-btn) .background_handler {
+.item.block-is-natural:not(.archive-item) .element-actions .actions-center-icons:not(.fixed-action-btn) .background_handler {
   margin-right: 15px;
 }
 
-.item.block-is-natural .element-actions .actions-center-icons .copy-handler {
+.item.block-is-natural:not(.archive-item) .element-actions .actions-center-icons .copy-handler {
   margin-top: 0;
 }
 

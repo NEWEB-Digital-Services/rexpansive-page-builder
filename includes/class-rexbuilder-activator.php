@@ -49,6 +49,7 @@ class Rexbuilder_Activator {
 			'post_types'	=>	array(
 				'post'	=>	1,
 				'page'	=>	1,
+				'rex_model' => 1
 			),
 			'animation'		=>	0,
 		);

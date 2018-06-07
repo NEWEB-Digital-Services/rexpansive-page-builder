@@ -49,6 +49,8 @@ class Rexbuilder_Admin {
 	 */
 	private $plugin_options;
 
+	private $settings;
+
 	/**
 	 * Initialize the class and set its properties.
 	 *
@@ -63,11 +65,17 @@ class Rexbuilder_Admin {
 
 		$this->plugin_options = get_option( $this->plugin_name . '_options' );
 
+		$this->settings = apply_filters( 'rexbuilder_metabox_settings', array(
+			'zak' => array(
+			  'active' => '0'
+			)
+		) );
+
 		if( isset( $this->plugin_options['post_types'] ) ) :
 			$post_to_activate = $this->plugin_options['post_types'];
 
 			// Call the construction of the metabox
-			require_once plugin_dir_path( __FILE__ ) . '/class-rexbuilder-meta-box.php';
+			require_once REXPANSIVE_BUILDER_PATH . 'admin/class-rexbuilder-meta-box.php';
 
 			foreach( $post_to_activate as $key => $value ) :
 
@@ -87,7 +95,7 @@ class Rexbuilder_Admin {
 						array(
 							'id' => '_rexbuilder_active',
 							'type' => 'hidden_field',
-							'default' => 'true',
+							'default' => ( $this->is_edit_page('new') ? 'true' : 'false' ),
 						),
 						/*array(
 							'id'	=>	'_rexbuilder_photoswipe',
@@ -143,17 +151,16 @@ class Rexbuilder_Admin {
 				if( ( $post_to_activate[$page_info->id] == 1 ) && 
 					( $post_to_activate[$page_info->post_type] == 1 ) ) :
 					wp_enqueue_style( 'material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $this->version, 'all' );
-					wp_enqueue_style( 'materialize', plugin_dir_url( __FILE__ ) . 'css/materialize.min.css', array(), $this->version, 'all' );
+					wp_enqueue_style( 'materialize', REXPANSIVE_BUILDER_URL . 'admin/css/materialize.min.css', array(), $this->version, 'all' );
 					
-					wp_enqueue_style( 'spectrum-style', plugin_dir_url( __FILE__ ) . 'spectrum/spectrum.css', array(), $this->version, 'all' );
+					wp_enqueue_style( 'spectrum-style', REXPANSIVE_BUILDER_URL . 'admin/spectrum/spectrum.css', array(), $this->version, 'all' );
 
-					wp_enqueue_style( 'font-awesome', plugin_dir_url( __FILE__ ) . 'font-awesome-4.3.0/css/font-awesome.min.css', array(), $this->version, 'all' );
-					wp_enqueue_style( 'rex-custom-fonts', plugin_dir_url( __FILE__ ) . 'rexpansive-font/font.css', array(), $this->version, 'all' );
+					wp_enqueue_style( 'font-awesome', REXPANSIVE_BUILDER_URL . 'admin/font-awesome-4.3.0/css/font-awesome.min.css', array(), $this->version, 'all' );
+					wp_enqueue_style( 'rex-custom-fonts', REXPANSIVE_BUILDER_URL . 'admin/rexpansive-font/font.css', array(), $this->version, 'all' );
 
-					wp_enqueue_style( 'gridster-style', plugin_dir_url( __FILE__ ) . 'css/jquery.gridster.css', array(), $this->version, 'all' );
-					wp_enqueue_style( 'custom-editor-buttons-style', plugin_dir_url( __FILE__ ) . 'css/rex-custom-editor-buttons.css', array(), $this->version, 'all' );
-					wp_enqueue_style( 'rexbuilder-style', plugin_dir_url( __FILE__ ) . 'css/builder.css', array(), $this->version, 'all' );
-					
+					wp_enqueue_style( 'gridster-style', REXPANSIVE_BUILDER_URL . 'admin/css/jquery.gridster.css', array(), $this->version, 'all' );
+					wp_enqueue_style( 'custom-editor-buttons-style', REXPANSIVE_BUILDER_URL . 'admin/css/rex-custom-editor-buttons.css', array(), $this->version, 'all' );
+					wp_enqueue_style( 'rexbuilder-style', REXPANSIVE_BUILDER_URL . 'admin/css/builder.css', array(), $this->version, 'all' );
 				endif;
 			endif;
 		endif;
@@ -175,10 +182,10 @@ class Rexbuilder_Admin {
 					( $post_to_activate[$page_info->post_type] == 1 ) ) :
 					wp_enqueue_style( 'material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $this->version, 'all' );
 
-					wp_enqueue_style( 'font-awesome', plugin_dir_url( __FILE__ ) . 'font-awesome-4.3.0/css/font-awesome.min.css', array(), $this->version, 'all' );
-					wp_enqueue_style( 'rex-custom-fonts', plugin_dir_url( __FILE__ ) . 'rexpansive-font/font.css', array(), $this->version, 'all' );
+					wp_enqueue_style( 'font-awesome', REXPANSIVE_BUILDER_URL . 'admin/font-awesome-4.3.0/css/font-awesome.min.css', array(), $this->version, 'all' );
+					wp_enqueue_style( 'rex-custom-fonts', REXPANSIVE_BUILDER_URL . 'admin/rexpansive-font/font.css', array(), $this->version, 'all' );
 
-					wp_enqueue_style( 'admin-style', plugin_dir_url( __FILE__ ) . 'css/admin.css', array(), $this->version, 'all' );
+					wp_enqueue_style( 'admin-style', REXPANSIVE_BUILDER_URL . 'admin/css/admin.css', array(), $this->version, 'all' );
 				endif;
 			endif;
 		endif;
@@ -219,15 +226,15 @@ class Rexbuilder_Admin {
 					wp_enqueue_script('jquery');
 					wp_enqueue_script("jquery-ui-draggable");
 
-					wp_enqueue_script( 'materialize-scripts', plugin_dir_url( __FILE__ ) . 'materialize/js/materialize.js', array('jquery'), $this->version, true );
-					wp_enqueue_script( 'gridster', plugin_dir_url( __FILE__ ) . 'js/jquery.gridster.js', array('jquery'),  $this->version, true );
+					wp_enqueue_script( 'materialize-scripts', REXPANSIVE_BUILDER_URL . 'admin/materialize/js/materialize.js', array('jquery'), $this->version, true );
+					wp_enqueue_script( 'gridster', REXPANSIVE_BUILDER_URL . 'admin/js/jquery.gridster.js', array('jquery'),  $this->version, true );
 					
-					wp_enqueue_script( 'spectrum-scripts', plugin_dir_url( __FILE__ ) . 'spectrum/spectrum.js', array('jquery'),  $this->version, true );
+					wp_enqueue_script( 'spectrum-scripts', REXPANSIVE_BUILDER_URL . 'admin/spectrum/spectrum.js', array('jquery'),  $this->version, true );
 
-					wp_enqueue_script( 'ace-scripts', plugin_dir_url( __FILE__ ) . 'ace/src-min-noconflict/ace.js', array('jquery'),  $this->version, true );
-					wp_enqueue_script( 'ace-mode-css-scripts', plugin_dir_url( __FILE__ ) . 'ace/src-min-noconflict/mode-css.js', array('jquery'),  $this->version, true );
+					wp_enqueue_script( 'ace-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/ace.js', array('jquery'),  $this->version, true );
+					wp_enqueue_script( 'ace-mode-css-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/mode-css.js', array('jquery'),  $this->version, true );
 
-					wp_enqueue_script( 'rexbuilder', plugin_dir_url( __FILE__ ) . 'js/rexbuilder.js', array('jquery'),  $this->version, true );
+					wp_enqueue_script( 'rexbuilder', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder.js', array('jquery'),  $this->version, true );
 					wp_localize_script( 'rexbuilder', '_plugin_backend_settings', array(
 						'activate_builder'	=>	'true',
 					) );
@@ -235,7 +242,7 @@ class Rexbuilder_Admin {
 						'ajaxurl'	=>	admin_url( 'admin-ajax.php' ),
 						'rexnonce'	=>	wp_create_nonce( 'rex-ajax-call-nonce' ),
 					) );
-					wp_enqueue_script( 'rexbuilder-admin', plugin_dir_url( __FILE__ ) . 'js/rexbuilder-admin.js', array( 'jquery' ), $this->version, true );
+					wp_enqueue_script( 'rexbuilder-admin', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin.js', array( 'jquery' ), $this->version, true );
 				endif;
 			endif;
 		endif;
@@ -260,10 +267,10 @@ class Rexbuilder_Admin {
 					wp_enqueue_script('jquery');
 					wp_enqueue_script("jquery-ui-draggable");
 
-					wp_enqueue_script( 'ace-scripts', plugin_dir_url( __FILE__ ) . 'ace/src-min-noconflict/ace.js', array('jquery'),  $this->version, true );
-					wp_enqueue_script( 'ace-mode-css-scripts', plugin_dir_url( __FILE__ ) . 'ace/src-min-noconflict/mode-css.js', array('jquery'),  $this->version, true );
+					wp_enqueue_script( 'ace-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/ace.js', array('jquery'),  $this->version, true );
+					wp_enqueue_script( 'ace-mode-css-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/mode-css.js', array('jquery'),  $this->version, true );
 
-					wp_enqueue_script( 'admin-plugins', plugin_dir_url( __FILE__ ) . 'js/plugins.js', array('jquery'),  $this->version, true );
+					wp_enqueue_script( 'admin-plugins', REXPANSIVE_BUILDER_URL . 'admin/js/plugins.js', array('jquery'),  $this->version, true );
 					wp_localize_script( 'admin-plugins', '_plugin_backend_settings', array(
 						'activate_builder'	=>	'true',
 					) );
@@ -271,7 +278,7 @@ class Rexbuilder_Admin {
 						'ajaxurl'	=>	admin_url( 'admin-ajax.php' ),
 						'rexnonce'	=>	wp_create_nonce( 'rex-ajax-call-nonce' ),
 					) );
-					wp_enqueue_script( 'rexbuilder-admin', plugin_dir_url( __FILE__ ) . 'js/rexbuilder-admin.js', array( 'jquery' ), $this->version, true );
+					wp_enqueue_script( 'rexbuilder-admin', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin.js', array( 'jquery' ), $this->version, true );
 				endif;
 			endif;
 		endif;
@@ -284,6 +291,24 @@ class Rexbuilder_Admin {
 	 */
 	public function add_plugin_options_menu() {
 		add_menu_page( 'Rexpansive Builder', 'Rexpansive Builder', 'manage_options', $this->plugin_name, array( $this, 'display_plugin_options_page' ), plugin_dir_url( __FILE__ ) . 'img/favicon.ico', '80.5' );
+		// add_submenu_page( $this->plugin_name, 'RexModels', 'RexModels', 'manage_options',  )
+	}
+
+	/**
+	 *	Add RexModel menu as a submenu of the Rexpansive Builder menu
+	 *
+	 *	@since 	1.1.2
+	 */
+	function add_plugin_menu_submenus() {
+		global $submenu;
+
+		$settings = admin_url( 'admin.php?page=' . $this->plugin_name );
+		$rex_model = admin_url( 'edit.php?post_type=rex_model' );
+		$rex_slider = admin_url( 'edit.php?post_type=rex_slider' );
+
+		$submenu[$this->plugin_name][] = array( 'Settings', 'manage_options', $settings );
+		$submenu[$this->plugin_name][] = array( 'RexSlider', 'manage_options', $rex_slider );
+		$submenu[$this->plugin_name][] = array( 'RexModel', 'manage_options', $rex_model );
 	}
 
 	/**
@@ -464,13 +489,19 @@ class Rexbuilder_Admin {
 			if( isset( $post_to_activate[$page_info->id] ) ) : 
 				if( ( $post_to_activate[$page_info->id] == 1 ) && 
 					( $post_to_activate[$page_info->post_type] == 1 ) ) :
+					$builder_active = get_post_meta( get_the_id(), '_rexbuilder_active', true);
+					if( $this->is_edit_page('new') ) {
+						$builder_active = 'true';
+					} else {
+						$builder_active = get_post_meta( get_the_id(), '_rexbuilder_active', true);
+					}
 	?>
 		<div class="builder-heading rexpansive-builder rexbuilder-materialize-wrap">
 			<img src="<?php echo plugin_dir_url( __FILE__ ); ?>img/rexpansive-builder.png" alt="logo" width="260" />
 			<div class="builder-switch-wrap">
 				<div class="switch">
 					<label>
-						<input type="checkbox" id="builder-switch" checked />
+						<input type="checkbox" id="builder-switch" <?php checked( 'true', $builder_active ); ?>/>
 						<span class="lever"></span>
 					</label>
 				</div>
@@ -608,7 +639,9 @@ class Rexbuilder_Admin {
 					'dots' => ( is_array( $slider_dots ) ? 'true' : ( "0" == $slider_dots ? 'true' : 'false' ) ),
 				);
 
-				$slider_gallery = get_field( '_rex_banner_gallery', $slider_id );
+				$slider_gallery = get_field( '_rex_banner_gallery', (int)$slider_id );
+
+				$response['gallery_field'] = $slider_gallery;
 
 				$slides_markup = "";
 
@@ -700,10 +733,10 @@ class Rexbuilder_Admin {
 	}
 
 	/**
-	*	Ajax call to create a rex_slider from the builder
-	*
-	*	@since 1.0.15
-	*/
+	 *	Ajax call to create a rex_slider from the builder
+	 *
+	 *	@since 1.0.15
+	 */
 	public function rex_create_slider_from_builder() {
 		$nonce = $_POST['nonce_param'];
 		$response = array(
@@ -731,18 +764,20 @@ class Rexbuilder_Admin {
 			'post_type'		=>	'rex_slider'
 		);
 
-		if( null == get_page_by_title( $args['title'] ) ) {
+		if( null == get_page_by_title( $args['post_title'] ) ) {
 			$slider_settings = $_POST['slider_data'];
 			// Create the page
 			$response['slider_id'] = wp_insert_post( $args );
 			$response['slider_title'] = $args['post_title'];
 			// adding the information for the slide
-			$this->rex_add_slider_fields( $slider_settings, $response['slider_id'] );
+			$response['add_results'] = $this->rex_add_slider_fields( $slider_settings, $response['slider_id'] );
 		} else {
 			$response['slider_id'] = -1;
 			$response['slider_title'] = "";
 			// The page exists
 		} // end if
+
+		$response['args'] = $args;
 
 		wp_send_json_success( $response );
 	}
@@ -779,9 +814,9 @@ class Rexbuilder_Admin {
 			$this->rex_clear_slider_fields( array(
 				'field_564f1f0c050be',
 				'field_5948cb2270b0f',
-				'field_564f2373722c2',
+				'field_564f2373722c3',
 			), $slider_to_edit );
-			$this->rex_add_slider_fields( $slider_settings, $slider_to_edit );
+			$response['edit_results'] = $this->rex_add_slider_fields( $slider_settings, $slider_to_edit );
 		} else {
 			$response['slider_id'] = -1;
 		}
@@ -796,6 +831,7 @@ class Rexbuilder_Admin {
 	*	@param int 						rex slider id
 	*/
 	public function rex_add_slider_fields( $slider_settings, $slider_id ) {
+		$result = array();
 
 		if( "true" == $slider_settings['settings']['auto_start'] ) {
 			update_field( 'field_564f1f0c050be', array( "yes" ) ,$slider_id );
@@ -815,9 +851,11 @@ class Rexbuilder_Admin {
 			update_field( 'field_5948cb2270b0f', "" , $slider_id );
 		}
 
+		$result['slides_settings'] = $slider_settings['slides'];
+
 		if( $slider_settings['slides'] ) {
 			// update_field( '_rex_banner_gallery', count( $slider_settings['slides'] ), $slider_id );
-			$slides_field_key = 'field_564f2373722c2';
+			$slides_field_key = 'field_564f2373722c3';
 			$values = array();
 
 			foreach( $slider_settings['slides'] as $key => $slide ) {
@@ -872,8 +910,13 @@ class Rexbuilder_Admin {
 				array_push( $values, $slide_values );
 			}
 
+			$result['values'] = $values;
+			$result['slider_id'] = $slider_id;
+
 			update_field( $slides_field_key, $values , $slider_id );
 		}
+
+		return $result;
 	}
 
 	/**
@@ -905,6 +948,7 @@ class Rexbuilder_Admin {
 	 * Define Slider Custom Post Type
 	 *
 	 *	@since 1.0.15
+	 *	@version 	1.1.2 	Hide the default admin menu
 	 */
 	public function rexpansive_slider_definition() {
 		$labels = array(
@@ -933,7 +977,7 @@ class Rexbuilder_Admin {
 			'hierarchical'        => false,
 			'public'              => true,
 			'show_ui'             => true,
-			'show_in_menu'        => true,
+			'show_in_menu'        => false,
 			'menu_position'       => 250,
 			'menu_icon'           => 'dashicons-format-gallery',
 			'show_in_admin_bar'   => true,
@@ -973,6 +1017,683 @@ class Rexbuilder_Admin {
 	}
 
 	/**
+	 *	Define the Models Custom Post Type
+	 *
+	 *	@since 	1.1.2
+	 */
+	public function rexpansive_models_defintion() {
+		$labels = array(
+			'name'                  => _x( 'RexModels', 'Post Type General Name', 'rexpansive' ),
+			'singular_name'         => _x( 'RexModel', 'Post Type Singular Name', 'rexpansive' ),
+			'menu_name'             => __( 'RexModel', 'rexpansive' ),
+			'name_admin_bar'        => __( 'RexModel', 'rexpansive' ),
+			'archives'              => __( 'RexModel Archives', 'rexpansive' ),
+			'attributes'            => __( 'RexModel Attributes', 'rexpansive' ),
+			'parent_item_colon'     => __( 'Parent RexModel:', 'rexpansive' ),
+			'all_items'             => __( 'All RexModels', 'rexpansive' ),
+			'add_new_item'          => __( 'Add New RexModel', 'rexpansive' ),
+			'add_new'               => __( 'Add New', 'rexpansive' ),
+			'new_item'              => __( 'New RexModel', 'rexpansive' ),
+			'edit_item'             => __( 'Edit RexModel', 'rexpansive' ),
+			'update_item'           => __( 'Update RexModel', 'rexpansive' ),
+			'view_item'             => __( 'View RexModel', 'rexpansive' ),
+			'view_items'            => __( 'View RexModels', 'rexpansive' ),
+			'search_items'          => __( 'Search RexModel', 'rexpansive' ),
+			'not_found'             => __( 'RexModel Not found', 'rexpansive' ),
+			'not_found_in_trash'    => __( 'RexModel Not found in Trash', 'rexpansive' ),
+			'featured_image'        => __( 'Featured Image', 'rexpansive' ),
+			'set_featured_image'    => __( 'Set featured image', 'rexpansive' ),
+			'remove_featured_image' => __( 'Remove featured image', 'rexpansive' ),
+			'use_featured_image'    => __( 'Use as featured image', 'rexpansive' ),
+			'insert_into_item'      => __( 'Insert into item', 'rexpansive' ),
+			'uploaded_to_this_item' => __( 'Uploaded to this item', 'rexpansive' ),
+			'items_list'            => __( 'RexModels list', 'rexpansive' ),
+			'items_list_navigation' => __( 'RexModels list navigation', 'rexpansive' ),
+			'filter_items_list'     => __( 'Filter items list', 'rexpansive' ),
+		);
+		$args = array(
+			'label'                 => __( 'RexModel', 'rexpansive' ),
+			'description'           => __( 'RexModel', 'rexpansive' ),
+			'labels'                => $labels,
+			'supports'              => array( 'title', 'editor', 'revisions' ),
+			'taxonomies'            => array( 'rex_model_taxonomy' ),
+			'hierarchical'          => false,
+			'public'                => true,
+			'show_ui'               => true,
+			'show_in_menu'          => false,
+			'menu_position'         => 65,
+			'show_in_admin_bar'     => true,
+			'show_in_nav_menus'     => false,
+			'can_export'            => true,
+			'has_archive'           => false,
+			'exclude_from_search'   => true,
+			'publicly_queryable'    => true,
+			'capability_type'       => 'page',
+		);
+		register_post_type( 'rex_model', $args );
+	}
+
+	/**
+	 *	Ajax call to create a rex_model from the builder
+	 *
+	 *	@since 1.1.2
+	 */
+	public function rex_create_model_from_builder() {
+		$nonce = $_POST['nonce_param'];
+		$response = array(
+			'error' => false,
+			'msg' => '',
+		);
+
+		if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) :
+			$response['error'] = true;
+			$response['msg'] = 'Error!';
+			wp_send_json_error( $response );
+		endif;
+
+		if( !isset( $_POST['model_data'] ) ) {
+			$response['error'] = true;
+			$response['msg'] = 'Error!';
+			wp_send_json_error( $response );
+		}
+
+		$model_settings = $_POST['model_data'];
+
+		if( empty( $model_settings['post_content'] ) ) {
+			$response['error'] = true;
+			$response['msg'] = 'Error. No content!';
+			wp_send_json_error( $response );
+		}
+
+		$args = array(
+			'comment_status'	=>	'closed',
+			'ping_status'		=>	'closed',
+			'post_title'		=>	$model_settings['post_title'],
+			'post_content'		=>	$model_settings['post_content'],
+			'post_status'		=>	'private',
+			'post_type'			=>	'rex_model'
+		);
+
+		if( null == get_page_by_title( $args['post_title'] ) ) {
+			$slider_settings = $_POST['slider_data'];
+			// Create the page
+			$response['model_id'] = wp_insert_post( $args );
+			$response['model_title'] = $args['post_title'];
+			update_post_meta( $response['model_id'], '_rexbuilder_active', 'true' );
+			// adding the information for the slide
+		} else {
+			$response['model_id'] = -1;
+			$response['model_title'] = "";
+			// The page exists
+		} // end if
+
+		$response['args'] = $args;
+
+		wp_send_json_success( $response );
+	}
+
+	/**
+	 * Ajax call to get a rex_model and insert in the builder
+	 * 
+	 * @since 1.1.2
+	 * @return JSON
+	 */
+	public function rex_get_model() {
+		$nonce = $_GET['nonce_param'];
+		$response = array(
+			'error' => false,
+			'msg' => '',
+		);
+
+		if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) :
+			$response['error'] = true;
+			$response['msg'] = 'Error!';
+			wp_send_json_error( $response );
+		endif;
+
+		if( !isset( $_GET['model_data'] ) ) {
+			$response['error'] = true;
+			$response['msg'] = 'Error!';
+			wp_send_json_error( $response );
+		}
+
+		$model_settings = $_GET['model_data'];
+
+		if( empty( $model_settings['ID'] ) ) {
+			$response['error'] = true;
+			$response['msg'] = 'Error. No model!';
+			wp_send_json_error( $response );
+		}
+
+		$checkbox_index = $model_settings['section_id'];
+
+		$args = array(
+			'post_type'			=>	'rex_model',
+			'post_status'		=>	'private',
+			'p'				=>	$model_settings['ID']
+		);
+
+		$query = new WP_Query( $args );
+		if ( $query->have_posts() ) {
+			while ( $query->have_posts() ) {
+				$query->the_post();
+
+				$pattern = get_shortcode_regex();
+				$contents = $query->post->post_content;
+				$response['model'] = $query->post;
+				$response['info'] = array();
+
+				ob_start();
+
+				if( !empty( $contents ) ) :
+					preg_match_all( "/$pattern/", $contents, $result_rows);
+					foreach( $result_rows[2] as $i => $section ) {
+						if( $section == 'RexpansiveSection') {
+		
+							$section_content = $result_rows[5][$i];
+							$section_attr = shortcode_parse_atts( trim( $result_rows[3][$i] ) );
+
+							$section_bg_setts = array(
+								'color' 	=> '',
+								'image' 	=> '',
+								'url' 		=> '',
+								'video'		=>	'',
+								'youtube'	=>	'',
+							);
+			
+							$section_bg_style = array();
+							$section_bg_button_preview_style = '';
+			
+							if( array_key_exists('color_bg_section', $section_attr) && '' != $section_attr['color_bg_section'] ) {
+								$section_bg_style['background-color'] = $section_attr['color_bg_section'];
+								$section_bg_style['background-image'] = '';
+								$section_bg_setts['color'] = $section_attr['color_bg_section'];
+								$section_bg_button_preview_style .= 'background-color:' . $section_attr['color_bg_section'] . ';background-image:none;';
+							} else if( array_key_exists('color_bg_section', $section_attr) && '' != $section_attr['image_bg_section'] ) {
+								$section_bg_style['background-image'] = 'url(' . wp_get_attachment_url( $section_attr['id_image_bg_section'] ) . ')';
+								$section_bg_style['background-color'] = '';
+								$section_bg_setts['image'] = $section_attr['id_image_bg_section'];
+								$section_bg_setts['url'] = wp_get_attachment_url( $section_attr['id_image_bg_section'] );
+								$section_bg_button_preview_style .= 'background-image:url(' . wp_get_attachment_url( $section_attr['id_image_bg_section'] ) . ');';
+							}
+			
+							if(array_key_exists('video_bg_id_section', $section_attr) && $section_attr['video_bg_id_section'] != 'undefined') :
+								$section_bg_setts['video'] = $section_attr['video_bg_id_section'];
+							endif;
+			
+							if(array_key_exists('video_bg_url_section', $section_attr) && $section_attr['video_bg_url_section'] != 'undefined') :
+								$section_bg_setts['youtube'] = $section_attr['video_bg_url_section'];
+							endif;
+			
+							if(array_key_exists('video_bg_url_vimeo_section', $section_attr) && $section_attr['video_bg_url_vimeo_section'] != 'undefined') :
+								$section_bg_setts['vimeo'] = $section_attr['video_bg_url_vimeo_section'];
+							endif;
+			
+							$response['info']['section_bg_settings'] = $section_bg_setts;
+							$section_bg_setts = json_encode( $section_bg_setts );
+			
+							$section_dimension = '';
+							if( '' != $section_attr['dimension'] ) {
+								$section_dimension = $section_attr['dimension'];
+							}
+
+							$response['info']['dimension'] = $section_dimension;
+							$response['info']['section_bg_button_preview_style'] = $section_bg_button_preview_style;
+							$response['info']['section_bg_style'] = $section_bg_style;
+
+							$background_responsive = array(
+								//'r' => '255',
+								//'g' => '255',
+								//'b' => '255',
+								//'a' => '0',
+								'gutter' => '20',
+								'isFull' => '',
+								'custom_classes' => '',
+								'section_width'	=>	'',
+							);
+			
+							$section_has_overlay = false;
+							$section_overlay_style = '';
+			
+							$section_overlay_color = '';
+			
+							if( array_key_exists( 'responsive_background', $section_attr ) && '' != $section_attr['responsive_background'] ) {
+							$section_overlay_color = $section_attr['responsive_background'];
+							}
+			
+							if( array_key_exists( 'block_distance', $section_attr ) && '' != $section_attr['block_distance'] ) {
+							$background_responsive['gutter'] = $section_attr['block_distance'];
+							}
+							if( array_key_exists( 'full_height', $section_attr ) && '' != $section_attr['full_height'] ) {
+								$background_responsive['isFull'] = $section_attr['full_height'];
+							}
+							if( array_key_exists( 'custom_classes', $section_attr ) && '' != $section_attr['custom_classes'] ) {
+							$background_responsive['custom_classes'] = $section_attr['custom_classes'];
+							$section_overlay_classes = preg_match_all("/active-(small|medium|large)-overlay/", $section_attr['custom_classes'], $foo);
+							if($section_overlay_classes > 0) :
+								$section_has_overlay = true;
+								$section_overlay_style = 'background-color:' . $section_overlay_color . ';';
+							endif;
+							}
+							if( array_key_exists( 'section_width', $section_attr ) && '' != $section_attr['section_width'] ) {
+								$background_responsive['section_width'] = $section_attr['section_width'];
+							}
+			
+							$custom_section_name = '';
+							if(array_key_exists('section_name', $section_attr) && $section_attr['section_name'] != 'undefined') :
+								$custom_section_name = $section_attr['section_name'];
+							endif;
+
+							$response['info']['section_bg_responsive'] = $background_responsive;
+							$response['info']['section_name'] = $custom_section_name;
+							$response['info']['layout'] = $section_attr['layout'];
+							$response['info']['section_overlay_color'] = $section_overlay_color;
+							$response['info']['row_separator_top'] = ( isset( $section_attr['row_separator_top'] ) ? $section_attr['row_separator_top'] : '' );
+							$response['info']['row_separator_bottom'] = ( isset( $section_attr['row_separator_bottom'] ) ? $section_attr['row_separator_bottom'] : '' );
+							$response['info']['row_separator_left'] = ( isset( $section_attr['row_separator_left'] ) ? $section_attr['row_separator_left'] : '' );
+							$response['info']['row_separator_right'] = ( isset( $section_attr['row_separator_right'] ) ? $section_attr['row_separator_right'] : '' );
+							$response['info']['row_active_photoswipe'] = ( isset( $section_attr['row_active_photoswipe'] ) ? $section_attr['row_active_photoswipe'] : '' );
+							$response['info']['section_has_overlay'] = $section_has_overlay;
+							$response['info']['section_overlay_style'] = $section_overlay_style;
+							$response['info']['section_model'] = $query->post->ID;
+
+							ob_start();
+							if( !empty( $section_content ) ) :
+								preg_match_all( "/$pattern/", $section_content, $result_block);
+								$blocks = array();
+								foreach( $result_block[3] as $i => $attrs ) :
+									$block_attr = shortcode_parse_atts( trim( $attrs ) );
+
+									// Prepare the background block settings
+
+									$background_block_setts = array(
+										'color' => '',
+										'image' => '',
+										'url' => '',
+										'bg_img_type' => '',
+										'photoswipe' => '',
+										'linkurl' => '',
+										'video'		=>	'',
+										'youtube'	=>	'',
+										'block_custom_class' => '',
+										'overlay_block_color' => '',
+										'image_size' => '',
+									);
+									$style = ' style="';
+
+									if( array_key_exists('image_bg_block', $block_attr) && array_key_exists('type_bg_block', $block_attr) && $block_attr['image_bg_block'] != '' && $block_attr['type_bg_block'] == 'full' ) {
+										$style .= 'background-image:url(' . wp_get_attachment_url ($block_attr['id_image_bg_block'] ) . ');';
+										$background_block_setts['image'] = $block_attr['id_image_bg_block'];
+										$background_block_setts['url'] = wp_get_attachment_url ($block_attr['id_image_bg_block'] );
+										$background_block_setts['bg_img_type'] = $block_attr['type_bg_block'];
+									} else if( array_key_exists('color_bg_block', $block_attr) && array_key_exists('type_bg_block', $block_attr) && 	$block_attr['color_bg_block'] != '' && $block_attr['type_bg_block'] != 'full' ) {
+										$style .= 'background-color:' . $block_attr['color_bg_block'] . ';';
+							
+										if( array_key_exists('type_bg_block', $block_attr) && $block_attr['type_bg_block'] == 'natural' ) {
+											$style .= 'background-image:url(' . wp_get_attachment_url( $block_attr['id_image_bg_block'] ) . ');';
+										}
+							
+										$background_block_setts['color'] = $block_attr['color_bg_block'];
+										$background_block_setts['image'] = $block_attr['id_image_bg_block'];
+										$background_block_setts['url'] = wp_get_attachment_url( $block_attr['id_image_bg_block'] );
+										$background_block_setts['bg_img_type'] = $block_attr['type_bg_block'];
+									} else if( array_key_exists('type_bg_block', $block_attr) && $block_attr['type_bg_block'] == 'natural' ) {
+										if( array_key_exists('color_bg_block', $block_attr) && array_key_exists('type_bg_block', $block_attr) && $block_attr['color_bg_block'] != '' && $block_attr['type_bg_block'] != 'full' ) {
+											$style .= 'background-color:' . $block_attr['color_bg_block'] . ';';
+										}
+										$style .= 'background-image:url(' . wp_get_attachment_url ($block_attr['id_image_bg_block'] ) . ');';
+										$background_block_setts['image'] = $block_attr['id_image_bg_block'];
+										$background_block_setts['url'] = wp_get_attachment_url ($block_attr['id_image_bg_block'] );
+										$background_block_setts['bg_img_type'] = $block_attr['type_bg_block'];
+							
+										$classEmpty = 'hidden';
+									}
+							
+									if(array_key_exists('video_bg_id', $block_attr) && $block_attr['video_bg_id'] != 'undefined') :
+										$background_block_setts['video'] = $block_attr['video_bg_id'];
+									else :
+										$background_block_setts['video'] = '';
+									endif;
+							
+									if(array_key_exists('video_bg_url', $block_attr) && $block_attr['video_bg_url'] != 'undefined') :
+										$background_block_setts['youtube'] = $block_attr['video_bg_url'];
+									else :
+										$background_block_setts['youtube'] = '';
+									endif;
+							
+									if(array_key_exists('video_bg_url_vimeo', $block_attr) && $block_attr['video_bg_url_vimeo'] != 'undefined') :
+										$background_block_setts['vimeo'] = $block_attr['video_bg_url_vimeo'];
+									else :
+										$background_block_setts['vimeo'] = '';
+									endif;
+							
+									$video_has_audio = '0';
+									if(array_key_exists('video_has_audio', $block_attr) && $block_attr['video_has_audio'] != 'undefined') :
+										$video_has_audio =  $block_attr['video_has_audio'];
+									endif;
+							
+									if(array_key_exists('photoswipe', $block_attr) && $block_attr['photoswipe'] != 'undefined') :
+										$background_block_setts['photoswipe'] = $block_attr['photoswipe'];
+									else :
+										$background_block_setts['photoswipe'] = '';
+									endif;
+							
+									if(array_key_exists('linkurl', $block_attr) && $block_attr['linkurl'] != 'undefined') :
+										$background_block_setts['linkurl'] = $block_attr['linkurl'];
+									else :
+										$background_block_setts['linkurl'] = '';
+									endif;
+							
+									if(array_key_exists('image_size', $block_attr) && $block_attr['image_size'] != 'undefined') :
+										$background_block_setts['image_size'] = $block_attr['image_size'];
+									else :
+										$background_block_setts['image_size'] = '';
+									endif;
+							
+									$element_preview_position_classes = '';
+							
+									if(array_key_exists('block_custom_class', $block_attr) && $block_attr['block_custom_class'] != 'undefined') :
+										$background_block_setts['block_custom_class'] = $block_attr['block_custom_class'];
+										$block_custom_classes = $block_attr['block_custom_class'];
+										$matches = preg_match_all("/rex-flex-(top|middle|bottom|left|center|right)/", $block_custom_classes, $content_position);
+										if($matches != 0) :
+											$element_preview_position_classes = ' element-content-positioned';
+											foreach ($content_position[0] as $key => $class) :
+												switch ($class) :
+													case 'rex-flex-top':
+														$element_preview_position_classes .= ' element-content-positioned-top';
+														break;
+													case 'rex-flex-middle':
+														$element_preview_position_classes .= ' element-content-positioned-middle';
+														break;
+													case 'rex-flex-bottom':
+														$element_preview_position_classes .= ' element-content-positioned-bottom';
+														break;
+													case 'rex-flex-left':
+														$element_preview_position_classes .= ' element-content-positioned-left';
+														break;
+													case 'rex-flex-center':
+														$element_preview_position_classes .= ' element-content-positioned-center';
+														break;
+													case 'rex-flex-right':
+														$element_preview_position_classes .= ' element-content-positioned-right';
+														break;
+													default:
+														break;
+												endswitch;
+											endforeach;
+										endif;
+									else :
+										$background_block_setts['block_custom_class'] = '';
+										$block_custom_classes = '';
+									endif;
+							
+									if(array_key_exists('block_padding', $block_attr) && $block_attr['block_padding'] != 'undefined') :
+										$content_padding_settings = $block_attr['block_padding'];
+									else :
+										$content_padding_settings = '';
+									endif;
+							
+									if(array_key_exists('overlay_block_color', $block_attr) && $block_attr['overlay_block_color'] != 'undefined') :
+										$background_block_setts['overlay_block_color'] = $block_attr['overlay_block_color'];
+									endif;
+							
+									$style .= '"';
+							
+									$define_borders = ' with-border';
+									if( $background_block_setts['color'] != '' || ( $background_block_setts['image'] != '' && $background_block_setts['bg_img_type'] != 'natural' ) ) :
+										if( $background_block_setts['color'] != 'rgba(255,255,255,0)' ) :
+											$define_borders = ' no-border';
+										endif;
+									endif;
+							
+									$temp_block_setts = $background_block_setts;
+							
+									$background_block_setts = json_encode( $background_block_setts );
+							
+									// Preapre the zak effect settings
+									$zak_effect_setts = array(
+										'side' => '',
+										'background_url' => '',
+										'background_id' => '',
+										'title' => '',
+										'icon_url' => '',
+										'icon_id' => '',
+										'content' => '',
+										'foreground_url' => '',
+										'foreground_id' => ''
+									);
+									if(array_key_exists('zak_side', $block_attr) && $block_attr['zak_side'] != 'undefined') {
+										$zak_effect_setts['side'] = $block_attr['zak_side'];
+									}
+							
+									if(array_key_exists('zak_background', $block_attr) && $block_attr['zak_background'] != 'undefined') {
+										$zak_effect_setts['background_url'] = wp_get_attachment_url( $block_attr['zak_background'] );
+										$zak_effect_setts['background_id'] = $block_attr['zak_background'];
+									}
+							
+									if(array_key_exists('zak_title', $block_attr) && $block_attr['zak_title'] != 'undefined') {
+										$zak_effect_setts['title'] = $block_attr['zak_title'];
+									}
+							
+									if(array_key_exists('zak_icon', $block_attr) && $block_attr['zak_icon'] != 'undefined') {
+										$zak_effect_setts['icon_url'] = ( $block_attr['zak_icon'] ) ? wp_get_attachment_url( $block_attr['zak_icon'] ) : '';
+										$zak_effect_setts['icon_id'] = $block_attr['zak_icon'];
+									}
+									$zak_effect_setts['content'] = ($result_block[5][$i]);
+							
+									if(array_key_exists('zak_foreground', $block_attr) && $block_attr['zak_foreground'] != 'undefined') :
+										if( '' != $block_attr['zak_foreground'] ) :
+											$zak_effect_setts['foreground_url'] = wp_get_attachment_url( $block_attr['zak_foreground'] );
+											$zak_effect_setts['foreground_id'] = $block_attr['zak_foreground'];
+										endif;
+									endif;														
+							
+									//var_dump(mysql_real_escape_string($result_block[5][$i]));
+							
+									$zak_effect_setts = json_encode( $zak_effect_setts );
+							
+									$block_content = $result_block[5][$i];																			
+							
+									$block_content = preg_replace('/^<\/p>/', '', $block_content);
+									$block_content = preg_replace('/<p>+$/', '', $block_content);
+							
+									$slider_data_markup = "";
+									$actions_args = array(
+										'block_has_slider' => false
+									);
+									if( "rexslider" == $block_attr['type'] ) {
+										preg_match_all( "/$pattern/", $block_content, $block_content_parsed);
+										$slider_settings = shortcode_parse_atts(trim($block_content_parsed[3][0]));
+										$slider_data_markup .= ' data-block-slider-id="' . esc_attr( $slider_settings['slider_id'] ) . '"';
+										$actions_args['block_has_slider'] = true;
+									}
+									$b_id = 'block_' . $checkbox_index . '_' . $i;
+									ob_start();
+									?>
+									<li id="<?php echo $b_id; ?>" class="<?php echo esc_attr( $block_attr['type'] ); echo esc_attr( $define_borders ); ?> item z-depth-1 hoverable svg-ripple-effect<?php if( isset( $block_attr['type_bg_block'] ) && $block_attr['type_bg_block'] == 'natural') : echo ' block-is-natural'; endif; ?>" data-block_type="<?php echo esc_attr( $block_attr['type'] ); ?>" data-col="<?php echo esc_attr( $block_attr['col'] ); ?>" data-row="<?php echo esc_attr( $block_attr['row'] ); ?>" data-sizex="<?php echo esc_attr( $block_attr['size_x'] ); ?>" data-sizey="<?php echo esc_attr( $block_attr['size_y'] ); ?>" data-bg_settings='<?php echo $background_block_setts; ?>' data-block-custom-classes="<?php echo esc_attr( $block_custom_classes ); ?>" data-content-padding="<?php echo esc_attr( $content_padding_settings ); ?>" data-video-has-audio="<?php echo esc_attr( $video_has_audio ); ?>"<?php echo $slider_data_markup; ?>>
+										<div class="element-actions<?php echo ( $actions_args['block_has_slider'] ? ' element-actions__block-slider' : '' ); ?>">
+											<div class="builder-fab-row-widgets actions-center-icons fixed-action-btn horizontal">
+												<button class="btn-floating builder-show-widgets waves-effect waves-light light-blue darken-3">
+												<i class="material-icons">add</i>
+												</button>
+												<ul>
+												<li class="edit_handler text-handler btn-floating waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Text', 'rexpansive'); ?>">
+													<i class="material-icons rex-icon">u</i>
+												</li>
+												<li class="edit_handler rex-slider-handler btn-floating waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Rex Slider', 'rexpansive'); ?>">
+													<i class="material-icons rex-icon">X</i>
+												</li>
+												<li class="background_handler btn-floating waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Block settings', 'rexpansive'); ?>">
+													<i class="material-icons">&#xE8B8;</i>
+												</li>
+												<li class="copy-handler btn-floating grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy block', 'rexpansive'); ?>">
+													<i class="material-icons white-text">&#xE14D;</i>
+												</li>
+												</ul>
+											</div>
+											<div class="actions-center-icons">
+												<div class="edit_handler text-handler btn-floating waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Text', 'rexpansive'); ?>">
+												<i class="material-icons rex-icon">u</i>
+												</div>
+												<div class="edit_handler rex-slider-handler btn-floating waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Rex Slider', 'rexpansive'); ?>">
+												<i class="material-icons rex-icon">X</i>
+												</div>
+												<div class="background_handler btn-floating waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Block settings', 'rexpansive'); ?>">
+												<i class="material-icons">&#xE8B8;</i>
+												</div>
+												<br>
+												<div class="copy-handler btn-floating grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy block', 'rexpansive'); ?>">
+												<i class="material-icons white-text">&#xE14D;</i>
+												</div>
+											</div>
+											<div class="delete_handler btn-floating waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete block', 'rexpansive'); ?>">
+												<i class="material-icons white-text">&#xE5CD;</i>
+											</div>
+										</div>
+										<?php
+										switch( $block_attr['type'] ) {
+										case 'image':
+									?>
+											<div class="element-data">
+											<textarea class="data-text-content" display="none"><?php echo $block_content; ?></textarea>
+											</div>
+											<div class="element-preview-wrap<?php echo $element_preview_position_classes; ?>"<?php echo $style; ?>>
+											<div class="element-preview">
+												<?php 
+												if( $block_attr['type_bg_block'] == '' && $block_attr['color_bg_block'] == '' ) { 
+													$control = true;
+												} else {
+													$control = false;
+												}
+												?>
+												<div class="backend-image-preview" data-image_id="<?php $block_attr['id_image_bg_block']; ?>" <?php if($control) { echo 'style="display:none;"'; } ?>>
+												<?php echo $block_content; ?>
+												</div>
+											</div>
+											</div>
+									<?php
+											break;
+										case 'text':
+										case 'textfill':
+										case 'rexslider':
+									?>
+											<div class="element-data">
+											<textarea class="data-text-content" display="none"><?php echo $block_content; ?></textarea>
+											</div>
+											<div class="element-preview-wrap<?php echo $element_preview_position_classes; ?>"<?php echo $style; ?>>
+											<div class="element-preview"><?php echo $block_content; ?></div>
+											</div>
+									<?php
+											break;
+										case 'empty':
+									?>
+											<div class="element-data">
+											<textarea class="data-text-content" display="none"><?php echo $block_content; ?></textarea>
+											</div>
+											<div class="element-preview-wrap<?php echo $element_preview_position_classes; ?>"<?php if($style) { echo $style; } ?>>
+											<div class="element-preview">
+												<div class="element-preview"><?php echo $block_content; ?></div>
+											</div>
+											</div>
+									<?php
+											break;
+										case 'video':
+									?>
+											<div class="element-data">
+											<textarea class="data-text-content" display="none"><?php echo $block_content; ?></textarea>	
+											</div>
+											<div class="element-preview-wrap<?php echo $element_preview_position_classes; ?>"<?php echo $style; ?>>
+											<div class="element-preview"><?php echo $block_content; ?></div>	
+											</div>
+									<?php
+											break;	
+										case 'expand':
+									?>
+											<div class="element-data">
+											<input class="data-zak-content" type="hidden" <?php echo 'data-zak-content=\'' . $zak_effect_setts . '\'' ?>>
+											</div>
+											<div class="element-preview"<?php echo $style; ?>>
+											<?php
+												if( 'left' == $block_attr['zak_side'] ) :
+											?>
+												<div class="zak-block zak-image-side">
+												<img src="<?php echo wp_get_attachment_url( $block_attr['zak_background'] ); ?>">
+												</div>
+												<div class="zak-block zak-text-side">
+												<h2><?php echo $block_attr['zak_title']; ?></h2>
+												<?php if( $block_attr['zak_icon'] ) : ?>
+													<img src="<?php echo wp_get_attachment_url( $block_attr['zak_icon'] ); ?>" alt="">
+												<?php endif; ?>
+												<div class="text-preview"><?php echo $block_content; ?></div>
+												</div>
+											<?php
+												else :
+											?>
+												<div class="zak-block zak-text-side">
+												<h2><?php echo $block_attr['zak_title']; ?></h2>
+												<?php if( $block_attr['zak_icon'] ) : ?>
+													<img src="<?php echo wp_get_attachment_url( $block_attr['zak_icon'] ); ?>" alt="">
+												<?php endif; ?>
+												<div class="text-preview"><?php echo $block_content; ?></div>
+												</div>
+												<div class="zak-block zak-image-side">
+												<img src="<?php echo wp_get_attachment_url( $block_attr['zak_background'] ); ?>">
+												</div>
+											<?php
+												endif;
+											?>
+											</div>
+									<?php
+											break;
+										case 'default':
+											break;
+										}
+									?>
+<div class="element-visual-info<?php
+  if('' != $temp_block_setts['youtube'] || '' != $temp_block_setts['video'] || '' != $temp_block_setts['vimeo'] ) :
+    echo ' ' . 'rex-active-video-notice';
+  endif;
+?>"<?php 
+  if( '' != $temp_block_setts['overlay_block_color'] ) :
+    echo ' style="background-color:' . $temp_block_setts['overlay_block_color'] . '"';
+  endif;
+?>>
+  <div class="vert-wrap">
+    <div class="vert-elem">
+      <i class="material-icons rex-icon rex-notice rex-video-notice">G</i>
+    </div>
+  </div>
+</div>
+<div class="el-visual-size"><span><?php echo $block_attr['size_x'] . 'x' . $block_attr['size_y']; ?></span></div>
+									</li>
+									<?php
+									$block = array(
+										'w' => $block_attr['size_x'],
+										'h' => $block_attr['size_y'],
+										'id' => $b_id,
+										'html' => trim( ob_get_clean() ),
+									);
+									array_push( $blocks, $block );
+								endforeach;
+							endif;
+							$response['info']['tmpl'] = $blocks;
+						}
+					}
+				endif;
+			}
+		} else {
+			// no posts found
+		}
+
+		wp_reset_postdata();
+
+		$response['args'] = $args;
+
+		wp_send_json_success( $response );
+	}
+
+	/**
 	 * Function to pack ACF in the plugin
 	 *
 	 *	@since 1.0.15
@@ -996,4 +1717,951 @@ class Rexbuilder_Admin {
 	public function acf_hide_menu( $show_admin ) {
 		return false;
 	}
+
+	/**
+	 * ACF Rule Type: Rexpansive Builder
+	 *
+	 * @param array $choices, all of the available rule types
+	 * @return array
+	 * @since 1.1.0
+	 */
+	public function acf_rule_type_rexpansive_builder( $choices ) {
+		$choices['Basic']['rexpansive_builder'] = 'Rexpansive Builder';
+		return $choices;
+	}
+	
+	/**
+	 * ACF Rule Values: Rexpansive Builder
+	 *
+	 * @param array $choices, available rule values for this type
+	 * @return array
+	 * @since 1.1.0
+	 */
+	public function acf_rule_values_rexpansive_builder( $choices ) {
+		// Copied from acf/core/controllers/field_group.php
+		// @see http://bit.ly/1Xnx44g
+
+		$args = array(
+			'posts_per_page' => -1,
+			'post_type' => $this->plugin_options['post_types'],
+			'meta_query' => array(
+				array(
+					'key' => '_rexbuilder_active',
+					'value' => 'true',
+					'compare' => 'LIKE'
+				)
+			)
+		);
+
+		$query = new WP_Query( $args );
+
+		if( $query->have_posts() ) {
+			while( $query->have_posts() ) {
+				$query->the_post();
+
+				$title = apply_filters( 'the_title', $query->post->post_title, $query->post->ID );
+				
+				$choices[ $query->post->ID ] = $title;
+			}
+		}
+		
+		return $choices;
+	}
+	
+	/**
+	 * ACF Rule Match: Rexpansive Builder
+	 *
+	 * @param boolean $match, whether the rule matches (true/false)
+	 * @param array $rule, the current rule you're matching. Includes 'param', 'operator' and 'value' parameters
+	 * @param array $options, data about the current edit screen (post_id, page_template...)
+	 * @return boolean $match
+	 * @since 1.1.0
+	 */
+	public function acf_rule_match_rexpansive_builder( $match, $rule, $options ) {
+			
+		if ( ! $options['post_id'] ) {
+			return false;
+		}
+		
+		$builder_active = get_post_meta( $options['post_id'], '_rexbuilder_active', true );
+		$has_builder = false;
+		if( 'true' == $builder_active ) {
+			$has_builder = true;
+		}
+
+		if ( '==' == $rule['operator'] ) { 
+			$match = $has_builder;
+		
+		} elseif ( '!=' == $rule['operator'] ) {
+			$match = ! $has_builder;
+		}
+		
+		return $match;
+	}
+
+	/**
+	 * Get post content for WPML compatibility
+	 *
+	 * @return void
+	 * @since 1.1.0
+	 */
+	function live_refresh_builder() {
+		$nonce = $_POST['rexnonce'];
+		
+		if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) :
+			die( 'Do not do this!' );
+		endif;
+	
+	
+		if ( current_user_can( 'edit_posts' ) ) :
+			$pattern = get_shortcode_regex();
+			$contents = get_post_field('post_content', $_POST['post_id']);
+			if( !empty( $contents ) ) :
+				preg_match_all( "/$pattern/", $contents, $result_rows);
+	
+				foreach( $result_rows[2] as $i => $section ) :
+					if( $section == 'RexpansiveSection') :
+	
+						$section_content = $result_rows[5][$i];
+						$section_attr = shortcode_parse_atts( trim( $result_rows[3][$i] ) );
+						
+						$section_bg_setts = array(
+							'color' 	=> '',
+							'image' 	=> '',
+							'url' 		=> '',
+							'video'		=>	'',
+							'youtube'	=>	'',
+						);
+	
+						$section_bg_style = '';
+						$section_bg_button_preview_style = '';
+	
+						if( '' != $section_attr['color_bg_section'] ) {
+							$section_bg_style = ' style="';
+							$section_bg_style .= 'background-color:' . esc_attr( $section_attr['color_bg_section'] );
+							$section_bg_setts['color'] = $section_attr['color_bg_section'];
+							$section_bg_style .= ';"';
+							$section_bg_button_preview_style .= ' style="background-color:' . esc_attr( $section_attr['color_bg_section'] ) . ';background-image:none;" ';
+						} else if( '' != $section_attr['image_bg_section'] ) {
+							$section_bg_style = ' style="';
+							$section_bg_style .= 'background-image:url(' . wp_get_attachment_url( $section_attr['id_image_bg_section'] ) . ')';
+							$section_bg_setts['image'] = $section_attr['id_image_bg_section'];
+							$section_bg_setts['url'] = wp_get_attachment_url( $section_attr['id_image_bg_section'] );
+							$section_bg_style .= ';"';
+							$section_bg_button_preview_style .= ' style="background-image:url(' . wp_get_attachment_url( $section_attr['id_image_bg_section'] ) . ');" ';
+						}
+	
+						if(array_key_exists('video_bg_id_section', $section_attr) && $section_attr['video_bg_id_section'] != 'undefined') :
+							$section_bg_setts['video'] = $section_attr['video_bg_id_section'];
+						endif;
+	
+						if(array_key_exists('video_bg_url_section', $section_attr) && $section_attr['video_bg_url_section'] != 'undefined') :
+							$section_bg_setts['youtube'] = $section_attr['video_bg_url_section'];
+						endif;
+	
+						if(array_key_exists('video_bg_url_vimeo_section', $section_attr) && $section_attr['video_bg_url_vimeo_section'] != 'undefined') :
+							$section_bg_setts['vimeo'] = $section_attr['video_bg_url_vimeo_section'];
+						endif;
+	
+						$section_bg_setts = json_encode( $section_bg_setts );
+	
+						$section_dimension = '';
+						if( '' != $section_attr['dimension'] ) {
+							$section_dimension = $section_attr['dimension'];
+						}
+	
+						$background_responsive = array(
+							'gutter' => '20',
+							'isFull' => '',
+							'custom_classes' => '',
+							'section_width'	=>	'',
+						);
+	
+						$section_has_overlay = false;
+						$section_overlay_style = '';
+						$section_overlay_color = '';
+	
+						if( array_key_exists( 'responsive_background', $section_attr ) && '' != $section_attr['responsive_background'] ) {
+							$section_overlay_color = $section_attr['responsive_background'];
+						}
+						if( array_key_exists( 'block_distance', $section_attr ) && '' != $section_attr['block_distance'] ) {
+							$background_responsive['gutter'] = $section_attr['block_distance'];
+						}
+						if( array_key_exists( 'full_height', $section_attr ) && '' != $section_attr['full_height'] ) {
+								$background_responsive['isFull'] = $section_attr['full_height'];
+							}
+						if( array_key_exists( 'custom_classes', $section_attr ) && '' != $section_attr['custom_classes'] ) {
+							$background_responsive['custom_classes'] = $section_attr['custom_classes'];
+							$section_overlay_classes = preg_match_all("/active-(small|medium|large)-overlay/", $section_attr['custom_classes'], $foo);
+							if($section_overlay_classes > 0) :
+								$section_has_overlay = true;
+								$section_overlay_style = ' style="background-color:' . $section_overlay_color . ';"';
+							endif;
+						}
+						if( array_key_exists( 'section_width', $section_attr ) && '' != $section_attr['section_width'] ) {
+							$background_responsive['section_width'] = $section_attr['section_width'];
+						}
+				
+						$custom_section_name = '';
+						if(array_key_exists('section_name', $section_attr) && $section_attr['section_name'] != 'undefined') :
+							$custom_section_name = $section_attr['section_name'];
+						endif;
+						
+						?>
+						<div class='builder-row clearfix z-depth-1' data-count='' data-gridcontent='' data-gridproperties='<?php echo $section_bg_setts; ?>' data-griddimension='<?php echo esc_attr( $section_dimension ); ?>' data-layout='<?php echo esc_attr( $section_attr["layout"] ); ?>' data-section-overlay-color='<?php echo $section_overlay_color; ?>' data-sectionid='<?php echo esc_attr( $custom_section_name ); ?>' data-backresponsive='<?php echo htmlspecialchars(json_encode($background_responsive)); ?>' data-row-separator-top='<?php echo ( isset( $section_attr["row_separator_top"] ) ? esc_attr( $section_attr["row_separator_top"] ) : '' ); ?>' data-row-separator-bottom='<?php echo ( isset( $section_attr["row_separator_bottom"] ) ? esc_attr( $section_attr["row_separator_bottom"] ) : '' ); ?>' data-row-separator-right='<?php echo ( isset( $section_attr["row_separator_right"] ) ? esc_attr( $section_attr["row_separator_right"] ) : '' ); ?>' data-row-separator-left='<?php echo ( isset( $section_attr["row_separator_left"] ) ? esc_attr( $section_attr["row_separator_left"] ) : '' ); ?>' data-section-active-photoswipe='<?php echo ( isset( $section_attr["row_active_photoswipe"] ) ? esc_attr( $section_attr["row_active_photoswipe"] ) : '' ); ?>'>
+	
+							<div class="builder-row-contents">
+								<div class="builder-edit-row-header">
+									<button class="btn-floating builder-delete-row waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexpansive-classic'); ?>">
+										<i class="material-icons white-text">&#xE5CD;</i>
+									</button>
+								</div>
+								<div class="builder-edit-row-wrap clearfix row valign-wrapper">
+									<div class="col s4 rex-edit-dimension-wrap valign-wrapper">
+										<div>
+											<input type="radio" 
+												id="section-full-<?php echo esc_attr( $checkbox_index ); ?>" 
+												name="section-dimension-<?php echo esc_attr( $checkbox_index ); ?>" 
+												class="builder-edit-row-dimension with-gap" 
+												value="full" title="Full"
+											<?php
+											checked( $section_attr['dimension'], 'full', 1 );
+											?> />
+											<label for="section-full-<?php echo esc_attr( $checkbox_index ); ?>" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Full', 'rexpansive-classic' ); ?>">
+												<i class="material-icons rex-icon">v<span class="rex-ripple"></span></i>
+											</label>
+										</div>
+										<div>
+											<input id="section-boxed-<?php echo esc_attr( $checkbox_index ); ?>" type="radio" 
+												name="section-dimension-<?php echo esc_attr( $checkbox_index ); ?>" 
+												class="builder-edit-row-dimension with-gap" value="boxed" title="Boxed"
+											<?php
+											checked( $section_attr['dimension'], 'boxed', 1 );
+											?> />
+											<label for="section-boxed-<?php echo esc_attr( $checkbox_index ); ?>" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Boxed', 'rexpansive-classic' ); ?>">
+												<i class="material-icons rex-icon">t<span class="rex-ripple"></span></i>
+											</label>
+										</div>
+										<div class="rex-edit-layout-wrap" style="display:none;">
+											<input id="section-fixed-<?php echo esc_attr( $checkbox_index ); ?>" type="radio" 
+												name="section-layout-<?php echo esc_attr( $checkbox_index ); ?>" 
+												class="builder-edit-row-layout with-gap" value="fixed" title="Fixed"
+											<?php
+											checked( $section_attr['layout'], 'fixed', 1 );
+											?> />
+											<label for="section-fixed-<?php echo esc_attr( $checkbox_index ); ?>" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Grid Layout', 'rexpansive-classic' ); ?>">
+												<i class="material-icons">&#xE8F1;<span class="rex-ripple"></span></i>
+											</label>
+											<input id="section-masonry-<?php echo esc_attr( $checkbox_index ); ?>" type="radio" 
+												name="section-layout-<?php echo esc_attr( $checkbox_index ); ?>" 
+												class="builder-edit-row-layout with-gap" value="masonry" title="Masonry"
+											<?php
+											checked( $section_attr['layout'], 'masonry', 1 );
+											?> />
+											<label for="section-masonry-<?php echo esc_attr( $checkbox_index ); ?>" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Masonry Layout', 'rexpansive-classic' ); ?>">
+												<i class="material-icons">&#xE871;<span class="rex-ripple"></span></i>
+											</label>
+										</div>
+	
+									</div>
+	
+									<div class="builder-buttons col s4 center-align">
+										<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e( 'Image', 'rexpansive-classic' ); ?>">
+											<i class="material-icons rex-icon">p</i>
+										</button>
+										<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="text" data-position="bottom" data-tooltip="<?php _e( 'Text', 'rexpansive-classic' ); ?>">
+											<i class="material-icons rex-icon">u</i>
+										</button>
+										<div class="builder-fab-row-widgets fixed-action-btn horizontal">
+											<button class="builder-add btn-floating builder-show-widgets waves-effect waves-light light-blue darken-3">
+												<i class="material-icons">add</i>
+											</button>
+											<ul>
+												<li>
+													<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="video" data-position="bottom" data-tooltip="<?php _e( 'Video', 'rexpansive-classic' ); ?>">
+														<i class="material-icons">play_arrow</i>
+													</button>
+												</li>
+												<li>
+													<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="rexslider" data-position="bottom" data-tooltip="<?php _e( 'RexSlider', 'rexpansive' ); ?>">
+														<i class="material-icons rex-icon">X</i>
+													</button>
+												</li>
+												<li>
+													<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="empty" data-position="bottom" data-tooltip="<?php _e( 'Block space', 'rexpansive-classic' ); ?>">
+														<i class="material-icons rex-icon">H</i>
+													</button>
+												</li>
+												<?php if( $this->settings['zak']['active'] == '1' ) { ?>
+												<li>
+													<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="expand" data-position="bottom" data-tooltip="<?php _e('Effect ZAK!', $this->plugin_name); ?>">
+														<i class="material-icons rex-icon">I</i>
+													</button>
+												</li>
+												<?php } ?>
+											</ul>
+										</div>
+									</div>
+									
+									<!-- Icon button -->
+									<div class="col s4 right-align builder-setting-buttons">
+										<div class="background_section_preview btn-floating tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Row background', 'rexpansive-classic' ); ?>"<?php echo $section_bg_button_preview_style; ?>></div>
+										<button class="btn-floating builder-section-config tooltipped waves-effect waves-light" data-position="bottom" data-tooltip="<?php _e('Row settings', 'rexpansive-classic'); ?>">
+											<i class="material-icons">&#xE8B8;</i>
+										</button>
+										<div class="btn-flat builder-copy-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy row', 'rexpansive-classic'); ?>">
+											<i class="material-icons grey-text text-darken-2">&#xE14D;</i>
+										</div>
+										<div class="btn-flat builder-move-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Move row', 'rexpansive-classic'); ?>">
+											<i class="material-icons grey-text text-darken-2">&#xE8D5;</i>
+										</div>
+									</div>
+								</div>
+								<div class="builder-row-edit">
+									
+									<div class="builder-elements">
+										<div class="gridster">
+											<ul <?php echo $section_bg_style; ?>>
+												<?php
+													if( !empty( $section_content ) ) :
+														preg_match_all( "/$pattern/", $section_content, $result_block);
+														foreach( $result_block[3] as $i => $attrs ) :
+															$block_attr = shortcode_parse_atts( trim( $attrs ) );
+	
+															// Prepare the background block settings
+	
+															$background_block_setts = array(
+																'color' => '',
+																'image' => '',
+																'url' => '',
+																'bg_img_type' => '',
+																'photoswipe' => '',
+																'linkurl' => '',
+																'video'		=>	'',
+																'youtube'	=>	'',
+																'block_custom_class' => '',
+																'overlay_block_color' => '',
+																'image_size' => '',
+															);
+															$style = ' style="';
+															$classEmpty = '';
+	
+															if( array_key_exists('image_bg_block', $block_attr) && array_key_exists('type_bg_block', $block_attr) && $block_attr['image_bg_block'] != '' && $block_attr['type_bg_block'] == 'full' ) {
+																$style .= 'background-image:url(' . wp_get_attachment_url ($block_attr['id_image_bg_block'] ) . ');';
+																$background_block_setts['image'] = $block_attr['id_image_bg_block'];
+																$background_block_setts['url'] = wp_get_attachment_url ($block_attr['id_image_bg_block'] );
+																$background_block_setts['bg_img_type'] = $block_attr['type_bg_block'];
+													
+																$classEmpty = 'hidden';
+															} else if( array_key_exists('color_bg_block', $block_attr) && array_key_exists('type_bg_block', $block_attr) && $block_attr['color_bg_block'] != '' && $block_attr['type_bg_block'] != 'full' ) {
+																$style .= 'background-color:' . $block_attr['color_bg_block'] . ';';
+													
+																if( array_key_exists('type_bg_block', $block_attr) && $block_attr['type_bg_block'] == 'natural' ) {
+																	$style .= 'background-image:url(' . wp_get_attachment_url( $block_attr['id_image_bg_block'] ) . ');';
+																}
+													
+																$background_block_setts['color'] = $block_attr['color_bg_block'];
+																$background_block_setts['image'] = $block_attr['id_image_bg_block'];
+																$background_block_setts['url'] = wp_get_attachment_url( $block_attr['id_image_bg_block'] );
+																$background_block_setts['bg_img_type'] = $block_attr['type_bg_block'];
+																$classEmpty = 'hidden';
+															} else if( array_key_exists('type_bg_block', $block_attr) && $block_attr['type_bg_block'] == 'natural' ) {
+																	if( array_key_exists('color_bg_block', $block_attr) && array_key_exists('type_bg_block', $block_attr) && $block_attr['color_bg_block'] != '' && $block_attr['type_bg_block'] != 'full' ) {
+																		$style .= 'background-color:' . $block_attr['color_bg_block'] . ';';
+																	}
+																$style .= 'background-image:url(' . wp_get_attachment_url ($block_attr['id_image_bg_block'] ) . ');';
+																$background_block_setts['image'] = $block_attr['id_image_bg_block'];
+																$background_block_setts['url'] = wp_get_attachment_url ($block_attr['id_image_bg_block'] );
+																$background_block_setts['bg_img_type'] = $block_attr['type_bg_block'];
+													
+																$classEmpty = 'hidden';
+															}
+													
+															if(array_key_exists('video_bg_id', $block_attr) && $block_attr['video_bg_id'] != 'undefined') :
+																$background_block_setts['video'] = $block_attr['video_bg_id'];
+															else :
+																$background_block_setts['video'] = '';
+															endif;
+													
+															if(array_key_exists('video_bg_url', $block_attr) && $block_attr['video_bg_url'] != 'undefined') :
+																$background_block_setts['youtube'] = $block_attr['video_bg_url'];
+															else :
+																$background_block_setts['youtube'] = '';
+															endif;
+													
+															if(array_key_exists('video_bg_url_vimeo', $block_attr) && $block_attr['video_bg_url_vimeo'] != 'undefined') :
+																$background_block_setts['vimeo'] = $block_attr['video_bg_url_vimeo'];
+															else :
+																$background_block_setts['vimeo'] = '';
+															endif;
+													
+															$video_has_audio = '0';
+															if(array_key_exists('video_has_audio', $block_attr) && $block_attr['video_has_audio'] != 'undefined') :
+																$video_has_audio =  $block_attr['video_has_audio'];
+															endif;
+													
+															if(array_key_exists('photoswipe', $block_attr) && $block_attr['photoswipe'] != 'undefined') :
+																$background_block_setts['photoswipe'] = $block_attr['photoswipe'];
+															else :
+																$background_block_setts['photoswipe'] = '';
+															endif;
+													
+															if(array_key_exists('linkurl', $block_attr) && $block_attr['linkurl'] != 'undefined') :
+																$background_block_setts['linkurl'] = $block_attr['linkurl'];
+															else :
+																$background_block_setts['linkurl'] = '';
+															endif;
+													
+															if(array_key_exists('image_size', $block_attr) && $block_attr['image_size'] != 'undefined') :
+																$background_block_setts['image_size'] = $block_attr['image_size'];
+															else :
+																$background_block_setts['image_size'] = '';
+															endif;
+													
+															$element_preview_position_classes = '';
+													
+															if(array_key_exists('block_custom_class', $block_attr) && $block_attr['block_custom_class'] != 'undefined') :
+																$background_block_setts['block_custom_class'] = $block_attr['block_custom_class'];
+																$block_custom_classes = $block_attr['block_custom_class'];
+																$matches = preg_match_all("/rex-flex-(top|middle|bottom|left|center|right)/", $block_custom_classes, $content_position);
+																if($matches != 0) :
+																	$element_preview_position_classes = ' element-content-positioned';
+																	foreach ($content_position[0] as $key => $class) :
+																		switch ($class) :
+																			case 'rex-flex-top':
+																				$element_preview_position_classes .= ' element-content-positioned-top';
+																				break;
+																			case 'rex-flex-middle':
+																				$element_preview_position_classes .= ' element-content-positioned-middle';
+																				break;
+																			case 'rex-flex-bottom':
+																				$element_preview_position_classes .= ' element-content-positioned-bottom';
+																				break;
+																			case 'rex-flex-left':
+																				$element_preview_position_classes .= ' element-content-positioned-left';
+																				break;
+																			case 'rex-flex-center':
+																				$element_preview_position_classes .= ' element-content-positioned-center';
+																				break;
+																			case 'rex-flex-right':
+																				$element_preview_position_classes .= ' element-content-positioned-right';
+																				break;
+																			default:
+																				break;
+																		endswitch;
+																	endforeach;
+																endif;
+															else :
+																$background_block_setts['block_custom_class'] = '';
+																$block_custom_classes = '';
+															endif;
+													
+															if(array_key_exists('block_padding', $block_attr) && $block_attr['block_padding'] != 'undefined') :
+																$content_padding_settings = $block_attr['block_padding'];
+															else :
+																$content_padding_settings = '';
+															endif;
+													
+															if(array_key_exists('overlay_block_color', $block_attr) && $block_attr['overlay_block_color'] != 'undefined') :
+																$background_block_setts['overlay_block_color'] = $block_attr['overlay_block_color'];
+															endif;
+													
+															$style .= '"';
+													
+															$define_borders = ' with-border';
+															if( $background_block_setts['color'] != '' || ( $background_block_setts['image'] != '' && $background_block_setts['bg_img_type'] != 'natural' ) ) :
+																if( $background_block_setts['color'] != 'rgba(255,255,255,0)' ) :
+																	$define_borders = ' no-border';
+																endif;
+															endif;
+													
+															$temp_block_setts = $background_block_setts;
+													
+															$background_block_setts = json_encode( $background_block_setts );
+													
+															// Preapre the zak effect settings
+															$zak_effect_setts = array(
+																'side' => '',
+																'background_url' => '',
+																'background_id' => '',
+																'title' => '',
+																'icon_url' => '',
+																'icon_id' => '',
+																'content' => '',
+																'foreground_url' => '',
+																'foreground_id' => ''
+															);
+															if(array_key_exists('zak_side', $block_attr) && $block_attr['zak_side'] != 'undefined') {
+																$zak_effect_setts['side'] = $block_attr['zak_side'];
+															}
+													
+															if(array_key_exists('zak_background', $block_attr) && $block_attr['zak_background'] != 'undefined') {
+																$zak_effect_setts['background_url'] = wp_get_attachment_url( $block_attr['zak_background'] );
+																$zak_effect_setts['background_id'] = $block_attr['zak_background'];
+															}
+													
+															if(array_key_exists('zak_title', $block_attr) && $block_attr['zak_title'] != 'undefined') {
+																$zak_effect_setts['title'] = $block_attr['zak_title'];
+															}
+													
+															if(array_key_exists('zak_icon', $block_attr) && $block_attr['zak_icon'] != 'undefined') {
+																$zak_effect_setts['icon_url'] = ( $block_attr['zak_icon'] ) ? wp_get_attachment_url( $block_attr['zak_icon'] ) : '';
+																$zak_effect_setts['icon_id'] = $block_attr['zak_icon'];
+															}
+															$zak_effect_setts['content'] = ($block_content);
+													
+															if(array_key_exists('zak_foreground', $block_attr) && $block_attr['zak_foreground'] != 'undefined') :
+																if( '' != $block_attr['zak_foreground'] ) :
+																	$zak_effect_setts['foreground_url'] = wp_get_attachment_url( $block_attr['zak_foreground'] );
+																	$zak_effect_setts['foreground_id'] = $block_attr['zak_foreground'];
+																endif;
+															endif;														
+													
+															//var_dump(mysql_real_escape_string($result_block[5][$i]));
+													
+															$zak_effect_setts = json_encode( $zak_effect_setts );
+													
+															$block_content = $result_block[5][$i];																			
+													
+															$block_content = preg_replace('/^<\/p>/', '', $block_content);
+															$block_content = preg_replace('/<p>+$/', '', $block_content);
+													
+															$slider_data_markup = "";
+															$actions_args = array(
+																'block_has_slider' => false
+															);
+															if( "rexslider" == $block_attr['type'] ) {
+																preg_match_all( "/$pattern/", $block_content, $block_content_parsed);
+																$slider_settings = shortcode_parse_atts(trim($block_content_parsed[3][0]));
+																$slider_data_markup .= ' data-block-slider-id="' . esc_attr( $slider_settings['slider_id'] ) . '"';
+																$actions_args['block_has_slider'] = true;
+															}
+															ob_start();
+														?>
+															<li id="<?php echo esc_attr( $block_attr['id'] ); ?>" class="<?php echo esc_attr( $block_attr['type'] ); echo esc_attr( $define_borders ); ?> item z-depth-1 hoverable svg-ripple-effect<?php if( isset( $block_attr['type_bg_block'] ) && $block_attr['type_bg_block'] == 'natural') : echo ' block-is-natural'; endif; ?>" data-block_type="<?php echo esc_attr( $block_attr['type'] ); ?>" data-col="<?php echo esc_attr( $block_attr['col'] ); ?>" data-row="<?php echo esc_attr( $block_attr['row'] ); ?>" data-sizex="<?php echo esc_attr( $block_attr['size_x'] ); ?>" data-sizey="<?php echo esc_attr( $block_attr['size_y'] ); ?>" data-bg_settings='<?php echo $background_block_setts; ?>' data-block-custom-classes="<?php echo esc_attr( $block_custom_classes ); ?>" data-content-padding="<?php echo esc_attr( $content_padding_settings ); ?>" data-video-has-audio="<?php echo esc_attr( $video_has_audio ); ?>"<?php echo $slider_data_markup; ?>>
+																	<div class="element-actions">
+																		<div class="builder-fab-row-widgets actions-center-icons fixed-action-btn horizontal">
+																			<button class="btn-floating builder-show-widgets waves-effect waves-light light-blue darken-3">
+																				<i class="material-icons">add</i>
+																			</button>
+																			<ul>
+																				<li class="edit_handler btn-floating waves-effect waves-light tooltipped<?php if( $block_attr['type_bg_block'] == 'natural') : echo ' hide-edit-handler'; endif; ?>" data-position="bottom" data-tooltip="<?php _e('Text', 'rexpansive-classic'); ?>"
+																				<?php
+																					if( $block_attr['type_bg_block'] == 'natural') :
+																						echo ' style="display:none;"';
+																					endif;
+																				?>><i class="material-icons rex-icon">u</i>
+																				</li>
+																				<li class="background_handler btn-floating waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Block settings', 'rexpansive-classic'); ?>">
+																					<i class="material-icons">&#xE8B8;</i>
+																				</li>
+																				<li class="copy-handler btn-floating grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy block', 'rexpansive-classic'); ?>">
+																					<i class="material-icons white-text">&#xE14D;</i>
+																				</li>
+																			</ul>
+																		</div>
+																		<div class="actions-center-icons">
+																			<div class="edit_handler btn-floating waves-effect waves-light tooltipped<?php if( $block_attr['type_bg_block'] == 'natural') : echo ' hide-edit-handler'; endif; ?>" data-position="bottom" data-tooltip="<?php _e('Text', 'rexpansive-classic'); ?>"
+																			<?php
+																				if( $block_attr['type_bg_block'] == 'natural') :
+																					echo ' style="display:none;"';
+																				endif;
+																			?>
+																			><i class="material-icons rex-icon">u</i></div>
+																			<div class="background_handler btn-floating waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Block settings', 'rexpansive-classic'); ?>">
+																				<i class="material-icons">&#xE8B8;</i>
+																			</div>
+																			<br>
+																			<div class="copy-handler btn-floating grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy block', 'rexpansive-classic'); ?>">
+																				<i class="material-icons white-text">&#xE14D;</i>
+																			</div>
+																		</div>
+																		<div class="delete_handler btn-floating waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete block', 'rexpansive-classic'); ?>">
+																			<i class="material-icons white-text">&#xE5CD;</i>
+																		</div>
+																	</div>
+																	<?php
+				switch( $block_attr['type'] ) {
+					case 'image':
+				?>
+				<div class="element-data">
+					<textarea class="data-text-content" display="none"><?php echo esc_textarea( $block_content ); ?></textarea>
+				</div>
+				<div class="element-preview-wrap<?php echo $element_preview_position_classes; ?>"<?php echo $style; ?>>
+					<div class="element-preview">
+					<?php 
+						if( $block_attr['type_bg_block'] == '' && $block_attr['color_bg_block'] == '' ) { 
+							$control = true;
+						} else {
+							$control = false;
+						}
+					?>
+						<div class="backend-image-preview" data-image_id="<?php esc_attr( $block_attr['id_image_bg_block'] ); ?>" <?php if($control) { echo 'style="display:none;"'; } ?>>
+							<?php echo $block_content; ?>
+						</div>
+					</div>
+				</div>
+				<?php
+						break;
+					case 'text':
+					case 'rexslider':
+				?>
+				<div class="element-data">
+					<textarea class="data-text-content" display="none"><?php echo esc_textarea( $block_content ); ?></textarea>
+				</div>
+				<div class="element-preview-wrap<?php echo $element_preview_position_classes; ?>"<?php echo $style; ?>>
+						<div class="element-preview"><?php echo $block_content; ?></div>
+				<?php
+					//endif;
+				?>
+				</div>
+				<?php
+						break;
+					case 'empty':
+				?>
+				<div class="element-data">
+					<textarea class="data-text-content" display="none"><?php echo esc_textarea( $block_content ); ?></textarea>
+				</div>
+				<div class="element-preview-wrap<?php echo $element_preview_position_classes; ?>"<?php if($style) { echo $style; } ?>>
+					<div class="element-preview">
+						<div class="element-preview"><?php echo $block_content; ?></div>
+					</div>
+				</div>
+				<?php
+						break;
+					case 'video':
+				?>
+				<div class="element-data">
+					<textarea class="data-text-content" display="none"><?php echo esc_textarea( $block_content ); ?></textarea>	
+				</div>
+				<div class="element-preview-wrap<?php echo $element_preview_position_classes; ?>"<?php echo $style; ?>>
+					<div class="element-preview"><?php echo $block_content; ?></div>	
+				</div>
+				<?php
+					break;
+				case 'expand':
+				?>
+				<div class="element-data">
+					<input class="data-zak-content" type="hidden" <?php echo 'data-zak-content=\'' . $zak_effect_setts . '\'' ?>>
+				</div>
+				<div class="element-preview"<?php echo $style; ?>>
+					<?php
+						if( 'left' == $block_attr['zak_side'] ) :
+					?>
+						<div class="zak-block zak-image-side">
+							<img src="<?php echo wp_get_attachment_url( $block_attr['zak_background'] ); ?>">
+						</div>
+						<div class="zak-block zak-text-side">
+							<h2><?php echo $block_attr['zak_title']; ?></h2>
+							<?php if( $block_attr['zak_icon'] ) : ?>
+								<img src="<?php echo wp_get_attachment_url( $block_attr['zak_icon'] ); ?>" alt="">
+							<?php endif; ?>
+							<div class="text-preview"><?php echo $block_content; ?></div>
+						</div>
+					<?php
+						else :
+					?>
+						<div class="zak-block zak-text-side">
+							<h2><?php echo $block_attr['zak_title']; ?></h2>
+							<?php if( $block_attr['zak_icon'] ) : ?>
+								<img src="<?php echo wp_get_attachment_url( $block_attr['zak_icon'] ); ?>" alt="">
+							<?php endif; ?>
+							<div class="text-preview"><?php echo $block_content; ?></div>
+						</div>
+						<div class="zak-block zak-image-side">
+							<img src="<?php echo wp_get_attachment_url( $block_attr['zak_background'] ); ?>">
+						</div>
+					<?php
+						endif;
+					?>
+				</div>
+				<?php
+					break;
+				case 'default':
+					break;
+			}
+		?>	
+	<div class="element-visual-info<?php
+		if('' != $temp_block_setts['youtube'] || '' != $temp_block_setts['video'] || '' != $temp_block_setts['vimeo'] ) :
+			echo ' ' . 'rex-active-video-notice';
+		endif;
+	?>"<?php 
+		if( '' != $temp_block_setts['overlay_block_color'] ) :
+			echo ' style="background-color:' . esc_attr( $temp_block_setts['overlay_block_color'] ) . '"';
+		endif;
+	?>>
+		<div class="vert-wrap">
+			<div class="vert-elem">
+				<i class="material-icons rex-icon rex-notice rex-video-notice">G</i>
+			</div>
+		</div>
+	</div>
+	<div class="el-visual-size"><span><?php echo $block_attr['size_x'] . 'x' . $block_attr['size_y']; ?></span></div>
+			</li>
+															<?php
+														endforeach;
+												?>
+												<?php endif; ?>
+											</ul>
+											<div class="section-visual-info<?php if($section_has_overlay) echo ' active-section-visual-info'; ?>"<?php if($section_has_overlay) echo $section_overlay_style; ?>></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<?php
+						$checkbox_index++;
+					endif;
+				endforeach;
+			else :
+			$defaultsectionproperties = json_encode( array(
+					"color"			=>	"",
+					"image"			=>	"",
+					"url"			=>	"",
+					"bg_img_type"	=>	"",
+					"video"			=>	"",
+					"youtube"		=>	"",
+				) );
+				$defaultidproperties = json_encode( array(
+					"section_id"	=>	"",
+					"icon_id"		=>	"",
+					"icon_url"		=>	"",
+					"image_id"		=>	"",
+					"image_url"		=>	"",
+				) );
+				$defaultsectionconfigs = json_encode(array(
+					'gutter' => '20',
+					'isFull' => '',
+					'custom_classes' => '',
+					'section_width'	=>	'',
+				));
+			?>
+				<div class="builder-row builder-new-row clearfix z-depth-1" data-count="0" data-gridcontent="" data-gridproperties="<?php echo htmlspecialchars( $defaultsectionproperties ); ?>" data-griddimension="full" data-layout="fixed" data-sectionid="" data-section-overlay-color="" data-backresponsive="<?php echo htmlspecialchars( $defaultsectionconfigs ); ?>">
+					<div class="builder-row-contents">
+						<div class="builder-edit-row-header">
+							<button class="btn-floating builder-delete-row waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexpansive-classic'); ?>">
+								<i class="material-icons white-text">&#xE5CD;</i>
+							</button>
+						</div>
+						<div class="builder-edit-row-wrap clearfix row valign-wrapper">
+							<div class="col s4">
+								<div class="rex-edit-dimension-wrap">
+									<input id="section-full-0" type="radio" 
+										name="section-dimension-0" 
+										class="builder-edit-row-dimension with-gap" value="full" checked title="Full" />
+									<label for="section-full-0" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Full', 'rexpansive-classic' ); ?>">
+										<!--<i class="material-icons">&#xE30B;</i>-->
+										<i class="material-icons rex-icon">v<span class="rex-ripple"></i>
+									</label>
+									<input id="section-boxed-0" type="radio" 
+										name="section-dimension-0" 
+										class="builder-edit-row-dimension with-gap" value="boxed" title="Boxed" />
+									<label for="section-boxed-0" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Boxed', 'rexpansive-classic' ); ?>">
+										<!--<i class="material-icons">&#xE30C;</i>-->
+										<i class="material-icons rex-icon">t<span class="rex-ripple"></i>
+									</label>
+								</div>
+								<div class="rex-edit-layout-wrap" style="display:none;">
+									<input id="section-fixed-0" type="radio" 
+										name="section-layout-0" 
+										class="builder-edit-row-layout with-gap" value="fixed" checked title="Grid Layout" />
+									<label for="section-fixed-0" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Grid Layout', 'rexpansive-classic' ); ?>">
+										<i class="material-icons">&#xE8F1;<span class="rex-ripple"></span></i>
+									</label>
+									<input id="section-masonry-0" type="radio" 
+										name="section-layout-0" 
+										class="builder-edit-row-layout with-gap" value="masonry" title="Masonry Layout" />
+									<label for="section-masonry-0"  class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Masonry Layout', 'rexpansive-classic' ); ?>">
+										<i class="material-icons">&#xE871;<span class="rex-ripple"></span></i>
+									</label>
+								</div>
+							</div>
+							
+							<div class="builder-buttons col s4 center-align">
+								<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e( 'Image', 'rexpansive-classic' ); ?>">
+									<i class="material-icons rex-icon">p</i>
+								</button>
+								<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="text" data-position="bottom" data-tooltip="<?php _e( 'Text', 'rexpansive-classic' ); ?>">
+									<i class="material-icons rex-icon">u</i>
+								</button>
+								<div class="builder-fab-row-widgets fixed-action-btn horizontal">
+									<button class="builder-add btn-floating builder-show-widgets waves-effect waves-light light-blue darken-3">
+										<i class="material-icons">add</i>
+									</button>
+									<ul>
+										<li>
+											<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="video" data-position="bottom" data-tooltip="<?php _e( 'Video', 'rexpansive-classic' ); ?>">
+												<i class="material-icons">play_arrow</i>
+											</button>
+										</li>
+										<li>
+											<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="rexslider" data-position="bottom" data-tooltip="<?php _e( 'RexSlider', 'rexpansive' ); ?>">
+												<i class="material-icons rex-icon">X</i>
+											</button>
+										</li>
+										<li>
+											<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="empty" data-position="bottom" data-tooltip="<?php _e( 'Block space', 'rexpansive-classic' ); ?>">
+												<i class="material-icons rex-icon">H</i>
+											</button>
+										</li>
+										<?php if( $this->settings['zak']['active'] == '1' ) { ?>
+										<li>
+											<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="expand" data-position="bottom" data-tooltip="<?php _e('Effect ZAK!', $this->plugin_name); ?>">
+												<i class="material-icons rex-icon">I</i>
+											</button>
+										</li>
+										<?php } ?>
+									</ul>
+								</div>
+							</div>
+							
+							<div class="col s4 right-align builder-setting-buttons">
+								<div class="background_section_preview btn-floating tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Row background', 'rexpansive-classic' ); ?>"></div>
+								<button class="btn-floating builder-section-config tooltipped" data-position="bottom" data-tooltip="<?php _e('Row settings', 'rexpansive-classic'); ?>">
+									<i class="material-icons white-text">&#xE8B8;</i>
+								</button>
+								<div class="btn-flat builder-copy-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy row', 'rexpansive-classic'); ?>">
+									<i class="material-icons grey-text text-darken-2">&#xE14D;</i>
+								</div>
+								<div class="btn-flat builder-move-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Move row', 'rexpansive-classic'); ?>">
+									<i class="material-icons grey-text text-darken-2">&#xE8D5;</i>
+								</div>
+							</div>
+						</div>
+						<div class="builder-row-edit">
+							<div class="builder-buttons-new-row col s3">
+								<div>
+									<button class="btn light-blue darken-1 builder-add waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e('Image', 'rexpansive-classic'); ?>">
+										<i class="material-icons rex-icon white-text">p</i>
+									</button>
+									<button class="btn light-blue darken-1 builder-add waves-effect waves-light tooltipped" value="text" data-position="bottom" data-tooltip="<?php _e('Text', 'rexpansive-classic'); ?>">
+										<i class="material-icons rex-icon white-text">u</i>
+									</button>
+									<br>
+									<div class="builder-fab-row-widgets fixed-action-btn horizontal">
+										<button class="builder-add btn-floating builder-show-widgets waves-effect waves-light light-blue darken-3">
+											<i class="material-icons">add</i>
+										</button>
+										<ul>
+											<li>
+												<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="video" data-position="bottom" data-tooltip="<?php _e( 'Video', 'rexpansive-classic' ); ?>">
+													<i class="material-icons">play_arrow</i>
+												</button>
+											</li>
+											<li>
+												<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="rexslider" data-position="bottom" data-tooltip="<?php _e( 'RexSlider', 'rexpansive-classic' ); ?>">
+													<i class="material-icons rex-icon">X</i>
+												</button>
+											</li>
+											<li>
+												<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="empty" data-position="bottom" data-tooltip="<?php _e( 'Block space', 'rexpansive-classic' ); ?>">
+													<i class="material-icons rex-icon">z</i>
+												</button>
+											</li>
+										</ul>
+									</div>
+								</div>
+							</div>
+							<div class="builder-elements">
+								<div class="gridster">
+									<ul>
+									</ul>
+									<div class="section-visual-info"></div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			
+			<?php
+				endif;
+			?>
+				
+		<?php
+		endif;
+	
+		exit();
+	}
+
+	/**
+	 * is_edit_page 
+	 * function to check if the current page is a post edit page
+	 * 
+	 * @author Ohad Raz <admin@bainternet.info>
+	 * 
+	 * @param  string  $new_edit what page to check for accepts new - new post page ,edit - edit post page, null for either
+	 * @return boolean
+	 */
+   	private function is_edit_page($new_edit = null){
+		global $pagenow;
+		//make sure we are on the backend
+		if (!is_admin()) return false;
+	
+	
+		if($new_edit == "edit") {
+			return in_array( $pagenow, array( 'post.php' ) );
+		} elseif($new_edit == "new") {//check for new post page
+			return in_array( $pagenow, array( 'post-new.php' ) );
+		} else {//check for either new or edit
+			return in_array( $pagenow, array( 'post.php', 'post-new.php' ) );
+		}
+	}
+	   
+	/**
+	 * Allowing XML import
+	 *
+	 * @param Array $mimes
+	 * @return Array
+	 * @since 1.1.2
+	 */
+	function register_xml_json_mime_type( $mimes ) {
+		$mimes['xml'] = 'application/xml';
+		$mimes['json'] = 'application/json';
+		return $mimes;
+	}
+
+	/**
+	 * Import some content
+	 *
+	 * @return void
+	 * @since 1.1.2
+	 */
+   	public function import_models() {
+		if(isset( $_GET['builder-import-models'] ) && 'true' == $_GET['builder-import-models'] && is_admin()) {
+			$imported = get_option( 'rexbuilder_models_imported' );
+			if( "1" != $imported ) {
+				require_once REXPANSIVE_BUILDER_PATH . 'admin/class-importheme-import-utilities.php';
+				require_once REXPANSIVE_BUILDER_PATH . 'admin/class-importheme-import-xml-content.php';
+		
+				// $xml_bundled_url = REXPANSIVE_BUILDER_URL . 'admin/models/contact-forms.xml';
+
+				$forms_url = 'http://demo.neweb.info/wp-content/uploads/rexpansive-builder-uploads/contact-forms.xml';
+				$xml_file = Rexpansive_Classic_Import_Utilities::upload_media_file( $forms_url, 'xml' );
+
+				if( file_exists( $xml_file['file'] ) ) {
+		
+					$Xml = new Rexpansive_Classic_Import_Xml_Content( $xml_file['file'] );
+			
+					wp_defer_term_counting( true );
+					wp_defer_comment_counting( true );
+			
+					wp_suspend_cache_invalidation( true );
+			
+					$Xml->run_import_all();
+			
+					wp_suspend_cache_invalidation( false );
+			
+					wp_defer_term_counting( false );
+					wp_defer_comment_counting( false );
+					
+					update_option( 'rexbuilder_models_imported', '1' );
+					Rexpansive_Classic_Import_Utilities::remove_media_file( $xml_file['file'] );
+
+					?><p><?php _e( 'CF7 Models correctly imported', 'rexpansive-builder' ); ?></p><?php
+				}
+			} else {
+				?><p><?php _e( 'CF7 Models already imported', 'rexpansive-builder' ); ?></p><?php
+			}
+		}
+   	}
 }

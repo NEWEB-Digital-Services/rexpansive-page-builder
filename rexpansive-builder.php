@@ -1,4 +1,5 @@
 <?php
+
 /**
  * The plugin bootstrap file
  *
@@ -15,8 +16,8 @@
  * Plugin Name:       Rexpansive Builder
  * Plugin URI:        http://rexpansive.neweb.info/
  * Description:       The new and awesome plugin to build a page in 1 minute! Expand your mind!
- * Version:           1.0.15
- * Author:            NEWEB di Simone Forgiarini
+ * Version:           1.1.2
+ * Author:            NEWEB - Digital Agency
  * Author URI:        http://www.neweb.info/      
  * Text Domain:       rexpansive-builder
  * Domain Path:       /languages
@@ -26,6 +27,29 @@
 if ( ! defined( 'WPINC' ) ) {
 	die;
 }
+
+/**
+ * Currently plugin version.
+ * Start at version 1.0.0 and use SemVer - https://semver.org
+ * Rename this for your plugin and update it as you release new versions.
+ */
+define( 'REXPANSIVE_BUILDER_VERSION', '1.1.2' );
+
+/**
+ * Constant for the plugin main PATH
+ */
+define( 'REXPANSIVE_BUILDER_PATH', plugin_dir_path( __FILE__ ) );
+
+/**
+ * Constant for the plugin main URL
+ */
+define( 'REXPANSIVE_BUILDER_URL', plugin_dir_url( __FILE__ ) );
+
+/**
+ * Constant with the name of the template folder to search
+ * in a WP THEME to customize the visualization
+ */
+define( 'REXPANSIVE_BUILDER_TMPL_FOLDER', 'rexpansive-builder' );
 
 /**
  * The code that runs during plugin activation.
@@ -70,5 +94,3 @@ function run_rexbuilder() {
 
 }
 run_rexbuilder();
-
-

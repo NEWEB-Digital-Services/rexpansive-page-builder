@@ -72,7 +72,67 @@
 					</label>
 				</td>
 			</tr>
+			<tr>
+				<th><?php _e( 'Contact form CF7', 'rexpansive-builder' ); ?></th>
+				<td>
+				<p><?php _e( 'We suggest you tu use CF7 plugin for your contact forms.', 'rexpansive-builder' ); ?></p>
+				<?php
+				$slug = 'contact-form-7';
+
+				$tgmpa = $GLOBALS['tgmpa'];
+
+				if( !$tgmpa->is_plugin_installed($slug) ) {
+					$install_type = 'install';
+					$url = wp_nonce_url(
+						add_query_arg(
+							array(
+								'plugin'                 => urlencode( $slug ),
+								'tgmpa-' . $install_type => $install_type . '-plugin',
+								'builder-import-models' => 'true'
+							),
+							$tgmpa->get_tgmpa_url()
+						),
+						'tgmpa-' . $install_type,
+						'tgmpa-nonce'
+					);
+					?>
+						<a href="<?php echo esc_url( $url ); ?>"><?php _e( 'Install', 'rexpansive-builder' ); ?></a>
+					<?php
+				} else if( !$tgmpa->is_plugin_active( $slug ) ) {
+					$install_type = 'activate';
+					$url = wp_nonce_url(
+						add_query_arg(
+							array(
+								'plugin'                 => urlencode( $slug ),
+								'tgmpa-' . $install_type => $install_type . '-plugin',
+								'builder-import-models' => 'true'
+							),
+							$tgmpa->get_tgmpa_url()
+						),
+						'tgmpa-' . $install_type,
+						'tgmpa-nonce'
+					);
+					?>
+						<a href="<?php echo esc_url( $url ); ?>"><?php _e( 'Activate', 'rexpansive-builder' ); ?></a>
+					<?php
+				} else {
+					?>
+					<p class="description indicator-hint">
+						<?php _e( 'Plugin installed correctly' , 'rexpansive-builder' ); ?>
+					</p>
+					<p class="description indicator-hint">
+						<?php _e( 'Do you need to install the CF7 Models bundled with the plugin?' , 'rexpansive-builder' ); ?>
+						<a href="<?php echo admin_url( 'admin.php?page=' . $this->plugin_name . '&builder-import-models=true' ); ?>"><?php _e( 'Click here', 'rexpansive-builder' ); ?></a>
+					</p>
+					<?php
+				}
+
+				do_action('rexpansive_builder_after_contacts_settings');
+				?>
+				</td>
+			</tr>
 		</table>
+	<?php do_action('rexpansive_builder_after_settings'); ?>
 	<?php submit_button( 'Save', 'primary', 'submit', TRUE ); ?>
 	</form>
 </div>

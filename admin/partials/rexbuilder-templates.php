@@ -10,7 +10,11 @@
  */
 
 defined( 'ABSPATH' ) or exit;
-
+$this->settings = apply_filters( 'rexbuilder_metabox_settings', array(
+	'zak' => array(
+		'active' => '0'
+	)
+) );
 ?>
 <script id="rexbuilder-tmpl-element-actions" type="text/html">
 <div class="element-actions">
@@ -263,11 +267,13 @@ defined( 'ABSPATH' ) or exit;
 								<i class="material-icons rex-icon">X</i>
 							</button>
 						</li>
-						<!-- <li>
-							<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="text-fill" data-position="bottom" data-tooltip="<?php _e( 'TextFill', 'rexspansive' ); ?>">
-								<span style="color:white;">T</span>
+						<?php if( $this->settings['zak']['active'] == '1' ) { ?>
+						<li>
+							<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="expand" data-position="bottom" data-tooltip="<?php _e('Effect ZAK!', 'rexpansive'); ?>">
+							<i class="material-icons rex-icon">I</i>
 							</button>
-						</li> -->
+						</li>
+						<?php } ?>
 					</ul>
 				</div>
 			</div>
@@ -277,8 +283,15 @@ defined( 'ABSPATH' ) or exit;
 				<button class="btn-floating builder-section-config tooltipped" data-position="bottom" data-tooltip="<?php _e('Row settings', 'rexspansive'); ?>">
 					<i class="material-icons">&#xE8B8;</i>
 				</button>
-				<div class="btn-flat builder-copy-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy row', 'rexspansive'); ?>">
+				<div class="btn-flat builder-copy-row tooltipped fixed-action-btn relative-action-btn top" data-position="bottom" data-tooltip="<?php _e('Copy row', 'rexpansive'); ?>">
 					<i class="material-icons grey-text text-darken-2">&#xE14D;</i>
+					<ul>
+						<li>
+							<div class="btn-floating btn-medium builder-model tooltipped waves-effect waves-light" data-position="bottom" data-tooltip="<?php _e('Model', 'rexpansive-classic'); ?>">
+							<i class="material-icons rex-icon">0</i>
+							</div>
+						</li>
+					</ul>
 				</div>
 				<div class="btn-flat builder-move-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Move row', 'rexspansive'); ?>">
 					<i class="material-icons grey-text text-darken-2">&#xE8D5;</i>
@@ -297,6 +310,17 @@ defined( 'ABSPATH' ) or exit;
 		</div>
 	</div>
 </div>
+</script>
+<script id="rexbuilder-tmpl-add-section" type="text/html">
+<tr>
+	<td colspan="" rowspan="" headers="">
+		<div class="builder-add-row-wrap">
+			<button id="builder-add-row" class="builder-button btn-floating btn light-blue darken-1 waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Add row', 'rexpansive-classic' ) ?>">
+				<i class="material-icons text-white">&#xE145;</i>
+			</button>
+		</div>
+	</td>
+</tr>
 </script>
 <script id="rex-slider__new-slide-tmpl" type="text/html">
 <div class="col rex-slider__slide rex-modal-content__modal-area__row" data-slider-slide-id="data.slideindex" data-block_type="slide">

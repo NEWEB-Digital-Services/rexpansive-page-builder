@@ -57,6 +57,8 @@ class Rexbuilder {
 	 */
 	protected $version;
 
+	protected $plugin_public;
+
 	/**
 	 * Define the core functionality of the plugin.
 	 *
@@ -69,14 +71,13 @@ class Rexbuilder {
 	public function __construct() {
 
 		$this->plugin_name = 'rexpansive-builder';
-		$this->version = '1.0.15';
+		$this->version = REXPANSIVE_BUILDER_VERSION;
 
 		$this->load_dependencies();
 		$this->set_locale();
 		$this->define_admin_hooks();
 		$this->define_public_hooks();
 		$this->define_shortcodes();
-		$this->include_acf();
 	}
 
 	/**
@@ -98,35 +99,50 @@ class Rexbuilder {
 	private function load_dependencies() {
 
 		/**
+		 * Add TGMPA funcionallity to include external plugin
+		 */
+		require_once REXPANSIVE_BUILDER_PATH . 'admin/required-plugins/plugins.php';
+
+		/**
+		 * Pack ACF inside the plugin
+		 */
+		require_once REXPANSIVE_BUILDER_PATH . 'admin/lib/acf/rexbuilder-include-acf.php';
+
+		/**
+		 * The class that helds some usefull utilties
+		 */
+		require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-utilities.php';
+
+		/**
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-rexbuilder-loader.php';
+		require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-loader.php';
 
 		/**
 		 * The class responsible for defining internationalization functionality
 		 * of the plugin.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-rexbuilder-i18n.php';
+		require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-i18n.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'admin/class-rexbuilder-admin.php';
+		require_once REXPANSIVE_BUILDER_PATH . 'admin/class-rexbuilder-admin.php';
 
 		/**
 		 * The class responsible for defining all actions that occur in the public-facing
 		 * side of the site.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'public/class-rexbuilder-public.php';
+		require_once REXPANSIVE_BUILDER_PATH . 'public/class-rexbuilder-public.php';
 
 		/**
 		 * The classes responsible for defining all the shortcodes.
 		 */
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-rexbuilder-section-shortcode.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-rexbuilder-block-shortcode.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-rexbuilder-textfill-shortcode.php';
-		require_once plugin_dir_path( dirname( __FILE__ ) ) . 'includes/class-rexbuilder-rexslider-shortcode.php';
+		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-section-shortcode.php';
+		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-block-shortcode.php';
+		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-textfill-shortcode.php';
+		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-rexslider-shortcode.php';
 
 		$this->loader = new Rexbuilder_Loader();
 
@@ -163,6 +179,8 @@ class Rexbuilder {
 
 		// Slider custom post type
 		$this->loader->add_action( 'init', $plugin_admin, 'rexpansive_slider_definition' );
+		$this->loader->add_action( 'init', $plugin_admin, 'rexpansive_models_defintion' );
+		
 		$this->loader->add_filter( 'manage_rex_slider_posts_columns', $plugin_admin, 'rexpansive_slider_columns_head_add_column' );
 		$this->loader->add_filter( 'manage_rex_slider_posts_columns', $plugin_admin, 'rexpansive_slider_columns_reorder' );
 		$this->loader->add_action( 'manage_rex_slider_posts_custom_column', $plugin_admin, 'rexpansive_slider_columns_content', 10, 2 );
@@ -172,6 +190,7 @@ class Rexbuilder {
 
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_plugin_options_menu' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'update_notifier_menu' );
+		$this->loader->add_action('admin_menu', $plugin_admin, 'add_plugin_menu_submenus');
 
 		$this->loader->add_action( 'admin_bar_menu', $plugin_admin, 'add_top_bar_plugin_options_menu', 1000 );
 
@@ -187,17 +206,29 @@ class Rexbuilder {
 
 		$this->loader->add_action( 'edit_form_after_title', $plugin_admin, 'add_switch_under_post_title' );
 
+		$this->loader->add_filter( 'upload_mimes', $plugin_admin, 'register_xml_json_mime_type' );
+		$this->loader->add_action( 'upgrader_process_complete', $plugin_admin, 'import_models' );
+		$this->loader->add_action( 'rexpansive_builder_after_contacts_settings', $plugin_admin, 'import_models' );
+
 		// Ajax functions
 		$this->loader->add_action( 'wp_ajax_rex_edit_slider_from_builder', $plugin_admin, 'rex_edit_slider_from_builder' );
 		$this->loader->add_action( 'wp_ajax_rex_create_slider_from_builder', $plugin_admin, 'rex_create_slider_from_builder' );
 		$this->loader->add_action( 'wp_ajax_rex_create_rexslider_admin_markup', $plugin_admin, 'rex_create_rexslider_admin_markup' );
+		$this->loader->add_action( 'wp_ajax_live_refresh_builder', $plugin_admin, 'live_refresh_builder' );
+		
+		$this->loader->add_action( 'wp_ajax_rex_create_model_from_builder', $plugin_admin, 'rex_create_model_from_builder' );
+		$this->loader->add_action( 'wp_ajax_rex_get_model', $plugin_admin, 'rex_get_model' );
 		
 		// bundle ACF
 		$this->loader->add_filter( 'acf/settings/path', $plugin_admin, 'acf_settings_path' );
 		$this->loader->add_filter( 'acf/settings/dir', $plugin_admin, 'acf_settings_dir' );
 		$this->loader->add_filter( 'acf/settings/show_admin', $plugin_admin, 'acf_hide_menu' );
+
+		$this->loader->add_filter( 'acf/location/rule_types', $plugin_admin, 'acf_rule_type_rexpansive_builder' );
+		$this->loader->add_filter( 'acf/location/rule_values/rexpansive_builder', $plugin_admin, 'acf_rule_values_rexpansive_builder' );
+		$this->loader->add_filter( 'acf/location/rule_match/rexpansive_builder', $plugin_admin, 'acf_rule_match_rexpansive_builder', 10, 3 );
 	}
-	
+
 	/**
 	 * Register all of the hooks related to the public-facing functionality
 	 * of the plugin.
@@ -206,26 +237,27 @@ class Rexbuilder {
 	 * @access   private
 	 */
 	private function define_public_hooks() {
-		
-		$plugin_public = new Rexbuilder_Public( $this->get_plugin_name(), $this->get_version() );
-		
-		//$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_media_uploader' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles_production' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts_production' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'print_post_custom_styles' );
-		
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_photoswipe_template' );
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_vertical_dots' );
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'create_builder_modals' );
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'create_rexlive_fixed_buttons' );
-	
-		$this->loader->add_action( 'wp_ajax_rexlive_save_sections', $plugin_public, 'rexlive_save_sections' );
-		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_sections', $plugin_public, 'rexlive_save_sections' );
 
-		$this->loader->add_filter( 'ajax_query_attachments_args', $plugin_public, 'filter_media' );
-		$this->loader->add_shortcode( 'frontend-button', $plugin_public, 'frontend_shortcode' );
+		$plugin_public = new Rexbuilder_Public( $this->get_plugin_name(), $this->get_version() );
+
+		//per la release
+//		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles_production' );
+//		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts_production' );
+
+		//per lo sviluppo
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'print_post_custom_styles' );
+
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_photoswipe_template' );
+
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_vertical_dots' );
+
+		// $this->loader->add_action( 'wpcf7_contact_form', $plugin_public, 'cf7_custom_script_guard' );
+		$this->loader->add_action( 'shortcode_atts_wpcf7', $plugin_public, 'cf7_custom_style', 10, 4 );
 	}
-	
+
 	/**
 	 * Register all of the shortcodes related to the public-facing functionality
 	 * of the plugin.
@@ -283,156 +315,6 @@ class Rexbuilder {
 	 */
 	public function get_version() {
 		return $this->version;
-	}
-
-	public function include_acf() {
-		define( 'ACF_LITE', true );
-
-		// 4. Include ACF
-		include_once( plugin_dir_path(__DIR__) . 'admin/lib/acf/advanced-custom-fields/acf.php' );
-
-		// Include ACF Repeater Add-on
-		include_once( plugin_dir_path(__DIR__) . 'admin/lib/acf/acf-repeater/acf-repeater.php');
-
-		if(function_exists("register_field_group")) {
-			register_field_group(array (
-				'id' => 'acf_rexpansive-slider',
-				'title' => 'Rexpansive Slider',
-				'fields' => array (
-					array (
-						'key' => 'field_564f2373722c2',
-						'label' => 'Slides',
-						'name' => '_rex_banner_gallery',
-						'type' => 'repeater',
-						'sub_fields' => array (
-							array (
-								'key' => 'field_5675394f2fa0f',
-								'label' => 'Image',
-								'name' => '_rex_banner_gallery_image',
-								'type' => 'image',
-								'column_width' => '',
-								'save_format' => 'object',
-								'preview_size' => 'thumbnail',
-								'library' => 'all',
-							),
-							array (
-								'key' => 'field_567539852fa11',
-								'label' => 'Title',
-								'name' => '_rex_banner_gallery_image_title',
-								'type' => 'wysiwyg',
-								'column_width' => '',
-								'default_value' => '',
-								'toolbar' => 'full',
-								'media_upload' => 'no',
-							),
-							array (
-								'key' => 'field_580e08d79f9db',
-								'label' => 'Video',
-								'name' => '_rex_banner_gallery_video',
-								'type' => 'text',
-								'column_width' => '',
-								'default_value' => '',
-								'placeholder' => '',
-								'prepend' => '',
-								'append' => '',
-								'formatting' => 'html',
-								'maxlength' => '',
-							),
-							array (
-								'key' => 'field_5948ca17a1bb8',
-								'label' => 'Mp4',
-								'name' => '_rex_banner_gallery_video_mp4',
-								'type' => 'file',
-								'column_width' => '',
-								'save_format' => 'object',
-								'library' => 'all',
-							),
-							array (
-								'key' => 'field_5948eb01358e1',
-								'label' => 'Audio',
-								'name' => '_rex_banner_gallery_video_audio',
-								'type' => 'checkbox',
-								'column_width' => '',
-								'choices' => array (
-									'yes' => 'Enable',
-								),
-								'default_value' => '',
-								'layout' => 'vertical',
-							),
-							array (
-								'key' => 'field_594a186edc532',
-								'label' => 'Url',
-								'name' => '_rex_banner_gallery_url',
-								'type' => 'text',
-								'column_width' => '',
-								'default_value' => '',
-								'placeholder' => '',
-								'prepend' => '',
-								'append' => '',
-								'formatting' => 'html',
-								'maxlength' => '',
-							),
-						),
-						'row_min' => '',
-						'row_limit' => '',
-						'layout' => 'row',
-						'button_label' => 'Add Slide',
-					),
-					array (
-						'key' => 'field_564f1f0c050be',
-						'label' => 'Enable Animation',
-						'name' => '_rex_enable_banner_animation',
-						'type' => 'checkbox',
-						'instructions' => 'If check, enables animation on banner images',
-						'choices' => array (
-							'yes' => 'Enable',
-						),
-						'default_value' => 'yes',
-						'layout' => 'horizontal',
-					),
-					array (
-						'key' => 'field_5948caf770b0e',
-						'label' => 'View Prev Next Arrows',
-						'name' => '_rex_enable_banner_prev_next',
-						'type' => 'checkbox',
-						'choices' => array (
-							'yes' => 'Enable',
-						),
-						'default_value' => 'yes',
-						'layout' => 'horizontal',
-					),
-					array (
-						'key' => 'field_5948cb2270b0f',
-						'label' => 'View Dots',
-						'name' => '_rex_enable_banner_dots',
-						'type' => 'checkbox',
-						'choices' => array (
-							'yes' => 'Enable',
-						),
-						'default_value' => 'yes',
-						'layout' => 'horizontal',
-					),
-				),
-				'location' => array (
-					array (
-						array (
-							'param' => 'post_type',
-							'operator' => '==',
-							'value' => 'rex_slider',
-							'order_no' => 0,
-							'group_no' => 0,
-						),
-					),
-				),
-				'options' => array (
-					'position' => 'normal',
-					'layout' => 'default',
-					'hide_on_screen' => array (
-					),
-				),
-				'menu_order' => 0,
-			));
-		}
 	}
 
 }

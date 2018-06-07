@@ -1,5 +1,5 @@
 /*
- *  Perfect Grid Gallery
+ *  Perfect Grid Gallery Editor
  */
 
 
@@ -95,6 +95,7 @@
 
             // getting section number
             this.properties.sectionNumber = ($(this.element).children('.grid-stack-item')[0].id).split('_')[1];
+            console.log(($(this.element).children('.grid-stack-item')[0].id).split('_')[1]);
             this.$element.addClass('grid-number-' + this.properties.sectionNumber);
 
             //this._saveStateElements();
@@ -102,7 +103,6 @@
             //Utilizzato per la creazione di nuovi blocchi
             this._findLastIDBlock();
 
-            
             this._defineDataSettings();
 
             this._setGutter();
@@ -120,7 +120,7 @@
             this._linkResizeEvents();
 
             this._linkDragEvents();
-
+ 
             // Bottone per aprire il loader delle immagini di WP
             // this.creaBottone();
 
@@ -139,9 +139,9 @@
                 }
             });
 
-            if (this.properties.gridEditable) {
+           /* if (this.properties.gridEditable) {
                 this._launchTextEditor();
-            }
+            } */
 
             (gallery.$element).parent().parent().hover(function (event) {
                 if (gallery.properties.gridEditable) {

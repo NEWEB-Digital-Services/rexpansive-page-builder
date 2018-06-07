@@ -1,6 +1,9 @@
 var Util = (function($) {
 	'use strict';
-
+//per controllare se la pagina visualizzata è una in particolare
+/*if( is_page(126) ) {
+}
+*/
 	var $window = $(window);
 
 	var fixSectionWidth = 0;

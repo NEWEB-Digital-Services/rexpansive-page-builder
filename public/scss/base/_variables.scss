@@ -3,6 +3,17 @@ $medium-start: 768px;
 $medium-end: 1024px;
 $large: 1025px;
 
+/** FORMS **/
+$form-custom-style: 'rxcf7-custom-style';
+$form-custom-loader: 'rxcf7-custom-loader';
+$form-custom-checkboxes: 'rxcf7-custom-checkbox';
+$form-custom-radio: 'rxcf7-custom-radio' ;
+$form-custom-select: 'rxcf7-custom-select';
+
+$spinkit-spinner-margin: 0 auto !default;
+$spinkit-size: 40px !default;
+$spinkit-spinner-color: #333 !default;
+
 @mixin backgroundCover {
 	background-size: cover;
 	background-position: center center;

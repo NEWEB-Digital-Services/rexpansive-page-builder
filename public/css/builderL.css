@@ -396,3 +396,13 @@
  .grid-item.is-positioning-post-drag:active {
   cursor: hand; 
  }
+
+.grid-item-content{
+     width: 100%;
+     height: 100%;
+ }
+
+.grid-item-content > .responsive-block-overlay{
+    width: 100%;
+    height: 100%;
+}

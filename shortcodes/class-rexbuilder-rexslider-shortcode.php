@@ -44,7 +44,7 @@ class Rexbuilder_RexSlider {
 		ob_start();
 
 		if( $this->check_post_exists( $slider_id ) ) :
-			
+
 			$slider_animation = get_field( '_rex_enable_banner_animation', $slider_id );
 			$slider_prev_next = get_field( '_rex_enable_banner_prev_next', $slider_id );
 			$slider_dots = get_field( '_rex_enable_banner_dots', $slider_id );
@@ -55,7 +55,7 @@ class Rexbuilder_RexSlider {
 
 			if( !empty( $slider_gallery ) ) :
 	?>
-	<div class="rex-slider-wrap" data-slider-id="<?php echo esc_attr( $slider_id ); ?>" data-rex-slider-animation="<?php echo ( is_array( $slider_animation ) ? 'true': ( "0" == $slider_animation ? 'true' : 'false' ) ); ?>" data-rex-slider-prev-next="<?php echo ( is_array( $slider_prev_next ) ? '1': ( "0" == $slider_prev_next ? 'true' : 'false' ) ); ?>" data-rex-slider-dots="<?php echo ( is_array( $slider_dots ) ? '1': ( "0" == $slider_dots ? 'true' : 'false' ) ); ?>">
+	<div class="rex-slider-wrap" data-rex-slider-animation="<?php echo ( is_array( $slider_animation ) ? 'true': ( "0" == $slider_animation ? 'true' : 'false' ) ); ?>" data-rex-slider-prev-next="<?php echo ( is_array( $slider_prev_next ) ? '1': ( "0" == $slider_prev_next ? 'true' : 'false' ) ); ?>" data-rex-slider-dots="<?php echo ( is_array( $slider_dots ) ? '1': ( "0" == $slider_dots ? 'true' : 'false' ) ); ?>">
 		<?php
 				foreach( $slider_gallery as $key => $slide ) :
 					$slider_el_style = '';

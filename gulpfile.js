@@ -3,10 +3,10 @@ var gulp = require('gulp'),
 	sass = require('gulp-ruby-sass'),
 	watch = require('gulp-watch'),
 	minifyCSS = require('gulp-minify-css'),
-	rename = require('gulp-rename'),
-	header = require('gulp-header'),
 	autoprefixer = require('gulp-autoprefixer'),
 	plumber = require('gulp-plumber'),
+	rename = require('gulp-rename'),
+	header = require('gulp-header'),
 	pkg = require('./package.json'),
 	jshint = require('gulp-jshint'),
 	uglify = require('gulp-uglify'),
@@ -14,8 +14,7 @@ var gulp = require('gulp'),
 	zip = require('gulp-zip'),
 	size = require('gulp-size'),
 	concat = require('gulp-concat'),
-	gulpUtil = require('gulp-util'),
-	sourcemaps = require('gulp-sourcemaps');
+	gulpUtil = require('gulp-util');
 
 var banner = ['/**',
 	' * <%= pkg.name %> v<%= pkg.version %>',
@@ -77,7 +76,21 @@ gulp.task('admin-css-build', function() {
 var admin_js_src = [ 
 	'admin/js/jquery.gridster.js', 
 	'admin/spectrum/spectrum.js', 
-	'admin/materialize/js/materialize.js', 
+	'admin/materialize/js/materialize.js',
+	'admin/js/0-Rexpansive_Builder_Admin_Config.js',
+	'admin/js/0-Rexpansive_Builder_Admin_Utilities.js',
+	'admin/js/1-Rexpansive_Builder_Admin_Modals.js',
+	'admin/js/1-Rexpansive_Builder_Admin_Templates.js',
+	'admin/js/2-Rexpansive_Builder_Admin_Hooks.js',
+	'admin/js/3-Rexpansive_Builder_Admin_Lightbox.js',
+	'admin/js/3-Rexpansive_Builder_Admin_ModelEditor.js',
+	'admin/js/3-Rexpansive_Builder_Admin_PaddingEditor.js',
+	'admin/js/3-Rexpansive_Builder_Admin_PositionEditor.js',
+	'admin/js/3-Rexpansive_Builder_Admin_TextEditor.js',
+	'admin/js/3-Rexpansive_Builder_Admin_VideoEditor.js',
+	'admin/js/4-Rexpansive_Builder_Admin_MediaUploader.js',
+	'admin/js/4-Rexpansive_Builder_Admin_VideoUploader.js',
+	'admin/js/5-Rexpansive_Builder_Admin_Section.js',
 	'admin/js/rexbuilder.js', 
 ];
 
@@ -105,34 +118,37 @@ gulp.task('public-css-build', function() {
 });
 
 var public_js_src = [
-	'public/js/0-isotope.pkgd.min.js',
-	'public/js/1-jquery.mCustomScrollbar.concat.min.js',
-	'public/js/2-jquery.perfectGridGallery.js',
-	'public/js/2-jquery.textFill.js',
-	//'public/js/2-TextResize.js',
-	'public/js/3-velocity.min.js',
-	'public/js/3-velocity.ui.min.js',
-	'public/js/4-jquery.rexScrollify.js',
-	'public/js/5-flickity.pkgd.min.js',
-	'public/Photoswipe/photoswipe.min.js',
-	'public/Photoswipe/photoswipe-ui-default.min.js',
-	'public/jquery.mb.YTPlayer/jquery.mb.YTPlayer.min.js',
+	'public/js/vendor/0-isotope.pkgd.min.js',
+	'public/js/vendor/1-classie.js',
+	'public/js/vendor/1-jquery.mCustomScrollbar.concat.min.js',
+	'public/js/vendor/2-jquery.expandEffect.js',
+	'public/js/vendor/2-jquery.perfectGridGallery.js',
+	'public/js/vendor/2-jquery.textFill.js',
+	'public/js/vendor/2-TextResize.js',
+	'public/js/vendor/3-velocity.min.js',
+	'public/js/vendor/3-velocity.ui.min.js',
+	'public/js/vendor/4-jquery.rexScrollify.js',
+	'public/js/vendor/5-flickity.pkgd.min.js',
+	'public/js/vendor/photoswipe.min.js',
+	'public/js/vendor/photoswipe-ui-default.min.js',
+	'public/js/vendor/jquery.mb.YTPlayer.min.js',
 	//'public/js/wow.min.js',
 	//'public/js/underscore-min.js',
 	//'public/js/jquery.getVideoThumbnail.js'
 ];
 
 var public_js_logic_src = [
-	'public/js/1-Util.js',
-	'public/js/2-RexSlider.js',
-	'public/js/8-VimeoVideo.js',
-	'public/js/rexbuilder-public.js',
+	'public/js/build/1-Rexbuilder_Util.js',
+	'public/js/build/2-RexSlider.js',
+	'public/js/build/5-Rexbuilder_FormFixes.js',
+	'public/js/build/8-VimeoVideo.js',
+	'public/js/build/rexbuilder-public.js',
 	//'public/js/TextResize.js',
 ];
 
 gulp.task('public-plugins-build', function() {
 	return gulp.src(public_js_src)
-		//.pipe(uglify({preserveComments: 'license'}))
+		.pipe(uglify({preserveComments: 'license'}))
 		.pipe(concat('plugins.js'))
 		.pipe(size({title:'Public JS Plugins'}))
 		.pipe(gulp.dest('public/js'))
@@ -140,7 +156,7 @@ gulp.task('public-plugins-build', function() {
 
 gulp.task('public-js-build', function() {
 	return gulp.src(public_js_logic_src)
-		//.pipe(uglify({preserveComments: 'license'}))		
+		.pipe(uglify({preserveComments: 'license'}))		
 		//.pipe(uglify({preserveComments: 'all'}))	
 		.pipe(concat('public.js'))
 		.pipe(size({title:'Public JS'}))
@@ -149,25 +165,18 @@ gulp.task('public-js-build', function() {
 
 /* ----- BUILD PLUGIN ------- */
 
-gulp.task('dev', ['admin-plugins-build', 'public-plugins-build', 'public-js-build'] ,function() {
-	//livereload.listen();
-	//gulp.watch(admin_js_src, ['admin-plugins-build']);
-	//gulp.watch('admin/css/builder.css', ['admin-css-build']);
-	//gulp.watch('public/scss/**/*.scss', ['builder-front']);
-	gulp.watch(['public/scss/**/*.scss'], ['public-css-build']);
+gulp.task('dev', ['admin-plugins-build', 'admin-css-build', 'public-css-build', 'public-plugins-build', 'public-js-build'] ,function() {
+	gulp.watch(admin_js_src, ['admin-plugins-build']);
+	gulp.watch('admin/scss/admin/builder.scss', ['admin-css-build']);
+	gulp.watch('public/scss/**/*.scss', ['public-css-build']);
 	gulp.watch(public_js_src, ['public-plugins-build']);
 	gulp.watch(public_js_logic_src, ['public-js-build']);
-	//gulp.watch('./**/*.php').on('change', function(file) {
-	//	livereload.changed(file.path);
-	//});
-	//gulp.watch('./**/*.html').on('change', function(file) {
-	//	livereload.changed(file);
-	//});
 });
 
 
 /* ---- BUIL CLEAN PLUGIN VERSION ----- */
-var premium_plugin_zip_name = 'Premium-1015-Rexpansive-Builder.zip';
+var premium_plugin_zip_name = 'Premium-112-Rexpansive-Builder.zip';
+var code_premium_plugin_zip_name = 'codecanyon-112-rexpansive-builder-wordpress-plugin';
 var premium_plugin_folder_name = 'rexpansive-builder';
 
 var plugin_premium_file_map = [
@@ -180,23 +189,29 @@ var plugin_premium_file_map = [
 	'admin/js/rexbuilder-admin.js',
 	'admin/js/textfill-button.js',
 	'admin/lib/**/*.*',
+	'admin/models/**/*',
 	'admin/partials/**/*.*',
+	'admin/required-plugins/**/*',
 	'admin/rexpansive-font/**/*.*',
+	'admin/class-importheme-import-utilities.php',
+	'admin/class-importheme-import-xml-content.php',
 	'admin/class-rexbuilder-admin.php',
 	'admin/class-rexbuilder-meta-box.php',
 	'admin/index.php',
-	'includes/**/*.*',
-	'languages/**/*.*',
-	'Licensing/**/*.*',
+	'includes/**/*',
+	'languages/**/*',
+	'Licensing/**/*',
 	'public/css/public.css',
 	'public/img/**/*',
 	'public/js/plugins.js',
 	'public/js/public.js',
-	'public/partials/**/*.*',
-	'public/Photoswipe/**/*.*',
-	'public/jquery.mb.YTPlayer/**/*.*',
+	'public/partials/**/*',
+	'public/templates/**/*',
+	'public/Photoswipe/**/*',
+	'public/jquery.mb.YTPlayer/**/*',
 	'public/class-rexbuilder-public.php',
 	'public/index.php',
+	'shortcodes/**/*',
 	'index.php',
 	'LICENSE.txt',
 	'README.txt',
@@ -229,6 +244,14 @@ var exec = require('child_process').exec;
 
 gulp.task('mac-zip', ['create-temp-folder'], function (cb) {
   exec('zip -r ' + premium_plugin_zip_name + ' ' + premium_plugin_folder_name + ' -x "*.DS_Store"', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    cb(err);
+  });
+});
+
+gulp.task('code-mac-zip', ['create-temp-folder'], function (cb) {
+  exec('zip -r ' + code_premium_plugin_zip_name + ' ' + premium_plugin_folder_name + ' -x "*.DS_Store"', function (err, stdout, stderr) {
     console.log(stdout);
     console.log(stderr);
     cb(err);
