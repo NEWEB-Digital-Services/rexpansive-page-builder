@@ -180,6 +180,7 @@ class Rexbuilder_Public {
 				'animations'	=>	$this->plugin_options['animation'],
 			));
 			wp_enqueue_script( '1-Util', REXPANSIVE_BUILDER_URL  . $cartella. 'js/1-Util.js', array( 'jquery' ), $this->version, true );
+			wp_enqueue_script( '1-RexUtil', REXPANSIVE_BUILDER_URL  . $cartella. 'js/build/1-Rexbuilder_Util.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( '8-VimeoVideo', REXPANSIVE_BUILDER_URL  . $cartella. 'js/8-VimeoVideo.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( 'textfill', REXPANSIVE_BUILDER_URL  . $cartella. 'js/__jquery.textFill.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( 'photoswipe', REXPANSIVE_BUILDER_URL  . $cartella. 'Photoswipe/photoswipe.min.js', array( 'jquery' ), $this->version, true );

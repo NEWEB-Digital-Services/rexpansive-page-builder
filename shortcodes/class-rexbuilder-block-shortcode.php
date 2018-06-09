@@ -99,17 +99,14 @@ class Rexbuilder_Block {
 			if( "" != $id_image_bg_block ) {
 				$img_attrs = wp_get_attachment_image_src( $id_image_bg_block, $image_size );
 				$alt_value = get_post_meta( $id_image_bg_block, '_wp_attachment_image_alt', true );
+				$block_background_style = ' style="background-image:url(\'' . $img_attrs[0] . '\')"';
 				if( "" !== $alt_value ) {
 					$alt_tag = ' alt="' . esc_attr( $alt_value ) . '" ';
 				}
-			}
-		
-			if (!empty( $image_bg_block )){
-				$block_background_style = ' style="background-image:url(\'' . $img_attrs[0] . '\')"';
 			} else if( !empty( $color_bg_block )) {
 				$block_background_style = ' style="background-color:' . $color_bg_block . ';"';
 			}
-
+			
 
 			$block_link_pre = '';
 			$block_link_before = '';
@@ -289,17 +286,18 @@ class Rexbuilder_Block {
 				endif;
 			endif;
 		
+			
+			$bg_video_toggle_audio_markup="";
+			
 			if( $video_has_audio == '1' ) {
-				$bg_video_toggle_audio_markup = '<div class="rex-video-toggle-audio"><div class="rex-video-toggle-audio-shadow"></div></div>';
-			} else {
-				$bg_video_toggle_audio_markup = '';
+				$bg_video_toggle_audio_markup = '<div class="rex-video-toggle-audio user-has-muted"><div class="rex-video-toggle-audio-shadow"></div></div>';
 			}
-		
+			
 			$bg_video_markup = '';
 		
 			if( '' != $video_bg_id && 'undefined' != $video_bg_id ) :
 				$bg_video_markup = '<div class="rex-video-wrap">';
-				$bg_video_markup .= '<video class="rex-video-container" preload autoplay loop' . ( $video_has_audio == '0' ? ' muted' : '' ) . '>';
+				$bg_video_markup .= '<video class="rex-video-container" preload autoplay loop muted>';
 				$bg_video_markup .= '<source type="video/mp4" src="' . wp_get_attachment_url ( $video_bg_id ) . '" />';
 				$bg_video_markup .= '</video>';
 				$bg_video_markup .= '</div>';
@@ -308,24 +306,15 @@ class Rexbuilder_Block {
 			$bg_youtube_video_markup = '';
 		
 			if( '' != $video_bg_url && 'undefined' != $video_bg_url ) :
-				if( $video_has_audio == '1' ) {
-					$mute = 'false';
-				} else {
-					$mute = 'true';
-				}
+				$mute = 'true';
 				$bg_youtube_video_markup = ' data-property="{videoURL:\'' . $video_bg_url . '\',containment:\'self\',startAt:0,mute:' . $mute . ',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"';
 			endif;
 		
 			$bg_video_vimeo_markup = '';
 			
 			if( '' != $video_bg_url_vimeo && 'undefined' != $video_bg_url_vimeo ) {
-				$bg_video_vimeo_markup .= '<div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--block" data-vimeo-video-mute="';
-				if( $video_has_audio == '0' ) {
-					$bg_video_vimeo_markup .= '1';
-				}
-				$bg_video_vimeo_markup .= '"';
-				$bg_video_vimeo_markup .= '>';
-				$bg_video_vimeo_markup .= '<iframe src="' . $video_bg_url_vimeo . '?autoplay=1&loop=1&byline=0&title=0&autopause=0" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+				$bg_video_vimeo_markup .= '<div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--block">';
+				$bg_video_vimeo_markup .= '<iframe src="' . $video_bg_url_vimeo . '?autoplay=1&loop=1&title=0&byline=0&portrait=0&autopause=0&muted=1" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
 				$bg_video_vimeo_markup .= '</div>';
 			}
 		
@@ -371,7 +360,6 @@ class Rexbuilder_Block {
 					echo ( ( $floating_border != '' && $block_link_before != '' ) ? $block_link_before : '' );
 					echo '</div>';
 					echo ( ($block_has_overlay) ? '</div>' : '' );
-					echo $bg_video_toggle_audio_markup;
 					echo '</div>';
 					echo ( $floating_border == '' ? $block_link_before : '');
 					break;
@@ -401,19 +389,17 @@ class Rexbuilder_Block {
 					echo '>';
 					echo ( ( $floating_border != '' && $block_link_pre != '' ) ? $block_link_pre : '' );
 					echo $floating_border;
-					if( $block_has_slider){
-						echo '<div>';
-						echo do_shortcode($content);
-						echo '</div>';
-					}else if("" != $content ) {
+					if("" != $content ) {
 						echo '<div class="text-wrap' . ( "fixed" == $section_layout ? ' rex-content-resizable"' : '"' ) . $block_style_padding . '>';
 						echo do_shortcode($content);
 						echo '</div>';
-									}
+					}
 					echo ( ( $floating_border != '' && $block_link_before != '' ) ? $block_link_before : '' );
 					echo '</div>';
 					echo ( ($block_has_overlay) ? '</div>' : '' );
-					echo $bg_video_toggle_audio_markup;
+					if('' != $video_bg_url || '' != $video_bg_id || '' != $bg_video_vimeo_markup){
+						echo $bg_video_toggle_audio_markup;
+					}
 					echo '</div>';
 					echo ( $floating_border == '' ? $block_link_before : '');
 					break;
@@ -454,8 +440,9 @@ class Rexbuilder_Block {
 					echo ( ( $floating_border != '' && $block_link_before != '' ) ? $block_link_before : '' );
 					echo '</div>';
 					echo ( ($block_has_overlay) ? '</div>' : '' );
-					echo $bg_video_toggle_audio_markup;
-		
+					if('' != $video_bg_url || '' != $video_bg_id || '' != $bg_video_vimeo_markup){
+						echo $bg_video_toggle_audio_markup;
+					}
 					echo '</div>';
 					echo ( $floating_border == '' ? $block_link_before : '');
 					break;

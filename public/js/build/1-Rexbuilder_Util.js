@@ -4,6 +4,10 @@ var Rexbuilder_Util = (function($) {
 	var $window;
 	var $body;
 
+	var fixSectionWidth = 0;
+	var elementIsResizing = false;
+	var elementIsDragging = false;
+
 	// function to detect if we are on a mobile device
 	var _detect_mobile = function() {
 		if (!("ontouchstart" in document.documentElement)) {
@@ -46,6 +50,27 @@ var Rexbuilder_Util = (function($) {
        }
        return(false);
 	};
+
+	var _checkPresentationPage = function() {
+		if( 0 !== $('.rexpansive_portfolio_presentation').length ) {
+			return true;
+		}
+		return false;
+	}
+
+	var _checkStaticPresentationPage = function() {
+		if( 0 !== $('.rexpansive-static-portfolio').length ) {
+			return true;
+		}
+		return false;
+	}
+
+	var _checkPost = function() {
+		if( 0 !== $('#rex-article').length ) {
+			return true;
+		}
+		return false;
+	}
 
 	// find the animation/transition event names
 	var _whichTransitionEvent = function(){
@@ -105,8 +130,13 @@ var Rexbuilder_Util = (function($) {
 		transitionEvent: _transitionEvent,
 		animationEvent: _animationEvent,
 		getQueryVariable: _getQueryVariable,
+		checkPresentationPage: _checkPresentationPage,
+		checkStaticPresentationPage : _checkStaticPresentationPage,
+		checkPost: _checkPost,
 		$window: $window,
-		scroll_timing: _scroll_timing
+		scroll_timing: _scroll_timing,
+		fixSectionWidth: fixSectionWidth,
+		elementIsResizing: elementIsResizing
 	};
 
 })(jQuery);

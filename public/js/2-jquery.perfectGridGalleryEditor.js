@@ -126,9 +126,9 @@
 
             var gallery = this;
             var $elem;
-            Util.elementIsDragging = false;
-            Util.elementIsResizing = false;
-            Util.editingElement = null;
+            Rexbuilder_Util.elementIsDragging = false;
+            Rexbuilder_Util.elementIsResizing = false;
+            Rexbuilder_Util.editingElement = null;
 
             $(gallery.element).children('.grid-stack-item').each(function () {
                 $elem = $(this);
@@ -151,7 +151,7 @@
                 // gallery.hideToolBox();
             });
 
-            $(window).on('keydown', { Gallery: this, Util: Util }, function (event) {
+            $(window).on('keydown', { Gallery: this, Rexbuilder_Util: Rexbuilder_Util }, function (event) {
                 if (event.data.Gallery.properties.gridEditable) {
                     // Se l'utente preme "Esc" mentre sta editando il testo
                     // contenuto nel blocco
@@ -166,15 +166,15 @@
                         G._showSizeViewer($(event.target).parents('.perfect-grid-item'));
                         G._showSettingButton($(event.target).parents('.perfect-grid-item'));
 
-                        if (typeof (Util.editingElement) !== null) {
-                            Util.editingElement.blur();
-                            Util.editingElement = null;
+                        if (typeof (Rexbuilder_Util.editingElement) !== null) {
+                            Rexbuilder_Util.editingElement.blur();
+                            Rexbuilder_Util.editingElement = null;
                         }
                     }
                 }
             });
 
-            $(window).on('mousedown', { Gallery: this, Util: Util }, function (event) {
+            $(window).on('mousedown', { Gallery: this, Rexbuilder_Util: Rexbuilder_Util }, function (event) {
                 if (event.data.Gallery.properties.gridEditable) {
                     var G = event.data.Gallery;
                     var target = event.target;
@@ -186,17 +186,17 @@
                             $(G.$element).addClass('gridActive');
                             G.properties.elementEdited = null;
                             gallery.properties.textWrapEditing = null;
-                            if (typeof (Util.editingElement) !== null) {
-                                Util.editingElement.blur();
-                                Util.editingElement = null;
+                            if (typeof (Rexbuilder_Util.editingElement) !== null) {
+                                Rexbuilder_Util.editingElement.blur();
+                                Rexbuilder_Util.editingElement = null;
                             }
                         }
                     }
                 }
             });
 
-            $(window).on('resize', { Gallery: this, Util: Util }, function (event) {
-                if (!event.data.Util.elementIsResizing) {
+            $(window).on('resize', { Gallery: this, Rexbuilder_Util: Rexbuilder_Util }, function (event) {
+                if (!event.data.Rexbuilder_Util.elementIsResizing) {
                     var G = event.data.Gallery;
                     var grid = G.$element.data('gridstack');
                     G._defineDynamicPrivateProperties();
@@ -217,7 +217,7 @@
 
             });
 
-            $(window).on('load', { Gallery: this, Util: Util }, function (event) {
+            $(window).on('load', { Gallery: this, Rexbuilder_Util: Rexbuilder_Util }, function (event) {
                 var gallery = event.data.Gallery;
                 var $elem;
                 // if there is masonry layout
@@ -231,13 +231,13 @@
                     gallery.updateSizeViewerText($elem);
                 });
 
-                $(gallery.element).on('change', { Gallery: gallery, Util: Util }, function (event, items) {
+                $(gallery.element).on('change', { Gallery: gallery, Rexbuilder_Util: Rexbuilder_Util }, function (event, items) {
                     if (event.data.Gallery.properties.firstStartGrid) {
                         // event.data.Gallery.saveGrid();
                         console.log('First Start grid: '+event.data.Gallery.properties.sectionNumber);
                         event.data.Gallery.properties.firstStartGrid = false;
                     } else {
-                        if (!Util.elementIsDragging && !Util.elementIsResizing) {
+                        if (!Rexbuilder_Util.elementIsDragging && !Rexbuilder_Util.elementIsResizing) {
                             event.data.Gallery.updateAllElementsProperties();
                             // event.data.Gallery.saveGrid();
                         }
@@ -455,8 +455,8 @@
                     'data-layout': G.settings.galleryLayout
                 });
                 
-                Util.elementIsResizing = true;
-                Util.elementIsDragging = true;
+                Rexbuilder_Util.elementIsResizing = true;
+                Rexbuilder_Util.elementIsDragging = true;
                 
                 // destroying gridstack & jquery ui
                 G.destroyGridstack();
@@ -498,8 +498,8 @@
                         G.fixElementTextSize(this, null, null);
                     }
                 });
-                Util.elementIsResizing = false;
-                Util.elementIsDragging = false;
+                Rexbuilder_Util.elementIsResizing = false;
+                Rexbuilder_Util.elementIsDragging = false;
                 this.properties.firstStartGrid = true;
                 G.$element.trigger('change');
                 this.properties.firstStartGrid = false;
@@ -1218,7 +1218,7 @@
 
             $elem.hover(function (event) {
                 if (gallery.properties.gridEditable) {
-                    if (!Util.elementIsResizing && Util.editingElement === null) {
+                    if (!Rexbuilder_Util.elementIsResizing && Rexbuilder_Util.editingElement === null) {
                         gallery._focusElement($elem);
                     }
                     if (gallery.properties.elementEdited != null) {
@@ -1236,7 +1236,7 @@
                 }
             }, function () {
                 if (gallery.properties.gridEditable) {
-                    if (!Util.elementIsResizing) {
+                    if (!Rexbuilder_Util.elementIsResizing) {
                         gallery._unFocusElement($elem);
                     }
                 }
@@ -1246,7 +1246,7 @@
                 if (gallery.properties.gridEditable) {
                     gallery._hideSizeViewer($elem);
                     gallery._hideSettingButton($elem);
-                    Util.editingElement = $elem;
+                    Rexbuilder_Util.editingElement = $elem;
                     var grid = gallery.$element.data('gridstack');
                     grid.disable();
                     $(gallery.$element).removeClass('gridActive');
@@ -1360,7 +1360,7 @@
                     block = $(event.target)[0];
                     $blockContent = $(block).find('.grid-item-content');
                     imageWidth = $blockContent.attr('data-background-image-width');
-                    Util.elementIsResizing = true;
+                    Rexbuilder_Util.elementIsResizing = true;
                     xStart = parseInt(block['attributes']['data-gs-x'].value);
                     if (gallery.properties.resizeHandle == 'e' || gallery.properties.resizeHandle == 'se') {
                         $('#' + block.id).attr("data-gs-max-width", (gallery.settings.numberCol - xStart));
@@ -1391,7 +1391,7 @@
 					 */
                 }
             }).on('gsresizestop', function (event, elem) {
-                if (Util.elementIsResizing) {
+                if (Rexbuilder_Util.elementIsResizing) {
                     gallery.updateSizeViewerText(elem);
                     if (gallery.settings.galleryLayout == 'masonry') {
                         $('#' + block.id).attr("data-height", Math.round(($('#' + block.id).attr("data-gs-height")) / gallery.properties.singleWidth));
@@ -1401,7 +1401,7 @@
                     if (!$(block).hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
                         gallery.fixElementTextSize(block, gallery.properties.resizeHandle, null);
                     }
-                    Util.elementIsResizing = false;
+                    Rexbuilder_Util.elementIsResizing = false;
 //                    gallery.$element.trigger('change');
                 }
             });
@@ -1412,13 +1412,13 @@
 
             // eventi per il drag
             $(gallery.$element).on('dragstart', function (event, ui) {
-                Util.elementIsDragging = true;
+                Rexbuilder_Util.elementIsDragging = true;
                 // console.log('drag start');
             }).on('drag', function (event, ui) {
                 // console.log('dragging');
             }).on('dragstop', function (event, ui) {
                 // console.log('drag end');
-                Util.elementIsDragging = false;
+                Rexbuilder_Util.elementIsDragging = false;
             })
         },
 
@@ -1842,7 +1842,7 @@
             var h, backgroundHeight, defaultHeight, textHeight;
             var $this;
             //            var idBlock; 
-            Util.elementIsResizing = true;
+            Rexbuilder_Util.elementIsResizing = true;
             this.$element.find('.grid-item-content').each(function () {
                 h = 0;
                 backgroundHeight = 0;
@@ -1878,7 +1878,7 @@
                 
                 grid.update($elem, null, null, w, h);
             });
-            Util.elementIsResizing = false;
+            Rexbuilder_Util.elementIsResizing = false;
 
             // gallery.updateAllElementsProperties();
             /*
