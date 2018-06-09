@@ -186,7 +186,8 @@ class Rexbuilder_Public {
 			wp_enqueue_script( 'photoswipe', REXPANSIVE_BUILDER_URL  . $cartella. 'Photoswipe/photoswipe.min.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( 'photoswipe-ui', REXPANSIVE_BUILDER_URL  . $cartella. 'Photoswipe/photoswipe-ui-default.min.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( 'jquery.mb.YTPlayer-script', REXPANSIVE_BUILDER_URL  . $cartella. 'jquery.mb.YTPlayer/jquery.mb.YTPlayer.min.js', array( 'jquery' ), $this->version, true );
-			wp_enqueue_script( 'rexbuilder', REXPANSIVE_BUILDER_URL  . $cartella. 'js/rexbuilder-public.js', array( 'jquery' ), $this->version, true );
+//			wp_enqueue_script( 'rexbuilder', REXPANSIVE_BUILDER_URL  . $cartella. 'js/rexbuilder-public.js', array( 'jquery' ), $this->version, true );
+			wp_enqueue_script( 'rexbuilder', REXPANSIVE_BUILDER_URL  . $cartella. 'js/build/rexbuilder-public.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( 'underscorejs', REXPANSIVE_BUILDER_URL  . $cartella. 'js/underscore-min.js', array( 'jquery' ), $this->version, true );
 			//wp_enqueue_script( 'text-resize', REXPANSIVE_BUILDER_URL  . $cartella. 'js/__TextResize.js', array( 'jquery' ), $this->version, true );
 			
