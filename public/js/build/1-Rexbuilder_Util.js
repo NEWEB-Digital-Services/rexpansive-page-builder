@@ -1,7 +1,7 @@
 var Rexbuilder_Util = (function($) {
 	'use strict';
 
-	var $window;
+	var $window = $(window);
 	var $body;
 
 	var fixSectionWidth = 0;
