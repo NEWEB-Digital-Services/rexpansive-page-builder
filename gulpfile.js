@@ -106,7 +106,7 @@ gulp.task('admin-plugins-build', function() {
 
 gulp.task('public-css-build', function() {
 	sass('public/public.scss',{
-		style:'compressed'
+		//style:'compressed'
 	})
 	.pipe(plumber())
     .pipe(autoprefixer({

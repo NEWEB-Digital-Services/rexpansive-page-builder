@@ -10,6 +10,7 @@ var RexSlider = (function($) {
   var box_slider_element_class = '.rex-box-slider-element';
 
   var _rexSliderInit = function() {
+    console.log("Slider starting");
     if($(slider_class, context).length) {
       $(slider_class, context).each(function(i, el) {
         var settings = {
@@ -156,6 +157,7 @@ var RexSlider = (function($) {
     if($(slider_class, context).length) {
       $(slider_class, context).each(function(i,el) {
         var auto_player = $(el).attr('data-rex-slider-animation');
+        console.log("autoplay slider: "+auto_player);
         if('undefined' != typeof auto_player && 'true' == auto_player) {
           $(el).flickity('playPlayer');
         }

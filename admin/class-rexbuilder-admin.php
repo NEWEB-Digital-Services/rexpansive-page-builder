@@ -834,9 +834,9 @@ class Rexbuilder_Admin {
 		$result = array();
 
 		if( "true" == $slider_settings['settings']['auto_start'] ) {
-			update_field( 'field_564f1f0c050be', array( "yes" ) ,$slider_id );
+			update_field( 'field_564f1f0c050bc', array( "yes" ) ,$slider_id );
 		} else {
-			update_field( 'field_564f1f0c050be', "" ,$slider_id );
+			update_field( 'field_564f1f0c050bc', "" ,$slider_id );
 		}
 
 		if( "true" == $slider_settings['settings']['prev_next'] ) {
