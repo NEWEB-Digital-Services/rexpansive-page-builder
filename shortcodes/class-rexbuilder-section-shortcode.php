@@ -140,7 +140,8 @@ class Rexbuilder_Section {
 			}
 			unset($property_name);
 			unset($value_property);
-			echo '></div>';
+			echo '></div>
+';
 		
 			$this->create_toolbox();
 	

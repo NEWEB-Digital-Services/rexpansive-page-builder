@@ -93,14 +93,8 @@
 
             this.properties.firstStartGrid = true;
 
-            // getting section number
-            this.properties.sectionNumber = ($(this.element).children('.grid-stack-item')[0].id).split('_')[1];
-            console.log(($(this.element).children('.grid-stack-item')[0].id).split('_')[1]);
-            this.$element.addClass('grid-number-' + this.properties.sectionNumber);
+            this._setGridID();
 
-            //this._saveStateElements();
-
-            //Utilizzato per la creazione di nuovi blocchi
             this._findLastIDBlock();
 
             this._defineDataSettings();
@@ -120,15 +114,17 @@
             this._linkResizeEvents();
 
             this._linkDragEvents();
- 
-            // Bottone per aprire il loader delle immagini di WP
-            //this.creaBottone();
 
             var gallery = this;
             var $elem;
+
             Rexbuilder_Util.elementIsDragging = false;
             Rexbuilder_Util.elementIsResizing = false;
             Rexbuilder_Util.editingElement = null;
+
+            if (this.properties.gridEditable) {
+                this._launchTextEditor();
+            }
 
             $(gallery.element).children('.grid-stack-item').each(function () {
                 $elem = $(this);
@@ -139,16 +135,14 @@
                 }
             });
 
-            if (this.properties.gridEditable) {
-                this._launchTextEditor();
-            }
-
             (gallery.$element).parent().parent().hover(function (event) {
                 if (gallery.properties.gridEditable) {
                     gallery.showToolBox();
                 }
             }, function () {
-                // gallery.hideToolBox();
+                if (gallery.properties.gridEditable) {
+                    //gallery.hideToolBox();
+                }
             });
 
             $(window).on('keydown', { Gallery: this, Rexbuilder_Util: Rexbuilder_Util }, function (event) {
@@ -290,6 +284,10 @@
             this.properties.lastIDBlock = max
         },
 
+        _setGridID: function(){
+            this.properties.sectionNumber = parseInt(($(this.element).parents('.rexpansive_section')).attr('data-rexlive-section-id'));
+            this.$element.addClass('grid-number-' + this.properties.sectionNumber);
+        },
         /**
 		 * Funzione chiamata per il salvataggio della griglia
 		 */
@@ -388,13 +386,14 @@
                             var w = parseInt(block['attributes']['data-gs-width'].value);
                             var h = this.properties.elementStartingH;
                             var grid = this.$element.data('gridstack');
-
+                            
+                            console.log(textHeight, h, maxBlockHeight);
                             if (textHeight >= maxBlockHeight) {
-                                h = h + Math.ceil(textHeight - maxBlockHeight / 5);
+                                h = h + Math.ceil((textHeight - maxBlockHeight )/ 5);
                             } else {
-                                h = Math.max(h - Math.floor(maxBlockHeight - textHeight / 5), parseInt($(dataBlockSelector).attr('data-block_height_masonry')));
+                                h = Math.max(h - Math.floor((maxBlockHeight - textHeight) / 5), parseInt($(dataBlockSelector).attr('data-block_height_masonry')));
                             }
-
+                            console.log(h);
                             grid.update(block, null, null, w, h);
                             this.properties.elementStartingH = h;
                         }
@@ -1603,12 +1602,12 @@
 					 * This example includes the default options for
 					 * placeholder, if nothing is passed this is what it used
 					 */
-                    text: '',
+                    text: 'Insert Text Here',
                     hideOnClick: true
                 }
             });
 
-            $('.text-wrap').each(function () {
+            $('.text-wrap', this.$element).each(function () {
                 $(this).mediumInsert({
                     editor: editor,
                     addons: {

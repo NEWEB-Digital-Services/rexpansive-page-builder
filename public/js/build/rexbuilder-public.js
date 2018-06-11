@@ -123,6 +123,11 @@ var lodash = _.noConflict();
 
         /* -- Launching the grid -- */
         console.log("Launching grid");
+
+        //Assegno il numero della row
+        $('.rexpansive_section').each(function(i, e){
+            $(e).attr('data-rexlive-section-id', i);
+        });
 		$('.perfect-grid-gallery').perfectGridGalleryEditor();
 
         /* -- Launching Photoswipe -- */
