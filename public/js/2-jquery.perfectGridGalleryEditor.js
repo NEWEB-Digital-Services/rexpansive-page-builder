@@ -122,7 +122,7 @@
             this._linkDragEvents();
  
             // Bottone per aprire il loader delle immagini di WP
-            // this.creaBottone();
+            //this.creaBottone();
 
             var gallery = this;
             var $elem;
@@ -139,9 +139,9 @@
                 }
             });
 
-           /* if (this.properties.gridEditable) {
+            if (this.properties.gridEditable) {
                 this._launchTextEditor();
-            } */
+            }
 
             (gallery.$element).parent().parent().hover(function (event) {
                 if (gallery.properties.gridEditable) {
@@ -741,7 +741,9 @@
             var section = this.$element.parents('.rexpansive_section');
             $(bottone).appendTo(section[0]);
             $(bottone).attr({
-                'id': 'frontend-button'
+                'id': 'frontend-button',
+                'data-uploader_title': 'test',
+                'data-uploader_button_text': 'test2'
             });
             var file_frame; // variable for the wp.media file_frame
 

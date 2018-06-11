@@ -93,18 +93,23 @@ class Rexbuilder_Public {
 			
 			$cartella = "public/";
 
-			//wp_enqueue_style( 'rexbuilder-grid-style', REXPANSIVE_BUILDER_URL . 'public/css/perfectGridGallery.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $this->version, 'all' );
+
+			wp_enqueue_style( 'photoswipe-skin', REXPANSIVE_BUILDER_URL  . $cartella. 'Photoswipe/default-skin/default-skin.css', array(), $this->version, 'all' );
+			
+			wp_enqueue_style( 'jquery.mb.YTPlayer-style', REXPANSIVE_BUILDER_URL  . $cartella. 'jquery.mb.YTPlayer/css/jquery.mb.YTPlayer.min.css', array(), $this->version, 'all' );
+			
+			wp_enqueue_style( 'rex-custom-fonts', REXPANSIVE_BUILDER_URL  . $cartella. 'rexpansive-font/font.css', array(), $this->version, 'all' );
+			
+			wp_enqueue_style( 'font-awesome', REXPANSIVE_BUILDER_URL  . $cartella. 'font-awesome-4.3.0/css/font-awesome.min.css', array(), $this->version, 'all' );
+
+
 			wp_enqueue_style( 'malihu-custom-scrollbar-style', REXPANSIVE_BUILDER_URL . $cartella. 'css/jquery.mCustomScrollbar.min.css', array(), $this->version, 'all' );
-			//wp_enqueue_style( 'flickity-style', REXPANSIVE_BUILDER_URL . $cartella. 'css/flickity.min.css', array(), $this->version, 'all' );
+
 			wp_enqueue_style( 'animate-css', REXPANSIVE_BUILDER_URL . $cartella. 'css/animate.css', array(), $this->version, 'all' );
 			wp_enqueue_style( 'textfill-style', REXPANSIVE_BUILDER_URL . $cartella. 'css/textFill.css', array(), $this->version, 'all' );
-			wp_enqueue_style( 'photoswipe-skin', REXPANSIVE_BUILDER_URL  . $cartella. 'Photoswipe/default-skin/default-skin.css', array(), $this->version, 'all' );
-			wp_enqueue_style( 'jquery.mb.YTPlayer-style', REXPANSIVE_BUILDER_URL  . $cartella. 'jquery.mb.YTPlayer/css/jquery.mb.YTPlayer.min.css', array(), $this->version, 'all' );
-			wp_enqueue_style( 'rexbuilder-style', plugin_dir_url( __FILE__ ) . 'css/builder.css', array(), $this->version, 'all' );
-			wp_enqueue_style( 'material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $this->version, 'all' );
+			wp_enqueue_style( 'rexbuilder-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/builder.css', array(), $this->version, 'all' );
 			wp_enqueue_style( 'materialize', REXPANSIVE_BUILDER_URL  . $cartella. 'css/materialize.min.css', array(), $this->version, 'all' );
-			wp_enqueue_style( 'font-awesome', REXPANSIVE_BUILDER_URL  . $cartella. 'font-awesome-4.3.0/css/font-awesome.min.css', array(), $this->version, 'all' );
-			wp_enqueue_style( 'rex-custom-fonts', REXPANSIVE_BUILDER_URL  . $cartella. 'rexpansive-font/font.css', array(), $this->version, 'all' );
 			wp_enqueue_style( 'custom-editor-buttons-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/rex-custom-editor-buttons.css', array(), $this->version, 'all' );
 			
 			wp_enqueue_style( 'jquery-ui-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/jquery-ui.min.css', array(), $this->version, 'all' );
@@ -122,9 +127,8 @@ class Rexbuilder_Public {
 			wp_enqueue_style( 'input-spinner', REXPANSIVE_BUILDER_URL  . $cartella. 'css/input-spinner.css', array(), $this->version, 'all' );
 			
 			wp_enqueue_style( 'rexpansive-builderLive-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/builderL.css', array(), $this->version, 'all' );
-			//wp_enqueue_style( 'rexpansive-builder-style', REXPANSIVE_BUILDER_URL . 'public/css/rexbuilder-public.css', array(), $this->version, 'all' );
 
-			wp_enqueue_style( 'public-style', REXPANSIVE_BUILDER_URL . 'public/css/public.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'public-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/public.css', array(), $this->version, 'all' );
 			
 		}
 	}
@@ -176,16 +180,18 @@ class Rexbuilder_Public {
 			
 			wp_enqueue_script( 'jquery' );
 			
-			wp_enqueue_script( 'storeVariables', REXPANSIVE_BUILDER_URL  . $cartella. 'js/store.legacy.min.js', array( 'jquery' ), $this->version, true );
+			wp_enqueue_script( 'photoswipe', REXPANSIVE_BUILDER_URL  . $cartella. 'Photoswipe/photoswipe.min.js', array( 'jquery' ), $this->version, true );
+			wp_enqueue_script( 'photoswipe-ui', REXPANSIVE_BUILDER_URL  . $cartella. 'Photoswipe/photoswipe-ui-default.min.js', array( 'jquery' ), $this->version, true );
+			
+			wp_enqueue_script( 'YTPlayer', REXPANSIVE_BUILDER_URL  . $cartella. 'js/vendor/jquery.mb.YTPlayer.min.js', array( 'jquery' ), $this->version, true );
 
+			wp_enqueue_script( 'storeVariables', REXPANSIVE_BUILDER_URL  . $cartella. 'js/store.legacy.min.js', array( 'jquery' ), $this->version, true );
+			
 			wp_enqueue_script( '1-RexUtil', REXPANSIVE_BUILDER_URL  . $cartella. 'js/build/1-Rexbuilder_Util.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( '5-flickity', REXPANSIVE_BUILDER_URL  . $cartella. 'js/vendor/5-flickity.pkgd.min.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( '2-RexSlider', REXPANSIVE_BUILDER_URL  . $cartella. 'js/build/2-RexSlider.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( '8-VimeoVideo', REXPANSIVE_BUILDER_URL  . $cartella. 'js/build/8-VimeoVideo.js', array( 'jquery' ), $this->version, true );
 			//wp_enqueue_script( 'textfill', REXPANSIVE_BUILDER_URL  . $cartella. 'js/__jquery.textFill.js', array( 'jquery' ), $this->version, true );
-			wp_enqueue_script( 'photoswipe', REXPANSIVE_BUILDER_URL  . $cartella. 'js/vendor/photoswipe.min.js', array( 'jquery' ), $this->version, true );
-			wp_enqueue_script( 'photoswipe-ui', REXPANSIVE_BUILDER_URL  . $cartella. 'js/vendor/photoswipe-ui-default.min.js', array( 'jquery' ), $this->version, true );
-			wp_enqueue_script( 'jquerymb', REXPANSIVE_BUILDER_URL  . $cartella. 'js/vendor/jquery.mb.YTPlayer.min.js', array( 'jquery' ), $this->version, true );
 			//wp_enqueue_script( 'text-resize', REXPANSIVE_BUILDER_URL  . $cartella. 'js/__TextResize.js', array( 'jquery' ), $this->version, true );
 			
 			wp_enqueue_script( 'jquery-ui', REXPANSIVE_BUILDER_URL  . $cartella. 'js/jquery-ui.min.js', array( 'jquery' ), $this->version, true );
@@ -216,6 +222,7 @@ class Rexbuilder_Public {
 			wp_enqueue_script( '3-velocity', REXPANSIVE_BUILDER_URL  . $cartella. 'js/vendor/3-velocity.min.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( '3-velocityui', REXPANSIVE_BUILDER_URL  . $cartella. 'js/vendor/3-velocity.ui.min.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( '4-jqueryScrollify', REXPANSIVE_BUILDER_URL  . $cartella. 'js/vendor/4-jquery.rexScrollify.js', array( 'jquery' ), $this->version, true );
+
 			
 			wp_enqueue_script( 'rexbuilder', REXPANSIVE_BUILDER_URL  . $cartella. 'js/build/rexbuilder-public.js', array( 'jquery' ), $this->version, true );
 			wp_localize_script( 'rexbuilder', '_plugin_frontend_settings', apply_filters( 'rexbuilder_js_settings', array(
@@ -225,14 +232,23 @@ class Rexbuilder_Public {
 					'font_weight' => 'bold'
 				),
 				'native_scroll_animation' => true
-			) ) );
+				)
+			));
+
+			wp_localize_script( 'rexbuilder', 'rexajax', array(
+					'ajaxurl'	=>	admin_url( 'admin-ajax.php' ),
+					'rexnonce'	=>	wp_create_nonce( 'rex-ajax-call-nonce' )
+			));
+
+			//wp_enqueue_script( 'creaButton', REXPANSIVE_BUILDER_URL  . $cartella. 'js/creaButtonMediaLibrary.js', array( 'jquery' ), $this->version, true );
+			
+			}
 		}
-	}
-	
-	/**
-	 * Register the stylesheets for the public-facing side of the site for production
-	 *
-	 * @since    1.0.0
+		
+		/**
+		 * Register the stylesheets for the public-facing side of the site for production
+		 *
+		 * @since    1.0.0
 	 */
 	public function enqueue_scripts_production() {
 		
@@ -263,6 +279,112 @@ class Rexbuilder_Public {
 			) ) );
 			wp_enqueue_script( 'rexbuilder-public', REXPANSIVE_BUILDER_URL . 'public/js/public.js', array( 'jquery' ), $this->version, true );
 		}
+	}
+
+	/**
+	 * Create the variuos modal editors of the builder.
+	 *
+	 * @since    1.0.0
+	 */
+	public function create_builder_modals() {
+		
+		//$page_info = get_current_screen();
+
+		if ( !current_user_can('edit_posts') &&  !current_user_can('edit_pages') ) { 
+			return; 
+		}
+		if( !isset( $this->plugin_options['post_types'] ) ) {
+			return;
+		}
+
+		include_once( 'partials/rexbuilder-modals-display.php' );
+
+		?>
+			<div id="id-post" data-post-id="<?php echo esc_attr( get_the_ID() ); ?>"></div>
+		<?php
+		
+
+/* 		if ( get_user_option('rich_editing') == 'true') { 
+			$post_to_activate = $this->plugin_options['post_types'];
+			if( isset( $post_to_activate[$page_info->id] ) ) : 
+				if( ( $post_to_activate[$page_info->id] == 1 ) && 
+					( $post_to_activate[$page_info->post_type] == 1 ) ) :
+
+
+				endif;
+			endif;
+		} */
+	}
+
+	public function create_rexlive_fixed_buttons(){
+		if ( !current_user_can('edit_posts') &&  !current_user_can('edit_pages') ) { 
+			return; 
+		}
+		if( !isset( $this->plugin_options['post_types'] ) ) {
+			return;
+		}
+		include_once('partials/rexlive-buttons-fixed.php');
+	}
+	/**
+	*	Ajax call to save sections status
+	*
+	*	@since 1.0.15
+	*/
+	public function rexlive_save_sections() {
+		$nonce = $_POST['nonce_param'];
+		$response = array(
+			'error' => false,
+			'msg' => '',
+		);
+		$shortcode = $_POST['shortcode'];
+		$post_id_to_update = intval($_POST['post_id_to_update']);
+
+		if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) :
+			$response['error'] = true;
+			$response['msg'] = 'Error!';
+			wp_send_json_error( $response );
+		endif;
+
+		$response['error'] = false;
+		
+		$args = array(
+			'ID'           => $post_id_to_update,
+			'post_content' => $shortcode,
+		);
+		
+		$update = wp_update_post($args);
+
+		$response['update'] = $update;
+		$response['id_recived'] = $post_id_to_update;
+
+		wp_send_json_success( $response );
+	}
+
+	function add_media_upload_scripts() {
+		if ( is_admin() ) {
+			 return;
+		} 
+		wp_enqueue_media();
+		wp_enqueue_script('media-frontend', REXPANSIVE_BUILDER_URL  . 'public/js/frontend.js', array( 'jquery' ), $this->version, true );
+	}
+	
+		/**
+	 * This filter insures users only see their own media
+	 */
+	function filter_media( $query ) {
+		// admins get to see everything
+		if ( ! current_user_can( 'manage_options' ) )
+			$query['author'] = get_current_user_id();
+		return $query;
+	}
+
+	function frontend_shortcode( $args ) {
+		// check if user can upload files
+		if ( current_user_can( 'upload_files' ) ) {
+			$str = __( 'Select File', 'frontend-media' );
+			return '<input id="frontend-button" type="button" value="' . $str . '" class="button" style="position: relative; z-index: 1;"><img id="frontend-image" />';
+		}
+		return __( 'Please Login To Upload', 'frontend-media' );
 	}
 
 	/**

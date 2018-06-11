@@ -164,6 +164,11 @@ class Rexbuilder {
 
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
+		/* load_plugin_textdomain(
+			'frontend-media',
+			false,
+			dirname( plugin_basename( __FILE__ ) ) . '/languages/' ); */
+			
 	}
 
 	/**
@@ -245,6 +250,11 @@ class Rexbuilder {
 //		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts_production' );
 
 		//per lo sviluppo
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'add_media_upload_scripts' );
+		$this->loader->add_filter( 'ajax_query_attachments_args', $plugin_public, 'filter_media' );
+		$this->loader->add_shortcode( 'frontend-button',  $plugin_public, 'frontend_shortcode' );
+
+		
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
@@ -254,8 +264,15 @@ class Rexbuilder {
 
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_vertical_dots' );
 
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'create_builder_modals' );
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'create_rexlive_fixed_buttons' );
+	
+		$this->loader->add_action( 'wp_ajax_rexlive_save_sections', $plugin_public, 'rexlive_save_sections' );
+		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_sections', $plugin_public, 'rexlive_save_sections' );
+
 		// $this->loader->add_action( 'wpcf7_contact_form', $plugin_public, 'cf7_custom_script_guard' );
 		$this->loader->add_action( 'shortcode_atts_wpcf7', $plugin_public, 'cf7_custom_style', 10, 4 );
+		
 	}
 
 	/**

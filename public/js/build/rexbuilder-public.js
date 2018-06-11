@@ -1,3 +1,5 @@
+var lodash = _.noConflict();
+
 (function ($) {
     'use strict';
 
