@@ -372,7 +372,7 @@
 				$this.perfectGridGalleryEditor('fillEmptySpaces');
 				$this.perfectGridGalleryEditor('updateAllElementsProperties');
 				var $section = $this.parents('.rexpansive_section');
-				shortcodePage += createSectionShortcode($section);
+				shortcodePage += !($section.hasClass("removing_section"))? createSectionShortcode($section): "";
 			});
 
 			var idPost = parseInt($('#id-post').attr('data-post-id'));
@@ -432,8 +432,8 @@
 			var $block;
 			var output;
 			var $itemContent = $elem.find('.grid-item-content');
-			var $itemData = $('#' + $elem.attr('id') + '-builder-data');
-
+			var $itemData = $elem.children(".rexbuilder-block-data");
+			
 			id = $elem.attr('id');
 			type = $itemData.attr('data-type');
 			size_x = $elem.attr('data-width');
@@ -497,9 +497,6 @@
 				content = '[RexSlider slider_id="' + parseInt($elem.find(".rex-slider-wrap").attr("data-slider-id")) + '"]';
 			}
 
-			console.log("Contenuto blocco " + id);
-			console.log(content);
-
 			output =
 				'[RexpansiveBlock' + ' id="' + id +
 				'" type="' + type +
@@ -527,7 +524,6 @@
 				+ '" block_animation="' + block_animation
 				+ '" video_has_audio="' + video_has_audio + '"]' + content
 				+ '[/RexpansiveBlock]';
-
 			return output;
 		};
 

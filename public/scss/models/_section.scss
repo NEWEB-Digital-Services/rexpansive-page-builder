@@ -20,6 +20,11 @@
 			max-width: 100%!important;
 		}
 	}
+
+	&.removing_section{
+		display: none;
+	}
+
 	// &.full-height-section {
 	// 	min-height: 100vh;
 	// 	.perfect-grid-gallery {

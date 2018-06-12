@@ -94,7 +94,9 @@
             this.properties.firstStartGrid = true;
 
             this._setGridID();
-
+            
+            this._updateBlocksID();
+            
             this._findLastIDBlock();
 
             this._defineDataSettings();
@@ -122,7 +124,7 @@
             Rexbuilder_Util.elementIsResizing = false;
             Rexbuilder_Util.editingElement = null;
 
-            if (this.properties.gridEditable) {
+            if (Rexbuilder_Util.editorMode) {
                 this._launchTextEditor();
             }
 
@@ -135,18 +137,16 @@
                 }
             });
 
-            (gallery.$element).parent().parent().hover(function (event) {
-                if (gallery.properties.gridEditable) {
+            if (Rexbuilder_Util.editorMode) {
+                (gallery.$element).parents(".rexpansive_section").hover(function (event) {
                     gallery.showToolBox();
-                }
-            }, function () {
-                if (gallery.properties.gridEditable) {
-                    //gallery.hideToolBox();
-                }
-            });
+                }, function () {
+                    gallery.hideToolBox();
+                });
+            }
 
             $(window).on('keydown', { Gallery: this, Rexbuilder_Util: Rexbuilder_Util }, function (event) {
-                if (event.data.Gallery.properties.gridEditable) {
+                if (event.data.Rexbuilder_Util.editorMode) {
                     // Se l'utente preme "Esc" mentre sta editando il testo
                     // contenuto nel blocco
                     if (event.keyCode == 27 && ($(event.target).parents('.perfect-grid-item') != 0)) {
@@ -169,7 +169,7 @@
             });
 
             $(window).on('mousedown', { Gallery: this, Rexbuilder_Util: Rexbuilder_Util }, function (event) {
-                if (event.data.Gallery.properties.gridEditable) {
+                if (event.data.Rexbuilder_Util.editorMode) {
                     var G = event.data.Gallery;
                     var target = event.target;
                     if (G.properties.elementEdited !== null && $(target).parents('.medium-editor-toolbar').length === 0 && $(target).parents('.sp-container').length === 0) {
@@ -241,7 +241,7 @@
             });
 
 
-            if (!this.properties.gridEditable) {
+            if (!Rexbuilder_Util.editorMode) {
                 this.frontEndMode();
             }
 
@@ -290,7 +290,11 @@
         },
 
         _updateBlocksID: function(){
-            ;
+            var $gallery = this;
+            this.$element.find('.grid-stack-item').each(function (i, e) {
+                $(e).attr("data-rexbuilder-block-id", $gallery.properties.sectionNumber+"_"+i);
+                $(e).children(".rexbuilder-block-data").attr("data-rexbuilder-block-data-id", $gallery.properties.sectionNumber+"_"+i);
+            });
         },
         
         /**
@@ -592,9 +596,7 @@
         },
 
         fillEmptySpaces: function () {
-            var gridElementId,
-                gridElement,
-                cols = this.settings.numberCol,
+            var cols = this.settings.numberCol,
                 rows = this._calculateGridHeight(),
                 i,
                 j;
@@ -1142,11 +1144,11 @@
         },
 
         showToolBox: function () {
-            this.$element.parents('.rexpansive_section').children('.toolBox').addClass('tool-box-active');
+            this.$element.parents('.rexpansive_section').children('.section-toolBox').addClass('tool-box-active');
         },
 
         hideToolBox: function () {
-            this.$element.parents('.rexpansive_section').children('.toolBox').removeClass('tool-box-active');
+            this.$element.parents('.rexpansive_section').children('.section-toolBox').removeClass('tool-box-active');
         },
 
         /**
@@ -1201,13 +1203,13 @@
 
             // adding element listeners
             $elem.click(function (event) {
-                if (gallery.properties.gridEditable) {
+                if (Rexbuilder_Util.editorMode) {
                     gallery._focusElement($elem);
                 }
             });
 
             $elem.mousedown(function (event) {
-                if (gallery.properties.gridEditable) {
+                if (Rexbuilder_Util.editorMode) {
                     if ((gallery.properties.elementEdited === null) && !$elem.hasClass('focused')) {
                         gallery._focusElement($elem);
                     }
@@ -1215,7 +1217,7 @@
             });
 
             $(document).mouseup(function (e) {
-                if (gallery.properties.gridEditable) {
+                if (Rexbuilder_Util.editorMode) {
                     gallery._unFocusElement($elem);
                     // FIXARE
                     /* $($elem[0].id).trigger('hover'); */
@@ -1223,7 +1225,7 @@
             });
 
             $elem.hover(function (event) {
-                if (gallery.properties.gridEditable) {
+                if (Rexbuilder_Util.editorMode) {
                     if (!Rexbuilder_Util.elementIsResizing && Rexbuilder_Util.editingElement === null) {
                         gallery._focusElement($elem);
                     }
@@ -1241,7 +1243,7 @@
                     }
                 }
             }, function () {
-                if (gallery.properties.gridEditable) {
+                if (Rexbuilder_Util.editorMode) {
                     if (!Rexbuilder_Util.elementIsResizing) {
                         gallery._unFocusElement($elem);
                     }
@@ -1249,7 +1251,7 @@
             });
 
             $elem.dblclick(function () {
-                if (gallery.properties.gridEditable) {
+                if (Rexbuilder_Util.editorMode) {
                     gallery._hideSizeViewer($elem);
                     gallery._hideSettingButton($elem);
                     Rexbuilder_Util.editingElement = $elem;
@@ -1320,7 +1322,7 @@
         },
 
         frontEndMode: function () {
-            this.properties.gridEditable = false;
+            Rexbuilder_Util.editorMode = false;
             var grid = this.$element.data('gridstack');
             grid.disable();
 
@@ -1332,7 +1334,7 @@
         },
 
         editorMode: function () {
-            this.properties.gridEditable = true;
+            Rexbuilder_Util.editorMode = true;
             var grid = this.$element.data('gridstack');
             grid.enable();
             // this.properties.mediumEditorIstance.setup();

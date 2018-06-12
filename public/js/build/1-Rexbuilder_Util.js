@@ -3,10 +3,12 @@ var Rexbuilder_Util = (function($) {
 
 	var $window = $(window);
 	var $body;
-
+	var $rexContainer;
+	
 	var fixSectionWidth = 0;
 	var elementIsResizing = false;
 	var elementIsDragging = false;
+	var editorMode = false;
 
 	// function to detect if we are on a mobile device
 	var _detect_mobile = function() {
@@ -136,7 +138,9 @@ var Rexbuilder_Util = (function($) {
 		$window: $window,
 		scroll_timing: _scroll_timing,
 		fixSectionWidth: fixSectionWidth,
-		elementIsResizing: elementIsResizing
+		elementIsResizing: elementIsResizing,
+		elementIsResizing: elementIsDragging,
+		editorMode: editorMode
 	};
 
 })(jQuery);

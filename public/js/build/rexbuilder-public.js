@@ -117,27 +117,19 @@ var lodash = _.noConflict();
     // Waiting until the ready of the DOM
     $(function () {
         Rexbuilder_Util.init();
+
+        Rexbuilder_Util.editorMode = true;
+
+
+        Rexbuilder_Section.init();
+
         _detect_mobile();
         
         //Rexbuilder_FormFixes.init();
 
-        
-        $('.rexpansive_section').wrapAll( "<div class=\"rex-container\"></div>" );
-        
-        //Setting row number
-        $('.rexpansive_section').each(function (i, e) {
-            $(e).attr('data-rexlive-section-id', i);
-        });
-        
         /* -- Launching the grid -- */
         console.log("Launching grid");
         $('.perfect-grid-gallery').perfectGridGalleryEditor();
-
-        //launching sortable
-        $('.rex-container').sortable({
-            handle: ".builder-move-row"
-            //            placeholder: "portlet-placeholder ui-corner-all"
-        });
 
         /* -- Launching Photoswipe -- */
         initPhotoSwipeFromDOM('.photoswipe-gallery');

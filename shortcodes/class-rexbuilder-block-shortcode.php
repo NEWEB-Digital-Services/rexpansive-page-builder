@@ -318,7 +318,7 @@ class Rexbuilder_Block {
 				$bg_video_vimeo_markup .= '</div>';
 			}
 		
-			echo '<div id="' . $id . '-builder-data" style="display: none;" ';
+			echo '<div id="' . $id . '-builder-data" class="rexbuilder-block-data" ';
 			foreach ($atts as $property_name => $value_property) {
 				echo 'data-'.$property_name.'="'.$value_property.'" ';
 			}

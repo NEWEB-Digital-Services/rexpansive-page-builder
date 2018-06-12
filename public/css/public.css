@@ -3887,6 +3887,8 @@ http://flickity.metafizzy.co
     @media screen and (max-width: 767px) {
       .rexpansive_section .center-disposition {
         max-width: 100% !important; } }
+  .rexpansive_section.removing_section {
+    display: none; }
 
 /* ----- Grid Flexbox content alignment ----------------*/
 .rex-flexbox {
@@ -4693,7 +4695,8 @@ a.pswp-item {
   line-height: 1; }
 
 .builder-move-row {
-  left: 0%; }
+  left: 0%;
+  cursor: move; }
 
 .builder-copy-row {
   left: 10%; }
@@ -4965,3 +4968,6 @@ a.pswp-item {
 .grid-item-content > .responsive-block-overlay {
   width: 100%;
   height: 100%; }
+
+.rexbuilder-block-data {
+  display: none; }
