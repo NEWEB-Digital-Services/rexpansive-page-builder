@@ -48,11 +48,22 @@
 
 #builder-save-grid-btn{
     width: 100px;
-    height: 100px;
+    height: 40px;
+    margin-top: 0;
     background-color: blue;
     color: orange;
     position: fixed;
 }
+
+#builder-undo-btn{
+    width: 100px;
+    height: 40px;
+    margin-top: 60px;
+    background-color: green;
+    color: red;
+    position: fixed;
+}
+
 
 .perfect-grid-item .full-image-background{
     background-repeat: no-repeat; 
@@ -80,12 +91,10 @@
     visibility: visible;
     z-index: 40;
     padding: 0px;
-    transform: translate(0, -50%);
 }
 
 .builder-delete-row{
-    left: 100%;
-    transform: translate(-50%, -50%);
+    right: 0%;
 }
 
 .builder-delete-row i{
@@ -116,14 +125,13 @@
     text-align: center;
 }
 
-
-.toolBox{
+.section-toolBox{
     width: 100%;
     height: 20px;
     overflow: visible;
-    position: absolute;
     right: 0px;
     top: 0px;
+    background-color: #444;
     display: none;
 }
 
@@ -365,13 +373,13 @@
             transition: transform 0.2s;
 }
 
-.packery-drop-placeholder {
+/* .packery-drop-placeholder {
     outline: 3px dashed #444;
     outline-offset: -6px;
-    /* transition position changing */
+    /* transition position changing 
     -webkit-transition: -webkit-transform 0.2s;
             transition: transform 0.2s;
-}
+} */
 
 /* jQuery UI Draggable adds ui-draggable-dragging */
  .ui-draggable-dragging{
@@ -382,7 +390,17 @@
 .grid-item-content:active {
     cursor: pointer;
 }
-/* Packery adds class while transitioning to drop position*/
+/* /* Packery adds class while transitioning to drop position
  .grid-item.is-positioning-post-drag:active {
   cursor: hand; 
- }
+ } */
+ 
+.grid-item-content{
+    width: 100%;
+    height: 100%;
+}
+
+.grid-item-content > .responsive-block-overlay{
+   width: 100%;
+   height: 100%;
+}

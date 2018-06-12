@@ -126,7 +126,7 @@ class Rexbuilder_Public {
 			//che è sta roba?
 			wp_enqueue_style( 'input-spinner', REXPANSIVE_BUILDER_URL  . $cartella. 'css/input-spinner.css', array(), $this->version, 'all' );
 			
-			wp_enqueue_style( 'rexpansive-builderLive-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/builderL.css', array(), $this->version, 'all' );
+			//wp_enqueue_style( 'rexpansive-builderLive-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/builderL.css', array(), $this->version, 'all' );
 
 			wp_enqueue_style( 'public-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/public.css', array(), $this->version, 'all' );
 			
@@ -177,8 +177,8 @@ class Rexbuilder_Public {
 		if( $this->builder_active_on_this_post_type() ) {
 			
 			$cartella = "public/";
-			
-			wp_enqueue_script( 'jquery' );
+			//include media libray
+			wp_enqueue_media();
 			
 			wp_enqueue_script( 'photoswipe', REXPANSIVE_BUILDER_URL  . $cartella. 'Photoswipe/photoswipe.min.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( 'photoswipe-ui', REXPANSIVE_BUILDER_URL  . $cartella. 'Photoswipe/photoswipe-ui-default.min.js', array( 'jquery' ), $this->version, true );
@@ -360,15 +360,7 @@ class Rexbuilder_Public {
 		wp_send_json_success( $response );
 	}
 
-	function add_media_upload_scripts() {
-		if ( is_admin() ) {
-			 return;
-		} 
-		wp_enqueue_media();
-		wp_enqueue_script('media-frontend', REXPANSIVE_BUILDER_URL  . 'public/js/frontend.js', array( 'jquery' ), $this->version, true );
-	}
-	
-		/**
+	/**
 	 * This filter insures users only see their own media
 	 */
 	function filter_media( $query ) {
@@ -376,15 +368,6 @@ class Rexbuilder_Public {
 		if ( ! current_user_can( 'manage_options' ) )
 			$query['author'] = get_current_user_id();
 		return $query;
-	}
-
-	function frontend_shortcode( $args ) {
-		// check if user can upload files
-		if ( current_user_can( 'upload_files' ) ) {
-			$str = __( 'Select File', 'frontend-media' );
-			return '<input id="frontend-button" type="button" value="' . $str . '" class="button" style="position: relative; z-index: 1;"><img id="frontend-image" />';
-		}
-		return __( 'Please Login To Upload', 'frontend-media' );
 	}
 
 	/**

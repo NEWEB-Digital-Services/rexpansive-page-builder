@@ -90,12 +90,10 @@
     visibility: visible;
     z-index: 40;
     padding: 0px;
-    transform: translate(0, -50%);
 }
 
 .builder-delete-row{
-    left: 100%;
-    transform: translate(-50%, -50%);
+    right: 0%;
 }
 
 .builder-delete-row i{
@@ -126,15 +124,17 @@
     text-align: center;
 }
 
+.rexpansive_section {
+    min-height: 100px;
+}
 
-.toolBox{
+.section-toolBox{
     width: 100%;
     height: 20px;
     overflow: visible;
-    position: absolute;
     right: 0px;
     top: 0px;
-    display: none;
+    background-color: #444;
 }
 
 .tool-box-active {
@@ -406,3 +406,4 @@
     width: 100%;
     height: 100%;
 }
+

@@ -288,6 +288,11 @@
             this.properties.sectionNumber = parseInt(($(this.element).parents('.rexpansive_section')).attr('data-rexlive-section-id'));
             this.$element.addClass('grid-number-' + this.properties.sectionNumber);
         },
+
+        _updateBlocksID: function(){
+            ;
+        },
+        
         /**
 		 * Funzione chiamata per il salvataggio della griglia
 		 */
@@ -1481,73 +1486,74 @@
 
         _launchTextEditor: function () {
             var divToolbar = document.createElement('div');
-            
+            var gallery = this;
+
             $(divToolbar).attr({
                 'id': this.properties.sectionNumber + '-SectionTextEditor',
                 'class': 'editable',
                 'style': 'display: none'
             });
             $('.rexpansive_section').parent().prepend(divToolbar);
-            
+
             var currentTextSelection;
-            
+
             /**
-             * Gets the color of the current text selection
+			 * Gets the color of the current text selection
 			 */
             function getCurrentTextColor() {
                 return $(editor.getSelectedParentElement()).css('color');
             }
-            
+
             /**
-             * Custom `color picker` extension
+			 * Custom `color picker` extension
 			 */
             var ColorPickerExtension = MediumEditor.extensions.button.extend({
                 name: "colorPicker",
                 action: "applyForeColor",
                 aria: "color picker",
                 contentDefault: "<span class='editor-color-picker'>Text Color<span>",
-                
+
                 init: function () {
                     this.button = this.document.createElement('button');
                     this.button.classList.add('medium-editor-action');
                     this.button.innerHTML = '<b>Text color</b>';
-                    
+
                     // init spectrum color picker for this button
                     initPicker(this.button);
-                    
+
                     // use our own handleClick instead of the default one
                     this.on(this.button, 'click', this.handleClick.bind(this));
                 },
                 handleClick: function (event) {
                     // keeping record of the current text selection
                     currentTextSelection = editor.exportSelection();
-                    
+
                     // sets the color of the current selection on the color
                     // picker
                     $(this.button).spectrum("set", getCurrentTextColor());
-                    
+
                     // from here on, it was taken form the default handleClick
                     event.preventDefault();
                     event.stopPropagation();
-                    
+
                     var action = this.getAction();
-                    
+
                     if (action) {
                         this.execAction(action);
                     }
                 }
             });
-            
+
             var pickerExtension = new ColorPickerExtension();
-            
+
             function setColor(color) {
                 var finalColor = color ? color.toRgbString() : 'rgba(0,0,0,0)';
-                
+
                 pickerExtension.base.importSelection(currentTextSelection);
                 pickerExtension.document.execCommand("styleWithCSS", false, true);
                 pickerExtension.document.execCommand("foreColor", false, finalColor);
             }
-            
+
             function initPicker(element) {
                 $(element).spectrum({
                     allowEmpty: true,
@@ -1599,14 +1605,14 @@
                 },
                 placeholder: {
                     /*
-                    * This example includes the default options for
-                    * placeholder, if nothing is passed this is what it used
-                    */
+					 * This example includes the default options for
+					 * placeholder, if nothing is passed this is what it used
+					 */
                     text: 'Insert Text Here',
                     hideOnClick: true
                 }
             });
-            var Gallery = this;
+
             $('.text-wrap', this.$element).each(function () {
                 $(this).mediumInsert({
                     editor: editor,
@@ -1624,60 +1630,58 @@
                         // tables: {}
                     },
                 });
-console.log(Gallery);
-                editor.on($(this), 'editableInput', { Gallery: this }, function (e) {
-                    console.log(e);
-                    var G = event.data.Gallery;
+            });
 
-                    if ($('.medium-insert-images figure img, .mediumInsert figure img').length > 0) {
-                        $('.medium-insert-images figure img, .mediumInsert figure img').each(function () {
-                            if (!$(this).hasClass('image-text-wrap')) {
-                                var $figura = $(this).parents('figure');
-                                var $textWrapper = $(this).parents('.medium-insert-images');
-                                console.log($figura);
-                                $(this).addClass('image-text-wrap');
-                                $(this).wrap('<span></span>');
-                                var spanEl = $(this).parent()[0];
-                                $(spanEl).addClass('image-span-wrap');
-                                gallery._addHandles(spanEl, 'e, s, w, se, sw');
-                                $(spanEl).resizable({
-                                    // containment: $textWrapper[0],
-                                    handles: {
-                                        'e': '.ui-resizable-e',
-                                        's': '.ui-resizable-s',
-                                        'w': '.ui-resizable-w',
-                                        'se': '.ui-resizable-se',
-                                        'sw': '.ui-resizable-sw'
-                                    },
-                                    start: function (event, ui) {
-                                        if ($(ui.element).is('span')) {
-                                            console.log('startResize image');
-                                        }
-                                    },
-                                    resize: function (event, ui) {
-                                        if ($(ui.element).is('span')) {
-                                            console.log('resizing image');
-                                        }
-                                    },
-                                    stop: function (event, ui) {
-                                        if ($(ui.element).is('span')) {
-                                            console.log($(ui.element).innerWidth(), $(ui.element).innerHeight());
-                                            console.log('stopResize image');
-                                        }
+            editor.subscribe('editableInput', function (e) {
+                // console.log(e);
+                if ($('.medium-insert-images figure img, .mediumInsert figure img').length > 0) {
+                    $('.medium-insert-images figure img, .mediumInsert figure img').each(function () {
+                        if (!$(this).hasClass('image-text-wrap')) {
+                            var $figura = $(this).parents('figure');
+                            var $textWrapper = $(this).parents('.medium-insert-images');
+                            console.log($figura);
+                            $(this).addClass('image-text-wrap');
+                            $(this).wrap('<span></span>');
+                            var spanEl = $(this).parent()[0];
+                            $(spanEl).addClass('image-span-wrap');
+                            gallery._addHandles(spanEl, 'e, s, w, se, sw');
+                            $(spanEl).resizable({
+                                // containment: $textWrapper[0],
+                                handles: {
+                                    'e': '.ui-resizable-e',
+                                    's': '.ui-resizable-s',
+                                    'w': '.ui-resizable-w',
+                                    'se': '.ui-resizable-se',
+                                    'sw': '.ui-resizable-sw'
+                                },
+                                start: function (event, ui) {
+                                    if ($(ui.element).is('span')) {
+                                        console.log('startResize image');
                                     }
-                                });
-                            }
-                        });
-                    }
-                    console.log(G.properties.elementEdited);
-                    gallery.fixElementTextSize(G.properties.elementEdited, null, e);
-                });
+                                },
+                                resize: function (event, ui) {
+                                    if ($(ui.element).is('span')) {
+                                        console.log('resizing image');
+                                    }
+                                },
+                                stop: function (event, ui) {
+                                    if ($(ui.element).is('span')) {
+                                        console.log($(ui.element).innerWidth(), $(ui.element).innerHeight());
+                                        console.log('stopResize image');
+                                    }
+                                }
+                            });
+                        }
+                    });
+                }
+                console.log(gallery.properties.elementEdited);
+                gallery.fixElementTextSize(gallery.properties.elementEdited, null, e);
             });
 
             var $elem;
-                var $blockContent;
-                $(gallery.$element).find('.rex-text-editable').each(function () {
-                    $elem = $(this);
+            var $blockContent;
+            $(gallery.$element).find('.rex-text-editable').each(function () {
+                $elem = $(this);
                 if($elem.find('.pswp-figure').length === 0){
                     gallery._addElementToTextEditor(editor, $elem);
                 }

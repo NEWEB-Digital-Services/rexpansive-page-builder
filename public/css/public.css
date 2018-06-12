@@ -3873,7 +3873,8 @@ http://flickity.metafizzy.co
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
-  position: relative; }
+  position: relative;
+  min-height: 100px; }
   .rexpansive_section .full-disposition,
   .rexpansive_section .center-disposition {
     margin: 0 auto;
@@ -4646,9 +4647,18 @@ a.pswp-item {
 
 #builder-save-grid-btn {
   width: 100px;
-  height: 100px;
+  height: 40px;
+  margin-top: 0;
   background-color: blue;
   color: orange;
+  position: fixed; }
+
+#builder-undo-btn {
+  width: 100px;
+  height: 40px;
+  margin-top: 60px;
+  background-color: green;
+  color: red;
   position: fixed; }
 
 .perfect-grid-item .full-image-background {
@@ -4673,16 +4683,10 @@ a.pswp-item {
   overflow: visible;
   visibility: visible;
   z-index: 40;
-  padding: 0px;
-  -webkit-transform: translate(0, -50%);
-      -ms-transform: translate(0, -50%);
-          transform: translate(0, -50%); }
+  padding: 0px; }
 
 .builder-delete-row {
-  left: 100%;
-  -webkit-transform: translate(-50%, -50%);
-      -ms-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%); }
+  right: 0%; }
 
 .builder-delete-row i {
   font-size: 1rem;
@@ -4706,13 +4710,13 @@ a.pswp-item {
   vertical-align: top;
   text-align: center; }
 
-.toolBox {
+.section-toolBox {
   width: 100%;
   height: 20px;
   overflow: visible;
-  position: absolute;
   right: 0px;
   top: 0px;
+  background-color: #444;
   display: none; }
 
 .tool-box-active {
@@ -4935,16 +4939,13 @@ a.pswp-item {
   transition: transform 0.2s;
   transition: transform 0.2s, -webkit-transform 0.2s; }
 
-.packery-drop-placeholder {
-  outline: 3px dashed #444;
-  outline-offset: -6px;
-  /* transition position changing */
-  -webkit-transition: -webkit-transform 0.2s;
-  transition: -webkit-transform 0.2s;
-  -o-transition: transform 0.2s;
-  transition: transform 0.2s;
-  transition: transform 0.2s, -webkit-transform 0.2s; }
-
+/* .packery-drop-placeholder {
+    outline: 3px dashed #444;
+    outline-offset: -6px;
+    /* transition position changing 
+    -webkit-transition: -webkit-transform 0.2s;
+            transition: transform 0.2s;
+} */
 /* jQuery UI Draggable adds ui-draggable-dragging */
 .ui-draggable-dragging {
   z-index: 2;
@@ -4953,6 +4954,14 @@ a.pswp-item {
 .grid-item-content:active {
   cursor: pointer; }
 
-/* Packery adds class while transitioning to drop position*/
-.grid-item.is-positioning-post-drag:active {
-  cursor: hand; }
+/* /* Packery adds class while transitioning to drop position
+ .grid-item.is-positioning-post-drag:active {
+  cursor: hand; 
+ } */
+.grid-item-content {
+  width: 100%;
+  height: 100%; }
+
+.grid-item-content > .responsive-block-overlay {
+  width: 100%;
+  height: 100%; }

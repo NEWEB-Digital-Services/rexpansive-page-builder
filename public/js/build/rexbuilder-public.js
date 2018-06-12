@@ -121,14 +121,23 @@ var lodash = _.noConflict();
         
         //Rexbuilder_FormFixes.init();
 
-        /* -- Launching the grid -- */
-        console.log("Launching grid");
-
-        //Assegno il numero della row
-        $('.rexpansive_section').each(function(i, e){
+        
+        $('.rexpansive_section').wrapAll( "<div class=\"rex-container\"></div>" );
+        
+        //Setting row number
+        $('.rexpansive_section').each(function (i, e) {
             $(e).attr('data-rexlive-section-id', i);
         });
-		$('.perfect-grid-gallery').perfectGridGalleryEditor();
+        
+        /* -- Launching the grid -- */
+        console.log("Launching grid");
+        $('.perfect-grid-gallery').perfectGridGalleryEditor();
+
+        //launching sortable
+        $('.rex-container').sortable({
+            handle: ".builder-move-row"
+            //            placeholder: "portlet-placeholder ui-corner-all"
+        });
 
         /* -- Launching Photoswipe -- */
         initPhotoSwipeFromDOM('.photoswipe-gallery');
