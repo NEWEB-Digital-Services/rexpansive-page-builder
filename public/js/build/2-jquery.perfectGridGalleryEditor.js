@@ -120,9 +120,10 @@
 
             var gallery = this;
             var $elem;
-
+            Rexbuilder_Util.elementEdited;
             if (Rexbuilder_Util.sectionCopying) {
                 gallery.hideToolBox();
+                gallery._removeScrollbars();
             }
 
             Rexbuilder_Util.elementIsDragging = false;
@@ -403,9 +404,9 @@
 
                             console.log(textHeight, h, maxBlockHeight);
                             if (textHeight >= maxBlockHeight) {
-                                h = h + Math.ceil((textHeight - maxBlockHeight) / 5);
+                                h = h + Math.ceil((textHeight - maxBlockHeight) / this.properties.singleHeight);
                             } else {
-                                h = Math.max(h - Math.floor((maxBlockHeight - textHeight) / 5), parseInt($(dataBlock).attr('data-block_height_masonry')));
+                                h = Math.max(h - Math.floor((maxBlockHeight - textHeight) / this.properties.singleHeight), parseInt($(dataBlock).attr('data-block_height_masonry')));
                             }
                             console.log(h);
                             grid.update(block, null, null, w, h);
@@ -439,7 +440,7 @@
             });
         },
 
-        restoreBackup: function () {
+        restoreBackup: function() {
             var block;
             var G = this;
             $(G.element).children('.grid-stack-item').each(function () {
@@ -645,6 +646,9 @@
         // Function that creates a new empty block and returns it. The block is
         // added to gridstack and gallery
         createBlock: function (x, y, w, h) {
+            /* if(h < this.properties.singleHeight){
+                return;
+            } */
             var divGridItem = document.createElement('div');
             var divGridStackContent = document.createElement('div');
             var divGridItemContent = document.createElement('div');
@@ -653,7 +657,9 @@
             var divTextWrap = document.createElement('div');
             var gallery = this;
             var grid = this.$element.data('gridstack');
-            var idNewBlock = "block_" + gallery.properties.sectionNumber + "_" + (gallery.properties.lastIDBlock + 1);
+            var idBlock = gallery.properties.sectionNumber + "_" + (gallery.properties.lastIDBlock + 1);
+            var idNewBlock = "block_" + idBlock;
+
             gallery.properties.lastIDBlock = gallery.properties.lastIDBlock + 1;
 
             $(divGridItem).attr({
@@ -667,6 +673,7 @@
                 'data-gs-width': w,
                 'data-gs-y': y,
                 'data-gs-x': x,
+                'data-rexbuilder-block-id': idBlock
             });
 
             $(divGridStackContent).attr({
@@ -698,19 +705,22 @@
 
             return divGridItem;
         },
-
+        
         createElementProperties: function (elem) {
             var divProperties = document.createElement('div');
             var $elem = $(elem);
+            var pos_y = this.settings.galleryLayout == 'masonry' ?  Math.round(parseInt($elem.attr('data-row')) / this.properties.singleHeight) : parseInt($elem.attr('data-row'));
+            var y = this.settings.galleryLayout == 'masonry' ?  Math.round(parseInt($elem.attr('data-height')) / this.properties.singleHeight) : parseInt($elem.attr('data-height'));
+            //console.log(pos_y, y);
             $(divProperties).attr({
                 'id': elem.id + '-builder-data',
                 'style': 'display: none;',
                 'data-id': elem.id,
                 'data-type': 'empty',
                 'data-col': $elem.attr('data-col'),
-                'data-row': $elem.attr('data-row'),
+                'data-row': pos_y,
                 'data-size_x': $elem.attr('data-width'),
-                'data-size_y': $elem.attr('data-height'),
+                'data-size_y': y,
                 'data-color_bg_block': '',
                 'data-image_bg_block': '',
                 'data-id_image_bg_block': '',
@@ -722,6 +732,7 @@
                 'data-linkurl': '',
                 'data-image_size': 'full',
                 'data-overlay_block_color': '',
+                'data-rexbuilder-block-data-id': $elem.attr('data-rexbuilder-block-id')
             });
             $(divProperties).prependTo(elem);
         },
@@ -996,24 +1007,34 @@
         },
 
 
+        _removeSizeViewer: function(elem){
+            var $elem = $(elem);
+            $elem.children('.el-size-viewer').remove();
+        },
 
-        _addSizeViewer: function ($elem) {
+
+        _addSizeViewer: function (elem) {
+            var $elem = $(elem);
             var spanViewer = document.createElement('span');
-            spanViewer.setAttribute('id', $elem.id.concat('-size-viewer'));
+            var stringID = $elem.attr("data-rexbuilder-block-id");
+            spanViewer.setAttribute('id', stringID.concat('-size-viewer'));
             $(spanViewer).addClass('el-size-viewer');
-            // $(spanViewer).css('left',
-            // this.properties.halfSeparatorElementRight);
-            // $(spanViewer).css('top',
-            // this.properties.halfSeparatorElementTop);
             $(spanViewer).css('left', 0);
             $(spanViewer).css('top', 0);
             $elem.append(spanViewer);
         },
 
+        _removeSettingButton: function(elem){
+            var $elem = $(elem);
+            $elem.children('.el-size-settingButton').remove();
+        },
+
         // Bottone ingranaggio a comparsa
-        _addSettingButton: function ($elem) {
+        _addSettingButton: function (elem) {
+            var $elem = $(elem);
             var elemDiv = document.createElement('div');
-            elemDiv.setAttribute('id', $elem.id.concat('-size-settingButton'));
+            var stringID = $elem.attr("data-rexbuilder-block-id");
+            elemDiv.setAttribute('id', stringID.concat('-size-settingButton'));
             $(elemDiv).addClass('el-size-settingButton');
             $(elemDiv).css('right', 40);
             $(elemDiv).css('top', 40);
@@ -1021,12 +1042,19 @@
 
         },
 
+        _removeHandles: function (elem) {
+            $(elem).children('.ui-resizable-handle').each(function(){
+                $(this).remove();
+            });
+        },
+
         // add span elements that will be used as handles of the element
         _addHandles: function (elem, $handles) {
+            var $elem = $(elem);
             var span;
             var div;
             var handle;
-            var stringID = elem.id === undefined ? "" : elem.id;
+            var stringID = $elem.attr("data-rexbuilder-block-id");
             $($handles.split(', ')).each(function () {
                 handle = this;
                 span = $(document.createElement('span')).attr({
@@ -1037,7 +1065,7 @@
                     'class': 'ui-resizable-handle ui-resizable-' + handle,
                     'data-axis': handle
                 });
-                if ($(elem).is('div')) {
+                if ($elem.is('div')) {
                     if (stringID != '') {
                         $(div).attr({
                             'id': stringID + '_handle_' + handle,
@@ -1045,11 +1073,12 @@
                     }
                 }
                 $(span).appendTo($(div));
-                $(div).appendTo($(elem));
+                $(div).appendTo($elem);
             });
         },
-
-        // fixes position of the handles of the element
+/*
+        //TODO update ID of handles
+        // fixes position of the handles of the element with gutter
         _fixHandlesPosition: function ($elem) {
             // variables for the east handler
             var le = $($elem).outerWidth() - 20,
@@ -1093,7 +1122,7 @@
             $('#' + $elem.id.concat('se') + ' > .circle-handle-se').css('top', tseCircle + 'px');
 
         },
-
+*/
         createResizePlaceHolder: function ($elem) {
             var block = $($elem)[0];
             var $placeholder = document.createElement('div');
@@ -1159,12 +1188,17 @@
             var imageWidth = -1;
             var $elem = $(elem);
 
-            if (!Rexbuilder_Util.sectionCopying) {
-                gallery._updateElementPadding($elem.find('.grid-stack-item-content'));
-                gallery._addHandles(elem, 'e, s, w, se, sw');
-                gallery._addSizeViewer(elem);
-                gallery._addSettingButton(elem);
+            gallery._updateElementPadding($elem.find('.grid-stack-item-content'));
+
+            if (Rexbuilder_Util.sectionCopying) {
+                gallery._removeSizeViewer(elem);
+                gallery._removeSettingButton(elem);
+                gallery._removeHandles(elem);
             }
+            
+            gallery._addSizeViewer(elem);
+            gallery._addSettingButton(elem);
+            gallery._addHandles(elem, 'e, s, w, se, sw');
 
             blockContent = $elem.find('.grid-item-content');
             imageWidth = blockContent.attr('data-background-image-width');
@@ -1177,8 +1211,6 @@
                     blockContent.removeClass('small-width');
                 }
             }
-
-            // $('#' + elem.id)
 
             $elem.attr({
                 "data-gs-min-width": 1,
