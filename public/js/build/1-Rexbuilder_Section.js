@@ -1,40 +1,64 @@
-var Rexbuilder_Section = (function ($)  {
+var Rexbuilder_Section = (function ($) {
     'use strict';
-    var $rexContent;
-    var sectionNumber;
+    var lastSectionNumber;
+
+    var _prepareSection = function ($section) {
+        var oldSectionID = parseInt($section.attr("data-rexlive-section-id"));
+        lastSectionNumber = lastSectionNumber + 1;
+        $section.find(".grid-stack-row").removeClass("grid-number-"+oldSectionID);
+        $section.find(".grid-stack-row").removeClass(function (index, className) {
+            return (className.match (/grid-stack-instance-\d+/g) || []).join(' ');
+        });
+        $section.attr("data-rexlive-section-id", lastSectionNumber);
+    }
 
     var init = function () {
         console.log("Launching section");
-        
-        $('.rexpansive_section').wrapAll("<div class=\"rex-container\"></div>");
-        $rexContent = $(".rex-container");
 
         //Setting row number
-        $rexContent.children('.rexpansive_section').each(function (i, e) {
+        Rexbuilder_Util["$rexContainer"].children('.rexpansive_section').each(function (i, e) {
             $(e).attr('data-rexlive-section-id', i);
+            lastSectionNumber = i;
         });
-        
-        if (Rexbuilder_Util.editorMode === true) {
-            console.log("editor mode");
-        } else {
-            console.log("user mode");
-        }
 
         if (Rexbuilder_Util.editorMode === true) {
             //launching sortable
-            $rexContent.sortable({
+            Rexbuilder_Util["$rexContainer"].sortable({
                 handle: ".builder-move-row"
                 //            placeholder: "portlet-placeholder ui-corner-all"
             });
 
-            $rexContent.find('.builder-delete-row').click(function(e){
+            // linking listeners to row setting buttons
+            $(document).on('click', '.builder-delete-row', function (e) {
                 $(e.currentTarget).parents('.rexpansive_section').addClass("removing_section");
             });
 
+            $(document).on('click', '.builder-copy-row', function (e) {
+                Rexbuilder_Util.sectionCopying = true;
+                var section = $(e.currentTarget).parents('.rexpansive_section');
+                var $newSection;
+                
+                $newSection = $(section).clone(false);
+                
+                $(section).after( $newSection );
+                
+                Rexbuilder_Section.prepareSection($newSection);                
+                
+                $newSection.find('.grid-stack-row').perfectGridGalleryEditor();
+                
+                $newSection.find('.builder-delete-row').click(function (e) {
+                    $(e.currentTarget).parents('.rexpansive_section').addClass("removing_section");
+                });
+                
+                Rexbuilder_Util["$rexContainer"].sortable( "refresh" );
+
+                Rexbuilder_Util.sectionCopying = false;
+            });
         }
 
     }
     return {
         init: init,
+        prepareSection: _prepareSection
     }
 })(jQuery);

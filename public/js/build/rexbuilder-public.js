@@ -120,7 +120,6 @@ var lodash = _.noConflict();
 
         Rexbuilder_Util.editorMode = true;
 
-
         Rexbuilder_Section.init();
 
         _detect_mobile();
@@ -128,8 +127,7 @@ var lodash = _.noConflict();
         //Rexbuilder_FormFixes.init();
 
         /* -- Launching the grid -- */
-        console.log("Launching grid");
-        $('.perfect-grid-gallery').perfectGridGalleryEditor();
+        Rexbuilder_Util.$rexContainer.find('.grid-stack-row').perfectGridGalleryEditor();
 
         /* -- Launching Photoswipe -- */
         initPhotoSwipeFromDOM('.photoswipe-gallery');

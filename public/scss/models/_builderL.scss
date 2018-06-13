@@ -93,13 +93,14 @@
     padding: 0px;
 }
 
-.builder-delete-row{
-    right: 0%;
-}
-
 .builder-delete-row i{
     font-size: 1rem;
     line-height: 1;
+}
+
+.builder-delete-row{
+    right: 0%;
+    cursor: pointer;
 }
 
 .builder-move-row{
@@ -109,10 +110,12 @@
 
 .builder-copy-row{
     left: 10%;
+    cursor: copy;
 }
 
 .builder-section-config{
     left: 20%;
+    cursor: pointer;
 }
 
 .builder-save-grid{

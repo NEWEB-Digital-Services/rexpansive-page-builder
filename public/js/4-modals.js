@@ -433,8 +433,8 @@
 			var output;
 			var $itemContent = $elem.find('.grid-item-content');
 			var $itemData = $elem.children(".rexbuilder-block-data");
-			
-			id = $elem.attr('id');
+
+			id = "block_" + $elem.attr('data-rexbuilder-block-id');
 			type = $itemData.attr('data-type');
 			size_x = $elem.attr('data-width');
 			size_y = $elem.attr('data-height');
@@ -531,7 +531,7 @@
 			var section_name = "", type = "perfect-grid", color_bg_section = "#ffffff", dimension = "full", margin = "", image_bg_section = "", id_image_bg_section = "", video_bg_url_section = '', video_bg_id_section = '', video_bg_url_vimeo_section = '', full_height = '', block_distance = 20, layout = "fixed", responsive_background = '', custom_classes = '', section_width = '', row_separator_top = '', row_separator_bottom = '', row_separator_right = '', row_separator_left = '';
 
 			var output = '';
-			var $gridGallery = $section.find('.perfect-grid-gallery');
+			var $gridGallery = $section.find('.grid-stack-row');
 			var $sectionData = $section.find('.section-data');
 
 			section_name = $sectionData.attr('data-section_name') === undefined ? ""

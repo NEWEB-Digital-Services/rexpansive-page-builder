@@ -4687,22 +4687,25 @@ a.pswp-item {
   z-index: 40;
   padding: 0px; }
 
-.builder-delete-row {
-  right: 0%; }
-
 .builder-delete-row i {
   font-size: 1rem;
   line-height: 1; }
+
+.builder-delete-row {
+  right: 0%;
+  cursor: pointer; }
 
 .builder-move-row {
   left: 0%;
   cursor: move; }
 
 .builder-copy-row {
-  left: 10%; }
+  left: 10%;
+  cursor: copy; }
 
 .builder-section-config {
-  left: 20%; }
+  left: 20%;
+  cursor: pointer; }
 
 .builder-save-grid {
   left: 30%; }
