@@ -60,27 +60,18 @@
             paddingTopBottom: false,
             setMobilePadding: false,
             setDesktopPadding: false,
-            elementResizeEvent: false,
             gutter: 0,
-            elementIsResizing: false,
-            elementIsDragging: false,
             elementStartingH: 0,
             percentFactorHandlers: 0.15,
             lostPixels: 0,
             elemHasFocus: false,
-            edgesElementsSetted: false,
-            windowIsReisized: false,
             resizeHandle: '',
             sectionNumber: null,
             elementEdited: null,
             gridstackInstanceID: null,
-            gridChanged: false,
-            gridHover: false,
             serializedData: [],
             firstStartGrid: false,
             lastIDBlock: null,
-            textWrapEditing: null,
-            gridEditable: true,
             mediumEditorIstance: null
         };
 
@@ -120,7 +111,7 @@
 
             var gallery = this;
             var $elem;
-            Rexbuilder_Util.elementEdited;
+
             if (Rexbuilder_Util.sectionCopying) {
                 gallery.hideToolBox();
                 gallery._removeScrollbars();
@@ -161,12 +152,10 @@
                         var grid = G.$element.data('gridstack');
                         grid.enable();
                         $(G.$element).addClass('gridActive');
-                        G.properties.elementEdited = null;
-                        gallery.properties.textWrapEditing = null;
                         G._showSizeViewer($(event.target).parents('.perfect-grid-item'));
                         G._showSettingButton($(event.target).parents('.perfect-grid-item'));
 
-                        if (typeof (Rexbuilder_Util.editingElement) !== null) {
+                        if (Rexbuilder_Util.editingElement !== null) {
                             Rexbuilder_Util.editingElement.blur();
                             Rexbuilder_Util.editingElement = null;
                         }
@@ -178,14 +167,12 @@
                 if (event.data.Rexbuilder_Util.editorMode) {
                     var G = event.data.Gallery;
                     var target = event.target;
-                    if (G.properties.elementEdited !== null && $(target).parents('.medium-editor-toolbar').length === 0 && $(target).parents('.sp-container').length === 0) {
+                    if (Rexbuilder_Util.editingElement !== null && $(target).parents('.medium-editor-toolbar').length === 0 && $(target).parents('.sp-container').length === 0) {
                         var $items = $($(target).parents('.grid-stack-item'));
-                        if (($items.length === 0) || $items[0].id !== G.properties.elementEdited.id) {
+                        if (($items.length === 0) || $items[0].id !== Rexbuilder_Util.editingElement.id) {
                             var grid = G.$element.data('gridstack');
                             grid.enable();
                             $(G.$element).addClass('gridActive');
-                            G.properties.elementEdited = null;
-                            gallery.properties.textWrapEditing = null;
                             if (typeof (Rexbuilder_Util.editingElement) !== null) {
                                 Rexbuilder_Util.editingElement.blur();
                                 Rexbuilder_Util.editingElement = null;
@@ -206,7 +193,7 @@
                         $(G.element).children('.grid-stack-item').each(function () {
                             $elem = $(this);
                             G.updateSizeViewerText($elem);
-                            //G.fixElementTextSize(this, null, null);
+                            G.fixElementTextSize(this, null, null);
                         });
                     } else {
                         grid.cellHeight(G.properties.singleHeight);
@@ -214,7 +201,6 @@
                         grid._updateStyles(G.properties.singleHeight);
                     }
                 }
-
             });
 
             $(window).on('load', { Gallery: this, Rexbuilder_Util: Rexbuilder_Util }, function (event) {
@@ -387,12 +373,14 @@
                         $blockContent.mCustomScrollbar("disable");
                     } else {
                         $blockContent.mCustomScrollbar();
-                        $blockContent.mCustomScrollbar("update");
+                        $blockContent.mCustomScrollbar({ "setHeight": "50%" });
+                        // $blockContent.mCustomScrollbar("update");
                     }
 
                     if (textHeight < maxBlockHeight) {
                         $blockContent.mCustomScrollbar("disable");
                     }
+
                 } else {
                     // successive modifiche dovute al cambiamento del contenuto
                     if ($blockContent.hasClass('mCS_no_scrollbar') || $blockContent.hasClass('mCS_disabled')) {
@@ -402,13 +390,13 @@
                             var h = this.properties.elementStartingH;
                             var grid = this.$element.data('gridstack');
 
-                            console.log(textHeight, h, maxBlockHeight);
+                            //console.log(textHeight, h, maxBlockHeight);
                             if (textHeight >= maxBlockHeight) {
                                 h = h + Math.ceil((textHeight - maxBlockHeight) / this.properties.singleHeight);
                             } else {
                                 h = Math.max(h - Math.floor((maxBlockHeight - textHeight) / this.properties.singleHeight), parseInt($(dataBlock).attr('data-block_height_masonry')));
                             }
-                            console.log(h);
+                            //console.log(h);
                             grid.update(block, null, null, w, h);
                             this.properties.elementStartingH = h;
                         }
@@ -440,7 +428,7 @@
             });
         },
 
-        restoreBackup: function() {
+        restoreBackup: function () {
             var block;
             var G = this;
             $(G.element).children('.grid-stack-item').each(function () {
@@ -646,9 +634,10 @@
         // Function that creates a new empty block and returns it. The block is
         // added to gridstack and gallery
         createBlock: function (x, y, w, h) {
-            /* if(h < this.properties.singleHeight){
+
+            if (this.settings.galleryLayout == 'masonry' && h * 5 < this.properties.singleWidth) {
                 return;
-            } */
+            }
             var divGridItem = document.createElement('div');
             var divGridStackContent = document.createElement('div');
             var divGridItemContent = document.createElement('div');
@@ -705,13 +694,13 @@
 
             return divGridItem;
         },
-        
+
         createElementProperties: function (elem) {
             var divProperties = document.createElement('div');
             var $elem = $(elem);
-            var pos_y = this.settings.galleryLayout == 'masonry' ?  Math.round(parseInt($elem.attr('data-row')) / this.properties.singleHeight) : parseInt($elem.attr('data-row'));
-            var y = this.settings.galleryLayout == 'masonry' ?  Math.round(parseInt($elem.attr('data-height')) / this.properties.singleHeight) : parseInt($elem.attr('data-height'));
-            //console.log(pos_y, y);
+            var pos_y = this.settings.galleryLayout == 'masonry' ? Math.round(parseInt($elem.attr('data-row')) / this.properties.singleHeight) : parseInt($elem.attr('data-row'));
+            var y = this.settings.galleryLayout == 'masonry' ? Math.round(parseInt($elem.attr('data-height')) / this.properties.singleHeight) : parseInt($elem.attr('data-height'));
+
             $(divProperties).attr({
                 'id': elem.id + '-builder-data',
                 'style': 'display: none;',
@@ -750,62 +739,11 @@
             });
         },
 
-        creaBottone: function () {
-
-            var bottone = document.createElement('button');
-
-            var section = this.$element.parents('.rexpansive_section');
-            $(bottone).appendTo(section[0]);
-            $(bottone).attr({
-                'id': 'frontend-button',
-                'data-uploader_title': 'test',
-                'data-uploader_button_text': 'test2'
-            });
-            var file_frame; // variable for the wp.media file_frame
-
-            // attach a click event (or whatever you want) to some element on
-            // your page
-            $('#frontend-button').on('click', function (event) {
-                event.preventDefault();
-
-                // if the file_frame has already been created, just reuse it
-                if (file_frame) {
-                    file_frame.open();
-                    return;
-                }
-
-                file_frame = wp.media.frames.file_frame = wp.media({
-                    title: $(this).data('uploader_title'),
-                    button: {
-                        text: $(this).data('uploader_button_text'),
-                    },
-                    multiple: false // set this to true for multiple file
-                    // selection
-                });
-
-                console.log(file_frame);
-
-                file_frame.on('select', function () {
-                    var attachment = file_frame.state().get('selection').first().toJSON();
-
-                    // do something with the file here
-                    $('#frontend-button').hide();
-                    $('#frontend-image').attr('src', attachment.url);
-                    console.log(attachment);
-                });
-
-                file_frame.open();
-            });
-        },
-
-
         updateElementAllProperties: function (elem) {
             this._updateElementSize(elem, 'x');
             this._updateElementSize(elem, 'y');
             this._updateElementSize(elem, 'w');
             this._updateElementSize(elem, 'h');
-            //console.log("SAVING: " + elem.id + " x: " + parseInt($(elem).attr('data-gs-x')) + " y: " + parseInt($(elem).attr('data-gs-x')) + " w: " + parseInt($(elem).attr('data-gs-x')) + " h: " + parseInt($(elem).attr('data-gs-x')));
-
         },
 
         _updateElementSize: function (elem, $case) {
@@ -1007,7 +945,7 @@
         },
 
 
-        _removeSizeViewer: function(elem){
+        _removeSizeViewer: function (elem) {
             var $elem = $(elem);
             $elem.children('.el-size-viewer').remove();
         },
@@ -1024,7 +962,7 @@
             $elem.append(spanViewer);
         },
 
-        _removeSettingButton: function(elem){
+        _removeSettingButton: function (elem) {
             var $elem = $(elem);
             $elem.children('.el-size-settingButton').remove();
         },
@@ -1043,7 +981,7 @@
         },
 
         _removeHandles: function (elem) {
-            $(elem).children('.ui-resizable-handle').each(function(){
+            $(elem).children('.ui-resizable-handle').each(function () {
                 $(this).remove();
             });
         },
@@ -1076,53 +1014,53 @@
                 $(div).appendTo($elem);
             });
         },
-/*
-        //TODO update ID of handles
-        // fixes position of the handles of the element with gutter
-        _fixHandlesPosition: function ($elem) {
-            // variables for the east handler
-            var le = $($elem).outerWidth() - 20,
-                te = 0,
-                he = ($($elem).outerHeight()) * (1 - this.properties.percentFactorHandlers),
-                leCircle = 15,
-                teCircle = $($elem).outerHeight() / 2;
-
-            // variables for the south handler
-            var ls = 0,
-                ts = $($elem).outerHeight() - 20,
-                ws = ($($elem).outerWidth()) * (1 - this.properties.percentFactorHandlers),
-                lsCircle = $($elem).outerWidth() / 2,
-                tsCircle = 15;
-
-            // variables for the south-east handler
-            var lse = $($elem).outerWidth() * (1 - this.properties.percentFactorHandlers),
-                tse = $($elem).outerHeight() * (1 - this.properties.percentFactorHandlers),
-                wlse = $($elem).outerWidth() * (this.properties.percentFactorHandlers * 2),
-                hlse = $($elem).outerHeight() * (this.properties.percentFactorHandlers * 2),
-                lseCircle = $($elem).outerWidth() * this.properties.percentFactorHandlers - 5,
-                tseCircle = $($elem).outerHeight() * this.properties.percentFactorHandlers - 5;
-
-            $('#' + $elem.id.concat('e')).css('left', le + 'px');
-            $('#' + $elem.id.concat('e')).css('top', te + 'px');
-            $('#' + $elem.id.concat('e')).css('height', he + 'px');
-            $('#' + $elem.id.concat('e') + ' > .circle-handle-e').css('left', leCircle + 'px');
-            $('#' + $elem.id.concat('e') + ' > .circle-handle-e').css('top', teCircle + 'px');
-
-            $('#' + $elem.id.concat('s')).css('left', ls + 'px');
-            $('#' + $elem.id.concat('s')).css('top', ts + 'px');
-            $('#' + $elem.id.concat('s')).css('width', ws + 'px');
-            $('#' + $elem.id.concat('s') + ' > .circle-handle-s').css('left', lsCircle + 'px');
-            $('#' + $elem.id.concat('s') + ' > .circle-handle-s').css('top', tsCircle + 'px');
-
-            $('#' + $elem.id.concat('se')).css('left', lse + 'px');
-            $('#' + $elem.id.concat('se')).css('top', tse + 'px');
-            $('#' + $elem.id.concat('se')).css('width', wlse + 'px');
-            $('#' + $elem.id.concat('se')).css('height', hlse + 'px');
-            $('#' + $elem.id.concat('se') + ' > .circle-handle-se').css('left', lseCircle + 'px');
-            $('#' + $elem.id.concat('se') + ' > .circle-handle-se').css('top', tseCircle + 'px');
-
-        },
-*/
+        /*
+                //TODO update ID of handles
+                // fixes position of the handles of the element with gutter
+                _fixHandlesPosition: function ($elem) {
+                    // variables for the east handler
+                    var le = $($elem).outerWidth() - 20,
+                        te = 0,
+                        he = ($($elem).outerHeight()) * (1 - this.properties.percentFactorHandlers),
+                        leCircle = 15,
+                        teCircle = $($elem).outerHeight() / 2;
+        
+                    // variables for the south handler
+                    var ls = 0,
+                        ts = $($elem).outerHeight() - 20,
+                        ws = ($($elem).outerWidth()) * (1 - this.properties.percentFactorHandlers),
+                        lsCircle = $($elem).outerWidth() / 2,
+                        tsCircle = 15;
+        
+                    // variables for the south-east handler
+                    var lse = $($elem).outerWidth() * (1 - this.properties.percentFactorHandlers),
+                        tse = $($elem).outerHeight() * (1 - this.properties.percentFactorHandlers),
+                        wlse = $($elem).outerWidth() * (this.properties.percentFactorHandlers * 2),
+                        hlse = $($elem).outerHeight() * (this.properties.percentFactorHandlers * 2),
+                        lseCircle = $($elem).outerWidth() * this.properties.percentFactorHandlers - 5,
+                        tseCircle = $($elem).outerHeight() * this.properties.percentFactorHandlers - 5;
+        
+                    $('#' + $elem.id.concat('e')).css('left', le + 'px');
+                    $('#' + $elem.id.concat('e')).css('top', te + 'px');
+                    $('#' + $elem.id.concat('e')).css('height', he + 'px');
+                    $('#' + $elem.id.concat('e') + ' > .circle-handle-e').css('left', leCircle + 'px');
+                    $('#' + $elem.id.concat('e') + ' > .circle-handle-e').css('top', teCircle + 'px');
+        
+                    $('#' + $elem.id.concat('s')).css('left', ls + 'px');
+                    $('#' + $elem.id.concat('s')).css('top', ts + 'px');
+                    $('#' + $elem.id.concat('s')).css('width', ws + 'px');
+                    $('#' + $elem.id.concat('s') + ' > .circle-handle-s').css('left', lsCircle + 'px');
+                    $('#' + $elem.id.concat('s') + ' > .circle-handle-s').css('top', tsCircle + 'px');
+        
+                    $('#' + $elem.id.concat('se')).css('left', lse + 'px');
+                    $('#' + $elem.id.concat('se')).css('top', tse + 'px');
+                    $('#' + $elem.id.concat('se')).css('width', wlse + 'px');
+                    $('#' + $elem.id.concat('se')).css('height', hlse + 'px');
+                    $('#' + $elem.id.concat('se') + ' > .circle-handle-se').css('left', lseCircle + 'px');
+                    $('#' + $elem.id.concat('se') + ' > .circle-handle-se').css('top', tseCircle + 'px');
+        
+                },
+        */
         createResizePlaceHolder: function ($elem) {
             var block = $($elem)[0];
             var $placeholder = document.createElement('div');
@@ -1195,7 +1133,7 @@
                 gallery._removeSettingButton(elem);
                 gallery._removeHandles(elem);
             }
-            
+
             gallery._addSizeViewer(elem);
             gallery._addSettingButton(elem);
             gallery._addHandles(elem, 'e, s, w, se, sw');
@@ -1243,7 +1181,7 @@
 
             $elem.mousedown(function (event) {
                 if (Rexbuilder_Util.editorMode) {
-                    if ((gallery.properties.elementEdited === null) && !$elem.hasClass('focused')) {
+                    if ((Rexbuilder_Util.editingElement === null) && !$elem.hasClass('focused')) {
                         gallery._focusElement($elem);
                     }
                 }
@@ -1262,9 +1200,9 @@
                     if (!Rexbuilder_Util.elementIsResizing && Rexbuilder_Util.editingElement === null) {
                         gallery._focusElement($elem);
                     }
-                    if (gallery.properties.elementEdited != null) {
+                    if (Rexbuilder_Util.editingElement != null) {
                         var grid = gallery.$element.data('gridstack');
-                        if ($($elem)[0].id !== gallery.properties.elementEdited.id) {
+                        if ($($elem)[0].id !== Rexbuilder_Util.editingElement.id) {
                             grid.enable();
                             $(gallery.$element).addClass('gridActive');
                             gallery._focusElement($elem);
@@ -1291,12 +1229,10 @@
                     var grid = gallery.$element.data('gridstack');
                     grid.disable();
                     $(gallery.$element).removeClass('gridActive');
-                    gallery.properties.elementEdited = $elem;
-                    console.log(gallery.properties.elementEdited);
+                    console.log(Rexbuilder_Util.editingElement);
                     gallery.properties.elementStartingH = parseInt($elem[0]['attributes']['data-gs-height'].value);
                     var textWrap = $elem.find('.text-wrap');
                     textWrap.trigger('externalInteraction');
-                    gallery.properties.textWrapEditing = textWrap;
                     if (!(textWrap.text().length) || textWrap.text() == '""') {
                         $(textWrap)[0].focus();
                     }
@@ -1668,7 +1604,6 @@
             });
 
             editor.subscribe('editableInput', function (e) {
-                // console.log(e);
                 if ($('.medium-insert-images figure img, .mediumInsert figure img').length > 0) {
                     $('.medium-insert-images figure img, .mediumInsert figure img').each(function () {
                         if (!$(this).hasClass('image-text-wrap')) {
@@ -1711,8 +1646,7 @@
                         }
                     });
                 }
-                console.log(gallery.properties.elementEdited);
-                gallery.fixElementTextSize(gallery.properties.elementEdited, null, e);
+                gallery.fixElementTextSize($(e.srcElement).parents(".grid-stack-item"), null, e);
             });
 
             var $elem;

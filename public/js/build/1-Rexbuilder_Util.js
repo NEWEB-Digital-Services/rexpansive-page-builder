@@ -10,7 +10,7 @@ var Rexbuilder_Util = (function($) {
 	var elementIsDragging = false;
 	var editorMode = false;
 	var sectionCopying = false;
-	var elementEdited = null;
+	var editingElement = null;
 
 	// function to detect if we are on a mobile device
 	var _detect_mobile = function() {
@@ -149,7 +149,7 @@ var Rexbuilder_Util = (function($) {
 		editorMode: editorMode,
 		$rexContainer: $rexContainer,
 		sectionCopying: sectionCopying,
-		elementEdited: elementEdited
+		editingElement: editingElement
 	};
 
 })(jQuery);
