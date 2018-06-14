@@ -191,8 +191,7 @@
                         // if there is masonry layout
                         G._calculateBlockHeightMasonry();
                         $(G.element).children('.grid-stack-item').each(function () {
-                            $elem = $(this);
-                            G.updateSizeViewerText($elem);
+                            G.updateSizeViewerText(this);
                             G.fixElementTextSize(this, null, null);
                         });
                     } else {
@@ -200,6 +199,7 @@
                         grid._initStyles();
                         grid._updateStyles(G.properties.singleHeight);
                     }
+                    //G.properties.mediumEditorIstance.trigger("editableInput");
                 }
             });
 
@@ -1094,19 +1094,19 @@
             $($resizePlaceHolder).css('height', nH * width + "px");
         },
 
-        updateSizeViewerText: function ($elem, x, y) {
+        updateSizeViewerText: function (elem, x, y) {
+            var $elem = $(elem);
             if (x === undefined || y === undefined) {
                 var x, y;
-                x = $($elem)[0]['attributes']['data-gs-width'].value;
+                x = parseInt($elem.attr("data-gs-width"));
+                y = parseInt($elem.attr("data-gs-height"));
                 if (this.settings.galleryLayout == 'masonry') {
-                    y = $($elem)[0]['attributes']['data-gs-height'].value * this.properties.singleHeight;
+                    y = y * this.properties.singleHeight;
                     y = Math.round(y);
-                } else {
-                    y = $($elem)[0]['attributes']['data-gs-height'].value;
                 }
             }
-            var name = $elem.id === undefined ? $elem[0]['attributes']['id'].value : $elem.id;
-            $('#' + name + ' > .el-size-viewer').text(x + ' x ' + y);
+            $elem.find(".el-size-viewer").text(x + ' x ' + y);
+            $elem = undefined;
         },
 
         showToolBox: function () {
@@ -1646,6 +1646,7 @@
                         }
                     });
                 }
+                //console.log(Rexbuilder_Util);
                 gallery.fixElementTextSize($(e.srcElement).parents(".grid-stack-item"), null, e);
             });
 
