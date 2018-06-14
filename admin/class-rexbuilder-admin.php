@@ -1297,11 +1297,13 @@ class Rexbuilder_Admin {
 							$response['info']['section_overlay_style'] = $section_overlay_style;
 							$response['info']['section_model'] = $query->post->ID;
 
+							$blocks = array();
+
 							ob_start();
-							if( !empty( $section_content ) ) :
+							if( !empty( $section_content ) ) {
 								preg_match_all( "/$pattern/", $section_content, $result_block);
 								$blocks = array();
-								foreach( $result_block[3] as $i => $attrs ) :
+								foreach( $result_block[3] as $i => $attrs ) {
 									$block_attr = shortcode_parse_atts( trim( $attrs ) );
 
 									// Prepare the background block settings
@@ -1671,12 +1673,14 @@ class Rexbuilder_Admin {
 									$block = array(
 										'w' => $block_attr['size_x'],
 										'h' => $block_attr['size_y'],
+										'col' => $block_attr['col'],
+										'row' => $block_attr['row'],
 										'id' => $b_id,
 										'html' => trim( ob_get_clean() ),
 									);
 									array_push( $blocks, $block );
-								endforeach;
-							endif;
+								}
+							}
 							$response['info']['tmpl'] = $blocks;
 						}
 					}

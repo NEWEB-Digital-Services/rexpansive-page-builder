@@ -115,10 +115,12 @@ var Rexpansive_Builder_Admin_ModelEditor = (function($) {
 
               Rexpansive_Builder_Admin_Config.collect[model.section_id].gridRef.remove_all_widgets();
 
-              for(var b=0; b<response.data.info.tmpl.length;b++) {
-                Rexpansive_Builder_Admin_Config.collect[model.section_id].gridRef.add_widget(response.data.info.tmpl[b].html, response.data.info.tmpl[b].w, response.data.info.tmpl[b].h);
-                Rexpansive_Builder_Admin_Utilities.update_live_visual_size($('#' + response.data.info.tmpl[b].id));
-                Rexpansive_Builder_Admin_Config.collect[model.section_id].internalIndex++;
+              if( response.data.info.tml ) {
+                for(var b=0; b<response.data.info.tmpl.length;b++) {
+                  Rexpansive_Builder_Admin_Config.collect[model.section_id].gridRef.add_widget(response.data.info.tmpl[b].html, parseInt( response.data.info.tmpl[b].w ), parseInt( response.data.info.tmpl[b].h ), parseInt( response.data.info.tmpl[b].col ), parseInt( response.data.info.tmpl[b].row ) );
+                  Rexpansive_Builder_Admin_Utilities.update_live_visual_size($('#' + response.data.info.tmpl[b].id));
+                  Rexpansive_Builder_Admin_Config.collect[model.section_id].internalIndex++;
+                }
               }
               
               Rexpansive_Builder_Admin_Utilities.launchTooltips();
