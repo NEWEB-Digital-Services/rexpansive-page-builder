@@ -488,6 +488,9 @@ class Rexbuilder_Block {
 			endswitch;
 			
 			echo "</div>\n";
+			
+			include(REXPANSIVE_BUILDER_PATH."public/partials/rexlive-block-tools.php");
+			echo '<div class="rexlive-block-drag-handle"></div>';
 			echo "</div>\n";
 		
 			return ob_get_clean();

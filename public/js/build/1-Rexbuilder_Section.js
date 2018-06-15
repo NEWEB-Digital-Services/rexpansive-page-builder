@@ -72,7 +72,7 @@ var Rexbuilder_Section = (function ($) {
             $(e).attr('data-rexlive-section-id', i);
             lastSectionNumber = i;
         });
-
+        
         if (Rexbuilder_Util.editorMode === true) {
             //launching sortable
             Rexbuilder_Util["$rexContainer"].sortable({

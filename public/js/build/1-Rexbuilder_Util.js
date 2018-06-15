@@ -10,6 +10,7 @@ var Rexbuilder_Util = (function($) {
 	var elementIsDragging = false;
 	var editorMode = false;
 	var sectionCopying = false;
+	var blockCopying = false;
 	var editingElement = null;
 	var windowIsResizing = false;
 
@@ -150,6 +151,7 @@ var Rexbuilder_Util = (function($) {
 		editorMode: editorMode,
 		$rexContainer: $rexContainer,
 		sectionCopying: sectionCopying,
+		blockCopying: blockCopying,
 		editingElement: editingElement,
 		windowIsResizing: windowIsResizing
 	};

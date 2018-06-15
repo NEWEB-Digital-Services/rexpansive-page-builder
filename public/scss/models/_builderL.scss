@@ -1,5 +1,6 @@
 ::selection {
-    /*color: #000;*/
+    color: red;
+    background: yellow;
 }
 
 .medium-insert-images.medium-insert-images-left, .medium-insert-images-left.mediumInsert, .mediumInsert.small{
@@ -284,8 +285,37 @@
     transform: translate(-50%, 50%);
 }
 
+.rexlive-block-toolbox {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    //height: 20px;
+    //background-color: #444;
+    display: none;
+}
+
+.rexlive-block-toolbox.focused{
+    display: block;
+}
+
+.rexlive-block-drag-handle{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+
+.builder-delete-block{
+    right: 0;
+    cursor: pointer;
+}
+
+.builder-copy-block{
+    left: 66%;
+    cursor: copy;
+}
+
 .el-size-viewer {
-    visibility: hidden;
     position: absolute;
     padding: 4px;
     font-family: 'Open Sans';
@@ -294,10 +324,11 @@
     z-index: 20;
     font-size: 10px;
     letter-spacing: 2px;
+    top: 0;
+    left: 0;
 }
 
 .el-size-settingButton {
-    visibility: hidden;
     position: absolute;
     z-index: 20;
     display: inline-block;
@@ -377,14 +408,6 @@
             transition: transform 0.2s;
 }
 
-/* .packery-drop-placeholder {
-    outline: 3px dashed #444;
-    outline-offset: -6px;
-    /* transition position changing 
-    -webkit-transition: -webkit-transform 0.2s;
-            transition: transform 0.2s;
-} */
-
 /* jQuery UI Draggable adds ui-draggable-dragging */
  .ui-draggable-dragging{
     z-index: 2;
@@ -394,10 +417,6 @@
 .grid-item-content:active {
     cursor: pointer;
 }
-/* /* Packery adds class while transitioning to drop position
- .grid-item.is-positioning-post-drag:active {
-  cursor: hand; 
- } */
  
 .grid-item-content{
     width: 100%;
@@ -414,4 +433,8 @@
 }
 .rex-container .medium-editor-insert-plugin p{
     margin: 0px;
+}
+
+.grid-stack-item.removing_block{
+    display: none;
 }

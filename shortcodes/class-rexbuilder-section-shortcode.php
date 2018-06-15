@@ -140,12 +140,10 @@ class Rexbuilder_Section {
 			}
 			unset($property_name);
 			unset($value_property);
-			echo '></div>
-';
+			echo '></div>';
 
+			include(REXPANSIVE_BUILDER_PATH."public/partials/rexlive-section-tools.php");
 
-			$this->create_toolbox();
-	
 			if( '' != $video_bg_url_vimeo_section && 'undefined' != $video_bg_url_vimeo_section ) {
 ?>
 <div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--section">

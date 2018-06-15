@@ -190,12 +190,14 @@
 
             $(window).on('load', { Gallery: this, Rexbuilder_Util: Rexbuilder_Util }, function (event) {
                 var gallery = event.data.Gallery;
-                var $elem;
+
+                
                 // if there is masonry layout               
                 if (Rexbuilder_Util.editorMode) {
+                    gallery._addBlockToolboxListeners();
                     gallery._launchTextEditor();
                 }
-
+                    
                 if (gallery.settings.galleryLayout == 'masonry') {
                     gallery._calculateBlockHeightMasonry();
                     gallery.updateAllElementsProperties();
@@ -203,12 +205,12 @@
 
 
                 $(gallery.element).children('.grid-stack-item').each(function () {
-                    $elem = $(this);
+                    var $elem = $(this);
                     gallery.updateSizeViewerText($elem);
                     // we need gridstack launched to calculate block heights
                     if (!$elem.hasClass('block-has-slider')) {
                         gallery.fixElementTextSize(this, null, null);
-                    }
+                    }        
                 });
 
                 //gallery.$element.trigger('change');
@@ -245,6 +247,38 @@
             gridReadyEvent.gallery = this;
             $(document).trigger(gridReadyEvent); 
             */
+        },
+
+        _addBlockToolboxListeners: function(){
+            $(document).on('click', '.builder-delete-block', function (e) {
+                var $elem = $(e.currentTarget).parents('.grid-stack-item');
+                var grid = $elem.parents('.grid-stack-row').data("gridstack");
+                grid.removeWidget($elem, false);
+                $elem.addClass("removing_block");
+            });
+
+            $(document).on('click', '.builder-copy-block', function (e) {
+                console.log("copia");
+                Rexbuilder_Util.blockCopying = true;
+                /* var section = $(e.currentTarget).parents('.rexpansive_section');
+                var $newSection;
+
+                $newSection = $(section).clone(false);
+
+                $(section).after($newSection);
+
+                Rexbuilder_Section.prepareSection($newSection);
+
+                $newSection.find('.grid-stack-row').perfectGridGalleryEditor();
+
+                $newSection.find('.builder-delete-row').click(function (e) {
+                    $(e.currentTarget).parents('.rexpansive_section').addClass("removing_section");
+                });
+
+                Rexbuilder_Util["$rexContainer"].sortable("refresh"); */
+
+                Rexbuilder_Util.blockCopying = false;
+            });
         },
 
         refreshGrid: function () {
@@ -1148,13 +1182,9 @@
             gallery._updateElementPadding($elem.find('.grid-stack-item-content'));
 
             if (Rexbuilder_Util.sectionCopying) {
-                gallery._removeSizeViewer(elem);
-                gallery._removeSettingButton(elem);
                 gallery._removeHandles(elem);
             }
 
-            gallery._addSizeViewer(elem);
-            gallery._addSettingButton(elem);
             gallery._addHandles(elem, 'e, s, w, se, sw');
 
             blockContent = $elem.find('.grid-item-content');
@@ -1174,6 +1204,7 @@
                 "data-gs-min-height": 1,
                 "data-gs-max-width": 500
             });
+
 
             // adding text wrap element if it's not there
             var textWrapEl;
@@ -1270,28 +1301,8 @@
             });
         },
 
-        _hideSizeViewer: function ($elem) {
-            $elem.children('.el-size-viewer').removeClass('focused');
-            $elem.children('.el-size-viewer').addClass('size-viewer-hidden');
-        },
-
-        _showSizeViewer: function ($elem) {
-            $elem.children('.el-size-viewer').addClass('focused');
-            $elem.children('.el-size-viewer').removeClass('size-viewer-hidden');
-        },
-
-        _showSettingButton: function ($elem) {
-            $elem.children('.el-size-settingButton').addClass('focused');
-            $elem.children('.el-size-settingButton').removeClass('size-settingButton-hidden');
-        },
-        _hideSettingButton: function ($elem) {
-            $elem.children('.el-size-settingButton').removeClass('focused');
-            $elem.children('.el-size-settingButton').addClass('size-settingButton-hidden');
-        },
-
         _focusElement: function ($elem) {
-            $elem.find('.el-size-viewer').addClass('focused');
-            $elem.find('.el-size-settingButton').addClass('focused');
+            $elem.children(".rexlive-block-toolbox").addClass("focused");
             $elem.addClass('focused');
             $elem.parent().addClass('focused');
             $elem.parent().parent().addClass('focused');
@@ -1300,8 +1311,7 @@
         },
 
         _unFocusElement: function ($elem) {
-            $elem.find('.el-size-viewer').removeClass('focused');
-            $elem.find('.el-size-settingButton').removeClass('focused');
+            $elem.children(".rexlive-block-toolbox").removeClass("focused");
             $elem.removeClass('focused');
             $elem.parent().removeClass('focused');
             $elem.parent().parent().removeClass('focused');
@@ -1438,7 +1448,7 @@
                 cellHeight: gallery.properties.singleHeight,
                 draggable: {
                     containment: 'parent',
-                    handle: '.grid-stack-item-content',
+                    handle: '.rexlive-block-drag-handle',
                     scroll: false,
                 },
                 float: floating,
