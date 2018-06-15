@@ -12,55 +12,10 @@ var Rexbuilder_Section = (function ($) {
             return (className.match(/grid-stack-instance-\d+/g) || []).join(' ');
         });
 
-        // removing scrollbars
-        $gallery.find(".grid-item-content").each(function () {
-            var $this = $(this);
-            var $div = $(document.createElement("div"));
-            var $divScrollbar = $this.find(".rex-custom-scrollbar");
-            var $textWrap = $this.find('.text-wrap');
-
-            $div.addClass("rex-custom-scrollbar");
-            if ($this.hasClass("rex-flexbox")) {
-                $div.addClass("rex-custom-position");
-            }
-            $textWrap.detach().appendTo($div);
-            $div.appendTo($divScrollbar.parent());
-            $divScrollbar.remove();
-
-            $this = undefined;
-            $div = undefined;
-            $divScrollbar = undefined;
-            $textWrap = undefined;
-        });
-
-        //removing text-editor
-        $gallery.find(".grid-item-content").each(function () {
-            var $this = $(this);
-            var $textWrap = $this.find('.text-wrap');
-            var textWrapContent;
-            var $div;
-            var css;
-
-            if ($textWrap.length != 0) {
-                textWrapContent = $textWrap.html();
-                $div = $(document.createElement("div"));
-                css = $textWrap.attr("style");
-                $div.appendTo($textWrap.parent());
-                $div.addClass("text-wrap");
-                if ($textWrap.hasClass("rex-content-resizable")) {
-                    $div.addClass("rex-content-resizable");
-                }
-                $div.attr("style", css);
-                $div.html(textWrapContent);
-                $textWrap.find(".text-editor-span-fix").eq(0).remove();
-                $textWrap.remove();
-            }
-
-            $this = undefined;
-            $textWrap = undefined;
-            textWrapContent = undefined;
-            $div = undefined;
-            css = undefined;
+        // removing scrollbars and text editor
+        $gallery.find(".grid-stack-item").each(function () {
+            Rexbuilder_Util_Editor.removeScrollBar($(this));
+            Rexbuilder_Util_Editor.removeTextEditor($(this));
         });
 
         $section.attr("data-rexlive-section-id", lastSectionNumber);
@@ -98,9 +53,7 @@ var Rexbuilder_Section = (function ($) {
 
                 $newSection.find('.grid-stack-row').perfectGridGalleryEditor();
 
-                $newSection.find('.builder-delete-row').click(function (e) {
-                    $(e.currentTarget).parents('.rexpansive_section').addClass("removing_section");
-                });
+                $newSection.find('.grid-stack-row').perfectGridGalleryEditor("updateGrid");
 
                 Rexbuilder_Util["$rexContainer"].sortable("refresh");
 

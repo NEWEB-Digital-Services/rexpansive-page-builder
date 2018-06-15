@@ -129,6 +129,8 @@ var lodash = _.noConflict();
         /* -- Launching the grid -- */
         Rexbuilder_Util.$rexContainer.find('.grid-stack-row').perfectGridGalleryEditor();
 
+        Rexbuilder_Util_Editor.addBlockToolboxListeners();
+        
         /* -- Launching Photoswipe -- */
         initPhotoSwipeFromDOM('.photoswipe-gallery');
 

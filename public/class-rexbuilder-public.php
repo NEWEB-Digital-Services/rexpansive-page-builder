@@ -188,33 +188,37 @@ class Rexbuilder_Public {
 			wp_enqueue_script( 'storeVariables', REXPANSIVE_BUILDER_URL  . $cartella. 'js/store.legacy.min.js', array( 'jquery' ), $this->version, true );
 			
 			wp_enqueue_script( '1-RexUtil', REXPANSIVE_BUILDER_URL  . $cartella. 'js/build/1-Rexbuilder_Util.js', array( 'jquery' ), $this->version, true );
+			wp_enqueue_script( '1-RexUtilEditor', REXPANSIVE_BUILDER_URL  . $cartella. 'js/build/1-Rexbuilder_Util_Editor.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( '5-flickity', REXPANSIVE_BUILDER_URL  . $cartella. 'js/vendor/5-flickity.pkgd.min.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( '2-RexSlider', REXPANSIVE_BUILDER_URL  . $cartella. 'js/build/2-RexSlider.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( '8-VimeoVideo', REXPANSIVE_BUILDER_URL  . $cartella. 'js/build/8-VimeoVideo.js', array( 'jquery' ), $this->version, true );
 			//wp_enqueue_script( 'textfill', REXPANSIVE_BUILDER_URL  . $cartella. 'js/__jquery.textFill.js', array( 'jquery' ), $this->version, true );
 			//wp_enqueue_script( 'text-resize', REXPANSIVE_BUILDER_URL  . $cartella. 'js/__TextResize.js', array( 'jquery' ), $this->version, true );
 			
+			//gridstack
 			wp_enqueue_script( 'jquery-ui', REXPANSIVE_BUILDER_URL  . $cartella. 'js/jquery-ui.min.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( 'touchPunch', REXPANSIVE_BUILDER_URL  . $cartella. 'js/jquery.ui.touch-punch.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( 'lodash', REXPANSIVE_BUILDER_URL  . $cartella. 'js/lodash.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( 'gridstack', REXPANSIVE_BUILDER_URL  . $cartella. 'js/gridstack.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( 'gridstackUI', REXPANSIVE_BUILDER_URL  . $cartella. 'js/gridstack.jQueryUI.js', array( 'jquery' ), $this->version, true );
 			
+			//editor text
 			wp_enqueue_script( 'spectrumColor', REXPANSIVE_BUILDER_URL  . $cartella. 'js/spectrum.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( 'medium-editor', REXPANSIVE_BUILDER_URL  . $cartella. 'js/medium-editor.min.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( 'mediumEditorToolbarStates', REXPANSIVE_BUILDER_URL  . $cartella. 'js/medium-editor-toolbar-states.min.js', array( 'jquery' ), $this->version, true );
 			
 			wp_enqueue_script( 'handlebars-runtime', REXPANSIVE_BUILDER_URL  . $cartella. 'js/handlebars.runtime.js', array( 'jquery' ), $this->version, true );
-			
 			wp_enqueue_script( 'jquery-fileupload', REXPANSIVE_BUILDER_URL  . $cartella. 'js/jquery.fileupload.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( 'jquery-cycle2', REXPANSIVE_BUILDER_URL  . $cartella. 'js/jquery.cycle2.min.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( 'cycle2-center', REXPANSIVE_BUILDER_URL  . $cartella. 'js/jquery.cycle2.center.min.js', array( 'jquery' ), $this->version, true );
-			
 			wp_enqueue_script( 'medium-editor-insert', REXPANSIVE_BUILDER_URL  . $cartella. 'js/medium-editor-insert-plugin.min.js', array( 'jquery' ), $this->version, true );
 			//wp_enqueue_script( 'medium-editor-tables', REXPANSIVE_BUILDER_URL  . $cartella. 'js/medium-editor-tables.min.js', array( 'jquery' ), $this->version, true );
 			//wp_enqueue_script( 'medium-editor-insert-tables', REXPANSIVE_BUILDER_URL  . $cartella. 'js/medium-editor-insert-tables.js', array( 'jquery' ), $this->version, true );
+
 			wp_enqueue_script( 'utilities', REXPANSIVE_BUILDER_URL  . $cartella. 'js/utilities.js', array( 'jquery' ), $this->version, true );
+
 			wp_enqueue_script( 'custom-scrollbar',REXPANSIVE_BUILDER_URL  . $cartella. 'js/vendor/1-jquery.mCustomScrollbar.concat.min.js', array( 'jquery' ), $this->version, true );
+
 			wp_enqueue_script( '2-jqueryEditor', REXPANSIVE_BUILDER_URL  . $cartella. 'js/build/2-jquery.perfectGridGalleryEditor.js', array( 'jquery' ), $this->version, true );
 			
 			wp_enqueue_script( '4-modals', REXPANSIVE_BUILDER_URL  . $cartella. 'js/4-modals.js', array( 'jquery' ), $this->version, true );

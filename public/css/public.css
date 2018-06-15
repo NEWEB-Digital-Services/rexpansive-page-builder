@@ -4869,6 +4869,9 @@ a.pswp-item {
   width: 100%;
   height: 100%; }
 
+.rexlive-block-drag-handle.hide-drag {
+  display: none; }
+
 .builder-delete-block {
   right: 0;
   cursor: pointer; }
