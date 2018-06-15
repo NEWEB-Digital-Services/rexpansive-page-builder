@@ -142,7 +142,8 @@ class Rexbuilder_Section {
 			unset($value_property);
 			echo '></div>
 ';
-		
+
+
 			$this->create_toolbox();
 	
 			if( '' != $video_bg_url_vimeo_section && 'undefined' != $video_bg_url_vimeo_section ) {

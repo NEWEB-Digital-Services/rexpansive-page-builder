@@ -242,8 +242,6 @@ class Rexbuilder_Public {
 					'rexnonce'	=>	wp_create_nonce( 'rex-ajax-call-nonce' )
 			));
 
-			//wp_enqueue_script( 'creaButton', REXPANSIVE_BUILDER_URL  . $cartella. 'js/creaButtonMediaLibrary.js', array( 'jquery' ), $this->version, true );
-			
 			}
 		}
 		
@@ -327,6 +325,27 @@ class Rexbuilder_Public {
 		}
 		include_once('partials/rexlive-buttons-fixed.php');
 	}
+
+	public function create_rexlive_section_tools(){
+		if ( !current_user_can('edit_posts') &&  !current_user_can('edit_pages') ) { 
+			return; 
+		}
+		if( !isset( $this->plugin_options['post_types'] ) ) {
+			return;
+		}
+		include_once('partials/rexlive-buttons-fixed.php');
+	}
+
+	public function create_rexlive_block_tools(){
+		if ( !current_user_can('edit_posts') &&  !current_user_can('edit_pages') ) { 
+			return; 
+		}
+		if( !isset( $this->plugin_options['post_types'] ) ) {
+			return;
+		}
+		include_once('partials/rexlive-buttons-fixed.php');
+	}
+
 	/**
 	*	Ajax call to save sections status
 	*

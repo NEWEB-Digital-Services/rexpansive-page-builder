@@ -253,6 +253,15 @@ class Rexbuilder {
 		// filter for the media library
 		//$this->loader->add_filter( 'ajax_query_attachments_args', $plugin_public, 'filter_media' );
 		
+		/* 			
+			funzione per vedere se un utente è loggato
+			if ( is_user_logged_in() ) {
+				echo "<script type='text/javascript'>alert('Welcome, registered user');</script>";
+			} else {
+				echo "<script type='text/javascript'>alert('Welcome, visitor');</script>";
+			}
+ */
+
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
@@ -263,8 +272,12 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_vertical_dots' );
 
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'create_builder_modals' );
+		
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'create_rexlive_fixed_buttons' );
-	
+		
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'create_rexlive_section_tools' );
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'create_rexlive_block_tools' );
+
 		$this->loader->add_action( 'wp_ajax_rexlive_save_sections', $plugin_public, 'rexlive_save_sections' );
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_sections', $plugin_public, 'rexlive_save_sections' );
 

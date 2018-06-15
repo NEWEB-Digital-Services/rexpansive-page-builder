@@ -3829,10 +3829,6 @@ http://flickity.metafizzy.co
   -webkit-animation-name: fadeInAndOut;
   animation-name: fadeInAndOut; }
 
-/* -------------- TYPOGRAPHY ------------- */
-.perfect-grid-item .text-wrap p:not(:last-child) {
-  margin-bottom: 1em; }
-
 .sk-double-bounce {
   width: 40px;
   height: 40px;
@@ -3955,10 +3951,6 @@ http://flickity.metafizzy.co
 .perfect-grid-item.rex-flex-right.rex-flex-bottom .grid-item-content {
   background-position: right bottom; }
 
-/* -------------- TYPOGRAPHY ------------- */
-.perfect-grid-item .text-wrap p:not(:last-child) {
-  margin-bottom: 1em; }
-
 /* ------- OVERLAY ------------ */
 .responsive-overlay {
   visibility: hidden;
@@ -4010,9 +4002,12 @@ http://flickity.metafizzy.co
   max-height: 100%;
   overflow: hidden; }
   .rex-custom-scrollbar .mCSB_scrollTools {
-    right: 30px; }
+    right: 10px; }
     .rex-custom-scrollbar .mCSB_scrollTools .mCSB_draggerContainer {
-      margin: 20px 0; }
+      margin: 20px 0;
+      /* 			margin-top: 5%;
+      			margin-bottom: 5%;
+       */ }
     .rex-custom-scrollbar .mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
       width: 3px;
       background-color: #686868; }
@@ -4974,3 +4969,6 @@ a.pswp-item {
 
 .rexbuilder-block-data {
   display: none; }
+
+.rex-container .medium-editor-insert-plugin p {
+  margin: 0px; }

@@ -11,6 +11,7 @@ var Rexbuilder_Util = (function($) {
 	var editorMode = false;
 	var sectionCopying = false;
 	var editingElement = null;
+	var windowIsResizing = false;
 
 	// function to detect if we are on a mobile device
 	var _detect_mobile = function() {
@@ -149,7 +150,8 @@ var Rexbuilder_Util = (function($) {
 		editorMode: editorMode,
 		$rexContainer: $rexContainer,
 		sectionCopying: sectionCopying,
-		editingElement: editingElement
+		editingElement: editingElement,
+		windowIsResizing: windowIsResizing
 	};
 
 })(jQuery);

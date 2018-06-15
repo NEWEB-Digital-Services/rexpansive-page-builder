@@ -67,8 +67,6 @@ var Rexbuilder_Section = (function ($) {
     }
 
     var init = function () {
-        console.log("Launching section");
-
         //Setting row number
         Rexbuilder_Util["$rexContainer"].children('.rexpansive_section').each(function (i, e) {
             $(e).attr('data-rexlive-section-id', i);

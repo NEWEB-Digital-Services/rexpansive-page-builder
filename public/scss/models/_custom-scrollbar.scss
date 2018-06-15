@@ -5,11 +5,13 @@
 	max-height: 100%;
 	overflow: hidden;
 	.mCSB_scrollTools {
-		right: 30px;
+		right: 10px;
 		// visibility: hidden;
 		.mCSB_draggerContainer {
 			margin: 20px 0;
-		}
+/* 			margin-top: 5%;
+			margin-bottom: 5%;
+ */		}
 		.mCSB_dragger {
 			.mCSB_dragger_bar {
 				width: 3px;
