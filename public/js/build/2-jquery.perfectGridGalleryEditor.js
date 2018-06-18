@@ -247,7 +247,6 @@
             });
 
             //gallery.$element.trigger('change');
-
             console.log('Grid ' + gallery.properties.sectionNumber + " launched");
         },
 
@@ -397,6 +396,7 @@
                         if ($blockContent.hasClass('mCS_no_scrollbar') || $blockContent.hasClass('mCS_disabled')) {
                             // se il layout della griglia e' masonry
                             if (this.settings.galleryLayout == 'masonry') {
+                                console.log(block);
                                 var w = parseInt(block['attributes']['data-gs-width'].value);
                                 var h = this.properties.elementStartingH;
                                 var grid = this.$element.data('gridstack');
@@ -463,37 +463,37 @@
             });
         },
 
-        reLaunchGrid: function (data) {
+        updateSection: function (data) {
             var G = this;
             var oldLayout = G.settings.galleryLayout;
 
             G.settings.galleryLayout = data['layout'];
-            console.log("relaunching grid");
+            console.log("Updating Section");
             if (oldLayout != G.settings.galleryLayout) {
-
-                G._defineDynamicPrivateProperties();
-
+                
+                G.$element.attr("data-layout", G.settings.galleryLayout);
                 $(G.element).parents('.rexpansive_section').find('.section-data').attr({
                     'data-layout': G.settings.galleryLayout
                 });
-
+                
                 Rexbuilder_Util.elementIsResizing = true;
                 Rexbuilder_Util.elementIsDragging = true;
-
+                
                 // destroying gridstack & jquery ui
                 G.destroyGridstack();
-
+                
                 // destroy scrollbars
                 G._removeScrollbars();
-
+                
                 // adding back the handles for resizing
                 if (!Rexbuilder_Util.sectionCopying) {
                     $(G.element).children('.grid-stack-item').each(function () {
                         G._addHandles(this, 'e, s, w, se, sw');
                     });
                 }
-
-                var $elem;
+                
+                G._defineDynamicPrivateProperties();
+                
                 // relaunching grid
                 if (G.settings.galleryLayout == 'masonry') {
                     G._launchGridStack();
@@ -502,27 +502,18 @@
                     G.restoreBackup();
                     G._launchGridStack();
                     G._fixBlocksPosition();
-
-                    /*    var grid = G.$element.data('gridstack');
-                       //grid.removeAll(false);
-   
-                       $(G.element).children('.grid-stack-item').reverse().each(function () {
-                           console.log(this.id + " x: " + (parseInt($(this).attr('data-col')) - 1) + " y: " + (parseInt($(this).attr('data-row')) - 1) + " w: " + parseInt($(this).attr('data-width')) + " h: " + parseInt($(this).attr('data-height')));
-                           grid.move(this, (parseInt($(this).attr('data-col')) - 1), (parseInt($(this).attr('data-row')) - 1));
-                       }); */
-
                 }
 
-                var $blockContent;
                 $(G.element).children('.grid-stack-item').each(function () {
-                    $elem = $(this);
+                    var $elem = $(this);
+                    var $blockContent = $elem.find('.grid-item-content');
                     G.updateSizeViewerText($elem);
-                    $blockContent = $elem.find('.grid-item-content');
                     if (!$elem.hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
                         G.properties.elementStartingH = parseInt(this['attributes']['data-gs-height'].value);
                         G.fixElementTextSize(this, null, null);
                     }
                 });
+
                 Rexbuilder_Util.elementIsResizing = false;
                 Rexbuilder_Util.elementIsDragging = false;
                 this.properties.firstStartGrid = true;
@@ -533,7 +524,7 @@
         },
 
         /**
-         * Funzione chiamata per distruggere l'istanza di gridstack
+         * Function called for destroying gridstack-istance
 		 */
         destroyGridstack: function () {
             var G = this;
@@ -550,20 +541,12 @@
             G.$element.removeClass('grid-stack-instance-' + this.properties.gridstackInstanceID);
         },
 
-        recalculateBlocks: function () {
-
-        },
-
         getGridWidth: function () {
             return this.properties.wrapWidth;
         },
 
         setGridWidth: function (width) {
             $(this.$element).outerWidth(width);
-        },
-
-        relayoutGrid: function () {
-            ;
         },
 
         // insert elements in the Packery grid and reload the items according to
@@ -660,6 +643,7 @@
                 return;
             }
             var divGridItem = document.createElement('div');
+            var divDragHandle = document.createElement('div');
             var divGridStackContent = document.createElement('div');
             var divGridItemContent = document.createElement('div');
             var divBlockOverlay = document.createElement('div');
@@ -685,10 +669,15 @@
                 'data-gs-x': x,
                 'data-rexbuilder-block-id': idBlock
             });
+            
+            $(divDragHandle).attr({
+                'class': 'rexlive-block-drag-handle'
+            });
 
             $(divGridStackContent).attr({
                 'class': 'grid-stack-item-content'
             });
+
             $(divGridItemContent).attr({
                 'class': 'grid-item-content'
             });
@@ -707,6 +696,7 @@
             $(divBlockOverlay).appendTo(divGridItemContent);
             $(divGridItemContent).appendTo(divGridStackContent);
             $(divGridStackContent).appendTo(divGridItem);
+            $(divDragHandle).appendTo(divGridItem);
 
             this._prepareElement(divGridItem);
             this.createElementProperties(divGridItem);
@@ -999,53 +989,7 @@
                 $(div).appendTo($elem);
             });
         },
-        /*
-                //TODO update ID of handles
-                // fixes position of the handles of the element with gutter
-                _fixHandlesPosition: function ($elem) {
-                    // variables for the east handler
-                    var le = $($elem).outerWidth() - 20,
-                        te = 0,
-                        he = ($($elem).outerHeight()) * (1 - this.properties.percentFactorHandlers),
-                        leCircle = 15,
-                        teCircle = $($elem).outerHeight() / 2;
-        
-                    // variables for the south handler
-                    var ls = 0,
-                        ts = $($elem).outerHeight() - 20,
-                        ws = ($($elem).outerWidth()) * (1 - this.properties.percentFactorHandlers),
-                        lsCircle = $($elem).outerWidth() / 2,
-                        tsCircle = 15;
-        
-                    // variables for the south-east handler
-                    var lse = $($elem).outerWidth() * (1 - this.properties.percentFactorHandlers),
-                        tse = $($elem).outerHeight() * (1 - this.properties.percentFactorHandlers),
-                        wlse = $($elem).outerWidth() * (this.properties.percentFactorHandlers * 2),
-                        hlse = $($elem).outerHeight() * (this.properties.percentFactorHandlers * 2),
-                        lseCircle = $($elem).outerWidth() * this.properties.percentFactorHandlers - 5,
-                        tseCircle = $($elem).outerHeight() * this.properties.percentFactorHandlers - 5;
-        
-                    $('#' + $elem.id.concat('e')).css('left', le + 'px');
-                    $('#' + $elem.id.concat('e')).css('top', te + 'px');
-                    $('#' + $elem.id.concat('e')).css('height', he + 'px');
-                    $('#' + $elem.id.concat('e') + ' > .circle-handle-e').css('left', leCircle + 'px');
-                    $('#' + $elem.id.concat('e') + ' > .circle-handle-e').css('top', teCircle + 'px');
-        
-                    $('#' + $elem.id.concat('s')).css('left', ls + 'px');
-                    $('#' + $elem.id.concat('s')).css('top', ts + 'px');
-                    $('#' + $elem.id.concat('s')).css('width', ws + 'px');
-                    $('#' + $elem.id.concat('s') + ' > .circle-handle-s').css('left', lsCircle + 'px');
-                    $('#' + $elem.id.concat('s') + ' > .circle-handle-s').css('top', tsCircle + 'px');
-        
-                    $('#' + $elem.id.concat('se')).css('left', lse + 'px');
-                    $('#' + $elem.id.concat('se')).css('top', tse + 'px');
-                    $('#' + $elem.id.concat('se')).css('width', wlse + 'px');
-                    $('#' + $elem.id.concat('se')).css('height', hlse + 'px');
-                    $('#' + $elem.id.concat('se') + ' > .circle-handle-se').css('left', lseCircle + 'px');
-                    $('#' + $elem.id.concat('se') + ' > .circle-handle-se').css('top', tseCircle + 'px');
-        
-                },
-        */
+
         createResizePlaceHolder: function ($elem) {
             var block = $($elem)[0];
             var $placeholder = document.createElement('div');
@@ -1174,12 +1118,14 @@
 
             // adding element listeners
             $elem.click(function (event) {
+                console.log("click: "+$elem.data("rexbuilder-block-id"));
                 if (Rexbuilder_Util.editorMode) {
                     //gallery._focusElement($elem);
                 }
             });
 
             $elem.mousedown(function (event) {
+                console.log("mouse down: "+$elem.data("rexbuilder-block-id"));
                 if (Rexbuilder_Util.editorMode) {
                     if ((Rexbuilder_Util.editingElement === null) && !$elem.hasClass('focused')) {
                         gallery._focusElement($elem);
@@ -1187,7 +1133,8 @@
                 }
             });
 
-            $(document).mouseup(function (e) {
+            $elem.mouseup(function (e) {
+                console.log("mouse up: "+$elem.data("rexbuilder-block-id"));
                 if (Rexbuilder_Util.editorMode) {
                     gallery._unFocusElement($elem);
                     gallery.enableDragHandle($elem);
@@ -1197,6 +1144,7 @@
             });
 
             $elem.hover(function (event) {
+                console.log("hover: "+$elem.data("rexbuilder-block-id"));
                 if (Rexbuilder_Util.editorMode) {
                     if (!Rexbuilder_Util.elementIsResizing && Rexbuilder_Util.editingElement === null) {
                         gallery._focusElement($elem);
@@ -1215,6 +1163,7 @@
                     }
                 }
             }, function () {
+                console.log("out hover: "+$elem.data("rexbuilder-block-id"));
                 if (Rexbuilder_Util.editorMode) {
                     if (!Rexbuilder_Util.elementIsResizing) {
                         gallery._unFocusElement($elem);
@@ -1224,6 +1173,7 @@
             });
 
             $elem.dblclick(function () {
+                console.log("dbclick: "+$elem.data("rexbuilder-block-id"));
                 if (Rexbuilder_Util.editorMode) {
                     gallery.hideSectionToolBox($elem);
                     gallery.disableDragHandle($elem);

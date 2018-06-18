@@ -8,25 +8,6 @@ var Rexbuilder_Util_Editor = (function ($) {
     var blockCopying;
     var editingElement;
 
-    var removeScrollBar = function ($elem) {
-        var $elemContent = $elem.find(".grid-item-content");
-        var $div = $(document.createElement("div"));
-        var $divScrollbar = $elemContent.find(".rex-custom-scrollbar");
-        var $textWrap = $elemContent.find('.text-wrap');
-
-        $div.addClass("rex-custom-scrollbar");
-        if ($elemContent.hasClass("rex-flexbox")) {
-            $div.addClass("rex-custom-position");
-        }
-        $textWrap.detach().appendTo($div);
-        $div.appendTo($divScrollbar.parent());
-        $divScrollbar.remove();
-
-        $elemContent = undefined;
-        $div = undefined;
-        $divScrollbar = undefined;
-        $textWrap = undefined;
-    }
     var addBlockToolboxListeners = function () {
 
         $(document).on('click', '.builder-delete-block', function (e) {
@@ -75,6 +56,26 @@ var Rexbuilder_Util_Editor = (function ($) {
         });
     }
 
+    var removeScrollBar = function ($elem) {
+        var $elemContent = $elem.find(".grid-item-content");
+        var $div = $(document.createElement("div"));
+        var $divScrollbar = $elemContent.find(".rex-custom-scrollbar");
+        var $textWrap = $elemContent.find('.text-wrap');
+
+        $div.addClass("rex-custom-scrollbar");
+        if ($elemContent.hasClass("rex-flexbox")) {
+            $div.addClass("rex-custom-position");
+        }
+        $textWrap.detach().appendTo($div);
+        $div.appendTo($divScrollbar.parent());
+        $divScrollbar.remove();
+
+        $elemContent = undefined;
+        $div = undefined;
+        $divScrollbar = undefined;
+        $textWrap = undefined;
+    }
+
     var removeTextEditor = function ($elem) {
 
         var $textWrap = $elem.find('.text-wrap');
@@ -103,6 +104,12 @@ var Rexbuilder_Util_Editor = (function ($) {
         css = undefined;
     }
 
+    var removeDeletedBlocks = function($gallery){
+        $gallery.children(".removing_block").each(function(){
+            $(this).remove();
+        });
+    }
+
     // init the utilities
     var init = function () {
         elementIsResizing = false;
@@ -121,7 +128,8 @@ var Rexbuilder_Util_Editor = (function ($) {
         editingElement: editingElement,
         removeScrollBar: removeScrollBar,
         removeTextEditor: removeTextEditor,
-        addBlockToolboxListeners: addBlockToolboxListeners
+        addBlockToolboxListeners: addBlockToolboxListeners,
+        removeDeletedBlocks: removeDeletedBlocks
     };
 
 })(jQuery);

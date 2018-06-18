@@ -12,6 +12,8 @@ var Rexbuilder_Section = (function ($) {
             return (className.match(/grid-stack-instance-\d+/g) || []).join(' ');
         });
 
+        Rexbuilder_Util_Editor.removeDeletedBlocks($gallery);
+
         // removing scrollbars and text editor
         $gallery.find(".grid-stack-item").each(function () {
             Rexbuilder_Util_Editor.removeScrollBar($(this));
