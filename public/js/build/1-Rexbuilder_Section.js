@@ -25,14 +25,14 @@ var Rexbuilder_Section = (function ($) {
 
     var init = function () {
         //Setting row number
-        Rexbuilder_Util["$rexContainer"].children('.rexpansive_section').each(function (i, e) {
+        Rexbuilder_Util.$rexContainer.children('.rexpansive_section').each(function (i, e) {
             $(e).attr('data-rexlive-section-id', i);
             lastSectionNumber = i;
         });
         
         if (Rexbuilder_Util.editorMode === true) {
             //launching sortable
-            Rexbuilder_Util["$rexContainer"].sortable({
+            Rexbuilder_Util.$rexContainer.sortable({
                 handle: ".builder-move-row"
                 //            placeholder: "portlet-placeholder ui-corner-all"
             });
@@ -43,7 +43,7 @@ var Rexbuilder_Section = (function ($) {
             });
 
             $(document).on('click', '.builder-copy-row', function (e) {
-                Rexbuilder_Util.sectionCopying = true;
+                Rexbuilder_Util_Editor.sectionCopying = true;
                 var section = $(e.currentTarget).parents('.rexpansive_section');
                 var $newSection;
 
@@ -57,9 +57,9 @@ var Rexbuilder_Section = (function ($) {
 
                 $newSection.find('.grid-stack-row').perfectGridGalleryEditor("updateGrid");
 
-                Rexbuilder_Util["$rexContainer"].sortable("refresh");
+                Rexbuilder_Util.$rexContainer.sortable("refresh");
 
-                Rexbuilder_Util.sectionCopying = false;
+                Rexbuilder_Util_Editor.sectionCopying = false;
             });
         }
 

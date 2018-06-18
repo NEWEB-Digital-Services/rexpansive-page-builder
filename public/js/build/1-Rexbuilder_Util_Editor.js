@@ -2,12 +2,6 @@
 var Rexbuilder_Util_Editor = (function ($) {
     'use strict';
 
-    var elementIsResizing;
-    var elementIsDragging;
-    var sectionCopying;
-    var blockCopying;
-    var editingElement;
-
     var addBlockToolboxListeners = function () {
 
         $(document).on('click', '.builder-delete-block', function (e) {
@@ -24,7 +18,7 @@ var Rexbuilder_Util_Editor = (function ($) {
 
             var galleryEditorIstance = $(e.currentTarget).parents('.grid-stack-row').data().plugin_perfectGridGalleryEditor;
 
-            Rexbuilder_Util.blockCopying = true;
+            Rexbuilder_Util_Editor.blockCopying = true;
             var $elem = $(e.currentTarget).parents('.grid-stack-item');
             var $newBlock;
             var $gallery = $elem.parents('.grid-stack-row');
@@ -52,7 +46,7 @@ var Rexbuilder_Util_Editor = (function ($) {
                 galleryEditorIstance.addElementToTextEditor(editor, $textWrap);
             }
 
-            Rexbuilder_Util.blockCopying = false;
+            Rexbuilder_Util_Editor.blockCopying = false;
         });
     }
 
@@ -104,32 +98,157 @@ var Rexbuilder_Util_Editor = (function ($) {
         css = undefined;
     }
 
-    var removeDeletedBlocks = function($gallery){
-        $gallery.children(".removing_block").each(function(){
+    var removeDeletedBlocks = function ($gallery) {
+        $gallery.children(".removing_block").each(function () {
             $(this).remove();
+        });
+    }
+
+    var endEditingElement = function () {
+        console.log("end editing element: " + Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id"));
+        var galleryEditorIstance = Rexbuilder_Util_Editor.editedGallery;
+        var gridstack = galleryEditorIstance.$element.data('gridstack');
+
+        if (Rexbuilder_Util_Editor.activateElementFocus) {
+            galleryEditorIstance._focusElement(Rexbuilder_Util_Editor.editedElement);
+        } else {
+            galleryEditorIstance._unFocusElement(Rexbuilder_Util_Editor.editedElement);
+        }
+
+        galleryEditorIstance.enableDragHandle(Rexbuilder_Util_Editor.editedElement);
+
+        Rexbuilder_Util_Editor.editedElement.blur();
+        Rexbuilder_Util_Editor.editedElement = null;
+
+        Rexbuilder_Util_Editor.editingGallery = false;
+        Rexbuilder_Util_Editor.editedGallery = null;
+        Rexbuilder_Util_Editor.editingElement = false;
+        Rexbuilder_Util_Editor.editedElement = null;
+
+        galleryEditorIstance.$element.addClass('gridActive');
+        gridstack.enable();
+    }
+
+    var startEditingElement = function () {
+        if (Rexbuilder_Util_Editor.editingElement && Rexbuilder_Util_Editor.editingGallery) {
+            var gallery = Rexbuilder_Util_Editor.editedGallery;
+            var $elem = Rexbuilder_Util_Editor.editedElement;
+            var gridstack = gallery.$element.data('gridstack');
+            gridstack.disable();
+            $(gallery.$element).removeClass('gridActive');
+
+            console.log("focusing: " + $elem.data("rexbuilder-block-id"));
+
+            gallery._unFocusElementEditing($elem);
+            gallery.properties.elementStartingH = parseInt($elem.attr("data-gs-height"));
+
+            var textWrap = $elem.find('.text-wrap');
+            textWrap.trigger('externalInteraction');
+            gallery.properties.mediumEditorIstance.trigger("externalInteraction");
+//            gallery.properties.mediumEditorIstance.focusElement($elem);
+            //trigger("focus", e, $elem.find(".text-wrap"));
+            
+            if (!(textWrap.text().length) || textWrap.text() == '""') {
+                $(textWrap)[0].focus();
+            }
+            // $(textWrap.lastChild)[0].focus();
+            /*
+             * if()#mCSB_1_container > div > div $()[0].focus();
+             */
+        }
+    }
+
+    var addWindowListeners = function () {
+
+        if (Rexbuilder_Util.editorMode) {
+            Rexbuilder_Util.$window.click(function (e) {
+                var $target = $(e.target);
+                if (Rexbuilder_Util_Editor.editingElement && ($target.parents(".grid-stack-item").length == 0) && ($target.parents(".media-frame").length == 0) && !($target.hasClass("grid-stack-item"))) {
+                    console.log(e);
+                    console.log("CLICK OUTSIDE ELEMENTS");
+                    Rexbuilder_Util_Editor.activateElementFocus = false;
+                    Rexbuilder_Util_Editor.endEditingElement();
+                    Rexbuilder_Util_Editor.activateElementFocus = true;
+                }
+
+            });
+
+            Rexbuilder_Util.$window.on('keydown', function (event) {
+                if (Rexbuilder_Util_Editor.editingGallery && event.keyCode == 27) {
+                    Rexbuilder_Util_Editor.endEditingElement();
+                }
+
+            });
+
+            Rexbuilder_Util.$window.on('mousedown', function (event) {
+
+                console.log("mouse down window");
+
+            });
+        }
+        Rexbuilder_Util.$window.on('resize', function (event) {
+            Rexbuilder_Util.windowIsResizing = true;
+            Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
+                if (!Rexbuilder_Util_Editor.elementIsResizing) {
+                    var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
+                    var gridstack = galleryEditorIstance.$element.data('gridstack');
+                    galleryEditorIstance._defineDynamicPrivateProperties();
+                    if (galleryEditorIstance.settings.galleryLayout == 'masonry') {
+                        // if there is masonry layout
+                        galleryEditorIstance._calculateBlockHeightMasonry();
+                        galleryEditorIstance.$element.children('.grid-stack-item').each(function () {
+                            galleryEditorIstance.updateSizeViewerText(this);
+                            galleryEditorIstance.fixElementTextSize(this, null, null);
+                        });
+                    } else {
+                        gridstack.cellHeight(galleryEditorIstance.properties.singleHeight);
+                        gridstack._initStyles();
+                        gridstack._updateStyles(galleryEditorIstance.properties.singleHeight);
+                        galleryEditorIstance.$element.children('.grid-stack-item').each(function () {
+                            galleryEditorIstance.fixElementTextSize(this, null, null);
+                        });
+                    }
+                    //G.properties.mediumEditorIstance.trigger("editableInput");
+                }
+            });
+            Rexbuilder_Util.windowIsResizing = false;
+        });
+
+        Rexbuilder_Util.$window.on('load', function (e) {
+            Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
+                var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
+                galleryEditorIstance.updateGrid();
+            });
         });
     }
 
     // init the utilities
     var init = function () {
-        elementIsResizing = false;
-        elementIsDragging = false;
-        sectionCopying = false;
-        blockCopying = false;
-        editingElement = null;
+        this.elementIsResizing = false;
+        this.elementIsDragging = false;
+
+        this.sectionCopying = false;
+        this.blockCopying = false;
+
+        this.editingGallery = false;
+        this.editedGallery = null;
+
+        this.editingElement = false;
+        this.editedElement = null;
+
+        this.activateElementFocus = false;
     }
 
     return {
         init: init,
-        elementIsResizing: elementIsResizing,
-        elementIsResizing: elementIsDragging,
-        sectionCopying: sectionCopying,
-        blockCopying: blockCopying,
-        editingElement: editingElement,
+
         removeScrollBar: removeScrollBar,
         removeTextEditor: removeTextEditor,
         addBlockToolboxListeners: addBlockToolboxListeners,
-        removeDeletedBlocks: removeDeletedBlocks
+        removeDeletedBlocks: removeDeletedBlocks,
+        addWindowListeners: addWindowListeners,
+        endEditingElement: endEditingElement,
+        startEditingElement: startEditingElement,
     };
 
 })(jQuery);

@@ -117,19 +117,23 @@ var lodash = _.noConflict();
     // Waiting until the ready of the DOM
     $(function () {
         Rexbuilder_Util.init();
+        Rexbuilder_Util_Editor.init();
 
         Rexbuilder_Util.editorMode = true;
 
         Rexbuilder_Section.init();
 
         _detect_mobile();
-        
+
         //Rexbuilder_FormFixes.init();
 
+        if (Rexbuilder_Util.editorMode) {
+            Rexbuilder_Util_Editor.addBlockToolboxListeners();
+            Rexbuilder_Util_Editor.addWindowListeners();
+        }
+        
         /* -- Launching the grid -- */
         Rexbuilder_Util.$rexContainer.find('.grid-stack-row').perfectGridGalleryEditor();
-
-        Rexbuilder_Util_Editor.addBlockToolboxListeners();
         
         /* -- Launching Photoswipe -- */
         initPhotoSwipeFromDOM('.photoswipe-gallery');

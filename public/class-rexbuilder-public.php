@@ -118,7 +118,7 @@ class Rexbuilder_Public {
 			
 			wp_enqueue_style( 'spectrum-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/spectrum.css', array(), $this->version, 'all' );
 			
-			wp_enqueue_style( 'medium-editor-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/medium-editor.min.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'medium-editor-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/medium-editor.css', array(), $this->version, 'all' );
 			wp_enqueue_style( 'medium-editor-instert-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/medium-editor-insert-plugin.min.css', array(), $this->version, 'all' );
 			wp_enqueue_style( 'medium-editor-insert-frontend-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/medium-editor-insert-plugin-frontend.min.css', array(), $this->version, 'all' );
 			//TODO ci penseremo dopo
@@ -204,7 +204,7 @@ class Rexbuilder_Public {
 			
 			//editor text
 			wp_enqueue_script( 'spectrumColor', REXPANSIVE_BUILDER_URL  . $cartella. 'js/spectrum.js', array( 'jquery' ), $this->version, true );
-			wp_enqueue_script( 'medium-editor', REXPANSIVE_BUILDER_URL  . $cartella. 'js/medium-editor.min.js', array( 'jquery' ), $this->version, true );
+			wp_enqueue_script( 'medium-editor', REXPANSIVE_BUILDER_URL  . $cartella. 'js/medium-editor.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( 'mediumEditorToolbarStates', REXPANSIVE_BUILDER_URL  . $cartella. 'js/medium-editor-toolbar-states.min.js', array( 'jquery' ), $this->version, true );
 			
 			wp_enqueue_script( 'handlebars-runtime', REXPANSIVE_BUILDER_URL  . $cartella. 'js/handlebars.runtime.js', array( 'jquery' ), $this->version, true );

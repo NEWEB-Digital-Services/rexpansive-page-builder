@@ -2,16 +2,9 @@ var Rexbuilder_Util = (function($) {
 	'use strict';
 
 	var $window = $(window);
-	var $body;
-	var $rexContainer;
 
 	var fixSectionWidth = 0;
-	var elementIsResizing = false;
-	var elementIsDragging = false;
 	var editorMode = false;
-	var sectionCopying = false;
-	var blockCopying = false;
-	var editingElement = null;
 	var windowIsResizing = false;
 
 	// function to detect if we are on a mobile device
@@ -123,8 +116,8 @@ var Rexbuilder_Util = (function($) {
 	// init the utilities
 	var init = function() {
 		this.$window = $(window);
-		this.$body = $('body');
-		
+		this.$body = $("body");
+
 		$('.rexpansive_section').wrapAll("<div class=\"rex-container\"></div>");
         this.$rexContainer = $(".rex-container");
 
@@ -146,13 +139,8 @@ var Rexbuilder_Util = (function($) {
 		$window: $window,
 		scroll_timing: _scroll_timing,
 		fixSectionWidth: fixSectionWidth,
-		elementIsResizing: elementIsResizing,
-		elementIsResizing: elementIsDragging,
+		//$rexContainer: $rexContainer,
 		editorMode: editorMode,
-		$rexContainer: $rexContainer,
-		sectionCopying: sectionCopying,
-		blockCopying: blockCopying,
-		editingElement: editingElement,
 		windowIsResizing: windowIsResizing
 	};
 
