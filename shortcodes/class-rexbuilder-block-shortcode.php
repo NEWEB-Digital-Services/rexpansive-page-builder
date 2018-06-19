@@ -349,6 +349,9 @@ class Rexbuilder_Block {
 					echo $bg_video_markup;
 					echo $bg_video_vimeo_markup;
 					echo ( ($block_has_overlay) ? '<div class="responsive-block-overlay" style="background-color:' . $overlay_block_color . ';">' : '' );
+
+					echo '<div class="rexlive-block-drag-handle"></div>';
+					
 					echo '<div class="rex-custom-scrollbar' . ( ($flex_positioned) ? ' rex-custom-position' : '' ) . '">';
 					echo ( ( $floating_border != '' && $block_link_pre != '' ) ? $block_link_pre : '' );
 					echo $floating_border;
@@ -385,6 +388,9 @@ class Rexbuilder_Block {
 					echo $bg_video_markup;
 					echo $bg_video_vimeo_markup;
 					echo ( ($block_has_overlay) ? '<div class="responsive-block-overlay" style="background-color:' . $overlay_block_color . ';">' : '' );
+
+					echo '<div class="rexlive-block-drag-handle"></div>';
+
 					echo '<div class="rex-custom-scrollbar' . ( ($flex_positioned) ? ' rex-custom-position' : '' ) . '"';
 					echo '>';
 					echo ( ( $floating_border != '' && $block_link_pre != '' ) ? $block_link_pre : '' );
@@ -429,6 +435,9 @@ class Rexbuilder_Block {
 					echo $bg_video_markup;
 					echo $bg_video_vimeo_markup;
 					echo ( ($block_has_overlay) ? '<div class="responsive-block-overlay" style="background-color:' . $overlay_block_color . ';">' : '' );
+
+					echo '<div class="rexlive-block-drag-handle"></div>';
+
 					echo '<div class="rex-custom-scrollbar' . ( ($flex_positioned) ? ' rex-custom-position' : '' ) . '">';
 					echo ( ( $floating_border != '' && $block_link_pre != '' ) ? $block_link_pre : '' );
 					echo $floating_border;
@@ -490,7 +499,7 @@ class Rexbuilder_Block {
 			echo "</div>\n";
 			
 			include(REXPANSIVE_BUILDER_PATH."public/partials/rexlive-block-tools.php");
-			echo '<div class="rexlive-block-drag-handle"></div>';
+			
 			echo "</div>\n";
 		
 			return ob_get_clean();

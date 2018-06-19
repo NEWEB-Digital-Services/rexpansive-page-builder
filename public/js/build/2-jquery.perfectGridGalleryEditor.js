@@ -83,6 +83,8 @@
         init: function () {
 
             this.properties.firstStartGrid = true;
+            
+            console.log(Rexbuilder_Util_Editor);
 
             this._setGridID();
 
@@ -123,7 +125,7 @@
 
 
             //a che cazzo serve?
-            this.$element.on('change', { Gallery: gallery}, function (event, items) {
+            this.$element.on('change', { Gallery: gallery }, function (event, items) {
                 if (event.data.Gallery.properties.firstStartGrid) {
                     // event.data.Gallery.saveGrid();
                     console.log('Grid ' + event.data.Gallery.properties.sectionNumber + " changed");
@@ -257,7 +259,7 @@
                 var maxBlockHeight = $blockContent.parents('.grid-item-content').innerHeight();
                 var textHeight = $textWrap.innerHeight();
                 var dataBlock = $(block).children('.rexbuilder-block-data');
-                
+
                 // se il resize del blocco viene fatto tramite una maniglia
                 if ($handler !== null) {
                     // updating scrollbar
@@ -277,7 +279,7 @@
                         }
                     }
                 } else {
-                    
+
                     // TODO aggiungere il caso in cui il blocco e' nuovo
                     // Il blocco non ha la barra
                     if ($(block).find('.mCustomScrollBox').length === 0) {
@@ -289,7 +291,7 @@
                             var grid = this.$element.data('gridstack');
                             var w = parseInt(block['attributes']['data-gs-width'].value);
                             var h = parseInt(block['attributes']['data-gs-width'].value);
-                            
+
                             if ($(dataBlock).attr('data-block_has_scrollbar') == 'true') {
                                 h = parseInt($(dataBlock).attr('data-block_height_masonry'));
                             } else {
@@ -297,7 +299,7 @@
                                 h = parseInt(block['attributes']['data-gs-height'].value);
                                 // differenza da ottenere per l'altezza giusta del
                                 // blocco
-                                
+
                                 if (textHeight >= maxBlockHeight) {
                                     h = h + Math.ceil((textHeight - maxBlockHeight) / 5);
                                 }
@@ -313,11 +315,11 @@
                             $blockContent.mCustomScrollbar({ "setHeight": "50%" });
                             // $blockContent.mCustomScrollbar("update");
                         }
-                        
+
                         if (textHeight < maxBlockHeight) {
                             $blockContent.mCustomScrollbar("disable");
                         }
-                        
+
                     } else if (Rexbuilder_Util.windowIsResizing) {
                         $blockContent.mCustomScrollbar("update");
                     } else {
@@ -328,18 +330,18 @@
                                 var w = parseInt(block['attributes']['data-gs-width'].value);
                                 var h = this.properties.elementStartingH;
                                 var grid = this.$element.data('gridstack');
-                                
+
                                 if (textHeight >= maxBlockHeight) {
                                     h = h + Math.ceil((textHeight - maxBlockHeight) / this.properties.singleHeight);
                                 } else {
                                     h = Math.max(h - Math.floor((maxBlockHeight - textHeight) / this.properties.singleHeight), parseInt($(dataBlock).attr('data-block_height_masonry')));
                                 }
-                                if(this.properties.elementStartingH !=  h) {
+                                if (this.properties.elementStartingH != h) {
                                     grid.update(block, null, null, w, h);
                                     this.properties.elementStartingH = h;
                                 }
                             }
-                            
+
                             $blockContent.mCustomScrollbar({ "setHeight": "50%" });
                             $blockContent.mCustomScrollbar("update");
                         } else {
@@ -399,30 +401,30 @@
             G.settings.galleryLayout = data['layout'];
             console.log("Updating Section");
             if (oldLayout != G.settings.galleryLayout) {
-                
+
                 G.$element.attr("data-layout", G.settings.galleryLayout);
                 $(G.element).parents('.rexpansive_section').find('.section-data').attr({
                     'data-layout': G.settings.galleryLayout
                 });
-                
+
                 Rexbuilder_Util_Editor.elementIsResizing = true;
                 Rexbuilder_Util_Editor.elementIsDragging = true;
-                
+
                 // destroying gridstack & jquery ui
                 G.destroyGridstack();
-                
+
                 // destroy scrollbars
                 G._removeScrollbars();
-                
+
                 // adding back the handles for resizing
                 if (!Rexbuilder_Util_Editor.sectionCopying) {
                     $(G.element).children('.grid-stack-item').each(function () {
                         G._addHandles(this, 'e, s, w, se, sw');
                     });
                 }
-                
+
                 G._defineDynamicPrivateProperties();
-                
+
                 // relaunching grid
                 if (G.settings.galleryLayout == 'masonry') {
                     G._launchGridStack();
@@ -598,7 +600,7 @@
                 'data-gs-x': x,
                 'data-rexbuilder-block-id': idBlock
             });
-            
+
             $(divDragHandle).attr({
                 'class': 'rexlive-block-drag-handle'
             });
@@ -1007,13 +1009,13 @@
 
                 gallery._addHandles(elem, 'e, s, w, se, sw');
 
-                
+
                 $elem.attr({
                     "data-gs-min-width": 1,
                     "data-gs-min-height": 1,
                     "data-gs-max-width": 500
                 });
-                
+
                 // adding text wrap element if it's not there
                 var textWrapEl;
                 if (($elem.find('.text-wrap')).length == 0) {
@@ -1029,10 +1031,10 @@
                     $(spanEl).addClass('text-editor-span-fix');
                     textWrapEl.append(spanEl);
                 }
-                
+
                 gallery.addElementListeners($elem);
             }
-            
+
             gallery._updateElementPadding($elem.find('.grid-stack-item-content'));
             blockContent = $elem.find('.grid-item-content');
             imageWidth = blockContent.attr('data-background-image-width');
@@ -1049,14 +1051,17 @@
 
         addElementListeners: function ($elem) {
             // adding element listeners
+
             var gallery = this;
+            var $dragHandle = $elem.find(".rexlive-block-drag-handle");
+            var dragHandle = $dragHandle[0];
 
             $elem.click(function (e) {
-                console.log(e); 
                 console.log("click: " + $elem.data("rexbuilder-block-id"));
-                console.log(Rexbuilder_Util_Editor); 
+                console.log(Rexbuilder_Util_Editor);
                 if (Rexbuilder_Util_Editor.editingElement && (Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id") != $elem.data("rexbuilder-block-id"))) {
                     console.log("ending editing");
+                    $elem.find(".text-wrap").blur();
                     Rexbuilder_Util_Editor.activateElementFocus = false;
                     Rexbuilder_Util_Editor.endEditingElement();
                     Rexbuilder_Util_Editor.activateElementFocus = true;
@@ -1067,30 +1072,61 @@
             // mouse down on another element
             $elem.mousedown(function (e) {
                 console.log("mouse down: " + $elem.data("rexbuilder-block-id"));
-                
+                if (Rexbuilder_Util_Editor.editingElement && (Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id") != $elem.data("rexbuilder-block-id"))) {
+                    console.log("%c stopping propagation ", "color: purple"); 
+                    $elem.find(".text-wrap").blur(); 
+                    Rexbuilder_Util_Editor.editedElement.find(".text-wrap").blur(); 
+                    Rexbuilder_Util_Editor.elementIsResizing = false;
+                    Rexbuilder_Util_Editor.elementIsDragging = false;
+                    e.stopPropagation();
+                    e.preventDefault();
+                }
+                Rexbuilder_Util_Editor.mouseDownEvent = e;
+                if (!(Rexbuilder_Util_Editor.editingElement || Rexbuilder_Util_Editor.elementIsDragging || Rexbuilder_Util_Editor.elementIsResizing)) {
+                    if (e.target != dragHandle) {
+                        clearTimeout(this.downTimer);
+                        this.downTimer = setTimeout(function () {
+                            console.log("%c we have to drag ", "color: green"); 
+                            $dragHandle.addClass("drag-up");
+
+                            Rexbuilder_Util_Editor.mouseDownEvent.target = dragHandle;
+                            Rexbuilder_Util_Editor.mouseDownEvent.srcElement = dragHandle;
+                            Rexbuilder_Util_Editor.mouseDownEvent.toElement = dragHandle;
+
+                            Rexbuilder_Util_Editor.elementIsDragging = true;
+
+                            $elem.trigger(Rexbuilder_Util_Editor.mouseDownEvent);
+                        }, 100);
+                    }
+                }
             });
 
             $elem.mouseup(function (e) {
                 console.log("mouse up: " + $elem.data("rexbuilder-block-id"));
-                console.log(e); 
-                if(!(Rexbuilder_Util_Editor.editingElement || Rexbuilder_Util_Editor.elementIsResizing || Rexbuilder_Util_Editor.elementIsDragging)){
-                    console.log("FOCUSING ELEMENT: "+ $elem.data("rexbuilder-block-id")); 
+
+                $dragHandle.removeClass("drag-up");
+                clearTimeout(this.downTimer);
+                Rexbuilder_Util_Editor.mouseDownEvent = null;
+
+                if (!(Rexbuilder_Util_Editor.editingElement || Rexbuilder_Util_Editor.elementIsResizing || Rexbuilder_Util_Editor.elementIsDragging)) {
+                    console.log("FOCUSING ELEMENT: " + $elem.data("rexbuilder-block-id"));
                     Rexbuilder_Util_Editor.editingElement = true;
                     Rexbuilder_Util_Editor.editedElement = $elem;
                     Rexbuilder_Util_Editor.editingGallery = true;
                     Rexbuilder_Util_Editor.editedGallery = gallery;
-                    
-                    Rexbuilder_Util_Editor.startEditingElement();
+
+                    console.log(e);
+                    Rexbuilder_Util_Editor.startEditingElement(e);
                 }
             });
 
             $elem.hover(function (e) {
-                console.log("hover: " + $elem.data("rexbuilder-block-id"));
+               // console.log("hover: " + $elem.data("rexbuilder-block-id"));
                 if (!(Rexbuilder_Util_Editor.editingElement || Rexbuilder_Util_Editor.elementIsResizing || Rexbuilder_Util_Editor.elementIsDragging)) {
-                    gallery._focusElement($elem);             
+                    gallery._focusElement($elem);
                 }
             }, function () {
-                console.log("out hover: " + $elem.data("rexbuilder-block-id"));
+               // console.log("out hover: " + $elem.data("rexbuilder-block-id"));
                 if (!(Rexbuilder_Util_Editor.editingElement || Rexbuilder_Util_Editor.elementIsResizing || Rexbuilder_Util_Editor.elementIsDragging)) {
                     gallery._unFocusElement($elem);
                 }
@@ -1103,14 +1139,17 @@
                     Rexbuilder_Util_Editor.endEditingElement();
                     Rexbuilder_Util_Editor.activateElementFocus = true;
                 }
+                Rexbuilder_Util_Editor.elementIsResizing = false;
+                Rexbuilder_Util_Editor.elementIsDragging = false;
 
                 Rexbuilder_Util_Editor.editingElement = true;
                 Rexbuilder_Util_Editor.editedElement = $elem;
                 Rexbuilder_Util_Editor.editingGallery = true;
                 Rexbuilder_Util_Editor.editedGallery = gallery;
-
-                Rexbuilder_Util_Editor.startEditingElement();
+                console.log(e);
+                Rexbuilder_Util_Editor.startEditingElement(e);
             });
+
         },
 
         showBlockToolBox: function ($elem) {
@@ -1122,12 +1161,13 @@
         },
 
         disableDragHandle: function ($elem) {
-            $elem.children(".rexlive-block-drag-handle").addClass("hide-drag");
+            console.log("disabling " + $elem.data("rexbuilder-block-id") + " drag handle");
+            //$elem.children(".rexlive-block-drag-handle").addClass("hide-drag");
         },
 
         enableDragHandle: function ($elem) {
-            console.log("enabling "+$elem.data("rexbuilder-block-id")+" drag handle"); 
-            $elem.children(".rexlive-block-drag-handle").removeClass("hide-drag");
+            console.log("enabling " + $elem.data("rexbuilder-block-id") + " drag handle");
+            //$elem.children(".rexlive-block-drag-handle").removeClass("hide-drag");
         },
 
         _prepareElements: function () {
@@ -1147,9 +1187,9 @@
             $elem.parent().parent().parent().parent().addClass('focused');
         },
 
-        _unFocusElementEditing: function($elem){
+        _unFocusElementEditing: function ($elem) {
             this.hideBlockToolBox($elem);
-            this.disableDragHandle($elem);
+            //this.disableDragHandle($elem);
             $elem.children(".rexlive-block-toolbox").removeClass("focused");
             $elem.removeClass('focused');
         },
@@ -1213,7 +1253,7 @@
                     xStart = parseInt(block['attributes']['data-gs-x'].value);
                     if (gallery.properties.resizeHandle == 'e' || gallery.properties.resizeHandle == 'se') {
                         $(block).attr("data-gs-max-width", (gallery.settings.numberCol - xStart));
-                    } else {
+                    } else if (gallery.properties.resizeHandle == 'w' || gallery.properties.resizeHandle == 'sw') {
                         wStart = parseInt(block['attributes']['data-gs-width'].value);
                         // $('#' + block.id).attr("data-gs-max-width", (xStart +
                         // wStart));
@@ -1251,6 +1291,7 @@
                         gallery.fixElementTextSize(block, gallery.properties.resizeHandle, null);
                     }
                     Rexbuilder_Util_Editor.elementIsResizing = false;
+                    Rexbuilder_Util_Editor.elementIsDragging = false;
                     //                    gallery.$element.trigger('change');
                 }
             });
@@ -1289,7 +1330,7 @@
                 disableOneColumnMode: true,
                 cellHeight: gallery.properties.singleHeight,
                 draggable: {
-                    containment: 'parent',
+                    containment: gallery.element,
                     handle: '.rexlive-block-drag-handle',
                     scroll: false,
                 },
@@ -1476,7 +1517,7 @@
                 }
             });
 
-           
+
 
             editor.subscribe('editableInput', function (e) {
                 if ($('.medium-insert-images figure img, .mediumInsert figure img').length > 0) {
@@ -1685,18 +1726,18 @@
                 });
         },
 
-        calculateTextWrapHeight: function(textWrap){
+        calculateTextWrapHeight: function (textWrap) {
             var textCalculate = $(textWrap).clone(false);
             textCalculate.children(".medium-insert-buttons").remove();
             var textHeight = 0;
-            if(textCalculate.text().trim().length != 0){
-                if (($(textWrap).hasClass("medium-editor-element") && !$(textWrap).hasClass("medium-editor-placeholder")) || ($(textWrap).parents(".pswp-item").length != 0 )) {
+            if (textCalculate.text().trim().length != 0) {
+                if (($(textWrap).hasClass("medium-editor-element") && !$(textWrap).hasClass("medium-editor-placeholder")) || ($(textWrap).parents(".pswp-item").length != 0)) {
                     textHeight = $(textWrap).innerHeight();
                 }
             }
             return textHeight;
         },
-        
+
         // Calculate masonry blocks height
         _calculateBlockHeightMasonry: function () {
             var gallery = this;
@@ -1737,7 +1778,7 @@
                         origH = $elem.attr('data-height');
                         defaultHeight = Math.round(sw * origH);
                     }
-                } else{
+                } else {
                     textHeight = textHeight + gutter;
                 }
 

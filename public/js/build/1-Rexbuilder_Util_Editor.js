@@ -109,16 +109,14 @@ var Rexbuilder_Util_Editor = (function ($) {
         var galleryEditorIstance = Rexbuilder_Util_Editor.editedGallery;
         var gridstack = galleryEditorIstance.$element.data('gridstack');
 
+        Rexbuilder_Util_Editor.elementIsDragging = false;
+        Rexbuilder_Util_Editor.editedElement.blur();
+
         if (Rexbuilder_Util_Editor.activateElementFocus) {
             galleryEditorIstance._focusElement(Rexbuilder_Util_Editor.editedElement);
         } else {
             galleryEditorIstance._unFocusElement(Rexbuilder_Util_Editor.editedElement);
         }
-
-        galleryEditorIstance.enableDragHandle(Rexbuilder_Util_Editor.editedElement);
-
-        Rexbuilder_Util_Editor.editedElement.blur();
-        Rexbuilder_Util_Editor.editedElement = null;
 
         Rexbuilder_Util_Editor.editingGallery = false;
         Rexbuilder_Util_Editor.editedGallery = null;
@@ -129,8 +127,10 @@ var Rexbuilder_Util_Editor = (function ($) {
         gridstack.enable();
     }
 
-    var startEditingElement = function () {
+    var startEditingElement = function (event) {
         if (Rexbuilder_Util_Editor.editingElement && Rexbuilder_Util_Editor.editingGallery) {
+            //event.preventDefault();
+            //event.stopPropagation();
             var gallery = Rexbuilder_Util_Editor.editedGallery;
             var $elem = Rexbuilder_Util_Editor.editedElement;
             var gridstack = gallery.$element.data('gridstack');
@@ -142,15 +142,13 @@ var Rexbuilder_Util_Editor = (function ($) {
             gallery._unFocusElementEditing($elem);
             gallery.properties.elementStartingH = parseInt($elem.attr("data-gs-height"));
 
-            var textWrap = $elem.find('.text-wrap');
-            textWrap.trigger('externalInteraction');
-            gallery.properties.mediumEditorIstance.trigger("externalInteraction");
-//            gallery.properties.mediumEditorIstance.focusElement($elem);
-            //trigger("focus", e, $elem.find(".text-wrap"));
-            
-            if (!(textWrap.text().length) || textWrap.text() == '""') {
+            var textWrap = $elem.find('.text-wrap')[0];
+            //event.type = "click";
+            //gallery.properties.mediumEditorIstance.trigger('focus', event, textWrap);
+
+            /* if (!(textWrap.text().length) || textWrap.text() == '""') {
                 $(textWrap)[0].focus();
-            }
+            } */
             // $(textWrap.lastChild)[0].focus();
             /*
              * if()#mCSB_1_container > div > div $()[0].focus();
@@ -237,6 +235,9 @@ var Rexbuilder_Util_Editor = (function ($) {
         this.editedElement = null;
 
         this.activateElementFocus = false;
+
+        this.mouseDownEvent = null;
+        this.mouseUpEvent = null;
     }
 
     return {

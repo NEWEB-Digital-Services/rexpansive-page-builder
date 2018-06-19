@@ -2739,7 +2739,6 @@ MediumEditor.extensions = {};
             switch (name) {
                 case 'externalInteraction':
                     // Detecting when user has interacted with elements outside of MediumEditor
-                    console.log("externalInteraction"); 
                     this.attachDOMEvent(this.options.ownerDocument.body, 'mousedown', this.handleBodyMousedown.bind(this), true);
                     this.attachDOMEvent(this.options.ownerDocument.body, 'click', this.handleBodyClick.bind(this), true);
                     this.attachDOMEvent(this.options.ownerDocument.body, 'focus', this.handleBodyFocus.bind(this), true);
@@ -2864,7 +2863,7 @@ MediumEditor.extensions = {};
         updateFocus: function (target, eventObj) {
             var hadFocus = this.base.getFocusedElement(),
                 toFocus;
-
+                
             // For clicks, we need to know if the mousedown that caused the click happened inside the existing focused element
             // or one of the extension elements.  If so, we don't want to focus another element
             if (hadFocus &&
@@ -2881,7 +2880,7 @@ MediumEditor.extensions = {};
                     if (!toFocus && (MediumEditor.util.isDescendant(element, target, true))) {
                         toFocus = element;
                     }
-
+                    
                     // bail if we found an element that's getting focus
                     return !!toFocus;
                 }, this);
@@ -2890,7 +2889,6 @@ MediumEditor.extensions = {};
             // Check if the target is external (not part of the editor, toolbar, or any other extension)
             var externalEvent = !MediumEditor.util.isDescendant(hadFocus, target, true) &&
                 !isElementDescendantOfExtension(this.base.extensions, target);
-
             if (toFocus !== hadFocus) {
                 // If element has focus, and focus is going outside of editor
                 // Don't blur focused element if clicking on editor, toolbar, or anchorpreview
