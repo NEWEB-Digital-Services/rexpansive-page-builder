@@ -274,6 +274,8 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'create_builder_modals' );
 		
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'create_rexlive_fixed_buttons' );
+		
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'include_js_template' );
 
 		$this->loader->add_action( 'wp_ajax_rexlive_save_sections', $plugin_public, 'rexlive_save_sections' );
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_sections', $plugin_public, 'rexlive_save_sections' );

@@ -180,6 +180,8 @@ class Rexbuilder_Public {
 			//include media libray
 			wp_enqueue_media();
 			
+			wp_enqueue_script( 'tmpl', REXPANSIVE_BUILDER_URL  . $cartella. 'js/vendor/tmpl.min.js', array( 'jquery' ), $this->version, true );
+			
 			wp_enqueue_script( 'photoswipe', REXPANSIVE_BUILDER_URL  . $cartella. 'Photoswipe/photoswipe.min.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( 'photoswipe-ui', REXPANSIVE_BUILDER_URL  . $cartella. 'Photoswipe/photoswipe-ui-default.min.js', array( 'jquery' ), $this->version, true );
 			
@@ -285,6 +287,15 @@ class Rexbuilder_Public {
 		}
 	}
 
+	public function include_js_template(){
+		if ( !current_user_can('edit_posts') &&  !current_user_can('edit_pages') ) { 
+			return; 
+		}
+		if( !isset( $this->plugin_options['post_types'] ) ) {
+			return;
+		}
+		include_once (REXPANSIVE_BUILDER_PATH."public/partials/rexbuilder-js-templates.php");
+	}
 	/**
 	 * Create the variuos modal editors of the builder.
 	 *

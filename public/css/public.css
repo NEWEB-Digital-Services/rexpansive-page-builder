@@ -4728,7 +4728,7 @@ a.pswp-item {
 .medium-editor-element:focus {
   outline: none; }
 
-.gridActive > .grid-stack-item:hover {
+.gridActive > .grid-stack-item.focused:hover {
   cursor: move; }
 
 .rexpansive_section .full-disposition.focused, .rexpansive_section .center-disposition.focused {

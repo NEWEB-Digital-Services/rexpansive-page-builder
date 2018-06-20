@@ -2,7 +2,6 @@
  *  Perfect Grid Gallery Editor
  */
 
-
 ; (function ($, window, document, undefined) {
 
     "use strict";
@@ -75,6 +74,9 @@
             mediumEditorIstance: null
         };
 
+        this.$section = this.$element.parents(this._defaults.gridParentWrap);
+        this.section = this.$section[0];
+
         this.init();
     }
 
@@ -83,8 +85,6 @@
         init: function () {
 
             this.properties.firstStartGrid = true;
-            
-            console.log(Rexbuilder_Util_Editor);
 
             this._setGridID();
 
@@ -115,14 +115,8 @@
             var gallery = this;
 
             if (Rexbuilder_Util_Editor.sectionCopying) {
-                gallery.hideSectionToolBox();
                 gallery._removeScrollbars();
             }
-
-            Rexbuilder_Util_Editor.elementIsDragging = false;
-            Rexbuilder_Util_Editor.elementIsResizing = false;
-            Rexbuilder_Util_Editor.editingElement = null;
-
 
             //a che cazzo serve?
             this.$element.on('change', { Gallery: gallery }, function (event, items) {
@@ -140,20 +134,7 @@
 
             if (!Rexbuilder_Util.editorMode) {
                 this.frontEndMode();
-            } else {
-                (gallery.$element).parents(".rexpansive_section").hover(function (event) {
-                    gallery.showSectionToolBox();
-                }, function () {
-                    gallery.hideSectionToolBox();
-                });
             }
-
-            /*   
-            // launching event 'editor is ready'
-            var gridReadyEvent = jQuery.Event("gridGalleryEditorReady");
-            gridReadyEvent.gallery = this;
-            $(document).trigger(gridReadyEvent); 
-            */
         },
 
 
@@ -214,7 +195,7 @@
         },
 
         _setGridID: function () {
-            this.properties.sectionNumber = parseInt(($(this.element).parents('.rexpansive_section')).attr('data-rexlive-section-id'));
+            this.properties.sectionNumber = parseInt(this.$section.attr('data-rexlive-section-id'));
             this.$element.addClass('grid-number-' + this.properties.sectionNumber);
         },
 
@@ -353,7 +334,7 @@
                 }
 
                 // updating sizeViewer Text
-                this.updateSizeViewerSizes(this, block);
+                this.updateSizeViewerSizes(block);
             }
         },
 
@@ -403,7 +384,7 @@
             if (oldLayout != G.settings.galleryLayout) {
 
                 G.$element.attr("data-layout", G.settings.galleryLayout);
-                $(G.element).parents('.rexpansive_section').find('.section-data').attr({
+                G.$section.find('.section-data').attr({
                     'data-layout': G.settings.galleryLayout
                 });
 
@@ -523,6 +504,7 @@
                 rows = this._calculateGridHeight(),
                 i,
                 j;
+            console.log(cols, rows);
             var guard;
             var grid = this.$element.data('gridstack');
             var w, h;
@@ -604,11 +586,9 @@
             $(divDragHandle).attr({
                 'class': 'rexlive-block-drag-handle'
             });
-
             $(divGridStackContent).attr({
                 'class': 'grid-stack-item-content'
             });
-
             $(divGridItemContent).attr({
                 'class': 'grid-item-content'
             });
@@ -623,11 +603,12 @@
             });
 
             $(divTextWrap).appendTo(divRexScrollbar);
+            $(divDragHandle).appendTo(divBlockOverlay);
             $(divRexScrollbar).appendTo(divBlockOverlay);
             $(divBlockOverlay).appendTo(divGridItemContent);
             $(divGridItemContent).appendTo(divGridStackContent);
             $(divGridStackContent).appendTo(divGridItem);
-            $(divDragHandle).appendTo(divGridItem);
+            $(divGridItem).append(tmpl("tmpl-tool-block"));
 
             this._prepareElement(divGridItem);
             this.createElementProperties(divGridItem);
@@ -799,9 +780,11 @@
             var $gridItem;
             this.$element.find('.grid-stack-item').each(function () {
                 $gridItem = $(this);
-                hTemp = parseInt($gridItem.attr('data-gs-height')) + parseInt($gridItem.attr('data-gs-y'));
-                if (hTemp > heightTot) {
-                    heightTot = hTemp;
+                if (!$gridItem.hasClass("removing_block")) {
+                    hTemp = parseInt($gridItem.attr('data-gs-height')) + parseInt($gridItem.attr('data-gs-y'));
+                    if (hTemp > heightTot) {
+                        heightTot = hTemp;
+                    }
                 }
             });
             return heightTot;
@@ -886,41 +869,6 @@
             });
         },
 
-        _removeHandles: function (elem) {
-            $(elem).children('.ui-resizable-handle').each(function () {
-                $(this).remove();
-            });
-        },
-
-        // add span elements that will be used as handles of the element
-        _addHandles: function (elem, $handles) {
-            var $elem = $(elem);
-            var span;
-            var div;
-            var handle;
-            var stringID = $elem.attr("data-rexbuilder-block-id");
-            $($handles.split(', ')).each(function () {
-                handle = this;
-                span = $(document.createElement('span')).attr({
-                    'class': 'circle-handle circle-handle-' + handle,
-                    'data-axis': handle
-                });
-                div = $(document.createElement('div')).attr({
-                    'class': 'ui-resizable-handle ui-resizable-' + handle,
-                    'data-axis': handle
-                });
-                if ($elem.is('div')) {
-                    if (stringID != '') {
-                        $(div).attr({
-                            'id': stringID + '_handle_' + handle,
-                        });
-                    }
-                }
-                $(span).appendTo($(div));
-                $(div).appendTo($elem);
-            });
-        },
-
         createResizePlaceHolder: function ($elem) {
             var block = $($elem)[0];
             var $placeholder = document.createElement('div');
@@ -969,16 +917,16 @@
             $elem = undefined;
         },
 
-        showSectionToolBox: function () {
-            this.$element.parents('.rexpansive_section').children('.section-toolBox').addClass('tool-box-active');
-        },
-
-        hideSectionToolBox: function () {
-            this.$element.parents('.rexpansive_section').children('.section-toolBox').removeClass('tool-box-active');
+        _prepareElements: function () {
+            var gallery = this;
+            $(gallery.$element).children('.grid-stack-item').each(function () {
+                var elem = this;
+                gallery._prepareElement(elem);
+            });
         },
 
         /**
-		 * Receives the element to prepare, not jquery object
+         * Receives the element to prepare, not jquery object
 		 */
         _prepareElement: function (elem) {
             var gallery = this;
@@ -1049,91 +997,168 @@
             }
         },
 
+        _removeHandles: function (elem) {
+            $(elem).children('.ui-resizable-handle').each(function () {
+                $(this).remove();
+            });
+        },
+
+        // add span elements that will be used as handles of the element
+        _addHandles: function (elem, $handles) {
+            var $elem = $(elem);
+            var span;
+            var div;
+            var handle;
+            var stringID = $elem.attr("data-rexbuilder-block-id");
+            $($handles.split(', ')).each(function () {
+                handle = this;
+                span = $(document.createElement('span')).attr({
+                    'class': 'circle-handle circle-handle-' + handle,
+                    'data-axis': handle
+                });
+                div = $(document.createElement('div')).attr({
+                    'class': 'ui-resizable-handle ui-resizable-' + handle,
+                    'data-axis': handle
+                });
+                if ($elem.is('div')) {
+                    if (stringID != '') {
+                        $(div).attr({
+                            'id': stringID + '_handle_' + handle,
+                        });
+                    }
+                }
+                $(span).appendTo($(div));
+                $(div).appendTo($elem);
+            });
+        },
+
         addElementListeners: function ($elem) {
             // adding element listeners
 
             var gallery = this;
             var $dragHandle = $elem.find(".rexlive-block-drag-handle");
+            var $textWrap = $elem.find(".text-wrap");
             var dragHandle = $dragHandle[0];
-
-            $elem.click(function (e) {
-                console.log("click: " + $elem.data("rexbuilder-block-id"));
-                console.log(Rexbuilder_Util_Editor);
-                if (Rexbuilder_Util_Editor.editingElement && (Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id") != $elem.data("rexbuilder-block-id"))) {
-                    console.log("ending editing");
-                    $elem.find(".text-wrap").blur();
-                    Rexbuilder_Util_Editor.activateElementFocus = false;
-                    Rexbuilder_Util_Editor.endEditingElement();
-                    Rexbuilder_Util_Editor.activateElementFocus = true;
-                    gallery._focusElement($elem);
-                }
-            });
+            var useDBclick = false;
 
             // mouse down on another element
             $elem.mousedown(function (e) {
                 console.log("mouse down: " + $elem.data("rexbuilder-block-id"));
-                if (Rexbuilder_Util_Editor.editingElement && (Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id") != $elem.data("rexbuilder-block-id"))) {
-                    console.log("%c stopping propagation ", "color: purple"); 
-                    $elem.find(".text-wrap").blur(); 
-                    Rexbuilder_Util_Editor.editedElement.find(".text-wrap").blur(); 
-                    Rexbuilder_Util_Editor.elementIsResizing = false;
-                    Rexbuilder_Util_Editor.elementIsDragging = false;
-                    e.stopPropagation();
-                    e.preventDefault();
-                }
-                Rexbuilder_Util_Editor.mouseDownEvent = e;
-                if (!(Rexbuilder_Util_Editor.editingElement || Rexbuilder_Util_Editor.elementIsDragging || Rexbuilder_Util_Editor.elementIsResizing)) {
-                    if (e.target != dragHandle) {
-                        clearTimeout(this.downTimer);
-                        this.downTimer = setTimeout(function () {
-                            console.log("%c we have to drag ", "color: green"); 
-                            $dragHandle.addClass("drag-up");
+                if ($(e.target).parents(".rexlive-block-toolbox").length == 0) {
+                    useDBclick = false;
+                    /* 
+                    if (Rexbuilder_Util_Editor.editingElement && (Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id") != $elem.data("rexbuilder-block-id"))) {
+                        console.log("%c stopping propagation ", "color: purple");
+                        //$textWrap.blur();
+                        Rexbuilder_Util_Editor.elementIsResizing = false;
+                        Rexbuilder_Util_Editor.elementIsDragging = false;
+                        //e.stopPropagation();
+                        //e.preventDefault();
+                    } 
+                    */
+                    Rexbuilder_Util_Editor.mouseDownEvent = e;
+                    if (!(Rexbuilder_Util_Editor.editingElement || Rexbuilder_Util_Editor.elementIsDragging || Rexbuilder_Util_Editor.elementIsResizing) || (Rexbuilder_Util_Editor.editingElement && (Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id") != $elem.data("rexbuilder-block-id")))) {
+                        if (e.target != dragHandle) {
+                            clearTimeout(this.downTimer);
+                            this.downTimer = setTimeout(function () {
+                                console.log("%c we have to drag ", "color: green");
+                                $dragHandle.addClass("drag-up");
 
-                            Rexbuilder_Util_Editor.mouseDownEvent.target = dragHandle;
-                            Rexbuilder_Util_Editor.mouseDownEvent.srcElement = dragHandle;
-                            Rexbuilder_Util_Editor.mouseDownEvent.toElement = dragHandle;
+                                Rexbuilder_Util_Editor.mouseDownEvent.target = dragHandle;
+                                Rexbuilder_Util_Editor.mouseDownEvent.srcElement = dragHandle;
+                                Rexbuilder_Util_Editor.mouseDownEvent.toElement = dragHandle;
 
-                            Rexbuilder_Util_Editor.elementIsDragging = true;
+                                Rexbuilder_Util_Editor.elementDraggingTriggered = true;
 
-                            $elem.trigger(Rexbuilder_Util_Editor.mouseDownEvent);
-                        }, 100);
+                                $elem.trigger(Rexbuilder_Util_Editor.mouseDownEvent);
+                            }, 125);
+                        }
                     }
+
                 }
             });
 
             $elem.mouseup(function (e) {
                 console.log("mouse up: " + $elem.data("rexbuilder-block-id"));
+                console.log(e.target);
 
-                $dragHandle.removeClass("drag-up");
-                clearTimeout(this.downTimer);
-                Rexbuilder_Util_Editor.mouseDownEvent = null;
+                if ($(e.target).parents(".rexlive-block-toolbox").length == 0) {
+                    if (Rexbuilder_Util_Editor.elementDraggingTriggered) {
+                        $dragHandle.removeClass("drag-up");
+                        Rexbuilder_Util_Editor.elementDraggingTriggered = false;
+                    }
+                    clearTimeout(this.downTimer);
+                    Rexbuilder_Util_Editor.mouseDownEvent = null;
 
-                if (!(Rexbuilder_Util_Editor.editingElement || Rexbuilder_Util_Editor.elementIsResizing || Rexbuilder_Util_Editor.elementIsDragging)) {
-                    console.log("FOCUSING ELEMENT: " + $elem.data("rexbuilder-block-id"));
-                    Rexbuilder_Util_Editor.editingElement = true;
-                    Rexbuilder_Util_Editor.editedElement = $elem;
-                    Rexbuilder_Util_Editor.editingGallery = true;
-                    Rexbuilder_Util_Editor.editedGallery = gallery;
+                    if (!(Rexbuilder_Util_Editor.editingElement || Rexbuilder_Util_Editor.elementIsResizing || Rexbuilder_Util_Editor.elementIsDragging) || (Rexbuilder_Util_Editor.editingElement && (Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id") != $elem.data("rexbuilder-block-id")))) {
+                        /* setTimeout(function () {
+                            console.log("now u can dbclick");
+                            useDBclick = true;
+                        }, 3000); */
+                        Rexbuilder_Util_Editor.editingElement = true;
+                        Rexbuilder_Util_Editor.editedElement = $elem;
+                        Rexbuilder_Util_Editor.editedTextWrap = $textWrap;
+                        Rexbuilder_Util_Editor.editingGallery = true;
+                        Rexbuilder_Util_Editor.editedGallery = gallery;
+                        if (!$textWrap.is(":focus")) {
+                            var caretPosition;
+                            if ($elem.hasClass("rex-flex-top")) {
+                                caretPosition = "end";
+                            } else if ($elem.hasClass("rex-flex-middle")) {
+                                var textHeight = $textWrap.innerHeight();
+                                var maxBlockHeight = $elem.innerHeight();
+                                if (e.offsetY < maxBlockHeight / 2 - textHeight / 2) {
+                                    caretPosition = "begin";
+                                } else {
+                                    caretPosition = "end";
+                                }
+                            } else {
+                                caretPosition = "begin";
+                            }
 
-                    console.log(e);
-                    Rexbuilder_Util_Editor.startEditingElement(e);
+                            if (caretPosition == "begin") {
+                                $textWrap.focus();
+                            } else {
+                                Rexbuilder_Util_Editor.setEndOfContenteditable($textWrap[0]);
+                            }
+                        }
+                        Rexbuilder_Util_Editor.startEditingElement();
+                    }
+                }
+            });
+
+            $elem.click(function (e) {
+                if (!Rexbuilder_Util_Editor.elementDraggingTriggered) {
+                    if (Rexbuilder_Util_Editor.editingElement && (Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id") != $elem.data("rexbuilder-block-id"))) {
+
+                        //$textWrap.blur();
+                        Rexbuilder_Util_Editor.activateElementFocus = false;
+                        Rexbuilder_Util_Editor.endEditingElement();
+                        Rexbuilder_Util_Editor.activateElementFocus = true;
+                        //gallery.focusElement($elem);
+                    }
                 }
             });
 
             $elem.hover(function (e) {
-               // console.log("hover: " + $elem.data("rexbuilder-block-id"));
-                if (!(Rexbuilder_Util_Editor.editingElement || Rexbuilder_Util_Editor.elementIsResizing || Rexbuilder_Util_Editor.elementIsDragging)) {
-                    gallery._focusElement($elem);
+                if (!(Rexbuilder_Util_Editor.editingElement || Rexbuilder_Util_Editor.elementIsResizing || Rexbuilder_Util_Editor.elementIsDragging) || Rexbuilder_Util_Editor.editingElement && (Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id") != $elem.data("rexbuilder-block-id"))) {
+                    Rexbuilder_Util_Editor.focusedElement = $elem;
+                    gallery.focusElement(Rexbuilder_Util_Editor.focusedElement);
                 }
             }, function () {
-               // console.log("out hover: " + $elem.data("rexbuilder-block-id"));
-                if (!(Rexbuilder_Util_Editor.editingElement || Rexbuilder_Util_Editor.elementIsResizing || Rexbuilder_Util_Editor.elementIsDragging)) {
-                    gallery._unFocusElement($elem);
+                if (!(Rexbuilder_Util_Editor.editingElement || Rexbuilder_Util_Editor.elementIsResizing || Rexbuilder_Util_Editor.elementIsDragging) || Rexbuilder_Util_Editor.editingElement && (Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id") != $elem.data("rexbuilder-block-id"))) {
+                    Rexbuilder_Util_Editor.focusedElement;
+                    gallery.unFocusElement(Rexbuilder_Util_Editor.focusedElement);
                 }
             });
 
             $elem.dblclick(function (e) {
-                console.log("dbclick: " + $elem.data("rexbuilder-block-id"));
+                /* console.log(useDBclick);
+                if (!useDBclick) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                } */
+                /* console.log("dbclick: " + $elem.data("rexbuilder-block-id"));
                 if (Rexbuilder_Util_Editor.editingElement && (Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id") != $elem.data("rexbuilder-block-id"))) {
                     Rexbuilder_Util_Editor.activateElementFocus = false;
                     Rexbuilder_Util_Editor.endEditingElement();
@@ -1144,10 +1169,11 @@
 
                 Rexbuilder_Util_Editor.editingElement = true;
                 Rexbuilder_Util_Editor.editedElement = $elem;
+                Rexbuilder_Util_Editor.editedTextWrap = $textWrap;
                 Rexbuilder_Util_Editor.editingGallery = true;
                 Rexbuilder_Util_Editor.editedGallery = gallery;
                 console.log(e);
-                Rexbuilder_Util_Editor.startEditingElement(e);
+                Rexbuilder_Util_Editor.startEditingElement(e); */
             });
 
         },
@@ -1170,16 +1196,13 @@
             //$elem.children(".rexlive-block-drag-handle").removeClass("hide-drag");
         },
 
-        _prepareElements: function () {
-            var gallery = this;
-            $(gallery.$element).children('.grid-stack-item').each(function () {
-                var elem = this;
-                gallery._prepareElement(elem);
-            });
+        unFocusElementEditing: function ($elem) {
+            this.hideBlockToolBox($elem);
+            $elem.removeClass('focused');
         },
 
-        _focusElement: function ($elem) {
-            $elem.children(".rexlive-block-toolbox").addClass("focused");
+        focusElement: function ($elem) {
+            this.showBlockToolBox($elem);
             $elem.addClass('focused');
             $elem.parent().addClass('focused');
             $elem.parent().parent().addClass('focused');
@@ -1187,15 +1210,9 @@
             $elem.parent().parent().parent().parent().addClass('focused');
         },
 
-        _unFocusElementEditing: function ($elem) {
-            this.hideBlockToolBox($elem);
-            //this.disableDragHandle($elem);
-            $elem.children(".rexlive-block-toolbox").removeClass("focused");
-            $elem.removeClass('focused');
-        },
 
-        _unFocusElement: function ($elem) {
-            $elem.children(".rexlive-block-toolbox").removeClass("focused");
+        unFocusElement: function ($elem) {
+            this.hideBlockToolBox($elem);
             $elem.removeClass('focused');
             $elem.parent().removeClass('focused');
             $elem.parent().parent().removeClass('focused');
@@ -1222,37 +1239,40 @@
         },
 
 
-        updateSizeViewerSizes: function (gallery, block) {
-            gallery.updateSizeViewerText(block,
-                Math.round($(block).outerWidth() / gallery.properties.singleWidth),
-                gallery.calculateHeightSizeViewer(block, gallery));
+        updateSizeViewerSizes: function (block) {
+            this.updateSizeViewerText(block,
+                Math.round($(block).outerWidth() / this.properties.singleWidth),
+                this.calculateHeightSizeViewer(block));
         },
 
-
-
-        calculateHeightSizeViewer: function (block, gallery) {
-            if (gallery.settings.galleryLayout == 'masonry') {
+        calculateHeightSizeViewer: function (block) {
+            if (this.settings.galleryLayout == 'masonry') {
                 return $(block).outerHeight();
             } else {
-                return Math.round($(block).outerHeight() / gallery.properties.singleHeight);
+                return Math.round($(block).outerHeight() / this.properties.singleHeight);
             }
         },
 
         _linkResizeEvents: function () {
             var gallery = this;
             var block, xStart, wStart, xView, yView;
+            var $block;
             var imageWidth;
             var $blockContent;
             $(gallery.$element).on('resizestart', function (event, ui) {
                 if (!$(ui.element).is('span')) {
+                    if (Rexbuilder_Util_Editor.editingElement) {
+                        Rexbuilder_Util_Editor.endEditingElement();
+                    }
                     gallery.properties.resizeHandle = $(event.toElement).attr('data-axis');
-                    block = $(event.target)[0];
-                    $blockContent = $(block).find('.grid-item-content');
+                    block = event.target;
+                    $block = $(block);
+                    $blockContent = $block.find('.grid-item-content');
                     imageWidth = $blockContent.attr('data-background-image-width');
                     Rexbuilder_Util_Editor.elementIsResizing = true;
                     xStart = parseInt(block['attributes']['data-gs-x'].value);
                     if (gallery.properties.resizeHandle == 'e' || gallery.properties.resizeHandle == 'se') {
-                        $(block).attr("data-gs-max-width", (gallery.settings.numberCol - xStart));
+                        $block.attr("data-gs-max-width", (gallery.settings.numberCol - xStart));
                     } else if (gallery.properties.resizeHandle == 'w' || gallery.properties.resizeHandle == 'sw') {
                         wStart = parseInt(block['attributes']['data-gs-width'].value);
                         // $('#' + block.id).attr("data-gs-max-width", (xStart +
@@ -1261,7 +1281,7 @@
                 }
             }).on('resize', function (event, ui) {
                 if (!$(ui.element).is('span')) {
-                    if ($(block).outerWidth() < imageWidth) {
+                    if ($block.outerWidth() < imageWidth) {
                         if (!$blockContent.hasClass('small-width')) {
                             $blockContent.addClass('small-width');
                         }
@@ -1269,9 +1289,9 @@
                         $blockContent.removeClass('small-width');
                     }
 
-                    gallery.updateSizeViewerSizes(gallery, block);
+                    gallery.updateSizeViewerSizes(block);
 
-                    if (!$(block).hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
+                    if (!$block.hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
                         gallery.fixElementTextSize(block, gallery.properties.resizeHandle, null);
                     }
                     /*
@@ -1283,11 +1303,11 @@
                 if (Rexbuilder_Util_Editor.elementIsResizing) {
                     gallery.updateSizeViewerText(elem);
                     if (gallery.settings.galleryLayout == 'masonry') {
-                        $(block).attr("data-height", Math.round(($(block).attr("data-gs-height")) / gallery.properties.singleWidth));
+                        $block.attr("data-height", Math.round(($block.attr("data-gs-height")) / gallery.properties.singleWidth));
                     }
-                    $(block).attr("data-gs-max-width", "500");
+                    $block.attr("data-gs-max-width", "500");
                     gallery.updateAllElementsProperties();
-                    if (!$(block).hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
+                    if (!$block.hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
                         gallery.fixElementTextSize(block, gallery.properties.resizeHandle, null);
                     }
                     Rexbuilder_Util_Editor.elementIsResizing = false;
@@ -1303,6 +1323,10 @@
             // eventi per il drag
             $(gallery.$element).on('dragstart', function (event, ui) {
                 Rexbuilder_Util_Editor.elementIsDragging = true;
+                ui.helper.eq(0).find(".text-wrap").blur();
+                if (Rexbuilder_Util_Editor.editingElement) {
+                    Rexbuilder_Util_Editor.endEditingElement();
+                }
                 console.log('drag start');
             }).on('drag', function (event, ui) {
                 // console.log('dragging');
@@ -1397,7 +1421,7 @@
                 'class': 'editable',
                 'style': 'display: none'
             });
-            $('.rexpansive_section').parent().prepend(divToolbar);
+            gallery.$section.parent().prepend(divToolbar);
 
             var currentTextSelection;
 
@@ -1512,12 +1536,10 @@
 					 * This example includes the default options for
 					 * placeholder, if nothing is passed this is what it used
 					 */
-                    text: "wwww",
+                    text: "Insert Text Here",
                     hideOnClick: true
                 }
             });
-
-
 
             editor.subscribe('editableInput', function (e) {
                 if ($('.medium-insert-images figure img, .mediumInsert figure img').length > 0) {

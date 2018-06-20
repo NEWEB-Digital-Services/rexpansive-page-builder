@@ -2,11 +2,33 @@
 var Rexbuilder_Util_Editor = (function ($) {
     'use strict';
 
+    var setEndOfContenteditable = function (contentEditableElement) {
+        var range, selection;
+        if (document.createRange)//Firefox, Chrome, Opera, Safari, IE 9+
+        {
+            range = document.createRange();//Create a range (a range is a like the selection but invisible)
+            range.selectNodeContents(contentEditableElement);//Select the entire contents of the element with the range
+            range.collapse(false);//collapse the range to the end point. false means collapse to end rather than the start
+            selection = window.getSelection();//get the selection object (allows you to change selection)
+            selection.removeAllRanges();//remove any selections already made
+            selection.addRange(range);//make the range you have just created the visible selection
+        }
+        else if (document.selection)//IE 8 and lower
+        {
+            range = document.body.createTextRange();//Create a range (a range is a like the selection but invisible)
+            range.moveToElementText(contentEditableElement);//Select the entire contents of the element with the range
+            range.collapse(false);//collapse the range to the end point. false means collapse to end rather than the start
+            range.select();//Select the range (make it the visible selection
+        }
+    }
+
     var addBlockToolboxListeners = function () {
 
         $(document).on('click', '.builder-delete-block', function (e) {
             e.preventDefault();
+            e.stopPropagation();
 
+            console.log("stopPropagation");
             var $elem = $(e.currentTarget).parents('.grid-stack-item');
             var grid = $elem.parents('.grid-stack-row').data("gridstack");
             grid.removeWidget($elem, false);
@@ -15,14 +37,14 @@ var Rexbuilder_Util_Editor = (function ($) {
 
         $(document).on('click', '.builder-copy-block', function (e) {
             e.preventDefault();
-
+            e.stopPropagation();
             var galleryEditorIstance = $(e.currentTarget).parents('.grid-stack-row').data().plugin_perfectGridGalleryEditor;
 
             Rexbuilder_Util_Editor.blockCopying = true;
             var $elem = $(e.currentTarget).parents('.grid-stack-item');
             var $newBlock;
             var $gallery = $elem.parents('.grid-stack-row');
-            var $grid = $gallery.data("gridstack");
+            var $gridstack = $gallery.data("gridstack");
             var editor = galleryEditorIstance.properties.mediumEditorIstance;
             $newBlock = $elem.clone(false);
 
@@ -36,7 +58,9 @@ var Rexbuilder_Util_Editor = (function ($) {
 
             galleryEditorIstance._prepareElement($newBlock.eq(0));
 
-            $grid.addWidget($newBlock, 0, 0, w, h, true);
+            galleryEditorIstance.unFocusElementEditing($newBlock);
+
+            $gridstack.addWidget($newBlock, 0, 0, w, h, true);
             var $textWrap = $newBlock.find(".text-wrap");
             var newBlock = $newBlock[0];
 
@@ -107,52 +131,38 @@ var Rexbuilder_Util_Editor = (function ($) {
     var endEditingElement = function () {
         console.log("end editing element: " + Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id"));
         var galleryEditorIstance = Rexbuilder_Util_Editor.editedGallery;
-        var gridstack = galleryEditorIstance.$element.data('gridstack');
 
         Rexbuilder_Util_Editor.elementIsDragging = false;
-        Rexbuilder_Util_Editor.editedElement.blur();
+        Rexbuilder_Util_Editor.editedTextWrap.blur();
 
-        if (Rexbuilder_Util_Editor.activateElementFocus) {
-            galleryEditorIstance._focusElement(Rexbuilder_Util_Editor.editedElement);
-        } else {
-            galleryEditorIstance._unFocusElement(Rexbuilder_Util_Editor.editedElement);
-        }
+        galleryEditorIstance.unFocusElement(Rexbuilder_Util_Editor.editedElement);
 
         Rexbuilder_Util_Editor.editingGallery = false;
         Rexbuilder_Util_Editor.editedGallery = null;
         Rexbuilder_Util_Editor.editingElement = false;
         Rexbuilder_Util_Editor.editedElement = null;
-
-        galleryEditorIstance.$element.addClass('gridActive');
-        gridstack.enable();
+        Rexbuilder_Util_Editor.editedTextWrap = null;
     }
 
-    var startEditingElement = function (event) {
+    var startEditingElement = function () {
         if (Rexbuilder_Util_Editor.editingElement && Rexbuilder_Util_Editor.editingGallery) {
-            //event.preventDefault();
-            //event.stopPropagation();
             var gallery = Rexbuilder_Util_Editor.editedGallery;
             var $elem = Rexbuilder_Util_Editor.editedElement;
             var gridstack = gallery.$element.data('gridstack');
-            gridstack.disable();
-            $(gallery.$element).removeClass('gridActive');
+            //gridstack.disable();
+            //$(gallery.$element).removeClass('gridActive');
 
-            console.log("focusing: " + $elem.data("rexbuilder-block-id"));
-
-            gallery._unFocusElementEditing($elem);
+            console.log("start editing " + $elem.attr("data-rexbuilder-block-id"));
+            gallery.unFocusElementEditing($elem);
             gallery.properties.elementStartingH = parseInt($elem.attr("data-gs-height"));
 
+            /*            
             var textWrap = $elem.find('.text-wrap')[0];
-            //event.type = "click";
-            //gallery.properties.mediumEditorIstance.trigger('focus', event, textWrap);
-
-            /* if (!(textWrap.text().length) || textWrap.text() == '""') {
+            if (!(textWrap.text().length) || textWrap.text() == '""') {
                 $(textWrap)[0].focus();
-            } */
+            } 
+            */
             // $(textWrap.lastChild)[0].focus();
-            /*
-             * if()#mCSB_1_container > div > div $()[0].focus();
-             */
         }
     }
 
@@ -229,15 +239,20 @@ var Rexbuilder_Util_Editor = (function ($) {
         this.blockCopying = false;
 
         this.editingGallery = false;
-        this.editedGallery = null;
-
         this.editingElement = false;
+
+        this.editedGallery = null;
         this.editedElement = null;
+        this.editedTextWrap = null;
 
         this.activateElementFocus = false;
 
         this.mouseDownEvent = null;
         this.mouseUpEvent = null;
+
+        this.elementDraggingTriggered = false;
+
+        this.focusedElement = null;
     }
 
     return {
@@ -250,6 +265,7 @@ var Rexbuilder_Util_Editor = (function ($) {
         addWindowListeners: addWindowListeners,
         endEditingElement: endEditingElement,
         startEditingElement: startEditingElement,
+        setEndOfContenteditable: setEndOfContenteditable
     };
 
 })(jQuery);
