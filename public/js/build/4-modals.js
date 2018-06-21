@@ -335,15 +335,19 @@ $(document).on(
  * true; } }
  */
 
-$(document).on('click', '#builder-undo-btn', function (e) {
+$(document).on('rexlive:undo', function (e) {
+	console.log(e); 
 	console.log('undo');
 });
 
-$(document).on('click', '#builder-save-grid-btn', function (e) {
+$(document).on('rexlive:save', function (e, data) {
 	// ajx call
 	// - clear previuos data
 	// - save new data
+	var layouts = data.settings;
+	//crea salvataggio senza shortcode in page
 
+	//
 	var shortcodePage = '';
 	$('.grid-stack-row').each(function () {
 		var $this = $(this);
@@ -354,6 +358,7 @@ $(document).on('click', '#builder-save-grid-btn', function (e) {
 	});
 
 	var idPost = parseInt($('#id-post').attr('data-post-id'));
+
 	$.ajax({
 		type: 'POST',
 		dataType: 'json',
@@ -362,7 +367,8 @@ $(document).on('click', '#builder-save-grid-btn', function (e) {
 			action: 'rexlive_save_sections',
 			nonce_param: rexajax.rexnonce,
 			shortcode: shortcodePage,
-			post_id_to_update: idPost
+			post_id_to_update: idPost,
+			layouts: layouts
 		},
 		success: function (response) {
 			console.log(response);

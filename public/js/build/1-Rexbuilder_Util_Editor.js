@@ -195,6 +195,7 @@ var Rexbuilder_Util_Editor = (function ($) {
             });
         }
         Rexbuilder_Util.$window.on('resize', function (event) {
+            console.log("window resized"); 
             Rexbuilder_Util.windowIsResizing = true;
             Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
                 if (!Rexbuilder_Util_Editor.elementIsResizing) {
@@ -228,6 +229,16 @@ var Rexbuilder_Util_Editor = (function ($) {
                 galleryEditorIstance.updateGrid();
             });
         });
+
+        Rexbuilder_Util.$window[0].addEventListener("message", receiveMessage, false);
+
+        function receiveMessage(event)
+        {   
+            if(event.data.trusted){
+                $(document).trigger("rexlive:save", { settings: event.data.selected });
+            }
+        }
+
     }
 
     // init the utilities
@@ -265,7 +276,7 @@ var Rexbuilder_Util_Editor = (function ($) {
         addWindowListeners: addWindowListeners,
         endEditingElement: endEditingElement,
         startEditingElement: startEditingElement,
-        setEndOfContenteditable: setEndOfContenteditable
+        setEndOfContenteditable: setEndOfContenteditable,
     };
 
 })(jQuery);

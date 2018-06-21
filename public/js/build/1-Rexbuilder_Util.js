@@ -117,8 +117,7 @@ var Rexbuilder_Util = (function($) {
 	var init = function() {
 		this.$window = $(window);
 		this.$body = $("body");
-
-		$('.rexpansive_section').wrapAll("<div class=\"rex-container\"></div>");
+		
         this.$rexContainer = $(".rex-container");
 
 		_detect_mobile();

@@ -73,6 +73,19 @@ gulp.task('admin-css-build', function() {
     .pipe(gulp.dest('admin/css'));
 });
 
+gulp.task('live-builder-style', function() {
+	sass('admin/scss/builder-live/live-editor.scss',{
+		//style:'compressed'
+	})
+	.pipe(plumber())
+    .pipe(autoprefixer({
+      browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
+  	}))
+    .pipe(plumber.stop())
+	.pipe(size({title: 'LiveBuilder CSS'}))
+    .pipe(gulp.dest('admin/css'));
+});
+
 var admin_js_src = [ 
 	'admin/js/jquery.gridster.js', 
 	'admin/spectrum/spectrum.js', 
@@ -171,6 +184,10 @@ gulp.task('dev', ['admin-plugins-build', 'admin-css-build', 'public-css-build', 
 	gulp.watch('public/scss/**/*.scss', ['public-css-build']);
 	gulp.watch(public_js_src, ['public-plugins-build']);
 	gulp.watch(public_js_logic_src, ['public-js-build']);
+});
+
+gulp.task('dev-live', ['live-builder-style'] ,function() {
+	gulp.watch('admin/scss/builder-live/**/*.scss', ['live-builder-style']);
 });
 
 

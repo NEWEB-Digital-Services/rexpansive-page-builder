@@ -192,29 +192,29 @@ class Rexbuilder {
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles_production' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts_production' );
-
+		
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_plugin_options_menu' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'update_notifier_menu' );
 		$this->loader->add_action('admin_menu', $plugin_admin, 'add_plugin_menu_submenus');
-
+		
 		$this->loader->add_action( 'admin_bar_menu', $plugin_admin, 'add_top_bar_plugin_options_menu', 1000 );
-
+		
 		$plugin_basename = plugin_basename( plugin_dir_path( __DIR__ ) . $this->plugin_name . '.php' );
 		$this->loader->add_filter( 'plugin_action_links_' . $plugin_basename, $plugin_admin, 'add_action_links' );
-
+		
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'plugin_options_update' );
-
+		
 		$this->loader->add_action( 'admin_footer', $plugin_admin, 'create_builder_modals' );
 		$this->loader->add_action( 'admin_footer', $plugin_admin, 'create_builder_templates' );
-
+		
 		$this->loader->add_action( 'admin_head', $plugin_admin, 'rexbuilder_add_custom_buttons' );
-
+		
 		$this->loader->add_action( 'edit_form_after_title', $plugin_admin, 'add_switch_under_post_title' );
-
+		
 		$this->loader->add_filter( 'upload_mimes', $plugin_admin, 'register_xml_json_mime_type' );
 		$this->loader->add_action( 'upgrader_process_complete', $plugin_admin, 'import_models' );
 		$this->loader->add_action( 'rexpansive_builder_after_contacts_settings', $plugin_admin, 'import_models' );
-
+		
 		// Ajax functions
 		$this->loader->add_action( 'wp_ajax_rex_edit_slider_from_builder', $plugin_admin, 'rex_edit_slider_from_builder' );
 		$this->loader->add_action( 'wp_ajax_rex_create_slider_from_builder', $plugin_admin, 'rex_create_slider_from_builder' );
@@ -228,12 +228,17 @@ class Rexbuilder {
 		$this->loader->add_filter( 'acf/settings/path', $plugin_admin, 'acf_settings_path' );
 		$this->loader->add_filter( 'acf/settings/dir', $plugin_admin, 'acf_settings_dir' );
 		$this->loader->add_filter( 'acf/settings/show_admin', $plugin_admin, 'acf_hide_menu' );
-
+		
 		$this->loader->add_filter( 'acf/location/rule_types', $plugin_admin, 'acf_rule_type_rexpansive_builder' );
 		$this->loader->add_filter( 'acf/location/rule_values/rexpansive_builder', $plugin_admin, 'acf_rule_values_rexpansive_builder' );
 		$this->loader->add_filter( 'acf/location/rule_match/rexpansive_builder', $plugin_admin, 'acf_rule_match_rexpansive_builder', 10, 3 );
+		
+		// live builder
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_live_editing_styles' );
+		$this->loader->add_action( 'rexlive_footer_scripts', $plugin_admin, 'enqueue_live_editing_scripts' );
+		$this->loader->add_action( 'post_action_rexpansive', $plugin_admin, 'include_live_editing' );
 	}
-
+	
 	/**
 	 * Register all of the hooks related to the public-facing functionality
 	 * of the plugin.
@@ -273,16 +278,14 @@ class Rexbuilder {
 
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'create_builder_modals' );
 		
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'create_rexlive_fixed_buttons' );
-		
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'include_js_template' );
-
+		
 		$this->loader->add_action( 'wp_ajax_rexlive_save_sections', $plugin_public, 'rexlive_save_sections' );
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_sections', $plugin_public, 'rexlive_save_sections' );
 
 		// $this->loader->add_action( 'wpcf7_contact_form', $plugin_public, 'cf7_custom_script_guard' );
 		$this->loader->add_action( 'shortcode_atts_wpcf7', $plugin_public, 'cf7_custom_style', 10, 4 );
-		
+		$this->loader->add_filter( "the_content", $plugin_public, "generate_builder_content");
 	}
 
 	/**

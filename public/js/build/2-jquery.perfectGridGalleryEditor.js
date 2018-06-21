@@ -1112,8 +1112,10 @@
                                 } else {
                                     caretPosition = "end";
                                 }
-                            } else {
+                            } else if ($elem.hasClass("rex-flex-bottom")) {
                                 caretPosition = "begin";
+                            } else {
+                                caretPosition = "end";
                             }
 
                             if (caretPosition == "begin") {

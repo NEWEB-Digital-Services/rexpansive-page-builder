@@ -341,6 +341,16 @@ class Rexbuilder_Public {
 		include_once('partials/rexlive-buttons-fixed.php');
 	}
 
+	public function create_rexlive_responsive_buttons(){
+		if ( !current_user_can('edit_posts') &&  !current_user_can('edit_pages') ) { 
+			return; 
+		}
+		if( !isset( $this->plugin_options['post_types'] ) ) {
+			return;
+		}
+		include_once('partials/rexlive-responsive-tools.php');
+	}
+
 	/**
 	*	Ajax call to save sections status
 	*
@@ -352,8 +362,7 @@ class Rexbuilder_Public {
 			'error' => false,
 			'msg' => '',
 		);
-		$shortcode = $_POST['shortcode'];
-		$post_id_to_update = intval($_POST['post_id_to_update']);
+		
 
 		if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) :
 			$response['error'] = true;
@@ -361,6 +370,9 @@ class Rexbuilder_Public {
 			wp_send_json_error( $response );
 		endif;
 
+		$shortcode = $_POST['shortcode'];
+		$layouts=$_POST['layouts'];
+		$post_id_to_update = intval($_POST['post_id_to_update']);
 		$response['error'] = false;
 		
 		$args = array(
@@ -369,6 +381,12 @@ class Rexbuilder_Public {
 		);
 		
 		$update = wp_update_post($args);
+		
+		if(isset($layouts)){
+			foreach( $layouts as $layout ) {
+				update_post_meta(  $post_id_to_update, '_rex_content_'.$layout, $shortcode);
+			}
+		}
 
 		$response['update'] = $update;
 		$response['id_recived'] = $post_id_to_update;
@@ -376,6 +394,24 @@ class Rexbuilder_Public {
 		wp_send_json_success( $response );
 	}
 
+function generate_builder_content($content){
+	global $post;
+	$layout = $_GET['layout'];
+	$field = "_rex_content_";
+	if(isset($layout)){
+		$field.=$layout;
+	} else {
+		$field.="mydesktop";
+	}
+	$contenuto = get_post_meta( $post->ID, $field, true);
+	?>
+		<div class="rex-container">
+	<?php
+		echo do_shortcode( $contenuto);
+	?>
+		</div>
+	<?php
+}
 	/**
 	 * This filter insures users only see their own media
 	 */

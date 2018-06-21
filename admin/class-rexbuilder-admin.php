@@ -2667,5 +2667,16 @@ class Rexbuilder_Admin {
 				?><p><?php _e( 'CF7 Models already imported', 'rexpansive-builder' ); ?></p><?php
 			}
 		}
-   	}
+	   }
+	   
+   	public function include_live_editing($post_id) {
+		include_once( 'partials/rexbuilder-live-editing.php' );
+   }
+
+   public function enqueue_live_editing_styles( $hook ){
+	wp_enqueue_style( 'live-editing-style', REXPANSIVE_BUILDER_URL . 'admin/css/live-editor.css', array(), $this->version, 'all' );
+   }
+   public function enqueue_live_editing_scripts( $hook ){
+	wp_enqueue_script( 'Rexlive-Util-Admin-Editor', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Util_Admin_Editor.js', array( ), $this->version, true );		
+   }
 }
