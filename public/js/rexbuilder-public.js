@@ -125,6 +125,8 @@
 		/* -- Launching the grid -- */
 		console.log("Launching grid");
 		$('.perfect-grid-gallery').perfectGridGalleryEditor();
+/* 		se editor
+		$('.perfect-grid-gallery').editor(); */
 
 		/* -- Launching Photoswipe -- */
 		initPhotoSwipeFromDOM('.photoswipe-gallery');

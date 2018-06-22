@@ -362,10 +362,10 @@ $(document).on('rexlive:save', function (e, data) {
 	$.ajax({
 		type: 'POST',
 		dataType: 'json',
-		url: rexajax.ajaxurl,
+		url: _plugin_frontend_settings.rexajax.ajaxurl,
 		data: {
 			action: 'rexlive_save_sections',
-			nonce_param: rexajax.rexnonce,
+			nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
 			shortcode: shortcodePage,
 			post_id_to_update: idPost,
 			layouts: layouts

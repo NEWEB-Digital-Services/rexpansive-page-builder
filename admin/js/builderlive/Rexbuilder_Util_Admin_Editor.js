@@ -17,7 +17,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
             var $frameDiv = $(frameDiv);
 
             $frameDiv.attr({
-                src: source_url + "?layout=mobile",
+                src: source_url + "?layout=mobile&editor=true",
                 allowfullscreen: "1"
             });
             $frameDiv.css({
@@ -38,7 +38,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
             var $frameDiv = $(frameDiv);
 
             $frameDiv.attr({
-                src: source_url + "?layout=tablet",
+                src: source_url + "?layout=tablet&editor=true",
                 allowfullscreen: "1"
             });
             $frameDiv.css({
@@ -59,7 +59,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
             var $frameDiv = $(frameDiv);
 
             $frameDiv.attr({
-                src: source_url + "?layout=desktop",
+                src: source_url + "?layout=desktop&editor=true",
                 allowfullscreen: "1"
             });
             $frameDiv.css({
@@ -80,7 +80,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
             var $frameDiv = $(frameDiv);
 
             $frameDiv.attr({
-                src: source_url,
+                src: source_url+"&editor=true",
                 allowfullscreen: "1"
             });
             $frameDiv.css({
@@ -102,7 +102,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
             var $frameDiv = $(frameDiv);
 
             $frameDiv.attr({
-                src: source_url + "?layout=custom",
+                src: source_url + "?layout=custom&editor=true",
                 allowfullscreen: "1"
             });
             $frameDiv.css({

@@ -119,7 +119,11 @@ var lodash = _.noConflict();
         Rexbuilder_Util.init();
         Rexbuilder_Util_Editor.init();
 
-        Rexbuilder_Util.editorMode = true;
+        if(_plugin_frontend_settings.user.logged && _plugin_frontend_settings.user.editing){
+            Rexbuilder_Util.editorMode = true;
+        }else{
+            Rexbuilder_Util.editorMode = false;
+        }
 
         Rexbuilder_Section.init();
 
@@ -129,8 +133,9 @@ var lodash = _.noConflict();
 
         if (Rexbuilder_Util.editorMode) {
             Rexbuilder_Util_Editor.addBlockToolboxListeners();
-            Rexbuilder_Util_Editor.addWindowListeners();
         }
+
+        Rexbuilder_Util_Editor.addWindowListeners();
         
         /* -- Launching the grid -- */
         Rexbuilder_Util.$rexContainer.find('.grid-stack-row').perfectGridGalleryEditor();

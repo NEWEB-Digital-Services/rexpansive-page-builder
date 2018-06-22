@@ -201,8 +201,8 @@ class Rexbuilder_Public {
 			wp_enqueue_script( 'jquery-ui', REXPANSIVE_BUILDER_URL  . $cartella. 'js/jquery-ui.min.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( 'touchPunch', REXPANSIVE_BUILDER_URL  . $cartella. 'js/jquery.ui.touch-punch.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( 'lodash', REXPANSIVE_BUILDER_URL  . $cartella. 'js/lodash.js', array( 'jquery' ), $this->version, true );
-			wp_enqueue_script( 'gridstack', REXPANSIVE_BUILDER_URL  . $cartella. 'js/gridstack.js', array( 'jquery' ), $this->version, true );
-			wp_enqueue_script( 'gridstackUI', REXPANSIVE_BUILDER_URL  . $cartella. 'js/gridstack.jQueryUI.js', array( 'jquery' ), $this->version, true );
+			wp_enqueue_script( 'gridstack', REXPANSIVE_BUILDER_URL  . $cartella. 'js/vendor/gridstack.js', array( 'jquery' ), $this->version, true );
+			wp_enqueue_script( 'gridstackUI', REXPANSIVE_BUILDER_URL  . $cartella. 'js/vendor/gridstack.jQueryUI.js', array( 'jquery' ), $this->version, true );
 			
 			//editor text
 			wp_enqueue_script( 'spectrumColor', REXPANSIVE_BUILDER_URL  . $cartella. 'js/spectrum.js', array( 'jquery' ), $this->version, true );
@@ -239,13 +239,16 @@ class Rexbuilder_Public {
 					'font_family' => 'sans-serif',
 					'font_weight' => 'bold'
 				),
-				'native_scroll_animation' => true
-				)
-			));
-
-			wp_localize_script( 'rexbuilder', 'rexajax', array(
+				'native_scroll_animation' => true,
+				'user'=> array(
+					'logged' => is_user_logged_in(),
+					'editing' => ((isset($_GET['editor']) && $_GET['editor'] == "true") ? true : false)
+				),
+				'rexajax' => array(
 					'ajaxurl'	=>	admin_url( 'admin-ajax.php' ),
 					'rexnonce'	=>	wp_create_nonce( 'rex-ajax-call-nonce' )
+				)				
+				)
 			));
 
 			}

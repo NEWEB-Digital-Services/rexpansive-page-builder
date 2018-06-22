@@ -28,10 +28,11 @@ defined( 'ABSPATH' ) or exit;
     /** This action is documented in wp-admin/admin-footer.php */
 	global $post;
 	$source = get_permalink($post->ID);
+	//$source = substr($source, 0, -1);
 	include_once("rexlive-toolbox-fixed.php");
 	?>
 	<div class="rexpansive-live-frame-container" style ="width:100%;height:100vh;margin: 0 auto;">
-		<iframe id="rexpansive-live-frame" src="<?php echo $source ?>" allowfullscreen="1" style="width:100%;height:100%"></iframe>
+		<iframe id="rexpansive-live-frame" src="<?php echo $source .'?&editor=true'?>" allowfullscreen="1" style="width:100%;height:100%"></iframe>
 	</div>
 	<?php
 	
