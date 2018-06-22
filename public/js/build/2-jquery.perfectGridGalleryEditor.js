@@ -234,49 +234,49 @@
 		 * Funzione che aggiorna la scollbar all'interno del blocco
 		 */
         fixElementTextSize: function (block, $handler, event) {
-            if (!$(block).hasClass('block-has-slider')) {
-                var $textWrap = $(block).find('.text-wrap');
-                var $blockContent = $(block).find('.rex-custom-scrollbar');
-                var maxBlockHeight = $blockContent.parents('.grid-item-content').innerHeight();
-                var textHeight = $textWrap.innerHeight();
-                var dataBlock = $(block).children('.rexbuilder-block-data');
-
+            var $block = $(block);
+            if (!$block.hasClass('block-has-slider')) {
+                var $blockContent = $block.find('.rex-custom-scrollbar');
                 // se il resize del blocco viene fatto tramite una maniglia
                 if ($handler !== null) {
+                    var $dataBlock = $block.children('.rexbuilder-block-data');
                     // updating scrollbar
                     $blockContent.mCustomScrollbar("update");
                     // aggiornamento della scrollbar del blocco se il layout e'
                     // masonry
                     if (this.settings.galleryLayout == 'masonry') {
                         if ($blockContent.hasClass('mCS_no_scrollbar') || $blockContent.hasClass('mCS_disabled')) {
-                            if ($(dataBlock).attr('data-block_has_scrollbar') != 'false') {
-                                $(dataBlock).attr('data-block_has_scrollbar', 'false');
+                            if ($dataBlock.attr('data-block_has_scrollbar') != 'false') {
+                                $dataBlock.attr('data-block_has_scrollbar', 'false');
                             }
                         } else {
-                            if ($(dataBlock).attr('data-block_has_scrollbar') != 'true') {
-                                $(dataBlock).attr('data-block_has_scrollbar', 'true');
+                            if ($dataBlock.attr('data-block_has_scrollbar') != 'true') {
+                                $dataBlock.attr('data-block_has_scrollbar', 'true');
                             }
-                            $(dataBlock).attr('data-block_height_masonry', block['attributes']['data-gs-height'].value);
+                            $dataBlock.attr('data-block_height_masonry', parseInt($block.data("gs-height")));
                         }
                     }
                 } else {
 
                     // TODO aggiungere il caso in cui il blocco e' nuovo
                     // Il blocco non ha la barra
-                    if ($(block).find('.mCustomScrollBox').length === 0) {
+                    if ($block.find('.mCustomScrollBox').length === 0) {
+                        var maxBlockHeight = $blockContent.parents('.grid-item-content').innerHeight();
+                        var textHeight = $block.find('.text-wrap').innerHeight();
                         // Primo avvio del blocco
                         //console.log(dataBlock + " senza barra");
                         // se il layout e' di tipo masonry
                         if (this.settings.galleryLayout == 'masonry') {
                             //console.log('setting ' + block.id + ' height');
-                            var grid = this.$element.data('gridstack');
+                            var gridstack = this.$element.data('gridstack');
+                            var $dataBlock = $block.children('.rexbuilder-block-data');
                             var w = parseInt(block['attributes']['data-gs-width'].value);
                             var h = parseInt(block['attributes']['data-gs-width'].value);
 
-                            if ($(dataBlock).attr('data-block_has_scrollbar') == 'true') {
-                                h = parseInt($(dataBlock).attr('data-block_height_masonry'));
+                            if ($dataBlock.attr('data-block_has_scrollbar') == 'true') {
+                                h = parseInt($dataBlock.attr('data-block_height_masonry'));
                             } else {
-                                $(dataBlock).attr('data-block_has_scrollbar', 'false');
+                                $dataBlock.attr('data-block_has_scrollbar', 'false');
                                 h = parseInt(block['attributes']['data-gs-height'].value);
                                 // differenza da ottenere per l'altezza giusta del
                                 // blocco
@@ -284,9 +284,9 @@
                                 if (textHeight >= maxBlockHeight) {
                                     h = h + Math.ceil((textHeight - maxBlockHeight) / 5);
                                 }
-                                $(dataBlock).attr('data-block_height_masonry', h);
+                                $dataBlock.attr('data-block_height_masonry', h);
                             }
-                            grid.update(block, null, null, w, h);
+                            gridstack.update(block, null, null, w, h);
                             maxBlockHeight = h;
                             $blockContent.mCustomScrollbar();
                             $blockContent.mCustomScrollbar("update");
@@ -302,9 +302,11 @@
                         }
 
                     } else if (Rexbuilder_Util.windowIsResizing) {
+                        var $blockContent = $block.find('.rex-custom-scrollbar');
                         $blockContent.mCustomScrollbar("update");
                     } else {
                         // successive modifiche dovute al cambiamento del contenuto
+                        var $blockContent = $block.find('.rex-custom-scrollbar');
                         if ($blockContent.hasClass('mCS_no_scrollbar') || $blockContent.hasClass('mCS_disabled')) {
                             // se il layout della griglia e' masonry
                             if (this.settings.galleryLayout == 'masonry') {
@@ -315,13 +317,15 @@
                                 if (textHeight >= maxBlockHeight) {
                                     h = h + Math.ceil((textHeight - maxBlockHeight) / this.properties.singleHeight);
                                 } else {
-                                    h = Math.max(h - Math.floor((maxBlockHeight - textHeight) / this.properties.singleHeight), parseInt($(dataBlock).attr('data-block_height_masonry')));
+                                    h = Math.max(h - Math.floor((maxBlockHeight - textHeight) / this.properties.singleHeight), parseInt($dataBlock.attr('data-block_height_masonry')));
                                 }
                                 if (this.properties.elementStartingH != h) {
                                     grid.update(block, null, null, w, h);
                                     this.properties.elementStartingH = h;
                                 }
                             }
+                            // updating sizeViewer Text
+                            this.updateSizeViewerSizes(block);
 
                             $blockContent.mCustomScrollbar({ "setHeight": "50%" });
                             $blockContent.mCustomScrollbar("update");
@@ -333,8 +337,6 @@
                     }
                 }
 
-                // updating sizeViewer Text
-                this.updateSizeViewerSizes(block);
             }
         },
 

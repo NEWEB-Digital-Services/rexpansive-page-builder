@@ -217,6 +217,8 @@ var Rexbuilder_Util_Editor = (function ($) {
                             galleryEditorIstance.fixElementTextSize(this, null, null);
                         });
                     }
+                    galleryEditorIstance = undefined;
+                    gridstack = undefined;
                     //G.properties.mediumEditorIstance.trigger("editableInput");
                 }
             });

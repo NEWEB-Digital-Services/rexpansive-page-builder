@@ -125,7 +125,8 @@ class Rexbuilder_Meta_Box {
         <?php
           //Retrieve the post content
           $checkbox_index = 0;
-          $contents = get_post( $post->ID )->post_content;
+//          $contents = get_post( $post->ID )->post_content;
+          $contents = get_post_meta( $post->ID, '_rex_content_mydesktop', true );
           preg_match_all( "/$pattern/", $contents, $result_rows);
           
           $customize_builder = apply_filters( 'rexpansive_builder_customize_builder', false );
@@ -780,9 +781,17 @@ class Rexbuilder_Meta_Box {
     if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
       return $post_id;
     }
+
+    Rexbuilder_Utilities::write_log($post_id);
+    foreach ( $this->fields as $field ) {
+      Rexbuilder_Utilities::write_log($field);
+      Rexbuilder_Utilities::write_log($_POST[ $field[ 'id' ] ]);
+    }
+
     $plugin_options = get_option( $this->plugin_name . '_options' );
     if( in_array( $_POST[ 'post_type' ], $plugin_options['post_types'] ) ) {
       if( !current_user_can( 'edit_page', $post_id ) ) {
+        
         return $post_id;
       } elseif ( !current_user_can( 'edit_post', $post_id ) ) {
         return $post_id;
