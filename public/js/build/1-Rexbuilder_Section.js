@@ -69,6 +69,7 @@ var Rexbuilder_Section = (function ($) {
             });
 
             $(document).on('click', '.builder-copy-row', function (e) {
+                console.log("copying row"); 
                 Rexbuilder_Util_Editor.sectionCopying = true;
                 var section = $(e.currentTarget).parents('.rexpansive_section');
                 var $newSection;

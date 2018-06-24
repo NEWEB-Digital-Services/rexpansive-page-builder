@@ -138,7 +138,6 @@ var Rexbuilder_Util = (function($) {
 		$window: $window,
 		scroll_timing: _scroll_timing,
 		fixSectionWidth: fixSectionWidth,
-		//$rexContainer: $rexContainer,
 		editorMode: editorMode,
 		windowIsResizing: windowIsResizing
 	};

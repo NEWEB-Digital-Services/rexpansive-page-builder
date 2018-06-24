@@ -220,7 +220,7 @@ class Rexbuilder_Public {
 			wp_enqueue_script( 'utilities', REXPANSIVE_BUILDER_URL  . $cartella. 'js/utilities.js', array( 'jquery' ), $this->version, true );
 
 			wp_enqueue_script( 'custom-scrollbar',REXPANSIVE_BUILDER_URL  . $cartella. 'js/vendor/1-jquery.mCustomScrollbar.concat.min.js', array( 'jquery' ), $this->version, true );
-
+			
 			wp_enqueue_script( '2-jqueryEditor', REXPANSIVE_BUILDER_URL  . $cartella. 'js/build/2-jquery.perfectGridGalleryEditor.js', array( 'jquery' ), $this->version, true );
 			
 			wp_enqueue_script( '4-modals', REXPANSIVE_BUILDER_URL  . $cartella. 'js/build/4-modals.js', array( 'jquery' ), $this->version, true );
@@ -406,11 +406,39 @@ function generate_builder_content($content){
 	} else {
 		$field.="mydesktop";
 	}
+	$mobile = get_post_meta( $post->ID, '_rex_content_mobile', true);
+	$tablet = get_post_meta( $post->ID, '_rex_content_tablet', true);
+	$desktop = get_post_meta( $post->ID, '_rex_content_desktop', true);
+
 	$contenuto = get_post_meta( $post->ID, $field, true);
 	?>
 		<div class="rex-container">
 	<?php
 		echo do_shortcode( $contenuto);
+	?>
+		</div>
+	<?php
+	?>
+
+	<div class="oooooo" style="display:none">
+	<?php
+		echo do_shortcode( $mobile);
+	?>
+		</div>
+	<?php
+	?>
+
+	<div class="oooooo" style="display:none">
+	<?php
+		echo do_shortcode($tablet);
+	?>
+		</div>
+	<?php
+	?>
+
+		<div class="oooooo" style="display:none">
+	<?php
+		echo do_shortcode( $desktop);
 	?>
 		</div>
 	<?php

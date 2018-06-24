@@ -80,7 +80,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
             var $frameDiv = $(frameDiv);
 
             $frameDiv.attr({
-                src: source_url+"&editor=true",
+                src: source_url+"?editor=true",
                 allowfullscreen: "1"
             });
             $frameDiv.css({
@@ -118,7 +118,8 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
             console.log("saving");
             var infos = {
                 selected: [],
-                trusted: true
+                eventName: "rexlive:save",
+                rexliveEvent: true
             };
             $responsiveToolbar.find("input[name=device]:checked").each(function () {
                 infos.selected.push(this.value);
@@ -130,10 +131,29 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
             frame.postMessage(infos, '*');
         });
 
-    }
+        $(document).on('click', '.btn-undo', function (e) {
+            console.log("undo");
+            var infos = {
+                eventName: "rexlive:undo",
+                rexliveEvent: true
+            };
+            
+            var frame = $frameBuilder[0].contentWindow;
 
-    var addWindowListeners = function () {
-        ;
+            frame.postMessage(infos, '*');
+        });
+
+        $(document).on('click', '.btn-redo', function (e) {
+            console.log("redo");
+            var infos = {
+                eventName: "rexlive:redo",
+                rexliveEvent: true
+            };
+            
+            var frame = $frameBuilder[0].contentWindow;
+
+            frame.postMessage(infos, '*');
+        });
     }
 
     // init the utilities

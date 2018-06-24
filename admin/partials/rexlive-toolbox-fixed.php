@@ -35,7 +35,8 @@ defined( 'ABSPATH' ) or exit;
         </div>
     </div>
     <div class="rexlive-builder-actions">
-        <button class = "btn-undo" style="position:absolute;bottom:0px;right:10%">Undo</button>
+        <button class = "btn-undo" style="position:absolute;bottom:0px;right:20%">Undo</button>
+        <button class = "btn-redo" style="position:absolute;bottom:0px;right:10%">Redo</button>
         <button class = "btn-save" style="position:absolute;bottom:0px;right:0%;">Save</button>
     </div>
 </div>
