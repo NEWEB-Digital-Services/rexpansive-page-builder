@@ -200,109 +200,54 @@ var Rexbuilder_Util_Editor = (function ($) {
         var test = true;
 
         Rexbuilder_Util.$window.on('resize', function (event) {
-            Rexbuilder_Util.windowIsResizing = true;
-            if (test) {
-                Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
-                    var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
-                    galleryEditorIstance.$element.children('.grid-stack-item').each(function () {
-                        var $block = $(this);
-                        if (!$block.hasClass('block-has-slider')) {
-                            //$block.find('.rex-custom-scrollbar').mCustomScrollbar("disable");
-                        }
+            if (!Rexbuilder_Util_Editor.elementIsResizing) {
+                 
+                event.preventDefault();
+                event.stopImmediatePropagation();
+                event.stopPropagation();
+
+                Rexbuilder_Util.windowIsResizing = true;
+                if (test) {
+                    Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
+                        var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
+                        //console.log("disabling scrollbars grid "+ galleryEditorIstance.getSectionNumber()); 
+                        galleryEditorIstance.removeScrollbars();
                     });
-                });
-                test = false;
+                    test = false;
+                }
+
+                clearTimeout(id);
+                id = setTimeout(doneResizing, 1000);
             }
-
-            clearTimeout(id);
-            id = setTimeout(doneResizing, 1000);
-            /* if (!Rexbuilder_Util_Editor.elementIsResizing) {
-                Rexbuilder_Util_Editor.hasResized = true;
-            } */
-            /*  if (!Rexbuilder_Util_Editor.elementIsResizing) {
-                 console.log("window resized");
-                 Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
-                     var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
-                     
-                     if(galleryEditorIstance._defineDynamicPrivateProperties()){
-                         var gridstack = galleryEditorIstance.$element.data('gridstack');
-                         
-                         
-                         
-                         if (galleryEditorIstance.settings.galleryLayout == 'masonry') {
-                             // if there is masonry layout
-                             galleryEditorIstance._calculateBlockHeightMasonry();
-                         } else {
-                             gridstack.cellHeight(galleryEditorIstance.properties.singleHeight);
-                             gridstack._initStyles();
-                             gridstack._updateStyles(galleryEditorIstance.properties.singleHeight);
-                             
-                         }
-                         
-                         galleryEditorIstance.$element.children('.grid-stack-item').each(function () {
-                             var $block = $(this);
-                             if (!$block.hasClass('block-has-slider')) {
-                                 //$block.find('.rex-custom-scrollbar').mCustomScrollbar("update");
-                             }
-                         });
-                         gridstack = undefined;
-                     }
-                     galleryEditorIstance = undefined;
-                     
-                     //G.properties.mediumEditorIstance.trigger("editableInput");
-                 });
-                 Rexbuilder_Util.windowIsResizing = false; */
-
         });
 
         function doneResizing() {
             if (!Rexbuilder_Util_Editor.elementIsResizing) {
-                console.log("window resized");
+                //console.log("window resized");
                 Rexbuilder_Util.windowIsResizing = true;
                 Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
                     var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
                     var gridstack = galleryEditorIstance.$element.data('gridstack');
 
-                   /*  galleryEditorIstance.$element.children('.grid-stack-item').each(function () {
-                        var $block = $(this);
-                        if (!$block.hasClass('block-has-slider')) {
-                            $block.find('.rex-custom-scrollbar').mCustomScrollbar("disable");
-                        }
-                    });
- */
                     galleryEditorIstance._defineDynamicPrivateProperties();
                     if (galleryEditorIstance.settings.galleryLayout == 'masonry') {
-                        // if there is masonry layout
                         galleryEditorIstance._calculateBlockHeightMasonry();
                     } else {
                         gridstack.cellHeight(galleryEditorIstance.properties.singleHeight);
                         gridstack._initStyles();
                         gridstack._updateStyles(galleryEditorIstance.properties.singleHeight);
-
                     }
 
-                    galleryEditorIstance.$element.children('.grid-stack-item').each(function () {
-                        var $block = $(this);
-                        if (!$block.hasClass('block-has-slider')) {
-                            $block.find('.rex-custom-scrollbar').mCustomScrollbar("update");
-                        }
-                    });
+                    galleryEditorIstance.createScrollbars();
+
                     galleryEditorIstance = undefined;
                     gridstack = undefined;
-                    //G.properties.mediumEditorIstance.trigger("editableInput");
                 });
                 Rexbuilder_Util.windowIsResizing = false;
                 test = true;
             }
         }
 
-        /* setInterval(function () {
-            if (Rexbuilder_Util_Editor.hasResized) {
-                
-                Rexbuilder_Util_Editor.hasResized = false;
-            }
-        }, 250);
- */
         Rexbuilder_Util.$window.on('load', function (e) {
             Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
                 var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
@@ -314,12 +259,12 @@ var Rexbuilder_Util_Editor = (function ($) {
 
         function receiveMessage(event) {
             if (event.data.rexliveEvent) {
-
+                console.log("rexlive event");
                 var e = jQuery.Event(event.data.eventName);
                 e.settings = {};
 
                 jQuery.extend(e.settings, event.data);
-                
+
                 $(document).trigger(e);
             }
         }

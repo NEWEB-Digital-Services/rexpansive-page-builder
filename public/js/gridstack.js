@@ -722,7 +722,7 @@
             if (isAutoCellHeight) {
                 self._updateHeightsOnResize();
             }
-
+            
             if (self._isOneColumnMode() && !self.opts.disableOneColumnMode) {
                 if (oneColumnMode) {
                     return;
@@ -749,7 +749,7 @@
 
                 self.container.removeClass(self.opts.oneColumnModeClass);
                 oneColumnMode = false;
-
+                
                 if (self.opts.staticGrid) {
                     return;
                 }

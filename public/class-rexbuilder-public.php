@@ -104,7 +104,8 @@ class Rexbuilder_Public {
 			wp_enqueue_style( 'font-awesome', REXPANSIVE_BUILDER_URL  . $cartella. 'font-awesome-4.3.0/css/font-awesome.min.css', array(), $this->version, 'all' );
 
 
-			wp_enqueue_style( 'malihu-custom-scrollbar-style', REXPANSIVE_BUILDER_URL . $cartella. 'css/jquery.mCustomScrollbar.min.css', array(), $this->version, 'all' );
+			//wp_enqueue_style( 'malihu-custom-scrollbar-style', REXPANSIVE_BUILDER_URL . $cartella. 'css/jquery.mCustomScrollbar.min.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'malihu-custom-scrollbar-style', REXPANSIVE_BUILDER_URL . $cartella. 'css/OverlayScrollbars.min.css', array(), $this->version, 'all' );
 
 			wp_enqueue_style( 'animate-css', REXPANSIVE_BUILDER_URL . $cartella. 'css/animate.css', array(), $this->version, 'all' );
 			wp_enqueue_style( 'textfill-style', REXPANSIVE_BUILDER_URL . $cartella. 'css/textFill.css', array(), $this->version, 'all' );
@@ -201,8 +202,8 @@ class Rexbuilder_Public {
 			wp_enqueue_script( 'jquery-ui', REXPANSIVE_BUILDER_URL  . $cartella. 'js/jquery-ui.min.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( 'touchPunch', REXPANSIVE_BUILDER_URL  . $cartella. 'js/jquery.ui.touch-punch.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( 'lodash', REXPANSIVE_BUILDER_URL  . $cartella. 'js/lodash.js', array( 'jquery' ), $this->version, true );
-			wp_enqueue_script( 'gridstack', REXPANSIVE_BUILDER_URL  . $cartella. 'js/vendor/gridstack.js', array( 'jquery' ), $this->version, true );
-			wp_enqueue_script( 'gridstackUI', REXPANSIVE_BUILDER_URL  . $cartella. 'js/vendor/gridstack.jQueryUI.js', array( 'jquery' ), $this->version, true );
+			wp_enqueue_script( 'gridstack', REXPANSIVE_BUILDER_URL  . $cartella. 'js/gridstack.js', array( 'jquery' ), $this->version, true );
+			wp_enqueue_script( 'gridstackUI', REXPANSIVE_BUILDER_URL  . $cartella. 'js/gridstack.jQueryUI.js', array( 'jquery' ), $this->version, true );
 			
 			//editor text
 			wp_enqueue_script( 'spectrumColor', REXPANSIVE_BUILDER_URL  . $cartella. 'js/spectrum.js', array( 'jquery' ), $this->version, true );
@@ -219,7 +220,8 @@ class Rexbuilder_Public {
 
 			wp_enqueue_script( 'utilities', REXPANSIVE_BUILDER_URL  . $cartella. 'js/utilities.js', array( 'jquery' ), $this->version, true );
 
-			wp_enqueue_script( 'custom-scrollbar',REXPANSIVE_BUILDER_URL  . $cartella. 'js/vendor/1-jquery.mCustomScrollbar.concat.min.js', array( 'jquery' ), $this->version, true );
+			//wp_enqueue_script( 'custom-scrollbar',REXPANSIVE_BUILDER_URL  . $cartella. 'js/vendor/1-jquery.mCustomScrollbar.concat.min.js', array( 'jquery' ), $this->version, true );
+			wp_enqueue_script( 'overlay-scrollbar',REXPANSIVE_BUILDER_URL  . $cartella. 'js/vendor/jquery.overlayScrollbars.min.js', array( 'jquery' ), $this->version, true );
 			
 			wp_enqueue_script( '2-jqueryEditor', REXPANSIVE_BUILDER_URL  . $cartella. 'js/build/2-jquery.perfectGridGalleryEditor.js', array( 'jquery' ), $this->version, true );
 			
@@ -418,7 +420,7 @@ function generate_builder_content($content){
 	?>
 		</div>
 	<?php
-	?>
+/* 	?>
 
 	<div class="oooooo" style="display:none">
 	<?php
@@ -441,7 +443,7 @@ function generate_builder_content($content){
 		echo do_shortcode( $desktop);
 	?>
 		</div>
-	<?php
+	<?php */
 }
 	/**
 	 * This filter insures users only see their own media

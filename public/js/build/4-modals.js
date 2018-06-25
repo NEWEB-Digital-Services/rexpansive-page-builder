@@ -394,13 +394,14 @@
 						$textWrapNoEditor.children(".text-editor-span-fix").remove();
 						if ($textWrapNoEditor.text().trim().length != 0) {
 							post += $textWrapNoEditor.html();
+							post += "<br>";
 						}
 					} else {
 						if ($textWrap.text().trim().length != 0) {
 							post += $textWrap.html();
+							post += "<br>";
 						}
 					}
-					post += "<br>";
 				});
 			});
 			return post;
