@@ -103,7 +103,7 @@ class Rexbuilder_Public {
 			
 			wp_enqueue_style( 'font-awesome', REXPANSIVE_BUILDER_URL  . $cartella. 'font-awesome-4.3.0/css/font-awesome.min.css', array(), $this->version, 'all' );
 
-			wp_enqueue_style( 'malihu-custom-scrollbar-style', REXPANSIVE_BUILDER_URL . $cartella. 'css/OverlayScrollbars.min.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'overlay-scrollbar-style', REXPANSIVE_BUILDER_URL . $cartella. 'css/OverlayScrollbars.min.css', array(), $this->version, 'all' );
 
 			wp_enqueue_style( 'animate-css', REXPANSIVE_BUILDER_URL . $cartella. 'css/animate.css', array(), $this->version, 'all' );
 			wp_enqueue_style( 'textfill-style', REXPANSIVE_BUILDER_URL . $cartella. 'css/textFill.css', array(), $this->version, 'all' );
@@ -217,7 +217,6 @@ class Rexbuilder_Public {
 
 			wp_enqueue_script( 'utilities', REXPANSIVE_BUILDER_URL  . $cartella. 'js/utilities.js', array( 'jquery' ), $this->version, true );
 
-			//wp_enqueue_script( 'custom-scrollbar',REXPANSIVE_BUILDER_URL  . $cartella. 'js/vendor/1-jquery.mCustomScrollbar.concat.min.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( 'overlay-scrollbar',REXPANSIVE_BUILDER_URL  . $cartella. 'js/vendor/jquery.overlayScrollbars.min.js', array( 'jquery' ), $this->version, true );
 			
 			wp_enqueue_script( '2-jqueryEditor', REXPANSIVE_BUILDER_URL  . $cartella. 'js/build/2-jquery.perfectGridGalleryEditor.js', array( 'jquery' ), $this->version, true );
@@ -227,7 +226,6 @@ class Rexbuilder_Public {
 			wp_enqueue_script( '3-velocity', REXPANSIVE_BUILDER_URL  . $cartella. 'js/vendor/3-velocity.min.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( '3-velocityui', REXPANSIVE_BUILDER_URL  . $cartella. 'js/vendor/3-velocity.ui.min.js', array( 'jquery' ), $this->version, true );
 			wp_enqueue_script( '4-jqueryScrollify', REXPANSIVE_BUILDER_URL  . $cartella. 'js/vendor/4-jquery.rexScrollify.js', array( 'jquery' ), $this->version, true );
-
 			
 			wp_enqueue_script( 'section-js', REXPANSIVE_BUILDER_URL  . $cartella. 'js/build/1-Rexbuilder_Section.js', array( 'jquery' ), $this->version, true );
 
@@ -333,26 +331,6 @@ class Rexbuilder_Public {
 		} */
 	}
 
-	public function create_rexlive_fixed_buttons(){
-		if ( !current_user_can('edit_posts') &&  !current_user_can('edit_pages') ) { 
-			return; 
-		}
-		if( !isset( $this->plugin_options['post_types'] ) ) {
-			return;
-		}
-		include_once('partials/rexlive-buttons-fixed.php');
-	}
-
-	public function create_rexlive_responsive_buttons(){
-		if ( !current_user_can('edit_posts') &&  !current_user_can('edit_pages') ) { 
-			return; 
-		}
-		if( !isset( $this->plugin_options['post_types'] ) ) {
-			return;
-		}
-		include_once('partials/rexlive-responsive-tools.php');
-	}
-
 	/**
 	*	Ajax call to save sections status
 	*
@@ -360,33 +338,41 @@ class Rexbuilder_Public {
 	*/
 	public function rexlive_save_sections() {
 		$nonce = $_POST['nonce_param'];
+
 		$response = array(
 			'error' => false,
 			'msg' => '',
 		);
 		
-
 		if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) :
 			$response['error'] = true;
 			$response['msg'] = 'Error!';
 			wp_send_json_error( $response );
 		endif;
 
-		$shortcode = $_POST['shortcode'];
-		$layouts=$_POST['layouts'];
+		$shortcode = $_POST['rex_shortcode'];
+		$cleanPost = $_POST['clean_post'];
+		
+		$saveLayouts = $_POST['layoutsSave'];
+
+		$layouts = $_POST['layoutsType'];
+		$groups = $_POST['layoutsGroups'];
+
 		$post_id_to_update = intval($_POST['post_id_to_update']);
 		$response['error'] = false;
 		
 		$args = array(
 			'ID'           => $post_id_to_update,
-			'post_content' => $shortcode,
+			'post_content' => $cleanPost,
 		);
 		
 		$update = wp_update_post($args);
 		
-		if(isset($layouts)){
-			foreach( $layouts as $layout ) {
-				update_post_meta(  $post_id_to_update, '_rex_content_'.$layout, $shortcode);
+		if(isset($saveLayouts) && isset($layouts) && isset($groups)){
+			update_post_meta(  $post_id_to_update, '_rex_responsive_settings', $layouts);
+			update_post_meta(  $post_id_to_update, '_rex_responsive_groups', $groups);
+			foreach( $saveLayouts as $layout ) {
+				update_post_meta(  $post_id_to_update, '_rex_content_'.$layout["name"], $shortcode);
 			}
 		}
 
@@ -400,47 +386,52 @@ function generate_builder_content($content){
 	global $post;
 	$layout = $_GET['layout'];
 	$field = "_rex_content_";
+		
 	if(isset($layout)){
 		$field.=$layout;
 	} else {
 		$field.="mydesktop";
 	}
-	$mobile = get_post_meta( $post->ID, '_rex_content_mobile', true);
+	
+	$layoutType = get_post_meta($post->ID,'_rex_responsive_layouts',true);
+	$layoutGroups = get_post_meta($post->ID,'_rex_responsive_groups',true);
+
+	?>
+	<div id="rexbuilder-layout-data" style="display: none;">
+		<div class = "groups">
+			<?php
+				echo json_encode($layoutGroups); 
+			?>
+		</div>
+		<div class = "available-layouts">
+			<?php
+				echo json_encode($layoutType); 
+			?>
+		</div>
+	</div>
+	<?php
+
+	foreach($layoutGroups as $group){
+		$content = get_post_meta( $post->ID, '_rex_content_'.$group[0], true);
+		?>
+		<div class="<?php
+			foreach($group as $type){
+				echo " rex-layout-".$type;
+			}
+		?>" style="display: none;">
+			<?php
+			echo do_shortcode( $content);
+			?>
+		</div>
+		<?php
+	}
+	/* 
+	$mobile = 
 	$tablet = get_post_meta( $post->ID, '_rex_content_tablet', true);
 	$desktop = get_post_meta( $post->ID, '_rex_content_desktop', true);
-
+ */
 	$contenuto = get_post_meta( $post->ID, $field, true);
-	?>
-		<div class="rex-container">
-	<?php
-		echo do_shortcode( $contenuto);
-	?>
-		</div>
-	<?php
-/* 	?>
-
-	<div class="oooooo" style="display:none">
-	<?php
-		echo do_shortcode( $mobile);
-	?>
-		</div>
-	<?php
-	?>
-
-	<div class="oooooo" style="display:none">
-	<?php
-		echo do_shortcode($tablet);
-	?>
-		</div>
-	<?php
-	?>
-
-		<div class="oooooo" style="display:none">
-	<?php
-		echo do_shortcode( $desktop);
-	?>
-		</div>
-	<?php */
+	
 }
 	/**
 	 * This filter insures users only see their own media

@@ -116,11 +116,31 @@ var lodash = _.noConflict();
 
     // Waiting until the ready of the DOM
     $(function () {
+
+        var w = $window.width();
+        var $resposiveData = $("#rexbuilder-layout-data");
+        var groups = JSON.parse($resposiveData.children(".groups").text());
+        var $responsiveLayoutAvaible = JSON.parse($resposiveData.children(".available-layouts").text());
+        var selectedLayout = "rex-layout-";
+        
+        console.log(w); 
+        $.each($responsiveLayoutAvaible, function(i, layout){
+            console.log(i, layout);
+            //selectedLayout += layout.name;
+        });
+        
+        if(selectedLayout === "rex-layout-"){
+            selectedLayout = "rex-layout-custom";
+        }
+
+        $("."+selectedLayout).addClass("rex-container");
+        $("."+selectedLayout).css("display", "block");
+
         Rexbuilder_Util.init();
         
         if(_plugin_frontend_settings.user.logged && _plugin_frontend_settings.user.editing){
             Rexbuilder_Util.editorMode = true;
-        }else{
+        } else {
             Rexbuilder_Util.editorMode = false;
             Rexbuilder_Util_Editor.init();
         }

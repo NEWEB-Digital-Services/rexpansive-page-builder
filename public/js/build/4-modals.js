@@ -339,10 +339,49 @@
 
 		$(document).on('rexlive:save', function (e) {
 
-			var layouts = e.settings.selected;
-			//crea salvataggio senza shortcode in page
+			var $layoutData = $("#rexbuilder-layout-data");
+			
+			var oldGroups = JSON.parse($layoutData.children(".groups").text());
+			var oldLayouts = JSON.parse($layoutData.children(".available-layouts").text());
+
+			var selectedlayouts = e.settings.selected;
+
+			var newlayout;
+
+			var flag = true;
+			$.each(selectedlayouts, function (i, e) {
+				newlayout = e.name;
+				$.each(oldGroups, function (i, og) {
+					if (flag) {
+						var index = og.indexOf(newlayout);
+						if (index > -1) {
+							flag = false;
+							og.splice(index, 1);
+						}
+					}
+				});
+				flag = true;
+			});
+
+			var newGroup = [];
+
+			$.each(selectedlayouts, function (i, layout) {
+				newGroup.push(layout.name);
+			});
+
+			var newGroups = [];
+
+			$.each(oldGroups, function (i, og) {
+				newGroups.push(og); 
+			});
+
+			newGroups.push(newGroup);
+			
+			
+			var newLayouts = oldLayouts;
+
 			var postClean = createCleanPost();
-			console.log(postClean);
+			//console.log(postClean);
 
 			var shortcodePage = '';
 			Rexbuilder_Util.$rexContainer.find('.grid-stack-row').each(function () {
@@ -354,7 +393,7 @@
 					shortcodePage += createSectionShortcode($section);
 				}
 			});
-			console.log("shortcodePage: " + shortcodePage);
+
 			var idPost = parseInt($('#id-post').attr('data-post-id'));
 
 			$.ajax({
@@ -364,9 +403,12 @@
 				data: {
 					action: 'rexlive_save_sections',
 					nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-					shortcode: shortcodePage,
+					rex_shortcode: shortcodePage,
+					clean_post: postClean,
 					post_id_to_update: idPost,
-					layouts: layouts
+					layoutsType: newLayouts,
+					layoutsGroups: newGroups,
+					layoutsSave: selectedlayouts
 				},
 				success: function (response) {
 					console.log(response);
@@ -379,7 +421,7 @@
 					console.log('errore chiama ajax');
 				}
 			});
-
+			
 		});
 		
 		var createCleanPost = function () {

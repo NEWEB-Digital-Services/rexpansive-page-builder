@@ -7,107 +7,28 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         var $frameContainer = $(".rexpansive-live-frame-container");
         var $frameBuilder = $("#rexpansive-live-frame");
         var $responsiveToolbar = $(".rexlive-responsive-toolbox");
-        console.log(source_url);
-        $(document).on('click', '.builder-mobile-layout', function (e) {
-            console.log("mobile layout");
+        
+        $(document).on('click', '.btn-builder-layout', function(e){
+            var $btn = $(e.target);
+
             $frameBuilder.remove();
-            $frameContainer.css("width", "320px");
+            if($btn.data("min-width") != ""){
+                $frameContainer.css("width", $btn.data("min-width"));
+            } else {
+                $frameContainer.css("width", "100%");
+            }
 
             var frameDiv = document.createElement("iframe");
             var $frameDiv = $(frameDiv);
 
             $frameDiv.attr({
-                src: source_url + "?layout=mobile&editor=true",
+                src: source_url + "?layout="+$btn.data("name")+"&editor=true",
                 allowfullscreen: "1"
             });
+
             $frameDiv.css({
                 "width": "100%",
                 "height": "100%",
-            });
-
-            $frameBuilder = $frameDiv;
-            $frameContainer.append($frameDiv);
-        });
-
-        $(document).on('click', '.builder-tablet-layout', function (e) {
-            console.log("tablet layout");
-            $frameBuilder.remove();
-            $frameContainer.css("width", "768px");
-
-            var frameDiv = document.createElement("iframe");
-            var $frameDiv = $(frameDiv);
-
-            $frameDiv.attr({
-                src: source_url + "?layout=tablet&editor=true",
-                allowfullscreen: "1"
-            });
-            $frameDiv.css({
-                "width": "100%",
-                "height": "100%"
-            });
-
-            $frameBuilder = $frameDiv;
-            $frameContainer.append($frameDiv);
-        });
-
-        $(document).on('click', '.builder-desktop-layout', function (e) {
-            console.log("desktop layout");
-            $frameBuilder.remove();
-            $frameContainer.css("width", "1024px");
-
-            var frameDiv = document.createElement("iframe");
-            var $frameDiv = $(frameDiv);
-
-            $frameDiv.attr({
-                src: source_url + "?layout=desktop&editor=true",
-                allowfullscreen: "1"
-            });
-            $frameDiv.css({
-                "width": "100%",
-                "height": "100%"
-            });
-
-            $frameBuilder = $frameDiv;
-            $frameContainer.append($frameDiv);
-        });
-
-        $(document).on('click', '.builder-my-desktop-layout', function (e) {
-            console.log("default layout");
-            $frameBuilder.remove();
-            $frameContainer.css("width", "100%");
-
-            var frameDiv = document.createElement("iframe");
-            var $frameDiv = $(frameDiv);
-
-            $frameDiv.attr({
-                src: source_url+"?editor=true",
-                allowfullscreen: "1"
-            });
-            $frameDiv.css({
-                "width": "100%",
-                "height": "100%"
-            });
-
-            $frameBuilder = $frameDiv;
-            $frameContainer.append($frameDiv);
-        });
-
-
-        $(document).on('click', '.builder-custom-layout', function (e) {
-            console.log("tablet layout");
-            $frameBuilder.remove();
-            $frameContainer.css("width", "90%");
-
-            var frameDiv = document.createElement("iframe");
-            var $frameDiv = $(frameDiv);
-
-            $frameDiv.attr({
-                src: source_url + "?layout=custom&editor=true",
-                allowfullscreen: "1"
-            });
-            $frameDiv.css({
-                "width": "100%",
-                "height": "100%"
             });
 
             $frameBuilder = $frameDiv;
@@ -121,8 +42,13 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                 eventName: "rexlive:save",
                 rexliveEvent: true
             };
-            $responsiveToolbar.find("input[name=device]:checked").each(function () {
-                infos.selected.push(this.value);
+            $responsiveToolbar.find("input[name=device]:checked").each(function (i, checkbox) {
+                var $checkbox = $(checkbox);
+                infos.selected.push({
+                    name: checkbox.value,
+                    minWidth: $checkbox.data("min-width"),
+                    maxWidth: $checkbox.data("max-width")
+                });
             });
             console.log(infos);
 

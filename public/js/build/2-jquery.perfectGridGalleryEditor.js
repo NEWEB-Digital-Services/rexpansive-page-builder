@@ -72,8 +72,7 @@
             firstStartGrid: false,
             lastIDBlock: null,
             mediumEditorIstance: null,
-            gridBlocksHeight: 0,
-            sectionMatrix: [[]]
+            gridBlocksHeight: 0
         };
 
         this.$section = this.$element.parents(this._defaults.gridParentWrap);
@@ -85,39 +84,39 @@
     // Avoid Plugin.prototype conflicts
     $.extend(perfectGridGalleryEditor.prototype, {
         init: function () {
-
+            
             this.properties.firstStartGrid = true;
-
+            
             this._setGridID();
-
+            
             console.log('First Start grid: ' + this.properties.sectionNumber);
-
+            
             this._updateBlocksID();
-
+            
             this._findLastIDBlock();
-
+            
             this._defineDataSettings();
-
+            
             this._setGutter();
-
+            
             this._defineSeparatorProperties();
-
+            
             this._setParentGridPadding();
-
+            
             this._calculateGridHeight();
-
+            
             this._defineDynamicPrivateProperties();
-
+            
             this._prepareElements();
-
+            
             this._launchGridStack();
-
+            
             this._linkResizeEvents();
-
+            
             this._linkDragEvents();
-
+            
             var gallery = this;
-
+            
             if (Rexbuilder_Util_Editor.sectionCopying) {
                 gallery._removeScrollbars();
             }
@@ -243,15 +242,16 @@
                 el.y = e['attributes']['data-gs-y'].value;
                 el.w = e['attributes']['data-gs-width'].value;
                 el.h = e['attributes']['data-gs-height'].value;
-                //console.log(e['attributes']['data-rexbuilder-block-id'].value,el.x,el.y,el.w,el.h); 
+                console.log(e.id,el.x,el.y,el.w,el.h); 
                 nodes.push(el);
             });
 
             var elements = _.sortBy(nodes, function (n) { 
                 return -1 * ((n.x + n.w) + (n.y + n.h) * 12); 
             });
+            //var elements = _.sortBy(nodes, ["y", "x"]);
 
-            //console.log(elements); 
+            console.log(elements); 
             return elements;
         },
 
