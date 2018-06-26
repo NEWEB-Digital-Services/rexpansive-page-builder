@@ -168,85 +168,31 @@ var Rexbuilder_Util_Editor = (function ($) {
 
     var addWindowListeners = function () {
 
-        if (Rexbuilder_Util.editorMode) {
-            Rexbuilder_Util.$window.click(function (e) {
-                var $target = $(e.target);
-                if (Rexbuilder_Util_Editor.editingElement && ($target.parents(".grid-stack-item").length == 0) && ($target.parents(".media-frame").length == 0) && !($target.hasClass("grid-stack-item"))) {
-                    console.log(e);
-                    console.log("CLICK OUTSIDE ELEMENTS");
-                    Rexbuilder_Util_Editor.activateElementFocus = false;
-                    Rexbuilder_Util_Editor.endEditingElement();
-                    Rexbuilder_Util_Editor.activateElementFocus = true;
-                }
-
-            });
-
-            Rexbuilder_Util.$window.on('keydown', function (event) {
-                if (Rexbuilder_Util_Editor.editingGallery && event.keyCode == 27) {
-                    Rexbuilder_Util_Editor.endEditingElement();
-                }
-
-            });
-
-            Rexbuilder_Util.$window.on('mousedown', function (event) {
-
-                console.log("mouse down window");
-
-            });
-        }
-
-        var id;
-
-        var test = true;
-
-        Rexbuilder_Util.$window.on('resize', function (event) {
-            if (!Rexbuilder_Util_Editor.elementIsResizing) {
-                 
-                event.preventDefault();
-                event.stopImmediatePropagation();
-                event.stopPropagation();
-
-                Rexbuilder_Util.windowIsResizing = true;
-                if (test) {
-                    Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
-                        var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
-                        //console.log("disabling scrollbars grid "+ galleryEditorIstance.getSectionNumber()); 
-                        galleryEditorIstance.removeScrollbars();
-                    });
-                    test = false;
-                }
-
-                clearTimeout(id);
-                id = setTimeout(doneResizing, 1000);
+        Rexbuilder_Util.$window.click(function (e) {
+            var $target = $(e.target);
+            if (Rexbuilder_Util_Editor.editingElement && ($target.parents(".grid-stack-item").length == 0) && ($target.parents(".media-frame").length == 0) && !($target.hasClass("grid-stack-item"))) {
+                console.log(e);
+                console.log("CLICK OUTSIDE ELEMENTS");
+                Rexbuilder_Util_Editor.activateElementFocus = false;
+                Rexbuilder_Util_Editor.endEditingElement();
+                Rexbuilder_Util_Editor.activateElementFocus = true;
             }
+
         });
 
-        function doneResizing() {
-            if (!Rexbuilder_Util_Editor.elementIsResizing) {
-                //console.log("window resized");
-                Rexbuilder_Util.windowIsResizing = true;
-                Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
-                    var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
-                    var gridstack = galleryEditorIstance.$element.data('gridstack');
-
-                    galleryEditorIstance._defineDynamicPrivateProperties();
-                    if (galleryEditorIstance.settings.galleryLayout == 'masonry') {
-                        galleryEditorIstance._calculateBlockHeightMasonry();
-                    } else {
-                        gridstack.cellHeight(galleryEditorIstance.properties.singleHeight);
-                        gridstack._initStyles();
-                        gridstack._updateStyles(galleryEditorIstance.properties.singleHeight);
-                    }
-
-                    galleryEditorIstance.createScrollbars();
-
-                    galleryEditorIstance = undefined;
-                    gridstack = undefined;
-                });
-                Rexbuilder_Util.windowIsResizing = false;
-                test = true;
+        Rexbuilder_Util.$window.on('keydown', function (event) {
+            if (Rexbuilder_Util_Editor.editingGallery && event.keyCode == 27) {
+                Rexbuilder_Util_Editor.endEditingElement();
             }
-        }
+
+        });
+
+        Rexbuilder_Util.$window.on('mousedown', function (event) {
+
+            console.log("mouse down window");
+
+        });
+
 
         Rexbuilder_Util.$window.on('load', function (e) {
             Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {

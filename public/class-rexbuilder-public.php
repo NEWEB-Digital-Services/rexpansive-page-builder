@@ -103,8 +103,6 @@ class Rexbuilder_Public {
 			
 			wp_enqueue_style( 'font-awesome', REXPANSIVE_BUILDER_URL  . $cartella. 'font-awesome-4.3.0/css/font-awesome.min.css', array(), $this->version, 'all' );
 
-
-			//wp_enqueue_style( 'malihu-custom-scrollbar-style', REXPANSIVE_BUILDER_URL . $cartella. 'css/jquery.mCustomScrollbar.min.css', array(), $this->version, 'all' );
 			wp_enqueue_style( 'malihu-custom-scrollbar-style', REXPANSIVE_BUILDER_URL . $cartella. 'css/OverlayScrollbars.min.css', array(), $this->version, 'all' );
 
 			wp_enqueue_style( 'animate-css', REXPANSIVE_BUILDER_URL . $cartella. 'css/animate.css', array(), $this->version, 'all' );
@@ -115,7 +113,6 @@ class Rexbuilder_Public {
 			
 			wp_enqueue_style( 'jquery-ui-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/jquery-ui.min.css', array(), $this->version, 'all' );
 			wp_enqueue_style( 'gridstack-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/gridstack.css', array(), $this->version, 'all' );
-			//wp_enqueue_style( 'gridstack-extra-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/gridstack-extra.css', array(), $this->version, 'all' );
 			
 			wp_enqueue_style( 'spectrum-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/spectrum.css', array(), $this->version, 'all' );
 			

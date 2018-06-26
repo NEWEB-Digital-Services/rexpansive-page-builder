@@ -433,7 +433,8 @@
 				zak_icon = "",
 				zak_foreground = "",
 				block_animation = "fadeInUpBig",
-				video_has_audio = '0';
+				video_has_audio = '0',
+				block_has_scrollbar = "false";
 
 			var content = "";
 			var $block;
@@ -488,6 +489,8 @@
 				: $itemData.attr('data-block_animation');
 			video_has_audio = $itemData.attr('data-video_has_audio') === undefined ? "0"
 				: $itemData.attr('data-video_has_audio');
+			block_has_scrollbar = $itemData.attr('data-block_has_scrollbar') === undefined ? "false"
+			: $itemData.attr('data-block_has_scrollbar');
 
 			if (!$elem.hasClass('block-has-slider')) {
 				$block = $itemContent.find('.text-wrap');
@@ -529,7 +532,9 @@
 				+ zak_side + '" zak_title="' + zak_title + '" zak_icon="'
 				+ zak_icon + '" zak_foreground="' + zak_foreground
 				+ '" block_animation="' + block_animation
-				+ '" video_has_audio="' + video_has_audio + '"]' + content
+				+ '" video_has_audio="' + video_has_audio 
+				+ '" block_has_scrollbar="'+block_has_scrollbar
+				+ '"]' + content
 				+ '[/RexpansiveBlock]';
 			return output;
 		};
