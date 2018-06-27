@@ -4,7 +4,7 @@ var RexSlider = (function($) {
   var slider_class = '.rex-slider-wrap';
   var slider_element_class = '.rex-slider-element';
   var slider_element_title_wrap = '.rex-slider-element-title';
-  var context = '.rexpansive_section';
+  var context = '.rex-container .rexpansive_section';
 
   var box_slider_class = '.rex-box-slider-wrap';
   var box_slider_element_class = '.rex-box-slider-element';

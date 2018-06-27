@@ -57,7 +57,7 @@ var lodash = _.noConflict();
     // Waiting for the complete load of the window
     $window.load(function () {
         /* -- Launching the textfill -- */
-        var $textFillContainer = $(".text-fill-container-canvas");
+        var $textFillContainer = Rexbuilder_Util.$rexContainer.find(".text-fill-container-canvas");
         if ($textFillContainer.length > 0) {
             $textFillContainer.textFill({
                 relative: true,
@@ -91,7 +91,7 @@ var lodash = _.noConflict();
                 // 	$('.wow').removeClass('has-wow');
                 // }
 
-                $('.rs-animation').rexScrollify({
+                Rexbuilder_Util.$rexContainer.find('.rs-animation').rexScrollify({
                     mobile: false,
                 });
             }
@@ -117,39 +117,47 @@ var lodash = _.noConflict();
     // Waiting until the ready of the DOM
     $(function () {
 
-        var w = $window.width();
-        var $resposiveData = $("#rexbuilder-layout-data");
-        var $responsiveLayoutAvaible = JSON.parse($resposiveData.children(".available-layouts").text());
-        var selectedLayout = "";
+        var $selectedPageLayout;
+        if (_plugin_frontend_settings.user.logged && _plugin_frontend_settings.user.editing) {
+            $selectedPageLayout = $(".rexbuilder-editor-active-layout");
+        } else {
+            var w = $window.width();
+            var $resposiveData = $("#rexbuilder-layout-data");
+            var $responsiveLayoutAvaible = JSON.parse($resposiveData.children(".available-layouts").text());
+            var selectedLayout = "";
 
-        $.each($responsiveLayoutAvaible, function (i, layout) {
-            if (layout[1] == "") {
-                layout[1] = "0";
-            }
-        });
-
-        var ordered = lodash.sortBy($responsiveLayoutAvaible, [function (o) { return parseInt(o[1]); }]);
-
-        $.each(ordered, function (i, layout) {
-            if (w > layout[1]) {
-                if (layout[2] != "") {
-                    if (w < layout[2]) {
-                        selectedLayout = "rex-layout-"+layout[0];
-                    }
-                } else {
-                    selectedLayout = "rex-layout-"+layout[0];
+            $.each($responsiveLayoutAvaible, function (i, layout) {
+                if (layout[1] == "") {
+                    layout[1] = "0";
                 }
-            }
-        });
+            });
 
-        if (selectedLayout === "") {
-            selectedLayout = "rex-layout-mydesktop";
+            var ordered = lodash.sortBy($responsiveLayoutAvaible, [function (o) { return parseInt(o[1]); }]);
+
+            $.each(ordered, function (i, layout) {
+                if (w > layout[1]) {
+                    if (layout[2] != "") {
+                        if (w < layout[2]) {
+                            selectedLayout = "rex-layout-" + layout[0];
+                        }
+                    } else {
+                        selectedLayout = "rex-layout-" + layout[0];
+                    }
+                }
+            });
+
+            if (selectedLayout === "") {
+                selectedLayout = "rex-layout-mydesktop";
+            }
+            $selectedPageLayout = $("." + selectedLayout);
+            if ($selectedPageLayout.length == 0) {
+                $selectedPageLayout = $(".rex-layout-mydesktop");
+            }
+            console.log(selectedLayout);
         }
 
-        console.log(selectedLayout);
-
-        $("." + selectedLayout).addClass("rex-container");
-        $("." + selectedLayout).css("display", "block");
+        $selectedPageLayout.addClass("rex-container");
+        $selectedPageLayout.css("display", "block");
 
         Rexbuilder_Util.init();
 
@@ -177,8 +185,10 @@ var lodash = _.noConflict();
         Rexbuilder_Util.$rexContainer.find('.grid-stack-row').perfectGridGalleryEditor();
 
         /* -- Launching Photoswipe -- */
-        initPhotoSwipeFromDOM('.photoswipe-gallery');
-
+        if (!Rexbuilder_Util.editorMode) {   
+            initPhotoSwipeFromDOM('.photoswipe-gallery');
+        }
+            
         RexSlider.init();
 
         VimeoVideo.init();
@@ -186,13 +196,13 @@ var lodash = _.noConflict();
         /* -- Launching YouTube Video -- */
         // declare object for video
         if (!jQuery.browser.mobile) {
-            $(".youtube-player").YTPlayer();
+            Rexbuilder_Util.$rexContainer.find(".youtube-player").YTPlayer();
 
-            $(".youtube-player").on("YTPReady", function () {
+            Rexbuilder_Util.$rexContainer.find(".youtube-player").on("YTPReady", function () {
                 $(this).optimizeDisplay();
             });
         } else {
-            $('.youtube-player').each(function (i, el) {
+            Rexbuilder_Util.$rexContainer.find('.youtube-player').each(function (i, el) {
                 var $this = $(el),
                     data_yt = eval('(' + $this.attr('data-property') + ')'),
                     url = data_yt.videoURL,
@@ -229,7 +239,7 @@ var lodash = _.noConflict();
         });
 
         // Adding audio functionallity
-        $('.perfect-grid-item').on('click', '.rex-video-toggle-audio', function (e) {
+        Rexbuilder_Util.$rexContainer.find('.perfect-grid-item').on('click', '.rex-video-toggle-audio', function (e) {
             e.stopPropagation();
             var $ytvideo = $(this).parents(".youtube-player");
             var $mpvideo = $(this).parents('.mp4-player').find('.rex-video-container');
@@ -298,7 +308,7 @@ var lodash = _.noConflict();
             $linksToSmooth.click(function () {
                 if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
                     var target = $(this.hash);
-                    target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+                    target = target.length ? target : Rexbuilder_Util.$rexContainer.find('[name=' + this.hash.slice(1) + ']');
                     if (target.length) {
                         smoothScroll(target);
                         return false;
@@ -309,8 +319,8 @@ var lodash = _.noConflict();
 
         /* -- Handle dot behaviour --- */
 
-        var contentSections = $('.rexpansive_section'),
-            navigationItems = $('.vertical-nav a');
+        var contentSections = Rexbuilder_Util.$rexContainer.find('.rexpansive_section'),
+            navigationItems = Rexbuilder_Util.$rexContainer.find('.vertical-nav a');
 
         updateNavigation();
         $window.on('scroll', function () {
@@ -325,24 +335,24 @@ var lodash = _.noConflict();
         //smooth scroll to second section
 
         //open-close navigation on touch devices
-        $('.touch .rex-nav-trigger').on('click', function () {
-            $('.touch .vertical-nav').toggleClass('open');
+        Rexbuilder_Util.$rexContainer.find('.touch .rex-nav-trigger').on('click', function () {
+            Rexbuilder_Util.$rexContainer.find('.touch .vertical-nav').toggleClass('open');
 
         });
         //close navigation on touch devices when selectin an elemnt from the list
-        var $touch_navigation_links = $('.touch .vertical-nav a');
+        var $touch_navigation_links = Rexbuilder_Util.$rexContainer.find('.touch .vertical-nav a');
 
         $touch_navigation_links.on('click', function () {
             $touch_navigation_links.find('.rex-label').removeClass('fadeInAndOut');
             $(this).find('.rex-label').addClass('fadeInAndOut');
-            $('.touch .vertical-nav').removeClass('open');
+            Rexbuilder_Util.$rexContainer.find('.touch .vertical-nav').removeClass('open');
         });
 
         function updateNavigation() {
             contentSections.each(function () {
                 var $this = $(this);
                 if (typeof $this.attr('id') != 'undefined' && $this.attr('id') != '') {
-                    var activeSection = $('.vertical-nav a[href="#' + $this.attr('id') + '"]').data('number') - 1;
+                    var activeSection = Rexbuilder_Util.$rexContainer.find('.vertical-nav a[href="#' + $this.attr('id') + '"]').data('number') - 1;
                     if (($this.offset().top - $window.height() / 2 < $window.scrollTop()) && ($this.offset().top + $this.height() - $window.height() / 2 > $window.scrollTop())) {
                         navigationItems.eq(activeSection).addClass('is-selected');
                     } else {
@@ -593,7 +603,7 @@ var lodash = _.noConflict();
         };
 
         // loop through all gallery elements and bind events
-        var galleryElements = document.querySelectorAll(gallerySelector);
+        var galleryElements = Rexbuilder_Util.$rexContainer.find(gallerySelector);
 
         for (var i = 0, l = galleryElements.length; i < l; i++) {
             galleryElements[i].setAttribute('data-pswp-uid', i + 1);

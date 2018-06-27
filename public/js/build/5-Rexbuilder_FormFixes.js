@@ -7,7 +7,7 @@ var Rexbuilder_FormFixes = (function($) {
   var $forms;
 
   var _cache_variables = function() {
-    $forms = $('.wpcf7-form');
+    $forms = Rexbuilder_Util.$rexContainer.find('.wpcf7-form');
   };
   
   var _fix_checkboxes = function() {

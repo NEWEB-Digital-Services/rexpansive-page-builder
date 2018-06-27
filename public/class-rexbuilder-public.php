@@ -385,14 +385,8 @@ class Rexbuilder_Public {
 function generate_builder_content($content){
 	global $post;
 	$layout = $_GET['layout'];
-	$field = "_rex_content_";
-		
-	if(isset($layout)){
-		$field.=$layout;
-	} else {
-		$field.="mydesktop";
-	}
-	
+	$editor = $_GET['editor'];
+
 	$layoutType = get_post_meta($post->ID,'_rex_responsive_layouts',true);
 	$layoutGroups = get_post_meta($post->ID,'_rex_responsive_groups',true);
 
@@ -411,27 +405,44 @@ function generate_builder_content($content){
 	</div>
 	<?php
 
-	foreach($layoutGroups as $group){
-		$content = get_post_meta( $post->ID, '_rex_content_'.$group[0], true);
+	if(isset($editor) && $editor == "true"){
+
+		$field = "_rex_content_";
+		$selected_layout;
+		if(isset($layout)){
+			$selected_layout = $layout;
+		} else {
+			$selected_layout = "mydesktop";
+		}
+		
+		$field .= $selected_layout;
+
+		$content = get_post_meta( $post->ID, $field, true);
 		?>
-		<div class="<?php
-			foreach($group as $type){
-				echo "rex-layout-".$type." ";
-			}
+		<div class="rexbuilder-editor-active-layout <?php
+				echo "rex-layout-".$selected_layout;	
 		?>" style="display: none;">
 			<?php
 			echo do_shortcode( $content);
 			?>
 		</div>
 		<?php
+	} else {
+		foreach($layoutGroups as $group){
+			$content = get_post_meta( $post->ID, '_rex_content_'.$group[0], true);
+			?>
+			<div class="<?php
+				foreach($group as $type){
+					echo "rex-layout-".$type." ";
+				}
+			?>" style="display: none;">
+				<?php
+				echo do_shortcode( $content);
+				?>
+			</div>
+			<?php
+		}
 	}
-	/* 
-	$mobile = 
-	$tablet = get_post_meta( $post->ID, '_rex_content_tablet', true);
-	$desktop = get_post_meta( $post->ID, '_rex_content_desktop', true);
- */
-	$contenuto = get_post_meta( $post->ID, $field, true);
-	
 }
 	/**
 	 * This filter insures users only see their own media

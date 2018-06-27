@@ -434,9 +434,6 @@
 .rexbuilder-block-data{
     display: none;
 }
-.rex-container .medium-editor-insert-plugin p{
-    margin: 0px;
-}
 
 .grid-stack-item.removing_block{
     display: none;
@@ -448,4 +445,8 @@
     width: 100%;
     height: 100px;
     background-color: aquamarine;
+}
+
+.grid-stack.grid-stack-one-column-mode > .grid-stack-item {
+    margin-bottom: 0px;
 }

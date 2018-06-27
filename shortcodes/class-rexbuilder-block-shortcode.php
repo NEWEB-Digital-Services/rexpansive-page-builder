@@ -44,6 +44,10 @@ class Rexbuilder_Block {
 			"size_y" => 1,
 			"row"	=>	'',
 			"col"	=>	'',
+			"gs_size_x" => 1,
+			"gs_size_y" => 1,
+			"gs_row"	=>	'',
+			"gs_col"	=>	'',
 			"color_bg_block" => "#ffffff",
 			"image_bg_block" => "",
 			"id_image_bg_block" => "",
@@ -70,6 +74,7 @@ class Rexbuilder_Block {
 		$builder_active = apply_filters( 'rexbuilder_post_active', get_post_meta( $post->ID, '_rexbuilder_active', true) );
 
 		if('true' == $builder_active) {
+			$editor = $_GET['editor'];
 
 			global $section_layout;
 
@@ -114,26 +119,26 @@ class Rexbuilder_Block {
 			if($linkurl != '' && $photoswipe == 'true') {
 				$photoswipe = 'false';
 			}
-			// Se non e' in editor mode
+
+			if(!isset($editor)){
+				if($photoswipe == 'true' && '' == $video_bg_id && '' == $video_bg_url && isset( $img_attrs[0] ) && '' != $img_attrs[0] ) :
 			
-			if($photoswipe == 'true' && '' == $video_bg_id && '' == $video_bg_url && isset( $img_attrs[0] ) && '' != $img_attrs[0] ) :
-		
-				$block_link_pre .= '<figure class="pswp-figure" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">';
-				$block_link_pre .= '<a class="pswp-item" href="' . $img_attrs[0] . '" itemprop="contentUrl" data-size="' . $img_attrs[1] . 'x' . $img_attrs[2] . '">';
-				$block_link_pre .= '<div class="pswp-item-thumb" data-thumb-image-type="' . $type_bg_block . '" data-thumburl="' . $img_attrs[0] . '" itemprop="thumbnail"></div>';
-				$block_link_before .= '</a>';
-				//$block_link_before .= '<figcaption class="pswp-item-caption" itemprop="caption description">' . get_the_title( $id_image_bg_block ) . '</figcaption>';
-				$block_link_before .= '<figcaption class="pswp-item-caption" itemprop="caption description"></figcaption>';
-				$block_link_before .= '</figure>';
-			endif;
-		
-			if($linkurl != '') :
-				$block_link_pre .= '<a class="element-link hovered" href="' . $linkurl . '" title="' . trim(strip_tags($linkurl)) . '">';
-				//$block_link_pre .= '<div class="element-link-effect-before"></div>';
-				//$block_link_before .= '<div class="element-link-effect-after"></div>';
-				$block_link_before .= '</a>';
-				$content = strip_tags( $content, '<p><h1><h2><h3><h4><h5><h6><strong><i><hr><div><span><pre><b><blockquote><address><cite><code><del><q><small><sub><sup><time><img><canvas><video><ul><ol><li><br>' );
-			endif;
+					$block_link_pre .= '<figure class="pswp-figure" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">';
+					$block_link_pre .= '<a class="pswp-item" href="' . $img_attrs[0] . '" itemprop="contentUrl" data-size="' . $img_attrs[1] . 'x' . $img_attrs[2] . '">';
+					$block_link_pre .= '<div class="pswp-item-thumb" data-thumb-image-type="' . $type_bg_block . '" data-thumburl="' . $img_attrs[0] . '" itemprop="thumbnail"></div>';
+					$block_link_before .= '</a>';
+					//$block_link_before .= '<figcaption class="pswp-item-caption" itemprop="caption description">' . get_the_title( $id_image_bg_block ) . '</figcaption>';
+					$block_link_before .= '<figcaption class="pswp-item-caption" itemprop="caption description"></figcaption>';
+					$block_link_before .= '</figure>';
+				endif;
+				if($linkurl != '') :
+					$block_link_pre .= '<a class="element-link hovered" href="' . $linkurl . '" title="' . trim(strip_tags($linkurl)) . '">';
+					//$block_link_pre .= '<div class="element-link-effect-before"></div>';
+					//$block_link_before .= '<div class="element-link-effect-after"></div>';
+					$block_link_before .= '</a>';
+					$content = strip_tags( $content, '<p><h1><h2><h3><h4><h5><h6><strong><i><hr><div><span><pre><b><blockquote><address><cite><code><del><q><small><sub><sup><time><img><canvas><video><ul><ol><li><br>' );
+				endif;
+			}
 			
 
 			$block_custom_class = apply_filters( 'rexpansive_block_custom_class', trim( $block_custom_class ), $id );
@@ -253,12 +258,10 @@ class Rexbuilder_Block {
 			echo ' data-row="' . $row . '"';
 			echo ' data-col="' . $col . '"';
 
-			$gs_y = $row -1;
-			$gs_x = $col -1;
-			echo ' data-gs-height="'.  $size_y . '"';
-			echo ' data-gs-width="' . $size_x . '"';
-			echo ' data-gs-y="' . $gs_y . '"';
-			echo ' data-gs-x="' . $gs_x . '"';
+ 			echo ' data-gs-height="'.  $gs_size_y . '"';
+			echo ' data-gs-width="' . $gs_size_x . '"';
+			echo ' data-gs-y="' . $gs_row . '"';
+			echo ' data-gs-x="' . $gs_col . '"'; 
 			
 			if( $floating_border != '' ) {
 				echo ' data-rs-animation-delay="0.5s"';

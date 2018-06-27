@@ -87,6 +87,8 @@ class Rexbuilder_Section {
 
 			$custom_classes = trim( $custom_classes );
 
+			$custom_classes .= " rex-block-grid ";
+			
 			$row_separators = '';
 			if( '' != $row_separator_top ) {
 				$row_separators .= ' data-row-separator-top="' . $row_separator_top . '"';

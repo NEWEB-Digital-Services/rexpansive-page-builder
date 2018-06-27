@@ -338,16 +338,10 @@
 		});
 
 		$(document).on('rexlive:save', function (e) {
-
-			var $layoutData = $("#rexbuilder-layout-data");
-
-			var oldGroups = JSON.parse($layoutData.children(".groups").text());
-			var oldLayouts = JSON.parse($layoutData.children(".available-layouts").text());
-
+			
 			var selectedlayouts = e.settings.selected;
-
-			var updatedGroups = updateGroups(selectedlayouts, oldGroups);
-			var updatedLayouts = updateLayouts(selectedlayouts, oldLayouts);
+			var updatedGroups = e.settings.updatedGroups;
+			var updatedLayouts = e.settings.updatedLayouts;
 
 			var postClean = createCleanPost();
 			//console.log(postClean);
@@ -393,82 +387,6 @@
 
 		});
 
-		var updateGroups = function (selectedlayouts, oldGroups) {
-
-			var layout;
-			var newGroup = [];
-			var newGroups = [];
-			var flag = true;
-			var index;
-
-			//removing layouts from old groups
-			$.each(selectedlayouts, function (i, e) {
-				layout = e.name;
-				$.each(oldGroups, function (i, oldGroup) {
-					if (flag) {
-						index = oldGroup.indexOf(layout);
-						if (index > -1) {
-							flag = false;
-							oldGroup.splice(index, 1);
-						}
-					}
-				});
-				flag = true;
-			});
-
-			//creating new group
-			$.each(selectedlayouts, function (i, layout) {
-				newGroup.push(layout.name);
-			});
-
-			//creating new groups
-			$.each(oldGroups, function (i, oldGroup) {
-				if(oldGroup.length != 0){
-					newGroups.push(oldGroup);
-				}
-			});
-			newGroups.push(newGroup);
-
-			return newGroups;
-		}
-
-		var updateLayouts = function (selectedlayouts, oldLayouts) {
-			var availableLayouts = [];
-			var selectedLayout;
-			var oldLayout;
-			
-			$.each(selectedlayouts, function (i, l) {
-				selectedLayout = l;
-				$.each(oldLayouts, function (i, ol) {
-					oldLayout = ol;
-					if (selectedLayout.name == oldLayout[0]) {
-						if (selectedLayout.minWidth != oldLayout[1]) {
-							oldLayout[1] = selectedLayout.minWidth;
-						}
-						if (selectedLayout.maxWidth != oldLayout[2]) {
-							oldLayout[2] = selectedLayout.maxWidth;
-						}
-						selectedLayout.presente = true;
-					}
-				});
-			});
-			$.each(oldLayouts, function (i, l) {
-				availableLayouts.push(l);
-			});
-
-			$.each(selectedlayouts, function (i, l) {
-				if (!l.presente) {
-					var newL = [];
-					newL.push(l.name);
-					newL.push(l.minWidth);
-					newL.push(l.maxWidth);
-					availableLayouts.push(newL);
-				}
-			});
-
-			return availableLayouts;
-		}
-
 		var createCleanPost = function () {
 			var post = "";
 			console.log("creating clean post");
@@ -501,6 +419,10 @@
 				size_y = 1,
 				row = '',
 				col = '',
+				gs_size_x = 1,
+				gs_size_y = 1,
+				gs_row = '',
+				gs_col = '',
 				color_bg_block = "#ffffff",
 				image_bg_block = "",
 				id_image_bg_block = "",
@@ -535,6 +457,10 @@
 			size_y = $elem.attr('data-height');
 			row = $elem.attr('data-row');
 			col = $elem.attr('data-col');
+			gs_size_x = $elem.attr('data-gs-width');
+			gs_size_y = $elem.attr('data-gs-height');
+			gs_row = $elem.attr('data-gs-y');
+			gs_col = $elem.attr('data-gs-x');			
 			color_bg_block = $itemContent.css('background-color') != '' ? $itemContent
 				.css('background-color')
 				: '#ffffff';
@@ -600,7 +526,11 @@
 				'" size_x="' + size_x +
 				'" size_y="' + size_y +
 				'" row="' + row +
-				'" col="' + col +
+				'" col="' + col +	
+				'" gs_size_x="' + gs_size_x +
+				'" gs_size_y="' + gs_size_y +
+				'" gs_row="' + gs_row +
+				'" gs_col="' + gs_col +
 				'" color_bg_block="' + color_bg_block +
 				'" image_bg_block="' + image_bg_block +
 				'" id_image_bg_block="' + id_image_bg_block +

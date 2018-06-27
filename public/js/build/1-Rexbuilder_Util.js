@@ -110,7 +110,7 @@ var Rexbuilder_Util = (function ($) {
 
 	var addWindowListeners = function () {
 		var firstResize = true;
-		var timeout; 
+		var timeout;
 		Rexbuilder_Util.$window.on('resize', function (event) {
 			if (!Rexbuilder_Util_Editor.elementIsResizing) {
 
@@ -122,7 +122,9 @@ var Rexbuilder_Util = (function ($) {
 				if (firstResize) {
 					Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
 						var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
-						galleryEditorIstance.removeScrollbars();
+						if (galleryEditorIstance !== undefined) {
+							galleryEditorIstance.removeScrollbars();
+						}
 					});
 					firstResize = false;
 				}
@@ -137,21 +139,24 @@ var Rexbuilder_Util = (function ($) {
 			Rexbuilder_Util.windowIsResizing = true;
 			Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
 				var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
-				var gridstack = galleryEditorIstance.$element.data('gridstack');
+				if (galleryEditorIstance !== undefined) {
 
-				galleryEditorIstance._defineDynamicPrivateProperties();
-				if (galleryEditorIstance.settings.galleryLayout == 'masonry') {
-					galleryEditorIstance._calculateBlockHeightMasonry();
-				} else {
-					gridstack.cellHeight(galleryEditorIstance.properties.singleHeight);
-					gridstack._initStyles();
-					gridstack._updateStyles(galleryEditorIstance.properties.singleHeight);
+					var gridstack = galleryEditorIstance.$element.data('gridstack');
+
+					galleryEditorIstance._defineDynamicPrivateProperties();
+					if (galleryEditorIstance.settings.galleryLayout == 'masonry') {
+						galleryEditorIstance._calculateBlockHeightMasonry();
+					} else {
+						gridstack.cellHeight(galleryEditorIstance.properties.singleHeight);
+						gridstack._initStyles();
+						gridstack._updateStyles(galleryEditorIstance.properties.singleHeight);
+					}
+
+					galleryEditorIstance.updateAllScrollbars();
+
+					galleryEditorIstance = undefined;
+					gridstack = undefined;
 				}
-
-				galleryEditorIstance.updateAllScrollbars();
-
-				galleryEditorIstance = undefined;
-				gridstack = undefined;
 			});
 			Rexbuilder_Util.windowIsResizing = false;
 			firstResize = true;

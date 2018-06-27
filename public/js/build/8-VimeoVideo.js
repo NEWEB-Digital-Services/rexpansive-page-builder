@@ -5,8 +5,8 @@ var VimeoVideo = (function($){
     var $vimeoBlockVideos = null;
     
     var _initObjects = function() {
-        $vimeoSectionVideos = $('.rex-video-vimeo-wrap--section');
-        $vimeoBlockVideos = $('.rex-video-vimeo-wrap--block');
+        $vimeoSectionVideos = Rexbuilder_Util.$rexContainer.find('.rex-video-vimeo-wrap--section');
+        $vimeoBlockVideos = Rexbuilder_Util.$rexContainer.find('.rex-video-vimeo-wrap--block');
     };
 
     /**

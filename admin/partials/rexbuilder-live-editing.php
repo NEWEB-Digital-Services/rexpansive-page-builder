@@ -30,6 +30,25 @@ defined( 'ABSPATH' ) or exit;
 	$source = get_permalink($post->ID);
 	//$source = substr($source, 0, -1);
 	include_once("rexlive-toolbox-fixed.php");
+
+	$layoutType = get_post_meta($post->ID,'_rex_responsive_layouts',true);
+	$layoutGroups = get_post_meta($post->ID,'_rex_responsive_groups',true);
+
+	?>
+	<div id="rexbuilder-layout-data-backend" style="display: none;">
+		<div class = "groups">
+			<?php
+				echo json_encode($layoutGroups); 
+			?>
+		</div>
+		<div class = "available-layouts">
+			<?php
+				echo json_encode($layoutType); 
+			?>
+		</div>
+	</div>
+	<?php
+
 	?>
 	<div class="rexpansive-live-frame-container" style ="width:100%;height:100vh;margin: 0 auto;">
 		<iframe id="rexpansive-live-frame" src="<?php echo $source .'?&editor=true'?>" allowfullscreen="1" style="width:100%;height:100%"></iframe>
