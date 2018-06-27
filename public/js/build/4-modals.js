@@ -340,45 +340,14 @@
 		$(document).on('rexlive:save', function (e) {
 
 			var $layoutData = $("#rexbuilder-layout-data");
-			
+
 			var oldGroups = JSON.parse($layoutData.children(".groups").text());
 			var oldLayouts = JSON.parse($layoutData.children(".available-layouts").text());
 
 			var selectedlayouts = e.settings.selected;
 
-			var newlayout;
-
-			var flag = true;
-			$.each(selectedlayouts, function (i, e) {
-				newlayout = e.name;
-				$.each(oldGroups, function (i, og) {
-					if (flag) {
-						var index = og.indexOf(newlayout);
-						if (index > -1) {
-							flag = false;
-							og.splice(index, 1);
-						}
-					}
-				});
-				flag = true;
-			});
-
-			var newGroup = [];
-
-			$.each(selectedlayouts, function (i, layout) {
-				newGroup.push(layout.name);
-			});
-
-			var newGroups = [];
-
-			$.each(oldGroups, function (i, og) {
-				newGroups.push(og); 
-			});
-
-			newGroups.push(newGroup);
-			
-			
-			var newLayouts = oldLayouts;
+			var updatedGroups = updateGroups(selectedlayouts, oldGroups);
+			var updatedLayouts = updateLayouts(selectedlayouts, oldLayouts);
 
 			var postClean = createCleanPost();
 			//console.log(postClean);
@@ -406,8 +375,8 @@
 					rex_shortcode: shortcodePage,
 					clean_post: postClean,
 					post_id_to_update: idPost,
-					layoutsType: newLayouts,
-					layoutsGroups: newGroups,
+					layoutsType: updatedLayouts,
+					layoutsGroups: updatedGroups,
 					layoutsSave: selectedlayouts
 				},
 				success: function (response) {
@@ -421,9 +390,85 @@
 					console.log('errore chiama ajax');
 				}
 			});
-			
+
 		});
-		
+
+		var updateGroups = function (selectedlayouts, oldGroups) {
+
+			var layout;
+			var newGroup = [];
+			var newGroups = [];
+			var flag = true;
+			var index;
+
+			//removing layouts from old groups
+			$.each(selectedlayouts, function (i, e) {
+				layout = e.name;
+				$.each(oldGroups, function (i, oldGroup) {
+					if (flag) {
+						index = oldGroup.indexOf(layout);
+						if (index > -1) {
+							flag = false;
+							oldGroup.splice(index, 1);
+						}
+					}
+				});
+				flag = true;
+			});
+
+			//creating new group
+			$.each(selectedlayouts, function (i, layout) {
+				newGroup.push(layout.name);
+			});
+
+			//creating new groups
+			$.each(oldGroups, function (i, oldGroup) {
+				if(oldGroup.length != 0){
+					newGroups.push(oldGroup);
+				}
+			});
+			newGroups.push(newGroup);
+
+			return newGroups;
+		}
+
+		var updateLayouts = function (selectedlayouts, oldLayouts) {
+			var availableLayouts = [];
+			var selectedLayout;
+			var oldLayout;
+			
+			$.each(selectedlayouts, function (i, l) {
+				selectedLayout = l;
+				$.each(oldLayouts, function (i, ol) {
+					oldLayout = ol;
+					if (selectedLayout.name == oldLayout[0]) {
+						if (selectedLayout.minWidth != oldLayout[1]) {
+							oldLayout[1] = selectedLayout.minWidth;
+						}
+						if (selectedLayout.maxWidth != oldLayout[2]) {
+							oldLayout[2] = selectedLayout.maxWidth;
+						}
+						selectedLayout.presente = true;
+					}
+				});
+			});
+			$.each(oldLayouts, function (i, l) {
+				availableLayouts.push(l);
+			});
+
+			$.each(selectedlayouts, function (i, l) {
+				if (!l.presente) {
+					var newL = [];
+					newL.push(l.name);
+					newL.push(l.minWidth);
+					newL.push(l.maxWidth);
+					availableLayouts.push(newL);
+				}
+			});
+
+			return availableLayouts;
+		}
+
 		var createCleanPost = function () {
 			var post = "";
 			console.log("creating clean post");
@@ -532,7 +577,7 @@
 			video_has_audio = $itemData.attr('data-video_has_audio') === undefined ? "0"
 				: $itemData.attr('data-video_has_audio');
 			block_has_scrollbar = $itemData.attr('data-block_has_scrollbar') === undefined ? "false"
-			: $itemData.attr('data-block_has_scrollbar');
+				: $itemData.attr('data-block_has_scrollbar');
 
 			if (!$elem.hasClass('block-has-slider')) {
 				$block = $itemContent.find('.text-wrap');
@@ -574,8 +619,8 @@
 				+ zak_side + '" zak_title="' + zak_title + '" zak_icon="'
 				+ zak_icon + '" zak_foreground="' + zak_foreground
 				+ '" block_animation="' + block_animation
-				+ '" video_has_audio="' + video_has_audio 
-				+ '" block_has_scrollbar="'+block_has_scrollbar
+				+ '" video_has_audio="' + video_has_audio
+				+ '" block_has_scrollbar="' + block_has_scrollbar
 				+ '"]' + content
 				+ '[/RexpansiveBlock]';
 			return output;
@@ -675,7 +720,7 @@
 
 			$gridGallery.find('.grid-stack-item').each(function () {
 				var $elem = $(this);
-				if(!$elem.hasClass("removing_block")){
+				if (!$elem.hasClass("removing_block")) {
 					output += createBlockShortcode($elem);
 				}
 			});

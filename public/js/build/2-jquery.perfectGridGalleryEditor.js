@@ -238,19 +238,16 @@
             var nodes = [];
             this.$element.children('.grid-stack-item').each(function (i, e) {
                 var el = e;
-                el.x = e['attributes']['data-gs-x'].value;
-                el.y = e['attributes']['data-gs-y'].value;
-                el.w = e['attributes']['data-gs-width'].value;
-                el.h = e['attributes']['data-gs-height'].value;
-                console.log(e.id,el.x,el.y,el.w,el.h); 
+                el.x = parseInt(e['attributes']['data-gs-x'].value);
+                el.y = parseInt(e['attributes']['data-gs-y'].value);
+                el.w = parseInt(e['attributes']['data-gs-width'].value);
+                el.h = parseInt(e['attributes']['data-gs-height'].value);
+                el.xw = el.x+el.w;
+                el.yh = el.y+el.h;
                 nodes.push(el);
             });
-
-            var elements = _.sortBy(nodes, function (n) { 
-                return -1 * ((n.x + n.w) + (n.y + n.h) * 12); 
-            });
-            //var elements = _.sortBy(nodes, ["y", "x"]);
-
+            console.log(nodes);
+            var elements = lodash.sortBy(nodes, [function(o) { return o.yh; },function(o) { return o.xw; }]); 
             console.log(elements); 
             return elements;
         },

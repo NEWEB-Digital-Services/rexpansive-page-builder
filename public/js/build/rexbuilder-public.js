@@ -53,7 +53,7 @@ var lodash = _.noConflict();
         }
         return ID;
     };
-    
+
     // Waiting for the complete load of the window
     $window.load(function () {
         /* -- Launching the textfill -- */
@@ -119,26 +119,41 @@ var lodash = _.noConflict();
 
         var w = $window.width();
         var $resposiveData = $("#rexbuilder-layout-data");
-        var groups = JSON.parse($resposiveData.children(".groups").text());
         var $responsiveLayoutAvaible = JSON.parse($resposiveData.children(".available-layouts").text());
-        var selectedLayout = "rex-layout-";
-        
-        console.log(w); 
-        $.each($responsiveLayoutAvaible, function(i, layout){
-            console.log(i, layout);
-            //selectedLayout += layout.name;
+        var selectedLayout = "";
+
+        $.each($responsiveLayoutAvaible, function (i, layout) {
+            if (layout[1] == "") {
+                layout[1] = "0";
+            }
         });
-        
-        if(selectedLayout === "rex-layout-"){
-            selectedLayout = "rex-layout-custom";
+
+        var ordered = lodash.sortBy($responsiveLayoutAvaible, [function (o) { return parseInt(o[1]); }]);
+
+        $.each(ordered, function (i, layout) {
+            if (w > layout[1]) {
+                if (layout[2] != "") {
+                    if (w < layout[2]) {
+                        selectedLayout = "rex-layout-"+layout[0];
+                    }
+                } else {
+                    selectedLayout = "rex-layout-"+layout[0];
+                }
+            }
+        });
+
+        if (selectedLayout === "") {
+            selectedLayout = "rex-layout-mydesktop";
         }
 
-        $("."+selectedLayout).addClass("rex-container");
-        $("."+selectedLayout).css("display", "block");
+        console.log(selectedLayout);
+
+        $("." + selectedLayout).addClass("rex-container");
+        $("." + selectedLayout).css("display", "block");
 
         Rexbuilder_Util.init();
-        
-        if(_plugin_frontend_settings.user.logged && _plugin_frontend_settings.user.editing){
+
+        if (_plugin_frontend_settings.user.logged && _plugin_frontend_settings.user.editing) {
             Rexbuilder_Util.editorMode = true;
         } else {
             Rexbuilder_Util.editorMode = false;
@@ -157,10 +172,10 @@ var lodash = _.noConflict();
 
         Rexbuilder_Util_Editor.addWindowListeners();
         Rexbuilder_Util.addWindowListeners();
-        
+
         /* -- Launching the grid -- */
         Rexbuilder_Util.$rexContainer.find('.grid-stack-row').perfectGridGalleryEditor();
-        
+
         /* -- Launching Photoswipe -- */
         initPhotoSwipeFromDOM('.photoswipe-gallery');
 

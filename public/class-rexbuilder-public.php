@@ -369,7 +369,7 @@ class Rexbuilder_Public {
 		$update = wp_update_post($args);
 		
 		if(isset($saveLayouts) && isset($layouts) && isset($groups)){
-			update_post_meta(  $post_id_to_update, '_rex_responsive_settings', $layouts);
+			update_post_meta(  $post_id_to_update, '_rex_responsive_layouts', $layouts);
 			update_post_meta(  $post_id_to_update, '_rex_responsive_groups', $groups);
 			foreach( $saveLayouts as $layout ) {
 				update_post_meta(  $post_id_to_update, '_rex_content_'.$layout["name"], $shortcode);
@@ -416,7 +416,7 @@ function generate_builder_content($content){
 		?>
 		<div class="<?php
 			foreach($group as $type){
-				echo " rex-layout-".$type;
+				echo "rex-layout-".$type." ";
 			}
 		?>" style="display: none;">
 			<?php
