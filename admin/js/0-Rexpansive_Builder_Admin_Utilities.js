@@ -7,6 +7,18 @@ var Rexpansive_Builder_Admin_Utilities = (function($) {
   var global_tooltipped;
 
   /**
+   * Metabox html id
+   * @since 2.0.0
+   */
+  var meta_box_selector = '#_rex_content_mydesktop';
+
+  /**
+   * Is the awesome and new builderlive active?
+   * @since 2.0.0
+   */
+  var builderlive = true;
+
+  /**
    * Lunching the tooltips of the dynamic blocks created
    */
   var launchTooltips = function () {
@@ -246,7 +258,9 @@ var Rexpansive_Builder_Admin_Utilities = (function($) {
     post_has_modified: post_has_modified,
     set_all_posts_modified: set_all_posts_modified,
     post_has_modified_title: post_has_modified_title,
-    createSectionShortcode: createSectionShortcode
+    createSectionShortcode: createSectionShortcode,
+    meta_box_selector: meta_box_selector,
+    builderlive: builderlive
   };
   
 })(jQuery);

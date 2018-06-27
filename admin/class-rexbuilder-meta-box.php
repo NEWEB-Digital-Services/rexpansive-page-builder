@@ -126,7 +126,8 @@ class Rexbuilder_Meta_Box {
           //Retrieve the post content
           $checkbox_index = 0;
 //          $contents = get_post( $post->ID )->post_content;
-          $contents = get_post_meta( $post->ID, '_rex_content_mydesktop', true );
+          // $contents = get_post_meta( $post->ID, '_rex_content_mydesktop', true );
+          $contents = $meta;
           preg_match_all( "/$pattern/", $contents, $result_rows);
           
           $customize_builder = apply_filters( 'rexpansive_builder_customize_builder', false );

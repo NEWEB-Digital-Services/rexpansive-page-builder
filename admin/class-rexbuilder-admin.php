@@ -111,7 +111,7 @@ class Rexbuilder_Admin {
 						array(
 							'label' => 'Rexbuilder',
 							'desc' => 'Expand your mind',
-							'id' => '_rexbuilder',
+							'id' => '_rex_content_mydesktop',
 							'type'	=>	'rexpansive_plugin',
 						),
 					) );
@@ -478,6 +478,7 @@ class Rexbuilder_Admin {
 	 *	Add a swtich button under the post title/permalink to activate/deactivate the builder
 	 *
 	 * 	@since    1.0.0
+	 * @version 	2.0.0
 	 */
 	public function add_switch_under_post_title() {
 		$page_info = get_current_screen();
@@ -506,6 +507,9 @@ class Rexbuilder_Admin {
 					</label>
 				</div>
 			</div>
+		</div>
+		<div style="text-align:center">
+			<a href="<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=rexpansive' ); ?>" class="button button-primary button-large"><?php _e( 'Go Live', 'rexpansive' ); ?></a>
 		</div>
 	<?php
 				endif;

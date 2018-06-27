@@ -1845,7 +1845,9 @@
         }
         sectionGrid = sectionGrid.join('');
 
-        setBuilderTimeStamp();
+        // setBuilderTimeStamp();
+
+        $(Rexpansive_Builder_Admin_Utilities.meta_box_selector).val(sectionGrid);
 
         var ed = tinyMCE.get('content');
 
@@ -2132,6 +2134,10 @@
 
       if ('' != sectionModel) {
         shortcode += ' section_model="' + sectionModel + '" ';
+      }
+
+      if( Rexpansive_Builder_Admin_Utilities.builderlive ) {
+        shortcode += ' edit_from_backend="true"';
       }
 
       shortcode += ']' + data + '[/RexpansiveSection]';
@@ -3760,7 +3766,7 @@
 
       $row.attr('data-backresponsive', JSON.stringify(config_settings));
 
-      setBuilderTimeStamp();
+      // setBuilderTimeStamp();
 
       Rexpansive_Builder_Admin_Modals.CloseModal($('#modal-background-responsive-set').parent('.rex-modal-wrap'));
 
