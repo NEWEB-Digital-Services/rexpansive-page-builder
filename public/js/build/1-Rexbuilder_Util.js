@@ -173,7 +173,6 @@ var Rexbuilder_Util = (function ($) {
 
 	var addWindowListeners = function () {
 		var firstResize = true;
-		var backFromMobile = false;
 		var timeout;
 		Rexbuilder_Util.$window.on('resize', function (event) {
 			if (!Rexbuilder_Util_Editor.elementIsResizing) {
@@ -220,28 +219,22 @@ var Rexbuilder_Util = (function ($) {
 				//re-create
 				//Rexbuilder_Util.launchVideoPlugins();
 			} else { */
-				if (Rexbuilder_Util.viewport().width > 768) {
-					//
-				}
 			console.log("same layout");
 			Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
 				var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
 				if (galleryEditorIstance !== undefined) {
-					/* if (Rexbuilder_Util.viewport().width <= 768) {
-						if(!backFromMobile){
-							collapse();
-						}
-						backFromMobile = true;
+
+					galleryEditorIstance._defineDynamicPrivateProperties();
+
+					if (Rexbuilder_Util.viewport().width <= 768) {
+						galleryEditorIstance.collapseElements();
 					} else {
-						if(backFromMobile){
-							restoreState();
-						}
+						galleryEditorIstance.restoreGrid();
 					}
- */
 
 					var gridstack = galleryEditorIstance.$element.data('gridstack');
 
-					galleryEditorIstance._defineDynamicPrivateProperties();
+					galleryEditorIstance.updateBlocksHeight();
 
 					if (galleryEditorIstance.settings.galleryLayout == 'fixed') {
 						gridstack.cellHeight(galleryEditorIstance.properties.singleHeight);
@@ -249,17 +242,17 @@ var Rexbuilder_Util = (function ($) {
 						gridstack._updateStyles(galleryEditorIstance.properties.singleHeight);
 					}
 
-					galleryEditorIstance.updateBlocksHeight();
-					galleryEditorIstance.createScrollbars();
-
 					galleryEditorIstance = undefined;
 					gridstack = undefined;
 				}
 			});
 
-			if (Rexbuilder_Util.viewport().width > 768) {
-				backFromMobile = false;
-			}
+			Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
+				var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
+				if (galleryEditorIstance !== undefined) {
+					galleryEditorIstance.createScrollbars();
+				}
+			});
 
 			Rexbuilder_Util.windowIsResizing = false;
 			firstResize = true;
@@ -323,7 +316,7 @@ var Rexbuilder_Util = (function ($) {
 		this.scrollbarProperties = {
 			//className: "rex-overlay-scrollbar", per quando dobbiamo stilare usiamo questa classe
 			className: "os-theme-dark",
-			overflowBehavior : {x: "hidden"},
+			overflowBehavior: { x: "hidden" },
 			autoUpdate: false
 		};
 	}

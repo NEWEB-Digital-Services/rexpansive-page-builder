@@ -77,7 +77,8 @@
             oneColumMode: false,
             oneColumModeActive: false,
             orderedElements: null,
-            nextElements: null
+            nextElements: null,
+            elementsData: []
         };
 
         this.$section = this.$element.parents(this._defaults.gridParentWrap);
@@ -106,6 +107,8 @@
             this._updateBlocksID();
 
             this._findLastIDBlock();
+
+            this._saveStateElements();
 
             this._defineDataSettings();
 
@@ -137,6 +140,7 @@
             } else {
                 this.frontEndMode();
             }
+
 
             this.properties.firstStartGrid = false;
         },
@@ -376,6 +380,7 @@
         },
 
         createScrollbars: function () {
+            console.log("lancio scrollbar grid: " + this.properties.sectionNumber);
             var $elem;
             var gallery = this;
             this.$element.children('.grid-stack-item').each(function () {
@@ -392,12 +397,15 @@
                     if ($textWrap.length != 0) {
                         textHeight = gallery.calculateTextWrapHeight($textWrap);
                     }
-                    var scrollbarIstance = $rexScrollbar.overlayScrollbars(Rexbuilder_Util.scrollbarProperties).overlayScrollbars();
-                    console.log("block: " + $elem.attr("data-rexbuilder-block-id") + " sleep?");
-                    console.log(textHeight, maxBlockHeight);
-                    if (textHeight < maxBlockHeight) {
-                        console.log("yes");
-                        scrollbarIstance.sleep();
+                    if (Rexbuilder_Util.editorMode) {
+                        var istanceScrollbar = $rexScrollbar.overlayScrollbars(Rexbuilder_Util.scrollbarProperties).overlayScrollbars();
+                        if (textHeight < maxBlockHeight) {
+                            istanceScrollbar.sleep();
+                        }
+                    } else {
+                        if (textHeight > maxBlockHeight) {
+                            $rexScrollbar.overlayScrollbars(Rexbuilder_Util.scrollbarProperties);
+                        }
                     }
                 }
             });
@@ -836,13 +844,15 @@
                 this.properties.oneColumMode = true;
             }
 
-            console.log(this._viewport());
-            if (this.properties.oneColumMode && this._viewport().width <= 768) {
-                this.properties.oneColumModeActive = true;
-            } else {
-                this.properties.oneColumModeActive = false;
+            if (!Rexbuilder_Util.windowIsResizing) {
+                if (this.properties.oneColumMode && this._viewport().width <= 768) {
+                    this.properties.oneColumModeActive = true;
+                    this.$element.addClass("grid-stack-one-column-mode");
+                } else {
+                    this.properties.oneColumModeActive = false;
+                }
             }
-            console.log(this.properties.oneColumModeActive);
+
             if (oldWidth != newWidth) {
                 this.properties.wrapWidth = newWidth;
                 this.properties.singleWidth = newWidth * this.settings.gridItemWidth;
@@ -951,14 +961,16 @@
         },
 
         _saveStateElements: function () {
-            var $items = this.$element.find('.perfect-grid-item');
-            $items.each(function () {
-                store.set(this['id'], {
+            var $elem;
+            this.$element.children('.grid-stack-item').each(function () {
+                $elem = $(this);
+                console.log($elem.attr("data-rexbuilder-block-id"));
+                store.set($elem.attr("data-rexbuilder-block-id"), {
                     "properties": [
-                        { "x": this['attributes']['data-row'].value },
-                        { "y": this['attributes']['data-col'].value },
-                        { "w": this['attributes']['data-width'].value },
-                        { "h": this['attributes']['data-height'].value }
+                        { "x": parseInt($elem.attr("data-gs-x")) },
+                        { "y": parseInt($elem.attr("data-gs-y")) },
+                        { "w": parseInt($elem.attr("data-gs-width")) },
+                        { "h": parseInt($elem.attr("data-gs-height")) }
                     ]
                 });
             });
@@ -1012,7 +1024,7 @@
                     $elem.attr("data-gs-height", $elem.data("height"));
                 });
             }
-            
+
             this.properties.orderedElements = this.getElementBottomTop();
             this.properties.nextElements = this.getElementTopBottomSpecial();
 
@@ -1047,7 +1059,6 @@
             } else {
                 $blockData.attr('data-block_height_fixed', gsH);
             }
-
             $blockData.attr("data-block_height_calculated", gsH);
 
         },
@@ -1491,13 +1502,6 @@
         */
         _launchGridStack: function () {
             var gallery = this;
-            var disableOneColumn;
-
-            if (gallery.properties.oneColumMode) {
-                disableOneColumn = false;
-            } else {
-                disableOneColumn = true;
-            }
 
             if (Rexbuilder_Util.editorMode) {
                 var floating;
@@ -1511,7 +1515,7 @@
                     auto: true,
                     acceptWidgets: false,
                     alwaysShowResizeHandle: true,
-                    disableOneColumnMode: disableOneColumn,
+                    disableOneColumnMode: true,
                     cellHeight: gallery.properties.singleHeight,
                     draggable: {
                         containment: gallery.element,
@@ -1539,7 +1543,7 @@
                 console.log("launching gridstack frontend");
                 gallery.$element.gridstack({
                     auto: true,
-                    disableOneColumnMode: disableOneColumn,
+                    disableOneColumnMode: true,
                     cellHeight: gallery.properties.singleHeight,
                     disableDrag: true,
                     disableResize: true,
@@ -1561,6 +1565,8 @@
 
             var $elem;
             var $elemData;
+            var gridstack = this.$element.data('gridstack');
+            gridstack.batchUpdate();
             this.$element.children(".grid-stack-item").each(function () {
                 $elem = $(this);
                 $elemData = $elem.children(".rexbuilder-block-data");
@@ -1569,21 +1575,24 @@
                     gallery.updateElementDataProperties($elemData);
                 }
             });
-            
+            gridstack.commit();
         },
-        
-        updateBlocksHeight: function(){
+
+        updateBlocksHeight: function () {
             var gallery = this;
             var $elem;
             var $elemData;
+            var gridstack = this.$element.data('gridstack');
+            gridstack.batchUpdate();
             this.$element.children(".grid-stack-item").each(function () {
                 $elem = $(this);
                 $elemData = $elem.children(".rexbuilder-block-data");
-                if($elemData.attr("data-block_live_edited") != "true"){
+                if ($elemData.attr("data-block_live_edited") != "true") {
                     gallery.updateElementHeight($elem);
                     gallery.updateElementDataProperties($elemData);
                 }
             });
+            gridstack.commit();
         },
 
         addElementToTextEditor: function (editor, $textWrap) {
@@ -1961,8 +1970,9 @@
                 textHeight = 0;
             }
             var gutter = this.properties.gutter;
-
-            if (this.properties.oneColumMode && this.properties.oneColumModeActive) {
+            console.log(w);
+            if (this.properties.oneColumModeActive) {
+                console.log("onecolumns");
                 w = 12;
             }
 
@@ -1990,10 +2000,10 @@
             if (this.settings.galleryLayout == "fixed") {
                 defaultHeight = startH * this.properties.singleHeight;
             }
+
+            newH = Math.max(startH, backgroundHeight, defaultHeight, textHeight);
             
-            newH = Math.max(startH,backgroundHeight, defaultHeight, textHeight);
-            console.log(startH,backgroundHeight, defaultHeight, textHeight); 
-            if(newH == defaultHeight && this.settings.galleryLayout == "fixed"){
+            if (newH == defaultHeight && this.settings.galleryLayout == "fixed") {
                 newH = startH;
             } else {
                 newH = Math.ceil(newH / this.properties.singleHeight);
@@ -2032,34 +2042,33 @@
             }
         },
 
-        calculateBlockHeightFixedOneColumn: function ($elem) {
-            var $textWrap = $elem.find('.text-wrap').eq(0);
-            var newH;
-            if ($textWrap.length == 0 || gallery.calculateTextWrapHeight($textWrap) == 0) {
-                var w = parseInt($elem.attr("data-width"));
-                var h = parseInt($elem.attr("data-height"));
-                var ratio;
-                var medio;
-                if (w > h) {
-                    ratio = w / h;
-                    medio = (16 / 9 + 4 / 3) / 2;
-                    if (ratio > medio) {
-                        newH = 7;
-                    } else {
-                        newH = 9;
-                    }
-                } else {
-                    console.log(h > w);
-                    ratio = h / w;
-                    medio = (9 / 16 + 3 / 4) / 2;
-                    if (ratio > medio) {
-                        newH = 16;
-                    } else {
-                        newH = 21;
-                    }
-                }
+        collapseElements: function () {
+            this.$element.addClass("grid-stack-one-column-mode");
+            this.properties.oneColumModeActive = true;
+        },
+
+        restoreGrid: function () {
+            console.log("restore grid");
+            if (this.properties.oneColumModeActive) {
+                var gallery = this;
+                var $elem;
+                var $elemData;
+                var gridstack = this.$element.data("gridstack");
+                var elDim;
+                gridstack.batchUpdate();
+                this.$element.children(".grid-stack-item").each(function () {
+                    $elem = $(this);
+                    $elemData = $elem.children(".rexbuilder-block-data");
+                    elDim = store.get($elem.attr("data-rexbuilder-block-id"));
+                    gridstack.update(this, elDim.properties[0].x, elDim.properties[1].y, elDim.properties[2].w, elDim.properties[3].h);
+                    gallery.updateElementDataProperties($elemData);
+                    console.log($elem.attr("data-gs-x"), $elem.attr("data-gs-y"), $elem.attr("data-gs-width"), $elem.attr("data-gs-height"));
+                });
+                this.$element.removeClass("grid-stack-one-column-mode");
+                gridstack.commit();
             }
-            return newH;
+            this.$element.removeClass("grid-stack-one-column-mode");
+            this.properties.oneColumModeActive = false;
         },
 
         // Calculate the viewport of the window
