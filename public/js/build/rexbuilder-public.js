@@ -42,18 +42,6 @@ var lodash = _.noConflict();
         }
     }
 
-    var getYotubeID = function (url) {
-        var ID;
-        if (url.indexOf("youtu.be") > 0) {
-            ID = url.substr(url.lastIndexOf("/") + 1, url.length);
-        } else if (url.indexOf("http") > -1) {
-            ID = url.match(/[\\?&]v=([^&#]*)/)[1];
-        } else {
-            ID = url.length > 15 ? null : url;
-        }
-        return ID;
-    };
-
     // Waiting for the complete load of the window
     $window.load(function () {
         /* -- Launching the textfill -- */
@@ -116,51 +104,8 @@ var lodash = _.noConflict();
 
     // Waiting until the ready of the DOM
     $(function () {
-
-        var $selectedPageLayout;
-        if (_plugin_frontend_settings.user.logged && _plugin_frontend_settings.user.editing) {
-            $selectedPageLayout = $(".rexbuilder-editor-active-layout");
-        } else {
-            var w = $window.width();
-            var $resposiveData = $("#rexbuilder-layout-data");
-            var $responsiveLayoutAvaible = JSON.parse($resposiveData.children(".available-layouts").text());
-            var selectedLayout = "";
-
-            $.each($responsiveLayoutAvaible, function (i, layout) {
-                if (layout[1] == "") {
-                    layout[1] = "0";
-                }
-            });
-
-            var ordered = lodash.sortBy($responsiveLayoutAvaible, [function (o) { return parseInt(o[1]); }]);
-
-            $.each(ordered, function (i, layout) {
-                if (w > layout[1]) {
-                    if (layout[2] != "") {
-                        if (w < layout[2]) {
-                            selectedLayout = "rex-layout-" + layout[0];
-                        }
-                    } else {
-                        selectedLayout = "rex-layout-" + layout[0];
-                    }
-                }
-            });
-
-            if (selectedLayout === "") {
-                selectedLayout = "rex-layout-mydesktop";
-            }
-            $selectedPageLayout = $("." + selectedLayout);
-            if ($selectedPageLayout.length == 0) {
-                $selectedPageLayout = $(".rex-layout-mydesktop");
-            }
-            console.log(selectedLayout);
-        }
-
-        $selectedPageLayout.addClass("rex-container");
-        $selectedPageLayout.css("display", "block");
-
+        
         Rexbuilder_Util.init();
-
         if (_plugin_frontend_settings.user.logged && _plugin_frontend_settings.user.editing) {
             Rexbuilder_Util.editorMode = true;
         } else {
@@ -176,9 +121,9 @@ var lodash = _.noConflict();
 
         if (Rexbuilder_Util.editorMode) {
             Rexbuilder_Util_Editor.addBlockToolboxListeners();
+            Rexbuilder_Util_Editor.addWindowListeners();
         }
 
-        Rexbuilder_Util_Editor.addWindowListeners();
         Rexbuilder_Util.addWindowListeners();
 
         /* -- Launching the grid -- */
@@ -188,35 +133,8 @@ var lodash = _.noConflict();
         if (!Rexbuilder_Util.editorMode) {   
             initPhotoSwipeFromDOM('.photoswipe-gallery');
         }
-            
-        RexSlider.init();
 
-        VimeoVideo.init();
-
-        /* -- Launching YouTube Video -- */
-        // declare object for video
-        if (!jQuery.browser.mobile) {
-            Rexbuilder_Util.$rexContainer.find(".youtube-player").YTPlayer();
-
-            Rexbuilder_Util.$rexContainer.find(".youtube-player").on("YTPReady", function () {
-                $(this).optimizeDisplay();
-            });
-        } else {
-            Rexbuilder_Util.$rexContainer.find('.youtube-player').each(function (i, el) {
-                var $this = $(el),
-                    data_yt = eval('(' + $this.attr('data-property') + ')'),
-                    url = data_yt.videoURL,
-                    id = getYotubeID(url);
-
-                $this.css('background-image', 'url(http://img.youtube.com/vi/' + id + '/0.jpg)');
-                $this.click(function (e) {
-                    e.preventDefault();
-                    window.location.href = url;
-                });
-
-            });
-            // $('.rex-video-wrap').getVideoThumbnail();
-        }
+        Rexbuilder_Util.launchVideoPlugins();
 
         // Pause/Play video on block click
         $(document).on("click", ".perfect-grid-item", function () {
@@ -239,7 +157,7 @@ var lodash = _.noConflict();
         });
 
         // Adding audio functionallity
-        Rexbuilder_Util.$rexContainer.find('.perfect-grid-item').on('click', '.rex-video-toggle-audio', function (e) {
+        $(document).on('click', '.rex-video-toggle-audio', function (e) {
             e.stopPropagation();
             var $ytvideo = $(this).parents(".youtube-player");
             var $mpvideo = $(this).parents('.mp4-player').find('.rex-video-container');

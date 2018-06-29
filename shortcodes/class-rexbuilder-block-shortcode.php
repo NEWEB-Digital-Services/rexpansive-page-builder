@@ -44,10 +44,10 @@ class Rexbuilder_Block {
 			"size_y" => 1,
 			"row"	=>	'',
 			"col"	=>	'',
-			"gs_size_x" => 1,
-			"gs_size_y" => 1,
-			"gs_row"	=>	'',
-			"gs_col"	=>	'',
+			"gs_width" => 1,
+			"gs_height" => 1,
+			"gs_y"	=>	'',
+			"gs_x"	=>	'',
 			"color_bg_block" => "#ffffff",
 			"image_bg_block" => "",
 			"id_image_bg_block" => "",
@@ -258,10 +258,10 @@ class Rexbuilder_Block {
 			echo ' data-row="' . $row . '"';
 			echo ' data-col="' . $col . '"';
 
- 			echo ' data-gs-height="'.  $gs_size_y . '"';
-			echo ' data-gs-width="' . $gs_size_x . '"';
-			echo ' data-gs-y="' . $gs_row . '"';
-			echo ' data-gs-x="' . $gs_col . '"'; 
+ 			echo ' data-gs-height="'.  $gs_height . '"';
+			echo ' data-gs-width="' . $gs_width . '"';
+			echo ' data-gs-y="' . $gs_y . '"';
+			echo ' data-gs-x="' . $gs_x . '"'; 
 			
 			if( $floating_border != '' ) {
 				echo ' data-rs-animation-delay="0.5s"';
@@ -500,8 +500,9 @@ class Rexbuilder_Block {
 			endswitch;
 			
 			echo "</div>\n";
-			
-			include(REXPANSIVE_BUILDER_PATH."public/partials/rexlive-block-tools.php");
+			if(isset($editor)){
+				include(REXPANSIVE_BUILDER_PATH."public/partials/rexlive-block-tools.php");
+			}
 			
 			echo "</div>\n";
 		

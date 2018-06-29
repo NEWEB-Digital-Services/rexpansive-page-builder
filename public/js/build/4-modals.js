@@ -419,10 +419,11 @@
 				size_y = 1,
 				row = '',
 				col = '',
-				gs_size_x = 1,
-				gs_size_y = 1,
-				gs_row = '',
-				gs_col = '',
+				gs_start_h = 1,
+				gs_width = 1,
+				gs_height = 1,
+				gs_y = '',
+				gs_x = '',
 				color_bg_block = "#ffffff",
 				image_bg_block = "",
 				id_image_bg_block = "",
@@ -443,7 +444,8 @@
 				zak_foreground = "",
 				block_animation = "fadeInUpBig",
 				video_has_audio = '0',
-				block_has_scrollbar = "false";
+				block_has_scrollbar = "false",
+				block_live_edited = "";
 
 			var content = "";
 			var $block;
@@ -457,10 +459,11 @@
 			size_y = $elem.attr('data-height');
 			row = $elem.attr('data-row');
 			col = $elem.attr('data-col');
-			gs_size_x = $elem.attr('data-gs-width');
-			gs_size_y = $elem.attr('data-gs-height');
-			gs_row = $elem.attr('data-gs-y');
-			gs_col = $elem.attr('data-gs-x');			
+			gs_width = $elem.attr('data-gs-width');
+			gs_height = $elem.attr('data-gs-height');
+			gs_start_h = $elem.attr('data-gs-height');
+			gs_y = $elem.attr('data-gs-y');
+			gs_x = $elem.attr('data-gs-x');			
 			color_bg_block = $itemContent.css('background-color') != '' ? $itemContent
 				.css('background-color')
 				: '#ffffff';
@@ -504,6 +507,7 @@
 				: $itemData.attr('data-video_has_audio');
 			block_has_scrollbar = $itemData.attr('data-block_has_scrollbar') === undefined ? "false"
 				: $itemData.attr('data-block_has_scrollbar');
+			block_live_edited = $itemData.attr('data-rexlive-edited') === undefined ? "" : "true";
 
 			if (!$elem.hasClass('block-has-slider')) {
 				$block = $itemContent.find('.text-wrap');
@@ -527,10 +531,11 @@
 				'" size_y="' + size_y +
 				'" row="' + row +
 				'" col="' + col +	
-				'" gs_size_x="' + gs_size_x +
-				'" gs_size_y="' + gs_size_y +
-				'" gs_row="' + gs_row +
-				'" gs_col="' + gs_col +
+				'" gs_start_h="' + gs_start_h +	
+				'" gs_width="' + gs_width +
+				'" gs_height="' + gs_height +
+				'" gs_y="' + gs_y +
+				'" gs_x="' + gs_x +
 				'" color_bg_block="' + color_bg_block +
 				'" image_bg_block="' + image_bg_block +
 				'" id_image_bg_block="' + id_image_bg_block +
@@ -551,6 +556,7 @@
 				+ '" block_animation="' + block_animation
 				+ '" video_has_audio="' + video_has_audio
 				+ '" block_has_scrollbar="' + block_has_scrollbar
+				+ '" block_live_edited="'+block_live_edited
 				+ '"]' + content
 				+ '[/RexpansiveBlock]';
 			return output;
@@ -581,7 +587,7 @@
 			var output = '';
 			var $gridGallery = $section.find('.grid-stack-row');
 			var $sectionData = $section.children('.section-data');
-
+			var galleryIstance = $gridGallery.data().plugin_perfectGridGalleryEditor;
 			section_name = $sectionData.attr('data-section_name') === undefined ? ""
 				: $sectionData.attr('data-section_name');
 			type = $sectionData.attr('data-type') === undefined ? "perfect-grid"
@@ -646,10 +652,15 @@
 				+ '" row_separator_top="' + row_separator_top
 				+ '" row_separator_bottom="' + row_separator_bottom
 				+ '" row_separator_right="' + row_separator_right
-				+ '" row_separator_left="' + row_separator_left + '"]';
+				+ '" row_separator_left="' + row_separator_left  
+				+ '" row_edited_live="true"]';
 
-			$gridGallery.find('.grid-stack-item').each(function () {
+			var elementsOrdered = galleryIstance.getElementTopBottomSpecial();
+			console.log(elementsOrdered); 
+			$(elementsOrdered).each(function () {
 				var $elem = $(this);
+				console.log(this); 
+				console.log($elem.attr("data-rexbuilder-block-id")); 
 				if (!$elem.hasClass("removing_block")) {
 					output += createBlockShortcode($elem);
 				}

@@ -219,6 +219,7 @@ var Rexbuilder_Util_Editor = (function ($) {
 
     // init the utilities
     var init = function () {
+
         this.elementIsResizing = false;
         this.elementIsDragging = false;
 

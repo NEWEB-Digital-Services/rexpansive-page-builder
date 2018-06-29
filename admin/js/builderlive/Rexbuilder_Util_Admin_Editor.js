@@ -113,7 +113,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
             $frameBuilder.remove();
             if ($btn.data("min-width") != "") {
-                $frameContainer.css("width", $btn.data("min-width"));
+                $frameContainer.css("max-width", $btn.data("min-width"));
             } else {
                 $frameContainer.css("width", "100%");
             }

@@ -117,7 +117,7 @@ class Rexbuilder_Public {
 			wp_enqueue_style( 'spectrum-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/spectrum.css', array(), $this->version, 'all' );
 			
 			wp_enqueue_style( 'medium-editor-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/medium-editor.css', array(), $this->version, 'all' );
-			wp_enqueue_style( 'medium-editor-instert-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/medium-editor-insert-plugin.min.css', array(), $this->version, 'all' );
+			//wp_enqueue_style( 'medium-editor-instert-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/medium-editor-insert-plugin.min.css', array(), $this->version, 'all' );
 			wp_enqueue_style( 'medium-editor-insert-frontend-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/medium-editor-insert-plugin-frontend.min.css', array(), $this->version, 'all' );
 			//TODO ci penseremo dopo
 			//wp_enqueue_style( 'medium-editor-tables-style.css', REXPANSIVE_BUILDER_URL  . $cartella. 'css/medium-editor-tables.min.css', array(), $this->version, 'all' );
@@ -389,6 +389,11 @@ function generate_builder_content($content){
 
 	$layoutType = get_post_meta($post->ID,'_rex_responsive_layouts',true);
 	$layoutGroups = get_post_meta($post->ID,'_rex_responsive_groups',true);
+	
+	if( $layoutType == "" || $layoutGroups == ""){
+		$layoutType = array(array("mydesktop", "", ""));
+		$layoutGroups = array(array("mydesktop"));
+	}
 
 	?>
 	<div id="rexbuilder-layout-data" style="display: none;">

@@ -57,6 +57,7 @@ class Rexbuilder_Section {
             'row_separator_bottom'	=>	'',
             'row_separator_right'	=>	'',
 			'row_separator_left'	=>	'',
+			'row_edited_live'	=>	'',
 			'section_model' => ''
         ), $atts, 'RexpansiveSection' );
 
@@ -72,6 +73,7 @@ class Rexbuilder_Section {
 		if('true' == $builder_active) {
 			global $section_layout;
 			$section_layout = $layout;
+			$editor = $_GET['editor'];
 
 			$section_style = "";
 			if( !empty( $image_bg_section ) ) {
@@ -86,8 +88,6 @@ class Rexbuilder_Section {
 			endif;
 
 			$custom_classes = trim( $custom_classes );
-
-			$custom_classes .= " rex-block-grid ";
 			
 			$row_separators = '';
 			if( '' != $row_separator_top ) {
@@ -143,9 +143,10 @@ class Rexbuilder_Section {
 			unset($property_name);
 			unset($value_property);
 			echo '></div>';
-
-			include(REXPANSIVE_BUILDER_PATH."public/partials/rexlive-section-tools.php");
-
+			if(isset($editor)){
+				include(REXPANSIVE_BUILDER_PATH."public/partials/rexlive-section-tools.php");
+			}
+				
 			if( '' != $video_bg_url_vimeo_section && 'undefined' != $video_bg_url_vimeo_section ) {
 ?>
 <div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--section">
