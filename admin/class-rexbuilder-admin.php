@@ -111,7 +111,7 @@ class Rexbuilder_Admin {
 						array(
 							'label' => 'Rexbuilder',
 							'desc' => 'Expand your mind',
-							'id' => '_rex_content_mydesktop',
+							'id' => '_rex_default_layout',
 							'type'	=>	'rexpansive_plugin',
 						),
 					) );

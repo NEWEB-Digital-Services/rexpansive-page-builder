@@ -280,8 +280,11 @@ class Rexbuilder {
 		
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'include_js_template' );
 		
-		$this->loader->add_action( 'wp_ajax_rexlive_save_sections', $plugin_public, 'rexlive_save_sections' );
-		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_sections', $plugin_public, 'rexlive_save_sections' );
+		$this->loader->add_action( 'wp_ajax_rexlive_save_default_layout', $plugin_public, 'rexlive_save_default_layout' );
+		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_default_layout', $plugin_public, 'rexlive_save_default_layout' );
+
+		$this->loader->add_action( 'wp_ajax_rexlive_save_customizations', $plugin_public, 'rexlive_save_customizations' );
+		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_customizations', $plugin_public, 'rexlive_save_customizations' );
 
 		// $this->loader->add_action( 'wpcf7_contact_form', $plugin_public, 'cf7_custom_script_guard' );
 		$this->loader->add_action( 'shortcode_atts_wpcf7', $plugin_public, 'cf7_custom_style', 10, 4 );

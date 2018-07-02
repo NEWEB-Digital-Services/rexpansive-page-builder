@@ -337,46 +337,106 @@
 			console.log('redo');
 		});
 
-		$(document).on('rexlive:save', function (e) {
-			
-			var selectedlayouts = e.settings.selected;
-			var updatedGroups = e.settings.updatedGroups;
-			var updatedLayouts = e.settings.updatedLayouts;
+		$(document).on("rexlive:saveDefaultLayout", function () {
+			console.log("saving default layout");
+
+			var idPost = parseInt($('#id-post').attr('data-post-id'));
 
 			var postClean = createCleanPost();
 			//console.log(postClean);
 
 			var shortcodePage = '';
-			Rexbuilder_Util.$rexContainer.find('.grid-stack-row').each(function () {
-				var $this = $(this);
-				var $section = $this.parents('.rexpansive_section');
+
+			Rexbuilder_Util.$rexContainer.find('.rexpansive_section').each(function () {
+				var $section = $(this);
 				if (!$section.hasClass("removing_section")) {
-					$this.perfectGridGalleryEditor('fillEmptySpaces');
-					$this.perfectGridGalleryEditor('updateAllElementsProperties');
-					shortcodePage += createSectionShortcode($section);
+					shortcodePage += createSectionProperties($section, "shortcode");
 				}
 			});
-
-			var idPost = parseInt($('#id-post').attr('data-post-id'));
+			console.log(shortcodePage);
 
 			$.ajax({
 				type: 'POST',
 				dataType: 'json',
 				url: _plugin_frontend_settings.rexajax.ajaxurl,
 				data: {
-					action: 'rexlive_save_sections',
+					action: 'rexlive_save_default_layout',
 					nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-					rex_shortcode: shortcodePage,
-					clean_post: postClean,
 					post_id_to_update: idPost,
-					layoutsType: updatedLayouts,
-					layoutsGroups: updatedGroups,
-					layoutsSave: selectedlayouts
+					clean_post: postClean,
+					rex_shortcode: shortcodePage,
 				},
 				success: function (response) {
 					console.log(response);
 					if (response.success) {
-						console.log('chiama effettttuuuata con successo');
+						console.log('default layout aggiornato');
+					} else {
+						console.log(response.msg);
+						console.log("errore");
+					}
+					console.log('chiama effettuata con successo');
+				},
+				error: function (response) {
+					console.log(response);
+					console.log('errore chiama ajax');
+				}
+			});
+		});
+
+		$(document).on('rexlive:saveCustomizations', function (e) {
+			var $layoutData = Rexbuilder_Util.$rexContainer.parent().children("#rexbuilder-layout-data");
+			console.log($layoutData); 
+			var $layoutsCustomDiv = $layoutData.children(".layouts-customizations");
+			var $layoutsAvaiableDiv = $layoutData.children(".available-layouts");
+
+			console.log("saving customizations");
+
+			var idPost = parseInt($('#id-post').attr('data-post-id'));
+
+			var activeLayout = e.settings.selected;
+			var updatedLayouts = e.settings.updatedLayouts;
+			var oldCustomizations;
+			
+			//console.log($layoutsCustomDiv.data("empty-customizations")); 
+
+			if ($layoutsCustomDiv.data("empty-customizations")) {
+				oldCustomizations = [];
+			} else {
+				oldCustomizations = JSON.parse($layoutsCustomDiv.text());
+			}
+
+			console.log(activeLayout);
+			console.log(updatedLayouts);
+			var customizationsArray = [];
+
+			/* $.each(oldCustomizations, function (i, oldCustom) {
+				customizationsArray.push(oldCustom);
+			}); */
+
+			if (oldCustomizations.length == 0) {
+				customizationsArray.push(createCustomization(activeLayout));
+			}
+
+			console.log(customizationsArray); 
+			
+			$layoutsCustomDiv.text(JSON.stringify(customizationsArray));
+			$layoutsAvaiableDiv.text(JSON.stringify(updatedLayouts));
+
+			$.ajax({
+				type: 'POST',
+				dataType: 'json',
+				url: _plugin_frontend_settings.rexajax.ajaxurl,
+				data: {
+					action: 'rexlive_save_default_layout',
+					nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+					post_id_to_update: idPost,
+					customizations: customizationsArray,
+					avaiable_layouts: updatedLayouts
+				},
+				success: function (response) {
+					console.log(response);
+					if (response.success) {
+						console.log('layout custom aggiornato');
 					}
 					console.log('chiama effettuata con successo');
 				},
@@ -384,8 +444,68 @@
 					console.log('errore chiama ajax');
 				}
 			});
-
 		});
+
+		var createCustomization = function (activeLayout) {
+			var data =
+			{
+				name: activeLayout[0],
+				sections: []
+			}
+			data.sections = createSectionsCustomizations();
+
+			return data;
+		}
+
+		var createSectionsCustomizations = function () {
+			var output = [];
+			Rexbuilder_Util.$rexContainer.children('.rexpansive_section').each(function () {
+				var $section = $(this);
+				if (!$section.hasClass("removing_section")) {
+					var sectionRexID = $section.attr("data-rexlive-section-id");
+					var section_props = {
+						section_rex_id: sectionRexID,
+						targets: [],
+					}
+					section_props.targets = createTargets($section);
+					output.push(section_props);
+				}
+			});
+
+			return output;
+		}
+
+		var createTargets = function ($section) {
+			var targets = [];
+
+			var section_props = {
+				name: "self",
+				props: {}
+			}
+
+			section_props.props = createSectionProperties($section, "customLayout");
+			targets.push(section_props);
+
+			var $gridGallery = $section.find('.grid-stack-row');
+			var galleryIstance = $gridGallery.data().plugin_perfectGridGalleryEditor;
+			var elementsOrdered = galleryIstance.getElementTopBottom();
+
+			galleryIstance.updateAllElementsProperties();
+
+			$(elementsOrdered).each(function () {
+				var $elem = $(this);
+				if (!$elem.hasClass("removing_block")) {
+					var blockRexID = $elem.attr("data-rexbuilder-block-id");
+					var block_props = {
+						name: blockRexID,
+						props: []
+					}
+					block_props.props = createBlockProperties($elem, "customLayout");
+					targets.push(block_props);
+				}
+			});
+			return targets;
+		}
 
 		var createCleanPost = function () {
 			var post = "";
@@ -412,7 +532,7 @@
 			return post;
 		}
 
-		var createBlockShortcode = function ($elem) {
+		var createBlockProperties = function ($elem, mode) {
 			var id = "",
 				type = "text",
 				size_x = 1,
@@ -448,7 +568,7 @@
 				block_live_edited = "";
 
 			var content = "";
-			var $block;
+			var $textWrap;
 			var output;
 			var $itemContent = $elem.find('.grid-item-content');
 			var $itemData = $elem.children(".rexbuilder-block-data");
@@ -463,7 +583,7 @@
 			gs_height = $elem.attr('data-gs-height');
 			gs_start_h = $elem.attr('data-gs-height');
 			gs_y = $elem.attr('data-gs-y');
-			gs_x = $elem.attr('data-gs-x');			
+			gs_x = $elem.attr('data-gs-x');
 			color_bg_block = $itemContent.css('background-color') != '' ? $itemContent
 				.css('background-color')
 				: '#ffffff';
@@ -510,12 +630,11 @@
 			block_live_edited = $itemData.attr('data-rexlive-edited') === undefined ? "" : "true";
 
 			if (!$elem.hasClass('block-has-slider')) {
-				$block = $itemContent.find('.text-wrap');
-				//TODO sistemare la copia, non deve eliminare dal dom gli oggetti, deve farlo solo nella copia
-				var $savingBlock = $block.clone(false);
+				$textWrap = $itemContent.find('.text-wrap');
+				var $savingBlock = $textWrap.clone(false);
 				$savingBlock.find('.medium-insert-buttons').remove();
 				$savingBlock.find('.text-editor-span-fix').remove();
-				if ($savingBlock.text() == "") {
+				if ($savingBlock.text().trim() == "") {
 					content = "";
 				} else {
 					content = $savingBlock.html();
@@ -524,45 +643,87 @@
 				content = '[RexSlider slider_id="' + parseInt($elem.find(".rex-slider-wrap").attr("data-slider-id")) + '"]';
 			}
 
-			output =
-				'[RexpansiveBlock' + ' id="' + id +
-				'" type="' + type +
-				'" size_x="' + size_x +
-				'" size_y="' + size_y +
-				'" row="' + row +
-				'" col="' + col +	
-				'" gs_start_h="' + gs_start_h +	
-				'" gs_width="' + gs_width +
-				'" gs_height="' + gs_height +
-				'" gs_y="' + gs_y +
-				'" gs_x="' + gs_x +
-				'" color_bg_block="' + color_bg_block +
-				'" image_bg_block="' + image_bg_block +
-				'" id_image_bg_block="' + id_image_bg_block +
-				'" video_bg_id="' + video_bg_id +
-				'" video_bg_url="' + video_bg_url +
-				'" video_bg_url_vimeo="' + video_bg_url_vimeo +
-				'" type_bg_block="' + type_bg_block +
-				'" image_size="' + image_size +
-				'" photoswipe="'
-				+ photoswipe +
-				'" linkurl="' + linkurl
-				+ '" block_custom_class="' + block_custom_class
-				+ '" block_padding="' + block_padding
-				+ '" overlay_block_color="' + overlay_block_color
-				+ '" zak_background="' + zak_background + '" zak_side="'
-				+ zak_side + '" zak_title="' + zak_title + '" zak_icon="'
-				+ zak_icon + '" zak_foreground="' + zak_foreground
-				+ '" block_animation="' + block_animation
-				+ '" video_has_audio="' + video_has_audio
-				+ '" block_has_scrollbar="' + block_has_scrollbar
-				+ '" block_live_edited="'+block_live_edited
-				+ '"]' + content
-				+ '[/RexpansiveBlock]';
-			return output;
+
+			if (mode == "shortcode") {
+				output = '[RexpansiveBlock'
+					+ ' id="' + id
+					+ '" type="' + type
+					+ '" size_x="' + size_x
+					+ '" size_y="' + size_y
+					+ '" row="' + row
+					+ '" col="' + col
+					+ '" gs_start_h="' + gs_start_h
+					+ '" gs_width="' + gs_width
+					+ '" gs_height="' + gs_height
+					+ '" gs_y="' + gs_y
+					+ '" gs_x="' + gs_x
+					+ '" color_bg_block="' + color_bg_block
+					+ '" image_bg_block="' + image_bg_block
+					+ '" id_image_bg_block="' + id_image_bg_block
+					+ '" video_bg_id="' + video_bg_id
+					+ '" video_bg_url="' + video_bg_url
+					+ '" video_bg_url_vimeo="' + video_bg_url_vimeo
+					+ '" type_bg_block="' + type_bg_block
+					+ '" image_size="' + image_size
+					+ '" photoswipe="' + photoswipe
+					+ '" linkurl="' + linkurl
+					+ '" block_custom_class="' + block_custom_class
+					+ '" block_padding="' + block_padding
+					+ '" overlay_block_color="' + overlay_block_color
+					+ '" zak_background="' + zak_background
+					+ '" zak_side="' + zak_side
+					+ '" zak_title="' + zak_title
+					+ '" zak_icon="' + zak_icon
+					+ '" zak_foreground="' + zak_foreground
+					+ '" block_animation="' + block_animation
+					+ '" video_has_audio="' + video_has_audio
+					+ '" block_has_scrollbar="' + block_has_scrollbar
+					+ '" block_live_edited="' + block_live_edited
+					+ '"]' + content
+					+ '[/RexpansiveBlock]';
+				return output;
+			} else if (mode == "customLayout") {
+				
+				var props = {};
+
+				props["id"] = id;
+				props["type"] = type;
+				props["size_x"] = size_x;
+				props["size_y"] = size_y;
+				props["row"] = row;
+				props["col"] = col;
+				props["gs_start_h"] = gs_start_h;
+				props["gs_width"] = gs_width;
+				props["gs_height"] = gs_height;
+				props["gs_y"] = gs_y;
+				props["gs_x"] = gs_x;
+				props["color_bg_block"] = color_bg_block;
+				props["image_bg_block"] = image_bg_block;
+				props["id_image_bg_block"] = id_image_bg_block;
+				props["video_bg_id"] = video_bg_id;
+				props["video_bg_url"] = video_bg_url;
+				props["video_bg_url_vimeo"] = video_bg_url_vimeo;
+				props["type_bg_block"] = type_bg_block;
+				props["image_size"] = image_size;
+				props["photoswipe"] = photoswipe;
+				props["block_custom_class"] = block_custom_class;
+				props["block_padding"] = block_padding;
+				props["overlay_block_color"] = overlay_block_color;
+				props["zak_background"] = zak_background;
+				props["zak_side"] = zak_side;
+				props["zak_title"] = zak_title;
+				props["zak_icon"] = zak_icon;
+				props["zak_foreground"] = zak_foreground;
+				props["block_animation"] = block_animation;
+				props["video_has_audio"] = video_has_audio;
+				props["block_has_scrollbar"] = block_has_scrollbar;
+				props["block_live_edited"] = block_live_edited;
+
+				return props;
+			}
 		};
 
-		var createSectionShortcode = function ($section) {
+		var createSectionProperties = function ($section, mode) {
 			var section_name = "",
 				type = "perfect-grid",
 				color_bg_section = "#ffffff",
@@ -636,133 +797,168 @@
 			row_separator_left = $sectionData.attr('data-row_separator_left') === undefined ? ""
 				: $sectionData.attr('data-row_separator_left');
 
-			output = '[RexpansiveSection' + ' section_name="' + section_name
-				+ '" type="' + type + '" color_bg_section="'
-				+ color_bg_section + '" dimension="' + dimension
-				+ '" margin="' + margin + '" image_bg_section="'
-				+ image_bg_section + '" id_image_bg_section="'
-				+ id_image_bg_section + '" video_bg_url_section="'
-				+ video_bg_url_section + '" video_bg_id_section="'
-				+ video_bg_id_section + '" video_bg_url_vimeo_section="'
-				+ video_bg_url_vimeo_section + '" full_height="'
-				+ full_height + '" block_distance="' + block_distance
-				+ '" layout="' + layout + '" responsive_background="'
-				+ responsive_background + '" custom_classes="'
-				+ custom_classes + '" section_width="' + section_width
-				+ '" row_separator_top="' + row_separator_top
-				+ '" row_separator_bottom="' + row_separator_bottom
-				+ '" row_separator_right="' + row_separator_right
-				+ '" row_separator_left="' + row_separator_left  
-				+ '" row_edited_live="true"]';
+			if (mode == "shortcode") {
 
-			var elementsOrdered = galleryIstance.getElementTopBottomSpecial();
-			console.log(elementsOrdered); 
-			$(elementsOrdered).each(function () {
-				var $elem = $(this);
-				console.log(this); 
-				console.log($elem.attr("data-rexbuilder-block-id")); 
-				if (!$elem.hasClass("removing_block")) {
-					output += createBlockShortcode($elem);
-				}
-			});
+				output = '[RexpansiveSection'
+					+ ' section_name="' + section_name
+					+ '" type="' + type
+					+ '" color_bg_section="' + color_bg_section
+					+ '" dimension="' + dimension
+					+ '" margin="' + margin
+					+ '" image_bg_section="' + image_bg_section
+					+ '" id_image_bg_section="' + id_image_bg_section
+					+ '" video_bg_url_section="' + video_bg_url_section
+					+ '" video_bg_id_section="' + video_bg_id_section
+					+ '" video_bg_url_vimeo_section="' + video_bg_url_vimeo_section
+					+ '" full_height="' + full_height
+					+ '" block_distance="' + block_distance
+					+ '" layout="' + layout
+					+ '" responsive_background="' + responsive_background
+					+ '" custom_classes="' + custom_classes
+					+ '" section_width="' + section_width
+					+ '" row_separator_top="' + row_separator_top
+					+ '" row_separator_bottom="' + row_separator_bottom
+					+ '" row_separator_right="' + row_separator_right
+					+ '" row_separator_left="' + row_separator_left
+					+ '" row_edited_live="true"]';
 
-			output += '[/RexpansiveSection]';
-			return output;
+				galleryIstance.fillEmptySpaces();
+				galleryIstance.updateAllElementsProperties();
+
+				var elementsOrdered = galleryIstance.getElementTopBottom();
+
+				$(elementsOrdered).each(function () {
+					var $elem = $(this);
+					if (!$elem.hasClass("removing_block")) {
+						output += createBlockProperties($elem, "shortcode");
+					}
+				});
+
+				output += '[/RexpansiveSection]';
+				return output;
+
+			} else if (mode == "customLayout") {
+
+				var props = {};
+
+				props["section_name"] = section_name;
+				props["type"] = type;
+				props["color_bg_section"] = color_bg_section;
+				props["dimension"] = dimension;
+				props["margin"] = margin;
+				props["image_bg_section"] = image_bg_section;
+				props["id_image_bg_section"] = id_image_bg_section;
+				props["video_bg_url_section"] = video_bg_url_section;
+				props["video_bg_id_section"] = video_bg_id_section;
+				props["video_bg_url_vimeo_section"] = video_bg_url_vimeo_section;
+				props["full_height"] = full_height;
+				props["block_distance"] = block_distance;
+				props["layout"] = layout;
+				props["responsive_background"] = responsive_background;
+				props["custom_classes"] = custom_classes;
+				props["section_width"] = section_width;
+				props["row_separator_top"] = row_separator_top;
+				props["row_separator_bottom"] = row_separator_bottom;
+				props["row_separator_right"] = row_separator_right;
+				props["row_separator_left"] = row_separator_left;
+
+				return props;
+			}
 		}
 
 		// ----------------------------------
 		/*
-		 * function uploadBlockBackground($wrap) { if( image_block_edit_frame ) {
-		 * image_block_edit_frame.open(); return; }
-		 * 
-		 * //create a new Library, base on defaults //you can put your
-		 * attributes in var editImage = wp.media.controller.Library.extend({
-		 * defaults : _.defaults({ id: 'upload-block-bg', title: 'Upload
-		 * Background', allowLocalEdits: true, displaySettings: true,
-		 * displayUserSettings: true, multiple : false, library: wp.media.query( {
-		 * type: 'image' } ), type : 'image',//audio, video, application/pdf,
-		 * ... etc }, wp.media.controller.Library.prototype.defaults ) });
-		 * 
-		 * //Setup media frame image_block_edit_frame = wp.media({ button : {
-		 * text : 'Select' }, state : 'upload-block-bg', states : [ new
-		 * editImage() ] });
-		 * 
-		 * //on close, if there is no select files, remove all the files already
-		 * selected in your main frame
-		 * image_block_edit_frame.on('close',function() { var selection =
-		 * image_block_edit_frame.state('upload-block-bg').get('selection');
-		 * if(!selection.length){ } });
-		 * 
-		 * 
-		 * image_block_edit_frame.on( 'select', function() { var state =
-		 * image_block_edit_frame.state('upload-block-bg'); var selection =
-		 * state.get('selection'); var imageArray = [];
-		 * 
-		 * if ( ! selection ) return;
-		 * 
-		 * //to get right side attachment UI info, such as: size and alignments
-		 * //org code from /wp-includes/js/media-editor.js, arround `line 603 --
-		 * send: { ... attachment: function( props, attachment ) { ... `
-		 * selection.each(function(attachment) { var display = state.display(
-		 * attachment ).toJSON(); var obj_attachment = attachment.toJSON() var
-		 * caption = obj_attachment.caption, options, html;
-		 *  // If captions are disabled, clear the caption. if ( !
-		 * wp.media.view.settings.captions ) delete obj_attachment.caption;
-		 * 
-		 * display = wp.media.string.props( display, obj_attachment );
-		 * 
-		 * options = { id: obj_attachment.id, post_content:
-		 * obj_attachment.description, post_excerpt: caption };
-		 * 
-		 * if ( display.linkUrl ) options.url = display.linkUrl;
-		 * 
-		 * if ( 'image' === obj_attachment.type ) { } else if ( 'video' ===
-		 * obj_attachment.type ) { html = wp.media.string.video( display,
-		 * obj_attachment ); } else if ( 'audio' === obj_attachment.type ) {
-		 * html = wp.media.string.audio( display, obj_attachment ); } else {
-		 * html = wp.media.string.link( display ); options.post_title =
-		 * display.title; }
-		 * 
-		 * //attach info to attachment.attributes object
-		 * attachment.attributes['nonce'] =
-		 * wp.media.view.settings.nonce.sendToEditor;
-		 * attachment.attributes['attachment'] = options;
-		 * attachment.attributes['html'] = html;
-		 * attachment.attributes['post_id'] = wp.media.view.settings.post.id;
-		 * 
-		 * $wrap.val(obj_attachment.id);
-		 * background_modal_properties.$image_url.val(obj_attachment.url);
-		 * background_modal_properties.$image_id.val(obj_attachment.id);
-		 * background_modal_properties.$image_size.val(display.size);
-		 * background_modal_properties.$image_preview.css('background-image',
-		 * 'url(' + obj_attachment.url + ')');
-		 * background_modal_properties.$image_preview_icon.hide();
-		 * background_modal_properties.$type_image.prop('checked', true); });
-		 * });
-		 * 
-		 * //reset selection in popup, when open the popup
-		 * image_block_edit_frame.on('open',function() { var attachment; var
-		 * selection =
-		 * image_block_edit_frame.state('upload-block-bg').get('selection');
-		 * 
-		 * //remove all the selection first selection.each(function(image) {
-		 * attachment = wp.media.attachment( image.attributes.id );
-		 * attachment.fetch(); selection.remove( attachment ? [ attachment ] : [] );
-		 * });
-		 *  // Check the already inserted image if(
-		 * background_modal_properties.$image_id.val() ) { attachment =
-		 * wp.media.attachment( background_modal_properties.$image_id.val() );
-		 * attachment.fetch(); selection.add( attachment ? [ attachment ] : [] ); }
-		 * });
-		 * 
-		 * //now open the popup image_block_edit_frame.open(); } //
-		 * uploadBlockBackground END
-		 * 
-		 * 
-		 * $('#modal-setting-button').on('click', '#background_up_img',
-		 * function(event){ //c -> click del mouse console.log("ciao");
-		 * event.preventDefault(); uploadBlockBackground($(this)); });
-		 */
+		* function uploadBlockBackground($wrap) { if( image_block_edit_frame ) {
+			* image_block_edit_frame.open(); return; }
+			* 
+	 * //create a new Library, base on defaults //you can put your
+	 * attributes in var editImage = wp.media.controller.Library.extend({
+	 * defaults : _.defaults({ id: 'upload-block-bg', title: 'Upload
+	 * Background', allowLocalEdits: true, displaySettings: true,
+	 * displayUserSettings: true, multiple : false, library: wp.media.query( {
+	 * type: 'image' } ), type : 'image',//audio, video, application/pdf,
+	 * ... etc }, wp.media.controller.Library.prototype.defaults ) });
+	 * 
+	 * //Setup media frame image_block_edit_frame = wp.media({ button : {
+	 * text : 'Select' }, state : 'upload-block-bg', states : [ new
+	 * editImage() ] });
+	 * 
+	 * //on close, if there is no select files, remove all the files already
+	 * selected in your main frame
+	 * image_block_edit_frame.on('close',function() { var selection =
+	 * image_block_edit_frame.state('upload-block-bg').get('selection');
+	 * if(!selection.length){ } });
+	 * 
+	 * 
+	 * image_block_edit_frame.on( 'select', function() { var state =
+	 * image_block_edit_frame.state('upload-block-bg'); var selection =
+	 * state.get('selection'); var imageArray = [];
+	 * 
+	 * if ( ! selection ) return;
+	 * 
+	 * //to get right side attachment UI info, such as: size and alignments
+	 * //org code from /wp-includes/js/media-editor.js, arround `line 603 --
+	 * send: { ... attachment: function( props, attachment ) { ... `
+	 * selection.each(function(attachment) { var display = state.display(
+	 * attachment ).toJSON(); var obj_attachment = attachment.toJSON() var
+	 * caption = obj_attachment.caption, options, html;
+	 *  // If captions are disabled, clear the caption. if ( !
+	 * wp.media.view.settings.captions ) delete obj_attachment.caption;
+	 * 
+	 * display = wp.media.string.props( display, obj_attachment );
+	 * 
+	 * options = { id: obj_attachment.id, post_content:
+	 * obj_attachment.description, post_excerpt: caption };
+	 * 
+	 * if ( display.linkUrl ) options.url = display.linkUrl;
+	 * 
+	 * if ( 'image' === obj_attachment.type ) { } else if ( 'video' ===
+	 * obj_attachment.type ) { html = wp.media.string.video( display,
+	 * obj_attachment ); } else if ( 'audio' === obj_attachment.type ) {
+	 * html = wp.media.string.audio( display, obj_attachment ); } else {
+	 * html = wp.media.string.link( display ); options.post_title =
+	 * display.title; }
+	 * 
+	 * //attach info to attachment.attributes object
+	 * attachment.attributes['nonce'] =
+	 * wp.media.view.settings.nonce.sendToEditor;
+	 * attachment.attributes['attachment'] = options;
+	 * attachment.attributes['html'] = html;
+	 * attachment.attributes['post_id'] = wp.media.view.settings.post.id;
+	 * 
+	 * $wrap.val(obj_attachment.id);
+	 * background_modal_properties.$image_url.val(obj_attachment.url);
+	 * background_modal_properties.$image_id.val(obj_attachment.id);
+	 * background_modal_properties.$image_size.val(display.size);
+	 * background_modal_properties.$image_preview.css('background-image',
+	 * 'url(' + obj_attachment.url + ')');
+	 * background_modal_properties.$image_preview_icon.hide();
+	 * background_modal_properties.$type_image.prop('checked', true); });
+	 * });
+	 * 
+	 * //reset selection in popup, when open the popup
+	 * image_block_edit_frame.on('open',function() { var attachment; var
+	 * selection =
+	 * image_block_edit_frame.state('upload-block-bg').get('selection');
+	 * 
+	 * //remove all the selection first selection.each(function(image) {
+	 * attachment = wp.media.attachment( image.attributes.id );
+	 * attachment.fetch(); selection.remove( attachment ? [ attachment ] : [] );
+	 * });
+	 *  // Check the already inserted image if(
+	 * background_modal_properties.$image_id.val() ) { attachment =
+	 * wp.media.attachment( background_modal_properties.$image_id.val() );
+	 * attachment.fetch(); selection.add( attachment ? [ attachment ] : [] ); }
+	 * });
+	 * 
+	 * //now open the popup image_block_edit_frame.open(); } //
+	 * uploadBlockBackground END
+	 * 
+	 * 
+	 * $('#modal-setting-button').on('click', '#background_up_img',
+	 * function(event){ //c -> click del mouse console.log("ciao");
+	 * event.preventDefault(); uploadBlockBackground($(this)); });
+	 */
 
 		// ----------------------------------
 		// ------------------------------------------

@@ -104,16 +104,24 @@ var lodash = _.noConflict();
 
     // Waiting until the ready of the DOM
     $(function () {
-        
+
         Rexbuilder_Util.init();
+
         if (_plugin_frontend_settings.user.logged && _plugin_frontend_settings.user.editing) {
+            var infos = {
+                eventName: "rexlive:edited",
+                edited: false,
+                rexliveEvent: true
+            };
+    
+            window.parent.postMessage(infos, '*');
+
             Rexbuilder_Util.editorMode = true;
+            Rexbuilder_Util_Editor.init();
+            Rexbuilder_Section.init();
         } else {
             Rexbuilder_Util.editorMode = false;
-            Rexbuilder_Util_Editor.init();
         }
-
-        Rexbuilder_Section.init();
 
         _detect_mobile();
 
@@ -130,7 +138,7 @@ var lodash = _.noConflict();
         Rexbuilder_Util.$rexContainer.find('.grid-stack-row').perfectGridGalleryEditor();
 
         /* -- Launching Photoswipe -- */
-        if (!Rexbuilder_Util.editorMode) {   
+        if (!Rexbuilder_Util.editorMode) {
             initPhotoSwipeFromDOM('.photoswipe-gallery');
         }
 

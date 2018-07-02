@@ -148,8 +148,7 @@ var Rexbuilder_Util_Editor = (function ($) {
         if (Rexbuilder_Util_Editor.editingElement && Rexbuilder_Util_Editor.editingGallery) {
             var gallery = Rexbuilder_Util_Editor.editedGallery;
             var $elem = Rexbuilder_Util_Editor.editedElement;
-            var gridstack = gallery.$element.data('gridstack');
-            //gridstack.disable();
+            
             //$(gallery.$element).removeClass('gridActive');
 
             console.log("start editing " + $elem.attr("data-rexbuilder-block-id"));
@@ -204,6 +203,7 @@ var Rexbuilder_Util_Editor = (function ($) {
         Rexbuilder_Util.$window[0].addEventListener("message", receiveMessage, false);
 
         function receiveMessage(event) {
+            console.log("evente received"); 
             if (event.data.rexliveEvent) {
                 console.log("rexlive event");
                 var e = jQuery.Event(event.data.eventName);

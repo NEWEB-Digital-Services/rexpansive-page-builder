@@ -1,7 +1,5 @@
 var Rexbuilder_Section = (function ($) {
     'use strict';
-    var lastSectionNumber;
-
     var _showSectionToolBox = function ($section) {
         $section.children('.section-toolBox').addClass('tool-box-active');
     }
@@ -22,7 +20,7 @@ var Rexbuilder_Section = (function ($) {
 
     var _prepareSection = function ($section) {
         var oldSectionID = parseInt($section.attr("data-rexlive-section-id"));
-        lastSectionNumber = lastSectionNumber + 1;
+        Rexbuilder_Util.lastSectionNumber = Rexbuilder_Util.lastSectionNumber + 1;
         var $gallery = $section.find(".grid-stack-row");
 
         $gallery.removeClass("grid-number-" + oldSectionID);
@@ -38,7 +36,7 @@ var Rexbuilder_Section = (function ($) {
             Rexbuilder_Util_Editor.removeTextEditor($(this));
         });
 
-        $section.attr("data-rexlive-section-id", lastSectionNumber);
+        $section.attr("data-rexlive-section-id", Rexbuilder_Util.lastSectionNumber);
         Rexbuilder_Section.linkHoverSection($section);
 
         Rexbuilder_Section.hideSectionToolBox($section);
@@ -46,49 +44,45 @@ var Rexbuilder_Section = (function ($) {
 
     var init = function () {
         //Setting row number
-        Rexbuilder_Util.$rexContainer.children('.rexpansive_section').each(function (i, e) {
-            $(e).attr('data-rexlive-section-id', i);
-            lastSectionNumber = i;
+
+
+        Rexbuilder_Util.$rexContainer.children(".rexpansive_section").each(function () {
+            var $this = $(this);
+            Rexbuilder_Section.linkHoverSection($this);
         });
 
-        if (Rexbuilder_Util.editorMode === true) {
-            Rexbuilder_Util.$rexContainer.children(".rexpansive_section").each(function () {
-                var $this = $(this);
-                Rexbuilder_Section.linkHoverSection($this);
-            });
+        //launching sortable
+        Rexbuilder_Util.$rexContainer.sortable({
+            handle: ".builder-move-row"
+            //            placeholder: "portlet-placeholder ui-corner-all"
+        });
 
-            //launching sortable
-            Rexbuilder_Util.$rexContainer.sortable({
-                handle: ".builder-move-row"
-                //            placeholder: "portlet-placeholder ui-corner-all"
-            });
+        // linking listeners to row setting buttons
+        $(document).on('click', '.builder-delete-row', function (e) {
+            $(e.currentTarget).parents('.rexpansive_section').addClass("removing_section");
+        });
 
-            // linking listeners to row setting buttons
-            $(document).on('click', '.builder-delete-row', function (e) {
-                $(e.currentTarget).parents('.rexpansive_section').addClass("removing_section");
-            });
+        $(document).on('click', '.builder-copy-row', function (e) {
+            console.log("copying row");
+            Rexbuilder_Util_Editor.sectionCopying = true;
+            var section = $(e.currentTarget).parents('.rexpansive_section');
+            var $newSection;
 
-            $(document).on('click', '.builder-copy-row', function (e) {
-                console.log("copying row"); 
-                Rexbuilder_Util_Editor.sectionCopying = true;
-                var section = $(e.currentTarget).parents('.rexpansive_section');
-                var $newSection;
+            $newSection = $(section).clone(false);
 
-                $newSection = $(section).clone(false);
+            $(section).after($newSection);
 
-                $(section).after($newSection);
+            Rexbuilder_Section.prepareSection($newSection);
 
-                Rexbuilder_Section.prepareSection($newSection);
+            $newSection.find('.grid-stack-row').perfectGridGalleryEditor();
 
-                $newSection.find('.grid-stack-row').perfectGridGalleryEditor();
+            $newSection.find('.grid-stack-row').perfectGridGalleryEditor("updateGrid");
 
-                $newSection.find('.grid-stack-row').perfectGridGalleryEditor("updateGrid");
+            Rexbuilder_Util.$rexContainer.sortable("refresh");
 
-                Rexbuilder_Util.$rexContainer.sortable("refresh");
+            Rexbuilder_Util_Editor.sectionCopying = false;
+        });
 
-                Rexbuilder_Util_Editor.sectionCopying = false;
-            });
-        }
 
     }
     return {

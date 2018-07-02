@@ -2,44 +2,29 @@ var Rexbuilder_Util = (function ($) {
 	'use strict';
 
 	var $window = $(window);
-	var $rexContainer;
 
 	var fixSectionWidth = 0;
 	var editorMode = false;
 	var windowIsResizing = false;
+	var activeLayout;
 
-
-	var updateContainer = function (layout) {
-		var $container;
-		if (layout === null) {
-			layout = "";
-			if (_plugin_frontend_settings.user.logged && _plugin_frontend_settings.user.editing) {
-				$container = $(".rexbuilder-editor-active-layout");
-			} else {
-				layout = Rexbuilder_Util.chooseLayout();
-				$container = $(".rex-layout-" + layout);
-				if ($container.length == 0) {
-					layout = "mydesktop";
-					$container = $(".rex-layout-mydesktop");
-				}
-			}
-		} else {
-			var $oldContainer = $(".rex-container");
-			$oldContainer.removeClass("rex-container");
-			$oldContainer.attr("data-layout-active", "");
-			$oldContainer.css("display", "none");
-		}
-
-		$container.addClass("rex-container");
-		$container.attr("data-layout-active", layout);
-		$container.css("display", "block");
-
-		Rexbuilder_Util.setContainer($container);
+	var _updateSectionsNumber = function () { 
+		var lastSectionNumber;
+		Rexbuilder_Util.$rexContainer.children('.rexpansive_section').each(function (i, e) {
+            $(e).attr('data-rexlive-section-id', i);
+            lastSectionNumber = i;
+		});
+		return lastSectionNumber;
 	}
 
 	var chooseLayout = function () {
 		var w = $window.width();
 		var $resposiveData = $("#rexbuilder-layout-data");
+		
+		if($resposiveData.children(".layouts-data").data("empty-customizations") == "true"){
+			return "default";
+		}
+
 		var $responsiveLayoutAvaible = JSON.parse($resposiveData.children(".available-layouts").text());
 		var selectedLayout = "";
 
@@ -64,12 +49,20 @@ var Rexbuilder_Util = (function ($) {
 		});
 
 		if (selectedLayout === "") {
-			selectedLayout = "mydesktop";
+			selectedLayout = "default";
 		}
 		console.log(selectedLayout);
 		return selectedLayout;
 	}
 
+	var _edit_dom_layout = function(chosenLayout){
+		var $resposiveData = $("#rexbuilder-layout-data");
+		if((chosenLayout == activeLayout) || ($resposiveData.children(".layouts-data").data("empty-customizations") == "true")){
+			return;
+		}
+		console.log("updaiting dom");
+	}
+	
 	// function to detect if we are on a mobile device
 	var _detect_mobile = function () {
 		if (!("ontouchstart" in document.documentElement)) {
@@ -306,7 +299,12 @@ var Rexbuilder_Util = (function ($) {
 		this.$window = $(window);
 		this.$body = $("body");
 
-		updateContainer(null);
+		this.$rexContainer = $(".rex-container");
+
+		activeLayout = chooseLayout();
+		_edit_dom_layout(activeLayout);
+		
+		this.lastSectionNumber = _updateSectionsNumber();
 
 		_detect_mobile();
 
@@ -331,7 +329,6 @@ var Rexbuilder_Util = (function ($) {
 		checkPresentationPage: _checkPresentationPage,
 		checkStaticPresentationPage: _checkStaticPresentationPage,
 		checkPost: _checkPost,
-		$rexContainer: $rexContainer,
 		$window: $window,
 		scroll_timing: _scroll_timing,
 		fixSectionWidth: fixSectionWidth,
@@ -341,8 +338,7 @@ var Rexbuilder_Util = (function ($) {
 		launchVideoPlugins: _launchVideoPlugins,
 		destroyVideoPlugins: _destroyVideoPlugins,
 		chooseLayout: chooseLayout,
-		setContainer: setContainer,
-		updateContainer: updateContainer
+		setContainer: setContainer
 	};
 
 })(jQuery);
