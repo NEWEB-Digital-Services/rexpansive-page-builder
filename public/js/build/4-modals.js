@@ -385,7 +385,7 @@
 
 		$(document).on('rexlive:saveCustomizations', function (e) {
 			var $layoutData = Rexbuilder_Util.$rexContainer.parent().children("#rexbuilder-layout-data");
-			console.log($layoutData); 
+			console.log($layoutData);
 			var $layoutsCustomDiv = $layoutData.children(".layouts-customizations");
 			var $layoutsAvaiableDiv = $layoutData.children(".available-layouts");
 
@@ -396,7 +396,7 @@
 			var activeLayout = e.settings.selected;
 			var updatedLayouts = e.settings.updatedLayouts;
 			var oldCustomizations;
-			
+
 			//console.log($layoutsCustomDiv.data("empty-customizations")); 
 
 			if ($layoutsCustomDiv.data("empty-customizations")) {
@@ -405,20 +405,19 @@
 				oldCustomizations = JSON.parse($layoutsCustomDiv.text());
 			}
 
-			console.log(activeLayout);
-			console.log(updatedLayouts);
 			var customizationsArray = [];
+			$.each(oldCustomizations, function (i, oldCustom) {
+				var oldLay = oldCustom;
+				if (oldLay.name != activeLayout[0]) {
+					customizationsArray.push(oldLay);
+				}
+			});
 
-			/* $.each(oldCustomizations, function (i, oldCustom) {
-				customizationsArray.push(oldCustom);
-			}); */
+			customizationsArray.push(createCustomization(activeLayout));
 
-			if (oldCustomizations.length == 0) {
-				customizationsArray.push(createCustomization(activeLayout));
-			}
 
-			console.log(customizationsArray); 
-			
+			console.log(customizationsArray);
+
 			$layoutsCustomDiv.text(JSON.stringify(customizationsArray));
 			$layoutsAvaiableDiv.text(JSON.stringify(updatedLayouts));
 
@@ -427,7 +426,7 @@
 				dataType: 'json',
 				url: _plugin_frontend_settings.rexajax.ajaxurl,
 				data: {
-					action: 'rexlive_save_default_layout',
+					action: 'rexlive_save_customizations',
 					nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
 					post_id_to_update: idPost,
 					customizations: customizationsArray,
@@ -480,6 +479,7 @@
 
 			var section_props = {
 				name: "self",
+				hide: false,
 				props: {}
 			}
 
@@ -498,6 +498,7 @@
 					var blockRexID = $elem.attr("data-rexbuilder-block-id");
 					var block_props = {
 						name: blockRexID,
+						hide: false,
 						props: []
 					}
 					block_props.props = createBlockProperties($elem, "customLayout");
@@ -683,7 +684,7 @@
 					+ '[/RexpansiveBlock]';
 				return output;
 			} else if (mode == "customLayout") {
-				
+
 				var props = {};
 
 				props["id"] = id;
@@ -743,7 +744,8 @@
 				row_separator_top = '',
 				row_separator_bottom = '',
 				row_separator_right = '',
-				row_separator_left = '';
+				row_separator_left = '',
+				rexlive_section_id = '';
 
 			var output = '';
 			var $gridGallery = $section.find('.grid-stack-row');
@@ -796,7 +798,7 @@
 				: $sectionData.attr('data-row_separator_right');
 			row_separator_left = $sectionData.attr('data-row_separator_left') === undefined ? ""
 				: $sectionData.attr('data-row_separator_left');
-
+			rexlive_section_id = $section.attr("data-rexlive-section-id"); 
 			if (mode == "shortcode") {
 
 				output = '[RexpansiveSection'
@@ -820,6 +822,7 @@
 					+ '" row_separator_bottom="' + row_separator_bottom
 					+ '" row_separator_right="' + row_separator_right
 					+ '" row_separator_left="' + row_separator_left
+					+ '" rexlive_section_id="' + rexlive_section_id
 					+ '" row_edited_live="true"]';
 
 				galleryIstance.fillEmptySpaces();

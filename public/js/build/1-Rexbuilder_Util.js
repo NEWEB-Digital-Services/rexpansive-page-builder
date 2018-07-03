@@ -8,20 +8,60 @@ var Rexbuilder_Util = (function ($) {
 	var windowIsResizing = false;
 	var activeLayout;
 
-	var _updateSectionsNumber = function () { 
-		var lastSectionNumber;
+	var createRandomID = function () {
+		var text = "";
+		var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+		for (var i = 0; i < 5; i++){
+			text += possible.charAt(Math.floor(Math.random() * possible.length));
+		}
+
+		return text;
+	}
+
+	var createSectionID = function () { 
+		var id;
+		var flag;
+		do {
+			flag = true;
+			id = createRandomID();
+			Rexbuilder_Util.$rexContainer.children('.rexpansive_section').each(function () {
+				if ($(this).attr('data-rexlive-section-id') !== undefined && $(this).attr('data-rexlive-section-id') == id) {
+					flag = false;
+				}
+			});
+		} while (!flag);
+		return id;
+	}
+
+	var _updateSectionsID = function () {
+		var id;
+		var $sec;
 		Rexbuilder_Util.$rexContainer.children('.rexpansive_section').each(function (i, e) {
-            $(e).attr('data-rexlive-section-id', i);
-            lastSectionNumber = i;
+			$sec = $(e);
+			if ($sec.attr('data-rexlive-section-id') === undefined) {
+				id = createSectionID();
+				$sec.attr('data-rexlive-section-id', id);
+			}
 		});
-		return lastSectionNumber;
+	}
+
+	var _updateSectionsNumber = function(){
+		var last;
+		var $sec;
+		Rexbuilder_Util.$rexContainer.children('.rexpansive_section').each(function (i, e) {
+			$sec = $(e);
+			$sec.attr('data-rexlive-section-number', i);
+			last = i;
+		});
+		Rexbuilder_Util.lastSectionNumber = last;
 	}
 
 	var chooseLayout = function () {
 		var w = $window.width();
 		var $resposiveData = $("#rexbuilder-layout-data");
-		
-		if($resposiveData.children(".layouts-data").data("empty-customizations") == "true"){
+
+		if ($resposiveData.children(".layouts-data").data("empty-customizations") == "true") {
 			return "default";
 		}
 
@@ -55,14 +95,72 @@ var Rexbuilder_Util = (function ($) {
 		return selectedLayout;
 	}
 
-	var _edit_dom_layout = function(chosenLayout){
+	var _edit_dom_layout = function (chosenLayout) {
+		Rexbuilder_Util.$rexContainer.attr("data-rex-layout-selected", chosenLayout);
 		var $resposiveData = $("#rexbuilder-layout-data");
-		if((chosenLayout == activeLayout) || ($resposiveData.children(".layouts-data").data("empty-customizations") == "true")){
+		if ((chosenLayout == activeLayout) || ($resposiveData.children(".layouts-customizations").data("empty-customizations") == "true")) {
 			return;
 		}
+		activeLayout = chosenLayout;
+		var layoutData = JSON.parse($resposiveData.children(".layouts-customizations").text());
+		var layoutSelected;
+		var i, j;
+		for (i = 0; i < layoutData.length; i++) {
+			if (layoutData[i].name == chosenLayout) {
+				layoutSelected = layoutData[i];
+				break;
+			}
+		}
+		if (i == layoutData.length) {
+			return;
+		}
+
+		console.log(layoutSelected);
 		console.log("updaiting dom");
+
+		var section;
+		var sectionRexId;
+		var target;
+		var targetID;
+		var targetProps;
+		var hide;
+
+		var $section;
+		var $sectionData;
+
+		var $gallery;
+		var $block;
+		var $blockContent;
+
+		for (i = 0; i < layoutSelected.sections.length; i++) {
+			section = layoutSelected.sections[i];
+			sectionRexId = section.section_rex_id;
+			console.log(sectionRexId);
+			console.log(section);
+			for (j = 0; j < section.targets.length; j++) {
+				target = section.targets[j];
+				targetID = target.name;
+				hide = target.hide;
+				targetProps = target.props;
+				if (hide) {
+
+				} else {
+
+					console.log(targetID);
+					if (targetID == "self") {
+						for (const propName in targetProps) {
+							console.log(propName + " " + targetProps[propName]);
+						}
+					} else {
+						for (const propName in targetProps) {
+							console.log(propName + " " + targetProps[propName]);
+						}
+					}
+				}
+			}
+		}
 	}
-	
+
 	// function to detect if we are on a mobile device
 	var _detect_mobile = function () {
 		if (!("ontouchstart" in document.documentElement)) {
@@ -301,10 +399,13 @@ var Rexbuilder_Util = (function ($) {
 
 		this.$rexContainer = $(".rex-container");
 
-		activeLayout = chooseLayout();
-		_edit_dom_layout(activeLayout);
+		this.lastSectionNumber = -1;
+
+		_updateSectionsID();
 		
-		this.lastSectionNumber = _updateSectionsNumber();
+		_edit_dom_layout(chooseLayout());
+		
+		_updateSectionsNumber();
 
 		_detect_mobile();
 
@@ -338,7 +439,8 @@ var Rexbuilder_Util = (function ($) {
 		launchVideoPlugins: _launchVideoPlugins,
 		destroyVideoPlugins: _destroyVideoPlugins,
 		chooseLayout: chooseLayout,
-		setContainer: setContainer
+		setContainer: setContainer,
+		createSectionID: createSectionID
 	};
 
 })(jQuery);

@@ -359,8 +359,8 @@ endif;
         $avaiable_layouts = $_POST['avaiable_layouts'];
         $custom_layouts = $_POST['customizations'];
 
-        update_post_meta($post_id_to_update, '_rex_customization', $custom_layouts);
         update_post_meta($post_id_to_update, '_rex_responsive_layouts', $avaiable_layouts);
+        update_post_meta($post_id_to_update, '_rex_customization', $custom_layouts);
 
         $response['update'] = $update;
         $response['id_recived'] = $post_id_to_update;
@@ -412,7 +412,6 @@ endif;
     public function generate_builder_content($content)
     {
         global $post;
-        $layout_selected = $_GET['layout'];
         $editor = $_GET['editor'];
         
         $defaultPage = get_post_meta($post->ID, '_rex_default_layout', true);
@@ -448,14 +447,7 @@ endif;
                 ?>
             </div>
         </div>
-        <div class="rex-container"
-        <?php
-        if (isset($editor) && $editor == "true") {
-            echo 'data-rex-layout-selected="' . $layout_selected . '"';
-        }
-        ?>
-	    >
-
+        <div class="rex-container" data-rex-layout-selected="">
 		<?php
         echo do_shortcode($defaultPage);
         ?>

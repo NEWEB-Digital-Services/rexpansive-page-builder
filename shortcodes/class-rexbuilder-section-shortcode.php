@@ -58,7 +58,8 @@ class Rexbuilder_Section {
             'row_separator_right'	=>	'',
 			'row_separator_left'	=>	'',
 			'row_edited_live'	=>	'',
-			'section_model' => ''
+			'section_model' => '',
+			'rexlive_section_id' => ''
         ), $atts, 'RexpansiveSection' );
 
 		extract( $parsed_atts );
@@ -163,10 +164,12 @@ class Rexbuilder_Section {
 				echo '</div>';
 			endif;
 
+			echo '<div class="responsive-overlay"';
 			if( "" != $responsive_background ) {
-				echo '<div class="responsive-overlay"' . $section_responsive_style . '">';
+				echo $section_responsive_style;
 			}
-
+			echo '>';
+			
 			if( 'boxed' == $dimension ) {
 				echo '<div class="center-disposition"';
 				if( '' != $section_width ) {

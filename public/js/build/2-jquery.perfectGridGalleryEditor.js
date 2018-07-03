@@ -168,7 +168,7 @@
         },
 
         _setGridID: function () {
-            this.properties.sectionNumber = parseInt(this.$section.attr('data-rexlive-section-id'));
+            this.properties.sectionNumber = parseInt(this.$section.attr('data-rexlive-section-number'));
             this.$element.addClass('grid-number-' + this.properties.sectionNumber);
         },
 

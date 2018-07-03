@@ -19,11 +19,11 @@ var Rexbuilder_Section = (function ($) {
     }
 
     var _prepareSection = function ($section) {
-        var oldSectionID = parseInt($section.attr("data-rexlive-section-id"));
+        var oldSectionNumber = parseInt($section.attr("data-rexlive-section-number"));
         Rexbuilder_Util.lastSectionNumber = Rexbuilder_Util.lastSectionNumber + 1;
         var $gallery = $section.find(".grid-stack-row");
 
-        $gallery.removeClass("grid-number-" + oldSectionID);
+        $gallery.removeClass("grid-number-" + oldSectionNumber);
         $gallery.removeClass(function (index, className) {
             return (className.match(/grid-stack-instance-\d+/g) || []).join(' ');
         });
@@ -36,7 +36,8 @@ var Rexbuilder_Section = (function ($) {
             Rexbuilder_Util_Editor.removeTextEditor($(this));
         });
 
-        $section.attr("data-rexlive-section-id", Rexbuilder_Util.lastSectionNumber);
+        $section.attr("data-rexlive-section-id", Rexbuilder_Util.createSectionID());
+
         Rexbuilder_Section.linkHoverSection($section);
 
         Rexbuilder_Section.hideSectionToolBox($section);
