@@ -32,7 +32,6 @@ var Rexbuilder_FormFixes = (function($) {
   };
 
   var _listen_events = function() {
-    console.log('actol');
     document.addEventListener( 'wpcf7submit', function( event ) {
       var $g = $(event.srcElement).parents('.perfect-grid-gallery');
       if($g.length>0) {

@@ -35,6 +35,7 @@ class Rexbuilder_Block {
 	 * @since    1.0.0
 	 * @param      string    $a       			The attributest passed.
 	 * @param      string    $content    		The content passed.
+	 * @version 1.1.3	Add handling photoswipe on slider
 	 */
 	public function render_block( $atts, $content = null ) {
 		extract( shortcode_atts( array(
@@ -111,7 +112,7 @@ class Rexbuilder_Block {
 			} else if( !empty( $color_bg_block )) {
 				$block_background_style = ' style="background-color:' . $color_bg_block . ';"';
 			}
-			
+		
 
 			$block_link_pre = '';
 			$block_link_before = '';
@@ -119,27 +120,27 @@ class Rexbuilder_Block {
 			if($linkurl != '' && $photoswipe == 'true') {
 				$photoswipe = 'false';
 			}
-
+		
 			if(!isset($editor)){
-				if($photoswipe == 'true' && '' == $video_bg_id && '' == $video_bg_url && isset( $img_attrs[0] ) && '' != $img_attrs[0] ) :
-			
-					$block_link_pre .= '<figure class="pswp-figure" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">';
-					$block_link_pre .= '<a class="pswp-item" href="' . $img_attrs[0] . '" itemprop="contentUrl" data-size="' . $img_attrs[1] . 'x' . $img_attrs[2] . '">';
-					$block_link_pre .= '<div class="pswp-item-thumb" data-thumb-image-type="' . $type_bg_block . '" data-thumburl="' . $img_attrs[0] . '" itemprop="thumbnail"></div>';
-					$block_link_before .= '</a>';
-					//$block_link_before .= '<figcaption class="pswp-item-caption" itemprop="caption description">' . get_the_title( $id_image_bg_block ) . '</figcaption>';
-					$block_link_before .= '<figcaption class="pswp-item-caption" itemprop="caption description"></figcaption>';
-					$block_link_before .= '</figure>';
-				endif;
-				if($linkurl != '') :
-					$block_link_pre .= '<a class="element-link hovered" href="' . $linkurl . '" title="' . trim(strip_tags($linkurl)) . '">';
-					//$block_link_pre .= '<div class="element-link-effect-before"></div>';
-					//$block_link_before .= '<div class="element-link-effect-after"></div>';
-					$block_link_before .= '</a>';
-					$content = strip_tags( $content, '<p><h1><h2><h3><h4><h5><h6><strong><i><hr><div><span><pre><b><blockquote><address><cite><code><del><q><small><sub><sup><time><img><canvas><video><ul><ol><li><br>' );
-				endif;
-			}
-			
+			if($photoswipe == 'true' && '' == $video_bg_id && '' == $video_bg_url && isset( $img_attrs[0] ) && '' != $img_attrs[0] ) :
+		
+				$block_link_pre .= '<figure class="pswp-figure" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">';
+				$block_link_pre .= '<a class="pswp-item" href="' . $img_attrs[0] . '" itemprop="contentUrl" data-size="' . $img_attrs[1] . 'x' . $img_attrs[2] . '">';
+				$block_link_pre .= '<div class="pswp-item-thumb" data-thumb-image-type="' . $type_bg_block . '" data-thumburl="' . $img_attrs[0] . '" itemprop="thumbnail"></div>';
+				$block_link_before .= '</a>';
+				//$block_link_before .= '<figcaption class="pswp-item-caption" itemprop="caption description">' . get_the_title( $id_image_bg_block ) . '</figcaption>';
+				$block_link_before .= '<figcaption class="pswp-item-caption" itemprop="caption description"></figcaption>';
+				$block_link_before .= '</figure>';
+			endif;
+			if($linkurl != '') :
+				$block_link_pre .= '<a class="element-link hovered" href="' . $linkurl . '" title="' . trim(strip_tags($linkurl)) . '">';
+				//$block_link_pre .= '<div class="element-link-effect-before"></div>';
+				//$block_link_before .= '<div class="element-link-effect-after"></div>';
+				$block_link_before .= '</a>';
+				$content = strip_tags( $content, '<p><h1><h2><h3><h4><h5><h6><strong><i><hr><div><span><pre><b><blockquote><address><cite><code><del><q><small><sub><sup><time><img><canvas><video><ul><ol><li><br>' );
+			endif;
+		}
+		
 
 			$block_custom_class = apply_filters( 'rexpansive_block_custom_class', trim( $block_custom_class ), $id );
 		
@@ -169,7 +170,20 @@ class Rexbuilder_Block {
 			if( has_shortcode( $content, 'RexSliderDefintion') ) {
 				$block_has_slider = true;
 				$content = Rexbuilder_Utilities::remove_shortcode_wrap_paragraphs( $content, 'RexSliderDefintion' );
-			}	
+			}
+
+			if( has_shortcode( $content, 'RexIndicator') ) {
+				$block_has_indicator = true;
+				$content = Rexbuilder_Utilities::remove_shortcode_wrap_paragraphs( $content, 'RexIndicator' );
+			}
+
+			if( $block_has_slider && 'true' == $photoswipe ) {
+				// strpos($content,']')
+				$last = strpos($content,']');
+				$s1 = substr($content, 0, $last );
+				$s2 = substr($content, $last );
+				$content = $s1 . ' photoswipe="true"' . $s2;
+			}
 		
 			$floating_border = '';
 			if( strpos( $block_custom_class, 'rex-floating-' ) !== false ) {
@@ -258,7 +272,7 @@ class Rexbuilder_Block {
 			echo ' data-row="' . $row . '"';
 			echo ' data-col="' . $col . '"';
 
- 			echo ' data-gs-height="'.  $gs_height . '"';
+			echo ' data-gs-height="'.  $gs_height . '"';
 			echo ' data-gs-width="' . $gs_width . '"';
 			echo ' data-gs-y="' . $gs_y . '"';
 			echo ' data-gs-x="' . $gs_x . '"'; 
@@ -288,14 +302,14 @@ class Rexbuilder_Block {
 					$block_style_padding = ' style="padding:' . $block_padding . '"';
 				endif;
 			endif;
-		
+			
 			
 			$bg_video_toggle_audio_markup="";
 			
 			if( $video_has_audio == '1' ) {
 				$bg_video_toggle_audio_markup = '<div class="rex-video-toggle-audio user-has-muted"><div class="rex-video-toggle-audio-shadow"></div></div>';
 			}
-			
+		
 			$bg_video_markup = '';
 		
 			if( '' != $video_bg_id && 'undefined' != $video_bg_id ) :
@@ -330,47 +344,48 @@ class Rexbuilder_Block {
 			echo '></div>';
 
 			echo '<div class="grid-stack-item-content">';
-			//do_shortcode( $content );
+			//do_shortcode( $content );		
 			switch( $type ) :
 				case 'image':
-					echo ( $floating_border == '' ? $block_link_pre : '');
-					echo '<div class="grid-item-content image-content' . ( ('' != $video_bg_url && 'undefined' != $video_bg_url) ? ' youtube-player' : '' ) . ( ( '' != $video_bg_id && 'undefined' != $video_bg_id ) ? ' mp4-player' : '' ) . ( $bg_video_vimeo_markup ? ' vimeo-player' : '' ) . ( ($flex_positioned) ? ' rex-flexbox' : '' );
-					if("" != $id_image_bg_block){
-						if('full' == $type_bg_block){
-							echo ' full';
-						} else{
-							echo ' natural';
-						}
-						echo '-image-background"';
-						echo ' data-background-image-width="'.$img_attrs[1].'" ';
-						echo ' data-background-image-height="'.$img_attrs[2];
+				echo ( $floating_border == '' ? $block_link_pre : '');
+				echo '<div class="grid-item-content image-content' . ( ('' != $video_bg_url && 'undefined' != $video_bg_url) ? ' youtube-player' : '' ) . ( ( '' != $video_bg_id && 'undefined' != $video_bg_id ) ? ' mp4-player' : '' ) . ( $bg_video_vimeo_markup ? ' vimeo-player' : '' ) . ( ($flex_positioned) ? ' rex-flexbox' : '' );
+				if("" != $id_image_bg_block){
+					if('full' == $type_bg_block){
+						echo ' full';
+					} else{
+						echo ' natural';
 					}
-					echo '" '.$block_background_style;
-					echo $bg_youtube_video_markup;
-					echo $alt_tag;
-					echo '>';
-					echo $bg_video_markup;
-					echo $bg_video_vimeo_markup;
-					echo ( ($block_has_overlay) ? '<div class="responsive-block-overlay" style="background-color:' . $overlay_block_color . ';">' : '' );
+					echo '-image-background"';
+					echo ' data-background-image-width="'.$img_attrs[1].'" ';
+					echo ' data-background-image-height="'.$img_attrs[2];
+				}
+				echo '" '.$block_background_style;
+				echo $bg_youtube_video_markup;
+				echo $alt_tag;
+				echo '>';
+				echo $bg_video_markup;
+				echo $bg_video_vimeo_markup;
+				echo ( ($block_has_overlay) ? '<div class="responsive-block-overlay" style="background-color:' . $overlay_block_color . ';">' : '' );
 
-					echo '<div class="rexlive-block-drag-handle"></div>';
-					
-					echo '<div class="rex-custom-scrollbar' . ( ($flex_positioned) ? ' rex-custom-position' : '' ) . '">';
-					echo ( ( $floating_border != '' && $block_link_pre != '' ) ? $block_link_pre : '' );
-					echo $floating_border;
-					if( "" != $content ) :
-						echo '<div class="text-wrap' . ( "fixed" == $section_layout ? ' rex-content-resizable"' : '"' ) . $block_style_padding . '>';
-						echo $content;
-						echo '</div>';
-					endif;
-					echo ( ( $floating_border != '' && $block_link_before != '' ) ? $block_link_before : '' );
+				echo '<div class="rexlive-block-drag-handle"></div>';
+				
+				echo '<div class="rex-custom-scrollbar' . ( ($flex_positioned) ? ' rex-custom-position' : '' ) . '">';
+				echo ( ( $floating_border != '' && $block_link_pre != '' ) ? $block_link_pre : '' );
+				echo $floating_border;
+				if( "" != $content ) :
+					echo '<div class="text-wrap' . ( "fixed" == $section_layout ? ' rex-content-resizable"' : '"' ) . $block_style_padding . '>';
+					echo do_shortcode($content);
 					echo '</div>';
-					echo ( ($block_has_overlay) ? '</div>' : '' );
-					echo '</div>';
-					echo ( $floating_border == '' ? $block_link_before : '');
-					break;
+				endif;
+				echo ( ( $floating_border != '' && $block_link_before != '' ) ? $block_link_before : '' );
+				echo '</div>';
+				echo ( ($block_has_overlay) ? '</div>' : '' );
+				echo '</div>';
+				echo ( $floating_border == '' ? $block_link_before : '');
+				break;
 				case 'text':
 				case 'rexslider':
+				case 'video':
 				case 'video':
 					echo ( $floating_border == '' ? $block_link_pre : '');
 					echo '<div class="grid-item-content text-content' . ( ('' != $video_bg_url && 'undefined' != $video_bg_url) ? ' youtube-player' : '' ) . ( ( '' != $video_bg_id && 'undefined' != $video_bg_id ) ? ' mp4-player' : '' ) . ( $bg_video_vimeo_markup ? ' vimeo-player' : '' ) . ( ($flex_positioned) ? ' rex-flexbox' : '' );
@@ -459,8 +474,8 @@ class Rexbuilder_Block {
 					echo ( $floating_border == '' ? $block_link_before : '');
 					break;
 				case 'expand':
-					echo '<div class="expand-effect-content" ' . $block_background_style . '>';
-					echo '<article class="expanded-description"><div class="expanded-icon">';
+				echo '<div class="expand-effect-content" ' . $block_background_style . '>';
+				echo '<article class="expanded-description"><div class="expanded-icon">';
 					if( $zak_icon ) :
 						echo wp_get_attachment_image( $zak_icon, 'full' );
 					endif;

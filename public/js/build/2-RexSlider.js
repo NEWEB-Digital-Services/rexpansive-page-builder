@@ -3,8 +3,9 @@ var RexSlider = (function($) {
 
   var slider_class = '.rex-slider-wrap';
   var slider_element_class = '.rex-slider-element';
+  var slider_custom_nav_class = '.flickity-page-dots.rex-slider__custom-nav';
   var slider_element_title_wrap = '.rex-slider-element-title';
-  var context = '.rex-container .rexpansive_section';
+  var context = '.rexpansive_section';
 
   var box_slider_class = '.rex-box-slider-wrap';
   var box_slider_element_class = '.rex-box-slider-element';
@@ -12,6 +13,8 @@ var RexSlider = (function($) {
   var _rexSliderInit = function() {
     if($(slider_class, context).length) {
       $(slider_class, context).each(function(i, el) {
+        var $el = $(el);
+
         var settings = {
           cellAlign: 'left',
           // contain: true,
@@ -21,53 +24,59 @@ var RexSlider = (function($) {
           selectedAttraction: 0.018,
           friction: 0.30,
           wrapAround: true,
-          setGallerySize: false,
-          adaptiveHeight: true,
+          // adaptiveHeight: true,
+          // setGallerySize: false,
           arrowShape: 'M 71.080084,1.034481 C 71.763642,0.34482599 72.61809,-1.250001e-8 73.557983,-1.250001e-8 c 0.939893,0 1.794341,0.34482600250001 2.477899,1.03448101250001 1.367117,1.37931 1.367117,3.620689 0,5 L 32.459031,49.999998 76.035882,93.965515 c 1.367117,1.379311 1.367117,3.62069 0,5 -1.367117,1.379315 -3.588681,1.379315 -4.955798,0 L 25.025333,52.499998 c -1.367117,-1.37931 -1.367117,-3.62069 0,-5 l 46.054751,-46.465517 0,0 z'
         };
 
-        var auto_player = $(el).attr('data-rex-slider-animation');
+        settings.setGallerySize = ( 'undefined' != typeof $el.attr('data-set-gallery-size') ? JSON.parse( $el.attr('data-set-gallery-size') ) : false );
+
+        var auto_player = $el.attr('data-rex-slider-animation');
         if('undefined' != typeof auto_player && 'true' == auto_player) {
           settings.autoPlay = true;
         }
 
-        var prev_next = $(el).attr('data-rex-slider-prev-next');
+        var prev_next = $el.attr('data-rex-slider-prev-next');
         if('undefined' != typeof prev_next && '1' == prev_next) {
           settings.prevNextButtons = true;
         }
 
-        var dots = $(el).attr('data-rex-slider-dots');
+        var dots = $el.attr('data-rex-slider-dots');
         if('undefined' != typeof dots && '1' == dots) {
           settings.pageDots = true;
         }
 
-        $(el).flickity( settings );
-        $(el).flickity('stopPlayer');
+        if( $el.hasClass( 'rex-slider--bottom-interface' ) ) {
+          $el.parents('.block-has-slider').addClass('block-has-slider--navigator');
+        }
 
-        // if( $(el).find('.rex-slider-element:not(:first-child) .youtube-player').length ) {
-        //   // var video_state = $(el).find('.rex-slider-element:first-child .youtube-player')[0].state;
+        $el.flickity( settings );
+        $el.flickity('stopPlayer');
+
+        // if( $el.find('.rex-slider-element:not(:first-child) .youtube-player').length ) {
+        //   // var video_state = $el.find('.rex-slider-element:first-child .youtube-player')[0].state;
         //   // if(video_state != 1) {
-        //     $(el).find('.rex-slider-element:not(first-child) .youtube-player').each(function() {
+        //     $el.find('.rex-slider-element:not(first-child) .youtube-player').each(function() {
         //       $(this).YTPStop();
         //     })
         //   // }
         // }
 
         Rexbuilder_Util.$window.on('resize', function() {
-          if( $(el).data('flickity') ) {
-            $(el).flickity('resize');
+          if( $el.data('flickity') ) {
+            $el.flickity('resize');
           }
         });
 
-        $(el).on( 'dragStart.flickity', function( ) {
+        $el.on( 'dragStart.flickity', function( ) {
           $(this).addClass('is-dragging');
         });
 
-        $(el).on( 'dragEnd.flickity', function( ) {
+        $el.on( 'dragEnd.flickity', function( ) {
           $(this).removeClass('is-dragging');
         });
 
-        $(el).on( 'select.flickity', function() {
+        $el.on( 'select.flickity', function() {
           var $videoSlide = $(this).find('.rex-slider-element.is-selected .youtube-player');
           if( $videoSlide.length ) {
             var video_state = $videoSlide[0].state;
@@ -76,6 +85,18 @@ var RexSlider = (function($) {
             }
           }
         });
+
+        /**
+         * Custom navigator logic. Valid for a list of dots wrapped by a general class
+         */
+        $el.find(slider_custom_nav_class).children().first().addClass('is-selected');
+
+        $el.find(slider_custom_nav_class).on('click','.dot', function(e) {
+          var $this = $(this);
+          var index = $this.index();
+          $this.addClass('is-selected').siblings('.dot').removeClass('is-selected');
+          $el.flickity( 'select', index );
+        })
       });
     }
 

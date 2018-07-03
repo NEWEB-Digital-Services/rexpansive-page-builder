@@ -462,6 +462,7 @@
 				var $section = $(this);
 				if (!$section.hasClass("removing_section")) {
 					var sectionRexID = $section.attr("data-rexlive-section-id");
+					console.log(sectionRexID); 
 					var section_props = {
 						section_rex_id: sectionRexID,
 						targets: [],
@@ -745,6 +746,10 @@
 				row_separator_bottom = '',
 				row_separator_right = '',
 				row_separator_left = '',
+				row_margin_top = '',
+				row_margin_bottom = '',
+				row_margin_right = '',
+				row_margin_left = '',
 				rexlive_section_id = '';
 
 			var output = '';
@@ -765,13 +770,11 @@
 				: $sectionData.attr('data-image_bg_section');
 			id_image_bg_section = $sectionData.attr('data-id_image_bg_section') === undefined ? ""
 				: $sectionData.attr('data-id_image_bg_section');
-			video_bg_url_section = $sectionData
-				.attr('data-video_bg_url_section') === undefined ? ""
+			video_bg_url_section = $sectionData.attr('data-video_bg_url_section') === undefined ? ""
 				: $sectionData.attr('data-video_bg_url_section');
 			video_bg_id_section = $sectionData.attr('data-video_bg_id_section') === undefined ? ""
 				: $sectionData.attr('data-video_bg_id_section');
-			video_bg_url_vimeo_section = $sectionData
-				.attr('data-video_bg_url_vimeo_section') === undefined ? ""
+			video_bg_url_vimeo_section = $sectionData.attr('data-video_bg_url_vimeo_section') === undefined ? ""
 				: $sectionData.attr('data-video_bg_url_vimeo_section');
 			video_bg_url_vimeo_section = video_bg_url_vimeo_section == 'undefined' ? ""
 				: video_bg_url_vimeo_section;
@@ -781,8 +784,7 @@
 				: parseInt($sectionData.attr('data-block_distance'));
 			layout = $sectionData.attr('data-layout') === undefined ? ""
 				: $sectionData.attr('data-layout');
-			responsive_background = $sectionData
-				.attr('data-responsive_background') === undefined ? "fixed"
+			responsive_background = $sectionData.attr('data-responsive_background') === undefined ? "fixed"
 				: $sectionData.attr('data-responsive_background');
 			custom_classes = $sectionData.attr('data-custom_classes') === undefined ? ""
 				: $sectionData.attr('data-custom_classes');
@@ -791,16 +793,22 @@
 			section_width = section_width == '%' ? "" : section_width;
 			row_separator_top = $sectionData.attr('data-row_separator_top') === undefined ? ""
 				: $sectionData.attr('data-row_separator_top');
-			row_separator_bottom = $sectionData
-				.attr('data-row_separator_bottom') === undefined ? ""
+			row_separator_bottom = $sectionData.attr('data-row_separator_bottom') === undefined ? ""
 				: $sectionData.attr('data-row_separator_bottom');
 			row_separator_right = $sectionData.attr('row_separator_right') === undefined ? ""
 				: $sectionData.attr('data-row_separator_right');
 			row_separator_left = $sectionData.attr('data-row_separator_left') === undefined ? ""
 				: $sectionData.attr('data-row_separator_left');
-			rexlive_section_id = $section.attr("data-rexlive-section-id"); 
+			row_margin_top = $sectionData.attr('data-row_margin_top') === undefined ? ""
+				: $sectionData.attr('data-row_margin_top');
+			row_margin_bottom = $sectionData.attr('data-row_margin_bottom') === undefined ? ""
+				: $sectionData.attr('data-row_margin_bottom');
+			row_margin_right = $sectionData.attr('data-row_margin_right') === undefined ? ""
+				: $sectionData.attr('data-row_margin_right');
+			row_margin_left = $sectionData.attr('data-row_margin_left') === undefined ? ""
+				: $sectionData.attr('data-row_margin_left');
+			rexlive_section_id = $section.attr("data-rexlive-section-id");
 			if (mode == "shortcode") {
-
 				output = '[RexpansiveSection'
 					+ ' section_name="' + section_name
 					+ '" type="' + type
@@ -822,6 +830,10 @@
 					+ '" row_separator_bottom="' + row_separator_bottom
 					+ '" row_separator_right="' + row_separator_right
 					+ '" row_separator_left="' + row_separator_left
+					+ '" row_margin_top="'+ row_margin_top
+					+ '" row_margin_bottom="'+ row_margin_bottom
+					+ '" row_margin_right="'+ row_margin_right
+					+ '" row_margin_left="'+ row_margin_left
 					+ '" rexlive_section_id="' + rexlive_section_id
 					+ '" row_edited_live="true"]';
 
@@ -864,7 +876,10 @@
 				props["row_separator_bottom"] = row_separator_bottom;
 				props["row_separator_right"] = row_separator_right;
 				props["row_separator_left"] = row_separator_left;
-
+				props["row_margin_top"] = row_margin_top;
+				props["row_margin_bottom"] = row_margin_bottom;
+				props["row_margin_right"] = row_margin_right;
+				props["row_margin_left"] = row_margin_left;
 				return props;
 			}
 		}

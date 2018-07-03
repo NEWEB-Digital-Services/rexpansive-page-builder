@@ -144,26 +144,19 @@ class Rexbuilder_Admin {
 
 		$page_info = get_current_screen();
 
-		if( isset( $this->plugin_options['post_types'] ) ) :
-			$post_to_activate = $this->plugin_options['post_types'];
+		if( $this->builder_active_on_this_post_type( $page_info ) ) {
+			wp_enqueue_style( 'material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $this->version, 'all' );
+			wp_enqueue_style( 'materialize', REXPANSIVE_BUILDER_URL . 'admin/css/materialize.min.css', array(), $this->version, 'all' );
+			
+			wp_enqueue_style( 'spectrum-style', REXPANSIVE_BUILDER_URL . 'admin/spectrum/spectrum.css', array(), $this->version, 'all' );
 
-			if( isset( $post_to_activate[$page_info->id] ) ) : 
-				if( ( $post_to_activate[$page_info->id] == 1 ) && 
-					( $post_to_activate[$page_info->post_type] == 1 ) ) :
-					wp_enqueue_style( 'material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $this->version, 'all' );
-					wp_enqueue_style( 'materialize', REXPANSIVE_BUILDER_URL . 'admin/css/materialize.min.css', array(), $this->version, 'all' );
-					
-					wp_enqueue_style( 'spectrum-style', REXPANSIVE_BUILDER_URL . 'admin/spectrum/spectrum.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'font-awesome', REXPANSIVE_BUILDER_URL . 'admin/font-awesome-4.3.0/css/font-awesome.min.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'rex-custom-fonts', REXPANSIVE_BUILDER_URL . 'admin/rexpansive-font/font.css', array(), $this->version, 'all' );
 
-					wp_enqueue_style( 'font-awesome', REXPANSIVE_BUILDER_URL . 'admin/font-awesome-4.3.0/css/font-awesome.min.css', array(), $this->version, 'all' );
-					wp_enqueue_style( 'rex-custom-fonts', REXPANSIVE_BUILDER_URL . 'admin/rexpansive-font/font.css', array(), $this->version, 'all' );
-
-					wp_enqueue_style( 'gridster-style', REXPANSIVE_BUILDER_URL . 'admin/css/jquery.gridster.css', array(), $this->version, 'all' );
-					wp_enqueue_style( 'custom-editor-buttons-style', REXPANSIVE_BUILDER_URL . 'admin/css/rex-custom-editor-buttons.css', array(), $this->version, 'all' );
-					wp_enqueue_style( 'rexbuilder-style', REXPANSIVE_BUILDER_URL . 'admin/css/builder.css', array(), $this->version, 'all' );
-				endif;
-			endif;
-		endif;
+			wp_enqueue_style( 'gridster-style', REXPANSIVE_BUILDER_URL . 'admin/css/jquery.gridster.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'custom-editor-buttons-style', REXPANSIVE_BUILDER_URL . 'admin/css/rex-custom-editor-buttons.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'rexbuilder-style', REXPANSIVE_BUILDER_URL . 'admin/css/builder.css', array(), $this->version, 'all' );
+		}
 	}
 
 	/**
@@ -174,21 +167,14 @@ class Rexbuilder_Admin {
 	public function enqueue_styles_production( $hook ) {
 		$page_info = get_current_screen();
 
-		if( isset( $this->plugin_options['post_types'] ) ) :
-			$post_to_activate = $this->plugin_options['post_types'];
+		if( $this->builder_active_on_this_post_type( $page_info ) ) {
+			wp_enqueue_style( 'material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $this->version, 'all' );
 
-			if( isset( $post_to_activate[$page_info->id] ) ) : 
-				if( ( $post_to_activate[$page_info->id] == 1 ) && 
-					( $post_to_activate[$page_info->post_type] == 1 ) ) :
-					wp_enqueue_style( 'material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $this->version, 'all' );
+			wp_enqueue_style( 'font-awesome', REXPANSIVE_BUILDER_URL . 'admin/font-awesome-4.3.0/css/font-awesome.min.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'rex-custom-fonts', REXPANSIVE_BUILDER_URL . 'admin/rexpansive-font/font.css', array(), $this->version, 'all' );
 
-					wp_enqueue_style( 'font-awesome', REXPANSIVE_BUILDER_URL . 'admin/font-awesome-4.3.0/css/font-awesome.min.css', array(), $this->version, 'all' );
-					wp_enqueue_style( 'rex-custom-fonts', REXPANSIVE_BUILDER_URL . 'admin/rexpansive-font/font.css', array(), $this->version, 'all' );
-
-					wp_enqueue_style( 'admin-style', REXPANSIVE_BUILDER_URL . 'admin/css/admin.css', array(), $this->version, 'all' );
-				endif;
-			endif;
-		endif;
+			wp_enqueue_style( 'admin-style', REXPANSIVE_BUILDER_URL . 'admin/css/admin.css', array(), $this->version, 'all' );
+		}
 	}
 
 	/**
@@ -215,37 +201,29 @@ class Rexbuilder_Admin {
 		// compared to the $hook.
 		$page_info = get_current_screen();
 
-		if( isset( $this->plugin_options['post_types'] ) ) :
+		if( $this->builder_active_on_this_post_type( $page_info ) ) {
+			wp_enqueue_media();
+			wp_enqueue_script('jquery');
+			wp_enqueue_script("jquery-ui-draggable");
 
-			$post_to_activate = $this->plugin_options['post_types'];
+			wp_enqueue_script( 'materialize-scripts', REXPANSIVE_BUILDER_URL . 'admin/materialize/js/materialize.js', array('jquery'), $this->version, true );
+			wp_enqueue_script( 'gridster', REXPANSIVE_BUILDER_URL . 'admin/js/jquery.gridster.js', array('jquery'),  $this->version, true );
+			
+			wp_enqueue_script( 'spectrum-scripts', REXPANSIVE_BUILDER_URL . 'admin/spectrum/spectrum.js', array('jquery'),  $this->version, true );
 
-			if( isset( $post_to_activate[$page_info->id] ) ) : 
-				if( ( $post_to_activate[$page_info->id] == 1 ) && 
-					( $post_to_activate[$page_info->post_type] == 1 ) ) :
-					wp_enqueue_media();
-					wp_enqueue_script('jquery');
-					wp_enqueue_script("jquery-ui-draggable");
+			wp_enqueue_script( 'ace-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/ace.js', array('jquery'),  $this->version, true );
+			wp_enqueue_script( 'ace-mode-css-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/mode-css.js', array('jquery'),  $this->version, true );
 
-					wp_enqueue_script( 'materialize-scripts', REXPANSIVE_BUILDER_URL . 'admin/materialize/js/materialize.js', array('jquery'), $this->version, true );
-					wp_enqueue_script( 'gridster', REXPANSIVE_BUILDER_URL . 'admin/js/jquery.gridster.js', array('jquery'),  $this->version, true );
-					
-					wp_enqueue_script( 'spectrum-scripts', REXPANSIVE_BUILDER_URL . 'admin/spectrum/spectrum.js', array('jquery'),  $this->version, true );
-
-					wp_enqueue_script( 'ace-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/ace.js', array('jquery'),  $this->version, true );
-					wp_enqueue_script( 'ace-mode-css-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/mode-css.js', array('jquery'),  $this->version, true );
-
-					wp_enqueue_script( 'rexbuilder', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder.js', array('jquery'),  $this->version, true );
-					wp_localize_script( 'rexbuilder', '_plugin_backend_settings', array(
-						'activate_builder'	=>	'true',
-					) );
-					wp_localize_script( 'rexbuilder', 'rexajax', array(
-						'ajaxurl'	=>	admin_url( 'admin-ajax.php' ),
-						'rexnonce'	=>	wp_create_nonce( 'rex-ajax-call-nonce' ),
-					) );
-					wp_enqueue_script( 'rexbuilder-admin', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin.js', array( 'jquery' ), $this->version, true );
-				endif;
-			endif;
-		endif;
+			wp_enqueue_script( 'rexbuilder', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder.js', array('jquery'),  $this->version, true );
+			wp_localize_script( 'rexbuilder', '_plugin_backend_settings', array(
+				'activate_builder'	=>	'true',
+			) );
+			wp_localize_script( 'rexbuilder', 'rexajax', array(
+				'ajaxurl'	=>	admin_url( 'admin-ajax.php' ),
+				'rexnonce'	=>	wp_create_nonce( 'rex-ajax-call-nonce' ),
+			) );
+			wp_enqueue_script( 'rexbuilder-admin', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin.js', array( 'jquery' ), $this->version, true );
+		}
 	}
 
 	/**
@@ -256,59 +234,38 @@ class Rexbuilder_Admin {
 	public function enqueue_scripts_production( $hook ) {
 		$page_info = get_current_screen();
 
-		if( isset( $this->plugin_options['post_types'] ) ) :
+		if( $this->builder_active_on_this_post_type( $page_info ) ) {
+			wp_enqueue_media();
+			wp_enqueue_script('jquery');
+			wp_enqueue_script("jquery-ui-draggable");
 
-			$post_to_activate = $this->plugin_options['post_types'];
+			wp_enqueue_script( 'ace-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/ace.js', array('jquery'),  $this->version, true );
+			wp_enqueue_script( 'ace-mode-css-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/mode-css.js', array('jquery'),  $this->version, true );
 
-			if( isset( $post_to_activate[$page_info->id] ) ) : 
-				if( ( $post_to_activate[$page_info->id] == 1 ) && 
-					( $post_to_activate[$page_info->post_type] == 1 ) ) :
-					wp_enqueue_media();
-					wp_enqueue_script('jquery');
-					wp_enqueue_script("jquery-ui-draggable");
-
-					wp_enqueue_script( 'ace-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/ace.js', array('jquery'),  $this->version, true );
-					wp_enqueue_script( 'ace-mode-css-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/mode-css.js', array('jquery'),  $this->version, true );
-
-					wp_enqueue_script( 'admin-plugins', REXPANSIVE_BUILDER_URL . 'admin/js/plugins.js', array('jquery'),  $this->version, true );
-					wp_localize_script( 'admin-plugins', '_plugin_backend_settings', array(
-						'activate_builder'	=>	'true',
-					) );
-					wp_localize_script( 'admin-plugins', 'rexajax', array(
-						'ajaxurl'	=>	admin_url( 'admin-ajax.php' ),
-						'rexnonce'	=>	wp_create_nonce( 'rex-ajax-call-nonce' ),
-					) );
-					wp_enqueue_script( 'rexbuilder-admin', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin.js', array( 'jquery' ), $this->version, true );
-				endif;
-			endif;
-		endif;
+			wp_enqueue_script( 'admin-plugins', REXPANSIVE_BUILDER_URL . 'admin/js/plugins.js', array('jquery'),  $this->version, true );
+			wp_localize_script( 'admin-plugins', '_plugin_backend_settings', array(
+				'activate_builder'	=>	'true',
+			) );
+			wp_localize_script( 'admin-plugins', 'rexajax', array(
+				'ajaxurl'	=>	admin_url( 'admin-ajax.php' ),
+				'rexnonce'	=>	wp_create_nonce( 'rex-ajax-call-nonce' ),
+			) );
+			wp_enqueue_script( 'rexbuilder-admin', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin.js', array( 'jquery' ), $this->version, true );
+		}
 	}
 
 	/**
 	 *	Register the administration menu for the plugin.
 	 *
 	 * 	@since    1.0.0
+	 *  @version 1.1.3 Adding submenus correctly
 	 */
 	public function add_plugin_options_menu() {
 		add_menu_page( 'Rexpansive Builder', 'Rexpansive Builder', 'manage_options', $this->plugin_name, array( $this, 'display_plugin_options_page' ), plugin_dir_url( __FILE__ ) . 'img/favicon.ico', '80.5' );
-		// add_submenu_page( $this->plugin_name, 'RexModels', 'RexModels', 'manage_options',  )
-	}
-
-	/**
-	 *	Add RexModel menu as a submenu of the Rexpansive Builder menu
-	 *
-	 *	@since 	1.1.2
-	 */
-	function add_plugin_menu_submenus() {
-		global $submenu;
-
-		$settings = admin_url( 'admin.php?page=' . $this->plugin_name );
-		$rex_model = admin_url( 'edit.php?post_type=rex_model' );
-		$rex_slider = admin_url( 'edit.php?post_type=rex_slider' );
-
-		$submenu[$this->plugin_name][] = array( 'Settings', 'manage_options', $settings );
-		$submenu[$this->plugin_name][] = array( 'RexSlider', 'manage_options', $rex_slider );
-		$submenu[$this->plugin_name][] = array( 'RexModel', 'manage_options', $rex_model );
+		add_submenu_page( $this->plugin_name, 'Settings', 'Settings', 'manage_options', $this->plugin_name );
+		add_submenu_page( $this->plugin_name, 'Contact Forms', 'Contact Forms', 'manage_options', 'rxcf7-list', array($this,'display_contact_form_list') );
+		add_submenu_page( $this->plugin_name, 'RexSlider', 'RexSlider', 'manage_options', 'edit.php?post_type=rex_slider' );
+		add_submenu_page( $this->plugin_name, 'RexModel', 'RexModel', 'manage_options', 'edit.php?post_type=rex_model' );
 	}
 
 	/**
@@ -346,6 +303,26 @@ class Rexbuilder_Admin {
 	 */
 	public function display_plugin_options_page() {
 		include_once( 'partials/rexbuilder-admin-display.php' );
+	}
+
+	/**
+	 * Render the contact form list with the usefull ready shortcodes
+	 *
+	 * @return void
+	 * @since 1.1.3
+	 */
+	public function display_contact_form_list() {
+		include_once( 'partials/rexbuilder-contact-form-list.php' );
+	}
+
+	/**
+	 * Including the new sprites
+	 *
+	 * @return void
+	 * @since 1.1.3
+	 */
+	public function include_sprites() {
+		?><div style="display:none"><?php include_once( REXPANSIVE_BUILDER_PATH .  'admin/sprites/symbol/svg/sprite.symbol.svg' ); ?></div><?php
 	}
 
 	/**
@@ -478,7 +455,6 @@ class Rexbuilder_Admin {
 	 *	Add a swtich button under the post title/permalink to activate/deactivate the builder
 	 *
 	 * 	@since    1.0.0
-	 * @version 	2.0.0
 	 */
 	public function add_switch_under_post_title() {
 		$page_info = get_current_screen();
@@ -532,15 +508,9 @@ class Rexbuilder_Admin {
 			return;
 		}
 		if ( get_user_option('rich_editing') == 'true') { 
-			$post_to_activate = $this->plugin_options['post_types'];
-			if( isset( $post_to_activate[$page_info->id] ) ) : 
-				if( ( $post_to_activate[$page_info->id] == 1 ) && 
-					( $post_to_activate[$page_info->post_type] == 1 ) ) :
-
-					include_once( 'partials/rexbuilder-modals-display.php' );
-
-				endif;
-			endif;
+			if( $this->builder_active_on_this_post_type( $page_info ) ) {
+				include_once( 'partials/rexbuilder-modals-display.php' );
+			}
 		}
 	}
 
@@ -552,19 +522,120 @@ class Rexbuilder_Admin {
 	public function create_builder_templates() {
 		$page_info = get_current_screen();
 
-		if( isset( $this->plugin_options['post_types'] ) ) :
+		if( $this->builder_active_on_this_post_type( $page_info ) ) {
+			include_once( 'partials/rexbuilder-templates.php' );
+		}
+	}
+
+	/**
+	 * Check if the builder is active on an admin page
+	 *
+	 * @param Object $page_info
+	 * @return bool
+	 * @since 1.1.3
+	 */
+	public function builder_active_on_this_post_type( $page_info ) {
+		$active = false;
+		if( isset( $this->plugin_options['post_types'] ) ) {
 
 			$post_to_activate = $this->plugin_options['post_types'];
 
-			if( isset( $post_to_activate[$page_info->id] ) ) : 
+			if( isset( $post_to_activate[$page_info->id] ) ) { 
 				if( ( $post_to_activate[$page_info->id] == 1 ) && 
-					( $post_to_activate[$page_info->post_type] == 1 ) ) :
+					( $post_to_activate[$page_info->post_type] == 1 ) ) {
+					$active = true;
+				}
+			}
+		}
 
-					include_once( 'partials/rexbuilder-templates.php' );
+		return apply_filters( 'rexbuilder_admin_post_type_active', $active );
+	}
 
-				endif;
-			endif;
-		endif;
+	/**
+	 * Enqueuing the assets of the builder on the contact form custom page
+	 * to add some functionallities (like modals)
+	 *
+	 * @param bool $active
+	 * @return bool
+	 */
+	public function add_builder_assets_on_contact_form_page( $active ) {
+		if(is_admin() && isset($_GET['page']) && 'rxcf7-list' == $_GET['page']) {
+			return true;
+		}
+		return $active;
+	}
+
+	/**
+	 * Ajax function to get the CF7 enhanced shortcode
+	 * 
+	 * @since 1.1.3
+	 * @return JSON
+	 */
+	public function rex_get_rxcf() {
+		$nonce = $_GET['nonce_param'];
+		$response = array(
+			'error' => false,
+			'msg' => '',
+		);
+
+		if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) {
+			$response['error'] = true;
+			$response['msg'] = 'Error!';
+			wp_send_json_error( $response );
+		}
+
+		$form_data = $_GET['cf_data'];
+
+		if ( empty( $form_data ) ) {
+			$response['error'] = true;
+			$response['msg'] = 'Error 1!';
+			wp_send_json_error( $response );
+		}
+
+		$response['data'] = $form_data;
+
+		$cf_scode = get_post_meta( $form_data['id'], '_cf7_enhanced_shortcode', true );
+
+		if( empty( $cf_scode ) ) {
+			$cf_scode = '[contact-form-7 id="'. $form_data['id'] . '" title="' . get_the_title( $form_data['id'] ) . '"]';
+		}
+
+		$response['shortcode'] = $cf_scode;
+
+		wp_send_json_success( $response );
+	}
+
+	/**
+	 * Ajax function to save the CF7 enhanced shortcode
+	 * 
+	 * @since 1.1.3
+	 * @return JSON
+	 */
+	public function rex_save_rxcf() {
+		$nonce = $_POST['nonce_param'];
+		$response = array(
+			'error' => false,
+			'msg' => '',
+		);
+
+		if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) {
+			$response['error'] = true;
+			$response['msg'] = 'Error!';
+			wp_send_json_error( $response );
+		}
+
+		$form_data = $_POST['cf_data'];
+
+		if ( empty( $form_data ) ) {
+			$response['error'] = true;
+			$response['msg'] = 'Error 1!';
+			wp_send_json_error( $response );
+		}
+
+		$response['data'] = $form_data;
+		$response['saving'] = update_post_meta( $form_data['id'], '_cf7_enhanced_shortcode', $form_data['shortcode'] );
+
+		wp_send_json_success( $response );
 	}
 
 	/**
@@ -631,7 +702,7 @@ class Rexbuilder_Admin {
 		$slider_id = $_POST['slider_id'];
 
 		if( $slider_id ) {
-			if( $this->check_post_exists( (int)$slider_id ) ) {
+			if( Rexbuilder_Utilities::check_post_exists( (int)$slider_id ) ) {
 
 				$slider_animation = get_field( '_rex_enable_banner_animation', $slider_id );
 				$slider_prev_next = get_field( '_rex_enable_banner_prev_next', $slider_id );
@@ -812,7 +883,7 @@ class Rexbuilder_Admin {
 
 		$slider_to_edit = (int)$_POST['slider_id'];
 
-		if( $this->check_post_exists( $slider_to_edit ) ) {
+		if( Rexbuilder_Utilities::check_post_exists( $slider_to_edit ) ) {
 			$slider_settings = $_POST['slider_data'];
 			$response['slider_id'] = $slider_to_edit;
 			$this->rex_clear_slider_fields( array(
@@ -933,19 +1004,6 @@ class Rexbuilder_Admin {
 		foreach( $fields as $field ) {
 			delete_field( $field, $slider_id );
 		}
-	}
-
-	 /**
-	 * Function to check if a post exists by id
-	 *
-	 *	@since 1.0.15
-	 */
-	public function check_post_exists( $id ) {
-		if( !is_null( $id ) ) :
-			return is_string( get_post_status( $id ) );
-		else :
-			return false;
-		endif;
 	}
 
 	/**
@@ -1241,7 +1299,7 @@ class Rexbuilder_Admin {
 								$section_dimension = $section_attr['dimension'];
 							}
 
-							$response['info']['dimension'] = $section_dimension;
+							$response['info']['griddimension'] = $section_dimension;
 							$response['info']['section_bg_button_preview_style'] = $section_bg_button_preview_style;
 							$response['info']['section_bg_style'] = $section_bg_style;
 
@@ -1300,13 +1358,13 @@ class Rexbuilder_Admin {
 							$response['info']['section_has_overlay'] = $section_has_overlay;
 							$response['info']['section_overlay_style'] = $section_overlay_style;
 							$response['info']['section_model'] = $query->post->ID;
-
+							
 							$blocks = array();
 
 							ob_start();
 							if( !empty( $section_content ) ) {
 								preg_match_all( "/$pattern/", $section_content, $result_block);
-								$blocks = array();
+
 								foreach( $result_block[3] as $i => $attrs ) {
 									$block_attr = shortcode_parse_atts( trim( $attrs ) );
 
@@ -2672,7 +2730,7 @@ class Rexbuilder_Admin {
 			}
 		}
 	   }
-	   
+	   	   
    	public function include_live_editing($post_id) {
 		include_once( 'partials/rexbuilder-live-editing.php' );
    }

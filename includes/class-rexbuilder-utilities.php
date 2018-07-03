@@ -65,7 +65,21 @@ class Rexbuilder_Utilities {
 
 		return $content;
 	}
-	
+
+	 /**
+	 * Function to check if a post exists by id
+	 *
+	 *	@since 1.0.15
+	 *	@version 1.1.3 Moved this function to the utilities class
+	 */
+	public static function check_post_exists( $id ) {
+		if( !is_null( $id ) ) :
+			return is_string( get_post_status( $id ) );
+		else :
+			return false;
+		endif;
+	}
+
 	public static function write_log ( $log )  {
 		if ( true === WP_DEBUG ) {
 			if ( is_array( $log ) || is_object( $log ) ) {
@@ -75,5 +89,5 @@ class Rexbuilder_Utilities {
 			}
 		}
 	}
-
+	
 }

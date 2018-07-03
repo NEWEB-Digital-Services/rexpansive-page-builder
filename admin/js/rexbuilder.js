@@ -23,6 +23,7 @@
     Rexpansive_Builder_Admin_Templates.init();
 
     Rexpansive_Builder_Admin_Lightbox.init();
+    Rexpansive_Builder_Admin_Rxcf.init();
     
     Rexpansive_Builder_Admin_PositionEditor.init();
     Rexpansive_Builder_Admin_PaddingEditor.init();
@@ -643,6 +644,12 @@
       $row_separator_bottom: $('#row-separator-bottom'),
       $row_separator_left: $('#row-separator-left'),
 
+      // Row margin
+      $row_margin_top: $('#row-margin-top'),
+      $row_margin_right: $('#row-margin-right'),
+      $row_margin_bottom: $('#row-margin-bottom'),
+      $row_margin_left: $('#row-margin-left'),
+
       // Row zoom
       $section_active_photoswipe: $('#section-active-photoswipe'),
       section_photoswipe_changed: false,
@@ -1113,13 +1120,20 @@
             if (response.success) {
               var slider_shortcode = '[RexSlider slider_id="' + response.data.slider_id + '"]';
 
-              var new_block = createNewTextBlock('rexslider', 12, 4);
-              var $new_block = $('#' + new_block);
+              if (slider_to_edit) {
+                $(slider_to_edit).find('.element-preview').empty().append(slider_shortcode.replace(/'/ig, "’"));
+                $(slider_to_edit).find('.data-text-content').text(slider_shortcode.replace(/'/ig, "’"));
+                $(slider_to_edit).attr('data-block-slider-id', response.data.slider_id);
+              } else {
 
-              $new_block.find('.element-actions').addClass('element-actions__block-slider');
-              $new_block.find('.element-preview').empty().append(slider_shortcode.replace(/'/ig, "’"));
-              $new_block.find('.data-text-content').text(slider_shortcode.replace(/'/ig, "’"));
-              $new_block.attr('data-block-slider-id', response.data.slider_id);
+                var new_block = createNewTextBlock('rexslider', 12, 4);
+                var $new_block = $('#' + new_block);
+
+                $new_block.find('.element-actions').addClass('element-actions__block-slider');
+                $new_block.find('.element-preview').empty().append(slider_shortcode.replace(/'/ig, "’"));
+                $new_block.find('.data-text-content').text(slider_shortcode.replace(/'/ig, "’"));
+                $new_block.attr('data-block-slider-id', response.data.slider_id);
+              }
 
               // Update Slider List
               rexslider_modal_properties.$slider_import.append('<option value="' + response.data.slider_id + '">' + response.data.slider_title + '</option>');
@@ -1172,6 +1186,19 @@
 
       } else {
         rexslider_modal_properties.$save_button.attr('data-slider-to-edit', '');
+        // New slider from edited
+
+        // Modal to initial state
+        rexslider_modal_properties.$slide_list.empty();
+        rexslider_modal_properties.$slider_autostart.prop('checked',true);
+        rexslider_modal_properties.$slider_prev_next.prop('checked',true);
+        rexslider_modal_properties.$slider_dots.prop('checked',true);
+
+        var last_slide_id = 0;
+        var new_slide_tmpl = slide_tmpl.replace(/\bdata.slideindex\b/g, last_slide_id).replace(/\bdata.slideindexfront\b/g, last_slide_id + 1);
+        rexslider_modal_properties.$slide_list.append(new_slide_tmpl);
+        rexslider_modal_properties.$slide_list.sortable('refresh');
+        Rexpansive_Builder_Admin_Utilities.resetModalDimensions(rexslider_modal_properties.$modal);
       }
     });
 
@@ -1837,17 +1864,23 @@
         var sectionSeparatorBottom = $builderArea.sortable('toArray', { attribute: 'data-row-separator-bottom' });
         var sectionSeparatorLeft = $builderArea.sortable('toArray', { attribute: 'data-row-separator-left' });
 
+        var sectionMarginTop = $builderArea.sortable('toArray', { attribute: 'data-row-margin-top' });
+        var sectionMarginRight = $builderArea.sortable('toArray', { attribute: 'data-row-margin-right' });
+        var sectionMarginBottom = $builderArea.sortable('toArray', { attribute: 'data-row-margin-bottom' });
+        var sectionMarginLeft = $builderArea.sortable('toArray', { attribute: 'data-row-margin-left' });
+
         var sectionActivePhotoswipe = $builderArea.sortable('toArray', { attribute: 'data-section-active-photoswipe' });
         var sectionModel = $builderArea.sortable('toArray', { attribute: 'data-section-model' });
 
         for (i = 0; i < sectionGrid.length; i++) {
-          sectionGrid[i] = createSectionShortcode(sectionGrid[i], sectionBackground[i], sectionDimension[i], sectionLayout[i], sectionIdentifiers[i], sectionOverlayColor[i], sectionBackgroundResponsive[i], sectionSeparatorTop[i], sectionSeparatorRight[i], sectionSeparatorBottom[i], sectionSeparatorLeft[i], sectionActivePhotoswipe[i], sectionModel[i]);
+          sectionGrid[i] = createSectionShortcode(sectionGrid[i], sectionBackground[i], sectionDimension[i], sectionLayout[i], sectionIdentifiers[i], sectionOverlayColor[i], sectionBackgroundResponsive[i], sectionSeparatorTop[i], sectionSeparatorRight[i], sectionSeparatorBottom[i], sectionSeparatorLeft[i], sectionMarginTop[i], sectionMarginRight[i], sectionMarginBottom[i], sectionMarginLeft[i],  sectionActivePhotoswipe[i], sectionModel[i]);
         }
         sectionGrid = sectionGrid.join('');
 
-        // setBuilderTimeStamp();
-
+        setBuilderTimeStamp();
+        
         $(Rexpansive_Builder_Admin_Utilities.meta_box_selector).val(sectionGrid);
+
 
         var ed = tinyMCE.get('content');
 
@@ -2069,7 +2102,7 @@
 		 *	@var	data		string	a JSON array of objects stringified
 		 *	@return	shortcode	string	the shortcode created
 		 */
-    var createSectionShortcode = function (data, settings, settsdim, settlayout, settIdentifier, settOverlayColor, settBackResp, settSepTop, settSepRight, settSepBottom, settSepLeft, settActivePhotoswipe, sectionModel) {
+    var createSectionShortcode = function (data, settings, settsdim, settlayout, settIdentifier, settOverlayColor, settBackResp, settSepTop, settSepRight, settSepBottom, settSepLeft, settMarTop, settMarRight, settMarBottom, settMarLeft, settActivePhotoswipe, sectionModel) {
       var shortcode = '',
         section_settings,
         dimension;
@@ -2128,6 +2161,22 @@
         shortcode += ' row_separator_left="' + settSepLeft + '" ';
       }
 
+      if ('' != settMarTop) {
+        shortcode += ' row_margin_top="' + settMarTop + '" ';
+      }
+
+      if ('' != settMarRight) {
+        shortcode += ' row_margin_right="' + settMarRight + '" ';
+      }
+
+      if ('' != settMarBottom) {
+        shortcode += ' row_margin_bottom="' + settMarBottom + '" ';
+      }
+
+      if ('' != settMarLeft) {
+        shortcode += ' row_margin_left="' + settMarLeft + '" ';
+      }
+
       if ('' != settActivePhotoswipe) {
         shortcode += ' row_active_photoswipe="' + settActivePhotoswipe + '" ';
       }
@@ -2139,7 +2188,7 @@
       if( Rexpansive_Builder_Admin_Utilities.builderlive ) {
         shortcode += ' edit_from_backend="true"';
       }
-
+      
       shortcode += ']' + data + '[/RexpansiveSection]';
       return shortcode;
     };
@@ -3571,6 +3620,30 @@
         section_config_modal_properties.$row_separator_left.val($parent.attr('data-row-separator-left'));
       }
 
+      if ('undefined' == typeof $parent.attr('data-row-margin-top') || '' == $parent.attr('data-row-margin-top')) {
+        section_config_modal_properties.$row_margin_top.val('');
+      } else {
+        section_config_modal_properties.$row_margin_top.val($parent.attr('data-row-margin-top'));
+      }
+
+      if ('undefined' == typeof $parent.attr('data-row-margin-right') || '' == $parent.attr('data-row-margin-right')) {
+        section_config_modal_properties.$row_margin_right.val('');
+      } else {
+        section_config_modal_properties.$row_margin_right.val($parent.attr('data-row-margin-right'));
+      }
+
+      if ('undefined' == typeof $parent.attr('data-row-margin-bottom') || '' == $parent.attr('data-row-margin-bottom')) {
+        section_config_modal_properties.$row_margin_bottom.val('');
+      } else {
+        section_config_modal_properties.$row_margin_bottom.val($parent.attr('data-row-margin-bottom'));
+      }
+
+      if ('undefined' == typeof $parent.attr('data-row-margin-left') || '' == $parent.attr('data-row-margin-left')) {
+        section_config_modal_properties.$row_margin_left.val('');
+      } else {
+        section_config_modal_properties.$row_margin_left.val($parent.attr('data-row-margin-left'));
+      }
+
       // Section Zoom
       section_config_modal_properties.section_photoswipe_changed = false;
       if ('undefined' != typeof $parent.attr('data-section-active-photoswipe') && "1" == $parent.attr('data-section-active-photoswipe')) {
@@ -3699,6 +3772,11 @@
       $row.attr('data-row-separator-left', section_config_modal_properties.$row_separator_left.val());
       // }
 
+      $row.attr('data-row-margin-top', section_config_modal_properties.$row_margin_top.val());
+      $row.attr('data-row-margin-right', section_config_modal_properties.$row_margin_right.val());
+      $row.attr('data-row-margin-bottom', section_config_modal_properties.$row_margin_bottom.val());
+      $row.attr('data-row-margin-left', section_config_modal_properties.$row_margin_left.val());
+
       // Section Photoswipe
       if (section_config_modal_properties.section_photoswipe_changed) {
         if (section_config_modal_properties.$section_active_photoswipe.prop('checked')) {
@@ -3766,7 +3844,7 @@
 
       $row.attr('data-backresponsive', JSON.stringify(config_settings));
 
-      // setBuilderTimeStamp();
+      setBuilderTimeStamp();
 
       Rexpansive_Builder_Admin_Modals.CloseModal($('#modal-background-responsive-set').parent('.rex-modal-wrap'));
 

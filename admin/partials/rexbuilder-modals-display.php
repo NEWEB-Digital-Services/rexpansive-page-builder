@@ -29,6 +29,30 @@ defined( 'ABSPATH' ) or exit;
 </div><!-- CSS Editor -->
 
 <div class="rex-modal-wrap rex-fade">
+    <div id="rex-rxcf-editor" class="rexbuilder-materialize-wrap rex-modal rex-modal-draggable z-depth-4">
+        <div class="modal-content">
+            <?php include('rexbuilder-modal-loader.php'); ?>
+            <div class="rex-modal-content__modal-area">
+                <textarea name="rex-rxcf-editor_input" id="rex-rxcf-editor_input" cols="30" rows="10" style="height:200px"></textarea>
+            </div>
+            <div class="row valign-wrapper">
+                <a class="rex-rxcf-editor_copy" href="#">
+                    <i class="material-icons grey-text text-darken-2">&#xE14D;</i>
+                </a>
+            </div>
+        </div>
+        <div class="rex-modal-footer">
+            <button class="waves-effect waves-light btn-flat grey rex-cancel-button" value="">
+                <i class="rex-icon">n</i>
+            </button>
+            <button class="waves-effect waves-light btn-flat blue darken-1 rex-save-button" value="">
+                <i class="rex-icon">m</i>
+            </button>
+        </div>
+    </div>
+</div><!-- CF7 Editor -->
+
+<div class="rex-modal-wrap rex-fade">
     <div id="rex-video-block" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
         <div class="modal-content">
             <div id="section-set-video-wrap" class="row valign-wrapper">
@@ -631,47 +655,75 @@ defined( 'ABSPATH' ) or exit;
 
             </div><!-- /full-heigth, boxed dimension, block distance -->
 
-            <div id="section-config-third-row" class="row valign-wrapper">
-                <div class="col">
-                    <div class="cross-style-wrap">
-                        <div class="clearfix">
-                            <div class="block-padding-wrap">
-                                <input type="text" id="row-separator-top" class="block-padding-values" name="row-separator-top" value="" placeholder="" />
-                                <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Row Margin Top">P</i>
-                                <span class="block-padding-label">PX</span>
-                            </div>
+            <div id="section-config-third-row" class="b-row align-items-center b--border-bottom">
+                <div class="b-col" style="padding-top: 17px;">
+                    <div class="cross-style-wrap" style="min-height:153px;">
+                        <div class="block-padding-wrap" style="padding-bottom: 6px;">
+                            <input type="text" id="row-separator-top" class="block-padding-values" name="row-separator-top" value="" placeholder="" />
+                            <!-- <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Row Margin Top">P</i> -->
+                            <i class="b-svg-icons tooltipped" data-position="bottom" data-tooltip="Row Margin Top"><svg><use xlink:href="#ico-distance-top"></use></svg></i>
+                            <span class="block-padding-label">PX</span>
                         </div>
-                        <div class="clearfix horizontal-cross-wrap">
+                        <div class="b-row justify-content-space-between">
                             <div class="block-padding-wrap">				
                                 <input type="text" id="row-separator-left" class="block-padding-values" name="row-separator-left" value="" placeholder="" />
-                                <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Row Margin Left">Q</i>
+                                <!-- <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Row Margin Left">Q</i> -->
+                                <i class="b-svg-icons tooltipped" data-position="bottom" data-tooltip="Row Margin Left"><svg><use xlink:href="#ico-distance-left"></use></svg></i>
                                 <span class="block-padding-label">PX</span>
                             </div>
-                            <div class="col row valign-wrapper gutter-wrap">
-                                <div class="block-padding-wrap">
-                                    <input type="text" id="" class="section-set-block-gutter block-padding-values" name="section-set-block-gutter" value="" placeholder="" size="15">
-                                    <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Block Distance', 'rexpansive' ); ?>">S</i>
-                                    <span class="block-padding-label">PX</span>
-                                    <span class="rex-material-bar"></span>
-                                </div>
+                            <div class="block-padding-wrap">
+                                <input type="text" id="" class="section-set-block-gutter block-padding-values" name="section-set-block-gutter" value="" placeholder="" size="15">
+                                <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Block Distance', 'rexpansive' ); ?>">S</i>
+                                <span class="block-padding-label">PX</span>
+                                <span class="rex-material-bar"></span>
                             </div>
                             <div class="block-padding-wrap">
                                 <input type="text" id="row-separator-right" class="block-padding-values" name="row-separator-right" value="" placeholder="" />
-                                <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Row Margin Right">O</i>
+                                <!-- <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Row Margin Right">O</i> -->
+                                <i class="b-svg-icons tooltipped" data-position="bottom" data-tooltip="Row Margin Right"><svg><use xlink:href="#ico-distance-right"></use></svg></i>
                                 <span class="block-padding-label">PX</span>
                             </div>
                         </div>
-                        <div class="clearfix">
-                            <div class="block-padding-wrap">				
-                                <input type="text" id="row-separator-bottom" class="block-padding-values" name="row-separator-bottom" value="" placeholder="" />
-                                <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Row Margin Bottom">N</i>
-                                <span class="block-padding-label">PX</span>
-                            </div>
+                        <div class="block-padding-wrap">				
+                            <input type="text" id="row-separator-bottom" class="block-padding-values" name="row-separator-bottom" value="" placeholder="" />
+                            <!-- <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Row Margin Bottom">N</i> -->
+                            <i class="b-svg-icons tooltipped" data-position="bottom" data-tooltip="Row Margin Bottom"><svg><use xlink:href="#ico-distance-bottom"></use></svg></i>
+                            <span class="block-padding-label">PX</span>
                         </div>
                     </div>
                 </div>
-                <div class="col row" style="margin-left:96px;">
-                    <div class="clearfix">
+
+                <div class="b-col">
+                    <div class="cross-style-wrap" style="max-width:210px;margin-left:12px;">
+                        <div class="block-padding-wrap">
+                            <input type="text" id="row-margin-top" class="block-padding-values" name="row-margin-top" value="" placeholder="0" />
+                            <span class="block-padding-label">PX</span>
+                        </div>
+                        <div class="b-row justify-content-space-between align-items-center" style="padding: 15px 0;">
+                            <div class="block-padding-wrap">				
+                                <input type="text" id="row-margin-left" class="block-padding-values" name="row-margin-left" value="" placeholder="0" />
+                                <span class="block-padding-label">PX</span>
+                            </div>
+                            <div class="block-padding-wrap" style="padding-left: 10px;">
+                                <i class="b-svg-icons b-svg__margin-icon"><svg><use xlink:href="#Ico_Margin"></use></svg></i>
+                            </div>
+                            <div class="block-padding-wrap">
+                                <input type="text" id="row-margin-right" class="block-padding-values" name="row-margin-right" value="" placeholder="0" />
+                                <span class="block-padding-label">PX</span>
+                            </div>
+                        </div>
+                        <div class="block-padding-wrap">				
+                            <input type="text" id="row-margin-bottom" class="block-padding-values" name="row-margin-bottom" value="" placeholder="0" />
+                            <span class="block-padding-label">PX</span>
+                        </div>
+                    </div>
+                </div>
+                
+            </div><!-- custom classes -->
+
+            <div class="b-row align-items-center b--border-bottom">
+                <div class="b-col b--border-right">
+                    <div class="b-row justify-content-center">
                         <div id="bg-set-full-section" class="rex-check-icon col">
                             <input type="checkbox" id="section-is-full" name="section-is-full" value="full-height">
                             <label for="section-is-full" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Full Height', 'rexpansive' ); ?>">
@@ -683,29 +735,27 @@ defined( 'ABSPATH' ) or exit;
                             <span>100%</span>
                         </div>
                     </div>
+                </div>
 
-                    <div id="rx-set-hold-grid" class="clearfix">
-                        <div id="rx-hold-grid__wrap" class="rex-check-icon col">
-                            <input type="checkbox" id="rx-hold-grid" name="rx-hold-grid" value="full-height">
-                            <label for="rx-hold-grid" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Grid On Mobile', 'rexpansive' ); ?>">
-                                <!--<i class="rex-icon rx-hold-grid__uncheck">T</i>
-                                <i class="rex-icon rx-hold-grid__check">U</i>-->
-                                <i class="rex-icon">V</i>
-                                <span class="rex-ripple"></span>
-                            </label>
-                        </div>
-                    </div>
+                <div id="bg-set-photoswipe" class="b-col b--border-right rex-check-icon">
+                    <input type="checkbox" id="section-active-photoswipe" name="section-active-photoswipe" title="<?php _e( 'All Images Zoom', 'rexpansive' ); ?>">
+                    <label for="section-active-photoswipe" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'All Images Zoom', 'rexpansive' ); ?>">
+                        <i class="rex-icon">R</i>
+                        <span class="rex-ripple"></span>
+                    </label>
+                </div>
 
-                    <div id="bg-set-photoswipe" class="col rex-check-icon">
-                        <input type="checkbox" id="section-active-photoswipe" name="section-active-photoswipe" title="<?php _e( 'All Images Zoom', 'rexpansive' ); ?>">
-                        <label for="section-active-photoswipe" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'All Images Zoom', 'rexpansive' ); ?>">
-                            <i class="rex-icon">R</i>
+                <div id="rx-set-hold-grid" class="b-col">
+                    <div id="rx-hold-grid__wrap" class="rex-check-icon col">
+                        <input type="checkbox" id="rx-hold-grid" name="rx-hold-grid" value="full-height">
+                        <label for="rx-hold-grid" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Grid On Mobile', 'rexpansive' ); ?>">
+                            <i class="rex-icon">V</i>
                             <span class="rex-ripple"></span>
                         </label>
                     </div>
                 </div>
-                
-            </div><!-- custom classes -->
+
+            </div>
 
             <div class="row valign-wrapper id-class-row-wrap">
                 <div id="rex-config-id" class="input-field col rex-input-prefixed">

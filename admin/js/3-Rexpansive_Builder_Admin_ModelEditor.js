@@ -90,7 +90,7 @@ var Rexpansive_Builder_Admin_ModelEditor = (function($) {
           success: function (response) {
             if (response.success) {
               
-              Rexpansive_Builder_Admin_Config.collect[model.section_id].sectionRef.attr('data-dimension', response.data.info.dimension);
+              Rexpansive_Builder_Admin_Config.collect[model.section_id].sectionRef.attr('data-griddimension', response.data.info.dimension);
               Rexpansive_Builder_Admin_Config.collect[model.section_id].sectionRef.attr('data-layout', response.data.info.layout);
               Rexpansive_Builder_Admin_Config.collect[model.section_id].sectionRef.attr('data-section-active-photoswipe', response.data.info.row_active_photoswipe);
               Rexpansive_Builder_Admin_Config.collect[model.section_id].sectionRef.attr('data-row-separator-top', response.data.info.row_separator_top);
@@ -115,7 +115,7 @@ var Rexpansive_Builder_Admin_ModelEditor = (function($) {
 
               Rexpansive_Builder_Admin_Config.collect[model.section_id].gridRef.remove_all_widgets();
 
-              if( response.data.info.tml ) {
+              if( response.data.info.tmpl ) {
                 for(var b=0; b<response.data.info.tmpl.length;b++) {
                   Rexpansive_Builder_Admin_Config.collect[model.section_id].gridRef.add_widget(response.data.info.tmpl[b].html, parseInt( response.data.info.tmpl[b].w ), parseInt( response.data.info.tmpl[b].h ), parseInt( response.data.info.tmpl[b].col ), parseInt( response.data.info.tmpl[b].row ) );
                   Rexpansive_Builder_Admin_Utilities.update_live_visual_size($('#' + response.data.info.tmpl[b].id));
@@ -124,8 +124,7 @@ var Rexpansive_Builder_Admin_ModelEditor = (function($) {
               }
               
               Rexpansive_Builder_Admin_Utilities.launchTooltips();
-              // Rexpansive_Builder_Admin_Config.$builderArea.find('.builder-row[data-count='+model.section_id+']').after(response.data.tmpl).remove();
-              // Rexpansive_Builder_Admin_Config.$builderArea.append(response.data.tmpl);
+              
             }
           },
           error: function(response) {

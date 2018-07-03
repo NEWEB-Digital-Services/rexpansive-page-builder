@@ -34,16 +34,19 @@ class Rexbuilder_RexSlider {
 	 * @since    1.0.0
 	 * @param      string    $a       			The attributest passed.
 	 * @param      string    $content    		The content passed.
+	 * @version 1.1.3	Add nav preview feature
+	 * @version 1.1.3	Add photoswipe on slider
 	 */
 	public function render_slider( $atts, $content = null ) {
 		extract( shortcode_atts( array(
 			'slider_id' => '',
 			'class' => '',
+			'photoswipe' => ''		// handling photoswipe on slider
 		), $atts ) );
 
 		ob_start();
 
-		if( $this->check_post_exists( $slider_id ) ) :
+		if( Rexbuilder_Utilities::check_post_exists( $slider_id ) ) :
 
 			$slider_animation = get_field( '_rex_enable_banner_animation', $slider_id );
 			$slider_prev_next = get_field( '_rex_enable_banner_prev_next', $slider_id );
@@ -51,11 +54,15 @@ class Rexbuilder_RexSlider {
 
 			$slider_gallery = get_field( '_rex_banner_gallery', $slider_id );
 
+			$nav_previewed = get_post_meta( $slider_id, '_rex_slider_previewed_nav', true );
+			$nav_previewed_html = '';
+
 			$re = '/^((https?|ftp|file):\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
 
 			if( !empty( $slider_gallery ) ) :
+				$num_slides = count( $slider_gallery );
 	?>
-	<div class="rex-slider-wrap"  data-slider-id="<?php echo esc_attr( $slider_id ); ?>" data-rex-slider-animation="<?php echo ( is_array( $slider_animation ) ? 'true': ( "0" == $slider_animation ? 'true' : 'false' ) ); ?>" data-rex-slider-prev-next="<?php echo ( is_array( $slider_prev_next ) ? '1': ( "0" == $slider_prev_next ? 'true' : 'false' ) ); ?>" data-rex-slider-dots="<?php echo ( is_array( $slider_dots ) ? '1': ( "0" == $slider_dots ? 'true' : 'false' ) ); ?>">
+	<div class="rex-slider-wrap<?php echo ( 1 == $nav_previewed ? ' rex-slider--bottom-interface' . ( 1 !== $num_slides ? ' rex-slider--bottom-interface--active' : '' ) : '' ); ?><?php echo ' rex-slider--' . $num_slides . '-slides'; ?>" data-rex-slider-animation="<?php echo ( is_array( $slider_animation ) ? 'true': ( "0" == $slider_animation ? 'true' : 'false' ) ); ?>" data-rex-slider-prev-next="<?php echo ( is_array( $slider_prev_next ) ? '1': ( "0" == $slider_prev_next ? 'true' : 'false' ) ); ?>" data-rex-slider-dots="<?php echo ( is_array( $slider_dots ) ? '1': ( "0" == $slider_dots ? 'true' : 'false' ) ); ?>" data-set-gallery-size="<?php echo esc_attr( 1 == $nav_previewed ? 'true' : 'false' ); ?>">
 		<?php
 				foreach( $slider_gallery as $key => $slide ) :
 					$slider_el_style = '';
@@ -63,8 +70,13 @@ class Rexbuilder_RexSlider {
 						$slider_el_style = ' style="background-image:url(' . $slide['_rex_banner_gallery_image']['url'] . ')"';
 					}
 	?>
-		<div class="rex-slider-element"<?php echo $slider_el_style; ?>>
+		<div class="rex-slider-element"<?php echo ( 1 != $nav_previewed ? $slider_el_style : '' ); ?>>
 	<?php
+
+	if( 1 == $nav_previewed && 'true' != $photoswipe && isset( $slide['_rex_banner_gallery_image']['url'] ) ) { ?>
+		<img src="<?php echo esc_url( $slide['_rex_banner_gallery_image']['url'] ); ?>">
+	<?php }
+
 	$active_video = apply_filters( 'rexpansive_slider_filter_active_video', true );
 	if( $slide['_rex_banner_gallery_video'] && $active_video ) {
 		// check if is a valid URL
@@ -77,9 +89,7 @@ class Rexbuilder_RexSlider {
 		<div class="youtube-player" data-property="{videoURL:'<?php echo $slide['_rex_banner_gallery_video']; ?>',containment:'self',startAt:0,mute:<?php echo ( is_array( $slide['_rex_banner_gallery_video_audio'] ) ? 'false' : 'true' ); ?>,autoPlay:<?php echo ( $key > 0 ? 'false' : 'true' ); ?>,loop:true,opacity:1,showControls:false,showYTLogo:false}" data-ytvideo-stop-on-click="false">
 	<?php
 				if( is_array( $slide['_rex_banner_gallery_video_audio'] ) ) {
-	?>
-	<div class="rex-video-toggle-audio"><div class="rex-video-toggle-audio-shadow"></div></div>
-	<?php
+	?><div class="rex-video-toggle-audio"><div class="rex-video-toggle-audio-shadow"></div></div><?php
 				}
 			} else if( false !== strpos( $slide['_rex_banner_gallery_video'], "vimeo" ) ) {
 	?>
@@ -89,13 +99,9 @@ class Rexbuilder_RexSlider {
 		</div>
 	<?php
 				if( is_array( $slide['_rex_banner_gallery_video_audio'] ) ) {
-	?>
-		<div class="rex-video-toggle-audio"><div class="rex-video-toggle-audio-shadow"></div></div>
-	<?php
+	?><div class="rex-video-toggle-audio"><div class="rex-video-toggle-audio-shadow"></div></div><?php
 				}
-	?>
-	</div>
-	<?php
+	?></div><?php
 			}
 		}
 	}
@@ -150,28 +156,41 @@ class Rexbuilder_RexSlider {
 			}
 		}
 	}
+
+	if( 'true' == $photoswipe && "" == $slide['_rex_banner_gallery_url'] ) {
+?>
+<figure class="pswp-figure" itemprop="associatedMedia" itemscope="" itemtype="http://schema.org/ImageObject">
+	<a class="pswp-item" href="<?php echo $slide['_rex_banner_gallery_image']['url']; ?>" itemprop="contentUrl" data-size="<?php echo $slide['_rex_banner_gallery_image']['width']; ?>x<?php echo $slide['_rex_banner_gallery_image']['height']; ?>">
+		<div class="pswp-item-thumb" data-thumb-image-type="full" data-thumburl="<?php echo $slide['_rex_banner_gallery_image']['url']; ?>" itemprop="thumbnail"></div>
+		<div class="rex-custom-scrollbar">
+		<?php
+			if( 1 == $nav_previewed && isset( $slide['_rex_banner_gallery_image']['url'] ) ) { ?>
+			<img src="<?php echo esc_url( $slide['_rex_banner_gallery_image']['url'] ); ?>">
+		<?php } ?>
+		</div>
+	</a>
+	<figcaption class="pswp-item-caption" itemprop="caption description"></figcaption>
+</figure>
+<?php
+	}
 	?>
 		</div>
-	<?php
-				endforeach;
+	<?php	
+				if( 1 == $nav_previewed ) {
+					$nav_previewed_html .= '<li class="dot"><span' . $slider_el_style . '></span></li>';
+				}
+			endforeach;
+
+			if( !empty( $nav_previewed_html ) && 1 !== $num_slides ) {
+				echo  '<ol class="flickity-page-dots rex-slider__previewed-nav rex-slider__custom-nav">' . $nav_previewed_html . '</ol>';
+			}
 		?>
 	</div>
 	<?php
+			
+			do_action( 'rex_slider_after_gallery_render', $slider_id );
 			endif;
 		endif;
 		return ob_get_clean();
-	}
-
-	 /**
-	 * Function to check if a post exists by id
-	 *
-	 *	@since 1.0.15
-	 */
-	private function check_post_exists( $id ) {
-		if( !is_null( $id ) ) :
-			return is_string( get_post_status( $id ) );
-		else :
-			return false;
-		endif;
 	}
 }

@@ -206,6 +206,9 @@ class Rexbuilder_Public
             wp_enqueue_script('lodash', REXPANSIVE_BUILDER_URL . $cartella . 'js/lodash.js', array('jquery'), $this->version, true);
             wp_enqueue_script('gridstack', REXPANSIVE_BUILDER_URL . $cartella . 'js/gridstack.js', array('jquery'), $this->version, true);
             wp_enqueue_script('gridstackUI', REXPANSIVE_BUILDER_URL . $cartella . 'js/gridstack.jQueryUI.js', array('jquery'), $this->version, true);
+            //
+            wp_enqueue_script('scrolled', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/4-jquery.rexScrolled.js', array('jquery'), $this->version, true);
+            wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/5-jquery.rexIndicator.js', array('jquery'), $this->version, true);
 
             //editor text
             wp_enqueue_script('spectrumColor', REXPANSIVE_BUILDER_URL . $cartella . 'js/spectrum.js', array('jquery'), $this->version, true);

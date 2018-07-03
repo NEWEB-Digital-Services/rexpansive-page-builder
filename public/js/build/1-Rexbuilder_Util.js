@@ -8,23 +8,24 @@ var Rexbuilder_Util = (function ($) {
 	var windowIsResizing = false;
 	var activeLayout;
 
-	var createRandomID = function () {
+	var createRandomID = function (n) {
 		var text = "";
 		var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-		for (var i = 0; i < 5; i++){
+		for (var i = 0; i < n; i++) {
 			text += possible.charAt(Math.floor(Math.random() * possible.length));
 		}
 
 		return text;
 	}
 
-	var createSectionID = function () { 
+	var createSectionID = function () {
 		var id;
 		var flag;
+		var idLength = 10;
 		do {
 			flag = true;
-			id = createRandomID();
+			id = createRandomID(idLength);
 			Rexbuilder_Util.$rexContainer.children('.rexpansive_section').each(function () {
 				if ($(this).attr('data-rexlive-section-id') !== undefined && $(this).attr('data-rexlive-section-id') == id) {
 					flag = false;
@@ -46,7 +47,7 @@ var Rexbuilder_Util = (function ($) {
 		});
 	}
 
-	var _updateSectionsNumber = function(){
+	var _updateSectionsNumber = function () {
 		var last;
 		var $sec;
 		Rexbuilder_Util.$rexContainer.children('.rexpansive_section').each(function (i, e) {
@@ -387,6 +388,19 @@ var Rexbuilder_Util = (function ($) {
 		this.$rexContainer = $container;
 	}
 
+	/**
+	 * Javascript crossbrowser class search
+	 * @param {node} el js element
+	 * @param {string} c class name to find
+	 * @since 1.1.3
+	 */
+	var _has_class = function (el, c) {
+		if (el.classList) {
+			return el.classList.contains(c);
+		} else {
+			return new RegExp('(^| )' + c + '( |$)', 'gi').test(el.className);
+		}
+	}
 	var _transitionEvent = '';
 	var _animationEvent = '';
 
@@ -402,9 +416,9 @@ var Rexbuilder_Util = (function ($) {
 		this.lastSectionNumber = -1;
 
 		_updateSectionsID();
-		
+
 		_edit_dom_layout(chooseLayout());
-		
+
 		_updateSectionsNumber();
 
 		_detect_mobile();
@@ -440,7 +454,8 @@ var Rexbuilder_Util = (function ($) {
 		destroyVideoPlugins: _destroyVideoPlugins,
 		chooseLayout: chooseLayout,
 		setContainer: setContainer,
-		createSectionID: createSectionID
+		createSectionID: createSectionID,
+		has_class: _has_class
 	};
 
 })(jQuery);

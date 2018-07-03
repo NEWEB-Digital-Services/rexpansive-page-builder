@@ -14,7 +14,8 @@ var gulp = require('gulp'),
 	zip = require('gulp-zip'),
 	size = require('gulp-size'),
 	concat = require('gulp-concat'),
-	gulpUtil = require('gulp-util');
+	gulpUtil = require('gulp-util'),
+	svgSprite = require('gulp-svg-sprite');
 
 var banner = ['/**',
 	' * <%= pkg.name %> v<%= pkg.version %>',
@@ -86,6 +87,7 @@ gulp.task('live-builder-style', function() {
     .pipe(gulp.dest('admin/css'));
 });
 
+
 var admin_js_src = [ 
 	'admin/js/jquery.gridster.js', 
 	'admin/spectrum/spectrum.js', 
@@ -99,6 +101,7 @@ var admin_js_src = [
 	'admin/js/3-Rexpansive_Builder_Admin_ModelEditor.js',
 	'admin/js/3-Rexpansive_Builder_Admin_PaddingEditor.js',
 	'admin/js/3-Rexpansive_Builder_Admin_PositionEditor.js',
+	'admin/js/3-Rexpansive_Builder_Admin_Rxcf.js',
 	'admin/js/3-Rexpansive_Builder_Admin_TextEditor.js',
 	'admin/js/3-Rexpansive_Builder_Admin_VideoEditor.js',
 	'admin/js/4-Rexpansive_Builder_Admin_MediaUploader.js',
@@ -113,6 +116,37 @@ gulp.task('admin-plugins-build', function() {
 		.pipe(concat('plugins.js'))
 		.pipe(size({title:'Admin JS'}))
 		.pipe(gulp.dest('admin/js'))
+});
+
+config	= {
+	shape				: {
+	  // dimension		: {			// Set maximum dimensions 
+	  //   maxWidth	: 32,
+	  //   maxHeight	: 32
+	  // },
+	  // spacing			: {			// Add padding 
+	  //   padding		: 10
+	  // },
+	  dest			: 'out/intermediate-svg'	// Keep the intermediate files 
+	},
+	mode				: {
+	  view			: {			// Activate the «view» mode 
+		bust		: false,
+		render		: {
+		  scss	: true		// Activate Sass output (with default options) 
+		}
+	  },
+	  symbol			: true		// Activate the «symbol» mode 
+	},
+	svg : {
+	  xmlDeclaration		: false,
+	}
+  };
+  
+gulp.task('sprites', function() {
+	gulp.src('./admin/ICO/**/*.svg')
+		.pipe(svgSprite(config))
+		.pipe(gulp.dest('./admin/sprites'));
 });
 
 /* --- BUILD PUBLIC SCRIPTS AND STYLES ------ */
@@ -140,8 +174,10 @@ var public_js_src = [
 	'public/js/vendor/2-TextResize.js',
 	'public/js/vendor/3-velocity.min.js',
 	'public/js/vendor/3-velocity.ui.min.js',
+	'public/js/vendor/4-jquery.rexScrolled.js',
 	'public/js/vendor/4-jquery.rexScrollify.js',
 	'public/js/vendor/5-flickity.pkgd.min.js',
+	'public/js/vendor/5-jquery.rexIndicator.js',
 	'public/js/vendor/photoswipe.min.js',
 	'public/js/vendor/photoswipe-ui-default.min.js',
 	'public/js/vendor/jquery.mb.YTPlayer.min.js',
@@ -192,8 +228,8 @@ gulp.task('dev-live', ['live-builder-style'] ,function() {
 
 
 /* ---- BUIL CLEAN PLUGIN VERSION ----- */
-var premium_plugin_zip_name = 'Premium-112-Rexpansive-Builder.zip';
-var code_premium_plugin_zip_name = 'codecanyon-112-rexpansive-builder-wordpress-plugin';
+var premium_plugin_zip_name = 'Premium-113-Rexpansive-Builder.zip';
+var code_premium_plugin_zip_name = 'codecanyon-113-rexpansive-builder-wordpress-plugin';
 var premium_plugin_folder_name = 'rexpansive-builder';
 
 var plugin_premium_file_map = [
@@ -210,6 +246,7 @@ var plugin_premium_file_map = [
 	'admin/partials/**/*.*',
 	'admin/required-plugins/**/*',
 	'admin/rexpansive-font/**/*.*',
+	'admin/sprites/symbol/svg/sprite.symbol.svg',
 	'admin/class-importheme-import-utilities.php',
 	'admin/class-importheme-import-xml-content.php',
 	'admin/class-rexbuilder-admin.php',

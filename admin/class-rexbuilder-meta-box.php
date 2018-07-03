@@ -125,7 +125,7 @@ class Rexbuilder_Meta_Box {
         <?php
           //Retrieve the post content
           $checkbox_index = 0;
-//          $contents = get_post( $post->ID )->post_content;
+          $contents = get_post( $post->ID )->post_content;
           // $contents = get_post_meta( $post->ID, '_rex_default_layout', true );
           $contents = $meta;
           preg_match_all( "/$pattern/", $contents, $result_rows);
@@ -238,7 +238,7 @@ class Rexbuilder_Meta_Box {
                 endif;
 
                 ?>
-                <div class="builder-row clearfix z-depth-1" data-count="" data-gridcontent='' data-gridproperties='<?php echo $section_bg_setts; ?>' data-griddimension='<?php echo $section_dimension; ?>' data-layout='<?php echo $section_attr['layout']; ?>' data-section-overlay-color="<?php echo $section_overlay_color; ?>" data-sectionid='<?php echo $custom_section_name; ?>' data-backresponsive='<?php echo htmlspecialchars(json_encode($background_responsive)); ?>' data-row-separator-top="<?php echo ( isset( $section_attr['row_separator_top'] ) ? $section_attr['row_separator_top'] : '' ); ?>" data-row-separator-bottom="<?php echo ( isset( $section_attr['row_separator_bottom'] ) ? $section_attr['row_separator_bottom'] : '' ); ?>" data-row-separator-right="<?php echo ( isset( $section_attr['row_separator_right'] ) ? $section_attr['row_separator_right'] : '' ); ?>" data-row-separator-left="<?php echo ( isset( $section_attr['row_separator_left'] ) ? $section_attr['row_separator_left'] : '' ); ?>" data-section-active-photoswipe="<?php echo ( isset( $section_attr['row_active_photoswipe'] ) ? $section_attr['row_active_photoswipe'] : '' ); ?>" data-section-model="<?php echo esc_attr($section_model); ?>">
+                <div class="builder-row clearfix z-depth-1" data-count="" data-gridcontent='' data-gridproperties='<?php echo $section_bg_setts; ?>' data-griddimension='<?php echo $section_dimension; ?>' data-layout='<?php echo $section_attr['layout']; ?>' data-section-overlay-color="<?php echo $section_overlay_color; ?>" data-sectionid='<?php echo $custom_section_name; ?>' data-backresponsive='<?php echo htmlspecialchars(json_encode($background_responsive)); ?>' data-row-separator-top="<?php echo ( isset( $section_attr['row_separator_top'] ) ? $section_attr['row_separator_top'] : '' ); ?>" data-row-separator-bottom="<?php echo ( isset( $section_attr['row_separator_bottom'] ) ? $section_attr['row_separator_bottom'] : '' ); ?>" data-row-separator-right="<?php echo ( isset( $section_attr['row_separator_right'] ) ? $section_attr['row_separator_right'] : '' ); ?>" data-row-separator-left="<?php echo ( isset( $section_attr['row_separator_left'] ) ? $section_attr['row_separator_left'] : '' ); ?>" data-section-active-photoswipe="<?php echo ( isset( $section_attr['row_active_photoswipe'] ) ? $section_attr['row_active_photoswipe'] : '' ); ?>" data-section-model="<?php echo esc_attr($section_model); ?>" data-row-margin-top="<?php echo ( isset( $section_attr['row_margin_top'] ) ? $section_attr['row_margin_top'] : '' ); ?>" data-row-margin-bottom="<?php echo ( isset( $section_attr['row_margin_bottom'] ) ? $section_attr['row_margin_bottom'] : '' ); ?>" data-row-margin-right="<?php echo ( isset( $section_attr['row_margin_right'] ) ? $section_attr['row_margin_right'] : '' ); ?>" data-row-margin-left="<?php echo ( isset( $section_attr['row_margin_left'] ) ? $section_attr['row_margin_left'] : '' ); ?>">
                   <div class="builder-row-contents">
                     <?php
                     $this->render_builder_header_row();
@@ -661,7 +661,7 @@ class Rexbuilder_Meta_Box {
               'section_width'	=>	'',
             ));
           ?>
-<div class="builder-row builder-new-row clearfix z-depth-1" data-count="0" data-gridcontent="" data-gridproperties="<?php echo htmlspecialchars( $defaultsectionproperties ); ?>" data-griddimension="full" data-layout="fixed" data-sectionid="" data-section-overlay-color="" data-backresponsive="<?php echo htmlspecialchars( $defaultsectionconfigs ); ?>" data-row-separator-top="" data-row-separator-bottom="" data-row-separator-right="" data-row-separator-left="" data-section-active-photoswipe="">
+<div class="builder-row builder-new-row clearfix z-depth-1" data-count="0" data-gridcontent="" data-gridproperties="<?php echo htmlspecialchars( $defaultsectionproperties ); ?>" data-griddimension="full" data-layout="fixed" data-sectionid="" data-section-overlay-color="" data-backresponsive="<?php echo htmlspecialchars( $defaultsectionconfigs ); ?>" data-row-separator-top="" data-row-separator-bottom="" data-row-separator-right="" data-row-separator-left="" data-row-margin-top="" data-row-margin-bottom="" data-row-margin-right="" data-row-margin-left="" data-section-active-photoswipe="">
   <div class="builder-row-contents">
     <?php
     $this->render_builder_header_row();
@@ -782,17 +782,9 @@ class Rexbuilder_Meta_Box {
     if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
       return $post_id;
     }
-
-    Rexbuilder_Utilities::write_log($post_id);
-    foreach ( $this->fields as $field ) {
-      Rexbuilder_Utilities::write_log($field);
-      Rexbuilder_Utilities::write_log($_POST[ $field[ 'id' ] ]);
-    }
-
     $plugin_options = get_option( $this->plugin_name . '_options' );
     if( in_array( $_POST[ 'post_type' ], $plugin_options['post_types'] ) ) {
       if( !current_user_can( 'edit_page', $post_id ) ) {
-        
         return $post_id;
       } elseif ( !current_user_can( 'edit_post', $post_id ) ) {
         return $post_id;

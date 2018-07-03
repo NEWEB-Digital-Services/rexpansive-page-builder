@@ -24,7 +24,6 @@ var Rexpansive_Builder_Admin_Lightbox = (function($) {
         .css('opacity',1);
       $lbx_bg.css('opacity',1);
       $lbx_container.css('transform','translate3d(0px, 0px, 0px)');
-      console.log(item);
       $lbx_item.empty().append(item);
     });
 

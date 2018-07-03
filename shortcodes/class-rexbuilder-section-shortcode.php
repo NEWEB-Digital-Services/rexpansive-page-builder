@@ -18,25 +18,28 @@
  * @author     Neweb <info@neweb.info>
  *
  */
-class Rexbuilder_Section {
-	/**
-	 * Initialize the class and set its properties.
-	 *
-	 * @since    1.0.0
-	 */
-	public function __construct( ) {
+class Rexbuilder_Section
+{
+    /**
+     * Initialize the class and set its properties.
+     *
+     * @since    1.0.0
+     */
+    public function __construct()
+    {
 
-	}
+    }
 
-	/**
-	 * Function that render the shortcode, merging the attributes and displaying the template.
-	 *
-	 * @since    1.0.0
-	 * @param      string    $a       			The attributest passed.
-	 * @param      string    $content    		The content passed.
-	 */
-	public function render_section( $atts, $content = null ) {
-		$parsed_atts = shortcode_atts( array(
+    /**
+     * Function that render the shortcode, merging the attributes and displaying the template.
+     *
+     * @since    1.0.0
+     * @param      string    $a                   The attributest passed.
+     * @param      string    $content            The content passed.
+     */
+    public function render_section($atts, $content = null)
+    {
+        $parsed_atts = shortcode_atts(array(
             "section_name" => "",
             "type" => "perfect-grid",
             "color_bg_section" => "#ffffff",
@@ -51,173 +54,203 @@ class Rexbuilder_Section {
             "block_distance" => 20,
             "layout" => "fixed",
             'responsive_background' => '',
-            'custom_classes' =>	'',
+            'custom_classes' => '',
             'section_width' => '',
-            'row_separator_top'	=>	'',
-            'row_separator_bottom'	=>	'',
-            'row_separator_right'	=>	'',
-			'row_separator_left'	=>	'',
-			'row_edited_live'	=>	'',
-			'section_model' => '',
-			'rexlive_section_id' => ''
-        ), $atts, 'RexpansiveSection' );
+            'row_separator_top' => '',
+            'row_separator_bottom' => '',
+            'row_separator_right' => '',
+            'row_separator_left' => '',
+            'row_margin_top' => '',
+            'row_margin_bottom' => '',
+            'row_margin_right' => '',
+            'row_margin_left' => '',
+            'section_model' => '',
+            'row_edited_live' => '',
+            'section_model' => '',
+            'rexlive_section_id' => '',
+        ), $atts, 'RexpansiveSection');
 
-		extract( $parsed_atts );
-		
-		// Applying a filter to the content
+        extract($parsed_atts);
+
+        // Applying a filter to the content
         // Passing all the attributes as reference to edit them based on the content
-        $content = apply_filters( 'rexpansive_filter_section', $content, array( &$parsed_atts ) );
+        $content = apply_filters('rexpansive_filter_section', $content, array(&$parsed_atts));
 
-		global $post;
-		$builder_active = apply_filters( 'rexbuilder_post_active', get_post_meta( $post->ID, '_rexbuilder_active', true) );
+        global $post;
+        $builder_active = apply_filters('rexbuilder_post_active', get_post_meta($post->ID, '_rexbuilder_active', true));
 
-		if('true' == $builder_active) {
-			global $section_layout;
-			$section_layout = $layout;
-			$editor = $_GET['editor'];
+        if ('true' == $builder_active) {
 
-			$section_style = "";
-			if( !empty( $image_bg_section ) ) {
-				$section_style = ' style="background-image:url(\'' . wp_get_attachment_url( $id_image_bg_section ) . '\');"';
-			} else if( !empty( $color_bg_section ) ) {
-				$section_style = ' style="background-color:' . $color_bg_section . ';"';
-			}
+            global $section_layout;
+            $section_layout = $layout;
+            $editor = $_GET['editor'];
 
-			$section_responsive_style = '';
-			if( "" != $responsive_background ) :
-				$section_responsive_style = ' style="background-color:' . $responsive_background . ';"';
-			endif;
+            $section_style = 'style="';
+            if (!empty($image_bg_section)) {
+                $section_style .= 'background-image:url(\'' . wp_get_attachment_url($id_image_bg_section) . '\');';
+            } else if (!empty($color_bg_section)) {
+                $section_style .= 'background-color:' . $color_bg_section . ';';
+            }
 
-			$custom_classes = trim( $custom_classes );
+            if ('' != $row_margin_top) {
+                $section_style .= 'margin-top:' . $row_margin_top . 'px;';
+            }
+
+            if ('' != $row_margin_right) {
+                $section_style .= 'margin-right:' . $row_margin_right . 'px;';
+            }
+
+            if ('' != $row_margin_bottom) {
+                $section_style .= 'margin-bottom:' . $row_margin_bottom . 'px;';
+            }
+
+            if ('' != $row_margin_left) {
+                $section_style .= 'margin-left:' . $row_margin_left . 'px;';
+            }
+
+            $section_responsive_style = '';
+            if ("" != $responsive_background):
+                $section_responsive_style = ' style="background-color:' . $responsive_background . ';"';
+            endif;
+
+            $custom_classes = trim($custom_classes);
+
+            $row_separators = '';
+            if ('' != $row_separator_top) {
+                $row_separators .= ' data-row-separator-top="' . $row_separator_top . '"';
+            }
+
+            if ('' != $row_separator_right) {
+                $row_separators .= ' data-row-separator-right="' . $row_separator_right . '"';
+            }
+
+            if ('' != $row_separator_bottom) {
+                $row_separators .= ' data-row-separator-bottom="' . $row_separator_bottom . '"';
+            }
+
+            if ('' != $row_separator_left) {
+                $row_separators .= ' data-row-separator-left="' . $row_separator_left . '"';
+            }
+
+            ob_start();
+
+            echo '<section';
+            if ($section_name != ''):
+                $x = preg_replace('/[\W\s+]/', '', $section_name);
+                echo ' href="#' . $x . '" id="' . $x . '"';
+            endif;
+
+            $content_has_photoswipe = strpos($content, 'photoswipe="true"');
+
+            $content_has_floating_blocks = strpos($content, 'rex-floating-');
+
+            $content_has_static_block = strpos($content, 'rex-static-block');
+
+            $row_has_accordion = has_shortcode($content, 'RexAccordion');
+
+            echo ' class="rexpansive_section' .
+            (($content_has_photoswipe > 0) ? ' photoswipe-gallery' : '') .
+            (('' != $custom_classes) ? ' ' . $custom_classes : '') .
+            (('true' == $full_height) ? ' full-height-section' : '') .
+            (('' != $video_bg_url_section && 'undefined' != $video_bg_url_section) ? ' youtube-player' : '') .
+            (($content_has_floating_blocks !== false) ? ' rex-section-has-floating-blocks' : '') .
+            (($content_has_static_block !== false) ? ' rex-section-has-static-blocks' : '') .
+            ((false !== $row_has_accordion) ? ' rex-section-has-accordion' : '') .
+            apply_filters('rexpansive_builder_section_class', '', $parsed_atts) .
+                '"' .
+                (($content_has_photoswipe > 0) ? ' itemscope itemtype="http://schema.org/ImageGallery"' : '') .
+                (('' != $video_bg_url_section && 'undefined' != $video_bg_url_section) ? ' data-property="{videoURL:\'' . $video_bg_url_section . '\',containment:\'self\',startAt:0,mute:true,autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"' : '') .
+				(strlen($section_style) > 7 ? ' ' . $section_style . '"' : '');
 			
-			$row_separators = '';
-			if( '' != $row_separator_top ) {
-				$row_separators .= ' data-row-separator-top="' . $row_separator_top . '"';
+			if($rexlive_section_id != ''){
+				echo 'data-rexlive-section-id="'. $rexlive_section_id .'"';
 			}
+			echo '>';
 
-			if( '' != $row_separator_right ) {
-				$row_separators .= ' data-row-separator-right="' . $row_separator_right . '"';
-			}
+            echo '<div class="section-data" style="display: none;" ';
+            foreach ($atts as $property_name => $value_property) {
+                echo 'data-' . $property_name . '="' . $value_property . '" ';
+            }
+            unset($property_name);
+            unset($value_property);
+            echo '></div>';
+            if (isset($editor)) {
+                include REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-section-tools.php";
+            }
 
-			if( '' != $row_separator_bottom ) {
-				$row_separators .= ' data-row-separator-bottom="' . $row_separator_bottom . '"';
-			}
-
-			if( '' != $row_separator_left ) {
-				$row_separators .= ' data-row-separator-left="' . $row_separator_left . '"';
-			}
-
-			ob_start();
-
-			echo '<section';
-			if($section_name != '') :
-				$x = preg_replace('/[\W\s+]/', '', $section_name);
-				echo ' href="#' . $x . '" id="' . $x . '"';
-			endif;
-
-			$content_has_photoswipe = strpos( $content, 'photoswipe="true"' );
-    
-			$content_has_floating_blocks = strpos( $content, 'rex-floating-' );
-		
-			$content_has_static_block = strpos( $content, 'rex-static-block' );
-
-			$row_has_accordion = has_shortcode( $content, 'RexAccordion' );
-
-			echo ' class="rexpansive_section' .
-				( ( $content_has_photoswipe > 0 ) ? ' photoswipe-gallery' : '' ) . 
-				( ( '' != $custom_classes ) ? ' ' . $custom_classes : '' ) . 
-				( ( 'true' == $full_height ) ? ' full-height-section' : '' ) .
-				( ( '' != $video_bg_url_section && 'undefined' != $video_bg_url_section ) ? ' youtube-player' : '' ) .
-				( ( $content_has_floating_blocks !== false ) ? ' rex-section-has-floating-blocks' : '' ) .
-				( ( $content_has_static_block !== false ) ? ' rex-section-has-static-blocks' : '' ) .
-				( ( false !== $row_has_accordion ) ? ' rex-section-has-accordion' : '' ) .
-				apply_filters( 'rexpansive_builder_section_class', '', $parsed_atts ) .
-				'"' . 
-				( ( $content_has_photoswipe > 0 ) ? ' itemscope itemtype="http://schema.org/ImageGallery"' : '' ) .
-				( ( '' != $video_bg_url_section && 'undefined' != $video_bg_url_section ) ? ' data-property="{videoURL:\'' . $video_bg_url_section . '\',containment:\'self\',startAt:0,mute:true,autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"' : '' ) .
-				$section_style . '>';
-
-			echo '<div class="section-data" style="display: none;" ';
-			foreach ($atts as $property_name => $value_property) {
-				echo 'data-'.$property_name.'="'.$value_property.'" ';
-			}
-			unset($property_name);
-			unset($value_property);
-			echo '></div>';
-			if(isset($editor)){
-				include(REXPANSIVE_BUILDER_PATH."public/partials/rexlive-section-tools.php");
-			}
-				
-			if( '' != $video_bg_url_vimeo_section && 'undefined' != $video_bg_url_vimeo_section ) {
-?>
+            if ('' != $video_bg_url_vimeo_section && 'undefined' != $video_bg_url_vimeo_section) {
+                ?>
 <div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--section">
 <iframe src="<?php echo $video_bg_url_vimeo_section; ?>?autoplay=1&loop=1&byline=0&title=0&autopause=0" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
 </div>
 <?php
-			}
+}
 
-			if( '' != $video_bg_id_section && 'undefined' != $video_bg_id_section ) :
-				echo '<div class="rex-video-section-wrap">';
-				echo '<video class="rex-video-container" preload muted autoplay loop>';
-				echo '<source type="video/mp4" src="' . wp_get_attachment_url( $video_bg_id_section ) . '" />';
-				echo '</video>';
-				echo '</div>';
-			endif;
+            if ('' != $video_bg_id_section && 'undefined' != $video_bg_id_section):
+                echo '<div class="rex-video-section-wrap">';
+                echo '<video class="rex-video-container" preload muted autoplay loop>';
+                echo '<source type="video/mp4" src="' . wp_get_attachment_url($video_bg_id_section) . '" />';
+                echo '</video>';
+                echo '</div>';
+            endif;
 
-			echo '<div class="responsive-overlay"';
-			if( "" != $responsive_background ) {
-				echo $section_responsive_style;
-			}
-			echo '>';
-			
-			if( 'boxed' == $dimension ) {
-				echo '<div class="center-disposition"';
-				if( '' != $section_width ) {
-					echo ' style="max-width:' . $section_width . ';"';
-				}
-				echo '>';
-			} else {
-				echo '<div class="full-disposition">';
-			}
+            echo '<div class="responsive-overlay"';
+            if ("" != $responsive_background) {
+                echo $section_responsive_style;
+            }
+            echo '>';
 
-			do_action( 'rexpansive_section_before_grid', array( &$parsed_atts ) );
+            if ('boxed' == $dimension) {
+                echo '<div class="center-disposition"';
+                if ('' != $section_width) {
+                    echo ' style="max-width:' . $section_width . ';"';
+                }
+                echo '>';
+            } else {
+                echo '<div class="full-disposition">';
+            }
 
-			echo '<div class="perfect-grid-gallery grid-stack grid-stack-row" data-separator="' . $block_distance . '" data-layout="' . $layout . '" data-full-height="' . ( ( 'true' == $full_height ) ? 'true' : 'false' ) . '"' . $row_separators . '>';
-			echo '<div class="perfect-grid-sizer"></div>';
-			echo do_shortcode( $content );
-			echo '</div>';
-			echo '</div>';
+            do_action('rexpansive_section_before_grid', array(&$parsed_atts));
 
-			if( "" != $responsive_background )
-				echo '</div>';
+            echo '<div class="perfect-grid-gallery grid-stack grid-stack-row" data-separator="' . $block_distance . '" data-layout="' . $layout . '" data-full-height="' . (('true' == $full_height) ? 'true' : 'false') . '"' . $row_separators . '>';
+            echo '<div class="perfect-grid-sizer"></div>';
+            echo do_shortcode($content);
+            echo '</div>';
+            echo '</div>';
 
-			echo '</section>';
-			return ob_get_clean();
-		} else {
-			ob_start();
-			echo do_shortcode( $content );
-			return ob_get_clean();
-		}
-	}
-	private function create_toolbox() {
-		?>
+            if ("" != $responsive_background) {
+                echo '</div>';
+            }
+
+            echo '</section>';
+            return ob_get_clean();
+        } else {
+            ob_start();
+            echo do_shortcode($content);
+            return ob_get_clean();
+        }
+    }
+
+    private function create_toolbox()
+    {
+        ?>
 		<div class="section-toolBox">
-			<button class="tool-button btn-floating builder-delete-row waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexspansive'); ?>">
+			<button class="tool-button btn-floating builder-delete-row waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexspansive');?>">
 				<i class="material-icons white-text">&#xE5CD;</i>
 			</button>
 
-			<button class="tool-button btn-floating builder-section-config tooltipped waves-effect waves-light" data-position="bottom" data-tooltip="<?php _e('Row settings', 'rexpansive'); ?>">
+			<button class="tool-button btn-floating builder-section-config tooltipped waves-effect waves-light" data-position="bottom" data-tooltip="<?php _e('Row settings', 'rexpansive');?>">
 				<i class="material-icons">&#xE8B8;</i>
 			</button>
 
-			<div class="tool-button btn-flat builder-copy-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy row', 'rexpansive'); ?>">
+			<div class="tool-button btn-flat builder-copy-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy row', 'rexpansive');?>">
 				<i class="material-icons grey-text text-darken-2">&#xE14D;</i>
 			</div>
 
-			<div class="tool-button btn-flat builder-move-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Move row', 'rexpansive'); ?>">
+			<div class="tool-button btn-flat builder-move-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Move row', 'rexpansive');?>">
 				<i class="material-icons grey-text text-darken-2">&#xE8D5;</i>
 			</div>
 		</div>
 		<?php
-	}
+}
 }

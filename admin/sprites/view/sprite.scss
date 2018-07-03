@@ -1,0 +1,64 @@
+%svg-common {
+	background: url("svg/sprite.view.svg") no-repeat;
+}
+
+.svg-Ico_Margin {
+	@extend %svg-common;
+	background-position: 0 0;
+}
+
+.svg-Ico_Margin-dims {
+	width: 130px;
+	height: 70px;
+}
+
+.svg-ico-distance-bottom {
+	@extend %svg-common;
+	background-position: 0 100%;
+}
+
+.svg-ico-distance-bottom-dims {
+	width: 21px;
+	height: 21px;
+}
+
+.svg-ico-distance-left {
+	@extend %svg-common;
+	background-position: 8.786610878661088% 100%;
+}
+
+.svg-ico-distance-left-dims {
+	width: 21px;
+	height: 21px;
+}
+
+.svg-ico-distance-margin {
+	@extend %svg-common;
+	background-position: 100% 0;
+}
+
+.svg-ico-distance-margin-dims {
+	width: 130px;
+	height: 70px;
+}
+
+.svg-ico-distance-right {
+	@extend %svg-common;
+	background-position: 17.573221757322177% 100%;
+}
+
+.svg-ico-distance-right-dims {
+	width: 21px;
+	height: 21px;
+}
+
+.svg-ico-distance-top {
+	@extend %svg-common;
+	background-position: 26.359832635983263% 100%;
+}
+
+.svg-ico-distance-top-dims {
+	width: 21px;
+	height: 21px;
+}
+
