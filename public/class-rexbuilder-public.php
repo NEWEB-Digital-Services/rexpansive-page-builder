@@ -341,7 +341,7 @@ endif;
 } */
     }
 
-    public function rexlive_save_customizations()
+    public function rexlive_save_avaiable_layouts()
     {
         $nonce = $_POST['nonce_param'];
 
@@ -359,13 +359,40 @@ endif;
         $response['error'] = false;
 
         $post_id_to_update = intval($_POST['post_id_to_update']);
+
+        $names = $_POST['names'];
         $avaiable_layouts = $_POST['avaiable_layouts'];
-        $custom_layouts = $_POST['customizations'];
 
+        update_post_meta($post_id_to_update, '_rex_responsive_layouts_names', $names);
         update_post_meta($post_id_to_update, '_rex_responsive_layouts', $avaiable_layouts);
-        update_post_meta($post_id_to_update, '_rex_customization', $custom_layouts);
 
-        $response['update'] = $update;
+        wp_send_json_success($response);
+    }
+
+    public function rexlive_save_customization_layout()
+    {
+        $nonce = $_POST['nonce_param'];
+
+        $response = array(
+            'error' => false,
+            'msg' => '',
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+        $response['error'] = false;
+
+        $post_id_to_update = intval($_POST['post_id_to_update']);
+
+        $layout = $_POST['customizations'];
+        $layout_name = $_POST['layout_name'];
+        
+        update_post_meta($post_id_to_update, '_rex_customization_' . $layout_name, $layout);
+
         $response['id_recived'] = $post_id_to_update;
 
         wp_send_json_success($response);
@@ -416,16 +443,27 @@ endif;
     {
         global $post;
         $editor = $_GET['editor'];
-        
+
         $defaultPage = get_post_meta($post->ID, '_rex_default_layout', true);
 
-        if($defaultPage == ""){
+        if ($defaultPage == "") {
             $defaultPage = get_post_meta($post->ID, '_rex_content_mydesktop', true);
         }
 
-        $customizations = get_post_meta($post->ID, '_rex_customization', true);
-        $layoutsAvaiable = get_post_meta($post->ID, '_rex_responsive_layouts', true);
+        $customizations_array = array();
+        $customizations_names = get_post_meta($post->ID, '_rex_responsive_layouts_names', true);
+        $customization = array();
 
+        foreach ($customizations_names as $name) {
+            $customization["name"] = $name;
+            $customization["sections"] = get_post_meta($post->ID, '_rex_customization_' . $name, true);
+            array_push($customizations_array, $customization);
+        }
+        //$customizations = get_post_meta($post->ID, '_rex_customization', true);
+
+//        $layoutsAvaiable = get_post_meta($post->ID, '_rex_responsive_layouts', true);
+
+        $layoutsAvaiable = "";
         if ($layoutsAvaiable == "") {
             $layoutsAvaiable = array(array("default", "", ""));
         }
@@ -434,25 +472,25 @@ endif;
         <div id="rexbuilder-layout-data" style="display: none;">
             <div class = "layouts-customizations"
             <?php
-                if (empty($customizations)) {
-                    echo 'data-empty-customizations="true">';
-                } else {
-                ?>
+if (empty($customizations_array)) {
+            echo 'data-empty-customizations="true">';
+        } else {
+            ?>
                 >
                 <?php
-                    echo json_encode($customizations);
-                }
-                ?>
+echo json_encode($customizations_array);
+        }
+        ?>
             </div>
             <div class = "available-layouts">
                 <?php
-                echo json_encode($layoutsAvaiable);
-                ?>
+echo json_encode($layoutsAvaiable);
+        ?>
             </div>
         </div>
         <div class="rex-container" data-rex-layout-selected="">
 		<?php
-        echo do_shortcode($defaultPage);
+echo do_shortcode($defaultPage);
         ?>
 	</div>
 	<?php

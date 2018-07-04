@@ -70,7 +70,7 @@
             gridstackInstanceID: null,
             serializedData: [],
             firstStartGrid: false,
-            lastIDBlock: null,
+            numberBlocks: null,
             mediumEditorIstance: null,
             gridBlocksHeight: 0,
             editedFromBackend: false,
@@ -100,7 +100,7 @@
 
             this._updateBlocksRexID();
 
-            this._findLastIDBlock();
+            this._countBlocks();
 
             this._saveDefaultBlockPosition();
 
@@ -134,9 +134,9 @@
             } else {
                 this.frontEndMode();
             }
-
+/* 
             console.log(this.getElementBottomTop());
-            console.log(this.getElementTopBottom());
+            console.log(this.getElementTopBottom()); */
             this.properties.firstStartGrid = false;
         },
 
@@ -155,16 +155,12 @@
 
         },
 
-        _findLastIDBlock: function () {
-            var max = -1;
-            var temp;
-            this.$element.find('.grid-stack-item').each(function () {
-                temp = parseInt($(this).attr("data-rexbuilder-block-id").split('_')[1]);
-                if (temp > max) {
-                    max = temp;
-                }
+        _countBlocks: function () {
+            var number = 0;
+            this.$element.find('.grid-stack-item').each(function (i, e) {
+                number = i;
             });
-            this.properties.lastIDBlock = max;
+            this.properties.lastIDBlock = number + 1;
         },
 
         _setGridID: function () {
@@ -173,10 +169,15 @@
         },
 
         _updateBlocksRexID: function () {
-            var number = this.properties.sectionNumber;
+            var id;
+            var $elem;
             this.$element.find('.grid-stack-item').each(function (i, e) {
-                $(e).attr("data-rexbuilder-block-id", number + "_" + i);
-                $(e).children(".rexbuilder-block-data").attr("data-rexbuilder-block-data-id", number + "_" + i);
+                $elem = $(e);
+                if ($elem.attr('data-rexbuilder-block-id') === undefined || $elem.attr('data-rexbuilder-block-id') == "") {
+                    id = Rexbuilder_Util.createBlockID();
+                    $elem.attr('data-rexbuilder-block-id', id);
+                    $elem.children(".rexbuilder-block-data").attr("data-rexbuilder_block_id", id);
+                }
             });
         },
 
@@ -577,10 +578,10 @@
             var divTextWrap = document.createElement('div');
             var gallery = this;
             var grid = this.$element.data('gridstack');
-            var idBlock = gallery.properties.sectionNumber + "_" + (gallery.properties.lastIDBlock + 1);
+            var idBlock = Rexbuilder_Util.createBlockID();
             var idNewBlock = "block_" + idBlock;
 
-            gallery.properties.lastIDBlock = gallery.properties.lastIDBlock + 1;
+            gallery.properties.numberBlocks = gallery.properties.numberBlocks + 1;
 
             $(divGridItem).attr({
                 'id': idNewBlock,
@@ -895,7 +896,7 @@
             var $elem;
             this.$element.children('.grid-stack-item').each(function () {
                 $elem = $(this);
-                console.log($elem.attr("data-rexbuilder-block-id"));
+               // console.log("saving: " + $elem.attr("data-rexbuilder-block-id"));
                 store.set($elem.attr("data-rexbuilder-block-id"), {
                     "properties": [
                         { "x": parseInt($elem.attr("data-gs-x")) },
@@ -993,19 +994,17 @@
 
         _prepareElementEditing: function ($elem) {
             if (Rexbuilder_Util_Editor.blockCopying) {
-                this.properties.lastIDBlock = this.properties.lastIDBlock + 1;
-                var numberBlock = this.properties.lastIDBlock;
-                var rowNumber = this.properties.sectionNumber;
+                this.properties.numberBlocks = this.properties.numberBlocks + 1;
                 var $elemData = $elem.children(".rexbuilder-block-data");
-
+                var id = Rexbuilder_Util.createBlockID();
                 $elem.attr({
-                    "id": "block_" + rowNumber + "_" + numberBlock,
-                    "data-rexbuilder-block-id": rowNumber + "_" + numberBlock,
+                    "id": "block_" + id,
+                    "data-rexbuilder-block-id": id,
                 });
                 $elemData.attr({
-                    "id": "block_" + rowNumber + "_" + numberBlock + "-builder-data",
-                    "data-id": "block_" + rowNumber + "_" + numberBlock,
-                    "data-rexbuilder-block-data-id": rowNumber + "_" + numberBlock,
+                    "id": "block_" + id + "-builder-data",
+                    "data-id": "block_" + id,
+                    "data-data_rexbuilder_block_id": id,
                 });
             }
 
@@ -1528,7 +1527,7 @@
         },
 
         _launchTextEditor: function () {
-            console.log("launching text editor");
+           // console.log("launching text editor");
             var divToolbar = document.createElement('div');
             var gallery = this;
 
@@ -1836,7 +1835,7 @@
         },
 
         updateElementHeight: function ($elem) {
-            console.log("calculating " + $elem.attr("data-rexbuilder-block-id") + " height");
+          //  console.log("calculating " + $elem.attr("data-rexbuilder-block-id") + " height");
             if (Rexbuilder_Util.editorMode) {
                 Rexbuilder_Util_Editor.elementIsResizing = true;
             }

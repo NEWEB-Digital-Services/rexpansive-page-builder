@@ -22,12 +22,30 @@ var Rexbuilder_Util = (function ($) {
 	var createSectionID = function () {
 		var id;
 		var flag;
-		var idLength = 10;
+		var idLength = 4;
 		do {
 			flag = true;
 			id = createRandomID(idLength);
 			Rexbuilder_Util.$rexContainer.children('.rexpansive_section').each(function () {
 				if ($(this).attr('data-rexlive-section-id') !== undefined && $(this).attr('data-rexlive-section-id') == id) {
+					flag = false;
+				}
+			});
+		} while (!flag);
+		return id;
+	}
+
+	var createBlockID = function () {
+		var id;
+		var flag;
+		var idLength = 4;
+		var $this;
+		do {
+			flag = true;
+			id = createRandomID(idLength);
+			Rexbuilder_Util.$rexContainer.find('.grid-stack-item').each(function () {
+				$this = $(this);
+				if ($this.attr('data-rexbuilder-block-id') !== undefined && $this.attr('data-rexbuilder-block-id') == id) {
 					flag = false;
 				}
 			});
@@ -99,10 +117,11 @@ var Rexbuilder_Util = (function ($) {
 	var _edit_dom_layout = function (chosenLayout) {
 		Rexbuilder_Util.$rexContainer.attr("data-rex-layout-selected", chosenLayout);
 		var $resposiveData = $("#rexbuilder-layout-data");
-		if ((chosenLayout == activeLayout) || ($resposiveData.children(".layouts-customizations").data("empty-customizations") == "true")) {
+		if ((chosenLayout == activeLayout) || ($resposiveData.children(".layouts-customizations").data("empty-customizations") == "true") || $resposiveData.children(".layouts-customizations").data("empty-customizations")) {
 			return;
 		}
 		activeLayout = chosenLayout;
+		chosenLayout = "custom";
 		var layoutData = JSON.parse($resposiveData.children(".layouts-customizations").text());
 		var layoutSelected;
 		var i, j;
@@ -116,7 +135,7 @@ var Rexbuilder_Util = (function ($) {
 			return;
 		}
 
-		console.log(layoutSelected);
+		console.log(layoutSelected.name);
 		console.log("updaiting dom");
 
 		var section;
@@ -130,31 +149,171 @@ var Rexbuilder_Util = (function ($) {
 		var $sectionData;
 
 		var $gallery;
-		var $block;
+		var $elem;
+		var $itemContent;
+		var $itemData;
 		var $blockContent;
 
 		for (i = 0; i < layoutSelected.sections.length; i++) {
 			section = layoutSelected.sections[i];
 			sectionRexId = section.section_rex_id;
-			console.log(sectionRexId);
-			console.log(section);
+			/* console.log(sectionRexId); */
+			$section = Rexbuilder_Util.$rexContainer.children('section[data-rexlive-section-id="' + sectionRexId + '"]');
+			$gallery = $section.find(".grid-stack-row");
+			/* console.log($section);
+			console.log($gallery); */
 			for (j = 0; j < section.targets.length; j++) {
 				target = section.targets[j];
 				targetID = target.name;
 				hide = target.hide;
 				targetProps = target.props;
-				if (hide) {
-
+				if (hide === "true") {
+					console.log("hiding: " + targetID);
 				} else {
 
-					console.log(targetID);
+					//console.log(targetID);
+
 					if (targetID == "self") {
+						/* console.log("setting section properties: "+targetID);
 						for (const propName in targetProps) {
 							console.log(propName + " " + targetProps[propName]);
-						}
+						} */
 					} else {
+						console.log("setting block properties: " +targetID);
+						$elem = $gallery.children('div[data-rexbuilder-block-id="' + targetID + '"]');
+						$itemData = $elem.children(".rexbuilder-block-data");
+						$itemContent = $elem.find(".grid-item-content");
+						/* console.log($elem);
+						console.log($itemData);
+						console.log($itemContent); */
 						for (const propName in targetProps) {
-							console.log(propName + " " + targetProps[propName]);
+							if (targetProps[propName] != "") {
+								switch (propName) {
+									case "rexbuilder_block_id":
+										break;
+
+									case "type":
+										$itemData.attr('data-type', targetProps[propName]);
+										break;
+
+									case "size_x":
+										$elem.attr('data-width', targetProps[propName]);
+										break;
+
+									case "size_y":
+										$elem.attr('data-height', targetProps[propName]);
+										break;
+
+									case "row":
+										$elem.attr('data-row', targetProps[propName]);
+										break;
+
+									case "col":
+										$elem.attr('data-col', targetProps[propName]);
+										break;
+
+									case "gs_start_h":
+										break;
+
+									case "gs_width":
+										$elem.attr('data-gs-width', targetProps[propName]);
+										break;
+
+									case "gs_height":
+										$elem.attr('data-gs-height', targetProps[propName]);
+										break;
+
+									case "gs_y":
+										$elem.attr('data-gs-y', targetProps[propName]);
+										break;
+
+									case "gs_x":
+										$elem.attr('data-gs-x', targetProps[propName]);
+										break;
+
+									case "color_bg_block":
+										console.log("change background color"); 
+										console.log($itemContent.css('background-color')); 
+										$itemContent.css('background-color', targetProps[propName]);
+										break;
+
+									case "image_bg_block":
+										$itemContent.css('background-image', 'url('+ targetProps[propName]+'")');
+										break;
+
+									case "image_width":
+										$itemContent.attr('data-background-image-width', parseInt(targetProps[propName]));
+										break;
+
+									case "image_height":
+										$itemContent.attr('data-background-image-height', parseInt(targetProps[propName]));
+										break;
+
+									case "id_image_bg_block":
+										$itemData.attr('data-id_image_bg_block', targetProps[propName]);
+										break;
+
+									case "video_bg_id":
+										break;
+
+									case "video_bg_url":
+										break;
+
+									case "video_bg_url_vimeo":
+										break;
+
+									case "type_bg_block":
+										break;
+
+									case "image_size":
+										break;
+
+									case "photoswipe":
+										break;
+
+									case "block_custom_class":
+										break;
+
+									case "block_padding":
+										break;
+
+									case "overlay_block_color":
+										break;
+
+									case "zak_background":
+										break;
+
+									case "zak_side":
+										break;
+
+									case "zak_title":
+										break;
+
+									case "zak_icon":
+										break;
+
+									case "zak_foreground":
+										break;
+
+									case "block_animation":
+										break;
+
+									case "video_has_audio":
+										break;
+
+									case "block_has_scrollbar":
+										break;
+
+									case "block_live_edited":
+										break;
+
+									default:
+										console.log("rip");
+										break;
+								}
+								//console.log("setting " + propName);
+							}
+							//							console.log(propName + " " + targetProps[propName]);
 						}
 					}
 				}
@@ -292,37 +451,21 @@ var Rexbuilder_Util = (function ($) {
 		function doneResizing() {
 			console.log("window resized");
 			Rexbuilder_Util.windowIsResizing = true;
-			/* var $oldContainer = Rexbuilder_Util.$rexContainer;
-			var $newContainer;
-			var oldLayout = Rexbuilder_Util.$rexContainer.attr("data-layout-active");
-			var newLayout = Rexbuilder_Util.chooseLayout();
-			if(oldLayout != newLayout){
-				$newContainer = $(".rex-layout-"+newLayout);
-			}
-			console.log($oldContainer);
-			console.log($newContainer); */
-			/* if ($oldContainer !== $newContainer) {
-				console.log("new layout");
-				//destroy
-				//Rexbuilder_Util.destroyVideoPlugins();
-				
-				//update-container
-				
-				//re-create
-				//Rexbuilder_Util.launchVideoPlugins();
-			} else { */
-			console.log("same layout");
+			
+			_edit_dom_layout(chooseLayout());
+			
 			Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
 				var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
 				if (galleryEditorIstance !== undefined) {
+					
 
 					galleryEditorIstance._defineDynamicPrivateProperties();
 
-					if (Rexbuilder_Util.viewport().width <= 768) {
+/* 					if (Rexbuilder_Util.viewport().width <= 768) {
 						galleryEditorIstance.collapseElements();
 					} else {
 						galleryEditorIstance.restoreGrid();
-					}
+					} */
 
 					var gridstack = galleryEditorIstance.$element.data('gridstack');
 
@@ -408,6 +551,7 @@ var Rexbuilder_Util = (function ($) {
 
 	// init the utilities
 	var init = function () {
+
 		this.$window = $(window);
 		this.$body = $("body");
 
@@ -455,6 +599,7 @@ var Rexbuilder_Util = (function ($) {
 		chooseLayout: chooseLayout,
 		setContainer: setContainer,
 		createSectionID: createSectionID,
+		createBlockID: createBlockID,
 		has_class: _has_class
 	};
 

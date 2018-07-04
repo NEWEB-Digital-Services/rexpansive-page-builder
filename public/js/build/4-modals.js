@@ -395,9 +395,8 @@
 
 			var activeLayout = e.settings.selected;
 			var updatedLayouts = e.settings.updatedLayouts;
-			var oldCustomizations;
 
-			//console.log($layoutsCustomDiv.data("empty-customizations")); 
+			var oldCustomizations;
 
 			if ($layoutsCustomDiv.data("empty-customizations")) {
 				oldCustomizations = [];
@@ -415,32 +414,63 @@
 
 			customizationsArray.push(createCustomization(activeLayout));
 
-
-			console.log(customizationsArray);
-
 			$layoutsCustomDiv.text(JSON.stringify(customizationsArray));
 			$layoutsAvaiableDiv.text(JSON.stringify(updatedLayouts));
+
+			//ajax call for saving layouts type and names
+			var layoutsNames = [];
+			$.each(customizationsArray, function (i, layout) {
+				layoutsNames.push(layout.name);
+			});
 
 			$.ajax({
 				type: 'POST',
 				dataType: 'json',
 				url: _plugin_frontend_settings.rexajax.ajaxurl,
 				data: {
-					action: 'rexlive_save_customizations',
+					action: 'rexlive_save_avaiable_layouts',
 					nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
 					post_id_to_update: idPost,
-					customizations: customizationsArray,
+					names: layoutsNames,
 					avaiable_layouts: updatedLayouts
 				},
 				success: function (response) {
 					console.log(response);
 					if (response.success) {
-						console.log('layout custom aggiornato');
+						console.log('nomi layout aggiornati');
 					}
 					console.log('chiama effettuata con successo');
 				},
 				error: function (response) {
 					console.log('errore chiama ajax');
+				}
+			});
+
+			//saving layouts customizations
+			$.each(customizationsArray, function (i, layout) {
+				if (layout.sections != "") {
+					$.ajax({
+						type: 'POST',
+						dataType: 'json',
+						url: _plugin_frontend_settings.rexajax.ajaxurl,
+						data: {
+							action: 'rexlive_save_customization_layout',
+							nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+							post_id_to_update: idPost,
+							customizations: layout.sections,
+							layout_name: layout.name
+						},
+						success: function (response) {
+							console.log(response);
+							if (response.success) {
+								console.log('layout custom aggiornato');
+							}
+							console.log('chiama effettuata con successo');
+						},
+						error: function (response) {
+							console.log('errore chiama ajax');
+						}
+					});
 				}
 			});
 		});
@@ -452,7 +482,6 @@
 				sections: []
 			}
 			data.sections = createSectionsCustomizations();
-
 			return data;
 		}
 
@@ -462,7 +491,7 @@
 				var $section = $(this);
 				if (!$section.hasClass("removing_section")) {
 					var sectionRexID = $section.attr("data-rexlive-section-id");
-					console.log(sectionRexID); 
+					console.log(sectionRexID);
 					var section_props = {
 						section_rex_id: sectionRexID,
 						targets: [],
@@ -497,6 +526,7 @@
 				var $elem = $(this);
 				if (!$elem.hasClass("removing_block")) {
 					var blockRexID = $elem.attr("data-rexbuilder-block-id");
+					console.log(blockRexID);
 					var block_props = {
 						name: blockRexID,
 						hide: false,
@@ -536,6 +566,7 @@
 
 		var createBlockProperties = function ($elem, mode) {
 			var id = "",
+				rex_id = "",
 				type = "text",
 				size_x = 1,
 				size_y = 1,
@@ -548,6 +579,8 @@
 				gs_x = '',
 				color_bg_block = "#ffffff",
 				image_bg_block = "",
+				image_width = 0,
+				image_height = 0,
 				id_image_bg_block = "",
 				video_bg_id = "",
 				video_bg_url = "",
@@ -576,14 +609,15 @@
 			var $itemData = $elem.children(".rexbuilder-block-data");
 
 			id = "block_" + $elem.attr('data-rexbuilder-block-id');
+			rex_id = $elem.attr('data-rexbuilder-block-id');
 			type = $itemData.attr('data-type');
 			size_x = $elem.attr('data-width');
 			size_y = $elem.attr('data-height');
 			row = $elem.attr('data-row');
 			col = $elem.attr('data-col');
+			gs_start_h = $elem.attr('data-gs-height');
 			gs_width = $elem.attr('data-gs-width');
 			gs_height = $elem.attr('data-gs-height');
-			gs_start_h = $elem.attr('data-gs-height');
 			gs_y = $elem.attr('data-gs-y');
 			gs_x = $elem.attr('data-gs-x');
 			color_bg_block = $itemContent.css('background-color') != '' ? $itemContent
@@ -591,6 +625,10 @@
 				: '#ffffff';
 			image_bg_block = $itemData.attr('data-image_bg_block') === undefined ? ""
 				: $itemData.attr('data-image_bg_block');
+			image_width = $itemContent.attr('data-background-image-width') === undefined ? ""
+				: parseInt($itemContent.attr('data-background-image-width'));
+			image_height = $itemContent.attr('data-background-image-height') === undefined ? ""
+				: parseInt($itemContent.attr('data-background-image-height'));
 			id_image_bg_block = $itemData.attr('data-id_image_bg_block') === undefined ? ""
 				: $itemData.attr('data-id_image_bg_block');
 			video_bg_id = $itemData.attr('data-video_bg_id') === undefined ? ""
@@ -649,6 +687,7 @@
 			if (mode == "shortcode") {
 				output = '[RexpansiveBlock'
 					+ ' id="' + id
+					+ '" rexbuilder_block_id="' + rex_id
 					+ '" type="' + type
 					+ '" size_x="' + size_x
 					+ '" size_y="' + size_y
@@ -687,8 +726,10 @@
 			} else if (mode == "customLayout") {
 
 				var props = {};
+				/* if (layout == "default") {
 
-				props["id"] = id;
+				} */
+				props["rexbuilder_block_id"] = rex_id;
 				props["type"] = type;
 				props["size_x"] = size_x;
 				props["size_y"] = size_y;
@@ -699,27 +740,76 @@
 				props["gs_height"] = gs_height;
 				props["gs_y"] = gs_y;
 				props["gs_x"] = gs_x;
-				props["color_bg_block"] = color_bg_block;
-				props["image_bg_block"] = image_bg_block;
-				props["id_image_bg_block"] = id_image_bg_block;
-				props["video_bg_id"] = video_bg_id;
-				props["video_bg_url"] = video_bg_url;
-				props["video_bg_url_vimeo"] = video_bg_url_vimeo;
-				props["type_bg_block"] = type_bg_block;
-				props["image_size"] = image_size;
-				props["photoswipe"] = photoswipe;
-				props["block_custom_class"] = block_custom_class;
-				props["block_padding"] = block_padding;
-				props["overlay_block_color"] = overlay_block_color;
-				props["zak_background"] = zak_background;
-				props["zak_side"] = zak_side;
-				props["zak_title"] = zak_title;
-				props["zak_icon"] = zak_icon;
-				props["zak_foreground"] = zak_foreground;
-				props["block_animation"] = block_animation;
-				props["video_has_audio"] = video_has_audio;
-				props["block_has_scrollbar"] = block_has_scrollbar;
-				props["block_live_edited"] = block_live_edited;
+
+				if (color_bg_block != "") {
+					props["color_bg_block"] = color_bg_block;
+				}
+				if (image_bg_block != "") {
+					props["image_bg_block"] = image_bg_block;
+				}
+				if (image_width != "") {
+					props["image_width"] = image_width;
+				}
+				if (image_height != "") {
+					props["image_height"] = image_height;
+				}
+				if (id_image_bg_block != "") {
+					props["id_image_bg_block"] = id_image_bg_block;
+				}
+				if (video_bg_id != "") {
+					props["video_bg_id"] = video_bg_id;
+				}
+				if (video_bg_url != "") {
+					props["video_bg_url"] = video_bg_url;
+				}
+				if (video_bg_url_vimeo != "") {
+					props["video_bg_url_vimeo"] = video_bg_url_vimeo;
+				}
+				if (type_bg_block != "") {
+					props["type_bg_block"] = type_bg_block;
+				}
+				if (image_size != "") {
+					props["image_size"] = image_size;
+				}
+				if (photoswipe != "") {
+					props["photoswipe"] = photoswipe;
+				}
+				if (block_custom_class != "") {
+					props["block_custom_class"] = block_custom_class;
+				}
+				if (block_padding != "") {
+					props["block_padding"] = block_padding;
+				}
+				if (overlay_block_color != "") {
+					props["overlay_block_color"] = overlay_block_color;
+				}
+				if (zak_background != "") {
+					props["zak_background"] = zak_background;
+				}
+				if (zak_side != "") {
+					props["zak_side"] = zak_side;
+				}
+				if (zak_title != "") {
+					props["zak_title"] = zak_title;
+				}
+				if (zak_icon != "") {
+					props["zak_icon"] = zak_icon;
+				}
+				if (zak_foreground != "") {
+					props["zak_foreground"] = zak_foreground;
+				}
+				if (block_animation != "") {
+					props["block_animation"] = block_animation;
+				}
+				if (video_has_audio != "") {
+					props["video_has_audio"] = video_has_audio;
+				}
+				if (block_has_scrollbar != "") {
+					props["block_has_scrollbar"] = block_has_scrollbar;
+				}
+				if (block_live_edited != "") {
+					props["block_live_edited"] = block_live_edited;
+				}
 
 				return props;
 			}
@@ -830,10 +920,10 @@
 					+ '" row_separator_bottom="' + row_separator_bottom
 					+ '" row_separator_right="' + row_separator_right
 					+ '" row_separator_left="' + row_separator_left
-					+ '" row_margin_top="'+ row_margin_top
-					+ '" row_margin_bottom="'+ row_margin_bottom
-					+ '" row_margin_right="'+ row_margin_right
-					+ '" row_margin_left="'+ row_margin_left
+					+ '" row_margin_top="' + row_margin_top
+					+ '" row_margin_bottom="' + row_margin_bottom
+					+ '" row_margin_right="' + row_margin_right
+					+ '" row_margin_left="' + row_margin_left
 					+ '" rexlive_section_id="' + rexlive_section_id
 					+ '" row_edited_live="true"]';
 
@@ -855,31 +945,79 @@
 			} else if (mode == "customLayout") {
 
 				var props = {};
+				if (section_name != "") {
+					props["section_name"] = section_name;
+				}
+				if (type != "") {
+					props["type"] = type;
+				}
+				if (color_bg_section != "") {
+					props["color_bg_section"] = color_bg_section;
+				}
+				if (dimension != "") {
+					props["dimension"] = dimension;
+				}
+				if (margin != "") {
+					props["margin"] = margin;
+				}
+				if (image_bg_section != "") {
+					props["image_bg_section"] = image_bg_section;
+				}
+				if (id_image_bg_section != "") {
+					props["id_image_bg_section"] = id_image_bg_section;
+				}
+				if (video_bg_id_section != "") {
+					props["video_bg_id_section"] = video_bg_id_section;
+				}
+				if (video_bg_url_section != "") {
+					props["video_bg_url_section"] = video_bg_url_section;
+				}
+				if (video_bg_url_vimeo_section != "") {
+					props["video_bg_url_vimeo_section"] = video_bg_url_vimeo_section;
+				}
+				if (full_height != "") {
+					props["full_height"] = full_height;
+				}
+				if (block_distance != "") {
+					props["block_distance"] = block_distance;
+				}
+				if (layout != "") {
+					props["layout"] = layout;
+				}
+				if (responsive_background != "") {
+					props["responsive_background"] = responsive_background;
+				}
+				if (custom_classes != "") {
+					props["custom_classes"] = custom_classes;
+				}
+				if (section_width != "") {
+					props["section_width"] = section_width;
+				}
+				if (row_separator_top != "") {
+					props["row_separator_top"] = row_separator_top;
+				}
+				if (row_separator_bottom != "") {
+					props["row_separator_bottom"] = row_separator_bottom;
+				}
+				if (row_separator_right != "") {
+					props["row_separator_right"] = row_separator_right;
+				}
+				if (row_separator_left != "") {
+					props["row_separator_left"] = row_separator_left;
+				}
+				if (row_margin_top != "") {
+					props["row_margin_top"] = row_margin_top;
+				}
+				if (row_margin_bottom != "") {
+					props["row_margin_bottom"] = row_margin_bottom;
+				}
+				if (row_margin_right != "") {
+					props["row_margin_right"] = row_margin_right;
+				}
+				if (row_margin_left != "") {
+					props["row_margin_left"] = row_margin_left;
+				}
 
-				props["section_name"] = section_name;
-				props["type"] = type;
-				props["color_bg_section"] = color_bg_section;
-				props["dimension"] = dimension;
-				props["margin"] = margin;
-				props["image_bg_section"] = image_bg_section;
-				props["id_image_bg_section"] = id_image_bg_section;
-				props["video_bg_url_section"] = video_bg_url_section;
-				props["video_bg_id_section"] = video_bg_id_section;
-				props["video_bg_url_vimeo_section"] = video_bg_url_vimeo_section;
-				props["full_height"] = full_height;
-				props["block_distance"] = block_distance;
-				props["layout"] = layout;
-				props["responsive_background"] = responsive_background;
-				props["custom_classes"] = custom_classes;
-				props["section_width"] = section_width;
-				props["row_separator_top"] = row_separator_top;
-				props["row_separator_bottom"] = row_separator_bottom;
-				props["row_separator_right"] = row_separator_right;
-				props["row_separator_left"] = row_separator_left;
-				props["row_margin_top"] = row_margin_top;
-				props["row_margin_bottom"] = row_margin_bottom;
-				props["row_margin_right"] = row_margin_right;
-				props["row_margin_left"] = row_margin_left;
 				return props;
 			}
 		}

@@ -69,6 +69,7 @@ class Rexbuilder_Block {
 			"zak_foreground" => "",
 			"block_animation" => "fadeInUpBig",
 			"video_has_audio"	=>	'0',
+			"rexbuilder_block_id" => ""
 		), $atts ) );
 
 		global $post;
@@ -265,7 +266,6 @@ class Rexbuilder_Block {
 			if( $floating_horizontal || $floating_vertical ) {
 				echo ' rex-floating-block';
 			}
-		
 			
 			echo '" data-height="'.  $size_y . '"';
 			echo ' data-width="' . $size_x . '"';
@@ -277,6 +277,12 @@ class Rexbuilder_Block {
 			echo ' data-gs-y="' . $gs_y . '"';
 			echo ' data-gs-x="' . $gs_x . '"'; 
 			
+			echo ' data-rexbuilder-block-id="';
+			if($rexbuilder_block_id != ""){
+				echo $rexbuilder_block_id;
+			}
+			echo '"';
+
 			if( $floating_border != '' ) {
 				echo ' data-rs-animation-delay="0.5s"';
 				if( $floating_horizontal ) {
