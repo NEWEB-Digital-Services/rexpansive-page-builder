@@ -388,7 +388,7 @@ endif;
 
         $post_id_to_update = intval($_POST['post_id_to_update']);
 
-        $layout = $_POST['customizations'];
+        $layout = $_POST['sections'];
         $layout_name = $_POST['layout_name'];
         
         update_post_meta($post_id_to_update, '_rex_customization_' . $layout_name, $layout);
@@ -461,10 +461,9 @@ endif;
         }
         //$customizations = get_post_meta($post->ID, '_rex_customization', true);
 
-//        $layoutsAvaiable = get_post_meta($post->ID, '_rex_responsive_layouts', true);
+        $layoutsAvaiable = get_post_meta($post->ID, '_rex_responsive_layouts', true);
 
-        $layoutsAvaiable = "";
-        if ($layoutsAvaiable == "") {
+        if ($layoutsAvaiable == NULL) {
             $layoutsAvaiable = array(array("default", "", ""));
         }
 

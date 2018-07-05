@@ -4,6 +4,9 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
     var activeLayoutPage;
     var editedLive;
+    var $frameContainer;
+    var $frameBuilder;
+    var frameBuilderWindow;
 
     var updateLayouts = function (selectedLayout, oldLayouts) {
         var availableLayouts = [];
@@ -36,8 +39,6 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
     var addResponsiveListeners = function () {
         console.log("adding listeners");
-        var $frameContainer = $(".rexpansive-live-frame-container");
-        var $frameBuilder = $("#rexpansive-live-frame");
         var $responsiveToolbar = $(".rexlive-responsive-toolbox");
         var $layoutData = $("#rexbuilder-layout-data-backend");
 
@@ -54,51 +55,51 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                 if (editedLive) {
                     if (confirm("Ehi, guarda che hai modificato qualcosa, vuoi matenere le modifiche?")) {
                         console.log("salva");
-                        var eventName;
                         var activeLayout = [];
                         activeLayout.push(activeLayoutPage);
+                        activeLayout.push(nameVisualizzato);
                         activeLayout.push($btn.data("min-width"));
                         activeLayout.push($btn.data("max-width"));
 
                         var availableLayouts = updateLayouts(activeLayout, JSON.parse($layoutData.children(".available-layouts").text()));
 
-                        var frame = $frameBuilder[0].contentWindow;
-
-                        var infos = {
+                        var updateData = {
                             selected: activeLayout,
                             eventName: "",
                             updatedLayouts: availableLayouts,
-                            rexliveEvent: true
                         };
-            
+
                         if (activeLayoutPage == "default") {
-            
-                            eventName = "rexlive:saveDefaultLayout";
-                            infos.eventName = eventName;
-                            frame.postMessage(infos, '*');
-            
-                            eventName = "rexlive:saveCustomizations";
-                            infos.eventName = eventName;
-                            frame.postMessage(infos, '*');
-                        } else {
-                            eventName = "rexlive:saveCustomizations";
-                            infos.eventName = eventName;
-                            frame.postMessage(infos, '*');
+                            updateData.eventName = "rexlive:saveDefaultLayout";
+                            sendIframeBuilderMessage(updateData);
                         }
+
+                        updateData.eventName = "rexlive:saveCustomizations";
+                        sendIframeBuilderMessage(updateData);
+                        
                         console.log("saved");
                     } else {
                         console.log("non salvare");
                     }
                     editedLive = false;
+                    console.log("saving ended");
                 }
-
+                //console.log("MADONNA"); 
                 activeLayoutPage = btnName;
-
+                updateResponsiveButtonFocus();
+                
                 if ($btn.data("min-width") != "") {
-                    $frameContainer.css("max-width", $btn.data("min-width"));
+                    $frameContainer.css("width", $btn.data("min-width"));
                 } else {
-                    $frameContainer.css("max-width", "100%");
+                    $frameContainer.css("width", "100%");
                 }
+
+                var layoutData = {
+                    selectedLayoutName: activeLayoutPage,
+                    eventName: "rexlive:changeLayout"
+                };
+                sendIframeBuilderMessage(layoutData);
+
             }
         });
 
@@ -106,90 +107,102 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
             console.log("saving");
             var activeLayout = [];
             var layoutBtn = $responsiveToolbar.find("button[data-name=" + activeLayoutPage + "]");
-            var eventName;
 
             var activeLayout = [];
             activeLayout.push(activeLayoutPage);
             activeLayout.push(layoutBtn.data("min-width"));
             activeLayout.push(layoutBtn.data("max-width"));
-            
+
             var availableLayouts = updateLayouts(activeLayout, JSON.parse($layoutData.children(".available-layouts").text()));
 
             $layoutData.children(".available-layouts").text(JSON.stringify(availableLayouts));
 
-            var frame = $frameBuilder[0].contentWindow;
-
-            var infos = {
+            var data = {
                 selected: activeLayout,
                 eventName: "",
                 updatedLayouts: availableLayouts,
-                rexliveEvent: true
             };
 
             if (activeLayoutPage == "default") {
-
-                eventName = "rexlive:saveDefaultLayout";
-                infos.eventName = eventName;
-                frame.postMessage(infos, '*');
-
-                eventName = "rexlive:saveCustomizations";
-                infos.eventName = eventName;
-                frame.postMessage(infos, '*');
-            } else {
-                eventName = "rexlive:saveCustomizations";
-                infos.eventName = eventName;
-                frame.postMessage(infos, '*');
+                data.eventName = "rexlive:saveDefaultLayout";
+                sendIframeBuilderMessage(data);
             }
+
+            data.eventName = "rexlive:saveCustomizations";
+            sendIframeBuilderMessage(data);
 
         });
 
         $(document).on('click', '.btn-undo', function (e) {
             console.log("undo");
-            var infos = {
+            var data = {
                 eventName: "rexlive:undo",
-                rexliveEvent: true
             };
 
-            var frame = $frameBuilder[0].contentWindow;
-
-            frame.postMessage(infos, '*');
+            sendIframeBuilderMessage(data);
         });
 
         $(document).on('click', '.btn-redo', function (e) {
             console.log("redo");
-            var infos = {
+            var data = {
                 eventName: "rexlive:redo",
-                rexliveEvent: true
             };
 
-            var frame = $frameBuilder[0].contentWindow;
-
-            frame.postMessage(infos, '*');
+            sendIframeBuilderMessage(data);
         });
 
         window.addEventListener("message", receiveMessage, false);
 
         function receiveMessage(event) {
             if (event.data.rexliveEvent) {
-                console.log("rexlive event");
+                console.log("rexlive event from iframe client");
                 if (event.data.eventName == "rexlive:edited") {
                     if (event.data.edited) {
                         editedLive = true;
                     }
                 }
+                if (event.data.eventName == "rexlive:layoutChanged") {
+                    activeLayoutPage = event.data.activeLayoutName;
+                    updateResponsiveButtonFocus();
+                }
             }
-        }
+        };
+
+        function updateResponsiveButtonFocus() {
+            console.log("updating layout focus");
+            var $oldBtn = $responsiveToolbar.find(".active-layout-btn");
+            var $layoutBtn = $responsiveToolbar.find("button[data-name=" + activeLayoutPage + "]");
+            if ($oldBtn.length != 0) {
+                $oldBtn.removeClass("active-layout-btn");
+            }
+            $layoutBtn.addClass("active-layout-btn");
+        };
+    }
+
+    var sendIframeBuilderMessage = function (data) {
+        var infos = {
+            rexliveEvent: true
+        };
+        jQuery.extend(infos, data);
+
+        frameBuilderWindow.postMessage(infos, '*');
     }
 
     // init the utilities
     var init = function () {
+
+        $frameContainer = $(".rexpansive-live-frame-container");
+        $frameBuilder = $("#rexpansive-live-frame");
+        frameBuilderWindow = $frameBuilder[0].contentWindow;
+
         activeLayoutPage = "default";
         editedLive = false;
     }
 
     return {
         init: init,
-        addResponsiveListeners: addResponsiveListeners
+        addResponsiveListeners: addResponsiveListeners,
+        sendIframeBuilderMessage: sendIframeBuilderMessage
     };
 
 })(jQuery);

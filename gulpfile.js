@@ -197,7 +197,9 @@ var public_js_logic_src = [
 
 gulp.task('public-plugins-build', function() {
 	return gulp.src(public_js_src)
-		.pipe(uglify({preserveComments: 'license'}))
+		.pipe(uglify({preserveComments: 'license'}).on('error', function(e){
+            console.log(e);
+         }))
 		.pipe(concat('plugins.js'))
 		.pipe(size({title:'Public JS Plugins'}))
 		.pipe(gulp.dest('public/js'))
@@ -205,7 +207,9 @@ gulp.task('public-plugins-build', function() {
 
 gulp.task('public-js-build', function() {
 	return gulp.src(public_js_logic_src)
-		.pipe(uglify({preserveComments: 'license'}))		
+		.pipe(uglify({preserveComments: 'license'}).on('error', function(e){
+            console.log(e);
+         }))		
 		//.pipe(uglify({preserveComments: 'all'}))	
 		.pipe(concat('public.js'))
 		.pipe(size({title:'Public JS'}))

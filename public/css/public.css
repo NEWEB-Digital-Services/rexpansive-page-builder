@@ -5002,5 +5002,8 @@ a.pswp-item {
   height: 100px;
   background-color: aquamarine; }
 
+.btn-builder-layout.active-layout-btn {
+  background-color: blue; }
+
 .grid-stack.grid-stack-one-column-mode > .grid-stack-item {
   margin-bottom: 0px; }

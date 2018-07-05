@@ -216,6 +216,20 @@ var Rexbuilder_Util_Editor = (function ($) {
         }
 
     }
+    
+    var addDocumentListeners = function(){
+        $(document).on("rexlive:changeLayout", function(event){
+            _edit_dom_layout(event.settings.selectedLayoutName);
+        });
+    }
+
+    var sendParentIframeMessage = function(data){
+        var infos = {
+            rexliveEvent: true
+        };
+        jQuery.extend(infos, data);
+        window.parent.postMessage(infos, '*');
+    }
 
     // init the utilities
     var init = function () {
@@ -253,9 +267,11 @@ var Rexbuilder_Util_Editor = (function ($) {
         addBlockToolboxListeners: addBlockToolboxListeners,
         removeDeletedBlocks: removeDeletedBlocks,
         addWindowListeners: addWindowListeners,
+        addDocumentListeners: addDocumentListeners,
         endEditingElement: endEditingElement,
         startEditingElement: startEditingElement,
         setEndOfContenteditable: setEndOfContenteditable,
+        sendParentIframeMessage: sendParentIframeMessage
     };
 
 })(jQuery);

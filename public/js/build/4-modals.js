@@ -350,10 +350,10 @@
 			Rexbuilder_Util.$rexContainer.find('.rexpansive_section').each(function () {
 				var $section = $(this);
 				if (!$section.hasClass("removing_section")) {
-					shortcodePage += createSectionProperties($section, "shortcode");
+					shortcodePage += createSectionProperties($section, "shortcode", null);
 				}
 			});
-			console.log(shortcodePage);
+			//console.log(shortcodePage);
 
 			$.ajax({
 				type: 'POST',
@@ -389,12 +389,14 @@
 			var $layoutsCustomDiv = $layoutData.children(".layouts-customizations");
 			var $layoutsAvaiableDiv = $layoutData.children(".available-layouts");
 
-			console.log("saving customizations");
 
 			var idPost = parseInt($('#id-post').attr('data-post-id'));
 
 			var activeLayout = e.settings.selected;
+			var activeLayoutName = activeLayout[0];
 			var updatedLayouts = e.settings.updatedLayouts;
+
+			console.log("saving customization " + activeLayoutName);
 
 			var oldCustomizations;
 
@@ -407,12 +409,12 @@
 			var customizationsArray = [];
 			$.each(oldCustomizations, function (i, oldCustom) {
 				var oldLay = oldCustom;
-				if (oldLay.name != activeLayout[0]) {
+				if (oldLay.name != activeLayoutName) {
 					customizationsArray.push(oldLay);
 				}
 			});
 
-			customizationsArray.push(createCustomization(activeLayout));
+			customizationsArray.push(createCustomization(activeLayoutName));
 
 			$layoutsCustomDiv.text(JSON.stringify(customizationsArray));
 			$layoutsAvaiableDiv.text(JSON.stringify(updatedLayouts));
@@ -422,7 +424,6 @@
 			$.each(customizationsArray, function (i, layout) {
 				layoutsNames.push(layout.name);
 			});
-
 			$.ajax({
 				type: 'POST',
 				dataType: 'json',
@@ -448,55 +449,60 @@
 
 			//saving layouts customizations
 			$.each(customizationsArray, function (i, layout) {
-				if (layout.sections != "") {
-					$.ajax({
-						type: 'POST',
-						dataType: 'json',
-						url: _plugin_frontend_settings.rexajax.ajaxurl,
-						data: {
-							action: 'rexlive_save_customization_layout',
-							nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-							post_id_to_update: idPost,
-							customizations: layout.sections,
-							layout_name: layout.name
-						},
-						success: function (response) {
-							console.log(response);
-							if (response.success) {
-								console.log('layout custom aggiornato');
+				console.log(layout);
+				if (layout.name == activeLayoutName) {
+					if (layout.sections != "") {
+						console.log(layout);
+						console.log(layout.sections);
+						$.ajax({
+							type: 'POST',
+							dataType: 'json',
+							url: _plugin_frontend_settings.rexajax.ajaxurl,
+							data: {
+								action: 'rexlive_save_customization_layout',
+								nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+								post_id_to_update: idPost,
+								sections: layout.sections,
+								layout_name: layout.name
+							},
+							success: function (response) {
+								console.log(response);
+								if (response.success) {
+									console.log('layout custom aggiornato');
+								}
+								console.log('chiama effettuata con successo');
+							},
+							error: function (response) {
+								console.log('errore chiama ajax');
 							}
-							console.log('chiama effettuata con successo');
-						},
-						error: function (response) {
-							console.log('errore chiama ajax');
-						}
-					});
+						});
+					}
 				}
 			});
 		});
 
-		var createCustomization = function (activeLayout) {
+		var createCustomization = function (layoutName) {
 			var data =
 			{
-				name: activeLayout[0],
+				name: layoutName,
 				sections: []
 			}
-			data.sections = createSectionsCustomizations();
+			data.sections = createSectionsCustomizations(layoutName);
 			return data;
 		}
 
-		var createSectionsCustomizations = function () {
+		var createSectionsCustomizations = function (layoutName) {
 			var output = [];
 			Rexbuilder_Util.$rexContainer.children('.rexpansive_section').each(function () {
 				var $section = $(this);
 				if (!$section.hasClass("removing_section")) {
 					var sectionRexID = $section.attr("data-rexlive-section-id");
-					console.log(sectionRexID);
+
 					var section_props = {
 						section_rex_id: sectionRexID,
 						targets: [],
 					}
-					section_props.targets = createTargets($section);
+					section_props.targets = createTargets($section, layoutName);
 					output.push(section_props);
 				}
 			});
@@ -504,16 +510,24 @@
 			return output;
 		}
 
-		var createTargets = function ($section) {
+		var checkEditsSection = function ($section) {
+			return $section.attr("data-rexlive-section-edited") == "true" ? true : false;
+		}
+		var checkEditsElement = function ($elem) {
+			return $elem.attr("data-rexlive-element-edited") == "true" ? true : false;
+		}
+		var createTargets = function ($section, layoutName) {
 			var targets = [];
 
 			var section_props = {
 				name: "self",
-				hide: false,
 				props: {}
 			}
-
-			section_props.props = createSectionProperties($section, "customLayout");
+			console.log(layoutName);
+			if (layoutName == "default" || checkEditsSection($section)) {
+				console.log("saving: " + "self");
+				section_props.props = createSectionProperties($section, "customLayout", layoutName);
+			}
 			targets.push(section_props);
 
 			var $gridGallery = $section.find('.grid-stack-row');
@@ -526,13 +540,14 @@
 				var $elem = $(this);
 				if (!$elem.hasClass("removing_block")) {
 					var blockRexID = $elem.attr("data-rexbuilder-block-id");
-					console.log(blockRexID);
 					var block_props = {
 						name: blockRexID,
-						hide: false,
-						props: []
+						props: {}
 					}
-					block_props.props = createBlockProperties($elem, "customLayout");
+					if (layoutName == "default" || checkEditsElement($elem)) {
+						console.log("saving: " + blockRexID);
+						block_props.props = createBlockProperties($elem, "customLayout", layoutName);
+					}
 					targets.push(block_props);
 				}
 			});
@@ -564,7 +579,7 @@
 			return post;
 		}
 
-		var createBlockProperties = function ($elem, mode) {
+		var createBlockProperties = function ($elem, mode, layoutName) {
 			var id = "",
 				rex_id = "",
 				type = "text",
@@ -582,6 +597,7 @@
 				image_width = 0,
 				image_height = 0,
 				id_image_bg_block = "",
+				video_mp4_url = "",
 				video_bg_id = "",
 				video_bg_url = "",
 				video_bg_url_vimeo = "",
@@ -633,6 +649,8 @@
 				: $itemData.attr('data-id_image_bg_block');
 			video_bg_id = $itemData.attr('data-video_bg_id') === undefined ? ""
 				: $itemData.attr('data-video_bg_id');
+			video_mp4_url = $itemData.attr('data-video_mp4_url') === undefined ? ""
+				: $itemData.attr('data-video_mp4_url');
 			video_bg_url = $itemData.attr('data-video_bg_url') === undefined ? ""
 				: $itemData.attr('data-video_bg_url');
 			video_bg_url_vimeo = $itemData.attr('data-video_bg_url_vimeo') === undefined ? ""
@@ -702,6 +720,7 @@
 					+ '" image_bg_block="' + image_bg_block
 					+ '" id_image_bg_block="' + id_image_bg_block
 					+ '" video_bg_id="' + video_bg_id
+					+ '" video_mp4_url="' + video_mp4_url
 					+ '" video_bg_url="' + video_bg_url
 					+ '" video_bg_url_vimeo="' + video_bg_url_vimeo
 					+ '" type_bg_block="' + type_bg_block
@@ -726,96 +745,155 @@
 			} else if (mode == "customLayout") {
 
 				var props = {};
-				/* if (layout == "default") {
 
-				} */
-				props["rexbuilder_block_id"] = rex_id;
-				props["type"] = type;
-				props["size_x"] = size_x;
-				props["size_y"] = size_y;
-				props["row"] = row;
-				props["col"] = col;
-				props["gs_start_h"] = gs_start_h;
-				props["gs_width"] = gs_width;
-				props["gs_height"] = gs_height;
-				props["gs_y"] = gs_y;
-				props["gs_x"] = gs_x;
-
-				if (color_bg_block != "") {
+				if (layoutName == "default") {
+					props["hide"] = false;
+					props["rexbuilder_block_id"] = rex_id;
+					props["type"] = type;
+					props["size_x"] = size_x;
+					props["size_y"] = size_y;
+					props["row"] = row;
+					props["col"] = col;
+					props["gs_start_h"] = gs_start_h;
+					props["gs_width"] = gs_width;
+					props["gs_height"] = gs_height;
+					props["gs_y"] = gs_y;
+					props["gs_x"] = gs_x;
 					props["color_bg_block"] = color_bg_block;
-				}
-				if (image_bg_block != "") {
 					props["image_bg_block"] = image_bg_block;
-				}
-				if (image_width != "") {
 					props["image_width"] = image_width;
-				}
-				if (image_height != "") {
 					props["image_height"] = image_height;
-				}
-				if (id_image_bg_block != "") {
 					props["id_image_bg_block"] = id_image_bg_block;
-				}
-				if (video_bg_id != "") {
 					props["video_bg_id"] = video_bg_id;
-				}
-				if (video_bg_url != "") {
+					props["video_mp4_url"] = video_mp4_url;
 					props["video_bg_url"] = video_bg_url;
-				}
-				if (video_bg_url_vimeo != "") {
 					props["video_bg_url_vimeo"] = video_bg_url_vimeo;
-				}
-				if (type_bg_block != "") {
 					props["type_bg_block"] = type_bg_block;
-				}
-				if (image_size != "") {
 					props["image_size"] = image_size;
-				}
-				if (photoswipe != "") {
 					props["photoswipe"] = photoswipe;
-				}
-				if (block_custom_class != "") {
 					props["block_custom_class"] = block_custom_class;
-				}
-				if (block_padding != "") {
 					props["block_padding"] = block_padding;
-				}
-				if (overlay_block_color != "") {
 					props["overlay_block_color"] = overlay_block_color;
-				}
-				if (zak_background != "") {
 					props["zak_background"] = zak_background;
-				}
-				if (zak_side != "") {
 					props["zak_side"] = zak_side;
-				}
-				if (zak_title != "") {
 					props["zak_title"] = zak_title;
-				}
-				if (zak_icon != "") {
 					props["zak_icon"] = zak_icon;
-				}
-				if (zak_foreground != "") {
 					props["zak_foreground"] = zak_foreground;
-				}
-				if (block_animation != "") {
 					props["block_animation"] = block_animation;
-				}
-				if (video_has_audio != "") {
 					props["video_has_audio"] = video_has_audio;
-				}
-				if (block_has_scrollbar != "") {
 					props["block_has_scrollbar"] = block_has_scrollbar;
-				}
-				if (block_live_edited != "") {
 					props["block_live_edited"] = block_live_edited;
+				} else {
+					if (rex_id != "") {
+						props["rexbuilder_block_id"] = rex_id;
+					}
+					if (type != "text") {
+						props["type"] = type;
+					}
+					if (size_x != 1) {
+						props["size_x"] = size_x;
+					}
+					if (size_y != 1) {
+						props["size_y"] = size_y;
+					}
+					if (row != "") {
+						props["row"] = row;
+					}
+					if (col != "") {
+						props["col"] = col;
+					}
+					if (gs_start_h != 1) {
+						props["gs_start_h"] = gs_start_h;
+					}
+					if (gs_width != 1) {
+						props["gs_width"] = gs_width;
+					}
+					if (gs_height != 1) {
+						props["gs_height"] = gs_height;
+					}
+					if (gs_y != "") {
+						props["gs_y"] = gs_y;
+					}
+					if (gs_x != "") {
+						props["gs_x"] = gs_x;
+					}
+					if (color_bg_block != "#ffffff") {
+						props["color_bg_block"] = color_bg_block;
+					}
+					if (image_bg_block != "") {
+						props["image_bg_block"] = image_bg_block;
+					}
+					if (image_width != 0) {
+						props["image_width"] = image_width;
+					}
+					if (image_height != 0) {
+						props["image_height"] = image_height;
+					}
+					if (id_image_bg_block != "") {
+						props["id_image_bg_block"] = id_image_bg_block;
+					}
+					if (video_bg_id != "") {
+						props["video_bg_id"] = video_bg_id;
+					}
+					if (video_bg_url != "") {
+						props["video_bg_url"] = video_bg_url;
+					}
+					if (video_bg_url_vimeo != "") {
+						props["video_bg_url_vimeo"] = video_bg_url_vimeo;
+					}
+					if (type_bg_block != "") {
+						props["type_bg_block"] = type_bg_block;
+					}
+					if (image_size != "full") {
+						props["image_size"] = image_size;
+					}
+					if (photoswipe != "") {
+						props["photoswipe"] = photoswipe;
+					}
+					if (block_custom_class != "") {
+						props["block_custom_class"] = block_custom_class;
+					}
+					if (block_padding != "") {
+						props["block_padding"] = block_padding;
+					}
+					if (overlay_block_color != "") {
+						props["overlay_block_color"] = overlay_block_color;
+					}
+					if (zak_background != "") {
+						props["zak_background"] = zak_background;
+					}
+					if (zak_side != "") {
+						props["zak_side"] = zak_side;
+					}
+					if (zak_title != "") {
+						props["zak_title"] = zak_title;
+					}
+					if (zak_icon != "") {
+						props["zak_icon"] = zak_icon;
+					}
+					if (zak_foreground != "") {
+						props["zak_foreground"] = zak_foreground;
+					}
+					if (block_animation != "fadeInUpBig") {
+						props["block_animation"] = block_animation;
+					}
+					if (video_has_audio != "0") {
+						props["video_has_audio"] = video_has_audio;
+					}
+					if (block_has_scrollbar != "false") {
+						props["block_has_scrollbar"] = block_has_scrollbar;
+					}
+					if (block_live_edited != "") {
+						props["block_live_edited"] = block_live_edited;
+					}
+
 				}
 
 				return props;
 			}
 		};
 
-		var createSectionProperties = function ($section, mode) {
+		var createSectionProperties = function ($section, mode, layoutName) {
 			var section_name = "",
 				type = "perfect-grid",
 				color_bg_section = "#ffffff",
@@ -935,7 +1013,7 @@
 				$(elementsOrdered).each(function () {
 					var $elem = $(this);
 					if (!$elem.hasClass("removing_block")) {
-						output += createBlockProperties($elem, "shortcode");
+						output += createBlockProperties($elem, "shortcode", null);
 					}
 				});
 
@@ -945,77 +1023,108 @@
 			} else if (mode == "customLayout") {
 
 				var props = {};
-				if (section_name != "") {
+
+				if (layoutName == "default") {
+					props["hide"] = false;
 					props["section_name"] = section_name;
-				}
-				if (type != "") {
 					props["type"] = type;
-				}
-				if (color_bg_section != "") {
 					props["color_bg_section"] = color_bg_section;
-				}
-				if (dimension != "") {
 					props["dimension"] = dimension;
-				}
-				if (margin != "") {
 					props["margin"] = margin;
-				}
-				if (image_bg_section != "") {
 					props["image_bg_section"] = image_bg_section;
-				}
-				if (id_image_bg_section != "") {
 					props["id_image_bg_section"] = id_image_bg_section;
-				}
-				if (video_bg_id_section != "") {
 					props["video_bg_id_section"] = video_bg_id_section;
-				}
-				if (video_bg_url_section != "") {
 					props["video_bg_url_section"] = video_bg_url_section;
-				}
-				if (video_bg_url_vimeo_section != "") {
 					props["video_bg_url_vimeo_section"] = video_bg_url_vimeo_section;
-				}
-				if (full_height != "") {
 					props["full_height"] = full_height;
-				}
-				if (block_distance != "") {
 					props["block_distance"] = block_distance;
-				}
-				if (layout != "") {
 					props["layout"] = layout;
-				}
-				if (responsive_background != "") {
 					props["responsive_background"] = responsive_background;
-				}
-				if (custom_classes != "") {
 					props["custom_classes"] = custom_classes;
-				}
-				if (section_width != "") {
 					props["section_width"] = section_width;
-				}
-				if (row_separator_top != "") {
 					props["row_separator_top"] = row_separator_top;
-				}
-				if (row_separator_bottom != "") {
 					props["row_separator_bottom"] = row_separator_bottom;
-				}
-				if (row_separator_right != "") {
 					props["row_separator_right"] = row_separator_right;
-				}
-				if (row_separator_left != "") {
 					props["row_separator_left"] = row_separator_left;
-				}
-				if (row_margin_top != "") {
 					props["row_margin_top"] = row_margin_top;
-				}
-				if (row_margin_bottom != "") {
 					props["row_margin_bottom"] = row_margin_bottom;
-				}
-				if (row_margin_right != "") {
 					props["row_margin_right"] = row_margin_right;
-				}
-				if (row_margin_left != "") {
 					props["row_margin_left"] = row_margin_left;
+
+				} else {
+
+					if (section_name != "") {
+						props["section_name"] = section_name;
+					}
+					if (type != "perfect-grid") {
+						props["type"] = type;
+					}
+					if (color_bg_section != "#ffffff") {
+						props["color_bg_section"] = color_bg_section;
+					}
+					if (dimension != "full") {
+						props["dimension"] = dimension;
+					}
+					if (margin != "") {
+						props["margin"] = margin;
+					}
+					if (image_bg_section != "") {
+						props["image_bg_section"] = image_bg_section;
+					}
+					if (id_image_bg_section != "") {
+						props["id_image_bg_section"] = id_image_bg_section;
+					}
+					if (video_bg_id_section != "") {
+						props["video_bg_id_section"] = video_bg_id_section;
+					}
+					if (video_bg_url_section != "") {
+						props["video_bg_url_section"] = video_bg_url_section;
+					}
+					if (video_bg_url_vimeo_section != "") {
+						props["video_bg_url_vimeo_section"] = video_bg_url_vimeo_section;
+					}
+					if (full_height != "") {
+						props["full_height"] = full_height;
+					}
+					if (block_distance != 20) {
+						props["block_distance"] = block_distance;
+					}
+					if (layout != "fixed") {
+						props["layout"] = layout;
+					}
+					if (responsive_background != "") {
+						props["responsive_background"] = responsive_background;
+					}
+					if (custom_classes != "") {
+						props["custom_classes"] = custom_classes;
+					}
+					if (section_width != "") {
+						props["section_width"] = section_width;
+					}
+					if (row_separator_top != "") {
+						props["row_separator_top"] = row_separator_top;
+					}
+					if (row_separator_bottom != "") {
+						props["row_separator_bottom"] = row_separator_bottom;
+					}
+					if (row_separator_right != "") {
+						props["row_separator_right"] = row_separator_right;
+					}
+					if (row_separator_left != "") {
+						props["row_separator_left"] = row_separator_left;
+					}
+					if (row_margin_top != "") {
+						props["row_margin_top"] = row_margin_top;
+					}
+					if (row_margin_bottom != "") {
+						props["row_margin_bottom"] = row_margin_bottom;
+					}
+					if (row_margin_right != "") {
+						props["row_margin_right"] = row_margin_right;
+					}
+					if (row_margin_left != "") {
+						props["row_margin_left"] = row_margin_left;
+					}
 				}
 
 				return props;

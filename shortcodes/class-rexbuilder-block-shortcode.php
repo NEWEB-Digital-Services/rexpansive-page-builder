@@ -345,8 +345,14 @@ class Rexbuilder_Block {
 			foreach ($atts as $property_name => $value_property) {
 				echo 'data-'.$property_name.'="'.$value_property.'" ';
 			}
+			
 			unset($property_name);
 			unset($value_property);
+
+			if( '' != $video_bg_id && 'undefined' != $video_bg_id ){
+				echo 'data-video-mp4-url="'. wp_get_attachment_url ( $video_bg_id ).'"';
+			}
+
 			echo '></div>';
 
 			echo '<div class="grid-stack-item-content">';
@@ -391,7 +397,6 @@ class Rexbuilder_Block {
 				break;
 				case 'text':
 				case 'rexslider':
-				case 'video':
 				case 'video':
 					echo ( $floating_border == '' ? $block_link_pre : '');
 					echo '<div class="grid-item-content text-content' . ( ('' != $video_bg_url && 'undefined' != $video_bg_url) ? ' youtube-player' : '' ) . ( ( '' != $video_bg_id && 'undefined' != $video_bg_id ) ? ' mp4-player' : '' ) . ( $bg_video_vimeo_markup ? ' vimeo-player' : '' ) . ( ($flex_positioned) ? ' rex-flexbox' : '' );

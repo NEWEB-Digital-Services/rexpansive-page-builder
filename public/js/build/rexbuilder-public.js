@@ -14,14 +14,6 @@ var Rexbuilder_App = (function ($) {
     Rexbuilder_Util.init();
 
     if (_plugin_frontend_settings.user.logged && _plugin_frontend_settings.user.editing) {
-      var infos = {
-        eventName: "rexlive:edited",
-        edited: false,
-        rexliveEvent: true
-      };
-
-      window.parent.postMessage(infos, '*');
-
       Rexbuilder_Util.editorMode = true;
       Rexbuilder_Util_Editor.init();
       Rexbuilder_Section.init();

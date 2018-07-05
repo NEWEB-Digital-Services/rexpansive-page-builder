@@ -134,9 +134,9 @@
             } else {
                 this.frontEndMode();
             }
-/* 
-            console.log(this.getElementBottomTop());
-            console.log(this.getElementTopBottom()); */
+            /* 
+                        console.log(this.getElementBottomTop());
+                        console.log(this.getElementTopBottom()); */
             this.properties.firstStartGrid = false;
         },
 
@@ -271,13 +271,16 @@
                                 if (textHeight >= maxBlockHeight) {
                                     h = h + Math.ceil((textHeight - maxBlockHeight) / this.properties.singleHeight);
                                 } else {
-                                    h = Math.max(h - Math.floor((maxBlockHeight - textHeight) / this.properties.singleHeight), parseInt($dataBlock.attr('data-block_height_calculated')));
+                                    h = Math.max(h - Math.floor((maxBlockHeight - textHeight) / this.properties.singleHeight),
+                                        isNaN(parseInt($dataBlock.attr('data-block_height_calculated'))) ? 0 : parseInt($dataBlock.attr('data-block_height_calculated')));
                                 }
                             } else {
                                 if (textHeight >= maxBlockHeight) {
                                     h = h + Math.ceil((textHeight - maxBlockHeight) / this.properties.singleHeight);
                                 } else {
-                                    h = Math.max(h - Math.floor((maxBlockHeight - textHeight) / this.properties.singleHeight), parseInt($dataBlock.attr('data-block_height_calculated')));
+                                    h = Math.max(h - Math.floor((maxBlockHeight - textHeight) / this.properties.singleHeight),
+                                        isNaN(parseInt($dataBlock.attr('data-block_height_calculated'))) ? 0 : parseInt($dataBlock.attr('data-block_height_calculated')));
+
                                 }
                                 console.log("new block fixed h: " + h);
                             }
@@ -376,6 +379,21 @@
                     }
                 }
             });
+        },
+
+        batchGridstack: function () {
+
+        },
+
+        commitGridstack: function () {
+
+        },
+
+        updateGridstackFixedMode: function () {
+            var gridstack = this.$element.data('gridstack');
+            gridstack.cellHeight(this.properties.singleHeight);
+            gridstack._initStyles();
+            gridstack._updateStyles(this.properties.singleHeight);
         },
 
         _fixBlocksPosition: function () {
@@ -896,7 +914,7 @@
             var $elem;
             this.$element.children('.grid-stack-item').each(function () {
                 $elem = $(this);
-               // console.log("saving: " + $elem.attr("data-rexbuilder-block-id"));
+                // console.log("saving: " + $elem.attr("data-rexbuilder-block-id"));
                 store.set($elem.attr("data-rexbuilder-block-id"), {
                     "properties": [
                         { "x": parseInt($elem.attr("data-gs-x")) },
@@ -1527,7 +1545,7 @@
         },
 
         _launchTextEditor: function () {
-           // console.log("launching text editor");
+            // console.log("launching text editor");
             var divToolbar = document.createElement('div');
             var gallery = this;
 
@@ -1835,7 +1853,7 @@
         },
 
         updateElementHeight: function ($elem) {
-          //  console.log("calculating " + $elem.attr("data-rexbuilder-block-id") + " height");
+            //  console.log("calculating " + $elem.attr("data-rexbuilder-block-id") + " height");
             if (Rexbuilder_Util.editorMode) {
                 Rexbuilder_Util_Editor.elementIsResizing = true;
             }

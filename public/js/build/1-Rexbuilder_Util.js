@@ -6,7 +6,8 @@ var Rexbuilder_Util = (function ($) {
 	var fixSectionWidth = 0;
 	var editorMode = false;
 	var windowIsResizing = false;
-	var activeLayout;
+	var responsiveLayouts;
+	var defaultLayoutSections;
 
 	var createRandomID = function (n) {
 		var text = "";
@@ -27,7 +28,7 @@ var Rexbuilder_Util = (function ($) {
 			flag = true;
 			id = createRandomID(idLength);
 			Rexbuilder_Util.$rexContainer.children('.rexpansive_section').each(function () {
-				if ($(this).attr('data-rexlive-section-id') !== undefined && $(this).attr('data-rexlive-section-id') == id) {
+				if (id == "self" || ($(this).attr('data-rexlive-section-id') !== undefined && $(this).attr('data-rexlive-section-id') == id)) {
 					flag = false;
 				}
 			});
@@ -45,7 +46,7 @@ var Rexbuilder_Util = (function ($) {
 			id = createRandomID(idLength);
 			Rexbuilder_Util.$rexContainer.find('.grid-stack-item').each(function () {
 				$this = $(this);
-				if ($this.attr('data-rexbuilder-block-id') !== undefined && $this.attr('data-rexbuilder-block-id') == id) {
+				if (id == "self" || ($this.attr('data-rexbuilder-block-id') !== undefined && $this.attr('data-rexbuilder-block-id') == id)) {
 					flag = false;
 				}
 			});
@@ -77,7 +78,8 @@ var Rexbuilder_Util = (function ($) {
 	}
 
 	var chooseLayout = function () {
-		var w = $window.width();
+		var w = _viewport().width;
+		console.log(w);
 		var $resposiveData = $("#rexbuilder-layout-data");
 
 		if ($resposiveData.children(".layouts-data").data("empty-customizations") == "true") {
@@ -85,8 +87,8 @@ var Rexbuilder_Util = (function ($) {
 		}
 
 		var $responsiveLayoutAvaible = JSON.parse($resposiveData.children(".available-layouts").text());
-		var selectedLayout = "";
-
+		var selectedLayoutName = "";
+		console.log($responsiveLayoutAvaible);
 		$.each($responsiveLayoutAvaible, function (i, layout) {
 			if (layout[1] == "") {
 				layout[1] = "0";
@@ -96,55 +98,77 @@ var Rexbuilder_Util = (function ($) {
 		var ordered = lodash.sortBy($responsiveLayoutAvaible, [function (o) { return parseInt(o[1]); }]);
 
 		$.each(ordered, function (i, layout) {
-			if (w > layout[1]) {
+			if (w >= layout[1]) {
 				if (layout[2] != "") {
 					if (w < layout[2]) {
-						selectedLayout = layout[0];
+						selectedLayoutName = layout[0];
 					}
 				} else {
-					selectedLayout = layout[0];
+					selectedLayoutName = layout[0];
 				}
 			}
 		});
 
-		if (selectedLayout === "") {
-			selectedLayout = "default";
+		if (selectedLayoutName === "") {
+			selectedLayoutName = "default";
 		}
-		console.log(selectedLayout);
-		return selectedLayout;
+		console.log(selectedLayoutName);
+		return selectedLayoutName;
 	}
 
-	var _edit_dom_layout = function (chosenLayout) {
-		Rexbuilder_Util.$rexContainer.attr("data-rex-layout-selected", chosenLayout);
+	var _edit_dom_layout = function (chosenLayoutName) {
+		console.log("chosen: " + chosenLayoutName);
+		Rexbuilder_Util.$rexContainer.attr("data-rex-layout-selected", chosenLayoutName);
 		var $resposiveData = $("#rexbuilder-layout-data");
-		if ((chosenLayout == activeLayout) || ($resposiveData.children(".layouts-customizations").data("empty-customizations") == "true") || $resposiveData.children(".layouts-customizations").data("empty-customizations")) {
+		if (chosenLayoutName == Rexbuilder_Util.activeLayout) {
 			return;
 		}
-		activeLayout = chosenLayout;
-		chosenLayout = "custom";
+
+		Rexbuilder_Util.activeLayout = chosenLayoutName;
+
+		var data = {
+			eventName: "rexlive:layoutChanged",
+			activeLayoutName: chosenLayoutName
+		}
+
+		Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+
+		if (($resposiveData.children(".layouts-customizations").data("empty-customizations") == "true") || $resposiveData.children(".layouts-customizations").data("empty-customizations")) {
+			return;
+		}
+
 		var layoutData = JSON.parse($resposiveData.children(".layouts-customizations").text());
+
+		responsiveLayouts = layoutData;
+		console.log(layoutData);
+		$.each(layoutData, function (i, layout) {
+			if (layout.name == "default") {
+				defaultLayoutSections = layout.sections;
+			}
+		});
+
 		var layoutSelected;
-		var i, j;
+		var i;
 		for (i = 0; i < layoutData.length; i++) {
-			if (layoutData[i].name == chosenLayout) {
+			if (layoutData[i].name == chosenLayoutName) {
 				layoutSelected = layoutData[i];
 				break;
 			}
 		}
+		var customSections;
 		if (i == layoutData.length) {
-			return;
+			console.log("loading default layout");
+			customSections = {};
+		} else {
+			customSections = layoutSelected.sections;
 		}
-
-		console.log(layoutSelected.name);
 		console.log("updaiting dom");
-
-		var section;
 		var sectionRexId;
-		var target;
-		var targetID;
-		var targetProps;
-		var hide;
+		var blockRexId;
 
+		var targetName;
+		var targetHide;
+		var targetProps;
 		var $section;
 		var $sectionData;
 
@@ -152,173 +176,198 @@ var Rexbuilder_Util = (function ($) {
 		var $elem;
 		var $itemContent;
 		var $itemData;
-		var $blockContent;
 
-		for (i = 0; i < layoutSelected.sections.length; i++) {
-			section = layoutSelected.sections[i];
+		console.log(defaultLayoutSections);
+		console.log(customSections);
+
+		/* 		var x = lodash.merge({}, defaultLayoutSections);
+				var y = lodash.merge({}, x, customSections);
+				var z = lodash.merge({}, x, y);
+				console.log(x);
+				console.log(y);
+				console.log(z); */
+
+		var mergedEdits = lodash.merge({}, defaultLayoutSections, customSections);
+		console.log(mergedEdits);
+		$.each(mergedEdits, function (i, section) {
 			sectionRexId = section.section_rex_id;
-			/* console.log(sectionRexId); */
 			$section = Rexbuilder_Util.$rexContainer.children('section[data-rexlive-section-id="' + sectionRexId + '"]');
 			$gallery = $section.find(".grid-stack-row");
-			/* console.log($section);
-			console.log($gallery); */
-			for (j = 0; j < section.targets.length; j++) {
-				target = section.targets[j];
-				targetID = target.name;
-				hide = target.hide;
+			$.each(section.targets, function (i, target) {
+				targetName = target.name;
 				targetProps = target.props;
-				if (hide === "true") {
-					console.log("hiding: " + targetID);
+				if (targetName == "self") {
+					/* console.log("setting section properties: "+targetName);
+					for (const propName in targetProps) {
+						console.log(propName + " " + targetProps[propName]);
+					} */
 				} else {
+					//console.log("setting block properties: " + targetName);
+					$elem = $gallery.children('div[data-rexbuilder-block-id="' + targetName + '"]');
+					$itemData = $elem.children(".rexbuilder-block-data");
+					$itemContent = $elem.find(".grid-item-content");
 
-					//console.log(targetID);
+					for (var propName in targetProps) {
+						switch (propName) {
+							case "hide":
+								;
+								break;
+							case "rexbuilder_block_id":
+								;
+								break;
 
-					if (targetID == "self") {
-						/* console.log("setting section properties: "+targetID);
-						for (const propName in targetProps) {
-							console.log(propName + " " + targetProps[propName]);
-						} */
-					} else {
-						console.log("setting block properties: " +targetID);
-						$elem = $gallery.children('div[data-rexbuilder-block-id="' + targetID + '"]');
-						$itemData = $elem.children(".rexbuilder-block-data");
-						$itemContent = $elem.find(".grid-item-content");
-						/* console.log($elem);
-						console.log($itemData);
-						console.log($itemContent); */
-						for (const propName in targetProps) {
-							if (targetProps[propName] != "") {
-								switch (propName) {
-									case "rexbuilder_block_id":
-										break;
+							case "type":
+								$itemData.attr('data-type', targetProps[propName]);
+								break;
 
-									case "type":
-										$itemData.attr('data-type', targetProps[propName]);
-										break;
+							case "size_x":
+								$elem.attr('data-width', targetProps[propName]);
+								break;
 
-									case "size_x":
-										$elem.attr('data-width', targetProps[propName]);
-										break;
+							case "size_y":
+								$elem.attr('data-height', targetProps[propName]);
+								break;
 
-									case "size_y":
-										$elem.attr('data-height', targetProps[propName]);
-										break;
+							case "row":
+								$elem.attr('data-row', targetProps[propName]);
+								break;
 
-									case "row":
-										$elem.attr('data-row', targetProps[propName]);
-										break;
+							case "col":
+								$elem.attr('data-col', targetProps[propName]);
+								break;
 
-									case "col":
-										$elem.attr('data-col', targetProps[propName]);
-										break;
+							/* 								case "gs_start_h":
+																break;
+							
+															case "gs_width":
+																$elem.attr('data-gs-width', targetProps[propName]);
+																break;
+							
+															case "gs_height":
+																$elem.attr('data-gs-height', targetProps[propName]);
+																break;
+							
+															case "gs_y":
+																$elem.attr('data-gs-y', targetProps[propName]);
+																break;
+							
+															case "gs_x":
+																$elem.attr('data-gs-x', targetProps[propName]);
+																break;
+							 */
+							case "color_bg_block":
+								console.log("setting bg color");
+								console.log(targetProps[propName]);
+								$itemContent.css('background-color', targetProps[propName]);
+								break;
 
-									case "gs_start_h":
-										break;
-
-									case "gs_width":
-										$elem.attr('data-gs-width', targetProps[propName]);
-										break;
-
-									case "gs_height":
-										$elem.attr('data-gs-height', targetProps[propName]);
-										break;
-
-									case "gs_y":
-										$elem.attr('data-gs-y', targetProps[propName]);
-										break;
-
-									case "gs_x":
-										$elem.attr('data-gs-x', targetProps[propName]);
-										break;
-
-									case "color_bg_block":
-										console.log("change background color"); 
-										console.log($itemContent.css('background-color')); 
-										$itemContent.css('background-color', targetProps[propName]);
-										break;
-
-									case "image_bg_block":
-										$itemContent.css('background-image', 'url('+ targetProps[propName]+'")');
-										break;
-
-									case "image_width":
-										$itemContent.attr('data-background-image-width', parseInt(targetProps[propName]));
-										break;
-
-									case "image_height":
-										$itemContent.attr('data-background-image-height', parseInt(targetProps[propName]));
-										break;
-
-									case "id_image_bg_block":
-										$itemData.attr('data-id_image_bg_block', targetProps[propName]);
-										break;
-
-									case "video_bg_id":
-										break;
-
-									case "video_bg_url":
-										break;
-
-									case "video_bg_url_vimeo":
-										break;
-
-									case "type_bg_block":
-										break;
-
-									case "image_size":
-										break;
-
-									case "photoswipe":
-										break;
-
-									case "block_custom_class":
-										break;
-
-									case "block_padding":
-										break;
-
-									case "overlay_block_color":
-										break;
-
-									case "zak_background":
-										break;
-
-									case "zak_side":
-										break;
-
-									case "zak_title":
-										break;
-
-									case "zak_icon":
-										break;
-
-									case "zak_foreground":
-										break;
-
-									case "block_animation":
-										break;
-
-									case "video_has_audio":
-										break;
-
-									case "block_has_scrollbar":
-										break;
-
-									case "block_live_edited":
-										break;
-
-									default:
-										console.log("rip");
-										break;
+							case "image_bg_block":
+								if (targetProps[propName] != "") {
+									$itemContent.attr("style", "background-image: url('" + targetProps[propName] + "'); background-color: rgba(0, 0, 0, 0);");
 								}
-								//console.log("setting " + propName);
-							}
-							//							console.log(propName + " " + targetProps[propName]);
+								break;
+
+							case "image_width":
+								if (targetProps[propName] != "") {
+									$itemContent.attr('data-background-image-width', parseInt(targetProps[propName]));
+								}
+								break;
+
+							case "image_height":
+								if (targetProps[propName] != "") {
+									$itemContent.attr('data-background-image-height', parseInt(targetProps[propName]));
+								}
+								break;
+
+							case "id_image_bg_block":
+								if (targetProps[propName] != "") {
+									$itemData.attr('data-id_image_bg_block', targetProps[propName]);
+								}
+								break;
+							//video mp4
+							case "video_bg_id":
+								;
+								break;
+							case "video_mp4_url":
+								var $videoWrap = $itemContent.children(".rex-video-wrap");
+								var $toggleAudio = $itemContent.children(".rex-video-toggle-audio");
+								if ($videoWrap.length != 0) {
+									if (false) {
+										$videoWrap.remove();
+										$toggleAudio.remove();
+									}
+								}
+								if (targetProps[propName] != "") {
+									tmpl.arg = "video";
+									$itemContent.prepand(tmpl("tmpl-video-mp4", { url: targetProps[propName] }));
+									$itemContent.append(tmpl("tmpl-video-toggle-audio"));
+								}
+								break;
+
+							// video youtube
+							case "video_bg_url":
+
+								break;
+
+							// video vimeo
+							case "video_bg_url_vimeo":
+
+								break;
+
+							case "type_bg_block":
+								break;
+
+							case "image_size":
+								break;
+
+							case "photoswipe":
+								break;
+
+							case "block_custom_class":
+								break;
+
+							case "block_padding":
+								break;
+
+							case "overlay_block_color":
+								break;
+
+							case "zak_background":
+								break;
+
+							case "zak_side":
+								break;
+
+							case "zak_title":
+								break;
+
+							case "zak_icon":
+								break;
+
+							case "zak_foreground":
+								break;
+
+							case "block_animation":
+								break;
+
+							case "video_has_audio":
+								break;
+
+							case "block_has_scrollbar":
+								break;
+
+							case "block_live_edited":
+								break;
+
+							default:
+								console.log("rip");
+								break;
 						}
 					}
+
 				}
-			}
-		}
+			});
+		});
 	}
 
 	// function to detect if we are on a mobile device
@@ -451,36 +500,48 @@ var Rexbuilder_Util = (function ($) {
 		function doneResizing() {
 			console.log("window resized");
 			Rexbuilder_Util.windowIsResizing = true;
-			
-			_edit_dom_layout(chooseLayout());
-			
+
+			/* Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
+				var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
+				if (galleryEditorIstance !== undefined) {
+					galleryEditorIstance.batchGridstack();
+				}
+			}); */
+
+			if (!editorMode) {
+				console.log("not editor, changing layout");
+				_edit_dom_layout(chooseLayout());
+			}
+
 			Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
 				var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
 				if (galleryEditorIstance !== undefined) {
-					
 
 					galleryEditorIstance._defineDynamicPrivateProperties();
 
-/* 					if (Rexbuilder_Util.viewport().width <= 768) {
+					/* if (Rexbuilder_Util.viewport().width <= 768) {
 						galleryEditorIstance.collapseElements();
 					} else {
 						galleryEditorIstance.restoreGrid();
 					} */
 
-					var gridstack = galleryEditorIstance.$element.data('gridstack');
 
 					galleryEditorIstance.updateBlocksHeight();
 
 					if (galleryEditorIstance.settings.galleryLayout == 'fixed') {
-						gridstack.cellHeight(galleryEditorIstance.properties.singleHeight);
-						gridstack._initStyles();
-						gridstack._updateStyles(galleryEditorIstance.properties.singleHeight);
-					}
+						galleryEditorIstance.updateGridstackFixedMode();
 
+					}
 					galleryEditorIstance = undefined;
-					gridstack = undefined;
 				}
 			});
+
+			/* Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
+				var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
+				if (galleryEditorIstance !== undefined) {
+					galleryEditorIstance.commitGridstack();
+				}
+			}); */
 
 			Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
 				var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
@@ -559,6 +620,8 @@ var Rexbuilder_Util = (function ($) {
 
 		this.lastSectionNumber = -1;
 
+		this.activeLayout = "";
+
 		_updateSectionsID();
 
 		_edit_dom_layout(chooseLayout());
@@ -600,7 +663,9 @@ var Rexbuilder_Util = (function ($) {
 		setContainer: setContainer,
 		createSectionID: createSectionID,
 		createBlockID: createBlockID,
-		has_class: _has_class
+		has_class: _has_class,
+		responsiveLayouts: responsiveLayouts,
+		defaultLayoutSections: defaultLayoutSections
 	};
 
 })(jQuery);
