@@ -19,9 +19,27 @@ defined( 'ABSPATH' ) or exit;
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title><?php echo __( 'Rexpansive', 'Rexpansive' ) . ' | ' . get_the_title(); ?></title>
 	<?php wp_head(); ?>
+	<!-- <link rel="stylesheet" href="<?php echo esc_url( REXPANSIVE_BUILDER_URL . 'admin/css/admin.css' ); ?>"> -->
 	<script>
 		var ajaxurl = '<?php echo admin_url( 'admin-ajax.php', 'relative' ); ?>';
 	</script>
+	<style>
+	ul {
+		list-style:none;
+	}
+
+	.layout__list {
+	}
+
+	.layout {
+		display:flex;
+		justify-content: space-around;
+	}
+
+	.layout__setting {
+		padding: 20px;
+	}
+	</style>
 </head>
 <body class="rexpansive-editor" style="overflow:hidden;">
 <?php
@@ -49,13 +67,23 @@ defined( 'ABSPATH' ) or exit;
 	do_action( 'admin_print_footer_scripts' );*/
 	 
 //	do_action("rexlive_footer_scripts");
+
+	include_once("rexlive-js-templates.php");
+	include_once("rexlive-modals-tools.php");
 ?>
+<script src="<?php echo REXPANSIVE_BUILDER_URL . 'admin/js/0-Rexpansive_Builder_Admin_Config.js'; ?>"></script>
+<script src="<?php echo REXPANSIVE_BUILDER_URL . 'admin/js/0-Rexpansive_Builder_Admin_Utilities.js'; ?>"></script>
+<script src="<?php echo REXPANSIVE_BUILDER_URL . 'admin/js/1-Rexpansive_Builder_Admin_Modals.js'; ?>"></script>
+<script src="<?php echo REXPANSIVE_BUILDER_URL . 'public/js/vendor/tmpl.min.js'; ?>"></script>
 <script src="<?php echo REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Util_Admin_Editor.js'; ?>"></script>
 <script>
 	var source_url = "<?php echo $source ?>";
 	$(document).ready(function () {
+		Rexpansive_Builder_Admin_Config.init();
+
 		Rexbuilder_Util_Admin_Editor.init();
 		Rexbuilder_Util_Admin_Editor.addResponsiveListeners();
+		Rexbuilder_Util_Admin_Editor.add_custom_layout_listener();
 	});
 </script>
 </body>

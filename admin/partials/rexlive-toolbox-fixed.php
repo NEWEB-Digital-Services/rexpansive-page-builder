@@ -23,7 +23,7 @@ defined('ABSPATH') or exit;
             <button class="btn-builder-layout builder-default-layout" data-min-width="" data-max-width="" data-name="default">MyDesktop</button>
         </div>
         <div style="position:absolute;bottom:0px;left:60%;">
-            <button class="btn-builder-layout builder-custom-layout" data-min-width="1440" data-max-width="1600" data-name="custom">+</button>
+            <button class="builder-config-layouts builder-custom-layout" data-min-width="1440" data-max-width="1600">+</button>
         </div>
     </div>
     <div class="rexlive-builder-actions">

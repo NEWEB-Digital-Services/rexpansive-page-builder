@@ -95,6 +95,7 @@ class Rexbuilder_Public
             }
 
             $cartella = "public/";
+            $cartella_admin = "admin/";
 
             wp_enqueue_style('material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $this->version, 'all');
 
@@ -102,9 +103,9 @@ class Rexbuilder_Public
 
             wp_enqueue_style('jquery.mb.YTPlayer-style', REXPANSIVE_BUILDER_URL . $cartella . 'jquery.mb.YTPlayer/css/jquery.mb.YTPlayer.min.css', array(), $this->version, 'all');
 
-            wp_enqueue_style('rex-custom-fonts', REXPANSIVE_BUILDER_URL . $cartella . 'rexpansive-font/font.css', array(), $this->version, 'all');
+            wp_enqueue_style('rex-custom-fonts', REXPANSIVE_BUILDER_URL . $cartella_admin . 'rexpansive-font/font.css', array(), $this->version, 'all');
 
-            wp_enqueue_style('font-awesome', REXPANSIVE_BUILDER_URL . $cartella . 'font-awesome-4.3.0/css/font-awesome.min.css', array(), $this->version, 'all');
+            wp_enqueue_style('font-awesome', REXPANSIVE_BUILDER_URL . $cartella_admin . 'font-awesome-4.3.0/css/font-awesome.min.css', array(), $this->version, 'all');
 
             wp_enqueue_style('overlay-scrollbar-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/OverlayScrollbars.min.css', array(), $this->version, 'all');
 
