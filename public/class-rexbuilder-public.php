@@ -365,7 +365,7 @@ endif;
         $avaiable_layouts = $_POST['avaiable_layouts'];
 
         update_post_meta($post_id_to_update, '_rex_responsive_layouts_names', $names);
-        update_post_meta($post_id_to_update, '_rex_responsive_layouts', $avaiable_layouts);
+        // update_post_meta($post_id_to_update, '_rex_responsive_layouts', $avaiable_layouts);
 
         wp_send_json_success($response);
     }
@@ -399,6 +399,11 @@ endif;
         wp_send_json_success($response);
     }
 
+    /**
+     * Saving custom layouts
+     *
+     * @return JSON
+     */
     public function rexlive_save_custom_layouts() {
         $nonce = $_POST['nonce_param'];
 
@@ -422,7 +427,7 @@ endif;
         $response['error'] = false;
 
         $post_id_to_update = intval($_POST['post_id_to_update']);
-        update_post_meta($post_id_to_update, '_rex_responsive_layouts_test', $_POST['custom_layouts']);
+        update_post_meta($post_id_to_update, '_rex_responsive_layouts', $_POST['custom_layouts']);
 
         wp_send_json_success($response);
     }

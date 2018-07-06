@@ -90,21 +90,21 @@ var Rexbuilder_Util = (function ($) {
 		var selectedLayoutName = "";
 		console.log($responsiveLayoutAvaible);
 		$.each($responsiveLayoutAvaible, function (i, layout) {
-			if (layout[1] == "") {
-				layout[1] = "0";
+			if (layout['min'] == "") {
+				layout['min'] = "0";
 			}
 		});
 
-		var ordered = lodash.sortBy($responsiveLayoutAvaible, [function (o) { return parseInt(o[1]); }]);
+		var ordered = lodash.sortBy($responsiveLayoutAvaible, [function (o) { return parseInt(o['min']); }]);
 
 		$.each(ordered, function (i, layout) {
-			if (w >= layout[1]) {
-				if (layout[2] != "") {
-					if (w < layout[2]) {
-						selectedLayoutName = layout[0];
+			if (w >= layout['min']) {
+				if (layout['max'] != "") {
+					if (w < layout['max']) {
+						selectedLayoutName = layout['id'];
 					}
 				} else {
-					selectedLayoutName = layout[0];
+					selectedLayoutName = layout['id'];
 				}
 			}
 		});
@@ -624,7 +624,10 @@ var Rexbuilder_Util = (function ($) {
 
 		_updateSectionsID();
 
-		_edit_dom_layout(chooseLayout());
+		var l = chooseLayout();
+		console.log(l);
+
+		_edit_dom_layout(l);
 
 		_updateSectionsNumber();
 

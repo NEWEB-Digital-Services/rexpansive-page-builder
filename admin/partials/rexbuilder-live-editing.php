@@ -72,7 +72,7 @@ defined( 'ABSPATH' ) or exit;
 	$source = get_permalink($post->ID);
 	
 	global $layouts;
-	$layouts = get_post_meta( $post->ID, '_rex_responsive_layouts_test', true );
+	$layouts = get_post_meta( $post->ID, '_rex_responsive_layouts', true );
 
 	if( "" == $layouts ) {
 		$layouts = array(
