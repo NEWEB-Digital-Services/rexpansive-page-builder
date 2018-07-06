@@ -206,13 +206,10 @@ var Rexbuilder_Util = (function ($) {
 						console.log(propName + " " + targetProps[propName]);
 					} */
 				} else {
-					//console.log("setting block properties: " + targetName);
 					$elem = $gallery.children('div[data-rexbuilder-block-id="' + targetName + '"]');
 					$itemData = $elem.children(".rexbuilder-block-data");
 					$itemContent = $elem.find(".grid-item-content");
-
 					_updateVideosBlock($itemData, $itemContent, targetProps["video_mp4_url"], targetProps["video_bg_url_vimeo"], targetProps["video_bg_url_youtube"]);
-
 
 
 					for (var propName in targetProps) {
@@ -318,7 +315,7 @@ var Rexbuilder_Util = (function ($) {
 							case "block_custom_class":
 								$elem.removeClass();
 								$elem.addClass("perfect-grid-item grid-stack-item w" + parseInt($elem.attr("data-gs-width")));
-								if (editorMode) {
+								if (Rexbuilder_Util.editorMode) {
 									$elem.addClass("rex-text-editable");
 								}
 								$elem.addClass(targetProps[propName]);
@@ -357,6 +354,32 @@ var Rexbuilder_Util = (function ($) {
 								}
 								break;
 
+							case "linkurl":
+								if (!Rexbuilder_Util.editorMode) {
+									if (targetProps[propName] != "") {
+										if ($itemContent.parents(".element-link").length != 0) {
+											console.log("already a link"); 
+											$itemContent.parents(".element-link").attr("href", targetProps[propName]);
+											$itemContent.parents(".element-link").attr("title", targetProps[propName]);
+										} else {
+											console.log("not a block link"); 
+											var $itemContentParent = $itemContent.parent();
+											tmpl.arg = "link";
+											$itemContentParent.append(tmpl("tmpl-link-block", {
+												url: targetProps[propName]
+											}));
+											$itemContent.detach().appendTo()
+											var $link = $itemContentParent.children(".element-link");
+											$itemContent.detach().appendTo($link);
+										}
+									} else {
+										if ($itemContent.parents(".element-link").length != 0) {
+											var $linkEl = $itemContent.parents(".element-link");
+											$linkEl.children().unwrap();
+										}
+									}
+								}
+								break;
 							case "zak_background":
 								break;
 

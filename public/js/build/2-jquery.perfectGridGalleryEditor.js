@@ -1540,7 +1540,7 @@
         },
 
         _launchTextEditor: function () {
-            // console.log("launching text editor");
+             console.log("launching text editor");
             var divToolbar = document.createElement('div');
             var gallery = this;
 

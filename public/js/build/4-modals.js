@@ -626,7 +626,7 @@
 			var output;
 			var $itemContent = $elem.find('.grid-item-content');
 			var $itemData = $elem.children(".rexbuilder-block-data");
-			
+
 			id = $elem.attr('id') === undefined ? "" : $elem.attr('id');
 			rex_id = $elem.attr('data-rexbuilder-block-id');
 			type = $itemData.attr('data-type');
@@ -777,6 +777,7 @@
 					props["block_custom_class"] = block_custom_class;
 					props["block_padding"] = block_padding;
 					props["overlay_block_color"] = overlay_block_color;
+					props["linkurl"] = linkurl;
 					props["zak_background"] = zak_background;
 					props["zak_side"] = zak_side;
 					props["zak_title"] = zak_title;
@@ -811,6 +812,7 @@
 					props["type_bg_block"] = type_bg_block;
 					props["image_size"] = image_size;
 					props["photoswipe"] = photoswipe;
+					props["linkurl"] = linkurl;
 					props["block_custom_class"] = block_custom_class;
 					props["block_padding"] = block_padding;
 					props["overlay_block_color"] = overlay_block_color;

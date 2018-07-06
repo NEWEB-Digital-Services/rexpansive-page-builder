@@ -67,3 +67,7 @@ data-property="{videoURL:'{%=video.url%}',containment:\'self\',startAt:0,mute:' 
     </figcaption>
 </figure>
 </script>
+<script type="text/x-tmpl" id="tmpl-link-block">
+<a class="element-link hovered" href="{%=link.url%}" title="{%=link.url%}">
+</a>					
+</script>
