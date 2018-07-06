@@ -353,7 +353,7 @@
 					shortcodePage += createSectionProperties($section, "shortcode", null);
 				}
 			});
-			//console.log(shortcodePage);
+			console.log(shortcodePage);
 
 			$.ajax({
 				type: 'POST',
@@ -432,8 +432,7 @@
 					action: 'rexlive_save_avaiable_layouts',
 					nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
 					post_id_to_update: idPost,
-					names: layoutsNames,
-					avaiable_layouts: updatedLayouts
+					names: layoutsNames
 				},
 				success: function (response) {
 					console.log(response);
@@ -513,9 +512,13 @@
 		var checkEditsSection = function ($section) {
 			return $section.attr("data-rexlive-section-edited") == "true" ? true : false;
 		}
+		/*
+		data-rexlive-element-edited="true"
+		*/
 		var checkEditsElement = function ($elem) {
 			return $elem.attr("data-rexlive-element-edited") == "true" ? true : false;
 		}
+
 		var createTargets = function ($section, layoutName) {
 			var targets = [];
 
@@ -624,7 +627,7 @@
 			var $itemContent = $elem.find('.grid-item-content');
 			var $itemData = $elem.children(".rexbuilder-block-data");
 
-			id = "block_" + $elem.attr('data-rexbuilder-block-id');
+			id = $elem.attr('id') === undefined ? "" : "block_"+$elem.attr('id');
 			rex_id = $elem.attr('data-rexbuilder-block-id');
 			type = $itemData.attr('data-type');
 			size_x = $elem.attr('data-width');
@@ -766,7 +769,7 @@
 					props["id_image_bg_block"] = id_image_bg_block;
 					props["video_bg_id"] = video_bg_id;
 					props["video_mp4_url"] = video_mp4_url;
-					props["video_bg_url"] = video_bg_url;
+					props["video_bg_url_youtube"] = video_bg_url;
 					props["video_bg_url_vimeo"] = video_bg_url_vimeo;
 					props["type_bg_block"] = type_bg_block;
 					props["image_size"] = image_size;
@@ -784,108 +787,42 @@
 					props["block_has_scrollbar"] = block_has_scrollbar;
 					props["block_live_edited"] = block_live_edited;
 				} else {
-					if (rex_id != "") {
-						props["rexbuilder_block_id"] = rex_id;
-					}
-					if (type != "text") {
-						props["type"] = type;
-					}
-					if (size_x != 1) {
-						props["size_x"] = size_x;
-					}
-					if (size_y != 1) {
-						props["size_y"] = size_y;
-					}
-					if (row != "") {
-						props["row"] = row;
-					}
-					if (col != "") {
-						props["col"] = col;
-					}
-					if (gs_start_h != 1) {
-						props["gs_start_h"] = gs_start_h;
-					}
-					if (gs_width != 1) {
-						props["gs_width"] = gs_width;
-					}
-					if (gs_height != 1) {
-						props["gs_height"] = gs_height;
-					}
-					if (gs_y != "") {
-						props["gs_y"] = gs_y;
-					}
-					if (gs_x != "") {
-						props["gs_x"] = gs_x;
-					}
-					if (color_bg_block != "#ffffff") {
-						props["color_bg_block"] = color_bg_block;
-					}
-					if (image_bg_block != "") {
-						props["image_bg_block"] = image_bg_block;
-					}
-					if (image_width != 0) {
-						props["image_width"] = image_width;
-					}
-					if (image_height != 0) {
-						props["image_height"] = image_height;
-					}
-					if (id_image_bg_block != "") {
-						props["id_image_bg_block"] = id_image_bg_block;
-					}
-					if (video_bg_id != "") {
-						props["video_bg_id"] = video_bg_id;
-					}
-					if (video_bg_url != "") {
-						props["video_bg_url"] = video_bg_url;
-					}
-					if (video_bg_url_vimeo != "") {
-						props["video_bg_url_vimeo"] = video_bg_url_vimeo;
-					}
-					if (type_bg_block != "") {
-						props["type_bg_block"] = type_bg_block;
-					}
-					if (image_size != "full") {
-						props["image_size"] = image_size;
-					}
-					if (photoswipe != "") {
-						props["photoswipe"] = photoswipe;
-					}
-					if (block_custom_class != "") {
-						props["block_custom_class"] = block_custom_class;
-					}
-					if (block_padding != "") {
-						props["block_padding"] = block_padding;
-					}
-					if (overlay_block_color != "") {
-						props["overlay_block_color"] = overlay_block_color;
-					}
-					if (zak_background != "") {
-						props["zak_background"] = zak_background;
-					}
-					if (zak_side != "") {
-						props["zak_side"] = zak_side;
-					}
-					if (zak_title != "") {
-						props["zak_title"] = zak_title;
-					}
-					if (zak_icon != "") {
-						props["zak_icon"] = zak_icon;
-					}
-					if (zak_foreground != "") {
-						props["zak_foreground"] = zak_foreground;
-					}
-					if (block_animation != "fadeInUpBig") {
-						props["block_animation"] = block_animation;
-					}
-					if (video_has_audio != "0") {
-						props["video_has_audio"] = video_has_audio;
-					}
-					if (block_has_scrollbar != "false") {
-						props["block_has_scrollbar"] = block_has_scrollbar;
-					}
-					if (block_live_edited != "") {
-						props["block_live_edited"] = block_live_edited;
-					}
+					props["hide"] = false;
+					props["rexbuilder_block_id"] = rex_id;
+					props["type"] = type;
+					props["size_x"] = size_x;
+					props["size_y"] = size_y;
+					props["row"] = row;
+					props["col"] = col;
+					props["gs_start_h"] = gs_start_h;
+					props["gs_width"] = gs_width;
+					props["gs_height"] = gs_height;
+					props["gs_y"] = gs_y;
+					props["gs_x"] = gs_x;
+					props["color_bg_block"] = color_bg_block;
+					props["image_bg_block"] = image_bg_block;
+					props["image_width"] = image_width;
+					props["image_height"] = image_height;
+					props["id_image_bg_block"] = id_image_bg_block;
+					props["video_bg_id"] = video_bg_id;
+					props["video_mp4_url"] = video_mp4_url;
+					props["video_bg_url_youtube"] = video_bg_url;
+					props["video_bg_url_vimeo"] = video_bg_url_vimeo;
+					props["type_bg_block"] = type_bg_block;
+					props["image_size"] = image_size;
+					props["photoswipe"] = photoswipe;
+					props["block_custom_class"] = block_custom_class;
+					props["block_padding"] = block_padding;
+					props["overlay_block_color"] = overlay_block_color;
+					props["zak_background"] = zak_background;
+					props["zak_side"] = zak_side;
+					props["zak_title"] = zak_title;
+					props["zak_icon"] = zak_icon;
+					props["zak_foreground"] = zak_foreground;
+					props["block_animation"] = block_animation;
+					props["video_has_audio"] = video_has_audio;
+					props["block_has_scrollbar"] = block_has_scrollbar;
+					props["block_live_edited"] = block_live_edited;
 
 				}
 
@@ -1053,8 +990,8 @@
 
 				} else {
 
+					props["section_name"] = section_name;
 					if (section_name != "") {
-						props["section_name"] = section_name;
 					}
 					if (type != "perfect-grid") {
 						props["type"] = type;

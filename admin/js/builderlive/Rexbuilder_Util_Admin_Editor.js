@@ -38,13 +38,11 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
     if (selectedLayout.presente === undefined) {
       availableLayouts.push(selectedLayout);
     }
-
     return availableLayouts;
   }
-
   var addResponsiveListeners = function () {
     console.log("adding listeners");
-    // var $responsiveToolbar = $(".rexlive-responsive-toolbox");
+    var $responsiveToolbar = $(".rexlive-responsive-toolbox");
     var $layoutData = $("#rexbuilder-layout-data-backend");
 
     $(document).on('click', '.btn-new-layout', function (e) {
@@ -62,7 +60,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
             console.log("salva");
             var activeLayout = [];
             activeLayout.push(activeLayoutPage);
-            activeLayout.push(nameVisualizzato);
+            //activeLayout.push(nameVisualizzato);
             activeLayout.push($btn.data("min-width"));
             activeLayout.push($btn.data("max-width"));
 
@@ -104,10 +102,8 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
           eventName: "rexlive:changeLayout"
         };
         sendIframeBuilderMessage(layoutData);
-
       }
     });
-
     $(document).on('click', '.btn-save', function (e) {
       console.log("saving");
       var activeLayout = [];
@@ -197,19 +193,19 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
    * Function that handles the open and close of the Layouts modal
    * @since live
    */
-  var add_custom_layout_listener = function() {
-    $responsiveToolbar.find('.builder-config-layouts').on('click', function(e) {
+  var add_custom_layout_listener = function () {
+    $responsiveToolbar.find('.builder-config-layouts').on('click', function (e) {
       e.preventDefault();
       Rexpansive_Builder_Admin_Modals.OpenModal($custom_layout_modal.parent('.rex-modal-wrap'));
     });
 
-    $custom_layout_modal.on('click', '.rex-cancel-button', function(e) {
+    $custom_layout_modal.on('click', '.rex-cancel-button', function (e) {
       Rexpansive_Builder_Admin_Modals.CloseModal($custom_layout_modal.parent('.rex-modal-wrap'));
     });
 
-    $custom_layout_modal.on('click', '.rex-save-button', function(e) {
+    $custom_layout_modal.on('click', '.rex-save-button', function (e) {
       var layouts = [];
-      $custom_layout_modal.find('.layout__item').each(function(i,e) {
+      $custom_layout_modal.find('.layout__item').each(function (i, e) {
         var $item = $(e);
         var layout = {
           'id': $item.find('input[name=rexlive-layout-id]').val(),
@@ -233,25 +229,25 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
       Rexpansive_Builder_Admin_Modals.CloseModal($custom_layout_modal.parent('.rex-modal-wrap'));
     });
 
-    $custom_layout_modal.on('click', '#rexlive-add-custom-layout', function() {
-      $custom_layout_modal.find('.layout__list').append( tmpl('rexlive-tmpl-new-layout', {l_id: create_layout_id()}) );
+    $custom_layout_modal.on('click', '#rexlive-add-custom-layout', function () {
+      $custom_layout_modal.find('.layout__list').append(tmpl('rexlive-tmpl-new-layout', { l_id: create_layout_id() }));
     });
 
-    $custom_layout_modal.on('click', '.rexlive-layout--edit', function(e) {
+    $custom_layout_modal.on('click', '.rexlive-layout--edit', function (e) {
       $(e.currentTarget).find('.dashicons-before').toggleClass('hide-icon');
 
-      if($(e.target).hasClass('dashicons-yes')) {
-        $(this).parents('.layout__item').removeClass('editing').find('input[data-editable-field=true]').attr('type','hidden');
+      if ($(e.target).hasClass('dashicons-yes')) {
+        $(this).parents('.layout__item').removeClass('editing').find('input[data-editable-field=true]').attr('type', 'hidden');
       } else if ($(e.target).hasClass('dashicons-edit')) {
-        $(this).parents('.layout__item').addClass('editing').find('input[data-editable-field=true]').attr('type','input');
+        $(this).parents('.layout__item').addClass('editing').find('input[data-editable-field=true]').attr('type', 'input');
       }
     });
 
-    $custom_layout_modal.on('click', '.rexlive-layout--delete', function() {
+    $custom_layout_modal.on('click', '.rexlive-layout--delete', function () {
       $(this).parents('.layout__item').remove();
     });
 
-    $custom_layout_modal.on('click', '.rexlive-remove-custom-layout', function() {
+    $custom_layout_modal.on('click', '.rexlive-remove-custom-layout', function () {
       $(this).parents('.layout__item').remove();
     });
   };
@@ -260,32 +256,32 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
    * Creating the ID of a new layout. Checks if one exists
    * @return {string} id
    */
-  var create_layout_id = function() {
+  var create_layout_id = function () {
     var id;
-		var flag;
-		var idLength = 4;
-		do {
-			flag = true;
-			id = createRandomID(idLength);
-			$custom_layout_modal.find('.layout__item').each(function () {
-				if ($(this).find('input[name=rexlive-layout-id]').val() == id) {
-					flag = false;
-				}
-			});
-		} while (!flag);
-		return id;
+    var flag;
+    var idLength = 4;
+    do {
+      flag = true;
+      id = createRandomID(idLength);
+      $custom_layout_modal.find('.layout__item').each(function () {
+        if ($(this).find('input[name=rexlive-layout-id]').val() == id) {
+          flag = false;
+        }
+      });
+    } while (!flag);
+    return id;
   }
 
   var createRandomID = function (n) {
-		var text = "";
-		var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    var text = "";
+    var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
-		for (var i = 0; i < n; i++) {
-			text += possible.charAt(Math.floor(Math.random() * possible.length));
-		}
+    for (var i = 0; i < n; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
 
-		return text;
-	}
+    return text;
+  }
 
   // init the utilities
   var init = function () {

@@ -123,24 +123,22 @@ class Rexbuilder_Block {
 			}
 		
 			if(!isset($editor)){
-			if($photoswipe == 'true' && '' == $video_bg_id && '' == $video_bg_url && isset( $img_attrs[0] ) && '' != $img_attrs[0] ) :
-		
-				$block_link_pre .= '<figure class="pswp-figure" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">';
-				$block_link_pre .= '<a class="pswp-item" href="' . $img_attrs[0] . '" itemprop="contentUrl" data-size="' . $img_attrs[1] . 'x' . $img_attrs[2] . '">';
-				$block_link_pre .= '<div class="pswp-item-thumb" data-thumb-image-type="' . $type_bg_block . '" data-thumburl="' . $img_attrs[0] . '" itemprop="thumbnail"></div>';
-				$block_link_before .= '</a>';
-				//$block_link_before .= '<figcaption class="pswp-item-caption" itemprop="caption description">' . get_the_title( $id_image_bg_block ) . '</figcaption>';
-				$block_link_before .= '<figcaption class="pswp-item-caption" itemprop="caption description"></figcaption>';
-				$block_link_before .= '</figure>';
-			endif;
-			if($linkurl != '') :
-				$block_link_pre .= '<a class="element-link hovered" href="' . $linkurl . '" title="' . trim(strip_tags($linkurl)) . '">';
-				//$block_link_pre .= '<div class="element-link-effect-before"></div>';
-				//$block_link_before .= '<div class="element-link-effect-after"></div>';
-				$block_link_before .= '</a>';
-				$content = strip_tags( $content, '<p><h1><h2><h3><h4><h5><h6><strong><i><hr><div><span><pre><b><blockquote><address><cite><code><del><q><small><sub><sup><time><img><canvas><video><ul><ol><li><br>' );
-			endif;
-		}
+				if($photoswipe == 'true' && '' == $video_bg_id && '' == $video_bg_url && isset( $img_attrs[0] ) && '' != $img_attrs[0] ) :
+					$block_link_pre .= '<figure class="pswp-figure" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">';
+					$block_link_pre .= '<a class="pswp-item" href="' . $img_attrs[0] . '" itemprop="contentUrl" data-size="' . $img_attrs[1] . 'x' . $img_attrs[2] . '">';
+					$block_link_pre .= '<div class="pswp-item-thumb" data-thumb-image-type="' . $type_bg_block . '" data-thumburl="' . $img_attrs[0] . '" itemprop="thumbnail"></div>';
+					$block_link_before .= '</a>';
+					$block_link_before .= '<figcaption class="pswp-item-caption" itemprop="caption description"></figcaption>';
+					$block_link_before .= '</figure>';
+				endif;
+				if($linkurl != '') :
+					$block_link_pre .= '<a class="element-link hovered" href="' . $linkurl . '" title="' . trim(strip_tags($linkurl)) . '">';
+					//$block_link_pre .= '<div class="element-link-effect-before"></div>';
+					//$block_link_before .= '<div class="element-link-effect-after"></div>';
+					$block_link_before .= '</a>';
+					$content = strip_tags( $content, '<p><h1><h2><h3><h4><h5><h6><strong><i><hr><div><span><pre><b><blockquote><address><cite><code><del><q><small><sub><sup><time><img><canvas><video><ul><ol><li><br>' );
+				endif;
+			}
 		
 
 			$block_custom_class = apply_filters( 'rexpansive_block_custom_class', trim( $block_custom_class ), $id );
@@ -350,7 +348,7 @@ class Rexbuilder_Block {
 			unset($value_property);
 
 			if( '' != $video_bg_id && 'undefined' != $video_bg_id ){
-				echo 'data-video-mp4-url="'. wp_get_attachment_url ( $video_bg_id ).'"';
+				echo 'data-video_mp4_url="'. wp_get_attachment_url ( $video_bg_id ).'"';
 			}
 
 			echo '></div>';

@@ -214,7 +214,6 @@ var Rexbuilder_Util_Editor = (function ($) {
         $(document).trigger(e);
       }
     }
-
   }
 
   var addDocumentListeners = function () {
@@ -263,9 +262,23 @@ var Rexbuilder_Util_Editor = (function ($) {
         console.log('errore chiama ajax');
       }
     });
-  };
+  }
 
-  // init the utilities
+  var addDocumentListeners = function () {
+    $(document).on("rexlive:changeLayout", function (event) {
+      console.log("layout changed");
+      _edit_dom_layout(event.settings.selectedLayoutName);
+    });
+  }
+
+  var sendParentIframeMessage = function (data) {
+    var infos = {
+      rexliveEvent: true
+    };
+    jQuery.extend(infos, data);
+    window.parent.postMessage(infos, '*');
+  }
+  
   var init = function () {
 
     this.elementIsResizing = false;

@@ -90,18 +90,18 @@ var Rexbuilder_Util = (function ($) {
 		var selectedLayoutName = "";
 		console.log($responsiveLayoutAvaible);
 		$.each($responsiveLayoutAvaible, function (i, layout) {
-			if (layout['min'] == "") {
-				layout['min'] = "0";
+			if (layout[2] == "") {
+				layout[2] = "0";
 			}
 		});
 
-		var ordered = lodash.sortBy($responsiveLayoutAvaible, [function (o) { return parseInt(o['min']); }]);
+		var ordered = lodash.sortBy($responsiveLayoutAvaible, [function (o) { return parseInt(o[2]); }]);
 
 		$.each(ordered, function (i, layout) {
-			if (w >= layout['min']) {
-				if (layout['max'] != "") {
-					if (w < layout['max']) {
-						selectedLayoutName = layout['id'];
+			if (w >= layout[2]) {
+				if (layout[3] != "") {
+					if (w < layout[3]) {
+						selectedLayoutName = layout[0];
 					}
 				} else {
 					selectedLayoutName = layout['id'];
@@ -155,7 +155,9 @@ var Rexbuilder_Util = (function ($) {
 				break;
 			}
 		}
+
 		var customSections;
+
 		if (i == layoutData.length) {
 			console.log("loading default layout");
 			customSections = {};
@@ -207,15 +209,15 @@ var Rexbuilder_Util = (function ($) {
 					$itemData = $elem.children(".rexbuilder-block-data");
 					$itemContent = $elem.find(".grid-item-content");
 
+					_updateVideosBlock($itemData, $itemContent, targetProps["video_mp4_url"], targetProps["video_bg_url_vimeo"], targetProps["video_bg_url_youtube"]);
+
+
+
 					for (var propName in targetProps) {
 						switch (propName) {
 							case "hide":
 								;
 								break;
-							case "rexbuilder_block_id":
-								;
-								break;
-
 							case "type":
 								$itemData.attr('data-type', targetProps[propName]);
 								break;
@@ -270,66 +272,84 @@ var Rexbuilder_Util = (function ($) {
 							case "image_width":
 								if (targetProps[propName] != "") {
 									$itemContent.attr('data-background-image-width', parseInt(targetProps[propName]));
+								} else {
+									$itemContent.attr('data-background-image-width', "");
 								}
 								break;
 
 							case "image_height":
 								if (targetProps[propName] != "") {
 									$itemContent.attr('data-background-image-height', parseInt(targetProps[propName]));
+								} else {
+									$itemContent.attr('data-background-image-height', "");
 								}
 								break;
 
 							case "id_image_bg_block":
 								if (targetProps[propName] != "") {
-									$itemData.attr('data-id_image_bg_block', targetProps[propName]);
+									$itemContent.attr('data-id_image_bg_block', parseInt(targetProps[propName]));
+								} else {
+									$itemContent.attr('data-id_image_bg_block', "");
 								}
-								break;
-							//video mp4
-							case "video_bg_id":
-								;
-								break;
-							case "video_mp4_url":
-								var $videoWrap = $itemContent.children(".rex-video-wrap");
-								var $toggleAudio = $itemContent.children(".rex-video-toggle-audio");
-								if ($videoWrap.length != 0) {
-									if (false) {
-										$videoWrap.remove();
-										$toggleAudio.remove();
-									}
-								}
-								if (targetProps[propName] != "") {
-									tmpl.arg = "video";
-									$itemContent.prepand(tmpl("tmpl-video-mp4", { url: targetProps[propName] }));
-									$itemContent.append(tmpl("tmpl-video-toggle-audio"));
-								}
-								break;
-
-							// video youtube
-							case "video_bg_url":
-
-								break;
-
-							// video vimeo
-							case "video_bg_url_vimeo":
-
 								break;
 
 							case "type_bg_block":
+								$itemData.attr('data-type_bg_block', targetProps[propName]);
 								break;
 
 							case "image_size":
-								break;
-
-							case "photoswipe":
+								if (targetProps[propName] != "") {
+									if (targetProps[propName] == "full") {
+										$itemContent.removeClass("natural-image-background");
+										$itemContent.addClass("full-image-background");
+									} else {
+										$itemContent.removeClass("full-image-background");
+										$itemContent.addClass("natural-image-background");
+									}
+								} else {
+									$itemContent.removeClass("natural-image-background");
+									$itemContent.removeClass("small-width");
+								}
+								$itemData.attr('data-image_size', targetProps[propName]);
 								break;
 
 							case "block_custom_class":
+								$elem.removeClass();
+								$elem.addClass("perfect-grid-item grid-stack-item w" + parseInt($elem.attr("data-gs-width")));
+								if (editorMode) {
+									$elem.addClass("rex-text-editable");
+								}
+								$elem.addClass(targetProps[propName]);
+								$itemData.attr("data-block_custom_class", targetProps[propName]);
 								break;
 
 							case "block_padding":
 								break;
 
 							case "overlay_block_color":
+								var $overlayDiv = $elem.find(".responsive-block-overlay");
+								if (targetProps[propName] != "") {
+									if ($overlayDiv.length != 0) {
+										$overlayDiv.css("background-color", targetProps[propName]);
+									} else {
+										tmpl.arg = "overlay";
+										var overlayDiv = tmpl("tmpl-overlay-block-div", { color: targetProps[propName] });
+										$itemContent.children().wrapAll(overlayDiv);
+									}
+								} else {
+									if ($overlayDiv.length != 0) {
+										$overlayDiv.children().eq(0).unwrap()
+									}
+								}
+								$itemData.attr("data-overlay_block_color", targetProps[propName]);
+								break;
+							case "photoswipe":
+								if (targetProps[propName] == "true") {
+									addPhotoSwipeElement($itemContent, targetProps['image_bg_block'], parseInt(targetProps['image_width']), parseInt(targetProps['image_height']), targetProps['image_size']);
+								} else {
+									removePhotoSwipeElement($itemContent);
+								}
+								$itemData.attr("data-photoswipe", targetProps[propName]);
 								break;
 
 							case "zak_background":
@@ -368,7 +388,412 @@ var Rexbuilder_Util = (function ($) {
 				}
 			});
 		});
+
+		initPhotoSwipe(".photoswipe-gallery");
 	}
+
+	var addPhotoSwipeElement = function ($itemContent, url, w, h, t) {
+		tmpl.arg = "image";
+		var $gridstackItemContent = $itemContent.parents(".grid-stack-item-content");
+		console.log("checking if is already photoswipe");
+		if ($itemContent.parents(".pswp-figure").length == 0) {
+			console.log("not");
+			$itemContent.parent().prepend(tmpl("tmpl-photoswipe-block", {
+				link: url,
+				width: w,
+				height: h,
+				type: t
+			}));
+			var $pspwItem = $gridstackItemContent.find(".pswp-item");
+			$itemContent.detach().appendTo($pspwItem)
+		}
+	}
+
+	var removePhotoSwipeElement = function ($itemContent) {
+		console.log("removing photoswipe"); 
+		console.log($itemContent); 
+		var $pswpFigure = $itemContent.parents(".pswp-figure");
+		console.log($pswpFigure); 
+		if ($pswpFigure.length != 0) {
+			console.log("removing ps"); 
+			var $pspwParent = $pswpFigure.parent();
+			$itemContent.detach().appendTo($pspwParent);
+			$pswpFigure.remove();
+		}
+	}
+
+	var initPhotoSwipe = function (gallerySelector) {
+
+		// parse slide data (url, title, size ...) from DOM elements 
+		// (children of gallerySelector)
+		var parseThumbnailElements = function (el) {
+			//var thumbElements = el.childNodes,
+
+			var thumbElements = $(el).find('.pswp-figure').get(),
+				numNodes = thumbElements.length,
+				items = [],
+				figureEl,
+				linkEl,
+				size,
+				item;
+
+			for (var i = 0; i < numNodes; i++) {
+
+				figureEl = thumbElements[i]; // <figure> element
+
+				// include only element nodes 
+				if (figureEl.nodeType !== 1) {
+					continue;
+				}
+
+				linkEl = figureEl.children[0]; // <a> element
+
+				size = linkEl.getAttribute('data-size').split('x');
+
+				// create slide object
+				item = {
+					src: linkEl.getAttribute('href'),
+					w: parseInt(size[0], 10),
+					h: parseInt(size[1], 10)
+				};
+
+				if (figureEl.children.length > 1) {
+					// <figcaption> content
+					item.title = figureEl.children[1].innerHTML;
+				}
+
+				if (linkEl.children.length > 0) {
+					// <img> thumbnail element, retrieving thumbnail url
+					item.msrc = linkEl.children[0].getAttribute('data-thumburl');
+				}
+
+				item.el = figureEl; // save link to element for getThumbBoundsFn
+				items.push(item);
+			}
+
+			return items;
+		};
+
+		// find nearest parent element
+		var closest = function closest(el, fn) {
+			return el && (fn(el) ? el : closest(el.parentNode, fn));
+		};
+
+		var collectionHas = function (a, b) { //helper function (see below)
+			for (var i = 0, len = a.length; i < len; i++) {
+				if (a[i] == b) return true;
+			}
+			return false;
+		};
+
+		var findParentBySelector = function (elm, selector) {
+			var all = document.querySelectorAll(selector);
+			var cur = elm.parentNode;
+			while (cur && !collectionHas(all, cur)) { //keep going up until you find a match
+				cur = cur.parentNode; //go up
+			}
+			return cur; //will return null if not found
+		};
+
+		// triggers when user clicks on thumbnail
+		var onThumbnailsClick = function (e) {
+			e = e || window.event;
+
+			// Bug fix for Block links and links inside blocks
+			if ($(e.target).parents('.perfect-grid-item').find('.element-link').length > 0 || $(e.target).is('a')) {
+				return;
+			}
+
+			e.preventDefault ? e.preventDefault() : e.returnValue = false;
+
+			var eTarget = e.target || e.srcElement;
+
+			// find root element of slide
+			var clickedListItem = closest(eTarget, function (el) {
+				return (el.tagName && el.tagName.toUpperCase() === 'FIGURE');
+			});
+
+			if (!clickedListItem) {
+				return;
+			}
+
+			// find index of clicked item by looping through all child nodes
+			// alternatively, you may define index via data- attribute
+			// var clickedGallery = clickedListItem.parentNode,
+			//var clickedGallery = findParentBySelector(clickedListItem, '.my-gallery'),
+			var clickedGallery = $(clickedListItem).parents(gallerySelector)[0],
+				//childNodes = clickedListItem.parentNode.childNodes,
+				childNodes = $(clickedGallery).find('.pswp-figure').get(),
+				numChildNodes = childNodes.length,
+				nodeIndex = 0,
+				index;
+
+			for (var i = 0; i < numChildNodes; i++) {
+				if (childNodes[i].nodeType !== 1) {
+					continue;
+				}
+
+				if (childNodes[i] === clickedListItem) {
+					index = nodeIndex;
+					break;
+				}
+				nodeIndex++;
+			}
+
+			if (index >= 0) {
+				// open PhotoSwipe if valid index found
+				openPhotoSwipe(index, clickedGallery);
+			}
+			return false;
+		};
+
+		// parse picture index and gallery index from URL (#&pid=1&gid=2)
+		var photoswipeParseHash = function () {
+			var hash = window.location.hash.substring(1),
+				params = {};
+
+			if (hash.length < 5) {
+				return params;
+			}
+
+			var vars = hash.split('&');
+			for (var i = 0; i < vars.length; i++) {
+				if (!vars[i]) {
+					continue;
+				}
+				var pair = vars[i].split('=');
+				if (pair.length < 2) {
+					continue;
+				}
+				params[pair[0]] = pair[1];
+			}
+
+			if (params.gid) {
+				params.gid = parseInt(params.gid, 10);
+			}
+
+			return params;
+		};
+
+		var openPhotoSwipe = function (index, galleryElement, disableAnimation, fromURL) {
+			var pswpElement = document.querySelectorAll('.pswp')[0],
+				gallery,
+				options,
+				items;
+
+			items = parseThumbnailElements(galleryElement);
+
+			// define options (if needed)
+			options = {
+
+				// define gallery index (for URL)
+				galleryUID: galleryElement.getAttribute('data-pswp-uid'),
+
+				getThumbBoundsFn: function (index) {
+					// See Options -> getThumbBoundsFn section of documentation for more info
+					var thumbnail = items[index].el.getElementsByClassName('pswp-item-thumb')[0], // find thumbnail
+						image_content = items[index].el.getElementsByClassName('rex-custom-scrollbar')[0],
+						pageYScroll = window.pageYOffset || document.documentElement.scrollTop,
+						rect = image_content.getBoundingClientRect(),
+						image_type = thumbnail.getAttribute('data-thumb-image-type');
+
+					if (image_type == 'natural') {
+
+						return { x: rect.left, y: rect.top + pageYScroll, w: rect.width };
+					} else {
+						// var full_rect = items[index].el.getBoundingClientRect();
+						// return {x:full_rect.left, y:full_rect.top + pageYScroll, w:full_rect.width};;
+						return null
+					}
+				},
+
+				closeOnScroll: false,
+				showHideOpacity: true
+			};
+
+			// PhotoSwipe opened from URL
+			if (fromURL) {
+				if (options.galleryPIDs) {
+					// parse real index when custom PIDs are used 
+					// http://photoswipe.com/documentation/faq.html#custom-pid-in-url
+					for (var j = 0; j < items.length; j++) {
+						if (items[j].pid == index) {
+							options.index = j;
+							break;
+						}
+					}
+				} else {
+					// in URL indexes start from 1
+					options.index = parseInt(index, 10) - 1;
+				}
+			} else {
+				options.index = parseInt(index, 10);
+			}
+
+			// exit if index not found
+			if (isNaN(options.index)) {
+				return;
+			}
+
+			if (disableAnimation) {
+				options.showAnimationDuration = 0;
+			}
+
+			// Pass data to PhotoSwipe and initialize it
+
+			gallery = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options);
+			gallery.init();
+		};
+
+		// loop through all gallery elements and bind events
+		var galleryElements = document.querySelectorAll(gallerySelector);
+
+		for (var i = 0, l = galleryElements.length; i < l; i++) {
+			galleryElements[i].setAttribute('data-pswp-uid', i + 1);
+			galleryElements[i].onclick = onThumbnailsClick;
+		}
+
+		// Parse URL and open gallery if it contains #&pid=3&gid=1
+		var hashData = photoswipeParseHash();
+		if (hashData.pid && hashData.gid) {
+			openPhotoSwipe(hashData.pid, galleryElements[hashData.gid - 1], true, true);
+		}
+	};
+
+	/**
+	 * Updates video background of an element
+	 * 
+	 * @param {*} $itemData 
+	 * @param {*} $itemContent 
+	 * @param {*} urlMp4 mp4 url
+	 * @param {*} urlVimeo vimeo url
+	 * @param {*} urlYoutube youtube url
+	 */
+	var _updateVideosBlock = function ($itemData, $itemContent, urlMp4, urlVimeo, urlYoutube) {
+		if ((urlMp4 == "") && (urlYoutube == "") && (urlVimeo == "")) {
+			removeMp4Video($itemContent);
+			removeYoutubeVideo($itemContent);
+			removeVimeoVideo($itemContent);
+		}
+		if ((urlMp4 != "") && (urlYoutube == "") && (urlVimeo == "")) {
+			removeYoutubeVideo($itemContent);
+			removeVimeoVideo($itemContent);
+			addMp4Video($itemContent, urlMp4);
+		}
+		if ((urlMp4 == "") && (urlYoutube != "") && (urlVimeo == "")) {
+			removeMp4Video($itemContent);
+			removeVimeoVideo($itemContent);
+			addYoutubeVideo($itemContent, urlYoutube);
+		}
+		if ((urlMp4 == "") && (urlYoutube == "") && (urlVimeo != "")) {
+			removeMp4Video($itemContent);
+			removeYoutubeVideo($itemContent);
+			addVimeoVideo($itemContent, urlVimeo);
+		}
+
+		$itemData.attr("data-video_mp4_url", urlMp4);
+		$itemData.attr("data-video_bg_url", urlYoutube);
+		$itemData.attr("data-video_bg_url_vimeo", urlVimeo);
+	}
+
+	var removeMp4Video = function ($itemContent) {
+		var $videoWrap = $itemContent.children(".rex-video-wrap");
+		var $toggleAudio = $itemContent.children(".rex-video-toggle-audio");
+		if ($videoWrap.length != 0) {
+			console.log("removing mp4 video");
+			$itemContent.removeClass("mp4-player");
+			$videoWrap.remove();
+			$toggleAudio.remove();
+		}
+	}
+
+	var removeYoutubeVideo = function ($itemContent) {
+		if ($itemContent.hasClass("youtube-player")) {
+			var $toggleAudio = $itemContent.children(".rex-video-toggle-audio");
+			$itemContent.YTPPlayerDestroy();
+			$itemContent.removeAttr("data-property");
+			$itemContent.removeAttr("id");
+			$itemContent.removeClass("youtube-player mb_YTPlayer isMuted");
+			$toggleAudio.remove();
+		}
+	}
+
+	var removeVimeoVideo = function ($itemContent) {
+		var $vimeoWrap = $itemContent.children('.rex-video-vimeo-wrap');
+		var $toggleAudio = $itemContent.children(".rex-video-toggle-audio");
+		if ($vimeoWrap.length != 0) {
+			var iframeVimeo = $vimeoWrap.children("iframe")[0];
+			VimeoVideo.removePlayer(iframeVimeo);
+			$itemContent.removeClass("vimeo-player");
+			$vimeoWrap.remove();
+			$toggleAudio.remove();
+		}
+	}
+
+	var addMp4Video = function ($itemContent, urlmp4) {
+		var $videoWrap = $itemContent.children(".rex-video-wrap");
+
+		if ($videoWrap.length != 0 && $videoWrap.find("source").attr("src") == urlmp4) {
+			return;
+		}
+
+		removeMp4Video($itemContent);
+		console.log("adding mp4 video")
+
+		tmpl.arg = "video";
+		$itemContent.prepend(tmpl("tmpl-video-mp4", { url: urlmp4 }));
+		$itemContent.append(tmpl("tmpl-video-toggle-audio"));
+		$itemContent.addClass("mp4-player");
+	}
+
+	var addYoutubeVideo = function ($itemContent, urlYoutube) {
+		if ($itemContent.hasClass("youtube-player")) {
+			var ytPlayer = $itemContent.YTPGetPlayer();
+			if (ytPlayer === undefined) {
+				return;
+			}
+			var videoID = $itemContent.YTPGetVideoID();
+			var urlID = getYoutubeID(urlYoutube);
+			if (videoID != urlID) {
+				$itemContent.YTPChangeMovie({
+					videoURL: urlYoutube,
+					containment: 'self',
+					startAt: 0,
+					mute: true,
+					autoPlay: true,
+					loop: true,
+					opacity: 1,
+					showControls: false,
+					showYTLogo: false
+				});
+			}
+		} else {
+			$itemContent.addClass("youtube-player");
+			$itemContent.attr("data-property", "{videoURL:'" + urlYoutube + "',containment:'self',startAt:0,mute:true,autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}");
+			$itemContent.YTPlayer();
+			$itemContent.append(tmpl("tmpl-video-toggle-audio"));
+		}
+	}
+
+	var addVimeoVideo = function ($itemContent, urlVimeo) {
+		var $vimeoWrap = $itemContent.children(".rex-video-vimeo-wrap");
+		urlVimeo += "?autoplay=1&loop=1&title=0&byline=0&portrait=0&autopause=0&muted=1";
+		if ($vimeoWrap.length != 0 && ($vimeoWrap.children("iframe").attr("src") == urlVimeo)) {
+			return;
+		}
+		removeVimeoVideo($itemContent);
+
+		console.log("adding vimeo video")
+
+		tmpl.arg = "video";
+		$itemContent.prepend(tmpl("tmpl-video-vimeo", { url: urlVimeo }));
+		$itemContent.append(tmpl("tmpl-video-toggle-audio"));
+		$itemContent.addClass("vimeo-player");
+
+		var vimeoFrame = $itemContent.children(".rex-video-vimeo-wrap").find("iframe")[0];
+		VimeoVideo.addPlayer("1", vimeoFrame);
+	}
+
 
 	// function to detect if we are on a mobile device
 	var _detect_mobile = function () {
@@ -668,7 +1093,8 @@ var Rexbuilder_Util = (function ($) {
 		createBlockID: createBlockID,
 		has_class: _has_class,
 		responsiveLayouts: responsiveLayouts,
-		defaultLayoutSections: defaultLayoutSections
+		defaultLayoutSections: defaultLayoutSections,
+		edit_dom_layout: _edit_dom_layout
 	};
 
 })(jQuery);

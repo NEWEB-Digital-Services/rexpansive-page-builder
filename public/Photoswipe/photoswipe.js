@@ -1,6 +1,6 @@
-/*! PhotoSwipe - v4.0.8 - 2015-05-21
+/*! PhotoSwipe - v4.1.2 - 2017-04-05
 * http://photoswipe.com
-* Copyright (c) 2015 Dmitry Semenov; */
+* Copyright (c) 2017 Dmitry Semenov; */
 (function (root, factory) { 
 	if (typeof define === 'function' && define.amd) {
 		define(factory);
@@ -318,7 +318,7 @@ var _options = {
 	pinchToClose: true,
 	closeOnScroll: true,
 	closeOnVerticalDrag: true,
-	verticalDragRange: 0.6,
+	verticalDragRange: 0.75,
 	hideAnimationDuration: 333,
 	showAnimationDuration: 333,
 	showHideOpacity: false,
@@ -334,15 +334,14 @@ var _options = {
     	if(isMouseClick) {
     		return 1;
     	} else {
-    		return item.initialZoomLevel < 0.7 ? 1 : 1.5;
+    		return item.initialZoomLevel < 0.7 ? 1 : 1.33;
     	}
     },
-    maxSpreadZoom: 2,
+    maxSpreadZoom: 1.33,
 	modal: true,
 
 	// not fully implemented yet
-	scaleMode: 'fit', // TODO
-	alwaysFadeIn: false // TODO
+	scaleMode: 'fit' // TODO
 };
 framework.extend(_options, options);
 
@@ -397,6 +396,9 @@ var _isOpen,
 	_currentWindowScrollY,
 	_features,
 	_windowVisibleSize = {},
+	_renderMaxResolution = false,
+	_orientationChangeTimeout,
+
 
 	// Registers PhotoSWipe module (History, Controller ...)
 	_registerModule = function(name, module) {
@@ -442,21 +444,43 @@ var _isOpen,
 		_bgOpacity = opacity;
 		self.bg.style.opacity = opacity * _options.bgOpacity;
 	},
-	
-	_applyZoomTransform = function(styleObj,x,y,zoom) {
+
+	_applyZoomTransform = function(styleObj,x,y,zoom,item) {
+		if(!_renderMaxResolution || (item && item !== self.currItem) ) {
+			zoom = zoom / (item ? item.fitRatio : self.currItem.fitRatio);	
+		}
+			
 		styleObj[_transformKey] = _translatePrefix + x + 'px, ' + y + 'px' + _translateSufix + ' scale(' + zoom + ')';
 	},
-	_applyCurrentZoomPan = function() {
+	_applyCurrentZoomPan = function( allowRenderResolution ) {
 		if(_currZoomElementStyle) {
+
+			if(allowRenderResolution) {
+				if(_currZoomLevel > self.currItem.fitRatio) {
+					if(!_renderMaxResolution) {
+						_setImageSize(self.currItem, false, true);
+						_renderMaxResolution = true;
+					}
+				} else {
+					if(_renderMaxResolution) {
+						_setImageSize(self.currItem);
+						_renderMaxResolution = false;
+					}
+				}
+			}
+			
+
 			_applyZoomTransform(_currZoomElementStyle, _panOffset.x, _panOffset.y, _currZoomLevel);
 		}
 	},
 	_applyZoomPanToItem = function(item) {
 		if(item.container) {
+
 			_applyZoomTransform(item.container.style, 
 								item.initialPosition.x, 
 								item.initialPosition.y, 
-								item.initialZoomLevel);
+								item.initialZoomLevel,
+								item);
 		}
 	},
 	_setTranslateX = function(x, elStyle) {
@@ -465,12 +489,11 @@ var _isOpen,
 	_moveMainScroll = function(x, dragging) {
 
 		if(!_options.loop && dragging) {
-			// if of current item during scroll (float)
-			var newSlideIndexOffset = _currentItemIndex + (_slideSize.x * _currPositionIndex - x)/_slideSize.x; 
-			var delta = Math.round(x - _mainScrollPos.x);
+			var newSlideIndexOffset = _currentItemIndex + (_slideSize.x * _currPositionIndex - x) / _slideSize.x,
+				delta = Math.round(x - _mainScrollPos.x);
 
 			if( (newSlideIndexOffset < 0 && delta > 0) || 
-				(newSlideIndexOffset >= _getNumItems()-1 && delta < 0) ) {
+				(newSlideIndexOffset >= _getNumItems() - 1 && delta < 0) ) {
 				x = _mainScrollPos.x + delta * _options.mainScrollEndFriction;
 			} 
 		}
@@ -523,13 +546,13 @@ var _isOpen,
 			framework.bind(document, 'mousemove', _onFirstMouseMove);
 		}
 
-		framework.bind(window, 'resize scroll', self);
+		framework.bind(window, 'resize scroll orientationchange', self);
 
 		_shout('bindEvents');
 	},
 
 	_unbindEvents = function() {
-		framework.unbind(window, 'resize', self);
+		framework.unbind(window, 'resize scroll orientationchange', self);
 		framework.unbind(window, 'scroll', _globalEventHandlers.scroll);
 		framework.unbind(document, 'keydown', self);
 		framework.unbind(document, 'mousemove', _onFirstMouseMove);
@@ -541,6 +564,8 @@ var _isOpen,
 		if(_isDragging) {
 			framework.unbind(window, _upMoveEvents, self);
 		}
+
+		clearTimeout(_orientationChangeTimeout);
 
 		_shout('unbindEvents');
 	},
@@ -772,11 +797,11 @@ var publicMethods = {
 		_currentWindowScrollY = _offset.y = y;
 		_shout('updateScrollOffset', _offset);
 	},
-	applyZoomPan: function(zoomLevel,panX,panY) {
+	applyZoomPan: function(zoomLevel,panX,panY,allowRenderResolution) {
 		_panOffset.x = panX;
 		_panOffset.y = panY;
 		_currZoomLevel = zoomLevel;
-		_applyCurrentZoomPan();
+		_applyCurrentZoomPan( allowRenderResolution );
 	},
 
 	init: function() {
@@ -787,7 +812,7 @@ var publicMethods = {
 
 		var i;
 
-		self.framework = framework; // basic function
+		self.framework = framework; // basic functionality
 		self.template = template; // root DOM element of PhotoSwipe
 		self.bg = framework.getChildByClass(template, 'pswp__bg');
 
@@ -820,6 +845,18 @@ var publicMethods = {
 		// Setup global events
 		_globalEventHandlers = {
 			resize: self.updateSize,
+
+			// Fixes: iOS 10.3 resize event
+			// does not update scrollWrap.clientWidth instantly after resize
+			// https://github.com/dimsemenov/PhotoSwipe/issues/1315
+			orientationchange: function() {
+				clearTimeout(_orientationChangeTimeout);
+				_orientationChangeTimeout = setTimeout(function() {
+					if(_viewportSize.x !== self.scrollWrap.clientWidth) {
+						self.updateSize();
+					}
+				}, 500);
+			},
 			scroll: _updatePageScrollOffset,
 			keydown: _onKeyDown,
 			click: _onGlobalClick
@@ -942,7 +979,7 @@ var publicMethods = {
 		framework.addClass(template, 'pswp--visible');
 	},
 
-	// Closes the gallery, then destroy it
+	// Close the gallery, then destroy it
 	close: function() {
 		if(!_isOpen) {
 			return;
@@ -953,10 +990,10 @@ var publicMethods = {
 		_shout('close');
 		_unbindEvents();
 
-		_showOrHide( self.currItem, null, true, self.destroy);
+		_showOrHide(self.currItem, null, true, self.destroy);
 	},
 
-	// destroys gallery (unbinds events, cleans up intervals and timeouts to avoid memory leaks)
+	// destroys the gallery (unbinds events, cleans up intervals and timeouts to avoid memory leaks)
 	destroy: function() {
 		_shout('destroy');
 
@@ -973,7 +1010,7 @@ var publicMethods = {
 
 		framework.unbind(self.scrollWrap, _downEvents, self);
 
-		// we unbind lost event at the end, as closing animation may depend on it
+		// we unbind scroll event at the end, as closing animation may depend on it
 		framework.unbind(window, 'scroll', self);
 
 		_stopDragUpdateLoop();
@@ -1097,6 +1134,7 @@ var publicMethods = {
 
 
 		self.currItem = _getItemAt( _currentItemIndex );
+		_renderMaxResolution = false;
 		
 		_shout('beforeChange', _indexDiff);
 
@@ -1129,7 +1167,8 @@ var publicMethods = {
 			var prevItem = _getItemAt(_prevItemIndex);
 			if(prevItem.initialZoomLevel !== _currZoomLevel) {
 				_calculateItemSize(prevItem , _viewportSize );
-				_applyZoomPanToItem( prevItem ); 
+				_setImageSize(prevItem);
+				_applyZoomPanToItem( prevItem ); 				
 			}
 
 		}
@@ -1222,6 +1261,7 @@ var publicMethods = {
 				}
 				if(item && item.container) {
 					_calculateItemSize(item, _viewportSize);
+					_setImageSize(item);
 					_applyZoomPanToItem( item );
 				}
 				
@@ -1235,7 +1275,7 @@ var publicMethods = {
 		if(_currPanBounds) {
 			_panOffset.x = _currPanBounds.center.x;
 			_panOffset.y = _currPanBounds.center.y;
-			_applyCurrentZoomPan();
+			_applyCurrentZoomPan( true );
 		}
 		
 		_shout('resize');
@@ -1272,7 +1312,6 @@ var publicMethods = {
 
 		_roundPoint(destPanOffset);
 
-		// _startZoomLevel = destZoomLevel;
 		var onUpdate = function(now) {
 			if(now === 1) {
 				_currZoomLevel = destZoomLevel;
@@ -1288,7 +1327,7 @@ var publicMethods = {
 				updateFn(now);
 			}
 
-			_applyCurrentZoomPan();
+			_applyCurrentZoomPan( now === 1 );
 		};
 
 		if(speed) {
@@ -1386,12 +1425,12 @@ var _gestureStartTime,
 	
 	// find the closest parent DOM element
 	_closestElement = function(el, fn) {
-	  	if(!el) {
+	  	if(!el || el === document) {
 	  		return false;
 	  	}
 
 	  	// don't search elements above pswp__scroll-wrap
-	  	if(el.className && el.className.indexOf('pswp__scroll-wrap') > -1 ) {
+	  	if(el.getAttribute('class') && el.getAttribute('class').indexOf('pswp__scroll-wrap') > -1 ) {
 	  		return false;
 	  	}
 
@@ -1730,12 +1769,19 @@ var _gestureStartTime,
 		if(_isDragging) {
 			var touchesList = _getTouchPoints(e);
 			if(!_direction && !_moved && !_isZooming) {
-				var diff = Math.abs(touchesList[0].x - _currPoint.x) - Math.abs(touchesList[0].y - _currPoint.y);
-				// check the direction of movement
-				if(Math.abs(diff) >= DIRECTION_CHECK_OFFSET) {
-					_direction = diff > 0 ? 'h' : 'v';
-					_currentPoints = touchesList;
+
+				if(_mainScrollPos.x !== _slideSize.x * _currPositionIndex) {
+					// if main scroll position is shifted – direction is always horizontal
+					_direction = 'h';
+				} else {
+					var diff = Math.abs(touchesList[0].x - _currPoint.x) - Math.abs(touchesList[0].y - _currPoint.y);
+					// check the direction of movement
+					if(Math.abs(diff) >= DIRECTION_CHECK_OFFSET) {
+						_direction = diff > 0 ? 'h' : 'v';
+						_currentPoints = touchesList;
+					}
 				}
+				
 			} else {
 				_currentPoints = touchesList;
 			}
@@ -1874,7 +1920,6 @@ var _gestureStartTime,
 
 			if(_direction === 'v' && _options.closeOnVerticalDrag) {
 				if(!_canPan()) {
-					
 					_currPanDist.y += delta.y;
 					_panOffset.y += delta.y;
 
@@ -2374,13 +2419,11 @@ var _gestureStartTime,
 
 		if(_opacityChanged) {
 			onUpdate = function(now) {
-
 				_applyBgOpacity(  (destOpacity - initialOpacity) * now + initialOpacity );
-
 			};
 		}
 
-		self.zoomTo(destZoomLevel, 0, 300,  framework.easing.cubic.out, onUpdate);
+		self.zoomTo(destZoomLevel, 0, 200,  framework.easing.cubic.out, onUpdate);
 		return true;
 	};
 
@@ -2518,21 +2561,23 @@ var _showOrHideTimeout,
 		// if bounds aren't provided, just open gallery without animation
 		if(!duration || !thumbBounds || thumbBounds.x === undefined) {
 
-			var finishWithoutAnimation = function() {
-				_shout('initialZoom' + (out ? 'Out' : 'In') );
+			_shout('initialZoom' + (out ? 'Out' : 'In') );
 
-				_currZoomLevel = item.initialZoomLevel;
-				_equalizePoints(_panOffset,  item.initialPosition );
-				_applyCurrentZoomPan();
+			_currZoomLevel = item.initialZoomLevel;
+			_equalizePoints(_panOffset,  item.initialPosition );
+			_applyCurrentZoomPan();
 
-				// no transition
-				template.style.opacity = out ? 0 : 1;
-				_applyBgOpacity(1);
+			template.style.opacity = out ? 0 : 1;
+			_applyBgOpacity(1);
 
+			if(duration) {
+				setTimeout(function() {
+					onComplete();
+				}, duration);
+			} else {
 				onComplete();
-			};
-			finishWithoutAnimation();
-			
+			}
+
 			return;
 		}
 
@@ -2760,7 +2805,7 @@ var _getItemAt,
 			// if it's not image, we return zero bounds (content is not zoomable)
 			return item.bounds;
 		}
-		return false;
+		
 	},
 
 	
@@ -2773,38 +2818,20 @@ var _getItemAt,
 			return;
 		}
 
-		var animate,
-			isSwiping = self.isDragging() && !self.isZooming(),
-			slideMightBeVisible = index === _currentItemIndex || self.isMainScrollAnimating() || isSwiping;
-
-		// fade in loaded image only when current holder is active, or might be visible
-		if(!preventAnimation && (_likelyTouchDevice || _options.alwaysFadeIn) && slideMightBeVisible) {
-			animate = true;
-		}
-
 		if(img) {
-			if(animate) {
-				img.style.opacity = 0;
-			}
 
 			item.imageAppended = true;
-			_setImageSize(img, item.w, item.h);
+			_setImageSize(item, img, (item === self.currItem && _renderMaxResolution) );
 			
 			baseDiv.appendChild(img);
 
-			if(animate) {
+			if(keepPlaceholder) {
 				setTimeout(function() {
-					img.style.opacity = 1;
-					if(keepPlaceholder) {
-						setTimeout(function() {
-							// hide image placeholder "behind"
-							if(item && item.loaded && item.placeholder) {
-								item.placeholder.style.display = 'none';
-								item.placeholder = null;
-							}
-						}, 500);
+					if(item && item.loaded && item.placeholder) {
+						item.placeholder.style.display = 'none';
+						item.placeholder = null;
 					}
-				}, 50);
+				}, 500);
 			}
 		}
 	},
@@ -2849,7 +2876,23 @@ var _getItemAt,
 			
 		}
 	},
-	_setImageSize = function(img, w, h) {
+	_setImageSize = function(item, img, maxRes) {
+		if(!item.src) {
+			return;
+		}
+
+		if(!img) {
+			img = item.container.lastChild;
+		}
+
+		var w = maxRes ? item.w : Math.round(item.w * item.fitRatio),
+			h = maxRes ? item.h : Math.round(item.h * item.fitRatio);
+		
+		if(item.placeholder && !item.loaded) {
+			item.placeholder.style.width = w + 'px';
+			item.placeholder.style.height = h + 'px';
+		}
+
 		img.style.width = w + 'px';
 		img.style.height = h + 'px';
 	},
@@ -2861,7 +2904,7 @@ var _getItemAt,
 			for(var i = 0; i < _imagesToAppendPool.length; i++) {
 				poolItem = _imagesToAppendPool[i];
 				if( poolItem.holder.index === poolItem.index ) {
-					_appendImage(poolItem.index, poolItem.item, poolItem.baseDiv, poolItem.img);
+					_appendImage(poolItem.index, poolItem.item, poolItem.baseDiv, poolItem.img, false, poolItem.clearPlaceholder);
 				}
 			}
 			_imagesToAppendPool = [];
@@ -2878,7 +2921,7 @@ _registerModule('Controller', {
 			index = _getLoopedId(index);
 			var item = _getItemAt(index);
 
-			if(!item || item.loaded || item.loading) {
+			if(!item || ((item.loaded || item.loading) && !_itemsNeedUpdate)) {
 				return;
 			}
 
@@ -2906,7 +2949,7 @@ _registerModule('Controller', {
 			_listen('beforeChange', function(diff) {
 
 				var p = _options.preload,
-					isNext = diff === null ? true : (diff > 0),
+					isNext = diff === null ? true : (diff >= 0),
 					preloadBefore = Math.min(p[0], _getNumItems() ),
 					preloadAfter = Math.min(p[1], _getNumItems() ),
 					i;
@@ -3016,6 +3059,8 @@ _registerModule('Controller', {
 			}
 
 			_checkForError(item);
+
+			_calculateItemSize(item, _viewportSize);
 			
 			if(item.src && !item.loadError && !item.loaded) {
 
@@ -3024,14 +3069,6 @@ _registerModule('Controller', {
 					// gallery closed before image finished loading
 					if(!_isOpen) {
 						return;
-					}
-
-					// Apply hw-acceleration only after image is loaded.
-					// This is webkit progressive image loading bugfix.
-					// https://bugs.webkit.org/show_bug.cgi?id=108630
-					// https://code.google.com/p/chromium/issues/detail?id=404547
-					if(item.img) {
-						item.img.style.webkitBackfaceVisibility = 'hidden';
 					}
 
 					// check if holder hasn't changed while image was loading
@@ -3054,10 +3091,11 @@ _registerModule('Controller', {
 									baseDiv:baseDiv,
 									img:item.img,
 									index:index,
-									holder:holder
+									holder:holder,
+									clearPlaceholder:true
 								});
 							} else {
-								_appendImage(index, item, baseDiv, item.img, _mainScrollAnimating || _initialZoomRunning);
+								_appendImage(index, item, baseDiv, item.img, _mainScrollAnimating || _initialZoomRunning, true);
 							}
 						} else {
 							// remove preloader & mini-img
@@ -3084,7 +3122,7 @@ _registerModule('Controller', {
 						placeholder.src = item.msrc;
 					}
 					
-					_setImageSize(placeholder, item.w, item.h);
+					_setImageSize(item, placeholder);
 
 					baseDiv.appendChild(placeholder);
 					item.placeholder = placeholder;
@@ -3117,14 +3155,12 @@ _registerModule('Controller', {
 			} else if(item.src && !item.loadError) {
 				// image object is created every time, due to bugs of image loading & delay when switching images
 				img = framework.createEl('pswp__img', 'img');
-				img.style.webkitBackfaceVisibility = 'hidden';
 				img.style.opacity = 1;
 				img.src = item.src;
-				_setImageSize(img, item.w, item.h);
+				_setImageSize(item, img);
 				_appendImage(index, item, baseDiv, img, true);
 			}
 			
-			_calculateItemSize(item, _viewportSize);
 
 			if(!_initialContentSet && index === _currentItemIndex) {
 				_currZoomElementStyle = baseDiv.style;
@@ -3327,9 +3363,9 @@ _registerModule('DesktopZoom', {
 			if(_currZoomLevel <= self.currItem.fitRatio) {
 				if( _options.modal ) {
 
-					if ( !_options.closeOnScroll ) {
+					if (!_options.closeOnScroll || _numAnimations || _isDragging) {
 						e.preventDefault();
-					} else if( _transformKey && Math.abs(e.deltaY) > 2 ) {
+					} else if(_transformKey && Math.abs(e.deltaY) > 2) {
 						// close PhotoSwipe
 						// if browser supports transforms & scroll changed enough
 						_closedByScroll = true;
