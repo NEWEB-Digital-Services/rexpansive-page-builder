@@ -11,30 +11,7 @@
 
 defined( 'ABSPATH' ) or exit;
 
-global $post;
-$layouts = get_post_meta( $post->ID, '_rex_responsive_layouts_test', true );
-
-$layouts = array(
-  array(
-    'id' => 'mobile',
-    'label' => 'Mobile',
-    'min' => '320',
-    'max' => '767'
-  ),
-  array(
-    'id' => 'tablet',
-    'label' => 'Tablet',
-    'min' => '768',
-    'max' => '1024'
-  ),
-  array(
-    'id' => 'default',
-    'label' => 'My Deskyot',
-    'min' => '1024',
-    'max' => ''
-  ),
-);
-
+global $layouts;
 ?>
 <div class="rex-modal-wrap rex-fade">
   <div id="rexlive-custom-layout-modal" class="rexbuilder-materialize-wrap rex-modal rex-modal-draggable z-depth-4">
@@ -49,19 +26,36 @@ $layouts = array(
                 <div class="layout">
                   <div class="layout__setting">
                     <input type="hidden" name="rexlive-layout-id" value="<?php echo esc_attr( $layout['id'] ); ?>">
-                    <input type="hidden" name="rexlive-layout-label" value="<?php echo esc_attr( $layout['label'] ); ?>">
-                    <?php echo $layout['label']; ?>
+                    <input type="hidden" name="rexlive-layout-label" data-editable-field="true" value="<?php echo esc_attr( $layout['label'] ); ?>">
+                    <span class="layout-value"><?php echo $layout['label']; ?></span>
                   </div>
                   <div class="layout__setting">
-                    <input type="hidden" name="rexlive-layout-min" value="<?php echo esc_attr( $layout['min'] ); ?>">
-                    <?php echo $layout['min']; ?>px
+                    <input type="hidden" name="rexlive-layout-min" data-editable-field="true" value="<?php echo esc_attr( $layout['min'] ); ?>">
+                    <span class="layout-value"><?php echo $layout['min']; ?>px</span>
                   </div>
                   <div class="layout__setting">
-                    <input type="hidden" name="rexlive-layout-max" value="<?php echo esc_attr( $layout['max'] ); ?>">
-                    <?php echo ( "" != $layout['max'] ? $layout['max'] . 'px' : '&infin;' ); ?>
+                    <input type="hidden" name="rexlive-layout-max" data-editable-field="true" value="<?php echo esc_attr( $layout['max'] ); ?>">
+                    <span class="layout-value"><?php echo ( "" != $layout['max'] ? $layout['max'] . 'px' : '&infin;' ); ?></span>
+                  </div>
+                  <?php if( 'standard' == $layout['type'] ) { ?>
+                  <div class="layout__setting">
+                    <input type="hidden" name="rexlive-layout-type" value="<?php echo esc_attr( $layout['type'] ); ?>">
                   </div>
                   <div class="layout__setting"></div>
-                  <div class="layout__setting"></div>
+                  <?php } else { ?>
+                    <div class="layout__setting">
+                    <input type="hidden" name="rexlive-layout-type" value="<?php echo esc_attr( $layout['type'] ); ?>">
+                    <span class="rexlive-layout--edit">
+                      <span class="dashicons-edit dashicons-before"></span>
+                      <span class="dashicons-yes dashicons-before hide-icon"></span>
+                    </span>
+                  </div>
+                  <div class="layout__setting">
+                    <span class="rexlive-layout--delete">
+                      <span class="dashicons-trash dashicons-before"></span>
+                    </span>
+                  </div>
+                  <?php } ?>
                 </div>
               </li>
               <?php

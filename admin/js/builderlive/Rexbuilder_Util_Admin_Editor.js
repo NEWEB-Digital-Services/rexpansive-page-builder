@@ -216,21 +216,76 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
           'label': $item.find('input[name=rexlive-layout-label]').val(),
           'min': $item.find('input[name=rexlive-layout-min]').val(),
           'max': $item.find('input[name=rexlive-layout-max]').val(),
+          'type': $item.find('input[name=rexlive-layout-type]').val(),
         };
         layouts.push(layout);
       });
       console.log(layouts);
+
+      var data = {
+        eventName: "",
+        updatedLayouts: layouts,
+      };
+
+      data.eventName = "rexlive:updateLayouts";
+      sendIframeBuilderMessage(data);
+
       Rexpansive_Builder_Admin_Modals.CloseModal($custom_layout_modal.parent('.rex-modal-wrap'));
     });
 
     $custom_layout_modal.on('click', '#rexlive-add-custom-layout', function() {
-      $custom_layout_modal.find('.layout__list').append( tmpl('rexlive-tmpl-new-layout', {l_id:0}) );
+      $custom_layout_modal.find('.layout__list').append( tmpl('rexlive-tmpl-new-layout', {l_id: create_layout_id()}) );
+    });
+
+    $custom_layout_modal.on('click', '.rexlive-layout--edit', function(e) {
+      $(e.currentTarget).find('.dashicons-before').toggleClass('hide-icon');
+
+      if($(e.target).hasClass('dashicons-yes')) {
+        $(this).parents('.layout__item').removeClass('editing').find('input[data-editable-field=true]').attr('type','hidden');
+      } else if ($(e.target).hasClass('dashicons-edit')) {
+        $(this).parents('.layout__item').addClass('editing').find('input[data-editable-field=true]').attr('type','input');
+      }
+    });
+
+    $custom_layout_modal.on('click', '.rexlive-layout--delete', function() {
+      $(this).parents('.layout__item').remove();
     });
 
     $custom_layout_modal.on('click', '.rexlive-remove-custom-layout', function() {
       $(this).parents('.layout__item').remove();
     });
   };
+
+  /**
+   * Creating the ID of a new layout. Checks if one exists
+   * @return {string} id
+   */
+  var create_layout_id = function() {
+    var id;
+		var flag;
+		var idLength = 4;
+		do {
+			flag = true;
+			id = createRandomID(idLength);
+			$custom_layout_modal.find('.layout__item').each(function () {
+				if ($(this).find('input[name=rexlive-layout-id]').val() == id) {
+					flag = false;
+				}
+			});
+		} while (!flag);
+		return id;
+  }
+
+  var createRandomID = function (n) {
+		var text = "";
+		var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+		for (var i = 0; i < n; i++) {
+			text += possible.charAt(Math.floor(Math.random() * possible.length));
+		}
+
+		return text;
+	}
 
   // init the utilities
   var init = function () {

@@ -16,7 +16,9 @@ defined( 'ABSPATH' ) or exit;
     <div class="layout__setting">
       <input type="text" name="rexlive-layout-max" placeholder="To">
     </div>
-    <div class="layout__setting"></div>
+    <div class="layout__setting">
+      <input type="hidden" name="rexlive-layout-type" value="custom">
+    </div>
     <div class="layout__setting">
       <button class="builder-button btn-floating btn light-blue darken-1 waves-effect waves-light tooltipped rexlive-remove-custom-layout" data-position="bottom" data-tooltip="Add Layout">
         <i class="rex-icon">n</i>

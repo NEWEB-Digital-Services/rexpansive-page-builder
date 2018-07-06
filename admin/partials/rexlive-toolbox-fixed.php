@@ -10,25 +10,30 @@
  */
 
 defined('ABSPATH') or exit;
+global $layouts;
 ?>
 <div class="rexlive-toolbox">
     <div class="rexlive-responsive-toolbox">
-        <div style="position:absolute;bottom:0px;left:0%;">
-            <button class="btn-builder-layout builder-mobile-layout" data-min-width="320" data-max-width="768" data-name="mobile">Mobile</button>
+    <?php
+    foreach( $layouts as $index => $layout ) {
+?>
+<div>
+    <button class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo ( "default" != $layout['id'] ? $layout['min'] : '' ); ?>" data-max-width="<?php echo ( "default" != $layout['id'] ? $layout['max'] : '' ); ?>" data-name="<?php echo $layout['id'] ?>"><?php echo $layout['label'] ?></button>
+</div>
+<?php
+        if( 2 == $index ) {
+?>
+<div>
+    <button class="builder-config-layouts builder-custom-layout">+</button>
+</div>
+<?php
+        }
+    }
+    ?>
+        <div class="rexlive-builder-actions">
+            <button class = "btn-undo">Undo</button>
+            <button class = "btn-redo">Redo</button>
+            <button class = "btn-save">Save</button>
         </div>
-        <div style="position:absolute;bottom:0px;left:15%;">
-            <button class="btn-builder-layout builder-tablet-layout" data-min-width="768" data-max-width="1024" data-name="tablet">Tablet</button>
-        </div>
-        <div style="position:absolute;bottom:0px;left:45%;">
-            <button class="btn-builder-layout builder-default-layout" data-min-width="" data-max-width="" data-name="default">MyDesktop</button>
-        </div>
-        <div style="position:absolute;bottom:0px;left:60%;">
-            <button class="builder-config-layouts builder-custom-layout" data-min-width="1440" data-max-width="1600">+</button>
-        </div>
-    </div>
-    <div class="rexlive-builder-actions">
-        <button class = "btn-undo" style="position:absolute;bottom:0px;right:20%">Undo</button>
-        <button class = "btn-redo" style="position:absolute;bottom:0px;right:10%">Redo</button>
-        <button class = "btn-save" style="position:absolute;bottom:0px;right:0%;">Save</button>
     </div>
 </div>

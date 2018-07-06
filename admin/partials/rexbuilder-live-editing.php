@@ -37,15 +37,69 @@ defined( 'ABSPATH' ) or exit;
 	}
 
 	.layout__setting {
-		padding: 20px;
+		padding: 10px;
+	}
+
+	.rexlive-layout--edit,
+	.rexlive-layout--delete {
+		cursor: pointer;
+	}
+
+	.hide-icon {
+		display:none;
+	}
+
+	.layout__item.editing .layout-value {
+		display:none;
+	}
+
+	.layout__item input {
+		max-width: 75px;
+	}
+
+	.rexlive-responsive-toolbox {
+		display:flex;
+		justify-content: space-between;
+		height: 100%;
+    	align-items: center;
 	}
 	</style>
 </head>
-<body class="rexpansive-editor" style="overflow:hidden;">
+<body class="rexpansive-editor" style="overflow:hidden;background-color:grey;">
 <?php
     /** This action is documented in wp-admin/admin-footer.php */
 	global $post;
 	$source = get_permalink($post->ID);
+	
+	global $layouts;
+	$layouts = get_post_meta( $post->ID, '_rex_responsive_layouts_test', true );
+
+	if( "" == $layouts ) {
+		$layouts = array(
+			array(
+				'id' => 'mobile',
+				'label' => 'Mobile',
+				'min' => '320',
+				'max' => '767',
+				'type' => 'standard'
+			),
+			array(
+				'id' => 'tablet',
+				'label' => 'Tablet',
+				'min' => '768',
+				'max' => '1024',
+				'type' => 'standard'
+			),
+			array(
+				'id' => 'default',
+				'label' => 'My Desktop',
+				'min' => '1025',
+				'max' => '',
+				'type' => 'standard'
+			),
+		);
+	}
+
 	include_once("rexlive-toolbox-fixed.php");
 
 	$layoutType = get_post_meta($post->ID,'_rex_responsive_layouts',true);

@@ -25,6 +25,7 @@ var Rexbuilder_App = (function ($) {
 
     if (Rexbuilder_Util.editorMode) {
       Rexbuilder_Util_Editor.addBlockToolboxListeners();
+      Rexbuilder_Util_Editor.addDocumentListeners();
       Rexbuilder_Util_Editor.addWindowListeners();
     }
 

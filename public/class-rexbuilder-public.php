@@ -399,6 +399,34 @@ endif;
         wp_send_json_success($response);
     }
 
+    public function rexlive_save_custom_layouts() {
+        $nonce = $_POST['nonce_param'];
+
+        $response = array(
+            'error' => false,
+            'msg' => '',
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+        if( !isset( $_POST['custom_layouts'] ) ) {
+            $response['error'] = true;
+            $response['msg'] = 'Data error!';
+            wp_send_json_error($response);
+        }
+
+        $response['error'] = false;
+
+        $post_id_to_update = intval($_POST['post_id_to_update']);
+        update_post_meta($post_id_to_update, '_rex_responsive_layouts_test', $_POST['custom_layouts']);
+
+        wp_send_json_success($response);
+    }
+
     /**
      *    Ajax call to save sections status
      *
