@@ -31,7 +31,7 @@ data-property="{videoURL:'{%=video.url%}',containment:\'self\',startAt:0,mute:' 
 </script>
 <script type="text/x-tmpl" id="tmpl-video-vimeo">
 <div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--block">
-    <iframe src="{%=video.url%}?autoplay=1&loop=1&title=0&byline=0&portrait=0&autopause=0&muted=1" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen>
+    <iframe src="{%=video.url%}" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen>
     </iframe>
 </div>
 </script>

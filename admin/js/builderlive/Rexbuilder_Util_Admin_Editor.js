@@ -57,7 +57,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                         console.log("salva");
                         var activeLayout = [];
                         activeLayout.push(activeLayoutPage);
-                        activeLayout.push(nameVisualizzato);
+                        //activeLayout.push(nameVisualizzato);
                         activeLayout.push($btn.data("min-width"));
                         activeLayout.push($btn.data("max-width"));
 

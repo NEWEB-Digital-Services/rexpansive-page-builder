@@ -207,6 +207,32 @@ var Rexbuilder_Util = (function ($) {
 					$itemData = $elem.children(".rexbuilder-block-data");
 					$itemContent = $elem.find(".grid-item-content");
 
+					//VIDEO
+					console.log("mp4: \"" + targetProps["video_mp4_url"] + "\"");
+					console.log("vimeo: \"" + targetProps["video_bg_url_vimeo"] + "\"");
+					console.log("youtube: \"" + targetProps["video_bg_url_youtube"] + "\"");
+
+					if ((targetProps["video_mp4_url"] == "") && (targetProps["video_bg_url_youtube"] == "") && (targetProps["video_bg_url_vimeo"] == "")) {
+						removeMp4Video($itemContent);
+						removeYoutubeVideo($itemContent);
+						removeVimeoVideo($itemContent);
+					}
+					if ((targetProps["video_mp4_url"] != "") && (targetProps["video_bg_url_youtube"] == "") && (targetProps["video_bg_url_vimeo"] == "")) {
+						removeYoutubeVideo($itemContent);
+						removeVimeoVideo($itemContent);
+						addMp4Video($itemContent, targetProps["video_mp4_url"]);
+					}
+					if ((targetProps["video_mp4_url"] == "") && (targetProps["video_bg_url_youtube"] != "") && (targetProps["video_bg_url_vimeo"] == "")) {
+						removeMp4Video($itemContent);
+						removeVimeoVideo($itemContent);
+						addYoutubeVideo($itemContent, targetProps["video_bg_url_youtube"]);
+					}
+					if ((targetProps["video_mp4_url"] == "") && (targetProps["video_bg_url_youtube"] == "") && (targetProps["video_bg_url_vimeo"] != "")) {
+						removeMp4Video($itemContent);
+						removeYoutubeVideo($itemContent);
+						addVimeoVideo($itemContent, targetProps["video_bg_url_vimeo"]);
+					}
+
 					for (var propName in targetProps) {
 						switch (propName) {
 							case "hide":
@@ -284,35 +310,6 @@ var Rexbuilder_Util = (function ($) {
 									$itemData.attr('data-id_image_bg_block', targetProps[propName]);
 								}
 								break;
-							//video mp4
-							case "video_bg_id":
-								;
-								break;
-							case "video_mp4_url":
-								var $videoWrap = $itemContent.children(".rex-video-wrap");
-								var $toggleAudio = $itemContent.children(".rex-video-toggle-audio");
-								if ($videoWrap.length != 0) {
-									if (false) {
-										$videoWrap.remove();
-										$toggleAudio.remove();
-									}
-								}
-								if (targetProps[propName] != "") {
-									tmpl.arg = "video";
-									$itemContent.prepand(tmpl("tmpl-video-mp4", { url: targetProps[propName] }));
-									$itemContent.append(tmpl("tmpl-video-toggle-audio"));
-								}
-								break;
-
-							// video youtube
-							case "video_bg_url":
-
-								break;
-
-							// video vimeo
-							case "video_bg_url_vimeo":
-
-								break;
 
 							case "type_bg_block":
 								break;
@@ -369,6 +366,107 @@ var Rexbuilder_Util = (function ($) {
 			});
 		});
 	}
+
+	var removeMp4Video = function ($itemContent) {
+		var $videoWrap = $itemContent.children(".rex-video-wrap");
+		var $toggleAudio = $itemContent.children(".rex-video-toggle-audio");
+		if ($videoWrap.length != 0) {
+			console.log("removing mp4 video");
+			$itemContent.removeClass("mp4-player");
+			$videoWrap.remove();
+			$toggleAudio.remove();
+		}
+	}
+
+	var removeYoutubeVideo = function ($itemContent) {
+		if ($itemContent.hasClass("youtube-player")) {
+			var $toggleAudio = $itemContent.children(".rex-video-toggle-audio");
+			$itemContent.YTPPlayerDestroy();
+			$itemContent.removeAttr("data-property");
+			$itemContent.removeAttr("id");
+			$itemContent.removeClass("youtube-player mb_YTPlayer isMuted");
+			$toggleAudio.remove();
+		}
+	}
+
+	var removeVimeoVideo = function ($itemContent) {
+		var $vimeoWrap = $itemContent.children('.rex-video-vimeo-wrap');
+		var $toggleAudio = $itemContent.children(".rex-video-toggle-audio");
+		if ($vimeoWrap.length != 0) {
+			var iframeVimeo = $vimeoWrap.children("iframe")[0];
+			VimeoVideo.removePlayer(iframeVimeo);
+			$itemContent.removeClass("vimeo-player");
+			$vimeoWrap.remove();
+			$toggleAudio.remove();
+		}
+	}
+
+	var addMp4Video = function ($itemContent, urlmp4) {
+		var $videoWrap = $itemContent.children(".rex-video-wrap");
+
+		if ($videoWrap.length != 0 && $videoWrap.find("source").attr("src") == urlmp4) {
+			return;
+		}
+
+		removeMp4Video($itemContent);
+		console.log("adding mp4 video")
+
+		tmpl.arg = "video";
+		$itemContent.prepend(tmpl("tmpl-video-mp4", { url: urlmp4 }));
+		$itemContent.append(tmpl("tmpl-video-toggle-audio"));
+		$itemContent.addClass("mp4-player");
+	}
+
+	var addYoutubeVideo = function ($itemContent, urlYoutube) {
+		// youtube-player"  style="background-color:rgba(0, 0, 0, 0);" data-property=""
+		if ($itemContent.hasClass("youtube-player")) {
+			var ytPlayer = $itemContent.YTPGetPlayer();
+			if (ytPlayer === undefined) {
+				return;
+			}
+			var videoID = $itemContent.YTPGetVideoID();
+			var urlID = getYoutubeID(urlYoutube);
+			if (videoID != urlID) {
+				$itemContent.YTPChangeMovie({
+					videoURL: urlYoutube,
+					containment: 'self',
+					startAt: 0,
+					mute: true,
+					autoPlay: true,
+					loop: true,
+					opacity: 1,
+					showControls: false,
+					showYTLogo: false
+				});
+				return;
+			}
+		} else {
+			$itemContent.addClass("youtube-player");
+			$itemContent.attr("data-property", "{videoURL:'" + urlYoutube + "',containment:'self',startAt:0,mute:true,autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}");
+			$itemContent.YTPlayer();
+			$itemContent.append(tmpl("tmpl-video-toggle-audio"));
+		}
+	}
+
+	var addVimeoVideo = function ($itemContent, urlVimeo) {
+		var $vimeoWrap = $itemContent.children(".rex-video-vimeo-wrap");
+		urlVimeo += "?autoplay=1&loop=1&title=0&byline=0&portrait=0&autopause=0&muted=1";
+		if ($vimeoWrap.length != 0 && ($vimeoWrap.children("iframe").attr("src") == urlVimeo)) {
+			return;
+		}
+		removeVimeoVideo($itemContent);
+
+		console.log("adding vimeo video")
+
+		tmpl.arg = "video";
+		$itemContent.prepend(tmpl("tmpl-video-vimeo", { url: urlVimeo }));
+		$itemContent.append(tmpl("tmpl-video-toggle-audio"));
+		$itemContent.addClass("vimeo-player");
+
+		var vimeoFrame = $itemContent.children(".rex-video-vimeo-wrap").find("iframe")[0];
+		VimeoVideo. addPlayer("1", vimeoFrame);
+	}
+
 
 	// function to detect if we are on a mobile device
 	var _detect_mobile = function () {

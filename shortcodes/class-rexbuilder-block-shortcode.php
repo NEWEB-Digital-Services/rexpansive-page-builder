@@ -350,7 +350,7 @@ class Rexbuilder_Block {
 			unset($value_property);
 
 			if( '' != $video_bg_id && 'undefined' != $video_bg_id ){
-				echo 'data-video-mp4-url="'. wp_get_attachment_url ( $video_bg_id ).'"';
+				echo 'data-video_mp4_url="'. wp_get_attachment_url ( $video_bg_id ).'"';
 			}
 
 			echo '></div>';
