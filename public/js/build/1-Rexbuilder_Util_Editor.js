@@ -203,24 +203,24 @@ var Rexbuilder_Util_Editor = (function ($) {
     Rexbuilder_Util.$window[0].addEventListener("message", receiveMessage, false);
 
     function receiveMessage(event) {
-      //console.log("evente received"); 
+      console.log("event received");
       if (event.data.rexliveEvent) {
         console.log("rexlive event");
         var e = jQuery.Event(event.data.eventName);
         e.settings = {};
 
         jQuery.extend(e.settings, event.data);
-
+        //console.log(e);
         $(document).trigger(e);
       }
     }
   }
 
   var addDocumentListeners = function () {
-    // $(document).on("rexlive:changeLayout", function(event){
-    //     _edit_dom_layout(event.settings.selectedLayoutName);
-    // });
-
+    $(document).on("rexlive:changeLayout", function (event) {
+      Rexbuilder_Util_Editor.buttonResized = true;
+      Rexbuilder_Util_Editor.clickedLayoutID = event.settings.selectedLayoutName;
+    });
     $(document).on('rexlive:updateLayouts', function (event) {
       _save_custom_layouts(event.settings.updatedLayouts);
     });
@@ -240,7 +240,7 @@ var Rexbuilder_Util_Editor = (function ($) {
    */
   var _save_custom_layouts = function (layouts) {
     var idPost = parseInt($('#id-post').attr('data-post-id'));
-
+    console.log("saving custom");
     $.ajax({
       type: 'POST',
       dataType: 'json',
@@ -264,13 +264,6 @@ var Rexbuilder_Util_Editor = (function ($) {
     });
   }
 
-  var addDocumentListeners = function () {
-    $(document).on("rexlive:changeLayout", function (event) {
-      console.log("layout changed");
-      _edit_dom_layout(event.settings.selectedLayoutName);
-    });
-  }
-
   var sendParentIframeMessage = function (data) {
     var infos = {
       rexliveEvent: true
@@ -278,7 +271,7 @@ var Rexbuilder_Util_Editor = (function ($) {
     jQuery.extend(infos, data);
     window.parent.postMessage(infos, '*');
   }
-  
+
   var init = function () {
 
     this.elementIsResizing = false;
@@ -304,6 +297,9 @@ var Rexbuilder_Util_Editor = (function ($) {
     this.focusedElement = null;
 
     this.hasResized = false;
+    this.buttonResized = false;
+    this.clickedLayoutID = "";
+
   }
 
   return {

@@ -626,8 +626,8 @@
 			var output;
 			var $itemContent = $elem.find('.grid-item-content');
 			var $itemData = $elem.children(".rexbuilder-block-data");
-
-			id = $elem.attr('id') === undefined ? "" : "block_"+$elem.attr('id');
+			
+			id = $elem.attr('id') === undefined ? "" : $elem.attr('id');
 			rex_id = $elem.attr('data-rexbuilder-block-id');
 			type = $itemData.attr('data-type');
 			size_x = $elem.attr('data-width');

@@ -82,7 +82,7 @@ var Rexbuilder_Util = (function ($) {
 		console.log(w);
 		var $resposiveData = $("#rexbuilder-layout-data");
 
-		if ($resposiveData.children(".layouts-data").data("empty-customizations") == "true") {
+		if ($resposiveData.children(".layouts-data").data("empty-customizations") == "true" || (Rexbuilder_Util.editorMode && Rexbuilder_Util.firstStart)) {
 			return "default";
 		}
 
@@ -90,18 +90,18 @@ var Rexbuilder_Util = (function ($) {
 		var selectedLayoutName = "";
 		console.log($responsiveLayoutAvaible);
 		$.each($responsiveLayoutAvaible, function (i, layout) {
-			if (layout[2] == "") {
-				layout[2] = "0";
+			if (layout["min"] == "") {
+				layout["min"] = 0;
 			}
 		});
 
-		var ordered = lodash.sortBy($responsiveLayoutAvaible, [function (o) { return parseInt(o[2]); }]);
+		var ordered = lodash.sortBy($responsiveLayoutAvaible, [function (o) { return parseInt(o["min"]); }]);
 
 		$.each(ordered, function (i, layout) {
-			if (w >= layout[2]) {
-				if (layout[3] != "") {
-					if (w < layout[3]) {
-						selectedLayoutName = layout[0];
+			if (w >= layout["min"]) {
+				if (layout["max"] != "") {
+					if (w < layout["max"]) {
+						selectedLayoutName = layout["id"];
 					}
 				} else {
 					selectedLayoutName = layout['id'];
@@ -117,12 +117,14 @@ var Rexbuilder_Util = (function ($) {
 	}
 
 	var _edit_dom_layout = function (chosenLayoutName) {
-		console.log("chosen: " + chosenLayoutName);
-		Rexbuilder_Util.$rexContainer.attr("data-rex-layout-selected", chosenLayoutName);
-		var $resposiveData = $("#rexbuilder-layout-data");
+
 		if (chosenLayoutName == Rexbuilder_Util.activeLayout) {
 			return;
 		}
+		console.log("chosen: " + chosenLayoutName);
+
+		Rexbuilder_Util.$rexContainer.attr("data-rex-layout-selected", chosenLayoutName);
+		var $resposiveData = $("#rexbuilder-layout-data");
 
 		Rexbuilder_Util.activeLayout = chosenLayoutName;
 
@@ -344,12 +346,15 @@ var Rexbuilder_Util = (function ($) {
 								$itemData.attr("data-overlay_block_color", targetProps[propName]);
 								break;
 							case "photoswipe":
-								if (targetProps[propName] == "true") {
-									addPhotoSwipeElement($itemContent, targetProps['image_bg_block'], parseInt(targetProps['image_width']), parseInt(targetProps['image_height']), targetProps['image_size']);
-								} else {
-									removePhotoSwipeElement($itemContent);
+								if (!Rexbuilder_Util.editorMode) {
+									if (targetProps[propName] == "true") {
+										addPhotoSwipeElement($itemContent, targetProps['image_bg_block'], parseInt(targetProps['image_width']), parseInt(targetProps['image_height']), targetProps['image_size']);
+										$section.addClass("photoswipe-gallery");
+									} else {
+										removePhotoSwipeElement($itemContent);
+									}
+									$itemData.attr("data-photoswipe", targetProps[propName]);
 								}
-								$itemData.attr("data-photoswipe", targetProps[propName]);
 								break;
 
 							case "zak_background":
@@ -389,7 +394,9 @@ var Rexbuilder_Util = (function ($) {
 			});
 		});
 
-		initPhotoSwipe(".photoswipe-gallery");
+		if (!Rexbuilder_Util.editorMode) {
+			initPhotoSwipe(".photoswipe-gallery");
+		}
 	}
 
 	var addPhotoSwipeElement = function ($itemContent, url, w, h, t) {
@@ -410,12 +417,12 @@ var Rexbuilder_Util = (function ($) {
 	}
 
 	var removePhotoSwipeElement = function ($itemContent) {
-		console.log("removing photoswipe"); 
-		console.log($itemContent); 
+		console.log("removing photoswipe");
+		console.log($itemContent);
 		var $pswpFigure = $itemContent.parents(".pswp-figure");
-		console.log($pswpFigure); 
+		console.log($pswpFigure);
 		if ($pswpFigure.length != 0) {
-			console.log("removing ps"); 
+			console.log("removing ps");
 			var $pspwParent = $pswpFigure.parent();
 			$itemContent.detach().appendTo($pspwParent);
 			$pswpFigure.remove();
@@ -933,10 +940,17 @@ var Rexbuilder_Util = (function ($) {
 				}
 			}); */
 
-			if (!editorMode) {
-				console.log("not editor, changing layout");
+			if (Rexbuilder_Util.editorMode && !Rexbuilder_Util_Editor.buttonResized) {
+				return;
+			}
+
+			if (Rexbuilder_Util.editorMode) {
+				Rexbuilder_Util_Editor.buttonResized = false;
+				_edit_dom_layout(Rexbuilder_Util_Editor.clickedLayoutID);
+			} else {
 				_edit_dom_layout(chooseLayout());
 			}
+
 
 			Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
 				var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
@@ -1037,6 +1051,13 @@ var Rexbuilder_Util = (function ($) {
 
 	// init the utilities
 	var init = function () {
+		this.firstStart = true;
+
+		if (_plugin_frontend_settings.user.logged && _plugin_frontend_settings.user.editing) {
+			this.editorMode = true;
+		} else {
+			this.editorMode = false;
+		}
 
 		this.$window = $(window);
 		this.$body = $("body");
@@ -1046,7 +1067,6 @@ var Rexbuilder_Util = (function ($) {
 		this.lastSectionNumber = -1;
 
 		this.activeLayout = "";
-
 		_updateSectionsID();
 
 		var l = chooseLayout();
@@ -1067,6 +1087,7 @@ var Rexbuilder_Util = (function ($) {
 			overflowBehavior: { x: "hidden" },
 			autoUpdate: false
 		};
+		this.firstStart = false;
 	}
 
 	return {

@@ -498,7 +498,6 @@
                 $elem.resizable("destroy");
             });
 
-
             G.$element.removeClass('grid-stack-instance-' + this.properties.gridstackInstanceID);
             if (G.$element.hasClass("grid-stack-one-column-mode")) {
                 G.$element.removeClass("grid-stack-one-column-mode");

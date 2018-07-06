@@ -87,23 +87,24 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
           editedLive = false;
           console.log("saving ended");
         }
-        //console.log("MADONNA"); 
+         
         activeLayoutPage = btnName;
         updateResponsiveButtonFocus();
-
-        if ($btn.data("min-width") != "") {
-          $frameContainer.css("width", $btn.data("min-width"));
-        } else {
-          $frameContainer.css("width", "100%");
-        }
 
         var layoutData = {
           selectedLayoutName: activeLayoutPage,
           eventName: "rexlive:changeLayout"
         };
         sendIframeBuilderMessage(layoutData);
+
+        if ($btn.data("min-width") != "") {
+          $frameContainer.css("width", $btn.data("min-width"));
+        } else {
+          $frameContainer.css("width", "100%");
+        }
       }
     });
+    
     $(document).on('click', '.btn-save', function (e) {
       console.log("saving");
       var activeLayout = [];
@@ -185,7 +186,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
       rexliveEvent: true
     };
     jQuery.extend(infos, data);
-
+    console.log("sending message to iframe"); 
     frameBuilderWindow.postMessage(infos, '*');
   };
 
