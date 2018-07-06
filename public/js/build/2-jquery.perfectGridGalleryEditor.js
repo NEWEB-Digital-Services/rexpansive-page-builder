@@ -597,12 +597,10 @@
             var gallery = this;
             var grid = this.$element.data('gridstack');
             var idBlock = Rexbuilder_Util.createBlockID();
-            var idNewBlock = "block_" + idBlock;
 
             gallery.properties.numberBlocks = gallery.properties.numberBlocks + 1;
 
             $(divGridItem).attr({
-                'id': idNewBlock,
                 'class': 'perfect-grid-item grid-stack-item empty-block',
                 'data-height': h,
                 'data-width': w,
@@ -655,11 +653,9 @@
             var $elem = $(elem);
             var pos_y = this.settings.galleryLayout == 'masonry' ? Math.round(parseInt($elem.attr('data-row')) / this.properties.singleHeight) : parseInt($elem.attr('data-row'));
             var y = this.settings.galleryLayout == 'masonry' ? Math.round(parseInt($elem.attr('data-height')) / this.properties.singleHeight) : parseInt($elem.attr('data-height'));
-
+            var id = Rexbuilder_Util.
             $(divProperties).attr({
-                'id': elem.id + '-builder-data',
                 'style': 'display: none;',
-                'data-id': elem.id,
                 'data-type': 'empty',
                 'data-col': $elem.attr('data-col'),
                 'data-row': pos_y,

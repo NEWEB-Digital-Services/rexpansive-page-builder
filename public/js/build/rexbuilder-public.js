@@ -319,6 +319,7 @@ var Rexbuilder_App = (function ($) {
       }
       return false;
     };
+    
     var findParentBySelector = function (elm, selector) {
       var all = document.querySelectorAll(selector);
       var cur = elm.parentNode;

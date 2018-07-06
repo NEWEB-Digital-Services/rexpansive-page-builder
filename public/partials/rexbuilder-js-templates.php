@@ -48,3 +48,22 @@ data-property="{videoURL:'{%=video.url%}',containment:\'self\',startAt:0,mute:' 
     </div>
 </div>
 </script>
+<script type="text/x-tmpl" id="tmpl-overlay-block-div">
+<div class="responsive-block-overlay" style="background-color:{%=overlay.color%}">
+</div>
+</script>
+<script type="text/x-tmpl" id="tmpl-overlay-section-div">
+<div class="responsive-section-overlay" style="background-color:{%=overlay.color%}">
+</div>
+</script>
+<script type="text/x-tmpl" id="tmpl-photoswipe-block">
+<figure class="pswp-figure" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+    <a class="pswp-item" href="{%=image.link%}" itemprop="contentUrl" data-size="{%=image.width%}x{%=image.height%}">
+        <div class="pswp-item-thumb" data-thumb-image-type="{%=image.type%}" data-thumburl="{%=image.link%}" itemprop="thumbnail">
+        </div>
+
+    </a>
+    <figcaption class="pswp-item-caption" itemprop="caption description">
+    </figcaption>
+</figure>
+</script>

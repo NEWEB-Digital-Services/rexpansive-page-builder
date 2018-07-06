@@ -219,6 +219,7 @@ var Rexbuilder_Util_Editor = (function ($) {
     
     var addDocumentListeners = function(){
         $(document).on("rexlive:changeLayout", function(event){
+            console.log("layout changed"); 
             _edit_dom_layout(event.settings.selectedLayoutName);
         });
     }

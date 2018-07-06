@@ -432,8 +432,7 @@
 					action: 'rexlive_save_avaiable_layouts',
 					nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
 					post_id_to_update: idPost,
-					names: layoutsNames,
-					avaiable_layouts: updatedLayouts
+					names: layoutsNames
 				},
 				success: function (response) {
 					console.log(response);
@@ -628,7 +627,7 @@
 			var $itemContent = $elem.find('.grid-item-content');
 			var $itemData = $elem.children(".rexbuilder-block-data");
 
-			id = "block_" + $elem.attr('data-rexbuilder-block-id');
+			id = $elem.attr('id') === undefined ? "" : "block_"+$elem.attr('id');
 			rex_id = $elem.attr('data-rexbuilder-block-id');
 			type = $itemData.attr('data-type');
 			size_x = $elem.attr('data-width');
