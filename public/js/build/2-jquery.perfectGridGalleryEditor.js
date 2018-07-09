@@ -105,11 +105,8 @@
             this._saveDefaultBlockPosition();
 
             this._defineDataSettings();
-
             this._setGutter();
-
             this._defineSeparatorProperties();
-
             this._setParentGridPadding();
 
             this.properties.gridBlocksHeight = this._calculateGridHeight();
@@ -251,7 +248,6 @@
                         $rexScrollbar.overlayScrollbars().sleep();
                     } else {
                         $rexScrollbar.overlayScrollbars().update();
-
                     }
                 } else {
                     if ($block.find("." + Rexbuilder_Util.scrollbarProperties.className).length === 0) {
@@ -1403,6 +1399,7 @@
                     }
                     Rexbuilder_Util_Editor.elementIsResizing = false;
                     Rexbuilder_Util_Editor.elementIsDragging = false;
+                    gallery.$element.attr("data-rexlive-layout-changed=\"true\"");
                 }
             });
         },
@@ -1938,6 +1935,7 @@
         },
 
         collapseElements: function () {
+            console.log("collapsing element"); 
             this.$element.addClass("grid-stack-one-column-mode");
             this.properties.oneColumModeActive = true;
         },

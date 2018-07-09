@@ -633,7 +633,7 @@
             oneColumnModeClass: opts.oneColumnModeClass || 'grid-stack-one-column-mode',
             ddPlugin: null
         });
-
+        console.log(this.opts); 
         if (this.opts.ddPlugin === false) {
             this.opts.ddPlugin = GridStackDragDropPlugin;
         } else if (this.opts.ddPlugin === null) {
@@ -727,6 +727,7 @@
                 if (oneColumnMode) {
                     return;
                 }
+                console.log("adding one col mode"); 
                 self.container.addClass(self.opts.oneColumnModeClass);
                 oneColumnMode = true;
 

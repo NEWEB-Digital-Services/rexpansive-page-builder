@@ -508,9 +508,17 @@
 
 			return output;
 		}
-
+		/*
+		data-rexlive-section-edited="true"
+		*/
 		var checkEditsSection = function ($section) {
 			return $section.attr("data-rexlive-section-edited") == "true" ? true : false;
+		}
+		/*
+		data-rexlive-layout-changed="true"
+		*/
+		var checkEditsLayoutGrid = function ($gallery) {
+			return $gallery.attr("data-rexlive-layout-changed") == "true" ? true : false;
 		}
 		/*
 		data-rexlive-element-edited="true"
@@ -537,8 +545,9 @@
 			var galleryIstance = $gridGallery.data().plugin_perfectGridGalleryEditor;
 			var elementsOrdered = galleryIstance.getElementTopBottom();
 
-			galleryIstance.updateAllElementsProperties();
+			var saveAllBloks = checkEditsLayoutGrid($gridGallery);
 
+			galleryIstance.updateAllElementsProperties();
 			$(elementsOrdered).each(function () {
 				var $elem = $(this);
 				if (!$elem.hasClass("removing_block")) {
@@ -547,7 +556,7 @@
 						name: blockRexID,
 						props: {}
 					}
-					if (layoutName == "default" || checkEditsElement($elem)) {
+					if (layoutName == "default" || saveAllBloks || checkEditsElement($elem)) {
 						console.log("saving: " + blockRexID);
 						block_props.props = createBlockProperties($elem, "customLayout", layoutName);
 					}
@@ -644,10 +653,10 @@
 				: '#ffffff';
 			image_bg_block = $itemData.attr('data-image_bg_block') === undefined ? ""
 				: $itemData.attr('data-image_bg_block');
-			image_width = $itemContent.attr('data-background-image-width') === undefined ? ""
-				: parseInt($itemContent.attr('data-background-image-width'));
-			image_height = $itemContent.attr('data-background-image-height') === undefined ? ""
-				: parseInt($itemContent.attr('data-background-image-height'));
+			image_width = $itemContent.attr('data-background_image_width') === undefined ? ""
+				: parseInt($itemContent.attr('data-background_image_width'));
+			image_height = $itemContent.attr('data-background_image_height') === undefined ? ""
+				: parseInt($itemContent.attr('data-background_image_height'));
 			id_image_bg_block = $itemData.attr('data-id_image_bg_block') === undefined ? ""
 				: $itemData.attr('data-id_image_bg_block');
 			video_bg_id = $itemData.attr('data-video_bg_id') === undefined ? ""
@@ -763,15 +772,15 @@
 					props["gs_y"] = gs_y;
 					props["gs_x"] = gs_x;
 					props["color_bg_block"] = color_bg_block;
-					props["image_bg_block"] = image_bg_block;
+					props["image_bg_url"] = image_bg_block;
 					props["image_width"] = image_width;
 					props["image_height"] = image_height;
-					props["id_image_bg_block"] = id_image_bg_block;
+					props["id_image_bg"] = id_image_bg_block;
 					props["video_bg_id"] = video_bg_id;
 					props["video_mp4_url"] = video_mp4_url;
 					props["video_bg_url_youtube"] = video_bg_url;
 					props["video_bg_url_vimeo"] = video_bg_url_vimeo;
-					props["type_bg_block"] = type_bg_block;
+					props["type_bg_image"] = type_bg_block;
 					props["image_size"] = image_size;
 					props["photoswipe"] = photoswipe;
 					props["block_custom_class"] = block_custom_class;
@@ -801,15 +810,15 @@
 					props["gs_y"] = gs_y;
 					props["gs_x"] = gs_x;
 					props["color_bg_block"] = color_bg_block;
-					props["image_bg_block"] = image_bg_block;
+					props["image_bg_url"] = image_bg_block;
 					props["image_width"] = image_width;
 					props["image_height"] = image_height;
-					props["id_image_bg_block"] = id_image_bg_block;
+					props["id_image_bg"] = id_image_bg_block;
 					props["video_bg_id"] = video_bg_id;
 					props["video_mp4_url"] = video_mp4_url;
 					props["video_bg_url_youtube"] = video_bg_url;
 					props["video_bg_url_vimeo"] = video_bg_url_vimeo;
-					props["type_bg_block"] = type_bg_block;
+					props["type_bg_image"] = type_bg_block;
 					props["image_size"] = image_size;
 					props["photoswipe"] = photoswipe;
 					props["linkurl"] = linkurl;
@@ -839,9 +848,12 @@
 				dimension = "full",
 				margin = "",
 				image_bg_section = "",
+				image_width = 0,
+				image_height = 0,
 				id_image_bg_section = "",
 				video_bg_url_section = '',
 				video_bg_id_section = '',
+				video_mp4_url = '',
 				video_bg_url_vimeo_section = '',
 				full_height = '',
 				block_distance = 20,
@@ -875,16 +887,20 @@
 				: $sectionData.attr('data-margin');
 			image_bg_section = $sectionData.attr('data-image_bg_section') === undefined ? ""
 				: $sectionData.attr('data-image_bg_section');
+			image_width = $section.attr('data-background_image_width') === undefined ? ""
+				: parseInt($section.attr('data-background_image_width'));
+			image_height = $section.attr('data-background_image_height') === undefined ? ""
+				: parseInt($section.attr('data-background_image_height'));
 			id_image_bg_section = $sectionData.attr('data-id_image_bg_section') === undefined ? ""
 				: $sectionData.attr('data-id_image_bg_section');
+			video_mp4_url = $sectionData.attr('data-video_mp4_url') === undefined ? ""
+				: $sectionData.attr('data-video_mp4_url');
 			video_bg_url_section = $sectionData.attr('data-video_bg_url_section') === undefined ? ""
 				: $sectionData.attr('data-video_bg_url_section');
 			video_bg_id_section = $sectionData.attr('data-video_bg_id_section') === undefined ? ""
 				: $sectionData.attr('data-video_bg_id_section');
 			video_bg_url_vimeo_section = $sectionData.attr('data-video_bg_url_vimeo_section') === undefined ? ""
 				: $sectionData.attr('data-video_bg_url_vimeo_section');
-			video_bg_url_vimeo_section = video_bg_url_vimeo_section == 'undefined' ? ""
-				: video_bg_url_vimeo_section;
 			full_height = $sectionData.attr('data-full_height') === undefined ? ""
 				: $sectionData.attr('data-full_height');
 			block_distance = $sectionData.attr('data-block_distance') === undefined ? 20
@@ -971,8 +987,11 @@
 					props["dimension"] = dimension;
 					props["margin"] = margin;
 					props["image_bg_section"] = image_bg_section;
+					props["image_width"] = image_width;
+					props["image_height"] = image_height;
 					props["id_image_bg_section"] = id_image_bg_section;
-					props["video_bg_id_section"] = video_bg_id_section;
+					props["video_bg_id"] = video_bg_id_section;
+					props["video_mp4_url"] = video_mp4_url;
 					props["video_bg_url_section"] = video_bg_url_section;
 					props["video_bg_url_vimeo_section"] = video_bg_url_vimeo_section;
 					props["full_height"] = full_height;
@@ -991,79 +1010,34 @@
 					props["row_margin_left"] = row_margin_left;
 
 				} else {
-
+					props["hide"] = false;
 					props["section_name"] = section_name;
-					if (section_name != "") {
-					}
-					if (type != "perfect-grid") {
-						props["type"] = type;
-					}
-					if (color_bg_section != "#ffffff") {
-						props["color_bg_section"] = color_bg_section;
-					}
-					if (dimension != "full") {
-						props["dimension"] = dimension;
-					}
-					if (margin != "") {
-						props["margin"] = margin;
-					}
-					if (image_bg_section != "") {
-						props["image_bg_section"] = image_bg_section;
-					}
-					if (id_image_bg_section != "") {
-						props["id_image_bg_section"] = id_image_bg_section;
-					}
-					if (video_bg_id_section != "") {
-						props["video_bg_id_section"] = video_bg_id_section;
-					}
-					if (video_bg_url_section != "") {
-						props["video_bg_url_section"] = video_bg_url_section;
-					}
-					if (video_bg_url_vimeo_section != "") {
-						props["video_bg_url_vimeo_section"] = video_bg_url_vimeo_section;
-					}
-					if (full_height != "") {
-						props["full_height"] = full_height;
-					}
-					if (block_distance != 20) {
-						props["block_distance"] = block_distance;
-					}
-					if (layout != "fixed") {
-						props["layout"] = layout;
-					}
-					if (responsive_background != "") {
-						props["responsive_background"] = responsive_background;
-					}
-					if (custom_classes != "") {
-						props["custom_classes"] = custom_classes;
-					}
-					if (section_width != "") {
-						props["section_width"] = section_width;
-					}
-					if (row_separator_top != "") {
-						props["row_separator_top"] = row_separator_top;
-					}
-					if (row_separator_bottom != "") {
-						props["row_separator_bottom"] = row_separator_bottom;
-					}
-					if (row_separator_right != "") {
-						props["row_separator_right"] = row_separator_right;
-					}
-					if (row_separator_left != "") {
-						props["row_separator_left"] = row_separator_left;
-					}
-					if (row_margin_top != "") {
-						props["row_margin_top"] = row_margin_top;
-					}
-					if (row_margin_bottom != "") {
-						props["row_margin_bottom"] = row_margin_bottom;
-					}
-					if (row_margin_right != "") {
-						props["row_margin_right"] = row_margin_right;
-					}
-					if (row_margin_left != "") {
-						props["row_margin_left"] = row_margin_left;
-					}
+					props["type"] = type;
+					props["color_bg_section"] = color_bg_section;
+					props["dimension"] = dimension;
+					props["margin"] = margin;
+					props["image_bg_section"] = image_bg_section;
+					props["image_width"] = image_width;
+					props["image_height"] = image_height;
+					props["id_image_bg_section"] = id_image_bg_section;
+					props["video_bg_id"] = video_bg_id_section;
+					props["video_mp4_url"] = video_mp4_url;
+					props["video_bg_url_section"] = video_bg_url_section;
+					props["video_bg_url_vimeo_section"] = video_bg_url_vimeo_section;
+					props["full_height"] = full_height;
+					props["block_distance"] = block_distance;
+					props["layout"] = layout;
+					props["responsive_background"] = responsive_background;
+					props["custom_classes"] = custom_classes;
+					props["section_width"] = section_width;
+					props["row_separator_top"] = row_separator_top;
+					props["row_separator_bottom"] = row_separator_bottom;
+					props["row_separator_right"] = row_separator_right;
+					props["row_separator_left"] = row_separator_left;
+					props["row_margin_top"] = row_margin_top;
+					props["row_margin_bottom"] = row_margin_bottom;
+					props["row_margin_right"] = row_margin_right;
+					props["row_margin_left"] = row_margin_left;
 				}
 
 				return props;

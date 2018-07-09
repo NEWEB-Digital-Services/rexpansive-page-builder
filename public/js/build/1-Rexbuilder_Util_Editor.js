@@ -203,7 +203,7 @@ var Rexbuilder_Util_Editor = (function ($) {
     Rexbuilder_Util.$window[0].addEventListener("message", receiveMessage, false);
 
     function receiveMessage(event) {
-      console.log("event received");
+      //console.log("event received");
       if (event.data.rexliveEvent) {
         console.log("rexlive event");
         var e = jQuery.Event(event.data.eventName);

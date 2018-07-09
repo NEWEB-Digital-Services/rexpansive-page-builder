@@ -47,6 +47,7 @@ class Rexbuilder_Section
             "margin" => "",
             "image_bg_section" => "",
             "id_image_bg_section" => "",
+            "image_size" => "full",
             'video_bg_url_section' => '',
             'video_bg_id_section' => '',
             'video_bg_url_vimeo_section' => '',
@@ -86,8 +87,9 @@ class Rexbuilder_Section
             $editor = $_GET['editor'];
 
             $section_style = 'style="';
-            if (!empty($image_bg_section)) {
-                $section_style .= 'background-image:url(\'' . wp_get_attachment_url($id_image_bg_section) . '\');';
+            if ("" != $id_image_bg_section) {
+                $img_attrs = wp_get_attachment_image_src($id_image_bg_section, $image_size);
+                $section_style .= 'background-image:url(\'' . $img_attrs[0] . '\');';
             } else if (!empty($color_bg_section)) {
                 $section_style .= 'background-color:' . $color_bg_section . ';';
             }
@@ -160,12 +162,17 @@ class Rexbuilder_Section
                 '"' .
                 (($content_has_photoswipe > 0) ? ' itemscope itemtype="http://schema.org/ImageGallery"' : '') .
                 (('' != $video_bg_url_section && 'undefined' != $video_bg_url_section) ? ' data-property="{videoURL:\'' . $video_bg_url_section . '\',containment:\'self\',startAt:0,mute:true,autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"' : '') .
-				(strlen($section_style) > 7 ? ' ' . $section_style . '"' : '');
-			
-			if($rexlive_section_id != ''){
-				echo 'data-rexlive-section-id="'. $rexlive_section_id .'"';
-			}
-			echo '>';
+                (strlen($section_style) > 7 ? ' ' . $section_style . '"' : '');
+            
+                if ("" != $id_image_bg_section) {
+                echo ' data-background_image_width="' . $img_attrs[1] . '" ';
+                echo ' data-background_image_height="' . $img_attrs[2]. '" ';
+            }
+
+            if ($rexlive_section_id != '') {
+                echo 'data-rexlive-section-id="' . $rexlive_section_id . '"';
+            }
+            echo '>';
 
             echo '<div class="section-data" style="display: none;" ';
             foreach ($atts as $property_name => $value_property) {
@@ -173,6 +180,10 @@ class Rexbuilder_Section
             }
             unset($property_name);
             unset($value_property);
+            if( '' != $video_bg_id_section && 'undefined' != $video_bg_id_section ){
+                $video_mp4_url = wp_get_attachment_url($video_bg_id_section);
+				echo 'data-video_mp4_url="'. $video_mp4_url .'"';
+			}
             echo '></div>';
             if (isset($editor)) {
                 include REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-section-tools.php";
@@ -180,16 +191,16 @@ class Rexbuilder_Section
 
             if ('' != $video_bg_url_vimeo_section && 'undefined' != $video_bg_url_vimeo_section) {
                 ?>
-<div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--section">
-<iframe src="<?php echo $video_bg_url_vimeo_section; ?>?autoplay=1&loop=1&byline=0&title=0&autopause=0" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-</div>
-<?php
-}
+                <div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--section">
+                <iframe src="<?php echo $video_bg_url_vimeo_section; ?>?autoplay=1&loop=1&byline=0&title=0&autopause=0" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                </div>
+                <?php
+            }
 
             if ('' != $video_bg_id_section && 'undefined' != $video_bg_id_section):
                 echo '<div class="rex-video-section-wrap">';
                 echo '<video class="rex-video-container" preload muted autoplay loop>';
-                echo '<source type="video/mp4" src="' . wp_get_attachment_url($video_bg_id_section) . '" />';
+                echo '<source type="video/mp4" src="' . $video_mp4_url . '" />';
                 echo '</video>';
                 echo '</div>';
             endif;

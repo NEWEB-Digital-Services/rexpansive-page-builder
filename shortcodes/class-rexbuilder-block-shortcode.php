@@ -317,9 +317,10 @@ class Rexbuilder_Block {
 			$bg_video_markup = '';
 		
 			if( '' != $video_bg_id && 'undefined' != $video_bg_id ) :
+				$video_mp4_url = wp_get_attachment_url ( $video_bg_id );
 				$bg_video_markup = '<div class="rex-video-wrap">';
 				$bg_video_markup .= '<video class="rex-video-container" preload autoplay loop muted>';
-				$bg_video_markup .= '<source type="video/mp4" src="' . wp_get_attachment_url ( $video_bg_id ) . '" />';
+				$bg_video_markup .= '<source type="video/mp4" src="' . $video_mp4_url . '" />';
 				$bg_video_markup .= '</video>';
 				$bg_video_markup .= '</div>';
 			endif;
@@ -348,7 +349,7 @@ class Rexbuilder_Block {
 			unset($value_property);
 
 			if( '' != $video_bg_id && 'undefined' != $video_bg_id ){
-				echo 'data-video_mp4_url="'. wp_get_attachment_url ( $video_bg_id ).'"';
+				echo 'data-video_mp4_url="'. $video_mp4_url .'"';
 			}
 
 			echo '></div>';
@@ -366,8 +367,8 @@ class Rexbuilder_Block {
 						echo ' natural';
 					}
 					echo '-image-background"';
-					echo ' data-background-image-width="'.$img_attrs[1].'" ';
-					echo ' data-background-image-height="'.$img_attrs[2];
+					echo ' data-background_image_width="'.$img_attrs[1].'" ';
+					echo ' data-background_image_height="'.$img_attrs[2];
 				}
 				echo '" '.$block_background_style;
 				echo $bg_youtube_video_markup;
@@ -405,8 +406,8 @@ class Rexbuilder_Block {
 							echo ' natural';
 						}
 						echo '-image-background"';
-						echo ' data-background-image-width="'.$img_attrs[1].'" ';
-						echo ' data-background-image-height="'.$img_attrs[2];
+						echo ' data-background_image_width="'.$img_attrs[1].'" ';
+						echo ' data-background_image_height="'.$img_attrs[2];
 					}
 					echo '" '.$block_background_style;
 					echo $bg_youtube_video_markup;
@@ -451,8 +452,8 @@ class Rexbuilder_Block {
 							echo ' natural';
 						}
 						echo '-image-background"';
-						echo ' data-background-image-width="'.$img_attrs[1].'" ';
-						echo ' data-background-image-height="'.$img_attrs[2];
+						echo ' data-background_image_width="'.$img_attrs[1].'" ';
+						echo ' data-background_image_height="'.$img_attrs[2];
 					}
 					echo '" '.$block_background_style;
 					echo $bg_youtube_video_markup;

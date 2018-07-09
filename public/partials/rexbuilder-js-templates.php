@@ -25,10 +25,6 @@ defined('ABSPATH') or exit;
     </div>
 </div>
 </script>
-<script type="text/x-tmpl" id="tmpl-video-youtube">
-data-property="{videoURL:'{%=video.url%}',containment:\'self\',startAt:0,mute:' . $mute . ',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"';
-
-</script>
 <script type="text/x-tmpl" id="tmpl-video-vimeo">
 <div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--block">
     <iframe src="{%=video.url%}" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen>

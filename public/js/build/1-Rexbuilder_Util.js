@@ -168,7 +168,6 @@ var Rexbuilder_Util = (function ($) {
 		}
 		console.log("updaiting dom");
 		var sectionRexId;
-		var blockRexId;
 
 		var targetName;
 		var targetHide;
@@ -181,36 +180,101 @@ var Rexbuilder_Util = (function ($) {
 		var $itemContent;
 		var $itemData;
 
-		console.log(defaultLayoutSections);
-		console.log(customSections);
-
-		/* 		var x = lodash.merge({}, defaultLayoutSections);
-				var y = lodash.merge({}, x, customSections);
-				var z = lodash.merge({}, x, y);
-				console.log(x);
-				console.log(y);
-				console.log(z); */
-
 		var mergedEdits = lodash.merge({}, defaultLayoutSections, customSections);
 		console.log(mergedEdits);
 		$.each(mergedEdits, function (i, section) {
 			sectionRexId = section.section_rex_id;
 			$section = Rexbuilder_Util.$rexContainer.children('section[data-rexlive-section-id="' + sectionRexId + '"]');
 			$gallery = $section.find(".grid-stack-row");
+			var galleryData = $gallery.data();
+			if (galleryData !== undefined) {
+				var galleryEditorIstance = $gallery.data().plugin_perfectGridGalleryEditor;
+				if (galleryEditorIstance !== undefined) {
+					galleryEditorIstance.batchGridstack();
+					console.log("enter batch mode");
+				}
+			}
 			$.each(section.targets, function (i, target) {
 				targetName = target.name;
 				targetProps = target.props;
 				if (targetName == "self") {
-					/* console.log("setting section properties: "+targetName);
+					console.log("setting section properties: " + targetName);
+					var $sectionData = $section.children(".section-data");
+					/* 					console.log(targetProps['id_image_bg_section'], targetProps['image_bg_section'], targetProps['image_width'], targetProps['image_height'], targetProps['dimension']);
+										 */
+					_updateImageBG($section, isNaN(parseInt(targetProps['id_image_bg_section'])) ? "" : parseInt(targetProps['id_image_bg_section']), targetProps['image_bg_section'], parseInt(targetProps['image_width']), parseInt(targetProps['image_height']), targetProps['dimension']);
+
+					_updateVideos($sectionData, $section, targetProps["video_bg_id"], targetProps["video_mp4_url"], targetProps["video_bg_url_vimeo_section"], targetProps["video_bg_url_section"], "section", false);
+
+					/*
 					for (const propName in targetProps) {
 						console.log(propName + " " + targetProps[propName]);
-					} */
+						switch(propName){
+							targetProps[propName]
+							case "section_name":
+								break;
+							case "type":
+								break;
+							case "color_bg_section":
+								break;
+							case "dimension":
+								break;
+							case "margin":
+								break;
+							case "":
+								break;
+							case "":
+								break;
+							case "":
+								break;
+							case "":
+								break;
+							case "":
+								break;
+							case "":
+								break;
+							case "":
+								break;
+							case "":
+								break;
+							case "":
+								break;
+							default:
+							console.log("default section"); 
+								break;
+							props["hide"] = false;
+					props["section_name"] = section_name;
+					props["type"] = type;
+					props["color_bg_section"] = color_bg_section;
+					props["dimension"] = dimension;
+					props["margin"] = margin;
+					props["image_bg_section"] = image_bg_section;
+					props["id_image_bg_section"] = id_image_bg_section;
+					props["full_height"] = full_height;
+					props["block_distance"] = block_distance;
+					props["layout"] = layout;
+					props["responsive_background"] = responsive_background;
+					props["custom_classes"] = custom_classes;
+					props["section_width"] = section_width;
+					props["row_separator_top"] = row_separator_top;
+					props["row_separator_bottom"] = row_separator_bottom;
+					props["row_separator_right"] = row_separator_right;
+					props["row_separator_left"] = row_separator_left;
+					props["row_margin_top"] = row_margin_top;
+					props["row_margin_bottom"] = row_margin_bottom;
+					props["row_margin_right"] = row_margin_right;
+					props["row_margin_left"] = row_margin_left;
+						}
+					}*/
 				} else {
+					console.log("setting el");
 					$elem = $gallery.children('div[data-rexbuilder-block-id="' + targetName + '"]');
 					$itemData = $elem.children(".rexbuilder-block-data");
 					$itemContent = $elem.find(".grid-item-content");
-					_updateVideosBlock($itemData, $itemContent, targetProps["video_mp4_url"], targetProps["video_bg_url_vimeo"], targetProps["video_bg_url_youtube"]);
 
+					_updateVideos($itemData, $itemContent, targetProps["video_bg_id"], targetProps["video_mp4_url"], targetProps["video_bg_url_vimeo"], targetProps["video_bg_url_youtube"], "block", targetProps['video_has_audio'] == "1" ? true : false);
+
+					_updateImageBG($itemContent, isNaN(parseInt(targetProps['id_image_bg'])) ? "" : parseInt(targetProps['id_image_bg']), targetProps['image_bg_url'], parseInt(targetProps['image_width']), parseInt(targetProps['image_height']), targetProps['type_bg_image']);
 
 					for (var propName in targetProps) {
 						switch (propName) {
@@ -237,79 +301,27 @@ var Rexbuilder_Util = (function ($) {
 								$elem.attr('data-col', targetProps[propName]);
 								break;
 
-							/* 								case "gs_start_h":
-																break;
-							
-															case "gs_width":
-																$elem.attr('data-gs-width', targetProps[propName]);
-																break;
-							
-															case "gs_height":
-																$elem.attr('data-gs-height', targetProps[propName]);
-																break;
-							
-															case "gs_y":
-																$elem.attr('data-gs-y', targetProps[propName]);
-																break;
-							
-															case "gs_x":
-																$elem.attr('data-gs-x', targetProps[propName]);
-																break;
-							 */
+							case "gs_start_h":
+								break;
+
+							case "gs_width":
+								$elem.attr('data-gs-width', targetProps[propName]);
+								break;
+
+							case "gs_height":
+								$elem.attr('data-gs-height', targetProps[propName]);
+								break;
+
+							case "gs_y":
+								$elem.attr('data-gs-y', targetProps[propName]);
+								break;
+
+							case "gs_x":
+								$elem.attr('data-gs-x', targetProps[propName]);
+								break;
+
 							case "color_bg_block":
-								console.log("setting bg color");
-								console.log(targetProps[propName]);
 								$itemContent.css('background-color', targetProps[propName]);
-								break;
-
-							case "image_bg_block":
-								if (targetProps[propName] != "") {
-									$itemContent.attr("style", "background-image: url('" + targetProps[propName] + "'); background-color: rgba(0, 0, 0, 0);");
-								}
-								break;
-
-							case "image_width":
-								if (targetProps[propName] != "") {
-									$itemContent.attr('data-background-image-width', parseInt(targetProps[propName]));
-								} else {
-									$itemContent.attr('data-background-image-width', "");
-								}
-								break;
-
-							case "image_height":
-								if (targetProps[propName] != "") {
-									$itemContent.attr('data-background-image-height', parseInt(targetProps[propName]));
-								} else {
-									$itemContent.attr('data-background-image-height', "");
-								}
-								break;
-
-							case "id_image_bg_block":
-								if (targetProps[propName] != "") {
-									$itemContent.attr('data-id_image_bg_block', parseInt(targetProps[propName]));
-								} else {
-									$itemContent.attr('data-id_image_bg_block', "");
-								}
-								break;
-
-							case "type_bg_block":
-								$itemData.attr('data-type_bg_block', targetProps[propName]);
-								break;
-
-							case "image_size":
-								if (targetProps[propName] != "") {
-									if (targetProps[propName] == "full") {
-										$itemContent.removeClass("natural-image-background");
-										$itemContent.addClass("full-image-background");
-									} else {
-										$itemContent.removeClass("full-image-background");
-										$itemContent.addClass("natural-image-background");
-									}
-								} else {
-									$itemContent.removeClass("natural-image-background");
-									$itemContent.removeClass("small-width");
-								}
-								$itemData.attr('data-image_size', targetProps[propName]);
 								break;
 
 							case "block_custom_class":
@@ -323,6 +335,23 @@ var Rexbuilder_Util = (function ($) {
 								break;
 
 							case "block_padding":
+								var $textWrap = $itemContent.find(".text-wrap");
+								if ($textWrap.length != 0) {
+									var newPaddings = targetProps[propName];
+									newPaddings = newPaddings.replace(/;/g, " ");
+									newPaddings += ";";
+									newPaddings = newPaddings.replace(/ ;/g, ";");
+									newPaddings = "padding: " + newPaddings;
+									$textWrap.attr("style", newPaddings)
+									// da finire se ci sono più stili applicati al text-wrap
+									// vedere con stefano
+									/**
+									var styleList = $textWrap.attr('style').split(/\s+/);
+			
+									$.each(styleList, function (index, item) {
+										console.log(item);
+									});*/
+								}
 								break;
 
 							case "overlay_block_color":
@@ -358,11 +387,11 @@ var Rexbuilder_Util = (function ($) {
 								if (!Rexbuilder_Util.editorMode) {
 									if (targetProps[propName] != "") {
 										if ($itemContent.parents(".element-link").length != 0) {
-											console.log("already a link"); 
+											console.log("already a link");
 											$itemContent.parents(".element-link").attr("href", targetProps[propName]);
 											$itemContent.parents(".element-link").attr("title", targetProps[propName]);
 										} else {
-											console.log("not a block link"); 
+											console.log("not a block link");
 											var $itemContentParent = $itemContent.parent();
 											tmpl.arg = "link";
 											$itemContentParent.append(tmpl("tmpl-link-block", {
@@ -398,9 +427,6 @@ var Rexbuilder_Util = (function ($) {
 							case "block_animation":
 								break;
 
-							case "video_has_audio":
-								break;
-
 							case "block_has_scrollbar":
 								break;
 
@@ -415,12 +441,66 @@ var Rexbuilder_Util = (function ($) {
 
 				}
 			});
+			if (galleryData !== undefined && galleryEditorIstance !== undefined) {
+				galleryEditorIstance.commitGridstack();
+				console.log("exit batch mode");
+			}
 		});
 
 		if (!Rexbuilder_Util.editorMode) {
 			initPhotoSwipe(".photoswipe-gallery");
 		}
 	}
+
+	var _updateImageBG = function ($target, idImage, urlImage, w, h, type) {
+		console.log("setting bgImage");
+		if ($target.hasClass("rexpansive_section")) {
+			var $targetData = $target.children("section-data");
+			var targetType = "section";
+			/* console.log($target, idImage, urlImage, w, h, type);
+			return; */
+		} else if ($target.hasClass("grid-item-content")) {
+			var $targetData = $target.parents(".grid-stack-item").children("rexbuilder-block-data");
+			var targetType = "block";
+		} else {
+			return;
+		}
+		if (idImage == "") {
+			$targetData.attr('data-id_image_bg_' + targetType, "");
+			$target.attr('data-background_image_width', "");
+			$target.attr('data-background_image_height', "");
+
+			$target.css("background-image", "");
+
+			$target.removeClass("natural-image-background");
+			$target.removeClass("full-image-background");
+			$target.removeClass("small-width");
+
+			$targetData.data("image_bg_" + targetType, "");
+			$targetData.data("id_image_bg_" + targetType, "");
+			$targetData.data("type_bg_" + targetType, "");
+			$targetData.data("image_size", "");
+		} else {
+			if (idImage == parseInt($targetData.data("id_image_bg" + targetType))) {
+				//same image
+				return
+			}
+			$target.attr("style", "background-image: url('" + urlImage + "'); background-color: rgba(0, 0, 0, 0);");
+			$target.attr('data-background-image-width', w);
+			$target.attr('data-background-image-height', h);
+			$targetData.attr('data-id_image_bg_' + targetType, idImage);
+			$targetData.attr('data-type_bg_' + targetType, type);
+			if (type == "full") {
+				$target.addClass("full-image-background");
+				$target.removeClass("natural-image-background");
+			} else {
+				$target.addClass("natural-image-background");
+				$target.removeClass("full-image-background");
+			}
+			$targetData.attr('data-image_size', type);
+		}
+	}
+
 
 	var addPhotoSwipeElement = function ($itemContent, url, w, h, t) {
 		tmpl.arg = "image";
@@ -691,101 +771,148 @@ var Rexbuilder_Util = (function ($) {
 	};
 
 	/**
-	 * Updates video background of an element
+	 * Updates video background 
 	 * 
 	 * @param {*} $itemData 
 	 * @param {*} $itemContent 
 	 * @param {*} urlMp4 mp4 url
+	 * @param {*} idMp4 mp4 id
 	 * @param {*} urlVimeo vimeo url
 	 * @param {*} urlYoutube youtube url
+	 * @param {*} targetType type of target (section, block)
+	 * @param {*} hasAudio true if has, false if not
 	 */
-	var _updateVideosBlock = function ($itemData, $itemContent, urlMp4, urlVimeo, urlYoutube) {
-		if ((urlMp4 == "") && (urlYoutube == "") && (urlVimeo == "")) {
-			removeMp4Video($itemContent);
-			removeYoutubeVideo($itemContent);
-			removeVimeoVideo($itemContent);
+	var _updateVideos = function ($targetData, $target, idMp4, urlMp4, urlVimeo, urlYoutube, targetType, hasAudio) {
+		console.log($targetData);
+		console.log($target);
+
+		if ($.isEmptyObject(urlMp4) && $.isEmptyObject(urlYoutube) && $.isEmptyObject(urlVimeo)) {
+			removeMp4Video($target, targetType);
+			removeYoutubeVideo($target, targetType);
+			removeVimeoVideo($target, targetType);
 		}
-		if ((urlMp4 != "") && (urlYoutube == "") && (urlVimeo == "")) {
-			removeYoutubeVideo($itemContent);
-			removeVimeoVideo($itemContent);
-			addMp4Video($itemContent, urlMp4);
+		if (!$.isEmptyObject(urlMp4) && $.isEmptyObject(urlYoutube) && $.isEmptyObject(urlVimeo)) {
+			console.log("updating videos mp4");
+			removeYoutubeVideo($target, targetType);
+			removeVimeoVideo($target, targetType);
+			addMp4Video($target, urlMp4, targetType, hasAudio);
 		}
-		if ((urlMp4 == "") && (urlYoutube != "") && (urlVimeo == "")) {
-			removeMp4Video($itemContent);
-			removeVimeoVideo($itemContent);
-			addYoutubeVideo($itemContent, urlYoutube);
+		if ($.isEmptyObject(urlMp4) && !$.isEmptyObject(urlYoutube) && $.isEmptyObject(urlVimeo)) {
+			removeMp4Video($target, targetType);
+			removeVimeoVideo($target, targetType);
+			addYoutubeVideo($target, urlYoutube, targetType, hasAudio);
 		}
-		if ((urlMp4 == "") && (urlYoutube == "") && (urlVimeo != "")) {
-			removeMp4Video($itemContent);
-			removeYoutubeVideo($itemContent);
-			addVimeoVideo($itemContent, urlVimeo);
+		if ($.isEmptyObject(urlMp4) && $.isEmptyObject(urlYoutube) && !$.isEmptyObject(urlVimeo)) {
+			removeMp4Video($target, targetType);
+			removeYoutubeVideo($target, targetType);
+			addVimeoVideo($target, urlVimeo, targetType, hasAudio);
 		}
 
-		$itemData.attr("data-video_mp4_url", urlMp4);
-		$itemData.attr("data-video_bg_url", urlYoutube);
-		$itemData.attr("data-video_bg_url_vimeo", urlVimeo);
+		$targetData.attr("data-video_bg_id_section", idMp4);
+		$targetData.attr("data-video_mp4_url", urlMp4);
+		if (targetType == "section") {
+			$targetData.attr("data-video_bg_url_section", urlYoutube);
+		} else {
+			$targetData.attr("data-video_bg_url", urlYoutube);
+		}
+		$targetData.attr("data-video_bg_url_vimeo", urlVimeo);
 	}
 
-	var removeMp4Video = function ($itemContent) {
-		var $videoWrap = $itemContent.children(".rex-video-wrap");
-		var $toggleAudio = $itemContent.children(".rex-video-toggle-audio");
+	var removeMp4Video = function ($target, targetType) {
+		if (targetType == "section") {
+			var $videoWrap = $target.children(".rex-video-wrap");
+		} else if (targetType == "block") {
+			var $videoWrap = $target.children(".rex-video-section-wrap");
+			var $toggleAudio = $target.children(".rex-video-toggle-audio");
+		} else {
+			return;
+		}
 		if ($videoWrap.length != 0) {
 			console.log("removing mp4 video");
-			$itemContent.removeClass("mp4-player");
+			$target.removeClass("mp4-player");
 			$videoWrap.remove();
-			$toggleAudio.remove();
+			if (targetType != "section" && $toggleAudio.length != 0) {
+				$toggleAudio.remove();
+			}
 		}
 	}
 
-	var removeYoutubeVideo = function ($itemContent) {
-		if ($itemContent.hasClass("youtube-player")) {
-			var $toggleAudio = $itemContent.children(".rex-video-toggle-audio");
-			$itemContent.YTPPlayerDestroy();
-			$itemContent.removeAttr("data-property");
-			$itemContent.removeAttr("id");
-			$itemContent.removeClass("youtube-player mb_YTPlayer isMuted");
-			$toggleAudio.remove();
+	var removeYoutubeVideo = function ($target, targetType) {
+		if ($target.hasClass("youtube-player")) {
+			$target.YTPPlayerDestroy();
+			$target.removeAttr("data-property");
+			$target.removeAttr("id");
+			$target.removeClass("youtube-player mb_YTPlayer isMuted");
+			if (targetType != "section") {
+				var $toggleAudio = $target.children(".rex-video-toggle-audio");
+				if ($toggleAudio.length != 0) {
+					$toggleAudio.remove();
+				}
+			}
 		}
 	}
 
-	var removeVimeoVideo = function ($itemContent) {
-		var $vimeoWrap = $itemContent.children('.rex-video-vimeo-wrap');
-		var $toggleAudio = $itemContent.children(".rex-video-toggle-audio");
+	var removeVimeoVideo = function ($target, targetType) {
+		var $vimeoWrap = $target.children('.rex-video-vimeo-wrap');
+		var $toggleAudio = $target.children(".rex-video-toggle-audio");
 		if ($vimeoWrap.length != 0) {
 			var iframeVimeo = $vimeoWrap.children("iframe")[0];
 			VimeoVideo.removePlayer(iframeVimeo);
-			$itemContent.removeClass("vimeo-player");
+			$target.removeClass("vimeo-player");
 			$vimeoWrap.remove();
-			$toggleAudio.remove();
+			if ($toggleAudio.length != 0) {
+				$toggleAudio.remove();
+			}
 		}
 	}
 
-	var addMp4Video = function ($itemContent, urlmp4) {
-		var $videoWrap = $itemContent.children(".rex-video-wrap");
-
+	var addMp4Video = function ($target, urlmp4, targetType, hasAudio) {
+		if (targetType == "section") {
+			var $videoWrap = $target.children(".rex-video-section-wrap");
+		} else if (targetType == "block") {
+			var $videoWrap = $target.children(".rex-video-wrap");
+		} else {
+			return;
+		}
+		console.log(hasAudio);
+		console.log($videoWrap);
 		if ($videoWrap.length != 0 && $videoWrap.find("source").attr("src") == urlmp4) {
+			if (targetType != "section") {
+				console.log("toggle?");
+				var $toggleAudio = $target.children(".rex-video-toggle-audio");
+				if ($toggleAudio.length == 0) {
+					if (hasAudio) {
+						$target.append(tmpl("tmpl-video-toggle-audio"));
+					}
+				} else {
+					if (!hasAudio) {
+						$toggleAudio.remove();
+					}
+				}
+			}
 			return;
 		}
 
-		removeMp4Video($itemContent);
-		console.log("adding mp4 video")
+		removeMp4Video($target);
 
 		tmpl.arg = "video";
-		$itemContent.prepend(tmpl("tmpl-video-mp4", { url: urlmp4 }));
-		$itemContent.append(tmpl("tmpl-video-toggle-audio"));
-		$itemContent.addClass("mp4-player");
+		$target.prepend(tmpl("tmpl-video-mp4", { url: urlmp4 }));
+		if (hasAudio) {
+			$target.append(tmpl("tmpl-video-toggle-audio"));
+		}
+		$target.addClass("mp4-player");
 	}
 
-	var addYoutubeVideo = function ($itemContent, urlYoutube) {
-		if ($itemContent.hasClass("youtube-player")) {
-			var ytPlayer = $itemContent.YTPGetPlayer();
+	var addYoutubeVideo = function ($target, urlYoutube, targetType, hasAudio) {
+		if ($target.hasClass("youtube-player")) {
+			var ytPlayer = $target.YTPGetPlayer();
 			if (ytPlayer === undefined) {
 				return;
 			}
-			var videoID = $itemContent.YTPGetVideoID();
+			var videoID = $target.YTPGetVideoID();
 			var urlID = getYoutubeID(urlYoutube);
 			if (videoID != urlID) {
-				$itemContent.YTPChangeMovie({
+				$target.YTPChangeMovie({
 					videoURL: urlYoutube,
 					containment: 'self',
 					startAt: 0,
@@ -796,31 +923,69 @@ var Rexbuilder_Util = (function ($) {
 					showControls: false,
 					showYTLogo: false
 				});
+			} else {
+				if (targetType != "section") {
+					var $toggleAudio = $target.children(".rex-video-toggle-audio");
+					if ($toggleAudio.length == 0) {
+						if (hasAudio) {
+							$target.append(tmpl("tmpl-video-toggle-audio"));
+						}
+					} else {
+						if (!hasAudio) {
+							$toggleAudio.remove();
+						}
+					}
+				}
 			}
 		} else {
-			$itemContent.addClass("youtube-player");
-			$itemContent.attr("data-property", "{videoURL:'" + urlYoutube + "',containment:'self',startAt:0,mute:true,autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}");
-			$itemContent.YTPlayer();
-			$itemContent.append(tmpl("tmpl-video-toggle-audio"));
+			console.log("ADDING YOUTUBE VIDEO");
+			$target.addClass("youtube-player isMuted");
+			console.log(urlYoutube);
+			$target.attr("data-property", "{videoURL:'" + urlYoutube + "',containment:'self',startAt:0,mute:true,autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}");
+			$target.YTPlayer();
+		}
+		if (targetType != "section") {
+			var $toggleAudio = $target.children(".rex-video-toggle-audio");
+			if ($toggleAudio.length == 0) {
+				if (hasAudio) {
+					$target.append(tmpl("tmpl-video-toggle-audio"));
+				}
+			} else {
+				if (!hasAudio) {
+					$toggleAudio.remove();
+				}
+			}
 		}
 	}
 
-	var addVimeoVideo = function ($itemContent, urlVimeo) {
-		var $vimeoWrap = $itemContent.children(".rex-video-vimeo-wrap");
+	var addVimeoVideo = function ($target, urlVimeo, targetType, hasAudio) {
+		var $vimeoWrap = $target.children(".rex-video-vimeo-wrap");
 		urlVimeo += "?autoplay=1&loop=1&title=0&byline=0&portrait=0&autopause=0&muted=1";
 		if ($vimeoWrap.length != 0 && ($vimeoWrap.children("iframe").attr("src") == urlVimeo)) {
+			if (targetType != "section") {
+				var $toggleAudio = $target.children(".rex-video-toggle-audio");
+				if ($toggleAudio.length == 0) {
+					if (hasAudio) {
+						$target.append(tmpl("tmpl-video-toggle-audio"));
+					}
+				} else {
+					if (!hasAudio) {
+						$toggleAudio.remove();
+					}
+				}
+			}
 			return;
 		}
-		removeVimeoVideo($itemContent);
-
-		console.log("adding vimeo video")
+		removeVimeoVideo($target, targetType);
 
 		tmpl.arg = "video";
-		$itemContent.prepend(tmpl("tmpl-video-vimeo", { url: urlVimeo }));
-		$itemContent.append(tmpl("tmpl-video-toggle-audio"));
-		$itemContent.addClass("vimeo-player");
+		$target.prepend(tmpl("tmpl-video-vimeo", { url: urlVimeo }));
+		if (hasAudio) {
+			$target.append(tmpl("tmpl-video-toggle-audio"));
+		}
+		$target.addClass("vimeo-player");
 
-		var vimeoFrame = $itemContent.children(".rex-video-vimeo-wrap").find("iframe")[0];
+		var vimeoFrame = $target.children(".rex-video-vimeo-wrap").find("iframe")[0];
 		VimeoVideo.addPlayer("1", vimeoFrame);
 	}
 
@@ -956,13 +1121,6 @@ var Rexbuilder_Util = (function ($) {
 			console.log("window resized");
 			Rexbuilder_Util.windowIsResizing = true;
 
-			/* Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
-				var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
-				if (galleryEditorIstance !== undefined) {
-					galleryEditorIstance.batchGridstack();
-				}
-			}); */
-
 			if (Rexbuilder_Util.editorMode && !Rexbuilder_Util_Editor.buttonResized) {
 				return;
 			}
@@ -974,36 +1132,20 @@ var Rexbuilder_Util = (function ($) {
 				_edit_dom_layout(chooseLayout());
 			}
 
-
 			Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
 				var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
 				if (galleryEditorIstance !== undefined) {
 
 					galleryEditorIstance._defineDynamicPrivateProperties();
 
-					/* if (Rexbuilder_Util.viewport().width <= 768) {
-						galleryEditorIstance.collapseElements();
-					} else {
-						galleryEditorIstance.restoreGrid();
-					} */
-
-
 					galleryEditorIstance.updateBlocksHeight();
 
 					if (galleryEditorIstance.settings.galleryLayout == 'fixed') {
 						galleryEditorIstance.updateGridstackFixedMode();
-
 					}
 					galleryEditorIstance = undefined;
 				}
 			});
-
-			/* Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
-				var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
-				if (galleryEditorIstance !== undefined) {
-					galleryEditorIstance.commitGridstack();
-				}
-			}); */
 
 			Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
 				var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
