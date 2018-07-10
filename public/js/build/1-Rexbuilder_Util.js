@@ -776,6 +776,8 @@ var Rexbuilder_Util = (function ($) {
 	var _updateVideos = function ($targetData, $target, idMp4, urlMp4, urlVimeo, urlYoutube, targetType, hasAudio) {
 		/* console.log($targetData);
 		console.log($target); */
+		console.log("data received"); 
+		console.log(idMp4, urlMp4, urlVimeo, urlYoutube, targetType, hasAudio); 
 
 		if ($.isEmptyObject(urlMp4) && $.isEmptyObject(urlYoutube) && $.isEmptyObject(urlVimeo)) {
 			removeMp4Video($target, targetType);
@@ -789,6 +791,7 @@ var Rexbuilder_Util = (function ($) {
 			addMp4Video($target, urlMp4, targetType, hasAudio);
 		}
 		if ($.isEmptyObject(urlMp4) && !$.isEmptyObject(urlYoutube) && $.isEmptyObject(urlVimeo)) {
+			console.log("updating videos youtube");
 			removeMp4Video($target, targetType);
 			removeVimeoVideo($target, targetType);
 			addYoutubeVideo($target, urlYoutube, targetType, hasAudio);
@@ -814,9 +817,9 @@ var Rexbuilder_Util = (function ($) {
 
 	var removeMp4Video = function ($target, targetType) {
 		if (targetType == "section") {
-			var $videoWrap = $target.children(".rex-video-wrap");
-		} else if (targetType == "block") {
 			var $videoWrap = $target.children(".rex-video-section-wrap");
+		} else if (targetType == "block") {
+			var $videoWrap = $target.children(".rex-video-wrap");
 			var $toggleAudio = $target.children(".rex-video-toggle-audio");
 		} else {
 			return;
@@ -846,8 +849,10 @@ var Rexbuilder_Util = (function ($) {
 				showYTLogo: false
 			}); */
 			$target.YTPPlayerDestroy();
+			var $wrapper = $target.children(".mbYTP_wrapper");
+			$wrapper.remove();
 			$target.removeAttr("data-property");
-			$target.removeAttr("id");
+			//$target.removeAttr("id");
 			$target.removeClass("youtube-player mb_YTPlayer isMuted");
 			if (targetType != "section") {
 				var $toggleAudio = $target.children(".rex-video-toggle-audio");
@@ -965,7 +970,7 @@ var Rexbuilder_Util = (function ($) {
 			}
 			return;
 		}
-		removeVimeoVideo($target, targetType);
+		/* removeVimeoVideo($target, targetType);
 
 		tmpl.arg = "video";
 		$target.prepend(tmpl("tmpl-video-vimeo", { url: urlVimeo }));
@@ -975,7 +980,7 @@ var Rexbuilder_Util = (function ($) {
 		$target.addClass("vimeo-player");
 
 		var vimeoFrame = $target.children(".rex-video-vimeo-wrap").find("iframe")[0];
-		VimeoVideo.addPlayer("1", vimeoFrame);
+		VimeoVideo.addPlayer("1", vimeoFrame); */
 	}
 
 

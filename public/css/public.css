@@ -4035,9 +4035,9 @@ http://flickity.metafizzy.co
   height: 100%;
   visibility: visible; }
 
-.rex-video-section-wrap {
-  z-index: -1; }
-
+/*.rex-video-section-wrap {
+	z-index: -1;
+}*/
 .rex-video-wrap + div {
   position: relative; }
 
@@ -5008,5 +5008,6 @@ a.pswp-item {
 .grid-stack.grid-stack-one-column-mode > .grid-stack-item {
   margin-bottom: 0px; }
 
-.rexpansive_section {
-  z-index: 0; }
+/* .rexpansive_section{
+    z-index: 0;
+} */
