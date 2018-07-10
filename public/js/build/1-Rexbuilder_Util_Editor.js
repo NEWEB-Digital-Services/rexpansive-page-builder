@@ -224,6 +224,14 @@ var Rexbuilder_Util_Editor = (function ($) {
     $(document).on('rexlive:updateLayouts', function (event) {
       _save_custom_layouts(event.settings.updatedLayouts);
     });
+    $(document).on('rexlive:undo', function (e) {
+      console.log(e);
+      console.log('undo');
+    });
+    $(document).on('rexlive:redo', function (e) {
+      console.log(e);
+      console.log('redo');
+    });
   }
 
   var sendParentIframeMessage = function (data) {

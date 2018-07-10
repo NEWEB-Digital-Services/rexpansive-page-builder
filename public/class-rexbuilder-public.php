@@ -195,6 +195,7 @@ class Rexbuilder_Public
 
             wp_enqueue_script('1-RexUtil', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Util.js', array('jquery'), $this->version, true);
             wp_enqueue_script('1-RexUtilEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Util_Editor.js', array('jquery'), $this->version, true);
+            wp_enqueue_script('2-RexSaveListeners', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/2-Rex_Save_Listeners.js', array('jquery'), $this->version, true);
             wp_enqueue_script('5-flickity', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/5-flickity.pkgd.min.js', array('jquery'), $this->version, true);
             wp_enqueue_script('2-RexSlider', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/2-RexSlider.js', array('jquery'), $this->version, true);
             wp_enqueue_script('8-VimeoVideo', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/8-VimeoVideo.js', array('jquery'), $this->version, true);
