@@ -170,7 +170,7 @@ class Rexbuilder_Section
             }
 
             if ($rexlive_section_id != '') {
-                echo 'data-rexlive-section-id="' . $rexlive_section_id . '"';
+                echo ' data-rexlive-section-id="' . $rexlive_section_id . '"';
             }
             echo '>';
 
@@ -192,7 +192,7 @@ class Rexbuilder_Section
             if ('' != $video_bg_url_vimeo_section && 'undefined' != $video_bg_url_vimeo_section) {
                 ?>
                 <div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--section">
-                <iframe src="<?php echo $video_bg_url_vimeo_section; ?>?autoplay=1&loop=1&byline=0&title=0&autopause=0" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
+                <iframe src="<?php echo $video_bg_url_vimeo_section; ?>?autoplay=1&loop=1&title=0&byline=0&portrait=0&autopause=0&muted=1" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
                 </div>
                 <?php
             }

@@ -173,18 +173,21 @@ var Rex_Save_Listeners = (function ($) {
 
             return output;
         }
+
         /*
         data-rexlive-section-edited="true"
         */
         var checkEditsSection = function ($section) {
             return $section.attr("data-rexlive-section-edited") == "true" ? true : false;
         }
+
         /*
         data-rexlive-layout-changed="true"
         */
         var checkEditsLayoutGrid = function ($gallery) {
             return $gallery.attr("data-rexlive-layout-changed") == "true" ? true : false;
         }
+
         /*
         data-rexlive-element-edited="true"
         */
@@ -568,22 +571,25 @@ var Rex_Save_Listeners = (function ($) {
                 : $sectionData.attr('data-video_bg_url_vimeo_section');
             full_height = $sectionData.attr('data-full_height') === undefined ? ""
                 : $sectionData.attr('data-full_height');
-            block_distance = $sectionData.attr('data-block_distance') === undefined ? 20
-                : parseInt($sectionData.attr('data-block_distance'));
+
             layout = $sectionData.attr('data-layout') === undefined ? ""
                 : $sectionData.attr('data-layout');
             responsive_background = $sectionData.attr('data-responsive_background') === undefined ? "fixed"
                 : $sectionData.attr('data-responsive_background');
             custom_classes = $sectionData.attr('data-custom_classes') === undefined ? ""
                 : $sectionData.attr('data-custom_classes');
+
             section_width = $sectionData.attr('data-section_width') === undefined ? ""
                 : $sectionData.attr('data-section_width');
             section_width = section_width == '%' ? "" : section_width;
+
+            block_distance = $sectionData.attr('data-block_distance') === undefined ? 20
+                : parseInt($sectionData.attr('data-block_distance'));
             row_separator_top = $sectionData.attr('data-row_separator_top') === undefined ? ""
                 : $sectionData.attr('data-row_separator_top');
             row_separator_bottom = $sectionData.attr('data-row_separator_bottom') === undefined ? ""
                 : $sectionData.attr('data-row_separator_bottom');
-            row_separator_right = $sectionData.attr('row_separator_right') === undefined ? ""
+            row_separator_right = $sectionData.attr('data-row_separator_right') === undefined ? ""
                 : $sectionData.attr('data-row_separator_right');
             row_separator_left = $sectionData.attr('data-row_separator_left') === undefined ? ""
                 : $sectionData.attr('data-row_separator_left');

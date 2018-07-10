@@ -20,7 +20,11 @@ defined( 'ABSPATH' ) or exit;
 	<button class="tool-button btn-floating builder-section-config tooltipped waves-effect waves-light" data-position="bottom" data-tooltip="<?php _e('Row settings', 'rexpansive'); ?>">
 		<i class="material-icons">&#xE8B8;</i>
 	</button>
-            
+	
+	<button class="tool-button btn-floating test-save tooltipped waves-effect waves-light">
+		A
+	</button>
+
 	<div class="tool-button btn-flat builder-copy-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy row', 'rexpansive'); ?>">
 		<i class="material-icons grey-text text-darken-2">&#xE14D;</i>
     </div>

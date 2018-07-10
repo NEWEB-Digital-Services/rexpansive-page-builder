@@ -207,8 +207,12 @@ var Rexbuilder_Util = (function ($) {
 
 					_updateSectionMargins($section, targetProps["row_margin_top"], targetProps["row_margin_bottom"], targetProps["row_margin_right"], targetProps["row_margin_left"]);
 
-					for (const propName in targetProps) {
-						console.log(propName + " " + targetProps[propName]);
+					_updateRow($sectionData, $gallery, targetProps['block_distance'], targetProps["row_separator_top"], targetProps["row_separator_bottom"], targetProps["row_separator_right"], targetProps["row_separator_left"], targetProps["full_height"], targetProps["layout"], targetProps["section_width"], targetProps["collapseElements"]);
+
+					$section.css('background-color', targetProps["color_bg_section"]);
+
+					/* for (const propName in targetProps) {
+						//console.log(propName + " " + targetProps[propName]);
 						switch (propName) {
 							case "section_name":
 								//$section.attd("id", targetProps[propName]);
@@ -216,34 +220,20 @@ var Rexbuilder_Util = (function ($) {
 							case "type":
 								break;
 							case "color_bg_section":
-								$section.css('background-color', targetProps[propName]);
+								
 								break;
 							case "margin":
 								break;
-							case "":
+							case "custom_classes":
 								break;
 							default:
 								console.log("default section");
 								break;
 						}
-						/* props["hide"] = false;
-						props["section_name"] = section_name;
-						props["type"] = type;
-						props["dimension"] = dimension;
-						props["margin"] = margin;
-						props["full_height"] = full_height;
-						props["block_distance"] = block_distance;
-						props["layout"] = layout;
+						/* 
+						props["hide"] = false;
 						props["responsive_background"] = responsive_background;
-						props["custom_classes"] = custom_classes;
-						
-						props["section_width"] = section_width;
-
-						props["row_separator_top"] = row_separator_top;
-						props["row_separator_bottom"] = row_separator_bottom;
-						props["row_separator_right"] = row_separator_right;
-						props["row_separator_left"] = row_separator_left; */
-					}
+					} */
 				} else {
 					console.log("setting el");
 					$elem = $gallery.children('div[data-rexbuilder-block-id="' + targetName + '"]');
@@ -428,6 +418,59 @@ var Rexbuilder_Util = (function ($) {
 		if (!Rexbuilder_Util.editorMode) {
 			initPhotoSwipe(".photoswipe-gallery");
 		}
+	}
+
+	var _updateRow = function ($sectionData, $galleryElement, gutter, separatorTop, separatorBottom, separatorRight, separatorLeft, fullHeight, layout, sectionWidth, collapseElements) {
+
+		gutter = $.isEmptyObject(gutter) ? 20 : parseInt(gutter);
+		separatorTop = $.isEmptyObject(separatorTop) ? gutter : parseInt(separatorTop);
+		separatorBottom = $.isEmptyObject(separatorBottom) ? gutter : parseInt(separatorBottom);
+		separatorRight = $.isEmptyObject(separatorRight) ? gutter : parseInt(separatorRight);
+		separatorLeft = $.isEmptyObject(separatorLeft) ? gutter : parseInt(separatorLeft);
+		fullHeight = $.isEmptyObject(fullHeight) ? false : fullHeight;
+		layout = $.isEmptyObject(layout) ? "fixed" : layout;
+		sectionWidth = $.isEmptyObject(sectionWidth) ? "100%" : sectionWidth;
+		collapseElements = $.isEmptyObject(collapseElements) ? false : collapseElements;
+
+		var newSettings = {
+			gutter: gutter,
+			separatorTop: separatorTop,
+			separatorBottom: separatorBottom,
+			separatorRight: separatorRight,
+			separatorLeft: separatorLeft,
+			fullHeight: fullHeight,
+			layout: layout,
+			collapseElements: collapseElements
+		}
+
+		var $galleryParent = $galleryElement.parent();
+		if (sectionWidth == "100%") {
+			$galleryParent.removeClass("center-disposition");
+			$galleryParent.addClass("full-disposition");
+			$galleryParent.css("max-width", sectionWidth);
+		} else {
+			$galleryParent.removeClass("full-disposition");
+			$galleryParent.addClass("center-disposition");
+			$galleryParent.css("max-width", sectionWidth);
+		}
+
+		var galleryData = $galleryElement.data();
+		if (galleryData !== undefined) {
+			var galleryEditorIstance = $galleryElement.data().plugin_perfectGridGalleryEditor;
+			if (galleryEditorIstance !== undefined) {
+				galleryEditorIstance.updateGridSettings(newSettings);
+			}
+		}
+
+		$galleryElement.attr("data-separator", gutter);
+		$galleryElement.attr("data-row-separator-top", separatorTop);
+		$galleryElement.attr("data-row-separator-right", separatorRight);
+		$galleryElement.attr("data-row-separator-bottom", separatorBottom);
+		$galleryElement.attr("data-row-separator-left", separatorLeft);
+		$galleryElement.attr("data-layout", layout);
+		$galleryElement.attr("data-full-height", fullHeight);
+		$sectionData.attr("data-section_width", sectionWidth.replace(/%/, ""));
+		$sectionData.attr("data-responsive_collapse", collapseElements);
 	}
 
 	var _updateSectionMargins = function ($section, marginTop, marginBottom, marginRight, marginLeft) {
@@ -774,29 +817,35 @@ var Rexbuilder_Util = (function ($) {
 	 * @param {*} hasAudio true if has, false if not
 	 */
 	var _updateVideos = function ($targetData, $target, idMp4, urlMp4, urlVimeo, urlYoutube, targetType, hasAudio) {
-		/* console.log($targetData);
-		console.log($target); */
-		console.log("data received"); 
-		console.log(idMp4, urlMp4, urlVimeo, urlYoutube, targetType, hasAudio); 
+		console.log($targetData);
+		console.log($target);
+		console.log("data received");
+		console.log("idMp4: \"" + idMp4 + "\"");
+		console.log("urlVimeo: \"" + urlVimeo + "\"");
+		console.log("urlYoutube: \"" + urlYoutube + "\"");
+		console.log("targetType: \"" + targetType + "\"");
+		console.log("hasAudio: \"" + hasAudio + "\"");
 
-		if ($.isEmptyObject(urlMp4) && $.isEmptyObject(urlYoutube) && $.isEmptyObject(urlVimeo)) {
+		if (($.isEmptyObject(urlMp4) || urlMp4 == "undefined") && ($.isEmptyObject(urlYoutube) || urlYoutube == "undefined") && ($.isEmptyObject(urlVimeo) || urlVimeo == "undefined")) {
+			console.log("NO VIDEO ACTIVE ON THIS BLOCK"); 
 			removeMp4Video($target, targetType);
 			removeYoutubeVideo($target, targetType);
 			removeVimeoVideo($target, targetType);
 		}
-		if (!$.isEmptyObject(urlMp4) && $.isEmptyObject(urlYoutube) && $.isEmptyObject(urlVimeo)) {
-			console.log("updating videos mp4");
+		if (!($.isEmptyObject(urlMp4) || urlMp4 == "undefined") && ($.isEmptyObject(urlYoutube) || urlYoutube == "undefined") && ($.isEmptyObject(urlVimeo) || urlVimeo == "undefined")) {
+			console.log("VIDEO MP4 ON THIS BLOCK");
 			removeYoutubeVideo($target, targetType);
 			removeVimeoVideo($target, targetType);
 			addMp4Video($target, urlMp4, targetType, hasAudio);
 		}
-		if ($.isEmptyObject(urlMp4) && !$.isEmptyObject(urlYoutube) && $.isEmptyObject(urlVimeo)) {
-			console.log("updating videos youtube");
+		if (($.isEmptyObject(urlMp4) || urlMp4 == "undefined") && !($.isEmptyObject(urlYoutube) || urlYoutube == "undefined") && ($.isEmptyObject(urlVimeo) || urlVimeo == "undefined")) {
+			console.log("VIDEO YOUTUBE ON THIS BLOCK");
 			removeMp4Video($target, targetType);
 			removeVimeoVideo($target, targetType);
 			addYoutubeVideo($target, urlYoutube, targetType, hasAudio);
 		}
-		if ($.isEmptyObject(urlMp4) && $.isEmptyObject(urlYoutube) && !$.isEmptyObject(urlVimeo)) {
+		if (($.isEmptyObject(urlMp4) || urlMp4 == "undefined") && ($.isEmptyObject(urlYoutube) || urlYoutube == "undefined") && !($.isEmptyObject(urlVimeo) || urlVimeo == "undefined")) {
+			console.log("VIDEO VIMEO ON THIS BLOCK");
 			removeMp4Video($target, targetType);
 			removeYoutubeVideo($target, targetType);
 			addVimeoVideo($target, urlVimeo, targetType, hasAudio);
@@ -818,6 +867,10 @@ var Rexbuilder_Util = (function ($) {
 	var removeMp4Video = function ($target, targetType) {
 		if (targetType == "section") {
 			var $videoWrap = $target.children(".rex-video-section-wrap");
+			if ($videoWrap.length == 0) {
+				$videoWrap = $target.children(".rex-video-wrap");
+			}
+			console.log($videoWrap);
 		} else if (targetType == "block") {
 			var $videoWrap = $target.children(".rex-video-wrap");
 			var $toggleAudio = $target.children(".rex-video-toggle-audio");
@@ -836,8 +889,8 @@ var Rexbuilder_Util = (function ($) {
 
 	var removeYoutubeVideo = function ($target, targetType) {
 		if ($target.hasClass("youtube-player")) {
-
-			/* $target.YTPChangeMovie({
+			/*
+			$target.YTPChangeMovie({
 				videoURL: "",
 				containment: 'self',
 				startAt: 0,
@@ -847,14 +900,25 @@ var Rexbuilder_Util = (function ($) {
 				opacity: 1,
 				showControls: false,
 				showYTLogo: false
-			}); */
-			$target.YTPPlayerDestroy();
-			var $wrapper = $target.children(".mbYTP_wrapper");
-			$wrapper.remove();
+			});
+*/			console.log("destroy YTP");
+			if ($target.YTPGetPlayer() === undefined) {
+				return;
+				//	$target.YTPlayer();
+			}
+			console.log("ytplayer is alive"); 
+			console.log($target.YTPGetPlayer());
+			$target.YTPPlayerDestroy(); 
+			$target.removeClass('youtube-player');
+			console.log($target); 
+			//$.removeData($target);
+			console.log("________________________________________");
+			console.log($target.YTPGetPlayer());
+/* 
 			$target.removeAttr("data-property");
-			//$target.removeAttr("id");
-			$target.removeClass("youtube-player mb_YTPlayer isMuted");
-			if (targetType != "section") {
+			$target.removeAttr("id");
+			$target.removeClass("youtube-player mb_YTPlayer isMuted"); */
+ 		if (targetType != "section") {
 				var $toggleAudio = $target.children(".rex-video-toggle-audio");
 				if ($toggleAudio.length != 0) {
 					$toggleAudio.remove();
@@ -881,6 +945,7 @@ var Rexbuilder_Util = (function ($) {
 	var addMp4Video = function ($target, urlmp4, targetType, hasAudio) {
 		if (targetType == "section") {
 			var $videoWrap = $target.children(".rex-video-section-wrap");
+
 		} else if (targetType == "block") {
 			var $videoWrap = $target.children(".rex-video-wrap");
 		} else {
@@ -926,12 +991,18 @@ var Rexbuilder_Util = (function ($) {
 			}
 		}
 		if ($target.hasClass("youtube-player")) {
+			console.log(".............................target has class youtbe");
+			console.log($target.YTPGetPlayer());
 			if ($target.YTPGetPlayer() === undefined) {
+				console.log("no player active");
+				console.log($target[0]);
 				$target.YTPlayer();
 				return;
 			}
 			var videoID = $target.YTPGetVideoID();
+			console.log(videoID);
 			var urlID = getYoutubeID(urlYoutube);
+			console.log(urlID);
 			if (videoID != urlID) {
 				$target.YTPChangeMovie({
 					videoURL: urlYoutube,
@@ -953,8 +1024,14 @@ var Rexbuilder_Util = (function ($) {
 	}
 
 	var addVimeoVideo = function ($target, urlVimeo, targetType, hasAudio) {
+		console.log("************************************");
+		console.log("adding vimeo video");
+		console.log($target);
+		console.log(urlVimeo, targetType, hasAudio);
 		var $vimeoWrap = $target.children(".rex-video-vimeo-wrap");
 		urlVimeo += "?autoplay=1&loop=1&title=0&byline=0&portrait=0&autopause=0&muted=1";
+		console.log(urlVimeo);
+		console.log(urlVimeo);
 		if ($vimeoWrap.length != 0 && ($vimeoWrap.children("iframe").attr("src") == urlVimeo)) {
 			if (targetType != "section") {
 				var $toggleAudio = $target.children(".rex-video-toggle-audio");
@@ -970,7 +1047,7 @@ var Rexbuilder_Util = (function ($) {
 			}
 			return;
 		}
-		/* removeVimeoVideo($target, targetType);
+		removeVimeoVideo($target, targetType);
 
 		tmpl.arg = "video";
 		$target.prepend(tmpl("tmpl-video-vimeo", { url: urlVimeo }));
@@ -980,7 +1057,7 @@ var Rexbuilder_Util = (function ($) {
 		$target.addClass("vimeo-player");
 
 		var vimeoFrame = $target.children(".rex-video-vimeo-wrap").find("iframe")[0];
-		VimeoVideo.addPlayer("1", vimeoFrame); */
+		VimeoVideo.addPlayer("1", vimeoFrame);
 	}
 
 
@@ -1164,7 +1241,8 @@ var Rexbuilder_Util = (function ($) {
 		if (!jQuery.browser.mobile) {
 			Rexbuilder_Util.$rexContainer.find(".youtube-player").each(function () {
 				if ($(this).YTPGetPlayer() === undefined) {
-					$(this).YTPlayer();
+					//$(this).YTPlayer();
+					console.log(this);
 					return;
 				}
 			});

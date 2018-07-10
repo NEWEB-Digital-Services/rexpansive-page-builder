@@ -232,6 +232,10 @@ var Rexbuilder_Util_Editor = (function ($) {
       console.log(e);
       console.log('redo');
     });
+    $(document).click(".test-save", function(e){
+      console.log(e);
+      $(e.target).parents(".rexpansive_section").attr("data-rexlive-section-edited","true"); 
+    })
   }
 
   var sendParentIframeMessage = function (data) {

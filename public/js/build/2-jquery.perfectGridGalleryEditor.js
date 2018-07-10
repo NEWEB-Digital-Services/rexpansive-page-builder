@@ -137,9 +137,13 @@
             this.properties.firstStartGrid = false;
         },
 
+        updateGridSettings: function (newSettings) {
+            console.log("updateGridSettings");
+            console.log(newSettings);
+        },
+
         updateGrid: function () {
-            console.log("updateGrid");
-            ;
+            console.log("update grid");
         },
 
         refreshGrid: function () {
@@ -649,26 +653,26 @@
             var pos_y = this.settings.galleryLayout == 'masonry' ? Math.round(parseInt($elem.attr('data-row')) / this.properties.singleHeight) : parseInt($elem.attr('data-row'));
             var y = this.settings.galleryLayout == 'masonry' ? Math.round(parseInt($elem.attr('data-height')) / this.properties.singleHeight) : parseInt($elem.attr('data-height'));
             var id = Rexbuilder_Util.
-            $(divProperties).attr({
-                'style': 'display: none;',
-                'data-type': 'empty',
-                'data-col': $elem.attr('data-col'),
-                'data-row': pos_y,
-                'data-size_x': $elem.attr('data-width'),
-                'data-size_y': y,
-                'data-color_bg_block': '',
-                'data-image_bg_block': '',
-                'data-id_image_bg_block': '',
-                'data-type_bg_block': '',
-                'data-video_bg_id': '',
-                'data-video_bg_url': '',
-                'data-video_bg_url_vimeo': '',
-                'data-photoswipe': '',
-                'data-linkurl': '',
-                'data-image_size': 'full',
-                'data-overlay_block_color': '',
-                'data-rexbuilder-block-data-id': $elem.attr('data-rexbuilder-block-id')
-            });
+                $(divProperties).attr({
+                    'style': 'display: none;',
+                    'data-type': 'empty',
+                    'data-col': $elem.attr('data-col'),
+                    'data-row': pos_y,
+                    'data-size_x': $elem.attr('data-width'),
+                    'data-size_y': y,
+                    'data-color_bg_block': '',
+                    'data-image_bg_block': '',
+                    'data-id_image_bg_block': '',
+                    'data-type_bg_block': '',
+                    'data-video_bg_id': '',
+                    'data-video_bg_url': '',
+                    'data-video_bg_url_vimeo': '',
+                    'data-photoswipe': '',
+                    'data-linkurl': '',
+                    'data-image_size': 'full',
+                    'data-overlay_block_color': '',
+                    'data-rexbuilder-block-data-id': $elem.attr('data-rexbuilder-block-id')
+                });
             $(divProperties).prependTo(elem);
         },
 
@@ -800,8 +804,8 @@
 
             if (!Rexbuilder_Util.windowIsResizing) {
                 if (this.properties.oneColumMode && this._viewport().width <= 768) {
-                    this.properties.oneColumModeActive = true;
-                    this.$element.addClass("grid-stack-one-column-mode");
+                    /* this.properties.oneColumModeActive = true;
+                    this.$element.addClass("grid-stack-one-column-mode"); */
                 } else {
                     this.properties.oneColumModeActive = false;
                 }
@@ -1537,7 +1541,7 @@
         },
 
         _launchTextEditor: function () {
-             console.log("launching text editor");
+            console.log("launching text editor");
             var divToolbar = document.createElement('div');
             var gallery = this;
 
@@ -1935,7 +1939,7 @@
         },
 
         collapseElements: function () {
-            console.log("collapsing element"); 
+            console.log("collapsing element");
             this.$element.addClass("grid-stack-one-column-mode");
             this.properties.oneColumModeActive = true;
         },
