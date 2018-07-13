@@ -5011,6 +5011,12 @@ a.pswp-item {
 .grid-stack.grid-stack-one-column-mode > .grid-stack-item {
   margin-bottom: 0px; }
 
+.rex-hide-element-live {
+  display: none; }
+
+.rex-hide-element > div.grid-stack-item-content > .grid-item-content > .responsive-block-overlay {
+  background-color: rgba(128, 128, 128, 0.75); }
+
 /* .rexpansive_section{
     z-index: 0;
 } */

@@ -116,6 +116,7 @@ var Rexpansive_Builder_Admin_Section = (function($) {
           } else {
             //output += ' zak_background="" zak_title="" zak_side="" zak_icon=""';
           }
+          output += " edited_from_backend=\"true\"";
           output += ']';
           if (type == 'expand') {
             output += JSON.parse(content).content;

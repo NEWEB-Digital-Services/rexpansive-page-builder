@@ -65,9 +65,11 @@ var Rex_Save_Listeners = (function ($) {
 
             var oldCustomizations;
 
-            if ($layoutsCustomDiv.data("empty-customizations")) {
+            if ($layoutsCustomDiv.attr("data-empty-customizations")) {
+                console.log("no customizations avaiable");
                 oldCustomizations = [];
             } else {
+                console.log("customizations avaiable");
                 oldCustomizations = JSON.parse($layoutsCustomDiv.text());
             }
 
@@ -83,6 +85,8 @@ var Rex_Save_Listeners = (function ($) {
 
             $layoutsCustomDiv.text(JSON.stringify(customizationsArray));
             $layoutsAvaiableDiv.text(JSON.stringify(updatedLayouts));
+
+            $layoutsCustomDiv.removeAttr("data-empty-customizations");
 
             //ajax call for saving layouts type and names
             var layoutsNames = [];
@@ -206,6 +210,7 @@ var Rex_Save_Listeners = (function ($) {
             if (layoutName == "default" || checkEditsSection($section)) {
                 console.log("saving: " + "self");
                 section_props.props = createSectionProperties($section, "customLayout", layoutName);
+                Rexbuilder_Util.activeLayout = layoutName;
             }
             targets.push(section_props);
 
@@ -227,6 +232,7 @@ var Rex_Save_Listeners = (function ($) {
                     if (layoutName == "default" || saveAllBloks || checkEditsElement($elem)) {
                         console.log("saving: " + blockRexID);
                         block_props.props = createBlockProperties($elem, "customLayout", layoutName);
+                        Rexbuilder_Util.activeLayout = layoutName;
                     }
                     targets.push(block_props);
                 }
@@ -464,6 +470,7 @@ var Rex_Save_Listeners = (function ($) {
                     props["video_has_audio"] = video_has_audio;
                     props["block_has_scrollbar"] = block_has_scrollbar;
                     props["block_live_edited"] = block_live_edited;
+                    props["overwritten"] = false;
                 } else {
                     props["hide"] = false;
                     props["rexbuilder_block_id"] = rex_id;
@@ -502,7 +509,7 @@ var Rex_Save_Listeners = (function ($) {
                     props["video_has_audio"] = video_has_audio;
                     props["block_has_scrollbar"] = block_has_scrollbar;
                     props["block_live_edited"] = block_live_edited;
-
+                    props["overwritten"] = true;
                 }
 
                 return props;
@@ -547,12 +554,15 @@ var Rex_Save_Listeners = (function ($) {
                 : $sectionData.attr('data-section_name');
             type = $sectionData.attr('data-type') === undefined ? "perfect-grid"
                 : $sectionData.attr('data-type');
+
             color_bg_section = $sectionData.attr('data-color_bg_section') === undefined ? "#ffffff"
                 : $sectionData.attr('data-color_bg_section');
-            dimension = $sectionData.attr('data-dimension') === undefined ? "full"
-                : $sectionData.attr('data-dimension');
+
             margin = $sectionData.attr('data-margin') === undefined ? ""
                 : $sectionData.attr('data-margin');
+
+            dimension = $sectionData.attr('data-dimension') === undefined ? "full"
+                : $sectionData.attr('data-dimension');
             image_bg_section = $sectionData.attr('data-image_bg_section') === undefined ? ""
                 : $sectionData.attr('data-image_bg_section');
             image_width = $section.attr('data-background_image_width') === undefined ? ""
@@ -561,6 +571,7 @@ var Rex_Save_Listeners = (function ($) {
                 : parseInt($section.attr('data-background_image_height'));
             id_image_bg_section = $sectionData.attr('data-id_image_bg_section') === undefined ? ""
                 : $sectionData.attr('data-id_image_bg_section');
+
             video_mp4_url = $sectionData.attr('data-video_mp4_url') === undefined ? ""
                 : $sectionData.attr('data-video_mp4_url');
             video_bg_url_section = $sectionData.attr('data-video_bg_url_section') === undefined ? ""
@@ -569,11 +580,11 @@ var Rex_Save_Listeners = (function ($) {
                 : $sectionData.attr('data-video_bg_id_section');
             video_bg_url_vimeo_section = $sectionData.attr('data-video_bg_url_vimeo_section') === undefined ? ""
                 : $sectionData.attr('data-video_bg_url_vimeo_section');
-            full_height = $sectionData.attr('data-full_height') === undefined ? ""
-                : $sectionData.attr('data-full_height');
 
-            layout = $sectionData.attr('data-layout') === undefined ? ""
-                : $sectionData.attr('data-layout');
+            full_height = $gridGallery.attr('data-full-height') === undefined ? ""
+                : $gridGallery.attr('data-full-height');
+            layout = $gridGallery.attr('data-layout') === undefined ? ""
+                : $gridGallery.attr('data-layout');
             responsive_background = $sectionData.attr('data-responsive_background') === undefined ? "fixed"
                 : $sectionData.attr('data-responsive_background');
             custom_classes = $sectionData.attr('data-custom_classes') === undefined ? ""
@@ -583,16 +594,17 @@ var Rex_Save_Listeners = (function ($) {
                 : $sectionData.attr('data-section_width');
             section_width = section_width == '%' ? "" : section_width;
 
-            block_distance = $sectionData.attr('data-block_distance') === undefined ? 20
-                : parseInt($sectionData.attr('data-block_distance'));
-            row_separator_top = $sectionData.attr('data-row_separator_top') === undefined ? ""
-                : $sectionData.attr('data-row_separator_top');
-            row_separator_bottom = $sectionData.attr('data-row_separator_bottom') === undefined ? ""
-                : $sectionData.attr('data-row_separator_bottom');
-            row_separator_right = $sectionData.attr('data-row_separator_right') === undefined ? ""
-                : $sectionData.attr('data-row_separator_right');
-            row_separator_left = $sectionData.attr('data-row_separator_left') === undefined ? ""
-                : $sectionData.attr('data-row_separator_left');
+            block_distance = $gridGallery.attr('data-separator') === undefined ? ""
+                : parseInt($gridGallery.attr('data-separator'));
+            row_separator_top = $gridGallery.attr('data-row-separator-top') === undefined ? ""
+                : parseInt($gridGallery.attr('data-row-separator-top'));
+            row_separator_bottom = $gridGallery.attr('data-row-separator-bottom') === undefined ? ""
+                : parseInt($gridGallery.attr('data-row-separator-bottom'));
+            row_separator_right = $gridGallery.attr('data-row-separator-right') === undefined ? ""
+                : parseInt($gridGallery.attr('data-row-separator-right'));
+            row_separator_left = $gridGallery.attr('data-row-separator-left') === undefined ? ""
+                : parseInt($gridGallery.attr('data-row-separator-left'));
+
             row_margin_top = $sectionData.attr('data-row_margin_top') === undefined ? ""
                 : $sectionData.attr('data-row_margin_top');
             row_margin_bottom = $sectionData.attr('data-row_margin_bottom') === undefined ? ""
@@ -601,7 +613,9 @@ var Rex_Save_Listeners = (function ($) {
                 : $sectionData.attr('data-row_margin_right');
             row_margin_left = $sectionData.attr('data-row_margin_left') === undefined ? ""
                 : $sectionData.attr('data-row_margin_left');
+
             rexlive_section_id = $section.attr("data-rexlive-section-id");
+
             if (mode == "shortcode") {
                 output = '[RexpansiveSection'
                     + ' section_name="' + section_name
@@ -631,7 +645,6 @@ var Rex_Save_Listeners = (function ($) {
                     + '" rexlive_section_id="' + rexlive_section_id
                     + '" row_edited_live="true"]';
 
-                galleryIstance.fillEmptySpaces();
                 galleryIstance.updateAllElementsProperties();
 
                 var elementsOrdered = galleryIstance.getElementTopBottom();
@@ -642,6 +655,19 @@ var Rex_Save_Listeners = (function ($) {
                         output += createBlockProperties($elem, "shortcode", null);
                     }
                 });
+
+                console.log("Adding empty blocks for backend");
+                var emptyBlocks = galleryIstance.fillEmptySpaces();
+                var i;
+                var id = galleryIstance.getLastID();
+                var rowNumber = galleryIstance.getRowNumber();
+
+                console.log(emptyBlocks);
+                for (i = 0; i < emptyBlocks.length; i++) {
+                    id = id + 1;
+                    //console.log(createEmptyBlockShortcode(rowNumber, id, emptyBlocks[i])); 
+                    output += createEmptyBlockShortcode(rowNumber, id, emptyBlocks[i]);
+                }
 
                 output += '[/RexpansiveSection]';
                 return output;
@@ -679,7 +705,7 @@ var Rex_Save_Listeners = (function ($) {
                     props["row_margin_bottom"] = row_margin_bottom;
                     props["row_margin_right"] = row_margin_right;
                     props["row_margin_left"] = row_margin_left;
-
+                    props["overwritten"] = false;
                 } else {
                     props["hide"] = false;
                     props["section_name"] = section_name;
@@ -709,9 +735,31 @@ var Rex_Save_Listeners = (function ($) {
                     props["row_margin_bottom"] = row_margin_bottom;
                     props["row_margin_right"] = row_margin_right;
                     props["row_margin_left"] = row_margin_left;
+                    props["overwritten"] = true;
                 }
                 return props;
             }
+        }
+
+        var createEmptyBlockShortcode = function (rowNumber, id, blockObj) {
+            //[RexpansiveBlock id="block_0_1" type="empty" col="3" row="1" size_x="10" size_y="2" color_bg_block="" image_bg_block="" id_image_bg_block="" type_bg_block="" photoswipe="" linkurl="" edited_from_backend="true"]
+
+            var output = "[RexpansiveBlock"
+                + ' id="block_' + rowNumber + "_" + id
+                + '" type="empty"'
+                + ' col="' + (blockObj.x + 1)
+                + '" row="' + (blockObj.y + 1)
+                + '" size_x="' + blockObj.w
+                + '" size_y="' + blockObj.h
+                + '" color_bg_block=""'
+                + ' image_bg_block=""'
+                + ' id_image_bg_block=""'
+                + ' type_bg_block=""'
+                + ' photoswipe=""'
+                + ' linkurl=""'
+                + ' empty_block_backend_fix="' + true
+                + '"][/RexpansiveBlock]';
+            return output;
         }
     })
 })(jQuery);

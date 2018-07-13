@@ -210,7 +210,7 @@ var Rexbuilder_Util_Editor = (function ($) {
         e.settings = {};
 
         jQuery.extend(e.settings, event.data);
-        //console.log(e);
+        console.log(e);
         $(document).trigger(e);
       }
     }
@@ -232,9 +232,10 @@ var Rexbuilder_Util_Editor = (function ($) {
       console.log(e);
       console.log('redo');
     });
-    $(document).click(".test-save", function(e){
+    $(document).click(".test-save", function (e) {
       console.log(e);
-      $(e.target).parents(".rexpansive_section").attr("data-rexlive-section-edited","true"); 
+      $(e.target).parents(".rexpansive_section").find(".grid-stack-row").attr("data-rexlive-layout-changed", "true");
+      $(e.target).parents(".rexpansive_section").attr("data-rexlive-section-edited", "true");
     })
   }
 

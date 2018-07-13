@@ -79,7 +79,7 @@ var Rexbuilder_Util = (function ($) {
 
 	var chooseLayout = function () {
 		var w = _viewport().width;
-		console.log(w);
+		//console.log(w);
 		var $resposiveData = $("#rexbuilder-layout-data");
 
 		if ($resposiveData.children(".layouts-data").data("empty-customizations") == "true" || (Rexbuilder_Util.editorMode && Rexbuilder_Util.firstStart)) {
@@ -88,7 +88,7 @@ var Rexbuilder_Util = (function ($) {
 
 		var $responsiveLayoutAvaible = JSON.parse($resposiveData.children(".available-layouts").text());
 		var selectedLayoutName = "";
-		console.log($responsiveLayoutAvaible);
+		//console.log($responsiveLayoutAvaible);
 		$.each($responsiveLayoutAvaible, function (i, layout) {
 			if (layout["min"] == "") {
 				layout["min"] = 0;
@@ -112,16 +112,18 @@ var Rexbuilder_Util = (function ($) {
 		if (selectedLayoutName === "") {
 			selectedLayoutName = "default";
 		}
-		console.log(selectedLayoutName);
+		//console.log(selectedLayoutName);
 		return selectedLayoutName;
 	}
 
 	var _edit_dom_layout = function (chosenLayoutName) {
-
+		console.log(chosenLayoutName);
+		console.log(Rexbuilder_Util.activeLayout);
+		//return;
 		if (chosenLayoutName == Rexbuilder_Util.activeLayout) {
 			return;
 		}
-		console.log("chosen: " + chosenLayoutName);
+		//console.log("chosen: " + chosenLayoutName);
 
 		Rexbuilder_Util.$rexContainer.attr("data-rex-layout-selected", chosenLayoutName);
 		var $resposiveData = $("#rexbuilder-layout-data");
@@ -142,7 +144,7 @@ var Rexbuilder_Util = (function ($) {
 		var layoutData = JSON.parse($resposiveData.children(".layouts-customizations").text());
 
 		responsiveLayouts = layoutData;
-		console.log(layoutData);
+		//console.log(layoutData);
 		$.each(layoutData, function (i, layout) {
 			if (layout.name == "default") {
 				defaultLayoutSections = layout.sections;
@@ -161,12 +163,12 @@ var Rexbuilder_Util = (function ($) {
 		var customSections;
 
 		if (i == layoutData.length) {
-			console.log("loading default layout");
+			//console.log("loading default layout");
 			customSections = {};
 		} else {
 			customSections = layoutSelected.sections;
 		}
-		console.log("updaiting dom");
+		//console.log("updaiting dom");
 		var sectionRexId;
 
 		var targetName;
@@ -181,6 +183,7 @@ var Rexbuilder_Util = (function ($) {
 		var $itemData;
 
 		var mergedEdits = lodash.merge({}, defaultLayoutSections, customSections);
+		console.log("applying data");
 		console.log(mergedEdits);
 		$.each(mergedEdits, function (i, section) {
 			sectionRexId = section.section_rex_id;
@@ -191,14 +194,14 @@ var Rexbuilder_Util = (function ($) {
 				var galleryEditorIstance = $gallery.data().plugin_perfectGridGalleryEditor;
 				if (galleryEditorIstance !== undefined) {
 					galleryEditorIstance.batchGridstack();
-					console.log("enter batch mode");
 				}
 			}
-			$.each(section.targets, function (i, target) {
+			$.each(section.targets.reverse(), function (i, target) {
 				targetName = target.name;
 				targetProps = target.props;
+				console.log("setting " + targetName);
 				if (targetName == "self") {
-					console.log("setting section properties: " + targetName);
+					//console.log("setting section properties: " + targetName);
 					var $sectionData = $section.children(".section-data");
 
 					_updateImageBG($section, isNaN(parseInt(targetProps['id_image_bg_section'])) ? "" : parseInt(targetProps['id_image_bg_section']), targetProps['image_bg_section'], parseInt(targetProps['image_width']), parseInt(targetProps['image_height']), targetProps['dimension']);
@@ -212,7 +215,7 @@ var Rexbuilder_Util = (function ($) {
 					$section.css('background-color', targetProps["color_bg_section"]);
 
 					/* for (const propName in targetProps) {
-						//console.log(propName + " " + targetProps[propName]);
+						////console.log(propName + " " + targetProps[propName]);
 						switch (propName) {
 							case "section_name":
 								//$section.attd("id", targetProps[propName]);
@@ -227,7 +230,7 @@ var Rexbuilder_Util = (function ($) {
 							case "custom_classes":
 								break;
 							default:
-								console.log("default section");
+								//console.log("default section");
 								break;
 						}
 						/* 
@@ -235,7 +238,7 @@ var Rexbuilder_Util = (function ($) {
 						props["responsive_background"] = responsive_background;
 					} */
 				} else {
-					console.log("setting el");
+					//console.log("setting el");
 					$elem = $gallery.children('div[data-rexbuilder-block-id="' + targetName + '"]');
 					$itemData = $elem.children(".rexbuilder-block-data");
 					$itemContent = $elem.find(".grid-item-content");
@@ -247,11 +250,16 @@ var Rexbuilder_Util = (function ($) {
 					for (var propName in targetProps) {
 						switch (propName) {
 							case "hide":
-								;
+								if(targetProps[propName].toString() == "true"){
+									$elem.addClass("rex-hide-element");
+								} else {
+									$elem.removeClass("rex-hide-element");
+								}
 								break;
 							case "type":
 								$itemData.attr('data-type', targetProps[propName]);
 								break;
+
 
 							case "size_x":
 								$elem.attr('data-width', targetProps[propName]);
@@ -270,22 +278,28 @@ var Rexbuilder_Util = (function ($) {
 								break;
 
 							case "gs_start_h":
+								console.log("start H: ", targetProps[propName]);
+								$itemData.attr('data-gs_start_h', targetProps[propName]);
 								break;
 
 							case "gs_width":
 								$elem.attr('data-gs-width', targetProps[propName]);
+								$itemData.attr('data-gs_width', targetProps[propName]);
 								break;
 
 							case "gs_height":
 								$elem.attr('data-gs-height', targetProps[propName]);
+								$itemData.attr('data-gs_height', targetProps[propName]);
 								break;
 
 							case "gs_y":
 								$elem.attr('data-gs-y', targetProps[propName]);
+								$itemData.attr('data-gs_y', targetProps[propName]);
 								break;
 
 							case "gs_x":
 								$elem.attr('data-gs-x', targetProps[propName]);
+								$itemData.attr('data-gs_x', targetProps[propName]);
 								break;
 
 							case "color_bg_block":
@@ -293,7 +307,7 @@ var Rexbuilder_Util = (function ($) {
 								break;
 
 							case "block_custom_class":
-								$elem.removeClass();
+								//$elem.removeClass();
 								$elem.addClass("perfect-grid-item grid-stack-item w" + parseInt($elem.attr("data-gs-width")));
 								if (Rexbuilder_Util.editorMode) {
 									$elem.addClass("rex-text-editable");
@@ -305,20 +319,11 @@ var Rexbuilder_Util = (function ($) {
 							case "block_padding":
 								var $textWrap = $itemContent.find(".text-wrap");
 								if ($textWrap.length != 0) {
-									var newPaddings = targetProps[propName];
-									newPaddings = newPaddings.replace(/;/g, " ");
-									newPaddings += ";";
-									newPaddings = newPaddings.replace(/ ;/g, ";");
-									newPaddings = "padding: " + newPaddings;
-									$textWrap.attr("style", newPaddings)
-									// da finire se ci sono più stili applicati al text-wrap
-									// vedere con stefano
-									/**
-									var styleList = $textWrap.attr('style').split(/\s+/);
-			
-									$.each(styleList, function (index, item) {
-										console.log(item);
-									});*/
+									var newPaddings = targetProps[propName].split(/;/g);
+									$textWrap.css("padding-top", newPaddings[0]);
+									$textWrap.css("padding-right", newPaddings[1]);
+									$textWrap.css("padding-bottom", newPaddings[2]);
+									$textWrap.css("padding-left", newPaddings[3]);
 								}
 								break;
 
@@ -355,11 +360,11 @@ var Rexbuilder_Util = (function ($) {
 								if (!Rexbuilder_Util.editorMode) {
 									if (targetProps[propName] != "") {
 										if ($itemContent.parents(".element-link").length != 0) {
-											console.log("already a link");
+											//console.log("already a link");
 											$itemContent.parents(".element-link").attr("href", targetProps[propName]);
 											$itemContent.parents(".element-link").attr("title", targetProps[propName]);
 										} else {
-											console.log("not a block link");
+											//console.log("not a block link");
 											var $itemContentParent = $itemContent.parent();
 											tmpl.arg = "link";
 											$itemContentParent.append(tmpl("tmpl-link-block", {
@@ -377,18 +382,11 @@ var Rexbuilder_Util = (function ($) {
 									}
 								}
 								break;
+
 							case "zak_background":
-								break;
-
 							case "zak_side":
-								break;
-
 							case "zak_title":
-								break;
-
 							case "zak_icon":
-								break;
-
 							case "zak_foreground":
 								break;
 
@@ -401,17 +399,20 @@ var Rexbuilder_Util = (function ($) {
 							case "block_live_edited":
 								break;
 
+							case "overwritten":
+								$itemData.attr("data-custom_layout", targetProps[propName].toString());
+								break;
+
 							default:
-								console.log("rip");
+								//console.log("rip");
 								break;
 						}
 					}
-
+					//console.log($itemData[0]);
 				}
 			});
 			if (galleryData !== undefined && galleryEditorIstance !== undefined) {
 				galleryEditorIstance.commitGridstack();
-				console.log("exit batch mode");
 			}
 		});
 
@@ -421,15 +422,16 @@ var Rexbuilder_Util = (function ($) {
 	}
 
 	var _updateRow = function ($sectionData, $galleryElement, gutter, separatorTop, separatorBottom, separatorRight, separatorLeft, fullHeight, layout, sectionWidth, collapseElements) {
-
+		console.log("data row received");
+		console.log(gutter, separatorTop, separatorBottom, separatorRight, separatorLeft, fullHeight, layout, sectionWidth, collapseElements);
 		gutter = $.isEmptyObject(gutter) ? 20 : parseInt(gutter);
 		separatorTop = $.isEmptyObject(separatorTop) ? gutter : parseInt(separatorTop);
 		separatorBottom = $.isEmptyObject(separatorBottom) ? gutter : parseInt(separatorBottom);
 		separatorRight = $.isEmptyObject(separatorRight) ? gutter : parseInt(separatorRight);
 		separatorLeft = $.isEmptyObject(separatorLeft) ? gutter : parseInt(separatorLeft);
-		fullHeight = $.isEmptyObject(fullHeight) ? false : fullHeight;
+		fullHeight = $.isEmptyObject(fullHeight) || fullHeight == "undefined" ? false : fullHeight;
 		layout = $.isEmptyObject(layout) ? "fixed" : layout;
-		sectionWidth = $.isEmptyObject(sectionWidth) ? "100%" : sectionWidth;
+		sectionWidth = $.isEmptyObject(sectionWidth) ? "100%" : sectionWidth + "%";
 		collapseElements = $.isEmptyObject(collapseElements) ? false : collapseElements;
 
 		var newSettings = {
@@ -444,6 +446,7 @@ var Rexbuilder_Util = (function ($) {
 		}
 
 		var $galleryParent = $galleryElement.parent();
+		console.log(sectionWidth);
 		if (sectionWidth == "100%") {
 			$galleryParent.removeClass("center-disposition");
 			$galleryParent.addClass("full-disposition");
@@ -456,8 +459,10 @@ var Rexbuilder_Util = (function ($) {
 
 		var galleryData = $galleryElement.data();
 		if (galleryData !== undefined) {
+			console.log("1");
 			var galleryEditorIstance = $galleryElement.data().plugin_perfectGridGalleryEditor;
 			if (galleryEditorIstance !== undefined) {
+				console.log("2");
 				galleryEditorIstance.updateGridSettings(newSettings);
 			}
 		}
@@ -471,6 +476,7 @@ var Rexbuilder_Util = (function ($) {
 		$galleryElement.attr("data-full-height", fullHeight);
 		$sectionData.attr("data-section_width", sectionWidth.replace(/%/, ""));
 		$sectionData.attr("data-responsive_collapse", collapseElements);
+
 	}
 
 	var _updateSectionMargins = function ($section, marginTop, marginBottom, marginRight, marginLeft) {
@@ -488,10 +494,11 @@ var Rexbuilder_Util = (function ($) {
 
 	var _updateImageBG = function ($target, idImage, urlImage, w, h, type) {
 		console.log("setting bgImage");
+		console.log(idImage, urlImage, w, h, type);
 		if ($target.hasClass("rexpansive_section")) {
 			var $targetData = $target.children("section-data");
 			var targetType = "section";
-			/* console.log($target, idImage, urlImage, w, h, type);
+			/* //console.log($target, idImage, urlImage, w, h, type);
 			return; */
 		} else if ($target.hasClass("grid-item-content")) {
 			var $targetData = $target.parents(".grid-stack-item").children("rexbuilder-block-data");
@@ -499,6 +506,7 @@ var Rexbuilder_Util = (function ($) {
 		} else {
 			return;
 		}
+
 		if (idImage == "") {
 			$targetData.attr('data-id_image_bg_' + targetType, "");
 			$target.attr('data-background_image_width', "");
@@ -539,9 +547,9 @@ var Rexbuilder_Util = (function ($) {
 	var addPhotoSwipeElement = function ($itemContent, url, w, h, t) {
 		tmpl.arg = "image";
 		var $gridstackItemContent = $itemContent.parents(".grid-stack-item-content");
-		console.log("checking if is already photoswipe");
+		//console.log("checking if is already photoswipe");
 		if ($itemContent.parents(".pswp-figure").length == 0) {
-			console.log("not");
+			//console.log("not");
 			$itemContent.parent().prepend(tmpl("tmpl-photoswipe-block", {
 				link: url,
 				width: w,
@@ -554,12 +562,12 @@ var Rexbuilder_Util = (function ($) {
 	}
 
 	var removePhotoSwipeElement = function ($itemContent) {
-		console.log("removing photoswipe");
-		console.log($itemContent);
+		//console.log("removing photoswipe");
+		//console.log($itemContent);
 		var $pswpFigure = $itemContent.parents(".pswp-figure");
-		console.log($pswpFigure);
+		//console.log($pswpFigure);
 		if ($pswpFigure.length != 0) {
-			console.log("removing ps");
+			//console.log("removing ps");
 			var $pspwParent = $pswpFigure.parent();
 			$itemContent.detach().appendTo($pspwParent);
 			$pswpFigure.remove();
@@ -817,35 +825,35 @@ var Rexbuilder_Util = (function ($) {
 	 * @param {*} hasAudio true if has, false if not
 	 */
 	var _updateVideos = function ($targetData, $target, idMp4, urlMp4, urlVimeo, urlYoutube, targetType, hasAudio) {
-		console.log($targetData);
-		console.log($target);
-		console.log("data received");
-		console.log("idMp4: \"" + idMp4 + "\"");
-		console.log("urlVimeo: \"" + urlVimeo + "\"");
-		console.log("urlYoutube: \"" + urlYoutube + "\"");
-		console.log("targetType: \"" + targetType + "\"");
-		console.log("hasAudio: \"" + hasAudio + "\"");
+		//console.log($targetData);
+		//console.log($target);
+		//console.log("data received");
+		//console.log("idMp4: \"" + idMp4 + "\"");
+		//console.log("urlVimeo: \"" + urlVimeo + "\"");
+		//console.log("urlYoutube: \"" + urlYoutube + "\"");
+		//console.log("targetType: \"" + targetType + "\"");
+		//console.log("hasAudio: \"" + hasAudio + "\"");
 
 		if (($.isEmptyObject(urlMp4) || urlMp4 == "undefined") && ($.isEmptyObject(urlYoutube) || urlYoutube == "undefined") && ($.isEmptyObject(urlVimeo) || urlVimeo == "undefined")) {
-			console.log("NO VIDEO ACTIVE ON THIS BLOCK"); 
+			//console.log("NO VIDEO ACTIVE ON THIS BLOCK"); 
 			removeMp4Video($target, targetType);
 			removeYoutubeVideo($target, targetType);
 			removeVimeoVideo($target, targetType);
 		}
 		if (!($.isEmptyObject(urlMp4) || urlMp4 == "undefined") && ($.isEmptyObject(urlYoutube) || urlYoutube == "undefined") && ($.isEmptyObject(urlVimeo) || urlVimeo == "undefined")) {
-			console.log("VIDEO MP4 ON THIS BLOCK");
+			//console.log("VIDEO MP4 ON THIS BLOCK");
 			removeYoutubeVideo($target, targetType);
 			removeVimeoVideo($target, targetType);
 			addMp4Video($target, urlMp4, targetType, hasAudio);
 		}
 		if (($.isEmptyObject(urlMp4) || urlMp4 == "undefined") && !($.isEmptyObject(urlYoutube) || urlYoutube == "undefined") && ($.isEmptyObject(urlVimeo) || urlVimeo == "undefined")) {
-			console.log("VIDEO YOUTUBE ON THIS BLOCK");
+			//console.log("VIDEO YOUTUBE ON THIS BLOCK");
 			removeMp4Video($target, targetType);
 			removeVimeoVideo($target, targetType);
 			addYoutubeVideo($target, urlYoutube, targetType, hasAudio);
 		}
 		if (($.isEmptyObject(urlMp4) || urlMp4 == "undefined") && ($.isEmptyObject(urlYoutube) || urlYoutube == "undefined") && !($.isEmptyObject(urlVimeo) || urlVimeo == "undefined")) {
-			console.log("VIDEO VIMEO ON THIS BLOCK");
+			//console.log("VIDEO VIMEO ON THIS BLOCK");
 			removeMp4Video($target, targetType);
 			removeYoutubeVideo($target, targetType);
 			addVimeoVideo($target, urlVimeo, targetType, hasAudio);
@@ -870,7 +878,7 @@ var Rexbuilder_Util = (function ($) {
 			if ($videoWrap.length == 0) {
 				$videoWrap = $target.children(".rex-video-wrap");
 			}
-			console.log($videoWrap);
+			//console.log($videoWrap);
 		} else if (targetType == "block") {
 			var $videoWrap = $target.children(".rex-video-wrap");
 			var $toggleAudio = $target.children(".rex-video-toggle-audio");
@@ -878,7 +886,7 @@ var Rexbuilder_Util = (function ($) {
 			return;
 		}
 		if ($videoWrap.length != 0) {
-			console.log("removing mp4 video");
+			//console.log("removing mp4 video");
 			$target.removeClass("mp4-player");
 			$videoWrap.remove();
 			if (targetType != "section" && $toggleAudio.length != 0) {
@@ -901,24 +909,24 @@ var Rexbuilder_Util = (function ($) {
 				showControls: false,
 				showYTLogo: false
 			});
-*/			console.log("destroy YTP");
+*/			//console.log("destroy YTP");
 			if ($target.YTPGetPlayer() === undefined) {
 				return;
 				//	$target.YTPlayer();
 			}
-			console.log("ytplayer is alive"); 
-			console.log($target.YTPGetPlayer());
-			$target.YTPPlayerDestroy(); 
+			//console.log("ytplayer is alive"); 
+			//console.log($target.YTPGetPlayer());
+			$target.YTPPlayerDestroy();
 			$target.removeClass('youtube-player');
-			console.log($target); 
+			//console.log($target); 
 			//$.removeData($target);
-			console.log("________________________________________");
-			console.log($target.YTPGetPlayer());
-/* 
-			$target.removeAttr("data-property");
-			$target.removeAttr("id");
-			$target.removeClass("youtube-player mb_YTPlayer isMuted"); */
- 		if (targetType != "section") {
+			//console.log("________________________________________");
+			//console.log($target.YTPGetPlayer());
+			/* 
+						$target.removeAttr("data-property");
+						$target.removeAttr("id");
+						$target.removeClass("youtube-player mb_YTPlayer isMuted"); */
+			if (targetType != "section") {
 				var $toggleAudio = $target.children(".rex-video-toggle-audio");
 				if ($toggleAudio.length != 0) {
 					$toggleAudio.remove();
@@ -991,18 +999,18 @@ var Rexbuilder_Util = (function ($) {
 			}
 		}
 		if ($target.hasClass("youtube-player")) {
-			console.log(".............................target has class youtbe");
-			console.log($target.YTPGetPlayer());
+			//console.log(".............................target has class youtbe");
+			//console.log($target.YTPGetPlayer());
 			if ($target.YTPGetPlayer() === undefined) {
-				console.log("no player active");
-				console.log($target[0]);
+				//console.log("no player active");
+				//console.log($target[0]);
 				$target.YTPlayer();
 				return;
 			}
 			var videoID = $target.YTPGetVideoID();
-			console.log(videoID);
+			//console.log(videoID);
 			var urlID = getYoutubeID(urlYoutube);
-			console.log(urlID);
+			//console.log(urlID);
 			if (videoID != urlID) {
 				$target.YTPChangeMovie({
 					videoURL: urlYoutube,
@@ -1024,14 +1032,14 @@ var Rexbuilder_Util = (function ($) {
 	}
 
 	var addVimeoVideo = function ($target, urlVimeo, targetType, hasAudio) {
-		console.log("************************************");
-		console.log("adding vimeo video");
-		console.log($target);
-		console.log(urlVimeo, targetType, hasAudio);
+		//console.log("************************************");
+		//console.log("adding vimeo video");
+		//console.log($target);
+		//console.log(urlVimeo, targetType, hasAudio);
 		var $vimeoWrap = $target.children(".rex-video-vimeo-wrap");
 		urlVimeo += "?autoplay=1&loop=1&title=0&byline=0&portrait=0&autopause=0&muted=1";
-		console.log(urlVimeo);
-		console.log(urlVimeo);
+		//console.log(urlVimeo);
+		//console.log(urlVimeo);
 		if ($vimeoWrap.length != 0 && ($vimeoWrap.children("iframe").attr("src") == urlVimeo)) {
 			if (targetType != "section") {
 				var $toggleAudio = $target.children(".rex-video-toggle-audio");
@@ -1190,18 +1198,21 @@ var Rexbuilder_Util = (function ($) {
 
 		function doneResizing() {
 			console.log("window resized");
+			console.log(Rexbuilder_Util_Editor.buttonResized);
+			console.log(Rexbuilder_Util.editorMode);
 			Rexbuilder_Util.windowIsResizing = true;
-
 			if (Rexbuilder_Util.editorMode && !Rexbuilder_Util_Editor.buttonResized) {
 				return;
 			}
 
 			if (Rexbuilder_Util.editorMode) {
+				console.log(Rexbuilder_Util_Editor.clickedLayoutID);
 				Rexbuilder_Util_Editor.buttonResized = false;
 				_edit_dom_layout(Rexbuilder_Util_Editor.clickedLayoutID);
 			} else {
 				_edit_dom_layout(chooseLayout());
 			}
+			this.oldLayout = Rexbuilder_Util.activeLayout;
 
 			Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
 				var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
@@ -1232,7 +1243,7 @@ var Rexbuilder_Util = (function ($) {
 	}
 
 	var _destroyVideoPlugins = function () {
-		console.log(Rexbuilder_Util.$rexContainer.find(".youtube-player"));
+		//console.log(Rexbuilder_Util.$rexContainer.find(".youtube-player"));
 	}
 
 	var _launchVideoPlugins = function () {
@@ -1242,7 +1253,7 @@ var Rexbuilder_Util = (function ($) {
 			Rexbuilder_Util.$rexContainer.find(".youtube-player").each(function () {
 				if ($(this).YTPGetPlayer() === undefined) {
 					//$(this).YTPlayer();
-					console.log(this);
+					//console.log(this);
 					return;
 				}
 			});
@@ -1308,12 +1319,16 @@ var Rexbuilder_Util = (function ($) {
 		this.lastSectionNumber = -1;
 
 		this.activeLayout = "";
+		this.oldLayout = "";
+
 		_updateSectionsID();
 
 		var l = chooseLayout();
-		console.log(l);
+
+		//console.log(l);
 
 		_edit_dom_layout(l);
+		this.oldLayout = l;
 
 		_updateSectionsNumber();
 
