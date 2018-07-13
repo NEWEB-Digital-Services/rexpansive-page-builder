@@ -140,6 +140,10 @@
             } else {
                 this.frontEndMode();
             }
+
+            if (this.$section.attr("data-rex-collapse-grid") == "true" && !this.$section.hasClass("rex-block-grid")) {
+                this.collapseElements();
+            }
             /* 
             console.log(this.getElementBottomTop());
             console.log(this.getElementTopBottom()); 
@@ -177,6 +181,12 @@
             this.changeLayout(newSettings.layout);
             this.properties.layoutChanged = false;
             this.properties.firstStartGrid = false;
+
+            if(newSettings.collapseElements){
+                this.collapseElements();
+            } else {
+                this.removeCollapseGrid();
+            }
         },
 
         updateGrid: function () {
@@ -1021,7 +1031,8 @@
                         { "x": parseInt($elem.attr("data-gs-x")) },
                         { "y": parseInt($elem.attr("data-gs-y")) },
                         { "w": parseInt($elem.attr("data-gs-width")) },
-                        { "h": parseInt($elem.attr("data-gs-height")) }
+                        { "h": parseInt($elem.attr("data-gs-height")) },
+
                     ]
                 });
             });
@@ -1574,6 +1585,7 @@
 
                 gallery.$element.gridstack({
                     auto: true,
+                    animate: true,
                     acceptWidgets: false,
                     alwaysShowResizeHandle: true,
                     disableOneColumnMode: true,
@@ -2003,9 +2015,11 @@
 
         updateElementHeight: function ($elem) {
             console.log("calculating " + $elem.attr("data-rexbuilder-block-id") + " height");
-            if (Rexbuilder_Util.editorMode) {
+
+            if (Rexbuilder_Util.editorMode && !this.properties.oneColumModeActive) {
                 Rexbuilder_Util_Editor.elementIsResizing = true;
             }
+
             var elem = $elem[0];
             var $blockData = $elem.children('.rexbuilder-block-data');
             var startH = parseInt($blockData.attr("data-gs_start_h"));
@@ -2059,6 +2073,9 @@
             }
 
             newH = Math.max(startH, backgroundHeight, defaultHeight, textHeight);
+            if (this.properties.oneColumModeActive) {
+                return newH;
+            }
             console.log(startH, backgroundHeight, defaultHeight, textHeight);
             if (this.settings.galleryLayout == "fixed") {
                 newH = Math.round(newH / this.properties.singleHeight);
@@ -2121,37 +2138,98 @@
 
         collapseElements: function () {
             console.log("collapsing element");
+            this._saveBlocksPosition();
+            this.fixBlockDomOrder();
             this.$element.addClass("grid-stack-one-column-mode");
+            this.$section.attr("data-rex-collapse-grid", true); 
             this.properties.oneColumModeActive = true;
+            this.fixCollapsedHeights();
         },
-
+        
+        fixBlockDomOrder: function () {
+            var orderedElements = this.getElementTopBottom();
+            var rexIDS = [];
+            var nodes = [];
+            var elem;
+            var i, j;
+            
+            for (i = 0; i < orderedElements.length; i++) {
+                var block = {
+                    rexID: $(orderedElements[i]).attr("data-rexbuilder-block-id"),
+                    added: false
+                }
+                rexIDS.push(block);
+            }
+            
+            this.$element.children(".grid-stack-item").each(function () {
+                var elemObj = {
+                    rexID: $(this).attr("data-rexbuilder-block-id"),
+                    element: $(this).detach()
+                }
+                nodes.push(elemObj);
+            });
+            
+            for (i = 0; i < rexIDS.length; i++) {
+                for (j = 0; j < nodes.length; j++) {
+                    if (nodes[j].rexID == rexIDS[i].rexID) {
+                        elem = nodes[j].element;
+                        break;
+                    }
+                }
+                this.$element.append(elem);
+                nodes.splice(j, 1);
+            }
+        },
+        
+        fixCollapsedHeights: function () {
+            var $elem;
+            var h;
+            var that = this;
+            this.$element.children(".grid-stack-item").each(function () {
+                $elem = $(this);
+                h = that.updateElementHeight($elem);
+                $elem.css("height", h + "px")
+            });
+        },
+        
         /**
          * Removes One Column mode and restores default layout of elements
          */
-        restoreGrid: function () {
-            console.log("restore grid");
+        removeCollapseGrid: function () {
+            console.log("remove Collapse");
+            
             if (this.properties.oneColumModeActive) {
                 var gallery = this;
                 var $elem;
                 var $elemData;
                 var gridstack = this.properties.gridstackInstance;
                 var elDim;
+                
+                //removing fixed height
+                this.$element.children(".grid-stack-item").each(function () {
+                    $(this).css("height", "");
+                });
+                
                 gridstack.batchUpdate();
                 this.$element.children(".grid-stack-item").each(function () {
                     $elem = $(this);
                     $elemData = $elem.children(".rexbuilder-block-data");
                     elDim = store.get($elem.attr("data-rexbuilder-block-id"));
                     gridstack.update(this, elDim.properties[0].x, elDim.properties[1].y, elDim.properties[2].w, elDim.properties[3].h);
-                    gallery.updateElementDataProperties($elemData);
-                    console.log($elem.attr("data-gs-x"), $elem.attr("data-gs-y"), $elem.attr("data-gs-width"), $elem.attr("data-gs-height"));
                 });
                 this.$element.removeClass("grid-stack-one-column-mode");
                 gridstack.commit();
+                this.$element.children(".grid-stack-item").each(function () {
+                    $elem = $(this);
+                    $elemData = $elem.children(".rexbuilder-block-data");
+                    gallery.updateElementDataProperties($elemData);
+                });
             }
+            this.$section.attr("data-rex-collapse-grid", false); 
             this.$element.removeClass("grid-stack-one-column-mode");
             this.properties.oneColumModeActive = false;
         },
-
+        
         // Calculate the viewport of the window
         _viewport: function () {
             var e = window, a = 'inner';

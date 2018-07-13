@@ -544,14 +544,17 @@ var Rex_Save_Listeners = (function ($) {
                 row_margin_bottom = '',
                 row_margin_right = '',
                 row_margin_left = '',
-                rexlive_section_id = '';
+                rexlive_section_id = '',
+                collapse_grid = false;
 
             var output = '';
             var $gridGallery = $section.find('.grid-stack-row');
             var $sectionData = $section.children('.section-data');
             var galleryIstance = $gridGallery.data().plugin_perfectGridGalleryEditor;
-            section_name = $sectionData.attr('data-section_name') === undefined ? ""
-                : $sectionData.attr('data-section_name');
+
+            section_name = $section.attr('id') === undefined ? ""
+                : $section.attr('id');
+
             type = $sectionData.attr('data-type') === undefined ? "perfect-grid"
                 : $sectionData.attr('data-type');
 
@@ -615,6 +618,7 @@ var Rex_Save_Listeners = (function ($) {
                 : $sectionData.attr('data-row_margin_left');
 
             rexlive_section_id = $section.attr("data-rexlive-section-id");
+            collapse_grid = $section.attr("data-rex-collapse-grid");
 
             if (mode == "shortcode") {
                 output = '[RexpansiveSection'
@@ -656,18 +660,7 @@ var Rex_Save_Listeners = (function ($) {
                     }
                 });
 
-                console.log("Adding empty blocks for backend");
-                var emptyBlocks = galleryIstance.fillEmptySpaces();
-                var i;
-                var id = galleryIstance.getLastID();
-                var rowNumber = galleryIstance.getRowNumber();
-
-                console.log(emptyBlocks);
-                for (i = 0; i < emptyBlocks.length; i++) {
-                    id = id + 1;
-                    //console.log(createEmptyBlockShortcode(rowNumber, id, emptyBlocks[i])); 
-                    output += createEmptyBlockShortcode(rowNumber, id, emptyBlocks[i]);
-                }
+                output += fillGridEmptySpaces(galleryIstance);
 
                 output += '[/RexpansiveSection]';
                 return output;
@@ -677,6 +670,7 @@ var Rex_Save_Listeners = (function ($) {
                 var props = {};
 
                 if (layoutName == "default") {
+                    props["collapse_grid"] = false;
                     props["hide"] = false;
                     props["section_name"] = section_name;
                     props["type"] = type;
@@ -707,6 +701,7 @@ var Rex_Save_Listeners = (function ($) {
                     props["row_margin_left"] = row_margin_left;
                     props["overwritten"] = false;
                 } else {
+                    props["collapse_grid"] = collapse_grid;
                     props["hide"] = false;
                     props["section_name"] = section_name;
                     props["type"] = type;
@@ -741,9 +736,23 @@ var Rex_Save_Listeners = (function ($) {
             }
         }
 
-        var createEmptyBlockShortcode = function (rowNumber, id, blockObj) {
-            //[RexpansiveBlock id="block_0_1" type="empty" col="3" row="1" size_x="10" size_y="2" color_bg_block="" image_bg_block="" id_image_bg_block="" type_bg_block="" photoswipe="" linkurl="" edited_from_backend="true"]
+        var fillGridEmptySpaces = function (galleryIstance) {
+            console.log("Adding empty blocks for backend");
+            var output = "";
+            var i;
+            var id = galleryIstance.getLastID();
+            var rowNumber = galleryIstance.getRowNumber();
+            var emptyBlocks = galleryIstance.fillEmptySpaces();
 
+            for (i = 0; i < emptyBlocks.length; i++) {
+                id = id + 1;
+                output += createEmptyBlockBackendFixShortcode(rowNumber, id, emptyBlocks[i]);
+            }
+
+            return output;
+        }
+
+        var createEmptyBlockBackendFixShortcode = function (rowNumber, id, blockObj) {
             var output = "[RexpansiveBlock"
                 + ' id="block_' + rowNumber + "_" + id
                 + '" type="empty"'

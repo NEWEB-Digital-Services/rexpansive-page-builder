@@ -196,6 +196,7 @@ class Rexbuilder_Public
             wp_enqueue_script('1-RexUtil', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Util.js', array('jquery'), $this->version, true);
             wp_enqueue_script('1-RexUtilEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Util_Editor.js', array('jquery'), $this->version, true);
             wp_enqueue_script('2-RexSaveListeners', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/2-Rex_Save_Listeners.js', array('jquery'), $this->version, true);
+            wp_enqueue_script('3-Navigator', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/3-Navigator.js', array('jquery'), $this->version, true);
             wp_enqueue_script('5-flickity', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/5-flickity.pkgd.min.js', array('jquery'), $this->version, true);
             wp_enqueue_script('2-RexSlider', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/2-RexSlider.js', array('jquery'), $this->version, true);
             wp_enqueue_script('8-VimeoVideo', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/8-VimeoVideo.js', array('jquery'), $this->version, true);
@@ -578,11 +579,13 @@ echo do_shortcode($defaultPage);
      */
     public function print_vertical_dots()
     {
+        global $post;
+        
         if ($this->builder_active_on_this_post_type()) {
             $nav = get_post_meta(get_the_ID(), '_rex_navigation_type', true);
 
             if (!empty($nav) && !empty(Rexbuilder_Utilities::get_plugin_templates_path('rexbuilder-' . $nav . '-template.php'))) {
-                $content = get_the_content();
+                $content = get_post_meta($post->ID, '_rex_default_layout', true);
                 $pattern = get_shortcode_regex();
 
                 preg_match_all("/$pattern/", $content, $content_shortcodes);
@@ -594,6 +597,9 @@ echo do_shortcode($defaultPage);
                         $titles[] = $x['section_name'];
                     endif;
                 endforeach;
+
+                var_dump('peter');
+                var_dump ($titles);
 
                 if (count($titles) > 0) {
                     include Rexbuilder_Utilities::get_plugin_templates_path('rexbuilder-' . $nav . '-template.php');

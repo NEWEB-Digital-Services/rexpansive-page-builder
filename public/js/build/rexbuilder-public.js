@@ -12,11 +12,12 @@ var Rexbuilder_App = (function ($) {
 
   var init = function () {
     Rexbuilder_Util.init();
-    if(Rexbuilder_Util.editorMode){
+    if (Rexbuilder_Util.editorMode) {
       Rexbuilder_Util_Editor.init();
       Rexbuilder_Section.init();
     }
 
+    Rex_Navigator.init();
     //Rexbuilder_FormFixes.init();
 
     if (Rexbuilder_Util.editorMode) {
@@ -70,7 +71,7 @@ var Rexbuilder_App = (function ($) {
 
     // Adding audio functionallity
     $(document).on('click', '.rex-video-toggle-audio', function (e) {
-      console.log("click on toggle"); 
+      console.log("click on toggle");
       e.stopPropagation();
       var $ytvideo = $(this).parents(".youtube-player");
       var $mpvideo = $(this).parents('.mp4-player').find('.rex-video-container');
@@ -141,71 +142,21 @@ var Rexbuilder_App = (function ($) {
           var target = $(this.hash);
           target = target.length ? target : Rexbuilder_Util.$rexContainer.find('[name=' + this.hash.slice(1) + ']');
           if (target.length) {
-            smoothScroll(target);
+            Rexbuilder_Util.smoothScroll(target);
             return false;
           }
         }
       });
-    };
 
-    /* -- Handle dot behaviour --- */
-
-    var navigationItems = Rexbuilder_Util.$rexContainer.find('.vertical-nav a');
-
-    updateNavigation();
-    Rexbuilder_Util.$window.on('scroll', function () {
-      updateNavigation();
-    });
-
-    //smooth scroll to the section
-    navigationItems.on('click', function (event) {
-      event.preventDefault();
-      smoothScroll($(this.hash));
-    });
-    //smooth scroll to second section
-
-    //open-close navigation on touch devices
-    Rexbuilder_Util.$rexContainer.find('.touch .rex-nav-trigger').on('click', function () {
-      Rexbuilder_Util.$rexContainer.find('.touch .vertical-nav').toggleClass('open');
-
-    });
-    //close navigation on touch devices when selectin an elemnt from the list
-    var $touch_navigation_links = Rexbuilder_Util.$rexContainer.find('.touch .vertical-nav a');
-
-    $touch_navigation_links.on('click', function () {
-      $touch_navigation_links.find('.rex-label').removeClass('fadeInAndOut');
-      $(this).find('.rex-label').addClass('fadeInAndOut');
-      Rexbuilder_Util.$rexContainer.find('.touch .vertical-nav').removeClass('open');
-    });
-
-    function updateNavigation() {
-      $sections.each(function () {
-        var $this = $(this);
-        if (typeof $this.attr('id') != 'undefined' && $this.attr('id') != '') {
-          var activeSection = Rexbuilder_Util.$rexContainer.find('.vertical-nav a[href="#' + $this.attr('id') + '"]').data('number') - 1;
-          if (($this.offset().top - Rexbuilder_Util.$window.height() / 2 < Rexbuilder_Util.$window.scrollTop()) && ($this.offset().top + $this.height() - Rexbuilder_Util.$window.height() / 2 > Rexbuilder_Util.$window.scrollTop())) {
-            navigationItems.eq(activeSection).addClass('is-selected');
-          } else {
-            navigationItems.eq(activeSection).removeClass('is-selected');
-          }
+      // advanced check to exclude woocommerce tabs
+      var _filterLinksToSmooth  = function(index) {
+        if ($(this).parents(".woocommerce-tabs").length != 0) {
+          return true;
+        } else {
+          return false;
         }
-      });
-    }
+      };
 
-    function smoothScroll(target) {
-      $('body,html').animate(
-        { 'scrollTop': target.offset().top + _plugin_frontend_settings.scroll_animation_offset },
-        600
-      );
-    }
-
-    // advanced check to exclude woocommerce tabs
-    var _filterLinksToSmooth = function (index) {
-      if ($(this).parents(".woocommerce-tabs").length != 0) {
-        return true;
-      } else {
-        return false;
-      }
     };
   };
 
@@ -316,7 +267,7 @@ var Rexbuilder_App = (function ($) {
       }
       return false;
     };
-    
+
     var findParentBySelector = function (elm, selector) {
       var all = document.querySelectorAll(selector);
       var cur = elm.parentNode;

@@ -110,21 +110,29 @@
 }
 
 .builder-copy-row{
-    left: 10%;
+    left: 5%;
     cursor: copy;
 }
 
 .builder-section-config{
-    left: 20%;
+    left: 10%;
     cursor: pointer;
 }
 
 .builder-save-grid{
-    left: 30%;
+    left: 15%;
 }
 
 .test-save{
-    left: 40%;
+    left: 20%;
+}
+
+.collapse-grid{
+    left: 25%;
+}
+
+.set-section-name{
+    left: 30%;
 }
 
 .builder-section-config i{
@@ -449,6 +457,7 @@
     width: 100%;
     height: 100px;
     background-color: aquamarine;
+    z-index: 200;
 }
 .btn-builder-layout.active-layout-btn{
     background-color: blue;
@@ -467,3 +476,7 @@
 /* .rexpansive_section{
     z-index: 0;
 } */
+
+.grid-stack-item {
+    transition: height 1s, min-height 1s;
+}

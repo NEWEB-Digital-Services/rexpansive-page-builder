@@ -210,7 +210,7 @@ var Rexbuilder_Util = (function ($) {
 
 					_updateSectionMargins($section, targetProps["row_margin_top"], targetProps["row_margin_bottom"], targetProps["row_margin_right"], targetProps["row_margin_left"]);
 
-					_updateRow($sectionData, $gallery, targetProps['block_distance'], targetProps["row_separator_top"], targetProps["row_separator_bottom"], targetProps["row_separator_right"], targetProps["row_separator_left"], targetProps["full_height"], targetProps["layout"], targetProps["section_width"], targetProps["collapseElements"]);
+					_updateRow($section, $sectionData, $gallery, targetProps['block_distance'], targetProps["row_separator_top"], targetProps["row_separator_bottom"], targetProps["row_separator_right"], targetProps["row_separator_left"], targetProps["full_height"], targetProps["layout"], targetProps["section_width"], targetProps['collapse_grid']);
 
 					$section.css('background-color', targetProps["color_bg_section"]);
 
@@ -250,7 +250,7 @@ var Rexbuilder_Util = (function ($) {
 					for (var propName in targetProps) {
 						switch (propName) {
 							case "hide":
-								if(targetProps[propName].toString() == "true"){
+								if (targetProps[propName].toString() == "true") {
 									$elem.addClass("rex-hide-element");
 								} else {
 									$elem.removeClass("rex-hide-element");
@@ -421,7 +421,7 @@ var Rexbuilder_Util = (function ($) {
 		}
 	}
 
-	var _updateRow = function ($sectionData, $galleryElement, gutter, separatorTop, separatorBottom, separatorRight, separatorLeft, fullHeight, layout, sectionWidth, collapseElements) {
+	var _updateRow = function ($section, $sectionData, $galleryElement, gutter, separatorTop, separatorBottom, separatorRight, separatorLeft, fullHeight, layout, sectionWidth, collapseElements) {
 		console.log("data row received");
 		console.log(gutter, separatorTop, separatorBottom, separatorRight, separatorLeft, fullHeight, layout, sectionWidth, collapseElements);
 		gutter = $.isEmptyObject(gutter) ? 20 : parseInt(gutter);
@@ -432,7 +432,7 @@ var Rexbuilder_Util = (function ($) {
 		fullHeight = $.isEmptyObject(fullHeight) || fullHeight == "undefined" ? false : fullHeight;
 		layout = $.isEmptyObject(layout) ? "fixed" : layout;
 		sectionWidth = $.isEmptyObject(sectionWidth) ? "100%" : sectionWidth + "%";
-		collapseElements = $.isEmptyObject(collapseElements) ? false : collapseElements;
+		collapseElements = $.isEmptyObject(collapseElements) ? false : (collapseElements == "true" ? true : false);
 
 		var newSettings = {
 			gutter: gutter,
@@ -476,7 +476,7 @@ var Rexbuilder_Util = (function ($) {
 		$galleryElement.attr("data-full-height", fullHeight);
 		$sectionData.attr("data-section_width", sectionWidth.replace(/%/, ""));
 		$sectionData.attr("data-responsive_collapse", collapseElements);
-
+		$section.attr("data-rex-collapse-grid", collapseElements);
 	}
 
 	var _updateSectionMargins = function ($section, marginTop, marginBottom, marginRight, marginLeft) {
@@ -1301,9 +1301,18 @@ var Rexbuilder_Util = (function ($) {
 
 	var _scroll_timing = 600;
 
+	function _smoothScroll($target) {
+		$('body,html').animate(
+			{ 'scrollTop': $target.offset().top + _plugin_frontend_settings.scroll_animation_offset },
+			600
+		);
+	}
+	
+
 	// init the utilities
 	var init = function () {
 		this.firstStart = true;
+		_plugin_frontend_settings.scroll_animation_offset = 0;
 
 		if (_plugin_frontend_settings.user.logged && _plugin_frontend_settings.user.editing) {
 			this.editorMode = true;
@@ -1371,7 +1380,8 @@ var Rexbuilder_Util = (function ($) {
 		has_class: _has_class,
 		responsiveLayouts: responsiveLayouts,
 		defaultLayoutSections: defaultLayoutSections,
-		edit_dom_layout: _edit_dom_layout
+		edit_dom_layout: _edit_dom_layout,
+		smoothScroll: _smoothScroll
 	};
 
 })(jQuery);

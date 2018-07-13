@@ -67,3 +67,13 @@ defined('ABSPATH') or exit;
 <a class="element-link hovered" href="{%=link.url%}" title="{%=link.url%}">
 </a>					
 </script>
+<script type="text/x-tmpl" id="tmpl-navigator-item">
+    <li>
+        <a href="#{%=navigator.title%}" class="vertical-nav-link not-smooth-anchor-scroll" data-number="{%=navigator.number%}">
+            <span class="dot-cont">
+                <span class="dot"></span>
+            </span>
+            <p class="label white-black">{%=navigator.title%}</p>
+        </a>
+	</li>					
+</script>

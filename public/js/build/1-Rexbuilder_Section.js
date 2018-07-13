@@ -21,6 +21,8 @@ var Rexbuilder_Section = (function ($) {
     var _prepareSection = function ($section) {
         var oldSectionNumber = parseInt($section.attr("data-rexlive-section-number"));
         Rexbuilder_Util.lastSectionNumber = Rexbuilder_Util.lastSectionNumber + 1;
+
+
         var $gallery = $section.find(".grid-stack-row");
 
         $gallery.removeClass("grid-number-" + oldSectionNumber);
@@ -30,6 +32,8 @@ var Rexbuilder_Section = (function ($) {
 
         Rexbuilder_Util_Editor.removeDeletedBlocks($gallery);
 
+        // TODO 
+        // AGGIORNARE GLI ID DEI BLOCCHI COPIATI
         // removing scrollbars and text editor
         $gallery.find(".grid-stack-item").each(function () {
             Rexbuilder_Util_Editor.removeScrollBar($(this));
@@ -43,22 +47,7 @@ var Rexbuilder_Section = (function ($) {
         Rexbuilder_Section.hideSectionToolBox($section);
     }
 
-    var init = function () {
-        //Setting row number
-
-
-        Rexbuilder_Util.$rexContainer.children(".rexpansive_section").each(function () {
-            var $this = $(this);
-            Rexbuilder_Section.linkHoverSection($this);
-        });
-
-        //launching sortable
-        Rexbuilder_Util.$rexContainer.sortable({
-            handle: ".builder-move-row"
-            //            placeholder: "portlet-placeholder ui-corner-all"
-        });
-
-        // linking listeners to row setting buttons
+    var _addSectionToolboxListeners = function () {
         $(document).on('click', '.builder-delete-row', function (e) {
             $(e.currentTarget).parents('.rexpansive_section').addClass("removing_section");
         });
@@ -84,8 +73,52 @@ var Rexbuilder_Section = (function ($) {
             Rexbuilder_Util_Editor.sectionCopying = false;
         });
 
+        $(document).on("click", ".collapse-grid", function (e) {
+            console.log("collapse");
+            var $section = $(e.target).parents(".rexpansive_section");
+            var $grid = $section.find(".grid-stack-row");
+            var galleryEditorIstance = $grid.data().plugin_perfectGridGalleryEditor;
+            if (galleryEditorIstance.properties.oneColumModeActive) {
+                galleryEditorIstance.removeCollapseGrid();
+            } else {
+                galleryEditorIstance.collapseElements();
+            }
+        });
+
+        $(document).on("click", ".set-section-name", function (e) {
+            console.log("adding section name");
+            /* var $section = $(e.target).parents(".rexpansive_section");
+            var newID = Math.floor(Math.random() * 1000000);
+            Rexbuilder_Util_Editor.updateNavigatorItem($section, "");  */
+        });
+    }
+
+    var init = function () {
+        //Setting row number
+        Rexbuilder_Util.$rexContainer.children(".rexpansive_section").each(function () {
+            var $this = $(this);
+            Rexbuilder_Section.linkHoverSection($this);
+            if ($.isEmptyObject($this.attr("id"))) {
+                console.log("no id");
+                $this.attr("id", "");
+            } else {
+                console.log($this.attr("id"));
+            }
+        });
+
+        //launching sortable
+        Rexbuilder_Util.$rexContainer.sortable({
+            handle: ".builder-move-row",
+            stop: function (event, ui) {
+                Rexbuilder_Util_Editor.fixNavigatorItemOrder($(event.srcElement).parents(".rexpansive_section"));
+            }
+        });
+
+        // linking listeners to row setting buttons
+        _addSectionToolboxListeners();
 
     }
+
     return {
         init: init,
         prepareSection: _prepareSection,

@@ -285,6 +285,86 @@ var Rexbuilder_Util_Editor = (function ($) {
     window.parent.postMessage(infos, '*');
   }
 
+  var fixNavigatorItemOrder = function ($section) {
+    if (!($section.attr("id") == undefined || $section.attr("id") == "")) {
+      var id = $section.attr("id");
+      var $navigatorWrap = $(document).find("nav[class=\"vertical-nav\"");
+      var $navItem = $navigatorWrap.find('li a[href="#' + id + '"]').parent();
+      var $nextSection = $section;
+      var nextID = "";
+      do {
+        $nextSection = $nextSection.next();
+        nextID = $nextSection.attr("id");
+        if (nextID != "") {
+          break;
+        }
+      } while ($nextSection.length != 0);
+
+      if (nextID == "" || nextID == undefined) {
+        $navigatorWrap.children("ul").append($navItem[0]);
+      } else {
+        $navItem.insertBefore($navigatorWrap.find('li a[href="#' + nextID + '"]').parent());
+      }
+    }
+  }
+
+  /**
+   * Used to change name, add or remove item from navigator
+   * @param {*} $section section linked
+   * @param {*} name name of the section, if name is "" the item will be removed
+   */
+  var updateNavigatorItem = function ($section, name) {
+    console.log(name);
+    var $navigatorWrap = $(document).find("nav[class=\"vertical-nav\"");
+    if (name != "") {
+      if ($section.attr("id") == undefined || $section.attr("id") == "") {
+        var totalSectionNumber = Rexbuilder_Util.$rexContainer.children(".rexpansive_section").length
+        var emptyIDs = Rexbuilder_Util.$rexContainer.children('.rexpansive_section[id=""]').length;
+        var $nextSection = $section;
+        var nextID = "";
+
+        do {
+          $nextSection = $nextSection.next();
+          nextID = $nextSection.attr("id");
+          if (nextID != "") {
+            break;
+          }
+        } while ($nextSection.length != 0);
+
+        var n = totalSectionNumber - emptyIDs + 1;
+        tmpl.arg = "navigator";
+
+        var navItem = tmpl("tmpl-navigator-item", {
+          title: name,
+          number: n
+        });
+
+        if (nextID == "" || nextID == undefined) {
+          $navigatorWrap.children("ul").append(navItem);
+        } else {
+          $(navItem).insertBefore($navigatorWrap.find('li a[href="#' + nextID + '"]').parent());
+        }
+      } else {
+        var oldName = $section.attr("id");
+        var $item = $navigatorWrap.find('li a[href="#' + oldName + '"]');
+        $item.attr("href", "#" + name);
+        $item.find(".label").text(name);
+      }
+      $section.attr("id", name);
+      $section.attr("href", "#" + name);
+    } else {
+      if (!($section.attr("id") == undefined || $section.attr("id") == "")) {
+        var oldName = $section.attr("id");
+        var $item = $navigatorWrap.find('li a[href="#' + oldName + '"]').parent();
+        $item.remove();
+        $section.attr("id", name);
+        $section.attr("href", "#" + name);
+      }
+    }
+
+    Rex_Navigator.updateNavigator();
+  };
+
   var init = function () {
 
     this.elementIsResizing = false;
@@ -327,7 +407,9 @@ var Rexbuilder_Util_Editor = (function ($) {
     endEditingElement: endEditingElement,
     startEditingElement: startEditingElement,
     setEndOfContenteditable: setEndOfContenteditable,
-    sendParentIframeMessage: sendParentIframeMessage
+    sendParentIframeMessage: sendParentIframeMessage,
+    updateNavigatorItem: updateNavigatorItem,
+    fixNavigatorItemOrder: fixNavigatorItemOrder
   };
 
 })(jQuery);
