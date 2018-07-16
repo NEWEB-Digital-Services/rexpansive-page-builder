@@ -53,7 +53,8 @@ var Rex_Save_Listeners = (function ($) {
             console.log($layoutData);
             var $layoutsCustomDiv = $layoutData.children(".layouts-customizations");
             var $layoutsAvaiableDiv = $layoutData.children(".available-layouts");
-
+            var customCSS = $("#rexpansive-builder-style-inline-css").text();
+            saveCustomCSS(customCSS);
 
             var idPost = parseInt($('#id-post').attr('data-post-id'));
 
@@ -148,6 +149,31 @@ var Rex_Save_Listeners = (function ($) {
                 }
             });
         });
+
+        var saveCustomCSS = function (styleToSave) {
+            var idPost = parseInt($('#id-post').attr('data-post-id'));
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: _plugin_frontend_settings.rexajax.ajaxurl,
+                data: {
+                    action: 'rexlive_save_custom_css',
+                    nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+                    post_id_to_update: idPost,
+                    custom_css: styleToSave
+                },
+                success: function (response) {
+                    console.log(response);
+                    if (response.success) {
+                        console.log('custom css aggiornato');
+                    }
+                    console.log('chiama effettuata con successo');
+                },
+                error: function (response) {
+                    console.log('errore chiama ajax');
+                }
+            });
+        }
 
         var createCustomization = function (layoutName) {
             var data =
@@ -333,6 +359,7 @@ var Rex_Save_Listeners = (function ($) {
                 : parseInt($itemContent.attr('data-background_image_height'));
             id_image_bg_block = $itemData.attr('data-id_image_bg_block') === undefined ? ""
                 : $itemData.attr('data-id_image_bg_block');
+
             video_bg_id = $itemData.attr('data-video_bg_id') === undefined ? ""
                 : $itemData.attr('data-video_bg_id');
             video_mp4_url = $itemData.attr('data-video_mp4_url') === undefined ? ""
@@ -341,6 +368,7 @@ var Rex_Save_Listeners = (function ($) {
                 : $itemData.attr('data-video_bg_url');
             video_bg_url_vimeo = $itemData.attr('data-video_bg_url_vimeo') === undefined ? ""
                 : $itemData.attr('data-video_bg_url_vimeo');
+
             type_bg_block = $itemData.attr('data-type_bg_block') === undefined ? "full"
                 : $itemData.attr('data-type_bg_block');
             image_size = $itemData.attr('data-image_size') === undefined ? "full"
@@ -564,8 +592,6 @@ var Rex_Save_Listeners = (function ($) {
             margin = $sectionData.attr('data-margin') === undefined ? ""
                 : $sectionData.attr('data-margin');
 
-            dimension = $sectionData.attr('data-dimension') === undefined ? "full"
-                : $sectionData.attr('data-dimension');
             image_bg_section = $sectionData.attr('data-image_bg_section') === undefined ? ""
                 : $sectionData.attr('data-image_bg_section');
             image_width = $section.attr('data-background_image_width') === undefined ? ""
@@ -593,9 +619,8 @@ var Rex_Save_Listeners = (function ($) {
             custom_classes = $sectionData.attr('data-custom_classes') === undefined ? ""
                 : $sectionData.attr('data-custom_classes');
 
-            section_width = $sectionData.attr('data-section_width') === undefined ? ""
-                : $sectionData.attr('data-section_width');
-            section_width = section_width == '%' ? "" : section_width;
+            section_width = $gridGallery.parent().css("max-width");
+            dimension = section_width === "100%" || section_width == "none" ? "full" : "boxed";
 
             block_distance = $gridGallery.attr('data-separator') === undefined ? ""
                 : parseInt($gridGallery.attr('data-separator'));
@@ -626,7 +651,6 @@ var Rex_Save_Listeners = (function ($) {
                     + '" type="' + type
                     + '" color_bg_section="' + color_bg_section
                     + '" dimension="' + dimension
-                    + '" margin="' + margin
                     + '" image_bg_section="' + image_bg_section
                     + '" id_image_bg_section="' + id_image_bg_section
                     + '" video_bg_url_section="' + video_bg_url_section
@@ -642,6 +666,7 @@ var Rex_Save_Listeners = (function ($) {
                     + '" row_separator_bottom="' + row_separator_bottom
                     + '" row_separator_right="' + row_separator_right
                     + '" row_separator_left="' + row_separator_left
+                    + '" margin="' + margin
                     + '" row_margin_top="' + row_margin_top
                     + '" row_margin_bottom="' + row_margin_bottom
                     + '" row_margin_right="' + row_margin_right

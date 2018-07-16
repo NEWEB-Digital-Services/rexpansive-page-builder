@@ -125,12 +125,10 @@ class Rexbuilder_Public
             wp_enqueue_style('medium-editor-insert-frontend-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/medium-editor-insert-plugin-frontend.min.css', array(), $this->version, 'all');
             //TODO ci penseremo dopo
             //wp_enqueue_style( 'medium-editor-tables-style.css', REXPANSIVE_BUILDER_URL  . $cartella. 'css/medium-editor-tables.min.css', array(), $this->version, 'all' );
-            //che è sta roba?
+            //che è sta roba? editor di testo?
             wp_enqueue_style('input-spinner', REXPANSIVE_BUILDER_URL . $cartella . 'css/input-spinner.css', array(), $this->version, 'all');
 
-            //wp_enqueue_style( 'rexpansive-builderLive-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/builderL.css', array(), $this->version, 'all' );
-
-            wp_enqueue_style('public-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/public.css', array(), $this->version, 'all');
+            wp_enqueue_style('rexpansive-builder-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/public.css', array(), $this->version, 'all');
 
         }
     }
@@ -191,6 +189,9 @@ class Rexbuilder_Public
 
             wp_enqueue_script('YTPlayer', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/jquery.mb.YTPlayer.min.js', array('jquery'), $this->version, true);
 
+            wp_enqueue_script( 'ace-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/ace.js', array('jquery'),  $this->version, true );
+			wp_enqueue_script( 'ace-mode-css-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/mode-css.js', array('jquery'),  $this->version, true );
+
             wp_enqueue_script('storeVariables', REXPANSIVE_BUILDER_URL . $cartella . 'js/store.legacy.min.js', array('jquery'), $this->version, true);
 
             wp_enqueue_script('1-RexUtil', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Util.js', array('jquery'), $this->version, true);
@@ -232,15 +233,17 @@ class Rexbuilder_Public
 
             wp_enqueue_script('2-jqueryEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/2-jquery.perfectGridGalleryEditor.js', array('jquery'), $this->version, true);
 
-            wp_enqueue_script('4-modals', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/4-modals.js', array('jquery'), $this->version, true);
-
+            
             wp_enqueue_script('3-velocity', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/3-velocity.min.js', array('jquery'), $this->version, true);
             wp_enqueue_script('3-velocityui', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/3-velocity.ui.min.js', array('jquery'), $this->version, true);
             wp_enqueue_script('4-jqueryScrollify', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/4-jquery.rexScrollify.js', array('jquery'), $this->version, true);
-
+            
             wp_enqueue_script('section-js', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Section.js', array('jquery'), $this->version, true);
-
+            
             wp_enqueue_script('rexbuilder', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/rexbuilder-public.js', array('jquery'), $this->version, true);
+            
+            wp_enqueue_script('4-modals', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/4-modals.js', array('jquery'), $this->version, true);
+            
             wp_localize_script('rexbuilder', '_plugin_frontend_settings', apply_filters('rexbuilder_js_settings', array(
                 'animations' => apply_filters('rexbuilder_animation_enabled', $this->plugin_options['animation']),
                 'textFill' => array(
@@ -344,6 +347,32 @@ endif;
 } */
     }
 
+    public function rexlive_save_custom_css()
+    {
+        $nonce = $_POST['nonce_param'];
+
+        $response = array(
+            'error' => false,
+            'msg' => '',
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+        $response['error'] = false;
+
+        $post_id_to_update = intval($_POST['post_id_to_update']);
+
+        $custom_css = $_POST['custom_css'];
+
+        update_post_meta($post_id_to_update, '_rexbuilder_custom_css', $custom_css);
+
+        wp_send_json_success($response);
+    }
+
     public function rexlive_save_avaiable_layouts()
     {
         $nonce = $_POST['nonce_param'];
@@ -393,7 +422,7 @@ endif;
 
         $layout = $_POST['sections'];
         $layout_name = $_POST['layout_name'];
-        
+
         update_post_meta($post_id_to_update, '_rex_customization_' . $layout_name, $layout);
 
         $response['id_recived'] = $post_id_to_update;
@@ -406,7 +435,8 @@ endif;
      *
      * @return JSON
      */
-    public function rexlive_save_custom_layouts() {
+    public function rexlive_save_custom_layouts()
+    {
         $nonce = $_POST['nonce_param'];
 
         $response = array(
@@ -420,7 +450,7 @@ endif;
             wp_send_json_error($response);
         endif;
 
-        if( !isset( $_POST['custom_layouts'] ) ) {
+        if (!isset($_POST['custom_layouts'])) {
             $response['error'] = true;
             $response['msg'] = 'Data error!';
             wp_send_json_error($response);
@@ -499,7 +529,7 @@ endif;
 
         $layoutsAvaiable = get_post_meta($post->ID, '_rex_responsive_layouts', true);
 
-        if ($layoutsAvaiable == NULL) {
+        if ($layoutsAvaiable == null) {
             $layoutsAvaiable = array(array("default", "", ""));
         }
 
@@ -523,6 +553,23 @@ echo json_encode($layoutsAvaiable);
         ?>
             </div>
         </div>
+        <?php
+if ($editor=="true") {
+            ?>
+        <button id="rex-open-ace-css-editor" class="btn-floating tooltipped" data-position="bottom" data-tooltip="<?php _e('CSS Editor', $this->plugin_name);?>">
+            <i class="material-icons">&#xE314;</i><span>CSS</span><i class="material-icons">&#xE315;</i>
+        </button>
+        <textarea style="display:none;" name="_rexbuilder_custom_css" id="_rexbuilder_custom_css">
+<?php
+$meta = get_post_meta($post->ID, '_rexbuilder_custom_css', true);
+            if ('' !== ($meta)) {
+                echo htmlspecialchars($meta);
+            }
+            ?>
+        </textarea>
+            <?php
+}
+        ?>
         <div class="rex-container" data-rex-layout-selected="">
 		<?php
 echo do_shortcode($defaultPage);
@@ -580,7 +627,7 @@ echo do_shortcode($defaultPage);
     public function print_vertical_dots()
     {
         global $post;
-        
+
         if ($this->builder_active_on_this_post_type()) {
             $nav = get_post_meta(get_the_ID(), '_rex_navigation_type', true);
 
@@ -599,7 +646,7 @@ echo do_shortcode($defaultPage);
                 endforeach;
 
                 var_dump('peter');
-                var_dump ($titles);
+                var_dump($titles);
 
                 if (count($titles) > 0) {
                     include Rexbuilder_Utilities::get_plugin_templates_path('rexbuilder-' . $nav . '-template.php');

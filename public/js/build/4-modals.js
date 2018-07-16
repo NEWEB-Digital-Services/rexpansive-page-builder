@@ -420,7 +420,47 @@
 	 * function(event){ //c -> click del mouse console.log("ciao");
 	 * event.preventDefault(); uploadBlockBackground($(this)); });
 	 */
+		/* ------------- CSS page editor --------------- */
+		var ace_css_editor_modal_properties = {
+			$open_button: $('#rex-open-ace-css-editor'),
+			$modal: $('#rex-css-editor'),
+			$modal_wrap: null,
+			$save_button: $('#css-editor-save'),
+			$cancel_button: $('#css-editor-cancel'),
+		};
 
+		ace_css_editor_modal_properties.$modal_wrap = ace_css_editor_modal_properties.$modal.parent('.rex-modal-wrap');
+		var $custom_css_content = $('textarea[id=_rexbuilder_custom_css]');
+		var $styleElement = $("#rexpansive-builder-style-inline-css");
+		var editor = ace.edit('rex-css-ace-editor');
+		
+		//var CSSMode = ace.require("ace/mode/css").Mode;
+		//editor.session.setMode(new CSSMode());
+		editor.setTheme("ace/theme/monokai");
+		editor.getSession().setMode("ace/mode/css");
+
+		ace_css_editor_modal_properties.$open_button.on('click', function (e) {
+			e.preventDefault();
+			if ($custom_css_content.text() !== '') {
+				editor.setValue($custom_css_content.text());
+				editor.clearSelection();
+			}
+			OpenModal(ace_css_editor_modal_properties.$modal_wrap);
+		});
+
+		ace_css_editor_modal_properties.$save_button.on('click', function (e) {
+			e.preventDefault();
+			$custom_css_content.text(editor.getValue());
+			$styleElement.text($custom_css_content.text());
+			CloseModal(ace_css_editor_modal_properties.$modal_wrap);
+		});
+
+		ace_css_editor_modal_properties.$cancel_button.on('click', function (e) {
+			e.preventDefault();
+			CloseModal(ace_css_editor_modal_properties.$modal_wrap);
+		});
+
+		
 		// ----------------------------------
 		// ------------------------------------------
 		var file_frame; // variable for the wp.media file_frame

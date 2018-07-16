@@ -149,7 +149,6 @@
             console.log(this.getElementTopBottom()); 
             */
             this.properties.firstStartGrid = false;
-            console.log(this.properties.gridstackInstance);
         },
 
         updateGridSettings: function (newSettings) {
@@ -182,7 +181,7 @@
             this.properties.layoutChanged = false;
             this.properties.firstStartGrid = false;
 
-            if(newSettings.collapseElements){
+            if (newSettings.collapseElements) {
                 this.collapseElements();
             } else {
                 this.removeCollapseGrid();
@@ -238,8 +237,8 @@
         },
 
         /**
-		 * Funzione chiamata per il salvataggio della griglia
-		 */
+     * Funzione chiamata per il salvataggio della griglia
+     */
         saveGrid: function () {
             var gallery = this;
             var singleHeight = gallery.settings.galleryLayout == 'masonry' ? gallery.properties.singleHeight / gallery.properties.singleWidth : 1;
@@ -564,7 +563,7 @@
 
         /**
          * Function called for destroying gridstack-istance
-		 */
+     */
         destroyGridstack: function () {
             console.log("destroy gridstack");
 
@@ -1123,7 +1122,7 @@
 
         /**
          * Receives the element to prepare, not jquery object
-		 */
+     */
         _prepareElement: function (elem) {
             var gallery = this;
             var $elem = $(elem);
@@ -1386,7 +1385,7 @@
                 }
                 Rexbuilder_Util_Editor.elementIsResizing = false;
                 Rexbuilder_Util_Editor.elementIsDragging = false;
-
+        
                 Rexbuilder_Util_Editor.editingElement = true;
                 Rexbuilder_Util_Editor.editedElement = $elem;
                 Rexbuilder_Util_Editor.editedTextWrap = $textWrap;
@@ -1531,9 +1530,9 @@
                         gallery.fixElementTextSize(block, gallery.properties.resizeHandle, null);
                     } */
                     /*
-					 * if (gallery.properties.resizeHandle == 'w' ||
-					 * gallery.properties.resizeHandle == 'sw') { ; }
-					 */
+           * if (gallery.properties.resizeHandle == 'w' ||
+           * gallery.properties.resizeHandle == 'sw') { ; }
+           */
                 }
             }).on('gsresizestop', function (event, elem) {
                 if (Rexbuilder_Util_Editor.elementIsResizing) {
@@ -1723,15 +1722,15 @@
             var currentTextSelection;
 
             /**
-			 * Gets the color of the current text selection
-			 */
+       * Gets the color of the current text selection
+       */
             function getCurrentTextColor() {
                 return $(editor.getSelectedParentElement()).css('color');
             }
 
             /**
-			 * Custom `color picker` extension
-			 */
+       * Custom `color picker` extension
+       */
             var ColorPickerExtension = MediumEditor.extensions.button.extend({
                 name: "colorPicker",
                 action: "applyForeColor",
@@ -1830,9 +1829,9 @@
                 },
                 placeholder: {
                     /*
-					 * This example includes the default options for
-					 * placeholder, if nothing is passed this is what it used
-					 */
+           * This example includes the default options for
+           * placeholder, if nothing is passed this is what it used
+           */
                     text: "Insert Text Here",
                     hideOnClick: true
                 }
@@ -1977,40 +1976,40 @@
                 }
             }
             /*
-			 * if
-			 * (this.$element.find(this.settings.itemSelector).hasClass('wrapper-expand-effect')) {
-			 * this.$element.find(this.settings.itemSelector).css('padding-bottom',
-			 * this.properties.halfSeparator);
-			 * this.$element.find(this.settings.itemSelector).css('padding-left',
-			 * this.properties.halfSeparator);
-			 * this.$element.find(this.settings.itemSelector).css('padding-right',
-			 * this.properties.halfSeparator); } else {
-			 * 
-			 * if (this.properties.paddingTopBottom) {
-			 * this.$element.find(this.settings.itemSelector).css('padding-top',
-			 * this.properties.halfSeparator);
-			 * this.$element.find(this.settings.itemSelector).css('padding-bottom',
-			 * this.properties.halfSeparator); } else {
-			 * this.$element.find(this.settings.itemSelector).css('padding',
-			 * this.properties.halfSeparator); } } } else if
-			 * (this._viewport().width < 768 &&
-			 * !this.properties.setMobilePadding &&
-			 * !this._check_parent_class("rex-block-grid")) {
-			 * this.properties.setMobilePadding = true;
-			 * this.properties.setDesktopPadding = false;
-			 * 
-			 * if ('false' == this.settings.mobilePadding) {
-			 * this.$element.find(this.settings.itemSelector).css('padding-top',
-			 * this.properties.halfSeparator);
-			 * this.$element.find(this.settings.itemSelector).css('padding-bottom',
-			 * this.properties.halfSeparator);
-			 * this.$element.find(this.settings.itemSelector).css('padding-left',
-			 * 0);
-			 * this.$element.find(this.settings.itemSelector).css('padding-right',
-			 * 0); } else if ('true' == this.settings.mobilePadding) {
-			 * this.$element.find(this.settings.itemSelector).css('padding',
-			 * this.properties.halfSeparator); } }
-			 */
+       * if
+       * (this.$element.find(this.settings.itemSelector).hasClass('wrapper-expand-effect')) {
+       * this.$element.find(this.settings.itemSelector).css('padding-bottom',
+       * this.properties.halfSeparator);
+       * this.$element.find(this.settings.itemSelector).css('padding-left',
+       * this.properties.halfSeparator);
+       * this.$element.find(this.settings.itemSelector).css('padding-right',
+       * this.properties.halfSeparator); } else {
+       * 
+       * if (this.properties.paddingTopBottom) {
+       * this.$element.find(this.settings.itemSelector).css('padding-top',
+       * this.properties.halfSeparator);
+       * this.$element.find(this.settings.itemSelector).css('padding-bottom',
+       * this.properties.halfSeparator); } else {
+       * this.$element.find(this.settings.itemSelector).css('padding',
+       * this.properties.halfSeparator); } } } else if
+       * (this._viewport().width < 768 &&
+       * !this.properties.setMobilePadding &&
+       * !this._check_parent_class("rex-block-grid")) {
+       * this.properties.setMobilePadding = true;
+       * this.properties.setDesktopPadding = false;
+       * 
+       * if ('false' == this.settings.mobilePadding) {
+       * this.$element.find(this.settings.itemSelector).css('padding-top',
+       * this.properties.halfSeparator);
+       * this.$element.find(this.settings.itemSelector).css('padding-bottom',
+       * this.properties.halfSeparator);
+       * this.$element.find(this.settings.itemSelector).css('padding-left',
+       * 0);
+       * this.$element.find(this.settings.itemSelector).css('padding-right',
+       * 0); } else if ('true' == this.settings.mobilePadding) {
+       * this.$element.find(this.settings.itemSelector).css('padding',
+       * this.properties.halfSeparator); } }
+       */
         },
 
         updateElementHeight: function ($elem) {
@@ -2141,18 +2140,18 @@
             this._saveBlocksPosition();
             this.fixBlockDomOrder();
             this.$element.addClass("grid-stack-one-column-mode");
-            this.$section.attr("data-rex-collapse-grid", true); 
+            this.$section.attr("data-rex-collapse-grid", true);
             this.properties.oneColumModeActive = true;
             this.fixCollapsedHeights();
         },
-        
+
         fixBlockDomOrder: function () {
             var orderedElements = this.getElementTopBottom();
             var rexIDS = [];
             var nodes = [];
             var elem;
             var i, j;
-            
+
             for (i = 0; i < orderedElements.length; i++) {
                 var block = {
                     rexID: $(orderedElements[i]).attr("data-rexbuilder-block-id"),
@@ -2160,7 +2159,7 @@
                 }
                 rexIDS.push(block);
             }
-            
+
             this.$element.children(".grid-stack-item").each(function () {
                 var elemObj = {
                     rexID: $(this).attr("data-rexbuilder-block-id"),
@@ -2168,7 +2167,7 @@
                 }
                 nodes.push(elemObj);
             });
-            
+
             for (i = 0; i < rexIDS.length; i++) {
                 for (j = 0; j < nodes.length; j++) {
                     if (nodes[j].rexID == rexIDS[i].rexID) {
@@ -2180,7 +2179,7 @@
                 nodes.splice(j, 1);
             }
         },
-        
+
         fixCollapsedHeights: function () {
             var $elem;
             var h;
@@ -2191,25 +2190,25 @@
                 $elem.css("height", h + "px")
             });
         },
-        
+
         /**
          * Removes One Column mode and restores default layout of elements
          */
         removeCollapseGrid: function () {
             console.log("remove Collapse");
-            
+
             if (this.properties.oneColumModeActive) {
                 var gallery = this;
                 var $elem;
                 var $elemData;
                 var gridstack = this.properties.gridstackInstance;
                 var elDim;
-                
+
                 //removing fixed height
                 this.$element.children(".grid-stack-item").each(function () {
                     $(this).css("height", "");
                 });
-                
+
                 gridstack.batchUpdate();
                 this.$element.children(".grid-stack-item").each(function () {
                     $elem = $(this);
@@ -2225,11 +2224,11 @@
                     gallery.updateElementDataProperties($elemData);
                 });
             }
-            this.$section.attr("data-rex-collapse-grid", false); 
+            this.$section.attr("data-rex-collapse-grid", false);
             this.$element.removeClass("grid-stack-one-column-mode");
             this.properties.oneColumModeActive = false;
         },
-        
+
         // Calculate the viewport of the window
         _viewport: function () {
             var e = window, a = 'inner';

@@ -263,5 +263,5 @@ class Rexbuilder_Section
 			</div>
 		</div>
 		<?php
-}
+    }
 }
