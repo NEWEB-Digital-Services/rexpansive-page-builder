@@ -128,6 +128,7 @@ class Rexbuilder_Public
             //che è sta roba? editor di testo?
             wp_enqueue_style('input-spinner', REXPANSIVE_BUILDER_URL . $cartella . 'css/input-spinner.css', array(), $this->version, 'all');
 
+            wp_enqueue_style('rexpansive-admin-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/admin.css', array(), $this->version, 'all');
             wp_enqueue_style('rexpansive-builder-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/public.css', array(), $this->version, 'all');
 
         }
@@ -196,6 +197,7 @@ class Rexbuilder_Public
 
             wp_enqueue_script('1-RexUtil', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Util.js', array('jquery'), $this->version, true);
             wp_enqueue_script('1-RexUtilEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Util_Editor.js', array('jquery'), $this->version, true);
+            wp_enqueue_script('1-RexDomUtil', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Dom_Util.js', array('jquery'), $this->version, true);
             wp_enqueue_script('2-RexSaveListeners', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/2-Rex_Save_Listeners.js', array('jquery'), $this->version, true);
             wp_enqueue_script('3-Navigator', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/3-Navigator.js', array('jquery'), $this->version, true);
             wp_enqueue_script('5-flickity', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/5-flickity.pkgd.min.js', array('jquery'), $this->version, true);
@@ -346,7 +348,17 @@ endif;
 endif;
 } */
     }
-
+    
+    /**
+	 * Including the new sprites
+	 *
+	 * @return void
+	 * @since 1.1.3
+	 */
+	public function include_sprites() {
+		?><div style="display:none"><?php include_once( REXPANSIVE_BUILDER_PATH .  'admin/sprites/symbol/svg/sprite.symbol.svg' ); ?></div><?php
+    }
+    
     public function rexlive_save_custom_css()
     {
         $nonce = $_POST['nonce_param'];

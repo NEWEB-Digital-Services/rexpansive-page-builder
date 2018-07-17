@@ -242,7 +242,7 @@ var Rex_Save_Listeners = (function ($) {
 
             var $gridGallery = $section.find('.grid-stack-row');
             var galleryIstance = $gridGallery.data().plugin_perfectGridGalleryEditor;
-            var elementsOrdered = galleryIstance.getElementTopBottom();
+            var elementsOrdered = galleryIstance.getElementsTopBottom();
 
             var saveAllBloks = checkEditsLayoutGrid($gridGallery);
 
@@ -460,85 +460,44 @@ var Rex_Save_Listeners = (function ($) {
 
                 var props = {};
 
-                if (layoutName == "default") {
-                    props["hide"] = false;
-                    props["rexbuilder_block_id"] = rex_id;
-                    props["type"] = type;
-                    props["size_x"] = size_x;
-                    props["size_y"] = size_y;
-                    props["row"] = row;
-                    props["col"] = col;
-                    props["gs_start_h"] = gs_start_h;
-                    props["gs_width"] = gs_width;
-                    props["gs_height"] = gs_height;
-                    props["gs_y"] = gs_y;
-                    props["gs_x"] = gs_x;
-                    props["color_bg_block"] = color_bg_block;
-                    props["image_bg_url"] = image_bg_block;
-                    props["image_width"] = image_width;
-                    props["image_height"] = image_height;
-                    props["id_image_bg"] = id_image_bg_block;
-                    props["video_bg_id"] = video_bg_id;
-                    props["video_mp4_url"] = video_mp4_url;
-                    props["video_bg_url_youtube"] = video_bg_url;
-                    props["video_bg_url_vimeo"] = video_bg_url_vimeo;
-                    props["type_bg_image"] = type_bg_block;
-                    props["image_size"] = image_size;
-                    props["photoswipe"] = photoswipe;
-                    props["block_custom_class"] = block_custom_class;
-                    props["block_padding"] = block_padding;
-                    props["overlay_block_color"] = overlay_block_color;
-                    props["linkurl"] = linkurl;
-                    props["zak_background"] = zak_background;
-                    props["zak_side"] = zak_side;
-                    props["zak_title"] = zak_title;
-                    props["zak_icon"] = zak_icon;
-                    props["zak_foreground"] = zak_foreground;
-                    props["block_animation"] = block_animation;
-                    props["video_has_audio"] = video_has_audio;
-                    props["block_has_scrollbar"] = block_has_scrollbar;
-                    props["block_live_edited"] = block_live_edited;
-                    props["overwritten"] = false;
-                } else {
-                    props["hide"] = false;
-                    props["rexbuilder_block_id"] = rex_id;
-                    props["type"] = type;
-                    props["size_x"] = size_x;
-                    props["size_y"] = size_y;
-                    props["row"] = row;
-                    props["col"] = col;
-                    props["gs_start_h"] = gs_start_h;
-                    props["gs_width"] = gs_width;
-                    props["gs_height"] = gs_height;
-                    props["gs_y"] = gs_y;
-                    props["gs_x"] = gs_x;
-                    props["color_bg_block"] = color_bg_block;
-                    props["image_bg_url"] = image_bg_block;
-                    props["image_width"] = image_width;
-                    props["image_height"] = image_height;
-                    props["id_image_bg"] = id_image_bg_block;
-                    props["video_bg_id"] = video_bg_id;
-                    props["video_mp4_url"] = video_mp4_url;
-                    props["video_bg_url_youtube"] = video_bg_url;
-                    props["video_bg_url_vimeo"] = video_bg_url_vimeo;
-                    props["type_bg_image"] = type_bg_block;
-                    props["image_size"] = image_size;
-                    props["photoswipe"] = photoswipe;
-                    props["linkurl"] = linkurl;
-                    props["block_custom_class"] = block_custom_class;
-                    props["block_padding"] = block_padding;
-                    props["overlay_block_color"] = overlay_block_color;
-                    props["zak_background"] = zak_background;
-                    props["zak_side"] = zak_side;
-                    props["zak_title"] = zak_title;
-                    props["zak_icon"] = zak_icon;
-                    props["zak_foreground"] = zak_foreground;
-                    props["block_animation"] = block_animation;
-                    props["video_has_audio"] = video_has_audio;
-                    props["block_has_scrollbar"] = block_has_scrollbar;
-                    props["block_live_edited"] = block_live_edited;
-                    props["overwritten"] = true;
-                }
+                props["hide"] = false;
+                props["rexbuilder_block_id"] = rex_id;
+                props["type"] = type;
+                props["size_x"] = size_x;
+                props["size_y"] = size_y;
+                props["row"] = row;
+                props["col"] = col;
+                props["gs_start_h"] = gs_start_h;
+                props["gs_width"] = gs_width;
+                props["gs_height"] = gs_height;
+                props["gs_y"] = gs_y;
+                props["gs_x"] = gs_x;
+                props["color_bg_block"] = color_bg_block;
+                props["image_bg_url"] = image_bg_block;
+                props["image_width"] = image_width;
+                props["image_height"] = image_height;
+                props["id_image_bg"] = id_image_bg_block;
+                props["video_bg_id"] = video_bg_id;
+                props["video_mp4_url"] = video_mp4_url;
+                props["video_bg_url_youtube"] = video_bg_url;
+                props["video_bg_url_vimeo"] = video_bg_url_vimeo;
+                props["type_bg_image"] = type_bg_block;
+                props["image_size"] = image_size;
+                props["photoswipe"] = photoswipe;
+                props["block_custom_class"] = block_custom_class;
+                props["block_padding"] = block_padding;
+                props["overlay_block_color"] = overlay_block_color;
+                props["linkurl"] = linkurl;
+                props["zak_background"] = zak_background;
+                props["zak_side"] = zak_side;
+                props["zak_title"] = zak_title;
+                props["zak_icon"] = zak_icon;
+                props["zak_foreground"] = zak_foreground;
+                props["block_animation"] = block_animation;
+                props["video_has_audio"] = video_has_audio;
+                props["block_has_scrollbar"] = block_has_scrollbar;
+                props["block_live_edited"] = block_live_edited;
+                props["overwritten"] = false;
 
                 return props;
             }
@@ -633,14 +592,10 @@ var Rex_Save_Listeners = (function ($) {
             row_separator_left = $gridGallery.attr('data-row-separator-left') === undefined ? ""
                 : parseInt($gridGallery.attr('data-row-separator-left'));
 
-            row_margin_top = $sectionData.attr('data-row_margin_top') === undefined ? ""
-                : $sectionData.attr('data-row_margin_top');
-            row_margin_bottom = $sectionData.attr('data-row_margin_bottom') === undefined ? ""
-                : $sectionData.attr('data-row_margin_bottom');
-            row_margin_right = $sectionData.attr('data-row_margin_right') === undefined ? ""
-                : $sectionData.attr('data-row_margin_right');
-            row_margin_left = $sectionData.attr('data-row_margin_left') === undefined ? ""
-                : $sectionData.attr('data-row_margin_left');
+            row_margin_top = $section.css("margin-top").replace("px", "");
+            row_margin_bottom = $section.css("margin-bottom").replace("px", "");
+            row_margin_right = $section.css("margin-right").replace("px", "");
+            row_margin_left = $section.css("margin-left").replace("px", "");
 
             rexlive_section_id = $section.attr("data-rexlive-section-id");
             collapse_grid = $section.attr("data-rex-collapse-grid");
@@ -676,7 +631,7 @@ var Rex_Save_Listeners = (function ($) {
 
                 galleryIstance.updateAllElementsProperties();
 
-                var elementsOrdered = galleryIstance.getElementTopBottom();
+                var elementsOrdered = galleryIstance.getElementsTopBottom();
 
                 $(elementsOrdered).each(function () {
                     var $elem = $(this);
@@ -694,69 +649,37 @@ var Rex_Save_Listeners = (function ($) {
 
                 var props = {};
 
-                if (layoutName == "default") {
-                    props["collapse_grid"] = false;
-                    props["hide"] = false;
-                    props["section_name"] = section_name;
-                    props["type"] = type;
-                    props["color_bg_section"] = color_bg_section;
-                    props["dimension"] = dimension;
-                    props["margin"] = margin;
-                    props["image_bg_section"] = image_bg_section;
-                    props["image_width"] = image_width;
-                    props["image_height"] = image_height;
-                    props["id_image_bg_section"] = id_image_bg_section;
-                    props["video_bg_id"] = video_bg_id_section;
-                    props["video_mp4_url"] = video_mp4_url;
-                    props["video_bg_url_section"] = video_bg_url_section;
-                    props["video_bg_url_vimeo_section"] = video_bg_url_vimeo_section;
-                    props["full_height"] = full_height;
-                    props["block_distance"] = block_distance;
-                    props["layout"] = layout;
-                    props["responsive_background"] = responsive_background;
-                    props["custom_classes"] = custom_classes;
-                    props["section_width"] = section_width;
-                    props["row_separator_top"] = row_separator_top;
-                    props["row_separator_bottom"] = row_separator_bottom;
-                    props["row_separator_right"] = row_separator_right;
-                    props["row_separator_left"] = row_separator_left;
-                    props["row_margin_top"] = row_margin_top;
-                    props["row_margin_bottom"] = row_margin_bottom;
-                    props["row_margin_right"] = row_margin_right;
-                    props["row_margin_left"] = row_margin_left;
-                    props["overwritten"] = false;
-                } else {
-                    props["collapse_grid"] = collapse_grid;
-                    props["hide"] = false;
-                    props["section_name"] = section_name;
-                    props["type"] = type;
-                    props["color_bg_section"] = color_bg_section;
-                    props["dimension"] = dimension;
-                    props["margin"] = margin;
-                    props["image_bg_section"] = image_bg_section;
-                    props["image_width"] = image_width;
-                    props["image_height"] = image_height;
-                    props["id_image_bg_section"] = id_image_bg_section;
-                    props["video_bg_id"] = video_bg_id_section;
-                    props["video_mp4_url"] = video_mp4_url;
-                    props["video_bg_url_section"] = video_bg_url_section;
-                    props["video_bg_url_vimeo_section"] = video_bg_url_vimeo_section;
-                    props["full_height"] = full_height;
-                    props["block_distance"] = block_distance;
-                    props["layout"] = layout;
-                    props["responsive_background"] = responsive_background;
-                    props["custom_classes"] = custom_classes;
-                    props["section_width"] = section_width;
-                    props["row_separator_top"] = row_separator_top;
-                    props["row_separator_bottom"] = row_separator_bottom;
-                    props["row_separator_right"] = row_separator_right;
-                    props["row_separator_left"] = row_separator_left;
-                    props["row_margin_top"] = row_margin_top;
-                    props["row_margin_bottom"] = row_margin_bottom;
-                    props["row_margin_right"] = row_margin_right;
-                    props["row_margin_left"] = row_margin_left;
-                    props["overwritten"] = true;
-                }
+                props["collapse_grid"] = false;
+                props["hide"] = false;
+                props["section_name"] = section_name;
+                props["type"] = type;
+                props["color_bg_section"] = color_bg_section;
+                props["dimension"] = dimension;
+                props["margin"] = margin;
+                props["image_bg_section"] = image_bg_section;
+                props["image_width"] = image_width;
+                props["image_height"] = image_height;
+                props["id_image_bg_section"] = id_image_bg_section;
+                props["video_bg_id"] = video_bg_id_section;
+                props["video_mp4_url"] = video_mp4_url;
+                props["video_bg_url_section"] = video_bg_url_section;
+                props["video_bg_url_vimeo_section"] = video_bg_url_vimeo_section;
+                props["full_height"] = full_height;
+                props["block_distance"] = block_distance;
+                props["layout"] = layout;
+                props["responsive_background"] = responsive_background;
+                props["custom_classes"] = custom_classes;
+                props["section_width"] = section_width;
+                props["row_separator_top"] = row_separator_top;
+                props["row_separator_bottom"] = row_separator_bottom;
+                props["row_separator_right"] = row_separator_right;
+                props["row_separator_left"] = row_separator_left;
+                props["row_margin_top"] = row_margin_top;
+                props["row_margin_bottom"] = row_margin_bottom;
+                props["row_margin_right"] = row_margin_right;
+                props["row_margin_left"] = row_margin_left;
+                props["overwritten"] = false;
+
                 return props;
             }
         }

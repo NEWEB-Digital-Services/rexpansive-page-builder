@@ -17,13 +17,7 @@
 			$section_boxed: $('#section-boxed-modal'),
 			$section_boxed_width: $('.section-set-boxed-width'),
 			$section_boxed_width_type: $('.section-width-type'),
-			$has_overlay_small: $('#section-has-overlay-small'),
-			$has_overlay_medium: $('#section-has-overlay-medium'),
-			$has_overlay_large: $('#section-has-overlay-large'),
-			$color_value: $('.backresponsive-color-section'),
-			$color_palette_buttons: $('#bg-overlay-color-palette .bg-palette-selector'),
-			$color_preview_icon: $('#overlay-preview-icon'),
-			// $color_preview: $('#overlay-palette-preview'),
+
 			// FULL height configuration
 			$is_full: $('#section-is-full'),
 			// HOLD GRID config
@@ -31,14 +25,20 @@
 			// ID and navigator configuration
 			$section_id: $('#sectionid-container'),
 			$save_button: $('#backresponsive-set-save'),
-
+	  
 			$block_gutter: $('.section-set-block-gutter'),
 			// Row separator
 			$row_separator_top: $('#row-separator-top'),
 			$row_separator_right: $('#row-separator-right'),
 			$row_separator_bottom: $('#row-separator-bottom'),
 			$row_separator_left: $('#row-separator-left'),
-
+	  
+			// Row margin
+			$row_margin_top: $('#row-margin-top'),
+			$row_margin_right: $('#row-margin-right'),
+			$row_margin_bottom: $('#row-margin-bottom'),
+			$row_margin_left: $('#row-margin-left'),
+	  
 			// Row zoom
 			$section_active_photoswipe: $('#section-active-photoswipe'),
 			section_photoswipe_changed: false,
@@ -136,8 +136,10 @@
 				'#backresponsive-set-save',
 				function (e) {
 					e.preventDefault();
-					var gridID = $(this).attr('data-section_id');
-					var gallery = $('.grid-number-' + gridID);
+					console.log(e);
+					var sectionID = $(this).attr('data-section_id');
+					var $section = Rexbuilder_Util.$rexContainer.children('.rexpansive_section[data-rexlive-section-id="' + sectionID + '"]');
+					var gallery = $section.find(".grid-stack-row");
 					// console.log(this);
 					var layout = section_config_modal_properties.$section_layout_type.filter(':checked').val();
 					/*
@@ -158,9 +160,9 @@
 						layout = section_config_modal_properties.$section_layout_type.filter(':checked').val();
 						*/
 					//var $row = $('.builder-row[data-count=' + 	section_id + ']'); $row.attr('data-layout', layout);
-					gallery.perfectGridGalleryEditor('updateSection', {
+					gallery.perfectGridGalleryEditor('updateGridSettings', {
 						'layout': layout
-					});
+					}, "sectionEditing");
 					setBuilderTimeStamp();
 
 					CloseModal($('#modal-background-responsive-set').parent('.rex-modal-wrap'));
@@ -308,7 +310,6 @@
 		 * $('#modal-background-responsive-set').parent('.rex-modal-wrap') );
 		 * });
 		 */
-		// $('.builder-section-config').hover();
 		$(document).on(
 			'click',
 			'#section-fixed',
@@ -433,7 +434,7 @@
 		var $custom_css_content = $('textarea[id=_rexbuilder_custom_css]');
 		var $styleElement = $("#rexpansive-builder-style-inline-css");
 		var editor = ace.edit('rex-css-ace-editor');
-		
+
 		//var CSSMode = ace.require("ace/mode/css").Mode;
 		//editor.session.setMode(new CSSMode());
 		editor.setTheme("ace/theme/monokai");
@@ -460,7 +461,7 @@
 			CloseModal(ace_css_editor_modal_properties.$modal_wrap);
 		});
 
-		
+
 		// ----------------------------------
 		// ------------------------------------------
 		var file_frame; // variable for the wp.media file_frame
@@ -506,8 +507,7 @@
 				'click',
 				'.el-size-settingButton',
 				function (c) { // c -> click del mouse
-					c.preventDefault(); // preventDef -> non fa andare
-					// in un evento di default
+					c.preventDefault();
 					var $rexpansiveSection = $(this).parents(
 						'.rexpansive_section'); // this -> il div
 					// che crea evento
@@ -537,20 +537,13 @@
 			'click',
 			'.builder-section-config',
 			function (e) {
-
 				e.preventDefault();
-				var $rexpansiveSection = $(this).parents(
-					'.rexpansive_section');
-				var $row = $($rexpansiveSection
-					.find('.perfect-grid-gallery'));
-				var sectionNumber = $row
-					.perfectGridGalleryEditor('getSectionNumber');
-				$('#backresponsive-set-save').attr('data-section_id',
-					sectionNumber);
-				$('#backresponsive-set-reset').attr('data-section_id',
-					sectionNumber);
-				OpenModal($('#modal-background-responsive-set').parent(
-					'.rex-modal-wrap'));
+				var $rexpansiveSection = $(e.target).parents('.rexpansive_section');
+				console.log($rexpansiveSection);
+				var sectionID = $rexpansiveSection.attr("data-rexlive-section-id");
+				$('#backresponsive-set-save').attr('data-section_id', sectionID);
+				$('#backresponsive-set-reset').attr('data-section_id', sectionID);
+				OpenModal($('#modal-background-responsive-set').parent('.rex-modal-wrap'));
 			});
 	}); // End of the DOM ready
 

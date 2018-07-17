@@ -216,14 +216,16 @@ var Rexbuilder_Util = (function ($) {
 
                     _updateVideos($sectionData, $section, targetProps["video_bg_id"], targetProps["video_mp4_url"], targetProps["video_bg_url_vimeo_section"], targetProps["video_bg_url_section"], "section", false);
 
-                    _updateSectionMargins($section, targetProps["row_margin_top"], targetProps["row_margin_bottom"], targetProps["row_margin_right"], targetProps["row_margin_left"]);
+                    Rexbuilder_Dom_Util.updateSectionMargins($section, targetProps["row_margin_top"], targetProps["row_margin_bottom"], targetProps["row_margin_right"], targetProps["row_margin_left"]);
 
-                    _updateRow($section, $sectionData, $gallery, targetProps['block_distance'], targetProps["row_separator_top"], targetProps["row_separator_bottom"], targetProps["row_separator_right"], targetProps["row_separator_left"], targetProps["full_height"], targetProps["layout"], targetProps["section_width"], targetProps['dimension'], targetProps['collapse_grid']);
+                    Rexbuilder_Dom_Util.updateRow($section, $sectionData, $gallery, targetProps['block_distance'], targetProps["row_separator_top"], targetProps["row_separator_bottom"], targetProps["row_separator_right"], targetProps["row_separator_left"], targetProps["full_height"], targetProps["layout"], targetProps["section_width"], targetProps['dimension'], targetProps['collapse_grid']);
 
                     $section.css('background-color', targetProps["color_bg_section"]);
                     $section.attr("id", targetProps['section_name']);
                     $section.attr('data-type', targetProps['type']);
+
                 } else {
+
                     //console.log("setting el");
                     $elem = $gallery.children('div[data-rexbuilder-block-id="' + targetName + '"]');
                     $itemData = $elem.children(".rexbuilder-block-data");
@@ -409,80 +411,6 @@ var Rexbuilder_Util = (function ($) {
         }
     }
 
-    var _updateRow = function ($section, $sectionData, $galleryElement, gutter, separatorTop, separatorBottom, separatorRight, separatorLeft, fullHeight, layout, sectionWidth, widthType, collapseElements) {
-        /* 
-                console.log("data row received");
-                console.log(gutter, separatorTop, separatorBottom, separatorRight, separatorLeft, fullHeight, layout, sectionWidth, collapseElements); */
-        gutter = $.isEmptyObject(gutter) ? 20 : parseInt(gutter);
-        separatorTop = $.isEmptyObject(separatorTop) ? gutter : parseInt(separatorTop);
-        separatorBottom = $.isEmptyObject(separatorBottom) ? gutter : parseInt(separatorBottom);
-        separatorRight = $.isEmptyObject(separatorRight) ? gutter : parseInt(separatorRight);
-        separatorLeft = $.isEmptyObject(separatorLeft) ? gutter : parseInt(separatorLeft);
-        fullHeight = $.isEmptyObject(fullHeight) || fullHeight == "undefined" ? false : fullHeight;
-        layout = $.isEmptyObject(layout) ? "fixed" : layout;
-        sectionWidth = $.isEmptyObject(sectionWidth) ? "100%" : "" + sectionWidth;
-        widthType = $.isEmptyObject(widthType) ? "full" : widthType;
-        collapseElements = $.isEmptyObject(collapseElements) ? false : (collapseElements == "true" ? true : false);
-
-        var newSettings = {
-            gutter: gutter,
-            separatorTop: separatorTop,
-            separatorBottom: separatorBottom,
-            separatorRight: separatorRight,
-            separatorLeft: separatorLeft,
-            fullHeight: fullHeight,
-            layout: layout,
-            collapseElements: collapseElements
-        }
-
-        var $galleryParent = $galleryElement.parent();
-
-        if (widthType == "full") {
-            $galleryParent.removeClass("center-disposition");
-            $galleryParent.addClass("full-disposition");
-            $galleryParent.css("max-width", "100%");
-        } else {
-            $galleryParent.removeClass("full-disposition");
-            $galleryParent.addClass("center-disposition");
-            $galleryParent.css("max-width", sectionWidth);
-        }
-
-        var galleryData = $galleryElement.data();
-        if (galleryData !== undefined) {
-            var galleryEditorIstance = $galleryElement.data().plugin_perfectGridGalleryEditor;
-            if (galleryEditorIstance !== undefined) {
-                galleryEditorIstance.updateGridSettings(newSettings);
-            }
-        }
-
-        $galleryElement.attr("data-separator", gutter);
-        $galleryElement.attr("data-row-separator-top", separatorTop);
-        $galleryElement.attr("data-row-separator-right", separatorRight);
-        $galleryElement.attr("data-row-separator-bottom", separatorBottom);
-        $galleryElement.attr("data-row-separator-left", separatorLeft);
-        $galleryElement.attr("data-layout", layout);
-        $galleryElement.attr("data-full-height", fullHeight);
-        
-        $sectionData.attr("data-section_width", sectionWidth);
-        $sectionData.attr("data-dimension", widthType);
-
-        $sectionData.attr("data-responsive_collapse", collapseElements);
-        
-        $section.attr("data-rex-collapse-grid", collapseElements);
-    }
-
-    var _updateSectionMargins = function ($section, marginTop, marginBottom, marginRight, marginLeft) {
-        var newMargins = "";
-        newMargins += $.isEmptyObject(marginTop) ? 0 : marginTop;
-        newMargins += "px ";
-        newMargins += $.isEmptyObject(marginBottom) ? 0 : marginBottom;
-        newMargins += "px ";
-        newMargins += $.isEmptyObject(marginRight) ? 0 : marginRight;
-        newMargins += "px ";
-        newMargins += $.isEmptyObject(marginLeft) ? 0 : marginLeft;
-        newMargins += "px";
-        $section.css("margin", newMargins);
-    }
 
     var _updateImageBG = function ($target, idImage, urlImage, w, h, type) {
         console.log("setting bgImage");
