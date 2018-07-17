@@ -25,20 +25,20 @@
 			// ID and navigator configuration
 			$section_id: $('#sectionid-container'),
 			$save_button: $('#backresponsive-set-save'),
-	  
+
 			$block_gutter: $('.section-set-block-gutter'),
 			// Row separator
 			$row_separator_top: $('#row-separator-top'),
 			$row_separator_right: $('#row-separator-right'),
 			$row_separator_bottom: $('#row-separator-bottom'),
 			$row_separator_left: $('#row-separator-left'),
-	  
+
 			// Row margin
 			$row_margin_top: $('#row-margin-top'),
 			$row_margin_right: $('#row-margin-right'),
 			$row_margin_bottom: $('#row-margin-bottom'),
 			$row_margin_left: $('#row-margin-left'),
-	  
+
 			// Row zoom
 			$section_active_photoswipe: $('#section-active-photoswipe'),
 			section_photoswipe_changed: false,
@@ -139,9 +139,9 @@
 					console.log(e);
 					var sectionID = $(this).attr('data-section_id');
 					var $section = Rexbuilder_Util.$rexContainer.children('.rexpansive_section[data-rexlive-section-id="' + sectionID + '"]');
-					var gallery = $section.find(".grid-stack-row");
+					var $gallery = $section.find(".grid-stack-row");
 					// console.log(this);
-					var layout = section_config_modal_properties.$section_layout_type.filter(':checked').val();
+					var newLayout = section_config_modal_properties.$section_layout_type.filter(':checked').val();
 					/*
 					var section_id = $(this).attr('data-section_id'),
 						color = $('.backresponsive-color-section').spectrum('get'),
@@ -160,10 +160,55 @@
 						layout = section_config_modal_properties.$section_layout_type.filter(':checked').val();
 						*/
 					//var $row = $('.builder-row[data-count=' + 	section_id + ']'); $row.attr('data-layout', layout);
-					gallery.perfectGridGalleryEditor('updateGridSettings', {
-						'layout': layout
-					}, "sectionEditing");
+
+					console.log("creating datas");
+					//reverseData: STATO PRIMA
+					var reverseData = {
+						gutter: $gallery.attr("data-separator"),
+						row_separator_top: $gallery.attr("data-row-separator-top"),
+						row_separator_bottom: $gallery.attr("data-row-separator-bottom"),
+						row_separator_right: $gallery.attr("data-row-separator-right"),
+						row_separator_left: $gallery.attr("data-row-separator-left"),
+						full_height: $gallery.attr("data-full-height"),
+						layout: $gallery.attr("data-layout"),
+						section_width: $gallery.parent().css("max-width"),
+						dimension: $gallery.parent().hasClass(".full-disposition") ? "full" : "boxed",
+						collapse_grid: $section.attr("data-rex-collapse-grid")
+					}
+
+					//actionData: STATO DOPO
+					/* 					var actionData = {
+											gutter: 10,
+											row_separator_top: 40,
+											row_separator_bottom: 40,
+											row_separator_right: 30,
+											row_separator_left: 30,
+											full_height: $gallery.attr("data-full-height"),
+											layout: newLayout,
+											section_width: $gallery.parent().css("max-width"),
+											dimension: $gallery.parent().hasClass(".full-disposition") ? "full" : "boxed",
+											collapse_grid: $section.attr("data-rex-collapse-grid")
+										} */
+					var actionData = {
+						gutter: $gallery.attr("data-separator"),
+						row_separator_top: $gallery.attr("data-row-separator-top"),
+						row_separator_bottom: $gallery.attr("data-row-separator-bottom"),
+						row_separator_right: $gallery.attr("data-row-separator-right"),
+						row_separator_left: $gallery.attr("data-row-separator-left"),
+						full_height: $gallery.attr("data-full-height"),
+						layout: newLayout,
+						section_width: $gallery.parent().css("max-width"),
+						dimension: $gallery.parent().hasClass(".full-disposition") ? "full" : "boxed",
+						collapse_grid: $section.attr("data-rex-collapse-grid")
+					}
+
+					Rexbuilder_Util_Editor.pushAction($section, "updateSection", actionData, reverseData);
+
 					setBuilderTimeStamp();
+
+					$gallery.perfectGridGalleryEditor('updateGridSettings', {
+						'layout': newLayout
+					}, "sectionEditing");
 
 					CloseModal($('#modal-background-responsive-set').parent('.rex-modal-wrap'));
 				});

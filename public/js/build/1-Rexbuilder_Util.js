@@ -202,6 +202,7 @@ var Rexbuilder_Util = (function ($) {
                 var galleryEditorIstance = $gallery.data().plugin_perfectGridGalleryEditor;
                 if (galleryEditorIstance !== undefined) {
                     galleryEditorIstance.batchGridstack();
+                    var gridstackInstance = galleryEditorIstance.properties.gridstackInstance;
                 }
             }
             $.each(section.targets.reverse(), function (i, target) {
@@ -209,6 +210,10 @@ var Rexbuilder_Util = (function ($) {
                 targetProps = target.props;
                 console.log("setting " + targetName);
                 if (targetName == "self") {
+                    if (galleryData !== undefined && galleryEditorIstance !== undefined) {
+                        //galleryEditorIstance.updateElementsGridstack();
+                        galleryEditorIstance.commitGridstack();
+                    }
                     //console.log("setting section properties: " + targetName);
                     var $sectionData = $section.children(".section-data");
 
@@ -218,7 +223,26 @@ var Rexbuilder_Util = (function ($) {
 
                     Rexbuilder_Dom_Util.updateSectionMargins($section, targetProps["row_margin_top"], targetProps["row_margin_bottom"], targetProps["row_margin_right"], targetProps["row_margin_left"]);
 
-                    Rexbuilder_Dom_Util.updateRow($section, $sectionData, $gallery, targetProps['block_distance'], targetProps["row_separator_top"], targetProps["row_separator_bottom"], targetProps["row_separator_right"], targetProps["row_separator_left"], targetProps["full_height"], targetProps["layout"], targetProps["section_width"], targetProps['dimension'], targetProps['collapse_grid']);
+                    var rowSettings = {
+                        gutter: targetProps['block_distance'],
+                        row_separator_top: targetProps['row_separator_top'],
+                        row_separator_bottom: targetProps['row_separator_bottom'],
+                        row_separator_right: targetProps['row_separator_right'],
+                        row_separator_left: targetProps['row_separator_left'],
+                        full_height: targetProps['full_height'],
+                        layout: targetProps['layout'],
+                        section_width: targetProps['section_width'],
+                        dimension: targetProps['dimension'],
+                        collapse_grid: targetProps['collapse_grid'],
+                    }
+                    
+                    console.log("DIMENSIONI BLOCCHI PRECAMBIO");
+                    $gallery.children(".grid-stack-item").each(function (i, elem) {
+                        var $elem = $(this);
+                        console.log(parseInt($elem.attr("data-gs-x")), parseInt($elem.attr("data-gs-y")), parseInt($elem.attr("data-gs-width")), parseInt($elem.attr("data-gs-height")));
+                    });
+
+                    Rexbuilder_Dom_Util.updateRow($section, $sectionData, $gallery, rowSettings);
 
                     $section.css('background-color', targetProps["color_bg_section"]);
                     $section.attr("id", targetProps['section_name']);
@@ -234,6 +258,8 @@ var Rexbuilder_Util = (function ($) {
                     _updateVideos($itemData, $itemContent, targetProps["video_bg_id"], targetProps["video_mp4_url"], targetProps["video_bg_url_vimeo"], targetProps["video_bg_url_youtube"], "block", targetProps['video_has_audio'] == "1" ? true : false);
 
                     _updateImageBG($itemContent, isNaN(parseInt(targetProps['id_image_bg'])) ? "" : parseInt(targetProps['id_image_bg']), targetProps['image_bg_url'], parseInt(targetProps['image_width']), parseInt(targetProps['image_height']), targetProps['type_bg_image']);
+
+                    _updateGridstackElement($elem, $itemData, targetProps["gs_x"], targetProps["gs_y"], targetProps["gs_width"], targetProps["gs_height"], targetProps["gs_start_h"], gridstackInstance);
 
                     for (var propName in targetProps) {
                         switch (propName) {
@@ -262,31 +288,6 @@ var Rexbuilder_Util = (function ($) {
 
                             case "col":
                                 $elem.attr('data-col', targetProps[propName]);
-                                break;
-
-                            case "gs_start_h":
-                                console.log("start H: ", targetProps[propName]);
-                                $itemData.attr('data-gs_start_h', targetProps[propName]);
-                                break;
-
-                            case "gs_width":
-                                $elem.attr('data-gs-width', targetProps[propName]);
-                                $itemData.attr('data-gs_width', targetProps[propName]);
-                                break;
-
-                            case "gs_height":
-                                $elem.attr('data-gs-height', targetProps[propName]);
-                                $itemData.attr('data-gs_height', targetProps[propName]);
-                                break;
-
-                            case "gs_y":
-                                $elem.attr('data-gs-y', targetProps[propName]);
-                                $itemData.attr('data-gs_y', targetProps[propName]);
-                                break;
-
-                            case "gs_x":
-                                $elem.attr('data-gs-x', targetProps[propName]);
-                                $itemData.attr('data-gs_x', targetProps[propName]);
                                 break;
 
                             case "color_bg_block":
@@ -399,11 +400,10 @@ var Rexbuilder_Util = (function ($) {
                         }
                     }
                     //console.log($itemData[0]);
+
                 }
             });
-            if (galleryData !== undefined && galleryEditorIstance !== undefined) {
-                galleryEditorIstance.commitGridstack();
-            }
+            
         });
 
         if (!Rexbuilder_Util.editorMode) {
@@ -411,6 +411,27 @@ var Rexbuilder_Util = (function ($) {
         }
     }
 
+    var _updateGridstackElement = function ($elem, $elemData, x, y, w, h, startH, gridstackInstance) {
+        x = parseInt(x);
+        y = parseInt(y);
+        w = parseInt(w);
+        h = parseInt(h);
+        if (typeof gridstackInstance !== "undefined") {
+            console.log('altezza blocchi ', x, y, w, h);
+
+            gridstackInstance.update($elem[0], x, y, w, h);
+        } else {
+            $elem.attr("data-gs-height", h);
+            $elem.attr("data-gs-width", w);
+            $elem.attr("data-gs-y", y);
+            $elem.attr("data-gs-x", x);
+        }
+        $elemData.attr("data-gs_start_h", startH);
+        $elemData.attr("data-gs_width", w);
+        $elemData.attr("data-gs_height", h);
+        $elemData.attr("data-gs_y", y);
+        $elemData.attr("data-gs_x", x);
+    }
 
     var _updateImageBG = function ($target, idImage, urlImage, w, h, type) {
         console.log("setting bgImage");

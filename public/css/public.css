@@ -5027,7 +5027,6 @@ a.pswp-item {
 /* .rexpansive_section{
     z-index: 0;
 } */
-.grid-stack-item {
-  -webkit-transition: height 1s, min-height 1s;
-  -o-transition: height 1s, min-height 1s;
-  transition: height 1s, min-height 1s; }
+/* .grid-stack-item {
+    transition: height 1s, min-height 1s;
+} */

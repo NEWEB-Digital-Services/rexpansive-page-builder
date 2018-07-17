@@ -150,6 +150,33 @@ var Rex_Save_Listeners = (function ($) {
             });
         });
 
+        $(document).on('rexlive:updateLayouts', function (event) {
+            var layouts = event.settings.updatedLayouts;
+            var idPost = parseInt($('#id-post').attr('data-post-id'));
+            console.log("saving custom");
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: _plugin_frontend_settings.rexajax.ajaxurl,
+                data: {
+                    action: 'rexlive_save_custom_layouts',
+                    nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+                    post_id_to_update: idPost,
+                    custom_layouts: layouts
+                },
+                success: function (response) {
+                    console.log(response);
+                    if (response.success) {
+                        console.log('cusotm layouts aggiornati');
+                    }
+                    console.log('chiama effettuata con successo');
+                },
+                error: function (response) {
+                    console.log('errore chiama ajax');
+                }
+            });
+        });
+
         var saveCustomCSS = function (styleToSave) {
             var idPost = parseInt($('#id-post').attr('data-post-id'));
             $.ajax({

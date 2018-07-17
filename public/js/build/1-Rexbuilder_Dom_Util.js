@@ -17,21 +17,24 @@ var Rexbuilder_Dom_Util = (function ($) {
      * @param {*} widthType full or boxed
      * @param {*} collapseElements true if elements have to collapse
      */
-    var _updateRow = function ($section, $sectionData, $galleryElement, gutter, separatorTop, separatorBottom, separatorRight, separatorLeft, fullHeight, layout, sectionWidth, widthType, collapseElements) {
-        /* 
+    var _updateRow = function ($section, $sectionData, $galleryElement, rowSettings) {
+
         console.log("data row received");
-        console.log(gutter, separatorTop, separatorBottom, separatorRight, separatorLeft, fullHeight, layout, sectionWidth, collapseElements);
-         */
-        gutter = $.isEmptyObject(gutter) ? 20 : parseInt(gutter);
-        separatorTop = $.isEmptyObject(separatorTop) ? gutter : parseInt(separatorTop);
-        separatorBottom = $.isEmptyObject(separatorBottom) ? gutter : parseInt(separatorBottom);
-        separatorRight = $.isEmptyObject(separatorRight) ? gutter : parseInt(separatorRight);
-        separatorLeft = $.isEmptyObject(separatorLeft) ? gutter : parseInt(separatorLeft);
-        layout = $.isEmptyObject(layout) ? "fixed" : layout;
-        fullHeight = $.isEmptyObject(fullHeight) || fullHeight == "undefined" || layout == "masonry" ? false : fullHeight;
-        sectionWidth = $.isEmptyObject(sectionWidth) ? "100%" : "" + sectionWidth;
-        widthType = $.isEmptyObject(widthType) ? "full" : widthType;
-        collapseElements = $.isEmptyObject(collapseElements) ? false : (collapseElements == "true" ? true : false);
+        console.log(rowSettings);
+        console.log(rowSettings.gutter);
+        console.log(typeof rowSettings.gutter === "undefined"); 
+        
+        var
+            gutter = typeof rowSettings.gutter === "undefined" ? 20 : parseInt(rowSettings.gutter),
+            separatorTop = typeof rowSettings.row_separator_top === "undefined" ? gutter : parseInt(rowSettings.row_separator_top),
+            separatorBottom = typeof rowSettings.row_separator_bottom === "undefined" ? gutter : parseInt(rowSettings.row_separator_bottom),
+            separatorRight = typeof rowSettings.row_separator_right === "undefined" ? gutter : parseInt(rowSettings.row_separator_right),
+            separatorLeft = typeof rowSettings.row_separator_left === "undefined" ? gutter : parseInt(rowSettings.row_separator_left),
+            layout = typeof rowSettings.layout === "undefined" ? "fixed" : rowSettings.layout,
+            fullHeight = typeof rowSettings.full_height === "undefined" || layout == "masonry" ? false : rowSettings.full_height,
+            sectionWidth = typeof rowSettings.section_width === "undefined" ? "100%" : "" + rowSettings.section_width,
+            widthType = typeof rowSettings.dimension === "undefined" ? "full" : rowSettings.dimension,
+            collapseElements = typeof rowSettings.collapse_grid === "undefined" ? false : (rowSettings.collapse_grid == "true" ? true : false);
 
         var newSettings = {
             gutter: gutter,
@@ -44,6 +47,7 @@ var Rexbuilder_Dom_Util = (function ($) {
             collapseElements: collapseElements
         }
 
+        console.log(newSettings); 
         var $galleryParent = $galleryElement.parent();
 
         if (widthType == "full") {
@@ -93,8 +97,28 @@ var Rexbuilder_Dom_Util = (function ($) {
         $section.css("margin", newMargins);
     }
 
+    var _performAction = function (action, flag) {
+        console.log("performing action");
+        console.log(action);
+        var dataToUse = flag ? action.performActionData : action.reverseActionData;
+        switch (action.actionName) {
+            case "updateSection":
+                var $section = Rexbuilder_Util.$rexContainer.children('.rexpansive_section[data-rexlive-section-id="' + action.sectionID + '"]');
+                var $sectionData = $section.children(".section-data");
+                var $galleryElement = $section.find(".grid-stack-row");
+                _updateRow($section, $sectionData, $galleryElement, dataToUse);
+                break;
+            case "updateSectionBlocksDisposition":
+
+                break;
+            default:
+                break;
+        }
+    }
+
     return {
         updateRow: _updateRow,
-        updateSectionMargins: _updateSectionMargins
+        updateSectionMargins: _updateSectionMargins,
+        performAction: _performAction
     };
 })(jQuery);

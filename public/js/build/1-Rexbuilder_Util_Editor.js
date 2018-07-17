@@ -2,6 +2,11 @@
 var Rexbuilder_Util_Editor = (function ($) {
     'use strict';
 
+    var undoStackArray;
+    var redoStackArray;
+
+    var testIndex;
+
     var setEndOfContenteditable = function (contentEditableElement) {
         var range, selection;
         if (document.createRange)//Firefox, Chrome, Opera, Safari, IE 9+
@@ -196,7 +201,7 @@ var Rexbuilder_Util_Editor = (function ($) {
         Rexbuilder_Util.$window.on('load', function (e) {
             Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
                 var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
-                galleryEditorIstance.updateGrid();
+                //galleryEditorIstance.updateGrid();
             });
         });
 
@@ -221,22 +226,66 @@ var Rexbuilder_Util_Editor = (function ($) {
             Rexbuilder_Util_Editor.buttonResized = true;
             Rexbuilder_Util_Editor.clickedLayoutID = event.settings.selectedLayoutName;
         });
-        $(document).on('rexlive:updateLayouts', function (event) {
-            _save_custom_layouts(event.settings.updatedLayouts);
-        });
-        $(document).on('rexlive:undo', function (e) {
-            console.log(e);
-            console.log('undo');
-        });
-        $(document).on('rexlive:redo', function (e) {
-            console.log(e);
-            console.log('redo');
-        });
+
         $(document).click(".test-save", function (e) {
-            console.log(e);
             $(e.target).parents(".rexpansive_section").find(".grid-stack-row").attr("data-rexlive-layout-changed", "true");
             $(e.target).parents(".rexpansive_section").attr("data-rexlive-section-edited", "true");
         })
+
+        $(document).on('rexlive:undo', function (e) {
+            if (undoStackArray.length > 0) {
+                var action = undoStackArray.pop();
+                Rexbuilder_Dom_Util.performAction(action, false);
+                redoStackArray.push(action);
+            }
+        });
+
+        $(document).on('rexlive:redo', function (e) {
+            if (redoStackArray.length > 0) {
+                var action = redoStackArray.pop();
+                Rexbuilder_Dom_Util.performAction(action, true);
+                undoStackArray.push(action);
+            }
+        });
+    }
+
+    var _pushAction = function ($target, actionName, actionData, reverseData) {
+        var ids = getIDs($target);
+        var action = {
+            sectionID: ids.sectionID,
+            targetID: ids.targetID,
+            actionName: actionName,
+            performActionData: actionData,
+            reverseActionData: reverseData
+        }
+        console.log(action);
+        undoStackArray.push(action);
+        redoStackArray = [];
+    };
+
+    var getIDs = function ($target) {
+        var data = {
+            sectionID: "",
+            targetID: ""
+        }
+
+        data.sectionID = $target.is("section") ? $target.attr("data-rexlive-section-id") : $target.parents(".rexpansive_section").attr("data-rexlive-section-id");
+
+        if ($target.parents(".grid-stack-item").length != 0) {
+            data.targetID = $target.parents(".grid-stack-item").attr("data-rexbuilder-block-id");
+        } else {
+            data.targetID = "self";
+        }
+
+        return data;
+    }
+
+    var _getStacks = function () {
+        var stacks = {
+            undo: undoStackArray,
+            redo: redoStackArray
+        }
+        return stacks;
     }
 
     var sendParentIframeMessage = function (data) {
@@ -245,36 +294,6 @@ var Rexbuilder_Util_Editor = (function ($) {
         };
         jQuery.extend(infos, data);
         window.parent.postMessage(infos, '*');
-    }
-
-    /**
-     * Saving the custom layouts
-     * @param {Array} layouts Array of objects defining the custom layouts
-     */
-    var _save_custom_layouts = function (layouts) {
-        var idPost = parseInt($('#id-post').attr('data-post-id'));
-        console.log("saving custom");
-        $.ajax({
-            type: 'POST',
-            dataType: 'json',
-            url: _plugin_frontend_settings.rexajax.ajaxurl,
-            data: {
-                action: 'rexlive_save_custom_layouts',
-                nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-                post_id_to_update: idPost,
-                custom_layouts: layouts
-            },
-            success: function (response) {
-                console.log(response);
-                if (response.success) {
-                    console.log('cusotm layouts aggiornati');
-                }
-                console.log('chiama effettuata con successo');
-            },
-            error: function (response) {
-                console.log('errore chiama ajax');
-            }
-        });
     }
 
     var sendParentIframeMessage = function (data) {
@@ -470,6 +489,10 @@ var Rexbuilder_Util_Editor = (function ($) {
         this.buttonResized = false;
         this.clickedLayoutID = "";
 
+        undoStackArray = [];
+        redoStackArray = [];
+        testIndex = 0;
+
         _fixCustomStyleElement();
     }
 
@@ -489,7 +512,10 @@ var Rexbuilder_Util_Editor = (function ($) {
         fixNavigatorItemOrder: fixNavigatorItemOrder,
         addCustomClass: _addCustomClass,
         removeCustomClass: _removeCustomClass,
-        escapeRegExp: _escapeRegExp
+        escapeRegExp: _escapeRegExp,
+        pushAction: _pushAction,
+        getIDs: getIDs,
+        getStacks: _getStacks
     };
 
 })(jQuery);
