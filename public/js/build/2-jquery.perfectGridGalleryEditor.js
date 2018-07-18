@@ -201,6 +201,12 @@
             });
         },
 
+        updateGridSettingsChangeLayout: function (newSettings) {
+            //Presuppongo che gridstack sia in batchmode
+
+
+        },
+
         updateGridSettingsModalUndoRedo: function (newSettings) {
             // o undo redo
             // funzione a parte per salvare stato
@@ -239,57 +245,32 @@
 
             if (newLayout != this.settings.galleryLayout) {
                 this.settings.galleryLayout = newLayout;
-                this.settings.fullHeight = "";
+                this.settings.fullHeight = "false";
                 console.log("changing layout");
                 console.log(newLayout);
 
-                // destroying gridstack & jquery ui
-                this.destroyGridstack();
+                this.batchGridstack();
 
                 this._restoreBlocksPosition();
 
-                // adding back the handles for resizing
-                this.$element.children('.grid-stack-item').each(function () {
-                    that._addHandles($(this), 'e, s, w, se, sw');
-                });
-
                 this._defineDynamicPrivateProperties();
-
-                // relaunching grid
-                console.log(this.properties.updatingSectionSameGrid);
-
+                this.updateGridstackCellHeight();
                 if (this.properties.startingLayout != this.settings.galleryLayout) {
                     this.properties.updatingSectionSameGrid = false;
                 }
-
-                this._launchGridStack();
-                //have to wait animation to update sizeViewers
-                //setTimeout(function () {
-                that._updateElementsSizeViewers();
-                //}, 1000);
+                this.updateBlocksHeight();
+                this.commitGridstack();
+                this._updateElementsSizeViewers();
             } else if (newLayout == "fixed") {
                 if (this.properties.oldFullHeight.toString() != fullHeight.toString()) {
-                    //this.saveStateGrid();
 
-                    console.log("fullH?");
-
-                    // destroying gridstack & jquery ui
-                    this.destroyGridstack();
-
-                    //                    this.properties.updatingSectionSameGrid = true;
+                    this.batchGridstack();
                     this.properties.updatingSection = false;
                     this._restoreBlocksPosition();
                     this.properties.updatingSection = true;
-
-                    // adding back the handles for resizing
-                    this.$element.children('.grid-stack-item').each(function () {
-                        that._addHandles($(this), 'e, s, w, se, sw');
-                    });
-
                     this._defineDynamicPrivateProperties();
-                    console.log(this.properties.singleHeight);
-                    this._launchGridStack();
-
+                    this.updateGridstackCellHeight();
+                    this.commitGridstack();
                 }
             }
 
@@ -596,7 +577,7 @@
             }
         },
 
-        updateGridstackFixedMode: function () {
+        updateGridstackCellHeight: function () {
             console.log("updating gridstackstyles");
             var gridstack = this.properties.gridstackInstance;
             gridstack.cellHeight(this.properties.singleHeight);
@@ -1144,7 +1125,7 @@
         _restoreBlocksPosition: function () {
             var $elem;
             var gallery = this;
-
+            var gridstackInstance = this.properties.gridstackInstance;
             this.$element.children('.grid-stack-item').each(function () {
                 var x, y, w, h;
                 var elDim;
@@ -1161,10 +1142,11 @@
                 w = elDim.properties[2].w;
                 h = elDim.properties[3].h;
                 console.log(x, y, w, h);
-                $elem.attr("data-gs-x", x);
-                $elem.attr("data-gs-y", y);
-                $elem.attr("data-gs-width", w);
-                $elem.attr("data-gs-height", h);
+                gridstackInstance.update(this, x, y, w, h);
+                /*                 $elem.attr("data-gs-x", x);
+                                $elem.attr("data-gs-y", y);
+                                $elem.attr("data-gs-width", w);
+                                $elem.attr("data-gs-height", h); */
             });
         },
 
@@ -1793,7 +1775,10 @@
                         $elem = $(this);
                         console.log(parseInt($elem.attr("data-gs-x")), parseInt($elem.attr("data-gs-y")), parseInt($elem.attr("data-gs-width")), parseInt($elem.attr("data-gs-height")));
                     });
-                    gridstack.batchUpdate();
+
+                    if (!this.properties.updatingSection) {
+                        gridstack.batchUpdate();
+                    }
                     $(this.properties.blocksBottomTop).each(function (i, e) {
                         $elem = $(this);
                         $elemData = $elem.children(".rexbuilder-block-data");
@@ -1801,16 +1786,19 @@
                             gallery.updateElementHeight($elem);
                         }
                     });
-                    gridstack.commit();
+                    if (!this.properties.updatingSection) {
+                        gridstack.commit();
+                    }
                 }
 
             }
             console.log("UPDATING DATA BLOCK HEIGHT");
+
             //setTimeout(function () {
             this.$element.children(".grid-stack-item").each(function () {
                 var $blockData = $(this).children(".rexbuilder-block-data");
                 var newH = parseInt($(this).attr("data-gs-height"));
-                gallery.updateElementDataHeightProperties($blockData, newH);
+                //gallery.updateElementDataHeightProperties($blockData, newH);
             });
             //}, 1000);
         },
@@ -2160,7 +2148,7 @@
             var $blockData = $elem.children('.rexbuilder-block-data');
             var startH;
             if (this.properties.updatingSection) {
-                if (this.settings.galleryLayout == "fixed" && this.properties.oldLayout == "masonry") {
+                if (this.settings.galleryLayout == "fixed" /* && this.properties.oldLayout == "masonry" */) {
                     startH = parseInt($blockData.attr("data-block_height_masonry"));
                     //console.log("masonry", startH);
                 } else {
@@ -2205,9 +2193,9 @@
                     if (this.properties.editedFromBackend && this.settings.galleryLayout == "masonry") {
                         console.log("backend + masonry");
                         defaultHeight = Math.round(sw * startH);
-                    } else if ((this.properties.oldCellHeight != 0) && (this.properties.oldCellHeight != this.properties.singleHeight) && !this.properties.layoutChanged) {
-                        //console.log("cellHeight changed");
-                        //console.log(this.properties.oldCellHeight, this.properties.singleHeight);
+                    } else if ((this.properties.oldCellHeight != 0) && (this.properties.oldCellHeight != this.properties.singleHeight)) {
+                        console.log("cellHeight changed");
+                        console.log(startH, this.properties.oldCellHeight, this.properties.singleHeight);
                         //console.log(startH);
                         defaultHeight = startH * this.properties.oldCellHeight;
                         //console.log(defaultHeight);
@@ -2237,6 +2225,8 @@
                         } */
 
             console.log(newH);
+            this.updateElementDataHeightProperties($blockData, newH);
+
             var gridstack = this.properties.gridstackInstance;
             if (gridstack !== undefined) {
                 if ((this.properties.oldCellHeight != 0) && this.properties.oldCellHeight != this.properties.singleHeight && this.properties.oldLayout == "masonry") {
@@ -2270,7 +2260,6 @@
 
         //Da sistemare mettendo un unico return
         calculateTextWrapHeight: function ($textWrap) {
-            console.log($textWrap.text().trim().length);
             if ($textWrap.hasClass("medium-editor-element")) {
                 var textHeight = 0;
                 var textCalculate = $textWrap.clone(false);
