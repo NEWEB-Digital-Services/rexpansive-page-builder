@@ -22,8 +22,8 @@ var Rexbuilder_Dom_Util = (function ($) {
         console.log("data row received");
         console.log(rowSettings);
         console.log(rowSettings.gutter);
-        console.log(typeof rowSettings.gutter === "undefined"); 
-        
+        console.log(typeof rowSettings.gutter === "undefined");
+
         var
             gutter = typeof rowSettings.gutter === "undefined" ? 20 : parseInt(rowSettings.gutter),
             separatorTop = typeof rowSettings.row_separator_top === "undefined" ? gutter : parseInt(rowSettings.row_separator_top),
@@ -36,18 +36,6 @@ var Rexbuilder_Dom_Util = (function ($) {
             widthType = typeof rowSettings.dimension === "undefined" ? "full" : rowSettings.dimension,
             collapseElements = typeof rowSettings.collapse_grid === "undefined" ? false : (rowSettings.collapse_grid == "true" ? true : false);
 
-        var newSettings = {
-            gutter: gutter,
-            separatorTop: separatorTop,
-            separatorBottom: separatorBottom,
-            separatorRight: separatorRight,
-            separatorLeft: separatorLeft,
-            fullHeight: fullHeight,
-            layout: layout,
-            collapseElements: collapseElements
-        }
-
-        console.log(newSettings); 
         var $galleryParent = $galleryElement.parent();
 
         if (widthType == "full") {
@@ -74,14 +62,6 @@ var Rexbuilder_Dom_Util = (function ($) {
         $sectionData.attr("data-responsive_collapse", collapseElements);
 
         $section.attr("data-rex-collapse-grid", collapseElements);
-
-        var galleryData = $galleryElement.data();
-        if (galleryData !== undefined) {
-            var galleryEditorIstance = $galleryElement.data().plugin_perfectGridGalleryEditor;
-            if (galleryEditorIstance !== undefined) {
-                galleryEditorIstance.updateGridSettings(newSettings, "domEditing");
-            }
-        }
     }
 
     var _updateSectionMargins = function ($section, marginTop, marginBottom, marginRight, marginLeft) {
@@ -98,15 +78,31 @@ var Rexbuilder_Dom_Util = (function ($) {
     }
 
     var _performAction = function (action, flag) {
+
         console.log("performing action");
         console.log(action);
-        var dataToUse = flag ? action.performActionData : action.reverseActionData;
+        var dataToUse;
+
+        if (flag) {
+            dataToUse = action.performActionData;
+            Rexbuilder_Util_Editor.redoActive = true;
+        } else {
+            dataToUse = action.reverseActionData;
+            Rexbuilder_Util_Editor.undoActive = true;
+        }
+
+        var $galleryElement = Rexbuilder_Util.$rexContainer.children('.rexpansive_section[data-rexlive-section-id="' + action.sectionID + '"]').find(".grid-stack-row");
+
         switch (action.actionName) {
             case "updateSection":
-                var $section = Rexbuilder_Util.$rexContainer.children('.rexpansive_section[data-rexlive-section-id="' + action.sectionID + '"]');
-                var $sectionData = $section.children(".section-data");
-                var $galleryElement = $section.find(".grid-stack-row");
-                _updateRow($section, $sectionData, $galleryElement, dataToUse);
+                var galleryData = $galleryElement.data();
+                if (galleryData !== undefined) {
+                    var galleryEditorIstance = $galleryElement.data().plugin_perfectGridGalleryEditor;
+                    if (galleryEditorIstance !== undefined) {
+                        console.log(flag ? "undoing" : "redoing");
+                        galleryEditorIstance.updateGridSettingsModalUndoRedo(dataToUse);
+                    }
+                }
                 break;
             case "updateSectionBlocksDisposition":
 
@@ -114,6 +110,9 @@ var Rexbuilder_Dom_Util = (function ($) {
             default:
                 break;
         }
+
+        Rexbuilder_Util_Editor.undoActive = false;
+        Rexbuilder_Util_Editor.redoActive = false;
     }
 
     return {

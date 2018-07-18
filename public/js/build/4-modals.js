@@ -142,6 +142,8 @@
 					var $gallery = $section.find(".grid-stack-row");
 					// console.log(this);
 					var newLayout = section_config_modal_properties.$section_layout_type.filter(':checked').val();
+					var fullHeight = (true === section_config_modal_properties.$is_full.prop('checked') ? 'true' : 'false');
+					console.log(fullHeight);
 					/*
 					var section_id = $(this).attr('data-section_id'),
 						color = $('.backresponsive-color-section').spectrum('get'),
@@ -169,7 +171,7 @@
 						row_separator_bottom: $gallery.attr("data-row-separator-bottom"),
 						row_separator_right: $gallery.attr("data-row-separator-right"),
 						row_separator_left: $gallery.attr("data-row-separator-left"),
-						full_height: $gallery.attr("data-full-height"),
+						fullHeight: $gallery.attr("data-full-height"),
 						layout: $gallery.attr("data-layout"),
 						section_width: $gallery.parent().css("max-width"),
 						dimension: $gallery.parent().hasClass(".full-disposition") ? "full" : "boxed",
@@ -177,25 +179,13 @@
 					}
 
 					//actionData: STATO DOPO
-					/* 					var actionData = {
-											gutter: 10,
-											row_separator_top: 40,
-											row_separator_bottom: 40,
-											row_separator_right: 30,
-											row_separator_left: 30,
-											full_height: $gallery.attr("data-full-height"),
-											layout: newLayout,
-											section_width: $gallery.parent().css("max-width"),
-											dimension: $gallery.parent().hasClass(".full-disposition") ? "full" : "boxed",
-											collapse_grid: $section.attr("data-rex-collapse-grid")
-										} */
 					var actionData = {
 						gutter: $gallery.attr("data-separator"),
 						row_separator_top: $gallery.attr("data-row-separator-top"),
 						row_separator_bottom: $gallery.attr("data-row-separator-bottom"),
 						row_separator_right: $gallery.attr("data-row-separator-right"),
 						row_separator_left: $gallery.attr("data-row-separator-left"),
-						full_height: $gallery.attr("data-full-height"),
+						fullHeight: fullHeight,
 						layout: newLayout,
 						section_width: $gallery.parent().css("max-width"),
 						dimension: $gallery.parent().hasClass(".full-disposition") ? "full" : "boxed",
@@ -206,9 +196,18 @@
 
 					setBuilderTimeStamp();
 
-					$gallery.perfectGridGalleryEditor('updateGridSettings', {
-						'layout': newLayout
-					}, "sectionEditing");
+					//DA CAPIRE DOVE ANDARE PER AGGIORNARE LE INFORMAZIONI NEL DOM, PER ORA FACCIAMOLO QUA
+					$gallery.attr("data-layout", newLayout);
+					$gallery.attr("data-full-height", fullHeight);
+					/* this.$element.attr("data-layout", newLayout);
+					this.$section.children('.section-data').attr({
+						'data-layout': newLayout
+					});
+					 */
+					$gallery.perfectGridGalleryEditor('updateGridSettingsModalUndoRedo', {
+						'layout': newLayout,
+						'fullHeight': fullHeight
+					});
 
 					CloseModal($('#modal-background-responsive-set').parent('.rex-modal-wrap'));
 				});

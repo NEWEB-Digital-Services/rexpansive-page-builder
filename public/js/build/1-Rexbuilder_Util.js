@@ -131,6 +131,25 @@ var Rexbuilder_Util = (function ($) {
         if (chosenLayoutName == Rexbuilder_Util.activeLayout) {
             return;
         }
+
+        Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function(i, grid){
+            var $grid = $(grid);
+            var galleryData = $grid.data();
+        var gridGalleryDestroyed = false;
+        if (galleryData !== undefined) {
+            var galleryEditorIstance = $gallery.data().plugin_perfectGridGalleryEditor;
+            if (galleryEditorIstance !== undefined) {
+                galleryEditorIstance.destroyGridGallery();
+                $gallery.perfectGridGalleryEditor("destroy");
+                gridGalleryDestroyed = true;
+                console.log("%%%%%%%%%%%%%%%%%grid DEAD%%%%%%%%%%%%%%%%");
+                console.log($gallery);
+            }
+        }
+        });
+        $gallery = $section;
+        
+
         //console.log("chosen: " + chosenLayoutName);
 
         Rexbuilder_Util.$rexContainer.attr("data-rex-layout-selected", chosenLayoutName);
@@ -183,7 +202,6 @@ var Rexbuilder_Util = (function ($) {
         var targetHide;
         var targetProps;
         var $section;
-        var $sectionData;
 
         var $gallery;
         var $elem;
@@ -198,22 +216,24 @@ var Rexbuilder_Util = (function ($) {
             $section = Rexbuilder_Util.$rexContainer.children('section[data-rexlive-section-id="' + sectionRexId + '"]');
             $gallery = $section.find(".grid-stack-row");
             var galleryData = $gallery.data();
+            var gridGalleryDestroyed = false;
             if (galleryData !== undefined) {
                 var galleryEditorIstance = $gallery.data().plugin_perfectGridGalleryEditor;
                 if (galleryEditorIstance !== undefined) {
-                    galleryEditorIstance.batchGridstack();
-                    var gridstackInstance = galleryEditorIstance.properties.gridstackInstance;
+                    galleryEditorIstance.destroyGridGallery();
+                    $gallery.perfectGridGalleryEditor("destroy");
+                    gridGalleryDestroyed = true;
+                    console.log("%%%%%%%%%%%%%%%%%grid DEAD%%%%%%%%%%%%%%%%");
+                    console.log($gallery);
                 }
             }
-            $.each(section.targets.reverse(), function (i, target) {
+            $.each(section.targets, function (i, target) {
+                console.log(target);
+                console.log(targetProps);
                 targetName = target.name;
                 targetProps = target.props;
                 console.log("setting " + targetName);
                 if (targetName == "self") {
-                    if (galleryData !== undefined && galleryEditorIstance !== undefined) {
-                        //galleryEditorIstance.updateElementsGridstack();
-                        galleryEditorIstance.commitGridstack();
-                    }
                     //console.log("setting section properties: " + targetName);
                     var $sectionData = $section.children(".section-data");
 
@@ -235,12 +255,6 @@ var Rexbuilder_Util = (function ($) {
                         dimension: targetProps['dimension'],
                         collapse_grid: targetProps['collapse_grid'],
                     }
-                    
-                    console.log("DIMENSIONI BLOCCHI PRECAMBIO");
-                    $gallery.children(".grid-stack-item").each(function (i, elem) {
-                        var $elem = $(this);
-                        console.log(parseInt($elem.attr("data-gs-x")), parseInt($elem.attr("data-gs-y")), parseInt($elem.attr("data-gs-width")), parseInt($elem.attr("data-gs-height")));
-                    });
 
                     Rexbuilder_Dom_Util.updateRow($section, $sectionData, $gallery, rowSettings);
 
@@ -259,7 +273,7 @@ var Rexbuilder_Util = (function ($) {
 
                     _updateImageBG($itemContent, isNaN(parseInt(targetProps['id_image_bg'])) ? "" : parseInt(targetProps['id_image_bg']), targetProps['image_bg_url'], parseInt(targetProps['image_width']), parseInt(targetProps['image_height']), targetProps['type_bg_image']);
 
-                    _updateGridstackElement($elem, $itemData, targetProps["gs_x"], targetProps["gs_y"], targetProps["gs_width"], targetProps["gs_height"], targetProps["gs_start_h"], gridstackInstance);
+                    _updateElementDimensions($elem, $itemData, targetProps["gs_x"], targetProps["gs_y"], targetProps["gs_width"], targetProps["gs_height"], targetProps["gs_start_h"]);
 
                     for (var propName in targetProps) {
                         switch (propName) {
@@ -403,7 +417,10 @@ var Rexbuilder_Util = (function ($) {
 
                 }
             });
-            
+            if (gridGalleryDestroyed) {
+                $gallery.perfectGridGalleryEditor();
+                console.log("%%%%%%%%%%%%%%%%%grid ALIVE%%%%%%%%%%%%%%%%");
+            }
         });
 
         if (!Rexbuilder_Util.editorMode) {
@@ -411,21 +428,18 @@ var Rexbuilder_Util = (function ($) {
         }
     }
 
-    var _updateGridstackElement = function ($elem, $elemData, x, y, w, h, startH, gridstackInstance) {
+    var _updateElementDimensions = function ($elem, $elemData, x, y, w, h, startH) {
         x = parseInt(x);
         y = parseInt(y);
         w = parseInt(w);
         h = parseInt(h);
-        if (typeof gridstackInstance !== "undefined") {
-            console.log('altezza blocchi ', x, y, w, h);
+        startH = parseInt(startH);
 
-            gridstackInstance.update($elem[0], x, y, w, h);
-        } else {
-            $elem.attr("data-gs-height", h);
-            $elem.attr("data-gs-width", w);
-            $elem.attr("data-gs-y", y);
-            $elem.attr("data-gs-x", x);
-        }
+        $elem.attr("data-gs-height", h);
+        $elem.attr("data-gs-width", w);
+        $elem.attr("data-gs-y", y);
+        $elem.attr("data-gs-x", x);
+
         $elemData.attr("data-gs_start_h", startH);
         $elemData.attr("data-gs_width", w);
         $elemData.attr("data-gs_height", h);
@@ -1154,7 +1168,10 @@ var Rexbuilder_Util = (function ($) {
             } else {
                 _edit_dom_layout(chooseLayout());
             }
-            this.oldLayout = Rexbuilder_Util.activeLayout;
+            if (Rexbuilder_Util.activeLayout != this.oldLayout) {
+                this.oldLayout = Rexbuilder_Util.activeLayout;
+                return;
+            }
 
             Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
                 var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;

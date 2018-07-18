@@ -488,6 +488,8 @@ var Rexbuilder_Util_Editor = (function ($) {
         this.hasResized = false;
         this.buttonResized = false;
         this.clickedLayoutID = "";
+        this.undoActive = false;
+        this.redoActive = false;
 
         undoStackArray = [];
         redoStackArray = [];
