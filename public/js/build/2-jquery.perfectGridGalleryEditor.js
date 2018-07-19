@@ -86,7 +86,9 @@
             blocksBottomTop: null,
             updatingSectionSameGrid: false,
             startingLayout: "",
-            oldFullHeight: ""
+            oldFullHeight: "",
+            blocksDimensions: [],
+            reverseDataGridDisposition: {}
         };
 
         this.$section = this.$element.parents(this._defaults.gridParentWrap);
@@ -142,13 +144,37 @@
                 this._linkResizeEvents();
                 this._linkDragEvents();
                 this._launchTextEditor();
+
+                var blocksDimensions = [];
+                var $elem;
+                var rexID;
+                this.$element.children('.grid-stack-item:not(.grid-stack-placeholder)').each(function () {
+                    $elem = $(this);
+                    rexID = $elem.attr("data-rexbuilder-block-id");
+                    var x, y, w, h;
+                    x = parseInt($elem.attr("data-gs-x"));
+                    y = parseInt($elem.attr("data-gs-y"));
+                    w = parseInt($elem.attr("data-gs-width"));
+                    h = parseInt($elem.attr("data-gs-height"));
+                    var blockObj = {
+                        rexID: rexID,
+                        elem: this,
+                        x: x,
+                        y: y,
+                        w: w,
+                        h: h,
+                    };
+                    blocksDimensions.push(blockObj);
+                });
+
+                this.properties.reverseDataGridDisposition = {
+                    gridstackInstance: this.properties.gridstackInstance,
+                    blocks: blocksDimensions
+                };
             } else {
                 this.frontEndMode();
             }
 
-            if (this.$section.attr("data-rex-collapse-grid") == "true" && !this.$section.hasClass("rex-block-grid")) {
-                this.collapseElements();
-            }
             /* 
             console.log(this.getElementBottomTop());
             console.log(this.getElementsTopBottom()); 
@@ -156,6 +182,10 @@
             this.saveStateGrid();
 
             this.properties.startingLayout = this.settings.galleryLayout;
+
+            if (this.$section.attr("data-rex-collapse-grid") == "true" && !this.$section.hasClass("rex-block-grid")) {
+                this.collapseElements();
+            }
 
             this.properties.firstStartGrid = false;
         },
@@ -204,7 +234,6 @@
         updateGridSettingsChangeLayout: function (newSettings) {
             //Presuppongo che gridstack sia in batchmode
 
-
         },
 
         updateGridSettingsModalUndoRedo: function (newSettings) {
@@ -241,35 +270,29 @@
 
             this.settings.fullHeight = fullHeight.toString();
 
-            var that = this;
-
             if (newLayout != this.settings.galleryLayout) {
                 this.settings.galleryLayout = newLayout;
                 this.settings.fullHeight = "false";
-                console.log("changing layout");
-                console.log(newLayout);
-
                 this.batchGridstack();
-
                 this._restoreBlocksPosition();
-
                 this._defineDynamicPrivateProperties();
-                this.updateGridstackCellHeight();
+                this.updateGridstackStyles();
                 if (this.properties.startingLayout != this.settings.galleryLayout) {
                     this.properties.updatingSectionSameGrid = false;
                 }
                 this.updateBlocksHeight();
+                this.updateFloatingElementsGridstack();
                 this.commitGridstack();
                 this._updateElementsSizeViewers();
+
             } else if (newLayout == "fixed") {
                 if (this.properties.oldFullHeight.toString() != fullHeight.toString()) {
-
                     this.batchGridstack();
                     this.properties.updatingSection = false;
                     this._restoreBlocksPosition();
                     this.properties.updatingSection = true;
                     this._defineDynamicPrivateProperties();
-                    this.updateGridstackCellHeight();
+                    this.updateGridstackStyles();
                     this.commitGridstack();
                 }
             }
@@ -284,6 +307,15 @@
             Rexbuilder_Util_Editor.elementIsDragging = false;
         },
 
+        updateFloatingElementsGridstack: function () {
+            var gridstack = this.properties.gridstackInstance;
+            if (newLayout == "masonry") {
+                gridstack.grid._float = false;
+            } else {
+                gridstack.grid._float = true;
+            }
+        },
+
         updateGridDistance: function (newSettings) {
             this.properties.gutter = newSettings.gutter;
             this.properties.gridTopSeparator = newSettings.separatorTop;
@@ -291,6 +323,7 @@
             this.properties.gridBottomSeparator = newSettings.separatorBottom;
             this.properties.gridLeftSeparator = newSettings.separatorLeft;
 
+            this.batchGridstack();
 
             this._setGutter();
             this._defineHalfSeparatorProperties();
@@ -299,12 +332,13 @@
             this._setGridPadding();
 
             var that = this;
-            var $el;
             this.$element.find(".grid-stack-item-content").each(function (i, el) {
-                $el = $(el);
-                that._updateElementPadding($el);
+                that._updateElementPadding($(el));
             });
 
+            this._defineDynamicPrivateProperties();
+            this.updateGridstackStyles();
+            this.commitGridstack();
         },
 
         updateGrid: function () {
@@ -577,7 +611,7 @@
             }
         },
 
-        updateGridstackCellHeight: function () {
+        updateGridstackStyles: function () {
             console.log("updating gridstackstyles");
             var gridstack = this.properties.gridstackInstance;
             gridstack.cellHeight(this.properties.singleHeight);
@@ -847,6 +881,7 @@
         updateAllElementsProperties: function () {
             console.log("updating elements properties");
             // andrebbe anche all'aggiunta di testo nel blocco se masonry, vediamo dopo
+
             var gallery = this;
             this.properties.editedFromBackend = false;
             this.properties.startingLayout = this.settings.galleryLayout;
@@ -864,6 +899,36 @@
             this.$element.children('.grid-stack-item:not(.grid-stack-placeholder)').each(function () {
                 gallery.updateElementAllProperties(this);
             });
+
+            //devo aspettare la fine delle animazioni
+            setTimeout(function () {
+                var blocksDimensions = [];
+                var rexID;
+                gallery.$element.children('.grid-stack-item:not(.grid-stack-placeholder)').each(function () {
+                    $elem = $(this);
+                    rexID = $elem.attr("data-rexbuilder-block-id");
+                    var x, y, w, h;
+                    x = parseInt($elem.attr("data-gs-x"));
+                    y = parseInt($elem.attr("data-gs-y"));
+                    w = parseInt($elem.attr("data-gs-width"));
+                    h = parseInt($elem.attr("data-gs-height"));
+                    var blockObj = {
+                        rexID: rexID,
+                        elem: this,
+                        x: x,
+                        y: y,
+                        w: w,
+                        h: h,
+                    };
+                    blocksDimensions.push(blockObj);
+                });
+                var actionData = {
+                    gridstackInstance: gallery.properties.gridstackInstance,
+                    blocks: blocksDimensions
+                };
+                Rexbuilder_Util_Editor.pushAction(gallery.$section, "updateSectionBlocksDisposition", actionData, gallery.properties.reverseDataGridDisposition);
+                gallery.properties.reverseDataGridDisposition = actionData;
+            }, 500);
         },
 
         updateElementAllProperties: function (elem) {
@@ -2153,6 +2218,9 @@
                     //console.log("masonry", startH);
                 } else {
                     startH = parseInt($blockData.attr("data-block_height_fixed"));
+                    if (isNaN(startH)) {
+                        startH = parseInt($elem.attr("data-gs-height"));
+                    }
                     //console.log("fixed", startH);
                 }
             } else {

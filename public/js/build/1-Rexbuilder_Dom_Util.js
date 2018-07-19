@@ -105,7 +105,23 @@ var Rexbuilder_Dom_Util = (function ($) {
                 }
                 break;
             case "updateSectionBlocksDisposition":
-
+                console.log(dataToUse);
+                var gridstack = dataToUse.gridstackInstance;
+                var blocksDimensions = dataToUse.blocks;
+                gridstack.batchUpdate();
+                var i;
+                var x, y, w, h;
+                var elem;
+                for (i = 0; i < blocksDimensions.length; i++) {
+                    x = blocksDimensions[i].x;
+                    y = blocksDimensions[i].y;
+                    w = blocksDimensions[i].w;
+                    h = blocksDimensions[i].h;
+                    elem = blocksDimensions[i].elem;
+                    console.log(x,y,w,h); 
+                    gridstack.update(elem, x, y, w, h);
+                }
+                gridstack.commit();
                 break;
             default:
                 break;
