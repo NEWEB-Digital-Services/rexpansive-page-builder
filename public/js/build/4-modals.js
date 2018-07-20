@@ -524,6 +524,18 @@
             var galleryEditorIstance = $grid.data().plugin_perfectGridGalleryEditor;
             galleryEditorIstance.addNewBlock();
 		});
+
+		$(document).on("click", ".add-new-block-image-test", function(e) {
+			var $section = $(e.target).parents(".rexpansive_section");
+			var s_id = $section.attr('data-rexlive-section-id');
+
+			var data = {
+				eventName: "rexlive:openMediaUploader",
+				s_id: s_id	
+			};
+	
+			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+		});
 		
 		// attach a click event (or whatever you want) to some element on your
 		// page
