@@ -1,2 +1,48 @@
-body {
-  background: white; }
+	ul {
+		list-style:none;
+	}
+
+	.layout__list {
+	}
+
+  .rexlive-toolbox{
+    top: 0px;
+    position: absolute;
+    width: 100%;
+    height: 100px;
+    background-color: aquamarine;
+    z-index: 200;
+  }
+
+	.layout {
+		display:flex;
+		justify-content: space-around;
+	}
+
+	.layout__setting {
+		padding: 10px;
+	}
+
+	.rexlive-layout--edit,
+	.rexlive-layout--delete {
+		cursor: pointer;
+	}
+
+	.hide-icon {
+		display:none;
+	}
+
+	.layout__item.editing .layout-value {
+		display:none;
+	}
+
+	.layout__item input {
+		max-width: 75px;
+	}
+
+	.rexlive-responsive-toolbox {
+		display:flex;
+		justify-content: space-between;
+		height: 100%;
+    	align-items: center;
+	}

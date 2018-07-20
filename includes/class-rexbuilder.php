@@ -237,7 +237,8 @@ class Rexbuilder {
 		// live builder
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_live_editing_styles' );
 		$this->loader->add_action( 'rexlive_footer_scripts', $plugin_admin, 'enqueue_live_editing_scripts' );
-		$this->loader->add_action( 'post_action_rexpansive', $plugin_admin, 'include_live_editing' );
+		$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_live_editing' );
+
 	}
 
 	/**

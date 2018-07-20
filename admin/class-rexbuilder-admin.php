@@ -168,12 +168,17 @@ class Rexbuilder_Admin {
 		$page_info = get_current_screen();
 
 		if( $this->builder_active_on_this_post_type( $page_info ) ) {
-			wp_enqueue_style( 'material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $this->version, 'all' );
-
-			wp_enqueue_style( 'font-awesome', REXPANSIVE_BUILDER_URL . 'admin/font-awesome-4.3.0/css/font-awesome.min.css', array(), $this->version, 'all' );
-			wp_enqueue_style( 'rex-custom-fonts', REXPANSIVE_BUILDER_URL . 'admin/rexpansive-font/font.css', array(), $this->version, 'all' );
-
-			wp_enqueue_style( 'admin-style', REXPANSIVE_BUILDER_URL . 'admin/css/admin.css', array(), $this->version, 'all' );
+			if( isset( $_GET['rexlive'] ) && 'true' == $_GET['rexlive'] ) {
+				// peta
+				wp_enqueue_style( 'liveStyle', REXPANSIVE_BUILDER_URL . 'admin/css/live-editor.css', array(), $this->version, 'all' );
+			} else {
+				wp_enqueue_style( 'material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $this->version, 'all' );
+	
+				wp_enqueue_style( 'font-awesome', REXPANSIVE_BUILDER_URL . 'admin/font-awesome-4.3.0/css/font-awesome.min.css', array(), $this->version, 'all' );
+				wp_enqueue_style( 'rex-custom-fonts', REXPANSIVE_BUILDER_URL . 'admin/rexpansive-font/font.css', array(), $this->version, 'all' );
+	
+				wp_enqueue_style( 'admin-style', REXPANSIVE_BUILDER_URL . 'admin/css/admin.css', array(), $this->version, 'all' );
+			}
 		}
 	}
 
@@ -230,27 +235,46 @@ class Rexbuilder_Admin {
 	 * Register the JavaScript for the admin area for production version
 	 *
 	 * @since    1.0.0
+	 * 
+	 * 
+	*			include_once("rexlive-js-templates.php");
+	*			include_once("rexlive-modals-tools.php");
 	 */
 	public function enqueue_scripts_production( $hook ) {
 		$page_info = get_current_screen();
 
 		if( $this->builder_active_on_this_post_type( $page_info ) ) {
 			wp_enqueue_media();
-			wp_enqueue_script('jquery');
-			wp_enqueue_script("jquery-ui-draggable");
+			
+			if( isset( $_GET['rexlive'] ) && 'true' == $_GET['rexlive'] ) {
+				wp_enqueue_script( 'rexbuilder-admin-config', REXPANSIVE_BUILDER_URL . 'admin/js/0-Rexpansive_Builder_Admin_Config.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( 'rexbuilder-admin-utilities', REXPANSIVE_BUILDER_URL . 'admin/js/0-Rexpansive_Builder_Admin_Utilities.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( 'rexbuilder-admin-modals', REXPANSIVE_BUILDER_URL . 'admin/js/1-Rexpansive_Builder_Admin_Modals.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( 'template-util', REXPANSIVE_BUILDER_URL . 'public/js/vendor/tmpl.min.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( 'rexlive-util-admin', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Util_Admin_Editor.js', array( 'jquery' ), $this->version, true );
+				global $post;
+				$source = get_permalink($post->ID);
+				wp_localize_script( 'rexlive-util-admin', 'live_editor_obj', array(
+					'source_url' => $source
+					) );
+				wp_enqueue_script( 'rexlive-start', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Starting.js', array( 'jquery' ), $this->version, true );
+			} else {
+				wp_enqueue_script('jquery');
+				wp_enqueue_script("jquery-ui-draggable");
 
-			wp_enqueue_script( 'ace-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/ace.js', array('jquery'),  $this->version, true );
-			wp_enqueue_script( 'ace-mode-css-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/mode-css.js', array('jquery'),  $this->version, true );
+				wp_enqueue_script( 'ace-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/ace.js', array('jquery'),  $this->version, true );
+				wp_enqueue_script( 'ace-mode-css-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/mode-css.js', array('jquery'),  $this->version, true );
 
-			wp_enqueue_script( 'admin-plugins', REXPANSIVE_BUILDER_URL . 'admin/js/plugins.js', array('jquery'),  $this->version, true );
-			wp_localize_script( 'admin-plugins', '_plugin_backend_settings', array(
-				'activate_builder'	=>	'true',
-			) );
-			wp_localize_script( 'admin-plugins', 'rexajax', array(
-				'ajaxurl'	=>	admin_url( 'admin-ajax.php' ),
-				'rexnonce'	=>	wp_create_nonce( 'rex-ajax-call-nonce' ),
-			) );
-			wp_enqueue_script( 'rexbuilder-admin', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( 'admin-plugins', REXPANSIVE_BUILDER_URL . 'admin/js/plugins.js', array('jquery'),  $this->version, true );
+				wp_localize_script( 'admin-plugins', '_plugin_backend_settings', array(
+					'activate_builder'	=>	'true',
+				) );
+				wp_localize_script( 'admin-plugins', 'rexajax', array(
+					'ajaxurl'	=>	admin_url( 'admin-ajax.php' ),
+					'rexnonce'	=>	wp_create_nonce( 'rex-ajax-call-nonce' ),
+				) );
+				wp_enqueue_script( 'rexbuilder-admin', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin.js', array( 'jquery' ), $this->version, true );
+			}
 		}
 	}
 
@@ -485,7 +509,7 @@ class Rexbuilder_Admin {
 			</div>
 		</div>
 		<div style="text-align:center">
-			<a href="<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=rexpansive' ); ?>" class="button button-primary button-large"><?php _e( 'Go Live', 'rexpansive' ); ?></a>
+			<a href="<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>" class="button button-primary button-large"><?php _e( 'Go Live', 'rexpansive' ); ?></a>
 		</div>
 	<?php
 				endif;
@@ -509,7 +533,10 @@ class Rexbuilder_Admin {
 		}
 		if ( get_user_option('rich_editing') == 'true') { 
 			if( $this->builder_active_on_this_post_type( $page_info ) ) {
-				include_once( 'partials/rexbuilder-modals-display.php' );
+				if( isset( $_GET['rexlive'] ) && 'true' == $_GET['rexlive'] ) {
+				} else {
+					include_once( 'partials/rexbuilder-modals-display.php' );
+				}
 			}
 		}
 	}
@@ -523,7 +550,10 @@ class Rexbuilder_Admin {
 		$page_info = get_current_screen();
 
 		if( $this->builder_active_on_this_post_type( $page_info ) ) {
-			include_once( 'partials/rexbuilder-templates.php' );
+			if( isset( $_GET['rexlive'] ) && 'true' == $_GET['rexlive'] ) {
+			} else {
+				include_once( 'partials/rexbuilder-templates.php' );
+			}
 		}
 	}
 
@@ -2741,4 +2771,5 @@ class Rexbuilder_Admin {
    public function enqueue_live_editing_scripts( $hook ){
 	wp_enqueue_script( 'Rexlive-Util-Admin-Editor', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Util_Admin_Editor.js', array( ), $this->version, true );		
    }
+   
 }

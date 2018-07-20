@@ -37,16 +37,6 @@
     overflow: hidden;
 }
 
-.rexlive-toolbox-fixed{
-    width: 200px;
-    height: 150px;
-    position: fixed;
-    bottom: 50%;
-    right: 0;
-    border: 3px solid #73AD21;
-    background-color: greenyellow;
-}
-
 #builder-save-grid-btn{
     width: 100px;
     height: 40px;
@@ -460,14 +450,6 @@
     display: none;
 }
 
-.rexlive-toolbox{
-    top: 0px;
-    position: absolute;
-    width: 100%;
-    height: 100px;
-    background-color: aquamarine;
-    z-index: 200;
-}
 .btn-builder-layout.active-layout-btn{
     background-color: blue;
 }
