@@ -85,7 +85,6 @@ var Rexbuilder_Dom_Util = (function ($) {
         $section.css("margin", newMargins);
     }
 
-
     var _updateImageBG = function ($target, idImage, urlImage, w, h, type) {
         console.log("setting bgImage");
         console.log(idImage, urlImage, w, h, type);
@@ -139,7 +138,6 @@ var Rexbuilder_Dom_Util = (function ($) {
     }
 
     var _updateBlocksLayout = function (dataToUse) {
-        console.log(dataToUse);
         var blocksDimensions = dataToUse.blocks;
         var i;
         var x, y, w, h;
@@ -184,10 +182,8 @@ var Rexbuilder_Dom_Util = (function ($) {
         switch (action.actionName) {
             case "updateSection":
                 if (galleryEditorIstance !== undefined) {
-                    console.log(flag ? "undoing" : "redoing");
                     Rexbuilder_Util_Editor.updatingGridstack = true;
                     galleryEditorIstance.batchGridstack();
-                    console.log(dataToUse);
                     _updateBlocksLayout(dataToUse.blocksDisposition);
                     galleryEditorIstance.updateGridSettingsModalUndoRedo(dataToUse);
                     galleryEditorIstance.updateGridstackStyles(dataToUse.blocksDisposition.cellHeight);
@@ -197,8 +193,8 @@ var Rexbuilder_Dom_Util = (function ($) {
                 }
                 break;
             case "updateSectionBlocksDisposition":
-                _updateBlocksLayout(dataToUse);
                 if (galleryEditorIstance !== undefined) {
+                    _updateBlocksLayout(dataToUse);
                     galleryEditorIstance._updateElementsSizeViewers();
                 }
                 break;

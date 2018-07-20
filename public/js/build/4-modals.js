@@ -121,103 +121,96 @@
 			// $('#_rexbuilder').val(Date.UTC(timestamp.getFullYear(),timestamp.getMonth(),timestamp.getDate()));
 		};
 
-		$(document).on(
-			'click',
-			'#backresponsive-set-cancel',
-			function (e) {
-				e.preventDefault();
-				CloseModal($('#modal-background-responsive-set').parent(
-					'.rex-modal-wrap'));
+		$(document).on('click', '#backresponsive-set-cancel', function (e) {
+			e.preventDefault();
+			CloseModal($('#modal-background-responsive-set').parent(
+				'.rex-modal-wrap'));
+		});
+
+		$(document).on('click', '#backresponsive-set-save', function (e) {
+			e.preventDefault();
+			console.log(e);
+			var sectionID = $(this).attr('data-section_id');
+			var $section = Rexbuilder_Util.$rexContainer.children('.rexpansive_section[data-rexlive-section-id="' + sectionID + '"]');
+			var $gallery = $section.find(".grid-stack-row");
+			// console.log(this);
+			var newLayout = section_config_modal_properties.$section_layout_type.filter(':checked').val();
+			var fullHeight = (true === section_config_modal_properties.$is_full.prop('checked') ? 'true' : 'false');
+			/*
+			var section_id = $(this).attr('data-section_id'),
+				color = $('.backresponsive-color-section').spectrum('get'),
+				opacity = $('.backresponsive-opacity-section').val(),
+				gutter = $('.section-set-block-gutter').val(),
+				custom_classes = $('#section-set-custom-class').val(),
+				section_width = '',
+				section_is_full_width = (true === section_config_modal_properties.$section_full.prop('checked') ? 'true' : 'false'),
+				section_is_boxed_width = (true === section_config_modal_properties.$section_boxed.prop('checked') ? 'true' : 'false'),
+				isFull = (true === section_config_modal_properties.$is_full.prop('checked') ? 'true' : ''),
+				holdGrid = (true === section_config_modal_properties.$hold_grid.prop('checked') ? 'true' : 'false'),
+				//has_small_overlay = ( true  === 	section_config_modal_properties.$has_overlay_small.prop('checked') ? 'true' : '' ), 
+				//has_medium_overlay = ( true === section_config_modal_properties.$has_overlay_medium.prop('checked') ? 'true' : '' ), 
+				//has_large_overlay = ( true === section_config_modal_properties.$has_overlay_large.prop('checked') ? 'true' : '' ), 
+				section_custom_name = section_config_modal_properties.$section_id.val(),
+				layout = section_config_modal_properties.$section_layout_type.filter(':checked').val();
+				*/
+			//var $row = $('.builder-row[data-count=' + 	section_id + ']'); $row.attr('data-layout', layout);
+
+			//reverseData: STATO PRIMA
+			var galleryEditorIstance = $gallery.data().plugin_perfectGridGalleryEditor;
+
+			var oldDisposition = galleryEditorIstance.createActionDataMoveBlocksGrid();
+
+			var reverseData = {
+				gutter: $gallery.attr("data-separator"),
+				row_separator_top: $gallery.attr("data-row-separator-top"),
+				row_separator_bottom: $gallery.attr("data-row-separator-bottom"),
+				row_separator_right: $gallery.attr("data-row-separator-right"),
+				row_separator_left: $gallery.attr("data-row-separator-left"),
+				fullHeight: $gallery.attr("data-full-height"),
+				layout: $gallery.attr("data-layout"),
+				section_width: $gallery.parent().css("max-width"),
+				dimension: $gallery.parent().hasClass("full-disposition") ? "full" : "boxed",
+				collapse_grid: $section.attr("data-rex-collapse-grid"),
+				blocksDisposition: oldDisposition
+			}
+
+			setBuilderTimeStamp();
+
+			//DA CAPIRE DOVE ANDARE PER AGGIORNARE LE INFORMAZIONI NEL DOM, PER ORA FACCIAMOLO QUA
+			$gallery.attr("data-layout", newLayout);
+			$gallery.attr("data-full-height", fullHeight);
+			/* this.$element.attr("data-layout", newLayout);
+			this.$section.children('.section-data').attr({
+				'data-layout': newLayout
+			});
+			 */
+
+			var newDisposition = galleryEditorIstance.updateGridSettingsModalUndoRedo({
+				'layout': newLayout,
+				'fullHeight': fullHeight
 			});
 
-		$(document)
-			.on(
-				'click',
-				'#backresponsive-set-save',
-				function (e) {
-					e.preventDefault();
-					console.log(e);
-					var sectionID = $(this).attr('data-section_id');
-					var $section = Rexbuilder_Util.$rexContainer.children('.rexpansive_section[data-rexlive-section-id="' + sectionID + '"]');
-					var $gallery = $section.find(".grid-stack-row");
-					// console.log(this);
-					var newLayout = section_config_modal_properties.$section_layout_type.filter(':checked').val();
-					var fullHeight = (true === section_config_modal_properties.$is_full.prop('checked') ? 'true' : 'false');
-					console.log(fullHeight);
-					/*
-					var section_id = $(this).attr('data-section_id'),
-						color = $('.backresponsive-color-section').spectrum('get'),
-						opacity = $('.backresponsive-opacity-section').val(),
-						gutter = $('.section-set-block-gutter').val(),
-						custom_classes = $('#section-set-custom-class').val(),
-						section_width = '',
-						section_is_full_width = (true === section_config_modal_properties.$section_full.prop('checked') ? 'true' : 'false'),
-						section_is_boxed_width = (true === section_config_modal_properties.$section_boxed.prop('checked') ? 'true' : 'false'),
-						isFull = (true === section_config_modal_properties.$is_full.prop('checked') ? 'true' : ''),
-						holdGrid = (true === section_config_modal_properties.$hold_grid.prop('checked') ? 'true' : 'false'),
-						//has_small_overlay = ( true  === 	section_config_modal_properties.$has_overlay_small.prop('checked') ? 'true' : '' ), 
-						//has_medium_overlay = ( true === section_config_modal_properties.$has_overlay_medium.prop('checked') ? 'true' : '' ), 
-						//has_large_overlay = ( true === section_config_modal_properties.$has_overlay_large.prop('checked') ? 'true' : '' ), 
-						section_custom_name = section_config_modal_properties.$section_id.val(),
-						layout = section_config_modal_properties.$section_layout_type.filter(':checked').val();
-						*/
-					//var $row = $('.builder-row[data-count=' + 	section_id + ']'); $row.attr('data-layout', layout);
+			//actionData: STATO DOPO
+			var actionData = {
+				gutter: $gallery.attr("data-separator"),
+				row_separator_top: $gallery.attr("data-row-separator-top"),
+				row_separator_bottom: $gallery.attr("data-row-separator-bottom"),
+				row_separator_right: $gallery.attr("data-row-separator-right"),
+				row_separator_left: $gallery.attr("data-row-separator-left"),
+				fullHeight: fullHeight,
+				layout: newLayout,
+				section_width: $gallery.parent().css("max-width"),
+				dimension: $gallery.parent().hasClass("full-disposition") ? "full" : "boxed",
+				collapse_grid: $section.attr("data-rex-collapse-grid"),
+				blocksDisposition: newDisposition
+			}
 
-					console.log("creating datas");
-					//reverseData: STATO PRIMA
-					var galleryEditorIstance = $gallery.data().plugin_perfectGridGalleryEditor;
+			Rexbuilder_Util_Editor.pushAction($section, "updateSection", actionData, reverseData);
 
-					var oldDisposition = galleryEditorIstance.createActionDataMoveBlocksGrid();
+			CloseModal($('#modal-background-responsive-set').parent('.rex-modal-wrap'));
+		});
 
-					var reverseData = {
-						gutter: $gallery.attr("data-separator"),
-						row_separator_top: $gallery.attr("data-row-separator-top"),
-						row_separator_bottom: $gallery.attr("data-row-separator-bottom"),
-						row_separator_right: $gallery.attr("data-row-separator-right"),
-						row_separator_left: $gallery.attr("data-row-separator-left"),
-						fullHeight: $gallery.attr("data-full-height"),
-						layout: $gallery.attr("data-layout"),
-						section_width: $gallery.parent().css("max-width"),
-						dimension: $gallery.parent().hasClass("full-disposition") ? "full" : "boxed",
-						collapse_grid: $section.attr("data-rex-collapse-grid"),
-						blocksDisposition: oldDisposition
-					}
 
-					setBuilderTimeStamp();
-
-					//DA CAPIRE DOVE ANDARE PER AGGIORNARE LE INFORMAZIONI NEL DOM, PER ORA FACCIAMOLO QUA
-					$gallery.attr("data-layout", newLayout);
-					$gallery.attr("data-full-height", fullHeight);
-					/* this.$element.attr("data-layout", newLayout);
-					this.$section.children('.section-data').attr({
-						'data-layout': newLayout
-					});
-					 */
-					
-					var newDisposition = galleryEditorIstance.updateGridSettingsModalUndoRedo({
-						'layout': newLayout,
-						'fullHeight': fullHeight
-					});
-
-					//actionData: STATO DOPO
-					var actionData = {
-						gutter: $gallery.attr("data-separator"),
-						row_separator_top: $gallery.attr("data-row-separator-top"),
-						row_separator_bottom: $gallery.attr("data-row-separator-bottom"),
-						row_separator_right: $gallery.attr("data-row-separator-right"),
-						row_separator_left: $gallery.attr("data-row-separator-left"),
-						fullHeight: fullHeight,
-						layout: newLayout,
-						section_width: $gallery.parent().css("max-width"),
-						dimension: $gallery.parent().hasClass("full-disposition") ? "full" : "boxed",
-						collapse_grid: $section.attr("data-rex-collapse-grid"),
-						blocksDisposition: newDisposition
-					}
-
-					Rexbuilder_Util_Editor.pushAction($section, "updateSection", actionData, reverseData);
-
-					CloseModal($('#modal-background-responsive-set').parent('.rex-modal-wrap'));
-				});
 		/*
 		 * var section_id = $(this).attr('data-section_id'), color =
 		 * $('.backresponsive-color-section').spectrum('get'), opacity =
@@ -517,85 +510,78 @@
 		// ------------------------------------------
 		var file_frame; // variable for the wp.media file_frame
 
+		$(document).on("click", ".add-new-block-image", function (e) {
+			event.preventDefault();
+
+			// if the file_frame has already been created, just reuse it
+			if (file_frame) {
+				file_frame.open();
+				return;
+			}
+            console.log(); 
+            var $section = $(e.target).parents(".rexpansive_section");
+            var $grid = $section.find(".grid-stack-row");
+            var galleryEditorIstance = $grid.data().plugin_perfectGridGalleryEditor;
+            galleryEditorIstance.addNewBlock();
+		});
+		
 		// attach a click event (or whatever you want) to some element on your
 		// page
-		$('#modal-setting-button').on(
-			'click',
-			'#background_up_img',
-			function (event) {
-				event.preventDefault();
+		$('#modal-setting-button').on('click', '#background_up_img', function (event) {
+			event.preventDefault();
 
-				// if the file_frame has already been created, just reuse it
-				if (file_frame) {
-					file_frame.open();
-					return;
-				}
-
-				file_frame = wp.media.frames.file_frame = wp.media({
-					/*
-					 * title: $( this ).data( 'uploader_title' ), button: {
-					 * text: $( this ).data( 'uploader_button_text' ), },
-					 * multiple: false // set this to true for multiple file
-					 * selection
-					 */
-				});
-
-				file_frame.on('select', function () {
-					attachment = file_frame.state().get('selection')
-						.first().toJSON();
-
-					// do something with the file here
-					$('#frontend-button').hide();
-					$('#frontend-image').attr('src', attachment.url);
-				});
-
+			// if the file_frame has already been created, just reuse it
+			if (file_frame) {
 				file_frame.open();
+				return;
+			}
+
+			file_frame = wp.media.frames.file_frame = wp.media({
+				/*
+				 * title: $( this ).data( 'uploader_title' ), button: {
+				 * text: $( this ).data( 'uploader_button_text' ), },
+				 * multiple: false // set this to true for multiple file
+				 * selection
+				 */
 			});
+
+			file_frame.on('select', function () {
+				attachment = file_frame.state().get('selection')
+					.first().toJSON();
+
+				// do something with the file here
+				$('#frontend-button').hide();
+				$('#frontend-image').attr('src', attachment.url);
+			});
+
+			file_frame.open();
+		});
 		// ------------------------------------------
-
-		$(document)
-			.on(
-				'click',
-				'.el-size-settingButton',
-				function (c) { // c -> click del mouse
-					c.preventDefault();
-					var $rexpansiveSection = $(this).parents(
-						'.rexpansive_section'); // this -> il div
-					// che crea evento
-					var $row = $($rexpansiveSection
-						.find('.perfect-grid-gallery'));
-					var sectionNumber = $row
-						.perfectGridGalleryEditor('getSectionNumber');
-					console.log(sectionNumber);
-					console.log(this);
-					// DA CONTROLLARE IL FATTO CHE SELEZIONI IL NUMERO
-					// DELLA ROW CORRETTA (sectionNumber)
-
-					$('#back-set-save').attr('data-section_id',
-						sectionNumber);
-					$('#back-set-reset').attr('data-section_id',
-						sectionNumber);
-					//OpenModal($('#modal-setting-button').parent('.rex-modal-wrap'));
-
-				});
 
 		$(document).on('click', '#back-set-reset', function (c) {
 			c.preventDefault();
 			CloseModal($('#modal-setting-button').parent('.rex-modal-wrap'));
 		});
 
-		$(document).on(
-			'click',
-			'.builder-section-config',
-			function (e) {
-				e.preventDefault();
-				var $rexpansiveSection = $(e.target).parents('.rexpansive_section');
-				console.log($rexpansiveSection);
-				var sectionID = $rexpansiveSection.attr("data-rexlive-section-id");
-				$('#backresponsive-set-save').attr('data-section_id', sectionID);
-				$('#backresponsive-set-reset').attr('data-section_id', sectionID);
-				OpenModal($('#modal-background-responsive-set').parent('.rex-modal-wrap'));
-			});
+		$(document).on('click', '.builder-section-config', function (e) {
+			e.preventDefault();
+			var $rexpansiveSection = $(e.target).parents('.rexpansive_section');
+			var sectionID = $rexpansiveSection.attr("data-rexlive-section-id");
+			$('#backresponsive-set-save').attr('data-section_id', sectionID);
+			$('#backresponsive-set-reset').attr('data-section_id', sectionID);
+			OpenModal($('#modal-background-responsive-set').parent('.rex-modal-wrap'));
+		});
+
+		$(document).on('click', '.builder-change-background', function (e) {
+			console.log("opzioni blocco");
+			e.preventDefault();
+			return;
+			var $element = $(e.target).parents('.grid-stack.item');
+			var blockRexID = $element.attr("data-rexbuilder-block-id");
+			$('#background_set_save').attr('data-block_id', blockRexID);
+			$('#background_set_cancel').attr('data-block_id', blockRexID);
+			OpenModal($('#background_block_set').parent('.rex-modal-wrap'));
+		});
 	}); // End of the DOM ready
 
 })(jQuery);

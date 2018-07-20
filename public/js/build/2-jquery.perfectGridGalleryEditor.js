@@ -201,33 +201,7 @@
         },
 
         _createFirstReverseStack: function () {
-            var blocksDimensions = [];
-            var $elem;
-            var rexID;
-
-            this.$element.children('.grid-stack-item:not(.grid-stack-placeholder)').each(function () {
-                $elem = $(this);
-                rexID = $elem.attr("data-rexbuilder-block-id");
-                var x, y, w, h;
-                x = parseInt($elem.attr("data-gs-x"));
-                y = parseInt($elem.attr("data-gs-y"));
-                w = parseInt($elem.attr("data-gs-width"));
-                h = parseInt($elem.attr("data-gs-height"));
-                var blockObj = {
-                    rexID: rexID,
-                    elem: this,
-                    x: x,
-                    y: y,
-                    w: w,
-                    h: h,
-                };
-                blocksDimensions.push(blockObj);
-            });
-
-            this.properties.reverseDataGridDisposition = {
-                gridstackInstance: this.properties.gridstackInstance,
-                blocks: blocksDimensions
-            };
+            this.properties.reverseDataGridDisposition = this.createActionDataMoveBlocksGrid();
         },
 
         clearStateGrid: function () {
@@ -296,36 +270,16 @@
             this.saveStateGrid();
 
             if (Rexbuilder_Util.editorMode) {
-                var blocksDimensions = [];
-                var $elem;
-                var rexID;
-                this.$element.children('.grid-stack-item:not(.grid-stack-placeholder)').each(function () {
-                    $elem = $(this);
-                    rexID = $elem.attr("data-rexbuilder-block-id");
-                    var x, y, w, h;
-                    x = parseInt($elem.attr("data-gs-x"));
-                    y = parseInt($elem.attr("data-gs-y"));
-                    w = parseInt($elem.attr("data-gs-width"));
-                    h = parseInt($elem.attr("data-gs-height"));
-                    var blockObj = {
-                        rexID: rexID,
-                        elem: this,
-                        x: x,
-                        y: y,
-                        w: w,
-                        h: h,
-                    };
-                    blocksDimensions.push(blockObj);
-                });
-
-                this.properties.reverseDataGridDisposition = {
-                    gridstackInstance: this.properties.gridstackInstance,
-                    blocks: blocksDimensions
-                };
+                this._createFirstReverseStack();
             }
+            /* 
+                        this.updateGridstackStyles(); 
+                        */
 
             if (newSettings.collapse_grid && !this.$section.hasClass("rex-block-grid")) {
                 this.collapseElements();
+            } else {
+                this.removeCollapseGrid();
             }
 
             this.properties.firstStartGrid = false;
@@ -723,7 +677,7 @@
                     return;
                 }
                 this.properties.singleHeight = newH;
-            } 
+            }
             var gridstack = this.properties.gridstackInstance;
             gridstack.cellHeight(this.properties.singleHeight);
             gridstack._initStyles();
@@ -819,7 +773,6 @@
                 rows = this._calculateGridHeight(),
                 i,
                 j;
-            console.log("creating empty blocks");
             var guard;
             var gridstack = this.properties.gridstackInstance;
             var w, h;
@@ -866,7 +819,6 @@
                             w: w,
                             h: h
                         };
-                        console.log(blockObj);
                         gridstack.addWidget(blockObj.el, blockObj.x, blockObj.y, blockObj.w, blockObj.h, false);
                         emptyBlocks.push(blockObj);
                     }
@@ -883,105 +835,50 @@
             return emptyBlocks;
         },
 
+        addNewBlock: function () {
+            console.log("adding new block");
+            var newEL = this.createBlock(0, 0, 2, 2);
+            console.log(newEL);
+            var gridstack = this.properties.gridstackInstance;
+            var x = 0;
+            var y = 10;
+            gridstack.addWidget(newEL, x, y, 2, 2, true, 1, 12, 1);
+        },
         // Function that creates a new empty block and returns it. The block is
         // added to gridstack and gallery
         createBlock: function (x, y, w, h) {
-
-            if (this.settings.galleryLayout == 'masonry' && h * this.settings.cellHeightMasonry < this.properties.singleWidth) {
-                return;
-            }
-
-            var divGridItem = document.createElement('div');
-            var divDragHandle = document.createElement('div');
-            var divGridStackContent = document.createElement('div');
-            var divGridItemContent = document.createElement('div');
-            var divBlockOverlay = document.createElement('div');
-            var divRexScrollbar = document.createElement('div');
-            var divTextWrap = document.createElement('div');
-            var gallery = this;
-            var gridstack = this.properties.gridstackInstance;
+            this.properties.lastIDBlock = this.properties.lastIDBlock + 1;
+            var idBlock = this.properties.lastIDBlock;
             var rexIdBlock = Rexbuilder_Util.createBlockID();
-            this.properties.numberBlocks = this.properties.numberBlocks + 1;
-            var idBlock = this.properties.numberBlocks;
-
-            gallery.properties.numberBlocks = gallery.properties.numberBlocks + 1;
-
-            $(divGridItem).attr({
-                'id': "block_" + idBlock,
-                'class': 'perfect-grid-item grid-stack-item empty-block',
-                'data-height': h,
-                'data-width': w,
-                'data-row': y + 1,
-                'data-col': x + 1,
-                'data-gs-height': h,
-                'data-gs-width': w,
-                'data-gs-y': y,
-                'data-gs-x': x,
-                'data-rexbuilder-block-id': rexIdBlock
+            tmpl.arg = "block";
+            var newElement = tmpl("tmpl-new-block", {
+                rexID: rexIdBlock,
+                id: this.properties.sectionNumber + "_" + idBlock,
+                gsWidth: w,
+                gsHeight: h,
+                gsX: x,
+                gsY: y,
+                backendHeight: 2,
+                backendWidth: 2,
+                backendX: 2,
+                backendY: 2,
             });
 
-            $(divDragHandle).attr({
-                'class': 'rexlive-block-drag-handle'
-            });
-            $(divGridStackContent).attr({
-                'class': 'grid-stack-item-content'
-            });
-            $(divGridItemContent).attr({
-                'class': 'grid-item-content'
-            });
-            $(divBlockOverlay).attr({
-                'class': 'responsive-block-overlay'
-            });
-            $(divRexScrollbar).attr({
-                'class': 'rex-custom-scrollbar'
-            });
-            $(divTextWrap).attr({
-                'class': 'text-wrap'
-            });
+            var $newEl = $(newElement);
+            $newEl.append(tmpl("tmpl-toolbox-block"));
 
-            $(divTextWrap).appendTo(divRexScrollbar);
-            $(divDragHandle).appendTo(divBlockOverlay);
-            $(divRexScrollbar).appendTo(divBlockOverlay);
-            $(divBlockOverlay).appendTo(divGridItemContent);
-            $(divGridItemContent).appendTo(divGridStackContent);
-            $(divGridStackContent).appendTo(divGridItem);
-            $(divGridItem).append(tmpl("tmpl-tool-block"));
+            /*             
+            Per quando si sposterà la generazione delle maniglie
+            $newEl.append(tmpl("tmpl-block-resize-handles", {
+                rexID: rexIdBlock
+            })); 
+            */
+            $newEl.find(".grid-item-content").prepend(tmpl("tmpl-block-drag-handle"));
 
-            this._prepareElement(divGridItem);
-            this.createElementProperties(divGridItem);
-            gridstack.addWidget(divGridItem, x, y, w, h, false);
-            this.updateSizeViewerText($(divGridItem), w, h);
+            this._prepareElement($newEl[0]);
+            this.updateSizeViewerText($newEl, w, h);
 
-            return divGridItem;
-        },
-
-        createElementProperties: function (elem) {
-            var divProperties = document.createElement('div');
-            var $elem = $(elem);
-            var pos_y = this.settings.galleryLayout == 'masonry' ? Math.round(parseInt($elem.attr('data-row')) / this.properties.singleHeight) : parseInt($elem.attr('data-row'));
-            var y = this.settings.galleryLayout == 'masonry' ? Math.round(parseInt($elem.attr('data-height')) / this.properties.singleHeight) : parseInt($elem.attr('data-height'));
-            $(divProperties).attr({
-                'style': 'display: none;',
-                'data-id': $elem.attr('id'),
-                'data-type': 'empty',
-                'data-col': $elem.attr('data-col'),
-                'data-row': pos_y,
-                'data-size_x': $elem.attr('data-width'),
-                'data-size_y': y,
-                'data-color_bg_block': '',
-                'data-image_bg_block': '',
-                'data-id_image_bg_block': '',
-                'data-type_bg_block': '',
-                'data-video_bg_id': '',
-                'data-video_bg_url': '',
-                'data-video_bg_url_vimeo': '',
-                'data-photoswipe': '',
-                'data-linkurl': '',
-                'data-image_size': 'full',
-                'data-overlay_block_color': '',
-                'data-rexbuilder-block-data-id': $elem.attr('data-rexbuilder-block-id')
-            });
-            $(divProperties).prependTo(elem);
+            return $newEl[0];
         },
 
         isEven: function (number) {
@@ -1382,10 +1279,10 @@
 
         _prepareElementEditing: function ($elem) {
             if (Rexbuilder_Util_Editor.blockCopying) {
-                this.properties.numberBlocks = this.properties.numberBlocks + 1;
+                this.properties.lastIDBlock = this.properties.lastIDBlock + 1;
                 var $elemData = $elem.children(".rexbuilder-block-data");
                 var rexId = Rexbuilder_Util.createBlockID();
-                var id = this.properties.numberBlocks;
+                var id = this.properties.lastIDBlock;
                 $elem.attr({
                     "id": "block_" + id,
                     "data-rexbuilder-block-id": rexId,
@@ -1492,7 +1389,7 @@
 
             // mouse down on another element
             $elem.mousedown(function (e) {
-                console.log("mouse down: " + $elem.data("rexbuilder-block-id"));
+                // console.log("mouse down: " + $elem.data("rexbuilder-block-id"));
                 if ($(e.target).parents(".rexlive-block-toolbox").length == 0) {
                     useDBclick = false;
                     /* 
@@ -1510,7 +1407,7 @@
                         if (e.target != dragHandle) {
                             clearTimeout(this.downTimer);
                             this.downTimer = setTimeout(function () {
-                                console.log("%c we have to drag ", "color: green");
+                                //console.log("%c we have to drag ", "color: green");
                                 $dragHandle.addClass("drag-up");
 
                                 Rexbuilder_Util_Editor.mouseDownEvent.target = dragHandle;
@@ -1528,9 +1425,9 @@
             });
 
             $elem.mouseup(function (e) {
-                console.log("mouse up: " + $elem.data("rexbuilder-block-id"));
-                console.log(e.target);
-
+                /*                 console.log("mouse up: " + $elem.data("rexbuilder-block-id"));
+                                console.log(e.target);
+                 */
                 if ($(e.target).parents(".rexlive-block-toolbox").length == 0) {
                     if (Rexbuilder_Util_Editor.elementDraggingTriggered) {
                         $dragHandle.removeClass("drag-up");
@@ -2397,8 +2294,6 @@
             var gridstack = this.properties.gridstackInstance;
             if (gridstack !== undefined) {
                 if ((this.properties.oldCellHeight != 0) && this.properties.oldCellHeight != this.properties.singleHeight && this.properties.oldLayout == "masonry") {
-                    //console.log("old dimensions");
-                    //console.log(parseInt($elem.attr("data-gs-x")), parseInt($elem.attr("data-gs-y")), parseInt($elem.attr("data-gs-width")), parseInt($elem.attr("data-gs-height")));
                     var x, y, w, h;
                     var elDim;
                     elDim = store.get(elem["attributes"]["data-rexbuilder-block-id"].value);
@@ -2406,8 +2301,6 @@
                     y = Math.round(parseInt(elDim.properties[1].y) * this.properties.oldCellHeight / this.properties.singleHeight);
                     w = w;
                     h = newH;
-                    //console.log("new dimensions");
-                    //console.log(x, y, w, h);
                     gridstack.update(elem, x, y, w, h);
                 } else {
                     if ($blockData.attr("data-custom_layout") == "true" && !this.properties.updatingSection) {
@@ -2418,7 +2311,6 @@
                     }
                 }
             }
-
 
             if (Rexbuilder_Util.editorMode) {
                 Rexbuilder_Util_Editor.elementIsResizing = false;

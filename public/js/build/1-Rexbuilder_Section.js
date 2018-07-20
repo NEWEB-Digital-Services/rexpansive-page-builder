@@ -87,10 +87,11 @@ var Rexbuilder_Section = (function ($) {
 
         $(document).on("click", ".set-section-name", function (e) {
             console.log("adding section name");
-            /* var $section = $(e.target).parents(".rexpansive_section");
+            /* 
             var newID = Math.floor(Math.random() * 1000000);
             Rexbuilder_Util_Editor.updateNavigatorItem($section, "");  */
         });
+
     }
 
     var init = function () {

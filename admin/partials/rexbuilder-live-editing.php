@@ -11,7 +11,6 @@
 
 defined( 'ABSPATH' ) or exit;
 ?>
-
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
@@ -124,6 +123,7 @@ defined( 'ABSPATH' ) or exit;
 
 	include_once("rexlive-js-templates.php");
 	include_once("rexlive-modals-tools.php");
+	wp_enqueue_media();
 ?>
 <script src="<?php echo REXPANSIVE_BUILDER_URL . 'admin/js/0-Rexpansive_Builder_Admin_Config.js'; ?>"></script>
 <script src="<?php echo REXPANSIVE_BUILDER_URL . 'admin/js/0-Rexpansive_Builder_Admin_Utilities.js'; ?>"></script>

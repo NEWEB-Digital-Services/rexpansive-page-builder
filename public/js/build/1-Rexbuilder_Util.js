@@ -224,7 +224,7 @@ var Rexbuilder_Util = (function ($) {
 
                 _updateVideos($itemData, $itemContent, targetProps["video_bg_id"], targetProps["video_mp4_url"], targetProps["video_bg_url_vimeo"], targetProps["video_bg_url_youtube"], "block", targetProps['video_has_audio'] == "1" ? true : false);
 
-                Rexbuilder_Dom_Util.updateImageBG($itemContent, isNaN(parseInt(targetProps['id_image_bg_section'])) ? "" : parseInt(targetProps['id_image_bg_section']), targetProps['image_bg_section'], parseInt(targetProps['image_width']), parseInt(targetProps['image_height']), targetProps['type_bg_image']);
+                Rexbuilder_Dom_Util.updateImageBG($itemContent, isNaN(parseInt(targetProps['id_image_bg'])) ? "" : parseInt(targetProps['id_image_bg']), targetProps['image_bg_url'], parseInt(targetProps['image_width']), parseInt(targetProps['image_height']), targetProps['type_bg_image']);
 
                 _updateElementDimensions($elem, $itemData, targetProps["gs_x"], targetProps["gs_y"], targetProps["gs_width"], targetProps["gs_height"], targetProps["gs_start_h"], gridstackInstance);
 
@@ -1099,6 +1099,7 @@ var Rexbuilder_Util = (function ($) {
                 console.log(Rexbuilder_Util_Editor.clickedLayoutID);
                 Rexbuilder_Util_Editor.buttonResized = false;
                 _edit_dom_layout(Rexbuilder_Util_Editor.clickedLayoutID);
+//                return;
             } else {
                 _edit_dom_layout(chooseLayout());
             }
@@ -1120,8 +1121,8 @@ var Rexbuilder_Util = (function ($) {
                 var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
                 if (galleryEditorIstance !== undefined) {
                     galleryEditorIstance._defineDynamicPrivateProperties();
-                    galleryEditorIstance.updateBlocksHeight();
                     galleryEditorIstance.updateGridstackStyles();
+                    galleryEditorIstance.updateBlocksHeight();
                     galleryEditorIstance = undefined;
                 }
             });
