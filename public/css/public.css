@@ -4891,6 +4891,10 @@ a.pswp-item {
   right: 0;
   cursor: pointer; }
 
+.builder-change-background {
+  left: 33%;
+  cursor: pointer; }
+
 .builder-copy-block {
   left: 66%;
   cursor: copy; }

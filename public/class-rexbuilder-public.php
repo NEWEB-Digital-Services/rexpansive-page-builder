@@ -549,24 +549,29 @@ endif;
         <div id="rexbuilder-layout-data" style="display: none;">
             <div class = "layouts-customizations"
             <?php
-if (empty($customizations_array)) {
-            echo 'data-empty-customizations="true">';
-        } else {
+            if (empty($customizations_array)) {
+                echo 'data-empty-customizations="true">';
+            } else {
             ?>
-                >
-                <?php
-echo json_encode($customizations_array);
-        }
-        ?>
+            >
+            <?php
+                echo json_encode($customizations_array);
+            }
+            ?>
             </div>
             <div class = "available-layouts">
                 <?php
-echo json_encode($layoutsAvaiable);
-        ?>
+                echo json_encode($layoutsAvaiable);
+                ?>
+            </div>
+            <div class = "available-layouts-names">
+                <?php
+                echo json_encode($customizations_names);
+                ?>
             </div>
         </div>
         <?php
-if ($editor=="true") {
+        if ($editor=="true") {
             ?>
         <button id="rex-open-ace-css-editor" class="btn-floating tooltipped" data-position="bottom" data-tooltip="<?php _e('CSS Editor', $this->plugin_name);?>">
             <i class="material-icons">&#xE314;</i><span>CSS</span><i class="material-icons">&#xE315;</i>

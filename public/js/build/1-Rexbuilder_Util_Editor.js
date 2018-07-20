@@ -5,8 +5,6 @@ var Rexbuilder_Util_Editor = (function ($) {
     var undoStackArray;
     var redoStackArray;
 
-    var testIndex;
-
     var setEndOfContenteditable = function (contentEditableElement) {
         var range, selection;
         if (document.createRange)//Firefox, Chrome, Opera, Safari, IE 9+
@@ -153,20 +151,9 @@ var Rexbuilder_Util_Editor = (function ($) {
         if (Rexbuilder_Util_Editor.editingElement && Rexbuilder_Util_Editor.editingGallery) {
             var gallery = Rexbuilder_Util_Editor.editedGallery;
             var $elem = Rexbuilder_Util_Editor.editedElement;
-
-            //$(gallery.$element).removeClass('gridActive');
-
             console.log("start editing " + $elem.attr("data-rexbuilder-block-id"));
             gallery.unFocusElementEditing($elem);
             gallery.properties.elementStartingH = parseInt($elem.attr("data-gs-height"));
-
-            /*            
-            var textWrap = $elem.find('.text-wrap')[0];
-            if (!(textWrap.text().length) || textWrap.text() == '""') {
-                $(textWrap)[0].focus();
-            } 
-            */
-            // $(textWrap.lastChild)[0].focus();
         }
     }
 
@@ -192,30 +179,32 @@ var Rexbuilder_Util_Editor = (function ($) {
         });
 
         Rexbuilder_Util.$window.on('mousedown', function (event) {
+            Rexbuilder_Util_Editor.mouseDown = true;
+            Rexbuilder_Util_Editor.mouseUp = false;
 
             console.log("mouse down window");
 
         });
 
+        Rexbuilder_Util.$window.on('mouseup', function (event) {
+            Rexbuilder_Util_Editor.mouseDown = false;
+            Rexbuilder_Util_Editor.mouseUp = true;
+            console.log("mouse up window");
+
+        });
+
 
         Rexbuilder_Util.$window.on('load', function (e) {
-            Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
-                var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
-                //galleryEditorIstance.updateGrid();
-            });
+            ;
         });
 
         Rexbuilder_Util.$window[0].addEventListener("message", receiveMessage, false);
 
         function receiveMessage(event) {
-            //console.log("event received");
             if (event.data.rexliveEvent) {
-                console.log("rexlive event");
                 var e = jQuery.Event(event.data.eventName);
                 e.settings = {};
-
                 jQuery.extend(e.settings, event.data);
-                console.log(e);
                 $(document).trigger(e);
             }
         }
@@ -258,7 +247,7 @@ var Rexbuilder_Util_Editor = (function ($) {
             performActionData: actionData,
             reverseActionData: reverseData
         }
-        console.log(action);
+        console.log(action); 
         undoStackArray.push(action);
         redoStackArray = [];
     };
@@ -481,6 +470,9 @@ var Rexbuilder_Util_Editor = (function ($) {
         this.mouseDownEvent = null;
         this.mouseUpEvent = null;
 
+        this.mouseDown = false;
+        this.mouseUp = false;
+
         this.elementDraggingTriggered = false;
 
         this.focusedElement = null;
@@ -491,9 +483,9 @@ var Rexbuilder_Util_Editor = (function ($) {
         this.undoActive = false;
         this.redoActive = false;
 
+        this.updatingGridstack = false;
         undoStackArray = [];
         redoStackArray = [];
-        testIndex = 0;
 
         _fixCustomStyleElement();
     }

@@ -165,6 +165,10 @@
 
 					console.log("creating datas");
 					//reverseData: STATO PRIMA
+					var galleryEditorIstance = $gallery.data().plugin_perfectGridGalleryEditor;
+
+					var oldDisposition = galleryEditorIstance.createActionDataMoveBlocksGrid();
+
 					var reverseData = {
 						gutter: $gallery.attr("data-separator"),
 						row_separator_top: $gallery.attr("data-row-separator-top"),
@@ -174,25 +178,10 @@
 						fullHeight: $gallery.attr("data-full-height"),
 						layout: $gallery.attr("data-layout"),
 						section_width: $gallery.parent().css("max-width"),
-						dimension: $gallery.parent().hasClass(".full-disposition") ? "full" : "boxed",
-						collapse_grid: $section.attr("data-rex-collapse-grid")
+						dimension: $gallery.parent().hasClass("full-disposition") ? "full" : "boxed",
+						collapse_grid: $section.attr("data-rex-collapse-grid"),
+						blocksDisposition: oldDisposition
 					}
-
-					//actionData: STATO DOPO
-					var actionData = {
-						gutter: $gallery.attr("data-separator"),
-						row_separator_top: $gallery.attr("data-row-separator-top"),
-						row_separator_bottom: $gallery.attr("data-row-separator-bottom"),
-						row_separator_right: $gallery.attr("data-row-separator-right"),
-						row_separator_left: $gallery.attr("data-row-separator-left"),
-						fullHeight: fullHeight,
-						layout: newLayout,
-						section_width: $gallery.parent().css("max-width"),
-						dimension: $gallery.parent().hasClass(".full-disposition") ? "full" : "boxed",
-						collapse_grid: $section.attr("data-rex-collapse-grid")
-					}
-
-					Rexbuilder_Util_Editor.pushAction($section, "updateSection", actionData, reverseData);
 
 					setBuilderTimeStamp();
 
@@ -204,10 +193,28 @@
 						'data-layout': newLayout
 					});
 					 */
-					$gallery.perfectGridGalleryEditor('updateGridSettingsModalUndoRedo', {
+					
+					var newDisposition = galleryEditorIstance.updateGridSettingsModalUndoRedo({
 						'layout': newLayout,
 						'fullHeight': fullHeight
 					});
+
+					//actionData: STATO DOPO
+					var actionData = {
+						gutter: $gallery.attr("data-separator"),
+						row_separator_top: $gallery.attr("data-row-separator-top"),
+						row_separator_bottom: $gallery.attr("data-row-separator-bottom"),
+						row_separator_right: $gallery.attr("data-row-separator-right"),
+						row_separator_left: $gallery.attr("data-row-separator-left"),
+						fullHeight: fullHeight,
+						layout: newLayout,
+						section_width: $gallery.parent().css("max-width"),
+						dimension: $gallery.parent().hasClass("full-disposition") ? "full" : "boxed",
+						collapse_grid: $section.attr("data-rex-collapse-grid"),
+						blocksDisposition: newDisposition
+					}
+
+					Rexbuilder_Util_Editor.pushAction($section, "updateSection", actionData, reverseData);
 
 					CloseModal($('#modal-background-responsive-set').parent('.rex-modal-wrap'));
 				});
