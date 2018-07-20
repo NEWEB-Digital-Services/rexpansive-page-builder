@@ -46,3 +46,12 @@
 		height: 100%;
     	align-items: center;
 	}
+/* hiding wordpress*/
+	#adminmenumain,#wpcontent,#wpfooter{
+		display: none;
+	}
+
+	.rexpansive-editor{
+		overflow:hidden;
+		background-color:grey;
+	}

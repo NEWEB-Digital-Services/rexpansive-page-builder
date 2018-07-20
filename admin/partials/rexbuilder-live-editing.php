@@ -9,56 +9,53 @@
  * @subpackage Rexbuilder/admin/partials
  */
 
-defined( 'ABSPATH' ) or exit;
+defined('ABSPATH') or exit;
 ?>
-
-<div class="rexpansive-editor" style="overflow:hidden;background-color:grey;">
 <?php
-	global $post;
-	$source = get_permalink($post->ID);
-	
-	global $layouts;
-	$layouts = get_post_meta( $post->ID, '_rex_responsive_layouts', true );
+global $post;
+$source = get_permalink($post->ID);
 
-	if( "" == $layouts ) {
-		$layouts = array(
-			array(
-				'id' => 'mobile',
-				'label' => 'Mobile',
-				'min' => '320',
-				'max' => '767',
-				'type' => 'standard'
-			),
-			array(
-				'id' => 'tablet',
-				'label' => 'Tablet',
-				'min' => '768',
-				'max' => '1024',
-				'type' => 'standard'
-			),
-			array(
-				'id' => 'default',
-				'label' => 'My Desktop',
-				'min' => '1025',
-				'max' => '',
-				'type' => 'standard'
-			),
-		);
-	}
+global $layouts;
+$layouts = get_post_meta($post->ID, '_rex_responsive_layouts', true);
 
-	include_once("rexlive-toolbox-fixed.php");
+if ("" == $layouts) {
+    $layouts = array(
+        array(
+            'id' => 'mobile',
+            'label' => 'Mobile',
+            'min' => '320',
+            'max' => '767',
+            'type' => 'standard',
+        ),
+        array(
+            'id' => 'tablet',
+            'label' => 'Tablet',
+            'min' => '768',
+            'max' => '1024',
+            'type' => 'standard',
+        ),
+        array(
+            'id' => 'default',
+            'label' => 'My Desktop',
+            'min' => '1025',
+            'max' => '',
+            'type' => 'standard',
+        ),
+    );
+}
 
-	$layoutType = get_post_meta($post->ID,'_rex_responsive_layouts',true);
+include_once "rexlive-toolbox-fixed.php";
 
-	?>
+$layoutType = get_post_meta($post->ID, '_rex_responsive_layouts', true);
+
+?>
 	<div id="rexbuilder-layout-data-backend" style="display: none;">
 		<div class = "available-layouts">
 			<?php
-				echo json_encode($layoutType); 
-			?>
+echo json_encode($layoutType);
+?>
 		</div>
 	</div>
 	<div class="rexpansive-live-frame-container" style ="width:100%;height:100vh;margin: 0 auto;">
-		<iframe id="rexpansive-live-frame" src="<?php echo $source .'?&editor=true'?>" allowfullscreen="1" style="width:100%;height:100%;border: 0px;"></iframe>
+		<iframe id="rexpansive-live-frame" src="<?php echo $source . '?&editor=true' ?>" allowfullscreen="1" style="width:100%;height:100%;border: 0px;"></iframe>
 	</div>
-</div>

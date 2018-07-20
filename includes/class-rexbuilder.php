@@ -235,10 +235,8 @@ class Rexbuilder {
 		$this->loader->add_filter( 'acf/location/rule_match/rexpansive_builder', $plugin_admin, 'acf_rule_match_rexpansive_builder', 10, 3 );
 
 		// live builder
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_live_editing_styles' );
-		$this->loader->add_action( 'rexlive_footer_scripts', $plugin_admin, 'enqueue_live_editing_scripts' );
 		$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_live_editing' );
-
+		$this->loader->add_filter( 'admin_body_class', $plugin_admin, 'rexlive_body_fix' );
 	}
 
 	/**
