@@ -168,17 +168,17 @@ class Rexbuilder_Admin {
 		$page_info = get_current_screen();
 
 		if( $this->builder_active_on_this_post_type( $page_info ) ) {
+			wp_enqueue_style( 'material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $this->version, 'all' );
+
+			wp_enqueue_style( 'font-awesome', REXPANSIVE_BUILDER_URL . 'admin/font-awesome-4.3.0/css/font-awesome.min.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'rex-custom-fonts', REXPANSIVE_BUILDER_URL . 'admin/rexpansive-font/font.css', array(), $this->version, 'all' );
+
+			wp_enqueue_style( 'admin-style', REXPANSIVE_BUILDER_URL . 'admin/css/admin.css', array(), $this->version, 'all' );
 			if( isset( $_GET['rexlive'] ) && 'true' == $_GET['rexlive'] ) {
 				// peta
+				
 				wp_enqueue_style( 'liveStyle', REXPANSIVE_BUILDER_URL . 'admin/css/live-editor.css', array(), $this->version, 'all' );
-			} else {
-				wp_enqueue_style( 'material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $this->version, 'all' );
-	
-				wp_enqueue_style( 'font-awesome', REXPANSIVE_BUILDER_URL . 'admin/font-awesome-4.3.0/css/font-awesome.min.css', array(), $this->version, 'all' );
-				wp_enqueue_style( 'rex-custom-fonts', REXPANSIVE_BUILDER_URL . 'admin/rexpansive-font/font.css', array(), $this->version, 'all' );
-	
-				wp_enqueue_style( 'admin-style', REXPANSIVE_BUILDER_URL . 'admin/css/admin.css', array(), $this->version, 'all' );
-			}
+			} 
 		}
 	}
 
@@ -2766,9 +2766,7 @@ class Rexbuilder_Admin {
    }
    
    public function rexlive_body_fix( $classes ) {
-	if( isset( $_GET['rexlive'] ) && 'true' == $_GET['rexlive'] ) {
-		   array_push( $classes, 'rexpansive-editor');
-	   }
+	   $classes .= ' rexpansive-editor ';
 	   return $classes;
    }
 }
