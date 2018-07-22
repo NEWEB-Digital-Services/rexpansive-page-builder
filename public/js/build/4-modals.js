@@ -525,6 +525,7 @@
             galleryEditorIstance.addNewBlock();
 		});
 
+		// Launch to the iframe parent the event to open the Media Uploader
 		$(document).on("click", ".add-new-block-image-test", function(e) {
 			var $section = $(e.target).parents(".rexpansive_section");
 			var s_id = $section.attr('data-rexlive-section-id');

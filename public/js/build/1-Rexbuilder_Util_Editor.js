@@ -236,6 +236,11 @@ var Rexbuilder_Util_Editor = (function ($) {
                 undoStackArray.push(action);
             }
         });
+
+        // Listen to image insertion
+        $(document).on('rexlive:insert_image', function(e) {
+            console.log(e.settings);
+        });
     }
 
     var _pushAction = function ($target, actionName, actionData, reverseData) {

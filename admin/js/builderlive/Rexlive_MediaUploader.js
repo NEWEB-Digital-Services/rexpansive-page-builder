@@ -40,15 +40,26 @@ var Rexlive_MediaUploader = (function($) {
     //on close, if there is no select files, remove all the files already selected in your main frame
     image_uploader_frame.on('close', function () {
       var selection = image_uploader_frame.state('insert-image').get('selection');
-      if (!selection.length) {
-      }
+      selection.each(function (image) {
+        if( 'undefined' !== typeof image ) {
+          var attachment = wp.media.attachment(image.attributes.id);
+          attachment.fetch();
+          selection.remove(attachment ? [attachment] : []);
+        }
+      });
     });
 
 
     image_uploader_frame.on('select', function () {
       var state = image_uploader_frame.state('insert-image');
       var selection = state.get('selection');
-      var imageArray = [];
+      var data = {
+        eventName: 'rexlive:insert_image',
+        data_to_send: {
+          info: info,
+          media: []
+        }
+      };
 
       if (!selection) return;
 
@@ -57,41 +68,35 @@ var Rexlive_MediaUploader = (function($) {
       selection.each(function (attachment) {
         var display = state.display(attachment).toJSON();
         var obj_attachment = attachment.toJSON();
-        var caption = obj_attachment.caption, options, html;
 
         // If captions are disabled, clear the caption.
         if (!wp.media.view.settings.captions)
           delete obj_attachment.caption;
-
+        
         display = wp.media.string.props(display, obj_attachment);
 
-        options = {
-          id: obj_attachment.id,
-          post_content: obj_attachment.description,
-          post_excerpt: caption
+        var to_send = {
+          media_info: obj_attachment,
+          display_info: display
         };
-
-        if (display.linkUrl)
-          options.url = display.linkUrl;
-
-          var to_send = {
-            info: info,
-            img_info: obj_attachment
-          };
-          console.log(to_send);
-        });
-
+        
+        data.data_to_send.media.push(to_send);
+      });
+      
+      // Launch image insert event to the iframe
+      Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
     });
 
     //reset selection in popup, when open the popup
     image_uploader_frame.on('open', function () {
       var selection = image_uploader_frame.state('insert-image').get('selection');
-
       //remove all the selection first
       selection.each(function (image) {
-        var attachment = wp.media.attachment(image.attributes.id);
-        attachment.fetch();
-        selection.remove(attachment ? [attachment] : []);
+        if( 'undefined' !== typeof image ) {
+          var attachment = wp.media.attachment(image.attributes.id);
+          attachment.fetch();
+          selection.remove(attachment ? [attachment] : []);
+        }
       });
     });
 
