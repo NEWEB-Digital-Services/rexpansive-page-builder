@@ -26,6 +26,7 @@ var Rexbuilder_Util_Editor = (function ($) {
     }
 
     var deleteBlock = function ($elem) {
+        //creare piatto per pila
         var gridstack = $elem.parents('.grid-stack-row').data("gridstack");
         gridstack.removeWidget($elem, false);
         $elem.addClass("removing_block");
@@ -44,10 +45,10 @@ var Rexbuilder_Util_Editor = (function ($) {
             e.preventDefault();
             e.stopPropagation();
             var $elem = $(e.target).parents(".grid-stack-item");
-            //creare piatto per pila
             deleteBlock($elem);
         });
 
+        // fixare l'id del blocco
         $(document).on('click', '.builder-copy-block', function (e) {
             e.preventDefault();
             e.stopPropagation();
@@ -181,28 +182,22 @@ var Rexbuilder_Util_Editor = (function ($) {
 
         });
 
+        // if "ESC" pressed end editing element
         Rexbuilder_Util.$window.on('keydown', function (event) {
             if (Rexbuilder_Util_Editor.editingGallery && event.keyCode == 27) {
                 Rexbuilder_Util_Editor.endEditingElement();
             }
-
         });
 
         Rexbuilder_Util.$window.on('mousedown', function (event) {
             Rexbuilder_Util_Editor.mouseDown = true;
             Rexbuilder_Util_Editor.mouseUp = false;
-
-            console.log("mouse down window");
-
         });
 
         Rexbuilder_Util.$window.on('mouseup', function (event) {
             Rexbuilder_Util_Editor.mouseDown = false;
             Rexbuilder_Util_Editor.mouseUp = true;
-            console.log("mouse up window");
-
         });
-
 
         Rexbuilder_Util.$window.on('load', function (e) {
             ;
@@ -222,6 +217,8 @@ var Rexbuilder_Util_Editor = (function ($) {
 
     var addDocumentListeners = function () {
         $(document).on("rexlive:changeLayout", function (event) {
+            undoStackArray = [];
+            redoStackArray = [];
             Rexbuilder_Util_Editor.buttonResized = true;
             Rexbuilder_Util_Editor.clickedLayoutID = event.settings.selectedLayoutName;
         });
@@ -245,6 +242,10 @@ var Rexbuilder_Util_Editor = (function ($) {
                 Rexbuilder_Dom_Util.performAction(action, true);
                 undoStackArray.push(action);
             }
+        });
+
+        $(document).on("rexlive:galleryReady", function (e) {
+            console.log(e); 
         });
     }
 
@@ -285,14 +286,6 @@ var Rexbuilder_Util_Editor = (function ($) {
             redo: redoStackArray
         }
         return stacks;
-    }
-
-    var sendParentIframeMessage = function (data) {
-        var infos = {
-            rexliveEvent: true
-        };
-        jQuery.extend(infos, data);
-        window.parent.postMessage(infos, '*');
     }
 
     var sendParentIframeMessage = function (data) {

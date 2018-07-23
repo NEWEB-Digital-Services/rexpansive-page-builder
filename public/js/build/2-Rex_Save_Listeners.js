@@ -259,11 +259,14 @@ var Rex_Save_Listeners = (function ($) {
                 name: "self",
                 props: {}
             }
-            console.log(layoutName);
+
             if (layoutName == "default" || checkEditsSection($section)) {
-                console.log("saving: " + "self");
                 section_props.props = createSectionProperties($section, "customLayout", layoutName);
                 Rexbuilder_Util.activeLayout = layoutName;
+            } else {
+                if (Rexbuilder_Util.viewport().width < 1025) {
+                    section_props.props["collapse_grid"] = true;
+                }
             }
             targets.push(section_props);
 
@@ -625,7 +628,7 @@ var Rex_Save_Listeners = (function ($) {
             row_margin_left = $section.css("margin-left").replace("px", "");
 
             rexlive_section_id = $section.attr("data-rexlive-section-id");
-            collapse_grid = $section.attr("data-rex-collapse-grid");
+            collapse_grid = typeof $section.attr("data-rex-collapse-grid") == "undefined" ? false : $section.attr("data-rex-collapse-grid");
 
             if (mode == "shortcode") {
                 output = '[RexpansiveSection'
@@ -676,7 +679,7 @@ var Rex_Save_Listeners = (function ($) {
 
                 var props = {};
 
-                props["collapse_grid"] = false;
+                props["collapse_grid"] = collapse_grid;
                 props["hide"] = false;
                 props["section_name"] = section_name;
                 props["type"] = type;

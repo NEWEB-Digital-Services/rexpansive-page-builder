@@ -508,36 +508,33 @@
 
 		// ----------------------------------
 		// ------------------------------------------
-		var file_frame; // variable for the wp.media file_frame
 
 		$(document).on("click", ".add-new-block-image", function (e) {
 			event.preventDefault();
 
-			// if the file_frame has already been created, just reuse it
-			if (file_frame) {
-				file_frame.open();
-				return;
+			var $section = $(e.target).parents(".rexpansive_section");
+			var $grid = $section.find(".grid-stack-row");
+			var galleryEditorIstance = $grid.data().plugin_perfectGridGalleryEditor;
+			if (galleryEditorIstance.settings.galleryLayout == "fixed") {
+				galleryEditorIstance.addNewBlockFixed();
+			} else {
+				galleryEditorIstance.addNewBlockMasonry();
 			}
-            console.log(); 
-            var $section = $(e.target).parents(".rexpansive_section");
-            var $grid = $section.find(".grid-stack-row");
-            var galleryEditorIstance = $grid.data().plugin_perfectGridGalleryEditor;
-            galleryEditorIstance.addNewBlock();
 		});
 
 		// Launch to the iframe parent the event to open the Media Uploader
-		$(document).on("click", ".add-new-block-image-test", function(e) {
+		$(document).on("click", ".add-new-block-image-test", function (e) {
 			var $section = $(e.target).parents(".rexpansive_section");
 			var s_id = $section.attr('data-rexlive-section-id');
 
 			var data = {
 				eventName: "rexlive:openMediaUploader",
-				s_id: s_id	
+				s_id: s_id
 			};
-	
+
 			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 		});
-		
+
 		// attach a click event (or whatever you want) to some element on your
 		// page
 		$('#modal-setting-button').on('click', '#background_up_img', function (event) {

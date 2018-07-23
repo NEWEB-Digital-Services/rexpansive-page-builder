@@ -45,10 +45,6 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
     var $responsiveToolbar = $(".rexlive-responsive-toolbox");
     var $layoutData = $("#rexbuilder-layout-data-backend");
 
-    $(document).on('click', '.btn-new-layout', function (e) {
-      console.log("creating new layout");
-    });
-
     $(document).on('click', '.btn-builder-layout', function (e) {
       var $btn = $(e.target);
       var btnName = $btn.data("name");
@@ -99,8 +95,12 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
         if ($btn.data("min-width") != "") {
           $frameContainer.css("width", $btn.data("min-width"));
+          $frameContainer.css("min-width", "");
         } else {
           $frameContainer.css("width", "100%");
+          if(activeLayoutPage == "default"){
+            $frameContainer.css("min-width", "1024px");
+          }
         }
       }
     });

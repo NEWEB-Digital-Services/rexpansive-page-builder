@@ -137,9 +137,11 @@ var Rexbuilder_Util = (function ($) {
         console.log(Rexbuilder_Util.activeLayout);
         //return;
         if (chosenLayoutName == Rexbuilder_Util.activeLayout) {
-            return;
+            if (chooseLayout == "default" && _viewport().width > 1024) {
+                return;
+            }
         }
-
+        console.log("why do u do dis");
         Rexbuilder_Util.$rexContainer.attr("data-rex-layout-selected", chosenLayoutName);
         var $resposiveData = $("#rexbuilder-layout-data");
 
@@ -151,6 +153,7 @@ var Rexbuilder_Util = (function ($) {
         }
 
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+
 
         if (($resposiveData.children(".layouts-customizations").data("empty-customizations") == "true") || $resposiveData.children(".layouts-customizations").data("empty-customizations")) {
             return;
@@ -176,14 +179,20 @@ var Rexbuilder_Util = (function ($) {
         }
 
         var customSections;
-
-        if (i == layoutData.length) {
-            //console.log("loading default layout");
+        var collapseElementsGrid = false;
+        if (i == layoutData.length || chosenLayoutName == "default") {
+            console.log(_viewport().width);
+            if (_viewport().width < 1025) {
+                collapseElementsGrid = true;
+            }
             customSections = {};
         } else {
             customSections = layoutSelected.sections;
         }
         //console.log("updaiting dom");
+        // removing collapsed from grid
+        Rexbuilder_Util.removeCollapsedGrids();
+
         var sectionRexId;
 
         var targetName;
@@ -199,13 +208,13 @@ var Rexbuilder_Util = (function ($) {
         console.log("applying data");
         console.log(mergedEdits);
 
+        Rexbuilder_Util.domUpdaiting = true;
         $.each(mergedEdits, function (i, section) {
             sectionRexId = section.section_rex_id;
             $section = Rexbuilder_Util.$rexContainer.children('section[data-rexlive-section-id="' + sectionRexId + '"]');
             $gallery = $section.find(".grid-stack-row");
             var galleryData = $gallery.data();
             if (galleryData !== undefined) {
-                Rexbuilder_Util.domUpdaiting = true;
                 var galleryEditorIstance = $gallery.data().plugin_perfectGridGalleryEditor;
                 if (galleryEditorIstance !== undefined) {
                     var gridstackInstance = galleryEditorIstance.properties.gridstackInstance;
@@ -368,24 +377,25 @@ var Rexbuilder_Util = (function ($) {
                 }
             }
 
-            updateSection($section, $gallery, targets[0].props);
+            updateSection($section, $gallery, targets[0].props, collapseElementsGrid);
 
             if (galleryData !== undefined) {
-                Rexbuilder_Util.domUpdaiting = false;
                 var galleryEditorIstance = $gallery.data().plugin_perfectGridGalleryEditor;
                 if (galleryEditorIstance !== undefined) {
                     galleryEditorIstance.commitGridstack();
                 }
             }
         });
+        Rexbuilder_Util.domUpdaiting = false;
 
         if (!Rexbuilder_Util.editorMode) {
             initPhotoSwipe(".photoswipe-gallery");
         }
     }
 
-    var updateSection = function ($section, $gallery, targetProps) {
+    var updateSection = function ($section, $gallery, targetProps, collapseElementsGrid) {
         //console.log("setting section properties: " + targetName);
+        console.log("force to collapse", collapseElementsGrid);
         var $sectionData = $section.children(".section-data");
 
         Rexbuilder_Dom_Util.updateImageBG($section, isNaN(parseInt(targetProps['id_image_bg_section'])) ? "" : parseInt(targetProps['id_image_bg_section']), targetProps['image_bg_section'], parseInt(targetProps['image_width']), parseInt(targetProps['image_height']));
@@ -404,7 +414,7 @@ var Rexbuilder_Util = (function ($) {
             layout: targetProps['layout'],
             section_width: targetProps['section_width'],
             dimension: targetProps['dimension'],
-            collapse_grid: targetProps['collapse_grid'],
+            collapse_grid: targetProps['collapse_grid'].toString() == "true" || collapseElementsGrid,
         }
 
         Rexbuilder_Dom_Util.updateRow($section, $sectionData, $gallery, rowSettings);
@@ -1091,6 +1101,7 @@ var Rexbuilder_Util = (function ($) {
             console.log("window resized");
             Rexbuilder_Util.windowIsResizing = true;
             if (Rexbuilder_Util.editorMode && !Rexbuilder_Util_Editor.buttonResized) {
+                console.log("editor mode, no button clicked");
                 Rexbuilder_Util.windowIsResizing = false;
                 return;
             }
@@ -1099,15 +1110,22 @@ var Rexbuilder_Util = (function ($) {
                 console.log(Rexbuilder_Util_Editor.clickedLayoutID);
                 Rexbuilder_Util_Editor.buttonResized = false;
                 _edit_dom_layout(Rexbuilder_Util_Editor.clickedLayoutID);
-                //                return;
+                /*
+                Rexbuilder_Util.windowIsResizing = false;
+                return;
+                */
             } else {
                 _edit_dom_layout(chooseLayout());
             }
 
+            console.log("DOM READY");
+
             if (Rexbuilder_Util.activeLayout != Rexbuilder_Util.oldLayout) {
                 Rexbuilder_Util.oldLayout = Rexbuilder_Util.activeLayout;
+                /*                 
                 Rexbuilder_Util.windowIsResizing = false;
-                return;
+                return; 
+                */
             }
 
             Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
@@ -1126,7 +1144,7 @@ var Rexbuilder_Util = (function ($) {
                     galleryEditorIstance = undefined;
                 }
             });
-
+            console.log("endingasiodwqoefhwefhweqfhwqeifjqpoifwe-pqoif");
             Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
                 var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
                 if (galleryEditorIstance !== undefined) {
@@ -1211,6 +1229,15 @@ var Rexbuilder_Util = (function ($) {
         return $section.find(".grid-stack-row").data().plugin_perfectGridGalleryEditor;
     }
 
+    var removeCollapsedGrids = function () {
+        Rexbuilder_Util.$rexContainer.children(".rexpansive_section").each(function () {
+            if (Rexbuilder_Util.galleryPluginActive) {
+                _getGalleryInstance($(this)).removeCollapseGrid();
+            }
+        });
+    }
+
+
     // init the utilities
     var init = function () {
         this.firstStart = true;
@@ -1251,6 +1278,7 @@ var Rexbuilder_Util = (function ($) {
             overflowBehavior: { x: "hidden" },
             autoUpdate: false
         };
+        this.galleryPluginActive = false;
         this.firstStart = false;
     }
 
@@ -1281,7 +1309,8 @@ var Rexbuilder_Util = (function ($) {
         defaultLayoutSections: defaultLayoutSections,
         edit_dom_layout: _edit_dom_layout,
         smoothScroll: _smoothScroll,
-        getGalleryInstance: _getGalleryInstance
+        getGalleryInstance: _getGalleryInstance,
+        removeCollapsedGrids: removeCollapsedGrids
     };
 
 })(jQuery);

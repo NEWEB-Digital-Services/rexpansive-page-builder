@@ -32,7 +32,7 @@ var Rexbuilder_Dom_Util = (function ($) {
             fullHeight = typeof rowSettings.full_height === "undefined" || layout == "masonry" ? false : rowSettings.full_height,
             sectionWidth = typeof rowSettings.section_width === "undefined" ? "100%" : "" + rowSettings.section_width,
             widthType = typeof rowSettings.dimension === "undefined" ? "full" : rowSettings.dimension,
-            collapseElements = typeof rowSettings.collapse_grid === "undefined" ? false : (rowSettings.collapse_grid == "true" ? true : false);
+            collapseElements = typeof rowSettings.collapse_grid === "undefined" ? false : (rowSettings.collapse_grid.toString() == "true" ? true : false);
 
         var $galleryParent = $galleryElement.parent();
 
@@ -56,7 +56,6 @@ var Rexbuilder_Dom_Util = (function ($) {
 
         $sectionData.attr("data-section_width", sectionWidth);
         $sectionData.attr("data-dimension", widthType);
-
         $sectionData.attr("data-responsive_collapse", collapseElements);
 
         $section.attr("data-rex-collapse-grid", collapseElements);

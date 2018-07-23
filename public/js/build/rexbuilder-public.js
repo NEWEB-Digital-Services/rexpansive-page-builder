@@ -198,6 +198,8 @@ var Rexbuilder_App = (function ($) {
 				});
 			}
 		}
+
+		Rexbuilder_Util.galleryPluginActive = true;
 	};
 
 	// Launch Photoswipe
