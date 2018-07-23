@@ -272,9 +272,6 @@
             if (Rexbuilder_Util.editorMode) {
                 this._createFirstReverseStack();
             }
-            /* 
-                        this.updateGridstackStyles(); 
-                        */
 
             if (newSettings.collapse_grid && !this.$section.hasClass("rex-block-grid")) {
                 this.collapseElements();
@@ -475,14 +472,16 @@
         getElementBottomTop: function () {
             var nodes = [];
             this.$element.children('.grid-stack-item').each(function (i, e) {
-                var el = e;
-                el.x = parseInt(e['attributes']['data-gs-x'].value);
-                el.y = parseInt(e['attributes']['data-gs-y'].value);
-                el.w = parseInt(e['attributes']['data-gs-width'].value);
-                el.h = parseInt(e['attributes']['data-gs-height'].value);
-                el.xw = el.x + el.w;
-                el.yh = el.y + el.h;
-                nodes.push(el);
+                if (!$(el).hasClass("removing_block")) {
+                    var el = e;
+                    el.x = parseInt(e['attributes']['data-gs-x'].value);
+                    el.y = parseInt(e['attributes']['data-gs-y'].value);
+                    el.w = parseInt(e['attributes']['data-gs-width'].value);
+                    el.h = parseInt(e['attributes']['data-gs-height'].value);
+                    el.xw = el.x + el.w;
+                    el.yh = el.y + el.h;
+                    nodes.push(el);
+                }
             });
             return (lodash.sortBy(nodes, [function (o) { return o.yh; }, function (o) { return o.xw; }])).reverse();
         },
@@ -835,15 +834,13 @@
             return emptyBlocks;
         },
 
-        addNewBlock: function () {
-            console.log("adding new block");
-            var newEL = this.createBlock(0, 0, 2, 2);
-            console.log(newEL);
+        addNewBlockFixed: function () {
+            var $newEL = this.createBlock(0, 0, 2, 2);
             var gridstack = this.properties.gridstackInstance;
-            var x = 0;
-            var y = 10;
-            gridstack.addWidget(newEL, x, y, 2, 2, true, 1, 12, 1);
+            gridstack.addWidget($newEL[0], 0, 0, 2, 2, true, 1, 12, 1);
+            return $newEL;
         },
+
         // Function that creates a new empty block and returns it. The block is
         // added to gridstack and gallery
         createBlock: function (x, y, w, h) {
@@ -858,10 +855,10 @@
                 gsHeight: h,
                 gsX: x,
                 gsY: y,
-                backendHeight: 2,
-                backendWidth: 2,
-                backendX: 2,
-                backendY: 2,
+                backendHeight: h,
+                backendWidth: w,
+                backendX: x + 1,
+                backendY: y + 1,
             });
 
             var $newEl = $(newElement);
@@ -878,7 +875,7 @@
             this._prepareElement($newEl[0]);
             this.updateSizeViewerText($newEl, w, h);
 
-            return $newEl[0];
+            return $newEl;
         },
 
         isEven: function (number) {

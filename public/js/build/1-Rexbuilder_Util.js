@@ -1099,7 +1099,7 @@ var Rexbuilder_Util = (function ($) {
                 console.log(Rexbuilder_Util_Editor.clickedLayoutID);
                 Rexbuilder_Util_Editor.buttonResized = false;
                 _edit_dom_layout(Rexbuilder_Util_Editor.clickedLayoutID);
-//                return;
+                //                return;
             } else {
                 _edit_dom_layout(chooseLayout());
             }
@@ -1207,6 +1207,9 @@ var Rexbuilder_Util = (function ($) {
         );
     }
 
+    var _getGalleryInstance = function ($section) {
+        return $section.find(".grid-stack-row").data().plugin_perfectGridGalleryEditor;
+    }
 
     // init the utilities
     var init = function () {
@@ -1277,7 +1280,8 @@ var Rexbuilder_Util = (function ($) {
         responsiveLayouts: responsiveLayouts,
         defaultLayoutSections: defaultLayoutSections,
         edit_dom_layout: _edit_dom_layout,
-        smoothScroll: _smoothScroll
+        smoothScroll: _smoothScroll,
+        getGalleryInstance: _getGalleryInstance
     };
 
 })(jQuery);

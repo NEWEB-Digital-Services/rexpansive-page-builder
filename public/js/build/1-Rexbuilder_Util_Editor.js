@@ -25,17 +25,27 @@ var Rexbuilder_Util_Editor = (function ($) {
         }
     }
 
+    var deleteBlock = function ($elem) {
+        var gridstack = $elem.parents('.grid-stack-row').data("gridstack");
+        gridstack.removeWidget($elem, false);
+        $elem.addClass("removing_block");
+    };
+
+    // funzione per il redo dell'eliminazione (da testare e finire)
+    var recreateBlock = function ($elem) {
+        var gridstack = $elem.parents('.grid-stack-row').data("gridstack");
+        gridstack.addWidget($elem[0]);
+        $elem.removeClass("removing_block");
+    };
+
     var addBlockToolboxListeners = function () {
 
         $(document).on('click', '.builder-delete-block', function (e) {
             e.preventDefault();
             e.stopPropagation();
-
-            console.log("stopPropagation");
-            var $elem = $(e.currentTarget).parents('.grid-stack-item');
-            var grid = $elem.parents('.grid-stack-row').data("gridstack");
-            grid.removeWidget($elem, false);
-            $elem.addClass("removing_block");
+            var $elem = $(e.target).parents(".grid-stack-item");
+            //creare piatto per pila
+            deleteBlock($elem);
         });
 
         $(document).on('click', '.builder-copy-block', function (e) {
@@ -236,11 +246,6 @@ var Rexbuilder_Util_Editor = (function ($) {
                 undoStackArray.push(action);
             }
         });
-
-        // Listen to image insertion
-        $(document).on('rexlive:insert_image', function(e) {
-            console.log(e.settings);
-        });
     }
 
     var _pushAction = function ($target, actionName, actionData, reverseData) {
@@ -252,7 +257,7 @@ var Rexbuilder_Util_Editor = (function ($) {
             performActionData: actionData,
             reverseActionData: reverseData
         }
-        console.log(action); 
+        console.log(action);
         undoStackArray.push(action);
         redoStackArray = [];
     };

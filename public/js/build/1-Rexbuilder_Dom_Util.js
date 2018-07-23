@@ -1,6 +1,5 @@
 var Rexbuilder_Dom_Util = (function ($) {
     'use strict';
-
     /**
      * 
      * @param {*} $section section to update
