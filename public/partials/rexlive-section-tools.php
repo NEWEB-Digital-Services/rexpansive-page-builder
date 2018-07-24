@@ -37,12 +37,16 @@ defined('ABSPATH') or exit;
 		N
 	</button>
 
-	<button class="tool-button btn-floating add-new-block-image tooltipped waves-effect waves-light">
+	<button class="tool-button btn-floating add-new-block-empty tooltipped waves-effect waves-light">
 		+
 	</button>
 
-	<button class="tool-button btn-floating add-new-block-image-test tooltipped waves-effect waves-light" style="left:40%">
+	<button class="tool-button btn-floating add-new-block-image tooltipped waves-effect waves-light">
 		i
+	</button>
+
+	<button class="tool-button btn-floating add-new-block-text tooltipped waves-effect waves-light">
+		t
 	</button>
 
 	<button class="tool-button btn-floating builder-delete-row waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexspansive');?>">

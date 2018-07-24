@@ -49,7 +49,7 @@ var Rexlive_MediaUploader = (function($) {
       });
     });
 
-
+    
     image_uploader_frame.on('select', function () {
       var state = image_uploader_frame.state('insert-image');
       var selection = state.get('selection');

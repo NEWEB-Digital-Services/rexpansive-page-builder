@@ -92,6 +92,38 @@ var Rexbuilder_Section = (function ($) {
             Rexbuilder_Util_Editor.updateNavigatorItem($section, "");  */
         });
 
+        $(document).on("click", ".add-new-block-empty", function (e) {
+            event.preventDefault();
+            var galleryEditorIstance = $(e.target).parents(".rexpansive_section").find(".grid-stack-row").data().plugin_perfectGridGalleryEditor;
+            galleryEditorIstance.createNewBlock(galleryEditorIstance.settings.galleryLayout);
+        });
+
+        // Launch to the iframe parent the event to open the Media Uploader
+        $(document).on("click", ".add-new-block-image", function (e) {
+            var $section = $(e.target).parents(".rexpansive_section");
+            var s_id = $section.attr('data-rexlive-section-id');
+            var data = {
+                eventName: "rexlive:openMediaUploader",
+            };
+
+            Rexbuilder_Util_Editor.sectionAddingElementRexID = s_id;
+            Rexbuilder_Util_Editor.sectionAddingElementObj = $section;
+
+            Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+        });
+
+        $(document).on("click", ".add-new-block-text", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+
+            var galleryEditorIstance = $(e.target).parents(".rexpansive_section").find(".grid-stack-row").data().plugin_perfectGridGalleryEditor;
+            var $elem = galleryEditorIstance.createNewBlock(galleryEditorIstance.settings.galleryLayout);
+            var event = jQuery.Event("mouseup");
+            event.target = $elem.find(".rexlive-block-drag-handle");
+            event.offsetY = 0;
+            $elem.trigger(event);
+        });
     }
 
     var init = function () {

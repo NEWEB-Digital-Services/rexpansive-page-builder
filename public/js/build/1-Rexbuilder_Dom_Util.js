@@ -1,27 +1,7 @@
 var Rexbuilder_Dom_Util = (function ($) {
     'use strict';
-    /**
-     * 
-     * @param {*} $section section to update
-     * @param {*} $sectionData section data to update
-     * @param {*} $galleryElement gallery element
-     * @param {*} gutter distance between blocks
-     * @param {*} separatorTop distance from top of section (px)
-     * @param {*} separatorBottom distance from bottom of section (px)
-     * @param {*} separatorRight distance from right of section (px)
-     * @param {*} separatorLeft distance from left of section (px)
-     * @param {*} fullHeight true if section has portrait height
-     * @param {*} layout fixed or masonry
-     * @param {*} sectionWidth width of grid (px or %)
-     * @param {*} widthType full or boxed
-     * @param {*} collapseElements true if elements have to collapse
-     */
+
     var _updateRow = function ($section, $sectionData, $galleryElement, rowSettings) {
-
-        console.log("data row received");
-        console.log($galleryElement);
-        console.log(rowSettings);
-
         var
             gutter = typeof rowSettings.gutter === "undefined" ? 20 : parseInt(rowSettings.gutter),
             separatorTop = typeof rowSettings.row_separator_top === "undefined" ? gutter : parseInt(rowSettings.row_separator_top),
@@ -32,9 +12,8 @@ var Rexbuilder_Dom_Util = (function ($) {
             fullHeight = typeof rowSettings.full_height === "undefined" || layout == "masonry" ? false : rowSettings.full_height,
             sectionWidth = typeof rowSettings.section_width === "undefined" ? "100%" : "" + rowSettings.section_width,
             widthType = typeof rowSettings.dimension === "undefined" ? "full" : rowSettings.dimension,
-            collapseElements = typeof rowSettings.collapse_grid === "undefined" ? false : (rowSettings.collapse_grid.toString() == "true" ? true : false);
-
-        var $galleryParent = $galleryElement.parent();
+            collapseElements = typeof rowSettings.collapse_grid === "undefined" ? false : (rowSettings.collapse_grid.toString() == "true" ? true : false),
+            $galleryParent = $galleryElement.parent();
 
         if (widthType == "full") {
             $galleryParent.removeClass("center-disposition");
@@ -84,21 +63,20 @@ var Rexbuilder_Dom_Util = (function ($) {
     }
 
     var _updateImageBG = function ($target, idImage, urlImage, w, h, type) {
-        console.log("setting bgImage");
-        console.log(idImage, urlImage, w, h, type);
+        var $targetData = null;
+        var targetType = "";
         if ($target.hasClass("rexpansive_section")) {
-            var $targetData = $target.children("section-data");
-            var targetType = "section";
+            $targetData = $target.children("section-data");
+            targetType = "section";
             type = "";
-			/* //console.log($target, idImage, urlImage, w, h, type);
-			return; */
         } else if ($target.hasClass("grid-item-content")) {
-            var $targetData = $target.parents(".grid-stack-item").children("rexbuilder-block-data");
-            var targetType = "block";
+            $targetData = $target.parents(".grid-stack-item").children(".rexbuilder-block-data");
+            targetType = "block";
         } else {
+            $targetData = undefined;
+            targetType = undefined;
             return;
         }
-
         if (idImage == "") {
             $targetData.attr('data-id_image_bg_' + targetType, "");
             $target.attr('data-background_image_width', "");
@@ -124,6 +102,7 @@ var Rexbuilder_Dom_Util = (function ($) {
             $target.attr('data-background_image_height', h);
             $targetData.attr('data-id_image_bg_' + targetType, idImage);
             $targetData.attr('data-type_bg_' + targetType, type);
+            $targetData.attr('data-image_bg_' + targetType, urlImage);
             if (type == "natural") {
                 $target.addClass("natural-image-background");
                 $target.removeClass("full-image-background");
@@ -157,6 +136,14 @@ var Rexbuilder_Dom_Util = (function ($) {
         }
     }
 
+    var _updateRemovingBlock = function ($elem, hasToBeRemoved, galleryEditorIstance) {
+        if (hasToBeRemoved) {
+            galleryEditorIstance.removeBlock($elem);
+        } else {
+            galleryEditorIstance.reAddBlock($elem);
+        }
+    };
+
     var _performAction = function (action, flag) {
 
         console.log("performing action");
@@ -182,9 +169,11 @@ var Rexbuilder_Dom_Util = (function ($) {
                 if (galleryEditorIstance !== undefined) {
                     Rexbuilder_Util_Editor.updatingGridstack = true;
                     galleryEditorIstance.batchGridstack();
+
                     _updateBlocksLayout(dataToUse.blocksDisposition);
                     galleryEditorIstance.updateGridSettingsModalUndoRedo(dataToUse);
                     galleryEditorIstance.updateGridstackStyles(dataToUse.blocksDisposition.cellHeight);
+
                     galleryEditorIstance.commitGridstack();
                     Rexbuilder_Util_Editor.updatingGridstack = false;
                     galleryEditorIstance._updateElementsSizeViewers();
@@ -195,6 +184,14 @@ var Rexbuilder_Dom_Util = (function ($) {
                     _updateBlocksLayout(dataToUse);
                     galleryEditorIstance._updateElementsSizeViewers();
                 }
+                break;
+            //Used to delete or recreate block
+            case "updateBlockVisibility":
+                if (galleryEditorIstance !== undefined) {
+                    _updateRemovingBlock(dataToUse.targetElement, dataToUse.hasToBeRemoved, dataToUse.galleryInstance);
+                }
+                break;
+            case "hideBlock":
                 break;
             default:
                 break;

@@ -25,27 +25,16 @@ var Rexbuilder_Util_Editor = (function ($) {
         }
     }
 
-    var deleteBlock = function ($elem) {
-        //creare piatto per pila
-        var gridstack = $elem.parents('.grid-stack-row').data("gridstack");
-        gridstack.removeWidget($elem, false);
-        $elem.addClass("removing_block");
-    };
-
-    // funzione per il redo dell'eliminazione (da testare e finire)
-    var recreateBlock = function ($elem) {
-        var gridstack = $elem.parents('.grid-stack-row').data("gridstack");
-        gridstack.addWidget($elem[0]);
-        $elem.removeClass("removing_block");
-    };
-
     var addBlockToolboxListeners = function () {
 
         $(document).on('click', '.builder-delete-block', function (e) {
             e.preventDefault();
             e.stopPropagation();
+            Rexbuilder_Util_Editor.removingBlocks = true;
             var $elem = $(e.target).parents(".grid-stack-item");
-            deleteBlock($elem);
+            var gridGalleryInstance = $elem.parent().data().plugin_perfectGridGalleryEditor;
+            gridGalleryInstance.deleteBlock($elem);
+            Rexbuilder_Util_Editor.removingBlocks = false;
         });
 
         // fixare l'id del blocco
@@ -245,7 +234,7 @@ var Rexbuilder_Util_Editor = (function ($) {
         });
 
         $(document).on("rexlive:galleryReady", function (e) {
-            console.log(e); 
+            console.log(e);
         });
     }
 
@@ -325,7 +314,6 @@ var Rexbuilder_Util_Editor = (function ($) {
      * @param {*} name name of the section, if name is "" the item will be removed
      */
     var updateNavigatorItem = function ($section, name) {
-        console.log(name);
         var $navigatorWrap = $(document).find("nav[class=\"vertical-nav\"");
         if (name != "") {
             if ($section.attr("id") == undefined || $section.attr("id") == "") {
@@ -487,6 +475,13 @@ var Rexbuilder_Util_Editor = (function ($) {
         this.redoActive = false;
 
         this.updatingGridstack = false;
+
+        this.addingNewBlocks = false;
+        this.removingBlocks = false;
+
+        this.sectionAddingElementRexID = null;
+        this.sectionAddingElementObj = null;
+
         undoStackArray = [];
         redoStackArray = [];
 

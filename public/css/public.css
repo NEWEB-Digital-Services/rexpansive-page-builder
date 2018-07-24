@@ -4641,15 +4641,6 @@ a.pswp-item {
   right: 0px;
   overflow: hidden; }
 
-.rexlive-toolbox-fixed {
-  width: 200px;
-  height: 150px;
-  position: fixed;
-  bottom: 50%;
-  right: 0;
-  border: 3px solid #73AD21;
-  background-color: greenyellow; }
-
 #builder-save-grid-btn {
   width: 100px;
   height: 40px;
@@ -4722,8 +4713,14 @@ a.pswp-item {
 .set-section-name {
   left: 30%; }
 
-.add-new-block-image {
+.add-new-block-empty {
   left: 35%; }
+
+.add-new-block-image {
+  left: 40%; }
+
+.add-new-block-text {
+  left: 45%; }
 
 .builder-section-config i {
   font-size: 14px;
@@ -5010,14 +5007,6 @@ a.pswp-item {
 
 .grid-stack-item.removing_block {
   display: none; }
-
-.rexlive-toolbox {
-  top: 0px;
-  position: absolute;
-  width: 100%;
-  height: 100px;
-  background-color: aquamarine;
-  z-index: 200; }
 
 .btn-builder-layout.active-layout-btn {
   background-color: blue; }

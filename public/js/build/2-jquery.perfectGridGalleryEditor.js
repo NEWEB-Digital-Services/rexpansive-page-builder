@@ -137,7 +137,7 @@
                 this.$element.on("change", function (e, data) {
                     // @todo
                     //aggiornare con aggiunta e eliminazione blocchi
-                    if (that.element == e.target && !Rexbuilder_Util_Editor.undoActive && !Rexbuilder_Util_Editor.redoActive && !that.properties.updatingSection && !Rexbuilder_Util.domUpdaiting && !Rexbuilder_Util.windowIsResizing && !that.properties.removingCollapsedElements) {
+                    if (that.element == e.target && !Rexbuilder_Util_Editor.undoActive && !Rexbuilder_Util_Editor.redoActive && !that.properties.updatingSection && !Rexbuilder_Util.domUpdaiting && !Rexbuilder_Util.windowIsResizing && !that.properties.removingCollapsedElements && !Rexbuilder_Util_Editor.addingNewBlocks && !Rexbuilder_Util_Editor.removingBlocks) {
                         var actionData = that.createActionDataMoveBlocksGrid();
                         Rexbuilder_Util_Editor.pushAction(that.$section, "updateSectionBlocksDisposition", actionData, $.extend(true, {}, that.properties.reverseDataGridDisposition));
                         that.properties.reverseDataGridDisposition = actionData;
@@ -178,7 +178,7 @@
             var blocksDimensions = [];
             var rexID;
 
-            this.$element.children('.grid-stack-item:not(.grid-stack-placeholder)').each(function () {
+            this.$element.children('.grid-stack-item:not(.grid-stack-placeholder, .removing_block)').each(function () {
                 var $elem = $(this);
                 rexID = $elem.attr("data-rexbuilder-block-id");
                 var x, y, w, h;
@@ -839,16 +839,83 @@
             return emptyBlocks;
         },
 
-        addNewBlockFixed: function () {
-            var $newEL = this.createBlock(0, 0, 2, 2);
-            var gridstack = this.properties.gridstackInstance;
-            gridstack.addWidget($newEL[0], 0, 0, 2, 2, true, 1, 12, 1);
-            return $newEL;
+        removeBlock: function ($elem) {
+            this.properties.gridstackInstance.removeWidget($elem[0], false);
+            $elem.addClass("removing_block");
         },
-        addNewBlockMasonry: function () {
-            var $newEL = this.createBlock(0, 0, 2, 2);
-            var gridstack = this.properties.gridstackInstance;
-            gridstack.addWidget($newEL[0], 0, 0, 2, 2, true, 1, 12, 1);
+
+        reAddBlock: function ($elem) {
+            var x, y, w, h;
+            x = parseInt($elem.attr("data-gs-x"));
+            y = parseInt($elem.attr("data-gs-y"));
+            w = parseInt($elem.attr("data-gs-width"));
+            h = parseInt($elem.attr("data-gs-height"));
+            $elem.removeClass("removing_block");
+
+            $elem.draggable("destroy");
+            $elem.resizable("destroy");
+
+            $elem.children(".ui-resizable-handle").each(function (i, el) {
+                $(el).remove();
+            })
+            this._addHandles($elem, 'e, s, w, se, sw');
+            this.properties.gridstackInstance.addWidget($elem[0], x, y, w, h, false, 1, 500, 1);
+        },
+
+        deleteBlock: function ($elem) {
+            var reverseData = {
+                targetElement: $elem,
+                hasToBeRemoved: false,
+                galleryInstance: this,
+                blocksDisposition: this.properties.reverseDataGridDisposition
+            };
+
+            this.removeBlock($elem);
+            this._createFirstReverseStack();
+
+            var actionData = {
+                targetElement: $elem,
+                hasToBeRemoved: true,
+                galleryInstance: this,
+                blocksDisposition: this.properties.reverseDataGridDisposition
+            };
+            Rexbuilder_Util_Editor.pushAction(this.$element, "updateBlockVisibility", actionData, reverseData);
+        },
+
+        createNewBlock: function (mode, x, y) {
+            Rexbuilder_Util_Editor.addingNewBlocks = true;
+            var $newEL = this.createBlock(0, 0, x, y);
+
+            var reverseData = {
+                targetElement: $newEL,
+                hasToBeRemoved: true,
+                galleryInstance: this,
+                blocksDisposition: this.properties.reverseDataGridDisposition
+            };
+
+            typeof x == "undefined" ? x = 2 : x = parseInt(x);
+            if (mode == "masonry") {
+                typeof y == "undefined" ? y = Math.round(this.properties.singleWidth * 2 / 5) : y = parseInt(y);
+            } else {
+                typeof y == "undefined" ? y = 2 : y = parseInt(y);
+            }
+
+            this.properties.gridstackInstance.addWidget($newEL[0], 0, 0, x, y, true, 1, 500, 1);
+
+            $newEL.removeAttr("data-gs-auto-position");
+            this._createFirstReverseStack();
+
+            var actionData = {
+                targetElement: $newEL,
+                hasToBeRemoved: false,
+                galleryInstance: this,
+                blocksDisposition: this.properties.reverseDataGridDisposition
+            };
+            var istanceScrollbar = $newEL.find('.rex-custom-scrollbar').overlayScrollbars(Rexbuilder_Util.scrollbarProperties).overlayScrollbars();
+            istanceScrollbar.sleep();
+            
+            Rexbuilder_Util_Editor.pushAction(this.$element, "updateBlockVisibility", actionData, reverseData);
+            Rexbuilder_Util_Editor.addingNewBlocks = false;
             return $newEL;
         },
 
@@ -879,11 +946,14 @@
             Per quando si sposterà la generazione delle maniglie
             $newEl.append(tmpl("tmpl-block-resize-handles", {
                 rexID: rexIdBlock
-            })); 
+            }));
             */
             $newEl.find(".grid-item-content").prepend(tmpl("tmpl-block-drag-handle"));
 
             this._prepareElement($newEl[0]);
+
+            this.addElementToTextEditor(this.properties.mediumEditorIstance, $newEl.find(".text-wrap"));
+            //aggiungere editor testo
             this.updateSizeViewerText($newEl, w, h);
 
             return $newEl;
@@ -1341,7 +1411,7 @@
             var $blockContent;
             var imageWidth = -1;
             $blockContent = $elem.find('.grid-item-content');
-            imageWidth = $blockContent.attr('data-background-image-width');
+            imageWidth = $blockContent.attr('data-background_image_width');
             if (imageWidth != -1) {
                 if ($elem.outerWidth() < imageWidth) {
                     if (!$blockContent.hasClass('small-width')) {
@@ -1416,7 +1486,7 @@
                         if (e.target != dragHandle) {
                             clearTimeout(this.downTimer);
                             this.downTimer = setTimeout(function () {
-                                //console.log("%c we have to drag ", "color: green");
+                                console.log("%c we have to drag ", "color: green");
                                 $dragHandle.addClass("drag-up");
 
                                 Rexbuilder_Util_Editor.mouseDownEvent.target = dragHandle;
@@ -1434,9 +1504,9 @@
             });
 
             $elem.mouseup(function (e) {
-                /*                 console.log("mouse up: " + $elem.data("rexbuilder-block-id"));
-                                console.log(e.target);
-                 */
+                console.log("mouse up: " + $elem.data("rexbuilder-block-id"));
+                console.log(e.target);
+
                 if ($(e.target).parents(".rexlive-block-toolbox").length == 0) {
                     if (Rexbuilder_Util_Editor.elementDraggingTriggered) {
                         $dragHandle.removeClass("drag-up");
@@ -1632,6 +1702,7 @@
             var $blockContent;
             var $uiElement;
             gallery.$element.on('resizestart', function (event, ui) {
+                console.log("starting resize");
                 $uiElement = $(ui.element);
                 if (!$uiElement.is('span')) {
                     if (Rexbuilder_Util_Editor.editingElement) {
@@ -1641,15 +1712,13 @@
                     block = event.target;
                     $block = $(block);
                     $blockContent = $block.find('.grid-item-content');
-                    imageWidth = $blockContent.attr('data-background-image-width');
+                    imageWidth = $blockContent.attr('data-background_image_width');
                     Rexbuilder_Util_Editor.elementIsResizing = true;
-                    xStart = parseInt(block['attributes']['data-gs-x'].value);
+                    xStart = parseInt($block.attr("data-gs-x"));
                     if (gallery.properties.resizeHandle == 'e' || gallery.properties.resizeHandle == 'se') {
                         $block.attr("data-gs-max-width", (gallery.settings.numberCol - xStart));
                     } else if (gallery.properties.resizeHandle == 'w' || gallery.properties.resizeHandle == 'sw') {
-                        wStart = parseInt(block['attributes']['data-gs-width'].value);
-                        // $('#' + block.id).attr("data-gs-max-width", (xStart +
-                        // wStart));
+                        wStart = parseInt($block.attr("data-gs-width"));
                     }
                 }
             }).on('resize', function (event, ui) {
@@ -1663,14 +1732,6 @@
                     }
 
                     gallery.updateSizeViewerSizes($block);
-
-                    /* if (!$block.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
-                        gallery.fixElementTextSize(block, gallery.properties.resizeHandle, null);
-                    } */
-                    /*
-           * if (gallery.properties.resizeHandle == 'w' ||
-           * gallery.properties.resizeHandle == 'sw') { ; }
-           */
                 }
             }).on('gsresizestop', function (event, elem) {
                 if (Rexbuilder_Util_Editor.elementIsResizing) {
@@ -1686,21 +1747,6 @@
                     Rexbuilder_Util_Editor.elementIsResizing = false;
                     Rexbuilder_Util_Editor.elementIsDragging = false;
                     gallery.$element.attr("data-rexlive-layout-changed=\"true\"");
-                    var $elem;
-
-                    gallery.$element.children(".grid-stack-item").each(function (i, elem) {
-                        $elem = $(this);
-                        console.log(parseInt($elem.attr("data-gs-x")), parseInt($elem.attr("data-gs-y")), parseInt($elem.attr("data-gs-width")), parseInt($elem.attr("data-gs-height")));
-                    });
-
-                    setTimeout(function () {
-                        var $elem;
-                        gallery.$element.children(".grid-stack-item").each(function (i, elem) {
-                            $elem = $(this);
-                            console.log(parseInt($elem.attr("data-gs-x")), parseInt($elem.attr("data-gs-y")), parseInt($elem.attr("data-gs-width")), parseInt($elem.attr("data-gs-height")));
-                        });
-
-                    }, 5000);
                 }
             });
         },
@@ -1718,22 +1764,6 @@
             }).on('drag', function (event, ui) {
                 // console.log('dragging');
             }).on('dragstop', function (event, ui) {
-                var $elem;
-
-                gallery.$element.children(".grid-stack-item").each(function (i, elem) {
-                    $elem = $(this);
-                    console.log(parseInt($elem.attr("data-gs-x")), parseInt($elem.attr("data-gs-y")), parseInt($elem.attr("data-gs-width")), parseInt($elem.attr("data-gs-height")));
-                });
-
-                setTimeout(function () {
-                    var $elem;
-                    gallery.$element.children(".grid-stack-item:not(.grid-stack-placeholder)").each(function (i, elem) {
-                        $elem = $(this);
-                        console.log(parseInt($elem.attr("data-gs-x")), parseInt($elem.attr("data-gs-y")), parseInt($elem.attr("data-gs-width")), parseInt($elem.attr("data-gs-height")));
-                    });
-
-                }, 5000);
-                console.log('drag end');
                 gallery.updateAllElementsProperties();
                 Rexbuilder_Util_Editor.elementIsDragging = false;
             })
@@ -1742,14 +1772,7 @@
         _launchGridStack: function () {
 
             var gallery = this;
-            /*             console.log("----------------------------------------------------------");
-                        console.log("BEFORE GRIDSTACK");
-                        console.log("----------------------------------------------------------");
-                        this.$element.children(".grid-stack-item").each(function (i, elem) {
-                            $elem = $(this);
-                            console.log(parseInt($elem.attr("data-gs-x")), parseInt($elem.attr("data-gs-y")), parseInt($elem.attr("data-gs-width")), parseInt($elem.attr("data-gs-height")));
-                        });
-            */
+
             if (Rexbuilder_Util.editorMode) {
                 var floating;
                 if (gallery.settings.galleryLayout == 'masonry') {
@@ -1761,6 +1784,7 @@
 
                 gallery.$element.gridstack({
                     auto: true,
+                    autoHide: false,
                     animate: true,
                     acceptWidgets: false,
                     alwaysShowResizeHandle: true,
@@ -1805,12 +1829,6 @@
 
             this.setGridstackIstanceNumber();
             this.properties.gridstackInstance = this.$element.data("gridstack");
-            var $elem;
-
-            /*             this.$element.children(".grid-stack-item").each(function (i, elem) {
-                            $elem = $(this);
-                            console.log(parseInt($elem.attr("data-gs-x")), parseInt($elem.attr("data-gs-y")), parseInt($elem.attr("data-gs-width")), parseInt($elem.attr("data-gs-height")));
-                        }); */
 
             /* Rimozione elementi da nascondere
             var gridstack = this.properties.gridstackInstance;
@@ -1847,14 +1865,6 @@
                 this.properties.blocksBottomTop = this.getElementBottomTop();
 
                 if (!this.properties.updatingSectionSameGrid) {
-                    /*                     console.log("----------------------------------------------------------");
-                                        console.log("UPDATING HEIGHTS");
-                                        console.log("----------------------------------------------------------");
-                                        this.$element.children(".grid-stack-item").each(function (i, elem) {
-                                            $elem = $(this);
-                                            console.log(parseInt($elem.attr("data-gs-x")), parseInt($elem.attr("data-gs-y")), parseInt($elem.attr("data-gs-width")), parseInt($elem.attr("data-gs-height")));
-                                        });
-                     */
                     this.batchGridstack();
 
                     $(this.properties.blocksBottomTop).each(function (i, e) {
@@ -2236,7 +2246,7 @@
             var gutter = this.properties.gutter;
             var $textWrap = $elem.find('.text-wrap');
             var $itemContent = $elem.find(".grid-item-content");
-            var w = parseInt($elem.attr("data-width"));
+            var w = parseInt($elem.attr("data-gs-width"));
             var backgroundHeight = 0;
             var defaultHeight = 0;
             var textHeight;
@@ -2257,7 +2267,7 @@
                     backgroundHeight = (parseInt($itemContent.attr('data-background_image_height')) * (w * sw)) / (parseInt($itemContent.attr('data-background_image_width')));
                 } else if ($itemContent.hasClass('natural_image_background')) {
                     if ($itemContent.hasClass('small-width')) {
-                        backgroundHeight = (parseInt($itemContent.attr('data-background_image_height')) * (w * sw)) / (parseInt($itemContent.attr('data-data-background_image_width'))) - gutter;
+                        backgroundHeight = (parseInt($itemContent.attr('data-background_image_height')) * (w * sw)) / (parseInt($itemContent.attr('data-background_image_width'))) - gutter;
                     } else {
                         backgroundHeight = parseInt($itemContent.attr('data-background_image_height')) + gutter;
                     }

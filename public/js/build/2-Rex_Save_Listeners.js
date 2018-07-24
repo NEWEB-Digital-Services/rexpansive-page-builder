@@ -368,7 +368,7 @@ var Rex_Save_Listeners = (function ($) {
 
             id = $elem.attr('id') === undefined ? "" : $elem.attr('id');
             rex_id = $elem.attr('data-rexbuilder-block-id');
-            type = $itemData.attr('data-type');
+            type = $itemData.attr('data-type') == "" ? "empty" : $itemData.attr('data-type');
             size_x = $elem.attr('data-width');
             size_y = $elem.attr('data-height');
             row = $elem.attr('data-row');
@@ -378,9 +378,10 @@ var Rex_Save_Listeners = (function ($) {
             gs_height = $elem.attr('data-gs-height');
             gs_y = $elem.attr('data-gs-y');
             gs_x = $elem.attr('data-gs-x');
-            color_bg_block = $itemContent.css('background-color') != '' ? $itemContent
-                .css('background-color')
+
+            color_bg_block = $itemContent.css('background-color') != '' ? $itemContent.css('background-color')
                 : '#ffffff';
+
             image_bg_block = $itemData.attr('data-image_bg_block') === undefined ? ""
                 : $itemData.attr('data-image_bg_block');
             image_width = $itemContent.attr('data-background_image_width') === undefined ? ""
@@ -389,7 +390,7 @@ var Rex_Save_Listeners = (function ($) {
                 : parseInt($itemContent.attr('data-background_image_height'));
             id_image_bg_block = $itemData.attr('data-id_image_bg_block') === undefined ? ""
                 : $itemData.attr('data-id_image_bg_block');
-
+            console.log(image_bg_block);
             video_bg_id = $itemData.attr('data-video_bg_id') === undefined ? ""
                 : $itemData.attr('data-video_bg_id');
             video_mp4_url = $itemData.attr('data-video_mp4_url') === undefined ? ""

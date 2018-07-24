@@ -168,7 +168,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
           updateResponsiveButtonFocus();
         }
         if (event.data.eventName == "rexlive:openMediaUploader") {
-          Rexlive_MediaUploader.openMediaUploader(event.data.s_id);
+          Rexlive_MediaUploader.openMediaUploader({});
         }
       }
     };

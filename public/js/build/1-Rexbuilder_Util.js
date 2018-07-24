@@ -141,7 +141,6 @@ var Rexbuilder_Util = (function ($) {
                 return;
             }
         }
-        console.log("why do u do dis");
         Rexbuilder_Util.$rexContainer.attr("data-rex-layout-selected", chosenLayoutName);
         var $resposiveData = $("#rexbuilder-layout-data");
 
@@ -179,11 +178,10 @@ var Rexbuilder_Util = (function ($) {
         }
 
         var customSections;
-        var collapseElementsGrid = false;
+        var forceCollapseElementsGrid = false;
         if (i == layoutData.length || chosenLayoutName == "default") {
-            console.log(_viewport().width);
             if (_viewport().width < 1025) {
-                collapseElementsGrid = true;
+                forceCollapseElementsGrid = true;
             }
             customSections = {};
         } else {
@@ -377,7 +375,7 @@ var Rexbuilder_Util = (function ($) {
                 }
             }
 
-            updateSection($section, $gallery, targets[0].props, collapseElementsGrid);
+            updateSection($section, $gallery, targets[0].props, forceCollapseElementsGrid);
 
             if (galleryData !== undefined) {
                 var galleryEditorIstance = $gallery.data().plugin_perfectGridGalleryEditor;
@@ -393,9 +391,9 @@ var Rexbuilder_Util = (function ($) {
         }
     }
 
-    var updateSection = function ($section, $gallery, targetProps, collapseElementsGrid) {
+    var updateSection = function ($section, $gallery, targetProps, forceCollapseElementsGrid) {
         //console.log("setting section properties: " + targetName);
-        console.log("force to collapse", collapseElementsGrid);
+        console.log("force to collapse", forceCollapseElementsGrid);
         var $sectionData = $section.children(".section-data");
 
         Rexbuilder_Dom_Util.updateImageBG($section, isNaN(parseInt(targetProps['id_image_bg_section'])) ? "" : parseInt(targetProps['id_image_bg_section']), targetProps['image_bg_section'], parseInt(targetProps['image_width']), parseInt(targetProps['image_height']));
@@ -414,7 +412,7 @@ var Rexbuilder_Util = (function ($) {
             layout: targetProps['layout'],
             section_width: targetProps['section_width'],
             dimension: targetProps['dimension'],
-            collapse_grid: targetProps['collapse_grid'].toString() == "true" || collapseElementsGrid,
+            collapse_grid: targetProps['collapse_grid'].toString() == "true" || forceCollapseElementsGrid,
         }
 
         Rexbuilder_Dom_Util.updateRow($section, $sectionData, $gallery, rowSettings);
