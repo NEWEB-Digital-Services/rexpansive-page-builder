@@ -4722,6 +4722,9 @@ a.pswp-item {
 .add-new-block-text {
   left: 45%; }
 
+.add-new-block-video {
+  left: 50%; }
+
 .builder-section-config i {
   font-size: 14px;
   line-height: 20px;

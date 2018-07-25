@@ -390,7 +390,7 @@ var Rex_Save_Listeners = (function ($) {
                 : parseInt($itemContent.attr('data-background_image_height'));
             id_image_bg_block = $itemData.attr('data-id_image_bg_block') === undefined ? ""
                 : $itemData.attr('data-id_image_bg_block');
-            console.log(image_bg_block);
+                
             video_bg_id = $itemData.attr('data-video_bg_id') === undefined ? ""
                 : $itemData.attr('data-video_bg_id');
             video_mp4_url = $itemData.attr('data-video_mp4_url') === undefined ? ""

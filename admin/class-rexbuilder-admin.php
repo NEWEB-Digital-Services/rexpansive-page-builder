@@ -252,6 +252,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'rexbuilder-admin-modals', REXPANSIVE_BUILDER_URL . 'admin/js/1-Rexpansive_Builder_Admin_Modals.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( 'rexbuilder-media-uploader', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_MediaUploader.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( 'template-util', REXPANSIVE_BUILDER_URL . 'public/js/vendor/tmpl.min.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( 'rexlive-modals-live', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Modals_Live.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( 'rexlive-util-admin', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Util_Admin_Editor.js', array( 'jquery' ), $this->version, true );
 				global $post;
 				$source = get_permalink($post->ID);
@@ -2764,10 +2765,10 @@ class Rexbuilder_Admin {
 	   	   
    	public function include_live_editing($post_id) {
 		include_once( 'partials/rexbuilder-live-editing.php' );
-   }
+    }
    
-   public function rexlive_body_fix( $classes ) {
+    public function rexlive_body_fix( $classes ) {
 	   $classes .= ' rexpansive-editor ';
 	   return $classes;
-   }
+    }
 }

@@ -139,7 +139,7 @@
                     //aggiornare con aggiunta e eliminazione blocchi
                     if (that.element == e.target && !Rexbuilder_Util_Editor.undoActive && !Rexbuilder_Util_Editor.redoActive && !that.properties.updatingSection && !Rexbuilder_Util.domUpdaiting && !Rexbuilder_Util.windowIsResizing && !that.properties.removingCollapsedElements && !Rexbuilder_Util_Editor.addingNewBlocks && !Rexbuilder_Util_Editor.removingBlocks) {
                         var actionData = that.createActionDataMoveBlocksGrid();
-                        Rexbuilder_Util_Editor.pushAction(that.$section, "updateSectionBlocksDisposition", actionData, $.extend(true, {}, that.properties.reverseDataGridDisposition));
+                        Rexbuilder_Util_Editor.pushAction(that.$section, "updateSectionBlocksDisposition", $.extend(true, {}, actionData), $.extend(true, {}, that.properties.reverseDataGridDisposition));
                         that.properties.reverseDataGridDisposition = actionData;
                     }
                     that._updateElementsSizeViewers();
@@ -867,7 +867,7 @@
                 targetElement: $elem,
                 hasToBeRemoved: false,
                 galleryInstance: this,
-                blocksDisposition: this.properties.reverseDataGridDisposition
+                blocksDisposition: $.extend(true, {}, this.properties.reverseDataGridDisposition)
             };
 
             this.removeBlock($elem);
@@ -877,28 +877,32 @@
                 targetElement: $elem,
                 hasToBeRemoved: true,
                 galleryInstance: this,
-                blocksDisposition: this.properties.reverseDataGridDisposition
+                blocksDisposition: $.extend(true, {}, this.properties.reverseDataGridDisposition)
             };
             Rexbuilder_Util_Editor.pushAction(this.$element, "updateBlockVisibility", actionData, reverseData);
         },
 
         createNewBlock: function (mode, x, y) {
             Rexbuilder_Util_Editor.addingNewBlocks = true;
+            
+            var defaultBlockWidthFixed = 2;
+            var defaultBlockHeightFixed = 2;
+
+            typeof x == "undefined" ? x = defaultBlockWidthFixed : x = parseInt(x);
+            if (mode == "masonry") {
+                typeof y == "undefined" ? y = Math.round(this.properties.singleWidth * defaultBlockHeightFixed / this.settings.cellHeightMasonry) : y = parseInt(y);
+            } else {
+                typeof y == "undefined" ? y = defaultBlockHeightFixed : y = parseInt(y);
+            }
+
             var $newEL = this.createBlock(0, 0, x, y);
 
             var reverseData = {
                 targetElement: $newEL,
                 hasToBeRemoved: true,
                 galleryInstance: this,
-                blocksDisposition: this.properties.reverseDataGridDisposition
+                blocksDisposition: $.extend(true, {}, this.properties.reverseDataGridDisposition)
             };
-
-            typeof x == "undefined" ? x = 2 : x = parseInt(x);
-            if (mode == "masonry") {
-                typeof y == "undefined" ? y = Math.round(this.properties.singleWidth * 2 / 5) : y = parseInt(y);
-            } else {
-                typeof y == "undefined" ? y = 2 : y = parseInt(y);
-            }
 
             this.properties.gridstackInstance.addWidget($newEL[0], 0, 0, x, y, true, 1, 500, 1);
 
@@ -909,11 +913,12 @@
                 targetElement: $newEL,
                 hasToBeRemoved: false,
                 galleryInstance: this,
-                blocksDisposition: this.properties.reverseDataGridDisposition
+                blocksDisposition: $.extend(true, {}, this.properties.reverseDataGridDisposition)
             };
+
             var istanceScrollbar = $newEL.find('.rex-custom-scrollbar').overlayScrollbars(Rexbuilder_Util.scrollbarProperties).overlayScrollbars();
             istanceScrollbar.sleep();
-            
+
             Rexbuilder_Util_Editor.pushAction(this.$element, "updateBlockVisibility", actionData, reverseData);
             Rexbuilder_Util_Editor.addingNewBlocks = false;
             return $newEL;
@@ -926,6 +931,7 @@
             var idBlock = this.properties.lastIDBlock;
             var rexIdBlock = Rexbuilder_Util.createBlockID();
             tmpl.arg = "block";
+            console.log("creating block:", x, y, w, h);
             var newElement = tmpl("tmpl-new-block", {
                 rexID: rexIdBlock,
                 id: this.properties.sectionNumber + "_" + idBlock,

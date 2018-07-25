@@ -171,7 +171,7 @@
 				section_width: $gallery.parent().css("max-width"),
 				dimension: $gallery.parent().hasClass("full-disposition") ? "full" : "boxed",
 				collapse_grid: $section.attr("data-rex-collapse-grid"),
-				blocksDisposition: oldDisposition
+				blocksDisposition: $.extend(true, {}, oldDisposition)
 			}
 
 			setBuilderTimeStamp();
@@ -202,7 +202,7 @@
 				section_width: $gallery.parent().css("max-width"),
 				dimension: $gallery.parent().hasClass("full-disposition") ? "full" : "boxed",
 				collapse_grid: $section.attr("data-rex-collapse-grid"),
-				blocksDisposition: newDisposition
+				blocksDisposition: $.extend(true, {}, newDisposition)
 			}
 
 			Rexbuilder_Util_Editor.pushAction($section, "updateSection", actionData, reverseData);
@@ -552,6 +552,34 @@
 			OpenModal($('#modal-background-responsive-set').parent('.rex-modal-wrap'));
 		});
 
+		// Launch to the iframe parent the event to open the Media Uploader
+		$(document).on("click", ".add-new-block-image", function (e) {
+			var $section = $(e.target).parents(".rexpansive_section");
+			var s_id = $section.attr('data-rexlive-section-id');
+			var data = {
+				eventName: "rexlive:openMediaUploader",
+			};
+
+			Rexbuilder_Util_Editor.sectionAddingElementRexID = s_id;
+			Rexbuilder_Util_Editor.sectionAddingElementObj = $section;
+
+			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+		});
+
+		// Launch to the iframe parent the event to open the add video modal
+		$(document).on("click", ".add-new-block-video", function (e) {
+			var $section = $(e.target).parents(".rexpansive_section");
+			var s_id = $section.attr('data-rexlive-section-id');
+			var data = {
+				eventName: "rexlive:addNewBlockVideo",
+			};
+
+			Rexbuilder_Util_Editor.sectionAddingElementRexID = s_id;
+			Rexbuilder_Util_Editor.sectionAddingElementObj = $section;
+
+			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+		});
+		
 		$(document).on('click', '.builder-change-background', function (e) {
 			console.log("opzioni blocco");
 			e.preventDefault();

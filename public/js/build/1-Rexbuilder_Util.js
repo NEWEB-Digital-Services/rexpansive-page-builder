@@ -229,7 +229,18 @@ var Rexbuilder_Util = (function ($) {
                 $itemData = $elem.children(".rexbuilder-block-data");
                 $itemContent = $elem.find(".grid-item-content");
 
-                _updateVideos($itemData, $itemContent, targetProps["video_bg_id"], targetProps["video_mp4_url"], targetProps["video_bg_url_vimeo"], targetProps["video_bg_url_youtube"], "block", targetProps['video_has_audio'] == "1" ? true : false);
+                var videoOptions = {
+                    targetData: $itemData,
+                    target: $itemContent,
+                    idMp4: targetProps["video_bg_id"],
+                    urlMp4: targetProps["video_mp4_url"],
+                    urlVimeo: targetProps["video_bg_url_vimeo"],
+                    urlYoutube: targetProps["video_bg_url_youtube"],
+                    targetType: "block",
+                    hasAudio: targetProps['video_has_audio'] == "1" || targetProps['video_has_audio'].toString() == "true" ? true : false
+                };
+
+                _updateVideos(videoOptions);
 
                 Rexbuilder_Dom_Util.updateImageBG($itemContent, isNaN(parseInt(targetProps['id_image_bg'])) ? "" : parseInt(targetProps['id_image_bg']), targetProps['image_bg_url'], parseInt(targetProps['image_width']), parseInt(targetProps['image_height']), targetProps['type_bg_image']);
 
@@ -398,7 +409,18 @@ var Rexbuilder_Util = (function ($) {
 
         Rexbuilder_Dom_Util.updateImageBG($section, isNaN(parseInt(targetProps['id_image_bg_section'])) ? "" : parseInt(targetProps['id_image_bg_section']), targetProps['image_bg_section'], parseInt(targetProps['image_width']), parseInt(targetProps['image_height']));
 
-        _updateVideos($sectionData, $section, targetProps["video_bg_id"], targetProps["video_mp4_url"], targetProps["video_bg_url_vimeo_section"], targetProps["video_bg_url_section"], "section", false);
+        var videoOptions = {
+            targetData: $sectionData,
+            target: $section,
+            idMp4: targetProps["video_bg_id"],
+            urlMp4: targetProps["video_mp4_url"],
+            urlVimeo: targetProps["video_bg_url_vimeo_section"],
+            urlYoutube: targetProps["video_bg_url_section"],
+            targetType: "section",
+            hasAudio: false
+        };
+
+        _updateVideos(videoOptions);
 
         Rexbuilder_Dom_Util.updateSectionMargins($section, targetProps["row_margin_top"], targetProps["row_margin_bottom"], targetProps["row_margin_right"], targetProps["row_margin_left"]);
 
@@ -711,51 +733,39 @@ var Rexbuilder_Util = (function ($) {
         }
     };
 
-	/**
-	 * Updates video background 
-	 * 
-	 * @param {*} $itemData 
-	 * @param {*} $itemContent 
-	 * @param {*} urlMp4 mp4 url
-	 * @param {*} idMp4 mp4 id
-	 * @param {*} urlVimeo vimeo url
-	 * @param {*} urlYoutube youtube url
-	 * @param {*} targetType type of target (section, block)
-	 * @param {*} hasAudio true if has, false if not
-	 */
-    var _updateVideos = function ($targetData, $target, idMp4, urlMp4, urlVimeo, urlYoutube, targetType, hasAudio) {
-        //console.log($targetData);
-        //console.log($target);
-        //console.log("data received");
-        //console.log("idMp4: \"" + idMp4 + "\"");
-        //console.log("urlVimeo: \"" + urlVimeo + "\"");
-        //console.log("urlYoutube: \"" + urlYoutube + "\"");
-        //console.log("targetType: \"" + targetType + "\"");
-        //console.log("hasAudio: \"" + hasAudio + "\"");
+    var _updateVideos = function (videoOptions) {
+        var $targetData = videoOptions.targetData,
+            $target = videoOptions.target,
+            idMp4 = videoOptions.idMp4,
+            urlMp4 = videoOptions.urlMp4,
+            urlVimeo = videoOptions.urlVimeo,
+            urlYoutube = videoOptions.urlYoutube,
+            targetType = videoOptions.targetType,
+            hasAudio = videoOptions.hasAudio;
 
         if (($.isEmptyObject(urlMp4) || urlMp4 == "undefined") && ($.isEmptyObject(urlYoutube) || urlYoutube == "undefined") && ($.isEmptyObject(urlVimeo) || urlVimeo == "undefined")) {
             //console.log("NO VIDEO ACTIVE ON THIS BLOCK"); 
-            removeMp4Video($target, targetType);
-            removeYoutubeVideo($target, targetType);
-            removeVimeoVideo($target, targetType);
+            Rexbuilder_Dom_Util.removeMp4Video($target, targetType);
+            Rexbuilder_Dom_Util.removeYoutubeVideo($target, targetType);
+            Rexbuilder_Dom_Util.removeVimeoVideo($target, targetType);
         }
         if (!($.isEmptyObject(urlMp4) || urlMp4 == "undefined") && ($.isEmptyObject(urlYoutube) || urlYoutube == "undefined") && ($.isEmptyObject(urlVimeo) || urlVimeo == "undefined")) {
             //console.log("VIDEO MP4 ON THIS BLOCK");
-            removeYoutubeVideo($target, targetType);
-            removeVimeoVideo($target, targetType);
-            addMp4Video($target, urlMp4, targetType, hasAudio);
+            Rexbuilder_Dom_Util.removeYoutubeVideo($target, targetType);
+            Rexbuilder_Dom_Util.removeVimeoVideo($target, targetType);
+            Rexbuilder_Dom_Util.addMp4Video($target, urlMp4, targetType, hasAudio);
         }
         if (($.isEmptyObject(urlMp4) || urlMp4 == "undefined") && !($.isEmptyObject(urlYoutube) || urlYoutube == "undefined") && ($.isEmptyObject(urlVimeo) || urlVimeo == "undefined")) {
             //console.log("VIDEO YOUTUBE ON THIS BLOCK");
-            removeMp4Video($target, targetType);
-            removeVimeoVideo($target, targetType);
-            addYoutubeVideo($target, urlYoutube, targetType, hasAudio);
+            Rexbuilder_Dom_Util.removeMp4Video($target, targetType);
+            Rexbuilder_Dom_Util.removeVimeoVideo($target, targetType);
+            Rexbuilder_Dom_Util.addYoutubeVideo($target, urlYoutube, targetType, hasAudio);
         }
         if (($.isEmptyObject(urlMp4) || urlMp4 == "undefined") && ($.isEmptyObject(urlYoutube) || urlYoutube == "undefined") && !($.isEmptyObject(urlVimeo) || urlVimeo == "undefined")) {
             //console.log("VIDEO VIMEO ON THIS BLOCK");
-            removeMp4Video($target, targetType);
-            removeYoutubeVideo($target, targetType);
-            addVimeoVideo($target, urlVimeo, targetType, hasAudio);
+            Rexbuilder_Dom_Util.removeMp4Video($target, targetType);
+            Rexbuilder_Dom_Util.removeYoutubeVideo($target, targetType);
+            Rexbuilder_Dom_Util.addVimeoVideo($target, urlVimeo, targetType, hasAudio);
         }
 
         if (targetType == "section") {
@@ -768,205 +778,9 @@ var Rexbuilder_Util = (function ($) {
             $targetData.attr("data-video_mp4_url", urlMp4);
             $targetData.attr("data-video_bg_url", urlYoutube);
             $targetData.attr("data-video_bg_url_vimeo", urlVimeo);
+            $targetData.attr("data-video_has_audio", hasAudio);
         }
     }
-
-    var removeMp4Video = function ($target, targetType) {
-        if (targetType == "section") {
-            var $videoWrap = $target.children(".rex-video-section-wrap");
-            if ($videoWrap.length == 0) {
-                $videoWrap = $target.children(".rex-video-wrap");
-            }
-            //console.log($videoWrap);
-        } else if (targetType == "block") {
-            var $videoWrap = $target.children(".rex-video-wrap");
-            var $toggleAudio = $target.children(".rex-video-toggle-audio");
-        } else {
-            return;
-        }
-        if ($videoWrap.length != 0) {
-            //console.log("removing mp4 video");
-            $target.removeClass("mp4-player");
-            $videoWrap.remove();
-            if (targetType != "section" && $toggleAudio.length != 0) {
-                $toggleAudio.remove();
-            }
-        }
-    }
-
-    var removeYoutubeVideo = function ($target, targetType) {
-        if ($target.hasClass("youtube-player")) {
-			/*
-			$target.YTPChangeMovie({
-				videoURL: "",
-				containment: 'self',
-				startAt: 0,
-				mute: true,
-				autoPlay: true,
-				loop: true,
-				opacity: 1,
-				showControls: false,
-				showYTLogo: false
-			});
-*/			//console.log("destroy YTP");
-            if ($target.YTPGetPlayer() === undefined) {
-                return;
-                //	$target.YTPlayer();
-            }
-            //console.log("ytplayer is alive"); 
-            //console.log($target.YTPGetPlayer());
-            $target.YTPPlayerDestroy();
-            $target.removeClass('youtube-player');
-            //console.log($target); 
-            //$.removeData($target);
-            //console.log("________________________________________");
-            //console.log($target.YTPGetPlayer());
-			/* 
-						$target.removeAttr("data-property");
-						$target.removeAttr("id");
-						$target.removeClass("youtube-player mb_YTPlayer isMuted"); */
-            if (targetType != "section") {
-                var $toggleAudio = $target.children(".rex-video-toggle-audio");
-                if ($toggleAudio.length != 0) {
-                    $toggleAudio.remove();
-                }
-            }
-
-        }
-    }
-
-    var removeVimeoVideo = function ($target, targetType) {
-        var $vimeoWrap = $target.children('.rex-video-vimeo-wrap');
-        var $toggleAudio = $target.children(".rex-video-toggle-audio");
-        if ($vimeoWrap.length != 0) {
-            var iframeVimeo = $vimeoWrap.children("iframe")[0];
-            VimeoVideo.removePlayer(iframeVimeo);
-            $target.removeClass("vimeo-player");
-            $vimeoWrap.remove();
-            if ($toggleAudio.length != 0) {
-                $toggleAudio.remove();
-            }
-        }
-    }
-
-    var addMp4Video = function ($target, urlmp4, targetType, hasAudio) {
-        if (targetType == "section") {
-            var $videoWrap = $target.children(".rex-video-section-wrap");
-
-        } else if (targetType == "block") {
-            var $videoWrap = $target.children(".rex-video-wrap");
-        } else {
-            return;
-        }
-        if ($videoWrap.length != 0 && $videoWrap.find("source").attr("src") == urlmp4) {
-            if (targetType != "section") {
-                var $toggleAudio = $target.children(".rex-video-toggle-audio");
-                if ($toggleAudio.length == 0) {
-                    if (hasAudio) {
-                        $target.append(tmpl("tmpl-video-toggle-audio"));
-                    }
-                } else {
-                    if (!hasAudio) {
-                        $toggleAudio.remove();
-                    }
-                }
-            }
-            return;
-        }
-
-        removeMp4Video($target);
-
-        tmpl.arg = "video";
-        $target.prepend(tmpl("tmpl-video-mp4", { url: urlmp4 }));
-        if (hasAudio) {
-            $target.append(tmpl("tmpl-video-toggle-audio"));
-        }
-        $target.addClass("mp4-player");
-    }
-
-    var addYoutubeVideo = function ($target, urlYoutube, targetType, hasAudio) {
-        if (targetType != "section") {
-            var $toggleAudio = $target.children(".rex-video-toggle-audio");
-            if ($toggleAudio.length == 0) {
-                if (hasAudio) {
-                    $target.append(tmpl("tmpl-video-toggle-audio"));
-                }
-            } else {
-                if (!hasAudio) {
-                    $toggleAudio.remove();
-                }
-            }
-        }
-        if ($target.hasClass("youtube-player")) {
-            //console.log(".............................target has class youtbe");
-            //console.log($target.YTPGetPlayer());
-            if ($target.YTPGetPlayer() === undefined) {
-                //console.log("no player active");
-                //console.log($target[0]);
-                $target.YTPlayer();
-                return;
-            }
-            var videoID = $target.YTPGetVideoID();
-            //console.log(videoID);
-            var urlID = getYoutubeID(urlYoutube);
-            //console.log(urlID);
-            if (videoID != urlID) {
-                $target.YTPChangeMovie({
-                    videoURL: urlYoutube,
-                    containment: 'self',
-                    startAt: 0,
-                    mute: true,
-                    autoPlay: true,
-                    loop: true,
-                    opacity: 1,
-                    showControls: false,
-                    showYTLogo: false
-                });
-            }
-        } else {
-            $target.addClass("youtube-player");
-            $target.attr("data-property", "{videoURL: '" + urlYoutube + "', containment: 'self',startAt: 0,mute: true,autoPlay: true,loop: true,opacity: 1,showControls: false,showYTLogo: false}");
-            $target.YTPlayer();
-        }
-    }
-
-    var addVimeoVideo = function ($target, urlVimeo, targetType, hasAudio) {
-        //console.log("************************************");
-        //console.log("adding vimeo video");
-        //console.log($target);
-        //console.log(urlVimeo, targetType, hasAudio);
-        var $vimeoWrap = $target.children(".rex-video-vimeo-wrap");
-        urlVimeo += "?autoplay=1&loop=1&title=0&byline=0&portrait=0&autopause=0&muted=1";
-        //console.log(urlVimeo);
-        //console.log(urlVimeo);
-        if ($vimeoWrap.length != 0 && ($vimeoWrap.children("iframe").attr("src") == urlVimeo)) {
-            if (targetType != "section") {
-                var $toggleAudio = $target.children(".rex-video-toggle-audio");
-                if ($toggleAudio.length == 0) {
-                    if (hasAudio) {
-                        $target.append(tmpl("tmpl-video-toggle-audio"));
-                    }
-                } else {
-                    if (!hasAudio) {
-                        $toggleAudio.remove();
-                    }
-                }
-            }
-            return;
-        }
-        removeVimeoVideo($target, targetType);
-
-        tmpl.arg = "video";
-        $target.prepend(tmpl("tmpl-video-vimeo", { url: urlVimeo }));
-        if (hasAudio) {
-            $target.append(tmpl("tmpl-video-toggle-audio"));
-        }
-        $target.addClass("vimeo-player");
-
-        var vimeoFrame = $target.children(".rex-video-vimeo-wrap").find("iframe")[0];
-        VimeoVideo.addPlayer("1", vimeoFrame);
-    }
-
 
     // function to detect if we are on a mobile device
     var _detect_mobile = function () {
@@ -1157,6 +971,16 @@ var Rexbuilder_Util = (function ($) {
 
     }
 
+    //@todo per quando si elimina un blocco
+    var _stopVideo = function ($target) {
+        ;
+    }
+    
+    //@todo per quando si fa il redo sull'eliminazione un blocco che aveva un video
+    var _playVideoFromBegin = function ($target) {
+        ;
+    }
+
     var _destroyVideoPlugins = function () {
         //console.log(Rexbuilder_Util.$rexContainer.find(".youtube-player"));
     }
@@ -1308,7 +1132,10 @@ var Rexbuilder_Util = (function ($) {
         edit_dom_layout: _edit_dom_layout,
         smoothScroll: _smoothScroll,
         getGalleryInstance: _getGalleryInstance,
-        removeCollapsedGrids: removeCollapsedGrids
+        removeCollapsedGrids: removeCollapsedGrids,
+        updateVideos: _updateVideos,
+        stopVideo: _stopVideo,
+        playVideoFromBegin: _playVideoFromBegin
     };
 
 })(jQuery);

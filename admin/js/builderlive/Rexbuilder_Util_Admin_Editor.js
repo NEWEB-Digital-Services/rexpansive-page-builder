@@ -170,6 +170,9 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         if (event.data.eventName == "rexlive:openMediaUploader") {
           Rexlive_MediaUploader.openMediaUploader({});
         }
+        if (event.data.eventName == "rexlive:addNewBlockVideo") {
+          Rexlive_Modals_Live.openVideoModal();
+        }
       }
     };
 

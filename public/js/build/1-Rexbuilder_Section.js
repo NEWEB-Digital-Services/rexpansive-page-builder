@@ -98,20 +98,6 @@ var Rexbuilder_Section = (function ($) {
             galleryEditorIstance.createNewBlock(galleryEditorIstance.settings.galleryLayout);
         });
 
-        // Launch to the iframe parent the event to open the Media Uploader
-        $(document).on("click", ".add-new-block-image", function (e) {
-            var $section = $(e.target).parents(".rexpansive_section");
-            var s_id = $section.attr('data-rexlive-section-id');
-            var data = {
-                eventName: "rexlive:openMediaUploader",
-            };
-
-            Rexbuilder_Util_Editor.sectionAddingElementRexID = s_id;
-            Rexbuilder_Util_Editor.sectionAddingElementObj = $section;
-
-            Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-        });
-
         $(document).on("click", ".add-new-block-text", function (e) {
             e.preventDefault();
             e.stopPropagation();
