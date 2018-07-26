@@ -252,14 +252,18 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'rexbuilder-admin-modals', REXPANSIVE_BUILDER_URL . 'admin/js/1-Rexpansive_Builder_Admin_Modals.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( 'rexbuilder-media-uploader', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_MediaUploader.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( 'template-util', REXPANSIVE_BUILDER_URL . 'public/js/vendor/tmpl.min.js', array( 'jquery' ), $this->version, true );
-				wp_enqueue_script( 'rexlive-modals-live', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Modals_Live.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( 'rexlive-modals-utils', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Modals_Utils.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( 'rexlive-modals', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Modals.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( 'Rexbuilder-Slider', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_RexSlider.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( 'rexlive-util-admin', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Util_Admin_Editor.js', array( 'jquery' ), $this->version, true );
 				global $post;
 				$source = get_permalink($post->ID);
-				wp_localize_script( 'rexlive-util-admin', 'live_editor_obj', array(
-					'source_url' => $source
-					) );
 				wp_enqueue_script( 'rexlive-start', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Starting.js', array( 'jquery' ), $this->version, true );
+				wp_localize_script( 'rexlive-start', 'live_editor_obj', array(
+					'source_url' => $source,
+					'ajaxurl'	=>	admin_url( 'admin-ajax.php' ),
+					'rexnonce'	=>	wp_create_nonce( 'rex-ajax-call-nonce' ),
+					) );
 			} else {
 				wp_enqueue_script('jquery');
 				wp_enqueue_script("jquery-ui-draggable");
@@ -2764,9 +2768,15 @@ class Rexbuilder_Admin {
 	   }
 	   	   
    	public function include_live_editing($post_id) {
+		
 		include_once( 'partials/rexbuilder-live-editing.php' );
     }
    
+	public function loadTest($post_id){
+		include_once( 'partials/rexbuilder-modals-display.php' );
+		include_once( 'partials/rexbuilder-templates.php' );
+	}
+
     public function rexlive_body_fix( $classes ) {
 	   $classes .= ' rexpansive-editor ';
 	   return $classes;

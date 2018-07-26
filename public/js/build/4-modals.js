@@ -507,7 +507,7 @@
 
 		// attach a click event (or whatever you want) to some element on your
 		// page
-		$('#modal-setting-button').on('click', '#background_up_img', function (event) {
+/* 		$('#modal-setting-button').on('click', '#background_up_img', function (event) {
 			event.preventDefault();
 
 			// if the file_frame has already been created, just reuse it
@@ -517,12 +517,11 @@
 			}
 
 			file_frame = wp.media.frames.file_frame = wp.media({
-				/*
-				 * title: $( this ).data( 'uploader_title' ), button: {
-				 * text: $( this ).data( 'uploader_button_text' ), },
-				 * multiple: false // set this to true for multiple file
-				 * selection
-				 */
+				
+				 title: $( this ).data( 'uploader_title' ), button: {
+				 text: $( this ).data( 'uploader_button_text' ), },
+				 multiple: false // set this to true for multiple file
+				 selection
 			});
 
 			file_frame.on('select', function () {
@@ -535,11 +534,11 @@
 			});
 
 			file_frame.open();
-		});
+		}); */
 		// ------------------------------------------
 
-		$(document).on('click', '#back-set-reset', function (c) {
-			c.preventDefault();
+		$(document).on('click', '#back-set-reset', function (e) {
+			e.preventDefault();
 			CloseModal($('#modal-setting-button').parent('.rex-modal-wrap'));
 		});
 
@@ -554,6 +553,7 @@
 
 		// Launch to the iframe parent the event to open the Media Uploader
 		$(document).on("click", ".add-new-block-image", function (e) {
+			e.preventDefault();
 			var $section = $(e.target).parents(".rexpansive_section");
 			var s_id = $section.attr('data-rexlive-section-id');
 			var data = {
@@ -568,6 +568,7 @@
 
 		// Launch to the iframe parent the event to open the add video modal
 		$(document).on("click", ".add-new-block-video", function (e) {
+			e.preventDefault();
 			var $section = $(e.target).parents(".rexpansive_section");
 			var s_id = $section.attr('data-rexlive-section-id');
 			var data = {
@@ -579,16 +580,25 @@
 
 			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 		});
-		
+
+		$(document).on("click", ".add-new-block-slider", function (e) {
+			e.preventDefault();
+			var $section = $(e.target).parents(".rexpansive_section");
+			var s_id = $section.attr('data-rexlive-section-id');
+			var data = {
+				eventName: "rexlive:addNewSlider",
+			};
+
+			Rexbuilder_Util_Editor.sectionAddingElementRexID = s_id;
+			Rexbuilder_Util_Editor.sectionAddingElementObj = $section;
+
+			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+		});
+
 		$(document).on('click', '.builder-change-background', function (e) {
 			console.log("opzioni blocco");
 			e.preventDefault();
 			return;
-			var $element = $(e.target).parents('.grid-stack.item');
-			var blockRexID = $element.attr("data-rexbuilder-block-id");
-			$('#background_set_save').attr('data-block_id', blockRexID);
-			$('#background_set_cancel').attr('data-block_id', blockRexID);
-			OpenModal($('#background_block_set').parent('.rex-modal-wrap'));
 		});
 	}); // End of the DOM ready
 

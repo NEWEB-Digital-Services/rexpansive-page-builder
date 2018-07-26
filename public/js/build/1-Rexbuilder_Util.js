@@ -133,10 +133,8 @@ var Rexbuilder_Util = (function ($) {
     }
 
     var _edit_dom_layout = function (chosenLayoutName) {
-        console.log(chosenLayoutName);
-        console.log(Rexbuilder_Util.activeLayout);
-        //return;
         if (chosenLayoutName == Rexbuilder_Util.activeLayout) {
+            // cos, che cazzo dovrebbe fare?
             if (chooseLayout == "default" && _viewport().width > 1024) {
                 return;
             }
@@ -153,7 +151,6 @@ var Rexbuilder_Util = (function ($) {
 
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 
-
         if (($resposiveData.children(".layouts-customizations").data("empty-customizations") == "true") || $resposiveData.children(".layouts-customizations").data("empty-customizations")) {
             return;
         }
@@ -161,7 +158,6 @@ var Rexbuilder_Util = (function ($) {
         var layoutData = JSON.parse($resposiveData.children(".layouts-customizations").text());
 
         responsiveLayouts = layoutData;
-        //console.log(layoutData);
         $.each(layoutData, function (i, layout) {
             if (layout.name == "default") {
                 defaultLayoutSections = layout.sections;
@@ -187,7 +183,6 @@ var Rexbuilder_Util = (function ($) {
         } else {
             customSections = layoutSelected.sections;
         }
-        //console.log("updaiting dom");
         // removing collapsed from grid
         Rexbuilder_Util.removeCollapsedGrids();
 
@@ -380,7 +375,6 @@ var Rexbuilder_Util = (function ($) {
                             break;
 
                         default:
-                            //console.log("rip");
                             break;
                     }
                 }
@@ -403,8 +397,6 @@ var Rexbuilder_Util = (function ($) {
     }
 
     var updateSection = function ($section, $gallery, targetProps, forceCollapseElementsGrid) {
-        //console.log("setting section properties: " + targetName);
-        console.log("force to collapse", forceCollapseElementsGrid);
         var $sectionData = $section.children(".section-data");
 
         Rexbuilder_Dom_Util.updateImageBG($section, isNaN(parseInt(targetProps['id_image_bg_section'])) ? "" : parseInt(targetProps['id_image_bg_section']), targetProps['image_bg_section'], parseInt(targetProps['image_width']), parseInt(targetProps['image_height']));
@@ -910,34 +902,21 @@ var Rexbuilder_Util = (function ($) {
         });
 
         function doneResizing() {
-            console.log("window resized");
             Rexbuilder_Util.windowIsResizing = true;
             if (Rexbuilder_Util.editorMode && !Rexbuilder_Util_Editor.buttonResized) {
-                console.log("editor mode, no button clicked");
                 Rexbuilder_Util.windowIsResizing = false;
                 return;
             }
 
             if (Rexbuilder_Util.editorMode) {
-                console.log(Rexbuilder_Util_Editor.clickedLayoutID);
                 Rexbuilder_Util_Editor.buttonResized = false;
                 _edit_dom_layout(Rexbuilder_Util_Editor.clickedLayoutID);
-                /*
-                Rexbuilder_Util.windowIsResizing = false;
-                return;
-                */
             } else {
                 _edit_dom_layout(chooseLayout());
             }
 
-            console.log("DOM READY");
-
             if (Rexbuilder_Util.activeLayout != Rexbuilder_Util.oldLayout) {
                 Rexbuilder_Util.oldLayout = Rexbuilder_Util.activeLayout;
-                /*                 
-                Rexbuilder_Util.windowIsResizing = false;
-                return; 
-                */
             }
 
             Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
@@ -956,7 +935,7 @@ var Rexbuilder_Util = (function ($) {
                     galleryEditorIstance = undefined;
                 }
             });
-            console.log("endingasiodwqoefhwefhweqfhwqeifjqpoifwe-pqoif");
+
             Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
                 var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
                 if (galleryEditorIstance !== undefined) {
@@ -975,7 +954,7 @@ var Rexbuilder_Util = (function ($) {
     var _stopVideo = function ($target) {
         ;
     }
-    
+
     //@todo per quando si fa il redo sull'eliminazione un blocco che aveva un video
     var _playVideoFromBegin = function ($target) {
         ;

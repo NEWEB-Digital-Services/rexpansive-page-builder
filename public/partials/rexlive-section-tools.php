@@ -26,7 +26,7 @@ defined('ABSPATH') or exit;
 	</button>
 
 	<button class="tool-button btn-floating test-save tooltipped waves-effect waves-light">
-		S
+		U
 	</button>
 
 	<button class="tool-button btn-floating collapse-grid tooltipped waves-effect waves-light">
@@ -51,6 +51,10 @@ defined('ABSPATH') or exit;
 
 	<button class="tool-button btn-floating add-new-block-video tooltipped waves-effect waves-light">
 		v
+	</button>
+
+	<button class="tool-button btn-floating add-new-block-slider tooltipped waves-effect waves-light">
+		S
 	</button>
 	
 	<button class="tool-button btn-floating builder-delete-row waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexspansive');?>">

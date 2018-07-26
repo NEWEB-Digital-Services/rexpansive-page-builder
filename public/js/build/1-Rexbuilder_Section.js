@@ -92,24 +92,6 @@ var Rexbuilder_Section = (function ($) {
             Rexbuilder_Util_Editor.updateNavigatorItem($section, "");  */
         });
 
-        $(document).on("click", ".add-new-block-empty", function (e) {
-            event.preventDefault();
-            var galleryEditorIstance = $(e.target).parents(".rexpansive_section").find(".grid-stack-row").data().plugin_perfectGridGalleryEditor;
-            galleryEditorIstance.createNewBlock(galleryEditorIstance.settings.galleryLayout);
-        });
-
-        $(document).on("click", ".add-new-block-text", function (e) {
-            e.preventDefault();
-            e.stopPropagation();
-            e.stopImmediatePropagation();
-
-            var galleryEditorIstance = $(e.target).parents(".rexpansive_section").find(".grid-stack-row").data().plugin_perfectGridGalleryEditor;
-            var $elem = galleryEditorIstance.createNewBlock(galleryEditorIstance.settings.galleryLayout);
-            var event = jQuery.Event("mouseup");
-            event.target = $elem.find(".rexlive-block-drag-handle");
-            event.offsetY = 0;
-            $elem.trigger(event);
-        });
     }
 
     var init = function () {

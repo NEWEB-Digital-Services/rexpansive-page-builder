@@ -884,7 +884,7 @@
 
         createNewBlock: function (mode, x, y) {
             Rexbuilder_Util_Editor.addingNewBlocks = true;
-            
+
             var defaultBlockWidthFixed = 2;
             var defaultBlockHeightFixed = 2;
 
@@ -916,12 +916,18 @@
                 blocksDisposition: $.extend(true, {}, this.properties.reverseDataGridDisposition)
             };
 
-            var istanceScrollbar = $newEL.find('.rex-custom-scrollbar').overlayScrollbars(Rexbuilder_Util.scrollbarProperties).overlayScrollbars();
-            istanceScrollbar.sleep();
-
             Rexbuilder_Util_Editor.pushAction(this.$element, "updateBlockVisibility", actionData, reverseData);
             Rexbuilder_Util_Editor.addingNewBlocks = false;
             return $newEL;
+        },
+
+        addScrollbar: function ($newEL) {
+            var istanceScrollbar = $newEL.find('.rex-custom-scrollbar').overlayScrollbars(Rexbuilder_Util.scrollbarProperties).overlayScrollbars();
+            istanceScrollbar.sleep();
+        },
+
+        addTextEditor: function ($newEl) {
+            this.addElementToTextEditor(this.properties.mediumEditorIstance, $newEl.find(".text-wrap"));
         },
 
         // Function that creates a new empty block and returns it. The block is
@@ -931,7 +937,7 @@
             var idBlock = this.properties.lastIDBlock;
             var rexIdBlock = Rexbuilder_Util.createBlockID();
             tmpl.arg = "block";
-            console.log("creating block:", x, y, w, h);
+
             var newElement = tmpl("tmpl-new-block", {
                 rexID: rexIdBlock,
                 id: this.properties.sectionNumber + "_" + idBlock,
@@ -958,8 +964,6 @@
 
             this._prepareElement($newEl[0]);
 
-            this.addElementToTextEditor(this.properties.mediumEditorIstance, $newEl.find(".text-wrap"));
-            //aggiungere editor testo
             this.updateSizeViewerText($newEl, w, h);
 
             return $newEl;

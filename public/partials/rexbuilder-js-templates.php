@@ -13,69 +13,69 @@ defined('ABSPATH') or exit;
 ?>
 
 <script type="text/x-tmpl" id="tmpl-toolbox-block">
-<div class="rexlive-block-toolbox">
-    <div class="rexlive-top-block-tools">
-        <span class="el-size-viewer"></span>
-        <button class="tool-button btn-floating builder-delete-block waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete block', 'rexspansive'); ?>">
-		    <i class="material-icons white-text">&#xE5CD;</i>
-    	</button>
-        <button class="tool-button btn-floating builder-change-background tooltipped waves-effect waves-light">
-	    	I
-    	</button>
-	    <div class="tool-button btn-flat builder-copy-block tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy block', 'rexpansive'); ?>">
-		    <i class="material-icons grey-text text-darken-2">&#xE14D;</i>
+    <div class="rexlive-block-toolbox">
+        <div class="rexlive-top-block-tools">
+            <span class="el-size-viewer"></span>
+            <button class="tool-button btn-floating builder-delete-block waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete block', 'rexspansive');?>">
+                <i class="material-icons white-text">&#xE5CD;</i>
+            </button>
+            <button class="tool-button btn-floating builder-change-background tooltipped waves-effect waves-light">
+                I
+            </button>
+            <div class="tool-button btn-flat builder-copy-block tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy block', 'rexpansive');?>">
+                <i class="material-icons grey-text text-darken-2">&#xE14D;</i>
+            </div>
         </div>
     </div>
-</div>
 </script>
 
 <script type="text/x-tmpl" id="tmpl-video-vimeo">
-<div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--block">
-    <iframe src="{%=video.url%}" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen>
-    </iframe>
-</div>
+    <div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--block">
+        <iframe src="{%=video.url%}" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen>
+        </iframe>
+    </div>
 </script>
 
 <script type="text/x-tmpl" id="tmpl-video-mp4">
-<div class="rex-video-wrap">
-    <video class="rex-video-container" preload autoplay loop muted>
-        <source type="video/mp4" src="{%=video.url%}">
-    </video>
-</div>
+    <div class="rex-video-wrap">
+        <video class="rex-video-container" preload autoplay loop muted>
+            <source type="video/mp4" src="{%=video.url%}">
+        </video>
+    </div>
 </script>
 
 <script type="text/x-tmpl" id="tmpl-video-toggle-audio">
-<div class="rex-video-toggle-audio user-has-muted">
-    <div class="rex-video-toggle-audio-shadow">
+    <div class="rex-video-toggle-audio user-has-muted">
+        <div class="rex-video-toggle-audio-shadow">
+        </div>
     </div>
-</div>
 </script>
 
 <script type="text/x-tmpl" id="tmpl-overlay-block-div">
-<div class="responsive-block-overlay" style="background-color:{%=overlay.color%}">
-</div>
+    <div class="responsive-block-overlay" style="background-color:{%=overlay.color%}">
+    </div>
 </script>
 
 <script type="text/x-tmpl" id="tmpl-overlay-section-div">
-<div class="responsive-section-overlay" style="background-color:{%=overlay.color%}">
-</div>
+    <div class="responsive-section-overlay" style="background-color:{%=overlay.color%}">
+    </div>
 </script>
 
 <script type="text/x-tmpl" id="tmpl-photoswipe-block">
-<figure class="pswp-figure" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-    <a class="pswp-item" href="{%=image.link%}" itemprop="contentUrl" data-size="{%=image.width%}x{%=image.height%}">
-        <div class="pswp-item-thumb" data-thumb-image-type="{%=image.type%}" data-thumburl="{%=image.link%}" itemprop="thumbnail">
-        </div>
+    <figure class="pswp-figure" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+        <a class="pswp-item" href="{%=image.link%}" itemprop="contentUrl" data-size="{%=image.width%}x{%=image.height%}">
+            <div class="pswp-item-thumb" data-thumb-image-type="{%=image.type%}" data-thumburl="{%=image.link%}" itemprop="thumbnail">
+            </div>
 
-    </a>
-    <figcaption class="pswp-item-caption" itemprop="caption description">
-    </figcaption>
-</figure>
+        </a>
+        <figcaption class="pswp-item-caption" itemprop="caption description">
+        </figcaption>
+    </figure>
 </script>
 
 <script type="text/x-tmpl" id="tmpl-link-block">
-<a class="element-link hovered" href="{%=link.url%}" title="{%=link.url%}">
-</a>					
+    <a class="element-link hovered" href="{%=link.url%}" title="{%=link.url%}">
+    </a>
 </script>
 
 <script type="text/x-tmpl" id="tmpl-navigator-item">
@@ -86,7 +86,7 @@ defined('ABSPATH') or exit;
             </span>
             <p class="label white-black">{%=navigator.title%}</p>
         </a>
-	</li>					
+	</li>
 </script>
 
 <script type="text/x-tmpl" id="tmpl-block-resize-handles">
@@ -128,16 +128,21 @@ defined('ABSPATH') or exit;
             </div>
         </div>
     </div>
-</script> 
-
-<script type="text/x-tmpl" id="tmpl-new-image-block">
-			
 </script>
 
-<script type="text/x-tmpl" id="tmpl-new-video-block">
-			
+<script type="text/x-tmpl" id="tmpl-new-slider-wrap">
+    <div class="rex-slider-wrap" data-slider-id="{%=slider.id%}" data-rex-slider-animation="{%=slider.animation%}" data-rex-slider-prev-next="{%=slider.prevnext%}" data-rex-slider-dots="{%=slider.dots%}">
+    </div>
 </script>
 
-<script type="text/x-tmpl" id="tmpl-new-video-youtube-block">
-			
+<script type="text/x-tmpl" id="tmpl-new-slider-element">
+    <div class="rex-slider-element">
+        <div class="rex-slider-video-wrapper"></div>
+        <div class="rex-slider-element-title"></div>
+    </div>
+</script>
+
+<script type="text/x-tmpl" id="tmpl-new-slider-element-link">
+    <a class="rex-slider-element-link" href="{%=link.url%}">
+    </a>
 </script>

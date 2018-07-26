@@ -141,7 +141,6 @@ var Rexlive_MediaUploader = (function ($) {
       ;
     });
 
-
     video_uploader_frame.on('select', function () {
       var state = video_uploader_frame.state('insert-video');
       var selection = state.get('selection');
@@ -178,9 +177,9 @@ var Rexlive_MediaUploader = (function ($) {
     video_uploader_frame.on('open', function () {
       var selection = video_uploader_frame.state('insert-video').get('selection');
       //remove all the selection first
-      selection.each(function (image) {
-        if ('undefined' !== typeof image) {
-          var attachment = wp.media.attachment(image.attributes.id);
+      selection.each(function (video) {
+        if ('undefined' !== typeof video) {
+          var attachment = wp.media.attachment(video.attributes.id);
           attachment.fetch();
           selection.remove(attachment ? [attachment] : []);
         }
