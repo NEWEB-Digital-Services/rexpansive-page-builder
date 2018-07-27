@@ -12,6 +12,7 @@ var Rexbuilder_App = (function ($) {
 
 	var init = function () {
 		Rexbuilder_Util.init();
+
 		if (Rexbuilder_Util.editorMode) {
 			Rexbuilder_Util_Editor.init();
 			Rexbuilder_Section.init();
@@ -68,13 +69,13 @@ var Rexbuilder_App = (function ($) {
 
 		// Adding audio functionallity
 		$(document).on('click', '.rex-video-toggle-audio', function (e) {
-			console.log("click on toggle");
 			e.stopPropagation();
 			var $ytvideo = $(this).parents(".youtube-player");
 			var $mpvideo = $(this).parents('.mp4-player').find('.rex-video-container');
 			var $vimvideo = $(this).parents('.vimeo-player').find('.rex-video-vimeo-wrap--block');
 			var $toggle = $(this);
 
+			//youtube video
 			if ($ytvideo.length > 0) {
 				var isMuted = $ytvideo.get(0).player.isMuted();
 				if (isMuted) {
@@ -86,6 +87,7 @@ var Rexbuilder_App = (function ($) {
 				}
 			}
 
+			//mp4 video
 			if ($mpvideo.length > 0) {
 				if ($mpvideo.prop('muted')) {
 					$mpvideo.prop('muted', false);
@@ -155,6 +157,17 @@ var Rexbuilder_App = (function ($) {
 			};
 
 		};
+
+		// Starting slider
+		RexSlider.init();
+		Rexbuilder_Util.$rexContainer.find(".rex-slider-wrap").each(function (i, slider) {
+			var $slider = $(slider);
+			$slider.find(".rex-slider-element").each(function (i, slide) {
+				var $video = $(slide).find(".rex-slider-video-wrapper");
+				Rexbuilder_Util.playVideo($video);
+			});
+		});
+
 	};
 
 	var load = function () {
@@ -172,6 +185,7 @@ var Rexbuilder_App = (function ($) {
 			});
 		}
 
+		// autoplay sliders
 		RexSlider.startAutoPlay();
 
 		/* -- Launching TextResize ------ */

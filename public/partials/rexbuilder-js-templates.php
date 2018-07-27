@@ -131,7 +131,7 @@ defined('ABSPATH') or exit;
 </script>
 
 <script type="text/x-tmpl" id="tmpl-new-slider-wrap">
-    <div class="rex-slider-wrap" data-slider-id="{%=slider.id%}" data-rex-slider-animation="{%=slider.animation%}" data-rex-slider-prev-next="{%=slider.prevnext%}" data-rex-slider-dots="{%=slider.dots%}">
+    <div class="rex-slider-wrap rex-slider--{%=slider.numberSlides%}-slides" data-slider-id="{%=slider.id%}" data-rex-slider-animation="{%=slider.animation%}" data-rex-slider-prev-next="{%=slider.prevnext%}" data-rex-slider-dots="{%=slider.dots%}">
     </div>
 </script>
 

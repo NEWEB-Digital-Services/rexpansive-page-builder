@@ -29,17 +29,18 @@ var RexSlider = (function ($) {
         settings.setGallerySize = ('undefined' != typeof $el.attr('data-set-gallery-size') ? JSON.parse($el.attr('data-set-gallery-size')) : false);
 
         var auto_player = $el.attr('data-rex-slider-animation');
-        if ('undefined' != typeof auto_player && 'true' == auto_player) {
+        if ('undefined' != typeof auto_player && '1' == auto_player.toString()) {
+            console.log("autoplay on");
             settings.autoPlay = true;
         }
 
         var prev_next = $el.attr('data-rex-slider-prev-next');
-        if ('undefined' != typeof prev_next && '1' == prev_next) {
+        if ('undefined' != typeof prev_next && '1' == prev_next.toString()) {
             settings.prevNextButtons = true;
         }
 
         var dots = $el.attr('data-rex-slider-dots');
-        if ('undefined' != typeof dots && '1' == dots) {
+        if ('undefined' != typeof dots && '1' == dots.toString()) {
             settings.pageDots = true;
         }
 
@@ -59,6 +60,7 @@ var RexSlider = (function ($) {
         //   // }
         // }
 
+        //da fixare dopo per il resize
         Rexbuilder_Util.$window.on('resize', function () {
             if ($el.data('flickity')) {
                 $el.flickity('resize');
@@ -73,14 +75,16 @@ var RexSlider = (function ($) {
             $(this).removeClass('is-dragging');
         });
 
-        $el.on('select.flickity', function () {
-            var $videoSlide = $(this).find('.rex-slider-element.is-selected .youtube-player');
-            if ($videoSlide.length) {
-                var video_state = $videoSlide[0].state;
-                if (video_state != 1) {
-                    $videoSlide.YTPPlay();
+        //play videos on focus slide
+        $el.on('select.flickity', function (event, index) {
+            var $rexSlider = $(event.target)
+            var $videoSlide = $rexSlider.find('.rex-slider-element.is-selected .rex-slider-video-wrapper');
+            $rexSlider.find(".rex-slider-video-wrapper").each(function (i, videoEl) {
+                if (videoEl != $videoSlide[0]) {
+                    Rexbuilder_Util.pauseVideo($(videoEl));
                 }
-            }
+            });
+            Rexbuilder_Util.playVideo($videoSlide);
         });
 
         /**
@@ -144,14 +148,14 @@ var RexSlider = (function ($) {
     }
 
     var _rexSliderInit = function () {
-        if ($(slider_class, context).length) {
+        if ($(slider_class, context).length > 0) {
             $(slider_class, context).each(function (i, el) {
                 var $el = $(el);
                 _initSlider($el);
             });
         }
 
-        if ($(box_slider_class, context).length) {
+        if ($(box_slider_class, context).length > 0) {
             $(box_slider_class, context).each(function (i, el) {
                 _initSliderBox(el);
             });
@@ -159,7 +163,7 @@ var RexSlider = (function ($) {
     };
 
     var _rexSliderDestroy = function () {
-        if ($(slider_class, context).length) {
+        if ($(slider_class, context).length > 0) {
             $(slider_class, context).each(function (i, el) {
                 if ('undefined' !== typeof $(el).data('flickity')) {
                     $(el).flickity('destroy');
@@ -167,7 +171,7 @@ var RexSlider = (function ($) {
             });
         }
 
-        if ($(box_slider_class, context).length) {
+        if ($(box_slider_class, context).length > 0) {
             $(box_slider_class, context).each(function (i, el) {
                 if ('undefined' !== typeof $(el).data('flickity')) {
                     $(el).flickity('destroy');
@@ -193,6 +197,7 @@ var RexSlider = (function ($) {
 
     return {
         init: init,
+        initSlider: _initSlider,
         startAutoPlay: _startSliders,
         destroy: _rexSliderDestroy,
     };

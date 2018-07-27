@@ -970,7 +970,7 @@ var Rexbuilder_Util = (function ($) {
         if (!jQuery.browser.mobile) {
             Rexbuilder_Util.$rexContainer.find(".youtube-player").each(function () {
                 if ($(this).YTPGetPlayer() === undefined) {
-                    //$(this).YTPlayer();
+                    $(this).YTPlayer();
                     //console.log(this);
                     return;
                 }
@@ -991,8 +991,6 @@ var Rexbuilder_Util = (function ($) {
             });
             // $('.rex-video-wrap').getVideoThumbnail();
         }
-
-        RexSlider.init();
 
         VimeoVideo.init();
     }
@@ -1038,6 +1036,28 @@ var Rexbuilder_Util = (function ($) {
         });
     }
 
+
+    var _pauseVideo = function ($target) {
+        if ($target.hasClass("mp4-player")) {
+            $target.find("video")[0].pause();
+        } else if ($target.hasClass("vimeo-player")) {
+            var vimeoPlugin = VimeoVideo.findVideo($target.find("iframe")[0]);
+            vimeoPlugin.pause();
+        } else if ($target.hasClass("youtube-player")) {
+            $target.YTPPause();
+        }
+    }
+
+    var _playVideo = function ($target) {
+        if ($target.hasClass("mp4-player")) {
+            $target.find("video")[0].play();
+        } else if ($target.hasClass("vimeo-player")) {
+            var vimeoPlugin = VimeoVideo.findVideo($target.find("iframe")[0]);
+            vimeoPlugin.play();
+        } else if ($target.hasClass("youtube-player")) {
+            $target.YTPPlay();
+        }
+    }
 
     // init the utilities
     var init = function () {
@@ -1114,7 +1134,10 @@ var Rexbuilder_Util = (function ($) {
         removeCollapsedGrids: removeCollapsedGrids,
         updateVideos: _updateVideos,
         stopVideo: _stopVideo,
-        playVideoFromBegin: _playVideoFromBegin
+        playVideoFromBegin: _playVideoFromBegin,
+        pauseVideo: _pauseVideo,
+        playVideo: _playVideo,
+
     };
 
 })(jQuery);

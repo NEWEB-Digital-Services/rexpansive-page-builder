@@ -41,6 +41,8 @@ var VimeoVideo = (function ($) {
             // cycle foreach section
             $vimeoBlockVideos.each(function (i, el) {
                 // mute videos on block if set to do that
+                console.log("adding vimeo to");
+                console.log(el);
                 var mute = $(el).attr('data-vimeo-video-mute');
                 var video = $(el).find('iframe')[0];
                 if ("undefined" != typeof Vimeo) {
@@ -55,8 +57,15 @@ var VimeoVideo = (function ($) {
      * @param {string} mute
      * @param {iframe} video iframe to link
      */
-    var _addPlayer = function (mute, video) {
-        var player = new Vimeo.Player(video);
+    var _addPlayer = function (mute, video, opt) {
+        var player;
+        if (typeof opt != "undefined") {
+            console.log(opt);
+            player = new Vimeo.Player(video, opt);
+        } else {
+            player = new Vimeo.Player(video);
+        }
+
         if ("1" == mute) {
             // set to mute -> videos remain mute
             player.ready().then(function () {
@@ -92,11 +101,9 @@ var VimeoVideo = (function ($) {
         for (i = 0; i < this.blockVideos.length; i++) {
             if (this.blockVideos[i].el === el) {
                 this.blockVideos[i].player.destroy().then(function () {
-                    console.log("player destroyed");
-                    // the player was destroyed
+
                 }).catch(function (error) {
-                    console.log(error);
-                    // an error occurred
+
                 });
                 playerRemoved = true;
                 break;

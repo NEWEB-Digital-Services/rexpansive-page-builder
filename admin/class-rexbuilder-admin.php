@@ -251,6 +251,9 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'rexbuilder-admin-utilities', REXPANSIVE_BUILDER_URL . 'admin/js/0-Rexpansive_Builder_Admin_Utilities.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( 'rexbuilder-admin-modals', REXPANSIVE_BUILDER_URL . 'admin/js/1-Rexpansive_Builder_Admin_Modals.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( 'rexbuilder-media-uploader', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_MediaUploader.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( 'rexbuilder-admin-text-editor', REXPANSIVE_BUILDER_URL . 'admin/js/3-Rexpansive_Builder_Admin_TextEditor.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( 'rexbuilder-admin-padding-editor', REXPANSIVE_BUILDER_URL . 'admin/js/3-Rexpansive_Builder_Admin_PaddingEditor.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( 'rexbuilder-admin-position-editor', REXPANSIVE_BUILDER_URL . 'admin/js/3-Rexpansive_Builder_Admin_PositionEditor.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( 'template-util', REXPANSIVE_BUILDER_URL . 'public/js/vendor/tmpl.min.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( 'rexlive-modals-utils', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Modals_Utils.js', array( 'jquery' ), $this->version, true );
 				wp_enqueue_script( 'rexlive-modals', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Modals.js', array( 'jquery' ), $this->version, true );

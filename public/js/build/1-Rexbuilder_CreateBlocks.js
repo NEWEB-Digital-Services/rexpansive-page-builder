@@ -142,24 +142,26 @@ var Rexbuilder_CreateBlocks = (function ($) {
     });
 
     $(document).on("rexlive:insert_new_slider", function (e) {
-        var $section = Rexbuilder_Util_Editor.sectionAddingElementObj,
-            galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
         var data = e.settings.data_to_send;
+        var slides = data.slider_slides;
+        var sliderData = {
+            id: data.slider_id,
+            settings: data.slider_settings,
+            numberSlides: slides.length
+        }
 
         console.log(data);
-
+        var $section = Rexbuilder_Util_Editor.sectionAddingElementObj,
+            galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
         var $el = _createBlockGrid(galleryInstance, 12, 4);
         var $textWrap = $el.find(".text-wrap");
 
         $el.addClass("block-has-slider");
         $el.children(".rexbuilder-block-data").attr("data-type", "rexslider");
+
         $textWrap.children().remove();
 
-        _createSliderWrap($textWrap, data.slider_id, data.slider_settings);
-
-        var $sliderWrap = $textWrap.children(".rex-slider-wrap");
-
-        var slides = data.slider_slides;
+        var $sliderWrap = _createSliderWrap($textWrap, sliderData);
 
         for (var i = 0; i < slides.length; i++) {
             tmpl.arg = "slide";
@@ -167,11 +169,11 @@ var Rexbuilder_CreateBlocks = (function ($) {
             var $slide = $(tmpl("tmpl-new-slider-element", {}));
 
             if (slides[i].slide_image_url != "none") {
-                $slide.css("background-image", "url('" + slides[i].slide_image_url + "')");
+                $slide.css("background-image", "url(" + slides[i].slide_image_url + ")");
             }
 
             if (slides[i].slide_text.trim().length != 0) {
-                $slide.children(".rex-slider-element-title").text(slides[i].slide_text);
+                $slide.children(".rex-slider-element-title").html(slides[i].slide_text);
             }
 
             $slide.appendTo($sliderWrap[0]);
@@ -182,6 +184,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
                 var $linkEl = $(tmpl("tmpl-new-slider-element-link", {
                     url: slides[i].slide_url
                 }));
+
                 $slide.children(".rex-slider-element-title").detach().appendTo($linkEl[0]);
                 $slide.append($linkEl[0]);
             }
@@ -206,10 +209,17 @@ var Rexbuilder_CreateBlocks = (function ($) {
                         $videoElement.addClass("vimeo-player");
 
                         var vimeoFrame = $videoElement.children(".rex-video-vimeo-wrap").find("iframe")[0];
-                        VimeoVideo.addPlayer("1", vimeoFrame);
+                        var opt = {
+                            autoplay: true,
+                            background: true,
+                            loop: true
+                        };
+                        VimeoVideo.addPlayer("1", vimeoFrame, opt);
                         break;
                     case "youtube":
-                        console.log("youtybrr");
+                        $videoElement.addClass("youtube-player");
+                        $videoElement.attr("data-property", "{videoURL: '" + slides[i].slide_video + "', containment: 'self',startAt: 0,mute: true,autoPlay: true,loop: true,opacity: 1,showControls: false,showYTLogo: false}");
+                        $videoElement.YTPlayer();
                         break;
                     default:
                         break;
@@ -221,21 +231,32 @@ var Rexbuilder_CreateBlocks = (function ($) {
             }
         }
 
+        RexSlider.initSlider($sliderWrap);
+
+        $sliderWrap.find(".rex-slider-element").each(function (i, slide) {
+            var $video = $(slide).find(".rex-slider-video-wrapper");
+            Rexbuilder_Util.playVideo($video);
+        });
+
+        if (sliderData.settings.auto_start) {
+            $sliderWrap.flickity('playPlayer');
+        }
         Rexbuilder_Util_Editor.sectionAddingElementRexID = null;
         Rexbuilder_Util_Editor.sectionAddingElementObj = null;
     });
 
-    var _createSliderWrap = function ($textWrap, slider_id, settings) {
+    var _createSliderWrap = function ($textWrap, data) {
         tmpl.arg = "slider";
-
         var $sliderWrap = $(tmpl("tmpl-new-slider-wrap", {
-            id: slider_id,
-            animation: settings.auto_start ? 1 : 0,
-            dots: settings.dots ? 1 : 0,
-            prevnext: settings.prev_next ? 1 : 0
+            id: data.id,
+            animation: data.settings.auto_start ? true : 0,
+            dots: data.settings.dots ? 1 : 0,
+            prevnext: data.settings.prev_next ? 1 : 0,
+            numberSlides: data.numberSlides
         }));
 
         $textWrap.append($sliderWrap[0]);
+        return $sliderWrap;
     }
 
     var _createBlockGrid = function (galleryInstance, w, h) {
@@ -251,4 +272,5 @@ var Rexbuilder_CreateBlocks = (function ($) {
         }
         return $el;
     }
+
 })(jQuery);
