@@ -769,18 +769,20 @@ class Rexbuilder_Admin {
 
 					$video_type = "";
 					$video_info_data = "";
-					preg_match($re, $slide['_rex_banner_gallery_video'], $matches, PREG_OFFSET_CAPTURE, 0);
-					if( count($matches) > 0 ) {
-						if( false !== strpos( $slide['_rex_banner_gallery_video'], "youtu" ) ) {
-							$video_type = 'youtube';
-							$video_info_data = $slide['_rex_banner_gallery_video'];
-						} else if( false !== strpos( $slide['_rex_banner_gallery_video'], "vimeo" ) ) {
-							$video_type = 'vimeo';
-							$video_info_data = $slide['_rex_banner_gallery_video'];
-						}
+
+					//youtube
+					if( false !== strpos( $slide['_rex_banner_gallery_video'], "youtu" ) ) {
+						$video_type = 'youtube';
+						$video_info_data = $slide['_rex_banner_gallery_video'];
+					//vimeo
+					} else if( false !== strpos( $slide['_rex_banner_gallery_video'], "vimeo" ) ) {
+						$video_type = 'vimeo';
+						$video_info_data = $slide['_rex_banner_gallery_video'];
+					//mp4
 					} else if( $slide['_rex_banner_gallery_video_mp4'] ) {
 						$video_type = 'mp4';
 						$video_info_data = $slide['_rex_banner_gallery_video_mp4']['id'];
+						$video_info_url = $slide['_rex_banner_gallery_video_mp4']['url'];
 					}
 
 					ob_start();
@@ -828,7 +830,7 @@ class Rexbuilder_Admin {
 	<div class="rex-slider__slide-data" style="display:none;">
 		<input type="hidden" name="rex-slider--slide-id" value="<?php echo ( isset( $slide['_rex_banner_gallery_image']['id'] ) ? $slide['_rex_banner_gallery_image']['id'] : '' ); ?>">
 		<textarea rows="" cols="" name="rex-slider--slide-text"><?php echo esc_textarea( $slide_content ); ?></textarea>
-		<input type="hidden" name="rex-slider--slide-video-url" value="<?php echo ( isset( $video_info_data ) ? $video_info_data : '' ); ?>">
+		<input type="hidden" name="rex-slider--slide-video-url" value="<?php echo ( isset( $video_info_data ) ? $video_info_data : '' ); ?>" <?php echo isset($video_info_url)? "data-mp4-url=\"". $video_info_url ."\"":"" ?>>
 		<input type="hidden" name="rex-slider--slide-video-type" value="<?php echo ( isset( $video_type ) ? $video_type : '' ); ?>">
 		<input type="hidden" name="rex-slider--slide-url" value="<?php echo ( isset( $slide['_rex_banner_gallery_url'] ) ? esc_url( $slide['_rex_banner_gallery_url'] ) : '' ); ?>">
 		<input type="hidden" name="rex-slider--slide-video-audio" value="<?php echo ( is_array( $slide['_rex_banner_gallery_video_audio'] ) ? 'true' : '' ); ?>">

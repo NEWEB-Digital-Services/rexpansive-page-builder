@@ -263,7 +263,6 @@ var Rexbuilder_RexSlider = (function ($) {
                     }
                 },
                 error: function (response) {
-                    console.log(response);
                     rexslider_modal_properties.$modal.removeClass('rex-modal--loading');
                 }
             });
@@ -524,6 +523,99 @@ var Rexbuilder_RexSlider = (function ($) {
         slide_uploader_video_frame.open();
     }	// SlideVideoHandler END
 
+    var _saveSlider = function (sliderData, block_to_edit, rex_slider_to_edit, saveNewSlider, savingLiveSlider) {
+        console.log(sliderData, block_to_edit, rex_slider_to_edit, saveNewSlider, savingLiveSlider);
+        var saveNew = typeof saveNewSlider != "undefined" ? saveNewSlider : false;
+        var saveLive = typeof savingLiveSlider != "undefined" ? savingLiveSlider : false;
+        if (rex_slider_to_edit) {
+            // ajx call
+            // - clear previuos data
+            // - save new data
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: live_editor_obj.ajaxurl,
+                data: {
+                    action: 'rex_edit_slider_from_builder',
+                    nonce_param: live_editor_obj.rexnonce,
+                    slider_data: sliderData,
+                    slider_id: rex_slider_to_edit
+                },
+                success: function (response) {
+                    if (response.success) {
+                        if (!saveLive) {
+                            console.log("rex_edit_slider_from_builder a true")
+                            // updating info
+                            var data = {
+                                eventName: "",
+                                data_to_send: {
+                                    id: response.data.slider_id,
+                                    settings: sliderData.settings,
+                                    slides: sliderData.slides
+                                }
+                            };
+                            if (block_to_edit) {
+                                data.eventName = "rexlive:updateSlider";
+                            } else {
+                                data.eventName = "rexlive:insert_new_slider";
+                            }
+                            Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
+                        }
+                    }
+                },
+                error: function (response) {
+
+                }
+            });
+        } else {
+            // ajax call:
+            // - create a new rex_slider post
+            // - add the correct information
+            // - return with the id, to append the shortcode in the block
+
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: live_editor_obj.ajaxurl,
+                data: {
+                    action: 'rex_create_slider_from_builder',
+                    nonce_param: live_editor_obj.rexnonce,
+                    slider_data: sliderData
+                },
+                success: function (response) {
+                    if (response.success) {
+                        console.log("rex_create_slider_from_builder a true")
+                        // updating info
+                        var data = {
+                            eventName: "",
+                            data_to_send: {
+                                id: response.data.slider_id,
+                                settings: sliderData.settings,
+                                slides: sliderData.slides
+                            }
+                        };
+                        if (!saveNew) {
+                            if (block_to_edit) {
+                                data.eventName = "rexlive:updateSlider";
+                            } else {
+                                data.eventName = "rexlive:insert_new_slider";
+                            }
+                            // Update Slider List
+                            rexslider_modal_properties.$slider_import.append('<option value="' + response.data.slider_id + '">' + response.data.slider_title + '</option>');
+                        } else {
+                            data.eventName = "rexlive:newSliderSavedOnDB";
+                        }
+                        Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
+                    }
+                },
+                error: function (response) {
+
+                }
+            });
+
+        }
+    }
+
     var _linkEvents = function () {
 
         // Live activation/deactivation of radio button on url insertion/delete
@@ -628,105 +720,15 @@ var Rexbuilder_RexSlider = (function ($) {
         /**
          * Modal Slider Save Event
          */
-        rexslider_modal_properties.$save_button.on('click', function () {
+        rexslider_modal_properties.$save_button.on('click', function (e) {
+
             // Retrieve Slider Data
-            var slider = _retrieveSliderData();
-
-            // var slider_shortcode = createSliderShortcode(slider);
-
-            var slider_to_edit = $(this).attr('data-block-to-edit');
+            var sliderData = _retrieveSliderData();
+            var block_to_edit = $(this).attr('data-block-to-edit');
             var rex_slider_to_edit = $(this).attr('data-slider-to-edit');
 
-            if (rex_slider_to_edit) {
-                // $(slider_to_edit).find('.element-preview').empty().append(slider_shortcode.replace(/'/ig,"’"));
-                // $(slider_to_edit).find('.data-text-content').text(slider_shortcode.replace(/'/ig,"’"));
+            _saveSlider(sliderData, block_to_edit, rex_slider_to_edit);
 
-                // ajx call
-                // - clear previuos data
-                // - save new data
-                $.ajax({
-                    type: 'POST',
-                    dataType: 'json',
-                    url: live_editor_obj.ajaxurl,
-                    data: {
-                        action: 'rex_edit_slider_from_builder',
-                        nonce_param: live_editor_obj.rexnonce,
-                        slider_data: slider,
-                        slider_id: rex_slider_to_edit
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            var slider_shortcode = '[RexSlider slider_id="' + response.data.slider_id + '"]';
-                            // updating info
-                            if (slider_to_edit) {
-                                $(slider_to_edit).find('.element-preview').empty().append(slider_shortcode.replace(/'/ig, "’"));
-                                $(slider_to_edit).find('.data-text-content').text(slider_shortcode.replace(/'/ig, "’"));
-                                $(slider_to_edit).attr('data-block-slider-id', response.data.slider_id);
-                            } else {
-                                var new_block = createNewTextBlock('rexslider', 12, 4);
-                                var $new_block = $('#' + new_block);
-
-                                $new_block.find('.element-actions').addClass('element-actions__block-slider');
-                                $new_block.find('.element-preview').empty().append(slider_shortcode.replace(/'/ig, "’"));
-                                $new_block.find('.data-text-content').text(slider_shortcode.replace(/'/ig, "’"));
-                                $new_block.attr('data-block-slider-id', response.data.slider_id);
-
-                                // Update Slider List
-                                // rexslider_modal_properties.$slider_import.append('<option value="' + response.data.slider_id + '">' + response.data.slider_title + '</option>');
-                            }
-                        }
-                    },
-                    error: function (response) {
-
-                    }
-                });
-            } else {
-                // ajax call:
-                // - create a new rex_slider post
-                // - add the correct information
-                // - return with the id, to append the shortcode in the block
-
-                $.ajax({
-                    type: 'POST',
-                    dataType: 'json',
-                    url: live_editor_obj.ajaxurl,
-                    data: {
-                        action: 'rex_create_slider_from_builder',
-                        nonce_param: live_editor_obj.rexnonce,
-                        slider_data: slider
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            var slider_shortcode = '[RexSlider slider_id="' + response.data.slider_id + '"]';
-
-                            if (slider_to_edit) {
-                                $(slider_to_edit).find('.element-preview').empty().append(slider_shortcode.replace(/'/ig, "’"));
-                                $(slider_to_edit).find('.data-text-content').text(slider_shortcode.replace(/'/ig, "’"));
-                                $(slider_to_edit).attr('data-block-slider-id', response.data.slider_id);
-                            } else {
-
-                                var data = {
-                                    eventName: 'rexlive:insert_new_slider',
-                                    data_to_send: {
-                                        slider_id: response.data.slider_id,
-                                        slider_settings: slider.settings,
-                                        slider_slides: slider.slides
-                                    }
-                                };
-
-                                Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
-                            }
-
-                            // Update Slider List
-                            rexslider_modal_properties.$slider_import.append('<option value="' + response.data.slider_id + '">' + response.data.slider_title + '</option>');
-                        }
-                    },
-                    error: function (response) {
-
-                    }
-                });
-
-            }
             Rexlive_Modals_Utils.closeModal(rexslider_modal_properties.$modal_wrap);
         });
 
@@ -931,7 +933,8 @@ var Rexbuilder_RexSlider = (function ($) {
 
     return {
         init: init,
-        openSliderModal: _openSliderEditor
+        openSliderModal: _openSliderEditor,
+        saveSlider: _saveSlider
     };
 
 })(jQuery);

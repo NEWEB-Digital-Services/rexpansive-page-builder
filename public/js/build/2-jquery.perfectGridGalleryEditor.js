@@ -66,7 +66,6 @@
             gridstackInstanceID: null,
             serializedData: [],
             firstStartGrid: false,
-            numberBlocks: null,
             mediumEditorIstance: null,
             gridBlocksHeight: 0,
             editedFromBackend: false,
@@ -83,7 +82,8 @@
             blocksDimensions: [],
             reverseDataGridDisposition: {},
             updatefullHeigth2Phases: false,
-            removingCollapsedElements: false
+            removingCollapsedElements: false,
+            lastIDBlock: 0
         };
 
         this.$section = this.$element.parents(this._defaults.gridParentWrap);
@@ -920,7 +920,7 @@
             Rexbuilder_Util_Editor.addingNewBlocks = false;
             return $newEL;
         },
-
+        
         addScrollbar: function ($newEL) {
             var istanceScrollbar = $newEL.find('.rex-custom-scrollbar').overlayScrollbars(Rexbuilder_Util.scrollbarProperties).overlayScrollbars();
             istanceScrollbar.sleep();
@@ -1101,7 +1101,7 @@
 
         // Define usefull private properties
         _defineDynamicPrivateProperties: function () {
-            var oldWidth = this.properties.wrapWidth;
+//            var oldWidth = this.properties.wrapWidth;
             var newWidth = this.$element.outerWidth();
             //console.log("DEFINE DYNAMIC GRID " + this.properties.sectionNumber);
             //method with jquery 
@@ -1121,7 +1121,6 @@
                     this.properties.oneColumModeActive = false;
                 }
             }
-            //if (oldWidth != newWidth || this.properties.updatingSection) {
             this.properties.wrapWidth = newWidth;
             this.properties.singleWidth = newWidth * this.settings.gridItemWidth;
 
@@ -1146,8 +1145,6 @@
                 //console.log(this.properties.singleHeight);
             }
             return true;
-            /* }
-            return false; */
         },
 
         _calculateGridHeight: function () {
@@ -1367,7 +1364,8 @@
         },
 
         _prepareElementEditing: function ($elem) {
-            if (Rexbuilder_Util_Editor.blockCopying) {
+
+/*             if (Rexbuilder_Util_Editor.blockCopying) {
                 this.properties.lastIDBlock = this.properties.lastIDBlock + 1;
                 var $elemData = $elem.children(".rexbuilder-block-data");
                 var rexId = Rexbuilder_Util.createBlockID();
@@ -1385,7 +1383,7 @@
 
             if (Rexbuilder_Util_Editor.sectionCopying || Rexbuilder_Util_Editor.blockCopying) {
                 this._removeHandles($elem);
-            }
+            } */
 
             this._addHandles($elem, 'e, s, w, se, sw');
 

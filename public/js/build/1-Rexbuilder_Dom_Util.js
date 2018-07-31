@@ -1,6 +1,54 @@
 var Rexbuilder_Dom_Util = (function ($) {
     'use strict';
 
+    var _updateSlider = function (data) {
+        var $textWrap = data.textWrap;
+        var numberSliderToActive = data.sliderNumberToActive;
+
+        $textWrap.children(".rex-slider-wrap:not([data-rex-slider-number=\"" + data.sliderNumberToActive + "\"])").each(function (i, slider) {
+            var $slider = $(slider);
+            $slider.css("display", "none");
+            $slider.attr("data-rex-slider-active", false);
+            RexSlider.destroySliderPlugins($slider);
+        });
+
+        var $sliderToActive = $textWrap.children(".rex-slider-wrap[data-rex-slider-number=\"" + numberSliderToActive + "\"]");
+
+        if ($sliderToActive.length == 0) {
+            var newSliderData = data.newSliderData;
+            if (typeof newSliderData != "undefined") {
+                var $elem = Rexbuilder_Util_Editor.sliderEditingObj.parents(".grid-stack-item");
+                Rexbuilder_CreateBlocks.createSlider(data.newSliderData, $elem);
+            }
+        } else {
+            $sliderToActive.css("display", "");
+            RexSlider.initSlider($sliderToActive);
+        }
+    }
+
+    var _updateSliderStack = function (data) {
+        var $section = Rexbuilder_Util_Editor.sectionEditingObj;
+        var $textWrap = Rexbuilder_Util_Editor.textWrapElementEditingObj;
+        var $sliderObj = Rexbuilder_Util_Editor.sliderEditingObj;
+
+        var reverseData = {
+            textWrap: $textWrap,
+            sliderNumberToActive: parseInt($sliderObj.attr("data-rex-slider-number"))
+        };
+
+        Rexbuilder_Dom_Util.lastSliderNumber = Rexbuilder_Dom_Util.lastSliderNumber + 1;
+
+        var actionData = {
+            textWrap: $textWrap,
+            sliderNumberToActive: Rexbuilder_Dom_Util.lastSliderNumber,
+            newSliderData: data
+        };
+
+        _updateSlider(actionData);
+
+        Rexbuilder_Util_Editor.pushAction($section, "updateSlider", actionData, reverseData);
+    }
+
     var _updateRow = function ($section, $sectionData, $galleryElement, rowSettings) {
         var
             gutter = typeof rowSettings.gutter === "undefined" ? 20 : parseInt(rowSettings.gutter),
@@ -114,38 +162,70 @@ var Rexbuilder_Dom_Util = (function ($) {
         }
     }
 
-    var _removeYoutubeVideo = function ($target, targetType) {
+    var _removeYoutubeVideo = function ($target, targetType, removeFromDom) {
         if ($target.hasClass("youtube-player")) {
             if ($target.YTPGetPlayer() === undefined) {
                 return;
             }
-            $target.YTPPlayerDestroy();
-            $target.removeClass('youtube-player');
-            if (targetType != "section") {
-                var $toggleAudio = $target.children(".rex-video-toggle-audio");
-                if ($toggleAudio.length != 0) {
-                    $toggleAudio.remove();
+            removeFromDom = typeof removeFromDom == "undefined" ? true : removeFromDom;
+            if (removeFromDom) {
+                $target.YTPPlayerDestroy();
+                $target.removeClass('youtube-player');
+                if (targetType != "section") {
+                    var $toggleAudio = $target.children(".rex-video-toggle-audio");
+                    if ($toggleAudio.length != 0) {
+                        $toggleAudio.remove();
+                    }
                 }
+            } else {
+
+                var videoID = $target.YTPGetVideoID();
+                var $targetParent = $target.parent();
+                var hadAudio = $target.children(".rex-video-toggle-audio").length != 0;
+                $target.YTPPlayerDestroy();
+
+                var wasSlide = $target.hasClass("rex-slider-video-wrapper");
+                $target.remove();
+
+                var newEl = document.createElement("div");
+                var $newEl = $(newEl);
+
+                if (hadAudio) {
+                    $newEl.append(tmpl("tmpl-video-toggle-audio"));
+                }
+
+                if (wasSlide) {
+                    $newEl.addClass("rex-slider-video-wrapper");
+                }
+
+                $newEl.addClass("youtube-player");
+                $newEl.attr("data-property", "{videoURL: 'https://www.youtube.com/watch?v=" + videoID + "', containment: 'self',startAt: 0,mute: true,autoPlay: true,loop: true,opacity: 1,showControls: false,showYTLogo: false}");
+                $newEl.prependTo($targetParent[0]);
             }
 
         }
     }
 
-    var _removeVimeoVideo = function ($target) {
+    var _removeVimeoVideo = function ($target, targetType, removeFromDom) {
         var $vimeoWrap = $target.children('.rex-video-vimeo-wrap');
         var $toggleAudio = $target.children(".rex-video-toggle-audio");
         if ($vimeoWrap.length != 0) {
             var iframeVimeo = $vimeoWrap.children("iframe")[0];
-            VimeoVideo.removePlayer(iframeVimeo);
-            $target.removeClass("vimeo-player");
-            $vimeoWrap.remove();
-            if ($toggleAudio.length != 0) {
-                $toggleAudio.remove();
+            removeFromDom = typeof removeFromDom == "undefined" ? true : removeFromDom;
+            if (removeFromDom) {
+                VimeoVideo.removePlayer(iframeVimeo);
+                $target.removeClass("vimeo-player");
+                $vimeoWrap.remove();
+                if ($toggleAudio.length != 0) {
+                    $toggleAudio.remove();
+                }
+            } else {
+                VimeoVideo.findVideo(iframeVimeo).unload();
             }
         }
     }
 
-    var _removeMp4Video = function ($target, targetType) {
+    var _removeMp4Video = function ($target, targetType, removeFromDom) {
         if (targetType == "section") {
             var $videoWrap = $target.children(".rex-video-section-wrap");
             if ($videoWrap.length == 0) {
@@ -159,11 +239,17 @@ var Rexbuilder_Dom_Util = (function ($) {
             return;
         }
         if ($videoWrap.length != 0) {
-            //console.log("removing mp4 video");
-            $target.removeClass("mp4-player");
-            $videoWrap.remove();
-            if (targetType != "section" && $toggleAudio.length != 0) {
-                $toggleAudio.remove();
+            removeFromDom = typeof removeFromDom == "undefined" ? true : removeFromDom;
+            if (removeFromDom) {
+                $target.removeClass("mp4-player");
+                $videoWrap.remove();
+                if (targetType != "section" && $toggleAudio.length != 0) {
+                    $toggleAudio.remove();
+                }
+            } else {
+                var videoEl = $videoWrap.find("video");
+                videoEl.pause();
+                videoEl.currentTime = 0;
             }
         }
     }
@@ -351,6 +437,9 @@ var Rexbuilder_Dom_Util = (function ($) {
                     _updateRemovingBlock(dataToUse.targetElement, dataToUse.hasToBeRemoved, dataToUse.galleryInstance);
                 }
                 break;
+            case "updateSlider":
+                _updateSlider(dataToUse);
+                break;
             case "hideBlock":
                 break;
             default:
@@ -361,7 +450,12 @@ var Rexbuilder_Dom_Util = (function ($) {
         Rexbuilder_Util_Editor.redoActive = false;
     }
 
+    var init = function () {
+        this.lastSliderNumber = 0;
+    }
+
     return {
+        init: init,
         updateRow: _updateRow,
         updateSectionMargins: _updateSectionMargins,
         updateImageBG: _updateImageBG,
@@ -371,6 +465,8 @@ var Rexbuilder_Dom_Util = (function ($) {
         addVimeoVideo: _addVimeoVideo,
         removeVimeoVideo: _removeVimeoVideo,
         addMp4Video: _addMp4Video,
-        removeMp4Video: _removeMp4Video
+        removeMp4Video: _removeMp4Video,
+        updateSlider: _updateSlider,
+        updateSliderStack: _updateSliderStack
     };
 })(jQuery);

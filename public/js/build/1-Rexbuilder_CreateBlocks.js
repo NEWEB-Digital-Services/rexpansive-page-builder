@@ -142,24 +142,36 @@ var Rexbuilder_CreateBlocks = (function ($) {
     });
 
     $(document).on("rexlive:insert_new_slider", function (e) {
-        var data = e.settings.data_to_send;
-        var slides = data.slider_slides;
+        _createSlider(e.settings.data_to_send);
+    });
+
+    var _createSlider = function (data, $elem) {
+        Rexbuilder_Dom_Util.lastSliderNumber = Rexbuilder_Dom_Util.lastSliderNumber + 1;
+        var sliderNumber = Rexbuilder_Dom_Util.lastSliderNumber;
+        var slides = data.slides;
+
         var sliderData = {
-            id: data.slider_id,
-            settings: data.slider_settings,
+            id: data.id,
+            settings: data.settings,
             numberSlides: slides.length
         }
 
-        console.log(data);
-        var $section = Rexbuilder_Util_Editor.sectionAddingElementObj,
-            galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
-        var $el = _createBlockGrid(galleryInstance, 12, 4);
-        var $textWrap = $el.find(".text-wrap");
+        var $el;
+        var $textWrap;
+        if (typeof $elem == "undefined") {
+            var $section = Rexbuilder_Util_Editor.sectionAddingElementObj;
+            var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
+            // 
+            $el = _createBlockGrid(galleryInstance, 12, 4);
+            $textWrap = $el.find(".text-wrap");
+            $textWrap.children().remove();
+        } else {
+            $el = $elem;
+            $textWrap = $el.find(".text-wrap");
+        }
 
         $el.addClass("block-has-slider");
         $el.children(".rexbuilder-block-data").attr("data-type", "rexslider");
-
-        $textWrap.children().remove();
 
         var $sliderWrap = _createSliderWrap($textWrap, sliderData);
 
@@ -170,6 +182,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
             if (slides[i].slide_image_url != "none") {
                 $slide.css("background-image", "url(" + slides[i].slide_image_url + ")");
+                $slide.attr("data-rex-slide-image-id", slides[i].slide_image_id);
             }
 
             if (slides[i].slide_text.trim().length != 0) {
@@ -200,6 +213,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
                             url: slides[i].slide_videoMp4Url
                         }));
                         $videoElement.addClass("mp4-player");
+                        $videoElement.children(".rex-video-wrap").attr("data-rex-video-mp4-id", slides[i].slide_video);
                         break;
 
                     case "vimeo":
@@ -207,19 +221,10 @@ var Rexbuilder_CreateBlocks = (function ($) {
                             url: slides[i].slide_video
                         }));
                         $videoElement.addClass("vimeo-player");
-
-                        var vimeoFrame = $videoElement.children(".rex-video-vimeo-wrap").find("iframe")[0];
-                        var opt = {
-                            autoplay: true,
-                            background: true,
-                            loop: true
-                        };
-                        VimeoVideo.addPlayer("1", vimeoFrame, opt);
                         break;
                     case "youtube":
                         $videoElement.addClass("youtube-player");
                         $videoElement.attr("data-property", "{videoURL: '" + slides[i].slide_video + "', containment: 'self',startAt: 0,mute: true,autoPlay: true,loop: true,opacity: 1,showControls: false,showYTLogo: false}");
-                        $videoElement.YTPlayer();
                         break;
                     default:
                         break;
@@ -231,19 +236,13 @@ var Rexbuilder_CreateBlocks = (function ($) {
             }
         }
 
+        $sliderWrap.attr("data-rex-slider-number", sliderNumber);
+
         RexSlider.initSlider($sliderWrap);
 
-        $sliderWrap.find(".rex-slider-element").each(function (i, slide) {
-            var $video = $(slide).find(".rex-slider-video-wrapper");
-            Rexbuilder_Util.playVideo($video);
-        });
-
-        if (sliderData.settings.auto_start) {
-            $sliderWrap.flickity('playPlayer');
-        }
         Rexbuilder_Util_Editor.sectionAddingElementRexID = null;
         Rexbuilder_Util_Editor.sectionAddingElementObj = null;
-    });
+    }
 
     var _createSliderWrap = function ($textWrap, data) {
         tmpl.arg = "slider";
@@ -272,5 +271,70 @@ var Rexbuilder_CreateBlocks = (function ($) {
         }
         return $el;
     }
+
+    var _createCopyBlock = function ($elem) {
+        var $gallery = $elem.parents('.grid-stack-row');
+        Rexbuilder_Util_Editor.sectionAddingElementObj = $gallery.parents(".rexpansive_section");
+        var galleryEditorIstance = $gallery.data().plugin_perfectGridGalleryEditor;
+        var gridstack = $gallery.data("gridstack");
+        var $newBlock;
+
+        $newBlock = $elem.clone(false);
+        var $newBlockData = $newBlock.children(".rexbuilder-block-data");
+
+        galleryEditorIstance._removeHandles($newBlock);
+
+        var newRexID = Rexbuilder_Util.createBlockID();
+
+        galleryEditorIstance.properties.lastIDBlock = galleryEditorIstance.properties.lastIDBlock + 1;
+
+        var newBlockID = "block_" + galleryEditorIstance.properties.sectionNumber + "_" + galleryEditorIstance.properties.lastIDBlock;
+
+        $newBlock.attr("data-rexbuilder-block-id", newRexID);
+        $newBlockData.attr("data-rexbuilder_block_id", newRexID);
+        $newBlock.attr("id", newBlockID);
+        $newBlockData.attr("data-id", newBlockID);
+        $newBlockData.attr("id", newBlockID + "-builder-data");
+
+        $newBlock.appendTo($gallery.eq(0));
+
+        var w = parseInt($newBlock.attr("data-gs-width"));
+        var h = parseInt($newBlock.attr("data-gs-height"));
+
+        Rexbuilder_Util_Editor.removeScrollBar($newBlock);
+        Rexbuilder_Util_Editor.removeTextEditor($newBlock);
+
+        galleryEditorIstance._prepareElement($newBlock.eq(0));
+
+        galleryEditorIstance.unFocusElementEditing($newBlock);
+
+        gridstack.addWidget($newBlock, 0, 0, w, h, true);
+
+        $newBlock.attr("data-gs-auto-position", "");
+
+        var $textWrap = $newBlock.find(".text-wrap");
+
+        if ($elem.hasClass("block-has-slider")) {
+            var $oldSlider = $elem.find(".text-wrap").children(".rex-slider-wrap[data-rex-slider-active=\"true\"]");
+            $textWrap.children().remove();
+            var sliderData = Rexbuilder_Util_Editor.createSliderData($oldSlider);
+            Rexbuilder_Util_Editor.blockCopyingObj = $newBlock;
+            Rexbuilder_Util_Editor.saveSliderOnDB(sliderData, true, newBlockID);
+        } else {
+            galleryEditorIstance.addScrollbar($newBlock);
+            galleryEditorIstance.addTextEditor($newBlock);
+        }
+    }
+    $(document).on("rexlive:newSliderSavedOnDB", function (e) {
+        if (Rexbuilder_Util_Editor.blockCopyingObj !== null) {
+            _createSlider(e.settings.data_to_send, Rexbuilder_Util_Editor.blockCopyingObj);
+        }
+        Rexbuilder_Util_Editor.blockCopyingObj = null;
+    });
+
+    return {
+        createSlider: _createSlider,
+        createCopyBlock: _createCopyBlock
+    };
 
 })(jQuery);

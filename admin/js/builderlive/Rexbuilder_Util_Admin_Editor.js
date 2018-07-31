@@ -163,19 +163,50 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                         editedLive = true;
                     }
                 }
+
                 if (event.data.eventName == "rexlive:layoutChanged") {
                     activeLayoutPage = event.data.activeLayoutName;
                     updateResponsiveButtonFocus();
                 }
+
                 if (event.data.eventName == "rexlive:openMediaUploader") {
                     Rexlive_MediaUploader.openMediaUploaderImage({});
                 }
+
                 if (event.data.eventName == "rexlive:addNewBlockVideo") {
                     Rexlive_Modals.openVideoModal();
                 }
+
                 if (event.data.eventName == "rexlive:addNewSlider") {
                     Rexbuilder_RexSlider.openSliderModal();
                 }
+
+                if (event.data.eventName == "rexlive:editSlider") {
+                    Rexbuilder_RexSlider.openSliderModal(event.data.blockID, event.data.shortCodeSlider, event.data.sliderID);
+                }
+
+                if (event.data.eventName == "rexlive:openSectionModal") {
+                    Rexlive_Modals.openSectionModal();
+                }
+
+                if (event.data.eventName == "rexlive:uploadSliderFromLive") {
+                    console.log(event.data);
+
+                    var dataSlider = event.data.sliderInfo;
+
+                    var sliderData = dataSlider.slider;
+                    var rex_slider_to_edit = dataSlider.slider.id.toString();
+                    var newSliderFlag = dataSlider.newSlider;
+                    var blockToEdit = dataSlider.blockID;
+
+                    if (newSliderFlag) {
+                        rex_slider_to_edit = "";
+                    }
+
+                    Rexbuilder_RexSlider.saveSlider(sliderData, blockToEdit, rex_slider_to_edit, newSliderFlag, true)
+
+                }
+
             }
         };
 

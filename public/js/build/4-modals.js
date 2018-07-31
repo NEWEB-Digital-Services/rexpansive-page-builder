@@ -8,41 +8,6 @@
 
 		// Prepare the variables that holds the Frame Uploaders
 		var image_uploader_frame, image_block_edit_frame, navigator_media_frame, video_uploader_frame, video_block_edit_frame, textfill_image_upload_frame;
-
-		var section_config_modal_properties = {
-			$section_layout_type: $('.builder-edit-row-layout'),
-			$section_fixed: $('#section-fixed'),
-			$section_masonry: $('#section-masonry'),
-			$section_full: $('#section-full-modal'),
-			$section_boxed: $('#section-boxed-modal'),
-			$section_boxed_width: $('.section-set-boxed-width'),
-			$section_boxed_width_type: $('.section-width-type'),
-
-			// FULL height configuration
-			$is_full: $('#section-is-full'),
-			// HOLD GRID config
-			$hold_grid: $("#rx-hold-grid"),
-			// ID and navigator configuration
-			$section_id: $('#sectionid-container'),
-			$save_button: $('#backresponsive-set-save'),
-
-			$block_gutter: $('.section-set-block-gutter'),
-			// Row separator
-			$row_separator_top: $('#row-separator-top'),
-			$row_separator_right: $('#row-separator-right'),
-			$row_separator_bottom: $('#row-separator-bottom'),
-			$row_separator_left: $('#row-separator-left'),
-
-			// Row margin
-			$row_margin_top: $('#row-margin-top'),
-			$row_margin_right: $('#row-margin-right'),
-			$row_margin_bottom: $('#row-margin-bottom'),
-			$row_margin_left: $('#row-margin-left'),
-
-			// Row zoom
-			$section_active_photoswipe: $('#section-active-photoswipe'),
-			section_photoswipe_changed: false,
-		};
 		/**
 		 * Open a modal dialog box
 		 * 
@@ -121,45 +86,19 @@
 			// $('#_rexbuilder').val(Date.UTC(timestamp.getFullYear(),timestamp.getMonth(),timestamp.getDate()));
 		};
 
-		$(document).on('click', '#backresponsive-set-cancel', function (e) {
-			e.preventDefault();
-			CloseModal($('#modal-background-responsive-set').parent(
-				'.rex-modal-wrap'));
-		});
+		$(document).on("rexlive:set_gallery_layout", function (e) {
+			var data = e.settings.data_to_send;
 
-		$(document).on('click', '#backresponsive-set-save', function (e) {
-			e.preventDefault();
-			console.log(e);
-			var sectionID = $(this).attr('data-section_id');
-			var $section = Rexbuilder_Util.$rexContainer.children('.rexpansive_section[data-rexlive-section-id="' + sectionID + '"]');
+			var sectionID = Rexbuilder_Util_Editor.sectionAddingElementRexID;
+			var $section = Rexbuilder_Util_Editor.sectionAddingElementObj;
 			var $gallery = $section.find(".grid-stack-row");
-			// console.log(this);
-			var newLayout = section_config_modal_properties.$section_layout_type.filter(':checked').val();
-			var fullHeight = (true === section_config_modal_properties.$is_full.prop('checked') ? 'true' : 'false');
-			/*
-			var section_id = $(this).attr('data-section_id'),
-				color = $('.backresponsive-color-section').spectrum('get'),
-				opacity = $('.backresponsive-opacity-section').val(),
-				gutter = $('.section-set-block-gutter').val(),
-				custom_classes = $('#section-set-custom-class').val(),
-				section_width = '',
-				section_is_full_width = (true === section_config_modal_properties.$section_full.prop('checked') ? 'true' : 'false'),
-				section_is_boxed_width = (true === section_config_modal_properties.$section_boxed.prop('checked') ? 'true' : 'false'),
-				isFull = (true === section_config_modal_properties.$is_full.prop('checked') ? 'true' : ''),
-				holdGrid = (true === section_config_modal_properties.$hold_grid.prop('checked') ? 'true' : 'false'),
-				//has_small_overlay = ( true  === 	section_config_modal_properties.$has_overlay_small.prop('checked') ? 'true' : '' ), 
-				//has_medium_overlay = ( true === section_config_modal_properties.$has_overlay_medium.prop('checked') ? 'true' : '' ), 
-				//has_large_overlay = ( true === section_config_modal_properties.$has_overlay_large.prop('checked') ? 'true' : '' ), 
-				section_custom_name = section_config_modal_properties.$section_id.val(),
-				layout = section_config_modal_properties.$section_layout_type.filter(':checked').val();
-				*/
-			//var $row = $('.builder-row[data-count=' + 	section_id + ']'); $row.attr('data-layout', layout);
+			var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
 
 			//reverseData: STATO PRIMA
-			var galleryEditorIstance = $gallery.data().plugin_perfectGridGalleryEditor;
-
-			var oldDisposition = galleryEditorIstance.createActionDataMoveBlocksGrid();
-
+			var oldDisposition = galleryInstance.createActionDataMoveBlocksGrid();
+			console.log("data received");
+			console.log(data); 
+			
 			var reverseData = {
 				gutter: $gallery.attr("data-separator"),
 				row_separator_top: $gallery.attr("data-row-separator-top"),
@@ -177,17 +116,12 @@
 			setBuilderTimeStamp();
 
 			//DA CAPIRE DOVE ANDARE PER AGGIORNARE LE INFORMAZIONI NEL DOM, PER ORA FACCIAMOLO QUA
-			$gallery.attr("data-layout", newLayout);
-			$gallery.attr("data-full-height", fullHeight);
-			/* this.$element.attr("data-layout", newLayout);
-			this.$section.children('.section-data').attr({
-				'data-layout': newLayout
-			});
-			 */
+			$gallery.attr("data-layout", data.newLayout);
+			$gallery.attr("data-full-height", data.fullHeight);
 
-			var newDisposition = galleryEditorIstance.updateGridSettingsModalUndoRedo({
-				'layout': newLayout,
-				'fullHeight': fullHeight
+			var newDisposition = galleryInstance.updateGridSettingsModalUndoRedo({
+				'layout': data.newLayout,
+				'fullHeight': data.fullHeight
 			});
 
 			//actionData: STATO DOPO
@@ -197,8 +131,8 @@
 				row_separator_bottom: $gallery.attr("data-row-separator-bottom"),
 				row_separator_right: $gallery.attr("data-row-separator-right"),
 				row_separator_left: $gallery.attr("data-row-separator-left"),
-				fullHeight: fullHeight,
-				layout: newLayout,
+				fullHeight: data.fullHeight,
+				layout: data.newLayout,
 				section_width: $gallery.parent().css("max-width"),
 				dimension: $gallery.parent().hasClass("full-disposition") ? "full" : "boxed",
 				collapse_grid: $section.attr("data-rex-collapse-grid"),
@@ -206,8 +140,8 @@
 			}
 
 			Rexbuilder_Util_Editor.pushAction($section, "updateSection", actionData, reverseData);
-
-			CloseModal($('#modal-background-responsive-set').parent('.rex-modal-wrap'));
+			Rexbuilder_Util_Editor.sectionAddingElementRexID = null;
+			Rexbuilder_Util_Editor.sectionAddingElementObj = null;
 		});
 
 
@@ -507,40 +441,35 @@
 
 		// attach a click event (or whatever you want) to some element on your
 		// page
-/* 		$('#modal-setting-button').on('click', '#background_up_img', function (event) {
-			event.preventDefault();
-
-			// if the file_frame has already been created, just reuse it
-			if (file_frame) {
-				file_frame.open();
-				return;
-			}
-
-			file_frame = wp.media.frames.file_frame = wp.media({
-				
-				 title: $( this ).data( 'uploader_title' ), button: {
-				 text: $( this ).data( 'uploader_button_text' ), },
-				 multiple: false // set this to true for multiple file
-				 selection
-			});
-
-			file_frame.on('select', function () {
-				attachment = file_frame.state().get('selection')
-					.first().toJSON();
-
-				// do something with the file here
-				$('#frontend-button').hide();
-				$('#frontend-image').attr('src', attachment.url);
-			});
-
-			file_frame.open();
-		}); */
+		/* 		$('#modal-setting-button').on('click', '#background_up_img', function (event) {
+					event.preventDefault();
+		
+					// if the file_frame has already been created, just reuse it
+					if (file_frame) {
+						file_frame.open();
+						return;
+					}
+		
+					file_frame = wp.media.frames.file_frame = wp.media({
+						
+						 title: $( this ).data( 'uploader_title' ), button: {
+						 text: $( this ).data( 'uploader_button_text' ), },
+						 multiple: false // set this to true for multiple file
+						 selection
+					});
+		
+					file_frame.on('select', function () {
+						attachment = file_frame.state().get('selection')
+							.first().toJSON();
+		
+						// do something with the file here
+						$('#frontend-button').hide();
+						$('#frontend-image').attr('src', attachment.url);
+					});
+		
+					file_frame.open();
+				}); */
 		// ------------------------------------------
-
-		$(document).on('click', '#back-set-reset', function (e) {
-			e.preventDefault();
-			CloseModal($('#modal-setting-button').parent('.rex-modal-wrap'));
-		});
 
 		$(document).on('click', '.builder-section-config', function (e) {
 			e.preventDefault();
@@ -548,7 +477,19 @@
 			var sectionID = $rexpansiveSection.attr("data-rexlive-section-id");
 			$('#backresponsive-set-save').attr('data-section_id', sectionID);
 			$('#backresponsive-set-reset').attr('data-section_id', sectionID);
-			OpenModal($('#modal-background-responsive-set').parent('.rex-modal-wrap'));
+
+			e.preventDefault();
+			var $section = $(e.target).parents(".rexpansive_section");
+			var s_id = $section.attr('data-rexlive-section-id');
+
+			var data = {
+				eventName: "rexlive:openSectionModal",
+			};
+
+			Rexbuilder_Util_Editor.sectionAddingElementRexID = s_id;
+			Rexbuilder_Util_Editor.sectionAddingElementObj = $section;
+
+			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 		});
 
 		// Launch to the iframe parent the event to open the Media Uploader
@@ -583,6 +524,7 @@
 
 		$(document).on("click", ".add-new-block-slider", function (e) {
 			e.preventDefault();
+			console.log("add sliderds"); 
 			var $section = $(e.target).parents(".rexpansive_section");
 			var s_id = $section.attr('data-rexlive-section-id');
 			var data = {

@@ -1036,6 +1036,33 @@ var Rexbuilder_Util = (function ($) {
         });
     }
 
+    var _startVideoPlugin = function ($target) {
+        if ($target.hasClass("mp4-player")) {
+            ;
+        } else if ($target.hasClass("vimeo-player")) {
+            var vimeoFrame = $target.children(".rex-video-vimeo-wrap").find("iframe")[0];
+            var opt = {
+                autoplay: true,
+                background: true,
+                loop: true
+            };
+            VimeoVideo.addPlayer("1", vimeoFrame, opt);
+        } else if ($target.hasClass("youtube-player")) {
+            if ($target.YTPGetPlayer() === undefined) {
+                $target.YTPlayer();
+            }
+        }
+    }
+
+    var _destroyVideo = function ($target, targetType, detachDom) {
+        if ($target.hasClass("mp4-player")) {
+            Rexbuilder_Dom_Util.removeMp4Video($target, targetType, detachDom);
+        } else if ($target.hasClass("vimeo-player")) {
+            Rexbuilder_Dom_Util.removeVimeoVideo($target, targetType, detachDom);
+        } else if ($target.hasClass("youtube-player")) {
+            Rexbuilder_Dom_Util.removeYoutubeVideo($target, targetType, detachDom);
+        }
+    }
 
     var _pauseVideo = function ($target) {
         if ($target.hasClass("mp4-player")) {
@@ -1044,6 +1071,9 @@ var Rexbuilder_Util = (function ($) {
             var vimeoPlugin = VimeoVideo.findVideo($target.find("iframe")[0]);
             vimeoPlugin.pause();
         } else if ($target.hasClass("youtube-player")) {
+            if ($target.YTPGetPlayer() === undefined) {
+                return;
+            }
             $target.YTPPause();
         }
     }
@@ -1055,10 +1085,16 @@ var Rexbuilder_Util = (function ($) {
             var vimeoPlugin = VimeoVideo.findVideo($target.find("iframe")[0]);
             vimeoPlugin.play();
         } else if ($target.hasClass("youtube-player")) {
+            if ($target.YTPGetPlayer() === undefined) {
+                return;
+            }
             $target.YTPPlay();
         }
     }
 
+    var _getBackgroundUrlFromCss = function (styleBackground) {
+        return styleBackground.replace('url(', '').replace(')', '').replace(/\"/gi, "");
+    }
     // init the utilities
     var init = function () {
         this.firstStart = true;
@@ -1137,7 +1173,9 @@ var Rexbuilder_Util = (function ($) {
         playVideoFromBegin: _playVideoFromBegin,
         pauseVideo: _pauseVideo,
         playVideo: _playVideo,
-
+        destroyVideo: _destroyVideo,
+        startVideoPlugin: _startVideoPlugin,
+        getBackgroundUrlFromCss: _getBackgroundUrlFromCss
     };
 
 })(jQuery);

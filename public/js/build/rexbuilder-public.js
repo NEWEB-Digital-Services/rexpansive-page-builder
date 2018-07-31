@@ -12,11 +12,12 @@ var Rexbuilder_App = (function ($) {
 
 	var init = function () {
 		Rexbuilder_Util.init();
+		Rexbuilder_Dom_Util.init();
 
 		if (Rexbuilder_Util.editorMode) {
 			Rexbuilder_Util_Editor.init();
 			Rexbuilder_Section.init();
-			Rexbuilder_Util_Editor.addBlockToolboxListeners();
+			Rexbuilder_Block.init();
 			Rexbuilder_Util_Editor.addDocumentListeners();
 			Rexbuilder_Util_Editor.addWindowListeners();
 		}
@@ -160,14 +161,7 @@ var Rexbuilder_App = (function ($) {
 
 		// Starting slider
 		RexSlider.init();
-		Rexbuilder_Util.$rexContainer.find(".rex-slider-wrap").each(function (i, slider) {
-			var $slider = $(slider);
-			$slider.find(".rex-slider-element").each(function (i, slide) {
-				var $video = $(slide).find(".rex-slider-video-wrapper");
-				Rexbuilder_Util.playVideo($video);
-			});
-		});
-
+		
 	};
 
 	var load = function () {

@@ -480,6 +480,15 @@
     background-color: rgba(128, 128, 128, 0.75);
 }
 
+.builder-edit-slider{
+    display: none;
+}
+
+.block-has-slider .builder-edit-slider{
+    display: block;
+    left: 50%;
+}
+
 /* .rexpansive_section{
     z-index: 0;
 } */

@@ -190,8 +190,8 @@ class Rexbuilder_Public
 
             wp_enqueue_script('YTPlayer', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/jquery.mb.YTPlayer.min.js', array('jquery'), $this->version, true);
 
-            wp_enqueue_script( 'ace-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/ace.js', array('jquery'),  $this->version, true );
-			wp_enqueue_script( 'ace-mode-css-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/mode-css.js', array('jquery'),  $this->version, true );
+            wp_enqueue_script('ace-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/ace.js', array('jquery'), $this->version, true);
+            wp_enqueue_script('ace-mode-css-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/mode-css.js', array('jquery'), $this->version, true);
 
             wp_enqueue_script('storeVariables', REXPANSIVE_BUILDER_URL . $cartella . 'js/store.legacy.min.js', array('jquery'), $this->version, true);
 
@@ -236,17 +236,17 @@ class Rexbuilder_Public
 
             wp_enqueue_script('2-jqueryEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/2-jquery.perfectGridGalleryEditor.js', array('jquery'), $this->version, true);
 
-            
             wp_enqueue_script('3-velocity', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/3-velocity.min.js', array('jquery'), $this->version, true);
             wp_enqueue_script('3-velocityui', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/3-velocity.ui.min.js', array('jquery'), $this->version, true);
             wp_enqueue_script('4-jqueryScrollify', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/4-jquery.rexScrollify.js', array('jquery'), $this->version, true);
-            
+
             wp_enqueue_script('section-js', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Section.js', array('jquery'), $this->version, true);
-            
+            wp_enqueue_script('block-js', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Block.js', array('jquery'), $this->version, true);
+
             wp_enqueue_script('rexbuilder', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/rexbuilder-public.js', array('jquery'), $this->version, true);
-            
+
             wp_enqueue_script('4-modals', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/4-modals.js', array('jquery'), $this->version, true);
-            
+
             wp_localize_script('rexbuilder', '_plugin_frontend_settings', apply_filters('rexbuilder_js_settings', array(
                 'animations' => apply_filters('rexbuilder_animation_enabled', $this->plugin_options['animation']),
                 'textFill' => array(
@@ -349,17 +349,18 @@ endif;
 endif;
 } */
     }
-    
+
     /**
-	 * Including the new sprites
-	 *
-	 * @return void
-	 * @since 1.1.3
-	 */
-	public function include_sprites() {
-		?><div style="display:none"><?php include_once( REXPANSIVE_BUILDER_PATH .  'admin/sprites/symbol/svg/sprite.symbol.svg' ); ?></div><?php
-    }
-    
+     * Including the new sprites
+     *
+     * @return void
+     * @since 1.1.3
+     */
+    public function include_sprites()
+    {
+        ?><div style="display:none"><?php include_once REXPANSIVE_BUILDER_PATH . 'admin/sprites/symbol/svg/sprite.symbol.svg';?></div><?php
+}
+
     public function rexlive_save_custom_css()
     {
         $nonce = $_POST['nonce_param'];
@@ -550,29 +551,29 @@ endif;
         <div id="rexbuilder-layout-data" style="display: none;">
             <div class = "layouts-customizations"
             <?php
-            if (empty($customizations_array)) {
-                echo 'data-empty-customizations="true">';
-            } else {
+if (empty($customizations_array)) {
+            echo 'data-empty-customizations="true">';
+        } else {
             ?>
             >
             <?php
-                echo json_encode($customizations_array);
-            }
-            ?>
+echo json_encode($customizations_array);
+        }
+        ?>
             </div>
             <div class = "available-layouts">
                 <?php
-                echo json_encode($layoutsAvaiable);
-                ?>
+echo json_encode($layoutsAvaiable);
+        ?>
             </div>
             <div class = "available-layouts-names">
                 <?php
-                echo json_encode($customizations_names);
-                ?>
+echo json_encode($customizations_names);
+        ?>
             </div>
         </div>
         <?php
-        if ($editor=="true") {
+if ($editor == "true") {
             ?>
         <button id="rex-open-ace-css-editor" class="btn-floating tooltipped" data-position="bottom" data-tooltip="<?php _e('CSS Editor', $this->plugin_name);?>">
             <i class="material-icons">&#xE314;</i><span>CSS</span><i class="material-icons">&#xE315;</i>

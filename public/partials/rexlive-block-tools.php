@@ -19,7 +19,10 @@ defined( 'ABSPATH' ) or exit;
     	</button>
         <button class="tool-button btn-floating builder-change-background tooltipped waves-effect waves-light">
 	    	I
-    	</button>
+        </button>
+        <button class="tool-button btn-floating builder-edit-slider tooltipped waves-effect waves-light">
+                S
+            </button>
 	    <div class="tool-button btn-flat builder-copy-block tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy block', 'rexpansive'); ?>">
 		    <i class="material-icons grey-text text-darken-2">&#xE14D;</i>
         </div>

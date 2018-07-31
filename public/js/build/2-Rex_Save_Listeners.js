@@ -362,7 +362,6 @@ var Rex_Save_Listeners = (function ($) {
 
             var content = "";
             var $textWrap;
-            var output;
             var $itemContent = $elem.find('.grid-item-content');
             var $itemData = $elem.children(".rexbuilder-block-data");
 
@@ -390,7 +389,7 @@ var Rex_Save_Listeners = (function ($) {
                 : parseInt($itemContent.attr('data-background_image_height'));
             id_image_bg_block = $itemData.attr('data-id_image_bg_block') === undefined ? ""
                 : $itemData.attr('data-id_image_bg_block');
-                
+
             video_bg_id = $itemData.attr('data-video_bg_id') === undefined ? ""
                 : $itemData.attr('data-video_bg_id');
             video_mp4_url = $itemData.attr('data-video_mp4_url') === undefined ? ""
@@ -432,23 +431,28 @@ var Rex_Save_Listeners = (function ($) {
                 : $itemData.attr('data-block_has_scrollbar');
             block_live_edited = $itemData.attr('data-rexlive-edited') === undefined ? "" : "true";
 
-            if (!$elem.hasClass('block-has-slider')) {
-                $textWrap = $itemContent.find('.text-wrap');
-                var $savingBlock = $textWrap.clone(false);
-                $savingBlock.find('.medium-insert-buttons').remove();
-                $savingBlock.find('.text-editor-span-fix').remove();
-                if ($savingBlock.text().trim() == "") {
-                    content = "";
-                } else {
-                    content = $savingBlock.html();
-                }
-            } else {
-                content = '[RexSlider slider_id="' + parseInt($elem.find(".rex-slider-wrap").attr("data-slider-id")) + '"]';
-            }
-
-
             if (mode == "shortcode") {
-                output = '[RexpansiveBlock'
+                $textWrap = $itemContent.find('.text-wrap');
+                if (!$elem.hasClass('block-has-slider')) {
+                    var $savingBlock = $textWrap.clone(false);
+                    $savingBlock.find('.medium-insert-buttons').remove();
+                    $savingBlock.find('.text-editor-span-fix').remove();
+                    if ($savingBlock.text().trim() == "") {
+                        content = "";
+                    } else {
+                        content = $savingBlock.html();
+                    }
+                } else {
+                    var $sliderToSave = $textWrap.children(".rex-slider-wrap[data-rex-slider-active=\"true\"]");
+
+                    var sliderID = parseInt($sliderToSave.attr("data-slider-id"));
+                    var sliderData = Rexbuilder_Util_Editor.createSliderData($sliderToSave);
+                    Rexbuilder_Util_Editor.saveSliderOnDB(sliderData, false);
+
+                    content = '[RexSlider slider_id="' + sliderID + '"]';
+                }
+
+                var output = '[RexpansiveBlock'
                     + ' id="' + id
                     + '" rexbuilder_block_id="' + rex_id
                     + '" type="' + type
