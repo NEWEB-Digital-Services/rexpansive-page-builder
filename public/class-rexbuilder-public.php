@@ -534,10 +534,12 @@ endif;
         $customizations_names = get_post_meta($post->ID, '_rex_responsive_layouts_names', true);
         $customization = array();
 
-        foreach ($customizations_names as $name) {
-            $customization["name"] = $name;
-            $customization["sections"] = get_post_meta($post->ID, '_rex_customization_' . $name, true);
-            array_push($customizations_array, $customization);
+        if (!empty($customizations_names)) {
+            foreach ($customizations_names as $name) {
+                $customization["name"] = $name;
+                $customization["sections"] = get_post_meta($post->ID, '_rex_customization_' . $name, true);
+                array_push($customizations_array, $customization);
+            }
         }
         //$customizations = get_post_meta($post->ID, '_rex_customization', true);
 

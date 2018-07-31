@@ -55,14 +55,14 @@ var Rexlive_Modals = (function ($) {
 
 
     var openVideoModal = function () {
-        Rexlive_Modals_Utils.openModal($('#rex-video-block').parent('.rex-modal-wrap'));
+        Rexlive_Modals_Utils.openModal($('#rex-insert-new-video-block').parent('.rex-modal-wrap'));
     }
 
     $(document).on('click', "#rex-upload-mp4", function () {
         Rexlive_MediaUploader.openMediaUploaderVideo();
     });
 
-    $(document).on("click", "#rex-video-block-save", function (e) {
+    $(document).on("click", "#rex-insert-video-block-save", function (e) {
         var urlYoutube = $("#rex-youtube-url").val();
         var urlVimeo = $("#rex-vimeo-url").val();
         var videoMp4Data = typeof e.videoData == "undefined" ? "" : e.videoData;
@@ -80,12 +80,13 @@ var Rexlive_Modals = (function ($) {
 
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
 
-        Rexlive_Modals_Utils.closeModal($('#rex-video-block').parent('.rex-modal-wrap'));
+        Rexlive_Modals_Utils.closeModal($('#rex-insert-new-video-block').parent('.rex-modal-wrap'));
     });
 
-    $(document).on("click", "#rex-video-block-cancel", function (e) {
+    $(document).on("click", "#rex-insert-video-block-cancel", function (e) {
+        console.log("closing modal");
         e.preventDefault();
-        Rexlive_Modals_Utils.closeModal($('#rex-video-block').parent('.rex-modal-wrap'));
+        Rexlive_Modals_Utils.closeModal($('#rex-insert-new-video-block').parent('.rex-modal-wrap'));
     });
 
     var init = function () {

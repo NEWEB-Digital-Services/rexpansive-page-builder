@@ -1327,3 +1327,87 @@ defined( 'ABSPATH' ) or exit;
 <div id="builder-loading-overlay" style="display:none;position:absolute;width:100%;height:100%;top:0;right:0;background-color:rgba(0,0,0,0.5);z-index:30;">
     <h3 style="color:white;">Loading...</h3>
 </div><!-- // #builder-loading-overlay -->
+
+<div class="rex-modal-wrap rex-fade">
+    <div id="rex-insert-new-video-block" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
+        <div class="modal-content">
+            <div class="row valign-wrapper">
+                <div class="rex-check rex-check-icon col">
+                    <input type="radio" class="rex-choose-video with-gap" name="rex-choose-video" value="youtube" id="rex-choose-youtube">
+                    <label for="rex-choose-youtube">
+                        <i class="material-icons rex-icon">C</i>
+                        <span class="rex-ripple"></span>
+                    </label>
+                </div>
+                <div class="input-field col">
+                    <input id="rex-youtube-url" type="text">
+                    <label id="rex-youtube-url-label" for="rex-youtube-url">https://youtu.be/...</label>
+                </div>
+                <div class="set-video-audio-btn col">
+                    <input type="checkbox" id="rex-block-video-has-audio" name="rex-block-video-has-audio" title="Audio ON/OFF">
+                    <label for="rex-block-video-has-audio" class="tooltipped" data-position="bottom" data-tooltip="Audio ON/OFF">
+                        <i class="rex-icon">
+                            <span class="rex-icon-audio">L</span><span class="rex-icon-mute">M</span>
+                        </i>
+                        <span class="rex-ripple"></span>
+                    </label>
+                </div>
+                <!-- youtube input -->
+            </div>
+            <div id="section-set-video-wrap-2" class="row valign-wrapper" style="padding-top:16px;">
+                <div class="rex-check rex-check-icon col" style="margin-right:5px;">
+                    <input type="radio" class="rex-choose-video with-gap" name="rex-choose-video" value="vimeo" id="rex-choose-vimeo">
+                    <label for="rex-choose-vimeo">
+                        <i class="material-icons rex-icon">Z</i>
+                        <span class="rex-ripple"></span>
+                    </label>
+                </div>
+                <div class="input-field col">
+                    <input id="rex-vimeo-url" type="text">
+                    <label id="rex-vimeo-url-label" for="rex-vimeo-url">https://player.vimeo.com/video/...</label>
+                </div>
+                <div class="set-video-audio-btn col">
+                    <input type="checkbox" id="rex-block-video-has-audio" name="rex-block-video-has-audio" title="Audio ON/OFF">
+                    <label for="rex-block-video-has-audio" class="tooltipped" data-position="bottom" data-tooltip="Audio ON/OFF">
+                        <i class="rex-icon">
+                            <span class="rex-icon-audio">L</span><span class="rex-icon-mute">M</span>
+                        </i>
+                        <span class="rex-ripple"></span>
+                    </label>
+                </div>
+                <!-- vimeo input -->
+            </div>
+            <div id="section-set-video-wrap-3" class="row valign-wrapper" style="padding-top:32px;">
+                <div class="rex-check rex-check-icon col">
+                    <input type="radio" class="rex-choose-video with-gap" name="rex-choose-video" value="mp4" id="rex-choose-mp4">
+                    <label id="rex-upload-mp4" for="rex-choose-mp4">
+                        <i class="material-icons rex-icon">A</i>
+                        <span class="rex-ripple"></span>
+                    </label>
+                </div>
+                <div class="input-field col">
+                    <input id="rex-mp4-id" type="text">
+                    <label id="rex-vimeo-url-label" for="rex-vimeo-url">https://site_name/wp-content/uploads/.../file_name.mp4</label>
+                </div>
+                <div class="set-video-audio-btn col">
+                    <input type="checkbox" id="rex-block-video-has-audio" name="rex-block-video-has-audio" title="Audio ON/OFF">
+                    <label for="rex-block-video-has-audio" class="tooltipped" data-position="bottom" data-tooltip="Audio ON/OFF">
+                        <i class="rex-icon">
+                            <span class="rex-icon-audio">L</span><span class="rex-icon-mute">M</span>
+                        </i>
+                        <span class="rex-ripple"></span>
+                    </label>
+                </div>
+                <!-- mp4 input -->
+            </div>
+        </div>
+        <div class="rex-modal-footer">
+            <button id="rex-insert-video-block-cancel" class="waves-effect waves-light btn-flat grey rex-cancel-button" value="">
+                <i class="rex-icon">n</i>
+            </button>
+            <button id="rex-insert-video-block-save" class="waves-effect waves-light btn-flat blue darken-1 rex-save-button" value="">
+                <i class="rex-icon">m</i>
+            </button>
+        </div>
+    </div>
+</div><!-- Insert New Block Video -->

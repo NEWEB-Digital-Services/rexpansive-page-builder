@@ -145,17 +145,17 @@ class Rexbuilder_Admin {
 		$page_info = get_current_screen();
 
 		if( $this->builder_active_on_this_post_type( $page_info ) ) {
-			wp_enqueue_style( 'material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $this->version, 'all' );
-			wp_enqueue_style( 'materialize', REXPANSIVE_BUILDER_URL . 'admin/css/materialize.min.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), null, 'all' );
+			wp_enqueue_style( 'materialize', REXPANSIVE_BUILDER_URL . 'admin/css/materialize.min.css', array(), null, 'all' );
 			
-			wp_enqueue_style( 'spectrum-style', REXPANSIVE_BUILDER_URL . 'admin/spectrum/spectrum.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'spectrum-style', REXPANSIVE_BUILDER_URL . 'admin/spectrum/spectrum.css', array(), null, 'all' );
 
-			wp_enqueue_style( 'font-awesome', REXPANSIVE_BUILDER_URL . 'admin/font-awesome-4.3.0/css/font-awesome.min.css', array(), $this->version, 'all' );
-			wp_enqueue_style( 'rex-custom-fonts', REXPANSIVE_BUILDER_URL . 'admin/rexpansive-font/font.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'font-awesome', REXPANSIVE_BUILDER_URL . 'admin/font-awesome-4.3.0/css/font-awesome.min.css', array(), null, 'all' );
+			wp_enqueue_style( 'rex-custom-fonts', REXPANSIVE_BUILDER_URL . 'admin/rexpansive-font/font.css', array(), null, 'all' );
 
-			wp_enqueue_style( 'gridster-style', REXPANSIVE_BUILDER_URL . 'admin/css/jquery.gridster.css', array(), $this->version, 'all' );
-			wp_enqueue_style( 'custom-editor-buttons-style', REXPANSIVE_BUILDER_URL . 'admin/css/rex-custom-editor-buttons.css', array(), $this->version, 'all' );
-			wp_enqueue_style( 'rexbuilder-style', REXPANSIVE_BUILDER_URL . 'admin/css/builder.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'gridster-style', REXPANSIVE_BUILDER_URL . 'admin/css/jquery.gridster.css', array(), null, 'all' );
+			wp_enqueue_style( 'custom-editor-buttons-style', REXPANSIVE_BUILDER_URL . 'admin/css/rex-custom-editor-buttons.css', array(), null, 'all' );
+			wp_enqueue_style( 'rexbuilder-style', REXPANSIVE_BUILDER_URL . 'admin/css/builder.css', array(), null, 'all' );
 		}
 	}
 
@@ -168,16 +168,16 @@ class Rexbuilder_Admin {
 		$page_info = get_current_screen();
 
 		if( $this->builder_active_on_this_post_type( $page_info ) ) {
-			wp_enqueue_style( 'material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $this->version, 'all' );
+			wp_enqueue_style( 'material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), null, 'all' );
 
-			wp_enqueue_style( 'font-awesome', REXPANSIVE_BUILDER_URL . 'admin/font-awesome-4.3.0/css/font-awesome.min.css', array(), $this->version, 'all' );
-			wp_enqueue_style( 'rex-custom-fonts', REXPANSIVE_BUILDER_URL . 'admin/rexpansive-font/font.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'font-awesome', REXPANSIVE_BUILDER_URL . 'admin/font-awesome-4.3.0/css/font-awesome.min.css', array(), null, 'all' );
+			wp_enqueue_style( 'rex-custom-fonts', REXPANSIVE_BUILDER_URL . 'admin/rexpansive-font/font.css', array(), null, 'all' );
 
-			wp_enqueue_style( 'admin-style', REXPANSIVE_BUILDER_URL . 'admin/css/admin.css', array(), $this->version, 'all' );
+			wp_enqueue_style( 'admin-style', REXPANSIVE_BUILDER_URL . 'admin/css/admin.css', array(), null, 'all' );
 			if( isset( $_GET['rexlive'] ) && 'true' == $_GET['rexlive'] ) {
 				// peta
 				
-				wp_enqueue_style( 'liveStyle', REXPANSIVE_BUILDER_URL . 'admin/css/live-editor.css', array(), $this->version, 'all' );
+				wp_enqueue_style( 'liveStyle', REXPANSIVE_BUILDER_URL . 'admin/css/live-editor.css', array(), null, 'all' );
 			} 
 		}
 	}
@@ -211,15 +211,15 @@ class Rexbuilder_Admin {
 			wp_enqueue_script('jquery');
 			wp_enqueue_script("jquery-ui-draggable");
 
-			wp_enqueue_script( 'materialize-scripts', REXPANSIVE_BUILDER_URL . 'admin/materialize/js/materialize.js', array('jquery'), $this->version, true );
-			wp_enqueue_script( 'gridster', REXPANSIVE_BUILDER_URL . 'admin/js/jquery.gridster.js', array('jquery'),  $this->version, true );
+			wp_enqueue_script( 'materialize-scripts', REXPANSIVE_BUILDER_URL . 'admin/materialize/js/materialize.js', array('jquery'), null, true );
+			wp_enqueue_script( 'gridster', REXPANSIVE_BUILDER_URL . 'admin/js/jquery.gridster.js', array('jquery'),  null, true );
 			
-			wp_enqueue_script( 'spectrum-scripts', REXPANSIVE_BUILDER_URL . 'admin/spectrum/spectrum.js', array('jquery'),  $this->version, true );
+			wp_enqueue_script( 'spectrum-scripts', REXPANSIVE_BUILDER_URL . 'admin/spectrum/spectrum.js', array('jquery'),  null, true );
 
-			wp_enqueue_script( 'ace-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/ace.js', array('jquery'),  $this->version, true );
-			wp_enqueue_script( 'ace-mode-css-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/mode-css.js', array('jquery'),  $this->version, true );
+			wp_enqueue_script( 'ace-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/ace.js', array('jquery'),  null, true );
+			wp_enqueue_script( 'ace-mode-css-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/mode-css.js', array('jquery'),  null, true );
 
-			wp_enqueue_script( 'rexbuilder', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder.js', array('jquery'),  $this->version, true );
+			wp_enqueue_script( 'rexbuilder', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder.js', array('jquery'),  null, true );
 			wp_localize_script( 'rexbuilder', '_plugin_backend_settings', array(
 				'activate_builder'	=>	'true',
 			) );
@@ -227,7 +227,7 @@ class Rexbuilder_Admin {
 				'ajaxurl'	=>	admin_url( 'admin-ajax.php' ),
 				'rexnonce'	=>	wp_create_nonce( 'rex-ajax-call-nonce' ),
 			) );
-			wp_enqueue_script( 'rexbuilder-admin', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin.js', array( 'jquery' ), $this->version, true );
+			wp_enqueue_script( 'rexbuilder-admin', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin.js', array( 'jquery' ), null, true );
 		}
 	}
 
@@ -247,21 +247,21 @@ class Rexbuilder_Admin {
 			wp_enqueue_media();
 			
 			if( isset( $_GET['rexlive'] ) && 'true' == $_GET['rexlive'] ) {
-				wp_enqueue_script( 'rexbuilder-admin-config', REXPANSIVE_BUILDER_URL . 'admin/js/0-Rexpansive_Builder_Admin_Config.js', array( 'jquery' ), $this->version, true );
-				wp_enqueue_script( 'rexbuilder-admin-utilities', REXPANSIVE_BUILDER_URL . 'admin/js/0-Rexpansive_Builder_Admin_Utilities.js', array( 'jquery' ), $this->version, true );
-				wp_enqueue_script( 'rexbuilder-admin-modals', REXPANSIVE_BUILDER_URL . 'admin/js/1-Rexpansive_Builder_Admin_Modals.js', array( 'jquery' ), $this->version, true );
-				wp_enqueue_script( 'rexbuilder-media-uploader', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_MediaUploader.js', array( 'jquery' ), $this->version, true );
-				wp_enqueue_script( 'rexbuilder-admin-text-editor', REXPANSIVE_BUILDER_URL . 'admin/js/3-Rexpansive_Builder_Admin_TextEditor.js', array( 'jquery' ), $this->version, true );
-				wp_enqueue_script( 'rexbuilder-admin-padding-editor', REXPANSIVE_BUILDER_URL . 'admin/js/3-Rexpansive_Builder_Admin_PaddingEditor.js', array( 'jquery' ), $this->version, true );
-				wp_enqueue_script( 'rexbuilder-admin-position-editor', REXPANSIVE_BUILDER_URL . 'admin/js/3-Rexpansive_Builder_Admin_PositionEditor.js', array( 'jquery' ), $this->version, true );
-				wp_enqueue_script( 'template-util', REXPANSIVE_BUILDER_URL . 'public/js/vendor/tmpl.min.js', array( 'jquery' ), $this->version, true );
-				wp_enqueue_script( 'rexlive-modals-utils', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Modals_Utils.js', array( 'jquery' ), $this->version, true );
-				wp_enqueue_script( 'rexlive-modals', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Modals.js', array( 'jquery' ), $this->version, true );
-				wp_enqueue_script( 'Rexbuilder-Slider', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_RexSlider.js', array( 'jquery' ), $this->version, true );
-				wp_enqueue_script( 'rexlive-util-admin', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Util_Admin_Editor.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( 'rexbuilder-admin-config', REXPANSIVE_BUILDER_URL . 'admin/js/0-Rexpansive_Builder_Admin_Config.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexbuilder-admin-utilities', REXPANSIVE_BUILDER_URL . 'admin/js/0-Rexpansive_Builder_Admin_Utilities.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexbuilder-admin-modals', REXPANSIVE_BUILDER_URL . 'admin/js/1-Rexpansive_Builder_Admin_Modals.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexbuilder-media-uploader', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_MediaUploader.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexbuilder-admin-text-editor', REXPANSIVE_BUILDER_URL . 'admin/js/3-Rexpansive_Builder_Admin_TextEditor.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexbuilder-admin-padding-editor', REXPANSIVE_BUILDER_URL . 'admin/js/3-Rexpansive_Builder_Admin_PaddingEditor.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexbuilder-admin-position-editor', REXPANSIVE_BUILDER_URL . 'admin/js/3-Rexpansive_Builder_Admin_PositionEditor.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'template-util', REXPANSIVE_BUILDER_URL . 'public/js/vendor/tmpl.min.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexlive-modals-utils', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Modals_Utils.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexlive-modals', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Modals.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'Rexbuilder-Slider', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_RexSlider.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexlive-util-admin', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Util_Admin_Editor.js', array( 'jquery' ), null, true );
 				global $post;
 				$source = get_permalink($post->ID);
-				wp_enqueue_script( 'rexlive-start', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Starting.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( 'rexlive-start', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Starting.js', array( 'jquery' ), null, true );
 				wp_localize_script( 'rexlive-start', 'live_editor_obj', array(
 					'source_url' => $source,
 					'ajaxurl'	=>	admin_url( 'admin-ajax.php' ),
@@ -271,10 +271,10 @@ class Rexbuilder_Admin {
 				wp_enqueue_script('jquery');
 				wp_enqueue_script("jquery-ui-draggable");
 
-				wp_enqueue_script( 'ace-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/ace.js', array('jquery'),  $this->version, true );
-				wp_enqueue_script( 'ace-mode-css-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/mode-css.js', array('jquery'),  $this->version, true );
+				wp_enqueue_script( 'ace-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/ace.js', array('jquery'),  null, true );
+				wp_enqueue_script( 'ace-mode-css-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/mode-css.js', array('jquery'),  null, true );
 
-				wp_enqueue_script( 'admin-plugins', REXPANSIVE_BUILDER_URL . 'admin/js/plugins.js', array('jquery'),  $this->version, true );
+				wp_enqueue_script( 'admin-plugins', REXPANSIVE_BUILDER_URL . 'admin/js/plugins.js', array('jquery'),  null, true );
 				wp_localize_script( 'admin-plugins', '_plugin_backend_settings', array(
 					'activate_builder'	=>	'true',
 				) );
@@ -282,7 +282,7 @@ class Rexbuilder_Admin {
 					'ajaxurl'	=>	admin_url( 'admin-ajax.php' ),
 					'rexnonce'	=>	wp_create_nonce( 'rex-ajax-call-nonce' ),
 				) );
-				wp_enqueue_script( 'rexbuilder-admin', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin.js', array( 'jquery' ), $this->version, true );
+				wp_enqueue_script( 'rexbuilder-admin', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin.js', array( 'jquery' ), null, true );
 			}
 		}
 	}
@@ -944,7 +944,7 @@ class Rexbuilder_Admin {
 				'field_5948cb2270b0f',
 				'field_564f2373722c3',
 			), $slider_to_edit );
-			
+
 			$response['edit_results'] = $this->rex_add_slider_fields( $slider_settings, $slider_to_edit );
 		} else {
 			$response['slider_id'] = -1;
