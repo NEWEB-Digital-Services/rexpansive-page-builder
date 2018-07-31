@@ -50,6 +50,7 @@
 	#adminmenumain,#wpcontent,#wpfooter{
 		display: none;
 	}
+
 	html.wp-toolbar {
 		padding-top: 0;
 	}
@@ -61,4 +62,14 @@
 	.rexpansive-live-frame-container {
 		width:100%;height:100vh;margin: 0 auto;
 		padding-top: 100px;
+	}
+	.title-slider{
+		display: none;
+	}
+	.editing-title-slider .title-slider{
+		display: block;
+	}
+
+	.editing-title-slider .rx__form-input{
+		display: none;
 	}

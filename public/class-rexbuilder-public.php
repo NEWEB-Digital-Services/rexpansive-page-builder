@@ -97,39 +97,39 @@ class Rexbuilder_Public
             $cartella = "public/";
             $cartella_admin = "admin/";
 
-            wp_enqueue_style('material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $this->version, 'all');
+            wp_enqueue_style('material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), null, 'all');
 
-            wp_enqueue_style('photoswipe-skin', REXPANSIVE_BUILDER_URL . $cartella . 'Photoswipe/default-skin/default-skin.css', array(), $this->version, 'all');
+            wp_enqueue_style('photoswipe-skin', REXPANSIVE_BUILDER_URL . $cartella . 'Photoswipe/default-skin/default-skin.css', array(), null, 'all');
 
-            wp_enqueue_style('jquery.mb.YTPlayer-style', REXPANSIVE_BUILDER_URL . $cartella . 'jquery.mb.YTPlayer/css/jquery.mb.YTPlayer.min.css', array(), $this->version, 'all');
+            wp_enqueue_style('jquery.mb.YTPlayer-style', REXPANSIVE_BUILDER_URL . $cartella . 'jquery.mb.YTPlayer/css/jquery.mb.YTPlayer.min.css', array(), null, 'all');
 
-            wp_enqueue_style('rex-custom-fonts', REXPANSIVE_BUILDER_URL . $cartella_admin . 'rexpansive-font/font.css', array(), $this->version, 'all');
+            wp_enqueue_style('rex-custom-fonts', REXPANSIVE_BUILDER_URL . $cartella_admin . 'rexpansive-font/font.css', array(), null, 'all');
 
-            wp_enqueue_style('font-awesome', REXPANSIVE_BUILDER_URL . $cartella_admin . 'font-awesome-4.3.0/css/font-awesome.min.css', array(), $this->version, 'all');
+            wp_enqueue_style('font-awesome', REXPANSIVE_BUILDER_URL . $cartella_admin . 'font-awesome-4.3.0/css/font-awesome.min.css', array(), null, 'all');
 
-            wp_enqueue_style('overlay-scrollbar-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/OverlayScrollbars.min.css', array(), $this->version, 'all');
+            wp_enqueue_style('overlay-scrollbar-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/OverlayScrollbars.min.css', array(), null, 'all');
 
-            wp_enqueue_style('animate-css', REXPANSIVE_BUILDER_URL . $cartella . 'css/animate.css', array(), $this->version, 'all');
-            wp_enqueue_style('textfill-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/textFill.css', array(), $this->version, 'all');
-            wp_enqueue_style('rexbuilder-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/builder.css', array(), $this->version, 'all');
-            wp_enqueue_style('materialize', REXPANSIVE_BUILDER_URL . $cartella . 'css/materialize.min.css', array(), $this->version, 'all');
-            wp_enqueue_style('custom-editor-buttons-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/rex-custom-editor-buttons.css', array(), $this->version, 'all');
+            wp_enqueue_style('animate-css', REXPANSIVE_BUILDER_URL . $cartella . 'css/animate.css', array(), null, 'all');
+            wp_enqueue_style('textfill-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/textFill.css', array(), null, 'all');
+            wp_enqueue_style('rexbuilder-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/builder.css', array(), null, 'all');
+            wp_enqueue_style('materialize', REXPANSIVE_BUILDER_URL . $cartella . 'css/materialize.min.css', array(), null, 'all');
+            wp_enqueue_style('custom-editor-buttons-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/rex-custom-editor-buttons.css', array(), null, 'all');
 
-            wp_enqueue_style('jquery-ui-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/jquery-ui.min.css', array(), $this->version, 'all');
-            wp_enqueue_style('gridstack-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/gridstack.css', array(), $this->version, 'all');
+            wp_enqueue_style('jquery-ui-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/jquery-ui.min.css', array(), null, 'all');
+            wp_enqueue_style('gridstack-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/gridstack.css', array(), null, 'all');
 
-            wp_enqueue_style('spectrum-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/spectrum.css', array(), $this->version, 'all');
+            wp_enqueue_style('spectrum-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/spectrum.css', array(), null, 'all');
 
-            wp_enqueue_style('medium-editor-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/medium-editor.css', array(), $this->version, 'all');
-            //wp_enqueue_style( 'medium-editor-instert-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/medium-editor-insert-plugin.min.css', array(), $this->version, 'all' );
-            wp_enqueue_style('medium-editor-insert-frontend-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/medium-editor-insert-plugin-frontend.min.css', array(), $this->version, 'all');
+            wp_enqueue_style('medium-editor-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/medium-editor.css', array(), null, 'all');
+            //wp_enqueue_style( 'medium-editor-instert-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/medium-editor-insert-plugin.min.css', array(), null, 'all' );
+            wp_enqueue_style('medium-editor-insert-frontend-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/medium-editor-insert-plugin-frontend.min.css', array(), null, 'all');
             //TODO ci penseremo dopo
-            //wp_enqueue_style( 'medium-editor-tables-style.css', REXPANSIVE_BUILDER_URL  . $cartella. 'css/medium-editor-tables.min.css', array(), $this->version, 'all' );
+            //wp_enqueue_style( 'medium-editor-tables-style.css', REXPANSIVE_BUILDER_URL  . $cartella. 'css/medium-editor-tables.min.css', array(), null, 'all' );
             //che è sta roba? editor di testo?
-            wp_enqueue_style('input-spinner', REXPANSIVE_BUILDER_URL . $cartella . 'css/input-spinner.css', array(), $this->version, 'all');
+            wp_enqueue_style('input-spinner', REXPANSIVE_BUILDER_URL . $cartella . 'css/input-spinner.css', array(), null, 'all');
 
-            wp_enqueue_style('rexpansive-admin-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/admin.css', array(), $this->version, 'all');
-            wp_enqueue_style('rexpansive-builder-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/public.css', array(), $this->version, 'all');
+            wp_enqueue_style('rexpansive-admin-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/admin.css', array(), null, 'all');
+            wp_enqueue_style('rexpansive-builder-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/public.css', array(), null, 'all');
 
         }
     }
@@ -149,11 +149,11 @@ class Rexbuilder_Public
                 // }
             }
 
-            wp_enqueue_style('photoswipe-skin', REXPANSIVE_BUILDER_URL . 'public/Photoswipe/default-skin/default-skin.css', array(), $this->version, 'all');
+            wp_enqueue_style('photoswipe-skin', REXPANSIVE_BUILDER_URL . 'public/Photoswipe/default-skin/default-skin.css', array(), null, 'all');
 
-            wp_enqueue_style('jquery.mb.YTPlayer-style', REXPANSIVE_BUILDER_URL . 'public/jquery.mb.YTPlayer/css/jquery.mb.YTPlayer.min.css', array(), $this->version, 'all');
+            wp_enqueue_style('jquery.mb.YTPlayer-style', REXPANSIVE_BUILDER_URL . 'public/jquery.mb.YTPlayer/css/jquery.mb.YTPlayer.min.css', array(), null, 'all');
 
-            wp_enqueue_style('rexpansive-builder-style', REXPANSIVE_BUILDER_URL . 'public/css/public.css', array(), $this->version, 'all');
+            wp_enqueue_style('rexpansive-builder-style', REXPANSIVE_BUILDER_URL . 'public/css/public.css', array(), null, 'all');
         }
     }
 
@@ -183,69 +183,69 @@ class Rexbuilder_Public
             //include media libray
             wp_enqueue_media();
 
-            wp_enqueue_script('tmpl', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/tmpl.min.js', array('jquery'), $this->version, true);
+            wp_enqueue_script('tmpl', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/tmpl.min.js', array('jquery'), null, true);
 
-            wp_enqueue_script('photoswipe', REXPANSIVE_BUILDER_URL . $cartella . 'Photoswipe/photoswipe.min.js', array('jquery'), $this->version, true);
-            wp_enqueue_script('photoswipe-ui', REXPANSIVE_BUILDER_URL . $cartella . 'Photoswipe/photoswipe-ui-default.min.js', array('jquery'), $this->version, true);
+            wp_enqueue_script('photoswipe', REXPANSIVE_BUILDER_URL . $cartella . 'Photoswipe/photoswipe.min.js', array('jquery'), null, true);
+            wp_enqueue_script('photoswipe-ui', REXPANSIVE_BUILDER_URL . $cartella . 'Photoswipe/photoswipe-ui-default.min.js', array('jquery'), null, true);
 
-            wp_enqueue_script('YTPlayer', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/jquery.mb.YTPlayer.min.js', array('jquery'), $this->version, true);
+            wp_enqueue_script('YTPlayer', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/jquery.mb.YTPlayer.min.js', array('jquery'), null, true);
 
-            wp_enqueue_script('ace-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/ace.js', array('jquery'), $this->version, true);
-            wp_enqueue_script('ace-mode-css-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/mode-css.js', array('jquery'), $this->version, true);
+            wp_enqueue_script('ace-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/ace.js', array('jquery'), null, true);
+            wp_enqueue_script('ace-mode-css-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/mode-css.js', array('jquery'), null, true);
 
-            wp_enqueue_script('storeVariables', REXPANSIVE_BUILDER_URL . $cartella . 'js/store.legacy.min.js', array('jquery'), $this->version, true);
+            wp_enqueue_script('storeVariables', REXPANSIVE_BUILDER_URL . $cartella . 'js/store.legacy.min.js', array('jquery'), null, true);
 
-            wp_enqueue_script('1-RexUtil', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Util.js', array('jquery'), $this->version, true);
-            wp_enqueue_script('1-RexUtilEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Util_Editor.js', array('jquery'), $this->version, true);
-            wp_enqueue_script('1-RexCreateBlocks', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_CreateBlocks.js', array('jquery'), $this->version, true);
-            wp_enqueue_script('1-RexDomUtil', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Dom_Util.js', array('jquery'), $this->version, true);
-            wp_enqueue_script('2-RexSaveListeners', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/2-Rex_Save_Listeners.js', array('jquery'), $this->version, true);
-            wp_enqueue_script('3-Navigator', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/3-Navigator.js', array('jquery'), $this->version, true);
-            wp_enqueue_script('5-flickity', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/flickity.pkgd.min.js', array('jquery'), $this->version, true);
-            wp_enqueue_script('2-RexSlider', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/2-RexSlider.js', array('jquery'), $this->version, true);
-            wp_enqueue_script('8-VimeoVideo', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/8-VimeoVideo.js', array('jquery'), $this->version, true);
-            //wp_enqueue_script( 'textfill', REXPANSIVE_BUILDER_URL  . $cartella. 'js/__jquery.textFill.js', array( 'jquery' ), $this->version, true );
-            //wp_enqueue_script( 'text-resize', REXPANSIVE_BUILDER_URL  . $cartella. 'js/__TextResize.js', array( 'jquery' ), $this->version, true );
+            wp_enqueue_script('1-RexUtil', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Util.js', array('jquery'), null, true);
+            wp_enqueue_script('1-RexUtilEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Util_Editor.js', array('jquery'), null, true);
+            wp_enqueue_script('1-RexCreateBlocks', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_CreateBlocks.js', array('jquery'), null, true);
+            wp_enqueue_script('1-RexDomUtil', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Dom_Util.js', array('jquery'), null, true);
+            wp_enqueue_script('2-RexSaveListeners', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/2-Rex_Save_Listeners.js', array('jquery'), null, true);
+            wp_enqueue_script('3-Navigator', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/3-Navigator.js', array('jquery'), null, true);
+            wp_enqueue_script('5-flickity', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/flickity.pkgd.min.js', array('jquery'), null, true);
+            wp_enqueue_script('2-RexSlider', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/2-RexSlider.js', array('jquery'), null, true);
+            wp_enqueue_script('8-VimeoVideo', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/8-VimeoVideo.js', array('jquery'), null, true);
+            //wp_enqueue_script( 'textfill', REXPANSIVE_BUILDER_URL  . $cartella. 'js/__jquery.textFill.js', array( 'jquery' ), null, true );
+            //wp_enqueue_script( 'text-resize', REXPANSIVE_BUILDER_URL  . $cartella. 'js/__TextResize.js', array( 'jquery' ), null, true );
 
             //gridstack
-            wp_enqueue_script('jquery-ui', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery-ui.min.js', array('jquery'), $this->version, true);
-            wp_enqueue_script('touchPunch', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery.ui.touch-punch.js', array('jquery'), $this->version, true);
-            wp_enqueue_script('lodash', REXPANSIVE_BUILDER_URL . $cartella . 'js/lodash.js', array('jquery'), $this->version, true);
-            wp_enqueue_script('gridstack', REXPANSIVE_BUILDER_URL . $cartella . 'js/gridstack.js', array('jquery'), $this->version, true);
-            wp_enqueue_script('gridstackUI', REXPANSIVE_BUILDER_URL . $cartella . 'js/gridstack.jQueryUI.js', array('jquery'), $this->version, true);
+            wp_enqueue_script('jquery-ui', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery-ui.min.js', array('jquery'), null, true);
+            wp_enqueue_script('touchPunch', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery.ui.touch-punch.js', array('jquery'), null, true);
+            wp_enqueue_script('lodash', REXPANSIVE_BUILDER_URL . $cartella . 'js/lodash.js', array('jquery'), null, true);
+            wp_enqueue_script('gridstack', REXPANSIVE_BUILDER_URL . $cartella . 'js/gridstack.js', array('jquery'), null, true);
+            wp_enqueue_script('gridstackUI', REXPANSIVE_BUILDER_URL . $cartella . 'js/gridstack.jQueryUI.js', array('jquery'), null, true);
             //
-            wp_enqueue_script('scrolled', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/4-jquery.rexScrolled.js', array('jquery'), $this->version, true);
-            wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/5-jquery.rexIndicator.js', array('jquery'), $this->version, true);
+            wp_enqueue_script('scrolled', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/4-jquery.rexScrolled.js', array('jquery'), null, true);
+            wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/5-jquery.rexIndicator.js', array('jquery'), null, true);
 
             //editor text
-            wp_enqueue_script('spectrumColor', REXPANSIVE_BUILDER_URL . $cartella . 'js/spectrum.js', array('jquery'), $this->version, true);
-            wp_enqueue_script('medium-editor', REXPANSIVE_BUILDER_URL . $cartella . 'js/medium-editor.js', array('jquery'), $this->version, true);
-            wp_enqueue_script('mediumEditorToolbarStates', REXPANSIVE_BUILDER_URL . $cartella . 'js/medium-editor-toolbar-states.min.js', array('jquery'), $this->version, true);
+            wp_enqueue_script('spectrumColor', REXPANSIVE_BUILDER_URL . $cartella . 'js/spectrum.js', array('jquery'), null, true);
+            wp_enqueue_script('medium-editor', REXPANSIVE_BUILDER_URL . $cartella . 'js/medium-editor.js', array('jquery'), null, true);
+            wp_enqueue_script('mediumEditorToolbarStates', REXPANSIVE_BUILDER_URL . $cartella . 'js/medium-editor-toolbar-states.min.js', array('jquery'), null, true);
 
-            wp_enqueue_script('handlebars-runtime', REXPANSIVE_BUILDER_URL . $cartella . 'js/handlebars.runtime.js', array('jquery'), $this->version, true);
-            wp_enqueue_script('jquery-fileupload', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery.fileupload.js', array('jquery'), $this->version, true);
-            wp_enqueue_script('jquery-cycle2', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery.cycle2.min.js', array('jquery'), $this->version, true);
-            wp_enqueue_script('cycle2-center', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery.cycle2.center.min.js', array('jquery'), $this->version, true);
-            wp_enqueue_script('medium-editor-insert', REXPANSIVE_BUILDER_URL . $cartella . 'js/medium-editor-insert-plugin.min.js', array('jquery'), $this->version, true);
-            //wp_enqueue_script( 'medium-editor-tables', REXPANSIVE_BUILDER_URL  . $cartella. 'js/medium-editor-tables.min.js', array( 'jquery' ), $this->version, true );
-            //wp_enqueue_script( 'medium-editor-insert-tables', REXPANSIVE_BUILDER_URL  . $cartella. 'js/medium-editor-insert-tables.js', array( 'jquery' ), $this->version, true );
+            wp_enqueue_script('handlebars-runtime', REXPANSIVE_BUILDER_URL . $cartella . 'js/handlebars.runtime.js', array('jquery'), null, true);
+            wp_enqueue_script('jquery-fileupload', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery.fileupload.js', array('jquery'), null, true);
+            wp_enqueue_script('jquery-cycle2', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery.cycle2.min.js', array('jquery'), null, true);
+            wp_enqueue_script('cycle2-center', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery.cycle2.center.min.js', array('jquery'), null, true);
+            wp_enqueue_script('medium-editor-insert', REXPANSIVE_BUILDER_URL . $cartella . 'js/medium-editor-insert-plugin.min.js', array('jquery'), null, true);
+            //wp_enqueue_script( 'medium-editor-tables', REXPANSIVE_BUILDER_URL  . $cartella. 'js/medium-editor-tables.min.js', array( 'jquery' ), null, true );
+            //wp_enqueue_script( 'medium-editor-insert-tables', REXPANSIVE_BUILDER_URL  . $cartella. 'js/medium-editor-insert-tables.js', array( 'jquery' ), null, true );
 
-            wp_enqueue_script('utilities', REXPANSIVE_BUILDER_URL . $cartella . 'js/utilities.js', array('jquery'), $this->version, true);
+            wp_enqueue_script('utilities', REXPANSIVE_BUILDER_URL . $cartella . 'js/utilities.js', array('jquery'), null, true);
 
-            wp_enqueue_script('overlay-scrollbar', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/jquery.overlayScrollbars.min.js', array('jquery'), $this->version, true);
+            wp_enqueue_script('overlay-scrollbar', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/jquery.overlayScrollbars.min.js', array('jquery'), null, true);
 
-            wp_enqueue_script('2-jqueryEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/2-jquery.perfectGridGalleryEditor.js', array('jquery'), $this->version, true);
+            wp_enqueue_script('2-jqueryEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/2-jquery.perfectGridGalleryEditor.js', array('jquery'), null, true);
 
-            wp_enqueue_script('3-velocity', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/3-velocity.min.js', array('jquery'), $this->version, true);
-            wp_enqueue_script('3-velocityui', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/3-velocity.ui.min.js', array('jquery'), $this->version, true);
-            wp_enqueue_script('4-jqueryScrollify', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/4-jquery.rexScrollify.js', array('jquery'), $this->version, true);
+            wp_enqueue_script('3-velocity', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/3-velocity.min.js', array('jquery'), null, true);
+            wp_enqueue_script('3-velocityui', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/3-velocity.ui.min.js', array('jquery'), null, true);
+            wp_enqueue_script('4-jqueryScrollify', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/4-jquery.rexScrollify.js', array('jquery'), null, true);
 
-            wp_enqueue_script('section-js', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Section.js', array('jquery'), $this->version, true);
-            wp_enqueue_script('block-js', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Block.js', array('jquery'), $this->version, true);
+            wp_enqueue_script('section-js', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Section.js', array('jquery'), null, true);
+            wp_enqueue_script('block-js', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Block.js', array('jquery'), null, true);
 
-            wp_enqueue_script('rexbuilder', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/rexbuilder-public.js', array('jquery'), $this->version, true);
+            wp_enqueue_script('rexbuilder', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/rexbuilder-public.js', array('jquery'), null, true);
 
-            wp_enqueue_script('4-modals', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/4-modals.js', array('jquery'), $this->version, true);
+            wp_enqueue_script('4-modals', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/4-modals.js', array('jquery'), null, true);
 
             wp_localize_script('rexbuilder', '_plugin_frontend_settings', apply_filters('rexbuilder_js_settings', array(
                 'animations' => apply_filters('rexbuilder_animation_enabled', $this->plugin_options['animation']),
@@ -292,7 +292,7 @@ class Rexbuilder_Public
 
         if ($this->builder_active_on_this_post_type()) {
             wp_enqueue_script('jquery');
-            wp_enqueue_script('public-plugins', REXPANSIVE_BUILDER_URL . 'public/js/plugins.js', array('jquery'), $this->version, true);
+            wp_enqueue_script('public-plugins', REXPANSIVE_BUILDER_URL . 'public/js/plugins.js', array('jquery'), null, true);
             wp_localize_script('public-plugins', '_plugin_frontend_settings', apply_filters('rexbuilder_js_settings', array(
                 'animations' => apply_filters('rexbuilder_animation_enabled', $this->plugin_options['animation']),
                 'textFill' => array(
@@ -301,7 +301,7 @@ class Rexbuilder_Public
                 ),
                 'native_scroll_animation' => true,
             )));
-            wp_enqueue_script('rexbuilder-public', REXPANSIVE_BUILDER_URL . 'public/js/public.js', array('jquery'), $this->version, true);
+            wp_enqueue_script('rexbuilder-public', REXPANSIVE_BUILDER_URL . 'public/js/public.js', array('jquery'), null, true);
         }
     }
 

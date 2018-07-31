@@ -875,15 +875,17 @@ class Rexbuilder_Admin {
 		$args = array(
 			'comment_status'	=>	'closed',
 			'ping_status'		=>	'closed',
-			'post_title'		=>	'slider_' . date("dmyhms"),
+			'post_title'		=>	$_POST['sliderTitle'],
 			'post_status'		=>	'publish',
 			'post_type'		=>	'rex_slider'
 		);
+		
+		$slider_id_insert = wp_insert_post( $args );
 
-		if( null == get_page_by_title( $args['post_title'] ) ) {
+		if( $slider_id_insert != 0) {
 			$slider_settings = $_POST['slider_data'];
 			// Create the page
-			$response['slider_id'] = wp_insert_post( $args );
+			$response['slider_id'] = $slider_id_insert;
 			$response['slider_title'] = $args['post_title'];
 			// adding the information for the slide
 			$response['add_results'] = $this->rex_add_slider_fields( $slider_settings, $response['slider_id'] );
@@ -905,6 +907,7 @@ class Rexbuilder_Admin {
 	*/
 	public function rex_edit_slider_from_builder() {
 		$nonce = $_POST['nonce_param'];
+
 		$response = array(
 			'error' => false,
 			'msg' => '',
@@ -925,13 +928,23 @@ class Rexbuilder_Admin {
 		$slider_to_edit = (int)$_POST['slider_id'];
 
 		if( Rexbuilder_Utilities::check_post_exists( $slider_to_edit ) ) {
+
 			$slider_settings = $_POST['slider_data'];
+
+			$new_slider_title = $_POST['sliderTitle'];
+			$argsSlider = array(
+				'ID'           => $slider_to_edit,
+				'post_title'   => $new_slider_title
+			);
+			wp_update_post( $argsSlider );
+
 			$response['slider_id'] = $slider_to_edit;
 			$this->rex_clear_slider_fields( array(
 				'field_564f1f0c050be',
 				'field_5948cb2270b0f',
 				'field_564f2373722c3',
 			), $slider_to_edit );
+			
 			$response['edit_results'] = $this->rex_add_slider_fields( $slider_settings, $slider_to_edit );
 		} else {
 			$response['slider_id'] = -1;

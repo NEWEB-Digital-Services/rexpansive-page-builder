@@ -1060,19 +1060,39 @@ defined( 'ABSPATH' ) or exit;
             // The Query
             $query = new WP_Query( $args );
 
-            ?><div class="rx__select-wrap"><select id="rex-slider__import" class="rx__form-input"><option value="0"><?php _e( 'New Slider', 'rexpansive-classic' ); ?></option><?php
-            // The Loop
-            if ( $query->have_posts() ) {
-                while ( $query->have_posts() ) {
-                    $query->the_post();
-                    ?><option value="<?php the_ID(); ?>"><?php the_title(); ?></option><?php
-                }
-            } else {
-                // no posts found
-            }
-
-            ?></select><div class="rx__form-input__select-arrow"></div></div><?php
-
+            ?>
+                <div class="rx__select-wrap">
+                    <input class="title-slider" type="text">
+                    <select id="rex-slider__import" class="rx__form-input">
+                        <option value="0"><?php _e( 'New Slider', 'rexpansive-classic' ); ?></option>
+                        <?php
+                        // Printing all sliders avaiable
+                        if ( $query->have_posts() ) {
+                            while ( $query->have_posts() ) {
+                                $query->the_post();
+                                ?>
+                        <option value="<?php the_ID(); ?>"><?php the_title(); ?></option>
+                                <?php
+                            }
+                        } else {
+                            // no posts found
+                        }
+                        ?>
+                    </select>
+                    <div class="rx__form-input__select-arrow"></div>
+                </div>
+                <div class="rex_edit_slider_title_toolbox">
+                    <div class="rex_edit_title_slider">
+                        <button id="edit_slider_title_btn">e</button>
+                    </div>
+                    <div class="rex_save_title_slider">
+                        <button id="save_slider_title_btn">s</button>
+                    </div>
+                    <div class="rex_cancel_title_slider">
+                        <button id="cancel_slider_title_btn">c</button>
+                    </div>
+                </div>
+            <?php
             // Restore original Post Data
             wp_reset_postdata();
             ?>

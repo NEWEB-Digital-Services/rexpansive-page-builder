@@ -203,7 +203,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                         rex_slider_to_edit = "";
                     }
 
-                    Rexbuilder_RexSlider.saveSlider(sliderData, blockToEdit, rex_slider_to_edit, newSliderFlag, true)
+                    Rexbuilder_RexSlider.saveSlider(sliderData, blockToEdit, rex_slider_to_edit, newSliderFlag, true, dataSlider.slider.id.toString())
 
                 }
 

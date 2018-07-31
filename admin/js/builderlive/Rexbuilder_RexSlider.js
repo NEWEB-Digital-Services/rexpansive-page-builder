@@ -5,7 +5,8 @@ var Rexbuilder_RexSlider = (function ($) {
     var rexslider_modal_links_editor;
     var slide_uploader_frame;
     var slide_uploader_video_frame;
-
+    var $selectedOptionImport;
+    var editingSliderTitle;
     /**
      * Retrieve the data of the slider
      * @return	Object	slider object data
@@ -434,7 +435,7 @@ var Rexbuilder_RexSlider = (function ($) {
         var uploadSlideVideo = wp.media.controller.Library.extend({
             defaults: _.defaults({
                 id: 'upload-slide-video',
-                title: 'Select Slide Image',
+                title: 'Select Slide Video',
                 allowLocalEdits: true,
                 displaySettings: true,
                 displayUserSettings: true,
@@ -523,10 +524,37 @@ var Rexbuilder_RexSlider = (function ($) {
         slide_uploader_video_frame.open();
     }	// SlideVideoHandler END
 
-    var _saveSlider = function (sliderData, block_to_edit, rex_slider_to_edit, saveNewSlider, savingLiveSlider) {
-        console.log(sliderData, block_to_edit, rex_slider_to_edit, saveNewSlider, savingLiveSlider);
+    var _saveSlider = function (sliderData, block_to_edit, rex_slider_to_edit, saveNewSlider, savingLiveSlider, oldSlideID) {
+
         var saveNew = typeof saveNewSlider != "undefined" ? saveNewSlider : false;
         var saveLive = typeof savingLiveSlider != "undefined" ? savingLiveSlider : false;
+        var idSlideToEdit;
+
+        if (saveNewSlider) {
+            idSlideToEdit = oldSlideID;
+        } else {
+            if (rex_slider_to_edit == "") {
+                idSlideToEdit = 0;
+            } else {
+                idSlideToEdit = rex_slider_to_edit;
+            }
+        }
+
+        var sliderTitle = rexslider_modal_properties.$slider_import.find("option[value=\"" + idSlideToEdit + "\"]").text();
+
+        //da mettere qua?
+        if (sliderTitle == "" || sliderTitle == "New Slider") {
+            function pad2(n) { return n < 10 ? '0' + n : n }
+            var date = new Date();
+            sliderTitle = "SLIDER_" +
+                date.getFullYear().toString() +
+                pad2(date.getMonth() + 1) +
+                pad2(date.getDate()) +
+                pad2(date.getHours()) +
+                pad2(date.getMinutes()) +
+                pad2(date.getSeconds());
+        }
+
         if (rex_slider_to_edit) {
             // ajx call
             // - clear previuos data
@@ -539,7 +567,8 @@ var Rexbuilder_RexSlider = (function ($) {
                     action: 'rex_edit_slider_from_builder',
                     nonce_param: live_editor_obj.rexnonce,
                     slider_data: sliderData,
-                    slider_id: rex_slider_to_edit
+                    slider_id: rex_slider_to_edit,
+                    sliderTitle: sliderTitle
                 },
                 success: function (response) {
                     if (response.success) {
@@ -580,7 +609,8 @@ var Rexbuilder_RexSlider = (function ($) {
                 data: {
                     action: 'rex_create_slider_from_builder',
                     nonce_param: live_editor_obj.rexnonce,
-                    slider_data: sliderData
+                    slider_data: sliderData,
+                    sliderTitle: sliderTitle
                 },
                 success: function (response) {
                     if (response.success) {
@@ -714,6 +744,10 @@ var Rexbuilder_RexSlider = (function ($) {
          * Modal Slider Close Event
          */
         rexslider_modal_properties.$cancel_button.on('click', function () {
+            if (editingSliderTitle) {
+                console.log("you have to save edit slider first");
+                return;
+            }
             Rexlive_Modals_Utils.closeModal(rexslider_modal_properties.$modal_wrap);
         });
 
@@ -721,7 +755,11 @@ var Rexbuilder_RexSlider = (function ($) {
          * Modal Slider Save Event
          */
         rexslider_modal_properties.$save_button.on('click', function (e) {
-
+            // var slide_reference = $(this).val();
+            if (editingSliderTitle) {
+                console.log("you have to save edit slider first");
+                return;
+            }
             // Retrieve Slider Data
             var sliderData = _retrieveSliderData();
             var block_to_edit = $(this).attr('data-block-to-edit');
@@ -789,6 +827,7 @@ var Rexbuilder_RexSlider = (function ($) {
          * Modal Slider Links Close Event
          */
         rexslider_modal_links_editor.$cancel_button.on('click', function () {
+
             rexslider_modal_properties.$modal.removeClass('push-down-modal');
             Rexlive_Modals_Utils.closeModal(rexslider_modal_links_editor.$modal_wrap, true);
         });
@@ -797,7 +836,6 @@ var Rexbuilder_RexSlider = (function ($) {
          * Modal Slider Links Save Event
          */
         rexslider_modal_links_editor.$save_button.on('click', function () {
-            // var slide_reference = $(this).val();
 
             var $slide_reference = $(this['attributes']['value'].value);
 
@@ -854,6 +892,51 @@ var Rexbuilder_RexSlider = (function ($) {
             SlideVideoHandler(rexslider_modal_links_editor.$video_mp4);
         });
 
+        $(document).on("click", "#edit_slider_title_btn", function (e) {
+            console.log("edit slider title");
+            var $button = $(e.target);
+            var $selectWrap = $button.parents(".rex-slider__import--wrap").children(".rx__select-wrap");
+            $selectedOptionImport = $selectWrap.children("select").find(":selected");
+            $selectWrap.addClass("editing-title-slider");
+
+            var $inputField = $selectWrap.children(".title-slider");
+            var selectedSliderID = $selectedOptionImport.val();
+
+            $inputField.val($selectedOptionImport.text());
+            $inputField.attr("data-rex-slider-id", selectedSliderID)
+
+            editingSliderTitle = true;
+        })
+
+        $(document).on("click", "#save_slider_title_btn", function (e) {
+            console.log("save slider title");
+            var $button = $(e.target);
+            var $selectWrap = $button.parents(".rex-slider__import--wrap").children(".rx__select-wrap");
+
+            var $inputField = $selectWrap.children(".title-slider");
+            var newName = $inputField.val();
+
+            $selectedOptionImport.text(newName)
+
+            $inputField.attr("data-rex-slider-id", "")
+            $inputField.val("")
+            $selectWrap.removeClass("editing-title-slider");
+
+            editingSliderTitle = false;
+        })
+
+        $(document).on("click", "#cancel_slider_title_btn", function (e) {
+            console.log("cancel slider title");
+            var $button = $(e.target);
+            var $selectWrap = $button.parents(".rex-slider__import--wrap").children(".rx__select-wrap");
+            var $inputField = $selectWrap.children(".title-slider");
+
+            $inputField.attr("data-rex-slider-id", "")
+            $inputField.val("")
+
+            $selectWrap.removeClass("editing-title-slider");
+            editingSliderTitle = false;
+        })
     }
 
     /**
@@ -928,6 +1011,8 @@ var Rexbuilder_RexSlider = (function ($) {
         rexslider_modal_links_editor.$video_vimeo = rexslider_modal_links_editor.$modal.find('#rex-slide__video-vimeo');
         rexslider_modal_links_editor.$video_audio = rexslider_modal_links_editor.$modal.find('#rex-slide__video--audio');
 
+        $selectedOptionImport = null;
+        editingSliderTitle = false;
         _linkEvents();
     }
 

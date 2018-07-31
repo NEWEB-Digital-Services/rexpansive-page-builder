@@ -116,7 +116,7 @@ class Rexbuilder_RexSlider {
 								?>
 								<div class="rex-slider-video-wrapper mp4-player">
 									<div class="rex-video-wrap" <?php echo $mp4IDattr;?>>
-										<video class="rex-video-container" preload <?php echo ( is_array( $slide['_rex_banner_gallery_video_audio'] ) ? '' : 'muted' ); ?> autoplay loop>
+										<video class="rex-video-container" preload muted autoplay loop>
 											<source type="video/mp4" src="<?php echo $slide['_rex_banner_gallery_video_mp4']['url']; ?>" />
 										</video>
 									</div>

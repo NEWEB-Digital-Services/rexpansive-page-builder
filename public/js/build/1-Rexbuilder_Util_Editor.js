@@ -85,11 +85,11 @@ var Rexbuilder_Util_Editor = (function ($) {
                 slide.slide_video_audio = $videoMp4Wrap.children(".rex-video-toggle-audio").length != 0;
                 slide.slide_video_type = "mp4";
             }
-
+            
             if ($videoVimeoWrap.length != 0) {
                 var $iframe = $videoVimeoWrap.find("iframe");
                 slide.slide_video = $iframe.attr("src").split('?')[0];
-                slide.slide_video_audio = $videoYoutubeWrap.children(".rex-video-toggle-audio").length != 0;
+                slide.slide_video_audio = $videoVimeoWrap.children(".rex-video-toggle-audio").length != 0;
                 slide.slide_video_type = "vimeo";
             }
 
