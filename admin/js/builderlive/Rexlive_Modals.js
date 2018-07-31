@@ -1,8 +1,9 @@
 
 var Rexlive_Modals = (function ($) {
     'use strict';
-    
+
     var section_config_modal_properties;
+    var insert_new_block_video_properties;
 
     var openSectionModal = function () {
         Rexlive_Modals_Utils.openModal($('#modal-background-responsive-set').parent('.rex-modal-wrap'));
@@ -58,14 +59,16 @@ var Rexlive_Modals = (function ($) {
         Rexlive_Modals_Utils.openModal($('#rex-insert-new-video-block').parent('.rex-modal-wrap'));
     }
 
-    $(document).on('click', "#rex-upload-mp4", function () {
+    $(document).on('click', "#rex-upload-mp4-video", function () {
         Rexlive_MediaUploader.openMediaUploaderVideo();
     });
 
     $(document).on("click", "#rex-insert-video-block-save", function (e) {
-        var urlYoutube = $("#rex-youtube-url").val();
-        var urlVimeo = $("#rex-vimeo-url").val();
-        var videoMp4Data = typeof e.videoData == "undefined" ? "" : e.videoData;
+        var urlYoutube = insert_new_block_video_properties.$linkYoutube.val();
+        var urlVimeo = insert_new_block_video_properties.$linkVimeo.val();
+        var urlMp4 = insert_new_block_video_properties.$linkMp4.val();
+        var idMp4 = parseInt(insert_new_block_video_properties.$linkMp4.attr("data-rex-mp4-id"));
+
         var audio = false;
 
         var data = {
@@ -73,7 +76,8 @@ var Rexlive_Modals = (function ($) {
             data_to_send: {
                 urlYoutube: urlYoutube,
                 urlVimeo: urlVimeo,
-                videoMp4: videoMp4Data,
+                urlMp4: urlMp4,
+                idMp4: idMp4,
                 hasAudio: audio
             }
         };
@@ -89,41 +93,73 @@ var Rexlive_Modals = (function ($) {
         Rexlive_Modals_Utils.closeModal($('#rex-insert-new-video-block').parent('.rex-modal-wrap'));
     });
 
+    $(document).on("click", ".rex-video-type-select", function (e) {
+        var $target = $(e.target);
+        _removeFocusVideoSelected();
+        if ($target.parents(".youtube-insert-wrap").length != 0) {
+            insert_new_block_video_properties.$youTubeWrap.addClass("selected");
+        } else if ($target.parents(".vimeo-insert-wrap").length != 0) {
+            insert_new_block_video_properties.$vimeoWrap.addClass("selected");
+        } else if ($target.parents(".mp4-insert-wrap").length != 0) {
+            insert_new_block_video_properties.$mp4Wrap.addClass("selected");
+        }
+    });
+
+    var _removeFocusVideoSelected = function () {
+        insert_new_block_video_properties.$youTubeWrap.removeClass("selected");
+        insert_new_block_video_properties.$vimeoWrap.removeClass("selected");
+        insert_new_block_video_properties.$mp4Wrap.removeClass("selected");
+    }
+
     var init = function () {
-		section_config_modal_properties = {
-			$section_layout_type: $('.rex-edit-layout-wrap'),
-			$section_fixed: $('#section-fixed'),
-			$section_masonry: $('#section-masonry'),
-			$section_full: $('#section-full-modal'),
-			$section_boxed: $('#section-boxed-modal'),
-			$section_boxed_width: $('.section-set-boxed-width'),
-			$section_boxed_width_type: $('.section-width-type'),
+        section_config_modal_properties = {
+            $section_layout_type: $('.rex-edit-layout-wrap'),
+            $section_fixed: $('#section-fixed'),
+            $section_masonry: $('#section-masonry'),
+            $section_full: $('#section-full-modal'),
+            $section_boxed: $('#section-boxed-modal'),
+            $section_boxed_width: $('.section-set-boxed-width'),
+            $section_boxed_width_type: $('.section-width-type'),
 
-			// FULL height configuration
-			$is_full: $('#section-is-full'),
-			// HOLD GRID config
-			$hold_grid: $("#rx-hold-grid"),
-			// ID and navigator configuration
-			$section_id: $('#sectionid-container'),
-			$save_button: $('#backresponsive-set-save'),
+            // FULL height configuration
+            $is_full: $('#section-is-full'),
+            // HOLD GRID config
+            $hold_grid: $("#rx-hold-grid"),
+            // ID and navigator configuration
+            $section_id: $('#sectionid-container'),
+            $save_button: $('#backresponsive-set-save'),
 
-			$block_gutter: $('.section-set-block-gutter'),
-			// Row separator
-			$row_separator_top: $('#row-separator-top'),
-			$row_separator_right: $('#row-separator-right'),
-			$row_separator_bottom: $('#row-separator-bottom'),
-			$row_separator_left: $('#row-separator-left'),
+            $block_gutter: $('.section-set-block-gutter'),
+            // Row separator
+            $row_separator_top: $('#row-separator-top'),
+            $row_separator_right: $('#row-separator-right'),
+            $row_separator_bottom: $('#row-separator-bottom'),
+            $row_separator_left: $('#row-separator-left'),
 
-			// Row margin
-			$row_margin_top: $('#row-margin-top'),
-			$row_margin_right: $('#row-margin-right'),
-			$row_margin_bottom: $('#row-margin-bottom'),
-			$row_margin_left: $('#row-margin-left'),
+            // Row margin
+            $row_margin_top: $('#row-margin-top'),
+            $row_margin_right: $('#row-margin-right'),
+            $row_margin_bottom: $('#row-margin-bottom'),
+            $row_margin_left: $('#row-margin-left'),
 
-			// Row zoom
-			$section_active_photoswipe: $('#section-active-photoswipe'),
-			section_photoswipe_changed: false,
-		};
+            // Row zoom
+            $section_active_photoswipe: $('#section-active-photoswipe'),
+            section_photoswipe_changed: false,
+        };
+
+        insert_new_block_video_properties = {
+            $self: $("#rex-insert-new-video-block"),
+            $linkYoutube: $("#rex-insert-youtube-url"),
+            $linkVimeo: $("#rex-insert-vimeo-url"),
+            $linkMp4: $("#rex-insert-mp4-url"),
+            $audioYoutube: $("#rex-new-block-video-youtube-audio"),
+            $audioVimeo: $("#rex-new-block-video-vimeo-audio"),
+            $audioMp4: $("#rex-new-block-video-mp4-audio"),
+            $youTubeWrap: $(".youtube-insert-wrap"),
+            $vimeoWrap: $(".vimeo-insert-wrap"),
+            $mp4Wrap: $(".mp4-insert-wrap")
+        }
+
     }
 
     return {

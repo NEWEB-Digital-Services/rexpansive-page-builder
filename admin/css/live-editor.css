@@ -73,3 +73,10 @@
 	.editing-title-slider .rx__form-input{
 		display: none;
 	}
+
+	.set-video-audio-btn {
+		display: none;
+	}
+	.video-insert-wrap.selected .set-video-audio-btn {
+		display: block;
+	}
