@@ -81,10 +81,10 @@ var Rexbuilder_App = (function ($) {
 				var isMuted = $ytvideo.get(0).player.isMuted();
 				if (isMuted) {
 					$ytvideo.YTPUnmute();
-					$(this).removeClass('user-has-muted');
+					$toggle.removeClass('user-has-muted');
 				} else {
 					$ytvideo.YTPMute();
-					$(this).addClass('user-has-muted');
+					$toggle.addClass('user-has-muted');
 				}
 			}
 
@@ -92,10 +92,10 @@ var Rexbuilder_App = (function ($) {
 			if ($mpvideo.length > 0) {
 				if ($mpvideo.prop('muted')) {
 					$mpvideo.prop('muted', false);
-					$(this).removeClass('user-has-muted');
+					$toggle.removeClass('user-has-muted');
 				} else {
 					$mpvideo.prop('muted', true);
-					$(this).addClass('user-has-muted');
+					$toggle.addClass('user-has-muted');
 				}
 			}
 

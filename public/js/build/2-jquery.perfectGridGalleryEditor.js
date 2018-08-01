@@ -83,7 +83,8 @@
             reverseDataGridDisposition: {},
             updatefullHeigth2Phases: false,
             removingCollapsedElements: false,
-            lastIDBlock: 0
+            lastIDBlock: 0,
+            updatingSectionWidth: false
         };
 
         this.$section = this.$element.parents(this._defaults.gridParentWrap);
@@ -137,7 +138,7 @@
                 this.$element.on("change", function (e, data) {
                     // @todo
                     //aggiornare con aggiunta e eliminazione blocchi
-                    if (that.element == e.target && !Rexbuilder_Util_Editor.undoActive && !Rexbuilder_Util_Editor.redoActive && !that.properties.updatingSection && !Rexbuilder_Util.domUpdaiting && !Rexbuilder_Util.windowIsResizing && !that.properties.removingCollapsedElements && !Rexbuilder_Util_Editor.addingNewBlocks && !Rexbuilder_Util_Editor.removingBlocks) {
+                    if (that.element == e.target && !Rexbuilder_Util_Editor.undoActive && !Rexbuilder_Util_Editor.redoActive && !that.properties.updatingSection && !Rexbuilder_Util.domUpdaiting && !Rexbuilder_Util.windowIsResizing && !that.properties.removingCollapsedElements && !Rexbuilder_Util_Editor.addingNewBlocks && !Rexbuilder_Util_Editor.removingBlocks && !that.properties.updatingSectionWidth) {
                         var actionData = that.createActionDataMoveBlocksGrid();
                         Rexbuilder_Util_Editor.pushAction(that.$section, "updateSectionBlocksDisposition", $.extend(true, {}, actionData), $.extend(true, {}, that.properties.reverseDataGridDisposition));
                         that.properties.reverseDataGridDisposition = actionData;
@@ -303,6 +304,8 @@
                 this.updateLayout(newSettings.layout, newSettings.fullHeight);
             }
 
+            this.updateSectionWidthWrap(newSettings.section_width);
+
             return this.createActionDataMoveBlocksGrid();
         },
 
@@ -376,6 +379,31 @@
                 gridstack.grid._float = true;
                 gridstack.grid.float = true;
             }
+        },
+
+        updateSectionWidthWrap: function (newWidthParent) {
+            console.log("applying new Width to parent", newWidthParent);
+
+            this.batchGridstack();
+            var $galleryParent = this.$element.parent();
+            if (newWidthParent == "100%") {
+                $galleryParent.removeClass("center-disposition");
+                $galleryParent.addClass("full-disposition");
+            } else {
+                $galleryParent.removeClass("full-disposition");
+                $galleryParent.addClass("center-disposition");
+            }
+            $galleryParent.css("max-width", newWidthParent);
+
+            this.properties.updatingSectionWidth = true;
+            this.properties.updatingSectionSameGrid = false;
+            this._defineDynamicPrivateProperties();
+            this.updateGridstackStyles();
+            this.updateBlocksHeight();
+            this.commitGridstack();
+            this.properties.updatingSectionSameGrid = true;
+            this.properties.updatingSectionWidth = false;
+
         },
 
         updateGridDistance: function (newSettings) {
@@ -920,7 +948,7 @@
             Rexbuilder_Util_Editor.addingNewBlocks = false;
             return $newEL;
         },
-        
+
         addScrollbar: function ($newEL) {
             var istanceScrollbar = $newEL.find('.rex-custom-scrollbar').overlayScrollbars(Rexbuilder_Util.scrollbarProperties).overlayScrollbars();
             istanceScrollbar.sleep();
@@ -1101,7 +1129,7 @@
 
         // Define usefull private properties
         _defineDynamicPrivateProperties: function () {
-//            var oldWidth = this.properties.wrapWidth;
+            //            var oldWidth = this.properties.wrapWidth;
             var newWidth = this.$element.outerWidth();
             //console.log("DEFINE DYNAMIC GRID " + this.properties.sectionNumber);
             //method with jquery 
@@ -1365,25 +1393,25 @@
 
         _prepareElementEditing: function ($elem) {
 
-/*             if (Rexbuilder_Util_Editor.blockCopying) {
-                this.properties.lastIDBlock = this.properties.lastIDBlock + 1;
-                var $elemData = $elem.children(".rexbuilder-block-data");
-                var rexId = Rexbuilder_Util.createBlockID();
-                var id = this.properties.lastIDBlock;
-                $elem.attr({
-                    "id": "block_" + id,
-                    "data-rexbuilder-block-id": rexId,
-                });
-                $elemData.attr({
-                    "id": "block_" + id + "-builder-data",
-                    "data-id": "block_" + id,
-                    "data-data_rexbuilder_block_id": rexId,
-                });
-            }
-
-            if (Rexbuilder_Util_Editor.sectionCopying || Rexbuilder_Util_Editor.blockCopying) {
-                this._removeHandles($elem);
-            } */
+            /*             if (Rexbuilder_Util_Editor.blockCopying) {
+                            this.properties.lastIDBlock = this.properties.lastIDBlock + 1;
+                            var $elemData = $elem.children(".rexbuilder-block-data");
+                            var rexId = Rexbuilder_Util.createBlockID();
+                            var id = this.properties.lastIDBlock;
+                            $elem.attr({
+                                "id": "block_" + id,
+                                "data-rexbuilder-block-id": rexId,
+                            });
+                            $elemData.attr({
+                                "id": "block_" + id + "-builder-data",
+                                "data-id": "block_" + id,
+                                "data-data_rexbuilder_block_id": rexId,
+                            });
+                        }
+            
+                        if (Rexbuilder_Util_Editor.sectionCopying || Rexbuilder_Util_Editor.blockCopying) {
+                            this._removeHandles($elem);
+                        } */
 
             this._addHandles($elem, 'e, s, w, se, sw');
 
@@ -1752,6 +1780,7 @@
                     if (!$block.hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
                         gallery.fixElementTextSize(block, gallery.properties.resizeHandle, null);
                     }
+                    $block.attr("data-gs-max-width", 500);
                     Rexbuilder_Util_Editor.elementIsResizing = false;
                     Rexbuilder_Util_Editor.elementIsDragging = false;
                     gallery.$element.attr("data-rexlive-layout-changed=\"true\"");
@@ -1871,14 +1900,15 @@
             if (typeof gridstack !== "null") {
                 //console.log("GRIDSTACK ACTIVE");
                 this.properties.blocksBottomTop = this.getElementBottomTop();
-
+                console.log("updating heights?");
                 if (!this.properties.updatingSectionSameGrid) {
+                    console.log("yes");
                     this.batchGridstack();
 
                     $(this.properties.blocksBottomTop).each(function (i, e) {
                         $elem = $(e);
                         $elemData = $elem.children(".rexbuilder-block-data");
-                        if (((gallery.settings.galleryLayout == "masonry") && ($elemData.attr("data-block_has_scrollbar") != "true") && ($elemData.attr("data-block_live_edited") != "true")) || gallery.properties.updatingSection) {
+                        if (((gallery.settings.galleryLayout == "masonry") && ($elemData.attr("data-block_has_scrollbar") != "true") && ($elemData.attr("data-block_live_edited") != "true")) || gallery.properties.updatingSection || (gallery.properties.updatingSectionWidth && gallery.settings.galleryLayout == "masonry")) {
                             gallery.updateElementHeight($elem);
                         }
                     });
@@ -2228,8 +2258,9 @@
         },
 
         updateElementHeight: function ($elem) {
-           /*  console.log("calculating " + $elem.attr("data-rexbuilder-block-id") + " height");
-           */  if (Rexbuilder_Util.editorMode && !this.properties.oneColumModeActive) {
+            console.log("calculating " + $elem.attr("data-rexbuilder-block-id") + " height");
+
+            if (Rexbuilder_Util.editorMode && !this.properties.oneColumModeActive) {
                 Rexbuilder_Util_Editor.elementIsResizing = true;
             }
             var elem = $elem[0];
@@ -2273,24 +2304,21 @@
             if (textHeight == 0) {
                 if ($itemContent.hasClass('full-image-background')) {
                     backgroundHeight = (parseInt($itemContent.attr('data-background_image_height')) * (w * sw)) / (parseInt($itemContent.attr('data-background_image_width')));
-                } else if ($itemContent.hasClass('natural_image_background')) {
+                } else if ($itemContent.hasClass('natural-image-background')) {
                     if ($itemContent.hasClass('small-width')) {
-                        backgroundHeight = (parseInt($itemContent.attr('data-background_image_height')) * (w * sw)) / (parseInt($itemContent.attr('data-background_image_width'))) - gutter;
+                        backgroundHeight = (parseInt($itemContent.attr('data-background_image_height')) * (w * sw)) / (parseInt($itemContent.attr('data-background_image_width')));
                     } else {
                         backgroundHeight = parseInt($itemContent.attr('data-background_image_height')) + gutter;
                     }
                 }
-                //console.log(this.properties.updatingSection);
-                if (this.properties.updatingSection || (backgroundHeight == 0) || $itemContent.hasClass('youtube-player') || $itemContent.hasClass('empty-content') || $itemContent.hasClass('block-has-slider') || $elem.hasClass('block-has-slider')) {
+
+                if ((backgroundHeight == 0) && (this.properties.updatingSection || $itemContent.hasClass('youtube-player') || ($itemContent.hasClass('empty-content') && (backgroundHeight == 0)) || $itemContent.hasClass('block-has-slider') || $elem.hasClass('block-has-slider'))) {
+                    console.log("calculating default height");
                     if (this.properties.editedFromBackend && this.settings.galleryLayout == "masonry") {
                         console.log("backend + masonry");
                         defaultHeight = Math.round(sw * startH);
                     } else if ((this.properties.oldCellHeight != 0) && (this.properties.oldCellHeight != this.properties.singleHeight)) {
-                        /*                         console.log("cellHeight changed");
-                                                console.log(startH, this.properties.oldCellHeight, this.properties.singleHeight); */
-                        //console.log(startH);
                         defaultHeight = startH * this.properties.oldCellHeight;
-                        //console.log(defaultHeight);
                     } else {
                         defaultHeight = startH * this.properties.singleHeight;
                     }
@@ -2300,7 +2328,7 @@
             }
 
             //console.log(startH); 
-
+            console.log(startH, backgroundHeight, defaultHeight, textHeight);
             newH = Math.max(startH, backgroundHeight, defaultHeight, textHeight);
             if (this.properties.oneColumModeActive) {
                 return newH;
@@ -2315,8 +2343,8 @@
             /*             if (this.properties.oldLayout == this.settings.galleryLayout) {
                             newH = startH;
                         } */
-            /* 
-                        console.log(newH); */
+
+            console.log(newH);
             this.updateElementDataHeightProperties($blockData, newH);
 
             var gridstack = this.properties.gridstackInstance;

@@ -588,19 +588,17 @@ defined( 'ABSPATH' ) or exit;
 <div class="rex-modal-wrap rex-fade">
     <div id="modal-background-responsive-set" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
         <div class="modal-content">
-
             <div id="section-config-first-row" class="row valign-wrapper">
-
                 <div class="col valign-wrapper">
                     <div class="rex-edit-layout-wrap">
-                        <div>
+                        <div class="rexlive-layout-type" data-rex-layout="fixed">
                             <input type="radio" id="section-fixed" name="section-layout" class="builder-edit-row-layout with-gap" value="fixed" checked title="Grid Layout" />
                             <label for="section-fixed"  class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Grid Layout', 'rexspansive' ); ?>">
                                 <i class="material-icons">&#xE8F1;</i>
                                 <span class="rex-ripple"></span>
                             </label>
                         </div>
-                        <div>
+                        <div class="rexlive-layout-type" data-rex-layout="masonry">
                             <input type="radio" id="section-masonry" name="section-layout" class="builder-edit-row-layout with-gap" value="masonry" title="Masonry Layout" />
                             <label for="section-masonry"  class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Masonry Layout', 'rexspansive' ); ?>">
                                 <i class="material-icons">&#xE871;</i>
@@ -608,26 +606,27 @@ defined( 'ABSPATH' ) or exit;
                             </label>
                         </div>
                     </div>
+                </div><!-- Grid fixed or masonry -->
+
+                <div>
                 </div>
 
-                <div></div>
-
-                <div class="col row valign-wrapper layout-wrap">
-                    <div>
+                <div class="col row valign-wrapper layout-wrap rex-edit-section-width">
+                    <div class="rexlive-section-width" data-rex-section-width="full">
                         <input type="radio" id="section-full-modal" name="section-dimension-modal" class="builder-edit-row-dimension-modal with-gap" value="full" title="Full" />
                         <label for="section-full-modal" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Full', $this->plugin_name ); ?>">
                             <i class="material-icons rex-icon">v</i>
                             <span class="rex-ripple"></span>
                         </label>
                     </div>
-                    <div>
+                    <div class="rexlive-section-width" data-rex-section-width="boxed">
                         <input id="section-boxed-modal" type="radio" name="section-dimension-modal" class="builder-edit-row-dimension-modal with-gap" value="boxed" title="Boxed" />
                         <label for="section-boxed-modal" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Boxed', $this->plugin_name ); ?>">
                             <i class="material-icons rex-icon">t</i>
                             <span class="rex-ripple"></span>
                         </label>
                     </div>
-                </div>
+                </div><!-- Full section width or boxed -->
 
                 <div class="col row valign-wrapper">
                     <div id="section-set-dimension" class="input-field rex-input-prefixed col">
@@ -636,14 +635,14 @@ defined( 'ABSPATH' ) or exit;
                         <span class="rex-material-bar"></span>
                     </div>
                     <div class="section-set-boxed-width-wrap col">
-                        <div class="rex-check-text">
+                        <div class="rex-check-text percentage-width boxed-width-type-wrap" data-rex-section-width-type="%">
                             <input id="block-width-percentage" type="radio" class="section-width-type with-gap" name="section-width-type" value="percentage" checked />
                             <label for="block-width-percentage">
                                 <?php _e( '%', 'rexpansive' ); ?>
                                 <span class="rex-ripple"></span>
                             </label>
                         </div>
-                        <div class="rex-check-text">
+                        <div class="rex-check-text pixel-width boxed-width-type-wrap" data-rex-section-width-type="px">
                             <input id="block-width-pixel" type="radio" class="section-width-type with-gap" name="section-width-type" value="pixel" />
                             <label for="block-width-pixel">
                                 <?php _e( 'PX', 'rexpansive' ); ?>
@@ -651,7 +650,7 @@ defined( 'ABSPATH' ) or exit;
                             </label>
                         </div>
                     </div>
-                </div>
+                </div><!-- Boxed section options-->
 
             </div><!-- /full-heigth, boxed dimension, block distance -->
 
@@ -1331,7 +1330,7 @@ defined( 'ABSPATH' ) or exit;
 <div class="rex-modal-wrap rex-fade">
     <div id="rex-insert-new-video-block" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
         <div class="modal-content">
-            <div class="row valign-wrapper youtube-insert-wrap video-insert-wrap">
+            <div id="insert-video-block-wrap-1" class="row valign-wrapper youtube-insert-wrap video-insert-wrap">
                 <div class="rex-check rex-check-icon col rex-video-type-select">
                     <input type="radio" class="rex-choose-video with-gap" name="rex-choose-video" value="youtube" id="rex-choose-youtube-video">
                     <label for="rex-choose-youtube-video">

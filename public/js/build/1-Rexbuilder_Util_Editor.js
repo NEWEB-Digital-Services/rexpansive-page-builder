@@ -533,6 +533,9 @@ var Rexbuilder_Util_Editor = (function ($) {
         this.addingNewBlocks = false;
         this.removingBlocks = false;
 
+        this.sectionChangingOptionsRexID = null;
+        this.sectionChangingOptionsObj = null;
+
         this.sectionAddingElementRexID = null;
         this.sectionAddingElementObj = null;
 

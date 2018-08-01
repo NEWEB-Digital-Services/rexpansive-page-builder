@@ -2,59 +2,203 @@
 var Rexlive_Modals = (function ($) {
     'use strict';
 
-    var section_config_modal_properties;
     var insert_new_block_video_properties;
     var videoMp4SelectedData;
 
-    var openSectionModal = function () {
-        Rexlive_Modals_Utils.openModal($('#modal-background-responsive-set').parent('.rex-modal-wrap'));
+    var section_config_modal_properties;
+    var oldSectionWidthData;
+    var defaultSectionWidthData;
+
+    var _openSectionModal = function (data) {
+        _clearSectionModal();
+        _updateSectionModal(data);
+        Rexlive_Modals_Utils.openModal(section_config_modal_properties.$self.parent('.rex-modal-wrap'));
     }
 
-    $(document).on('click', '#backresponsive-set-cancel', function (e) {
-        e.preventDefault();
-        Rexlive_Modals_Utils.closeModal($('#modal-background-responsive-set').parent('.rex-modal-wrap'));
-    });
+    var _closeSectionModal = function () {
+        _resetSetionModalData();
+        Rexlive_Modals_Utils.closeModal(section_config_modal_properties.$self.parent('.rex-modal-wrap'));
+    }
 
-    $(document).on('click', '#backresponsive-set-save', function (e) {
-        e.preventDefault();
-        // console.log(this);
-        //@todo manca lettura layout 
-        var newLayout = section_config_modal_properties.$section_layout_type.filter(':checked').val();
-        var fullHeight = (true === section_config_modal_properties.$is_full.prop('checked') ? 'true' : 'false');
+    var _resetSetionModalData = function () {
+        oldSectionWidthData.dimension = "";
+        oldSectionWidthData.sectionWidth = "";
+        oldSectionWidthData.widthType = "";
+    }
 
-        //recuperare dati
-        /*
-        var section_id = $(this).attr('data-section_id'),
-            color = $('.backresponsive-color-section').spectrum('get'),
-            opacity = $('.backresponsive-opacity-section').val(),
-            gutter = $('.section-set-block-gutter').val(),
-            custom_classes = $('#section-set-custom-class').val(),
-            section_width = '',
-            section_is_full_width = (true === section_config_modal_properties.$section_full.prop('checked') ? 'true' : 'false'),
-            section_is_boxed_width = (true === section_config_modal_properties.$section_boxed.prop('checked') ? 'true' : 'false'),
-            isFull = (true === section_config_modal_properties.$is_full.prop('checked') ? 'true' : ''),
-            holdGrid = (true === section_config_modal_properties.$hold_grid.prop('checked') ? 'true' : 'false'),
-            //has_small_overlay = ( true  === 	section_config_modal_properties.$has_overlay_small.prop('checked') ? 'true' : '' ), 
-            //has_medium_overlay = ( true === section_config_modal_properties.$has_overlay_medium.prop('checked') ? 'true' : '' ), 
-            //has_large_overlay = ( true === section_config_modal_properties.$has_overlay_large.prop('checked') ? 'true' : '' ), 
-            section_custom_name = section_config_modal_properties.$section_id.val(),
-            layout = section_config_modal_properties.$section_layout_type.filter(':checked').val();
-            */
-        //var $row = $('.builder-row[data-count=' + 	section_id + ']'); $row.attr('data-layout', layout);
+    var _clearSectionModal = function () {
+        _clearLayoutTypeSelection();
+        _clearSectionWidth();
+        _clearFullHeight();
+    }
 
-        var data = {
-            eventName: "rexlive:set_gallery_layout",
-            data_to_send: {
-                newLayout: newLayout,
-                fullHeight: fullHeight
+    var _focusLayout = function (layoutName) {
+        var $layoutWrap = section_config_modal_properties.$section_layout_types_wrap.children("[data-rex-layout=\"" + layoutName + "\"]");
+        $layoutWrap.addClass("selected");
+        $layoutWrap.find("input").attr("checked", true);
+    }
+
+    var _clearFullHeight = function () {
+        section_config_modal_properties.$is_full.prop('checked', false);
+    }
+
+    var _updateFullHeight = function (active) {
+        section_config_modal_properties.$is_full.prop('checked', active == "true");
+    }
+
+    var _updateSectionWidth = function (dimension, sectionWidth) {
+        _clearSectionWidth();
+
+        var widthType = "%";
+        var width = "100";
+
+        if (dimension != "full") {
+            width = parseInt(sectionWidth);
+            if (sectionWidth.indexOf("%") == -1) {
+                widthType = "px";
             }
-        };
+        }
 
-        Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
+        oldSectionWidthData.type = dimension;
+        oldSectionWidthData.sectionWidth = width;
+        oldSectionWidthData.dimension = widthType;
 
-        Rexlive_Modals_Utils.closeModal($('#modal-background-responsive-set').parent('.rex-modal-wrap'));
-    });
+        section_config_modal_properties.$section_boxed_width.val(width);
 
+        var $sectionWidthWrap = section_config_modal_properties.$section_width_type.children("[data-rex-section-width=\"" + dimension + "\"]");
+        $sectionWidthWrap.addClass("selected");
+        $sectionWidthWrap.find("input").attr("checked", true);
+
+        var $sectionBoxedWidthTypeWrap = section_config_modal_properties.$section_boxed_width_wrap.children("[data-rex-section-width-type=\"" + widthType + "\"]");
+        $sectionBoxedWidthTypeWrap.addClass("selected");
+        $sectionBoxedWidthTypeWrap.find("input").attr("checked", true);
+    }
+
+    var _updateSectionModal = function (data) {
+        console.log(data);
+        _focusLayout(data.activeLayout);
+        _updateSectionWidth(data.dimension, data.section_width);
+        _updateFullHeight(data.fullHeight);
+    }
+
+    var _clearLayoutTypeSelection = function () {
+        section_config_modal_properties.$section_layout_typeWrap.each(function (i, el) {
+            $(el).removeClass("selected");
+            $(el).find("input").attr("checked", false);
+        });
+    }
+
+    var _clearSectionWidth = function () {
+        section_config_modal_properties.$section_width_type_wrap.each(function (i, el) {
+            $(el).removeClass("selected");
+            $(el).find("input").attr("checked", false);
+        });
+        section_config_modal_properties.$section_boxed_width.val("");
+    }
+
+    var _clearSectionBoxedWidthType = function () {
+        section_config_modal_properties.$section_boxed_width_wrap.children().each(function (i, el) {
+            $(el).removeClass("selected");
+            $(el).find("input").attr("checked", false);
+        });
+    }
+
+    var _updateSectionBoxedWidthData = function (data) {
+        _clearSectionBoxedWidthType();
+        section_config_modal_properties.$section_boxed_width.val(data.sectionWidth);
+        var $sectionBoxedWidthTypeWrap = section_config_modal_properties.$section_boxed_width_wrap.children("[data-rex-section-width-type=\"" + data.dimension + "\"]");
+        $sectionBoxedWidthTypeWrap.addClass("selected");
+        $sectionBoxedWidthTypeWrap.find("input").attr("checked", true);
+    }
+
+    var _linkDocumentListenersSectionPropertiesModal = function () {
+
+        $(document).on("click", "#modal-background-responsive-set .boxed-width-type-wrap", function (e) {
+            e.preventDefault();
+            var wasFull = section_config_modal_properties.$section_width_type.children(".selected").attr("data-rex-section-width") == "full";
+            _clearSectionBoxedWidthType();
+            var $sectionBoxedWidthTypeWrap = $(e.target).parents(".boxed-width-type-wrap");
+            $sectionBoxedWidthTypeWrap.addClass("selected");
+            $sectionBoxedWidthTypeWrap.find("input").attr("checked", true);
+
+            if (wasFull && $sectionBoxedWidthTypeWrap.attr("data-rex-section-width-type") == "px") {
+                _clearSectionWidth();
+                var $sectionWidthWrap = section_config_modal_properties.$section_width_type.children("[data-rex-section-width=\"boxed\"]");
+                $sectionWidthWrap.addClass("selected");
+                $sectionWidthWrap.find("input").attr("checked", true);
+                section_config_modal_properties.$section_boxed_width.val(defaultSectionWidthData.boxed.sectionWidth);
+            }
+
+        });
+
+        $(document).on("click", "#modal-background-responsive-set .rexlive-section-width", function (e) {
+            e.preventDefault();
+            _clearSectionWidth();
+            var $sectionWidthTypeWrap = $(e.target).parents(".rexlive-section-width");
+            $sectionWidthTypeWrap.addClass("selected");
+            $sectionWidthTypeWrap.find("input").attr("checked", true);
+            var selectedType = $sectionWidthTypeWrap.attr("data-rex-section-width");
+            if (selectedType != oldSectionWidthData.type) {
+                if (selectedType == "boxed") {
+                    _updateSectionBoxedWidthData(defaultSectionWidthData.boxed);
+                } else {
+                    _updateSectionBoxedWidthData(defaultSectionWidthData.full);
+                }
+            } else {
+                _updateSectionBoxedWidthData(oldSectionWidthData);
+            }
+        });
+
+        $(document).on("click", "#modal-background-responsive-set .rexlive-layout-type", function (e) {
+            e.preventDefault();
+            _clearLayoutTypeSelection();
+            var $layoutWrap = $(e.target).parents(".rexlive-layout-type");
+            $layoutWrap.addClass("selected");
+            $layoutWrap.find("input").attr("checked", true);
+        });
+
+        $(document).on('click', '#backresponsive-set-save', function (e) {
+            e.preventDefault();
+
+            var $wrapLayoutType = section_config_modal_properties.$section_layout_types_wrap;
+            var newLayout = $wrapLayoutType.children(".selected").attr("data-rex-layout");
+
+            var section_width = section_config_modal_properties.$section_boxed_width.val();
+            var section_width_boxed_type = section_config_modal_properties.$section_boxed_width_wrap.children(".selected").attr("data-rex-section-width-type");
+
+            var fullHeight = (true === section_config_modal_properties.$is_full.prop('checked') ? 'true' : 'false');
+
+            var custom_classes = $('#section-set-custom-class').val();
+            var section_is_full_width = (true === section_config_modal_properties.$section_full.prop('checked') ? 'true' : 'false');
+            var section_is_boxed_width = (true === section_config_modal_properties.$section_boxed.prop('checked') ? 'true' : 'false');
+            var holdGrid = (true === section_config_modal_properties.$hold_grid.prop('checked') ? 'true' : 'false');
+            var section_custom_name = section_config_modal_properties.$section_id.val();
+
+            console.log(custom_classes, section_width, section_is_full_width, section_is_boxed_width, holdGrid, section_custom_name);
+
+            var data = {
+                eventName: "rexlive:set_gallery_layout",
+                data_to_send: {
+                    layout: newLayout,
+                    fullHeight: fullHeight,
+                    sectionWidth: {
+                        width: section_width,
+                        type: section_width_boxed_type
+                    }
+                }
+            };
+
+            console.log(data.data_to_send);
+            Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
+
+            _closeSectionModal();
+        });
+
+        $(document).on('click', '#backresponsive-set-cancel', function (e) {
+            e.preventDefault();
+            _closeSectionModal();
+        });
+    }
 
     var openVideoModal = function () {
         _clearVideoModal();
@@ -74,6 +218,7 @@ var Rexlive_Modals = (function ($) {
         insert_new_block_video_properties.$vimeoWrap.addClass("selected");
         insert_new_block_video_properties.$radioChooseVimeo.attr("checked", true);
     }
+
     var _focusMp4 = function () {
         insert_new_block_video_properties.$mp4Wrap.addClass("selected");
         insert_new_block_video_properties.$radioChooseMp4.attr("checked", true);
@@ -99,7 +244,7 @@ var Rexlive_Modals = (function ($) {
     }
 
     var _linkDocumentListenersVideoInsertModal = function () {
-        $(document).on("click", ".input-field", function (e) {
+        $(document).on("click", "#rex-insert-new-video-block .input-field", function (e) {
             e.preventDefault();
             _clearFocusVideo();
             var $target = $(e.target);
@@ -197,63 +342,94 @@ var Rexlive_Modals = (function ($) {
     }
 
     var init = function () {
+        var $sectionConfigModal = $('#modal-background-responsive-set');
         section_config_modal_properties = {
-            $section_layout_type: $('.rex-edit-layout-wrap'),
-            $section_fixed: $('#section-fixed'),
-            $section_masonry: $('#section-masonry'),
-            $section_full: $('#section-full-modal'),
-            $section_boxed: $('#section-boxed-modal'),
-            $section_boxed_width: $('.section-set-boxed-width'),
-            $section_boxed_width_type: $('.section-width-type'),
+            $self: $sectionConfigModal,
+
+            $section_layout_typeWrap: $sectionConfigModal.find(".rexlive-layout-type"),
+            $section_layout_types_wrap: $sectionConfigModal.find('.rex-edit-layout-wrap'),
+            $section_fixed: $sectionConfigModal.find('#section-fixed'),
+            $section_masonry: $sectionConfigModal.find('#section-masonry'),
+
+            //section width options
+            $section_width_type_wrap: $sectionConfigModal.find(".rexlive-section-width"),
+            $section_width_type: $sectionConfigModal.find(".rex-edit-section-width"),
+            $section_full: $sectionConfigModal.find('#section-full-modal'),
+            $section_boxed: $sectionConfigModal.find('#section-boxed-modal'),
+            $section_boxed_width: $sectionConfigModal.find('.section-set-boxed-width'),
+            $section_boxed_width_type: $sectionConfigModal.find('.section-width-type'),
+            $section_boxed_width_wrap: $sectionConfigModal.find('.section-set-boxed-width-wrap'),
 
             // FULL height configuration
-            $is_full: $('#section-is-full'),
+            $is_full: $sectionConfigModal.find('#section-is-full'),
             // HOLD GRID config
-            $hold_grid: $("#rx-hold-grid"),
+            $hold_grid: $sectionConfigModal.find("#rx-hold-grid"),
             // ID and navigator configuration
-            $section_id: $('#sectionid-container'),
-            $save_button: $('#backresponsive-set-save'),
+            $section_id: $sectionConfigModal.find('#sectionid-container'),
+            $save_button: $sectionConfigModal.find('#backresponsive-set-save'),
 
-            $block_gutter: $('.section-set-block-gutter'),
+            $block_gutter: $sectionConfigModal.find('.section-set-block-gutter'),
             // Row separator
-            $row_separator_top: $('#row-separator-top'),
-            $row_separator_right: $('#row-separator-right'),
-            $row_separator_bottom: $('#row-separator-bottom'),
-            $row_separator_left: $('#row-separator-left'),
+            $row_separator_top: $sectionConfigModal.find('#row-separator-top'),
+            $row_separator_right: $sectionConfigModal.find('#row-separator-right'),
+            $row_separator_bottom: $sectionConfigModal.find('#row-separator-bottom'),
+            $row_separator_left: $sectionConfigModal.find('#row-separator-left'),
 
             // Row margin
-            $row_margin_top: $('#row-margin-top'),
-            $row_margin_right: $('#row-margin-right'),
-            $row_margin_bottom: $('#row-margin-bottom'),
-            $row_margin_left: $('#row-margin-left'),
+            $row_margin_top: $sectionConfigModal.find('#row-margin-top'),
+            $row_margin_right: $sectionConfigModal.find('#row-margin-right'),
+            $row_margin_bottom: $sectionConfigModal.find('#row-margin-bottom'),
+            $row_margin_left: $sectionConfigModal.find('#row-margin-left'),
 
             // Row zoom
-            $section_active_photoswipe: $('#section-active-photoswipe'),
+            $section_active_photoswipe: $sectionConfigModal.find('#section-active-photoswipe'),
             section_photoswipe_changed: false,
         };
 
+        defaultSectionWidthData = {
+            boxed: {
+                type: "boxed",
+                dimension: "%",
+                sectionWidth: "80"
+            },
+            full: {
+                type: "full",
+                dimension: "%",
+                sectionWidth: "100"
+            }
+        }
+
+        oldSectionWidthData = {
+            dimension: "",
+            sectionWidth: "",
+            widthType: ""
+        }
+
+        var $videoModal = $("#rex-insert-new-video-block");
+
         insert_new_block_video_properties = {
-            $self: $("#rex-insert-new-video-block"),
-            $linkYoutube: $("#rex-insert-youtube-url"),
-            $linkVimeo: $("#rex-insert-vimeo-url"),
-            $audioYoutube: $("#rex-new-block-video-youtube-audio"),
-            $audioVimeo: $("#rex-new-block-video-vimeo-audio"),
-            $audioMp4: $("#rex-new-block-video-mp4-audio"),
-            $radioChooseYoutube: $("#rex-choose-youtube-video"),
-            $radioChooseVimeo: $("#rex-choose-vimeo-video"),
-            $radioChooseMp4: $("#rex-choose-mp4-video"),
-            $youTubeWrap: $(".youtube-insert-wrap"),
-            $vimeoWrap: $(".vimeo-insert-wrap"),
-            $mp4Wrap: $(".mp4-insert-wrap")
+            $self: $videoModal,
+            $linkYoutube: $videoModal.find("#rex-insert-youtube-url"),
+            $linkVimeo: $videoModal.find("#rex-insert-vimeo-url"),
+            $audioYoutube: $videoModal.find("#rex-new-block-video-youtube-audio"),
+            $audioVimeo: $videoModal.find("#rex-new-block-video-vimeo-audio"),
+            $audioMp4: $videoModal.find("#rex-new-block-video-mp4-audio"),
+            $radioChooseYoutube: $videoModal.find("#rex-choose-youtube-video"),
+            $radioChooseVimeo: $videoModal.find("#rex-choose-vimeo-video"),
+            $radioChooseMp4: $videoModal.find("#rex-choose-mp4-video"),
+            $youTubeWrap: $videoModal.find("#insert-video-block-wrap-1"),
+            $vimeoWrap: $videoModal.find("#insert-video-block-wrap-2"),
+            $mp4Wrap: $videoModal.find("#insert-video-block-wrap-3"),
         }
 
         videoMp4SelectedData = null;
         _linkDocumentListenersVideoInsertModal();
+        _linkDocumentListenersSectionPropertiesModal();
     }
 
     return {
         init: init,
-        openSectionModal: openSectionModal,
+        openSectionModal: _openSectionModal,
         openVideoModal: openVideoModal,
         updateMp4VideoModal: _updateMp4VideoModal
     };

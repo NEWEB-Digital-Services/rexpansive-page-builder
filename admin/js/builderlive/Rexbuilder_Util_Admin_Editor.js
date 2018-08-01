@@ -186,7 +186,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                 }
 
                 if (event.data.eventName == "rexlive:openSectionModal") {
-                    Rexlive_Modals.openSectionModal();
+                    Rexlive_Modals.openSectionModal(event.data.section_options_active);
                 }
 
                 if (event.data.eventName == "rexlive:uploadSliderFromLive") {

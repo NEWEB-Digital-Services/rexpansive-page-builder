@@ -97,6 +97,13 @@ var Rexbuilder_Dom_Util = (function ($) {
 
     }
 
+    var _updateGridDomProperties = function ($galleryElement, data) {
+        console.log("updating _updateGridDomProperties");
+        console.log(data);
+        $galleryElement.attr("data-layout", data.layout);
+        $galleryElement.attr("data-full-height", data.fullHeight);
+    }
+
     var _updateSectionMargins = function ($section, marginTop, marginBottom, marginRight, marginLeft) {
         var newMargins = "";
         newMargins += $.isEmptyObject(marginTop) ? 0 : marginTop;
@@ -418,6 +425,7 @@ var Rexbuilder_Dom_Util = (function ($) {
 
                     _updateBlocksLayout(dataToUse.blocksDisposition);
                     galleryEditorIstance.updateGridSettingsModalUndoRedo(dataToUse);
+                    _updateGridDomProperties($galleryElement, dataToUse);
                     galleryEditorIstance.updateGridstackStyles(dataToUse.blocksDisposition.cellHeight);
 
                     galleryEditorIstance.commitGridstack();
@@ -467,6 +475,7 @@ var Rexbuilder_Dom_Util = (function ($) {
         addMp4Video: _addMp4Video,
         removeMp4Video: _removeMp4Video,
         updateSlider: _updateSlider,
-        updateSliderStack: _updateSliderStack
+        updateSliderStack: _updateSliderStack,
+        updateGridDomProperties: _updateGridDomProperties
     };
 })(jQuery);

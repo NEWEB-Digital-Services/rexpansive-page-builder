@@ -83,22 +83,21 @@
 		var setBuilderTimeStamp = function () {
 			var timestamp = new Date();
 			console.log(timestamp);
-			// $('#_rexbuilder').val(Date.UTC(timestamp.getFullYear(),timestamp.getMonth(),timestamp.getDate()));
 		};
 
 		$(document).on("rexlive:set_gallery_layout", function (e) {
 			var data = e.settings.data_to_send;
+			console.log(data);
 
-			var sectionID = Rexbuilder_Util_Editor.sectionAddingElementRexID;
-			var $section = Rexbuilder_Util_Editor.sectionAddingElementObj;
+			var sectionID = Rexbuilder_Util_Editor.sectionChangingOptionsRexID;
+			var $section = Rexbuilder_Util_Editor.sectionChangingOptionsObj;
 			var $gallery = $section.find(".grid-stack-row");
 			var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
 
 			//reverseData: STATO PRIMA
 			var oldDisposition = galleryInstance.createActionDataMoveBlocksGrid();
 			console.log("data received");
-			console.log(data); 
-			
+
 			var reverseData = {
 				gutter: $gallery.attr("data-separator"),
 				row_separator_top: $gallery.attr("data-row-separator-top"),
@@ -115,13 +114,12 @@
 
 			setBuilderTimeStamp();
 
-			//DA CAPIRE DOVE ANDARE PER AGGIORNARE LE INFORMAZIONI NEL DOM, PER ORA FACCIAMOLO QUA
-			$gallery.attr("data-layout", data.newLayout);
-			$gallery.attr("data-full-height", data.fullHeight);
+			Rexbuilder_Dom_Util.updateGridDomProperties($gallery, data);
 
 			var newDisposition = galleryInstance.updateGridSettingsModalUndoRedo({
-				'layout': data.newLayout,
-				'fullHeight': data.fullHeight
+				'layout': data.layout,
+				'fullHeight': data.fullHeight,
+				'section_width': ""+data.sectionWidth.width+data.sectionWidth.type,
 			});
 
 			//actionData: STATO DOPO
@@ -132,7 +130,7 @@
 				row_separator_right: $gallery.attr("data-row-separator-right"),
 				row_separator_left: $gallery.attr("data-row-separator-left"),
 				fullHeight: data.fullHeight,
-				layout: data.newLayout,
+				layout: data.layout,
 				section_width: $gallery.parent().css("max-width"),
 				dimension: $gallery.parent().hasClass("full-disposition") ? "full" : "boxed",
 				collapse_grid: $section.attr("data-rex-collapse-grid"),
@@ -140,8 +138,9 @@
 			}
 
 			Rexbuilder_Util_Editor.pushAction($section, "updateSection", actionData, reverseData);
-			Rexbuilder_Util_Editor.sectionAddingElementRexID = null;
-			Rexbuilder_Util_Editor.sectionAddingElementObj = null;
+
+			Rexbuilder_Util_Editor.sectionChangingOptionsRexID = null;
+			Rexbuilder_Util_Editor.sectionChangingOptionsObj = null;
 		});
 
 
@@ -475,6 +474,7 @@
 			e.preventDefault();
 			var $rexpansiveSection = $(e.target).parents('.rexpansive_section');
 			var sectionID = $rexpansiveSection.attr("data-rexlive-section-id");
+			var $gridElement = $rexpansiveSection.find(".grid-stack-row");
 			$('#backresponsive-set-save').attr('data-section_id', sectionID);
 			$('#backresponsive-set-reset').attr('data-section_id', sectionID);
 
@@ -482,12 +482,25 @@
 			var $section = $(e.target).parents(".rexpansive_section");
 			var s_id = $section.attr('data-rexlive-section-id');
 
+			var activeLayout = $gridElement.attr("data-layout");
+			var fullHeight = $gridElement.attr("data-full-height");
+			var section_width = $gridElement.parent().css("max-width");
+			var dimension = section_width === "100%" || section_width == "none" ? "full" : "boxed";
+
 			var data = {
 				eventName: "rexlive:openSectionModal",
+				section_options_active: {
+					activeLayout: activeLayout,
+
+					section_width: section_width,
+					dimension: dimension,
+
+					fullHeight: fullHeight
+				}
 			};
 
-			Rexbuilder_Util_Editor.sectionAddingElementRexID = s_id;
-			Rexbuilder_Util_Editor.sectionAddingElementObj = $section;
+			Rexbuilder_Util_Editor.sectionChangingOptionsRexID = s_id;
+			Rexbuilder_Util_Editor.sectionChangingOptionsObj = $section;
 
 			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 		});
@@ -524,7 +537,7 @@
 
 		$(document).on("click", ".add-new-block-slider", function (e) {
 			e.preventDefault();
-			console.log("add sliderds"); 
+			console.log("add sliderds");
 			var $section = $(e.target).parents(".rexpansive_section");
 			var s_id = $section.attr('data-rexlive-section-id');
 			var data = {
