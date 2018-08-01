@@ -4,6 +4,7 @@ var Rexlive_Modals = (function ($) {
 
     var section_config_modal_properties;
     var insert_new_block_video_properties;
+    var videoMp4SelectedData;
 
     var openSectionModal = function () {
         Rexlive_Modals_Utils.openModal($('#modal-background-responsive-set').parent('.rex-modal-wrap'));
@@ -56,59 +57,143 @@ var Rexlive_Modals = (function ($) {
 
 
     var openVideoModal = function () {
-        Rexlive_Modals_Utils.openModal($('#rex-insert-new-video-block').parent('.rex-modal-wrap'));
+        _clearVideoModal();
+        Rexlive_Modals_Utils.openModal(insert_new_block_video_properties.$self.parent('.rex-modal-wrap'));
     }
 
-    $(document).on('click', "#rex-upload-mp4-video", function () {
-        Rexlive_MediaUploader.openMediaUploaderVideo();
-    });
+    var _closeVideoModal = function () {
+        Rexlive_Modals_Utils.closeModal(insert_new_block_video_properties.$self.parent('.rex-modal-wrap'));
+    }
 
-    $(document).on("click", "#rex-insert-video-block-save", function (e) {
-        var urlYoutube = insert_new_block_video_properties.$linkYoutube.val();
-        var urlVimeo = insert_new_block_video_properties.$linkVimeo.val();
-        var urlMp4 = insert_new_block_video_properties.$linkMp4.val();
-        var idMp4 = parseInt(insert_new_block_video_properties.$linkMp4.attr("data-rex-mp4-id"));
+    var _focusYoutube = function () {
+        insert_new_block_video_properties.$youTubeWrap.addClass("selected");
+        insert_new_block_video_properties.$radioChooseYoutube.attr("checked", true);
+    }
 
-        var audio = false;
+    var _focusVimeo = function () {
+        insert_new_block_video_properties.$vimeoWrap.addClass("selected");
+        insert_new_block_video_properties.$radioChooseVimeo.attr("checked", true);
+    }
+    var _focusMp4 = function () {
+        insert_new_block_video_properties.$mp4Wrap.addClass("selected");
+        insert_new_block_video_properties.$radioChooseMp4.attr("checked", true);
+    }
 
-        var data = {
-            eventName: 'rexlive:insert_video',
-            data_to_send: {
-                urlYoutube: urlYoutube,
-                urlVimeo: urlVimeo,
-                urlMp4: urlMp4,
-                idMp4: idMp4,
-                hasAudio: audio
-            }
-        };
-
-        Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
-
-        Rexlive_Modals_Utils.closeModal($('#rex-insert-new-video-block').parent('.rex-modal-wrap'));
-    });
-
-    $(document).on("click", "#rex-insert-video-block-cancel", function (e) {
-        console.log("closing modal");
-        e.preventDefault();
-        Rexlive_Modals_Utils.closeModal($('#rex-insert-new-video-block').parent('.rex-modal-wrap'));
-    });
-
-    $(document).on("click", ".rex-video-type-select", function (e) {
-        var $target = $(e.target);
-        _removeFocusVideoSelected();
-        if ($target.parents(".youtube-insert-wrap").length != 0) {
-            insert_new_block_video_properties.$youTubeWrap.addClass("selected");
-        } else if ($target.parents(".vimeo-insert-wrap").length != 0) {
-            insert_new_block_video_properties.$vimeoWrap.addClass("selected");
-        } else if ($target.parents(".mp4-insert-wrap").length != 0) {
-            insert_new_block_video_properties.$mp4Wrap.addClass("selected");
-        }
-    });
-
-    var _removeFocusVideoSelected = function () {
+    var _clearFocusVideo = function () {
         insert_new_block_video_properties.$youTubeWrap.removeClass("selected");
         insert_new_block_video_properties.$vimeoWrap.removeClass("selected");
         insert_new_block_video_properties.$mp4Wrap.removeClass("selected");
+        insert_new_block_video_properties.$radioChooseYoutube.attr("checked", false);
+        insert_new_block_video_properties.$radioChooseVimeo.attr("checked", false);
+        insert_new_block_video_properties.$radioChooseMp4.attr("checked", false);
+    }
+
+    var _clearVideoModal = function () {
+        insert_new_block_video_properties.$linkVimeo.val("");
+        insert_new_block_video_properties.$linkYoutube.val("");
+        _clearFocusVideo();
+    }
+
+    var _updateMp4VideoModal = function (videos) {
+        videoMp4SelectedData = videos;
+    }
+
+    var _linkDocumentListenersVideoInsertModal = function () {
+        $(document).on("click", ".input-field", function (e) {
+            e.preventDefault();
+            _clearFocusVideo();
+            var $target = $(e.target);
+            if (!$target.is("div")) {
+                $target = $target.parents(".input-field");
+            }
+            var selectedtype = $target.attr("data-rex-video-type");
+            switch (selectedtype) {
+                case "youtube":
+                    _focusYoutube();
+                    break;
+                case "vimeo":
+                    _focusVimeo();
+                    break;
+                case "mp4":
+                    _focusMp4();
+                    break;
+                default:
+                    break;
+            }
+        });
+
+        $(document).on("click", "#rex-insert-video-block-cancel", function (e) {
+            e.preventDefault();
+            _closeVideoModal();
+        });
+
+        $(document).on("click", ".set-video-audio-btn", function (e) {
+            e.preventDefault();
+            var $target = $(e.target);
+            var $audioBtnWrapper = $target.parents(".set-video-audio-btn");
+            var $checkBox = $audioBtnWrapper.find(".video-audio-checkbox");
+            var check = $checkBox.attr("checked");
+            check = !check;
+            $checkBox.attr("checked", check);
+        });
+
+        $(document).on("click", ".rex-video-type-select", function (e) {
+            e.preventDefault();
+            _clearFocusVideo();
+
+            var $target = $(e.target);
+            if ($target.parents(".youtube-insert-wrap").length != 0) {
+                _focusYoutube();
+            } else if ($target.parents(".vimeo-insert-wrap").length != 0) {
+                _focusVimeo();
+            } else if ($target.parents(".mp4-insert-wrap").length != 0) {
+                _focusMp4();
+            }
+        });
+
+        $(document).on('click', "#rex-upload-mp4-video", function () {
+            Rexlive_MediaUploader.openMediaUploaderVideo();
+        });
+
+        $(document).on("click", "#rex-insert-video-block-save", function (e) {
+            var type;
+            var urlYoutube;
+            var urlVimeo;
+            var videoMp4Data;
+            var audio;
+            var $selected = insert_new_block_video_properties.$self.find(".video-insert-wrap.selected");
+
+            if ($selected.hasClass("youtube-insert-wrap")) {
+                type = "youtube";
+                urlYoutube = insert_new_block_video_properties.$linkYoutube.val();
+                audio = insert_new_block_video_properties.$audioYoutube.attr("checked");
+            } else if ($selected.hasClass("vimeo-insert-wrap")) {
+                type = "vimeo";
+                urlVimeo = insert_new_block_video_properties.$linkVimeo.val();
+                audio = insert_new_block_video_properties.$audioVimeo.attr("checked");
+            } else if ($selected.hasClass("mp4-insert-wrap")) {
+                type = "mp4";
+                videoMp4Data = videoMp4SelectedData;
+                audio = insert_new_block_video_properties.$audioMp4.attr("checked");
+            }
+
+            audio = typeof audio != "undefined" && audio == "checked";
+
+            var data = {
+                eventName: 'rexlive:insert_video',
+                data_to_send: {
+                    urlYoutube: urlYoutube,
+                    urlVimeo: urlVimeo,
+                    videoMp4: videoMp4Data,
+                    hasAudio: audio,
+                    typeVideo: type
+                }
+            };
+
+            Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
+
+            _closeVideoModal();
+        });
     }
 
     var init = function () {
@@ -151,21 +236,26 @@ var Rexlive_Modals = (function ($) {
             $self: $("#rex-insert-new-video-block"),
             $linkYoutube: $("#rex-insert-youtube-url"),
             $linkVimeo: $("#rex-insert-vimeo-url"),
-            $linkMp4: $("#rex-insert-mp4-url"),
             $audioYoutube: $("#rex-new-block-video-youtube-audio"),
             $audioVimeo: $("#rex-new-block-video-vimeo-audio"),
             $audioMp4: $("#rex-new-block-video-mp4-audio"),
+            $radioChooseYoutube: $("#rex-choose-youtube-video"),
+            $radioChooseVimeo: $("#rex-choose-vimeo-video"),
+            $radioChooseMp4: $("#rex-choose-mp4-video"),
             $youTubeWrap: $(".youtube-insert-wrap"),
             $vimeoWrap: $(".vimeo-insert-wrap"),
             $mp4Wrap: $(".mp4-insert-wrap")
         }
 
+        videoMp4SelectedData = null;
+        _linkDocumentListenersVideoInsertModal();
     }
 
     return {
         init: init,
         openSectionModal: openSectionModal,
-        openVideoModal: openVideoModal
+        openVideoModal: openVideoModal,
+        updateMp4VideoModal: _updateMp4VideoModal
     };
 
 })(jQuery);

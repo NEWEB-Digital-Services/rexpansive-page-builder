@@ -77,6 +77,11 @@
 	.set-video-audio-btn {
 		display: none;
 	}
+	
 	.video-insert-wrap.selected .set-video-audio-btn {
 		display: block;
+	}
+
+	.input-field.hide-mp4-link{
+		visibility: hidden;
 	}

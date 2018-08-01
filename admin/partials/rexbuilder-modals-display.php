@@ -1339,12 +1339,12 @@ defined( 'ABSPATH' ) or exit;
                         <span class="rex-ripple"></span>
                     </label>
                 </div>
-                <div class="input-field col">
+                <div class="input-field col" data-rex-video-type="youtube">
                     <input id="rex-insert-youtube-url" class="youtube-url" type="text">
                     <label id="rex-insert-youtube-url-label" for="rex-insert-youtube-url">https://youtu.be/...</label>
                 </div>
                 <div class="set-video-audio-btn col">
-                    <input type="checkbox" id="rex-new-block-video-youtube-audio" name="block-youtube-audio" title="Audio ON/OFF">
+                    <input class="video-audio-checkbox" type="checkbox" id="rex-new-block-video-youtube-audio" name="block-youtube-audio" title="Audio ON/OFF">
                     <label for="rex-new-block-video-youtube-audio" class="tooltipped" data-position="bottom" data-tooltip="Audio ON/OFF">
                         <i class="rex-icon">
                             <span class="rex-icon-audio">L</span><span class="rex-icon-mute">M</span>
@@ -1362,12 +1362,12 @@ defined( 'ABSPATH' ) or exit;
                         <span class="rex-ripple"></span>
                     </label>
                 </div>
-                <div class="input-field col">
+                <div class="input-field col" data-rex-video-type="vimeo">
                     <input id="rex-insert-vimeo-url" class="vimeo-url" type="text">
                     <label id="rex-insert-vimeo-url-label" for="rex-insert-vimeo-url">https://player.vimeo.com/video/...</label>
                 </div>
                 <div class="set-video-audio-btn col">
-                    <input type="checkbox" id="rex-new-block-video-vimeo-audio" name="block-vimeo-audio" title="Audio ON/OFF">
+                    <input class="video-audio-checkbox" type="checkbox" id="rex-new-block-video-vimeo-audio" name="block-vimeo-audio" title="Audio ON/OFF">
                     <label for="rex-new-block-video-vimeo-audio" class="tooltipped" data-position="bottom" data-tooltip="Audio ON/OFF">
                         <i class="rex-icon">
                             <span class="rex-icon-audio">L</span><span class="rex-icon-mute">M</span>
@@ -1385,12 +1385,8 @@ defined( 'ABSPATH' ) or exit;
                         <span class="rex-ripple"></span>
                     </label>
                 </div>
-                <div class="input-field col">
-                    <input id="rex-insert-mp4-url" class="mp4-url" type="text">
-                    <label id="rex-insert-mp4-url-label" for="rex-insert-mp4-url">https://site_name/wp-content/uploads/.../file_name.mp4</label>
-                </div>
                 <div class="set-video-audio-btn col">
-                    <input type="checkbox" id="rex-new-block-video-mp4-audio" name="block-mp4-audio" title="Audio ON/OFF">
+                    <input class="video-audio-checkbox" type="checkbox" id="rex-new-block-video-mp4-audio" name="block-mp4-audio" title="Audio ON/OFF">
                     <label for="rex-new-block-video-mp4-audio" class="tooltipped" data-position="bottom" data-tooltip="Audio ON/OFF">
                         <i class="rex-icon">
                             <span class="rex-icon-audio">L</span><span class="rex-icon-mute">M</span>

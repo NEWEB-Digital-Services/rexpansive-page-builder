@@ -90,50 +90,52 @@ var Rexbuilder_CreateBlocks = (function ($) {
     });
 
     $(document).on("rexlive:insert_video", function (e) {
-        var $section = Rexbuilder_Util_Editor.sectionAddingElementObj,
-            galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
         var data = e.settings.data_to_send;
-        var audio = typeof data.audio == "undefined" ? "" : data.audio;
-        var urlYoutube = typeof data.urlYoutube == "undefined" ? "" : data.urlYoutube;
-        var urlVimeo = typeof data.urlVimeo == "undefined" ? "" : data.urlVimeo;
-        var videoMp4 = typeof data.videoMp4 == "undefined" ? "" : data.videoMp4;
-        if (videoMp4.length == 0) {
-            var $el = _createBlockGrid(galleryInstance, 3, 3);
-            var $itemContent = $el.find(".grid-item-content");
-            var $itemData = $el.children(".rexbuilder-block-data");
-            var videoOptions = {
-                targetData: $itemData,
-                target: $itemContent,
-                idMp4: "",
-                urlMp4: "",
-                urlVimeo: urlVimeo,
-                urlYoutube: urlYoutube,
-                targetType: "block",
-                hasAudio: audio
-            }
-            Rexbuilder_Util.updateVideos(videoOptions);
-            galleryInstance.addScrollbar($el);
-            galleryInstance.addTextEditor($el);
-        } else {
-            for (var i = 0; i < videoMp4.length; i++) {
+        if (!(typeof data.typeVideo == "undefined")) {
+            var $section = Rexbuilder_Util_Editor.sectionAddingElementObj,
+                galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
+            var audio = typeof data.hasAudio == "undefined" ? "" : data.hasAudio;
+            var urlYoutube = typeof data.urlYoutube == "undefined" ? "" : data.urlYoutube;
+            var urlVimeo = typeof data.urlVimeo == "undefined" ? "" : data.urlVimeo;
+            var videoMp4 = typeof data.videoMp4 == "undefined" ? "" : data.videoMp4;
+            if (videoMp4.length == 0) {
                 var $el = _createBlockGrid(galleryInstance, 3, 3);
                 var $itemContent = $el.find(".grid-item-content");
                 var $itemData = $el.children(".rexbuilder-block-data");
-                var videoMp4Url = videoMp4[i].videoUrl;
-                var videoMp4ID = videoMp4[i].videoID;
                 var videoOptions = {
                     targetData: $itemData,
                     target: $itemContent,
-                    idMp4: videoMp4ID,
-                    urlMp4: videoMp4Url,
-                    urlVimeo: "",
-                    urlYoutube: "",
+                    idMp4: "",
+                    urlMp4: "",
+                    urlVimeo: urlVimeo,
+                    urlYoutube: urlYoutube,
                     targetType: "block",
                     hasAudio: audio
                 }
                 Rexbuilder_Util.updateVideos(videoOptions);
                 galleryInstance.addScrollbar($el);
                 galleryInstance.addTextEditor($el);
+            } else {
+                for (var i = 0; i < videoMp4.length; i++) {
+                    var $el = _createBlockGrid(galleryInstance, 3, 3);
+                    var $itemContent = $el.find(".grid-item-content");
+                    var $itemData = $el.children(".rexbuilder-block-data");
+                    var videoMp4Url = videoMp4[i].videoUrl;
+                    var videoMp4ID = videoMp4[i].videoID;
+                    var videoOptions = {
+                        targetData: $itemData,
+                        target: $itemContent,
+                        idMp4: videoMp4ID,
+                        urlMp4: videoMp4Url,
+                        urlVimeo: "",
+                        urlYoutube: "",
+                        targetType: "block",
+                        hasAudio: audio
+                    }
+                    Rexbuilder_Util.updateVideos(videoOptions);
+                    galleryInstance.addScrollbar($el);
+                    galleryInstance.addTextEditor($el);
+                }
             }
         }
 
