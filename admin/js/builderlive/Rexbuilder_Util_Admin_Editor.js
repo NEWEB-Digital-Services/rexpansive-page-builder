@@ -174,7 +174,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                 }
 
                 if (event.data.eventName == "rexlive:addNewBlockVideo") {
-                    Rexlive_Modals.openVideoModal();
+                    Insert_Video_Modal.openVideoModal();
                 }
 
                 if (event.data.eventName == "rexlive:addNewSlider") {

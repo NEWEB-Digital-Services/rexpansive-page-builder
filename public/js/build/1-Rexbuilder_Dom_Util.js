@@ -100,21 +100,21 @@ var Rexbuilder_Dom_Util = (function ($) {
     var _updateGridDomProperties = function ($galleryElement, data) {
         console.log("updating _updateGridDomProperties");
         console.log(data);
+
         $galleryElement.attr("data-layout", data.layout);
         $galleryElement.attr("data-full-height", data.fullHeight);
+        $galleryElement.attr("data-separator", data.rowDistances.gutter);
+        $galleryElement.attr("data-row-separator-top", data.rowDistances.top);
+        $galleryElement.attr("data-row-separator-right", data.rowDistances.right);
+        $galleryElement.attr("data-row-separator-bottom", data.rowDistances.bottom);
+        $galleryElement.attr("data-row-separator-left", data.rowDistances.left);
     }
 
-    var _updateSectionMargins = function ($section, marginTop, marginBottom, marginRight, marginLeft) {
-        var newMargins = "";
-        newMargins += $.isEmptyObject(marginTop) ? 0 : marginTop;
-        newMargins += "px ";
-        newMargins += $.isEmptyObject(marginRight) ? 0 : marginRight;
-        newMargins += "px ";
-        newMargins += $.isEmptyObject(marginBottom) ? 0 : marginBottom;
-        newMargins += "px ";
-        newMargins += $.isEmptyObject(marginLeft) ? 0 : marginLeft;
-        newMargins += "px";
-        $section.css("margin", newMargins);
+    var _updateSectionMargins = function ($section, margins) {
+        $section.css("margin-top", margins.top + "px");
+        $section.css("margin-right", margins.right + "px");
+        $section.css("margin-bottom", margins.bottom + "px");
+        $section.css("margin-left", margins.left + "px");
     }
 
     var _updateImageBG = function ($target, idImage, urlImage, w, h, type) {
@@ -411,7 +411,9 @@ var Rexbuilder_Dom_Util = (function ($) {
             Rexbuilder_Util_Editor.undoActive = true;
         }
 
-        var $galleryElement = Rexbuilder_Util.$rexContainer.children('.rexpansive_section[data-rexlive-section-id="' + action.sectionID + '"]').find(".grid-stack-row");
+        var $section = Rexbuilder_Util.$rexContainer.children('.rexpansive_section[data-rexlive-section-id="' + action.sectionID + '"]')
+        var $galleryElement = $section.find(".grid-stack-row");
+
         var galleryData = $galleryElement.data();
         if (galleryData !== undefined) {
             var galleryEditorIstance = $galleryElement.data().plugin_perfectGridGalleryEditor;
@@ -424,8 +426,9 @@ var Rexbuilder_Dom_Util = (function ($) {
                     galleryEditorIstance.batchGridstack();
 
                     _updateBlocksLayout(dataToUse.blocksDisposition);
-                    galleryEditorIstance.updateGridSettingsModalUndoRedo(dataToUse);
+                    _updateSectionMargins($section, dataToUse.marginsSection);
                     _updateGridDomProperties($galleryElement, dataToUse);
+                    galleryEditorIstance.updateGridSettingsModalUndoRedo(dataToUse);
                     galleryEditorIstance.updateGridstackStyles(dataToUse.blocksDisposition.cellHeight);
 
                     galleryEditorIstance.commitGridstack();

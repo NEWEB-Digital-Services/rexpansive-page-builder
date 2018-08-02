@@ -166,7 +166,7 @@ var Rexlive_MediaUploader = (function ($) {
                 videoArray.push(videoObj);
             });
 
-            Rexlive_Modals.updateMp4VideoModal(videoArray);
+            Insert_Video_Modal.updateMp4VideoModal(videoArray);
         });
 
         //reset selection in popup, when open the popup

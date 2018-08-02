@@ -566,6 +566,7 @@ var Rex_Save_Listeners = (function ($) {
                 row_margin_bottom = '',
                 row_margin_right = '',
                 row_margin_left = '',
+                row_active_photoswipe = '',
                 rexlive_section_id = '',
                 collapse_grid = false;
 
@@ -616,21 +617,45 @@ var Rex_Save_Listeners = (function ($) {
             section_width = $gridGallery.parent().css("max-width");
             dimension = section_width === "100%" || section_width == "none" ? "full" : "boxed";
 
-            block_distance = $gridGallery.attr('data-separator') === undefined ? ""
-                : parseInt($gridGallery.attr('data-separator'));
-            row_separator_top = $gridGallery.attr('data-row-separator-top') === undefined ? ""
-                : parseInt($gridGallery.attr('data-row-separator-top'));
-            row_separator_bottom = $gridGallery.attr('data-row-separator-bottom') === undefined ? ""
-                : parseInt($gridGallery.attr('data-row-separator-bottom'));
-            row_separator_right = $gridGallery.attr('data-row-separator-right') === undefined ? ""
-                : parseInt($gridGallery.attr('data-row-separator-right'));
-            row_separator_left = $gridGallery.attr('data-row-separator-left') === undefined ? ""
-                : parseInt($gridGallery.attr('data-row-separator-left'));
+            var grid_gutter = parseInt($gridGallery.attr('data-separator'));
+            var grid_separator_top = parseInt($gridGallery.attr('data-row-separator-top'));
+            var grid_separator_right = parseInt($gridGallery.attr('data-row-separator-right'));
+            var grid_separator_bottom = parseInt($gridGallery.attr('data-row-separator-bottom'));
+            var grid_separator_left = parseInt($gridGallery.attr('data-row-separator-left'));
 
-            row_margin_top = $section.css("margin-top").replace("px", "");
-            row_margin_bottom = $section.css("margin-bottom").replace("px", "");
-            row_margin_right = $section.css("margin-right").replace("px", "");
-            row_margin_left = $section.css("margin-left").replace("px", "");
+            var row_distances = {
+                gutter: isNaN(grid_gutter) ? "" : grid_gutter,
+                top: isNaN(grid_separator_top) ? "" : grid_separator_top,
+                right: isNaN(grid_separator_right) ? "" : grid_separator_right,
+                bottom: isNaN(grid_separator_bottom) ? "" : grid_separator_bottom,
+                left: isNaN(grid_separator_left) ? "" : grid_separator_left,
+            }
+
+            block_distance = row_distances.gutter;
+            row_separator_top = row_distances.top;
+            row_separator_right = row_distances.right;
+            row_separator_bottom = row_distances.bottom;
+            row_separator_left = row_distances.left;
+
+            var section_margin_top = parseInt($section.css("margin-top").split("px")[0]);
+            var section_margin_right = parseInt($section.css("margin-right").split("px")[0]);
+            var section_margin_bottom = parseInt($section.css("margin-bottom").split("px")[0]);
+            var section_margin_left = parseInt($section.css("margin-left").split("px")[0]);
+
+            var rowMargins = {
+                top: isNaN(section_margin_top) ? "" : section_margin_top,
+                right: isNaN(section_margin_right) ? "" : section_margin_right,
+                bottom: isNaN(section_margin_bottom) ? "" : section_margin_bottom,
+                left: isNaN(section_margin_left) ? "" : section_margin_left,
+            }
+
+            row_margin_top = rowMargins.top;
+            row_margin_right = rowMargins.right;
+            row_margin_bottom = rowMargins.bottom;
+            row_margin_left = rowMargins.left;
+
+            row_active_photoswipe = typeof $sectionData.attr('data-row_active_photoswipe') == "undefined" ? "0"
+                : $sectionData.attr('data-row_active_photoswipe');
 
             rexlive_section_id = $section.attr("data-rexlive-section-id");
             collapse_grid = typeof $section.attr("data-rex-collapse-grid") == "undefined" ? false : $section.attr("data-rex-collapse-grid");
@@ -661,9 +686,10 @@ var Rex_Save_Listeners = (function ($) {
                     + '" row_margin_bottom="' + row_margin_bottom
                     + '" row_margin_right="' + row_margin_right
                     + '" row_margin_left="' + row_margin_left
+                    + '" row_active_photoswipe="' + row_active_photoswipe
                     + '" rexlive_section_id="' + rexlive_section_id
                     + '" row_edited_live="true"]';
-
+                    
                 galleryIstance.updateAllElementsProperties();
 
                 var elementsOrdered = galleryIstance.getElementsTopBottom();

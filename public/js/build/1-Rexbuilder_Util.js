@@ -414,7 +414,14 @@ var Rexbuilder_Util = (function ($) {
 
         _updateVideos(videoOptions);
 
-        Rexbuilder_Dom_Util.updateSectionMargins($section, targetProps["row_margin_top"], targetProps["row_margin_bottom"], targetProps["row_margin_right"], targetProps["row_margin_left"]);
+        var margins = {
+            top: isNaN(parseInt(targetProps["row_margin_top"])) ? 0 : parseInt(targetProps["row_margin_top"]),
+            right: isNaN(parseInt(targetProps["row_margin_right"])) ? 0 : parseInt(targetProps["row_margin_right"]),
+            bottom: isNaN(parseInt(targetProps["row_margin_bottom"])) ? 0 : parseInt(targetProps["row_margin_bottom"]),
+            left: isNaN(parseInt(targetProps["row_margin_left"])) ? 0 : parseInt(targetProps["row_margin_left"])
+        }
+        
+        Rexbuilder_Dom_Util.updateSectionMargins($section, margins);
 
         var rowSettings = {
             gutter: targetProps['block_distance'],
@@ -461,7 +468,10 @@ var Rexbuilder_Util = (function ($) {
         tmpl.arg = "image";
         var $gridstackItemContent = $itemContent.parents(".grid-stack-item-content");
         //console.log("checking if is already photoswipe");
+        console.log("have to add photoswipe?");
         if ($itemContent.parents(".pswp-figure").length == 0) {
+            console.log("yes?");
+
             //console.log("not");
             $itemContent.parent().prepend(tmpl("tmpl-photoswipe-block", {
                 link: url,

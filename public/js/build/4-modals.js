@@ -98,12 +98,29 @@
 			var oldDisposition = galleryInstance.createActionDataMoveBlocksGrid();
 			console.log("data received");
 
+			var oldRowDistances = {
+				gutter: parseInt($gallery.attr("data-separator")),
+				top: parseInt($gallery.attr("data-row-separator-top")),
+				bottom: parseInt($gallery.attr("data-row-separator-bottom")),
+				right: parseInt($gallery.attr("data-row-separator-right")),
+				left: parseInt($gallery.attr("data-row-separator-left"))
+			}
+
+			var section_margin_top = parseInt($section.css("margin-top").split("px")[0]);
+			var section_margin_right = parseInt($section.css("margin-right").split("px")[0]);
+			var section_margin_bottom = parseInt($section.css("margin-bottom").split("px")[0]);
+			var section_margin_left = parseInt($section.css("margin-left").split("px")[0]);
+
+			var oldMargins = {
+				top: isNaN(section_margin_top) ? 0 : section_margin_top,
+				right: isNaN(section_margin_right) ? 0 : section_margin_right,
+				bottom: isNaN(section_margin_bottom) ? 0 : section_margin_bottom,
+				left: isNaN(section_margin_left) ? 0 : section_margin_left,
+			}
+
 			var reverseData = {
-				gutter: $gallery.attr("data-separator"),
-				row_separator_top: $gallery.attr("data-row-separator-top"),
-				row_separator_bottom: $gallery.attr("data-row-separator-bottom"),
-				row_separator_right: $gallery.attr("data-row-separator-right"),
-				row_separator_left: $gallery.attr("data-row-separator-left"),
+				marginsSection: oldMargins,
+				rowDistances: oldRowDistances,
 				fullHeight: $gallery.attr("data-full-height"),
 				layout: $gallery.attr("data-layout"),
 				section_width: $gallery.parent().css("max-width"),
@@ -115,20 +132,19 @@
 			setBuilderTimeStamp();
 
 			Rexbuilder_Dom_Util.updateGridDomProperties($gallery, data);
+			Rexbuilder_Dom_Util.updateSectionMargins($section, data.sectionMargins);
 
 			var newDisposition = galleryInstance.updateGridSettingsModalUndoRedo({
 				'layout': data.layout,
 				'fullHeight': data.fullHeight,
-				'section_width': ""+data.sectionWidth.width+data.sectionWidth.type,
+				'section_width': "" + data.sectionWidth.width + data.sectionWidth.type,
+				'rowDistances': data.rowDistances
 			});
 
 			//actionData: STATO DOPO
 			var actionData = {
-				gutter: $gallery.attr("data-separator"),
-				row_separator_top: $gallery.attr("data-row-separator-top"),
-				row_separator_bottom: $gallery.attr("data-row-separator-bottom"),
-				row_separator_right: $gallery.attr("data-row-separator-right"),
-				row_separator_left: $gallery.attr("data-row-separator-left"),
+				marginsSection: data.sectionMargins,
+				rowDistances: data.rowDistances,
 				fullHeight: data.fullHeight,
 				layout: data.layout,
 				section_width: $gallery.parent().css("max-width"),
@@ -142,168 +158,6 @@
 			Rexbuilder_Util_Editor.sectionChangingOptionsRexID = null;
 			Rexbuilder_Util_Editor.sectionChangingOptionsObj = null;
 		});
-
-
-		/*
-		 * var section_id = $(this).attr('data-section_id'), color =
-		 * $('.backresponsive-color-section').spectrum('get'), opacity =
-		 * $('.backresponsive-opacity-section').val(), gutter =
-		 * $('.section-set-block-gutter').val(), custom_classes =
-		 * $('#section-set-custom-class').val(), section_width = '',
-		 * section_is_full_width = ( true ===
-		 * section_config_modal_properties.$section_full.prop('checked') ?
-		 * 'true' : 'false' ), section_is_boxed_width = ( true ===
-		 * section_config_modal_properties.$section_boxed.prop('checked') ?
-		 * 'true' : 'false' ), isFull = ( true ===
-		 * section_config_modal_properties.$is_full.prop('checked') ? 'true' : '' ),
-		 * holdGrid = ( true ===
-		 * section_config_modal_properties.$hold_grid.prop('checked') ? 'true' :
-		 * 'false' ), //has_small_overlay = ( true ===
-		 * section_config_modal_properties.$has_overlay_small.prop('checked') ?
-		 * 'true' : '' ), //has_medium_overlay = ( true ===
-		 * section_config_modal_properties.$has_overlay_medium.prop('checked') ?
-		 * 'true' : '' ), //has_large_overlay = ( true ===
-		 * section_config_modal_properties.$has_overlay_large.prop('checked') ?
-		 * 'true' : '' ), section_custom_name =
-		 * section_config_modal_properties.$section_id.val();
-		 * 
-		 * var layout =
-		 * section_config_modal_properties.$section_layout_type.filter(':checked').val();
-		 * 
-		 * var $row = $('.builder-row[data-count=' + section_id + ']');
-		 * $row.attr( 'data-layout', layout );
-		 * 
-		 * var section_saved_settings = $row.attr( 'data-backresponsive' ),
-		 * section_saved_custom_classes = '';
-		 * 
-		 * if(typeof section_saved_settings != 'undefined' &&
-		 * section_saved_settings !== '') { section_saved_settings =
-		 * JSON.parse(section_saved_settings); section_saved_custom_classes =
-		 * section_saved_settings.custom_classes; }
-		 * 
-		 *  // Handle main builder view checkboxes var section_width_type =
-		 * $row.find('.builder-edit-row-wrap
-		 * input[type="radio"][name^="section-dimension-"]'); var
-		 * section_width_type_full =
-		 * section_width_type.filter('[id^=section-full]'); var
-		 * section_width_type_boxed =
-		 * section_width_type.filter('[id^=section-boxed]');
-		 *  // Setting custom name section $row.attr( 'data-sectionid',
-		 * section_custom_name);
-		 *  // Setting section layout type // switch(layout) { // case
-		 * 'masonry': //This means that the user is changing the section view
-		 * from fixed TO masonry // $row.find('.builder-elements
-		 * li.item:not(.expand)').each(function() { // var $this = $(this); //
-		 * var bg_settings = $this.data('bg_settings'); // if(typeof bg_settings !=
-		 * 'undefined' && '' != bg_settings.bg_img_type && 'full' ==
-		 * bg_settings.bg_img_type ) { // bg_settings.bg_img_type = 'natural'; //
-		 * $this.attr('data-bg_settings', JSON.stringify(bg_settings)); //
-		 * $this.trigger('blockChangeImage'); // } // }); // break; // case
-		 * 'fixed': //This means that the user is changing the section view from
-		 * masonry TO fixed // $row.find('.builder-elements
-		 * li.item:not(.expand)').each(function() { // var $this = $(this); //
-		 * var bg_settings = $this.data('bg_settings'); // if(typeof bg_settings !=
-		 * 'undefined' && '' != bg_settings.bg_img_type && 'natural' ==
-		 * bg_settings.bg_img_type ) { // bg_settings.bg_img_type = 'full'; //
-		 * $this.attr('data-bg_settings', JSON.stringify(bg_settings)); //
-		 * $this.trigger('blockChangeImage'); // } // }); // break; // default: //
-		 * break; // }
-		 *  // Setting section overlay /*var section_has_overlay = false;
-		 * 
-		 * if( 'true' == has_small_overlay ) { custom_classes += '
-		 * active-small-overlay'; section_has_overlay = true; }
-		 * 
-		 * if( 'true' == has_medium_overlay ) { custom_classes += '
-		 * active-medium-overlay'; section_has_overlay = true; }
-		 * 
-		 * if( 'true' == has_large_overlay ) { custom_classes += '
-		 * active-large-overlay'; section_has_overlay = true; }//
-		 *  // Row Margin
-		 *  // if( '-1' !=
-		 * section_config_modal_properties.$row_separator_top.val().search(/\D/g) || '' ==
-		 * section_config_modal_properties.$row_separator_top.val() ) {
-		 * $row.attr( 'data-row-separator-top',
-		 * section_config_modal_properties.$row_separator_top.val() ); // }
-		 *  // if( '-1' !=
-		 * section_config_modal_properties.$row_separator_right.val().search(/\D/g) || '' ==
-		 * section_config_modal_properties.$row_separator_right.val() ) {
-		 * $row.attr( 'data-row-separator-right',
-		 * section_config_modal_properties.$row_separator_right.val() ); // }
-		 *  // if( '-1' !=
-		 * section_config_modal_properties.$row_separator_bottom.val().search(/\D/g) || '' ==
-		 * section_config_modal_properties.$row_separator_bottom.val() ) {
-		 * $row.attr( 'data-row-separator-bottom',
-		 * section_config_modal_properties.$row_separator_bottom.val() ); // }
-		 *  // if( '-1' !=
-		 * section_config_modal_properties.$row_separator_left.val().search(/\D/g) || '' ==
-		 * section_config_modal_properties.$row_separator_left.val() ) {
-		 * $row.attr( 'data-row-separator-left',
-		 * section_config_modal_properties.$row_separator_left.val() ); // }
-		 *  // Section Photoswipe if(
-		 * section_config_modal_properties.section_photoswipe_changed ) { if(
-		 * section_config_modal_properties.$section_active_photoswipe.prop('checked') ) { //
-		 * Here goes auto block-photoswipe logic
-		 * $row.attr('data-section-active-photoswipe', '1');
-		 * set_blocks_on_row_property($row, 'photoswipe', 'true') } else {
-		 * $row.attr('data-section-active-photoswipe', '0');
-		 * set_blocks_on_row_property($row, 'photoswipe', ''); } }
-		 *  // Overlay var overlay_infos =
-		 * section_saved_custom_classes.match(/active-(large|medium|small)-overlay/g);
-		 * if(overlay_infos) { overlay_infos = overlay_infos.join(' '); } else {
-		 * overlay_infos = ''; }
-		 *  // Hold Grid var holded_info = ''; if( 'true' == holdGrid ) {
-		 * holded_info = 'rex-block-grid'; }
-		 *  // Section dimension if( 'true' == section_is_full_width ) {
-		 * section_width_type_full.prop('checked', true);
-		 * section_width_type_boxed.prop('checked', false);
-		 * $row.attr('data-griddimension', 'full'); } else if( 'true' ==
-		 * section_is_boxed_width ) { section_width_type_full.prop('checked',
-		 * false); section_width_type_boxed.prop('checked', true);
-		 * $row.attr('data-griddimension', 'boxed'); }
-		 * 
-		 * section_width =
-		 * section_config_modal_properties.$section_boxed_width.val();
-		 * 
-		 * var width_type = $('.section-width-type:checked').val();
-		 * switch(width_type) { case 'percentage': if('100' == section_width) {
-		 * section_width = ''; } section_width = section_width + '%'; break;
-		 * case 'pixel': section_width = section_width + 'px'; break; default:
-		 * break; }
-		 * 
-		 * var clean_custom_classes = custom_classes.trim() + ' ' +
-		 * overlay_infos.trim() + ' ' + holded_info;
-		 * 
-		 * //console.log(clean_custom_classes);
-		 * 
-		 * var config_settings = { gutter : gutter, isFull : isFull,
-		 * custom_classes : clean_custom_classes.trim(), section_width :
-		 * section_width, };
-		 * 
-		 * $row.attr( 'data-backresponsive', JSON.stringify(config_settings) );
-		 * 
-		 * setBuilderTimeStamp();
-		 * 
-		 * CloseModal(
-		 * $('#modal-background-responsive-set').parent('.rex-modal-wrap') );
-		 * });
-		 */
-		$(document).on(
-			'click',
-			'#section-fixed',
-			function (e) {
-				$('#bg-set-full-section').parent().removeClass(
-					'hide-full-height-option');
-			}
-		);
-
-		$(document).on(
-			'click',
-			'#section-masonry',
-			function (e) {
-				$('#bg-set-full-section').parent().addClass(
-					'hide-full-height-option');
-			}
-		);
 
 		// ----------------------------------
 		/*
@@ -486,16 +340,43 @@
 			var fullHeight = $gridElement.attr("data-full-height");
 			var section_width = $gridElement.parent().css("max-width");
 			var dimension = section_width === "100%" || section_width == "none" ? "full" : "boxed";
+			var paddingsRow = {
+				gutter: parseInt($gridElement.attr("data-separator")),
+				top: parseInt($gridElement.attr("data-row-separator-top")),
+				bottom: parseInt($gridElement.attr("data-row-separator-bottom")),
+				right: parseInt($gridElement.attr("data-row-separator-right")),
+				left: parseInt($gridElement.attr("data-row-separator-left"))
+			}
+
+			var marginsSection = {
+				top: parseInt($rexpansiveSection.css("margin-top").split("px")[0]),
+				right: parseInt($rexpansiveSection.css("margin-right").split("px")[0]),
+				bottom: parseInt($rexpansiveSection.css("margin-bottom").split("px")[0]),
+				left: parseInt($rexpansiveSection.css("margin-left").split("px")[0])
+			}
+
+			var photoswipe = true;
+
+			$gridElement.children(".grid-stack-item:not(.removing_block)").each(function (i, el) {
+				var $elData = $(el).children(".rexbuilder-block-data");
+				if ($elData.attr("data-image_bg_block") != "" && $elData.attr("data-photoswipe").toString() != "true") {
+					photoswipe = false;
+				}
+			});
 
 			var data = {
 				eventName: "rexlive:openSectionModal",
 				section_options_active: {
 					activeLayout: activeLayout,
+					fullHeight: fullHeight,
 
 					section_width: section_width,
 					dimension: dimension,
 
-					fullHeight: fullHeight
+					rowDistances: paddingsRow,
+
+					marginsSection: marginsSection,
+					photoswipe: photoswipe
 				}
 			};
 
