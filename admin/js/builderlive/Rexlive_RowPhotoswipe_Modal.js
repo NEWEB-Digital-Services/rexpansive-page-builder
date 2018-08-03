@@ -17,14 +17,20 @@ var PhotoSwipe_Modal = (function ($) {
         return photoswipe;
     }
 
+    var _linkDocumentListeners = function () {
+        section_photoswipe.$section_active_photoswipe.click(function (e) {
+            Rexlive_Modals.applyPhotoswipeSetting();
+        })
+    }
+
     var _init = function ($container) {
         section_photoswipe = {
-            // Row zoom
             $section_active_photoswipe: $container.find('#section-active-photoswipe')
         }
 
         defaultPhotoswipe = false;
         _resetPhotoswipe();
+        _linkDocumentListeners();
     }
 
     return {

@@ -666,11 +666,26 @@ echo do_shortcode($defaultPage);
                     endif;
                 endforeach;
 
-                var_dump('peter');
-                var_dump($titles);
-
                 if (count($titles) > 0) {
                     include Rexbuilder_Utilities::get_plugin_templates_path('rexbuilder-' . $nav . '-template.php');
+                } else{
+                    if (isset($_GET['editor']) && $_GET['editor'] == "true"){
+                        ?> 
+                        <nav class="vertical-nav nav-editor-mode-enable">
+                            <ul>
+                            </ul>
+                        </nav>
+                        <?php
+                    }
+                }
+            } else {
+                if(isset($_GET['editor']) && $_GET['editor'] == "true"){
+                    ?> 
+                    <nav class="vertical-nav nav-editor-mode-disable">
+                        <ul>
+                        </ul>
+                    </nav>
+                    <?php
                 }
             }
         }

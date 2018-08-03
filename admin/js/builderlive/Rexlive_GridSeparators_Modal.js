@@ -44,6 +44,63 @@ var GridSeparators_Modal = (function ($) {
         return distances;
     }
 
+    var _linkKeyDownListener = function ($target) {
+        $target.keydown(function (e) {
+            var $input = $(e.target);
+            // Allow: backspace, delete, tab, enter and .
+            if ($.inArray(e.keyCode, [46, 8, 9, 13, 110]) !== -1 ||
+                // Allow: Ctrl+A, Command+A
+                (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                // Allow: home, end, left, right, down, up
+                (e.keyCode >= 35 && e.keyCode <= 40)) {
+                // let it happen, don't do anything
+                if (e.keyCode == 38) { // up
+                    e.preventDefault();
+                    $input.val(isNaN(parseInt($input.val())) ? 0 : parseInt($input.val()) + 1);
+                }
+
+                if (e.keyCode == 40) { //down
+                    e.preventDefault();
+                    $input.val(Math.max(isNaN(parseInt($input.val())) ? 0 : parseInt($input.val()) - 1, 0));
+                }
+                return;
+            }
+
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+
+            //escape
+            if (e.keyCode == 27) {
+                $input.blur();
+            }
+        });
+    }
+
+    var _linkKeyUpListener = function ($target) {
+        $target.keyup(function (e) {
+            if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode == 38) || (e.keyCode == 40) || (e.keyCode == 8)) {
+                e.preventDefault();
+                Rexlive_Modals.applySectionLayout();
+            }
+        });
+    }
+
+    var _linkDistancesListeners = function () {
+        _linkKeyDownListener(grid_paddings_modal_properties.$block_gutter);
+        _linkKeyDownListener(grid_paddings_modal_properties.$row_separator_top);
+        _linkKeyDownListener(grid_paddings_modal_properties.$row_separator_right);
+        _linkKeyDownListener(grid_paddings_modal_properties.$row_separator_bottom);
+        _linkKeyDownListener(grid_paddings_modal_properties.$row_separator_left);
+
+        _linkKeyUpListener(grid_paddings_modal_properties.$block_gutter);
+        _linkKeyUpListener(grid_paddings_modal_properties.$row_separator_top);
+        _linkKeyUpListener(grid_paddings_modal_properties.$row_separator_right);
+        _linkKeyUpListener(grid_paddings_modal_properties.$row_separator_bottom);
+        _linkKeyUpListener(grid_paddings_modal_properties.$row_separator_left);
+    }
+
     var _init = function ($container) {
         grid_paddings_modal_properties = {
             // Row separators
@@ -63,6 +120,7 @@ var GridSeparators_Modal = (function ($) {
         }
 
         _resetDistances();
+        _linkDistancesListeners();
     }
 
     return {

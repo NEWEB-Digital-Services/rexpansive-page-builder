@@ -50,12 +50,28 @@ var Rexbuilder_Dom_Util = (function ($) {
     }
 
     var _updateRow = function ($section, $sectionData, $galleryElement, rowSettings) {
+
+        var grid_gutter = parseInt(rowSettings.gutter);
+        var grid_separator_top = parseInt(rowSettings.row_separator_top);
+        var grid_separator_right = parseInt(rowSettings.row_separator_right);
+        var grid_separator_bottom = parseInt(rowSettings.row_separator_bottom);
+        var grid_separator_left = parseInt(rowSettings.row_separator_left);
+
+        var defaultGutter = 20;
+        var row_distances = {
+            gutter: isNaN(grid_gutter) ? defaultGutter : grid_gutter,
+            top: isNaN(grid_separator_top) ? defaultGutter : grid_separator_top,
+            right: isNaN(grid_separator_right) ? defaultGutter : grid_separator_right,
+            bottom: isNaN(grid_separator_bottom) ? defaultGutter : grid_separator_bottom,
+            left: isNaN(grid_separator_left) ? defaultGutter : grid_separator_left,
+        }
+
         var
-            gutter = typeof rowSettings.gutter === "undefined" ? 20 : parseInt(rowSettings.gutter),
-            separatorTop = typeof rowSettings.row_separator_top === "undefined" ? gutter : parseInt(rowSettings.row_separator_top),
-            separatorBottom = typeof rowSettings.row_separator_bottom === "undefined" ? gutter : parseInt(rowSettings.row_separator_bottom),
-            separatorRight = typeof rowSettings.row_separator_right === "undefined" ? gutter : parseInt(rowSettings.row_separator_right),
-            separatorLeft = typeof rowSettings.row_separator_left === "undefined" ? gutter : parseInt(rowSettings.row_separator_left),
+            gutter = row_distances.gutter,
+            separatorTop = row_distances.top,
+            separatorRight = row_distances.right,
+            separatorBottom = row_distances.bottom,
+            separatorLeft = row_distances.left,
             layout = typeof rowSettings.layout === "undefined" ? "fixed" : rowSettings.layout,
             fullHeight = typeof rowSettings.full_height === "undefined" || layout == "masonry" ? false : rowSettings.full_height,
             sectionWidth = typeof rowSettings.section_width === "undefined" ? "100%" : "" + rowSettings.section_width,
@@ -98,8 +114,8 @@ var Rexbuilder_Dom_Util = (function ($) {
     }
 
     var _updateGridDomProperties = function ($galleryElement, data) {
-        console.log("updating _updateGridDomProperties");
-        console.log(data);
+        //console.log("updating _updateGridDomProperties");
+        //console.log(data);
 
         $galleryElement.attr("data-layout", data.layout);
         $galleryElement.attr("data-full-height", data.fullHeight);
@@ -238,7 +254,7 @@ var Rexbuilder_Dom_Util = (function ($) {
             if ($videoWrap.length == 0) {
                 $videoWrap = $target.children(".rex-video-wrap");
             }
-            //console.log($videoWrap);
+            ////console.log($videoWrap);
         } else if (targetType == "block") {
             var $videoWrap = $target.children(".rex-video-wrap");
             var $toggleAudio = $target.children(".rex-video-toggle-audio");
@@ -397,10 +413,33 @@ var Rexbuilder_Dom_Util = (function ($) {
         }
     };
 
+    var _updateSectionName = function ($section, newName) {
+        $section.attr("data-rexlive-section-name", newName);
+        var newSafeName = newName.replace(/ /gm, "");
+        Rex_Navigator.updateNavigatorItem($section, newSafeName, newName);
+    }
+
+    var _enablePhotoswipeAllBlocksSection = function ($section) {
+        var $gallery = $section.find(".grid-stack-row");
+        $gallery.children(".grid-stack-item:not(.removing_block)").each(function(i, el){
+            var $elData = $(el).children(".rexbuilder-block-data");
+            var textWrapLength = Rexbuilder_Util_Editor.getTextWrapLength($(el));
+            if ($elData.attr("data-image_bg_block") != "" && textWrapLength == 0) {
+                $elData.attr("data-photoswipe", true);
+            }
+        });
+    }
+
+    var _updateSectionPhotoswipe = function (elements) {
+        $.each(elements, function (i, elem) {
+            elem.$data.attr("data-photoswipe", elem.photoswipe);
+        });
+    }
+
     var _performAction = function (action, flag) {
 
-        console.log("performing action");
-        console.log(action);
+        //console.log("performing action");
+        //console.log(action);
         var dataToUse;
 
         if (flag) {
@@ -451,7 +490,11 @@ var Rexbuilder_Dom_Util = (function ($) {
             case "updateSlider":
                 _updateSlider(dataToUse);
                 break;
-            case "hideBlock":
+            case "updateSectionName":
+                _updateSectionName($section, dataToUse.sectionName);
+                break;
+            case "updateSectionPhotoswipe":
+                _updateSectionPhotoswipe(dataToUse.elements);
                 break;
             default:
                 break;
@@ -479,6 +522,8 @@ var Rexbuilder_Dom_Util = (function ($) {
         removeMp4Video: _removeMp4Video,
         updateSlider: _updateSlider,
         updateSliderStack: _updateSliderStack,
-        updateGridDomProperties: _updateGridDomProperties
+        updateGridDomProperties: _updateGridDomProperties,
+        updateSectionName: _updateSectionName,
+        enablePhotoswipeAllBlocksSection: _enablePhotoswipeAllBlocksSection
     };
 })(jQuery);

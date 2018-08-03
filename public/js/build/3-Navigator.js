@@ -5,10 +5,30 @@ var Rex_Navigator = (function ($) {
     var $sections;
     var $touch_navigation_links;
 
+    var _updateNavigatorDom = function ($navigatorWrap) {
+        var $sections = Rexbuilder_Util.$rexContainer.children(".rexpansive_section");
+        $sections.each(function (i, sec) {
+            var $section = $(sec);
+            var name = $section.attr("data-rexlive-section-name");
+            if (name != "") {
+                var newSafeName = name.replace(/ /gm, "");
+
+                tmpl.arg = "navigator";
+                var navItem = tmpl("tmpl-navigator-item", {
+                    sectionName: name,
+                    sectionID: newSafeName,
+                    number: i + 1
+                });
+                
+                $navigatorWrap.children("ul").append(navItem);
+            }
+        });
+    }
+
     var updateNavigation = function () {
         $sections.each(function () {
             var $this = $(this);
-            if (typeof $this.attr('id') != 'undefined' && $this.attr('id') != '') {
+            if ($this.attr('id') != '') {
                 var activeSection = $(document).find('.vertical-nav a[href="#' + $this.attr('id') + '"]').data('number') - 1;
                 if (($this.offset().top - Rexbuilder_Util.$window.height() / 2 < Rexbuilder_Util.$window.scrollTop()) && ($this.offset().top + $this.height() - Rexbuilder_Util.$window.height() / 2 > Rexbuilder_Util.$window.scrollTop())) {
                     navigationItems.eq(activeSection).addClass('is-selected');
@@ -31,11 +51,90 @@ var Rex_Navigator = (function ($) {
         $touch_navigation_links = $(document).find('.touch .vertical-nav a');
     }
 
+    var _fixNavigatorItemOrder = function ($section) {
+        if (!($section.attr("id") == undefined || $section.attr("id") == "")) {
+            var id = $section.attr("id");
+            var $navigatorWrap = $(document).find("nav[class*=\"vertical-nav\"]");
+            var $navItem = $navigatorWrap.find('li a[href="#' + id + '"]').parent();
+            var $nextSection = $section;
+            var nextID = "";
+            do {
+                $nextSection = $nextSection.next();
+                nextID = $nextSection.attr("id");
+                if (nextID != "") {
+                    break;
+                }
+            } while ($nextSection.length != 0);
+
+            if (nextID == "" || nextID == undefined) {
+                $navigatorWrap.children("ul").append($navItem[0]);
+            } else {
+                $navItem.insertBefore($navigatorWrap.find('li a[href="#' + nextID + '"]').parent());
+            }
+        }
+    }
+
+    /**
+     * Used to change name, add or remove item from navigator
+     * @param {*} $section section linked
+     * @param {*} name name of the section, if name is "" the item will be removed
+     */
+    var _updateNavigatorItem = function ($section, newSafeName, newName) {
+        var $navigatorWrap = $(document).find("nav[class*=\"vertical-nav\"]");
+        if (newSafeName != "") {
+            if ($section.attr("id") == "") {
+                var totalSectionNumber = Rexbuilder_Util.$rexContainer.children(".rexpansive_section").length;
+                var emptyIDs = Rexbuilder_Util.$rexContainer.children('.rexpansive_section[id=""]').length;
+                var $nextSection = $section;
+                var nextID = "";
+
+                do {
+                    $nextSection = $nextSection.next();
+                    nextID = $nextSection.attr("id");
+                    if (nextID != "") {
+                        break;
+                    }
+                } while ($nextSection.length != 0);
+
+                var n = totalSectionNumber - emptyIDs + 1;
+                tmpl.arg = "navigator";
+
+                var navItem = tmpl("tmpl-navigator-item", {
+                    sectionName: newName,
+                    sectionID: newSafeName,
+                    number: n
+                });
+
+                if (nextID == "" || nextID == undefined) {
+                    $navigatorWrap.children("ul").append(navItem);
+                } else {
+                    $(navItem).insertBefore($navigatorWrap.find('li a[href="#' + nextID + '"]').parent());
+                }
+            } else {
+                var oldName = $section.attr("id");
+                var $item = $navigatorWrap.find('li a[href="#' + oldName + '"]');
+                $item.attr("href", "#" + newSafeName);
+                $item.find(".label").text(newName);
+            }
+            $section.attr("id", newSafeName);
+            $section.attr("href", "#" + newSafeName);
+        } else {
+            if (!($section.attr("id") == "")) {
+                var oldName = $section.attr("id");
+                var $item = $navigatorWrap.find('li a[href="#' + oldName + '"]').parent();
+                $item.remove();
+                $section.attr("id", "");
+                $section.attr("href", "");
+            }
+        }
+
+        updateNavigator();
+    };
+
     var updateNavigator = function () {
         updateSections();
         updateNavigationItems();
         updateTouchNavigationLinks();
-
         updateNavigation();
     }
 
@@ -59,6 +158,10 @@ var Rex_Navigator = (function ($) {
     }
 
     var init = function () {
+        var $navigatorWrap = $(document).find("nav[class*=\"vertical-nav\"]");
+        if ($navigatorWrap.length != 0 && $navigatorWrap.hasClass("nav-editor-mode-disable")) {
+            _updateNavigatorDom($navigatorWrap);
+        }
 
         Rexbuilder_Util.$window.on('scroll', function () {
             updateNavigation();
@@ -70,7 +173,9 @@ var Rex_Navigator = (function ($) {
 
     return {
         init: init,
-        updateNavigator: updateNavigator
+        updateNavigator: updateNavigator,
+        updateNavigatorItem: _updateNavigatorItem,
+        fixNavigatorItemOrder: _fixNavigatorItemOrder
     };
 
 })(jQuery);

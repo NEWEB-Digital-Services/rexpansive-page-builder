@@ -81,22 +81,21 @@
 		};
 
 		var setBuilderTimeStamp = function () {
+			/* 
 			var timestamp = new Date();
-			console.log(timestamp);
+			console.log(timestamp); 
+			*/
 		};
 
 		$(document).on("rexlive:set_gallery_layout", function (e) {
 			var data = e.settings.data_to_send;
-			console.log(data);
 
-			var sectionID = Rexbuilder_Util_Editor.sectionChangingOptionsRexID;
 			var $section = Rexbuilder_Util_Editor.sectionChangingOptionsObj;
 			var $gallery = $section.find(".grid-stack-row");
 			var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
 
 			//reverseData: STATO PRIMA
 			var oldDisposition = galleryInstance.createActionDataMoveBlocksGrid();
-			console.log("data received");
 
 			var oldRowDistances = {
 				gutter: parseInt($gallery.attr("data-separator")),
@@ -154,9 +153,65 @@
 			}
 
 			Rexbuilder_Util_Editor.pushAction($section, "updateSection", actionData, reverseData);
+		});
 
-			Rexbuilder_Util_Editor.sectionChangingOptionsRexID = null;
-			Rexbuilder_Util_Editor.sectionChangingOptionsObj = null;
+		$(document).on("rexlive:set_row_photoswipe", function (e) {
+			var data = e.settings.data_to_send;
+			if (data.photoswipe.toString() == "true") {
+
+				var $section = Rexbuilder_Util_Editor.sectionChangingOptionsObj;
+				var $gallery = $section.find(".grid-stack-row");
+
+				var elementsBefore = Rexbuilder_Util_Editor.getElementsPhotoswipe($gallery);
+				var reverseData = {
+					elements: elementsBefore
+				}
+
+				Rexbuilder_Dom_Util.enablePhotoswipeAllBlocksSection($section);
+
+				//actionData: STATO DOPO
+				var elementsAfter = Rexbuilder_Util_Editor.getElementsPhotoswipe($gallery);
+				var actionData = {
+					elements: elementsAfter
+				}
+				Rexbuilder_Util_Editor.pushAction($section, "updateSectionPhotoswipe", actionData, reverseData);
+			}
+		});
+
+		$(document).on("rexlive:change_section_name", function (e) {
+			var data = e.settings.data_to_send;
+			var $section = Rexbuilder_Util_Editor.sectionChangingOptionsObj;
+			var reverseData = {
+				sectionName: $section.attr("data-rexlive-section-name")
+			}
+
+			Rexbuilder_Dom_Util.updateSectionName($section, data.sectionName);
+
+			var actionData = {
+				sectionName: data.sectionName
+			}
+
+			Rexbuilder_Util_Editor.pushAction($section, "updateSectionName", actionData, reverseData);
+		});
+
+		$(document).on("rexlive:change_section_custom_classes", function (e) {
+			var data = e.settings.data_to_send;
+			console.log(data);
+
+			var $section = Rexbuilder_Util_Editor.sectionChangingOptionsObj;
+
+			var reverseData = {
+				classes: oldClasses
+			}
+
+			Rexbuilder_Dom_Util.updateSectionCustomClasses(data.newClasses);
+
+			//actionData: STATO DOPO
+			var actionData = {
+				classes: data.newClasses
+			}
+
+			//Rexbuilder_Util_Editor.pushAction($section, "updateSectionCustomClasses", actionData, reverseData);
 		});
 
 		// ----------------------------------
@@ -357,12 +412,29 @@
 
 			var photoswipe = true;
 
+			//i blocchi che possono avere photoswipe
+			var imageBloks = [];
+
 			$gridElement.children(".grid-stack-item:not(.removing_block)").each(function (i, el) {
-				var $elData = $(el).children(".rexbuilder-block-data");
-				if ($elData.attr("data-image_bg_block") != "" && $elData.attr("data-photoswipe").toString() != "true") {
-					photoswipe = false;
+				var $el = $(el);
+				var $elData = $el.children(".rexbuilder-block-data");
+				var textWrapLength = Rexbuilder_Util_Editor.getTextWrapLength($el);
+				if ($elData.attr("data-image_bg_block") != "" && $elData.attr("data-image_bg_block") != "" && textWrapLength == 0) {
+					imageBloks.push($elData);
 				}
 			});
+
+			if (imageBloks.length > 0) {
+				for (var i = 0; i < imageBloks.length; i++) {
+					if ((imageBloks[i].attr("data-photoswipe").toString() != "true")) {
+						photoswipe = false;
+					}
+				}
+			} else {
+				photoswipe = false;
+			}
+
+			var nameSection = $section.attr("data-rexlive-section-name");
 
 			var data = {
 				eventName: "rexlive:openSectionModal",
@@ -376,7 +448,9 @@
 					rowDistances: paddingsRow,
 
 					marginsSection: marginsSection,
-					photoswipe: photoswipe
+					photoswipe: photoswipe,
+
+					sectionName: nameSection
 				}
 			};
 
@@ -390,12 +464,12 @@
 		$(document).on("click", ".add-new-block-image", function (e) {
 			e.preventDefault();
 			var $section = $(e.target).parents(".rexpansive_section");
-			var s_id = $section.attr('data-rexlive-section-id');
+			var rex_section_id = $section.attr('data-rexlive-section-id');
 			var data = {
 				eventName: "rexlive:openMediaUploader",
 			};
 
-			Rexbuilder_Util_Editor.sectionAddingElementRexID = s_id;
+			Rexbuilder_Util_Editor.sectionAddingElementRexID = rex_section_id;
 			Rexbuilder_Util_Editor.sectionAddingElementObj = $section;
 
 			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
@@ -405,12 +479,12 @@
 		$(document).on("click", ".add-new-block-video", function (e) {
 			e.preventDefault();
 			var $section = $(e.target).parents(".rexpansive_section");
-			var s_id = $section.attr('data-rexlive-section-id');
+			var rex_section_id = $section.attr('data-rexlive-section-id');
 			var data = {
 				eventName: "rexlive:addNewBlockVideo",
 			};
 
-			Rexbuilder_Util_Editor.sectionAddingElementRexID = s_id;
+			Rexbuilder_Util_Editor.sectionAddingElementRexID = rex_section_id;
 			Rexbuilder_Util_Editor.sectionAddingElementObj = $section;
 
 			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
@@ -420,12 +494,12 @@
 			e.preventDefault();
 			console.log("add sliderds");
 			var $section = $(e.target).parents(".rexpansive_section");
-			var s_id = $section.attr('data-rexlive-section-id');
+			var rex_section_id = $section.attr('data-rexlive-section-id');
 			var data = {
 				eventName: "rexlive:addNewSlider",
 			};
 
-			Rexbuilder_Util_Editor.sectionAddingElementRexID = s_id;
+			Rexbuilder_Util_Editor.sectionAddingElementRexID = rex_section_id;
 			Rexbuilder_Util_Editor.sectionAddingElementObj = $section;
 
 			Rexbuilder_Util_Editor.sendParentIframeMessage(data);

@@ -83,11 +83,11 @@ defined('ABSPATH') or exit;
 
 <script type="text/x-tmpl" id="tmpl-navigator-item">
     <li>
-        <a href="#{%=navigator.title%}" class="vertical-nav-link not-smooth-anchor-scroll" data-number="{%=navigator.number%}">
+        <a href="#{%=navigator.sectionID%}" class="vertical-nav-link not-smooth-anchor-scroll" data-number="{%=navigator.number%}">
             <span class="dot-cont">
                 <span class="dot"></span>
             </span>
-            <p class="label white-black">{%=navigator.title%}</p>
+            <p class="label white-black">{%=navigator.sectionName%}</p>
         </a>
 	</li>
 </script>

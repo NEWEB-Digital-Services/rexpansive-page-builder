@@ -139,6 +139,7 @@ class Rexbuilder_Block
                     $block_link_before .= '</a>';
                     $block_link_before .= '<figcaption class="pswp-item-caption" itemprop="caption description"></figcaption>';
                     $block_link_before .= '</figure>';
+                    $content = strip_tags($content, '<p><h1><h2><h3><h4><h5><h6><strong><i><hr><div><span><pre><b><blockquote><address><cite><code><del><q><small><sub><sup><time><img><canvas><video><ul><ol><li><br>');
                 endif;
                 if ($linkurl != ''):
                     $block_link_pre .= '<a class="element-link hovered" href="' . $linkurl . '" title="' . trim(strip_tags($linkurl)) . '">';

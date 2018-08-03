@@ -439,7 +439,7 @@ var Rexbuilder_Util = (function ($) {
         Rexbuilder_Dom_Util.updateRow($section, $sectionData, $gallery, rowSettings);
 
         $section.css('background-color', targetProps["color_bg_section"]);
-        $section.attr("id", targetProps['section_name']);
+        Rexbuilder_Dom_Util.updateSectionName($section, targetProps['section_name']);
         $section.attr('data-type', targetProps['type']);
     }
 

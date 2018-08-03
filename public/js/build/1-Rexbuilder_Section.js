@@ -41,6 +41,7 @@ var Rexbuilder_Section = (function ($) {
         });
 
         $section.attr("data-rexlive-section-id", Rexbuilder_Util.createSectionID());
+        $section.attr("data-rexlive-section-name", "");
 
         Rexbuilder_Section.linkHoverSection($section);
 
@@ -84,14 +85,6 @@ var Rexbuilder_Section = (function ($) {
                 galleryEditorIstance.collapseElements();
             }
         });
-
-        $(document).on("click", ".set-section-name", function (e) {
-            console.log("adding section name");
-            /* 
-            var newID = Math.floor(Math.random() * 1000000);
-            Rexbuilder_Util_Editor.updateNavigatorItem($section, "");  */
-        });
-
     }
 
     var init = function () {
@@ -99,19 +92,19 @@ var Rexbuilder_Section = (function ($) {
         Rexbuilder_Util.$rexContainer.children(".rexpansive_section").each(function () {
             var $this = $(this);
             Rexbuilder_Section.linkHoverSection($this);
-            if ($.isEmptyObject($this.attr("id"))) {
-                console.log("no id");
+            if (typeof $this.attr("id") == "undefined") {
                 $this.attr("id", "");
-            } else {
-                console.log($this.attr("id"));
-            }
+            };
+            if (typeof $this.attr("data-rexlive-section-name") == "undefined") {
+                $this.attr("data-rexlive-section-name", "");
+            };
         });
 
         //launching sortable
         Rexbuilder_Util.$rexContainer.sortable({
             handle: ".builder-move-row",
             stop: function (event, ui) {
-                Rexbuilder_Util_Editor.fixNavigatorItemOrder($(event.srcElement).parents(".rexpansive_section"));
+                Rex_Navigator.fixNavigatorItemOrder($(event.srcElement).parents(".rexpansive_section"));
             }
         });
 

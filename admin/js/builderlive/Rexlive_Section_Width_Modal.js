@@ -76,7 +76,6 @@ var Section_Width_Modal = (function ($) {
 
     var _linkDocumentListeners = function () {
         $(document).on("click", "#modal-background-responsive-set .boxed-width-type-wrap", function (e) {
-            e.preventDefault();
             var wasFull = sectionWidthProperties.$section_width_type.children(".selected").attr("data-rex-section-width") == "full";
             _clearSectionBoxedWidthType();
             var $sectionBoxedWidthTypeWrap = $(e.target).parents(".boxed-width-type-wrap");
@@ -90,11 +89,10 @@ var Section_Width_Modal = (function ($) {
                 $sectionWidthWrap.find("input").attr("checked", true);
                 sectionWidthProperties.$section_boxed_width.val(defaultSectionWidthData.boxed.sectionWidth);
             }
-
+            Rexlive_Modals.applySectionLayout();
         });
-
+        
         $(document).on("click", "#modal-background-responsive-set .rexlive-section-width", function (e) {
-            e.preventDefault();
             _clearSectionWidth();
             var $sectionWidthTypeWrap = $(e.target).parents(".rexlive-section-width");
             $sectionWidthTypeWrap.addClass("selected");
@@ -109,9 +107,10 @@ var Section_Width_Modal = (function ($) {
             } else {
                 _updateSectionBoxedWidthData(oldSectionWidthData);
             }
+            Rexlive_Modals.applySectionLayout();
         });
     }
-
+    
     var _init = function ($container) {
         sectionWidthProperties = {
             $section_width_type_wrap: $container.find(".rexlive-section-width"),

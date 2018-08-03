@@ -575,8 +575,7 @@ var Rex_Save_Listeners = (function ($) {
             var $sectionData = $section.children('.section-data');
             var galleryIstance = $gridGallery.data().plugin_perfectGridGalleryEditor;
 
-            section_name = $section.attr('id') === undefined ? ""
-                : $section.attr('id');
+            section_name = $section.attr('data-rexlive-section-name');
 
             type = $sectionData.attr('data-type') === undefined ? "perfect-grid"
                 : $sectionData.attr('data-type');

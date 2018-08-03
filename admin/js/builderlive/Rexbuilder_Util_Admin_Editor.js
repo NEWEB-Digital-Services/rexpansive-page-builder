@@ -50,10 +50,10 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
             var btnName = $btn.data("name");
 
             if (activeLayoutPage != btnName) {
-                console.log("different layout selected");
+                //console.log("different layout selected");
                 if (editedLive) {
                     if (confirm("Ehi, guarda che hai modificato qualcosa, vuoi matenere le modifiche?")) {
-                        console.log("salva");
+                        //console.log("salva");
                         var activeLayout = [];
                         activeLayout.push(activeLayoutPage);
                         //activeLayout.push(nameVisualizzato);
@@ -76,12 +76,12 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                         updateData.eventName = "rexlive:saveCustomizations";
                         sendIframeBuilderMessage(updateData);
 
-                        console.log("saved");
+                        //console.log("saved");
                     } else {
-                        console.log("non salvare");
+                        //console.log("non salvare");
                     }
                     editedLive = false;
-                    console.log("saving ended");
+                    //console.log("saving ended");
                 }
 
                 activeLayoutPage = btnName;
@@ -106,7 +106,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         });
 
         $(document).on('click', '.btn-save', function (e) {
-            console.log("saving");
+            //console.log("saving");
             var activeLayout = [];
             var layoutBtn = $responsiveToolbar.find("button[data-name=" + activeLayoutPage + "]");
 
@@ -136,7 +136,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         });
 
         $(document).on('click', '.btn-undo', function (e) {
-            console.log("undo");
+            //console.log("undo");
             var data = {
                 eventName: "rexlive:undo",
             };
@@ -145,7 +145,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         });
 
         $(document).on('click', '.btn-redo', function (e) {
-            console.log("redo");
+            //console.log("redo");
             var data = {
                 eventName: "rexlive:redo",
             };
@@ -157,7 +157,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
         function receiveMessage(event) {
             if (event.data.rexliveEvent) {
-                console.log("rexlive event from iframe client");
+                //console.log("rexlive event from iframe client");
                 if (event.data.eventName == "rexlive:edited") {
                     if (event.data.edited) {
                         editedLive = true;
@@ -190,7 +190,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                 }
 
                 if (event.data.eventName == "rexlive:uploadSliderFromLive") {
-                    console.log(event.data);
+                    //console.log(event.data);
 
                     var dataSlider = event.data.sliderInfo;
 
@@ -211,7 +211,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         };
 
         function updateResponsiveButtonFocus() {
-            console.log("updating layout focus");
+            //console.log("updating layout focus");
             var $oldBtn = $responsiveToolbar.find(".active-layout-btn");
             var $layoutBtn = $responsiveToolbar.find("button[data-name=" + activeLayoutPage + "]");
             if ($oldBtn.length != 0) {
@@ -226,7 +226,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
             rexliveEvent: true
         };
         jQuery.extend(infos, data);
-        console.log("sending message to iframe");
+        //console.log("sending message to iframe");
         frameBuilderWindow.postMessage(infos, '*');
     };
 
@@ -257,7 +257,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                 };
                 layouts.push(layout);
             });
-            console.log(layouts);
+            //console.log(layouts);
 
             var data = {
                 eventName: "",

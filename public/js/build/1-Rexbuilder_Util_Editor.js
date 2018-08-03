@@ -85,7 +85,7 @@ var Rexbuilder_Util_Editor = (function ($) {
                 slide.slide_video_audio = $videoMp4Wrap.children(".rex-video-toggle-audio").length != 0;
                 slide.slide_video_type = "mp4";
             }
-            
+
             if ($videoVimeoWrap.length != 0) {
                 var $iframe = $videoVimeoWrap.find("iframe");
                 slide.slide_video = $iframe.attr("src").split('?')[0];
@@ -151,6 +151,30 @@ var Rexbuilder_Util_Editor = (function ($) {
         textWrapContent = undefined;
         $div = undefined;
         css = undefined;
+    }
+
+    var _getTextWrapLength = function ($elem) {
+        var $textWrap = $elem.find(".text-wrap");
+        var length = 0;
+
+        var textHeight = 0;
+        if ($textWrap.hasClass("medium-editor-element")) {
+            var textCalculate = $textWrap.clone(false);
+            textCalculate.children(".medium-insert-buttons").remove();
+            length = textCalculate.text().trim().length;
+            if (length != 0) {
+                if (($textWrap.hasClass("medium-editor-element") && !$textWrap.hasClass("medium-editor-placeholder")) || ($textWrap.parents(".pswp-item").length != 0)) {
+                    textHeight = $textWrap.innerHeight();
+                }
+            }
+        } else {
+            length = $textWrap.text().trim().length;
+            if (length != 0) {
+                textHeight = $textWrap.innerHeight();
+            }
+        }
+
+        return textHeight == 0 ? 0 : length;
     }
 
     var removeDeletedBlocks = function ($gallery) {
@@ -318,84 +342,6 @@ var Rexbuilder_Util_Editor = (function ($) {
         window.parent.postMessage(infos, '*');
     }
 
-    var fixNavigatorItemOrder = function ($section) {
-        if (!($section.attr("id") == undefined || $section.attr("id") == "")) {
-            var id = $section.attr("id");
-            var $navigatorWrap = $(document).find("nav[class=\"vertical-nav\"");
-            var $navItem = $navigatorWrap.find('li a[href="#' + id + '"]').parent();
-            var $nextSection = $section;
-            var nextID = "";
-            do {
-                $nextSection = $nextSection.next();
-                nextID = $nextSection.attr("id");
-                if (nextID != "") {
-                    break;
-                }
-            } while ($nextSection.length != 0);
-
-            if (nextID == "" || nextID == undefined) {
-                $navigatorWrap.children("ul").append($navItem[0]);
-            } else {
-                $navItem.insertBefore($navigatorWrap.find('li a[href="#' + nextID + '"]').parent());
-            }
-        }
-    }
-
-    /**
-     * Used to change name, add or remove item from navigator
-     * @param {*} $section section linked
-     * @param {*} name name of the section, if name is "" the item will be removed
-     */
-    var updateNavigatorItem = function ($section, name) {
-        var $navigatorWrap = $(document).find("nav[class=\"vertical-nav\"");
-        if (name != "") {
-            if ($section.attr("id") == undefined || $section.attr("id") == "") {
-                var totalSectionNumber = Rexbuilder_Util.$rexContainer.children(".rexpansive_section").length
-                var emptyIDs = Rexbuilder_Util.$rexContainer.children('.rexpansive_section[id=""]').length;
-                var $nextSection = $section;
-                var nextID = "";
-
-                do {
-                    $nextSection = $nextSection.next();
-                    nextID = $nextSection.attr("id");
-                    if (nextID != "") {
-                        break;
-                    }
-                } while ($nextSection.length != 0);
-
-                var n = totalSectionNumber - emptyIDs + 1;
-                tmpl.arg = "navigator";
-
-                var navItem = tmpl("tmpl-navigator-item", {
-                    title: name,
-                    number: n
-                });
-
-                if (nextID == "" || nextID == undefined) {
-                    $navigatorWrap.children("ul").append(navItem);
-                } else {
-                    $(navItem).insertBefore($navigatorWrap.find('li a[href="#' + nextID + '"]').parent());
-                }
-            } else {
-                var oldName = $section.attr("id");
-                var $item = $navigatorWrap.find('li a[href="#' + oldName + '"]');
-                $item.attr("href", "#" + name);
-                $item.find(".label").text(name);
-            }
-            $section.attr("id", name);
-            $section.attr("href", "#" + name);
-        } else {
-            if (!($section.attr("id") == undefined || $section.attr("id") == "")) {
-                var oldName = $section.attr("id");
-                var $item = $navigatorWrap.find('li a[href="#' + oldName + '"]').parent();
-                $item.remove();
-                $section.attr("id", name);
-                $section.attr("href", "#" + name);
-            }
-        }
-
-        Rex_Navigator.updateNavigator();
-    };
 
     /**
      * 
@@ -479,7 +425,7 @@ var Rexbuilder_Util_Editor = (function ($) {
      * @param {*} sliderData Data of the slider
      * @param {*} newSliderFlag true if save as new slider, false otherwise
      */
-    var _saveSliderOnDB = function(sliderData, newSliderFlag, newBlockID){
+    var _saveSliderOnDB = function (sliderData, newSliderFlag, newBlockID) {
         console.log("saving slider on db");
 
         var data = {
@@ -492,6 +438,27 @@ var Rexbuilder_Util_Editor = (function ($) {
         };
 
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+    }
+
+    var _getElementsPhotoswipe = function($gallery){
+        var elementsPhotoswipe = [];
+        $gallery.children(".grid-stack-item:not(.removing_block)").each(function (i, el) {
+            var $el = $(el);
+            var $elData = $el.children(".rexbuilder-block-data");
+            
+            var elPW = {
+                $data: $elData,
+                photoswipe: false
+            }
+
+            if ($elData.attr("data-photoswipe").toString() == "true") {
+                elPW.photoswipe = true;
+            }
+
+            elementsPhotoswipe.push(elPW);
+        });
+
+        return elementsPhotoswipe;
     }
 
     var init = function () {
@@ -561,8 +528,6 @@ var Rexbuilder_Util_Editor = (function ($) {
         startEditingElement: startEditingElement,
         setEndOfContenteditable: setEndOfContenteditable,
         sendParentIframeMessage: sendParentIframeMessage,
-        updateNavigatorItem: updateNavigatorItem,
-        fixNavigatorItemOrder: fixNavigatorItemOrder,
         addCustomClass: _addCustomClass,
         removeCustomClass: _removeCustomClass,
         escapeRegExp: _escapeRegExp,
@@ -570,7 +535,9 @@ var Rexbuilder_Util_Editor = (function ($) {
         getIDs: getIDs,
         getStacks: _getStacks,
         createSliderData: _createSliderData,
-        saveSliderOnDB: _saveSliderOnDB
+        saveSliderOnDB: _saveSliderOnDB,
+        getTextWrapLength: _getTextWrapLength,
+        getElementsPhotoswipe: _getElementsPhotoswipe
     };
 
 })(jQuery);

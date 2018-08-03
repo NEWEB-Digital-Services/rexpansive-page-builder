@@ -39,6 +39,61 @@ var SectionMargins_Modal = (function ($) {
         return margins;
     }
 
+    var _linkKeyDownListener = function ($target) {
+        $target.keydown(function (e) {
+            var $input = $(e.target);
+            // Allow: backspace, delete, tab, enter and .
+            if ($.inArray(e.keyCode, [46, 8, 9, 13, 110]) !== -1 ||
+                // Allow: Ctrl+A, Command+A
+                (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+                // Allow: home, end, left, right, down, up
+                (e.keyCode >= 35 && e.keyCode <= 40)) {
+                // let it happen, don't do anything
+                if (e.keyCode == 38) { // up
+                    e.preventDefault();
+                    $input.val(isNaN(parseInt($input.val())) ? 0 : parseInt($input.val()) + 1);
+                }
+
+                if (e.keyCode == 40) { //down
+                    e.preventDefault();
+                    $input.val(Math.max(isNaN(parseInt($input.val())) ? 0 : parseInt($input.val()) - 1, 0));
+                }
+                return;
+            }
+
+            // Ensure that it is a number and stop the keypress
+            if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
+                e.preventDefault();
+            }
+
+            //escape
+            if (e.keyCode == 27) {
+                $input.blur();
+            }
+        });
+    }
+
+    var _linkKeyUpListener = function ($target) {
+        $target.keyup(function (e) {
+            if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode == 38) || (e.keyCode == 40) || (e.keyCode == 8)) {
+                e.preventDefault();
+                Rexlive_Modals.applySectionLayout();
+            }
+        });
+    }
+
+    var _linkMarginsListeners = function () {
+        _linkKeyDownListener(section_margins_modal_properties.$row_margin_top);
+        _linkKeyDownListener(section_margins_modal_properties.$row_margin_right);
+        _linkKeyDownListener(section_margins_modal_properties.$row_margin_bottom);
+        _linkKeyDownListener(section_margins_modal_properties.$row_margin_left);
+
+        _linkKeyUpListener(section_margins_modal_properties.$row_margin_top);
+        _linkKeyUpListener(section_margins_modal_properties.$row_margin_right);
+        _linkKeyUpListener(section_margins_modal_properties.$row_margin_bottom);
+        _linkKeyUpListener(section_margins_modal_properties.$row_margin_left);
+    }
+
     var _init = function ($container) {
         section_margins_modal_properties = {
             // Row margin
@@ -54,7 +109,9 @@ var SectionMargins_Modal = (function ($) {
             bottom: 0,
             left: 0,
         }
+
         _resetMargins();
+        _linkMarginsListeners();
     }
 
     return {
