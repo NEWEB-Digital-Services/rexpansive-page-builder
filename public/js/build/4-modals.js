@@ -205,12 +205,12 @@
 				classes: oldClasses
 			}
 
-			Rexbuilder_Dom_Util.updateCustomClasses($section, data);
+			Rexbuilder_Dom_Util.updateCustomClasses($section, data.customClasses);
 
 			//actionData: STATO DOPO
 			var actionData = {
 				$target: $section,
-				classes: data
+				classes: data.customClasses
 			}
 
 			//Rexbuilder_Util_Editor.pushAction($section, "updateCustomClasses", actionData, reverseData);
@@ -437,7 +437,7 @@
 			}
 
 			var nameSection = $section.attr("data-rexlive-section-name");
-
+			var customClasses = $section.children(".section-data").attr("data-custom_classes");
 			var data = {
 				eventName: "rexlive:openSectionModal",
 				section_options_active: {
@@ -452,7 +452,8 @@
 					marginsSection: marginsSection,
 					photoswipe: photoswipe,
 
-					sectionName: nameSection
+					sectionName: nameSection,
+					customClasses: customClasses
 				}
 			};
 

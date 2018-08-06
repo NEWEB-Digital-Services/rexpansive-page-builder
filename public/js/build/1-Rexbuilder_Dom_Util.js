@@ -421,7 +421,7 @@ var Rexbuilder_Dom_Util = (function ($) {
 
     var _enablePhotoswipeAllBlocksSection = function ($section) {
         var $gallery = $section.find(".grid-stack-row");
-        $gallery.children(".grid-stack-item:not(.removing_block)").each(function(i, el){
+        $gallery.children(".grid-stack-item:not(.removing_block)").each(function (i, el) {
             var $elData = $(el).children(".rexbuilder-block-data");
             var textWrapLength = Rexbuilder_Util_Editor.getTextWrapLength($(el));
             if ($elData.attr("data-image_bg_block") != "" && textWrapLength == 0) {
@@ -431,9 +431,9 @@ var Rexbuilder_Dom_Util = (function ($) {
     }
 
     var _updateSectionPhotoswipe = function (elements) {
-        $.each(elements, function (i, elem) {
-            elem.$data.attr("data-photoswipe", elem.photoswipe);
-        });
+        for (var i = 0; i < elements.length; i++) {
+            elements[i].$data.attr("data-photoswipe", elements[i].photoswipe);
+        }
     }
 
     /**
@@ -441,11 +441,32 @@ var Rexbuilder_Dom_Util = (function ($) {
      * @param {*} $target target (section or block)
      * @param {*} newClasses array of new classes (strings)
      */
-    var _updateCustomClasses = function($target, newClasses){
-        console.log(newClasses);
+    var _updateCustomClasses = function ($target, newClasses) {
+        var $targetData;
+        var oldClasses;
 
-        //Rexbuilder_Util_Editor.addCustomClass
-        //Rexbuilder_Util_Editor.removeCustomClass
+        if ($target.is("section")) {
+            $targetData = $target.children(".section-data");
+            oldClasses = $targetData.attr("data-custom_classes");
+        } else {
+            $targetData = $target.children(".rexbuilder-block-data");
+            oldClasses = $targetData.attr("data-block_custom_class");
+        }
+
+        oldClasses = oldClasses.trim();
+        var oldClassesList = oldClasses.split(/\s+/);
+
+        //removing oldClasses
+        for (var i = 0; i < oldClassesList.length; i++) {
+            Rexbuilder_Util_Editor.removeCustomClass(oldClassesList[i], $targetData);
+            $target.removeClass(oldClassesList[i]);
+        }
+
+        // adding new Classes
+        for (var i = 0; i < newClasses.length; i++) {
+            Rexbuilder_Util_Editor.addCustomClass(newClasses[i], $targetData);
+            $target.addClass(newClasses[i]);
+        }
     }
 
     var _performAction = function (action, flag) {

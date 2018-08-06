@@ -375,6 +375,7 @@ var Rexbuilder_Util_Editor = (function ($) {
      */
     var _removeCustomClass = function (className, $targetData) {
         if (className != '') {
+
             var classes = "";
             if (!$targetData.parent().is("section")) {
                 classes = $targetData.attr("data-block_custom_class");
@@ -383,7 +384,7 @@ var Rexbuilder_Util_Editor = (function ($) {
             }
 
             className = _escapeRegExp(className);
-            var expression = '(\\s' + className + '\\s|^' + className + '\\s|\\s' + className + '$)';
+            var expression = '(\\s' + className + '\\s|^' + className + '\\s|\\s' + className + '$|^' + className + '$)';
             var reg = new RegExp(expression, "g");
             classes = classes.replace(reg, " ");
             classes = classes.trim();
