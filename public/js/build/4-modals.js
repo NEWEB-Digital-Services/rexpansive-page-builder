@@ -3,82 +3,8 @@
 	'use strict';
 
 	$(function () {
-
-		var $lean_overlay = $('.lean-overlay');
-
 		// Prepare the variables that holds the Frame Uploaders
 		var image_uploader_frame, image_block_edit_frame, navigator_media_frame, video_uploader_frame, video_block_edit_frame, textfill_image_upload_frame;
-		/**
-		 * Open a modal dialog box
-		 * 
-		 * @param {jQuery Object} $target modal to open
-		 * 
-		 * @param {boolean}
-		 *            target_only active only the modal not the overlay
-		 * @param {Array}
-		 *            additional_class Array of additional classes
-		 */
-		var OpenModal = function ($target, target_only, additional_class) {
-			target_only = typeof target_only !== 'undefined' ? target_only
-				: false;
-			additional_class = typeof additional_class !== 'undefined' ? additional_class
-				: [];
-
-			if (!target_only) {
-				$('body').addClass('rex-modal-open');
-				$lean_overlay.show();
-			} else {
-				$target.addClass('rex-in--up');
-			}
-			$target.addClass('rex-in').show();
-
-			if (additional_class.length) {
-				for (var i = 0; i < additional_class.length; i++) {
-					$target.find('.rex-modal').addClass(additional_class[i]);
-				}
-			}
-
-			resetModalDimensions($target.find('.rex-modal'));
-		};
-
-		/**
-		 * Close a modal dialog box
-		 * 
-		 * @param {jQuery Object} $target modal to close
-		 */
-		var CloseModal = function ($target, target_only, additional_class) {
-			target_only = typeof target_only !== 'undefined' ? target_only
-				: false;
-			additional_class = typeof additional_class !== 'undefined' ? additional_class
-				: [];
-
-			if (!target_only && !$target.hasClass('rex-in--up')) {
-				$('body').removeClass('rex-modal-open');
-				$lean_overlay.hide();
-			}
-			$target.removeClass('rex-in').hide();
-			if ($target.hasClass('rex-in--up')) {
-				$target.removeClass('rex-in--up');
-			}
-
-			if (additional_class.length) {
-				for (var i = 0; i < additional_class.length; i++) {
-					$target.find('.rex-modal').removeClass(additional_class[i]);
-				}
-			}
-
-			resetModalDimensions($target.find('.rex-modal'));
-		};
-
-		/**
-		 * reset a modal height to prevent dynamic content bugs
-		 * 
-		 * @param {jQuery Object} $target
-		 */
-		var resetModalDimensions = function ($target) {
-			$target.css('height', 'auto');
-			$target.css('width', 'auto');
-		};
 
 		var setBuilderTimeStamp = function () {
 			/* 
@@ -207,13 +133,30 @@
 
 			Rexbuilder_Dom_Util.updateCustomClasses($section, data.customClasses);
 
-			//actionData: STATO DOPO
 			var actionData = {
 				$target: $section,
 				classes: data.customClasses
 			}
 
-			//Rexbuilder_Util_Editor.pushAction($section, "updateCustomClasses", actionData, reverseData);
+			Rexbuilder_Util_Editor.pushAction($section, "updateCustomClasses", actionData, reverseData);
+		});
+
+		$(document).on("rexlive:SetCustomCSS", function (e) {
+			var data = e.settings.data_to_send;
+
+			var oldCSS = Rexbuilder_Util_Editor.$styleElement.text();
+
+			var reverseData = {
+				css: oldCSS
+			}
+
+			Rexbuilder_Dom_Util.updateCustomCSS(data.customCSS);
+
+			var actionData = {
+				css: data.customCSS
+			}
+
+			Rexbuilder_Util_Editor.pushAction("document", "updateCustomCSS", actionData, reverseData);
 		});
 
 		// ----------------------------------
@@ -309,45 +252,6 @@
 	 * function(event){ //c -> click del mouse console.log("ciao");
 	 * event.preventDefault(); uploadBlockBackground($(this)); });
 	 */
-		/* ------------- CSS page editor --------------- */
-		var ace_css_editor_modal_properties = {
-			$open_button: $('#rex-open-ace-css-editor'),
-			$modal: $('#rex-css-editor'),
-			$modal_wrap: null,
-			$save_button: $('#css-editor-save'),
-			$cancel_button: $('#css-editor-cancel'),
-		};
-
-		ace_css_editor_modal_properties.$modal_wrap = ace_css_editor_modal_properties.$modal.parent('.rex-modal-wrap');
-		var $custom_css_content = $('textarea[id=_rexbuilder_custom_css]');
-		var $styleElement = $("#rexpansive-builder-style-inline-css");
-		var editor = ace.edit('rex-css-ace-editor');
-
-		//var CSSMode = ace.require("ace/mode/css").Mode;
-		//editor.session.setMode(new CSSMode());
-		editor.setTheme("ace/theme/monokai");
-		editor.getSession().setMode("ace/mode/css");
-
-		ace_css_editor_modal_properties.$open_button.on('click', function (e) {
-			e.preventDefault();
-			if ($custom_css_content.text() !== '') {
-				editor.setValue($custom_css_content.text());
-				editor.clearSelection();
-			}
-			OpenModal(ace_css_editor_modal_properties.$modal_wrap);
-		});
-
-		ace_css_editor_modal_properties.$save_button.on('click', function (e) {
-			e.preventDefault();
-			$custom_css_content.text(editor.getValue());
-			$styleElement.text($custom_css_content.text());
-			CloseModal(ace_css_editor_modal_properties.$modal_wrap);
-		});
-
-		ace_css_editor_modal_properties.$cancel_button.on('click', function (e) {
-			e.preventDefault();
-			CloseModal(ace_css_editor_modal_properties.$modal_wrap);
-		});
 
 		// attach a click event (or whatever you want) to some element on your
 		// page
@@ -478,6 +382,18 @@
 			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 		});
 
+		// Launch to the iframe parent the event to open the CSS editor
+		$(document).on("click", "#rex-open-ace-css-editor", function (e) {
+			e.preventDefault();
+			var currentStyle = $("#rexpansive-builder-style-inline-css").text().replace(/^\s+|\s+$/g, '');
+			var data = {
+				eventName: "rexlive:openCssEditor",
+				currentStyle: currentStyle
+			};
+
+			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+		});
+
 		// Launch to the iframe parent the event to open the add video modal
 		$(document).on("click", ".add-new-block-video", function (e) {
 			e.preventDefault();
@@ -495,7 +411,6 @@
 
 		$(document).on("click", ".add-new-block-slider", function (e) {
 			e.preventDefault();
-			console.log("add sliderds");
 			var $section = $(e.target).parents(".rexpansive_section");
 			var rex_section_id = $section.attr('data-rexlive-section-id');
 			var data = {

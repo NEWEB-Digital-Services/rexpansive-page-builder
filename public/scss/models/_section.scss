@@ -4,7 +4,9 @@
 	background-position: center center;
 	background-repeat: no-repeat;
 	position: relative;
-	min-height: 100px;
+	&.empty-section{
+		min-height: 100px;
+	}
 	.full-disposition,
 	.center-disposition {
 		margin: 0 auto;

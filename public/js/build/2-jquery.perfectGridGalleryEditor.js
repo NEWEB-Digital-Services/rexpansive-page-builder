@@ -162,7 +162,13 @@
 
             this.properties.startingLayout = this.settings.galleryLayout;
 
-            if (this.$section.attr("data-rex-collapse-grid") == "true" && !this.$section.hasClass("rex-block-grid")) {
+            var collapseGrid = this.$section.attr("data-rex-collapse-grid");
+
+            if (typeof collapseGrid == "undefined") {
+                if (Rexbuilder_Util.activeLayout == "default" && this._viewport().width < 768) {
+                    this.collapseElements();
+                }
+            } else if ((Rexbuilder_Util.activeLayout == "default" && this._viewport().width < 768 && collapseGrid.toString() == "true") || collapseGrid.toString() == "true") {
                 this.collapseElements();
             }
 
@@ -284,7 +290,7 @@
                 this._createFirstReverseStack();
             }
 
-            if (newSettings.collapse_grid.toString() == "true" && !this.$section.hasClass("rex-block-grid")) {
+            if (newSettings.collapse_grid.toString() == "true") {
                 this.collapseElements();
             } else {
                 this.removeCollapseGrid();
@@ -473,6 +479,7 @@
             this.$element.find('.grid-stack-item').each(function (i, e) {
                 number = i;
             });
+            this.properties.numberBlocksVisibileOnGrid = number + 1;
             this.properties.lastIDBlock = number + 1;
         },
 
@@ -891,11 +898,14 @@
         },
 
         removeBlock: function ($elem) {
+            this.properties.numberBlocksVisibileOnGrid--;
+
             this.properties.gridstackInstance.removeWidget($elem[0], false);
             $elem.addClass("removing_block");
         },
 
         reAddBlock: function ($elem) {
+            this.properties.numberBlocksVisibileOnGrid++;
             var x, y, w, h;
             x = parseInt($elem.attr("data-gs-x"));
             y = parseInt($elem.attr("data-gs-y"));
@@ -922,7 +932,13 @@
             };
 
             this.removeBlock($elem);
+
             this._createFirstReverseStack();
+            if (this.properties.numberBlocksVisibileOnGrid == 0) {
+                $elem.parents(".rexpansive_section").addClass("empty-section");
+            } else {
+                $elem.parents(".rexpansive_section").removeClass("empty-section");
+            }
 
             var actionData = {
                 targetElement: $elem,
@@ -984,6 +1000,8 @@
         // Function that creates a new empty block and returns it. The block is
         // added to gridstack and gallery
         createBlock: function (x, y, w, h) {
+            this.properties.numberBlocksVisibileOnGrid++;
+            this.$section.removeClass("empty-section");
             this.properties.lastIDBlock = this.properties.lastIDBlock + 1;
             var idBlock = this.properties.lastIDBlock;
             var rexIdBlock = Rexbuilder_Util.createBlockID();
@@ -1152,26 +1170,22 @@
 
         // Define usefull private properties
         _defineDynamicPrivateProperties: function () {
-            //            var oldWidth = this.properties.wrapWidth;
+            console.log("dynamivcs");
             var newWidth = this.$element.outerWidth();
-            // //console.log("DEFINE DYNAMIC GRID " + this.properties.sectionNumber);
-            //method with jquery 
-            //this.element.offsetWidth; 
-            //this.$element.outerWidth();
-            if (this.$section.hasClass("rex-block-grid")) {
-                this.properties.oneColumMode = false;
-            } else {
-                this.properties.oneColumMode = true;
-            }
 
-            if (!Rexbuilder_Util.windowIsResizing) {
-                if (this.properties.oneColumMode && this._viewport().width <= 768) {
-                    /* this.properties.oneColumModeActive = true;
-                    this.$element.addClass("grid-stack-one-column-mode"); */
+            var collapseGrid = this.$section.attr("data-rex-collapse-grid");
+            if (typeof collapseGrid == "undefined") {
+                if (Rexbuilder_Util.activeLayout == "default" && this._viewport().width <= 768) {
+                    this.properties.oneColumModeActive = true;
                 } else {
                     this.properties.oneColumModeActive = false;
                 }
+            } else if ((Rexbuilder_Util.activeLayout == "default" && this._viewport().width <= 768 && collapseGrid.toString() == "true") || collapseGrid.toString() == "true") {
+                this.properties.oneColumModeActive = true;
+            } else {
+                this.properties.oneColumModeActive = false;
             }
+
             this.properties.wrapWidth = newWidth;
             this.properties.singleWidth = newWidth * this.settings.gridItemWidth;
 
@@ -2168,10 +2182,10 @@
         _setParentGridPadding: function () {
             var $parent = this.$element.parent();
             //console.log('setting parent padding');
-            if (this._viewport().width >= 768 && !this.properties.setDesktopPadding || (!this.properties.setDesktopPadding && !this.properties.setMobilePadding && this._check_parent_class("rex-block-grid"))) {
+            if (this._viewport().width >= 768 && !this.properties.setDesktopPadding || (!this.properties.setDesktopPadding && !this.properties.setMobilePadding && this.$section.attr("data-rex-collapse-grid") == "true")) {
                 //console.log('setting parent padding');
                 this.properties.setDesktopPadding = true;
-                if (this.$section.hasClass("rex-block-grid")) {
+                if (this.$section.attr("data-rex-collapse-grid") == "true") {
                     this.properties.setMobilePadding = true;
                 } else {
                     this.properties.setMobilePadding = false;
@@ -2207,9 +2221,9 @@
         },
         // setting the blocks and wrap padding
         _setGridPadding: function () {
-            if (this._viewport().width >= 768 && !this.properties.setDesktopPadding || (!this.properties.setDesktopPadding && !this.properties.setMobilePadding && this._check_parent_class("rex-block-grid"))) {
+            if (this._viewport().width >= 768 && !this.properties.setDesktopPadding || (!this.properties.setDesktopPadding && !this.properties.setMobilePadding && this.$section.attr("data-rex-collapse-grid") == "true")) {
                 this.properties.setDesktopPadding = true;
-                if (this._check_parent_class("rex-block-grid")) {
+                if (this.$section.attr("data-rex-collapse-grid") == "true") {
                     this.properties.setMobilePadding = true;
                 } else {
                     this.properties.setMobilePadding = false;
@@ -2261,7 +2275,7 @@
         * this.properties.halfSeparator); } } } else if
         * (this._viewport().width < 768 &&
         * !this.properties.setMobilePadding &&
-        * !this._check_parent_class("rex-block-grid")) {
+        * this.$section.attr("data-rex-collapse-grid") == "true") {
         * this.properties.setMobilePadding = true;
         * this.properties.setDesktopPadding = false;
         * 
@@ -2303,7 +2317,15 @@
                 startH = parseInt($blockData.attr("data-gs_start_h"));
             }
             var newH;
-            var sw = this.properties.singleWidth;
+            var swGrid = this.properties.singleWidth;
+            var sw;
+
+            if (this.properties.oneColumModeActive) {
+                sw = this.$element.outerWidth() * this.settings.gridItemWidth;
+            } else {
+                sw = swGrid;
+            }
+
             var gutter = this.properties.gutter;
             var $textWrap = $elem.find('.text-wrap');
             var $itemContent = $elem.find(".grid-item-content");
@@ -2361,12 +2383,7 @@
             } else {
                 newH = Math.ceil(newH / this.properties.singleHeight);
             }
-            // //console.log(newH);
-            /*             if (this.properties.oldLayout == this.settings.galleryLayout) {
-                            newH = startH;
-                        } */
 
-            //console.log(newH);
             this.updateElementDataHeightProperties($blockData, newH);
 
             var gridstack = this.properties.gridstackInstance;
@@ -2468,6 +2485,7 @@
                 $elem = $(this);
                 h = that.updateElementHeight($elem);
                 $elem.css("height", h + "px")
+                $elem.find(".el-size-viewer").text("12 x " + Math.round(h));
             });
         },
 
@@ -2503,6 +2521,12 @@
                     $elemData = $elem.children(".rexbuilder-block-data");
                     elDim = store.get($elem.attr("data-rexbuilder-block-id"));
                     gallery.updateElementDataHeightProperties($elemData, elDim.properties[3].h);
+                    ;
+                    var scrollbarIstance = $elem.find('.rex-custom-scrollbar').overlayScrollbars();
+                    if (typeof scrollbarIstance != "undefined") {
+                        scrollbarIstance.update();
+                    }
+                    gallery.updateSizeViewerSizes($elem);
                 });
             }
             this.$section.attr("data-rex-collapse-grid", false);

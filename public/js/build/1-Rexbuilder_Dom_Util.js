@@ -50,7 +50,6 @@ var Rexbuilder_Dom_Util = (function ($) {
     }
 
     var _updateRow = function ($section, $sectionData, $galleryElement, rowSettings) {
-
         var grid_gutter = parseInt(rowSettings.gutter);
         var grid_separator_top = parseInt(rowSettings.row_separator_top);
         var grid_separator_right = parseInt(rowSettings.row_separator_right);
@@ -405,11 +404,25 @@ var Rexbuilder_Dom_Util = (function ($) {
         }
     }
 
+    var _collapseGrid = function (gridInstance, collapse) {
+        if (collapse) {
+            gridInstance.collapseElements();
+        } else {
+            gridInstance.removeCollapseGrid();
+        }
+    }
+
     var _updateRemovingBlock = function ($elem, hasToBeRemoved, galleryEditorIstance) {
         if (hasToBeRemoved) {
             galleryEditorIstance.removeBlock($elem);
         } else {
             galleryEditorIstance.reAddBlock($elem);
+        }
+
+        if (galleryEditorIstance.properties.numberBlocksVisibileOnGrid == 0) {
+            $elem.parents(".rexpansive_section").addClass("empty-section");
+        } else {
+            $elem.parents(".rexpansive_section").removeClass("empty-section");
         }
     };
 
@@ -467,6 +480,10 @@ var Rexbuilder_Dom_Util = (function ($) {
             Rexbuilder_Util_Editor.addCustomClass(newClasses[i], $targetData);
             $target.addClass(newClasses[i]);
         }
+    }
+
+    var _updateCustomCSS = function (newCss) {
+        $("#rexpansive-builder-style-inline-css").text(newCss);
     }
 
     var _performAction = function (action, flag) {
@@ -531,6 +548,15 @@ var Rexbuilder_Dom_Util = (function ($) {
             case "updateSectionPhotoswipe":
                 _updateSectionPhotoswipe(dataToUse.elements);
                 break;
+            case "collapseSection":
+                _collapseGrid(dataToUse.gridInstance, dataToUse.collapse);
+                break;
+            case "updateCustomClasses":
+                _updateCustomClasses(dataToUse.$target, dataToUse.classes);
+                break;
+            case "updateCustomCSS":
+                _updateCustomCSS(dataToUse.css);
+                break;
             default:
                 break;
         }
@@ -560,6 +586,8 @@ var Rexbuilder_Dom_Util = (function ($) {
         updateGridDomProperties: _updateGridDomProperties,
         updateSectionName: _updateSectionName,
         enablePhotoswipeAllBlocksSection: _enablePhotoswipeAllBlocksSection,
-        updateCustomClasses: _updateCustomClasses
+        updateCustomClasses: _updateCustomClasses,
+        collapseGrid: _collapseGrid,
+        updateCustomCSS: _updateCustomCSS
     };
 })(jQuery);

@@ -54,7 +54,8 @@ var Rex_Save_Listeners = (function ($) {
             var $layoutsCustomDiv = $layoutData.children(".layouts-customizations");
             var $layoutsAvaiableDiv = $layoutData.children(".available-layouts");
             var customCSS = $("#rexpansive-builder-style-inline-css").text();
-            saveCustomCSS(customCSS);
+            customCSS = customCSS.trim();
+            saveCustomCSS(customCSS);  
 
             var idPost = parseInt($('#id-post').attr('data-post-id'));
 

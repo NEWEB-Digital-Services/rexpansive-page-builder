@@ -286,17 +286,26 @@ var Rexbuilder_Util_Editor = (function ($) {
         });
 
         $(document).on("rexlive:galleryReady", function (e) {
-            console.log("Gallery "+e.galleryID+" ready");
+            console.log("Gallery " + e.galleryID + " ready");
         });
 
         $(document).on("rexlive:updateSlider", function (e) {
             var data = e.settings;
             Rexbuilder_Dom_Util.updateSliderStack(data.data_to_send);
         });
+
     }
 
     var _pushAction = function ($target, actionName, actionData, reverseData) {
-        var ids = getIDs($target);
+        if ($target !== "document") {
+            var ids = getIDs($target);
+        } else {
+            var ids = {
+                sectionID: "",
+                targetID: ""
+            }
+        }
+        
         var action = {
             sectionID: ids.sectionID,
             targetID: ids.targetID,
@@ -402,8 +411,7 @@ var Rexbuilder_Util_Editor = (function ($) {
     }
 
     var _fixCustomStyleElement = function () {
-        var styleElement = $("#rexpansive-builder-style-inline-css");
-        if (styleElement.length == 0) {
+        if (Rexbuilder_Util_Editor.$styleElement.length == 0) {
             var css = '',
                 head = document.head || document.getElementsByTagName('head')[0],
                 style = document.createElement('style');
@@ -440,12 +448,12 @@ var Rexbuilder_Util_Editor = (function ($) {
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     }
 
-    var _getElementsPhotoswipe = function($gallery){
+    var _getElementsPhotoswipe = function ($gallery) {
         var elementsPhotoswipe = [];
         $gallery.children(".grid-stack-item:not(.removing_block)").each(function (i, el) {
             var $el = $(el);
             var $elData = $el.children(".rexbuilder-block-data");
-            
+
             var elPW = {
                 $data: $elData,
                 photoswipe: false
@@ -514,6 +522,7 @@ var Rexbuilder_Util_Editor = (function ($) {
         undoStackArray = [];
         redoStackArray = [];
 
+        this.$styleElement = $("#rexpansive-builder-style-inline-css");
         _fixCustomStyleElement();
     }
 

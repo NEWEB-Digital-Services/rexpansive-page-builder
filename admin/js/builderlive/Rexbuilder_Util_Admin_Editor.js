@@ -190,8 +190,6 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                 }
 
                 if (event.data.eventName == "rexlive:uploadSliderFromLive") {
-                    //console.log(event.data);
-
                     var dataSlider = event.data.sliderInfo;
 
                     var sliderData = dataSlider.slider;
@@ -207,6 +205,9 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
                 }
 
+                if (event.data.eventName == "rexlive:openCssEditor") {
+                    CssEditor_Modal.openModal(event.data.currentStyle);
+                }
             }
         };
 

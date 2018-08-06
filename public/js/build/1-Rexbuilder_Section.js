@@ -75,15 +75,24 @@ var Rexbuilder_Section = (function ($) {
         });
 
         $(document).on("click", ".collapse-grid", function (e) {
-            console.log("collapse");
             var $section = $(e.target).parents(".rexpansive_section");
             var $grid = $section.find(".grid-stack-row");
             var galleryEditorIstance = $grid.data().plugin_perfectGridGalleryEditor;
-            if (galleryEditorIstance.properties.oneColumModeActive) {
-                galleryEditorIstance.removeCollapseGrid();
-            } else {
-                galleryEditorIstance.collapseElements();
+            var isCollapsed = galleryEditorIstance.properties.oneColumModeActive;
+
+            var reverseData = {
+                gridInstance: galleryEditorIstance,
+                collapse: isCollapsed
             }
+            var newCollapse = !isCollapsed;
+
+            Rexbuilder_Dom_Util.collapseGrid(galleryEditorIstance, newCollapse);
+            var actionData = {
+                gridInstance: galleryEditorIstance,
+                collapse: newCollapse
+            }
+
+            Rexbuilder_Util_Editor.pushAction($section, "collapseSection", actionData, reverseData);
         });
     }
 

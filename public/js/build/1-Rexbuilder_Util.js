@@ -134,8 +134,14 @@ var Rexbuilder_Util = (function ($) {
 
     var _edit_dom_layout = function (chosenLayoutName) {
         if (chosenLayoutName == Rexbuilder_Util.activeLayout) {
-            // cos, che cazzo dovrebbe fare?
-            if (chooseLayout == "default" && _viewport().width > 1024) {
+            if (chosenLayoutName == "default") {
+                if (_viewport().width > 767) {
+                    Rexbuilder_Util.removeCollapsedGrids();
+                } else {
+                    if (!Rexbuilder_Util.blockGridUnder768) {
+                        Rexbuilder_Util.collapseAllGrids();
+                    }
+                }
                 return;
             }
         }
@@ -152,6 +158,13 @@ var Rexbuilder_Util = (function ($) {
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 
         if (($resposiveData.children(".layouts-customizations").data("empty-customizations") == "true") || $resposiveData.children(".layouts-customizations").data("empty-customizations")) {
+            if (_viewport().width > 767) {
+                removeCollapsedGrids();
+            } else {
+                if (!Rexbuilder_Util.blockGridUnder768) {
+                    Rexbuilder_Util.collapseAllGrids();
+                }
+            }
             return;
         }
 
@@ -176,7 +189,7 @@ var Rexbuilder_Util = (function ($) {
         var customSections;
         var forceCollapseElementsGrid = false;
         if (i == layoutData.length || chosenLayoutName == "default") {
-            if (_viewport().width < 1025) {
+            if (_viewport().width < 768) {
                 forceCollapseElementsGrid = true;
             }
             customSections = {};
@@ -198,7 +211,7 @@ var Rexbuilder_Util = (function ($) {
         var $itemContent;
         var $itemData;
         var mergedEdits = lodash.merge({}, defaultLayoutSections, customSections);
-        console.log("applying data");
+        console.log("applying data layout ", Rexbuilder_Util.activeLayout);
         console.log(mergedEdits);
 
         Rexbuilder_Util.domUpdaiting = true;
@@ -420,7 +433,7 @@ var Rexbuilder_Util = (function ($) {
             bottom: isNaN(parseInt(targetProps["row_margin_bottom"])) ? 0 : parseInt(targetProps["row_margin_bottom"]),
             left: isNaN(parseInt(targetProps["row_margin_left"])) ? 0 : parseInt(targetProps["row_margin_left"])
         }
-        
+
         Rexbuilder_Dom_Util.updateSectionMargins($section, margins);
 
         var rowSettings = {
@@ -1046,6 +1059,14 @@ var Rexbuilder_Util = (function ($) {
         });
     }
 
+    var collapseAllGrids = function () {
+        Rexbuilder_Util.$rexContainer.children(".rexpansive_section").each(function () {
+            if (Rexbuilder_Util.galleryPluginActive) {
+                _getGalleryInstance($(this)).collapseElements();
+            }
+        });
+    }
+
     var _startVideoPlugin = function ($target) {
         if ($target.hasClass("mp4-player")) {
             ;
@@ -1126,6 +1147,10 @@ var Rexbuilder_Util = (function ($) {
         this.activeLayout = "";
         this.domUpdaiting = false;
 
+        var oldResposiveBlockGrid = this.$rexContainer.children(".rexpansive_section").eq(0).attr("data-rex-collapse-grid");
+
+        this.blockGridUnder768 = typeof oldResposiveBlockGrid != "undefined" ? oldResposiveBlockGrid.toString() == "false" : false;
+
         _updateSectionsID();
 
         var l = chooseLayout();
@@ -1178,6 +1203,7 @@ var Rexbuilder_Util = (function ($) {
         smoothScroll: _smoothScroll,
         getGalleryInstance: _getGalleryInstance,
         removeCollapsedGrids: removeCollapsedGrids,
+        collapseAllGrids: collapseAllGrids,
         updateVideos: _updateVideos,
         stopVideo: _stopVideo,
         playVideoFromBegin: _playVideoFromBegin,

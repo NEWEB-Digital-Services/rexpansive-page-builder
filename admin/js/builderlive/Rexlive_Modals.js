@@ -127,8 +127,11 @@ var Rexlive_Modals = (function ($) {
         SectionName_Modal.init($sectionConfigModal);
         CustomClasses_Modal.init($sectionConfigModal);
 
-        // new blocks
+        // new blocks video
         Insert_Video_Modal.init();
+
+        // custom css
+        CssEditor_Modal.init();
     }
 
     return {

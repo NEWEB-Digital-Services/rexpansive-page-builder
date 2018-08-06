@@ -47,7 +47,7 @@ var Insert_Video_Modal = (function ($) {
         videoMp4SelectedData = videos;
     }
 
-    var _linkDocumentListenersVideoInsertModal = function () {
+    var _linkDocumentListeners = function () {
         $(document).on("click", "#rex-insert-new-video-block .input-field", function (e) {
             e.preventDefault();
             _clearFocusVideo();
@@ -164,7 +164,7 @@ var Insert_Video_Modal = (function ($) {
         }
 
         videoMp4SelectedData = null;
-        _linkDocumentListenersVideoInsertModal();
+        _linkDocumentListeners();
     }
     return {
         init: _init,

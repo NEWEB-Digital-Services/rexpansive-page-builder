@@ -544,9 +544,12 @@ endif;
         //$customizations = get_post_meta($post->ID, '_rex_customization', true);
 
         $layoutsAvaiable = get_post_meta($post->ID, '_rex_responsive_layouts', true);
-
+        
         if ($layoutsAvaiable == null) {
-            $layoutsAvaiable = array(array("default", "", ""));
+            $mobile = array("id" => "mobile", "label" => "Mobile", "min" => "320", "max" => "767", "type" => "standard");
+            $tablet = array("id" => "tablet", "label" => "Tablet", "min" => "768", "max" => "1024", "type" => "standard");
+            $default = array("id" => "default", "label" => "My Desktop", "min" => "1025", "max" => "", "type" => "standard");
+            $layoutsAvaiable = array($mobile, $tablet, $default);
         }
 
         ?>
@@ -580,14 +583,12 @@ if ($editor == "true") {
         <button id="rex-open-ace-css-editor" class="btn-floating tooltipped" data-position="bottom" data-tooltip="<?php _e('CSS Editor', $this->plugin_name);?>">
             <i class="material-icons">&#xE314;</i><span>CSS</span><i class="material-icons">&#xE315;</i>
         </button>
-        <textarea style="display:none;" name="_rexbuilder_custom_css" id="_rexbuilder_custom_css">
-<?php
-$meta = get_post_meta($post->ID, '_rexbuilder_custom_css', true);
+        <textarea style="display:none;" name="_rexbuilder_custom_css" id="_rexbuilder_custom_css"><?php
+        $meta = get_post_meta($post->ID, '_rexbuilder_custom_css', true);
             if ('' !== ($meta)) {
                 echo htmlspecialchars($meta);
             }
-            ?>
-        </textarea>
+            ?></textarea>
             <?php
 }
         ?>
