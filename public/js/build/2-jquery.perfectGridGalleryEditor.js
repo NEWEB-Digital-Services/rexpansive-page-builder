@@ -84,7 +84,8 @@
             updatefullHeigth2Phases: false,
             removingCollapsedElements: false,
             lastIDBlock: 0,
-            updatingGridWidth: false
+            updatingGridWidth: false,
+            blocksVisibileOnGrid: 0
         };
 
         this.$section = this.$element.parents(this._defaults.gridParentWrap);
@@ -106,7 +107,7 @@
 
             this._setGridID();
 
-             //console.log('First Start grid: ' + this.properties.sectionNumber);
+            //console.log('First Start grid: ' + this.properties.sectionNumber);
 
             this._updateBlocksRexID();
 
@@ -172,6 +173,7 @@
         triggerGalleryReady: function () {
             var event = jQuery.Event("rexlive:galleryReady");
             event.gallery = this;
+            event.galleryID = this.properties.sectionNumber;
             $(document).trigger(event)
         },
 

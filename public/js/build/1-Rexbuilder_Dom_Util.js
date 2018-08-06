@@ -436,6 +436,18 @@ var Rexbuilder_Dom_Util = (function ($) {
         });
     }
 
+    /**
+     * 
+     * @param {*} $target target (section or block)
+     * @param {*} newClasses array of new classes (strings)
+     */
+    var _updateCustomClasses = function($target, newClasses){
+        console.log(newClasses);
+
+        //Rexbuilder_Util_Editor.addCustomClass
+        //Rexbuilder_Util_Editor.removeCustomClass
+    }
+
     var _performAction = function (action, flag) {
 
         //console.log("performing action");
@@ -444,9 +456,11 @@ var Rexbuilder_Dom_Util = (function ($) {
 
         if (flag) {
             dataToUse = action.performActionData;
+            Rexbuilder_Util_Editor.undoActive = false;
             Rexbuilder_Util_Editor.redoActive = true;
         } else {
             dataToUse = action.reverseActionData;
+            Rexbuilder_Util_Editor.redoActive = false;
             Rexbuilder_Util_Editor.undoActive = true;
         }
 
@@ -524,6 +538,7 @@ var Rexbuilder_Dom_Util = (function ($) {
         updateSliderStack: _updateSliderStack,
         updateGridDomProperties: _updateGridDomProperties,
         updateSectionName: _updateSectionName,
-        enablePhotoswipeAllBlocksSection: _enablePhotoswipeAllBlocksSection
+        enablePhotoswipeAllBlocksSection: _enablePhotoswipeAllBlocksSection,
+        updateCustomClasses: _updateCustomClasses
     };
 })(jQuery);

@@ -11,12 +11,8 @@ var Rexlive_Modals = (function ($) {
     }
 
     var _closeSectionModal = function () {
-        _resetSectionModalData();
+        _clearSectionModal();
         Rexlive_Modals_Utils.closeModal(section_config_modal_properties.$self.parent('.rex-modal-wrap'));
-    }
-
-    var _resetSectionModalData = function () {
-        Section_Width_Modal.resetOldWidthData();
     }
 
     var _clearSectionModal = function () {
@@ -26,6 +22,7 @@ var Rexlive_Modals = (function ($) {
         SectionMargins_Modal.resetMargins();
         PhotoSwipe_Modal.resetPhotoswipe();
         SectionName_Modal.resetSectionName();
+        CustomClasses_Modal.resetCustomClasses();
     }
 
     var _updateSectionModal = function (data) {
@@ -35,6 +32,7 @@ var Rexlive_Modals = (function ($) {
         SectionMargins_Modal.updateMargins(data.marginsSection);
         PhotoSwipe_Modal.updatePhotoswipe(data.photoswipe);
         SectionName_Modal.updateSectionName(data.sectionName);
+        CustomClasses_Modal.updateCustomClasses(data.customClasses);
     }
 
     var _applySectionLayout = function () {
@@ -82,13 +80,23 @@ var Rexlive_Modals = (function ($) {
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_sectionName);
     }
 
+    var _applyCustomClasses = function () {
+        var newClassesString = CustomClasses_Modal.getData();
+        newClassesString = newClassesString.trim();
+        var classList = newClassesString.split(/\s+/);
+        var data_customClasses = {
+            eventName: "rexlive:apply_section_custom_classes",
+            data_to_send: {
+                customClasses: classList
+            }
+        }
+
+        Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_customClasses);
+    }
+
     var _linkDocumentListenersSectionPropertiesModal = function () {
         section_config_modal_properties.$save_button.click(function (e) {
             e.preventDefault();
-
-            var custom_classes = $('#section-set-custom-class').val();
-            var holdGrid = (true === section_config_modal_properties.$hold_grid.prop('checked') ? 'true' : 'false');
-
             _closeSectionModal();
         });
 
@@ -106,20 +114,20 @@ var Rexlive_Modals = (function ($) {
 
             $save_button: $sectionConfigModal.find('#backresponsive-set-save'),
             $cancel_button: $sectionConfigModal.find('#backresponsive-set-cancel'),
-
-            // HOLD GRID config
-            $hold_grid: $sectionConfigModal.find("#rx-hold-grid"),
         };
 
         _linkDocumentListenersSectionPropertiesModal();
 
+        // section config
         LayoutGrid_Modal.init($sectionConfigModal);
         Section_Width_Modal.init($sectionConfigModal);
         GridSeparators_Modal.init($sectionConfigModal);
         SectionMargins_Modal.init($sectionConfigModal);
         PhotoSwipe_Modal.init($sectionConfigModal);
         SectionName_Modal.init($sectionConfigModal);
+        CustomClasses_Modal.init($sectionConfigModal);
 
+        // new blocks
         Insert_Video_Modal.init();
     }
 
@@ -128,7 +136,8 @@ var Rexlive_Modals = (function ($) {
         openSectionModal: _openSectionModal,
         applySectionName: _applySectionName,
         applyPhotoswipeSetting: _applyPhotoswipeSetting,
-        applySectionLayout: _applySectionLayout
+        applySectionLayout: _applySectionLayout,
+        applyCustomClasses: _applyCustomClasses
     };
 
 })(jQuery);

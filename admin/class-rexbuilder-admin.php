@@ -263,6 +263,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'rexlive-section-margins-modal', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_SectionMargins_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-row-photoswipe-modal', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_RowPhotoswipe_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-section-name-modal', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_SectionName_Modal.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexlive-custom-classes-modal', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_CustomClasses_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-modals', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Modals.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexbuilder-Slider', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_RexSlider.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-util-admin', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Util_Admin_Editor.js', array( 'jquery' ), null, true );

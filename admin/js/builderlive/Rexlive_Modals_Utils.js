@@ -3,6 +3,7 @@ var Rexlive_Modals_Utils = (function ($) {
     'use strict';
 
     var $lean_overlay;
+    var $modals;
 
     /**
      * Open a modal dialog box
@@ -78,12 +79,14 @@ var Rexlive_Modals_Utils = (function ($) {
 
     var init = function () {
         $lean_overlay = $('.lean-overlay');
-
-        $('.rex-modal-draggable').draggable({
-            cancel: "input,textarea,button,select,option,.rex-check-icon, .input-field, .rex-slider__slide-edit, #rex-css-ace-editor, label"
+        $modals = $('.rex-modal-draggable');
+        $modals.each(function (i, modal) {
+            var $modal = $(modal);
+            $modal.draggable({
+                cancel: "input,textarea,button,select,option,.rex-check-icon, .input-field, .rex-slider__slide-edit, #rex-css-ace-editor, label"
+            });
         });
     }
-
     return {
         init: init,
         openModal: _openModal,

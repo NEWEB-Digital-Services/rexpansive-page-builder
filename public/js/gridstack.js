@@ -633,7 +633,6 @@
             oneColumnModeClass: opts.oneColumnModeClass || 'grid-stack-one-column-mode',
             ddPlugin: null
         });
-        console.log(this.opts); 
         if (this.opts.ddPlugin === false) {
             this.opts.ddPlugin = GridStackDragDropPlugin;
         } else if (this.opts.ddPlugin === null) {

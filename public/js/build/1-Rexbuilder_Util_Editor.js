@@ -286,7 +286,7 @@ var Rexbuilder_Util_Editor = (function ($) {
         });
 
         $(document).on("rexlive:galleryReady", function (e) {
-            console.log(e);
+            console.log("Gallery "+e.galleryID+" ready");
         });
 
         $(document).on("rexlive:updateSlider", function (e) {
@@ -341,7 +341,6 @@ var Rexbuilder_Util_Editor = (function ($) {
         jQuery.extend(infos, data);
         window.parent.postMessage(infos, '*');
     }
-
 
     /**
      * 

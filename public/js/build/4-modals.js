@@ -194,24 +194,26 @@
 			Rexbuilder_Util_Editor.pushAction($section, "updateSectionName", actionData, reverseData);
 		});
 
-		$(document).on("rexlive:change_section_custom_classes", function (e) {
+		$(document).on("rexlive:apply_section_custom_classes", function (e) {
 			var data = e.settings.data_to_send;
-			console.log(data);
 
 			var $section = Rexbuilder_Util_Editor.sectionChangingOptionsObj;
+			var oldClasses = $section.children(".section-data").attr("data-custom_classes");
 
 			var reverseData = {
+				$target: $section,
 				classes: oldClasses
 			}
 
-			Rexbuilder_Dom_Util.updateSectionCustomClasses(data.newClasses);
+			Rexbuilder_Dom_Util.updateCustomClasses($section, data);
 
 			//actionData: STATO DOPO
 			var actionData = {
-				classes: data.newClasses
+				$target: $section,
+				classes: data
 			}
 
-			//Rexbuilder_Util_Editor.pushAction($section, "updateSectionCustomClasses", actionData, reverseData);
+			//Rexbuilder_Util_Editor.pushAction($section, "updateCustomClasses", actionData, reverseData);
 		});
 
 		// ----------------------------------
