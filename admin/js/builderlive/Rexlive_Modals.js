@@ -132,6 +132,9 @@ var Rexlive_Modals = (function ($) {
 
         // custom css
         CssEditor_Modal.init();
+
+        //background row
+        //SectionBackground_Modal.init();
     }
 
     return {

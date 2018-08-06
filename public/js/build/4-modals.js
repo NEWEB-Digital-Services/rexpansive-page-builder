@@ -423,6 +423,12 @@
 			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 		});
 
+		$(document).on('click', '.edit-background-section', function (e) {
+			console.log("background section");
+			e.preventDefault();
+			return;
+		});
+
 		$(document).on('click', '.builder-change-background', function (e) {
 			console.log("opzioni blocco");
 			e.preventDefault();
