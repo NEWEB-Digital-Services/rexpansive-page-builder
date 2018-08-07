@@ -190,9 +190,6 @@ class Rexbuilder_Public
 
             wp_enqueue_script('YTPlayer', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/jquery.mb.YTPlayer.min.js', array('jquery'), null, true);
 
-            wp_enqueue_script('ace-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/ace.js', array('jquery'), null, true);
-            wp_enqueue_script('ace-mode-css-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/mode-css.js', array('jquery'), null, true);
-
             wp_enqueue_script('storeVariables', REXPANSIVE_BUILDER_URL . $cartella . 'js/store.legacy.min.js', array('jquery'), null, true);
 
             wp_enqueue_script('1-RexUtil', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Util.js', array('jquery'), null, true);
@@ -211,8 +208,8 @@ class Rexbuilder_Public
             wp_enqueue_script('jquery-ui', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery-ui.min.js', array('jquery'), null, true);
             wp_enqueue_script('touchPunch', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery.ui.touch-punch.js', array('jquery'), null, true);
             wp_enqueue_script('lodash', REXPANSIVE_BUILDER_URL . $cartella . 'js/lodash.js', array('jquery'), null, true);
-            wp_enqueue_script('gridstack', REXPANSIVE_BUILDER_URL . $cartella . 'js/gridstack.js', array('jquery'), null, true);
-            wp_enqueue_script('gridstackUI', REXPANSIVE_BUILDER_URL . $cartella . 'js/gridstack.jQueryUI.js', array('jquery'), null, true);
+            wp_enqueue_script('gridstack', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/gridstack.js', array('jquery'), null, true);
+            wp_enqueue_script('gridstackUI', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/gridstack.jQueryUI.js', array('jquery'), null, true);
             //
             wp_enqueue_script('scrolled', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/4-jquery.rexScrolled.js', array('jquery'), null, true);
             wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/5-jquery.rexIndicator.js', array('jquery'), null, true);

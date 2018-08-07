@@ -10,7 +10,7 @@
  * @subpackage Rexbuilder/admin/partials
  */
 
-defined( 'ABSPATH' ) or exit;
+defined('ABSPATH') or exit;
 ?>
 <div class="rex-modal-wrap rex-fade">
     <div id="rex-css-editor" class="rexbuilder-materialize-wrap rex-modal rex-modal-draggable z-depth-4">
@@ -31,7 +31,7 @@ defined( 'ABSPATH' ) or exit;
 <div class="rex-modal-wrap rex-fade">
     <div id="rex-rxcf-editor" class="rexbuilder-materialize-wrap rex-modal rex-modal-draggable z-depth-4">
         <div class="modal-content">
-            <?php include('rexbuilder-modal-loader.php'); ?>
+            <?php include 'rexbuilder-modal-loader.php';?>
             <div class="rex-modal-content__modal-area">
                 <textarea name="rex-rxcf-editor_input" id="rex-rxcf-editor_input" cols="30" rows="10" style="height:200px"></textarea>
             </div>
@@ -106,17 +106,17 @@ defined( 'ABSPATH' ) or exit;
         <div class="modal-content-wrap">
             <div class="modal-editor-header">
                 <div class="rexeditor-modal__header__buttons-wrap">
-                    <button id="content-position-open-modal" class="btn-floating waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e( 'Text Position', 'rexspansive' ); ?>">
+                    <button id="content-position-open-modal" class="btn-floating waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e('Text Position', 'rexspansive');?>">
                         <i class="material-icons rex-icon">E</i>
                     </button>
-                    <button id="content-padding-open-modal" class="btn-floating waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e( 'Padding', 'rexspansive' ); ?>">
+                    <button id="content-padding-open-modal" class="btn-floating waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e('Padding', 'rexspansive');?>">
                         <i class="material-icons rex-icon">D</i>
                     </button>
                 </div>
             </div>
             <div class="modal-content">
                 <div class="modal-editor-editorarea">
-                <?php wp_editor( '', 'rexbuilder_editor', array( 'textarea_rows' => 20, 'wpautop' => false, 'editor_height' => 250 ) ); ?>
+                <?php wp_editor('', 'rexbuilder_editor', array('textarea_rows' => 20, 'wpautop' => false, 'editor_height' => 250));?>
                 </div>
             </div>
             <div class="rexeditor_bottom rex-modal-footer clearfix">
@@ -143,7 +143,7 @@ defined( 'ABSPATH' ) or exit;
                         </div>
                     </div>
                     <div class="clearfix">
-                        <div class="block-padding-wrap">				
+                        <div class="block-padding-wrap">
                             <input type="text" id="block-padding-left" class="block-padding-values" name="block-padding-left" value="5" />
                             <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Padding Left">a</i>
                         </div>
@@ -154,7 +154,7 @@ defined( 'ABSPATH' ) or exit;
                         </div>
                     </div>
                     <div class="clearfix">
-                        <div class="block-padding-wrap">				
+                        <div class="block-padding-wrap">
                             <input type="text" id="block-padding-bottom" class="block-padding-values" name="block-padding-bottom" value="5" />
                             <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Padding Bottom">b</i>
                         </div>
@@ -339,11 +339,11 @@ defined( 'ABSPATH' ) or exit;
                         <div id="palette-orange" class="bg-palette-selector">
                             <input class="bg-palette-value" type="hidden" value="rgba(255,152,0,1)" />
                             <span class="bg-palette-button"></span>
-                        </div>						
+                        </div>
                         <div id="palette-purple" class="bg-palette-selector">
                             <input class="bg-palette-value" type="hidden" value="rgba(156,39,176,1)" />
                             <span class="bg-palette-button"></span>
-                        </div>						
+                        </div>
                         <div id="palette-transparent" class="bg-palette-selector">
                             <input class="bg-palette-value" type="hidden" value="rgba(255,255,255,0)" />
                             <span class="bg-palette-button">
@@ -351,7 +351,7 @@ defined( 'ABSPATH' ) or exit;
                             </span>
                         </div>
                     </div>
-                </div>				
+                </div>
             </div><!-- /COLOR BACKGROUND -->
 
             <div id="block-set-video-wrap" class="row valign-wrapper">
@@ -389,7 +389,7 @@ defined( 'ABSPATH' ) or exit;
             <div id="block-set-video-wrap-2" class="row valign-wrapper">
                 <div class="col rex-check-icon">
                     <input type="radio" class="rex-block-choose-video with-gap" name="rex-block-choose-video" value="vimeo" id="rex-block-choose-vimeo">
-                    <label for="rex-block-choose-vimeo" data-tooltip="<?php _e( 'Vimeo', 'rexpansive' ); ?>">
+                    <label for="rex-block-choose-vimeo" data-tooltip="<?php _e('Vimeo', 'rexpansive');?>">
                         <i class="material-icons rex-icon">Z</i>
                         <span class="rex-ripple"></span>
                     </label>
@@ -455,7 +455,7 @@ defined( 'ABSPATH' ) or exit;
                         </div>
                     </div>
                     <div class="clearfix">
-                        <div class="block-padding-wrap">				
+                        <div class="block-padding-wrap">
                             <input type="text" id="bm-block-padding-left" class="block-padding-values" name="block-padding-left" value="5" />
                             <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Padding Left">a</i>
                         </div>
@@ -466,7 +466,7 @@ defined( 'ABSPATH' ) or exit;
                         </div>
                     </div>
                     <div class="clearfix">
-                        <div class="block-padding-wrap">				
+                        <div class="block-padding-wrap">
                             <input type="text" id="bm-block-padding-bottom" class="block-padding-values" name="block-padding-bottom" value="5" />
                             <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Padding Bottom">b</i>
                         </div>
@@ -495,21 +495,21 @@ defined( 'ABSPATH' ) or exit;
                 <div class="col">
                     <div id="bg-set-block-overlay" class="col rex-check-icon">
                         <input type="checkbox" id="block-has-overlay-small" class="block-has-overlay" name="block-has-overlay-small" value="small">
-                        <label for="block-has-overlay-small" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Overlay Mobile', 'rexpansive' ); ?>">
+                        <label for="block-has-overlay-small" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Overlay Mobile', 'rexpansive');?>">
                             <i class="rex-icon">r</i>
                             <span class="rex-ripple"></span>
                         </label>
                     </div>
                     <div class="col rex-check-icon">
                         <input type="checkbox" id="block-has-overlay-medium" class="block-has-overlay" name="block-has-overlay-medium" value="medium">
-                        <label for="block-has-overlay-medium" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Overlay Tablet', 'rexpansive' ); ?>">
+                        <label for="block-has-overlay-medium" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Overlay Tablet', 'rexpansive');?>">
                             <i class="rex-icon">y</i>
                             <span class="rex-ripple"></span>
                         </label>
                     </div>
                     <div class="col rex-check-icon">
                         <input type="checkbox" id="block-has-overlay-large" class="block-has-overlay" name="block-has-overlay-large" value="large">
-                        <label for="block-has-overlay-large" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Overlay Desktop', 'rexpansive' ); ?>">
+                        <label for="block-has-overlay-large" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Overlay Desktop', 'rexpansive');?>">
                             <i class="rex-icon">x</i>
                             <span class="rex-ripple"></span>
                         </label>
@@ -542,7 +542,7 @@ defined( 'ABSPATH' ) or exit;
                         <div id="overlay-block-palette-orange" class="bg-palette-selector">
                             <input class="bg-palette-value" type="hidden" value="rgba(255,152,0,0.6)" />
                             <span class="bg-palette-button"></span>
-                        </div>	
+                        </div>
                         <div id="overlay-block-palette-transparent" class="bg-palette-selector">
                             <input class="bg-palette-value" type="hidden" value="rgba(255,255,255,0)" />
                             <span class="bg-palette-button">
@@ -593,14 +593,14 @@ defined( 'ABSPATH' ) or exit;
                     <div class="rex-edit-layout-wrap">
                         <div class="rexlive-layout-type" data-rex-layout="fixed">
                             <input type="radio" id="section-fixed" name="section-layout" class="builder-edit-row-layout with-gap" value="fixed" checked title="Grid Layout" />
-                            <label for="section-fixed"  class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Grid Layout', 'rexspansive' ); ?>">
+                            <label for="section-fixed"  class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Grid Layout', 'rexspansive');?>">
                                 <i class="material-icons">&#xE8F1;</i>
                                 <span class="rex-ripple"></span>
                             </label>
                         </div>
                         <div class="rexlive-layout-type" data-rex-layout="masonry">
                             <input type="radio" id="section-masonry" name="section-layout" class="builder-edit-row-layout with-gap" value="masonry" title="Masonry Layout" />
-                            <label for="section-masonry"  class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Masonry Layout', 'rexspansive' ); ?>">
+                            <label for="section-masonry"  class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Masonry Layout', 'rexspansive');?>">
                                 <i class="material-icons">&#xE871;</i>
                                 <span class="rex-ripple"></span>
                             </label>
@@ -614,14 +614,14 @@ defined( 'ABSPATH' ) or exit;
                 <div class="col row valign-wrapper layout-wrap rex-edit-section-width">
                     <div class="rexlive-section-width" data-rex-section-width="full">
                         <input type="radio" id="section-full-modal" name="section-dimension-modal" class="builder-edit-row-dimension-modal with-gap" value="full" title="Full" />
-                        <label for="section-full-modal" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Full', $this->plugin_name ); ?>">
+                        <label for="section-full-modal" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Full', $this->plugin_name);?>">
                             <i class="material-icons rex-icon">v</i>
                             <span class="rex-ripple"></span>
                         </label>
                     </div>
                     <div class="rexlive-section-width" data-rex-section-width="boxed">
                         <input id="section-boxed-modal" type="radio" name="section-dimension-modal" class="builder-edit-row-dimension-modal with-gap" value="boxed" title="Boxed" />
-                        <label for="section-boxed-modal" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Boxed', $this->plugin_name ); ?>">
+                        <label for="section-boxed-modal" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Boxed', $this->plugin_name);?>">
                             <i class="material-icons rex-icon">t</i>
                             <span class="rex-ripple"></span>
                         </label>
@@ -630,7 +630,7 @@ defined( 'ABSPATH' ) or exit;
 
                 <div class="col row valign-wrapper">
                     <div id="section-set-dimension" class="input-field rex-input-prefixed col">
-                        <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Boxed Width', 'rexpansive' ); ?>">t</i>
+                        <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e('Boxed Width', 'rexpansive');?>">t</i>
                         <input type="text" id="" class="section-set-boxed-width" name="section-set-boxed-width" value="0000" placeholder="" size="23">
                         <span class="rex-material-bar"></span>
                     </div>
@@ -638,14 +638,14 @@ defined( 'ABSPATH' ) or exit;
                         <div class="rex-check-text percentage-width boxed-width-type-wrap" data-rex-section-width-type="%">
                             <input id="block-width-percentage" type="radio" class="section-width-type with-gap" name="section-width-type" value="percentage" checked />
                             <label for="block-width-percentage">
-                                <?php _e( '%', 'rexpansive' ); ?>
+                                <?php _e('%', 'rexpansive');?>
                                 <span class="rex-ripple"></span>
                             </label>
                         </div>
                         <div class="rex-check-text pixel-width boxed-width-type-wrap" data-rex-section-width-type="px">
                             <input id="block-width-pixel" type="radio" class="section-width-type with-gap" name="section-width-type" value="pixel" />
                             <label for="block-width-pixel">
-                                <?php _e( 'PX', 'rexpansive' ); ?>
+                                <?php _e('PX', 'rexpansive');?>
                                 <span class="rex-ripple"></span>
                             </label>
                         </div>
@@ -664,7 +664,7 @@ defined( 'ABSPATH' ) or exit;
                             <span class="block-padding-label">PX</span>
                         </div>
                         <div class="b-row justify-content-space-between">
-                            <div class="block-padding-wrap">				
+                            <div class="block-padding-wrap">
                                 <input type="text" id="row-separator-left" class="block-padding-values" name="row-separator-left" value="" placeholder="" />
                                 <!-- <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Row Margin Left">Q</i> -->
                                 <i class="b-svg-icons tooltipped" data-position="bottom" data-tooltip="Row Margin Left"><svg><use xlink:href="#ico-distance-left"></use></svg></i>
@@ -672,7 +672,7 @@ defined( 'ABSPATH' ) or exit;
                             </div>
                             <div class="block-padding-wrap">
                                 <input type="text" id="" class="section-set-block-gutter block-padding-values" name="section-set-block-gutter" value="" placeholder="" size="15">
-                                <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Block Distance', 'rexpansive' ); ?>">S</i>
+                                <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e('Block Distance', 'rexpansive');?>">S</i>
                                 <span class="block-padding-label">PX</span>
                                 <span class="rex-material-bar"></span>
                             </div>
@@ -683,7 +683,7 @@ defined( 'ABSPATH' ) or exit;
                                 <span class="block-padding-label">PX</span>
                             </div>
                         </div>
-                        <div class="block-padding-wrap">				
+                        <div class="block-padding-wrap">
                             <input type="text" id="row-separator-bottom" class="block-padding-values" name="row-separator-bottom" value="" placeholder="" />
                             <!-- <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Row Margin Bottom">N</i> -->
                             <i class="b-svg-icons tooltipped" data-position="bottom" data-tooltip="Row Margin Bottom"><svg><use xlink:href="#ico-distance-bottom"></use></svg></i>
@@ -699,7 +699,7 @@ defined( 'ABSPATH' ) or exit;
                             <span class="block-padding-label">PX</span>
                         </div>
                         <div class="b-row justify-content-space-between align-items-center" style="padding: 15px 0;">
-                            <div class="block-padding-wrap">				
+                            <div class="block-padding-wrap">
                                 <input type="text" id="row-margin-left" class="block-padding-values" name="row-margin-left" value="" placeholder="0" />
                                 <span class="block-padding-label">PX</span>
                             </div>
@@ -711,13 +711,13 @@ defined( 'ABSPATH' ) or exit;
                                 <span class="block-padding-label">PX</span>
                             </div>
                         </div>
-                        <div class="block-padding-wrap">				
+                        <div class="block-padding-wrap">
                             <input type="text" id="row-margin-bottom" class="block-padding-values" name="row-margin-bottom" value="" placeholder="0" />
                             <span class="block-padding-label">PX</span>
                         </div>
                     </div>
                 </div>
-                
+
             </div><!-- custom classes -->
 
             <div class="b-row align-items-center b--border-bottom">
@@ -725,7 +725,7 @@ defined( 'ABSPATH' ) or exit;
                     <div class="b-row justify-content-center">
                         <div id="bg-set-full-section" class="rex-check-icon col">
                             <input type="checkbox" id="section-is-full" name="section-is-full" value="full-height">
-                            <label for="section-is-full" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Full Height', 'rexpansive' ); ?>">
+                            <label for="section-is-full" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Full Height', 'rexpansive');?>">
                                 <i class="rex-icon">s</i>
                                 <span class="rex-ripple"></span>
                             </label>
@@ -737,8 +737,8 @@ defined( 'ABSPATH' ) or exit;
                 </div>
 
                 <div id="bg-set-photoswipe" class="b-col b--border-right rex-check-icon">
-                    <input type="checkbox" id="section-active-photoswipe" name="section-active-photoswipe" title="<?php _e( 'All Images Zoom', 'rexpansive' ); ?>">
-                    <label for="section-active-photoswipe" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'All Images Zoom', 'rexpansive' ); ?>">
+                    <input type="checkbox" id="section-active-photoswipe" name="section-active-photoswipe" title="<?php _e('All Images Zoom', 'rexpansive');?>">
+                    <label for="section-active-photoswipe" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('All Images Zoom', 'rexpansive');?>">
                         <i class="rex-icon">R</i>
                         <span class="rex-ripple"></span>
                     </label>
@@ -747,7 +747,7 @@ defined( 'ABSPATH' ) or exit;
                 <div id="rx-set-hold-grid" class="b-col">
                     <div id="rx-hold-grid__wrap" class="rex-check-icon col">
                         <input type="checkbox" id="rx-hold-grid" name="rx-hold-grid" value="full-height">
-                        <label for="rx-hold-grid" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Grid On Mobile', 'rexpansive' ); ?>">
+                        <label for="rx-hold-grid" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Grid On Mobile', 'rexpansive');?>">
                             <i class="rex-icon">V</i>
                             <span class="rex-ripple"></span>
                         </label>
@@ -758,15 +758,15 @@ defined( 'ABSPATH' ) or exit;
 
             <div class="row valign-wrapper id-class-row-wrap">
                 <div id="rex-config-id" class="input-field col rex-input-prefixed">
-                    <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Section Name', 'rexpansive' ); ?>">B</i>
+                    <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e('Section Name', 'rexpansive');?>">B</i>
                     <input type="text" id="sectionid-container" name="sectionid-container">
                     <span class="rex-material-bar"></span>
                 </div>
                 <div id="section-set-class-wrap" class="input-field col rex-input-prefixed">
-                    <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Custom Class', 'rexpansive' ); ?>">e</i>
+                    <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e('Custom Class', 'rexpansive');?>">e</i>
                     <input type="text" id="section-set-custom-class" name="section-set-custom-class" value="" size="10">
                     <label for="section-set-custom-class">
-                        <?php _e( 'Classes', 'rexpansive'); ?>
+                        <?php _e('Classes', 'rexpansive');?>
                     </label>
                     <span class="rex-material-bar"></span>
                 </div>
@@ -854,11 +854,11 @@ defined( 'ABSPATH' ) or exit;
                     <div id="palette-orange" class="bg-palette-selector">
                         <input class="bg-palette-value" type="hidden" value="rgba(255,152,0,1)" />
                         <span class="bg-palette-button"></span>
-                    </div>						
+                    </div>
                     <div id="palette-purple" class="bg-palette-selector">
                         <input class="bg-palette-value" type="hidden" value="rgba(156,39,176,1)" />
                         <span class="bg-palette-button"></span>
-                    </div>						
+                    </div>
                     <div id="palette-transparent" class="bg-palette-selector">
                         <input class="bg-palette-value" type="hidden" value="rgba(255,255,255,0)" />
                         <span class="bg-palette-button">
@@ -866,7 +866,7 @@ defined( 'ABSPATH' ) or exit;
                         </span>
                     </div>
                 </div>
-            </div>				
+            </div>
         </div>
 
         <div id="textfill-set-align-wrap" class="row valign-wrapper">
@@ -900,7 +900,7 @@ defined( 'ABSPATH' ) or exit;
                     </div>
                 </div>
                 <div class="clearfix">
-                    <div class="block-padding-wrap">				
+                    <div class="block-padding-wrap">
                         <input type="text" id="textfill-padding-left" class="block-padding-values" name="textfill-padding-left" value="0" />
                         <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Padding Left">a</i>
                     </div>
@@ -911,7 +911,7 @@ defined( 'ABSPATH' ) or exit;
                     </div>
                 </div>
                 <div class="clearfix">
-                    <div class="block-padding-wrap">				
+                    <div class="block-padding-wrap">
                         <input type="text" id="textfill-padding-bottom" class="block-padding-values" name="textfill-padding-bottom" value="0" />
                         <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Padding Bottom">b</i>
                     </div>
@@ -936,7 +936,7 @@ defined( 'ABSPATH' ) or exit;
             </div>
         </div>
     </div>
-        
+
     <div class="rex-modal-footer">
         <button id="textfill-set-cancel" class="waves-effect waves-light btn-flat grey rex-cancel-button">
             <i class="rex-icon">n</i>
@@ -951,7 +951,7 @@ defined( 'ABSPATH' ) or exit;
     <div id="rex-slider-block" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
         <div class="modal-content">
 
-            <?php include('rexbuilder-modal-loader.php'); ?>
+            <?php include 'rexbuilder-modal-loader.php';?>
 
             <div class="rex-slider__slide-list rex-modal-content__modal-area">
                 <div class="col rex-slider__slide rex-modal-content__modal-area__row" data-slider-slide-id="0" data-block_type="slide">
@@ -960,36 +960,36 @@ defined( 'ABSPATH' ) or exit;
                         <button class="rex-slider__slide-index btn-circle btn-small btn-bordered grey-border border-darken-2 waves-effect waves-light white grey-text text-darken-2">1</button>
 
                         <div class="rex-button-with-plus">
-                            <button class="rex-slider__slide-edit rex-slider__slide__image-preview btn-floating waves-effect waves-light tooltipped grey darken-2" value="edit-slide" data-position="bottom" data-tooltip="<?php _e( 'Slide', 'rexpansive-classic' ); ?>">
+                            <button class="rex-slider__slide-edit rex-slider__slide__image-preview btn-floating waves-effect waves-light tooltipped grey darken-2" value="edit-slide" data-position="bottom" data-tooltip="<?php _e('Slide', 'rexpansive-classic');?>">
                                 <i class="material-icons rex-icon">p</i>
                             </button>
-                            <button class="rex-slider__slide-edit rex-plus-button btn-floating light-blue darken-1 tooltipped" value="add-slide" data-position="bottom" data-tooltip="<?php _e( 'Select Image', 'rexpansive-classic' ); ?>">
+                            <button class="rex-slider__slide-edit rex-plus-button btn-floating light-blue darken-1 tooltipped" value="add-slide" data-position="bottom" data-tooltip="<?php _e('Select Image', 'rexpansive-classic');?>">
                                 <i class="material-icons">&#xE145;</i>
                             </button>
                         </div>
 
-                        <button class="rex-slider__slide-edit btn-floating waves-effect waves-light tooltipped grey darken-2" value="text" data-position="bottom" data-tooltip="<?php _e( 'Text', 'rexpansive-classic' ); ?>">
+                        <button class="rex-slider__slide-edit btn-floating waves-effect waves-light tooltipped grey darken-2" value="text" data-position="bottom" data-tooltip="<?php _e('Text', 'rexpansive-classic');?>">
                             <i class="material-icons rex-icon">u</i>
                         </button>
 
-                        <button class="rex-slider__slide-edit btn-floating waves-effect waves-light tooltipped grey darken-2" value="video" data-position="bottom" data-tooltip="<?php _e( 'Video', 'rexpansive-classic' ); ?>">
+                        <button class="rex-slider__slide-edit btn-floating waves-effect waves-light tooltipped grey darken-2" value="video" data-position="bottom" data-tooltip="<?php _e('Video', 'rexpansive-classic');?>">
                             <i class="material-icons">play_arrow</i>
                         </button>
 
-                        <button class="rex-slider__slide-edit btn-floating waves-effect waves-light tooltipped grey darken-2" value="url" data-position="bottom" data-tooltip="<?php _e( 'Link', 'rexpansive-classic' ); ?>">
+                        <button class="rex-slider__slide-edit btn-floating waves-effect waves-light tooltipped grey darken-2" value="url" data-position="bottom" data-tooltip="<?php _e('Link', 'rexpansive-classic');?>">
                             <i class="material-icons rex-icon">l</i>
                         </button>
-                        
+
                         <div>
-                            <button class="rex-slider__slide-edit btn-flat tooltipped" data-position="bottom" value="copy" data-tooltip="<?php _e('Copy slide', 'rexpansive-classic'); ?>">
+                            <button class="rex-slider__slide-edit btn-flat tooltipped" data-position="bottom" value="copy" data-tooltip="<?php _e('Copy slide', 'rexpansive-classic');?>">
                                 <i class="material-icons grey-text text-darken-2">&#xE14D;</i>
                             </button>
 
-                            <div class="rex-slider__slide-edit btn-flat tooltipped" data-position="bottom" value="move" data-tooltip="<?php _e('Move slide', 'rexpansive-classic'); ?>">
+                            <div class="rex-slider__slide-edit btn-flat tooltipped" data-position="bottom" value="move" data-tooltip="<?php _e('Move slide', 'rexpansive-classic');?>">
                                 <i class="material-icons grey-text text-darken-2">&#xE8D5;</i>
                             </div>
 
-                            <button class="rex-slider__slide-edit btn-flat tooltipped" value="delete" data-position="bottom" data-tooltip="<?php _e('Delete slide', 'rexpansive-classic'); ?>">
+                            <button class="rex-slider__slide-edit btn-flat tooltipped" value="delete" data-position="bottom" data-tooltip="<?php _e('Delete slide', 'rexpansive-classic');?>">
                                 <i class="material-icons grey-text text-darken-2">&#xE5CD;</i>
                             </button>
                         </div>
@@ -1011,7 +1011,7 @@ defined( 'ABSPATH' ) or exit;
             </div>
 
             <div class="rex-slider__add-slide__wrap rex-modal-content__modal-area--bordered">
-                <button id="rex-slider__add-new-slide" class="builder-button btn-floating btn light-blue darken-1 waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Add slide', 'rexpansive-classic' ) ?>">
+                <button id="rex-slider__add-new-slide" class="builder-button btn-floating btn light-blue darken-1 waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Add slide', 'rexpansive-classic')?>">
                     <i class="material-icons text-white">&#xE145;</i>
                 </button>
             </div><!-- // .rex-slider__add-slide__wrap -->
@@ -1020,24 +1020,24 @@ defined( 'ABSPATH' ) or exit;
                 <div class="col">
                     <div class="valign-wrapper space-between-wrapper">
                         <div class="rex-check-icon">
-                            <input type="checkbox" id="rex-slider__autostart" name="rex-slider__autostart" title="<?php _e('Autostart','rexpansive-classic'); ?>">
-                            <label for="rex-slider__autostart" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Autostart','rexpansive-classic'); ?>">
+                            <input type="checkbox" id="rex-slider__autostart" name="rex-slider__autostart" title="<?php _e('Autostart', 'rexpansive-classic');?>">
+                            <label for="rex-slider__autostart" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Autostart', 'rexpansive-classic');?>">
                                 <i class="rex-icon">J</i>
                                 <span class="rex-ripple"></span>
                             </label>
                         </div>
-                        
+
                         <div class="rex-check-icon">
-                            <input type="checkbox" id="rex-slider__prev-next" name="rex-slider__prev-next" title="<?php _e('Prev Next','rexpansive-classic'); ?>">
-                            <label for="rex-slider__prev-next" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Prev Next','rexpansive-classic'); ?>">
+                            <input type="checkbox" id="rex-slider__prev-next" name="rex-slider__prev-next" title="<?php _e('Prev Next', 'rexpansive-classic');?>">
+                            <label for="rex-slider__prev-next" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Prev Next', 'rexpansive-classic');?>">
                                 <i class="rex-icon">K</i>
                                 <span class="rex-ripple"></span>
                             </label>
                         </div>
-                        
+
                         <div class="rex-check-icon">
-                            <input type="checkbox" id="rex-slider__dots" name="rex-slider__dots" title="<?php _e('Dots','rexpansive-classic'); ?>">
-                            <label for="rex-slider__dots" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Dots','rexpansive-classic'); ?>">
+                            <input type="checkbox" id="rex-slider__dots" name="rex-slider__dots" title="<?php _e('Dots', 'rexpansive-classic');?>">
+                            <label for="rex-slider__dots" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Dots', 'rexpansive-classic');?>">
                                 <i class="rex-icon">Y</i>
                                 <span class="rex-ripple"></span>
                             </label>
@@ -1049,34 +1049,34 @@ defined( 'ABSPATH' ) or exit;
             <div class="rex-slider__import--wrap rex-modal-content__modal-area">
 
             <?php
-            // WP_Query arguments
-            $args = array(
-                'post_type'              => array( 'rex_slider' ),
-                'post_status'            => array( 'publish' ),
-                'posts_per_page'         => '-1',
-            );
+// WP_Query arguments
+$args = array(
+    'post_type' => array('rex_slider'),
+    'post_status' => array('publish'),
+    'posts_per_page' => '-1',
+);
 
-            // The Query
-            $query = new WP_Query( $args );
+// The Query
+$query = new WP_Query($args);
 
-            ?>
+?>
                 <div class="rx__select-wrap">
                     <input class="title-slider" type="text">
                     <select id="rex-slider__import" class="rx__form-input">
-                        <option value="0"><?php _e( 'New Slider', 'rexpansive-classic' ); ?></option>
+                        <option value="0"><?php _e('New Slider', 'rexpansive-classic');?></option>
                         <?php
-                        // Printing all sliders avaiable
-                        if ( $query->have_posts() ) {
-                            while ( $query->have_posts() ) {
-                                $query->the_post();
-                                ?>
-                        <option value="<?php the_ID(); ?>"><?php the_title(); ?></option>
+// Printing all sliders avaiable
+if ($query->have_posts()) {
+    while ($query->have_posts()) {
+        $query->the_post();
+        ?>
+                        <option value="<?php the_ID();?>"><?php the_title();?></option>
                                 <?php
-                            }
-                        } else {
-                            // no posts found
-                        }
-                        ?>
+}
+} else {
+    // no posts found
+}
+?>
                     </select>
                     <div class="rx__form-input__select-arrow"></div>
                 </div>
@@ -1092,9 +1092,9 @@ defined( 'ABSPATH' ) or exit;
                     </div>
                 </div>
             <?php
-            // Restore original Post Data
-            wp_reset_postdata();
-            ?>
+// Restore original Post Data
+wp_reset_postdata();
+?>
 
             </div>
         </div>
@@ -1151,7 +1151,7 @@ defined( 'ABSPATH' ) or exit;
                 <div class="valign-wrapper rex-modal-content__modal-area__row">
                     <div class="col rex-check-icon">
                         <input type="radio" class="rex-slide-choose-video with-gap" name="rex-slide-choose-video" value="vimeo" id="rex-slide-choose-vimeo">
-                        <label for="rex-slide-choose-vimeo" data-tooltip="<?php _e( 'Vimeo', 'rexpansive-classic' ); ?>">
+                        <label for="rex-slide-choose-vimeo" data-tooltip="<?php _e('Vimeo', 'rexpansive-classic');?>">
                             <i class="material-icons rex-icon rex-vimeo__icon">Z</i>
                             <span class="rex-ripple"></span>
                         </label>
@@ -1193,16 +1193,16 @@ defined( 'ABSPATH' ) or exit;
     <div id="rex-model-block" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
         <div class="modal-content">
 
-            <?php include('rexbuilder-modal-loader.php'); ?>
+            <?php include 'rexbuilder-modal-loader.php';?>
 
             <div class="rex-model__add-model__wrap rex-modal-content__modal-area--bordered rex-modal-content__modal-area" style="display:flex;">
                 <div id="rex-model__name__wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix" style="width:100%;">
                     <span class="prefix"></span>
                     <input type="text" id="rex-model__name" name="rex-model__name">
-                    <label for="rex-model__name" class=""><?php _e( 'Model name', 'rexpansive' ); ?></label>
+                    <label for="rex-model__name" class=""><?php _e('Model name', 'rexpansive');?></label>
                     <span class="rex-material-bar"></span>
                 </div>
-                <button id="rex-model__add-new-model" class="builder-button btn-floating btn-no-shadow btn-bordered btn-bordered--inactive tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Add model', 'rexpansive-classic' ) ?>">
+                <button id="rex-model__add-new-model" class="builder-button btn-floating btn-no-shadow btn-bordered btn-bordered--inactive tooltipped" data-position="bottom" data-tooltip="<?php _e('Add model', 'rexpansive-classic')?>">
                     <i class="material-icons">&#xE145;</i>
                 </button>
             </div><!-- // .rex-model__add-model__wrap -->
@@ -1210,37 +1210,37 @@ defined( 'ABSPATH' ) or exit;
             <div class="rex-model__import--wrap rex-modal-content__modal-area">
 
             <?php
-            // WP_Query arguments
-            $args = array(
-                'post_type'              => array( 'rex_model' ),
-                'post_status'            => array( 'publish', 'private' ),
-                'posts_per_page'         => '-1',
-            );
+// WP_Query arguments
+$args = array(
+    'post_type' => array('rex_model'),
+    'post_status' => array('publish', 'private'),
+    'posts_per_page' => '-1',
+);
 
-            // The Query
-            $query = new WP_Query( $args );
+// The Query
+$query = new WP_Query($args);
 
-            ?><div class="rx__select-wrap">
-                <select id="rex-model__import" class="rx__form-input"><option value="0"><?php _e( 'New Model', 'rexpansive-classic' ); ?></option><?php
-            // The Loop
-            if ( $query->have_posts() ) {
-                while ( $query->have_posts() ) {
-                    $query->the_post();
-                    ?><option value="<?php the_ID(); ?>" data-preview-url="<?php echo get_permalink(); ?>"><?php the_title(); ?></option><?php
-                }
-            } else {
-                // no posts found
-            }
+?><div class="rx__select-wrap">
+                <select id="rex-model__import" class="rx__form-input"><option value="0"><?php _e('New Model', 'rexpansive-classic');?></option><?php
+// The Loop
+if ($query->have_posts()) {
+    while ($query->have_posts()) {
+        $query->the_post();
+        ?><option value="<?php the_ID();?>" data-preview-url="<?php echo get_permalink(); ?>"><?php the_title();?></option><?php
+}
+} else {
+    // no posts found
+}
 
-            ?>
+?>
                 </select>
                 <div class="rx__form-input__select-arrow"></div>
             </div>
             <?php
 
-            // Restore original Post Data
-            wp_reset_postdata();
-            ?>
+// Restore original Post Data
+wp_reset_postdata();
+?>
 
             <div id="rex-model__open-preview">
                 <i class="rex-icon">g</i>
@@ -1269,7 +1269,7 @@ defined( 'ABSPATH' ) or exit;
 		</div>
         <div class="rex-lightbox__ui rex-lightbox__ui--hidden">
 			<div class="rex-lightbox__top-bar">
-                <button class="rex-lightbox__button rex-lightbox__button--close" title="<?php _e( 'Close (Esc)', 'rexpansive-builder' ); ?>"><i class="material-icons white-text">&#xE5CD;</i></button>
+                <button class="rex-lightbox__button rex-lightbox__button--close" title="<?php _e('Close (Esc)', 'rexpansive-builder');?>"><i class="material-icons white-text">&#xE5CD;</i></button>
             </div>
         </div>
     </div>
@@ -1280,41 +1280,41 @@ defined( 'ABSPATH' ) or exit;
     <div id="rexeditor-expand-modal" class="rex-modal-draggable z-depth-4">
         <div class="modal-wrap">
             <header class="rexeditor-header clearfix">
-                <h2><?php _e('Insert content', 'rexpansive-classic'); ?></h2>
+                <h2><?php _e('Insert content', 'rexpansive-classic');?></h2>
                 <div id="rexeditor-expand-close"><span class="dashicons dashicons-no-alt"></span></div>
             </header>
 
             <div class="expand-editor-fieldwrap">
                 <div class="expand-editor-topfields">
-                    <label for="expand-background"><?php _e( 'Background Image', 'rexpansive-classic' ); ?></label>
+                    <label for="expand-background"><?php _e('Background Image', 'rexpansive-classic');?></label>
                     <input type="text" name="expand-background" class="exp-back-holder" data-image_id=''>
-                    <button class="button button-primary button-large exp-back-upload"><?php _e( 'Select Background', 'rexpansive-classic' ); ?></button><br><br>
-                    <label for="expand-side"><?php _e( 'Choose Expand Side', 'rexpansive-classic' ); ?></label>
-                    <input type="radio" class="exp-side-holder" name="expand-side" value="left" checked><?php _e( 'Left', 'rexpansive-classic' ); ?>
-                    <input type="radio" class="exp-side-holder" name="expand-side" value="right"><?php _e( 'Right', 'rexpansive-classic' ); ?><br><br>
-                    <label for="expand-title"><?php _e( 'Title', 'rexpansive-classic' ); ?></label>
+                    <button class="button button-primary button-large exp-back-upload"><?php _e('Select Background', 'rexpansive-classic');?></button><br><br>
+                    <label for="expand-side"><?php _e('Choose Expand Side', 'rexpansive-classic');?></label>
+                    <input type="radio" class="exp-side-holder" name="expand-side" value="left" checked><?php _e('Left', 'rexpansive-classic');?>
+                    <input type="radio" class="exp-side-holder" name="expand-side" value="right"><?php _e('Right', 'rexpansive-classic');?><br><br>
+                    <label for="expand-title"><?php _e('Title', 'rexpansive-classic');?></label>
                     <input type="text" name="expand-title" class="exp-title-holder"/>
                     <input type="text" name="expand-icon" class="exp-icon-holder" data-icon_id=''/>
-                    <button class="button button-primary button-large exp-icon-upload"><?php _e( 'Select Icon', 'rexpansive-classic' ); ?></button>
+                    <button class="button button-primary button-large exp-icon-upload"><?php _e('Select Icon', 'rexpansive-classic');?></button>
                     <br><br>
-                    <label for="expand-foreground"><?php _e( 'Foreground Image', 'rexpansive-classic' ); ?>
+                    <label for="expand-foreground"><?php _e('Foreground Image', 'rexpansive-classic');?>
                         <input type="text" name="expand-foreground" class="zak-foreground-holder" data-foreground-id=''/>
                     </label>
-                    <button class="button button-primary button-large zak-foreground-upload"><?php _e( 'Select Foreground', 'rexpansive-classic' ); ?></button>
+                    <button class="button button-primary button-large zak-foreground-upload"><?php _e('Select Foreground', 'rexpansive-classic');?></button>
                 </div>
-                
+
                 <div class="modal-editor-editorarea">
-                    <?php wp_editor( '', 'rexbuilder_expand_editor', array( 'editor_height' => 150) ); ?>
+                    <?php wp_editor('', 'rexbuilder_expand_editor', array('editor_height' => 150));?>
                 </div>
 
                 <div class="expand-editor-bottomfields">
-                    
+
                 </div>
             </div>
 
             <div class="rexeditor_bottom">
-                <button id="expand-editor-cancel" class="button button-large" value="image"><?php _e('Cancel', 'rexpansive-classic'); ?></button>
-                <button id="expand-editor-save" class="button button-primary button-large" value=""><?php _e('Save', 'rexpansive-classic'); ?></button>
+                <button id="expand-editor-cancel" class="button button-large" value="image"><?php _e('Cancel', 'rexpansive-classic');?></button>
+                <button id="expand-editor-save" class="button button-primary button-large" value=""><?php _e('Save', 'rexpansive-classic');?></button>
             </div>
         </div>
     </div><!-- ZAK Editor -->
@@ -1406,3 +1406,184 @@ defined( 'ABSPATH' ) or exit;
         </div>
     </div>
 </div><!-- Insert New Block Video -->
+
+<div class="rex-modal-wrap rex-fade">
+   <div id="rex-edit-background-section" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
+        <div class="modal-content">
+            <div class="background_set_image row valign-wrapper">
+                <div class="col">
+                    <div class="valign-wrapper">
+                        <div class="rex-check">
+                            <input type="radio" id="background-section-value-image" class="background_type with-gap" name="background_type" value="image" />
+                            <label for="background-section-value-image" title="Image">
+                                <span class="rex-ripple" />
+                            </label>
+                        </div>
+                        <div id="bg-section-set-img-wrap" class="rex-button-with-plus">
+                            <div id="bg-section-img-preview" class="image-preview-logo">
+                                <i class="material-icons rex-icon">p</i>
+                            </div>
+                            <button id="background-section-up-img" class="rex-plus-button btn-floating light-blue darken-1" value="" title="Select Image">
+                                <i class="material-icons"></i>
+                            </button>
+                            <input name="" class="file-path" type="hidden" id="background-section-url" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /BACKGROUND IMAGE SECTION-->
+            <div id="background-section-set-color" class="background_set_color row valign-wrapper">
+                <div class="col">
+                    <div class="valign-wrapper">
+                        <div class="">
+                            <input type="radio" id="background-section-value-color" class="background_type with-gap" name="background_type" value="color" />
+                            <label for="background-section-value-color">
+                                <span class="rex-ripple" />
+                            </label>
+                        </div>
+                        <div class="rex-relative-col">
+                            <input type="hidden" id="background-section-color-runtime" name="background-section-color-runtime" value="" />
+                            <input id="background-section-color" type="text" name="background-section-color" value="" size="10" />
+                            <div id="background-section-preview-icon" class="preview-color-icon"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div id="bg-section-color-palette" class="clearfix">
+                        <div class="bg-palette-selector">
+                            <input class="bg-palette-value" type="hidden" value="rgba(33,150,243,1)" />
+                            <span class="bg-palette-button bg-palette-blue" />
+                        </div>
+                        <div class="bg-palette-selector">
+                            <input class="bg-palette-value" type="hidden" value="rgba(139,195,74,1)" />
+                            <span class="bg-palette-button bg-palette-green" />
+                        </div>
+                        <div class="bg-palette-selector">
+                            <input class="bg-palette-value" type="hidden" value="rgba(0,0,0,1)" />
+                            <span class="bg-palette-button bg-palette-black" />
+                        </div>
+                        <div class="bg-palette-selector">
+                            <input class="bg-palette-value" type="hidden" value="rgba(244,67,54,1)" />
+                            <span class="bg-palette-button bg-palette-red" />
+                        </div>
+                        <div class="bg-palette-selector">
+                            <input class="bg-palette-value" type="hidden" value="rgba(255,152,0,1)" />
+                            <span class="bg-palette-button bg-palette-orange" />
+                        </div>
+                        <div class="bg-palette-selector">
+                            <input class="bg-palette-value" type="hidden" value="rgba(156,39,176,1)" />
+                            <span class="bg-palette-button bg-palette-purple" />
+                        </div>
+                        <div class="bg-palette-selector">
+                            <input class="bg-palette-value" type="hidden" value="rgba(255,255,255,0)" />
+                            <span class="bg-palette-button bg-palette-transparent">
+                                <i class="material-icons rex-icon">o</i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /COLOR BACKGROUND SECTION -->
+            <div id="bg-overlay-row-set-color" class="background_set_color row valign-wrapper">
+                <div class="col">
+                    <div class="valign-wrapper">
+                        <div class="">
+                            <input type="checkbox" id="overlay-section-active" value="color" />
+                            <label for="overlay-section-active">
+                                <span class="rex-ripple" />
+                            </label>
+                        </div>
+                        <div class="rex-relative-col">
+                            <div class="section-overlay-preview">
+                                <input id="overlay-color-row-value" type="text" name="overlay-color-row-value" value="rgba(255,255,255,0.5)" size="10" />
+                                <div id="overlay-row-preview-icon" class="preview-color-icon"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div id="bg-overlay-row-color-palette" class="col">
+                        <div class="bg-palette-selector">
+                            <input class="bg-palette-value" type="hidden" value="rgba(33,150,243,0.6)" />
+                            <span class="bg-palette-button overlay-palette-blue" />
+                        </div>
+                        <div class="bg-palette-selector">
+                            <input class="bg-palette-value" type="hidden" value="rgba(139,195,74,0.6)" />
+                            <span class="bg-palette-button overlay-palette-green" />
+                        </div>
+                        <div class="bg-palette-selector">
+                            <input class="bg-palette-value" type="hidden" value="rgba(0,0,0,0.6)" />
+                            <span class="bg-palette-button overlay-palette-black" />
+                        </div>
+                        <div class="bg-palette-selector">
+                            <input class="bg-palette-value" type="hidden" value="rgba(244,67,54,0.6)" />
+                            <span class="bg-palette-button overlay-palette-red" />
+                        </div>
+                        <div class="bg-palette-selector">
+                            <input class="bg-palette-value" type="hidden" value="rgba(255,152,0,0.6)" />
+                            <span class="bg-palette-button overlay-palette-orange" />
+                        </div>
+                        <div class="bg-palette-selector">
+                            <input class="bg-palette-value" type="hidden" value="rgba(156,39,176,0.6))" />
+                            <span class="bg-palette-button overlay-palette-purple" />
+                        </div>
+                        <div class="bg-palette-selector">
+                            <input class="bg-palette-value" type="hidden" value="rgba(255,255,255,0)" />
+                            <span class="bg-palette-button overlay-palette-transparent">
+                                <i class="material-icons rex-icon">o</i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /OVERLAY SECTION -->
+            <div id="edit-video-row-wrap-1" class="row valign-wrapper youtube-insert-wrap video-insert-wrap">
+                <div class="rex-check rex-check-icon col rex-video-type-select">
+                    <input type="radio" class="rex-choose-video with-gap" name="rex-choose-video" value="youtube" id="rex-choose-youtube-video-section" />
+                    <label for="rex-choose-youtube-video-section">
+                        <i class="material-icons rex-icon">C</i>
+                        <span class="rex-ripple" />
+                    </label>
+                </div>
+                <div class="input-field col" data-rex-video-type="youtube">
+                    <input id="rex-youtube-video-section" class="youtube-url" type="text" />
+                    <label id="rex-youtube-video-section-label" for="rex-youtube-video-section">https://youtu.be/...</label>
+                </div>
+            </div>
+            <!-- youtube video background section -->
+            <div id="edit-video-row-wrap-2" class="row valign-wrapper vimeo-insert-wrap video-insert-wrap" style="padding-top:16px;">
+                <div class="rex-check rex-check-icon col rex-video-type-select" style="margin-right:5px;">
+                    <input type="radio" class="rex-choose-video with-gap" name="rex-choose-video" value="vimeo" id="rex-choose-vimeo-video-section" />
+                    <label for="rex-choose-vimeo-video-section">
+                        <i class="material-icons rex-icon">Z</i>
+                        <span class="rex-ripple" />
+                    </label>
+                </div>
+                <div class="input-field col" data-rex-video-type="vimeo">
+                    <input id="rex-vimeo-video-section" class="vimeo-url" type="text" />
+                    <label id="rex-vimeo-video-section-label" for="rex-vimeo-video-section">https://player.vimeo.com/video/...</label>
+                </div>
+            </div>
+            <!-- vimeo input section-->
+            <div id="edit-video-row-wrap-3" class="row valign-wrapper mp4-insert-wrap video-insert-wrap" style="padding-top:16px;">
+                <div class="rex-check rex-check-icon col rex-video-type-select ">
+                    <input type="radio" class="rex-choose-video with-gap" name="rex-choose-video" value="mp4" id="rex-choose-mp4-video-section" />
+                    <label id="rex-upload-mp4-video-section" for="rex-choose-mp4-video-section">
+                        <i class="material-icons rex-icon">A</i>
+                        <span class="rex-ripple" />
+                    </label>
+                </div>
+            </div>
+            <!-- mp4 input section-->
+        </div>
+        <div class="rex-modal-footer">
+            <button id="rex-edit-row-background-cancel" class="waves-effect waves-light btn-flat grey rex-cancel-button" value="">
+                <i class="rex-icon">n</i>
+            </button>
+            <button id="rex-edit-row-background-save" class="waves-effect waves-light btn-flat blue darken-1 rex-save-button" value="">
+                <i class="rex-icon">m</i>
+            </button>
+        </div>
+    </div>
+</div>
+<!-- Edit Section Background -->

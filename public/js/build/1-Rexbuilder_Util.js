@@ -411,9 +411,7 @@ var Rexbuilder_Util = (function ($) {
 
     var updateSection = function ($section, $gallery, targetProps, forceCollapseElementsGrid) {
         var $sectionData = $section.children(".section-data");
-
-        Rexbuilder_Dom_Util.updateImageBG($section, isNaN(parseInt(targetProps['id_image_bg_section'])) ? "" : parseInt(targetProps['id_image_bg_section']), targetProps['image_bg_section'], parseInt(targetProps['image_width']), parseInt(targetProps['image_height']));
-
+        
         var videoOptions = {
             targetData: $sectionData,
             target: $section,
@@ -425,7 +423,24 @@ var Rexbuilder_Util = (function ($) {
             hasAudio: false
         };
 
-        _updateVideos(videoOptions);
+        var sectionBGoptions = {
+            color: targetProps["color_bg_section"],
+            imageOptions: {
+                idImage: isNaN(parseInt(targetProps['id_image_bg_section'])) ? "" : parseInt(targetProps['id_image_bg_section']), 
+                urlImage: targetProps['image_bg_section'], 
+                width: parseInt(targetProps['image_width']), 
+                height: parseInt(targetProps['image_height'])
+            }
+        }
+
+        var sectionOverlayOptins= {
+            color: targetProps["row_overlay_color"],
+            active: targetProps["row_overlay_active"],
+        }
+
+        Rexbuilder_Dom_Util.updateSectionVideoBackground(videoOptions);
+        Rexbuilder_Dom_Util.updateSectionBackground($section, sectionBGoptions);
+        Rexbuilder_Dom_Util.updateSectionOverlay($section, sectionOverlayOptins);
 
         var margins = {
             top: isNaN(parseInt(targetProps["row_margin_top"])) ? 0 : parseInt(targetProps["row_margin_top"]),
@@ -451,7 +466,6 @@ var Rexbuilder_Util = (function ($) {
 
         Rexbuilder_Dom_Util.updateRow($section, $sectionData, $gallery, rowSettings);
 
-        $section.css('background-color', targetProps["color_bg_section"]);
         Rexbuilder_Dom_Util.updateSectionName($section, targetProps['section_name']);
         $section.attr('data-type', targetProps['type']);
     }

@@ -130,6 +130,7 @@ var Rexbuilder_Dom_Util = (function ($) {
         $section.css("margin-right", margins.right + "px");
         $section.css("margin-bottom", margins.bottom + "px");
         $section.css("margin-left", margins.left + "px");
+        var $sectionData
     }
 
     var _updateImageBG = function ($target, idImage, urlImage, w, h, type) {
@@ -486,6 +487,40 @@ var Rexbuilder_Dom_Util = (function ($) {
         $("#rexpansive-builder-style-inline-css").text(newCss);
     }
 
+    var _updateSectionOverlay = function ($section, overlay) {
+        var $overlayElem = $section.children(".responsive-overlay");
+        var $sectionData = $section.children(".section-data");
+        $overlayElem.css("background-color", overlay.color);
+
+        $sectionData.attr("data-row_overlay_color", overlay.color);
+        $sectionData.attr("data-row_overlay_active", overlay.active);
+
+        if (overlay.active) {
+            $overlayElem.addClass("rex-active-overlay");
+        } else {
+            $overlayElem.removeClass("rex-active-overlay");
+        }
+    }
+
+    var _updateSectionBackground = function ($section, data) {
+        var $sectionData = $section.children(".section-data");
+        $section.css('background-color', data.color);
+        $sectionData.attr("data-color_bg_section", data.color);
+        _updateImageBG($section, data.imageOptions.idImage, data.imageOptions.urlImage, data.imageOptions.width, data.imageOptions.height);
+    }
+
+    var _updateSectionVideoBackground = function (videoOpt) {
+        Rexbuilder_Util.updateVideos(videoOpt);
+    }
+
+    var _updateSectionBackgroundColor = function ($section, color) {
+        $section.css('background-color', color);
+    }
+
+    var _updateSectionBackgroundImage = function ($section, data) {
+        _updateImageBG($section, data.imageOptions.idImage, data.imageOptions.urlImage, data.imageOptions.width, data.imageOptions.height);
+    }
+
     var _performAction = function (action, flag) {
 
         //console.log("performing action");
@@ -588,6 +623,11 @@ var Rexbuilder_Dom_Util = (function ($) {
         enablePhotoswipeAllBlocksSection: _enablePhotoswipeAllBlocksSection,
         updateCustomClasses: _updateCustomClasses,
         collapseGrid: _collapseGrid,
-        updateCustomCSS: _updateCustomCSS
+        updateCustomCSS: _updateCustomCSS,
+        updateSectionOverlay: _updateSectionOverlay,
+        updateSectionBackground: _updateSectionBackground,
+        updateSectionVideoBackground: _updateSectionVideoBackground,
+        updateSectionBackgroundColor: _updateSectionBackgroundColor,
+        updateSectionBackgroundImage: _updateSectionBackgroundImage
     };
 })(jQuery);

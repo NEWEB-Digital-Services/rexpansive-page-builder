@@ -82,7 +82,7 @@ var GridSeparators_Modal = (function ($) {
         $target.keyup(function (e) {
             if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode == 38) || (e.keyCode == 40) || (e.keyCode == 8)) {
                 e.preventDefault();
-                Rexlive_Modals.applySectionLayout();
+                Section_Modal.applySectionLayout();
             }
         });
     }

@@ -19,7 +19,7 @@ var CustomClasses_Modal = (function ($) {
 
     var _linkDocumentListeners = function () {
         custom_classes_modal_properties.$classes.blur(function (e) {
-            Rexlive_Modals.applyCustomClasses();
+            Section_Modal.applyCustomClasses();
         })
     }
 

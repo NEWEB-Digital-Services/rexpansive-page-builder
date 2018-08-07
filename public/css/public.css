@@ -5043,6 +5043,9 @@ a.pswp-item {
 .nav-editor-mode-enable {
   display: block; }
 
+.responsive-overlay.rex-active-overlay {
+  visibility: visible; }
+
 /* .rexpansive_section{
     z-index: 0;
 } */

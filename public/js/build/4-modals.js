@@ -159,6 +159,26 @@
 			Rexbuilder_Util_Editor.pushAction("document", "updateCustomCSS", actionData, reverseData);
 		});
 
+		$(document).on("rexlive:apply_background_color_section", function (e) {
+			var data = e.settings.data_to_send;
+			console.log("applying background color");
+			return;
+			var $section = Rexbuilder_Util_Editor.sectionChangingOptionsObj;
+			var oldColor = $section.children(".section-data").attr("data-color_bg_section");
+
+			var reverseData = {
+				color: oldColor
+			}
+
+			Rexbuilder_Dom_Util.updateSectionBackground();
+
+			var actionData = {
+				color: data.color
+			}
+
+			Rexbuilder_Util_Editor.pushAction($section, "updateSectionBackgroundColor", actionData, reverseData);
+		});
+
 		// ----------------------------------
 		/*
 		* function uploadBlockBackground($wrap) { if( image_block_edit_frame ) {
@@ -424,9 +444,40 @@
 		});
 
 		$(document).on('click', '.edit-background-section', function (e) {
-			console.log("background section");
 			e.preventDefault();
-			return;
+			var $section = $(e.target).parents(".rexpansive_section");
+			var rex_section_id = $section.attr('data-rexlive-section-id');
+			var $sectionData = $section.children(".section-data");
+
+			var color = $sectionData.attr("data-color_bg_section");
+			var youtubeVideo = $sectionData.attr("data-video_bg_url_section");
+			var vimeoUrl = $sectionData.attr("data-video_bg_url_vimeo_section");
+			var mp4Video = $sectionData.attr("data-video_bg_id_section");
+			var idImage = $sectionData.attr("data-id_image_bg_section");
+			var imageUrl = $sectionData.attr("data-image_bg_section");;
+			var overlayColor = typeof $sectionData.attr("data-row_overlay_color") != "undefined" ? $sectionData.attr("data-row_overlay_color") : "";
+			var overlayActive = typeof $sectionData.attr("data-row_overlay_active") != "undefined" ? $sectionData.attr("data-row_overlay_active") : false;
+
+			var currentBackgroundData = {
+				color: color,
+				youtubeVideo: youtubeVideo,
+				vimeoUrl: vimeoUrl,
+				mp4Video: mp4Video,
+				idImage: idImage,
+				imageUrl: imageUrl,
+				overlayColor: overlayColor,
+				overlayActive: overlayActive
+			}
+
+			var data = {
+				eventName: "rexlive:editBackgroundSection",
+				activeBG: currentBackgroundData
+			};
+
+			Rexbuilder_Util_Editor.sectionEditingBackgroundID = rex_section_id;
+			Rexbuilder_Util_Editor.sectionEditingBackgroundObj = $section;
+
+			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 		});
 
 		$(document).on('click', '.builder-change-background', function (e) {

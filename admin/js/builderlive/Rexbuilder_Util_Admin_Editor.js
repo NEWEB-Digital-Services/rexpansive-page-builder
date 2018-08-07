@@ -170,7 +170,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                 }
 
                 if (event.data.eventName == "rexlive:openMediaUploader") {
-                    Rexlive_MediaUploader.openMediaUploaderImage({});
+                    Rexlive_MediaUploader.openInsertImageBlocksMediaUploader({});
                 }
 
                 if (event.data.eventName == "rexlive:addNewBlockVideo") {
@@ -186,7 +186,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                 }
 
                 if (event.data.eventName == "rexlive:openSectionModal") {
-                    Rexlive_Modals.openSectionModal(event.data.section_options_active);
+                    Section_Modal.openSectionModal(event.data.section_options_active);
                 }
 
                 if (event.data.eventName == "rexlive:uploadSliderFromLive") {
@@ -207,6 +207,11 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
                 if (event.data.eventName == "rexlive:openCssEditor") {
                     CssEditor_Modal.openModal(event.data.currentStyle);
+                }
+
+                if (event.data.eventName == "rexlive:editBackgroundSection") {
+                    console.log(event.data);
+                    SectionBackground_Modal.openSectionBackgroundModal(event.data.activeBG);
                 }
             }
         };

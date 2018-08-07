@@ -19,7 +19,7 @@ var SectionName_Modal = (function ($) {
 
     var _linkDocumentListeners = function () {
         section_name_modal_properties.$section_id.keyup(function (e) {
-            Rexlive_Modals.applySectionName();
+            Section_Modal.applySectionName();
         })
     }
 

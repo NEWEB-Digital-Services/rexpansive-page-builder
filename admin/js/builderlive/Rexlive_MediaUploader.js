@@ -4,13 +4,14 @@
 var Rexlive_MediaUploader = (function ($) {
     'use strict';
 
+    var image_multiple_uploader_frame;
     var image_uploader_frame;
     var video_uploader_frame;
 
-    function openMediaUploaderImage(info) {
+    function _openMediaUploaderMultipleImage(info) {
         // If the frame is already opened, return it
-        if (image_uploader_frame) {
-            image_uploader_frame.open();
+        if (image_multiple_uploader_frame) {
+            image_multiple_uploader_frame.open();
             return;
         }
 
@@ -30,7 +31,7 @@ var Rexlive_MediaUploader = (function ($) {
         });
 
         //Setup media frame
-        image_uploader_frame = wp.media({
+        image_multiple_uploader_frame = wp.media({
             button: { text: 'Select' },
             state: 'insert-image',
             states: [
@@ -38,8 +39,8 @@ var Rexlive_MediaUploader = (function ($) {
             ]
         });
 
-        image_uploader_frame.on('select', function () {
-            var state = image_uploader_frame.state('insert-image');
+        image_multiple_uploader_frame.on('select', function () {
+            var state = image_multiple_uploader_frame.state('insert-image');
             var selection = state.get('selection');
             var data = {
                 eventName: 'rexlive:insert_image',
@@ -75,21 +76,13 @@ var Rexlive_MediaUploader = (function ($) {
             Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
         });
 
-        //on close, if there is no select files, remove all the files already selected in your main frame
-        image_uploader_frame.on('close', function () {
-            /* var selection = image_uploader_frame.state('insert-image').get('selection');
-            selection.each(function (image) {
-              if ('undefined' !== typeof image) {
-                var attachment = wp.media.attachment(image.attributes.id);
-                attachment.fetch();
-                selection.remove(attachment ? [attachment] : []);
-              }
-            }); */
+        image_multiple_uploader_frame.on('close', function () {
+
         });
 
         //reset selection in popup, when open the popup
-        image_uploader_frame.on('open', function () {
-            var selection = image_uploader_frame.state('insert-image').get('selection');
+        image_multiple_uploader_frame.on('open', function () {
+            var selection = image_multiple_uploader_frame.state('insert-image').get('selection');
             //remove all the selection first
             selection.each(function (image) {
                 if ('undefined' !== typeof image) {
@@ -101,8 +94,110 @@ var Rexlive_MediaUploader = (function ($) {
         });
 
         //now open the popup
-        image_uploader_frame.open();
+        image_multiple_uploader_frame.open();
     }	// openMediaUploader IMAGE END
+
+    function _openMediaUploaderImage($data, $preview, image_id) {
+        image_id = typeof image_id !== 'undefined' ? image_id : null;
+
+        if (image_uploader_frame) {
+            // setting my custom data
+            image_uploader_frame.state('upload-image-bg').set('$data', $data);
+            image_uploader_frame.state('upload-image-bg').set('$preview', $preview);
+            image_uploader_frame.state('upload-image-bg').set('image_id', image_id);
+
+            image_uploader_frame.open();
+            return;
+        }
+
+        //create a new Library, base on defaults
+        //you can put your attributes in
+        var uplaodImage = wp.media.controller.Library.extend({
+            defaults: _.defaults({
+                id: 'upload-image-bg',
+                title: 'Select Background Image',
+                allowLocalEdits: true,
+                displaySettings: true,
+                displayUserSettings: true,
+                multiple: false,
+                library: wp.media.query({ type: 'image' }),
+                type: 'image',//audio, video, application/pdf, ... etc
+                $data: $data,
+                $preview: $preview,
+                image_id: image_id
+            }, wp.media.controller.Library.prototype.defaults)
+        });
+
+        //Setup media frame
+        image_uploader_frame = wp.media({
+            button: { text: 'Select' },
+            state: 'upload-image-bg',
+            states: [
+                new uplaodImage()
+            ]
+        });
+
+        //on close, if there is no select files, remove all the files already selected in your main frame
+        image_uploader_frame.on('close', function () {
+            var selection = image_uploader_frame.state('upload-image-bg').get('selection');
+            if (selection.length == 0) {
+                $data.val();
+            }
+        });
+
+        image_uploader_frame.on('select', function () {
+
+            var state = image_uploader_frame.state('upload-image-bg');
+            var selection = state.get('selection');
+
+            if (!selection) return;
+
+            selection.each(function (attachment) {
+                var display = state.display(attachment).toJSON();
+                var obj_attachment = attachment.toJSON();
+
+                // If captions are disabled, clear the caption.
+                if (!wp.media.view.settings.captions)
+                    delete obj_attachment.caption;
+
+                display = wp.media.string.props(display, obj_attachment);
+                console.log(obj_attachment.id,obj_attachment.url)
+                console.log(display);
+                // save id image info
+                image_uploader_frame.state('upload-image-bg').get('$data').val(obj_attachment.id);
+                // create image preview
+                image_uploader_frame.state('upload-image-bg').get('$preview').css('backgroundImage', 'url(' + obj_attachment.url + ')');
+                image_uploader_frame.state('upload-image-bg').get('$preview').find("i").css("display", "none");
+            });
+        });
+
+        //reset selection in popup, when open the popup
+        image_uploader_frame.on('open', function () {
+            var attachment;
+            var selection = image_uploader_frame.state('upload-image-bg').get('selection');
+
+            //remove all the selection first
+            selection.each(function (video) {
+                attachment = wp.media.attachment(video.attributes.id);
+                attachment.fetch();
+                selection.remove(attachment ? [attachment] : []);
+            });
+
+            var image_id = image_uploader_frame.state('upload-image-bg').get('image_id');
+
+            // Check the already inserted image
+            if (image_id) {
+                attachment = wp.media.attachment(image_id);
+                attachment.fetch();
+
+                selection.add(attachment ? [attachment] : []);
+            }
+        });
+
+        //now open the popup
+        image_uploader_frame.open();
+    }
+
 
     function openMediaUploaderVideo(info) {
         // If the frame is already opened, return it
@@ -187,7 +282,8 @@ var Rexlive_MediaUploader = (function ($) {
     }	// openMediaUploader VIDEO END
 
     return {
-        openMediaUploaderImage: openMediaUploaderImage,
+        openInsertImageBlocksMediaUploader: _openMediaUploaderMultipleImage,
+        openEditImageMediaUploader: _openMediaUploaderImage,
         openMediaUploaderVideo: openMediaUploaderVideo,
     };
 

@@ -294,6 +294,11 @@ var Rexbuilder_Util_Editor = (function ($) {
             Rexbuilder_Dom_Util.updateSliderStack(data.data_to_send);
         });
 
+        $(document).on("rexlive:change_section_bg_color", function (e) {
+            var data = e.settings;
+            Rexbuilder_Dom_Util.updateSectionBackgroundColor(Rexbuilder_Util_Editor.sectionEditingBackgroundObj, data.data_to_send.color);
+        });
+
     }
 
     var _pushAction = function ($target, actionName, actionData, reverseData) {
@@ -305,7 +310,7 @@ var Rexbuilder_Util_Editor = (function ($) {
                 targetID: ""
             }
         }
-        
+
         var action = {
             sectionID: ids.sectionID,
             targetID: ids.targetID,
@@ -518,6 +523,9 @@ var Rexbuilder_Util_Editor = (function ($) {
 
         this.sectionEditingObj = null;
         this.elementEditingObj = null;
+
+        this.sectionEditingBackgroundID = null;
+        this.sectionEditingBackgroundObj = null;
 
         undoStackArray = [];
         redoStackArray = [];

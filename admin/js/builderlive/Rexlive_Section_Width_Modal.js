@@ -89,7 +89,7 @@ var Section_Width_Modal = (function ($) {
                 $sectionWidthWrap.find("input").attr("checked", true);
                 sectionWidthProperties.$section_boxed_width.val(defaultSectionWidthData.boxed.sectionWidth);
             }
-            Rexlive_Modals.applySectionLayout();
+            Section_Modal.applySectionLayout();
         });
         
         $(document).on("click", "#modal-background-responsive-set .rexlive-section-width", function (e) {
@@ -107,7 +107,7 @@ var Section_Width_Modal = (function ($) {
             } else {
                 _updateSectionBoxedWidthData(oldSectionWidthData);
             }
-            Rexlive_Modals.applySectionLayout();
+            Section_Modal.applySectionLayout();
         });
     }
     

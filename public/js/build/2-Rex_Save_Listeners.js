@@ -55,7 +55,7 @@ var Rex_Save_Listeners = (function ($) {
             var $layoutsAvaiableDiv = $layoutData.children(".available-layouts");
             var customCSS = $("#rexpansive-builder-style-inline-css").text();
             customCSS = customCSS.trim();
-            saveCustomCSS(customCSS);  
+            saveCustomCSS(customCSS);
 
             var idPost = parseInt($('#id-post').attr('data-post-id'));
 
@@ -568,12 +568,15 @@ var Rex_Save_Listeners = (function ($) {
                 row_margin_right = '',
                 row_margin_left = '',
                 row_active_photoswipe = '',
+                row_overlay_color = '',
+                row_overlay_active = '',
                 rexlive_section_id = '',
                 collapse_grid = false;
 
             var output = '';
             var $gridGallery = $section.find('.grid-stack-row');
             var $sectionData = $section.children('.section-data');
+
             var galleryIstance = $gridGallery.data().plugin_perfectGridGalleryEditor;
 
             section_name = $section.attr('data-rexlive-section-name');
@@ -581,8 +584,7 @@ var Rex_Save_Listeners = (function ($) {
             type = $sectionData.attr('data-type') === undefined ? "perfect-grid"
                 : $sectionData.attr('data-type');
 
-            color_bg_section = $sectionData.attr('data-color_bg_section') === undefined ? "#ffffff"
-                : $sectionData.attr('data-color_bg_section');
+            color_bg_section = $sectionData.attr("data-color_bg_section");
 
             margin = $sectionData.attr('data-margin') === undefined ? ""
                 : $sectionData.attr('data-margin');
@@ -657,6 +659,9 @@ var Rex_Save_Listeners = (function ($) {
             row_active_photoswipe = typeof $sectionData.attr('data-row_active_photoswipe') == "undefined" ? "0"
                 : $sectionData.attr('data-row_active_photoswipe');
 
+            row_overlay_color = $sectionData.attr("data-row_overlay_color");
+            row_overlay_active = $sectionData.attr("data-row_overlay_active");
+
             rexlive_section_id = $section.attr("data-rexlive-section-id");
             collapse_grid = typeof $section.attr("data-rex-collapse-grid") == "undefined" ? false : $section.attr("data-rex-collapse-grid");
 
@@ -687,9 +692,11 @@ var Rex_Save_Listeners = (function ($) {
                     + '" row_margin_right="' + row_margin_right
                     + '" row_margin_left="' + row_margin_left
                     + '" row_active_photoswipe="' + row_active_photoswipe
+                    + '" row_overlay_color="' + row_overlay_color
+                    + '" row_overlay_active="' + row_overlay_active
                     + '" rexlive_section_id="' + rexlive_section_id
                     + '" row_edited_live="true"]';
-                    
+
                 galleryIstance.updateAllElementsProperties();
 
                 var elementsOrdered = galleryIstance.getElementsTopBottom();
@@ -739,6 +746,8 @@ var Rex_Save_Listeners = (function ($) {
                 props["row_margin_bottom"] = row_margin_bottom;
                 props["row_margin_right"] = row_margin_right;
                 props["row_margin_left"] = row_margin_left;
+                props["row_overlay_color"] = row_overlay_color;
+                props["row_overlay_active"] = row_overlay_active;
                 props["overwritten"] = false;
 
                 return props;

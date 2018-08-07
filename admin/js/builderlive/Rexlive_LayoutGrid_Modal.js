@@ -50,11 +50,11 @@ var LayoutGrid_Modal = (function ($) {
             var $layoutWrap = $(e.target).parents(".rexlive-layout-type");
             $layoutWrap.addClass("selected");
             $layoutWrap.find("input").attr("checked", true);
-            Rexlive_Modals.applySectionLayout();
+            Section_Modal.applySectionLayout();
         });
         
         section_layout_modal_properties.$is_full.click(function(){
-            Rexlive_Modals.applySectionLayout();
+            Section_Modal.applySectionLayout();
         });
     }
 

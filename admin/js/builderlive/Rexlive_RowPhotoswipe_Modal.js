@@ -19,7 +19,7 @@ var PhotoSwipe_Modal = (function ($) {
 
     var _linkDocumentListeners = function () {
         section_photoswipe.$section_active_photoswipe.click(function (e) {
-            Rexlive_Modals.applyPhotoswipeSetting();
+            Section_Modal.applyPhotoswipeSetting();
         })
     }
 
