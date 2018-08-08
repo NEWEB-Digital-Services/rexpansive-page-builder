@@ -250,7 +250,15 @@ var Rexbuilder_Util = (function ($) {
 
                 _updateVideos(videoOptions);
 
-                Rexbuilder_Dom_Util.updateImageBG($itemContent, isNaN(parseInt(targetProps['id_image_bg'])) ? "" : parseInt(targetProps['id_image_bg']), targetProps['image_bg_url'], parseInt(targetProps['image_width']), parseInt(targetProps['image_height']), targetProps['type_bg_image']);
+                var imageOptions = {
+                    idImage: isNaN(parseInt(targetProps['id_image_bg'])) ? "" : parseInt(targetProps['id_image_bg']),
+                    urlImage: targetProps['image_bg_url'],
+                    width: parseInt(targetProps['image_width']),
+                    height: parseInt(targetProps['image_height']),
+                    type: targetProps['type_bg_image']
+                }
+
+                Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOptions);
 
                 _updateElementDimensions($elem, $itemData, targetProps["gs_x"], targetProps["gs_y"], targetProps["gs_width"], targetProps["gs_height"], targetProps["gs_start_h"], gridstackInstance);
 
@@ -422,24 +430,30 @@ var Rexbuilder_Util = (function ($) {
             targetType: "section",
             hasAudio: false
         };
-        
+
         var imageOptions = {
+            active: typeof targetProps["image_bg_section_active"] == "undefined" ? true : targetProps["image_bg_section_active"].toString(),
             idImage: isNaN(parseInt(targetProps['id_image_bg_section'])) ? "" : parseInt(targetProps['id_image_bg_section']),
             urlImage: targetProps['image_bg_section'],
             width: parseInt(targetProps['image_width']),
             height: parseInt(targetProps['image_height'])
         }
-
+        console.log(imageOptions);
         var sectionOverlay = {
             color: targetProps["row_overlay_color"],
-            active: targetProps["row_overlay_active"],
+            active: typeof targetProps["row_overlay_active"] == "undefined" ? false : targetProps["row_overlay_active"].toString()
         }
 
         Rexbuilder_Dom_Util.updateSectionVideoBackground(videoOptions);
 
-        Rexbuilder_Dom_Util.updateImageBG($section, imageOptions.idImage, imageOptions.urlImage, imageOptions.width, imageOptions.height);
+        Rexbuilder_Dom_Util.updateImageBG($section, imageOptions);
 
-        Rexbuilder_Dom_Util.updateSectionBackgroundColor($section, targetProps["color_bg_section"]);
+        var backgroundColorOpt = {
+            color: targetProps["color_bg_section"],
+            active: typeof targetProps["color_bg_section_active"] == "undefined" ? true : targetProps["color_bg_section_active"].toString()
+        };
+
+        Rexbuilder_Dom_Util.updateSectionBackgroundColor($section, backgroundColorOpt);
 
         Rexbuilder_Dom_Util.updateSectionOverlay($section, sectionOverlay);
 

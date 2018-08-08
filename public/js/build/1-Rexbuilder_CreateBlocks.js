@@ -75,7 +75,15 @@ var Rexbuilder_CreateBlocks = (function ($) {
                 type = "natural";
             }
 
-            Rexbuilder_Dom_Util.updateImageBG($el.find(".grid-item-content"), idImage, urlImage, w, h, type);
+            var dataImage = {
+                idImage: idImage,
+                urlImage: urlImage,
+                width: w,
+                height: h,
+                type: type
+            }
+            
+            Rexbuilder_Dom_Util.updateImageBG($el.find(".grid-item-content"), dataImage);
 
             if (galleryInstance.settings.galleryLayout == "masonry") {
                 galleryInstance._fixImageSize($el);

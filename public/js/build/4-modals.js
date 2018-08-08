@@ -164,16 +164,20 @@
 			console.log("applying background color");
 
 			var $section = Rexbuilder_Util_Editor.sectionEditingBackgroundObj;
-			var oldColor = $section.children(".section-data").attr("data-color_bg_section");
+			var $dataSection = $section.children(".section-data");
+			var oldColor = $dataSection.attr("data-color_bg_section");
+			var oldActive = $dataSection.attr("data-color_bg_section_active");
 
 			var reverseData = {
-				color: oldColor
+				color: oldColor,
+				active: oldActive
 			}
 
-			Rexbuilder_Dom_Util.updateSectionBackgroundColor($section, data.color);
+			Rexbuilder_Dom_Util.updateSectionBackgroundColor($section, data);
 
 			var actionData = {
-				color: data.color
+				color: data.color,
+				active: data.active
 			}
 
 			Rexbuilder_Util_Editor.pushAction($section, "updateSectionBackgroundColor", actionData, reverseData);
@@ -200,6 +204,40 @@
 			}
 
 			Rexbuilder_Util_Editor.pushAction($section, "updateSectionOverlay", actionData, reverseData);
+		});
+
+		$(document).on("rexlive:apply_background_image_section", function (e) {
+			var data = e.settings.data_to_send;
+
+			var $section = Rexbuilder_Util_Editor.sectionEditingBackgroundObj;
+			var $sectionData = $section.children(".section-data");
+
+			var idImage = typeof $sectionData.attr("data-id_image_bg_section") == "undefined" ? "" : $sectionData.attr("data-id_image_bg_section");
+			var imageUrl = typeof $sectionData.attr("data-image_bg_section") == "undefined" ? "" : $sectionData.attr("data-image_bg_section");
+			var width = typeof $section.attr("data-background_image_width") == "undefined" ? "" : $section.attr("data-background_image_width");
+			var height = typeof $section.attr("data-background_image_height") == "undefined" ? "" : $section.attr("data-background_image_height");
+			var activeImage = typeof $sectionData.attr("data-image_bg_section_active") != "undefined" ? $sectionData.attr("data-image_bg_section_active") : true;
+
+
+			var reverseData = {
+				active: activeImage,
+				idImage: idImage,
+				urlImage: imageUrl,
+				width: width,
+				height: height,
+			}
+
+			Rexbuilder_Dom_Util.updateImageBG($section, data);
+
+			var actionData = {
+				active: data.active,
+				idImage: data.idImage,
+				urlImage:  data.urlImage,
+				width: data.width,
+				height:  data.height
+			}
+
+			Rexbuilder_Util_Editor.pushAction($section, "updateSectionImageBG", actionData, reverseData);
 		});
 
 		// ----------------------------------
@@ -473,21 +511,39 @@
 			var $sectionData = $section.children(".section-data");
 
 			var color = $sectionData.attr("data-color_bg_section");
-			var youtubeVideo = $sectionData.attr("data-video_bg_url_section");
-			var vimeoUrl = $sectionData.attr("data-video_bg_url_vimeo_section");
-			var mp4Video = $sectionData.attr("data-video_bg_id_section");
-			var idImage = $sectionData.attr("data-id_image_bg_section");
-			var imageUrl = $sectionData.attr("data-image_bg_section");;
+			var colorActive = typeof $sectionData.attr("data-color_bg_section_active") != "undefined" ? $sectionData.attr("data-color_bg_section_active") : true;
 			var overlayColor = typeof $sectionData.attr("data-row_overlay_color") != "undefined" ? $sectionData.attr("data-row_overlay_color") : "";
 			var overlayActive = typeof $sectionData.attr("data-row_overlay_active") != "undefined" ? $sectionData.attr("data-row_overlay_active") : false;
 
+			var idImage = typeof $sectionData.attr("data-id_image_bg_section") == "undefined" ? "" : $sectionData.attr("data-id_image_bg_section");
+			var imageUrl = typeof $sectionData.attr("data-image_bg_section") == "undefined" ? "" : $sectionData.attr("data-image_bg_section");
+			var width = typeof $section.attr("data-background_image_width") == "undefined" ? "" : $section.attr("data-background_image_width");
+			var height = typeof $section.attr("data-background_image_height") == "undefined" ? "" : $section.attr("data-background_image_height");
+			var activeImage = typeof $sectionData.attr("data-image_bg_section_active") != "undefined" ? $sectionData.attr("data-image_bg_section_active") : true;
+
+			var youtubeVideo = $sectionData.attr("data-video_bg_url_section");
+			var vimeoUrl = $sectionData.attr("data-video_bg_url_vimeo_section");
+			var mp4Video = $sectionData.attr("data-video_bg_id_section");
+			var mp4VideoID = "";
+
 			var currentBackgroundData = {
-				color: color,
-				youtubeVideo: youtubeVideo,
-				vimeoUrl: vimeoUrl,
-				mp4Video: mp4Video,
-				idImage: idImage,
-				imageUrl: imageUrl,
+				bgColor: {
+					color: color,
+					active: colorActive
+				},
+				imageBG: {
+					idImage: idImage,
+					imageUrl: imageUrl,
+					width: width,
+					height: height,
+					active: activeImage
+				},
+				bgVideo: {
+					youtubeVideo: youtubeVideo,
+					vimeoUrl: vimeoUrl,
+					mp4Video: mp4Video,
+					mp4VideoID: mp4VideoID
+				},
 				overlay: {
 					color: overlayColor,
 					active: overlayActive

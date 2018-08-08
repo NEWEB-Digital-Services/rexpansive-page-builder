@@ -1413,9 +1413,9 @@ wp_reset_postdata();
             <div class="background_set_image row valign-wrapper">
                 <div class="col">
                     <div class="valign-wrapper">
-                        <div class="rex-check">
-                            <input type="radio" id="background-section-value-image" class="background_type with-gap" name="background_type" value="image" />
-                            <label for="background-section-value-image" title="Image">
+                        <div class="bg-image-section-active-wrapper">
+                            <input type="checkbox" id="image-section-active" value="color" />
+                            <label for="image-section-active">
                                 <span class="rex-ripple" />
                             </label>
                         </div>
@@ -1435,9 +1435,9 @@ wp_reset_postdata();
             <div id="background-section-set-color" class="background_set_color row valign-wrapper">
                 <div class="col">
                     <div class="valign-wrapper">
-                        <div class="">
-                            <input type="radio" id="background-section-value-color" class="background_type with-gap" name="background_type" value="color" />
-                            <label for="background-section-value-color">
+                        <div class="bg-color-section-active-wrapper">
+                            <input type="checkbox" id="color-section-active" value="color" />
+                            <label for="color-section-active">
                                 <span class="rex-ripple" />
                             </label>
                         </div>

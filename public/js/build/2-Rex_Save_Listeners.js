@@ -543,12 +543,14 @@ var Rex_Save_Listeners = (function ($) {
             var section_name = "",
                 type = "perfect-grid",
                 color_bg_section = "#ffffff",
+                color_bg_section_active = "true",
                 dimension = "full",
                 margin = "",
                 image_bg_section = "",
                 image_width = 0,
                 image_height = 0,
                 id_image_bg_section = "",
+                image_bg_section_active = "",
                 video_bg_url_section = '',
                 video_bg_id_section = '',
                 video_mp4_url = '',
@@ -584,7 +586,8 @@ var Rex_Save_Listeners = (function ($) {
             type = $sectionData.attr('data-type') === undefined ? "perfect-grid"
                 : $sectionData.attr('data-type');
 
-            color_bg_section = $sectionData.attr("data-color_bg_section");
+            color_bg_section = typeof $sectionData.attr("data-color_bg_section") == "undefined" ? "" : $sectionData.attr("data-color_bg_section");
+            color_bg_section_active = typeof $sectionData.attr("data-color_bg_section_active") == "undefined" ? true : $sectionData.attr("data-color_bg_section_active");
 
             margin = $sectionData.attr('data-margin') === undefined ? ""
                 : $sectionData.attr('data-margin');
@@ -597,6 +600,7 @@ var Rex_Save_Listeners = (function ($) {
                 : parseInt($section.attr('data-background_image_height'));
             id_image_bg_section = $sectionData.attr('data-id_image_bg_section') === undefined ? ""
                 : $sectionData.attr('data-id_image_bg_section');
+            image_bg_section_active = typeof $sectionData.attr("data-image_bg_section_active") == "undefined" ? true : $sectionData.attr("data-image_bg_section_active");
 
             video_mp4_url = $sectionData.attr('data-video_mp4_url') === undefined ? ""
                 : $sectionData.attr('data-video_mp4_url');
@@ -659,8 +663,8 @@ var Rex_Save_Listeners = (function ($) {
             row_active_photoswipe = typeof $sectionData.attr('data-row_active_photoswipe') == "undefined" ? "0"
                 : $sectionData.attr('data-row_active_photoswipe');
 
-            row_overlay_color = $sectionData.attr("data-row_overlay_color");
-            row_overlay_active = $sectionData.attr("data-row_overlay_active");
+            row_overlay_color = typeof $sectionData.attr("data-row_overlay_color") == "undefined" ? "" : $sectionData.attr("data-row_overlay_color");
+            row_overlay_active = typeof $sectionData.attr("data-row_overlay_active") == "undefined" ? false : $sectionData.attr("data-row_overlay_active");
 
             rexlive_section_id = $section.attr("data-rexlive-section-id");
             collapse_grid = typeof $section.attr("data-rex-collapse-grid") == "undefined" ? false : $section.attr("data-rex-collapse-grid");
@@ -670,7 +674,9 @@ var Rex_Save_Listeners = (function ($) {
                     + ' section_name="' + section_name
                     + '" type="' + type
                     + '" color_bg_section="' + color_bg_section
+                    + '" color_bg_section_active="' + color_bg_section_active
                     + '" dimension="' + dimension
+                    + '" image_bg_section_active="' + image_bg_section_active
                     + '" image_bg_section="' + image_bg_section
                     + '" id_image_bg_section="' + id_image_bg_section
                     + '" video_bg_url_section="' + video_bg_url_section
@@ -722,8 +728,10 @@ var Rex_Save_Listeners = (function ($) {
                 props["section_name"] = section_name;
                 props["type"] = type;
                 props["color_bg_section"] = color_bg_section;
+                props["color_bg_section_active"] = color_bg_section_active;
                 props["dimension"] = dimension;
                 props["margin"] = margin;
+                props["image_bg_section_active"] = image_bg_section_active;
                 props["image_bg_section"] = image_bg_section;
                 props["image_width"] = image_width;
                 props["image_height"] = image_height;

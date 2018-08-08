@@ -161,13 +161,22 @@ var Rexlive_MediaUploader = (function ($) {
                     delete obj_attachment.caption;
 
                 display = wp.media.string.props(display, obj_attachment);
-                console.log(obj_attachment.id,obj_attachment.url)
-                console.log(display);
+
+                var $data = image_uploader_frame.state('upload-image-bg').get('$data');
+
                 // save id image info
-                image_uploader_frame.state('upload-image-bg').get('$data').val(obj_attachment.id);
+                $data.val(obj_attachment.id);
+                $data.attr("data-rex-image-bg-url", display.src);
+                $data.attr("data-rex-image-width", display.width);
+                $data.attr("data-rex-image-height", display.height);
+
                 // create image preview
                 image_uploader_frame.state('upload-image-bg').get('$preview').css('backgroundImage', 'url(' + obj_attachment.url + ')');
                 image_uploader_frame.state('upload-image-bg').get('$preview').find("i").css("display", "none");
+
+                if($data.parents("#rex-edit-background-section").length != 0){
+                    Background_Image_Modal.updateImageBackground();
+                }
             });
         });
 

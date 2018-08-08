@@ -130,24 +130,32 @@ var Rexbuilder_Dom_Util = (function ($) {
         $section.css("margin-right", margins.right + "px");
         $section.css("margin-bottom", margins.bottom + "px");
         $section.css("margin-left", margins.left + "px");
-        var $sectionData
     }
 
-    var _updateImageBG = function ($target, idImage, urlImage, w, h, type) {
+    var _updateImageBG = function ($target, data) {
+
+        var idImage = data.idImage;
+        var urlImage = data.urlImage;
+        var w = data.width;
+        var h = data.height;
+        var type = data.type;
+        var active = data.active;
+
         var $targetData = null;
         var targetType = "";
+
         if ($target.hasClass("rexpansive_section")) {
-            $targetData = $target.children("section-data");
+            $targetData = $target.children(".section-data");
+            $targetData.attr("image_bg_section_active", active);
             targetType = "section";
             type = "";
         } else if ($target.hasClass("grid-item-content")) {
             $targetData = $target.parents(".grid-stack-item").children(".rexbuilder-block-data");
             targetType = "block";
         } else {
-            $targetData = undefined;
-            targetType = undefined;
             return;
         }
+
         if (idImage == "") {
             $targetData.attr('data-id_image_bg_' + targetType, "");
             $target.attr('data-background_image_width', "");
@@ -168,7 +176,8 @@ var Rexbuilder_Dom_Util = (function ($) {
                 //same image
                 return
             }
-            $target.attr("style", "background-image: url('" + urlImage + "'); background-color: rgba(0, 0, 0, 0);");
+
+            $target.css("background-image", "url(" + urlImage + ")");
             $target.attr('data-background_image_width', w);
             $target.attr('data-background_image_height', h);
             $targetData.attr('data-id_image_bg_' + targetType, idImage);
@@ -495,9 +504,11 @@ var Rexbuilder_Dom_Util = (function ($) {
         $section.css('background-color', color);
     }
 
-    var _updateSectionBackgroundColor = function ($section, color) {
-        $section.css('background-color', color);
-        $section.children(".section-data").attr("data-color_bg_section", color);
+    var _updateSectionBackgroundColor = function ($section, bgColor) {
+        var $sectionData = $section.children(".section-data");
+        $section.css('background-color', bgColor.color);
+        $sectionData.attr("data-color_bg_section", bgColor.color);
+        $sectionData.attr("data-color_bg_section_active", bgColor.active);
     }
 
     var _updateSectionOverlayColorLive = function ($section, color) {
@@ -520,7 +531,7 @@ var Rexbuilder_Dom_Util = (function ($) {
     }
 
     var _updateSectionBackgroundImage = function ($section, data) {
-        _updateImageBG($section, data.imageOptions.idImage, data.imageOptions.urlImage, data.imageOptions.width, data.imageOptions.height);
+        _updateImageBG($section, data);
     }
 
     var _performAction = function (action, flag) {
@@ -595,10 +606,13 @@ var Rexbuilder_Dom_Util = (function ($) {
                 _updateCustomCSS(dataToUse.css);
                 break;
             case "updateSectionBackgroundColor":
-                _updateSectionBackgroundColor($section, dataToUse.color);
+                _updateSectionBackgroundColor($section, dataToUse);
                 break;
             case "updateSectionOverlay":
                 _updateSectionOverlay($section, dataToUse);
+                break;
+            case "updateSectionImageBG":
+                _updateImageBG($section, dataToUse);
                 break;
             default:
                 break;

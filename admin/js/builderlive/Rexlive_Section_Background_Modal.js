@@ -5,19 +5,14 @@ var SectionBackground_Modal = (function ($) {
 
     var _openSectionBackgroundModal = function (data) {
 
-        Background_Color_Modal.updateColorModal(data.color);
+        Background_Color_Modal.updateColorModal(data.bgColor);
         Overlay_Color_Modal.updateOverlayModal(data.overlay);
-
-        section_background_properties.$image_url.val(data.idImage);
-        if (data.idImage != "") {
-            section_background_properties.$image_preview.css('backgroundImage', 'url(' + data.imageUrl + ')')
-            section_background_properties.$image_preview.find("i").css("display", "none");
-        }
-
+        Background_Image_Modal.updateImageModal(data.imageBG);
         Rexlive_Modals_Utils.openModal(section_background_properties.$self.parent('.rex-modal-wrap'));
     }
-
+    
     var _closeSectionBackgroundModal = function () {
+        Background_Image_Modal.resetImageModal();
         Rexlive_Modals_Utils.closeModal(section_background_properties.$self.parent('.rex-modal-wrap'));
     }
 
@@ -30,23 +25,12 @@ var SectionBackground_Modal = (function ($) {
             e.preventDefault();
             _closeSectionBackgroundModal();
         });
-
-        section_background_properties.$image_upload_wrap.click(function (e) {
-            Rexlive_MediaUploader.openEditImageMediaUploader(section_background_properties.$image_url, section_background_properties.$image_preview, section_background_properties.$image_url.val());
-        });
     }
 
     var _init = function () {
         var $editSection = $("#rex-edit-background-section");
         section_background_properties = {
             $self: $editSection,
-
-            $image_upload_wrap: $editSection.find('#bg-section-set-img-wrap'),
-            $type_image: $editSection.find('#background-section-value-image'),
-            $image_preview: $editSection.find('#bg-section-img-preview'),
-            $image_preview_icon: $editSection.find('#bg-section-img-preview i'),
-            $image_url: $editSection.find('#background-section-url'),
-            $image_id: $editSection.find('#background-section-up-img'),
 
             $linkYoutube: $editSection.find("#rex-insert-youtube-url"),
             $linkVimeo: $editSection.find("#rex-insert-vimeo-url"),
@@ -62,13 +46,14 @@ var SectionBackground_Modal = (function ($) {
         }
 
         Background_Color_Modal.init($editSection);
+        Background_Image_Modal.init($editSection);
         Overlay_Color_Modal.init($editSection);
         _linkDocumentListeners();
     }
 
     return {
         init: _init,
-        openSectionBackgroundModal: _openSectionBackgroundModal
+        openSectionBackgroundModal: _openSectionBackgroundModal,
     };
 
 })(jQuery);
