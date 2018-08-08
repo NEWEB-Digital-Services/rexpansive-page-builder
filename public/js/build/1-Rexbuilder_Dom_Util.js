@@ -487,6 +487,23 @@ var Rexbuilder_Dom_Util = (function ($) {
         $("#rexpansive-builder-style-inline-css").text(newCss);
     }
 
+    var _updateSectionVideoBackground = function (videoOpt) {
+        Rexbuilder_Util.updateVideos(videoOpt);
+    }
+
+    var _updateSectionBackgroundColorLive = function ($section, color) {
+        $section.css('background-color', color);
+    }
+
+    var _updateSectionBackgroundColor = function ($section, color) {
+        $section.css('background-color', color);
+        $section.children(".section-data").attr("data-color_bg_section", color);
+    }
+
+    var _updateSectionOverlayColorLive = function ($section, color) {
+        $section.children(".responsive-overlay").css("background-color", color);
+    }
+
     var _updateSectionOverlay = function ($section, overlay) {
         var $overlayElem = $section.children(".responsive-overlay");
         var $sectionData = $section.children(".section-data");
@@ -495,26 +512,11 @@ var Rexbuilder_Dom_Util = (function ($) {
         $sectionData.attr("data-row_overlay_color", overlay.color);
         $sectionData.attr("data-row_overlay_active", overlay.active);
 
-        if (overlay.active) {
+        if (overlay.active.toString() == "true") {
             $overlayElem.addClass("rex-active-overlay");
         } else {
             $overlayElem.removeClass("rex-active-overlay");
         }
-    }
-
-    var _updateSectionBackground = function ($section, data) {
-        var $sectionData = $section.children(".section-data");
-        $section.css('background-color', data.color);
-        $sectionData.attr("data-color_bg_section", data.color);
-        _updateImageBG($section, data.imageOptions.idImage, data.imageOptions.urlImage, data.imageOptions.width, data.imageOptions.height);
-    }
-
-    var _updateSectionVideoBackground = function (videoOpt) {
-        Rexbuilder_Util.updateVideos(videoOpt);
-    }
-
-    var _updateSectionBackgroundColor = function ($section, color) {
-        $section.css('background-color', color);
     }
 
     var _updateSectionBackgroundImage = function ($section, data) {
@@ -592,6 +594,12 @@ var Rexbuilder_Dom_Util = (function ($) {
             case "updateCustomCSS":
                 _updateCustomCSS(dataToUse.css);
                 break;
+            case "updateSectionBackgroundColor":
+                _updateSectionBackgroundColor($section, dataToUse.color);
+                break;
+            case "updateSectionOverlay":
+                _updateSectionOverlay($section, dataToUse);
+                break;
             default:
                 break;
         }
@@ -624,10 +632,11 @@ var Rexbuilder_Dom_Util = (function ($) {
         updateCustomClasses: _updateCustomClasses,
         collapseGrid: _collapseGrid,
         updateCustomCSS: _updateCustomCSS,
-        updateSectionOverlay: _updateSectionOverlay,
-        updateSectionBackground: _updateSectionBackground,
         updateSectionVideoBackground: _updateSectionVideoBackground,
+        updateSectionBackgroundImage: _updateSectionBackgroundImage,
         updateSectionBackgroundColor: _updateSectionBackgroundColor,
-        updateSectionBackgroundImage: _updateSectionBackgroundImage
+        updateSectionBackgroundColorLive: _updateSectionBackgroundColorLive,
+        updateSectionOverlay: _updateSectionOverlay,
+        updateSectionOverlayColorLive: _updateSectionOverlayColorLive
     };
 })(jQuery);

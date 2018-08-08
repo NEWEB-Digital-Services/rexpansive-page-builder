@@ -162,21 +162,44 @@
 		$(document).on("rexlive:apply_background_color_section", function (e) {
 			var data = e.settings.data_to_send;
 			console.log("applying background color");
-			return;
-			var $section = Rexbuilder_Util_Editor.sectionChangingOptionsObj;
+
+			var $section = Rexbuilder_Util_Editor.sectionEditingBackgroundObj;
 			var oldColor = $section.children(".section-data").attr("data-color_bg_section");
 
 			var reverseData = {
 				color: oldColor
 			}
 
-			Rexbuilder_Dom_Util.updateSectionBackground();
+			Rexbuilder_Dom_Util.updateSectionBackgroundColor($section, data.color);
 
 			var actionData = {
 				color: data.color
 			}
 
 			Rexbuilder_Util_Editor.pushAction($section, "updateSectionBackgroundColor", actionData, reverseData);
+		});
+
+		$(document).on("rexlive:change_section_overlay", function (e) {
+			var data = e.settings.data_to_send;
+
+			var $section = Rexbuilder_Util_Editor.sectionEditingBackgroundObj;
+			var $dataSection = $section.children(".section-data");
+			var oldColor = $dataSection.attr("data-row_overlay_color");
+			var oldActive = $dataSection.attr("data-row_overlay_active");
+
+			var reverseData = {
+				color: oldColor,
+				active: oldActive
+			}
+
+			Rexbuilder_Dom_Util.updateSectionOverlay($section, data);
+
+			var actionData = {
+				color: data.color,
+				active: data.active
+			}
+
+			Rexbuilder_Util_Editor.pushAction($section, "updateSectionOverlay", actionData, reverseData);
 		});
 
 		// ----------------------------------
@@ -465,8 +488,10 @@
 				mp4Video: mp4Video,
 				idImage: idImage,
 				imageUrl: imageUrl,
-				overlayColor: overlayColor,
-				overlayActive: overlayActive
+				overlay: {
+					color: overlayColor,
+					active: overlayActive
+				}
 			}
 
 			var data = {

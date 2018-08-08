@@ -1487,7 +1487,7 @@ wp_reset_postdata();
             <div id="bg-overlay-row-set-color" class="background_set_color row valign-wrapper">
                 <div class="col">
                     <div class="valign-wrapper">
-                        <div class="">
+                        <div class="overlay-active-wrapper">
                             <input type="checkbox" id="overlay-section-active" value="color" />
                             <label for="overlay-section-active">
                                 <span class="rex-ripple" />

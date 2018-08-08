@@ -411,7 +411,7 @@ var Rexbuilder_Util = (function ($) {
 
     var updateSection = function ($section, $gallery, targetProps, forceCollapseElementsGrid) {
         var $sectionData = $section.children(".section-data");
-        
+
         var videoOptions = {
             targetData: $sectionData,
             target: $section,
@@ -422,25 +422,26 @@ var Rexbuilder_Util = (function ($) {
             targetType: "section",
             hasAudio: false
         };
-
-        var sectionBGoptions = {
-            color: targetProps["color_bg_section"],
-            imageOptions: {
-                idImage: isNaN(parseInt(targetProps['id_image_bg_section'])) ? "" : parseInt(targetProps['id_image_bg_section']), 
-                urlImage: targetProps['image_bg_section'], 
-                width: parseInt(targetProps['image_width']), 
-                height: parseInt(targetProps['image_height'])
-            }
+        
+        var imageOptions = {
+            idImage: isNaN(parseInt(targetProps['id_image_bg_section'])) ? "" : parseInt(targetProps['id_image_bg_section']),
+            urlImage: targetProps['image_bg_section'],
+            width: parseInt(targetProps['image_width']),
+            height: parseInt(targetProps['image_height'])
         }
 
-        var sectionOverlayOptins= {
+        var sectionOverlay = {
             color: targetProps["row_overlay_color"],
             active: targetProps["row_overlay_active"],
         }
 
         Rexbuilder_Dom_Util.updateSectionVideoBackground(videoOptions);
-        Rexbuilder_Dom_Util.updateSectionBackground($section, sectionBGoptions);
-        Rexbuilder_Dom_Util.updateSectionOverlay($section, sectionOverlayOptins);
+
+        Rexbuilder_Dom_Util.updateImageBG($section, imageOptions.idImage, imageOptions.urlImage, imageOptions.width, imageOptions.height);
+
+        Rexbuilder_Dom_Util.updateSectionBackgroundColor($section, targetProps["color_bg_section"]);
+
+        Rexbuilder_Dom_Util.updateSectionOverlay($section, sectionOverlay);
 
         var margins = {
             top: isNaN(parseInt(targetProps["row_margin_top"])) ? 0 : parseInt(targetProps["row_margin_top"]),

@@ -6,6 +6,7 @@ var SectionBackground_Modal = (function ($) {
     var _openSectionBackgroundModal = function (data) {
 
         Background_Color_Modal.updateColorModal(data.color);
+        Overlay_Color_Modal.updateOverlayModal(data.overlay);
 
         section_background_properties.$image_url.val(data.idImage);
         if (data.idImage != "") {

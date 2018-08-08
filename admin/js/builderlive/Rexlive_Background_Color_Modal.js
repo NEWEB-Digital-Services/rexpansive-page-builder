@@ -73,8 +73,7 @@ var Background_Color_Modal = (function ($) {
             background_color_properties.$type_color.prop("checked", true);
             background_color_properties.$color_value.spectrum('set', color);
             background_color_properties.$color_runtime_value.val(color);
-            changeColorEvent.data_to_send.color = color;
-            Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(changeColorEvent);
+            _applyBackgroundColor(color);
         });
 
         $('.block-background-color-picker .sp-choose').on('click', function () {

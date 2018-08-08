@@ -296,7 +296,12 @@ var Rexbuilder_Util_Editor = (function ($) {
 
         $(document).on("rexlive:change_section_bg_color", function (e) {
             var data = e.settings;
-            Rexbuilder_Dom_Util.updateSectionBackgroundColor(Rexbuilder_Util_Editor.sectionEditingBackgroundObj, data.data_to_send.color);
+            Rexbuilder_Dom_Util.updateSectionBackgroundColorLive(Rexbuilder_Util_Editor.sectionEditingBackgroundObj, data.data_to_send.color);
+        });
+
+        $(document).on("rexlive:change_section_overlay_color", function (e) {
+            var data = e.settings;
+            Rexbuilder_Dom_Util.updateSectionOverlayColorLive(Rexbuilder_Util_Editor.sectionEditingBackgroundObj, data.data_to_send.color);
         });
 
     }
