@@ -77,18 +77,18 @@ var Rexbuilder_Section = (function ($) {
         $(document).on("click", ".collapse-grid", function (e) {
             var $section = $(e.target).parents(".rexpansive_section");
             var $grid = $section.find(".grid-stack-row");
-            var galleryEditorIstance = $grid.data().plugin_perfectGridGalleryEditor;
-            var isCollapsed = galleryEditorIstance.properties.oneColumModeActive;
+            var galleryEditorInstance = $grid.data().plugin_perfectGridGalleryEditor;
+            var isCollapsed = galleryEditorInstance.properties.oneColumModeActive;
 
             var reverseData = {
-                gridInstance: galleryEditorIstance,
+                gridInstance: galleryEditorInstance,
                 collapse: isCollapsed
             }
             var newCollapse = !isCollapsed;
 
-            Rexbuilder_Dom_Util.collapseGrid(galleryEditorIstance, newCollapse);
+            Rexbuilder_Dom_Util.collapseGrid(galleryEditorInstance, newCollapse);
             var actionData = {
-                gridInstance: galleryEditorIstance,
+                gridInstance: galleryEditorInstance,
                 collapse: newCollapse
             }
 

@@ -13,6 +13,8 @@ defined('ABSPATH') or exit;
 ?>
 <?php
 global $post;
+global $pagenow;
+
 $source = get_permalink($post->ID);
 
 global $layouts;

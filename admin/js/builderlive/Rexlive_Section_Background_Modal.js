@@ -5,15 +5,15 @@ var SectionBackground_Modal = (function ($) {
 
     var _openSectionBackgroundModal = function (data) {
 
-        Background_Color_Modal.updateColorModal(data.bgColor);
-        Overlay_Color_Modal.updateOverlayModal(data.overlay);
-        Background_Image_Modal.updateImageModal(data.imageBG);
+        Background_Section_Color_Modal.updateColorModal(data.bgColor);
+        Overlay_Color_Section_Modal.updateOverlayModal(data.overlay);
+        Background_Section_Image_Modal.updateImageModal(data.imageBG);
         Section_Video_Background_Modal.updateVideoModal(data.bgVideo);
         Rexlive_Modals_Utils.openModal(section_background_properties.$self.parent('.rex-modal-wrap'));
     }
     
     var _closeSectionBackgroundModal = function () {
-        Background_Image_Modal.resetImageModal();
+        Background_Section_Image_Modal.resetImageModal();
         Rexlive_Modals_Utils.closeModal(section_background_properties.$self.parent('.rex-modal-wrap'));
     }
 
@@ -36,10 +36,10 @@ var SectionBackground_Modal = (function ($) {
             $save_button: $editSection.find('#rex-edit-row-background-save'),
             $cancel_button: $editSection.find('#rex-edit-row-background-cancel'),
         }
-
-        Background_Color_Modal.init($editSection);
-        Background_Image_Modal.init($editSection);
-        Overlay_Color_Modal.init($editSection);
+        console.log($editSection);
+        Background_Section_Color_Modal.init($editSection);
+        Background_Section_Image_Modal.init($editSection);        
+        Overlay_Color_Section_Modal.init($editSection);
         Section_Video_Background_Modal.init($editSection);
         _linkDocumentListeners();
     }

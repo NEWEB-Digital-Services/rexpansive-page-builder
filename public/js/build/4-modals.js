@@ -161,7 +161,6 @@
 
 		$(document).on("rexlive:apply_background_color_section", function (e) {
 			var data = e.settings.data_to_send;
-			console.log("applying background color");
 
 			var $section = Rexbuilder_Util_Editor.sectionEditingBackgroundObj;
 			var $dataSection = $section.children(".section-data");
@@ -287,134 +286,125 @@
 				hasAudio: false
 			}
 
-			//Rexbuilder_Util_Editor.pushAction($section, "updateSectionVideoBG", actionData, reverseData);
+			Rexbuilder_Util_Editor.pushAction($section, "updateSectionVideoBG", actionData, reverseData);
 		});
 
-		// ----------------------------------
-		/*
-		* function uploadBlockBackground($wrap) { if( image_block_edit_frame ) {
-			* image_block_edit_frame.open(); return; }
-			* 
-	 * //create a new Library, base on defaults //you can put your
-	 * attributes in var editImage = wp.media.controller.Library.extend({
-	 * defaults : _.defaults({ id: 'upload-block-bg', title: 'Upload
-	 * Background', allowLocalEdits: true, displaySettings: true,
-	 * displayUserSettings: true, multiple : false, library: wp.media.query( {
-	 * type: 'image' } ), type : 'image',//audio, video, application/pdf,
-	 * ... etc }, wp.media.controller.Library.prototype.defaults ) });
-	 * 
-	 * //Setup media frame image_block_edit_frame = wp.media({ button : {
-	 * text : 'Select' }, state : 'upload-block-bg', states : [ new
-	 * editImage() ] });
-	 * 
-	 * //on close, if there is no select files, remove all the files already
-	 * selected in your main frame
-	 * image_block_edit_frame.on('close',function() { var selection =
-	 * image_block_edit_frame.state('upload-block-bg').get('selection');
-	 * if(!selection.length){ } });
-	 * 
-	 * 
-	 * image_block_edit_frame.on( 'select', function() { var state =
-	 * image_block_edit_frame.state('upload-block-bg'); var selection =
-	 * state.get('selection'); var imageArray = [];
-	 * 
-	 * if ( ! selection ) return;
-	 * 
-	 * //to get right side attachment UI info, such as: size and alignments
-	 * //org code from /wp-includes/js/media-editor.js, arround `line 603 --
-	 * send: { ... attachment: function( props, attachment ) { ... `
-	 * selection.each(function(attachment) { var display = state.display(
-	 * attachment ).toJSON(); var obj_attachment = attachment.toJSON() var
-	 * caption = obj_attachment.caption, options, html;
-	 *  // If captions are disabled, clear the caption. if ( !
-	 * wp.media.view.settings.captions ) delete obj_attachment.caption;
-	 * 
-	 * display = wp.media.string.props( display, obj_attachment );
-	 * 
-	 * options = { id: obj_attachment.id, post_content:
-	 * obj_attachment.description, post_excerpt: caption };
-	 * 
-	 * if ( display.linkUrl ) options.url = display.linkUrl;
-	 * 
-	 * if ( 'image' === obj_attachment.type ) { } else if ( 'video' ===
-	 * obj_attachment.type ) { html = wp.media.string.video( display,
-	 * obj_attachment ); } else if ( 'audio' === obj_attachment.type ) {
-	 * html = wp.media.string.audio( display, obj_attachment ); } else {
-	 * html = wp.media.string.link( display ); options.post_title =
-	 * display.title; }
-	 * 
-	 * //attach info to attachment.attributes object
-	 * attachment.attributes['nonce'] =
-	 * wp.media.view.settings.nonce.sendToEditor;
-	 * attachment.attributes['attachment'] = options;
-	 * attachment.attributes['html'] = html;
-	 * attachment.attributes['post_id'] = wp.media.view.settings.post.id;
-	 * 
-	 * $wrap.val(obj_attachment.id);
-	 * background_modal_properties.$image_url.val(obj_attachment.url);
-	 * background_modal_properties.$image_id.val(obj_attachment.id);
-	 * background_modal_properties.$image_size.val(display.size);
-	 * background_modal_properties.$image_preview.css('background-image',
-	 * 'url(' + obj_attachment.url + ')');
-	 * background_modal_properties.$image_preview_icon.hide();
-	 * background_modal_properties.$type_image.prop('checked', true); });
-	 * });
-	 * 
-	 * //reset selection in popup, when open the popup
-	 * image_block_edit_frame.on('open',function() { var attachment; var
-	 * selection =
-	 * image_block_edit_frame.state('upload-block-bg').get('selection');
-	 * 
-	 * //remove all the selection first selection.each(function(image) {
-	 * attachment = wp.media.attachment( image.attributes.id );
-	 * attachment.fetch(); selection.remove( attachment ? [ attachment ] : [] );
-	 * });
-	 *  // Check the already inserted image if(
-	 * background_modal_properties.$image_id.val() ) { attachment =
-	 * wp.media.attachment( background_modal_properties.$image_id.val() );
-	 * attachment.fetch(); selection.add( attachment ? [ attachment ] : [] ); }
-	 * });
-	 * 
-	 * //now open the popup image_block_edit_frame.open(); } //
-	 * uploadBlockBackground END
-	 * 
-	 * 
-	 * $('#modal-setting-button').on('click', '#background_up_img',
-	 * function(event){ //c -> click del mouse console.log("ciao");
-	 * event.preventDefault(); uploadBlockBackground($(this)); });
-	 */
+		$(document).on("rexlive:apply_background_color_block", function (e) {
+			var data = e.settings.data_to_send;
 
-		// attach a click event (or whatever you want) to some element on your
-		// page
-		/* 		$('#modal-setting-button').on('click', '#background_up_img', function (event) {
-					event.preventDefault();
-		
-					// if the file_frame has already been created, just reuse it
-					if (file_frame) {
-						file_frame.open();
-						return;
-					}
-		
-					file_frame = wp.media.frames.file_frame = wp.media({
-						
-						 title: $( this ).data( 'uploader_title' ), button: {
-						 text: $( this ).data( 'uploader_button_text' ), },
-						 multiple: false // set this to true for multiple file
-						 selection
-					});
-		
-					file_frame.on('select', function () {
-						attachment = file_frame.state().get('selection')
-							.first().toJSON();
-		
-						// do something with the file here
-						$('#frontend-button').hide();
-						$('#frontend-image').attr('src', attachment.url);
-					});
-		
-					file_frame.open();
-				}); */
-		// ------------------------------------------
+			var rex_block_id = data.blockRexID;
+			var $elem = Rexbuilder_Util.$rexContainer.find("div [data-rexbuilder-block-id=\"" + rex_block_id + "\"]");
+			var $elemData = $elem.children(".rexbuilder-block-data");
+			var $section = $elem.parents(".rexpansive_section");
+			var oldColor = $elemData.attr("data-color_bg_block");
+			var oldActive = typeof $elemData.attr("data-color_bg_elem_active") != "undefined" ? $elemData.attr("data-color_bg_elem_active") : true;
+
+			var reverseData = {
+				blockRexID: rex_block_id,
+				color: oldColor,
+				active: oldActive
+			}
+
+			Rexbuilder_Dom_Util.updateBlockBackgroundColor(data);
+
+			var actionData = {
+				blockRexID: rex_block_id,
+				color: data.color,
+				active: data.active
+			}
+
+			Rexbuilder_Util_Editor.pushAction($section, "updateBlockBackgroundColor", actionData, reverseData);
+		});
+
+		$(document).on("rexlive:change_block_overlay", function (e) {
+			var data = e.settings.data_to_send;
+
+			var rex_block_id = data.blockRexID;
+			var $elem = Rexbuilder_Util.$rexContainer.find("div [data-rexbuilder-block-id=\"" + rex_block_id + "\"]");
+			var $elemData = $elem.children(".rexbuilder-block-data");
+			var $section = $elem.parents(".rexpansive_section");
+			var oldOverlayColor = typeof $elemData.attr("data-overlay_block_color") != "undefined" ? $elemData.attr("data-overlay_block_color") : "";
+			var oldOverlayActive = typeof $elemData.attr("data-overlay_block_color_active") != "undefined" ? $elemData.attr("data-overlay_block_color_active") : false;
+
+			var reverseData = {
+				blockRexID: rex_block_id,
+				color: oldOverlayColor,
+				active: oldOverlayActive
+			}
+
+			Rexbuilder_Dom_Util.updateBlockOverlay(data);
+
+			var actionData = {
+				blockRexID: rex_block_id,
+				color: data.color,
+				active: data.active
+			}
+
+			Rexbuilder_Util_Editor.pushAction($section, "updateBlockOverlay", actionData, reverseData);
+		});
+
+		$(document).on("rexlive:apply_background_image_block", function (e) {
+			var data = e.settings.data_to_send;
+			console.log(data);
+			return;
+
+			var rex_block_id = data.blockRexID;
+			var $elem = Rexbuilder_Util.$rexContainer.find("div [data-rexbuilder-block-id=\"" + rex_block_id + "\"]");
+			var $itemContent = $elem.find(".grid-item-content");
+			var $elemData = $elem.children(".rexbuilder-block-data");
+			var $section = $elem.parents(".rexpansive_section");
+			var galleryEditorInstance = Rexbuilder_Util.getGalleryInstance($section);
+
+			var old_idImage = typeof $elemData.attr("data-id_image_bg_block") == "undefined" ? "" : $elemData.attr("data-id_image_bg_block");
+			var old_imageUrl = typeof $elemData.attr("data-image_bg_block") == "undefined" ? "" : $elemData.attr("data-image_bg_block");
+			var old_width = typeof $itemContent.attr("data-background_image_width") == "undefined" ? "" : $itemContent.attr("data-background_image_width");
+			var old_height = typeof $itemContent.attr("data-background_image_height") == "undefined" ? "" : $itemContent.attr("data-background_image_height");
+			var old_activeImage = typeof $elemData.attr("data-image_bg_elem_active") != "undefined" ? $elemData.attr("data-image_bg_elem_active") : true;
+			
+			var defaultTypeImage;
+			if (old_activeImage.toString() == "true") {
+				defaultTypeImage = $elem.parents(".grid-stack-row").attr("data-layout") == "fixed" ? "full" : "natural";
+			} else {
+				defaultTypeImage = "";
+			}
+
+			var old_typeBGimage = typeof $elemData.attr('data-type_bg_block') == "undefined" ? defaultTypeImage : $elemData.attr('data-type_bg_block');
+
+			var reverseData = {
+				$itemContent: $itemContent,
+				imageOpt: {
+					active: old_activeImage,
+					idImage: old_idImage,
+					urlImage: old_imageUrl,
+					width: old_width,
+					height: old_height,
+					typeBGimage: old_typeBGimage
+				}
+			}
+
+			var imageOpt = {
+				active: data.active,
+				idImage: data.idImage,
+				urlImage: data.urlImage,
+				width: data.width,
+				height: data.height,
+				typeBGimage: data.typeBGImage
+			}
+
+			Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOpt);
+			if (galleryEditorInstance.settings.galleryLayout == "masonry") {
+				galleryEditorInstance.updateElementHeight($itemContent.parents(".grid-stack-item"));
+			}
+
+			var actionData = {
+				$itemContent: $itemContent,
+				imageOpt: imageOpt
+			}
+
+			Rexbuilder_Util_Editor.pushAction($section, "updateBlockImageBG", actionData, reverseData);
+		});
+
+		////////////////////////////////////////////////////////////////
 
 		$(document).on('click', '.builder-section-config', function (e) {
 			e.preventDefault();
@@ -611,9 +601,70 @@
 			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 		});
 
-		$(document).on('click', '.builder-change-background', function (e) {
-			console.log("opzioni blocco");
+		$(document).on('click', '.builder-edit-block', function (e) {
 			e.preventDefault();
+
+			var $elem = $(e.target).parents(".grid-stack-item");
+			var rex_block_id = $elem.attr('data-rexbuilder-block-id');
+			var $elemData = $elem.children(".rexbuilder-block-data");
+			var $itemContent = $elem.find(".grid-item-content");
+
+			var color = $elemData.attr("data-color_bg_block");
+			var colorActive = typeof $elemData.attr("data-color_bg_elem_active") != "undefined" ? $elemData.attr("data-color_bg_elem_active") : true;
+			var overlayColor = typeof $elemData.attr("data-overlay_block_color") != "undefined" ? $elemData.attr("data-overlay_block_color") : "";
+			var overlayActive = typeof $elemData.attr("data-overlay_block_color_active") != "undefined" ? $elemData.attr("data-overlay_block_color_active") : false;
+
+			var idImage = typeof $elemData.attr("data-id_image_bg_block") == "undefined" ? "" : $elemData.attr("data-id_image_bg_block");
+			var imageUrl = typeof $elemData.attr("data-image_bg_block") == "undefined" ? "" : $elemData.attr("data-image_bg_block");
+			var width = typeof $itemContent.attr("data-background_image_width") == "undefined" ? "" : $itemContent.attr("data-background_image_width");
+			var height = typeof $itemContent.attr("data-background_image_height") == "undefined" ? "" : $itemContent.attr("data-background_image_height");
+			var activeImage = typeof $elemData.attr("data-image_bg_elem_active") != "undefined" ? $elemData.attr("data-image_bg_elem_active") : true;
+			var defaultTypeImage = $elem.parents(".grid-stack-row").attr("data-layout") == "fixed" ? "full" : "natural";
+			var typeBGimage = typeof $elemData.attr('data-type_bg_block') == "undefined" ? defaultTypeImage : $elemData.attr('data-type_bg_block');
+
+			var mp4Video = typeof $elemData.attr('data-video_mp4_url') == "undefined" ? "" : $elemData.attr('data-video_mp4_url');
+			var youtubeVideo = typeof $elemData.attr('data-video_bg_url_elem') == "undefined" ? "" : $elemData.attr('data-video_bg_url_elem');
+			var mp4VideoID = typeof $elemData.attr('data-video_bg_id_elem') == "undefined" ? "" : $elemData.attr('data-video_bg_id_elem');
+			var vimeoUrl = typeof $elemData.attr('data-video_bg_url_vimeo_elem') == "undefined" ? "" : $elemData.attr('data-video_bg_url_vimeo_elem');
+
+			var currentBlockData = {
+				bgColor: {
+					color: color,
+					active: colorActive,
+					rexID: rex_block_id
+				},
+				imageBG: {
+					idImage: idImage,
+					imageUrl: imageUrl,
+					width: width,
+					height: height,
+					typeBGimage: typeBGimage,
+					active: activeImage,
+					defaultTypeImage: defaultTypeImage,
+					photoswipe: false,
+					activePhotoswipe: false,
+				},
+				bgVideo: {
+					youtubeVideo: youtubeVideo,
+					vimeoUrl: vimeoUrl,
+					mp4Video: mp4Video,
+					mp4VideoID: mp4VideoID
+				},
+				overlay: {
+					color: overlayColor,
+					active: overlayActive,
+					rexID: rex_block_id
+				}
+			};
+
+			var data = {
+				eventName: "rexlive:editBlockOptions",
+				activeBlockData: currentBlockData
+			};
+
+
+
+			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 			return;
 		});
 	}); // End of the DOM ready

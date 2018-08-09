@@ -66,7 +66,7 @@
             gridstackInstanceID: null,
             serializedData: [],
             firstStartGrid: false,
-            mediumEditorIstance: null,
+            mediumEditorInstance: null,
             gridBlocksHeight: 0,
             editedFromBackend: false,
             oneColumMode: false,
@@ -570,8 +570,8 @@
                     return;
                 }
                 if ($handler !== null) {
-                    var scrollbarIstance = $rexScrollbar.overlayScrollbars();
-                    if (typeof scrollbarIstance !== "undefined") {
+                    var scrollbarInstance = $rexScrollbar.overlayScrollbars();
+                    if (typeof scrollbarInstance !== "undefined") {
                         var textHeight = 0;
                         var $blockContent = $block.find('.grid-item-content');
                         var maxBlockHeight = $blockContent.height();
@@ -580,9 +580,9 @@
                             textHeight = this.calculateTextWrapHeight($textWrap);
                         }
                         if (textHeight < maxBlockHeight) {
-                            scrollbarIstance.sleep();
+                            scrollbarInstance.sleep();
                         } else {
-                            scrollbarIstance.update();
+                            scrollbarInstance.update();
                         }
                     }
                 } else {
@@ -590,7 +590,7 @@
                         ;
                     } else {
                         // successive modifiche dovute al cambiamento del contenuto
-                        var scrollbarIstance = $rexScrollbar.overlayScrollbars();
+                        var scrollbarInstance = $rexScrollbar.overlayScrollbars();
 
                         if (!$rexScrollbar.hasClass(Rexbuilder_Util.scrollbarProperties.className) || $rexScrollbar.hasClass('os-host-scrollbar-vertical-hidden')) {
                             var maxBlockHeight = $rexScrollbar.parents('.grid-item-content').height();
@@ -623,11 +623,11 @@
                                 this.updateSizeViewerSizes($block);
                                 this.properties.elementStartingH = h;
                             }
-                            scrollbarIstance.scroll({ y: "50%" }, 100);
-                            scrollbarIstance.update();
+                            scrollbarInstance.scroll({ y: "50%" }, 100);
+                            scrollbarInstance.update();
                         } else {
-                            scrollbarIstance.scroll({ y: "100%" }, 100);
-                            scrollbarIstance.update();
+                            scrollbarInstance.scroll({ y: "100%" }, 100);
+                            scrollbarInstance.update();
                         }
                     }
                 }
@@ -640,10 +640,10 @@
             this.$element.children('.grid-stack-item').each(function () {
                 var $block = $(this);
                 if (!$block.hasClass('block-has-slider')) {
-                    var scrollbarIstance = $block.find('.rex-custom-scrollbar').overlayScrollbars();
-                    if (scrollbarIstance !== undefined) {
+                    var scrollbarInstance = $block.find('.rex-custom-scrollbar').overlayScrollbars();
+                    if (scrollbarInstance !== undefined) {
                         //console.log("sleeping " + $block.data("rexbuilder-block-id"));
-                        scrollbarIstance.sleep();
+                        scrollbarInstance.sleep();
                     }
                 }
             });
@@ -653,10 +653,10 @@
             this.$element.children('.grid-stack-item').each(function () {
                 var $block = $(this);
                 if (!$block.hasClass('block-has-slider')) {
-                    var scrollbarIstance = $block.find('.rex-custom-scrollbar').overlayScrollbars();
-                    if (scrollbarIstance !== undefined) {
+                    var scrollbarInstance = $block.find('.rex-custom-scrollbar').overlayScrollbars();
+                    if (scrollbarInstance !== undefined) {
                         //console.log("waking " + $block.data("rexbuilder-block-id"));
-                        scrollbarIstance.update();
+                        scrollbarInstance.update();
                     }
                 }
             });
@@ -672,10 +672,10 @@
                 $elem = $(this);
                 var $blockContent = $elem.find('.grid-item-content');
                 if (!$elem.hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
-                    var scrollbarIstance = $elem.find('.rex-custom-scrollbar').overlayScrollbars();
-                    if (scrollbarIstance !== undefined) {
+                    var scrollbarInstance = $elem.find('.rex-custom-scrollbar').overlayScrollbars();
+                    if (scrollbarInstance !== undefined) {
                         // //console.log("destroy " + $elem.data("rexbuilder-block-id")); 
-                        scrollbarIstance.destroy();
+                        scrollbarInstance.destroy();
                     }
                 }
             });
@@ -994,7 +994,7 @@
         },
 
         addTextEditor: function ($newEl) {
-            this.addElementToTextEditor(this.properties.mediumEditorIstance, $newEl.find(".text-wrap"));
+            this.addElementToTextEditor(this.properties.mediumEditorInstance, $newEl.find(".text-wrap"));
         },
 
         // Function that creates a new empty block and returns it. The block is
@@ -1728,7 +1728,7 @@
         editorMode: function () {
             var gridstack = this.properties.gridstackInstance;
             gridstack.enable();
-            // this.properties.mediumEditorIstance.setup();
+            // this.properties.mediumEditorInstance.setup();
             //console.log('griglia abilitata');
         },
 
@@ -2171,11 +2171,11 @@
                 }
             });
 
-            this.properties.mediumEditorIstance = editor;
+            this.properties.mediumEditorInstance = editor;
         },
 
         destroyMediumEditor: function () {
-            this.properties.mediumEditorIstance.destroy();
+            this.properties.mediumEditorInstance.destroy();
             this.$element.find(".medium-insert-buttons").remove();
         },
 
@@ -2522,9 +2522,9 @@
                     elDim = store.get($elem.attr("data-rexbuilder-block-id"));
                     gallery.updateElementDataHeightProperties($elemData, elDim.properties[3].h);
                     ;
-                    var scrollbarIstance = $elem.find('.rex-custom-scrollbar').overlayScrollbars();
-                    if (typeof scrollbarIstance != "undefined") {
-                        scrollbarIstance.update();
+                    var scrollbarInstance = $elem.find('.rex-custom-scrollbar').overlayScrollbars();
+                    if (typeof scrollbarInstance != "undefined") {
+                        scrollbarInstance.update();
                     }
                     gallery.updateSizeViewerSizes($elem);
                 });

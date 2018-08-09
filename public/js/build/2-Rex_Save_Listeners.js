@@ -3,11 +3,11 @@ var Rex_Save_Listeners = (function ($) {
     $(function () {
 
         $(document).on("rexlive:saveDefaultLayout", function () {
-            console.log("saving default layout");
 
             var idPost = parseInt($('#id-post').attr('data-post-id'));
 
-            var postClean = createCleanPost();
+            var postClean = "";
+            //createCleanPost();
             //console.log(postClean);
 
             var shortcodePage = '';
@@ -18,7 +18,6 @@ var Rex_Save_Listeners = (function ($) {
                     shortcodePage += createSectionProperties($section, "shortcode", null);
                 }
             });
-            console.log(shortcodePage);
 
             $.ajax({
                 type: 'POST',
@@ -50,7 +49,7 @@ var Rex_Save_Listeners = (function ($) {
 
         $(document).on('rexlive:saveCustomizations', function (e) {
             var $layoutData = Rexbuilder_Util.$rexContainer.parent().children("#rexbuilder-layout-data");
-            console.log($layoutData);
+
             var $layoutsCustomDiv = $layoutData.children(".layouts-customizations");
             var $layoutsAvaiableDiv = $layoutData.children(".available-layouts");
             var customCSS = $("#rexpansive-builder-style-inline-css").text();
@@ -63,15 +62,11 @@ var Rex_Save_Listeners = (function ($) {
             var activeLayoutName = activeLayout[0];
             var updatedLayouts = e.settings.updatedLayouts;
 
-            console.log("saving customization " + activeLayoutName);
-
             var oldCustomizations;
 
             if ($layoutsCustomDiv.attr("data-empty-customizations")) {
-                console.log("no customizations avaiable");
                 oldCustomizations = [];
             } else {
-                console.log("customizations avaiable");
                 oldCustomizations = JSON.parse($layoutsCustomDiv.text());
             }
 
@@ -119,11 +114,8 @@ var Rex_Save_Listeners = (function ($) {
 
             //saving layouts customizations
             $.each(customizationsArray, function (i, layout) {
-                console.log(layout);
                 if (layout.name == activeLayoutName) {
                     if (layout.sections != "") {
-                        console.log(layout);
-                        console.log(layout.sections);
                         $.ajax({
                             type: 'POST',
                             dataType: 'json',
@@ -154,7 +146,6 @@ var Rex_Save_Listeners = (function ($) {
         $(document).on('rexlive:updateLayouts', function (event) {
             var layouts = event.settings.updatedLayouts;
             var idPost = parseInt($('#id-post').attr('data-post-id'));
-            console.log("saving custom");
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
@@ -336,6 +327,7 @@ var Rex_Save_Listeners = (function ($) {
                 gs_y = '',
                 gs_x = '',
                 color_bg_block = "#ffffff",
+                color_bg_block_active = "#ffffff",
                 image_bg_block = "",
                 image_width = 0,
                 image_height = 0,
@@ -351,6 +343,7 @@ var Rex_Save_Listeners = (function ($) {
                 block_custom_class = '',
                 block_padding = '',
                 overlay_block_color = '',
+                overlay_block_color_active = false,
                 zak_background = "",
                 zak_side = "",
                 zak_title = "",
@@ -379,8 +372,8 @@ var Rex_Save_Listeners = (function ($) {
             gs_y = $elem.attr('data-gs-y');
             gs_x = $elem.attr('data-gs-x');
 
-            color_bg_block = $itemContent.css('background-color') != '' ? $itemContent.css('background-color')
-                : '#ffffff';
+            color_bg_block = typeof $itemData.attr("data-color_bg_block") == "undefined" ? "" : $itemData.attr("data-color_bg_block");
+            color_bg_block_active = typeof $itemData.attr("data-color_bg_elem_active") != "undefined" ? $itemData.attr("data-color_bg_elem_active") : true;
 
             image_bg_block = $itemData.attr('data-image_bg_block') === undefined ? ""
                 : $itemData.attr('data-image_bg_block');
@@ -400,20 +393,26 @@ var Rex_Save_Listeners = (function ($) {
             video_bg_url_vimeo = $itemData.attr('data-video_bg_url_vimeo') === undefined ? ""
                 : $itemData.attr('data-video_bg_url_vimeo');
 
-            type_bg_block = $itemData.attr('data-type_bg_block') === undefined ? "full"
-                : $itemData.attr('data-type_bg_block');
-            image_size = $itemData.attr('data-image_size') === undefined ? "full"
-                : $itemData.attr('data-image_size');
+            var defaultTypeImage = $elem.parents(".grid-stack-row").attr("data-layout") == "fixed" ? "full" : "natural";
+
+            type_bg_block = typeof $itemData.attr('data-type_bg_block') == "undefined" ? defaultTypeImage : $itemData.attr('data-type_bg_block');
+            image_size = typeof $itemData.attr('data-image_size') == "undefined" ? "full" : $itemData.attr('data-image_size');
+
             photoswipe = $itemData.attr('data-photoswipe') === undefined ? ""
                 : $itemData.attr('data-photoswipe');
+
             linkurl = $itemData.attr('data-linkurl') === undefined ? ""
                 : $itemData.attr('data-linkurl');
+
             block_custom_class = $itemData.attr('data-block_custom_class') === undefined ? ""
                 : $itemData.attr('data-block_custom_class');
+                
             block_padding = $itemData.attr('data-block_padding') === undefined ? ""
                 : $itemData.attr('data-block_padding');
-            overlay_block_color = $itemData.attr('data-overlay_block_color') === undefined ? ""
-                : $itemData.attr('data-overlay_block_color');
+        
+            overlay_block_color = typeof $itemData.attr("data-overlay_block_color") == "undefined" ? "" : $itemData.attr('data-overlay_block_color');
+            overlay_block_color_active = typeof $itemData.attr("data-overlay_block_color_active") != "undefined" ? $itemData.attr("data-overlay_block_color_active") : false;
+            
             zak_background = $itemData.attr('data-zak_background') === undefined ? ""
                 : $itemData.attr('data-zak_background');
             zak_side = $itemData.attr('data-zak_side') === undefined ? ""
@@ -467,6 +466,7 @@ var Rex_Save_Listeners = (function ($) {
                     + '" gs_y="' + gs_y
                     + '" gs_x="' + gs_x
                     + '" color_bg_block="' + color_bg_block
+                    + '" color_bg_block_active="' + color_bg_block_active
                     + '" image_bg_block="' + image_bg_block
                     + '" id_image_bg_block="' + id_image_bg_block
                     + '" video_bg_id="' + video_bg_id
@@ -480,6 +480,7 @@ var Rex_Save_Listeners = (function ($) {
                     + '" block_custom_class="' + block_custom_class
                     + '" block_padding="' + block_padding
                     + '" overlay_block_color="' + overlay_block_color
+                    + '" overlay_block_color_active="' + overlay_block_color_active
                     + '" zak_background="' + zak_background
                     + '" zak_side="' + zak_side
                     + '" zak_title="' + zak_title
@@ -489,7 +490,8 @@ var Rex_Save_Listeners = (function ($) {
                     + '" video_has_audio="' + video_has_audio
                     + '" block_has_scrollbar="' + block_has_scrollbar
                     + '" block_live_edited="' + block_live_edited
-                    + '"]' + content
+                    + '"]' 
+                    + content
                     + '[/RexpansiveBlock]';
                 return output;
             } else if (mode == "customLayout") {
@@ -509,6 +511,7 @@ var Rex_Save_Listeners = (function ($) {
                 props["gs_y"] = gs_y;
                 props["gs_x"] = gs_x;
                 props["color_bg_block"] = color_bg_block;
+                props["color_bg_block_active"] = color_bg_block_active;
                 props["image_bg_url"] = image_bg_block;
                 props["image_width"] = image_width;
                 props["image_height"] = image_height;
@@ -523,6 +526,7 @@ var Rex_Save_Listeners = (function ($) {
                 props["block_custom_class"] = block_custom_class;
                 props["block_padding"] = block_padding;
                 props["overlay_block_color"] = overlay_block_color;
+                props["overlay_block_color_active"] = overlay_block_color_active;
                 props["linkurl"] = linkurl;
                 props["zak_background"] = zak_background;
                 props["zak_side"] = zak_side;

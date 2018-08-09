@@ -331,9 +331,6 @@ class Rexbuilder_Public
 
         include_once 'partials/rexbuilder-modals-display.php';
 
-        ?>
-			<div id="id-post" data-post-id="<?php echo esc_attr(get_the_ID()); ?>"></div>
-		<?php
 
 /*
 if ( get_user_option('rich_editing') == 'true') {
@@ -516,6 +513,12 @@ endif;
         wp_send_json_success($response);
     }
 
+    public function print_post_id(){
+        ?>
+        <div id="id-post" data-post-id="<?php echo esc_attr(get_the_ID()); ?>"></div>
+        <?php
+    }
+    
     public function generate_builder_content($content)
     {
         global $post;

@@ -4901,7 +4901,7 @@ a.pswp-item {
   right: 0;
   cursor: pointer; }
 
-.builder-change-background {
+.builder-edit-block {
   left: 33%;
   cursor: pointer; }
 
@@ -5044,6 +5044,9 @@ a.pswp-item {
   display: block; }
 
 .responsive-overlay.rex-active-overlay {
+  visibility: visible; }
+
+.responsive-block-overlay.rex-active-overlay {
   visibility: visible; }
 
 .rexpansive-ytp.youtube-player {

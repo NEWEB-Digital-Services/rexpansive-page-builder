@@ -1,4 +1,4 @@
-var Overlay_Color_Modal = (function ($) {
+var Overlay_Color_Section_Modal = (function ($) {
     'use strict';
 
     var background_overlay_properties;

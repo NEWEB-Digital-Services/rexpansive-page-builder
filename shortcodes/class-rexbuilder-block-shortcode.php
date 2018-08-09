@@ -158,12 +158,6 @@ class Rexbuilder_Block
                 $flex_positioned = true;
             endif;
 
-            $block_has_overlay = false;
-
-            if (preg_match_all('/active-(large|medium|small)-block-overlay/', $block_custom_class, $matches) != 0 && $overlay_block_color != ''):
-                $block_has_overlay = true;
-            endif;
-
             $block_is_static = false;
             if (strpos($block_custom_class, 'rex-static-block') !== false) {
                 $block_is_static = true;
@@ -357,7 +351,7 @@ class Rexbuilder_Block
 
             echo '<div id="' . $id . '-builder-data" class="rexbuilder-block-data" ';
             foreach ($atts as $property_name => $value_property) {
-                echo 'data-' . $property_name . '="' . $value_property . '" ';
+                echo 'data-' . $property_name . '="' . ($value_property != "undefined"? $value_property : "" ). '" ';
             }
 
             unset($property_name);
@@ -396,7 +390,8 @@ class Rexbuilder_Block
 
                     echo $bg_video_markup;
                     echo $bg_video_vimeo_markup;
-                    echo (($block_has_overlay) ? '<div class="responsive-block-overlay" style="background-color:' . $overlay_block_color . ';">' : '');
+
+                    echo '<div class="responsive-block-overlay"'.($overlay_block_color !=""? ' style="background-color:' . $overlay_block_color . ';"' : ''). '>';
 
                     echo '<div class="rex-custom-scrollbar' . (($flex_positioned) ? ' rex-custom-position' : '') . '">';
                     echo (($floating_border != '' && $block_link_pre != '') ? $block_link_pre : '');
@@ -408,7 +403,7 @@ class Rexbuilder_Block
                     endif;
                     echo (($floating_border != '' && $block_link_before != '') ? $block_link_before : '');
                     echo '</div>';
-                    echo (($block_has_overlay) ? '</div>' : '');
+                    echo '</div>';
                     echo '</div>';
                     echo ($floating_border == '' ? $block_link_before : '');
                     break;
@@ -438,7 +433,7 @@ class Rexbuilder_Block
 
                     echo $bg_video_markup;
                     echo $bg_video_vimeo_markup;
-                    echo (($block_has_overlay) ? '<div class="responsive-block-overlay" style="background-color:' . $overlay_block_color . ';">' : '');
+                    echo '<div class="responsive-block-overlay"'.($overlay_block_color !=""? ' style="background-color:' . $overlay_block_color . ';"' : ''). '>';
 
                     echo '<div class="rex-custom-scrollbar' . (($flex_positioned) ? ' rex-custom-position' : '') . '"';
                     echo '>';
@@ -451,7 +446,7 @@ class Rexbuilder_Block
                     }
                     echo (($floating_border != '' && $block_link_before != '') ? $block_link_before : '');
                     echo '</div>';
-                    echo (($block_has_overlay) ? '</div>' : '');
+                    echo '</div>';
                     if ('' != $video_bg_url || '' != $video_bg_id || '' != $bg_video_vimeo_markup) {
                         echo $bg_video_toggle_audio_markup;
                     }
@@ -487,7 +482,7 @@ class Rexbuilder_Block
 
                     echo $bg_video_markup;
                     echo $bg_video_vimeo_markup;
-                    echo (($block_has_overlay) ? '<div class="responsive-block-overlay" style="background-color:' . $overlay_block_color . ';">' : '');
+                    echo '<div class="responsive-block-overlay"'.($overlay_block_color !=""? ' style="background-color:' . $overlay_block_color . ';"' : '') . '>';
                     
                     echo '<div class="rex-custom-scrollbar' . (($flex_positioned) ? ' rex-custom-position' : '') . '">';
                     echo (($floating_border != '' && $block_link_pre != '') ? $block_link_pre : '');
@@ -499,7 +494,7 @@ class Rexbuilder_Block
                     endif;
                     echo (($floating_border != '' && $block_link_before != '') ? $block_link_before : '');
                     echo '</div>';
-                    echo (($block_has_overlay) ? '</div>' : '');
+                    echo '</div>';
                     if ('' != $video_bg_url || '' != $video_bg_id || '' != $bg_video_vimeo_markup) {
                         echo $bg_video_toggle_audio_markup;
                     }

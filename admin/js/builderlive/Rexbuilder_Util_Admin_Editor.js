@@ -188,34 +188,38 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                 if (event.data.eventName == "rexlive:openSectionModal") {
                     Section_Modal.openSectionModal(event.data.section_options_active);
                 }
-
+                
                 if (event.data.eventName == "rexlive:uploadSliderFromLive") {
                     var dataSlider = event.data.sliderInfo;
-
+                    
                     var sliderData = dataSlider.slider;
                     var rex_slider_to_edit = dataSlider.slider.id.toString();
                     var newSliderFlag = dataSlider.newSlider;
                     var blockToEdit = dataSlider.blockID;
-
+                    
                     if (newSliderFlag) {
                         rex_slider_to_edit = "";
                     }
-
+                    
                     Rexbuilder_RexSlider.saveSlider(sliderData, blockToEdit, rex_slider_to_edit, newSliderFlag, true, dataSlider.slider.id.toString())
-
+                    
                 }
-
+                
                 if (event.data.eventName == "rexlive:openCssEditor") {
                     CssEditor_Modal.openModal(event.data.currentStyle);
                 }
-
+                
                 if (event.data.eventName == "rexlive:editBackgroundSection") {
-                    console.log(event.data);
                     SectionBackground_Modal.openSectionBackgroundModal(event.data.activeBG);
+                }
+                
+                if (event.data.eventName == "rexlive:editBlockOptions") {
+                    console.log(event.data);
+                    BlockOptions_Modal.openBlockOptionsModal(event.data.activeBlockData);
                 }
             }
         };
-
+        
         function updateResponsiveButtonFocus() {
             //console.log("updating layout focus");
             var $oldBtn = $responsiveToolbar.find(".active-layout-btn");

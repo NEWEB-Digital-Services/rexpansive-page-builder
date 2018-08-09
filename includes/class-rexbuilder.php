@@ -199,6 +199,12 @@ class Rexbuilder {
 
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'plugin_options_update' );
 
+		// live builder
+		if( isset( $_GET['rexlive'] ) && 'true' == $_GET['rexlive'] ) {
+			$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_live_editing' );
+			$this->loader->add_filter( 'admin_body_class', $plugin_admin, 'rexlive_body_fix' );
+		}
+
 		$this->loader->add_action( 'admin_footer', $plugin_admin, 'create_builder_modals' );
 		$this->loader->add_action( 'admin_footer', $plugin_admin, 'create_builder_templates' );
 		$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_sprites' );
@@ -234,12 +240,7 @@ class Rexbuilder {
 		$this->loader->add_filter( 'acf/location/rule_values/rexpansive_builder', $plugin_admin, 'acf_rule_values_rexpansive_builder' );
 		$this->loader->add_filter( 'acf/location/rule_match/rexpansive_builder', $plugin_admin, 'acf_rule_match_rexpansive_builder', 10, 3 );
 		
-		// live builder
-		if( isset( $_GET['rexlive'] ) && 'true' == $_GET['rexlive'] ) {
-			$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_live_editing' );
-			$this->loader->add_action( 'admin_footer', $plugin_admin, 'loadTest' );
-			$this->loader->add_filter( 'admin_body_class', $plugin_admin, 'rexlive_body_fix' );
-		}
+		
 	}
 	
 	/**
@@ -276,10 +277,12 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'print_post_custom_styles' );
 
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_photoswipe_template' );
-
+		
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_vertical_dots' );
+		
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_post_id' );
 
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'create_builder_modals' );
+		//$this->loader->add_action( 'wp_footer', $plugin_public, 'create_builder_modals' );
 		
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'include_js_template' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'include_sprites' );

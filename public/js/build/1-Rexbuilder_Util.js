@@ -221,10 +221,10 @@ var Rexbuilder_Util = (function ($) {
             $gallery = $section.find(".grid-stack-row");
             var galleryData = $gallery.data();
             if (galleryData !== undefined) {
-                var galleryEditorIstance = $gallery.data().plugin_perfectGridGalleryEditor;
-                if (galleryEditorIstance !== undefined) {
-                    var gridstackInstance = galleryEditorIstance.properties.gridstackInstance;
-                    galleryEditorIstance.batchGridstack();
+                var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
+                if (galleryEditorInstance !== undefined) {
+                    var gridstackInstance = galleryEditorInstance.properties.gridstackInstance;
+                    galleryEditorInstance.batchGridstack();
                 }
             }
 
@@ -248,7 +248,7 @@ var Rexbuilder_Util = (function ($) {
                     hasAudio: targetProps['video_has_audio'] == "1" || targetProps['video_has_audio'].toString() == "true" ? true : false
                 };
 
-                //                _updateVideos(videoOptions);
+                _updateVideos(videoOptions);
 
                 var imageOptions = {
                     idImage: isNaN(parseInt(targetProps['id_image_bg'])) ? "" : parseInt(targetProps['id_image_bg']),
@@ -261,6 +261,22 @@ var Rexbuilder_Util = (function ($) {
                 Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOptions);
 
                 _updateElementDimensions($elem, $itemData, targetProps["gs_x"], targetProps["gs_y"], targetProps["gs_width"], targetProps["gs_height"], targetProps["gs_start_h"], gridstackInstance);
+
+                var bgColorOpt = {
+                    blockRexID: targetName,
+                    color: targetProps["color_bg_block"],
+                    active: typeof targetProps["color_bg_block_active"] == "undefined" ? true : targetProps["color_bg_block_active"].toString()
+                }
+
+                Rexbuilder_Dom_Util.updateBlockBackgroundColor(bgColorOpt);
+
+                var overlayBlockOpt = {
+                    blockRexID: targetName,
+                    color: targetProps["overlay_block_color"],
+                    active: typeof targetProps["overlay_block_color_active"] == "undefined" ? false : targetProps["overlay_block_color_active"].toString()
+                }
+
+                Rexbuilder_Dom_Util.updateBlockOverlay(overlayBlockOpt);
 
                 for (var propName in targetProps) {
                     switch (propName) {
@@ -291,10 +307,6 @@ var Rexbuilder_Util = (function ($) {
                             $elem.attr('data-col', targetProps[propName]);
                             break;
 
-                        case "color_bg_block":
-                            $itemContent.css('background-color', targetProps[propName]);
-                            break;
-
                         case "block_custom_class":
                             $elem.removeClass();
                             $elem.addClass("perfect-grid-item grid-stack-item w" + parseInt($elem.attr("data-gs-width")));
@@ -317,24 +329,6 @@ var Rexbuilder_Util = (function ($) {
                                 $textWrap.css("padding-bottom", newPaddings[2]);
                                 $textWrap.css("padding-left", newPaddings[3]);
                             }
-                            break;
-
-                        case "overlay_block_color":
-                            var $overlayDiv = $elem.find(".responsive-block-overlay");
-                            if (targetProps[propName] != "") {
-                                if ($overlayDiv.length != 0) {
-                                    $overlayDiv.css("background-color", targetProps[propName]);
-                                } else {
-                                    tmpl.arg = "overlay";
-                                    var overlayDiv = tmpl("tmpl-overlay-block-div", { color: targetProps[propName] });
-                                    $itemContent.children().wrapAll(overlayDiv);
-                                }
-                            } else {
-                                if ($overlayDiv.length != 0) {
-                                    $overlayDiv.children().eq(0).unwrap()
-                                }
-                            }
-                            $itemData.attr("data-overlay_block_color", targetProps[propName]);
                             break;
                         case "photoswipe":
                             if (!Rexbuilder_Util.editorMode) {
@@ -404,9 +398,9 @@ var Rexbuilder_Util = (function ($) {
             updateSection($section, $gallery, targets[0].props, forceCollapseElementsGrid);
 
             if (galleryData !== undefined) {
-                var galleryEditorIstance = $gallery.data().plugin_perfectGridGalleryEditor;
-                if (galleryEditorIstance !== undefined) {
-                    galleryEditorIstance.commitGridstack();
+                var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
+                if (galleryEditorInstance !== undefined) {
+                    galleryEditorInstance.commitGridstack();
                 }
             }
         });
@@ -940,9 +934,9 @@ var Rexbuilder_Util = (function ($) {
                 Rexbuilder_Util.windowIsResizing = true;
                 if (firstResize) {
                     Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
-                        var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
-                        if (galleryEditorIstance !== undefined) {
-                            galleryEditorIstance.removeScrollbars();
+                        var galleryEditorInstance = $(this).data().plugin_perfectGridGalleryEditor;
+                        if (galleryEditorInstance !== undefined) {
+                            galleryEditorInstance.removeScrollbars();
                         }
                     });
                     firstResize = false;
@@ -972,27 +966,27 @@ var Rexbuilder_Util = (function ($) {
             }
 
             Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
-                var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
-                if (galleryEditorIstance !== undefined) {
-                    galleryEditorIstance.batchGridstack();
+                var galleryEditorInstance = $(this).data().plugin_perfectGridGalleryEditor;
+                if (galleryEditorInstance !== undefined) {
+                    galleryEditorInstance.batchGridstack();
                 }
             });
 
             Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
-                var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
-                if (galleryEditorIstance !== undefined) {
-                    galleryEditorIstance._defineDynamicPrivateProperties();
-                    galleryEditorIstance.updateGridstackStyles();
-                    galleryEditorIstance.updateBlocksHeight();
-                    galleryEditorIstance = undefined;
+                var galleryEditorInstance = $(this).data().plugin_perfectGridGalleryEditor;
+                if (galleryEditorInstance !== undefined) {
+                    galleryEditorInstance._defineDynamicPrivateProperties();
+                    galleryEditorInstance.updateGridstackStyles();
+                    galleryEditorInstance.updateBlocksHeight();
+                    galleryEditorInstance = undefined;
                 }
             });
 
             Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
-                var galleryEditorIstance = $(this).data().plugin_perfectGridGalleryEditor;
-                if (galleryEditorIstance !== undefined) {
-                    galleryEditorIstance.commitGridstack();
-                    galleryEditorIstance.createScrollbars();
+                var galleryEditorInstance = $(this).data().plugin_perfectGridGalleryEditor;
+                if (galleryEditorInstance !== undefined) {
+                    galleryEditorInstance.commitGridstack();
+                    galleryEditorInstance.createScrollbars();
                 }
             });
 

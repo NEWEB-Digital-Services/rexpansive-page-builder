@@ -339,7 +339,7 @@
     cursor: pointer;
 }
 
-.builder-change-background{
+.builder-edit-block{
     left: 33%;
     cursor: pointer;
 }
@@ -480,10 +480,6 @@
     display: none;
 }
 
-.rex-hide-element > div.grid-stack-item-content > .grid-item-content > .responsive-block-overlay{
-    background-color: rgba(128, 128, 128, 0.75);
-}
-
 .builder-edit-slider{
     display: none;
 }
@@ -502,6 +498,10 @@
 }
 
 .responsive-overlay.rex-active-overlay{
+    visibility: visible;
+}
+
+.responsive-block-overlay.rex-active-overlay{
     visibility: visible;
 }
 

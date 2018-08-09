@@ -187,8 +187,9 @@ class Rexbuilder_Section
 
             echo '<div class="section-data" style="display: none;" ';
             foreach ($atts as $property_name => $value_property) {
-                echo 'data-' . $property_name . '="' . $value_property . '" ';
+                echo 'data-' . $property_name . '="' . ($value_property != "undefined"? $value_property : "" ). '" ';
             }
+
             unset($property_name);
             unset($value_property);
             if ('' != $video_bg_id_section && 'undefined' != $video_bg_id_section) {

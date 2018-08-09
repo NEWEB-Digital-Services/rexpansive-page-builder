@@ -14,6 +14,9 @@ var Rexlive_Modals = (function ($) {
 
         //background row
         SectionBackground_Modal.init();
+
+        //block options
+        BlockOptions_Modal.init();
     }
 
     return {

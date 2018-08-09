@@ -185,12 +185,12 @@ var Rexbuilder_Util_Editor = (function ($) {
 
     var endEditingElement = function () {
         console.log("end editing element: " + Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id"));
-        var galleryEditorIstance = Rexbuilder_Util_Editor.editedGallery;
+        var galleryEditorInstance = Rexbuilder_Util_Editor.editedGallery;
 
         Rexbuilder_Util_Editor.elementIsDragging = false;
         Rexbuilder_Util_Editor.editedTextWrap.blur();
 
-        galleryEditorIstance.unFocusElement(Rexbuilder_Util_Editor.editedElement);
+        galleryEditorInstance.unFocusElement(Rexbuilder_Util_Editor.editedElement);
 
         Rexbuilder_Util_Editor.editingGallery = false;
         Rexbuilder_Util_Editor.editedGallery = null;
@@ -302,6 +302,16 @@ var Rexbuilder_Util_Editor = (function ($) {
         $(document).on("rexlive:change_section_overlay_color", function (e) {
             var data = e.settings;
             Rexbuilder_Dom_Util.updateSectionOverlayColorLive(Rexbuilder_Util_Editor.sectionEditingBackgroundObj, data.data_to_send.color);
+        });
+
+        $(document).on("rexlive:change_block_bg_color", function (e) {
+            var data = e.settings;
+            Rexbuilder_Dom_Util.updateBlockBackgroundColorLive(data.data_to_send);
+        });
+
+        $(document).on("rexlive:change_block_overlay_color", function (e) {
+            var data = e.settings;
+            Rexbuilder_Dom_Util.updateBlockOverlayColorLive(data.data_to_send);
         });
 
     }
@@ -531,6 +541,9 @@ var Rexbuilder_Util_Editor = (function ($) {
 
         this.sectionEditingBackgroundID = null;
         this.sectionEditingBackgroundObj = null;
+
+        this.blockEditingOptsID = null;
+        this.blockEditingOptsObj = null;
 
         undoStackArray = [];
         redoStackArray = [];

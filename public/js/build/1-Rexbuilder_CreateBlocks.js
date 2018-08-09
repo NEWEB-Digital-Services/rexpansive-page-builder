@@ -290,20 +290,20 @@ var Rexbuilder_CreateBlocks = (function ($) {
     var _createCopyBlock = function ($elem) {
         var $gallery = $elem.parents('.grid-stack-row');
         Rexbuilder_Util_Editor.sectionAddingElementObj = $gallery.parents(".rexpansive_section");
-        var galleryEditorIstance = $gallery.data().plugin_perfectGridGalleryEditor;
+        var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
         var gridstack = $gallery.data("gridstack");
         var $newBlock;
 
         $newBlock = $elem.clone(false);
         var $newBlockData = $newBlock.children(".rexbuilder-block-data");
 
-        galleryEditorIstance._removeHandles($newBlock);
+        galleryEditorInstance._removeHandles($newBlock);
 
         var newRexID = Rexbuilder_Util.createBlockID();
 
-        galleryEditorIstance.properties.lastIDBlock = galleryEditorIstance.properties.lastIDBlock + 1;
+        galleryEditorInstance.properties.lastIDBlock = galleryEditorInstance.properties.lastIDBlock + 1;
 
-        var newBlockID = "block_" + galleryEditorIstance.properties.sectionNumber + "_" + galleryEditorIstance.properties.lastIDBlock;
+        var newBlockID = "block_" + galleryEditorInstance.properties.sectionNumber + "_" + galleryEditorInstance.properties.lastIDBlock;
 
         $newBlock.attr("data-rexbuilder-block-id", newRexID);
         $newBlockData.attr("data-rexbuilder_block_id", newRexID);
@@ -319,9 +319,9 @@ var Rexbuilder_CreateBlocks = (function ($) {
         Rexbuilder_Util_Editor.removeScrollBar($newBlock);
         Rexbuilder_Util_Editor.removeTextEditor($newBlock);
 
-        galleryEditorIstance._prepareElement($newBlock.eq(0));
+        galleryEditorInstance._prepareElement($newBlock.eq(0));
 
-        galleryEditorIstance.unFocusElementEditing($newBlock);
+        galleryEditorInstance.unFocusElementEditing($newBlock);
 
         gridstack.addWidget($newBlock, 0, 0, w, h, true);
 
@@ -336,8 +336,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
             Rexbuilder_Util_Editor.blockCopyingObj = $newBlock;
             Rexbuilder_Util_Editor.saveSliderOnDB(sliderData, true, newBlockID);
         } else {
-            galleryEditorIstance.addScrollbar($newBlock);
-            galleryEditorIstance.addTextEditor($newBlock);
+            galleryEditorInstance.addScrollbar($newBlock);
+            galleryEditorInstance.addTextEditor($newBlock);
         }
     }
     $(document).on("rexlive:newSliderSavedOnDB", function (e) {
