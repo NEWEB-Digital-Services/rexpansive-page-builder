@@ -126,15 +126,6 @@ var RexSlider = (function ($) {
         $(el).flickity(settings);
         $(el).flickity('stopPlayer');
 
-        // if( $(el).find('.rex-slider-element:not(:first-child) .youtube-player').length ) {
-        //   // var video_state = $(el).find('.rex-slider-element:first-child .youtube-player')[0].state;
-        //   // if(video_state != 1) {
-        //     $(el).find('.rex-slider-element:not(first-child) .youtube-player').each(function() {
-        //       $(this).YTPStop();
-        //     })
-        //   // }
-        // }
-
         Rexbuilder_Util.$window.on('resize', function () {
             $(el).flickity('resize');
         });

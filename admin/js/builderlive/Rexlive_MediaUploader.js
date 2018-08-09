@@ -6,6 +6,7 @@ var Rexlive_MediaUploader = (function ($) {
 
     var image_multiple_uploader_frame;
     var image_uploader_frame;
+    var video_multiple_uploader_frame;
     var video_uploader_frame;
 
     function _openMediaUploaderMultipleImage(info) {
@@ -207,11 +208,10 @@ var Rexlive_MediaUploader = (function ($) {
         image_uploader_frame.open();
     }
 
-
-    function openMediaUploaderVideo(info) {
+    function _openInsertVideoBlocksMediaUploader(info) {
         // If the frame is already opened, return it
-        if (video_uploader_frame) {
-            video_uploader_frame.open();
+        if (video_multiple_uploader_frame) {
+            video_multiple_uploader_frame.open();
             return;
         }
 
@@ -231,7 +231,7 @@ var Rexlive_MediaUploader = (function ($) {
         });
 
         //Setup media frame
-        video_uploader_frame = wp.media({
+        video_multiple_uploader_frame = wp.media({
             button: { text: 'Select' },
             state: 'insert-video',
             states: [
@@ -240,12 +240,12 @@ var Rexlive_MediaUploader = (function ($) {
         });
 
         //on close, if there is no select files, remove all the files already selected in your main frame
-        video_uploader_frame.on('close', function () {
+        video_multiple_uploader_frame.on('close', function () {
             ;
         });
 
-        video_uploader_frame.on('select', function () {
-            var state = video_uploader_frame.state('insert-video');
+        video_multiple_uploader_frame.on('select', function () {
+            var state = video_multiple_uploader_frame.state('insert-video');
             var selection = state.get('selection');
             var videoArray = [];
 
@@ -274,8 +274,8 @@ var Rexlive_MediaUploader = (function ($) {
         });
 
         //reset selection in popup, when open the popup
-        video_uploader_frame.on('open', function () {
-            var selection = video_uploader_frame.state('insert-video').get('selection');
+        video_multiple_uploader_frame.on('open', function () {
+            var selection = video_multiple_uploader_frame.state('insert-video').get('selection');
             //remove all the selection first
             selection.each(function (video) {
                 if ('undefined' !== typeof video) {
@@ -287,13 +287,116 @@ var Rexlive_MediaUploader = (function ($) {
         });
 
         //now open the popup
-        video_uploader_frame.open();
+        video_multiple_uploader_frame.open();
     }	// openMediaUploader VIDEO END
+    
+    function _openMediaUploaderVideo($data, video_id) {
+        video_id = typeof video_id !== 'undefined' ? video_id : null;
+
+        if (video_uploader_frame) {
+            // setting my custom data
+            video_uploader_frame.state('upload-video-bg').set('$data', $data);
+            video_uploader_frame.state('upload-video-bg').set('video_id', video_id);
+
+            video_uploader_frame.open();
+            return;
+        }
+
+        //create a new Library, base on defaults
+        //you can put your attributes in
+        var uploadVideo = wp.media.controller.Library.extend({
+            defaults: _.defaults({
+                id: 'upload-video-bg',
+                title: 'Select Background Image',
+                allowLocalEdits: true,
+                displaySettings: true,
+                displayUserSettings: true,
+                multiple: false,
+                library: wp.media.query({ type: 'video' }),
+                type: 'video',//audio, video, application/pdf, ... etc
+                $data: $data,
+                video_id: video_id
+            }, wp.media.controller.Library.prototype.defaults)
+        });
+
+        //Setup media frame
+        video_uploader_frame = wp.media({
+            button: { text: 'Select' },
+            state: 'upload-video-bg',
+            states: [
+                new uploadVideo()
+            ]
+        });
+
+        //on close, if there is no select files, remove all the files already selected in your main frame
+        video_uploader_frame.on('close', function () {
+            var selection = video_uploader_frame.state('upload-video-bg').get('selection');
+            if (selection.length == 0) {
+                $data.val();
+            }
+        });
+
+        video_uploader_frame.on('select', function () {
+
+            var state = video_uploader_frame.state('upload-video-bg');
+            var selection = state.get('selection');
+
+            if (!selection) return;
+
+            selection.each(function (attachment) {
+                var display = state.display(attachment).toJSON();
+                var obj_attachment = attachment.toJSON();
+
+                // If captions are disabled, clear the caption.
+                if (!wp.media.view.settings.captions)
+                    delete obj_attachment.caption;
+
+                display = wp.media.string.props(display, obj_attachment);
+
+                var $data = video_uploader_frame.state('upload-video-bg').get('$data');
+
+                // save id image info
+                $data.val(obj_attachment.id);
+                $data.attr("data-rex-video-bg-url", obj_attachment.url);
+
+                if($data.parents("#rex-edit-background-section").length != 0){
+                    Section_Video_Background_Modal.updateVideoBackground();
+                }
+            });
+        });
+
+        //reset selection in popup, when open the popup
+        video_uploader_frame.on('open', function () {
+            var attachment;
+            var selection = video_uploader_frame.state('upload-video-bg').get('selection');
+
+            //remove all the selection first
+            selection.each(function (video) {
+                attachment = wp.media.attachment(video.attributes.id);
+                attachment.fetch();
+                selection.remove(attachment ? [attachment] : []);
+            });
+
+            var video_id = video_uploader_frame.state('upload-video-bg').get('video_id');
+
+            // Check the already inserted image
+            if (video_id) {
+                attachment = wp.media.attachment(video_id);
+                attachment.fetch();
+
+                selection.add(attachment ? [attachment] : []);
+            }
+        });
+
+        //now open the popup
+        video_uploader_frame.open();
+    }
 
     return {
         openInsertImageBlocksMediaUploader: _openMediaUploaderMultipleImage,
         openEditImageMediaUploader: _openMediaUploaderImage,
-        openMediaUploaderVideo: openMediaUploaderVideo,
+        openInsertVideoBlocksMediaUploader: _openInsertVideoBlocksMediaUploader,
+        openMediaUploaderVideo: _openMediaUploaderVideo,
     };
 
 })(jQuery);

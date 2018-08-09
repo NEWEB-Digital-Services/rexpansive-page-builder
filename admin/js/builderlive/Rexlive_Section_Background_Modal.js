@@ -8,6 +8,7 @@ var SectionBackground_Modal = (function ($) {
         Background_Color_Modal.updateColorModal(data.bgColor);
         Overlay_Color_Modal.updateOverlayModal(data.overlay);
         Background_Image_Modal.updateImageModal(data.imageBG);
+        Section_Video_Background_Modal.updateVideoModal(data.bgVideo);
         Rexlive_Modals_Utils.openModal(section_background_properties.$self.parent('.rex-modal-wrap'));
     }
     
@@ -31,16 +32,7 @@ var SectionBackground_Modal = (function ($) {
         var $editSection = $("#rex-edit-background-section");
         section_background_properties = {
             $self: $editSection,
-
-            $linkYoutube: $editSection.find("#rex-insert-youtube-url"),
-            $linkVimeo: $editSection.find("#rex-insert-vimeo-url"),
-            $radioChooseYoutube: $editSection.find("#rex-choose-youtube-video"),
-            $radioChooseVimeo: $editSection.find("#rex-choose-vimeo-video"),
-            $radioChooseMp4: $editSection.find("#rex-choose-mp4-video"),
-            $youTubeWrap: $editSection.find("#insert-video-block-wrap-1"),
-            $vimeoWrap: $editSection.find("#insert-video-block-wrap-2"),
-            $mp4Wrap: $editSection.find("#insert-video-block-wrap-3"),
-
+            
             $save_button: $editSection.find('#rex-edit-row-background-save'),
             $cancel_button: $editSection.find('#rex-edit-row-background-cancel'),
         }
@@ -48,6 +40,7 @@ var SectionBackground_Modal = (function ($) {
         Background_Color_Modal.init($editSection);
         Background_Image_Modal.init($editSection);
         Overlay_Color_Modal.init($editSection);
+        Section_Video_Background_Modal.init($editSection);
         _linkDocumentListeners();
     }
 

@@ -71,7 +71,7 @@ var Rexbuilder_App = (function ($) {
 		// Adding audio functionallity
 		$(document).on('click', '.rex-video-toggle-audio', function (e) {
 			e.stopPropagation();
-			var $ytvideo = $(this).parents(".youtube-player");
+			var $ytvideo = $(this).parents(".rex-ytp-wrapper").children(".youtube-player");
 			var $mpvideo = $(this).parents('.mp4-player').find('.rex-video-container');
 			var $vimvideo = $(this).parents('.vimeo-player').find('.rex-video-vimeo-wrap--block');
 			var $toggle = $(this);

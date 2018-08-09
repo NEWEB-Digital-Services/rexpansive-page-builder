@@ -195,49 +195,31 @@ var Rexbuilder_Dom_Util = (function ($) {
     }
 
     var _removeYoutubeVideo = function ($target, targetType, removeFromDom) {
-        if ($target.hasClass("youtube-player")) {
-            if ($target.YTPGetPlayer() === undefined) {
-                return;
-            }
+        var $ytpWrapper = $target.children(".rexpansive-ytp");
+        if ($ytpWrapper.length != 0) {
             removeFromDom = typeof removeFromDom == "undefined" ? true : removeFromDom;
             if (removeFromDom) {
-                $target.YTPPlayerDestroy();
-                $target.removeClass('youtube-player');
-                if (targetType != "section") {
-                    var $toggleAudio = $target.children(".rex-video-toggle-audio");
-                    if ($toggleAudio.length != 0) {
-                        $toggleAudio.remove();
-                    }
-                }
+                $ytpWrapper.YTPPlayerDestroy();
+                $ytpWrapper.remove();
             } else {
+                var videoID = $ytpWrapper.YTPGetVideoID();
+                var hadAudio = $ytpWrapper.children(".rex-video-toggle-audio").length != 0;
 
-                var videoID = $target.YTPGetVideoID();
-                var $targetParent = $target.parent();
-                var hadAudio = $target.children(".rex-video-toggle-audio").length != 0;
-                $target.YTPPlayerDestroy();
+                $ytpWrapper.YTPPlayerDestroy();
+                $ytpWrapper.remove();
 
-                var wasSlide = $target.hasClass("rex-slider-video-wrapper");
-                $target.remove();
-
-                var newEl = document.createElement("div");
-                var $newEl = $(newEl);
-
+                var div = document.createElement("div");
+                var $div = $(div);
+                
                 if (hadAudio) {
-                    $newEl.append(tmpl("tmpl-video-toggle-audio"));
+                    $div.append(tmpl("tmpl-video-toggle-audio"));
                 }
-
-                if (wasSlide) {
-                    $newEl.addClass("rex-slider-video-wrapper");
-                }
-
-                $newEl.addClass("youtube-player");
-                $newEl.attr("data-property", "{videoURL: 'https://www.youtube.com/watch?v=" + videoID + "', containment: 'self',startAt: 0,mute: true,autoPlay: true,loop: true,opacity: 1,showControls: false,showYTLogo: false}");
-                $newEl.prependTo($targetParent[0]);
+                $div.prependTo($target[0]);
+                $div.addClass("rexpansive-ytp youtube-player");
+                $div.attr("data-property", "{videoURL: '" + videoID + "', containment: 'self',startAt: 0,mute: true,autoPlay: true,loop: true,opacity: 1,showControls: false,showYTLogo: false}");
             }
-
         }
     }
-
     var _removeVimeoVideo = function ($target, targetType, removeFromDom) {
         var $vimeoWrap = $target.children('.rex-video-vimeo-wrap');
         var $toggleAudio = $target.children(".rex-video-toggle-audio");
@@ -322,27 +304,18 @@ var Rexbuilder_Dom_Util = (function ($) {
     }
 
     var _addYoutubeVideo = function ($target, urlYoutube, targetType, hasAudio) {
-        if (targetType != "section") {
-            var $toggleAudio = $target.children(".rex-video-toggle-audio");
-            if ($toggleAudio.length == 0) {
-                if (hasAudio) {
-                    $target.append(tmpl("tmpl-video-toggle-audio"));
-                }
-            } else {
-                if (!hasAudio) {
-                    $toggleAudio.remove();
-                }
-            }
-        }
-        if ($target.hasClass("youtube-player")) {
-            if ($target.YTPGetPlayer() === undefined) {
-                $target.YTPlayer();
+        var $ytpWrapper = $target.children(".rexpansive-ytp");
+        $target.addClass("rex-ytp-wrapper");
+        if ($ytpWrapper.length != 0) {
+            if ($ytpWrapper.YTPGetPlayer() === undefined) {
+                $ytpWrapper.YTPlayer();
+                $ytpWrapper.addClass("youtube-player-launching");
                 return;
             }
-            var videoID = $target.YTPGetVideoID();
+            var videoID = $ytpWrapper.YTPGetVideoID();
             var urlID = Rexbuilder_Util.getYoutubeID(urlYoutube);
             if (videoID != urlID) {
-                $target.YTPChangeMovie({
+                $ytpWrapper.YTPChangeMovie({
                     videoURL: urlYoutube,
                     containment: 'self',
                     startAt: 0,
@@ -355,9 +328,25 @@ var Rexbuilder_Dom_Util = (function ($) {
                 });
             }
         } else {
-            $target.addClass("youtube-player");
-            $target.attr("data-property", "{videoURL: '" + urlYoutube + "', containment: 'self',startAt: 0,mute: true,autoPlay: true,loop: true,opacity: 1,showControls: false,showYTLogo: false}");
-            $target.YTPlayer();
+            var div = document.createElement("div");
+            var $div = $(div);
+            $div.prependTo($target[0]);
+            $div.addClass("rexpansive-ytp youtube-player");
+            $div.attr("data-property", "{videoURL: '" + urlYoutube + "', containment: 'self',startAt: 0,mute: true,autoPlay: true,loop: true,opacity: 1,showControls: false,showYTLogo: false}");
+            $div.YTPlayer();
+        }
+
+        if (targetType != "section") {
+            var $toggleAudio = $ytpWrapper.children(".rex-video-toggle-audio");
+            if ($toggleAudio.length == 0) {
+                if (hasAudio) {
+                    $ytpWrapper.append(tmpl("tmpl-video-toggle-audio"));
+                }
+            } else {
+                if (!hasAudio) {
+                    $toggleAudio.remove();
+                }
+            }
         }
     }
 
@@ -613,6 +602,9 @@ var Rexbuilder_Dom_Util = (function ($) {
                 break;
             case "updateSectionImageBG":
                 _updateImageBG($section, dataToUse);
+                break;
+            case "updateSectionVideoBG":
+                Rexbuilder_Util.updateVideos(dataToUse);
                 break;
             default:
                 break;

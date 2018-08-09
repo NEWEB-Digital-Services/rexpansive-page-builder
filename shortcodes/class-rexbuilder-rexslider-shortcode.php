@@ -99,8 +99,10 @@ class Rexbuilder_RexSlider {
 							//youtube
 							if( false !== strpos( $slide['_rex_banner_gallery_video'], "youtu" ) ) {
 								?>
-								<div class="rex-slider-video-wrapper youtube-player" data-property="{videoURL:'<?php echo $slide['_rex_banner_gallery_video']; ?>',containment:'self',startAt:0,mute: true,autoPlay: true,loop: true,opacity: 1,showControls: false,showYTLogo: false}" data-ytvideo-stop-on-click="false">
-								<?php
+								<div class="rex-slider-video-wrapper rex-ytp-wrapper">
+									<div class="rexpansive-ytp youtube-player" data-property="{videoURL:'<?php echo $slide['_rex_banner_gallery_video']; ?>',containment:'self',startAt:0,mute: true,autoPlay: true,loop: true,opacity: 1,showControls: false,showYTLogo: false}" data-ytvideo-stop-on-click="false">
+									</div>							
+							<?php
 							//vimeo
 							} else if( false !== strpos( $slide['_rex_banner_gallery_video'], "vimeo" ) ) {
 								?>

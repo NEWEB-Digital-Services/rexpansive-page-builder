@@ -248,7 +248,7 @@ var Rexbuilder_Util = (function ($) {
                     hasAudio: targetProps['video_has_audio'] == "1" || targetProps['video_has_audio'].toString() == "true" ? true : false
                 };
 
-                _updateVideos(videoOptions);
+                //                _updateVideos(videoOptions);
 
                 var imageOptions = {
                     idImage: isNaN(parseInt(targetProps['id_image_bg'])) ? "" : parseInt(targetProps['id_image_bg']),
@@ -438,7 +438,7 @@ var Rexbuilder_Util = (function ($) {
             width: parseInt(targetProps['image_width']),
             height: parseInt(targetProps['image_height'])
         }
-        console.log(imageOptions);
+
         var sectionOverlay = {
             color: targetProps["row_overlay_color"],
             active: typeof targetProps["row_overlay_active"] == "undefined" ? false : targetProps["row_overlay_active"].toString()
@@ -1020,12 +1020,13 @@ var Rexbuilder_Util = (function ($) {
         /* -- Launching YouTube Video -- */
         // declare object for video
         if (!jQuery.browser.mobile) {
-            Rexbuilder_Util.$rexContainer.find(".youtube-player").each(function () {
-                if ($(this).YTPGetPlayer() === undefined) {
-                    $(this).YTPlayer();
-                    //console.log(this);
+            Rexbuilder_Util.$rexContainer.find(".youtube-player").each(function (i, el) {
+                var $this = $(el);
+                if ($this.YTPGetPlayer() === undefined && !$this.hasClass("youtube-player-launching")) {
+                    $this.YTPlayer();
                     return;
                 }
+                $this.removeClass("youtube-player-launching");
             });
         } else {
             Rexbuilder_Util.$rexContainer.find('.youtube-player').each(function (i, el) {
@@ -1107,9 +1108,9 @@ var Rexbuilder_Util = (function ($) {
                 loop: true
             };
             VimeoVideo.addPlayer("1", vimeoFrame, opt);
-        } else if ($target.hasClass("youtube-player")) {
-            if ($target.YTPGetPlayer() === undefined) {
-                $target.YTPlayer();
+        } else if ($target.hasClass("rex-ytp-wrapper")) {
+            if ($target.children(".youtube-player").YTPGetPlayer() === undefined) {
+                $target.children(".youtube-player").YTPlayer();
             }
         }
     }
@@ -1119,7 +1120,7 @@ var Rexbuilder_Util = (function ($) {
             Rexbuilder_Dom_Util.removeMp4Video($target, targetType, detachDom);
         } else if ($target.hasClass("vimeo-player")) {
             Rexbuilder_Dom_Util.removeVimeoVideo($target, targetType, detachDom);
-        } else if ($target.hasClass("youtube-player")) {
+        } else if ($target.hasClass("rex-ytp-wrapper")) {
             Rexbuilder_Dom_Util.removeYoutubeVideo($target, targetType, detachDom);
         }
     }
@@ -1130,11 +1131,11 @@ var Rexbuilder_Util = (function ($) {
         } else if ($target.hasClass("vimeo-player")) {
             var vimeoPlugin = VimeoVideo.findVideo($target.find("iframe")[0]);
             vimeoPlugin.pause();
-        } else if ($target.hasClass("youtube-player")) {
-            if ($target.YTPGetPlayer() === undefined) {
+        } else if ($target.hasClass("rex-ytp-wrapper")) {
+            if ($target.children(".youtube-player").YTPGetPlayer() === undefined) {
                 return;
             }
-            $target.YTPPause();
+            $target.children(".youtube-player").YTPPause();
         }
     }
 
@@ -1144,11 +1145,11 @@ var Rexbuilder_Util = (function ($) {
         } else if ($target.hasClass("vimeo-player")) {
             var vimeoPlugin = VimeoVideo.findVideo($target.find("iframe")[0]);
             vimeoPlugin.play();
-        } else if ($target.hasClass("youtube-player")) {
-            if ($target.YTPGetPlayer() === undefined) {
+        } else if ($target.hasClass("rex-ytp-wrapper")) {
+            if ($target.children(".youtube-player").YTPGetPlayer() === undefined) {
                 return;
             }
-            $target.YTPPlay();
+            $target.children(".youtube-player").YTPPlay();
         }
     }
 

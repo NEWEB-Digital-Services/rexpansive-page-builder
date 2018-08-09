@@ -48,7 +48,8 @@ var Insert_Video_Modal = (function ($) {
     }
 
     var _linkDocumentListeners = function () {
-        $(document).on("click", "#rex-insert-new-video-block .input-field", function (e) {
+
+        insert_video_properties.$self.find(".input-field").click(function (e) {
             e.preventDefault();
             _clearFocusVideo();
             var $target = $(e.target);
@@ -71,12 +72,12 @@ var Insert_Video_Modal = (function ($) {
             }
         });
 
-        $(document).on("click", "#rex-insert-video-block-cancel", function (e) {
+        insert_video_properties.$self.find("#rex-insert-video-block-cancel").click(function (e) {
             e.preventDefault();
             _closeVideoModal();
         });
 
-        $(document).on("click", ".set-video-audio-btn", function (e) {
+        insert_video_properties.$self.find(".set-video-audio-btn").click(function (e) {
             e.preventDefault();
             var $target = $(e.target);
             var $audioBtnWrapper = $target.parents(".set-video-audio-btn");
@@ -86,7 +87,7 @@ var Insert_Video_Modal = (function ($) {
             $checkBox.attr("checked", check);
         });
 
-        $(document).on("click", ".rex-video-type-select", function (e) {
+        insert_video_properties.$self.find(".rex-video-type-select").click(function (e) {
             e.preventDefault();
             _clearFocusVideo();
 
@@ -99,12 +100,11 @@ var Insert_Video_Modal = (function ($) {
                 _focusMp4();
             }
         });
-
-        $(document).on('click', "#rex-upload-mp4-video", function () {
-            Rexlive_MediaUploader.openMediaUploaderVideo();
+        insert_video_properties.$self.find("#rex-upload-mp4-video").click(function (e) {
+            Rexlive_MediaUploader.openInsertVideoBlocksMediaUploader();
         });
 
-        $(document).on("click", "#rex-insert-video-block-save", function (e) {
+        insert_video_properties.$self.find("#rex-insert-video-block-save").click(function (e) {
             var type;
             var urlYoutube;
             var urlVimeo;

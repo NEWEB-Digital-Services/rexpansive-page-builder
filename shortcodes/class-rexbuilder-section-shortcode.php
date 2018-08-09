@@ -124,7 +124,7 @@ class Rexbuilder_Section
                 $atts['custom_classes'] = $custom_classes;
                 $rexlive_collapse_grid = false;
             }
-            
+
             $row_separators = '';
             if ('' != $row_separator_top) {
                 $row_separators .= ' data-row-separator-top="' . $row_separator_top . '"';
@@ -145,7 +145,7 @@ class Rexbuilder_Section
             ob_start();
 
             echo '<section';
-            
+
             if ($section_name != ''):
                 $x = preg_replace('/[\W\s+]/', '', $section_name);
                 echo ' data-rexlive-section-name="' . $section_name . '"';
@@ -164,14 +164,11 @@ class Rexbuilder_Section
             (($content_has_photoswipe > 0) ? ' photoswipe-gallery' : '') .
             (('' != $custom_classes) ? ' ' . $custom_classes : '') .
             (('true' == $full_height) ? ' full-height-section' : '') .
-            (('' != $video_bg_url_section && 'undefined' != $video_bg_url_section) ? ' youtube-player' : '') .
             (($content_has_floating_blocks !== false) ? ' rex-section-has-floating-blocks' : '') .
             (($content_has_static_block !== false) ? ' rex-section-has-static-blocks' : '') .
             ((false !== $row_has_accordion) ? ' rex-section-has-accordion' : '') .
-            apply_filters('rexpansive_builder_section_class', '', $parsed_atts) .
-                '"' .
+            apply_filters('rexpansive_builder_section_class', '', $parsed_atts) . '"' .
                 (($content_has_photoswipe > 0) ? ' itemscope itemtype="http://schema.org/ImageGallery"' : '') .
-                (('' != $video_bg_url_section && 'undefined' != $video_bg_url_section) ? ' data-property="{videoURL:\'' . $video_bg_url_section . '\',containment:\'self\',startAt:0,mute:true,autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"' : '') .
                 (strlen($section_style) > 7 ? ' ' . $section_style . '"' : '');
 
             if ("" != $id_image_bg_section) {
@@ -203,6 +200,13 @@ class Rexbuilder_Section
                 include REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-section-tools.php";
             }
 
+            if ('' != $video_bg_url_section && 'undefined' != $video_bg_url_section){
+            ?>
+                <div class="rexpansive-ytp youtube-player" data-property="{videoURL:'<?php echo $video_bg_url_section; ?>',containment:'self',startAt:0,mute:true,autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}">
+                </div>
+            <?php
+            }
+ 
             if ('' != $video_bg_url_vimeo_section && 'undefined' != $video_bg_url_vimeo_section) {
                 ?>
                 <div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--section">

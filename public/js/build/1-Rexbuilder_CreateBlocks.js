@@ -82,7 +82,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
                 height: h,
                 type: type
             }
-            
+
             Rexbuilder_Dom_Util.updateImageBG($el.find(".grid-item-content"), dataImage);
 
             if (galleryInstance.settings.galleryLayout == "masonry") {
@@ -233,8 +233,13 @@ var Rexbuilder_CreateBlocks = (function ($) {
                         $videoElement.addClass("vimeo-player");
                         break;
                     case "youtube":
-                        $videoElement.addClass("youtube-player");
-                        $videoElement.attr("data-property", "{videoURL: '" + slides[i].slide_video + "', containment: 'self',startAt: 0,mute: true,autoPlay: true,loop: true,opacity: 1,showControls: false,showYTLogo: false}");
+                        var div = document.createElement("div");
+                        var $div = $(div);
+                        $videoElement.addClass("rex-ytp-wrapper");
+                        $div.prependTo($videoElement[0]);
+                        $div.addClass("rexpansive-ytp youtube-player");
+                        $div.attr("data-property", "{videoURL: '" + slides[i].slide_video + "', containment: 'self',startAt: 0,mute: true,autoPlay: true,loop: true,opacity: 1,showControls: false,showYTLogo: false}");
+
                         break;
                     default:
                         break;

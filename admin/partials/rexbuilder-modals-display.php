@@ -1537,42 +1537,46 @@ wp_reset_postdata();
                 </div>
             </div>
             <!-- /OVERLAY SECTION -->
-            <div id="edit-video-row-wrap-1" class="row valign-wrapper youtube-insert-wrap video-insert-wrap">
-                <div class="rex-check rex-check-icon col rex-video-type-select">
-                    <input type="radio" class="rex-choose-video with-gap" name="rex-choose-video" value="youtube" id="rex-choose-youtube-video-section" />
-                    <label for="rex-choose-youtube-video-section">
-                        <i class="material-icons rex-icon">C</i>
-                        <span class="rex-ripple" />
-                    </label>
+            <div id="video-section-editor-wrapper">
+                <div id="edit-video-row-wrap-1" class="row valign-wrapper youtube-insert-wrap video-insert-wrap">
+                    <div class="rex-check rex-check-icon col rex-video-type-select">
+                        <input type="checkbox" class="rex-choose-video with-gap" name="rex-choose-video" value="youtube" id="rex-choose-youtube-video-section" />
+                        <label for="rex-choose-youtube-video-section">
+                            <i class="material-icons rex-icon">C</i>
+                            <span class="rex-ripple" />
+                        </label>
+                    </div>
+                    <div class="input-field col" data-rex-video-type="youtube">
+                        <input id="rex-youtube-video-section" class="youtube-url" type="text" />
+                        <label id="rex-youtube-video-section-label" for="rex-youtube-video-section">https://youtu.be/...</label>
+                    </div>
                 </div>
-                <div class="input-field col" data-rex-video-type="youtube">
-                    <input id="rex-youtube-video-section" class="youtube-url" type="text" />
-                    <label id="rex-youtube-video-section-label" for="rex-youtube-video-section">https://youtu.be/...</label>
+                <!-- youtube video background section -->
+                <div id="edit-video-row-wrap-2" class="row valign-wrapper vimeo-insert-wrap video-insert-wrap" style="padding-top:16px;">
+                    <div class="rex-check rex-check-icon col rex-video-type-select" style="margin-right:5px;">
+                        <input type="checkbox" class="rex-choose-video with-gap" name="rex-choose-video" value="vimeo" id="rex-choose-vimeo-video-section" />
+                        <label for="rex-choose-vimeo-video-section">
+                            <i class="material-icons rex-icon">Z</i>
+                            <span class="rex-ripple" />
+                        </label>
+                    </div>
+                    <div class="input-field col" data-rex-video-type="vimeo">
+                        <input id="rex-vimeo-video-section" class="vimeo-url" type="text" />
+                        <label id="rex-vimeo-video-section-label" for="rex-vimeo-video-section">https://player.vimeo.com/video/...</label>
+                    </div>
                 </div>
-            </div>
-            <!-- youtube video background section -->
-            <div id="edit-video-row-wrap-2" class="row valign-wrapper vimeo-insert-wrap video-insert-wrap" style="padding-top:16px;">
-                <div class="rex-check rex-check-icon col rex-video-type-select" style="margin-right:5px;">
-                    <input type="radio" class="rex-choose-video with-gap" name="rex-choose-video" value="vimeo" id="rex-choose-vimeo-video-section" />
-                    <label for="rex-choose-vimeo-video-section">
-                        <i class="material-icons rex-icon">Z</i>
-                        <span class="rex-ripple" />
-                    </label>
+                <!-- vimeo input section-->
+                <div id="edit-video-row-wrap-3" class="row valign-wrapper mp4-insert-wrap video-insert-wrap" style="padding-top:16px;">
+                    <div class="rex-check rex-check-icon col rex-video-type-select ">
+                        <input type="checkbox" class="rex-choose-video with-gap" name="rex-choose-video" value="mp4" id="rex-choose-mp4-video-section" />
+                        <label id="rex-upload-mp4-video-section" for="rex-choose-mp4-video-section">
+                            <i class="material-icons rex-icon">A</i>
+                            <span class="rex-ripple" />
+                        </label>
+                        <input name="" class="file-path" type="hidden" id="video-section-mp4-url" />
+                    </div>
                 </div>
-                <div class="input-field col" data-rex-video-type="vimeo">
-                    <input id="rex-vimeo-video-section" class="vimeo-url" type="text" />
-                    <label id="rex-vimeo-video-section-label" for="rex-vimeo-video-section">https://player.vimeo.com/video/...</label>
-                </div>
-            </div>
-            <!-- vimeo input section-->
-            <div id="edit-video-row-wrap-3" class="row valign-wrapper mp4-insert-wrap video-insert-wrap" style="padding-top:16px;">
-                <div class="rex-check rex-check-icon col rex-video-type-select ">
-                    <input type="radio" class="rex-choose-video with-gap" name="rex-choose-video" value="mp4" id="rex-choose-mp4-video-section" />
-                    <label id="rex-upload-mp4-video-section" for="rex-choose-mp4-video-section">
-                        <i class="material-icons rex-icon">A</i>
-                        <span class="rex-ripple" />
-                    </label>
-                </div>
+                <!-- mp4 input section-->
             </div>
             <!-- mp4 input section-->
         </div>

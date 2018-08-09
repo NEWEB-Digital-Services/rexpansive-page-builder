@@ -232,12 +232,62 @@
 			var actionData = {
 				active: data.active,
 				idImage: data.idImage,
-				urlImage:  data.urlImage,
+				urlImage: data.urlImage,
 				width: data.width,
-				height:  data.height
+				height: data.height
 			}
 
 			Rexbuilder_Util_Editor.pushAction($section, "updateSectionImageBG", actionData, reverseData);
+		});
+
+		$(document).on("rexlive:update_section_background_video", function (e) {
+			var data = e.settings.data_to_send;
+			console.log(data);
+
+			var $section = Rexbuilder_Util_Editor.sectionEditingBackgroundObj;
+			var $sectionData = $section.children(".section-data");
+
+			var mp4Video = typeof $sectionData.attr('data-video_mp4_url') == "undefined" ? "" : $sectionData.attr('data-video_mp4_url');
+			var youtubeVideo = typeof $sectionData.attr('data-video_bg_url_section') == "undefined" ? "" : $sectionData.attr('data-video_bg_url_section');
+			var mp4VideoID = typeof $sectionData.attr('data-video_bg_id_section') == "undefined" ? "" : $sectionData.attr('data-video_bg_id_section');
+			var vimeoUrl = typeof $sectionData.attr('data-video_bg_url_vimeo_section') == "undefined" ? "" : $sectionData.attr('data-video_bg_url_vimeo_section');
+
+			var reverseData = {
+				targetData: $sectionData,
+				target: $section,
+				idMp4: mp4VideoID,
+				urlMp4: mp4Video,
+				urlVimeo: vimeoUrl,
+				urlYoutube: youtubeVideo,
+				targetType: "section",
+				hasAudio: false
+			}
+
+			var videoOptions = {
+				targetData: $sectionData,
+				target: $section,
+				idMp4: data.videoMp4.idMp4,
+				urlMp4: data.videoMp4.linkMp4,
+				urlVimeo: data.urlVimeo,
+				urlYoutube: data.urlYoutube,
+				targetType: "section",
+				hasAudio: false
+			}
+
+			Rexbuilder_Util.updateVideos(videoOptions);
+
+			var actionData = {
+				targetData: $sectionData,
+				target: $section,
+				idMp4: data.videoMp4.idMp4,
+				urlMp4: data.videoMp4.linkMp4,
+				urlVimeo: data.urlVimeo,
+				urlYoutube: data.urlYoutube,
+				targetType: "section",
+				hasAudio: false
+			}
+
+			//Rexbuilder_Util_Editor.pushAction($section, "updateSectionVideoBG", actionData, reverseData);
 		});
 
 		// ----------------------------------
@@ -521,10 +571,10 @@
 			var height = typeof $section.attr("data-background_image_height") == "undefined" ? "" : $section.attr("data-background_image_height");
 			var activeImage = typeof $sectionData.attr("data-image_bg_section_active") != "undefined" ? $sectionData.attr("data-image_bg_section_active") : true;
 
-			var youtubeVideo = $sectionData.attr("data-video_bg_url_section");
-			var vimeoUrl = $sectionData.attr("data-video_bg_url_vimeo_section");
-			var mp4Video = $sectionData.attr("data-video_bg_id_section");
-			var mp4VideoID = "";
+			var mp4Video = typeof $sectionData.attr('data-video_mp4_url') == "undefined" ? "" : $sectionData.attr('data-video_mp4_url');
+			var youtubeVideo = typeof $sectionData.attr('data-video_bg_url_section') == "undefined" ? "" : $sectionData.attr('data-video_bg_url_section');
+			var mp4VideoID = typeof $sectionData.attr('data-video_bg_id_section') == "undefined" ? "" : $sectionData.attr('data-video_bg_id_section');
+			var vimeoUrl = typeof $sectionData.attr('data-video_bg_url_vimeo_section') == "undefined" ? "" : $sectionData.attr('data-video_bg_url_vimeo_section');
 
 			var currentBackgroundData = {
 				bgColor: {

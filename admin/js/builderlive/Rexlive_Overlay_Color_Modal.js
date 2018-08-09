@@ -5,10 +5,12 @@ var Overlay_Color_Modal = (function ($) {
     var colorActive;
 
     var _updateOverlayModal = function (data) {
+        console.log(data);
         if (data.color != "") {
             background_overlay_properties.$overlay_color_value.val(data.color);
             background_overlay_properties.$overlay_color_preview_icon.hide();
             background_overlay_properties.$overlay_color_value.spectrum('set', data.color);
+            colorActive = data.color;
         } else {
             background_overlay_properties.$overlay_color_value.val('');
             background_overlay_properties.$overlay_color_preview_icon.show();
