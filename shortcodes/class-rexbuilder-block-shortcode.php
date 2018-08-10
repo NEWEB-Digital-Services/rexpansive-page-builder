@@ -150,6 +150,7 @@ class Rexbuilder_Block
                 endif;
             }
 
+
             $block_custom_class = apply_filters('rexpansive_block_custom_class', trim($block_custom_class), $id);
 
             $flex_positioned = false;
@@ -323,27 +324,36 @@ class Rexbuilder_Block
                 $bg_video_toggle_audio_markup = '<div class="rex-video-toggle-audio user-has-muted"><div class="rex-video-toggle-audio-shadow"></div></div>';
             }
 
+            $videoTypeActive = '';
             $bg_video_markup = '';
-
             if ('' != $video_bg_id && 'undefined' != $video_bg_id):
+                $videoTypeActive = 'mp4-player';
                 $video_mp4_url = wp_get_attachment_url($video_bg_id);
-                $bg_video_markup = '<div class="rex-video-wrap">';
+                $videoMP4Data = wp_get_attachment_metadata($video_bg_id);
+                $videoMp4Width = $videoMP4Data["width"];
+                $videoMp4Height = $videoMP4Data["height"];
+                $bg_video_markup .= '<div class="rex-video-wrap" data-rex-video-width="'.$videoMp4Width.'" data-rex-video-height="'.$videoMp4Height.'">';
                 $bg_video_markup .= '<video class="rex-video-container" preload autoplay loop muted>';
                 $bg_video_markup .= '<source type="video/mp4" src="' . $video_mp4_url . '" />';
                 $bg_video_markup .= '</video>';
                 $bg_video_markup .= '</div>';
+
             endif;
 
             $bg_youtube_video_markup = '';
 
             if ('' != $video_bg_url && 'undefined' != $video_bg_url):
+                $videoTypeActive = 'youtube-player';
                 $mute = 'true';
-                $bg_youtube_video_markup = ' data-property="{videoURL:\'' . $video_bg_url . '\',containment:\'self\',startAt:0,mute:' . $mute . ',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"';
+                $bg_youtube_video_markup .= '<div class="rex-youtube-wrap" data-property="{videoURL:\'' . $video_bg_url . '\',containment:\'self\',startAt:0,mute:' . $mute . ',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"></div>';
+                $bg_youtube_video_markup .= '</div>';
             endif;
 
+            
             $bg_video_vimeo_markup = '';
 
             if ('' != $video_bg_url_vimeo && 'undefined' != $video_bg_url_vimeo) {
+                $videoTypeActive = 'vimeo-player';
                 $bg_video_vimeo_markup .= '<div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--block">';
                 $bg_video_vimeo_markup .= '<iframe src="' . $video_bg_url_vimeo . '?autoplay=1&loop=1&title=0&byline=0&portrait=0&autopause=0&muted=1" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
                 $bg_video_vimeo_markup .= '</div>';
@@ -368,7 +378,7 @@ class Rexbuilder_Block
             switch ($type):
                 case 'image':
                     echo ($floating_border == '' ? $block_link_pre : '');
-                    echo '<div class="grid-item-content image-content' . (('' != $video_bg_url && 'undefined' != $video_bg_url) ? ' youtube-player' : '') . (('' != $video_bg_id && 'undefined' != $video_bg_id) ? ' mp4-player' : '') . ($bg_video_vimeo_markup ? ' vimeo-player' : '') . (($flex_positioned) ? ' rex-flexbox' : '');
+                    echo '<div class="grid-item-content image-content ' . (($flex_positioned) ? ' rex-flexbox ' : '');
                     if ("" != $id_image_bg_block) {
                             if ('full' == $type_bg_block) {
                                 echo ' full';
@@ -379,17 +389,15 @@ class Rexbuilder_Block
                             echo ' data-background_image_width="' . $img_attrs[1] . '" ';
                             echo ' data-background_image_height="' . $img_attrs[2];
                     }
-                    echo '" ' . $block_background_style;
-                    echo $bg_youtube_video_markup;
+                    echo $videoTypeActive.'" ' . $block_background_style;
                     echo $alt_tag;
                     echo '>';
                     
-                    if (isset($editor)) {
-                        echo '<div class="rexlive-block-drag-handle"></div>';
-                    }
+                    echo '<div class="rexlive-block-drag-handle"></div>';
 
                     echo $bg_video_markup;
                     echo $bg_video_vimeo_markup;
+                    echo $bg_youtube_video_markup;
 
                     echo '<div class="responsive-block-overlay"'.($overlay_block_color !=""? ' style="background-color:' . $overlay_block_color . ';"' : ''). '>';
 
@@ -404,6 +412,9 @@ class Rexbuilder_Block
                     echo (($floating_border != '' && $block_link_before != '') ? $block_link_before : '');
                     echo '</div>';
                     echo '</div>';
+                    if ($videoTypeActive != '') {
+                        echo $bg_video_toggle_audio_markup;
+                    }
                     echo '</div>';
                     echo ($floating_border == '' ? $block_link_before : '');
                     break;
@@ -411,7 +422,7 @@ class Rexbuilder_Block
                 case 'rexslider':
                 case 'video':
                     echo ($floating_border == '' ? $block_link_pre : '');
-                    echo '<div class="grid-item-content text-content' . (('' != $video_bg_url && 'undefined' != $video_bg_url) ? ' youtube-player' : '') . (('' != $video_bg_id && 'undefined' != $video_bg_id) ? ' mp4-player' : '') . ($bg_video_vimeo_markup ? ' vimeo-player' : '') . (($flex_positioned) ? ' rex-flexbox' : '');
+                    echo '<div class="grid-item-content text-content ' . (($flex_positioned) ? ' rex-flexbox ' : '');
                     if ("" != $id_image_bg_block) {
                         if ('full' == $type_bg_block) {
                             echo ' full';
@@ -422,17 +433,15 @@ class Rexbuilder_Block
                         echo ' data-background_image_width="' . $img_attrs[1] . '" ';
                         echo ' data-background_image_height="' . $img_attrs[2];
                     }
-                    echo '" ' . $block_background_style;
-                    echo $bg_youtube_video_markup;
+                    echo $videoTypeActive.'" ' . $block_background_style;
                     echo $alt_tag;
                     echo '>';
                     
-                    if (isset($editor)) {
-                        echo '<div class="rexlive-block-drag-handle"></div>';
-                    }
+                    echo '<div class="rexlive-block-drag-handle"></div>';
 
                     echo $bg_video_markup;
                     echo $bg_video_vimeo_markup;
+                    echo $bg_youtube_video_markup;
                     echo '<div class="responsive-block-overlay"'.($overlay_block_color !=""? ' style="background-color:' . $overlay_block_color . ';"' : ''). '>';
 
                     echo '<div class="rex-custom-scrollbar' . (($flex_positioned) ? ' rex-custom-position' : '') . '"';
@@ -447,7 +456,7 @@ class Rexbuilder_Block
                     echo (($floating_border != '' && $block_link_before != '') ? $block_link_before : '');
                     echo '</div>';
                     echo '</div>';
-                    if ('' != $video_bg_url || '' != $video_bg_id || '' != $bg_video_vimeo_markup) {
+                    if ($videoTypeActive != '') {
                         echo $bg_video_toggle_audio_markup;
                     }
                     echo '</div>';
@@ -455,11 +464,8 @@ class Rexbuilder_Block
                     break;
                 case 'empty':
                     echo ($floating_border == '' ? $block_link_pre : '');
-                    echo '<div class="grid-item-content empty-content';
+                    echo '<div class="grid-item-content empty-content ';
                     echo (("" == $block_background_style && "" == $id_image_bg_block && "" == $content) ? ' real-empty' : '');
-                    echo (('' != $video_bg_url && 'undefined' != $video_bg_url) ? ' youtube-player' : '');
-                    echo (('' != $video_bg_id && 'undefined' != $video_bg_id) ? ' mp4-player' : '');
-                    echo (('' != $bg_video_vimeo_markup && 'undefined' != $bg_video_vimeo_markup) ? ' vimeo-player' : '');
                     echo (($flex_positioned) ? ' rex-flexbox' : '');
                     if ("" != $id_image_bg_block) {
                         if ('full' == $type_bg_block) {
@@ -471,17 +477,16 @@ class Rexbuilder_Block
                         echo ' data-background_image_width="' . $img_attrs[1] . '" ';
                         echo ' data-background_image_height="' . $img_attrs[2];
                     }
-                    echo '" ' . $block_background_style;
-                    echo $bg_youtube_video_markup;
+                    echo $videoTypeActive.'" ' . $block_background_style;
                     echo $alt_tag;
                     echo '>';
 
-                    if (isset($editor)) {
-                        echo '<div class="rexlive-block-drag-handle"></div>';
-                    }
+                    echo '<div class="rexlive-block-drag-handle"></div>';
 
                     echo $bg_video_markup;
                     echo $bg_video_vimeo_markup;
+                    echo $bg_youtube_video_markup;
+
                     echo '<div class="responsive-block-overlay"'.($overlay_block_color !=""? ' style="background-color:' . $overlay_block_color . ';"' : '') . '>';
                     
                     echo '<div class="rex-custom-scrollbar' . (($flex_positioned) ? ' rex-custom-position' : '') . '">';
@@ -495,7 +500,7 @@ class Rexbuilder_Block
                     echo (($floating_border != '' && $block_link_before != '') ? $block_link_before : '');
                     echo '</div>';
                     echo '</div>';
-                    if ('' != $video_bg_url || '' != $video_bg_id || '' != $bg_video_vimeo_markup) {
+                    if ($videoTypeActive != '') {
                         echo $bg_video_toggle_audio_markup;
                     }
                     echo '</div>';

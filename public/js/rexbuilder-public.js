@@ -138,13 +138,13 @@
 		/* -- Launching YouTube Video -- */
 		// declare object for video
 		if (!jQuery.browser.mobile) {
-			$(".youtube-player").YTPlayer();
+			$(".rex-youtube-wrap").YTPlayer();
 
-			$(".youtube-player").on("YTPReady", function () {
+			$(".rex-youtube-wrap").on("YTPReady", function () {
 				$(this).optimizeDisplay();
 			});
 		} else {
-			$('.youtube-player').each(function (i, el) {
+			$('.rex-youtube-wrap').each(function (i, el) {
 				var $this = $(el),
 					data_yt = eval('(' + $this.attr('data-property') + ')'),
 					url = data_yt.videoURL,
@@ -163,7 +163,7 @@
 		// Pause/Play video on block click
 		$(document).on("click", ".perfect-grid-item", function () {
 			if (!$(this).hasClass('block-has-slider')) {
-				var $ytvideo = $(this).find(".youtube-player");
+				var $ytvideo = $(this).find(".rex-youtube-wrap");
 				var $mpvideo = $(this).find(".rex-video-container");
 
 				if ($ytvideo.length > 0) {
@@ -183,7 +183,7 @@
 		// Adding audio functionallity
 		$('.perfect-grid-item').on('click', '.rex-video-toggle-audio', function (e) {
 			e.stopPropagation();
-			var $ytvideo = $(this).parents(".youtube-player");
+			var $ytvideo = $(this).parents(".youtube-player").find(".rex-youtube-wrap");
 			var $mpvideo = $(this).parents('.mp4-player').find('.rex-video-container');
 			var $vimvideo = $(this).parents('.vimeo-player').find('.rex-video-vimeo-wrap--block');
 			var $toggle = $(this);

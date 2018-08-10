@@ -94,7 +94,8 @@ var Rexbuilder_Util_Editor = (function ($) {
             }
 
             if ($videoYoutubeWrap.length != 0) {
-                var elemData = jQuery.extend(true, {}, eval('(' + $videoYoutubeWrap.attr("data-property") + ')'));
+                var $ytpPlayer = $videoYoutubeWrap.find(".rex-youtube-wrap");
+                var elemData = jQuery.extend(true, {}, eval('(' + $ytpPlayer.attr("data-property") + ')'));
                 slide.slide_video = elemData.videoURL;
                 slide.slide_video_audio = $videoYoutubeWrap.children(".rex-video-toggle-audio").length != 0;
                 slide.slide_video_type = "youtube";
@@ -546,7 +547,7 @@ var Rexbuilder_Util_Editor = (function ($) {
         this.blockEditingOptsObj = null;
 
         this.updatingImageBg = false;
-        
+
         undoStackArray = [];
         redoStackArray = [];
 

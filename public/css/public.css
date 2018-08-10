@@ -5027,9 +5027,6 @@ a.pswp-item {
 .rex-hide-element-live {
   display: none; }
 
-.rex-hide-element > div.grid-stack-item-content > .grid-item-content > .responsive-block-overlay {
-  background-color: rgba(128, 128, 128, 0.75); }
-
 .builder-edit-slider {
   display: none; }
 
@@ -5049,7 +5046,7 @@ a.pswp-item {
 .responsive-block-overlay.rex-active-overlay {
   visibility: visible; }
 
-.rexpansive-ytp.youtube-player {
+.youtube-player > .rex-youtube-wrap {
   position: absolute;
   width: 100%;
   height: 100%;

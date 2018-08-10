@@ -254,10 +254,10 @@ var Rexbuilder_Util = (function ($) {
 
                 var imageOptions = {
                     active: activeImage,
-                    idImage: activeImage ? parseInt(targetProps["id_image_bg"]) : "",
+                    idImage: activeImage ? (!isNaN(parseInt(targetProps["id_image_bg"]))? parseInt(targetProps["id_image_bg"]) : "") :"",
                     urlImage: activeImage ? targetProps["image_bg_url"] : "",
-                    width: activeImage ? parseInt(targetProps["image_width"]) : "",
-                    height: activeImage ? parseInt(targetProps["image_height"]) : "",
+                    width: activeImage ? (!isNaN(parseInt(targetProps["image_width"]))? parseInt(targetProps["image_width"]) : "") :"",
+                    height: activeImage ? (!isNaN(parseInt(targetProps["image_height"]))? parseInt(targetProps["image_height"]) : "") :"",
                     typeBGimage: activeImage ? targetProps["type_bg_image"] : "",
                     photoswipe: activeImage ? targetProps["photoswipe"] : "",
                 }
@@ -1022,7 +1022,7 @@ var Rexbuilder_Util = (function ($) {
         /* -- Launching YouTube Video -- */
         // declare object for video
         if (!jQuery.browser.mobile) {
-            Rexbuilder_Util.$rexContainer.find(".youtube-player").each(function (i, el) {
+            Rexbuilder_Util.$rexContainer.find(".rex-youtube-wrap").each(function (i, el) {
                 var $this = $(el);
                 if ($this.YTPGetPlayer() === undefined && !$this.hasClass("youtube-player-launching")) {
                     $this.YTPlayer();
@@ -1031,7 +1031,7 @@ var Rexbuilder_Util = (function ($) {
                 $this.removeClass("youtube-player-launching");
             });
         } else {
-            Rexbuilder_Util.$rexContainer.find('.youtube-player').each(function (i, el) {
+            Rexbuilder_Util.$rexContainer.find('.rex-youtube-wrap').each(function (i, el) {
                 var $this = $(el),
                     data_yt = eval('(' + $this.attr('data-property') + ')'),
                     url = data_yt.videoURL,
@@ -1110,9 +1110,9 @@ var Rexbuilder_Util = (function ($) {
                 loop: true
             };
             VimeoVideo.addPlayer("1", vimeoFrame, opt);
-        } else if ($target.hasClass("rex-ytp-wrapper")) {
-            if ($target.children(".youtube-player").YTPGetPlayer() === undefined) {
-                $target.children(".youtube-player").YTPlayer();
+        } else if ($target.hasClass("youtube-player")) {
+            if ($target.children(".rex-youtube-wrap").YTPGetPlayer() === undefined) {
+                $target.children(".rex-youtube-wrap").YTPlayer();
             }
         }
     }
@@ -1122,7 +1122,7 @@ var Rexbuilder_Util = (function ($) {
             Rexbuilder_Dom_Util.removeMp4Video($target, targetType, detachDom);
         } else if ($target.hasClass("vimeo-player")) {
             Rexbuilder_Dom_Util.removeVimeoVideo($target, targetType, detachDom);
-        } else if ($target.hasClass("rex-ytp-wrapper")) {
+        } else if ($target.hasClass("youtube-player")) {
             Rexbuilder_Dom_Util.removeYoutubeVideo($target, targetType, detachDom);
         }
     }
@@ -1133,11 +1133,11 @@ var Rexbuilder_Util = (function ($) {
         } else if ($target.hasClass("vimeo-player")) {
             var vimeoPlugin = VimeoVideo.findVideo($target.find("iframe")[0]);
             vimeoPlugin.pause();
-        } else if ($target.hasClass("rex-ytp-wrapper")) {
-            if ($target.children(".youtube-player").YTPGetPlayer() === undefined) {
+        } else if ($target.hasClass("youtube-player")) {
+            if ($target.children(".rex-youtube-wrap").YTPGetPlayer() === undefined) {
                 return;
             }
-            $target.children(".youtube-player").YTPPause();
+            $target.children(".rex-youtube-wrap").YTPPause();
         }
     }
 
@@ -1147,8 +1147,8 @@ var Rexbuilder_Util = (function ($) {
         } else if ($target.hasClass("vimeo-player")) {
             var vimeoPlugin = VimeoVideo.findVideo($target.find("iframe")[0]);
             vimeoPlugin.play();
-        } else if ($target.hasClass("rex-ytp-wrapper")) {
-            if ($target.children(".youtube-player").YTPGetPlayer() === undefined) {
+        } else if ($target.hasClass("youtube-player")) {
+            if ($target.children(".rex-youtube-wrap").YTPGetPlayer() === undefined) {
                 return;
             }
             $target.children(".youtube-player").YTPPlay();

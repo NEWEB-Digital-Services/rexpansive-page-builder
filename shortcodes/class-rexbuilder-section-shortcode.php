@@ -142,6 +142,36 @@ class Rexbuilder_Section
                 $row_separators .= ' data-row-separator-left="' . $row_separator_left . '"';
             }
 
+            $videoTypeActive = '';
+
+            $bg_video_markup = '';
+            if ('' != $video_bg_id_section && 'undefined' != $video_bg_id_section){
+                $videoTypeActive = 'mp4-player';
+                $video_mp4_url = wp_get_attachment_url($video_bg_id_section);
+                $bg_video_markup .= '<div class="rex-video-section-wrap">';
+                $bg_video_markup .= '<video class="rex-video-container" preload autoplay loop muted>';
+                $bg_video_markup .= '<source type="video/mp4" src="' . $video_mp4_url . '" />';
+                $bg_video_markup .= '</video>';
+                $bg_video_markup .= '</div>';
+            }
+            
+            $bg_youtube_video_markup = '';
+            
+            if ('' != $video_bg_url_section && 'undefined' != $video_bg_url_section){
+                
+                $videoTypeActive = 'youtube-player';
+                $bg_youtube_video_markup .= '<div class="rex-youtube-wrap" data-property="{videoURL:\'' . $video_bg_url_section . '\',containment:\'self\',startAt:0,mute:\'true\',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"></div>';
+                $bg_youtube_video_markup .= '</div>';
+            }
+                        
+            $bg_video_vimeo_markup = '';
+            if ('' != $video_bg_url_vimeo && 'undefined' != $video_bg_url_vimeo) {
+                $videoTypeActive = 'vimeo-player';
+                $bg_video_vimeo_markup .= '<div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--section">';
+                $bg_video_vimeo_markup .= '<iframe src="' . $video_bg_url_vimeo_section . '?autoplay=1&loop=1&title=0&byline=0&portrait=0&autopause=0&muted=1" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+                $bg_video_vimeo_markup .= '</div>';
+            }
+
             ob_start();
 
             echo '<section';
@@ -160,7 +190,7 @@ class Rexbuilder_Section
 
             $row_has_accordion = has_shortcode($content, 'RexAccordion');
 
-            echo ' class="rexpansive_section' .
+            echo ' class="rexpansive_section ' . $videoTypeActive .
             (($content_has_photoswipe > 0) ? ' photoswipe-gallery' : '') .
             (('' != $custom_classes) ? ' ' . $custom_classes : '') .
             (('true' == $full_height) ? ' full-height-section' : '') .
@@ -193,7 +223,6 @@ class Rexbuilder_Section
             unset($property_name);
             unset($value_property);
             if ('' != $video_bg_id_section && 'undefined' != $video_bg_id_section) {
-                $video_mp4_url = wp_get_attachment_url($video_bg_id_section);
                 echo 'data-video_mp4_url="' . $video_mp4_url . '"';
             }
             echo '></div>';
@@ -201,29 +230,10 @@ class Rexbuilder_Section
                 include REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-section-tools.php";
             }
 
-            if ('' != $video_bg_url_section && 'undefined' != $video_bg_url_section){
-            ?>
-                <div class="rexpansive-ytp youtube-player" data-property="{videoURL:'<?php echo $video_bg_url_section; ?>',containment:'self',startAt:0,mute:true,autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}">
-                </div>
-            <?php
-            }
- 
-            if ('' != $video_bg_url_vimeo_section && 'undefined' != $video_bg_url_vimeo_section) {
-                ?>
-                <div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--section">
-                <iframe src="<?php echo $video_bg_url_vimeo_section; ?>?autoplay=1&loop=1&title=0&byline=0&portrait=0&autopause=0&muted=1" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>
-                </div>
-                <?php
-}
-
-            if ('' != $video_bg_id_section && 'undefined' != $video_bg_id_section):
-                echo '<div class="rex-video-section-wrap">';
-                echo '<video class="rex-video-container" preload muted autoplay loop>';
-                echo '<source type="video/mp4" src="' . $video_mp4_url . '" />';
-                echo '</video>';
-                echo '</div>';
-            endif;
-
+            echo $bg_video_markup;
+            echo $bg_youtube_video_markup;
+            echo $bg_video_vimeo_markup;
+            
             echo '<div class="responsive-overlay"';
             if ("" != $responsive_background) {
                 echo $section_responsive_style;

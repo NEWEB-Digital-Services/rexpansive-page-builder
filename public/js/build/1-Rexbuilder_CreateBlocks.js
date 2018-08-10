@@ -233,13 +233,11 @@ var Rexbuilder_CreateBlocks = (function ($) {
                         $videoElement.addClass("vimeo-player");
                         break;
                     case "youtube":
-                        var div = document.createElement("div");
-                        var $div = $(div);
-                        $videoElement.addClass("rex-ytp-wrapper");
-                        $div.prependTo($videoElement[0]);
-                        $div.addClass("rexpansive-ytp youtube-player");
-                        $div.attr("data-property", "{videoURL: '" + slides[i].slide_video + "', containment: 'self',startAt: 0,mute: true,autoPlay: true,loop: true,opacity: 1,showControls: false,showYTLogo: false}");
-
+                        $videoElement.prepend(tmpl("tmpl-video-vimeo", {
+                            url: slides[i].slide_video,
+                            audio: false
+                        }));
+                        $videoElement.addClass("youtube-player");
                         break;
                     default:
                         break;

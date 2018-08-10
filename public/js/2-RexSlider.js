@@ -68,7 +68,7 @@ var RexSlider = (function($) {
         });
 
         $(el).on( 'select.flickity', function() {
-          var $videoSlide = $(this).find('.rex-slider-element.is-selected .youtube-player');
+          var $videoSlide = $(this).find('.rex-slider-element.is-selected .rex-youtube-wrap');
           if( $videoSlide.length ) {
             var video_state = $videoSlide[0].state;
             if(video_state != 1) {

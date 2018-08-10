@@ -47,6 +47,11 @@ defined('ABSPATH') or exit;
     </div>
 </script>
 
+<script type="text/x-tmpl" id="tmpl-video-youtube">
+    <div class="rex-youtube-wrap" data-property="{videoURL:'{%=video.url%}',containment:'self',startAt:0,mute:'{%=video.audio%}',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}">
+    </div>
+</script>
+
 <script type="text/x-tmpl" id="tmpl-video-toggle-audio">
     <div class="rex-video-toggle-audio user-has-muted">
         <div class="rex-video-toggle-audio-shadow">
