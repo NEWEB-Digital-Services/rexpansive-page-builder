@@ -175,8 +175,10 @@ var Rexlive_MediaUploader = (function ($) {
                 image_uploader_frame.state('upload-image-bg').get('$preview').css('backgroundImage', 'url(' + obj_attachment.url + ')');
                 image_uploader_frame.state('upload-image-bg').get('$preview').find("i").css("display", "none");
 
-                if($data.parents("#rex-edit-background-section").length != 0){
+                if ($data.parents("#rex-edit-background-section").length != 0) {
                     Background_Section_Image_Modal.updateImageBackground();
+                } else if ($data.parents("#block-edit-image-bg").length != 0) {
+                    Background_Block_Image_Modal.updateImageBackground();
                 }
             });
         });
@@ -289,7 +291,7 @@ var Rexlive_MediaUploader = (function ($) {
         //now open the popup
         video_multiple_uploader_frame.open();
     }	// openMediaUploader VIDEO END
-    
+
     function _openMediaUploaderVideo($data, video_id) {
         video_id = typeof video_id !== 'undefined' ? video_id : null;
 
@@ -354,13 +356,16 @@ var Rexlive_MediaUploader = (function ($) {
                 display = wp.media.string.props(display, obj_attachment);
 
                 var $data = video_uploader_frame.state('upload-video-bg').get('$data');
-
-                // save id image info
+                // save video info
                 $data.val(obj_attachment.id);
                 $data.attr("data-rex-video-bg-url", obj_attachment.url);
+                $data.attr("data-rex-video-bg-width", obj_attachment.width);
+                $data.attr("data-rex-video-bg-height", obj_attachment.height);
 
-                if($data.parents("#rex-edit-background-section").length != 0){
+                if ($data.parents("#rex-edit-background-section").length != 0) {
                     Section_Video_Background_Modal.updateVideoBackground();
+                } else if($data.parents("#video-block-editor-wrapper").length != 0){
+                    Block_Video_Background_Modal.updateVideoBackground();
                 }
             });
         });

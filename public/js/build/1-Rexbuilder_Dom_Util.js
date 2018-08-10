@@ -113,9 +113,6 @@ var Rexbuilder_Dom_Util = (function ($) {
     }
 
     var _updateGridDomProperties = function ($galleryElement, data) {
-        //console.log("updating _updateGridDomProperties");
-        //console.log(data);
-
         $galleryElement.attr("data-layout", data.layout);
         $galleryElement.attr("data-full-height", data.fullHeight);
         $galleryElement.attr("data-separator", data.rowDistances.gutter);
@@ -133,66 +130,85 @@ var Rexbuilder_Dom_Util = (function ($) {
     }
 
     var _updateImageBG = function ($target, data) {
-
-        var idImage = data.idImage;
-        var urlImage = data.urlImage;
-        var w = data.width;
-        var h = data.height;
-        var type = data.type;
-        var active = data.active;
-
-        var $targetData = null;
-        var targetType = "";
-
         if ($target.hasClass("rexpansive_section")) {
-            $targetData = $target.children(".section-data");
-            $targetData.attr("data-image_bg_section_active", active);
-            targetType = "section";
-            type = "";
+            var $sectionData = $target.children(".section-data");
+            if (data.idImage == "" || data.active.toString() != "true") {
+                _resetImageSection($target, $sectionData);
+            } else {
+                _updateImageSection($target, $sectionData, data);
+            }
         } else if ($target.hasClass("grid-item-content")) {
-            $targetData = $target.parents(".grid-stack-item").children(".rexbuilder-block-data");
-            $targetData.attr("data-image_bg_elem_active", active);
-            targetType = "block";
-        } else {
-            return;
+            var $elemData = $target.parents(".grid-stack-item").children(".rexbuilder-block-data");
+            if (data.idImage == "" || data.active.toString() != "true") {
+                _resetImageBlock($target, $elemData);
+            } else {
+                _updateImageBlock($target, $elemData, data);
+            }
+        }
+    }
+
+    var _updateImageSection = function ($section, $sectionData, data) {
+        if (idImage == parseInt($sectionData.attr("data-id_image_bg_section"))) {
+            //same image
+            return
+        }
+        $section.css("background-image", "url(" + data.urlImage + ")");
+        $section.attr('data-background_image_width', data.width);
+        $section.attr('data-background_image_height', data.height);
+        $sectionData.attr("data-id_image_bg_section", data.idImage);
+        $sectionData.attr("data-image_bg_section", data.urlImage);
+        $sectionData.attr("data-image_bg_section_active", data.active);
+    }
+
+    var _updateImageBlock = function ($itemContent, $elemData, data) {
+        console.log(data);
+        $elemData.attr("data-id_image_bg_block", data.idImage);
+        $elemData.attr("data-type_bg_block", data.typeBGimage);
+        $elemData.attr("data-image_bg_block", data.urlImage);
+        $elemData.attr("data-image_size", "full");
+        $elemData.attr("data-photoswipe", data.photoswipe);
+        $elemData.attr("data-image_bg_elem_active", data.active);
+        if (data.typeBGimage == "full") {
+            $itemContent.removeClass("natural-image-background");
+            $itemContent.addClass("full-image-background");
+        } else if (data.typeBGimage == "natural") {
+            $itemContent.removeClass("full-image-background");
+            $itemContent.addClass("natural-image-background");
+            var $elem = $itemContent.parents(".grid-stack-item");
+            if ($elem.outerWidth() < data.width) {
+                $itemContent.addClass('small-width');
+            } else {
+                $itemContent.removeClass('small-width');
+            }
         }
 
-        if (idImage == "") {
-            $targetData.attr('data-id_image_bg_' + targetType, "");
-            $target.attr('data-background_image_width', "");
-            $target.attr('data-background_image_height', "");
+        $itemContent.attr('data-background_image_width', data.width);
+        $itemContent.attr('data-background_image_height', data.height);
+        $itemContent.css("background-image", "url(" + data.urlImage + ")");
+    }
 
-            $target.css("background-image", "");
+    var _resetImageSection = function ($section, $sectionData) {
+        $sectionData.attr("data-image_bg_section", "");
+        $sectionData.attr("data-id_image_bg_section", "");
+        $sectionData.data("image_size", "");
+        $section.attr('data-background_image_width', "");
+        $section.attr('data-background_image_height', "");
+        $section.css("background-image", "");
+    }
 
-            $target.removeClass("natural-image-background");
-            $target.removeClass("full-image-background");
-            $target.removeClass("small-width");
-
-            $targetData.data("image_bg_" + targetType, "");
-            $targetData.data("id_image_bg_" + targetType, "");
-            $targetData.data("type_bg_" + targetType, "");
-            $targetData.data("image_size", "");
-        } else {
-            if (idImage == parseInt($targetData.data("id_image_bg" + targetType))) {
-                //same image
-                return
-            }
-
-            $target.css("background-image", "url(" + urlImage + ")");
-            $target.attr('data-background_image_width', w);
-            $target.attr('data-background_image_height', h);
-            $targetData.attr('data-id_image_bg_' + targetType, idImage);
-            $targetData.attr('data-type_bg_' + targetType, type);
-            $targetData.attr('data-image_bg_' + targetType, urlImage);
-            if (type == "natural") {
-                $target.addClass("natural-image-background");
-                $target.removeClass("full-image-background");
-            } else if (type == "full") {
-                $target.addClass("full-image-background");
-                $target.removeClass("natural-image-background");
-            }
-            $targetData.attr('data-image_size', type);
-        }
+    var _resetImageBlock = function ($itemContent, $elemData) {
+        $elemData.attr("data-id_image_bg_block", "");
+        $elemData.attr("data-type_bg_block", "");
+        $elemData.attr("data-image_bg_block", "");
+        $elemData.attr("data-image_size", "");
+        $elemData.attr("data-photoswipe", "");
+        $elemData.attr("data-image_bg_elem_active", "");
+        $itemContent.removeClass("natural-image-background");
+        $itemContent.removeClass("full-image-background");
+        $itemContent.removeClass("small-width");
+        $itemContent.attr('data-background_image_width', "");
+        $itemContent.attr('data-background_image_height', "");
+        $itemContent.css("background-image", "");
     }
 
     var _removeYoutubeVideo = function ($target, targetType, removeFromDom) {
@@ -654,12 +670,14 @@ var Rexbuilder_Dom_Util = (function ($) {
                 _updateBlockOverlay(dataToUse);
                 break;
             case "updateBlockImageBG":
-                _updateImageBG(dataToUse.$itemContent, dataToUse);
+                Rexbuilder_Util_Editor.updatingImageBg = true;
+                _updateImageBG(dataToUse.$itemContent, dataToUse.imageOpt);
                 if (galleryEditorInstance !== undefined) {
                     if (galleryEditorInstance.settings.galleryLayout == "masonry") {
                         galleryEditorInstance.updateElementHeight(dataToUse.$itemContent.parents(".grid-stack-item"));
                     }
                 }
+                Rexbuilder_Util_Editor.updatingImageBg = false;
                 break;
             case "updateBlockVideoBG":
                 Rexbuilder_Util.updateVideos(dataToUse);

@@ -3,15 +3,6 @@
 	'use strict';
 
 	$(function () {
-		// Prepare the variables that holds the Frame Uploaders
-		var image_uploader_frame, image_block_edit_frame, navigator_media_frame, video_uploader_frame, video_block_edit_frame, textfill_image_upload_frame;
-
-		var setBuilderTimeStamp = function () {
-			/* 
-			var timestamp = new Date();
-			console.log(timestamp); 
-			*/
-		};
 
 		$(document).on("rexlive:set_gallery_layout", function (e) {
 			var data = e.settings.data_to_send;
@@ -53,8 +44,6 @@
 				collapse_grid: $section.attr("data-rex-collapse-grid"),
 				blocksDisposition: $.extend(true, {}, oldDisposition)
 			}
-
-			setBuilderTimeStamp();
 
 			Rexbuilder_Dom_Util.updateGridDomProperties($gallery, data);
 			Rexbuilder_Dom_Util.updateSectionMargins($section, data.sectionMargins);
@@ -241,7 +230,6 @@
 
 		$(document).on("rexlive:update_section_background_video", function (e) {
 			var data = e.settings.data_to_send;
-			console.log(data);
 
 			var $section = Rexbuilder_Util_Editor.sectionEditingBackgroundObj;
 			var $sectionData = $section.children(".section-data");
@@ -345,11 +333,10 @@
 
 		$(document).on("rexlive:apply_background_image_block", function (e) {
 			var data = e.settings.data_to_send;
-			console.log(data);
-			return;
-
-			var rex_block_id = data.blockRexID;
+			Rexbuilder_Util_Editor.updatingImageBg = true;
+			var rex_block_id = data.rex_block_id;
 			var $elem = Rexbuilder_Util.$rexContainer.find("div [data-rexbuilder-block-id=\"" + rex_block_id + "\"]");
+
 			var $itemContent = $elem.find(".grid-item-content");
 			var $elemData = $elem.children(".rexbuilder-block-data");
 			var $section = $elem.parents(".rexpansive_section");
@@ -360,7 +347,7 @@
 			var old_width = typeof $itemContent.attr("data-background_image_width") == "undefined" ? "" : $itemContent.attr("data-background_image_width");
 			var old_height = typeof $itemContent.attr("data-background_image_height") == "undefined" ? "" : $itemContent.attr("data-background_image_height");
 			var old_activeImage = typeof $elemData.attr("data-image_bg_elem_active") != "undefined" ? $elemData.attr("data-image_bg_elem_active") : true;
-			
+
 			var defaultTypeImage;
 			if (old_activeImage.toString() == "true") {
 				defaultTypeImage = $elem.parents(".grid-stack-row").attr("data-layout") == "fixed" ? "full" : "natural";
@@ -369,17 +356,20 @@
 			}
 
 			var old_typeBGimage = typeof $elemData.attr('data-type_bg_block') == "undefined" ? defaultTypeImage : $elemData.attr('data-type_bg_block');
+			var old_photoswipe = typeof $elemData.attr('data-photoswipe') == "undefined" ? "" : $elemData.attr('data-photoswipe');
 
+			var oldOpt = {
+				active: old_activeImage,
+				idImage: old_idImage,
+				urlImage: old_imageUrl,
+				width: old_width,
+				height: old_height,
+				typeBGimage: old_typeBGimage,
+				photoswipe: old_photoswipe
+			};
 			var reverseData = {
 				$itemContent: $itemContent,
-				imageOpt: {
-					active: old_activeImage,
-					idImage: old_idImage,
-					urlImage: old_imageUrl,
-					width: old_width,
-					height: old_height,
-					typeBGimage: old_typeBGimage
-				}
+				imageOpt: oldOpt
 			}
 
 			var imageOpt = {
@@ -388,23 +378,79 @@
 				urlImage: data.urlImage,
 				width: data.width,
 				height: data.height,
-				typeBGimage: data.typeBGImage
-			}
+				typeBGimage: data.typeBGimage,
+				photoswipe: data.photoswipe
+			};
 
 			Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOpt);
 			if (galleryEditorInstance.settings.galleryLayout == "masonry") {
-				galleryEditorInstance.updateElementHeight($itemContent.parents(".grid-stack-item"));
+				galleryEditorInstance.updateElementHeight($elem);
 			}
 
 			var actionData = {
 				$itemContent: $itemContent,
 				imageOpt: imageOpt
-			}
+			};
 
 			Rexbuilder_Util_Editor.pushAction($section, "updateBlockImageBG", actionData, reverseData);
+			Rexbuilder_Util_Editor.updatingImageBg = false;
 		});
 
-		////////////////////////////////////////////////////////////////
+		$(document).on("rexlive:update_block_background_video", function (e) {
+			var data = e.settings.data_to_send;
+			console.log(data);
+			return;
+			var $section = Rexbuilder_Util_Editor.sectionEditingBackgroundObj;
+			var $sectionData = $section.children(".section-data");
+
+			var mp4Video = typeof $sectionData.attr('data-video_mp4_url') == "undefined" ? "" : $sectionData.attr('data-video_mp4_url');
+			var youtubeVideo = typeof $sectionData.attr('data-video_bg_url_section') == "undefined" ? "" : $sectionData.attr('data-video_bg_url_section');
+			var mp4VideoID = typeof $sectionData.attr('data-video_bg_id_section') == "undefined" ? "" : $sectionData.attr('data-video_bg_id_section');
+			var vimeoUrl = typeof $sectionData.attr('data-video_bg_url_vimeo_section') == "undefined" ? "" : $sectionData.attr('data-video_bg_url_vimeo_section');
+
+			var reverseData = {
+				targetData: $sectionData,
+				target: $section,
+				idMp4: mp4VideoID,
+				urlMp4: mp4Video,
+				urlVimeo: vimeoUrl,
+				urlYoutube: youtubeVideo,
+				targetType: "section",
+				hasAudio: false
+			}
+
+			var videoOptions = {
+				targetData: $sectionData,
+				target: $section,
+				idMp4: data.videoMp4.idMp4,
+				urlMp4: data.videoMp4.linkMp4,
+				urlVimeo: data.urlVimeo,
+				urlYoutube: data.urlYoutube,
+				targetType: "section",
+				hasAudio: false
+			}
+
+			Rexbuilder_Util.updateVideos(videoOptions);
+
+			var actionData = {
+				targetData: $sectionData,
+				target: $section,
+				idMp4: data.videoMp4.idMp4,
+				urlMp4: data.videoMp4.linkMp4,
+				urlVimeo: data.urlVimeo,
+				urlYoutube: data.urlYoutube,
+				targetType: "section",
+				hasAudio: false
+			}
+
+			Rexbuilder_Util_Editor.pushAction($section, "updateSectionVideoBG", actionData, reverseData);
+		});
+		///////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////
+		///////////////////////////////////////////////////////////////////////////////////////
 
 		$(document).on('click', '.builder-section-config', function (e) {
 			e.preventDefault();
@@ -611,8 +657,21 @@
 
 			var color = $elemData.attr("data-color_bg_block");
 			var colorActive = typeof $elemData.attr("data-color_bg_elem_active") != "undefined" ? $elemData.attr("data-color_bg_elem_active") : true;
+			var colorData = {
+				color: color,
+				active: colorActive,
+				rexID: rex_block_id
+			};
+
+
 			var overlayColor = typeof $elemData.attr("data-overlay_block_color") != "undefined" ? $elemData.attr("data-overlay_block_color") : "";
 			var overlayActive = typeof $elemData.attr("data-overlay_block_color_active") != "undefined" ? $elemData.attr("data-overlay_block_color_active") : false;
+			var overlayData = {
+				color: overlayColor,
+				active: overlayActive,
+				rexID: rex_block_id
+			}
+
 
 			var idImage = typeof $elemData.attr("data-id_image_bg_block") == "undefined" ? "" : $elemData.attr("data-id_image_bg_block");
 			var imageUrl = typeof $elemData.attr("data-image_bg_block") == "undefined" ? "" : $elemData.attr("data-image_bg_block");
@@ -621,38 +680,63 @@
 			var activeImage = typeof $elemData.attr("data-image_bg_elem_active") != "undefined" ? $elemData.attr("data-image_bg_elem_active") : true;
 			var defaultTypeImage = $elem.parents(".grid-stack-row").attr("data-layout") == "fixed" ? "full" : "natural";
 			var typeBGimage = typeof $elemData.attr('data-type_bg_block') == "undefined" ? defaultTypeImage : $elemData.attr('data-type_bg_block');
+			var activePhotoswipe = typeof $elemData.attr('data-photoswipe') == "undefined" ? "" : $elemData.attr('data-photoswipe');
+			var imageData = {
+				idImage: idImage,
+				imageUrl: imageUrl,
+				width: width,
+				height: height,
+				typeBGimage: typeBGimage,
+				active: activeImage,
+				defaultTypeImage: defaultTypeImage,
+				photoswipe: activePhotoswipe,
+				rexID: rex_block_id
+			};
+
 
 			var mp4Video = typeof $elemData.attr('data-video_mp4_url') == "undefined" ? "" : $elemData.attr('data-video_mp4_url');
-			var youtubeVideo = typeof $elemData.attr('data-video_bg_url_elem') == "undefined" ? "" : $elemData.attr('data-video_bg_url_elem');
 			var mp4VideoID = typeof $elemData.attr('data-video_bg_id_elem') == "undefined" ? "" : $elemData.attr('data-video_bg_id_elem');
+			var youtubeUrl = typeof $elemData.attr('data-video_bg_url_elem') == "undefined" ? "" : $elemData.attr('data-video_bg_url_elem');
 			var vimeoUrl = typeof $elemData.attr('data-video_bg_url_vimeo_elem') == "undefined" ? "" : $elemData.attr('data-video_bg_url_vimeo_elem');
+			var mp4VideoWidth = "";
+			var mp4VideoHeight = "";
+			var type = "";
+			var audio = false;
+
+			if (mp4VideoID != "") {
+				type = "mp4";
+			} else if (youtubeUrl != "") {
+				type = "vimeo";
+			} else if (vimeoUrl != "") {
+				type = "youtube";
+			}
+
+			var videoData = {
+				type: type,
+				mp4Data: {
+					idMp4: mp4VideoID,
+					linkMp4: mp4Video,
+					width: mp4VideoWidth,
+					height: mp4VideoHeight
+				},
+				vimeoUrl: vimeoUrl,
+				youtubeUrl: youtubeUrl,
+				audio: audio,
+				rexID: rex_block_id
+			};
+
 
 			var currentBlockData = {
-				bgColor: {
-					color: color,
-					active: colorActive,
+				bgColor: colorData,
+				imageBG: imageData,
+				bgVideo: videoData,
+				overlay: overlayData,
+				linkBlock: {
+					link: "",
 					rexID: rex_block_id
 				},
-				imageBG: {
-					idImage: idImage,
-					imageUrl: imageUrl,
-					width: width,
-					height: height,
-					typeBGimage: typeBGimage,
-					active: activeImage,
-					defaultTypeImage: defaultTypeImage,
-					photoswipe: false,
-					activePhotoswipe: false,
-				},
-				bgVideo: {
-					youtubeVideo: youtubeVideo,
-					vimeoUrl: vimeoUrl,
-					mp4Video: mp4Video,
-					mp4VideoID: mp4VideoID
-				},
-				overlay: {
-					color: overlayColor,
-					active: overlayActive,
+				customClasses: {
+					classes: [],
 					rexID: rex_block_id
 				}
 			};
@@ -661,8 +745,6 @@
 				eventName: "rexlive:editBlockOptions",
 				activeBlockData: currentBlockData
 			};
-
-
 
 			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 			return;

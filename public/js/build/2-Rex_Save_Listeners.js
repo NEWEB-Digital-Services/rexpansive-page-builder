@@ -332,13 +332,14 @@ var Rex_Save_Listeners = (function ($) {
                 image_width = 0,
                 image_height = 0,
                 id_image_bg_block = "",
+                type_bg_block = "",
+                image_size = 'full',
+                photoswipe = '',
+                image_bg_elem_active = true,
                 video_mp4_url = "",
                 video_bg_id = "",
                 video_bg_url = "",
                 video_bg_url_vimeo = "",
-                type_bg_block = "",
-                image_size = 'full',
-                photoswipe = '',
                 linkurl = '',
                 block_custom_class = '',
                 block_padding = '',
@@ -375,14 +376,15 @@ var Rex_Save_Listeners = (function ($) {
             color_bg_block = typeof $itemData.attr("data-color_bg_block") == "undefined" ? "" : $itemData.attr("data-color_bg_block");
             color_bg_block_active = typeof $itemData.attr("data-color_bg_elem_active") != "undefined" ? $itemData.attr("data-color_bg_elem_active") : true;
 
-            image_bg_block = $itemData.attr('data-image_bg_block') === undefined ? ""
-                : $itemData.attr('data-image_bg_block');
-            image_width = $itemContent.attr('data-background_image_width') === undefined ? ""
-                : parseInt($itemContent.attr('data-background_image_width'));
-            image_height = $itemContent.attr('data-background_image_height') === undefined ? ""
-                : parseInt($itemContent.attr('data-background_image_height'));
-            id_image_bg_block = $itemData.attr('data-id_image_bg_block') === undefined ? ""
-                : $itemData.attr('data-id_image_bg_block');
+            id_image_bg_block = $itemData.attr('data-id_image_bg_block') === undefined ? "" : $itemData.attr('data-id_image_bg_block');
+            image_bg_block = $itemData.attr('data-image_bg_block') === undefined ? "" : $itemData.attr('data-image_bg_block');
+            image_width = $itemContent.attr('data-background_image_width') === undefined ? "" : parseInt($itemContent.attr('data-background_image_width'));
+            image_height = $itemContent.attr('data-background_image_height') === undefined ? "" : parseInt($itemContent.attr('data-background_image_height'));
+            var defaultTypeImage = $elem.parents(".grid-stack-row").attr("data-layout") == "fixed" ? "full" : "natural";
+            type_bg_block = typeof $itemData.attr('data-type_bg_block') == "undefined" ? defaultTypeImage : $itemData.attr('data-type_bg_block');
+            image_size = typeof $itemData.attr('data-image_size') == "undefined" ? "full" : $itemData.attr('data-image_size');
+            photoswipe = $itemData.attr('data-photoswipe') === undefined ? "" : $itemData.attr('data-photoswipe');
+            image_bg_elem_active = typeof $itemData.attr("data-image_bg_elem_active") != "undefined" ? $itemData.attr("data-image_bg_elem_active") : true;
 
             video_bg_id = $itemData.attr('data-video_bg_id') === undefined ? ""
                 : $itemData.attr('data-video_bg_id');
@@ -392,27 +394,21 @@ var Rex_Save_Listeners = (function ($) {
                 : $itemData.attr('data-video_bg_url');
             video_bg_url_vimeo = $itemData.attr('data-video_bg_url_vimeo') === undefined ? ""
                 : $itemData.attr('data-video_bg_url_vimeo');
-
-            var defaultTypeImage = $elem.parents(".grid-stack-row").attr("data-layout") == "fixed" ? "full" : "natural";
-
-            type_bg_block = typeof $itemData.attr('data-type_bg_block') == "undefined" ? defaultTypeImage : $itemData.attr('data-type_bg_block');
-            image_size = typeof $itemData.attr('data-image_size') == "undefined" ? "full" : $itemData.attr('data-image_size');
-
-            photoswipe = $itemData.attr('data-photoswipe') === undefined ? ""
-                : $itemData.attr('data-photoswipe');
+            video_has_audio = $itemData.attr('data-video_has_audio') === undefined ? "0"
+                : $itemData.attr('data-video_has_audio');
 
             linkurl = $itemData.attr('data-linkurl') === undefined ? ""
                 : $itemData.attr('data-linkurl');
 
             block_custom_class = $itemData.attr('data-block_custom_class') === undefined ? ""
                 : $itemData.attr('data-block_custom_class');
-                
+
             block_padding = $itemData.attr('data-block_padding') === undefined ? ""
                 : $itemData.attr('data-block_padding');
-        
+
             overlay_block_color = typeof $itemData.attr("data-overlay_block_color") == "undefined" ? "" : $itemData.attr('data-overlay_block_color');
             overlay_block_color_active = typeof $itemData.attr("data-overlay_block_color_active") != "undefined" ? $itemData.attr("data-overlay_block_color_active") : false;
-            
+
             zak_background = $itemData.attr('data-zak_background') === undefined ? ""
                 : $itemData.attr('data-zak_background');
             zak_side = $itemData.attr('data-zak_side') === undefined ? ""
@@ -425,8 +421,7 @@ var Rex_Save_Listeners = (function ($) {
                 : $itemData.attr('data-zak_foreground');
             block_animation = $itemData.attr('data-block_animation') === undefined ? "fadeInUpBig"
                 : $itemData.attr('data-block_animation');
-            video_has_audio = $itemData.attr('data-video_has_audio') === undefined ? "0"
-                : $itemData.attr('data-video_has_audio');
+
             block_has_scrollbar = $itemData.attr('data-block_has_scrollbar') === undefined ? "false"
                 : $itemData.attr('data-block_has_scrollbar');
             block_live_edited = $itemData.attr('data-rexlive-edited') === undefined ? "" : "true";
@@ -469,6 +464,7 @@ var Rex_Save_Listeners = (function ($) {
                     + '" color_bg_block_active="' + color_bg_block_active
                     + '" image_bg_block="' + image_bg_block
                     + '" id_image_bg_block="' + id_image_bg_block
+                    + '" image_bg_elem_active="' + image_bg_elem_active
                     + '" video_bg_id="' + video_bg_id
                     + '" video_mp4_url="' + video_mp4_url
                     + '" video_bg_url="' + video_bg_url
@@ -490,7 +486,7 @@ var Rex_Save_Listeners = (function ($) {
                     + '" video_has_audio="' + video_has_audio
                     + '" block_has_scrollbar="' + block_has_scrollbar
                     + '" block_live_edited="' + block_live_edited
-                    + '"]' 
+                    + '"]'
                     + content
                     + '[/RexpansiveBlock]';
                 return output;
@@ -523,6 +519,7 @@ var Rex_Save_Listeners = (function ($) {
                 props["type_bg_image"] = type_bg_block;
                 props["image_size"] = image_size;
                 props["photoswipe"] = photoswipe;
+                props["image_bg_elem_active"] = image_bg_elem_active;
                 props["block_custom_class"] = block_custom_class;
                 props["block_padding"] = block_padding;
                 props["overlay_block_color"] = overlay_block_color;

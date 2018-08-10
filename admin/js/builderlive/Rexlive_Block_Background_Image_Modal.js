@@ -3,10 +3,12 @@ var Background_Block_Image_Modal = (function ($) {
 
     var background_block_image_properties;
     var backgroundImageActive;
+    var rexID;
 
     var _updateImageModal = function (data) {
         console.log(data);
-
+        _resetImageModal();
+        rexID = data.rexID;
         background_block_image_properties.$image_url.val(data.idImage);
         if (data.idImage != "") {
             background_block_image_properties.$image_preview.css('backgroundImage', 'url(' + data.imageUrl + ')')
@@ -28,6 +30,7 @@ var Background_Block_Image_Modal = (function ($) {
     }
 
     var _resetImageModal = function () {
+        rexID = "";
         background_block_image_properties.$image_url.val("");
         background_block_image_properties.$image_preview.css('backgroundImage', "")
         background_block_image_properties.$image_preview.find("i").css("display", "block");
@@ -36,6 +39,7 @@ var Background_Block_Image_Modal = (function ($) {
         background_block_image_properties.$image_url.attr("data-rex-image-height", "");
         backgroundImageActive = true;
         background_block_image_properties.$image_active.prop('checked', true);
+        background_block_image_properties.$checkboxPhotoswipe.prop('checked', false);
     }
 
     var _updateImageBackground = function () {
@@ -47,8 +51,8 @@ var Background_Block_Image_Modal = (function ($) {
         var height = typeof background_block_image_properties.$image_url.attr("data-rex-image-height") == "undefined" ? "" : background_block_image_properties.$image_url.attr("data-rex-image-height");
 
         var $wrapImageType = background_block_image_properties.$image_type_types_wrap;
-        var typeBGimage = $wrapImageType.children(".selected").attr("data-rex-type");
-        var photoswipe = (true === background_block_image_properties.$is_photoswipe.prop('checked') ? 'true' : 'false');
+        var typeBGimage = $wrapImageType.children(".selected").attr("data-rex-type-image");
+        var photoswipe = (true === background_block_image_properties.$checkboxPhotoswipe.prop('checked') ? 'true' : 'false');
 
         var data_image = {
             eventName: "rexlive:apply_background_image_block",
@@ -59,19 +63,16 @@ var Background_Block_Image_Modal = (function ($) {
                 height: backgroundImageActive ? height : "",
                 typeBGimage: backgroundImageActive ? typeBGimage : "",
                 photoswipe: backgroundImageActive ? photoswipe : "",
-                active: backgroundImageActive
+                active: backgroundImageActive,
+                rex_block_id: rexID
             }
         }
 
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_image);
     }
 
-    var _clearPhotoswipe = function () {
-        background_block_image_properties.$is_photoswipe.prop('checked', false);
-    }
-
     var _updatePhotoswipe = function (active) {
-        background_block_image_properties.$is_photoswipe.prop('checked', active.toString() == "true");
+        background_block_image_properties.$checkboxPhotoswipe.prop('checked', active.toString() == "true");
     }
 
     var _focusImageType = function (imageType) {
@@ -107,22 +108,23 @@ var Background_Block_Image_Modal = (function ($) {
 
         background_block_image_properties.$image_type_typeWrap.click(function (e) {
             e.preventDefault();
-            _clearImageTypeSelection();
             var $imageTypeWrap = $(e.target).parents(".rex-background-image-type-wrap");
-            $imageTypeWrap.addClass("selected");
-            $imageTypeWrap.find("input").attr("checked", true);
-            _updateImageBackground();
+            if (!$imageTypeWrap.hasClass("selected")) {
+                _clearImageTypeSelection();
+                $imageTypeWrap.addClass("selected");
+                $imageTypeWrap.find("input").attr("checked", true);
+                _updateImageBackground();
+            }
         });
-        
+
         background_block_image_properties.$is_photoswipe.click(function (e) {
             e.preventDefault();
-            var status = true === background_block_image_properties.$is_photoswipe.prop('checked');
+            var status = true === background_block_image_properties.$checkboxPhotoswipe.prop('checked');
             if (status) {
-                background_block_image_properties.$is_photoswipe.prop('checked', false);
+                background_block_image_properties.$checkboxPhotoswipe.prop('checked', false);
             } else {
-                background_block_image_properties.$is_photoswipe.prop('checked', true);
+                background_block_image_properties.$checkboxPhotoswipe.prop('checked', true);
             }
-            backgroundImageActive = status;
             _updateImageBackground();
         });
     }
@@ -149,8 +151,10 @@ var Background_Block_Image_Modal = (function ($) {
 
             // Photoswipe
             $is_photoswipe: $self.find('#bg-set-photoswipe'),
+            $checkboxPhotoswipe: $self.find("#background_photoswipe"),
         }
 
+        rexID = "";
         backgroundImageActive = true;
         _addDocumentListeners();
     }

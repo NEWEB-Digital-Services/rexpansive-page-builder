@@ -250,12 +250,16 @@ var Rexbuilder_Util = (function ($) {
 
                 _updateVideos(videoOptions);
 
+                var activeImage = typeof targetProps["image_bg_elem_active"] == "undefined" ? true : (targetProps["color_bg_block_active"].toString() == "true");
+
                 var imageOptions = {
-                    idImage: isNaN(parseInt(targetProps['id_image_bg'])) ? "" : parseInt(targetProps['id_image_bg']),
-                    urlImage: targetProps['image_bg_url'],
-                    width: parseInt(targetProps['image_width']),
-                    height: parseInt(targetProps['image_height']),
-                    type: targetProps['type_bg_image']
+                    active: activeImage,
+                    idImage: activeImage ? parseInt(targetProps["id_image_bg"]) : "",
+                    urlImage: activeImage ? targetProps["image_bg_url"] : "",
+                    width: activeImage ? parseInt(targetProps["image_width"]) : "",
+                    height: activeImage ? parseInt(targetProps["image_height"]) : "",
+                    typeBGimage: activeImage ? targetProps["type_bg_image"] : "",
+                    photoswipe: activeImage ? targetProps["photoswipe"] : "",
                 }
 
                 Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOptions);
@@ -332,7 +336,7 @@ var Rexbuilder_Util = (function ($) {
                             break;
                         case "photoswipe":
                             if (!Rexbuilder_Util.editorMode) {
-                                if (targetProps[propName] == "true") {
+                                if (targetProps["photoswipe"] == "true") {
                                     addPhotoSwipeElement($itemContent, targetProps['image_bg_block'], parseInt(targetProps['image_width']), parseInt(targetProps['image_height']), targetProps['image_size']);
                                     $section.addClass("photoswipe-gallery");
                                 } else {
@@ -401,6 +405,10 @@ var Rexbuilder_Util = (function ($) {
                 var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
                 if (galleryEditorInstance !== undefined) {
                     galleryEditorInstance.commitGridstack();
+                    //brutto, ma per ora funziona, aspettiamo implementino un evento per il commit di gridstack
+                    setTimeout(function () {
+                        galleryEditorInstance._createFirstReverseStack();
+                    }, 100);
                 }
             }
         });
@@ -485,7 +493,7 @@ var Rexbuilder_Util = (function ($) {
         w = parseInt(w);
         h = parseInt(h);
         startH = parseInt(startH);
-        if (typeof gridstackInstance !== "undefined") {
+        if (typeof gridstackInstance != "undefined") {
             gridstackInstance.update($elem[0], x, y, w, h);
         } else {
             $elem.attr("data-gs-height", h);

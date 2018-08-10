@@ -7,6 +7,7 @@ var BlockOptions_Modal = (function ($) {
         Background_Block_Color_Modal.updateColorModal(data.bgColor);
         Overlay_Color_block_Modal.updateOverlayModal(data.overlay);
         Background_Block_Image_Modal.updateImageModal(data.imageBG);
+        Block_Video_Background_Modal.updateVideoModal(data.bgVideo);
         Rexlive_Modals_Utils.openModal(block_options_properties.$self.parent('.rex-modal-wrap'));
     }
 
@@ -39,6 +40,7 @@ var BlockOptions_Modal = (function ($) {
         Background_Block_Color_Modal.init($blockOptions);
         Overlay_Color_block_Modal.init($blockOptions);
         Background_Block_Image_Modal.init($blockOptions);
+        Block_Video_Background_Modal.init($blockOptions);
     }
 
     return {

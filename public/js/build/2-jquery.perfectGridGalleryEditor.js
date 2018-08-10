@@ -139,7 +139,8 @@
                 this.$element.on("change", function (e, data) {
                     // @todo
                     //aggiornare con aggiunta e eliminazione blocchi
-                    if (that.element == e.target && !Rexbuilder_Util_Editor.undoActive && !Rexbuilder_Util_Editor.redoActive && !that.properties.updatingSection && !Rexbuilder_Util.domUpdaiting && !Rexbuilder_Util.windowIsResizing && !that.properties.removingCollapsedElements && !Rexbuilder_Util_Editor.addingNewBlocks && !Rexbuilder_Util_Editor.removingBlocks && !that.properties.updatingGridWidth) {
+                    if (that.element == e.target && !Rexbuilder_Util_Editor.undoActive && !Rexbuilder_Util_Editor.redoActive && !that.properties.updatingSection && !Rexbuilder_Util.domUpdaiting && !Rexbuilder_Util.windowIsResizing && !that.properties.removingCollapsedElements && !Rexbuilder_Util_Editor.addingNewBlocks && !Rexbuilder_Util_Editor.removingBlocks && !that.properties.updatingGridWidth &&
+                        !Rexbuilder_Util_Editor.updatingImageBg) {
                         var actionData = that.createActionDataMoveBlocksGrid();
                         Rexbuilder_Util_Editor.pushAction(that.$section, "updateSectionBlocksDisposition", $.extend(true, {}, actionData), $.extend(true, {}, that.properties.reverseDataGridDisposition));
                         that.properties.reverseDataGridDisposition = actionData;
@@ -189,8 +190,10 @@
 
             this.$element.children('.grid-stack-item:not(.grid-stack-placeholder, .removing_block)').each(function () {
                 var $elem = $(this);
+                var $elemData = $elem.children(".rexbuilder-block-data");
                 rexID = $elem.attr("data-rexbuilder-block-id");
                 var x, y, w, h;
+
                 x = parseInt($elem.attr("data-gs-x"));
                 y = parseInt($elem.attr("data-gs-y"));
                 w = parseInt($elem.attr("data-gs-width"));
@@ -285,10 +288,6 @@
             this.updateFloatingElementsGridstack();
             this.clearStateGrid();
             this.saveStateGrid();
-
-            if (Rexbuilder_Util.editorMode) {
-                this._createFirstReverseStack();
-            }
 
             if (newSettings.collapse_grid.toString() == "true") {
                 this.collapseElements();
@@ -1416,13 +1415,12 @@
         },
 
         updateElementDataHeightProperties: function ($blockData, newH) {
-            //             //console.log(); 
             if (this.settings.galleryLayout == "masonry") {
                 $blockData.attr("data-block_height_masonry", newH);
             } else {
                 $blockData.attr('data-block_height_fixed', newH);
             }
-            if (this.properties.firstStartGrid) {
+            if (this.properties.firstStartGrid || Rexbuilder_Util_Editor.updatingImageBg) {
                 $blockData.attr('data-gs_start_h', newH);
             }
             $blockData.attr("data-block_height_calculated", newH);
@@ -1430,7 +1428,8 @@
 
         _prepareElementEditing: function ($elem) {
 
-            /*             if (Rexbuilder_Util_Editor.blockCopying) {
+            /*  
+            if (Rexbuilder_Util_Editor.blockCopying) {
                             this.properties.lastIDBlock = this.properties.lastIDBlock + 1;
                             var $elemData = $elem.children(".rexbuilder-block-data");
                             var rexId = Rexbuilder_Util.createBlockID();
@@ -1448,7 +1447,8 @@
             
                         if (Rexbuilder_Util_Editor.sectionCopying || Rexbuilder_Util_Editor.blockCopying) {
                             this._removeHandles($elem);
-                        } */
+            } 
+            */
 
             this._addHandles($elem, 'e, s, w, se, sw');
 
@@ -1774,6 +1774,7 @@
             var imageWidth;
             var $blockContent;
             var $uiElement;
+            var heightFactor;
             gallery.$element.on('resizestart', function (event, ui) {
                 //console.log("starting resize");
                 $uiElement = $(ui.element);
@@ -1793,18 +1794,18 @@
                     } else if (gallery.properties.resizeHandle == 'w' || gallery.properties.resizeHandle == 'sw') {
                         wStart = parseInt($block.attr("data-gs-width"));
                     }
+                    heightFactor = gallery.settings.galleryLayout == "masonry" ? 1 : gallery.properties.singleWidth;
                 }
             }).on('resize', function (event, ui) {
                 if (!$uiElement.is('span')) {
-                    if ($block.outerWidth() < imageWidth) {
+                    if (ui.size.width < imageWidth) {
                         if (!$blockContent.hasClass('small-width')) {
                             $blockContent.addClass('small-width');
                         }
                     } else {
                         $blockContent.removeClass('small-width');
                     }
-
-                    gallery.updateSizeViewerSizes($block);
+                    gallery.updateSizeViewerText($block, Math.round(ui.size.width / gallery.properties.singleWidth), Math.round(ui.size.height / heightFactor));
                 }
             }).on('gsresizestop', function (event, elem) {
                 if (Rexbuilder_Util_Editor.elementIsResizing) {
@@ -2370,9 +2371,10 @@
             } else {
                 textHeight = textHeight + gutter;
             }
-
-            // //console.log(startH); 
-            //console.log(startH, backgroundHeight, defaultHeight, textHeight);
+            /*
+            console.log(startH); 
+            console.log(startH, backgroundHeight, defaultHeight, textHeight);
+            */
             newH = Math.max(startH, backgroundHeight, defaultHeight, textHeight);
             if (this.properties.oneColumModeActive) {
                 return newH;
@@ -2383,6 +2385,7 @@
             } else {
                 newH = Math.ceil(newH / this.properties.singleHeight);
             }
+            //  console.log(newH); 
 
             this.updateElementDataHeightProperties($blockData, newH);
 
