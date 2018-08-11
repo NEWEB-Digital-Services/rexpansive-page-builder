@@ -148,7 +148,7 @@ class Rexbuilder_Section
             if ('' != $video_bg_id_section && 'undefined' != $video_bg_id_section){
                 $videoTypeActive = 'mp4-player';
                 $video_mp4_url = wp_get_attachment_url($video_bg_id_section);
-                $bg_video_markup .= '<div class="rex-video-section-wrap">';
+                $bg_video_markup .= '<div class="rex-video-wrap">';
                 $bg_video_markup .= '<video class="rex-video-container" preload autoplay loop muted>';
                 $bg_video_markup .= '<source type="video/mp4" src="' . $video_mp4_url . '" />';
                 $bg_video_markup .= '</video>';

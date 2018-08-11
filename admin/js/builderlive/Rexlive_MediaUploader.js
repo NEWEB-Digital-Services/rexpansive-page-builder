@@ -256,7 +256,9 @@ var Rexlive_MediaUploader = (function ($) {
             selection.each(function (attachment) {
                 var videoObj = {
                     videoID: -1,
-                    videoUrl: ""
+                    videoUrl: "",
+                    width: "",
+                    height: ""
                 };
 
                 var display = state.display(attachment).toJSON();
@@ -269,6 +271,8 @@ var Rexlive_MediaUploader = (function ($) {
                 display = wp.media.string.props(display, obj_attachment);
                 videoObj.videoID = obj_attachment.id;
                 videoObj.videoUrl = obj_attachment.url;
+                videoObj.width = obj_attachment.width;
+                videoObj.height = obj_attachment.height;
                 videoArray.push(videoObj);
             });
 

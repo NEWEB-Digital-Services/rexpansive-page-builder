@@ -86,9 +86,11 @@ var VimeoVideo = (function ($) {
      * @param {DOM object} el 
      */
     var _findVideo = function (el) {
-        for (var i = 0; i < this.blockVideos.length; i++) {
-            if (this.blockVideos[i].el === el) {
-                return this.blockVideos[i].player;
+        if (this.blockVideos !== undefined) {
+            for (var i = 0; i < this.blockVideos.length; i++) {
+                if (this.blockVideos[i].el === el) {
+                    return this.blockVideos[i].player;
+                }
             }
         }
         return null;

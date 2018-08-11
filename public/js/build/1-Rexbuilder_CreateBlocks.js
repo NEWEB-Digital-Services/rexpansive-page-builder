@@ -99,6 +99,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
     $(document).on("rexlive:insert_video", function (e) {
         var data = e.settings.data_to_send;
+        console.log(data);
         if (!(typeof data.typeVideo == "undefined")) {
             var $section = Rexbuilder_Util_Editor.sectionAddingElementObj,
                 galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
@@ -106,41 +107,57 @@ var Rexbuilder_CreateBlocks = (function ($) {
             var urlYoutube = typeof data.urlYoutube == "undefined" ? "" : data.urlYoutube;
             var urlVimeo = typeof data.urlVimeo == "undefined" ? "" : data.urlVimeo;
             var videoMp4 = typeof data.videoMp4 == "undefined" ? "" : data.videoMp4;
+
+            var type = "";
+
+            if (videoMp4.length != 0) {
+                type = "mp4";
+            } else if (urlVimeo != "") {
+                type = "vimeo";
+            } else if (urlYoutube != "") {
+                type = "youtube";
+            }
+
             if (videoMp4.length == 0) {
                 var $el = _createBlockGrid(galleryInstance, 3, 3);
                 var $itemContent = $el.find(".grid-item-content");
-                var $itemData = $el.children(".rexbuilder-block-data");
                 var videoOptions = {
-                    targetData: $itemData,
-                    target: $itemContent,
-                    idMp4: "",
-                    urlMp4: "",
-                    urlVimeo: urlVimeo,
-                    urlYoutube: urlYoutube,
-                    targetType: "block",
-                    hasAudio: audio
+                    mp4Data: {
+                        idMp4: "",
+                        linkMp4: "",
+                        width: "",
+                        height: "",
+                    },
+                    vimeoUrl: urlVimeo,
+                    youtubeUrl: urlYoutube,
+                    audio: audio,
+                    typeVideo: type
                 }
-                Rexbuilder_Util.updateVideos(videoOptions);
+                Rexbuilder_Dom_Util.updateVideos($itemContent, videoOptions);
                 galleryInstance.addScrollbar($el);
                 galleryInstance.addTextEditor($el);
             } else {
                 for (var i = 0; i < videoMp4.length; i++) {
                     var $el = _createBlockGrid(galleryInstance, 3, 3);
                     var $itemContent = $el.find(".grid-item-content");
-                    var $itemData = $el.children(".rexbuilder-block-data");
-                    var videoMp4Url = videoMp4[i].videoUrl;
-                    var videoMp4ID = videoMp4[i].videoID;
+                    var mp4Url = videoMp4[i].videoUrl;
+                    var mp4ID = videoMp4[i].videoID;
+                    var mp4width = videoMp4[i].width;
+                    var mp4height = videoMp4[i].height;
+
                     var videoOptions = {
-                        targetData: $itemData,
-                        target: $itemContent,
-                        idMp4: videoMp4ID,
-                        urlMp4: videoMp4Url,
-                        urlVimeo: "",
-                        urlYoutube: "",
-                        targetType: "block",
-                        hasAudio: audio
+                        mp4Data: {
+                            idMp4: mp4ID,
+                            linkMp4: mp4Url,
+                            width: mp4width,
+                            height: mp4height,
+                        },
+                        vimeoUrl: "",
+                        youtubeUrl: "",
+                        audio: audio,
+                        typeVideo: type
                     }
-                    Rexbuilder_Util.updateVideos(videoOptions);
+                    Rexbuilder_Dom_Util.updateVideos($itemContent, videoOptions);
                     galleryInstance.addScrollbar($el);
                     galleryInstance.addTextEditor($el);
                 }

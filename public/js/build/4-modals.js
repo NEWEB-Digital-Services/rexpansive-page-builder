@@ -238,40 +238,55 @@
 			var youtubeVideo = typeof $sectionData.attr('data-video_bg_url_section') == "undefined" ? "" : $sectionData.attr('data-video_bg_url_section');
 			var mp4VideoID = typeof $sectionData.attr('data-video_bg_id_section') == "undefined" ? "" : $sectionData.attr('data-video_bg_id_section');
 			var vimeoUrl = typeof $sectionData.attr('data-video_bg_url_vimeo_section') == "undefined" ? "" : $sectionData.attr('data-video_bg_url_vimeo_section');
+			var type = "";
+
+			if (mp4VideoID != "") {
+				type = "mp4";
+			} else if (vimeoUrl != "") {
+				type = "vimeo";
+			} else if (youtubeVideo != "") {
+				type = "youtube";
+			}
 
 			var reverseData = {
-				targetData: $sectionData,
-				target: $section,
-				idMp4: mp4VideoID,
-				urlMp4: mp4Video,
-				urlVimeo: vimeoUrl,
-				urlYoutube: youtubeVideo,
-				targetType: "section",
-				hasAudio: false
+				mp4Data: {
+					idMp4: mp4VideoID,
+					linkMp4: mp4Video,
+					width: "",
+					height: ""
+				},
+				vimeoUrl: vimeoUrl,
+				youtubeUrl: youtubeVideo,
+				audio: false,
+				typeVideo: type
 			}
 
 			var videoOptions = {
-				targetData: $sectionData,
-				target: $section,
-				idMp4: data.videoMp4.idMp4,
-				urlMp4: data.videoMp4.linkMp4,
-				urlVimeo: data.urlVimeo,
-				urlYoutube: data.urlYoutube,
-				targetType: "section",
-				hasAudio: false
+				mp4Data: {
+					idMp4: data.videoMp4.idMp4,
+					linkMp4: data.videoMp4.linkMp4,
+					width: "",
+					height: ""
+				},
+				vimeoUrl: data.urlVimeo,
+				youtubeUrl: data.urlYoutube,
+				audio: false,
+				typeVideo: data.typeVideo
 			}
 
-			Rexbuilder_Util.updateVideos(videoOptions);
+			Rexbuilder_Dom_Util.updateVideos($section,videoOptions);
 
 			var actionData = {
-				targetData: $sectionData,
-				target: $section,
-				idMp4: data.videoMp4.idMp4,
-				urlMp4: data.videoMp4.linkMp4,
-				urlVimeo: data.urlVimeo,
-				urlYoutube: data.urlYoutube,
-				targetType: "section",
-				hasAudio: false
+				mp4Data: {
+					idMp4: data.videoMp4.idMp4,
+					linkMp4: data.videoMp4.linkMp4,
+					width: "",
+					height: ""
+				},
+				vimeoUrl: data.urlVimeo,
+				youtubeUrl: data.urlYoutube,
+				audio: false,
+				typeVideo: data.typeVideo
 			}
 
 			Rexbuilder_Util_Editor.pushAction($section, "updateSectionVideoBG", actionData, reverseData);
@@ -399,51 +414,77 @@
 		$(document).on("rexlive:update_block_background_video", function (e) {
 			var data = e.settings.data_to_send;
 			console.log(data);
-			return;
-			var $section = Rexbuilder_Util_Editor.sectionEditingBackgroundObj;
-			var $sectionData = $section.children(".section-data");
 
-			var mp4Video = typeof $sectionData.attr('data-video_mp4_url') == "undefined" ? "" : $sectionData.attr('data-video_mp4_url');
-			var youtubeVideo = typeof $sectionData.attr('data-video_bg_url_section') == "undefined" ? "" : $sectionData.attr('data-video_bg_url_section');
-			var mp4VideoID = typeof $sectionData.attr('data-video_bg_id_section') == "undefined" ? "" : $sectionData.attr('data-video_bg_id_section');
-			var vimeoUrl = typeof $sectionData.attr('data-video_bg_url_vimeo_section') == "undefined" ? "" : $sectionData.attr('data-video_bg_url_vimeo_section');
+			var rex_block_id = data.rexID;
+			var $elem = Rexbuilder_Util.$rexContainer.find("div [data-rexbuilder-block-id=\"" + rex_block_id + "\"]");
+
+			var $itemContent = $elem.find(".grid-item-content");
+			var $elemData = $elem.children(".rexbuilder-block-data");
+			var $section = $elem.parents(".rexpansive_section");
+			var galleryEditorInstance = Rexbuilder_Util.getGalleryInstance($section);
+
+			var oldmp4Video = typeof $elemData.attr('data-video_mp4_url') == "undefined" ? "" : $elemData.attr('data-video_mp4_url');
+			var oldmp4VideoID = typeof $elemData.attr('data-video_bg_id_elem') == "undefined" ? "" : $elemData.attr('data-video_bg_id_elem');
+			var oldyoutubeUrl = typeof $elemData.attr('data-video_bg_url_elem') == "undefined" ? "" : $elemData.attr('data-video_bg_url_elem');
+			var oldvimeoUrl = typeof $elemData.attr('data-video_bg_url_vimeo_elem') == "undefined" ? "" : $elemData.attr('data-video_bg_url_vimeo_elem');
+			var $videoMp4Wrap = $itemContent.children(".rex-video-wrap");
+			var oldmp4VideoWidth = "";
+			var oldmp4VideoHeight = "";
+			if ($videoMp4Wrap.length != 0) {
+				oldmp4VideoWidth = parseInt($videoMp4Wrap.attr("data-rex-video-width"));
+				oldmp4VideoHeight = parseInt($videoMp4Wrap.attr("data-rex-video-height"));
+			}
+			var oldAudio = $itemContent.children(".rex-video-toggle-audio").length != 0;
+			var type = "";
+
+			if (oldmp4VideoID != "") {
+				type = "mp4";
+			} else if (oldyoutubeUrl != "") {
+				type = "vimeo";
+			} else if (oldvimeoUrl != "") {
+				type = "youtube";
+			}
 
 			var reverseData = {
-				targetData: $sectionData,
-				target: $section,
-				idMp4: mp4VideoID,
-				urlMp4: mp4Video,
-				urlVimeo: vimeoUrl,
-				urlYoutube: youtubeVideo,
-				targetType: "section",
-				hasAudio: false
+				$itemContent: $itemContent,
+				videoOpt: {
+					mp4Data: {
+						idMp4: oldmp4VideoID,
+						linkMp4: oldmp4Video,
+						width: oldmp4VideoWidth,
+						height: oldmp4VideoHeight
+					},
+					vimeoUrl: oldvimeoUrl,
+					youtubeUrl: oldyoutubeUrl,
+					audio: oldAudio,
+					typeVideo: type
+				}
 			}
 
 			var videoOptions = {
-				targetData: $sectionData,
-				target: $section,
-				idMp4: data.videoMp4.idMp4,
-				urlMp4: data.videoMp4.linkMp4,
-				urlVimeo: data.urlVimeo,
-				urlYoutube: data.urlYoutube,
-				targetType: "section",
-				hasAudio: false
+				mp4Data: {
+					idMp4: data.videoMp4.idMp4,
+					linkMp4: data.videoMp4.linkMp4,
+					width: data.videoMp4.width,
+					height: data.videoMp4.height
+				},
+				vimeoUrl: data.urlVimeo,
+				youtubeUrl: data.urlYoutube,
+				audio: data.audio.toString() == "true",
+				typeVideo: data.typeVideo
 			}
 
-			Rexbuilder_Util.updateVideos(videoOptions);
+			Rexbuilder_Dom_Util.updateVideos($itemContent, videoOptions);
+			if (galleryEditorInstance.settings.galleryLayout == "masonry") {
+				//galleryEditorInstance.updateElementHeight($elem);
+			}
 
 			var actionData = {
-				targetData: $sectionData,
-				target: $section,
-				idMp4: data.videoMp4.idMp4,
-				urlMp4: data.videoMp4.linkMp4,
-				urlVimeo: data.urlVimeo,
-				urlYoutube: data.urlYoutube,
-				targetType: "section",
-				hasAudio: false
+				$itemContent: $itemContent,
+				videoOpt: videoOptions
 			}
 
-			Rexbuilder_Util_Editor.pushAction($section, "updateSectionVideoBG", actionData, reverseData);
+			Rexbuilder_Util_Editor.pushAction($section, "updateBlockVideoBG", actionData, reverseData);
 		});
 		///////////////////////////////////////////////////////////////////////////////////////
 		///////////////////////////////////////////////////////////////////////////////////////
@@ -695,20 +736,26 @@
 
 
 			var mp4Video = typeof $elemData.attr('data-video_mp4_url') == "undefined" ? "" : $elemData.attr('data-video_mp4_url');
-			var mp4VideoID = typeof $elemData.attr('data-video_bg_id_elem') == "undefined" ? "" : $elemData.attr('data-video_bg_id_elem');
-			var youtubeUrl = typeof $elemData.attr('data-video_bg_url_elem') == "undefined" ? "" : $elemData.attr('data-video_bg_url_elem');
-			var vimeoUrl = typeof $elemData.attr('data-video_bg_url_vimeo_elem') == "undefined" ? "" : $elemData.attr('data-video_bg_url_vimeo_elem');
+			var mp4VideoID = typeof $elemData.attr('data-video_bg_id') == "undefined" ? "" : $elemData.attr('data-video_bg_id');
+			var youtubeUrl = typeof $elemData.attr('data-video_bg_url') == "undefined" ? "" : $elemData.attr('data-video_bg_url');
+			var vimeoUrl = typeof $elemData.attr('data-video_bg_url_vimeo') == "undefined" ? "" : $elemData.attr('data-video_bg_url_vimeo');
+			var $videoMp4Wrap = $itemContent.children(".rex-video-wrap");
 			var mp4VideoWidth = "";
 			var mp4VideoHeight = "";
+			if ($videoMp4Wrap.length != 0) {
+				mp4VideoWidth = parseInt($videoMp4Wrap.attr("data-rex-video-width"));
+				mp4VideoHeight = parseInt($videoMp4Wrap.attr("data-rex-video-height"));
+			}
+
 			var type = "";
-			var audio = false;
+			var audio = $itemContent.children(".rex-video-toggle-audio").length != 0;
 
 			if (mp4VideoID != "") {
 				type = "mp4";
 			} else if (youtubeUrl != "") {
-				type = "vimeo";
-			} else if (vimeoUrl != "") {
 				type = "youtube";
+			} else if (vimeoUrl != "") {
+				type = "vimeo";
 			}
 
 			var videoData = {

@@ -237,27 +237,42 @@ var Rexbuilder_Util = (function ($) {
                 $itemData = $elem.children(".rexbuilder-block-data");
                 $itemContent = $elem.find(".grid-item-content");
 
+                var mp4ID = !isNaN(parseInt(targetProps["video_bg_id"])) ? parseInt(targetProps["video_bg_id"]) : "";
+                var youtubeUrl = typeof targetProps["video_bg_url_youtube"] == "undefined" ? "" : targetProps["video_bg_url_youtube"];
+                var vimeoUrl = typeof targetProps["video_bg_url_vimeo"] == "undefined" ? "" : targetProps["video_bg_url_vimeo"];
+                var type = "";
+
+                if (mp4ID != "") {
+                    type = "mp4";
+                } else if (vimeoUrl != "") {
+                    type = "vimeo";
+                } else if (youtubeUrl != "") {
+                    type = "youtube";
+                }
+
                 var videoOptions = {
-                    targetData: $itemData,
-                    target: $itemContent,
-                    idMp4: targetProps["video_bg_id"],
-                    urlMp4: targetProps["video_mp4_url"],
-                    urlVimeo: targetProps["video_bg_url_vimeo"],
-                    urlYoutube: targetProps["video_bg_url_youtube"],
-                    targetType: "block",
-                    hasAudio: targetProps['video_has_audio'] == "1" || targetProps['video_has_audio'].toString() == "true" ? true : false
+                    mp4Data: {
+                        idMp4: mp4ID,
+                        linkMp4: typeof targetProps["video_mp4_url"] == "undefined" ? "" : targetProps["video_mp4_url"],
+                        width: isNaN(parseInt(targetProps["video_bg_width"])) ? parseInt(targetProps["video_bg_width"]) : "",
+                        height: isNaN(parseInt(targetProps["video_bg_height"])) ? parseInt(targetProps["video_bg_height"]) : ""
+                    },
+                    vimeoUrl: vimeoUrl,
+                    youtubeUrl: youtubeUrl,
+                    audio: targetProps['video_has_audio'] == "1" || targetProps['video_has_audio'].toString() == "true" ? true : false,
+                    typeVideo: type
                 };
 
-                _updateVideos(videoOptions);
+                Rexbuilder_Dom_Util.updateVideos($itemContent, videoOptions);
 
                 var activeImage = typeof targetProps["image_bg_elem_active"] == "undefined" ? true : (targetProps["color_bg_block_active"].toString() == "true");
 
                 var imageOptions = {
                     active: activeImage,
-                    idImage: activeImage ? (!isNaN(parseInt(targetProps["id_image_bg"]))? parseInt(targetProps["id_image_bg"]) : "") :"",
+                    idImage: activeImage ? (!isNaN(parseInt(targetProps["id_image_bg"])) ? parseInt(targetProps["id_image_bg"]) : "") : "",
                     urlImage: activeImage ? targetProps["image_bg_url"] : "",
-                    width: activeImage ? (!isNaN(parseInt(targetProps["image_width"]))? parseInt(targetProps["image_width"]) : "") :"",
-                    height: activeImage ? (!isNaN(parseInt(targetProps["image_height"]))? parseInt(targetProps["image_height"]) : "") :"",
+                    width: activeImage ? (!isNaN(parseInt(targetProps["image_width"])) ? parseInt(targetProps["image_width"]) : "") : "",
+                    height: activeImage ? (!isNaN(parseInt(targetProps["image_height"])) ? parseInt(targetProps["image_height"]) : "") : "",
                     typeBGimage: activeImage ? targetProps["type_bg_image"] : "",
                     photoswipe: activeImage ? targetProps["photoswipe"] : "",
                 }
@@ -422,16 +437,33 @@ var Rexbuilder_Util = (function ($) {
     var updateSection = function ($section, $gallery, targetProps, forceCollapseElementsGrid) {
         var $sectionData = $section.children(".section-data");
 
+        var mp4ID = !isNaN(parseInt(targetProps["video_bg_id"])) ? parseInt(targetProps["video_bg_id"]) : "";
+        var youtubeUrl = typeof targetProps["video_bg_url_section"] == "undefined" ? "" : targetProps["video_bg_url_section"];
+        var vimeoUrl = typeof targetProps["video_bg_url_vimeo_section"] == "undefined" ? "" : targetProps["video_bg_url_vimeo_section"];
+        var type = "";
+
+        if (mp4ID != "") {
+            type = "mp4";
+        } else if (vimeoUrl != "") {
+            type = "vimeo";
+        } else if (youtubeUrl != "") {
+            type = "youtube";
+        }
+
         var videoOptions = {
-            targetData: $sectionData,
-            target: $section,
-            idMp4: targetProps["video_bg_id"],
-            urlMp4: targetProps["video_mp4_url"],
-            urlVimeo: targetProps["video_bg_url_vimeo_section"],
-            urlYoutube: targetProps["video_bg_url_section"],
-            targetType: "section",
-            hasAudio: false
+            mp4Data: {
+                idMp4: mp4ID,
+                linkMp4: typeof targetProps["video_mp4_url"] == "undefined" ? "" : targetProps["video_mp4_url"],
+                width: "",
+                height: ""
+            },
+            vimeoUrl: vimeoUrl,
+            youtubeUrl: youtubeUrl,
+            audio: false,
+            typeVideo: type
         };
+
+        Rexbuilder_Dom_Util.updateSectionVideoBackground($section, videoOptions);
 
         var imageOptions = {
             active: typeof targetProps["image_bg_section_active"] == "undefined" ? true : targetProps["image_bg_section_active"].toString(),
@@ -445,8 +477,6 @@ var Rexbuilder_Util = (function ($) {
             color: targetProps["row_overlay_color"],
             active: typeof targetProps["row_overlay_active"] == "undefined" ? false : targetProps["row_overlay_active"].toString()
         }
-
-        Rexbuilder_Dom_Util.updateSectionVideoBackground(videoOptions);
 
         Rexbuilder_Dom_Util.updateImageBG($section, imageOptions);
 
@@ -778,55 +808,6 @@ var Rexbuilder_Util = (function ($) {
             openPhotoSwipe(hashData.pid, galleryElements[hashData.gid - 1], true, true);
         }
     };
-
-    var _updateVideos = function (videoOptions) {
-        var $targetData = videoOptions.targetData,
-            $target = videoOptions.target,
-            idMp4 = videoOptions.idMp4,
-            urlMp4 = videoOptions.urlMp4,
-            urlVimeo = videoOptions.urlVimeo,
-            urlYoutube = videoOptions.urlYoutube,
-            targetType = videoOptions.targetType,
-            hasAudio = videoOptions.hasAudio;
-
-        if (($.isEmptyObject(urlMp4) || urlMp4 == "undefined") && ($.isEmptyObject(urlYoutube) || urlYoutube == "undefined") && ($.isEmptyObject(urlVimeo) || urlVimeo == "undefined")) {
-            //console.log("NO VIDEO ACTIVE ON THIS BLOCK"); 
-            Rexbuilder_Dom_Util.removeMp4Video($target, targetType);
-            Rexbuilder_Dom_Util.removeYoutubeVideo($target, targetType);
-            Rexbuilder_Dom_Util.removeVimeoVideo($target, targetType);
-        }
-        if (!($.isEmptyObject(urlMp4) || urlMp4 == "undefined") && ($.isEmptyObject(urlYoutube) || urlYoutube == "undefined") && ($.isEmptyObject(urlVimeo) || urlVimeo == "undefined")) {
-            //console.log("VIDEO MP4 ON THIS BLOCK");
-            Rexbuilder_Dom_Util.removeYoutubeVideo($target, targetType);
-            Rexbuilder_Dom_Util.removeVimeoVideo($target, targetType);
-            Rexbuilder_Dom_Util.addMp4Video($target, urlMp4, targetType, hasAudio);
-        }
-        if (($.isEmptyObject(urlMp4) || urlMp4 == "undefined") && !($.isEmptyObject(urlYoutube) || urlYoutube == "undefined") && ($.isEmptyObject(urlVimeo) || urlVimeo == "undefined")) {
-            //console.log("VIDEO YOUTUBE ON THIS BLOCK");
-            Rexbuilder_Dom_Util.removeMp4Video($target, targetType);
-            Rexbuilder_Dom_Util.removeVimeoVideo($target, targetType);
-            Rexbuilder_Dom_Util.addYoutubeVideo($target, urlYoutube, targetType, hasAudio);
-        }
-        if (($.isEmptyObject(urlMp4) || urlMp4 == "undefined") && ($.isEmptyObject(urlYoutube) || urlYoutube == "undefined") && !($.isEmptyObject(urlVimeo) || urlVimeo == "undefined")) {
-            //console.log("VIDEO VIMEO ON THIS BLOCK");
-            Rexbuilder_Dom_Util.removeMp4Video($target, targetType);
-            Rexbuilder_Dom_Util.removeYoutubeVideo($target, targetType);
-            Rexbuilder_Dom_Util.addVimeoVideo($target, urlVimeo, targetType, hasAudio);
-        }
-
-        if (targetType == "section") {
-            $targetData.attr("data-video_bg_id_section", idMp4);
-            $targetData.attr("data-video_mp4_url", urlMp4);
-            $targetData.attr("data-video_bg_url_section", urlYoutube);
-            $targetData.attr("data-video_bg_url_vimeo_section", urlVimeo);
-        } else {
-            $targetData.attr("data-video_bg_id", idMp4);
-            $targetData.attr("data-video_mp4_url", urlMp4);
-            $targetData.attr("data-video_bg_url", urlYoutube);
-            $targetData.attr("data-video_bg_url_vimeo", urlVimeo);
-            $targetData.attr("data-video_has_audio", hasAudio);
-        }
-    }
 
     // function to detect if we are on a mobile device
     var _detect_mobile = function () {
@@ -1236,7 +1217,6 @@ var Rexbuilder_Util = (function ($) {
         getGalleryInstance: _getGalleryInstance,
         removeCollapsedGrids: removeCollapsedGrids,
         collapseAllGrids: collapseAllGrids,
-        updateVideos: _updateVideos,
         stopVideo: _stopVideo,
         playVideoFromBegin: _playVideoFromBegin,
         pauseVideo: _pauseVideo,
