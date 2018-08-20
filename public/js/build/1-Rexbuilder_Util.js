@@ -297,6 +297,8 @@ var Rexbuilder_Util = (function ($) {
 
                 Rexbuilder_Dom_Util.updateBlockOverlay(overlayBlockOpt);
 
+                Rexbuilder_Dom_Util.updateBlockPaddings($elem, _getPaddingsDataString(targetProps["block_padding"]));
+
                 for (var propName in targetProps) {
                     switch (propName) {
                         case "hide":
@@ -337,17 +339,6 @@ var Rexbuilder_Util = (function ($) {
                             }
                             $elem.addClass(targetProps[propName]);
                             $itemData.attr("data-block_custom_class", targetProps[propName]);
-                            break;
-
-                        case "block_padding":
-                            var $textWrap = $itemContent.find(".text-wrap");
-                            if ($textWrap.length != 0) {
-                                var newPaddings = targetProps[propName].split(/;/g);
-                                $textWrap.css("padding-top", newPaddings[0]);
-                                $textWrap.css("padding-right", newPaddings[1]);
-                                $textWrap.css("padding-bottom", newPaddings[2]);
-                                $textWrap.css("padding-left", newPaddings[3]);
-                            }
                             break;
                         case "photoswipe":
                             if (!Rexbuilder_Util.editorMode) {
@@ -1139,6 +1130,42 @@ var Rexbuilder_Util = (function ($) {
     var _getBackgroundUrlFromCss = function (styleBackground) {
         return styleBackground.replace('url(', '').replace(')', '').replace(/\"/gi, "");
     }
+
+    var _getPaddingsDataString = function (paddingString) {
+        var paddingsData = {
+            top: "5",
+            right: "5",
+            bottom: "5",
+            left: "5",
+            type: "px",
+        }
+        if (paddingString != "") {
+            var paddings = paddingString.split(/;/gm);
+            paddingsData.top = parseInt(paddings[0].split(/\D+/gm)[0]);
+            paddingsData.right = parseInt(paddings[1].split(/\D+/gm)[0]);
+            paddingsData.bottom = parseInt(paddings[2].split(/\D+/gm)[0]);
+            paddingsData.left = parseInt(paddings[3].split(/\D+/gm)[0]);
+
+            var typePaddingActive = "";
+            if (paddings[0].indexOf("%") != -1) {
+                typePaddingActive = "%";
+            } else {
+                typePaddingActive = "px";
+            }
+            paddingsData.type = typePaddingActive;
+        }
+        return paddingsData;
+    }
+
+    var _paddingsToString = function (paddings) {
+        var output = "";
+        output += "" + paddings.top + paddings.type + ";";
+        output += "" + paddings.right + paddings.type + ";";
+        output += "" + paddings.bottom + paddings.type + ";";
+        output += "" + paddings.left + paddings.type + ";";
+        return output;
+    }
+
     // init the utilities
     var init = function () {
         this.firstStart = true;
@@ -1223,7 +1250,9 @@ var Rexbuilder_Util = (function ($) {
         playVideo: _playVideo,
         destroyVideo: _destroyVideo,
         startVideoPlugin: _startVideoPlugin,
-        getBackgroundUrlFromCss: _getBackgroundUrlFromCss
+        getBackgroundUrlFromCss: _getBackgroundUrlFromCss,
+        getPaddingsDataString: _getPaddingsDataString,
+        paddingsToString: _paddingsToString
     };
 
 })(jQuery);

@@ -22,6 +22,9 @@ defined('ABSPATH') or exit;
             <button class="tool-button btn-floating builder-change-background tooltipped waves-effect waves-light">
                 I
             </button>
+            <button class="tool-button btn-floating builder-edit-block tooltipped waves-effect waves-light">
+	    	O
+            </button>
             <button class="tool-button btn-floating builder-edit-slider tooltipped waves-effect waves-light">
                 S
             </button>

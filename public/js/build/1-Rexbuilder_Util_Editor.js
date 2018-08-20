@@ -547,6 +547,7 @@ var Rexbuilder_Util_Editor = (function ($) {
         this.blockEditingOptsObj = null;
 
         this.updatingImageBg = false;
+        this.updatingPaddingBlock = false;
 
         undoStackArray = [];
         redoStackArray = [];

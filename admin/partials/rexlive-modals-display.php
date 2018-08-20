@@ -576,49 +576,51 @@ defined('ABSPATH') or exit;
                         </label>
                     </div>
                 </div>
-
-                <div class="col">
-                    <div class="clearfix">
-                        <div class="block-padding-wrap">
-                            <input type="text" id="bm-block-padding-top" class="block-padding-values" name="block-padding-top" value="5" />
-                            <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Padding Top">d</i>
+                <!-- POSITIONS -->
+                <div id="block-paddings-wrapper">
+                    <div class="col">
+                        <div class="clearfix">
+                            <div class="block-padding-wrap">
+                                <input type="text" id="bm-block-padding-top" class="block-padding-values" name="block-padding-top" value="5" />
+                                <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Padding Top">d</i>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <div class="block-padding-wrap">
+                                <input type="text" id="bm-block-padding-left" class="block-padding-values" name="block-padding-left" value="5" />
+                                <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Padding Left">a</i>
+                            </div>
+                            <div id="block-padding-future-content"></div>
+                            <div class="block-padding-wrap">
+                                <input type="text" id="bm-block-padding-right" class="block-padding-values" name="block-padding-right" value="5" />
+                                <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Padding Right">c</i>
+                            </div>
+                        </div>
+                        <div class="clearfix">
+                            <div class="block-padding-wrap">
+                                <input type="text" id="bm-block-padding-bottom" class="block-padding-values" name="block-padding-bottom" value="5" />
+                                <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Padding Bottom">b</i>
+                            </div>
                         </div>
                     </div>
-                    <div class="clearfix">
-                        <div class="block-padding-wrap">
-                            <input type="text" id="bm-block-padding-left" class="block-padding-values" name="block-padding-left" value="5" />
-                            <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Padding Left">a</i>
+                    <div id="block-padding-type-select" class="rex-vertical-check-wrap col">
+                        <div class="rex-check-text rex-block-padding-type-wrap" data-rex-type-padding="%">
+                            <input id="bm-block-pad-percentage" type="radio" class="bm-block-padding-type with-gap" name="block-padding-type" value="percentage" checked />
+                            <label for="bm-block-pad-percentage">
+                                %
+                                <span class="rex-ripple"></span>
+                            </label>
                         </div>
-                        <div id="block-padding-future-content"></div>
-                        <div class="block-padding-wrap">
-                            <input type="text" id="bm-block-padding-right" class="block-padding-values" name="block-padding-right" value="5" />
-                            <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Padding Right">c</i>
-                        </div>
-                    </div>
-                    <div class="clearfix">
-                        <div class="block-padding-wrap">
-                            <input type="text" id="bm-block-padding-bottom" class="block-padding-values" name="block-padding-bottom" value="5" />
-                            <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Padding Bottom">b</i>
+                        <div class="rex-check-text rex-block-padding-type-wrap" data-rex-type-padding="px">
+                            <input id="bm-block-pad-pixel" type="radio" class="bm-block-padding-type with-gap" name="block-padding-type" value="pixel" />
+                            <label for="bm-block-pad-pixel">
+                                PX
+                                <span class="rex-ripple"></span>
+                            </label>
                         </div>
                     </div>
                 </div>
-
-                <div class="rex-vertical-check-wrap col">
-                    <div class="rex-check-text">
-                        <input id="bm-block-pad-percentage" type="radio" class="bm-block-padding-type with-gap" name="block-padding-type" value="percentage" checked />
-                        <label for="bm-block-pad-percentage">
-                            %
-                            <span class="rex-ripple"></span>
-                        </label>
-                    </div>
-                    <div class="rex-check-text">
-                        <input id="bm-block-pad-pixel" type="radio" class="bm-block-padding-type with-gap" name="block-padding-type" value="pixel" />
-                        <label for="bm-block-pad-pixel">
-                            PX
-                            <span class="rex-ripple"></span>
-                        </label>
-                    </div>
-                </div>
+                <!-- PADDINGS -->
             </div>
             <!-- /POSITION & PADDING -->
             <div id="bg-set-link-wrap" class="row">

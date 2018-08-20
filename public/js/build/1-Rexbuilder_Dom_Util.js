@@ -376,24 +376,25 @@ var Rexbuilder_Dom_Util = (function ($) {
 
     var _addVimeoVideo = function ($target, urlVimeo, hasAudio) {
         var $vimeoWrap = $target.children(".rex-video-vimeo-wrap");
-        urlVimeo += "?autoplay=1&loop=1&title=0&byline=0&portrait=0&autopause=0&muted=1";
-        $target.addClass("vimeo-player");
-
         var $toggleAudio = $target.children(".rex-video-toggle-audio");
-
-        if ($vimeoWrap.length != 0 && ($vimeoWrap.children("iframe").attr("src") != urlVimeo) || ($vimeoWrap.length == 0)) {
+        $target.addClass("vimeo-player");
+        if (urlVimeo == "") {
             _removeVimeoVideo($target, true);
-            tmpl.arg = "video";
-            $target.prepend(tmpl("tmpl-video-vimeo", { url: urlVimeo }));
-            var vimeoFrame = $target.children(".rex-video-vimeo-wrap").find("iframe")[0];
-            VimeoVideo.addPlayer("1", vimeoFrame);
-        } else if ($vimeoWrap.length != 0) {
-            var vimeoPlugin = VimeoVideo.findVideo($vimeoWrap.find("iframe")[0]);
-            if (vimeoPlugin != null){
-                vimeoPlugin.play();
+        } else {
+            urlVimeo += "?autoplay=1&loop=1&title=0&byline=0&portrait=0&autopause=0&muted=1";
+            if ($vimeoWrap.length != 0 && ($vimeoWrap.children("iframe").attr("src") != urlVimeo) || ($vimeoWrap.length == 0)) {
+                _removeVimeoVideo($target, true);
+                tmpl.arg = "video";
+                $target.prepend(tmpl("tmpl-video-vimeo", { url: urlVimeo }));
+                var vimeoFrame = $target.children(".rex-video-vimeo-wrap").find("iframe")[0];
+                VimeoVideo.addPlayer("1", vimeoFrame);
+            } else if ($vimeoWrap.length != 0) {
+                var vimeoPlugin = VimeoVideo.findVideo($vimeoWrap.find("iframe")[0]);
+                if (vimeoPlugin != null) {
+                    vimeoPlugin.play();
+                }
             }
         }
-
         if ($toggleAudio.length == 0) {
             if (hasAudio) {
                 $target.append(tmpl("tmpl-video-toggle-audio"));
@@ -422,7 +423,6 @@ var Rexbuilder_Dom_Util = (function ($) {
         }
 
         var type = videoOptions.typeVideo;
-
         if (type == "") {
             _removeMp4Video($target, true);
             _removeYoutubeVideo($target, true);
@@ -454,6 +454,18 @@ var Rexbuilder_Dom_Util = (function ($) {
             $elemData.attr("data-video_has_audio", videoOptions.audio);
         } else if (targetType == "slide") {
             ;
+        }
+    }
+
+    var _updateBlockPaddings = function ($elem, paddings) {
+        var $elData = $elem.children(".rexbuilder-block-data");
+        $elData.attr("data-block_padding", Rexbuilder_Util.paddingsToString(paddings));
+        var $textWrap = $elem.find(".text-wrap");
+        if ($textWrap.length != 0) {
+            $textWrap.css("padding-top", "" + paddings.top + paddings.type);
+            $textWrap.css("padding-right", "" + paddings.right + paddings.type);
+            $textWrap.css("padding-bottom", "" + paddings.bottom + paddings.type);
+            $textWrap.css("padding-left", "" + paddings.left + paddings.type);
         }
     }
 
@@ -643,6 +655,7 @@ var Rexbuilder_Dom_Util = (function ($) {
     }
 
     var _performAction = function (action, flag) {
+        console.log("performing "+ action.actionName);
         var dataToUse;
 
         if (flag) {
@@ -738,6 +751,16 @@ var Rexbuilder_Dom_Util = (function ($) {
                 }
                 Rexbuilder_Util_Editor.updatingImageBg = false;
                 break;
+            case "updateBlockPadding":
+                Rexbuilder_Util_Editor.updatingPaddingBlock = true;
+                _updateBlockPaddings(dataToUse.$elem, dataToUse.dataPadding);
+                if (galleryEditorInstance !== undefined) {
+                    if (galleryEditorInstance.settings.galleryLayout == "masonry") {
+                        galleryEditorInstance.updateElementHeight(dataToUse.$elem);
+                    }
+                }
+                Rexbuilder_Util_Editor.updatingPaddingBlock = false;
+                break;
             case "updateBlockVideoBG":
                 Rexbuilder_Dom_Util.updateVideos(dataToUse.$itemContent, dataToUse.videoOpt);
                 break;
@@ -784,5 +807,6 @@ var Rexbuilder_Dom_Util = (function ($) {
         updateBlockOverlayColorLive: _updateBlockOverlayColorLive,
         updateBlockOverlay: _updateBlockOverlay,
         updateVideos: _updateVideos,
+        updateBlockPaddings: _updateBlockPaddings
     };
 })(jQuery);

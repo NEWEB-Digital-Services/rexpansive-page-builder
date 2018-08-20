@@ -51,8 +51,10 @@ var Rexbuilder_App = (function ($) {
 		// Pause/Play video on block click
 		$(document).on("click", ".perfect-grid-item", function () {
 			if (!$(this).hasClass('block-has-slider')) {
-				var $ytvideo = $(this).find(".youtube-player");
-				var $mpvideo = $(this).find(".rex-video-container");
+				var $itemContent = $(this).find(".grid-item-content");
+				var $ytvideo = $itemContent.children(".rex-youtube-wrap");
+				var $vimvideo = $itemContent.children('.rex-video-vimeo-wrap--block');
+				var $mpvideo = $itemContent.children('.rex-video-wrap');
 
 				if ($ytvideo.length > 0) {
 					var video_state = $ytvideo[0].state;
@@ -62,8 +64,25 @@ var Rexbuilder_App = (function ($) {
 						$ytvideo.YTPPlay();
 					}
 				}
+
+				if ($vimvideo.length > 0) {
+					var player = VimeoVideo.findVideo($vimvideo.find('iframe')[0]);
+					if (player) {
+						player.getPaused().then(function (paused) {
+							if (paused) {
+								player.play();
+							} else {
+								player.pause();
+							}
+						}).catch(function (error) {
+							// an error occurred
+						});
+					}
+				}
+
 				if ($mpvideo.length > 0) {
-					$mpvideo.get(0).paused ? $mpvideo.get(0).play() : $mpvideo.get(0).pause();
+					var videoMp4 = $mpvideo.find(".rex-video-container").get(0);
+					videoMp4.paused ? videoMp4.play() : videoMp4.pause();
 				}
 			}
 		});
@@ -71,10 +90,10 @@ var Rexbuilder_App = (function ($) {
 		// Adding audio functionallity
 		$(document).on('click', '.rex-video-toggle-audio', function (e) {
 			e.stopPropagation();
-			var $ytvideo = $(this).parents(".youtube-player").children(".rex-youtube-wrap");
-			var $mpvideo = $(this).parents('.mp4-player').find('.rex-video-container');
-			var $vimvideo = $(this).parents('.vimeo-player').find('.rex-video-vimeo-wrap--block');
 			var $toggle = $(this);
+			var $ytvideo = $toggle.parents(".youtube-player").children(".rex-youtube-wrap");
+			var $mpvideo = $toggle.parents('.mp4-player').find('.rex-video-container');
+			var $vimvideo = $toggle.parents('.vimeo-player').find('.rex-video-vimeo-wrap--block');
 
 			//youtube video
 			if ($ytvideo.length > 0) {
@@ -161,7 +180,7 @@ var Rexbuilder_App = (function ($) {
 
 		// Starting slider
 		RexSlider.init();
-		
+
 	};
 
 	var load = function () {

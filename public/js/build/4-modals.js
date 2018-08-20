@@ -274,7 +274,7 @@
 				typeVideo: data.typeVideo
 			}
 
-			Rexbuilder_Dom_Util.updateVideos($section,videoOptions);
+			Rexbuilder_Dom_Util.updateVideos($section, videoOptions);
 
 			var actionData = {
 				mp4Data: {
@@ -486,6 +486,43 @@
 
 			Rexbuilder_Util_Editor.pushAction($section, "updateBlockVideoBG", actionData, reverseData);
 		});
+
+		$(document).on("rexlive:apply_paddings_block", function (e) {
+			var data = e.settings.data_to_send;
+
+			var rex_block_id = data.rexID;
+			var $elem = Rexbuilder_Util.$rexContainer.find("div [data-rexbuilder-block-id=\"" + rex_block_id + "\"]");
+
+			var $elemData = $elem.children(".rexbuilder-block-data");
+			var $section = $elem.parents(".rexpansive_section");
+			var galleryEditorInstance = Rexbuilder_Util.getGalleryInstance($section);
+
+			var paddingsElemData = typeof $elemData.attr('data-block_padding') == "undefined" ? "" : $elemData.attr('data-block_padding');
+			var oldPaddings = Rexbuilder_Util.getPaddingsDataString(paddingsElemData);
+			console.log(oldPaddings);
+			var reverseData = {
+				$elem: $elem,
+				dataPadding: oldPaddings
+			}
+
+			console.log(data.paddings);
+
+			Rexbuilder_Util_Editor.updatingPaddingBlock = true;
+			Rexbuilder_Dom_Util.updateBlockPaddings($elem, data.paddings);
+			if (galleryEditorInstance.settings.galleryLayout == "masonry") {
+				galleryEditorInstance.updateElementHeight($elem);
+			}
+			Rexbuilder_Util_Editor.updatingPaddingBlock = false;
+
+			var actionData = {
+				$elem: $elem,
+				dataPadding: data.paddings
+			}
+
+			Rexbuilder_Util_Editor.pushAction($section, "updateBlockPadding", actionData, reverseData);
+
+		});
+
 		///////////////////////////////////////////////////////////////////////////////////////
 		///////////////////////////////////////////////////////////////////////////////////////
 		///////////////////////////////////////////////////////////////////////////////////////
@@ -773,11 +810,18 @@
 			};
 
 
+			var paddingsElemData = typeof $elemData.attr('data-block_padding') == "undefined" ? "" : $elemData.attr('data-block_padding');
+			var paddingsData = {
+				rexID: rex_block_id,
+				paddings: Rexbuilder_Util.getPaddingsDataString(paddingsElemData),
+			}
+
 			var currentBlockData = {
 				bgColor: colorData,
 				imageBG: imageData,
 				bgVideo: videoData,
 				overlay: overlayData,
+				paddings: paddingsData,
 				linkBlock: {
 					link: "",
 					rexID: rex_block_id

@@ -137,10 +137,18 @@
             if (Rexbuilder_Util.editorMode) {
                 var that = this;
                 this.$element.on("change", function (e, data) {
-                    // @todo
-                    //aggiornare con aggiunta e eliminazione blocchi
-                    if (that.element == e.target && !Rexbuilder_Util_Editor.undoActive && !Rexbuilder_Util_Editor.redoActive && !that.properties.updatingSection && !Rexbuilder_Util.domUpdaiting && !Rexbuilder_Util.windowIsResizing && !that.properties.removingCollapsedElements && !Rexbuilder_Util_Editor.addingNewBlocks && !Rexbuilder_Util_Editor.removingBlocks && !that.properties.updatingGridWidth &&
-                        !Rexbuilder_Util_Editor.updatingImageBg) {
+                    if (that.element == e.target && 
+                    !Rexbuilder_Util_Editor.undoActive && 
+                    !Rexbuilder_Util_Editor.redoActive && 
+                    !that.properties.updatingSection && 
+                    !Rexbuilder_Util.domUpdaiting && 
+                    !Rexbuilder_Util.windowIsResizing && 
+                    !that.properties.removingCollapsedElements && 
+                    !Rexbuilder_Util_Editor.addingNewBlocks && 
+                    !Rexbuilder_Util_Editor.removingBlocks && 
+                    !that.properties.updatingGridWidth &&
+                    !Rexbuilder_Util_Editor.updatingImageBg &&
+                    !Rexbuilder_Util_Editor.updatingPaddingBlock) {
                         var actionData = that.createActionDataMoveBlocksGrid();
                         Rexbuilder_Util_Editor.pushAction(that.$section, "updateSectionBlocksDisposition", $.extend(true, {}, actionData), $.extend(true, {}, that.properties.reverseDataGridDisposition));
                         that.properties.reverseDataGridDisposition = actionData;
@@ -590,7 +598,6 @@
                     } else {
                         // successive modifiche dovute al cambiamento del contenuto
                         var scrollbarInstance = $rexScrollbar.overlayScrollbars();
-
                         if (!$rexScrollbar.hasClass(Rexbuilder_Util.scrollbarProperties.className) || $rexScrollbar.hasClass('os-host-scrollbar-vertical-hidden')) {
                             var maxBlockHeight = $rexScrollbar.parents('.grid-item-content').height();
                             var textHeight = $block.find('.text-wrap').innerHeight();
@@ -617,10 +624,12 @@
                             }
 
                             if (this.properties.elementStartingH != h) {
-                                var gridstack = this.properties.gridstackInstance;
-                                gridstack.update(block, null, null, w, h);
-                                this.updateSizeViewerSizes($block);
-                                this.properties.elementStartingH = h;
+                                if (!Rexbuilder_Util_Editor.updatingPaddingBlock) {
+                                    var gridstack = this.properties.gridstackInstance;
+                                    gridstack.update(block, null, null, w, h);
+                                    this.updateSizeViewerSizes($block);
+                                    this.properties.elementStartingH = h;
+                                }
                             }
                             scrollbarInstance.scroll({ y: "50%" }, 100);
                             scrollbarInstance.update();
@@ -2304,15 +2313,13 @@
             var $blockData = $elem.children('.rexbuilder-block-data');
             var startH;
             if (this.properties.updatingSection) {
-                if (this.settings.galleryLayout == "fixed" /* && this.properties.oldLayout == "masonry" */) {
+                if (this.settings.galleryLayout == "fixed") {
                     startH = parseInt($blockData.attr("data-block_height_masonry"));
-                    // //console.log("masonry", startH);
                 } else {
                     startH = parseInt($blockData.attr("data-block_height_fixed"));
                     if (isNaN(startH)) {
                         startH = parseInt($elem.attr("data-gs-height"));
                     }
-                    // //console.log("fixed", startH);
                 }
             } else {
                 startH = parseInt($blockData.attr("data-gs_start_h"));
@@ -2404,9 +2411,12 @@
                     if ($blockData.attr("data-custom_layout") == "true" && !this.properties.updatingSection) {
                         newH = startH;
                         gridstack.resize(elem, w, newH);
-                    } else if (startH != newH) {
+                    } else if (startH != newH || Rexbuilder_Util_Editor.updatingPaddingBlock) {
                         gridstack.resize(elem, w, newH);
                     }
+                }
+                if (Rexbuilder_Util_Editor.updatingPaddingBlock) {
+                    this.fixElementTextSize(elem, null, null);
                 }
             }
             if (Rexbuilder_Util.editorMode) {
@@ -2559,11 +2569,7 @@
 
         // check if the parent wrap of the grd has a particular class
         _check_parent_class: function (c) {
-            if (this.$element.parents(this.settings.gridParentWrap).hasClass(c)) {
-                return true;
-            } else {
-                return false;
-            }
+            return this.$element.parents(this.settings.gridParentWrap).hasClass(c);
         }
     });
 

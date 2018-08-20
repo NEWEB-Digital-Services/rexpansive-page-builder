@@ -6,7 +6,6 @@ var Background_Block_Image_Modal = (function ($) {
     var rexID;
 
     var _updateImageModal = function (data) {
-        console.log(data);
         _resetImageModal();
         rexID = data.rexID;
         background_block_image_properties.$image_url.val(data.idImage);
@@ -143,11 +142,9 @@ var Background_Block_Image_Modal = (function ($) {
             $image_url: $self.find('#background-block-url'),
             $image_id: $self.find('#background-block-up-img'),
 
-            // Layout Grid Masonry
+            // Natural or Full
             $image_type_typeWrap: $self.find(".rex-background-image-type-wrap"),
             $image_type_types_wrap: $self.find('#bg-set-img-type'),
-            $section_fixed: $self.find('#bg-img-type-full'),
-            $section_masonry: $self.find('#bg-img-type-natural'),
 
             // Photoswipe
             $is_photoswipe: $self.find('#bg-set-photoswipe'),
