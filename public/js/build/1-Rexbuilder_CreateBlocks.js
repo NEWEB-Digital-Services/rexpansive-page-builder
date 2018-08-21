@@ -32,7 +32,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
     $(document).on("rexlive:insert_image", function (e) {
         var data = e.settings.data_to_send;
-
+        console.log(data);
         var $section = Rexbuilder_Util_Editor.sectionAddingElementObj;
         var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
         var i;
@@ -80,15 +80,12 @@ var Rexbuilder_CreateBlocks = (function ($) {
                 urlImage: urlImage,
                 width: w,
                 height: h,
-                type: type
+                typeBGimage: type,
+                active: "true"
             }
 
             Rexbuilder_Dom_Util.updateImageBG($el.find(".grid-item-content"), dataImage);
-
-            if (galleryInstance.settings.galleryLayout == "masonry") {
-                galleryInstance._fixImageSize($el);
-            }
-
+            
             galleryInstance.addScrollbar($el);
             galleryInstance.addTextEditor($el);
         }

@@ -526,3 +526,71 @@
 /* .grid-stack-item {
     transition: height 1s, min-height 1s;
 } */
+
+.rex-image-wrapper{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+}
+
+.rex-video-toggle-audio {
+    z-index: 1;
+}
+
+.rex-flex-left.rex-flex-top {
+    .rex-image-wrapper.natural-image-background {
+        background-position: left top;
+    }
+}
+
+.rex-flex-left.rex-flex-middle {
+    .rex-image-wrapper.natural-image-background {
+        background-position: left center;
+    }
+}
+
+.rex-flex-left.rex-flex-bottom {
+     .rex-image-wrapper.natural-image-background {
+        background-position: left bottom;
+    }
+}
+
+.rex-flex-center.rex-flex-top {
+     .rex-image-wrapper.natural-image-background {
+        background-position: center top;
+    }
+}
+
+.rex-flex-center.rex-flex-middle {
+     .rex-image-wrapper.natural-image-background {
+        background-position: center center;
+    }
+}
+
+.rex-flex-center.rex-flex-bottom {
+     .rex-image-wrapper.natural-image-background {
+        background-position: center bottom;
+    }
+}
+
+.rex-flex-right.rex-flex-top {
+     .rex-image-wrapper.natural-image-background {
+        background-position: right top;
+    }
+}
+
+.rex-flex-right.rex-flex-middle {
+     .rex-image-wrapper.natural-image-background {
+        background-position: right center;
+    }
+}
+
+.rex-flex-right.rex-flex-bottom {
+     .rex-image-wrapper.natural-image-background {
+        background-position: right bottom;
+    }
+}
+
+.rex-slider-wrap .rex-slider-element .rex-video-toggle-audio{
+    position: absolute;
+}

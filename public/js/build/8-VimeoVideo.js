@@ -58,26 +58,28 @@ var VimeoVideo = (function ($) {
      * @param {iframe} video iframe to link
      */
     var _addPlayer = function (mute, video, opt) {
-        var player;
-        if (typeof opt != "undefined") {
-            console.log(opt);
-            player = new Vimeo.Player(video, opt);
-        } else {
-            player = new Vimeo.Player(video);
+        if(typeof this.blockVideos != "undefined"){
+            var player;
+            if (typeof opt != "undefined") {
+                console.log(opt);
+                player = new Vimeo.Player(video, opt);
+            } else {
+                player = new Vimeo.Player(video);
+            }
+            
+            if ("1" == mute) {
+                // set to mute -> videos remain mute
+                player.ready().then(function () {
+                    player.setVolume(0);
+                });
+            }
+            // save info to later use -> videos can change audio state
+            var video_block = {
+                el: video,
+                player: player
+            };
+            this.blockVideos.push(video_block);
         }
-
-        if ("1" == mute) {
-            // set to mute -> videos remain mute
-            player.ready().then(function () {
-                player.setVolume(0);
-            });
-        }
-        // save info to later use -> videos can change audio state
-        var video_block = {
-            el: video,
-            player: player
-        };
-        this.blockVideos.push(video_block);
     };
 
     /**

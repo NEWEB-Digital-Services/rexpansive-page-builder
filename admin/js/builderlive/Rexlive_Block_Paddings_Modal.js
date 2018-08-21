@@ -70,6 +70,7 @@ var BlockPaddings_Modal = (function ($) {
     var _linkKeyDownListener = function ($target) {
         $target.keydown(function (e) {
             var $input = $(e.target);
+            console.log(e.target);
             // Allow: backspace, delete, tab, enter and .
             if ($.inArray(e.keyCode, [46, 8, 9, 13, 110]) !== -1 ||
                 // Allow: Ctrl+A, Command+A

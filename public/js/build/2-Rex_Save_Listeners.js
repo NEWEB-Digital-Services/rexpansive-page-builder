@@ -353,7 +353,8 @@ var Rex_Save_Listeners = (function ($) {
                 block_animation = "fadeInUpBig",
                 video_has_audio = '0',
                 block_has_scrollbar = "false",
-                block_live_edited = "";
+                block_live_edited = "",
+                block_flex_position = "";
 
             var content = "";
             var $textWrap;
@@ -426,6 +427,8 @@ var Rex_Save_Listeners = (function ($) {
                 : $itemData.attr('data-block_has_scrollbar');
             block_live_edited = $itemData.attr('data-rexlive-edited') === undefined ? "" : "true";
 
+            block_flex_position = typeof $itemData.attr('data-block_flex_position') == "undefined" ? "" : $itemData.attr('data-block_flex_position');
+
             if (mode == "shortcode") {
                 $textWrap = $itemContent.find('.text-wrap');
                 if (!$elem.hasClass('block-has-slider')) {
@@ -486,6 +489,7 @@ var Rex_Save_Listeners = (function ($) {
                     + '" video_has_audio="' + video_has_audio
                     + '" block_has_scrollbar="' + block_has_scrollbar
                     + '" block_live_edited="' + block_live_edited
+                    + '" block_flex_position="' + block_flex_position
                     + '"]'
                     + content
                     + '[/RexpansiveBlock]';
@@ -534,6 +538,7 @@ var Rex_Save_Listeners = (function ($) {
                 props["video_has_audio"] = video_has_audio;
                 props["block_has_scrollbar"] = block_has_scrollbar;
                 props["block_live_edited"] = block_live_edited;
+                props["block_flex_position"] = block_flex_position;
                 props["overwritten"] = false;
 
                 return props;

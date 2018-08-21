@@ -114,10 +114,12 @@
 
 			var $section = Rexbuilder_Util_Editor.sectionChangingOptionsObj;
 			var oldClasses = $section.children(".section-data").attr("data-custom_classes");
+			oldClasses = oldClasses.trim();
+			var oldClassesList = oldClasses.split(/\s+/);
 
 			var reverseData = {
 				$target: $section,
-				classes: oldClasses
+				classes: oldClassesList
 			}
 
 			Rexbuilder_Dom_Util.updateCustomClasses($section, data.customClasses);
@@ -499,13 +501,11 @@
 
 			var paddingsElemData = typeof $elemData.attr('data-block_padding') == "undefined" ? "" : $elemData.attr('data-block_padding');
 			var oldPaddings = Rexbuilder_Util.getPaddingsDataString(paddingsElemData);
-			console.log(oldPaddings);
+
 			var reverseData = {
 				$elem: $elem,
 				dataPadding: oldPaddings
 			}
-
-			console.log(data.paddings);
 
 			Rexbuilder_Util_Editor.updatingPaddingBlock = true;
 			Rexbuilder_Dom_Util.updateBlockPaddings($elem, data.paddings);
@@ -523,6 +523,95 @@
 
 		});
 
+		$(document).on("rexlive:apply_flex_position_block", function(e){
+			var data = e.settings.data_to_send;
+			
+			var $elem = Rexbuilder_Util.$rexContainer.find("div [data-rexbuilder-block-id=\"" + data.rex_block_id + "\"]");
+
+			var $elemData = $elem.children(".rexbuilder-block-data");
+			var $section = $elem.parents(".rexpansive_section");
+
+			var oldFlexPosition = typeof $elemData.attr('data-block_flex_position') == "undefined" ? "" : $elemData.attr('data-block_flex_position');
+
+			var flexPosition = {
+				x: "",
+				y: ""
+			};
+
+			if (oldFlexPosition != "") {
+				var pos = oldFlexPosition.split(" ");
+				flexPosition.x = pos[0];
+				flexPosition.y = pos[1];
+			}
+
+			var reverseData = {
+				$elem: $elem,
+				dataPosition: flexPosition
+			}
+
+			Rexbuilder_Dom_Util.updateFlexPostition($elem, data.position);
+
+			var actionData = {
+				$elem: $elem,
+				dataPosition: data.position
+			}
+
+			Rexbuilder_Util_Editor.pushAction($section, "updateBlockFlexPosition", actionData, reverseData);
+		});
+
+		$(document).on("rexlive:apply_block_custom_classes", function (e) {
+			var data = e.settings.data_to_send;
+
+			var $elem = Rexbuilder_Util.$rexContainer.find("div [data-rexbuilder-block-id=\"" + data.rex_block_id + "\"]");
+
+			var $elemData = $elem.children(".rexbuilder-block-data");
+			var $section = $elem.parents(".rexpansive_section");
+
+			var oldClasses = typeof $elemData.attr('data-block_custom_class') == "undefined" ? "" : $elemData.attr('data-block_custom_class');
+
+			oldClasses = oldClasses.trim();
+			var oldClassesList = oldClasses.split(/\s+/);
+			
+			var reverseData = {
+				$target: $elem,
+				classes: oldClassesList
+			}
+
+			Rexbuilder_Dom_Util.updateCustomClasses($elem, data.customClasses);
+
+			var actionData = {
+				$target: $elem,
+				classes: data.customClasses
+			}
+
+			Rexbuilder_Util_Editor.pushAction($section, "updateCustomClasses", actionData, reverseData);
+
+		});
+
+		$(document).on("rexlive:apply_block_link_url", function (e) {
+			var data = e.settings.data_to_send;
+			var $elem = Rexbuilder_Util.$rexContainer.find("div [data-rexbuilder-block-id=\"" + data.rex_block_id + "\"]");
+
+			var $elemData = $elem.children(".rexbuilder-block-data");
+			var $section = $elem.parents(".rexpansive_section");
+
+			var oldUrl = typeof $elemData.attr('data-linkurl') == "undefined" ? "" : $elemData.attr('data-linkurl');
+			
+			var reverseData = {
+				$elem: $elem,
+				url: oldUrl
+			}
+
+			Rexbuilder_Dom_Util.updateBlockUrl($elem, data.url);
+
+			var actionData = {
+				$elem: $elem,
+				url: data.url
+			}
+
+			Rexbuilder_Util_Editor.pushAction($section, "updateBlockUrl", actionData, reverseData);
+
+		});
 		///////////////////////////////////////////////////////////////////////////////////////
 		///////////////////////////////////////////////////////////////////////////////////////
 		///////////////////////////////////////////////////////////////////////////////////////
@@ -816,18 +905,31 @@
 				paddings: Rexbuilder_Util.getPaddingsDataString(paddingsElemData),
 			}
 
+			var blockFlexPosition = typeof $elemData.attr('data-block_flex_position') == "undefined" ? "" : $elemData.attr('data-block_flex_position');
+			var blockFlexPositionArr = blockFlexPosition.split(" ");
+			var blockFlexPositionString = blockFlexPositionArr[1]+"-"+blockFlexPositionArr[0];
+			var position = {
+				rexID: rex_block_id,
+				position: blockFlexPositionString
+			};
+
+			var classes = typeof $elemData.attr('data-block_custom_class') == "undefined" ? "" : $elemData.attr('data-block_custom_class');
+			
+			var blockUrl = typeof $elemData.attr('data-linkurl') == "undefined" ? "" : $elemData.attr('data-linkurl');
+
 			var currentBlockData = {
 				bgColor: colorData,
 				imageBG: imageData,
 				bgVideo: videoData,
 				overlay: overlayData,
 				paddings: paddingsData,
-				linkBlock: {
-					link: "",
+				flexPosition: position,
+				customClasses: {
+					classes: classes,
 					rexID: rex_block_id
 				},
-				customClasses: {
-					classes: [],
+				linkBlock: {
+					link: blockUrl,
 					rexID: rex_block_id
 				}
 			};

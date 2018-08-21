@@ -46,6 +46,7 @@ var LayoutGrid_Modal = (function ($) {
 
     var _linkDocumentListeners = function () {
         $(document).on("click", "#modal-background-responsive-set .rexlive-layout-type", function (e) {
+            e.preventDefault();
             _clearLayoutTypeSelection();
             var $layoutWrap = $(e.target).parents(".rexlive-layout-type");
             $layoutWrap.addClass("selected");

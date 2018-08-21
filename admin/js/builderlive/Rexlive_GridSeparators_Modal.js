@@ -46,6 +46,7 @@ var GridSeparators_Modal = (function ($) {
 
     var _linkKeyDownListener = function ($target) {
         $target.keydown(function (e) {
+            console.log(e.target);
             var $input = $(e.target);
             // Allow: backspace, delete, tab, enter and .
             if ($.inArray(e.keyCode, [46, 8, 9, 13, 110]) !== -1 ||

@@ -49,6 +49,18 @@ var Rexbuilder_App = (function ($) {
 		Rexbuilder_Util.launchVideoPlugins();
 
 		// Pause/Play video on block click
+		$(document).on("click", ".YTPOverlay", function (e) { 
+			var $ytvideo = $(e.target).parents(".rex-youtube-wrap");
+			if ($ytvideo.length > 0) {
+				var video_state = $ytvideo[0].state;
+				if (video_state == 1) {
+					$ytvideo.YTPPause();
+				} else {
+					$ytvideo.YTPPlay();
+				}
+			}
+		});
+		
 		$(document).on("click", ".perfect-grid-item", function () {
 			if (!$(this).hasClass('block-has-slider')) {
 				var $itemContent = $(this).find(".grid-item-content");

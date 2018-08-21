@@ -22,7 +22,7 @@ var Section_Modal = (function ($) {
         SectionMargins_Modal.resetMargins();
         PhotoSwipe_Modal.resetPhotoswipe();
         SectionName_Modal.resetSectionName();
-        CustomClasses_Modal.resetCustomClasses();
+        Section_CustomClasses_Modal.resetCustomClasses();
     }
 
     var _updateSectionModal = function (data) {
@@ -32,7 +32,7 @@ var Section_Modal = (function ($) {
         SectionMargins_Modal.updateMargins(data.marginsSection);
         PhotoSwipe_Modal.updatePhotoswipe(data.photoswipe);
         SectionName_Modal.updateSectionName(data.sectionName);
-        CustomClasses_Modal.updateCustomClasses(data.customClasses);
+        Section_CustomClasses_Modal.updateCustomClasses(data.customClasses);
     }
 
     var _applySectionLayout = function () {
@@ -40,7 +40,6 @@ var Section_Modal = (function ($) {
         var sectionWidthData = Section_Width_Modal.getData();
         var gridSeparatosData = GridSeparators_Modal.getData();
         var marginsSectionData = SectionMargins_Modal.getData();
-
         var data_gallery = {
             eventName: "rexlive:set_gallery_layout",
             data_to_send: {
@@ -81,7 +80,7 @@ var Section_Modal = (function ($) {
     }
 
     var _applyCustomClasses = function () {
-        var newClassesString = CustomClasses_Modal.getData();
+        var newClassesString = Section_CustomClasses_Modal.getData();
         newClassesString = newClassesString.trim();
         var classList = newClassesString.split(/\s+/);
         var data_customClasses = {
@@ -123,8 +122,7 @@ var Section_Modal = (function ($) {
         SectionMargins_Modal.init($sectionConfigModal);
         PhotoSwipe_Modal.init($sectionConfigModal);
         SectionName_Modal.init($sectionConfigModal);
-        CustomClasses_Modal.init($sectionConfigModal);
-
+        Section_CustomClasses_Modal.init($sectionConfigModal);
     }
 
     return {

@@ -9,7 +9,9 @@ var BlockOptions_Modal = (function ($) {
         Background_Block_Image_Modal.updateImageModal(data.imageBG);
         Block_Video_Background_Modal.updateVideoModal(data.bgVideo);
         BlockPaddings_Modal.updatePaddings(data.paddings);
-        
+        Block_Content_Positions_Modal.updatePosition(data.flexPosition);
+        Block_CustomClasses_Modal.updateCustomClasses(data.customClasses);
+        Block_Url_Modal.updateBlockUrl(data.linkBlock);
         Rexlive_Modals_Utils.openModal(block_options_properties.$self.parent('.rex-modal-wrap'));
     }
 
@@ -44,6 +46,9 @@ var BlockOptions_Modal = (function ($) {
         Background_Block_Image_Modal.init($blockOptions);
         Block_Video_Background_Modal.init($blockOptions);
         BlockPaddings_Modal.init($blockOptions);
+        Block_Content_Positions_Modal.init($blockOptions);
+        Block_CustomClasses_Modal.init($blockOptions);
+        Block_Url_Modal.init($blockOptions);
     }
 
     return {

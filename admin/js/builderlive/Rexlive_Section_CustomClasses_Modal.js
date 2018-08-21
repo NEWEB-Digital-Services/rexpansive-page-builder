@@ -1,4 +1,4 @@
-var CustomClasses_Modal = (function ($) {
+var Section_CustomClasses_Modal = (function ($) {
     'use strict';
 
     var custom_classes_modal_properties;
