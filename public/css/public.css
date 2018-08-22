@@ -5102,3 +5102,14 @@ a.pswp-item {
 
 .rex-slider-wrap .rex-slider-element .rex-video-toggle-audio {
   position: absolute; }
+
+.rex-hide-responsive-tools > .rexpansive_section .section-toolBox > .builder-copy-row,
+.rex-hide-responsive-tools > .rexpansive_section .section-toolBox > .add-new-block-empty,
+.rex-hide-responsive-tools > .rexpansive_section .section-toolBox > .add-new-block-image,
+.rex-hide-responsive-tools > .rexpansive_section .section-toolBox > .add-new-block-text,
+.rex-hide-responsive-tools > .rexpansive_section .section-toolBox > .add-new-block-video,
+.rex-hide-responsive-tools > .rexpansive_section .section-toolBox > .add-new-block-slider {
+  display: none; }
+.rex-hide-responsive-tools > .rexpansive_section .rexlive-block-toolbox > .rexlive-top-block-tools .builder-edit-slider,
+.rex-hide-responsive-tools > .rexpansive_section .rexlive-block-toolbox > .rexlive-top-block-tools .builder-copy-block {
+  display: none; }

@@ -130,7 +130,6 @@ var Rexbuilder_Dom_Util = (function ($) {
     }
 
     var _updateImageBG = function ($target, data) {
-        console.log(data);
         if ($target.hasClass("rexpansive_section")) {
             var $sectionData = $target.children(".section-data");
             if (data.idImage == "" || data.active.toString() != "true") {
@@ -149,7 +148,6 @@ var Rexbuilder_Dom_Util = (function ($) {
     }
 
     var _updateImageSection = function ($section, $sectionData, data) {
-        console.log(data);
         if (data.idImage == parseInt($sectionData.attr("data-id_image_bg_section"))) {
             //same image
             return
@@ -530,12 +528,19 @@ var Rexbuilder_Dom_Util = (function ($) {
         }
     }
 
-    var _collapseGrid = function (gridInstance, collapse) {
+    var _collapseGrid = function (gridInstance, collapse, blockDisposition, layout) {
+        Rexbuilder_Util_Editor.updatingCollapsedGrid = true;
         if (collapse) {
-            gridInstance.collapseElements();
+            gridInstance.collapseElementsProperties();
         } else {
-            gridInstance.removeCollapseGrid();
+            gridInstance.removeCollapseElementsProperties();
         }
+        gridInstance.updateGridLayoutCollapse(layout);
+        _updateBlocksLayout(blockDisposition);
+        setTimeout(function(){
+            Rexbuilder_Util_Editor.updatingCollapsedGrid = false;
+            gridInstance._createFirstReverseStack();
+        }, 1000);
     }
 
     var _updateRemovingBlock = function ($elem, hasToBeRemoved, galleryEditorInstance) {
@@ -773,7 +778,7 @@ var Rexbuilder_Dom_Util = (function ($) {
                 _updateSectionPhotoswipe(dataToUse.elements);
                 break;
             case "collapseSection":
-                _collapseGrid(dataToUse.gridInstance, dataToUse.collapse);
+                _collapseGrid(dataToUse.gridInstance, dataToUse.collapse, dataToUse.blockDisposition, dataToUse.gridLayout);
                 break;
             case "updateCustomClasses":
                 _updateCustomClasses(dataToUse.$target, dataToUse.classes);

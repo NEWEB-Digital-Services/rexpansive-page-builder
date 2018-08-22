@@ -79,20 +79,71 @@ var Rexbuilder_Section = (function ($) {
             var $grid = $section.find(".grid-stack-row");
             var galleryEditorInstance = $grid.data().plugin_perfectGridGalleryEditor;
             var isCollapsed = galleryEditorInstance.properties.oneColumModeActive;
+            if (!isCollapsed) {
+                var layout = {
+                    layout: galleryEditorInstance.settings.galleryLayout,
+                    fullHeight: galleryEditorInstance.settings.fullHeight,
+                    singleHeight: galleryEditorInstance.properties.singleHeight
+                };
+                
+                var oldDisposition = galleryEditorInstance.createActionDataMoveBlocksGrid();
+                
+                var reverseData = {
+                    gridInstance: galleryEditorInstance,
+                    gridLayout: layout,
+                    blockDisposition: oldDisposition,
+                    collapse: isCollapsed
+                }
+                
+                galleryEditorInstance.collapseElementsProperties();
+                galleryEditorInstance.collapseElements(reverseData);
+            } else {
+                var layout = {
+                    layout: galleryEditorInstance.settings.galleryLayout,
+                    fullHeight: galleryEditorInstance.settings.fullHeight,
+                    singleHeight: galleryEditorInstance.properties.singleHeight
+                };
+                
+                var oldDisposition = galleryEditorInstance.createActionDataMoveBlocksGrid();
 
-            var reverseData = {
-                gridInstance: galleryEditorInstance,
-                collapse: isCollapsed
+                var reverseData = {
+                    gridInstance: galleryEditorInstance,
+                    gridLayout: layout,
+                    blockDisposition: oldDisposition,
+                    collapse: true
+                }
+
+                Rexbuilder_Dom_Util.collapseGrid(galleryEditorInstance, false, galleryEditorInstance.properties.dispositionBeforeCollapsing, galleryEditorInstance.properties.layoutBeforeCollapsing);
+
+                var actionData = {
+                    gridInstance: galleryEditorInstance,
+                    gridLayout: galleryEditorInstance.properties.layoutBeforeCollapsing,
+                    blockDisposition: galleryEditorInstance.properties.dispositionBeforeCollapsing,
+                    collapse: false
+                }
+
+                Rexbuilder_Util_Editor.pushAction($section, "collapseSection", actionData, reverseData);
             }
-            var newCollapse = !isCollapsed;
+        });
 
-            Rexbuilder_Dom_Util.collapseGrid(galleryEditorInstance, newCollapse);
-            var actionData = {
-                gridInstance: galleryEditorInstance,
-                collapse: newCollapse
+        $(document).on("rexlive:collapsingElementsEnded", function (e) {
+            var galleryEditorInstance = e.settings.galleryEditorInstance;
+            var reverseData = e.settings.reverseData;
+            var $section = e.settings.$section;
+            if (typeof reverseData.collapse != "undefined") {
+                var newDispostion = galleryEditorInstance.createActionDataMoveBlocksGrid();
+                var actionData = {
+                    gridInstance: galleryEditorInstance,
+                    gridLayout: {
+                        layout: "masonry",
+                        fullHeight: false,
+                        singleHeight: galleryEditorInstance.settings.cellHeightMasonry
+                    },
+                    blockDisposition: newDispostion,
+                    collapse: true
+                }
+                Rexbuilder_Util_Editor.pushAction($section, "collapseSection", actionData, reverseData);
             }
-
-            Rexbuilder_Util_Editor.pushAction($section, "collapseSection", actionData, reverseData);
         });
     }
 

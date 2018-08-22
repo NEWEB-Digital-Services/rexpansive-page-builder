@@ -83,9 +83,13 @@
             reverseDataGridDisposition: {},
             updatefullHeigth2Phases: false,
             removingCollapsedElements: false,
+            collapsingElements: false,
             lastIDBlock: 0,
             updatingGridWidth: false,
-            numberBlocksVisibileOnGrid: 0
+            numberBlocksVisibileOnGrid: 0,
+            beforeCollapseWasFixed: false,
+            dispositionBeforeCollapsing: {},
+            layoutBeforeCollapsing: {}
         };
 
         this.$section = this.$element.parents(this._defaults.gridParentWrap);
@@ -144,11 +148,13 @@
                         !Rexbuilder_Util.domUpdaiting &&
                         !Rexbuilder_Util.windowIsResizing &&
                         !that.properties.removingCollapsedElements &&
+                        !that.properties.collapsingElements &&
                         !Rexbuilder_Util_Editor.addingNewBlocks &&
                         !Rexbuilder_Util_Editor.removingBlocks &&
                         !that.properties.updatingGridWidth &&
                         !Rexbuilder_Util_Editor.updatingImageBg &&
-                        !Rexbuilder_Util_Editor.updatingPaddingBlock) {
+                        !Rexbuilder_Util_Editor.updatingPaddingBlock &&
+                        !Rexbuilder_Util_Editor.updatingCollapsedGrid) {
                         var actionData = that.createActionDataMoveBlocksGrid();
                         Rexbuilder_Util_Editor.pushAction(that.$section, "updateSectionBlocksDisposition", $.extend(true, {}, actionData), $.extend(true, {}, that.properties.reverseDataGridDisposition));
                         that.properties.reverseDataGridDisposition = actionData;
@@ -172,6 +178,12 @@
             this.properties.startingLayout = this.settings.galleryLayout;
 
             var collapseGrid = this.$section.attr("data-rex-collapse-grid");
+            this.properties.dispositionBeforeCollapsing = this.createActionDataMoveBlocksGrid();
+            this.properties.layoutBeforeCollapsing = {
+                layout: this.settings.galleryLayout,
+                fullHeight: this.settings.fullHeight,
+                singleHeight: this.properties.singleHeight
+            };
 
             if (typeof collapseGrid == "undefined") {
                 if (Rexbuilder_Util.activeLayout == "default" && this._viewport().width < 768) {
@@ -306,10 +318,15 @@
             this.clearStateGrid();
             this.saveStateGrid();
 
+            this.properties.layoutBeforeCollapsing = {
+                layout: this.settings.galleryLayout,
+                fullHeight: this.settings.fullHeight,
+                singleHeight: this.properties.singleHeight
+            };
             if (newSettings.collapse_grid.toString() == "true") {
                 this.collapseElements();
             } else {
-                this.removeCollapseGrid();
+                this.removeCollapseElementsProperties();
             }
 
             this.triggerGalleryReady();
@@ -318,6 +335,7 @@
         },
 
         updateGridSettingsModalUndoRedo: function (newSettings) {
+            this.removeCollapseElementsProperties();
             if (this.settings.galleryLayout != newSettings.layout && newSettings.layout == "fixed" && newSettings.fullHeight == "true") {
                 this.updateLayout("fixed", "false");
                 this.updateLayout("fixed", "true");
@@ -371,11 +389,11 @@
 
                 this._defineDynamicPrivateProperties();
                 this.updateGridstackStyles();
-                
+
                 if (this.properties.startingLayout != this.settings.galleryLayout) {
                     this.properties.updatingSectionSameGrid = false;
                 }
-                
+
                 this.updateBlocksHeight();
                 this.updateFloatingElementsGridstack();
                 this._updateElementsSizeViewers();
@@ -385,12 +403,12 @@
                     this.updateGridstackStyles();
                 }
             }
-            
+
             if (!Rexbuilder_Util_Editor.updatingGridstack) {
                 this.commitGridstack();
                 this._createFirstReverseStack();
             }
-            
+
             this.createScrollbars();
 
             this.properties.updatingSection = false;
@@ -399,9 +417,9 @@
             this.properties.updatingSectionSameGrid = true;
             Rexbuilder_Util_Editor.elementIsResizing = false;
             Rexbuilder_Util_Editor.elementIsDragging = false;
-            
+
         },
-        
+
         updateFloatingElementsGridstack: function () {
             // da chiamare prima del commit
             var gridstack = this.properties.gridstackInstance;
@@ -1003,18 +1021,18 @@
             this.properties.gridstackInstance.commit();
 
             this._createFirstReverseStack();
-            
+
             var actionData = {
                 targetElement: $newEL,
                 hasToBeRemoved: false,
                 galleryInstance: this,
                 blocksDisposition: $.extend(true, {}, this.properties.reverseDataGridDisposition)
             };
-            
+
             Rexbuilder_Util_Editor.pushAction(this.$element, "updateBlockVisibility", actionData, reverseData);
             Rexbuilder_Util_Editor.addingNewBlocks = false;
             $newEL.removeAttr("data-gs-auto-position");
-            
+
             $newEL.data("gs-height", parseInt($newEL.attr("data-gs-height")));
             $newEL.data("gs-width", parseInt($newEL.attr("data-gs-width")));
             $newEL.data("gs-y", parseInt($newEL.attr("data-gs-y")));
@@ -2406,13 +2424,18 @@
                     }
                 }
 
-                if ((backgroundHeight == 0) && (this.properties.updatingSection || ($itemContent.hasClass('empty-content') && (backgroundHeight == 0)) || $itemContent.hasClass('block-has-slider') || $elem.hasClass('block-has-slider'))) {
+                if (this.properties.oneColumModeActive && ($itemContent.hasClass('youtube-player') || $itemContent.hasClass('mp4-player') || $itemContent.hasClass('vimeo-player'))) {
+                    backgroundHeight = Math.round(w * sw * 3 / 4);
+                }
+                if ((backgroundHeight == 0) && (this.properties.updatingSection || ($itemContent.hasClass('empty-content') && (backgroundHeight == 0)) || $elem.hasClass('block-has-slider'))) {
                     //console.log("calculating default height");
                     if (this.properties.editedFromBackend && this.settings.galleryLayout == "masonry") {
                         //console.log("backend + masonry");
                         defaultHeight = Math.round(sw * startH);
                     } else if ((this.properties.oldCellHeight != 0) && (this.properties.oldCellHeight != this.properties.singleHeight)) {
                         defaultHeight = startH * this.properties.oldCellHeight;
+                    } else if (this.properties.oneColumModeActive && this.properties.beforeCollapseWasFixed) {
+                        defaultHeight = startH * this.properties.singleWidth;
                     } else {
                         defaultHeight = startH * this.properties.singleHeight;
                     }
@@ -2420,12 +2443,12 @@
             } else {
                 textHeight = textHeight + gutter;
             }
-/*             
+            /*             
             console.log(startH); 
             console.log(startH, backgroundHeight, defaultHeight, textHeight);
-             */
+                */
             newH = Math.max(startH, backgroundHeight, defaultHeight, textHeight);
-            if (this.properties.oneColumModeActive) {
+            if (this.properties.oneColumModeActive && !Rexbuilder_Util.windowIsResizing) {
                 return newH;
             }
 
@@ -2436,7 +2459,7 @@
             }
 
             this.updateElementDataHeightProperties($blockData, newH);
-            
+
             var gridstack = this.properties.gridstackInstance;
             if (gridstack !== undefined) {
                 if ((this.properties.oldCellHeight != 0) && this.properties.oldCellHeight != this.properties.singleHeight && this.properties.oldLayout == "masonry") {
@@ -2486,14 +2509,103 @@
             }
         },
 
-        collapseElements: function () {
-            //console.log("collapsing element");
-            this._saveBlocksPosition();
-            this.fixBlockDomOrder();
-            this.$element.addClass("grid-stack-one-column-mode");
+        collapseElementsProperties: function () {
             this.$section.attr("data-rex-collapse-grid", true);
+            //this.$element.addClass("rex-collapsed-grid");
             this.properties.oneColumModeActive = true;
-            this.fixCollapsedHeights();
+        },
+
+        removeCollapseElementsProperties: function () {
+            this.$section.attr("data-rex-collapse-grid", false);
+            //this.$element.removeClass("rex-collapsed-grid");
+            this.properties.oneColumModeActive = false;
+        },
+
+        updateGridLayoutCollapse: function (layoutData) {
+            this.settings.galleryLayout = layoutData.layout;
+            this.settings.fullHeight = layoutData.fullHeight;
+            this.properties.singleHeight = layoutData.singleHeight;
+            this.batchGridstack();
+            this.updateGridstackStyles();
+            this.updateFloatingElementsGridstack();
+            this.commitGridstack();
+        },
+
+        changeGridToMasonry: function () {
+            this.settings.galleryLayout = "masonry";
+            this.settings.fullHeight = false;
+            this.properties.singleHeight = this.settings.cellHeightMasonry;
+            this.batchGridstack();
+            this.updateGridstackStyles();
+            this.updateFloatingElementsGridstack();
+            this.commitGridstack();
+            this.$element.attr("data-layout", "masonry");
+            this.$element.attr("data-full-height", "false");
+        },
+        /**
+         * When commit event is added, have to change timeouts with listeners
+         */
+        collapseElements: function (reverseData) {
+            reverseData = typeof reverseData == "undefined" ? {} : reverseData;
+
+            this.properties.dispositionBeforeCollapsing = this.createActionDataMoveBlocksGrid();
+            console.log(this.properties.dispositionBeforeCollapsing);
+            this.properties.layoutBeforeCollapsing = {
+                layout: this.settings.galleryLayout,
+                fullHeight: this.settings.fullHeight,
+                singleHeight: this.properties.singleHeight
+            };
+            console.log(this.properties.layoutBeforeCollapsing);
+            var that = this;
+            this.fixBlockDomOrder();
+            this._saveBlocksPosition();
+            this.collapseElementsProperties();
+            this.properties.collapsingElements = true;
+            if (this.settings.galleryLayout == "fixed") {
+                this.properties.beforeCollapseWasFixed = true;
+                this.changeGridToMasonry();
+            }
+            this.batchGridstack();
+            this.updateBlocksWidth();
+            this.commitGridstack();
+            setTimeout(function () {
+                that.batchGridstack();
+                that.updateCollapsedBlocksHeight();
+                that.commitGridstack();
+                that._updateElementsSizeViewers();
+                setTimeout(function () {
+                    that._createFirstReverseStack();
+
+                    var event = jQuery.Event("rexlive:collapsingElementsEnded");
+                    event.settings = {
+                        galleryEditorInstance: that,
+                        $section: that.$section,
+                        reverseData: reverseData
+                    };
+                    if (!Rexbuilder_Util.windowIsResizing && !Rexbuilder_Util.domUpdaiting) {
+                        $(document).trigger(event);
+                    }
+                }, 300, reverseData);
+                that.properties.collapsingElements = false;
+            }, 300, reverseData);
+
+        },
+
+        updateBlocksWidth: function () {
+            var that = this;
+            this.$element.children(".grid-stack-item").reverse().each(function (i, el) {
+                var $el = $(el);
+                that.properties.gridstackInstance.update($el[0], 0, parseInt($el.attr("data-gs-y")), 12, parseInt($el.attr("data-gs-height")));
+            });
+        },
+
+        updateCollapsedBlocksHeight: function () {
+            var that = this;
+            this.$element.children(".grid-stack-item").reverse().each(function (i, el) {
+                var $el = $(el);
+                var newH = Math.round(that.updateElementHeight($el) / that.settings.cellHeightMasonry);
+                that.properties.gridstackInstance.resize($el[0], 12, newH);
+            });
         },
 
         fixBlockDomOrder: function () {
@@ -2541,52 +2653,6 @@
                 $elem.css("height", h + "px")
                 $elem.find(".el-size-viewer").text("12 x " + Math.round(h));
             });
-        },
-
-        /**
-         * Removes One Column mode and restores default layout of elements
-         */
-        removeCollapseGrid: function () {
-            //console.log("remove Collapse");
-            this.properties.removingCollapsedElements = true;
-            if (this.properties.oneColumModeActive) {
-                var gallery = this;
-                var $elem;
-                var $elemData;
-                var gridstack = this.properties.gridstackInstance;
-                var elDim;
-
-                //removing fixed height
-                this.$element.children(".grid-stack-item").each(function () {
-                    $(this).css("height", "");
-                });
-                this.batchGridstack();
-                this.$element.children(".grid-stack-item").each(function () {
-                    $elem = $(this);
-                    $elemData = $elem.children(".rexbuilder-block-data");
-                    elDim = store.get($elem.attr("data-rexbuilder-block-id"));
-                    gridstack.update(this, elDim.properties[0].x, elDim.properties[1].y, elDim.properties[2].w, elDim.properties[3].h);
-                });
-                this.$element.removeClass("grid-stack-one-column-mode");
-                this.commitGridstack();
-
-                this.$element.children(".grid-stack-item").each(function () {
-                    $elem = $(this);
-                    $elemData = $elem.children(".rexbuilder-block-data");
-                    elDim = store.get($elem.attr("data-rexbuilder-block-id"));
-                    gallery.updateElementDataHeightProperties($elemData, elDim.properties[3].h);
-                    ;
-                    var scrollbarInstance = $elem.find('.rex-custom-scrollbar').overlayScrollbars();
-                    if (typeof scrollbarInstance != "undefined") {
-                        scrollbarInstance.update();
-                    }
-                    gallery.updateSizeViewerSizes($elem);
-                });
-            }
-            this.$section.attr("data-rex-collapse-grid", false);
-            this.$element.removeClass("grid-stack-one-column-mode");
-            this.properties.removingCollapsedElements = false;
-            this.properties.oneColumModeActive = false;
         },
 
         destroyGridGallery: function () {

@@ -594,3 +594,22 @@
 .rex-slider-wrap .rex-slider-element .rex-video-toggle-audio{
     position: absolute;
 }
+
+.rex-hide-responsive-tools > .rexpansive_section {
+    .section-toolBox > {
+        .builder-copy-row,
+        .add-new-block-empty,
+        .add-new-block-image,
+        .add-new-block-text,
+        .add-new-block-video,
+        .add-new-block-slider {
+            display: none;
+        }
+    }
+    .rexlive-block-toolbox > .rexlive-top-block-tools{
+        .builder-edit-slider,
+        .builder-copy-block {
+            display: none;
+        }
+    }
+}
