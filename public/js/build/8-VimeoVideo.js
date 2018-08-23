@@ -41,8 +41,6 @@ var VimeoVideo = (function ($) {
             // cycle foreach section
             $vimeoBlockVideos.each(function (i, el) {
                 // mute videos on block if set to do that
-                console.log("adding vimeo to");
-                console.log(el);
                 var mute = $(el).attr('data-vimeo-video-mute');
                 var video = $(el).find('iframe')[0];
                 if ("undefined" != typeof Vimeo) {
@@ -61,7 +59,6 @@ var VimeoVideo = (function ($) {
         if(typeof this.blockVideos != "undefined"){
             var player;
             if (typeof opt != "undefined") {
-                console.log(opt);
                 player = new Vimeo.Player(video, opt);
             } else {
                 player = new Vimeo.Player(video);

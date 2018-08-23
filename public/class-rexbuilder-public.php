@@ -541,7 +541,6 @@ endif;
                 array_push($customizations_array, $customization);
             }
         }
-        //$customizations = get_post_meta($post->ID, '_rex_customization', true);
 
         $layoutsAvaiable = get_post_meta($post->ID, '_rex_responsive_layouts', true);
         
@@ -553,50 +552,56 @@ endif;
         }
 
         ?>
-        <div id="rexbuilder-layout-data" style="display: none;">
-            <div class = "layouts-customizations"
-            <?php
-if (empty($customizations_array)) {
-            echo 'data-empty-customizations="true">';
-        } else {
-            ?>
-            >
-            <?php
-echo json_encode($customizations_array);
-        }
-        ?>
-            </div>
-            <div class = "available-layouts">
+<div class="rexbuilder-live-content">
+            <div id="rexbuilder-layout-data" style="display: none;">
+                <div class = "layouts-customizations"
                 <?php
-echo json_encode($layoutsAvaiable);
-        ?>
-            </div>
-            <div class = "available-layouts-names">
+    if (empty($customizations_array)) {
+                echo 'data-empty-customizations="true">';
+            } else {
+                ?>
+                >
                 <?php
-echo json_encode($customizations_names);
-        ?>
-            </div>
-        </div>
-        <?php
-if ($editor == "true") {
-            ?>
-        <button id="rex-open-ace-css-editor" class="btn-floating tooltipped" data-position="bottom" data-tooltip="<?php _e('CSS Editor', $this->plugin_name);?>">
-            <i class="material-icons">&#xE314;</i><span>CSS</span><i class="material-icons">&#xE315;</i>
-        </button>
-        <textarea style="display:none;" name="_rexbuilder_custom_css" id="_rexbuilder_custom_css"><?php
-        $meta = get_post_meta($post->ID, '_rexbuilder_custom_css', true);
-            if ('' !== ($meta)) {
-                echo htmlspecialchars($meta);
+    echo json_encode($customizations_array);
             }
-            ?></textarea>
+            ?>
+                </div>
+                <div class = "available-layouts">
+                    <?php
+    echo json_encode($layoutsAvaiable);
+            ?>
+                </div>
+                <div class = "available-layouts-names">
+                    <?php
+    echo json_encode($customizations_names);
+            ?>
+                </div>
+            </div>
             <?php
-}
-        ?>
-        <div class="rex-container" data-rex-layout-selected="">
-		<?php
-echo do_shortcode($defaultPage);
-        ?>
-	</div>
+    if ($editor == "true") {
+                ?>
+            <button id="rex-open-ace-css-editor" class="btn-floating tooltipped" data-position="bottom" data-tooltip="<?php _e('CSS Editor', $this->plugin_name);?>">
+                <i class="material-icons">&#xE314;</i><span>CSS</span><i class="material-icons">&#xE315;</i>
+            </button>
+            <textarea style="display:none;" name="_rexbuilder_custom_css" id="_rexbuilder_custom_css"><?php
+            $meta = get_post_meta($post->ID, '_rexbuilder_custom_css', true);
+                if ('' !== ($meta)) {
+                    echo htmlspecialchars($meta);
+                }
+                ?></textarea>
+                <?php
+    }
+            ?>
+
+            <div class="rex-container" data-rex-layout-selected="">
+            <?php
+    echo do_shortcode($defaultPage);
+            ?>
+            </div>
+            <button class="add-new-section">
+                ADD
+            </button>
+        </div>
 	<?php
 
     }

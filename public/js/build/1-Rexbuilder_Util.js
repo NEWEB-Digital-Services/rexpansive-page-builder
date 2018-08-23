@@ -75,7 +75,7 @@ var Rexbuilder_Util = (function ($) {
     }
 
     var _updateSectionsNumber = function () {
-        var last;
+        var last = -1;
         var $sec;
         Rexbuilder_Util.$rexContainer.children('.rexpansive_section').each(function (i, e) {
             $sec = $(e);
@@ -205,16 +205,19 @@ var Rexbuilder_Util = (function ($) {
         Rexbuilder_Util.removeCollapsedGrids();
 
         var mergedEdits = $.extend(true, {}, customSections);
-        var pullingEdits = $.extend(true, {}, defaultLayoutSections);
+        var pushingEdits = $.extend(true, {}, defaultLayoutSections);
 
         var m, n;
         var sectionFounded;
         var targetFounded;
+        var newBlocksLayout = [];
+        var newSectionsLayout = [];
         if (!jQuery.isEmptyObject(mergedEdits)) {
             $.each(mergedEdits, function (i, sectionCustom) {
                 sectionFounded = false;
-                $.each(pullingEdits, function (i, sectionDefault) {
+                $.each(pushingEdits, function (i, sectionDefault) {
                     if (sectionDefault.section_rex_id == sectionCustom.section_rex_id) {
+                        sectionDefault.founded = true;
                         sectionCustom.notInSection = false;
                         sectionFounded = true;
                         for (m = 0; m < sectionCustom.targets.length; m++) {
@@ -222,6 +225,7 @@ var Rexbuilder_Util = (function ($) {
                             for (n = 0; n < sectionDefault.targets.length; n++) {
                                 if (sectionCustom.targets[m].name == sectionDefault.targets[n].name) {
                                     sectionCustom.targets[m].notDisplay = false;
+                                    sectionDefault.targets[n].founded = true;
                                     targetFounded = true;
                                     sectionCustom.targets[m].props = lodash.merge({}, sectionDefault.targets[n].props, sectionCustom.targets[m].props);
                                 }
@@ -230,14 +234,24 @@ var Rexbuilder_Util = (function ($) {
                                 sectionCustom.targets[m].notDisplay = true;
                             }
                         }
+                        for (n = 0; n < sectionDefault.targets.length; n++) {
+                            if (typeof sectionDefault.targets[n].founded == "undefined") {
+                                newBlocksLayout.push(sectionDefault.targets[n]);
+                            }
+                        }
                     }
                 });
                 if (!sectionFounded) {
                     sectionCustom.notInSection = true;
                 }
+                $.each(pushingEdits, function (i, sectionDefault) {
+                    if (typeof sectionDefault.founded == "undefined") {
+                        newSectionsLayout.push(sectionDefault);
+                    }
+                });
             });
         } else {
-            mergedEdits = pullingEdits;
+            mergedEdits = pushingEdits;
         }
 
         var sectionRexId;
@@ -251,10 +265,15 @@ var Rexbuilder_Util = (function ($) {
         var $elem;
         var $itemContent;
         var $itemData;
+        console.log("applying");
+        console.log(mergedEdits);
 
         Rexbuilder_Util.domUpdaiting = true;
+        var sectionDomOrder = [];
+
         $.each(mergedEdits, function (i, section) {
             if (!section.notInSection || chosenLayoutName == "default") {
+                sectionDomOrder.push(section.section_rex_id);
                 sectionRexId = section.section_rex_id;
                 $section = Rexbuilder_Util.$rexContainer.children('section[data-rexlive-section-id="' + sectionRexId + '"]');
                 $gallery = $section.find(".grid-stack-row");
@@ -321,7 +340,16 @@ var Rexbuilder_Util = (function ($) {
 
                         Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOptions);
 
-                        _updateElementDimensions($elem, $itemData, targetProps["gs_x"], targetProps["gs_y"], targetProps["gs_width"], targetProps["gs_height"], targetProps["gs_start_h"], gridstackInstance);
+                        var postionData = {
+                            x: targetProps["gs_x"],
+                            y: targetProps["gs_y"],
+                            w: targetProps["gs_width"],
+                            h: targetProps["gs_height"],
+                            startH: targetProps["gs_start_h"],
+                            gridstackInstance: gridstackInstance,
+                        };
+
+                        _updateElementDimensions($elem, $itemData, postionData);
 
                         var bgColorOpt = {
                             blockRexID: targetName,
@@ -380,11 +408,11 @@ var Rexbuilder_Util = (function ($) {
                                     break;
 
                                 case "row":
-                                    $elem.attr('data-row', targetProps[propName]);
+                                    $elem.attr('data-row', targetProps["row"]);
                                     break;
 
                                 case "col":
-                                    $elem.attr('data-col', targetProps[propName]);
+                                    $elem.attr('data-col', targetProps["col"]);
                                     break;
                                 case "photoswipe":
                                     if (!Rexbuilder_Util.editorMode) {
@@ -436,7 +464,7 @@ var Rexbuilder_Util = (function ($) {
                                 case "block_live_edited":
                                     break;
                                 case "overwritten":
-                                    $itemData.attr("data-custom_layout", targetProps[propName].toString());
+                                    $itemData.attr("data-custom_layout", targetProps["overwritten"].toString());
                                     break;
                                 default:
                                     break;
@@ -454,11 +482,15 @@ var Rexbuilder_Util = (function ($) {
                         setTimeout(function () {
                             galleryEditorInstance.properties.dispositionBeforeCollapsing = galleryEditorInstance.createActionDataMoveBlocksGrid();
                             galleryEditorInstance._createFirstReverseStack();
-                        }, 300);
+                            galleryEditorInstance._updateElementsSizeViewers();
+                        }, 400);
                     }
                 }
             }
         });
+
+        Rexbuilder_Dom_Util.fixSectionDomOrder(sectionDomOrder);
+
         Rexbuilder_Util.domUpdaiting = false;
 
         if (!Rexbuilder_Util.editorMode) {
@@ -557,14 +589,14 @@ var Rexbuilder_Util = (function ($) {
         Rexbuilder_Dom_Util.updateCustomClasses($section, classList);
     }
 
-    var _updateElementDimensions = function ($elem, $elemData, x, y, w, h, startH, gridstackInstance) {
-        x = parseInt(x);
-        y = parseInt(y);
-        w = parseInt(w);
-        h = parseInt(h);
-        startH = parseInt(startH);
-        if (typeof gridstackInstance != "undefined") {
-            gridstackInstance.update($elem[0], x, y, w, h);
+    var _updateElementDimensions = function ($elem, $elemData, posData) {
+        var x = parseInt(posData.x);
+        var y = parseInt(posData.y);
+        var w = parseInt(posData.w);
+        var h = parseInt(posData.h);
+        var startH = parseInt(posData.startH);
+        if (typeof posData.gridstackInstance != "undefined") {
+            posData.gridstackInstance.update($elem[0], x, y, w, h);
         } else {
             $elem.attr("data-gs-height", h);
             $elem.attr("data-gs-width", w);
@@ -1025,14 +1057,105 @@ var Rexbuilder_Util = (function ($) {
 
     }
 
-    //@todo per quando si elimina un blocco
-    var _stopVideo = function ($target) {
-        ;
+    var _stopBlockVideos = function($elem){
+        _stopVideo($elem.find(".grid-item-content"));
+    }
+    var _playBlockVideos = function($elem){
+        _playVideoFromBegin($elem.find(".grid-item-content"));
     }
 
-    //@todo per quando si fa il redo sull'eliminazione un blocco che aveva un video
+    var _stopPluginsSection = function ($section) {
+        console.log("have to stop videos");
+        var $mp4Videos = $section.find(".mp4-player");
+        var $vimeoVideos = $section.find(".vimeo-player");
+        var $youtubeVideos = $section.find(".youtube-player");
+
+        $.each($mp4Videos, function(i, video){
+            Rexbuilder_Util.stopVideo($(video));
+        });
+
+        $.each($vimeoVideos, function(i, video){
+            Rexbuilder_Util.stopVideo($(video));
+        });
+
+        $.each($youtubeVideos, function(i, video){
+            Rexbuilder_Util.stopVideo($(video));
+        });
+    }
+
+    var _playPluginsSection = function ($section) {
+        console.log("have to restrart videos");
+        var $mp4Videos = $section.find(".mp4-player");
+        var $vimeoVideos = $section.find(".vimeo-player");
+        var $youtubeVideos = $section.find(".youtube-player");
+
+        $.each($mp4Videos, function(i, video){
+            Rexbuilder_Util.playVideoFromBegin($(video));
+        });
+        
+        $.each($vimeoVideos, function(i, video){
+            Rexbuilder_Util.playVideoFromBegin($(video));
+        });
+
+        $.each($youtubeVideos, function(i, video){
+            Rexbuilder_Util.playVideoFromBegin($(video));
+        });
+    }
+
+    var _stopVideo = function ($target) {
+        if ($target.hasClass("mp4-player")) {
+            var mp4video = $target.children(".rex-video-wrap").find("video")[0];
+            mp4video.currentTime = 0;
+            mp4video.pause();
+        } else if ($target.hasClass("vimeo-player")) {
+            VimeoVideo.findVideo($target.children(".rex-video-vimeo-wrap").find("iframe")[0]).unload();
+        } else if ($target.hasClass("youtube-player")) {
+            if ($target.children(".rex-youtube-wrap").YTPGetPlayer() === undefined) {
+                return;
+            }
+            $target.children(".rex-youtube-wrap").YTPStop();
+        }
+    }
+
     var _playVideoFromBegin = function ($target) {
-        ;
+        if ($target.hasClass("mp4-player")) {
+            var mp4video = $target.children(".rex-video-wrap").find("video")[0];
+            mp4video.currentTime = 0;
+            mp4video.play();
+            var $toggle = $target.children("rex-video-toggle-audio");
+            if ($toggle.length != 0 && !$toggle.hasClass("user-has-muted")) {
+                $mp4video.prop('muted', false);
+            } else {
+                $mp4video.prop('muted', true);
+            }
+        } else if ($target.hasClass("vimeo-player")) {
+            var vimPlayer = VimeoVideo.findVideo($target.children(".rex-video-vimeo-wrap").find("iframe")[0]);
+            vimPlayer.play();
+            var $toggle = $target.children("rex-video-toggle-audio");
+            if ($toggle.length != 0 && !$toggle.hasClass("user-has-muted")) {
+                // have to wait vimeo to be lunched
+                setTimeout(function () {
+                    vimPlayer.getVolume().then(function (volume) {
+                        if (0 == volume) {
+                            vimPlayer.setVolume(1);
+                        }
+                    });
+                }, 500, vimPlayer);
+            }
+        } else if ($target.hasClass("youtube-player")) {
+            var ytpObj = $target.children(".rex-youtube-wrap");
+            var ytpPlayer = ytpObj.YTPGetPlayer();
+            if (ytpPlayer === undefined) {
+                return;
+            }
+            ytpObj.YTPPlay();
+            var $toggle = $target.children("rex-video-toggle-audio");
+            if ($toggle.length != 0 && !$toggle.hasClass("user-has-muted")) {
+                ytpObj.YTPUnmute();
+            } else {
+                ytpObj.YTPMute();
+            }
+        }
     }
 
     var _destroyVideoPlugins = function () {
@@ -1153,9 +1276,9 @@ var Rexbuilder_Util = (function ($) {
 
     var _pauseVideo = function ($target) {
         if ($target.hasClass("mp4-player")) {
-            $target.find("video")[0].pause();
+            $target.children(".rex-video-wrap").find("video")[0].pause();
         } else if ($target.hasClass("vimeo-player")) {
-            var vimeoPlugin = VimeoVideo.findVideo($target.find("iframe")[0]);
+            var vimeoPlugin = VimeoVideo.findVideo($target.children(".rex-video-vimeo-wrap").find("iframe")[0]);
             vimeoPlugin.pause();
         } else if ($target.hasClass("youtube-player")) {
             if ($target.children(".rex-youtube-wrap").YTPGetPlayer() === undefined) {
@@ -1284,6 +1407,10 @@ var Rexbuilder_Util = (function ($) {
         addWindowListeners: addWindowListeners,
         launchVideoPlugins: _launchVideoPlugins,
         destroyVideoPlugins: _destroyVideoPlugins,
+        stopPluginsSection: _stopPluginsSection,
+        playPluginsSection: _playPluginsSection,
+        stopBlockVideos: _stopBlockVideos,
+        playBlockVideos: _playBlockVideos,
         chooseLayout: chooseLayout,
         setContainer: setContainer,
         createSectionID: createSectionID,

@@ -537,17 +537,20 @@ var Rexbuilder_Dom_Util = (function ($) {
         }
         gridInstance.updateGridLayoutCollapse(layout);
         _updateBlocksLayout(blockDisposition);
-        setTimeout(function(){
+        setTimeout(function () {
             Rexbuilder_Util_Editor.updatingCollapsedGrid = false;
             gridInstance._createFirstReverseStack();
-        }, 1000);
+            gridInstance._updateElementsSizeViewers();
+        }, 500);
     }
 
     var _updateRemovingBlock = function ($elem, hasToBeRemoved, galleryEditorInstance) {
         if (hasToBeRemoved) {
             galleryEditorInstance.removeBlock($elem);
+            Rexbuilder_Util.stopBlockVideos($elem);
         } else {
             galleryEditorInstance.reAddBlock($elem);
+            Rexbuilder_Util.playBlockVideos($elem);
         }
 
         if (galleryEditorInstance.properties.numberBlocksVisibileOnGrid == 0) {
@@ -561,6 +564,34 @@ var Rexbuilder_Dom_Util = (function ($) {
         $section.attr("data-rexlive-section-name", newName);
         var newSafeName = newName.replace(/ /gm, "");
         Rex_Navigator.updateNavigatorItem($section, newSafeName, newName);
+    }
+
+    var _fixSectionDomOrder = function (newOrder) {
+        var sections = [];
+        var $section;
+        var i, j;
+        Rexbuilder_Util.$rexContainer.children(".rexpansive_section").each(function () {
+            var sectionObj = {
+                rexID: $(this).attr("data-rexlive-section-id"),
+                $section: $(this).detach()
+            }
+            sections.push(sectionObj);
+        });
+
+        for (i = 0; i < newOrder.length; i++) {
+            for (j = 0; j < sections.length; j++) {
+                if (sections[j].rexID == newOrder[i]) {
+                    $section = sections[j].$section;
+                    break;
+                }
+            }
+            Rexbuilder_Util.$rexContainer.append($section);
+            sections.splice(j, 1);
+        }
+
+        for (j = 0; j < sections.length; j++) {
+            Rexbuilder_Util.$rexContainer.append(sections[j].$section);
+        }
     }
 
     var _enablePhotoswipeAllBlocksSection = function ($section) {
@@ -717,6 +748,16 @@ var Rexbuilder_Dom_Util = (function ($) {
         _updateImageBG($section, data);
     }
 
+    var _updateSectionVisibility = function ($section, show) {
+        if (show) {
+            $section.removeClass("removing_section");
+            Rexbuilder_Util.playPluginsSection($section);
+        } else {
+            Rexbuilder_Util.stopPluginsSection($section);
+            $section.addClass("removing_section");
+        }
+    }
+
     var _performAction = function (action, flag) {
         console.log("performing " + action.actionName);
         var dataToUse;
@@ -833,6 +874,9 @@ var Rexbuilder_Dom_Util = (function ($) {
             case "updateBlockUrl":
                 _updateBlockUrl(dataToUse.$elem, dataToUse.url);
                 break;
+            case "updateSectionVisibility":
+                _updateSectionVisibility($section, dataToUse.show);
+                break;
             default:
                 break;
         }
@@ -878,6 +922,8 @@ var Rexbuilder_Dom_Util = (function ($) {
         updateVideos: _updateVideos,
         updateBlockPaddings: _updateBlockPaddings,
         updateFlexPostition: _updateFlexPostition,
-        updateBlockUrl: _updateBlockUrl
+        updateBlockUrl: _updateBlockUrl,
+        updateSectionVisibility: _updateSectionVisibility,
+        fixSectionDomOrder: _fixSectionDomOrder
     };
 })(jQuery);

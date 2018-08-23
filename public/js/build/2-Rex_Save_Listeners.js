@@ -12,6 +12,8 @@ var Rex_Save_Listeners = (function ($) {
 
             var shortcodePage = '';
 
+            Rexbuilder_Util_Editor.savingGrid = true;
+
             Rexbuilder_Util.$rexContainer.find('.rexpansive_section').each(function () {
                 var $section = $(this);
                 if (!$section.hasClass("removing_section")) {
@@ -19,6 +21,7 @@ var Rex_Save_Listeners = (function ($) {
                 }
             });
 
+            Rexbuilder_Util_Editor.savingGrid = false;
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
@@ -115,7 +118,6 @@ var Rex_Save_Listeners = (function ($) {
             //saving layouts customizations
             $.each(customizationsArray, function (i, layout) {
                 if (layout.name == activeLayoutName) {
-                    if (layout.sections != "") {
                         $.ajax({
                             type: 'POST',
                             dataType: 'json',
@@ -139,7 +141,6 @@ var Rex_Save_Listeners = (function ($) {
                             }
                         });
                     }
-                }
             });
         });
 
@@ -219,7 +220,7 @@ var Rex_Save_Listeners = (function ($) {
                     output.push(section_props);
                 }
             });
-
+            console.log(output);
             return output;
         }
 
@@ -227,21 +228,21 @@ var Rex_Save_Listeners = (function ($) {
         data-rexlive-section-edited="true"
         */
         var checkEditsSection = function ($section) {
-            return $section.attr("data-rexlive-section-edited") == "true" ? true : false;
+            return $section.attr("data-rexlive-section-edited") == "true";
         }
 
         /*
         data-rexlive-layout-changed="true"
         */
         var checkEditsLayoutGrid = function ($gallery) {
-            return $gallery.attr("data-rexlive-layout-changed") == "true" ? true : false;
+            return $gallery.attr("data-rexlive-layout-changed") == "true";
         }
 
         /*
         data-rexlive-element-edited="true"
         */
         var checkEditsElement = function ($elem) {
-            return $elem.attr("data-rexlive-element-edited") == "true" ? true : false;
+            return $elem.attr("data-rexlive-element-edited") == "true";
         }
 
         var createTargets = function ($section, layoutName) {
@@ -256,7 +257,7 @@ var Rex_Save_Listeners = (function ($) {
                 section_props.props = createSectionProperties($section, "customLayout", layoutName);
                 Rexbuilder_Util.activeLayout = layoutName;
             } else {
-                if (Rexbuilder_Util.viewport().width < 1025) {
+                if (Rexbuilder_Util.viewport().width < 768) {
                     section_props.props["collapse_grid"] = true;
                 }
             }
@@ -379,8 +380,8 @@ var Rex_Save_Listeners = (function ($) {
 
             id_image_bg_block = $itemData.attr('data-id_image_bg_block') === undefined ? "" : $itemData.attr('data-id_image_bg_block');
             image_bg_block = $itemData.attr('data-image_bg_block') === undefined ? "" : $itemData.attr('data-image_bg_block');
-            image_width = $itemContent.attr('data-background_image_width') === undefined ? "" : parseInt($itemContent.attr('data-background_image_width'));
-            image_height = $itemContent.attr('data-background_image_height') === undefined ? "" : parseInt($itemContent.attr('data-background_image_height'));
+            image_width = $itemContent.attr('data-background_image_width') === undefined ? "" : (isNaN(parseInt($itemContent.attr('data-background_image_width'))) ? "" : parseInt($itemContent.attr('data-background_image_width')));
+            image_height = $itemContent.attr('data-background_image_height') === undefined ? "" : (isNaN(parseInt($itemContent.attr('data-background_image_height'))) ? "" : parseInt($itemContent.attr('data-background_image_height')));
             var defaultTypeImage = $elem.parents(".grid-stack-row").attr("data-layout") == "fixed" ? "full" : "natural";
             type_bg_block = typeof $itemData.attr('data-type_bg_block') == "undefined" ? defaultTypeImage : $itemData.attr('data-type_bg_block');
             image_size = typeof $itemData.attr('data-image_size') == "undefined" ? "full" : $itemData.attr('data-image_size');
@@ -601,9 +602,9 @@ var Rex_Save_Listeners = (function ($) {
             image_bg_section = $sectionData.attr('data-image_bg_section') === undefined ? ""
                 : $sectionData.attr('data-image_bg_section');
             image_width = $section.attr('data-background_image_width') === undefined ? ""
-                : parseInt($section.attr('data-background_image_width'));
+                : (isNaN(parseInt($section.attr('data-background_image_width'))) ? "" : parseInt($section.attr('data-background_image_width')));
             image_height = $section.attr('data-background_image_height') === undefined ? ""
-                : parseInt($section.attr('data-background_image_height'));
+                : (isNaN(parseInt($section.attr('data-background_image_height'))) ? "" : parseInt($section.attr('data-background_image_height')));
             id_image_bg_section = $sectionData.attr('data-id_image_bg_section') === undefined ? ""
                 : $sectionData.attr('data-id_image_bg_section');
             image_bg_section_active = typeof $sectionData.attr("data-image_bg_section_active") == "undefined" ? true : $sectionData.attr("data-image_bg_section_active");
@@ -763,7 +764,7 @@ var Rex_Save_Listeners = (function ($) {
                 props["row_overlay_color"] = row_overlay_color;
                 props["row_overlay_active"] = row_overlay_active;
                 props["overwritten"] = false;
-
+                console.log(props);
                 return props;
             }
         }

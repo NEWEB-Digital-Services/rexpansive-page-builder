@@ -19,9 +19,6 @@ defined('ABSPATH') or exit;
             <button class="tool-button btn-floating builder-delete-block waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete block', 'rexspansive');?>">
                 <i class="material-icons white-text">&#xE5CD;</i>
             </button>
-            <button class="tool-button btn-floating builder-change-background tooltipped waves-effect waves-light">
-                I
-            </button>
             <button class="tool-button btn-floating builder-edit-block tooltipped waves-effect waves-light">
 	    	O
             </button>
@@ -159,3 +156,81 @@ defined('ABSPATH') or exit;
     <a class="rex-slider-element-link" href="{%=link.url%}">
     </a>
 </script>
+
+<script type="text/x-tmpl" id="tmpl-add-new-section-button">
+    <button class="add-new-section">
+	    	ADD
+    </button>
+</script>
+
+<script type="text/x-tmpl" id="tmpl-toolbox-section">
+    <div class="section-toolBox">
+        <div class="tool-button btn-flat builder-move-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Move row', 'rexpansive');?>">
+            <i class="material-icons grey-text text-darken-2">&#xE8D5;</i>
+        </div>
+
+        <div class="tool-button btn-flat builder-copy-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy row', 'rexpansive');?>">
+            <i class="material-icons grey-text text-darken-2">&#xE14D;</i>
+        </div>
+
+        <button class="tool-button btn-floating builder-section-config tooltipped waves-effect waves-light" data-position="bottom" data-tooltip="<?php _e('Row settings', 'rexpansive');?>">
+            <i class="material-icons">&#xE8B8;</i>
+        </button>
+
+        <button class="tool-button btn-floating collapse-grid tooltipped waves-effect waves-light">
+            C
+        </button>
+
+        <button class="tool-button btn-floating add-new-block-empty tooltipped waves-effect waves-light">
+            +
+        </button>
+
+        <button class="tool-button btn-floating add-new-block-image tooltipped waves-effect waves-light">
+            i
+        </button>
+
+        <button class="tool-button btn-floating add-new-block-text tooltipped waves-effect waves-light">
+            t
+        </button>
+
+        <button class="tool-button btn-floating add-new-block-video tooltipped waves-effect waves-light">
+            v
+        </button>
+
+        <button class="tool-button btn-floating add-new-block-slider tooltipped waves-effect waves-light">
+            S
+        </button>	
+        
+        <button class="tool-button btn-floating edit-background-section tooltipped waves-effect waves-light">
+            B
+        </button>
+
+        <button class="tool-button btn-floating builder-delete-row waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexspansive');?>">
+            <i class="material-icons white-text">&#xE5CD;</i>
+        </button>
+
+    </div>
+</script>
+
+<script type="text/x-tmpl" id="tmpl-new-section">
+    <section class="rexpansive_section empty-section" data-rexlive-section-id="{%=section.rexID%}" data-rexlive-section-name="">
+        <div class="section-data" style="display: none;" data-section_name="" data-type="perfect-grid" data-color_bg_section="" data-color_bg_section_active="true"
+            data-dimension="{%=section.dimension%}" data-image_bg_section_active="true" data-image_bg_section="" data-id_image_bg_section=""
+            data-video_bg_url_section="" data-video_bg_id_section="" data-video_bg_url_vimeo_section="" data-full_height="{%=section.fullHeight%}"
+            data-block_distance="{%=section.blockDistance%}" data-layout="{%=section.layout%}" data-responsive_background="" data-custom_classes=""
+            data-section_width="{%=section.sectionWidth%}" data-row_separator_top="{%=section.rowSeparatorTop%}" data-row_separator_bottom="{%=section.rowSeparatorBottom%}"
+            data-row_separator_right="{%=section.rowSeparatorRight%}" data-row_separator_left="{%=section.rowSeparatorLeft%}" data-margin=""
+            data-row_margin_top="" data-row_margin_bottom="" data-row_margin_right="" data-row_margin_left="" data-row_active_photoswipe=""
+            data-row_overlay_color="" data-row_overlay_active="false" data-rexlive_section_id="{%=section.rexID%}" data-row_edited_live="true"></div>
+        <div class="responsive-overlay">
+            <div class="{%=section.dimensionClass%}">
+                <div class="perfect-grid-gallery grid-stack grid-stack-row" data-separator="{%=section.blockDistance%}" data-layout="{%=section.layout%}"
+                    data-full-height="{%=section.fullHeight%}" data-row-separator-top="{%=section.rowSeparatorTop%}" data-row-separator-right="{%=section.rowSeparatorRight%}"
+                    data-row-separator-bottom="{%=section.rowSeparatorBottom%}" data-row-separator-left="{%=section.rowSeparatorLeft%}">
+                    <div class="perfect-grid-sizer"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+</script>
+

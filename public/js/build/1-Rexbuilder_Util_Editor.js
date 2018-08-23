@@ -106,7 +106,37 @@ var Rexbuilder_Util_Editor = (function ($) {
         return data;
     }
 
-    var removeScrollBar = function ($elem) {
+    var _generateElementNewIDs = function ($elem, blockNumber, sectionNumber) {
+        var newBlockID = "block_" + sectionNumber + "_" + blockNumber;
+        var $elData = $elem.children(".rexbuilder-block-data");
+        var newRexID = Rexbuilder_Util.createBlockID();
+
+        $elem.attr("data-rexbuilder-block-id", newRexID);
+        $elData.attr("data-rexbuilder_block_id", newRexID);
+        $elem.attr("id", newBlockID);
+        $elData.attr("data-id", newBlockID);
+        $elData.attr("id", newBlockID + "-builder-data");
+    }
+
+    var _fixCopiedElementSlider = function ($elem) {
+        if ($elem.hasClass("block-has-slider")) {
+            var $textWrap = $elem.find(".text-wrap");
+            var blockID = $elem.attr("data-rexbuilder-block-id");
+            var $oldSlider = $textWrap.children(".rex-slider-wrap[data-rex-slider-active=\"true\"]");
+            $textWrap.children().remove();
+            var sliderData = Rexbuilder_Util_Editor.createSliderData($oldSlider);
+            Rexbuilder_Util_Editor.blockCopyingObj = $elem;
+            Rexbuilder_Util_Editor.saveSliderOnDB(sliderData, true, blockID);
+        }
+    }
+
+    var _removeHandles = function ($elem) {
+        $elem.children('.ui-resizable-handle').each(function () {
+            $(this).remove();
+        });
+    }
+
+    var _removeScrollBar = function ($elem) {
         var $elemContent = $elem.find(".grid-item-content");
         var $div = $(document.createElement("div"));
         var $divScrollbar = $elemContent.find(".rex-custom-scrollbar");
@@ -120,20 +150,21 @@ var Rexbuilder_Util_Editor = (function ($) {
         $div.appendTo($divScrollbar.parent());
         $divScrollbar.remove();
 
+        console.log();
+
         $elemContent = undefined;
         $div = undefined;
         $divScrollbar = undefined;
         $textWrap = undefined;
     }
 
-    var removeTextEditor = function ($elem) {
-
+    var _removeTextEditor = function ($elem) {
         var $textWrap = $elem.find('.text-wrap');
         var textWrapContent;
         var $div;
         var css;
-
-        if ($textWrap.length != 0) {
+        
+        if ($textWrap.length != 0 && $textWrap.hasClass("medium-editor-element")) {
             textWrapContent = $textWrap.html();
             $div = $(document.createElement("div"));
             css = $textWrap.attr("style");
@@ -142,10 +173,12 @@ var Rexbuilder_Util_Editor = (function ($) {
             if ($textWrap.hasClass("rex-content-resizable")) {
                 $div.addClass("rex-content-resizable");
             }
+            
+            $textWrap.remove();
             $div.attr("style", css);
             $div.html(textWrapContent);
-            $div.find(".text-editor-span-fix").eq(0).remove();
-            $textWrap.remove();
+            $div.find(".text-editor-span-fix").remove();
+            $div.find(".medium-insert-buttons").remove();
         }
 
         $textWrap = undefined;
@@ -263,6 +296,11 @@ var Rexbuilder_Util_Editor = (function ($) {
             redoStackArray = [];
             Rexbuilder_Util_Editor.buttonResized = true;
             Rexbuilder_Util_Editor.clickedLayoutID = event.settings.selectedLayoutName;
+            if (event.settings.selectedLayoutName == "default") {
+                Rexbuilder_Util.$rexContainer.removeClass("rex-hide-responsive-tools");
+            } else {
+                Rexbuilder_Util.$rexContainer.addClass("rex-hide-responsive-tools");
+            }
         });
 
         $(document).click(".test-save", function (e) {
@@ -450,7 +488,6 @@ var Rexbuilder_Util_Editor = (function ($) {
     }
 
     /**
-     * 
      * @param {*} sliderData Data of the slider
      * @param {*} newSliderFlag true if save as new slider, false otherwise
      */
@@ -548,8 +585,9 @@ var Rexbuilder_Util_Editor = (function ($) {
 
         this.updatingImageBg = false;
         this.updatingPaddingBlock = false;
-        
+
         this.updatingCollapsedGrid = false;
+        this.savingGrid = false;
 
         undoStackArray = [];
         redoStackArray = [];
@@ -557,11 +595,16 @@ var Rexbuilder_Util_Editor = (function ($) {
         this.$styleElement = $("#rexpansive-builder-style-inline-css");
         _fixCustomStyleElement();
     }
+    _generateElementNewIDs
+    _fixCopiedElementSlider
 
     return {
         init: init,
-        removeScrollBar: removeScrollBar,
-        removeTextEditor: removeTextEditor,
+        removeScrollBar: _removeScrollBar,
+        removeTextEditor: _removeTextEditor,
+        removeHandles: _removeHandles,
+        generateElementNewIDs: _generateElementNewIDs,
+        fixCopiedElementSlider: _fixCopiedElementSlider,
         removeDeletedBlocks: removeDeletedBlocks,
         addWindowListeners: addWindowListeners,
         addDocumentListeners: addDocumentListeners,
@@ -578,7 +621,7 @@ var Rexbuilder_Util_Editor = (function ($) {
         createSliderData: _createSliderData,
         saveSliderOnDB: _saveSliderOnDB,
         getTextWrapLength: _getTextWrapLength,
-        getElementsPhotoswipe: _getElementsPhotoswipe
+        getElementsPhotoswipe: _getElementsPhotoswipe,
     };
 
 })(jQuery);

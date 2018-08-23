@@ -182,6 +182,12 @@ class Rexbuilder_Section
                 echo ' href="#' . $x . '" id="' . $x . '"';
             endif;
 
+            if($content == ""){
+                $empty_section = true;
+            } else{
+                $empty_section = false;
+            }
+
             $content_has_photoswipe = strpos($content, 'photoswipe="true"');
 
             $content_has_floating_blocks = strpos($content, 'rex-floating-');
@@ -190,7 +196,8 @@ class Rexbuilder_Section
 
             $row_has_accordion = has_shortcode($content, 'RexAccordion');
 
-            echo ' class="rexpansive_section ' . $videoTypeActive .
+            echo ' class="rexpansive_section' . ($empty_section ? ' empty-section' : '')
+            . $videoTypeActive .
             (($content_has_photoswipe > 0) ? ' photoswipe-gallery' : '') .
             (('' != $custom_classes) ? ' ' . $custom_classes : '') .
             (('true' == $full_height) ? ' full-height-section' : '') .

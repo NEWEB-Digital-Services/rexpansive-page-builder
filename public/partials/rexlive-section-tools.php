@@ -25,16 +25,8 @@ defined('ABSPATH') or exit;
 		<i class="material-icons">&#xE8B8;</i>
 	</button>
 
-	<button class="tool-button btn-floating test-save tooltipped waves-effect waves-light">
-		U
-	</button>
-
 	<button class="tool-button btn-floating collapse-grid tooltipped waves-effect waves-light">
 		C
-	</button>
-
-	<button class="tool-button btn-floating set-section-name tooltipped waves-effect waves-light">
-		N
 	</button>
 
 	<button class="tool-button btn-floating add-new-block-empty tooltipped waves-effect waves-light">

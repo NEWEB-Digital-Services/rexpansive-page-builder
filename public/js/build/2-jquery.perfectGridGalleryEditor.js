@@ -130,10 +130,6 @@
 
             this._prepareElements();
 
-            if (Rexbuilder_Util_Editor.sectionCopying) {
-                this.removeScrollbars();
-            }
-
             this._launchGridStack();
 
             this.createScrollbars();
@@ -154,7 +150,8 @@
                         !that.properties.updatingGridWidth &&
                         !Rexbuilder_Util_Editor.updatingImageBg &&
                         !Rexbuilder_Util_Editor.updatingPaddingBlock &&
-                        !Rexbuilder_Util_Editor.updatingCollapsedGrid) {
+                        !Rexbuilder_Util_Editor.updatingCollapsedGrid &&
+                        !Rexbuilder_Util_Editor.savingGrid) {
                         var actionData = that.createActionDataMoveBlocksGrid();
                         Rexbuilder_Util_Editor.pushAction(that.$section, "updateSectionBlocksDisposition", $.extend(true, {}, actionData), $.extend(true, {}, that.properties.reverseDataGridDisposition));
                         that.properties.reverseDataGridDisposition = actionData;
@@ -165,8 +162,8 @@
                 this._updateElementsSizeViewers();
                 this._linkResizeEvents();
                 this._linkDragEvents();
-                this._launchTextEditor();
 
+                this._launchTextEditor();
                 this._createFirstReverseStack();
 
             } else {
@@ -202,7 +199,7 @@
                     }
                 }
             });
-
+            console.log(this.properties.numberBlocksVisibileOnGrid);
             this.triggerGalleryReady();
             this.properties.firstStartGrid = false;
         },
@@ -510,11 +507,17 @@
 
         _countBlocks: function () {
             var number = 0;
+            var flag = false;
+
             this.$element.find('.grid-stack-item').each(function (i, e) {
                 number = i;
+                flag = true;
             });
-            this.properties.numberBlocksVisibileOnGrid = number + 1;
-            this.properties.lastIDBlock = number + 1;
+
+            if (flag) {
+                this.properties.numberBlocksVisibileOnGrid = number + 1;
+                this.properties.lastIDBlock = number + 1;
+            }
         },
 
         getLastID: function () {
@@ -727,6 +730,7 @@
                     return;
                 }
                 var $blockContent = $elem.find('.grid-item-content');
+                //                if(!Rexbuilder_Util_Editor.sectionCopying){
                 if ($elem.find(".rex-slider-wrap").length === 0 && !$blockContent.hasClass('youtube-player')) {
                     var maxBlockHeight = $blockContent.height();
                     var textHeight = 0;
@@ -745,6 +749,7 @@
                         }
                     }
                 }
+                //                }
             });
         },
 
@@ -969,10 +974,13 @@
             this.removeBlock($elem);
 
             this._createFirstReverseStack();
+
+            Rexbuilder_Util.stopBlockVideos($elem);
+    
             if (this.properties.numberBlocksVisibileOnGrid == 0) {
-                $elem.parents(".rexpansive_section").addClass("empty-section");
+                this.$section.addClass("empty-section");
             } else {
-                $elem.parents(".rexpansive_section").removeClass("empty-section");
+                this.$section.removeClass("empty-section");
             }
 
             var actionData = {
@@ -1012,10 +1020,7 @@
 
             var x = parseInt($newEL.attr("data-gs-x"));
             var y = parseInt($newEL.attr("data-gs-y"));
-            console.log("updaiting");
-            console.log(x, y, w, h);
-            console.log($newEL);
-            console.log($newEL[0]);
+
             this.properties.gridstackInstance.batchUpdate();
             this.properties.gridstackInstance.update($newEL[0], x, y, w, h);
             this.properties.gridstackInstance.commit();
@@ -2046,7 +2051,6 @@
         },
 
         _launchTextEditor: function () {
-            //console.log("launching text editor");
             var divToolbar = document.createElement('div');
             var gallery = this;
             var id = this.properties.sectionNumber + '-SectionTextEditor';
