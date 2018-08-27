@@ -225,6 +225,57 @@ var Rexbuilder_Section = (function ($) {
 
             Rexbuilder_Util_Editor.pushAction($newSection, "updateSectionVisibility", actionData, reverseData);
         });
+
+        $(document).on("rexlive:applyModelSection", function(e){
+            Rexbuilder_Util_Editor.sectionCopying = true;
+
+            var data = e.settings.data_to_send;
+            console.log(data);
+            var oldSectionID = data.sectionRexID;
+            var newSectionHtml = data.model;
+            var html = $.parseHTML( newSectionHtml );
+            
+            var $oldSection = Rexbuilder_Util.$rexContainer.children(".rexpansive_section[data-rexlive-section-id=\""+oldSectionID+"\"]");
+            
+            $oldSection.after(html);
+            
+            var $newSection = $(html);
+
+            var dataModel = {
+				modelID: data.modelID,
+				modelName: data.modelName,
+				isModel: true
+            }
+            
+            Rexbuilder_Dom_Util.updateSectionBecameModel($newSection, dataModel);
+
+            Rexbuilder_Section.prepareSectionCopied($newSection);
+            var $newSectionData = $newSection.children(".section-data");
+            $newSectionData.after(tmpl("tmpl-toolbox-section"));
+            
+            var $row = $newSection.find('.grid-stack-row');
+
+            $row.perfectGridGalleryEditor();
+
+            Rexbuilder_Util.$rexContainer.sortable("refresh");
+
+            var reverseData = {
+                $sectionToHide: $newSection,
+                $sectionToShow: $oldSection,
+            };
+
+            Rexbuilder_Dom_Util.updateSectionVisibility($oldSection, false);
+            Rexbuilder_Dom_Util.updateSectionVisibility($newSection, true);
+
+            var actionData = {
+                $sectionToHide: $oldSection,
+                $sectionToShow: $newSection,
+            };
+
+            Rexbuilder_Util_Editor.pushAction($newSection, "updateSectionModel", actionData, reverseData);
+
+            Rexbuilder_Util_Editor.sectionCopying = false;
+        });
     }
 
     var init = function () {

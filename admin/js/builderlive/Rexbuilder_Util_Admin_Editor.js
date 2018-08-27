@@ -13,32 +13,40 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
     var $custom_layout_modal;
 
-    var updateLayouts = function (selectedLayout, oldLayouts) {
-        var availableLayouts = [];
-
-        var oldLayout;
-
-        $.each(oldLayouts, function (i, ol) {
-            oldLayout = ol;
-            if (selectedLayout[0] == oldLayout[0]) {
-                if (selectedLayout[1] != oldLayout[1]) {
-                    oldLayout[1] = selectedLayout[1];
-                }
-                if (selectedLayout[2] != oldLayout[2]) {
-                    oldLayout[2] = selectedLayout[2];
-                }
-                selectedLayout.presente = true;
-            }
-        });
-
-        $.each(oldLayouts, function (i, l) {
-            availableLayouts.push(l);
-        });
-
-        if (selectedLayout.presente === undefined) {
-            availableLayouts.push(selectedLayout);
+    var _findLayoutType = function (name) {
+        if (name == "default" || name == "tablet" || name == "mobile") {
+            return "standard";
         }
-        return availableLayouts;
+        return "custom";
+    }
+
+    var _updateLayouts = function (newLayout, oldLayouts) {
+        var availableLayoutsData = [];
+
+        var i;
+        for (i = 0; i < oldLayouts.length; i++) {
+            var layout = oldLayouts[i];
+
+            //se è presente aggiorno i dati del layout
+            if (layout.id == newLayout.id) {
+                if (layout.min != newLayout.min) {
+                    layout.min = newLayout.min;
+                }
+                if (layout.max != newLayout.max) {
+                    layout.max = newLayout.max;
+                }
+                if (layout.label != newLayout.label) {
+                    layout.label = newLayout.label;
+                }
+                newLayout.presente = true;
+            }
+            availableLayoutsData.push(layout);
+        }
+
+        if (typeof newLayout.presente == "undefined") {
+            availableLayoutsData.push(newLayout);
+        }
+        return availableLayoutsData;
     }
 
     var addResponsiveListeners = function () {
@@ -47,20 +55,32 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
         $(document).on('click', '.btn-builder-layout', function (e) {
             var $btn = $(e.target);
-            var btnName = $btn.data("name");
+            var btnName = $btn.attr("data-name");
 
             if (activeLayoutPage != btnName) {
-                //console.log("different layout selected");
+
+                var buttonData = {
+                    min: $btn.attr("data-min-width"),
+                    max: $btn.attr("data-max-width"),
+                    id: btnName,
+                    label: $btn.text(),
+                    type: _findLayoutType(btnName)
+                };
+
                 if (editedLive) {
                     if (confirm("Ehi, guarda che hai modificato qualcosa, vuoi matenere le modifiche?")) {
                         //console.log("salva");
-                        var activeLayout = [];
-                        activeLayout.push(activeLayoutPage);
-                        //activeLayout.push(nameVisualizzato);
-                        activeLayout.push($btn.data("min-width"));
-                        activeLayout.push($btn.data("max-width"));
+                        var $layoutBtn = $responsiveToolbar.find("button[data-name=" + activeLayoutPage + "]");
 
-                        var availableLayouts = updateLayouts(activeLayout, JSON.parse($layoutData.children(".available-layouts").text()));
+                        var activeLayoutData = {
+                            min: $layoutBtn.attr("data-min-width"),
+                            max: $layoutBtn.attr("data-max-width"),
+                            id: activeLayoutPage,
+                            label: $layoutBtn.text(),
+                            type: _findLayoutType(activeLayoutPage)
+                        };
+
+                        var availableLayouts = _updateLayouts(activeLayoutData, JSON.parse($layoutData.children(".available-layouts").text()));
 
                         var updateData = {
                             selected: activeLayout,
@@ -89,12 +109,14 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
                 var layoutData = {
                     selectedLayoutName: activeLayoutPage,
+                    layoutData: buttonData,
                     eventName: "rexlive:changeLayout"
                 };
+
                 sendIframeBuilderMessage(layoutData);
 
-                if ($btn.data("min-width") != "") {
-                    $frameContainer.css("width", $btn.data("min-width"));
+                if ($btn.attr("data-min-width") != "") {
+                    $frameContainer.css("width", $btn.attr("data-min-width"));
                     $frameContainer.css("min-width", "");
                 } else {
                     $frameContainer.css("width", "100%");
@@ -107,20 +129,23 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
         $(document).on('click', '.btn-save', function (e) {
             //console.log("saving");
-            var activeLayout = [];
-            var layoutBtn = $responsiveToolbar.find("button[data-name=" + activeLayoutPage + "]");
 
-            var activeLayout = [];
-            activeLayout.push(activeLayoutPage);
-            activeLayout.push(layoutBtn.data("min-width"));
-            activeLayout.push(layoutBtn.data("max-width"));
+            var $layoutBtn = $responsiveToolbar.find("button[data-name=" + activeLayoutPage + "]");
 
-            var availableLayouts = updateLayouts(activeLayout, JSON.parse($layoutData.children(".available-layouts").text()));
+            var activeLayoutData = {
+                min: $layoutBtn.attr("data-min-width"),
+                max: $layoutBtn.attr("data-max-width"),
+                id: activeLayoutPage,
+                label: $layoutBtn.text(),
+                type: _findLayoutType(activeLayoutPage)
+            };
+
+            var availableLayouts = _updateLayouts(activeLayoutData, JSON.parse($layoutData.children(".available-layouts").text()));
 
             $layoutData.children(".available-layouts").text(JSON.stringify(availableLayouts));
 
             var data = {
-                selected: activeLayout,
+                selected: activeLayoutPage,
                 eventName: "",
                 updatedLayouts: availableLayouts,
             };
@@ -182,44 +207,53 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                 }
 
                 if (event.data.eventName == "rexlive:editSlider") {
-                    Rexbuilder_RexSlider.openSliderModal(event.data.blockID, event.data.shortCodeSlider, event.data.sliderID);
+                    var data = event.data;
+                    Rexbuilder_RexSlider.openSliderModal(data.blockID, data.shortCodeSlider, data.sliderID);
                 }
 
                 if (event.data.eventName == "rexlive:openSectionModal") {
                     Section_Modal.openSectionModal(event.data.section_options_active);
                 }
-                
+
+                if (event.data.eventName == "rexlive:openModalMenu") {
+                    ModelModal.openModal(event.data.modelData);
+                }
+
+                if (event.data.eventName == "rexlive:updateModel") {
+                    ModelModal.updateModel(event.data.modelData);
+                }
+
                 if (event.data.eventName == "rexlive:uploadSliderFromLive") {
                     var dataSlider = event.data.sliderInfo;
-                    
+
                     var sliderData = dataSlider.slider;
                     var rex_slider_to_edit = dataSlider.slider.id.toString();
                     var newSliderFlag = dataSlider.newSlider;
                     var blockToEdit = dataSlider.blockID;
-                    
+
                     if (newSliderFlag) {
                         rex_slider_to_edit = "";
                     }
-                    
+
                     Rexbuilder_RexSlider.saveSlider(sliderData, blockToEdit, rex_slider_to_edit, newSliderFlag, true, dataSlider.slider.id.toString())
-                    
+
                 }
-                
+
                 if (event.data.eventName == "rexlive:openCssEditor") {
                     CssEditor_Modal.openModal(event.data.currentStyle);
                 }
-                
+
                 if (event.data.eventName == "rexlive:editBackgroundSection") {
                     SectionBackground_Modal.openSectionBackgroundModal(event.data.activeBG);
                 }
-                
+
                 if (event.data.eventName == "rexlive:editBlockOptions") {
                     console.log(event.data);
                     BlockOptions_Modal.openBlockOptionsModal(event.data.activeBlockData);
                 }
             }
         };
-        
+
         function updateResponsiveButtonFocus() {
             //console.log("updating layout focus");
             var $oldBtn = $responsiveToolbar.find(".active-layout-btn");
@@ -240,6 +274,29 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         frameBuilderWindow.postMessage(infos, '*');
     };
 
+    var _updateLayoutsDB = function(updatedLayouts){
+        $.ajax({
+            type: 'POST',
+            dataType: 'json',
+            url: live_editor_obj.ajaxurl,
+            data: {
+                action: 'rex_save_custom_layouts',
+                nonce_param: live_editor_obj.rexnonce,
+                custom_layouts: updatedLayouts
+            },
+            success: function (response) {
+                console.log(response);
+                if (response.success) {
+                    console.log('cusotm layouts aggiornati');
+                }
+                console.log('chiama effettuata con successo');
+            },
+            error: function (response) {
+                console.log('errore chiama ajax');
+            }
+        });
+    }
+
     /**
      * Function that handles the open and close of the Layouts modal
      * @since live
@@ -256,6 +313,9 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
         $custom_layout_modal.on('click', '.rex-save-button', function (e) {
             var layouts = [];
+            /* per aggiungere live, da farne il tmpl
+            <button class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo ( "default" != $layout['id'] ? $layout['min'] : '' ); ?>" data-max-width="<?php echo ( "default" != $layout['id'] ? $layout['max'] : '' ); ?>" data-name="<?php echo $layout['id'] ?>"><?php echo $layout['label'] ?></button>
+            */
             $custom_layout_modal.find('.layout__item').each(function (i, e) {
                 var $item = $(e);
                 var layout = {
@@ -269,13 +329,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
             });
             //console.log(layouts);
 
-            var data = {
-                eventName: "",
-                updatedLayouts: layouts,
-            };
-
-            data.eventName = "rexlive:updateLayouts";
-            sendIframeBuilderMessage(data);
+            _updateLayoutsDB(layouts);
 
             Rexpansive_Builder_Admin_Modals.CloseModal($custom_layout_modal.parent('.rex-modal-wrap'));
         });

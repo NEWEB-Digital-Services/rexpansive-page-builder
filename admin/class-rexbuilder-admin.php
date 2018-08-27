@@ -287,6 +287,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'rexlive-block-custom-classes', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Block_Custom_Classes_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-block-link-url', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Block_Url_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-block-options', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Block_Options_Modal.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexlive-model-options', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Model_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-modals', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Modals.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexbuilder-Slider', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_RexSlider.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-util-admin', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Util_Admin_Editor.js', array( 'jquery' ), null, true );
@@ -1218,6 +1219,39 @@ class Rexbuilder_Admin {
 		register_post_type( 'rex_model', $args );
 	}
 
+    /**
+     * Saving custom layouts
+     *
+     * @return JSON
+     */
+    public function rex_save_custom_layouts()
+    {
+        $nonce = $_POST['nonce_param'];
+
+        $response = array(
+            'error' => false,
+            'msg' => '',
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+        if (!isset($_POST['custom_layouts'])) {
+            $response['error'] = true;
+            $response['msg'] = 'Data error!';
+            wp_send_json_error($response);
+        }
+
+        $response['error'] = false;
+        
+        update_option("_rex_responsive_layouts", $_POST['custom_layouts']);
+
+        wp_send_json_success($response);
+	}
+	
 	/**
 	 *	Ajax call to create a rex_model from the builder
 	 *
@@ -1243,6 +1277,7 @@ class Rexbuilder_Admin {
 		}
 
 		$model_settings = $_POST['model_data'];
+		$layout = $_POST["model_layout"];
 
 		if( empty( $model_settings['post_content'] ) ) {
 			$response['error'] = true;
@@ -1260,11 +1295,12 @@ class Rexbuilder_Admin {
 		);
 
 		if( null == get_page_by_title( $args['post_title'] ) ) {
-			$slider_settings = $_POST['slider_data'];
 			// Create the page
 			$response['model_id'] = wp_insert_post( $args );
 			$response['model_title'] = $args['post_title'];
 			update_post_meta( $response['model_id'], '_rexbuilder_active', 'true' );
+			update_post_meta( $response['model_id'], '_rex_model_customization_names', array("default") );
+			update_post_meta( $response['model_id'], '_rex_model_customization_default', $layout );
 			// adding the information for the slide
 		} else {
 			$response['model_id'] = -1;
@@ -1277,6 +1313,77 @@ class Rexbuilder_Admin {
 		wp_send_json_success( $response );
 	}
 
+	public function rex_get_model_live() {
+		$nonce = $_GET['nonce_param'];
+		$response = array(
+			'error' => false,
+			'msg' => '',
+		);
+
+		if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) :
+			$response['error'] = true;
+			$response['msg'] = 'Error!';
+			wp_send_json_error( $response );
+		endif;
+
+		if( !isset( $_GET['model_data'] ) ) {
+			$response['error'] = true;
+			$response['msg'] = 'Error!';
+			wp_send_json_error( $response );
+		}
+
+		$model_settings = $_GET['model_data'];
+
+		if( empty( $model_settings['ID'] ) ) {
+			$response['error'] = true;
+			$response['msg'] = 'Error. No model!';
+			wp_send_json_error( $response );
+		}
+
+		$args = array(
+			'post_type'		=>	'rex_model',
+			'post_status'	=>	'private',
+			'p'				=>	$model_settings['ID']
+		);
+
+		$query = new WP_Query( $args );
+
+		if ( $query->have_posts() ) {
+			while ( $query->have_posts() ) {
+				$query->the_post();
+				$post = $query->post;
+				$response['model'] = do_shortcode($post->post_content);
+				$response['name'] = $post->post_title;
+				$response['id'] = $post->ID;
+
+				$modelCustomizationsNames = get_post_meta($post->ID, '_rex_model_customization_names', true);
+				
+				if($modelCustomizationsNames == ""){
+					$modelCustomizationsNames = array();
+				}
+
+				$response['customizations_names'] = $modelCustomizationsNames;
+
+				//Customizations Data
+				$customizations = array();
+				if (!empty($modelCustomizationsNames)) {
+					foreach ($modelCustomizationsNames as $name) {
+						$customization = array();
+						$customization["name"] = $name;
+						$customization["sections"] = get_post_meta($id, '_rex_customization_' . $name, true);
+						array_push($customizations, $customization);
+					}
+				}
+
+				$response['customizations_data'] = $customizations;
+			}
+		}
+		wp_reset_postdata();
+
+		$response['args'] = $args;
+
+		wp_send_json_success( $response );
+	}
 	/**
 	 * Ajax call to get a rex_model and insert in the builder
 	 * 

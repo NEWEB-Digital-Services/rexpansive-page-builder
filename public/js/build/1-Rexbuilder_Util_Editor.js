@@ -25,6 +25,68 @@ var Rexbuilder_Util_Editor = (function ($) {
         }
     }
 
+    var _updateLayoutsAvaiable = function(newLayout, oldLayouts){
+        var availableLayoutsData = [];
+
+        var i;
+        for (i = 0; i < oldLayouts.length; i++) {
+            var layout = oldLayouts[i];
+
+            //se è presente aggiorno i dati del layout
+            if (layout.id == newLayout.id) {
+                if (layout.min != newLayout.min) {
+                    layout.min = newLayout.min;
+                }
+                if (layout.max != newLayout.max) {
+                    layout.max = newLayout.max;
+                }
+                if (layout.label != newLayout.label) {
+                    layout.label = newLayout.label;
+                }
+                newLayout.presente = true;
+            }
+            availableLayoutsData.push(layout);
+        }
+
+        if (typeof newLayout.presente == "undefined") {
+            availableLayoutsData.push(newLayout);
+        }
+        return availableLayoutsData;
+    }
+
+    var _createDefaultCustomLayouts = function(){
+        var layouts = [];
+
+        var mobile = {
+            id: "mobile",
+            label: "Mobile",
+            min: 320,
+            max: 767,
+            type: "standard"
+        };
+        var tablet = {
+            id: "tablet",
+            label: "Tablet",
+            min: 768,
+            max: 1024,
+            type: "standard"
+        };
+
+        var defaultLayout = {
+            id: "default",
+            label: "My Desktop",
+            min: 1025,
+            max: "",
+            type: "standard"
+        };
+
+        layouts.push(mobile);
+        layouts.push(tablet);
+        layouts.push(defaultLayout);
+
+        return layouts;
+    }
+    
     var _createSliderData = function ($sliderWrapper) {
         var auto_start = $sliderWrapper.attr("data-rex-slider-animation").toString() == "true";
         var prev_next = $sliderWrapper.attr("data-rex-slider-prev-next").toString() == "1";
@@ -292,11 +354,13 @@ var Rexbuilder_Util_Editor = (function ($) {
 
     var addDocumentListeners = function () {
         $(document).on("rexlive:changeLayout", function (event) {
+            var data = event.settings;
             undoStackArray = [];
             redoStackArray = [];
+            Rexbuilder_Util.chosenLayoutData = jQuery.extend(true, {}, data.layoutData);
             Rexbuilder_Util_Editor.buttonResized = true;
-            Rexbuilder_Util_Editor.clickedLayoutID = event.settings.selectedLayoutName;
-            if (event.settings.selectedLayoutName == "default") {
+            Rexbuilder_Util_Editor.clickedLayoutID = data.selectedLayoutName;
+            if (data.selectedLayoutName == "default") {
                 Rexbuilder_Util.$rexContainer.removeClass("rex-hide-responsive-tools");
             } else {
                 Rexbuilder_Util.$rexContainer.addClass("rex-hide-responsive-tools");
@@ -587,7 +651,10 @@ var Rexbuilder_Util_Editor = (function ($) {
         this.updatingPaddingBlock = false;
 
         this.updatingCollapsedGrid = false;
+
         this.savingGrid = false;
+        
+        this.openingModel = false;
 
         undoStackArray = [];
         redoStackArray = [];
@@ -622,6 +689,8 @@ var Rexbuilder_Util_Editor = (function ($) {
         saveSliderOnDB: _saveSliderOnDB,
         getTextWrapLength: _getTextWrapLength,
         getElementsPhotoswipe: _getElementsPhotoswipe,
+        updateLayoutsAvaiable: _updateLayoutsAvaiable,
+        createDefaultCustomLayouts: _createDefaultCustomLayouts,
     };
 
 })(jQuery);

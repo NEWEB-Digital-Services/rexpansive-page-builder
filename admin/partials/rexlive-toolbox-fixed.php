@@ -10,12 +10,13 @@
  */
 
 defined('ABSPATH') or exit;
-global $layouts;
+global $layoutsAvaiable;
+
 ?>
 <div class="rexlive-toolbox">
     <div class="rexlive-responsive-toolbox">
     <?php
-    foreach( $layouts as $index => $layout ) {
+    foreach( $layoutsAvaiable as $index => $layout ) {
 ?>
 <div>
     <button class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo ( "default" != $layout['id'] ? $layout['min'] : '' ); ?>" data-max-width="<?php echo ( "default" != $layout['id'] ? $layout['max'] : '' ); ?>" data-name="<?php echo $layout['id'] ?>"><?php echo $layout['label'] ?></button>

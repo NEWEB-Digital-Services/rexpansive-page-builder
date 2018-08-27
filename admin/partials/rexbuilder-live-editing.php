@@ -17,44 +17,22 @@ global $pagenow;
 
 $source = get_permalink($post->ID);
 
-global $layouts;
-$layouts = get_post_meta($post->ID, '_rex_responsive_layouts', true);
+global $layoutsAvaiable;
 
-if ("" == $layouts) {
-    $layouts = array(
-        array(
-            'id' => 'mobile',
-            'label' => 'Mobile',
-            'min' => '320',
-            'max' => '767',
-            'type' => 'standard',
-        ),
-        array(
-            'id' => 'tablet',
-            'label' => 'Tablet',
-            'min' => '768',
-            'max' => '1024',
-            'type' => 'standard',
-        ),
-        array(
-            'id' => 'default',
-            'label' => 'My Desktop',
-            'min' => '1025',
-            'max' => '',
-            'type' => 'standard',
-        ),
-    );
-}
+$mobile = array("id" => "mobile", "label" => "Mobile", "min" => "320", "max" => "767", "type" => "standard");
+$tablet = array("id" => "tablet", "label" => "Tablet", "min" => "768", "max" => "1024", "type" => "standard");
+$default = array("id" => "default", "label" => "My Desktop", "min" => "1025", "max" => "", "type" => "standard");
+$defaultLayoutsAvaiable = array($mobile, $tablet, $default);
+
+$layoutsAvaiable = get_option('_rex_responsive_layouts', $defaultLayoutsAvaiable);
 
 include_once "rexlive-toolbox-fixed.php";
-
-$layoutType = get_post_meta($post->ID, '_rex_responsive_layouts', true);
 
 ?>
 	<div id="rexbuilder-layout-data-backend" style="display: none;">
 		<div class = "available-layouts">
 			<?php
-echo json_encode($layoutType);
+echo json_encode($layoutsAvaiable);
 ?>
 		</div>
 	</div>

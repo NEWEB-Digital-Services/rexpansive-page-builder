@@ -70,6 +70,8 @@ class Rexbuilder_Section
             'section_model' => '',
             'rexlive_section_id' => '',
             'row_active_photoswipe' => '',
+            'rexlive_model_id' => '',
+            'rexlive_model_name' => ''
         ), $atts, 'RexpansiveSection');
 
         extract($parsed_atts);
@@ -165,7 +167,7 @@ class Rexbuilder_Section
             }
                         
             $bg_video_vimeo_markup = '';
-            if ('' != $video_bg_url_vimeo && 'undefined' != $video_bg_url_vimeo) {
+            if ('' != $video_bg_url_vimeo_section && 'undefined' != $video_bg_url_vimeo_section) {
                 $videoTypeActive = 'vimeo-player';
                 $bg_video_vimeo_markup .= '<div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--section">';
                 $bg_video_vimeo_markup .= '<iframe src="' . $video_bg_url_vimeo_section . '?autoplay=1&loop=1&title=0&byline=0&portrait=0&autopause=0&muted=1" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
@@ -198,6 +200,7 @@ class Rexbuilder_Section
 
             echo ' class="rexpansive_section' . ($empty_section ? ' empty-section' : '')
             . $videoTypeActive .
+            (("" != $rexlive_model_id) ? " rex-model-section" : "") .
             (($content_has_photoswipe > 0) ? ' photoswipe-gallery' : '') .
             (('' != $custom_classes) ? ' ' . $custom_classes : '') .
             (('true' == $full_height) ? ' full-height-section' : '') .
@@ -216,10 +219,19 @@ class Rexbuilder_Section
             if ($rexlive_section_id != '') {
                 echo ' data-rexlive-section-id="' . $rexlive_section_id . '"';
             }
-
+            
             if (isset($rexlive_collapse_grid)) {
                 echo ' data-rex-collapse-grid="false"';
             }
+
+            if ($rexlive_model_id != '') {
+                echo ' data-rexlive-model-id="' . $rexlive_model_id . '"';
+            }
+
+            if ($rexlive_model_name != '') {
+                echo ' data-rexlive-model-name="' . $rexlive_model_name . '"';
+            }
+            
             echo '>';
 
             echo '<div class="section-data" style="display: none;" ';

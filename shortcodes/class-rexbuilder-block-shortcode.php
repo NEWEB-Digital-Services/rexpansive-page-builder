@@ -402,7 +402,7 @@ class Rexbuilder_Block
                 echo 'data-video_mp4_url="' . $video_mp4_url . '"';
             }
 
-            if($flex_positioned){
+            if($flex_positioned_active){
                 echo "data-block_flex_position=\"".$flex_position[0]." ".$flex_position[1]."\"";
             }
 

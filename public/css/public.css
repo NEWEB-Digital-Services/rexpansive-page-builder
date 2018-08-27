@@ -4732,6 +4732,12 @@ a.pswp-item {
 .edit-background-section {
   left: 60%; }
 
+.open-model {
+  left: 65%; }
+
+.update-model {
+  left: 70%; }
+
 .builder-section-config i {
   font-size: 14px;
   line-height: 20px;

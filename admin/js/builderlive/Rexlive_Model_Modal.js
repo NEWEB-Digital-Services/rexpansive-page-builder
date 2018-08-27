@@ -1,0 +1,173 @@
+var ModelModal = (function ($) {
+    'use strict';
+    var rexmodel_modal_props;
+    var model_created;
+    var sectionRexID;
+    var sectionShortCode;
+    var custom_layouts;
+
+    var layout;
+    var modelSelectedID;
+
+    var _openModal = function (data) {
+        sectionRexID = data.rexID;
+        modelSelectedID = data.modelID;
+        sectionShortCode = data.shortCode;
+        layout = data.layout;
+        custom_layouts = data.custom_layouts;
+        
+        rexmodel_modal_props.$model_name.val('');
+        rexmodel_modal_props.$model_import.find('option[value=0]').prop('selected', true);
+
+        if (modelSelectedID != "") {
+            rexmodel_modal_props.$model_import.find('option[value=0]').prop('selected', false);
+            rexmodel_modal_props.$model_import.find('option[value=' + modelSelectedID + ']').prop('selected', true);
+        }
+        Rexlive_Modals_Utils.openModal(rexmodel_modal_props.$self.parent('.rex-modal-wrap'));
+    }
+
+    var _closeModal = function () {
+        Rexlive_Modals_Utils.closeModal(rexmodel_modal_props.$self.parent('.rex-modal-wrap'));
+    }
+
+    var _linkDocumentListeners = function () {
+        rexmodel_modal_props.$save_button.click(function (e) {
+            e.preventDefault();
+            _closeModal();
+        });
+
+        rexmodel_modal_props.$cancel_button.click(function (e) {
+            e.preventDefault();
+            _closeModal();
+        });
+
+        rexmodel_modal_props.$model_import.on('change', function (e) {
+            var model_id = rexmodel_modal_props.$model_import.val();
+            if (model_id != '' && model_id != '0' && !model_created) {
+                rexmodel_modal_props.$self.addClass('rex-modal--loading');
+                var model = {
+                    ID: model_id
+                };
+                $.ajax({
+                    type: 'GET',
+                    dataType: 'json',
+                    url: live_editor_obj.ajaxurl,
+                    data: {
+                        action: 'rex_get_model_live',
+                        nonce_param: live_editor_obj.rexnonce,
+                        model_data: model
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            var modelData = {
+                                eventName: "rexlive:applyModelSection",
+                                data_to_send: {
+                                    sectionRexID: sectionRexID,
+                                    model: response.data.model,
+                                    modelName: response.data.name,
+                                    modelID: response.data.id
+                                }
+                            }
+                            Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(modelData);
+                        }
+                    },
+                    error: function (response) {
+                    },
+                    complete: function (response) {
+                        rexmodel_modal_props.$self.removeClass('rex-modal--loading');
+                    }
+                });
+            }
+        });
+
+        rexmodel_modal_props.$model_name.on('focusout', function (e) {
+            e.preventDefault();
+            rexmodel_modal_props.$model_name.parent().removeClass('input-active');
+        });
+
+        rexmodel_modal_props.$model_name.on('focusin', function (e) {
+            e.preventDefault();
+            rexmodel_modal_props.$model_name.parent().addClass('input-active');
+        });
+
+        rexmodel_modal_props.$add_new_model.on('click', function () {
+            if (rexmodel_modal_props.$model_name.val() != '') {
+                var model_name = rexmodel_modal_props.$model_name.val();
+
+                var model = {
+                    'post_title': model_name,
+                    'post_content': sectionShortCode
+                };
+
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: live_editor_obj.ajaxurl,
+                    data: {
+                        action: 'rex_create_model_from_builder',
+                        nonce_param: live_editor_obj.rexnonce,
+                        model_data: model,
+                        model_layout: layout,
+                        custom_layouts: custom_layouts
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            if (response.data.model_id != -1) {
+                                rexmodel_modal_props.$model_name.val('').siblings('label').removeClass('active');
+                                rexmodel_modal_props.$save_button.val('');
+                                rexmodel_modal_props.$model_import.children().eq(0).after('<option value="' + response.data.model_id + '">' + response.data.model_title + '</option>');
+                                rexmodel_modal_props.$model_import.find('option[value=' + response.data.model_id + ']').prop('selected', true);
+                                var modelData = {
+                                    eventName: "rexlive:newModelCreated",
+                                    data_to_send: {
+                                        sectionRexID: sectionRexID,
+                                        modelID: response.data.model_id,
+                                        modelName: model_name
+                                    }
+                                }
+                                Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(modelData);
+                                model_created = true;
+                            } else {
+                                rexmodel_modal_props.$model_name.val('nome già presente');
+                            }
+                        }
+                    },
+                    error: function (response) {
+                        model_created = false;
+                    },
+                    complete: function (response) {
+                        rexmodel_modal_props.$self.removeClass('rex-modal--loading');
+                    }
+                });
+            } else {
+                rexmodel_modal_props.$model_name.focus();
+            }
+        });
+    }
+
+    var _init = function () {
+        console.log("starting models");
+        var $self = $("#rex-model-block")
+        var $container = $self;
+        rexmodel_modal_props = {
+            $self: $self,
+            $save_button: $container.find('.rex-save-button'),
+            $cancel_button: $container.find('.rex-cancel-button'),
+            $model_import: $container.find("#rex-model__import"),
+            $model_name: $container.find('#rex-model__name'),
+            $add_new_model: $container.find('#rex-model__add-new-model'),
+        }
+        model_created = false;
+        sectionRexID = "";
+        modelSelectedID = "";
+        sectionShortCode = "";
+        _linkDocumentListeners();
+    }
+
+    return {
+        init: _init,
+        openModal: _openModal,
+        closeModal: _closeModal
+    };
+
+})(jQuery);

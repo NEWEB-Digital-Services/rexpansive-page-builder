@@ -193,6 +193,7 @@ var Rexbuilder_App = (function ($) {
 		// Starting slider
 		RexSlider.init();
 
+		Rexbuilder_Util.playAllVideos();
 	};
 
 	var load = function () {

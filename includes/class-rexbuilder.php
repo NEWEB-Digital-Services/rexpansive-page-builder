@@ -144,6 +144,7 @@ class Rexbuilder {
 		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-textfill-shortcode.php';
 		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-rexslider-shortcode.php';
 		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-indicator-shortcode.php';
+		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-model-shortcode.php';
 
 		$this->loader = new Rexbuilder_Loader();
 
@@ -226,6 +227,8 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_ajax_live_refresh_builder', $plugin_admin, 'live_refresh_builder' );
 		
 		$this->loader->add_action( 'wp_ajax_rex_create_model_from_builder', $plugin_admin, 'rex_create_model_from_builder' );
+		$this->loader->add_action( 'wp_ajax_rex_get_model_live', $plugin_admin, 'rex_get_model_live' );
+		$this->loader->add_action( 'wp_ajax_rex_save_custom_layouts', $plugin_admin, 'rex_save_custom_layouts' );
 		$this->loader->add_action( 'wp_ajax_rex_get_model', $plugin_admin, 'rex_get_model' );
 		
 		$this->loader->add_action( 'wp_ajax_rex_get_rxcf', $plugin_admin, 'rex_get_rxcf' );
@@ -239,7 +242,6 @@ class Rexbuilder {
 		$this->loader->add_filter( 'acf/location/rule_types', $plugin_admin, 'acf_rule_type_rexpansive_builder' );
 		$this->loader->add_filter( 'acf/location/rule_values/rexpansive_builder', $plugin_admin, 'acf_rule_values_rexpansive_builder' );
 		$this->loader->add_filter( 'acf/location/rule_match/rexpansive_builder', $plugin_admin, 'acf_rule_match_rexpansive_builder', 10, 3 );
-		
 		
 	}
 	
@@ -295,12 +297,18 @@ class Rexbuilder {
 
 		$this->loader->add_action( 'wp_ajax_rexlive_save_customization_layout', $plugin_public, 'rexlive_save_customization_layout' );
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_customization_layout', $plugin_public, 'rexlive_save_customization_layout' );
-
-		$this->loader->add_action( 'wp_ajax_rexlive_save_custom_layouts', $plugin_public, 'rexlive_save_custom_layouts' );
-		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_custom_layouts', $plugin_public, 'rexlive_save_custom_layouts' );
 		
 		$this->loader->add_action( 'wp_ajax_rexlive_save_custom_css', $plugin_public, 'rexlive_save_custom_css' );
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_custom_css', $plugin_public, 'rexlive_save_custom_css' );
+
+		$this->loader->add_action( 'wp_ajax_rexlive_save_customization_model', $plugin_public, 'rexlive_save_customization_model' );
+		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_customization_model', $plugin_public, 'rexlive_save_customization_model' );
+
+		$this->loader->add_action( 'wp_ajax_rexlive_save_avaiable_model_layouts_names', $plugin_public, 'rexlive_save_avaiable_model_layouts_names' );
+		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_avaiable_model_layouts_names', $plugin_public, 'rexlive_save_avaiable_model_layouts_names' );
+
+		$this->loader->add_action( 'wp_ajax_rexlive_edit_model_shortcode_builder', $plugin_public, 'rexlive_edit_model_shortcode_builder' );
+		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_edit_model_shortcode_builder', $plugin_public, 'rexlive_edit_model_shortcode_builder' );
 
 		// $this->loader->add_action( 'wpcf7_contact_form', $plugin_public, 'cf7_custom_script_guard' );
 		$this->loader->add_action( 'shortcode_atts_wpcf7', $plugin_public, 'cf7_custom_style', 10, 4 );
@@ -321,12 +329,14 @@ class Rexbuilder {
 		$textfill = new Rexbuilder_TextFill();
 		$slider = new Rexbuilder_RexSlider();
 		$indicator = new Rexbuilder_Indicator();
+		$model = new Rexbuilder_Model();
 
 		$this->loader->add_shortcode( 'RexpansiveSection', $section, 'render_section' );
 		$this->loader->add_shortcode( 'RexpansiveBlock', $block, 'render_block' );
 		$this->loader->add_shortcode( 'TextFill', $textfill, 'render_textfill' );
 		$this->loader->add_shortcode( 'RexSlider', $slider, 'render_slider' );
 		$this->loader->add_shortcode( 'RexIndicator', $indicator, 'render_indicator' );
+		$this->loader->add_shortcode( 'RexModel', $model, 'render_model' );
 	}
 
 	/**

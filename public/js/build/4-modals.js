@@ -612,6 +612,28 @@
 			Rexbuilder_Util_Editor.pushAction($section, "updateBlockUrl", actionData, reverseData);
 
 		});
+
+		$(document).on("rexlive:newModelCreated", function (e) {
+			var data = e.settings.data_to_send;
+			var $section =  Rexbuilder_Util.$rexContainer.children(".rexpansive_section[data-rexlive-section-id=\""+data.sectionRexID+"\"]");
+						
+			var reverseData = {
+				modelID: "",
+				modelName: "",
+				isModel: false
+			}
+
+			var actionData = {
+				modelID: data.modelID,
+				modelName: data.modelName,
+				isModel: true
+			}
+			
+			Rexbuilder_Dom_Util.updateSectionBecameModel($section, actionData);
+
+			Rexbuilder_Util_Editor.pushAction($section, "sectionBecameModel", actionData, reverseData);
+		});
+
 		///////////////////////////////////////////////////////////////////////////////////////
 		///////////////////////////////////////////////////////////////////////////////////////
 		///////////////////////////////////////////////////////////////////////////////////////
@@ -941,6 +963,65 @@
 
 			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 			return;
+		});
+
+		$(document).on("click", ".open-model", function (e) {
+			Rexbuilder_Util_Editor.openingModel = true;
+			var $section = $(e.target).parents(".rexpansive_section");
+			var sectionRexID = $section.attr("data-rexlive-section-id");
+			var shortCode = Rex_Save_Listeners.createSectionProperties($section, "shortcode");
+			var layoutDefault = Rex_Save_Listeners.createTargets($section, "default");
+			var defaultCustomLayouts = Rexbuilder_Util_Editor.createDefaultCustomLayouts();
+			var modelID = typeof $section.attr("data-rexlive-model-id") != "undefined" ? $section.attr("data-rexlive-model-id") : "";
+
+			var data = {
+				eventName: "rexlive:openModalMenu",
+				modelData: {
+					modelID: modelID,
+					rexID: sectionRexID,
+					shortCode: shortCode,
+					layout: layoutDefault,
+					custom_layouts: defaultCustomLayouts
+				}
+			};
+			
+			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+			Rexbuilder_Util_Editor.openingModel = false;
+		});
+
+		$(document).on("click", ".update-model", function (e) {
+			Rexbuilder_Util_Editor.openingModel = true;
+			var $section = $(e.target).parents(".rexpansive_section");
+			var layoutName = Rexbuilder_Util.activeLayout;
+			var data;
+			var modelID = typeof $section.attr("data-rexlive-model-id") != "undefined" ? $section.attr("data-rexlive-model-id") : "";
+			var modelName = typeof $section.attr("data-rexlive-model-name") != "undefined" ? $section.attr("data-rexlive-model-name") : "";
+
+			if (layoutName == "default") {
+				data = Rex_Save_Listeners.createSectionProperties($section, "shortcode");
+
+				var modelUpdateData = {
+					layout: layoutName,
+					post_content: data,
+					model_id: modelID,
+					post_title: modelName
+				};
+
+				var event = jQuery.Event("rexlive:updateModelShortCode");
+				event.settings = {
+					modelData: modelUpdateData
+				};
+				$(document).trigger(event);
+			}
+
+			var event = jQuery.Event("rexlive:saveCustomizationsModel");
+			event.settings = {
+				$section: $section,
+				modelID: modelID,
+				layoutName: layoutName,
+				modelName: modelName
+			};
+			$(document).trigger(event);
 		});
 	}); // End of the DOM ready
 

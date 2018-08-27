@@ -151,6 +151,7 @@
                         !Rexbuilder_Util_Editor.updatingImageBg &&
                         !Rexbuilder_Util_Editor.updatingPaddingBlock &&
                         !Rexbuilder_Util_Editor.updatingCollapsedGrid &&
+                        !Rexbuilder_Util_Editor.openingModel &&
                         !Rexbuilder_Util_Editor.savingGrid) {
                         var actionData = that.createActionDataMoveBlocksGrid();
                         Rexbuilder_Util_Editor.pushAction(that.$section, "updateSectionBlocksDisposition", $.extend(true, {}, actionData), $.extend(true, {}, that.properties.reverseDataGridDisposition));

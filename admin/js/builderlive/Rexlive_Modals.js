@@ -3,7 +3,7 @@ var Rexlive_Modals = (function ($) {
     'use strict';
 
     var init = function () {
-        //section
+        // section
         Section_Modal.init();
 
         // new blocks video
@@ -12,11 +12,14 @@ var Rexlive_Modals = (function ($) {
         // custom css
         CssEditor_Modal.init();
 
-        //background row
+        // background row
         SectionBackground_Modal.init();
 
-        //block options
+        // block options
         BlockOptions_Modal.init();
+
+        // models
+        ModelModal.init();
     }
 
     return {

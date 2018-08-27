@@ -401,11 +401,35 @@ endif;
         $post_id_to_update = intval($_POST['post_id_to_update']);
 
         $names = $_POST['names'];
-        $avaiable_layouts = $_POST['avaiable_layouts'];
 
         update_post_meta($post_id_to_update, '_rex_responsive_layouts_names', $names);
-        // update_post_meta($post_id_to_update, '_rex_responsive_layouts', $avaiable_layouts);
 
+        wp_send_json_success($response);
+    }
+
+    //Elenco dei nomi delle customizzazioni disponibili per un modello 
+    public function rexlive_save_avaiable_model_layouts_names()
+    {
+        $nonce = $_POST['nonce_param'];
+
+        $response = array(
+            'error' => false,
+            'msg' => '',
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+        $response['error'] = false;
+
+        $post_id_to_update = intval($_POST['post_id_to_update']);
+
+        $names = $_POST['names'];
+
+        update_post_meta($post_id_to_update, '_rex_model_customization_names', $names);
         wp_send_json_success($response);
     }
 
@@ -438,12 +462,7 @@ endif;
         wp_send_json_success($response);
     }
 
-    /**
-     * Saving custom layouts
-     *
-     * @return JSON
-     */
-    public function rexlive_save_custom_layouts()
+    public function rexlive_save_customization_model()
     {
         $nonce = $_POST['nonce_param'];
 
@@ -458,16 +477,16 @@ endif;
             wp_send_json_error($response);
         endif;
 
-        if (!isset($_POST['custom_layouts'])) {
-            $response['error'] = true;
-            $response['msg'] = 'Data error!';
-            wp_send_json_error($response);
-        }
-
         $response['error'] = false;
 
-        $post_id_to_update = intval($_POST['post_id_to_update']);
-        update_post_meta($post_id_to_update, '_rex_responsive_layouts', $_POST['custom_layouts']);
+        $post_id_to_update = intval($_POST['model_id_to_update']);
+
+        $layout = $_POST['targets'];
+        $layout_name = $_POST['layout_name'];
+
+        update_post_meta($post_id_to_update, '_rex_model_customization_' . $layout_name, $layout);
+
+        $response['id_recived'] = $post_id_to_update;
 
         wp_send_json_success($response);
     }
@@ -513,6 +532,61 @@ endif;
         wp_send_json_success($response);
     }
 
+    /**
+     *    Ajax call to save model shortcode
+     *
+     *    @since 1.0.15
+     */
+    public function rexlive_edit_model_shortcode_builder()
+    {
+        $nonce = $_POST['nonce_param'];
+
+        $response = array(
+            'error' => false,
+            'msg' => '',
+        );
+
+        if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) :
+            $response['error'] = true;
+            $response['msg'] = 'Error!';
+            wp_send_json_error( $response );
+        endif;
+
+        if( !isset( $_POST['model_data'] ) ) {
+            $response['error'] = true;
+            $response['msg'] = 'Error!';
+            wp_send_json_error( $response );
+        }
+
+        $model_settings = $_POST['model_data'];
+
+        if( empty( $model_settings['post_content'] ) ) {
+            $response['error'] = true;
+            $response['msg'] = 'Error. No content!';
+            wp_send_json_error( $response );
+        }
+
+        $model_to_edit = (int)$model_settings['model_id'];
+
+        if( Rexbuilder_Utilities::check_post_exists( $model_to_edit ) ) {
+
+            $new_model_title = $model_settings['post_title'];
+
+            $argsModel = array(
+                'ID'           => $model_to_edit,
+                'post_title'   => $new_model_title,
+                'post_content' => $model_settings['post_content']
+            );
+
+            wp_update_post( $argsModel );
+
+            $response['model_id'] = $argsModel["ID"];
+        } else {
+            $response['model_id'] = -1;
+        }
+        wp_send_json_success( $response );
+    }
+
     public function print_post_id(){
         ?>
         <div id="id-post" data-post-id="<?php echo esc_attr(get_the_ID()); ?>"></div>
@@ -522,6 +596,14 @@ endif;
     public function generate_builder_content($content)
     {
         global $post;
+
+        $mobile = array("id" => "mobile", "label" => "Mobile", "min" => "320", "max" => "767", "type" => "standard");
+        $tablet = array("id" => "tablet", "label" => "Tablet", "min" => "768", "max" => "1024", "type" => "standard");
+        $default = array("id" => "default", "label" => "My Desktop", "min" => "1025", "max" => "", "type" => "standard");
+        $defaultLayoutsAvaiable = array($mobile, $tablet, $default);
+
+        $layoutsAvaiable = get_option('_rex_responsive_layouts', $defaultLayoutsAvaiable);
+
         $editor = $_GET['editor'];
 
         $defaultPage = get_post_meta($post->ID, '_rex_default_layout', true);
@@ -530,52 +612,88 @@ endif;
             $defaultPage = get_post_meta($post->ID, '_rex_content_mydesktop', true);
         }
 
+        // find models ids in page
+        $models_ids = array();
+        $pattern = get_shortcode_regex();
+        preg_match_all("/$pattern/", $defaultPage, $matches);
+        foreach ($matches[2] as $index => $shortcode) {
+            if ($shortcode == "RexModel") {
+                $result = shortcode_parse_atts(trim($matches[3][$index]));
+                array_push($models_ids, $result["id"]);
+            }
+        }
+
+        $models_customizations = array();
+        $models_customizations_avaiable = array();
+
+        $flag_models = false;
+
+        foreach($models_ids as $id){
+            // Names
+            $modelCustomizationsNames = get_post_meta($id, '_rex_model_customization_names', true);
+            if($modelCustomizationsNames == ""){
+                $modelCustomizationsNames = array();
+            }
+            $modelNames = array("id" => $id, "names" => $modelCustomizationsNames);
+            array_push($models_customizations_avaiable, $modelNames);
+
+            //Customizations Data
+            $customizations = array();
+            if (!empty($modelCustomizationsNames)) {
+                $flag_models = true;
+                foreach ($modelCustomizationsNames as $name) {
+                    $customization = array();
+                    $customization["name"] = $name;
+                    $customization["sections"] = get_post_meta($id, '_rex_model_customization_' . $name, true);
+                    array_push($customizations, $customization);
+                }
+            }
+
+            $modelCustomizations = array("id" => $id, "customizations" => $customizations);
+
+            array_push($models_customizations, $modelCustomizations);
+        }
+
         $customizations_array = array();
         $customizations_names = get_post_meta($post->ID, '_rex_responsive_layouts_names', true);
-        $customization = array();
-
+        $flag_page_customization = false;
         if (!empty($customizations_names)) {
+            $flag_page_customization = true;
             foreach ($customizations_names as $name) {
+                $customization = array();
                 $customization["name"] = $name;
                 $customization["sections"] = get_post_meta($post->ID, '_rex_customization_' . $name, true);
                 array_push($customizations_array, $customization);
             }
         }
 
-        $layoutsAvaiable = get_post_meta($post->ID, '_rex_responsive_layouts', true);
-        
-        if ($layoutsAvaiable == null) {
-            $mobile = array("id" => "mobile", "label" => "Mobile", "min" => "320", "max" => "767", "type" => "standard");
-            $tablet = array("id" => "tablet", "label" => "Tablet", "min" => "768", "max" => "1024", "type" => "standard");
-            $default = array("id" => "default", "label" => "My Desktop", "min" => "1025", "max" => "", "type" => "standard");
-            $layoutsAvaiable = array($mobile, $tablet, $default);
-        }
-
         ?>
 <div class="rexbuilder-live-content">
+            <div id="layout-avaiable-dimensions" style="display: none;">
+            <?php echo json_encode($layoutsAvaiable); ?></div>
+            <div id="rexbuilder-model-data" style="display: none;">
+                <div class = "models-customizations" <?php
+                if (!$flag_models) {
+                    echo 'data-empty-models-customizations="true">';
+                } else { ?>>
+                    <?php
+                    echo json_encode($models_customizations);
+                }
+                ?></div>
+                <div class = "available-models-customizations-names">
+                <?php echo json_encode($models_customizations_avaiable);?></div>
+            </div>
             <div id="rexbuilder-layout-data" style="display: none;">
-                <div class = "layouts-customizations"
-                <?php
-    if (empty($customizations_array)) {
-                echo 'data-empty-customizations="true">';
-            } else {
-                ?>
-                >
-                <?php
-    echo json_encode($customizations_array);
-            }
-            ?>
-                </div>
-                <div class = "available-layouts">
+                <div class = "layouts-customizations" <?php
+                if (!$flag_page_customization) {
+                    echo 'data-empty-customizations="true">';
+                } else { ?>>
                     <?php
-    echo json_encode($layoutsAvaiable);
-            ?>
-                </div>
+                    echo json_encode($customizations_array);
+                }
+                ?></div>
                 <div class = "available-layouts-names">
-                    <?php
-    echo json_encode($customizations_names);
-            ?>
-                </div>
+                <?php echo json_encode($customizations_names); ?></div>
             </div>
             <?php
     if ($editor == "true") {
@@ -598,9 +716,15 @@ endif;
     echo do_shortcode($defaultPage);
             ?>
             </div>
-            <button class="add-new-section">
-                ADD
-            </button>
+            <?php 
+            if ($editor == "true") {
+?>
+                    <button class="add-new-section">
+                    ADD
+                    </button>
+            <?php
+                }
+            ?>
         </div>
 	<?php
 

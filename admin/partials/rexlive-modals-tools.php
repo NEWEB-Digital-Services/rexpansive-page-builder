@@ -11,7 +11,8 @@
 
 defined( 'ABSPATH' ) or exit;
 
-global $layouts;
+global $layoutsAvaiable;
+
 ?>
 <div class="rex-modal-wrap rex-fade">
   <div id="rexlive-custom-layout-modal" class="rexbuilder-materialize-wrap rex-modal rex-modal-draggable z-depth-4">
@@ -20,7 +21,7 @@ global $layouts;
         <div class="b-col">
           <ul class="layout__list">
             <?php 
-            foreach( $layouts as $layout ) {
+            foreach( $layoutsAvaiable as $layout ) {
               ?>
               <li class="layout__item">
                 <div class="layout">

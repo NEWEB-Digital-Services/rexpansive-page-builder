@@ -757,6 +757,21 @@ var Rexbuilder_Dom_Util = (function ($) {
             $section.addClass("removing_section");
         }
     }
+    
+    var _updateModelVisibility = function($sectionToHide, $sectionToShow){
+        _updateSectionVisibility($sectionToHide, false);
+        _updateSectionVisibility($sectionToShow, true);
+    }
+    
+    var _updateSectionBecameModel = function ($section, data) {
+        if (data.isModel) {
+            $section.addClass("rex-model-section");
+        } else {
+            $section.removeClass("rex-model-section");
+        }
+        $section.attr("data-rexlive-model-id", data.modelID);
+        $section.attr("data-rexlive-model-name", data.modelName);
+    }
 
     var _performAction = function (action, flag) {
         console.log("performing " + action.actionName);
@@ -877,6 +892,12 @@ var Rexbuilder_Dom_Util = (function ($) {
             case "updateSectionVisibility":
                 _updateSectionVisibility($section, dataToUse.show);
                 break;
+            case "updateSectionModel":
+                _updateModelVisibility(dataToUse.$sectionToHide, dataToUse.$sectionToShow);
+                break;
+            case "sectionBecameModel":
+                _updateSectionBecameModel($section, dataToUse);
+                break;
             default:
                 break;
         }
@@ -924,6 +945,7 @@ var Rexbuilder_Dom_Util = (function ($) {
         updateFlexPostition: _updateFlexPostition,
         updateBlockUrl: _updateBlockUrl,
         updateSectionVisibility: _updateSectionVisibility,
-        fixSectionDomOrder: _fixSectionDomOrder
+        fixSectionDomOrder: _fixSectionDomOrder,
+        updateSectionBecameModel: _updateSectionBecameModel
     };
 })(jQuery);

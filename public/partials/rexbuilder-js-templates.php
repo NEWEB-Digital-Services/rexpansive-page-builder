@@ -205,6 +205,14 @@ defined('ABSPATH') or exit;
             B
         </button>
 
+        <button class="tool-button btn-floating open-model tooltipped waves-effect waves-light">
+            M
+        </button>
+
+        <button class="tool-button btn-floating update-model tooltipped waves-effect waves-light">
+            P
+        </button>
+
         <button class="tool-button btn-floating builder-delete-row waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexspansive');?>">
             <i class="material-icons white-text">&#xE5CD;</i>
         </button>
