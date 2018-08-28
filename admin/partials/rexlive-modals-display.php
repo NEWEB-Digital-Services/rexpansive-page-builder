@@ -1120,7 +1120,8 @@ defined('ABSPATH') or exit;
             </div><!-- // .rex-model__add-model__wrap -->
 
             <div class="rex-model__import--wrap rex-modal-content__modal-area">
-
+                <div class="rex-model__model-insert-success-wrap"></div>
+                <div class="rex-model__import--wrap-active">
             <?php
 // WP_Query arguments
 $args = array(
@@ -1161,7 +1162,7 @@ wp_reset_postdata();
             <div id="rex-model__open-preview">
                 <i class="rex-icon">g</i>
             </div>
-
+        </div>
             </div>
         </div>
 

@@ -757,12 +757,12 @@ var Rexbuilder_Dom_Util = (function ($) {
             $section.addClass("removing_section");
         }
     }
-    
-    var _updateModelVisibility = function($sectionToHide, $sectionToShow){
+
+    var _updateModelVisibility = function ($sectionToHide, $sectionToShow) {
         _updateSectionVisibility($sectionToHide, false);
         _updateSectionVisibility($sectionToShow, true);
     }
-    
+
     var _updateSectionBecameModel = function ($section, data) {
         if (data.isModel) {
             $section.addClass("rex-model-section");
@@ -771,6 +771,50 @@ var Rexbuilder_Dom_Util = (function ($) {
         }
         $section.attr("data-rexlive-model-id", data.modelID);
         $section.attr("data-rexlive-model-name", data.modelName);
+    }
+
+    var _updateDivModelCustomizationsData = function (updatedModalCustomizationsData) {
+        var $modelCustomDiv = $("#rexbuilder-model-data .models-customizations");
+
+        var oldModels;
+        if ($modelCustomDiv.attr("data-empty-models-customizations")) {
+            oldModels = [];
+        } else {
+            oldModels = JSON.parse($modelCustomDiv.text());
+        }
+
+        var modelsCustomizations = [];
+        var i;
+
+        for (i = 0; i < oldModels.length; i++) {
+            var model = oldModels[i];
+            if (model.id != updatedModalCustomizationsData.id) {
+                modelsCustomizations.push(model);
+            }
+        }
+
+        modelsCustomizations.push(updatedModalCustomizationsData);
+
+        $modelCustomDiv.text(JSON.stringify(modelsCustomizations));
+        $modelCustomDiv.removeAttr("data-empty-models-customizations");
+    }
+
+    var _updateDivModelCustomizationsNames = function (updatedModalCustomizationsNames) {
+        var $modelsAvaiableNamesDiv = $("#rexbuilder-model-data .available-models-customizations-names");
+        var names = JSON.parse($modelsAvaiableNamesDiv.text());
+        var newNamesData = [];
+        var i;
+
+        for (i = 0; i < names.length; i++) {
+            var namesData = names[i];
+            if (namesData.modelID != updatedModalCustomizationsNames.modelID) {
+                newNamesData.push(namesData);
+            }
+        }
+
+        newNamesData.push(updatedModalCustomizationsNames);
+
+        $modelsAvaiableNamesDiv.text(JSON.stringify(newNamesData));
     }
 
     var _performAction = function (action, flag) {
@@ -898,6 +942,9 @@ var Rexbuilder_Dom_Util = (function ($) {
             case "sectionBecameModel":
                 _updateSectionBecameModel($section, dataToUse);
                 break;
+            case "updateSectionOrder":
+                _fixSectionDomOrder(dataToUse.sectionOrder);
+                break;
             default:
                 break;
         }
@@ -946,6 +993,8 @@ var Rexbuilder_Dom_Util = (function ($) {
         updateBlockUrl: _updateBlockUrl,
         updateSectionVisibility: _updateSectionVisibility,
         fixSectionDomOrder: _fixSectionDomOrder,
-        updateSectionBecameModel: _updateSectionBecameModel
+        updateSectionBecameModel: _updateSectionBecameModel,
+        updateDivModelCustomizationsData: _updateDivModelCustomizationsData,
+        updateDivModelCustomizationsNames: _updateDivModelCustomizationsNames,
     };
 })(jQuery);

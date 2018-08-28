@@ -15,22 +15,24 @@ global $layoutsAvaiable;
 ?>
 <div class="rexlive-toolbox">
     <div class="rexlive-responsive-toolbox">
-    <?php
-    foreach( $layoutsAvaiable as $index => $layout ) {
-?>
-<div>
-    <button class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo ( "default" != $layout['id'] ? $layout['min'] : '' ); ?>" data-max-width="<?php echo ( "default" != $layout['id'] ? $layout['max'] : '' ); ?>" data-name="<?php echo $layout['id'] ?>"><?php echo $layout['label'] ?></button>
-</div>
-<?php
-        if( 2 == $index ) {
-?>
-<div>
-    <button class="builder-config-layouts builder-custom-layout">+</button>
-</div>
-<?php
-        }
-    }
-    ?>
+        <div class="rexlive-responsive-buttons-wrapper">
+        <?php
+            foreach( $layoutsAvaiable as $index => $layout ) {
+            ?>
+            <div>
+                <button class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo ( "default" != $layout['id'] ? $layout['min'] : '' ); ?>" data-max-width="<?php echo ( "default" != $layout['id'] ? $layout['max'] : '' ); ?>" data-name="<?php echo $layout['id'] ?>"><?php echo $layout['label'] ?></button>
+            </div>
+            <?php
+                if( 2 == $index ) {
+            ?>
+            <div>
+                <button class="builder-config-layouts builder-custom-layout">+</button>
+            </div>
+            <?php
+                }
+            }
+        ?>
+        </div>
         <div class="rexlive-builder-actions">
             <button class = "btn-undo">Undo</button>
             <button class = "btn-redo">Redo</button>

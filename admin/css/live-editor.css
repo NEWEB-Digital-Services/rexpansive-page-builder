@@ -2,9 +2,10 @@
 		list-style:none;
 	}
 
-	.layout__list {
+	.layout__list .removing-item{
+		display: none;
 	}
-
+	
   .rexlive-toolbox{
     top: 0px;
     position: absolute;
@@ -163,4 +164,12 @@
 	line-height: 42px;
 	color: #fff;
 	font-size: 26px;
+}
+.rex-model__import--wrap-active{
+	display: flex;
+	width: 100%;
+}
+
+.rex-model__import--wrap-active.hide-import-wrap{
+	display: none
 }

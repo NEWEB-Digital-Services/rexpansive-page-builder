@@ -523,9 +523,9 @@
 
 		});
 
-		$(document).on("rexlive:apply_flex_position_block", function(e){
+		$(document).on("rexlive:apply_flex_position_block", function (e) {
 			var data = e.settings.data_to_send;
-			
+
 			var $elem = Rexbuilder_Util.$rexContainer.find("div [data-rexbuilder-block-id=\"" + data.rex_block_id + "\"]");
 
 			var $elemData = $elem.children(".rexbuilder-block-data");
@@ -571,7 +571,7 @@
 
 			oldClasses = oldClasses.trim();
 			var oldClassesList = oldClasses.split(/\s+/);
-			
+
 			var reverseData = {
 				$target: $elem,
 				classes: oldClassesList
@@ -596,7 +596,7 @@
 			var $section = $elem.parents(".rexpansive_section");
 
 			var oldUrl = typeof $elemData.attr('data-linkurl') == "undefined" ? "" : $elemData.attr('data-linkurl');
-			
+
 			var reverseData = {
 				$elem: $elem,
 				url: oldUrl
@@ -615,8 +615,8 @@
 
 		$(document).on("rexlive:newModelCreated", function (e) {
 			var data = e.settings.data_to_send;
-			var $section =  Rexbuilder_Util.$rexContainer.children(".rexpansive_section[data-rexlive-section-id=\""+data.sectionRexID+"\"]");
-						
+			var $section = Rexbuilder_Util.$rexContainer.children(".rexpansive_section[data-rexlive-section-id=\"" + data.sectionRexID + "\"]");
+
 			var reverseData = {
 				modelID: "",
 				modelName: "",
@@ -628,7 +628,7 @@
 				modelName: data.modelName,
 				isModel: true
 			}
-			
+
 			Rexbuilder_Dom_Util.updateSectionBecameModel($section, actionData);
 
 			Rexbuilder_Util_Editor.pushAction($section, "sectionBecameModel", actionData, reverseData);
@@ -929,14 +929,14 @@
 
 			var blockFlexPosition = typeof $elemData.attr('data-block_flex_position') == "undefined" ? "" : $elemData.attr('data-block_flex_position');
 			var blockFlexPositionArr = blockFlexPosition.split(" ");
-			var blockFlexPositionString = blockFlexPositionArr[1]+"-"+blockFlexPositionArr[0];
+			var blockFlexPositionString = blockFlexPositionArr[1] + "-" + blockFlexPositionArr[0];
 			var position = {
 				rexID: rex_block_id,
 				position: blockFlexPositionString
 			};
 
 			var classes = typeof $elemData.attr('data-block_custom_class') == "undefined" ? "" : $elemData.attr('data-block_custom_class');
-			
+
 			var blockUrl = typeof $elemData.attr('data-linkurl') == "undefined" ? "" : $elemData.attr('data-linkurl');
 
 			var currentBlockData = {
@@ -984,44 +984,59 @@
 					custom_layouts: defaultCustomLayouts
 				}
 			};
-			
+
 			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 			Rexbuilder_Util_Editor.openingModel = false;
 		});
 
-		$(document).on("click", ".update-model", function (e) {
-			Rexbuilder_Util_Editor.openingModel = true;
-			var $section = $(e.target).parents(".rexpansive_section");
-			var layoutName = Rexbuilder_Util.activeLayout;
-			var data;
-			var modelID = typeof $section.attr("data-rexlive-model-id") != "undefined" ? $section.attr("data-rexlive-model-id") : "";
-			var modelName = typeof $section.attr("data-rexlive-model-name") != "undefined" ? $section.attr("data-rexlive-model-name") : "";
+		$(document).on("click", ".update-model-button", function (e) {
+			var $button = $(e.target);
+			var $section = $button.parents(".rexpansive_section");
+			var $gallery = $section.find(".grid-stack-row");
+			if ($button.hasClass("locked")) {
+				$button.removeClass("locked");
+				$button.addClass("unlocked");
+				$section.removeClass("rexlive-block-grid-editing");
+				$gallery.parent().children(".rexpansive-block-grid").remove();
+			} else {
+				$button.removeClass("unlocked");
+				$button.addClass("locked");
+				$section.addClass("rexlive-block-grid-editing");
+				$gallery.parent().prepend(tmpl("tmpl-div-block-grid", {}));
+				
+				Rexbuilder_Util_Editor.openingModel = true;
+				var layoutName = Rexbuilder_Util.activeLayout;
+				var data;
+				var modelID = typeof $section.attr("data-rexlive-model-id") != "undefined" ? $section.attr("data-rexlive-model-id") : "";
+				var modelName = typeof $section.attr("data-rexlive-model-name") != "undefined" ? $section.attr("data-rexlive-model-name") : "";
 
-			if (layoutName == "default") {
-				data = Rex_Save_Listeners.createSectionProperties($section, "shortcode");
+				if (layoutName == "default") {
+					data = Rex_Save_Listeners.createSectionProperties($section, "shortcode");
 
-				var modelUpdateData = {
-					layout: layoutName,
-					post_content: data,
-					model_id: modelID,
-					post_title: modelName
-				};
+					var modelUpdateData = {
+						layout: layoutName,
+						post_content: data,
+						model_id: modelID,
+						post_title: modelName
+					};
 
-				var event = jQuery.Event("rexlive:updateModelShortCode");
+					var event = jQuery.Event("rexlive:updateModelShortCode");
+					event.settings = {
+						modelData: modelUpdateData
+					};
+					$(document).trigger(event);
+				}
+
+				var event = jQuery.Event("rexlive:saveCustomizationsModel");
 				event.settings = {
-					modelData: modelUpdateData
+					$section: $section,
+					modelID: modelID,
+					layoutName: layoutName,
+					modelName: modelName
 				};
 				$(document).trigger(event);
-			}
 
-			var event = jQuery.Event("rexlive:saveCustomizationsModel");
-			event.settings = {
-				$section: $section,
-				modelID: modelID,
-				layoutName: layoutName,
-				modelName: modelName
-			};
-			$(document).trigger(event);
+			}
 		});
 	}); // End of the DOM ready
 

@@ -19,7 +19,10 @@ var Rexlive_Modals = (function ($) {
         BlockOptions_Modal.init();
 
         // models
-        ModelModal.init();
+        Model_Modal.init();
+
+        // layouts
+        CustomLayouts_Modal.init();
     }
 
     return {

@@ -178,11 +178,29 @@ var Rexbuilder_Util = (function ($) {
         return selectedLayoutName;
     }
 
+    var _createEmptyTargets = function (targetsToEmpty) {
+        var emptyTargets = [];
+        var i;
+        for (i = 0; i < targetsToEmpty.length; i++) {
+            var emptyTarget = {
+                name: targetsToEmpty[i].name,
+                props: {}
+            };
+            if (targetsToEmpty[i].name == "self" && _viewport().width < 768) {
+                emptyTarget.props.collapse_grid = true;
+            }
+            emptyTargets.push(emptyTarget);
+        }
+        return emptyTargets;
+    }
+
     var _edit_dom_layout = function (chosenLayoutName) {
         if (Rexbuilder_Util.editorMode) {
             if (chosenLayoutName == "default") {
                 Rexbuilder_Util.$rexContainer.removeClass("rex-hide-responsive-tools");
+                Rexbuilder_Util.$rexContainer.parent().removeClass("rex-hide-responsive-tools");
             } else {
+                Rexbuilder_Util.$rexContainer.parent().addClass("rex-hide-responsive-tools");
                 Rexbuilder_Util.$rexContainer.addClass("rex-hide-responsive-tools");
             }
         }
@@ -198,6 +216,7 @@ var Rexbuilder_Util = (function ($) {
                 return;
             }
         }
+
         Rexbuilder_Util.$rexContainer.attr("data-rex-layout-selected", chosenLayoutName);
         Rexbuilder_Util.activeLayout = chosenLayoutName;
 
@@ -232,8 +251,6 @@ var Rexbuilder_Util = (function ($) {
             layoutDataModels = JSON.parse($modelData.children(".models-customizations").text());
         }
 
-        console.log(layoutDataPage);
-        console.log(layoutDataModels);
         var modelsIDInPage = [];
 
         Rexbuilder_Util.$rexContainer.children(".rexpansive_section:not(.removing_section)").each(function (i, el) {
@@ -242,41 +259,118 @@ var Rexbuilder_Util = (function ($) {
                 modelsIDInPage.push(parseInt($section.attr("data-rexlive-model-id")));
             }
         });
-        console.log(modelsIDInPage);
-        return;
-        var defaultLayoutSections = {};
+
+        var i, j, p, q;
+        var defaultLayoutSections = [];
         for (i = 0; i < layoutDataPage.length; i++) {
-            if (layout.name == "default") {
-                defaultLayoutSections = layoutDataPage[i].sections;
+            if (layoutDataPage[i].name == "default") {
+                for (j = 0; j < layoutDataPage[i].sections.length; j++) {
+                    var sectionDefaultData = jQuery.extend(true, {}, layoutDataPage[i].sections[j]);
+                    if (layoutDataPage[i].sections[j].section_is_model.toString() == "true") {
+                        for (p = 0; p < layoutDataModels.length; p++) {
+                            if (layoutDataModels[p].id == sectionDefaultData.section_model_id) {
+                                for (q = 0; q < layoutDataModels[p].customizations.length; q++) {
+                                    if (layoutDataModels[p].customizations[q].name == "default") {
+                                        sectionDefaultData.targets = jQuery.extend(true, [], layoutDataModels[p].customizations[q].targets);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    defaultLayoutSections.push(sectionDefaultData);
+                }
             }
         }
 
-        var layoutSelected;
-        var i;
-        for (i = 0; i < layoutData.length; i++) {
-            if (layoutData[i].name == chosenLayoutName) {
-                layoutSelected = layoutData[i];
+        var layoutSelectedSections = [];
+        for (i = 0; i < layoutDataPage.length; i++) {
+            if (layoutDataPage[i].name == chosenLayoutName) {
+                for (j = 0; j < layoutDataPage[i].sections.length; j++) {
+                    var sectionCustomData = jQuery.extend(true, {}, layoutDataPage[i].sections[j]);
+                    if (layoutDataPage[i].sections[j].section_is_model.toString() == "true") {
+                        for (p = 0; p < layoutDataModels.length; p++) {
+                            if (layoutDataModels[p].id == sectionCustomData.section_model_id) {
+                                for (q = 0; q < layoutDataModels[p].customizations.length; q++) {
+                                    if (layoutDataModels[p].customizations[q].name == chosenLayoutName) {
+                                        sectionCustomData.targets = jQuery.extend(true, [], layoutDataModels[p].customizations[q].targets);
+                                    }
+                                }
+                            }
+                        }
+                        if (typeof sectionCustomData.targets == "undefined") {
+                            var modelActiveDefault = [];
+                            for (p = 0; p < layoutDataModels.length; p++) {
+                                if (layoutDataModels[p].id == sectionCustomData.section_model_id) {
+                                    for (q = 0; q < layoutDataModels[p].customizations.length; q++) {
+                                        if (layoutDataModels[p].customizations[q].name == "default") {
+                                            modelActiveDefault = layoutDataModels[p].customizations[q].targets;
+                                        }
+                                    }
+                                }
+                            }
+                            sectionCustomData.targets = _createEmptyTargets(modelActiveDefault);
+                        }
+                    }
+                    layoutSelectedSections.push(sectionCustomData);
+                }
                 break;
             }
         }
 
-        var customSections = {};
-        var forceCollapseElementsGrid = false;
-        if (i == layoutData.length || chosenLayoutName == "default") {
-            if (_viewport().width < 768) {
-                forceCollapseElementsGrid = true;
+        // no layout custom for page, checking models
+        if (i == layoutDataPage.length) {
+            for (i = 0; i < layoutDataPage.length; i++) {
+                if (layoutDataPage[i].name == "default") {
+                    for (j = 0; j < layoutDataPage[i].sections.length; j++) {
+                        var sectionPage = jQuery.extend(true, {}, layoutDataPage[i].sections[j]);
+                        if (sectionPage.section_is_model.toString() == "true") {
+                            for (p = 0; p < layoutDataModels.length; p++) {
+                                if (layoutDataModels[p].id == sectionPage.section_model_id) {
+                                    for (q = 0; q < layoutDataModels[p].customizations.length; q++) {
+                                        if (layoutDataModels[p].customizations[q].name == chosenLayoutName) {
+                                            sectionPage.targets = jQuery.extend(true, [], layoutDataModels[p].customizations[q].targets);
+                                        }
+                                    }
+                                }
+                            }
+                            if (typeof sectionPage.targets == "undefined") {
+                                var modelActiveDefault = [];
+                                for (p = 0; p < layoutDataModels.length; p++) {
+                                    if (layoutDataModels[p].id == sectionPage.section_model_id) {
+                                        for (q = 0; q < layoutDataModels[p].customizations.length; q++) {
+                                            if (layoutDataModels[p].customizations[q].name == "default") {
+                                                modelActiveDefault = layoutDataModels[p].customizations[q].targets;
+                                            }
+                                        }
+                                    }
+                                }
+                                sectionPage.targets = _createEmptyTargets(modelActiveDefault);
+                            }
+                        } else {
+                            sectionPage.targets = _createEmptyTargets(sectionPage.targets);
+                        }
+                        layoutSelectedSections.push(sectionPage);
+                    }
+                    break;
+                }
             }
-        } else {
-            customSections = layoutSelected.sections;
         }
-        // removing collapsed from grid
-        Rexbuilder_Util.removeCollapsedGrids();
+
+        var customSections = layoutSelectedSections;
+        var forceCollapseElementsGrid = false;
+        /*         if (i == layoutDataPage.length || chosenLayoutName == "default") {
+                    if (_viewport().width < 768) {
+                        forceCollapseElementsGrid = true;
+                    }
+                } else {
+                    customSections = layoutSelectedSections;
+                } */
 
         var mergedEdits = $.extend(true, {}, customSections);
         var pushingEdits = $.extend(true, {}, defaultLayoutSections);
-        console.log(mergedEdits)
-        console.log(pushingEdits);
 
+        // removing collapsed from grid
+        Rexbuilder_Util.removeCollapsedGrids();
         var m, n;
         var sectionFounded;
         var targetFounded;
@@ -335,6 +429,7 @@ var Rexbuilder_Util = (function ($) {
         var $elem;
         var $itemContent;
         var $itemData;
+
         console.log("applying");
         console.log(mergedEdits);
 
@@ -349,7 +444,7 @@ var Rexbuilder_Util = (function ($) {
                 $gallery = $section.find(".grid-stack-row");
                 var galleryData = $gallery.data();
                 if (galleryData !== undefined) {
-                    var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
+                    var galleryEditorInstance = galleryData.plugin_perfectGridGalleryEditor;
                     if (galleryEditorInstance !== undefined) {
                         var gridstackInstance = galleryEditorInstance.properties.gridstackInstance;
                         galleryEditorInstance.batchGridstack();

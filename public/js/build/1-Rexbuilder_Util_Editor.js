@@ -25,7 +25,7 @@ var Rexbuilder_Util_Editor = (function ($) {
         }
     }
 
-    var _updateLayoutsAvaiable = function(newLayout, oldLayouts){
+    var _updateLayoutsAvaiable = function (newLayout, oldLayouts) {
         var availableLayoutsData = [];
 
         var i;
@@ -54,7 +54,7 @@ var Rexbuilder_Util_Editor = (function ($) {
         return availableLayoutsData;
     }
 
-    var _createDefaultCustomLayouts = function(){
+    var _createDefaultCustomLayouts = function () {
         var layouts = [];
 
         var mobile = {
@@ -86,7 +86,7 @@ var Rexbuilder_Util_Editor = (function ($) {
 
         return layouts;
     }
-    
+
     var _createSliderData = function ($sliderWrapper) {
         var auto_start = $sliderWrapper.attr("data-rex-slider-animation").toString() == "true";
         var prev_next = $sliderWrapper.attr("data-rex-slider-prev-next").toString() == "1";
@@ -225,7 +225,7 @@ var Rexbuilder_Util_Editor = (function ($) {
         var textWrapContent;
         var $div;
         var css;
-        
+
         if ($textWrap.length != 0 && $textWrap.hasClass("medium-editor-element")) {
             textWrapContent = $textWrap.html();
             $div = $(document.createElement("div"));
@@ -235,7 +235,7 @@ var Rexbuilder_Util_Editor = (function ($) {
             if ($textWrap.hasClass("rex-content-resizable")) {
                 $div.addClass("rex-content-resizable");
             }
-            
+
             $textWrap.remove();
             $div.attr("style", css);
             $div.html(textWrapContent);
@@ -362,7 +362,9 @@ var Rexbuilder_Util_Editor = (function ($) {
             Rexbuilder_Util_Editor.clickedLayoutID = data.selectedLayoutName;
             if (data.selectedLayoutName == "default") {
                 Rexbuilder_Util.$rexContainer.removeClass("rex-hide-responsive-tools");
+                Rexbuilder_Util.$rexContainer.parent().removeClass("rex-hide-responsive-tools");
             } else {
+                Rexbuilder_Util.$rexContainer.parent().addClass("rex-hide-responsive-tools");
                 Rexbuilder_Util.$rexContainer.addClass("rex-hide-responsive-tools");
             }
         });
@@ -415,6 +417,12 @@ var Rexbuilder_Util_Editor = (function ($) {
         $(document).on("rexlive:change_block_overlay_color", function (e) {
             var data = e.settings;
             Rexbuilder_Dom_Util.updateBlockOverlayColorLive(data.data_to_send);
+        });
+
+        $(document).on("rexlive:updateLayoutsDimensions", function (e) {
+            var data = e.settings;
+            console.log("ayeyye");
+            console.log(data);
         });
 
     }
@@ -653,8 +661,9 @@ var Rexbuilder_Util_Editor = (function ($) {
         this.updatingCollapsedGrid = false;
 
         this.savingGrid = false;
-        
+
         this.openingModel = false;
+        this.insertingModel = false;
 
         undoStackArray = [];
         redoStackArray = [];

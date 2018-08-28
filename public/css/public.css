@@ -4735,7 +4735,8 @@ a.pswp-item {
 .open-model {
   left: 65%; }
 
-.update-model {
+.update-model-button {
+  display: none;
   left: 70%; }
 
 .builder-section-config i {
@@ -5119,3 +5120,23 @@ a.pswp-item {
 .rex-hide-responsive-tools > .rexpansive_section .rexlive-block-toolbox > .rexlive-top-block-tools .builder-edit-slider,
 .rex-hide-responsive-tools > .rexpansive_section .rexlive-block-toolbox > .rexlive-top-block-tools .builder-copy-block {
   display: none; }
+
+.rexbuilder-live-content.rex-hide-responsive-tools > .add-new-section {
+  display: none; }
+
+.rexpansive_section.rex-model-section .update-model-button {
+  display: block; }
+
+.update-model-button.unlocked {
+  background-color: green; }
+
+.update-model-button.locked {
+  background-color: red; }
+
+.rexpansive-block-grid {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 99999999999; }

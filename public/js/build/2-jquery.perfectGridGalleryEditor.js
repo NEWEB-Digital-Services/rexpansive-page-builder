@@ -1486,28 +1486,6 @@
 
         _prepareElementEditing: function ($elem) {
 
-            /*  
-            if (Rexbuilder_Util_Editor.blockCopying) {
-                            this.properties.lastIDBlock = this.properties.lastIDBlock + 1;
-                            var $elemData = $elem.children(".rexbuilder-block-data");
-                            var rexId = Rexbuilder_Util.createBlockID();
-                            var id = this.properties.lastIDBlock;
-                            $elem.attr({
-                                "id": "block_" + id,
-                                "data-rexbuilder-block-id": rexId,
-                            });
-                            $elemData.attr({
-                                "id": "block_" + id + "-builder-data",
-                                "data-id": "block_" + id,
-                                "data-data_rexbuilder_block_id": rexId,
-                            });
-                        }
-            
-                        if (Rexbuilder_Util_Editor.sectionCopying || Rexbuilder_Util_Editor.blockCopying) {
-                            this._removeHandles($elem);
-            } 
-            */
-
             this._addHandles($elem, 'e, s, w, se, sw');
 
             $elem.attr({
@@ -1760,12 +1738,12 @@
         },
 
         focusElement: function ($elem) {
-            this.showBlockToolBox($elem);
-            $elem.addClass('focused');
-            $elem.parent().addClass('focused');
-            $elem.parent().parent().addClass('focused');
-            $elem.parent().parent().parent().addClass('focused');
-            $elem.parent().parent().parent().parent().addClass('focused');
+                this.showBlockToolBox($elem);
+                $elem.addClass('focused');
+                $elem.parent().addClass('focused');
+                $elem.parent().parent().addClass('focused');
+                $elem.parent().parent().parent().addClass('focused');
+                $elem.parent().parent().parent().parent().addClass('focused');
         },
 
         unFocusElement: function ($elem) {

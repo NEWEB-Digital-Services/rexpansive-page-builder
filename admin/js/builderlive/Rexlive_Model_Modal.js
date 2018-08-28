@@ -1,4 +1,4 @@
-var ModelModal = (function ($) {
+var Model_Modal = (function ($) {
     'use strict';
     var rexmodel_modal_props;
     var model_created;
@@ -10,6 +10,8 @@ var ModelModal = (function ($) {
     var modelSelectedID;
 
     var _openModal = function (data) {
+        rexmodel_modal_props.$model_import_wrap.removeClass("hide-import-wrap");
+        rexmodel_modal_props.$model_insert_success_wrap.text("");
         sectionRexID = data.rexID;
         modelSelectedID = data.modelID;
         sectionShortCode = data.shortCode;
@@ -65,7 +67,9 @@ var ModelModal = (function ($) {
                                     sectionRexID: sectionRexID,
                                     model: response.data.model,
                                     modelName: response.data.name,
-                                    modelID: response.data.id
+                                    modelID: response.data.id,
+                                    customizationsData: response.data.customizations_data,
+                                    customizationsNames: response.data.customizations_names,
                                 }
                             }
                             Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(modelData);
@@ -112,6 +116,7 @@ var ModelModal = (function ($) {
                     },
                     success: function (response) {
                         if (response.success) {
+                            console.log(response);
                             if (response.data.model_id != -1) {
                                 rexmodel_modal_props.$model_name.val('').siblings('label').removeClass('active');
                                 rexmodel_modal_props.$save_button.val('');
@@ -127,8 +132,14 @@ var ModelModal = (function ($) {
                                 }
                                 Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(modelData);
                                 model_created = true;
+                                rexmodel_modal_props.$model_import_wrap.addClass("hide-import-wrap");
+                                rexmodel_modal_props.$model_insert_success_wrap.text("Modello Inserito");
+                                setTimeout(function(){
+                                    _closeModal();
+                                }, 1000);
                             } else {
-                                rexmodel_modal_props.$model_name.val('nome già presente');
+                                rexmodel_modal_props.$model_import_wrap.addClass("hide-import-wrap");
+                                rexmodel_modal_props.$model_insert_success_wrap.text("Nome già presente");
                             }
                         }
                     },
@@ -156,6 +167,8 @@ var ModelModal = (function ($) {
             $model_import: $container.find("#rex-model__import"),
             $model_name: $container.find('#rex-model__name'),
             $add_new_model: $container.find('#rex-model__add-new-model'),
+            $model_import_wrap: $container.find('.rex-model__import--wrap-active'),
+            $model_insert_success_wrap: $container.find(".rex-model__model-insert-success-wrap")
         }
         model_created = false;
         sectionRexID = "";

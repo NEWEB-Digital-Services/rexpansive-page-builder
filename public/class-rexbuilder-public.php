@@ -428,7 +428,7 @@ endif;
         $post_id_to_update = intval($_POST['post_id_to_update']);
 
         $names = $_POST['names'];
-
+        
         update_post_meta($post_id_to_update, '_rex_model_customization_names', $names);
         wp_send_json_success($response);
     }
@@ -644,7 +644,7 @@ endif;
                 foreach ($modelCustomizationsNames as $name) {
                     $customization = array();
                     $customization["name"] = $name;
-                    $customization["sections"] = get_post_meta($id, '_rex_model_customization_' . $name, true);
+                    $customization["targets"] = get_post_meta($id, '_rex_model_customization_' . $name, true);
                     array_push($customizations, $customization);
                 }
             }

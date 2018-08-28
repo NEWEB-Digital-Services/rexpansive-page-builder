@@ -26,9 +26,12 @@ $defaultLayoutsAvaiable = array($mobile, $tablet, $default);
 
 $layoutsAvaiable = get_option('_rex_responsive_layouts', $defaultLayoutsAvaiable);
 
-include_once "rexlive-toolbox-fixed.php";
-
 ?>
+<div id="rexpansive-builder-backend-wrapper">
+	<?php
+	include_once "rexlive-toolbox-fixed.php";
+
+	?>
 	<div id="rexbuilder-layout-data-backend" style="display: none;">
 		<div class = "available-layouts">
 			<?php
@@ -39,7 +42,7 @@ echo json_encode($layoutsAvaiable);
 	<div class="rexpansive-live-frame-container">
 		<iframe id="rexpansive-live-frame" src="<?php echo $source . '?&editor=true' ?>" allowfullscreen="1" style="width:100%;height:100%;border: 0px;"></iframe>
 	</div>
-
+</div>
 <?php
 include_once("rexlive-js-templates.php");
 include_once("rexlive-modals-tools.php");

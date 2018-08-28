@@ -65,8 +65,7 @@ var Rex_Save_Listeners = (function ($) {
 
             var idPost = parseInt($('#id-post').attr('data-post-id'));
 
-            var activeLayout = e.settings.selected;
-            var activeLayoutName = activeLayout[0];
+            var activeLayoutName = Rexbuilder_Util.activeLayout;
             var updatedLayouts = e.settings.updatedLayouts;
 
             var oldCustomizations;
@@ -150,8 +149,6 @@ var Rex_Save_Listeners = (function ($) {
 
         $(document).on('rexlive:saveCustomizationsModel', function (e) {
             var data = e.settings;
-            console.log(data);
-
             var $section = data.$section;
             var idModel = parseInt(data.modelID);
             var activeLayout = data.layoutName;
@@ -174,10 +171,9 @@ var Rex_Save_Listeners = (function ($) {
             var i;
 
             var modelActive = {};
-
             for (i = 0; i < oldModels.length; i++) {
                 var model = oldModels[i];
-                if (model.model_id != idModel) {
+                if (model.id != idModel) {
                     modelsCustomizations.push(model);
                 } else {
                     modelActive = model;
@@ -185,8 +181,8 @@ var Rex_Save_Listeners = (function ($) {
             }
 
             if (jQuery.isEmptyObject(modelActive)) {
-                modelActive.model_id = idModel;
-                modelActive.model_name = modelName;
+                modelActive.id = idModel;
+                modelActive.name = modelName;
                 modelActive.customizations = [];
             }
 
@@ -199,7 +195,6 @@ var Rex_Save_Listeners = (function ($) {
 
             for (i = 0; i < modelCustomLayoutData.customizations.length; i++) {
                 // have to update only active layout
-                console.log(modelCustomLayoutData);
                 if (modelCustomLayoutData.customizations[i].name == activeLayout) {
                     $.ajax({
                         type: 'POST',
@@ -208,8 +203,8 @@ var Rex_Save_Listeners = (function ($) {
                         data: {
                             action: 'rexlive_save_customization_model',
                             nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-                            model_id_to_update: modelCustomLayoutData.model_id,
-                            model_name: modelCustomLayoutData.model_name,
+                            model_id_to_update: modelCustomLayoutData.id,
+                            model_name: modelCustomLayoutData.name,
                             targets: modelCustomLayoutData.customizations[i].targets,
                             layout_name: activeLayout
                         },
@@ -258,7 +253,7 @@ var Rex_Save_Listeners = (function ($) {
                 data: {
                     action: 'rexlive_save_avaiable_model_layouts_names',
                     nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-                    post_id_to_update: modelActive.model_id,
+                    post_id_to_update: modelActive.id,
                     names: modelSavingCustomizationNames
                 },
                 success: function (response) {
@@ -275,33 +270,6 @@ var Rex_Save_Listeners = (function ($) {
 
             
         });
-        
-        $(document).on('rexlive:updateLayoutsDataAvaiableModel', function (event) {
-            var layouts = event.settings.updatedLayouts;
-            var idPost = event.settings.modelID;
-            $.ajax({
-                type: 'POST',
-                dataType: 'json',
-                url: _plugin_frontend_settings.rexajax.ajaxurl,
-                data: {
-                    action: 'rexlive_save_model_layouts_dimensions',
-                    nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-                    post_id_to_update: idPost,
-                    custom_layouts: layouts
-                },
-                success: function (response) {
-                    console.log(response);
-                    if (response.success) {
-                        console.log('cusotm layouts aggiornati');
-                    }
-                    console.log('chiama effettuata con successo');
-                },
-                error: function (response) {
-                    console.log('errore chiama ajax');
-                }
-            });
-        });
-
 
         $(document).on('rexlive:updateModelShortCode', function (event) {
             $.ajax({
