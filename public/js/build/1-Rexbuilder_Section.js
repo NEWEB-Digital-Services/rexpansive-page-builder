@@ -37,7 +37,7 @@ var Rexbuilder_Section = (function ($) {
         // removing scrollbars and text editor
         $gallery.find(".grid-stack-item").each(function (i, el) {
             var $elem = $(el);
-            if(!Rexbuilder_Util_Editor.insertingModel){
+            if (!Rexbuilder_Util_Editor.insertingModel) {
                 Rexbuilder_Util_Editor.generateElementNewIDs($elem, i, Rexbuilder_Util.lastSectionNumber);
             }
             Rexbuilder_Util_Editor.removeScrollBar($elem);
@@ -46,7 +46,7 @@ var Rexbuilder_Section = (function ($) {
             Rexbuilder_Util_Editor.fixCopiedElementSlider($elem);
         });
 
-        if(!Rexbuilder_Util_Editor.insertingModel){
+        if (!Rexbuilder_Util_Editor.insertingModel) {
             $section.attr("data-rexlive-section-id", Rexbuilder_Util.createSectionID());
             $section.attr("data-rexlive-section-name", "");
         }
@@ -77,12 +77,25 @@ var Rexbuilder_Section = (function ($) {
             console.log("copying section");
 
             Rexbuilder_Util_Editor.sectionCopying = true;
-
             var $section = $(e.currentTarget).parents('.rexpansive_section');
             var $newSection = $section.clone(false);
+            if ($section.hasClass("rex-model-section")) {
+                Rexbuilder_Util_Editor.insertingModel = true;
+            }
 
+            if($newSection.hasClass("rex-model-section")){
+                var modelID = $newSection.attr("data-rexlive-model-id");
+                var modelNumber = 1;
+                Rexbuilder_Util.$rexContainer.children(".rexpansive_section").each(function (i, sec) {
+                    var $sec = $(sec);
+                    if ($sec.attr("data-rexlive-model-id") == modelID) {
+                        modelNumber = modelNumber + 1;
+                    }
+                });
+                $newSection.attr("data-rexlive-model-number", modelNumber);
+            }
+            
             $newSection.insertAfter($section);
-
             Rexbuilder_Section.prepareSectionCopied($newSection);
 
             var $row = $newSection.find('.grid-stack-row');
@@ -104,6 +117,7 @@ var Rexbuilder_Section = (function ($) {
             Rexbuilder_Util_Editor.pushAction($newSection, "updateSectionVisibility", actionData, reverseData);
 
             Rexbuilder_Util_Editor.sectionCopying = false;
+            Rexbuilder_Util_Editor.insertingModel = false;
         });
 
         $(document).on("click", ".collapse-grid", function (e) {
@@ -238,28 +252,42 @@ var Rexbuilder_Section = (function ($) {
             var data = e.settings.data_to_send;
             console.log(data);
 
-            var oldSectionID = data.sectionRexID;
             var newSectionHtml = data.model;
             var html = $.parseHTML(newSectionHtml);
+            var $oldSection;
 
-            var $oldSection = Rexbuilder_Util.$rexContainer.children(".rexpansive_section[data-rexlive-section-id=\"" + oldSectionID + "\"]");
+            if (data.sectionTarget.modelNumber != "") {
+                $oldSection = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"][data-rexlive-model-number="' + data.sectionTarget.modelNumber + '"]');
+            } else {
+                $oldSection = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"]');
+            }
+
+            var modelNumber = 1;
+            Rexbuilder_Util.$rexContainer.children(".rexpansive_section").each(function (i, sec) {
+                var $sec = $(sec);
+                if ($sec.attr("data-rexlive-model-id") == data.modelID) {
+                    modelNumber = modelNumber + 1;
+                }
+            });
 
             $oldSection.after(html);
 
             var $newSection = $(html);
+
             var dataModel = {
                 modelID: data.modelID,
                 modelName: data.modelName,
+                sectionID: $newSection.attr("data-rexlive-section-id"),
+                $section: $newSection,
+                modelNumber: modelNumber,
                 isModel: true
             }
-            
-            $newSection.addClass("rexlive-block-grid-editing");
 
             var addingModelCustomizationsNames = {
                 modelID: dataModel.modelID,
                 names: data.customizationsNames
             };
-            
+
             Rexbuilder_Dom_Util.updateDivModelCustomizationsNames(addingModelCustomizationsNames);
 
             var addingModelCustomizationsData = {
@@ -270,11 +298,13 @@ var Rexbuilder_Section = (function ($) {
 
             Rexbuilder_Dom_Util.updateDivModelCustomizationsData(addingModelCustomizationsData);
 
-            Rexbuilder_Dom_Util.updateSectionBecameModel($newSection, dataModel);
+            Rexbuilder_Dom_Util.updateSectionBecameModel(dataModel);
 
             Rexbuilder_Section.prepareSectionCopied($newSection);
             var $newSectionData = $newSection.children(".section-data");
             $newSectionData.after(tmpl("tmpl-toolbox-section"));
+            var $buttonModel = $newSection.find(".update-model-button");
+            Rexbuilder_Dom_Util.updateLockEditModel($buttonModel, true);
 
             var $row = $newSection.find('.grid-stack-row');
 
@@ -303,17 +333,81 @@ var Rexbuilder_Section = (function ($) {
         });
     }
 
+    var _updateModelsHtmlLive = function (data) {
+        Rexbuilder_Util_Editor.sectionCopying = true;
+        Rexbuilder_Util_Editor.insertingModel = true;
+        var idModel = data.modelID;
+        var newHtml = data.html;
+        var editedModelNumber =  data.model_number;
+        var modelName =  data.modelName;
+        
+        Rexbuilder_Util.$rexContainer.children(".rexpansive_section:not(.removing_section)").each(function (i, sec) {
+            var $section = $(sec);
+            if ($section.attr("data-rexlive-model-id") == idModel && $section.attr("data-rexlive-model-number") != editedModelNumber) {
+                var modelNumber = 1;
+                Rexbuilder_Util.$rexContainer.children(".rexpansive_section:not(.removing_section)").each(function (i, sec) {
+                    if ($(sec).attr("data-rexlive-model-id") == idModel) {
+                        modelNumber = modelNumber + 1;
+                    }
+                });
+                
+                var html = $.parseHTML(newHtml);
+                $section.after(html);
+
+                var $newSection = $(html);
+
+                var dataModel = {
+                    modelID: idModel,
+                    modelName: modelName,
+                    modelNumber, modelNumber,
+                    sectionID: $newSection.attr("data-rexlive-section-id"),
+                    isModel: true,
+                    $section: $newSection
+                }
+
+                Rexbuilder_Dom_Util.updateSectionBecameModel(dataModel);
+
+                Rexbuilder_Section.prepareSectionCopied($newSection);
+                var $newSectionData = $newSection.children(".section-data");
+                $newSectionData.after(tmpl("tmpl-toolbox-section"));
+                var $buttonModel = $newSection.find(".update-model-button");
+                Rexbuilder_Dom_Util.updateLockEditModel($buttonModel, true);
+
+                var $row = $newSection.find('.grid-stack-row');
+
+                $row.perfectGridGalleryEditor();
+
+                Rexbuilder_Util.$rexContainer.sortable("refresh");
+                Rexbuilder_Dom_Util.updateSectionVisibility($section, false);
+                Rexbuilder_Dom_Util.updateSectionVisibility($newSection, true);
+            }
+        });
+        
+        Rexbuilder_Dom_Util.fixModelNumbersSaving();
+        
+        Rexbuilder_Util.$rexContainer.children(".rexpansive_section.removing_section.rex-model-section").each(function (i, sec) {
+            $(sec).attr("data-rexlive-saved-model-number", "");
+        });
+
+        Rexbuilder_Util_Editor.sectionCopying = false;
+        Rexbuilder_Util_Editor.insertingModel = false;
+    }
+
     var init = function () {
         //Setting row number
         Rexbuilder_Util.$rexContainer.children(".rexpansive_section").each(function (i, section) {
             var $section = $(section);
             Rexbuilder_Section.linkHoverSection($section);
-            if($section.hasClass("rex-model-section")){
+            if ($section.hasClass("rex-model-section")) {
                 $section.addClass("rexlive-block-grid-editing");
+                $section.find(".grid-stack-row").parent().prepend(tmpl("tmpl-div-block-grid", {}));
+                $section.find(".section-toolBox").parent().prepend(tmpl("tmpl-div-block-section-toolbox", {}));
             }
+
             if (typeof $section.attr("id") == "undefined") {
                 $section.attr("id", "");
             };
+
             if (typeof $section.attr("data-rexlive-section-name") == "undefined") {
                 $section.attr("data-rexlive-section-name", "");
             };
@@ -325,17 +419,44 @@ var Rexbuilder_Section = (function ($) {
         Rexbuilder_Util.$rexContainer.sortable({
             start: function (event, ui) {
                 startingSectionsOrder = [];
-                Rexbuilder_Util.$rexContainer.children(".rexpansive_section:not(.removing_section)").each(function(i, el){
-                    startingSectionsOrder.push($(el).attr("data-rexlive-section-id"));
+
+                Rexbuilder_Util.$rexContainer.children(".rexpansive_section:not(.removing_section)").each(function (i, el) {
+                    var $section = $(el);
+
+                    var sectionObj = {
+                        rexID: $section.attr("data-rexlive-section-id"),
+                        modelID: -1,
+                        modelNumber: -1,
+                    }
+
+                    if ($section.hasClass("rex-model-section")) {
+                        sectionObj.modelID = $section.attr("data-rexlive-model-id");
+                        sectionObj.modelNumber = $section.attr("data-rexlive-model-number");
+                    }
+
+                    startingSectionsOrder.push(sectionObj);
                 });
             },
             handle: ".builder-move-row",
             stop: function (event, ui) {
                 endSectionsOrder = [];
-                Rexbuilder_Util.$rexContainer.children(".rexpansive_section:not(.removing_section)").each(function(i, el){
-                    endSectionsOrder.push($(el).attr("data-rexlive-section-id"));
+                Rexbuilder_Util.$rexContainer.children(".rexpansive_section:not(.removing_section)").each(function (i, el) {
+                    var $section = $(el);
+
+                    var sectionObj = {
+                        rexID: $section.attr("data-rexlive-section-id"),
+                        modelID: -1,
+                        modelNumber: -1,
+                    }
+
+                    if ($section.hasClass("rex-model-section")) {
+                        sectionObj.modelID = $section.attr("data-rexlive-model-id");
+                        sectionObj.modelNumber = $section.attr("data-rexlive-model-number");
+                    }
+
+                    endSectionsOrder.push(sectionObj);
                 });
-                
+
                 var actionData = {
                     sectionOrder: endSectionsOrder
                 };
@@ -360,6 +481,7 @@ var Rexbuilder_Section = (function ($) {
         prepareSectionCopied: _prepareSectionCopied,
         showSectionToolBox: _showSectionToolBox,
         hideSectionToolBox: _hideSectionToolBox,
-        linkHoverSection: _linkHoverSection
+        linkHoverSection: _linkHoverSection,
+        updateModelsHtmlLive: _updateModelsHtmlLive
     }
 })(jQuery);

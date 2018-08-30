@@ -4,12 +4,13 @@ var Background_Block_Color_Modal = (function ($) {
     var background_block_color_properties;
     var colorActive;
     var bgColorActive;
-    var blockRexID;
+    var target;
+    var changeColorEvent;
 
     var _updateColorModal = function (data) {
 
-        blockRexID = data.rexID;
-        console.log(data);
+        target = data.target;
+        changeColorEvent.data_to_send.target = data.target;
         if (data.color != "") {
             background_block_color_properties.$color_runtime_value.val(data.color);
             background_block_color_properties.$color_preview_icon.hide();
@@ -31,13 +32,13 @@ var Background_Block_Color_Modal = (function ($) {
     var _applyBackgroundColor = function () {
         var status = true === background_block_color_properties.$color_active.prop('checked');
         bgColorActive = status;
-        console.log("applying ", colorActive);
+
         var data_color = {
             eventName: "rexlive:apply_background_color_block",
             data_to_send: {
-                blockRexID: blockRexID,
                 color: bgColorActive ? colorActive : "",
-                active: bgColorActive
+                active: bgColorActive,
+                target: target
             }
         }
 
@@ -45,11 +46,11 @@ var Background_Block_Color_Modal = (function ($) {
     }
 
     var _launchSpectrumBackgroundColor = function () {
-        var changeColorEvent = {
+        changeColorEvent = {
             eventName: "rexlive:change_block_bg_color",
             data_to_send: {
-                blockRexID: "",
-                color: null
+                color: null,
+                target: {}
             }
         }
 
@@ -60,9 +61,6 @@ var Background_Block_Color_Modal = (function ($) {
             showAlpha: true,
             showInput: true,
             containerClassName: 'rexbuilder-materialize-wrap block-background-color-picker',
-            show: function (color){
-                changeColorEvent.data_to_send.blockRexID = blockRexID;
-            },
             move: function (color) {
                 background_block_color_properties.$color_preview_icon.hide();
                 changeColorEvent.data_to_send.color = bgColorActive ? color.toRgbString() : "";
@@ -117,7 +115,6 @@ var Background_Block_Color_Modal = (function ($) {
         }
 
         bgColorActive = true;
-        blockRexID = "";
 
         _launchSpectrumBackgroundColor();
 

@@ -3,11 +3,11 @@ var Background_Block_Image_Modal = (function ($) {
 
     var background_block_image_properties;
     var backgroundImageActive;
-    var rexID;
+    var target;
 
     var _updateImageModal = function (data) {
         _resetImageModal();
-        rexID = data.rexID;
+        target = data.target;
         background_block_image_properties.$image_url.val(data.idImage);
         if (data.idImage != "") {
             background_block_image_properties.$image_preview.css('backgroundImage', 'url(' + data.imageUrl + ')')
@@ -29,7 +29,6 @@ var Background_Block_Image_Modal = (function ($) {
     }
 
     var _resetImageModal = function () {
-        rexID = "";
         background_block_image_properties.$image_url.val("");
         background_block_image_properties.$image_preview.css('backgroundImage', "")
         background_block_image_properties.$image_preview.find("i").css("display", "block");
@@ -63,7 +62,7 @@ var Background_Block_Image_Modal = (function ($) {
                 typeBGimage: backgroundImageActive ? typeBGimage : "",
                 photoswipe: backgroundImageActive ? photoswipe : "",
                 active: backgroundImageActive,
-                rex_block_id: rexID
+                target: target
             }
         }
 
@@ -151,7 +150,6 @@ var Background_Block_Image_Modal = (function ($) {
             $checkboxPhotoswipe: $self.find("#background_photoswipe"),
         }
 
-        rexID = "";
         backgroundImageActive = true;
         _addDocumentListeners();
     }

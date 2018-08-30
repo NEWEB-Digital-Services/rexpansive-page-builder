@@ -3,9 +3,11 @@ var Insert_Video_Modal = (function ($) {
 
     var insert_video_properties;
     var videoMp4SelectedData;
-
-    var _openVideoModal = function () {
+    var sectionTarget;
+    
+    var _openVideoModal = function (data) {
         _clearVideoModal();
+        sectionTarget = data.sectionTarget;
         Rexlive_Modals_Utils.openModal(insert_video_properties.$self.parent('.rex-modal-wrap'));
     }
 
@@ -135,7 +137,8 @@ var Insert_Video_Modal = (function ($) {
                     urlVimeo: urlVimeo,
                     videoMp4: videoMp4Data,
                     hasAudio: audio,
-                    typeVideo: type
+                    typeVideo: type,
+                    sectionTarget: sectionTarget
                 }
             };
 

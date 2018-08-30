@@ -3,14 +3,14 @@ var Block_Url_Modal = (function ($) {
 
     var block_url_modal_properties;
     var defaultUrl;
-    var rexID;
+    var target;
 
     var _resetBlockUrl = function () {
         block_url_modal_properties.$urlInput.val(defaultUrl);
     }
 
     var _updateBlockUrl = function (data) {
-        rexID = data.rexID;
+        target = data.target;
         block_url_modal_properties.$urlInput.val(data.link);
     }
 
@@ -21,7 +21,7 @@ var Block_Url_Modal = (function ($) {
             eventName: "rexlive:apply_block_link_url",
             data_to_send: {
                 url: url,
-                rex_block_id: rexID
+                target: target
             }
         }
 

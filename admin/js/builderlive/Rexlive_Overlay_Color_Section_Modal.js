@@ -3,9 +3,12 @@ var Overlay_Color_Section_Modal = (function ($) {
 
     var background_overlay_properties;
     var colorActive;
+    var changeColorEvent;
+    var sectionTarget;
 
     var _updateOverlayModal = function (data) {
-        console.log(data);
+        sectionTarget = data.sectionTarget;
+        changeColorEvent.data_to_send.sectionTarget = data.sectionTarget;
         if (data.color != "") {
             background_overlay_properties.$overlay_color_value.val(data.color);
             background_overlay_properties.$overlay_color_preview_icon.hide();
@@ -28,7 +31,8 @@ var Overlay_Color_Section_Modal = (function ($) {
             eventName: "rexlive:change_section_overlay",
             data_to_send: {
                 color: colorActive,
-                active: status
+                active: status,
+                sectionTarget: sectionTarget
             }
         }
 
@@ -36,10 +40,11 @@ var Overlay_Color_Section_Modal = (function ($) {
     }
 
     var _launchSpectrumOverlayColor = function () {
-        var changeColorEvent = {
+        changeColorEvent = {
             eventName: "rexlive:change_section_overlay_color",
             data_to_send: {
-                color: null
+                color: null,
+                sectionTarget: {}
             }
         }
 
@@ -71,7 +76,7 @@ var Overlay_Color_Section_Modal = (function ($) {
             $(event.currentTarget).addClass('palette-color-active');
             background_overlay_properties.$overlay_color_preview_icon.hide();
             background_overlay_properties.$overlay_color_palette_buttons.not(event.currentTarget).removeClass('palette-color-active');
-            background_overlay_properties.$overlay_color_value.spectrum('set',color);
+            background_overlay_properties.$overlay_color_value.spectrum('set', color);
             colorActive = color;
             _applyOverlay();
         });
@@ -97,7 +102,7 @@ var Overlay_Color_Section_Modal = (function ($) {
         }
 
         _launchSpectrumOverlayColor();
-        
+
         background_overlay_properties.$overlay_active_wrapper.click(function (e) {
             e.preventDefault();
             var status = true === background_overlay_properties.$overlay_active.prop('checked');

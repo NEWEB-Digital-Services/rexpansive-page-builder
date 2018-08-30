@@ -579,7 +579,23 @@ endif;
             );
 
             wp_update_post( $argsModel );
+            
+            $argsQuery = array(
+				'post_type'		=>	'rex_model',
+				'post_status'	=>	'private',
+				'p'				=>	 $model_to_edit
+			);
 
+			$query = new WP_Query( $argsQuery );
+			if ( $query->have_posts() ) {
+				while ( $query->have_posts() ) {
+					$query->the_post();
+					$post = $query->post;
+					$response['model_html'] = do_shortcode($post->post_content);
+				}
+			}
+            wp_reset_postdata();
+            
             $response['model_id'] = $argsModel["ID"];
         } else {
             $response['model_id'] = -1;

@@ -36,7 +36,7 @@ var SectionBackground_Modal = (function ($) {
             $save_button: $editSection.find('#rex-edit-row-background-save'),
             $cancel_button: $editSection.find('#rex-edit-row-background-cancel'),
         }
-        console.log($editSection);
+        
         Background_Section_Color_Modal.init($editSection);
         Background_Section_Image_Modal.init($editSection);        
         Overlay_Color_Section_Modal.init($editSection);

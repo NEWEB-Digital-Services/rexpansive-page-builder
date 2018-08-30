@@ -3,7 +3,7 @@ var Block_Video_Background_Modal = (function ($) {
 
     var video_background_properties;
     var videoChosen;
-    var rexID;
+    var target;
 
     var _updateVideoModal = function (data) {
         console.log(data);
@@ -35,7 +35,7 @@ var Block_Video_Background_Modal = (function ($) {
             video_background_properties.$audioYoutube.prop('checked', data.audio.toString() == "true");
             _focusYoutube();
         }
-        rexID = data.rexID;
+        target = data.target;
     }
 
     var _clearFocusVideo = function () {
@@ -147,7 +147,7 @@ var Block_Video_Background_Modal = (function ($) {
         var data = {
             eventName: 'rexlive:update_block_background_video',
             data_to_send: {
-                rexID: rexID,
+                target: target,
                 urlYoutube: type == "" || type != "youtube" ? "" : urlYoutube,
                 urlVimeo: type == "" || type != "vimeo" ? "" : urlVimeo,
                 videoMp4: type == "" || type != "mp4" ? emptyMp4Data : videoMp4Data,
@@ -215,7 +215,6 @@ var Block_Video_Background_Modal = (function ($) {
             $audioMp4: $self.find("#rex-edit-block-video-mp4-audio"),
         }
         videoChosen = "";
-        rexID = "";
         _linkDocumentListeners();
     }
     return {

@@ -29,8 +29,17 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
     }
     
     var _receiveMessage = function (event) {
+        
         if (event.data.rexliveEvent) {
+            var eventData = event.data;
             //console.log("rexlive event from iframe client");
+            // da finire con lo switch per una maggiore chiarezza
+            switch(eventData.eventName){
+                case "":
+                    break;
+                default: break;
+            }
+
             if (event.data.eventName == "rexlive:edited") {
                 if (event.data.edited) {
                     editedLive = true;
@@ -43,15 +52,15 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
             }
 
             if (event.data.eventName == "rexlive:openMediaUploader") {
-                Rexlive_MediaUploader.openInsertImageBlocksMediaUploader({});
+                Rexlive_MediaUploader.openInsertImageBlocksMediaUploader(eventData);
             }
 
             if (event.data.eventName == "rexlive:addNewBlockVideo") {
-                Insert_Video_Modal.openVideoModal();
+                Insert_Video_Modal.openVideoModal(eventData);
             }
 
             if (event.data.eventName == "rexlive:addNewSlider") {
-                Rexbuilder_RexSlider.openSliderModal();
+                Rexbuilder_RexSlider.openSliderModal("", "", "", eventData.sectionTarget);
             }
 
             if (event.data.eventName == "rexlive:editSlider") {
@@ -97,6 +106,10 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
             if (event.data.eventName == "rexlive:editBlockOptions") {
                 BlockOptions_Modal.openBlockOptionsModal(event.data.activeBlockData);
+            }
+            
+            if (event.data.eventName == "rexlive:editRemoveModal") {
+                Model_Edit_Modal.openModal(event.data.modelData);
             }
         }
     };

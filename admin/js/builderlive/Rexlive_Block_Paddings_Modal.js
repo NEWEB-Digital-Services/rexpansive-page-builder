@@ -3,7 +3,7 @@ var BlockPaddings_Modal = (function ($) {
 
     var block_paddings_modal_properties;
     var defaultPaddings;
-    var rexID;
+    var target;
 
     var _resetPaddings = function () {
         block_paddings_modal_properties.$block_padding_top.val(defaultPaddings.top);
@@ -13,7 +13,7 @@ var BlockPaddings_Modal = (function ($) {
     }
 
     var _updatePaddings = function (data) {
-        rexID = data.rexID;
+        target = data.target;
         var top = isNaN(parseInt(data.paddings.top)) ? defaultPaddings.top : data.paddings.top;
         var right = isNaN(parseInt(data.paddings.right)) ? defaultPaddings.right : data.paddings.right;
         var bottom = isNaN(parseInt(data.paddings.bottom)) ? defaultPaddings.bottom : data.paddings.bottom;
@@ -53,7 +53,7 @@ var BlockPaddings_Modal = (function ($) {
         var data_padding = {
             eventName: "rexlive:apply_paddings_block",
             data_to_send: {
-                rexID: rexID,
+                target: target,
                 paddings: {
                     top: isNaN(top) ? defaultPaddings.top : top,
                     right: isNaN(right) ? defaultPaddings.right : right,

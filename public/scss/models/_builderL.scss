@@ -80,7 +80,7 @@
     border-radius: 50%;
     overflow: visible;
     visibility: visible;
-    z-index: 40;
+    z-index: 30;
     padding: 0px;
 }
 
@@ -107,14 +107,6 @@
 .builder-section-config{
     left: 10%;
     cursor: pointer;
-}
-
-.builder-save-grid{
-    left: 15%;
-}
-
-.test-save{
-    left: 20%;
 }
 
 .collapse-grid{
@@ -191,7 +183,7 @@
 }
 
 .rexpansive_section.focused {
-    z-index: 31;
+    z-index: 20;
 }
 .perfect-grid-gallery.focused {
     overflow: visible;
@@ -209,7 +201,7 @@
     visibility: hidden;
     overflow: visible;
     position: absolute;
-    z-index: 31;
+    z-index: 20;
     box-sizing: inherit;
 }
 
@@ -401,7 +393,7 @@
     -o-transition: all 0.0s ease-out;
     -ms-transition: all 0.0 ease-out;
     transition: all 0.0s ease-out;
-    z-index: 31;
+    z-index: 20;
     position: absolute;
 }
 
@@ -605,17 +597,18 @@
 }
 
 .rex-hide-responsive-tools > .rexpansive_section {
-    .section-toolBox > {
+    .section-toolBox {
         .builder-copy-row,
         .add-new-block-empty,
         .add-new-block-image,
         .add-new-block-text,
         .add-new-block-video,
-        .add-new-block-slider {
+        .add-new-block-slider,
+        .open-model {
             display: none;
         }
     }
-    .rexlive-block-toolbox > .rexlive-top-block-tools{
+    .rexlive-block-toolbox .rexlive-top-block-tools{
         .builder-edit-slider,
         .builder-copy-block {
             display: none;
@@ -645,5 +638,23 @@
     height: 100%;
     top: 0;
     left: 0;
-    z-index: 99999999999;
+    z-index: 100;
+}
+
+.rexlive-block-grid-editing{
+    .builder-move-row,
+    .builder-delete-row,
+    .update-model-button,
+    .builder-copy-row {
+        z-index: 101;
+    }
+}
+
+.rexpansive-block-section-toolbox {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 35;
 }

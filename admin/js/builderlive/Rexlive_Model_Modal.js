@@ -2,9 +2,12 @@ var Model_Modal = (function ($) {
     'use strict';
     var rexmodel_modal_props;
     var model_created;
-    var sectionRexID;
+
     var sectionShortCode;
-    var custom_layouts;
+    var layouts;
+    var layoutsNames;
+
+    var target;
 
     var layout;
     var modelSelectedID;
@@ -12,12 +15,12 @@ var Model_Modal = (function ($) {
     var _openModal = function (data) {
         rexmodel_modal_props.$model_import_wrap.removeClass("hide-import-wrap");
         rexmodel_modal_props.$model_insert_success_wrap.text("");
-        sectionRexID = data.rexID;
+        target = data.sectionTarget;
         modelSelectedID = data.modelID;
         sectionShortCode = data.shortCode;
-        layout = data.layout;
-        custom_layouts = data.custom_layouts;
-        
+        layouts = data.layouts;
+        layoutsNames = data.layoutsNames;
+
         rexmodel_modal_props.$model_name.val('');
         rexmodel_modal_props.$model_import.find('option[value=0]').prop('selected', true);
 
@@ -44,6 +47,7 @@ var Model_Modal = (function ($) {
         });
 
         rexmodel_modal_props.$model_import.on('change', function (e) {
+            console.log("changing model");
             var model_id = rexmodel_modal_props.$model_import.val();
             if (model_id != '' && model_id != '0' && !model_created) {
                 rexmodel_modal_props.$self.addClass('rex-modal--loading');
@@ -64,7 +68,7 @@ var Model_Modal = (function ($) {
                             var modelData = {
                                 eventName: "rexlive:applyModelSection",
                                 data_to_send: {
-                                    sectionRexID: sectionRexID,
+                                    sectionTarget: target,
                                     model: response.data.model,
                                     modelName: response.data.name,
                                     modelID: response.data.id,
@@ -76,6 +80,7 @@ var Model_Modal = (function ($) {
                         }
                     },
                     error: function (response) {
+                        
                     },
                     complete: function (response) {
                         rexmodel_modal_props.$self.removeClass('rex-modal--loading');
@@ -95,6 +100,7 @@ var Model_Modal = (function ($) {
         });
 
         rexmodel_modal_props.$add_new_model.on('click', function () {
+
             if (rexmodel_modal_props.$model_name.val() != '') {
                 var model_name = rexmodel_modal_props.$model_name.val();
 
@@ -111,34 +117,37 @@ var Model_Modal = (function ($) {
                         action: 'rex_create_model_from_builder',
                         nonce_param: live_editor_obj.rexnonce,
                         model_data: model,
-                        model_layout: layout,
-                        custom_layouts: custom_layouts
+                        model_layouts: layouts,
+                        names: layoutsNames
                     },
                     success: function (response) {
                         if (response.success) {
-                            console.log(response);
+                            rexmodel_modal_props.$model_import_wrap.addClass("hide-import-wrap");
                             if (response.data.model_id != -1) {
                                 rexmodel_modal_props.$model_name.val('').siblings('label').removeClass('active');
                                 rexmodel_modal_props.$save_button.val('');
                                 rexmodel_modal_props.$model_import.children().eq(0).after('<option value="' + response.data.model_id + '">' + response.data.model_title + '</option>');
                                 rexmodel_modal_props.$model_import.find('option[value=' + response.data.model_id + ']').prop('selected', true);
                                 var modelData = {
-                                    eventName: "rexlive:newModelCreated",
+                                    eventName: "rexlive:applyModelSection",
                                     data_to_send: {
-                                        sectionRexID: sectionRexID,
+                                        sectionTarget: target,
+                                        model: response.data.model_html,
+                                        modelName: model_name,
                                         modelID: response.data.model_id,
-                                        modelName: model_name
+                                        customizationsData: layouts,
+                                        customizationsNames: layoutsNames,
                                     }
                                 }
+
                                 Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(modelData);
+
                                 model_created = true;
-                                rexmodel_modal_props.$model_import_wrap.addClass("hide-import-wrap");
                                 rexmodel_modal_props.$model_insert_success_wrap.text("Modello Inserito");
-                                setTimeout(function(){
+                                setTimeout(function () {
                                     _closeModal();
                                 }, 1000);
                             } else {
-                                rexmodel_modal_props.$model_import_wrap.addClass("hide-import-wrap");
                                 rexmodel_modal_props.$model_insert_success_wrap.text("Nome già presente");
                             }
                         }
@@ -157,7 +166,6 @@ var Model_Modal = (function ($) {
     }
 
     var _init = function () {
-        console.log("starting models");
         var $self = $("#rex-model-block")
         var $container = $self;
         rexmodel_modal_props = {
@@ -171,7 +179,6 @@ var Model_Modal = (function ($) {
             $model_insert_success_wrap: $container.find(".rex-model__model-insert-success-wrap")
         }
         model_created = false;
-        sectionRexID = "";
         modelSelectedID = "";
         sectionShortCode = "";
         _linkDocumentListeners();

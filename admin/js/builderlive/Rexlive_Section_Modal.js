@@ -3,7 +3,8 @@ var Section_Modal = (function ($) {
     'use strict';
 
     var section_config_modal_properties;
-
+    var sectionTarget;
+    
     var _openSectionModal = function (data) {
         _clearSectionModal();
         _updateSectionModal(data);
@@ -26,6 +27,8 @@ var Section_Modal = (function ($) {
     }
 
     var _updateSectionModal = function (data) {
+        sectionTarget = data.sectionTarget;
+
         LayoutGrid_Modal.updateLayoutModal(data.activeLayout, data.fullHeight);
         Section_Width_Modal.updateSectionWidth(data.dimension, data.section_width);
         GridSeparators_Modal.updateDistances(data.rowDistances);
@@ -43,6 +46,7 @@ var Section_Modal = (function ($) {
         var data_gallery = {
             eventName: "rexlive:set_gallery_layout",
             data_to_send: {
+                sectionTarget: sectionTarget,
                 layout: layoutData.layout,
                 fullHeight: layoutData.fullHeight,
                 sectionWidth: sectionWidthData,
@@ -60,6 +64,7 @@ var Section_Modal = (function ($) {
         var data_photoswipe = {
             eventName: "rexlive:set_row_photoswipe",
             data_to_send: {
+                sectionTarget: sectionTarget,
                 photoswipe: photoswipe
             }
         }
@@ -72,6 +77,7 @@ var Section_Modal = (function ($) {
         var data_sectionName = {
             eventName: "rexlive:change_section_name",
             data_to_send: {
+                sectionTarget: sectionTarget,
                 sectionName: sectionName
             }
         }
@@ -86,6 +92,7 @@ var Section_Modal = (function ($) {
         var data_customClasses = {
             eventName: "rexlive:apply_section_custom_classes",
             data_to_send: {
+                sectionTarget: sectionTarget,
                 customClasses: classList
             }
         }
@@ -123,6 +130,7 @@ var Section_Modal = (function ($) {
         PhotoSwipe_Modal.init($sectionConfigModal);
         SectionName_Modal.init($sectionConfigModal);
         Section_CustomClasses_Modal.init($sectionConfigModal);
+        sectionTarget = {};
     }
 
     return {

@@ -731,7 +731,6 @@
                     return;
                 }
                 var $blockContent = $elem.find('.grid-item-content');
-                //                if(!Rexbuilder_Util_Editor.sectionCopying){
                 if ($elem.find(".rex-slider-wrap").length === 0 && !$blockContent.hasClass('youtube-player')) {
                     var maxBlockHeight = $blockContent.height();
                     var textHeight = 0;
@@ -750,7 +749,6 @@
                         }
                     }
                 }
-                //                }
             });
         },
 
@@ -2568,9 +2566,9 @@
                     if (!Rexbuilder_Util.windowIsResizing && !Rexbuilder_Util.domUpdaiting) {
                         $(document).trigger(event);
                     }
-                }, 300, reverseData);
+                }, 500, reverseData);
                 that.properties.collapsingElements = false;
-            }, 300, reverseData);
+            }, 500, reverseData);
 
         },
 

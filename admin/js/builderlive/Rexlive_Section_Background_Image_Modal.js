@@ -3,8 +3,10 @@ var Background_Section_Image_Modal = (function ($) {
 
     var background_section_image_properties;
     var backgroundImageActive;
+    var sectionTarget;
 
     var _updateImageModal = function (data) {
+        sectionTarget = data.sectionTarget;
         background_section_image_properties.$image_url.val(data.idImage);
         if (data.idImage != "") {
             background_section_image_properties.$image_preview.css('backgroundImage', 'url(' + data.imageUrl + ')')
@@ -47,7 +49,8 @@ var Background_Section_Image_Modal = (function ($) {
                 urlImage: backgroundImageActive ? urlImage : "",
                 width: backgroundImageActive ? width : "",
                 height: backgroundImageActive ? height : "",
-                active: backgroundImageActive
+                active: backgroundImageActive,
+                sectionTarget: sectionTarget
             }
         }
 

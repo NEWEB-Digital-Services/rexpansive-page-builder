@@ -4,8 +4,13 @@ var Background_Section_Color_Modal = (function ($) {
     var background_section_color_properties;
     var colorActive;
     var bgColorActive;
+    var sectionTarget;
+    var changeColorEvent;
 
     var _updateColorModal = function (data) {
+        console.log(data);
+        sectionTarget = data.sectionTarget;
+        changeColorEvent.data_to_send.sectionTarget = data.sectionTarget;
         if (data.color != "") {
             background_section_color_properties.$color_runtime_value.val(data.color);
             background_section_color_properties.$color_preview_icon.hide();
@@ -31,7 +36,8 @@ var Background_Section_Color_Modal = (function ($) {
             eventName: "rexlive:apply_background_color_section",
             data_to_send: {
                 color: bgColorActive ? colorActive : "",
-                active: bgColorActive
+                active: bgColorActive,
+                sectionTarget: sectionTarget
             }
         }
 
@@ -39,10 +45,11 @@ var Background_Section_Color_Modal = (function ($) {
     }
 
     var _launchSpectrumBackgroundColor = function () {
-        var changeColorEvent = {
+        changeColorEvent = {
             eventName: "rexlive:change_section_bg_color",
             data_to_send: {
-                color: null
+                color: null,
+                sectionTarget: {}
             }
         }
 
@@ -54,7 +61,9 @@ var Background_Section_Color_Modal = (function ($) {
             showInput: true,
             containerClassName: 'rexbuilder-materialize-wrap block-background-color-picker',
             move: function (color) {
+                console.log(changeColorEvent);
                 background_section_color_properties.$color_preview_icon.hide();
+                
                 changeColorEvent.data_to_send.color = bgColorActive ? color.toRgbString() : "";
                 Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(changeColorEvent);
             },

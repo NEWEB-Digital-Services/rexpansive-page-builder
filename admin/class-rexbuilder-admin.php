@@ -290,6 +290,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'rexlive-model-options', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Model_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-custom-layouts-options', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_CustomLayout_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-modals', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Modals.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexlive-edit-modals', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Model_Edit_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexbuilder-Slider', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_RexSlider.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-util-admin', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Util_Admin_Editor.js', array( 'jquery' ), null, true );
 				global $post;
@@ -1278,7 +1279,8 @@ class Rexbuilder_Admin {
 		}
 
 		$model_settings = $_POST['model_data'];
-		$layout = $_POST["model_layout"];
+		$layouts = $_POST['model_layouts'];
+		$names = $_POST['names'];
 
 		if( empty( $model_settings['post_content'] ) ) {
 			$response['error'] = true;
@@ -1300,10 +1302,31 @@ class Rexbuilder_Admin {
 			$response['model_id'] = wp_insert_post( $args );
 			$response['model_title'] = $args['post_title'];
 			update_post_meta( $response['model_id'], '_rexbuilder_active', 'true' );
-			update_post_meta( $response['model_id'], '_rex_model_customization_names', array("default") );
-			update_post_meta( $response['model_id'], '_rex_model_customization_default', $layout );
-			// adding the information for the slide
+			update_post_meta( $response['model_id'], '_rex_model_customization_names', $names);
+			foreach ($layouts as $index => $layout) {
+				$layoutName = $layout['name'];
+				$targets =  $layout['targets'];
+				update_post_meta( $response['model_id'], '_rex_model_customization_' . $layoutName, $targets);
+			}
+
+			$argsQuery = array(
+				'post_type'		=>	'rex_model',
+				'post_status'	=>	'private',
+				'p'				=>	$response['model_id']
+			);
+	
+			$query = new WP_Query( $argsQuery );
+			if ( $query->have_posts() ) {
+				while ( $query->have_posts() ) {
+					$query->the_post();
+					$post = $query->post;
+					$response['model_html'] = do_shortcode($post->post_content);
+				}
+			}
+			wp_reset_postdata();
+
 		} else {
+			
 			$response['model_id'] = -1;
 			$response['model_title'] = "";
 			// The page exists

@@ -3,12 +3,11 @@ var Block_Content_Positions_Modal = (function ($) {
 
     var block_content_position_properties;
     var defaultPositionCoordinates;
-    var rexID;
+    var target;
 
     var _updatePosition = function (data) {
-        rexID = data.rexID;
+        target = data.target;
         _resetPosition();
-        console.log(data);
         var position = data.position == "" ? defaultPositionCoordinates : data.position;
         block_content_position_properties.$positions.filter("[value=\"" + position + "\"]").prop('checked', true);
     }
@@ -29,7 +28,7 @@ var Block_Content_Positions_Modal = (function ($) {
                     x: x,
                     y: y
                 },
-                rex_block_id: rexID
+                target: target
             }
         }
 
@@ -47,6 +46,7 @@ var Block_Content_Positions_Modal = (function ($) {
         defaultPositionCoordinates = "";
 
         block_content_position_properties.$self.find(".rex-block-position").on("click", function (e) { 
+            //waiting for ending animation
             setTimeout(function(){
                 _applyBlockPosition();
             }, 50)

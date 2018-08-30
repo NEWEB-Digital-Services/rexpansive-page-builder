@@ -21,6 +21,9 @@ var Rexlive_Modals = (function ($) {
         // models
         Model_Modal.init();
 
+        // models edit
+        Model_Edit_Modal.init();
+
         // layouts
         CustomLayouts_Modal.init();
     }

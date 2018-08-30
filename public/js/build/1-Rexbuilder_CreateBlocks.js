@@ -32,8 +32,14 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
     $(document).on("rexlive:insert_image", function (e) {
         var data = e.settings.data_to_send;
-        console.log(data);
-        var $section = Rexbuilder_Util_Editor.sectionAddingElementObj;
+
+        var $section;
+        if (data.sectionTarget.modelNumber != "") {
+            $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"][data-rexlive-saved-model-number="' + data.sectionTarget.modelNumber + '"]');
+        } else {
+            $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"]');
+        }
+
         var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
         var i;
 
@@ -85,21 +91,25 @@ var Rexbuilder_CreateBlocks = (function ($) {
             }
 
             Rexbuilder_Dom_Util.updateImageBG($el.find(".grid-item-content"), dataImage);
-            
+
             galleryInstance.addScrollbar($el);
             galleryInstance.addTextEditor($el);
         }
-
-        Rexbuilder_Util_Editor.sectionAddingElementRexID = null;
-        Rexbuilder_Util_Editor.sectionAddingElementObj = null;
     });
 
     $(document).on("rexlive:insert_video", function (e) {
         var data = e.settings.data_to_send;
         console.log(data);
         if (!(typeof data.typeVideo == "undefined")) {
-            var $section = Rexbuilder_Util_Editor.sectionAddingElementObj,
-                galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
+            var $section;
+
+            if (data.sectionTarget.modelNumber != "") {
+                $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"][data-rexlive-saved-model-number="' + data.sectionTarget.modelNumber + '"]');
+            } else {
+                $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"]');
+            }
+
+            var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
             var audio = typeof data.hasAudio == "undefined" ? "" : data.hasAudio;
             var urlYoutube = typeof data.urlYoutube == "undefined" ? "" : data.urlYoutube;
             var urlVimeo = typeof data.urlVimeo == "undefined" ? "" : data.urlVimeo;
@@ -160,9 +170,6 @@ var Rexbuilder_CreateBlocks = (function ($) {
                 }
             }
         }
-
-        Rexbuilder_Util_Editor.sectionAddingElementRexID = null;
-        Rexbuilder_Util_Editor.sectionAddingElementObj = null;
     });
 
     $(document).on("rexlive:insert_new_slider", function (e) {
@@ -170,6 +177,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     });
 
     var _createSlider = function (data, $elem) {
+        console.log(data);
         Rexbuilder_Dom_Util.lastSliderNumber = Rexbuilder_Dom_Util.lastSliderNumber + 1;
         var sliderNumber = Rexbuilder_Dom_Util.lastSliderNumber;
         var slides = data.slides;
@@ -183,7 +191,14 @@ var Rexbuilder_CreateBlocks = (function ($) {
         var $el;
         var $textWrap;
         if (typeof $elem == "undefined") {
-            var $section = Rexbuilder_Util_Editor.sectionAddingElementObj;
+            var $section;
+
+			if (data.sectionTarget.modelNumber != "") {
+				$section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"][data-rexlive-saved-model-number="' + data.sectionTarget.modelNumber + '"]');
+			} else {
+				$section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"]');
+            }
+            
             var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
             // 
             $el = _createBlockGrid(galleryInstance, 12, 4);
@@ -266,9 +281,6 @@ var Rexbuilder_CreateBlocks = (function ($) {
         $sliderWrap.attr("data-rex-slider-number", sliderNumber);
 
         RexSlider.initSlider($sliderWrap);
-
-        Rexbuilder_Util_Editor.sectionAddingElementRexID = null;
-        Rexbuilder_Util_Editor.sectionAddingElementObj = null;
     }
 
     var _createSliderWrap = function ($textWrap, data) {
@@ -301,7 +313,6 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
     var _createCopyBlock = function ($elem) {
         var $gallery = $elem.parents('.grid-stack-row');
-        Rexbuilder_Util_Editor.sectionAddingElementObj = $gallery.parents(".rexpansive_section");
         var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
         var gridstack = $gallery.data("gridstack");
         var $newBlock;

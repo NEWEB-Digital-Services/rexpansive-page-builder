@@ -20,7 +20,7 @@ var Rexbuilder_Util = (function ($) {
         return text;
     }
 
-    var createSectionID = function () {
+    var _createSectionID = function () {
         var id;
         var flag;
         var idLength = 4;
@@ -41,10 +41,12 @@ var Rexbuilder_Util = (function ($) {
     }
 
     var createBlockID = function () {
+        console.log("creating new block ID");
         var id;
         var flag;
         var idLength = 4;
         var $this;
+
         do {
             flag = true;
             id = createRandomID(idLength);
@@ -68,7 +70,7 @@ var Rexbuilder_Util = (function ($) {
         Rexbuilder_Util.$rexContainer.children('.rexpansive_section').each(function (i, e) {
             $sec = $(e);
             if ($sec.attr('data-rexlive-section-id') === undefined) {
-                id = createSectionID();
+                id = _createSectionID();
                 $sec.attr('data-rexlive-section-id', id);
             }
         });
@@ -116,10 +118,6 @@ var Rexbuilder_Util = (function ($) {
 
         var layoutsPageNames = [];
         var flag_insert;
-
-        /*         console.log(allLayoutsDimensions);
-                console.log(allModelsCustomizationsNames);
-                console.log(avaiableNames); */
 
         for (i = 0; i < allLayoutsDimensions.length; i++) {
             flag_insert = false;
@@ -246,10 +244,14 @@ var Rexbuilder_Util = (function ($) {
             layoutDataPage = JSON.parse($resposiveData.children(".layouts-customizations").text());
         }
 
+        console.log("layoutDataPage", layoutDataPage);
+
         var layoutDataModels = [];
         if ($modelData.children(".models-customizations").text() != "") {
             layoutDataModels = JSON.parse($modelData.children(".models-customizations").text());
         }
+
+        console.log("layoutDataModels", layoutDataModels);
 
         var modelsIDInPage = [];
 
@@ -259,6 +261,19 @@ var Rexbuilder_Util = (function ($) {
                 modelsIDInPage.push(parseInt($section.attr("data-rexlive-model-id")));
             }
         });
+
+        var sectionsPage = [];
+
+        Rexbuilder_Util.$rexContainer.children(".rexpansive_section:not(.removing_section)").each(function (i, el) {
+            var $section = $(el);
+            var secObj = {
+                rexID: $section.attr("data-rexlive-section-id"),
+                modelID: isNaN(parseInt($section.attr("data-rexlive-model-id"))) ? "" : parseInt($section.attr("data-rexlive-model-id")),
+            }
+            sectionsPage.push(secObj);
+        });
+
+        console.log("sectionsPage", sectionsPage);
 
         var i, j, p, q;
         var defaultLayoutSections = [];
@@ -366,8 +381,39 @@ var Rexbuilder_Util = (function ($) {
                     customSections = layoutSelectedSections;
                 } */
 
+        console.log("customSections", customSections);
+        console.log("defaultLayoutSections", defaultLayoutSections);
         var mergedEdits = $.extend(true, {}, customSections);
         var pushingEdits = $.extend(true, {}, defaultLayoutSections);
+
+        var modelsNumbers = [];
+        var flagModel;
+        //fixing empty models numbers
+        $.each(mergedEdits, function (i, sectionCustom) {
+            if (sectionCustom.section_is_model.toString() == "true") {
+                if (typeof sectionCustom.section_model_number == "undefined") {
+                    flagModel = false;
+                    for (i = 0; i < modelsNumbers.length; i++) {
+                        if (modelsNumbers[i].id == sectionCustom.section_model_id) {
+                            modelsNumbers[i].number = modelsNumbers[i].number + 1;
+                            sectionCustom.section_model_number = modelsNumbers[i].number;
+                            flagModel = true;
+                        }
+                    }
+                    if (!flagModel) {
+                        var modelObj = {
+                            id: sectionCustom.section_model_id,
+                            number: 1
+                        }
+                        sectionCustom.section_model_number = 1;
+                        modelsNumbers.push(modelObj);
+                    }
+                }
+            }
+            if (typeof sectionCustom.targets == "undefined") {
+                sectionCustom.targets = [];
+            }
+        });
 
         // removing collapsed from grid
         Rexbuilder_Util.removeCollapsedGrids();
@@ -403,253 +449,51 @@ var Rexbuilder_Util = (function ($) {
                                 newBlocksLayout.push(sectionDefault.targets[n]);
                             }
                         }
+                        if (m == 0) {
+                            sectionCustom.targets = sectionDefault.targets;
+                        }
                     }
                 });
                 if (!sectionFounded) {
                     sectionCustom.notInSection = true;
                 }
-                $.each(pushingEdits, function (i, sectionDefault) {
-                    if (typeof sectionDefault.founded == "undefined") {
-                        newSectionsLayout.push(sectionDefault);
-                    }
-                });
+            });
+            $.each(pushingEdits, function (i, sectionDefault) {
+                if (typeof sectionDefault.founded == "undefined") {
+                    newSectionsLayout.push(sectionDefault);
+                }
             });
         } else {
             mergedEdits = pushingEdits;
         }
-
-        var sectionRexId;
-
-        var targetName;
-        var targetHide;
-        var targetProps;
-        var $section;
-
-        var $gallery;
-        var $elem;
-        var $itemContent;
-        var $itemData;
+        console.log("newBlocksLayout", newBlocksLayout);
+        console.log("newSectionsLayout", newSectionsLayout);
 
         console.log("applying");
-        console.log(mergedEdits);
+        console.log("mergedEdits", mergedEdits);
 
         Rexbuilder_Util.domUpdaiting = true;
         var sectionDomOrder = [];
 
-        $.each(mergedEdits, function (i, section) {
+        $.each(mergedEdits, function (q, section) {
             if (!section.notInSection || chosenLayoutName == "default") {
-                sectionDomOrder.push(section.section_rex_id);
-                sectionRexId = section.section_rex_id;
-                $section = Rexbuilder_Util.$rexContainer.children('section[data-rexlive-section-id="' + sectionRexId + '"]');
-                $gallery = $section.find(".grid-stack-row");
-                var galleryData = $gallery.data();
-                if (galleryData !== undefined) {
-                    var galleryEditorInstance = galleryData.plugin_perfectGridGalleryEditor;
-                    if (galleryEditorInstance !== undefined) {
-                        var gridstackInstance = galleryEditorInstance.properties.gridstackInstance;
-                        galleryEditorInstance.batchGridstack();
-                    }
+                var sectionObj = {
+                    rexID: section.section_rex_id,
+                    modelID: -1,
+                    modelNumber: -1,
                 }
 
-                var targets = section.targets;
-
-                for (var i = 1; i < targets.length; i++) {
-                    if (!targets[i].notDisplay || chosenLayoutName == "default") {
-
-                        targetName = targets[i].name;
-                        targetProps = targets[i].props;
-
-                        $elem = $gallery.children('div[data-rexbuilder-block-id="' + targetName + '"]');
-                        $itemData = $elem.children(".rexbuilder-block-data");
-                        $itemContent = $elem.find(".grid-item-content");
-
-                        var mp4ID = !isNaN(parseInt(targetProps["video_bg_id"])) ? parseInt(targetProps["video_bg_id"]) : "";
-                        var youtubeUrl = typeof targetProps["video_bg_url_youtube"] == "undefined" ? "" : targetProps["video_bg_url_youtube"];
-                        var vimeoUrl = typeof targetProps["video_bg_url_vimeo"] == "undefined" ? "" : targetProps["video_bg_url_vimeo"];
-                        var type = "";
-
-                        if (mp4ID != "") {
-                            type = "mp4";
-                        } else if (vimeoUrl != "") {
-                            type = "vimeo";
-                        } else if (youtubeUrl != "") {
-                            type = "youtube";
-                        }
-
-                        var videoOptions = {
-                            mp4Data: {
-                                idMp4: mp4ID,
-                                linkMp4: typeof targetProps["video_mp4_url"] == "undefined" ? "" : targetProps["video_mp4_url"],
-                                width: isNaN(parseInt(targetProps["video_bg_width"])) ? parseInt(targetProps["video_bg_width"]) : "",
-                                height: isNaN(parseInt(targetProps["video_bg_height"])) ? parseInt(targetProps["video_bg_height"]) : ""
-                            },
-                            vimeoUrl: vimeoUrl,
-                            youtubeUrl: youtubeUrl,
-                            audio: targetProps['video_has_audio'] == "1" || targetProps['video_has_audio'].toString() == "true" ? true : false,
-                            typeVideo: type
-                        };
-
-                        Rexbuilder_Dom_Util.updateVideos($itemContent, videoOptions);
-
-                        var activeImage = typeof targetProps["image_bg_elem_active"] == "undefined" ? true : (targetProps["color_bg_block_active"].toString() == "true");
-
-                        var imageOptions = {
-                            active: activeImage,
-                            idImage: activeImage ? (!isNaN(parseInt(targetProps["id_image_bg"])) ? parseInt(targetProps["id_image_bg"]) : "") : "",
-                            urlImage: activeImage ? targetProps["image_bg_url"] : "",
-                            width: activeImage ? (!isNaN(parseInt(targetProps["image_width"])) ? parseInt(targetProps["image_width"]) : "") : "",
-                            height: activeImage ? (!isNaN(parseInt(targetProps["image_height"])) ? parseInt(targetProps["image_height"]) : "") : "",
-                            typeBGimage: activeImage ? targetProps["type_bg_image"] : "",
-                            photoswipe: activeImage ? targetProps["photoswipe"] : "",
-                        }
-
-                        Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOptions);
-
-                        var postionData = {
-                            x: targetProps["gs_x"],
-                            y: targetProps["gs_y"],
-                            w: targetProps["gs_width"],
-                            h: targetProps["gs_height"],
-                            startH: targetProps["gs_start_h"],
-                            gridstackInstance: gridstackInstance,
-                        };
-
-                        _updateElementDimensions($elem, $itemData, postionData);
-
-                        var bgColorOpt = {
-                            blockRexID: targetName,
-                            color: targetProps["color_bg_block"],
-                            active: typeof targetProps["color_bg_block_active"] == "undefined" ? true : targetProps["color_bg_block_active"].toString()
-                        }
-
-                        Rexbuilder_Dom_Util.updateBlockBackgroundColor(bgColorOpt);
-
-                        var overlayBlockOpt = {
-                            blockRexID: targetName,
-                            color: targetProps["overlay_block_color"],
-                            active: typeof targetProps["overlay_block_color_active"] == "undefined" ? false : targetProps["overlay_block_color_active"].toString()
-                        }
-
-                        Rexbuilder_Dom_Util.updateBlockOverlay(overlayBlockOpt);
-
-                        Rexbuilder_Dom_Util.updateBlockPaddings($elem, _getPaddingsDataString(targetProps["block_padding"]));
-
-                        var newClasses = targetProps["block_custom_class"];
-                        var classList = [];
-                        if (newClasses != "") {
-                            newClasses = newClasses.trim();
-                            classList = newClasses.split(/\s+/);
-                        }
-                        Rexbuilder_Dom_Util.updateCustomClasses($elem, classList);
-
-                        var pos = targetProps["block_flex_position"].split(" ");
-
-                        var flexPosition = {
-                            x: pos[0],
-                            y: pos[1]
-                        }
-
-                        Rexbuilder_Dom_Util.updateFlexPostition($elem, flexPosition);
-
-                        for (var propName in targetProps) {
-                            switch (propName) {
-                                case "hide":
-                                    if (targetProps[propName].toString() == "true") {
-                                        $elem.addClass("rex-hide-element");
-                                    } else {
-                                        $elem.removeClass("rex-hide-element");
-                                    }
-                                    break;
-                                case "type":
-                                    $itemData.attr('data-type', targetProps["type"]);
-                                    break;
-
-                                case "size_x":
-                                    $elem.attr('data-width', targetProps["size_x"]);
-                                    break;
-
-                                case "size_y":
-                                    $elem.attr('data-height', targetProps["size_y"]);
-                                    break;
-
-                                case "row":
-                                    $elem.attr('data-row', targetProps["row"]);
-                                    break;
-
-                                case "col":
-                                    $elem.attr('data-col', targetProps["col"]);
-                                    break;
-                                case "photoswipe":
-                                    if (!Rexbuilder_Util.editorMode) {
-                                        if (targetProps["photoswipe"] == "true") {
-                                            addPhotoSwipeElement($itemContent, targetProps['image_bg_block'], parseInt(targetProps['image_width']), parseInt(targetProps['image_height']), targetProps['image_size']);
-                                            $section.addClass("photoswipe-gallery");
-                                        } else {
-                                            removePhotoSwipeElement($itemContent);
-                                        }
-                                        $itemData.attr("data-photoswipe", targetProps["photoswipe"]);
-                                    }
-                                    break;
-                                case "linkurl":
-                                    if (!Rexbuilder_Util.editorMode) {
-                                        var $linkEl = $itemContent.parents(".element-link");
-                                        if (targetProps["linkurl"] != "") {
-                                            if ($linkEl.length != 0) {
-                                                //console.log("already a link");
-                                                $linkEl.attr("href", targetProps["linkurl"]);
-                                                $linkEl.attr("title", targetProps["linkurl"]);
-                                            } else {
-                                                //console.log("not a block link");
-                                                var $itemContentParent = $itemContent.parent();
-                                                tmpl.arg = "link";
-                                                $itemContentParent.append(tmpl("tmpl-link-block", {
-                                                    url: targetProps["linkurl"]
-                                                }));
-                                                var $link = $itemContentParent.children(".element-link");
-                                                $itemContent.detach().appendTo($link);
-                                            }
-                                        } else {
-                                            if ($linkEl.length != 0) {
-                                                $linkEl.children().unwrap();
-                                            }
-                                        }
-                                    }
-                                    Rexbuilder_Dom_Util.updateBlockUrl($elem, targetProps["linkurl"]);
-                                    break;
-                                case "zak_background":
-                                case "zak_side":
-                                case "zak_title":
-                                case "zak_icon":
-                                case "zak_foreground":
-                                    break;
-                                case "block_animation":
-                                    break;
-                                case "block_has_scrollbar":
-                                    break;
-                                case "block_live_edited":
-                                    break;
-                                case "overwritten":
-                                    $itemData.attr("data-custom_layout", targetProps["overwritten"].toString());
-                                    break;
-                                default:
-                                    break;
-                            }
-                        }
-                    }
+                var $section;
+                if (section.section_is_model.toString() == "true") {
+                    sectionObj.modelID = section.model_id;
+                    sectionObj.modelNumber = section.section_model_number;
+                    $section = Rexbuilder_Util.$rexContainer.children('section[data-rexlive-section-id="' + section.section_rex_id + '"][data-rexlive-saved-model-number="' + sectionObj.modelNumber + '"]');
+                } else {
+                    $section = Rexbuilder_Util.$rexContainer.children('section[data-rexlive-section-id="' + section.section_rex_id + '"]');
                 }
-                updateSection($section, $gallery, targets[0].props, forceCollapseElementsGrid);
-
-                if (galleryData !== undefined) {
-                    var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
-                    if (galleryEditorInstance !== undefined) {
-                        galleryEditorInstance.commitGridstack();
-                        //brutto, ma per ora funziona, aspettiamo implementino un evento per il commit di gridstack
-                        setTimeout(function () {
-                            galleryEditorInstance.properties.dispositionBeforeCollapsing = galleryEditorInstance.createActionDataMoveBlocksGrid();
-                            galleryEditorInstance._createFirstReverseStack();
-                            galleryEditorInstance._updateElementsSizeViewers();
-                        }, 400);
-                    }
+                if($section.length != 0){
+                    sectionDomOrder.push(sectionObj);   
+                    _updateDOMelements($section, section.targets, forceCollapseElementsGrid);
                 }
             }
         });
@@ -661,6 +505,232 @@ var Rexbuilder_Util = (function ($) {
         if (!Rexbuilder_Util.editorMode) {
             initPhotoSwipe(".photoswipe-gallery");
         }
+    }
+
+    var _updateDOMelements = function ($section, targets, forceCollapseElementsGrid) {
+        var $gallery = $section.find(".grid-stack-row");
+        var galleryData = $gallery.data();
+        if (galleryData !== undefined) {
+            var galleryEditorInstance = galleryData.plugin_perfectGridGalleryEditor;
+            if (galleryEditorInstance !== undefined) {
+                var gridstackInstance = galleryEditorInstance.properties.gridstackInstance;
+                galleryEditorInstance.batchGridstack();
+            }
+        }
+
+        for (var i = 1; i < targets.length; i++) {
+            if (!targets[i].notDisplay || Rexbuilder_Util.activeLayout == "default") {
+
+                var targetName = targets[i].name;
+                var targetProps = targets[i].props;
+                var $elem = $gallery.children('div[data-rexbuilder-block-id="' + targetName + '"]');
+                var $itemData = $elem.children(".rexbuilder-block-data");
+                var $itemContent = $elem.find(".grid-item-content");
+
+                var postionData = {
+                    x: targetProps["gs_x"],
+                    y: targetProps["gs_y"],
+                    w: targetProps["gs_width"],
+                    h: targetProps["gs_height"],
+                    startH: targetProps["gs_start_h"],
+                    gridstackInstance: gridstackInstance,
+                };
+
+                _updateElementDimensions($elem, $itemData, postionData);
+                
+                var mp4ID = !isNaN(parseInt(targetProps["video_bg_id"])) ? parseInt(targetProps["video_bg_id"]) : "";
+                var youtubeUrl = typeof targetProps["video_bg_url_youtube"] == "undefined" ? "" : targetProps["video_bg_url_youtube"];
+                var vimeoUrl = typeof targetProps["video_bg_url_vimeo"] == "undefined" ? "" : targetProps["video_bg_url_vimeo"];
+                var type = "";
+
+                if (mp4ID != "") {
+                    type = "mp4";
+                } else if (vimeoUrl != "") {
+                    type = "vimeo";
+                } else if (youtubeUrl != "") {
+                    type = "youtube";
+                }
+
+                var videoOptions = {
+                    mp4Data: {
+                        idMp4: mp4ID,
+                        linkMp4: typeof targetProps["video_mp4_url"] == "undefined" ? "" : targetProps["video_mp4_url"],
+                        width: isNaN(parseInt(targetProps["video_bg_width"])) ? parseInt(targetProps["video_bg_width"]) : "",
+                        height: isNaN(parseInt(targetProps["video_bg_height"])) ? parseInt(targetProps["video_bg_height"]) : ""
+                    },
+                    vimeoUrl: vimeoUrl,
+                    youtubeUrl: youtubeUrl,
+                    audio: targetProps['video_has_audio'] == "1" || targetProps['video_has_audio'].toString() == "true" ? true : false,
+                    typeVideo: type
+                };
+
+                Rexbuilder_Dom_Util.updateVideos($itemContent, videoOptions);
+
+                var activeImage = typeof targetProps["image_bg_elem_active"] == "undefined" ? true : (targetProps["color_bg_block_active"].toString() == "true");
+
+                var imageOptions = {
+                    active: activeImage,
+                    idImage: activeImage ? (!isNaN(parseInt(targetProps["id_image_bg"])) ? parseInt(targetProps["id_image_bg"]) : "") : "",
+                    urlImage: activeImage ? targetProps["image_bg_url"] : "",
+                    width: activeImage ? (!isNaN(parseInt(targetProps["image_width"])) ? parseInt(targetProps["image_width"]) : "") : "",
+                    height: activeImage ? (!isNaN(parseInt(targetProps["image_height"])) ? parseInt(targetProps["image_height"]) : "") : "",
+                    typeBGimage: activeImage ? targetProps["type_bg_image"] : "",
+                    photoswipe: activeImage ? targetProps["photoswipe"] : "",
+                }
+
+                Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOptions);
+
+                var bgColorOpt = {
+                    $elem: $elem,
+                    color: targetProps["color_bg_block"],
+                    active: typeof targetProps["color_bg_block_active"] == "undefined" ? true : targetProps["color_bg_block_active"].toString()
+                }
+
+                Rexbuilder_Dom_Util.updateBlockBackgroundColor(bgColorOpt);
+
+                var overlayBlockOpt = {
+                    $elem: $elem,
+                    color: targetProps["overlay_block_color"],
+                    active: typeof targetProps["overlay_block_color_active"] == "undefined" ? false : targetProps["overlay_block_color_active"].toString()
+                }
+
+                Rexbuilder_Dom_Util.updateBlockOverlay(overlayBlockOpt);
+
+                Rexbuilder_Dom_Util.updateBlockPaddings($elem, _getPaddingsDataString(targetProps["block_padding"]));
+
+                var newClasses = targetProps["block_custom_class"];
+                var classList = [];
+                if (newClasses != "") {
+                    newClasses = newClasses.trim();
+                    classList = newClasses.split(/\s+/);
+                }
+                Rexbuilder_Dom_Util.updateCustomClasses($elem, classList);
+
+                var pos = targetProps["block_flex_position"].split(" ");
+
+                var flexPosition = {
+                    x: pos[0],
+                    y: pos[1]
+                }
+
+                Rexbuilder_Dom_Util.updateFlexPostition($elem, flexPosition);
+
+                for (var propName in targetProps) {
+                    switch (propName) {
+                        case "hide":
+                            if (targetProps[propName].toString() == "true") {
+                                $elem.addClass("rex-hide-element");
+                            } else {
+                                $elem.removeClass("rex-hide-element");
+                            }
+                            break;
+                        case "type":
+                            $itemData.attr('data-type', targetProps["type"]);
+                            break;
+
+                        case "size_x":
+                            $elem.attr('data-width', targetProps["size_x"]);
+                            break;
+
+                        case "size_y":
+                            $elem.attr('data-height', targetProps["size_y"]);
+                            break;
+
+                        case "row":
+                            $elem.attr('data-row', targetProps["row"]);
+                            break;
+
+                        case "col":
+                            $elem.attr('data-col', targetProps["col"]);
+                            break;
+                        case "photoswipe":
+                            if (!Rexbuilder_Util.editorMode) {
+                                if (targetProps["photoswipe"] == "true") {
+                                    addPhotoSwipeElement($itemContent, targetProps['image_bg_block'], parseInt(targetProps['image_width']), parseInt(targetProps['image_height']), targetProps['image_size']);
+                                    $section.addClass("photoswipe-gallery");
+                                } else {
+                                    removePhotoSwipeElement($itemContent);
+                                }
+                                $itemData.attr("data-photoswipe", targetProps["photoswipe"]);
+                            }
+                            break;
+                        case "linkurl":
+                            if (!Rexbuilder_Util.editorMode) {
+                                var $linkEl = $itemContent.parents(".element-link");
+                                if (targetProps["linkurl"] != "") {
+                                    if ($linkEl.length != 0) {
+                                        //console.log("already a link");
+                                        $linkEl.attr("href", targetProps["linkurl"]);
+                                        $linkEl.attr("title", targetProps["linkurl"]);
+                                    } else {
+                                        //console.log("not a block link");
+                                        var $itemContentParent = $itemContent.parent();
+                                        tmpl.arg = "link";
+                                        $itemContentParent.append(tmpl("tmpl-link-block", {
+                                            url: targetProps["linkurl"]
+                                        }));
+                                        var $link = $itemContentParent.children(".element-link");
+                                        $itemContent.detach().appendTo($link);
+                                    }
+                                } else {
+                                    if ($linkEl.length != 0) {
+                                        $linkEl.children().unwrap();
+                                    }
+                                }
+                            }
+                            Rexbuilder_Dom_Util.updateBlockUrl($elem, targetProps["linkurl"]);
+                            break;
+                        case "zak_background":
+                        case "zak_side":
+                        case "zak_title":
+                        case "zak_icon":
+                        case "zak_foreground":
+                            break;
+                        case "block_animation":
+                            break;
+                        case "block_has_scrollbar":
+                            break;
+                        case "block_live_edited":
+                            break;
+                        case "overwritten":
+                            $itemData.attr("data-custom_layout", targetProps["overwritten"].toString());
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            } else{
+                var $el =$gallery.children('div[data-rexbuilder-block-id="' + targetName + '"]');
+                if($el.length !=0){
+                    console.log("che me ne facico di lui");
+//                    $el.remove();
+                }
+            }
+        }
+
+        updateSection($section, $gallery, targets[0].props, forceCollapseElementsGrid);
+
+        if (galleryData !== undefined) {
+            var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
+            if (galleryEditorInstance !== undefined) {
+                galleryEditorInstance.commitGridstack();
+                //brutto, ma per ora funziona, aspettiamo implementino un evento per il commit di gridstack
+                setTimeout(function () {
+                    galleryEditorInstance.properties.dispositionBeforeCollapsing = galleryEditorInstance.createActionDataMoveBlocksGrid();
+                    galleryEditorInstance._createFirstReverseStack();
+                    galleryEditorInstance._updateElementsSizeViewers();
+                }, 400);
+            }
+        }
+    }
+
+    var _updateModelsLive = function (idModel, targets, editedModelNumber) {
+        Rexbuilder_Util.$rexContainer.children(".rexpansive_section").each(function (i, sec) {
+            var $section = $(sec);
+            if ($section.attr("data-rexlive-model-id") == idModel && $section.attr("data-rexlive-model-number") != editedModelNumber) {
+                _updateDOMelements($section, targets, false);
+            }
+        });
     }
 
     var updateSection = function ($section, $gallery, targetProps, forceCollapseElementsGrid) {
@@ -742,7 +812,8 @@ var Rexbuilder_Util = (function ($) {
 
         Rexbuilder_Dom_Util.updateRow($section, $sectionData, $gallery, rowSettings);
 
-        Rexbuilder_Dom_Util.updateSectionName($section, targetProps['section_name']);
+        var newName = typeof targetProps['section_name'] == "undefined" ? "" : targetProps['section_name'];
+        Rexbuilder_Dom_Util.updateSectionName($section, newName);
         $section.attr('data-type', targetProps['type']);
 
         var newClasses = targetProps["custom_classes"];
@@ -755,6 +826,7 @@ var Rexbuilder_Util = (function ($) {
     }
 
     var _updateElementDimensions = function ($elem, $elemData, posData) {
+        console.log("dimensionsApplyed", posData);
         var x = parseInt(posData.x);
         var y = parseInt(posData.y);
         var w = parseInt(posData.w);
@@ -1559,6 +1631,8 @@ var Rexbuilder_Util = (function ($) {
 
         this.chosenLayoutData = null;
 
+        Rexbuilder_Dom_Util.fixModelNumbers();
+        Rexbuilder_Dom_Util.fixModelNumbersSaving();
         var l = chooseLayout();
         _edit_dom_layout(l);
         this.oldLayout = l;
@@ -1604,7 +1678,7 @@ var Rexbuilder_Util = (function ($) {
         playBlockVideos: _playBlockVideos,
         chooseLayout: chooseLayout,
         setContainer: setContainer,
-        createSectionID: createSectionID,
+        createSectionID: _createSectionID,
         createBlockID: createBlockID,
         has_class: _has_class,
         responsiveLayouts: responsiveLayouts,
@@ -1624,7 +1698,8 @@ var Rexbuilder_Util = (function ($) {
         getPaddingsDataString: _getPaddingsDataString,
         paddingsToString: _paddingsToString,
         playAllVideos: _playAllVideos,
-        findLayoutType: _findLayoutType
+        findLayoutType: _findLayoutType,
+        updateModelsLive: _updateModelsLive,
     };
 
 })(jQuery);

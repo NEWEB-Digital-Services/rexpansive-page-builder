@@ -212,8 +212,6 @@ var Rexbuilder_Util_Editor = (function ($) {
         $div.appendTo($divScrollbar.parent());
         $divScrollbar.remove();
 
-        console.log();
-
         $elemContent = undefined;
         $div = undefined;
         $divScrollbar = undefined;
@@ -401,22 +399,22 @@ var Rexbuilder_Util_Editor = (function ($) {
 
         $(document).on("rexlive:change_section_bg_color", function (e) {
             var data = e.settings;
-            Rexbuilder_Dom_Util.updateSectionBackgroundColorLive(Rexbuilder_Util_Editor.sectionEditingBackgroundObj, data.data_to_send.color);
+            Rexbuilder_Dom_Util.updateSectionBackgroundColorLive(data.data_to_send.sectionTarget, data.data_to_send.color);
         });
 
         $(document).on("rexlive:change_section_overlay_color", function (e) {
             var data = e.settings;
-            Rexbuilder_Dom_Util.updateSectionOverlayColorLive(Rexbuilder_Util_Editor.sectionEditingBackgroundObj, data.data_to_send.color);
+            Rexbuilder_Dom_Util.updateSectionOverlayColorLive(data.data_to_send.sectionTarget, data.data_to_send.color);
         });
 
         $(document).on("rexlive:change_block_bg_color", function (e) {
             var data = e.settings;
-            Rexbuilder_Dom_Util.updateBlockBackgroundColorLive(data.data_to_send);
+            Rexbuilder_Dom_Util.updateBlockBackgroundColorLive(data.data_to_send.target, data.data_to_send.color);
         });
 
         $(document).on("rexlive:change_block_overlay_color", function (e) {
             var data = e.settings;
-            Rexbuilder_Dom_Util.updateBlockOverlayColorLive(data.data_to_send);
+            Rexbuilder_Dom_Util.updateBlockOverlayColorLive(data.data_to_send.target, data.data_to_send.color);
         });
 
         $(document).on("rexlive:updateLayoutsDimensions", function (e) {
@@ -433,17 +431,20 @@ var Rexbuilder_Util_Editor = (function ($) {
         } else {
             var ids = {
                 sectionID: "",
-                targetID: ""
+                targetID: "",
+                modelNumber: -1
             }
         }
 
         var action = {
             sectionID: ids.sectionID,
             targetID: ids.targetID,
+            modelNumber: ids.modelNumber,
             actionName: actionName,
             performActionData: actionData,
             reverseActionData: reverseData
         }
+
         console.log(action);
         undoStackArray.push(action);
         redoStackArray = [];
@@ -452,13 +453,20 @@ var Rexbuilder_Util_Editor = (function ($) {
     var getIDs = function ($target) {
         var data = {
             sectionID: "",
-            targetID: ""
+            targetID: "",
+            modelNumber: ""
         }
 
-        data.sectionID = $target.is("section") ? $target.attr("data-rexlive-section-id") : $target.parents(".rexpansive_section").attr("data-rexlive-section-id");
+        var $section = $target.is("section") ? $target : $target.parents(".rexpansive_section");
+        var $elem = $target.parents(".grid-stack-item");
+        data.sectionID = $section.attr("data-rexlive-section-id");
+        
+        if($section.hasClass("rex-model-section")){
+            data.modelNumber = $section.attr("data-rexlive-model-number");
+        }
 
-        if ($target.parents(".grid-stack-item").length != 0) {
-            data.targetID = $target.parents(".grid-stack-item").attr("data-rexbuilder-block-id");
+        if ($elem.length != 0) {
+            data.targetID = $elem.attr("data-rexbuilder-block-id");
         } else {
             data.targetID = "self";
         }
@@ -598,6 +606,33 @@ var Rexbuilder_Util_Editor = (function ($) {
 
         return elementsPhotoswipe;
     }
+    var _getSectionCustomLayouts = function (sectionRexID) {
+        var layouts = [];
+        var $layoutData = Rexbuilder_Util.$rexContainer.parent().children("#rexbuilder-layout-data");
+        var $layoutsCustomDiv = $layoutData.children(".layouts-customizations");
+        var oldCustomizations;
+        var i, j;
+        if ($layoutsCustomDiv.attr("data-empty-customizations")) {
+            oldCustomizations = [];
+        } else {
+            oldCustomizations = JSON.parse($layoutsCustomDiv.text());
+        }
+
+        for (i = 0; i < oldCustomizations.length; i++) {
+            var name = oldCustomizations[i].name;
+            for (j = 0; j < oldCustomizations[i].sections.length; j++) {
+                if (oldCustomizations[i].sections[j].section_rex_id == sectionRexID) {
+                    var targets = jQuery.extend(true, [], oldCustomizations[i].sections[j].targets);
+                    var customization = {
+                        name: name,
+                        targets: targets
+                    }
+                    layouts.push(customization);
+                }
+            }
+        }
+        return layouts;
+    }
 
     var init = function () {
 
@@ -605,6 +640,7 @@ var Rexbuilder_Util_Editor = (function ($) {
         this.elementIsDragging = false;
 
         this.sectionCopying = false;
+
         this.blockCopying = false;
         this.blockCopyingObj = null;
 
@@ -638,19 +674,10 @@ var Rexbuilder_Util_Editor = (function ($) {
         this.addingNewBlocks = false;
         this.removingBlocks = false;
 
-        this.sectionChangingOptionsRexID = null;
-        this.sectionChangingOptionsObj = null;
-
-        this.sectionAddingElementRexID = null;
-        this.sectionAddingElementObj = null;
-
         this.sliderEditingObj = null;
 
         this.sectionEditingObj = null;
         this.elementEditingObj = null;
-
-        this.sectionEditingBackgroundID = null;
-        this.sectionEditingBackgroundObj = null;
 
         this.blockEditingOptsID = null;
         this.blockEditingOptsObj = null;
@@ -700,6 +727,7 @@ var Rexbuilder_Util_Editor = (function ($) {
         getElementsPhotoswipe: _getElementsPhotoswipe,
         updateLayoutsAvaiable: _updateLayoutsAvaiable,
         createDefaultCustomLayouts: _createDefaultCustomLayouts,
+        getSectionCustomLayouts: _getSectionCustomLayouts,
     };
 
 })(jQuery);

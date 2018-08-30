@@ -7,6 +7,8 @@ var Rexbuilder_RexSlider = (function ($) {
     var slide_uploader_video_frame;
     var $selectedOptionImport;
     var editingSliderTitle;
+    var sectionTarget;
+
     /**
      * Retrieve the data of the slider
      * @return	Object	slider object data
@@ -225,14 +227,15 @@ var Rexbuilder_RexSlider = (function ($) {
      * @param {string} data shortcode of the slider
      * @param {string} slider_id id of the rex slider to edit
      */
-    var _openSliderEditor = function (id, data, slider_id) {
+    var _openSliderEditor = function (id, data, slider_id, targetSection) {
 
         _cleanSliderData();
 
         id = typeof id !== 'undefined' ? id : '';
         data = typeof data !== 'undefined' ? data : '';
         slider_id = typeof slider_id !== 'undefined' ? slider_id : '';
-
+        
+        sectionTarget = targetSection;
 
         if (id && data && slider_id) {
             // save id block information
@@ -580,7 +583,8 @@ var Rexbuilder_RexSlider = (function ($) {
                                 data_to_send: {
                                     id: response.data.slider_id,
                                     settings: sliderData.settings,
-                                    slides: sliderData.slides
+                                    slides: sliderData.slides,
+                                    sectionTarget: sectionTarget
                                 }
                             };
                             if (block_to_edit) {
@@ -621,7 +625,8 @@ var Rexbuilder_RexSlider = (function ($) {
                             data_to_send: {
                                 id: response.data.slider_id,
                                 settings: sliderData.settings,
-                                slides: sliderData.slides
+                                slides: sliderData.slides,
+                                sectionTarget: sectionTarget
                             }
                         };
                         if (!saveNew) {

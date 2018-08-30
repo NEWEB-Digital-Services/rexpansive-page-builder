@@ -1176,3 +1176,20 @@ wp_reset_postdata();
         </div>
     </div>
 </div><!-- RexModel modal -->
+<div class="rex-modal-wrap rex-fade">
+    <div id="rex-edit-model-choose" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
+        <div class="modal-content">
+            <div class="edit-model-description">
+                Cosa vuoi fare?
+            </div>
+            <div>
+                <div class="rex-edit-option" data-rex-option="edit">
+                    <button class="rex-button edit-model">Edita</button>
+                </div>
+                <div class="rex-edit-option" data-rex-option="remove">
+                    <button class="rex-button remove-model">Togli</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Edit Model  -->

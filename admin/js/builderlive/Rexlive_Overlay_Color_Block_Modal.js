@@ -3,11 +3,12 @@ var Overlay_Color_block_Modal = (function ($) {
 
     var overlay_block_properties;
     var colorActive;
-    var blockRexID;
-
+    var target;
+    var changeColorEvent;
+    
     var _updateOverlayModal = function (data) {
-        console.log(data);
-        blockRexID = data.rexID;
+        target = data.target;
+        changeColorEvent.data_to_send.target = data.target;
 
         if (data.color != "") {
             overlay_block_properties.$overlay_color_value.val(data.color);
@@ -30,9 +31,9 @@ var Overlay_Color_block_Modal = (function ($) {
         var overlayData = {
             eventName: "rexlive:change_block_overlay",
             data_to_send: {
-                blockRexID: blockRexID,
                 color: colorActive,
-                active: status
+                active: status,
+                target: target
             }
         }
 
@@ -40,11 +41,11 @@ var Overlay_Color_block_Modal = (function ($) {
     }
 
     var _launchSpectrumOverlayColor = function () {
-        var changeColorEvent = {
+        changeColorEvent = {
             eventName: "rexlive:change_block_overlay_color",
             data_to_send: {
-                blockRexID: "",
-                color: null
+                color: null,
+                target: {}
             }
         }
 
@@ -55,9 +56,6 @@ var Overlay_Color_block_Modal = (function ($) {
             showAlpha: true,
             showInput: true,
             containerClassName: 'rexbuilder-materialize-wrap block-overlay-color-picker',
-            show: function () {
-                changeColorEvent.data_to_send.blockRexID = blockRexID;
-            },
             move: function (color) {
                 overlay_block_properties.$overlay_color_preview_icon.hide();
                 changeColorEvent.data_to_send.color = color.toRgbString();
