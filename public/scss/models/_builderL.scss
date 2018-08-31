@@ -111,6 +111,9 @@
 
 .collapse-grid{
     left: 25%;
+    &.grid-collapsed{
+        background-color: orange;
+    }
 }
 
 .set-section-name{

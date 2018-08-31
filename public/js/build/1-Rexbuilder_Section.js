@@ -122,44 +122,51 @@ var Rexbuilder_Section = (function ($) {
 
         $(document).on("click", ".collapse-grid", function (e) {
             var $section = $(e.target).parents(".rexpansive_section");
-            var $grid = $section.find(".grid-stack-row");
-            var galleryEditorInstance = $grid.data().plugin_perfectGridGalleryEditor;
-            var isCollapsed = galleryEditorInstance.properties.oneColumModeActive;
-            if (!isCollapsed) {
-                var layout = {
-                    layout: galleryEditorInstance.settings.galleryLayout,
-                    fullHeight: galleryEditorInstance.settings.fullHeight,
-                    singleHeight: galleryEditorInstance.properties.singleHeight
-                };
 
-                var oldDisposition = galleryEditorInstance.createActionDataMoveBlocksGrid();
+            var gridCollapsed;
+            if(typeof $section.attr("data-rex-collapse-grid") != "undefined" && $section.attr("data-rex-collapse-grid").toString() == "true"){
+                gridCollapsed = true;
+            } else {
+                gridCollapsed = false;
+            }
 
-                var reverseData = {
-                    gridInstance: galleryEditorInstance,
-                    gridLayout: layout,
-                    blockDisposition: oldDisposition,
-                    collapse: isCollapsed
-                }
+            var galleryEditorInstance = Rexbuilder_Util.getGalleryInstance($section);
+            var oldDisposition = galleryEditorInstance.createActionDataMoveBlocksGrid();
 
+            var layout = {
+                layout: galleryEditorInstance.settings.galleryLayout,
+                fullHeight: galleryEditorInstance.settings.fullHeight,
+                singleHeight: galleryEditorInstance.properties.singleHeight
+            };
+            
+            var reverseData = {
+                gridInstance: galleryEditorInstance,
+                gridLayout: layout,
+                blockDisposition: oldDisposition,
+                collapse: gridCollapsed
+            }
+
+            if (!gridCollapsed) {
                 galleryEditorInstance.collapseElementsProperties();
                 galleryEditorInstance.collapseElements(reverseData);
             } else {
-                var layout = {
-                    layout: galleryEditorInstance.settings.galleryLayout,
-                    fullHeight: galleryEditorInstance.settings.fullHeight,
-                    singleHeight: galleryEditorInstance.properties.singleHeight
+                
+                var defaultTargets = Rexbuilder_Util.getDefaultTargets($section);
+                var i, j;
+
+
+                var postionData = {
+                    x: targetProps["gs_x"],
+                    y: targetProps["gs_y"],
+                    w: targetProps["gs_width"],
+                    h: targetProps["gs_height"],
+                    startH: targetProps["gs_start_h"],
+                    gridstackInstance: gridstackInstance,
                 };
 
-                var oldDisposition = galleryEditorInstance.createActionDataMoveBlocksGrid();
+                _updateElementDimensions($elem, $itemData, postionData);
 
-                var reverseData = {
-                    gridInstance: galleryEditorInstance,
-                    gridLayout: layout,
-                    blockDisposition: oldDisposition,
-                    collapse: true
-                }
-
-                Rexbuilder_Dom_Util.collapseGrid(galleryEditorInstance, false, galleryEditorInstance.properties.dispositionBeforeCollapsing, galleryEditorInstance.properties.layoutBeforeCollapsing);
+//                Rexbuilder_Dom_Util.collapseGrid(galleryEditorInstance, false, galleryEditorInstance.properties.dispositionBeforeCollapsing, galleryEditorInstance.properties.layoutBeforeCollapsing);
 
                 var actionData = {
                     gridInstance: galleryEditorInstance,

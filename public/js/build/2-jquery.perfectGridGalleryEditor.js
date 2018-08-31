@@ -2492,13 +2492,15 @@
 
         collapseElementsProperties: function () {
             this.$section.attr("data-rex-collapse-grid", true);
-            //this.$element.addClass("rex-collapsed-grid");
+            //adding class to button for collapse
+            this.$section.find(".collapse-grid").addClass("grid-collapsed");
             this.properties.oneColumModeActive = true;
         },
-
+        
         removeCollapseElementsProperties: function () {
             this.$section.attr("data-rex-collapse-grid", false);
-            //this.$element.removeClass("rex-collapsed-grid");
+            //removing class to button for collapse
+            this.$section.find(".collapse-grid").removeClass("grid-collapsed");
             this.properties.oneColumModeActive = false;
         },
 
@@ -2550,11 +2552,12 @@
             this.updateBlocksWidth();
             this.commitGridstack();
             setTimeout(function () {
+                // when elements are with width of 100%, we can calculate their content height
                 that.batchGridstack();
                 that.updateCollapsedBlocksHeight();
                 that.commitGridstack();
-                that._updateElementsSizeViewers();
                 setTimeout(function () {
+                    that._updateElementsSizeViewers();
                     that._createFirstReverseStack();
 
                     var event = jQuery.Event("rexlive:collapsingElementsEnded");

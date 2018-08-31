@@ -562,7 +562,7 @@ class Rexbuilder_Admin {
 						e.preventDefault();
 						$('#wp-preview').val(true);
 						$('#post-preview')
-							.attr('href',<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>)
+							//.attr('href','<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>')
 							.trigger('click');
 					});
 				});

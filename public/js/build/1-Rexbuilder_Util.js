@@ -747,6 +747,12 @@ var Rexbuilder_Util = (function ($) {
             }
         });
     }
+    var _getDefaultTargets = function($section){
+        var layoutDataPage = [];
+        if ($resposiveData.children(".layouts-customizations").text() != "") {
+            layoutDataPage = JSON.parse($resposiveData.children(".layouts-customizations").text());
+        }
+    }
 
     var updateSection = function ($section, $gallery, targetProps, forceCollapseElementsGrid) {
         var $sectionData = $section.children(".section-data");
