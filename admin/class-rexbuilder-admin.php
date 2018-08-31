@@ -553,6 +553,7 @@ class Rexbuilder_Admin {
 		</div>
 		<div style="text-align:center">
 			<a href="<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>" class="button button-primary button-large go-live <?php echo ( 'auto-draft' == get_post_status($post->ID) ? ' draft' : '' ); ?>" target="_blank"><?php _e( 'Go Live', 'rexpansive' ); ?></a>
+			<input type="hidden" name="force_live" value="">
 			<script>
 				;(function ($) {
 				'use strict';
@@ -561,9 +562,11 @@ class Rexbuilder_Admin {
 					$('.go-live.draft').on('click', function(e) {
 						e.preventDefault();
 						$('#wp-preview').val(true);
+						$('input[name=force_live]').val("do_force_live");
 						$('#post-preview')
 							//.attr('href','<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>')
 							.trigger('click');
+						$('input[name=force_live]').val("");
 					});
 				});
 				})(jQuery);
@@ -584,7 +587,10 @@ class Rexbuilder_Admin {
 	 * @since 1.1.0
 	 */
 	public function change_preview_url( $url ) {
-		return admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' );
+		if( isset( $_POST['wp-preview'] ) && "dopreview" == $_POST['wp-preview'] && isset( $_POST['force_live'] ) && "do_force_live" == $_POST['force_live'] ) {
+			return admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' );
+		}
+		return $url;
 	}
 
 	/**
