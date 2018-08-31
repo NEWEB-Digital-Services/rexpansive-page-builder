@@ -552,12 +552,38 @@ class Rexbuilder_Admin {
 			</div>
 		</div>
 		<div style="text-align:center">
-			<a href="<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>" class="button button-primary button-large"><?php _e( 'Go Live', 'rexpansive' ); ?></a>
+			<a href="<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>" class="button button-primary button-large go-live <?php echo ( 'auto-draft' == get_post_status($post->ID) ? ' draft' : '' ); ?>" target="_blank"><?php _e( 'Go Live', 'rexpansive' ); ?></a>
+			<script>
+				;(function ($) {
+				'use strict';
+				// Waiting until the ready of the DOM
+				$(function () {
+					$('.go-live.draft').on('click', function(e) {
+						e.preventDefault();
+						$('#wp-preview').val(true);
+						$('#post-preview')
+							.trigger('click');
+					});
+				});
+				})(jQuery);
+
+			</script>
 		</div>
 	<?php
 				endif;
 			endif;
 		endif;
+	}
+
+	/**
+	 * Change the default preview URL to correctly open the editor
+	 *
+	 * @param string $url
+	 * @return string $url
+	 * @since 1.1.0
+	 */
+	public function change_preview_url( $url ) {
+		return $url . '&action=edit&rexlive=true';
 	}
 
 	/**
