@@ -1060,7 +1060,6 @@
 				}
 			};
 
-
 			var mp4Video = typeof $elemData.attr('data-video_mp4_url') == "undefined" ? "" : $elemData.attr('data-video_mp4_url');
 			var mp4VideoID = typeof $elemData.attr('data-video_bg_id') == "undefined" ? "" : $elemData.attr('data-video_bg_id');
 			var youtubeUrl = typeof $elemData.attr('data-video_bg_url') == "undefined" ? "" : $elemData.attr('data-video_bg_url');
@@ -1174,19 +1173,21 @@
 			var sectionCustomizations = Rexbuilder_Util_Editor.getSectionCustomLayouts(sectionID);
 			var names = [];
 			var i;
-			for(i=0; i<sectionCustomizations.length; i++){
-				names.push(sectionCustomizations[i].name);
-			}
-
-			var simoneDiceSi = true;
-			if (simoneDiceSi) {
+			if(sectionCustomizations.length != 0){
+				for(i=0; i<sectionCustomizations.length; i++){
+					names.push(sectionCustomizations[i].name);
+				}
 				for (i = 0; i < sectionCustomizations.length; i++) {
 					if (sectionCustomizations[i].name == "default") {
 						sectionCustomizations[i].targets = Rex_Save_Listeners.createTargets($section, "default");
 					}
 				}
 			} else {
-				;
+				names.push("default");
+				sectionCustomizations.push({
+					name: "default",
+					targets: Rex_Save_Listeners.createTargets($section, "default")
+				});
 			}
 
 			var modelID = typeof $section.attr("data-rexlive-model-id") != "undefined" ? $section.attr("data-rexlive-model-id") : "";

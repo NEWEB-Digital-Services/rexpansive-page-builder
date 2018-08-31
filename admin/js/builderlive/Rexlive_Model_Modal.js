@@ -20,6 +20,10 @@ var Model_Modal = (function ($) {
         sectionShortCode = data.shortCode;
         layouts = data.layouts;
         layoutsNames = data.layoutsNames;
+        
+        console.log(layouts);
+        console.log(layoutsNames);
+        console.log(sectionShortCode);
 
         rexmodel_modal_props.$model_name.val('');
         rexmodel_modal_props.$model_import.find('option[value=0]').prop('selected', true);
@@ -124,6 +128,7 @@ var Model_Modal = (function ($) {
                         if (response.success) {
                             rexmodel_modal_props.$model_import_wrap.addClass("hide-import-wrap");
                             if (response.data.model_id != -1) {
+                                console.log(response);
                                 rexmodel_modal_props.$model_name.val('').siblings('label').removeClass('active');
                                 rexmodel_modal_props.$save_button.val('');
                                 rexmodel_modal_props.$model_import.children().eq(0).after('<option value="' + response.data.model_id + '">' + response.data.model_title + '</option>');

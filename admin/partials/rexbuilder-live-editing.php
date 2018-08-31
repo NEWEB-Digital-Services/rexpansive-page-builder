@@ -16,6 +16,18 @@ global $post;
 global $pagenow;
 
 $source = get_permalink($post->ID);
+if( get_post_status( $id ) == "auto-draft"){
+//	$source .= "&preview=true&editor=true";
+	$source= add_query_arg( array(
+			'preview' => 'true',
+			'editor' => 'true',
+		), $source );
+} else{
+//	$source .= "&editor=true";
+	$source= add_query_arg( array(
+			'editor' => 'true',
+		), $source );
+}
 
 global $layoutsAvaiable;
 
@@ -40,7 +52,7 @@ echo json_encode($layoutsAvaiable);
 		</div>
 	</div>
 	<div class="rexpansive-live-frame-container">
-		<iframe id="rexpansive-live-frame" src="<?php echo $source . '?&editor=true' ?>" allowfullscreen="1" style="width:100%;height:100%;border: 0px;"></iframe>
+		<iframe id="rexpansive-live-frame" src="<?php echo $source; ?>" allowfullscreen="1" style="width:100%;height:100%;border: 0px;"></iframe>
 	</div>
 </div>
 <?php

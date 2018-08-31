@@ -41,12 +41,26 @@
 		max-width: 75px;
 	}
 
-	.rexlive-responsive-toolbox {
-		display:flex;
-		justify-content: space-between;
+	.rexlive-responsive-buttons-wrapper{
+		width: 100%;
 		height: 100%;
-    	align-items: center;
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
 	}
+
+	.rexlive-responsive-toolbox {
+	    display: flex;
+    	height: 100%;
+	}
+	
+	.rexlive-builder-actions{
+		height: 100%;
+		display: flex;
+		justify-content: space-around;
+		align-items: center;
+	}
+
 /* hiding wordpress*/
 	#adminmenumain,#wpcontent,#wpfooter{
 		display: none;
@@ -165,6 +179,7 @@
 	color: #fff;
 	font-size: 26px;
 }
+
 .rex-model__import--wrap-active{
 	display: flex;
 	width: 100%;

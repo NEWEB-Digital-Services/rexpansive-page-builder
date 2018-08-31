@@ -184,10 +184,10 @@
             };
 
             if (typeof collapseGrid == "undefined") {
-                if (Rexbuilder_Util.activeLayout == "default" && this._viewport().width < 768) {
+                if (Rexbuilder_Util.activeLayout == "default" && this._viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth) {
                     this.collapseElements();
                 }
-            } else if ((Rexbuilder_Util.activeLayout == "default" && this._viewport().width < 768 && collapseGrid.toString() == "true") || collapseGrid.toString() == "true") {
+            } else if ((Rexbuilder_Util.activeLayout == "default" && this._viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth && collapseGrid.toString() == "true") || collapseGrid.toString() == "true") {
                 this.collapseElements();
             }
 
@@ -1231,12 +1231,12 @@
 
             var collapseGrid = this.$section.attr("data-rex-collapse-grid");
             if (typeof collapseGrid == "undefined") {
-                if (Rexbuilder_Util.activeLayout == "default" && this._viewport().width <= 768) {
+                if (Rexbuilder_Util.activeLayout == "default" && this._viewport().width <= _plugin_frontend_settings.defaultSettings.collapseWidth) {
                     this.properties.oneColumModeActive = true;
                 } else {
                     this.properties.oneColumModeActive = false;
                 }
-            } else if ((Rexbuilder_Util.activeLayout == "default" && this._viewport().width <= 768 && collapseGrid.toString() == "true") || collapseGrid.toString() == "true") {
+            } else if ((Rexbuilder_Util.activeLayout == "default" && this._viewport().width <= _plugin_frontend_settings.defaultSettings.collapseWidth && collapseGrid.toString() == "true") || collapseGrid.toString() == "true") {
                 this.properties.oneColumModeActive = true;
             } else {
                 this.properties.oneColumModeActive = false;
@@ -2227,7 +2227,7 @@
         _setParentGridPadding: function () {
             var $parent = this.$element.parent();
             //console.log('setting parent padding');
-            if (this._viewport().width >= 768 && !this.properties.setDesktopPadding || (!this.properties.setDesktopPadding && !this.properties.setMobilePadding && this.$section.attr("data-rex-collapse-grid") == "true")) {
+            if (this._viewport().width >= _plugin_frontend_settings.defaultSettings.collapseWidth && !this.properties.setDesktopPadding || (!this.properties.setDesktopPadding && !this.properties.setMobilePadding && this.$section.attr("data-rex-collapse-grid") == "true")) {
                 //console.log('setting parent padding');
                 this.properties.setDesktopPadding = true;
                 if (this.$section.attr("data-rex-collapse-grid") == "true") {
@@ -2266,7 +2266,7 @@
         },
         // setting the blocks and wrap padding
         _setGridPadding: function () {
-            if (this._viewport().width >= 768 && !this.properties.setDesktopPadding || (!this.properties.setDesktopPadding && !this.properties.setMobilePadding && this.$section.attr("data-rex-collapse-grid") == "true")) {
+            if (this._viewport().width >= _plugin_frontend_settings.defaultSettings.collapseWidth && !this.properties.setDesktopPadding || (!this.properties.setDesktopPadding && !this.properties.setMobilePadding && this.$section.attr("data-rex-collapse-grid") == "true")) {
                 this.properties.setDesktopPadding = true;
                 if (this.$section.attr("data-rex-collapse-grid") == "true") {
                     this.properties.setMobilePadding = true;
@@ -2318,7 +2318,7 @@
         * this.properties.halfSeparator); } else {
         * this.$element.find(this.settings.itemSelector).css('padding',
         * this.properties.halfSeparator); } } } else if
-        * (this._viewport().width < 768 &&
+        * (this._viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth &&
         * !this.properties.setMobilePadding &&
         * this.$section.attr("data-rex-collapse-grid") == "true") {
         * this.properties.setMobilePadding = true;

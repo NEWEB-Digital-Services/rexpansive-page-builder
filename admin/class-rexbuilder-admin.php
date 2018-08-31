@@ -1281,6 +1281,7 @@ class Rexbuilder_Admin {
 		$model_settings = $_POST['model_data'];
 		$layouts = $_POST['model_layouts'];
 		$names = $_POST['names'];
+		$model_shortcode = $model_settings['post_content'];
 
 		if( empty( $model_settings['post_content'] ) ) {
 			$response['error'] = true;
@@ -1292,27 +1293,45 @@ class Rexbuilder_Admin {
 			'comment_status'	=>	'closed',
 			'ping_status'		=>	'closed',
 			'post_title'		=>	$model_settings['post_title'],
-			'post_content'		=>	$model_settings['post_content'],
+			'post_content'		=>	"",
 			'post_status'		=>	'private',
 			'post_type'			=>	'rex_model'
 		);
 
 		if( null === get_page_by_title( $args['post_title'], OBJECT, 'rex_model' ) ) {
 			// Create the page
-			$response['model_id'] = wp_insert_post( $args );
-			$response['model_title'] = $args['post_title'];
-			update_post_meta( $response['model_id'], '_rexbuilder_active', 'true' );
-			update_post_meta( $response['model_id'], '_rex_model_customization_names', $names);
+			$model_insert_id = wp_insert_post( $args );
+			$model_title = $args['post_title'];
+
+			$response['model_id'] = $model_insert_id;
+			$response['model_title'] = $model_title;
+
+			// updating shortcode with post id and model name
+			$model_shortcode = str_replace('rexlive_model_id=\"\"','rexlive_model_id="'.$model_insert_id.'"', $model_shortcode);
+			$model_shortcode = str_replace('rexlive_model_name=\"\"', 'rexlive_model_name="'.$model_title.'"', $model_shortcode);
+
+			// updating post content with new shortcode
+			$argsModel = array(
+				'ID'           => $model_insert_id,
+				'post_title'   => $model_title,
+				'post_content' => $model_shortcode,
+			);
+
+			wp_update_post( $argsModel );
+
+			update_post_meta( $model_insert_id, '_rexbuilder_active', 'true' );
+			update_post_meta( $model_insert_id, '_rex_model_customization_names', $names);
+
 			foreach ($layouts as $index => $layout) {
 				$layoutName = $layout['name'];
 				$targets =  $layout['targets'];
-				update_post_meta( $response['model_id'], '_rex_model_customization_' . $layoutName, $targets);
+				update_post_meta( $model_insert_id, '_rex_model_customization_' . $layoutName, $targets);
 			}
 
 			$argsQuery = array(
 				'post_type'		=>	'rex_model',
 				'post_status'	=>	'private',
-				'p'				=>	$response['model_id']
+				'p'				=>	$model_insert_id
 			);
 	
 			$query = new WP_Query( $argsQuery );

@@ -5149,3 +5149,6 @@ a.pswp-item {
   top: 0;
   left: 0;
   z-index: 35; }
+
+.rex-hide-section {
+  display: none; }

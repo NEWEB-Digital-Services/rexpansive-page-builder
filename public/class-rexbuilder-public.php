@@ -240,9 +240,9 @@ class Rexbuilder_Public
             wp_enqueue_script('section-js', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Section.js', array('jquery'), null, true);
             wp_enqueue_script('block-js', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Block.js', array('jquery'), null, true);
 
-            wp_enqueue_script('rexbuilder', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/rexbuilder-public.js', array('jquery'), null, true);
-
             wp_enqueue_script('4-modals', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/4-modals.js', array('jquery'), null, true);
+
+            wp_enqueue_script('rexbuilder', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/rexbuilder-public.js', array('jquery'), null, true);
 
             wp_localize_script('rexbuilder', '_plugin_frontend_settings', apply_filters('rexbuilder_js_settings', array(
                 'animations' => apply_filters('rexbuilder_animation_enabled', $this->plugin_options['animation']),
@@ -259,6 +259,9 @@ class Rexbuilder_Public
                     'ajaxurl' => admin_url('admin-ajax.php'),
                     'rexnonce' => wp_create_nonce('rex-ajax-call-nonce'),
                 ),
+                'defaultSettings' => array(
+                    'collapseWidth' => 768,
+                )
             )
             ));
 

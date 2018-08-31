@@ -184,7 +184,7 @@ var Rexbuilder_Util = (function ($) {
                 name: targetsToEmpty[i].name,
                 props: {}
             };
-            if (targetsToEmpty[i].name == "self" && _viewport().width < 768) {
+            if (targetsToEmpty[i].name == "self" && _viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth) {
                 emptyTarget.props.collapse_grid = true;
             }
             emptyTargets.push(emptyTarget);
@@ -244,6 +244,13 @@ var Rexbuilder_Util = (function ($) {
             layoutDataPage = JSON.parse($resposiveData.children(".layouts-customizations").text());
         }
 
+        var i ;
+        // if no sections on this layout
+        for(i=0; i<layoutDataPage.length; i++){
+            if(layoutDataPage[i].sections == null){
+                layoutDataPage[i].sections = [];
+            }
+        }
         console.log("layoutDataPage", layoutDataPage);
 
         var layoutDataModels = [];
@@ -374,7 +381,7 @@ var Rexbuilder_Util = (function ($) {
         var customSections = layoutSelectedSections;
         var forceCollapseElementsGrid = false;
         /*         if (i == layoutDataPage.length || chosenLayoutName == "default") {
-                    if (_viewport().width < 768) {
+                    if (_viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth) {
                         forceCollapseElementsGrid = true;
                     }
                 } else {
@@ -492,8 +499,13 @@ var Rexbuilder_Util = (function ($) {
                     $section = Rexbuilder_Util.$rexContainer.children('section[data-rexlive-section-id="' + section.section_rex_id + '"]');
                 }
                 if($section.length != 0){
+                    if(typeof section.section_removing != "undefined" && section.section_removing.toString() == "true"){
+                        $section.addClass("rex-hide-section");
+                    } else {
+                        $section.removeClass("rex-hide-section");
+                        _updateDOMelements($section, section.targets, forceCollapseElementsGrid);
+                    }
                     sectionDomOrder.push(sectionObj);   
-                    _updateDOMelements($section, section.targets, forceCollapseElementsGrid);
                 }
             }
         });
@@ -598,7 +610,7 @@ var Rexbuilder_Util = (function ($) {
 
                 Rexbuilder_Dom_Util.updateBlockPaddings($elem, _getPaddingsDataString(targetProps["block_padding"]));
 
-                var newClasses = targetProps["block_custom_class"];
+                var newClasses = typeof targetProps["block_custom_class"] == "undefined" ? "" : targetProps["block_custom_class"];
                 var classList = [];
                 if (newClasses != "") {
                     newClasses = newClasses.trim();
@@ -725,6 +737,9 @@ var Rexbuilder_Util = (function ($) {
     }
 
     var _updateModelsLive = function (idModel, targets, editedModelNumber) {
+        console.log(idModel);
+        console.log(targets);
+        console.log(editedModelNumber);
         Rexbuilder_Util.$rexContainer.children(".rexpansive_section").each(function (i, sec) {
             var $section = $(sec);
             if ($section.attr("data-rexlive-model-id") == idModel && $section.attr("data-rexlive-model-number") != editedModelNumber) {
@@ -816,7 +831,7 @@ var Rexbuilder_Util = (function ($) {
         Rexbuilder_Dom_Util.updateSectionName($section, newName);
         $section.attr('data-type', targetProps['type']);
 
-        var newClasses = targetProps["custom_classes"];
+        var newClasses = typeof targetProps["custom_classes"] == "undefined" ? "" : targetProps["custom_classes"];
         var classList = [];
         if (newClasses != "") {
             newClasses = newClasses.trim();
@@ -1626,7 +1641,7 @@ var Rexbuilder_Util = (function ($) {
         var oldResposiveBlockGrid = this.$rexContainer.children(".rexpansive_section").eq(0).attr("data-rex-collapse-grid");
 
         this.blockGridUnder768 = typeof oldResposiveBlockGrid != "undefined" ? oldResposiveBlockGrid.toString() == "false" : false;
-
+        console.log("dimension", _plugin_frontend_settings.defaultSettings.collapseWidth);
         _updateSectionsID();
 
         this.chosenLayoutData = null;

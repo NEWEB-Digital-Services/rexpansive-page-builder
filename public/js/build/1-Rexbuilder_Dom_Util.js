@@ -639,6 +639,10 @@ var Rexbuilder_Dom_Util = (function ($) {
             $targetData = $target.children(".rexbuilder-block-data");
             oldClasses = $targetData.attr("data-block_custom_class");
         }
+        
+        if(typeof oldClasses == "undefined"){
+            oldClasses = "";
+        }
 
         oldClasses = oldClasses.trim();
         var oldClassesList = oldClasses.split(/\s+/);

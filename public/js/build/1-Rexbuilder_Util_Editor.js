@@ -620,14 +620,16 @@ var Rexbuilder_Util_Editor = (function ($) {
 
         for (i = 0; i < oldCustomizations.length; i++) {
             var name = oldCustomizations[i].name;
-            for (j = 0; j < oldCustomizations[i].sections.length; j++) {
-                if (oldCustomizations[i].sections[j].section_rex_id == sectionRexID) {
-                    var targets = jQuery.extend(true, [], oldCustomizations[i].sections[j].targets);
-                    var customization = {
-                        name: name,
-                        targets: targets
+            if(oldCustomizations[i].sections != null){
+                for (j = 0; j < oldCustomizations[i].sections.length; j++) {
+                    if (oldCustomizations[i].sections[j].section_rex_id == sectionRexID) {
+                        var targets = jQuery.extend(true, [], oldCustomizations[i].sections[j].targets);
+                        var customization = {
+                            name: name,
+                            targets: targets
+                        }
+                        layouts.push(customization);
                     }
-                    layouts.push(customization);
                 }
             }
         }
