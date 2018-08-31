@@ -187,7 +187,7 @@ class Rexbuilder {
 		$this->loader->add_filter( 'manage_rex_slider_posts_columns', $plugin_admin, 'rexpansive_slider_columns_reorder' );
 		$this->loader->add_action( 'manage_rex_slider_posts_custom_column', $plugin_admin, 'rexpansive_slider_columns_content', 10, 2 );
 
-		$this->loader->add_filter( 'preview_post_link', $plugin_admin, 'change_preview_url' );
+		// $this->loader->add_filter( 'preview_post_link', $plugin_admin, 'change_preview_url' );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles_production' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts_production' );

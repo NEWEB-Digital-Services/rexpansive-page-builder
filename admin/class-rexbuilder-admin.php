@@ -562,6 +562,7 @@ class Rexbuilder_Admin {
 						e.preventDefault();
 						$('#wp-preview').val(true);
 						$('#post-preview')
+							.attr('href',<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>)
 							.trigger('click');
 					});
 				});
@@ -583,7 +584,7 @@ class Rexbuilder_Admin {
 	 * @since 1.1.0
 	 */
 	public function change_preview_url( $url ) {
-		return $url . '&action=edit&rexlive=true';
+		return admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' );
 	}
 
 	/**
