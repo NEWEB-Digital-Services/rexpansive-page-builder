@@ -153,8 +153,6 @@ var Rexbuilder_Util = (function ($) {
         var selectedLayoutName = "";
         var ordered = lodash.sortBy(layoutsPageNames, [function (o) { return parseInt(o.min); }]);
 
-        console.log(ordered);
-
         for (i = 0; i < ordered.length; i++) {
             if (windowWidth >= ordered[i].min) {
                 if (ordered[i].max != "") {
@@ -202,9 +200,10 @@ var Rexbuilder_Util = (function ($) {
                 Rexbuilder_Util.$rexContainer.addClass("rex-hide-responsive-tools");
             }
         }
+
         if (chosenLayoutName == Rexbuilder_Util.activeLayout) {
             if (chosenLayoutName == "default") {
-                if (_viewport().width > 767) {
+                if (_viewport().width >= _plugin_frontend_settings.defaultSettings.collapseWidth) {
                     Rexbuilder_Util.removeCollapsedGrids();
                 } else {
                     if (!Rexbuilder_Util.blockGridUnder768) {
@@ -244,10 +243,10 @@ var Rexbuilder_Util = (function ($) {
             layoutDataPage = JSON.parse($resposiveData.children(".layouts-customizations").text());
         }
 
-        var i ;
+        var i;
         // if no sections on this layout
-        for(i=0; i<layoutDataPage.length; i++){
-            if(layoutDataPage[i].sections == null){
+        for (i = 0; i < layoutDataPage.length; i++) {
+            if (layoutDataPage[i].sections == null) {
                 layoutDataPage[i].sections = [];
             }
         }
@@ -498,14 +497,14 @@ var Rexbuilder_Util = (function ($) {
                 } else {
                     $section = Rexbuilder_Util.$rexContainer.children('section[data-rexlive-section-id="' + section.section_rex_id + '"]');
                 }
-                if($section.length != 0){
-                    if(typeof section.section_removing != "undefined" && section.section_removing.toString() == "true"){
+                if ($section.length != 0) {
+                    if (typeof section.section_removing != "undefined" && section.section_removing.toString() == "true") {
                         $section.addClass("rex-hide-section");
                     } else {
                         $section.removeClass("rex-hide-section");
                         _updateDOMelements($section, section.targets, forceCollapseElementsGrid);
                     }
-                    sectionDomOrder.push(sectionObj);   
+                    sectionDomOrder.push(sectionObj);
                 }
             }
         });
@@ -547,9 +546,20 @@ var Rexbuilder_Util = (function ($) {
                     startH: targetProps["gs_start_h"],
                     gridstackInstance: gridstackInstance,
                 };
-
+                /**
+                 props = Rexbuilder_Util.getDefaultBlockProps($section, elemetsDisposition[i].name);
+                        if(defaultLayout.layout != galleryLayout.layout){
+                            if(defaultLayout.layout == "masonry"){
+                                props.gs_y = Math.round(props.gs_y / 5);
+                                props.gs_height = Math.round(props.gs_height / 5);
+                            } else {
+                                props.gs_y = props.gs_y * 5;
+                                props.gs_height = props.gs_height * 5;
+                            }
+                        }
+                 */
                 _updateElementDimensions($elem, $itemData, postionData);
-                
+
                 var mp4ID = !isNaN(parseInt(targetProps["video_bg_id"])) ? parseInt(targetProps["video_bg_id"]) : "";
                 var youtubeUrl = typeof targetProps["video_bg_url_youtube"] == "undefined" ? "" : targetProps["video_bg_url_youtube"];
                 var vimeoUrl = typeof targetProps["video_bg_url_vimeo"] == "undefined" ? "" : targetProps["video_bg_url_vimeo"];
@@ -711,35 +721,38 @@ var Rexbuilder_Util = (function ($) {
                             break;
                     }
                 }
-            } else{
-                var $el =$gallery.children('div[data-rexbuilder-block-id="' + targetName + '"]');
-                if($el.length !=0){
+            } else {
+                var $el = $gallery.children('div[data-rexbuilder-block-id="' + targetName + '"]');
+                if ($el.length != 0) {
                     console.log("che me ne facico di lui");
-//                    $el.remove();
+                    //                    $el.remove();
                 }
             }
         }
 
         updateSection($section, $gallery, targets[0].props, forceCollapseElementsGrid);
-
         if (galleryData !== undefined) {
             var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
             if (galleryEditorInstance !== undefined) {
-                galleryEditorInstance.commitGridstack();
-                //brutto, ma per ora funziona, aspettiamo implementino un evento per il commit di gridstack
+                galleryEditorInstance.properties.gridstackInstance.commit();
+                //waiting for gridstack updating blocks dimensions with saved data
                 setTimeout(function () {
-                    galleryEditorInstance.properties.dispositionBeforeCollapsing = galleryEditorInstance.createActionDataMoveBlocksGrid();
-                    galleryEditorInstance._createFirstReverseStack();
-                    galleryEditorInstance._updateElementsSizeViewers();
-                }, 400);
+                    galleryEditorInstance.batchGridstack();
+                    //updaiting blocks height for masonry
+                    galleryEditorInstance.updateBlocksHeight();
+                    galleryEditorInstance.commitGridstack();
+                    setTimeout(function () {
+                        galleryEditorInstance.properties.dispositionBeforeCollapsing = galleryEditorInstance.createActionDataMoveBlocksGrid();
+                        galleryEditorInstance._createFirstReverseStack();
+                        galleryEditorInstance.createScrollbars();
+                        galleryEditorInstance._updateElementsSizeViewers();
+                    }, 200, galleryEditorInstance);
+                }, 200, galleryEditorInstance);
             }
         }
     }
 
     var _updateModelsLive = function (idModel, targets, editedModelNumber) {
-        console.log(idModel);
-        console.log(targets);
-        console.log(editedModelNumber);
         Rexbuilder_Util.$rexContainer.children(".rexpansive_section").each(function (i, sec) {
             var $section = $(sec);
             if ($section.attr("data-rexlive-model-id") == idModel && $section.attr("data-rexlive-model-number") != editedModelNumber) {
@@ -747,11 +760,144 @@ var Rexbuilder_Util = (function ($) {
             }
         });
     }
-    var _getDefaultTargets = function($section){
+
+    var _getLayoutTargets = function ($section, layoutName) {
+        layoutName = typeof layoutName === "undefined" ? "default" : layoutName;
+        var targets = [];
+        var i, j;
+
+        if ($section.hasClass("rex-model-section")) {
+            var modelID = $section.attr("data-rexlive-model-id");
+            var layoutDataModels = [];
+            var $modelData = $("#rexbuilder-model-data");
+            if ($modelData.children(".models-customizations").text() != "") {
+                layoutDataModels = JSON.parse($modelData.children(".models-customizations").text());
+            }
+            for (i = 0; i < layoutDataModels.length; i++) {
+                if (layoutDataModels[i].id == modelID) {
+                    for (j = 0; j < layoutDataModels[i].customizations.length; j++) {
+                        if (layoutDataModels[i].customizations[j].name == layoutName) {
+                            targets = jQuery.extend(true, [], layoutDataModels[i].customizations[j].targets);
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        } else {
+            var rexID = $section.attr("data-rexlive-section-id");
+            var $resposiveData = $("#rexbuilder-layout-data");
+            var layoutDataPage = [];
+
+            if ($resposiveData.children(".layouts-customizations").text() != "") {
+                layoutDataPage = JSON.parse($resposiveData.children(".layouts-customizations").text());
+            }
+
+            for (i = 0; i < layoutDataPage.length; i++) {
+                if (layoutDataPage[i].name == layoutName && typeof layoutDataPage[i].sections !== "undefined") {
+                    for (j = 0; j < layoutDataPage[i].sections.length; j++) {
+                        if (layoutDataPage[i].sections[j].section_rex_id == rexID) {
+                            targets = jQuery.extend(true, [], layoutDataPage[i].sections[j].targets);
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+        return targets;
+    }
+
+    var _getDefaultBlockProps = function ($section, blockRexID) {
+        var defaultTargets = _getLayoutTargets($section, "default");
+        var i;
+        var blockProps = {};
+        for(i=1; i< defaultTargets.length; i++){
+            if(defaultTargets[i].name == blockRexID){
+                blockProps = jQuery.extend(true, {}, defaultTargets[i].props);
+                break;
+            }
+        }
+        return blockProps;
+    }
+
+    var _getGridLayout = function ($section, layoutName) {
+        layoutName = typeof layoutName === "undefined" ? "default" : layoutName;
+        var gridLayout = {
+            layout: "fixed",
+            fullHeight: false,
+            collapsed: false,
+        };
+
+        var i, j;
+
+        if ($section.hasClass("rex-model-section")) {
+            var modelID = $section.attr("data-rexlive-model-id");
+            var layoutDataModels = [];
+            var $modelData = $("#rexbuilder-model-data");
+            if ($modelData.children(".models-customizations").text() != "") {
+                layoutDataModels = JSON.parse($modelData.children(".models-customizations").text());
+            }
+            for (i = 0; i < layoutDataModels.length; i++) {
+                if (layoutDataModels[i].id == modelID) {
+                    for (j = 0; j < layoutDataModels[i].customizations.length; j++) {
+                        if (layoutDataModels[i].customizations[j].name == layoutName) {
+                            gridLayout.layout = layoutDataModels[i].customizations[j].targets[0].props['layout'];
+                            gridLayout.fullHeight = layoutDataModels[i].customizations[j].targets[0].props['full_height'];
+                            gridLayout.collapsed = layoutDataModels[i].customizations[j].targets[0].props['collapse_grid'];
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        } else {
+            var rexID = $section.attr("data-rexlive-section-id");
+            var $resposiveData = $("#rexbuilder-layout-data");
+            var layoutDataPage = [];
+
+            if ($resposiveData.children(".layouts-customizations").text() != "") {
+                layoutDataPage = JSON.parse($resposiveData.children(".layouts-customizations").text());
+            }
+
+            for (i = 0; i < layoutDataPage.length; i++) {
+                if (layoutDataPage[i].name == layoutName && typeof layoutDataPage[i].sections !== "undefined") {
+                    for (j = 0; j < layoutDataPage[i].sections.length; j++) {
+                        
+                        if (layoutDataPage[i].sections[j].section_rex_id == rexID) {
+                            gridLayout.layout = layoutDataPage[i].sections[j].targets[0].props['layout'];
+                            gridLayout.fullHeight = layoutDataPage[i].sections[j].targets[0].props['full_height'];
+                            gridLayout.collapsed = layoutDataPage[i].sections[j].targets[0].props['collapse_grid'];
+                            break;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
+        return gridLayout;
+    }
+
+    var _customizationExists = function (layoutName) {
+        var exists = false;
+        var i;
+
+        var $resposiveData = $("#rexbuilder-layout-data");
         var layoutDataPage = [];
+
         if ($resposiveData.children(".layouts-customizations").text() != "") {
             layoutDataPage = JSON.parse($resposiveData.children(".layouts-customizations").text());
         }
+
+        for (i = 0; i < layoutDataPage.length; i++) {
+            if (layoutDataPage[i].name == layoutName) {
+                exists = true;
+                break;
+            }
+        }
+
+        return exists;
     }
 
     var updateSection = function ($section, $gallery, targetProps, forceCollapseElementsGrid) {
@@ -824,10 +970,13 @@ var Rexbuilder_Util = (function ($) {
             row_separator_bottom: targetProps['row_separator_bottom'],
             row_separator_right: targetProps['row_separator_right'],
             row_separator_left: targetProps['row_separator_left'],
+
             full_height: targetProps['full_height'],
             layout: targetProps['layout'],
+
             section_width: targetProps['section_width'],
             dimension: targetProps['dimension'],
+
             collapse_grid: targetProps['collapse_grid'].toString() == "true" || forceCollapseElementsGrid,
         }
 
@@ -838,6 +987,7 @@ var Rexbuilder_Util = (function ($) {
         $section.attr('data-type', targetProps['type']);
 
         var newClasses = typeof targetProps["custom_classes"] == "undefined" ? "" : targetProps["custom_classes"];
+
         var classList = [];
         if (newClasses != "") {
             newClasses = newClasses.trim();
@@ -847,7 +997,6 @@ var Rexbuilder_Util = (function ($) {
     }
 
     var _updateElementDimensions = function ($elem, $elemData, posData) {
-        console.log("dimensionsApplyed", posData);
         var x = parseInt(posData.x);
         var y = parseInt(posData.y);
         var w = parseInt(posData.w);
@@ -1278,37 +1427,38 @@ var Rexbuilder_Util = (function ($) {
                 _edit_dom_layout(Rexbuilder_Util_Editor.clickedLayoutID);
             } else {
                 _edit_dom_layout(chooseLayout());
+            //}
+
+                if (Rexbuilder_Util.activeLayout != Rexbuilder_Util.oldLayout) {
+                    Rexbuilder_Util.oldLayout = Rexbuilder_Util.activeLayout;
+                }
+
+                Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
+                    var galleryEditorInstance = $(this).data().plugin_perfectGridGalleryEditor;
+                    console.log(galleryEditorInstance);
+                    if (galleryEditorInstance !== undefined) {
+                        galleryEditorInstance.batchGridstack();
+                    }
+                });
+
+                Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
+                    var galleryEditorInstance = $(this).data().plugin_perfectGridGalleryEditor;
+                    if (galleryEditorInstance !== undefined) {
+                        galleryEditorInstance._defineDynamicPrivateProperties();
+                        galleryEditorInstance.updateGridstackStyles();
+                        galleryEditorInstance.updateBlocksHeight();
+                        galleryEditorInstance = undefined;
+                    }
+                });
+
+                Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
+                    var galleryEditorInstance = $(this).data().plugin_perfectGridGalleryEditor;
+                    if (galleryEditorInstance !== undefined) {
+                        galleryEditorInstance.commitGridstack();
+                        galleryEditorInstance.createScrollbars();
+                    }
+                });
             }
-
-            if (Rexbuilder_Util.activeLayout != Rexbuilder_Util.oldLayout) {
-                Rexbuilder_Util.oldLayout = Rexbuilder_Util.activeLayout;
-            }
-
-            Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
-                var galleryEditorInstance = $(this).data().plugin_perfectGridGalleryEditor;
-                if (galleryEditorInstance !== undefined) {
-                    galleryEditorInstance.batchGridstack();
-                }
-            });
-
-            Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
-                var galleryEditorInstance = $(this).data().plugin_perfectGridGalleryEditor;
-                if (galleryEditorInstance !== undefined) {
-                    galleryEditorInstance._defineDynamicPrivateProperties();
-                    galleryEditorInstance.updateGridstackStyles();
-                    galleryEditorInstance.updateBlocksHeight();
-                    galleryEditorInstance = undefined;
-                }
-            });
-
-            Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
-                var galleryEditorInstance = $(this).data().plugin_perfectGridGalleryEditor;
-                if (galleryEditorInstance !== undefined) {
-                    galleryEditorInstance.commitGridstack();
-                    galleryEditorInstance.createScrollbars();
-                }
-            });
-
             Rexbuilder_Util.windowIsResizing = false;
             firstResize = true;
         }
@@ -1721,6 +1871,11 @@ var Rexbuilder_Util = (function ($) {
         playAllVideos: _playAllVideos,
         findLayoutType: _findLayoutType,
         updateModelsLive: _updateModelsLive,
+        getLayoutTargets: _getLayoutTargets,
+        updateElementDimensions: _updateElementDimensions,
+        getGridLayout: _getGridLayout,
+        customizationExists: _customizationExists,
+        getDefaultBlockProps: _getDefaultBlockProps,
     };
 
 })(jQuery);

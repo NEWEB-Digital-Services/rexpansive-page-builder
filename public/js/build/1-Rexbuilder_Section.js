@@ -131,7 +131,6 @@ var Rexbuilder_Section = (function ($) {
             }
 
             var galleryEditorInstance = Rexbuilder_Util.getGalleryInstance($section);
-            var oldDisposition = galleryEditorInstance.createActionDataMoveBlocksGrid();
 
             var layout = {
                 layout: galleryEditorInstance.settings.galleryLayout,
@@ -142,7 +141,7 @@ var Rexbuilder_Section = (function ($) {
             var reverseData = {
                 gridInstance: galleryEditorInstance,
                 gridLayout: layout,
-                blockDisposition: oldDisposition,
+                blockDisposition: galleryEditorInstance.createActionDataMoveBlocksGrid(),
                 collapse: gridCollapsed
             }
 
@@ -150,32 +149,99 @@ var Rexbuilder_Section = (function ($) {
                 galleryEditorInstance.collapseElementsProperties();
                 galleryEditorInstance.collapseElements(reverseData);
             } else {
+                Rexbuilder_Util_Editor.updatingCollapsedGrid = true;
+
+                var elemetsDisposition;
+                var galleryLayoutToActive; 
+                var defaultLayout;
+
+                if(Rexbuilder_Util.customizationExists(Rexbuilder_Util.activeLayout)){
+                    elemetsDisposition = Rexbuilder_Util.getLayoutTargets($section, Rexbuilder_Util.activeLayout);
+                    galleryLayoutToActive = Rexbuilder_Util.getGridLayout($section, Rexbuilder_Util.activeLayout);
+                } else {
+                    elemetsDisposition = Rexbuilder_Util.getLayoutTargets($section, "default");
+                    galleryLayoutToActive = Rexbuilder_Util.getGridLayout($section, "default");
+                }
+                defaultLayout = galleryLayoutToActive = Rexbuilder_Util.getGridLayout($section, "default");
                 
-                var defaultTargets = Rexbuilder_Util.getDefaultTargets($section);
-                var i, j;
+                var i;
+                var gridstackInstance = galleryEditorInstance.properties.gridstackInstance;
+                var fullHeight = galleryLayoutToActive.fullHeight;
 
-
-                var postionData = {
-                    x: targetProps["gs_x"],
-                    y: targetProps["gs_y"],
-                    w: targetProps["gs_width"],
-                    h: targetProps["gs_height"],
-                    startH: targetProps["gs_start_h"],
-                    gridstackInstance: gridstackInstance,
-                };
-
-                _updateElementDimensions($elem, $itemData, postionData);
-
-//                Rexbuilder_Dom_Util.collapseGrid(galleryEditorInstance, false, galleryEditorInstance.properties.dispositionBeforeCollapsing, galleryEditorInstance.properties.layoutBeforeCollapsing);
-
-                var actionData = {
-                    gridInstance: galleryEditorInstance,
-                    gridLayout: galleryEditorInstance.properties.layoutBeforeCollapsing,
-                    blockDisposition: galleryEditorInstance.properties.dispositionBeforeCollapsing,
-                    collapse: false
+                if(false){
+                    fullHeight = true;
+                    singleHeight = this._viewport().height / Rexbuilder_Util_Editor.calculateGridHeight(elemetsDisposition);
                 }
 
-                Rexbuilder_Util_Editor.pushAction($section, "collapseSection", actionData, reverseData);
+                var galleryLayout = {
+                    layout: galleryLayoutToActive.layout,
+                    fullHeight: false,
+                    singleHeight: galleryLayoutToActive.layout == "masonry" ? 5 : galleryEditorInstance.$element.outerWidth() / 12,
+                }
+                
+                galleryEditorInstance.$element.attr("data-layout", galleryLayout.layout);
+                galleryEditorInstance.$element.attr("data-full-height", galleryLayout.fullHeight);
+
+                galleryEditorInstance.updateGridLayoutCollapse(galleryLayout);
+
+                galleryEditorInstance.batchGridstack();
+
+                for (i = 1; i < elemetsDisposition.length; i++) {
+                    var $elem = $section.find("div[data-rexbuilder-block-id=\"" + elemetsDisposition[i].name + "\"]");
+                    var $elemData = $elem.children(".rexbuilder-block-data");
+                    var props = elemetsDisposition[i].props;
+                    if(typeof props === "undefined"){
+                        props = Rexbuilder_Util.getDefaultBlockProps($section, elemetsDisposition[i].name);
+                        if(defaultLayout.layout != galleryLayout.layout){
+                            if(defaultLayout.layout == "masonry"){
+                                props.gs_y = Math.round(props.gs_y / 5);
+                                props.gs_height = Math.round(props.gs_height / 5);
+                            } else {
+                                props.gs_y = props.gs_y * 5;
+                                props.gs_height = props.gs_height * 5;
+                            }
+                        }
+                    }
+                    var postionData = {
+                        x: props.gs_x,
+                        y: props.gs_y,
+                        w: props.gs_width,
+                        h: props.gs_height,
+                        startH: props.gs_start_h,
+                        gridstackInstance: gridstackInstance,
+                    };
+                    Rexbuilder_Util.updateElementDimensions($elem, $elemData, postionData);
+                }
+
+                galleryEditorInstance.commitGridstack();
+
+                galleryEditorInstance.removeCollapseElementsProperties();
+                if (galleryLayout.layout == "masonry") {
+                    setTimeout(function () {
+                        galleryEditorInstance.updateBlocksHeight();
+                        setTimeout(function () {
+                            var actionData = {
+                                gridInstance: galleryEditorInstance,
+                                gridLayout: galleryLayout,
+                                blockDisposition: galleryEditorInstance.createActionDataMoveBlocksGrid(),
+                                collapse: false
+                            }
+                            Rexbuilder_Util_Editor.pushAction($section, "collapseSection", actionData, reverseData);
+                            Rexbuilder_Util_Editor.updatingCollapsedGrid = false;
+                        }, 400, reverseData, $section, galleryEditorInstance, galleryLayout);
+                    }, 300, reverseData, $section, galleryEditorInstance, galleryLayout);
+                } else {
+                    setTimeout(function () {
+                        var actionData = {
+                            gridInstance: galleryEditorInstance,
+                            gridLayout: galleryLayout,
+                            blockDisposition: galleryEditorInstance.createActionDataMoveBlocksGrid(),
+                            collapse: false
+                        }
+                        Rexbuilder_Util_Editor.pushAction($section, "collapseSection", actionData, reverseData);
+                        Rexbuilder_Util_Editor.updatingCollapsedGrid = false;
+                    }, 400, reverseData, $section, galleryEditorInstance, galleryLayout);
+                }
             }
         });
 

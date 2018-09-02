@@ -111,7 +111,7 @@ var Rexbuilder_Dom_Util = (function ($) {
 
         var galleryData = $galleryElement.data();
         if (galleryData !== undefined) {
-            var galleryEditorInstance = $galleryElement.data().plugin_perfectGridGalleryEditor;
+            var galleryEditorInstance = galleryData.plugin_perfectGridGalleryEditor;
             if (galleryEditorInstance !== undefined) {
                 galleryEditorInstance.updateGridSettingsChangeLayout(rowSettings);
             }
@@ -547,7 +547,7 @@ var Rexbuilder_Dom_Util = (function ($) {
             Rexbuilder_Util_Editor.updatingCollapsedGrid = false;
             gridInstance._createFirstReverseStack();
             gridInstance._updateElementsSizeViewers();
-        }, 500);
+        }, 200);
     }
 
     var _updateRemovingBlock = function ($elem, hasToBeRemoved, galleryEditorInstance) {
@@ -640,7 +640,7 @@ var Rexbuilder_Dom_Util = (function ($) {
             oldClasses = $targetData.attr("data-block_custom_class");
         }
         
-        if(typeof oldClasses == "undefined"){
+        if (typeof oldClasses == "undefined") {
             oldClasses = "";
         }
 
@@ -978,13 +978,14 @@ var Rexbuilder_Dom_Util = (function ($) {
 
                     galleryEditorInstance.commitGridstack();
                     Rexbuilder_Util_Editor.updatingGridstack = false;
-                    galleryEditorInstance._updateElementsSizeViewers();
+                    //waiting gridstack to update size viewers
+                    setTimeout(galleryEditorInstance._updateElementsSizeViewers(), 200);
                 }
                 break;
             case "updateSectionBlocksDisposition":
                 if (galleryEditorInstance !== undefined) {
                     _updateBlocksLayout(dataToUse);
-                    galleryEditorInstance._updateElementsSizeViewers();
+                    setTimeout(galleryEditorInstance._updateElementsSizeViewers(), 200);
                 }
                 break;
             //Used to delete or recreate block

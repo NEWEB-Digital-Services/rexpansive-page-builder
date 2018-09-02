@@ -321,12 +321,13 @@
                 fullHeight: this.settings.fullHeight,
                 singleHeight: this.properties.singleHeight
             };
+            console.log(newSettings.collapse_grid);
             if (newSettings.collapse_grid.toString() == "true") {
                 this.collapseElements();
             } else {
                 this.removeCollapseElementsProperties();
             }
-
+            this.properties.updatingSectionSameGrid = false;
             this.triggerGalleryReady();
 
             this.properties.firstStartGrid = false;
@@ -359,8 +360,8 @@
         },
 
         updateLayout: function (newLayout, fullHeight) {
-            //console.log("changing layout, data active:", this.settings.galleryLayout, this.settings.fullHeight);
-            //console.log("changing layout, data received:", newLayout, fullHeight);
+            console.log("changing layout, data active:", this.settings.galleryLayout, this.settings.fullHeight);
+            console.log("changing layout, data received:", newLayout, fullHeight);
 
             Rexbuilder_Util_Editor.elementIsResizing = true;
             Rexbuilder_Util_Editor.elementIsDragging = true;
@@ -375,7 +376,7 @@
                 this.batchGridstack();
             }
 
-            this.settings.fullHeight = fullHeight.toString();
+            this.settings.fullHeight = fullHeight.toString() == "true";
 
             if (newLayout != this.settings.galleryLayout) {
                 this.settings.galleryLayout = newLayout;
@@ -435,7 +436,7 @@
             this.batchGridstack();
             this._defineDynamicPrivateProperties();
             this.updateGridstackStyles();
-            this.updateBlocksHeight();
+//            this.updateBlocksHeight();
             this.commitGridstack();
         },
 
@@ -1861,6 +1862,7 @@
                     Rexbuilder_Util_Editor.elementIsResizing = false;
                     Rexbuilder_Util_Editor.elementIsDragging = false;
                     gallery.$element.attr("data-rexlive-layout-changed=\"true\"");
+                    gallery.removeCollapseElementsProperties();
                 }
             });
         },
@@ -1980,10 +1982,12 @@
             var $elemData;
             var gridstack = this.properties.gridstackInstance;
             if (typeof gridstack !== "null") {
-                // //console.log("GRIDSTACK ACTIVE");
+                console.log("GRIDSTACK ACTIVE");
                 this.properties.blocksBottomTop = this.getElementBottomTop();
-                //console.log("updating heights?");
-                if (!this.properties.updatingSectionSameGrid) {
+                console.log("updating heights?");
+                console.log(this.properties.updatingSectionSameGrid);
+                if (!this.properties.updatingSectionSameGrid || Rexbuilder_Util.windowIsResizing) {
+                    console.log("updaiting hegihts 1984");
                     //console.log("yes");
                     this.batchGridstack();
 
@@ -2340,7 +2344,7 @@
 
         updateElementHeight: function ($elem) {
             console.log("calculating " + $elem.attr("data-rexbuilder-block-id") + " height");
-
+            console.log($elem.attr("data-gs-width"));
             if (Rexbuilder_Util.editorMode && !this.properties.oneColumModeActive) {
                 Rexbuilder_Util_Editor.elementIsResizing = true;
             }

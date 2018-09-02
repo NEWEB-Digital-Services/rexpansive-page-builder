@@ -43,10 +43,13 @@
 			var reverseData = {
 				marginsSection: oldMargins,
 				rowDistances: oldRowDistances,
+				
 				fullHeight: $gallery.attr("data-full-height"),
 				layout: $gallery.attr("data-layout"),
+
 				section_width: $gallery.parent().css("max-width"),
 				dimension: $gallery.parent().hasClass("full-disposition") ? "full" : "boxed",
+
 				collapse_grid: $section.attr("data-rex-collapse-grid"),
 				blocksDisposition: $.extend(true, {}, oldDisposition)
 			}
