@@ -41,7 +41,6 @@ var Rexbuilder_Util = (function ($) {
     }
 
     var createBlockID = function () {
-        console.log("creating new block ID");
         var id;
         var flag;
         var idLength = 4;
@@ -69,7 +68,7 @@ var Rexbuilder_Util = (function ($) {
         var $sec;
         Rexbuilder_Util.$rexContainer.children('.rexpansive_section').each(function (i, e) {
             $sec = $(e);
-            if ($sec.attr('data-rexlive-section-id') === undefined) {
+            if (typeof $sec.attr('data-rexlive-section-id') === "undefined" || $sec.attr('data-rexlive-section-id') == "") {
                 id = _createSectionID();
                 $sec.attr('data-rexlive-section-id', id);
             }
@@ -79,8 +78,8 @@ var Rexbuilder_Util = (function ($) {
     var _updateSectionsNumber = function () {
         var last = -1;
         var $sec;
-        Rexbuilder_Util.$rexContainer.children('.rexpansive_section').each(function (i, e) {
-            $sec = $(e);
+        Rexbuilder_Util.$rexContainer.children('.rexpansive_section').each(function (i, sec) {
+            $sec = $(sec);
             $sec.attr('data-rexlive-section-number', i);
             last = i;
         });
@@ -228,7 +227,7 @@ var Rexbuilder_Util = (function ($) {
         var $modelData = $("#rexbuilder-model-data");
 
         if (($resposiveData.children(".layouts-customizations").attr("data-empty-customizations") == "true") && $modelData.children(".models-customizations").attr("data-empty-models-customizations") == "true") {
-            if (_viewport().width > 767) {
+            if (_viewport().width >= _plugin_frontend_settings.defaultSettings.collapseWidth) {
                 removeCollapsedGrids();
             } else {
                 if (!Rexbuilder_Util.blockGridUnder768) {
@@ -250,14 +249,13 @@ var Rexbuilder_Util = (function ($) {
                 layoutDataPage[i].sections = [];
             }
         }
-        console.log("layoutDataPage", layoutDataPage);
+
 
         var layoutDataModels = [];
         if ($modelData.children(".models-customizations").text() != "") {
             layoutDataModels = JSON.parse($modelData.children(".models-customizations").text());
         }
 
-        console.log("layoutDataModels", layoutDataModels);
 
         var modelsIDInPage = [];
 
@@ -278,8 +276,6 @@ var Rexbuilder_Util = (function ($) {
             }
             sectionsPage.push(secObj);
         });
-
-        console.log("sectionsPage", sectionsPage);
 
         var i, j, p, q;
         var defaultLayoutSections = [];
@@ -379,16 +375,7 @@ var Rexbuilder_Util = (function ($) {
 
         var customSections = layoutSelectedSections;
         var forceCollapseElementsGrid = false;
-        /*         if (i == layoutDataPage.length || chosenLayoutName == "default") {
-                    if (_viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth) {
-                        forceCollapseElementsGrid = true;
-                    }
-                } else {
-                    customSections = layoutSelectedSections;
-                } */
 
-        console.log("customSections", customSections);
-        console.log("defaultLayoutSections", defaultLayoutSections);
         var mergedEdits = $.extend(true, {}, customSections);
         var pushingEdits = $.extend(true, {}, defaultLayoutSections);
 
@@ -443,7 +430,22 @@ var Rexbuilder_Util = (function ($) {
                                     sectionCustom.targets[m].notDisplay = false;
                                     sectionDefault.targets[n].founded = true;
                                     targetFounded = true;
+                                    //fixing dimensions of new blocks in custom layout
                                     sectionCustom.targets[m].props = lodash.merge({}, sectionDefault.targets[n].props, sectionCustom.targets[m].props);
+
+                                    if (m > 1 && jQuery.isEmptyObject(sectionCustom.targets[m].props)) {
+                                        if (Rexbuilder_Util.activeLayout != "default") {
+                                            if (sectionDefault.targets[0].props.layout != sectionCustom.targets[0].props['layout']) {
+                                                if (sectionDefault.targets[0].props.layout == "masonry") {
+                                                    sectionCustom.targets[m].props.gs_y = Math.round(sectionDefault.targets[n].props.gs_y / 5);
+                                                    sectionCustom.targets[m].props.gs_height = Math.round(sectionDefault.targets[n].props.gs_height / 5);
+                                                } else {
+                                                    sectionCustom.targets[m].props.gs_y = sectionDefault.targets[n].props.gs_y * 5;
+                                                    sectionCustom.targets[m].props.gs_height = sectionDefault.targets[n].props.gs_height * 5;
+                                                }
+                                            }
+                                        }
+                                    }
                                 }
                             }
                             if (!targetFounded) {
@@ -472,6 +474,11 @@ var Rexbuilder_Util = (function ($) {
         } else {
             mergedEdits = pushingEdits;
         }
+        console.log("layoutDataPage", layoutDataPage);
+        console.log("layoutDataModels", layoutDataModels);
+        console.log("sectionsPage", sectionsPage);
+        console.log("customSections", customSections);
+        console.log("defaultLayoutSections", defaultLayoutSections);
         console.log("newBlocksLayout", newBlocksLayout);
         console.log("newSectionsLayout", newSectionsLayout);
 
@@ -546,18 +553,7 @@ var Rexbuilder_Util = (function ($) {
                     startH: targetProps["gs_start_h"],
                     gridstackInstance: gridstackInstance,
                 };
-                /**
-                 props = Rexbuilder_Util.getDefaultBlockProps($section, elemetsDisposition[i].name);
-                        if(defaultLayout.layout != galleryLayout.layout){
-                            if(defaultLayout.layout == "masonry"){
-                                props.gs_y = Math.round(props.gs_y / 5);
-                                props.gs_height = Math.round(props.gs_height / 5);
-                            } else {
-                                props.gs_y = props.gs_y * 5;
-                                props.gs_height = props.gs_height * 5;
-                            }
-                        }
-                 */
+
                 _updateElementDimensions($elem, $itemData, postionData);
 
                 var mp4ID = !isNaN(parseInt(targetProps["video_bg_id"])) ? parseInt(targetProps["video_bg_id"]) : "";
@@ -637,6 +633,12 @@ var Rexbuilder_Util = (function ($) {
 
                 Rexbuilder_Dom_Util.updateFlexPostition($elem, flexPosition);
 
+                var sliderRatio = typeof targetProps["slider_dimension_ratio"] == "undefined" ? "" : targetProps["slider_dimension_ratio"];
+                $itemData.attr("data-slider_ratio", sliderRatio);
+
+                var blockEdited = typeof targetProps["block_live_edited"] == "undefined" ? "" : targetProps["block_live_edited"];
+                $itemData.attr("data-block_live_edited", blockEdited);
+
                 for (var propName in targetProps) {
                     switch (propName) {
                         case "hide":
@@ -712,8 +714,6 @@ var Rexbuilder_Util = (function ($) {
                             break;
                         case "block_has_scrollbar":
                             break;
-                        case "block_live_edited":
-                            break;
                         case "overwritten":
                             $itemData.attr("data-custom_layout", targetProps["overwritten"].toString());
                             break;
@@ -731,20 +731,32 @@ var Rexbuilder_Util = (function ($) {
         }
 
         updateSection($section, $gallery, targets[0].props, forceCollapseElementsGrid);
+        var collapse = targets[0].props.collapse_grid.toString() == "true" || forceCollapseElementsGrid;
         if (galleryData !== undefined) {
+
             var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
             if (galleryEditorInstance !== undefined) {
+                Rexbuilder_Util.domUpdaiting = true;
                 galleryEditorInstance.properties.gridstackInstance.commit();
                 //waiting for gridstack updating blocks dimensions with saved data
                 setTimeout(function () {
+                    Rexbuilder_Util.domUpdaiting = true;
                     galleryEditorInstance.batchGridstack();
                     //updaiting blocks height for masonry
-                    galleryEditorInstance.updateBlocksHeight();
+                    if (galleryEditorInstance.settings.galleryLayout == "masonry" && !collapse) {
+                        galleryEditorInstance.updateBlocksHeight();
+                    } else if (galleryEditorInstance.settings.galleryLayout == "fixed" && galleryEditorInstance.settings.fullHeight.toString() == "true") {
+                        galleryEditorInstance.updateFullHeight();
+                    }
                     galleryEditorInstance.commitGridstack();
                     setTimeout(function () {
+                        Rexbuilder_Util.domUpdaiting = false;
                         galleryEditorInstance.properties.dispositionBeforeCollapsing = galleryEditorInstance.createActionDataMoveBlocksGrid();
                         galleryEditorInstance._createFirstReverseStack();
-                        galleryEditorInstance.createScrollbars();
+                        galleryEditorInstance._fixImagesDimension();
+                        if (Rexbuilder_Util.editorMode) {
+                            galleryEditorInstance.createScrollbars();
+                        }
                         galleryEditorInstance._updateElementsSizeViewers();
                     }, 200, galleryEditorInstance);
                 }, 200, galleryEditorInstance);
@@ -812,8 +824,8 @@ var Rexbuilder_Util = (function ($) {
         var defaultTargets = _getLayoutTargets($section, "default");
         var i;
         var blockProps = {};
-        for(i=1; i< defaultTargets.length; i++){
-            if(defaultTargets[i].name == blockRexID){
+        for (i = 1; i < defaultTargets.length; i++) {
+            if (defaultTargets[i].name == blockRexID) {
                 blockProps = jQuery.extend(true, {}, defaultTargets[i].props);
                 break;
             }
@@ -863,7 +875,7 @@ var Rexbuilder_Util = (function ($) {
             for (i = 0; i < layoutDataPage.length; i++) {
                 if (layoutDataPage[i].name == layoutName && typeof layoutDataPage[i].sections !== "undefined") {
                     for (j = 0; j < layoutDataPage[i].sections.length; j++) {
-                        
+
                         if (layoutDataPage[i].sections[j].section_rex_id == rexID) {
                             gridLayout.layout = layoutDataPage[i].sections[j].targets[0].props['layout'];
                             gridLayout.fullHeight = layoutDataPage[i].sections[j].targets[0].props['full_height'];
@@ -1401,8 +1413,8 @@ var Rexbuilder_Util = (function ($) {
 
                 Rexbuilder_Util.windowIsResizing = true;
                 if (firstResize) {
-                    Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
-                        var galleryEditorInstance = $(this).data().plugin_perfectGridGalleryEditor;
+                    Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function (e, row) {
+                        var galleryEditorInstance = $(row).data().plugin_perfectGridGalleryEditor;
                         if (galleryEditorInstance !== undefined) {
                             galleryEditorInstance.removeScrollbars();
                         }
@@ -1427,35 +1439,17 @@ var Rexbuilder_Util = (function ($) {
                 _edit_dom_layout(Rexbuilder_Util_Editor.clickedLayoutID);
             } else {
                 _edit_dom_layout(chooseLayout());
-            //}
 
-                if (Rexbuilder_Util.activeLayout != Rexbuilder_Util.oldLayout) {
-                    Rexbuilder_Util.oldLayout = Rexbuilder_Util.activeLayout;
-                }
-
-                Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
-                    var galleryEditorInstance = $(this).data().plugin_perfectGridGalleryEditor;
-                    console.log(galleryEditorInstance);
+                Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function (e, row) {
+                    var galleryEditorInstance = $(row).data().plugin_perfectGridGalleryEditor;
                     if (galleryEditorInstance !== undefined) {
                         galleryEditorInstance.batchGridstack();
-                    }
-                });
-
-                Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
-                    var galleryEditorInstance = $(this).data().plugin_perfectGridGalleryEditor;
-                    if (galleryEditorInstance !== undefined) {
                         galleryEditorInstance._defineDynamicPrivateProperties();
                         galleryEditorInstance.updateGridstackStyles();
                         galleryEditorInstance.updateBlocksHeight();
-                        galleryEditorInstance = undefined;
-                    }
-                });
-
-                Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function () {
-                    var galleryEditorInstance = $(this).data().plugin_perfectGridGalleryEditor;
-                    if (galleryEditorInstance !== undefined) {
                         galleryEditorInstance.commitGridstack();
-                        galleryEditorInstance.createScrollbars();
+                        //waiting for gridstack commit
+                        setTimeout(galleryEditorInstance.createScrollbars(), 200);
                     }
                 });
             }
@@ -1788,7 +1782,9 @@ var Rexbuilder_Util = (function ($) {
         this.$body = $("body");
 
         this.$rexContainer = $(".rex-container");
-
+        if(Rexbuilder_Util.$rexContainer.attr("data-backend-edited").toString()== "true" && Rexbuilder_Util.editorMode){
+            Rexbuilder_Util.$rexContainer.addClass("backend-edited");
+        }
         this.lastSectionNumber = -1;
 
         this.activeLayout = "";
@@ -1797,16 +1793,15 @@ var Rexbuilder_Util = (function ($) {
         var oldResposiveBlockGrid = this.$rexContainer.children(".rexpansive_section").eq(0).attr("data-rex-collapse-grid");
 
         this.blockGridUnder768 = typeof oldResposiveBlockGrid != "undefined" ? oldResposiveBlockGrid.toString() == "false" : false;
-        console.log("dimension", _plugin_frontend_settings.defaultSettings.collapseWidth);
-        _updateSectionsID();
 
         this.chosenLayoutData = null;
 
+        _updateSectionsID();
         Rexbuilder_Dom_Util.fixModelNumbers();
         Rexbuilder_Dom_Util.fixModelNumbersSaving();
+
         var l = chooseLayout();
         _edit_dom_layout(l);
-        this.oldLayout = l;
 
         _updateSectionsNumber();
 

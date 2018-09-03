@@ -104,7 +104,6 @@ var Model_Modal = (function ($) {
         });
 
         rexmodel_modal_props.$add_new_model.on('click', function () {
-
             if (rexmodel_modal_props.$model_name.val() != '') {
                 var model_name = rexmodel_modal_props.$model_name.val();
 
@@ -128,7 +127,6 @@ var Model_Modal = (function ($) {
                         if (response.success) {
                             rexmodel_modal_props.$model_import_wrap.addClass("hide-import-wrap");
                             if (response.data.model_id != -1) {
-                                console.log(response);
                                 rexmodel_modal_props.$model_name.val('').siblings('label').removeClass('active');
                                 rexmodel_modal_props.$save_button.val('');
                                 rexmodel_modal_props.$model_import.children().eq(0).after('<option value="' + response.data.model_id + '">' + response.data.model_title + '</option>');

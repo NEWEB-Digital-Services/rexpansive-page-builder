@@ -43,7 +43,9 @@ var Rexbuilder_Section = (function ($) {
             Rexbuilder_Util_Editor.removeScrollBar($elem);
             Rexbuilder_Util_Editor.removeHandles($elem);
             Rexbuilder_Util_Editor.removeTextEditor($elem);
-            Rexbuilder_Util_Editor.fixCopiedElementSlider($elem);
+            if (!Rexbuilder_Util_Editor.insertingModel) {
+                Rexbuilder_Util_Editor.fixCopiedElementSlider($elem);
+            }
         });
 
         if (!Rexbuilder_Util_Editor.insertingModel) {
@@ -83,7 +85,7 @@ var Rexbuilder_Section = (function ($) {
                 Rexbuilder_Util_Editor.insertingModel = true;
             }
 
-            if($newSection.hasClass("rex-model-section")){
+            if ($newSection.hasClass("rex-model-section")) {
                 var modelID = $newSection.attr("data-rexlive-model-id");
                 var modelNumber = 1;
                 Rexbuilder_Util.$rexContainer.children(".rexpansive_section").each(function (i, sec) {
@@ -94,7 +96,7 @@ var Rexbuilder_Section = (function ($) {
                 });
                 $newSection.attr("data-rexlive-model-number", modelNumber);
             }
-            
+
             $newSection.insertAfter($section);
             Rexbuilder_Section.prepareSectionCopied($newSection);
 
@@ -124,7 +126,7 @@ var Rexbuilder_Section = (function ($) {
             var $section = $(e.target).parents(".rexpansive_section");
 
             var gridCollapsed;
-            if(typeof $section.attr("data-rex-collapse-grid") != "undefined" && $section.attr("data-rex-collapse-grid").toString() == "true"){
+            if (typeof $section.attr("data-rex-collapse-grid") != "undefined" && $section.attr("data-rex-collapse-grid").toString() == "true") {
                 gridCollapsed = true;
             } else {
                 gridCollapsed = false;
@@ -137,7 +139,7 @@ var Rexbuilder_Section = (function ($) {
                 fullHeight: galleryEditorInstance.settings.fullHeight,
                 singleHeight: galleryEditorInstance.properties.singleHeight
             };
-            
+
             var reverseData = {
                 gridInstance: galleryEditorInstance,
                 gridLayout: layout,
@@ -152,33 +154,35 @@ var Rexbuilder_Section = (function ($) {
                 Rexbuilder_Util_Editor.updatingCollapsedGrid = true;
 
                 var elemetsDisposition;
-                var galleryLayoutToActive; 
+                var galleryLayoutToActive;
                 var defaultLayout;
 
-                if(Rexbuilder_Util.customizationExists(Rexbuilder_Util.activeLayout)){
+                if (Rexbuilder_Util.customizationExists(Rexbuilder_Util.activeLayout)) {
                     elemetsDisposition = Rexbuilder_Util.getLayoutTargets($section, Rexbuilder_Util.activeLayout);
                     galleryLayoutToActive = Rexbuilder_Util.getGridLayout($section, Rexbuilder_Util.activeLayout);
                 } else {
                     elemetsDisposition = Rexbuilder_Util.getLayoutTargets($section, "default");
                     galleryLayoutToActive = Rexbuilder_Util.getGridLayout($section, "default");
                 }
-                defaultLayout = galleryLayoutToActive = Rexbuilder_Util.getGridLayout($section, "default");
-                
+                defaultLayout = Rexbuilder_Util.getGridLayout($section, "default");
+
                 var i;
                 var gridstackInstance = galleryEditorInstance.properties.gridstackInstance;
-                var fullHeight = galleryLayoutToActive.fullHeight;
+                var fullHeight = galleryLayoutToActive.fullHeight.toString() == "true";
+                var singleHeight;
 
-                if(false){
-                    fullHeight = true;
-                    singleHeight = this._viewport().height / Rexbuilder_Util_Editor.calculateGridHeight(elemetsDisposition);
+                if (galleryLayoutToActive.layout == "masonry") {
+                    singleHeight = 5;
+                } else {
+                    singleHeight = galleryEditorInstance.$element.outerWidth() / 12;
                 }
 
                 var galleryLayout = {
                     layout: galleryLayoutToActive.layout,
-                    fullHeight: false,
-                    singleHeight: galleryLayoutToActive.layout == "masonry" ? 5 : galleryEditorInstance.$element.outerWidth() / 12,
+                    fullHeight: fullHeight,
+                    singleHeight: singleHeight,
                 }
-                
+
                 galleryEditorInstance.$element.attr("data-layout", galleryLayout.layout);
                 galleryEditorInstance.$element.attr("data-full-height", galleryLayout.fullHeight);
 
@@ -190,10 +194,10 @@ var Rexbuilder_Section = (function ($) {
                     var $elem = $section.find("div[data-rexbuilder-block-id=\"" + elemetsDisposition[i].name + "\"]");
                     var $elemData = $elem.children(".rexbuilder-block-data");
                     var props = elemetsDisposition[i].props;
-                    if(typeof props === "undefined"){
+                    if (typeof props === "undefined") {
                         props = Rexbuilder_Util.getDefaultBlockProps($section, elemetsDisposition[i].name);
-                        if(defaultLayout.layout != galleryLayout.layout){
-                            if(defaultLayout.layout == "masonry"){
+                        if (defaultLayout.layout != galleryLayout.layout) {
+                            if (defaultLayout.layout == "masonry") {
                                 props.gs_y = Math.round(props.gs_y / 5);
                                 props.gs_height = Math.round(props.gs_height / 5);
                             } else {
@@ -216,8 +220,10 @@ var Rexbuilder_Section = (function ($) {
                 galleryEditorInstance.commitGridstack();
 
                 galleryEditorInstance.removeCollapseElementsProperties();
+
                 if (galleryLayout.layout == "masonry") {
                     setTimeout(function () {
+
                         galleryEditorInstance.updateBlocksHeight();
                         setTimeout(function () {
                             var actionData = {
@@ -226,21 +232,42 @@ var Rexbuilder_Section = (function ($) {
                                 blockDisposition: galleryEditorInstance.createActionDataMoveBlocksGrid(),
                                 collapse: false
                             }
+                            galleryEditorInstance._fixImagesDimension();
                             Rexbuilder_Util_Editor.pushAction($section, "collapseSection", actionData, reverseData);
                             Rexbuilder_Util_Editor.updatingCollapsedGrid = false;
                         }, 400, reverseData, $section, galleryEditorInstance, galleryLayout);
                     }, 300, reverseData, $section, galleryEditorInstance, galleryLayout);
                 } else {
-                    setTimeout(function () {
-                        var actionData = {
-                            gridInstance: galleryEditorInstance,
-                            gridLayout: galleryLayout,
-                            blockDisposition: galleryEditorInstance.createActionDataMoveBlocksGrid(),
-                            collapse: false
-                        }
-                        Rexbuilder_Util_Editor.pushAction($section, "collapseSection", actionData, reverseData);
-                        Rexbuilder_Util_Editor.updatingCollapsedGrid = false;
-                    }, 400, reverseData, $section, galleryEditorInstance, galleryLayout);
+                    if (fullHeight) {
+                        setTimeout(function () {
+                            galleryEditorInstance.properties.gridBlocksHeight = galleryEditorInstance._calculateGridHeight();
+                            galleryLayout.singleHeight = galleryEditorInstance._viewport().height / galleryEditorInstance.properties.gridBlocksHeight;
+                            galleryEditorInstance.updateGridstackStyles(galleryLayout.singleHeight);
+                            setTimeout(function () {
+                                var actionData = {
+                                    gridInstance: galleryEditorInstance,
+                                    gridLayout: galleryLayout,
+                                    blockDisposition: galleryEditorInstance.createActionDataMoveBlocksGrid(),
+                                    collapse: false
+                                }
+                                Rexbuilder_Util_Editor.pushAction($section, "collapseSection", actionData, reverseData);
+                                galleryEditorInstance._fixImagesDimension();
+                                Rexbuilder_Util_Editor.updatingCollapsedGrid = false;
+                            }, 100, reverseData, $section, galleryEditorInstance, galleryLayout);
+                        }, 300, reverseData, $section, galleryEditorInstance, galleryLayout);
+                    } else {
+                        setTimeout(function () {
+                            var actionData = {
+                                gridInstance: galleryEditorInstance,
+                                gridLayout: galleryLayout,
+                                blockDisposition: galleryEditorInstance.createActionDataMoveBlocksGrid(),
+                                collapse: false
+                            }
+                            galleryEditorInstance._fixImagesDimension();
+                            Rexbuilder_Util_Editor.pushAction($section, "collapseSection", actionData, reverseData);
+                            Rexbuilder_Util_Editor.updatingCollapsedGrid = false;
+                        }, 400, reverseData, $section, galleryEditorInstance, galleryLayout);
+                    }
                 }
             }
         });
@@ -383,6 +410,16 @@ var Rexbuilder_Section = (function ($) {
 
             $row.perfectGridGalleryEditor();
 
+            //starting sliders after grid is up
+            setTimeout(function () {  
+                $row.children(".grid-stack-item").each(function(i, el){
+                    var $sliderToActive = $(el).find(".rex-slider-wrap");
+                    if($sliderToActive.length != 0){
+                        RexSlider.initSlider($sliderToActive);
+                    }
+                });
+            }, 500, $row);
+
             Rexbuilder_Util.$rexContainer.sortable("refresh");
 
             var reverseData = {
@@ -411,9 +448,9 @@ var Rexbuilder_Section = (function ($) {
         Rexbuilder_Util_Editor.insertingModel = true;
         var idModel = data.modelID;
         var newHtml = data.html;
-        var editedModelNumber =  data.model_number;
-        var modelName =  data.modelName;
-        
+        var editedModelNumber = data.model_number;
+        var modelName = data.modelName;
+
         Rexbuilder_Util.$rexContainer.children(".rexpansive_section:not(.removing_section)").each(function (i, sec) {
             var $section = $(sec);
             if ($section.attr("data-rexlive-model-id") == idModel && $section.attr("data-rexlive-model-number") != editedModelNumber) {
@@ -423,7 +460,7 @@ var Rexbuilder_Section = (function ($) {
                         modelNumber = modelNumber + 1;
                     }
                 });
-                
+
                 var html = $.parseHTML(newHtml);
                 $section.after(html);
 
@@ -455,9 +492,9 @@ var Rexbuilder_Section = (function ($) {
                 Rexbuilder_Dom_Util.updateSectionVisibility($newSection, true);
             }
         });
-        
+
         Rexbuilder_Dom_Util.fixModelNumbersSaving();
-        
+
         Rexbuilder_Util.$rexContainer.children(".rexpansive_section.removing_section.rex-model-section").each(function (i, sec) {
             $(sec).attr("data-rexlive-saved-model-number", "");
         });

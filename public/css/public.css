@@ -4702,6 +4702,9 @@ a.pswp-item {
   left: 10%;
   cursor: pointer; }
 
+.backend-edited .collapse-grid {
+  display: none; }
+
 .collapse-grid {
   left: 25%; }
   .collapse-grid.grid-collapsed {

@@ -8,7 +8,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
         var $section = $(e.target).parents(".rexpansive_section");
         var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
         var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout);
-
+        $el.find(".grid-item-content").addClass("empty-content");
         galleryInstance.addTextEditor($el);
         galleryInstance.addScrollbar($el);
     });
@@ -32,7 +32,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
     $(document).on("rexlive:insert_image", function (e) {
         var data = e.settings.data_to_send;
- 
+
         var $section;
         if (data.sectionTarget.modelNumber != "") {
             $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"][data-rexlive-model-number="' + data.sectionTarget.modelNumber + '"]');
@@ -193,12 +193,12 @@ var Rexbuilder_CreateBlocks = (function ($) {
         if (typeof $elem == "undefined") {
             var $section;
 
-			if (data.sectionTarget.modelNumber != "") {
-				$section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"][data-rexlive-model-number="' + data.sectionTarget.modelNumber + '"]');
-			} else {
-				$section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"]');
+            if (data.sectionTarget.modelNumber != "") {
+                $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"][data-rexlive-model-number="' + data.sectionTarget.modelNumber + '"]');
+            } else {
+                $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"]');
             }
-            
+
             var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
             // 
             $el = _createBlockGrid(galleryInstance, 12, 4);

@@ -109,6 +109,10 @@
     cursor: pointer;
 }
 
+.backend-edited .collapse-grid{
+    display: none;
+}
+
 .collapse-grid{
     left: 25%;
     &.grid-collapsed{

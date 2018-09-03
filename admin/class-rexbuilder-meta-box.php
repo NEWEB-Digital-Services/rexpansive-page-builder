@@ -803,6 +803,10 @@ class Rexbuilder_Meta_Box {
         delete_post_meta( $post_id, $field[ 'id' ], $old );
       }
 
+      if('rexpansive_plugin' == $field["type"] ){
+        update_post_meta( $post_id, '_save_from_backend', "true" );
+      }
+
     endforeach;
   }
 

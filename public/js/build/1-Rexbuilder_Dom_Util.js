@@ -545,6 +545,7 @@ var Rexbuilder_Dom_Util = (function ($) {
         _updateBlocksLayout(blockDisposition);
         setTimeout(function () {
             Rexbuilder_Util_Editor.updatingCollapsedGrid = false;
+            gridInstance._fixImagesDimension();
             gridInstance._createFirstReverseStack();
             gridInstance._updateElementsSizeViewers();
         }, 200);

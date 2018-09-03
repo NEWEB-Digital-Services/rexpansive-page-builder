@@ -58,7 +58,6 @@ var Background_Section_Image_Modal = (function ($) {
     }
 
     var _addDocumentListeners = function () {
-        console.log(background_section_image_properties.$image_active_wrapper);
         background_section_image_properties.$image_active_wrapper.click(function (e) {
             e.preventDefault();
             var status = true === background_section_image_properties.$image_active.prop('checked');

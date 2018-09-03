@@ -39,6 +39,7 @@ var Rex_Save_Listeners = (function ($) {
                 success: function (response) {
                     if (response.success) {
                         console.log('shortcode pagina aggiornato!');
+                        Rexbuilder_Util.$rexContainer.removeClass("backend-edited");
                     }
                 },
                 error: function (response) {
@@ -498,6 +499,9 @@ var Rex_Save_Listeners = (function ($) {
             props: {}
         }
 
+        var $gridGallery = $section.find('.grid-stack-row');
+        var saveAllBloks = checkEditsLayoutGrid($gridGallery);
+
         if (layoutName == "default" || checkEditsSection($section)) {
             section_props.props = createSectionProperties($section, "customLayout", null);
             Rexbuilder_Util.activeLayout = layoutName;
@@ -506,13 +510,19 @@ var Rex_Save_Listeners = (function ($) {
                 section_props.props["collapse_grid"] = true;
             }
         }
+
+        if (saveAllBloks) {
+            section_props.props.gridEdited = true;
+            section_props.props.full_height = $gridGallery.attr("data-full-height");
+            section_props.props.layout = $gridGallery.attr("data-layout");
+        } else {
+            section_props.props.gridEdited = false;
+        }
+
         targets.push(section_props);
 
-        var $gridGallery = $section.find('.grid-stack-row');
         var galleryIstance = $gridGallery.data().plugin_perfectGridGalleryEditor;
         var elementsOrdered = galleryIstance.getElementsTopBottom();
-
-        var saveAllBloks = checkEditsLayoutGrid($gridGallery);
 
         galleryIstance.updateAllElementsProperties();
         $(elementsOrdered).each(function () {
@@ -598,7 +608,8 @@ var Rex_Save_Listeners = (function ($) {
             video_has_audio = '0',
             block_has_scrollbar = "false",
             block_live_edited = "",
-            block_flex_position = "";
+            block_flex_position = "",
+            slider_dimension_ratio = 1;
 
         var content = "";
         var $textWrap;
@@ -669,9 +680,17 @@ var Rex_Save_Listeners = (function ($) {
 
         block_has_scrollbar = $itemData.attr('data-block_has_scrollbar') === undefined ? "false"
             : $itemData.attr('data-block_has_scrollbar');
-        block_live_edited = $itemData.attr('data-rexlive-edited') === undefined ? "" : "true";
+        block_live_edited = typeof $itemData.attr('data-block_live_edited') === "undefined" ? "" : $itemData.attr('data-block_live_edited');
 
         block_flex_position = typeof $itemData.attr('data-block_flex_position') == "undefined" ? "" : $itemData.attr('data-block_flex_position');
+
+        if ($elem.hasClass("block-has-slider")) {
+            $itemData.attr('data-slider_ratio', ($elem.outerHeight() / $elem.outerWidth()).toFixed(3))
+        } else {
+            $itemData.attr('data-slider_ratio', "");
+        }
+
+        slider_dimension_ratio = typeof $itemData.attr('data-slider_ratio') == "undefined" ? "" : $itemData.attr('data-slider_ratio');
 
         if (mode == "shortcode") {
             $textWrap = $itemContent.find('.text-wrap');
@@ -785,6 +804,7 @@ var Rex_Save_Listeners = (function ($) {
             props["block_has_scrollbar"] = block_has_scrollbar;
             props["block_live_edited"] = block_live_edited;
             props["block_flex_position"] = block_flex_position;
+            props["slider_dimension_ratio"] = slider_dimension_ratio;
             props["overwritten"] = false;
 
             return props;

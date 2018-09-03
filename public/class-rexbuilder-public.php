@@ -529,6 +529,8 @@ endif;
 
         update_post_meta($post_id_to_update, '_rex_default_layout', $shortcode);
 
+        update_post_meta($post_id_to_update, '_save_from_backend', "false" );
+
         $response['update'] = $update;
         $response['id_recived'] = $post_id_to_update;
 
@@ -727,10 +729,14 @@ endif;
                 }
                 ?></textarea>
                 <?php
-    }
-            ?>
+            }
 
-            <div class="rex-container" data-rex-layout-selected="">
+            $backendEditing = "false";
+            if(get_post_meta($post->ID, '_save_from_backend', true) == "true"){
+                $backendEditing = "true";
+            }
+            ?>
+            <div class="rex-container" data-rex-layout-selected="" data-backend-edited="<?php echo $backendEditing;?>">
             <?php
     echo do_shortcode($defaultPage);
             ?>
