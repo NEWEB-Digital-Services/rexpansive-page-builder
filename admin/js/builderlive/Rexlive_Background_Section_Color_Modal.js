@@ -52,6 +52,7 @@ var Background_Section_Color_Modal = (function ($) {
                 sectionTarget: {}
             }
         }
+        var flagPickerUsed;
 
         background_section_color_properties.$color_value.spectrum({
             replacerClassName: 'btn-floating',
@@ -60,18 +61,24 @@ var Background_Section_Color_Modal = (function ($) {
             showAlpha: true,
             showInput: true,
             containerClassName: 'rexbuilder-materialize-wrap block-background-color-picker',
+            show: function () {
+                flagPickerUsed = false;
+            },
             move: function (color) {
-                console.log(changeColorEvent);
                 background_section_color_properties.$color_preview_icon.hide();
-                
                 changeColorEvent.data_to_send.color = bgColorActive ? color.toRgbString() : "";
                 Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(changeColorEvent);
+                flagPickerUsed = true;
             },
             change: function (color) {
                 background_section_color_properties.$color_palette_buttons.removeClass('palette-color-active');
             },
             hide: function (color) {
-                colorActive = color.toRgbString();
+                if(flagPickerUsed){
+                    colorActive = color.toRgbString();
+                }
+                console.log(colorActive);
+                background_section_color_properties.$color_runtime_value.val(colorActive);
                 _applyBackgroundColor();
             },
             cancelText: '',

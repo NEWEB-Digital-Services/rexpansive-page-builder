@@ -485,25 +485,27 @@ var Rexbuilder_RexSlider = (function ($) {
         slide_uploader_video_frame.open();
     }	// SlideVideoHandler END
 
-    var _saveSlider = function (sliderData, block_to_edit, rex_slider_to_edit, saveNewSlider, savingLiveSlider, oldSlideID) {
+    var _saveSlider = function (sliderData, block_to_edit, rex_slider_to_edit, saveNewSlider, savingLiveSlider, targetToEdit) {
 
         var saveNew = typeof saveNewSlider != "undefined" ? saveNewSlider : false;
         var saveLive = typeof savingLiveSlider != "undefined" ? savingLiveSlider : false;
         var idSlideToEdit;
 
-        if (saveNewSlider) {
-            idSlideToEdit = oldSlideID;
-        } else {
-            if (rex_slider_to_edit == "") {
+        console.log(rex_slider_to_edit);
+        console.log(saveNew);
+
+        if (rex_slider_to_edit == "" && !saveNew) {
                 idSlideToEdit = 0;
             } else {
                 idSlideToEdit = rex_slider_to_edit;
             }
+
+        if (typeof targetToEdit != "undefined") {
+            target = targetToEdit;
         }
 
         var sliderTitle = rexslider_modal_properties.$slider_import.find("option[value=\"" + idSlideToEdit + "\"]").text();
 
-        //da mettere qua?
         if (sliderTitle == "" || sliderTitle == "New Slider") {
             function pad2(n) { return n < 10 ? '0' + n : n }
             var date = new Date();
@@ -514,9 +516,33 @@ var Rexbuilder_RexSlider = (function ($) {
                 pad2(date.getHours()) +
                 pad2(date.getMinutes()) +
                 pad2(date.getSeconds());
+        } else {
+            if (saveNew) {
+                if (sliderTitle.indexOf(" - copy") != -1) {
+                    var regex = /copy(?:\s+([0-9]+))*/gm;
+                    var m;
+                    var num = -1;
+                    while ((m = regex.exec(sliderTitle)) !== null) {
+                        // This is necessary to avoid infinite loops with zero-width matches
+                        if (m.index === regex.lastIndex) {
+                            regex.lastIndex++;
+                        }
+                        if (typeof m[1] == "undefined") {
+                            num = 0;
+                        } else {
+                            num = parseInt(m[1]);
+                        }
+                    }
+                    sliderTitle = sliderTitle.replace(regex, "");
+                    num = num + 1;
+                    sliderTitle += "copy " + num;
+                } else {
+                    sliderTitle += " - copy";
+                }
+            }
         }
-
-        if (rex_slider_to_edit) {
+        
+        if (rex_slider_to_edit && !saveNew) {
             // ajx call
             // - clear previuos data
             // - save new data
@@ -594,10 +620,10 @@ var Rexbuilder_RexSlider = (function ($) {
                                 data.eventName = "rexlive:insert_new_slider";
                             }
                             // Update Slider List
-                            rexslider_modal_properties.$slider_import.append('<option value="' + response.data.slider_id + '">' + response.data.slider_title + '</option>');
                         } else {
                             data.eventName = "rexlive:newSliderSavedOnDB";
                         }
+                        rexslider_modal_properties.$slider_import.append('<option value="' + response.data.slider_id + '">' + response.data.slider_title + '</option>');
                         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
                     }
                 },

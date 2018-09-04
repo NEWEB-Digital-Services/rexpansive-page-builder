@@ -290,6 +290,8 @@ var Rexbuilder_Section = (function ($) {
                 }
                 Rexbuilder_Util_Editor.pushAction($section, "collapseSection", actionData, reverseData);
             }
+            Rexbuilder_Util.fixVideosAudioSection($section);
+            Rexbuilder_Util.fixYoutubeDimensionsSection($section);
         });
 
         $(document).on("click", ".add-new-section", function (e) {

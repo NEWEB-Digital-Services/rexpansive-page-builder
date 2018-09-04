@@ -121,11 +121,10 @@ class Rexbuilder_Public
             wp_enqueue_style('spectrum-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/spectrum.css', array(), null, 'all');
 
             wp_enqueue_style('medium-editor-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/medium-editor.css', array(), null, 'all');
-            //wp_enqueue_style( 'medium-editor-instert-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/medium-editor-insert-plugin.min.css', array(), null, 'all' );
-            wp_enqueue_style('medium-editor-insert-frontend-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/medium-editor-insert-plugin-frontend.min.css', array(), null, 'all');
-            //TODO ci penseremo dopo
-            //wp_enqueue_style( 'medium-editor-tables-style.css', REXPANSIVE_BUILDER_URL  . $cartella. 'css/medium-editor-tables.min.css', array(), null, 'all' );
-            //che è sta roba? editor di testo?
+            
+            //wp_enqueue_style( 'medium-editor-instert-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/medium-editor-insert-plugin.css', array(), null, 'all' );
+            wp_enqueue_style('medium-editor-insert-frontend-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/medium-editor-insert-plugin-frontend.css', array(), null, 'all');
+
             wp_enqueue_style('input-spinner', REXPANSIVE_BUILDER_URL . $cartella . 'css/input-spinner.css', array(), null, 'all');
 
             wp_enqueue_style('rexpansive-admin-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/admin.css', array(), null, 'all');
@@ -223,9 +222,7 @@ class Rexbuilder_Public
             wp_enqueue_script('jquery-fileupload', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery.fileupload.js', array('jquery'), null, true);
             wp_enqueue_script('jquery-cycle2', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery.cycle2.min.js', array('jquery'), null, true);
             wp_enqueue_script('cycle2-center', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery.cycle2.center.min.js', array('jquery'), null, true);
-            wp_enqueue_script('medium-editor-insert', REXPANSIVE_BUILDER_URL . $cartella . 'js/medium-editor-insert-plugin.min.js', array('jquery'), null, true);
-            //wp_enqueue_script( 'medium-editor-tables', REXPANSIVE_BUILDER_URL  . $cartella. 'js/medium-editor-tables.min.js', array( 'jquery' ), null, true );
-            //wp_enqueue_script( 'medium-editor-insert-tables', REXPANSIVE_BUILDER_URL  . $cartella. 'js/medium-editor-insert-tables.js', array( 'jquery' ), null, true );
+            wp_enqueue_script('medium-editor-insert', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/medium-editor-insert-plugin.js', array('jquery'), null, true);
 
             wp_enqueue_script('utilities', REXPANSIVE_BUILDER_URL . $cartella . 'js/utilities.js', array('jquery'), null, true);
 

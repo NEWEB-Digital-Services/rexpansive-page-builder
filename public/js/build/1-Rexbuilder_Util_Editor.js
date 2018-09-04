@@ -187,7 +187,6 @@ var Rexbuilder_Util_Editor = (function ($) {
             var $oldSlider = $textWrap.children(".rex-slider-wrap[data-rex-slider-active=\"true\"]");
             $textWrap.children().remove();
             var sliderData = Rexbuilder_Util_Editor.createSliderData($oldSlider);
-            Rexbuilder_Util_Editor.blockCopyingObj = $elem;
             Rexbuilder_Util_Editor.saveSliderOnDB(sliderData, true, blockID);
         }
     }
@@ -423,6 +422,10 @@ var Rexbuilder_Util_Editor = (function ($) {
             console.log(data);
         });
 
+        $(document).on("rexlive:newSliderSavedOnDB", function (e) {
+            var data = e.settings;
+            Rexbuilder_CreateBlocks.createSlider(data.data_to_send);
+        });
     }
 
     var _pushAction = function ($target, actionName, actionData, reverseData) {
@@ -460,8 +463,8 @@ var Rexbuilder_Util_Editor = (function ($) {
         var $section = $target.is("section") ? $target : $target.parents(".rexpansive_section");
         var $elem = $target.parents(".grid-stack-item");
         data.sectionID = $section.attr("data-rexlive-section-id");
-        
-        if($section.hasClass("rex-model-section")){
+
+        if ($section.hasClass("rex-model-section")) {
             data.modelNumber = $section.attr("data-rexlive-model-number");
         }
 
@@ -571,16 +574,16 @@ var Rexbuilder_Util_Editor = (function ($) {
      * @param {*} sliderData Data of the slider
      * @param {*} newSliderFlag true if save as new slider, false otherwise
      */
-    var _saveSliderOnDB = function (sliderData, newSliderFlag, newBlockID) {
+    var _saveSliderOnDB = function (sliderData, newSliderFlag, newBlockID, targetToEdit) {
         console.log("saving slider on db");
-
         var data = {
             eventName: "rexlive:uploadSliderFromLive",
             sliderInfo: {
                 slider: sliderData,
                 newSlider: newSliderFlag,
-                blockID: newBlockID
-            }
+                blockID: newBlockID,
+                target: targetToEdit
+            },
         };
 
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
@@ -620,7 +623,7 @@ var Rexbuilder_Util_Editor = (function ($) {
 
         for (i = 0; i < oldCustomizations.length; i++) {
             var name = oldCustomizations[i].name;
-            if(oldCustomizations[i].sections != null){
+            if (oldCustomizations[i].sections != null) {
                 for (j = 0; j < oldCustomizations[i].sections.length; j++) {
                     if (oldCustomizations[i].sections[j].section_rex_id == sectionRexID) {
                         var targets = jQuery.extend(true, [], oldCustomizations[i].sections[j].targets);
@@ -644,7 +647,6 @@ var Rexbuilder_Util_Editor = (function ($) {
         this.sectionCopying = false;
 
         this.blockCopying = false;
-        this.blockCopyingObj = null;
 
         this.editingGallery = false;
         this.editingElement = false;
@@ -675,7 +677,7 @@ var Rexbuilder_Util_Editor = (function ($) {
 
         this.addingNewBlocks = false;
         this.removingBlocks = false;
-        
+
         this.updatingImageBg = false;
         this.updatingPaddingBlock = false;
 

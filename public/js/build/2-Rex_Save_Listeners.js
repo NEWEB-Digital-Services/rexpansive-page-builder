@@ -534,7 +534,7 @@ var Rex_Save_Listeners = (function ($) {
                     props: {}
                 }
                 if (layoutName == "default" || saveAllBloks || checkEditsElement($elem)) {
-                    block_props.props = createBlockProperties($elem, "customLayout", layoutName);
+                    block_props.props = createBlockProperties($elem, "customLayout", $gridGallery);
                 }
                 targets.push(block_props);
             }
@@ -567,7 +567,7 @@ var Rex_Save_Listeners = (function ($) {
         return post;
     }
 
-    var createBlockProperties = function ($elem, mode, layoutName) {
+    var createBlockProperties = function ($elem, mode, $gridGallery) {
         var id = "",
             rex_id = "",
             type = "text",
@@ -680,7 +680,12 @@ var Rex_Save_Listeners = (function ($) {
 
         block_has_scrollbar = $itemData.attr('data-block_has_scrollbar') === undefined ? "false"
             : $itemData.attr('data-block_has_scrollbar');
-        block_live_edited = typeof $itemData.attr('data-block_live_edited') === "undefined" ? "" : $itemData.attr('data-block_live_edited');
+            
+        if ($gridGallery.attr("data-layout") == "masonry") {
+            block_live_edited = typeof $itemData.attr('data-block_live_edited') === "undefined" ? "" : $itemData.attr('data-block_live_edited');
+        } else {
+            block_live_edited = "";
+        }
 
         block_flex_position = typeof $itemData.attr('data-block_flex_position') == "undefined" ? "" : $itemData.attr('data-block_flex_position');
 
@@ -994,7 +999,7 @@ var Rex_Save_Listeners = (function ($) {
             $(elementsOrdered).each(function () {
                 var $elem = $(this);
                 if (!$elem.hasClass("removing_block")) {
-                    output += createBlockProperties($elem, "shortcode", null);
+                    output += createBlockProperties($elem, "shortcode", $gridGallery);
                 }
             });
 

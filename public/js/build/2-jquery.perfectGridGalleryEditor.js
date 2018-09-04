@@ -152,13 +152,13 @@
                         !Rexbuilder_Util_Editor.updatingPaddingBlock &&
                         !Rexbuilder_Util_Editor.updatingCollapsedGrid &&
                         !Rexbuilder_Util_Editor.openingModel &&
+                        !Rexbuilder_Util_Editor.blockCopying &&
                         !Rexbuilder_Util_Editor.savingGrid) {
                         var actionData = that.createActionDataMoveBlocksGrid();
                         that.$element.attr("data-rexlive-layout-changed", "true");
                         Rexbuilder_Util_Editor.pushAction(that.$section, "updateSectionBlocksDisposition", $.extend(true, {}, actionData), $.extend(true, {}, that.properties.reverseDataGridDisposition));
                         that.properties.reverseDataGridDisposition = actionData;
                     }
-                    that._updateElementsSizeViewers();
                 });
 
                 this._updateElementsSizeViewers();
@@ -437,7 +437,9 @@
             this.batchGridstack();
             this._defineDynamicPrivateProperties();
             this.updateGridstackStyles();
-            //            this.updateBlocksHeight();
+            if (!Rexbuilder_Util.domUpdaiting) {
+                this.updateBlocksHeight();
+            }
             this.commitGridstack();
         },
 
@@ -1858,7 +1860,6 @@
                             $elemData.attr("data-block_live_edited", "true");
                         }
                     }
-                    $block.children(".rexbuilder-block-data").attr("data-rexlive-edited", "true");
                     gallery.updateAllElementsProperties();
                     if (!$block.hasClass('block-has-slider') && !$blockContent.hasClass('block-has-slider') && !$blockContent.hasClass('youtube-player')) {
                         gallery.fixElementTextSize(block, gallery.properties.resizeHandle, null);
@@ -1869,6 +1870,12 @@
                     Rexbuilder_Util_Editor.elementIsDragging = false;
                     gallery.$element.attr("data-rexlive-layout-changed=\"true\"");
                     gallery.removeCollapseElementsProperties();
+                    setTimeout(function () {
+                        $block.find(".rex-youtube-wrap").each(function (i, video) {
+                            $(video).optimizeDisplay();
+                            $(video).YTPPlay();
+                        });
+                    }, 400, $block);
                 }
             });
         },
@@ -1988,15 +1995,9 @@
             var $elemData;
             var gridstack = this.properties.gridstackInstance;
             if (typeof gridstack !== "null") {
-                console.log("GRIDSTACK ACTIVE");
                 this.properties.blocksBottomTop = this.getElementBottomTop();
-                console.log("updating heights?");
                 if (!this.properties.updatingSectionSameGrid || Rexbuilder_Util.windowIsResizing) {
-                    console.log("updaiting hegihts 1984");
-                    //console.log("yes");
                     this.batchGridstack();
-                    console.log(gallery.properties.updatingGridWidth)
-                    console.log(gallery.properties.updatingSection)
                     $(this.properties.blocksBottomTop).each(function (i, e) {
                         $elem = $(e);
                         $elemData = $elem.children(".rexbuilder-block-data");
@@ -2424,7 +2425,6 @@
                 if ($itemContent.hasClass('youtube-player') || $itemContent.hasClass('mp4-player') || $itemContent.hasClass('vimeo-player')) {
                     videoHeight = Math.round(w * sw * defaultRatio);
                 }
-
                 if ($elem.hasClass('block-has-slider') && !isNaN(parseFloat($blockData.attr("data-slider_ratio")))) {
                     var sliderRatio = parseFloat($blockData.attr("data-slider_ratio"));
                     if (this._viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth) {
@@ -2434,7 +2434,7 @@
                     }
                 }
 
-                if ((videoHeight == 0 && backgroundHeight == 0 && sliderHeight == 0) && (this.properties.updatingSection || $itemContent.hasClass('empty-content') || this.properties.firstStartGrid)) {
+                if ((videoHeight == 0 && backgroundHeight == 0 && sliderHeight == 0) && (this.properties.updatingSection || $itemContent.hasClass('empty-content') || this.properties.firstStartGrid || $elem.hasClass('block-has-slider'))) {
                     //console.log("calculating default height");
                     if (this.properties.editedFromBackend && this.settings.galleryLayout == "masonry") {
                         //console.log("backend + masonry");
@@ -2455,11 +2455,9 @@
                 emptyBlockFlag = true;
             }
 
-            console.log(startH);
             console.log(startH, backgroundHeight, videoHeight, defaultHeight, textHeight, sliderHeight);
 
             newH = Math.max(startH, backgroundHeight, videoHeight, defaultHeight, textHeight, sliderHeight);
-
             if (this.properties.oneColumModeActive && !Rexbuilder_Util.windowIsResizing) {
                 return {
                     height: newH,
@@ -2468,7 +2466,7 @@
             }
 
             if (this.settings.galleryLayout == "fixed") {
-                newH = Math.round(newH / this.properties.singleHeight);
+                newH = Math.ceil(newH / this.properties.singleHeight);
             } else {
                 newH = Math.ceil(newH / this.properties.singleHeight);
             }

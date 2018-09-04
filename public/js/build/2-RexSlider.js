@@ -160,7 +160,7 @@ var RexSlider = (function ($) {
             $el.flickity('destroy');
         }
         $el.find(".rex-slider-video-wrapper").each(function (i, videoEL) {
-            Rexbuilder_Util.destroyVideo($(videoEL), "slider", false);
+            Rexbuilder_Util.destroyVideo($(videoEL), false);
         });
     }
 

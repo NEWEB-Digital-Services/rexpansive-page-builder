@@ -3,9 +3,11 @@ var Section_Video_Background_Modal = (function ($) {
 
     var video_background_properties;
     var videoChosen;
+    var sectionTarget;
 
     var _updateVideoModal = function (data) {
         _clearVideoModal();
+        sectionTarget = data.sectionTarget;
         if (data.mp4VideoID != "") {
             videoChosen = "mp4";
             video_background_properties.$linkVimeo.val("");
@@ -132,7 +134,8 @@ var Section_Video_Background_Modal = (function ($) {
                 urlYoutube: type == "" || type != "youtube" ? "" : urlYoutube,
                 urlVimeo: type == "" || type != "vimeo" ? "" : urlVimeo,
                 videoMp4: type == "" || type != "mp4" ? emptyMp4Data : videoMp4Data,
-                typeVideo: type
+                typeVideo: type,
+                sectionTarget: sectionTarget
             }
         };
 

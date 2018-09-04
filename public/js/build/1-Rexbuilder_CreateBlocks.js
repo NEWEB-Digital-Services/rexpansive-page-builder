@@ -99,7 +99,6 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
     $(document).on("rexlive:insert_video", function (e) {
         var data = e.settings.data_to_send;
-        console.log(data);
         if (!(typeof data.typeVideo == "undefined")) {
             var $section;
 
@@ -178,6 +177,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
     var _createSlider = function (data, $elem, numberSlider) {
         var sliderNumber;
+        console.log(data);
         if (typeof numberSlider == "undefined") {
             Rexbuilder_Dom_Util.lastSliderNumber = Rexbuilder_Dom_Util.lastSliderNumber + 1;
             sliderNumber = Rexbuilder_Dom_Util.lastSliderNumber;
@@ -203,8 +203,11 @@ var Rexbuilder_CreateBlocks = (function ($) {
             }
 
             var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
-
-            $el = _createBlockGrid(galleryInstance, 12, 4);
+            if (typeof data.target.rexID == "undefined") {
+                $el = _createBlockGrid(galleryInstance, 12, 4);
+            } else {
+                $el = $section.find("div [data-rexbuilder-block-id=\"" + data.target.rexID + "\"]");
+            }
             $textWrap = $el.find(".text-wrap");
             $textWrap.children().remove();
         } else {
@@ -265,7 +268,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
                         $videoElement.addClass("vimeo-player");
                         break;
                     case "youtube":
-                        $videoElement.prepend(tmpl("tmpl-video-vimeo", {
+                        $videoElement.prepend(tmpl("tmpl-video-youtube", {
                             url: slides[i].slide_video,
                             audio: false
                         }));
@@ -341,37 +344,69 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
         var w = parseInt($newBlock.attr("data-gs-width"));
         var h = parseInt($newBlock.attr("data-gs-height"));
+        var $itemContent = $newBlock.find(".grid-item-content");
+        var videoTypeActive = Rexbuilder_Util.destroyVideo($itemContent, false);
 
         Rexbuilder_Util_Editor.removeScrollBar($newBlock);
         Rexbuilder_Util_Editor.removeTextEditor($newBlock);
-
         galleryEditorInstance._prepareElement($newBlock.eq(0));
-
         galleryEditorInstance.unFocusElementEditing($newBlock);
 
-        gridstack.addWidget($newBlock, 0, 0, w, h, true);
+        var reverseData = {
+            targetElement: $newBlock,
+            hasToBeRemoved: true,
+            galleryInstance: galleryEditorInstance,
+            blocksDisposition: $.extend(true, {}, galleryEditorInstance.properties.reverseDataGridDisposition)
+        };
 
-        $newBlock.attr("data-gs-auto-position", "");
+        gridstack.addWidget($newBlock[0], 0, 0, w, h, true, 1, 500, 1);
+
+        var x = parseInt($newBlock.attr("data-gs-x"));
+        var y = parseInt($newBlock.attr("data-gs-y"));
+
+        gridstack.batchUpdate();
+        gridstack.update($newBlock[0], x, y, w, h);
+        gridstack.commit();
+
+        galleryEditorInstance._createFirstReverseStack();
+
+        var actionData = {
+            targetElement: $newBlock,
+            hasToBeRemoved: false,
+            galleryInstance: galleryEditorInstance,
+            blocksDisposition: $.extend(true, {}, galleryEditorInstance.properties.reverseDataGridDisposition)
+        };
+
+        Rexbuilder_Util_Editor.pushAction(galleryEditorInstance.$element, "updateBlockVisibility", actionData, reverseData);
+        $newBlock.removeAttr("data-gs-auto-position");
+        if(videoTypeActive != ""){
+            $itemContent.addClass(videoTypeActive+"-player");
+        }
+        Rexbuilder_Util.startVideoPlugin($itemContent);
 
         var $textWrap = $newBlock.find(".text-wrap");
 
         if ($elem.hasClass("block-has-slider")) {
             var $oldSlider = $elem.find(".text-wrap").children(".rex-slider-wrap[data-rex-slider-active=\"true\"]");
             $textWrap.children().remove();
+            var $section = $elem.parents(".rexpansive_section");
+            var sectionID = $section.attr("data-rexlive-section-id");
+            var modelNumber = typeof $section.attr("data-rexlive-model-number") != "undefined" ? $section.attr("data-rexlive-model-number") : "";
+            var rex_block_id = newRexID;
+
+            var target = {
+                sectionID: sectionID,
+                modelNumber: modelNumber,
+                rexID: rex_block_id
+            }
+
             var sliderData = Rexbuilder_Util_Editor.createSliderData($oldSlider);
-            Rexbuilder_Util_Editor.blockCopyingObj = $newBlock;
-            Rexbuilder_Util_Editor.saveSliderOnDB(sliderData, true, newBlockID);
+            Rexbuilder_Util_Editor.saveSliderOnDB(sliderData, true, newBlockID, target);
         } else {
             galleryEditorInstance.addScrollbar($newBlock);
             galleryEditorInstance.addTextEditor($newBlock);
         }
     }
-    $(document).on("rexlive:newSliderSavedOnDB", function (e) {
-        if (Rexbuilder_Util_Editor.blockCopyingObj !== null) {
-            _createSlider(e.settings.data_to_send, Rexbuilder_Util_Editor.blockCopyingObj);
-        }
-        Rexbuilder_Util_Editor.blockCopyingObj = null;
-    });
 
     return {
         createSlider: _createSlider,

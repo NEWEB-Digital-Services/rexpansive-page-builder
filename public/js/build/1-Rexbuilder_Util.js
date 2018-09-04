@@ -1519,12 +1519,38 @@ var Rexbuilder_Util = (function ($) {
         }
     }
 
-    var _playVideoFromBegin = function ($target) {
+    var _fixVideosAudioSection = function ($section) {
+        var $mp4Videos = $section.find(".mp4-player");
+        var $vimeoVideos = $section.find(".vimeo-player");
+        var $youtubeVideos = $section.find(".youtube-player");
+
+        $.each($mp4Videos, function (i, video) {
+            Rexbuilder_Util.fixVideoAudio($(video));
+        });
+
+        $.each($vimeoVideos, function (i, video) {
+            Rexbuilder_Util.fixVideoAudio($(video));
+        });
+
+        $.each($youtubeVideos, function (i, video) {
+            Rexbuilder_Util.fixVideoAudio($(video));
+        });
+    }
+
+    var _fixYoutubeDimensionsSection = function ($section) { 
+        var $youtubeVideos = $section.find(".rex-youtube-wrap");
+        $.each($youtubeVideos, function (i, video) {
+            $(video).optimizeDisplay();
+            $(video).YTPPlay();
+        });
+    }
+    
+    var _fixVideoAudio = function ($target) {
+        console.log("fixing audio to");
+        console.log($target);
+        var $toggle = $target.children("rex-video-toggle-audio");
         if ($target.hasClass("mp4-player")) {
             var mp4video = $target.children(".rex-video-wrap").find("video")[0];
-            mp4video.currentTime = 0;
-            mp4video.play();
-            var $toggle = $target.children("rex-video-toggle-audio");
             if ($toggle.length != 0 && !$toggle.hasClass("user-has-muted")) {
                 $(mp4video).prop('muted', false);
             } else {
@@ -1532,18 +1558,35 @@ var Rexbuilder_Util = (function ($) {
             }
         } else if ($target.hasClass("vimeo-player")) {
             var vimPlayer = VimeoVideo.findVideo($target.children(".rex-video-vimeo-wrap").find("iframe")[0]);
-            vimPlayer.play();
-            var $toggle = $target.children("rex-video-toggle-audio");
             if ($toggle.length != 0 && !$toggle.hasClass("user-has-muted")) {
-                // have to wait vimeo to be lunched
-                setTimeout(function () {
-                    vimPlayer.getVolume().then(function (volume) {
-                        if (0 == volume) {
-                            vimPlayer.setVolume(1);
-                        }
-                    });
-                }, 500, vimPlayer);
+                vimPlayer.setVolume(1);
+
+            } else {
+                vimPlayer.setVolume(0);
             }
+        } else if ($target.hasClass("youtube-player")) {
+            var ytpObj = $target.children(".rex-youtube-wrap");
+            var ytpPlayer = ytpObj.YTPGetPlayer();
+            if (ytpPlayer !== undefined) {
+                if ($toggle.length != 0 && !$toggle.hasClass("user-has-muted")) {
+                    console.log("unmute");
+                    ytpObj.YTPUnmute();
+                } else {
+                    console.log("mute");
+                    ytpObj.YTPMute();
+                }
+            }
+        }
+    }
+
+    var _playVideoFromBegin = function ($target) {
+        if ($target.hasClass("mp4-player")) {
+            var mp4video = $target.children(".rex-video-wrap").find("video")[0];
+            mp4video.currentTime = 0;
+            mp4video.play();
+        } else if ($target.hasClass("vimeo-player")) {
+            var vimPlayer = VimeoVideo.findVideo($target.children(".rex-video-vimeo-wrap").find("iframe")[0]);
+            vimPlayer.play();
         } else if ($target.hasClass("youtube-player")) {
             var ytpObj = $target.children(".rex-youtube-wrap");
             var ytpPlayer = ytpObj.YTPGetPlayer();
@@ -1551,13 +1594,10 @@ var Rexbuilder_Util = (function ($) {
                 return;
             }
             ytpObj.YTPPlay();
-            var $toggle = $target.children("rex-video-toggle-audio");
-            if ($toggle.length != 0 && !$toggle.hasClass("user-has-muted")) {
-                ytpObj.YTPUnmute();
-            } else {
-                ytpObj.YTPMute();
-            }
         }
+        setTimeout(function () {        
+            Rexbuilder_Util.fixVideoAudio($target);
+        }, 500, $target);
     }
 
     var _destroyVideoPlugins = function () {
@@ -1666,14 +1706,19 @@ var Rexbuilder_Util = (function ($) {
         }
     }
 
-    var _destroyVideo = function ($target, targetType, detachDom) {
+    var _destroyVideo = function ($target, detachDom) {
+        var type = "";
         if ($target.hasClass("mp4-player")) {
-            Rexbuilder_Dom_Util.removeMp4Video($target, targetType, detachDom);
+            type = "mp4";
+            Rexbuilder_Dom_Util.removeMp4Video($target, detachDom);
         } else if ($target.hasClass("vimeo-player")) {
-            Rexbuilder_Dom_Util.removeVimeoVideo($target, targetType, detachDom);
+            type = "vimeo";
+            Rexbuilder_Dom_Util.removeVimeoVideo($target, detachDom);
         } else if ($target.hasClass("youtube-player")) {
-            Rexbuilder_Dom_Util.removeYoutubeVideo($target, targetType, detachDom);
+            type = "youtube";
+            Rexbuilder_Dom_Util.removeYoutubeVideo($target, detachDom);
         }
+        return type;
     }
 
     var _pauseVideo = function ($target) {
@@ -1724,7 +1769,7 @@ var Rexbuilder_Util = (function ($) {
             if ($target.children(".rex-youtube-wrap").YTPGetPlayer() === undefined) {
                 return;
             }
-            $target.children(".youtube-player").YTPPlay();
+            $target.children(".rex-youtube-wrap").YTPPlay();
         }
     }
 
@@ -1782,7 +1827,7 @@ var Rexbuilder_Util = (function ($) {
         this.$body = $("body");
 
         this.$rexContainer = $(".rex-container");
-        if(Rexbuilder_Util.$rexContainer.attr("data-backend-edited").toString()== "true" && Rexbuilder_Util.editorMode){
+        if (Rexbuilder_Util.$rexContainer.attr("data-backend-edited").toString() == "true" && Rexbuilder_Util.editorMode) {
             Rexbuilder_Util.$rexContainer.addClass("backend-edited");
         }
         this.lastSectionNumber = -1;
@@ -1871,6 +1916,9 @@ var Rexbuilder_Util = (function ($) {
         getGridLayout: _getGridLayout,
         customizationExists: _customizationExists,
         getDefaultBlockProps: _getDefaultBlockProps,
+        fixVideosAudioSection: _fixVideosAudioSection,
+        fixVideoAudio: _fixVideoAudio,
+        fixYoutubeDimensionsSection: _fixYoutubeDimensionsSection,
     };
 
 })(jQuery);
