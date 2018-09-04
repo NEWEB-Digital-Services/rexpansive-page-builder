@@ -7,7 +7,7 @@ var Rexbuilder_RexSlider = (function ($) {
     var slide_uploader_video_frame;
     var $selectedOptionImport;
     var editingSliderTitle;
-    var sectionTarget;
+    var target;
 
     /**
      * Retrieve the data of the slider
@@ -63,47 +63,6 @@ var Rexbuilder_RexSlider = (function ($) {
         };
 
         return slider;
-    };
-
-    /**
-     * Slider Shortcode Function Creation
-     * 
-     * @param	slider	Object	an object representing the slider
-     */
-    var createSliderShortcode = function (slider) {
-        var result = '[RexSliderDefintion';
-        for (var key in slider.settings) {
-            if (slider.settings.hasOwnProperty(key)) {
-                if (slider.settings[key]) {
-                    result += ' ' + key + '="' + slider.settings[key] + '"';
-                }
-            }
-        }
-        result += ']';
-
-        var slide_shortocode = '';
-
-        for (var j = 0; j < slider.slides.length; j++) {
-            slide_shortocode += '[RexSlide';
-            for (var key in slider.slides[j]) {
-                if (slider.slides[j].hasOwnProperty(key) && "slide_text" !== key) {
-                    if (slider.slides[j][key]) {
-                        slide_shortocode += ' ' + key + '="' + slider.slides[j][key] + '"';
-                    }
-                }
-            }
-            slide_shortocode += ']';
-            if (slider.slides[j].hasOwnProperty('slide_text') && "" != slider.slides[j]['slide_text']) {
-                slide_shortocode += slider.slides[j]['slide_text'];
-            }
-            slide_shortocode += '[/RexSlide]';
-        }
-
-        result += slide_shortocode;
-
-        result += '[/RexSliderDefintion]';
-
-        return result;
     };
 
     /**
@@ -227,16 +186,15 @@ var Rexbuilder_RexSlider = (function ($) {
      * @param {string} data shortcode of the slider
      * @param {string} slider_id id of the rex slider to edit
      */
-    var _openSliderEditor = function (id, data, slider_id, targetSection) {
+    var _openSliderEditor = function (id, data, slider_id, targetToEdit) {
 
         _cleanSliderData();
 
         id = typeof id !== 'undefined' ? id : '';
         data = typeof data !== 'undefined' ? data : '';
         slider_id = typeof slider_id !== 'undefined' ? slider_id : '';
-        
-        sectionTarget = targetSection;
-
+        target = targetToEdit;
+        console.log(targetToEdit);
         if (id && data && slider_id) {
             // save id block information
             rexslider_modal_properties.$save_button.attr('data-block-to-edit', id);
@@ -584,7 +542,7 @@ var Rexbuilder_RexSlider = (function ($) {
                                     id: response.data.slider_id,
                                     settings: sliderData.settings,
                                     slides: sliderData.slides,
-                                    sectionTarget: sectionTarget
+                                    target: target
                                 }
                             };
                             if (block_to_edit) {
@@ -626,7 +584,7 @@ var Rexbuilder_RexSlider = (function ($) {
                                 id: response.data.slider_id,
                                 settings: sliderData.settings,
                                 slides: sliderData.slides,
-                                sectionTarget: sectionTarget
+                                target: target
                             }
                         };
                         if (!saveNew) {

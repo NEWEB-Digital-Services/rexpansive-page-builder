@@ -675,15 +675,7 @@ var Rexbuilder_Util_Editor = (function ($) {
 
         this.addingNewBlocks = false;
         this.removingBlocks = false;
-
-        this.sliderEditingObj = null;
-
-        this.sectionEditingObj = null;
-        this.elementEditingObj = null;
-
-        this.blockEditingOptsID = null;
-        this.blockEditingOptsObj = null;
-
+        
         this.updatingImageBg = false;
         this.updatingPaddingBlock = false;
 

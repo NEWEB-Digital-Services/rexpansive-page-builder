@@ -4,7 +4,7 @@ var Rexbuilder_Dom_Util = (function ($) {
     var _updateSlider = function (data) {
         var $textWrap = data.textWrap;
         var numberSliderToActive = data.sliderNumberToActive;
-
+        console.log(data);
         $textWrap.children(".rex-slider-wrap:not([data-rex-slider-number=\"" + data.sliderNumberToActive + "\"])").each(function (i, slider) {
             var $slider = $(slider);
             $slider.css("display", "none");
@@ -13,12 +13,12 @@ var Rexbuilder_Dom_Util = (function ($) {
         });
 
         var $sliderToActive = $textWrap.children(".rex-slider-wrap[data-rex-slider-number=\"" + numberSliderToActive + "\"]");
-
+        console.log($sliderToActive);
         if ($sliderToActive.length == 0) {
             var newSliderData = data.newSliderData;
             if (typeof newSliderData != "undefined") {
-                var $elem = Rexbuilder_Util_Editor.sliderEditingObj.parents(".grid-stack-item");
-                Rexbuilder_CreateBlocks.createSlider(data.newSliderData, $elem);
+                var $elem = $textWrap.parents(".grid-stack-item");
+                Rexbuilder_CreateBlocks.createSlider(data.newSliderData, $elem, numberSliderToActive);
             }
         } else {
             $sliderToActive.css("display", "");
@@ -28,15 +28,17 @@ var Rexbuilder_Dom_Util = (function ($) {
 
     var _updateSliderStack = function (data) {
         var $section;
+        console.log(data);
 
-        if (data.sectionTarget.modelNumber != "") {
-            $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"][data-rexlive-model-number="' + data.sectionTarget.modelNumber + '"]');
+        if (data.target.modelNumber != "") {
+            $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.target.sectionID + '"][data-rexlive-model-number="' + data.target.modelNumber + '"]');
         } else {
-            $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"]');
+            $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.target.sectionID + '"]');
         }
 
-        var $textWrap = Rexbuilder_Util_Editor.textWrapElementEditingObj;
-        var $sliderObj = Rexbuilder_Util_Editor.sliderEditingObj;
+        var $elem = $section.find("div [data-rexbuilder-block-id=\"" + data.target.rexID + "\"]");
+        var $textWrap = $elem.find(".text-wrap");
+        var $sliderObj = $textWrap.find(".rex-slider-wrap[data-rex-slider-number=\""+data.target.sliderNumber+"\"]");
 
         var reverseData = {
             textWrap: $textWrap,

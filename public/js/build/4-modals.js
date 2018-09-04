@@ -924,7 +924,7 @@
 			var modelNumber = typeof $section.attr("data-rexlive-model-number") != "undefined" ? $section.attr("data-rexlive-model-number") : "";
 			var data = {
 				eventName: "rexlive:addNewSlider",
-				sectionTarget: {
+				target: {
 					sectionID: sectionID,
 					modelNumber: modelNumber
 				},

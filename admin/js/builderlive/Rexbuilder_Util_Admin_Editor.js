@@ -60,12 +60,12 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
             }
 
             if (event.data.eventName == "rexlive:addNewSlider") {
-                Rexbuilder_RexSlider.openSliderModal("", "", "", eventData.sectionTarget);
+                Rexbuilder_RexSlider.openSliderModal("", "", "", eventData.target);
             }
 
             if (event.data.eventName == "rexlive:editSlider") {
                 var data = event.data;
-                Rexbuilder_RexSlider.openSliderModal(data.blockID, data.shortCodeSlider, data.sliderID);
+                Rexbuilder_RexSlider.openSliderModal(data.blockID, data.shortCodeSlider, data.sliderID, data.target);
             }
 
             if (event.data.eventName == "rexlive:openSectionModal") {

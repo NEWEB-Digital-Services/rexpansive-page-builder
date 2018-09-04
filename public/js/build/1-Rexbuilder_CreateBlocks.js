@@ -176,12 +176,16 @@ var Rexbuilder_CreateBlocks = (function ($) {
         _createSlider(e.settings.data_to_send);
     });
 
-    var _createSlider = function (data, $elem) {
-        console.log(data);
-        Rexbuilder_Dom_Util.lastSliderNumber = Rexbuilder_Dom_Util.lastSliderNumber + 1;
-        var sliderNumber = Rexbuilder_Dom_Util.lastSliderNumber;
-        var slides = data.slides;
+    var _createSlider = function (data, $elem, numberSlider) {
+        var sliderNumber;
+        if (typeof numberSlider == "undefined") {
+            Rexbuilder_Dom_Util.lastSliderNumber = Rexbuilder_Dom_Util.lastSliderNumber + 1;
+            sliderNumber = Rexbuilder_Dom_Util.lastSliderNumber;
+        } else {
+            sliderNumber = numberSlider;
+        }
 
+        var slides = data.slides;
         var sliderData = {
             id: data.id,
             settings: data.settings,
@@ -192,15 +196,14 @@ var Rexbuilder_CreateBlocks = (function ($) {
         var $textWrap;
         if (typeof $elem == "undefined") {
             var $section;
-
-            if (data.sectionTarget.modelNumber != "") {
-                $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"][data-rexlive-model-number="' + data.sectionTarget.modelNumber + '"]');
+            if (data.target.modelNumber != "") {
+                $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.target.sectionID + '"][data-rexlive-model-number="' + data.target.modelNumber + '"]');
             } else {
-                $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"]');
+                $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.target.sectionID + '"]');
             }
 
             var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
-            // 
+
             $el = _createBlockGrid(galleryInstance, 12, 4);
             $textWrap = $el.find(".text-wrap");
             $textWrap.children().remove();
