@@ -34,7 +34,7 @@ defined('ABSPATH') or exit;
 
 <script type="text/x-tmpl" id="tmpl-video-vimeo">
     <div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--block">
-        <iframe src="{%=video.url%}" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen>
+        <iframe src="{%=video.url%}" width="640" height="360" frameborder="0" allow="autoplay"  webkitallowfullscreen mozallowfullscreen allowfullscreen>
         </iframe>
     </div>
 </script>

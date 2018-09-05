@@ -682,6 +682,7 @@ var Rexbuilder_Util_Editor = (function ($) {
         this.updatingPaddingBlock = false;
 
         this.updatingCollapsedGrid = false;
+        this.updatingSectionWidth = false;
 
         this.savingGrid = false;
 

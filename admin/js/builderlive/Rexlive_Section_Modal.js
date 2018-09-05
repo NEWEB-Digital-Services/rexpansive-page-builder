@@ -30,7 +30,11 @@ var Section_Modal = (function ($) {
         sectionTarget = data.sectionTarget;
 
         LayoutGrid_Modal.updateLayoutModal(data.activeLayout, data.fullHeight);
-        Section_Width_Modal.updateSectionWidth(data.dimension, data.section_width);
+        Section_Width_Modal.updateSectionWidth({
+            dimension: data.dimension, 
+            sectionWidth: data.section_width, 
+            sectionTarget: data.sectionTarget
+        });
         GridSeparators_Modal.updateDistances(data.rowDistances);
         SectionMargins_Modal.updateMargins(data.marginsSection);
         PhotoSwipe_Modal.updatePhotoswipe(data.photoswipe);
@@ -40,7 +44,6 @@ var Section_Modal = (function ($) {
 
     var _applySectionLayout = function () {
         var layoutData = LayoutGrid_Modal.getData();
-        var sectionWidthData = Section_Width_Modal.getData();
         var gridSeparatosData = GridSeparators_Modal.getData();
         var marginsSectionData = SectionMargins_Modal.getData();
         var data_gallery = {
@@ -49,7 +52,6 @@ var Section_Modal = (function ($) {
                 sectionTarget: sectionTarget,
                 layout: layoutData.layout,
                 fullHeight: layoutData.fullHeight,
-                sectionWidth: sectionWidthData,
                 rowDistances: gridSeparatosData,
                 sectionMargins: marginsSectionData
             }

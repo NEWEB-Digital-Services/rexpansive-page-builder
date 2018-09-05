@@ -163,7 +163,6 @@ class Rexbuilder_Section
                 
                 $videoTypeActive = 'youtube-player';
                 $bg_youtube_video_markup .= '<div class="rex-youtube-wrap" data-property="{videoURL:\'' . $video_bg_url_section . '\',containment:\'self\',startAt:0,mute:\'true\',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"></div>';
-                $bg_youtube_video_markup .= '</div>';
             }
                         
             $bg_video_vimeo_markup = '';
@@ -199,7 +198,7 @@ class Rexbuilder_Section
             $row_has_accordion = has_shortcode($content, 'RexAccordion');
 
             echo ' class="rexpansive_section' . ($empty_section ? ' empty-section' : '')
-            . $videoTypeActive .
+            . ($videoTypeActive!= "" ? " ".$videoTypeActive : "") .
             (("" != $rexlive_model_id) ? " rex-model-section" : "") .
             (($content_has_photoswipe > 0) ? ' photoswipe-gallery' : '') .
             (('' != $custom_classes) ? ' ' . $custom_classes : '') .

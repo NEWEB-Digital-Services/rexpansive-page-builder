@@ -898,48 +898,48 @@ defined('ABSPATH') or exit;
 
                 <div>
                 </div>
-
-                <div class="col row valign-wrapper layout-wrap rex-edit-section-width">
-                    <div class="rexlive-section-width" data-rex-section-width="full">
-                        <input type="radio" id="section-full-modal" name="section-dimension-modal" class="builder-edit-row-dimension-modal with-gap" value="full" title="Full" />
-                        <label for="section-full-modal" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Full', $this->plugin_name);?>">
-                            <i class="material-icons rex-icon">v</i>
-                            <span class="rex-ripple"></span>
-                        </label>
-                    </div>
-                    <div class="rexlive-section-width" data-rex-section-width="boxed">
-                        <input id="section-boxed-modal" type="radio" name="section-dimension-modal" class="builder-edit-row-dimension-modal with-gap" value="boxed" title="Boxed" />
-                        <label for="section-boxed-modal" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Boxed', $this->plugin_name);?>">
-                            <i class="material-icons rex-icon">t</i>
-                            <span class="rex-ripple"></span>
-                        </label>
-                    </div>
-                </div><!-- Full section width or boxed -->
-
-                <div class="col row valign-wrapper">
-                    <div id="section-set-dimension" class="input-field rex-input-prefixed col">
-                        <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e('Boxed Width', 'rexpansive');?>">t</i>
-                        <input type="text" id="" class="section-set-boxed-width" name="section-set-boxed-width" value="0000" placeholder="" size="23">
-                        <span class="rex-material-bar"></span>
-                    </div>
-                    <div class="section-set-boxed-width-wrap col">
-                        <div class="rex-check-text percentage-width boxed-width-type-wrap" data-rex-section-width-type="%">
-                            <input id="block-width-percentage" type="radio" class="section-width-type with-gap" name="section-width-type" value="percentage" checked />
-                            <label for="block-width-percentage">
-                                <?php _e('%', 'rexpansive');?>
+                <div class="section-width-wrapper">
+                    <div class="col valign-wrapper layout-wrap rex-edit-section-width-wrapper">
+                        <div class="rexlive-section-width" data-rex-section-width="full">
+                            <input type="radio" id="section-full-modal" name="section-dimension-modal" class="builder-edit-row-dimension-modal with-gap" value="full" title="Full" />
+                            <label for="section-full-modal" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Full', $this->plugin_name);?>">
+                                <i class="material-icons rex-icon">v</i>
                                 <span class="rex-ripple"></span>
                             </label>
                         </div>
-                        <div class="rex-check-text pixel-width boxed-width-type-wrap" data-rex-section-width-type="px">
-                            <input id="block-width-pixel" type="radio" class="section-width-type with-gap" name="section-width-type" value="pixel" />
-                            <label for="block-width-pixel">
-                                <?php _e('PX', 'rexpansive');?>
+                        <div class="rexlive-section-width" data-rex-section-width="boxed">
+                            <input id="section-boxed-modal" type="radio" name="section-dimension-modal" class="builder-edit-row-dimension-modal with-gap" value="boxed" title="Boxed" />
+                            <label for="section-boxed-modal" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Boxed', $this->plugin_name);?>">
+                                <i class="material-icons rex-icon">t</i>
                                 <span class="rex-ripple"></span>
                             </label>
                         </div>
-                    </div>
-                </div><!-- Boxed section options-->
+                    </div><!-- Full section width or boxed -->
 
+                    <div class="col valign-wrapper">
+                        <div id="section-set-dimension" class="input-field rex-input-prefixed col">
+                            <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e('Boxed Width', 'rexpansive');?>">t</i>
+                            <input type="text" id="" class="section-set-boxed-width" name="section-set-boxed-width" value="0000" placeholder="" size="23">
+                            <span class="rex-material-bar"></span>
+                        </div>
+                        <div class="section-set-boxed-width-wrap col">
+                            <div class="rex-check-text percentage-width boxed-width-type-wrap" data-rex-section-width-type="%">
+                                <input id="block-width-percentage" type="radio" class="section-width-type with-gap" name="section-width-type" value="percentage" checked />
+                                <label for="block-width-percentage">
+                                    <?php _e('%', 'rexpansive');?>
+                                    <span class="rex-ripple"></span>
+                                </label>
+                            </div>
+                            <div class="rex-check-text pixel-width boxed-width-type-wrap" data-rex-section-width-type="px">
+                                <input id="block-width-pixel" type="radio" class="section-width-type with-gap" name="section-width-type" value="pixel" />
+                                <label for="block-width-pixel">
+                                    <?php _e('PX', 'rexpansive');?>
+                                    <span class="rex-ripple"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div><!-- Boxed section options-->
+                </div>
             </div><!-- /full-heigth, boxed dimension, block distance -->
 
             <div id="section-config-third-row" class="b-row align-items-center b--border-bottom">

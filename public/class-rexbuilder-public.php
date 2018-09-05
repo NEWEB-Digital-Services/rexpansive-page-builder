@@ -188,6 +188,7 @@ class Rexbuilder_Public
             wp_enqueue_script('photoswipe-ui', REXPANSIVE_BUILDER_URL . $cartella . 'Photoswipe/photoswipe-ui-default.min.js', array('jquery'), null, true);
 
             wp_enqueue_script('YTPlayer', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/jquery.mb.YTPlayer.min.js', array('jquery'), null, true);
+            //wp_enqueue_script('YTPlayer', REXPANSIVE_BUILDER_URL . $cartella . 'jquery.mb.YTPlayer/jquery.mb.YTPlayer.min.js', array('jquery'), null, true);
 
             wp_enqueue_script('storeVariables', REXPANSIVE_BUILDER_URL . $cartella . 'js/store.legacy.min.js', array('jquery'), null, true);
 

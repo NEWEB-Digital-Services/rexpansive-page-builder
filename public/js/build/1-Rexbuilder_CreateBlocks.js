@@ -369,7 +369,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
         gridstack.commit();
 
         galleryEditorInstance._createFirstReverseStack();
-
+        galleryEditorInstance.properties.numberBlocksVisibileOnGrid = galleryEditorInstance.properties.numberBlocksVisibileOnGrid + 1;
         var actionData = {
             targetElement: $newBlock,
             hasToBeRemoved: false,
@@ -379,8 +379,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
         Rexbuilder_Util_Editor.pushAction(galleryEditorInstance.$element, "updateBlockVisibility", actionData, reverseData);
         $newBlock.removeAttr("data-gs-auto-position");
-        if(videoTypeActive != ""){
-            $itemContent.addClass(videoTypeActive+"-player");
+        if (videoTypeActive != "") {
+            $itemContent.addClass(videoTypeActive + "-player");
         }
         Rexbuilder_Util.startVideoPlugin($itemContent);
 

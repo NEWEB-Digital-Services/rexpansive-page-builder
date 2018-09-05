@@ -46,6 +46,9 @@ var Rexbuilder_Section = (function ($) {
             if (!Rexbuilder_Util_Editor.insertingModel) {
                 Rexbuilder_Util_Editor.fixCopiedElementSlider($elem);
             }
+            if ($elem.find(".rexlive-block-toolbox").length == 0) {
+                $elem.find(".grid-stack-item-content").after(tmpl("tmpl-toolbox-block", {}));
+            }
         });
 
         if (!Rexbuilder_Util_Editor.insertingModel) {
@@ -95,6 +98,8 @@ var Rexbuilder_Section = (function ($) {
                     }
                 });
                 $newSection.attr("data-rexlive-model-number", modelNumber);
+                var $buttonModel = $newSection.find(".update-model-button");
+                Rexbuilder_Dom_Util.updateLockEditModel($buttonModel, true);
             }
 
             $newSection.insertAfter($section);
@@ -290,8 +295,6 @@ var Rexbuilder_Section = (function ($) {
                 }
                 Rexbuilder_Util_Editor.pushAction($section, "collapseSection", actionData, reverseData);
             }
-            Rexbuilder_Util.fixVideosAudioSection($section);
-            Rexbuilder_Util.fixYoutubeDimensionsSection($section);
         });
 
         $(document).on("click", ".add-new-section", function (e) {
@@ -413,10 +416,10 @@ var Rexbuilder_Section = (function ($) {
             $row.perfectGridGalleryEditor();
 
             //starting sliders after grid is up
-            setTimeout(function () {  
-                $row.children(".grid-stack-item").each(function(i, el){
+            setTimeout(function () {
+                $row.children(".grid-stack-item").each(function (i, el) {
                     var $sliderToActive = $(el).find(".rex-slider-wrap");
-                    if($sliderToActive.length != 0){
+                    if ($sliderToActive.length != 0) {
                         RexSlider.initSlider($sliderToActive);
                     }
                 });

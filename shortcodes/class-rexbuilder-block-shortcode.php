@@ -349,7 +349,7 @@ class Rexbuilder_Block
             $bg_video_toggle_audio_markup = "";
 
             if ($video_has_audio == '1') {
-                $bg_video_toggle_audio_markup .= '<div class="rex-video-toggle-audio user-has-muted">';
+                $bg_video_toggle_audio_markup .= '<div class="rex-video-toggle-audio">';
                 $bg_video_toggle_audio_markup .= '<div class="rex-video-toggle-audio-shadow"></div>';
                 $bg_video_toggle_audio_markup .= '</div>';
             }
@@ -364,7 +364,7 @@ class Rexbuilder_Block
                 $videoMp4Width = $videoMP4Data["width"];
                 $videoMp4Height = $videoMP4Data["height"];
                 $bg_video_markup .= '<div class="rex-video-wrap" data-rex-video-width="'.$videoMp4Width.'" data-rex-video-height="'.$videoMp4Height.'">';
-                $bg_video_markup .= '<video class="rex-video-container" preload autoplay loop muted>';
+                $bg_video_markup .= '<video class="rex-video-container" preload autoplay loop'.            ($bg_video_toggle_audio_markup != "" ? "": " muted").'>';
                 $bg_video_markup .= '<source type="video/mp4" src="' . $video_mp4_url . '" />';
                 $bg_video_markup .= '</video>';
                 $bg_video_markup .= '</div>';
@@ -375,7 +375,7 @@ class Rexbuilder_Block
 
             if ('' != $video_bg_url && 'undefined' != $video_bg_url):
                 $videoTypeActive = 'youtube-player';
-                $mute = 'true';
+                $mute = ($bg_video_toggle_audio_markup != "" ? "false" : "true");
                 $bg_youtube_video_markup .= '<div class="rex-youtube-wrap" data-property="{videoURL:\'' . $video_bg_url . '\',containment:\'self\',startAt:0,mute:' . $mute . ',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"></div>';
             endif;
 
@@ -384,8 +384,9 @@ class Rexbuilder_Block
 
             if ('' != $video_bg_url_vimeo && 'undefined' != $video_bg_url_vimeo) {
                 $videoTypeActive = 'vimeo-player';
+                $muteVideo = ($bg_video_toggle_audio_markup != "" ? "0" : "1");
                 $bg_video_vimeo_markup .= '<div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--block">';
-                $bg_video_vimeo_markup .= '<iframe src="' . $video_bg_url_vimeo . '?autoplay=1&loop=1&title=0&byline=0&portrait=0&autopause=0&muted=1" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+                $bg_video_vimeo_markup .= '<iframe src="' . $video_bg_url_vimeo . '?autoplay=1&loop=1&title=0&byline=0&portrait=0&autopause=0&muted='.$muteVideo.'&background=1" width="640" height="360" frameborder="0" allow="autoplay" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
                 $bg_video_vimeo_markup .= '</div>';
             }
 

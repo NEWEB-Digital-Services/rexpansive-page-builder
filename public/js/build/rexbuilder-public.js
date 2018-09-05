@@ -46,10 +46,76 @@ var Rexbuilder_App = (function ($) {
 			initPhotoSwipeFromDOM('.photoswipe-gallery');
 		}
 
+
+		if (true == _plugin_frontend_settings.native_scroll_animation) {
+
+			var excluded_links = [
+				'[href="#"]',
+				'.no-smoothing',
+				'.vertical-nav-link',
+				'.rex-vertical-nav-link',
+				'.woocommerce-review-link',
+			];
+
+			// Smooth scroll on all internal links
+			var $linksToSmooth = Rexbuilder_Util.$body.find('a[href*="#"]');
+			for (var i = 0; i < excluded_links.length; i++) {
+				$linksToSmooth = $linksToSmooth.not(excluded_links[i]);
+			}
+
+			$linksToSmooth = $linksToSmooth.not(_filterLinksToSmooth);
+
+			$linksToSmooth.click(function () {
+				if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
+					var target = $(this.hash);
+					target = target.length ? target : Rexbuilder_Util.$rexContainer.find('[name=' + this.hash.slice(1) + ']');
+					if (target.length) {
+						Rexbuilder_Util.smoothScroll(target);
+						return false;
+					}
+				}
+			});
+
+			// advanced check to exclude woocommerce tabs
+			var _filterLinksToSmooth = function (index) {
+				if ($(this).parents(".woocommerce-tabs").length != 0) {
+					return true;
+				} else {
+					return false;
+				}
+			};
+
+		};
+
+		_linkDocumentListeners();
+
+		// Starting slider
+		RexSlider.init();
+
 		Rexbuilder_Util.launchVideoPlugins();
 
+		Rexbuilder_Util.playAllVideos();
+	};
+
+	var _linkDocumentListeners = function () {
+		$(document).on("YTPStart", function (e) {
+			var ytContainer = $(e.target);
+			var $toggle = ytContainer.parents(".youtube-player").eq(0).children(".rex-video-toggle-audio");
+			var ytpPlayer = ytContainer.YTPGetPlayer();
+			if (ytpPlayer !== undefined) {
+				ytContainer.optimizeDisplay();
+				if ($toggle.length != 0 && !$toggle.hasClass("user-has-muted")) {
+					ytContainer.YTPUnmute();
+				} else {
+					ytpPlayer.mute();
+					ytpPlayer.isMute = true;
+					ytpPlayer.setVolume(0);
+				}
+			}
+		});
+
 		// Pause/Play video on block click
-		$(document).on("click", ".YTPOverlay", function (e) { 
+		$(document).on("click", ".YTPOverlay", function (e) {
 			var $ytvideo = $(e.target).parents(".rex-youtube-wrap");
 			if ($ytvideo.length > 0) {
 				var video_state = $ytvideo[0].state;
@@ -60,7 +126,7 @@ var Rexbuilder_App = (function ($) {
 				}
 			}
 		});
-		
+
 		$(document).on("click", ".perfect-grid-item", function () {
 			if (!$(this).hasClass('block-has-slider')) {
 				var $itemContent = $(this).find(".grid-item-content");
@@ -94,7 +160,11 @@ var Rexbuilder_App = (function ($) {
 
 				if ($mpvideo.length > 0) {
 					var videoMp4 = $mpvideo.find(".rex-video-container").get(0);
-					videoMp4.paused ? videoMp4.play() : videoMp4.pause();
+					if (videoMp4.paused) {
+						videoMp4.play();
+					} else {
+						videoMp4.pause();
+					}
 				}
 			}
 		});
@@ -103,9 +173,9 @@ var Rexbuilder_App = (function ($) {
 		$(document).on('click', '.rex-video-toggle-audio', function (e) {
 			e.stopPropagation();
 			var $toggle = $(this);
-			var $ytvideo = $toggle.parents(".youtube-player").children(".rex-youtube-wrap");
-			var $mpvideo = $toggle.parents('.mp4-player').find('.rex-video-container');
-			var $vimvideo = $toggle.parents('.vimeo-player').find('.rex-video-vimeo-wrap--block');
+			var $ytvideo = $toggle.parents(".youtube-player").eq(0).children(".rex-youtube-wrap");
+			var $mpvideo = $toggle.parents('.mp4-player').eq(0).find('.rex-video-container');
+			var $vimvideo = $toggle.parents('.vimeo-player').eq(0).find('.rex-video-vimeo-wrap--block');
 
 			//youtube video
 			if ($ytvideo.length > 0) {
@@ -149,52 +219,7 @@ var Rexbuilder_App = (function ($) {
 				}
 			}
 		});
-
-		if (true == _plugin_frontend_settings.native_scroll_animation) {
-
-			var excluded_links = [
-				'[href="#"]',
-				'.no-smoothing',
-				'.vertical-nav-link',
-				'.rex-vertical-nav-link',
-				'.woocommerce-review-link',
-			];
-
-			// Smooth scroll on all internal links
-			var $linksToSmooth = Rexbuilder_Util.$body.find('a[href*="#"]');
-			for (var i = 0; i < excluded_links.length; i++) {
-				$linksToSmooth = $linksToSmooth.not(excluded_links[i]);
-			}
-
-			$linksToSmooth = $linksToSmooth.not(_filterLinksToSmooth);
-
-			$linksToSmooth.click(function () {
-				if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') && location.hostname == this.hostname) {
-					var target = $(this.hash);
-					target = target.length ? target : Rexbuilder_Util.$rexContainer.find('[name=' + this.hash.slice(1) + ']');
-					if (target.length) {
-						Rexbuilder_Util.smoothScroll(target);
-						return false;
-					}
-				}
-			});
-
-			// advanced check to exclude woocommerce tabs
-			var _filterLinksToSmooth = function (index) {
-				if ($(this).parents(".woocommerce-tabs").length != 0) {
-					return true;
-				} else {
-					return false;
-				}
-			};
-
-		};
-
-		// Starting slider
-		RexSlider.init();
-
-		Rexbuilder_Util.playAllVideos();
-	};
+	}
 
 	var load = function () {
 		/* -- Launching the textfill -- */

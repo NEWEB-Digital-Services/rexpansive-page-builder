@@ -650,7 +650,7 @@ var Rex_Save_Listeners = (function ($) {
             : $itemData.attr('data-video_bg_url');
         video_bg_url_vimeo = $itemData.attr('data-video_bg_url_vimeo') === undefined ? ""
             : $itemData.attr('data-video_bg_url_vimeo');
-        video_has_audio = $itemData.attr('data-video_has_audio') === undefined ? "0"
+        video_has_audio = $itemData.attr('data-video_has_audio') === undefined ? false
             : $itemData.attr('data-video_has_audio');
 
         linkurl = $itemData.attr('data-linkurl') === undefined ? ""
@@ -756,7 +756,7 @@ var Rex_Save_Listeners = (function ($) {
                 + '" zak_icon="' + zak_icon
                 + '" zak_foreground="' + zak_foreground
                 + '" block_animation="' + block_animation
-                + '" video_has_audio="' + video_has_audio
+                + '" video_has_audio="' + (video_has_audio.toString() == "true" ? "1" : "0")
                 + '" block_has_scrollbar="' + block_has_scrollbar
                 + '" block_live_edited="' + block_live_edited
                 + '" block_flex_position="' + block_flex_position

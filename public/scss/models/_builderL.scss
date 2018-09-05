@@ -670,3 +670,21 @@
     position: absolute;
     right: 0;
 }
+
+.rex-video-vimeo-wrap, .rex-youtube-wrap{
+    .rex-video-iframe-natural{
+        width: 100%!important;
+        height: 100%!important;
+        position: absolute;
+        margin-top: 0!important;
+        margin-left: 0!important;
+        min-height: auto;
+        min-width: auto;
+    }
+}
+
+.rex-youtube-wrap, .rex-video-vimeo-wrap{
+    iframe{
+        margin-bottom: 0px;
+    }
+}
