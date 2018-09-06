@@ -8,6 +8,8 @@ var Rexbuilder_Util = (function ($) {
     var windowIsResizing = false;
     var responsiveLayouts;
     var defaultLayoutSections;
+    var $modelsCustomizationsDataDiv;
+    var $pageCustomizationsDataDiv;
 
     var createRandomID = function (n) {
         var text = "";
@@ -93,6 +95,167 @@ var Rexbuilder_Util = (function ($) {
         return "custom";
     }
 
+    var _getModelsCustomizations = function () { 
+        var data = [];
+        $modelsCustomizationsDataDiv.children(".model-customizations-container").each(function (i, modelData) { 
+            var $modelData = $(modelData);
+            var modelID = parseInt($modelData.attr("data-model-id"));
+            var customizations = [];
+            $modelData.children(".model-customization-data").each(function (j, modelCustomization) {
+                var $modelCustomization = $(modelCustomization);
+                var customizationName = $modelCustomization.attr("data-model-layout-name");
+                var customizationTargets = JSON.parse($modelCustomization.text());
+                var customization = {
+                    name: customizationName,
+                    targets: customizationTargets
+                }
+                customizations.push(customization);
+            });
+            var modelCustomizations = {
+                id: modelID,
+                customizations, customizations
+            }
+            data.push(modelCustomizations);
+        });
+        return data;
+    };
+    
+    var _updateModelsCustomizationsData = function(updatedModelCustomizationsData){
+        var k;
+        var modelFounded = false;
+        $modelsCustomizationsDataDiv.children(".model-customizations-container").each(function (i, modelData) {
+            var $modelData = $(modelData);
+            var modelID = parseInt($modelData.attr("data-model-id"));
+            if(updatedModelCustomizationsData.id == modelID){
+                modelFounded = true;
+                $modelData.children(".model-customization-data").remove();
+                for(k=0; k<updatedModelCustomizationsData.customizations.length; k++){
+                    var $div = $(document.createElement("div"));
+                    $div.addClass("model-customization-data");
+                    $div.attr("data-model-layout-name", updatedModelCustomizationsData.customizations[k].name);
+                    $div.text(JSON.stringify(updatedModelCustomizationsData.customizations[k].targets));
+                    $div.appendTo($modelData[0]);
+                }
+            }
+        });
+        
+        if(!modelFounded){
+            var $divContainer = $(document.createElement("div"));
+            $divContainer.addClass("model-customizations-container");
+            $divContainer.attr("data-model-id", updatedModelCustomizationsData.id);
+            for(k=0; k<updatedModelCustomizationsData.customizations.length; k++){
+                var $div = $(document.createElement("div"));
+                $div.addClass("model-customization-data");
+                $div.attr("data-model-layout-name", updatedModelCustomizationsData.customizations[k].name);
+                $div.text(JSON.stringify(updatedModelCustomizationsData.customizations[k].targets));
+                $div.appendTo($divContainer[0]);
+            }
+            $divContainer.appendTo($modelsCustomizationsDataDiv[0]);
+        }
+    }
+
+    // returns customizations, custom layouts are updated with default page sections and blocks
+    var _getPageCustomizations = function () { 
+        var data = [];
+        var defaultLayout = {
+            name: "default",
+            sections: []
+        };
+
+        var $pageDefaultLayoutWrapper = $pageCustomizationsDataDiv.children(".customization-wrap[data-customization-name=\"default\"]");
+        $pageDefaultLayoutWrapper.children(".section-targets").each(function (j, sectionTargetsElem) {
+            var $sectionTargetsElem = $(sectionTargetsElem);
+            var sectionRexID = $sectionTargetsElem.attr("data-section-rex-id");
+            var modelID = isNaN(parseInt($sectionTargetsElem.attr("data-model-id"))) ? -1 : parseInt($sectionTargetsElem.attr("data-model-id"));
+            var modelNumber = isNaN(parseInt($sectionTargetsElem.attr("data-model-number"))) ? -1 : parseInt($sectionTargetsElem.attr("data-model-number"));
+            var targets = JSON.parse($sectionTargetsElem.text());
+            defaultLayout.sections.push({
+                section_rex_id: sectionRexID,
+                section_model_id: modelID != -1 ? modelID : "",
+                section_model_number: modelNumber != -1 ? modelNumber : "",
+                section_is_model: modelID != -1,
+                targets: targets
+            });
+        });
+
+        data.push(defaultLayout);
+
+        var flagSection;
+        var k;
+        $pageCustomizationsDataDiv.children(".customization-wrap:not([data-customization-name=\"default\"])").each(function (i, customizationWrap) { 
+            var $customizationWrap = $(customizationWrap);
+            var customizationName = $customizationWrap.attr("data-customization-name");
+            var sectionsCustomizations = [];
+            var layoutCustomization = {
+                name: customizationName,
+                sections: sectionsCustomizations
+            }
+
+            $customizationWrap.children(".section-targets").each(function (j, sectionTargetsElem) {
+                var $sectionTargetsElem = $(sectionTargetsElem);
+                var sectionRexID = $sectionTargetsElem.attr("data-section-rex-id");
+                var modelID = isNaN(parseInt($sectionTargetsElem.attr("data-model-id"))) ? -1 : parseInt($sectionTargetsElem.attr("data-model-id"));
+                var modelNumber = isNaN(parseInt($sectionTargetsElem.attr("data-model-number"))) ? -1 : parseInt($sectionTargetsElem.attr("data-model-number"));
+                var targets = JSON.parse($sectionTargetsElem.text());
+                
+                flagSection= false;
+                for(k=0; k<defaultLayout.sections.length; k++){
+                    if(defaultLayout.sections[k].section_rex_id == sectionRexID){
+                        flagSection = true;
+                    }
+                }
+
+                if(flagSection){
+                    layoutCustomization.sections.push({
+                        section_rex_id: sectionRexID,
+                        section_model_id: modelID != -1 ? modelID : "",
+                        section_model_number: modelNumber != -1 ? modelNumber : "",
+                        section_is_model: modelID != -1,
+                        targets: targets
+                    });
+                }
+            });
+            
+            data.push(layoutCustomization);
+        });
+        return data;
+    };
+    
+    var _updatePageCustomizationsData = function(updatedModelCustomizationsData){
+        var k;
+        var modelFounded = false;
+        $modelsCustomizationsDataDiv.children(".model-customizations-container").each(function (i, modelData) {
+            var $modelData = $(modelData);
+            var modelID = parseInt($modelData.attr("data-model-id"));
+            if(updatedModelCustomizationsData.id == modelID){
+                modelFounded = true;
+                $modelData.children(".model-customization-data").remove();
+                for(k=0; k<updatedModelCustomizationsData.customizations.length; k++){
+                    var $div = $(document.createElement("div"));
+                    $div.addClass("model-customization-data");
+                    $div.attr("data-model-layout-name", updatedModelCustomizationsData.customizations[k].name);
+                    $div.text(JSON.stringify(updatedModelCustomizationsData.customizations[k].targets));
+                    $div.appendTo($modelData[0]);
+                }
+            }
+        });
+        
+        if(!modelFounded){
+            var $divContainer = $(document.createElement("div"));
+            $divContainer.addClass("model-customizations-container");
+            $divContainer.attr("data-model-id", updatedModelCustomizationsData.id);
+            for(k=0; k<updatedModelCustomizationsData.customizations.length; k++){
+                var $div = $(document.createElement("div"));
+                $div.addClass("model-customization-data");
+                $div.attr("data-model-layout-name", updatedModelCustomizationsData.customizations[k].name);
+                $div.text(JSON.stringify(updatedModelCustomizationsData.customizations[k].targets));
+                $div.appendTo($divContainer[0]);
+            }
+            $divContainer.appendTo($modelsCustomizationsDataDiv[0]);
+        }
+    }
+
+
     var chooseLayout = function () {
         var $responsiveData = $("#rexbuilder-layout-data");
         var $modelData = $("#rexbuilder-model-data");
@@ -105,7 +268,7 @@ var Rexbuilder_Util = (function ($) {
             type: "standard"
         }
 
-        if (($responsiveData.children(".layouts-data").attr("data-empty-customizations") == "true" && $modelData.children(".models-customizations").attr("data-empty-models-customizations") == "true") || (Rexbuilder_Util.editorMode && Rexbuilder_Util.firstStart)) {
+        if (($responsiveData.children(".layouts-data").attr("data-empty-customizations") == "true") || (Rexbuilder_Util.editorMode && Rexbuilder_Util.firstStart)) {
             return "default";
         }
 
@@ -250,13 +413,7 @@ var Rexbuilder_Util = (function ($) {
             }
         }
 
-
-        var layoutDataModels = [];
-        if ($modelData.children(".models-customizations").text() != "") {
-            layoutDataModels = JSON.parse($modelData.children(".models-customizations").text());
-        }
-
-
+        var layoutDataModels = _getModelsCustomizations();
         var modelsIDInPage = [];
 
         Rexbuilder_Util.$rexContainer.children(".rexpansive_section:not(.removing_section)").each(function (i, el) {
@@ -415,6 +572,7 @@ var Rexbuilder_Util = (function ($) {
         var targetFounded;
         var newBlocksLayout = [];
         var newSectionsLayout = [];
+        console.log(pushingEdits);
         if (!jQuery.isEmptyObject(mergedEdits)) {
             $.each(mergedEdits, function (i, sectionCustom) {
                 sectionFounded = false;
@@ -432,7 +590,7 @@ var Rexbuilder_Util = (function ($) {
                                     targetFounded = true;
 
                                     if(m == 0 && typeof sectionCustom.targets[m].collapse_grid == "undefined" && _viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth){
-                                        sectionCustom.targets[m].collapse_grid = true;
+                                        sectionCustom.targets[0].props.collapse_grid = true;
                                     }
                                     sectionCustom.targets[m].props = lodash.merge({}, sectionDefault.targets[n].props, sectionCustom.targets[m].props);
                                     
@@ -463,6 +621,9 @@ var Rexbuilder_Util = (function ($) {
                         }
                         if (m == 0) {
                             sectionCustom.targets = sectionDefault.targets;
+                            if(_viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth){
+                                sectionCustom.targets[0].props.collapse_grid = true;
+                            }
                         }
                     }
                 });
@@ -478,7 +639,7 @@ var Rexbuilder_Util = (function ($) {
         } else {
             mergedEdits = pushingEdits;
         }
-/*         
+        
         console.log("layoutDataPage", layoutDataPage);
         console.log("layoutDataModels", layoutDataModels);
         console.log("sectionsPage", sectionsPage);
@@ -489,8 +650,7 @@ var Rexbuilder_Util = (function ($) {
 
         console.log("applying");
         console.log("mergedEdits", mergedEdits); 
-        */
-
+       
         Rexbuilder_Util.domUpdaiting = true;
         var sectionDomOrder = [];
 
@@ -510,6 +670,7 @@ var Rexbuilder_Util = (function ($) {
                 } else {
                     $section = Rexbuilder_Util.$rexContainer.children('section[data-rexlive-section-id="' + section.section_rex_id + '"]');
                 }
+                console.log($section)
                 if ($section.length != 0) {
                     if (typeof section.section_removing != "undefined" && section.section_removing.toString() == "true") {
                         $section.addClass("rex-hide-section");
@@ -584,7 +745,7 @@ var Rexbuilder_Util = (function ($) {
                     },
                     vimeoUrl: vimeoUrl,
                     youtubeUrl: youtubeUrl,
-                    audio: targetProps['video_has_audio'] == "1" || targetProps['video_has_audio'].toString() == "true" ? true : false,
+                    audio: typeof targetProps['video_has_audio'] == "undefined" ? "" : (targetProps['video_has_audio']== "1" || targetProps['video_has_audio'].toString() == "true" ? true : false),
                     typeVideo: type
                 };
 
@@ -620,7 +781,7 @@ var Rexbuilder_Util = (function ($) {
 
                 Rexbuilder_Dom_Util.updateBlockOverlay(overlayBlockOpt);
 
-                Rexbuilder_Dom_Util.updateBlockPaddings($elem, _getPaddingsDataString(targetProps["block_padding"]));
+                Rexbuilder_Dom_Util.updateBlockPaddings($elem, _getPaddingsDataString(typeof targetProps["block_padding"] != "undefined"?targetProps["block_padding"] : "") );
 
                 var newClasses = typeof targetProps["block_custom_class"] == "undefined" ? "" : targetProps["block_custom_class"];
                 var classList = [];
@@ -630,7 +791,7 @@ var Rexbuilder_Util = (function ($) {
                 }
                 Rexbuilder_Dom_Util.updateCustomClasses($elem, classList);
 
-                var pos = targetProps["block_flex_position"].split(" ");
+                var pos = typeof(targetProps["block_flex_position"]) != "undefined" ? targetProps["block_flex_position"].split(" ") : "";
 
                 var flexPosition = {
                     x: pos[0],
@@ -772,6 +933,7 @@ var Rexbuilder_Util = (function ($) {
     }
 
     var _updateModelsLive = function (idModel, targets, editedModelNumber) {
+        Rexbuilder_Util.domUpdaiting = true;
         Rexbuilder_Util.$rexContainer.children(".rexpansive_section").each(function (i, sec) {
             var $section = $(sec);
             if ($section.attr("data-rexlive-model-id") == idModel && $section.attr("data-rexlive-model-number") != editedModelNumber) {
@@ -1841,7 +2003,8 @@ var Rexbuilder_Util = (function ($) {
 
         this.$window = $(window);
         this.$body = $("body");
-
+        $modelsCustomizationsDataDiv = $("#rexbuilder-model-data").children(".models-customizations").eq(0);
+        $pageCustomizationsDataDiv = $("#rexbuilder-layout-data").children(".layouts-customizations-test").eq(0);
         this.$rexContainer = $(".rex-container");
         if (Rexbuilder_Util.$rexContainer.attr("data-backend-edited").toString() == "true" && Rexbuilder_Util.editorMode) {
             Rexbuilder_Util.$rexContainer.addClass("backend-edited");
@@ -1935,6 +2098,9 @@ var Rexbuilder_Util = (function ($) {
         fixVideosAudioSection: _fixVideosAudioSection,
         fixVideoAudio: _fixVideoAudio,
         fixYoutube: _fixYoutube,
+        getModelsCustomizations: _getModelsCustomizations,
+        updateModelsCustomizationsData: _updateModelsCustomizationsData,
+        getPageCustomizations: _getPageCustomizations,
     };
 
 })(jQuery);

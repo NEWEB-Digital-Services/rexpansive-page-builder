@@ -78,7 +78,7 @@ var Rex_Save_Listeners = (function ($) {
             });
 
             Rexbuilder_Dom_Util.fixModelNumbersSaving();
-
+            
             var newCustomization = createCustomization(activeLayoutName);
             console.log("newCustomization", newCustomization);
             console.log("customizationsArray", jQuery.extend(true, [], customizationsArray));
@@ -88,7 +88,6 @@ var Rex_Save_Listeners = (function ($) {
             if (activeLayoutName == "default") {
                 for (i = 0; i < customizationsArray.length; i++) {
                     var modelsNumbers = _countModels(customizationsArray[i].sections);
-                    console.log("layoutName", customizationsArray[i].name);
                     for (j = 0; j < newCustomization.sections.length; j++) {
                         flagSection = false;
                         for (k = 0; k < customizationsArray[i].sections.length; k++) {
@@ -139,11 +138,12 @@ var Rex_Save_Listeners = (function ($) {
                                 section_model_id: newCustomization.sections[j].section_model_id,
                                 section_model_number: newCustomization.sections[j].section_model_number
                             }
-                            customizationsArray[i].sections.push(sectionObj);
+                            customizationsArray[i].sections.splice(j, 0, sectionObj);
                         }
                     }
                 }
             }
+
             customizationsArray.push(newCustomization);
             console.log("customizationsArray", customizationsArray);
             $layoutsCustomDiv.text(JSON.stringify(customizationsArray));
@@ -208,26 +208,14 @@ var Rex_Save_Listeners = (function ($) {
 
             var $modelData = Rexbuilder_Util.$rexContainer.parent().children("#rexbuilder-model-data");
 
-            var $modelCustomDiv = $modelData.children(".models-customizations");
-            var $modelsAvaiableNamesDiv = $modelData.children(".available-models-customizations-names");
-
-            var oldModels;
-
-            if ($modelCustomDiv.attr("data-empty-models-customizations")) {
-                oldModels = [];
-            } else {
-                oldModels = JSON.parse($modelCustomDiv.text());
-            }
-
-            var modelsCustomizations = [];
+            var oldModels = Rexbuilder_Util.getModelsCustomizations();
             var i;
 
             var modelActive = {};
+
             for (i = 0; i < oldModels.length; i++) {
                 var model = oldModels[i];
-                if (model.id != idModel) {
-                    modelsCustomizations.push(model);
-                } else {
+                if (model.id == idModel) {
                     modelActive = model;
                 }
             }
@@ -239,11 +227,9 @@ var Rex_Save_Listeners = (function ($) {
             }
 
             var modelCustomLayoutData = updateModel(modelActive, $section, activeLayout);
-            modelsCustomizations.push(modelCustomLayoutData);
 
-            $modelCustomDiv.text(JSON.stringify(modelsCustomizations));
-            console.log("modelCustomLayoutData", modelCustomLayoutData);
-            console.log(activeLayout);
+            Rexbuilder_Util.updateModelsCustomizationsData(modelCustomLayoutData);
+
             if (activeLayout != "default") {
                 for (i = 0; i < modelCustomLayoutData.customizations.length; i++) {
                     // have to update others model with same ID
@@ -252,12 +238,11 @@ var Rex_Save_Listeners = (function ($) {
                     }
                 }
             }
-
-            $modelCustomDiv.removeAttr("data-empty-models-customizations");
-
+            
             for (i = 0; i < modelCustomLayoutData.customizations.length; i++) {
                 // have to update only active layout
-                if (modelCustomLayoutData.customizations[i].name == activeLayout) {
+                // if active is default, update all with new blocks
+                if (modelCustomLayoutData.customizations[i].name == activeLayout || activeLayout == "default") {
                     $.ajax({
                         type: 'POST',
                         dataType: 'json',
@@ -266,9 +251,9 @@ var Rex_Save_Listeners = (function ($) {
                             action: 'rexlive_save_customization_model',
                             nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
                             model_id_to_update: modelCustomLayoutData.id,
-                            model_name: modelCustomLayoutData.name,
+                            model_name: modelCustomLayoutData.customizations.name,
                             targets: modelCustomLayoutData.customizations[i].targets,
-                            layout_name: activeLayout
+                            layout_name: modelCustomLayoutData.customizations[i].name
                         },
                         success: function (response) {
                             if (response.success) {
@@ -283,6 +268,8 @@ var Rex_Save_Listeners = (function ($) {
 
             //updaiting names of avaiable layouts
             //ajax call for saving layouts type and names
+            
+            var $modelsAvaiableNamesDiv = $modelData.children(".available-models-customizations-names");
             var modelSavingCustomizationNames = [];
             for (i = 0; i < modelCustomLayoutData.customizations.length; i++) {
                 modelSavingCustomizationNames.push(modelCustomLayoutData.customizations[i].name);
@@ -435,9 +422,10 @@ var Rex_Save_Listeners = (function ($) {
             targets: createTargets($section, activeLayout)
         };
 
+        //if active layout is default, have to update custom layouts with new blocks
         if (activeLayout == "default") {
             for (i = 0; i < customizations.length; i++) {
-                if (typeof customizations[i].targets == "undefined" || customizations[i].targets.length == 0) {
+                if (typeof customizations[i].targets == "undefined" || customizations[i].targets == null ||  customizations[i].targets.length == 0) {
                     customizations[i].targets = [];
                     customizations[i].targets.push({
                         name: "self",
@@ -450,6 +438,7 @@ var Rex_Save_Listeners = (function ($) {
                     for (k = 1; k < customizations[i].targets.length; k++) {
                         if (newCustomization.targets[j].name == customizations[i].targets[k].name) {
                             flagBlock = true;
+                            break;
                         }
                     }
                     if (!flagBlock) {

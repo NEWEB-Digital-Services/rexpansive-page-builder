@@ -328,9 +328,13 @@
             var that = this;
             var collapseGrid = newSettings.collapse_grid;
             setTimeout(function () {
+                console.log("grid almost ready");
+                console.log("collapse?");
                 if (collapseGrid.toString() == "true") {
+                    console.log("yes");
                     that.collapseElements();
                 } else {
+                    console.log("no");
                     that.removeCollapseElementsProperties();
                 }
                 that.properties.updatingSectionSameGrid = false;

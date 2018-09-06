@@ -229,6 +229,8 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_ajax_live_refresh_builder', $plugin_admin, 'live_refresh_builder' );
 		
 		$this->loader->add_action( 'wp_ajax_rex_create_model_from_builder', $plugin_admin, 'rex_create_model_from_builder' );
+		$this->loader->add_action( 'wp_ajax_rex_save_model_customization', $plugin_admin, 'rex_save_model_customization' );
+		$this->loader->add_action( 'wp_ajax_rex_save_model_customization_names', $plugin_admin, 'rex_save_model_customization_names' );
 		$this->loader->add_action( 'wp_ajax_rex_get_model_live', $plugin_admin, 'rex_get_model_live' );
 		$this->loader->add_action( 'wp_ajax_rex_save_custom_layouts', $plugin_admin, 'rex_save_custom_layouts' );
 		$this->loader->add_action( 'wp_ajax_rex_get_model', $plugin_admin, 'rex_get_model' );

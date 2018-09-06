@@ -696,7 +696,19 @@ endif;
                     echo 'data-empty-models-customizations="true">';
                 } else { ?>>
                     <?php
-                    echo json_encode($models_customizations);
+                    foreach ($models_customizations as $model) {
+                        $idModel = $model['id'];
+                        echo '<div class="model-customizations-container" data-model-id="'. $idModel .'">';
+                        $customizations = $model['customizations'];
+                        foreach($customizations as $custom){
+                            $customName = $custom['name'];
+                            $customTargets = $custom['targets'];
+                            echo '<div class="model-customization-data" data-model-layout-name="' . $customName . '">';
+                            echo json_encode($customTargets);
+                            echo '</div>';
+                        }
+                        echo '</div>';
+                    }
                 }
                 ?></div>
                 <div class = "available-models-customizations-names">
@@ -706,9 +718,25 @@ endif;
                 <div class = "layouts-customizations" <?php
                 if (!$flag_page_customization) {
                     echo 'data-empty-customizations="true">';
-                } else { ?>>
+                } else {?>><?php echo json_encode($customizations_array);}?></div>
+                <div class = "layouts-customizations-test" <?php
+                if (!$flag_page_customization) {
+                    echo 'data-empty-customizations="true">';
+                } else {?>>
                     <?php
-                    echo json_encode($customizations_array);
+                    foreach ($customizations_array as $customization) {
+                        $customization_name = $customization['name'];
+                        echo '<div class="customization-wrap" data-customization-name="'.$customization_name.'">';
+                        $sections = $customization['sections'];
+                        foreach($sections as $section_targets){
+                            $sectionRexID = $section_targets['section_rex_id'];
+                            $targets = $section_targets['targets'];
+                            echo '<div class="section-targets" data-section-rex-id="' . $sectionRexID . '">';
+                            echo json_encode($targets);
+                            echo '</div>';
+                        }
+                        echo '</div>';
+                    }
                 }
                 ?></div>
                 <div class = "available-layouts-names">

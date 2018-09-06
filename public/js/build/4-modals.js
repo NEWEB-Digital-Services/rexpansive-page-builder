@@ -1233,15 +1233,12 @@
 			var modelNumber = typeof $section.attr("data-rexlive-model-number") != "undefined" ? $section.attr("data-rexlive-model-number") : "";
 			var modelID = Rexbuilder_Util.createSectionID();
 			var shortCode = Rex_Save_Listeners.createSectionProperties($section, "shortcode", modelID);
-
 			var sectionCustomizations = Rexbuilder_Util_Editor.getSectionCustomLayouts(sectionID);
 			var names = [];
 			var i;
 			if (sectionCustomizations.length != 0) {
 				for (i = 0; i < sectionCustomizations.length; i++) {
 					names.push(sectionCustomizations[i].name);
-				}
-				for (i = 0; i < sectionCustomizations.length; i++) {
 					if (sectionCustomizations[i].name == "default") {
 						sectionCustomizations[i].targets = Rex_Save_Listeners.createTargets($section, "default");
 					}
@@ -1256,6 +1253,31 @@
 
 			var modelID = typeof $section.attr("data-rexlive-model-id") != "undefined" ? $section.attr("data-rexlive-model-id") : "";
 
+			var modelsCounted = [];
+			var modelFoundFlag = false;
+
+			var k;
+
+			Rexbuilder_Util.$rexContainer.find(".rexpansive_section.rex-model-section").each(function (i, sec) {
+				var $sec = $(sec);
+				var modelID = parseInt($sec.attr("data-rexlive-model-id"));
+				var modelNumber = parseInt($sec.attr("data-rexlive-model-number"));
+				modelFoundFlag = false;
+
+				for (k = 0; k < modelsCounted.length; k++) {
+					if (modelID == modelsCounted[k].modelID && modelNumber > modelsCounted[k].number) {
+						modelsCounted[k].number = modelNumber;
+						modelFoundFlag = true;
+					}
+				}
+				if (!modelFoundFlag) {
+					modelsCounted.push({
+						modelID: modelID,
+						number: modelNumber
+					});
+				}
+			});
+
 			var data = {
 				eventName: "rexlive:openModalMenu",
 				modelData: {
@@ -1266,7 +1288,8 @@
 					},
 					shortCode: shortCode,
 					layouts: sectionCustomizations,
-					layoutsNames: names
+					layoutsNames: names,
+					modelsNumbers: modelsCounted
 				}
 			};
 

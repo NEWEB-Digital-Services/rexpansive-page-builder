@@ -355,7 +355,6 @@ var Rexbuilder_Section = (function ($) {
             Rexbuilder_Util_Editor.insertingModel = true;
 
             var data = e.settings.data_to_send;
-            console.log(data);
 
             var newSectionHtml = data.model;
             var html = $.parseHTML(newSectionHtml);
@@ -378,7 +377,7 @@ var Rexbuilder_Section = (function ($) {
             $oldSection.after(html);
 
             var $newSection = $(html);
-
+            
             var dataModel = {
                 modelID: data.modelID,
                 modelName: data.modelName,
@@ -389,7 +388,7 @@ var Rexbuilder_Section = (function ($) {
             }
 
             var addingModelCustomizationsNames = {
-                modelID: dataModel.modelID,
+                id: dataModel.modelID,
                 names: data.customizationsNames
             };
 
@@ -400,8 +399,8 @@ var Rexbuilder_Section = (function ($) {
                 name: dataModel.modelName,
                 customizations: data.customizationsData
             };
-
-            Rexbuilder_Dom_Util.updateDivModelCustomizationsData(addingModelCustomizationsData);
+            
+            Rexbuilder_Util.updateModelsCustomizationsData(addingModelCustomizationsData);
 
             Rexbuilder_Dom_Util.updateSectionBecameModel(dataModel);
 
@@ -456,9 +455,10 @@ var Rexbuilder_Section = (function ($) {
         var editedModelNumber = data.model_number;
         var modelName = data.modelName;
 
-        Rexbuilder_Util.$rexContainer.children(".rexpansive_section:not(.removing_section)").each(function (i, sec) {
+        Rexbuilder_Util.$rexContainer.children(".rexpansive_section.rex-model-section:not(.removing_section)").each(function (i, sec) {
             var $section = $(sec);
             if ($section.attr("data-rexlive-model-id") == idModel && $section.attr("data-rexlive-model-number") != editedModelNumber) {
+                var oldSectionModelSavedNumber = isNaN(parseInt($section.attr("data-rexlive-saved-model-number")))? "": $section.attr("data-rexlive-saved-model-number");
                 var modelNumber = 1;
                 Rexbuilder_Util.$rexContainer.children(".rexpansive_section:not(.removing_section)").each(function (i, sec) {
                     if ($(sec).attr("data-rexlive-model-id") == idModel) {
@@ -470,7 +470,8 @@ var Rexbuilder_Section = (function ($) {
                 $section.after(html);
 
                 var $newSection = $(html);
-
+                $newSection.attr("data-rexlive-saved-model-number", oldSectionModelSavedNumber);
+                
                 var dataModel = {
                     modelID: idModel,
                     modelName: modelName,
@@ -497,8 +498,6 @@ var Rexbuilder_Section = (function ($) {
                 Rexbuilder_Dom_Util.updateSectionVisibility($newSection, true);
             }
         });
-
-        Rexbuilder_Dom_Util.fixModelNumbersSaving();
 
         Rexbuilder_Util.$rexContainer.children(".rexpansive_section.removing_section.rex-model-section").each(function (i, sec) {
             $(sec).attr("data-rexlive-saved-model-number", "");

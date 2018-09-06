@@ -535,26 +535,27 @@ var Rexbuilder_Dom_Util = (function ($) {
         var x, y, w, h;
         var elem;
         var gridstack = dataToUse.gridstackInstance;
-        console.log(dataToUse);
-        var $section = $(dataToUse.blocks[0].elem).parents(".rexpansive_section");
-        if (!Rexbuilder_Util_Editor.updatingGridstack) {
-            gridstack.batchUpdate();
-        }
-        for (i = 0; i < blocksDimensions.length; i++) {
-            x = blocksDimensions[i].x;
-            y = blocksDimensions[i].y;
-            w = blocksDimensions[i].w;
-            h = blocksDimensions[i].h;
-            elem = blocksDimensions[i].elem;
-            gridstack.update(elem, x, y, w, h);
-        }
-        if (!Rexbuilder_Util_Editor.updatingGridstack) {
-            gridstack.commit();
-        }
+        if (blocksDimensions.length > 0) {
+            var $section = $(dataToUse.blocks[0].elem).parents(".rexpansive_section");
+            if (!Rexbuilder_Util_Editor.updatingGridstack) {
+                gridstack.batchUpdate();
+            }
+            for (i = 0; i < blocksDimensions.length; i++) {
+                x = blocksDimensions[i].x;
+                y = blocksDimensions[i].y;
+                w = blocksDimensions[i].w;
+                h = blocksDimensions[i].h;
+                elem = blocksDimensions[i].elem;
+                gridstack.update(elem, x, y, w, h);
+            }
+            if (!Rexbuilder_Util_Editor.updatingGridstack) {
+                gridstack.commit();
+            }
 
-        setTimeout(function(){
-            Rexbuilder_Util.fixYoutube($section)
-        }, 1500, $section);
+            setTimeout(function () {
+                Rexbuilder_Util.fixYoutube($section)
+            }, 1500, $section);
+        }
     }
 
     var _collapseGrid = function (gridInstance, collapse, blockDisposition, layout) {
@@ -837,32 +838,6 @@ var Rexbuilder_Dom_Util = (function ($) {
         $section.attr("data-rexlive-section-id", data.sectionID);
     }
 
-    var _updateDivModelCustomizationsData = function (updatedModalCustomizationsData) {
-        var $modelCustomDiv = $("#rexbuilder-model-data .models-customizations");
-
-        var oldModels;
-        if ($modelCustomDiv.attr("data-empty-models-customizations")) {
-            oldModels = [];
-        } else {
-            oldModels = JSON.parse($modelCustomDiv.text());
-        }
-
-        var modelsCustomizations = [];
-        var i;
-
-        for (i = 0; i < oldModels.length; i++) {
-            var model = oldModels[i];
-            if (model.id != updatedModalCustomizationsData.id) {
-                modelsCustomizations.push(model);
-            }
-        }
-
-        modelsCustomizations.push(updatedModalCustomizationsData);
-
-        $modelCustomDiv.text(JSON.stringify(modelsCustomizations));
-        $modelCustomDiv.removeAttr("data-empty-models-customizations");
-    }
-
     var _updateDivModelCustomizationsNames = function (updatedModalCustomizationsNames) {
         var $modelsAvaiableNamesDiv = $("#rexbuilder-model-data .available-models-customizations-names");
         var names = JSON.parse($modelsAvaiableNamesDiv.text());
@@ -871,13 +846,12 @@ var Rexbuilder_Dom_Util = (function ($) {
 
         for (i = 0; i < names.length; i++) {
             var namesData = names[i];
-            if (namesData.modelID != updatedModalCustomizationsNames.modelID) {
+            if (namesData.id != updatedModalCustomizationsNames.id) {
                 newNamesData.push(namesData);
             }
         }
 
         newNamesData.push(updatedModalCustomizationsNames);
-
         $modelsAvaiableNamesDiv.text(JSON.stringify(newNamesData));
     }
 
@@ -1185,7 +1159,6 @@ var Rexbuilder_Dom_Util = (function ($) {
         updateSectionVisibility: _updateSectionVisibility,
         fixSectionDomOrder: _fixSectionDomOrder,
         updateSectionBecameModel: _updateSectionBecameModel,
-        updateDivModelCustomizationsData: _updateDivModelCustomizationsData,
         updateDivModelCustomizationsNames: _updateDivModelCustomizationsNames,
         updateLockEditModel: _updateLockEditModel,
         fixModelNumbers: _fixModelNumbers,

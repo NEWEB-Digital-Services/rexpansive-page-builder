@@ -1312,8 +1312,6 @@ class Rexbuilder_Admin {
 		}
 
 		$model_settings = $_POST['model_data'];
-		$layouts = $_POST['model_layouts'];
-		$names = $_POST['names'];
 		$model_shortcode = $model_settings['post_content'];
 
 		if( empty( $model_settings['post_content'] ) ) {
@@ -1351,22 +1349,14 @@ class Rexbuilder_Admin {
 			);
 
 			wp_update_post( $argsModel );
-
 			update_post_meta( $model_insert_id, '_rexbuilder_active', 'true' );
-			update_post_meta( $model_insert_id, '_rex_model_customization_names', $names);
-
-			foreach ($layouts as $index => $layout) {
-				$layoutName = $layout['name'];
-				$targets =  $layout['targets'];
-				update_post_meta( $model_insert_id, '_rex_model_customization_' . $layoutName, $targets);
-			}
 
 			$argsQuery = array(
 				'post_type'		=>	'rex_model',
 				'post_status'	=>	'private',
 				'p'				=>	$model_insert_id
 			);
-	
+
 			$query = new WP_Query( $argsQuery );
 			if ( $query->have_posts() ) {
 				while ( $query->have_posts() ) {
@@ -1387,6 +1377,58 @@ class Rexbuilder_Admin {
 		$response['args'] = $args;
 
 		wp_send_json_success( $response );
+	}
+
+	public function rex_save_model_customization(){
+        $nonce = $_POST['nonce_param'];
+
+        $response = array(
+            'error' => false,
+            'msg' => '',
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+        $response['error'] = false;
+
+        $post_id_to_update = intval($_POST['model_id_to_update']);
+
+        $layout = $_POST['targets'];
+        $layout_name = $_POST['layout_name'];
+
+        update_post_meta($post_id_to_update, '_rex_model_customization_' . $layout_name, $layout);
+
+        $response['id_recived'] = $post_id_to_update;
+
+        wp_send_json_success($response);
+	}
+
+	public function rex_save_model_customization_names(){
+        $nonce = $_POST['nonce_param'];
+
+        $response = array(
+            'error' => false,
+            'msg' => '',
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+        $response['error'] = false;
+
+        $post_id_to_update = intval($_POST['model_id_to_update']);
+
+        $names = $_POST['names'];
+        update_post_meta($post_id_to_update, '_rex_model_customization_names', $names);
+		$response['names'] = $names;
+        wp_send_json_success($response);
 	}
 
 	public function rex_get_model_live() {
@@ -1428,9 +1470,14 @@ class Rexbuilder_Admin {
 			while ( $query->have_posts() ) {
 				$query->the_post();
 				$post = $query->post;
-				$response['model'] = do_shortcode($post->post_content);
+				$modelShortcode = $post->post_content;
+				$response['model'] = do_shortcode($modelShortcode);
 				$response['name'] = $post->post_title;
 				$response['id'] = $post->ID;
+
+				$re = '/rexlive_section_id="([a-zA-Z0-9]+)"/m';
+				preg_match_all($re, $modelShortcode, $matches, PREG_SET_ORDER, 0);
+				$response['sectionRexID'] = $matches;
 
 				$modelCustomizationsNames = get_post_meta($post->ID, '_rex_model_customization_names', true);
 				

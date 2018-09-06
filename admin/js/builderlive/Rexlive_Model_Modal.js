@@ -9,8 +9,8 @@ var Model_Modal = (function ($) {
 
     var target;
 
-    var layout;
     var modelSelectedID;
+    var modelInPageNumbers;
 
     var _openModal = function (data) {
         rexmodel_modal_props.$model_import_wrap.removeClass("hide-import-wrap");
@@ -20,10 +20,8 @@ var Model_Modal = (function ($) {
         sectionShortCode = data.shortCode;
         layouts = data.layouts;
         layoutsNames = data.layoutsNames;
-        
-        console.log(layouts);
-        console.log(layoutsNames);
-        console.log(sectionShortCode);
+        model_created = false;
+        modelInPageNumbers = data.modelsNumbers;
 
         rexmodel_modal_props.$model_name.val('');
         rexmodel_modal_props.$model_import.find('option[value=0]').prop('selected', true);
@@ -51,7 +49,6 @@ var Model_Modal = (function ($) {
         });
 
         rexmodel_modal_props.$model_import.on('change', function (e) {
-            console.log("changing model");
             var model_id = rexmodel_modal_props.$model_import.val();
             if (model_id != '' && model_id != '0' && !model_created) {
                 rexmodel_modal_props.$self.addClass('rex-modal--loading');
@@ -72,7 +69,7 @@ var Model_Modal = (function ($) {
                             var modelData = {
                                 eventName: "rexlive:applyModelSection",
                                 data_to_send: {
-                                    sectionTarget: target,
+                                    sectionTarget: jQuery.extend(true, {}, target),
                                     model: response.data.model,
                                     modelName: response.data.name,
                                     modelID: response.data.id,
@@ -80,11 +77,36 @@ var Model_Modal = (function ($) {
                                     customizationsNames: response.data.customizations_names,
                                 }
                             }
+
+                            var modelSectionRexID = response.data.sectionRexID[0][1];
+                            var modelIsInpage = false;
+                            var number = 1;
+
+                            for(var i = 0 ;i < modelInPageNumbers.length; i++){
+                                if(response.data.id == modelInPageNumbers[i].modelID){
+                                    modelIsInpage= true;
+                                    modelInPageNumbers[i].number += 1;
+                                    number = modelInPageNumbers[i].number;
+                                }
+                            }
+
+                            if(!modelIsInpage){
+                                modelInPageNumbers.push({
+                                    modelID: response.data.id,
+                                    number: number
+                                });
+                            }
+
+                            target = {
+                                sectionID: modelSectionRexID,
+                                modelNumber: number
+                            }
+
                             Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(modelData);
                         }
                     },
                     error: function (response) {
-                        
+
                     },
                     complete: function (response) {
                         rexmodel_modal_props.$self.removeClass('rex-modal--loading');
@@ -112,55 +134,112 @@ var Model_Modal = (function ($) {
                     'post_content': sectionShortCode
                 };
 
-                $.ajax({
-                    type: 'POST',
-                    dataType: 'json',
-                    url: live_editor_obj.ajaxurl,
-                    data: {
-                        action: 'rex_create_model_from_builder',
-                        nonce_param: live_editor_obj.rexnonce,
-                        model_data: model,
-                        model_layouts: layouts,
-                        names: layoutsNames
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            rexmodel_modal_props.$model_import_wrap.addClass("hide-import-wrap");
-                            if (response.data.model_id != -1) {
-                                rexmodel_modal_props.$model_name.val('').siblings('label').removeClass('active');
-                                rexmodel_modal_props.$save_button.val('');
-                                rexmodel_modal_props.$model_import.children().eq(0).after('<option value="' + response.data.model_id + '">' + response.data.model_title + '</option>');
-                                rexmodel_modal_props.$model_import.find('option[value=' + response.data.model_id + ']').prop('selected', true);
-                                var modelData = {
-                                    eventName: "rexlive:applyModelSection",
-                                    data_to_send: {
-                                        sectionTarget: target,
-                                        model: response.data.model_html,
-                                        modelName: model_name,
-                                        modelID: response.data.model_id,
-                                        customizationsData: layouts,
-                                        customizationsNames: layoutsNames,
+                var dataModelSaved = {
+                    modelID: -1,
+                    modelTitle: "",
+                    modelHtml: ""
+                }
+
+                $.when(
+                    $.ajax({
+                        type: 'POST',
+                        dataType: 'json',
+                        url: live_editor_obj.ajaxurl,
+                        data: {
+                            action: 'rex_create_model_from_builder',
+                            nonce_param: live_editor_obj.rexnonce,
+                            model_data: model,
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                rexmodel_modal_props.$model_import_wrap.addClass("hide-import-wrap");
+                                if (response.data.model_id != -1) {
+                                    var modelCreatedID = response.data.model_id;
+                                    dataModelSaved.modelID = modelCreatedID;
+                                    dataModelSaved.modelTitle = model_name;
+                                    dataModelSaved.modelHtml = response.data.model_html;
+                                    for (var i = 0; i < layouts.length; i++) {
+                                        var name = layouts[i].name;
+                                        var targets = layouts[i].targets;
+                                        $.ajax({
+                                            type: 'POST',
+                                            dataType: 'json',
+                                            url: live_editor_obj.ajaxurl,
+                                            data: {
+                                                action: 'rex_save_model_customization',
+                                                nonce_param: live_editor_obj.rexnonce,
+                                                model_id_to_update: modelCreatedID,
+                                                targets: targets,
+                                                layout_name: name,
+                                            },
+                                            success: function (response) {
+                                            },
+                                            error: function (response) {
+                                            },
+                                            complete: function (response) {
+                                            }
+                                        });                                       
                                     }
+
+                                    $.ajax({
+                                        type: 'POST',
+                                        dataType: 'json',
+                                        url: live_editor_obj.ajaxurl,
+                                        data: {
+                                            action: 'rex_save_model_customization_names',
+                                            nonce_param: live_editor_obj.rexnonce,
+                                            model_id_to_update: modelCreatedID,
+                                            names: layoutsNames,
+                                        },
+                                        success: function (response) {
+                                        },
+                                        error: function (response) {
+                                        },
+                                        complete: function (response) {
+                                        }
+                                    });
+                                } else {
+                                    rexmodel_modal_props.$model_insert_success_wrap.text("Nome già presente");
                                 }
-
-                                Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(modelData);
-
-                                model_created = true;
-                                rexmodel_modal_props.$model_insert_success_wrap.text("Modello Inserito");
-                                setTimeout(function () {
-                                    _closeModal();
-                                }, 1000);
-                            } else {
-                                rexmodel_modal_props.$model_insert_success_wrap.text("Nome già presente");
                             }
+                        },
+                        error: function (response) {
+                            ;
+                        },
+                        complete: function (response) {
+                            ;
                         }
-                    },
-                    error: function (response) {
-                        model_created = false;
-                    },
-                    complete: function (response) {
-                        rexmodel_modal_props.$self.removeClass('rex-modal--loading');
+                    }),
+                ).then(function () {
+                    // All have been resolved (or rejected), do your thing
+                    rexmodel_modal_props.$self.removeClass('rex-modal--loading');
+
+                    var modelID = dataModelSaved.modelID;
+                    var modelTitle = dataModelSaved.modelTitle;
+                    var modelHTML = dataModelSaved.modelHtml;
+
+                    rexmodel_modal_props.$model_name.val('').siblings('label').removeClass('active');
+                    rexmodel_modal_props.$save_button.val('');
+                    rexmodel_modal_props.$model_import.children().eq(0).after('<option value="' + modelID + '">' + modelTitle + '</option>');
+                    rexmodel_modal_props.$model_import.find('option[value=' + modelID + ']').prop('selected', true);
+                    var modelData = {
+                        eventName: "rexlive:applyModelSection",
+                        data_to_send: {
+                            sectionTarget: target,
+                            model: modelHTML,
+                            modelName: modelTitle,
+                            modelID: modelID,
+                            customizationsData: layouts,
+                            customizationsNames: layoutsNames,
+                        }
                     }
+                    Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(modelData);
+
+                    model_created = true;
+                    rexmodel_modal_props.$model_insert_success_wrap.text("Modello Inserito");
+                    setTimeout(function () {
+                        _closeModal();
+                    }, 1000);
                 });
             } else {
                 rexmodel_modal_props.$model_name.focus();

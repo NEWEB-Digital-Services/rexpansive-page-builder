@@ -82,7 +82,6 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
             if (event.data.eventName == "rexlive:uploadSliderFromLive") {
                 var dataSlider = event.data.sliderInfo;
-                console.log(dataSlider);
                 var sliderData = dataSlider.slider;
                 var rex_slider_to_edit = dataSlider.slider.id.toString();
                 var newSliderFlag = dataSlider.newSlider;
