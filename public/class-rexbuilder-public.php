@@ -455,8 +455,8 @@ endif;
 
         $layout = $_POST['sections'];
         $layout_name = $_POST['layout_name'];
-
-        update_post_meta($post_id_to_update, '_rex_customization_' . $layout_name, $layout);
+        $slashedLayout = wp_slash(wp_json_encode( $layout ));
+        update_post_meta($post_id_to_update, '_rex_customization_' . $layout_name, $slashedLayout);
 
         $response['id_recived'] = $post_id_to_update;
 
@@ -681,7 +681,8 @@ endif;
             foreach ($customizations_names as $name) {
                 $customization = array();
                 $customization["name"] = $name;
-                $customization["sections"] = get_post_meta($post->ID, '_rex_customization_' . $name, true);
+                $customizationTargetsJSON = get_post_meta($post->ID, '_rex_customization_' . $name, true);
+                $customization["sections"] = json_decode($customizationTargetsJSON);
                 array_push($customizations_array, $customization);
             }
         }
@@ -729,10 +730,18 @@ endif;
                         echo '<div class="customization-wrap" data-customization-name="'.$customization_name.'">';
                         $sections = $customization['sections'];
                         foreach($sections as $section_targets){
-                            $sectionRexID = $section_targets['section_rex_id'];
-                            $targets = $section_targets['targets'];
-                            echo '<div class="section-targets" data-section-rex-id="' . $sectionRexID . '">';
+
+                            $sectionRexID = $section_targets -> section_rex_id;
+                            $sectionModelNumber = $section_targets -> section_model_number;
+                            $sectionModelID = $section_targets -> section_model_id;
+                            $targets = $section_targets -> targets;
+
+                            echo '<div class="section-targets" data-section-rex-id="' . $sectionRexID . '" data-model-id="'.$sectionModelID.'" data-model-number="'.$sectionModelNumber.'">';
+                            if($targets != ""){
                             echo json_encode($targets);
+                            } else{
+                                echo "[]";
+                            }
                             echo '</div>';
                         }
                         echo '</div>';
