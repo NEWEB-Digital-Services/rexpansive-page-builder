@@ -12,7 +12,7 @@ var Rexlive_MediaUploader = (function ($) {
     function _openMediaUploaderMultipleImage(info) {
         // If the frame is already opened, return it
         if (image_multiple_uploader_frame) {
-            image_multiple_uploader_frame.state('upload-image-bg').set('liveTarget', info.sectionTarget);
+            image_multiple_uploader_frame.state('insert-image').set('liveTarget', info.sectionTarget);
             image_multiple_uploader_frame.open();
             return;
         }
@@ -45,7 +45,7 @@ var Rexlive_MediaUploader = (function ($) {
         image_multiple_uploader_frame.on('select', function () {
             var state = image_multiple_uploader_frame.state('insert-image');
             var sectionTarget = state.get("liveTarget");
-
+            
             var selection = state.get('selection');
             var data = {
                 eventName: 'rexlive:insert_image',

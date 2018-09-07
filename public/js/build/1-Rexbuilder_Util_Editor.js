@@ -277,7 +277,6 @@ var Rexbuilder_Util_Editor = (function ($) {
     }
 
     var endEditingElement = function () {
-        console.log("end editing element: " + Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id"));
         var galleryEditorInstance = Rexbuilder_Util_Editor.editedGallery;
 
         Rexbuilder_Util_Editor.elementIsDragging = false;

@@ -179,7 +179,7 @@ var Rex_Save_Listeners = (function ($) {
                             action: 'rexlive_save_customization_layout',
                             nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
                             post_id_to_update: idPost,
-                            sections: customizationsArray[i].sections,
+                            sections: JSON.stringify(customizationsArray[i].sections),
                             layout_name: customizationsArray[i].name
                         },
                         success: function (response) {
@@ -203,7 +203,7 @@ var Rex_Save_Listeners = (function ($) {
                         action: 'rexlive_save_customization_layout',
                         nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
                         post_id_to_update: idPost,
-                        sections: newCustomization.sections,
+                        sections: JSON.stringify(newCustomization.sections),
                         layout_name: newCustomization.name
                     },
                     success: function (response) {

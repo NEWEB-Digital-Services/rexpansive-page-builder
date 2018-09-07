@@ -169,7 +169,7 @@ var Model_Modal = (function ($) {
                                                 action: 'rex_save_model_customization',
                                                 nonce_param: live_editor_obj.rexnonce,
                                                 model_id_to_update: modelCreatedID,
-                                                targets: targets,
+                                                targets: JSON.stringify(targets),
                                                 layout_name: name,
                                             },
                                             success: function (response) {

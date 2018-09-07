@@ -408,7 +408,6 @@ endif;
         wp_send_json_success($response);
     }
 
-    //Elenco dei nomi delle customizzazioni disponibili per un modello 
     public function rexlive_save_avaiable_model_layouts_names()
     {
         $nonce = $_POST['nonce_param'];
@@ -455,9 +454,9 @@ endif;
 
         $layout = $_POST['sections'];
         $layout_name = $_POST['layout_name'];
-        $layoutEncoded = wp_json_encode( $layout );
-        $slashedLayout = wp_slash( $layoutEncoded );
-        update_post_meta($post_id_to_update, '_rex_customization_' . $layout_name, $slashedLayout);
+
+        $clearData = stripslashes($_POST['sections']);
+        update_post_meta($post_id_to_update, '_rex_customization_' . $layout_name, $clearData);
 
         $response['id_recived'] = $post_id_to_update;
 
@@ -486,9 +485,8 @@ endif;
         $targets = $_POST['targets'];
         $layout_name = $_POST['layout_name'];
         
-        $targetsEncoded = wp_json_encode( $targets );
-        $slashedTargets = wp_slash( $targetsEncoded );
-        update_post_meta($post_id_to_update, '_rex_model_customization_' . $layout_name, $slashedTargets);
+        $targetsData = stripslashes($targets);
+        update_post_meta($post_id_to_update, '_rex_model_customization_' . $layout_name, $targetsData);
 
         $response['id_recived'] = $post_id_to_update;
 
@@ -609,7 +607,8 @@ endif;
         wp_send_json_success( $response );
     }
 
-    public function print_post_id(){
+    public function print_post_id()
+    {
         ?>
         <div id="id-post" data-post-id="<?php echo esc_attr(get_the_ID()); ?>"></div>
         <?php
@@ -644,6 +643,8 @@ endif;
                 array_push($models_ids, $result["id"]);
             }
         }
+        
+        $models_ids = array_unique($models_ids);
 
         $models_customizations = array();
         $models_customizations_avaiable = array();
@@ -667,7 +668,8 @@ endif;
                     $customization = array();
                     $customization["name"] = $name;
                     $customizationTargetsJSON = get_post_meta($id, '_rex_model_customization_' . $name, true);
-                    $customization["targets"] = json_decode($customizationTargetsJSON, true);
+                    $targetsDecoded = json_decode($customizationTargetsJSON, true);
+                    $customization["targets"] = $targetsDecoded;
                     array_push($model_layouts, $customization);
                 }
             }
@@ -686,12 +688,13 @@ endif;
                 $customization = array();
                 $customization["name"] = $name;
                 $customizationSectionsJSON = get_post_meta($post->ID, '_rex_customization_' . $name, true);
-                $customization["sections"] = json_decode($customizationSectionsJSON, true);
+                $sectionsDecoded = json_decode($customizationSectionsJSON, true);
+                $customization["sections"] = $sectionsDecoded;
                 array_push($customizations_array, $customization);
             }
         }
 
-        ?>
+?>
 <div class="rexbuilder-live-content">
             <div id="layout-avaiable-dimensions" style="display: none;">
             <?php echo json_encode($layoutsAvaiable); ?></div>
@@ -708,23 +711,30 @@ endif;
                         foreach($customizations as $custom){
                             $customName = $custom['name'];
                             $customTargets = $custom['targets'];
+
+                            if(isset($custom["targets"])){
+                                $customTargets = $custom["targets"];
+                            } else{
+                                $customTargets = "";
+                            }
+                            
                             echo '<div class="model-customization-data" data-model-layout-name="' . $customName . '">';
-                            echo json_encode($customTargets);
+                            
+                            if($customTargets != ""){
+                                echo json_encode($customTargets);
+                            } else{
+                                echo '[]';
+                            }
                             echo '</div>';
                         }
                         echo '</div>';
                     }
                 }
                 ?></div>
-                <div class = "available-models-customizations-names">
-                <?php echo json_encode($models_customizations_avaiable);?></div>
+                <div class = "available-models-customizations-names"><?php echo json_encode($models_customizations_avaiable);?></div>
             </div>
             <div id="rexbuilder-layout-data" style="display: none;">
-                <div class = "layouts-customizations" <?php
-                if (!$flag_page_customization) {
-                    echo 'data-empty-customizations="true">';
-                } else {?>><?php echo json_encode($customizations_array);}?></div>
-                <div class = "layouts-customizations-test" <?php
+                <div class="layouts-customizations" <?php
                 if (!$flag_page_customization) {
                     echo 'data-empty-customizations="true">';
                 } else {?>>
@@ -768,7 +778,7 @@ endif;
                     }
                 }
                 ?></div>
-                <div class = "available-layouts-names"><?php echo json_encode($customizations_names); ?></div>
+                <div class="available-layouts-names"><?php echo json_encode($customizations_names); ?></div>
             </div>
             <?php
     if ($editor == "true") {

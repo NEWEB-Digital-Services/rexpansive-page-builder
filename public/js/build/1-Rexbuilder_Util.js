@@ -95,9 +95,9 @@ var Rexbuilder_Util = (function ($) {
         return "custom";
     }
 
-    var _getModelsCustomizations = function () { 
+    var _getModelsCustomizations = function () {
         var data = [];
-        $modelsCustomizationsDataDiv.children(".model-customizations-container").each(function (i, modelData) { 
+        $modelsCustomizationsDataDiv.children(".model-customizations-container").each(function (i, modelData) {
             var $modelData = $(modelData);
             var modelID = parseInt($modelData.attr("data-model-id"));
             var customizations = [];
@@ -119,12 +119,12 @@ var Rexbuilder_Util = (function ($) {
         });
         return data;
     };
-    
+
     var _updateModelsCustomizationsData = function (updatedModelCustomizationsData) {
         var i;
         var model_ID_to_update = updatedModelCustomizationsData.id;
         var $modelDataDiv = $modelsCustomizationsDataDiv.children(".model-customizations-container[data-model-id=\"" + model_ID_to_update + "\"]");
-        
+
         if ($modelDataDiv.length != 0) {
             $modelDataDiv.children(".model-customization-data").remove();
         } else {
@@ -161,7 +161,7 @@ var Rexbuilder_Util = (function ($) {
     }
 
     // returns customizations
-    var _getPageCustomizations = function () { 
+    var _getPageCustomizations = function () {
         var data = [];
 
         var defaultLayout = {
@@ -190,7 +190,7 @@ var Rexbuilder_Util = (function ($) {
 
         data.push(defaultLayout);
 
-        $pageCustomizationsDataDiv.children(".customization-wrap:not([data-customization-name=\"default\"])").each(function (i, customizationWrap) { 
+        $pageCustomizationsDataDiv.children(".customization-wrap:not([data-customization-name=\"default\"])").each(function (i, customizationWrap) {
             var $customizationWrap = $(customizationWrap);
             var customizationName = $customizationWrap.attr("data-customization-name");
             var sectionsCustomizations = [];
@@ -206,7 +206,7 @@ var Rexbuilder_Util = (function ($) {
                 var modelNumber = isNaN(parseInt($sectionTargetsElem.attr("data-model-number"))) ? -1 : parseInt($sectionTargetsElem.attr("data-model-number"));
                 var hideSection = typeof $sectionTargetsElem.attr("data-section-hide") == "undefined" ? false : ($sectionTargetsElem.attr("data-section-hide").toString() == "true" ? true : false);
                 var targets = JSON.parse($sectionTargetsElem.text());
-                
+
                 layoutCustomization.sections.push({
                     section_rex_id: sectionRexID,
                     section_model_id: modelID != -1 ? modelID : "",
@@ -221,7 +221,7 @@ var Rexbuilder_Util = (function ($) {
 
         return data;
     };
-    
+
     var _updatePageCustomizationsData = function (updatedPageCustomizationsData) {
         var layoutNameToUpdate = updatedPageCustomizationsData.name;
         var $customizationWrapper = $pageCustomizationsDataDiv.children(".customization-wrap[data-customization-name=\"" + layoutNameToUpdate + "\"]");
@@ -423,12 +423,7 @@ var Rexbuilder_Util = (function ($) {
         }
 
         var layoutDataPage = _getPageCustomizations();
-/*         
-        var layoutDataPage = [];
-        if ($resposiveData.children(".layouts-customizations").text() != "") {
-            layoutDataPage = JSON.parse($resposiveData.children(".layouts-customizations").text());
-        }
- */
+
         var i;
         // if no sections on this layout
         for (i = 0; i < layoutDataPage.length; i++) {
@@ -614,11 +609,11 @@ var Rexbuilder_Util = (function ($) {
                                     sectionDefault.targets[n].founded = true;
                                     targetFounded = true;
 
-                                    if(m == 0 && typeof sectionCustom.targets[m].collapse_grid == "undefined" && _viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth){
+                                    if (m == 0 && typeof sectionCustom.targets[m].collapse_grid == "undefined" && _viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth) {
                                         sectionCustom.targets[0].props.collapse_grid = true;
                                     }
                                     sectionCustom.targets[m].props = lodash.merge({}, sectionDefault.targets[n].props, sectionCustom.targets[m].props);
-                                    
+
                                     //fixing dimensions of new blocks in custom layout
                                     if (m > 1 && jQuery.isEmptyObject(sectionCustom.targets[m].props)) {
                                         if (Rexbuilder_Util.activeLayout != "default") {
@@ -646,7 +641,7 @@ var Rexbuilder_Util = (function ($) {
                         }
                         if (m == 0) {
                             sectionCustom.targets = sectionDefault.targets;
-                            if(_viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth){
+                            if (_viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth) {
                                 sectionCustom.targets[0].props.collapse_grid = true;
                             }
                         }
@@ -664,7 +659,7 @@ var Rexbuilder_Util = (function ($) {
         } else {
             mergedEdits = pushingEdits;
         }
-        
+
         console.log("layoutDataPage", layoutDataPage);
         console.log("layoutDataModels", layoutDataModels);
         console.log("sectionsPage", sectionsPage);
@@ -674,8 +669,8 @@ var Rexbuilder_Util = (function ($) {
         console.log("newSectionsLayout", newSectionsLayout);
 
         console.log("applying");
-        console.log("mergedEdits", mergedEdits); 
-       
+        console.log("mergedEdits", mergedEdits);
+
         Rexbuilder_Util.domUpdaiting = true;
         var sectionDomOrder = [];
 
@@ -770,7 +765,7 @@ var Rexbuilder_Util = (function ($) {
                     },
                     vimeoUrl: vimeoUrl,
                     youtubeUrl: youtubeUrl,
-                    audio: typeof targetProps['video_has_audio'] == "undefined" ? "" : (targetProps['video_has_audio']== "1" || targetProps['video_has_audio'].toString() == "true" ? true : false),
+                    audio: typeof targetProps['video_has_audio'] == "undefined" ? "" : (targetProps['video_has_audio'] == "1" || targetProps['video_has_audio'].toString() == "true" ? true : false),
                     typeVideo: type
                 };
 
@@ -806,7 +801,7 @@ var Rexbuilder_Util = (function ($) {
 
                 Rexbuilder_Dom_Util.updateBlockOverlay(overlayBlockOpt);
 
-                Rexbuilder_Dom_Util.updateBlockPaddings($elem, _getPaddingsDataString(typeof targetProps["block_padding"] != "undefined"?targetProps["block_padding"] : "") );
+                Rexbuilder_Dom_Util.updateBlockPaddings($elem, _getPaddingsDataString(typeof targetProps["block_padding"] != "undefined" ? targetProps["block_padding"] : ""));
 
                 var newClasses = typeof targetProps["block_custom_class"] == "undefined" ? "" : targetProps["block_custom_class"];
                 var classList = [];
@@ -816,7 +811,7 @@ var Rexbuilder_Util = (function ($) {
                 }
                 Rexbuilder_Dom_Util.updateCustomClasses($elem, classList);
 
-                var pos = typeof(targetProps["block_flex_position"]) != "undefined" ? targetProps["block_flex_position"].split(" ") : "";
+                var pos = typeof (targetProps["block_flex_position"]) != "undefined" ? targetProps["block_flex_position"].split(" ") : "";
 
                 var flexPosition = {
                     x: pos[0],
@@ -832,10 +827,10 @@ var Rexbuilder_Util = (function ($) {
                 $itemData.attr("data-block_live_edited", blockEdited);
 
                 var hideBlock = typeof targetProps["hide"] == "undefined" ? false : (targetProps["hide"].toString() == "true" ? true : false);
-                
+
                 if (hideBlock) {
                     $elem.addClass("rex-hide-element");
-                    if(typeof galleryEditorInstance != "undefined"){
+                    if (typeof galleryEditorInstance != "undefined") {
                         galleryEditorInstance.removeBlock($elem);
                         Rexbuilder_Util.stopBlockVideos($elem);
                     }
@@ -983,11 +978,8 @@ var Rexbuilder_Util = (function ($) {
 
         if ($section.hasClass("rex-model-section")) {
             var modelID = $section.attr("data-rexlive-model-id");
-            var layoutDataModels = [];
-            var $modelData = $("#rexbuilder-model-data");
-            if ($modelData.children(".models-customizations").text() != "") {
-                layoutDataModels = JSON.parse($modelData.children(".models-customizations").text());
-            }
+            var layoutDataModels = _getModelsCustomizations();
+
             for (i = 0; i < layoutDataModels.length; i++) {
                 if (layoutDataModels[i].id == modelID) {
                     for (j = 0; j < layoutDataModels[i].customizations.length; j++) {
@@ -1001,12 +993,7 @@ var Rexbuilder_Util = (function ($) {
             }
         } else {
             var rexID = $section.attr("data-rexlive-section-id");
-            var $resposiveData = $("#rexbuilder-layout-data");
-            var layoutDataPage = [];
-
-            if ($resposiveData.children(".layouts-customizations").text() != "") {
-                layoutDataPage = JSON.parse($resposiveData.children(".layouts-customizations").text());
-            }
+            var layoutDataPage = _getPageCustomizations();
 
             for (i = 0; i < layoutDataPage.length; i++) {
                 if (layoutDataPage[i].name == layoutName && typeof layoutDataPage[i].sections !== "undefined") {
@@ -1048,11 +1035,8 @@ var Rexbuilder_Util = (function ($) {
 
         if ($section.hasClass("rex-model-section")) {
             var modelID = $section.attr("data-rexlive-model-id");
-            var layoutDataModels = [];
-            var $modelData = $("#rexbuilder-model-data");
-            if ($modelData.children(".models-customizations").text() != "") {
-                layoutDataModels = JSON.parse($modelData.children(".models-customizations").text());
-            }
+            var layoutDataModels = _getModelsCustomizations();
+
             for (i = 0; i < layoutDataModels.length; i++) {
                 if (layoutDataModels[i].id == modelID) {
                     for (j = 0; j < layoutDataModels[i].customizations.length; j++) {
@@ -1068,21 +1052,18 @@ var Rexbuilder_Util = (function ($) {
             }
         } else {
             var rexID = $section.attr("data-rexlive-section-id");
-            var $resposiveData = $("#rexbuilder-layout-data");
-            var layoutDataPage = [];
-
-            if ($resposiveData.children(".layouts-customizations").text() != "") {
-                layoutDataPage = JSON.parse($resposiveData.children(".layouts-customizations").text());
-            }
+            var layoutDataPage = _getPageCustomizations();
 
             for (i = 0; i < layoutDataPage.length; i++) {
-                if (layoutDataPage[i].name == layoutName && typeof layoutDataPage[i].sections !== "undefined") {
+                if (layoutDataPage[i].name == layoutName && typeof layoutDataPage[i].sections !== "undefined" && typeof layoutDataPage[i].sections !== null) {
                     for (j = 0; j < layoutDataPage[i].sections.length; j++) {
 
                         if (layoutDataPage[i].sections[j].section_rex_id == rexID) {
-                            gridLayout.layout = layoutDataPage[i].sections[j].targets[0].props['layout'];
-                            gridLayout.fullHeight = layoutDataPage[i].sections[j].targets[0].props['full_height'];
-                            gridLayout.collapsed = layoutDataPage[i].sections[j].targets[0].props['collapse_grid'];
+                            if (layoutDataPage[i].sections[j].targets.length != 0) {
+                                gridLayout.layout = layoutDataPage[i].sections[j].targets[0].props['layout'];
+                                gridLayout.fullHeight = layoutDataPage[i].sections[j].targets[0].props['full_height'];
+                                gridLayout.collapsed = layoutDataPage[i].sections[j].targets[0].props['collapse_grid'];
+                            }
                             break;
                         }
                     }
@@ -1097,16 +1078,16 @@ var Rexbuilder_Util = (function ($) {
     var _customizationExists = function (layoutName) {
         var exists = false;
         var i;
+        var $layoutsAvaiableDiv = $("#rexbuilder-layout-data .available-layouts-names");
 
-        var $resposiveData = $("#rexbuilder-layout-data");
-        var layoutDataPage = [];
+        var layoutsNamesAvaiable = [];
 
-        if ($resposiveData.children(".layouts-customizations").text() != "") {
-            layoutDataPage = JSON.parse($resposiveData.children(".layouts-customizations").text());
+        if ($layoutsAvaiableDiv.text() != "") {
+            layoutsNamesAvaiable = JSON.parse($layoutsAvaiableDiv.text());
         }
 
-        for (i = 0; i < layoutDataPage.length; i++) {
-            if (layoutDataPage[i].name == layoutName) {
+        for (i = 0; i < layoutsNamesAvaiable.length; i++) {
+            if (layoutsNamesAvaiable[i] == layoutName) {
                 exists = true;
                 break;
             }
@@ -1726,7 +1707,7 @@ var Rexbuilder_Util = (function ($) {
         var $mp4Videos = $section.find(".mp4-player");
         var $vimeoVideos = $section.find(".vimeo-player");
         var $youtubeVideos = $section.find(".youtube-player");
-        
+
         Rexbuilder_Util.fixVideoAudio($section);
         $.each($mp4Videos, function (i, video) {
             Rexbuilder_Util.fixVideoAudio($(video));
@@ -1760,7 +1741,7 @@ var Rexbuilder_Util = (function ($) {
             }
         });
     }
-    
+
     var _fixVideoAudio = function ($target) {
         var $toggle = $target.children("rex-video-toggle-audio");
         if ($target.hasClass("mp4-player")) {
@@ -1787,7 +1768,7 @@ var Rexbuilder_Util = (function ($) {
                 } else {
                     ytpPlayer.mute();
                     ytpPlayer.isMute = true;
-                    ytpPlayer.setVolume( 0 );
+                    ytpPlayer.setVolume(0);
                 }
             }
         }
@@ -1809,7 +1790,7 @@ var Rexbuilder_Util = (function ($) {
             }
             ytpObj.YTPPlay();
         }
-        setTimeout(function () {        
+        setTimeout(function () {
             Rexbuilder_Util.fixVideoAudio($target);
         }, 500, $target);
     }
@@ -2038,7 +2019,7 @@ var Rexbuilder_Util = (function ($) {
         this.$window = $(window);
         this.$body = $("body");
         $modelsCustomizationsDataDiv = $("#rexbuilder-model-data").children(".models-customizations").eq(0);
-        $pageCustomizationsDataDiv = $("#rexbuilder-layout-data").children(".layouts-customizations-test").eq(0);
+        $pageCustomizationsDataDiv = $("#rexbuilder-layout-data").children(".layouts-customizations").eq(0);
         this.$rexContainer = $(".rex-container");
         if (Rexbuilder_Util.$rexContainer.attr("data-backend-edited").toString() == "true" && Rexbuilder_Util.editorMode) {
             Rexbuilder_Util.$rexContainer.addClass("backend-edited");

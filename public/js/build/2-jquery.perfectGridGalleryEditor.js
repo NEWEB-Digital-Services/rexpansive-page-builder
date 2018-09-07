@@ -342,7 +342,7 @@
                 that.properties.firstStartGrid = false;
             }, 200, that, collapseGrid);
             var $section = that.$section;
-            setTimeout(function(){
+            setTimeout(function () {
                 Rexbuilder_Util.fixYoutube($section)
             }, 1500, $section);
         },
@@ -819,7 +819,7 @@
         },
 
         updateFullHeight: function () {
-            this.properties.gridBlocksHeight = this._calculateGridHeight();
+            this.properties.gridBlocksHeight = parseInt(this.$element.attr("data-gs-current-height"));
             this.updateGridstackStyles(this._viewport().height / this.properties.gridBlocksHeight);
         },
 
@@ -988,7 +988,7 @@
             this.properties.numberBlocksVisibileOnGrid--;
 
             this.properties.gridstackInstance.removeWidget($elem[0], false);
-            if(Rexbuilder_Util.activeLayout == "default"){
+            if (Rexbuilder_Util.activeLayout == "default") {
                 $elem.addClass("removing_block");
             }
             $elem.addClass("rex-hide-element");
@@ -1001,8 +1001,8 @@
             y = parseInt($elem.attr("data-gs-y"));
             w = parseInt($elem.attr("data-gs-width"));
             h = parseInt($elem.attr("data-gs-height"));
-            
-            if(Rexbuilder_Util.activeLayout == "default"){
+
+            if (Rexbuilder_Util.activeLayout == "default") {
                 $elem.removeClass("removing_block");
             }
             $elem.removeClass("rex-hide-element");
@@ -1933,7 +1933,7 @@
                     gallery.removeCollapseElementsProperties();
                     var $section = gallery.$section;
                     //waiting for transition end
-                    setTimeout(function(){
+                    setTimeout(function () {
                         Rexbuilder_Util.fixYoutube($section);
                     }, 1000, $section);
                 }
@@ -2061,7 +2061,8 @@
                     $(this.properties.blocksBottomTop).each(function (i, e) {
                         $elem = $(e);
                         $elemData = $elem.children(".rexbuilder-block-data");
-                        if ((((gallery.settings.galleryLayout == "masonry") && (($elemData.attr("data-block_has_scrollbar") != "true") && ($elemData.attr("data-block_live_edited") != "true")) || gallery.properties.updatingGridWidth)) || gallery.properties.updatingSection) {
+                        //if ((((gallery.settings.galleryLayout == "masonry") && (($elemData.attr("data-block_has_scrollbar") != "true") && ($elemData.attr("data-block_live_edited") != "true")) || gallery.properties.updatingGridWidth)) || gallery.properties.updatingSection) {
+                        if ((gallery.settings.galleryLayout == "masonry" && $elemData.attr("data-block_live_edited").toString() != "true") || gallery.properties.updatingSection) {
                             gallery.updateElementHeight($elem);
                         }
                     });
@@ -2279,7 +2280,7 @@
                 }
                 //setTimeout(function () {
                 // console.log("timeout endend");
-                if(e !== null){
+                if (e !== null) {
                     gallery.fixElementTextSize($(e.srcElement).parents(".grid-stack-item")[0], null, e);
                 }
                 //}, 2000, gallery, e);
@@ -2609,6 +2610,8 @@
             this.settings.galleryLayout = layoutData.layout;
             this.settings.fullHeight = layoutData.fullHeight;
             this.properties.singleHeight = layoutData.singleHeight;
+            this.$element.attr("data-full-height", layoutData.fullHeight);
+            this.$element.attr("data-layout", layoutData.layout);
             this.batchGridstack();
             this.updateGridstackStyles();
             this.updateFloatingElementsGridstack();
@@ -2668,7 +2671,7 @@
                         reverseData: reverseData
                     };
                     that.updateSrollbars();
-                    setTimeout(function(){
+                    setTimeout(function () {
                         Rexbuilder_Util.fixYoutube($section)
                     }, 1000, $section);
 

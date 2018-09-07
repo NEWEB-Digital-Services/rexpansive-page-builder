@@ -997,8 +997,8 @@ var Rexbuilder_Dom_Util = (function ($) {
                     _updateGridDomProperties($galleryElement, dataToUse);
                     galleryEditorInstance.updateGridSettingsModalUndoRedo(dataToUse);
                     galleryEditorInstance.updateGridstackStyles(dataToUse.blocksDisposition.cellHeight);
-
                     galleryEditorInstance.commitGridstack();
+                    galleryEditorInstance.updateSrollbars();
                     Rexbuilder_Util_Editor.updatingGridstack = false;
                     //waiting gridstack to update size viewers
                     setTimeout(galleryEditorInstance._updateElementsSizeViewers(), 200);

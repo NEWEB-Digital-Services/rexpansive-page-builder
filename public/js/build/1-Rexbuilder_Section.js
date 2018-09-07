@@ -369,7 +369,7 @@ var Rexbuilder_Section = (function ($) {
             var modelNumber = 1;
             Rexbuilder_Util.$rexContainer.children(".rexpansive_section").each(function (i, sec) {
                 var $sec = $(sec);
-                if ($sec.attr("data-rexlive-model-id") == data.modelID) {
+                if ($sec.attr("data-rexlive-model-id") == data.id) {
                     modelNumber = modelNumber + 1;
                 }
             });
@@ -379,7 +379,7 @@ var Rexbuilder_Section = (function ($) {
             var $newSection = $(html);
             
             var dataModel = {
-                modelID: data.modelID,
+                id: data.modelID,
                 modelName: data.modelName,
                 sectionID: $newSection.attr("data-rexlive-section-id"),
                 $section: $newSection,
@@ -388,14 +388,14 @@ var Rexbuilder_Section = (function ($) {
             }
 
             var addingModelCustomizationsNames = {
-                id: dataModel.modelID,
+                id: dataModel.id,
                 names: data.customizationsNames
             };
 
             Rexbuilder_Util.updateDivModelCustomizationsNames(addingModelCustomizationsNames);
 
             var addingModelCustomizationsData = {
-                id: dataModel.modelID,
+                id: dataModel.id,
                 name: dataModel.modelName,
                 customizations: data.customizationsData
             };

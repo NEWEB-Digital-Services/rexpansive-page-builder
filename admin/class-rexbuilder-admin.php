@@ -1399,11 +1399,9 @@ class Rexbuilder_Admin {
 
         $targets = $_POST['targets'];
         $layout_name = $_POST['layout_name'];
-        
-        $targetsEncoded = wp_json_encode( $targets );
-        $slashedTargets = wp_slash( $targetsEncoded );
-        update_post_meta($post_id_to_update, '_rex_model_customization_' . $layout_name, $slashedTargets);
 
+        $targetsData = stripslashes($targets);
+        update_post_meta($post_id_to_update, '_rex_model_customization_' . $layout_name, $targetsData);
         $response['id_recived'] = $post_id_to_update;
 
         wp_send_json_success($response);
@@ -1497,7 +1495,8 @@ class Rexbuilder_Admin {
 						$customization = array();
 						$customization["name"] = $name;
 						$customizationTargetsJSON = get_post_meta($post->ID, '_rex_model_customization_' . $name, true);
-						$customization["targets"] = json_decode($customizationTargetsJSON, true);
+						$targetsDecoded = json_decode($customizationTargetsJSON, true);
+						$customization["targets"] = $targetsDecoded;
 						array_push($customizations, $customization);
 					}
 				}
