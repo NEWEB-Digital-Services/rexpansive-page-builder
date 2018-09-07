@@ -392,7 +392,7 @@ var Rexbuilder_Section = (function ($) {
                 names: data.customizationsNames
             };
 
-            Rexbuilder_Dom_Util.updateDivModelCustomizationsNames(addingModelCustomizationsNames);
+            Rexbuilder_Util.updateDivModelCustomizationsNames(addingModelCustomizationsNames);
 
             var addingModelCustomizationsData = {
                 id: dataModel.modelID,

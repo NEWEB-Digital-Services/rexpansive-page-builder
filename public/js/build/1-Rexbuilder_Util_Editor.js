@@ -609,35 +609,6 @@ var Rexbuilder_Util_Editor = (function ($) {
 
         return elementsPhotoswipe;
     }
-    var _getSectionCustomLayouts = function (sectionRexID) {
-        var layouts = [];
-        var $layoutData = Rexbuilder_Util.$rexContainer.parent().children("#rexbuilder-layout-data");
-        var $layoutsCustomDiv = $layoutData.children(".layouts-customizations");
-        var oldCustomizations;
-        var i, j;
-        if ($layoutsCustomDiv.attr("data-empty-customizations")) {
-            oldCustomizations = [];
-        } else {
-            oldCustomizations = JSON.parse($layoutsCustomDiv.text());
-        }
-
-        for (i = 0; i < oldCustomizations.length; i++) {
-            var name = oldCustomizations[i].name;
-            if (oldCustomizations[i].sections != null) {
-                for (j = 0; j < oldCustomizations[i].sections.length; j++) {
-                    if (oldCustomizations[i].sections[j].section_rex_id == sectionRexID) {
-                        var targets = jQuery.extend(true, [], oldCustomizations[i].sections[j].targets);
-                        var customization = {
-                            name: name,
-                            targets: targets
-                        }
-                        layouts.push(customization);
-                    }
-                }
-            }
-        }
-        return layouts;
-    }
 
     var init = function () {
 
@@ -724,7 +695,6 @@ var Rexbuilder_Util_Editor = (function ($) {
         getElementsPhotoswipe: _getElementsPhotoswipe,
         updateLayoutsAvaiable: _updateLayoutsAvaiable,
         createDefaultCustomLayouts: _createDefaultCustomLayouts,
-        getSectionCustomLayouts: _getSectionCustomLayouts,
     };
 
 })(jQuery);

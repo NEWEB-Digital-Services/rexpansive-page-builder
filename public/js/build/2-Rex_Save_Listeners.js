@@ -49,9 +49,7 @@ var Rex_Save_Listeners = (function ($) {
         });
 
         $(document).on('rexlive:saveCustomizations', function (e) {
-            var $layoutData = Rexbuilder_Util.$rexContainer.parent().children("#rexbuilder-layout-data");
 
-            var $layoutsCustomDiv = $layoutData.children(".layouts-customizations");
             var customCSS = $("#rexpansive-builder-style-inline-css").text();
             customCSS = customCSS.trim();
             saveCustomCSS(customCSS);
@@ -61,31 +59,26 @@ var Rex_Save_Listeners = (function ($) {
 
             var activeLayoutName = Rexbuilder_Util.activeLayout;
 
-            var oldCustomizations;
+            var customizationsArray = Rexbuilder_Util.getPageCustomizations();
 
-            if ($layoutsCustomDiv.attr("data-empty-customizations")) {
-                oldCustomizations = [];
-            } else {
-                oldCustomizations = JSON.parse($layoutsCustomDiv.text());
-            }
-
-            var customizationsArray = [];
-            $.each(oldCustomizations, function (i, oldCustom) {
-                var oldLay = oldCustom;
-                if (oldLay.name != activeLayoutName) {
-                    customizationsArray.push(oldLay);
+            for (var index = 0; index < customizationsArray.length; index++) {
+                if (customizationsArray[index].name == activeLayoutName) {
+                    break;
                 }
-            });
-
-            Rexbuilder_Dom_Util.fixModelNumbersSaving();
+            }
             
+            if (index != customizationsArray.length) {
+                customizationsArray.splice(index, 1);
+            }
+            
+            Rexbuilder_Dom_Util.fixModelNumbersSaving();
             var newCustomization = createCustomization(activeLayoutName);
-            console.log("newCustomization", newCustomization);
-            console.log("customizationsArray", jQuery.extend(true, [], customizationsArray));
-            var flagSection;
-            var flagTarget;
+
             //updaiting custom layouts with new sections
             if (activeLayoutName == "default") {
+                var flagSection;
+                var flagTarget;
+    
                 for (i = 0; i < customizationsArray.length; i++) {
                     var modelsNumbers = _countModels(customizationsArray[i].sections);
                     for (j = 0; j < newCustomization.sections.length; j++) {
@@ -130,11 +123,13 @@ var Rex_Save_Listeners = (function ($) {
                                 }
                             }
                         }
+
                         if (!flagSection) {
                             var sectionObj = {
                                 section_rex_id: newCustomization.sections[j].section_rex_id,
                                 targets: [],
                                 section_is_model: newCustomization.sections[j].section_is_model.toString(),
+                                section_hide: false,
                                 section_model_id: newCustomization.sections[j].section_model_id,
                                 section_model_number: newCustomization.sections[j].section_model_number
                             }
@@ -143,17 +138,16 @@ var Rex_Save_Listeners = (function ($) {
                     }
                 }
             }
-
             customizationsArray.push(newCustomization);
-            console.log("customizationsArray", customizationsArray);
-            $layoutsCustomDiv.text(JSON.stringify(customizationsArray));
-            $layoutsCustomDiv.removeAttr("data-empty-customizations");
 
             //ajax call for saving layouts type and names
             var layoutsNames = [];
-            $.each(customizationsArray, function (i, layout) {
-                layoutsNames.push(layout.name);
-            });
+            for (i = 0; i < customizationsArray.length; i++) {
+                layoutsNames.push(customizationsArray[i].name);
+            }
+
+            Rexbuilder_Util.updatePageAvaiableLayoutsNames(layoutsNames);
+
             $.ajax({
                 type: 'POST',
                 dataType: 'json',
@@ -173,8 +167,34 @@ var Rex_Save_Listeners = (function ($) {
                 }
             });
 
-            //saving layouts customizations
-            $.each(customizationsArray, function (i, layout) {
+            if (activeLayoutName == "default") {
+                //if is default, have to update all layouts
+                for (i = 0; i < customizationsArray.length; i++) {
+                    Rexbuilder_Util.updatePageCustomizationsData(customizationsArray[i]);
+                    $.ajax({
+                        type: 'POST',
+                        dataType: 'json',
+                        url: _plugin_frontend_settings.rexajax.ajaxurl,
+                        data: {
+                            action: 'rexlive_save_customization_layout',
+                            nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+                            post_id_to_update: idPost,
+                            sections: customizationsArray[i].sections,
+                            layout_name: customizationsArray[i].name
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                console.log('layout custom aggiornato!');
+                            }
+                        },
+                        error: function (response) {
+                        }
+                    });
+                }
+            } else {
+                //updaiting only custom layout
+                Rexbuilder_Util.updatePageCustomizationsData(newCustomization);
+
                 $.ajax({
                     type: 'POST',
                     dataType: 'json',
@@ -183,8 +203,8 @@ var Rex_Save_Listeners = (function ($) {
                         action: 'rexlive_save_customization_layout',
                         nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
                         post_id_to_update: idPost,
-                        sections: layout.sections,
-                        layout_name: layout.name
+                        sections: newCustomization.sections,
+                        layout_name: newCustomization.name
                     },
                     success: function (response) {
                         if (response.success) {
@@ -194,8 +214,7 @@ var Rex_Save_Listeners = (function ($) {
                     error: function (response) {
                     }
                 });
-
-            });
+            }
         });
 
         $(document).on('rexlive:saveCustomizationsModel', function (e) {
@@ -205,8 +224,6 @@ var Rex_Save_Listeners = (function ($) {
             var modelEditedNumber = data.model_number;
             var activeLayout = data.layoutName;
             var modelName = data.modelName;
-
-            var $modelData = Rexbuilder_Util.$rexContainer.parent().children("#rexbuilder-model-data");
 
             var oldModels = Rexbuilder_Util.getModelsCustomizations();
             var i;
@@ -238,7 +255,7 @@ var Rex_Save_Listeners = (function ($) {
                     }
                 }
             }
-            
+
             for (i = 0; i < modelCustomLayoutData.customizations.length; i++) {
                 // have to update only active layout
                 // if active is default, update all with new blocks
@@ -268,28 +285,18 @@ var Rex_Save_Listeners = (function ($) {
 
             //updaiting names of avaiable layouts
             //ajax call for saving layouts type and names
-            
-            var $modelsAvaiableNamesDiv = $modelData.children(".available-models-customizations-names");
+
             var modelSavingCustomizationNames = [];
             for (i = 0; i < modelCustomLayoutData.customizations.length; i++) {
                 modelSavingCustomizationNames.push(modelCustomLayoutData.customizations[i].name);
             }
 
-            var names = JSON.parse($modelsAvaiableNamesDiv.text());
-            var newNamesData = [];
-            for (i = 0; i < names.length; i++) {
-                var namesData = names[i];
-                if (namesData.modelID != idModel) {
-                    newNamesData.push(namesData);
-                }
-            }
             var savingModelNamesData = {
                 modelID: idModel,
                 names: modelSavingCustomizationNames
             };
-            newNamesData.push(savingModelNamesData);
 
-            $modelsAvaiableNamesDiv.text(JSON.stringify(newNamesData));
+            Rexbuilder_Util.updateDivModelCustomizationsNames(savingModelNamesData);
 
             //aggiornamento nomi layout
             $.ajax({
@@ -310,8 +317,6 @@ var Rex_Save_Listeners = (function ($) {
                 error: function (response) {
                 }
             });
-
-
         });
 
         $(document).on('rexlive:updateModelShortCode', function (event) {
@@ -375,7 +380,7 @@ var Rex_Save_Listeners = (function ($) {
 
     var createSectionsCustomizations = function (layoutName) {
         var output = [];
-        Rexbuilder_Util.$rexContainer.children('.rexpansive_section').each(function (i, sec) {
+        Rexbuilder_Util.$rexContainer.children('.rexpansive_section:not(.removing_section)').each(function (i, sec) {
             var $section = $(sec);
             var sectionRexID = $section.attr("data-rexlive-section-id");
 
@@ -385,23 +390,22 @@ var Rex_Save_Listeners = (function ($) {
                 section_is_model: false,
                 section_model_id: "",
                 section_model_number: -1,
-                section_removing: false
+                section_hide: false
             }
-            if ($section.hasClass("removing_section") || $section.hasClass("rex-hide-section")) {
-                if (layoutName != "default") {
-                    section_props.section_removing = true;
-                    output.push(section_props);
-                }
+
+            if ($section.hasClass("rex-hide-section")) {
+                section_props.section_hide = true;
+            }
+            
+            if (!$section.hasClass("rex-model-section")) {
+                section_props.targets = createTargets($section, layoutName);
             } else {
-                if (!$section.hasClass("rex-model-section")) {
-                    section_props.targets = createTargets($section, layoutName);
-                } else {
-                    section_props.section_is_model = true;
-                    section_props.section_model_id = $section.attr("data-rexlive-model-id");
-                    section_props.section_model_number = $section.attr("data-rexlive-saved-model-number");
-                }
-                output.push(section_props);
+                section_props.section_is_model = true;
+                section_props.section_model_id = $section.attr("data-rexlive-model-id");
+                section_props.section_model_number = $section.attr("data-rexlive-saved-model-number");
             }
+            
+            output.push(section_props);
         });
         return output;
     }
@@ -425,7 +429,7 @@ var Rex_Save_Listeners = (function ($) {
         //if active layout is default, have to update custom layouts with new blocks
         if (activeLayout == "default") {
             for (i = 0; i < customizations.length; i++) {
-                if (typeof customizations[i].targets == "undefined" || customizations[i].targets == null ||  customizations[i].targets.length == 0) {
+                if (typeof customizations[i].targets == "undefined" || customizations[i].targets == null || customizations[i].targets.length == 0) {
                     customizations[i].targets = [];
                     customizations[i].targets.push({
                         name: "self",
@@ -598,7 +602,8 @@ var Rex_Save_Listeners = (function ($) {
             block_has_scrollbar = "false",
             block_live_edited = "",
             block_flex_position = "",
-            slider_dimension_ratio = 1;
+            slider_dimension_ratio = 1,
+            hide_block = false;
 
         var content = "";
         var $textWrap;
@@ -669,7 +674,7 @@ var Rex_Save_Listeners = (function ($) {
 
         block_has_scrollbar = $itemData.attr('data-block_has_scrollbar') === undefined ? "false"
             : $itemData.attr('data-block_has_scrollbar');
-            
+
         if ($gridGallery.attr("data-layout") == "masonry") {
             block_live_edited = typeof $itemData.attr('data-block_live_edited') === "undefined" ? "" : $itemData.attr('data-block_live_edited');
         } else {
@@ -685,6 +690,8 @@ var Rex_Save_Listeners = (function ($) {
         }
 
         slider_dimension_ratio = typeof $itemData.attr('data-slider_ratio') == "undefined" ? "" : $itemData.attr('data-slider_ratio');
+
+        hide_block = $elem.hasClass("rex-hide-block");
 
         if (mode == "shortcode") {
             $textWrap = $itemContent.find('.text-wrap');
@@ -757,7 +764,7 @@ var Rex_Save_Listeners = (function ($) {
 
             var props = {};
 
-            props["hide"] = false;
+            props["hide"] = hide_block;
             props["rexbuilder_block_id"] = rex_id;
             props["type"] = type;
             props["size_x"] = size_x;
@@ -1002,7 +1009,6 @@ var Rex_Save_Listeners = (function ($) {
             var props = {};
 
             props["collapse_grid"] = collapse_grid;
-            props["hide"] = false;
             props["section_name"] = section_name;
             props["type"] = type;
             props["color_bg_section"] = color_bg_section;

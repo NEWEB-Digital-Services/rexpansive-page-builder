@@ -552,7 +552,7 @@ class Rexbuilder_Admin {
 			</div>
 		</div>
 		<div style="text-align:center">
-			<a href="<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>" class="button button-primary button-large go-live <?php echo ( 'auto-draft' == get_post_status($post->ID) ? ' draft' : '' ); ?>" target="_blank"><?php _e( 'Go Live', 'rexpansive' ); ?></a>
+			<a href="<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>" class="button button-primary button-large go-live <?php echo ( 'auto-draft' == get_post_status(get_the_id()) ? ' draft' : '' ); ?>" target="_blank"><?php _e( 'Go Live', 'rexpansive' ); ?></a>
 			<input type="hidden" name="force_live" value="">
 			<script>
 				;(function ($) {
@@ -1397,10 +1397,12 @@ class Rexbuilder_Admin {
 
         $post_id_to_update = intval($_POST['model_id_to_update']);
 
-        $layout = $_POST['targets'];
+        $targets = $_POST['targets'];
         $layout_name = $_POST['layout_name'];
-
-        update_post_meta($post_id_to_update, '_rex_model_customization_' . $layout_name, $layout);
+        
+        $targetsEncoded = wp_json_encode( $targets );
+        $slashedTargets = wp_slash( $targetsEncoded );
+        update_post_meta($post_id_to_update, '_rex_model_customization_' . $layout_name, $slashedTargets);
 
         $response['id_recived'] = $post_id_to_update;
 
@@ -1490,10 +1492,12 @@ class Rexbuilder_Admin {
 				//Customizations Data
 				$customizations = array();
 				if (!empty($modelCustomizationsNames)) {
+					$flag_models = true;
 					foreach ($modelCustomizationsNames as $name) {
 						$customization = array();
 						$customization["name"] = $name;
-						$customization["targets"] = get_post_meta($post->ID, '_rex_model_customization_' . $name, true);
+						$customizationTargetsJSON = get_post_meta($post->ID, '_rex_model_customization_' . $name, true);
+						$customization["targets"] = json_decode($customizationTargetsJSON, true);
 						array_push($customizations, $customization);
 					}
 				}

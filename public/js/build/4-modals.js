@@ -1231,9 +1231,9 @@
 			var $section = $(e.target).parents(".rexpansive_section");
 			var sectionID = $section.attr("data-rexlive-section-id");
 			var modelNumber = typeof $section.attr("data-rexlive-model-number") != "undefined" ? $section.attr("data-rexlive-model-number") : "";
-			var modelID = Rexbuilder_Util.createSectionID();
-			var shortCode = Rex_Save_Listeners.createSectionProperties($section, "shortcode", modelID);
-			var sectionCustomizations = Rexbuilder_Util_Editor.getSectionCustomLayouts(sectionID);
+			var newSectionID = Rexbuilder_Util.createSectionID();
+			var shortCode = Rex_Save_Listeners.createSectionProperties($section, "shortcode", newSectionID);
+			var sectionCustomizations = Rexbuilder_Util.getSectionCustomLayouts(sectionID);
 			var names = [];
 			var i;
 			if (sectionCustomizations.length != 0) {

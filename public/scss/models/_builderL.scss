@@ -481,9 +481,6 @@
 .grid-stack.grid-stack-one-column-mode > .grid-stack-item {
     margin-bottom: 0px;
 }
-.rex-hide-element-live{
-    display: none;
-}
 
 .builder-edit-slider{
     display: none;
@@ -690,4 +687,8 @@
         margin-bottom: 0px;
         margin-left: 0px;
     }
+}
+
+.grid-stack-item.rex-hide-element{
+    display: none;
 }

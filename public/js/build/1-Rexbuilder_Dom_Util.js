@@ -802,11 +802,17 @@ var Rexbuilder_Dom_Util = (function ($) {
 
     var _updateSectionVisibility = function ($section, show) {
         if (show) {
-            $section.removeClass("removing_section");
+            if(Rexbuilder_Util.activeLayout == "default"){
+                $section.removeClass("removing_section");
+            }
+            $section.removeClass("rex-hide-section");
             Rexbuilder_Util.playPluginsSection($section);
         } else {
             Rexbuilder_Util.stopPluginsSection($section);
-            $section.addClass("removing_section");
+            if(Rexbuilder_Util.activeLayout == "default"){
+                $section.addClass("removing_section");
+            }
+            $section.addClass("rex-hide-section");
         }
     }
 
@@ -836,23 +842,6 @@ var Rexbuilder_Dom_Util = (function ($) {
         $section.attr("data-rexlive-model-name", data.modelName);
         $section.attr("data-rexlive-model-number", data.modelNumber);
         $section.attr("data-rexlive-section-id", data.sectionID);
-    }
-
-    var _updateDivModelCustomizationsNames = function (updatedModalCustomizationsNames) {
-        var $modelsAvaiableNamesDiv = $("#rexbuilder-model-data .available-models-customizations-names");
-        var names = JSON.parse($modelsAvaiableNamesDiv.text());
-        var newNamesData = [];
-        var i;
-
-        for (i = 0; i < names.length; i++) {
-            var namesData = names[i];
-            if (namesData.id != updatedModalCustomizationsNames.id) {
-                newNamesData.push(namesData);
-            }
-        }
-
-        newNamesData.push(updatedModalCustomizationsNames);
-        $modelsAvaiableNamesDiv.text(JSON.stringify(newNamesData));
     }
 
     var _updateLockEditModel = function ($button, lock) {
@@ -1159,7 +1148,6 @@ var Rexbuilder_Dom_Util = (function ($) {
         updateSectionVisibility: _updateSectionVisibility,
         fixSectionDomOrder: _fixSectionDomOrder,
         updateSectionBecameModel: _updateSectionBecameModel,
-        updateDivModelCustomizationsNames: _updateDivModelCustomizationsNames,
         updateLockEditModel: _updateLockEditModel,
         fixModelNumbers: _fixModelNumbers,
         fixModelNumbersSaving: _fixModelNumbersSaving,

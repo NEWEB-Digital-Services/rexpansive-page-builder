@@ -455,7 +455,8 @@ endif;
 
         $layout = $_POST['sections'];
         $layout_name = $_POST['layout_name'];
-        $slashedLayout = wp_slash(wp_json_encode( $layout ));
+        $layoutEncoded = wp_json_encode( $layout );
+        $slashedLayout = wp_slash( $layoutEncoded );
         update_post_meta($post_id_to_update, '_rex_customization_' . $layout_name, $slashedLayout);
 
         $response['id_recived'] = $post_id_to_update;
@@ -482,10 +483,12 @@ endif;
 
         $post_id_to_update = intval($_POST['model_id_to_update']);
 
-        $layout = $_POST['targets'];
+        $targets = $_POST['targets'];
         $layout_name = $_POST['layout_name'];
-
-        update_post_meta($post_id_to_update, '_rex_model_customization_' . $layout_name, $layout);
+        
+        $targetsEncoded = wp_json_encode( $targets );
+        $slashedTargets = wp_slash( $targetsEncoded );
+        update_post_meta($post_id_to_update, '_rex_model_customization_' . $layout_name, $slashedTargets);
 
         $response['id_recived'] = $post_id_to_update;
 
@@ -657,18 +660,19 @@ endif;
             array_push($models_customizations_avaiable, $modelNames);
 
             //Customizations Data
-            $customizations = array();
+            $model_layouts = array();
             if (!empty($modelCustomizationsNames)) {
                 $flag_models = true;
                 foreach ($modelCustomizationsNames as $name) {
                     $customization = array();
                     $customization["name"] = $name;
-                    $customization["targets"] = get_post_meta($id, '_rex_model_customization_' . $name, true);
-                    array_push($customizations, $customization);
+                    $customizationTargetsJSON = get_post_meta($id, '_rex_model_customization_' . $name, true);
+                    $customization["targets"] = json_decode($customizationTargetsJSON, true);
+                    array_push($model_layouts, $customization);
                 }
             }
 
-            $modelCustomizations = array("id" => $id, "customizations" => $customizations);
+            $modelCustomizations = array("id" => $id, "customizations" => $model_layouts);
 
             array_push($models_customizations, $modelCustomizations);
         }
@@ -681,8 +685,8 @@ endif;
             foreach ($customizations_names as $name) {
                 $customization = array();
                 $customization["name"] = $name;
-                $customizationTargetsJSON = get_post_meta($post->ID, '_rex_customization_' . $name, true);
-                $customization["sections"] = json_decode($customizationTargetsJSON);
+                $customizationSectionsJSON = get_post_meta($post->ID, '_rex_customization_' . $name, true);
+                $customization["sections"] = json_decode($customizationSectionsJSON, true);
                 array_push($customizations_array, $customization);
             }
         }
@@ -730,16 +734,32 @@ endif;
                         echo '<div class="customization-wrap" data-customization-name="'.$customization_name.'">';
                         $sections = $customization['sections'];
                         foreach($sections as $section_targets){
+                            $sectionRexID = $section_targets["section_rex_id"];
+                            $sectionModelNumber = $section_targets["section_model_number"];
+                            $sectionModelID = $section_targets["section_model_id"];
+                            
+                            if(isset($section_targets["section_hide"])){
+                                $hideSection = $section_targets["section_hide"];
+                            } else {
+                                $hideSection = "false";
+                            }
 
-                            $sectionRexID = $section_targets -> section_rex_id;
-                            $sectionModelNumber = $section_targets -> section_model_number;
-                            $sectionModelID = $section_targets -> section_model_id;
-                            $targets = $section_targets -> targets;
-
-                            echo '<div class="section-targets" data-section-rex-id="' . $sectionRexID . '" data-model-id="'.$sectionModelID.'" data-model-number="'.$sectionModelNumber.'">';
-                            if($targets != ""){
-                            echo json_encode($targets);
+                            if(isset($section_targets["targets"])){
+                                $targets = $section_targets["targets"];
                             } else{
+                                $targets = "";
+                            }
+
+                            echo '<div class="section-targets"';
+                            echo ' data-section-rex-id="' . $sectionRexID . '"';
+                            echo ' data-model-id="'.$sectionModelID.'"';
+                            echo ' data-model-number="'.$sectionModelNumber.'"';
+                            echo ' data-section-hide="'.$hideSection.'"';
+                            echo '>';
+
+                            if($targets != ""){
+                                echo json_encode($targets);
+                            } else {
                                 echo "[]";
                             }
                             echo '</div>';
@@ -748,8 +768,7 @@ endif;
                     }
                 }
                 ?></div>
-                <div class = "available-layouts-names">
-                <?php echo json_encode($customizations_names); ?></div>
+                <div class = "available-layouts-names"><?php echo json_encode($customizations_names); ?></div>
             </div>
             <?php
     if ($editor == "true") {

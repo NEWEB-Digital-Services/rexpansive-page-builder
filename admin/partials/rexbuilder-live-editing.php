@@ -16,7 +16,7 @@ global $post;
 global $pagenow;
 
 $source = get_permalink($post->ID);
-if( get_post_status( $id ) == "auto-draft"){
+if( get_post_status( $post->ID ) == "auto-draft"){
 //	$source .= "&preview=true&editor=true";
 	$source= add_query_arg( array(
 			'preview' => 'true',

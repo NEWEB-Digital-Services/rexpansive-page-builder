@@ -988,7 +988,10 @@
             this.properties.numberBlocksVisibileOnGrid--;
 
             this.properties.gridstackInstance.removeWidget($elem[0], false);
-            $elem.addClass("removing_block");
+            if(Rexbuilder_Util.activeLayout == "default"){
+                $elem.addClass("removing_block");
+            }
+            $elem.addClass("rex-hide-element");
         },
 
         reAddBlock: function ($elem) {
@@ -998,7 +1001,11 @@
             y = parseInt($elem.attr("data-gs-y"));
             w = parseInt($elem.attr("data-gs-width"));
             h = parseInt($elem.attr("data-gs-height"));
-            $elem.removeClass("removing_block");
+            
+            if(Rexbuilder_Util.activeLayout == "default"){
+                $elem.removeClass("removing_block");
+            }
+            $elem.removeClass("rex-hide-element");
 
             $elem.draggable("destroy");
             $elem.resizable("destroy");
