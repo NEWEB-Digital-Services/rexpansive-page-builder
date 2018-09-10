@@ -64,15 +64,40 @@ var Rexbuilder_Section = (function ($) {
     var _addSectionToolboxListeners = function () {
         $(document).on('click', '.builder-delete-row', function (e) {
             var $section = $(e.currentTarget).parents('.rexpansive_section');
+            var layoutsOrder = null;
+            var modelNumber = -1;
+            var modelID = -1;
+            if (Rexbuilder_Util.activeLayout == "default") {
+                if ($section.hasClass("rex-model-section")) {
+                    layoutsOrder = Rexbuilder_Util.getPageCustomizationsLive();
+                    modelNumber = parseInt($section.attr("data-rexlive-saved-model-number"));
+                    modelID = parseInt($section.attr("data-rexlive-model-id"));
+                }
+            }
 
             var reverseData = {
-                show: true
+                show: true,
+                layoutsOrder: layoutsOrder != null ? jQuery.extend(true, [], layoutsOrder) : null
             };
 
             Rexbuilder_Dom_Util.updateSectionVisibility($section, false);
 
+            if (layoutsOrder != null && modelNumber != -1) {
+                var i, j;
+                for (i = 0; i < layoutsOrder.length; i++) {
+                    for (j = 0; j < layoutsOrder[i].sections.length; j++) {
+                        if (layoutsOrder[i].sections[j].section_model_id == modelID && layoutsOrder[i].sections[j].section_model_number == modelNumber) {
+                            layoutsOrder[i].sections.splice(j, 1);
+                            break;
+                        }
+                    }
+                }
+                Rexbuilder_Util.updatePageCustomizationsLive(layoutsOrder);
+            }
+
             var actionData = {
-                show: false
+                show: false,
+                layoutsOrder: layoutsOrder != null ? jQuery.extend(true, [], layoutsOrder) : null
             };
 
             Rexbuilder_Util_Editor.pushAction($section, "updateSectionVisibility", actionData, reverseData);
@@ -158,20 +183,9 @@ var Rexbuilder_Section = (function ($) {
             } else {
                 Rexbuilder_Util_Editor.updatingCollapsedGrid = true;
 
-                var elemetsDisposition;
-                var galleryLayoutToActive;
-                var defaultLayout;
+                var elemetsDisposition = Rexbuilder_Util.getLayoutLiveSectionTargets($section);
+                var galleryLayoutToActive = Rexbuilder_Util.getGridLayoutLive($section);
 
-                if (Rexbuilder_Util.customizationExists(Rexbuilder_Util.activeLayout)) {
-                    elemetsDisposition = Rexbuilder_Util.getLayoutSectionTargets($section, Rexbuilder_Util.activeLayout);
-                    galleryLayoutToActive = Rexbuilder_Util.getGridLayout($section, Rexbuilder_Util.activeLayout);
-                } else {
-                    elemetsDisposition = Rexbuilder_Util.getLayoutSectionTargets($section, "default");
-                    galleryLayoutToActive = Rexbuilder_Util.getGridLayout($section, "default");
-                }
-                defaultLayout = Rexbuilder_Util.getGridLayout($section, "default");
-
-                var i;
                 var gridstackInstance = galleryEditorInstance.properties.gridstackInstance;
                 var fullHeight = galleryLayoutToActive.fullHeight.toString() == "true";
                 var singleHeight;
@@ -195,22 +209,10 @@ var Rexbuilder_Section = (function ($) {
 
                 galleryEditorInstance.batchGridstack();
 
-                for (i = 1; i < elemetsDisposition.length; i++) {
+                for (var i = 1; i < elemetsDisposition.length; i++) {
                     var $elem = $section.find("div[data-rexbuilder-block-id=\"" + elemetsDisposition[i].name + "\"]");
                     var $elemData = $elem.children(".rexbuilder-block-data");
                     var props = elemetsDisposition[i].props;
-                    if (typeof props === "undefined") {
-                        props = Rexbuilder_Util.getDefaultBlockProps($section, elemetsDisposition[i].name);
-                        if (defaultLayout.layout != galleryLayout.layout) {
-                            if (defaultLayout.layout == "masonry") {
-                                props.gs_y = Math.round(props.gs_y / 5);
-                                props.gs_height = Math.round(props.gs_height / 5);
-                            } else {
-                                props.gs_y = props.gs_y * 5;
-                                props.gs_height = props.gs_height * 5;
-                            }
-                        }
-                    }
                     var postionData = {
                         x: props.gs_x,
                         y: props.gs_y,
@@ -377,7 +379,7 @@ var Rexbuilder_Section = (function ($) {
             $oldSection.after(html);
 
             var $newSection = $(html);
-            
+
             var dataModel = {
                 id: data.modelID,
                 modelName: data.modelName,
@@ -399,7 +401,7 @@ var Rexbuilder_Section = (function ($) {
                 name: dataModel.modelName,
                 customizations: data.customizationsData
             };
-            
+
             Rexbuilder_Util.updateModelsCustomizationsData(addingModelCustomizationsData);
 
             Rexbuilder_Dom_Util.updateSectionBecameModel(dataModel);
@@ -458,7 +460,7 @@ var Rexbuilder_Section = (function ($) {
         Rexbuilder_Util.$rexContainer.children(".rexpansive_section.rex-model-section:not(.removing_section)").each(function (i, sec) {
             var $section = $(sec);
             if ($section.attr("data-rexlive-model-id") == idModel && $section.attr("data-rexlive-model-number") != editedModelNumber) {
-                var oldSectionModelSavedNumber = isNaN(parseInt($section.attr("data-rexlive-saved-model-number")))? "": $section.attr("data-rexlive-saved-model-number");
+                var oldSectionModelSavedNumber = isNaN(parseInt($section.attr("data-rexlive-saved-model-number"))) ? "" : $section.attr("data-rexlive-saved-model-number");
                 var modelNumber = 1;
                 Rexbuilder_Util.$rexContainer.children(".rexpansive_section:not(.removing_section)").each(function (i, sec) {
                     if ($(sec).attr("data-rexlive-model-id") == idModel) {
@@ -471,7 +473,7 @@ var Rexbuilder_Section = (function ($) {
 
                 var $newSection = $(html);
                 $newSection.attr("data-rexlive-saved-model-number", oldSectionModelSavedNumber);
-                
+
                 var dataModel = {
                     modelID: idModel,
                     modelName: modelName,

@@ -177,7 +177,7 @@ class Rexbuilder_Section
 
             echo '<section';
 
-            if ($section_name != ''):
+            if ($section_name != '' && $section_name != "undefined"):
                 $x = preg_replace('/[\W\s+]/', '', $section_name);
                 echo ' data-rexlive-section-name="' . $section_name . '"';
                 echo ' href="#' . $x . '" id="' . $x . '"';

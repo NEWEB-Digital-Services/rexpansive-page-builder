@@ -816,7 +816,7 @@ var Rexbuilder_Dom_Util = (function ($) {
         _updateImageBG($section, data);
     }
 
-    var _updateSectionVisibility = function ($section, show) {
+    var _updateSectionVisibility = function ($section, show, layoutsOrder) {
         if (show) {
             if (Rexbuilder_Util.activeLayout == "default") {
                 $section.removeClass("removing_section");
@@ -829,6 +829,9 @@ var Rexbuilder_Dom_Util = (function ($) {
                 $section.addClass("removing_section");
             }
             $section.addClass("rex-hide-section");
+        }
+        if (typeof layoutsOrder !== "undefined" && layoutsOrder != null) {
+            Rexbuilder_Util.updatePageCustomizationsLive(layoutsOrder);
         }
     }
 
@@ -1098,7 +1101,7 @@ var Rexbuilder_Dom_Util = (function ($) {
                 _updateBlockUrl(dataToUse.$elem, dataToUse.url);
                 break;
             case "updateSectionVisibility":
-                _updateSectionVisibility($section, dataToUse.show);
+                _updateSectionVisibility($section, dataToUse.show, dataToUse.layoutsOrder);
                 break;
             case "updateSectionModel":
                 _updateModelVisibility(dataToUse.$sectionToHide, dataToUse.$sectionToShow);

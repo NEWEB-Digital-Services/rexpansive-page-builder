@@ -785,6 +785,10 @@ endif;
                 }
                 ?></div>
             </div>
+            <div id="rexbuilder-layout-data-live" style="display: none;">
+            </div>
+            <div id="rexbuilder-layouts-sections-order" style="display: none;">
+            </div>
             <?php
     if ($editor == "true") {
             ?><button id="rex-open-ace-css-editor" class="btn-floating tooltipped" data-position="bottom" data-tooltip="<?php _e('CSS Editor', $this->plugin_name);?>">

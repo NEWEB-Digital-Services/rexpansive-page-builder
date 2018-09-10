@@ -11,6 +11,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
         $el.find(".grid-item-content").addClass("empty-content");
         galleryInstance.addTextEditor($el);
         galleryInstance.addScrollbar($el);
+        Rexbuilder_Util.updateSectionLive($section);
     });
 
     $(document).on("click", ".add-new-block-text", function (e) {
@@ -27,6 +28,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
         var event = jQuery.Event("mouseup");
         event.target = $el.find(".rexlive-block-drag-handle");
         event.offsetY = 0;
+        Rexbuilder_Util.updateSectionLive($section);
         $el.trigger(event);
     });
 
@@ -95,6 +97,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
             galleryInstance.addScrollbar($el);
             galleryInstance.addTextEditor($el);
         }
+        Rexbuilder_Util.updateSectionLive($section);
     });
 
     $(document).on("rexlive:insert_video", function (e) {
@@ -169,15 +172,17 @@ var Rexbuilder_CreateBlocks = (function ($) {
                 }
             }
         }
+        Rexbuilder_Util.updateSectionLive($section);
     });
 
     $(document).on("rexlive:insert_new_slider", function (e) {
         _createSlider(e.settings.data_to_send);
+        Rexbuilder_Util.updateSectionLive($section);
     });
 
     var _createSlider = function (data, $elem, numberSlider) {
         var sliderNumber;
-        console.log(data);
+
         if (typeof numberSlider == "undefined") {
             Rexbuilder_Dom_Util.lastSliderNumber = Rexbuilder_Dom_Util.lastSliderNumber + 1;
             sliderNumber = Rexbuilder_Dom_Util.lastSliderNumber;
@@ -321,6 +326,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
         var $gallery = $elem.parents('.grid-stack-row');
         var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
         var gridstack = $gallery.data("gridstack");
+        var $section = $elem.parents(".rexpansive_section");
         var $newBlock;
 
         $newBlock = $elem.clone(false);
@@ -389,7 +395,6 @@ var Rexbuilder_CreateBlocks = (function ($) {
         if ($elem.hasClass("block-has-slider")) {
             var $oldSlider = $elem.find(".text-wrap").children(".rex-slider-wrap[data-rex-slider-active=\"true\"]");
             $textWrap.children().remove();
-            var $section = $elem.parents(".rexpansive_section");
             var sectionID = $section.attr("data-rexlive-section-id");
             var modelNumber = typeof $section.attr("data-rexlive-model-number") != "undefined" ? $section.attr("data-rexlive-model-number") : "";
             var rex_block_id = newRexID;
@@ -406,6 +411,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
             galleryEditorInstance.addScrollbar($newBlock);
             galleryEditorInstance.addTextEditor($newBlock);
         }
+        Rexbuilder_Util.updateSectionLive($section);
     }
 
     return {

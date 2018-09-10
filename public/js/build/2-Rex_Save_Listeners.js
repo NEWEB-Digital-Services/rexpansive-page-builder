@@ -59,18 +59,18 @@ var Rex_Save_Listeners = (function ($) {
 
             var activeLayoutName = Rexbuilder_Util.activeLayout;
 
-            var customizationsArray = Rexbuilder_Util.getPageCustomizations();
+            var customizationsArray = Rexbuilder_Util.getPageCustomizationsLive();
 
             for (var index = 0; index < customizationsArray.length; index++) {
                 if (customizationsArray[index].name == activeLayoutName) {
                     break;
                 }
             }
-            
+
             if (index != customizationsArray.length) {
                 customizationsArray.splice(index, 1);
             }
-            
+
             Rexbuilder_Dom_Util.fixModelNumbersSaving();
             var newCustomization = createCustomization(activeLayoutName);
 
@@ -78,7 +78,7 @@ var Rex_Save_Listeners = (function ($) {
             if (activeLayoutName == "default") {
                 var flagSection;
                 var flagTarget;
-    
+
                 for (i = 0; i < customizationsArray.length; i++) {
                     var modelsNumbers = _countModels(customizationsArray[i].sections);
                     for (j = 0; j < newCustomization.sections.length; j++) {
@@ -96,6 +96,7 @@ var Rex_Save_Listeners = (function ($) {
                                 } else {
                                     flagSection = true;
                                 }
+
                                 //adding new blocks to custom layouts
                                 if (flagSection && customizationsArray[i].sections[k].section_is_model.toString() != "true") {
                                     if (typeof customizationsArray[i].sections[k].targets == "undefined" || customizationsArray[i].sections[k].targets.length == 0) {
@@ -170,6 +171,7 @@ var Rex_Save_Listeners = (function ($) {
             if (activeLayoutName == "default") {
                 //if is default, have to update all layouts
                 for (i = 0; i < customizationsArray.length; i++) {
+                    Rexbuilder_Util.updatePageCustomizationsLive(customizationsArray[i]);
                     Rexbuilder_Util.updatePageCustomizationsData(customizationsArray[i]);
                     $.ajax({
                         type: 'POST',
@@ -194,6 +196,7 @@ var Rex_Save_Listeners = (function ($) {
             } else {
                 //updaiting only custom layout
                 Rexbuilder_Util.updatePageCustomizationsData(newCustomization);
+                Rexbuilder_Util.updatePageCustomizationsLive(newCustomization);
 
                 $.ajax({
                     type: 'POST',
@@ -393,10 +396,8 @@ var Rex_Save_Listeners = (function ($) {
                 section_hide: false
             }
 
-            if ($section.hasClass("rex-hide-section")) {
-                section_props.section_hide = true;
-            }
-            
+            section_props.section_hide = $section.hasClass("rex-hide-section");
+
             if (!$section.hasClass("rex-model-section")) {
                 section_props.targets = createTargets($section, layoutName);
             } else {
@@ -404,7 +405,7 @@ var Rex_Save_Listeners = (function ($) {
                 section_props.section_model_id = $section.attr("data-rexlive-model-id");
                 section_props.section_model_number = $section.attr("data-rexlive-saved-model-number");
             }
-            
+
             output.push(section_props);
         });
         return output;
@@ -693,7 +694,7 @@ var Rex_Save_Listeners = (function ($) {
 
         slider_dimension_ratio = typeof $itemData.attr('data-slider_ratio') == "undefined" ? "" : $itemData.attr('data-slider_ratio');
 
-        hide_block = $elem.hasClass("rex-hide-block");
+        hide_block = $elem.hasClass("rex-hide-element");
 
         if (mode == "shortcode") {
             $textWrap = $itemContent.find('.text-wrap');

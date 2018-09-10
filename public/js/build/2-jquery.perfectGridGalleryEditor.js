@@ -169,8 +169,6 @@
                 this._launchTextEditor();
                 this._createFirstReverseStack();
 
-            } else {
-                this.frontEndMode();
             }
 
             this.saveStateGrid();
@@ -545,17 +543,33 @@
 
         _countBlocks: function () {
             var number = 0;
-            var flag = false;
+
+            var numberBlock = 0;
 
             this.$element.find('.grid-stack-item').each(function (i, e) {
                 number = i;
-                flag = true;
+                var $el = $(e);
+                var regex = /\d+$/gm;
+                var str = $el.attr("id");
+                var m;
+                while ((m = regex.exec(str)) !== null) {
+                    // This is necessary to avoid infinite loops with zero-width matches
+                    if (m.index === regex.lastIndex) {
+                        regex.lastIndex++;
+                    }
+
+                    // The result can be accessed through the `m`-variable.
+                    m.forEach((match, groupIndex) => {
+                        numberBlock = parseInt(match);
+                    });
+                }
+                if (numberBlock > number) {
+                    number = numberBlock;
+                }
             });
 
-            if (flag) {
-                this.properties.numberBlocksVisibileOnGrid = number + 1;
-                this.properties.lastIDBlock = number + 1;
-            }
+            this.properties.numberBlocksVisibileOnGrid = number;
+            this.properties.lastIDBlock = number;
         },
 
         getLastID: function () {
@@ -1639,16 +1653,6 @@
                 //  //console.log("mouse down: " + $elem.data("rexbuilder-block-id"));
                 if ($(e.target).parents(".rexlive-block-toolbox").length == 0) {
                     useDBclick = false;
-                    /* 
-                    if (Rexbuilder_Util_Editor.editingElement && (Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id") != $elem.data("rexbuilder-block-id"))) {
-                         //console.log("%c stopping propagation ", "color: purple");
-                        //$textWrap.blur();
-                        Rexbuilder_Util_Editor.elementIsResizing = false;
-                        Rexbuilder_Util_Editor.elementIsDragging = false;
-                        //e.stopPropagation();
-                        //e.preventDefault();
-                    } 
-                    */
                     Rexbuilder_Util_Editor.mouseDownEvent = e;
                     if (!(Rexbuilder_Util_Editor.editingElement || Rexbuilder_Util_Editor.elementIsDragging || Rexbuilder_Util_Editor.elementIsResizing) || (Rexbuilder_Util_Editor.editingElement && (Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id") != $elem.data("rexbuilder-block-id")))) {
                         if (e.target != dragHandle) {
@@ -1814,19 +1818,6 @@
             $elem.parent().parent().parent().parent().removeClass('focused');
         },
 
-        frontEndMode: function () {
-            //          var gridstack = this.properties.gridstackInstance;
-            //            gridstack.disable();
-            //console.log('griglia disabilitata');
-        },
-
-        editorMode: function () {
-            var gridstack = this.properties.gridstackInstance;
-            gridstack.enable();
-            // this.properties.mediumEditorInstance.setup();
-            //console.log('griglia abilitata');
-        },
-
         _updateElementsSizeViewers: function () {
             var gallery = this;
             this.$element.children(".grid-stack-item").each(function () {
@@ -1840,12 +1831,10 @@
                 x = parseInt($elem.attr("data-gs-width"));
                 y = parseInt($elem.attr("data-gs-height"));
                 if (this.settings.galleryLayout == 'masonry') {
-                    y = y * this.properties.singleHeight;
-                    y = Math.round(y);
+                    y = Math.round(y * this.properties.singleHeight);
                 }
             }
             $elem.find(".el-size-viewer").text(x + ' x ' + y);
-            $elem = undefined;
         },
 
         updateSizeViewerSizes: function ($block) {
@@ -1962,13 +1951,13 @@
 
             var gallery = this;
 
+            var floating;
+            if (gallery.settings.galleryLayout == 'masonry') {
+                floating = false;
+            } else {
+                floating = true;
+            }
             if (Rexbuilder_Util.editorMode) {
-                var floating;
-                if (gallery.settings.galleryLayout == 'masonry') {
-                    floating = false;
-                } else {
-                    floating = true;
-                }
                 //console.log("launching gridstack backend");
 
                 gallery.$element.gridstack({
@@ -2009,7 +1998,7 @@
                     cellHeight: gallery.properties.singleHeight,
                     disableDrag: true,
                     disableResize: true,
-                    float: false,
+                    float: floating,
                     verticalMargin: 0,
                     staticGrid: true,
                     width: gallery.settings.numberCol
@@ -2019,14 +2008,13 @@
             this.setGridstackIstanceNumber();
             this.properties.gridstackInstance = this.$element.data("gridstack");
 
-            /* Rimozione elementi da nascondere
+            //Rimozione elementi da nascondere
             var gridstack = this.properties.gridstackInstance;
-        
-            this.$element.children(".grid-stack-item").each(function () {
-                if ($(this).hasClass("rex-hide-element-live")) {
-                    gridstack.removeWidget(this, false);
+            this.$element.children(".grid-stack-item").each(function (i, elem) {
+                if ($(elem).hasClass("rex-hide-element")) {
+                    gridstack.removeWidget(elem, false);
                 }
-            }); */
+            });
 
             this.updateBlocksHeight();
 
@@ -2063,7 +2051,8 @@
                         $elemData = $elem.children(".rexbuilder-block-data");
                         //if ((((gallery.settings.galleryLayout == "masonry") && (($elemData.attr("data-block_has_scrollbar") != "true") && ($elemData.attr("data-block_live_edited") != "true")) || gallery.properties.updatingGridWidth)) || gallery.properties.updatingSection) {
                         if ((gallery.settings.galleryLayout == "masonry" && $elemData.attr("data-block_live_edited").toString() != "true") || gallery.properties.updatingSection) {
-                            gallery.updateElementHeight($elem);
+                            if (!($elem.hasClass("rex-hide-element") || $elem.hasClass("removing_block")))
+                                gallery.updateElementHeight($elem);
                         }
                     });
 
