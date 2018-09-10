@@ -126,11 +126,10 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
                 if (editedLive) {
                     if (confirm("Ehi, guarda che hai modificato qualcosa, vuoi matenere le modifiche?")) {
-                        //console.log("salva");
-
                         var updateData = {
                             selected: activeLayoutPage,
-                            eventName: ""
+                            eventName: "",
+                            buttonData: buttonData,
                         };
 
                         if (activeLayoutPage == "default") {
@@ -141,12 +140,9 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                         updateData.eventName = "rexlive:saveCustomizations";
                         sendIframeBuilderMessage(updateData);
 
-                        //console.log("saved");
-                    } else {
-                        //console.log("non salvare");
+                        return;
                     }
                     editedLive = false;
-                    //console.log("saving ended");
                 }
 
                 activeLayoutPage = btnName;

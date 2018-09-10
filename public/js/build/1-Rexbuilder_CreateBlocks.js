@@ -177,6 +177,12 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
     $(document).on("rexlive:insert_new_slider", function (e) {
         _createSlider(e.settings.data_to_send);
+        var $section;
+        if (e.settings.data_to_send.target.modelNumber != "") {
+            $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + e.settings.data_to_send.target.sectionID + '"][data-rexlive-model-number="' + e.settings.data_to_send.target.modelNumber + '"]');
+        } else {
+            $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + e.settings.data_to_send.target.sectionID + '"]');
+        }
         Rexbuilder_Util.updateSectionLive($section);
     });
 

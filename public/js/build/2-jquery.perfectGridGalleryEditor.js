@@ -1650,78 +1650,78 @@
 
             // mouse down on another element
             $elem.mousedown(function (e) {
-                //  //console.log("mouse down: " + $elem.data("rexbuilder-block-id"));
                 if ($(e.target).parents(".rexlive-block-toolbox").length == 0) {
-                    useDBclick = false;
                     Rexbuilder_Util_Editor.mouseDownEvent = e;
-                    if (!(Rexbuilder_Util_Editor.editingElement || Rexbuilder_Util_Editor.elementIsDragging || Rexbuilder_Util_Editor.elementIsResizing) || (Rexbuilder_Util_Editor.editingElement && (Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id") != $elem.data("rexbuilder-block-id")))) {
-                        if (e.target != dragHandle) {
-                            clearTimeout(this.downTimer);
-                            this.downTimer = setTimeout(function () {
-                                //console.log("%c we have to drag ", "color: green");
-                                $dragHandle.addClass("drag-up");
+                    if (Rexbuilder_Util.activeLayout != "default") {
+                        $dragHandle.addClass("drag-up");
+                        Rexbuilder_Util_Editor.mouseDownEvent.target = dragHandle;
+                        Rexbuilder_Util_Editor.mouseDownEvent.srcElement = dragHandle;
+                        Rexbuilder_Util_Editor.mouseDownEvent.toElement = dragHandle;
+                        Rexbuilder_Util_Editor.elementDraggingTriggered = true;
+                    } else {
+                        useDBclick = false;
+                        if (!(Rexbuilder_Util_Editor.editingElement || Rexbuilder_Util_Editor.elementIsDragging || Rexbuilder_Util_Editor.elementIsResizing) || (Rexbuilder_Util_Editor.editingElement && (Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id") != $elem.data("rexbuilder-block-id")))) {
+                            if (e.target != dragHandle) {
+                                clearTimeout(this.downTimer);
+                                this.downTimer = setTimeout(function () {
+                                    $dragHandle.addClass("drag-up");
 
-                                Rexbuilder_Util_Editor.mouseDownEvent.target = dragHandle;
-                                Rexbuilder_Util_Editor.mouseDownEvent.srcElement = dragHandle;
-                                Rexbuilder_Util_Editor.mouseDownEvent.toElement = dragHandle;
+                                    Rexbuilder_Util_Editor.mouseDownEvent.target = dragHandle;
+                                    Rexbuilder_Util_Editor.mouseDownEvent.srcElement = dragHandle;
+                                    Rexbuilder_Util_Editor.mouseDownEvent.toElement = dragHandle;
 
-                                Rexbuilder_Util_Editor.elementDraggingTriggered = true;
+                                    Rexbuilder_Util_Editor.elementDraggingTriggered = true;
 
-                                $elem.trigger(Rexbuilder_Util_Editor.mouseDownEvent);
-                            }, 125);
+                                    $elem.trigger(Rexbuilder_Util_Editor.mouseDownEvent);
+                                }, 125);
+                            }
                         }
                     }
-
                 }
             });
 
             $elem.mouseup(function (e) {
-                //console.log("mouse up: " + $elem.data("rexbuilder-block-id"));
-                //console.log(e.target);
-
                 if ($(e.target).parents(".rexlive-block-toolbox").length == 0) {
                     if (Rexbuilder_Util_Editor.elementDraggingTriggered) {
                         $dragHandle.removeClass("drag-up");
                         Rexbuilder_Util_Editor.elementDraggingTriggered = false;
                     }
-                    clearTimeout(this.downTimer);
-                    Rexbuilder_Util_Editor.mouseDownEvent = null;
+                    if (Rexbuilder_Util.activeLayout == "default") {
+                        clearTimeout(this.downTimer);
+                        Rexbuilder_Util_Editor.mouseDownEvent = null;
 
-                    if (!(Rexbuilder_Util_Editor.editingElement || Rexbuilder_Util_Editor.elementIsResizing || Rexbuilder_Util_Editor.elementIsDragging) || (Rexbuilder_Util_Editor.editingElement && (Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id") != $elem.data("rexbuilder-block-id")))) {
-                        /* setTimeout(function () {
-                             //console.log("now u can dbclick");
-                            useDBclick = true;
-                        }, 3000); */
-                        Rexbuilder_Util_Editor.editingElement = true;
-                        Rexbuilder_Util_Editor.editedElement = $elem;
-                        Rexbuilder_Util_Editor.editedTextWrap = $textWrap;
-                        Rexbuilder_Util_Editor.editingGallery = true;
-                        Rexbuilder_Util_Editor.editedGallery = gallery;
-                        if (!$textWrap.is(":focus")) {
-                            var caretPosition;
-                            if ($elem.hasClass("rex-flex-top")) {
-                                caretPosition = "end";
-                            } else if ($elem.hasClass("rex-flex-middle")) {
-                                var textHeight = $textWrap.innerHeight();
-                                var maxBlockHeight = $elem.innerHeight();
-                                if (e.offsetY < maxBlockHeight / 2 - textHeight / 2) {
+                        if (!(Rexbuilder_Util_Editor.editingElement || Rexbuilder_Util_Editor.elementIsResizing || Rexbuilder_Util_Editor.elementIsDragging) || (Rexbuilder_Util_Editor.editingElement && (Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id") != $elem.data("rexbuilder-block-id")))) {
+                            Rexbuilder_Util_Editor.editingElement = true;
+                            Rexbuilder_Util_Editor.editedElement = $elem;
+                            Rexbuilder_Util_Editor.editedTextWrap = $textWrap;
+                            Rexbuilder_Util_Editor.editingGallery = true;
+                            Rexbuilder_Util_Editor.editedGallery = gallery;
+                            if (!$textWrap.is(":focus")) {
+                                var caretPosition;
+                                if ($elem.hasClass("rex-flex-top")) {
+                                    caretPosition = "end";
+                                } else if ($elem.hasClass("rex-flex-middle")) {
+                                    var textHeight = $textWrap.innerHeight();
+                                    var maxBlockHeight = $elem.innerHeight();
+                                    if (e.offsetY < maxBlockHeight / 2 - textHeight / 2) {
+                                        caretPosition = "begin";
+                                    } else {
+                                        caretPosition = "end";
+                                    }
+                                } else if ($elem.hasClass("rex-flex-bottom")) {
                                     caretPosition = "begin";
                                 } else {
                                     caretPosition = "end";
                                 }
-                            } else if ($elem.hasClass("rex-flex-bottom")) {
-                                caretPosition = "begin";
-                            } else {
-                                caretPosition = "end";
-                            }
 
-                            if (caretPosition == "begin") {
-                                $textWrap.focus();
-                            } else {
-                                Rexbuilder_Util_Editor.setEndOfContenteditable($textWrap[0]);
+                                if (caretPosition == "begin") {
+                                    $textWrap.focus();
+                                } else {
+                                    Rexbuilder_Util_Editor.setEndOfContenteditable($textWrap[0]);
+                                }
                             }
+                            Rexbuilder_Util_Editor.startEditingElement();
                         }
-                        Rexbuilder_Util_Editor.startEditingElement();
                     }
                 }
             });
@@ -1729,12 +1729,9 @@
             $elem.click(function (e) {
                 if (!Rexbuilder_Util_Editor.elementDraggingTriggered) {
                     if (Rexbuilder_Util_Editor.editingElement && (Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id") != $elem.data("rexbuilder-block-id"))) {
-
-                        //$textWrap.blur();
                         Rexbuilder_Util_Editor.activateElementFocus = false;
                         Rexbuilder_Util_Editor.endEditingElement();
                         Rexbuilder_Util_Editor.activateElementFocus = true;
-                        //gallery.focusElement($elem);
                     }
                 }
             });
@@ -1750,31 +1747,6 @@
                     gallery.unFocusElement(Rexbuilder_Util_Editor.focusedElement);
                 }
             });
-
-            $elem.dblclick(function (e) {
-                /*  //console.log(useDBclick);
-                if (!useDBclick) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                } */
-                /*  //console.log("dbclick: " + $elem.data("rexbuilder-block-id"));
-                if (Rexbuilder_Util_Editor.editingElement && (Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id") != $elem.data("rexbuilder-block-id"))) {
-                    Rexbuilder_Util_Editor.activateElementFocus = false;
-                    Rexbuilder_Util_Editor.endEditingElement();
-                    Rexbuilder_Util_Editor.activateElementFocus = true;
-                }
-                Rexbuilder_Util_Editor.elementIsResizing = false;
-                Rexbuilder_Util_Editor.elementIsDragging = false;
-         
-                Rexbuilder_Util_Editor.editingElement = true;
-                Rexbuilder_Util_Editor.editedElement = $elem;
-                Rexbuilder_Util_Editor.editedTextWrap = $textWrap;
-                Rexbuilder_Util_Editor.editingGallery = true;
-                Rexbuilder_Util_Editor.editedGallery = gallery;
-                 //console.log(e);
-                Rexbuilder_Util_Editor.startEditingElement(e); */
-            });
-
         },
 
         showBlockToolBox: function ($elem) {

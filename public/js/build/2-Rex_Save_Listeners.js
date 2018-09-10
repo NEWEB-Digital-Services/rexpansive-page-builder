@@ -58,7 +58,7 @@ var Rex_Save_Listeners = (function ($) {
             var i, j, k, m, p, q;
 
             var activeLayoutName = Rexbuilder_Util.activeLayout;
-
+            var data = event.settings;
             var customizationsArray = Rexbuilder_Util.getPageCustomizationsLive();
 
             for (var index = 0; index < customizationsArray.length; index++) {
@@ -147,6 +147,8 @@ var Rex_Save_Listeners = (function ($) {
                 layoutsNames.push(customizationsArray[i].name);
             }
 
+            Rexbuilder_Util_Editor.clearSectionsEdited();
+
             Rexbuilder_Util.updatePageAvaiableLayoutsNames(layoutsNames);
 
             $.ajax({
@@ -217,6 +219,9 @@ var Rex_Save_Listeners = (function ($) {
                     error: function (response) {
                     }
                 });
+            }
+            if(typeof data.buttonData != "undefined"){
+                console.log();
             }
         });
 

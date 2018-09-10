@@ -365,11 +365,6 @@ var Rexbuilder_Util_Editor = (function ($) {
             }
         });
 
-        $(document).click(".test-save", function (e) {
-            $(e.target).parents(".rexpansive_section").find(".grid-stack-row").attr("data-rexlive-layout-changed", "true");
-            $(e.target).parents(".rexpansive_section").attr("data-rexlive-section-edited", "true");
-        })
-
         $(document).on('rexlive:undo', function (e) {
             if (undoStackArray.length > 0) {
                 var action = undoStackArray.pop();
@@ -618,6 +613,15 @@ var Rexbuilder_Util_Editor = (function ($) {
             Rexbuilder_Util.$rexContainer.addClass("rex-hide-responsive-tools");
         }
     }
+
+    var _clearSectionsEdited = function(){
+        Rexbuilder_Util.$rexContainer.children(".rexpansive_section").each(function (i, sec) {
+            var $section = $(sec);
+            $section.attr("data-rexlive-section-edited", false);
+            $section.find(".grid-stack-row").attr("data-rexlive-layout-changed", false);
+            $section.find(".grid-stack-item").attr("data-rexlive-element-edited", false);
+        });
+    }
     
     var init = function () {
 
@@ -705,6 +709,7 @@ var Rexbuilder_Util_Editor = (function ($) {
         updateLayoutsAvaiable: _updateLayoutsAvaiable,
         createDefaultCustomLayouts: _createDefaultCustomLayouts,
         fixToolsVisibility: _fixToolsVisibility,
+        clearSectionsEdited: _clearSectionsEdited,
     };
 
 })(jQuery);
