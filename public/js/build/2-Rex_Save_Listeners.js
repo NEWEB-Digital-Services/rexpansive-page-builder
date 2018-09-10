@@ -269,7 +269,7 @@ var Rex_Save_Listeners = (function ($) {
                             nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
                             model_id_to_update: modelCustomLayoutData.id,
                             model_name: modelCustomLayoutData.customizations.name,
-                            targets: modelCustomLayoutData.customizations[i].targets,
+                            targets: JSON.stringify(modelCustomLayoutData.customizations[i].targets),
                             layout_name: modelCustomLayoutData.customizations[i].name
                         },
                         success: function (response) {
@@ -410,7 +410,7 @@ var Rex_Save_Listeners = (function ($) {
         return output;
     }
 
-    var updateModel = function (model, $section, activeLayout) {
+    var updateModel = function (model, $section, activeLayout, targets) {
         var customizations = [];
         var i, j, k;
         var flagBlock;
@@ -421,9 +421,11 @@ var Rex_Save_Listeners = (function ($) {
                 customizations.push(customization);
             }
         }
+
+        targets = typeof targets !== "undefined" ? targets : createTargets($section, activeLayout);
         var newCustomization = {
             name: activeLayout,
-            targets: createTargets($section, activeLayout)
+            targets: targets
         };
 
         //if active layout is default, have to update custom layouts with new blocks
@@ -1110,6 +1112,7 @@ var Rex_Save_Listeners = (function ($) {
 
     return {
         createSectionProperties: createSectionProperties,
-        createTargets: createTargets
+        createTargets: createTargets,
+        updateModel: updateModel,
     }
 })(jQuery);

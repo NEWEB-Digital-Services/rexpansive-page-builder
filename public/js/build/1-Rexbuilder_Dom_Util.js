@@ -597,10 +597,11 @@ var Rexbuilder_Dom_Util = (function ($) {
         Rex_Navigator.updateNavigatorItem($section, newSafeName, newName);
     }
 
-    var _fixSectionDomOrder = function (newOrder) {
+    var _fixSectionDomOrder = function (newOrder, domUpdating) {
         var sections = [];
         var $section;
         var i, j;
+        domUpdating = typeof domUpdating !== "undefined" ? false : domUpdating;
         Rexbuilder_Util.$rexContainer.children(".rexpansive_section").each(function (i, sec) {
             var $sec = $(sec);
             var sectionObj = {
@@ -608,6 +609,7 @@ var Rexbuilder_Dom_Util = (function ($) {
                 section_is_model: $sec.hasClass("rex-model-section"),
                 section_model_id: $sec.attr("data-rexlive-model-id"),
                 section_model_number: $sec.attr("data-rexlive-model-number"),
+                section_model_saved_number: $sec.attr("data-rexlive-saved-model-number"),
                 $section: $sec.detach()
             }
             sections.push(sectionObj);
@@ -616,8 +618,22 @@ var Rexbuilder_Dom_Util = (function ($) {
         for (i = 0; i < newOrder.length; i++) {
             for (j = 0; j < sections.length; j++) {
                 if (sections[j].rexID == newOrder[i].rexID) {
-                    $section = sections[j].$section;
-                    break;
+                    if (sections[j].section_is_model) {
+                        if (domUpdating) {
+                            if (sections[j].section_model_saved_number == newOrder[i].modelNumber) {
+                                $section = sections[j].$section;
+                                break;
+                            }
+                        } else {
+                            if (sections[j].section_model_number == newOrder[i].modelNumber) {
+                                $section = sections[j].$section;
+                                break;
+                            }
+                        }
+                    } else {
+                        $section = sections[j].$section;
+                        break;
+                    }
                 }
             }
             Rexbuilder_Util.$rexContainer.append($section);
@@ -628,7 +644,7 @@ var Rexbuilder_Dom_Util = (function ($) {
             Rexbuilder_Util.$rexContainer.append(sections[j].$section);
         }
 
-        _fixModelNumbers();
+        //_fixModelNumbers();
     }
 
     var _enablePhotoswipeAllBlocksSection = function ($section) {
@@ -802,14 +818,14 @@ var Rexbuilder_Dom_Util = (function ($) {
 
     var _updateSectionVisibility = function ($section, show) {
         if (show) {
-            if(Rexbuilder_Util.activeLayout == "default"){
+            if (Rexbuilder_Util.activeLayout == "default") {
                 $section.removeClass("removing_section");
             }
             $section.removeClass("rex-hide-section");
             Rexbuilder_Util.playPluginsSection($section);
         } else {
             Rexbuilder_Util.stopPluginsSection($section);
-            if(Rexbuilder_Util.activeLayout == "default"){
+            if (Rexbuilder_Util.activeLayout == "default") {
                 $section.addClass("removing_section");
             }
             $section.addClass("rex-hide-section");

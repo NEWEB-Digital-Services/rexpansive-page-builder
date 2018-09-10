@@ -163,10 +163,10 @@ var Rexbuilder_Section = (function ($) {
                 var defaultLayout;
 
                 if (Rexbuilder_Util.customizationExists(Rexbuilder_Util.activeLayout)) {
-                    elemetsDisposition = Rexbuilder_Util.getLayoutTargets($section, Rexbuilder_Util.activeLayout);
+                    elemetsDisposition = Rexbuilder_Util.getLayoutSectionTargets($section, Rexbuilder_Util.activeLayout);
                     galleryLayoutToActive = Rexbuilder_Util.getGridLayout($section, Rexbuilder_Util.activeLayout);
                 } else {
-                    elemetsDisposition = Rexbuilder_Util.getLayoutTargets($section, "default");
+                    elemetsDisposition = Rexbuilder_Util.getLayoutSectionTargets($section, "default");
                     galleryLayoutToActive = Rexbuilder_Util.getGridLayout($section, "default");
                 }
                 defaultLayout = Rexbuilder_Util.getGridLayout($section, "default");

@@ -696,8 +696,7 @@ endif;
 
 ?>
 <div class="rexbuilder-live-content">
-            <div id="layout-avaiable-dimensions" style="display: none;">
-            <?php echo json_encode($layoutsAvaiable); ?></div>
+            <div id="layout-avaiable-dimensions" style="display: none;"><?php echo json_encode($layoutsAvaiable); ?></div>
             <div id="rexbuilder-model-data" style="display: none;">
                 <div class = "models-customizations" <?php
                 if (!$flag_models) {
@@ -778,12 +777,17 @@ endif;
                     }
                 }
                 ?></div>
-                <div class="available-layouts-names"><?php echo json_encode($customizations_names); ?></div>
+                <div class="available-layouts-names"><?php 
+                if($customizations_names != ""){
+                    echo json_encode($customizations_names); 
+                }else{
+                    echo "[]";
+                }
+                ?></div>
             </div>
             <?php
     if ($editor == "true") {
-                ?>
-            <button id="rex-open-ace-css-editor" class="btn-floating tooltipped" data-position="bottom" data-tooltip="<?php _e('CSS Editor', $this->plugin_name);?>">
+            ?><button id="rex-open-ace-css-editor" class="btn-floating tooltipped" data-position="bottom" data-tooltip="<?php _e('CSS Editor', $this->plugin_name);?>">
                 <i class="material-icons">&#xE314;</i><span>CSS</span><i class="material-icons">&#xE315;</i>
             </button>
             <textarea style="display:none;" name="_rexbuilder_custom_css" id="_rexbuilder_custom_css"><?php

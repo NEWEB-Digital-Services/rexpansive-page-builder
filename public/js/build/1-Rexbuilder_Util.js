@@ -113,7 +113,7 @@ var Rexbuilder_Util = (function ($) {
             });
             var modelCustomizations = {
                 id: modelID,
-                customizations, customizations
+                customizations: customizations
             }
             data.push(modelCustomizations);
         });
@@ -176,7 +176,7 @@ var Rexbuilder_Util = (function ($) {
             var modelID = isNaN(parseInt($sectionTargetsElem.attr("data-model-id"))) ? -1 : parseInt($sectionTargetsElem.attr("data-model-id"));
             var modelNumber = isNaN(parseInt($sectionTargetsElem.attr("data-model-number"))) ? -1 : parseInt($sectionTargetsElem.attr("data-model-number"));
             var hideSection = typeof $sectionTargetsElem.attr("data-section-hide") == "undefined" ? false : ($sectionTargetsElem.attr("data-section-hide").toString() == "true" ? true : false);
-            var targets = JSON.parse($sectionTargetsElem.text());
+            var targets = $sectionTargetsElem.text() != "" ? JSON.parse($sectionTargetsElem.text()) : [];
 
             defaultLayout.sections.push({
                 section_rex_id: sectionRexID,
@@ -193,10 +193,9 @@ var Rexbuilder_Util = (function ($) {
         $pageCustomizationsDataDiv.children(".customization-wrap:not([data-customization-name=\"default\"])").each(function (i, customizationWrap) {
             var $customizationWrap = $(customizationWrap);
             var customizationName = $customizationWrap.attr("data-customization-name");
-            var sectionsCustomizations = [];
             var layoutCustomization = {
                 name: customizationName,
-                sections: sectionsCustomizations
+                sections: []
             }
 
             $customizationWrap.children(".section-targets").each(function (j, sectionTargetsElem) {
@@ -205,8 +204,7 @@ var Rexbuilder_Util = (function ($) {
                 var modelID = isNaN(parseInt($sectionTargetsElem.attr("data-model-id"))) ? -1 : parseInt($sectionTargetsElem.attr("data-model-id"));
                 var modelNumber = isNaN(parseInt($sectionTargetsElem.attr("data-model-number"))) ? -1 : parseInt($sectionTargetsElem.attr("data-model-number"));
                 var hideSection = typeof $sectionTargetsElem.attr("data-section-hide") == "undefined" ? false : ($sectionTargetsElem.attr("data-section-hide").toString() == "true" ? true : false);
-                var targets = JSON.parse($sectionTargetsElem.text());
-
+                var targets = $sectionTargetsElem.text() != "" ? JSON.parse($sectionTargetsElem.text()) : [];
                 layoutCustomization.sections.push({
                     section_rex_id: sectionRexID,
                     section_model_id: modelID != -1 ? modelID : "",
@@ -243,7 +241,9 @@ var Rexbuilder_Util = (function ($) {
             $div.attr("data-model-id", updatedPageCustomizationsData.sections[i].section_model_id);
             $div.attr("data-model-number", updatedPageCustomizationsData.sections[i].section_model_number);
             $div.attr("data-section-hide", updatedPageCustomizationsData.sections[i].section_hide);
-            $div.text(JSON.stringify(updatedPageCustomizationsData.sections[i].targets));
+            if (updatedPageCustomizationsData.sections[i].section_model_id == "") {
+                $div.text(JSON.stringify(updatedPageCustomizationsData.sections[i].targets));
+            }
             $div.appendTo($customizationWrapper[0]);
         }
         $pageCustomizationsDataDiv.removeAttr("data-empty-customizations");
@@ -374,15 +374,210 @@ var Rexbuilder_Util = (function ($) {
         return emptyTargets;
     }
 
+    //creating default page layout, merging with models default layout
+    var _getDefaultPageLayout = function (layoutDataPage, layoutDataModels) {
+        var defaultLayoutSections = [];
+        var i, j, p, q;
+        for (i = 0; i < layoutDataPage.length; i++) {
+            if (layoutDataPage[i].name == "default") {
+                for (j = 0; j < layoutDataPage[i].sections.length; j++) {
+                    defaultLayoutSections.push(jQuery.extend(true, {}, layoutDataPage[i].sections[j]));
+                }
+                break;
+            }
+        }
+
+        for (i = 0; i < defaultLayoutSections.length; i++) {
+            if (defaultLayoutSections[i].section_is_model.toString() == "true") {
+                for (p = 0; p < layoutDataModels.length; p++) {
+                    if (layoutDataModels[p].id == defaultLayoutSections[i].section_model_id) {
+                        for (q = 0; q < layoutDataModels[p].customizations.length; q++) {
+                            if (layoutDataModels[p].customizations[q].name == "default") {
+                                defaultLayoutSections[i].targets = jQuery.extend(true, [], layoutDataModels[p].customizations[q].targets);
+                                break;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        return defaultLayoutSections;
+    }
+
+    var _getDefaultModelsLayout = function (layoutDataModels) {
+        var i, j;
+        var data = [];
+        for (i = 0; i < layoutDataModels.length; i++) {
+            for (j = 0; j < layoutDataModels[i].customizations.length; j++) {
+                if (layoutDataModels[i].customizations[j].name == "default") {
+                    data.push({
+                        id: layoutDataModels[i].id,
+                        targets: layoutDataModels[i].customizations[j].targets
+                    });
+                    break;
+                }
+            }
+        }
+        return data;
+    }
+
+    var _getCustomLayoutSections = function (layoutDataPage, layoutDataModels, defaultLayoutSections, layoutName) {
+
+        if (layoutName == "default") {
+            return defaultLayoutSections;
+        }
+
+        var layoutSelectedSections = [];
+        var i, j, p, q;
+        var flagCustomLayoutPage = false;
+        var defaultDataModels = _getDefaultModelsLayout(layoutDataModels);
+        var modelCustomization;
+
+        for (i = 0; i < layoutDataPage.length; i++) {
+            if (layoutDataPage[i].name == layoutName) {
+                flagCustomLayoutPage = true;
+                for (j = 0; j < layoutDataPage[i].sections.length; j++) {
+                    layoutSelectedSections.push(jQuery.extend(true, {}, layoutDataPage[i].sections[j]));
+                }
+                break;
+            }
+        }
+
+        //means that this page has no custom layout
+        if (!flagCustomLayoutPage) {
+            for (i = 0; i < defaultLayoutSections.length; i++) {
+                var newCustomSection = jQuery.extend(true, {}, defaultLayoutSections[i]);
+                newCustomSection.targets = _createEmptyTargets(defaultLayoutSections[i].targets);
+            }
+        }
+
+        //fixing models custom layouts and empty targets
+        for (i = 0; i < layoutSelectedSections.length; i++) {
+            if (layoutSelectedSections[i].section_is_model.toString() == "true") {
+                for (p = 0; p < layoutDataModels.length; p++) {
+                    if (layoutDataModels[p].id == layoutSelectedSections[i].section_model_id) {
+                        modelCustomization = false;
+                        for (q = 0; q < layoutDataModels[p].customizations.length; q++) {
+                            if (layoutDataModels[p].customizations[q].name == layoutName) {
+                                modelCustomization = true;
+                                layoutSelectedSections[i].targets = jQuery.extend(true, [], layoutDataModels[p].customizations[q].targets);
+                                break;
+                            }
+                        }
+                        if (!modelCustomization) {
+                            for (q = 0; q < defaultDataModels.length; q++) {
+                                if (layoutSelectedSections[i].section_model_id == defaultDataModels[q].id) {
+                                    layoutSelectedSections[i].targets = _createEmptyTargets(defaultDataModels[q].targets);
+                                    break;
+                                }
+                            }
+                        }
+                        break;
+                    }
+                }
+            } else {
+                if (layoutSelectedSections[i].targets.length == 0) {
+                    for (j = 0; j < defaultLayoutSections.length; j++) {
+                        if (layoutSelectedSections[i].section_rex_id == defaultLayoutSections[j].section_rex_id) {
+                            layoutSelectedSections[i].targets = _createEmptyTargets(defaultLayoutSections[j].targets);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return layoutSelectedSections;
+    }
+
+    var _mergeSections = function (layoutSelectedSections, defaultLayoutSections) {
+        var i, j, m, n;
+        var targetFounded;
+
+        // merging custom data with default data
+        if (Rexbuilder_Util.activeLayout != "default") {
+            for (i = 0; i < layoutSelectedSections.length; i++) {
+                layoutSelectedSections[i].defaultSection = false;
+                for (j = 0; j < defaultLayoutSections.length; j++) {
+                    if (layoutSelectedSections[i].section_rex_id == defaultLayoutSections[j].section_rex_id) {
+                        var sectionCustom = layoutSelectedSections[i];
+                        var sectionDefault = defaultLayoutSections[j];
+                        if (jQuery.isEmptyObject(sectionCustom.targets[0].props)) {
+                            layoutSelectedSections[i].defaultSection = true;
+                        }
+                        for (m = 0; m < sectionCustom.targets.length; m++) {
+                            targetFounded = false;
+                            for (n = 0; n < sectionDefault.targets.length; n++) {
+                                if (sectionCustom.targets[m].name == sectionDefault.targets[n].name) {
+                                    sectionCustom.targets[m].notDisplay = false;
+                                    targetFounded = true;
+
+                                    sectionCustom.targets[m].props = lodash.merge({}, sectionDefault.targets[n].props, sectionCustom.targets[m].props);
+
+                                    //fixing dimensions of new blocks in custom layout
+                                    if (m > 1 && jQuery.isEmptyObject(sectionCustom.targets[m].props)) {
+                                        if (Rexbuilder_Util.activeLayout != "default") {
+                                            if (sectionDefault.targets[0].props.layout != sectionCustom.targets[0].props['layout']) {
+                                                if (sectionDefault.targets[0].props.layout == "masonry") {
+                                                    sectionCustom.targets[m].props.gs_y = Math.round(sectionDefault.targets[n].props.gs_y / 5);
+                                                    sectionCustom.targets[m].props.gs_height = Math.round(sectionDefault.targets[n].props.gs_height / 5);
+                                                    sectionCustom.targets[m].props.gs_start_h = Math.round(sectionDefault.targets[n].props.gs_start_h / 5);
+                                                } else {
+                                                    sectionCustom.targets[m].props.gs_y = sectionDefault.targets[n].props.gs_y * 5;
+                                                    sectionCustom.targets[m].props.gs_height = sectionDefault.targets[n].props.gs_height * 5;
+                                                    sectionCustom.targets[m].props.gs_start_h = sectionDefault.targets[n].props.gs_start_h * 5;
+                                                }
+                                            }
+                                        }
+                                    }
+                                    break;
+                                }
+                            }
+                            if (!targetFounded) {
+                                sectionCustom.targets[m].notDisplay = true;
+                            }
+                        }
+                        break;
+                    }
+                }
+            }
+        }
+
+        //updaiting dom custom layout
+        _updatePageCustomizationsData({
+            name: Rexbuilder_Util.activeLayout,
+            sections: layoutSelectedSections
+        });
+
+        var modelsCustomizations = _getModelsCustomizations();
+        for (i = 0; i < layoutSelectedSections.length; i++) {
+            if (layoutSelectedSections[i].section_is_model) {
+                for (j = 0; j < modelsCustomizations.length; j++) {
+                    if (layoutSelectedSections[i].section_model_id == modelsCustomizations[j].id) {
+                        var modelCustomization = modelsCustomizations[j];
+                        var updatedModelData = Rex_Save_Listeners.updateModel(modelCustomization, null, Rexbuilder_Util.activeLayout, layoutSelectedSections[i].targets);
+                        _updateModelsCustomizationsData(updatedModelData);
+                        break;
+                    }
+                }
+            }
+        }
+
+        console.log("defaultLayoutSections", defaultLayoutSections);
+        console.log("layoutSelectedSections", layoutSelectedSections);
+        //forcing sections that are no models to collapse grid if necessary
+        for (i = 0; i < layoutSelectedSections.length; i++) {
+            if (((Rexbuilder_Util.activeLayout != "default" && layoutSelectedSections[i].defaultSection) || (Rexbuilder_Util.activeLayout == "default")) && _viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth) {
+                layoutSelectedSections[i].targets[0].props.collapse_grid = true;
+            }
+        }
+        return jQuery.extend(true, {}, layoutSelectedSections);
+    }
+
     var _edit_dom_layout = function (chosenLayoutName) {
         if (Rexbuilder_Util.editorMode) {
-            if (chosenLayoutName == "default") {
-                Rexbuilder_Util.$rexContainer.removeClass("rex-hide-responsive-tools");
-                Rexbuilder_Util.$rexContainer.parent().removeClass("rex-hide-responsive-tools");
-            } else {
-                Rexbuilder_Util.$rexContainer.parent().addClass("rex-hide-responsive-tools");
-                Rexbuilder_Util.$rexContainer.addClass("rex-hide-responsive-tools");
-            }
+            Rexbuilder_Util_Editor.fixToolsVisibility(chosenLayoutName);
         }
 
         if (chosenLayoutName == Rexbuilder_Util.activeLayout) {
@@ -422,17 +617,6 @@ var Rexbuilder_Util = (function ($) {
             return;
         }
 
-        var layoutDataPage = _getPageCustomizations();
-
-        var i;
-        // if no sections on this layout
-        for (i = 0; i < layoutDataPage.length; i++) {
-            if (layoutDataPage[i].sections == null) {
-                layoutDataPage[i].sections = [];
-            }
-        }
-
-        var layoutDataModels = _getModelsCustomizations();
         var modelsIDInPage = [];
 
         Rexbuilder_Util.$rexContainer.children(".rexpansive_section:not(.removing_section)").each(function (i, el) {
@@ -453,225 +637,53 @@ var Rexbuilder_Util = (function ($) {
             sectionsPage.push(secObj);
         });
 
-        var i, j, p, q;
-        var defaultLayoutSections = [];
-        for (i = 0; i < layoutDataPage.length; i++) {
-            if (layoutDataPage[i].name == "default") {
-                for (j = 0; j < layoutDataPage[i].sections.length; j++) {
-                    var sectionDefaultData = jQuery.extend(true, {}, layoutDataPage[i].sections[j]);
-                    if (layoutDataPage[i].sections[j].section_is_model.toString() == "true") {
-                        for (p = 0; p < layoutDataModels.length; p++) {
-                            if (layoutDataModels[p].id == sectionDefaultData.section_model_id) {
-                                for (q = 0; q < layoutDataModels[p].customizations.length; q++) {
-                                    if (layoutDataModels[p].customizations[q].name == "default") {
-                                        sectionDefaultData.targets = jQuery.extend(true, [], layoutDataModels[p].customizations[q].targets);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    defaultLayoutSections.push(sectionDefaultData);
-                }
-            }
-        }
+        var i, j;
 
-        var layoutSelectedSections = [];
-        for (i = 0; i < layoutDataPage.length; i++) {
-            if (layoutDataPage[i].name == chosenLayoutName) {
-                for (j = 0; j < layoutDataPage[i].sections.length; j++) {
-                    var sectionCustomData = jQuery.extend(true, {}, layoutDataPage[i].sections[j]);
-                    if (layoutDataPage[i].sections[j].section_is_model.toString() == "true") {
-                        for (p = 0; p < layoutDataModels.length; p++) {
-                            if (layoutDataModels[p].id == sectionCustomData.section_model_id) {
-                                for (q = 0; q < layoutDataModels[p].customizations.length; q++) {
-                                    if (layoutDataModels[p].customizations[q].name == chosenLayoutName) {
-                                        sectionCustomData.targets = jQuery.extend(true, [], layoutDataModels[p].customizations[q].targets);
-                                    }
-                                }
-                            }
-                        }
-                        if (typeof sectionCustomData.targets == "undefined") {
-                            var modelActiveDefault = [];
-                            for (p = 0; p < layoutDataModels.length; p++) {
-                                if (layoutDataModels[p].id == sectionCustomData.section_model_id) {
-                                    for (q = 0; q < layoutDataModels[p].customizations.length; q++) {
-                                        if (layoutDataModels[p].customizations[q].name == "default") {
-                                            modelActiveDefault = layoutDataModels[p].customizations[q].targets;
-                                        }
-                                    }
-                                }
-                            }
-                            sectionCustomData.targets = _createEmptyTargets(modelActiveDefault);
-                        }
-                    }
-                    layoutSelectedSections.push(sectionCustomData);
-                }
-                break;
-            }
-        }
+        var layoutDataPage = _getPageCustomizations();
+        var layoutDataModels = _getModelsCustomizations();
+        var defaultLayoutSections = _getDefaultPageLayout(layoutDataPage, layoutDataModels);
+        var layoutSelectedSections = _getCustomLayoutSections(layoutDataPage, layoutDataModels, defaultLayoutSections, chosenLayoutName);
 
-        // no layout custom for page, checking models
-        if (i == layoutDataPage.length) {
-            for (i = 0; i < layoutDataPage.length; i++) {
-                if (layoutDataPage[i].name == "default") {
-                    for (j = 0; j < layoutDataPage[i].sections.length; j++) {
-                        var sectionPage = jQuery.extend(true, {}, layoutDataPage[i].sections[j]);
-                        if (sectionPage.section_is_model.toString() == "true") {
-                            for (p = 0; p < layoutDataModels.length; p++) {
-                                if (layoutDataModels[p].id == sectionPage.section_model_id) {
-                                    for (q = 0; q < layoutDataModels[p].customizations.length; q++) {
-                                        if (layoutDataModels[p].customizations[q].name == chosenLayoutName) {
-                                            sectionPage.targets = jQuery.extend(true, [], layoutDataModels[p].customizations[q].targets);
-                                        }
-                                    }
-                                }
-                            }
-                            if (typeof sectionPage.targets == "undefined") {
-                                var modelActiveDefault = [];
-                                for (p = 0; p < layoutDataModels.length; p++) {
-                                    if (layoutDataModels[p].id == sectionPage.section_model_id) {
-                                        for (q = 0; q < layoutDataModels[p].customizations.length; q++) {
-                                            if (layoutDataModels[p].customizations[q].name == "default") {
-                                                modelActiveDefault = layoutDataModels[p].customizations[q].targets;
-                                            }
-                                        }
-                                    }
-                                }
-                                sectionPage.targets = _createEmptyTargets(modelActiveDefault);
-                            }
-                        } else {
-                            sectionPage.targets = _createEmptyTargets(sectionPage.targets);
-                        }
-                        layoutSelectedSections.push(sectionPage);
-                    }
-                    break;
-                }
-            }
-        }
-
-        var customSections = layoutSelectedSections;
-        var forceCollapseElementsGrid = false;
-
-        var mergedEdits = $.extend(true, {}, customSections);
-        var pushingEdits = $.extend(true, {}, defaultLayoutSections);
-
+        //fixing models numbers
         var modelsNumbers = [];
         var flagModel;
-        //fixing empty models numbers
-        $.each(mergedEdits, function (i, sectionCustom) {
-            if (sectionCustom.section_is_model.toString() == "true") {
-                if (typeof sectionCustom.section_model_number == "undefined") {
-                    flagModel = false;
-                    for (i = 0; i < modelsNumbers.length; i++) {
-                        if (modelsNumbers[i].id == sectionCustom.section_model_id) {
-                            modelsNumbers[i].number = modelsNumbers[i].number + 1;
-                            sectionCustom.section_model_number = modelsNumbers[i].number;
-                            flagModel = true;
-                        }
-                    }
-                    if (!flagModel) {
-                        var modelObj = {
-                            id: sectionCustom.section_model_id,
-                            number: 1
-                        }
-                        sectionCustom.section_model_number = 1;
-                        modelsNumbers.push(modelObj);
+        for (i = 0; i < layoutSelectedSections; i++) {
+            if (layoutSelectedSections[i].section_is_model.toString() == "true") {
+                flagModel = false;
+                for (j = 0; j < modelsNumbers.length; j++) {
+                    if (modelsNumbers[j].id == layoutSelectedSections[i].section_model_id) {
+                        modelsNumbers[j].number = modelsNumbers[j].number + 1;
+                        layoutSelectedSections[i].section_model_number = modelsNumbers[j].number;
+                        flagModel = true;
+                        break;
                     }
                 }
+                if (!flagModel) {
+                    layoutSelectedSections[i].section_model_number = 1;
+                    modelsNumbers.push({
+                        id: layoutSelectedSections[i].section_model_id,
+                        number: 1
+                    });
+                }
             }
-            if (typeof sectionCustom.targets == "undefined") {
-                sectionCustom.targets = [];
-            }
-        });
+        }
+
+        var mergedEdits = _mergeSections(layoutSelectedSections, defaultLayoutSections);
 
         // removing collapsed from grid
         Rexbuilder_Util.removeCollapsedGrids();
-        var m, n;
-        var sectionFounded;
-        var targetFounded;
-        var newBlocksLayout = [];
-        var newSectionsLayout = [];
-        console.log(pushingEdits);
-        // merging custom data with default data
-        if (!jQuery.isEmptyObject(mergedEdits)) {
-            $.each(mergedEdits, function (i, sectionCustom) {
-                sectionFounded = false;
-                $.each(pushingEdits, function (i, sectionDefault) {
-                    if (sectionDefault.section_rex_id == sectionCustom.section_rex_id) {
-                        sectionDefault.founded = true;
-                        sectionCustom.notInSection = false;
-                        sectionFounded = true;
-                        for (m = 0; m < sectionCustom.targets.length; m++) {
-                            targetFounded = false;
-                            for (n = 0; n < sectionDefault.targets.length; n++) {
-                                if (sectionCustom.targets[m].name == sectionDefault.targets[n].name) {
-                                    sectionCustom.targets[m].notDisplay = false;
-                                    sectionDefault.targets[n].founded = true;
-                                    targetFounded = true;
-
-                                    if (m == 0 && typeof sectionCustom.targets[m].collapse_grid == "undefined" && _viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth) {
-                                        sectionCustom.targets[0].props.collapse_grid = true;
-                                    }
-                                    sectionCustom.targets[m].props = lodash.merge({}, sectionDefault.targets[n].props, sectionCustom.targets[m].props);
-
-                                    //fixing dimensions of new blocks in custom layout
-                                    if (m > 1 && jQuery.isEmptyObject(sectionCustom.targets[m].props)) {
-                                        if (Rexbuilder_Util.activeLayout != "default") {
-                                            if (sectionDefault.targets[0].props.layout != sectionCustom.targets[0].props['layout']) {
-                                                if (sectionDefault.targets[0].props.layout == "masonry") {
-                                                    sectionCustom.targets[m].props.gs_y = Math.round(sectionDefault.targets[n].props.gs_y / 5);
-                                                    sectionCustom.targets[m].props.gs_height = Math.round(sectionDefault.targets[n].props.gs_height / 5);
-                                                } else {
-                                                    sectionCustom.targets[m].props.gs_y = sectionDefault.targets[n].props.gs_y * 5;
-                                                    sectionCustom.targets[m].props.gs_height = sectionDefault.targets[n].props.gs_height * 5;
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            if (!targetFounded) {
-                                sectionCustom.targets[m].notDisplay = true;
-                            }
-                        }
-                        for (n = 0; n < sectionDefault.targets.length; n++) {
-                            if (typeof sectionDefault.targets[n].founded == "undefined") {
-                                newBlocksLayout.push(sectionDefault.targets[n]);
-                            }
-                        }
-                        if (m == 0) {
-                            sectionCustom.targets = sectionDefault.targets;
-                            if (_viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth) {
-                                sectionCustom.targets[0].props.collapse_grid = true;
-                            }
-                        }
-                    }
-                });
-                if (!sectionFounded) {
-                    sectionCustom.notInSection = true;
-                }
-            });
-            $.each(pushingEdits, function (i, sectionDefault) {
-                if (typeof sectionDefault.founded == "undefined") {
-                    newSectionsLayout.push(sectionDefault);
-                }
-            });
-        } else {
-            mergedEdits = pushingEdits;
-        }
-
+/* 
         console.log("layoutDataPage", layoutDataPage);
         console.log("layoutDataModels", layoutDataModels);
         console.log("sectionsPage", sectionsPage);
-        console.log("customSections", customSections);
+        console.log("layoutSelectedSections", layoutSelectedSections);
         console.log("defaultLayoutSections", defaultLayoutSections);
-        console.log("newBlocksLayout", newBlocksLayout);
-        console.log("newSectionsLayout", newSectionsLayout);
-
+ */
         console.log("applying");
         console.log("mergedEdits", mergedEdits);
 
         Rexbuilder_Util.domUpdaiting = true;
+        var forceCollapseElementsGrid = false;
         var sectionDomOrder = [];
 
         $.each(mergedEdits, function (q, section) {
@@ -690,8 +702,8 @@ var Rexbuilder_Util = (function ($) {
                 } else {
                     $section = Rexbuilder_Util.$rexContainer.children('section[data-rexlive-section-id="' + section.section_rex_id + '"]');
                 }
-                console.log($section)
-                if ($section.length != 0) {
+
+                if ($section.length != 0 && !$section.hasClass("removing_section")) {
                     if (typeof section.section_hide != "undefined" && section.section_hide.toString() == "true") {
                         $section.addClass("rex-hide-section");
                     } else {
@@ -703,7 +715,7 @@ var Rexbuilder_Util = (function ($) {
             }
         });
 
-        Rexbuilder_Dom_Util.fixSectionDomOrder(sectionDomOrder);
+        Rexbuilder_Dom_Util.fixSectionDomOrder(sectionDomOrder, true);
 
         Rexbuilder_Util.domUpdaiting = false;
 
@@ -971,7 +983,7 @@ var Rexbuilder_Util = (function ($) {
         });
     }
 
-    var _getLayoutTargets = function ($section, layoutName) {
+    var _getLayoutSectionTargets = function ($section, layoutName) {
         layoutName = typeof layoutName === "undefined" ? "default" : layoutName;
         var targets = [];
         var i, j;
@@ -1011,7 +1023,7 @@ var Rexbuilder_Util = (function ($) {
     }
 
     var _getDefaultBlockProps = function ($section, blockRexID) {
-        var defaultTargets = _getLayoutTargets($section, "default");
+        var defaultTargets = _getLayoutSectionTargets($section, "default");
         var i;
         var blockProps = {};
         for (i = 1; i < defaultTargets.length; i++) {
@@ -1835,12 +1847,12 @@ var Rexbuilder_Util = (function ($) {
         this.$rexContainer = $container;
     }
 
-	/**
-	 * Javascript crossbrowser class search
-	 * @param {node} el js element
-	 * @param {string} c class name to find
-	 * @since 1.1.3
-	 */
+    /**
+     * Javascript crossbrowser class search
+     * @param {node} el js element
+     * @param {string} c class name to find
+     * @since 1.1.3
+     */
     var _has_class = function (el, c) {
         if (el.classList) {
             return el.classList.contains(c);
@@ -2029,8 +2041,8 @@ var Rexbuilder_Util = (function ($) {
         this.activeLayout = "";
         this.domUpdaiting = false;
 
+        //da fixare, per adesso prende in cosiderazione solo la prima row, non tutte
         var oldResposiveBlockGrid = this.$rexContainer.children(".rexpansive_section").eq(0).attr("data-rex-collapse-grid");
-
         this.blockGridUnder768 = typeof oldResposiveBlockGrid != "undefined" ? oldResposiveBlockGrid.toString() == "false" : false;
 
         this.chosenLayoutData = null;
@@ -2105,7 +2117,7 @@ var Rexbuilder_Util = (function ($) {
         playAllVideos: _playAllVideos,
         findLayoutType: _findLayoutType,
         updateModelsLive: _updateModelsLive,
-        getLayoutTargets: _getLayoutTargets,
+        getLayoutSectionTargets: _getLayoutSectionTargets,
         updateElementDimensions: _updateElementDimensions,
         getGridLayout: _getGridLayout,
         customizationExists: _customizationExists,

@@ -609,6 +609,16 @@ var Rexbuilder_Util_Editor = (function ($) {
         return elementsPhotoswipe;
     }
 
+    var _fixToolsVisibility = function(activeLayout){
+        if (activeLayout == "default") {
+            Rexbuilder_Util.$rexContainer.removeClass("rex-hide-responsive-tools");
+            Rexbuilder_Util.$rexContainer.parent().removeClass("rex-hide-responsive-tools");
+        } else {
+            Rexbuilder_Util.$rexContainer.parent().addClass("rex-hide-responsive-tools");
+            Rexbuilder_Util.$rexContainer.addClass("rex-hide-responsive-tools");
+        }
+    }
+    
     var init = function () {
 
         this.elementIsResizing = false;
@@ -694,6 +704,7 @@ var Rexbuilder_Util_Editor = (function ($) {
         getElementsPhotoswipe: _getElementsPhotoswipe,
         updateLayoutsAvaiable: _updateLayoutsAvaiable,
         createDefaultCustomLayouts: _createDefaultCustomLayouts,
+        fixToolsVisibility: _fixToolsVisibility,
     };
 
 })(jQuery);
