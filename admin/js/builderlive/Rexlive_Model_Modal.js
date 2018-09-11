@@ -82,15 +82,15 @@ var Model_Modal = (function ($) {
                             var modelIsInpage = false;
                             var number = 1;
 
-                            for(var i = 0 ;i < modelInPageNumbers.length; i++){
-                                if(response.data.id == modelInPageNumbers[i].modelID){
-                                    modelIsInpage= true;
+                            for (var i = 0; i < modelInPageNumbers.length; i++) {
+                                if (response.data.id == modelInPageNumbers[i].modelID) {
+                                    modelIsInpage = true;
                                     modelInPageNumbers[i].number += 1;
                                     number = modelInPageNumbers[i].number;
                                 }
                             }
 
-                            if(!modelIsInpage){
+                            if (!modelIsInpage) {
                                 modelInPageNumbers.push({
                                     modelID: response.data.id,
                                     number: number
@@ -153,54 +153,52 @@ var Model_Modal = (function ($) {
                         success: function (response) {
                             if (response.success) {
                                 rexmodel_modal_props.$model_import_wrap.addClass("hide-import-wrap");
-                                if (response.data.model_id != -1) {
-                                    var modelCreatedID = response.data.model_id;
-                                    dataModelSaved.modelID = modelCreatedID;
-                                    dataModelSaved.modelTitle = model_name;
-                                    dataModelSaved.modelHtml = response.data.model_html;
-                                    for (var i = 0; i < layouts.length; i++) {
-                                        var name = layouts[i].name;
-                                        var targets = layouts[i].targets;
-                                        $.ajax({
-                                            type: 'POST',
-                                            dataType: 'json',
-                                            url: live_editor_obj.ajaxurl,
-                                            data: {
-                                                action: 'rex_save_model_customization',
-                                                nonce_param: live_editor_obj.rexnonce,
-                                                model_id_to_update: modelCreatedID,
-                                                targets: JSON.stringify(targets),
-                                                layout_name: name,
-                                            },
-                                            success: function (response) {
-                                            },
-                                            error: function (response) {
-                                            },
-                                            complete: function (response) {
-                                            }
-                                        });                                       
-                                    }
-
+                                var modelCreatedID = response.data.model_id;
+                                dataModelSaved.modelID = modelCreatedID;
+                                dataModelSaved.modelTitle = model_name;
+                                dataModelSaved.modelHtml = response.data.model_html;
+                                for (var i = 0; i < layouts.length; i++) {
+                                    var name = layouts[i].name;
+                                    var targets = layouts[i].targets;
                                     $.ajax({
                                         type: 'POST',
                                         dataType: 'json',
                                         url: live_editor_obj.ajaxurl,
                                         data: {
-                                            action: 'rex_save_model_customization_names',
+                                            action: 'rex_save_model_customization',
                                             nonce_param: live_editor_obj.rexnonce,
                                             model_id_to_update: modelCreatedID,
-                                            names: layoutsNames,
+                                            targets: JSON.stringify(targets),
+                                            layout_name: name,
                                         },
                                         success: function (response) {
                                         },
                                         error: function (response) {
+                                            ;
                                         },
                                         complete: function (response) {
                                         }
                                     });
-                                } else {
-                                    rexmodel_modal_props.$model_insert_success_wrap.text("Nome già presente");
                                 }
+
+                                $.ajax({
+                                    type: 'POST',
+                                    dataType: 'json',
+                                    url: live_editor_obj.ajaxurl,
+                                    data: {
+                                        action: 'rex_save_model_customization_names',
+                                        nonce_param: live_editor_obj.rexnonce,
+                                        model_id_to_update: modelCreatedID,
+                                        names: layoutsNames,
+                                    },
+                                    success: function (response) {
+                                    },
+                                    error: function (response) {
+                                        ;
+                                    },
+                                    complete: function (response) {
+                                    }
+                                });
                             }
                         },
                         error: function (response) {
@@ -240,6 +238,9 @@ var Model_Modal = (function ($) {
                     setTimeout(function () {
                         _closeModal();
                     }, 1000);
+                }, function () {
+                    rexmodel_modal_props.$model_import_wrap.addClass("hide-import-wrap");
+                    rexmodel_modal_props.$model_insert_success_wrap.text("Nome già presente");
                 });
             } else {
                 rexmodel_modal_props.$model_name.focus();

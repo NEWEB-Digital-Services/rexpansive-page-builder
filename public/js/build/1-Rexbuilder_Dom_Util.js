@@ -81,7 +81,7 @@ var Rexbuilder_Dom_Util = (function ($) {
             fullHeight = typeof rowSettings.full_height === "undefined" || layout == "masonry" ? false : rowSettings.full_height,
             sectionWidth = typeof rowSettings.section_width === "undefined" ? "100%" : "" + rowSettings.section_width,
             widthType = typeof rowSettings.dimension === "undefined" ? "full" : rowSettings.dimension,
-            collapseElements = typeof rowSettings.collapse_grid === "undefined" ? false : (rowSettings.collapse_grid.toString() == "true" ? true : false),
+            collapseElements = false,
             $galleryParent = $galleryElement.parent();
 
         if (widthType == "full") {
@@ -831,7 +831,7 @@ var Rexbuilder_Dom_Util = (function ($) {
             $section.addClass("rex-hide-section");
         }
         if (typeof layoutsOrder !== "undefined" && layoutsOrder != null) {
-            Rexbuilder_Util.updatePageCustomizationsLive(layoutsOrder);
+            Rexbuilder_Util.updatePageCustomizationsDomOrder(layoutsOrder);
         }
     }
 

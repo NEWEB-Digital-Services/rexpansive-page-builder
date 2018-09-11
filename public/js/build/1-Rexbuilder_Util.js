@@ -143,6 +143,7 @@ var Rexbuilder_Util = (function ($) {
             $div.text(JSON.stringify(updatedModelCustomizationsData.customizations[i].targets));
             $div.appendTo($modelDataDiv[0]);
         }
+        $modelsCustomizationsDataDiv.attr("data-empty-models-customizations", false);
     }
 
     var _updateDivModelCustomizationsNames = function (updatedModelCustomizationsNames) {
@@ -467,6 +468,8 @@ var Rexbuilder_Util = (function ($) {
             for (i = 0; i < defaultLayoutSections.length; i++) {
                 var newCustomSection = jQuery.extend(true, {}, defaultLayoutSections[i]);
                 newCustomSection.targets = _createEmptyTargets(defaultLayoutSections[i].targets);
+                newCustomSection.sectionCleared = true;
+                layoutSelectedSections.push(newCustomSection);
             }
         }
 
@@ -480,6 +483,8 @@ var Rexbuilder_Util = (function ($) {
                             if (layoutDataModels[p].customizations[q].name == layoutName) {
                                 modelCustomization = true;
                                 layoutSelectedSections[i].targets = jQuery.extend(true, [], layoutDataModels[p].customizations[q].targets);
+                                layoutSelectedSections[i].defaultSection = false;
+                                layoutSelectedSections[i].sectionCleared = false;
                                 break;
                             }
                         }
@@ -487,6 +492,7 @@ var Rexbuilder_Util = (function ($) {
                             for (q = 0; q < defaultDataModels.length; q++) {
                                 if (layoutSelectedSections[i].section_model_id == defaultDataModels[q].id) {
                                     layoutSelectedSections[i].targets = _createEmptyTargets(defaultDataModels[q].targets);
+                                    layoutSelectedSections[i].sectionCleared = true;
                                     break;
                                 }
                             }
@@ -499,6 +505,7 @@ var Rexbuilder_Util = (function ($) {
                     for (j = 0; j < defaultLayoutSections.length; j++) {
                         if (layoutSelectedSections[i].section_rex_id == defaultLayoutSections[j].section_rex_id) {
                             layoutSelectedSections[i].targets = _createEmptyTargets(defaultLayoutSections[j].targets);
+                            layoutSelectedSections[i].sectionCleared = true;
                             break;
                         }
                     }
@@ -511,18 +518,22 @@ var Rexbuilder_Util = (function ($) {
     var _mergeSections = function (layoutSelectedSections, defaultLayoutSections) {
         var i, j, m, n;
         var targetFounded;
-        console.log(layoutSelectedSections)
         // merging custom data with default data
+        console.log("layoutSelectedSections", jQuery.extend(true, [], layoutSelectedSections));
         if (Rexbuilder_Util.activeLayout != "default") {
             for (i = 0; i < layoutSelectedSections.length; i++) {
+                console.log(i);
+                layoutSelectedSections[i].sectionFounded = false;
                 layoutSelectedSections[i].defaultSection = false;
                 for (j = 0; j < defaultLayoutSections.length; j++) {
                     if (layoutSelectedSections[i].section_rex_id == defaultLayoutSections[j].section_rex_id) {
+                        layoutSelectedSections[i].sectionFounded = true;
                         var sectionCustom = layoutSelectedSections[i];
                         var sectionDefault = defaultLayoutSections[j];
-                        if (jQuery.isEmptyObject(sectionCustom.targets[0].props)) {
-                            layoutSelectedSections[i].defaultSection = true;
+                        if (jQuery.isEmptyObject(sectionCustom.targets[0].props) || (typeof sectionCustom.sectionCleared != "undefined" && sectionCustom.sectionCleared)) {
+                            sectionCustom.defaultSection = true;
                         }
+
                         for (m = 0; m < sectionCustom.targets.length; m++) {
                             targetFounded = false;
                             for (n = 0; n < sectionDefault.targets.length; n++) {
@@ -559,22 +570,36 @@ var Rexbuilder_Util = (function ($) {
                     }
                 }
             }
-            if(layoutSelectedSections.length == 0){
+            if (layoutSelectedSections.length == 0) {
                 layoutSelectedSections = defaultLayoutSections;
+                for (i = 0; i < layoutSelectedSections.length; i++) {
+                    layoutSelectedSections[i].defaultSection = true;
+                }
             }
         }
 
         //updaiting dom custom layout
         _createPageCustomizationsDataLive(layoutSelectedSections);
 
-        /*         
-                console.log("defaultLayoutSections", defaultLayoutSections);
-                console.log("layoutSelectedSections", layoutSelectedSections); 
-        */
+        /*                 
+                        console.log("defaultLayoutSections", defaultLayoutSections);
+                        console.log("layoutSelectedSections", layoutSelectedSections); 
+                 */
         //forcing sections that are no models to collapse grid if necessary
         for (i = 0; i < layoutSelectedSections.length; i++) {
-            if (((Rexbuilder_Util.activeLayout != "default" && layoutSelectedSections[i].defaultSection) || (Rexbuilder_Util.activeLayout == "default")) && _viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth) {
-                layoutSelectedSections[i].targets[0].props.collapse_grid = true;
+            //if section is not removed from layout
+            if (layoutSelectedSections[i].sectionFounded) {
+                if (layoutSelectedSections[i].targets[0].props.collapse_grid.toString() == "true") {
+                    layoutSelectedSections[i].targets[0].props.wasCollapsed = true;
+                } else {
+                    layoutSelectedSections[i].targets[0].props.wasCollapsed = false;
+                }
+
+                if (((Rexbuilder_Util.activeLayout != "default" && layoutSelectedSections[i].defaultSection) || (Rexbuilder_Util.activeLayout == "default")) && _viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth) {
+                    layoutSelectedSections[i].targets[0].props.collapse_grid = true;
+                } else {
+                    layoutSelectedSections[i].targets[0].props.collapse_grid = false;
+                }
             }
         }
         return jQuery.extend(true, {}, layoutSelectedSections);
@@ -600,13 +625,6 @@ var Rexbuilder_Util = (function ($) {
 
         Rexbuilder_Util.$rexContainer.attr("data-rex-layout-selected", chosenLayoutName);
         Rexbuilder_Util.activeLayout = chosenLayoutName;
-
-        //updaiting selected layout on buttons
-        var data = {
-            eventName: "rexlive:layoutChanged",
-            activeLayoutName: chosenLayoutName
-        }
-        Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 
         var $resposiveData = $("#rexbuilder-layout-data");
         var $modelData = $("#rexbuilder-model-data");
@@ -645,14 +663,16 @@ var Rexbuilder_Util = (function ($) {
         var i, j;
 
         var layoutDataPage = _getPageCustomizations();
+        if (Rexbuilder_Util.activeLayout == "default") {
+            _saveCustomizationDomOrder(jQuery.extend(true, [], layoutDataPage));
+        }
         var layoutDataModels = _getModelsCustomizations();
         var defaultLayoutSections = _getDefaultPageLayout(layoutDataPage, layoutDataModels);
         var layoutSelectedSections = _getCustomLayoutSections(layoutDataPage, layoutDataModels, defaultLayoutSections, chosenLayoutName);
-
-        if(Rexbuilder_Util.activeLayout == "default"){
-            _saveCustomizationDomOrder(layoutDataPage);
-        }
-
+        /*         
+                console.log("defaultLayoutSections", jQuery.extend(true, [], defaultLayoutSections));
+                console.log("layoutSelectedSections", jQuery.extend(true, [], layoutSelectedSections));
+         */
         //fixing models numbers
         var modelsNumbers = [];
         var flagModel;
@@ -858,8 +878,8 @@ var Rexbuilder_Util = (function ($) {
                 var sliderRatio = typeof targetProps["slider_dimension_ratio"] == "undefined" ? "" : targetProps["slider_dimension_ratio"];
                 $itemData.attr("data-slider_ratio", sliderRatio);
 
-                var blockEdited = typeof targetProps["block_live_edited"] == "undefined" ? "" : targetProps["block_live_edited"];
-                $itemData.attr("data-block_live_edited", blockEdited);
+                var blockEdited = typeof targetProps["block_dimensions_live_edited"] == "undefined" ? "" : targetProps["block_dimensions_live_edited"];
+                $itemData.attr("data-block_dimensions_live_edited", blockEdited);
 
                 var hideBlock = typeof targetProps["hide"] == "undefined" ? false : (targetProps["hide"].toString() == "true" ? true : false);
 
@@ -874,6 +894,9 @@ var Rexbuilder_Util = (function ($) {
                     }
                     Rexbuilder_Util.playBlockVideos($elem);
                 }
+
+                var elementEdited = typeof targetProps["element_edited"] == "undefined" ? false : (targetProps["element_edited"].toString() == "true" ? true : false);
+                $elem.attr("data-rexlive-element-edited", elementEdited);
 
                 for (var propName in targetProps) {
                     switch (propName) {
@@ -966,6 +989,7 @@ var Rexbuilder_Util = (function ($) {
             var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
             if (galleryEditorInstance !== undefined) {
                 Rexbuilder_Util.domUpdaiting = true;
+
                 galleryEditorInstance.properties.gridstackInstance.commit();
                 //waiting for gridstack updating blocks dimensions with saved data
                 setTimeout(function () {
@@ -976,6 +1000,9 @@ var Rexbuilder_Util = (function ($) {
                         galleryEditorInstance.updateBlocksHeight();
                     } else if (galleryEditorInstance.settings.galleryLayout == "fixed" && galleryEditorInstance.settings.fullHeight.toString() == "true") {
                         galleryEditorInstance.updateFullHeight();
+                    }
+                    if (targets[0].props.wasCollapsed) {
+                        galleryEditorInstance.collapseElementsProperties();
                     }
                     galleryEditorInstance.commitGridstack();
                     setTimeout(function () {
@@ -1004,26 +1031,26 @@ var Rexbuilder_Util = (function ($) {
         });
     }
 
-    var _saveCustomizationDomOrder = function(pageCustomizations){
+    var _saveCustomizationDomOrder = function (pageCustomizations) {
         var i, j;
         $layoutsDomOrder.children().remove();
         var sections = [];
-        for(i=0; i<pageCustomizations.length; i++){
+        for (i = 0; i < pageCustomizations.length; i++) {
             var $divLayout = $(document.createElement("div"));
             $divLayout.addClass("layout-sections");
             $divLayout.attr("data-rex-layout-name", pageCustomizations[i].name);
             sections = [];
-            for(j=0; j<pageCustomizations[i].sections.length; j++){
+            for (j = 0; j < pageCustomizations[i].sections.length; j++) {
                 sections.push(pageCustomizations[i].sections[j]);
             }
             $divLayout.text(JSON.stringify(sections));
             $divLayout.appendTo($layoutsDomOrder[0]);
         }
     }
-    
-    var _getPageCustomizationsLive = function () {
+
+    var _getPageCustomizationsDom = function () {
         var customizations = [];
-        $layoutsDomOrder.children(".layout-sections:not([data-rex-layout-name=\"default\"])").each(function(i, layout){
+        $layoutsDomOrder.children(".layout-sections:not([data-rex-layout-name=\"default\"])").each(function (i, layout) {
             var $layout = $(layout);
             customizations.push({
                 name: $layout.attr("data-rex-layout-name"),
@@ -1033,10 +1060,15 @@ var Rexbuilder_Util = (function ($) {
         return customizations;
     }
 
-    var _updatePageCustomizationsLive = function (layoutsData) {
-        for(var i=0; i<layoutsData.length; i++){
-            $layoutsDomOrder.children(".layout-sections[data-rex-layout-name=\""+layoutsData[i].name+"\"]").text(JSON.stringify(layoutsData[i].sections));
+    var _updatePageCustomizationsDomOrder = function (layoutsData) {
+        for (var i = 0; i < layoutsData.length; i++) {
+            $layoutsDomOrder.children(".layout-sections[data-rex-layout-name=\"" + layoutsData[i].name + "\"]").text(JSON.stringify(layoutsData[i].sections));
         }
+    }
+
+    var _getPageAvaiableLayoutsNames = function () {
+        var $pageLayoutsNamesDiv = $("#rexbuilder-layout-data .available-layouts-names");
+        return JSON.parse($pageLayoutsNamesDiv.text());
     }
 
     var _getLayoutLiveSectionTargets = function ($section) {
@@ -2296,13 +2328,14 @@ var Rexbuilder_Util = (function ($) {
         getPageCustomizations: _getPageCustomizations,
         updatePageCustomizationsData: _updatePageCustomizationsData,
         updatePageAvaiableLayoutsNames: _updatePageAvaiableLayoutsNames,
+        getPageAvaiableLayoutsNames: _getPageAvaiableLayoutsNames,
         updateDivModelCustomizationsNames: _updateDivModelCustomizationsNames,
         getSectionCustomLayouts: _getSectionCustomLayouts,
         getLayoutLiveSectionTargets: _getLayoutLiveSectionTargets,
         getGridLayoutLive: _getGridLayoutLive,
         updateSectionLive: _updateSectionLive,
-        updatePageCustomizationsLive: _updatePageCustomizationsLive,
-        getPageCustomizationsLive: _getPageCustomizationsLive,
+        updatePageCustomizationsDomOrder: _updatePageCustomizationsDomOrder,
+        getPageCustomizationsDom: _getPageCustomizationsDom,
     };
 
 })(jQuery);

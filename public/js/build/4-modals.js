@@ -105,6 +105,7 @@
 				sectionWidth: sectionWidth,
 				widthType: widthType
 			});
+			$section.attr("data-rexlive-section-edited", true);
 		});
 		
 		$(document).on("rexlive:sectionWidthApplyed", function (e) {
@@ -153,6 +154,7 @@
 					elements: elementsAfter
 				}
 				Rexbuilder_Util_Editor.pushAction($section, "updateSectionPhotoswipe", actionData, reverseData);
+				$section.attr("data-rexlive-section-edited", true);
 			}
 		});
 
@@ -175,7 +177,7 @@
 			var actionData = {
 				sectionName: data.sectionName
 			}
-
+			$section.attr("data-rexlive-section-edited", true);
 			Rexbuilder_Util_Editor.pushAction($section, "updateSectionName", actionData, reverseData);
 		});
 
@@ -205,7 +207,7 @@
 				$target: $section,
 				classes: data.customClasses
 			}
-
+			$section.attr("data-rexlive-section-edited", true);
 			Rexbuilder_Util_Editor.pushAction($section, "updateCustomClasses", actionData, reverseData);
 		});
 
@@ -253,7 +255,13 @@
 				color: data.color,
 				active: data.active
 			}
+			$section.attr("data-rexlive-section-edited", true);
 
+			var data = {
+				eventName: "rexlive:edited",
+				edited: true
+			}
+			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 			Rexbuilder_Util_Editor.pushAction($section, "updateSectionBackgroundColor", actionData, reverseData);
 		});
 
@@ -282,7 +290,7 @@
 				color: data.color,
 				active: data.active
 			}
-
+			$section.attr("data-rexlive-section-edited", true);
 			Rexbuilder_Util_Editor.pushAction($section, "updateSectionOverlay", actionData, reverseData);
 		});
 
@@ -322,7 +330,7 @@
 				width: data.width,
 				height: data.height
 			}
-
+			$section.attr("data-rexlive-section-edited", true);
 			Rexbuilder_Util_Editor.pushAction($section, "updateSectionImageBG", actionData, reverseData);
 		});
 
@@ -393,7 +401,7 @@
 				audio: false,
 				typeVideo: data.typeVideo
 			}
-
+			$section.attr("data-rexlive-section-edited", true);
 			Rexbuilder_Util_Editor.pushAction($section, "updateSectionVideoBG", actionData, reverseData);
 		});
 
@@ -427,7 +435,7 @@
 			}
 
 			Rexbuilder_Dom_Util.updateBlockBackgroundColor(actionData);
-
+			$elem.attr("data-rexlive-element-edited", true);
 			Rexbuilder_Util_Editor.pushAction($section, "updateBlockBackgroundColor", actionData, reverseData);
 		});
 
@@ -460,7 +468,7 @@
 			}
 
 			Rexbuilder_Dom_Util.updateBlockOverlay(actionData);
-
+			$elem.attr("data-rexlive-element-edited", true);
 			Rexbuilder_Util_Editor.pushAction($section, "updateBlockOverlay", actionData, reverseData);
 		});
 
@@ -530,7 +538,7 @@
 				$itemContent: $itemContent,
 				imageOpt: imageOpt
 			};
-
+			$elem.attr("data-rexlive-element-edited", true);
 			Rexbuilder_Util_Editor.pushAction($section, "updateBlockImageBG", actionData, reverseData);
 			Rexbuilder_Util_Editor.updatingImageBg = false;
 		});
@@ -613,7 +621,7 @@
 				$itemContent: $itemContent,
 				videoOpt: videoOptions
 			}
-
+			$elem.attr("data-rexlive-element-edited", true);
 			Rexbuilder_Util_Editor.pushAction($section, "updateBlockVideoBG", actionData, reverseData);
 		});
 
@@ -652,7 +660,7 @@
 				$elem: $elem,
 				dataPadding: data.paddings
 			}
-
+			$elem.attr("data-rexlive-element-edited", true);
 			Rexbuilder_Util_Editor.pushAction($section, "updateBlockPadding", actionData, reverseData);
 
 		});
@@ -696,7 +704,7 @@
 				$elem: $elem,
 				dataPosition: data.position
 			}
-
+			$elem.attr("data-rexlive-element-edited", true);
 			Rexbuilder_Util_Editor.pushAction($section, "updateBlockFlexPosition", actionData, reverseData);
 		});
 
@@ -732,8 +740,8 @@
 				classes: data.customClasses
 			}
 
+			$elem.attr("data-rexlive-element-edited", true);
 			Rexbuilder_Util_Editor.pushAction($section, "updateCustomClasses", actionData, reverseData);
-
 		});
 
 		$(document).on("rexlive:apply_block_link_url", function (e) {
@@ -765,8 +773,8 @@
 				url: data.url
 			}
 
+			$elem.attr("data-rexlive-element-edited", true);
 			Rexbuilder_Util_Editor.pushAction($section, "updateBlockUrl", actionData, reverseData);
-
 		});
 
 		$(document).on("rexlive:editModal", function (e) {
@@ -1292,7 +1300,7 @@
 					modelsNumbers: modelsCounted
 				}
 			};
-
+			console.log(data);
 			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 			Rexbuilder_Util_Editor.openingModel = false;
 		});

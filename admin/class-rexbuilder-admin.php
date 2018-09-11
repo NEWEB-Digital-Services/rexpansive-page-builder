@@ -1367,16 +1367,17 @@ class Rexbuilder_Admin {
 			}
 			wp_reset_postdata();
 
+			$response['args'] = $args;
+
+			wp_send_json_success( $response );
 		} else {
-			
+			// The page exists
+			$response['error'] = true;
 			$response['model_id'] = -1;
 			$response['model_title'] = "";
-			// The page exists
+			$response['success'] = false;
+			wp_send_json_error($response, 500);
 		} // end if
-
-		$response['args'] = $args;
-
-		wp_send_json_success( $response );
 	}
 
 	public function rex_save_model_customization(){

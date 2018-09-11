@@ -41,14 +41,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
             }
 
             if (event.data.eventName == "rexlive:edited") {
-                if (event.data.edited) {
-                    editedLive = true;
-                }
-            }
-
-            if (event.data.eventName == "rexlive:layoutChanged") {
-                activeLayoutPage = event.data.activeLayoutName;
-                updateResponsiveButtonFocus();
+                editedLive = event.data.edited;
             }
 
             if (event.data.eventName == "rexlive:openMediaUploader") {

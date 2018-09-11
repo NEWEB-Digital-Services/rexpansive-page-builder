@@ -69,7 +69,7 @@ var Rexbuilder_Section = (function ($) {
             var modelID = -1;
             if (Rexbuilder_Util.activeLayout == "default") {
                 if ($section.hasClass("rex-model-section")) {
-                    layoutsOrder = Rexbuilder_Util.getPageCustomizationsLive();
+                    layoutsOrder = Rexbuilder_Util.getPageCustomizationsDom();
                     modelNumber = parseInt($section.attr("data-rexlive-saved-model-number"));
                     modelID = parseInt($section.attr("data-rexlive-model-id"));
                 }
@@ -92,7 +92,7 @@ var Rexbuilder_Section = (function ($) {
                         }
                     }
                 }
-                Rexbuilder_Util.updatePageCustomizationsLive(layoutsOrder);
+                Rexbuilder_Util.updatePageCustomizationsDomOrder(layoutsOrder);
             }
 
             var actionData = {

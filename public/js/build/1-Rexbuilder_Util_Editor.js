@@ -353,6 +353,7 @@ var Rexbuilder_Util_Editor = (function ($) {
             var data = event.settings;
             undoStackArray = [];
             redoStackArray = [];
+            _clearSectionsEdited();
             Rexbuilder_Util.chosenLayoutData = jQuery.extend(true, {}, data.layoutData);
             Rexbuilder_Util_Editor.buttonResized = true;
             Rexbuilder_Util_Editor.clickedLayoutID = data.selectedLayoutName;
