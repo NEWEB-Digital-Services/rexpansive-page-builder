@@ -220,9 +220,9 @@ var Rex_Save_Listeners = (function ($) {
                     }
                 });
             }
-            if(typeof data.buttonData != "undefined"){
+            /* if(typeof data.buttonData != "undefined"){
                 console.log();
-            }
+            } */
         });
 
         $(document).on('rexlive:saveCustomizationsModel', function (e) {

@@ -1653,11 +1653,11 @@
                 if ($(e.target).parents(".rexlive-block-toolbox").length == 0) {
                     Rexbuilder_Util_Editor.mouseDownEvent = e;
                     if (Rexbuilder_Util.activeLayout != "default") {
-                        $dragHandle.addClass("drag-up");
+                       /*  $dragHandle.addClass("drag-up");
                         Rexbuilder_Util_Editor.mouseDownEvent.target = dragHandle;
                         Rexbuilder_Util_Editor.mouseDownEvent.srcElement = dragHandle;
                         Rexbuilder_Util_Editor.mouseDownEvent.toElement = dragHandle;
-                        Rexbuilder_Util_Editor.elementDraggingTriggered = true;
+                        Rexbuilder_Util_Editor.elementDraggingTriggered = true; */
                     } else {
                         useDBclick = false;
                         if (!(Rexbuilder_Util_Editor.editingElement || Rexbuilder_Util_Editor.elementIsDragging || Rexbuilder_Util_Editor.elementIsResizing) || (Rexbuilder_Util_Editor.editingElement && (Rexbuilder_Util_Editor.editedElement.data("rexbuilder-block-id") != $elem.data("rexbuilder-block-id")))) {
