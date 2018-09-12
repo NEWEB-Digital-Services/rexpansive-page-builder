@@ -154,13 +154,14 @@
                         !Rexbuilder_Util_Editor.updatingCollapsedGrid &&
                         !Rexbuilder_Util_Editor.openingModel &&
                         !Rexbuilder_Util_Editor.blockCopying &&
-                        !Rexbuilder_Util_Editor.savingPage) {
+                        !Rexbuilder_Util_Editor.savingPage &&
+                        !Rexbuilder_Util_Editor.savingModel) {
                         var data = {
                             eventName: "rexlive:edited",
                             edited: true
                         }
                         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-                        if(Rexbuilder_Util.activeLayout == "default"){
+                        if (Rexbuilder_Util.activeLayout == "default") {
                             Rexbuilder_Util.updateDefaultLayoutStateSection(that.$section);
                         }
                         var actionData = that.createActionDataMoveBlocksGrid();
@@ -1153,12 +1154,6 @@
             var $newEl = $(newElement);
             $newEl.append(tmpl("tmpl-toolbox-block"));
 
-            /*             
-            Per quando si sposterà la generazione delle maniglie
-            $newEl.append(tmpl("tmpl-block-resize-handles", {
-                rexID: rexIdBlock
-            }));
-            */
             $newEl.find(".grid-item-content").prepend(tmpl("tmpl-block-drag-handle"));
 
             this._prepareElement($newEl[0]);
@@ -1174,9 +1169,6 @@
 
         // Updating elements properties
         updateAllElementsProperties: function () {
-            //console.log("updating elements properties");
-            // andrebbe anche all'aggiunta di testo nel blocco se masonry, vediamo dopo
-
             var gallery = this;
             this.properties.editedFromBackend = false;
             this.properties.startingLayout = this.settings.galleryLayout;
@@ -1216,7 +1208,7 @@
                     // gridster works 1 to n not 0 to n-1
                     size = size + 1;
 
-                    block['attributes']['data-col'].value = size
+                    block['attributes']['data-col'].value = size;
                     $dataBlock.attr({
                         'data-col': size
                     });

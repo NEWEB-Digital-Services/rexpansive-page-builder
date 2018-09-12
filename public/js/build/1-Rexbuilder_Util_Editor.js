@@ -676,6 +676,7 @@ var Rexbuilder_Util_Editor = (function ($) {
         this.updatingSectionWidth = false;
 
         this.savingPage = false;
+        this.savingModel = false;
 
         this.openingModel = false;
         this.insertingModel = false;

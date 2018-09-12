@@ -34,7 +34,7 @@ var Rex_Save_Listeners = (function ($) {
             Rexbuilder_Util.updatePageCustomizationsData(newCustomization);
 
             var ajaxCalls = [];
-            
+
             //avaiable custom layouts
             ajaxCalls.push(
                 $.ajax({
@@ -80,7 +80,7 @@ var Rex_Save_Listeners = (function ($) {
             if (activeLayoutName == "default") {
                 var postClean = "";
                 var shortcodePage = '';
-                
+
                 Rexbuilder_Util.updateDefaultLayoutState({
                     pageData: newCustomization.sections,
                     modelsData: Rexbuilder_Util.getModelsCustomizations()
@@ -100,10 +100,10 @@ var Rex_Save_Listeners = (function ($) {
 
                 //fixing customizations in page
                 var customizationsArray = [];
-               // var flagSection;
+                // var flagSection;
                 var flagTarget;
                 customizationsArray = Rexbuilder_Util.getPageCustomizationsDom();
-                console.log("customizationsArray",jQuery.extend(true, [], customizationsArray));
+                console.log("customizationsArray", jQuery.extend(true, [], customizationsArray));
                 for (i = 0; i < customizationsArray.length; i++) {
                     var modelsNumbers = _countModels(customizationsArray[i].sections);
                     for (j = 0; j < newCustomization.sections.length; j++) {
@@ -151,22 +151,22 @@ var Rex_Save_Listeners = (function ($) {
                             }
                         }
                         //teoricamente non serve
-/*                         if (!flagSection) {
-                            console.log("qua non ci devi sta");
-                            var sectionObj = {
-                                section_rex_id: newCustomization.sections[j].section_rex_id,
-                                targets: [],
-                                section_is_model: newCustomization.sections[j].section_is_model.toString(),
-                                section_hide: false,
-                                section_model_id: newCustomization.sections[j].section_model_id,
-                                section_model_number: newCustomization.sections[j].section_model_number
-                            }
-                            customizationsArray[i].sections.splice(j, 0, sectionObj);
-                        } */
+                        /*                         if (!flagSection) {
+                                                    console.log("qua non ci devi sta");
+                                                    var sectionObj = {
+                                                        section_rex_id: newCustomization.sections[j].section_rex_id,
+                                                        targets: [],
+                                                        section_is_model: newCustomization.sections[j].section_is_model.toString(),
+                                                        section_hide: false,
+                                                        section_model_id: newCustomization.sections[j].section_model_id,
+                                                        section_model_number: newCustomization.sections[j].section_model_number
+                                                    }
+                                                    customizationsArray[i].sections.splice(j, 0, sectionObj);
+                                                } */
                     }
                 }
                 customizationsArray.push(newCustomization);
-                
+
                 for (var i = 0; i < customizationsArray.length; i++) {
                     Rexbuilder_Util.updatePageCustomizationsData(customizationsArray[i]);
                     Rexbuilder_Util.updatePageCustomizationsDomOrder(customizationsArray[i]);
@@ -258,71 +258,33 @@ var Rex_Save_Listeners = (function ($) {
             });
         });
 
-        $(document).on('rexlive:saveCustomizationsModel', function (e) {
+        $(document).on("rexlive:saveModel", function (e) {
+
+            var ajaxCalls = [];
+            Rexbuilder_Util_Editor.savingModel = true;
             var data = e.settings;
             var $section = data.$section;
-            var idModel = parseInt(data.modelID);
-            var modelEditedNumber = data.model_number;
-            var activeLayout = data.layoutName;
-            var modelName = data.modelName;
-
+            var activeLayout = Rexbuilder_Util.activeLayout;
+            var i, j, k;
+            var modelID = typeof $section.attr("data-rexlive-model-id") != "undefined" ? $section.attr("data-rexlive-model-id") : "";
+            var modelName = typeof $section.attr("data-rexlive-model-name") != "undefined" ? $section.attr("data-rexlive-model-name") : "";
+            
             var oldModels = Rexbuilder_Util.getModelsCustomizations();
-            var i;
-
             var modelActive = {};
-
             for (i = 0; i < oldModels.length; i++) {
                 var model = oldModels[i];
-                if (model.id == idModel) {
+                if (model.id == modelID) {
                     modelActive = model;
                 }
             }
-
             if (jQuery.isEmptyObject(modelActive)) {
-                modelActive.id = idModel;
+                modelActive.id = modelID;
                 modelActive.name = modelName;
                 modelActive.customizations = [];
             }
-
             var modelCustomLayoutData = updateModel(modelActive, $section, activeLayout);
 
             Rexbuilder_Util.updateModelsCustomizationsData(modelCustomLayoutData);
-
-            if (activeLayout != "default") {
-                for (i = 0; i < modelCustomLayoutData.customizations.length; i++) {
-                    // have to update others model with same ID
-                    if (modelCustomLayoutData.customizations[i].name == activeLayout) {
-                        Rexbuilder_Util.updateModelsLive(idModel, modelCustomLayoutData.customizations[i].targets, modelEditedNumber);
-                    }
-                }
-            }
-
-            for (i = 0; i < modelCustomLayoutData.customizations.length; i++) {
-                // have to update only active layout
-                // if active is default, update all with new blocks
-                if (modelCustomLayoutData.customizations[i].name == activeLayout || activeLayout == "default") {
-                    $.ajax({
-                        type: 'POST',
-                        dataType: 'json',
-                        url: _plugin_frontend_settings.rexajax.ajaxurl,
-                        data: {
-                            action: 'rexlive_save_customization_model',
-                            nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-                            model_id_to_update: modelCustomLayoutData.id,
-                            model_name: modelCustomLayoutData.customizations.name,
-                            targets: JSON.stringify(modelCustomLayoutData.customizations[i].targets),
-                            layout_name: modelCustomLayoutData.customizations[i].name
-                        },
-                        success: function (response) {
-                            if (response.success) {
-                                console.log('layout custom modello aggiornato!');
-                            }
-                        },
-                        error: function (response) {
-                        }
-                    });
-                }
-            }
 
             //updaiting names of avaiable layouts
             //ajax call for saving layouts type and names
@@ -331,57 +293,141 @@ var Rex_Save_Listeners = (function ($) {
             for (i = 0; i < modelCustomLayoutData.customizations.length; i++) {
                 modelSavingCustomizationNames.push(modelCustomLayoutData.customizations[i].name);
             }
-
             var savingModelNamesData = {
-                modelID: idModel,
+                modelID: modelID,
                 names: modelSavingCustomizationNames
             };
-
             Rexbuilder_Util.updateDivModelCustomizationsNames(savingModelNamesData);
-
-            //aggiornamento nomi layout
-            $.ajax({
-                type: 'POST',
-                dataType: 'json',
-                url: _plugin_frontend_settings.rexajax.ajaxurl,
-                data: {
-                    action: 'rexlive_save_avaiable_model_layouts_names',
-                    nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-                    post_id_to_update: modelActive.id,
-                    names: modelSavingCustomizationNames
-                },
-                success: function (response) {
-                    if (response.success) {
-                        console.log('nomi layout modello aggiornati!');
+            ajaxCalls.push(
+                //aggiornamento nomi layout
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: _plugin_frontend_settings.rexajax.ajaxurl,
+                    data: {
+                        action: 'rexlive_save_avaiable_model_layouts_names',
+                        nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+                        post_id_to_update: modelID,
+                        names: modelSavingCustomizationNames
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            console.log('nomi layout modello aggiornati!');
+                        }
+                    },
+                    error: function (response) {
                     }
-                },
-                error: function (response) {
-                }
-            });
-        });
+                })
+            );
 
-        $(document).on('rexlive:updateModelShortCode', function (event) {
-            var dataModel = event.settings.modelData;
-            $.ajax({
-                type: 'POST',
-                dataType: 'json',
-                url: _plugin_frontend_settings.rexajax.ajaxurl,
-                data: {
-                    action: 'rexlive_edit_model_shortcode_builder',
-                    nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-                    model_data: dataModel.ajaxCallData
-                },
-                success: function (response) {
-                    if (response.success) {
-                        console.log("shortcode modello aggiornato!");
-                        dataModel.pageData.html = response.data.model_html;
-                        Rexbuilder_Section.updateModelsHtmlLive(dataModel.pageData);
+            if (activeLayout != "default") {
+                for (i = 0; i < modelCustomLayoutData.customizations.length; i++) {
+                    // have to update others model with same ID
+                    if (modelCustomLayoutData.customizations[i].name == activeLayout) {
+                        Rexbuilder_Util.updateModelsLive(idModel, modelCustomLayoutData.customizations[i].targets, modelEditedNumber);
+                        // aggiornare dom
+                        ajaxCalls.push(
+                            $.ajax({
+                                type: 'POST',
+                                dataType: 'json',
+                                url: _plugin_frontend_settings.rexajax.ajaxurl,
+                                data: {
+                                    action: 'rexlive_save_customization_model',
+                                    nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+                                    model_id_to_update: modelCustomLayoutData.id,
+                                    model_name: modelCustomLayoutData.customizations.name,
+                                    targets: JSON.stringify(modelCustomLayoutData.customizations[i].targets),
+                                    layout_name: modelCustomLayoutData.customizations[i].name
+                                },
+                                success: function (response) {
+                                    if (response.success) {
+                                        console.log('layout custom modello aggiornato!');
+                                    }
+                                },
+                                error: function (response) {
+                                }
+                            })
+                        );
+                        break;
                     }
-                },
-                error: function (response) {
-                },
-                complete: function (response) {
                 }
+            } else {
+                var shortcode = createSectionProperties($section, "shortcode");
+
+                var modelDataSaveShortcode = {
+                    model_id: modelID,
+                    post_title: modelName,
+                    post_content: shortcode,
+                };
+
+                var dataModel = {
+                    modelName: modelName,
+                    model_number: $section.attr("data-rexlive-model-number"),
+                    html: "",
+                    modelID: modelID,
+                }
+                ajaxCalls.push(
+                    $.ajax({
+                        type: 'POST',
+                        dataType: 'json',
+                        url: _plugin_frontend_settings.rexajax.ajaxurl,
+                        data: {
+                            action: 'rexlive_edit_model_shortcode_builder',
+                            nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+                            model_data: modelDataSaveShortcode
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                console.log("shortcode modello aggiornato!");
+                                dataModel.html = response.data.model_html;
+                                Rexbuilder_Section.updateModelsHtmlLive(dataModel);
+                            }
+                        },
+                        error: function (response) {
+                        },
+                        complete: function (response) {
+                        }
+                    })
+                );
+                
+                for (i = 0; i < modelCustomLayoutData.customizations.length; i++) {
+                    // have to update only active layout
+                    // if active is default, update all with new blocks
+                    ajaxCalls.push(
+                        $.ajax({
+                            type: 'POST',
+                            dataType: 'json',
+                            url: _plugin_frontend_settings.rexajax.ajaxurl,
+                            data: {
+                                action: 'rexlive_save_customization_model',
+                                nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+                                model_id_to_update: modelCustomLayoutData.id,
+                                model_name: modelCustomLayoutData.customizations.name,
+                                targets: JSON.stringify(modelCustomLayoutData.customizations[i].targets),
+                                layout_name: modelCustomLayoutData.customizations[i].name
+                            },
+                            success: function (response) {
+                                if (response.success) {
+                                    console.log('layout ' + response.data.layoutName + ' aggiornato!');
+                                }
+                            },
+                            error: function (response) {
+                            }
+                        })
+                    );
+                }
+            }
+
+            // Can't pass a literal array, so use apply.
+            $.when.apply($, ajaxCalls).then(function () {
+                // Do your success stuff
+                Rexbuilder_Util_Editor.savingModel = false;
+                console.log("salvataggio modello finito!");
+            }).fail(function () {
+                // Probably want to catch failure
+            }).always(function () {
+                // Or use always if you want to do the same thing
+                // whether the call succeeds or fails
             });
         });
     })

@@ -489,6 +489,7 @@ endif;
         update_post_meta($post_id_to_update, '_rex_model_customization_' . $layout_name, $targetsData);
 
         $response['id_received'] = $post_id_to_update;
+        $response['layoutName'] = $layout_name;
 
         wp_send_json_success($response);
     }

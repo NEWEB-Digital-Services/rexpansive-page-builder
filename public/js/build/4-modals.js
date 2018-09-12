@@ -901,32 +901,107 @@
 		$(document).on("rexlive:modelBecameSection", function (e) {
 			var data = e.settings.data_to_send;
 			var $section;
+            var defaultStateSections = null;
+            var layoutsOrder = null;
+			
+			if (Rexbuilder_Util.activeLayout == "default") {
+                defaultStateSections = Rexbuilder_Util.getDefaultLayoutState();
+                layoutsOrder = Rexbuilder_Util.getPageCustomizationsDom();
+			}
+
+			var oldRexID =  data.sectionTarget.sectionID;
+			var oldModelID =  data.modelID;
+			var oldModelNumber = data.sectionTarget.modelNumber;
 
 			if (data.sectionTarget.modelNumber != "") {
-				$section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"][data-rexlive-model-number="' + data.sectionTarget.modelNumber + '"]');
+				$section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + oldRexID + '"][data-rexlive-model-number="' + oldModelNumber + '"]');
 			} else {
-				$section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"]');
+				$section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + oldRexID+ '"]');
 			}
 
 			var reverseData = {
-				modelID: data.modelID,
+				modelID: oldModelID,
 				modelName: data.modelName,
-				modelNumber: data.sectionTarget.modelNumber,
+				modelNumber: oldModelNumber,
 				sectionID: $section.attr("data-rexlive-section-id"),
 				isModel: true,
-				$section: $section
+				$section: $section,
+				layoutsOrder: layoutsOrder != null ? jQuery.extend(true, [], layoutsOrder) : null,
+				stateDefault: defaultStateSections != null ? jQuery.extend(true, [], defaultStateSections) : null  
 			}
+
+			var oldRexID =  data.sectionTarget.sectionID;
+			var oldModelID =  data.modelID;
+			var oldModelNumber = data.sectionTarget.modelNumber;
+			var newRexID = Rexbuilder_Util.createSectionID();
+
+            // fixing dom order in default and custom layouts
+            if (layoutsOrder != null) {
+                var i, j;
+
+                var sectionObj = {
+                    section_rex_id: newRexID,
+                    targets: [],
+                    section_is_model: false,
+                    section_model_id: -1,
+                    section_model_number: -1,
+                    section_hide: false,
+                    section_created_live: true
+                }
+                
+                for (i = 0; i < layoutsOrder.length; i++) {
+                    for (j = 0; j < layoutsOrder[i].sections.length; j++) {
+                        if (layoutsOrder[i].sections[j].section_is_model) {
+                            if (layoutsOrder[i].sections[j].section_model_id == oldModelID && layoutsOrder[i].sections[j].section_model_number == oldModelNumber) {
+                                break;
+                            }
+                        } else {
+                            if (oldRexID == layoutsOrder[i].sections[j].section_rex_id) {
+                                break;
+                            }
+                        }
+                    }
+					layoutsOrder[i].sections.splice(j, 1, jQuery.extend(true, {}, sectionObj));
+                }
+                Rexbuilder_Util.updatePageCustomizationsDomOrder(layoutsOrder);
+                
+                for (j = 0; j < defaultStateSections.length; j++) {
+                    if (defaultStateSections[j].section_is_model) {
+                        if (defaultStateSections[j].section_model_id == oldModelID && defaultStateSections[j].section_model_number == oldModelNumber) {
+                            break;
+                        }
+                    } else {
+                        if (oldRexID == defaultStateSections[j].section_rex_id) {
+                            break;
+                        }
+                    }
+				}
+
+				sectionObj.targets = Rex_Save_Listeners.createTargets($section, "default");
+                defaultStateSections.splice(j, 1, sectionObj);
+                Rexbuilder_Util.updateDefaultLayoutState({ pageData: defaultStateSections });
+            }
+			
+			Rexbuilder_Dom_Util.updateSectionBecameModel({
+				modelID: "",
+				modelName: "",
+				modelNumber: "",
+				sectionID: newRexID,
+				isModel: false,
+				$section: $section
+			});
 
 			var actionData = {
 				modelID: "",
 				modelName: "",
 				modelNumber: "",
-				sectionID: Rexbuilder_Util.createSectionID(),
+				sectionID: newRexID,
 				isModel: false,
-				$section: $section
+				$section: $section,
+				layoutsOrder: layoutsOrder != null ? jQuery.extend(true, [], layoutsOrder) : null,
+				stateDefault: defaultStateSections != null ? jQuery.extend(true, [], defaultStateSections) : null  
 			}
 
-			Rexbuilder_Dom_Util.updateSectionBecameModel(actionData);
 
 			Rexbuilder_Util_Editor.pushAction($section, "sectionBecameModel", actionData, reverseData);
 		});
@@ -1394,7 +1469,6 @@
 					modelsNumbers: modelsCounted
 				}
 			};
-			console.log(data);
 			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 			Rexbuilder_Util_Editor.openingModel = false;
 		});
@@ -1427,46 +1501,9 @@
 				Rexbuilder_Util_Editor.openingModel = false;
 			} else {
 				Rexbuilder_Dom_Util.updateLockEditModel($button, true);
-
-				Rexbuilder_Util_Editor.openingModel = true;
-				var layoutName = Rexbuilder_Util.activeLayout;
-				var modelID = typeof $section.attr("data-rexlive-model-id") != "undefined" ? $section.attr("data-rexlive-model-id") : "";
-				var modelName = typeof $section.attr("data-rexlive-model-name") != "undefined" ? $section.attr("data-rexlive-model-name") : "";
-				var modelNumber = typeof $section.attr("data-rexlive-model-number") != "undefined" ? $section.attr("data-rexlive-model-number") : "";
-
-				if (layoutName == "default") {
-					var shortcode = Rex_Save_Listeners.createSectionProperties($section, "shortcode");
-					var dataUpdateDataPage = {
-						modelID: modelID,
-						layoutName: layoutName,
-						modelName: modelName,
-						model_number: modelNumber
-					}
-
-					var modelUpdateData = {
-						layout: layoutName,
-						post_content: shortcode,
-						model_id: modelID,
-						post_title: modelName
-					};
-
-					var event = jQuery.Event("rexlive:updateModelShortCode");
-					event.settings = {
-						modelData: {
-							pageData: dataUpdateDataPage,
-							ajaxCallData: modelUpdateData
-						}
-					};
-					$(document).trigger(event);
-				}
-
-				var event = jQuery.Event("rexlive:saveCustomizationsModel");
+				var event = jQuery.Event("rexlive:saveModel");
 				event.settings = {
 					$section: $section,
-					modelID: modelID,
-					layoutName: layoutName,
-					modelName: modelName,
-					model_number: modelNumber
 				};
 				$(document).trigger(event);
 			}

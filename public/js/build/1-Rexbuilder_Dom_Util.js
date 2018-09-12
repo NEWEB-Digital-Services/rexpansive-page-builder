@@ -851,13 +851,28 @@ var Rexbuilder_Dom_Util = (function ($) {
         }
     }
 
-    var _updateModelVisibility = function ($sectionToHide, $sectionToShow) {
+    var _updateModelVisibility = function (data) {
+        var $sectionToHide = data.$sectionToHide;
+        var $sectionToShow = data.$sectionToShow;
+        var layoutsOrder = data.layoutsOrder;
+        var defaultStateSections = data.defaultStateSections;
+
         _updateSectionVisibility($sectionToHide, false);
         _updateSectionVisibility($sectionToShow, true);
-    }
+        
+        if (typeof layoutsOrder !== "undefined" && layoutsOrder != null) {
+            Rexbuilder_Util.updatePageCustomizationsDomOrder(layoutsOrder);
+        }
 
+        if (typeof defaultStateSections !== "undefined" && defaultStateSections != null) {
+            Rexbuilder_Util.updateDefaultLayoutState({ pageData: defaultStateSections });
+        }
+    }
+   
     var _updateSectionBecameModel = function (data) {
         var $section = data.$section;
+        var layoutsOrder = data.layoutsOrder;
+        var defaultStateSections = data.defaultStateSections;
         if (data.isModel) {
             $section.addClass("rex-model-section");
             $section.addClass("rexlive-block-grid-editing");
@@ -877,6 +892,14 @@ var Rexbuilder_Dom_Util = (function ($) {
         $section.attr("data-rexlive-model-name", data.modelName);
         $section.attr("data-rexlive-model-number", data.modelNumber);
         $section.attr("data-rexlive-section-id", data.sectionID);
+
+        if (typeof layoutsOrder !== "undefined" && layoutsOrder != null) {
+            Rexbuilder_Util.updatePageCustomizationsDomOrder(layoutsOrder);
+        }
+
+        if (typeof defaultStateSections !== "undefined" && defaultStateSections != null) {
+            Rexbuilder_Util.updateDefaultLayoutState({ pageData: defaultStateSections });
+        }
     }
 
     var _updateLockEditModel = function ($button, lock) {
@@ -1120,7 +1143,7 @@ var Rexbuilder_Dom_Util = (function ($) {
                 _updateSectionVisibility($section, dataToUse.show, dataToUse.layoutsOrder, dataToUse.stateDefault);
                 break;
             case "updateSectionModel":
-                _updateModelVisibility(dataToUse.$sectionToHide, dataToUse.$sectionToShow);
+                _updateModelVisibility(dataToUse);
                 break;
             case "sectionBecameModel":
                 _updateSectionBecameModel(dataToUse);
