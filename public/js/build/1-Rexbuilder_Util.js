@@ -12,6 +12,7 @@ var Rexbuilder_Util = (function ($) {
     var $pageCustomizationsDataDiv;
     var $liveDataContainer;
     var $layoutsDomOrder;
+    var $defaultLayoutState;
 
     var createRandomID = function (n) {
         var text = "";
@@ -208,12 +209,14 @@ var Rexbuilder_Util = (function ($) {
                 var modelNumber = isNaN(parseInt($sectionTargetsElem.attr("data-model-number"))) ? -1 : parseInt($sectionTargetsElem.attr("data-model-number"));
                 var hideSection = typeof $sectionTargetsElem.attr("data-section-hide") == "undefined" ? false : ($sectionTargetsElem.attr("data-section-hide").toString() == "1" ? true : false);
                 var targets = $sectionTargetsElem.text() != "" ? JSON.parse($sectionTargetsElem.text()) : [];
+                var section_created_live = typeof $sectionTargetsElem.attr("data-section-created-live") == "undefined" ? false : ($sectionTargetsElem.attr("data-section-created-live").toString() == "1" ? true : false);
                 layoutCustomization.sections.push({
                     section_rex_id: sectionRexID,
                     section_model_id: modelID != -1 ? modelID : "",
                     section_model_number: modelNumber != -1 ? modelNumber : "",
                     section_is_model: modelID != -1,
                     section_hide: hideSection,
+                    section_created_live: section_created_live,
                     targets: targets
                 });
             });
@@ -259,6 +262,7 @@ var Rexbuilder_Util = (function ($) {
             $div.attr("data-model-id", updatedPageCustomizationsData.sections[i].section_model_id);
             $div.attr("data-model-number", updatedPageCustomizationsData.sections[i].section_model_number);
             $div.attr("data-section-hide", updatedPageCustomizationsData.sections[i].section_hide);
+            $div.attr("data-section-created-live", updatedPageCustomizationsData.sections[i].section_created_live.toString() == "true" ? "1" : false);
             if (updatedPageCustomizationsData.sections[i].section_model_id == "") {
                 $div.text(JSON.stringify(updatedPageCustomizationsData.sections[i].targets));
             }
@@ -522,7 +526,6 @@ var Rexbuilder_Util = (function ($) {
         console.log("layoutSelectedSections", jQuery.extend(true, [], layoutSelectedSections));
         if (Rexbuilder_Util.activeLayout != "default") {
             for (i = 0; i < layoutSelectedSections.length; i++) {
-                console.log(i);
                 layoutSelectedSections[i].sectionFounded = false;
                 layoutSelectedSections[i].defaultSection = false;
                 for (j = 0; j < defaultLayoutSections.length; j++) {
@@ -540,30 +543,56 @@ var Rexbuilder_Util = (function ($) {
                                 if (sectionCustom.targets[m].name == sectionDefault.targets[n].name) {
                                     sectionCustom.targets[m].notDisplay = false;
                                     targetFounded = true;
-
-                                    sectionCustom.targets[m].props = lodash.merge({}, sectionDefault.targets[n].props, sectionCustom.targets[m].props);
+                                    sectionDefault.targets[n].oldElement = true;
 
                                     //fixing dimensions of new blocks in custom layout
-                                    if (m > 1 && jQuery.isEmptyObject(sectionCustom.targets[m].props)) {
+                                    if (m >= 1 && jQuery.isEmptyObject(sectionCustom.targets[m].props)) {
                                         if (Rexbuilder_Util.activeLayout != "default") {
                                             if (sectionDefault.targets[0].props.layout != sectionCustom.targets[0].props['layout']) {
+                                                var cellWidth = parseFloat(sectionDefault.targets[0].props.grid_cell_width);
+                                                var cellHeightMasonry = 5;
                                                 if (sectionDefault.targets[0].props.layout == "masonry") {
-                                                    sectionCustom.targets[m].props.gs_y = Math.round(sectionDefault.targets[n].props.gs_y / 5);
-                                                    sectionCustom.targets[m].props.gs_height = Math.round(sectionDefault.targets[n].props.gs_height / 5);
-                                                    sectionCustom.targets[m].props.gs_start_h = Math.round(sectionDefault.targets[n].props.gs_start_h / 5);
+                                                    sectionCustom.targets[m].props.gs_y = Math.round(sectionDefault.targets[n].props.gs_y * cellHeightMasonry / cellWidth);
+                                                    sectionCustom.targets[m].props.gs_height = Math.round(sectionDefault.targets[n].props.gs_height * cellHeightMasonry / cellWidth);
+                                                    sectionCustom.targets[m].props.gs_start_h = Math.round(sectionDefault.targets[n].props.gs_start_h * cellHeightMasonry / cellWidth);
                                                 } else {
-                                                    sectionCustom.targets[m].props.gs_y = sectionDefault.targets[n].props.gs_y * 5;
-                                                    sectionCustom.targets[m].props.gs_height = sectionDefault.targets[n].props.gs_height * 5;
-                                                    sectionCustom.targets[m].props.gs_start_h = sectionDefault.targets[n].props.gs_start_h * 5;
+                                                    sectionCustom.targets[m].props.gs_y = Math.round(sectionDefault.targets[n].props.gs_y * cellWidth / cellHeightMasonry);
+                                                    sectionCustom.targets[m].props.gs_height = Math.round(sectionDefault.targets[n].props.gs_height * cellWidth / cellHeightMasonry);
+                                                    sectionCustom.targets[m].props.gs_start_h = Math.round(sectionDefault.targets[n].props.gs_start_h * cellWidth / cellHeightMasonry);
                                                 }
                                             }
                                         }
                                     }
+
+                                    sectionCustom.targets[m].props = lodash.merge({}, sectionDefault.targets[n].props, sectionCustom.targets[m].props);
                                     break;
                                 }
                             }
                             if (!targetFounded) {
                                 sectionCustom.targets[m].notDisplay = true;
+                            }
+                        }
+
+                        //fixing dimensions of blocks not saved
+                        for (n = 0; n < sectionDefault.targets.length; n++) {
+                            if (typeof sectionDefault.targets[n].oldElement == "undefined") {
+                                var newElement = jQuery.extend(true, {}, sectionDefault.targets[n]);
+                                if (Rexbuilder_Util.activeLayout != "default") {
+                                    if (sectionDefault.targets[0].props.layout != sectionCustom.targets[0].props['layout']) {
+                                        var cellWidth = parseFloat(sectionDefault.targets[0].props.grid_cell_width);
+                                        var cellHeightMasonry = 5;
+                                        if (sectionDefault.targets[0].props.layout == "masonry") {
+                                            newElement.props.gs_y = Math.round(newElement.props.gs_y * cellHeightMasonry / cellWidth);
+                                            newElement.props.gs_height = Math.round(newElement.props.gs_height * cellHeightMasonry / cellWidth);
+                                            newElement.props.gs_start_h = Math.round(newElement.props.gs_start_h * cellHeightMasonry / cellWidth);
+                                        } else {
+                                            newElement.props.gs_y = Math.round(newElement.props.gs_y * cellWidth / cellHeightMasonry);
+                                            newElement.props.gs_height = Math.round(newElement.props.gs_height * cellWidth / cellHeightMasonry);
+                                            newElement.props.gs_start_h = Math.round(newElement.props.gs_start_h * cellWidth / cellHeightMasonry);
+                                        }
+                                    }
+                                }
+                                sectionCustom.targets.splice(1, 0, newElement);
                             }
                         }
                         break;
@@ -663,11 +692,23 @@ var Rexbuilder_Util = (function ($) {
         var i, j;
 
         var layoutDataPage = _getPageCustomizations();
+
         if (Rexbuilder_Util.activeLayout == "default") {
             _saveCustomizationDomOrder(jQuery.extend(true, [], layoutDataPage));
         }
+
         var layoutDataModels = _getModelsCustomizations();
-        var defaultLayoutSections = _getDefaultPageLayout(layoutDataPage, layoutDataModels);
+        var defaultLayoutSections;
+
+        if ($defaultLayoutState.attr("data-empty-default-customization") == "true") {
+            defaultLayoutSections = _getDefaultPageLayout(layoutDataPage, layoutDataModels);
+            _createDefaultLayoutState(defaultLayoutSections);
+        } else {
+            _updateDefaultLayoutState({
+                modelsData: layoutDataModels
+            });
+            defaultLayoutSections = _getDefaultLayoutState();
+        }
         var layoutSelectedSections = _getCustomLayoutSections(layoutDataPage, layoutDataModels, defaultLayoutSections, chosenLayoutName);
         /*         
                 console.log("defaultLayoutSections", jQuery.extend(true, [], defaultLayoutSections));
@@ -724,7 +765,7 @@ var Rexbuilder_Util = (function ($) {
 
                 var $section;
                 if (section.section_is_model.toString() == "true") {
-                    sectionObj.modelID = section.model_id;
+                    sectionObj.modelID = section.section_model_id;
                     sectionObj.modelNumber = section.section_model_number;
                     $section = Rexbuilder_Util.$rexContainer.children('section[data-rexlive-section-id="' + section.section_rex_id + '"][data-rexlive-saved-model-number="' + sectionObj.modelNumber + '"]');
                 } else {
@@ -742,7 +783,7 @@ var Rexbuilder_Util = (function ($) {
                 }
             }
         });
-
+        console.log("dom applied order", jQuery.extend(true,[], sectionDomOrder));
         Rexbuilder_Dom_Util.fixSectionDomOrder(sectionDomOrder, true);
 
         Rexbuilder_Util.domUpdaiting = false;
@@ -966,9 +1007,6 @@ var Rexbuilder_Util = (function ($) {
                             break;
                         case "block_has_scrollbar":
                             break;
-                        case "overwritten":
-                            $itemData.attr("data-custom_layout", targetProps["overwritten"].toString());
-                            break;
                         default:
                             break;
                     }
@@ -983,7 +1021,8 @@ var Rexbuilder_Util = (function ($) {
         }
 
         updateSection($section, $gallery, targets[0].props, forceCollapseElementsGrid);
-        var collapse = targets[0].props.collapse_grid.toString() == "true" || forceCollapseElementsGrid;
+        var collapse = typeof targets[0].props.collapse_grid == "undefined" ? false : (targets[0].props.collapse_grid.toString() == "true" || forceCollapseElementsGrid);
+
         if (galleryData !== undefined) {
 
             var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
@@ -1061,6 +1100,7 @@ var Rexbuilder_Util = (function ($) {
     }
 
     var _updatePageCustomizationsDomOrder = function (layoutsData) {
+        console.log("layoutsData", layoutsData);
         for (var i = 0; i < layoutsData.length; i++) {
             $layoutsDomOrder.children(".layout-sections[data-rex-layout-name=\"" + layoutsData[i].name + "\"]").text(JSON.stringify(layoutsData[i].sections));
         }
@@ -1096,7 +1136,254 @@ var Rexbuilder_Util = (function ($) {
         return targets;
     }
 
-    var _updateSectionLive = function ($section) {
+    var _createDefaultLayoutState = function (sectionsData) {
+        $defaultLayoutState.children().remove();
+        var i;
+        for (i = 0; i < sectionsData.length; i++) {
+            var $div = $(document.createElement("div"));
+            $div.addClass("section-targets");
+            $div.attr("data-section-rex-id", sectionsData[i].section_rex_id);
+            $div.attr("data-model-id", sectionsData[i].section_model_id);
+            $div.attr("data-model-number", sectionsData[i].section_model_number);
+            $div.attr("data-section-hide", sectionsData[i].section_hide);
+            $div.text(JSON.stringify(sectionsData[i].targets));
+            $div.appendTo($defaultLayoutState[0]);
+        }
+        $defaultLayoutState.removeAttr("data-empty-default-customization");
+    }
+
+    var _updateDefaultLayoutState = function (data) {
+        var updatedSectionsData = typeof data.pageData == "undefined" ? [] : data.pageData;
+        var modelsData = typeof data.modelsData == "undefined" ? [] : data.modelsData;
+        var p, q, r;
+        if (updatedSectionsData.length == 0) {
+            $defaultLayoutState.children(".section-targets").each(function (j, sectionTargetsElem) {
+                var $sectionTargetsElem = $(sectionTargetsElem);
+                var modelID = isNaN(parseInt($sectionTargetsElem.attr("data-model-id"))) ? -1 : parseInt($sectionTargetsElem.attr("data-model-id"));
+                if (modelID != -1) {
+                    for (q = 0; q < modelsData.length; q++) {
+                        if (modelID == modelsData[q].id) {
+                            for (r = 0; r < modelsData[q].customizations.length; r++) {
+                                if (modelsData[q].customizations[r].name == "default") {
+                                    $sectionTargetsElem.text(JSON.stringify(modelsData[q].customizations[r].targets));
+                                    break;
+                                }
+                            }
+                            break;
+                        }
+                    }
+                }
+            });
+        } else {
+            $defaultLayoutState.children(".section-targets").remove();
+            for (p = 0; p < updatedSectionsData.length; p++) {
+                var $div = $(document.createElement("div"));
+                $div.addClass("section-targets");
+                $div.attr("data-section-rex-id", updatedSectionsData[p].section_rex_id);
+                $div.attr("data-model-id", updatedSectionsData[p].section_model_id);
+                $div.attr("data-model-number", updatedSectionsData[p].section_model_number);
+                $div.attr("data-section-hide", updatedSectionsData[p].section_hide);
+                if (updatedSectionsData[p].section_model_id == "") {
+                    $div.text(JSON.stringify(updatedSectionsData[p].targets));
+                } else {
+                    if (updatedSectionsData[p].section_model_id != -1) {
+                        for (q = 0; q < modelsData.length; q++) {
+                            if (updatedSectionsData[p].section_model_id == modelsData[q].id) {
+                                for (r = 0; r < modelsData[q].customizations.length; r++) {
+                                    if (modelsData[q].customizations[r].name == "default") {
+                                        $div.text(JSON.stringify(modelsData[q].customizations[r].targets));
+                                        break;
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+                $div.appendTo($defaultLayoutState[0]);
+            }
+        }
+    }
+
+    var _updateDefaultLayoutStateDOMOrder = function (newOrder) {
+        var data = _getDefaultLayoutState();
+        newOrder = jQuery.extend(true, [], newOrder);
+
+        var i, j;
+        var flagNumbers;
+        var models = [];
+        for (i = 0; i < newOrder.length; i++) {
+            if (newOrder[i].modelID != -1) {
+                flagNumbers = false;
+                for (j = 0; j < models.length; j++) {
+                    if (models[j].id == newOrder[i].modelID) {
+                        models[j].number = models[j].number + 1;
+                        newOrder[i].modelNumber = models[j].number;
+                        flagNumbers = true;
+                        break;
+                    }
+                }
+                if (!flagNumbers) {
+                    models.push({
+                        id: newOrder[i].modelID,
+                        number: 1,
+                    });
+                    newOrder[i].modelNumber = 1;
+                }
+            }
+        }
+        
+        var newData = [];
+        var section;
+        for (i = 0; i < newOrder.length; i++) {
+            for (j = 0; j < data.length; j++) {
+                if (newOrder[i].modelID != -1) {
+                    if (newOrder[i].modelID == data[j].section_model_id && newOrder[i].modelNumber == data[j].section_model_number) {
+                        section = data.splice(j, 1);
+                    }
+                } else {
+                    if (newOrder[i].rexID == data[j].section_rex_id) {
+                        section = data.splice(j, 1);
+                    }
+                }
+            }
+            newData.push(section[0]);
+        }
+
+        _updateDefaultLayoutState({pageData: newData});
+    }
+
+    var _updateDefaultLayoutStateSection = function ($section, position) {
+        position = typeof position == "undefined" ? -1 : position;
+        Rexbuilder_Dom_Util.fixModelNumbersSaving();
+        var layoutData = Rex_Save_Listeners.createTargets($section, Rexbuilder_Util.activeLayout);
+        var sectionAdded = false;
+        if ($section.hasClass("rex-model-section")) {
+            var modelID = $section.attr("data-rexlive-model-id");
+            var modelNumber = $section.attr("data-rexlive-section-number");
+            $defaultLayoutState.children(".section-targets").each(function (i, sec) {
+                var $sec = $(sec);
+                if (modelID == $sec.attr("data-model-id")) {
+                    $sec.text(JSON.stringify(layoutData));
+                    if (modelNumber == $sec.attr("data-model-number")) {
+                        sectionAdded = true;
+                    }
+                }
+            });
+        } else {
+            var rexID = $section.attr("data-rexlive-section-id");
+            $defaultLayoutState.children(".section-targets").each(function (i, sec) {
+                var $sec = $(sec);
+                if (rexID == $sec.attr("data-section-rex-id")) {
+                    $sec.text(JSON.stringify(layoutData));
+                    sectionAdded = true;
+                }
+            });
+        }
+
+        if (!sectionAdded) {
+            var section_props = {
+                section_rex_id: $section.attr("data-rexlive-section-id"),
+                section_is_model: false,
+                section_model_id: "",
+                section_model_number: -1,
+                section_hide: false
+            }
+
+            section_props.section_hide = $section.hasClass("rex-hide-section");
+
+            if ($section.hasClass("rex-model-section")) {
+                section_props.section_is_model = true;
+                section_props.section_model_id = $section.attr("data-rexlive-model-id");
+                section_props.section_model_number = $section.attr("data-rexlive-saved-model-number");
+            }
+
+            var $div = $(document.createElement("div"));
+            $div.addClass("section-targets");
+            $div.attr("data-section-rex-id", section_props.section_rex_id);
+            $div.attr("data-model-id", section_props.section_model_id);
+            $div.attr("data-model-number", section_props.section_model_number);
+            $div.attr("data-section-hide", section_props.section_hide);
+            $div.text(JSON.stringify(layoutData));
+            if(position == -1){
+                $div.appendTo($defaultLayoutState[0]);
+            } else {
+                var $selectedSection;
+                position = position - 1;
+                $defaultLayoutState.children(".section-targets").each(function (i, sec) {
+                    if (i == position) {
+                        $selectedSection = $(sec);
+                        return false;
+                    }
+                });
+                $selectedSection.after($div[0]);
+            }
+        }
+    }
+
+    // gets default layout
+    var _getDefaultLayoutState = function () {
+        var defaultLayoutSections = [];
+
+        $defaultLayoutState.children(".section-targets").each(function (j, sectionTargetsElem) {
+            var $sectionTargetsElem = $(sectionTargetsElem);
+            var sectionRexID = $sectionTargetsElem.attr("data-section-rex-id");
+            var modelID = isNaN(parseInt($sectionTargetsElem.attr("data-model-id"))) ? -1 : parseInt($sectionTargetsElem.attr("data-model-id"));
+            var modelNumber = isNaN(parseInt($sectionTargetsElem.attr("data-model-number"))) ? -1 : parseInt($sectionTargetsElem.attr("data-model-number"));
+            var hideSection = typeof $sectionTargetsElem.attr("data-section-hide") == "undefined" ? false : ($sectionTargetsElem.attr("data-section-hide").toString() == "1" ? true : false);
+            var targets = $sectionTargetsElem.text() != "" ? JSON.parse($sectionTargetsElem.text()) : [];
+
+            defaultLayoutSections.push({
+                section_rex_id: sectionRexID,
+                section_model_id: modelID != -1 ? modelID : "",
+                section_model_number: modelNumber != -1 ? modelNumber : "",
+                section_is_model: modelID != -1,
+                section_hide: hideSection,
+                targets: targets
+            });
+        });
+        return defaultLayoutSections;
+    }
+
+    var _updateSectionOrderCustomLayouts = function(sectionMoved, newOrder){
+        var layoutsOrder = Rexbuilder_Util.getPageCustomizationsDom();
+        var moveSection;
+        var newSecPosition;
+        var i, j;
+        for (i = 0; i < newOrder.length; i++) {
+            if (newOrder[i].rexID == sectionMoved.rexID && newOrder[i].modelNumber == sectionMoved.modelNumber && newOrder[i].modelID == sectionMoved.modelID) {
+                newSecPosition = i;
+                break;
+            }
+        }
+        for (i = 0; i < layoutsOrder.length; i++) {
+            moveSection = false;
+            for (j = 0; j < layoutsOrder[i].sections.length; j++) {
+                if (layoutsOrder[i].sections[j].section_is_model) {
+                    if (layoutsOrder[i].sections[j].section_model_id == sectionMoved.modelID && layoutsOrder[i].sections[j].section_model_number == sectionMoved.modelNumber) {
+                        if (typeof layoutsOrder[i].sections[j].section_created_live !== "undefined" && layoutsOrder[i].sections[j].section_created_live.toString() == "true" ) {
+                            moveSection = true;
+                        }
+                        break;
+                    }
+                } else {
+                    if (sectionMoved.rexID == layoutsOrder[i].sections[j].section_rex_id) {
+                        if (typeof layoutsOrder[i].sections[j].section_created_live !== "undefined" && layoutsOrder[i].sections[j].section_created_live.toString() == "true" ) {
+                            moveSection = true;
+                        }
+                        break;
+                    }
+                }
+            }
+            if (moveSection) {
+                var oldsec = (layoutsOrder[i].sections.splice(j, 1))[0];
+                layoutsOrder[i].sections.splice(newSecPosition, 0, oldsec);
+            }
+        }
+        Rexbuilder_Util.updatePageCustomizationsDomOrder(layoutsOrder);
+    }
+
+    var _updateSectionStateLive = function ($section) {
         Rexbuilder_Dom_Util.fixModelNumbersSaving();
         var layoutData = Rex_Save_Listeners.createTargets($section, Rexbuilder_Util.activeLayout);
         var sectionAdded = false;
@@ -1382,7 +1669,7 @@ var Rexbuilder_Util = (function ($) {
             section_width: targetProps['section_width'],
             dimension: targetProps['dimension'],
 
-            collapse_grid: targetProps['collapse_grid'].toString() == "true" || forceCollapseElementsGrid,
+            collapse_grid: typeof targetProps["collapse_grid"] == "undefined" ? false : (targetProps["collapse_grid"].toString() == "true" || forceCollapseElementsGrid),
         }
 
         Rexbuilder_Dom_Util.updateRow($section, $sectionData, $gallery, rowSettings);
@@ -2229,6 +2516,7 @@ var Rexbuilder_Util = (function ($) {
         $pageCustomizationsDataDiv = $("#rexbuilder-layout-data").children(".layouts-customizations").eq(0);
         $liveDataContainer = $("#rexbuilder-layout-data-live");
         $layoutsDomOrder = $("#rexbuilder-layouts-sections-order");
+        $defaultLayoutState = $("#rexbuilder-default-layout-state");
         this.$rexContainer = $(".rex-container");
 
         if (Rexbuilder_Util.$rexContainer.attr("data-backend-edited").toString() == "true" && Rexbuilder_Util.editorMode) {
@@ -2333,9 +2621,14 @@ var Rexbuilder_Util = (function ($) {
         getSectionCustomLayouts: _getSectionCustomLayouts,
         getLayoutLiveSectionTargets: _getLayoutLiveSectionTargets,
         getGridLayoutLive: _getGridLayoutLive,
-        updateSectionLive: _updateSectionLive,
+        updateSectionStateLive: _updateSectionStateLive,
         updatePageCustomizationsDomOrder: _updatePageCustomizationsDomOrder,
         getPageCustomizationsDom: _getPageCustomizationsDom,
+        updateDefaultLayoutState: _updateDefaultLayoutState,
+        updateDefaultLayoutStateSection: _updateDefaultLayoutStateSection,
+        updateDefaultLayoutStateDOMOrder: _updateDefaultLayoutStateDOMOrder,
+        getDefaultLayoutState: _getDefaultLayoutState,
+        updateSectionOrderCustomLayouts: _updateSectionOrderCustomLayouts,
     };
 
 })(jQuery);

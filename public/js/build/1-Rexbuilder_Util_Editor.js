@@ -192,8 +192,8 @@ var Rexbuilder_Util_Editor = (function ($) {
     }
 
     var _removeHandles = function ($elem) {
-        $elem.children('.ui-resizable-handle').each(function () {
-            $(this).remove();
+        $elem.children('.ui-resizable-handle').each(function (i, handle) {
+            $(handle).remove();
         });
     }
 
@@ -295,7 +295,6 @@ var Rexbuilder_Util_Editor = (function ($) {
         if (Rexbuilder_Util_Editor.editingElement && Rexbuilder_Util_Editor.editingGallery) {
             var gallery = Rexbuilder_Util_Editor.editedGallery;
             var $elem = Rexbuilder_Util_Editor.editedElement;
-            console.log("start editing " + $elem.attr("data-rexbuilder-block-id"));
             gallery.unFocusElementEditing($elem);
             gallery.properties.elementStartingH = parseInt($elem.attr("data-gs-height"));
         }
@@ -306,8 +305,6 @@ var Rexbuilder_Util_Editor = (function ($) {
         Rexbuilder_Util.$window.click(function (e) {
             var $target = $(e.target);
             if (Rexbuilder_Util_Editor.editingElement && ($target.parents(".grid-stack-item").length == 0) && ($target.parents(".media-frame").length == 0) && !($target.hasClass("grid-stack-item"))) {
-                console.log(e);
-                console.log("CLICK OUTSIDE ELEMENTS");
                 Rexbuilder_Util_Editor.activateElementFocus = false;
                 Rexbuilder_Util_Editor.endEditingElement();
                 Rexbuilder_Util_Editor.activateElementFocus = true;
@@ -412,14 +409,17 @@ var Rexbuilder_Util_Editor = (function ($) {
         });
 
         $(document).on("rexlive:updateLayoutsDimensions", function (e) {
-            var data = e.settings;
-            console.log("ayeyye");
-            console.log(data);
+            console.log("rexlive:updateLayoutsDimensions");
         });
 
         $(document).on("rexlive:newSliderSavedOnDB", function (e) {
             var data = e.settings;
             Rexbuilder_CreateBlocks.createSlider(data.data_to_send);
+        });
+
+        $(document).on("rexlive:dropChanges", function (e) {
+            var eventData = e.settings.data_to_send;
+            _restorePageStartingState(eventData);
         });
     }
 
@@ -443,7 +443,6 @@ var Rexbuilder_Util_Editor = (function ($) {
             reverseActionData: reverseData
         }
 
-        console.log(action);
         undoStackArray.push(action);
         redoStackArray = [];
     };
@@ -570,7 +569,6 @@ var Rexbuilder_Util_Editor = (function ($) {
      * @param {*} newSliderFlag true if save as new slider, false otherwise
      */
     var _saveSliderOnDB = function (sliderData, newSliderFlag, newBlockID, targetToEdit) {
-        console.log("saving slider on db");
         var data = {
             eventName: "rexlive:uploadSliderFromLive",
             sliderInfo: {
@@ -623,7 +621,15 @@ var Rexbuilder_Util_Editor = (function ($) {
             $section.find(".grid-stack-item").attr("data-rexlive-element-edited", false);
         });
     }
-    
+
+    var _restorePageStartingState = function(eventData){
+        var data = {
+            eventName: "rexlive:restoreStateEnded",
+            buttonData: eventData.buttonData
+        }
+        Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+    }
+
     var init = function () {
 
         this.elementIsResizing = false;
@@ -669,7 +675,7 @@ var Rexbuilder_Util_Editor = (function ($) {
         this.updatingCollapsedGrid = false;
         this.updatingSectionWidth = false;
 
-        this.savingGrid = false;
+        this.savingPage = false;
 
         this.openingModel = false;
         this.insertingModel = false;

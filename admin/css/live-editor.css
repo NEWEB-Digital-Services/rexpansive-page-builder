@@ -192,3 +192,7 @@
 #rex-edit-model-choose .rex-hide-option{
 	display: none;
 }
+
+.rex-saving.btn-save{
+	background-color: #757575;
+}

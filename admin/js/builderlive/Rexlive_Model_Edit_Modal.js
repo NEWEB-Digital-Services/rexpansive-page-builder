@@ -40,7 +40,7 @@ var Model_Edit_Modal = (function ($) {
                     data_model_modal.eventName = "rexlive:modelBecameSection";
                     break;
                 case "edit":
-                    data_model_modal.eventName = "rexlive:editModal";
+                    data_model_modal.eventName = "rexlive:editModel";
                     break;
                 default:
                     break;

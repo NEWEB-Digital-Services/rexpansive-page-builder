@@ -597,11 +597,11 @@ var Rexbuilder_Dom_Util = (function ($) {
         Rex_Navigator.updateNavigatorItem($section, newSafeName, newName);
     }
 
-    var _fixSectionDomOrder = function (newOrder, domUpdating) {
+    var _fixSectionDomOrder = function (newOrder, domUpdating, sectionMoved) {
         var sections = [];
         var $section;
         var i, j;
-        domUpdating = typeof domUpdating !== "undefined" ? false : domUpdating;
+        domUpdating = typeof domUpdating === "undefined" ? false : domUpdating;
         Rexbuilder_Util.$rexContainer.children(".rexpansive_section").each(function (i, sec) {
             var $sec = $(sec);
             var sectionObj = {
@@ -644,7 +644,13 @@ var Rexbuilder_Dom_Util = (function ($) {
             Rexbuilder_Util.$rexContainer.append(sections[j].$section);
         }
 
-        //_fixModelNumbers();
+        if (Rexbuilder_Util.activeLayout == "default") {
+            Rexbuilder_Util.updateDefaultLayoutStateDOMOrder(newOrder);
+            //fixing custom layouts dom order
+            if (typeof sectionMoved !== "undefined") {
+                Rexbuilder_Util.updateSectionOrderCustomLayouts(sectionMoved, newOrder);                
+            }
+        }
     }
 
     var _enablePhotoswipeAllBlocksSection = function ($section) {
@@ -708,6 +714,13 @@ var Rexbuilder_Dom_Util = (function ($) {
 
     var _updateFlexPostition = function ($elem, flexPosition) {
         if (!$elem.hasClass("block-has-slider")) {
+            var $scrollbarDiv = $elem.find(".rex-custom-scrollbar");
+            if ($scrollbarDiv.length != 0) {
+                var scrollbarInstance = $scrollbarDiv.overlayScrollbars();
+                if (typeof scrollbarInstance != "undefined") {
+                    scrollbarInstance.update();
+                }
+            }
             var flexClasses = "rex-flex-top rex-flex-middle rex-flex-bottom rex-flex-left rex-flex-center rex-flex-right";
             $elem.removeClass(flexClasses);
             var $elemData = $elem.children(".rexbuilder-block-data");
@@ -816,7 +829,7 @@ var Rexbuilder_Dom_Util = (function ($) {
         _updateImageBG($section, data);
     }
 
-    var _updateSectionVisibility = function ($section, show, layoutsOrder) {
+    var _updateSectionVisibility = function ($section, show, layoutsOrder, defaultStateSections) {
         if (show) {
             if (Rexbuilder_Util.activeLayout == "default") {
                 $section.removeClass("removing_section");
@@ -832,6 +845,9 @@ var Rexbuilder_Dom_Util = (function ($) {
         }
         if (typeof layoutsOrder !== "undefined" && layoutsOrder != null) {
             Rexbuilder_Util.updatePageCustomizationsDomOrder(layoutsOrder);
+        }
+        if (typeof defaultStateSections !== "undefined" && defaultStateSections != null) {
+            Rexbuilder_Util.updateDefaultLayoutState({ pageData: defaultStateSections });
         }
     }
 
@@ -1101,7 +1117,7 @@ var Rexbuilder_Dom_Util = (function ($) {
                 _updateBlockUrl(dataToUse.$elem, dataToUse.url);
                 break;
             case "updateSectionVisibility":
-                _updateSectionVisibility($section, dataToUse.show, dataToUse.layoutsOrder);
+                _updateSectionVisibility($section, dataToUse.show, dataToUse.layoutsOrder, dataToUse.stateDefault);
                 break;
             case "updateSectionModel":
                 _updateModelVisibility(dataToUse.$sectionToHide, dataToUse.$sectionToShow);
@@ -1110,7 +1126,7 @@ var Rexbuilder_Dom_Util = (function ($) {
                 _updateSectionBecameModel(dataToUse);
                 break;
             case "updateSectionOrder":
-                _fixSectionDomOrder(dataToUse.sectionOrder);
+                _fixSectionDomOrder(dataToUse.sectionOrder, false, dataToUse.sectionMoved);
                 break;
             case "updateLockButton":
                 _updateLockEditModel(dataToUse.$button, dataToUse.lock);

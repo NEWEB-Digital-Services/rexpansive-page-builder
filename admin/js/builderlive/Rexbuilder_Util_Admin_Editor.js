@@ -10,11 +10,10 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
     var $frameContainer;
     var $frameBuilder;
     var frameBuilderWindow;
-    var $responsiveToolbar;
 
     var updateResponsiveButtonFocus = function () {
-        var $oldBtn = $responsiveToolbar.find(".active-layout-btn");
-        var $layoutBtn = $responsiveToolbar.find("button[data-name=" + activeLayoutPage + "]");
+        var $oldBtn = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find(".active-layout-btn");
+        var $layoutBtn = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find("button[data-name=" + activeLayoutPage + "]");
         if ($oldBtn.length != 0) {
             $oldBtn.removeClass("active-layout-btn");
         }
@@ -32,13 +31,6 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         
         if (event.data.rexliveEvent) {
             var eventData = event.data;
-            //console.log("rexlive event from iframe client");
-            // da finire con lo switch per una maggiore chiarezza
-            switch(eventData.eventName){
-                case "":
-                    break;
-                default: break;
-            }
 
             if (event.data.eventName == "rexlive:edited") {
                 editedLive = event.data.edited;
@@ -99,6 +91,21 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
             if (event.data.eventName == "rexlive:editRemoveModal") {
                 Model_Edit_Modal.openModal(event.data.modelData);
             }
+
+            if (event.data.eventName == "rexlive:savePageEnded") {
+                Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find(".btn-save").removeClass("rex-saving");
+                editedLive = false;
+                if(typeof event.data.buttonData !== "undefined"){
+                    _updateLayoutPage(event.data.buttonData);
+                }
+            }
+
+            if (event.data.eventName == "rexlive:restoreStateEnded") {
+                editedLive = false;
+                if(typeof event.data.buttonData !== "undefined"){
+                    _updateLayoutPage(event.data.buttonData);
+                }
+            }
         }
     };
 
@@ -118,65 +125,23 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                 };
 
                 if (editedLive) {
-                    if (confirm("Ehi, guarda che hai modificato qualcosa, vuoi matenere le modifiche?")) {
-                        var updateData = {
-                            selected: activeLayoutPage,
-                            eventName: "",
-                            buttonData: buttonData,
-                        };
-
-                        if (activeLayoutPage == "default") {
-                            updateData.eventName = "rexlive:saveDefaultLayout";
-                            sendIframeBuilderMessage(updateData);
-                        }
-
-                        updateData.eventName = "rexlive:saveCustomizations";
-                        sendIframeBuilderMessage(updateData);
-
-                        return;
-                    }
-                    editedLive = false;
+                    Change_Layout_Modal.openModal(activeLayoutPage, buttonData);
+                    return;
                 }
-
-                activeLayoutPage = btnName;
-                updateResponsiveButtonFocus();
-
-                var layoutData = {
-                    selectedLayoutName: activeLayoutPage,
-                    eventName: "rexlive:changeLayout",
-                    layoutData: buttonData
-                };
-
-                sendIframeBuilderMessage(layoutData);
-
-                if ($btn.attr("data-min-width") != "") {
-                    $frameContainer.css("width", $btn.attr("data-min-width"));
-                    $frameContainer.css("min-width", "");
-                } else {
-                    $frameContainer.css("width", "100%");
-                    if (activeLayoutPage == "default") {
-                        $frameContainer.css("min-width", "1024px");
-                    }
-                }
+                _updateLayoutPage(buttonData);
             }
         });
 
         $(document).on('click', '.btn-save', function (e) {
             //console.log("saving");
-
-            var data = {
-                selected: activeLayoutPage,
-                eventName: ""
-            };
-
-            if (activeLayoutPage == "default") {
-                data.eventName = "rexlive:saveDefaultLayout";
-                sendIframeBuilderMessage(data);
+            $(e.target).addClass("rex-saving");
+            var dataSave = {
+                eventName: "rexlive:savePage",
+                data_to_send: {
+                    activeLayout: activeLayoutPage
+                }
             }
-
-            data.eventName = "rexlive:saveCustomizations";
-            sendIframeBuilderMessage(data);
-
+            _sendIframeBuilderMessage(dataSave);
         });
 
         $(document).on('click', '.btn-undo', function (e) {
@@ -185,7 +150,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                 eventName: "rexlive:undo",
             };
 
-            sendIframeBuilderMessage(data);
+            _sendIframeBuilderMessage(data);
         });
 
         $(document).on('click', '.btn-redo', function (e) {
@@ -194,13 +159,38 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                 eventName: "rexlive:redo",
             };
 
-            sendIframeBuilderMessage(data);
+            _sendIframeBuilderMessage(data);
         });
 
         window.addEventListener("message", _receiveMessage, false);
     }
+    
+    var _updateLayoutPage = function(buttonData){
 
-    var sendIframeBuilderMessage = function (data) {
+        editedLive = false;
+        activeLayoutPage = buttonData.id;
+        updateResponsiveButtonFocus();
+
+        var layoutData = {
+            selectedLayoutName: activeLayoutPage,
+            eventName: "rexlive:changeLayout",
+            layoutData: buttonData
+        };
+
+        _sendIframeBuilderMessage(layoutData);
+
+        if (buttonData.min != "") {
+            $frameContainer.css("width", buttonData.min);
+            $frameContainer.css("min-width", "");
+        } else {
+            $frameContainer.css("width", "100%");
+            if (activeLayoutPage == "default") {
+                $frameContainer.css("min-width", "1024px");
+            }
+        }
+    }
+
+    var _sendIframeBuilderMessage = function (data) {
         var infos = {
             rexliveEvent: true
         };
@@ -224,12 +214,11 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
     var init = function () {
 
         this.$rexpansiveContainer = $("#rexpansive-builder-backend-wrapper");
-
         $frameContainer = this.$rexpansiveContainer.find(".rexpansive-live-frame-container");
         $frameBuilder = this.$rexpansiveContainer.find("#rexpansive-live-frame");
         frameBuilderWindow = $frameBuilder[0].contentWindow;
 
-        $responsiveToolbar = this.$rexpansiveContainer.find(".rexlive-responsive-toolbox");
+        this.$responsiveToolbar = this.$rexpansiveContainer.find(".rexlive-responsive-toolbox");
 
         activeLayoutPage = "default";
         editedLive = false;
@@ -239,7 +228,8 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
     return {
         init: init,
         createRandomID: _createRandomID,
-        sendIframeBuilderMessage: sendIframeBuilderMessage
+        sendIframeBuilderMessage: _sendIframeBuilderMessage,
+        updateLayoutPage: _updateLayoutPage,
     };
 
 })(jQuery);

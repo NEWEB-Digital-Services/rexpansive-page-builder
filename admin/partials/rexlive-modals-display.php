@@ -1193,3 +1193,24 @@ wp_reset_postdata();
         </div>
     </div>
 </div><!-- Edit Model  -->
+
+<div class="rex-modal-wrap rex-fade">
+    <div id="rex-layout-page-changed" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
+        <div class="modal-content">
+            <div class="layout-page-changed-description">
+                Save changes?
+            </div>
+            <div>
+                <div class="rex-edit-option" data-rex-option="save">
+                    <button class="rex-button save-page">yes</button>
+                </div>
+                <div class="rex-edit-option" data-rex-option="continue">
+                    <button class="rex-button continue">no</button>
+                </div>
+                <div class="rex-edit-option" data-rex-option="abort">
+                    <button class="rex-button abort">cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Layout page Changed -->

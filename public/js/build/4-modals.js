@@ -71,6 +71,10 @@
 			}
 
 			Rexbuilder_Util_Editor.pushAction($section, "updateSection", actionData, reverseData);
+			$section.attr("data-rexlive-section-edited", true);
+			if(Rexbuilder_Util.activeLayout == "default"){
+                Rexbuilder_Util.updateDefaultLayoutStateSection($section);
+            }
 		});
 		
 		$(document).on("rexlive:set_section_width", function (e) {  
@@ -250,7 +254,9 @@
 			}
 
 			Rexbuilder_Dom_Util.updateSectionBackgroundColor($section, data);
-
+			if(Rexbuilder_Util.activeLayout == "default"){
+                Rexbuilder_Util.updateDefaultLayoutStateSection($section);
+            }
 			var actionData = {
 				color: data.color,
 				active: data.active
@@ -291,6 +297,14 @@
 				active: data.active
 			}
 			$section.attr("data-rexlive-section-edited", true);
+			if(Rexbuilder_Util.activeLayout == "default"){
+                Rexbuilder_Util.updateDefaultLayoutStateSection($section);
+            }
+			var data = {
+				eventName: "rexlive:edited",
+				edited: true
+			}
+			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 			Rexbuilder_Util_Editor.pushAction($section, "updateSectionOverlay", actionData, reverseData);
 		});
 
@@ -331,6 +345,14 @@
 				height: data.height
 			}
 			$section.attr("data-rexlive-section-edited", true);
+			if(Rexbuilder_Util.activeLayout == "default"){
+                Rexbuilder_Util.updateDefaultLayoutStateSection($section);
+            }
+			var data = {
+				eventName: "rexlive:edited",
+				edited: true
+			}
+			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 			Rexbuilder_Util_Editor.pushAction($section, "updateSectionImageBG", actionData, reverseData);
 		});
 
@@ -402,6 +424,14 @@
 				typeVideo: data.typeVideo
 			}
 			$section.attr("data-rexlive-section-edited", true);
+			if(Rexbuilder_Util.activeLayout == "default"){
+                Rexbuilder_Util.updateDefaultLayoutStateSection($section);
+            }
+			var data = {
+				eventName: "rexlive:edited",
+				edited: true
+			}
+			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 			Rexbuilder_Util_Editor.pushAction($section, "updateSectionVideoBG", actionData, reverseData);
 		});
 
@@ -436,6 +466,14 @@
 
 			Rexbuilder_Dom_Util.updateBlockBackgroundColor(actionData);
 			$elem.attr("data-rexlive-element-edited", true);
+			if(Rexbuilder_Util.activeLayout == "default"){
+                Rexbuilder_Util.updateDefaultLayoutStateSection($section);
+            }
+			var data = {
+				eventName: "rexlive:edited",
+				edited: true
+			}
+			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 			Rexbuilder_Util_Editor.pushAction($section, "updateBlockBackgroundColor", actionData, reverseData);
 		});
 
@@ -469,6 +507,14 @@
 
 			Rexbuilder_Dom_Util.updateBlockOverlay(actionData);
 			$elem.attr("data-rexlive-element-edited", true);
+			if(Rexbuilder_Util.activeLayout == "default"){
+                Rexbuilder_Util.updateDefaultLayoutStateSection($section);
+            }
+			var data = {
+				eventName: "rexlive:edited",
+				edited: true
+			}
+			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 			Rexbuilder_Util_Editor.pushAction($section, "updateBlockOverlay", actionData, reverseData);
 		});
 
@@ -539,6 +585,14 @@
 				imageOpt: imageOpt
 			};
 			$elem.attr("data-rexlive-element-edited", true);
+			if(Rexbuilder_Util.activeLayout == "default"){
+                Rexbuilder_Util.updateDefaultLayoutStateSection($section);
+            }
+			var data = {
+				eventName: "rexlive:edited",
+				edited: true
+			}
+			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 			Rexbuilder_Util_Editor.pushAction($section, "updateBlockImageBG", actionData, reverseData);
 			Rexbuilder_Util_Editor.updatingImageBg = false;
 		});
@@ -622,6 +676,14 @@
 				videoOpt: videoOptions
 			}
 			$elem.attr("data-rexlive-element-edited", true);
+			if(Rexbuilder_Util.activeLayout == "default"){
+                Rexbuilder_Util.updateDefaultLayoutStateSection($section);
+            }
+			var data = {
+				eventName: "rexlive:edited",
+				edited: true
+			}
+			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 			Rexbuilder_Util_Editor.pushAction($section, "updateBlockVideoBG", actionData, reverseData);
 		});
 
@@ -661,6 +723,14 @@
 				dataPadding: data.paddings
 			}
 			$elem.attr("data-rexlive-element-edited", true);
+			if(Rexbuilder_Util.activeLayout == "default"){
+                Rexbuilder_Util.updateDefaultLayoutStateSection($section);
+            }
+			var data = {
+				eventName: "rexlive:edited",
+				edited: true
+			}
+			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 			Rexbuilder_Util_Editor.pushAction($section, "updateBlockPadding", actionData, reverseData);
 
 		});
@@ -705,6 +775,14 @@
 				dataPosition: data.position
 			}
 			$elem.attr("data-rexlive-element-edited", true);
+			if(Rexbuilder_Util.activeLayout == "default"){
+                Rexbuilder_Util.updateDefaultLayoutStateSection($section);
+            }
+			var data = {
+				eventName: "rexlive:edited",
+				edited: true
+			}
+			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 			Rexbuilder_Util_Editor.pushAction($section, "updateBlockFlexPosition", actionData, reverseData);
 		});
 
@@ -741,6 +819,14 @@
 			}
 
 			$elem.attr("data-rexlive-element-edited", true);
+			if(Rexbuilder_Util.activeLayout == "default"){
+                Rexbuilder_Util.updateDefaultLayoutStateSection($section);
+            }
+			var data = {
+				eventName: "rexlive:edited",
+				edited: true
+			}
+			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 			Rexbuilder_Util_Editor.pushAction($section, "updateCustomClasses", actionData, reverseData);
 		});
 
@@ -774,10 +860,18 @@
 			}
 
 			$elem.attr("data-rexlive-element-edited", true);
+			if(Rexbuilder_Util.activeLayout == "default"){
+                Rexbuilder_Util.updateDefaultLayoutStateSection($section);
+            }
+			var data = {
+				eventName: "rexlive:edited",
+				edited: true
+			}
+			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 			Rexbuilder_Util_Editor.pushAction($section, "updateBlockUrl", actionData, reverseData);
 		});
 
-		$(document).on("rexlive:editModal", function (e) {
+		$(document).on("rexlive:editModel", function (e) {
 			var data = e.settings.data_to_send;
 			var $section;
 

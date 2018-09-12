@@ -292,6 +292,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'rexlive-modals', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Modals.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-edit-modals', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Model_Edit_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexbuilder-Slider', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_RexSlider.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'Rexlive-ChangeLayout', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_ChangeLayout_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-util-admin', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Util_Admin_Editor.js', array( 'jquery' ), null, true );
 				global $post;
 				$source = get_permalink($post->ID);
@@ -1403,7 +1404,7 @@ class Rexbuilder_Admin {
 
         $targetsData = stripslashes($targets);
         update_post_meta($post_id_to_update, '_rex_model_customization_' . $layout_name, $targetsData);
-        $response['id_recived'] = $post_id_to_update;
+        $response['id_received'] = $post_id_to_update;
 
         wp_send_json_success($response);
 	}

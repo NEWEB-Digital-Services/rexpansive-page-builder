@@ -2,94 +2,129 @@ var Rex_Save_Listeners = (function ($) {
     'use strict';
     $(function () {
 
-        $(document).on("rexlive:saveDefaultLayout", function () {
+        $(document).on("rexlive:savePage", function (e) {
+            var eventData = e.settings.data_to_send;
+            var i, j, k, m, p, q;
 
-            Rexbuilder_Util_Editor.savingGrid = true;
-
+            Rexbuilder_Util_Editor.savingPage = true;
             var idPost = parseInt($('#id-post').attr('data-post-id'));
+            var activeLayoutName = Rexbuilder_Util.activeLayout;
 
-            var postClean = "";
-            //createCleanPost();
-            //console.log(postClean);
+            //getting custom css set in page
+            var customCSS = $("#rexpansive-builder-style-inline-css").text().trim();
 
-            var shortcodePage = '';
+            //creating customization of page
+            Rexbuilder_Dom_Util.fixModelNumbersSaving();
+            var newCustomization = createCustomization(activeLayoutName);
 
-            Rexbuilder_Util.$rexContainer.find('.rexpansive_section').each(function () {
-                var $section = $(this);
-                if (!$section.hasClass("removing_section")) {
-                    if (!$section.hasClass("rex-model-section")) {
-                        shortcodePage += createSectionProperties($section, "shortcode", null);
-                    } else {
-                        shortcodePage += "[RexModel id=" + $section.attr("data-rexlive-model-id") + "][/RexModel]";
-                    }
+            //updating customizations avaiable names
+            var layoutsNames = Rexbuilder_Util.getPageAvaiableLayoutsNames();
+            var flagNames = false;
+            for (i = 0; i < layoutsNames.length; i++) {
+                if (layoutsNames[i] == newCustomization.name) {
+                    flagNames = true;
+                    break;
                 }
-            });
+            }
+            if (!flagNames) {
+                layoutsNames.push(newCustomization.name);
+            }
 
-            $.ajax({
+            Rexbuilder_Util.updatePageAvaiableLayoutsNames(layoutsNames);
+            Rexbuilder_Util.updatePageCustomizationsData(newCustomization);
+
+            var ajaxCalls = [];
+            
+            //avaiable custom layouts
+            ajaxCalls.push(
+                $.ajax({
+                    type: 'POST',
+                    dataType: 'json',
+                    url: _plugin_frontend_settings.rexajax.ajaxurl,
+                    data: {
+                        action: 'rexlive_save_avaiable_layouts',
+                        nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+                        post_id_to_update: idPost,
+                        names: layoutsNames
+                    },
+                    success: function (response) {
+                        if (response.success) {
+                            console.log('nomi layout aggiornati!');
+                        }
+                    },
+                    error: function (response) {
+                    }
+                })
+            );
+
+            //custom css
+            ajaxCalls.push($.ajax({
                 type: 'POST',
                 dataType: 'json',
                 url: _plugin_frontend_settings.rexajax.ajaxurl,
                 data: {
-                    action: 'rexlive_save_default_layout',
+                    action: 'rexlive_save_custom_css',
                     nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
                     post_id_to_update: idPost,
-                    clean_post: postClean,
-                    rex_shortcode: shortcodePage,
+                    custom_css: customCSS
                 },
                 success: function (response) {
                     if (response.success) {
-                        console.log('shortcode pagina aggiornato!');
-                        Rexbuilder_Util.$rexContainer.removeClass("backend-edited");
+                        console.log('custom css aggiornato!');
                     }
                 },
                 error: function (response) {
                 }
-            });
-            Rexbuilder_Util_Editor.savingGrid = false;
-        });
+            }));
 
-        $(document).on('rexlive:saveCustomizations', function (e) {
-
-            var customCSS = $("#rexpansive-builder-style-inline-css").text();
-            customCSS = customCSS.trim();
-            saveCustomCSS(customCSS);
-
-            var idPost = parseInt($('#id-post').attr('data-post-id'));
-            var i, j, k, m, p, q;
-
-            var activeLayoutName = Rexbuilder_Util.activeLayout;
-
-            Rexbuilder_Dom_Util.fixModelNumbersSaving();
-
-            var newCustomization = createCustomization(activeLayoutName);
-
-            var customizationsArray = [];
-            //updaiting custom layouts with new sections
             if (activeLayoutName == "default") {
-                var flagSection;
+                var postClean = "";
+                var shortcodePage = '';
+                
+                Rexbuilder_Util.updateDefaultLayoutState({
+                    pageData: newCustomization.sections,
+                    modelsData: Rexbuilder_Util.getModelsCustomizations()
+                });
+
+                // shortcode of page
+                Rexbuilder_Util.$rexContainer.find('.rexpansive_section').each(function () {
+                    var $section = $(this);
+                    if (!$section.hasClass("removing_section")) {
+                        if (!$section.hasClass("rex-model-section")) {
+                            shortcodePage += createSectionProperties($section, "shortcode", null);
+                        } else {
+                            shortcodePage += "[RexModel id=" + $section.attr("data-rexlive-model-id") + "][/RexModel]";
+                        }
+                    }
+                });
+
+                //fixing customizations in page
+                var customizationsArray = [];
+               // var flagSection;
                 var flagTarget;
                 customizationsArray = Rexbuilder_Util.getPageCustomizationsDom();
-
+                console.log("customizationsArray",jQuery.extend(true, [], customizationsArray));
                 for (i = 0; i < customizationsArray.length; i++) {
                     var modelsNumbers = _countModels(customizationsArray[i].sections);
                     for (j = 0; j < newCustomization.sections.length; j++) {
-                        flagSection = false;
+                        //flagSection = false;
                         for (k = 0; k < customizationsArray[i].sections.length; k++) {
                             if (newCustomization.sections[j].section_rex_id == customizationsArray[i].sections[k].section_rex_id) {
                                 if (customizationsArray[i].sections[k].section_is_model.toString() == "true") {
                                     for (m = 0; m < modelsNumbers.length; m++) {
                                         if (modelsNumbers[m].id == customizationsArray[i].sections[k].section_model_id) {
                                             if (parseInt(newCustomization.sections[j].section_model_number) <= modelsNumbers[m].number) {
-                                                flagSection = true;
+                                                //flagSection = true;
                                             }
                                         }
                                     }
                                 } else {
-                                    flagSection = true;
+                                    //flagSection = true;
                                 }
 
                                 //adding new blocks to custom layouts
-                                if (flagSection && customizationsArray[i].sections[k].section_is_model.toString() != "true") {
+                                //if (flagSection && customizationsArray[i].sections[k].section_is_model.toString() != "true") {
+                                if (customizationsArray[i].sections[k].section_is_model.toString() != "true") {
                                     if (typeof customizationsArray[i].sections[k].targets == "undefined" || customizationsArray[i].sections[k].targets.length == 0) {
                                         customizationsArray[i].sections[k].targets = [];
                                         customizationsArray[i].sections[k].targets.push({
@@ -115,8 +150,9 @@ var Rex_Save_Listeners = (function ($) {
                                 }
                             }
                         }
-
-                        if (!flagSection) {
+                        //teoricamente non serve
+/*                         if (!flagSection) {
+                            console.log("qua non ci devi sta");
                             var sectionObj = {
                                 section_rex_id: newCustomization.sections[j].section_rex_id,
                                 targets: [],
@@ -126,54 +162,63 @@ var Rex_Save_Listeners = (function ($) {
                                 section_model_number: newCustomization.sections[j].section_model_number
                             }
                             customizationsArray[i].sections.splice(j, 0, sectionObj);
-                        }
+                        } */
                     }
                 }
-            }
-            customizationsArray.push(newCustomization);
-
-            //ajax call for saving layouts type and names
-            var layoutsNames = Rexbuilder_Util.getPageAvaiableLayoutsNames();
-            var flagNames = false;
-            for (i = 0; i < layoutsNames.length; i++) {
-                if (layoutsNames[i] == newCustomization.name) {
-                    flagNames = true;
-                    break;
-                }
-            }
-            if (!flagNames) {
-                layoutsNames.push(newCustomization.name);
-            }
-
-            Rexbuilder_Util_Editor.clearSectionsEdited();
-
-            Rexbuilder_Util.updatePageAvaiableLayoutsNames(layoutsNames);
-
-            $.ajax({
-                type: 'POST',
-                dataType: 'json',
-                url: _plugin_frontend_settings.rexajax.ajaxurl,
-                data: {
-                    action: 'rexlive_save_avaiable_layouts',
-                    nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-                    post_id_to_update: idPost,
-                    names: layoutsNames
-                },
-                success: function (response) {
-                    if (response.success) {
-                        console.log('nomi layout aggiornati!');
-                    }
-                },
-                error: function (response) {
-                }
-            });
-
-            if (activeLayoutName == "default") {
-                //if is default, have to update all layouts
-                for (i = 0; i < customizationsArray.length; i++) {
+                customizationsArray.push(newCustomization);
+                
+                for (var i = 0; i < customizationsArray.length; i++) {
                     Rexbuilder_Util.updatePageCustomizationsData(customizationsArray[i]);
                     Rexbuilder_Util.updatePageCustomizationsDomOrder(customizationsArray[i]);
+                    ajaxCalls.push(
+                        $.ajax({
+                            type: 'POST',
+                            dataType: 'json',
+                            url: _plugin_frontend_settings.rexajax.ajaxurl,
+                            data: {
+                                action: 'rexlive_save_customization_layout',
+                                nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+                                post_id_to_update: idPost,
+                                sections: JSON.stringify(customizationsArray[i].sections),
+                                layout_name: customizationsArray[i].name
+                            },
+                            success: function (response) {
+                                if (response.success) {
+                                    console.log('layout ' + response.data.layoutName + ' aggiornato!');
+                                }
+                            },
+                            error: function (response) {
+                            }
+                        })
+                    );
+                }
 
+                //save shortcode page
+                ajaxCalls.push(
+                    $.ajax({
+                        type: 'POST',
+                        dataType: 'json',
+                        url: _plugin_frontend_settings.rexajax.ajaxurl,
+                        data: {
+                            action: 'rexlive_save_default_layout',
+                            nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+                            post_id_to_update: idPost,
+                            clean_post: postClean,
+                            rex_shortcode: shortcodePage,
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                console.log('shortcode pagina aggiornato!');
+                                Rexbuilder_Util.$rexContainer.removeClass("backend-edited");
+                            }
+                        },
+                        error: function (response) {
+                        }
+                    })
+                );
+            } else {
+                //ajax calls 
+                ajaxCalls.push(
                     $.ajax({
                         type: 'POST',
                         dataType: 'json',
@@ -182,49 +227,35 @@ var Rex_Save_Listeners = (function ($) {
                             action: 'rexlive_save_customization_layout',
                             nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
                             post_id_to_update: idPost,
-                            sections: JSON.stringify(customizationsArray[i].sections),
-                            layout_name: customizationsArray[i].name
+                            sections: JSON.stringify(newCustomization.sections),
+                            layout_name: newCustomization.name
                         },
                         success: function (response) {
                             if (response.success) {
-                                console.log('layout custom aggiornato!');
+                                console.log('layout ' + response.data.layoutName + ' aggiornato!');
                             }
                         },
                         error: function (response) {
                         }
-                    });
-                }
-            } else {
-                //updaiting only custom layout
-                Rexbuilder_Util.updatePageCustomizationsData(newCustomization);
-                Rexbuilder_Util.updatePageCustomizationsDomOrder(newCustomization);
-
-                $.ajax({
-                    type: 'POST',
-                    dataType: 'json',
-                    url: _plugin_frontend_settings.rexajax.ajaxurl,
-                    data: {
-                        action: 'rexlive_save_customization_layout',
-                        nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-                        post_id_to_update: idPost,
-                        sections: JSON.stringify(newCustomization.sections),
-                        layout_name: newCustomization.name
-                    },
-                    success: function (response) {
-                        if (response.success) {
-                            console.log('layout custom aggiornato!');
-                        }
-                    },
-                    error: function (response) {
-                    }
-                });
+                    })
+                );
             }
-            
-            var data = {
-				eventName: "rexlive:edited",
-				edited: false
-			}
-			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+
+            // Can't pass a literal array, so use apply.
+            $.when.apply($, ajaxCalls).then(function () {
+                // Do your success stuff
+                Rexbuilder_Util_Editor.savingPage = false;
+                var data = {
+                    eventName: "rexlive:savePageEnded",
+                    buttonData: eventData.buttonData
+                }
+                Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+            }).fail(function () {
+                // Probably want to catch failure
+            }).always(function () {
+                // Or use always if you want to do the same thing
+                // whether the call succeeds or fails
+            });
         });
 
         $(document).on('rexlive:saveCustomizationsModel', function (e) {
@@ -352,31 +383,8 @@ var Rex_Save_Listeners = (function ($) {
                 complete: function (response) {
                 }
             });
-
         });
     })
-
-    var saveCustomCSS = function (styleToSave) {
-        var idPost = parseInt($('#id-post').attr('data-post-id'));
-        $.ajax({
-            type: 'POST',
-            dataType: 'json',
-            url: _plugin_frontend_settings.rexajax.ajaxurl,
-            data: {
-                action: 'rexlive_save_custom_css',
-                nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-                post_id_to_update: idPost,
-                custom_css: styleToSave
-            },
-            success: function (response) {
-                if (response.success) {
-                    console.log('custom css aggiornato!');
-                }
-            },
-            error: function (response) {
-            }
-        });
-    }
 
     var createCustomization = function (layoutName) {
         var data =
@@ -400,7 +408,8 @@ var Rex_Save_Listeners = (function ($) {
                 section_is_model: false,
                 section_model_id: "",
                 section_model_number: -1,
-                section_hide: false
+                section_hide: false,
+                section_created_live: false
             }
 
             section_props.section_hide = $section.hasClass("rex-hide-section");
@@ -889,7 +898,8 @@ var Rex_Save_Listeners = (function ($) {
             rexlive_section_id = '',
             collapse_grid = false,
             rexlive_model_id = '',
-            rexlive_model_name = '';
+            rexlive_model_name = '',
+            grid_cell_width = 1;
 
         var output = '';
         var $gridGallery = $section.find('.grid-stack-row');
@@ -992,6 +1002,7 @@ var Rex_Save_Listeners = (function ($) {
 
         rexlive_model_id = typeof $section.attr("data-rexlive-model-id") == "undefined" ? "" : $section.attr("data-rexlive-model-id");
         rexlive_model_name = typeof $section.attr("data-rexlive-model-name") == "undefined" ? "" : $section.attr("data-rexlive-model-name");
+        grid_cell_width = Rexbuilder_Util.getGalleryInstance($section).properties.singleWidth;
 
         if (mode == "shortcode") {
             output = '[RexpansiveSection'
@@ -1050,6 +1061,7 @@ var Rex_Save_Listeners = (function ($) {
             var props = {};
 
             props["collapse_grid"] = collapse_grid;
+            props["grid_cell_width"] = grid_cell_width;
             props["section_name"] = section_name;
             props["type"] = type;
             props["color_bg_section"] = color_bg_section;
@@ -1083,7 +1095,6 @@ var Rex_Save_Listeners = (function ($) {
             props["row_overlay_active"] = row_overlay_active;
             props["rexlive_model_id"] = rexlive_model_id;
             props["rexlive_model_name"] = rexlive_model_name;
-            props["overwritten"] = false;
             return props;
         }
     }

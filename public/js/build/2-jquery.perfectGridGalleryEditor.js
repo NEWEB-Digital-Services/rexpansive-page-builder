@@ -154,7 +154,15 @@
                         !Rexbuilder_Util_Editor.updatingCollapsedGrid &&
                         !Rexbuilder_Util_Editor.openingModel &&
                         !Rexbuilder_Util_Editor.blockCopying &&
-                        !Rexbuilder_Util_Editor.savingGrid) {
+                        !Rexbuilder_Util_Editor.savingPage) {
+                        var data = {
+                            eventName: "rexlive:edited",
+                            edited: true
+                        }
+                        Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+                        if(Rexbuilder_Util.activeLayout == "default"){
+                            Rexbuilder_Util.updateDefaultLayoutStateSection(that.$section);
+                        }
                         var actionData = that.createActionDataMoveBlocksGrid();
                         that.$element.attr("data-rexlive-layout-changed", true);
                         Rexbuilder_Util_Editor.pushAction(that.$section, "updateSectionBlocksDisposition", $.extend(true, {}, actionData), $.extend(true, {}, that.properties.reverseDataGridDisposition));
@@ -326,13 +334,9 @@
             var that = this;
             var collapseGrid = newSettings.collapse_grid;
             setTimeout(function () {
-                console.log("grid almost ready");
-                console.log("collapse?");
                 if (collapseGrid.toString() == "true") {
-                    console.log("yes");
                     that.collapseElements();
                 } else {
-                    console.log("no");
                     that.removeCollapseElementsProperties();
                 }
                 that.properties.updatingSectionSameGrid = false;
@@ -2522,14 +2526,7 @@
                     h = newH;
                     gridstack.update(elem, x, y, w, h);
                 } else {
-                    /*                     
-                                        if ($blockData.attr("data-custom_layout") == "true" && !this.properties.updatingSection) {
-                                            newH = startH;
-                                            gridstack.resize(elem, w, newH);
-                                        } else { 
-                    */
                     gridstack.resize(elem, w, newH);
-                    //                  }
                 }
                 if (Rexbuilder_Util_Editor.updatingPaddingBlock) {
                     this.fixElementTextSize(elem, null, null);

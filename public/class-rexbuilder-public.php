@@ -458,8 +458,8 @@ endif;
         $clearData = stripslashes($_POST['sections']);
         update_post_meta($post_id_to_update, '_rex_customization_' . $layout_name, $clearData);
 
-        $response['id_recived'] = $post_id_to_update;
-
+        $response['id_received'] = $post_id_to_update;
+        $response['layoutName'] = $layout_name;
         wp_send_json_success($response);
     }
 
@@ -488,7 +488,7 @@ endif;
         $targetsData = stripslashes($targets);
         update_post_meta($post_id_to_update, '_rex_model_customization_' . $layout_name, $targetsData);
 
-        $response['id_recived'] = $post_id_to_update;
+        $response['id_received'] = $post_id_to_update;
 
         wp_send_json_success($response);
     }
@@ -531,7 +531,7 @@ endif;
         update_post_meta($post_id_to_update, '_save_from_backend', "false" );
 
         $response['update'] = $update;
-        $response['id_recived'] = $post_id_to_update;
+        $response['id_received'] = $post_id_to_update;
 
         wp_send_json_success($response);
     }
@@ -753,6 +753,12 @@ endif;
                                 $hideSection = "false";
                             }
 
+                            if(isset($section_targets["section_created_live"])){
+                                $createdLive = $section_targets["section_created_live"];
+                            } else {
+                                $createdLive = "false";
+                            }
+
                             if(isset($section_targets["targets"])){
                                 $targets = $section_targets["targets"];
                             } else{
@@ -764,6 +770,7 @@ endif;
                             echo ' data-model-id="'.$sectionModelID.'"';
                             echo ' data-model-number="'.$sectionModelNumber.'"';
                             echo ' data-section-hide="'.$hideSection.'"';
+                            echo ' data-section-created-live="'.$createdLive.'"';
                             echo '>';
 
                             if($targets != ""){
@@ -785,10 +792,9 @@ endif;
                 }
                 ?></div>
             </div>
-            <div id="rexbuilder-layout-data-live" style="display: none;">
-            </div>
-            <div id="rexbuilder-layouts-sections-order" style="display: none;">
-            </div>
+            <div id="rexbuilder-layout-data-live" style="display: none;"></div>
+            <div id="rexbuilder-layouts-sections-order" style="display: none;"></div>
+            <div id="rexbuilder-default-layout-state" style="display: none;" data-empty-default-customization="true"></div>
             <?php
     if ($editor == "true") {
             ?><button id="rex-open-ace-css-editor" class="btn-floating tooltipped" data-position="bottom" data-tooltip="<?php _e('CSS Editor', $this->plugin_name);?>">

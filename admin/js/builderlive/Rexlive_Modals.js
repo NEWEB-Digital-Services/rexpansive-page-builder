@@ -26,6 +26,9 @@ var Rexlive_Modals = (function ($) {
 
         // layouts
         CustomLayouts_Modal.init();
+
+        // change active layout
+        Change_Layout_Modal.init();
     }
 
     return {
