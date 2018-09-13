@@ -2129,25 +2129,27 @@ var Rexbuilder_Util = (function ($) {
                 _edit_dom_layout(Rexbuilder_Util_Editor.clickedLayoutID);
             } else {
                 _edit_dom_layout(chooseLayout());
-
-                Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function (e, row) {
-                    var galleryEditorInstance = $(row).data().plugin_perfectGridGalleryEditor;
-                    if (galleryEditorInstance !== undefined) {
-                        galleryEditorInstance.batchGridstack();
-                        galleryEditorInstance._defineDynamicPrivateProperties();
-                        galleryEditorInstance.updateGridstackStyles();
-                        galleryEditorInstance.updateBlocksHeight();
-                        galleryEditorInstance.commitGridstack();
-                        //waiting for gridstack commit
-                        setTimeout(galleryEditorInstance.createScrollbars(), 200);
-                    }
-                });
+                _updateGridsHeights();
             }
             Rexbuilder_Util.windowIsResizing = false;
             firstResize = true;
         }
-
     }
+
+    var _updateGridsHeights = function(){
+        Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function (e, row) {
+            var galleryEditorInstance = $(row).data().plugin_perfectGridGalleryEditor;
+            if (galleryEditorInstance !== undefined) {
+                galleryEditorInstance.batchGridstack();
+                galleryEditorInstance._defineDynamicPrivateProperties();
+                galleryEditorInstance.updateGridstackStyles();
+                galleryEditorInstance.updateBlocksHeight();
+                galleryEditorInstance.commitGridstack();
+                //waiting for gridstack commit
+                setTimeout(galleryEditorInstance.createScrollbars(), 200);
+            }
+        });
+    };
 
     var _stopBlockVideos = function ($elem) {
         _stopVideo($elem.find(".grid-item-content"));
@@ -2639,6 +2641,7 @@ var Rexbuilder_Util = (function ($) {
         updateDefaultLayoutStateDOMOrder: _updateDefaultLayoutStateDOMOrder,
         getDefaultLayoutState: _getDefaultLayoutState,
         updateSectionOrderCustomLayouts: _updateSectionOrderCustomLayouts,
+        updateGridsHeights: _updateGridsHeights,
     };
 
 })(jQuery);

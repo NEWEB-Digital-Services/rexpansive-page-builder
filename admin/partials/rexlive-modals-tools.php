@@ -27,15 +27,15 @@ global $layoutsAvaiable;
                 <div class="layout">
                   <div class="layout__setting">
                     <input type="hidden" name="rexlive-layout-id" value="<?php echo esc_attr( $layout['id'] ); ?>">
-                    <input type="hidden" name="rexlive-layout-label" data-editable-field="true" value="<?php echo esc_attr( $layout['label'] ); ?>">
+                    <input class="layout-label-input" type="hidden" name="rexlive-layout-label" data-editable-field="true" value="<?php echo esc_attr( $layout['label'] ); ?>">
                     <span class="layout-value"><?php echo $layout['label']; ?></span>
                   </div>
                   <div class="layout__setting">
-                    <input type="hidden" name="rexlive-layout-min" data-editable-field="true" value="<?php echo esc_attr( $layout['min'] ); ?>">
+                    <input class="layout-min-input" type="hidden" name="rexlive-layout-min" data-editable-field="true" value="<?php echo esc_attr( $layout['min'] ); ?>">
                     <span class="layout-value"><?php echo $layout['min']; ?>px</span>
                   </div>
                   <div class="layout__setting">
-                    <input type="hidden" name="rexlive-layout-max" data-editable-field="true" value="<?php echo esc_attr( $layout['max'] ); ?>">
+                    <input class="layout-max-input" type="hidden" name="rexlive-layout-max" data-editable-field="true" value="<?php echo esc_attr( $layout['max'] ); ?>">
                     <span class="layout-value"><?php echo ( "" != $layout['max'] ? $layout['max'] . 'px' : '&infin;' ); ?></span>
                   </div>
                   <?php if( 'standard' == $layout['type'] ) { ?>
@@ -76,9 +76,6 @@ global $layoutsAvaiable;
     <div class="rex-modal-footer">
       <button class="waves-effect waves-light btn-flat grey rex-cancel-button" value="">
         <i class="rex-icon">n</i>
-      </button>
-      <button class="waves-effect waves-light btn-flat blue darken-1 rex-save-button" value="">
-        <i class="rex-icon">m</i>
       </button>
     </div>
   </div>

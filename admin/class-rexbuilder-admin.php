@@ -574,7 +574,7 @@ class Rexbuilder_Admin {
 
 			</script>
 		</div>
-	<?php
+		<?php
 				endif;
 			endif;
 		endif;

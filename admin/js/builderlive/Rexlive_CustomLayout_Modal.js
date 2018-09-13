@@ -1,10 +1,9 @@
 var CustomLayouts_Modal = (function ($) {
     'use strict';
 
-    var $buttonsWrapper;
-
-    var $custom_layout_modal;
-    var $layoutData;
+    var custom_layouts_modal_props;
+    var activeLayout;
+    var activeLayoutData;
 
     /**
      * Creating the ID of a new layout. Checks if one exists
@@ -17,42 +16,13 @@ var CustomLayouts_Modal = (function ($) {
         do {
             flag = true;
             id = Rexbuilder_Util_Admin_Editor.createRandomID(idLength);
-            $custom_layout_modal.find('.layout__item').each(function () {
+            custom_layouts_modal_props.$layoutsList.find('.layout__item').each(function () {
                 if ($(this).find('input[name=rexlive-layout-id]').val() == id) {
                     flag = false;
                 }
             });
         } while (!flag);
         return id;
-    }
-
-    var _updateLayouts = function (newLayout, oldLayouts) {
-        var availableLayoutsData = [];
-
-        var i;
-        for (i = 0; i < oldLayouts.length; i++) {
-            var layout = oldLayouts[i];
-
-            //se è presente aggiorno i dati del layout
-            if (layout.id == newLayout.id) {
-                if (layout.min != newLayout.min) {
-                    layout.min = newLayout.min;
-                }
-                if (layout.max != newLayout.max) {
-                    layout.max = newLayout.max;
-                }
-                if (layout.label != newLayout.label) {
-                    layout.label = newLayout.label;
-                }
-                newLayout.presente = true;
-            }
-            availableLayoutsData.push(layout);
-        }
-
-        if (typeof newLayout.presente == "undefined") {
-            availableLayoutsData.push(newLayout);
-        }
-        return availableLayoutsData;
     }
 
     var _updateLayoutsDB = function (updatedLayouts) {
@@ -68,7 +38,7 @@ var CustomLayouts_Modal = (function ($) {
             success: function (response) {
                 console.log(response);
                 if (response.success) {
-                    console.log('cusotm layouts aggiornati');
+                    console.log('custom layouts aggiornati');
                 }
                 console.log('chiama effettuata con successo');
             },
@@ -77,115 +47,275 @@ var CustomLayouts_Modal = (function ($) {
             }
         });
     }
+    
+    var _getLayoutsData = function () {
+        var layouts = [];
+        custom_layouts_modal_props.$layoutsList.find('.layout__item').each(function (i, e) {
+            var $item = $(e);
+                var buttonData = {
+                    'id': $item.find('input[name=rexlive-layout-id]').val(),
+                    'label': $item.find('input[name=rexlive-layout-label]').val(),
+                    'min': $item.find('input[name=rexlive-layout-min]').val(),
+                    'max': $item.find('input[name=rexlive-layout-max]').val(),
+                    'type': $item.find('input[name=rexlive-layout-type]').val(),
+                };
+                layouts.push(buttonData);
+        });
+        return layouts;
+    };
 
     var _updateLayoutsDataIframe = function (data) {
+        var layoutFounded = false;
+        var updateHeights = false;
+
+        for(i=0; i<data.length; i++){
+            if(activeLayoutData.id == data[i].id){
+                layoutFounded = true;
+                if(activeLayoutData.min != data[i].min && data[i].id != "default"){
+                    updateHeights = true;
+                    activeLayoutData.min = data[i].min;
+                    Rexbuilder_Util_Admin_Editor.updateIframeWidth(data[i].min);
+                }
+                break;
+            }
+        }
         var dataLayout = {
             eventName: "rexlive:updateLayoutsDimensions",
             data_to_send: {
-                layouts: data
+                layouts: data,
+                updateHeights: updateHeights
             }
         }
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataLayout);
+        setTimeout(function () {
+            if(!layoutFounded){
+                Rexbuilder_Util_Admin_Editor.setActiveLayout("default");
+                Rexbuilder_Util_Admin_Editor.updateLayoutPage({
+                    min: "",
+                    max: "",
+                    id: "default",
+                    label: "My Desktop",
+                    type: "standard"
+                });
+                _updateActiveLayout("default");
+            }
+        }, 50, layoutFounded);
     }
-
+    
     var _updateLayoutsDataDiv = function (data) {
-        $layoutData.text(JSON.stringify(data));
-    }
-
-    var _openModal = function(){
-        Rexpansive_Builder_Admin_Modals.OpenModal($custom_layout_modal.parent('.rex-modal-wrap'));
-    }
-
-    var _closeModal = function(){
-        Rexpansive_Builder_Admin_Modals.CloseModal($custom_layout_modal.parent('.rex-modal-wrap'));
+        custom_layouts_modal_props.$layoutDataContainer.text(JSON.stringify(data));
     }
 
     var _updateButtons = function(data){
-        console.log(data);
+        var k;
+        custom_layouts_modal_props.$buttonsWrapper.find(".btn-builder-layout").each(function (i, button) { 
+            var $button = $(button);
+            for(k=0; k<data.length; k++){
+                if ($button.attr("data-name") == data[k].id && data[k].id != "default") {
+                    if ($button.attr("data-min-width") != data[k].min) {
+                        $button.attr("data-min-width", data[k].min);
+                    }
+                    if ($button.attr("data-max-width") != data[k].max) {
+                        $button.attr("data-max-width",data[k].max);
+                    }
+                    if ($button.text() != data[k].label) {
+                        $button.text(data[k].label);
+                    }
+                    break;
+                }
+            }
+        });
     }
 
-    var _linkDocumentListeners = function () {
-        $buttonsWrapper.find('.builder-config-layouts').on('click', function (e) {
+    var _updateLayoutsData = function(){
+        var dataAvaiableLayouts = _getLayoutsData();
+        _updateButtons(dataAvaiableLayouts);
+        _updateLayoutsDataDiv(dataAvaiableLayouts);
+        _updateLayoutsDataIframe(dataAvaiableLayouts);
+    }
+
+    var _updateActiveLayout = function(activeLayout){
+        custom_layouts_modal_props.$layoutsList.find(".layout.active-on-page").removeClass("active-on-page");
+        custom_layouts_modal_props.$layoutsList.find(".layout input[name=\"rexlive-layout-id\"][value=\""+activeLayout+"\"]").parents(".layout").addClass("active-on-page");
+    }
+
+    var _openModal = function(){
+        Rexpansive_Builder_Admin_Modals.OpenModal(custom_layouts_modal_props.$self.parent('.rex-modal-wrap'));
+    }
+
+    var _closeModal = function(){
+        Rexpansive_Builder_Admin_Modals.CloseModal(custom_layouts_modal_props.$self.parent('.rex-modal-wrap'));
+    }
+
+    var _keyDownHandlerNumber = function(e){
+        var $input = $(e.target);
+        // Allow: backspace, delete, tab, enter and .
+        if ($.inArray(e.keyCode, [46, 8, 9, 13, 110]) !== -1 ||
+            // Allow: Ctrl+A, Command+A
+            (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
+            // Allow: home, end, left, right, down, up
+            (e.keyCode >= 35 && e.keyCode <= 40)) {
+            // let it happen, don't do anything
+            if (e.keyCode == 38) { // up
+                e.preventDefault();
+                $input.val(isNaN(parseInt($input.val())) ? 0 : parseInt($input.val()) + 1);
+            }
+
+            if (e.keyCode == 40) { //down
+                e.preventDefault();
+                $input.val(Math.max(isNaN(parseInt($input.val())) ? 0 : parseInt($input.val()) - 1, 0));
+            }
+            return;
+        }
+
+        // Ensure that it is a number and stop the keypress
+        if ((e.shiftKey || (e.keyCode < 48 || e.keyCode > 57)) && (e.keyCode < 96 || e.keyCode > 105)) {
             e.preventDefault();
-            _openModal();
-        });
+        }
+    }
 
-        $custom_layout_modal.on('click', '.rex-cancel-button', function (e) {
-            Rexpansive_Builder_Admin_Modals.CloseModal($custom_layout_modal.parent('.rex-modal-wrap'));
-        });
+    var _keyUpHandlerNumber = function (e) {
+        var $target = $(e.target);
+        if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode == 38) || (e.keyCode == 40) || (e.keyCode == 8)) {
+            e.preventDefault();
+            $target.parents(".layout__setting").find(".layout-value").text($target.val()+"px");
+            _updateLayoutsData();
+        }
+        if (e.keyCode == 13 || e.keyCode == 27) {
+            e.preventDefault();
+            var $layoutWrapper = $target.parents(".layout").eq(0);
+            $layoutWrapper.find('.dashicons-before.dashicons-edit').removeClass('hide-icon');
+            $layoutWrapper.find('.dashicons-before.dashicons-trash').removeClass('hide-icon');
+            $layoutWrapper.find('.dashicons-before.dashicons-yes').addClass('hide-icon');
+            $layoutWrapper.parent().removeClass('editing');
+            $layoutWrapper.find('input[data-editable-field=true]').attr('type', 'hidden');
+        }
+    }
 
-        $custom_layout_modal.on('click', '.rex-save-button', function (e) {
-            var layoutsToSave = [];
-            tmpl.arg = "button";
+    var _keyUpHandlerLabel = function (e) {
+        e.preventDefault();
+        var $target = $(e.target);
+        $target.parents(".layout__setting").find(".layout-value").text($target.val());
+        if (e.keyCode == 13 || e.keyCode == 27) {
+            e.preventDefault();
+            var $layoutWrapper = $target.parents(".layout").eq(0);
+            $layoutWrapper.find('.dashicons-before.dashicons-edit').removeClass('hide-icon');
+            $layoutWrapper.find('.dashicons-before.dashicons-trash').removeClass('hide-icon');
+            $layoutWrapper.find('.dashicons-before.dashicons-yes').addClass('hide-icon');
+            $layoutWrapper.parent().removeClass('editing');
+            $layoutWrapper.find('input[data-editable-field=true]').attr('type', 'hidden');
+        }
+        _updateLayoutsData();
+    }
+    
+    var _linkDocumentListeners = function () {
 
-            $custom_layout_modal.find('.layout__item').each(function (i, e) {
-                var $item = $(e);
-
-                if(!$item.hasClass("removing-item")){
-
-                    var buttonData = {
-                        'id': $item.find('input[name=rexlive-layout-id]').val(),
-                        'label': $item.find('input[name=rexlive-layout-label]').val(),
-                        'min': $item.find('input[name=rexlive-layout-min]').val(),
-                        'max': $item.find('input[name=rexlive-layout-max]').val(),
-                        'type': $item.find('input[name=rexlive-layout-type]').val(),
-                    };
-
-                    layoutsToSave.push(buttonData);
-
-                    if($item.hasClass("new-layout")){
-                        var newButtonData = jQuery.extend(true, {}, buttonData);
-                        if(newButtonData.maxWidth == ""){
-                            newButtonData.maxWidth = "&infin;"
-                        } else{
-                            newButtonData.maxWidth = buttonData.maxWidth + "px";
-                        }
-                        console.log(newButtonData);
-                        var $itemBefore = $item.prev();
-                        $itemBefore.after(tmpl("rexlive-tmpl-custom-layout-modal"), newButtonData); 
-                        $item.remove();
-                    }
-                }
-            });
-
-            _updateLayoutsDB(layoutsToSave);
-            _updateLayoutsDataIframe(layoutsToSave);
-            _updateLayoutsDataDiv(layoutsToSave);
-            _updateButtons(layoutsToSave);
-
+        custom_layouts_modal_props.$close_button.click(function (e) {
+            e.preventDefault();
+            _updateLayoutsDB(_getLayoutsData());
             _closeModal();
         });
 
-        $custom_layout_modal.on('click', '#rexlive-add-custom-layout', function () {
-            $custom_layout_modal.find('.layout__list').append(tmpl('rexlive-tmpl-new-layout', { l_id: create_layout_id() }));
+        custom_layouts_modal_props.$config_layouts.on('click', function (e) {
+            e.preventDefault();
+            activeLayout = Rexbuilder_Util_Admin_Editor.getActiveLayout();
+            activeLayoutData = {
+                id: "",
+                min: "",
+                max: ""
+            };
+
+            var $activeButton = custom_layouts_modal_props.$buttonsWrapper.find("button[data-name=\""+activeLayout+"\"]");
+            activeLayoutData.id = $activeButton.attr("data-name");
+            activeLayoutData.min = $activeButton.attr("data-min-width");
+            activeLayoutData.max = $activeButton.attr("data-max-width");
+
+            _updateActiveLayout(activeLayout);
+            _openModal();
         });
 
-        $custom_layout_modal.on('click', '.rexlive-layout--edit', function (e) {
-            $(e.currentTarget).find('.dashicons-before').toggleClass('hide-icon');
+        custom_layouts_modal_props.$add_custom_layout_button.on('click', function () {
+            var idCreated = create_layout_id();
 
+            tmpl.arg = "customLayout";
+            var $newCustom = $(tmpl('rexlive-tmpl-custom-layout-modal', {
+                id: idCreated,
+                label: "",
+                minWidth: "",
+                maxWidth: "",
+                type: "custom"
+            }));
+            custom_layouts_modal_props.$layoutsList.append($newCustom[0]);
+
+            var $layoutWrapper = $newCustom.find(".layout").eq(0);
+            $layoutWrapper.find('.dashicons-before.dashicons-edit').addClass('hide-icon');
+            $layoutWrapper.find('.dashicons-before.dashicons-trash').removeClass('hide-icon');
+            $layoutWrapper.find('.dashicons-before.dashicons-yes').removeClass('hide-icon');
+            $layoutWrapper.parent().addClass('editing');
+            $layoutWrapper.find('input[data-editable-field=true]').attr('type', 'input');
+
+            custom_layouts_modal_props.$buttonsWrapper.append(tmpl("rexlive-tmpl-custom-layout-button", {
+                id: idCreated,
+                label: "",
+                minWidth: "",
+                maxWidth: "",
+                type: "custom"
+            }));
+            _updateLayoutsData();
+        });
+
+        custom_layouts_modal_props.$self.on("click", ".rexlive-layout--edit", function(e){
+            $(e.currentTarget).find('.dashicons-before').toggleClass('hide-icon');
             if ($(e.target).hasClass('dashicons-yes')) {
-                $(this).parents('.layout__item').removeClass('editing').find('input[data-editable-field=true]').attr('type', 'hidden');
+                $(this).parents('.layout__item').eq(0).removeClass('editing').find('input[data-editable-field=true]').attr('type', 'hidden');
             } else if ($(e.target).hasClass('dashicons-edit')) {
-                $(this).parents('.layout__item').addClass('editing').find('input[data-editable-field=true]').attr('type', 'input');
+                $(this).parents('.layout__item').eq(0).addClass('editing').find('input[data-editable-field=true]').attr('type', 'input');
             }
         });
 
-        $custom_layout_modal.on('click', '.rexlive-layout--delete', function () {
-            $(this).parents('.layout__item').addClass("removing-item");
+        custom_layouts_modal_props.$self.on("click", ".rexlive-layout--delete", function(e){
+            if (confirm("sei sicuro?")) {
+                var idLayout = $(this).parents('.layout__item').find('input[name=rexlive-layout-id]').val();
+                custom_layouts_modal_props.$buttonsWrapper.find("button[data-name=\""+idLayout+"\"]").parent().remove();
+                $(this).parents('.layout__item').remove();
+                _updateLayoutsData();
+            }
         });
 
-        $custom_layout_modal.on('click', '.rexlive-remove-custom-layout', function () {
-            $(this).parents('.layout__item').remove();
+        custom_layouts_modal_props.$self.on("keydown", "input.layout-min-input", function(e){
+            _keyDownHandlerNumber(e);
+        });
+        
+        custom_layouts_modal_props.$self.on("keydown", "input.layout-max-input", function(e){
+            _keyDownHandlerNumber(e); 
+        });
+
+        custom_layouts_modal_props.$self.on("keyup", "input.layout-min-input", function(e){
+            _keyUpHandlerNumber(e);
+        });
+        
+        custom_layouts_modal_props.$self.on("keyup", "input.layout-max-input", function(e){
+            _keyUpHandlerNumber(e); 
+        });
+
+        custom_layouts_modal_props.$self.on("keyup", "input.layout-label-input", function(e){
+            _keyUpHandlerLabel(e); 
         });
     }
 
-
     var _init = function () {
-
-        $custom_layout_modal = $('#rexlive-custom-layout-modal');
-        $buttonsWrapper = Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.find(".rexlive-responsive-buttons-wrapper");
-        $layoutData = Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.find("#rexbuilder-layout-data-backend > .avaiable-layouts");
-
+        var $container = $('#rexlive-custom-layout-modal');
+        var $buttonsWrapper = Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.find(".rexlive-responsive-buttons-wrapper");
+        var $layoutData = Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.find("#rexbuilder-layout-data-backend > .avaiable-layouts");
+        custom_layouts_modal_props = {
+            $self: $container,
+            $close_button: $container.find('.rex-cancel-button'),
+            $buttonsWrapper: $buttonsWrapper,
+            $config_layouts: $buttonsWrapper.find('.builder-config-layouts'),
+            $layoutDataContainer: $layoutData,
+            $layoutsList: $container.find(".layout__list"),
+            $add_custom_layout_button: $container.find("#rexlive-add-custom-layout"),
+        }
         _linkDocumentListeners();
     }
 

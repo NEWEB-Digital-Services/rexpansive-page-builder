@@ -356,6 +356,16 @@ var Rexbuilder_Util_Editor = (function ($) {
             Rexbuilder_Util_Editor.clickedLayoutID = data.selectedLayoutName;
             _fixToolsVisibility(data.selectedLayoutName);
         });
+        
+        $(document).on("rexlive:updateLayoutsDimensions", function (e) {
+            var data = e.settings.data_to_send;
+            $("#layout-avaiable-dimensions").text(JSON.stringify(data.layouts));
+            if (data.updateHeights) {
+                Rexbuilder_Util.windowIsResizing = true;
+                Rexbuilder_Util.updateGridsHeights();
+                Rexbuilder_Util.windowIsResizing = false;
+            }
+        });
 
         $(document).on('rexlive:undo', function (e) {
             if (undoStackArray.length > 0) {
@@ -400,10 +410,6 @@ var Rexbuilder_Util_Editor = (function ($) {
         $(document).on("rexlive:change_block_overlay_color", function (e) {
             var data = e.settings;
             Rexbuilder_Dom_Util.updateBlockOverlayColorLive(data.data_to_send.target, data.data_to_send.color);
-        });
-
-        $(document).on("rexlive:updateLayoutsDimensions", function (e) {
-            console.log("rexlive:updateLayoutsDimensions");
         });
 
         $(document).on("rexlive:newSliderSavedOnDB", function (e) {

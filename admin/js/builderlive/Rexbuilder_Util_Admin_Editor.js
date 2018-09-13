@@ -107,10 +107,10 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                         break;
                     default: 
                         break;
-                }
-                if(typeof event.data.buttonData !== "undefined" && event.data.buttonData != ""){
-                    if (modelSaved && pageSaved){
-                        Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find(".btn-save").removeClass("rex-saving");
+                    }
+                if (modelSaved && pageSaved) {
+                    Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find(".btn-save").removeClass("rex-saving");
+                    if (typeof event.data.buttonData !== "undefined" && event.data.buttonData != "") {
                         _updateLayoutPage(event.data.buttonData);
                     }
                 }
@@ -155,7 +155,6 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         });
 
         $(document).on('click', '.btn-save', function (e) {
-            //console.log("saving");
             $(e.target).addClass("rex-saving");
             var dataSave = {
                 eventName: "rexlive:savePage",
@@ -167,7 +166,6 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         });
 
         $(document).on('click', '.btn-undo', function (e) {
-            //console.log("undo");
             var data = {
                 eventName: "rexlive:undo",
             };
@@ -176,7 +174,6 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         });
 
         $(document).on('click', '.btn-redo', function (e) {
-            //console.log("redo");
             var data = {
                 eventName: "rexlive:redo",
             };
@@ -212,6 +209,17 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         }
     }
 
+    var _updateIframeWidth= function(newWidth, flagDefault){
+        flagDefault = typeof flagDefault == "undefined" ? false : flagDefault;
+        if(flagDefault){
+            $frameContainer.css("width", "100%");
+            $frameContainer.css("min-width", "1024px");
+        } else{
+            $frameContainer.css("width", newWidth);
+            $frameContainer.css("min-width", "");
+        }
+    }
+
     var _sendIframeBuilderMessage = function (data) {
         var infos = {
             rexliveEvent: true
@@ -230,6 +238,14 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         }
 
         return text;
+    }
+
+    var _getActiveLayout = function(){
+        return activeLayoutPage;
+    }
+
+    var _setActiveLayout = function(layout){
+        activeLayoutPage = layout;
     }
 
     // init the utilities
@@ -252,6 +268,9 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         createRandomID: _createRandomID,
         sendIframeBuilderMessage: _sendIframeBuilderMessage,
         updateLayoutPage: _updateLayoutPage,
+        getActiveLayout: _getActiveLayout,
+        setActiveLayout: _setActiveLayout,
+        updateIframeWidth: _updateIframeWidth,
     };
 
 })(jQuery);

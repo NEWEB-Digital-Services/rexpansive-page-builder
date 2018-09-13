@@ -196,3 +196,11 @@
 .rex-saving.btn-save{
 	background-color: #757575;
 }
+
+#rexlive-custom-layout-modal .rex-cancel-button{
+	width: 100%;
+}
+
+.layout.active-on-page{
+	background-color: lightblue;
+}

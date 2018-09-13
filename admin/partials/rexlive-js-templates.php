@@ -3,55 +3,32 @@
 defined('ABSPATH') or exit;
 
 ?>
-<script type="text/x-tmpl" id="rexlive-tmpl-new-layout">
-<li class="layout__item new-layout">
-    <div class="layout">
-        <div class="layout__setting">
-            <input type="hidden" name="rexlive-layout-id" value="{%=o.l_id%}">
-            <input type="text" name="rexlive-layout-label" placeholder="Name">
-        </div>
-        <div class="layout__setting">
-            <input type="text" name="rexlive-layout-min" placeholder="From">
-        </div>
-        <div class="layout__setting">
-            <input type="text" name="rexlive-layout-max" placeholder="To">
-        </div>
-        <div class="layout__setting">
-            <input type="hidden" name="rexlive-layout-type" value="custom">
-        </div>
-        <div class="layout__setting">
-            <button class="builder-button btn-floating btn light-blue darken-1 waves-effect waves-light tooltipped rexlive-remove-custom-layout" data-position="bottom" data-tooltip="Add Layout">
-                <i class="rex-icon">n</i>
-            </button>
-        </div>
-    </div>
-</li>
-</script>
-
 <script type="text/x-tmpl" id="rexlive-tmpl-custom-layout-button">
-<button class="btn-builder-layout builder-{%=button.id%}-layout" data-min-width="{%=button.minWidth%}" data-max-width="{%=button.maxWidth%}" data-name="{%=button.id%}">
-    {%=button.label%}
-</button>
+<div>
+    <button class="btn-builder-layout builder-{%=customLayout.id%}-layout" data-min-width="{%=customLayout.minWidth%}" data-max-width="{%=customLayout.maxWidth%}" data-name="{%=customLayout.id%}">
+        {%=customLayout.label%}
+    </button>
+</div>
 </script>
 
 <script type="text/x-tmpl" id="rexlive-tmpl-custom-layout-modal">
 <li class="layout__item">
     <div class="layout">
         <div class="layout__setting">
-            <input type="hidden" name="rexlive-layout-id" value="{%=button.id%}">
-            <input type="hidden" name="rexlive-layout-label" data-editable-field="true" value="{%=button.label%}">
-            <span class="layout-value">{%=button.label%}</span>
+            <input type="hidden" name="rexlive-layout-id" value="{%=customLayout.id%}">
+            <input class="layout-label-input" type="hidden" name="rexlive-layout-label" data-editable-field="true" value="{%=customLayout.label%}">
+            <span class="layout-value">{%=customLayout.label%}</span>
         </div>
         <div class="layout__setting">
-            <input type="hidden" name="rexlive-layout-min" data-editable-field="true" value="{%=button.minWidth%}">
-            <span class="layout-value">{%=button.minWidth%}px</span>
+            <input class="layout-min-input" type="hidden" name="rexlive-layout-min" data-editable-field="true" value="{%=customLayout.minWidth%}">
+            <span class="layout-value">{%=customLayout.minWidth%}px</span>
         </div>
         <div class="layout__setting">
-            <input type="hidden" name="rexlive-layout-max" data-editable-field="true" value="{%=button.maxWidth%}">
-            <span class="layout-value">{%=button.maxWidth%}</span>
+            <input class="layout-max-input" type="hidden" name="rexlive-layout-max" data-editable-field="true" value="{%=customLayout.maxWidth%}">
+            <span class="layout-value">&infin;</span>
         </div>
         <div class="layout__setting">
-            <input type="hidden" name="rexlive-layout-type" value="{%=button.type%}">
+            <input type="hidden" name="rexlive-layout-type" value="{%=customLayout.type%}">
             <span class="rexlive-layout--edit">
                 <span class="dashicons-edit dashicons-before"></span>
                 <span class="dashicons-yes dashicons-before hide-icon"></span>

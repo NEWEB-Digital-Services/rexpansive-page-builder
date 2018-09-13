@@ -40,17 +40,12 @@ $layoutsAvaiable = get_option('_rex_responsive_layouts', $defaultLayoutsAvaiable
 
 ?>
 <div id="rexpansive-builder-backend-wrapper">
+	<div id="rexbuilder-layout-data-backend" style="display: none;">
+		<div class = "available-layouts"><?php echo json_encode($layoutsAvaiable);?></div>
+	</div>
 	<?php
 	include_once "rexlive-toolbox-fixed.php";
-
 	?>
-	<div id="rexbuilder-layout-data-backend" style="display: none;">
-		<div class = "available-layouts">
-			<?php
-echo json_encode($layoutsAvaiable);
-?>
-		</div>
-	</div>
 	<div class="rexpansive-live-frame-container">
 		<iframe id="rexpansive-live-frame" src="<?php echo $source; ?>" allowfullscreen="1" style="width:100%;height:100%;border: 0px;"></iframe>
 	</div>
