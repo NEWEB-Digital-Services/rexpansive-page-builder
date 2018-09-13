@@ -4629,7 +4629,6 @@ a.pswp-item {
   height: 100%; }
 
 .image-span-wrap {
-  /*serve per il debug*/
   background-color: blue;
   display: inline-block;
   position: static; }
@@ -5142,7 +5141,7 @@ a.pswp-item {
   z-index: 101; }
 
 .rex-container.editing-model .update-model-button:not(.unlocked) {
-  z-index: 20; }
+  z-index: 30; }
 
 .rexpansive-block-section-toolbox {
   position: absolute;

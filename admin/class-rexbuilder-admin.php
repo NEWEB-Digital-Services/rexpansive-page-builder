@@ -540,7 +540,7 @@ class Rexbuilder_Admin {
 					} else {
 						$builder_active = get_post_meta( get_the_id(), '_rexbuilder_active', true);
 					}
-	?>
+		?>
 		<div class="builder-heading rexpansive-builder rexbuilder-materialize-wrap">
 			<img src="<?php echo plugin_dir_url( __FILE__ ); ?>img/rexpansive-builder.png" alt="logo" width="260" />
 			<div class="builder-switch-wrap">
@@ -575,6 +575,10 @@ class Rexbuilder_Admin {
 			</script>
 		</div>
 		<?php
+			$savedFromLive = get_post_meta( get_the_id(), '_save_from_backend', true);
+			if(isset($savedFromLive) && $savedFromLive == "false"){
+				echo "<div style=\"text-align:center\">Yo, guarda che hai salvato dal live, ora non puoi modificare dal vecchio builder</div>";
+			}
 				endif;
 			endif;
 		endif;
