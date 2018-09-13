@@ -21,7 +21,6 @@
 }
 
 .image-span-wrap{
-    /*serve per il debug*/
     background-color: blue;
     display: inline-block;      
     position: static;
@@ -648,6 +647,12 @@
     .update-model-button,
     .builder-copy-row {
         z-index: 101;
+    }
+}
+
+.rex-container.editing-model{
+    .update-model-button:not(.unlocked){
+        z-index: 30;
     }
 }
 

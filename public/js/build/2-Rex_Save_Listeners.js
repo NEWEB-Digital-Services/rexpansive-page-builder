@@ -103,7 +103,6 @@ var Rex_Save_Listeners = (function ($) {
                 // var flagSection;
                 var flagTarget;
                 customizationsArray = Rexbuilder_Util.getPageCustomizationsDom();
-                console.log("customizationsArray", jQuery.extend(true, [], customizationsArray));
                 for (i = 0; i < customizationsArray.length; i++) {
                     var modelsNumbers = _countModels(customizationsArray[i].sections);
                     for (j = 0; j < newCustomization.sections.length; j++) {
@@ -150,19 +149,6 @@ var Rex_Save_Listeners = (function ($) {
                                 }
                             }
                         }
-                        //teoricamente non serve
-                        /*                         if (!flagSection) {
-                                                    console.log("qua non ci devi sta");
-                                                    var sectionObj = {
-                                                        section_rex_id: newCustomization.sections[j].section_rex_id,
-                                                        targets: [],
-                                                        section_is_model: newCustomization.sections[j].section_is_model.toString(),
-                                                        section_hide: false,
-                                                        section_model_id: newCustomization.sections[j].section_model_id,
-                                                        section_model_number: newCustomization.sections[j].section_model_number
-                                                    }
-                                                    customizationsArray[i].sections.splice(j, 0, sectionObj);
-                                                } */
                     }
                 }
                 customizationsArray.push(newCustomization);
@@ -247,7 +233,8 @@ var Rex_Save_Listeners = (function ($) {
                 Rexbuilder_Util_Editor.savingPage = false;
                 var data = {
                     eventName: "rexlive:savePageEnded",
-                    buttonData: eventData.buttonData
+                    buttonData: eventData.buttonData,
+                    dataSaved: "page"
                 }
                 Rexbuilder_Util_Editor.sendParentIframeMessage(data);
             }).fail(function () {
@@ -259,16 +246,18 @@ var Rex_Save_Listeners = (function ($) {
         });
 
         $(document).on("rexlive:saveModel", function (e) {
-
+            if (!Rexbuilder_Util.$rexContainer.hasClass("editing-model")) {
+                return;
+            }
             var ajaxCalls = [];
             Rexbuilder_Util_Editor.savingModel = true;
-            var data = e.settings;
-            var $section = data.$section;
+            var $section = Rexbuilder_Util.$rexContainer.find(".rex-model-section .update-model-button.unlocked").eq(0).parents(".rexpansive_section");
             var activeLayout = Rexbuilder_Util.activeLayout;
-            var i, j, k;
+            var i;
             var modelID = typeof $section.attr("data-rexlive-model-id") != "undefined" ? $section.attr("data-rexlive-model-id") : "";
             var modelName = typeof $section.attr("data-rexlive-model-name") != "undefined" ? $section.attr("data-rexlive-model-name") : "";
-            
+            var modelEditedNumber = typeof $section.attr("data-rexlive-model-number") != "undefined" ? $section.attr("data-rexlive-model-number") : "";
+
             var oldModels = Rexbuilder_Util.getModelsCustomizations();
             var modelActive = {};
             for (i = 0; i < oldModels.length; i++) {
@@ -324,8 +313,7 @@ var Rex_Save_Listeners = (function ($) {
                 for (i = 0; i < modelCustomLayoutData.customizations.length; i++) {
                     // have to update others model with same ID
                     if (modelCustomLayoutData.customizations[i].name == activeLayout) {
-                        Rexbuilder_Util.updateModelsLive(idModel, modelCustomLayoutData.customizations[i].targets, modelEditedNumber);
-                        // aggiornare dom
+                        Rexbuilder_Util.updateModelsLive(modelID, createTargets($section, "default"), modelEditedNumber);
                         ajaxCalls.push(
                             $.ajax({
                                 type: 'POST',
@@ -389,7 +377,7 @@ var Rex_Save_Listeners = (function ($) {
                         }
                     })
                 );
-                
+
                 for (i = 0; i < modelCustomLayoutData.customizations.length; i++) {
                     // have to update only active layout
                     // if active is default, update all with new blocks
@@ -421,7 +409,16 @@ var Rex_Save_Listeners = (function ($) {
             // Can't pass a literal array, so use apply.
             $.when.apply($, ajaxCalls).then(function () {
                 // Do your success stuff
+                var $button = Rexbuilder_Util.$rexContainer.find(".rex-model-section .update-model-button.unlocked").eq(0);
+                Rexbuilder_Dom_Util.updateLockEditModel($button, true);
+                Rexbuilder_Util.$rexContainer.removeClass("editing-model");
                 Rexbuilder_Util_Editor.savingModel = false;
+                var data = {
+                    eventName: "rexlive:savePageEnded",
+                    dataSaved: "model",
+                    buttonData: typeof e.settings != "undefined" ? e.settings.data_to_send.buttonData : ""
+                }
+                Rexbuilder_Util_Editor.sendParentIframeMessage(data);
                 console.log("salvataggio modello finito!");
             }).fail(function () {
                 // Probably want to catch failure
@@ -566,7 +563,6 @@ var Rex_Save_Listeners = (function ($) {
 
         if (layoutName == "default" || checkEditsSection($section)) {
             section_props.props = createSectionProperties($section, "customLayout", null);
-            Rexbuilder_Util.activeLayout = layoutName;
         }
 
         if (saveBlockDisposition) {
@@ -1141,6 +1137,7 @@ var Rex_Save_Listeners = (function ($) {
             props["row_overlay_active"] = row_overlay_active;
             props["rexlive_model_id"] = rexlive_model_id;
             props["rexlive_model_name"] = rexlive_model_name;
+            props["section_edited"] = true;
             return props;
         }
     }

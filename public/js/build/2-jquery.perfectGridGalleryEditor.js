@@ -158,9 +158,10 @@
                         !Rexbuilder_Util_Editor.savingModel) {
                         var data = {
                             eventName: "rexlive:edited",
-                            edited: true
+                            modelEdited: that.$section.hasClass("rex-model-section")
                         }
                         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+                        
                         if (Rexbuilder_Util.activeLayout == "default") {
                             Rexbuilder_Util.updateDefaultLayoutStateSection(that.$section);
                         }
@@ -177,7 +178,6 @@
 
                 this._launchTextEditor();
                 this._createFirstReverseStack();
-
             }
 
             this.saveStateGrid();
@@ -821,7 +821,6 @@
         batchGridstack: function () {
             if (!this.properties.gridstackBatchMode) {
                 if (this.properties.gridstackInstance !== null) {
-                    //console.log("enter batch mode");
                     this.properties.gridstackInstance.batchUpdate();
                 }
                 this.properties.gridstackBatchMode = true;
@@ -831,7 +830,6 @@
         commitGridstack: function () {
             if (this.properties.gridstackBatchMode && !Rexbuilder_Util.domUpdaiting) {
                 if (this.properties.gridstackInstance !== null) {
-                    //console.log("exit batch mode");
                     this.properties.gridstackInstance.commit();
                 }
                 this.properties.gridstackBatchMode = false;

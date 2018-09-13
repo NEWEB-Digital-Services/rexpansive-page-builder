@@ -354,13 +354,7 @@ var Rexbuilder_Util_Editor = (function ($) {
             Rexbuilder_Util.chosenLayoutData = jQuery.extend(true, {}, data.layoutData);
             Rexbuilder_Util_Editor.buttonResized = true;
             Rexbuilder_Util_Editor.clickedLayoutID = data.selectedLayoutName;
-            if (data.selectedLayoutName == "default") {
-                Rexbuilder_Util.$rexContainer.removeClass("rex-hide-responsive-tools");
-                Rexbuilder_Util.$rexContainer.parent().removeClass("rex-hide-responsive-tools");
-            } else {
-                Rexbuilder_Util.$rexContainer.parent().addClass("rex-hide-responsive-tools");
-                Rexbuilder_Util.$rexContainer.addClass("rex-hide-responsive-tools");
-            }
+            _fixToolsVisibility(data.selectedLayoutName);
         });
 
         $(document).on('rexlive:undo', function (e) {
@@ -623,6 +617,11 @@ var Rexbuilder_Util_Editor = (function ($) {
     }
 
     var _restorePageStartingState = function(eventData){
+        if (Rexbuilder_Util.$rexContainer.hasClass("editing-model")) {
+            var $button = Rexbuilder_Util.$rexContainer.find(".rex-model-section .update-model-button.unlocked").eq(0);
+            Rexbuilder_Dom_Util.updateLockEditModel($button, true);
+            Rexbuilder_Util.$rexContainer.removeClass("editing-model");
+        }
         var data = {
             eventName: "rexlive:restoreStateEnded",
             buttonData: eventData.buttonData

@@ -28,6 +28,7 @@ var Rexbuilder_Section = (function ($) {
 
         $gallery.removeClass("grid-number-" + oldSectionNumber);
 
+        //removing old gridstack instance class
         $gallery.removeClass(function (index, className) {
             return (className.match(/grid-stack-instance-\d+/g) || []).join(' ');
         });
@@ -132,9 +133,8 @@ var Rexbuilder_Section = (function ($) {
 
             var data = {
                 eventName: "rexlive:edited",
-                edited: true
+                modelEdited: $section.hasClass("rex-model-section")
             }
-
             Rexbuilder_Util_Editor.sendParentIframeMessage(data);
         });
 
@@ -252,14 +252,14 @@ var Rexbuilder_Section = (function ($) {
 
             Rexbuilder_Util_Editor.sectionCopying = false;
             Rexbuilder_Util_Editor.insertingModel = false;
+
             var data = {
                 eventName: "rexlive:edited",
-                edited: true
+                modelEdited: $section.hasClass("rex-model-section")
             }
             Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 
             if (Rexbuilder_Util.activeLayout == "default") {
-                console.log(newSectionNumber)
                 Rexbuilder_Util.updateDefaultLayoutStateSection($newSection, newSectionNumber);
             }
         });
@@ -389,11 +389,13 @@ var Rexbuilder_Section = (function ($) {
                     }
                 }
             }
+
             var data = {
                 eventName: "rexlive:edited",
-                edited: true
+                modelEdited: $section.hasClass("rex-model-section")
             }
             Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+            
             if (Rexbuilder_Util.activeLayout == "default") {
                 Rexbuilder_Util.updateDefaultLayoutStateSection($section);
             }
@@ -500,7 +502,7 @@ var Rexbuilder_Section = (function ($) {
 
             var data = {
                 eventName: "rexlive:edited",
-                edited: true
+                modelEdited: $newSection.hasClass("rex-model-section")
             }
             Rexbuilder_Util_Editor.sendParentIframeMessage(data);
             if (Rexbuilder_Util.activeLayout == "default") {
@@ -672,7 +674,7 @@ var Rexbuilder_Section = (function ($) {
             Rexbuilder_Util_Editor.insertingModel = false;
             var data = {
                 eventName: "rexlive:edited",
-                edited: true
+                modelEdited: false
             }
             Rexbuilder_Util_Editor.sendParentIframeMessage(data);
         });
@@ -837,7 +839,7 @@ var Rexbuilder_Section = (function ($) {
                 //$section.attr("data-rexlive-section-edited", true);
                 var data = {
                     eventName: "rexlive:edited",
-                    edited: true
+                    modelEdited: $section.hasClass("rex-model-section")
                 }
                 Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 

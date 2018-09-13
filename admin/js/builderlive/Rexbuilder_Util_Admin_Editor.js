@@ -5,7 +5,8 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
     'use strict';
 
     var activeLayoutPage;
-    var editedLive;
+    var modelSaved;
+    var pageSaved;
 
     var $frameContainer;
     var $frameBuilder;
@@ -33,7 +34,11 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
             var eventData = event.data;
 
             if (event.data.eventName == "rexlive:edited") {
-                editedLive = event.data.edited;
+                if(event.data.modelEdited){
+                    modelSaved = false;
+                } else{
+                    pageSaved = false;
+                }
             }
 
             if (event.data.eventName == "rexlive:openMediaUploader") {
@@ -93,16 +98,28 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
             }
 
             if (event.data.eventName == "rexlive:savePageEnded") {
-                Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find(".btn-save").removeClass("rex-saving");
-                editedLive = false;
-                if(typeof event.data.buttonData !== "undefined"){
-                    _updateLayoutPage(event.data.buttonData);
+                switch (event.data.dataSaved) {
+                    case 'model':
+                        modelSaved = true;
+                        break;
+                    case 'page':
+                        pageSaved = true;
+                        break;
+                    default: 
+                        break;
+                }
+                if(typeof event.data.buttonData !== "undefined" && event.data.buttonData != ""){
+                    if (modelSaved && pageSaved){
+                        Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find(".btn-save").removeClass("rex-saving");
+                        _updateLayoutPage(event.data.buttonData);
+                    }
                 }
             }
 
             if (event.data.eventName == "rexlive:restoreStateEnded") {
-                editedLive = false;
-                if(typeof event.data.buttonData !== "undefined"){
+                modelSaved = true;
+                pageSaved = true;
+                if(typeof event.data.buttonData !== "undefined" && typeof event.data.buttonData != ""){
                     _updateLayoutPage(event.data.buttonData);
                 }
             }
@@ -124,8 +141,13 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                     type: _findLayoutType(btnName)
                 };
 
-                if (editedLive) {
-                    Change_Layout_Modal.openModal(activeLayoutPage, buttonData);
+                if (!(modelSaved && pageSaved)) {
+                    Change_Layout_Modal.openModal({
+                        activeLayout: activeLayoutPage,
+                        buttonData: buttonData,
+                        modelSaved: modelSaved,
+                        pageSaved: pageSaved
+                    });
                     return;
                 }
                 _updateLayoutPage(buttonData);
@@ -166,8 +188,8 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
     }
     
     var _updateLayoutPage = function(buttonData){
-
-        editedLive = false;
+        modelSaved = true;
+        pageSaved = true;
         activeLayoutPage = buttonData.id;
         updateResponsiveButtonFocus();
 
@@ -219,9 +241,9 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         frameBuilderWindow = $frameBuilder[0].contentWindow;
 
         this.$responsiveToolbar = this.$rexpansiveContainer.find(".rexlive-responsive-toolbox");
-
+        pageSaved = true;
+        modelSaved = true;
         activeLayoutPage = "default";
-        editedLive = false;
         _addDocumentListeners();
     };
 

@@ -15,9 +15,10 @@ var Rexbuilder_CreateBlocks = (function ($) {
         if(Rexbuilder_Util.activeLayout == "default"){
             Rexbuilder_Util.updateDefaultLayoutStateSection($section);
         }
+
         var data = {
             eventName: "rexlive:edited",
-            edited: true
+            modelEdited: $section.hasClass("rex-model-section")
         }
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });
@@ -43,7 +44,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
         }
         var data = {
             eventName: "rexlive:edited",
-            edited: true
+            modelEdited: $section.hasClass("rex-model-section")
         }
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });
@@ -119,7 +120,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
         }
         var data = {
             eventName: "rexlive:edited",
-            edited: true
+            modelEdited: $section.hasClass("rex-model-section")
         }
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });
@@ -202,7 +203,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
         }
         var data = {
             eventName: "rexlive:edited",
-            edited: true
+            modelEdited: $section.hasClass("rex-model-section")
         }
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });
@@ -221,7 +222,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
         }
         var data = {
             eventName: "rexlive:edited",
-            edited: true
+            modelEdited: $section.hasClass("rex-model-section")
         }
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });

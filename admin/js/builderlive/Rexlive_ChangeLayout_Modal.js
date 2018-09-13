@@ -4,9 +4,11 @@ var Change_Layout_Modal = (function ($) {
     var activeLayoutPage;
     var buttonData;
 
-    var _openModal = function (layoutName, button) {
-        activeLayoutPage = layoutName;
-        buttonData = button;
+    var _openModal = function (data) {
+        activeLayoutPage = data.activeLayout;
+        buttonData = data.buttonData;
+        console.log("page status saved: ", data.pageSaved);
+        console.log("model status saved: ", data.modelSaved);
         Rexlive_Modals_Utils.openModal(layout_changing_props.$self.parent('.rex-modal-wrap'));
     }
 
@@ -22,15 +24,20 @@ var Change_Layout_Modal = (function ($) {
             switch (optionSelected) {
                 case "save":
                     Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find(".btn-save").addClass("rex-saving");
-                    var dataSave = {
+                    var dataSavePage = {
                         eventName: "rexlive:savePage",
                         data_to_send: {
-                            selected: activeLayoutPage,
-                            eventName: "",
                             buttonData: buttonData,
                         }
                     }
-                    Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataSave);
+                    var dataSaveModel = {
+                        eventName: "rexlive:saveModel",
+                        data_to_send: {
+                            buttonData: buttonData,
+                        }
+                    }
+                    Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataSavePage);
+                    Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataSaveModel);
                     break;
                 case "continue":
                     var data = {

@@ -124,7 +124,7 @@ var Rex_Navigator = (function ($) {
                 var $item = $navigatorWrap.find('li a[href="#' + oldName + '"]').parent();
                 $item.remove();
                 $section.attr("id", "");
-                $section.attr("href", "");
+                $section.removeAttr("href");
             }
         }
 

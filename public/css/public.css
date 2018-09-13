@@ -5141,6 +5141,9 @@ a.pswp-item {
 .rexlive-block-grid-editing .builder-copy-row {
   z-index: 101; }
 
+.rex-container.editing-model .update-model-button:not(.unlocked) {
+  z-index: 20; }
+
 .rexpansive-block-section-toolbox {
   position: absolute;
   width: 100%;

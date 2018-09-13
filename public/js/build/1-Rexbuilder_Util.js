@@ -524,6 +524,7 @@ var Rexbuilder_Util = (function ($) {
         var targetFounded;
         // merging custom data with default data
         console.log("layoutSelectedSections", jQuery.extend(true, [], layoutSelectedSections));
+        console.log("defaultLayoutSections", jQuery.extend(true, [], defaultLayoutSections));
         if (Rexbuilder_Util.activeLayout != "default") {
             for (i = 0; i < layoutSelectedSections.length; i++) {
                 layoutSelectedSections[i].sectionFounded = false;
@@ -533,10 +534,11 @@ var Rexbuilder_Util = (function ($) {
                         layoutSelectedSections[i].sectionFounded = true;
                         var sectionCustom = layoutSelectedSections[i];
                         var sectionDefault = defaultLayoutSections[j];
-                        if (jQuery.isEmptyObject(sectionCustom.targets[0].props) || (typeof sectionCustom.sectionCleared != "undefined" && sectionCustom.sectionCleared)) {
+                        if ((typeof sectionCustom.targets[0] == "undefined" || jQuery.isEmptyObject(sectionCustom.targets[0].props)) || (typeof sectionCustom.sectionCleared != "undefined" && sectionCustom.sectionCleared)) {
                             sectionCustom.defaultSection = true;
+                            sectionCustom.targets = jQuery.extend(true, [], sectionDefault.targets);
                         }
-
+                        
                         for (m = 0; m < sectionCustom.targets.length; m++) {
                             targetFounded = false;
                             for (n = 0; n < sectionDefault.targets.length; n++) {
@@ -634,11 +636,7 @@ var Rexbuilder_Util = (function ($) {
         return jQuery.extend(true, {}, layoutSelectedSections);
     }
 
-    var _edit_dom_layout = function (chosenLayoutName) {
-        if (Rexbuilder_Util.editorMode) {
-            Rexbuilder_Util_Editor.fixToolsVisibility(chosenLayoutName);
-        }
-
+    var _edit_dom_layout = function (chosenLayoutName) {        
         if (chosenLayoutName == Rexbuilder_Util.activeLayout) {
             if (chosenLayoutName == "default") {
                 if (_viewport().width >= _plugin_frontend_settings.defaultSettings.collapseWidth) {
@@ -651,7 +649,7 @@ var Rexbuilder_Util = (function ($) {
                 return;
             }
         }
-
+        
         Rexbuilder_Util.$rexContainer.attr("data-rex-layout-selected", chosenLayoutName);
         Rexbuilder_Util.activeLayout = chosenLayoutName;
 
@@ -827,17 +825,22 @@ var Rexbuilder_Util = (function ($) {
                 var $elem = $gallery.children('div[data-rexbuilder-block-id="' + targetName + '"]');
                 var $itemData = $elem.children(".rexbuilder-block-data");
                 var $itemContent = $elem.find(".grid-item-content");
-
-                var postionData = {
-                    x: targetProps["gs_x"],
-                    y: targetProps["gs_y"],
-                    w: targetProps["gs_width"],
-                    h: targetProps["gs_height"],
-                    startH: targetProps["gs_start_h"],
+                var positionDataActive = {
+                    x: $elem.attr("data-gs-x"),
+                    y: $elem.attr("data-gs-y"),
+                    w: $elem.attr("data-gs-width"),
+                    h: $elem.attr("data-gs-height"),
+                    startH: $itemData.attr("data-gs_start_h"),
+                }
+                var positionData = {
+                    x: typeof targetProps["gs_x"] == "undefined" ? positionDataActive.x : targetProps["gs_x"],
+                    y: typeof targetProps["gs_y"] == "undefined" ? positionDataActive.y : targetProps["gs_y"],
+                    w: typeof targetProps["gs_width"] == "undefined" ? positionDataActive.w : targetProps["gs_width"],
+                    h: typeof targetProps["gs_height"] == "undefined" ? positionDataActive.h : targetProps["gs_height"],
+                    startH: typeof targetProps["gs_start_h"] == "undefined" ? positionDataActive.startH : targetProps["gs_start_h"],
                     gridstackInstance: gridstackInstance,
                 };
-
-                _updateElementDimensions($elem, $itemData, postionData);
+                _updateElementDimensions($elem, $itemData, positionData);
 
                 var mp4ID = !isNaN(parseInt(targetProps["video_bg_id"])) ? parseInt(targetProps["video_bg_id"]) : "";
                 var youtubeUrl = typeof targetProps["video_bg_url_youtube"] == "undefined" ? "" : targetProps["video_bg_url_youtube"];
@@ -1022,18 +1025,18 @@ var Rexbuilder_Util = (function ($) {
 
         updateSection($section, $gallery, targets[0].props, forceCollapseElementsGrid);
         var collapse = typeof targets[0].props.collapse_grid == "undefined" ? false : (targets[0].props.collapse_grid.toString() == "true" || forceCollapseElementsGrid);
-
+        
         if (galleryData !== undefined) {
-
             var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
             if (galleryEditorInstance !== undefined) {
                 Rexbuilder_Util.domUpdaiting = true;
-
+                
                 galleryEditorInstance.properties.gridstackInstance.commit();
                 //waiting for gridstack updating blocks dimensions with saved data
                 setTimeout(function () {
                     Rexbuilder_Util.domUpdaiting = true;
                     galleryEditorInstance.batchGridstack();
+                    galleryEditorInstance.properties.gridstackInstance.batchUpdate();
                     //updaiting blocks height for masonry
                     if (galleryEditorInstance.settings.galleryLayout == "masonry" && !collapse) {
                         galleryEditorInstance.updateBlocksHeight();
@@ -1043,7 +1046,7 @@ var Rexbuilder_Util = (function ($) {
                     if (targets[0].props.wasCollapsed) {
                         galleryEditorInstance.collapseElementsProperties();
                     }
-                    galleryEditorInstance.commitGridstack();
+                    galleryEditorInstance.properties.gridstackInstance.commit();
                     setTimeout(function () {
                         Rexbuilder_Util.domUpdaiting = false;
                         galleryEditorInstance.properties.dispositionBeforeCollapsing = galleryEditorInstance.createActionDataMoveBlocksGrid();
@@ -1055,7 +1058,7 @@ var Rexbuilder_Util = (function ($) {
                         galleryEditorInstance._updateElementsSizeViewers();
                         Rexbuilder_Util.playAllVideos();
                     }, 200, galleryEditorInstance);
-                }, 200, galleryEditorInstance);
+                }, 300, galleryEditorInstance);
             }
         }
     }
@@ -1068,6 +1071,7 @@ var Rexbuilder_Util = (function ($) {
                 _updateDOMelements($section, targets, false);
             }
         });
+        Rexbuilder_Util.domUpdaiting = false;
     }
 
     var _saveCustomizationDomOrder = function (pageCustomizations) {
@@ -1689,6 +1693,9 @@ var Rexbuilder_Util = (function ($) {
             classList = newClasses.split(/\s+/);
         }
         Rexbuilder_Dom_Util.updateCustomClasses($section, classList);
+
+        var sectionEdited = typeof targetProps["section_edited"] == "undefined" ? false : (targetProps["section_edited"].toString() == "true" ? true : false);
+        $section.attr("data-rexlive-section-edited", sectionEdited);
     }
 
     var _updateElementDimensions = function ($elem, $elemData, posData) {
