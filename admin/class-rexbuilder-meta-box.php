@@ -783,9 +783,11 @@ class Rexbuilder_Meta_Box {
       !wp_verify_nonce( $_POST[ 'rexbuilder_meta_nonce' ], basename( __FILE__ ) ) ) {
       return $post_id;
     }
+    
     if( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) {
       return $post_id;
     }
+
     $plugin_options = get_option( $this->plugin_name . '_options' );
     if( in_array( $_POST[ 'post_type' ], $plugin_options['post_types'] ) ) {
       if( !current_user_can( 'edit_page', $post_id ) ) {
@@ -796,7 +798,7 @@ class Rexbuilder_Meta_Box {
     }
     
     foreach ( $this->fields as $field ) :
-
+      
       if('rexpansive_plugin' == $field["type"] ){
         $savedFromBackend = get_post_meta( get_the_id(), '_save_from_backend', true);
         if(isset($savedFromBackend) && $savedFromBackend == "false"){

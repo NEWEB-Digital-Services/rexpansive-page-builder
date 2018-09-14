@@ -11,10 +11,8 @@ var Model_Modal = (function ($) {
 
     var modelSelectedID;
     var modelInPageNumbers;
-
-    var _openModal = function (data) {
-        rexmodel_modal_props.$model_import_wrap.removeClass("hide-import-wrap");
-        rexmodel_modal_props.$model_insert_success_wrap.text("");
+    
+    var _updateModelList = function(data){
         target = data.sectionTarget;
         modelSelectedID = data.modelID;
         sectionShortCode = data.shortCode;
@@ -23,14 +21,85 @@ var Model_Modal = (function ($) {
         model_created = false;
         modelInPageNumbers = data.modelsNumbers;
 
-        rexmodel_modal_props.$model_name.val('');
-        rexmodel_modal_props.$model_import.find('option[value=0]').prop('selected', true);
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: live_editor_obj.ajaxurl,
+            data: {
+                action: 'rex_get_model_list',
+                nonce_param: live_editor_obj.rexnonce,
+            },
+            success: function (response) {
+                if (response.success) {
+                    var currentList = [];
+                    var modelObj = {
+                        id: '0',
+                        founded: true
+                    }
+                    currentList.push(modelObj);
+                    rexmodel_modal_props.$model_import.children().each(function (i, model) {
+                        var modelID = $(model).val();
+                        if(modelID != "0"){
+                            var modelObj = {
+                                id: modelID,
+                                founded: false
+                            }
+                            currentList.push(modelObj);
+                        }
+                    });
+                    var updatedList = response.data.updated_list;
+                    var i, j;
 
-        if (modelSelectedID != "") {
-            rexmodel_modal_props.$model_import.find('option[value=0]').prop('selected', false);
-            rexmodel_modal_props.$model_import.find('option[value=' + modelSelectedID + ']').prop('selected', true);
-        }
-        Rexlive_Modals_Utils.openModal(rexmodel_modal_props.$self.parent('.rex-modal-wrap'));
+                    for(i=0; i<updatedList.length; i++){
+                        updatedList[i].founded = false;
+                    }
+                    
+                    for(i=0; i<updatedList.length; i++){
+                        for(j=0; j<currentList.length; j++){
+                            if(updatedList[i].id == currentList[j].id){
+                                updatedList[i].founded = true;
+                                currentList[j].founded = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    for(i=0; i<updatedList.length; i++){
+                        if(!updatedList[i].founded){
+                            rexmodel_modal_props.$model_import.children().eq(0).after('<option value="' + updatedList[i].id + '">' + updatedList[i].name + '</option>');
+                        }
+                    }
+
+                    for(i=0; i<currentList.length; i++){
+                        if(!currentList[i].founded){
+                            rexmodel_modal_props.$model_import.find('option[value=' + currentList[i].id + ']').remove();
+                        }
+                    }
+
+                    rexmodel_modal_props.$model_name.val('');
+                    rexmodel_modal_props.$model_import.find('option[value=0]').prop('selected', true);
+                    if (modelSelectedID != "") {
+                        rexmodel_modal_props.$model_import.find('option[value=0]').prop('selected', false);
+                        rexmodel_modal_props.$model_import.find('option[value=' + modelSelectedID + ']').prop('selected', true);
+                    }
+                    Rexlive_Modals_Utils.openModal(rexmodel_modal_props.$self.parent('.rex-modal-wrap'));
+                }
+            },
+            error: function (response) {
+                ;
+            },
+            complete: function (response) {
+                rexmodel_modal_props.$self.removeClass('rex-modal--loading');
+            }
+        })
+    }
+
+    var _openModal = function (data) {
+        rexmodel_modal_props.$model_import_wrap.removeClass("hide-import-wrap");
+        rexmodel_modal_props.$model_insert_success_wrap.text("");
+
+        //update models list
+        _updateModelList(data);
     }
 
     var _closeModal = function () {

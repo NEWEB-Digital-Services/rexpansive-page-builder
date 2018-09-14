@@ -87,7 +87,11 @@ class Rexbuilder_Section
 
             global $section_layout;
             $section_layout = $layout;
-            $editor = $_GET['editor'];
+            if(isset($_GET['editor'])){
+                $editor = $_GET['editor'];
+            } else{
+                $editor = false;
+            }
 
             $section_style = 'style="';
             if ("" != $id_image_bg_section) {
@@ -244,7 +248,8 @@ class Rexbuilder_Section
                 echo 'data-video_mp4_url="' . $video_mp4_url . '"';
             }
             echo '></div>';
-            if (isset($editor)) {
+            
+            if (isset($editor) && $editor == "true") {
                 include REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-section-tools.php";
             }
 

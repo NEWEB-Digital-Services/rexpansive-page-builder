@@ -577,7 +577,7 @@ class Rexbuilder_Admin {
 		<?php
 			$savedFromBackend = get_post_meta( get_the_id(), '_save_from_backend', true);
 			if(isset($savedFromBackend) && $savedFromBackend == "false"){
-				echo "<div style=\"text-align:center\">Yo, guarda che hai salvato dal live, ora non puoi modificare dal vecchio builder</div>";
+				echo "<div style=\"text-align:center\">Hei, guarda che hai salvato dal live, ora non puoi modificare il contenuto della pagina dal vecchio builder</div>";
 			}
 				endif;
 			endif;
@@ -1241,7 +1241,7 @@ class Rexbuilder_Admin {
 			'label'                 => __( 'RexModel', 'rexpansive' ),
 			'description'           => __( 'RexModel', 'rexpansive' ),
 			'labels'                => $labels,
-			'supports'              => array( 'title', 'editor', 'revisions' ),
+			'supports'              => array( 'title', 'editor', 'revisions', 'thumbnail'),
 			'taxonomies'            => array( 'rex_model_taxonomy' ),
 			'hierarchical'          => false,
 			'public'                => true,
@@ -1362,6 +1362,8 @@ class Rexbuilder_Admin {
 				'p'				=>	$model_insert_id
 			);
 
+			update_post_meta($model_insert_id, '_save_from_backend', "false" );
+			
 			$query = new WP_Query( $argsQuery );
 			if ( $query->have_posts() ) {
 				while ( $query->have_posts() ) {
@@ -1383,6 +1385,91 @@ class Rexbuilder_Admin {
 			$response['success'] = false;
 			wp_send_json_error($response, 500);
 		} // end if
+	}
+
+	function rex_fix_post_content($content)
+	{
+		$screen = get_current_screen();
+		if (is_a($screen, 'WP_Screen')) {
+			$idPost = get_the_ID();
+			$savedFromBackend = get_post_meta($idPost, '_save_from_backend', true);
+			if (isset($savedFromBackend) && $savedFromBackend == "false") {
+				$newContent = "";
+				$postType = get_post_type($idPost);
+
+				$args = array(
+					'post_type' => $postType,
+					'p' => $idPost,
+				);
+
+				$query = new WP_Query($args);
+
+				if ($query->have_posts()) {
+					while ($query->have_posts()) {
+						$query->the_post();
+						$post = $query->post;
+						$newContent = $post->post_content;
+					}
+				}
+
+				wp_reset_postdata();
+				return $newContent;
+			}
+		}
+		return $content;
+	}
+
+	public function rex_get_model_list(){
+		$nonce = $_GET['nonce_param'];
+
+        $response = array(
+            'error' => false,
+            'msg' => '',
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+		$response['error'] = false;
+		
+		// WP_Query arguments
+		$args = array(
+			'post_type'              => array( 'rex_model' ),
+			'post_status'            => array( 'publish', 'private' ),
+			'posts_per_page'         => '-1',
+		);
+
+		$modelList = array();
+		// The Query
+		
+		$query = new WP_Query( $args );
+
+		if ( $query->have_posts() ) {
+			while ( $query->have_posts() ) {
+				$query->the_post();
+				
+				$modelData = array();
+				
+				$modelData["id"] = get_the_ID();
+				$modelData["name"] = get_the_title();
+				$modelData["preview_image_url"] = get_the_post_thumbnail_url();
+
+				array_push($modelList, $modelData);
+			}
+		} else {
+			// no posts found
+		}
+
+		// Restore original Post Data
+		wp_reset_postdata();
+
+		$response["updated_list"] = $modelList;
+		$response["args"] = $args;
+
+        wp_send_json_success($response);
 	}
 
 	public function rex_save_model_customization(){
@@ -1515,7 +1602,7 @@ class Rexbuilder_Admin {
 		$response['args'] = $args;
 
 		wp_send_json_success( $response );
-	}
+	}		
 	/**
 	 * Ajax call to get a rex_model and insert in the builder
 	 * 

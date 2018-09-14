@@ -601,6 +601,7 @@ endif;
 			}
             wp_reset_postdata();
             
+            update_post_meta($model_to_edit, '_save_from_backend', "false" );
             $response['model_id'] = $argsModel["ID"];
         } else {
             $response['model_id'] = -1;
@@ -626,8 +627,12 @@ endif;
 
         $layoutsAvaiable = get_option('_rex_responsive_layouts', $defaultLayoutsAvaiable);
 
-        $editor = $_GET['editor'];
-
+        if(isset($_GET['editor'])){
+            $editor = $_GET['editor'];
+        } else{
+            $editor = false;
+        }
+        
         $rexbuilderShortcode = get_post_meta($post->ID, '_rexbuilder_shortcode', true);
 
         if ($rexbuilderShortcode == "") {
@@ -797,7 +802,7 @@ endif;
             <div id="rexbuilder-layouts-sections-order" style="display: none;"></div>
             <div id="rexbuilder-default-layout-state" style="display: none;" data-empty-default-customization="true"></div>
             <?php
-    if ($editor == "true") {
+    if (isset($editor) && $editor == "true") {
             ?><button id="rex-open-ace-css-editor" class="btn-floating tooltipped" data-position="bottom" data-tooltip="<?php _e('CSS Editor', $this->plugin_name);?>">
                 <i class="material-icons">&#xE314;</i><span>CSS</span><i class="material-icons">&#xE315;</i>
             </button>
@@ -821,7 +826,7 @@ endif;
             ?>
             </div>
             <?php 
-            if ($editor == "true") {
+            if (isset($editor) && $editor == "true") {
 ?>
                     <button class="add-new-section">
                     ADD

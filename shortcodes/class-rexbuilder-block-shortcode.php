@@ -87,7 +87,11 @@ class Rexbuilder_Block
                 echo "";
                 return ob_get_clean();
             }
-            $editor = $_GET['editor'];
+
+            if(isset($_GET['editor'])){
+                $editor = $_GET['editor'];
+            }
+
 
             global $section_layout;
 
@@ -596,7 +600,7 @@ class Rexbuilder_Block
             endswitch;
 
             echo "</div>";
-            if (isset($editor)) {
+            if (isset($editor) && $editor == "true") {
                 include REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-block-tools.php";
             }
 
