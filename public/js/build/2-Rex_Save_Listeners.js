@@ -186,7 +186,7 @@ var Rex_Save_Listeners = (function ($) {
                         dataType: 'json',
                         url: _plugin_frontend_settings.rexajax.ajaxurl,
                         data: {
-                            action: 'rexlive_save_default_layout',
+                            action: 'rexlive_save_shortcode',
                             nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
                             post_id_to_update: idPost,
                             clean_post: postClean,
@@ -196,6 +196,7 @@ var Rex_Save_Listeners = (function ($) {
                             if (response.success) {
                                 console.log('shortcode pagina aggiornato!');
                                 Rexbuilder_Util.$rexContainer.removeClass("backend-edited");
+                                Rexbuilder_Util.backendEdited = false;
                             }
                         },
                         error: function (response) {
@@ -983,8 +984,6 @@ var Rex_Save_Listeners = (function ($) {
             : $gridGallery.attr('data-full-height');
         layout = $gridGallery.attr('data-layout') === undefined ? ""
             : $gridGallery.attr('data-layout');
-        responsive_background = $sectionData.attr('data-responsive_background') === undefined ? "fixed"
-            : $sectionData.attr('data-responsive_background');
         custom_classes = $sectionData.attr('data-custom_classes') === undefined ? ""
             : $sectionData.attr('data-custom_classes');
 
@@ -1031,7 +1030,11 @@ var Rex_Save_Listeners = (function ($) {
         row_active_photoswipe = typeof $sectionData.attr('data-row_active_photoswipe') == "undefined" ? "0"
             : $sectionData.attr('data-row_active_photoswipe');
 
+        responsive_background = $sectionData.attr('data-responsive_background') === undefined ? "" : $sectionData.attr('data-responsive_background');
         row_overlay_color = typeof $sectionData.attr("data-row_overlay_color") == "undefined" ? "" : $sectionData.attr("data-row_overlay_color");
+        if(row_overlay_color == ""){
+            row_overlay_color = responsive_background;
+        }
         row_overlay_active = typeof $sectionData.attr("data-row_overlay_active") == "undefined" ? false : $sectionData.attr("data-row_overlay_active");
 
         if (typeof newID == "undefined" || newID === null) {
@@ -1122,7 +1125,6 @@ var Rex_Save_Listeners = (function ($) {
             props["full_height"] = full_height;
             props["block_distance"] = block_distance;
             props["layout"] = layout;
-            props["responsive_background"] = responsive_background;
             props["custom_classes"] = custom_classes;
             props["section_width"] = section_width;
             props["row_separator_top"] = row_separator_top;

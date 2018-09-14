@@ -53,7 +53,7 @@ defined('ABSPATH') or exit;
 </script>
 
 <script type="text/x-tmpl" id="tmpl-video-toggle-audio">
-    <div class="rex-video-toggle-audio user-has-muted">
+    <div class="rex-video-toggle-audio">
         <div class="rex-video-toggle-audio-shadow">
         </div>
     </div>

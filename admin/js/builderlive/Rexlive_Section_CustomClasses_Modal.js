@@ -3,17 +3,32 @@ var Section_CustomClasses_Modal = (function ($) {
 
     var custom_classes_modal_properties;
     var defaultClasses;
-
+    var hiddenClasses;
+    
     var _resetCustomClasses = function () {
         custom_classes_modal_properties.$classes.val(defaultClasses);
     }
 
     var _updateCustomClasses = function (newClasses) {
+        hiddenClasses = "";
+        if (newClasses.indexOf("active-large-overlay") !== -1) {
+            hiddenClasses += " active-large-overlay";
+            newClasses = newClasses.replace("active-large-overlay", "");
+        }
+        if (newClasses.indexOf("active-medium-overlay") !== -1) {
+            hiddenClasses += " active-medium-overlay";
+            newClasses = newClasses.replace("active-medium-overlay", "");
+        }
+        if (newClasses.indexOf("active-small-overlay") !== -1) {
+            hiddenClasses += " active-small-overlay";
+            newClasses = newClasses.replace("active-small-overlay", "");
+        }
         custom_classes_modal_properties.$classes.val(newClasses);
     }
 
     var _getData = function () {
         var newClasses = custom_classes_modal_properties.$classes.val();
+        newClasses += hiddenClasses;
         return newClasses;
     }
 

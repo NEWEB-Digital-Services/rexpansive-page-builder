@@ -161,7 +161,7 @@
                             modelEdited: that.$section.hasClass("rex-model-section")
                         }
                         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-                        
+
                         if (Rexbuilder_Util.activeLayout == "default") {
                             Rexbuilder_Util.updateDefaultLayoutStateSection(that.$section);
                         }
@@ -192,12 +192,14 @@
                 singleHeight: this.properties.singleHeight
             };
 
-            if (typeof collapseGrid == "undefined") {
-                if (Rexbuilder_Util.activeLayout == "default" && this._viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth) {
+            if (Rexbuilder_Util.activeLayout == "default" && this._viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth) {
+                if (typeof collapseGrid == "undefined") {
                     this.collapseElements();
+                } else {
+                    if (collapseGrid.toString() == "true") {
+                        this.collapseElements();
+                    }
                 }
-            } else if ((Rexbuilder_Util.activeLayout == "default" && this._viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth && collapseGrid.toString() == "true") || collapseGrid.toString() == "true") {
-                this.collapseElements();
             }
 
             this.$element.find(".rex-image-wrapper").each(function (i, el) {
@@ -1968,6 +1970,9 @@
                     disableOneColumnMode: true,
                     cellHeight: gallery.properties.singleHeight,
                     disableDrag: true,
+                    draggable: {
+                        handle: '.rexlive-block-drag-handle',
+                    },
                     disableResize: true,
                     float: floating,
                     verticalMargin: 0,
@@ -2021,8 +2026,7 @@
                     $(this.properties.blocksBottomTop).each(function (i, e) {
                         $elem = $(e);
                         $elemData = $elem.children(".rexbuilder-block-data");
-                        //if ((((gallery.settings.galleryLayout == "masonry") && (($elemData.attr("data-block_has_scrollbar") != "true") && ($elemData.attr("data-block_dimensions_live_edited") != "true")) || gallery.properties.updatingGridWidth)) || gallery.properties.updatingSection) {
-                        if ((gallery.settings.galleryLayout == "masonry" && $elemData.attr("data-block_dimensions_live_edited").toString() != "true") || gallery.properties.updatingSection) {
+                        if ((gallery.settings.galleryLayout == "masonry" && ((typeof $elemData.attr("data-block_dimensions_live_edited") != "undefined" && $elemData.attr("data-block_dimensions_live_edited").toString() != "true") || Rexbuilder_Util.backendEdited)) || gallery.properties.updatingSection) {
                             if (!($elem.hasClass("rex-hide-element") || $elem.hasClass("removing_block")))
                                 gallery.updateElementHeight($elem);
                         }

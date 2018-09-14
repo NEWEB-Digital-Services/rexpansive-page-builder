@@ -538,7 +538,7 @@ var Rexbuilder_Util = (function ($) {
                             sectionCustom.defaultSection = true;
                             sectionCustom.targets = jQuery.extend(true, [], sectionDefault.targets);
                         }
-                        
+
                         for (m = 0; m < sectionCustom.targets.length; m++) {
                             targetFounded = false;
                             for (n = 0; n < sectionDefault.targets.length; n++) {
@@ -616,10 +616,11 @@ var Rexbuilder_Util = (function ($) {
                         console.log("defaultLayoutSections", defaultLayoutSections);
                         console.log("layoutSelectedSections", layoutSelectedSections); 
                  */
-        //forcing sections that are no models to collapse grid if necessary
+        //
+        //console.log("forcing sections that are no models to collapse grid if necessary");
         for (i = 0; i < layoutSelectedSections.length; i++) {
             //if section is not removed from layout
-            if (layoutSelectedSections[i].sectionFounded) {
+            if (layoutSelectedSections[i].sectionFounded || Rexbuilder_Util.activeLayout == "default") {
                 if (layoutSelectedSections[i].targets[0].props.collapse_grid.toString() == "true") {
                     layoutSelectedSections[i].targets[0].props.wasCollapsed = true;
                 } else {
@@ -636,7 +637,7 @@ var Rexbuilder_Util = (function ($) {
         return jQuery.extend(true, {}, layoutSelectedSections);
     }
 
-    var _edit_dom_layout = function (chosenLayoutName) {        
+    var _edit_dom_layout = function (chosenLayoutName) {
         if (chosenLayoutName == Rexbuilder_Util.activeLayout) {
             if (chosenLayoutName == "default") {
                 if (_viewport().width >= _plugin_frontend_settings.defaultSettings.collapseWidth) {
@@ -649,7 +650,7 @@ var Rexbuilder_Util = (function ($) {
                 return;
             }
         }
-        
+
         Rexbuilder_Util.$rexContainer.attr("data-rex-layout-selected", chosenLayoutName);
         Rexbuilder_Util.activeLayout = chosenLayoutName;
 
@@ -781,7 +782,7 @@ var Rexbuilder_Util = (function ($) {
                 }
             }
         });
-        console.log("dom applied order", jQuery.extend(true,[], sectionDomOrder));
+        console.log("dom applied order", jQuery.extend(true, [], sectionDomOrder));
         Rexbuilder_Dom_Util.fixSectionDomOrder(sectionDomOrder, true);
 
         Rexbuilder_Util.domUpdaiting = false;
@@ -1025,12 +1026,12 @@ var Rexbuilder_Util = (function ($) {
 
         updateSection($section, $gallery, targets[0].props, forceCollapseElementsGrid);
         var collapse = typeof targets[0].props.collapse_grid == "undefined" ? false : (targets[0].props.collapse_grid.toString() == "true" || forceCollapseElementsGrid);
-        
+
         if (galleryData !== undefined) {
             var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
             if (galleryEditorInstance !== undefined) {
                 Rexbuilder_Util.domUpdaiting = true;
-                
+
                 galleryEditorInstance.properties.gridstackInstance.commit();
                 //waiting for gridstack updating blocks dimensions with saved data
                 setTimeout(function () {
@@ -1236,7 +1237,7 @@ var Rexbuilder_Util = (function ($) {
                 }
             }
         }
-        
+
         var newData = [];
         var section;
         for (i = 0; i < newOrder.length; i++) {
@@ -1254,7 +1255,7 @@ var Rexbuilder_Util = (function ($) {
             newData.push(section[0]);
         }
 
-        _updateDefaultLayoutState({pageData: newData});
+        _updateDefaultLayoutState({ pageData: newData });
     }
 
     var _updateDefaultLayoutStateSection = function ($section, position) {
@@ -1309,7 +1310,7 @@ var Rexbuilder_Util = (function ($) {
             $div.attr("data-model-number", section_props.section_model_number);
             $div.attr("data-section-hide", section_props.section_hide);
             $div.text(JSON.stringify(layoutData));
-            if(position == -1){
+            if (position == -1) {
                 $div.appendTo($defaultLayoutState[0]);
             } else {
                 var $selectedSection;
@@ -1349,7 +1350,7 @@ var Rexbuilder_Util = (function ($) {
         return defaultLayoutSections;
     }
 
-    var _updateSectionOrderCustomLayouts = function(sectionMoved, newOrder){
+    var _updateSectionOrderCustomLayouts = function (sectionMoved, newOrder) {
         console.log(sectionMoved);
         console.log(newOrder);
         var layoutsOrder = Rexbuilder_Util.getPageCustomizationsDom();
@@ -1368,14 +1369,14 @@ var Rexbuilder_Util = (function ($) {
             for (j = 0; j < layoutsOrder[i].sections.length; j++) {
                 if (layoutsOrder[i].sections[j].section_is_model) {
                     if (layoutsOrder[i].sections[j].section_model_id == sectionMoved.modelID && layoutsOrder[i].sections[j].section_model_number == sectionMoved.modelNumber) {
-                        if (typeof layoutsOrder[i].sections[j].section_created_live !== "undefined" && layoutsOrder[i].sections[j].section_created_live.toString() == "true" ) {
+                        if (typeof layoutsOrder[i].sections[j].section_created_live !== "undefined" && layoutsOrder[i].sections[j].section_created_live.toString() == "true") {
                             moveSection = true;
                         }
                         break;
                     }
                 } else {
                     if (sectionMoved.rexID == layoutsOrder[i].sections[j].section_rex_id) {
-                        if (typeof layoutsOrder[i].sections[j].section_created_live !== "undefined" && layoutsOrder[i].sections[j].section_created_live.toString() == "true" ) {
+                        if (typeof layoutsOrder[i].sections[j].section_created_live !== "undefined" && layoutsOrder[i].sections[j].section_created_live.toString() == "true") {
                             moveSection = true;
                         }
                         break;
@@ -2136,7 +2137,7 @@ var Rexbuilder_Util = (function ($) {
         }
     }
 
-    var _updateGridsHeights = function(){
+    var _updateGridsHeights = function () {
         Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function (e, row) {
             var galleryEditorInstance = $(row).data().plugin_perfectGridGalleryEditor;
             if (galleryEditorInstance !== undefined) {
@@ -2290,11 +2291,15 @@ var Rexbuilder_Util = (function ($) {
             vimPlayer.play();
         } else if ($target.hasClass("youtube-player")) {
             var ytpObj = $target.children(".rex-youtube-wrap");
-            var ytpPlayer = ytpObj.YTPGetPlayer();
-            if (ytpPlayer === undefined) {
-                return;
+            if (ytpObj.length != 0) {
+                var ytpPlayer = ytpObj.YTPGetPlayer();
+                if (ytpPlayer === undefined) {
+                    return;
+                }
+                ytpObj.YTPPlay();
+            } else {
+                return
             }
-            ytpObj.YTPPlay();
         }
         setTimeout(function () {
             Rexbuilder_Util.fixVideoAudio($target);
@@ -2465,10 +2470,14 @@ var Rexbuilder_Util = (function ($) {
             var vimeoPlugin = VimeoVideo.findVideo($target.find("iframe")[0]);
             vimeoPlugin.play();
         } else if ($target.hasClass("youtube-player")) {
-            if ($target.children(".rex-youtube-wrap").YTPGetPlayer() === undefined) {
+            if ($target.children(".rex-youtube-wrap").length != 0) {
+                if ($target.children(".rex-youtube-wrap").YTPGetPlayer() === undefined) {
+                    return;
+                }
+                $target.children(".rex-youtube-wrap").YTPPlay();
+            } else {
                 return;
             }
-            $target.children(".rex-youtube-wrap").YTPPlay();
         }
     }
 
@@ -2530,9 +2539,10 @@ var Rexbuilder_Util = (function ($) {
         $layoutsDomOrder = $("#rexbuilder-layouts-sections-order");
         $defaultLayoutState = $("#rexbuilder-default-layout-state");
         this.$rexContainer = $(".rex-container");
-
-        if (Rexbuilder_Util.$rexContainer.attr("data-backend-edited").toString() == "true" && Rexbuilder_Util.editorMode) {
+        this.backendEdited = false;
+        if (Rexbuilder_Util.$rexContainer.attr("data-backend-edited").toString() == "true") {
             Rexbuilder_Util.$rexContainer.addClass("backend-edited");
+            this.backendEdited = true;
         }
         this.lastSectionNumber = -1;
 

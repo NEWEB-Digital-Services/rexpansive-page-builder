@@ -90,6 +90,10 @@ class Rexbuilder_Meta_Box {
 
     foreach($this->fields as $field) :
       $meta = get_post_meta( $post->ID, $field['id'], true );
+      
+      if($field['id'] == "_rexbuilder_shortcode" && $meta == "") {
+				$meta = $post->post_content;
+      }
 
       $pattern = get_shortcode_regex();
 
@@ -126,7 +130,7 @@ class Rexbuilder_Meta_Box {
           //Retrieve the post content
           $checkbox_index = 0;
           $contents = get_post( $post->ID )->post_content;
-          // $contents = get_post_meta( $post->ID, '_rex_default_layout', true );
+          // $contents = get_post_meta( $post->ID, '_rexbuilder_shortcode', true );
           $contents = $meta;
           preg_match_all( "/$pattern/", $contents, $result_rows);
           
@@ -790,9 +794,16 @@ class Rexbuilder_Meta_Box {
         return $post_id;
       }
     }
-
+    
     foreach ( $this->fields as $field ) :
 
+      if('rexpansive_plugin' == $field["type"] ){
+        $savedFromBackend = get_post_meta( get_the_id(), '_save_from_backend', true);
+        if(isset($savedFromBackend) && $savedFromBackend == "false"){
+          return $post_id;
+        }
+      }
+      
       $old = get_post_meta( $post_id, $field[ 'id' ], true );
 
       $new = $_POST[ $field[ 'id' ] ];

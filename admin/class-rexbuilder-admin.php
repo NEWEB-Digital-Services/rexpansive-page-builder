@@ -111,7 +111,7 @@ class Rexbuilder_Admin {
 						array(
 							'label' => 'Rexbuilder',
 							'desc' => 'Expand your mind',
-							'id' => '_rex_default_layout',
+							'id' => '_rexbuilder_shortcode',
 							'type'	=>	'rexpansive_plugin',
 						),
 					) );
@@ -575,8 +575,8 @@ class Rexbuilder_Admin {
 			</script>
 		</div>
 		<?php
-			$savedFromLive = get_post_meta( get_the_id(), '_save_from_backend', true);
-			if(isset($savedFromLive) && $savedFromLive == "false"){
+			$savedFromBackend = get_post_meta( get_the_id(), '_save_from_backend', true);
+			if(isset($savedFromBackend) && $savedFromBackend == "false"){
 				echo "<div style=\"text-align:center\">Yo, guarda che hai salvato dal live, ora non puoi modificare dal vecchio builder</div>";
 			}
 				endif;
@@ -1490,7 +1490,7 @@ class Rexbuilder_Admin {
 				if($modelCustomizationsNames == ""){
 					$modelCustomizationsNames = array();
 				}
-
+		
 				$response['customizations_names'] = $modelCustomizationsNames;
 
 				//Customizations Data

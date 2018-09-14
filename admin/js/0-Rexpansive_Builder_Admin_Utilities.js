@@ -10,7 +10,7 @@ var Rexpansive_Builder_Admin_Utilities = (function($) {
    * Metabox html id
    * @since 2.0.0
    */
-  var meta_box_selector = '#_rex_default_layout';
+  var meta_box_selector = '#_rexbuilder_shortcode';
 
   /**
    * Is the awesome and new builderlive active?

@@ -13,10 +13,10 @@
  * @package           Rexbuilder
  *
  * @wordpress-plugin
- * Plugin Name:       Rexpansive Builder
+ * Plugin Name:       Rexpansive Builder (builder live)
  * Plugin URI:        http://rexpansive.neweb.info/
  * Description:       The new and awesome plugin to build a page in 1 minute! Expand your mind!
- * Version:           1.1.2
+ * Version:           2.0.0
  * Author:            NEWEB - Digital Agency
  * Author URI:        http://www.neweb.info/      
  * Text Domain:       rexpansive-builder
@@ -33,7 +33,7 @@ if ( ! defined( 'WPINC' ) ) {
  * Start at version 1.0.0 and use SemVer - https://semver.org
  * Rename this for your plugin and update it as you release new versions.
  */
-define( 'REXPANSIVE_BUILDER_VERSION', '1.1.2' );
+define( 'REXPANSIVE_BUILDER_VERSION', '2.0.0' );
 
 /**
  * Constant for the plugin main PATH

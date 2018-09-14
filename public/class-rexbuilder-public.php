@@ -499,7 +499,7 @@ endif;
      *
      *    @since 1.0.15
      */
-    public function rexlive_save_default_layout()
+    public function rexlive_save_shortcode()
     {
         $nonce = $_POST['nonce_param'];
 
@@ -527,7 +527,7 @@ endif;
 
         $update = wp_update_post($args);
 
-        update_post_meta($post_id_to_update, '_rex_default_layout', $shortcode);
+        update_post_meta($post_id_to_update, '_rexbuilder_shortcode', $shortcode);
 
         update_post_meta($post_id_to_update, '_save_from_backend', "false" );
 
@@ -628,16 +628,16 @@ endif;
 
         $editor = $_GET['editor'];
 
-        $defaultPage = get_post_meta($post->ID, '_rex_default_layout', true);
+        $rexbuilderShortcode = get_post_meta($post->ID, '_rexbuilder_shortcode', true);
 
-        if ($defaultPage == "") {
-            $defaultPage = get_post_meta($post->ID, '_rex_content_mydesktop', true);
+        if ($rexbuilderShortcode == "") {
+            $rexbuilderShortcode = $post->post_content;
         }
 
         // find models ids in page
         $models_ids = array();
         $pattern = get_shortcode_regex();
-        preg_match_all("/$pattern/", $defaultPage, $matches);
+        preg_match_all("/$pattern/", $rexbuilderShortcode, $matches);
         foreach ($matches[2] as $index => $shortcode) {
             if ($shortcode == "RexModel") {
                 $result = shortcode_parse_atts(trim($matches[3][$index]));
@@ -810,14 +810,14 @@ endif;
                 <?php
             }
 
-            $backendEditing = "false";
-            if(get_post_meta($post->ID, '_save_from_backend', true) == "true"){
-                $backendEditing = "true";
+            $backendEditing = "true";
+            if(get_post_meta($post->ID, '_save_from_backend', true) == "false"){
+                $backendEditing = "false";
             }
             ?>
             <div class="rex-container" data-rex-layout-selected="" data-backend-edited="<?php echo $backendEditing;?>">
             <?php
-    echo do_shortcode($defaultPage);
+    echo do_shortcode($rexbuilderShortcode);
             ?>
             </div>
             <?php 
@@ -887,10 +887,14 @@ endif;
             $nav = get_post_meta(get_the_ID(), '_rex_navigation_type', true);
 
             if (!empty($nav) && !empty(Rexbuilder_Utilities::get_plugin_templates_path('rexbuilder-' . $nav . '-template.php'))) {
-                $content = get_post_meta($post->ID, '_rex_default_layout', true);
+                $rexbuilderShortcode = get_post_meta($post->ID, '_rexbuilder_shortcode', true);
+                
+                if ($rexbuilderShortcode == "") {
+                    $rexbuilderShortcode = $post->post_content;
+                }
                 $pattern = get_shortcode_regex();
 
-                preg_match_all("/$pattern/", $content, $content_shortcodes);
+                preg_match_all("/$pattern/", $rexbuilderShortcode, $content_shortcodes);
                 // Check for section titles; if no one has a title, don't display the navigation
                 $titles = array();
                 foreach ($content_shortcodes[3] as $attrs):

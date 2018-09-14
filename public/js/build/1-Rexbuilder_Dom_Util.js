@@ -81,7 +81,7 @@ var Rexbuilder_Dom_Util = (function ($) {
             fullHeight = typeof rowSettings.full_height === "undefined" || layout == "masonry" ? false : rowSettings.full_height,
             sectionWidth = typeof rowSettings.section_width === "undefined" ? "100%" : "" + rowSettings.section_width,
             widthType = typeof rowSettings.dimension === "undefined" ? "full" : rowSettings.dimension,
-            collapseElements = false,
+            collapseElements = Rexbuilder_Util.editorMode ? false : rowSettings.collapse_grid,
             $galleryParent = $galleryElement.parent();
 
         if (widthType == "full") {
@@ -383,7 +383,6 @@ var Rexbuilder_Dom_Util = (function ($) {
     var _addYoutubeVideo = function ($target, urlYoutube, hasAudio) {
         var $ytpWrapper = $target.children(".rex-youtube-wrap");
         var $toggleAudio = $target.children(".rex-video-toggle-audio");
-        $target.addClass("youtube-player");
         if ($ytpWrapper.length != 0) {
             var elemData = jQuery.extend(true, {}, eval('(' + $ytpWrapper.attr("data-property") + ')'));
             var activeUrl = elemData.videoURL;
@@ -393,21 +392,30 @@ var Rexbuilder_Dom_Util = (function ($) {
 
             if (videoID != urlID) {
                 if ($ytpWrapper.YTPGetPlayer() === undefined) {
-                    $ytpWrapper.attr("data-property", "{videoURL:'" + urlYoutube + "',containment:'self',startAt:0,mute:'true',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}");
+                    $ytpWrapper.attr("data-property", "{videoURL:'" + urlYoutube + "',containment:'self',startAt:0,mute:'"+!hasAudio+"',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}");
                     $ytpWrapper.addClass("youtube-player-launching");
                     $ytpWrapper.YTPlayer();
                 } else {
-                    $ytpWrapper.YTPChangeMovie({
-                        videoURL: urlYoutube,
-                        containment: 'self',
-                        startAt: 0,
-                        mute: true,
-                        autoPlay: true,
-                        loop: true,
-                        opacity: 1,
-                        showControls: false,
-                        showYTLogo: false
-                    });
+                    _removeYoutubeVideo($target, true);
+
+                    //waiting to youtube plugin dead
+                    setTimeout(function () {
+                        tmpl.arg = "video";
+                        $target.prepend(tmpl("tmpl-video-youtube", { url: urlYoutube, audio: !hasAudio }));
+                        $target.children(".rex-youtube-wrap").YTPlayer();
+                        var $toggleAudio = $target.children(".rex-video-toggle-audio");
+                        if ($toggleAudio.length == 0) {
+                            if (hasAudio) {
+                                $target.append(tmpl("tmpl-video-toggle-audio"));
+                            }
+                        } else {
+                            if (hasAudio) {
+                                $toggleAudio.removeClass("removing-toggle-audio");
+                            } else {
+                                $toggleAudio.remove();
+                            }
+                        }
+                    }, 1000, $target, urlYoutube, hasAudio);
                 }
             } else {
                 if ($ytpWrapper.YTPGetPlayer() === undefined) {
@@ -417,10 +425,11 @@ var Rexbuilder_Dom_Util = (function ($) {
             }
         } else {
             tmpl.arg = "video";
-            $target.prepend(tmpl("tmpl-video-youtube", { url: urlYoutube, audio: false }));
+            $target.prepend(tmpl("tmpl-video-youtube", { url: urlYoutube, audio: !hasAudio }));
             $target.children(".rex-youtube-wrap").YTPlayer();
         }
 
+        $target.addClass("youtube-player");
         if ($toggleAudio.length == 0) {
             if (hasAudio) {
                 $target.append(tmpl("tmpl-video-toggle-audio"));
