@@ -39,6 +39,19 @@ defined('ABSPATH') or exit;
                 <span class="dashicons-trash dashicons-before"></span>
             </span>
         </div>
+        <div class="layout__setting">
+            <span class="rexlive-layout--move">
+                <span class="dashicons-move dashicons-before"></span>
+            </span>
+        </div>
     </div>
 </li>
+</script>
+
+<script type="text/x-tmpl" id="rexlive-tmpl-custom-layout-handle">
+<div class="layout__setting">
+    <span class="rexlive-layout--move">
+        <span class="dashicons-move dashicons-before"></span>
+    </span>
+</div>
 </script>

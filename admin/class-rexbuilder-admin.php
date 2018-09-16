@@ -1395,24 +1395,7 @@ class Rexbuilder_Admin {
 			$savedFromBackend = get_post_meta($idPost, '_save_from_backend', true);
 			if (isset($savedFromBackend) && $savedFromBackend == "false") {
 				$newContent = "";
-				$postType = get_post_type($idPost);
-
-				$args = array(
-					'post_type' => $postType,
-					'p' => $idPost,
-				);
-
-				$query = new WP_Query($args);
-
-				if ($query->have_posts()) {
-					while ($query->have_posts()) {
-						$query->the_post();
-						$post = $query->post;
-						$newContent = $post->post_content;
-					}
-				}
-
-				wp_reset_postdata();
+				$newContent = get_the_content($idPost);
 				return $newContent;
 			}
 		}
