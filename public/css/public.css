@@ -5175,3 +5175,6 @@ a.pswp-item {
 
 .grid-stack-item.rex-hide-element {
   display: none; }
+
+.rex-custom-scrollbar .text-wrap > ul, .rex-custom-scrollbar .text-wrap > ol {
+  margin-left: 1.25em; }

@@ -1110,6 +1110,7 @@
 					sectionID: sectionID,
 					modelNumber: modelNumber
 				},
+				returnEventName: "rexlive:insert_image",
 				eventName: "rexlive:openMediaUploader",
 			};
 

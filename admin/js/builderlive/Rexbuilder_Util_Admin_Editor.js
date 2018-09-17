@@ -12,6 +12,8 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
     var $frameBuilder;
     var frameBuilderWindow;
 
+    var updatedLayoutData;
+
     var updateResponsiveButtonFocus = function () {
         var $oldBtn = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find(".active-layout-btn");
         var $layoutBtn = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find("button[data-name=" + activeLayoutPage + "]");
@@ -182,6 +184,8 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         });
 
         window.addEventListener("message", _receiveMessage, false);
+
+        
     }
     
     var _updateLayoutPage = function(buttonData){
@@ -190,28 +194,21 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         activeLayoutPage = buttonData.id;
         updateResponsiveButtonFocus();
 
-        var layoutData = {
+        updatedLayoutData = {
             selectedLayoutName: activeLayoutPage,
             eventName: "rexlive:changeLayout",
             layoutData: buttonData
         };
 
-        _sendIframeBuilderMessage(layoutData);
-
-        if (buttonData.min != "") {
-            $frameContainer.css("width", buttonData.min);
-            $frameContainer.css("min-width", "");
-        } else {
-            $frameContainer.css("width", "100%");
-            if (activeLayoutPage == "default") {
-                $frameContainer.css("min-width", "1024px");
-            }
-        }
+        _updateIframeWidth(buttonData.min);
+    }
+    
+    var _updateLayoutActiveData = function (newData) {
+        updatedLayoutData = newData;
     }
 
-    var _updateIframeWidth= function(newWidth, flagDefault){
-        flagDefault = typeof flagDefault == "undefined" ? false : flagDefault;
-        if(flagDefault){
+    var _updateIframeWidth = function(newWidth){
+        if(newWidth==""){
             $frameContainer.css("width", "100%");
             $frameContainer.css("min-width", "1024px");
         } else{
@@ -247,6 +244,42 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
     var _setActiveLayout = function(layout){
         activeLayoutPage = layout;
     }
+    
+    var _whichTransitionEvent = function () {
+        var t,
+            el = document.createElement("fakeelement");
+
+        var transitions = {
+            "transition": "transitionend",
+            "OTransition": "oTransitionEnd",
+            "MozTransition": "transitionend",
+            "WebkitTransition": "webkitTransitionEnd"
+        };
+
+        for (t in transitions) {
+            if (el.style[t] !== undefined) {
+                return transitions[t];
+            }
+        }
+    };
+
+    var _whichAnimationEvent = function () {
+        var t,
+            el = document.createElement("fakeelement");
+
+        var animations = {
+            "animation": "animationend",
+            "OAnimation": "oAnimationEnd",
+            "MozAnimation": "animationend",
+            "WebkitAnimation": "webkitAnimationEnd"
+        }
+
+        for (t in animations) {
+            if (el.style[t] !== undefined) {
+                return animations[t];
+            }
+        }
+    };
 
     // init the utilities
     var init = function () {
@@ -256,10 +289,20 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         $frameBuilder = this.$rexpansiveContainer.find("#rexpansive-live-frame");
         frameBuilderWindow = $frameBuilder[0].contentWindow;
 
+        $frameBuilder.on(Rexbuilder_Util_Admin_Editor._transitionEvent, function () {        
+            if(updateLayoutActiveData !== null){
+                _sendIframeBuilderMessage(updatedLayoutData);
+            }
+        });
+        
         this.$responsiveToolbar = this.$rexpansiveContainer.find(".rexlive-responsive-toolbox");
         pageSaved = true;
         modelSaved = true;
         activeLayoutPage = "default";
+
+        this._transitionEvent = _whichTransitionEvent();
+        this._animationEvent = _whichAnimationEvent();
+        
         _addDocumentListeners();
     };
 
@@ -271,6 +314,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         getActiveLayout: _getActiveLayout,
         setActiveLayout: _setActiveLayout,
         updateIframeWidth: _updateIframeWidth,
+        updateLayoutActiveData: _updateLayoutActiveData,
     };
 
 })(jQuery);

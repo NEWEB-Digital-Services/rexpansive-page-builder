@@ -176,9 +176,7 @@ class Rexbuilder_Admin {
 
 			wp_enqueue_style( 'admin-style', REXPANSIVE_BUILDER_URL . 'admin/css/admin.css', array(), null, 'all' );
 			if( isset( $_GET['rexlive'] ) && 'true' == $_GET['rexlive'] ) {
-				// peta
-
-				wp_enqueue_style( 'liveStyle', REXPANSIVE_BUILDER_URL . 'admin/css/live-editor.css', array(), null, 'all' );
+				wp_enqueue_style( 'rexliveStyle', REXPANSIVE_BUILDER_URL . 'admin/css/rexbuilder-tools.css', array(), null, 'all' );
 			} 
 		}
 	}

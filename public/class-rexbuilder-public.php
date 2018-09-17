@@ -112,7 +112,6 @@ class Rexbuilder_Public
             wp_enqueue_style('animate-css', REXPANSIVE_BUILDER_URL . $cartella . 'css/animate.css', array(), null, 'all');
             wp_enqueue_style('textfill-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/textFill.css', array(), null, 'all');
             wp_enqueue_style('rexbuilder-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/builder.css', array(), null, 'all');
-            wp_enqueue_style('materialize', REXPANSIVE_BUILDER_URL . $cartella . 'css/materialize.min.css', array(), null, 'all');
             wp_enqueue_style('custom-editor-buttons-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/rex-custom-editor-buttons.css', array(), null, 'all');
 
             wp_enqueue_style('jquery-ui-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/jquery-ui.min.css', array(), null, 'all');
@@ -127,7 +126,6 @@ class Rexbuilder_Public
 
             wp_enqueue_style('input-spinner', REXPANSIVE_BUILDER_URL . $cartella . 'css/input-spinner.css', array(), null, 'all');
 
-            wp_enqueue_style('rexpansive-admin-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/admin.css', array(), null, 'all');
             wp_enqueue_style('rexpansive-builder-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/public.css', array(), null, 'all');
 
         }
@@ -218,6 +216,7 @@ class Rexbuilder_Public
             wp_enqueue_script('spectrumColor', REXPANSIVE_BUILDER_URL . $cartella . 'js/spectrum.js', array('jquery'), null, true);
             wp_enqueue_script('medium-editor', REXPANSIVE_BUILDER_URL . $cartella . 'js/medium-editor.js', array('jquery'), null, true);
             wp_enqueue_script('mediumEditorToolbarStates', REXPANSIVE_BUILDER_URL . $cartella . 'js/medium-editor-toolbar-states.min.js', array('jquery'), null, true);
+            //wp_enqueue_script('textEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/2-Text_Editor', array('jquery'), null, true);
 
             wp_enqueue_script('handlebars-runtime', REXPANSIVE_BUILDER_URL . $cartella . 'js/handlebars.runtime.js', array('jquery'), null, true);
             wp_enqueue_script('jquery-fileupload', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery.fileupload.js', array('jquery'), null, true);

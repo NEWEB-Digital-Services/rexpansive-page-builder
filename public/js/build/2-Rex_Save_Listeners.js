@@ -789,11 +789,17 @@ var Rex_Save_Listeners = (function ($) {
                 var $savingBlock = $textWrap.clone(false);
                 $savingBlock.find('.medium-insert-buttons').remove();
                 $savingBlock.find('.text-editor-span-fix').remove();
+                $savingBlock.find(".ui-sortable").removeClass("ui-sortable");
+                $savingBlock.find(".ui-sortable-handle").removeClass("ui-sortable-handle");
+                $savingBlock.find("figure").removeAttr("style");
+                $savingBlock.find("figure").removeAttr("class");
+                
                 if ($savingBlock.text().trim() == "") {
                     content = "";
                 } else {
                     content = $savingBlock.html();
                 }
+                console.log(content);
             } else {
                 var $sliderToSave = $textWrap.children(".rex-slider-wrap[data-rex-slider-active=\"true\"]");
 

@@ -13,6 +13,7 @@ var Rexlive_MediaUploader = (function ($) {
         // If the frame is already opened, return it
         if (image_multiple_uploader_frame) {
             image_multiple_uploader_frame.state('insert-image').set('liveTarget', info.sectionTarget);
+            image_multiple_uploader_frame.state('insert-image').set('eventName', info.returnEventName);
             image_multiple_uploader_frame.open();
             return;
         }
@@ -29,6 +30,7 @@ var Rexlive_MediaUploader = (function ($) {
                 multiple: true,
                 library: wp.media.query({ type: 'image' }),
                 liveTarget: info.sectionTarget,
+                eventName: info.returnEventName,
                 type: 'image'//audio, video, application/pdf, ... etc
             }, wp.media.controller.Library.prototype.defaults)
         });
@@ -45,10 +47,11 @@ var Rexlive_MediaUploader = (function ($) {
         image_multiple_uploader_frame.on('select', function () {
             var state = image_multiple_uploader_frame.state('insert-image');
             var sectionTarget = state.get("liveTarget");
+            var eventName = state.get("eventName");
             
             var selection = state.get('selection');
             var data = {
-                eventName: 'rexlive:insert_image',
+                eventName: eventName,
                 data_to_send: {
                     info: info,
                     media: [],

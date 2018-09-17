@@ -74,6 +74,7 @@ var CustomLayouts_Modal = (function ($) {
                 if (activeLayoutData.min != data[i].min && data[i].id != "default") {
                     updateHeights = true;
                     activeLayoutData.min = data[i].min;
+                    Rexbuilder_Util_Admin_Editor.updateLayoutActiveData(null);
                     Rexbuilder_Util_Admin_Editor.updateIframeWidth(data[i].min);
                 }
                 break;

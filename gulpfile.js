@@ -75,7 +75,7 @@ gulp.task('admin-css-build', function() {
 });
 
 gulp.task('live-builder-style', function() {
-	sass('admin/scss/builder-live/live-editor.scss',{
+	sass('admin/rexbuilder-tools.scss',{
 		//style:'compressed'
 	})
 	.pipe(plumber())
@@ -87,6 +87,9 @@ gulp.task('live-builder-style', function() {
     .pipe(gulp.dest('admin/css'));
 });
 
+gulp.task('peter', ['live-builder-style'] ,function() {
+	gulp.watch('admin/scss/rexbuilder-tools/**/*.scss', ['live-builder-style']);
+});
 
 var admin_js_src = [ 
 	'admin/js/jquery.gridster.js', 

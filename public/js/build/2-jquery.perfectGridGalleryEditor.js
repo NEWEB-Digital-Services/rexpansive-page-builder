@@ -1906,17 +1906,19 @@
             // eventi per il drag
             var gallery = this;
             this.$element.on('dragstart', function (event, ui) {
-                Rexbuilder_Util_Editor.elementIsDragging = true;
-                ui.helper.eq(0).find(".text-wrap").blur();
-                if (Rexbuilder_Util_Editor.editingElement) {
-                    Rexbuilder_Util_Editor.endEditingElement();
+                if (typeof ui !== "undefined") {
+                    Rexbuilder_Util_Editor.elementIsDragging = true;
+                    ui.helper.eq(0).find(".text-wrap").blur();
+                    if (Rexbuilder_Util_Editor.editingElement) {
+                        Rexbuilder_Util_Editor.endEditingElement();
+                    }
                 }
-                //console.log('drag start');
             }).on('drag', function (event, ui) {
-                //  //console.log('dragging');
             }).on('dragstop', function (event, ui) {
-                gallery.updateAllElementsProperties();
-                Rexbuilder_Util_Editor.elementIsDragging = false;
+                if (typeof ui !== "undefined") {
+                    gallery.updateAllElementsProperties();
+                    Rexbuilder_Util_Editor.elementIsDragging = false;
+                }
             })
         },
 
@@ -2049,16 +2051,18 @@
             $textWrap.mediumInsert({
                 editor: editor,
                 addons: {
-                    images: {
+                    images: false,
+                    embeds: {
+                        oembedProxy: 'https://medium.iframe.ly/api/oembed?iframe=1'
+                    },
+                    wordpressImages: {
                         uploadScript: null,
                         deleteScript: null,
                         captions: false,
                         captionPlaceholder: false,
-                        actions: null
-                    },
-                    embeds: {
-                        oembedProxy: 'https://medium.iframe.ly/api/oembed?iframe=1'
-                    },
+                        actions: null,
+                        preview: false
+                    }
                     // tables: {}
                 },
             });
@@ -2077,18 +2081,18 @@
                 Rexbuilder_Util.$rexContainer.prepend(divToolbar);
             }
 
-            var currentTextSelection;
 
+            var currentTextSelection;
             /**
-        * Gets the color of the current text selection
-        */
+            * Gets the color of the current text selection
+            */
             function getCurrentTextColor() {
                 return $(editor.getSelectedParentElement()).css('color');
             }
 
             /**
-        * Custom `color picker` extension
-        */
+            * Custom `color picker` extension
+            */
             var ColorPickerExtension = MediumEditor.extensions.button.extend({
                 name: "colorPicker",
                 action: "applyForeColor",
@@ -2108,6 +2112,11 @@
                 },
                 handleClick: function (event) {
                     // keeping record of the current text selection
+                    var toolbar = editor.getExtensionByName('toolbar');
+                    if (toolbar) {
+                        toolbar.hideToolbar();
+                    }
+
                     currentTextSelection = editor.exportSelection();
 
                     // sets the color of the current selection on the color
@@ -2127,7 +2136,6 @@
             });
 
             var pickerExtension = new ColorPickerExtension();
-
             function setColor(color) {
                 var finalColor = color ? color.toRgbString() : 'rgba(0,0,0,0)';
 
@@ -2165,6 +2173,100 @@
                 });
             }
 
+            var TextHtmlExtension = MediumEditor.extensions.button.extend({
+                name: "textHtml",
+                action: "changeText",
+                aria: "text to html",
+                contentDefault: "<span class='editor-text-html'>Text Html<span>",
+
+                init: function () {
+                    this.button = this.document.createElement('button');
+                    this.button.classList.add('medium-editor-action');
+                    this.button.innerHTML = '<b>Text Html</b>';
+
+                    // use our own handleClick instead of the default one
+                    this.on(this.button, 'click', this.handleClick.bind(this));
+                },
+
+                handleClick: function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    var selection = editor.exportSelection();
+
+                    var newSelection = jQuery.extend(true, {}, selection);
+                    newSelection.end = newSelection.start + 1;
+                    editor.importSelection(newSelection, true);
+                    var $beginEl = $(editor.getSelectedParentElement());
+                    var $beginCopy = $(editor.getSelectedParentElement());
+                    newSelection = jQuery.extend(true, {}, selection);
+                    newSelection.start = newSelection.end - 1;
+                    editor.importSelection(newSelection, true);
+                    var $endEl = $(editor.getSelectedParentElement());
+                    var nodes = [];
+                    var elementsNumber = $(editor.elements[1]).children().length;
+                    var i = 0;
+                    var flagStop = false;
+                    while ($beginCopy.get(0) !== $endEl.get(0) && i < elementsNumber) {
+                        if ($beginCopy.hasClass("medium-insert-buttons")) {
+                            flagStop = true;
+                            break;
+                        }
+                        nodes.push($beginCopy);
+                        $beginCopy = $beginCopy.next();
+                        i++;
+                    }
+                    nodes.push($beginCopy);
+
+                    var toolbar = editor.getExtensionByName('toolbar');
+                    if (toolbar) {
+                        toolbar.hideToolbar();
+                    }
+
+                    var htmlSelected = "";
+                    for (i = 0; i < nodes.length; i++) {
+                        nodes[i].wrap("<div></div>");
+                        var $tempContainer = nodes[i].parent();
+                        var stringHtml = $tempContainer.html();
+                        if (typeof stringHtml === "undefined") {
+                            flagStop = true;
+                            break;
+                        }
+                        htmlSelected += stringHtml;
+                        nodes[i].unwrap();
+                    }
+                    
+                    if (flagStop) {
+                        return;
+                    }
+
+                    $beginEl.wrap("<textarea></textarea");
+
+                    var $textArea = $beginEl.parent();
+                    for (i = 0; i < nodes.length; i++) {
+                        nodes[i].remove();
+                    }
+                    $textArea.text(htmlSelected);
+                    $textArea.wrap("<div class=\"editing-html\"></div>");
+
+                    var $container = $textArea.parent();
+                    var $closeButton = $(document.createElement("button"));
+                    $closeButton.addClass("rex-close-html-editor");
+                    $closeButton.text("applica");
+                    $container.prepend($closeButton[0]);
+                }
+            });
+
+            $(document).on("click", ".rex-close-html-editor", function (e) {
+                var $wrapper = $(e.target).parents(".editing-html");
+                var $textArea = $wrapper.find("textarea");
+                var $html = $.parseHTML($textArea.val());
+                $wrapper.children().remove();
+                $wrapper.append($html);
+                $wrapper.children().eq(0).unwrap();
+            });
+
+            var htmlExtension = new TextHtmlExtension();
+
             var editor = new MediumEditor('.editable', {
                 toolbar: {
                     buttons: [
@@ -2178,77 +2280,74 @@
                         'quote',
                         'orderedlist',
                         'unorderedlist',
-                        'table'
+                        'table',
+                        'textHtml'
                     ]
                 },
                 imageDragging: false,
                 extensions: {
                     colorPicker: pickerExtension,
+                    textHtml: htmlExtension
                 },
                 placeholder: {
                     /*
-           * This example includes the default options for
-           * placeholder, if nothing is passed this is what it used
-           */
+                    * This example includes the default options for
+                    * placeholder, if nothing is passed this is what it used
+                    */
                     text: "Insert Text Here",
                     hideOnClick: true
                 }
             });
 
-            editor.subscribe('editableInput', function (e) {
-                if ($('.medium-insert-images figure img, .mediumInsert figure img').length > 0) {
-                    $('.medium-insert-images figure img, .mediumInsert figure img').each(function () {
-                        var $imageTextWrap;
-                        $imageTextWrap = $(this);
-                        if (!$imageTextWrap.hasClass('image-text-wrap')) {
-                            var $figura = $imageTextWrap.parents('figure');
-                            var $textWrapper = $imageTextWrap.parents('.medium-insert-images');
-                            //console.log($figura);
-                            $imageTextWrap.addClass('image-text-wrap');
-                            $imageTextWrap.wrap('<span></span>');
-                            var spanEl = $imageTextWrap.parent()[0];
-                            var $spanEl = $(spanEl);
-                            var $uiElement;
-                            $spanEl.addClass('image-span-wrap');
-                            if (!Rexbuilder_Util_Editor.sectionCopying) {
-                                gallery._addHandles($spanEl, 'e, s, w, se, sw');
-                            }
-                            $spanEl.resizable({
-                                // containment: $textWrapper[0],
-                                handles: {
-                                    'e': '.ui-resizable-e',
-                                    's': '.ui-resizable-s',
-                                    'w': '.ui-resizable-w',
-                                    'se': '.ui-resizable-se',
-                                    'sw': '.ui-resizable-sw'
-                                },
-                                start: function (event, ui) {
-                                    $uiElement = $(ui.element);
-                                    if ($uiElement.is('span')) {
-                                        //console.log('startResize image');
-                                    }
-                                },
-                                resize: function (event, ui) {
-                                    if ($uiElement.is('span')) {
-                                        //console.log('resizing image');
-                                    }
-                                },
-                                stop: function (event, ui) {
-                                    if ($uiElement.is('span')) {
-                                        //console.log($uiElement.innerWidth(), $uiElement.innerHeight());
-                                        //console.log('stopResize image');
-                                    }
-                                }
-                            });
-                        }
-                    });
-                }
-                //setTimeout(function () {
-                // console.log("timeout endend");
-                if (e !== null) {
-                    gallery.fixElementTextSize($(e.srcElement).parents(".grid-stack-item")[0], null, e);
-                }
-                //}, 2000, gallery, e);
+            editor.subscribe('editableInput', function (e, elem) {
+                /*
+               if ($('.medium-insert-images figure img, .mediumInsert figure img').length > 0) {
+                   $('.medium-insert-images figure img, .mediumInsert figure img').each(function () {
+                       var $imageTextWrap;
+                       $imageTextWrap = $(this);
+                       if (!$imageTextWrap.hasClass('image-text-wrap')) {
+                           var $figura = $imageTextWrap.parents('figure');
+                           var $textWrapper = $imageTextWrap.parents('.medium-insert-images');
+                           //console.log($figura);
+                           $imageTextWrap.addClass('image-text-wrap');
+                           $imageTextWrap.wrap('<span></span>');
+                           var spanEl = $imageTextWrap.parent()[0];
+                           var $spanEl = $(spanEl);
+                           var $uiElement;
+                           $spanEl.addClass('image-span-wrap');
+                           gallery._addHandles($spanEl, 'e, s, w, se, sw');
+                           $spanEl.resizable({
+                               // containment: $textWrapper[0],
+                               handles: {
+                                   'e': '.ui-resizable-e',
+                                   's': '.ui-resizable-s',
+                                   'w': '.ui-resizable-w',
+                                   'se': '.ui-resizable-se',
+                                   'sw': '.ui-resizable-sw'
+                               },
+                               start: function (event, ui) {
+                                   $uiElement = $(ui.element);
+                                   if ($uiElement.is('span')) {
+                                       //console.log('startResize image');
+                                   }
+                               },
+                               resize: function (event, ui) {
+                                   if ($uiElement.is('span')) {
+                                       //console.log('resizing image');
+                                   }
+                               },
+                               stop: function (event, ui) {
+                                   if ($uiElement.is('span')) {
+                                       //console.log($uiElement.innerWidth(), $uiElement.innerHeight());
+                                       //console.log('stopResize image');
+                                   }
+                               }
+                           });
+                       }
+                   });
+               }
+                */
+                gallery.fixElementTextSize($(elem).parents(".grid-stack-item")[0], null, null);
             });
 
             gallery.$element.find('.rex-text-editable').each(function () {
