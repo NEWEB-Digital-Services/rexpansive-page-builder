@@ -618,7 +618,6 @@ var Rexbuilder_Dom_Util = (function ($) {
                 section_is_model: $sec.hasClass("rex-model-section"),
                 section_model_id: $sec.attr("data-rexlive-model-id"),
                 section_model_number: $sec.attr("data-rexlive-model-number"),
-                section_model_saved_number: $sec.attr("data-rexlive-saved-model-number"),
                 $section: $sec.detach()
             }
             sections.push(sectionObj);
@@ -628,16 +627,9 @@ var Rexbuilder_Dom_Util = (function ($) {
             for (j = 0; j < sections.length; j++) {
                 if (sections[j].rexID == newOrder[i].rexID) {
                     if (sections[j].section_is_model) {
-                        if (domUpdating) {
-                            if (sections[j].section_model_saved_number == newOrder[i].modelNumber) {
-                                $section = sections[j].$section;
-                                break;
-                            }
-                        } else {
-                            if (sections[j].section_model_number == newOrder[i].modelNumber) {
-                                $section = sections[j].$section;
-                                break;
-                            }
+                        if (sections[j].section_model_number == newOrder[i].modelNumber) {
+                            $section = sections[j].$section;
+                            break;
                         }
                     } else {
                         $section = sections[j].$section;
@@ -960,35 +952,6 @@ var Rexbuilder_Dom_Util = (function ($) {
         });
     }
 
-    var _fixModelNumbersSaving = function () {
-        var models = [];
-        var i;
-
-        var flagNumbers;
-        Rexbuilder_Util.$rexContainer.children(".rexpansive_section:not(.removing_section)").each(function (j, sec) {
-            var $section = $(sec);
-            if ($section.hasClass("rex-model-section")) {
-                var modelID = $section.attr("data-rexlive-model-id");
-                flagNumbers = false;
-                for (i = 0; i < models.length; i++) {
-                    if (models[i].id == modelID) {
-                        models[i].number = models[i].number + 1;
-                        $section.attr("data-rexlive-saved-model-number", models[i].number);
-                        flagNumbers = true;
-                    }
-                }
-                if (!flagNumbers) {
-                    var model = {
-                        id: modelID,
-                        number: 1,
-                    }
-                    models.push(model);
-                    $section.attr("data-rexlive-saved-model-number", model.number);
-                }
-            }
-        });
-    }
-
     var _updateSectionWidthData = function ($section, data) {
         var $sectionData = $section.children(".section-data");
         $sectionData.attr("data-section_width", data.sectionWidth);
@@ -1217,7 +1180,7 @@ var Rexbuilder_Dom_Util = (function ($) {
         updateSectionBecameModel: _updateSectionBecameModel,
         updateLockEditModel: _updateLockEditModel,
         fixModelNumbers: _fixModelNumbers,
-        fixModelNumbersSaving: _fixModelNumbersSaving,
+        fixModelNumbers: _fixModelNumbers,
         updateSectionWidthData: _updateSectionWidthData,
         updateSectionWidth: _updateSectionWidth,
     };

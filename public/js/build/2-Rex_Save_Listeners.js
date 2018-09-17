@@ -14,7 +14,7 @@ var Rex_Save_Listeners = (function ($) {
             var customCSS = $("#rexpansive-builder-style-inline-css").text().trim();
 
             //creating customization of page
-            Rexbuilder_Dom_Util.fixModelNumbersSaving();
+            Rexbuilder_Dom_Util.fixModelNumbers();
             var newCustomization = createCustomization(activeLayoutName);
 
             //updating customizations avaiable names
@@ -463,7 +463,7 @@ var Rex_Save_Listeners = (function ($) {
             } else {
                 section_props.section_is_model = true;
                 section_props.section_model_id = $section.attr("data-rexlive-model-id");
-                section_props.section_model_number = $section.attr("data-rexlive-saved-model-number");
+                section_props.section_model_number = $section.attr("data-rexlive-model-number");
             }
 
             output.push(section_props);

@@ -201,6 +201,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         };
 
         _updateIframeWidth(buttonData.min);
+        _sendIframeBuilderMessage(updatedLayoutData);
     }
     
     var _updateLayoutActiveData = function (newData) {
@@ -291,7 +292,6 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
         $frameBuilder.on(Rexbuilder_Util_Admin_Editor._transitionEvent, function () {        
             if(updateLayoutActiveData !== null){
-                _sendIframeBuilderMessage(updatedLayoutData);
             }
         });
         

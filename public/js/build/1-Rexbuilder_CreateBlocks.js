@@ -51,7 +51,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
     $(document).on("rexlive:insert_image", function (e) {
         var data = e.settings.data_to_send;
-
+        
         var $section;
         if (data.sectionTarget.modelNumber != "") {
             $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"][data-rexlive-model-number="' + data.sectionTarget.modelNumber + '"]');

@@ -74,7 +74,7 @@ var Rexbuilder_Section = (function ($) {
                 defaultStateSections = Rexbuilder_Util.getDefaultLayoutState();
                 layoutsOrder = Rexbuilder_Util.getPageCustomizationsDom();
                 if ($section.hasClass("rex-model-section")) {
-                    modelNumber = parseInt($section.attr("data-rexlive-saved-model-number"));
+                    modelNumber = parseInt($section.attr("data-rexlive-model-number"));
                     modelID = parseInt($section.attr("data-rexlive-model-id"));
                 }
             }
@@ -88,7 +88,7 @@ var Rexbuilder_Section = (function ($) {
             Rexbuilder_Dom_Util.updateSectionVisibility($section, false);
             if (layoutsOrder != null) {
                 var i, j;
-                //Rexbuilder_Dom_Util.fixModelNumbersSaving();
+                Rexbuilder_Dom_Util.fixModelNumbers();
                 for (i = 0; i < layoutsOrder.length; i++) {
                     for (j = 0; j < layoutsOrder[i].sections.length; j++) {
                         if (layoutsOrder[i].sections[j].section_is_model) {
@@ -100,6 +100,15 @@ var Rexbuilder_Section = (function ($) {
                             if (rexID == layoutsOrder[i].sections[j].section_rex_id) {
                                 layoutsOrder[i].sections.splice(j, 1);
                                 break;
+                            }
+                        }
+                    }
+                    if(modelID != -1){
+                        var k=1;
+                        for (j = 0; j < layoutsOrder[i].sections.length; j++) {
+                            if (layoutsOrder[i].sections[j].section_model_id == modelID){
+                                layoutsOrder[i].sections[j].section_model_number = k;
+                                k=k+1;
                             }
                         }
                     }
@@ -120,6 +129,17 @@ var Rexbuilder_Section = (function ($) {
                         }
                     }
                 }
+                
+                if(modelID != -1){
+                    var k=1;
+                    for (j = 0; j < defaultStateSections.length; j++) {
+                        if (defaultStateSections[j].section_model_id == modelID){
+                            defaultStateSections[j].section_model_number = k;
+                            k=k+1;
+                        }
+                    }
+                }
+
                 Rexbuilder_Util.updateDefaultLayoutState({ pageData: defaultStateSections });
             }
 
@@ -133,7 +153,7 @@ var Rexbuilder_Section = (function ($) {
 
             var data = {
                 eventName: "rexlive:edited",
-                modelEdited: $section.hasClass("rex-model-section")
+                modelEdited: false
             }
             Rexbuilder_Util_Editor.sendParentIframeMessage(data);
         });
@@ -255,7 +275,7 @@ var Rexbuilder_Section = (function ($) {
 
             var data = {
                 eventName: "rexlive:edited",
-                modelEdited: $section.hasClass("rex-model-section")
+                modelEdited: false
             }
             Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 
@@ -502,7 +522,7 @@ var Rexbuilder_Section = (function ($) {
 
             var data = {
                 eventName: "rexlive:edited",
-                modelEdited: $newSection.hasClass("rex-model-section")
+                modelEdited: false
             }
             Rexbuilder_Util_Editor.sendParentIframeMessage(data);
             if (Rexbuilder_Util.activeLayout == "default") {
@@ -691,7 +711,7 @@ var Rexbuilder_Section = (function ($) {
         Rexbuilder_Util.$rexContainer.children(".rexpansive_section.rex-model-section:not(.removing_section)").each(function (i, sec) {
             var $section = $(sec);
             if ($section.attr("data-rexlive-model-id") == idModel && $section.attr("data-rexlive-model-number") != editedModelNumber) {
-                var oldSectionModelSavedNumber = isNaN(parseInt($section.attr("data-rexlive-saved-model-number"))) ? "" : $section.attr("data-rexlive-saved-model-number");
+                var oldSectionModelSavedNumber = isNaN(parseInt($section.attr("data-rexlive-model-number"))) ? "" : $section.attr("data-rexlive-model-number");
                 var modelNumber = 1;
                 Rexbuilder_Util.$rexContainer.children(".rexpansive_section:not(.removing_section)").each(function (i, sec) {
                     if ($(sec).attr("data-rexlive-model-id") == idModel) {
@@ -703,7 +723,7 @@ var Rexbuilder_Section = (function ($) {
                 $section.after(html);
 
                 var $newSection = $(html);
-                $newSection.attr("data-rexlive-saved-model-number", oldSectionModelSavedNumber);
+                $newSection.attr("data-rexlive-model-number", oldSectionModelSavedNumber);
 
                 var dataModel = {
                     modelID: idModel,
@@ -733,7 +753,7 @@ var Rexbuilder_Section = (function ($) {
         });
 
         Rexbuilder_Util.$rexContainer.children(".rexpansive_section.removing_section.rex-model-section").each(function (i, sec) {
-            $(sec).attr("data-rexlive-saved-model-number", "");
+            $(sec).attr("data-rexlive-model-number", "");
         });
 
         Rexbuilder_Util_Editor.sectionCopying = false;
@@ -765,7 +785,7 @@ var Rexbuilder_Section = (function ($) {
         //launching sortable
         Rexbuilder_Util.$rexContainer.sortable({
             start: function (event, ui) {
-                Rexbuilder_Dom_Util.fixModelNumbersSaving();
+                Rexbuilder_Dom_Util.fixModelNumbers();
                 startingSectionsOrder = [];
                 Rexbuilder_Util.$rexContainer.children(".rexpansive_section:not(.removing_section):not(.ui-sortable-placeholder)").each(function (i, el) {
                     var $section = $(el);
@@ -795,10 +815,7 @@ var Rexbuilder_Section = (function ($) {
 
                 if ($section.hasClass("rex-model-section")) {
                     sectionMovedObj.modelID = $section.attr("data-rexlive-model-id");
-                    sectionMovedObj.modelNumber = $section.attr("data-rexlive-model-saved-number");
-                    if(typeof sectionMovedObj.modelNumber == "undefined"){
-                        sectionMovedObj.modelNumber = $section.attr("data-rexlive-model-number");
-                    }
+                    sectionMovedObj.modelNumber = $section.attr("data-rexlive-model-number");
                 }
 
                 endSectionsOrder = [];
@@ -836,10 +853,9 @@ var Rexbuilder_Section = (function ($) {
 
                 Rexbuilder_Util_Editor.pushAction("document", "updateSectionOrder", actionData, reverseData);
 
-                //$section.attr("data-rexlive-section-edited", true);
                 var data = {
                     eventName: "rexlive:edited",
-                    modelEdited: $section.hasClass("rex-model-section")
+                    modelEdited: false
                 }
                 Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 

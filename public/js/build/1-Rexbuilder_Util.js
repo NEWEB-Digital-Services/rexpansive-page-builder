@@ -766,7 +766,7 @@ var Rexbuilder_Util = (function ($) {
                 if (section.section_is_model.toString() == "true") {
                     sectionObj.modelID = section.section_model_id;
                     sectionObj.modelNumber = section.section_model_number;
-                    $section = Rexbuilder_Util.$rexContainer.children('section[data-rexlive-section-id="' + section.section_rex_id + '"][data-rexlive-saved-model-number="' + sectionObj.modelNumber + '"]');
+                    $section = Rexbuilder_Util.$rexContainer.children('section[data-rexlive-section-id="' + section.section_rex_id + '"][data-rexlive-model-number="' + sectionObj.modelNumber + '"]');
                 } else {
                     $section = Rexbuilder_Util.$rexContainer.children('section[data-rexlive-section-id="' + section.section_rex_id + '"]');
                 }
@@ -1260,7 +1260,7 @@ var Rexbuilder_Util = (function ($) {
 
     var _updateDefaultLayoutStateSection = function ($section, position) {
         position = typeof position == "undefined" ? -1 : position;
-        Rexbuilder_Dom_Util.fixModelNumbersSaving();
+        Rexbuilder_Dom_Util.fixModelNumbers();
         var layoutData = Rex_Save_Listeners.createTargets($section, Rexbuilder_Util.activeLayout);
         var sectionAdded = false;
         if ($section.hasClass("rex-model-section")) {
@@ -1300,7 +1300,7 @@ var Rexbuilder_Util = (function ($) {
             if ($section.hasClass("rex-model-section")) {
                 section_props.section_is_model = true;
                 section_props.section_model_id = $section.attr("data-rexlive-model-id");
-                section_props.section_model_number = $section.attr("data-rexlive-saved-model-number");
+                section_props.section_model_number = $section.attr("data-rexlive-model-number");
             }
 
             var $div = $(document.createElement("div"));
@@ -1392,7 +1392,7 @@ var Rexbuilder_Util = (function ($) {
     }
 
     var _updateSectionStateLive = function ($section) {
-        Rexbuilder_Dom_Util.fixModelNumbersSaving();
+        Rexbuilder_Dom_Util.fixModelNumbers();
         var layoutData = Rex_Save_Listeners.createTargets($section, Rexbuilder_Util.activeLayout);
         var sectionAdded = false;
         if ($section.hasClass("rex-model-section")) {
@@ -1429,7 +1429,7 @@ var Rexbuilder_Util = (function ($) {
             if ($section.hasClass("rex-model-section")) {
                 section_props.section_is_model = true;
                 section_props.section_model_id = $section.attr("data-rexlive-model-id");
-                section_props.section_model_number = $section.attr("data-rexlive-saved-model-number");
+                section_props.section_model_number = $section.attr("data-rexlive-model-number");
             }
 
             var $div = $(document.createElement("div"));
@@ -2557,7 +2557,7 @@ var Rexbuilder_Util = (function ($) {
 
         _updateSectionsID();
         Rexbuilder_Dom_Util.fixModelNumbers();
-        Rexbuilder_Dom_Util.fixModelNumbersSaving();
+        Rexbuilder_Dom_Util.fixModelNumbers();
 
         var l = chooseLayout();
         _edit_dom_layout(l);

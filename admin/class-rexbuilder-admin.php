@@ -1305,13 +1305,13 @@ class Rexbuilder_Admin {
 		if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) :
 			$response['error'] = true;
 			$response['msg'] = 'Error!';
-			wp_send_json_error( $response );
+			wp_send_json_error( $response , 500);
 		endif;
 
 		if( !isset( $_POST['model_data'] ) ) {
 			$response['error'] = true;
 			$response['msg'] = 'Error!';
-			wp_send_json_error( $response );
+			wp_send_json_error( $response , 500);
 		}
 
 		$model_settings = $_POST['model_data'];
@@ -1320,7 +1320,7 @@ class Rexbuilder_Admin {
 		if( empty( $model_settings['post_content'] ) ) {
 			$response['error'] = true;
 			$response['msg'] = 'Error. No content!';
-			wp_send_json_error( $response );
+			wp_send_json_error( $response , 500);
 		}
 
 		$args = array(
