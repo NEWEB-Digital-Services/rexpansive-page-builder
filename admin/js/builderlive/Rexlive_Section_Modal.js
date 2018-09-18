@@ -3,8 +3,7 @@ var Section_Modal = (function ($) {
     'use strict';
 
     var section_config_modal_properties;
-    var sectionTarget;
-    
+
     var _openSectionModal = function (data) {
         _clearSectionModal();
         _updateSectionModal(data);
@@ -22,84 +21,20 @@ var Section_Modal = (function ($) {
         GridSeparators_Modal.resetDistances();
         SectionMargins_Modal.resetMargins();
         PhotoSwipe_Modal.resetPhotoswipe();
+        FullHeight_Modal.resetFullHeight();
         SectionName_Modal.resetSectionName();
         Section_CustomClasses_Modal.resetCustomClasses();
     }
 
     var _updateSectionModal = function (data) {
-        sectionTarget = data.sectionTarget;
-
-        LayoutGrid_Modal.updateLayoutModal(data.activeLayout, data.fullHeight);
-        Section_Width_Modal.updateSectionWidth({
-            dimension: data.dimension, 
-            sectionWidth: data.section_width, 
-            sectionTarget: data.sectionTarget
-        });
-        GridSeparators_Modal.updateDistances(data.rowDistances);
-        SectionMargins_Modal.updateMargins(data.marginsSection);
-        PhotoSwipe_Modal.updatePhotoswipe(data.photoswipe);
-        SectionName_Modal.updateSectionName(data.sectionName);
-        Section_CustomClasses_Modal.updateCustomClasses(data.customClasses);
-    }
-
-    var _applySectionLayout = function () {
-        var layoutData = LayoutGrid_Modal.getData();
-        var gridSeparatosData = GridSeparators_Modal.getData();
-        var marginsSectionData = SectionMargins_Modal.getData();
-        var data_gallery = {
-            eventName: "rexlive:set_gallery_layout",
-            data_to_send: {
-                sectionTarget: sectionTarget,
-                layout: layoutData.layout,
-                fullHeight: layoutData.fullHeight,
-                rowDistances: gridSeparatosData,
-                sectionMargins: marginsSectionData
-            }
-        };
-
-        Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_gallery);
-    }
-
-    var _applyPhotoswipeSetting = function () {
-        var photoswipe = PhotoSwipe_Modal.getData();
-
-        var data_photoswipe = {
-            eventName: "rexlive:set_row_photoswipe",
-            data_to_send: {
-                sectionTarget: sectionTarget,
-                photoswipe: photoswipe
-            }
-        }
-
-        Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_photoswipe);
-    }
-
-    var _applySectionName = function () {
-        var sectionName = SectionName_Modal.getData();
-        var data_sectionName = {
-            eventName: "rexlive:change_section_name",
-            data_to_send: {
-                sectionTarget: sectionTarget,
-                sectionName: sectionName
-            }
-        }
-
-        Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_sectionName);
-    }
-
-    var _applyCustomClasses = function () {
-        var newClassesString = Section_CustomClasses_Modal.getData();
-        newClassesString = newClassesString.trim();
-        var classList = newClassesString.split(/\s+/);
-        var data_customClasses = {
-            eventName: "rexlive:apply_section_custom_classes",
-            data_to_send: {
-                sectionTarget: sectionTarget,
-                customClasses: classList
-            }
-        }
-
-        Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_customClasses);
+        LayoutGrid_Modal.updateLayoutModal(data);
+        Section_Width_Modal.updateSectionWidth(data);
+        GridSeparators_Modal.updateDistances(data);
+        SectionMargins_Modal.updateMargins(data);
+        PhotoSwipe_Modal.updatePhotoswipe(data);
+        FullHeight_Modal.updateFullHeight(data);
+        SectionName_Modal.updateSectionName(data);
+        Section_CustomClasses_Modal.updateCustomClasses(data);
     }
 
     var _linkDocumentListenersSectionPropertiesModal = function () {
@@ -113,6 +48,7 @@ var Section_Modal = (function ($) {
             _closeSectionModal();
         });
     }
+
     var init = function () {
         var $sectionConfigModal = $('#modal-background-responsive-set');
         section_config_modal_properties = {
@@ -130,18 +66,14 @@ var Section_Modal = (function ($) {
         GridSeparators_Modal.init($sectionConfigModal);
         SectionMargins_Modal.init($sectionConfigModal);
         PhotoSwipe_Modal.init($sectionConfigModal);
+        FullHeight_Modal.init($sectionConfigModal);
         SectionName_Modal.init($sectionConfigModal);
         Section_CustomClasses_Modal.init($sectionConfigModal);
-        sectionTarget = {};
     }
 
     return {
         init: init,
-        openSectionModal: _openSectionModal,
-        applySectionName: _applySectionName,
-        applyPhotoswipeSetting: _applyPhotoswipeSetting,
-        applySectionLayout: _applySectionLayout,
-        applyCustomClasses: _applyCustomClasses
+        openSectionModal: _openSectionModal
     };
 
 })(jQuery);

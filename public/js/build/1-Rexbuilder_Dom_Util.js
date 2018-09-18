@@ -57,10 +57,10 @@ var Rexbuilder_Dom_Util = (function ($) {
 
     var _updateRow = function ($section, $sectionData, $galleryElement, rowSettings) {
         var grid_gutter = parseInt(rowSettings.gutter);
-        var grid_separator_top = parseInt(rowSettings.row_separator_top);
-        var grid_separator_right = parseInt(rowSettings.row_separator_right);
-        var grid_separator_bottom = parseInt(rowSettings.row_separator_bottom);
-        var grid_separator_left = parseInt(rowSettings.row_separator_left);
+        var grid_separator_top = parseInt(rowSettings.top);
+        var grid_separator_right = parseInt(rowSettings.right);
+        var grid_separator_bottom = parseInt(rowSettings.bottom);
+        var grid_separator_left = parseInt(rowSettings.left);
 
         var defaultGutter = 20;
         var row_distances = {
@@ -115,24 +115,6 @@ var Rexbuilder_Dom_Util = (function ($) {
                 galleryEditorInstance.updateGridSettingsChangeLayout(rowSettings);
             }
         }
-
-    }
-
-    var _updateGridDomProperties = function ($galleryElement, data) {
-        $galleryElement.attr("data-layout", data.layout);
-        $galleryElement.attr("data-full-height", data.fullHeight);
-        $galleryElement.attr("data-separator", data.rowDistances.gutter);
-        $galleryElement.attr("data-row-separator-top", data.rowDistances.top);
-        $galleryElement.attr("data-row-separator-right", data.rowDistances.right);
-        $galleryElement.attr("data-row-separator-bottom", data.rowDistances.bottom);
-        $galleryElement.attr("data-row-separator-left", data.rowDistances.left);
-    }
-
-    var _updateSectionMargins = function ($section, margins) {
-        $section.css("margin-top", margins.top + "px");
-        $section.css("margin-right", margins.right + "px");
-        $section.css("margin-bottom", margins.bottom + "px");
-        $section.css("margin-left", margins.left + "px");
     }
 
     var _updateImageBG = function ($target, data) {
@@ -829,11 +811,12 @@ var Rexbuilder_Dom_Util = (function ($) {
     var _updateSectionBackgroundImage = function ($section, data) {
         _updateImageBG($section, data);
     }
-
+    
     var _updateSectionVisibility = function ($section, show, layoutsOrder, defaultStateSections) {
         if (show) {
             if (Rexbuilder_Util.activeLayout == "default") {
                 $section.removeClass("removing_section");
+                Rexbuilder_Util.addSectionID($section.attr("data-rexlive-section-id"));
             }
             $section.removeClass("rex-hide-section");
             Rexbuilder_Util.playPluginsSection($section);
@@ -841,6 +824,7 @@ var Rexbuilder_Dom_Util = (function ($) {
             Rexbuilder_Util.stopPluginsSection($section);
             if (Rexbuilder_Util.activeLayout == "default") {
                 $section.addClass("removing_section");
+                Rexbuilder_Util.removeSectionID($section.attr("data-rexlive-section-id"));
             }
             $section.addClass("rex-hide-section");
         }
@@ -969,15 +953,7 @@ var Rexbuilder_Dom_Util = (function ($) {
             widthType: widthType
         });
 
-        var $galleryParent = galleryInstance.$element.parent();
-        if (sectionWidth == "100%") {
-            $galleryParent.removeClass("center-disposition");
-            $galleryParent.addClass("full-disposition");
-        } else {
-            $galleryParent.removeClass("full-disposition");
-            $galleryParent.addClass("center-disposition");
-        }
-        $galleryParent.css("max-width", sectionWidth);
+        galleryInstance.updateSectionWidthWrap(sectionWidth);
 
         Rexbuilder_Util_Editor.updatingGridstack = true;
         galleryInstance.batchGridstack();
@@ -985,6 +961,82 @@ var Rexbuilder_Dom_Util = (function ($) {
         _updateBlocksLayout(data.blocksDisposition);
         galleryInstance.commitGridstack();
         Rexbuilder_Util_Editor.updatingGridstack = false;
+    }
+
+    var _updateRowDistancesData = function ($gallery, newDistances) {
+        var $sectionData = $gallery.parents(".rexpansive_section").children(".section-data");
+        
+        $gallery.attr("data-separator", newDistances.gutter);
+        $gallery.attr("data-row-separator-top", newDistances.top);
+        $gallery.attr("data-row-separator-right", newDistances.right);
+        $gallery.attr("data-row-separator-bottom", newDistances.bottom);
+        $gallery.attr("data-row-separator-left", newDistances.left);
+
+        $sectionData.attr("data-block_distance", newDistances.gutter);
+        $sectionData.attr("data-row_separator_top", newDistances.top);
+        $sectionData.attr("data-row_separator_right", newDistances.right);
+        $sectionData.attr("data-row_separator_bottom", newDistances.bottom);
+        $sectionData.attr("data-row_separator_left", newDistances.left);
+    }
+
+    var _updateRowDistances = function ($section, data) {
+        var newDistances = data.rowDistances;
+        var $gallery = $section.find(".grid-stack-row");
+        var galleryInstance = data.galleryInstance;
+
+        _updateRowDistancesData($gallery, newDistances);
+        galleryInstance.updateRowDistances(newDistances);
+
+        Rexbuilder_Util_Editor.updatingGridstack = true;
+        galleryInstance.batchGridstack();
+        galleryInstance.updateGridstackGridSizes(data.singleWidth, data.singleHeight);
+        _updateBlocksLayout(data.blocksDisposition);
+        galleryInstance.commitGridstack();
+        Rexbuilder_Util_Editor.updatingGridstack = false;
+    }
+    
+    var _updateSectionMarginsData = function ($section, margins) {
+        $section.css("margin-top", margins.top + "px");
+        $section.css("margin-right", margins.right + "px");
+        $section.css("margin-bottom", margins.bottom + "px");
+        $section.css("margin-left", margins.left + "px");
+    }
+
+    var _updateSectionMargins = function ($section, data) {
+        _updateSectionMarginsData($section, data.marginsSection);
+        var galleryInstance = data.galleryInstance;
+        Rexbuilder_Util_Editor.updatingGridstack = true;
+        galleryInstance.batchGridstack();
+        galleryInstance.updateGridstackGridSizes(data.singleWidth, data.singleHeight);
+        _updateBlocksLayout(data.blocksDisposition);
+        galleryInstance.commitGridstack();
+        Rexbuilder_Util_Editor.updatingGridstack = false;
+    }
+
+    var _updateGridLayoutDomProperties = function ($gallery, layout) {
+        var $sectionData = $gallery.parents(".rexpansive_section").children(".section-data");
+        $gallery.attr("data-layout", layout);
+        $gallery.attr("data-full-height", false);
+        $sectionData.attr("data-layout", layout);
+        $sectionData.attr("data-full_height", false);
+    }
+
+    var _updateSectionLayout = function ($gallery, data) {
+        _updateGridLayoutDomProperties($gallery, data.layout);
+
+        var galleryInstance = data.galleryInstance;
+        Rexbuilder_Util_Editor.updatingGridstack = true;
+        galleryInstance.settings.galleryLayout = data.layout;
+        galleryInstance.batchGridstack();
+        galleryInstance.updateFloatingElementsGridstack();
+        galleryInstance.updateGridstackGridSizes(data.singleWidth, data.singleHeight);
+        _updateBlocksLayout(data.blocksDisposition);
+        galleryInstance.commitGridstack();
+        Rexbuilder_Util_Editor.updatingGridstack = false;
+    }
+    
+    var _updateSectionFullHeight = function (data) {
+        data.galleryInstance.updateFullHeight(data.fullHeight.toString() == "true");
     }
 
     var _performAction = function (action, flag) {
@@ -1017,22 +1069,11 @@ var Rexbuilder_Dom_Util = (function ($) {
         }
 
         switch (action.actionName) {
-            case "updateSection":
-                if (galleryEditorInstance !== undefined) {
-                    Rexbuilder_Util_Editor.updatingGridstack = true;
-                    galleryEditorInstance.batchGridstack();
-
-                    _updateBlocksLayout(dataToUse.blocksDisposition);
-                    _updateSectionMargins($section, dataToUse.marginsSection);
-                    _updateGridDomProperties($galleryElement, dataToUse);
-                    galleryEditorInstance.updateGridSettingsModalUndoRedo(dataToUse);
-                    galleryEditorInstance.updateGridstackStyles(dataToUse.blocksDisposition.cellHeight);
-                    galleryEditorInstance.commitGridstack();
-                    galleryEditorInstance.updateSrollbars();
-                    Rexbuilder_Util_Editor.updatingGridstack = false;
-                    //waiting gridstack to update size viewers
-                    setTimeout(galleryEditorInstance._updateElementsSizeViewers(), 200);
-                }
+            case "updateSectionLayout":
+                _updateSectionLayout($galleryElement, dataToUse);
+                break;
+            case "updateSectionFullHeight":
+                _updateSectionFullHeight(dataToUse);
                 break;
             case "updateSectionBlocksDisposition":
                 if (galleryEditorInstance !== undefined) {
@@ -1129,6 +1170,12 @@ var Rexbuilder_Dom_Util = (function ($) {
             case "updateSectionWidth":
                 _updateSectionWidth($section, dataToUse);
                 break;
+            case "updateGridDistances":
+                _updateRowDistances($section, dataToUse);
+                break;
+            case "updateSectionMargins":
+                _updateSectionMargins($section, dataToUse);
+                break;
             default:
                 break;
         }
@@ -1145,6 +1192,7 @@ var Rexbuilder_Dom_Util = (function ($) {
         init: init,
         updateRow: _updateRow,
         updateSectionMargins: _updateSectionMargins,
+        updateSectionMarginsData: _updateSectionMarginsData,
         updateImageBG: _updateImageBG,
         performAction: _performAction,
         addYoutubeVideo: _addYoutubeVideo,
@@ -1155,7 +1203,7 @@ var Rexbuilder_Dom_Util = (function ($) {
         removeMp4Video: _removeMp4Video,
         updateSlider: _updateSlider,
         updateSliderStack: _updateSliderStack,
-        updateGridDomProperties: _updateGridDomProperties,
+        updateGridLayoutDomProperties: _updateGridLayoutDomProperties,
         updateSectionName: _updateSectionName,
         enablePhotoswipeAllBlocksSection: _enablePhotoswipeAllBlocksSection,
         updateCustomClasses: _updateCustomClasses,
@@ -1183,5 +1231,7 @@ var Rexbuilder_Dom_Util = (function ($) {
         fixModelNumbers: _fixModelNumbers,
         updateSectionWidthData: _updateSectionWidthData,
         updateSectionWidth: _updateSectionWidth,
+        updateRowDistancesData: _updateRowDistancesData,
+        updateGridLayoutDomProperties: _updateGridLayoutDomProperties,
     };
 })(jQuery);

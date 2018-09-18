@@ -4,12 +4,15 @@ var Section_CustomClasses_Modal = (function ($) {
     var custom_classes_modal_properties;
     var defaultClasses;
     var hiddenClasses;
+    var sectionTarget;
     
     var _resetCustomClasses = function () {
         custom_classes_modal_properties.$classes.val(defaultClasses);
     }
 
-    var _updateCustomClasses = function (newClasses) {
+    var _updateCustomClasses = function (data) {
+        sectionTarget = data.sectionTarget;
+        var newClasses = data.customClasses;
         hiddenClasses = "";
         if (newClasses.indexOf("active-large-overlay") !== -1) {
             hiddenClasses += " active-large-overlay";
@@ -26,6 +29,21 @@ var Section_CustomClasses_Modal = (function ($) {
         custom_classes_modal_properties.$classes.val(newClasses);
     }
 
+    var _applyCustomClasses = function () {
+        var newClassesString = _getData();
+        newClassesString = newClassesString.trim();
+        var classList = newClassesString.split(/\s+/);
+        var data_customClasses = {
+            eventName: "rexlive:apply_section_custom_classes",
+            data_to_send: {
+                sectionTarget: sectionTarget,
+                customClasses: classList
+            }
+        }
+
+        Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_customClasses);
+    }
+
     var _getData = function () {
         var newClasses = custom_classes_modal_properties.$classes.val();
         newClasses += hiddenClasses;
@@ -34,7 +52,7 @@ var Section_CustomClasses_Modal = (function ($) {
 
     var _linkDocumentListeners = function () {
         custom_classes_modal_properties.$classes.blur(function (e) {
-            Section_Modal.applyCustomClasses();
+            _applyCustomClasses();
         })
     }
 

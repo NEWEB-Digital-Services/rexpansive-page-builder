@@ -4,7 +4,81 @@
 
 	$(function () {
 
-		$(document).on("rexlive:set_gallery_layout", function (e) {
+		$(document).on("rexlive:set_row_fullHeight", function (e) {
+			var data = e.settings.data_to_send;
+			var $section;
+
+			if (data.sectionTarget.modelNumber != "") {
+				$section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"][data-rexlive-model-number="' + data.sectionTarget.modelNumber + '"]');
+			} else {
+				$section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"]');
+			}
+
+			var $gallery = $section.find(".grid-stack-row");
+			var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
+
+			var reverseData = {
+				fullHeight: $gallery.attr("data-full-height"),
+				galleryInstance: galleryInstance
+			}
+
+			galleryInstance.updateFullHeight(data.fullHeight.toString() == "true");
+
+			var actionData = {
+				fullHeight: data.fullHeight.toString(),
+				galleryInstance: galleryInstance
+			}
+
+			Rexbuilder_Util_Editor.pushAction($section, "updateSectionFullHeight", actionData, reverseData);
+			$section.attr("data-rexlive-section-edited", true);
+		});
+
+		$(document).on("rexlive:set_gallery_layout", function(e){
+			// se simone cambia idea e vuole che tornando a schiacciare su fixed senza aver fatto modifiche si torni nella configurazione con i buchi, triggerare undo
+			
+			var data = e.settings.data_to_send;
+			var $section;
+
+			if (data.sectionTarget.modelNumber != "") {
+				$section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"][data-rexlive-model-number="' + data.sectionTarget.modelNumber + '"]');
+			} else {
+				$section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"]');
+			}
+
+			var $gallery = $section.find(".grid-stack-row");
+			var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
+
+			var reverseData = {				
+				collapse_grid: $section.attr("data-rex-collapse-grid"),
+				gridLayout: galleryInstance.settings.galleryLayout,
+				galleryInstance: galleryInstance,
+				singleWidth: galleryInstance.properties.singleWidth,
+				singleHeight: galleryInstance.properties.singleHeight,
+				blocksDisposition: $.extend(true, {}, galleryInstance.createActionDataMoveBlocksGrid())
+			}
+			Rexbuilder_Util_Editor.updatingSectionLayout = true;
+			$section.attr("data-rexlive-section-edited", true);
+			Rexbuilder_Dom_Util.updateGridLayoutDomProperties($gallery, data.layout);
+			galleryInstance.updateGridLayout(data.layout, reverseData);
+		});
+
+		$(document).on("rexlive:galleryLayoutChanged", function (e) {
+			var galleryInstance = e.settings.galleryEditorInstance;
+			var reverseData = e.settings.reverseData;
+			var $section = e.settings.$section;
+
+			var actionData = {
+				gridLayout: e.settings.layout,
+				galleryInstance: galleryInstance,
+				singleWidth: galleryInstance.properties.singleWidth,
+				singleHeight: galleryInstance.properties.singleHeight,
+				blocksDisposition: $.extend(true, {}, galleryInstance.createActionDataMoveBlocksGrid())
+			}
+			Rexbuilder_Util_Editor.updatingSectionLayout = false;
+			Rexbuilder_Util_Editor.pushAction($section, "updateSectionLayout", actionData, reverseData);
+		});
+
+		$(document).on("rexlive:set_row_separatos", function(e){
 			var data = e.settings.data_to_send;
 			var $section;
 
@@ -27,6 +101,51 @@
 				right: parseInt($gallery.attr("data-row-separator-right")),
 				left: parseInt($gallery.attr("data-row-separator-left"))
 			}
+			
+			var reverseData = {
+				rowDistances: oldRowDistances,
+				galleryInstance: galleryInstance,
+				singleWidth: galleryInstance.properties.singleWidth,
+				singleHeight: galleryInstance.properties.singleHeight,
+				blocksDisposition: $.extend(true, {}, oldDisposition)
+			}
+
+			Rexbuilder_Util_Editor.updatingRowDistances = true;
+
+			Rexbuilder_Dom_Util.updateRowDistancesData($gallery, data.distances);
+			galleryInstance.updateRowDistances(data.distances, reverseData);
+			$section.attr("data-rexlive-section-edited", true);
+		});
+
+		$(document).on("rexlive:rowDistancesApplied", function (e) {
+			var galleryInstance = e.settings.galleryEditorInstance;
+			var reverseData = e.settings.reverseData;
+			var $section = e.settings.$section;
+
+			var actionData = {
+				rowDistances: jQuery.extend({}, true, e.settings.newDistances),
+				galleryInstance: galleryInstance,
+				singleWidth: galleryInstance.properties.singleWidth,
+				singleHeight: galleryInstance.properties.singleHeight,
+				blocksDisposition: $.extend(true, {}, galleryInstance.createActionDataMoveBlocksGrid())
+			}
+			Rexbuilder_Util_Editor.updatingRowDistances = false;
+			Rexbuilder_Util_Editor.pushAction($section, "updateGridDistances", actionData, reverseData);
+		});
+
+		$(document).on("rexlive:set_section_margins", function(e){
+			var data = e.settings.data_to_send;
+			var $section;
+
+			if (data.sectionTarget.modelNumber != "") {
+				$section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"][data-rexlive-model-number="' + data.sectionTarget.modelNumber + '"]');
+			} else {
+				$section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"]');
+			}
+
+			var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
+
+			var oldDisposition = galleryInstance.createActionDataMoveBlocksGrid();
 
 			var section_margin_top = parseInt($section.css("margin-top").split("px")[0]);
 			var section_margin_right = parseInt($section.css("margin-right").split("px")[0]);
@@ -42,39 +161,35 @@
 
 			var reverseData = {
 				marginsSection: oldMargins,
-				rowDistances: oldRowDistances,
-
-				fullHeight: $gallery.attr("data-full-height"),
-				layout: $gallery.attr("data-layout"),
-
-				collapse_grid: $section.attr("data-rex-collapse-grid"),
+				galleryInstance: galleryInstance,
+				singleWidth: galleryInstance.properties.singleWidth,
+				singleHeight: galleryInstance.properties.singleHeight,
 				blocksDisposition: $.extend(true, {}, oldDisposition)
 			}
 
-			Rexbuilder_Dom_Util.updateGridDomProperties($gallery, data);
-			Rexbuilder_Dom_Util.updateSectionMargins($section, data.sectionMargins);
+			Rexbuilder_Util_Editor.updatingSectionMargins = true;
 
-			var newDisposition = galleryInstance.updateGridSettingsModalUndoRedo({
-				'layout': data.layout,
-				'fullHeight': data.fullHeight,
-				'rowDistances': data.rowDistances
-			});
+			Rexbuilder_Dom_Util.updateSectionMarginsData($section, data.margins);
+			galleryInstance.updateRowSectionMargins(data.margins, reverseData);
 
-			//actionData: STATO DOPO
-			var actionData = {
-				marginsSection: data.sectionMargins,
-				rowDistances: data.rowDistances,
-				fullHeight: data.fullHeight,
-				layout: data.layout,
-				collapse_grid: $section.attr("data-rex-collapse-grid"),
-				blocksDisposition: $.extend(true, {}, newDisposition)
-			}
-
-			Rexbuilder_Util_Editor.pushAction($section, "updateSection", actionData, reverseData);
 			$section.attr("data-rexlive-section-edited", true);
-			if (Rexbuilder_Util.activeLayout == "default") {
-				Rexbuilder_Util.updateDefaultLayoutStateSection($section);
+		});
+
+		$(document).on("rexlive:sectionMarginsApplied", function (e) {
+			var galleryInstance = e.settings.galleryEditorInstance;
+			var reverseData = e.settings.reverseData;
+			var $section = e.settings.$section;
+
+			var actionData = {
+				marginsSection: jQuery.extend({}, true, e.settings.newMargins),
+				galleryInstance: galleryInstance,
+				singleWidth: galleryInstance.properties.singleWidth,
+				singleHeight: galleryInstance.properties.singleHeight,
+				blocksDisposition: $.extend(true, {}, galleryInstance.createActionDataMoveBlocksGrid())
 			}
+
+			Rexbuilder_Util_Editor.updatingSectionMargins = false;
+			Rexbuilder_Util_Editor.pushAction($section, "updateSectionMargins", actionData, reverseData);
 		});
 
 		$(document).on("rexlive:set_section_width", function (e) {
@@ -90,7 +205,7 @@
 			var $gallery = $section.find(".grid-stack-row");
 			var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
 			var newSectionWidth = "" + data.sectionWidth.width + data.sectionWidth.type;
-			Rexbuilder_Util.updatingSectionWidth = true;
+			Rexbuilder_Util_Editor.updatingSectionWidth = true;
 
 			var sectionWidth = $gallery.parent().css("max-width") == "none" ? "100%" : $gallery.parent().css("max-width");
 			var widthType = $gallery.parent().hasClass("full-disposition") ? "full" : "boxed";
@@ -127,7 +242,7 @@
 				singleHeight: galleryInstance.properties.singleHeight,
 				blocksDisposition: $.extend(true, {}, galleryInstance.createActionDataMoveBlocksGrid())
 			}
-			Rexbuilder_Util.updatingSectionWidth = false;
+			Rexbuilder_Util_Editor.updatingSectionWidth = false;
 			Rexbuilder_Util_Editor.pushAction($section, "updateSectionWidth", actionData, reverseData);
 		});
 

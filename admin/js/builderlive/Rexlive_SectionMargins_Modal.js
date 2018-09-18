@@ -3,6 +3,7 @@ var SectionMargins_Modal = (function ($) {
 
     var section_margins_modal_properties;
     var defaultMargins;
+    var sectionTarget;
 
     var _resetMargins = function () {
         section_margins_modal_properties.$row_margin_top.val(defaultMargins.top);
@@ -11,7 +12,9 @@ var SectionMargins_Modal = (function ($) {
         section_margins_modal_properties.$row_margin_left.val(defaultMargins.left);
     }
 
-    var _updateMargins = function (margins) {
+    var _updateMargins = function (data) {
+        sectionTarget = data.sectionTarget;
+        var margins = data.marginsSection;
         var top = isNaN(margins.top) ? defaultMargins.top : margins.top;
         var right = isNaN(margins.right) ? defaultMargins.right : margins.right;
         var bottom = isNaN(margins.bottom) ? defaultMargins.bottom : margins.bottom;
@@ -39,9 +42,20 @@ var SectionMargins_Modal = (function ($) {
         return margins;
     }
 
+    var _applySectionMargins = function () {
+        var data_section_margins = {
+            eventName: "rexlive:set_section_margins",
+            data_to_send: {
+                margins: _getData(),
+                sectionTarget: sectionTarget
+            }
+        }
+
+        Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_section_margins);
+    }
+    
     var _linkKeyDownListener = function ($target) {
         $target.keydown(function (e) {
-            console.log(e.target);
             var $input = $(e.target);
             // Allow: backspace, delete, tab, enter and .
             if ($.inArray(e.keyCode, [46, 8, 9, 13, 110]) !== -1 ||
@@ -78,7 +92,7 @@ var SectionMargins_Modal = (function ($) {
         $target.keyup(function (e) {
             if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode == 38) || (e.keyCode == 40) || (e.keyCode == 8)) {
                 e.preventDefault();
-                Section_Modal.applySectionLayout();
+                _applySectionMargins();
             }
         });
     }

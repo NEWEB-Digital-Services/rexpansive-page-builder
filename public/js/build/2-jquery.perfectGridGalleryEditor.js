@@ -66,7 +66,6 @@
             gridstackInstanceID: null,
             serializedData: [],
             firstStartGrid: false,
-            mediumEditorInstance: null,
             gridBlocksHeight: 0,
             editedFromBackend: false,
             oneColumMode: false,
@@ -140,8 +139,9 @@
                     if (that.element == e.target &&
                         !Rexbuilder_Util_Editor.undoActive &&
                         !Rexbuilder_Util_Editor.redoActive &&
-                        !that.properties.updatingSection &&
-                        !Rexbuilder_Util.updatingSectionWidth &&
+                        !Rexbuilder_Util_Editor.updatingRowDistances &&
+                        !Rexbuilder_Util_Editor.updatingSectionMargins &&
+                        !Rexbuilder_Util_Editor.updatingSectionLayout &&
                         !Rexbuilder_Util.domUpdaiting &&
                         !Rexbuilder_Util.windowIsResizing &&
                         !that.properties.removingCollapsedElements &&
@@ -319,13 +319,27 @@
             this.properties.blocksBottomTop = null;
             this.settings.galleryLayout = newSettings.layout;
 
-            this._defineDynamicPrivateProperties();
+            var grid_gutter = parseInt(newSettings.gutter);
+            var grid_separator_top = parseInt(newSettings.top);
+            var grid_separator_right = parseInt(newSettings.right);
+            var grid_separator_bottom = parseInt(newSettings.bottom);
+            var grid_separator_left = parseInt(newSettings.left);
+
+            var defaultGutter = 20;
+            var row_distances = {
+                gutter: isNaN(grid_gutter) ? defaultGutter : grid_gutter,
+                top: isNaN(grid_separator_top) ? defaultGutter : grid_separator_top,
+                right: isNaN(grid_separator_right) ? defaultGutter : grid_separator_right,
+                bottom: isNaN(grid_separator_bottom) ? defaultGutter : grid_separator_bottom,
+                left: isNaN(grid_separator_left) ? defaultGutter : grid_separator_left,
+            }
+
             this._setGridID();
-            this.updateGridDistance(newSettings);
-            this.fixBlockDomOrder();
+            this.updateGridDistance(row_distances);
             this.updateFloatingElementsGridstack();
+            this._defineDynamicPrivateProperties();
+            this.updateGridstackStyles();
             this.clearStateGrid();
-            this.saveStateGrid();
 
             this.properties.layoutBeforeCollapsing = {
                 layout: this.settings.galleryLayout,
@@ -333,111 +347,43 @@
                 singleHeight: this.properties.singleHeight
             };
 
-            //waiting for calculating blocks heights;
-            var that = this;
-            var collapseGrid = newSettings.collapse_grid;
-            setTimeout(function () {
-                if (collapseGrid.toString() == "true") {
-                    that.collapseElements();
-                } else {
-                    that.removeCollapseElementsProperties();
-                }
-                that.properties.updatingSectionSameGrid = false;
-                that.triggerGalleryReady();
-                that.properties.firstStartGrid = false;
-            }, 200, that, collapseGrid);
-            var $section = that.$section;
-            setTimeout(function () {
-                Rexbuilder_Util.fixYoutube($section)
-            }, 1500, $section);
-        },
-
-        updateGridSettingsModalUndoRedo: function (newSettings) {
             this.removeCollapseElementsProperties();
-            if (this.settings.galleryLayout != newSettings.layout && newSettings.layout == "fixed" && newSettings.fullHeight == "true") {
-                this.updateLayout("fixed", "false");
-                this.updateLayout("fixed", "true");
-            } else if (this.settings.galleryLayout != newSettings.layout && newSettings.layout == "masonry" && this.settings.fullHeight.toString() == "true") {
-                this.updateLayout("fixed", "false");
-                this.updateLayout("masonry", "false");
-            } else if (this.settings.galleryLayout != newSettings.layout || this.settings.fullHeight != newSettings.fullHeight) {
-                this.updateLayout(newSettings.layout, newSettings.fullHeight);
-            }
-
-            var newDistances = {
-                gutter: newSettings.rowDistances.gutter,
-                separatorTop: newSettings.rowDistances.top,
-                separatorRight: newSettings.rowDistances.right,
-                separatorBottom: newSettings.rowDistances.bottom,
-                separatorLeft: newSettings.rowDistances.left
-            }
-
-            this.updateGridDistance(newDistances);
-
-            return this.createActionDataMoveBlocksGrid();
         },
 
-        updateLayout: function (newLayout, fullHeight) {
-            console.log("changing layout, data active:", this.settings.galleryLayout, this.settings.fullHeight);
-            console.log("changing layout, data received:", newLayout, fullHeight);
-
-            Rexbuilder_Util_Editor.elementIsResizing = true;
-            Rexbuilder_Util_Editor.elementIsDragging = true;
-            this.properties.updatingSection = true;
-            this.properties.oldCellHeight = this.properties.singleHeight;
-            this.properties.oldLayout = this.settings.galleryLayout;
-            this.properties.oldFullHeight = this.settings.fullHeight;
-
-            this._saveBlocksPosition();
-            this.removeScrollbars();
-            if (!Rexbuilder_Util_Editor.updatingGridstack) {
-                this.batchGridstack();
-            }
-
-            this.settings.fullHeight = fullHeight.toString() == "true";
-
-            if (newLayout != this.settings.galleryLayout) {
-                this.settings.galleryLayout = newLayout;
+        updateGridLayout: function (layout, reverseData) {
+            if (this.settings.galleryLayout != layout) {
+                this._saveBlocksPosition();
+                this.removeCollapseElementsProperties();
+                this.properties.oldCellHeight = this.properties.singleHeight;
+                this.properties.oldLayout = this.settings.galleryLayout;
+                this.properties.oldFullHeight = this.settings.fullHeight;
+                this.removeScrollbars();
+                this.settings.galleryLayout = layout;
                 this.settings.fullHeight = "false";
-
-                if (!Rexbuilder_Util_Editor.undoActive && !Rexbuilder_Util_Editor.redoActive) {
-                    this._restoreBlocksPosition();
-                }
-
                 this._defineDynamicPrivateProperties();
                 this.updateGridstackStyles();
-
-                if (this.properties.startingLayout != this.settings.galleryLayout) {
-                    this.properties.updatingSectionSameGrid = false;
-                }
-                if (!Rexbuilder_Util.domUpdaiting) {
-                    this.updateBlocksHeight();
-                }
+                this.updateBlocksHeight();
                 this.updateFloatingElementsGridstack();
-                this._updateElementsSizeViewers();
-            } else if (newLayout == "fixed") {
-                if (this.properties.oldFullHeight.toString() != fullHeight.toString()) {
-                    this._defineDynamicPrivateProperties();
-                    this.updateGridstackStyles();
+                this.commitGridstack();
+                if (typeof reverseData !== "undefined") {
+                    var that = this;
+                    setTimeout(function () {
+                        var galleryInstance = that;
+                        galleryInstance._updateElementsSizeViewers();
+                        var event = jQuery.Event("rexlive:galleryLayoutChanged");
+                        event.settings = {
+                            galleryEditorInstance: galleryInstance,
+                            $section: that.$section,
+                            reverseData: reverseData
+                        };
+
+                        that.createScrollbars();
+                        that.properties.oldLayout = "";
+                        that.properties.oldCellHeight = that.properties.singleHeight;
+                        $(document).trigger(event);
+                    }, 300, reverseData, that);
                 }
             }
-
-            if (!Rexbuilder_Util_Editor.updatingGridstack) {
-                this.commitGridstack();
-                this._createFirstReverseStack();
-            }
-
-            this.createScrollbars();
-            var that = this;
-            //waiting for calculating blocks heights;
-            setTimeout(function () {
-                that.properties.updatingSection = false;
-                that.properties.oldLayout = "";
-                that.properties.oldCellHeight = that.properties.singleHeight;
-                that.properties.updatingSectionSameGrid = true;
-                Rexbuilder_Util_Editor.elementIsResizing = false;
-                Rexbuilder_Util_Editor.elementIsDragging = false;
-            }, 200, that);
         },
 
         updateFloatingElementsGridstack: function () {
@@ -463,8 +409,6 @@
         },
 
         updateSectionWidthWrap: function (newWidthParent, reverseData) {
-            console.log("applying new Width to parent", newWidthParent);
-
             var $galleryParent = this.$element.parent();
             if (newWidthParent == "100%") {
                 $galleryParent.removeClass("center-disposition");
@@ -475,19 +419,8 @@
             }
             $galleryParent.css("max-width", newWidthParent);
 
-            var wasUpdaitingSameGrid = this.properties.updatingSectionSameGrid.toString() == "true";
-
-            if (wasUpdaitingSameGrid) {
-                this.properties.updatingSectionSameGrid = false;
-            }
-
-            this.updateGridstack();
-
-            if (wasUpdaitingSameGrid) {
-                this.properties.updatingSectionSameGrid = true;
-            }
-
             if (typeof reverseData !== "undefined") {
+                this.updateGridstack();
                 var that = this;
                 setTimeout(function () {
                     var galleryInstance = that;
@@ -503,17 +436,51 @@
             }
         },
 
-        updateGridDistance: function (newSettings) {
-            var updateGridstack = false;
-            if (this.properties.gutter != parseInt(newSettings.gutter) || this.properties.gridRightSeparator != parseInt(newSettings.separatorRight) || this.properties.gridLeftSeparator != parseInt(newSettings.separatorLeft)) {
-                updateGridstack = true;
+        updateRowDistances: function (newDistances, reverseData) {
+            this.updateGridDistance(newDistances);
+            if (typeof reverseData !== "undefined") {
+                var that = this;
+                this.updateGridstack();
+                setTimeout(function () {
+                    var galleryInstance = that;
+                    galleryInstance._updateElementsSizeViewers();
+                    var event = jQuery.Event("rexlive:rowDistancesApplied");
+                    event.settings = {
+                        galleryEditorInstance: galleryInstance,
+                        $section: that.$section,
+                        newDistances: newDistances,
+                        reverseData: reverseData
+                    };
+                    $(document).trigger(event);
+                }, 300, reverseData, that, newDistances);
             }
+        },
 
+        updateRowSectionMargins: function (newMargins, reverseData) {
+            if (typeof reverseData !== "undefined") {
+                var that = this;
+                this.updateGridstack();
+                setTimeout(function () {
+                    var galleryInstance = that;
+                    galleryInstance._updateElementsSizeViewers();
+                    var event = jQuery.Event("rexlive:sectionMarginsApplied");
+                    event.settings = {
+                        galleryEditorInstance: galleryInstance,
+                        $section: that.$section,
+                        newMargins: newMargins,
+                        reverseData: reverseData
+                    };
+                    $(document).trigger(event);
+                }, 300, reverseData, that, newMargins);
+            }
+        },
+
+        updateGridDistance: function (newSettings) {
             this.properties.gutter = parseInt(newSettings.gutter);
-            this.properties.gridTopSeparator = parseInt(newSettings.separatorTop);
-            this.properties.gridRightSeparator = parseInt(newSettings.separatorRight);
-            this.properties.gridBottomSeparator = parseInt(newSettings.separatorBottom);
-            this.properties.gridLeftSeparator = parseInt(newSettings.separatorLeft);
+            this.properties.gridTopSeparator = parseInt(newSettings.top);
+            this.properties.gridRightSeparator = parseInt(newSettings.right);
+            this.properties.gridBottomSeparator = parseInt(newSettings.bottom);
+            this.properties.gridLeftSeparator = parseInt(newSettings.left);
 
             this._setGutter();
             this._defineHalfSeparatorProperties();
@@ -525,14 +492,6 @@
             this.$element.find(".grid-stack-item-content").each(function (i, el) {
                 that._updateElementPadding($(el));
             });
-
-            if (updateGridstack) {
-                this.properties.updatingGridWidth = true;
-                this.properties.updatingSectionSameGrid = false;
-                this.updateGridstack();
-                this.properties.updatingSectionSameGrid = true;
-                this.properties.updatingGridWidth = false;
-            }
         },
 
         updateGrid: function () {
@@ -807,9 +766,9 @@
                         textHeight = gallery.calculateTextWrapHeight($textWrap);
                     }
                     if (Rexbuilder_Util.editorMode) {
-                        var istanceScrollbar = $rexScrollbar.overlayScrollbars(Rexbuilder_Util.scrollbarProperties).overlayScrollbars();
+                        var instanceScrollbar = $rexScrollbar.overlayScrollbars(Rexbuilder_Util.scrollbarProperties).overlayScrollbars();
                         if (textHeight < maxBlockHeight) {
-                            istanceScrollbar.sleep();
+                            instanceScrollbar.sleep();
                         }
                     } else {
                         if (textHeight > maxBlockHeight) {
@@ -830,7 +789,7 @@
         },
 
         commitGridstack: function () {
-            if (this.properties.gridstackBatchMode && !Rexbuilder_Util.domUpdaiting) {
+            if (!Rexbuilder_Util.domUpdaiting) {
                 if (this.properties.gridstackInstance !== null) {
                     this.properties.gridstackInstance.commit();
                 }
@@ -838,16 +797,21 @@
             }
         },
 
-        updateFullHeight: function () {
+        updateFullHeight: function (active) {
+            active = typeof active == "undefined" ? true : active.toString() == "true";
             this.properties.gridBlocksHeight = parseInt(this.$element.attr("data-gs-current-height"));
-            this.updateGridstackStyles(this._viewport().height / this.properties.gridBlocksHeight);
+            var cellHeight;
+            if (active) {
+                cellHeight = this._viewport().height / this.properties.gridBlocksHeight;
+            } else{
+                cellHeight = this.properties.singleWidth;
+            }
+            this.updateGridstackStyles(cellHeight);
+            this.$element.attr("data-full-height", active);
         },
 
         updateGridstackStyles: function (newH) {
             if (newH !== undefined) {
-                if (newH === this.properties.singleHeight) {
-                    return;
-                }
                 this.properties.singleHeight = newH;
             }
             var gridstack = this.properties.gridstackInstance;
@@ -857,16 +821,12 @@
         },
 
         updateGridstackGridSizes: function (newCellWidth, newCellHeight) {
-            var oldCellWidth = this.properties.singleWidth;
-            var oldCellHeight = this.properties.singleHeight;
-            if (oldCellWidth != newCellWidth && oldCellHeight != newCellHeight) {
-                this.properties.singleHeight = newCellHeight;
-                this.properties.singleWidth = newCellWidth;
-                var gridstack = this.properties.gridstackInstance;
-                gridstack.cellHeight(newCellHeight);
-                gridstack._initStyles();
-                gridstack._updateStyles(this.properties.singleHeight);
-            }
+            this.properties.singleHeight = newCellHeight;
+            this.properties.singleWidth = newCellWidth;
+            var gridstack = this.properties.gridstackInstance;
+            gridstack.cellHeight(newCellHeight);
+            gridstack._initStyles();
+            gridstack._updateStyles(this.properties.singleHeight);
         },
 
         restoreBackup: function () {
@@ -1120,12 +1080,8 @@
         },
 
         addScrollbar: function ($newEL) {
-            var istanceScrollbar = $newEL.find('.rex-custom-scrollbar').overlayScrollbars(Rexbuilder_Util.scrollbarProperties).overlayScrollbars();
-            istanceScrollbar.sleep();
-        },
-
-        addTextEditor: function ($newEl) {
-            this.addElementToTextEditor(this.properties.mediumEditorInstance, $newEl.find(".text-wrap"));
+            var instanceScrollbar = $newEL.find('.rex-custom-scrollbar').overlayScrollbars(Rexbuilder_Util.scrollbarProperties).overlayScrollbars();
+            instanceScrollbar.sleep();
         },
 
         // Function that creates a new empty block and returns it. The block is
@@ -1426,7 +1382,7 @@
                         { "h": h },
                     ]
                 });
-                if (gallery.properties.updatingSection && !gallery.properties.updatingSectionSameGrid) {
+                if (Rexbuilder_Util_Editor.updatingSectionLayout && !gallery.properties.updatingSectionSameGrid) {
                     store.set(rexID + "_noEdits", {
                         "properties": [
                             { "x": x },
@@ -1447,7 +1403,7 @@
                 var x, y, w, h;
                 var elDim;
                 $elem = $(this);
-                if (gallery.properties.updatingSection && typeof (store.get($elem.attr("data-rexbuilder-block-id") + "_noEdits")) !== "undefined") {
+                if (Rexbuilder_Util_Editor.updatingSectionLayout && typeof (store.get($elem.attr("data-rexbuilder-block-id") + "_noEdits")) !== "undefined") {
                     elDim = store.get($elem.attr("data-rexbuilder-block-id") + "_noEdits");
                     //console.log("%%%%%%%%%% picking old dim %%%%%%%%%%%%%%");
                 } else {
@@ -1542,9 +1498,11 @@
             } else {
                 $blockData.attr('data-block_height_fixed', newH);
             }
+            /*
             if (this.properties.firstStartGrid || Rexbuilder_Util_Editor.updatingImageBg) {
-                $blockData.attr('data-gs_start_h', newH);
-            }
+            } 
+            */
+            $blockData.attr('data-gs_start_h', newH);
             $blockData.attr("data-block_height_calculated", newH);
         },
 
@@ -2028,7 +1986,7 @@
                     $(this.properties.blocksBottomTop).each(function (i, e) {
                         $elem = $(e);
                         $elemData = $elem.children(".rexbuilder-block-data");
-                        if ((gallery.settings.galleryLayout == "masonry" && ((typeof $elemData.attr("data-block_dimensions_live_edited") != "undefined" && $elemData.attr("data-block_dimensions_live_edited").toString() != "true") || Rexbuilder_Util.backendEdited)) || gallery.properties.updatingSection) {
+                        if ((gallery.settings.galleryLayout == "masonry" && ((typeof $elemData.attr("data-block_dimensions_live_edited") != "undefined" && $elemData.attr("data-block_dimensions_live_edited").toString() != "true") || Rexbuilder_Util.backendEdited)) || Rexbuilder_Util_Editor.updatingSectionLayout) {
                             if (!($elem.hasClass("rex-hide-element") || $elem.hasClass("removing_block")))
                                 gallery.updateElementHeight($elem);
                         }
@@ -2042,327 +2000,13 @@
             }
         },
 
-        addElementToTextEditor: function (editor, $textWrap) {
-            editor.addElements($textWrap);
-            this.addMediumInsertToElement($textWrap, editor);
-        },
-
-        addMediumInsertToElement: function ($textWrap, editor) {
-            $textWrap.mediumInsert({
-                editor: editor,
-                addons: {
-                    images: false,
-                    embeds: {
-                        oembedProxy: 'https://medium.iframe.ly/api/oembed?iframe=1'
-                    },
-                    wordpressImages: {
-                        uploadScript: null,
-                        deleteScript: null,
-                        captions: false,
-                        captionPlaceholder: false,
-                        actions: null,
-                        preview: false
-                    }
-                    // tables: {}
-                },
-            });
-        },
-
         _launchTextEditor: function () {
-            var divToolbar = document.createElement('div');
-            var gallery = this;
-            var id = this.properties.sectionNumber + '-SectionTextEditor';
-            if (Rexbuilder_Util.$rexContainer.children('.editable[id="' + id + '"]').length == 0) {
-                $(divToolbar).attr({
-                    'id': id,
-                    'class': 'editable',
-                    'style': 'display: none'
-                });
-                Rexbuilder_Util.$rexContainer.prepend(divToolbar);
-            }
-
-
-            var currentTextSelection;
-            /**
-            * Gets the color of the current text selection
-            */
-            function getCurrentTextColor() {
-                return $(editor.getSelectedParentElement()).css('color');
-            }
-
-            /**
-            * Custom `color picker` extension
-            */
-            var ColorPickerExtension = MediumEditor.extensions.button.extend({
-                name: "colorPicker",
-                action: "applyForeColor",
-                aria: "color picker",
-                contentDefault: "<span class='editor-color-picker'>Text Color<span>",
-
-                init: function () {
-                    this.button = this.document.createElement('button');
-                    this.button.classList.add('medium-editor-action');
-                    this.button.innerHTML = '<b>Text color</b>';
-
-                    // init spectrum color picker for this button
-                    initPicker(this.button);
-
-                    // use our own handleClick instead of the default one
-                    this.on(this.button, 'click', this.handleClick.bind(this));
-                },
-                handleClick: function (event) {
-                    // keeping record of the current text selection
-                    var toolbar = editor.getExtensionByName('toolbar');
-                    if (toolbar) {
-                        toolbar.hideToolbar();
-                    }
-
-                    currentTextSelection = editor.exportSelection();
-
-                    // sets the color of the current selection on the color
-                    // picker
-                    $(this.button).spectrum("set", getCurrentTextColor());
-
-                    // from here on, it was taken form the default handleClick
-                    event.preventDefault();
-                    event.stopPropagation();
-
-                    var action = this.getAction();
-
-                    if (action) {
-                        this.execAction(action);
-                    }
-                }
-            });
-
-            var pickerExtension = new ColorPickerExtension();
-            function setColor(color) {
-                var finalColor = color ? color.toRgbString() : 'rgba(0,0,0,0)';
-
-                pickerExtension.base.importSelection(currentTextSelection);
-                pickerExtension.document.execCommand("styleWithCSS", false, true);
-                pickerExtension.document.execCommand("foreColor", false, finalColor);
-            }
-
-            function initPicker(element) {
-                $(element).spectrum({
-                    allowEmpty: true,
-                    color: "#f00",
-                    showInput: true,
-                    showAlpha: true,
-                    showPalette: true,
-                    showInitial: true,
-                    hideAfterPaletteSelect: true,
-                    preferredFormat: "hex3",
-                    change: function (color) {
-                        setColor(color);
-                    },
-                    hide: function (color) {
-                        setColor(color);
-                    },
-                    palette: [
-                        ["#000", "#444", "#666", "#999", "#ccc", "#eee", "#f3f3f3", "#fff"],
-                        ["#f00", "#f90", "#ff0", "#0f0", "#0ff", "#00f", "#90f", "#f0f"],
-                        ["#f4cccc", "#fce5cd", "#fff2cc", "#d9ead3", "#d0e0e3", "#cfe2f3", "#d9d2e9", "#ead1dc"],
-                        ["#ea9999", "#f9cb9c", "#ffe599", "#b6d7a8", "#a2c4c9", "#9fc5e8", "#b4a7d6", "#d5a6bd"],
-                        ["#e06666", "#f6b26b", "#ffd966", "#93c47d", "#76a5af", "#6fa8dc", "#8e7cc3", "#c27ba0"],
-                        ["#c00", "#e69138", "#f1c232", "#6aa84f", "#45818e", "#3d85c6", "#674ea7", "#a64d79"],
-                        ["#900", "#b45f06", "#bf9000", "#38761d", "#134f5c", "#0b5394", "#351c75", "#741b47"],
-                        ["#600", "#783f04", "#7f6000", "#274e13", "#0c343d", "#073763", "#20124d", "#4c1130"]
-                    ]
-                });
-            }
-
-            var TextHtmlExtension = MediumEditor.extensions.button.extend({
-                name: "textHtml",
-                action: "changeText",
-                aria: "text to html",
-                contentDefault: "<span class='editor-text-html'>Text Html<span>",
-
-                init: function () {
-                    this.button = this.document.createElement('button');
-                    this.button.classList.add('medium-editor-action');
-                    this.button.innerHTML = '<b>Text Html</b>';
-
-                    // use our own handleClick instead of the default one
-                    this.on(this.button, 'click', this.handleClick.bind(this));
-                },
-
-                handleClick: function (event) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                    var selection = editor.exportSelection();
-
-                    var newSelection = jQuery.extend(true, {}, selection);
-                    newSelection.end = newSelection.start + 1;
-                    editor.importSelection(newSelection, true);
-                    var $beginEl = $(editor.getSelectedParentElement());
-                    var $beginCopy = $(editor.getSelectedParentElement());
-                    newSelection = jQuery.extend(true, {}, selection);
-                    newSelection.start = newSelection.end - 1;
-                    editor.importSelection(newSelection, true);
-                    var $endEl = $(editor.getSelectedParentElement());
-                    var nodes = [];
-                    var elementsNumber = $(editor.elements[1]).children().length;
-                    var i = 0;
-                    var flagStop = false;
-                    while ($beginCopy.get(0) !== $endEl.get(0) && i < elementsNumber) {
-                        if ($beginCopy.hasClass("medium-insert-buttons")) {
-                            flagStop = true;
-                            break;
-                        }
-                        nodes.push($beginCopy);
-                        $beginCopy = $beginCopy.next();
-                        i++;
-                    }
-                    nodes.push($beginCopy);
-
-                    var toolbar = editor.getExtensionByName('toolbar');
-                    if (toolbar) {
-                        toolbar.hideToolbar();
-                    }
-
-                    var htmlSelected = "";
-                    for (i = 0; i < nodes.length; i++) {
-                        nodes[i].wrap("<div></div>");
-                        var $tempContainer = nodes[i].parent();
-                        var stringHtml = $tempContainer.html();
-                        if (typeof stringHtml === "undefined") {
-                            flagStop = true;
-                            break;
-                        }
-                        htmlSelected += stringHtml;
-                        nodes[i].unwrap();
-                    }
-                    
-                    if (flagStop) {
-                        return;
-                    }
-
-                    $beginEl.wrap("<textarea></textarea");
-
-                    var $textArea = $beginEl.parent();
-                    for (i = 0; i < nodes.length; i++) {
-                        nodes[i].remove();
-                    }
-                    $textArea.text(htmlSelected);
-                    $textArea.wrap("<div class=\"editing-html\"></div>");
-
-                    var $container = $textArea.parent();
-                    var $closeButton = $(document.createElement("button"));
-                    $closeButton.addClass("rex-close-html-editor");
-                    $closeButton.text("applica");
-                    $container.prepend($closeButton[0]);
-                }
-            });
-
-            $(document).on("click", ".rex-close-html-editor", function (e) {
-                var $wrapper = $(e.target).parents(".editing-html");
-                var $textArea = $wrapper.find("textarea");
-                var $html = $.parseHTML($textArea.val());
-                $wrapper.children().remove();
-                $wrapper.append($html);
-                $wrapper.children().eq(0).unwrap();
-            });
-
-            var htmlExtension = new TextHtmlExtension();
-
-            var editor = new MediumEditor('.editable', {
-                toolbar: {
-                    buttons: [
-                        'colorPicker',
-                        'bold',
-                        'italic',
-                        'underline',
-                        'anchor',
-                        'h2',
-                        'h3',
-                        'quote',
-                        'orderedlist',
-                        'unorderedlist',
-                        'table',
-                        'textHtml'
-                    ]
-                },
-                imageDragging: false,
-                extensions: {
-                    colorPicker: pickerExtension,
-                    textHtml: htmlExtension
-                },
-                placeholder: {
-                    /*
-                    * This example includes the default options for
-                    * placeholder, if nothing is passed this is what it used
-                    */
-                    text: "Insert Text Here",
-                    hideOnClick: true
-                }
-            });
-
-            editor.subscribe('editableInput', function (e, elem) {
-                /*
-               if ($('.medium-insert-images figure img, .mediumInsert figure img').length > 0) {
-                   $('.medium-insert-images figure img, .mediumInsert figure img').each(function () {
-                       var $imageTextWrap;
-                       $imageTextWrap = $(this);
-                       if (!$imageTextWrap.hasClass('image-text-wrap')) {
-                           var $figura = $imageTextWrap.parents('figure');
-                           var $textWrapper = $imageTextWrap.parents('.medium-insert-images');
-                           //console.log($figura);
-                           $imageTextWrap.addClass('image-text-wrap');
-                           $imageTextWrap.wrap('<span></span>');
-                           var spanEl = $imageTextWrap.parent()[0];
-                           var $spanEl = $(spanEl);
-                           var $uiElement;
-                           $spanEl.addClass('image-span-wrap');
-                           gallery._addHandles($spanEl, 'e, s, w, se, sw');
-                           $spanEl.resizable({
-                               // containment: $textWrapper[0],
-                               handles: {
-                                   'e': '.ui-resizable-e',
-                                   's': '.ui-resizable-s',
-                                   'w': '.ui-resizable-w',
-                                   'se': '.ui-resizable-se',
-                                   'sw': '.ui-resizable-sw'
-                               },
-                               start: function (event, ui) {
-                                   $uiElement = $(ui.element);
-                                   if ($uiElement.is('span')) {
-                                       //console.log('startResize image');
-                                   }
-                               },
-                               resize: function (event, ui) {
-                                   if ($uiElement.is('span')) {
-                                       //console.log('resizing image');
-                                   }
-                               },
-                               stop: function (event, ui) {
-                                   if ($uiElement.is('span')) {
-                                       //console.log($uiElement.innerWidth(), $uiElement.innerHeight());
-                                       //console.log('stopResize image');
-                                   }
-                               }
-                           });
-                       }
-                   });
-               }
-                */
-                gallery.fixElementTextSize($(elem).parents(".grid-stack-item")[0], null, null);
-            });
-
-            gallery.$element.find('.rex-text-editable').each(function () {
+            this.$element.find('.rex-text-editable').each(function () {
                 var $elem = $(this);
                 if ($elem.find('.pswp-figure').length === 0 && $elem.find('.rex-slider-wrap').length === 0) {
-                    gallery.addElementToTextEditor(editor, $elem.find(".text-wrap"));
+                    TextEditor.addElementToTextEditor($elem.find(".text-wrap"));
                 }
             });
-
-            this.properties.mediumEditorInstance = editor;
-        },
-
-        destroyMediumEditor: function () {
-            this.properties.mediumEditorInstance.destroy();
-            this.$element.find(".medium-insert-buttons").remove();
         },
 
         _setParentGridPadding: function () {
@@ -2407,7 +2051,7 @@
         },
         // setting the blocks and wrap padding
         _setGridPadding: function () {
-            if (this._viewport().width >= _plugin_frontend_settings.defaultSettings.collapseWidth && !this.properties.setDesktopPadding || (!this.properties.setDesktopPadding && !this.properties.setMobilePadding && this.$section.attr("data-rex-collapse-grid") == "true")) {
+            if (!this.properties.setDesktopPadding || (!this.properties.setDesktopPadding && !this.properties.setMobilePadding && this.$section.attr("data-rex-collapse-grid") == "true")) {
                 this.properties.setDesktopPadding = true;
                 if (this.$section.attr("data-rex-collapse-grid") == "true") {
                     this.properties.setMobilePadding = true;
@@ -2566,7 +2210,7 @@
                     }
                 }
 
-                if ((videoHeight == 0 && backgroundHeight == 0 && sliderHeight == 0) && (this.properties.updatingSection || $itemContent.hasClass('empty-content') || this.properties.firstStartGrid || $elem.hasClass('block-has-slider'))) {
+                if ((videoHeight == 0 && backgroundHeight == 0 && sliderHeight == 0) && (Rexbuilder_Util_Editor.updatingSectionLayout || $itemContent.hasClass('empty-content') || this.properties.firstStartGrid || $elem.hasClass('block-has-slider'))) {
                     if (this.properties.editedFromBackend && this.settings.galleryLayout == "masonry") {
                         defaultHeight = Math.round(sw * startH);
                     } else if ((this.properties.oldCellHeight != 0) && (this.properties.oldCellHeight != this.properties.singleHeight)) {
@@ -2604,12 +2248,14 @@
             } else {
                 newH = Math.ceil(newH / this.properties.singleHeight);
             }
-
             this.updateElementDataHeightProperties($blockData, newH);
 
             var gridstack = this.properties.gridstackInstance;
+            console.log(1);
             if (gridstack !== undefined) {
+                console.log(2);
                 if ((this.properties.oldCellHeight != 0) && this.properties.oldCellHeight != this.properties.singleHeight && this.properties.oldLayout == "masonry") {
+                    console.log(3);
                     var x, y, w, h;
                     var elDim;
                     elDim = store.get(elem["attributes"]["data-rexbuilder-block-id"].value);
@@ -2694,13 +2340,11 @@
         collapseElements: function (reverseData) {
             reverseData = typeof reverseData == "undefined" ? {} : reverseData;
             this.properties.dispositionBeforeCollapsing = this.createActionDataMoveBlocksGrid();
-            console.log(this.properties.dispositionBeforeCollapsing);
             this.properties.layoutBeforeCollapsing = {
                 layout: this.settings.galleryLayout,
                 fullHeight: this.settings.fullHeight,
                 singleHeight: this.properties.singleHeight
             };
-            console.log(this.properties.layoutBeforeCollapsing);
             var that = this;
             this.fixBlockDomOrder();
             this._saveBlocksPosition();
@@ -2818,8 +2462,6 @@
         destroyGridGallery: function () {
             this.destroyGridstack();
             this.removeScrollbars();
-            // DA SISTEMARE LA DISTRUZIONE DEL PLUGIN
-            //this.destroyMediumEditor();
             this.clearStateGrid();
             this.$element.removeClass('grid-number-' + this.properties.sectionNumber);
         },

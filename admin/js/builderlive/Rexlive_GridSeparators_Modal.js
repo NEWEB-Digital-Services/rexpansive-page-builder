@@ -3,6 +3,7 @@ var GridSeparators_Modal = (function ($) {
 
     var grid_paddings_modal_properties;
     var defaultSeparatos;
+    var sectionTarget;
 
     var _resetDistances = function () {
         grid_paddings_modal_properties.$block_gutter.val(defaultSeparatos.gutter);
@@ -12,7 +13,9 @@ var GridSeparators_Modal = (function ($) {
         grid_paddings_modal_properties.$row_separator_left.val(defaultSeparatos.left);
     }
 
-    var _updateDistances = function (distances) {
+    var _updateDistances = function (data) {
+        sectionTarget = data.sectionTarget;
+        var distances = data.rowDistances;
         var gutter = isNaN(distances.gutter) ? defaultSeparatos.gutter : distances.gutter;
         var top = isNaN(distances.top) ? defaultSeparatos.top : distances.top;
         var right = isNaN(distances.right) ? defaultSeparatos.right : distances.right;
@@ -40,13 +43,24 @@ var GridSeparators_Modal = (function ($) {
             bottom: isNaN(bottom) ? defaultSeparatos.bottom : bottom,
             left: isNaN(left) ? defaultSeparatos.left : left,
         }
-
+        
         return distances;
+    }
+    
+    var _applyRowDistances = function () {
+        var data_grid_distances = {
+            eventName: "rexlive:set_row_separatos",
+            data_to_send: {
+                distances: _getData(),
+                sectionTarget: sectionTarget
+            }
+        }
+
+        Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_grid_distances);
     }
 
     var _linkKeyDownListener = function ($target) {
         $target.keydown(function (e) {
-            console.log(e.target);
             var $input = $(e.target);
             // Allow: backspace, delete, tab, enter and .
             if ($.inArray(e.keyCode, [46, 8, 9, 13, 110]) !== -1 ||
@@ -83,7 +97,7 @@ var GridSeparators_Modal = (function ($) {
         $target.keyup(function (e) {
             if ((e.keyCode >= 48 && e.keyCode <= 57) || (e.keyCode == 38) || (e.keyCode == 40) || (e.keyCode == 8)) {
                 e.preventDefault();
-                Section_Modal.applySectionLayout();
+                _applyRowDistances();
             }
         });
     }
@@ -103,13 +117,15 @@ var GridSeparators_Modal = (function ($) {
     }
 
     var _init = function ($container) {
+        var $self = $container;
         grid_paddings_modal_properties = {
             // Row separators
-            $block_gutter: $container.find('.section-set-block-gutter'),
-            $row_separator_top: $container.find('#row-separator-top'),
-            $row_separator_right: $container.find('#row-separator-right'),
-            $row_separator_bottom: $container.find('#row-separator-bottom'),
-            $row_separator_left: $container.find('#row-separator-left'),
+            $self: $self,
+            $block_gutter: $self.find('.section-set-block-gutter'),
+            $row_separator_top: $self.find('#row-separator-top'),
+            $row_separator_right: $self.find('#row-separator-right'),
+            $row_separator_bottom: $self.find('#row-separator-bottom'),
+            $row_separator_left: $self.find('#row-separator-left'),
         }
 
         defaultSeparatos = {

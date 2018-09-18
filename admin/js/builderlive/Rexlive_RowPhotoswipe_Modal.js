@@ -3,13 +3,15 @@ var PhotoSwipe_Modal = (function ($) {
 
     var section_photoswipe;
     var defaultPhotoswipe;
+    var sectionTarget;
 
     var _resetPhotoswipe = function () {
         section_photoswipe.$section_active_photoswipe.attr("checked", defaultPhotoswipe);
     }
 
-    var _updatePhotoswipe = function (active) {
-        section_photoswipe.$section_active_photoswipe.attr("checked", active)
+    var _updatePhotoswipe = function (data) {
+        sectionTarget = data.sectionTarget;
+        section_photoswipe.$section_active_photoswipe.attr("checked", data.photoswipe)
     }
 
     var _getData = function () {
@@ -17,9 +19,23 @@ var PhotoSwipe_Modal = (function ($) {
         return photoswipe;
     }
 
+    var _applyPhotoswipeSetting = function () {
+        var photoswipe = _getData();
+
+        var data_photoswipe = {
+            eventName: "rexlive:set_row_photoswipe",
+            data_to_send: {
+                sectionTarget: sectionTarget,
+                photoswipe: photoswipe
+            }
+        }
+
+        Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_photoswipe);
+    }
+
     var _linkDocumentListeners = function () {
         section_photoswipe.$section_active_photoswipe.click(function (e) {
-            Section_Modal.applyPhotoswipeSetting();
+            _applyPhotoswipeSetting();
         })
     }
 

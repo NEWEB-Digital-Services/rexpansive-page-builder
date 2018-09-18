@@ -3,13 +3,15 @@ var SectionName_Modal = (function ($) {
 
     var section_name_modal_properties;
     var defaultName;
-
+    var sectionTarget;
+    
     var _resetSectionName = function () {
         section_name_modal_properties.$section_id.val(defaultName);
     }
-
-    var _updateSectionName = function (newName) {
-        section_name_modal_properties.$section_id.val(newName);
+    
+    var _updateSectionName = function (data) {
+        sectionTarget = data.sectionTarget;
+        section_name_modal_properties.$section_id.val(data.sectionName);
     }
 
     var _getData = function () {
@@ -17,9 +19,22 @@ var SectionName_Modal = (function ($) {
         return newName;
     }
 
+    var _applySectionName = function () {
+        var sectionName = _getData();
+        var data_sectionName = {
+            eventName: "rexlive:change_section_name",
+            data_to_send: {
+                sectionTarget: sectionTarget,
+                sectionName: sectionName
+            }
+        }
+
+        Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_sectionName);
+    }
+    
     var _linkDocumentListeners = function () {
         section_name_modal_properties.$section_id.keyup(function (e) {
-            Section_Modal.applySectionName();
+            _applySectionName();
         })
     }
 

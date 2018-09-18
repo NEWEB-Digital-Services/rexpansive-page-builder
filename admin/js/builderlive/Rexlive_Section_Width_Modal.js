@@ -18,7 +18,7 @@ var Section_Width_Modal = (function ($) {
 
         sectionTarget = data.sectionTarget;
         var dimension = data.dimension;
-        var sectionWidth = data.sectionWidth;
+        var sectionWidth = data.section_width;
         var widthType = "%";
         var width = "100";
 

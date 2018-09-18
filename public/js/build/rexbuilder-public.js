@@ -20,6 +20,7 @@ var Rexbuilder_App = (function ($) {
 			Rexbuilder_Block.init();
 			Rexbuilder_Util_Editor.addDocumentListeners();
 			Rexbuilder_Util_Editor.addWindowListeners();
+			TextEditor.init();
 		}
 
 		Rex_Navigator.init();

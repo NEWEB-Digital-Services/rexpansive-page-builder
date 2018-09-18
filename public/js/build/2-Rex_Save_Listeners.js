@@ -203,6 +203,29 @@ var Rex_Save_Listeners = (function ($) {
                         }
                     })
                 );
+
+                //save sections ids used
+                var idsUsed = Rexbuilder_Util.getSectionNamesUsed();
+                Rexbuilder_Util.saveSectionNamesUsed();
+                ajaxCalls.push(
+                    $.ajax({
+                        type: 'POST',
+                        dataType: 'json',
+                        url: _plugin_frontend_settings.rexajax.ajaxurl,
+                        data: {
+                            action: 'rexlive_save_sections_rexids',
+                            nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+                            ids_used: JSON.stringify(idsUsed),
+                        },
+                        success: function (response) {
+                            if (response.success) {
+                                console.log('nomi delle section utilizzati salvati!');
+                            }
+                        },
+                        error: function (response) {
+                        }
+                    })
+                );
             } else {
                 //ajax calls 
                 ajaxCalls.push(

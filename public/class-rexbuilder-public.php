@@ -216,7 +216,7 @@ class Rexbuilder_Public
             wp_enqueue_script('spectrumColor', REXPANSIVE_BUILDER_URL . $cartella . 'js/spectrum.js', array('jquery'), null, true);
             wp_enqueue_script('medium-editor', REXPANSIVE_BUILDER_URL . $cartella . 'js/medium-editor.js', array('jquery'), null, true);
             wp_enqueue_script('mediumEditorToolbarStates', REXPANSIVE_BUILDER_URL . $cartella . 'js/medium-editor-toolbar-states.min.js', array('jquery'), null, true);
-            //wp_enqueue_script('textEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/2-Text_Editor', array('jquery'), null, true);
+            wp_enqueue_script('textEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/2-Text_Editor', array('jquery'), null, true);
 
             wp_enqueue_script('handlebars-runtime', REXPANSIVE_BUILDER_URL . $cartella . 'js/handlebars.runtime.js', array('jquery'), null, true);
             wp_enqueue_script('jquery-fileupload', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery.fileupload.js', array('jquery'), null, true);
@@ -354,6 +354,35 @@ endif;
     {
         ?><div style="display:none"><?php include_once REXPANSIVE_BUILDER_PATH . 'admin/sprites/symbol/svg/sprite.symbol.svg';?></div><?php
 }
+
+    public function rexlive_save_sections_rexids()
+    {
+        $nonce = $_POST['nonce_param'];
+
+        $response = array(
+            'error' => false,
+            'msg' => '',
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+        if (!isset($_POST['ids_used'])) {
+            $response['error'] = true;
+            $response['msg'] = 'Data error!';
+            wp_send_json_error($response);
+        }
+
+        $response['error'] = false;
+        
+        $clearData = stripslashes($_POST['ids_used']);
+        update_option("_rex_section_ids_used", $clearData);
+
+        wp_send_json_success($response);
+    }
 
     public function rexlive_save_custom_css()
     {
@@ -626,6 +655,10 @@ endif;
 
         $layoutsAvaiable = get_option('_rex_responsive_layouts', $defaultLayoutsAvaiable);
 
+        $defaultIDs = array();
+        $sectionsIDsJSON = get_option('_rex_section_ids_used', $defaultIDs);
+        $sectionsIDsUsed = json_decode($sectionsIDsJSON, true);
+
         if(isset($_GET['editor'])){
             $editor = $_GET['editor'];
         } else{
@@ -701,6 +734,13 @@ endif;
 
 ?>
 <div class="rexbuilder-live-content">
+            <div id="sections-ids-used" style="display: none;"><?php 
+            if ($sectionsIDsUsed == null) {
+                echo "[]";
+            } else {
+                echo json_encode($sectionsIDsUsed);
+            }
+            ?></div>
             <div id="layout-avaiable-dimensions" style="display: none;"><?php echo json_encode($layoutsAvaiable); ?></div>
             <div id="rexbuilder-model-data" style="display: none;">
                 <div class = "models-customizations" <?php

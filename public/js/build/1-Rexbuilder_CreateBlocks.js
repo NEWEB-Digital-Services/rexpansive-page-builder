@@ -9,7 +9,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
         var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
         var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout);
         $el.find(".grid-item-content").addClass("empty-content");
-        galleryInstance.addTextEditor($el);
+        TextEditor.addElementToTextEditor($el.find(".text-wrap"));
         galleryInstance.addScrollbar($el);
         Rexbuilder_Util.updateSectionStateLive($section);
         if(Rexbuilder_Util.activeLayout == "default"){
@@ -31,8 +31,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
         var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
         var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout);
 
-        galleryInstance.addTextEditor($el);
         galleryInstance.addScrollbar($el);
+        TextEditor.addElementToTextEditor($el.find(".text-wrap"));
 
         var event = jQuery.Event("mouseup");
         event.target = $el.find(".rexlive-block-drag-handle");
@@ -112,7 +112,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
             Rexbuilder_Dom_Util.updateImageBG($el.find(".grid-item-content"), dataImage);
 
             galleryInstance.addScrollbar($el);
-            galleryInstance.addTextEditor($el);
+            TextEditor.addElementToTextEditor($el.find(".text-wrap"));
         }
         Rexbuilder_Util.updateSectionStateLive($section);
         if(Rexbuilder_Util.activeLayout == "default"){
@@ -169,7 +169,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
                 }
                 Rexbuilder_Dom_Util.updateVideos($itemContent, videoOptions);
                 galleryInstance.addScrollbar($el);
-                galleryInstance.addTextEditor($el);
+                TextEditor.addElementToTextEditor($el.find(".text-wrap"));
             } else {
                 for (var i = 0; i < videoMp4.length; i++) {
                     var $el = _createBlockGrid(galleryInstance, 3, 3);
@@ -193,7 +193,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
                     }
                     Rexbuilder_Dom_Util.updateVideos($itemContent, videoOptions);
                     galleryInstance.addScrollbar($el);
-                    galleryInstance.addTextEditor($el);
+                    TextEditor.addElementToTextEditor($el.find(".text-wrap"));
                 }
             }
         }
@@ -456,7 +456,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
             Rexbuilder_Util_Editor.saveSliderOnDB(sliderData, true, newBlockID, target);
         } else {
             galleryEditorInstance.addScrollbar($newBlock);
-            galleryEditorInstance.addTextEditor($newBlock);
+            TextEditor.addElementToTextEditor($newBlock.find(".text-wrap"));
         }
         Rexbuilder_Util.updateSectionStateLive($section);
         if(Rexbuilder_Util.activeLayout == "default"){
