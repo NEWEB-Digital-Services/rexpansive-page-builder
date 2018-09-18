@@ -1,0 +1,12 @@
+.rex-model__import--wrap-active {
+  display: flex;
+  width: 100%;
+}
+
+.rex-model__import--wrap-active.hide-import-wrap {
+  display: none;
+}
+
+#rex-edit-model-choose .rex-hide-option {
+  display: none;
+}

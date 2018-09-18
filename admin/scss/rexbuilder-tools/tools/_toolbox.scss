@@ -1,0 +1,32 @@
+.rexlive-toolbox {
+  top: 0px;
+  position: absolute;
+  width: 100%;
+  height: 100px;
+  background-color: aquamarine;
+  z-index: 200;
+}
+
+.rexlive-responsive-buttons-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.rexlive-responsive-toolbox {
+  display: flex;
+  height: 100%;
+}
+
+.rexlive-builder-actions {
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.rex-saving.btn-save {
+  background-color: #757575;
+}

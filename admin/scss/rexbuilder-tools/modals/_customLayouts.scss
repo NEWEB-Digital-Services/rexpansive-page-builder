@@ -1,0 +1,37 @@
+.layout {
+  display: flex;
+  justify-content: space-around;
+  &.active-on-page {
+    background-color: lightblue;
+  }
+}
+
+.layout__setting {
+  padding: 10px;
+}
+
+.rexlive-layout--edit,
+.rexlive-layout--delete {
+  cursor: pointer;
+}
+
+.hide-icon {
+  display: none;
+}
+
+.layout__item.editing .layout-value {
+  display: none;
+}
+
+.layout__item {
+  input {
+    max-width: 75px;
+  }
+  .removing-item {
+    display: none;
+  }
+}
+
+#rexlive-custom-layout-modal .rex-cancel-button {
+  width: 100%;
+}

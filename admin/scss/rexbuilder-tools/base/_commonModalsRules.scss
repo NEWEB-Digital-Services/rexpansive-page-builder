@@ -1,0 +1,81 @@
+ul {
+  list-style: none;
+}
+
+//palette background colors
+.bg-palette-blue {
+  background-color: $palette-blue;
+}
+.bg-palette-green {
+  background-color: $palette-green;
+}
+.bg-palette-black {
+  background-color: $palette-black;
+}
+.bg-palette-red {
+  background-color: $palette-red;
+}
+.bg-palette-orange {
+  background-color: $palette-orange;
+}
+.bg-palette-purple {
+  background-color: $palette-purple;
+}
+.bg-palette-transparent {
+  background-color: $palette-transparent;
+}
+
+//palette overlay colors
+.overlay-palette-blue {
+  background-color: $overlay-palette-blue;
+}
+.overlay-palette-green {
+  background-color: $overlay-palette-green;
+}
+.overlay-palette-black {
+  background-color: $overlay-palette-black;
+}
+.overlay-palette-red {
+  background-color: $overlay-palette-red;
+}
+.overlay-palette-orange {
+  background-color: $overlay-palette-orange;
+}
+.overlay-palette-purple {
+  background-color: $overlay-palette-purple;
+}
+.overlay-palette-transparent {
+  background-color: $overlay-palette-transparent;
+}
+
+.image-preview-logo {
+  width: 42px;
+  height: 42px;
+  float: left;
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  text-align: center;
+  border: 1px solid #757575;
+  background-color: #757575;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  cursor: pointer;
+  -webkit-transition: 0.2s ease-out;
+  -moz-transition: 0.2s ease-out;
+  -o-transition: 0.2s ease-out;
+  -ms-transition: 0.2s ease-out;
+  transition: 0.2s ease-out;
+}
+
+.image-preview-logo:hover {
+  box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+}
+
+.image-preview-logo i {
+  line-height: 42px;
+  color: #fff;
+  font-size: 26px;
+}
