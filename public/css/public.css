@@ -5178,3 +5178,11 @@ a.pswp-item {
 
 .rex-custom-scrollbar .text-wrap > ul, .rex-custom-scrollbar .text-wrap > ol {
   margin-left: 1.25em; }
+
+.rexpansive-lock-section {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999999 !important; }

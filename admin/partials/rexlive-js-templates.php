@@ -55,3 +55,16 @@ defined('ABSPATH') or exit;
     </span>
 </div>
 </script>
+
+<script type="text/x-tmpl" id="rexlive-tmpl-model-item-list">
+<li data-rex-model-id="{%=model.id%}">
+    <div class="model-import-drag-handle">
+        <span class="import-drag-handle">
+            <span class="dashicons-move dashicons-before"></span>
+        </span>
+    </div>
+    <div class="model-name">{%=model.name%}</div>
+    <div class="model-preview"><img class="model-thumbnail" src="{%=model.previewUrl%}"></div>
+    <div class="model-html">{%=model.html%}</div>
+</li>
+</script>

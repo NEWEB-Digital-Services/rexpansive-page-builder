@@ -112,6 +112,9 @@ ul {
 #rex-edit-model-choose .rex-hide-option {
   display: none; }
 
+#rex-models-list .model-html {
+  display: none; }
+
 .set-video-audio-btn {
   display: none; }
 

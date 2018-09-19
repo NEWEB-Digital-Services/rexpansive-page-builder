@@ -1,23 +1,21 @@
-var Change_Layout_Modal = (function ($) {
+var LockedOptionMask = (function ($) {
     'use strict';
-    var layout_changing_props;
-    var activeLayoutPage;
+    var locked_option_props;
     var buttonData;
 
     var _openModal = function (data) {
-        activeLayoutPage = data.activeLayout;
         buttonData = data.buttonData;
-        Rexlive_Modals_Utils.openModal(layout_changing_props.$self.parent('.rex-modal-wrap'));
+        Rexlive_Modals_Utils.openModal(locked_option_props.$self.parent('.rex-modal-wrap'));
     }
 
     var _closeModal = function () {
-        Rexlive_Modals_Utils.closeModal(layout_changing_props.$self.parent('.rex-modal-wrap'));
+        Rexlive_Modals_Utils.closeModal(locked_option_props.$self.parent('.rex-modal-wrap'));
     }
 
     var _linkDocumentListeners = function () {
-        layout_changing_props.$button.on("click", function (e) {
+        locked_option_props.$button.on("click", function (e) {
             var $button = $(e.target);
-            var optionSelected = $button.parents(".rex-change-layout-option").attr("data-rex-option");
+            var optionSelected = $button.parents(".rex-locked-option-wrapper").attr("data-rex-option");
 
             switch (optionSelected) {
                 case "save":
@@ -37,17 +35,6 @@ var Change_Layout_Modal = (function ($) {
                     Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataSavePage);
                     Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataSaveModel);
                     break;
-                case "continue":
-                    var data = {
-                        eventName: "rexlive:dropChanges",
-                        data_to_send: {
-                            selected: activeLayoutPage,
-                            eventName: "",
-                            buttonData: buttonData,
-                        }
-                    }
-                    Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
-                    break;
                 case "abort":
                     break;
                 default:
@@ -59,9 +46,9 @@ var Change_Layout_Modal = (function ($) {
     }
 
     var _init = function () {
-        var $self = $("#rex-layout-page-changed")
+        var $self = $("#rex-locked-option")
         var $container = $self;
-        layout_changing_props = {
+        locked_option_props = {
             $self: $self,
             $button: $container.find('.rex-button'),
         }

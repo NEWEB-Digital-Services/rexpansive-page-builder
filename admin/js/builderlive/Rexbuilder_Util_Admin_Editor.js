@@ -9,7 +9,6 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
     var pageSaved;
 
     var $frameContainer;
-    var $frameBuilder;
     var frameBuilderWindow;
 
     var updatedLayoutData;
@@ -33,6 +32,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
     var _receiveMessage = function (event) {
 
         if (event.data.rexliveEvent) {
+            //fare come sul live, con lo switch sui nomi degli eventi
             var eventData = event.data;
 
             if (event.data.eventName == "rexlive:edited") {
@@ -111,6 +111,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                         break;
                 }
                 if (modelSaved && pageSaved) {
+                    Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.attr("data-rex-edited-backend", false);
                     Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find(".btn-save").removeClass("rex-saving");
                     if (typeof event.data.buttonData !== "undefined" && event.data.buttonData != "") {
                         _updateLayoutPage(event.data.buttonData);
@@ -142,17 +143,22 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                     label: $btn.text(),
                     type: _findLayoutType(btnName)
                 };
-
-                if (!(modelSaved && pageSaved)) {
-                    Change_Layout_Modal.openModal({
-                        activeLayout: activeLayoutPage,
-                        buttonData: buttonData,
-                        modelSaved: modelSaved,
-                        pageSaved: pageSaved
-                    });
-                    return;
+                var dataObj = {
+                    activeLayout: activeLayoutPage,
+                    buttonData: buttonData,
+                    modelSaved: modelSaved,
+                    pageSaved: pageSaved
                 }
-                _updateLayoutPage(buttonData);
+                
+                if (Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.attr("data-rex-edited-backend").toString() == "true") {
+                    LockedOptionMask.openModal(dataObj);
+                } else {
+                    if (!(modelSaved && pageSaved)) {
+                        Change_Layout_Modal.openModal(dataObj);
+                        return;
+                    }
+                    _updateLayoutPage(buttonData);
+                }
             }
         });
 
@@ -183,9 +189,11 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
             _sendIframeBuilderMessage(data);
         });
 
+        $(document).on('click', '.btn-models', function (e) {
+            Model_Import_Modal.openModal();
+        });
+
         window.addEventListener("message", _receiveMessage, false);
-
-
     }
 
     var _updateLayoutPage = function (buttonData) {
@@ -285,18 +293,33 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
             }
         }
     };
+    
+    var _blockIframeRows = function(){
+        var data = {
+            eventName: "rexlive:lockRows",
+        };
+
+        _sendIframeBuilderMessage(data);
+    };
+
+    var _releaseIframeRows = function(){
+        var data = {
+            eventName: "rexlive:unlockRows",
+        };
+
+        _sendIframeBuilderMessage(data);
+    };
 
     // init the utilities
     var init = function () {
 
         this.$rexpansiveContainer = $("#rexpansive-builder-backend-wrapper");
         $frameContainer = this.$rexpansiveContainer.find(".rexpansive-live-frame-container");
-        $frameBuilder = this.$rexpansiveContainer.find("#rexpansive-live-frame");
-        frameBuilderWindow = $frameBuilder[0].contentWindow;
+        this.$frameBuilder = this.$rexpansiveContainer.find("#rexpansive-live-frame");
+        frameBuilderWindow = this.$frameBuilder[0].contentWindow;
 
         this.transitionEvent = _whichTransitionEvent();
         this.animationEvent = _whichAnimationEvent();
-
 
         this.$responsiveToolbar = this.$rexpansiveContainer.find(".rexlive-responsive-toolbox");
         pageSaved = true;
@@ -323,6 +346,8 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         setActiveLayout: _setActiveLayout,
         updateIframeWidth: _updateIframeWidth,
         updateLayoutActiveData: _updateLayoutActiveData,
+        releaseIframeRows: _releaseIframeRows,
+        blockIframeRows: _blockIframeRows
     };
 
 })(jQuery);

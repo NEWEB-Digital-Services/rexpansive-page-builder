@@ -247,6 +247,11 @@ defined('ABSPATH') or exit;
 <script type="text/x-tmpl" id="tmpl-div-block-grid">
     <div class="rexpansive-block-grid"></div>
 </script>
+
 <script type="text/x-tmpl" id="tmpl-div-block-section-toolbox">
     <div class="rexpansive-block-section-toolbox"></div>
+</script>
+
+<script type="text/x-tmpl" id="tmpl-div-lock-section">
+    <div class="rexpansive-lock-section"></div>
 </script>

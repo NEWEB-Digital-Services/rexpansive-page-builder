@@ -248,7 +248,14 @@ class Rexbuilder_Admin {
 			if( isset( $_GET['rexlive'] ) && 'true' == $_GET['rexlive'] ) {
 
 				wp_enqueue_script( 'spectrum-scripts', REXPANSIVE_BUILDER_URL . 'admin/spectrum/spectrum.js', array('jquery'),  null, true );
-
+				//droppable
+				            //gridstack
+				wp_enqueue_script('jquery-ui', REXPANSIVE_BUILDER_URL . 'public/js/jquery-ui.min.js', array('jquery'), null, true);
+				wp_enqueue_script('touchPunch', REXPANSIVE_BUILDER_URL . 'public/js/jquery.ui.touch-punch.js', array('jquery'), null, true);
+/* 				wp_enqueue_script('jquery-droppable-iframe', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery-ui-droppable-iframe.js', array('jquery'), null, true);
+*/
+			//	 wp_enqueue_script('drag-and-drop', REXPANSIVE_BUILDER_URL . 'admin/js/vendor/dnd.js', array('jquery'), null, true);
+				 
 				wp_enqueue_script( 'rexbuilder-admin-config', REXPANSIVE_BUILDER_URL . 'admin/js/0-Rexpansive_Builder_Admin_Config.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexbuilder-admin-utilities', REXPANSIVE_BUILDER_URL . 'admin/js/0-Rexpansive_Builder_Admin_Utilities.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexbuilder-admin-modals', REXPANSIVE_BUILDER_URL . 'admin/js/1-Rexpansive_Builder_Admin_Modals.js', array( 'jquery' ), null, true );
@@ -288,10 +295,12 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'rexlive-block-options', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Block_Options_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-model-options', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Model_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-custom-layouts-options', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_CustomLayout_Modal.js', array( 'jquery' ), null, true );
-				wp_enqueue_script( 'rexlive-modals', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Modals.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-edit-modals', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Model_Edit_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexbuilder-Slider', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_RexSlider.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-ChangeLayout', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_ChangeLayout_Modal.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'Rexlive-LockedOption-Mask', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_LockedOption_Mask.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'Rexlive-Model-Import', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Model_Import.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexlive-modals', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Modals.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-util-admin', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Util_Admin_Editor.js', array( 'jquery' ), null, true );
 				global $post;
 				$source = get_permalink($post->ID);
@@ -1394,7 +1403,8 @@ class Rexbuilder_Admin {
 			$savedFromBackend = get_post_meta($idPost, '_save_from_backend', true);
 			if (isset($savedFromBackend) && $savedFromBackend == "false") {
 				$newContent = "";
-				$newContent = get_the_content($idPost);
+				$post = get_post( (int)$idPost );
+				$newContent =  $post->post_content;
 				return $newContent;
 			}
 		}

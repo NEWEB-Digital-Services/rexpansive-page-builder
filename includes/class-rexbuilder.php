@@ -202,7 +202,9 @@ class Rexbuilder {
 
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'plugin_options_update' );
 
-		// live builder
+		// live builder		
+		$this->loader->add_filter( 'content_save_pre', $plugin_admin, 'rex_fix_post_content' );
+		
 		if( isset( $_GET['rexlive'] ) && 'true' == $_GET['rexlive'] ) {
 			$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_live_editing' );
 			$this->loader->add_filter( 'admin_body_class', $plugin_admin, 'rexlive_body_fix' );
@@ -235,7 +237,6 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_ajax_rex_save_custom_layouts', $plugin_admin, 'rex_save_custom_layouts' );
 		$this->loader->add_action( 'wp_ajax_rex_get_model', $plugin_admin, 'rex_get_model' );
 		$this->loader->add_action( 'wp_ajax_rex_get_model_list', $plugin_admin, 'rex_get_model_list' );
-		$this->loader->add_filter( 'content_save_pre', $plugin_admin, 'rex_fix_post_content' );
 
 		$this->loader->add_action( 'wp_ajax_rex_get_rxcf', $plugin_admin, 'rex_get_rxcf' );
 		$this->loader->add_action( 'wp_ajax_rex_save_rxcf', $plugin_admin, 'rex_save_rxcf' );

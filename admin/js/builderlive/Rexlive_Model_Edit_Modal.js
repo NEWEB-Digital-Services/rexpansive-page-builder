@@ -29,7 +29,7 @@ var Model_Edit_Modal = (function ($) {
     var _linkDocumentListeners = function () {
         rexmodel_edit_props.$button.on("click", function (e) {
             var $button = $(e.target);
-            var optionSelected = $button.parents(".rex-edit-option").attr("data-rex-option");
+            var optionSelected = $button.parents(".rex-edit-model-option").attr("data-rex-option");
             var data_model_modal = {
                 eventName: "",
                 data_to_send: dataReceived

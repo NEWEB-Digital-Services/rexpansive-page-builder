@@ -38,8 +38,13 @@ $defaultLayoutsAvaiable = array($mobile, $tablet, $default);
 
 $layoutsAvaiable = get_option('_rex_responsive_layouts', $defaultLayoutsAvaiable);
 
+$backendEditing = "true";
+if(get_post_meta($post->ID, '_save_from_backend', true) == "false"){
+	$backendEditing = "false";
+}
+
 ?>
-<div id="rexpansive-builder-backend-wrapper">
+<div id="rexpansive-builder-backend-wrapper" data-rex-edited-backend="<?php echo $backendEditing;?>">
 	<div id="rexbuilder-layout-data-backend" style="display: none;">
 		<div class = "available-layouts"><?php echo json_encode($layoutsAvaiable);?></div>
 	</div>

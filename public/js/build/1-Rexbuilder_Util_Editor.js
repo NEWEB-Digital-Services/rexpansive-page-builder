@@ -421,6 +421,14 @@ var Rexbuilder_Util_Editor = (function ($) {
             var eventData = e.settings.data_to_send;
             _restorePageStartingState(eventData);
         });
+
+        $(document).on("rexlive:lockRows", function (e) {
+            _lockRows();
+        });
+        
+        $(document).on("rexlive:unlockRows", function (e) {
+            _releaseRows();
+        });
     }
 
     var _pushAction = function ($target, actionName, actionData, reverseData) {
@@ -633,6 +641,27 @@ var Rexbuilder_Util_Editor = (function ($) {
             buttonData: eventData.buttonData
         }
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+    }
+
+    var _lockRows = function(){
+        Rexbuilder_Util.$rexContainer.children(".rexpansive_section").each(function(i, sec){
+            var $sec = $(sec);
+            $sec.wrap("<div></div>");
+            $sec.parent().attr("style", "position:relative;");
+            $sec.parent().append(tmpl("tmpl-div-lock-section", {}));
+        });
+    }
+    var _releaseRows = function(){
+        Rexbuilder_Util.$rexContainer.find(".rexpansive_section").each(function(i, sec){
+            var $sec = $(sec);
+            $sec.siblings().each(function (j, sib) {
+                var $sib = $(sib);
+                if($sib.hasClass("rexpansive-lock-section")){
+                    $sib.remove();
+                }
+            });
+            $sec.unwrap();
+        });
     }
 
     var init = function () {

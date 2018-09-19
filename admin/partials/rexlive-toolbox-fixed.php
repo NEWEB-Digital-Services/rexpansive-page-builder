@@ -34,6 +34,7 @@ global $layoutsAvaiable;
         ?>
         </div>
         <div class="rexlive-builder-actions">
+            <button class = "btn-models">Model</button>
             <button class = "btn-undo">Undo</button>
             <button class = "btn-redo">Redo</button>
             <button class = "btn-save">Save</button>

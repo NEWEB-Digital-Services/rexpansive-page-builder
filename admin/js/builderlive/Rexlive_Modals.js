@@ -29,6 +29,12 @@ var Rexlive_Modals = (function ($) {
 
         // change active layout
         Change_Layout_Modal.init();
+
+        // change active layout
+        LockedOptionMask.init();
+
+        // change active layout
+        Model_Import_Modal.init();
     }
 
     return {

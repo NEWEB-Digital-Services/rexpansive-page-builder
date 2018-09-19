@@ -1144,7 +1144,7 @@ if ($query->have_posts()) {
         ?>
         <option value="<?php the_ID();?>" data-preview-url="<?php echo get_permalink(); ?>"><?php the_title();?></option>
         <?php
-}
+    }
 } else {
     // no posts found
 }
@@ -1183,10 +1183,10 @@ wp_reset_postdata();
                 Cosa vuoi fare?
             </div>
             <div>
-                <div class="rex-edit-option" data-rex-option="edit">
+                <div class="rex-edit-model-option" data-rex-option="edit">
                     <button class="rex-button edit-model">Edita</button>
                 </div>
-                <div class="rex-edit-option" data-rex-option="remove">
+                <div class="rex-edit-model-option" data-rex-option="remove">
                     <button class="rex-button remove-model">Togli</button>
                 </div>
             </div>
@@ -1201,16 +1201,94 @@ wp_reset_postdata();
                 Save changes?
             </div>
             <div>
-                <div class="rex-edit-option" data-rex-option="save">
+                <div class="rex-change-layout-option" data-rex-option="save">
                     <button class="rex-button save-page">yes</button>
                 </div>
-                <div class="rex-edit-option" data-rex-option="continue">
+                <div class="rex-change-layout-option" data-rex-option="continue">
                     <button class="rex-button continue">no</button>
                 </div>
-                <div class="rex-edit-option" data-rex-option="abort">
+                <div class="rex-change-layout-option" data-rex-option="abort">
                     <button class="rex-button abort">cancel</button>
                 </div>
             </div>
         </div>
     </div>
 </div><!-- Layout page Changed -->
+
+<div class="rex-modal-wrap rex-fade">
+    <div id="rex-locked-option" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
+        <div class="modal-content">
+            <div class="locked-option-changed-description">
+            This feature is not avaiable until saved.
+            Attention! Once you have saved from live, you can not edit from backend.
+            </div>
+            <div>
+                <div class="rex-locked-option-wrapper" data-rex-option="save">
+                    <button class="rex-button save-page">save</button>
+                </div>
+                <div class="rex-locked-option-wrapper" data-rex-option="abort">
+                    <button class="rex-button abort">cancel</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Locked feature -->
+
+<div class="rex-modal-wrap rex-fade" style="width:500px;overflow:visible;">
+    <div id="rex-models-list" class="rex-modal rexbuilder-materialize-wrap z-depth-4">
+        <div class="modal-content">
+            <div class="models-list-wrapper">
+                <ul class="model-list">
+                    <?php
+                // WP_Query arguments
+                $args = array(
+                    'post_type' => array('rex_model'),
+                    'post_status' => array('publish', 'private'),
+                    'posts_per_page' => '-1',
+                );
+
+                // The Query
+                
+                $query = new WP_Query($args);
+                // The Loop
+                if ($query->have_posts()) {
+                    while ($query->have_posts()) {
+                        $query->the_post();
+                        $model_id = get_the_ID();
+                        $model_title =  get_the_title();
+                        $model_previewUrl = get_the_post_thumbnail_url();
+                        $modelShortCode = get_the_content();
+                        $model_html = do_shortcode($modelShortCode);
+                        ?>
+                        <li draggable="true" data-rex-model-id="<?php echo $model_id;?>">
+                            <div class="">
+                                <span class="">
+                                    <span class="dashicons-move dashicons-before"></span>
+                                </span>
+                            </div>
+                            <div class="model-name"><?php echo $model_title;?></div>
+                            <div class="model-preview"><img class="model-thumbnail"<?php
+                            if($model_previewUrl != ""){
+                                echo " src=\"" . $model_previewUrl . "\"";
+                            }
+                            ?>></div>
+                            <div class="model-html"><?php echo $model_html;?></div>
+                        </li>
+                        <?php
+                    }
+                } else {
+                    // no posts found
+                }
+                // Restore original Post Data
+                wp_reset_postdata(); 
+
+                ?></ul>
+            </div>
+            <div class="rexeditor_bottom rex-modal-footer clearfix">
+                <button class="waves-effect waves-light btn-flat grey rex-close-button" value="">
+                    <i class="rex-icon">n</i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div><!-- Model Lists -->

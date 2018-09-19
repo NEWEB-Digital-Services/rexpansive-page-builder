@@ -783,7 +783,9 @@ var Rexbuilder_Section = (function ($) {
         var startingSectionsOrder = [];
         var endSectionsOrder = [];
         //launching sortable
+        console.log("launching sortable");
         Rexbuilder_Util.$rexContainer.sortable({
+            iframeFix: true,
             start: function (event, ui) {
                 Rexbuilder_Dom_Util.fixModelNumbers();
                 startingSectionsOrder = [];
@@ -860,7 +862,17 @@ var Rexbuilder_Section = (function ($) {
                 Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 
                 Rex_Navigator.fixNavigatorItemOrder($section);
-            }
+            },
+            update: function (event, ui) {
+                console.log(event);
+                console.log(ui);
+                console.log("list updated");
+            },
+            receive: function(event, ui) {
+                console.log(event);
+                console.log(ui);
+                console.log("item received");                
+            }  
         });
 
         // linking listeners to row setting buttons
