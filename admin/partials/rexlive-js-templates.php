@@ -4,7 +4,7 @@ defined('ABSPATH') or exit;
 
 ?>
 <script type="text/x-tmpl" id="rexlive-tmpl-custom-layout-button">
-<div>
+<div class="layout-container">
     <button class="btn-builder-layout builder-{%=customLayout.id%}-layout" data-min-width="{%=customLayout.minWidth%}" data-max-width="{%=customLayout.maxWidth%}" data-name="{%=customLayout.id%}">
         {%=customLayout.label%}
     </button>

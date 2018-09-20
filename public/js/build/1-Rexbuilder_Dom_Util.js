@@ -1176,9 +1176,6 @@ var Rexbuilder_Dom_Util = (function ($) {
             case "updateSectionMargins":
                 _updateSectionMargins($section, dataToUse);
                 break;
-            case "insertModelInPage":
-                _updateSectionMargins($section, dataToUse);
-                break;
             default:
                 break;
         }

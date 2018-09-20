@@ -243,6 +243,7 @@ var Rex_Save_Listeners = (function ($) {
                         success: function (response) {
                             if (response.success) {
                                 console.log('layout ' + response.data.layoutName + ' aggiornato!');
+                                console.log(newCustomization.sections);
                             }
                         },
                         error: function (response) {
@@ -611,6 +612,7 @@ var Rex_Save_Listeners = (function ($) {
                     name: blockRexID,
                     props: {}
                 }
+                
                 if (layoutName == "default" || saveBlockDisposition || checkEditsElement($elem)) {
                     block_props.props = createBlockProperties($elem, "customLayout", $gridGallery);
                 }
@@ -882,7 +884,7 @@ var Rex_Save_Listeners = (function ($) {
         } else if (mode == "customLayout") {
 
             var props = {};
-
+            
             props["hide"] = hide_block;
             if (Rexbuilder_Util.activeLayout == "default") {
                 props["element_edited"] = false;

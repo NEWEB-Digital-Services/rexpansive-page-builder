@@ -321,7 +321,8 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         this.transitionEvent = _whichTransitionEvent();
         this.animationEvent = _whichAnimationEvent();
 
-        this.$responsiveToolbar = this.$rexpansiveContainer.find(".rexlive-responsive-toolbox");
+        this.$responsiveToolbar = this.$rexpansiveContainer.find(".rexlive-toolbox");
+        
         pageSaved = true;
         modelSaved = true;
         activeLayoutPage = "default";

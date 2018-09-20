@@ -286,7 +286,7 @@ var TextEditor = (function ($) {
                 * This example includes the default options for
                 * placeholder, if nothing is passed this is what it used
                 */
-                text: "Insert Text Here",
+                text: "",
                 hideOnClick: true
             }
         });

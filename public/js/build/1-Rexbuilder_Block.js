@@ -10,6 +10,7 @@ var Rexbuilder_Block = (function ($) {
             var $elem = $(e.target).parents(".grid-stack-item");
             var gridGalleryInstance = $elem.parent().data().plugin_perfectGridGalleryEditor;
             gridGalleryInstance.deleteBlock($elem);
+            $elem.attr("data-rexlive-element-edited", true);
             Rexbuilder_Util_Editor.removingBlocks = false;
         });
 
