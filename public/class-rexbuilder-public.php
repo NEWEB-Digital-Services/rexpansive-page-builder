@@ -565,11 +565,6 @@ endif;
         wp_send_json_success($response);
     }
 
-    /**
-     *    Ajax call to save model shortcode
-     *
-     *    @since 1.0.15
-     */
     public function rexlive_edit_model_shortcode_builder()
     {
         $nonce = $_POST['nonce_param'];

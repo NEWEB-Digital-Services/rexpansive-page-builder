@@ -1234,7 +1234,7 @@ wp_reset_postdata();
     </div>
 </div><!-- Locked feature -->
 
-<div class="rex-modal-wrap rex-fade" style="width:500px;overflow:visible;">
+<div class="rex-modal-wrap rex-fade" style="width:500px;overflow:visible;left:70%;">
     <div id="rex-models-list" class="rex-modal rexbuilder-materialize-wrap z-depth-4">
         <div class="modal-content">
             <div class="models-list-wrapper">
@@ -1257,22 +1257,14 @@ wp_reset_postdata();
                         $model_id = get_the_ID();
                         $model_title =  get_the_title();
                         $model_previewUrl = get_the_post_thumbnail_url();
-                        $modelShortCode = get_the_content();
-                        $model_html = do_shortcode($modelShortCode);
                         ?>
-                        <li draggable="true" data-rex-model-id="<?php echo $model_id;?>">
-                            <div class="">
-                                <span class="">
-                                    <span class="dashicons-move dashicons-before"></span>
-                                </span>
-                            </div>
+                        <li class="model__element" draggable="true" data-rex-model-id="<?php echo $model_id;?>">
                             <div class="model-name"><?php echo $model_title;?></div>
                             <div class="model-preview"><img class="model-thumbnail"<?php
                             if($model_previewUrl != ""){
                                 echo " src=\"" . $model_previewUrl . "\"";
                             }
                             ?>></div>
-                            <div class="model-html"><?php echo $model_html;?></div>
                         </li>
                         <?php
                     }

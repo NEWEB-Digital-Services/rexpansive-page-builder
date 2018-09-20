@@ -1176,6 +1176,9 @@ var Rexbuilder_Dom_Util = (function ($) {
             case "updateSectionMargins":
                 _updateSectionMargins($section, dataToUse);
                 break;
+            case "insertModelInPage":
+                _updateSectionMargins($section, dataToUse);
+                break;
             default:
                 break;
         }
@@ -1203,7 +1206,6 @@ var Rexbuilder_Dom_Util = (function ($) {
         removeMp4Video: _removeMp4Video,
         updateSlider: _updateSlider,
         updateSliderStack: _updateSliderStack,
-        updateGridLayoutDomProperties: _updateGridLayoutDomProperties,
         updateSectionName: _updateSectionName,
         enablePhotoswipeAllBlocksSection: _enablePhotoswipeAllBlocksSection,
         updateCustomClasses: _updateCustomClasses,
@@ -1227,7 +1229,6 @@ var Rexbuilder_Dom_Util = (function ($) {
         fixSectionDomOrder: _fixSectionDomOrder,
         updateSectionBecameModel: _updateSectionBecameModel,
         updateLockEditModel: _updateLockEditModel,
-        fixModelNumbers: _fixModelNumbers,
         fixModelNumbers: _fixModelNumbers,
         updateSectionWidthData: _updateSectionWidthData,
         updateSectionWidth: _updateSectionWidth,

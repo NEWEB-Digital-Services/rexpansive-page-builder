@@ -1,5 +1,6 @@
 var Rexbuilder_Section = (function ($) {
     'use strict';
+
     var _showSectionToolBox = function ($section) {
         $section.children('.section-toolBox').addClass('tool-box-active');
     }
@@ -159,8 +160,6 @@ var Rexbuilder_Section = (function ($) {
         });
 
         $(document).on('click', '.builder-copy-row', function (e) {
-            console.log("copying section");
-
             Rexbuilder_Util_Editor.sectionCopying = true;
             var $section = $(e.currentTarget).parents('.rexpansive_section');
             var $newSection = $section.clone(false);
@@ -698,6 +697,170 @@ var Rexbuilder_Section = (function ($) {
             }
             Rexbuilder_Util_Editor.sendParentIframeMessage(data);
         });
+
+        $(document).on("rexlive:importModels", function (e) {
+            if(Rexbuilder_Util.activeLayout != "default"){
+                return;
+            }
+
+            var $model_to_import = Rexbuilder_Util.$rexContainer.find(".import-model");
+
+            if($model_to_import.length == 0){
+                return;
+            }
+            
+            //positioning before first section
+            if ($model_to_import.next().is("#textEditorToolbar")) {
+                Rexbuilder_Util.$rexContainer.find(".rexpansive_section").eq(0).before($model_to_import.detach());
+            }
+
+            $.ajax({
+                type: 'GET',
+                dataType: 'json',
+                url: _plugin_frontend_settings.rexajax.ajaxurl,
+                data: {
+                    action: 'rex_get_model_live',
+                    nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+                    model_data: {
+                        ID: parseInt($model_to_import.attr("data-rex-model-id"))
+                    }
+                },
+                success: function (response) {
+                    if (response.success) {
+                        var modelData = {
+                            model: response.data.model,
+                            modelName: response.data.name,
+                            modelID: response.data.id,
+                            customizationsData: response.data.customizations_data,
+                            customizationsNames: response.data.customizations_names,
+                        }
+                        
+                        Rexbuilder_Util_Editor.sectionCopying = true;
+                        Rexbuilder_Util_Editor.insertingModel = true;
+
+                        var html = $.parseHTML(modelData.model);
+                        $model_to_import.after(html);
+                        $model_to_import.remove();
+
+                        var defaultStateSections = Rexbuilder_Util.getDefaultLayoutState();
+                        var layoutsOrder = Rexbuilder_Util.getPageCustomizationsDom();
+                        var modelNumber = 1;
+                        Rexbuilder_Util.$rexContainer.children(".rexpansive_section.rex-model-section:not(.removing_section)").each(function (i, sec) {
+                            var $sec = $(sec);
+                            if ($sec.attr("data-rexlive-model-id") == modelData.modelID) {
+                                modelNumber = modelNumber + 1;
+                            }
+                        });
+
+                        var $newSection = $(html);
+                        var newSectionRexID = $newSection.attr("data-rexlive-section-id");
+                        $newSection.attr("data-rexlive-model-number", modelNumber);
+
+                        var addingModelCustomizationsNames = {
+                            id: modelData.modelID,
+                            names: modelData.customizationsNames
+                        };
+
+                        Rexbuilder_Util.updateDivModelCustomizationsNames(addingModelCustomizationsNames);
+
+                        var addingModelCustomizationsData = {
+                            id: modelData.modelID,
+                            name: modelData.modelName,
+                            customizations: modelData.customizationsData
+                        };
+
+                        Rexbuilder_Util.updateModelsCustomizationsData(addingModelCustomizationsData);
+
+                        Rexbuilder_Section.prepareSectionCopied($newSection);
+                        var $newSectionData = $newSection.children(".section-data");
+                        $newSectionData.after(tmpl("tmpl-toolbox-section"));
+                        var $buttonModel = $newSection.find(".update-model-button");
+                        Rexbuilder_Dom_Util.updateLockEditModel($buttonModel, true);
+
+                        var $row = $newSection.find('.grid-stack-row');
+
+                        $row.perfectGridGalleryEditor();
+
+                        //starting sliders after grid is up
+                        setTimeout(function () {
+                            $row.children(".grid-stack-item").each(function (i, el) {
+                                var $sliderToActive = $(el).find(".rex-slider-wrap");
+                                if ($sliderToActive.length != 0) {
+                                    RexSlider.initSlider($sliderToActive);
+                                }
+                            });
+                        }, 500, $row);
+
+                        Rexbuilder_Util.$rexContainer.sortable("refresh");
+
+                        var reverseData = {
+                            show: false,
+                            layoutsOrder: layoutsOrder != null ? jQuery.extend(true, [], layoutsOrder) : null
+                        };
+            
+                        Rexbuilder_Dom_Util.updateSectionVisibility($newSection, true);
+    
+                        // fixing dom order in default and custom layouts
+                        if (layoutsOrder != null) {
+                            var modelPosition = 0;
+                            Rexbuilder_Util.$rexContainer.children(".rexpansive_section:not(.removing_section)").each(function(i, sec){
+                                var $sec = $(sec);
+                                if($sec.attr("data-rexlive-model-id") == modelData.modelID && $sec.attr("data-rexlive-model-number") == modelNumber){
+                                    modelPosition = i;
+                                    return false;
+                                }
+                            });
+                            var i;
+
+                            var modelObj = {
+                                section_rex_id: newSectionRexID,
+                                targets: [],
+                                section_is_model: true,
+                                section_model_id: modelData.modelID,
+                                section_model_number: modelNumber,
+                                section_hide: false,
+                                section_created_live: true
+                            }
+                            
+                            for (i = 0; i < layoutsOrder.length; i++) {
+                                layoutsOrder[i].sections.splice(modelPosition, 0, jQuery.extend(true, {}, modelObj));
+                            }
+
+                            defaultStateSections.splice(modelPosition, 0, jQuery.extend(true, {}, modelObj));
+
+                            Rexbuilder_Util.updatePageCustomizationsDomOrder(layoutsOrder);
+
+                            Rexbuilder_Util.updateDefaultLayoutState({ 
+                                pageData: defaultStateSections,
+                                modelsData: Rexbuilder_Util.getModelsCustomizations()
+                            });
+                        }
+                        
+                        var actionData = {
+                            show: true,
+                            layoutsOrder: layoutsOrder != null ? jQuery.extend(true, [], layoutsOrder) : null
+                        };
+
+                        Rexbuilder_Util_Editor.pushAction($newSection, "updateSectionVisibility", actionData, reverseData);
+
+                        Rexbuilder_Util_Editor.sectionCopying = false;
+                        Rexbuilder_Util_Editor.insertingModel = false;
+                        var data = {
+                            eventName: "rexlive:edited",
+                            modelEdited: false
+                        }
+                        Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+                    }
+                },
+                error: function (response) {
+                    ;
+                },
+                complete: function (response) {
+                    ;
+                }
+            });
+            //$model_to_import.children().remove();
+        });
     }
 
     var _updateModelsHtmlLive = function (data) {
@@ -728,7 +891,7 @@ var Rexbuilder_Section = (function ($) {
                 var dataModel = {
                     modelID: idModel,
                     modelName: modelName,
-                    modelNumber, modelNumber,
+                    modelNumber: modelNumber,
                     sectionID: $newSection.attr("data-rexlive-section-id"),
                     isModel: true,
                     $section: $newSection
@@ -783,7 +946,6 @@ var Rexbuilder_Section = (function ($) {
         var startingSectionsOrder = [];
         var endSectionsOrder = [];
         //launching sortable
-        console.log("launching sortable");
         Rexbuilder_Util.$rexContainer.sortable({
             iframeFix: true,
             start: function (event, ui) {
@@ -863,16 +1025,6 @@ var Rexbuilder_Section = (function ($) {
 
                 Rex_Navigator.fixNavigatorItemOrder($section);
             },
-            update: function (event, ui) {
-                console.log(event);
-                console.log(ui);
-                console.log("list updated");
-            },
-            receive: function(event, ui) {
-                console.log(event);
-                console.log(ui);
-                console.log("item received");                
-            }  
         });
 
         // linking listeners to row setting buttons

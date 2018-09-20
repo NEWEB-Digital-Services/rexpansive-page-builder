@@ -526,7 +526,7 @@
                     }
 
                     // The result can be accessed through the `m`-variable.
-                    m.forEach((match, groupIndex) => {
+                    $.each(m, function(i, match){
                         numberBlock = parseInt(match);
                     });
                 }

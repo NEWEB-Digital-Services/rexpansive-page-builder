@@ -1,9 +1,84 @@
+/**
+ * https://www.html5rocks.com/en/tutorials/dnd/basics/
+ * https://github.com/StackHive/DragDropInterface
+ * http://mereskin.github.io/dnd/
+ */
+
 var Model_Import_Modal = (function ($) {
     'use strict';
     var rexmodel_import_props;
 
-    var _openModal = function (data) {
-        Rexlive_Modals_Utils.openModal(rexmodel_import_props.$self.parent('.rex-modal-wrap'), true);
+    var _updateModelList = function () {
+        $.ajax({
+            type: 'GET',
+            dataType: 'json',
+            url: live_editor_obj.ajaxurl,
+            data: {
+                action: 'rex_get_model_list',
+                nonce_param: live_editor_obj.rexnonce,
+            },
+            success: function (response) {
+                if (response.success) {
+                    var currentList = [];
+                    rexmodel_import_props.$self.find(".model__element").each(function (i, model) {
+                        var modelID = $(model).attr("data-rex-model-id");
+                        var modelObj = {
+                            id: modelID,
+                            founded: false
+                        }
+                        currentList.push(modelObj);
+                    });
+
+                    var updatedList = response.data.updated_list;
+
+                    var i, j;
+
+                    for (i = 0; i < updatedList.length; i++) {
+                        updatedList[i].founded = false;
+                    }
+
+                    for (i = 0; i < updatedList.length; i++) {
+                        for (j = 0; j < currentList.length; j++) {
+                            if (updatedList[i].id == currentList[j].id) {
+                                updatedList[i].founded = true;
+                                currentList[j].founded = true;
+                                break;
+                            }
+                        }
+                    }
+
+                    tmpl.arg = "model";
+
+                    for (i = 0; i < updatedList.length; i++) {
+                        if (!updatedList[i].founded) {
+                            rexmodel_import_props.$self.find(".model-list").prepend(tmpl("rexlive-tmpl-model-item-list", {
+                                id: updatedList[i].id,
+                                name: updatedList[i].name,
+                                preview: updatedList[i].preview_image_url != "" ? " src=\"" + updatedList[i].preview_image_url + "\"" : "",
+                            }));
+                        }
+                    }
+
+                    for (i = 0; i < currentList.length; i++) {
+                        if (!currentList[i].founded) {
+                            rexmodel_import_props.$self.find('.model__element[data-rex-model-id="' + currentList[i].id + '"]').remove();
+                        }
+                    }
+
+                    Rexlive_Modals_Utils.openModal(rexmodel_import_props.$self.parent('.rex-modal-wrap'), true);
+                }
+            },
+            error: function (response) {
+                ;
+            },
+            complete: function (response) {
+                rexmodel_import_props.$self.removeClass('rex-modal--loading');
+            }
+        })
+    }
+
+    var _openModal = function () {
+        _updateModelList();
     }
 
     var _closeModal = function () {
@@ -23,38 +98,65 @@ var Model_Import_Modal = (function ($) {
 
         var clientFrameWindow = Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow;
 
-        rexmodel_import_props.$self.find(".model-list li").on('dragstart', function (event) {
-            console.log("Drag Started");
+        var stop = true;
+        /*
+        Funzione che esegue lo scrolling nell'iframe
+        */
+        var scroll = function (step) {
+            var scrollY = $(Rexbuilder_Util_Admin_Editor.$frameBuilder[0].contentWindow).scrollTop();
+            $(Rexbuilder_Util_Admin_Editor.$frameBuilder[0].contentWindow).scrollTop(scrollY + step);
+            if (!stop) {
+                setTimeout(function () { 
+                    scroll(step) 
+                }, 20);
+            }
+        }
+ 
+        $(document).on('dragstart', ".model-list li", function (event) {
             Rexbuilder_Util_Admin_Editor.blockIframeRows();
+            event.originalEvent.dataTransfer.effectAllowed = 'all';
             dragoverqueue_processtimer = setInterval(function () {
                 DragDropFunctions.ProcessDragOverQueue();
             }, 100);
-            var insertingHTML = $(this).attr('data-insert-html');
-            event.originalEvent.dataTransfer.setData("Text", insertingHTML);
+            var insertingHTML = "<div class=\"import-model\" data-rex-model-id=\"" + $(this).attr("data-rex-model-id") + "\"><h1>Importing Model</h1></div>";
+            event.originalEvent.dataTransfer.setData("text/plain", insertingHTML);
         });
 
-        rexmodel_import_props.$self.find(".model-list li").on('dragend', function () {
-            console.log("Drag End");
+        // definisce quando bisogna scrollare in alto o in basso
+        $(document).on('drag', ".model-list li", function (event) {
+            stop = true;
+
+            if (event.clientY < 150) {
+                stop = false;
+                scroll(-1);
+            }
+
+            if (event.clientY > ($(Rexbuilder_Util_Admin_Editor.$frameBuilder[0].contentWindow).height() - 150)) {
+                stop = false;
+                scroll(1);
+            }
+        });
+
+        $(document).on('dragend', ".model-list li", function (event) {
             Rexbuilder_Util_Admin_Editor.releaseIframeRows();
+            stop = true;
             clearInterval(dragoverqueue_processtimer);
-           // DragDropFunctions.removePlaceholder();
+            DragDropFunctions.removePlaceholder();
             DragDropFunctions.ClearContainerContext();
         });
 
         Rexbuilder_Util_Admin_Editor.$frameBuilder.load(function () {
-            //Add CSS File to iFrame
-            var style = $("<style data-reserved-styletag></style>").html(GetInsertionCSS());
-            $(clientFrameWindow.document.head).append(style);
+            var $rexContainer = $(clientFrameWindow.document).find('.rex-container').eq(0);
 
-            $(clientFrameWindow.document).find('.rex-container').on('dragenter', function (event) {
-                //console.log(event);
+            $rexContainer.on('dragenter', function (event) {
                 event.stopPropagation();
                 currentElement = $(event.target);
                 currentElementChangeFlag = true;
                 elementRectangle = event.target.getBoundingClientRect();
                 countdown = 1;
+            });
 
-            }).on('dragover', function (event) {
+            $rexContainer.on('dragover', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
                 if (countdown % 15 != 0 && currentElementChangeFlag == false) {
@@ -69,28 +171,28 @@ var Model_Import_Modal = (function ($) {
                     y: event.originalEvent.clientY
                 };
                 DragDropFunctions.AddEntryToDragOverQueue(currentElement, elementRectangle, mousePosition)
-            })
+            });
 
-            $(clientFrameWindow.document).find('.rex-container').on('drop', function (event) {
+            $rexContainer.on('drop', function (event) {
                 event.preventDefault();
                 event.stopPropagation();
-                console.log('Drop event');
                 var e;
                 if (event.isTrigger) {
                     e = triggerEvent.originalEvent;
                 } else {
                     e = event.originalEvent;
                 }
-                console.log("provo a scrivere");
                 try {
-                    var textData = e.dataTransfer.getData('Text');
+                    var textData = e.dataTransfer.getData('text/plain');
                     var $insertionPoint = Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find(".drop-marker");
-                    console.log("butto roba");
-                    var checkDiv = $(textData);
-                    $insertionPoint.after("<p>Test</p>");
-//                    insertionPoint.remove();
-                }
-                catch (e) {
+                    var $divInsert = $(jQuery.parseHTML(textData));
+                    $divInsert.insertAfter($insertionPoint[0]);
+                    $insertionPoint.remove();
+                    var dataEndDrop = {
+                        eventName: "rexlive:importModels",
+                    }
+                    Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
+                } catch (e) {
                     console.log(e);
                 }
             });
@@ -116,59 +218,40 @@ var Model_Import_Modal = (function ($) {
                 if ($element.is('html')) {
                     $element = $element.find('body');
                 }
-                //Top and Bottom Area Percentage to trigger different case. [5% of top and bottom area gets reserved for this]
-                var breakPointNumber = { x: 5, y: 5 };
 
+                //Top and Bottom Area Percentage to trigger different case. [5% of top and bottom area gets reserved for this]
+                var breakPointNumber = { x: 50, y: 50 };
                 var mousePercents = this.GetMouseBearingsPercentage($element, elementRect, mousePos);
-                if ((mousePercents.x > breakPointNumber.x && mousePercents.x < 100 - breakPointNumber.x) && (mousePercents.y > breakPointNumber.y && mousePercents.y < 100 - breakPointNumber.y)) {
-                    //Case 1 -
-                    var $tempelement = $element.clone();
-                    $tempelement.find(".drop-marker").remove();
-                    if ($tempelement.html() == "" && !this.checkVoidElement($tempelement)) {
+                if ((mousePercents.x > breakPointNumber.x && mousePercents.x < (100 - breakPointNumber.x)) &&
+                    (mousePercents.y > breakPointNumber.y && mousePercents.y < (100 - breakPointNumber.y))
+                ) {
+                    var $tempElement = $element.clone();
+                    $tempElement.find(".drop-marker").remove();
+                    if ($tempElement.html() == "" && !this.checkVoidElement($tempElement)) {
                         if (mousePercents.y < 90) {
                             return this.PlaceInside($element);
                         }
-                    }
-                    else if ($tempelement.children().length == 0) {
-                        //text element detected
-                        //console.log("Text Element");
+                    } else if ($tempElement.children().length == 0) {
                         this.DecideBeforeAfter($element, mousePercents);
-                    }
-                    else if ($tempelement.children().length == 1) {
-                        //only 1 child element detected
-                        //console.log("1 Child Element");
+                    } else if ($tempElement.children().length == 1) {
                         this.DecideBeforeAfter($element.children(":not(.drop-marker,[data-dragcontext-marker])").first(), mousePercents);
-                    }
-                    else {
+                    } else {
                         var positionAndElement = this.findNearestElement($element, mousePos.x, mousePos.y);
                         this.DecideBeforeAfter(positionAndElement.el, mousePercents, mousePos);
-                        //more than 1 child element present
-                        //console.log("More than 1 child detected");
                     }
-                }
-                else if ((mousePercents.x <= breakPointNumber.x) || (mousePercents.y <= breakPointNumber.y)) {
-                    var validElement = null
-                    if (mousePercents.y <= mousePercents.x) {
-                        validElement = this.FindValidParent($element, 'top');
-                    }
-                    else {
-                        validElement = this.FindValidParent($element, 'left');
-                    }
+                } else if ((mousePercents.x <= breakPointNumber.x) || (mousePercents.y <= breakPointNumber.y)) {
+                    var validElement = this.FindValidParent($element, 'top');
 
                     if (validElement.is("body,html")) {
                         validElement = Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find("body").children(":not(.drop-marker,[data-dragcontext-marker])").first();
                     }
                     this.DecideBeforeAfter(validElement, mousePercents, mousePos);
-                }
-                else if ((mousePercents.x >= 100 - breakPointNumber.x) || (mousePercents.y >= 100 - breakPointNumber.y)) {
-                    var validElement = null
-                    if (mousePercents.y >= mousePercents.x)
-                        validElement = this.FindValidParent($element, 'bottom');
-                    else
-                        validElement = this.FindValidParent($element, 'right');
+                } else if ((mousePercents.x >= 100 - breakPointNumber.x) || (mousePercents.y >= 100 - breakPointNumber.y)) {
+                    var validElement = this.FindValidParent($element, 'bottom');
 
-                    if (validElement.is("body,html"))
+                    if (validElement.is("body,html")) {
                         validElement = Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find("body").children(":not(.drop-marker,[data-dragcontext-marker])").last();
+                    }
                     this.DecideBeforeAfter(validElement, mousePercents, mousePos);
                 }
             },
@@ -176,11 +259,6 @@ var Model_Import_Modal = (function ($) {
                 if (mousePos) {
                     mousePercents = this.GetMouseBearingsPercentage($targetElement, null, mousePos);
                 }
-
-                /*if(!mousePercents)
-                {
-                mousePercents = this.GetMouseBearingsPercentage($targetElement, $targetElement.get(0).getBoundingClientRect(), mousePos);
-                } */
 
                 var $orientation = ($targetElement.css('display') == "inline" || $targetElement.css('display') == "inline-block");
                 if ($targetElement.is("br")) {
@@ -190,16 +268,13 @@ var Model_Import_Modal = (function ($) {
                 if ($orientation) {
                     if (mousePercents.x < 50) {
                         return this.PlaceBefore($targetElement);
-                    }
-                    else {
+                    } else {
                         return this.PlaceAfter($targetElement);
                     }
-                }
-                else {
+                } else {
                     if (mousePercents.y < 50) {
                         return this.PlaceBefore($targetElement);
-                    }
-                    else {
+                    } else {
                         return this.PlaceAfter($targetElement);
                     }
                 }
@@ -223,12 +298,14 @@ var Model_Import_Modal = (function ($) {
                             var elementRect = $element.get(0).getBoundingClientRect();
                             var $tempElement = $element.parent();
                             var tempelementRect = $tempElement.get(0).getBoundingClientRect();
-                            if ($element.is("body"))
+                            if ($element.is("body") || $element.hasClass("rex-container")) {
                                 return $element;
-                            if (Math.abs(tempelementRect.left - elementRect.left) == 0)
+                            }
+                            if (Math.abs(tempelementRect.left - elementRect.left) == 0) {
                                 $element = $element.parent();
-                            else
+                            } else {
                                 return $element;
+                            }
                         }
                         break;
                     case "right":
@@ -236,12 +313,14 @@ var Model_Import_Modal = (function ($) {
                             var elementRect = $element.get(0).getBoundingClientRect();
                             var $tempElement = $element.parent();
                             var tempelementRect = $tempElement.get(0).getBoundingClientRect();
-                            if ($element.is("body"))
+                            if ($element.is("body") || $element.hasClass("rex-container")) {
                                 return $element;
-                            if (Math.abs(tempelementRect.right - elementRect.right) == 0)
+                            }
+                            if (Math.abs(tempelementRect.right - elementRect.right) == 0) {
                                 $element = $element.parent();
-                            else
+                            } else {
                                 return $element;
+                            }
                         }
                         break;
                     case "top":
@@ -249,12 +328,14 @@ var Model_Import_Modal = (function ($) {
                             var elementRect = $element.get(0).getBoundingClientRect();
                             var $tempElement = $element.parent();
                             var tempelementRect = $tempElement.get(0).getBoundingClientRect();
-                            if ($element.is("body"))
+                            if ($element.is("body") || $element.hasClass("rex-container")) {
                                 return $element;
-                            if (Math.abs(tempelementRect.top - elementRect.top) == 0)
+                            }
+                            if (Math.abs(tempelementRect.top - elementRect.top) == 0) {
                                 $element = $element.parent();
-                            else
+                            } else {
                                 return $element;
+                            }
                         }
                         break;
                     case "bottom":
@@ -262,62 +343,70 @@ var Model_Import_Modal = (function ($) {
                             var elementRect = $element.get(0).getBoundingClientRect();
                             var $tempElement = $element.parent();
                             var tempelementRect = $tempElement.get(0).getBoundingClientRect();
-                            if ($element.is("body"))
+                            if ($element.is("body") || $element.hasClass("rex-container")) {
                                 return $element;
-                            if (Math.abs(tempelementRect.bottom - elementRect.bottom) == 0)
+                            }
+                            if (Math.abs(tempelementRect.bottom - elementRect.bottom) == 0) {
                                 $element = $element.parent();
-                            else
+                            } else {
                                 return $element;
+                            }
                         }
+                        break;
+                    default:
                         break;
                 }
             },
             addPlaceHolder: function ($element, position, placeholder) {
-                if (!placeholder)
+                if ($element.hasClass("rex-container")) {
+                    if (position == "before") {
+                        position = "inside-prepend";
+                    } else {
+                        position = "inside-append";
+                    }
+                }
+                if (!placeholder) {
                     placeholder = this.getPlaceHolder();
+                }
                 this.removePlaceholder();
                 switch (position) {
                     case "before":
                         placeholder.find(".message").html($element.parent().data('sh-dnd-error'));
                         $element.before(placeholder);
-                        console.log($element);
-                        console.log("BEFORE");
                         this.AddContainerContext($element, 'sibling');
                         break;
                     case "after":
                         placeholder.find(".message").html($element.parent().data('sh-dnd-error'));
                         $element.after(placeholder);
-                        console.log($element);
-                        console.log("AFTER");
                         this.AddContainerContext($element, 'sibling');
                         break
                     case "inside-prepend":
                         placeholder.find(".message").html($element.data('sh-dnd-error'));
                         $element.prepend(placeholder);
                         this.AddContainerContext($element, 'inside');
-                        console.log($element);
-                        console.log("PREPEND");
                         break;
                     case "inside-append":
                         placeholder.find(".message").html($element.data('sh-dnd-error'));
                         $element.append(placeholder);
                         this.AddContainerContext($element, 'inside');
-                        console.log($element);
-                        console.log("APPEND");
                         break;
                 }
             },
+
             removePlaceholder: function () {
                 Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find(".drop-marker").remove();
             },
+
             getPlaceHolder: function () {
                 return $("<li class='drop-marker'></li>");
             },
+
             PlaceInside: function ($element) {
                 var placeholder = this.getPlaceHolder();
                 placeholder.addClass('horizontal').css('width', $element.width() + "px");
                 this.addPlaceHolder($element, "inside-append", placeholder);
             },
+
             PlaceBefore: function ($element) {
                 var placeholder = this.getPlaceHolder();
                 var inlinePlaceholder = ($element.css('display') == "inline" || $element.css('display') == "inline-block");
@@ -328,10 +417,11 @@ var Model_Import_Modal = (function ($) {
                     placeholder.addClass('horizontal').css('width', $element.width() + "px");
                     return this.addPlaceHolder($element, "inside-prepend", placeholder);
                 }
-                if (inlinePlaceholder)
+                if (inlinePlaceholder) {
                     placeholder.addClass("vertical").css('height', $element.innerHeight() + "px");
-                else
+                } else {
                     placeholder.addClass("horizontal").css('width', $element.parent().width() + "px");
+                }
                 this.addPlaceHolder($element, "before", placeholder);
             },
 
@@ -340,24 +430,25 @@ var Model_Import_Modal = (function ($) {
                 var inlinePlaceholder = ($element.css('display') == "inline" || $element.css('display') == "inline-block");
                 if ($element.is("br")) {
                     inlinePlaceholder = false;
-                }
-                else if ($element.is("td,th")) {
+                } else if ($element.is("td,th")) {
                     placeholder.addClass('horizontal').css('width', $element.width() + "px");
                     return this.addPlaceHolder($element, "inside-append", placeholder);
                 }
-                if (inlinePlaceholder)
+                if (inlinePlaceholder) {
                     placeholder.addClass("vertical").css('height', $element.innerHeight() + "px");
-                else
+                } else {
                     placeholder.addClass("horizontal").css('width', $element.parent().width() + "px");
+                }
                 this.addPlaceHolder($element, "after", placeholder);
             },
+
             findNearestElement: function ($container, clientX, clientY) {
                 var _this = this;
                 var previousElData = null;
                 var childElement = $container.children(":not(.drop-marker,[data-dragcontext-marker])");
                 if (childElement.length > 0) {
                     childElement.each(function () {
-                        if ($(this).is(".drop-marker")){
+                        if ($(this).is(".drop-marker")) {
                             return;
                         }
 
@@ -391,34 +482,36 @@ var Model_Import_Modal = (function ($) {
                                 corner1 = { x: clientX, y: yPosition2, 'position': 'after' };
                             }
 
-                        }
-                        else {
+                        } else {
                             //runs if no element found!
                             if (clientX < xPosition1 && clientX < xPosition2) {
-                                corner1 = { x: xPosition1, y: yPosition1, 'position': 'before' };          //left top
+                                corner1 = { x: xPosition1, y: yPosition1, 'position': 'before' };        //left top
                                 corner2 = { x: xPosition1, y: yPosition2, 'position': 'after' };       //left bottom
                             }
                             else if (clientX > xPosition1 && clientX > xPosition2) {
-                                //console.log('I m on the right of the element');
                                 corner1 = { x: xPosition2, y: yPosition1, 'position': 'before' };   //Right top
-                                corner2 = { x: xPosition2, y: yPosition2, 'position': 'after' }; //Right Bottom
+                                corner2 = { x: xPosition2, y: yPosition2, 'position': 'after' };
+                                //Right Bottom
                             }
                             else if (clientY < yPosition1 && clientY < yPosition2) {
-                                // console.log('I m on the top of the element');
-                                corner1 = { x: xPosition1, y: yPosition1, 'position': 'before' }; //Top Left
-                                corner2 = { x: xPosition2, y: yPosition1, 'position': 'after' }; //Top Right
+                                corner1 = { x: xPosition1, y: yPosition1, 'position': 'before' };
+                                //Top Left
+                                corner2 = { x: xPosition2, y: yPosition1, 'position': 'after' };
+                                //Top Right
                             }
                             else if (clientY > yPosition1 && clientY > yPosition2) {
-                                // console.log('I m on the bottom of the element');
-                                corner1 = { x: xPosition1, y: yPosition2, 'position': 'before' }; //Left bottom
-                                corner2 = { x: xPosition2, y: yPosition2, 'position': 'after' } //Right Bottom
+                                corner1 = { x: xPosition1, y: yPosition2, 'position': 'before' };
+                                //Left bottom
+                                corner2 = { x: xPosition2, y: yPosition2, 'position': 'after' }
+                                //Right Bottom
                             }
                         }
 
                         distance1 = _this.calculateDistance(corner1, clientX, clientY);
 
-                        if (corner2 !== null)
+                        if (corner2 !== null) {
                             distance2 = _this.calculateDistance(corner2, clientX, clientY);
+                        }
 
                         if (distance1 < distance2 || distance2 === null) {
                             distance = distance1;
@@ -439,8 +532,7 @@ var Model_Import_Modal = (function ($) {
                     if (previousElData !== null) {
                         var position = previousElData.position;
                         return { 'el': $(previousElData.el), 'position': position };
-                    }
-                    else {
+                    } else {
                         return false;
                     }
                 }
@@ -496,6 +588,7 @@ var Model_Import_Modal = (function ($) {
                         break;
                 }
             },
+
             PositionContextMarker: function ($contextMarker, $element) {
                 var rect = $element.get(0).getBoundingClientRect();
                 $contextMarker.css({
@@ -507,21 +600,15 @@ var Model_Import_Modal = (function ($) {
                 if (rect.top + Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find("body").scrollTop() < 24)
                     $contextMarker.find("[data-dragcontext-marker-text]").css('top', '0px');
             },
+
             ClearContainerContext: function () {
                 Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find('[data-dragcontext-marker]').remove();
             },
+
             getElementName: function ($element) {
                 return $element.prop('tagName');
             }
         };
-
-        var GetInsertionCSS = function () {
-            var styles = "" +
-                ".reserved-drop-marker{width:100%;height:2px;background:#00a8ff;position:absolute}.reserved-drop-marker::after,.reserved-drop-marker::before{content:'';background:#00a8ff;height:7px;width:7px;position:absolute;border-radius:50%;top:-2px}.reserved-drop-marker::before{left:0}.reserved-drop-marker::after{right:0}";
-            styles += "[data-dragcontext-marker],[data-sh-parent-marker]{outline:#19cd9d solid 2px;text-align:center;position:absolute;z-index:123456781;pointer-events:none;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif}[data-dragcontext-marker] [data-dragcontext-marker-text],[data-sh-parent-marker] [data-sh-parent-marker-text]{background:#19cd9d;color:#fff;padding:2px 10px;display:inline-block;font-size:14px;position:relative;top:-24px;min-width:121px;font-weight:700;pointer-events:none;z-index:123456782}[data-dragcontext-marker].invalid{outline:#dc044f solid 2px}[data-dragcontext-marker].invalid [data-dragcontext-marker-text]{background:#dc044f}[data-dragcontext-marker=body]{outline-offset:-2px}[data-dragcontext-marker=body] [data-dragcontext-marker-text]{top:0;position:fixed}";
-            styles += '.drop-marker{pointer-events:none;}.drop-marker.horizontal{background:#00adff;position:absolute;height:2px;list-style:none;visibility:visible!important;box-shadow:0 1px 2px rgba(255,255,255,.4),0 -1px 2px rgba(255,255,255,.4);z-index:123456789;text-align:center}.drop-marker.horizontal.topside{margin-top:0}.drop-marker.horizontal.bottomside{margin-top:2px}.drop-marker.horizontal:before{content:"";width:8px;height:8px;background:#00adff;border-radius:8px;margin-top:-3px;float:left;box-shadow:0 1px 2px rgba(255,255,255,.4),0 -1px 2px rgba(255,255,255,.4)}.drop-marker.horizontal:after{content:"";width:8px;height:8px;background:#00adff;border-radius:8px;margin-top:-3px;float:right;box-shadow:0 1px 2px rgba(255,255,255,.4),0 -1px 2px rgba(255,255,255,.4)}.drop-marker.vertical{height:50px;list-style:none;border:1px solid #00ADFF;position:absolute;margin-left:3px;display:inline;box-shadow:1px 0 2px rgba(255,255,255,.4),-1px 0 2px rgba(255,255,255,.4)}.drop-marker.vertical.leftside{margin-left:0}.drop-marker.vertical.rightside{margin-left:3px}.drop-marker.vertical:before{content:"";width:8px;height:8px;background:#00adff;border-radius:8px;margin-top:-4px;top:0;position:absolute;margin-left:-4px;box-shadow:1px 0 2px rgba(255,255,255,.4),-1px 0 2px rgba(255,255,255,.4)}.drop-marker.vertical:after{content:"";width:8px;height:8px;background:#00adff;border-radius:8px;margin-left:-4px;bottom:-4px;position:absolute;box-shadow:1px 0 2px rgba(255,255,255,.4),-1px 0 2px rgba(255,255,255,.4)}';
-            return styles;
-        }
     }
 
     var _init = function () {
