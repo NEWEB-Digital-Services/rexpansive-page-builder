@@ -128,6 +128,7 @@ class Rexbuilder_Public
 
             wp_enqueue_style('rexpansive-builder-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/public.css', array(), null, 'all');
 
+            wp_enqueue_style('rexpansive-builder-editor-style', REXPANSIVE_BUILDER_URL .'admin/css/live-def.css', array(), null, 'all');
         }
     }
 

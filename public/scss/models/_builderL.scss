@@ -27,38 +27,10 @@
   height: 100%;
 }
 
-.image-span-wrap {
-  background-color: blue;
-  display: inline-block;
-  position: static;
-}
-
-.hide-full-height-option {
-  visibility: hidden;
-}
-
 .grid-stack > .grid-stack-item > .grid-stack-item-content {
   left: 0px;
   right: 0px;
   overflow: hidden;
-}
-
-#builder-save-grid-btn {
-  width: 100px;
-  height: 40px;
-  margin-top: 0;
-  background-color: blue;
-  color: orange;
-  position: fixed;
-}
-
-#builder-undo-btn {
-  width: 100px;
-  height: 40px;
-  margin-top: 60px;
-  background-color: green;
-  color: red;
-  position: fixed;
 }
 
 .perfect-grid-item .full-image-background {
@@ -393,9 +365,8 @@
 .circle-handle {
   width: 10px;
   height: 10px;
-  background-color: #039be5;
+  background-color: #FF0040;
   border: 1px solid white;
-  border-radius: 50%;
   overflow: visible;
   -webkit-transition: all 0s ease-out;
   -moz-transition: all 0s ease-out;
@@ -822,7 +793,6 @@
     0 -1px 2px rgba(255, 255, 255, 0.4);
 }
 .drop-marker.vertical {
-  height: 50px;
   list-style: none;
   border: 1px solid #00adff;
   position: absolute;

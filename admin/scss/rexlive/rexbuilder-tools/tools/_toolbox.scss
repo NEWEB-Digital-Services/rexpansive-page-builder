@@ -148,30 +148,30 @@
 
 .btn-builder-layout{
   .l-svg-icons{
-    fill: #000000;
-    stroke: #000000;
+    fill: $icon-base-color;
+    stroke: $icon-base-color;
     > svg {
-      fill: #000000;
-      stroke: #000000;
+      fill: $icon-base-color;
+      stroke: $icon-base-color;
     }
   }
   &.active-layout .l-svg-icons{
-    fill: #00ACFF;
-    stroke: #00ACFF;
+    fill: $icon-active-color;
+    stroke: $icon-active-color;
     > svg {
-      fill: #00ACFF;
-      stroke: #00ACFF;
+      fill: $icon-active-color;
+      stroke: $icon-active-color;
     } 
   }
 }
 
 .btn-builder-layout:hover:not(.active-layout){
   .l-svg-icons{
-    fill: #979797;
-    stroke: #979797;
+    fill: $icon-hover-color;
+    stroke: $icon-hover-color;
     > svg {
-      fill: #979797;
-      stroke: #979797;
+      fill: $icon-hover-color;
+      stroke: $icon-hover-color;
     }
   }
 }

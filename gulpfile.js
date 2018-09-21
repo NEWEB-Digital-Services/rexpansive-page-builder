@@ -108,7 +108,7 @@ gulp.task('admin-css-build', function() {
 });
 
 gulp.task('live-builder-style', function() {
-	sass('admin/rexbuilder-tools.scss',{
+		sass('admin/scss/rexlive/live-def.scss',{
 		//style:'compressed'
 	})
 	.pipe(plumber())
@@ -120,8 +120,22 @@ gulp.task('live-builder-style', function() {
     .pipe(gulp.dest('admin/css'));
 });
 
-gulp.task('peter', ['live-builder-style'] ,function() {
-	gulp.watch('admin/scss/rexbuilder-tools/**/*.scss', ['live-builder-style']);
+gulp.task('admin-builder-style', function() {
+	sass('admin/scss/rexlive/tools-def.scss',{
+		//style:'compressed'
+	})
+	.pipe(plumber())
+    .pipe(autoprefixer({
+      browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
+  	}))
+    .pipe(plumber.stop())
+	.pipe(size({title: 'LiveBuilder Admin CSS'}))
+    .pipe(gulp.dest('admin/css'));
+});
+
+gulp.task('peter', ['live-builder-style','admin-builder-style'] ,function() {
+	gulp.watch('admin/scss/rexlive/**/*.scss', ['live-builder-style']);
+	gulp.watch('admin/scss/rexlive/**/*.scss', ['admin-builder-style']);
 });
 
 var admin_js_src = [ 
