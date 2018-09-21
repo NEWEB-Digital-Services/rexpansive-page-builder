@@ -5,9 +5,12 @@ defined('ABSPATH') or exit;
 ?>
 <script type="text/x-tmpl" id="rexlive-tmpl-custom-layout-button">
 <div class="layout-container">
-    <button class="btn-builder-layout builder-{%=customLayout.id%}-layout" data-min-width="{%=customLayout.minWidth%}" data-max-width="{%=customLayout.maxWidth%}" data-name="{%=customLayout.id%}">
-        {%=customLayout.label%}
-    </button>
+    <div class="btn-builder-layout builder-{%=customLayout.id%}-layout" data-min-width="{%=customLayout.minWidth%}" data-max-width="{%=customLayout.maxWidth%}" data-name="{%=customLayout.id%}" data-layout-type="custom">
+        <i class="l-svg-icons"><svg><use xlink:href="#A009-Range"></use></svg></i>
+        <div class="layout-custom-number">
+            <div class="rex-number"></div>
+        </div>
+    </div>
 </div>
 </script>
 

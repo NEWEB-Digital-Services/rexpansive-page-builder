@@ -1,4 +1,5 @@
 .rexlive-toolbox {
+  position: absolute;
   top: 0;
   left: 0;
   background-color: white;
@@ -8,13 +9,7 @@
   justify-content: space-between;
   align-items: center;
   box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
-}
-
-.btn-save {
-  background-color: #039be5;
-  &.rex-saving {
-    background-color: #757575;
-  }
+  z-index: 1;
 }
 
 .tools-container-left {
@@ -23,41 +18,160 @@
 }
 
 .tools-container-right {
-  width: 15%;
   right: 0;
+  width: 15%;
 }
 
 .tools-container-middle {
   width: 70%;
 }
 
-.layout-container {
-  width: 100px;
-  height: 50px;
+.left-tools{
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
 }
 
-.left-tools {
+.right-tools {
   display: flex;
-  justify-content: space-around;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .middle-tools {
   display: flex;
   justify-content: center;
-}
-
-.right-tools {
-  display: flex;
-  justify-content: space-around;
-}
-
-.tool-option {
-  width: 80px;
-  height: 50px;
-  display: flex;
-  justify-content: center;
   align-items: center;
+}
+
+//@include item
+.layout-container, .tool-option {
+  cursor: pointer;
+  padding: 0 20px;
+  height: 100%;
+
+}
+
+.rexlive-toolbox .l-svg-icons{
+  font-size: 30px;
+}
+
+.btn-save {
+  font-size: 30px;
+  .l-svg-icons{
+    fill: #00acff;
+    > svg {
+      fill: #00acff;
+    }
+  }
+  &.page-edited{
+    .l-svg-icons{
+      fill: #979797;
+      > svg {
+        fill: #979797;
+      }
+    }
+/*     
+    &.rex-saving {
+    } 
+*/
+  }
+}
+
+.builder-add-custom-layout .l-svg-icons{
+  font-size: 16px;
+}
+
+.btn-undo, .btn-redo{
+  .l-svg-icons{
+    font-size: 20px;
+  }
+}
+
+.btn-undo{
+  border-right-color: #D6D6D6;
+  border-right-style: solid;
+  border-right-width: 1px;
+}
+
+.btn-custom-css .l-svg-icons{
+  font-size: 25px;
+}
+
+.btn-builder-layout[data-layout-type="custom"]{  
+  position: relative;
+  .l-svg-icons{
+    font-size: 25px;
+  }
+}
+
+.btn-builder-layout[data-name="mobile"]{  
+  .l-svg-icons{
+    font-size: 26px;
+  }
+}
+.btn-builder-layout[data-name="tablet"]{  
+  .l-svg-icons{
+    font-size: 26px;
+  }
+}
+.btn-builder-layout[data-name="default"]{  
+  .l-svg-icons{
+    font-size: 25px;
+  }
+}
+
+.layout-custom-number{
+  color: #979797;
+  font-size: 9px;
+  font-weight: 700;
+  line-height: 1;
+  position: absolute;
+  width: 100%;
+  bottom: 26px;
+  left: 0;
+}
+.rex-number{
+  text-align: center;
+}
+
+.close-toolbox{
+  .l-svg-icons{
+    font-size: 15px;
+    fill: #979797;
+    > svg {
+      fill: #979797;
+    }
+  }
+}
+
+
+.btn-builder-layout{
+  .l-svg-icons{
+    fill: #000000;
+    stroke: #000000;
+    > svg {
+      fill: #000000;
+      stroke: #000000;
+    }
+  }
+  &.active-layout .l-svg-icons{
+    fill: #00ACFF;
+    stroke: #00ACFF;
+    > svg {
+      fill: #00ACFF;
+      stroke: #00ACFF;
+    } 
+  }
+}
+
+.btn-builder-layout:hover:not(.active-layout){
+  .l-svg-icons{
+    fill: #979797;
+    stroke: #979797;
+    > svg {
+      fill: #979797;
+      stroke: #979797;
+    }
+  }
 }

@@ -368,7 +368,12 @@ var Rexbuilder_Util_Editor = (function ($) {
         });
 
         $(document).on('rexlive:undo', function (e) {
-            if (undoStackArray.length > 0) {
+            if (undoStackArray.length > 0) {                            
+                var data = {
+                    eventName: "rexlive:edited",
+                    modelEdited: false
+                }
+                Rexbuilder_Util_Editor.sendParentIframeMessage(data);
                 var action = undoStackArray.pop();
                 Rexbuilder_Dom_Util.performAction(action, false);
                 redoStackArray.push(action);

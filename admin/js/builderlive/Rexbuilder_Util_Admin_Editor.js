@@ -7,20 +7,12 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
     var activeLayoutPage;
     var modelSaved;
     var pageSaved;
+    var $saveBtn;
 
     var $frameContainer;
     var frameBuilderWindow;
 
     var updatedLayoutData;
-
-    var updateResponsiveButtonFocus = function () {
-        var $oldBtn = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find(".active-layout-btn");
-        var $layoutBtn = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find("button[data-name=" + activeLayoutPage + "]");
-        if ($oldBtn.length != 0) {
-            $oldBtn.removeClass("active-layout-btn");
-        }
-        $layoutBtn.addClass("active-layout-btn");
-    }
 
     var _findLayoutType = function (name) {
         if (name == "default" || name == "mobile" || name == "tablet") {
@@ -41,6 +33,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                 } else {
                     pageSaved = false;
                 }
+                $saveBtn.addClass("page-edited");
             }
 
             if (event.data.eventName == "rexlive:openMediaUploader") {
@@ -112,7 +105,8 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                 }
                 if (modelSaved && pageSaved) {
                     Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.attr("data-rex-edited-backend", false);
-                    Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find(".btn-save").removeClass("rex-saving");
+                    $saveBtn.removeClass("page-edited");
+                    $saveBtn.removeClass("rex-saving");
                     if (typeof event.data.buttonData !== "undefined" && event.data.buttonData != "") {
                         _updateLayoutPage(event.data.buttonData);
                     }
@@ -131,11 +125,11 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
     var _addDocumentListeners = function () {
         $(document).on('click', '.btn-builder-layout', function (e) {
-            var $btn = $(e.target);
+            var $btn = $(e.target).parents(".btn-builder-layout");
             var btnName = $btn.attr("data-name");
 
             if (activeLayoutPage != btnName) {
-
+            
                 var buttonData = {
                     min: $btn.attr("data-min-width"),
                     max: $btn.attr("data-max-width"),
@@ -162,8 +156,8 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
             }
         });
 
-        $(document).on('click', '.btn-save', function (e) {
-            $(e.target).addClass("rex-saving");
+        $saveBtn.on('click', function (e) {
+            $(this).addClass("rex-saving");
             var dataSave = {
                 eventName: "rexlive:savePage",
                 data_to_send: {
@@ -200,7 +194,8 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         modelSaved = true;
         pageSaved = true;
         activeLayoutPage = buttonData.id;
-        updateResponsiveButtonFocus();
+        Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find(".btn-builder-layout.active-layout").removeClass("active-layout");
+        Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find(".btn-builder-layout[data-name=\""+activeLayoutPage+"\"]").addClass("active-layout");
 
         updatedLayoutData = {
             selectedLayoutName: activeLayoutPage,
@@ -256,6 +251,8 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
     var _setActiveLayout = function (layout) {
         activeLayoutPage = layout;
+        this.$responsiveToolbar.find(".btn-builder-layout.active-layout").removeClass("active-layout");
+        this.$responsiveToolbar.find(".btn-builder-layout[data-name=\""+activeLayoutPage+"\"]").addClass("active-layout");
     }
 
     var _whichTransitionEvent = function () {
@@ -310,6 +307,11 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         _sendIframeBuilderMessage(data);
     };
 
+    var _editPageProperties = function(){
+        pageSaved = false;
+        $saveBtn.addClass("page-edited");
+    }
+
     // init the utilities
     var init = function () {
 
@@ -322,11 +324,11 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         this.animationEvent = _whichAnimationEvent();
 
         this.$responsiveToolbar = this.$rexpansiveContainer.find(".rexlive-toolbox");
-        
+        $saveBtn = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find(".btn-save");
         pageSaved = true;
         modelSaved = true;
         activeLayoutPage = "default";
-
+        this.$responsiveToolbar.find(".builder-default-layout").addClass("active-layout");
         this.activeWidth = 0;
 
         $frameContainer.on(Rexbuilder_Util_Admin_Editor.transitionEvent, function () {
@@ -348,7 +350,8 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         updateIframeWidth: _updateIframeWidth,
         updateLayoutActiveData: _updateLayoutActiveData,
         releaseIframeRows: _releaseIframeRows,
-        blockIframeRows: _blockIframeRows
+        blockIframeRows: _blockIframeRows,
+        editPageProperties: _editPageProperties
     };
 
 })(jQuery);

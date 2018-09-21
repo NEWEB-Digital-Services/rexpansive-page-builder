@@ -119,12 +119,12 @@ var CustomLayouts_Modal = (function ($) {
                     if ($button.attr("data-max-width") != data[k].max) {
                         $button.attr("data-max-width", data[k].max);
                     }
-                    if ($button.text() != data[k].label) {
-                        $button.text(data[k].label);
-                    }
                     break;
                 }
             }
+        });
+        custom_layouts_modal_props.$buttonsWrapper.find(".btn-builder-layout[data-layout-type=\"custom\"]").each(function (i, custom) {
+            $(custom).find(".rex-number").text(i+1);
         });
     }
 
@@ -226,7 +226,7 @@ var CustomLayouts_Modal = (function ($) {
                 max: ""
             };
 
-            var $activeButton = custom_layouts_modal_props.$buttonsWrapper.find("button[data-name=\"" + activeLayout + "\"]");
+            var $activeButton = custom_layouts_modal_props.$buttonsWrapper.find("div[data-name=\"" + activeLayout + "\"]");
             activeLayoutData.id = $activeButton.attr("data-name");
             activeLayoutData.min = $activeButton.attr("data-min-width");
             activeLayoutData.max = $activeButton.attr("data-max-width");
@@ -255,7 +255,7 @@ var CustomLayouts_Modal = (function ($) {
             $layoutWrapper.parent().addClass('editing');
             $layoutWrapper.find('input[data-editable-field=true]').attr('type', 'input');
 
-            custom_layouts_modal_props.$buttonsWrapper.append(tmpl("rexlive-tmpl-custom-layout-button", {
+            custom_layouts_modal_props.$config_layouts.parent().before(tmpl("rexlive-tmpl-custom-layout-button", {
                 id: idCreated,
                 label: "",
                 minWidth: "",
@@ -277,7 +277,7 @@ var CustomLayouts_Modal = (function ($) {
         custom_layouts_modal_props.$self.on("click", ".rexlive-layout--delete", function (e) {
             if (confirm("sei sicuro?")) {
                 var idLayout = $(this).parents('.layout__item').find('input[name=rexlive-layout-id]').val();
-                custom_layouts_modal_props.$buttonsWrapper.find("button[data-name=\"" + idLayout + "\"]").parent().remove();
+                custom_layouts_modal_props.$buttonsWrapper.find("div[data-name=\"" + idLayout + "\"]").parent().remove();
                 $(this).parents('.layout__item').remove();
                 _updateLayoutsData();
             }
@@ -338,12 +338,12 @@ var CustomLayouts_Modal = (function ($) {
             stop: function (event, ui) {
                 var idLayoutMoved = ui.item.find("input[name=\"rexlive-layout-id\"]").val();
                 var idLayoutBefore = ui.item.prev().find("input[name=\"rexlive-layout-id\"]").val();
-                var $layoutMoved = custom_layouts_modal_props.$buttonsWrapper.find("button[data-name=\"" + idLayoutMoved + "\"]").parent("div");
-                var $layoutBefore = custom_layouts_modal_props.$buttonsWrapper.find("button[data-name=\"" + idLayoutBefore + "\"]").parent("div");
-                if (idLayoutBefore == "default") {
-                    $layoutBefore = $layoutBefore.next();
-                }
+                var $layoutMoved = custom_layouts_modal_props.$buttonsWrapper.find("div[data-name=\"" + idLayoutMoved + "\"]").parent("div");
+                var $layoutBefore = custom_layouts_modal_props.$buttonsWrapper.find("div[data-name=\"" + idLayoutBefore + "\"]").parent("div");
                 $layoutBefore.after($layoutMoved.detach());
+                custom_layouts_modal_props.$buttonsWrapper.find(".btn-builder-layout[data-layout-type=\"custom\"]").each(function (i, custom) {
+                    $(custom).find(".rex-number").text(i+1);
+                });
             }
         });
     }

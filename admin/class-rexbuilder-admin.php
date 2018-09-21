@@ -393,6 +393,10 @@ class Rexbuilder_Admin {
 		?><div style="display:none"><?php include_once( REXPANSIVE_BUILDER_PATH .  'admin/sprites/symbol/svg/sprite.symbol.svg' ); ?></div><?php
 	}
 
+	public function include_sprites_live() {
+		?><div style="display:none"><?php include_once( REXPANSIVE_BUILDER_PATH .  'admin/sprites_live/symbol/svg/sprite.symbol.svg' ); ?></div><?php
+	}
+
 	/**
 	 *	Validate the plugin settings
 	 *

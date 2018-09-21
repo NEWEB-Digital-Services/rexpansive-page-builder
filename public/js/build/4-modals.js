@@ -1131,6 +1131,17 @@
 		///////////////////////////////////////////////////////////////////////////////////////
 		///////////////////////////////////////////////////////////////////////////////////////
 
+		// Launch to the iframe parent the event to open the CSS editor
+		$(document).on("rexlive:getCustomCss", function () {
+			var currentStyle = $("#rexpansive-builder-style-inline-css").text().replace(/^\s+|\s+$/g, '');
+			var data = {
+				eventName: "rexlive:openCssEditor",
+				currentStyle: currentStyle
+			};
+
+			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+		});
+
 		$(document).on('click', '.builder-section-config', function (e) {
 			e.preventDefault();
 
@@ -1227,18 +1238,6 @@
 				},
 				returnEventName: "rexlive:insert_image",
 				eventName: "rexlive:openMediaUploader",
-			};
-
-			Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-		});
-
-		// Launch to the iframe parent the event to open the CSS editor
-		$(document).on("click", "#rex-open-ace-css-editor", function (e) {
-			e.preventDefault();
-			var currentStyle = $("#rexpansive-builder-style-inline-css").text().replace(/^\s+|\s+$/g, '');
-			var data = {
-				eventName: "rexlive:openCssEditor",
-				currentStyle: currentStyle
 			};
 
 			Rexbuilder_Util_Editor.sendParentIframeMessage(data);

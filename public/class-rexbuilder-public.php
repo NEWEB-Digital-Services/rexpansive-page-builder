@@ -836,18 +836,6 @@ endif;
             <div id="rexbuilder-layouts-sections-order" style="display: none;"></div>
             <div id="rexbuilder-default-layout-state" style="display: none;" data-empty-default-customization="true"></div>
             <?php
-    if (isset($editor) && $editor == "true") {
-            ?><button id="rex-open-ace-css-editor" class="btn-floating tooltipped" data-position="bottom" data-tooltip="<?php _e('CSS Editor', $this->plugin_name);?>">
-                <i class="material-icons">&#xE314;</i><span>CSS</span><i class="material-icons">&#xE315;</i>
-            </button>
-            <textarea style="display:none;" name="_rexbuilder_custom_css" id="_rexbuilder_custom_css"><?php
-            $meta = get_post_meta($post->ID, '_rexbuilder_custom_css', true);
-                if ('' !== ($meta)) {
-                    echo htmlspecialchars($meta);
-                }
-                ?></textarea>
-                <?php
-            }
 
             $backendEditing = "true";
             if(get_post_meta($post->ID, '_save_from_backend', true) == "false"){

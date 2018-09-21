@@ -206,6 +206,7 @@ class Rexbuilder {
 		$this->loader->add_filter( 'content_save_pre', $plugin_admin, 'rex_fix_post_content' );
 		
 		if( isset( $_GET['rexlive'] ) && 'true' == $_GET['rexlive'] ) {
+			$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_sprites_live' );
 			$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_live_editing' );
 			$this->loader->add_filter( 'admin_body_class', $plugin_admin, 'rexlive_body_fix' );
 		}
