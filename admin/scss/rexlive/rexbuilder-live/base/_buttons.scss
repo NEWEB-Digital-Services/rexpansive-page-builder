@@ -1,21 +1,31 @@
 .tool-button--big {
   border-radius: 25px;
-  box-shadow: $main-shadow;
+  transition: box-shadow 0.3s ease-out;
+
   @include bl-btn;
+
+  // &:hover {
+    box-shadow: $main-shadow;
+  // }
 }
 
 .tool-button {
   display: block;
-  // width: 20px;
-  // height: 20px;
   border-radius: 50%;
   overflow: visible;
   visibility: visible;
   z-index: 30;
-  // padding: 0px;
   padding: 5px;
   cursor: pointer;
   line-height: 1;
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out, box-shadow 0.3s ease-out;
+
+  &.tool-button--inline {
+    display: inline-block;
+  }
+  
+  box-shadow: $main-shadow;
+  
   @include bl-btn;
 
   &:hover {
@@ -26,8 +36,8 @@
     @include bl-btn--hover;
   }
 
-  &.tool-button--inline {
-    display: inline-block;
+  &.tool-button--black {
+    @include bl-btn--black;
   }
 }
 
@@ -53,6 +63,5 @@
   .tool-button {
     transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px);
     opacity: 0;
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
   }
 }

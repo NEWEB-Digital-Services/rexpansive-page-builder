@@ -3,6 +3,7 @@
   height: 100%;
 }
 
+// Buttons mixins
 @mixin bl-btn {
   background-color: $btn-base-background;
   color: $btn-base-color;
@@ -31,4 +32,21 @@
   .l-svg-icons > svg {
     fill: $btn-active-color;
   }
+}
+
+@mixin bl-btn--black {
+  background-color: #000;
+  color: #fff;
+
+  .l-svg-icons,
+  .l-svg-icons > svg {
+    fill: #fff;
+  }
+}
+
+// Tools mixins
+@mixin generic-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

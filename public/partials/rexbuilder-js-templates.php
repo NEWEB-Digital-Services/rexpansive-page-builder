@@ -167,58 +167,90 @@ defined('ABSPATH') or exit;
 <script type="text/x-tmpl" id="tmpl-toolbox-section">
     <div class="section-toolBox">
         <div class="tools">
-            <div class="tool-button btn-flat builder-move-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Move row', 'rexpansive');?>">
-            <i class="material-icons grey-text text-darken-2">&#xE8D5;</i>
+            
+            <div>
+                <div class="tool-button--big">
+                    <label>
+                        <input type="radio" name="row-dimension" checked>
+                        <span><?php Rexbuilder_Utilities::get_icon('#B001-Full'); ?></span>
+                    </label>
+                    <label>
+                        <input type="radio" name="row-dimension">
+                        <span><?php Rexbuilder_Utilities::get_icon('#B002-Boxed'); ?></span>
+                    </label>
+                </div>
             </div>
+            <!-- // right area: row dimension -->
 
-            <div class="tool-button btn-flat builder-copy-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy row', 'rexpansive');?>">
-                <i class="material-icons grey-text text-darken-2">&#xE14D;</i>
+            <div>
+                <div class="tool-button-floating">
+                    <div class="tool-button add-new-block-empty tooltipped active">
+                        <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
+                    </div>
+        
+                    <div class="tool-button_list">
+                        <div class="tool-button add-new-block-image tooltipped">
+                            <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
+                        </div>
+        
+                        <div class="tool-button add-new-block-text tooltipped">
+                            <?php Rexbuilder_Utilities::get_icon('#B003-Text'); ?>
+                        </div>
+                        
+                        <div class="tool-button add-new-block-video tooltipped">
+                            <?php Rexbuilder_Utilities::get_icon('#B004-Video'); ?>
+                        </div>
+        
+                        <div class="tool-button add-new-block-slider tooltipped">
+                            <?php Rexbuilder_Utilities::get_icon('#Z003-RexSlider'); ?>
+                        </div>
+                    </div>
+                </div>
             </div>
+            <!-- // center area: insert element -->
 
-            <button class="tool-button btn-floating builder-section-config tooltipped waves-effect waves-light" data-position="bottom" data-tooltip="<?php _e('Row settings', 'rexpansive');?>">
-                    <i class="material-icons">&#xE8B8;</i>
-            </button>
+            <div>
+                <div class="tool-button tool-button--inline builder-copy-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy row', 'rexpansive');?>">
+                    <?php Rexbuilder_Utilities::get_icon('#Z004-Copy'); ?>
+                </div>
+                
+                <div class="tool-button tool-button--inline builder-move-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Move row', 'rexpansive');?>">
+                    <?php Rexbuilder_Utilities::get_icon('#B007-Move'); ?>
+                </div>
 
-            <button class="tool-button btn-floating collapse-grid tooltipped waves-effect waves-light">
-                C
-            </button>
+                <div class="tool-button-floating">
+                    <div class="tool-button builder-section-config tooltipped" data-position="bottom" data-tooltip="<?php _e('Row settings', 'rexpansive');?>">
+                        <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>					
+                    </div>
+                    <div class="tool-button_list">
+                        <div class="tool-button collapse-grid tooltipped">
+                            <?php Rexbuilder_Utilities::get_icon('#B006-Colapse'); ?>
+                        </div>
+                        
+                        <div class="tool-button edit-background-section tooltipped">
+                            <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
+                        </div>
+                        
+                        <div class="tool-button open-model tooltipped">
+                            <?php Rexbuilder_Utilities::get_icon('#B005-RexModel'); ?>
+                        </div>
+                        
+                        <div class="tool-button update-model-button tooltipped locked">
+                            <span class="unlocked-icon"><?php Rexbuilder_Utilities::get_icon('#B009-Lock-Open'); ?></span>
+                            <span class="locked-icon"><?php Rexbuilder_Utilities::get_icon('#B008-Lock-Close'); ?></span>
+                        </div>
+                    </div>
+                </div>
 
-            <button class="tool-button btn-floating add-new-block-empty tooltipped waves-effect waves-light">
-                +
-            </button>
 
-            <button class="tool-button btn-floating add-new-block-image tooltipped waves-effect waves-light">
-                i
-            </button>
-
-            <button class="tool-button btn-floating add-new-block-text tooltipped waves-effect waves-light">
-                t
-            </button>
-
-            <button class="tool-button btn-floating add-new-block-video tooltipped waves-effect waves-light">
-                v
-            </button>
-
-            <button class="tool-button btn-floating add-new-block-slider tooltipped waves-effect waves-light">
-                S
-            </button>
-
-            <button class="tool-button btn-floating edit-background-section tooltipped waves-effect waves-light">
-                B
-            </button>
-
-            <button class="tool-button btn-floating open-model tooltipped waves-effect waves-light">
-                M
-            </button>
-
-            <button class="tool-button btn-floating update-model-button tooltipped waves-effect waves-light locked">
-                L
-            </button>
-
-            <button class="tool-button btn-floating builder-delete-row waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexspansive');?>">
-                    <i class="material-icons white-text">&#xE5CD;</i>
-            </button>
+            </div>
+            <!-- // left area: clone, move, settings -->
         </div>
+
+        <div class="tool-button tool-button--black builder-delete-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexspansive');?>">
+            <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+        </div>
+        <!-- // remove section -->
     </div>
 </script>
 

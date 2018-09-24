@@ -285,19 +285,6 @@
   transform: translate(-50%, 50%);
 }
 
-.rexlive-block-toolbox {
-  position: absolute;
-  width: 100%;
-  top: 0;
-  //height: 20px;
-  //background-color: #444;
-  display: none;
-}
-
-.rexlive-block-toolbox.focused {
-  display: block;
-}
-
 .rexlive-block-drag-handle {
   position: absolute;
   width: 100%;
@@ -308,11 +295,6 @@
   z-index: 1;
 }
 
-.builder-delete-block {
-  right: 0;
-  cursor: pointer;
-}
-
 .builder-edit-block {
   left: 33%;
   cursor: pointer;
@@ -321,19 +303,6 @@
 .builder-copy-block {
   left: 66%;
   cursor: copy;
-}
-
-.el-size-viewer {
-  position: absolute;
-  padding: 4px;
-  font-family: "Open Sans";
-  background: rgba(0, 0, 0, 0.3);
-  color: white;
-  z-index: 20;
-  font-size: 10px;
-  letter-spacing: 2px;
-  top: 0;
-  left: 0;
 }
 
 .el-size-settingButton {
@@ -589,11 +558,23 @@
 }
 
 .update-model-button.unlocked {
-  background-color: green;
+  // background-color: green;
+  .locked-icon {
+    display: none;
+  }
+  .unlocked-icon {
+    display: inline;
+  }
 }
 
 .update-model-button.locked {
-  background-color: red;
+  // background-color: red;
+  .locked-icon {
+    display: inline;
+  }
+  .unlocked-icon {
+    display: none;
+  }
 }
 
 .rexpansive-block-grid {

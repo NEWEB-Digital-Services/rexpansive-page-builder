@@ -1803,10 +1803,15 @@ ul {
 
 .tool-button--big {
   border-radius: 25px;
-  -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
-          box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
+  -webkit-transition: -webkit-box-shadow 0.3s ease-out;
+  transition: -webkit-box-shadow 0.3s ease-out;
+  -o-transition: box-shadow 0.3s ease-out;
+  transition: box-shadow 0.3s ease-out;
+  transition: box-shadow 0.3s ease-out, -webkit-box-shadow 0.3s ease-out;
   background-color: #fff;
-  color: #979797; }
+  color: #979797;
+  -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
+          box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45); }
   .tool-button--big .l-svg-icons,
   .tool-button--big .l-svg-icons > svg {
     fill: #979797; }
@@ -1820,8 +1825,17 @@ ul {
   padding: 5px;
   cursor: pointer;
   line-height: 1;
+  -webkit-transition: opacity 0.3s ease-out, -webkit-transform 0.3s ease-out, -webkit-box-shadow 0.3s ease-out;
+  transition: opacity 0.3s ease-out, -webkit-transform 0.3s ease-out, -webkit-box-shadow 0.3s ease-out;
+  -o-transition: opacity 0.3s ease-out, transform 0.3s ease-out, box-shadow 0.3s ease-out;
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out, box-shadow 0.3s ease-out;
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out, box-shadow 0.3s ease-out, -webkit-transform 0.3s ease-out, -webkit-box-shadow 0.3s ease-out;
+  -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
+          box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
   background-color: #fff;
   color: #979797; }
+  .tool-button.tool-button--inline {
+    display: inline-block; }
   .tool-button .l-svg-icons,
   .tool-button .l-svg-icons > svg {
     fill: #979797; }
@@ -1837,8 +1851,12 @@ ul {
     .tool-button.active .l-svg-icons,
     .tool-button.active .l-svg-icons > svg {
       fill: #fff; }
-  .tool-button.tool-button--inline {
-    display: inline-block; }
+  .tool-button.tool-button--black {
+    background-color: #000;
+    color: #fff; }
+    .tool-button.tool-button--black .l-svg-icons,
+    .tool-button.tool-button--black .l-svg-icons > svg {
+      fill: #fff; }
 
 .tool-button-floating {
   position: relative;
@@ -1857,12 +1875,7 @@ ul {
     -webkit-transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px);
         -ms-transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px);
             transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px);
-    opacity: 0;
-    -webkit-transition: opacity 0.3s ease-out, -webkit-transform 0.3s ease-out;
-    transition: opacity 0.3s ease-out, -webkit-transform 0.3s ease-out;
-    -o-transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-    transition: opacity 0.3s ease-out, transform 0.3s ease-out, -webkit-transform 0.3s ease-out; }
+    opacity: 0; }
 
 .section-toolBox {
   width: 100%;
@@ -1870,8 +1883,7 @@ ul {
   right: 0px;
   top: 0px;
   display: none;
-  color: #000;
-  display: block; }
+  color: #000; }
   .section-toolBox.tool-box-active {
     display: block; }
   .section-toolBox .tools {
@@ -1886,8 +1898,33 @@ ul {
         -ms-flex-align: center;
             align-items: center; }
 
-.rexlive-top-block-tools {
-  text-align: right; }
+.rexlive-block-toolbox {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  display: none; }
+  .rexlive-block-toolbox.focused {
+    display: block; }
+  .rexlive-block-toolbox .rexlive-top-block-tools {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    padding: 5px 20px;
+    position: relative; }
+  .rexlive-block-toolbox .builder-delete-block {
+    position: absolute;
+    top: -10px;
+    right: -10px; }
+  .rexlive-block-toolbox .el-size-viewer {
+    font-family: sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px; }
 
 .rexpansive_section.focused {
   z-index: 20;
@@ -2125,15 +2162,6 @@ ul {
       -ms-transform: translate(-50%, 50%);
           transform: translate(-50%, 50%); }
 
-.rexlive-block-toolbox {
-  position: absolute;
-  width: 100%;
-  top: 0;
-  display: none; }
-
-.rexlive-block-toolbox.focused {
-  display: block; }
-
 .rexlive-block-drag-handle {
   position: absolute;
   width: 100%;
@@ -2142,10 +2170,6 @@ ul {
 .rexlive-block-drag-handle.drag-up {
   z-index: 1; }
 
-.builder-delete-block {
-  right: 0;
-  cursor: pointer; }
-
 .builder-edit-block {
   left: 33%;
   cursor: pointer; }
@@ -2153,18 +2177,6 @@ ul {
 .builder-copy-block {
   left: 66%;
   cursor: copy; }
-
-.el-size-viewer {
-  position: absolute;
-  padding: 4px;
-  font-family: "Open Sans";
-  background: rgba(0, 0, 0, 0.3);
-  color: white;
-  z-index: 20;
-  font-size: 10px;
-  letter-spacing: 2px;
-  top: 0;
-  left: 0; }
 
 .el-size-settingButton {
   position: absolute;
@@ -2359,11 +2371,15 @@ ul {
 .rexpansive_section.rex-model-section .update-model-button {
   display: block; }
 
-.update-model-button.unlocked {
-  background-color: green; }
+.update-model-button.unlocked .locked-icon {
+  display: none; }
+.update-model-button.unlocked .unlocked-icon {
+  display: inline; }
 
-.update-model-button.locked {
-  background-color: red; }
+.update-model-button.locked .locked-icon {
+  display: inline; }
+.update-model-button.locked .unlocked-icon {
+  display: none; }
 
 .rexpansive-block-grid {
   position: absolute;

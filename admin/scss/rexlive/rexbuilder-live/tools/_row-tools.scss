@@ -6,7 +6,7 @@
   top: 0px;
   display: none;
   color: #000;
-  display: block;
+  // display: block;
   
   &.tool-box-active {
     display: block;
@@ -14,8 +14,6 @@
 
   .tools {
     padding: 10px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    @include generic-toolbar;
   }
 }

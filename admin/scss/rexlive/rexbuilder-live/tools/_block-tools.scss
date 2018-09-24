@@ -1,3 +1,31 @@
-.rexlive-top-block-tools {
-  text-align: right;
+.rexlive-block-toolbox {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  //height: 20px;
+  //background-color: #444;
+  display: none;
+  // display: block;
+  
+  &.focused {
+    display: block;
+  }
+
+  .rexlive-top-block-tools {
+    @include generic-toolbar;
+    padding: 5px 20px;
+    position: relative;
+  }
+
+  .builder-delete-block {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+  }
+
+  .el-size-viewer {
+    font-family: sans-serif;
+    font-size: 10px;
+    letter-spacing: 2px;
+  }
 }
