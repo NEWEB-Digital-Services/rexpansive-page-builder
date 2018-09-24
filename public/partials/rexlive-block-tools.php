@@ -14,16 +14,16 @@ defined( 'ABSPATH' ) or exit;
 <div class="rexlive-block-toolbox">
     <div class="rexlive-top-block-tools">
         <span class="el-size-viewer"></span>
-        <button class="tool-button btn-floating builder-delete-block waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete block', 'rexspansive'); ?>">
+        <button class="tool-button tool-button--inline builder-delete-block waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete block', 'rexspansive'); ?>">
 		    <i class="material-icons white-text">&#xE5CD;</i>
     	</button>
-        <button class="tool-button btn-floating builder-edit-block tooltipped waves-effect waves-light">
+        <button class="tool-button tool-button--inline builder-edit-block tooltipped waves-effect waves-light">
 	    	O
         </button>
-        <button class="tool-button btn-floating builder-edit-slider tooltipped waves-effect waves-light">
+        <button class="tool-button tool-button--inline builder-edit-slider tooltipped waves-effect waves-light">
             S
         </button>
-	    <div class="tool-button btn-flat builder-copy-block tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy block', 'rexpansive'); ?>">
+	    <div class="tool-button tool-button--inline btn-flat builder-copy-block tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy block', 'rexpansive'); ?>">
 		    <i class="material-icons grey-text text-darken-2">&#xE14D;</i>
         </div>
     </div>

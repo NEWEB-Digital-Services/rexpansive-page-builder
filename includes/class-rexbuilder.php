@@ -296,6 +296,7 @@ class Rexbuilder {
 		
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'include_js_template' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'include_sprites' );
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'include_sprites_live' );
 
 		$this->loader->add_action( 'wp_ajax_rexlive_save_shortcode', $plugin_public, 'rexlive_save_shortcode' );
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_shortcode', $plugin_public, 'rexlive_save_shortcode' );

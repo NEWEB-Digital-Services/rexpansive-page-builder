@@ -89,5 +89,11 @@ class Rexbuilder_Utilities {
 			}
 		}
 	}
+
+	public static function get_icon( $id ) {
+		?>
+		<i class="l-svg-icons"><svg><use xlink:href="<?php echo $id; ?>"></use></svg></i>
+		<?php
+	}
 	
 }

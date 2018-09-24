@@ -217,7 +217,7 @@ class Rexbuilder_Public
             wp_enqueue_script('spectrumColor', REXPANSIVE_BUILDER_URL . $cartella . 'js/spectrum.js', array('jquery'), null, true);
             wp_enqueue_script('medium-editor', REXPANSIVE_BUILDER_URL . $cartella . 'js/medium-editor.js', array('jquery'), null, true);
             wp_enqueue_script('mediumEditorToolbarStates', REXPANSIVE_BUILDER_URL . $cartella . 'js/medium-editor-toolbar-states.min.js', array('jquery'), null, true);
-            wp_enqueue_script('textEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/2-Text_Editor', array('jquery'), null, true);
+            wp_enqueue_script('textEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/2-Text_Editor.js', array('jquery'), null, true);
 
             wp_enqueue_script('handlebars-runtime', REXPANSIVE_BUILDER_URL . $cartella . 'js/handlebars.runtime.js', array('jquery'), null, true);
             wp_enqueue_script('jquery-fileupload', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery.fileupload.js', array('jquery'), null, true);
@@ -354,7 +354,11 @@ endif;
     public function include_sprites()
     {
         ?><div style="display:none"><?php include_once REXPANSIVE_BUILDER_PATH . 'admin/sprites/symbol/svg/sprite.symbol.svg';?></div><?php
-}
+    }
+
+    public function include_sprites_live() {
+		?><div style="display:none"><?php include_once( REXPANSIVE_BUILDER_PATH .  'admin/sprites_live/symbol/svg/sprite.symbol.svg' ); ?></div><?php
+	}
 
     public function rexlive_save_sections_rexids()
     {

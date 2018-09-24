@@ -17,7 +17,21 @@ $overlay-palette-orange:rgba(255, 152, 0, 0.6);
 $overlay-palette-purple:rgba(156, 39, 176, 0.6);
 $overlay-palette-transparent:rgba(255, 255, 255, 0);
 
+// shadow
+$main-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
+
 //icons
 $icon-base-color: #000000;
 $icon-hover-color: #979797;
 $icon-active-color: #00ACFF;
+
+// buttons
+$btn-base-color: #979797;
+$btn-base-background: #fff;
+$btn-hover-color: #fff;
+$btn-hover-background: #00ACFF;
+$btn-active-color: #00ACFF;
+$btn-active-background: #fff;
+
+// Classes
+$row-focused: '.focused';

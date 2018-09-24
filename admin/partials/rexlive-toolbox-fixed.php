@@ -17,10 +17,10 @@ global $layoutsAvaiable;
   <div class="tools-container-left">
     <div class="left-tools">
       <div class="tool-option close-toolbox">
-        <i class="l-svg-icons"><svg><use xlink:href="#A007-Close"></use></svg></i>
+        <?php Rexbuilder_Utilities::get_icon('#A007-Close'); ?>
       </div>
       <div class="tool-option btn-custom-css" id="open-css-editor">
-        <i class="l-svg-icons"><svg><use xlink:href="#A008-Code"></use></svg></i>
+        <?php Rexbuilder_Utilities::get_icon('#A008-Code'); ?>
       </div>
     </div>
   </div>
@@ -32,7 +32,7 @@ global $layoutsAvaiable;
                 ?>
                   <div class="layout-container">
                     <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo $layout['min']?>" data-max-width="<?php echo $layout['max']; ?>" data-name="<?php echo $layout['id'] ?>">
-                      <i class="l-svg-icons"><svg><use xlink:href="#A010-Mobile"></use></svg></i>
+                      <?php Rexbuilder_Utilities::get_icon('#A010-Mobile'); ?>
                     </div>
                   </div>
                 <?php
@@ -41,7 +41,7 @@ global $layoutsAvaiable;
                 ?>
                   <div class="layout-container">
                     <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo $layout['min']?>" data-max-width="<?php echo $layout['max']; ?>" data-name="<?php echo $layout['id'] ?>">
-                      <i class="l-svg-icons"><svg><use xlink:href="#A001-Tablet"></use></svg></i>
+                      <?php Rexbuilder_Utilities::get_icon('#A001-Tablet'); ?>
                     </div>
                   </div>
                 <?php
@@ -50,7 +50,7 @@ global $layoutsAvaiable;
                   ?>
                   <div class="layout-container">
                     <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="" data-max-width="" data-name="<?php echo $layout['id'] ?>">
-                      <i class="l-svg-icons"><svg><use xlink:href="#A011-Desktop"></use></svg></i>
+                      <?php Rexbuilder_Utilities::get_icon('#A011-Desktop'); ?>
                     </div>
                   </div>
                   <?php
@@ -59,7 +59,7 @@ global $layoutsAvaiable;
                   ?>
                   <div class="layout-container">
                     <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo $layout['min']; ?>" data-max-width="<?php echo $layout['max']; ?>" data-name="<?php echo $layout['id'] ?>" data-layout-type="custom">
-                      <i class="l-svg-icons"><svg><use xlink:href="#A009-Range"></use></svg></i>
+                      <?php Rexbuilder_Utilities::get_icon('#A009-Range'); ?>
                       <div class="layout-custom-number">
                         <div class="rex-number"><?php echo ($index-2);?></div>
                       </div>
@@ -72,7 +72,7 @@ global $layoutsAvaiable;
         ?>
       <div class="layout-container">
         <div class="builder-config-layouts builder-add-custom-layout">
-          <i class="l-svg-icons"><svg><use xlink:href="#A004-Plus"></use></svg></i>
+        <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
         </div>
       </div>
     </div>
@@ -82,13 +82,13 @@ global $layoutsAvaiable;
       <!-- Pulsante per importare i modelli -->
       <!-- <div class="tool-option"><button class = "btn-models">Import</button></div> -->
       <div class="tool-option btn-undo">
-        <i class="l-svg-icons"><svg><use xlink:href="#A003-Undo"></use></svg></i>
+        <?php Rexbuilder_Utilities::get_icon('#A003-Undo'); ?>
       </div>
       <div class="tool-option btn-redo">
-        <i class="l-svg-icons"><svg><use xlink:href="#A002-Redo"></use></svg></i>
+        <?php Rexbuilder_Utilities::get_icon('#A002-Redo'); ?>
       </div>
       <div class="tool-option btn-save">
-          <i class="l-svg-icons ico-white"><svg><use xlink:href="#A006-Save"></use></svg></i>
+        <?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?>
       </div>
     </div>
   </div>

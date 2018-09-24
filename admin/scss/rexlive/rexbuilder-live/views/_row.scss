@@ -1,0 +1,12 @@
+.rexpansive_section {
+  &#{$row-focused} {
+    z-index: 20;
+    border: 2px solid $icon-active-color;
+  }
+}
+
+.perfect-grid-gallery {
+  &#{$row-focused} {
+    overflow: visible;
+  }
+}

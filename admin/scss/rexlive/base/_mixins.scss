@@ -1,4 +1,34 @@
 @mixin item {
-    padding: 0 20px;
-    height: 100%;
+  padding: 0 20px;
+  height: 100%;
+}
+
+@mixin bl-btn {
+  background-color: $btn-base-background;
+  color: $btn-base-color;
+
+  .l-svg-icons,
+  .l-svg-icons > svg {
+    fill: $btn-base-color;
+  }
+}
+
+@mixin bl-btn--hover {
+  background-color: $btn-hover-background;
+  color: $btn-hover-color;
+
+  .l-svg-icons,
+  .l-svg-icons > svg {
+    fill: $btn-hover-color;
+  }
+}
+
+@mixin bl-btn--active {
+  background-color: $btn-active-background;
+  color: $btn-active-color;
+
+  .l-svg-icons,
+  .l-svg-icons > svg {
+    fill: $btn-active-color;
+  }
 }

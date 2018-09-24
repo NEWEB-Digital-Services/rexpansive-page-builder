@@ -1,0 +1,21 @@
+.section-toolBox {
+  width: 100%;
+  // height: 20px;
+  overflow: visible;
+  right: 0px;
+  top: 0px;
+  display: none;
+  color: #000;
+  display: block;
+  
+  &.tool-box-active {
+    display: block;
+  }
+
+  .tools {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
