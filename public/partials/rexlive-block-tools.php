@@ -40,7 +40,7 @@ defined( 'ABSPATH' ) or exit;
 				<div class="tool-button_list">
 
                     <button class="tool-button tool-button--inline builder-edit-slider tooltipped waves-effect waves-light">
-                        S
+                        <?php Rexbuilder_Utilities::get_icon('#Z003-RexSlider'); ?>
                     </button>
 
                 </div>
