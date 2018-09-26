@@ -1861,15 +1861,17 @@ ul {
 .tool-button-floating {
   position: relative;
   display: inline-block; }
-  .tool-button-floating:hover .tool-button_list .tool-button {
-    opacity: 1;
-    -webkit-transform: scale(1) translateY(0) translateX(0);
-        -ms-transform: scale(1) translateY(0) translateX(0);
-            transform: scale(1) translateY(0) translateX(0); }
+  .tool-button-floating:hover .tool-button_list {
+    z-index: 10000; }
+    .tool-button-floating:hover .tool-button_list .tool-button {
+      opacity: 1;
+      -webkit-transform: scale(1) translateY(0) translateX(0);
+          -ms-transform: scale(1) translateY(0) translateX(0);
+              transform: scale(1) translateY(0) translateX(0); }
 
 .tool-button_list {
   position: absolute;
-  z-index: 10000;
+  z-index: -10000;
   top: 100%; }
   .tool-button_list .tool-button {
     -webkit-transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px);

@@ -193,6 +193,7 @@
 		});
 
 		$(document).on("rexlive:set_section_width", function (e) {
+			
 			var data = e.settings.data_to_send;
 			var $section;
 

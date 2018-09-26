@@ -1,81 +1,97 @@
-var LayoutGrid_Modal = (function ($) {
-    'use strict';
-    var section_layout_modal_properties;
-    var sectionTarget;
+/**
+ * Row Fixed/Masonry Logic
+ * 
+ * @since 2.0.0
+ */
+var LayoutGrid_Modal = (function($) {
+  "use strict";
+  var section_layout_modal_properties;
+  var sectionTarget;
 
-    var _updateLayoutModal = function (data) {
-        sectionTarget = data.sectionTarget;
-        _focusLayout(data.activeLayout);
-    }
+  var _updateLayoutModal = function(data) {
+    sectionTarget = data.sectionTarget;
+    _focusLayout(data.activeLayout);
+  };
 
-    var _clearLayoutModal = function () {
-        _clearLayoutTypeSelection();
-    }
+  var _clearLayoutModal = function() {
+    _clearLayoutTypeSelection();
+  };
 
-    var _clearLayoutTypeSelection = function () {
-        section_layout_modal_properties.$section_layout_typeWrap.each(function (i, el) {
-            $(el).removeClass("selected");
-            $(el).find("input").attr("checked", false);
-        });
-    }
+  var _clearLayoutTypeSelection = function() {
+    section_layout_modal_properties.$section_layout_typeWrap.each(function(
+      i,
+      el
+    ) {
+      $(el).removeClass("selected");
+      $(el)
+        .find("input")
+        .attr("checked", false);
+    });
+  };
 
-    var _focusLayout = function (layoutName) {
-        var $layoutWrap = section_layout_modal_properties.$section_layout_types_wrap.children("[data-rex-layout=\"" + layoutName + "\"]");
-        $layoutWrap.addClass("selected");
-        $layoutWrap.find("input").attr("checked", true);
-    }
-    
-    var _getData = function () {
-        var $wrapLayoutType = section_layout_modal_properties.$section_layout_types_wrap;
-        var newLayout = $wrapLayoutType.children(".selected").attr("data-rex-layout");
-        var data = {
-            layout: newLayout
-        };
-        return data;
-    }
+  var _focusLayout = function(layoutName) {
+    var $layoutWrap = section_layout_modal_properties.$section_layout_types_wrap.children(
+      '[data-rex-layout="' + layoutName + '"]'
+    );
+    $layoutWrap.addClass("selected");
+    $layoutWrap.find("input").attr("checked", true);
+  };
 
-    var _applySectionLayout = function () {
-        var layoutData = _getData();
-        var data_gallery = {
-            eventName: "rexlive:set_gallery_layout",
-            data_to_send: {
-                sectionTarget: sectionTarget,
-                layout: layoutData.layout
-            }
-        };
+  var _getData = function() {
+    var $wrapLayoutType =
+      section_layout_modal_properties.$section_layout_types_wrap;
+    var newLayout = $wrapLayoutType
+      .children(".selected")
+      .attr("data-rex-layout");
+    var data = {
+      layout: newLayout
+    };
+    return data;
+  };
 
-        Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_gallery);
-    }
-
-    var _linkDocumentListeners = function () {
-        $(document).on("click", "#modal-background-responsive-set .rexlive-layout-type", function (e) {
-            e.preventDefault();
-            _clearLayoutTypeSelection();
-            var $layoutWrap = $(e.target).parents(".rexlive-layout-type");
-            $layoutWrap.addClass("selected");
-            $layoutWrap.find("input").attr("checked", true);
-            _applySectionLayout();
-        });
-    }
-
-    var _init = function ($container) {
-        section_layout_modal_properties = {
-
-            // Layout Grid Masonry
-            $section_layout_typeWrap: $container.find(".rexlive-layout-type"),
-            $section_layout_types_wrap: $container.find('.rex-edit-layout-wrap'),
-            $section_fixed: $container.find('#section-fixed'),
-            $section_masonry: $container.find('#section-masonry'),
-
-        }
-        _linkDocumentListeners();
-    }
-
-    return {
-        init: _init,
-        getData: _getData,
-        updateLayoutModal: _updateLayoutModal,
-        clearLayoutModal: _clearLayoutModal
+  var _applySectionLayout = function() {
+    var layoutData = _getData();
+    var data_gallery = {
+      eventName: "rexlive:set_gallery_layout",
+      data_to_send: {
+        sectionTarget: sectionTarget,
+        layout: layoutData.layout
+      }
     };
 
+    Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_gallery);
+  };
+
+  var _linkDocumentListeners = function() {
+    $(document).on(
+      "click",
+      "#modal-background-responsive-set .rexlive-layout-type",
+      function(e) {
+        e.preventDefault();
+        _clearLayoutTypeSelection();
+        var $layoutWrap = $(e.target).parents(".rexlive-layout-type");
+        $layoutWrap.addClass("selected");
+        $layoutWrap.find("input").attr("checked", true);
+        _applySectionLayout();
+      }
+    );
+  };
+
+  var _init = function($container) {
+    section_layout_modal_properties = {
+      // Layout Grid Masonry
+      $section_layout_typeWrap: $container.find(".rexlive-layout-type"),
+      $section_layout_types_wrap: $container.find(".rex-edit-layout-wrap"),
+      $section_fixed: $container.find("#section-fixed"),
+      $section_masonry: $container.find("#section-masonry")
+    };
+    _linkDocumentListeners();
+  };
+
+  return {
+    init: _init,
+    getData: _getData,
+    updateLayoutModal: _updateLayoutModal,
+    clearLayoutModal: _clearLayoutModal
+  };
 })(jQuery);

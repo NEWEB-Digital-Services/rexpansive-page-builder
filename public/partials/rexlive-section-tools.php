@@ -1,12 +1,12 @@
 <?php
 /**
- * Print the markup of the modals of the builder
+ * Print the markup of the row toolbar buttons
  *
  * @link       htto://www.neweb.info
- * @since      1.0.10
+ * @since      2.0.0
  *
  * @package    Rexbuilder
- * @subpackage Rexbuilder/admin/partials
+ * @subpackage Rexbuilder/public/partials
  */
 
 defined('ABSPATH') or exit;
@@ -18,11 +18,11 @@ defined('ABSPATH') or exit;
 		<div>
 			<div class="tool-button--big">
 				<label>
-					<input type="radio" name="row-dimension" checked>
+					<input type="radio" class="edit-section-width" name="row-dimension-<?php echo $atts['rexlive_section_id']; ?>" value="full" <?php checked('full',$atts['dimension'],true); ?>>
 					<span><?php Rexbuilder_Utilities::get_icon('#B001-Full'); ?></span>
 				</label>
 				<label>
-					<input type="radio" name="row-dimension">
+					<input type="radio" class="edit-section-width" name="row-dimension-<?php echo $atts['rexlive_section_id']; ?>" value="boxed" <?php checked('boxed',$atts['dimension'],true); ?>>
 					<span><?php Rexbuilder_Utilities::get_icon('#B002-Boxed'); ?></span>
 				</label>
 			</div>
