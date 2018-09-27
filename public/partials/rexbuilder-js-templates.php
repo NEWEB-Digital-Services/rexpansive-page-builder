@@ -194,11 +194,11 @@ defined('ABSPATH') or exit;
             <div>
                 <div class="tool-button--big">
                     <label>
-                        <input type="radio" name="row-dimension-{%=section.rexID%}" checked>
+                        <input type="radio" class="edit-section-width" data-section_width="full" name="row-dimension-{%=section.rexID%}" value="100%" checked>
                         <span><?php Rexbuilder_Utilities::get_icon('#B001-Full'); ?></span>
                     </label>
                     <label>
-                        <input type="radio" name="row-dimension-{%=section.rexID%}">
+                        <input type="radio" class="edit-section-width" data-section_width="boxed" name="row-dimension-{%=section.rexID%}" value="80%">
                         <span><?php Rexbuilder_Utilities::get_icon('#B002-Boxed'); ?></span>
                     </label>
                 </div>

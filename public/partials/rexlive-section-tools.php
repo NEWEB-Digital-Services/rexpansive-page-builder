@@ -18,11 +18,11 @@ defined('ABSPATH') or exit;
 		<div>
 			<div class="tool-button--big">
 				<label>
-					<input type="radio" class="edit-section-width" name="row-dimension-<?php echo $atts['rexlive_section_id']; ?>" value="full" <?php checked('full',$atts['dimension'],true); ?>>
+					<input type="radio" class="edit-section-width" data-section_width="full" name="row-dimension-<?php echo $atts['rexlive_section_id']; ?>" value="100%" <?php checked('full',$atts['dimension'],true); ?>>
 					<span><?php Rexbuilder_Utilities::get_icon('#B001-Full'); ?></span>
 				</label>
 				<label>
-					<input type="radio" class="edit-section-width" name="row-dimension-<?php echo $atts['rexlive_section_id']; ?>" value="boxed" <?php checked('boxed',$atts['dimension'],true); ?>>
+					<input type="radio" class="edit-section-width" data-section_width="boxed" name="row-dimension-<?php echo $atts['rexlive_section_id']; ?>" value="<?php echo ( 'boxed' == $atts['dimension'] ? esc_attr( $atts['section_width'] ) : '80%' ); ?>" <?php checked('boxed',$atts['dimension'],true); ?>>
 					<span><?php Rexbuilder_Utilities::get_icon('#B002-Boxed'); ?></span>
 				</label>
 			</div>
@@ -55,6 +55,16 @@ defined('ABSPATH') or exit;
 			</div>
 		</div>
 		<!-- // center area: insert element -->
+
+		<div>
+			<div class="tool-button tool-button--inline edit-section-image-background tooltipped" data-position="bottom" data-tooltip="" value="<?php echo esc_attr( $atts['id_image_bg_section'] ); ?>">
+				<?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
+			</div>
+			<div class="tool-button tool-button--inline tool-button--color tooltipped tool-button--empty" data-position="bottom" data-tooltip="">
+				<span style="opacity:0;">B</span>
+			</div>
+		</div>
+		<!-- // new area: fast configuration elements -->
 
 		<div>
 			<div class="tool-button tool-button--inline builder-copy-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy row', 'rexpansive');?>">

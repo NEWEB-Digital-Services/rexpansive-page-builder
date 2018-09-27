@@ -1857,6 +1857,14 @@ ul {
     .tool-button.tool-button--black .l-svg-icons,
     .tool-button.tool-button--black .l-svg-icons > svg {
       fill: #fff; }
+  .tool-button.tool-button--empty {
+    min-width: 26px;
+    min-height: 26px; }
+  .tool-button.tool-button--color {
+    background-image: url(../img/colors-hd.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center; }
 
 .tool-button-floating {
   position: relative;
