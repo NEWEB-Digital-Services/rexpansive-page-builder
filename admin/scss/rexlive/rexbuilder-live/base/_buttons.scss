@@ -7,6 +7,10 @@
   // &:hover {
     box-shadow: $main-shadow;
   // }
+
+  &.tool-button--inline {
+    display: inline-block;
+  }
 }
 
 .tool-button {
@@ -17,6 +21,7 @@
   z-index: 30;
   padding: 5px;
   cursor: pointer;
+  // position: relative;
   line-height: 1;
   transition: opacity 0.3s ease-out, transform 0.3s ease-out, box-shadow 0.3s ease-out;
 
@@ -51,6 +56,18 @@
     background-repeat: no-repeat;
     background-position: center;
   }
+}
+
+.tool-button--double-icon--wrap {
+  position: relative;
+  display: inline-block;
+}
+
+.tool-button--double-icon {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  font-size: 10px;
 }
 
 .tool-button-floating {

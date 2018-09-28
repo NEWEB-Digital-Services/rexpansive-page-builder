@@ -11,7 +11,7 @@ var Rexlive_MediaUploader = (function($) {
   var video_multiple_uploader_frame;
   var video_uploader_frame;
 
-  function _openMediaUploaderMultipleImage(info) {
+  function _openInsertImageBlocksMediaUploader(info) {
     // If the frame is already opened, return it
     if (image_multiple_uploader_frame) {
       image_multiple_uploader_frame
@@ -113,18 +113,125 @@ var Rexlive_MediaUploader = (function($) {
   } // openMediaUploader IMAGE END
 
   /**
+   * Live insert/edit a single image Uploader
+   * @since 2.0.0
+   * @param {Object}  info
+   */
+  function _openImageLiveMediaUploader(info) {
+    // If the frame is already opened, return it
+    if (image_uploader_frame) {
+      image_uploader_frame
+        .state("insert-image")
+        .set("liveTarget", info.sectionTarget);
+      image_uploader_frame
+        .state("insert-image")
+        .set("eventName", info.returnEventName);
+      image_uploader_frame.open();
+      return;
+    }
+
+    //create a new Library, base on defaults
+    //you can put your attributes in
+    var insertImage = wp.media.controller.Library.extend({
+      defaults: _.defaults(
+        {
+          id: "insert-image",
+          title: "Insert Image",
+          allowLocalEdits: true,
+          displaySettings: true,
+          displayUserSettings: true,
+          multiple: false,
+          library: wp.media.query({ type: "image" }),
+          liveTarget: info.sectionTarget,
+          eventName: info.returnEventName,
+          type: "image" //audio, video, application/pdf, ... etc
+        },
+        wp.media.controller.Library.prototype.defaults
+      )
+    });
+
+    //Setup media frame
+    image_uploader_frame = wp.media({
+      button: { text: "Select" },
+      state: "insert-image",
+      states: [new insertImage()]
+    });
+
+    image_uploader_frame.on("select", function() {
+      var state = image_uploader_frame.state("insert-image");
+      var sectionTarget = state.get("liveTarget");
+      var eventName = state.get("eventName");
+
+      var selection = state.get("selection");
+      var data = {
+        eventName: eventName,
+        data_to_send: {
+          // info: info,
+          // media: [],
+          sectionTarget: sectionTarget
+        }
+      };
+
+      if (!selection) return;
+
+      //to get right side attachment UI info, such as: size and alignments
+      //org code from /wp-includes/js/media-editor.js, arround `line 603 -- send: { ... attachment: function( props, attachment ) { ... `
+      selection.each(function(attachment) {
+        var display = state.display(attachment).toJSON();
+        var obj_attachment = attachment.toJSON();
+
+        // If captions are disabled, clear the caption.
+        if (!wp.media.view.settings.captions) delete obj_attachment.caption;
+
+        display = wp.media.string.props(display, obj_attachment);
+
+        // var to_send = {
+        //   media_info: obj_attachment,
+        //   display_info: display
+        // };
+
+        // data.data_to_send.media.push(to_send);
+        data.data_to_send.idImage = obj_attachment.id;
+        data.data_to_send.urlImage = display.src;
+        data.data_to_send.width = display.width;
+        data.data_to_send.height = display.height;
+        data.data_to_send.active = true;
+      }); 
+
+      // Launch image insert event to the iframe
+      Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
+    });
+
+    image_uploader_frame.on("close", function() {});
+
+    //reset selection in popup, when open the popup
+    image_uploader_frame.on("open", function() {
+      var selection = image_uploader_frame
+        .state("insert-image")
+        .get("selection");
+      //remove all the selection first
+      selection.each(function(image) {
+        if ("undefined" !== typeof image) {
+          var attachment = wp.media.attachment(image.attributes.id);
+          attachment.fetch();
+          selection.remove(attachment ? [attachment] : []);
+        }
+      });
+    });
+
+    //now open the popup
+    image_uploader_frame.open();
+  } // openMediaUploader IMAGE END
+
+  /**
    * Open the media uploader for a row background
    * Needs refactoring or making another function
    * @param {jQuery Object} $data Button launcher
    * @param {jQuery Object} $preview Preview Object
    * @param {int} image_id image id
    */
-  function _openMediaUploaderImage($data, $preview, image_id) {
+  function _openEditImageMediaUploader($data, $preview, image_id) {
     image_id = typeof image_id !== "undefined" ? image_id : null;
-
-    console.log($data);
-    console.log($preview);
-    console.log(image_id);
 
     if (image_uploader_frame) {
       // setting my custom data
@@ -444,8 +551,9 @@ var Rexlive_MediaUploader = (function($) {
   }
 
   return {
-    openInsertImageBlocksMediaUploader: _openMediaUploaderMultipleImage,
-    openEditImageMediaUploader: _openMediaUploaderImage,
+    openInsertImageBlocksMediaUploader: _openInsertImageBlocksMediaUploader,
+    openEditImageMediaUploader: _openEditImageMediaUploader,
+    openImageLiveMediaUploader: _openImageLiveMediaUploader,
     openInsertVideoBlocksMediaUploader: _openInsertVideoBlocksMediaUploader,
     openMediaUploaderVideo: _openMediaUploaderVideo
   };

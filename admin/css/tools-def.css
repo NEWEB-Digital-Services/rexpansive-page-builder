@@ -1801,6 +1801,29 @@ ul {
   color: #fff;
   font-size: 26px; }
 
+.bl_d-flex {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.bl_col-6 {
+  width: 50%; }
+
+.bl_jc-c {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center; }
+
+.bl_jc-sb {
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between; }
+
+.bl_ai-c {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
 .layout {
   display: -webkit-box;
   display: -ms-flexbox;

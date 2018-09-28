@@ -248,7 +248,7 @@ var Section_Width_Modal = (function($) {
     sectionWidthProperties = {
       $self: $self,
       $section_width_type_wrap: $self.find(".rexlive-section-width"),
-      $section_width_type: $self.find(".rex-edit-section-width"),
+      $section_width_type: $self.find(".rex-edit-row-width"),
       $section_full: $self.find("#section-full-modal"),
       $section_boxed: $self.find("#section-boxed-modal"),
       $section_boxed_width_input: $self.find(".section-set-boxed-width"),

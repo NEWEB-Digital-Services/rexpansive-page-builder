@@ -611,7 +611,7 @@ defined('ABSPATH') or exit;
                 <div>
                 </div>
 
-                <div class="col row valign-wrapper layout-wrap rex-edit-section-width">
+                <div class="col row valign-wrapper layout-wrap rex-edit-row-width">
                     <div class="rexlive-section-width" data-rex-section-width="full">
                         <input type="radio" id="section-full-modal" name="section-dimension-modal" class="builder-edit-row-dimension-modal with-gap" value="full" title="Full" />
                         <label for="section-full-modal" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Full', $this->plugin_name);?>">

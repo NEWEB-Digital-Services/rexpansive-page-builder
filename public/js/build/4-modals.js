@@ -324,7 +324,7 @@
       });
 
       if('undefined' == typeof e.settings.forged) {
-        $section.find('.edit-section-width[data-section_width='+widthType+']').prop('checked',true).val(sectionWidth);
+        $section.find('.edit-row-width[data-section_width='+widthType+']').prop('checked',true).val(sectionWidth);
       }
       
       $section.attr("data-rexlive-section-edited", true);
@@ -629,6 +629,10 @@
       );
     });
 
+    /**
+     * Listen event to apply an image on a row
+     * @since 2.0.0
+     */
     $(document).on("rexlive:apply_background_image_section", function(e) {
       var data = e.settings.data_to_send;
 
