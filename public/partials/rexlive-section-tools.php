@@ -12,7 +12,7 @@
 defined('ABSPATH') or exit;
 
 ?>
-<div class="section-toolBox">
+<div class="section-toolBox" style="display:block!important;">
 	<div class="tools">
 		
 		<div class="bl_col-6">
@@ -59,7 +59,7 @@ defined('ABSPATH') or exit;
 						</div>
 					</div>
 				</div>
-			</div>
+			</div><!-- // insert element -->
 
 			<div>
 
@@ -70,18 +70,23 @@ defined('ABSPATH') or exit;
 					<div class="tool-button tool-button--inline tool-button--double-icon deactivate-row-image-background">
 						<?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
 					</div>
-				</div>
+				</div><!-- // Change Row image background -->
 
 				<div class="tool-button--double-icon--wrap">
-					<div class="tool-button tool-button--inline edit-row-color-background tool-button--color tooltipped tool-button--empty" data-position="bottom" data-tooltip="">
-						<span style="opacity:0;">B</span>
-					</div>
 					<input type="text" name="edit-row-color-background" value="<?php echo esc_attr( $atts['color_bg_section'] ); ?>">
 					<div class="tool-button tool-button--inline tool-button--double-icon deactivate-row-color-background">
 						<?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
 					</div>
-				</div>
-			</div>
+				</div><!-- // Change Row color background -->
+
+				<div class="tool-button--double-icon--wrap">
+					<input type="text" name="edit-row-overlay-color" value="<?php echo esc_attr( $atts['data-row_overlay_color'] ); ?>">
+					<div class="tool-button tool-button--inline tool-button--double-icon deactivate-row-overlay-color">
+						<?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+					</div>
+				</div><!-- // Change Row color background -->
+
+			</div><!-- // fast configuration elements -->
 
 			<div>
 				<div class="tool-button tool-button--inline builder-copy-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy row', 'rexpansive');?>">
@@ -112,13 +117,9 @@ defined('ABSPATH') or exit;
 					</div>
 				</div>
 
-			</div>
+			</div><!-- clone, move, settings -->
 		</div>
-		<!-- // right area -->
-		<!-- insert element -->
-		<!-- fast configuration elements -->
-		<!-- clone, move, settings -->
-		
+		<!-- // right area -->		
 	</div>
 
 	<div class="tool-button tool-button--black builder-delete-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexspansive');?>">

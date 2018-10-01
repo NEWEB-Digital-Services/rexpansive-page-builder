@@ -55,6 +55,30 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+
+    &.sp-replacer {
+      position: static;
+    }
+
+    .sp-preview {
+      display: none;
+      // background-image: none;
+      // width: 100%;
+      // height: 100%;
+      // margin: 0;
+      // border: none;
+    }
+
+    // .sp-preview-inner {
+    //   top: -1px;
+    //   right: -1px;
+    //   bottom: -1px;
+    //   left: -1px;
+    // }
+
+    .sp-dd {
+      display: none;
+    }
   }
 }
 

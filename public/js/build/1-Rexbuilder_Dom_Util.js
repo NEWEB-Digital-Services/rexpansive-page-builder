@@ -894,6 +894,12 @@ var Rexbuilder_Dom_Util = (function($) {
         .find('section[data-rexlive-section-id="' + data.sectionID + '"]')
         .css("background-color", color);
     }
+
+    // Set live picker
+    Rexbuilder_Util.$rexContainer
+      .find('section[data-rexlive-section-id="' + data.sectionID + '"]')
+      .find('input[name=edit-row-color-background]')
+      .spectrum('set',color);
   };
 
   var _updateSectionBackgroundColor = function($section, bgColor) {
@@ -901,6 +907,11 @@ var Rexbuilder_Dom_Util = (function($) {
     $section.css("background-color", bgColor.color);
     $sectionData.attr("data-color_bg_section", bgColor.color);
     $sectionData.attr("data-color_bg_section_active", bgColor.active);
+
+    // Set live picker
+    $section
+      .find('input[name=edit-row-color-background]')
+      .spectrum('set',bgColor.color);
   };
 
   var _updateBlockBackgroundColorLive = function(data, color) {
@@ -959,6 +970,12 @@ var Rexbuilder_Dom_Util = (function($) {
         .children(".responsive-overlay")
         .css("background-color", color);
     }
+
+    // Set live picker
+    Rexbuilder_Util.$rexContainer
+      .find('section[data-rexlive-section-id="' + data.sectionID + '"]')
+      .find('input[name=edit-row-overlay-color]')
+      .spectrum('set',color);
   };
 
   var _updateSectionOverlay = function($section, overlay) {
@@ -974,6 +991,11 @@ var Rexbuilder_Dom_Util = (function($) {
     } else {
       $overlayElem.removeClass("rex-active-overlay");
     }
+
+    // Set live picker
+    $section
+      .find('input[name=edit-row-overlay-color]')
+      .spectrum('set',overlay.color);
   };
 
   var _updateBlockOverlayColorLive = function(data, color) {

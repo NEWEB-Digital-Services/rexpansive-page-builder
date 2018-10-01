@@ -626,6 +626,8 @@ var Rexbuilder_Section = (function($) {
 
       Rexbuilder_Util.$rexContainer.sortable("refresh");
 
+      Rexbuilder_Section_Editor.launchSpectrumPickerBackgorundColorRow($newSection.find('input[name=edit-row-color-background]')[0]);
+
       var reverseData = {
         show: false,
         layoutsOrder:

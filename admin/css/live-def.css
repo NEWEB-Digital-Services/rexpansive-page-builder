@@ -1890,6 +1890,12 @@ ul {
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center; }
+    .tool-button.tool-button--color.sp-replacer {
+      position: static; }
+    .tool-button.tool-button--color .sp-preview {
+      display: none; }
+    .tool-button.tool-button--color .sp-dd {
+      display: none; }
 
 .tool-button--double-icon--wrap {
   position: relative;

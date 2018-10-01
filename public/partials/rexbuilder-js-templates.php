@@ -234,16 +234,22 @@ defined('ABSPATH') or exit;
                             </div>
                         </div>
                     </div>
-                </div>
+                </div><!-- // insert element -->
 
                 <div>
                     <div class="tool-button tool-button--inline edit-row-image-background tooltipped" data-position="bottom" data-tooltip="" value="">
                         <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
+                        <div class="tool-button tool-button--inline tool-button--double-icon deactivate-row-image-background">
+                            <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+                        </div>
                     </div>
-                    <div class="tool-button tool-button--inline tool-button--color tooltipped tool-button--empty" data-position="bottom" data-tooltip="">
-                        <span style="opacity:0;">B</span>
+                    <div class="tool-button--double-icon--wrap">
+                        <input type="text" name="edit-row-color-background" value="">
+                        <div class="tool-button tool-button--inline tool-button--double-icon deactivate-row-color-background">
+                            <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+                        </div>
                     </div>
-                </div>
+                </div><!-- // fast configuration elements -->
 
                 <div>
                     <div class="tool-button tool-button--inline builder-copy-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy row', 'rexpansive');?>">
@@ -274,12 +280,9 @@ defined('ABSPATH') or exit;
                             </div>
                         </div>
                     </div>
-                </div>
+                </div><!-- // clone, move, settings -->
             </div>
             <!-- // right area -->
-            <!-- insert element -->
-            <!-- fast configuration elements -->
-            <!-- clone, move, settings -->
         </div>
 
         <div class="tool-button tool-button--black builder-delete-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexspansive');?>">
