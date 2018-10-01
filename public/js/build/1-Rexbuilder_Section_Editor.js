@@ -26,7 +26,7 @@ var Rexbuilder_Section_Editor = (function($) {
      * At the width selection, create a rexlive:set_section_width event with all the needed data
      * @since 2.0.0
      */
-    $(document).on('click', '.edit-row-width', function(e) {
+    $(document).on('change', '.edit-row-width', function(e) {
       // var rexID = e.target.name.split('-')[2];
       // var $section_data = $(e.target).parents('.rexpansive_section').children('.section-data');
       var $section = $(e.target).parents(".rexpansive_section");
@@ -57,6 +57,35 @@ var Rexbuilder_Section_Editor = (function($) {
       };
 
       var event = jQuery.Event("rexlive:set_section_width");
+      event.settings = settings;
+      $(document).trigger(event);
+    });
+
+    /**
+     * Event attached on row layout changed
+     * @since 2.0.0
+     */
+    $(document).on('change', '.edit-row-layout', function(e) {
+      var $section = $(e.target).parents(".rexpansive_section");
+      // var $section_data = $section.children('.section-data');
+      var sectionID = $section.attr("data-rexlive-section-id");
+      var modelNumber =
+        typeof $section.attr("data-rexlive-model-number") != "undefined"
+          ? $section.attr("data-rexlive-model-number")
+          : "";
+
+      var settings = {
+        data_to_send: {
+          sectionTarget: {
+            sectionID: sectionID,
+            modelNumber: modelNumber
+          },
+          layout: e.target.value
+        },
+        forged: true
+      };
+
+      var event = jQuery.Event("rexlive:set_gallery_layout");
       event.settings = settings;
       $(document).trigger(event);
     });

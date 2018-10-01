@@ -25,19 +25,31 @@ defined('ABSPATH') or exit;
 					<input type="radio" class="edit-row-width" data-section_width="boxed" name="row-dimension-<?php echo $atts['rexlive_section_id']; ?>" value="<?php echo ( 'boxed' == $atts['dimension'] ? esc_attr( $atts['section_width'] ) : '80%' ); ?>" <?php checked('boxed',$atts['dimension'],true); ?>>
 					<span><?php Rexbuilder_Utilities::get_icon('#B002-Boxed'); ?></span>
 				</label>
-			</div>
+			</div><!-- // row dimension -->
+
+			<div class="tool-button--big tool-button--inline">
+				<label>
+					<input type="radio" class="edit-row-layout" data-section_layout="fixed" name="row-layout-<?php echo $atts['rexlive_section_id']; ?>" value="fixed" <?php checked('fixed',$atts['layout'],true); ?>>
+					<span>F</span>
+				</label>
+				<label>
+					<input type="radio" class="edit-row-layout" data-section_layout="masonry" name="row-layout-<?php echo $atts['rexlive_section_id']; ?>" value="masonry" <?php checked('masonry',$atts['dimension'],true); ?>>
+					<span>M</span>
+				</label>
+			</div><!-- // row layout -->
+
 			<div class="tool-button tool-button--inline collapse-grid tooltipped">
 				<?php Rexbuilder_Utilities::get_icon('#B006-Colapse'); ?>
-			</div>
+			</div><!-- // collapse -->
 		</div>
-		<!-- // left area: row dimension -->
+		<!-- // left area: row dimension, layout, collapse -->
 
 		<div class="bl_col-6 bl_d-flex bl_jc-sb">
 		
 			<div>
 				<div class="tool-button-floating">
 					<!-- to add an empty block add this class: add-new-block-empty -->
-					<div class="tool-button  tooltipped active">
+					<div class="tool-button tooltipped active">
 						<?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
 					</div>
 		
@@ -51,7 +63,7 @@ defined('ABSPATH') or exit;
 						</div>
 						
 						<div class="tool-button add-new-block-video tooltipped">
-							<?php Rexbuilder_Utilities::get_icon('#B004-Video'); ?>
+							<?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
 						</div>
 		
 						<div class="tool-button add-new-block-slider tooltipped">
@@ -84,7 +96,12 @@ defined('ABSPATH') or exit;
 					<div class="tool-button tool-button--inline tool-button--double-icon deactivate-row-overlay-color">
 						<?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
 					</div>
-				</div><!-- // Change Row color background -->
+				</div><!-- // Change Row overlay color -->
+
+				<div class="tool-button tool-button--inline edit-row-video-background">
+					<?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
+				</div>
+				<!-- // Add background video -->
 
 			</div><!-- // fast configuration elements -->
 

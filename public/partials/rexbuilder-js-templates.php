@@ -201,7 +201,19 @@ defined('ABSPATH') or exit;
                         <input type="radio" class="edit-row-width" data-section_width="boxed" name="row-dimension-{%=section.rexID%}" value="80%">
                         <span><?php Rexbuilder_Utilities::get_icon('#B002-Boxed'); ?></span>
                     </label>
-                </div>
+                </div><!-- // row dimension -->
+
+                <div class="tool-button--big tool-button--inline">
+                    <label>
+                        <input type="radio" class="edit-row-layout" data-section_layout="fixed" name="row-layout-{%=section.rexID%}" value="fixed" checked>
+                        <span>F</span>
+                    </label>
+                    <label>
+                        <input type="radio" class="edit-row-layout" data-section_layout="masonry" name="row-layout-{%=section.rexID%}" value="masonry">
+                        <span>M</span>
+                    </label>
+                </div><!-- // row layout -->
+
                 <div class="tool-button tool-button--inline collapse-grid tooltipped">
                     <?php Rexbuilder_Utilities::get_icon('#B006-Colapse'); ?>
                 </div>
@@ -243,12 +255,20 @@ defined('ABSPATH') or exit;
                             <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                         </div>
                     </div>
+
                     <div class="tool-button--double-icon--wrap">
                         <input type="text" name="edit-row-color-background" value="">
                         <div class="tool-button tool-button--inline tool-button--double-icon deactivate-row-color-background">
                             <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                         </div>
                     </div>
+
+                    <div class="tool-button--double-icon--wrap">
+                        <input type="text" name="edit-row-overlay-color" value="">
+                        <div class="tool-button tool-button--inline tool-button--double-icon deactivate-row-overlay-color">
+                            <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+                        </div>
+                    </div><!-- // Change Row overlay color -->
                 </div><!-- // fast configuration elements -->
 
                 <div>
