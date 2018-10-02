@@ -155,7 +155,7 @@ class Rexbuilder_Section
                 $videoTypeActive = 'mp4-player';
                 $video_mp4_url = wp_get_attachment_url($video_bg_id_section);
                 $bg_video_markup .= '<div class="rex-video-wrap">';
-                $bg_video_markup .= '<video class="rex-video-container" preload autoplay loop muted>';
+                $bg_video_markup .= '<video class="rex-video-container" preload autoplay loop muted playsinline>';
                 $bg_video_markup .= '<source type="video/mp4" src="' . $video_mp4_url . '" />';
                 $bg_video_markup .= '</video>';
                 $bg_video_markup .= '</div>';

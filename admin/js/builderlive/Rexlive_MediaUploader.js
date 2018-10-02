@@ -8,6 +8,7 @@ var Rexlive_MediaUploader = (function($) {
 
   var image_multiple_uploader_frame;
   var image_uploader_frame;
+  var image_uploader_frame_direct;
   var video_multiple_uploader_frame;
   var video_uploader_frame;
 
@@ -119,14 +120,15 @@ var Rexlive_MediaUploader = (function($) {
    */
   function _openImageLiveMediaUploader(info) {
     // If the frame is already opened, return it
-    if (image_uploader_frame) {
-      image_uploader_frame
+    if (image_uploader_frame_direct) {
+      image_uploader_frame_direct
         .state("insert-image")
         .set("liveTarget", info.sectionTarget);
-      image_uploader_frame
+      image_uploader_frame_direct
         .state("insert-image")
-        .set("eventName", info.returnEventName);
-      image_uploader_frame.open();
+        .set("eventName", info.returnEventName)
+        .set("data_to_send", info.data_to_send)
+      image_uploader_frame_direct.open();
       return;
     }
 
@@ -144,6 +146,7 @@ var Rexlive_MediaUploader = (function($) {
           library: wp.media.query({ type: "image" }),
           liveTarget: info.sectionTarget,
           eventName: info.returnEventName,
+          data_to_send: info.data_to_send,
           type: "image" //audio, video, application/pdf, ... etc
         },
         wp.media.controller.Library.prototype.defaults
@@ -151,16 +154,17 @@ var Rexlive_MediaUploader = (function($) {
     });
 
     //Setup media frame
-    image_uploader_frame = wp.media({
+    image_uploader_frame_direct = wp.media({
       button: { text: "Select" },
       state: "insert-image",
       states: [new insertImage()]
     });
 
-    image_uploader_frame.on("select", function() {
-      var state = image_uploader_frame.state("insert-image");
+    image_uploader_frame_direct.on("select", function() {
+      var state = image_uploader_frame_direct.state("insert-image");
       var sectionTarget = state.get("liveTarget");
       var eventName = state.get("eventName");
+      var data_to_send = state.get("data_to_send");
 
       var selection = state.get("selection");
       var data = {
@@ -168,8 +172,10 @@ var Rexlive_MediaUploader = (function($) {
         data_to_send: {
           // info: info,
           // media: [],
-          sectionTarget: sectionTarget
+          sectionTarget: sectionTarget,
+          target: sectionTarget
         }
+        // data_to_send: data_to_send
       };
 
       if (!selection) return;
@@ -196,17 +202,21 @@ var Rexlive_MediaUploader = (function($) {
         data.data_to_send.width = display.width;
         data.data_to_send.height = display.height;
         data.data_to_send.active = true;
+        data.data_to_send.typeBGimage = 'full';
       }); 
+
+      console.log('selezioni immagine');
+      console.log(data);
 
       // Launch image insert event to the iframe
       Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
     });
 
-    image_uploader_frame.on("close", function() {});
+    image_uploader_frame_direct.on("close", function() {});
 
     //reset selection in popup, when open the popup
-    image_uploader_frame.on("open", function() {
-      var selection = image_uploader_frame
+    image_uploader_frame_direct.on("open", function() {
+      var selection = image_uploader_frame_direct
         .state("insert-image")
         .get("selection");
       //remove all the selection first
@@ -220,7 +230,7 @@ var Rexlive_MediaUploader = (function($) {
     });
 
     //now open the popup
-    image_uploader_frame.open();
+    image_uploader_frame_direct.open();
   } // openMediaUploader IMAGE END
 
   /**

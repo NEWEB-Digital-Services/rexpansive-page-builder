@@ -2236,6 +2236,7 @@ var Rexbuilder_Util = (function ($) {
             var mp4video = $target.children(".rex-video-wrap").find("video")[0];
             mp4video.currentTime = 0;
             mp4video.pause();
+            console.log('_stopVideo: faccio pause del video');
         } else if ($target.hasClass("vimeo-player")) {
             VimeoVideo.findVideo($target.children(".rex-video-vimeo-wrap").find("iframe")[0]).unload();
         } else if ($target.hasClass("youtube-player")) {
@@ -2319,6 +2320,7 @@ var Rexbuilder_Util = (function ($) {
 
     var _playVideoFromBegin = function ($target) {
         if ($target.hasClass("mp4-player")) {
+            console.log('_playVideoFromBegin: faccio play al video');
             var mp4video = $target.children(".rex-video-wrap").find("video")[0];
             mp4video.currentTime = 0;
             mp4video.play();
@@ -2466,6 +2468,7 @@ var Rexbuilder_Util = (function ($) {
     var _pauseVideo = function ($target) {
         if ($target.hasClass("mp4-player")) {
             $target.children(".rex-video-wrap").find("video")[0].pause();
+            console.log('_pauseVideo: faccio pause del video');
         } else if ($target.hasClass("vimeo-player")) {
             var vimeoPlugin = VimeoVideo.findVideo($target.children(".rex-video-vimeo-wrap").find("iframe")[0]);
             vimeoPlugin.pause();
@@ -2501,6 +2504,7 @@ var Rexbuilder_Util = (function ($) {
 
     var _playVideo = function ($target) {
         if ($target.hasClass("mp4-player")) {
+            console.log('_playVideo: faccio play al video');
             $target.find("video")[0].play();
         } else if ($target.hasClass("vimeo-player")) {
             var vimeoPlugin = VimeoVideo.findVideo($target.find("iframe")[0]);

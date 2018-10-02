@@ -23,7 +23,7 @@ defined('ABSPATH') or exit;
         <!-- // left area: size viewer -->
 
         <div>
-            <div class="tool-button tool-button--inline tooltipped">
+            <div class="tool-button tool-button--inline edit-block-image tooltipped">
                 <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
             </div>
         </div>

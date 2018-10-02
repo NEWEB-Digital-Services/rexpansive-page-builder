@@ -941,6 +941,8 @@
     });
 
     $(document).on("rexlive:apply_background_image_block", function(e) {
+      console.log('modifico DOM');
+      
       var data = e.settings.data_to_send;
       Rexbuilder_Util_Editor.updatingImageBg = true;
       var target = data.target;

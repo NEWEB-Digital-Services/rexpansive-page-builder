@@ -368,7 +368,7 @@ class Rexbuilder_Block
                 $videoMp4Width = $videoMP4Data["width"];
                 $videoMp4Height = $videoMP4Data["height"];
                 $bg_video_markup .= '<div class="rex-video-wrap" data-rex-video-width="'.$videoMp4Width.'" data-rex-video-height="'.$videoMp4Height.'">';
-                $bg_video_markup .= '<video class="rex-video-container" preload autoplay loop'.            ($bg_video_toggle_audio_markup != "" ? "": " muted").'>';
+                $bg_video_markup .= '<video class="rex-video-container" preload autoplay loop playsinline'.            ($bg_video_toggle_audio_markup != "" ? "": " muted").'>';
                 $bg_video_markup .= '<source type="video/mp4" src="' . $video_mp4_url . '" />';
                 $bg_video_markup .= '</video>';
                 $bg_video_markup .= '</div>';

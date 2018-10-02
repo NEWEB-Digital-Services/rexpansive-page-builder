@@ -184,6 +184,9 @@ var Rexbuilder_Dom_Util = (function($) {
       if (data.idImage == "" || data.active.toString() != "true") {
         _resetImageBlock($target, $elemData);
       } else {
+        console.log($target);
+        console.log($elemData);
+        console.log(data);
         _updateImageBlock($target, $elemData, data);
       }
     }
@@ -368,6 +371,7 @@ var Rexbuilder_Dom_Util = (function($) {
   };
 
   var _removeMp4Video = function($target, removeFromDom) {
+    console.log('rimuovi video mp4 perch?');
     var $videoWrap = $target.children(".rex-video-wrap");
     var $toggleAudio = $target.children(".rex-video-toggle-audio");
     if ($videoWrap.length != 0) {
@@ -604,6 +608,7 @@ var Rexbuilder_Dom_Util = (function($) {
     var type = videoOptions.typeVideo;
     if (type == "") {
       _removeMp4Video($target, true);
+      console.log(1, 'rimuovi video mp4 perch?');
       _removeYoutubeVideo($target, true);
       _removeVimeoVideo($target, true);
     } else if (type == "mp4") {

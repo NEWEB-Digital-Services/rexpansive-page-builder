@@ -97,7 +97,7 @@ var Rexbuilder_Section_Editor = (function($) {
      * @since 2.0.0
      */
     $(document).on('click', '.edit-row-image-background', function(e) {
-      var $section = $(e.target).parents(".rexpansive_section");
+      var $section = $(this).parents(".rexpansive_section");
       var sectionID = $section.attr("data-rexlive-section-id");
       var modelNumber =
         typeof $section.attr("data-rexlive-model-number") != "undefined"
@@ -111,7 +111,7 @@ var Rexbuilder_Section_Editor = (function($) {
             sectionID: sectionID,
             modelNumber: modelNumber
           },
-          idImage: e.target.value,
+          idImage: this.getAttribute('value'),
           returnEventName: 'rexlive:apply_background_image_section'
         }
       };
