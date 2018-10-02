@@ -2496,6 +2496,7 @@ var Rexbuilder_Util = (function ($) {
             $.each($youtubeVideos, function (i, video) {
                 Rexbuilder_Util.playVideo($(video));
             });
+            Rexbuilder_Util.playVideo($section);
         });
     }
 
