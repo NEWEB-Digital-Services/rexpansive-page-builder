@@ -95,5 +95,15 @@ class Rexbuilder_Utilities {
 		<i class="l-svg-icons"><svg><use xlink:href="<?php echo $id; ?>"></use></svg></i>
 		<?php
 	}
+
+	public static function close_button( $tooltip = "" ) {
+		ob_start();
+?>
+<div class="tool-button tool-button--black tool-button--close rex-modal__close-button tooltipped" data-position="bottom" data-tooltip="<?php _e( $tooltip, 'rexspansive');?>">
+<?php self::get_icon('#Z003-Close'); ?>
+</div>
+<?php
+		echo ob_get_clean();
+	}
 	
 }

@@ -238,7 +238,7 @@ defined('ABSPATH') or exit;
                             </div>
                             
                             <div class="tool-button add-new-block-video tooltipped">
-                                <?php Rexbuilder_Utilities::get_icon('#B004-Video'); ?>
+                                <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
                             </div>
             
                             <div class="tool-button add-new-block-slider tooltipped">
@@ -269,6 +269,12 @@ defined('ABSPATH') or exit;
                             <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                         </div>
                     </div><!-- // Change Row overlay color -->
+
+                    <div class="tool-button tool-button--inline edit-row-video-background">
+                        <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
+                    </div>
+                    <!-- // Add background video -->
+
                 </div><!-- // fast configuration elements -->
 
                 <div>

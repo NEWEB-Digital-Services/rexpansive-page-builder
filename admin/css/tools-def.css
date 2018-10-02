@@ -1824,6 +1824,117 @@ ul {
       -ms-flex-align: center;
           align-items: center; }
 
+.tool-button--big {
+  border-radius: 25px;
+  -webkit-transition: -webkit-box-shadow 0.3s ease-out;
+  transition: -webkit-box-shadow 0.3s ease-out;
+  -o-transition: box-shadow 0.3s ease-out;
+  transition: box-shadow 0.3s ease-out;
+  transition: box-shadow 0.3s ease-out, -webkit-box-shadow 0.3s ease-out;
+  background-color: #fff;
+  color: #979797;
+  -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
+          box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45); }
+  .tool-button--big .l-svg-icons,
+  .tool-button--big .l-svg-icons > svg {
+    fill: #979797; }
+  .tool-button--big.tool-button--inline {
+    display: inline-block; }
+
+.tool-button {
+  display: block;
+  border-radius: 50%;
+  overflow: visible;
+  visibility: visible;
+  z-index: 30;
+  padding: 5px;
+  cursor: pointer;
+  line-height: 1;
+  -webkit-transition: opacity 0.3s ease-out, -webkit-transform 0.3s ease-out, -webkit-box-shadow 0.3s ease-out;
+  transition: opacity 0.3s ease-out, -webkit-transform 0.3s ease-out, -webkit-box-shadow 0.3s ease-out;
+  -o-transition: opacity 0.3s ease-out, transform 0.3s ease-out, box-shadow 0.3s ease-out;
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out, box-shadow 0.3s ease-out;
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out, box-shadow 0.3s ease-out, -webkit-transform 0.3s ease-out, -webkit-box-shadow 0.3s ease-out;
+  -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
+          box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
+  background-color: #fff;
+  color: #979797; }
+  .tool-button.tool-button--inline {
+    display: inline-block; }
+  .tool-button .l-svg-icons,
+  .tool-button .l-svg-icons > svg {
+    fill: #979797; }
+  .tool-button:hover {
+    background-color: #00ACFF;
+    color: #fff; }
+    .tool-button:hover .l-svg-icons,
+    .tool-button:hover .l-svg-icons > svg {
+      fill: #fff; }
+  .tool-button.active {
+    background-color: #00ACFF;
+    color: #fff; }
+    .tool-button.active .l-svg-icons,
+    .tool-button.active .l-svg-icons > svg {
+      fill: #fff; }
+  .tool-button.tool-button--black {
+    background-color: #000;
+    color: #fff; }
+    .tool-button.tool-button--black .l-svg-icons,
+    .tool-button.tool-button--black .l-svg-icons > svg {
+      fill: #fff; }
+  .tool-button.tool-button--empty {
+    min-width: 26px;
+    min-height: 26px; }
+  .tool-button.tool-button--color {
+    background-image: url(../img/colors-hd.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center; }
+    .tool-button.tool-button--color.sp-replacer {
+      position: static; }
+    .tool-button.tool-button--color .sp-preview {
+      display: none; }
+    .tool-button.tool-button--color .sp-dd {
+      display: none; }
+  .tool-button.tool-button--close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    -webkit-transform: translate(50%, -50%);
+        -ms-transform: translate(50%, -50%);
+            transform: translate(50%, -50%); }
+
+.tool-button--double-icon--wrap {
+  position: relative;
+  display: inline-block; }
+
+.tool-button--double-icon {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  font-size: 10px; }
+
+.tool-button-floating {
+  position: relative;
+  display: inline-block; }
+  .tool-button-floating:hover .tool-button_list {
+    z-index: 10000; }
+    .tool-button-floating:hover .tool-button_list .tool-button {
+      opacity: 1;
+      -webkit-transform: scale(1) translateY(0) translateX(0);
+          -ms-transform: scale(1) translateY(0) translateX(0);
+              transform: scale(1) translateY(0) translateX(0); }
+
+.tool-button_list {
+  position: absolute;
+  z-index: -10000;
+  top: 100%; }
+  .tool-button_list .tool-button {
+    -webkit-transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px);
+        -ms-transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px);
+            transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px);
+    opacity: 0; }
+
 .layout {
   display: -webkit-box;
   display: -ms-flexbox;

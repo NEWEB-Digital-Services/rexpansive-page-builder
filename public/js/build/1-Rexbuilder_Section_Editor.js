@@ -210,6 +210,57 @@ var Rexbuilder_Section_Editor = (function($) {
       event.settings = settings;
       $(document).trigger(event);
     });
+
+    /**
+     * Editing or insert a background video on a row, in a separate modal
+     * @since 2.0.0
+     */
+    $(document).on('click', '.edit-row-video-background', function(e) {
+      e.preventDefault();
+      var $section = $(e.target).parents(".rexpansive_section");
+      var sectionID = $section.attr("data-rexlive-section-id");
+      var modelNumber =
+        typeof $section.attr("data-rexlive-model-number") != "undefined"
+          ? $section.attr("data-rexlive-model-number")
+          : "";
+      var $sectionData = $section.children(".section-data");
+
+      var mp4Video =
+        typeof $sectionData.attr("data-video_mp4_url") == "undefined"
+          ? ""
+          : $sectionData.attr("data-video_mp4_url");
+      var youtubeVideo =
+        typeof $sectionData.attr("data-video_bg_url_section") == "undefined"
+          ? ""
+          : $sectionData.attr("data-video_bg_url_section");
+      var mp4VideoID =
+        typeof $sectionData.attr("data-video_bg_id_section") == "undefined"
+          ? ""
+          : $sectionData.attr("data-video_bg_id_section");
+      var vimeoUrl =
+        typeof $sectionData.attr("data-video_bg_url_vimeo_section") ==
+        "undefined"
+          ? ""
+          : $sectionData.attr("data-video_bg_url_vimeo_section");
+
+      var data = {
+        eventName: "rexlive:editRowVideoBackground",
+        activeBG: {
+          bgVideo: {
+            sectionTarget: {
+              sectionID: sectionID,
+              modelNumber: modelNumber
+            },
+            youtubeVideo: youtubeVideo,
+            vimeoUrl: vimeoUrl,
+            mp4Video: mp4Video,
+            mp4VideoID: mp4VideoID
+          }
+        }
+      };
+
+      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+    });
   };
 
   /**

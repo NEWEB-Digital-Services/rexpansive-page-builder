@@ -120,6 +120,7 @@ defined('ABSPATH') or exit;
 
 <div class="rex-modal-wrap rex-fade">
    <div id="rex-edit-background-section" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
+        <?php Rexbuilder_Utilities::close_button(); ?>
         <div class="modal-content">
             <div id="section-edit-image-bg" class="background_set_image row valign-wrapper">
                 <div class="col">
@@ -248,60 +249,58 @@ defined('ABSPATH') or exit;
                 </div>
             </div>
             <!-- /OVERLAY SECTION -->
-            <div id="video-section-editor-wrapper">
-                <div id="edit-video-row-wrap-1" class="row valign-wrapper youtube-insert-wrap video-insert-wrap">
-                    <div class="rex-check rex-check-icon col rex-video-type-select">
-                        <input type="checkbox" class="rex-choose-video with-gap" name="rex-choose-video" value="youtube" id="rex-choose-youtube-video-section" />
-                        <label for="rex-choose-youtube-video-section">
-                            <i class="material-icons rex-icon">C</i>
-                            <span class="rex-ripple" />
-                        </label>
-                    </div>
-                    <div class="input-field col" data-rex-video-type="youtube">
-                        <input id="rex-youtube-video-section" class="youtube-url" type="text" />
-                        <label id="rex-youtube-video-section-label" for="rex-youtube-video-section">https://youtu.be/...</label>
-                    </div>
-                </div>
-                <!-- youtube video background section -->
-                <div id="edit-video-row-wrap-2" class="row valign-wrapper vimeo-insert-wrap video-insert-wrap" style="padding-top:16px;">
-                    <div class="rex-check rex-check-icon col rex-video-type-select" style="margin-right:5px;">
-                        <input type="checkbox" class="rex-choose-video with-gap" name="rex-choose-video" value="vimeo" id="rex-choose-vimeo-video-section" />
-                        <label for="rex-choose-vimeo-video-section">
-                            <i class="material-icons rex-icon">Z</i>
-                            <span class="rex-ripple" />
-                        </label>
-                    </div>
-                    <div class="input-field col" data-rex-video-type="vimeo">
-                        <input id="rex-vimeo-video-section" class="vimeo-url" type="text" />
-                        <label id="rex-vimeo-video-section-label" for="rex-vimeo-video-section">https://player.vimeo.com/video/...</label>
-                    </div>
-                </div>
-                <!-- vimeo input section-->
-                <div id="edit-video-row-wrap-3" class="row valign-wrapper mp4-insert-wrap video-insert-wrap" style="padding-top:16px;">
-                    <div class="rex-check rex-check-icon col rex-video-type-select ">
-                        <input type="checkbox" class="rex-choose-video with-gap" name="rex-choose-video" value="mp4" id="rex-choose-mp4-video-section" />
-                        <label id="rex-upload-mp4-video-section" for="rex-choose-mp4-video-section">
-                            <i class="material-icons rex-icon">A</i>
-                            <span class="rex-ripple" />
-                        </label>
-                        <input name="" class="file-path" type="hidden" id="video-section-mp4-url" />
-                    </div>
-                </div>
-                <!-- mp4 input section-->
-            </div>
-            <!-- video bg section-->
-        </div>
-        <div class="rex-modal-footer">
-            <button id="rex-edit-row-background-cancel" class="waves-effect waves-light btn-flat grey rex-cancel-button" value="">
-                <i class="rex-icon">n</i>
-            </button>
-            <button id="rex-edit-row-background-save" class="waves-effect waves-light btn-flat blue darken-1 rex-save-button" value="">
-                <i class="rex-icon">m</i>
-            </button>
         </div>
     </div>
 </div>
 <!-- Edit Section Background -->
+
+<div class="rex-modal-wrap rex-fade">
+    <div id="video-section-editor-wrapper" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
+        <?php Rexbuilder_Utilities::close_button(); ?>
+        <div class="modal-content">
+            <div id="edit-video-row-wrap-1" class="row valign-wrapper youtube-insert-wrap video-insert-wrap">
+                <div class="rex-check rex-check-icon col rex-video-type-select">
+                    <input type="checkbox" class="rex-choose-video with-gap" name="rex-choose-video" value="youtube" id="rex-choose-youtube-video-section" />
+                    <label for="rex-choose-youtube-video-section">
+                        <i class="material-icons rex-icon">C</i>
+                        <span class="rex-ripple" />
+                    </label>
+                </div>
+                <div class="input-field col" data-rex-video-type="youtube">
+                    <input id="rex-youtube-video-section" class="youtube-url" type="text" />
+                    <label id="rex-youtube-video-section-label" for="rex-youtube-video-section">https://youtu.be/...</label>
+                </div>
+            </div>
+            <!-- youtube video background section -->
+            <div id="edit-video-row-wrap-2" class="row valign-wrapper vimeo-insert-wrap video-insert-wrap" style="padding-top:16px;">
+                <div class="rex-check rex-check-icon col rex-video-type-select" style="margin-right:5px;">
+                    <input type="checkbox" class="rex-choose-video with-gap" name="rex-choose-video" value="vimeo" id="rex-choose-vimeo-video-section" />
+                    <label for="rex-choose-vimeo-video-section">
+                        <i class="material-icons rex-icon">Z</i>
+                        <span class="rex-ripple" />
+                    </label>
+                </div>
+                <div class="input-field col" data-rex-video-type="vimeo">
+                    <input id="rex-vimeo-video-section" class="vimeo-url" type="text" />
+                    <label id="rex-vimeo-video-section-label" for="rex-vimeo-video-section">https://player.vimeo.com/video/...</label>
+                </div>
+            </div>
+            <!-- vimeo input section-->
+            <div id="edit-video-row-wrap-3" class="row valign-wrapper mp4-insert-wrap video-insert-wrap" style="padding-top:16px;">
+                <div class="rex-check rex-check-icon col rex-video-type-select ">
+                    <input type="checkbox" class="rex-choose-video with-gap" name="rex-choose-video" value="mp4" id="rex-choose-mp4-video-section" />
+                    <label id="rex-upload-mp4-video-section" for="rex-choose-mp4-video-section">
+                        <i class="material-icons rex-icon">A</i>
+                        <span class="rex-ripple" />
+                    </label>
+                    <input name="" class="file-path" type="hidden" id="video-section-mp4-url" />
+                </div>
+            </div>
+            <!-- mp4 input section-->
+            <!-- video bg section-->
+        </div>
+    </div>
+</div>
 
 <div class="rex-modal-wrap rex-fade">
     <div id="rex-block-options" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
@@ -875,6 +874,7 @@ defined('ABSPATH') or exit;
 
 <div class="rex-modal-wrap rex-fade">
     <div id="modal-background-responsive-set" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
+        <?php Rexbuilder_Utilities::close_button(); ?>
         <div class="modal-content">
             <div id="section-config-first-row" class="row valign-wrapper">
                 <div class="col valign-wrapper">
@@ -1032,7 +1032,7 @@ defined('ABSPATH') or exit;
                     </label>
                 </div>
 
-                <div id="rx-set-hold-grid" class="b-col">
+                <!-- <div id="rx-set-hold-grid" class="b-col">
                     <div id="rx-hold-grid__wrap" class="rex-check-icon col">
                         <input type="checkbox" id="rx-hold-grid" name="rx-hold-grid" value="full-height">
                         <label for="rx-hold-grid" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Grid On Mobile', 'rexpansive');?>">
@@ -1040,7 +1040,7 @@ defined('ABSPATH') or exit;
                             <span class="rex-ripple"></span>
                         </label>
                     </div>
-                </div>
+                </div> -->
 
             </div>
 
@@ -1059,14 +1059,6 @@ defined('ABSPATH') or exit;
                     <span class="rex-material-bar"></span>
                 </div>
             </div><!-- custom classes -->
-        </div>
-        <div class="backresponsive-set-bottom rex-modal-footer">
-            <button id="backresponsive-set-cancel" class="waves-effect waves-light btn-flat grey rex-cancel-button">
-                <i class="rex-icon">n</i>
-            </button>
-            <button id="backresponsive-set-save" class="waves-effect waves-light btn-flat blue darken-1 rex-save-button" data-section_id="">
-                <i class="rex-icon">m</i>
-            </button>
         </div>
     </div>
 </div><!-- Section settings -->

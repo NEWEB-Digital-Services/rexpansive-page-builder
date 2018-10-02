@@ -88,6 +88,10 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                 SectionBackground_Modal.openSectionBackgroundModal(event.data.activeBG);
             }
 
+            if( event.data.eventName == "rexlive:editRowVideoBackground" ) {
+                Section_Video_Background_Modal.openSectionVideoBackgroundModal(event.data.activeBG);
+            }
+
             if (event.data.eventName == "rexlive:editBlockOptions") {
                 BlockOptions_Modal.openBlockOptionsModal(event.data.activeBlockData);
             }

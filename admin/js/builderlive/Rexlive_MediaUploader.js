@@ -511,7 +511,7 @@ var Rexlive_MediaUploader = (function($) {
         $data.attr("data-rex-video-bg-width", obj_attachment.width);
         $data.attr("data-rex-video-bg-height", obj_attachment.height);
 
-        if ($data.parents("#rex-edit-background-section").length != 0) {
+        if ($data.parents("#video-section-editor-wrapper").length != 0) {
           Section_Video_Background_Modal.updateVideoBackground();
         } else if ($data.parents("#video-block-editor-wrapper").length != 0) {
           Block_Video_Background_Modal.updateVideoBackground();

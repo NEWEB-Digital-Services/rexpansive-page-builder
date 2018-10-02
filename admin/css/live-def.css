@@ -1896,6 +1896,13 @@ ul {
       display: none; }
     .tool-button.tool-button--color .sp-dd {
       display: none; }
+  .tool-button.tool-button--close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    -webkit-transform: translate(50%, -50%);
+        -ms-transform: translate(50%, -50%);
+            transform: translate(50%, -50%); }
 
 .tool-button--double-icon--wrap {
   position: relative;

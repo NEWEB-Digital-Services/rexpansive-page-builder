@@ -41,12 +41,7 @@ var Section_Modal = (function($) {
   };
 
   var _linkDocumentListenersSectionPropertiesModal = function() {
-    section_config_modal_properties.$save_button.click(function(e) {
-      e.preventDefault();
-      _closeSectionModal();
-    });
-
-    section_config_modal_properties.$cancel_button.click(function(e) {
+    section_config_modal_properties.$close_button.click(function(e) {
       e.preventDefault();
       _closeSectionModal();
     });
@@ -56,9 +51,8 @@ var Section_Modal = (function($) {
     var $sectionConfigModal = $("#modal-background-responsive-set");
     section_config_modal_properties = {
       $self: $sectionConfigModal,
-
-      $save_button: $sectionConfigModal.find("#backresponsive-set-save"),
-      $cancel_button: $sectionConfigModal.find("#backresponsive-set-cancel")
+      
+      $close_button: $sectionConfigModal.find('.rex-modal__close-button'),
     };
 
     _linkDocumentListenersSectionPropertiesModal();

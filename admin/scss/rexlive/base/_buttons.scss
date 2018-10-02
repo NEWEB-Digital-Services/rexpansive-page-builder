@@ -80,6 +80,13 @@
       display: none;
     }
   }
+
+  &.tool-button--close {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(50%,-50%);
+  }
 }
 
 .tool-button--double-icon--wrap {
