@@ -304,6 +304,7 @@ defined('ABSPATH') or exit;
 
 <div class="rex-modal-wrap rex-fade">
     <div id="rex-block-options" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
+        <?php Rexbuilder_Utilities::close_button(); ?>
         <div class="background-options-area modal-content">
             <div id="block-edit-image-bg" class="background_set_image row valign-wrapper">
                 <div class="col">
@@ -645,14 +646,6 @@ defined('ABSPATH') or exit;
                 </div>
             </div>
             <!-- /LINK CLASSES -->
-        </div>
-        <div class="background_set_bottom rex-modal-footer">
-            <button id="block_options_cancel" class="waves-effect waves-light btn-flat grey rex-cancel-button" value="image">
-                <i class="rex-icon">n</i>
-            </button>
-            <button id="block_options_save" class="waves-effect waves-light btn-flat blue darken-1 rex-save-button" value="" data-block_id="" data-block_parent="" data-block_id="">
-                <i class="rex-icon">m</i>
-            </button>
         </div>
     </div>
 </div>
@@ -1035,7 +1028,7 @@ defined('ABSPATH') or exit;
                 <!-- <div id="rx-set-hold-grid" class="b-col">
                     <div id="rx-hold-grid__wrap" class="rex-check-icon col">
                         <input type="checkbox" id="rx-hold-grid" name="rx-hold-grid" value="full-height">
-                        <label for="rx-hold-grid" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Grid On Mobile', 'rexpansive');?>">
+                        <label for="rx-hold-grid" class="tooltipped" data-position="bottom" data-tooltip="<?php // _e('Grid On Mobile', 'rexpansive');?>">
                             <i class="rex-icon">V</i>
                             <span class="rex-ripple"></span>
                         </label>

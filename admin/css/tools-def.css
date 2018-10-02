@@ -1935,6 +1935,9 @@ ul {
             transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px);
     opacity: 0; }
 
+.rex-modal {
+  max-height: none; }
+
 .layout {
   display: -webkit-box;
   display: -ms-flexbox;
