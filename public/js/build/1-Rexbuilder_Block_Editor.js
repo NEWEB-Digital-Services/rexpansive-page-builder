@@ -52,7 +52,7 @@ var Rexbuilder_Block_Editor = (function($) {
           ? "full"
           : "natural";
       var typeBGimage =
-        typeof $elemData.attr("data-type_bg_block") == "undefined"
+        ( typeof $elemData.attr("data-type_bg_block") == "undefined" || "" == $elemData.attr("data-type_bg_block") )
           ? defaultTypeImage
           : $elemData.attr("data-type_bg_block");
       var activePhotoswipe =
@@ -60,8 +60,10 @@ var Rexbuilder_Block_Editor = (function($) {
           ? ""
           : $elemData.attr("data-photoswipe");
 
+      var activeImage = true;
+
       var data = {
-        eventName: "rexlive:openSectionBackgroundImageUploader",
+        eventName: "rexlive:openLiveImageUploader",
         live_uploader_data: {
           idImage: activeImage ? idImage : "",
           urlImage: activeImage ? imageUrl : "",
@@ -91,42 +93,7 @@ var Rexbuilder_Block_Editor = (function($) {
             },
           }
         },
-        // target: {
-        //   sectionID: sectionID,
-        //   modelNumber: modelNumber,
-        //   rexID: rex_block_id
-        // },
-        // imageData: {
-        //   idImage: idImage,
-        //   imageUrl: imageUrl,
-        //   width: width,
-        //   height: height,
-        //   typeBGimage: typeBGimage,
-        //   active: activeImage,
-        //   defaultTypeImage: defaultTypeImage,
-        //   photoswipe: activePhotoswipe,
-        //   target: {
-        //     sectionID: sectionID,
-        //     modelNumber: modelNumber,
-        //     rexID: rex_block_id
-        //   }
-        // }
       };
-
-      console.log('premo su pulsante');
-      console.log(data);
-
-      // var data = {
-      //   eventName: "rexlive:openSectionBackgroundImageUploader",
-      //   live_uploader_data: {
-      //     sectionTarget: {
-      //       sectionID: sectionID,
-      //       modelNumber: modelNumber
-      //     },
-      //     idImage: e.target.value,
-      //     returnEventName: 'rexlive:apply_background_image_section'
-      //   }
-      // };
 
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });

@@ -115,6 +115,9 @@ var Rexlive_MediaUploader = (function($) {
 
   /**
    * Live insert/edit a single image Uploader
+   * Use this on all the buttons that need to open the uploader
+   * directly on click
+   * 
    * @since 2.0.0
    * @param {Object}  info
    */
@@ -122,10 +125,9 @@ var Rexlive_MediaUploader = (function($) {
     // If the frame is already opened, return it
     if (image_uploader_frame_direct) {
       image_uploader_frame_direct
-        .state("insert-image")
-        .set("liveTarget", info.sectionTarget);
-      image_uploader_frame_direct
-        .state("insert-image")
+        .state("live-image")
+        .set("liveTarget", info.sectionTarget)
+        .set("selected_image", info.idImage)
         .set("eventName", info.returnEventName)
         .set("data_to_send", info.data_to_send)
       image_uploader_frame_direct.open();
@@ -137,7 +139,7 @@ var Rexlive_MediaUploader = (function($) {
     var insertImage = wp.media.controller.Library.extend({
       defaults: _.defaults(
         {
-          id: "insert-image",
+          id: "live-image",
           title: "Insert Image",
           allowLocalEdits: true,
           displaySettings: true,
@@ -147,6 +149,7 @@ var Rexlive_MediaUploader = (function($) {
           liveTarget: info.sectionTarget,
           eventName: info.returnEventName,
           data_to_send: info.data_to_send,
+          selected_image: info.idImage,
           type: "image" //audio, video, application/pdf, ... etc
         },
         wp.media.controller.Library.prototype.defaults
@@ -156,12 +159,12 @@ var Rexlive_MediaUploader = (function($) {
     //Setup media frame
     image_uploader_frame_direct = wp.media({
       button: { text: "Select" },
-      state: "insert-image",
+      state: "live-image",
       states: [new insertImage()]
     });
 
     image_uploader_frame_direct.on("select", function() {
-      var state = image_uploader_frame_direct.state("insert-image");
+      var state = image_uploader_frame_direct.state("live-image");
       var sectionTarget = state.get("liveTarget");
       var eventName = state.get("eventName");
       var data_to_send = state.get("data_to_send");
@@ -201,11 +204,20 @@ var Rexlive_MediaUploader = (function($) {
         data.data_to_send.urlImage = display.src;
         data.data_to_send.width = display.width;
         data.data_to_send.height = display.height;
-        data.data_to_send.active = true;
-        data.data_to_send.typeBGimage = 'full';
+
+        if( 'undefined' !== typeof data_to_send.photoswipe ) {
+          data.data_to_send.photoswipe = data_to_send.photoswipe;
+        }
+
+        if( 'undefined' !== typeof data_to_send.active ) {
+          data.data_to_send.active = data_to_send.active;
+        }
+
+        if( 'undefined' !== typeof data_to_send.typeBGimage ) {
+          data.data_to_send.typeBGimage = data_to_send.typeBGimage;
+        }
       }); 
 
-      console.log('selezioni immagine');
       console.log(data);
 
       // Launch image insert event to the iframe
@@ -216,17 +228,29 @@ var Rexlive_MediaUploader = (function($) {
 
     //reset selection in popup, when open the popup
     image_uploader_frame_direct.on("open", function() {
+      var attachment;
       var selection = image_uploader_frame_direct
-        .state("insert-image")
+        .state("live-image")
         .get("selection");
+
       //remove all the selection first
-      selection.each(function(image) {
-        if ("undefined" !== typeof image) {
-          var attachment = wp.media.attachment(image.attributes.id);
-          attachment.fetch();
-          selection.remove(attachment ? [attachment] : []);
-        }
+      selection.each(function(video) {
+        attachment = wp.media.attachment(video.attributes.id);
+        attachment.fetch();
+        selection.remove(attachment ? [attachment] : []);
       });
+
+      var image_id = image_uploader_frame_direct
+        .state("live-image")
+        .get("selected_image");
+
+      // Check the already inserted image
+      if (image_id) {
+        attachment = wp.media.attachment(image_id);
+        attachment.fetch();
+
+        selection.add(attachment ? [attachment] : []);
+      }
     });
 
     //now open the popup

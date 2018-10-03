@@ -882,8 +882,9 @@ defined('ABSPATH') or exit;
                         <div class="rexlive-layout-type" data-rex-layout="masonry">
                             <input type="radio" id="section-masonry" name="section-layout" class="builder-edit-row-layout with-gap" value="masonry" title="Masonry Layout" />
                             <label for="section-masonry"  class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Masonry Layout', 'rexspansive');?>">
-                                <i class="material-icons">&#xE871;</i>
-                                <span class="rex-ripple"></span>
+                                <!-- <i class="material-icons">&#xE871;</i>
+                                <span class="rex-ripple"></span> -->
+                                <?php Rexbuilder_Utilities::get_icon('#B010-Masonry'); ?>
                             </label>
                         </div>
                     </div>

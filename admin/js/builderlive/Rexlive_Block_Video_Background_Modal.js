@@ -6,7 +6,6 @@ var Block_Video_Background_Modal = (function ($) {
     var target;
 
     var _updateVideoModal = function (data) {
-        console.log(data);
         _clearVideoModal();
         if (data.type == "mp4") {
             videoChosen = "mp4";

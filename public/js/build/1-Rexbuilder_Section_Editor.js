@@ -93,7 +93,7 @@ var Rexbuilder_Section_Editor = (function($) {
     /**
      * Event attached on background image button
      * 
-     * Create a rexlive:openSectionBackgroundImageUploader message to send to iframe parent
+     * Create a rexlive:openLiveImageUploader message to send to iframe parent
      * @since 2.0.0
      */
     $(document).on('click', '.edit-row-image-background', function(e) {
@@ -105,14 +105,17 @@ var Rexbuilder_Section_Editor = (function($) {
           : "";
 
       var data = {
-        eventName: "rexlive:openSectionBackgroundImageUploader",
+        eventName: "rexlive:openLiveImageUploader",
         live_uploader_data: {
           sectionTarget: {
             sectionID: sectionID,
             modelNumber: modelNumber
           },
           idImage: this.getAttribute('value'),
-          returnEventName: 'rexlive:apply_background_image_section'
+          returnEventName: 'rexlive:apply_background_image_section',
+          data_to_send: {
+            active: true
+          }
         }
       };
 
