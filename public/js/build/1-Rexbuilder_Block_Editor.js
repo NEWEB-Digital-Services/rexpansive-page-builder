@@ -243,6 +243,38 @@ var Rexbuilder_Block_Editor = (function($) {
       event.settings = settings;
       $(document).trigger(event);
     });
+
+    /**
+     * Deactivate an overlay color
+     * @since 2.0.0
+     */
+    $(document).on('click', '.deactivate-block-overlay-color', function(e) {
+      var $elem = $(e.target).parents(".grid-stack-item");
+      var $section = $elem.parents(".rexpansive_section");
+      var rex_block_id = $elem.attr("data-rexbuilder-block-id");
+      var sectionID = $section.attr("data-rexlive-section-id");
+      var modelNumber =
+        typeof $section.attr("data-rexlive-model-number") != "undefined"
+          ? $section.attr("data-rexlive-model-number")
+          : "";
+
+      var settings = {
+        data_to_send: {
+          color: null,
+          active: false,
+          target: {
+            sectionID: sectionID,
+            modelNumber: modelNumber,
+            rexID: rex_block_id
+          },
+        }
+      };
+
+      var event = jQuery.Event("rexlive:change_block_overlay");
+      event.settings = settings;
+      $(document).trigger(event);
+    });
+
   };
 
   /**
@@ -318,6 +350,120 @@ var Rexbuilder_Block_Editor = (function($) {
   };
 
   /**
+   * Launching spcetrum color picker on an input element, for the block overlay color
+   * @param {DOM Element} el input element on which launch spectrum
+   * @since 2.0.0
+   */
+  var _launchSpectrumPickerOverlayColorBlock = function( el ) {
+    var $picker = $(el);
+
+    var $elem = $picker.parents(".grid-stack-item");
+    var $section = $elem.parents(".rexpansive_section");
+    var rex_block_id = $elem.attr("data-rexbuilder-block-id");
+    var sectionID = $section.attr("data-rexlive-section-id");
+    var modelNumber =
+      typeof $section.attr("data-rexlive-model-number") != "undefined"
+        ? $section.attr("data-rexlive-model-number")
+        : "";
+    var $elemData = $elem.children(".rexbuilder-block-data");
+
+    var flagPickerUsed = false;
+
+    var overlayActive;
+    if (
+      $elem.hasClass("active-large-block-overlay") ||
+      $elem.hasClass("active-medium-block-overlay") ||
+      $elem.hasClass("active-small-block-overlay")
+    ) {
+      overlayActive = false;
+    } else {
+      overlayActive =
+        typeof $elemData.attr("data-overlay_block_color_active") !=
+        "undefined"
+          ? JSON.parse( $elemData.attr("data-overlay_block_color_active") )
+          : false;
+    }
+
+    if (!overlayActive) {
+      if (
+        Rexbuilder_Util.activeLayout == "default" &&
+        $elem.hasClass("active-large-block-overlay")
+      ) {
+        overlayActive = true;
+      }
+      if (
+        Rexbuilder_Util.activeLayout == "tablet" &&
+        $elem.hasClass("active-medium-block-overlay")
+      ) {
+        overlayActive = true;
+      }
+      if (
+        Rexbuilder_Util.activeLayout == "mobile" &&
+        $elem.hasClass("active-small-block-overlay")
+      ) {
+        overlayActive = true;
+      }
+    }
+
+    var settings = {
+      data_to_send: {
+        color: null,
+        active: false,
+        target: {
+          sectionID: sectionID,
+          modelNumber: modelNumber,
+          rexID: rex_block_id
+        },
+      }
+    };
+
+    $picker.spectrum({
+      replacerClassName: "tool-button tool-button--inline tool-button--empty tool-button--color tool-button--spectrum",
+      preferredFormat: "hex",
+      showPalette: false,
+      showAlpha: true,
+      showInput: true,
+      show: function() {
+        flagPickerUsed = false;
+      },
+      move: function(color) {
+        if( overlayActive ) {
+          settings.data_to_send.active = true;
+          settings.data_to_send.color =  color.toRgbString();
+  
+          var event = jQuery.Event("rexlive:change_block_overlay_color");
+          event.settings = settings;
+          $(document).trigger(event);
+        } else {
+          settings.data_to_send.active = true;
+          settings.data_to_send.color = color.toRgbString();
+
+          var event = jQuery.Event("rexlive:change_block_overlay");
+          event.settings = settings;
+          $(document).trigger(event);
+        }
+
+        flagPickerUsed = true;
+      },
+      change: function(color) {
+        // 
+      },
+      hide: function(color) {
+        if (flagPickerUsed) {
+          settings.data_to_send.active = true;
+          settings.data_to_send.color = color.toRgbString();
+
+          var event = jQuery.Event("rexlive:change_block_overlay");
+          event.settings = settings;
+          $(document).trigger(event);
+        }
+
+        flagPickerUsed = false;
+      },
+    });
+  };
+
+  /**
    * Setting the block live color pickers for the background
    * @since 2.0.0
    */
@@ -328,11 +474,22 @@ var Rexbuilder_Block_Editor = (function($) {
   };
 
   /**
+   * Setting the block live colore pickers for the overlay
+   * @since 2.0.0
+   */
+  var _setBlockOverlayColorPicker = function() {
+    $('input[name=edit-block-overlay-color]').each(function(i, el) {
+      _launchSpectrumPickerOverlayColorBlock( el );
+    });
+  };
+
+  /**
    * Set the block tools that need some logic
    * @since 2.0.0
    */
   var _setTools = function() {
     _setBlockColorBackgroundPicker();
+    _setBlockOverlayColorPicker();
   };
 
   /**
@@ -345,6 +502,7 @@ var Rexbuilder_Block_Editor = (function($) {
 
   return {
     init: init,
-    launchSpectrumPickerBackgorundColorBlock: _launchSpectrumPickerBackgorundColorBlock
+    launchSpectrumPickerBackgorundColorBlock: _launchSpectrumPickerBackgorundColorBlock,
+    launchSpectrumPickerOverlayColorBlock: _launchSpectrumPickerOverlayColorBlock
   }
 })(jQuery);

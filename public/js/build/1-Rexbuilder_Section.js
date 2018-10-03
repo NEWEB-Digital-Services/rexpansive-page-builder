@@ -270,6 +270,9 @@ var Rexbuilder_Section = (function($) {
       $newSection.find('input[name=edit-block-color-background]').each(function(i,el) {
         Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock(el);
       });
+      $newSection.find('input[name=edit-block-overlay-color]').each(function(i,el) {
+        Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock(el);
+      });
 
       var reverseData = {
         show: false,

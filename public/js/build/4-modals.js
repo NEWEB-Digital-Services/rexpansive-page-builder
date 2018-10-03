@@ -2,6 +2,38 @@
   "use strict";
 
   $(function() {
+    /**
+     * Listening for events to update live a row or a block
+     * 1) Row Full Height : rexlive:set_row_fullHeight
+     * 2) Row Layout : rexlive:set_gallery_layout
+     * 3) Row Layout : rexlive:galleryLayoutChanged
+     * 4) Row Gutter : rexlive:set_row_separatos
+     * 5) Row Gutter : rexlive:rowDistancesApplied
+     * 6) Row Margins : rexlive:set_section_margins
+     * 7) Row Margins : rexlive:sectionMarginsApplied
+     * 8) Row Width : rexlive:set_section_width
+     * 9) Row Width : rexlive:sectionWidthApplyed
+     * 10) Row Photoswipe : rexlive:set_row_photoswipe
+     * 11) Row Name : rexlive:change_section_name
+     * 12) Row Custom Classes : rexlive:apply_section_custom_classes
+     * 13) Custom CSS : rexlive:SetCustomCSS
+     * 14) Row Background Color : rexlive:apply_background_color_section
+     * 15) Row Overlay : rexlive:change_section_overlay
+     * 16) Row Image Background : rexlive:apply_background_image_section
+     * 17) Row Video Background : rexlive:update_section_background_video
+     * 18) Block Background Color : rexlive:apply_background_color_block
+     * 19) Block Overlay : rexlive:change_block_overlay
+     * 20) Block Image : rexlive:apply_background_image_block
+     * 21) Block Video Background : rexlive:update_block_background_video
+     * 22) Block Paddings : rexlive:apply_paddings_block
+     * 23) Block Content Position : rexlive:apply_flex_position_block
+     * 24) Block Custom Classes : rexlive:apply_block_custom_classes
+     * 25) Block Custom Link : rexlive:apply_block_link_url
+     * 26) Model : rexlive:editModel
+     * 27) Model : rexlive:modelBecameSection
+     * 28) Custom CSS : rexlive:getCustomCss
+     */
+
     $(document).on("rexlive:set_row_fullHeight", function(e) {
       var data = e.settings.data_to_send;
       var $section;

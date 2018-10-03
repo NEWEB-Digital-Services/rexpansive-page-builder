@@ -12,6 +12,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
         TextEditor.addElementToTextEditor($el.find(".text-wrap"));
         galleryInstance.addScrollbar($el);
         Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($el.find('input[name=edit-block-color-background]')[0]);
+        Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock($el.find('input[name=edit-block-overlay-color]')[0]);
 
         Rexbuilder_Util.updateSectionStateLive($section);
         if(Rexbuilder_Util.activeLayout == "default"){
@@ -37,6 +38,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
         TextEditor.addElementToTextEditor($el.find(".text-wrap"));
 
         Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($el.find('input[name=edit-block-color-background]')[0]);
+        Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock($el.find('input[name=edit-block-overlay-color]')[0]);
 
         var event = jQuery.Event("mouseup");
         event.target = $el.find(".rexlive-block-drag-handle");
@@ -118,6 +120,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
             galleryInstance.addScrollbar($el);
             TextEditor.addElementToTextEditor($el.find(".text-wrap"));
             Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($el.find('input[name=edit-block-color-background]')[0]);
+            Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock($el.find('input[name=edit-block-overlay-color]')[0]);
         }
         Rexbuilder_Util.updateSectionStateLive($section);
         if(Rexbuilder_Util.activeLayout == "default"){
@@ -465,6 +468,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
             TextEditor.addElementToTextEditor($newBlock.find(".text-wrap"));
         }
         Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($newBlock.find('input[name=edit-block-color-background]')[0]);
+        Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock($newBlock.find('input[name=edit-block-overlay-color]')[0]);
         Rexbuilder_Util.updateSectionStateLive($section);
         if(Rexbuilder_Util.activeLayout == "default"){
             Rexbuilder_Util.updateDefaultLayoutStateSection($section);

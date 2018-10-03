@@ -92,7 +92,7 @@ defined('ABSPATH') or exit;
 				</div><!-- // Change Row color background -->
 
 				<div class="tool-button--double-icon--wrap">
-					<input class="spectrum-input-element" type="text" name="edit-row-overlay-color" value="<?php echo esc_attr( $atts['data-row_overlay_color'] ); ?>">
+					<input class="spectrum-input-element" type="text" name="edit-row-overlay-color" value="<?php echo esc_attr( $atts['row_overlay_color'] ); ?>">
 					<div class="tool-button tool-button--inline tool-button--double-icon deactivate-row-overlay-color">
 						<?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
 					</div>

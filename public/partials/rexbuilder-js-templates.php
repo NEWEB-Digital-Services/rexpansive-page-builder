@@ -39,6 +39,13 @@ defined('ABSPATH') or exit;
                 </div>
             </div><!-- // Change Block color background -->
 
+            <div class="tool-button--double-icon--wrap">
+                <input class="spectrum-input-element" type="text" name="edit-block-overlay-color" value="">
+                <div class="tool-button tool-button--inline tool-button--double-icon deactivate-block-overlay-color">
+                    <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+                </div>
+            </div><!-- // Change Block overlay color -->
+
             <div class="tool-button tool-button--inline edit-block-video-background">
                 <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
             </div><!-- // Change Block Video background -->
