@@ -246,6 +246,11 @@ var Rexbuilder_Util_Editor = (function ($) {
         css = undefined;
     }
 
+    var _removeColorPicker = function($elem) {
+        $elem.find('.tool-button--spectrum').remove();
+        $elem.find('input.spectrum-input-element').spectrum('destroy');
+    };
+
     var _getTextWrapLength = function ($elem) {
         var $textWrap = $elem.find(".text-wrap");
         var length = 0;
@@ -734,6 +739,7 @@ var Rexbuilder_Util_Editor = (function ($) {
         init: init,
         removeScrollBar: _removeScrollBar,
         removeTextEditor: _removeTextEditor,
+        removeColorPicker: _removeColorPicker,
         removeHandles: _removeHandles,
         generateElementNewIDs: _generateElementNewIDs,
         fixCopiedElementSlider: _fixCopiedElementSlider,

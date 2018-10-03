@@ -318,7 +318,7 @@ var Rexbuilder_Section_Editor = (function($) {
     var flagPickerUsed = false;
 
     $picker.spectrum({
-      replacerClassName: "tool-button tool-button--inline tool-button--empty edit-row-color-background tool-button--color",
+      replacerClassName: "tool-button tool-button--inline tool-button--empty tool-button--color tool-button--spectrum",
       preferredFormat: "hex",
       showPalette: false,
       showAlpha: true,
@@ -373,8 +373,8 @@ var Rexbuilder_Section_Editor = (function($) {
         // );
         // _applyBackgroundColor();
       },
-      cancelText: "",
-      chooseText: ""
+      // cancelText: "",
+      // chooseText: ""
     });
 
     $picker.prev('.edit-row-color-background').on('click', function() {
@@ -412,7 +412,7 @@ var Rexbuilder_Section_Editor = (function($) {
     };
     
     $picker.spectrum({
-      replacerClassName: "tool-button tool-button--inline tool-button--empty edit-row-overlay-color tool-button--color",
+      replacerClassName: "tool-button tool-button--inline tool-button--empty tool-button--color tool-button--spectrum",
       preferredFormat: "hex",
       showPalette: false,
       showAlpha: true,

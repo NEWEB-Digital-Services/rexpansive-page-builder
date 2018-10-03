@@ -21,9 +21,21 @@ defined( 'ABSPATH' ) or exit;
         <!-- // left area: size viewer -->
 
         <div>
-            <div class="tool-button tool-button--inline edit-block-image tooltipped">
-                <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
-            </div>
+            <div class="tool-button--double-icon--wrap">
+                <div class="tool-button tool-button--inline edit-block-image tooltipped">
+                    <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
+                </div>
+                <div class="tool-button tool-button--inline tool-button--double-icon deactivate-block-image-background">
+                    <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+                </div>
+            </div><!-- // Change Block image background -->
+
+            <div class="tool-button--double-icon--wrap">
+                <input class="spectrum-input-element" type="text" name="edit-block-color-background" value="<?php echo esc_attr( $atts['color_bg_block'] ); ?>">
+                <div class="tool-button tool-button--inline tool-button--double-icon deactivate-block-color-background">
+                    <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+                </div>
+            </div><!-- // Change Block color background -->
         </div>
 
         <div>

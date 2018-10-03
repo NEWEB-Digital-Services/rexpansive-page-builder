@@ -97,10 +97,165 @@ var Rexbuilder_Block_Editor = (function($) {
 
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });
+
+    /**
+     * Deactivate a block image
+     * @since 2.0.0
+     */
+    $(document).on('click', '.deactivate-block-image-background', function(e) {
+      var $elem = $(e.target).parents(".grid-stack-item");
+      var $section = $elem.parents(".rexpansive_section");
+      var rex_block_id = $elem.attr("data-rexbuilder-block-id");
+      var sectionID = $section.attr("data-rexlive-section-id");
+      var modelNumber =
+        typeof $section.attr("data-rexlive-model-number") != "undefined"
+          ? $section.attr("data-rexlive-model-number")
+          : "";
+
+      var settings = {
+        data_to_send: {
+          target: {
+            sectionID: sectionID,
+            modelNumber: modelNumber,
+            rexID: rex_block_id
+          },
+          idImage: "",
+          urlImage: "",
+          width: "",
+          height: "",
+          typeBGimage: "",
+          photoswipe: "",
+          active: false,
+        },
+      };
+
+      var event = jQuery.Event("rexlive:apply_background_image_block");
+      event.settings = settings;
+      $(document).trigger(event);
+    });
+
+    /**
+     * Deactivate a block color
+     * @since 2.0.0
+     */
+    $(document).on('click', '.deactivate-block-color-background', function(e) {
+      var $elem = $(e.target).parents(".grid-stack-item");
+      var $section = $elem.parents(".rexpansive_section");
+      var rex_block_id = $elem.attr("data-rexbuilder-block-id");
+      var sectionID = $section.attr("data-rexlive-section-id");
+      var modelNumber =
+        typeof $section.attr("data-rexlive-model-number") != "undefined"
+          ? $section.attr("data-rexlive-model-number")
+          : "";
+      // var $elemData = $elem.children(".rexbuilder-block-data");
+      // var bgColorActive = $elemData.attr('data-color_bg_block_active');
+
+      var settings = {
+        data_to_send: {
+          color: "",
+          active: false,
+          target: {
+            sectionID: sectionID,
+            modelNumber: modelNumber,
+            rexID: rex_block_id
+          },
+        }
+      };
+
+      var event = jQuery.Event("rexlive:apply_background_color_block");
+      event.settings = settings;
+      $(document).trigger(event);
+    });
   };
 
-  var _setTools = function() {
+  /**
+   * Launching the spectrum color picker on an input element, for the block background color
+   * @param {DOM element} el input element in which launch the color picker
+   * @since 2.0.0
+   */
+  var _launchSpectrumPickerBackgorundColorBlock = function( el ) {
+    var $picker = $(el);
 
+    var $elem = $picker.parents(".grid-stack-item");
+    var $section = $elem.parents(".rexpansive_section");
+    var rex_block_id = $elem.attr("data-rexbuilder-block-id");
+    var sectionID = $section.attr("data-rexlive-section-id");
+    var modelNumber =
+      typeof $section.attr("data-rexlive-model-number") != "undefined"
+        ? $section.attr("data-rexlive-model-number")
+        : "";
+    var $elemData = $elem.children(".rexbuilder-block-data");
+
+    var bgColorActive = $elemData.attr('data-color_bg_block_active');
+    var colorActive = $elemData.attr('data-color_bg_block');
+
+    var flagPickerUsed;
+
+    var settings = {
+      data_to_send: {
+        color: bgColorActive ? colorActive : "",
+        active: bgColorActive,
+        target: {
+          sectionID: sectionID,
+          modelNumber: modelNumber,
+          rexID: rex_block_id
+        },
+      }
+    };
+
+    $picker.spectrum({
+      replacerClassName: "tool-button tool-button--inline tool-button--empty tool-button--color tool-button--spectrum",
+      preferredFormat: "hex",
+      showPalette: false,
+      showAlpha: true,
+      showInput: true,
+      show: function() {
+        flagPickerUsed = false;
+      },
+      move: function(color) {
+        settings.data_to_send.color = settings.data_to_send.active
+          ? color.toRgbString()
+          : "";
+
+        var event = jQuery.Event("rexlive:change_block_bg_color");
+        event.settings = settings;
+        $(document).trigger(event);
+
+        flagPickerUsed = true;
+      },
+      change: function(color) {
+        // 
+      },
+      hide: function(color) {
+        if (flagPickerUsed) {
+          colorActive = color.toRgbString();
+        }
+
+        settings.data_to_send.color = colorActive;
+
+        var event = jQuery.Event("rexlive:apply_background_color_block");
+        event.settings = settings;
+        $(document).trigger(event);
+      },
+    });
+  };
+
+  /**
+   * Setting the block live color pickers for the background
+   * @since 2.0.0
+   */
+  var _setBlockColorBackgroundPicker = function() {
+    $('input[name=edit-block-color-background]').each(function(i, el) {
+      _launchSpectrumPickerBackgorundColorBlock( el );
+    });
+  };
+
+  /**
+   * Set the block tools that need some logic
+   * @since 2.0.0
+   */
+  var _setTools = function() {
+    _setBlockColorBackgroundPicker();
   };
 
   /**
@@ -113,5 +268,6 @@ var Rexbuilder_Block_Editor = (function($) {
 
   return {
     init: init,
+    launchSpectrumPickerBackgorundColorBlock: _launchSpectrumPickerBackgorundColorBlock
   }
 })(jQuery);

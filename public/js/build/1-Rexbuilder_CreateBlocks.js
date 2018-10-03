@@ -11,6 +11,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
         $el.find(".grid-item-content").addClass("empty-content");
         TextEditor.addElementToTextEditor($el.find(".text-wrap"));
         galleryInstance.addScrollbar($el);
+        Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($el.find('input[name=edit-block-color-background]')[0]);
+
         Rexbuilder_Util.updateSectionStateLive($section);
         if(Rexbuilder_Util.activeLayout == "default"){
             Rexbuilder_Util.updateDefaultLayoutStateSection($section);
@@ -33,6 +35,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
         galleryInstance.addScrollbar($el);
         TextEditor.addElementToTextEditor($el.find(".text-wrap"));
+
+        Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($el.find('input[name=edit-block-color-background]')[0]);
 
         var event = jQuery.Event("mouseup");
         event.target = $el.find(".rexlive-block-drag-handle");
@@ -113,6 +117,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
             galleryInstance.addScrollbar($el);
             TextEditor.addElementToTextEditor($el.find(".text-wrap"));
+            Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($el.find('input[name=edit-block-color-background]')[0]);
         }
         Rexbuilder_Util.updateSectionStateLive($section);
         if(Rexbuilder_Util.activeLayout == "default"){
@@ -402,6 +407,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
         Rexbuilder_Util_Editor.removeScrollBar($newBlock);
         Rexbuilder_Util_Editor.removeTextEditor($newBlock);
+        Rexbuilder_Util_Editor.removeColorPicker($newBlock);
         galleryEditorInstance._prepareElement($newBlock.eq(0));
         galleryEditorInstance.unFocusElementEditing($newBlock);
 
@@ -458,6 +464,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
             galleryEditorInstance.addScrollbar($newBlock);
             TextEditor.addElementToTextEditor($newBlock.find(".text-wrap"));
         }
+        Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($newBlock.find('input[name=edit-block-color-background]')[0]);
         Rexbuilder_Util.updateSectionStateLive($section);
         if(Rexbuilder_Util.activeLayout == "default"){
             Rexbuilder_Util.updateDefaultLayoutStateSection($section);

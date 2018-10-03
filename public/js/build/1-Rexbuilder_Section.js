@@ -254,6 +254,8 @@ var Rexbuilder_Section = (function($) {
         Rexbuilder_Dom_Util.updateLockEditModel($buttonModel, true);
       }
 
+      Rexbuilder_Util_Editor.removeColorPicker($newSection);
+
       $newSection.insertAfter($section);
       Rexbuilder_Section.prepareSectionCopied($newSection);
 
@@ -262,6 +264,12 @@ var Rexbuilder_Section = (function($) {
       $row.perfectGridGalleryEditor();
 
       Rexbuilder_Util.$rexContainer.sortable("refresh");
+
+      Rexbuilder_Section_Editor.launchSpectrumPickerBackgorundColorRow($newSection.find('input[name=edit-row-color-background]')[0]);
+      Rexbuilder_Section_Editor.launchSpectrumPickerOverlayColorRow($newSection.find('input[name=edit-row-overlay-color]')[0]);
+      $newSection.find('input[name=edit-block-color-background]').each(function(i,el) {
+        Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock(el);
+      });
 
       var reverseData = {
         show: false,

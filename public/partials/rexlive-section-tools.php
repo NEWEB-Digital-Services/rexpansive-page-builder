@@ -85,14 +85,14 @@ defined('ABSPATH') or exit;
 				</div><!-- // Change Row image background -->
 
 				<div class="tool-button--double-icon--wrap">
-					<input type="text" name="edit-row-color-background" value="<?php echo esc_attr( $atts['color_bg_section'] ); ?>">
+					<input class="spectrum-input-element" type="text" name="edit-row-color-background" value="<?php echo esc_attr( $atts['color_bg_section'] ); ?>">
 					<div class="tool-button tool-button--inline tool-button--double-icon deactivate-row-color-background">
 						<?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
 					</div>
 				</div><!-- // Change Row color background -->
 
 				<div class="tool-button--double-icon--wrap">
-					<input type="text" name="edit-row-overlay-color" value="<?php echo esc_attr( $atts['data-row_overlay_color'] ); ?>">
+					<input class="spectrum-input-element" type="text" name="edit-row-overlay-color" value="<?php echo esc_attr( $atts['data-row_overlay_color'] ); ?>">
 					<div class="tool-button tool-button--inline tool-button--double-icon deactivate-row-overlay-color">
 						<?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
 					</div>
