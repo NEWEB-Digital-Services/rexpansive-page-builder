@@ -824,7 +824,7 @@ var Rex_Save_Listeners = (function ($) {
                 } else {
                     content = $savingBlock.html();
                 }
-                console.log(content);
+                // console.log(content);
             } else {
                 var $sliderToSave = $textWrap.children(".rex-slider-wrap[data-rex-slider-active=\"true\"]");
 

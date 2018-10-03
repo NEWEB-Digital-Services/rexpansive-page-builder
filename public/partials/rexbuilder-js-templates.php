@@ -272,8 +272,10 @@ defined('ABSPATH') or exit;
                 </div><!-- // insert element -->
 
                 <div>
-                    <div class="tool-button tool-button--inline edit-row-image-background tooltipped" data-position="bottom" data-tooltip="" value="">
-                        <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
+                    <div class="tool-button--double-icon--wrap">
+                        <div class="tool-button tool-button--inline edit-row-image-background tooltipped" data-position="bottom" data-tooltip="" value="">
+                            <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
+                        </div>
                         <div class="tool-button tool-button--inline tool-button--double-icon deactivate-row-image-background">
                             <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                         </div>

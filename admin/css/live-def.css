@@ -1850,11 +1850,6 @@ ul {
   padding: 5px;
   cursor: pointer;
   line-height: 1;
-  -webkit-transition: opacity 0.3s ease-out, -webkit-transform 0.3s ease-out, -webkit-box-shadow 0.3s ease-out;
-  transition: opacity 0.3s ease-out, -webkit-transform 0.3s ease-out, -webkit-box-shadow 0.3s ease-out;
-  -o-transition: opacity 0.3s ease-out, transform 0.3s ease-out, box-shadow 0.3s ease-out;
-  transition: opacity 0.3s ease-out, transform 0.3s ease-out, box-shadow 0.3s ease-out;
-  transition: opacity 0.3s ease-out, transform 0.3s ease-out, box-shadow 0.3s ease-out, -webkit-transform 0.3s ease-out, -webkit-box-shadow 0.3s ease-out;
   -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
           box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
   background-color: #fff;

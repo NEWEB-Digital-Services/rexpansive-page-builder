@@ -400,7 +400,7 @@ var Rexbuilder_Section_Editor = (function($) {
     
     var flagPickerUsed = false;
 
-    var overlayColorActive = JSON.parse( $section_data.attr('data-row_overlay_active') );
+    var overlayColorActive = JSON.parse( ( 'undefined' !== typeof $section_data.attr('data-row_overlay_active') ? $section_data.attr('data-row_overlay_active') : false ) );
     var changeColorEvent = {
       eventName: "rexlive:change_section_overlay_color",
       data_to_send: {
