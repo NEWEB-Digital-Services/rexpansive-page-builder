@@ -367,3 +367,78 @@ gulp.task('code-mac-zip', ['create-temp-folder'], function (cb) {
 });
 
 gulp.task('build-mac', ['create-temp-folder', 'mac-zip', 'remove-temp-folder']);
+
+/* ---- BUILD LIVE PLUGIN VERSION ----- */
+var live_zip_name = 'Premium-200-Rexpansive-Builder.zip';
+var live_folder_name = 'builderlive';
+
+var live_file_map = [
+	'admin/ace/**/*',
+	'admin/css/**/*',
+	'admin/font-awesome-4.3.0/**/*',
+	'admin/img/**/*.*',
+	'admin/js/**/*',
+	'admin/lib/**/*',
+	'admin/models/**/*',
+	'admin/partials/**/*',
+	'admin/required-plugins/**/*',
+	'admin/rexpansive-font/**/*.*',
+	'admin/sprites/symbol/svg/sprite.symbol.svg',
+	'admin/sprites_live/symbol/svg/sprite.symbol.svg',
+	'admin/class-importheme-import-utilities.php',
+	'admin/class-importheme-import-xml-content.php',
+	'admin/class-rexbuilder-admin.php',
+	'admin/class-rexbuilder-meta-box.php',
+	'admin/index.php',
+	'includes/**/*',
+	'languages/**/*',
+	'Licensing/**/*',
+	'public/css/**/*',
+	'public/img/**/*',
+	'public/js/**/*',
+	'public/partials/**/*',
+	'public/Photoswipe/**/*',
+	'public/templates/**/*',
+	'public/jquery.mb.YTPlayer/**/*',
+	'public/class-rexbuilder-public.php',
+	'public/index.php',
+	'shortcodes/**/*',
+	'index.php',
+	'LICENSE.txt',
+	'README.txt',
+	'rexpansive-builder.php',
+	'uninstall.php',
+];
+
+gulp.task('create-temp-live-folder', function(cb) {
+	return gulp.src(live_file_map, { base: './' })
+		.pipe(gulp.dest(live_folder_name + '/'));
+	cb(err);
+});
+
+gulp.task('remove-temp-live-folder', ['create-temp-live-folder','mac-live-zip'], function(cb) {
+	return gulp.src(live_folder_name, {read: false})
+		.pipe(clean());
+	cb(err);
+});
+
+gulp.task('create-live-zip', ['create-temp-live-folder'], function(cb) {
+	return gulp.src(live_folder_name + '/**/*', { base: './'})
+		.pipe(zip(live_zip_name))
+		.pipe(gulp.dest(''));
+	cb(err);
+});
+
+gulp.task('build', ['create-temp-live-folder', 'create-live-zip', 'remove-temp-live-folder']);
+
+var exec = require('child_process').exec;
+
+gulp.task('mac-live-zip', ['create-temp-live-folder'], function (cb) {
+  exec('zip -r ' + live_zip_name + ' ' + live_folder_name + ' -x "*.DS_Store"', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    cb(err);
+  });
+});
+
+gulp.task('build-live-mac', ['create-temp-live-folder', 'mac-live-zip', 'remove-temp-live-folder']);
