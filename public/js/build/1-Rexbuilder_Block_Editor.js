@@ -427,21 +427,17 @@ var Rexbuilder_Block_Editor = (function($) {
         flagPickerUsed = false;
       },
       move: function(color) {
-        if( overlayActive ) {
-          settings.data_to_send.active = true;
-          settings.data_to_send.color =  color.toRgbString();
-  
-          var event = jQuery.Event("rexlive:change_block_overlay_color");
-          event.settings = settings;
-          $(document).trigger(event);
-        } else {
-          settings.data_to_send.active = true;
-          settings.data_to_send.color = color.toRgbString();
+        settings.data_to_send.active = true;
+        settings.data_to_send.color =  color.toRgbString();
 
+        if( overlayActive ) {
+          var event = jQuery.Event("rexlive:change_block_overlay_color");
+        } else {
           var event = jQuery.Event("rexlive:change_block_overlay");
-          event.settings = settings;
-          $(document).trigger(event);
         }
+        
+        event.settings = settings;
+        $(document).trigger(event);
 
         flagPickerUsed = true;
       },

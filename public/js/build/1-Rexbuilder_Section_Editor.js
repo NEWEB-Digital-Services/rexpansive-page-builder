@@ -397,13 +397,15 @@ var Rexbuilder_Section_Editor = (function($) {
       typeof $section.attr("data-rexlive-model-number") != "undefined"
         ? $section.attr("data-rexlive-model-number")
         : "";
+    
+    var flagPickerUsed = false;
 
-    var overlayColorActive = $section_data.attr('data-row_overlay_active');
+    var overlayColorActive = JSON.parse( $section_data.attr('data-row_overlay_active') );
     var changeColorEvent = {
       eventName: "rexlive:change_section_overlay_color",
       data_to_send: {
         color: null,
-        active: overlayColorActive,
+        active: false,
         sectionTarget: {
           sectionID: sectionID,
           modelNumber: modelNumber
@@ -418,27 +420,39 @@ var Rexbuilder_Section_Editor = (function($) {
       showAlpha: true,
       showInput: true,
       // containerClassName: "rexbuilder-materialize-wrap block-overlay-color-picker",
+      show: function() {
+        flagPickerUsed = false;
+      },
       move: function(color) {
+        changeColorEvent.data_to_send.active = true;
         changeColorEvent.data_to_send.color = color.toRgbString();
-        var event = jQuery.Event("rexlive:change_section_overlay_color");
+        if( overlayColorActive ) {
+          var event = jQuery.Event("rexlive:change_section_overlay_color");
+        } else {
+          var event = jQuery.Event("rexlive:change_section_overlay");
+        }
         event.settings = changeColorEvent;
         $(document).trigger(event);
-        // Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(changeColorEvent);
+
+        flagPickerUsed = true;
       },
       change: function(color) {
-        // background_overlay_properties.$overlay_color_palette_buttons.removeClass(
-        //   "palette-color-active"
-        // );
+        //
       },
       hide: function(color) {
-        changeColorEvent.data_to_send.color = color.toRgbString();
-        changeColorEvent.data_to_send.active = true;
-        var event = jQuery.Event("rexlive:change_section_overlay");
-        event.settings = changeColorEvent;
-        $(document).trigger(event);
+        if(flagPickerUsed) {
+          changeColorEvent.data_to_send.color = color.toRgbString();
+          changeColorEvent.data_to_send.active = true;
+
+          var event = jQuery.Event("rexlive:change_section_overlay");
+          event.settings = changeColorEvent;
+          $(document).trigger(event);
+        }
+
+        flagPickerUsed = false;
       },
-      cancelText: "",
-      chooseText: ""
+      // cancelText: "",
+      // chooseText: ""
     });
   };
 
