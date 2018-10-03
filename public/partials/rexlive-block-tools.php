@@ -36,6 +36,10 @@ defined( 'ABSPATH' ) or exit;
                     <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                 </div>
             </div><!-- // Change Block color background -->
+
+            <div class="tool-button tool-button--inline edit-block-video-background">
+                <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
+            </div><!-- // Change Block Video background -->
         </div>
 
         <div>

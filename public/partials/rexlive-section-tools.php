@@ -23,7 +23,7 @@ defined('ABSPATH') or exit;
 				</label>
 				<label>
 					<input type="radio" class="edit-row-width" data-section_width="boxed" name="row-dimension-<?php echo $atts['rexlive_section_id']; ?>" value="<?php echo ( 'boxed' == $atts['dimension'] ? esc_attr( $atts['section_width'] ) : '80%' ); ?>" <?php checked('boxed',$atts['dimension'],true); ?>>
-					<span><?php Rexbuilder_Utilities::get_icon('#B002-Boxed'); ?></span>
+					<span><?php Rexbuilder_Utilities::get_icon('#B002-Boxed-1'); ?></span>
 				</label>
 			</div><!-- // row dimension -->
 

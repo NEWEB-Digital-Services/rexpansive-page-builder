@@ -164,10 +164,8 @@ var Rexbuilder_App = (function ($) {
 				if ($mpvideo.length > 0) {
 					var videoMp4 = $mpvideo.find(".rex-video-container").get(0);
 					if (videoMp4.paused) {
-						console.log('DOM on click: faccio play del video');
 						videoMp4.play();
 					} else {
-						console.log('DOM on click: faccio pause del video');
 						videoMp4.pause();
 					}
 				}

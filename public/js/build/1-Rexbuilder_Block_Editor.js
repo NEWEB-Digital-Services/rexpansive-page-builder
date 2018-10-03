@@ -99,6 +99,83 @@ var Rexbuilder_Block_Editor = (function($) {
     });
 
     /**
+     * Edit a block background video
+     * @since 2.0.0
+     */
+    $(document).on('click', '.edit-block-video-background', function(e) {
+      var $elem = $(e.target).parents(".grid-stack-item");
+      var $section = $elem.parents(".rexpansive_section");
+      var rex_block_id = $elem.attr("data-rexbuilder-block-id");
+      var sectionID = $section.attr("data-rexlive-section-id");
+      var modelNumber =
+        typeof $section.attr("data-rexlive-model-number") != "undefined"
+          ? $section.attr("data-rexlive-model-number")
+          : "";
+      var $elemData = $elem.children(".rexbuilder-block-data");
+      var $itemContent = $elem.find(".grid-item-content");
+
+      var mp4Video =
+        typeof $elemData.attr("data-video_mp4_url") == "undefined"
+          ? ""
+          : $elemData.attr("data-video_mp4_url");
+      var mp4VideoID =
+        typeof $elemData.attr("data-video_bg_id") == "undefined"
+          ? ""
+          : $elemData.attr("data-video_bg_id");
+      var youtubeUrl =
+        typeof $elemData.attr("data-video_bg_url") == "undefined"
+          ? ""
+          : $elemData.attr("data-video_bg_url");
+      var vimeoUrl =
+        typeof $elemData.attr("data-video_bg_url_vimeo") == "undefined"
+          ? ""
+          : $elemData.attr("data-video_bg_url_vimeo");
+      var $videoMp4Wrap = $itemContent.children(".rex-video-wrap");
+      var mp4VideoWidth = "";
+      var mp4VideoHeight = "";
+      if ($videoMp4Wrap.length != 0) {
+        mp4VideoWidth = parseInt($videoMp4Wrap.attr("data-rex-video-width"));
+        mp4VideoHeight = parseInt($videoMp4Wrap.attr("data-rex-video-height"));
+      }
+
+      var type = "";
+      var audio = $itemContent.children(".rex-video-toggle-audio").length != 0;
+
+      if (mp4VideoID != "") {
+        type = "mp4";
+      } else if (youtubeUrl != "") {
+        type = "youtube";
+      } else if (vimeoUrl != "") {
+        type = "vimeo";
+      }
+
+      var data = {
+        eventName: "rexlive:editBlockVideoBackground",
+        activeBlockData: {
+          bgVideo: {
+            type: type,
+            mp4Data: {
+              idMp4: mp4VideoID,
+              linkMp4: mp4Video,
+              width: mp4VideoWidth,
+              height: mp4VideoHeight
+            },
+            vimeoUrl: vimeoUrl,
+            youtubeUrl: youtubeUrl,
+            audio: audio,
+            target: {
+              sectionID: sectionID,
+              modelNumber: modelNumber,
+              rexID: rex_block_id
+            }
+          }
+        }
+      };
+
+      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+    });
+
+    /**
      * Deactivate a block image
      * @since 2.0.0
      */
