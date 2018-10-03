@@ -6,6 +6,8 @@
   top: 0px;
   display: none;
   color: #000;
+  position: absolute;
+  z-index: 2000;
   // display: block;
   
   &.tool-box-active {

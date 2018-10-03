@@ -1936,7 +1936,9 @@ ul {
   right: 0px;
   top: 0px;
   display: none;
-  color: #000; }
+  color: #000;
+  position: absolute;
+  z-index: 2000; }
   .section-toolBox.tool-box-active {
     display: block; }
   .section-toolBox .tools {

@@ -12,7 +12,7 @@
 defined('ABSPATH') or exit;
 
 ?>
-<div class="section-toolBox" style="display:block!important;">
+<div class="section-toolBox">
 	<div class="tools">
 		
 		<div class="bl_col-6">
