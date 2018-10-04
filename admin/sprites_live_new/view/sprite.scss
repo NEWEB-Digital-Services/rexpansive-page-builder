@@ -4,7 +4,7 @@
 
 .svg-21-Models-list {
 	@extend %svg-common;
-	background-position: 100% 0;
+	background-position: 100% 16.666666666666668%;
 }
 
 .svg-21-Models-list-dims {
@@ -154,7 +154,7 @@
 
 .svg-B006-Collapse {
 	@extend %svg-common;
-	background-position: 100% 83.33333333333333%;
+	background-position: 100% 100%;
 }
 
 .svg-B006-Collapse-dims {
@@ -222,9 +222,19 @@
 	height: 20px;
 }
 
-.svg-Z001-Plus {
+.svg-C002-No-Select {
 	@extend %svg-common;
 	background-position: 70.92198581560284% 100%;
+}
+
+.svg-C002-No-Select-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-Z001-Plus {
+	@extend %svg-common;
+	background-position: 85.1063829787234% 100%;
 }
 
 .svg-Z001-Plus-dims {
@@ -234,7 +244,7 @@
 
 .svg-Z002-Image-Full {
 	@extend %svg-common;
-	background-position: 85.1063829787234% 100%;
+	background-position: 100% 0;
 }
 
 .svg-Z002-Image-Full-dims {
@@ -254,7 +264,7 @@
 
 .svg-Z003-RexSlider {
 	@extend %svg-common;
-	background-position: 100% 16.666666666666668%;
+	background-position: 100% 33.333333333333336%;
 }
 
 .svg-Z003-RexSlider-dims {
@@ -264,7 +274,7 @@
 
 .svg-Z004-Copy {
 	@extend %svg-common;
-	background-position: 100% 33.333333333333336%;
+	background-position: 100% 50%;
 }
 
 .svg-Z004-Copy-dims {
@@ -274,7 +284,7 @@
 
 .svg-Z005-Setting {
 	@extend %svg-common;
-	background-position: 100% 50%;
+	background-position: 100% 66.66666666666667%;
 }
 
 .svg-Z005-Setting-dims {
@@ -284,7 +294,7 @@
 
 .svg-Z006-Video {
 	@extend %svg-common;
-	background-position: 100% 66.66666666666667%;
+	background-position: 100% 83.33333333333333%;
 }
 
 .svg-Z006-Video-dims {

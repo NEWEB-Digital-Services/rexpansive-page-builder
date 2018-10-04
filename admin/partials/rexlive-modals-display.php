@@ -456,7 +456,8 @@ defined('ABSPATH') or exit;
                         <div class="bg-palette-selector">
                             <input class="bg-palette-value" type="hidden" value="rgba(255,255,255,0)" />
                             <span class="bg-palette-button overlay-palette-transparent">
-                                <i class="material-icons rex-icon">o</i>
+                                <!-- <i class="material-icons rex-icon">o</i> -->
+                                <?php Rexbuilder_Utilities::get_icon('#C002-No-Select'); ?>
                             </span>
                         </div>
                     </div>
@@ -560,7 +561,8 @@ defined('ABSPATH') or exit;
             <div id="bg-set-link-wrap" class="row">
                 <div class="col block-url-link-wrapper">
                     <div class="input-field rex-input-prefixed">
-                        <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="Link">l</i>
+                        <!-- <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="Link">l</i> -->
+                        <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#C001-Link'); ?></span>
                         <input type="text" id="block_link_value" name="block_link_value" value="" size="30">
                         <label for="block_link_value">http://www...</label>
                         <span class="rex-material-bar"></span>
@@ -568,7 +570,8 @@ defined('ABSPATH') or exit;
                 </div>
                 <div class="col block-custom-class-wrapper">
                     <div class="input-field rex-col2 rex-input-prefixed">
-                        <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="Custom Class">e</i>
+                        <!-- <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="Custom Class">e</i> -->
+                        <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#A008-Code'); ?></span>
                         <input type="text" id="rex_block_custom_class" name="rex_block_custom_class" value="">
                         <label for="rex_block_custom_class">
                             Classes
@@ -974,7 +977,7 @@ defined('ABSPATH') or exit;
                                     <span class="bl_input-indicator">px</span>
                                 </div><!-- // row padding left -->
                             </div>
-                            <div class="rex-live__row-padding-wrap">
+                            <div class="rex-live__row-padding-wrap bl_d-flex bl_jc-c bl_ai-c">
                                 <div class="rex-live__row-padding-wrap--xasix"></div>
                                 <div class="rex-live__row-gutter bl_d-flex bl_jc-c bl_ai-c">
                                     <div class="val-wrap bl_d-iflex bl_ai-c">

@@ -2151,7 +2151,8 @@ ul {
       -ms-transform: translateX(-1px);
           transform: translateX(-1px);
   background: #000;
-  position: absolute; }
+  position: absolute;
+  z-index: 0; }
 
 .rex-live__row-padding-wrap--xasix {
   width: 100%;
@@ -2162,12 +2163,14 @@ ul {
       -ms-transform: translateY(-1px);
           transform: translateY(-1px);
   background: #000;
-  position: absolute; }
+  position: absolute;
+  z-index: 0; }
 
 .rex-live__row-gutter {
-  float: right;
   width: 50%;
-  height: 50%; }
+  height: 50%;
+  z-index: 10;
+  background-color: #fafafa; }
 
 .layout {
   display: -webkit-box;
