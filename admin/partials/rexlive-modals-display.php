@@ -189,7 +189,8 @@ defined('ABSPATH') or exit;
                         <div class="bg-palette-selector">
                             <input class="bg-palette-value" type="hidden" value="rgba(255,255,255,0)" />
                             <span class="bg-palette-button bg-palette-transparent">
-                                <i class="material-icons rex-icon">o</i>
+                                <?php Rexbuilder_Utilities::get_icon('#C002-No-Select'); ?>
+                                <!-- <i class="material-icons rex-icon">o</i> -->
                             </span>
                         </div>
                     </div>
@@ -242,7 +243,7 @@ defined('ABSPATH') or exit;
                         <div class="bg-palette-selector">
                             <input class="bg-palette-value" type="hidden" value="rgba(255,255,255,0)" />
                             <span class="bg-palette-button overlay-palette-transparent">
-                                <i class="material-icons rex-icon">o</i>
+                                <?php Rexbuilder_Utilities::get_icon('#C002-No-Select'); ?>
                             </span>
                         </div>
                     </div>
@@ -349,11 +350,17 @@ defined('ABSPATH') or exit;
                 </div>
                 <div class="col">
                     <div id="bg-set-photoswipe" class="col rex-check-icon">
-                        <input type="checkbox" id="background_photoswipe" name="background_photoswipe" title="Photo Zoom">
+                        <label>
+                            <input type="checkbox" id="background_photoswipe" name="background_photoswipe" title="<?php _e( 'Photo Zoom', 'rexpansive' ); ?>">
+                            <span>
+                                <?php Rexbuilder_Utilities::get_icon('#Z007-Zoom'); ?>
+                            </span>
+                        </label>
+                        <!-- <input type="checkbox" id="background_photoswipe" name="background_photoswipe" title="Photo Zoom">
                         <label for="background_photoswipe" class="tooltipped" data-position="bottom" data-tooltip="Photo Zoom">
                             <i class="rex-icon">g</i>
                             <span class="rex-ripple"></span>
-                        </label>
+                        </label> -->
                     </div>
                 </div>
             </div>
@@ -403,7 +410,7 @@ defined('ABSPATH') or exit;
                         <div class="bg-palette-selector">
                             <input class="bg-palette-value" type="hidden" value="rgba(255,255,255,0)" />
                             <span class="bg-palette-button bg-palette-transparent">
-                                <i class="material-icons rex-icon">o</i>
+                                <?php Rexbuilder_Utilities::get_icon('#C002-No-Select'); ?>
                             </span>
                         </div>
                     </div>
@@ -456,7 +463,6 @@ defined('ABSPATH') or exit;
                         <div class="bg-palette-selector">
                             <input class="bg-palette-value" type="hidden" value="rgba(255,255,255,0)" />
                             <span class="bg-palette-button overlay-palette-transparent">
-                                <!-- <i class="material-icons rex-icon">o</i> -->
                                 <?php Rexbuilder_Utilities::get_icon('#C002-No-Select'); ?>
                             </span>
                         </div>
@@ -513,47 +519,54 @@ defined('ABSPATH') or exit;
                 </div>
                 <!-- POSITIONS -->
                 <div id="block-paddings-wrapper">
-                    <div class="col">
-                        <div class="clearfix">
-                            <div class="block-padding-wrap">
+                    <div class="rex-live__block-padding-wrap">
+                        <div class="bl_d-flex bl_jc-c">
+                            <div class="val-wrap bl_d-iflex bl_ai-c">
                                 <input type="text" id="bm-block-padding-top" class="block-padding-values" name="block-padding-top" value="5" />
-                                <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Padding Top">d</i>
+                            </div><!-- // block padding top -->
+                        </div>
+                        <div class="bl_d-flex bl_ai-c bl_jc-sb">
+                            <div>
+                                <div class="val-wrap bl_d-iflex bl_ai-c">
+                                    <input type="text" id="bm-block-padding-left" class="block-padding-values" name="block-padding-left" value="5" />
+                                </div><!-- // block padding left -->
+                            </div>
+                            <div class="rex-live__row-gutter-wrap bl_d-flex bl_jc-c bl_ai-c">
+                                <div class="rex-live__gutter-wrap--xaxis"></div>
+                                <div class="rex-live__row-gutter bl_d-flex bl_jc-c bl_ai-c">
+                                    <div class="val-wrap bl_d-iflex bl_ai-c">
+                                        <div id="block-padding-type-select" class="rex-vertical-check-wrap col">
+                                            <div class="rex-check-text rex-block-padding-type-wrap" data-rex-type-padding="%">
+                                                <input id="bm-block-pad-percentage" type="radio" class="bm-block-padding-type with-gap" name="block-padding-type" value="percentage" checked />
+                                                <label for="bm-block-pad-percentage">
+                                                    %
+                                                    <span class="rex-ripple"></span>
+                                                </label>
+                                            </div>
+                                            <div class="rex-check-text rex-block-padding-type-wrap" data-rex-type-padding="px">
+                                                <input id="bm-block-pad-pixel" type="radio" class="bm-block-padding-type with-gap" name="block-padding-type" value="pixel" />
+                                                <label for="bm-block-pad-pixel">
+                                                    PX
+                                                    <span class="rex-ripple"></span>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div><!-- // block padding unit measure -->
+                                </div>
+                                <div class="rex-live__gutter-wrap--yaxis"></div>
+                            </div>
+                            <div>
+                                <div class="val-wrap bl_d-iflex bl_ai-c">
+                                    <input type="text" id="bm-block-padding-right" class="block-padding-values" name="block-padding-right" value="5" />
+                                </div><!-- // block padding right -->
                             </div>
                         </div>
-                        <div class="clearfix">
-                            <div class="block-padding-wrap">
-                                <input type="text" id="bm-block-padding-left" class="block-padding-values" name="block-padding-left" value="5" />
-                                <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Padding Left">a</i>
-                            </div>
-                            <div id="block-padding-future-content"></div>
-                            <div class="block-padding-wrap">
-                                <input type="text" id="bm-block-padding-right" class="block-padding-values" name="block-padding-right" value="5" />
-                                <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Padding Right">c</i>
-                            </div>
-                        </div>
-                        <div class="clearfix">
-                            <div class="block-padding-wrap">
+                        <div class="bl_d-flex bl_jc-c">
+                            <div class="val-wrap bl_d-iflex bl_ai-c">
                                 <input type="text" id="bm-block-padding-bottom" class="block-padding-values" name="block-padding-bottom" value="5" />
-                                <i class="rex-icon tooltipped" data-position="bottom" data-tooltip="Padding Bottom">b</i>
-                            </div>
+                            </div><!-- // block paddig bottom -->
                         </div>
-                    </div>
-                    <div id="block-padding-type-select" class="rex-vertical-check-wrap col">
-                        <div class="rex-check-text rex-block-padding-type-wrap" data-rex-type-padding="%">
-                            <input id="bm-block-pad-percentage" type="radio" class="bm-block-padding-type with-gap" name="block-padding-type" value="percentage" checked />
-                            <label for="bm-block-pad-percentage">
-                                %
-                                <span class="rex-ripple"></span>
-                            </label>
-                        </div>
-                        <div class="rex-check-text rex-block-padding-type-wrap" data-rex-type-padding="px">
-                            <input id="bm-block-pad-pixel" type="radio" class="bm-block-padding-type with-gap" name="block-padding-type" value="pixel" />
-                            <label for="bm-block-pad-pixel">
-                                PX
-                                <span class="rex-ripple"></span>
-                            </label>
-                        </div>
-                    </div>
+                    </div><!-- // block padding -->
                 </div>
                 <!-- PADDINGS -->
             </div>
@@ -961,7 +974,7 @@ defined('ABSPATH') or exit;
                             <span class="bl_input-indicator">px</span>
                         </div><!-- // row margin left -->
                     </div>
-                    <div class="rex-live__row-margin-wrap">
+                    <div class="rex-live__row-padding-wrap">
                         <div class="bl_d-flex bl_jc-c">
                             <div class="val-wrap bl_d-iflex bl_ai-c">
                                 <input type="text" size="5" id="row-separator-top" class="block-padding-values" name="row-separator-top"
@@ -977,8 +990,8 @@ defined('ABSPATH') or exit;
                                     <span class="bl_input-indicator">px</span>
                                 </div><!-- // row padding left -->
                             </div>
-                            <div class="rex-live__row-padding-wrap bl_d-flex bl_jc-c bl_ai-c">
-                                <div class="rex-live__row-padding-wrap--xasix"></div>
+                            <div class="rex-live__row-gutter-wrap bl_d-flex bl_jc-c bl_ai-c">
+                                <div class="rex-live__gutter-wrap--xaxis"></div>
                                 <div class="rex-live__row-gutter bl_d-flex bl_jc-c bl_ai-c">
                                     <div class="val-wrap bl_d-iflex bl_ai-c">
                                         <input type="text" size="5" id="" class="section-set-block-gutter block-padding-values" name="section-set-block-gutter"
@@ -986,7 +999,7 @@ defined('ABSPATH') or exit;
                                         <span class="bl_input-indicator">px</span>
                                     </div><!-- // row gutter -->
                                 </div>
-                                <div class="rex-live__row-padding-wrap--yasix"></div>
+                                <div class="rex-live__gutter-wrap--yaxis"></div>
                             </div>
                             <div>
                                 <div class="val-wrap bl_d-iflex bl_ai-c">

@@ -58,19 +58,21 @@
 
 .btn-save {
   font-size: 30px;
-  .l-svg-icons{
-    fill: #00acff;
-    > svg {
-      fill: #00acff;
-    }
-  }
+  @include fill-icon(#00acff);
+  // .l-svg-icons{
+  //   fill: #00acff;
+  //   > svg {
+  //     fill: #00acff;
+  //   }
+  // }
   &.page-edited{
-    .l-svg-icons{
-      fill: #979797;
-      > svg {
-        fill: #979797;
-      }
-    }
+    @include fill-icon(#979797);
+    // .l-svg-icons{
+    //   fill: #979797;
+    //   > svg {
+    //     fill: #979797;
+    //   }
+    // }
 /*     
     &.rex-saving {
     } 
@@ -135,43 +137,25 @@
   text-align: center;
 }
 
-.close-toolbox{
+.close-toolbox {
+  @include fill-icon(#979797);
   .l-svg-icons{
     font-size: 15px;
-    fill: #979797;
-    > svg {
-      fill: #979797;
-    }
+    // fill: #979797;
+    // > svg {
+    //   fill: #979797;
+    // }
   }
 }
 
 
 .btn-builder-layout{
-  .l-svg-icons{
-    fill: $icon-base-color;
-    stroke: $icon-base-color;
-    > svg {
-      fill: $icon-base-color;
-      stroke: $icon-base-color;
-    }
-  }
-  &.active-layout .l-svg-icons{
-    fill: $icon-active-color;
-    stroke: $icon-active-color;
-    > svg {
-      fill: $icon-active-color;
-      stroke: $icon-active-color;
-    } 
+  @include fill-icon($icon-base-color);
+  &.active-layout {
+    @include fill-icon($icon-active-color);
   }
 }
 
 .btn-builder-layout:hover:not(.active-layout){
-  .l-svg-icons{
-    fill: $icon-hover-color;
-    stroke: $icon-hover-color;
-    > svg {
-      fill: $icon-hover-color;
-      stroke: $icon-hover-color;
-    }
-  }
+  @include fill-icon($icon-hover-color);
 }

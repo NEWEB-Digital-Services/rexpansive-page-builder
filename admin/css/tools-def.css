@@ -2130,19 +2130,23 @@ ul {
   max-width: 340px;
   margin: 0 auto; }
 
-.rex-live__row-margin-wrap {
+.rex-live__row-padding-wrap {
   border: 2px solid #000;
   margin: 5px;
   padding: 5px; }
 
-.rex-live__row-padding-wrap {
+.rex-live__block-padding-wrap {
+  margin: 5px;
+  padding: 5px; }
+
+.rex-live__row-gutter-wrap {
   width: 120px;
   height: 120px;
   border: 2px dotted #000;
   position: relative;
   margin: 5px; }
 
-.rex-live__row-padding-wrap--yasix {
+.rex-live__gutter-wrap--yaxis {
   width: 2px;
   height: 100%;
   top: 0;
@@ -2154,7 +2158,7 @@ ul {
   position: absolute;
   z-index: 0; }
 
-.rex-live__row-padding-wrap--xasix {
+.rex-live__gutter-wrap--xaxis {
   width: 100%;
   height: 2px;
   top: 50%;
@@ -2309,19 +2313,15 @@ ul {
 
 .btn-save {
   font-size: 30px; }
-  .btn-save .l-svg-icons {
+  .btn-save .l-svg-icons > svg {
     fill: #00acff; }
-    .btn-save .l-svg-icons > svg {
-      fill: #00acff; }
   .btn-save.page-edited {
     /*     
         &.rex-saving {
         } 
     */ }
-    .btn-save.page-edited .l-svg-icons {
+    .btn-save.page-edited .l-svg-icons > svg {
       fill: #979797; }
-      .btn-save.page-edited .l-svg-icons > svg {
-        fill: #979797; }
 
 .builder-add-custom-layout .l-svg-icons {
   font-size: 16px; }
@@ -2364,31 +2364,18 @@ ul {
 .rex-number {
   text-align: center; }
 
-.close-toolbox .l-svg-icons {
-  font-size: 15px;
+.close-toolbox .l-svg-icons > svg {
   fill: #979797; }
-  .close-toolbox .l-svg-icons > svg {
-    fill: #979797; }
+.close-toolbox .l-svg-icons {
+  font-size: 15px; }
 
-.btn-builder-layout .l-svg-icons {
-  fill: #000000;
-  stroke: #000000; }
-  .btn-builder-layout .l-svg-icons > svg {
-    fill: #000000;
-    stroke: #000000; }
-.btn-builder-layout.active-layout .l-svg-icons {
-  fill: #00ACFF;
-  stroke: #00ACFF; }
-  .btn-builder-layout.active-layout .l-svg-icons > svg {
-    fill: #00ACFF;
-    stroke: #00ACFF; }
+.btn-builder-layout .l-svg-icons > svg {
+  fill: #000000; }
+.btn-builder-layout.active-layout .l-svg-icons > svg {
+  fill: #00ACFF; }
 
-.btn-builder-layout:hover:not(.active-layout) .l-svg-icons {
-  fill: #979797;
-  stroke: #979797; }
-  .btn-builder-layout:hover:not(.active-layout) .l-svg-icons > svg {
-    fill: #979797;
-    stroke: #979797; }
+.btn-builder-layout:hover:not(.active-layout) .l-svg-icons > svg {
+  fill: #979797; }
 
 #rexpansive-builder-backend-wrapper .rexpansive-live-frame-container {
   -webkit-transition: width 300ms;

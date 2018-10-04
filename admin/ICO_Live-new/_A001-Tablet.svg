@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
     <!-- Generator: Sketch 52 (66869) - http://www.bohemiancoding.com/sketch -->
-    <title>Artboard</title>
+    <title>Ico</title>
     <desc>Created with Sketch.</desc>
-    <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <path d="M4,14 L16,14 L16,2 L4,2 L4,14 Z M18,0 L18,20 L2,20 L2,0 L18,0 Z M9,16 L9,18 L11,18 L11,16 L9,16 Z" id="Combined-Shape" fill="" fill-rule="nonzero"></path>
+    <g id="Ico" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <rect id="Rectangle" stroke="" stroke-width="2" x="3" y="1" width="14" height="18"></rect>
     </g>
 </svg>
