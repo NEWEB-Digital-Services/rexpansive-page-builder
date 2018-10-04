@@ -1806,6 +1806,11 @@ ul {
   display: -ms-flexbox;
   display: flex; }
 
+.bl_d-iflex {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex; }
+
 .bl_col-6 {
   width: 50%; }
 

@@ -1806,6 +1806,11 @@ ul {
   display: -ms-flexbox;
   display: flex; }
 
+.bl_d-iflex {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex; }
+
 .bl_col-6 {
   width: 50%; }
 
@@ -1932,6 +1937,53 @@ ul {
 
 .rex-modal {
   max-height: none; }
+
+.bl_input-indicator {
+  font-size: 10px;
+  text-transform: uppercase; }
+
+.rex-live__row-margin-padding {
+  max-width: 340px;
+  margin: 0 auto; }
+
+.rex-live__row-margin-wrap {
+  border: 2px dashed #000;
+  margin: 5px;
+  padding: 5px; }
+
+.rex-live__row-padding-wrap {
+  width: 120px;
+  height: 120px;
+  border: 2px dotted #000;
+  position: relative;
+  margin: 5px; }
+
+.rex-live__row-padding-wrap--yasix {
+  width: 2px;
+  height: 100%;
+  top: 0;
+  left: 50%;
+  -webkit-transform: translateX(-1px);
+      -ms-transform: translateX(-1px);
+          transform: translateX(-1px);
+  background: #000;
+  position: absolute; }
+
+.rex-live__row-padding-wrap--xasix {
+  width: 100%;
+  height: 2px;
+  top: 50%;
+  left: 0;
+  -webkit-transform: translateY(-1px);
+      -ms-transform: translateY(-1px);
+          transform: translateY(-1px);
+  background: #000;
+  position: absolute; }
+
+.rex-live__row-gutter {
+  float: right;
+  width: 50%;
+  height: 50%; }
 
 .layout {
   display: -webkit-box;
