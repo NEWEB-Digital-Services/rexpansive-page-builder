@@ -19,7 +19,7 @@ var Background_Section_Image_Modal = (function($) {
         "url(" + data.imageUrl + ")"
       );
       background_section_image_properties.$image_preview
-        .find("i")
+        .children()
         .css("display", "none");
       background_section_image_properties.$image_url.attr(
         "data-rex-image-bg-url",
@@ -49,7 +49,7 @@ var Background_Section_Image_Modal = (function($) {
       ""
     );
     background_section_image_properties.$image_preview
-      .find("i")
+      .children()
       .css("display", "block");
     background_section_image_properties.$image_url.attr(
       "data-rex-image-bg-url",

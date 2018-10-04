@@ -2,7 +2,6 @@
   display: inline-block;
   width: 1em;
   height: 1em;
-  fill: #000000;
   vertical-align: -0.1em;
   line-height: 1; }
 
@@ -10,8 +9,11 @@
   display: inline-block;
   width: 1em;
   height: 1em;
-  fill: #000000;
+  fill: #979797;
   vertical-align: -0.1em; }
+
+.l-icon--white .l-svg-icons > svg {
+  fill: #fff; }
 
 .materialize-red {
   background-color: #e51c23 !important; }
@@ -2111,8 +2113,6 @@ ul {
 .rex-modal {
   max-height: none;
   max-width: 405px; }
-  .rex-modal .l-svg-icons > svg {
-    fill: #979797; }
   .rex-modal .l-svg-icons {
     font-size: 20px; }
 
@@ -2370,7 +2370,7 @@ ul {
   font-size: 15px; }
 
 .btn-builder-layout .l-svg-icons > svg {
-  fill: #000000; }
+  fill: #000; }
 .btn-builder-layout.active-layout .l-svg-icons > svg {
   fill: #00ACFF; }
 

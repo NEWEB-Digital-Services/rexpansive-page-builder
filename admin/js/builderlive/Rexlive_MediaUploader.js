@@ -346,7 +346,7 @@ var Rexlive_MediaUploader = (function($) {
         image_uploader_frame
           .state("upload-image-bg")
           .get("$preview")
-          .find("i")
+          .children()
           .css("display", "none");
 
         if ($data.parents("#rex-edit-background-section").length != 0) {

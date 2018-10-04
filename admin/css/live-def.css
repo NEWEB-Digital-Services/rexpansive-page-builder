@@ -2,7 +2,6 @@
   display: inline-block;
   width: 1em;
   height: 1em;
-  fill: #000000;
   vertical-align: -0.1em;
   line-height: 1; }
 
@@ -10,8 +9,11 @@
   display: inline-block;
   width: 1em;
   height: 1em;
-  fill: #000000;
+  fill: #979797;
   vertical-align: -0.1em; }
+
+.l-icon--white .l-svg-icons > svg {
+  fill: #fff; }
 
 .materialize-red {
   background-color: #e51c23 !important; }
@@ -2222,7 +2224,8 @@ ul {
   position: absolute;
   cursor: pointer;
   top: -10px;
-  right: -10px; }
+  right: -10px;
+  font-size: 10px; }
 
 .builder-move-row {
   cursor: move; }

@@ -2,7 +2,7 @@
   display: inline-block;
   width: 1em;
   height: 1em;
-  fill: $icon-base-color;
+  // fill: $icon-base-color;
   vertical-align: -0.1em;
   line-height: 1;
 }
@@ -13,4 +13,8 @@
   height: 1em;
   fill: $icon-base-color;
   vertical-align: -0.1em;
+}
+
+.l-icon--white {
+  @include fill-icon(#fff);
 }

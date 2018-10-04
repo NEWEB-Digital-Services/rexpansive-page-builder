@@ -133,10 +133,11 @@ defined('ABSPATH') or exit;
                         </div>
                         <div id="bg-section-set-img-wrap" class="rex-button-with-plus">
                             <div id="bg-section-img-preview" class="image-preview-logo">
-                                <i class="material-icons rex-icon">p</i>
+                                <!-- <i class="material-icons rex-icon">p</i> -->
+                                <span class="l-icon--white"><?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?></span>
                             </div>
-                            <button id="background-section-up-img" class="rex-plus-button btn-floating light-blue darken-1" value="" title="Select Image">
-                                <i class="material-icons"></i>
+                            <button id="background-section-up-img" class="rex-plus-button l-icon--white btn-floating light-blue darken-1" value="" title="Select Image">
+                                <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                             </button>
                             <input name="" class="file-path" type="hidden" id="background-section-url" />
                         </div>
@@ -318,10 +319,11 @@ defined('ABSPATH') or exit;
                         </div>
                         <div id="bg-block-set-img-wrap" class="rex-button-with-plus">
                             <div id="bg-block-img-preview" class="image-preview-logo">
-                                <i class="material-icons rex-icon">p</i>
+                                <!-- <i class="material-icons rex-icon">p</i> -->
+                                <span class="l-icon--white"><?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?></span>
                             </div>
-                            <button id="background-block-up-img" class="rex-plus-button btn-floating light-blue darken-1" value="" title="Select Image">
-                                <i class="material-icons"></i>
+                            <button id="background-block-up-img" class="rex-plus-button btn-floating l-icon--white light-blue darken-1" value="" title="Select Image">
+                                <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                             </button>
                             <input name="" class="file-path" type="hidden" id="background-block-url" />
                         </div>
@@ -333,18 +335,24 @@ defined('ABSPATH') or exit;
                     </div>
                     <div id="bg-set-img-type" class="col clearfix">
                         <div class="rex-background-image-type-wrap" data-rex-type-image="full">
-                            <input id="bg-img-type-full" class="background_image_type with-gap" type="radio" name="background_image_type" value="full">
-                            <label for="bg-img-type-full" class="tooltipped" data-position="bottom" data-tooltip="Full">
+                            <label>
+                                <input id="bg-img-type-full" class="background_image_type with-gap" type="radio" name="background_image_type" value="full">
+                                <span><?php Rexbuilder_Utilities::get_icon('#C003-Image-Full'); ?></span>
+                            </label>
+                            <!-- <label for="bg-img-type-full" class="tooltipped" data-position="bottom" data-tooltip="Full">
                                 <i class="material-icons rex-icon">j</i>
                                 <span class="rex-ripple"></span>
-                            </label>
+                            </label> -->
                         </div>
                         <div class="rex-background-image-type-wrap" data-rex-type-image="natural">
-                            <input id="bg-img-type-natural" class="background_image_type with-gap" type="radio" name="background_image_type" value="natural">
-                            <label for="bg-img-type-natural" class="tooltipped" data-position="bottom" data-tooltip="Natural">
+                            <label>
+                                <input id="bg-img-type-natural" class="background_image_type with-gap" type="radio" name="background_image_type" value="natural">
+                                <span><?php Rexbuilder_Utilities::get_icon('#C004-Image-Natural'); ?></span>
+                            </label>
+                            <!-- <label for="bg-img-type-natural" class="tooltipped" data-position="bottom" data-tooltip="Natural">
                                 <i class="material-icons rex-icon">k</i>
                                 <span class="rex-ripple"></span>
-                            </label>
+                            </label> -->
                         </div>
                     </div>
                 </div>

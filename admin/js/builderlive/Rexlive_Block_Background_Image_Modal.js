@@ -15,7 +15,7 @@ var Background_Block_Image_Modal = (function($) {
         "url(" + data.imageUrl + ")"
       );
       background_block_image_properties.$image_preview
-        .find("i")
+        .children()
         .css("display", "none");
       background_block_image_properties.$image_url.attr(
         "data-rex-image-bg-url",
@@ -48,7 +48,7 @@ var Background_Block_Image_Modal = (function($) {
     background_block_image_properties.$image_url.val("");
     background_block_image_properties.$image_preview.css("backgroundImage", "");
     background_block_image_properties.$image_preview
-      .find("i")
+      .children()
       .css("display", "block");
     background_block_image_properties.$image_url.attr(
       "data-rex-image-bg-url",

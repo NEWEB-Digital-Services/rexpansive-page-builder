@@ -150,7 +150,7 @@
 
 
 .btn-builder-layout{
-  @include fill-icon($icon-base-color);
+  @include fill-icon(#000);
   &.active-layout {
     @include fill-icon($icon-active-color);
   }

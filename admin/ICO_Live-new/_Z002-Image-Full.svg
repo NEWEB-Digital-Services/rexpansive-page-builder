@@ -4,10 +4,8 @@
     <title>Artboard</title>
     <desc>Created with Sketch.</desc>
     <g id="Artboard" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="15-Image" transform="translate(0.000000, 3.000000)" fill="">
-            <polygon id="Triangle" points="5 7 10 17 0 17"></polygon>
-            <polygon id="Triangle" points="12.5 2 20 17 5 17"></polygon>
-            <circle id="Oval" cx="5" cy="2" r="2"></circle>
-        </g>
+        <path d="M7.36842105,14.7368421 L14,5.5067062e-14 L20.0255163,10.0425271 L20.0255163,20 L10,20 L3.37507799e-14,20 L5,10 L7.36842105,14.7368421 Z" id="Combined-Shape" fill=""></path>
+        <path d="M20,20 L0,20 L20,20 Z" id="Rectangle" fill=""></path>
+        <circle id="Oval" fill="" cx="5" cy="5" r="2"></circle>
     </g>
 </svg>

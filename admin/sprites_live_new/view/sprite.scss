@@ -14,7 +14,7 @@
 
 .svg-A001-Tablet {
 	@extend %svg-common;
-	background-position: 0 85.71428571428571%;
+	background-position: 14.184397163120567% 85.71428571428571%;
 }
 
 .svg-A001-Tablet-dims {
@@ -174,7 +174,7 @@
 
 .svg-B010-Masonry {
 	@extend %svg-common;
-	background-position: 70.92198581560284% 15%;
+	background-position: 0 85.71428571428571%;
 }
 
 .svg-B010-Masonry-dims {
@@ -184,7 +184,7 @@
 
 .svg-B011-Grid {
 	@extend %svg-common;
-	background-position: 14.184397163120567% 85.71428571428571%;
+	background-position: 70.92198581560284% 15%;
 }
 
 .svg-B011-Grid-dims {
@@ -348,6 +348,16 @@
 }
 
 .svg-_A010-Mobile-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-_Z002-Image-Full {
+	@extend %svg-common;
+	background-position: 56.737588652482266% 100%;
+}
+
+.svg-_Z002-Image-Full-dims {
 	width: 20px;
 	height: 20px;
 }
