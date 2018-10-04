@@ -119,16 +119,18 @@ $radio-border: 2px solid $radio-fill-color;
 }
 
 [type="radio"]:checked + span {
-  .l-svg-icons,
-  .l-svg-icons > svg {
-    fill: $radio-fill-color;
-  }
+  // .l-svg-icons,
+  // .l-svg-icons > svg {
+  //   fill: $radio-fill-color;
+  // }
+  @include fill-icon($radio-fill-color);
 }
 
 [type="radio"]:not(:checked) + span,
 [type="radio"]:not(:checked) + span {
-  .l-svg-icons,
-  .l-svg-icons > svg {
-    fill: $radio-empty-color;
-  }
+  // .l-svg-icons,
+  // .l-svg-icons > svg {
+  //   fill: $radio-empty-color;
+  // }
+  @include fill-icon($radio-empty-color);
 }

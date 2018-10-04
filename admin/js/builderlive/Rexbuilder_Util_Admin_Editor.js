@@ -14,6 +14,8 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
     var updatedLayoutData;
 
+    var input_selector;
+
     var _findLayoutType = function (name) {
         if (name == "default" || name == "mobile" || name == "tablet") {
             return "standard";
@@ -199,6 +201,24 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
             Model_Import_Modal.openModal();
         });
 
+        $(document).on('focus', input_selector, function(e) {
+            if ($(e.target).is(input_selector)) {
+                $(e.target)
+                    .siblings('label, .prefix')
+                    .addClass('active');
+                }
+            }
+        );
+
+        $(document).on('blur', input_selector, function(e) {
+            if ($(e.target).is(input_selector)) {
+                $(e.target)
+                    .siblings('label, .prefix')
+                    .removeClass('active');
+                }
+            }
+        );
+
         window.addEventListener("message", _receiveMessage, false);
     }
 
@@ -342,6 +362,8 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
         activeLayoutPage = "default";
         this.$responsiveToolbar.find(".builder-default-layout").addClass("active-layout");
         this.activeWidth = 0;
+        
+        input_selector = 'input[type=text], input[type=password], input[type=email], input[type=url], input[type=tel], input[type=number], input[type=search], input[type=date], input[type=time], textarea';
 
         $frameContainer.on(Rexbuilder_Util_Admin_Editor.transitionEvent, function () {
             if (updatedLayoutData !== null) {

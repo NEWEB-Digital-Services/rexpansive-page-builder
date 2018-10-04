@@ -62,10 +62,11 @@ $radio-empty-color: #979797;
   }
 
   + span {
-    .l-svg-icons,
-    .l-svg-icons > svg {
-      fill: $radio-empty-color;
-    }
+    // .l-svg-icons,
+    // .l-svg-icons > svg {
+    //   fill: $radio-empty-color;
+    // }
+    @include fill-icon($radio-empty-color);
   }
 }
 
@@ -90,10 +91,11 @@ $radio-empty-color: #979797;
   }
 
   + span {
-    .l-svg-icons,
-    .l-svg-icons > svg {
-      fill: $radio-fill-color;
-    }
+    // .l-svg-icons,
+    // .l-svg-icons > svg {
+    //   fill: $radio-fill-color;
+    // }
+    @include fill-icon($radio-fill-color);
   }
 }
 

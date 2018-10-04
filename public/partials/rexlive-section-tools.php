@@ -39,7 +39,7 @@ defined('ABSPATH') or exit;
 			</div><!-- // row layout -->
 
 			<div class="tool-button tool-button--inline collapse-grid tooltipped">
-				<?php Rexbuilder_Utilities::get_icon('#B006-Colapse'); ?>
+				<?php Rexbuilder_Utilities::get_icon('#B006-Collapse'); ?>
 			</div><!-- // collapse -->
 		</div>
 		<!-- // left area: row dimension, layout, collapse -->

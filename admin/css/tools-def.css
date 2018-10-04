@@ -1725,13 +1725,10 @@
   background-color: rgba(0, 0, 0, 0.42);
   border-color: #949494; }
 
-[type="radio"]:checked + span .l-svg-icons,
 [type="radio"]:checked + span .l-svg-icons > svg {
   fill: #00ACFF; }
 
-[type="radio"]:not(:checked) + span .l-svg-icons,
 [type="radio"]:not(:checked) + span .l-svg-icons > svg,
-[type="radio"]:not(:checked) + span .l-svg-icons,
 [type="radio"]:not(:checked) + span .l-svg-icons > svg {
   fill: #979797; }
 
@@ -1789,7 +1786,6 @@
     -webkit-box-shadow: 0 0 0 10px rgba(0, 0, 0, 0.1);
             box-shadow: 0 0 0 10px rgba(0, 0, 0, 0.1);
     background-color: rgba(0, 0, 0, 0.1); }
-  [type="checkbox"] + span .l-svg-icons,
   [type="checkbox"] + span .l-svg-icons > svg {
     fill: #979797; }
 
@@ -1813,7 +1809,6 @@
 [type="checkbox"]:checked:disabled + span:before {
   border-right: 2px solid rgba(0, 0, 0, 0.42);
   border-bottom: 2px solid rgba(0, 0, 0, 0.42); }
-[type="checkbox"]:checked + span .l-svg-icons,
 [type="checkbox"]:checked + span .l-svg-icons > svg {
   fill: #00ACFF; }
 
@@ -2023,7 +2018,6 @@ ul {
   color: #979797;
   -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
           box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45); }
-  .tool-button--big .l-svg-icons,
   .tool-button--big .l-svg-icons > svg {
     fill: #979797; }
   .tool-button--big.tool-button--inline {
@@ -2044,25 +2038,21 @@ ul {
   color: #979797; }
   .tool-button.tool-button--inline {
     display: inline-block; }
-  .tool-button .l-svg-icons,
   .tool-button .l-svg-icons > svg {
     fill: #979797; }
   .tool-button:hover {
     background-color: #00ACFF;
     color: #fff; }
-    .tool-button:hover .l-svg-icons,
     .tool-button:hover .l-svg-icons > svg {
       fill: #fff; }
   .tool-button.active {
     background-color: #00ACFF;
     color: #fff; }
-    .tool-button.active .l-svg-icons,
     .tool-button.active .l-svg-icons > svg {
       fill: #fff; }
   .tool-button.tool-button--black {
     background-color: #000;
     color: #fff; }
-    .tool-button.tool-button--black .l-svg-icons,
     .tool-button.tool-button--black .l-svg-icons > svg {
       fill: #fff; }
   .tool-button.tool-button--empty {
@@ -2119,13 +2109,22 @@ ul {
     opacity: 0; }
 
 .rex-modal {
-  max-height: none; }
+  max-height: none;
+  max-width: 405px; }
+  .rex-modal .l-svg-icons > svg {
+    fill: #979797; }
   .rex-modal .l-svg-icons {
     font-size: 20px; }
 
 .bl_input-indicator {
   font-size: 10px;
   text-transform: uppercase; }
+
+.prefix.active {
+  background-color: #fff;
+  color: #00ACFF; }
+  .prefix.active .l-svg-icons > svg {
+    fill: #00ACFF; }
 
 .rex-live__row-margin-padding {
   max-width: 340px;

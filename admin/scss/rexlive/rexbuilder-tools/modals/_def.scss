@@ -1,5 +1,8 @@
 .rex-modal {
   max-height: none;
+  max-width: 405px;
+
+  @include fill-icon($icon-deactive-color);
 
   .l-svg-icons {
     font-size: 20px;
@@ -9,4 +12,10 @@
 .bl_input-indicator {
   font-size: 10px;
   text-transform: uppercase;
+}
+
+.prefix {
+  &.active {
+    @include bl-btn--active;
+  }
 }
