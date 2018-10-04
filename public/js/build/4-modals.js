@@ -2381,7 +2381,7 @@
     });
 
     $(document).on("click", ".update-model-button", function(e) {
-      var $button = $(e.target);
+      var $button = $(this);
       var $section = $button.parents(".rexpansive_section");
 
       if ($button.hasClass("locked")) {
