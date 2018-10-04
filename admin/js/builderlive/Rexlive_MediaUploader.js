@@ -216,9 +216,7 @@ var Rexlive_MediaUploader = (function($) {
         if( 'undefined' !== typeof data_to_send.typeBGimage ) {
           data.data_to_send.typeBGimage = data_to_send.typeBGimage;
         }
-      }); 
-
-      console.log(data);
+      });
 
       // Launch image insert event to the iframe
       Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);

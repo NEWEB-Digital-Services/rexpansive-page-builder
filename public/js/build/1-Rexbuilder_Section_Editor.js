@@ -328,7 +328,6 @@ var Rexbuilder_Section_Editor = (function($) {
         flagPickerUsed = false;
       },
       move: function(color) {
-        // background_section_color_properties.$color_preview_icon.hide();
         settings.data_to_send.color = bgColorActive
           ? color.toRgbString()
           : "";
@@ -347,31 +346,23 @@ var Rexbuilder_Section_Editor = (function($) {
       hide: function(color) {
         if (flagPickerUsed) {
           colorActive = color.toRgbString();
+          
+          var data_color = {
+            data_to_send: {
+              color: bgColorActive ? colorActive : "",
+              active: bgColorActive,
+              sectionTarget: settings.data_to_send.sectionTarget
+            }
+          };
+  
+          settings.data_to_send = data_color.data_to_send;
+  
+          var event = jQuery.Event("rexlive:apply_background_color_section");
+          event.settings = settings;
+          $(document).trigger(event);
         }
-        // console.log(colorActive);
-        // var status =
-        //   true ===
-        //   background_section_color_properties.$color_active.prop("checked");
-        // bgColorActive = status;
-        var data_color = {
-          data_to_send: {
-            color: bgColorActive ? colorActive : "",
-            active: bgColorActive,
-            sectionTarget: settings.data_to_send.sectionTarget
-          }
-        };
 
-        settings.data_to_send = data_color.data_to_send;
-
-        var event = jQuery.Event("rexlive:apply_background_color_section");
-        event.settings = settings;
-        $(document).trigger(event);
-
-        // Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_color);
-        // background_section_color_properties.$color_runtime_value.val(
-        //   colorActive
-        // );
-        // _applyBackgroundColor();
+        flagPickerUsed = false;
       },
       // cancelText: "",
       // chooseText: ""
