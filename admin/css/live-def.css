@@ -2166,6 +2166,8 @@ ul {
 .rexpansive_section.focused {
   z-index: 20;
   border: 2px solid #00ACFF; }
+.rexpansive_section.empty-section .responsive-overlay {
+  min-height: 100px; }
 
 .perfect-grid-gallery.focused {
   overflow: visible; }

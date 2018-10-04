@@ -201,6 +201,11 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
             Model_Import_Modal.openModal();
         });
 
+        /**
+         * Material design input field animation on focus
+         * Slide up the label
+         * @since 2.0.0
+         */
         $(document).on('focus', input_selector, function(e) {
             if ($(e.target).is(input_selector)) {
                 $(e.target)
@@ -210,6 +215,11 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
             }
         );
 
+        /**
+         * Material design input field animation on blur
+         * Slide down the label
+         * @since 2.0.0
+         */
         $(document).on('blur', input_selector, function(e) {
             if ($(e.target).is(input_selector)) {
                 $(e.target)

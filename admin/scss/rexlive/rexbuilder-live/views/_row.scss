@@ -3,6 +3,12 @@
     z-index: 20;
     border: 2px solid $icon-active-color;
   }
+
+  &.empty-section {
+    .responsive-overlay {
+      min-height: 100px;
+    }
+  }
 }
 
 .perfect-grid-gallery {

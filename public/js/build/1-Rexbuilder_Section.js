@@ -264,15 +264,9 @@ var Rexbuilder_Section = (function($) {
       $row.perfectGridGalleryEditor();
 
       Rexbuilder_Util.$rexContainer.sortable("refresh");
-
-      Rexbuilder_Section_Editor.launchSpectrumPickerBackgorundColorRow($newSection.find('input[name=edit-row-color-background]')[0]);
-      Rexbuilder_Section_Editor.launchSpectrumPickerOverlayColorRow($newSection.find('input[name=edit-row-overlay-color]')[0]);
-      $newSection.find('input[name=edit-block-color-background]').each(function(i,el) {
-        Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock(el);
-      });
-      $newSection.find('input[name=edit-block-overlay-color]').each(function(i,el) {
-        Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock(el);
-      });
+      
+      Rexbuilder_Section_Editor.updateRowTools( $newSection );
+      Rexbuilder_Block_Editor.updateBlockToolsOnRow( $newSection );
 
       var reverseData = {
         show: false,
@@ -586,6 +580,10 @@ var Rexbuilder_Section = (function($) {
       }
     });
 
+    /**
+     * Adding a new row
+     * @since 2.0.0
+     */
     $(document).on("click", ".add-new-section", function(e) {
       var rexIdSection = Rexbuilder_Util.createSectionID();
 
@@ -637,8 +635,7 @@ var Rexbuilder_Section = (function($) {
 
       Rexbuilder_Util.$rexContainer.sortable("refresh");
 
-      Rexbuilder_Section_Editor.launchSpectrumPickerBackgorundColorRow($newSection.find('input[name=edit-row-color-background]')[0]);
-      Rexbuilder_Section_Editor.launchSpectrumPickerOverlayColorRow($newSection.find('input[name=edit-row-overlay-color]')[0]);
+      Rexbuilder_Section_Editor.updateRowTools( $newSection );
 
       var reverseData = {
         show: false,
@@ -779,6 +776,9 @@ var Rexbuilder_Section = (function($) {
       var $row = $newSection.find(".grid-stack-row");
 
       $row.perfectGridGalleryEditor();
+
+      Rexbuilder_Section_Editor.updateRowTools( $newSection );
+      Rexbuilder_Block_Editor.updateBlockToolsOnRow( $newSection );
 
       //starting sliders after grid is up
       setTimeout(
@@ -998,6 +998,9 @@ var Rexbuilder_Section = (function($) {
             var $row = $newSection.find(".grid-stack-row");
 
             $row.perfectGridGalleryEditor();
+
+            Rexbuilder_Section_Editor.updateRowTools( $newSection );
+            Rexbuilder_Block_Editor.updateBlockToolsOnRow( $newSection );
 
             //starting sliders after grid is up
             setTimeout(

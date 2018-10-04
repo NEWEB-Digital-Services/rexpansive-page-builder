@@ -457,6 +457,15 @@ var Rexbuilder_Section_Editor = (function($) {
   };
 
   /**
+   * Launch the row tools
+   * @param {jQuery element} $row new row
+   */
+  var _updateRowTools = function( $row ) {
+    _launchSpectrumPickerBackgorundColorRow($row.find('input[name=edit-row-color-background]')[0]);
+    _launchSpectrumPickerOverlayColorRow($row.find('input[name=edit-row-overlay-color]')[0]);
+  };
+
+  /**
    * Initing the row toolbar
    */
   var init = function() {
@@ -468,6 +477,7 @@ var Rexbuilder_Section_Editor = (function($) {
   return {
     init: init,
     launchSpectrumPickerBackgorundColorRow: _launchSpectrumPickerBackgorundColorRow,
-    launchSpectrumPickerOverlayColorRow: _launchSpectrumPickerOverlayColorRow
+    launchSpectrumPickerOverlayColorRow: _launchSpectrumPickerOverlayColorRow,
+    updateRowTools: _updateRowTools
   }
 })(jQuery);

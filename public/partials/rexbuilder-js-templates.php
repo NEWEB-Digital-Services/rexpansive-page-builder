@@ -229,16 +229,16 @@ defined('ABSPATH') or exit;
                 <div class="tool-button--big tool-button--inline">
                     <label>
                         <input type="radio" class="edit-row-layout" data-section_layout="fixed" name="row-layout-{%=section.rexID%}" value="fixed" checked>
-                        <span>F</span>
+                        <span><?php Rexbuilder_Utilities::get_icon('#B011-Grid'); ?></span>
                     </label>
                     <label>
                         <input type="radio" class="edit-row-layout" data-section_layout="masonry" name="row-layout-{%=section.rexID%}" value="masonry">
-                        <span>M</span>
+                        <span><?php Rexbuilder_Utilities::get_icon('#B010-Masonry'); ?></span>
                     </label>
                 </div><!-- // row layout -->
 
                 <div class="tool-button tool-button--inline collapse-grid tooltipped">
-                    <?php Rexbuilder_Utilities::get_icon('#B006-Colapse'); ?>
+                    <?php Rexbuilder_Utilities::get_icon('#B006-Collapse'); ?>
                 </div>
             </div>
             <!-- // right area: row dimension -->

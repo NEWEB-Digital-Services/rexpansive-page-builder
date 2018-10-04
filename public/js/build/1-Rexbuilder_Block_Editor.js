@@ -489,6 +489,19 @@ var Rexbuilder_Block_Editor = (function($) {
   };
 
   /**
+   * Launch the tools of blocks in a new row
+   * @param {jQuery element} $row New row
+   */
+  var _updateBlockToolsOnRow = function( $row ) {
+    $row.find('input[name=edit-block-color-background]').each(function(i,el) {
+      _launchSpectrumPickerBackgorundColorBlock(el);
+    });
+    $row.find('input[name=edit-block-overlay-color]').each(function(i,el) {
+      _launchSpectrumPickerOverlayColorBlock(el);
+    });
+  }
+
+  /**
    * Initing the block toolbar
    */
   var init = function() {
@@ -499,6 +512,7 @@ var Rexbuilder_Block_Editor = (function($) {
   return {
     init: init,
     launchSpectrumPickerBackgorundColorBlock: _launchSpectrumPickerBackgorundColorBlock,
-    launchSpectrumPickerOverlayColorBlock: _launchSpectrumPickerOverlayColorBlock
+    launchSpectrumPickerOverlayColorBlock: _launchSpectrumPickerOverlayColorBlock,
+    updateBlockToolsOnRow: _updateBlockToolsOnRow
   }
 })(jQuery);
