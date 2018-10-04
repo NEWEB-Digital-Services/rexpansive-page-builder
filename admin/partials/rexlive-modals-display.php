@@ -882,18 +882,15 @@ defined('ABSPATH') or exit;
                 <div class="col valign-wrapper">
                     <div class="rex-edit-layout-wrap">
                         <div class="rexlive-layout-type" data-rex-layout="fixed">
-                            <input type="radio" id="section-fixed" name="section-layout" class="builder-edit-row-layout with-gap" value="fixed" checked title="Grid Layout" />
-                            <label for="section-fixed"  class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Grid Layout', 'rexspansive');?>">
-                                <i class="material-icons">&#xE8F1;</i>
-                                <span class="rex-ripple"></span>
+                            <label>
+                                <input type="radio" id="section-fixed" name="section-layout" class="builder-edit-row-layout with-gap" value="fixed" checked title="Grid Layout" />
+                                <span><?php Rexbuilder_Utilities::get_icon('#B011-Grid'); ?></span>
                             </label>
                         </div>
                         <div class="rexlive-layout-type" data-rex-layout="masonry">
-                            <input type="radio" id="section-masonry" name="section-layout" class="builder-edit-row-layout with-gap" value="masonry" title="Masonry Layout" />
-                            <label for="section-masonry"  class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Masonry Layout', 'rexspansive');?>">
-                                <!-- <i class="material-icons">&#xE871;</i>
-                                <span class="rex-ripple"></span> -->
-                                <?php Rexbuilder_Utilities::get_icon('#B010-Masonry'); ?>
+                            <label>
+                                <input type="radio" id="section-masonry" name="section-layout" class="builder-edit-row-layout with-gap" value="masonry" title="Masonry Layout" />
+                                <span><?php Rexbuilder_Utilities::get_icon('#B010-Masonry'); ?></span>
                             </label>
                         </div>
                     </div>
@@ -904,24 +901,24 @@ defined('ABSPATH') or exit;
                 <div class="section-width-wrapper">
                     <div class="col valign-wrapper layout-wrap rex-edit-row-width-wrapper">
                         <div class="rexlive-section-width" data-rex-section-width="full">
-                            <input type="radio" id="section-full-modal" name="section-dimension-modal" class="builder-edit-row-dimension-modal with-gap" value="full" title="Full" />
-                            <label for="section-full-modal" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Full', $this->plugin_name);?>">
-                                <i class="material-icons rex-icon">v</i>
-                                <span class="rex-ripple"></span>
+                            <label>
+                                <input type="radio" id="section-full-modal" name="section-dimension-modal" class="builder-edit-row-dimension-modal with-gap" value="full" title="Full" />
+                                <span><?php Rexbuilder_Utilities::get_icon('#B001-Full'); ?></span>
                             </label>
                         </div>
                         <div class="rexlive-section-width" data-rex-section-width="boxed">
-                            <input id="section-boxed-modal" type="radio" name="section-dimension-modal" class="builder-edit-row-dimension-modal with-gap" value="boxed" title="Boxed" />
-                            <label for="section-boxed-modal" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Boxed', $this->plugin_name);?>">
-                                <i class="material-icons rex-icon">t</i>
-                                <span class="rex-ripple"></span>
+                            <label>
+                                <input id="section-boxed-modal" type="radio" name="section-dimension-modal" class="builder-edit-row-dimension-modal with-gap" value="boxed" title="Boxed" />
+                                <span><?php Rexbuilder_Utilities::get_icon('#B002-Boxed'); ?></span>
                             </label>
+                            
                         </div>
                     </div><!-- Full section width or boxed -->
 
                     <div class="col valign-wrapper">
                         <div id="section-set-dimension" class="input-field rex-input-prefixed col">
-                            <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e('Boxed Width', 'rexpansive');?>">t</i>
+                            <!-- <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php // _e('Boxed Width', 'rexpansive');?>">t</i> -->
+                            <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#B002-Boxed'); ?></span>
                             <input type="text" id="" class="section-set-boxed-width" name="section-set-boxed-width" value="0000" placeholder="" size="23">
                             <span class="rex-material-bar"></span>
                         </div>
@@ -1025,23 +1022,23 @@ defined('ABSPATH') or exit;
                 <div class="b-col b--border-right">
                     <div class="b-row justify-content-center">
                         <div id="bg-set-full-section" class="rex-check-icon col">
-                            <input type="checkbox" id="section-is-full" name="section-is-full" value="full-height">
-                            <label for="section-is-full" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Full Height', 'rexpansive');?>">
-                                <i class="rex-icon">s</i>
-                                <span class="rex-ripple"></span>
+                            <label>
+                                <input type="checkbox" id="section-is-full" name="section-is-full" value="full-height">
+                                <span>
+                                    <?php Rexbuilder_Utilities::get_icon('#B012-Full-Height'); ?>
+                                    <span class="bl_input-indicator">100%</span>
+                                </span>
                             </label>
-                        </div>
-                        <div id="bg-set-full-text" class="rex-col-text col">
-                            <span>100%</span>
                         </div>
                     </div>
                 </div>
 
                 <div id="bg-set-photoswipe" class="b-col b--border-right rex-check-icon">
-                    <input type="checkbox" id="section-active-photoswipe" name="section-active-photoswipe" title="<?php _e('All Images Zoom', 'rexpansive');?>">
-                    <label for="section-active-photoswipe" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('All Images Zoom', 'rexpansive');?>">
-                        <i class="rex-icon">R</i>
-                        <span class="rex-ripple"></span>
+                    <label>
+                        <input type="checkbox" id="section-active-photoswipe" name="section-active-photoswipe" title="<?php _e('All Images Zoom', 'rexpansive');?>">
+                        <span>
+                            <?php Rexbuilder_Utilities::get_icon('#Z007-Zoom'); ?>
+                        </span>
                     </label>
                 </div>
 
@@ -1059,12 +1056,14 @@ defined('ABSPATH') or exit;
 
             <div class="row valign-wrapper id-class-row-wrap">
                 <div id="rex-config-id" class="input-field col rex-input-prefixed">
-                    <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e('Section Name', 'rexpansive');?>">B</i>
+                    <!-- <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e('Section Name', 'rexpansive');?>">B</i> -->
+                    <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#B013-Row-ID'); ?></span>
                     <input type="text" id="sectionid-container" name="sectionid-container">
                     <span class="rex-material-bar"></span>
                 </div>
                 <div id="section-set-class-wrap" class="input-field col rex-input-prefixed">
-                    <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e('Custom Class', 'rexpansive');?>">e</i>
+                    <!-- <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e('Custom Class', 'rexpansive');?>">e</i> -->
+                    <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#A008-Code'); ?></span>
                     <input type="text" id="section-set-custom-class" name="section-set-custom-class" value="" size="10">
                     <label for="section-set-custom-class">
                         <?php _e('Classes', 'rexpansive');?>

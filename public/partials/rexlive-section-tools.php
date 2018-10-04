@@ -23,18 +23,18 @@ defined('ABSPATH') or exit;
 				</label>
 				<label>
 					<input type="radio" class="edit-row-width" data-section_width="boxed" name="row-dimension-<?php echo $atts['rexlive_section_id']; ?>" value="<?php echo ( 'boxed' == $atts['dimension'] ? esc_attr( $atts['section_width'] ) : '80%' ); ?>" <?php checked('boxed',$atts['dimension'],true); ?>>
-					<span><?php Rexbuilder_Utilities::get_icon('#B002-Boxed-1'); ?></span>
+					<span><?php Rexbuilder_Utilities::get_icon('#B002-Boxed'); ?></span>
 				</label>
 			</div><!-- // row dimension -->
 
 			<div class="tool-button--big tool-button--inline">
 				<label>
 					<input type="radio" class="edit-row-layout" data-section_layout="fixed" name="row-layout-<?php echo $atts['rexlive_section_id']; ?>" value="fixed" <?php checked('fixed',$atts['layout'],true); ?>>
-					<span>F</span>
+					<span><?php Rexbuilder_Utilities::get_icon('#B011-Grid'); ?></span>
 				</label>
 				<label>
 					<input type="radio" class="edit-row-layout" data-section_layout="masonry" name="row-layout-<?php echo $atts['rexlive_section_id']; ?>" value="masonry" <?php checked('masonry',$atts['dimension'],true); ?>>
-					<span>M</span>
+					<span><?php Rexbuilder_Utilities::get_icon('#B010-Masonry'); ?></span>
 				</label>
 			</div><!-- // row layout -->
 

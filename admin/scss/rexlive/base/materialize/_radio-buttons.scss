@@ -124,3 +124,11 @@ $radio-border: 2px solid $radio-fill-color;
     fill: $radio-fill-color;
   }
 }
+
+[type="radio"]:not(:checked) + span,
+[type="radio"]:not(:checked) + span {
+  .l-svg-icons,
+  .l-svg-icons > svg {
+    fill: $radio-empty-color;
+  }
+}

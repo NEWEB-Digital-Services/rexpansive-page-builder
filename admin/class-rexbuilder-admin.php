@@ -394,7 +394,7 @@ class Rexbuilder_Admin {
 	}
 
 	public function include_sprites_live() {
-		?><div style="display:none"><?php include_once( REXPANSIVE_BUILDER_PATH .  'admin/sprites_live/symbol/svg/sprite.symbol.svg' ); ?></div><?php
+		?><div style="display:none"><?php include_once( REXPANSIVE_BUILDER_PATH .  'admin/sprites_live_new/symbol/svg/sprite.symbol.svg' ); ?></div><?php
 	}
 
 	/**
