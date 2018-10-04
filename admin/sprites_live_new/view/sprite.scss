@@ -2,19 +2,9 @@
 	background: url("svg/sprite.view.svg") no-repeat;
 }
 
-.svg-21-Models-list {
-	@extend %svg-common;
-	background-position: 100% 42.857142857142854%;
-}
-
-.svg-21-Models-list-dims {
-	width: 20px;
-	height: 20px;
-}
-
 .svg-A001-Tablet {
 	@extend %svg-common;
-	background-position: 14.184397163120567% 85.71428571428571%;
+	background-position: 100% 42.857142857142854%;
 }
 
 .svg-A001-Tablet-dims {
@@ -24,7 +14,7 @@
 
 .svg-A002-Redo {
 	@extend %svg-common;
-	background-position: 14.184397163120567% 100%;
+	background-position: 14.184397163120567% 85.71428571428571%;
 }
 
 .svg-A002-Redo-dims {
@@ -34,7 +24,7 @@
 
 .svg-A003-Undo {
 	@extend %svg-common;
-	background-position: 70.92198581560284% 29.285714285714285%;
+	background-position: 14.184397163120567% 100%;
 }
 
 .svg-A003-Undo-dims {
@@ -44,7 +34,7 @@
 
 .svg-A006-Save {
 	@extend %svg-common;
-	background-position: 70.92198581560284% 43.57142857142857%;
+	background-position: 70.92198581560284% 29.285714285714285%;
 }
 
 .svg-A006-Save-dims {
@@ -54,7 +44,7 @@
 
 .svg-A006-Save-Clear {
 	@extend %svg-common;
-	background-position: 0 71.42857142857143%;
+	background-position: 70.92198581560284% 43.57142857142857%;
 }
 
 .svg-A006-Save-Clear-dims {
@@ -64,7 +54,7 @@
 
 .svg-A007-Close {
 	@extend %svg-common;
-	background-position: 14.184397163120567% 71.42857142857143%;
+	background-position: 0 71.42857142857143%;
 }
 
 .svg-A007-Close-dims {
@@ -74,7 +64,7 @@
 
 .svg-A008-Code {
 	@extend %svg-common;
-	background-position: 28.368794326241133% 71.42857142857143%;
+	background-position: 14.184397163120567% 71.42857142857143%;
 }
 
 .svg-A008-Code-dims {
@@ -84,7 +74,7 @@
 
 .svg-A009-Range {
 	@extend %svg-common;
-	background-position: 42.5531914893617% 71.42857142857143%;
+	background-position: 28.368794326241133% 71.42857142857143%;
 }
 
 .svg-A009-Range-dims {
@@ -94,7 +84,7 @@
 
 .svg-A010-Mobile {
 	@extend %svg-common;
-	background-position: 56.737588652482266% 71.42857142857143%;
+	background-position: 42.5531914893617% 71.42857142857143%;
 }
 
 .svg-A010-Mobile-dims {
@@ -104,10 +94,20 @@
 
 .svg-A011-Desktop {
 	@extend %svg-common;
-	background-position: 70.92198581560284% 71.42857142857143%;
+	background-position: 56.737588652482266% 71.42857142857143%;
 }
 
 .svg-A011-Desktop-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-A012-Models-List {
+	@extend %svg-common;
+	background-position: 70.92198581560284% 71.42857142857143%;
+}
+
+.svg-A012-Models-List-dims {
 	width: 20px;
 	height: 20px;
 }
