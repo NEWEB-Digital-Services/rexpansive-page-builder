@@ -4053,7 +4053,8 @@ video.rex-video-container {
   z-index: 0;
   -webkit-transform: translateX(-50%) translateY(-50%);
   -ms-transform: translateX(-50%) translateY(-50%);
-  transform: translateX(-50%) translateY(-50%); }
+  transform: translateX(-50%) translateY(-50%);
+  margin: 0; }
 
 .rex-video-toggle-audio {
   position: absolute;
@@ -4121,7 +4122,7 @@ video.rex-video-container {
 
   .grid-item-content.youtube-player:before {
     display: block;
-    content: '';
+    content: "";
     top: 0;
     left: 0;
     position: absolute;

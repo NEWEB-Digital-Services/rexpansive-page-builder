@@ -216,7 +216,7 @@ var Rexbuilder_Section_Editor = (function($) {
     });
 
     /**
-     * Editing or insert a background video on a row, in a separate modal
+     * Open the modal to editing or insert a background video on a row
      * @since 2.0.0
      */
     $(document).on('click', '.edit-row-video-background', function(e) {
@@ -264,6 +264,41 @@ var Rexbuilder_Section_Editor = (function($) {
       };
 
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+    });
+
+    /**
+     * Deactivating a video (everyone) on a background of a row
+     * @since 2.0.0
+     */
+    $(document).on('click', '.deactivate-row-video-background', function(e) {
+      e.preventDefault();
+
+      var $section = $(e.target).parents(".rexpansive_section");
+      var sectionID = $section.attr("data-rexlive-section-id");
+      var modelNumber =
+        typeof $section.attr("data-rexlive-model-number") != "undefined"
+          ? $section.attr("data-rexlive-model-number")
+          : "";
+
+      var settings = {
+        data_to_send: {
+          sectionTarget: {
+            sectionID: sectionID,
+            modelNumber: modelNumber
+          },
+          typeVideo: "",
+          urlVimeo: "",
+          urlYoutube: "",
+          videoMp4: {
+            idMp4: "",
+            linkMp4: "",
+          },
+        }
+      };
+
+      var event = jQuery.Event("rexlive:update_section_background_video");
+      event.settings = settings;
+      $(document).trigger(event);
     });
   };
 
@@ -471,7 +506,7 @@ var Rexbuilder_Section_Editor = (function($) {
    */
   var init = function() {
     // _cache_elements();
-    row_picker_classes = 'tool-button tool-button--inline tool-button--empty tool-button--color tool-button--flat tool-button--spectrum';
+    row_picker_classes = 'tool-button tool-button--inline tool-button--empty tool-button--color tool-button--spectrum';
     _attachEvents();
     _setTools();
   };

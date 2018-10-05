@@ -2,11 +2,11 @@
 
 .rex-video-section-wrap,
 .rex-video-wrap {
-	position: absolute;
-	overflow: hidden;
-	width: 100%;
-	height: 100%;
-	visibility: visible;
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
+  height: 100%;
+  visibility: visible;
 }
 
 /*.rex-video-section-wrap {
@@ -14,131 +14,132 @@
 }*/
 
 .rex-video-wrap {
-	+ div {
-		position: relative;
-	}
+  + div {
+    position: relative;
+  }
 }
 
-video.rex-video-container { 
-	position: absolute;
-	top: 50%;
-	left: 50%;
-	min-width: 100%;
-	min-height: 100%;
-	width: auto;
-	height: auto;
-	z-index: 0;
-	-webkit-transform: translateX(-50%) translateY(-50%);
-	-ms-transform: translateX(-50%) translateY(-50%);
-	transform: translateX(-50%) translateY(-50%);
+video.rex-video-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 100%;
+  min-height: 100%;
+  width: auto;
+  height: auto;
+  z-index: 0;
+  -webkit-transform: translateX(-50%) translateY(-50%);
+  -ms-transform: translateX(-50%) translateY(-50%);
+  transform: translateX(-50%) translateY(-50%);
+  margin: 0;
 }
 
 .rex-video-toggle-audio {
-	position: absolute;
-	width: 20px;
-	height: 20px;
-	bottom: 9px;
-	right: 9px;
-	display: block;
-	// background-image: url('../img/ic_volume_up_3x.png');
-	// @include backgroundCover;
-	background-image: url('../img/ic_volume_up_off_white_black.png');
-	background-size: 200%;
-	background-repeat: no-repeat;
-	background-position: 0 -20px;
-	opacity: 0.5;
-	cursor: pointer;
-	&.user-has-muted {
-		// background-image: url('../img/ic_volume_off_3x.png');
-		background-image: url('../img/ic_volume_up_off_white_black.png');
-		background-position: -20px -20px;
-		.rex-video-toggle-audio-shadow {
-			// background-image: url('../img/ic_volume_off_white_3x.png');
-			background-image: url('../img/ic_volume_up_off_white_black.png');
-			background-position: -20px 0;
-		}
-	}
-	.rex-video-toggle-audio-shadow {
-		position: relative;
-		display: block;
-		top: -1px;
-		left: -1px;
-		width: inherit;
-		height: inherit;
-		// background-image: url('../img/ic_volume_up_white_3x.png');
-		// @include backgroundCover;
-		background-image: url('../img/ic_volume_up_off_white_black.png');
-		background-size: 200%;
-		background-repeat: no-repeat;
-		background-position: 0 0;
-	}
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  bottom: 9px;
+  right: 9px;
+  display: block;
+  // background-image: url('../img/ic_volume_up_3x.png');
+  // @include backgroundCover;
+  background-image: url("../img/ic_volume_up_off_white_black.png");
+  background-size: 200%;
+  background-repeat: no-repeat;
+  background-position: 0 -20px;
+  opacity: 0.5;
+  cursor: pointer;
+  &.user-has-muted {
+    // background-image: url('../img/ic_volume_off_3x.png');
+    background-image: url("../img/ic_volume_up_off_white_black.png");
+    background-position: -20px -20px;
+    .rex-video-toggle-audio-shadow {
+      // background-image: url('../img/ic_volume_off_white_3x.png');
+      background-image: url("../img/ic_volume_up_off_white_black.png");
+      background-position: -20px 0;
+    }
+  }
+  .rex-video-toggle-audio-shadow {
+    position: relative;
+    display: block;
+    top: -1px;
+    left: -1px;
+    width: inherit;
+    height: inherit;
+    // background-image: url('../img/ic_volume_up_white_3x.png');
+    // @include backgroundCover;
+    background-image: url("../img/ic_volume_up_off_white_black.png");
+    background-size: 200%;
+    background-repeat: no-repeat;
+    background-position: 0 0;
+  }
 }
 
 .rex-video-vimeo-wrap {
-	position: fixed;
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	z-index: -1;
-	z-index: 0;
-	pointer-events: none;
-	overflow: hidden;
+  position: fixed;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
 
-	&.rex-video-vimeo-wrap--block {
-		// z-index: -1;
-		+ .rex-custom-scrollbar {
-			position: relative;
-		}
-	}
+  &.rex-video-vimeo-wrap--block {
+    // z-index: -1;
+    + .rex-custom-scrollbar {
+      position: relative;
+    }
+  }
 
-	iframe {
-		width: 100vw;
-		height: 56.25vw; /* Given a 16:9 aspect ratio, 9/16*100 = 56.25 */
-		min-height: 100vh;
-		min-width: 177.77vh; /* Given a 16:9 aspect ratio, 16/9*100 = 177.77 */
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-	}
+  iframe {
+    width: 100vw;
+    height: 56.25vw; /* Given a 16:9 aspect ratio, 9/16*100 = 56.25 */
+    min-height: 100vh;
+    min-width: 177.77vh; /* Given a 16:9 aspect ratio, 16/9*100 = 177.77 */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 }
 
-@media screen and (max-width:$small) {
-	.perfect-grid-gallery .grid-item-content.youtube-player,
-	.perfect-grid-gallery .grid-item-content.vimeo-player,
-	.perfect-grid-gallery .grid-item-content.mp4-player {
-		height: 100%!important;
-	}
-	.grid-item-content.youtube-player:before {
-		display: block;
-		content: '';
-		top: 0;
-		left: 0;
-		position: absolute;
-		background-image: url(https://www.youtube.com/yt/brand/media/image/YouTube-icon-dark.png);
-		width: 100%;
-		height: 100%;
-		background-size: 100px;
-		background-repeat: no-repeat;
-		background-position: center center;
-		opacity: 0.6;
-	}
-	.rex-video-wrap {
-		.rex-video-container {
-			// visibility: hidden;
-		}
-		.rex-video-mp4-thumbnail {
-			position: absolute;
-			top: 50%;
-			left: 50%;
-			width: inherit;
-			height: auto;
-			z-index: 0;
-			-webkit-transform: translateX(-50%) translateY(-50%);
-			-ms-transform: translateX(-50%) translateY(-50%);
-			transform: translateX(-50%) translateY(-50%);
-		}
-	}
+@media screen and (max-width: $small) {
+  .perfect-grid-gallery .grid-item-content.youtube-player,
+  .perfect-grid-gallery .grid-item-content.vimeo-player,
+  .perfect-grid-gallery .grid-item-content.mp4-player {
+    height: 100% !important;
+  }
+  .grid-item-content.youtube-player:before {
+    display: block;
+    content: "";
+    top: 0;
+    left: 0;
+    position: absolute;
+    background-image: url(https://www.youtube.com/yt/brand/media/image/YouTube-icon-dark.png);
+    width: 100%;
+    height: 100%;
+    background-size: 100px;
+    background-repeat: no-repeat;
+    background-position: center center;
+    opacity: 0.6;
+  }
+  .rex-video-wrap {
+    .rex-video-container {
+      // visibility: hidden;
+    }
+    .rex-video-mp4-thumbnail {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: inherit;
+      height: auto;
+      z-index: 0;
+      -webkit-transform: translateX(-50%) translateY(-50%);
+      -ms-transform: translateX(-50%) translateY(-50%);
+      transform: translateX(-50%) translateY(-50%);
+    }
+  }
 }

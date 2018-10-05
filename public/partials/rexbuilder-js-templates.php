@@ -11,7 +11,8 @@
 
 defined('ABSPATH') or exit;
 
-$tool_button_classes = 'tool-button tool-button--flat';
+$tool_button_classes_right = 'tool-button tool-button--flat';
+$tool_button_classes = 'tool-button';
 ?>
 
 <script type="text/x-tmpl" id="tmpl-toolbox-block">
@@ -219,22 +220,22 @@ $tool_button_classes = 'tool-button tool-button--flat';
             <div class="bl_col-6 bl_d-flex bl_ai-c">
                 <div class="<?php echo $tool_button_classes; ?> tool-button--inline">
                     <label>
-                        <input type="radio" class="edit-row-width flat-checkbox" data-section_width="full" name="row-dimension-{%=section.rexID%}" value="100%" checked>
+                        <input type="radio" class="edit-row-width" data-section_width="full" name="row-dimension-{%=section.rexID%}" value="100%" checked>
                         <span><?php Rexbuilder_Utilities::get_icon('#B001-Full'); ?></span>
                     </label>
                     <label>
-                        <input type="radio" class="edit-row-width flat-checkbox" data-section_width="boxed" name="row-dimension-{%=section.rexID%}" value="80%">
+                        <input type="radio" class="edit-row-width" data-section_width="boxed" name="row-dimension-{%=section.rexID%}" value="80%">
                         <span><?php Rexbuilder_Utilities::get_icon('#B002-Boxed'); ?></span>
                     </label>
                 </div><!-- // row dimension -->
 
                 <div class="<?php echo $tool_button_classes; ?> tool-button tool-button--inline">
                     <label>
-                        <input type="radio" class="edit-row-layout flat-checkbox" data-section_layout="fixed" name="row-layout-{%=section.rexID%}" value="fixed" checked>
+                        <input type="radio" class="edit-row-layout" data-section_layout="fixed" name="row-layout-{%=section.rexID%}" value="fixed" checked>
                         <span><?php Rexbuilder_Utilities::get_icon('#B011-Grid'); ?></span>
                     </label>
                     <label>
-                        <input type="radio" class="edit-row-layout flat-checkbox" data-section_layout="masonry" name="row-layout-{%=section.rexID%}" value="masonry">
+                        <input type="radio" class="edit-row-layout" data-section_layout="masonry" name="row-layout-{%=section.rexID%}" value="masonry">
                         <span><?php Rexbuilder_Utilities::get_icon('#B010-Masonry'); ?></span>
                     </label>
                 </div><!-- // row layout -->
@@ -249,7 +250,7 @@ $tool_button_classes = 'tool-button tool-button--flat';
 		
                 <div class="bl_d-iflex bl_ai-c">
                     <div class="tool-button-floating">
-                        <div class="<?php echo $tool_button_classes; ?> tooltipped active">
+                        <div class="<?php echo $tool_button_classes_right; ?> tooltipped active">
                             <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                         </div>
             

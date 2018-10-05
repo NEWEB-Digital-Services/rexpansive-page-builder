@@ -29,9 +29,8 @@
     display: inline-block;
   }
   
-  box-shadow: $main-shadow;
-  
   @include bl-btn;
+  @include bl-btn--hover-shadow;
 
   &:hover {
     @include bl-btn--hover;
@@ -55,8 +54,8 @@
   }
 
   &.tool-button--empty {
-    min-width: 26px;
-    min-height: 26px;
+    min-width: $row-tools-size;
+    min-height: $row-tools-size;
   }
 
   &.tool-button--color {
@@ -65,6 +64,7 @@
     background-repeat: no-repeat;
     background-position: center;
     border: none;
+    vertical-align: initial;
 
     &.sp-replacer {
       position: static;
@@ -102,13 +102,24 @@
 .tool-button--double-icon--wrap {
   position: relative;
   display: inline-block;
+  line-height: 1;
+
+  &:hover {
+    .tool-button--double-icon {
+      opacity: 1;
+    }
+  }
 }
 
 .tool-button--double-icon {
   position: absolute;
-  top: -5px;
-  right: -5px;
+  top: 0;
+  right: 0;
   font-size: 10px;
+  padding: 2px;
+  transform: translate(50%, -50%);
+  opacity: 0;
+  transition: opacity 500ms;
 }
 
 .tool-button-floating {

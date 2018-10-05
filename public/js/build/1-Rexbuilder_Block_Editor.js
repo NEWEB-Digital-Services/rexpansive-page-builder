@@ -507,7 +507,7 @@ var Rexbuilder_Block_Editor = (function($) {
    * Initing the block toolbar
    */
   var init = function() {
-    block_picker_classes = 'tool-button tool-button--inline tool-button--empty tool-button--color tool-button--flat tool-button--spectrum';
+    block_picker_classes = 'tool-button tool-button--inline tool-button--empty tool-button--color tool-button--spectrum';
     _attachEvents();
     _setTools();
   };

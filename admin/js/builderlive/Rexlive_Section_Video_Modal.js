@@ -11,6 +11,7 @@ var Section_Video_Background_Modal = (function($) {
 
   var _openSectionVideoBackgroundModal = function(data) {
     _updateVideoModal(data.bgVideo);
+    console.log(data);
     Rexlive_Modals_Utils.openModal(
       video_background_properties.$self.parent(".rex-modal-wrap")
     );

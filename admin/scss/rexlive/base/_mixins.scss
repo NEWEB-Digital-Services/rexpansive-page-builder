@@ -53,6 +53,14 @@
   @include fill-icon(#fff);
 }
 
+@mixin bl-btn--hover-shadow {
+  box-shadow: none;
+  transition: box-shadow 300ms;
+  &:hover {
+    box-shadow: $main-shadow;
+  }
+}
+
 // Tools mixins
 @mixin generic-toolbar {
   display: flex;

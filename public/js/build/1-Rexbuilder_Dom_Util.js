@@ -405,8 +405,9 @@ var Rexbuilder_Dom_Util = (function($) {
       _removeMp4Video($target, true);
       tmpl.arg = "video";
       if ($target.is("section")) {
+        var insert_after = ".section-toolBox";
         $target
-          .children(".section-data")
+          .children(insert_after)
           .after(
             tmpl("tmpl-video-mp4", {
               url: mp4Data.linkMp4,

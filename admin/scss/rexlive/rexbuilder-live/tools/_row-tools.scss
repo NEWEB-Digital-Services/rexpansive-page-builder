@@ -28,14 +28,14 @@
     @include generic-toolbar;
   }
 
-  font-size: 10px;
+  font-size: $row-tools-size;
 
-  .tool-button--color {
-    min-width: auto;
-    min-height: auto;
-    width: 10px;
-    height: 10px;
-  }
+  // .tool-button--color {
+  //   min-width: auto;
+  //   min-height: auto;
+  //   width: 10px;
+  //   height: 10px;
+  // }
 }
 
 .builder-move-row {
@@ -44,4 +44,28 @@
 
 .builder-copy-row {
   cursor: copy;
+}
+
+.row-toolBox__fast-configuration {
+  .tool-button--inline {
+    max-height: $row-tools-size;
+  }
+  .tool-button--double-icon--wrap {
+    max-height: $row-tools-size;
+    margin: 0 5px;
+  }
+
+  .tool-button {
+    &:not(.tool-button--double-icon) {
+      padding: 0;
+      overflow: hidden;
+    }
+  }
+
+  .edit-row-video-background {
+    &.tool-button {
+      padding: 4px;
+      font-size: 12px;
+    }
+  }
 }

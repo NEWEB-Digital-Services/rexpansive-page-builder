@@ -227,36 +227,6 @@
   transform: rotate(0deg);
 }
 
-.circle-handle-e {
-  top: 50%;
-  right: 0%;
-  transform: translateX(50%);
-}
-
-.circle-handle-w {
-  top: 50%;
-  left: 0%;
-  transform: translateX(-50%);
-}
-
-.circle-handle-s {
-  left: 50%;
-  bottom: 0%;
-  transform: translate(-50%, 50%);
-}
-
-.circle-handle-se {
-  bottom: 0%;
-  right: 0%;
-  transform: translate(50%, 50%);
-}
-
-.circle-handle-sw {
-  bottom: 0%;
-  left: 0%;
-  transform: translate(-50%, 50%);
-}
-
 .rexlive-block-drag-handle {
   position: absolute;
   width: 100%;
@@ -294,58 +264,14 @@
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
 }
 
-.circle-handle {
-  width: 10px;
-  height: 10px;
-  background-color: #FF0040;
-  border: 1px solid white;
-  overflow: visible;
-  -webkit-transition: all 0s ease-out;
-  -moz-transition: all 0s ease-out;
-  -o-transition: all 0s ease-out;
-  -ms-transition: all 0 ease-out;
-  transition: all 0s ease-out;
-  z-index: 20;
-  position: absolute;
-}
-
-.grid-stack-item.focused {
-  overflow: visible;
-  z-index: 2;
-  outline: 1px dashed rgba(0, 0, 0, 0.5);
-  -webkit-box-shadow: 0px 0px 111px 1px rgba(0, 0, 0, 0.8);
-  -moz-box-shadow: 0px 0px 111px 1px rgba(0, 0, 0, 0.8);
-  box-shadow: 0px 0px 111px 1px rgba(0, 0, 0, 0.8);
-}
-
-.circle-handle:hover {
-  box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
-}
-
-.ui-resizable-e:hover > .circle-handle {
-  -webkit-transform: scale(2) translateX(25%);
-  transform: scale(2) translateX(25%);
-}
-
-.ui-resizable-s:hover > .circle-handle {
-  -webkit-transform: scale(2) translate(-25%, 25%);
-  transform: scale(2) translate(-25%, 25%);
-}
-
-.ui-resizable-w:hover > .circle-handle {
-  -webkit-transform: scale(2) translateX(-25%);
-  transform: scale(2) translateX(-25%);
-}
-
-.ui-resizable-se:hover > .circle-handle {
-  -webkit-transform: scale(2) translate(25%, 25%);
-  transform: scale(2) translate(25%, 25%);
-}
-
-.ui-resizable-sw:hover > .circle-handle {
-  -webkit-transform: scale(2) translate(-25%, 25%);
-  transform: scale(2) translate(-25%, 25%);
-}
+// .grid-stack-item.focused {
+//   overflow: visible;
+//   z-index: 2;
+//   outline: 1px dashed rgba(0, 0, 0, 0.5);
+//   -webkit-box-shadow: 0px 0px 111px 1px rgba(0, 0, 0, 0.8);
+//   -moz-box-shadow: 0px 0px 111px 1px rgba(0, 0, 0, 0.8);
+//   box-shadow: 0px 0px 111px 1px rgba(0, 0, 0, 0.8);
+// }
 
 .resizePlaceHolder {
   outline: 3px dashed #444;

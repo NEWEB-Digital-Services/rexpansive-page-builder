@@ -738,7 +738,7 @@ endif;
         }
 
 ?>
-<div class="rexbuilder-live-content">
+<div class="rexbuilder-live-content<?php echo ($editor ? ' rexbuilder-live-content--editing' : ''); ?>">
             <div id="sections-ids-used" style="display: none;"><?php 
             if ($sectionsIDsUsed == null) {
                 echo "[]";
