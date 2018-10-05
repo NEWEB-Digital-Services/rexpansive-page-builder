@@ -215,7 +215,7 @@ defined('ABSPATH') or exit;
         <div class="tools">
             
             <div class="bl_col-6">
-                <div class="tool-button--big tool-button--inline">
+                <div class="tool-button tool-button--inline">
                     <label>
                         <input type="radio" class="edit-row-width" data-section_width="full" name="row-dimension-{%=section.rexID%}" value="100%" checked>
                         <span><?php Rexbuilder_Utilities::get_icon('#B001-Full'); ?></span>
@@ -226,7 +226,7 @@ defined('ABSPATH') or exit;
                     </label>
                 </div><!-- // row dimension -->
 
-                <div class="tool-button--big tool-button--inline">
+                <div class="tool-button tool-button--inline">
                     <label>
                         <input type="radio" class="edit-row-layout" data-section_layout="fixed" name="row-layout-{%=section.rexID%}" value="fixed" checked>
                         <span><?php Rexbuilder_Utilities::get_icon('#B011-Grid'); ?></span>
@@ -331,15 +331,15 @@ defined('ABSPATH') or exit;
                             </div>
                         </div>
                     </div>
+
+                    <div class="tool-button tool-button--inline tool-button--black builder-delete-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexspansive');?>">
+                        <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+                    </div>
+                    <!-- // remove section -->
                 </div><!-- // clone, move, settings -->
             </div>
             <!-- // right area -->
         </div>
-
-        <div class="tool-button tool-button--black builder-delete-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexspansive');?>">
-            <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
-        </div>
-        <!-- // remove section -->
     </div>
 </script>
 
@@ -354,7 +354,7 @@ defined('ABSPATH') or exit;
             data-row_margin_top="" data-row_margin_bottom="" data-row_margin_right="" data-row_margin_left="" data-row_active_photoswipe=""
             data-row_overlay_color="" data-row_overlay_active="false" data-rexlive_section_id="{%=section.rexID%}" data-row_edited_live="true"></div>
         <div class="responsive-overlay">
-            <div class="{%=section.dimensionClass%}">
+            <div class="rex-row__dimension {%=section.dimensionClass%}">
                 <div class="perfect-grid-gallery grid-stack grid-stack-row" data-separator="{%=section.blockDistance%}" data-layout="{%=section.layout%}"
                     data-full-height="{%=section.fullHeight%}" data-row-separator-top="{%=section.rowSeparatorTop%}" data-row-separator-right="{%=section.rowSeparatorRight%}"
                     data-row-separator-bottom="{%=section.rowSeparatorBottom%}" data-row-separator-left="{%=section.rowSeparatorLeft%}">

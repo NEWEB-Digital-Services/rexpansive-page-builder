@@ -20,6 +20,10 @@ $overlay-palette-transparent:rgba(255, 255, 255, 0);
 // shadow
 $main-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
 
+// main-palette
+$palette-color-1: #00ACFF;
+$palette-color-2: #979797;
+
 //icons
 $icon-base-color: #979797;
 $icon-hover-color: #979797;
@@ -33,6 +37,10 @@ $btn-hover-color: #fff;
 $btn-hover-background: #00ACFF;
 $btn-active-color: #00ACFF;
 $btn-active-background: #fff;
+
+// forms
+// radio button
+$input-flat-disabled-color: #fff;
 
 // Classes
 $row-focused: '.focused';

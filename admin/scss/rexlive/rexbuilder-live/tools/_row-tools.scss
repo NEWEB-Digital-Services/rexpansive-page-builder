@@ -4,22 +4,60 @@
   overflow: visible;
   right: 0px;
   top: 0px;
-  display: none;
+  // display: none;
   color: #000;
   position: absolute;
   z-index: 2000;
-  // display: block;
+  display: block;
+  background-color: $palette-color-1;
+  // transition: opacity 300ms;
+  transform: translateY(-50%);
   
   &.tool-box-active {
     display: block;
   }
 
+  &:hover {
+    opacity: 1;
+  }
+
   .tools {
-    padding: 10px;
+    // padding: 10px;
     @include generic-toolbar;
   }
 
-  font-size: 20px;
+  font-size: 10px;
   // .l-svg-icons {
   // }
+
+  .tool-button--color {
+    min-width: auto;
+    min-height: auto;
+    width: 10px;
+    height: 10px;
+  }
+}
+
+// .builder-delete-row i {
+//   font-size: 1rem;
+//   line-height: 1;
+// }
+
+.builder-delete-row {
+  // right: 0%;
+  // position: absolute;
+  // cursor: pointer;
+  // top: -10px;
+  // right: -10px;
+  font-size: 10px;
+}
+
+.builder-move-row {
+  // left: 0%;
+  cursor: move;
+}
+
+.builder-copy-row {
+  // left: 5%;
+  cursor: copy;
 }

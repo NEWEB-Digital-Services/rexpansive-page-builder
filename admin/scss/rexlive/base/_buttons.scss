@@ -45,6 +45,15 @@
     @include bl-btn--black;
   }
 
+  &.tool-button--flat {
+    box-shadow: none;
+    padding: 0 5px;
+    @include bl-btn-flat;
+    &:hover {
+      @include bl-btn-flat--hover;
+    }
+  }
+
   &.tool-button--empty {
     min-width: 26px;
     min-height: 26px;
@@ -55,6 +64,7 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
+    border: none;
 
     &.sp-replacer {
       position: static;

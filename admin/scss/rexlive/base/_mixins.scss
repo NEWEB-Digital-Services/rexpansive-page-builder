@@ -19,11 +19,24 @@
   @include fill-icon($btn-base-color);
 }
 
+@mixin bl-btn-flat {
+  background-color: transparent;
+  color: #fff;
+  @include fill-icon(#fff);
+}
+
 @mixin bl-btn--hover {
   background-color: $btn-hover-background;
   color: $btn-hover-color;
 
   @include fill-icon($btn-hover-color);
+}
+
+@mixin bl-btn-flat--hover {
+  background-color: transparent;
+  color: #fff;
+
+  @include fill-icon(#fff);
 }
 
 @mixin bl-btn--active {

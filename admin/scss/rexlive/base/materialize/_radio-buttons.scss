@@ -119,18 +119,74 @@ $radio-border: 2px solid $radio-fill-color;
 }
 
 [type="radio"]:checked + span {
-  // .l-svg-icons,
-  // .l-svg-icons > svg {
-  //   fill: $radio-fill-color;
-  // }
   @include fill-icon($radio-fill-color);
 }
 
 [type="radio"]:not(:checked) + span,
 [type="radio"]:not(:checked) + span {
-  // .l-svg-icons,
-  // .l-svg-icons > svg {
-  //   fill: $radio-empty-color;
-  // }
   @include fill-icon($radio-empty-color);
+}
+
+// flat checkbox style
+[type="radio"].flat-checkbox {
+  font-size: 1em;
+}
+[type="radio"].flat-checkbox:not(:checked) + span,
+[type="radio"].flat-checkbox:checked + span {
+  padding-left: 15px;
+  height: 10px;
+  line-height: 10px;
+}
+
+[type="radio"].flat-checkbox + span:before,
+[type="radio"].flat-checkbox + span:after {
+  margin: 0;
+  width: 10px;
+  height: 10px;
+}
+
+/* Unchecked styles */
+[type="radio"].flat-checkbox:not(:checked) + span:before,
+[type="radio"].flat-checkbox:not(:checked) + span:after {
+  border: 2px solid #fff;
+}
+
+/* Checked styles */
+[type="radio"].flat-checkbox:checked + span:after,
+[type="radio"].flat-checkbox.with-gap:checked + span:before,
+[type="radio"].flat-checkbox.with-gap:checked + span:after {
+  border: #000;
+}
+
+[type="radio"].flat-checkbox:checked + span:after,
+[type="radio"].flat-checkbox.with-gap:checked + span:after {
+  background-color: #000;
+}
+
+/* Disabled style */
+[type="radio"].flat-checkbox:disabled:not(:checked) + span:before,
+[type="radio"].flat-checkbox:disabled:checked + span:before {
+  border-color: $input-flat-disabled-color;
+}
+
+[type="radio"].flat-checkbox:disabled + span {
+  color: $input-flat-disabled-color;
+}
+
+[type="radio"].flat-checkbox:disabled:not(:checked) + span:before {
+  border-color: $input-flat-disabled-color;
+}
+
+[type="radio"].flat-checkbox:disabled:checked + span:after {
+  background-color: $input-flat-disabled-color;
+  border-color: $input-disabled-solid-color;
+}
+
+[type="radio"].flat-checkbox:checked + span {
+  @include fill-icon(#000);
+}
+
+[type="radio"].flat-checkbox:not(:checked) + span,
+[type="radio"].flat-checkbox:not(:checked) + span {
+  @include fill-icon(#fff);
 }

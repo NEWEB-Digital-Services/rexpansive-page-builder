@@ -53,11 +53,11 @@
 }
 
 .rexlive-toolbox .l-svg-icons{
-  font-size: 30px;
+  font-size: 20px;
 }
 
 .btn-save {
-  font-size: 30px;
+  // font-size: 30px;
   @include fill-icon(#00acff);
   // .l-svg-icons{
   //   fill: #00acff;
@@ -80,15 +80,15 @@
   }
 }
 
-.builder-add-custom-layout .l-svg-icons{
-  font-size: 16px;
-}
+// .builder-add-custom-layout .l-svg-icons{
+//   font-size: 16px;
+// }
 
-.btn-undo, .btn-redo{
-  .l-svg-icons{
-    font-size: 20px;
-  }
-}
+// .btn-undo, .btn-redo{
+//   .l-svg-icons{
+//     font-size: 20px;
+//   }
+// }
 
 .btn-undo{
   border-right-color: #D6D6D6;
@@ -96,32 +96,32 @@
   border-right-width: 1px;
 }
 
-.btn-custom-css .l-svg-icons{
-  font-size: 25px;
-}
+// .btn-custom-css .l-svg-icons{
+//   font-size: 20px;
+// }
 
 .btn-builder-layout[data-layout-type="custom"]{  
   position: relative;
-  .l-svg-icons{
-    font-size: 25px;
-  }
+  // .l-svg-icons{
+  //   font-size: 25px;
+  // }
 }
 
-.btn-builder-layout[data-name="mobile"]{  
-  .l-svg-icons{
-    font-size: 26px;
-  }
-}
-.btn-builder-layout[data-name="tablet"]{  
-  .l-svg-icons{
-    font-size: 26px;
-  }
-}
-.btn-builder-layout[data-name="default"]{  
-  .l-svg-icons{
-    font-size: 25px;
-  }
-}
+// .btn-builder-layout[data-name="mobile"]{  
+//   .l-svg-icons{
+//     font-size: 26px;
+//   }
+// }
+// .btn-builder-layout[data-name="tablet"]{  
+//   .l-svg-icons{
+//     font-size: 26px;
+//   }
+// }
+// .btn-builder-layout[data-name="default"]{  
+//   .l-svg-icons{
+//     font-size: 25px;
+//   }
+// }
 
 .layout-custom-number{
   color: #979797;
@@ -130,7 +130,7 @@
   line-height: 1;
   position: absolute;
   width: 100%;
-  bottom: 26px;
+  bottom: 21px;
   left: 0;
 }
 .rex-number{
@@ -140,7 +140,7 @@
 .close-toolbox {
   @include fill-icon(#979797);
   .l-svg-icons{
-    font-size: 15px;
+    // font-size: 15px;
     // fill: #979797;
     // > svg {
     //   fill: #979797;

@@ -264,13 +264,13 @@ class Rexbuilder_Section
             echo '>';
 
             if ('boxed' == $dimension) {
-                echo '<div class="center-disposition"';
+                echo '<div class="rex-row__dimension center-disposition"';
                 if ('' != $section_width) {
                     echo ' style="max-width:' . $section_width . ';"';
                 }
                 echo '>';
             } else {
-                echo '<div class="full-disposition">';
+                echo '<div class="rex-row__dimension full-disposition">';
             }
 
             do_action('rexpansive_section_before_grid', array(&$parsed_atts));

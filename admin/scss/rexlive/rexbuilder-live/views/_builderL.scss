@@ -49,34 +49,10 @@
   background-size: 100%;
 }
 
-.builder-delete-row i {
-  font-size: 1rem;
-  line-height: 1;
-}
-
-.builder-delete-row {
-  // right: 0%;
-  position: absolute;
-  cursor: pointer;
-  top: -10px;
-  right: -10px;
-  font-size: 10px;
-}
-
-.builder-move-row {
-  // left: 0%;
-  cursor: move;
-}
-
-.builder-copy-row {
-  // left: 5%;
-  cursor: copy;
-}
-
-.builder-section-config {
-  // left: 10%;
-  cursor: pointer;
-}
+// .builder-section-config {
+//   // left: 10%;
+//   // cursor: pointer;
+// }
 
 .backend-edited .collapse-grid {
   display: none;
@@ -122,12 +98,12 @@
   left: 70%;
 }
 
-.builder-section-config i {
-  font-size: 20px;
-  line-height: 20px;
-  vertical-align: top;
-  text-align: center;
-}
+// .builder-section-config i {
+//   font-size: 20px;
+//   line-height: 20px;
+//   vertical-align: top;
+//   text-align: center;
+// }
 
 // .section-toolBox {
 //   width: 100%;
@@ -146,30 +122,26 @@
 .medium-editor-element:focus {
   outline: none;
 }
-.gridActive > .grid-stack-item.focused:hover {
-  cursor: move;
-}
 
-.rexpansive_section .full-disposition.focused,
-.rexpansive_section .center-disposition.focused {
-  overflow: visible;
-}
-
-// .rexpansive_section.focused {
-//   z-index: 20;
-// }
-// .perfect-grid-gallery.focused {
+// .rexpansive_section .full-disposition.focused,
+// .rexpansive_section .center-disposition.focused {
 //   overflow: visible;
 // }
-.perfect-grid-item.focused,
-.grid-stack-item.focused {
-  overflow: visible;
-  z-index: 2;
-  outline: 1px dashed rgba(0, 0, 0, 0.5);
-  -webkit-box-shadow: 0px 0px 111px 1px rgba(0, 0, 0, 0.8);
-  -moz-box-shadow: 0px 0px 111px 1px rgba(0, 0, 0, 0.8);
-  box-shadow: 0px 0px 111px 1px rgba(0, 0, 0, 0.8);
-}
+
+// .perfect-grid-item.focused,
+// .grid-stack-item.focused {
+//   overflow: visible;
+//   z-index: 2;
+//   outline: 1px dashed rgba(0, 0, 0, 0.5);
+//   -webkit-box-shadow: 0px 0px 111px 1px rgba(0, 0, 0, 0.8);
+//   -moz-box-shadow: 0px 0px 111px 1px rgba(0, 0, 0, 0.8);
+//   box-shadow: 0px 0px 111px 1px rgba(0, 0, 0, 0.8);
+// }
+
+// .perfect-grid-item.focused > .ui-resizable-handle,
+// .grid-stack-item.focused.ui-resizable-handle {
+//   visibility: visible;
+// }
 
 .grid-stack > .grid-stack-item > .ui-resizable-handle {
   visibility: hidden;
@@ -179,9 +151,8 @@
   box-sizing: inherit;
 }
 
-.perfect-grid-item.focused > .ui-resizable-handle,
-.grid-stack-item.focused.ui-resizable-handle {
-  visibility: visible;
+.gridActive > .grid-stack-item.focused:hover {
+  cursor: move;
 }
 
 .el-size-viewer.focused {

@@ -6,20 +6,20 @@ var Rexbuilder_Section = (function($) {
   };
 
   var _hideSectionToolBox = function($section) {
-    $section.children(".section-toolBox").removeClass("tool-box-active");
+    // $section.children(".section-toolBox").removeClass("tool-box-active");
   };
 
   var _linkHoverSection = function($section) {
-    $section.hover(
-      function(event) {
-        Rexbuilder_Section.showSectionToolBox($section);
-      },
-      function(event) {
-        if ($(event.toElement).parents(".medium-editor-toolbar").length == 0) {
-          Rexbuilder_Section.hideSectionToolBox($section);
-        }
-      }
-    );
+    // $section.hover(
+    //   function(event) {
+    //     Rexbuilder_Section.showSectionToolBox($section);
+    //   },
+    //   function(event) {
+    //     if ($(event.toElement).parents(".medium-editor-toolbar").length == 0) {
+    //       Rexbuilder_Section.hideSectionToolBox($section);
+    //     }
+    //   }
+    // );
   };
 
   var _prepareSectionCopied = function($section) {

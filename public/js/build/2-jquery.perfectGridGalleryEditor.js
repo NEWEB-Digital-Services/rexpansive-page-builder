@@ -1734,19 +1734,21 @@
         focusElement: function ($elem) {
             this.showBlockToolBox($elem);
             $elem.addClass('focused');
-            $elem.parent().addClass('focused');
-            $elem.parent().parent().addClass('focused');
-            $elem.parent().parent().parent().addClass('focused');
-            $elem.parent().parent().parent().parent().addClass('focused');
+            this.$section.addClass('focused');
+            // $elem.parent().addClass('focused');
+            // $elem.parent().parent().addClass('focused');
+            // $elem.parent().parent().parent().addClass('focused');
+            // $elem.parent().parent().parent().parent().addClass('focused');
         },
 
         unFocusElement: function ($elem) {
             this.hideBlockToolBox($elem);
             $elem.removeClass('focused');
-            $elem.parent().removeClass('focused');
-            $elem.parent().parent().removeClass('focused');
-            $elem.parent().parent().parent().removeClass('focused');
-            $elem.parent().parent().parent().parent().removeClass('focused');
+            this.$section.removeClass('focused');
+            // $elem.parent().removeClass('focused');
+            // $elem.parent().parent().removeClass('focused');
+            // $elem.parent().parent().parent().removeClass('focused');
+            // $elem.parent().parent().parent().parent().removeClass('focused');
         },
 
         _updateElementsSizeViewers: function () {

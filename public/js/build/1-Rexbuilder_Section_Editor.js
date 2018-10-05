@@ -8,6 +8,7 @@ var Rexbuilder_Section_Editor = (function($) {
 
   // var $row_backgrond_color_pickers = null;
   // var $row_overlay_color_pickers = null;
+  var row_picker_classes;
 
   /**
    * Caching some elements
@@ -318,7 +319,7 @@ var Rexbuilder_Section_Editor = (function($) {
     var flagPickerUsed = false;
 
     $picker.spectrum({
-      replacerClassName: "tool-button tool-button--inline tool-button--empty tool-button--color tool-button--spectrum",
+      replacerClassName: row_picker_classes,
       preferredFormat: "hex",
       showPalette: false,
       showAlpha: true,
@@ -405,7 +406,7 @@ var Rexbuilder_Section_Editor = (function($) {
     };
     
     $picker.spectrum({
-      replacerClassName: "tool-button tool-button--inline tool-button--empty tool-button--color tool-button--spectrum",
+      replacerClassName: row_picker_classes,
       preferredFormat: "hex",
       showPalette: false,
       showAlpha: true,
@@ -470,6 +471,7 @@ var Rexbuilder_Section_Editor = (function($) {
    */
   var init = function() {
     // _cache_elements();
+    row_picker_classes = 'tool-button tool-button--inline tool-button--empty tool-button--color tool-button--flat tool-button--spectrum';
     _attachEvents();
     _setTools();
   };

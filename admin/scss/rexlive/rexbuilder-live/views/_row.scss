@@ -1,7 +1,14 @@
 .rexpansive_section {
   &#{$row-focused} {
     z-index: 20;
-    border: 2px solid $icon-active-color;
+    // border: 2px solid $icon-active-color;
+    .rex-row__dimension {
+      overflow: visible;
+    }
+
+    .perfect-grid-gallery {
+      overflow: visible;
+    }
   }
 
   &.empty-section {

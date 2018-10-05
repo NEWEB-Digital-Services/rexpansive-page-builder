@@ -1734,6 +1734,58 @@
 [type="radio"]:not(:checked) + span .l-svg-icons > svg {
   fill: #979797; }
 
+[type="radio"].flat-checkbox {
+  font-size: 1em; }
+
+[type="radio"].flat-checkbox:not(:checked) + span,
+[type="radio"].flat-checkbox:checked + span {
+  padding-left: 15px;
+  height: 10px;
+  line-height: 10px; }
+
+[type="radio"].flat-checkbox + span:before,
+[type="radio"].flat-checkbox + span:after {
+  margin: 0;
+  width: 10px;
+  height: 10px; }
+
+/* Unchecked styles */
+[type="radio"].flat-checkbox:not(:checked) + span:before,
+[type="radio"].flat-checkbox:not(:checked) + span:after {
+  border: 2px solid #fff; }
+
+/* Checked styles */
+[type="radio"].flat-checkbox:checked + span:after,
+[type="radio"].flat-checkbox.with-gap:checked + span:before,
+[type="radio"].flat-checkbox.with-gap:checked + span:after {
+  border: #000; }
+
+[type="radio"].flat-checkbox:checked + span:after,
+[type="radio"].flat-checkbox.with-gap:checked + span:after {
+  background-color: #000; }
+
+/* Disabled style */
+[type="radio"].flat-checkbox:disabled:not(:checked) + span:before,
+[type="radio"].flat-checkbox:disabled:checked + span:before {
+  border-color: #fff; }
+
+[type="radio"].flat-checkbox:disabled + span {
+  color: #fff; }
+
+[type="radio"].flat-checkbox:disabled:not(:checked) + span:before {
+  border-color: #fff; }
+
+[type="radio"].flat-checkbox:disabled:checked + span:after {
+  background-color: #fff;
+  border-color: #949494; }
+
+[type="radio"].flat-checkbox:checked + span .l-svg-icons > svg {
+  fill: #000; }
+
+[type="radio"].flat-checkbox:not(:checked) + span .l-svg-icons > svg,
+[type="radio"].flat-checkbox:not(:checked) + span .l-svg-icons > svg {
+  fill: #fff; }
+
 /* Checkboxes
    ========================================================================== */
 /* Remove default checkbox */
@@ -2057,6 +2109,19 @@ ul {
     color: #fff; }
     .tool-button.tool-button--black .l-svg-icons > svg {
       fill: #fff; }
+  .tool-button.tool-button--flat {
+    -webkit-box-shadow: none;
+            box-shadow: none;
+    padding: 0 5px;
+    background-color: transparent;
+    color: #fff; }
+    .tool-button.tool-button--flat .l-svg-icons > svg {
+      fill: #fff; }
+    .tool-button.tool-button--flat:hover {
+      background-color: transparent;
+      color: #fff; }
+      .tool-button.tool-button--flat:hover .l-svg-icons > svg {
+        fill: #fff; }
   .tool-button.tool-button--empty {
     min-width: 26px;
     min-height: 26px; }
@@ -2064,7 +2129,8 @@ ul {
     background-image: url(../img/colors-hd.png);
     background-size: cover;
     background-repeat: no-repeat;
-    background-position: center; }
+    background-position: center;
+    border: none; }
     .tool-button.tool-button--color.sp-replacer {
       position: static; }
     .tool-button.tool-button--color .sp-preview {
@@ -2309,47 +2375,25 @@ ul {
   height: 100%; }
 
 .rexlive-toolbox .l-svg-icons {
-  font-size: 30px; }
-
-.btn-save {
-  font-size: 30px; }
-  .btn-save .l-svg-icons > svg {
-    fill: #00acff; }
-  .btn-save.page-edited {
-    /*     
-        &.rex-saving {
-        } 
-    */ }
-    .btn-save.page-edited .l-svg-icons > svg {
-      fill: #979797; }
-
-.builder-add-custom-layout .l-svg-icons {
-  font-size: 16px; }
-
-.btn-undo .l-svg-icons, .btn-redo .l-svg-icons {
   font-size: 20px; }
+
+.btn-save .l-svg-icons > svg {
+  fill: #00acff; }
+.btn-save.page-edited {
+  /*     
+      &.rex-saving {
+      } 
+  */ }
+  .btn-save.page-edited .l-svg-icons > svg {
+    fill: #979797; }
 
 .btn-undo {
   border-right-color: #D6D6D6;
   border-right-style: solid;
   border-right-width: 1px; }
 
-.btn-custom-css .l-svg-icons {
-  font-size: 25px; }
-
 .btn-builder-layout[data-layout-type="custom"] {
   position: relative; }
-  .btn-builder-layout[data-layout-type="custom"] .l-svg-icons {
-    font-size: 25px; }
-
-.btn-builder-layout[data-name="mobile"] .l-svg-icons {
-  font-size: 26px; }
-
-.btn-builder-layout[data-name="tablet"] .l-svg-icons {
-  font-size: 26px; }
-
-.btn-builder-layout[data-name="default"] .l-svg-icons {
-  font-size: 25px; }
 
 .layout-custom-number {
   color: #979797;
@@ -2358,7 +2402,7 @@ ul {
   line-height: 1;
   position: absolute;
   width: 100%;
-  bottom: 26px;
+  bottom: 21px;
   left: 0; }
 
 .rex-number {
@@ -2366,8 +2410,6 @@ ul {
 
 .close-toolbox .l-svg-icons > svg {
   fill: #979797; }
-.close-toolbox .l-svg-icons {
-  font-size: 15px; }
 
 .btn-builder-layout .l-svg-icons > svg {
   fill: #000; }
