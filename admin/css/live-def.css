@@ -2177,9 +2177,9 @@ ul {
     opacity: 0; }
 
 .section-toolBox {
-  width: 100%;
   overflow: visible;
-  right: 0px;
+  right: -2px;
+  left: -2px;
   top: 0px;
   color: #000;
   position: absolute;
@@ -2189,6 +2189,7 @@ ul {
   -webkit-transform: translateY(-50%);
       -ms-transform: translateY(-50%);
           transform: translateY(-50%);
+  opacity: 0;
   font-size: 10px; }
   .section-toolBox.tool-box-active {
     display: block; }
@@ -2209,9 +2210,6 @@ ul {
     min-height: auto;
     width: 10px;
     height: 10px; }
-
-.builder-delete-row {
-  font-size: 10px; }
 
 .builder-move-row {
   cursor: move; }
@@ -2871,6 +2869,12 @@ ul {
     overflow: visible; }
 .rexpansive_section.empty-section .responsive-overlay {
   min-height: 100px; }
+.rexpansive_section:hover {
+  outline: 2px solid #00ACFF; }
+
+.rex-row__dimension:before, .rex-row__dimension:after {
+  content: ' ';
+  display: table; }
 
 .perfect-grid-gallery.focused {
   overflow: visible; }

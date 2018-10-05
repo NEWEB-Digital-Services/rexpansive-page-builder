@@ -136,7 +136,7 @@ $tool_button_classes = 'tool-button tool-button--flat';
 					</div>
 				</div>
 
-				<div class="tool-button tool-button--close tool-button--inline tool-button--black builder-delete-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexspansive');?>">
+				<div class="tool-button tool-button--inline tool-button--black builder-delete-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexspansive');?>">
 					<?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
 				</div>
 
