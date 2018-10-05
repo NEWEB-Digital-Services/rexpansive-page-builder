@@ -97,6 +97,16 @@
     right: 0;
     transform: translate(50%,-50%);
   }
+
+  &.tool-button--image-preview {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    // background-color: transparent;
+    #{$icon-class} {
+      opacity: 0;
+    }
+  }
 }
 
 .tool-button--double-icon--wrap {

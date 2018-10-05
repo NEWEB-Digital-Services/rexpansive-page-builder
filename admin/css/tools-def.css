@@ -2153,6 +2153,12 @@ ul {
     -webkit-transform: translate(50%, -50%);
         -ms-transform: translate(50%, -50%);
             transform: translate(50%, -50%); }
+  .tool-button.tool-button--image-preview {
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover; }
+    .tool-button.tool-button--image-preview .l-svg-icons {
+      opacity: 0; }
 
 .tool-button--double-icon--wrap {
   position: relative;

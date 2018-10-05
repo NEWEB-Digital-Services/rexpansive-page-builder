@@ -79,7 +79,7 @@ $tool_button_classes = 'tool-button';
 			<div class="bl_d-iflex bl_ai-c row-toolBox__fast-configuration">
 
 				<div class="tool-button--double-icon--wrap">
-					<div class="<?php echo $tool_button_classes; ?> tool-button--inline edit-row-image-background tooltipped" data-position="bottom" data-tooltip="" value="<?php echo esc_attr( $atts['id_image_bg_section'] ); ?>">
+					<div class="<?php echo $tool_button_classes; ?> tool-button--inline edit-row-image-background tooltipped<?php echo ( "" != $atts['id_image_bg_section'] ? ' tool-button--image-preview' : '' ); ?>" data-position="bottom" data-tooltip="" value="<?php echo esc_attr( $atts['id_image_bg_section'] ); ?>"<?php echo ( "" != $atts['id_image_bg_section'] ? ' style="background-image:url(' . $atts['image_bg_section'] . ');"' : '' ); ?>>
 						<?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
 					</div>
 					<div class="tool-button tool-button--inline tool-button--black tool-button--double-icon deactivate-row-image-background">

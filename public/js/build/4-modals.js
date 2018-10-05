@@ -717,7 +717,6 @@
       };
 
       Rexbuilder_Dom_Util.updateImageBG($section, data);
-      $section.find('.edit-row-image-background').attr('value',data.idImage);
 
       var actionData = {
         active: data.active,

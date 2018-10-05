@@ -202,6 +202,7 @@ var Rexbuilder_Dom_Util = (function($) {
     $sectionData.attr("data-id_image_bg_section", data.idImage);
     $sectionData.attr("data-image_bg_section", data.urlImage);
     $sectionData.attr("data-image_bg_section_active", data.active);
+    $section.find('.edit-row-image-background').addClass('tool-button--image-preview').attr('value',data.idImage).css('background-image','url('+data.urlImage+')');
   };
 
   var _updateImageBlock = function($itemContent, $elemData, data) {
@@ -277,6 +278,7 @@ var Rexbuilder_Dom_Util = (function($) {
     $section.attr("data-background_image_width", "");
     $section.attr("data-background_image_height", "");
     $section.css("background-image", "");
+    $section.find('.edit-row-image-background').removeClass('tool-button--image-preview').attr('value','').css('background-image','none');
   };
 
   var _resetImageBlock = function($itemContent, $elemData) {
