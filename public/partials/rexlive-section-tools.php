@@ -58,7 +58,7 @@ $tool_button_classes = 'tool-button';
 				<label for="row-layout-masonry-<?php echo $atts['rexlive_section_id']; ?>"><span><?php Rexbuilder_Utilities::get_icon('#B010-Masonry'); ?></span></label>
 			</div>
 
-			<div class="<?php echo $tool_button_classes; ?> tool-button--inline collapse-grid tooltipped">
+			<div class="<?php echo $tool_button_classes_right; ?> tool-button--inline collapse-grid tooltipped">
 				<?php Rexbuilder_Utilities::get_icon('#B006-Collapse'); ?>
 			</div><!-- // collapse -->
 		</div>
@@ -169,3 +169,4 @@ $tool_button_classes = 'tool-button';
 	</div>
 	<!-- // remove section -->
 </div>
+<div class="section-toolBoox__highlight"></div>

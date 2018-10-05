@@ -32,9 +32,9 @@
   @include bl-btn;
   @include bl-btn--hover-shadow;
 
-  &:hover {
-    @include bl-btn--hover;
-  }
+  // &:hover {
+  //   @include bl-btn--hover;
+  // }
 
   &.active {
     @include bl-btn--hover;

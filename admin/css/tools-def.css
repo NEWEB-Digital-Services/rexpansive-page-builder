@@ -2510,7 +2510,7 @@
    * 
    **/
   .switch-toggle.switch-live {
-    padding: 0 5px; }
+    padding: 0; }
 
   .switch-toggle.switch-live label,
   .switch-toggle.switch-live > span {
@@ -2686,11 +2686,6 @@ ul {
   .tool-button:hover {
     -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
             box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45); }
-  .tool-button:hover {
-    background-color: #00ACFF;
-    color: #fff; }
-    .tool-button:hover .l-svg-icons > svg {
-      fill: #fff; }
   .tool-button.active {
     background-color: #00ACFF;
     color: #fff; }

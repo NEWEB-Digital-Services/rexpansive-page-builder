@@ -2510,7 +2510,7 @@
    * 
    **/
   .switch-toggle.switch-live {
-    padding: 0 5px; }
+    padding: 0; }
 
   .switch-toggle.switch-live label,
   .switch-toggle.switch-live > span {
@@ -2686,11 +2686,6 @@ ul {
   .tool-button:hover {
     -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
             box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45); }
-  .tool-button:hover {
-    background-color: #00ACFF;
-    color: #fff; }
-    .tool-button:hover .l-svg-icons > svg {
-      fill: #fff; }
   .tool-button.active {
     background-color: #00ACFF;
     color: #fff; }
@@ -2805,7 +2800,10 @@ ul {
     display: block; }
   .section-toolBox:hover {
     opacity: 1; }
+    .section-toolBox:hover + .section-toolBoox__highlight {
+      opacity: 1; }
   .section-toolBox .tools {
+    padding: 5px 0;
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -2815,6 +2813,19 @@ ul {
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center; }
+  .section-toolBox .switch-toggle {
+    padding-right: 10px; }
+
+.section-toolBoox__highlight {
+  position: absolute;
+  content: '';
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  outline: 2px solid #00ACFF;
+  opacity: 0; }
 
 .builder-move-row {
   cursor: move; }
@@ -3403,8 +3414,6 @@ ul {
     overflow: visible; }
 .rexbuilder-live-content--editing .rexpansive_section.empty-section .responsive-overlay {
   min-height: 100px; }
-.rexbuilder-live-content--editing .rexpansive_section:hover {
-  outline: 2px solid #00ACFF; }
 
 .rex-row__dimension:before,
 .rex-row__dimension:after {

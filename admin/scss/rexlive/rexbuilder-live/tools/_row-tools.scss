@@ -21,11 +21,19 @@
 
   &:hover {
     opacity: 1;
+
+    + .section-toolBoox__highlight {
+      opacity: 1;
+    }
   }
 
   .tools {
-    // padding: 10px;
+    padding: 5px 0;
     @include generic-toolbar;
+  }
+
+  .switch-toggle {
+    padding-right: 10px;
   }
 
   font-size: $row-tools-size;
@@ -36,6 +44,18 @@
   //   width: 10px;
   //   height: 10px;
   // }
+}
+
+.section-toolBoox__highlight {
+  position: absolute;
+  content: '';
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  outline: 2px solid $palette-color-1;
+  opacity: 0;
 }
 
 .builder-move-row {
