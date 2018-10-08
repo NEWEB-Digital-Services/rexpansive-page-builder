@@ -3135,5 +3135,10 @@ class Rexbuilder_Admin {
     public function rexlive_body_fix( $classes ) {
 	   $classes .= ' rexpansive-editor ';
 	   return $classes;
-    }
+	}
+	
+	public function post_list_add_link_to_live_editor( $actions, $Post ) {
+		// $actions['live-edit'] = 
+		return $actions;
+	}
 }
