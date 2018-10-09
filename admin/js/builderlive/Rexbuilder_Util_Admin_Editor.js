@@ -165,6 +165,9 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
                         Change_Layout_Modal.openModal(dataObj);
                         return;
                     }
+                    _sendIframeBuilderMessage({
+                        eventName: "rexlive:startChangeLayout",
+                    });
                     _updateLayoutPage(buttonData);
                 }
             }
@@ -377,6 +380,7 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
         $frameContainer.on(Rexbuilder_Util_Admin_Editor.transitionEvent, function () {
             if (updatedLayoutData !== null) {
+                console.log('animazion stop');
                 _sendIframeBuilderMessage(updatedLayoutData);
             }
         });

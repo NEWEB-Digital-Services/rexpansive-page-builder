@@ -362,6 +362,10 @@ var Rexbuilder_Util_Editor = (function ($) {
             _fixToolsVisibility(data.selectedLayoutName);
         });
         
+        $(document).on('rexlive:startChangeLayout', function(event) {
+            _startLoading();
+        });
+        
         $(document).on("rexlive:updateLayoutsDimensions", function (e) {
             var data = e.settings.data_to_send;
             $("#layout-avaiable-dimensions").text(JSON.stringify(data.layouts));
@@ -631,6 +635,28 @@ var Rexbuilder_Util_Editor = (function ($) {
         }
     }
 
+    /**
+     * Launch loading animation on the editor
+     * @since 2.0.0
+     */
+    var _startLoading = function() {
+        // Rexbuilder_Util.$rexContainer.parent().addClass("rexbuilder-live-content--loading");
+        // Rexbuilder_Util.$loader.css('visibility','visible').addClass('fade-in').on(Rexbuilder_Util._animationEvent, function() {
+        //     Rexbuilder_Util.$loader.removeClass('');
+        // });
+    };
+
+    /**
+     * Ending loading animation on the editor
+     * @since 2.0.0
+     */
+    var _endLoading = function() {
+        // Rexbuilder_Util.$loader.addClass('fade-out').on(Rexbuilder_Util._animationEvent, function() {
+        //     Rexbuilder_Util.$rexContainer.parent().removeClass("rexbuilder-live-content--loading");
+        //     Rexbuilder_Util.$loader.css('visibility','visible');
+        // });
+    };
+
     var _clearSectionsEdited = function(){
         Rexbuilder_Util.$rexContainer.children(".rexpansive_section").each(function (i, sec) {
             var $section = $(sec);
@@ -764,6 +790,8 @@ var Rexbuilder_Util_Editor = (function ($) {
         createDefaultCustomLayouts: _createDefaultCustomLayouts,
         fixToolsVisibility: _fixToolsVisibility,
         clearSectionsEdited: _clearSectionsEdited,
+        startLoading: _startLoading,
+        endLoading: _endLoading
     };
 
 })(jQuery);

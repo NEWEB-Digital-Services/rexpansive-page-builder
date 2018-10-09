@@ -815,6 +815,7 @@ var Rexbuilder_Util = (function ($) {
         console.log("dom applied order", jQuery.extend(true, [], sectionDomOrder));
         Rexbuilder_Dom_Util.fixSectionDomOrder(sectionDomOrder, true);
 
+        Rexbuilder_Util_Editor.endLoading();
         Rexbuilder_Util.domUpdaiting = false;
 
         if (!Rexbuilder_Util.editorMode) {
@@ -2582,6 +2583,7 @@ var Rexbuilder_Util = (function ($) {
         $usedIDSContainer = $("#sections-ids-used");
         _storeNamesUsed();
         this.$rexContainer = $(".rex-container");
+        this.$loader = $('.rexlive-loader');
         this.backendEdited = false;
         if (Rexbuilder_Util.$rexContainer.attr("data-backend-edited").toString() == "true") {
             Rexbuilder_Util.$rexContainer.addClass("backend-edited");

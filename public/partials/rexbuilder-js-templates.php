@@ -215,9 +215,7 @@ $tool_button_classes = 'tool-button';
 </script>
 
 <script type="text/x-tmpl" id="tmpl-add-new-section-button">
-    <button class="add-new-section">
-	    	ADD
-    </button>
+    <button class="add-new-section">ADD</button>
 </script>
 
 <script type="text/x-tmpl" id="tmpl-toolbox-section">
@@ -344,6 +342,7 @@ $tool_button_classes = 'tool-button';
             <!-- // right area -->
         </div>
     </div>
+    <div class="section-toolBoox__highlight"></div>
 </script>
 
 <script type="text/x-tmpl" id="tmpl-new-section">

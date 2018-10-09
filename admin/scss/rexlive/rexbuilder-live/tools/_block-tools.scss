@@ -46,3 +46,11 @@
   }
 
 }
+
+.grid-stack-item[data-row="1"] {
+  .rexlive-block-toolbox {
+    &.top-tools {
+      top: 30px;
+    }
+  }
+}

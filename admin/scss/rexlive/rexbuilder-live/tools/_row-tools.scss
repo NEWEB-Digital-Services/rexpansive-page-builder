@@ -6,31 +6,36 @@
   left: -2px;
   top: 0px;
   // display: none;
-  color: #000;
   position: absolute;
   z-index: 2000;
   display: block;
-  background-color: $palette-color-1;
   // transition: opacity 300ms;
-  transform: translateY(-50%);
-  opacity: 0;
+  // transform: translateY(-50%);
+  // opacity: 0; 
+
+  .tools {
+    color: #000;
+    background-color: $palette-color-1;
+    padding: 5px 0;
+    opacity: 0;
+    @include generic-toolbar;
+  }
   
   &.tool-box-active {
     display: block;
   }
 
   &:hover {
-    opacity: 1;
+    .tools {
+      opacity: 1;
+      transform: translateY(-50%);
+    }
 
     + .section-toolBoox__highlight {
       opacity: 1;
     }
   }
 
-  .tools {
-    padding: 5px 0;
-    @include generic-toolbar;
-  }
 
   .switch-toggle {
     padding-right: 10px;

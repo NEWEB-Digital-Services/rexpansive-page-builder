@@ -863,6 +863,7 @@ endif;
                     <button class="add-new-section">
                     ADD
                     </button>
+                    <?php include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-loader.php"; ?>
             <?php
                 }
             ?>

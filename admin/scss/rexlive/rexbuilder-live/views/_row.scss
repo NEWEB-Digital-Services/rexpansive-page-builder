@@ -1,5 +1,6 @@
 .rexbuilder-live-content--editing {
 
+  position: relative;
   .rexpansive_section {
     &#{$row-focused} {
       z-index: 20;
