@@ -352,9 +352,19 @@
 	height: 20px;
 }
 
-.svg-_Z002-Image-Full {
+.svg-_B002-Boxed {
 	@extend %svg-common;
 	background-position: 56.737588652482266% 100%;
+}
+
+.svg-_B002-Boxed-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-_Z002-Image-Full {
+	@extend %svg-common;
+	background-position: 70.92198581560284% 100%;
 }
 
 .svg-_Z002-Image-Full-dims {

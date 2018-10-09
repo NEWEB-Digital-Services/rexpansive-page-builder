@@ -139,6 +139,7 @@
   &:hover {
     .tool-button_list {
       z-index: 10000;
+      visibility: visible;
       .tool-button {
         opacity: 1;
         transform: scale(1) translateY(0) translateX(0);
@@ -152,6 +153,7 @@
   position: absolute;
   z-index: -10000;
   top: 100%;
+  visibility: hidden;
   .tool-button {
     transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px);
     opacity: 0;

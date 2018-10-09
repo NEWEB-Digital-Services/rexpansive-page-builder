@@ -1109,6 +1109,7 @@
 
             var $newEl = $(newElement);
             $newEl.append(tmpl("tmpl-toolbox-block"));
+            $newEl.append(tmpl("tmpl-toolbox-block-bottom"));
 
             $newEl.find(".grid-item-content").prepend(tmpl("tmpl-block-drag-handle"));
 

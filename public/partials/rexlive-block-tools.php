@@ -11,15 +11,9 @@
 
 defined( 'ABSPATH' ) or exit;
 ?>
-<div class="rexlive-block-toolbox">
+<div class="rexlive-block-toolbox top-tools">
     <div class="rexlive-top-block-tools">
-        <div>
-            <div class="tool-button--big">
-                <span class="el-size-viewer"></span>
-            </div>
-        </div>
-        <!-- // left area: size viewer -->
-
+        <div></div>
         <div>
             <div class="tool-button--double-icon--wrap">
                 <div class="tool-button tool-button--inline edit-block-image tooltipped">

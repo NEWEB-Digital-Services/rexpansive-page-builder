@@ -9,9 +9,16 @@ var Rexbuilder_Block = (function ($) {
             Rexbuilder_Util_Editor.removingBlocks = true;
             var $elem = $(e.target).parents(".grid-stack-item");
             var gridGalleryInstance = $elem.parent().data().plugin_perfectGridGalleryEditor;
+            var $section = gridGalleryInstance.$section;
             gridGalleryInstance.deleteBlock($elem);
             $elem.attr("data-rexlive-element-edited", true);
             Rexbuilder_Util_Editor.removingBlocks = false;
+
+            var data = {
+                eventName: "rexlive:edited",
+                modelEdited: $section.hasClass("rex-model-section")
+            }
+            Rexbuilder_Util_Editor.sendParentIframeMessage(data);
         });
 
         $(document).on("click", ".builder-edit-slider", function (e) {

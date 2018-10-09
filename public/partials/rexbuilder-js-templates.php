@@ -16,14 +16,9 @@ $tool_button_classes = 'tool-button';
 ?>
 
 <script type="text/x-tmpl" id="tmpl-toolbox-block">
-<div class="rexlive-block-toolbox">
+<div class="rexlive-block-toolbox top-tools">
     <div class="rexlive-top-block-tools">
-        <div>
-            <div class="tool-button--big">
-                <span class="el-size-viewer"></span>
-            </div>
-        </div>
-        <!-- // left area: size viewer -->
+        <div></div>
 
         <div>
             <div class="tool-button--double-icon--wrap">
@@ -78,6 +73,18 @@ $tool_button_classes = 'tool-button';
     <button class="tool-button tool-button--black builder-delete-block waves-effect tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete block', 'rexspansive'); ?>">
         <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
     </button>
+</div>
+</script>
+
+<script type="text/x-tmpl" id="tmpl-toolbox-block-bottom">
+<div class="rexlive-block-toolbox bottom-tools">
+    <div class="rexlive-bottom-block-tools">
+        <div>
+            <div class="tool-button--big">
+                <span class="el-size-viewer"></span>
+            </div>
+        </div>
+    </div>
 </div>
 </script>
 
@@ -218,29 +225,22 @@ $tool_button_classes = 'tool-button';
         <div class="tools">
             
             <div class="bl_col-6 bl_d-flex bl_ai-c">
-                <div class="<?php echo $tool_button_classes; ?> tool-button--inline">
-                    <label>
-                        <input type="radio" class="edit-row-width" data-section_width="full" name="row-dimension-{%=section.rexID%}" value="100%" checked>
-                        <span><?php Rexbuilder_Utilities::get_icon('#B001-Full'); ?></span>
-                    </label>
-                    <label>
-                        <input type="radio" class="edit-row-width" data-section_width="boxed" name="row-dimension-{%=section.rexID%}" value="80%">
-                        <span><?php Rexbuilder_Utilities::get_icon('#B002-Boxed'); ?></span>
-                    </label>
-                </div><!-- // row dimension -->
+                <div class="switch-toggle switch-live">
+                    <input type="radio" class="edit-row-width" data-section_width="full" id="row-dimension-full-{%=section.rexID%}" name="row-dimension-{%=section.rexID%}" value="100%" checked>
+                    <label for="row-dimension-full-{%=section.rexID%}"><span><?php Rexbuilder_Utilities::get_icon('#B001-Full'); ?></span></label>
+                    <input type="radio" class="edit-row-width" data-section_width="boxed" id="row-dimension-boxed-{%=section.rexID%}" name="row-dimension-{%=section.rexID%}" value="80%">
+                    <label for="row-dimension-boxed-{%=section.rexID%}"><span><?php Rexbuilder_Utilities::get_icon('#B002-Boxed'); ?></span></label>
+                    <a></a>
+                </div><!-- // Row dimension -->
 
-                <div class="<?php echo $tool_button_classes; ?> tool-button tool-button--inline">
-                    <label>
-                        <input type="radio" class="edit-row-layout" data-section_layout="fixed" name="row-layout-{%=section.rexID%}" value="fixed" checked>
-                        <span><?php Rexbuilder_Utilities::get_icon('#B011-Grid'); ?></span>
-                    </label>
-                    <label>
-                        <input type="radio" class="edit-row-layout" data-section_layout="masonry" name="row-layout-{%=section.rexID%}" value="masonry">
-                        <span><?php Rexbuilder_Utilities::get_icon('#B010-Masonry'); ?></span>
-                    </label>
-                </div><!-- // row layout -->
+                <div class="switch-toggle switch-live">
+                    <input type="radio" class="edit-row-layout" data-section_layout="fixed" id="row-layout-fixed-{%=section.rexID%}" name="row-layout-{%=section.rexID%}" value="fixed" checked>
+                    <label for="row-layout-fixed-{%=section.rexID%}"><span><?php Rexbuilder_Utilities::get_icon('#B011-Grid'); ?></span></label>
+                    <input type="radio" class="edit-row-layout" data-section_layout="masonry" id="row-layout-masonry-{%=section.rexID%}" name="row-layout-{%=section.rexID%}" value="masonry">
+                    <label for="row-layout-masonry-{%=section.rexID%}"><span><?php Rexbuilder_Utilities::get_icon('#B010-Masonry'); ?></span></label>
+                </div><!-- // Row layout -->
 
-                <div class="<?php echo $tool_button_classes; ?> tool-button--inline collapse-grid tooltipped">
+                <div class="<?php echo $tool_button_classes_right; ?> tool-button--inline collapse-grid tooltipped">
                     <?php Rexbuilder_Utilities::get_icon('#B006-Collapse'); ?>
                 </div>
             </div>
@@ -274,7 +274,7 @@ $tool_button_classes = 'tool-button';
                     </div>
                 </div><!-- // insert element -->
 
-                <div>
+                <div class="bl_d-iflex bl_ai-c row-toolBox__fast-configuration">
                     <div class="tool-button--double-icon--wrap">
                         <div class="<?php echo $tool_button_classes; ?> tool-button--inline edit-row-image-background tooltipped" data-position="bottom" data-tooltip="" value="">
                             <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
@@ -306,16 +306,16 @@ $tool_button_classes = 'tool-button';
                 </div><!-- // fast configuration elements -->
 
                 <div class="bl_d-iflex bl_ai-c">
-                    <div class="<?php echo $tool_button_classes; ?> tool-button--inline builder-copy-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy row', 'rexpansive');?>">
+                    <div class="<?php echo $tool_button_classes_right; ?> tool-button--inline builder-copy-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy row', 'rexpansive');?>">
                         <?php Rexbuilder_Utilities::get_icon('#Z004-Copy'); ?>
                     </div>
                     
-                    <div class="<?php echo $tool_button_classes; ?> tool-button--inline builder-move-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Move row', 'rexpansive');?>">
+                    <div class="<?php echo $tool_button_classes_right; ?> tool-button--inline builder-move-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Move row', 'rexpansive');?>">
                         <?php Rexbuilder_Utilities::get_icon('#B007-Move'); ?>
                     </div>
 
                     <div class="tool-button-floating">
-                        <div class="<?php echo $tool_button_classes; ?> builder-section-config tooltipped" data-position="bottom" data-tooltip="<?php _e('Row settings', 'rexpansive');?>">
+                        <div class="<?php echo $tool_button_classes_right; ?> builder-section-config tooltipped" data-position="bottom" data-tooltip="<?php _e('Row settings', 'rexpansive');?>">
                             <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>					
                         </div>
                         <div class="tool-button_list">
@@ -335,7 +335,7 @@ $tool_button_classes = 'tool-button';
                         </div>
                     </div>
 
-                    <div class="tool-button tool-button--inline tool-button--black builder-delete-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexspansive');?>">
+                    <div class="<?php echo $tool_button_classes_right; ?> tool-button--inline builder-delete-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexspansive');?>">
                         <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                     </div>
                     <!-- // remove section -->

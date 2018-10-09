@@ -19,17 +19,6 @@ $tool_button_classes = 'tool-button';
 	<div class="tools">
 		
 		<div class="bl_col-6 bl_d-flex bl_ai-c">
-			<!-- <div class="<?php // echo $tool_button_classes; ?> tool-button--inline">
-				<label>
-					<input type="radio" class="edit-row-width" data-section_width="full" name="row-dimension-<?php // echo $atts['rexlive_section_id']; ?>" value="100%" <?php // checked('full',$atts['dimension'],true); ?>>
-					<span><?php // Rexbuilder_Utilities::get_icon('#B001-Full'); ?></span>
-				</label>
-				<label>
-					<input type="radio" class="edit-row-width" data-section_width="boxed" name="row-dimension-<?php // echo $atts['rexlive_section_id']; ?>" value="<?php // echo ( 'boxed' == $atts['dimension'] ? esc_attr( $atts['section_width'] ) : '80%' ); ?>" <?php // checked('boxed',$atts['dimension'],true); ?>>
-					<span><?php // Rexbuilder_Utilities::get_icon('#B002-Boxed'); ?></span>
-				</label>
-			</div> -->
-			<!-- // row dimension -->
 
 			<div class="switch-toggle switch-live">
 				<input type="radio" class="edit-row-width" data-section_width="full" id="row-dimension-full-<?php echo $atts['rexlive_section_id']; ?>" name="row-dimension-<?php echo $atts['rexlive_section_id']; ?>" value="100%" <?php checked('full',$atts['dimension'],true); ?>>
@@ -37,26 +26,14 @@ $tool_button_classes = 'tool-button';
 				<input type="radio" class="edit-row-width" data-section_width="boxed" id="row-dimension-boxed-<?php echo $atts['rexlive_section_id']; ?>" name="row-dimension-<?php echo $atts['rexlive_section_id']; ?>" value="<?php echo ( 'boxed' == $atts['dimension'] ? esc_attr( $atts['section_width'] ) : '80%' ); ?>" <?php checked('boxed',$atts['dimension'],true); ?>>
 				<label for="row-dimension-boxed-<?php echo $atts['rexlive_section_id']; ?>"><span><?php Rexbuilder_Utilities::get_icon('#B002-Boxed'); ?></span></label>
 				<a></a>
-			</div>
-
-			<!-- <div class="<?php // echo $tool_button_classes; ?> tool-button--inline">
-				<label>
-					<input type="radio" class="edit-row-layout" data-section_layout="fixed" name="row-layout-<?php // echo $atts['rexlive_section_id']; ?>" value="fixed" <?php // checked('fixed',$atts['layout'],true); ?>>
-					<span><?php // Rexbuilder_Utilities::get_icon('#B011-Grid'); ?></span>
-				</label>
-				<label>
-					<input type="radio" class="edit-row-layout" data-section_layout="masonry" name="row-layout-<?php // echo $atts['rexlive_section_id']; ?>" value="masonry" <?php // checked('masonry',$atts['dimension'],true); ?>>
-					<span><?php // Rexbuilder_Utilities::get_icon('#B010-Masonry'); ?></span>
-				</label>
-			</div> -->
-			<!-- // row layout -->
+			</div><!-- // Row dimension -->
 
 			<div class="switch-toggle switch-live">
 				<input type="radio" class="edit-row-layout" data-section_layout="fixed" id="row-layout-fixed-<?php echo $atts['rexlive_section_id']; ?>" name="row-layout-<?php echo $atts['rexlive_section_id']; ?>" value="fixed" <?php checked('fixed',$atts['layout'],true); ?>>
 				<label for="row-layout-fixed-<?php echo $atts['rexlive_section_id']; ?>"><span><?php Rexbuilder_Utilities::get_icon('#B011-Grid'); ?></span></label>
-				<input type="radio" class="edit-row-layout" data-section_layout="masonry" id="row-layout-masonry-<?php echo $atts['rexlive_section_id']; ?>" name="row-layout-<?php echo $atts['rexlive_section_id']; ?>" value="masonry" <?php checked('masonry',$atts['dimension'],true); ?>>
+				<input type="radio" class="edit-row-layout" data-section_layout="masonry" id="row-layout-masonry-<?php echo $atts['rexlive_section_id']; ?>" name="row-layout-<?php echo $atts['rexlive_section_id']; ?>" value="masonry" <?php checked('masonry',$atts['layout'],true); ?>>
 				<label for="row-layout-masonry-<?php echo $atts['rexlive_section_id']; ?>"><span><?php Rexbuilder_Utilities::get_icon('#B010-Masonry'); ?></span></label>
-			</div>
+			</div><!-- // Row layout -->
 
 			<div class="<?php echo $tool_button_classes_right; ?> tool-button--inline collapse-grid tooltipped">
 				<?php Rexbuilder_Utilities::get_icon('#B006-Collapse'); ?>

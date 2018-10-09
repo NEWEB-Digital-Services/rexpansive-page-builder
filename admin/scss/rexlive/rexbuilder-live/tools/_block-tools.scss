@@ -1,10 +1,20 @@
 .rexlive-block-toolbox {
   position: absolute;
   width: 100%;
-  top: 0;
+  left: 0;
+  font-size: 20px;
+
+  &.top-tools {
+    top: 0;
+  }
+
+  &.bottom-tools {
+    bottom: 0;
+  }
+
+  display: none;
   //height: 20px;
   //background-color: #444;
-  display: none;
   // display: block;
   
   &.focused {
@@ -12,6 +22,12 @@
   }
 
   .rexlive-top-block-tools {
+    @include generic-toolbar;
+    padding: 5px 20px;
+    position: relative;
+  }
+
+  .rexlive-bottom-block-tools {
     @include generic-toolbar;
     padding: 5px 20px;
     position: relative;
@@ -29,7 +45,4 @@
     letter-spacing: 2px;
   }
 
-  font-size: 20px;
-  // .l-svg-icons {
-  // }
 }
