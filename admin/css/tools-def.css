@@ -2829,6 +2829,13 @@ ul {
             transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px);
     opacity: 0; }
 
+.tool-indicator {
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 5px 3px;
+  -webkit-backface-visibility: visible;
+          backface-visibility: visible; }
+
 .rex-modal {
   max-height: none;
   max-width: 405px; }

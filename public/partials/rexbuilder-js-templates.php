@@ -79,11 +79,7 @@ $tool_button_classes = 'tool-button';
 <script type="text/x-tmpl" id="tmpl-toolbox-block-bottom">
 <div class="rexlive-block-toolbox bottom-tools">
     <div class="rexlive-bottom-block-tools">
-        <div>
-            <div class="tool-button--big">
-                <span class="el-size-viewer"></span>
-            </div>
-        </div>
+        <div class="el-size-viewer tool-indicator"></div>
     </div>
 </div>
 </script>
@@ -224,18 +220,17 @@ $tool_button_classes = 'tool-button';
             
             <div class="bl_col-6 bl_d-flex bl_ai-c">
                 <div class="switch-toggle switch-live">
-                    <input type="radio" class="edit-row-width" data-section_width="full" id="row-dimension-full-{%=section.rexID%}" name="row-dimension-{%=section.rexID%}" value="100%" checked>
+                    <input type="radio" class="edit-row-width" data-section_width="full" id="row-dimension-full-{%=section.rexID%}" name="row-dimension-{%=section.rexID%}" value="100%">
                     <label for="row-dimension-full-{%=section.rexID%}"><span><?php Rexbuilder_Utilities::get_icon('#B001-Full'); ?></span></label>
-                    <input type="radio" class="edit-row-width" data-section_width="boxed" id="row-dimension-boxed-{%=section.rexID%}" name="row-dimension-{%=section.rexID%}" value="80%">
+                    <input type="radio" class="edit-row-width" data-section_width="boxed" id="row-dimension-boxed-{%=section.rexID%}" name="row-dimension-{%=section.rexID%}" value="80%" checked>
                     <label for="row-dimension-boxed-{%=section.rexID%}"><span><?php Rexbuilder_Utilities::get_icon('#B002-Boxed'); ?></span></label>
-                    <a></a>
                 </div><!-- // Row dimension -->
 
                 <div class="switch-toggle switch-live">
-                    <input type="radio" class="edit-row-layout" data-section_layout="fixed" id="row-layout-fixed-{%=section.rexID%}" name="row-layout-{%=section.rexID%}" value="fixed" checked>
-                    <label for="row-layout-fixed-{%=section.rexID%}"><span><?php Rexbuilder_Utilities::get_icon('#B011-Grid'); ?></span></label>
                     <input type="radio" class="edit-row-layout" data-section_layout="masonry" id="row-layout-masonry-{%=section.rexID%}" name="row-layout-{%=section.rexID%}" value="masonry">
                     <label for="row-layout-masonry-{%=section.rexID%}"><span><?php Rexbuilder_Utilities::get_icon('#B010-Masonry'); ?></span></label>
+                    <input type="radio" class="edit-row-layout" data-section_layout="fixed" id="row-layout-fixed-{%=section.rexID%}" name="row-layout-{%=section.rexID%}" value="fixed" checked>
+                    <label for="row-layout-fixed-{%=section.rexID%}"><span><?php Rexbuilder_Utilities::get_icon('#B011-Grid'); ?></span></label>
                 </div><!-- // Row layout -->
 
                 <div class="<?php echo $tool_button_classes_right; ?> tool-button--inline collapse-grid tooltipped">

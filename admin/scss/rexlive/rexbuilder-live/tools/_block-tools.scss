@@ -2,14 +2,23 @@
   position: absolute;
   width: 100%;
   left: 0;
-  font-size: 20px;
+  font-size: 10px;
+
+  @include live-fonts();
 
   &.top-tools {
     top: 0;
+    z-index: 50;
   }
 
   &.bottom-tools {
     bottom: 0;
+    z-index: 50;
+  }
+
+  &.floating-tools {
+    top: 0;
+    z-index: 10;
   }
 
   display: none;
@@ -23,34 +32,117 @@
 
   .rexlive-top-block-tools {
     @include generic-toolbar;
-    padding: 5px 20px;
+    padding: 10px 20px;
     position: relative;
   }
 
   .rexlive-bottom-block-tools {
-    @include generic-toolbar;
-    padding: 5px 20px;
+    padding: 0 20px;
+    padding-bottom: 20px;
     position: relative;
+  }
+
+  .rexlive-floating-block-tools {
+    @include generic-toolbar;
+    position: relative;
+  }
+
+  .tool-button {
+    @include fill-icon(#000);
   }
 
   .builder-delete-block {
     position: absolute;
     top: -10px;
     right: -10px;
+    font-size: 10px;
+    background-color: $palette-color-3;
+    @include fill-icon(#fff);
   }
 
   .el-size-viewer {
-    font-family: sans-serif;
+    font-weight: 400;
+    letter-spacing: 1px;
     font-size: 10px;
-    letter-spacing: 2px;
+  }
+
+  .tool-button {
+    box-shadow: 0 4px 5px 0 rgba(0,0,0,0.14), 0 1px 10px 0 rgba(0,0,0,0.12), 0 2px 4px -1px rgba(0,0,0,0.3);
+    &:hover {
+      box-shadow: 0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12), 0 8px 10px -7px rgba(0,0,0,0.2);
+    }
   }
 
 }
 
 .grid-stack-item[data-row="1"] {
+  .rexlive-top-block-tools {
+    padding: 0;
+  }
   .rexlive-block-toolbox {
     &.top-tools {
-      top: 30px;
+      top: 20px;
+    }
+  }
+}
+
+.block-toolBox__fast-configuration {
+  .tool-button--inline {
+    max-height: $row-tools-size;
+  }
+  .tool-button--double-icon--wrap {
+    max-height: $row-tools-size;
+    margin: 0 5px;
+  }
+
+  .tool-button {
+    &:not(.tool-button--double-icon) {
+      padding: 0;
+      overflow: hidden;
+    }
+  }
+
+  .edit-block-image {
+    &.tool-button {
+      padding: 0;
+      font-size: 20px;
+    }
+  }
+
+  .edit-block-video-background {
+    &.tool-button {
+      padding: 5px;
+    }
+  }
+}
+
+.block-toolBox__config-tools {
+  .tool-button-floating {
+  // .builder-delete-block {
+    margin-left: 10px;
+  }
+}
+
+.rexlive-block-toolbox {
+  .block-toolBox__config-tools {
+    font-size: 10px;
+    .builder-delete-block {
+      position: static;
+      display: none;
+    }
+  }
+}
+
+.grid-stack-item[data-row="1"] {
+  .builder-delete-block {
+    display: none;
+  }
+  .rexlive-block-toolbox {
+    .block-toolBox__config-tools {
+      .builder-delete-block {
+        transform: translateX(10px);
+        display: inline-block;
+      }
     }
   }
 }

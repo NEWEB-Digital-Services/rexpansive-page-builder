@@ -58,10 +58,13 @@
   display: none;
 }
 
-.collapse-grid {
-  // left: 25%;
-  &.grid-collapsed {
-    background-color: orange;
+.tool-button.tool-button--flat {
+  &.collapse-grid {
+    @include fill-icon(rgba(255, 255, 255, 0.5));
+    // left: 25%;
+    &.grid-collapsed {
+      @include fill-icon(#fff);
+    }
   }
 }
 

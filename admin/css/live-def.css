@@ -2829,6 +2829,13 @@ ul {
             transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px);
     opacity: 0; }
 
+.tool-indicator {
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 5px 3px;
+  -webkit-backface-visibility: visible;
+          backface-visibility: visible; }
+
 .section-toolBox {
   overflow: visible;
   right: -2px;
@@ -2897,12 +2904,18 @@ ul {
   position: absolute;
   width: 100%;
   left: 0;
-  font-size: 20px;
+  font-size: 10px;
+  font-family: 'Roboto', sans-serif;
   display: none; }
   .rexlive-block-toolbox.top-tools {
-    top: 0; }
+    top: 0;
+    z-index: 50; }
   .rexlive-block-toolbox.bottom-tools {
-    bottom: 0; }
+    bottom: 0;
+    z-index: 50; }
+  .rexlive-block-toolbox.floating-tools {
+    top: 0;
+    z-index: 10; }
   .rexlive-block-toolbox.focused {
     display: block; }
   .rexlive-block-toolbox .rexlive-top-block-tools {
@@ -2915,9 +2928,13 @@ ul {
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
-    padding: 5px 20px;
+    padding: 10px 20px;
     position: relative; }
   .rexlive-block-toolbox .rexlive-bottom-block-tools {
+    padding: 0 20px;
+    padding-bottom: 20px;
+    position: relative; }
+  .rexlive-block-toolbox .rexlive-floating-block-tools {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
@@ -2927,19 +2944,63 @@ ul {
     -webkit-box-align: center;
         -ms-flex-align: center;
             align-items: center;
-    padding: 5px 20px;
     position: relative; }
+  .rexlive-block-toolbox .tool-button .l-svg-icons > svg {
+    fill: #000; }
   .rexlive-block-toolbox .builder-delete-block {
     position: absolute;
     top: -10px;
-    right: -10px; }
-  .rexlive-block-toolbox .el-size-viewer {
-    font-family: sans-serif;
+    right: -10px;
     font-size: 10px;
-    letter-spacing: 2px; }
+    background-color: #FF0040; }
+    .rexlive-block-toolbox .builder-delete-block .l-svg-icons > svg {
+      fill: #fff; }
+  .rexlive-block-toolbox .el-size-viewer {
+    font-weight: 400;
+    letter-spacing: 1px;
+    font-size: 10px; }
+  .rexlive-block-toolbox .tool-button {
+    -webkit-box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3); }
+    .rexlive-block-toolbox .tool-button:hover {
+      -webkit-box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -7px rgba(0, 0, 0, 0.2);
+              box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -7px rgba(0, 0, 0, 0.2); }
 
+.grid-stack-item[data-row="1"] .rexlive-top-block-tools {
+  padding: 0; }
 .grid-stack-item[data-row="1"] .rexlive-block-toolbox.top-tools {
-  top: 30px; }
+  top: 20px; }
+
+.block-toolBox__fast-configuration .tool-button--inline {
+  max-height: 20px; }
+.block-toolBox__fast-configuration .tool-button--double-icon--wrap {
+  max-height: 20px;
+  margin: 0 5px; }
+.block-toolBox__fast-configuration .tool-button:not(.tool-button--double-icon) {
+  padding: 0;
+  overflow: hidden; }
+.block-toolBox__fast-configuration .edit-block-image.tool-button {
+  padding: 0;
+  font-size: 20px; }
+.block-toolBox__fast-configuration .edit-block-video-background.tool-button {
+  padding: 5px; }
+
+.block-toolBox__config-tools .tool-button-floating {
+  margin-left: 10px; }
+
+.rexlive-block-toolbox .block-toolBox__config-tools {
+  font-size: 10px; }
+  .rexlive-block-toolbox .block-toolBox__config-tools .builder-delete-block {
+    position: static;
+    display: none; }
+
+.grid-stack-item[data-row="1"] .builder-delete-block {
+  display: none; }
+.grid-stack-item[data-row="1"] .rexlive-block-toolbox .block-toolBox__config-tools .builder-delete-block {
+  -webkit-transform: translateX(10px);
+      -ms-transform: translateX(10px);
+          transform: translateX(10px);
+  display: inline-block; }
 
 .rexlive-loader {
   position: absolute;
@@ -3006,8 +3067,10 @@ ul {
 .backend-edited .collapse-grid {
   display: none; }
 
-.collapse-grid.grid-collapsed {
-  background-color: orange; }
+.tool-button.tool-button--flat.collapse-grid .l-svg-icons > svg {
+  fill: rgba(255, 255, 255, 0.5); }
+.tool-button.tool-button--flat.collapse-grid.grid-collapsed .l-svg-icons > svg {
+  fill: #fff; }
 
 .add-new-block-empty {
   left: 35%; }

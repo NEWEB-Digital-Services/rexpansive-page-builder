@@ -601,8 +601,9 @@ class Rexbuilder_Block
 
             echo "</div>";
             if (isset($editor) && $editor == "true") {
-                include REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-block-tools.php";
+                include REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-block-tools-top.php";
                 include REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-block-tools-bottom.php";
+                include REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-block-tools-floating.php";
             }
 
             echo "</div>";

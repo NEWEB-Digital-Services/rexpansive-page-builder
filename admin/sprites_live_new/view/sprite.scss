@@ -14,7 +14,7 @@
 
 .svg-A002-Redo {
 	@extend %svg-common;
-	background-position: 14.184397163120567% 85.71428571428571%;
+	background-position: 28.368794326241133% 85.71428571428571%;
 }
 
 .svg-A002-Redo-dims {
@@ -184,7 +184,7 @@
 
 .svg-B011-Grid {
 	@extend %svg-common;
-	background-position: 70.92198581560284% 15%;
+	background-position: 14.184397163120567% 85.71428571428571%;
 }
 
 .svg-B011-Grid-dims {
@@ -194,7 +194,7 @@
 
 .svg-B012-Full-Height {
 	@extend %svg-common;
-	background-position: 28.368794326241133% 85.71428571428571%;
+	background-position: 70.92198581560284% 15%;
 }
 
 .svg-B012-Full-Height-dims {
@@ -368,6 +368,16 @@
 }
 
 .svg-_Z002-Image-Full-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-_Z005-Setting {
+	@extend %svg-common;
+	background-position: 85.1063829787234% 100%;
+}
+
+.svg-_Z005-Setting-dims {
 	width: 20px;
 	height: 20px;
 }
