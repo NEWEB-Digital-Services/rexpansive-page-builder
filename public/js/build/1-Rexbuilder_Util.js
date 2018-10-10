@@ -941,7 +941,7 @@ var Rexbuilder_Util = (function($) {
 
   var _edit_dom_layout = function(chosenLayoutName) {
     var response = {
-      collapse_needed: false
+      collapse_needed: false,
     };
     
     // No change layout, simple resize
@@ -1134,7 +1134,7 @@ var Rexbuilder_Util = (function($) {
             $section.addClass("rex-hide-section");
           } else {
             $section.removeClass("rex-hide-section");
-            _updateDOMelements(
+            response.collapse_needed += _updateDOMelements(
               $section,
               section.targets,
               forceCollapseElementsGrid
@@ -1558,7 +1558,7 @@ var Rexbuilder_Util = (function($) {
                   1500,
                   galleryEditorInstance.$section
                 );
-                alert('ROW PRONTA');
+                console.log('ROW PRONTA');
               },
               200,
               galleryEditorInstance
@@ -1569,6 +1569,8 @@ var Rexbuilder_Util = (function($) {
         );
       }
     }
+
+    return collapse;
   };
 
   var _updateModelsLive = function(idModel, targets, editedModelNumber) {
@@ -2844,8 +2846,13 @@ var Rexbuilder_Util = (function($) {
       if (Rexbuilder_Util.editorMode) {
         Rexbuilder_Util_Editor.buttonResized = false;
         var situation = _edit_dom_layout(Rexbuilder_Util_Editor.clickedLayoutID);
-        console.log('situation', situation);
-        Rexbuilder_Util_Editor.endLoading();
+        if( 0 === situation.collapse_needed ) {
+          Rexbuilder_Util_Editor.endLoading();
+        } else {
+          $(document).one("rexlive:collapsingElementsEnded", function(e) {
+            Rexbuilder_Util_Editor.endLoading();
+          });
+        }
       } else {
         _edit_dom_layout(chooseLayout());
         _updateGridsHeights();
