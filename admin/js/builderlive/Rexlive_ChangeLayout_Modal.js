@@ -36,6 +36,7 @@ var Change_Layout_Modal = (function ($) {
                     }
                     Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataSavePage);
                     Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataSaveModel);
+                    Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage({eventName:'rexlive:startChangeLayout'});
                     break;
                 case "continue":
                     var data = {

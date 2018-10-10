@@ -6,7 +6,7 @@ var Rex_Save_Listeners = (function ($) {
             var eventData = e.settings.data_to_send;
             var i, j, k, m, p, q;
 
-            Rexbuilder_Util_Editor.startLoading();
+            // Rexbuilder_Util_Editor.startLoading();
             Rexbuilder_Util_Editor.savingPage = true;
             var idPost = parseInt($('#id-post').attr('data-post-id'));
             var activeLayoutName = Rexbuilder_Util.activeLayout;
@@ -266,7 +266,7 @@ var Rex_Save_Listeners = (function ($) {
             }).fail(function () {
                 // Probably want to catch failure
             }).always(function () {
-                Rexbuilder_Util_Editor.endLoading();
+                // Rexbuilder_Util_Editor.endLoading();
                 // Or use always if you want to do the same thing
                 // whether the call succeeds or fails
             });

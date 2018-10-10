@@ -15,6 +15,9 @@ var Rexbuilder_Util = (function($) {
   var $defaultLayoutState;
   var $usedIDSContainer;
   var sectionIDSused;
+  var frontAvailableLayouts;
+  var actualFrontLayout;
+  var changedFrontLayout;
 
   var createRandomID = function(n) {
     var text = "";
@@ -152,6 +155,19 @@ var Rexbuilder_Util = (function($) {
       return "standard";
     }
     return "custom";
+  };
+
+  /**
+   * Calculating the actual layout based on the device size
+   * @since 2.0.0
+   */
+  var _findFrontLayout = function() {
+    var dev_w = _viewport().width;
+    for( var i=frontAvailableLayouts.length-1; i >= 0; i-- ) {
+      if(dev_w >= parseInt(frontAvailableLayouts[i].min) && ( "" != frontAvailableLayouts[i].max ? dev_w <= parseInt(frontAvailableLayouts[i].max) : true ) ) {
+        return frontAvailableLayouts[i].id;
+      }
+    }
   };
 
   var _getModelsCustomizations = function() {
@@ -744,14 +760,14 @@ var Rexbuilder_Util = (function($) {
     var i, j, m, n;
     var targetFounded;
     // merging custom data with default data
-    console.log(
-      "layoutSelectedSections",
-      jQuery.extend(true, [], layoutSelectedSections)
-    );
-    console.log(
-      "defaultLayoutSections",
-      jQuery.extend(true, [], defaultLayoutSections)
-    );
+    // console.log(
+    //   "layoutSelectedSections",
+    //   jQuery.extend(true, [], layoutSelectedSections)
+    // );
+    // console.log(
+    //   "defaultLayoutSections",
+    //   jQuery.extend(true, [], defaultLayoutSections)
+    // );
     if (Rexbuilder_Util.activeLayout != "default") {
       for (i = 0; i < layoutSelectedSections.length; i++) {
         layoutSelectedSections[i].sectionFounded = false;
@@ -2845,25 +2861,31 @@ var Rexbuilder_Util = (function($) {
 
       if (Rexbuilder_Util.editorMode) {
         Rexbuilder_Util_Editor.buttonResized = false;
-        var situation = _edit_dom_layout(Rexbuilder_Util_Editor.clickedLayoutID);
-        if( 0 === situation.collapse_needed ) {
-          Rexbuilder_Util_Editor.endLoading();
-        } else {
-          $(document).one("rexlive:collapsingElementsEnded", function(e) {
-            Rexbuilder_Util_Editor.endLoading();
-          });
-        }
+        var resize_info = _edit_dom_layout(Rexbuilder_Util_Editor.clickedLayoutID);
       } else {
-        _edit_dom_layout(chooseLayout());
+        var resize_info = _edit_dom_layout(chooseLayout());
         _updateGridsHeights();
+
+        if(actualFrontLayout == _findLayoutType()) {
+          changedFrontLayout = true;
+          console.log(changedFrontLayout);
+        }
       }
+
+      if( 0 === resize_info.collapse_needed ) {
+        Rexbuilder_Util_Editor.endLoading();
+      } else {
+        $(document).one("rexlive:collapsingElementsEnded", function(e) {
+          Rexbuilder_Util_Editor.endLoading();
+        });
+      }
+
       Rexbuilder_Util.windowIsResizing = false;
       firstResize = true;
     }
   };
 
   var _updateGridsHeights = function() {
-    var numGridStackRow = Rexbuilder_Util.$rexContainer.find(".grid-stack-row").length;
     Rexbuilder_Util.$rexContainer
       .find(".grid-stack-row")
       .each(function(index, row) {
@@ -3314,6 +3336,11 @@ var Rexbuilder_Util = (function($) {
       this.editorMode = true;
     } else {
       this.editorMode = false;
+      changedFrontLayout = false;
+      frontAvailableLayouts = JSON.parse($("#layout-avaiable-dimensions").text());
+      actualFrontLayout = _findFrontLayout();
+      console.log(frontAvailableLayouts);
+      console.log(actualFrontLayout);
     }
 
     this.$window = $(window);

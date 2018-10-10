@@ -435,6 +435,7 @@ var Rexbuilder_Util_Editor = (function ($) {
         });
 
         $(document).on("rexlive:dropChanges", function (e) {
+            Rexbuilder_Util_Editor.startLoading();
             var eventData = e.settings.data_to_send;
             _restorePageStartingState(eventData);
         });

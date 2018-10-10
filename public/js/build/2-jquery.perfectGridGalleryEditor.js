@@ -1480,7 +1480,6 @@
 
     // Define usefull private properties
     _defineDynamicPrivateProperties: function() {
-      console.log("dynamivcs");
       var newWidth = this.$element.outerWidth();
 
       var collapseGrid = this.$section.attr("data-rex-collapse-grid");
@@ -2602,11 +2601,11 @@
     },
 
     updateElementHeight: function($elem) {
-      console.log(
-        "calculating " + $elem.attr("data-rexbuilder-block-id") + " height"
-      );
-      console.log($elem.attr("data-gs-width"));
-      console.log("elem width", $elem.outerWidth());
+      // console.log(
+      //   "calculating " + $elem.attr("data-rexbuilder-block-id") + " height"
+      // );
+      // console.log($elem.attr("data-gs-width"));
+      // console.log("elem width", $elem.outerWidth());
       if (Rexbuilder_Util.editorMode && !this.properties.oneColumModeActive) {
         Rexbuilder_Util_Editor.elementIsResizing = true;
       }
@@ -2745,14 +2744,14 @@
         emptyBlockFlag = true;
       }
 
-      console.log(
-        startH,
-        backgroundHeight,
-        videoHeight,
-        defaultHeight,
-        textHeight,
-        sliderHeight
-      );
+      // console.log(
+      //   startH,
+      //   backgroundHeight,
+      //   videoHeight,
+      //   defaultHeight,
+      //   textHeight,
+      //   sliderHeight
+      // );
 
       newH = Math.max(
         startH,
@@ -2766,7 +2765,7 @@
         this.properties.oneColumModeActive &&
         !Rexbuilder_Util.windowIsResizing
       ) {
-        console.log('ho veramente finito tutto 22222!');
+
         return {
           height: newH,
           empty: emptyBlockFlag
@@ -2785,15 +2784,12 @@
       this.updateElementDataHeightProperties($blockData, newH);
 
       var gridstack = this.properties.gridstackInstance;
-      console.log(1);
       if (gridstack !== undefined) {
-        console.log(2);
         if (
           this.properties.oldCellHeight != 0 &&
           this.properties.oldCellHeight != this.properties.singleHeight &&
           this.properties.oldLayout == "masonry"
         ) {
-          console.log(3);
           var x, y, w, h;
           var elDim;
           elDim = store.get(
@@ -2817,7 +2813,6 @@
       if (Rexbuilder_Util.editorMode) {
         Rexbuilder_Util_Editor.elementIsResizing = false;
       }
-      console.log('ho veramente finito tutto!');
     },
 
     //Da sistemare mettendo un unico return
