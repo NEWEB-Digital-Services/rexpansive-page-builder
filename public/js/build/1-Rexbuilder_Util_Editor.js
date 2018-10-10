@@ -1,4 +1,7 @@
-
+/**
+ * Util functions on RexLive
+ * @since 2.0.0
+ */
 var Rexbuilder_Util_Editor = (function ($) {
     'use strict';
 
@@ -639,22 +642,50 @@ var Rexbuilder_Util_Editor = (function ($) {
      * Launch loading animation on the editor
      * @since 2.0.0
      */
-    var _startLoading = function() {
-        // Rexbuilder_Util.$rexContainer.parent().addClass("rexbuilder-live-content--loading");
-        // Rexbuilder_Util.$loader.css('visibility','visible').addClass('fade-in').on(Rexbuilder_Util._animationEvent, function() {
-        //     Rexbuilder_Util.$loader.removeClass('');
-        // });
+    var _startLoading = function( animate_loader ) {
+        animate_loader = typeof animate_loader !== 'undefined' ? animate_loader : true;
+        console.log('comincio animazione');
+        if( animate_loader ) {
+            // Rexbuilder_Util.$rexContainer.parent().addClass("rexbuilder-live-content--loading");
+            // Rexbuilder_Util.$loader.addClass('active').addClass('fade-in');
+            Rexbuilder_Util.$rexContainer.addClass("fade-out").one(Rexbuilder_Util._animationEvent, function() {
+                Rexbuilder_Util.$rexContainer.css("opacity","0").removeClass("fade-out");
+            });
+        }
+
+        // if( animate_blocks ) {
+        //     Rexbuilder_Util.$rexContainer.find('.grid-stack-item').addClass('fade-out');
+        // }
     };
 
     /**
      * Ending loading animation on the editor
      * @since 2.0.0
      */
-    var _endLoading = function() {
-        // Rexbuilder_Util.$loader.addClass('fade-out').on(Rexbuilder_Util._animationEvent, function() {
-        //     Rexbuilder_Util.$rexContainer.parent().removeClass("rexbuilder-live-content--loading");
-        //     Rexbuilder_Util.$loader.css('visibility','visible');
-        // });
+    var _endLoading = function( animate_loader ) {
+        animate_loader = typeof animate_loader !== 'undefined' ? animate_loader : true;
+
+        // setTimeout(function() {
+
+        console.log('finisco animazione');
+        if( animate_loader ) {
+        // Rexbuilder_Util.$loader.addClass('fade-out').one(Rexbuilder_Util._animationEvent, function() {
+            //     Rexbuilder_Util.$rexContainer.parent().removeClass("rexbuilder-live-content--loading");
+            //     Rexbuilder_Util.$loader.removeClass('active fade-out fade-in');
+            // });
+            Rexbuilder_Util.$rexContainer.addClass("fade-in").one(Rexbuilder_Util._animationEvent, function() {
+                Rexbuilder_Util.$rexContainer.css("opacity","").removeClass("fade-in");
+            });
+        }
+                
+        // }, 2000);
+        // if( animate_blocks ) {
+        //     Rexbuilder_Util.$rexContainer.find('.grid-stack-item').each(function(i,el) {
+        //         $(el).addClass('fade-in').one(Rexbuilder_Util._animationEvent, function() {
+        //             $(this).removeClass('fade-out fade-in');
+        //         });
+        //     });
+        // }
     };
 
     var _clearSectionsEdited = function(){

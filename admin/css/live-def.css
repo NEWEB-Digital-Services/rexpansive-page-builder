@@ -3067,15 +3067,20 @@ ul {
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 172, 255, 0.6);
+  background-color: #fff;
   opacity: 0;
   visibility: hidden;
   z-index: -10; }
   .rexlive-loader .rexlive-loader--element {
     top: 50%; }
+  .rexlive-loader.active {
+    visibility: visible;
+    z-index: 1000; }
+  .rexlive-loader .sk-double-bounce .sk-child {
+    background-color: #FF0040; }
 
-.rexbuilder-live-content--loading .rexlive-loader {
-  z-index: 2000; }
+.rexbuilder-live-content--loading {
+  overflow: hidden; }
 
 ::-moz-selection {
   color: red;

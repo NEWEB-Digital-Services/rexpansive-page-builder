@@ -64,7 +64,8 @@ var Rexbuilder_Section = (function($) {
         $elem
           .find(".grid-stack-item-content")
           .after(tmpl("tmpl-toolbox-block", {}))
-          .after(tmpl("tmpl-toolbox-block-bottom", {}));
+          .after(tmpl("tmpl-toolbox-block-bottom", {}))
+          .after(tmpl("tmpl-toolbox-block-floating", {}));
       }
     });
 
@@ -556,6 +557,9 @@ var Rexbuilder_Section = (function($) {
       }
     });
 
+    /**
+     * Listening collapse row end
+     */
     $(document).on("rexlive:collapsingElementsEnded", function(e) {
       var galleryEditorInstance = e.settings.galleryEditorInstance;
       var reverseData = e.settings.reverseData;

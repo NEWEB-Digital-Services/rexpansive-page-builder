@@ -4,7 +4,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba($palette-color-1, 0.6);
+  background-color: #fff;
   opacity: 0;
   visibility: hidden;
   z-index: -10;
@@ -13,15 +13,27 @@
   .rexlive-loader--element {
     top: 50%;
   }
+
+  &.active {
+    visibility: visible;
+    z-index: 1000;
+  }
+
+  .sk-double-bounce {
+    .sk-child {
+      background-color: $palette-color-3;
+    }
+  }
 }
 
 .rexbuilder-live-content--loading {
-  .rexlive-loader {
+  overflow: hidden;
+  // .rexlive-loader {
     // opacity: 1;
     // visibility: visible;
-    z-index: 2000;
+    // z-index: 2000;
     // transition: visibility 0s, opacity 1000ms;
-  }
+  // }
 
   // .grid-stack-item {
   //   opacity: 0;

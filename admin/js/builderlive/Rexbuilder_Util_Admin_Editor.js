@@ -380,7 +380,6 @@ var Rexbuilder_Util_Admin_Editor = (function ($) {
 
         $frameContainer.on(Rexbuilder_Util_Admin_Editor.transitionEvent, function () {
             if (updatedLayoutData !== null) {
-                console.log('animazion stop');
                 _sendIframeBuilderMessage(updatedLayoutData);
             }
         });
