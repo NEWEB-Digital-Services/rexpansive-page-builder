@@ -27,6 +27,10 @@
 }
 
 .rexbuilder-live-content--loading {
+  .grid-stack.grid-stack-animate, 
+  .grid-stack.grid-stack-animate .grid-stack-item {
+    transition: none;
+  }
   overflow: hidden;
   // .rexlive-loader {
     // opacity: 1;

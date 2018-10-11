@@ -3081,6 +3081,11 @@ ul {
 
 .rexbuilder-live-content--loading {
   overflow: hidden; }
+  .rexbuilder-live-content--loading .grid-stack.grid-stack-animate,
+  .rexbuilder-live-content--loading .grid-stack.grid-stack-animate .grid-stack-item {
+    -webkit-transition: none;
+    -o-transition: none;
+    transition: none; }
 
 ::-moz-selection {
   color: red;

@@ -16,7 +16,7 @@ var Rexbuilder_Util = (function($) {
   var $usedIDSContainer;
   var sectionIDSused;
   var frontAvailableLayouts;
-  var actualFrontLayout;
+  var startFrontLayout;
   var changedFrontLayout;
 
   var createRandomID = function(n) {
@@ -2859,25 +2859,48 @@ var Rexbuilder_Util = (function($) {
         return;
       }
 
+      // Live editor resize logic
       if (Rexbuilder_Util.editorMode) {
         Rexbuilder_Util_Editor.buttonResized = false;
         var resize_info = _edit_dom_layout(Rexbuilder_Util_Editor.clickedLayoutID);
-      } else {
-        var resize_info = _edit_dom_layout(chooseLayout());
-        _updateGridsHeights();
 
-        if(actualFrontLayout == _findLayoutType()) {
-          changedFrontLayout = true;
-          console.log(changedFrontLayout);
-        }
-      }
-
-      if( 0 === resize_info.collapse_needed ) {
-        Rexbuilder_Util_Editor.endLoading();
-      } else {
-        $(document).one("rexlive:collapsingElementsEnded", function(e) {
+        if( 0 === resize_info.collapse_needed ) {
           Rexbuilder_Util_Editor.endLoading();
-        });
+        } else {
+          $(document).one("rexlive:collapsingElementsEnded", function(e) {
+            Rexbuilder_Util_Editor.endLoading();
+          });
+        }
+      } else {    // Front end resize logic
+        var actualLayout = _findFrontLayout();
+        
+        if(startFrontLayout != actualLayout) {
+          changedFrontLayout = true;
+          startFrontLayout = actualLayout;
+          Rexbuilder_Util_Editor.startLoading();
+        }
+
+        if(changedFrontLayout) {
+          setTimeout(function() {
+            var resize_info = _edit_dom_layout(chooseLayout());
+            _updateGridsHeights();
+    
+            if(changedFrontLayout) {
+              if( 0 == resize_info.collapse_needed ) {
+                Rexbuilder_Util_Editor.endLoading();
+              } else {
+                $(document).one("rexlive:collapsingElementsEnded", function(e) {
+                  Rexbuilder_Util_Editor.endLoading();
+                });
+              }
+            }
+            changedFrontLayout = false;
+          }, 300);
+        } else {
+          var resize_info = _edit_dom_layout(chooseLayout());
+          _updateGridsHeights();
+        }
+
       }
 
       Rexbuilder_Util.windowIsResizing = false;
@@ -3338,9 +3361,9 @@ var Rexbuilder_Util = (function($) {
       this.editorMode = false;
       changedFrontLayout = false;
       frontAvailableLayouts = JSON.parse($("#layout-avaiable-dimensions").text());
-      actualFrontLayout = _findFrontLayout();
+      startFrontLayout = _findFrontLayout();
       console.log(frontAvailableLayouts);
-      console.log(actualFrontLayout);
+      console.log(startFrontLayout);
     }
 
     this.$window = $(window);

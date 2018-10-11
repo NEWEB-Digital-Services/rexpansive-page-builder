@@ -647,7 +647,7 @@ var Rexbuilder_Util_Editor = (function ($) {
         animate_loader = typeof animate_loader !== 'undefined' ? animate_loader : true;
         console.log('comincio animazione');
         if( animate_loader ) {
-            // Rexbuilder_Util.$rexContainer.parent().addClass("rexbuilder-live-content--loading");
+            Rexbuilder_Util.$rexContainer.parent().addClass("rexbuilder-live-content--loading");
             // Rexbuilder_Util.$loader.addClass('active').addClass('fade-in');
             Rexbuilder_Util.$rexContainer.addClass("fade-out").one(Rexbuilder_Util._animationEvent, function() {
                 Rexbuilder_Util.$rexContainer.css("opacity","0").removeClass("fade-out");
@@ -671,11 +671,11 @@ var Rexbuilder_Util_Editor = (function ($) {
         console.log('finisco animazione');
         if( animate_loader ) {
         // Rexbuilder_Util.$loader.addClass('fade-out').one(Rexbuilder_Util._animationEvent, function() {
-            //     Rexbuilder_Util.$rexContainer.parent().removeClass("rexbuilder-live-content--loading");
             //     Rexbuilder_Util.$loader.removeClass('active fade-out fade-in');
             // });
             Rexbuilder_Util.$rexContainer.addClass("fade-in").one(Rexbuilder_Util._animationEvent, function() {
                 Rexbuilder_Util.$rexContainer.css("opacity","").removeClass("fade-in");
+                Rexbuilder_Util.$rexContainer.parent().removeClass("rexbuilder-live-content--loading");
             });
         }
                 
