@@ -608,7 +608,7 @@ defined('ABSPATH') or exit;
 <!-- Block settings background settings -->
 
 <div class="rex-modal-wrap rex-fade">
-    <div id="video-block-editor-wrapper" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
+    <div id="video-block-editor-wrapper" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4" data-block_tools="">
         <?php Rexbuilder_Utilities::close_button(); ?>
         <div class="modal-content">
             <div class="video-block-edit-wrap">

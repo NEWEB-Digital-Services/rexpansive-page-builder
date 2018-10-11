@@ -115,7 +115,8 @@ var Rexbuilder_Block_Editor = (function($) {
      * @since 2.0.0
      */
     $(document).on('click', '.edit-block-video-background', function(e) {
-      var $elem = $(e.target).parents(".grid-stack-item");
+      var $btn = $(e.target);
+      var $elem = $btn.parents(".grid-stack-item");
       var $section = $elem.parents(".rexpansive_section");
       var rex_block_id = $elem.attr("data-rexbuilder-block-id");
       var sectionID = $section.attr("data-rexlive-section-id");
@@ -125,6 +126,14 @@ var Rexbuilder_Block_Editor = (function($) {
           : "";
       var $elemData = $elem.children(".rexbuilder-block-data");
       var $itemContent = $elem.find(".grid-item-content");
+
+      var tools = '';
+      var $btn_container = $btn.parents('.rexlive-block-toolbox');
+      if( $btn_container.hasClass('bottom-tools') ) {
+        tools = 'bottom';
+      } else if ($btn_container.hasClass('top-tools')) {
+        tools = 'top';
+      }
 
       var mp4Video =
         typeof $elemData.attr("data-video_mp4_url") == "undefined"
@@ -179,7 +188,8 @@ var Rexbuilder_Block_Editor = (function($) {
               sectionID: sectionID,
               modelNumber: modelNumber,
               rexID: rex_block_id
-            }
+            },
+            tools: tools
           }
         }
       };
@@ -307,6 +317,48 @@ var Rexbuilder_Block_Editor = (function($) {
       };
 
       var event = jQuery.Event("rexlive:change_block_overlay");
+      event.settings = settings;
+      $(document).trigger(event);
+    });
+
+    /**
+     * Deactivate a video background
+     * @since 2.0.0
+     */
+    $(document).on( 'click', '.deactivate-block-video-background', function(e) {
+      var $btn = $(e.target);
+      var $elem = $btn.parents(".grid-stack-item");
+      var $section = $elem.parents(".rexpansive_section");
+      var rex_block_id = $elem.attr("data-rexbuilder-block-id");
+      var sectionID = $section.attr("data-rexlive-section-id");
+      var modelNumber =
+        typeof $section.attr("data-rexlive-model-number") != "undefined"
+          ? $section.attr("data-rexlive-model-number")
+          : "";
+
+      var $btn_container = $btn.parents('.rexlive-block-toolbox');
+
+      if( $btn_container.hasClass('bottom-tools') ) {
+        $btn.parents('.tool-button--double-icon--wrap').addClass('tool-button--hide');
+        $elem.find('.rexlive-block-toolbox.top-tools').find('.edit-block-video-background').parents('.tool-button--double-icon--wrap').removeClass('tool-button--hide');
+      }
+
+      var settings = {
+        data_to_send: {
+          target: {
+            sectionID: sectionID,
+            modelNumber: modelNumber,
+            rexID: rex_block_id
+          },
+          urlYoutube: "",
+          urlVimeo: "",
+          videoMp4: "",
+          audio: "",
+          typeVideo: ""
+        }
+      }
+
+      var event = jQuery.Event("rexlive:update_block_background_video");
       event.settings = settings;
       $(document).trigger(event);
     });

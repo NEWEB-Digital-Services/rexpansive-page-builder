@@ -164,7 +164,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
             }
 
             if (videoMp4.length == 0) {
-                var $el = _createBlockGrid(galleryInstance, 3, 3);
+                var $el = _createBlockGrid(galleryInstance, 3, 3, 'video');
                 var $itemContent = $el.find(".grid-item-content");
                 var videoOptions = {
                     mp4Data: {
@@ -183,7 +183,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
                 TextEditor.addElementToTextEditor($el.find(".text-wrap"));
             } else {
                 for (var i = 0; i < videoMp4.length; i++) {
-                    var $el = _createBlockGrid(galleryInstance, 3, 3);
+                    var $el = _createBlockGrid(galleryInstance, 3, 3, 'video');
                     var $itemContent = $el.find(".grid-item-content");
                     var mp4Url = videoMp4[i].videoUrl;
                     var mp4ID = videoMp4[i].videoID;
@@ -367,16 +367,17 @@ var Rexbuilder_CreateBlocks = (function ($) {
         return $sliderWrap;
     }
 
-    var _createBlockGrid = function (galleryInstance, w, h) {
+    var _createBlockGrid = function (galleryInstance, w, h, block_type) {
+        block_type = typeof block_type !== 'undefined' ? block_type : '';
         var $el;
         var singleWidth = galleryInstance.properties.singleWidth,
             blockW = w,
             blockH = h;
         if (galleryInstance.settings.galleryLayout == "fixed") {
-            $el = galleryInstance.createNewBlock("fixed", blockW, blockH);
+            $el = galleryInstance.createNewBlock("fixed", blockW, blockH, block_type);
         } else {
             blockH = Math.max(Math.round(blockH * singleWidth / galleryInstance.settings.cellHeightMasonry), 1);
-            $el = galleryInstance.createNewBlock("masonry", blockW, blockH);
+            $el = galleryInstance.createNewBlock("masonry", blockW, blockH, block_type);
         }
         return $el;
     }

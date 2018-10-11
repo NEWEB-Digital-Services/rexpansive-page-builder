@@ -37,6 +37,15 @@ defined( 'ABSPATH' ) or exit;
                     <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                 </div>
             </div><!-- // Change Block overlay color -->
+
+            <div class="tool-button--double-icon--wrap<?php echo ( '' == $atts['video_bg_id'] && '' == $atts['video_bg_url'] && '' == $atts['video_bg_url_vimeo'] ? ' tool-button--hide' : '' ); ?>">
+                <div class="tool-button tool-button--inline edit-block-video-background">
+                    <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
+                </div>
+                <div class="tool-button tool-button--inline tool-button--double-icon tool-button--deactivate deactivate-block-video-background">
+                    <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+                </div>
+            </div><!-- // Change Block Video background -->
         </div>
     </div>
 </div>

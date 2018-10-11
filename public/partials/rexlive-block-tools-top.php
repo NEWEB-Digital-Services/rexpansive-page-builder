@@ -16,15 +16,7 @@ defined( 'ABSPATH' ) or exit;
         <div style="visibility:hidden;">
             <div class="el-size-viewer tool-indicator"></div>
         </div>
-        <div class="bl_d-iflex bl_ai-c block-toolBox__fast-configuration">
-            <div class="tool-button--double-icon--wrap">
-                <div class="tool-button tool-button--inline edit-block-video-background">
-                    <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
-                </div>
-                <div class="tool-button tool-button--inline tool-button--double-icon tool-button--deactivate deactivate-block-video-background">
-                    <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
-                </div>
-            </div><!-- // Change Block Video background -->
+        <div class="bl_d-iflex bl_ai-c">
         </div>
 
         <div class="bl_d-iflex bl_ai-c block-toolBox__config-tools">
@@ -54,6 +46,14 @@ defined( 'ABSPATH' ) or exit;
                         <input class="spectrum-input-element" type="text" name="edit-block-overlay-color" value="<?php echo esc_attr( $atts['overlay_block_color'] ); ?>">
                         
                     </div><!-- // Change Block overlay color -->
+
+                    <div class="tool-button--double-icon--wrap">
+                        <div class="tool-button tool-button--inline edit-block-video-background">
+                            <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
+                        </div>
+                    </div><!-- // Change Block Video background -->
+
+
                     <div class="tool-button tool-button--inline builder-edit-slider tooltipped waves-effect waves-light">
                         <?php Rexbuilder_Utilities::get_icon('#Z003-RexSlider'); ?>
                     </div><!-- // rexslider -->

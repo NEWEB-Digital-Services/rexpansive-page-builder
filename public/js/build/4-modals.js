@@ -1100,6 +1100,10 @@
       Rexbuilder_Util_Editor.updatingImageBg = false;
     });
 
+    /**
+     * Updating the background of a block with a video: YouTube, Vimeo, mp4
+     * @since 2.0.0
+     */
     $(document).on("rexlive:update_block_background_video", function(e) {
       var data = e.settings.data_to_send;
       var target = data.target;
@@ -1125,6 +1129,21 @@
       var $elemData = $elem.children(".rexbuilder-block-data");
       var $section = $elem.parents(".rexpansive_section");
       var galleryEditorInstance = Rexbuilder_Util.getGalleryInstance($section);
+
+      // If we have a video, make checks to synch tools
+      if( ( 'youtube' == data.typeVideo && '' !== data.urlYoutube ) || ( 'vimeo' == data.typeVideo && '' !== data.urlVimeo ) || ( 'mp4' == data.typeVideo && '' !== data.videoMp4.idMp4 ) ) {
+
+        switch(data.tools) {
+          case 'top':
+            $elem.find('.rexlive-block-toolbox.top-tools .edit-block-video-background').parent('.tool-button--double-icon--wrap').addClass('tool-button--hide');
+            $elem.find('.rexlive-block-toolbox.bottom-tools .edit-block-video-background').parent('.tool-button--double-icon--wrap').removeClass('tool-button--hide');
+          case 'bottom':
+            // the click comes from the bottom block tools: do nothing for now
+          default:
+            break;
+        };
+
+      }
 
       var oldmp4Video =
         typeof $elemData.attr("data-video_mp4_url") == "undefined"

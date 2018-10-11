@@ -11,12 +11,14 @@ var Block_Video_Background_Modal = (function($) {
 
   var _openBlockVideoBackgroundModal = function(data) {
     _updateVideoModal(data.bgVideo);
+    video_background_properties.$self.attr('data-block_tools', data.bgVideo.tools);
     Rexlive_Modals_Utils.openModal(
       video_background_properties.$self.parent(".rex-modal-wrap")
     );
   };
 
   var _closeBlockVideoBackgroundModal = function() {
+    video_background_properties.$self.attr('data-block_tools', '');
     Rexlive_Modals_Utils.closeModal(
       video_background_properties.$self.parent(".rex-modal-wrap")
     );
@@ -222,7 +224,8 @@ var Block_Video_Background_Modal = (function($) {
         urlVimeo: type == "" || type != "vimeo" ? "" : urlVimeo,
         videoMp4: type == "" || type != "mp4" ? emptyMp4Data : videoMp4Data,
         audio: type == "" ? "" : audio,
-        typeVideo: type
+        typeVideo: type,
+        tools: video_background_properties.$self.attr('data-block_tools')
       }
     };
 

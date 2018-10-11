@@ -76,21 +76,21 @@ $tool_button_classes = 'tool-button';
 					<div class="<?php echo $tool_button_classes; ?> tool-button--inline edit-row-image-background tooltipped<?php echo ( "" != $atts['id_image_bg_section'] ? ' tool-button--image-preview' : '' ); ?>" data-position="bottom" data-tooltip="" value="<?php echo esc_attr( $atts['id_image_bg_section'] ); ?>"<?php echo ( "" != $atts['id_image_bg_section'] ? ' style="background-image:url(' . $atts['image_bg_section'] . ');"' : '' ); ?>>
 						<?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
 					</div>
-					<div class="tool-button tool-button--inline tool-button--black tool-button--double-icon deactivate-row-image-background">
+					<div class="tool-button tool-button--inline tool-button--deactivate tool-button--double-icon deactivate-row-image-background">
 						<?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
 					</div>
 				</div><!-- // Change Row image background -->
 
 				<div class="tool-button--double-icon--wrap">
 					<input class="spectrum-input-element" type="text" name="edit-row-color-background" value="<?php echo esc_attr( $atts['color_bg_section'] ); ?>">
-					<div class="tool-button tool-button--inline tool-button--black tool-button--double-icon deactivate-row-color-background">
+					<div class="tool-button tool-button--inline tool-button--deactivate tool-button--double-icon deactivate-row-color-background">
 						<?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
 					</div>
 				</div><!-- // Change Row color background -->
 
 				<div class="tool-button--double-icon--wrap">
 					<input class="spectrum-input-element" type="text" name="edit-row-overlay-color" value="<?php echo esc_attr( $atts['row_overlay_color'] ); ?>">
-					<div class="tool-button tool-button--inline tool-button--black tool-button--double-icon deactivate-row-overlay-color">
+					<div class="tool-button tool-button--inline tool-button--deactivate tool-button--double-icon deactivate-row-overlay-color">
 						<?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
 					</div>
 				</div><!-- // Change Row overlay color -->
@@ -99,7 +99,7 @@ $tool_button_classes = 'tool-button';
 					<div class="<?php echo $tool_button_classes; ?> tool-button--inline edit-row-video-background">
 						<?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
 					</div>
-					<div class="tool-button tool-button--inline tool-button--black tool-button--double-icon deactivate-row-video-background">
+					<div class="tool-button tool-button--inline tool-button--deactivate tool-button--double-icon deactivate-row-video-background">
 						<?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
 					</div>
 				</div>

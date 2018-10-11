@@ -1291,8 +1291,7 @@
     // Function that creates a new empty block and returns it. The block is
     // added to gridstack and gallery
     createBlock: function(x, y, w, h, block_type) {
-      block_type = typeof block_type !== 'undefined' ? block_type : "";
-      console.log(block_type);
+      block_type = typeof block_type !== 'undefined' ? block_type : "";    
       this.properties.numberBlocksVisibileOnGrid++;
       this.$section.removeClass("empty-section");
       this.properties.lastIDBlock = this.properties.lastIDBlock + 1;
@@ -1317,6 +1316,8 @@
       var tools_info = {
         block_type: block_type
       };
+
+      console.log(block_type);
 
       $newEl.append(tmpl("tmpl-toolbox-block",tools_info));
       $newEl.append(tmpl("tmpl-toolbox-block-bottom",tools_info));
