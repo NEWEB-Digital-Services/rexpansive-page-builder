@@ -112,6 +112,21 @@
     background-color: $palette-color-4;
     @include fill-icon(#fff);
   }
+
+  &.tool-button--color-preview {
+    position: absolute;
+    top: 0;
+    z-index: -1;
+  }
+}
+
+.tool-button--picker-preview {
+  .tool-button {
+    &.tool-button--color {
+      background-image: none;
+      background-color: transparent;
+    }
+  }
 }
 
 .tool-button--hide {
@@ -138,6 +153,15 @@
     transform: translate(50%, -50%)!important;
     opacity: 0;
     transition: opacity 500ms;
+  }
+}
+
+.tool-button_list {
+  .tool-button--double-icon--wrap {
+    margin-top: 10px;
+  }
+  > .tool-button {
+    margin-top: 10px;
   }
 }
 

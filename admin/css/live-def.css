@@ -2788,6 +2788,14 @@ ul {
     background-color: #424242; }
     .tool-button.tool-button--deactivate .l-svg-icons > svg {
       fill: #fff; }
+  .tool-button.tool-button--color-preview {
+    position: absolute;
+    top: 0;
+    z-index: -1; }
+
+.tool-button--picker-preview .tool-button.tool-button--color {
+  background-image: none;
+  background-color: transparent; }
 
 .tool-button--hide {
   display: none !important; }
@@ -2811,6 +2819,11 @@ ul {
     -webkit-transition: opacity 500ms;
     -o-transition: opacity 500ms;
     transition: opacity 500ms; }
+
+.tool-button_list .tool-button--double-icon--wrap {
+  margin-top: 10px; }
+.tool-button_list > .tool-button {
+  margin-top: 10px; }
 
 .tool-button-floating {
   position: relative;
@@ -2975,7 +2988,8 @@ ul {
 
 .tool-button.edit-block-image {
   padding: 0;
-  font-size: 20px; }
+  font-size: 20px;
+  overflow: hidden; }
 
 .perfect-grid-gallery[data-row-separator-top="0"] .grid-stack-item[data-row="1"] .rexlive-top-block-tools,
 .perfect-grid-gallery[data-row-separator-top="1"] .grid-stack-item[data-row="1"] .rexlive-top-block-tools,

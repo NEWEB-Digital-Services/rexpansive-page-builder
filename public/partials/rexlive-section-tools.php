@@ -81,8 +81,9 @@ $tool_button_classes = 'tool-button';
 					</div>
 				</div><!-- // Change Row image background -->
 
-				<div class="tool-button--double-icon--wrap">
+				<div class="tool-button--double-icon--wrap<?php echo ( "" != $atts['color_bg_section'] ? ' tool-button--picker-preview' : '' ); ?>">
 					<input class="spectrum-input-element" type="text" name="edit-row-color-background" value="<?php echo esc_attr( $atts['color_bg_section'] ); ?>">
+					<div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"<?php echo ' style="background-color:' . $atts['color_bg_section'] . ';"'; ?>></div>
 					<div class="tool-button tool-button--inline tool-button--deactivate tool-button--double-icon deactivate-row-color-background">
 						<?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
 					</div>

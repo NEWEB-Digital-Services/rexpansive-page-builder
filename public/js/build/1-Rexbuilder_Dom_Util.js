@@ -899,10 +899,18 @@ var Rexbuilder_Dom_Util = (function($) {
     }
 
     // Set live picker
-    Rexbuilder_Util.$rexContainer
+    var $picker = Rexbuilder_Util.$rexContainer
       .find('section[data-rexlive-section-id="' + data.sectionID + '"]')
-      .find('input[name=edit-row-color-background]')
+      .find('input[name=edit-row-color-background]');
+
+    $picker
       .spectrum('set',color);
+    $picker
+      .parent()
+      .addClass('tool-button--picker-preview')
+    $picker
+      .next('.tool-button--color')
+      .css('background-color',color);
   };
 
   var _updateSectionBackgroundColor = function($section, bgColor) {
@@ -912,9 +920,17 @@ var Rexbuilder_Dom_Util = (function($) {
     $sectionData.attr("data-color_bg_section_active", bgColor.active);
 
     // Set live picker
-    $section
-      .find('input[name=edit-row-color-background]')
+    var $picker = $section
+      .find('input[name=edit-row-color-background]');
+
+    $picker
       .spectrum('set',bgColor.color);
+    $picker
+      .parent()
+      .addClass('tool-button--picker-preview')
+    $picker
+      .next('.tool-button--color')
+      .css('background-color',bgColor.color);
   };
 
   var _updateBlockBackgroundColorLive = function(data, color) {
@@ -953,6 +969,9 @@ var Rexbuilder_Dom_Util = (function($) {
     $itemContent.css("background-color", data.color);
     $elemData.attr("data-color_bg_block", data.color);
     $elemData.attr("data-color_bg_elem_active", data.active);
+
+    var $picker = $elem
+      .find('input[name=edit-block-color-background]');
   };
 
   var _updateSectionOverlayColorLive = function(data, color) {
