@@ -154,7 +154,7 @@ var Rexlive_MediaUploader = (function($) {
         },
         wp.media.controller.Library.prototype.defaults
       )
-    });
+    }); 
 
     //Setup media frame
     image_uploader_frame_direct = wp.media({
@@ -217,6 +217,8 @@ var Rexlive_MediaUploader = (function($) {
           data.data_to_send.typeBGimage = data_to_send.typeBGimage;
         }
       });
+
+      data.data_to_send.tools = data_to_send.tools;
 
       // Launch image insert event to the iframe
       Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);

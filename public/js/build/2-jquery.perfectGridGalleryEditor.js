@@ -1193,7 +1193,9 @@
       );
     },
 
-    createNewBlock: function(mode, w, h) {
+    createNewBlock: function(mode, w, h, block_type) {
+      block_type = typeof block_type !== 'undefined' ? block_type : "";
+      console.log(block_type);
       Rexbuilder_Util_Editor.addingNewBlocks = true;
 
       var defaultBlockWidthFixed = 2;
@@ -1217,7 +1219,7 @@
 
       w = parseInt(w);
       h = parseInt(h);
-      var $newEL = this.createBlock(0, 0, w, h);
+      var $newEL = this.createBlock(0, 0, w, h, block_type);
 
       var reverseData = {
         targetElement: $newEL,
@@ -1288,7 +1290,9 @@
 
     // Function that creates a new empty block and returns it. The block is
     // added to gridstack and gallery
-    createBlock: function(x, y, w, h) {
+    createBlock: function(x, y, w, h, block_type) {
+      block_type = typeof block_type !== 'undefined' ? block_type : "";
+      console.log(block_type);
       this.properties.numberBlocksVisibileOnGrid++;
       this.$section.removeClass("empty-section");
       this.properties.lastIDBlock = this.properties.lastIDBlock + 1;
@@ -1310,8 +1314,12 @@
       });
 
       var $newEl = $(newElement);
-      $newEl.append(tmpl("tmpl-toolbox-block"));
-      $newEl.append(tmpl("tmpl-toolbox-block-bottom"));
+      var tools_info = {
+        block_type: block_type
+      };
+
+      $newEl.append(tmpl("tmpl-toolbox-block",tools_info));
+      $newEl.append(tmpl("tmpl-toolbox-block-bottom",tools_info));
       $newEl.append(tmpl("tmpl-toolbox-block-floating"));
 
       $newEl.find(".grid-item-content").prepend(tmpl("tmpl-block-drag-handle"));

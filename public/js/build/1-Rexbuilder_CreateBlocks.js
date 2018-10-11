@@ -94,7 +94,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
             blockH = Math.max(Math.round(h * blockW / w), 1);
 
             if (galleryInstance.settings.galleryLayout == "fixed") {
-                $el = galleryInstance.createNewBlock("fixed", blockW, blockH);
+                $el = galleryInstance.createNewBlock("fixed", blockW, blockH, "image");
                 type = "full";
             } else {
                 var gutter = galleryInstance.properties.gutter;
@@ -104,7 +104,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
                     blockH = h + gutter;
                 }
                 blockH = Math.max(Math.round(blockH / masonryHeight), 1);
-                $el = galleryInstance.createNewBlock("masonry", blockW, blockH);
+                $el = galleryInstance.createNewBlock("masonry", blockW, blockH, "image");
                 type = "natural";
             }
 

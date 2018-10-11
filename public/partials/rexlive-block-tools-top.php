@@ -21,7 +21,7 @@ defined( 'ABSPATH' ) or exit;
                 <div class="tool-button tool-button--inline edit-block-video-background">
                     <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
                 </div>
-                <div class="tool-button tool-button--inline tool-button--double-icon deactivate-block-video-background">
+                <div class="tool-button tool-button--inline tool-button--double-icon tool-button--deactivate deactivate-block-video-background">
                     <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                 </div>
             </div><!-- // Change Block Video background -->
@@ -39,18 +39,33 @@ defined( 'ABSPATH' ) or exit;
                 </div>
                 
 				<div class="tool-button_list">
-                    <button class="tool-button tool-button--inline builder-edit-slider tooltipped waves-effect waves-light">
+                    <div class="tool-button--double-icon--wrap<?php echo ( !( 'true' != $atts['image_bg_elem_active'] || "" == $atts['id_image_bg_block'] ) ? ' tool-button--hide' : '' ); ?>">
+                        <div class="tool-button tool-button--inline edit-block-image tooltipped">
+                            <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
+                        </div>
+                        
+                    </div><!-- // Change Block image background -->
+
+                    <div class="tool-button--double-icon--wrap<?php echo ( !( 'true' != $atts['color_bg_block_active'] || "" == $atts['color_bg_block'] ) ? ' tool-button--hide' : '' ); ?>">
+                        <input class="spectrum-input-element" type="text" name="edit-block-color-background" value="<?php echo esc_attr( $atts['color_bg_block'] ); ?>">
+                    </div><!-- // Change Block color background -->
+
+                    <div class="tool-button--double-icon--wrap<?php echo ( !( 'true' != $atts['overlay_block_color_active'] || "" == $atts['overlay_block_color'] ) ? ' tool-button--hide' : '' ); ?>">
+                        <input class="spectrum-input-element" type="text" name="edit-block-overlay-color" value="<?php echo esc_attr( $atts['overlay_block_color'] ); ?>">
+                        
+                    </div><!-- // Change Block overlay color -->
+                    <div class="tool-button tool-button--inline builder-edit-slider tooltipped waves-effect waves-light">
                         <?php Rexbuilder_Utilities::get_icon('#Z003-RexSlider'); ?>
-                    </button>
+                    </div><!-- // rexslider -->
                 </div>
             </div>
 
-            <button class="tool-button tool-button--inline builder-delete-block waves-effect tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete block', 'rexspansive'); ?>">
+            <div class="tool-button tool-button--inline builder-delete-block waves-effect tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete block', 'rexspansive'); ?>">
                 <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
-            </button>
+            </div>
         </div>
     </div>
-    <button class="tool-button builder-delete-block waves-effect tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete block', 'rexspansive'); ?>">
+    <div class="tool-button builder-delete-block waves-effect tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete block', 'rexspansive'); ?>">
         <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
-    </button>
+    </div>
 </div>

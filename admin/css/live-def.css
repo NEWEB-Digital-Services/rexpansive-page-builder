@@ -2784,6 +2784,13 @@ ul {
     background-size: cover; }
     .tool-button.tool-button--image-preview .l-svg-icons {
       opacity: 0; }
+  .tool-button.tool-button--deactivate {
+    background-color: #424242; }
+    .tool-button.tool-button--deactivate .l-svg-icons > svg {
+      fill: #fff; }
+
+.tool-button--hide {
+  display: none !important; }
 
 .tool-button--double-icon--wrap {
   position: relative;
@@ -2791,20 +2798,19 @@ ul {
   line-height: 1; }
   .tool-button--double-icon--wrap:hover .tool-button--double-icon {
     opacity: 1; }
-
-.tool-button--double-icon {
-  position: absolute;
-  top: 0;
-  right: 0;
-  font-size: 10px;
-  padding: 2px;
-  -webkit-transform: translate(50%, -50%);
-      -ms-transform: translate(50%, -50%);
-          transform: translate(50%, -50%);
-  opacity: 0;
-  -webkit-transition: opacity 500ms;
-  -o-transition: opacity 500ms;
-  transition: opacity 500ms; }
+  .tool-button--double-icon--wrap .tool-button--double-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 10px;
+    padding: 3px;
+    -webkit-transform: translate(50%, -50%) !important;
+        -ms-transform: translate(50%, -50%) !important;
+            transform: translate(50%, -50%) !important;
+    opacity: 0;
+    -webkit-transition: opacity 500ms;
+    -o-transition: opacity 500ms;
+    transition: opacity 500ms; }
 
 .tool-button-floating {
   position: relative;
@@ -2911,7 +2917,7 @@ ul {
     top: 0;
     z-index: 50; }
   .rexlive-block-toolbox.bottom-tools {
-    bottom: 0;
+    bottom: 20px;
     z-index: 50; }
   .rexlive-block-toolbox.floating-tools {
     top: 0;
@@ -2932,7 +2938,6 @@ ul {
     position: relative; }
   .rexlive-block-toolbox .rexlive-bottom-block-tools {
     padding: 0 20px;
-    padding-bottom: 20px;
     position: relative; }
   .rexlive-block-toolbox .rexlive-floating-block-tools {
     display: -webkit-box;
@@ -2947,12 +2952,14 @@ ul {
     position: relative; }
   .rexlive-block-toolbox .tool-button .l-svg-icons > svg {
     fill: #000; }
+  .rexlive-block-toolbox .tool-button.tool-button--deactivate .l-svg-icons > svg {
+    fill: #fff; }
   .rexlive-block-toolbox .builder-delete-block {
     position: absolute;
     top: -10px;
     right: -10px;
     font-size: 10px;
-    background-color: #FF0040; }
+    background-color: #424242; }
     .rexlive-block-toolbox .builder-delete-block .l-svg-icons > svg {
       fill: #fff; }
   .rexlive-block-toolbox .el-size-viewer {
@@ -2965,6 +2972,10 @@ ul {
     .rexlive-block-toolbox .tool-button:hover {
       -webkit-box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -7px rgba(0, 0, 0, 0.2);
               box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -7px rgba(0, 0, 0, 0.2); }
+
+.tool-button.edit-block-image {
+  padding: 0;
+  font-size: 20px; }
 
 .perfect-grid-gallery[data-row-separator-top="0"] .grid-stack-item[data-row="1"] .rexlive-top-block-tools,
 .perfect-grid-gallery[data-row-separator-top="1"] .grid-stack-item[data-row="1"] .rexlive-top-block-tools,
@@ -3046,9 +3057,6 @@ ul {
 .block-toolBox__fast-configuration .tool-button:not(.tool-button--double-icon) {
   padding: 0;
   overflow: hidden; }
-.block-toolBox__fast-configuration .edit-block-image.tool-button {
-  padding: 0;
-  font-size: 20px; }
 .block-toolBox__fast-configuration .edit-block-video-background.tool-button {
   padding: 5px; }
 

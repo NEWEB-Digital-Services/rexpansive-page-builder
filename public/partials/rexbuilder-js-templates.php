@@ -46,47 +46,61 @@ $tool_button_classes = 'tool-button';
                 
 				<div class="tool-button_list">
 
-                    <button class="tool-button tool-button--inline builder-edit-slider tooltipped waves-effect waves-light">
+                    <div class="tool-button tool-button--inline builder-edit-slider tooltipped waves-effect waves-light">
                         <?php Rexbuilder_Utilities::get_icon('#Z003-RexSlider'); ?>
-                    </button>
+                    </div>
+
+                    <div class="tool-button--double-icon--wrap{% if(block.block_type == 'image') { %} tool-button--hide{% } %}">
+                        <div class="tool-button tool-button--inline edit-block-image tooltipped">
+                            <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
+                        </div>
+                    </div><!-- // Change Block image background -->
+
+                    <div class="tool-button--double-icon--wrap">
+                        <input class="spectrum-input-element" type="text" name="edit-block-color-background" value="">
+                    </div><!-- // Change Block color background -->
+
+                    <div class="tool-button--double-icon--wrap">
+                        <input class="spectrum-input-element" type="text" name="edit-block-overlay-color" value="">
+                    </div><!-- // Change Block overlay color -->
 
                 </div>
             </div>
 
-            <button class="tool-button tool-button--inline builder-delete-block waves-effect tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete block', 'rexspansive'); ?>">
+            <div class="tool-button tool-button--inline builder-delete-block waves-effect tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete block', 'rexspansive'); ?>">
                 <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
-            </button>
+            </div>
         </div>
     </div>
-    <button class="tool-button tool-button--black builder-delete-block waves-effect tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete block', 'rexspansive'); ?>">
+    <div class="tool-button tool-button--black builder-delete-block waves-effect tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete block', 'rexspansive'); ?>">
         <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
-    </button>
+    </div>
 </div>
 </script>
 
 <script type="text/x-tmpl" id="tmpl-toolbox-block-bottom">
-<div class="rexlive-block-toolbox bottom-tools">
+<div class="rexlive-block-toolbox bottom-tools" data-block-type="{%=block.block_type%}">
     <div class="rexlive-bottom-block-tools bl_d-flex bl_jc-c">
         <div class="bl_d-iflex bl_ai-c block-toolBox__fast-configuration">
-            <div class="tool-button--double-icon--wrap">
+            <div class="tool-button--double-icon--wrap{% if(block.block_type != 'image') { %} tool-button--hide{% } %}">
                 <div class="tool-button tool-button--inline edit-block-image tooltipped">
                     <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
                 </div>
-                <div class="tool-button tool-button--inline tool-button--double-icon deactivate-block-image-background">
+                <div class="tool-button tool-button--inline tool-button--double-icon tool-button--deactivate deactivate-block-image-background">
                     <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                 </div>
             </div><!-- // Change Block image background -->
 
-            <div class="tool-button--double-icon--wrap">
+            <div class="tool-button--double-icon--wrap tool-button--hide">
                 <input class="spectrum-input-element" type="text" name="edit-block-color-background" value="">
-                <div class="tool-button tool-button--inline tool-button--double-icon deactivate-block-color-background">
+                <div class="tool-button tool-button--inline tool-button--double-icon tool-button--deactivate deactivate-block-color-background">
                     <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                 </div>
             </div><!-- // Change Block color background -->
 
-            <div class="tool-button--double-icon--wrap">
+            <div class="tool-button--double-icon--wrap tool-button--hide">
                 <input class="spectrum-input-element" type="text" name="edit-block-overlay-color" value="">
-                <div class="tool-button tool-button--inline tool-button--double-icon deactivate-block-overlay-color">
+                <div class="tool-button tool-button--inline tool-button--double-icon tool-button--deactivate deactivate-block-overlay-color">
                     <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                 </div>
             </div><!-- // Change Block overlay color -->
@@ -291,21 +305,21 @@ $tool_button_classes = 'tool-button';
                         <div class="<?php echo $tool_button_classes; ?> tool-button--inline edit-row-image-background tooltipped" data-position="bottom" data-tooltip="" value="">
                             <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
                         </div>
-                        <div class="tool-button tool-button--flat tool-button--inline tool-button--double-icon deactivate-row-image-background">
+                        <div class="tool-button tool-button--flat tool-button--inline tool-button--double-icon tool-button--deactivate deactivate-row-image-background">
                             <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                         </div>
                     </div>
 
                     <div class="tool-button--double-icon--wrap">
                         <input class="spectrum-input-element" type="text" name="edit-row-color-background" value="">
-                        <div class="tool-button tool-button--flat tool-button--inline tool-button--double-icon deactivate-row-color-background">
+                        <div class="tool-button tool-button--flat tool-button--inline tool-button--double-icon tool-button--deactivate deactivate-row-color-background">
                             <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                         </div>
                     </div>
 
                     <div class="tool-button--double-icon--wrap">
                         <input class="spectrum-input-element" type="text" name="edit-row-overlay-color" value="">
-                        <div class="tool-button tool-button--flat tool-button--inline tool-button--double-icon deactivate-row-overlay-color">
+                        <div class="tool-button tool-button--flat tool-button--inline tool-button--double-icon tool-button--deactivate deactivate-row-overlay-color">
                             <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                         </div>
                     </div><!-- // Change Row overlay color -->

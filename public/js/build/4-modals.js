@@ -999,6 +999,16 @@
       var $section = $elem.parents(".rexpansive_section");
       var galleryEditorInstance = Rexbuilder_Util.getGalleryInstance($section);
 
+      switch(data.tools) {
+        case 'top':
+          $elem.find('.rexlive-block-toolbox.top-tools .edit-block-image').parent('.tool-button--double-icon--wrap').addClass('tool-button--hide');
+          $elem.find('.rexlive-block-toolbox.bottom-tools .edit-block-image').parent('.tool-button--double-icon--wrap').removeClass('tool-button--hide');
+        case 'bottom':
+          // the click comes from the bottom block tools: do nothing for now
+        default:
+          break;
+      };
+
       var old_idImage =
         typeof $elemData.attr("data-id_image_bg_block") == "undefined"
           ? ""

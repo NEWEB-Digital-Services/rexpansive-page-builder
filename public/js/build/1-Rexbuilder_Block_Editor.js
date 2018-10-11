@@ -18,7 +18,8 @@ var Rexbuilder_Block_Editor = (function($) {
      * @since 2.0.0
      */
     $(document).on('click', '.edit-block-image', function(e) {
-      var $elem = $(e.target).parents(".grid-stack-item");
+      var $btn = $(e.target);
+      var $elem = $btn.parents(".grid-stack-item");
       var $section = $elem.parents(".rexpansive_section");
       var rex_block_id = $elem.attr("data-rexbuilder-block-id");
       var sectionID = $section.attr("data-rexlive-section-id");
@@ -28,6 +29,14 @@ var Rexbuilder_Block_Editor = (function($) {
           : "";
       var $elemData = $elem.children(".rexbuilder-block-data");
       var $itemContent = $elem.find(".grid-item-content");
+
+      var tools = '';
+      var $btn_container = $btn.parents('.rexlive-block-toolbox');
+      if( $btn_container.hasClass('bottom-tools') ) {
+        tools = 'bottom';
+      } else if ($btn_container.hasClass('top-tools')) {
+        tools = 'top';
+      }
 
       var idImage =
         typeof $elemData.attr("data-id_image_bg_block") == "undefined"
@@ -88,6 +97,7 @@ var Rexbuilder_Block_Editor = (function($) {
             typeBGimage: activeImage ? typeBGimage : "",
             photoswipe: activeImage ? activePhotoswipe : "",
             active: activeImage,
+            tools: tools,        
             sectionTarget: {
               sectionID: sectionID,
               modelNumber: modelNumber,
@@ -182,7 +192,8 @@ var Rexbuilder_Block_Editor = (function($) {
      * @since 2.0.0
      */
     $(document).on('click', '.deactivate-block-image-background', function(e) {
-      var $elem = $(e.target).parents(".grid-stack-item");
+      var $btn = $(e.target);
+      var $elem = $btn.parents(".grid-stack-item");
       var $section = $elem.parents(".rexpansive_section");
       var rex_block_id = $elem.attr("data-rexbuilder-block-id");
       var sectionID = $section.attr("data-rexlive-section-id");
@@ -190,6 +201,13 @@ var Rexbuilder_Block_Editor = (function($) {
         typeof $section.attr("data-rexlive-model-number") != "undefined"
           ? $section.attr("data-rexlive-model-number")
           : "";
+
+      var $btn_container = $btn.parents('.rexlive-block-toolbox');
+
+      if( $btn_container.hasClass('bottom-tools') ) {
+        $btn.parents('.tool-button--double-icon--wrap').addClass('tool-button--hide');
+        $elem.find('.rexlive-block-toolbox.top-tools').find('.edit-block-image').parents('.tool-button--double-icon--wrap').removeClass('tool-button--hide');
+      }
 
       var settings = {
         data_to_send: {
@@ -218,7 +236,8 @@ var Rexbuilder_Block_Editor = (function($) {
      * @since 2.0.0
      */
     $(document).on('click', '.deactivate-block-color-background', function(e) {
-      var $elem = $(e.target).parents(".grid-stack-item");
+      var $btn = $(e.target);
+      var $elem = $btn.parents(".grid-stack-item");
       var $section = $elem.parents(".rexpansive_section");
       var rex_block_id = $elem.attr("data-rexbuilder-block-id");
       var sectionID = $section.attr("data-rexlive-section-id");
@@ -228,6 +247,13 @@ var Rexbuilder_Block_Editor = (function($) {
           : "";
       // var $elemData = $elem.children(".rexbuilder-block-data");
       // var bgColorActive = $elemData.attr('data-color_bg_block_active');
+
+      var $btn_container = $btn.parents('.rexlive-block-toolbox');
+
+      if( $btn_container.hasClass('bottom-tools') ) {
+        $btn.parents('.tool-button--double-icon--wrap').addClass('tool-button--hide');
+        $elem.find('.rexlive-block-toolbox.top-tools').find('input[name=edit-block-color-background]').parents('.tool-button--double-icon--wrap').removeClass('tool-button--hide');
+      }
 
       var settings = {
         data_to_send: {
@@ -251,7 +277,8 @@ var Rexbuilder_Block_Editor = (function($) {
      * @since 2.0.0
      */
     $(document).on('click', '.deactivate-block-overlay-color', function(e) {
-      var $elem = $(e.target).parents(".grid-stack-item");
+      var $btn = $(e.target);
+      var $elem = $btn.parents(".grid-stack-item");
       var $section = $elem.parents(".rexpansive_section");
       var rex_block_id = $elem.attr("data-rexbuilder-block-id");
       var sectionID = $section.attr("data-rexlive-section-id");
@@ -259,6 +286,13 @@ var Rexbuilder_Block_Editor = (function($) {
         typeof $section.attr("data-rexlive-model-number") != "undefined"
           ? $section.attr("data-rexlive-model-number")
           : "";
+
+      var $btn_container = $btn.parents('.rexlive-block-toolbox');
+
+      if( $btn_container.hasClass('bottom-tools') ) {
+        $btn.parents('.tool-button--double-icon--wrap').addClass('tool-button--hide');
+        $elem.find('.rexlive-block-toolbox.top-tools').find('input[name=edit-block-overlay-color]').parents('.tool-button--double-icon--wrap').removeClass('tool-button--hide');
+      }
 
       var settings = {
         data_to_send: {
@@ -300,6 +334,8 @@ var Rexbuilder_Block_Editor = (function($) {
     var bgColorActive = $elemData.attr('data-color_bg_block_active');
     var colorActive = $elemData.attr('data-color_bg_block');
 
+    var $btn_container = $picker.parents('.rexlive-block-toolbox');
+
     var flagPickerUsed;
 
     var settings = {
@@ -340,6 +376,10 @@ var Rexbuilder_Block_Editor = (function($) {
       hide: function(color) {
         if (flagPickerUsed) {
           colorActive = color.toRgbString();
+          if( $btn_container.hasClass('top-tools') ) {
+            $picker.parents('.tool-button--double-icon--wrap').addClass('tool-button--hide');
+            $elem.find('.rexlive-block-toolbox.bottom-tools').find('input[name=edit-block-color-background]').parents('.tool-button--double-icon--wrap').removeClass('tool-button--hide');
+          }
         }
 
         settings.data_to_send.color = colorActive;
@@ -368,6 +408,8 @@ var Rexbuilder_Block_Editor = (function($) {
         ? $section.attr("data-rexlive-model-number")
         : "";
     var $elemData = $elem.children(".rexbuilder-block-data");
+
+    var $btn_container = $picker.parents('.rexlive-block-toolbox');
 
     var flagPickerUsed = false;
 
@@ -450,6 +492,11 @@ var Rexbuilder_Block_Editor = (function($) {
         if (flagPickerUsed) {
           settings.data_to_send.active = true;
           settings.data_to_send.color = color.toRgbString();
+
+          if( $btn_container.hasClass('top-tools') ) {
+            $picker.parents('.tool-button--double-icon--wrap').addClass('tool-button--hide');
+            $elem.find('.rexlive-block-toolbox.bottom-tools').find('input[name=edit-block-overlay-color]').parents('.tool-button--double-icon--wrap').removeClass('tool-button--hide');
+          }
 
           var event = jQuery.Event("rexlive:change_block_overlay");
           event.settings = settings;

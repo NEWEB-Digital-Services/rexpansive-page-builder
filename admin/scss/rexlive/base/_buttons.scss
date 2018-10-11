@@ -107,6 +107,15 @@
       opacity: 0;
     }
   }
+
+  &.tool-button--deactivate {
+    background-color: $palette-color-4;
+    @include fill-icon(#fff);
+  }
+}
+
+.tool-button--hide {
+  display: none!important;
 }
 
 .tool-button--double-icon--wrap {
@@ -119,18 +128,19 @@
       opacity: 1;
     }
   }
+
+  .tool-button--double-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 10px;
+    padding: 3px;
+    transform: translate(50%, -50%)!important;
+    opacity: 0;
+    transition: opacity 500ms;
+  }
 }
 
-.tool-button--double-icon {
-  position: absolute;
-  top: 0;
-  right: 0;
-  font-size: 10px;
-  padding: 2px;
-  transform: translate(50%, -50%);
-  opacity: 0;
-  transition: opacity 500ms;
-}
 
 .tool-button-floating {
   // > .tool-button {

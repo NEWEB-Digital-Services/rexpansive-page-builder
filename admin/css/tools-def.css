@@ -2784,6 +2784,13 @@ ul {
     background-size: cover; }
     .tool-button.tool-button--image-preview .l-svg-icons {
       opacity: 0; }
+  .tool-button.tool-button--deactivate {
+    background-color: #424242; }
+    .tool-button.tool-button--deactivate .l-svg-icons > svg {
+      fill: #fff; }
+
+.tool-button--hide {
+  display: none !important; }
 
 .tool-button--double-icon--wrap {
   position: relative;
@@ -2791,20 +2798,19 @@ ul {
   line-height: 1; }
   .tool-button--double-icon--wrap:hover .tool-button--double-icon {
     opacity: 1; }
-
-.tool-button--double-icon {
-  position: absolute;
-  top: 0;
-  right: 0;
-  font-size: 10px;
-  padding: 2px;
-  -webkit-transform: translate(50%, -50%);
-      -ms-transform: translate(50%, -50%);
-          transform: translate(50%, -50%);
-  opacity: 0;
-  -webkit-transition: opacity 500ms;
-  -o-transition: opacity 500ms;
-  transition: opacity 500ms; }
+  .tool-button--double-icon--wrap .tool-button--double-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 10px;
+    padding: 3px;
+    -webkit-transform: translate(50%, -50%) !important;
+        -ms-transform: translate(50%, -50%) !important;
+            transform: translate(50%, -50%) !important;
+    opacity: 0;
+    -webkit-transition: opacity 500ms;
+    -o-transition: opacity 500ms;
+    transition: opacity 500ms; }
 
 .tool-button-floating {
   position: relative;
