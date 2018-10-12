@@ -369,10 +369,13 @@ var Rexbuilder_Block_Editor = (function($) {
      * @todo
      */
     $(document).on('click', '.edit-block-content', function(e) {
-      console.log('click me');
       var $btn = $(e.target);
       var $elem = $btn.parents(".grid-stack-item");
-      $elem.find('text-wrap').focus();
+      
+      var event = jQuery.Event("mouseup");
+      event.target = $elem.find(".rexlive-block-drag-handle");
+      event.offsetY = 0;
+      $elem.trigger(event);
     });
 
     /**
