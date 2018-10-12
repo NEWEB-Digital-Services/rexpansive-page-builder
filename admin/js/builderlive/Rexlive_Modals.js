@@ -21,6 +21,9 @@ var Rexlive_Modals = (function ($) {
         // block options
         BlockOptions_Modal.init();
 
+        // block content position modal
+        Block_Content_Positions_Modal.init();
+
         // models
         Model_Modal.init();
 

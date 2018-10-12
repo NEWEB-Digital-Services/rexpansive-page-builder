@@ -38,8 +38,6 @@ var Rexbuilder_CreateBlocks = (function ($) {
         galleryInstance.addScrollbar($el);
         TextEditor.addElementToTextEditor($el.find(".text-wrap"));
 
-        // Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($el.find('input[name=edit-block-color-background]')[0]);
-        // Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock($el.find('input[name=edit-block-overlay-color]')[0]);
         Rexbuilder_Block_Editor.updateBlockTools($el);
 
         var event = jQuery.Event("mouseup");

@@ -70,7 +70,7 @@ $tool_button_classes = 'tool-button';
 				</div>
 			</div><!-- // insert element -->
 
-			<div class="bl_d-iflex bl_ai-c row-toolBox__fast-configuration">
+			<div class="bl_d-iflex bl_ai-c row-toolBox__tools row-toolBox__fast-configuration">
 
 				<div class="tool-button--double-icon--wrap">
 					<div class="<?php echo $tool_button_classes; ?> tool-button--inline edit-row-image-background tooltipped<?php echo ( "" != $atts['id_image_bg_section'] ? ' tool-button--image-preview' : '' ); ?>" data-position="bottom" data-tooltip="" value="<?php echo esc_attr( $atts['id_image_bg_section'] ); ?>"<?php echo ( "" != $atts['id_image_bg_section'] ? ' style="background-image:url(' . $atts['image_bg_section'] . ');"' : '' ); ?>>
@@ -92,6 +92,7 @@ $tool_button_classes = 'tool-button';
 				<div class="tool-button--double-icon--wrap">
 					<input class="spectrum-input-element" type="text" name="edit-row-overlay-color">
 					<div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"></div>
+					<div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview-texture"></div>
 					<div class="tool-button tool-button--inline tool-button--deactivate tool-button--double-icon deactivate-row-overlay-color">
 						<?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
 					</div>
@@ -109,7 +110,7 @@ $tool_button_classes = 'tool-button';
 
 			</div><!-- // fast configuration elements -->
 
-			<div class="bl_d-iflex bl_ai-c">
+			<div class="bl_d-iflex bl_ai-c row-toolBox__tools row-toolBox__standard-configuration">
 				<div class="<?php echo $tool_button_classes_right; ?> tool-button--inline builder-copy-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy row', 'rexpansive');?>">
 					<?php Rexbuilder_Utilities::get_icon('#Z004-Copy'); ?>
 				</div>
@@ -122,9 +123,30 @@ $tool_button_classes = 'tool-button';
 					<div class="<?php echo $tool_button_classes_right; ?> builder-section-config tooltipped" data-position="bottom" data-tooltip="<?php _e('Row settings', 'rexpansive');?>">
 						<?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>					
 					</div>
-					<div class="tool-button_list">						
-						<div class="tool-button tool-button--full edit-background-section tooltipped">
+					<div class="tool-button_list">	
+						<div class="tool-button tool-button--full edit-background-section tooltipped tool-button--hide">
 							<?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
+						</div>
+
+						<div class="tool-button tool-button--full edit-row-image-background tooltipped <?php echo ( "" != $atts['id_image_bg_section'] ? ' tool-button--hide' : '' ); ?>">
+							<?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
+						</div>
+
+						<div class="tool-button--double-icon--wrap">
+							<input class="spectrum-input-element" type="text" name="edit-row-color-background">
+							<div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"></div>
+							<div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview-texture"></div>
+						</div><!-- // Change Row color background -->
+
+						<div class="tool-button--double-icon--wrap">
+							<input class="spectrum-input-element" type="text" name="edit-row-overlay-color">
+							<div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"></div>
+							<div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview-texture"></div>
+						</div>
+						<!-- // Change Row overlay color -->
+
+						<div class="tool-button edit-row-video-background">
+							<?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
 						</div>
 						
 						<div class="tool-button open-model tooltipped">

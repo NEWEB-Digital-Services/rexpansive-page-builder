@@ -281,7 +281,7 @@ var Rexbuilder_Dom_Util = (function($) {
     $section.attr("data-background_image_width", "");
     $section.attr("data-background_image_height", "");
     $section.css("background-image", "");
-    $section.find('.edit-row-image-background').removeClass('tool-button--image-preview').attr('value','').css('background-image','none');
+    Rexbuilder_Section_Editor.resetRowBackgroundImageTool( $section );
   };
 
   var _resetImageBlock = function($itemContent, $elemData) {
@@ -634,6 +634,7 @@ var Rexbuilder_Dom_Util = (function($) {
         "data-video_bg_url_vimeo_section",
         videoOptions.vimeoUrl
       );
+      Rexbuilder_Section_Editor.updateRowBackgroundVideo( $target, videoOptions );
     } else if (targetType == "block") {
       $elemData.attr("data-video_bg_id", videoOptions.mp4Data.idMp4);
       $elemData.attr("data-video_mp4_url", videoOptions.mp4Data.linkMp4);
@@ -1008,12 +1009,12 @@ var Rexbuilder_Dom_Util = (function($) {
 
     if (overlay.active.toString() == "true") {
       $overlayElem.addClass("rex-active-overlay");
+      // Set tools
     } else {
       $overlayElem.removeClass("rex-active-overlay");
     }
-
-    // Set tools
-    Rexbuilder_Section_Editor.updateRowOverlayColorTool( $section, overlay.color );
+    
+    Rexbuilder_Section_Editor.updateRowOverlayColorTool( $section, overlay );
   };
 
   var _updateBlockOverlayColorLive = function(data, color) {

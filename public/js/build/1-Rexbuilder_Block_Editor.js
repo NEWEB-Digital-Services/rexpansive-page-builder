@@ -363,6 +363,61 @@ var Rexbuilder_Block_Editor = (function($) {
       $(document).trigger(event);
     });
 
+    /**
+     * Focus the text editor on click of this button
+     * @since 2.0.0
+     * @todo
+     */
+    $(document).on('click', '.edit-block-content', function(e) {
+      console.log('click me');
+      var $btn = $(e.target);
+      var $elem = $btn.parents(".grid-stack-item");
+      $elem.find('text-wrap').focus();
+    });
+
+    /**
+     * Edit the block content position 
+     * @since 2.0.0
+     */
+    $(document).on('click', '.edit-block-content-position', function(e) {
+      var $btn = $(e.target);
+      var $elem = $btn.parents(".grid-stack-item");
+      var $section = $elem.parents(".rexpansive_section");
+      var rex_block_id = $elem.attr("data-rexbuilder-block-id");
+      var $elemData = $elem.children(".rexbuilder-block-data");
+      var sectionID = $section.attr("data-rexlive-section-id");
+      var modelNumber =
+        typeof $section.attr("data-rexlive-model-number") != "undefined"
+          ? $section.attr("data-rexlive-model-number")
+          : "";
+
+      var blockFlexPosition =
+        typeof $elemData.attr("data-block_flex_position") == "undefined"
+          ? ""
+          : $elemData.attr("data-block_flex_position");
+      var blockFlexPositionArr = blockFlexPosition.split(" ");
+      var blockFlexPositionString =
+        blockFlexPositionArr[1] + "-" + blockFlexPositionArr[0];
+
+      var settings = {
+        flexPosition: {
+          target: {
+            sectionID: sectionID,
+            modelNumber: modelNumber,
+            rexID: rex_block_id
+          },
+          position: blockFlexPositionString,
+        }
+      }
+
+      var data = {
+        eventName: "rexlive:editBlockContentPosition",
+        activeBlockData: settings
+      };
+
+      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+    });
+
   };
 
   /**

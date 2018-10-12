@@ -54,10 +54,10 @@
 }
 
 @mixin bl-btn--hover-shadow {
-  box-shadow: none;
+  box-shadow: $shadow-1;
   transition: box-shadow 300ms;
   &:hover {
-    box-shadow: $main-shadow;
+    box-shadow: $shadow-2;
   }
 }
 

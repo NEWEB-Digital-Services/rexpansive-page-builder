@@ -163,6 +163,7 @@ var Rexbuilder_Section_Editor = (function($) {
      * @since 2.0.0
      */
     $(document).on('click', '.deactivate-row-color-background', function(e) {
+      var $btn = $(e.target);
       var $section = $(e.target).parents(".rexpansive_section");
       // var $section_data = $section.children('.section-data');
       var sectionID = $section.attr("data-rexlive-section-id");
@@ -180,7 +181,7 @@ var Rexbuilder_Section_Editor = (function($) {
             modelNumber: modelNumber
           }
         },
-      }; 
+      };
 
       var event = jQuery.Event("rexlive:apply_background_color_section");
       event.settings = settings;
@@ -497,8 +498,12 @@ var Rexbuilder_Section_Editor = (function($) {
    * @param {jQuery element} $row new row
    */
   var _updateRowTools = function( $row ) {
-    _launchSpectrumPickerBackgorundColorRow($row.find('input[name=edit-row-color-background]')[0]);
-    _launchSpectrumPickerOverlayColorRow($row.find('input[name=edit-row-overlay-color]')[0]);
+    $row.find('input[name=edit-row-color-background]').each(function(i,el) {
+      _launchSpectrumPickerBackgorundColorRow(el);
+    });
+    $row.find('input[name=edit-row-overlay-color]').each(function(i,el) {
+      _launchSpectrumPickerOverlayColorRow(el);
+    });
   };
 
   /**
@@ -507,12 +512,47 @@ var Rexbuilder_Section_Editor = (function($) {
    * @param {JS object} data background image data
    */
   var _updateRowBackgroundImageTool = function( $target, data ) {
-    $target
-      .find('.edit-row-image-background')
+    var $tool_fast = $target
+      .find('.row-toolBox__fast-configuration')
+      .find('.edit-row-image-background');
+    var $tool_standard = $target
+      .find('.row-toolBox__standard-configuration')
+      .find('.edit-row-image-background');
+
+    $tool_fast
       .addClass('tool-button--image-preview')
       .attr('value',data.idImage)
-      .css('background-image','url('+data.urlImage+')');
+      .css('background-image','url('+data.urlImage+')')
+      .parent()
+      .removeClass('tool-button--hide');
+
+    $tool_standard
+      .addClass('tool-button--hide');
   };
+
+  /**
+   * Reset the background image tools
+   * @param {jQuery Object} $target row edited
+   */
+  var _resetRowBackgroundImageTool = function( $target ) {
+    var $tool_fast = $target
+      .find('.row-toolBox__fast-configuration')
+      .find('.edit-row-image-background');
+    var $tool_standard = $target
+      .find('.row-toolBox__standard-configuration')
+      .find('.edit-row-image-background');
+
+    $tool_fast
+      .removeClass('tool-button--image-preview')
+      .attr('value','')
+      .css('background-image','none')
+      .parent()
+      .addClass('tool-button--hide');
+
+    $tool_standard
+      // .parent()
+      .removeClass('tool-button--hide');
+  }
 
   /**
    * Setting the tool for the row color background preview
@@ -520,22 +560,45 @@ var Rexbuilder_Section_Editor = (function($) {
    * @param {string} color color to set
    */
   var _updateRowBackgroundColorTool = function( $target, color ) {
+    var $picker_fast = $target
+      .find('.row-toolBox__fast-configuration')
+      .find('input[name=edit-row-color-background]');
+    var $picker_standard = $target
+      .find('.row-toolBox__standard-configuration')
+      .find('input[name=edit-row-color-background]');
+
     if( "" != color ) {
-      var $picker = $target
-        .find('input[name=edit-row-color-background]');
-        
-      $picker
+      $picker_fast
         .val(color)
         .spectrum('set',color);
-      $picker
+      $picker_fast
         .parent()
         .addClass('tool-button--picker-preview')
-      $picker
+        .removeClass('tool-button--hide')
+      $picker_fast
         .siblings('.tool-button--color-preview')
         .css('background-color',color);
+
+      $picker_standard
+        .val(color)
+        .spectrum('set',color)
+        .parent()
+        .addClass('tool-button--hide');
+    } else {
+      $picker_standard
+        .parent()
+        .removeClass('tool-button--hide');
+      $picker_fast
+        .parent()
+        .addClass('tool-button--hide');
     }
   };
 
+  /**
+   * 
+   * @param {*} $target 
+   * @param {*} color 
+   */
   var _updateRowBackgroundColorToolLive = function( $target, color ) {
     var $picker = $target
       .find('input[name=edit-row-color-background]');
@@ -546,31 +609,55 @@ var Rexbuilder_Section_Editor = (function($) {
     $picker
       .parent()
       .addClass('tool-button--picker-preview')
+      .removeClass('tool-button--hide')
     $picker
       .siblings('.tool-button--color-preview')
       .css('background-color',color);
   };
 
-  var _updateRowOverlayColorTool = function( $target, color ) {
-    if( "" != color ) {
-      // Set live picker
-      var $picker = $target
-        .find('input[name=edit-row-overlay-color]');
+  /**
+   * Update the overlay tools
+   * @param {jQuery Object} $target row edited
+   * @param {JS Object} overlay_data object with the overlay data
+   */
+  var _updateRowOverlayColorTool = function( $target, overlay_data ) {
+    var $picker_fast = $target
+      .find('.row-toolBox__fast-configuration')
+      .find('input[name=edit-row-overlay-color]');
+    var $picker_standard = $target
+      .find('.row-toolBox__standard-configuration')
+      .find('input[name=edit-row-overlay-color]');
 
-      $picker
-        .val(color)
-        .spectrum("set",color)
+    if( overlay_data.active.toString() == "true" ) {
+      $picker_fast
+        .val(overlay_data.color)
+        .spectrum("set",overlay_data.color)
 
-      $picker
+      $picker_fast
         .parent()
         .addClass('tool-button--picker-preview')
-      $picker
+        .removeClass('tool-button--hide')
+      $picker_fast
         .siblings('.tool-button--color-preview')
-        .css('background-color',color);
+        .css('background-color',overlay_data.color);
+
+      $picker_standard
+        .val(overlay_data.color)
+        .spectrum('set',overlay_data.color)
+        .parent()
+        .addClass('tool-button--hide');
+    } else {
+      $picker_standard
+        .parent()
+        .removeClass('tool-button--hide');
+      $picker_fast
+        .parent()
+        .addClass('tool-button--hide');
     }
   }
 
   var _updateRowOverlayColorToolLive = function( $target, color ) {
+    console.log('_updateRowOverlayColorToolLive');
     var $picker = $target
       .find('input[name=edit-row-overlay-color]');
 
@@ -585,6 +672,34 @@ var Rexbuilder_Section_Editor = (function($) {
       .siblings('.tool-button--color-preview')
       .css('background-color',color);
   }
+
+  /**
+   * Updating the video tools for a row
+   * @param {jQuery Object} $target row edited
+   * @param {JS Object} info information about the row background video
+   */
+  var _updateRowBackgroundVideo = function( $target, info ) {
+    var $tool_fast = $target
+      .find('.row-toolBox__fast-configuration')
+      .find('.edit-row-video-background');
+    var $tool_standard = $target
+      .find('.row-toolBox__standard-configuration')
+      .find('.edit-row-video-background');
+
+    if( "" == info.typeVideo ) {
+      $tool_fast
+        .parent()
+        .addClass('tool-button--hide');
+      $tool_standard
+        .removeClass('tool-button--hide');
+    } else {
+      $tool_fast
+        .parent()
+        .removeClass('tool-button--hide');
+      $tool_standard
+        .addClass('tool-button--hide');
+    }
+  };
 
   /**
    * Initing the row toolbar
@@ -602,9 +717,11 @@ var Rexbuilder_Section_Editor = (function($) {
     launchSpectrumPickerOverlayColorRow: _launchSpectrumPickerOverlayColorRow,
     updateRowTools: _updateRowTools,
     updateRowBackgroundImageTool: _updateRowBackgroundImageTool,
+    resetRowBackgroundImageTool: _resetRowBackgroundImageTool,
     updateRowBackgroundColorTool: _updateRowBackgroundColorTool,
     updateRowBackgroundColorToolLive: _updateRowBackgroundColorToolLive,
     updateRowOverlayColorTool: _updateRowOverlayColorTool,
     updateRowOverlayColorToolLive: _updateRowOverlayColorToolLive,
+    updateRowBackgroundVideo: _updateRowBackgroundVideo
   }
 })(jQuery);

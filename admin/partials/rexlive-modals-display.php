@@ -479,7 +479,7 @@ defined('ABSPATH') or exit;
             </div>
             
             <div id="block-set-class-wrap" class="row valign-wrapper">
-                <div id="block-content-positions-wrapper">
+                <!-- <div id="block-content-positions-wrapper">
                     <div class="col">
                         <div>
                             <input id="rex-bm-content-top-left" type="radio" class="content-position with-gap" name="content-position" value="top-left" />
@@ -524,7 +524,7 @@ defined('ABSPATH') or exit;
                             </label>
                         </div>
                     </div>
-                </div>
+                </div> -->
                 <!-- POSITIONS -->
                 <div id="block-paddings-wrapper">
                     <div class="rex-live__block-padding-wrap">
@@ -602,6 +602,64 @@ defined('ABSPATH') or exit;
                 </div>
             </div>
             <!-- /LINK CLASSES -->
+        </div>
+    </div>
+</div>
+
+<!-- Block settings background settings -->
+<div class="rex-modal-wrap rex-fade">
+    <div id="rex-block-content-position-editor" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
+        <?php Rexbuilder_Utilities::close_button(); ?>
+        <div class="background-options-area modal-content">            
+            <div id="block-set-class-wrap" class="row valign-wrapper">
+                <div id="block-content-positions-wrapper">
+                    <div class="col">
+                        <div>
+                            <input id="rex-bm-content-top-left" type="radio" class="content-position with-gap" name="content-position" value="top-left" />
+                            <label for="rex-bm-content-top-left" class="tooltipped rex-block-position" data-position="bottom" data-tooltip="Top-Left">
+                                <span class="rex-ripple"></span>
+                            </label>
+                            <input id="rex-bm-content-top-center" type="radio" class="content-position with-gap" name="content-position" value="top-center" />
+                            <label for="rex-bm-content-top-center" class="tooltipped rex-block-position" data-position="bottom" data-tooltip="Top-Center">
+                                <span class="rex-ripple"></span>
+                            </label>
+                            <input id="rex-bm-content-top-right" type="radio" class="content-position with-gap" name="content-position" value="top-right"/>
+                            <label for="rex-bm-content-top-right" class="tooltipped rex-block-position" data-position="bottom" data-tooltip="Top-Right">
+                                <span class="rex-ripple"></span>
+                            </label>
+                        </div>
+                        <div>
+                            <input id="rex-bm-content-middle-left" type="radio" class="content-position with-gap" name="content-position" value="middle-left" />
+                            <label for="rex-bm-content-middle-left" class="tooltipped rex-block-position" data-position="bottom" data-tooltip="Middle-Left">
+                                <span class="rex-ripple"></span>
+                            </label>
+                            <input id="rex-bm-content-middle-center" type="radio" class="content-position with-gap" name="content-position" value="middle-center" />
+                            <label for="rex-bm-content-middle-center" class="tooltipped rex-block-position" data-position="bottom" data-tooltip="Middle-Center">
+                                <span class="rex-ripple"></span>
+                            </label>
+                            <input id="rex-bm-content-middle-right" type="radio" class="content-position with-gap" name="content-position" value="middle-right" />
+                            <label for="rex-bm-content-middle-right" class="tooltipped rex-block-position" data-position="bottom" data-tooltip="Middle-Right">
+                                <span class="rex-ripple"></span>
+                            </label>
+                        </div>
+                        <div>
+                            <input id="rex-bm-content-bottom-left" type="radio" class="content-position with-gap" name="content-position" value="bottom-left" />
+                            <label for="rex-bm-content-bottom-left" class="tooltipped rex-block-position" data-position="bottom" data-tooltip="Bottom-Left">
+                                <span class="rex-ripple"></span>
+                            </label>
+                            <input id="rex-bm-content-bottom-center" type="radio" class="content-position with-gap" name="content-position" value="bottom-center" />
+                            <label for="rex-bm-content-bottom-center" class="tooltipped rex-block-position" data-position="bottom" data-tooltip="Bottom-Center">
+                                <span class="rex-ripple"></span>
+                            </label>
+                            <input id="rex-bm-content-bottom-right" type="radio" class="content-position with-gap" name="content-position" value="bottom-right" />
+                            <label for="rex-bm-content-bottom-right" class="tooltipped rex-block-position" data-position="bottom" data-tooltip="Bottom-Right">
+                                <span class="rex-ripple"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!-- POSITIONS -->
+            </div>
         </div>
     </div>
 </div>

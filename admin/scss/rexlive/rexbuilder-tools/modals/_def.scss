@@ -3,6 +3,7 @@
   max-width: 405px;
 
   // @include fill-icon($icon-deactive-color);
+  border: 2px solid #000;
 
   .l-svg-icons {
     font-size: 20px;
@@ -17,5 +18,12 @@
 .prefix {
   &.active {
     @include bl-btn--active;
+  }
+}
+
+body.rexpansive-editor {
+  .lean-overlay {
+    display: none;
+    background-color: transparent;
   }
 }

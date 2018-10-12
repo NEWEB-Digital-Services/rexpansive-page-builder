@@ -27,6 +27,7 @@ defined( 'ABSPATH' ) or exit;
             <div class="tool-button--double-icon--wrap">
                 <input class="spectrum-input-element" type="text" name="edit-block-color-background" value="">
                 <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"></div>
+                <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview-texture"></div>
                 <div class="tool-button tool-button--inline tool-button--double-icon tool-button--deactivate deactivate-block-color-background">
                     <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                 </div>
@@ -35,6 +36,7 @@ defined( 'ABSPATH' ) or exit;
             <div class="tool-button--double-icon--wrap<?php echo ( $not_has_overlay ? ' tool-button--hide' : ' tool-button--picker-preview' ); ?>">
                 <input class="spectrum-input-element" type="text" name="edit-block-overlay-color" value="<?php echo esc_attr( $atts['overlay_block_color'] ); ?>">
                 <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"<?php echo ( !$not_has_overlay ? ' style="background-color:' . $atts['overlay_block_color'] . ';"' : '' ); ?>></div>
+                <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview-texture"></div>
                 <div class="tool-button tool-button--inline tool-button--double-icon tool-button--deactivate deactivate-block-overlay-color">
                     <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                 </div>

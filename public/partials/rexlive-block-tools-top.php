@@ -16,12 +16,19 @@ defined( 'ABSPATH' ) or exit;
         <div style="visibility:hidden;">
             <div class="el-size-viewer tool-indicator"></div>
         </div>
+
         <div class="bl_d-iflex bl_ai-c">
+            <div class="tool-button tool-button--inline edit-block-content">
+                <?php Rexbuilder_Utilities::get_icon('#B003-Text'); ?>
+            </div>
+            <div class="tool-button tool-button--inline edit-block-content-position">
+                <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
+            </div>
         </div>
 
         <div class="bl_d-iflex bl_ai-c block-toolBox__config-tools">
             
-            <div class="tool-button tool-button--inline btn-flat builder-copy-block tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy block', 'rexpansive'); ?>">
+            <div class="tool-button tool-button--inline builder-copy-block tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy block', 'rexpansive'); ?>">
                 <?php Rexbuilder_Utilities::get_icon('#Z004-Copy'); ?>
             </div>
 
