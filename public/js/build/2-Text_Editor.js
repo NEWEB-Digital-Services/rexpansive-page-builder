@@ -153,7 +153,7 @@ var TextEditor = (function($) {
     init: function() {
       this.button = this.document.createElement("button");
       this.button.classList.add("medium-editor-action");
-      this.button.innerHTML = "<b>Text color</b>";
+      this.button.innerHTML = "<span class='meditor-color-picker'><span class='meditor-color-picker__placeholder'>P</span></span>";
 
       // init spectrum color picker for this button
       initPicker(this.button);
@@ -347,8 +347,12 @@ var TextEditor = (function($) {
           "italic",
           "underline",
           "anchor",
+          "h1",
           "h2",
           "h3",
+          "h4",
+          "h5",
+          "h6",
           "quote",
           "orderedlist",
           "unorderedlist",

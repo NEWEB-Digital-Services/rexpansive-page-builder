@@ -3092,6 +3092,14 @@ ul {
     position: static;
     display: none; }
 
+.meditor-color-picker {
+  background-image: url(../img/colors-hd.png);
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat; }
+  .meditor-color-picker .meditor-color-picker__placeholder {
+    opacity: 0; }
+
 .rexlive-loader {
   position: absolute;
   top: 0;
