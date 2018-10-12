@@ -8,6 +8,8 @@ var Change_Layout_Modal = (function ($) {
         activeLayoutPage = data.activeLayout;
         buttonData = data.buttonData;
         Rexlive_Modals_Utils.openModal(layout_changing_props.$self.parent('.rex-modal-wrap'));
+        
+        layout_changing_props.$layout_name_placholder.text(data.activeLayout);
     }
 
     var _closeModal = function () {
@@ -65,6 +67,7 @@ var Change_Layout_Modal = (function ($) {
         layout_changing_props = {
             $self: $self,
             $button: $container.find('.rex-button'),
+            $layout_name_placholder: $container.find('.layout-name')
         }
         _linkDocumentListeners();
     }

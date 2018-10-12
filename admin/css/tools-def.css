@@ -2885,6 +2885,15 @@ body.rexpansive-editor .lean-overlay {
   display: none;
   background-color: transparent; }
 
+.rex-modal__outside-footer {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  text-align: center;
+  -webkit-transform: translateY(50%);
+      -ms-transform: translateY(50%);
+          transform: translateY(50%); }
+
 .rex-live__row-margin-padding {
   max-width: 340px;
   margin: 0 auto; }
@@ -2964,6 +2973,13 @@ body.rexpansive-editor .lean-overlay {
 
 #rexlive-custom-layout-modal .rex-cancel-button {
   width: 100%; }
+
+.layout-page-changed-description {
+  padding: 15px;
+  text-align: center; }
+  .layout-page-changed-description .layout-name {
+    display: block;
+    text-transform: uppercase; }
 
 .rex-model__import--wrap-active {
   display: -webkit-box;

@@ -1282,20 +1282,21 @@ wp_reset_postdata();
 
 <div class="rex-modal-wrap rex-fade">
     <div id="rex-layout-page-changed" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
+        <div class="tool-button tool-button--black rex-change-layout-option tool-button--close tooltipped" data-position="bottom" data-tooltip="<?php _e( $tooltip, 'rexspansive');?>" data-rex-option="abort">
+            <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
+        </div>
         <div class="modal-content">
             <div class="layout-page-changed-description">
-                Save changes?
+                <?php _e( 'Save changes', 'rexpansive-builder' ); ?>
+                <span class="layout-name"></span><span>?</span>
             </div>
-            <div>
-                <div class="rex-change-layout-option" data-rex-option="save">
-                    <button class="rex-button save-page">yes</button>
-                </div>
-                <div class="rex-change-layout-option" data-rex-option="continue">
-                    <button class="rex-button continue">no</button>
-                </div>
-                <div class="rex-change-layout-option" data-rex-option="abort">
-                    <button class="rex-button abort">cancel</button>
-                </div>
+        </div>
+        <div class="rex-modal__outside-footer">
+            <div class="tool-button tool-button--inline rex-change-layout-option" data-rex-option="save">
+                <span class="rex-button save-page"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+            </div>
+            <div class="tool-button tool-button--inline tool-button--black rex-change-layout-option" data-rex-option="continue">
+                <span class="rex-button continue"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
             </div>
         </div>
     </div>
