@@ -50,6 +50,14 @@
   //   width: 10px;
   //   height: 10px;
   // }
+
+  .tool-button_list {
+    font-size: 10px;
+    left: 5px;
+    .tool-button--full {
+      font-size: 20px;
+    }
+  }
 }
 
 .section-toolBoox__highlight {

@@ -2792,6 +2792,9 @@ ul {
     position: absolute;
     top: 0;
     z-index: -1; }
+  .tool-button.tool-button--full {
+    overflow: hidden;
+    padding: 0; }
 
 .tool-button--picker-preview .tool-button.tool-button--color {
   background-image: none;
@@ -2889,6 +2892,11 @@ ul {
     opacity: 1; }
   .section-toolBox .switch-toggle {
     padding-right: 10px; }
+  .section-toolBox .tool-button_list {
+    font-size: 10px;
+    left: 5px; }
+    .section-toolBox .tool-button_list .tool-button--full {
+      font-size: 20px; }
 
 .section-toolBoox__highlight {
   position: absolute;

@@ -37,8 +37,8 @@ defined( 'ABSPATH' ) or exit;
                         </div>                        
                     </div><!-- // Change Block image background -->
 
-                    <div class="tool-button--double-icon--wrap<?php echo ( !$not_has_color ? ' tool-button--hide' : '' ); ?>">
-                        <input class="spectrum-input-element" type="text" name="edit-block-color-background" value="<?php echo esc_attr( $atts['color_bg_block'] ); ?>">
+                    <div class="tool-button--double-icon--wrap">
+                        <input class="spectrum-input-element" type="text" name="edit-block-color-background" value="">
                     </div><!-- // Change Block color background -->
 
                     <div class="tool-button--double-icon--wrap<?php echo ( !$not_has_overlay ? ' tool-button--hide' : '' ); ?>">

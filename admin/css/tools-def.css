@@ -2792,6 +2792,9 @@ ul {
     position: absolute;
     top: 0;
     z-index: -1; }
+  .tool-button.tool-button--full {
+    overflow: hidden;
+    padding: 0; }
 
 .tool-button--picker-preview .tool-button.tool-button--color {
   background-image: none;

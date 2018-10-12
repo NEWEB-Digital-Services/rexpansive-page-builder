@@ -600,7 +600,7 @@ var Rexbuilder_Block_Editor = (function($) {
     $row.find('input[name=edit-block-overlay-color]').each(function(i,el) {
       _launchSpectrumPickerOverlayColorBlock(el);
     });
-  }
+  };
 
   var _updateBlockTools = function( $block ) {
     $block.find('input[name=edit-block-color-background]').each(function(i,el) {
@@ -609,6 +609,97 @@ var Rexbuilder_Block_Editor = (function($) {
     $block.find('input[name=edit-block-overlay-color]').each(function(i,el) {
       _launchSpectrumPickerOverlayColorBlock(el);
     });
+  };
+
+  var _updateBlockBackgroundImageTool = function( $target, data ) {
+    var $tool_top = $target
+      .parents('.grid-stack-item')
+      .find('.rexlive-block-toolbox.top-tools')
+      .find('.edit-block-image');
+
+    var $tool_bottom = $target
+      .parents('.grid-stack-item')
+      .find('.rexlive-block-toolbox.bottom-tools')
+      .find('.edit-block-image');
+
+    $tool_bottom
+      .addClass('tool-button--image-preview')
+      .css('background-image','url('+data.urlImage+')')
+  }
+
+  var _updateBlockBackgroundColorToolLive = function( $target, color ) {
+    // Set live picker
+    var $picker_top = $target
+      .parents('.grid-stack-item')
+      .find('.rexlive-block-toolbox.top-tools')
+      .find('input[name=edit-block-color-background]');
+
+    var $picker_bottom = $target
+      .parents('.grid-stack-item')
+      .find('.rexlive-block-toolbox.bottom-tools')
+      .find('input[name=edit-block-color-background]');
+
+    if( "" != color ) {
+      $picker_bottom
+        .val(color)
+        .spectrum('set',color);
+      $picker_bottom
+        .parent()
+        .addClass('tool-button--picker-preview')
+        .removeClass('tool-button--hide')
+      $picker_bottom
+        .siblings('.tool-button--color-preview')
+        .css('background-color',color);
+
+      $picker_top
+        .val(color)
+        .spectrum('set',color)
+        .parent()
+        .addClass('tool-button--hide');
+    } else {
+      $picker_top
+        .parent()
+        .removeClass('tool-button--hide');
+      $picker_bottom
+        .parent()
+        .addClass('tool-button--hide');
+    }
+  };
+
+  var _updateBlockBackgroundColorTool = function($target, color) {
+    // Set tool picker
+    var $picker_top = $target
+      .find('.rexlive-block-toolbox.top-tools')
+      .find('input[name=edit-block-color-background]');
+
+    var $picker_bottom = $target
+      .find('.rexlive-block-toolbox.bottom-tools')
+      .find('input[name=edit-block-color-background]');
+
+    if( "" != color ) {
+      $picker_bottom
+        .val(color)
+        .spectrum('set',color);
+      $picker_bottom
+        .parent()
+        .addClass('tool-button--picker-preview')
+        .removeClass('tool-button--hide')
+      $picker_bottom
+        .siblings('.tool-button--color-preview')
+        .css('background-color',color);
+      $picker_top
+        .val(color)
+        .spectrum('set',color)
+        .parent()
+        .addClass('tool-button--hide');
+    } else {
+      $picker_top
+        .parent()
+        .removeClass('tool-button--hide');
+      $picker_bottom
+        .parent()
+        .addClass('tool-button--hide');
+    }
   }
 
   /**
@@ -625,6 +716,9 @@ var Rexbuilder_Block_Editor = (function($) {
     launchSpectrumPickerBackgorundColorBlock: _launchSpectrumPickerBackgorundColorBlock,
     launchSpectrumPickerOverlayColorBlock: _launchSpectrumPickerOverlayColorBlock,
     updateBlockToolsOnRow: _updateBlockToolsOnRow,
-    updateBlockTools: _updateBlockTools
+    updateBlockTools: _updateBlockTools,
+    updateBlockBackgroundImageTool: _updateBlockBackgroundImageTool,
+    updateBlockBackgroundColorToolLive: _updateBlockBackgroundColorToolLive,
+    updateBlockBackgroundColorTool: _updateBlockBackgroundColorTool
   }
 })(jQuery);

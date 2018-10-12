@@ -202,7 +202,8 @@ var Rexbuilder_Dom_Util = (function($) {
     $sectionData.attr("data-id_image_bg_section", data.idImage);
     $sectionData.attr("data-image_bg_section", data.urlImage);
     $sectionData.attr("data-image_bg_section_active", data.active);
-    $section.find('.edit-row-image-background').addClass('tool-button--image-preview').attr('value',data.idImage).css('background-image','url('+data.urlImage+')');
+
+    Rexbuilder_Section_Editor.updateRowBackgroundImageTool($section,data);
   };
 
   var _updateImageBlock = function($itemContent, $elemData, data) {
@@ -221,6 +222,8 @@ var Rexbuilder_Dom_Util = (function($) {
 
     $itemContent.attr("data-background_image_width", data.width);
     $itemContent.attr("data-background_image_height", data.height);
+
+    Rexbuilder_Block_Editor.updateBlockBackgroundImageTool($itemContent, data);
   };
 
   var _addImageNaturalBgBlock = function($itemContent, data) {
@@ -882,60 +885,48 @@ var Rexbuilder_Dom_Util = (function($) {
   };
 
   var _updateSectionBackgroundColorLive = function(data, color) {
+    var $target;
+
     if (data.modelNumber != "") {
-      Rexbuilder_Util.$rexContainer
+      $target = Rexbuilder_Util.$rexContainer
         .find(
           'section[data-rexlive-section-id="' +
             data.sectionID +
             '"][data-rexlive-model-number="' +
             data.modelNumber +
             '"]'
-        )
+        );
+      $target
         .css("background-color", color);
     } else {
-      Rexbuilder_Util.$rexContainer
-        .find('section[data-rexlive-section-id="' + data.sectionID + '"]')
+      $target = Rexbuilder_Util.$rexContainer
+        .find('section[data-rexlive-section-id="' + data.sectionID + '"]');
+      $target
         .css("background-color", color);
     }
-
-    // Set live picker
-    var $picker = Rexbuilder_Util.$rexContainer
-      .find('section[data-rexlive-section-id="' + data.sectionID + '"]')
-      .find('input[name=edit-row-color-background]');
-
-    $picker
-      .spectrum('set',color);
-    $picker
-      .parent()
-      .addClass('tool-button--picker-preview')
-    $picker
-      .next('.tool-button--color')
-      .css('background-color',color);
+      
+    Rexbuilder_Section_Editor.updateRowBackgroundColorToolLive( $target, color );
   };
 
+  /**
+   * Updating the background color of a row
+   * Called at loading of a layout
+   * @param {jQuery Object} $section row in which update the background color
+   * @param {Object} bgColor object with color background info
+   */
   var _updateSectionBackgroundColor = function($section, bgColor) {
     var $sectionData = $section.children(".section-data");
     $section.css("background-color", bgColor.color);
     $sectionData.attr("data-color_bg_section", bgColor.color);
     $sectionData.attr("data-color_bg_section_active", bgColor.active);
 
-    // Set live picker
-    var $picker = $section
-      .find('input[name=edit-row-color-background]');
-
-    $picker
-      .spectrum('set',bgColor.color);
-    $picker
-      .parent()
-      .addClass('tool-button--picker-preview')
-    $picker
-      .next('.tool-button--color')
-      .css('background-color',bgColor.color);
+    Rexbuilder_Section_Editor.updateRowBackgroundColorTool( $section, bgColor.color );
   };
 
   var _updateBlockBackgroundColorLive = function(data, color) {
+    var $target;
     if (data.modelNumber != "") {
-      Rexbuilder_Util.$rexContainer
+      $target = Rexbuilder_Util.$rexContainer
         .find(
           'section[data-rexlive-section-id="' +
             data.sectionID +
@@ -947,20 +938,28 @@ var Rexbuilder_Dom_Util = (function($) {
           'div [data-rexbuilder-block-id="' +
             data.rexID +
             '"] .grid-item-content'
-        )
+        );
+      $target
         .css("background-color", color);
     } else {
-      Rexbuilder_Util.$rexContainer
+      $target = Rexbuilder_Util.$rexContainer
         .find('section[data-rexlive-section-id="' + data.sectionID + '"]')
         .find(
           'div [data-rexbuilder-block-id="' +
             data.rexID +
             '"] .grid-item-content'
-        )
+        );
+      $target
         .css("background-color", color);
     }
+
+    Rexbuilder_Block_Editor.updateBlockBackgroundColorToolLive( $target, color );
   };
 
+  /**
+   * Updating the color of a block
+   * @param {Ojbect} data object with the information on which block to update an how
+   */
   var _updateBlockBackgroundColor = function(data) {
     var $elem = data.$elem;
     var $itemContent = $elem.find(".grid-item-content");
@@ -970,34 +969,33 @@ var Rexbuilder_Dom_Util = (function($) {
     $elemData.attr("data-color_bg_block", data.color);
     $elemData.attr("data-color_bg_elem_active", data.active);
 
-    var $picker = $elem
-      .find('input[name=edit-block-color-background]');
+    Rexbuilder_Block_Editor.updateBlockBackgroundColorTool($elem,data.color);
   };
 
   var _updateSectionOverlayColorLive = function(data, color) {
+    var $target;
     if (data.modelNumber != "") {
-      Rexbuilder_Util.$rexContainer
+      $target = Rexbuilder_Util.$rexContainer
         .find(
           'section[data-rexlive-section-id="' +
             data.sectionID +
             '"][data-rexlive-model-number="' +
             data.modelNumber +
             '"]'
-        )
+        );
+      $target
         .children(".responsive-overlay")
         .css("background-color", color);
     } else {
-      Rexbuilder_Util.$rexContainer
-        .find('section[data-rexlive-section-id="' + data.sectionID + '"]')
+      $target = Rexbuilder_Util.$rexContainer
+        .find('section[data-rexlive-section-id="' + data.sectionID + '"]');
+      $target
         .children(".responsive-overlay")
         .css("background-color", color);
     }
 
     // Set live picker
-    Rexbuilder_Util.$rexContainer
-      .find('section[data-rexlive-section-id="' + data.sectionID + '"]')
-      .find('input[name=edit-row-overlay-color]')
-      .spectrum('set',color);
+    Rexbuilder_Section_Editor.updateRowOverlayColorToolLive( $target, color );
   };
 
   var _updateSectionOverlay = function($section, overlay) {
@@ -1014,10 +1012,8 @@ var Rexbuilder_Dom_Util = (function($) {
       $overlayElem.removeClass("rex-active-overlay");
     }
 
-    // Set live picker
-    $section
-      .find('input[name=edit-row-overlay-color]')
-      .spectrum('set',overlay.color);
+    // Set tools
+    Rexbuilder_Section_Editor.updateRowOverlayColorTool( $section, overlay.color );
   };
 
   var _updateBlockOverlayColorLive = function(data, color) {

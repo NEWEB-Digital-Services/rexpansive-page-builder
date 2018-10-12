@@ -16,7 +16,7 @@ defined( 'ABSPATH' ) or exit;
         <div class="bl_d-iflex bl_ai-c block-toolBox__fast-configuration">
 
             <div class="tool-button--double-icon--wrap<?php echo ( $not_has_image ? ' tool-button--hide' : '' ); ?>">
-                <div class="tool-button tool-button--inline edit-block-image tooltipped<?php echo ( !$not_has_image ? ' tool-button--image-preview' : '' ); ?>"<?php echo( !$not_has_image ? ' style="background-image:url(' . $atts['image_bg_block'] . ');"' : '' ); ?>>
+                <div class="tool-button tool-button--inline edit-block-image tooltipped">
                     <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
                 </div>
                 <div class="tool-button tool-button--inline tool-button--double-icon tool-button--deactivate deactivate-block-image-background">
@@ -24,9 +24,9 @@ defined( 'ABSPATH' ) or exit;
                 </div>
             </div><!-- // Change Block image background -->
 
-            <div class="tool-button--double-icon--wrap<?php echo ( $not_has_color ? ' tool-button--hide' : ' tool-button--picker-preview' ); ?>">
-                <input class="spectrum-input-element" type="text" name="edit-block-color-background" value="<?php echo esc_attr( $atts['color_bg_block'] ); ?>">
-                <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"<?php echo ( !$not_has_color ? ' style="background-color:' . $atts['color_bg_block'] . ';"' : '' ); ?>></div>
+            <div class="tool-button--double-icon--wrap">
+                <input class="spectrum-input-element" type="text" name="edit-block-color-background" value="">
+                <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"></div>
                 <div class="tool-button tool-button--inline tool-button--double-icon tool-button--deactivate deactivate-block-color-background">
                     <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                 </div>

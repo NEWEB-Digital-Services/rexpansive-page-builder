@@ -118,6 +118,11 @@
     top: 0;
     z-index: -1;
   }
+
+  &.tool-button--full {
+    overflow: hidden;
+    padding: 0;
+  }
 }
 
 .tool-button--picker-preview {

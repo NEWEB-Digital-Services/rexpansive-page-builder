@@ -502,6 +502,91 @@ var Rexbuilder_Section_Editor = (function($) {
   };
 
   /**
+   * Setting the tool for the row image background preview
+   * @param {jQuery Object} $target edited row
+   * @param {JS object} data background image data
+   */
+  var _updateRowBackgroundImageTool = function( $target, data ) {
+    $target
+      .find('.edit-row-image-background')
+      .addClass('tool-button--image-preview')
+      .attr('value',data.idImage)
+      .css('background-image','url('+data.urlImage+')');
+  };
+
+  /**
+   * Setting the tool for the row color background preview
+   * @param {jQuery Object} $target edited row
+   * @param {string} color color to set
+   */
+  var _updateRowBackgroundColorTool = function( $target, color ) {
+    if( "" != color ) {
+      var $picker = $target
+        .find('input[name=edit-row-color-background]');
+        
+      $picker
+        .val(color)
+        .spectrum('set',color);
+      $picker
+        .parent()
+        .addClass('tool-button--picker-preview')
+      $picker
+        .siblings('.tool-button--color-preview')
+        .css('background-color',color);
+    }
+  };
+
+  var _updateRowBackgroundColorToolLive = function( $target, color ) {
+    var $picker = $target
+      .find('input[name=edit-row-color-background]');
+    // Set live picker
+    $picker
+      .val(color)
+      .spectrum('set',color);
+    $picker
+      .parent()
+      .addClass('tool-button--picker-preview')
+    $picker
+      .siblings('.tool-button--color-preview')
+      .css('background-color',color);
+  };
+
+  var _updateRowOverlayColorTool = function( $target, color ) {
+    if( "" != color ) {
+      // Set live picker
+      var $picker = $target
+        .find('input[name=edit-row-overlay-color]');
+
+      $picker
+        .val(color)
+        .spectrum("set",color)
+
+      $picker
+        .parent()
+        .addClass('tool-button--picker-preview')
+      $picker
+        .siblings('.tool-button--color-preview')
+        .css('background-color',color);
+    }
+  }
+
+  var _updateRowOverlayColorToolLive = function( $target, color ) {
+    var $picker = $target
+      .find('input[name=edit-row-overlay-color]');
+
+    $picker
+      .val(color)
+      .spectrum("set",color)
+    
+    $picker
+      .parent()
+      .addClass('tool-button--picker-preview')
+    $picker
+      .siblings('.tool-button--color-preview')
+      .css('background-color',color);
+  }
+
+  /**
    * Initing the row toolbar
    */
   var init = function() {
@@ -515,6 +600,11 @@ var Rexbuilder_Section_Editor = (function($) {
     init: init,
     launchSpectrumPickerBackgorundColorRow: _launchSpectrumPickerBackgorundColorRow,
     launchSpectrumPickerOverlayColorRow: _launchSpectrumPickerOverlayColorRow,
-    updateRowTools: _updateRowTools
+    updateRowTools: _updateRowTools,
+    updateRowBackgroundImageTool: _updateRowBackgroundImageTool,
+    updateRowBackgroundColorTool: _updateRowBackgroundColorTool,
+    updateRowBackgroundColorToolLive: _updateRowBackgroundColorToolLive,
+    updateRowOverlayColorTool: _updateRowOverlayColorTool,
+    updateRowOverlayColorToolLive: _updateRowOverlayColorToolLive,
   }
 })(jQuery);

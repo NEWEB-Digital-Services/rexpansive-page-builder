@@ -51,7 +51,7 @@ $tool_button_classes = 'tool-button';
 					</div>
 		
 					<div class="tool-button_list">
-						<div class="tool-button add-new-block-image tooltipped">
+						<div class="tool-button tool-button--full add-new-block-image tooltipped">
 							<?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
 						</div>
 		
@@ -81,16 +81,17 @@ $tool_button_classes = 'tool-button';
 					</div>
 				</div><!-- // Change Row image background -->
 
-				<div class="tool-button--double-icon--wrap<?php echo ( "" != $atts['color_bg_section'] ? ' tool-button--picker-preview' : '' ); ?>">
-					<input class="spectrum-input-element" type="text" name="edit-row-color-background" value="<?php echo esc_attr( $atts['color_bg_section'] ); ?>">
-					<div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"<?php echo ' style="background-color:' . $atts['color_bg_section'] . ';"'; ?>></div>
+				<div class="tool-button--double-icon--wrap">
+					<input class="spectrum-input-element" type="text" name="edit-row-color-background">
+					<div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"></div>
 					<div class="tool-button tool-button--inline tool-button--deactivate tool-button--double-icon deactivate-row-color-background">
 						<?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
 					</div>
 				</div><!-- // Change Row color background -->
 
 				<div class="tool-button--double-icon--wrap">
-					<input class="spectrum-input-element" type="text" name="edit-row-overlay-color" value="<?php echo esc_attr( $atts['row_overlay_color'] ); ?>">
+					<input class="spectrum-input-element" type="text" name="edit-row-overlay-color">
+					<div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"></div>
 					<div class="tool-button tool-button--inline tool-button--deactivate tool-button--double-icon deactivate-row-overlay-color">
 						<?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
 					</div>
@@ -122,7 +123,7 @@ $tool_button_classes = 'tool-button';
 						<?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>					
 					</div>
 					<div class="tool-button_list">						
-						<div class="tool-button edit-background-section tooltipped">
+						<div class="tool-button tool-button--full edit-background-section tooltipped">
 							<?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
 						</div>
 						
