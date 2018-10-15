@@ -10,6 +10,7 @@ var TextEditor = (function($) {
 
   var pickerExtensionInstance;
   var htmlExtensionInstance;
+  var textTagsExtensionInstance;
 
   var currentTextSelection;
 
@@ -186,7 +187,41 @@ var TextEditor = (function($) {
     }
   });
 
-  // text htmlExtension
+  var TextTagExtension = MediumEditor.extensions.button.extend({
+    name: "textTags",
+    action: "",
+    contentDefault: "TAGS",
+    init: function() {
+      // this.classApplier = rangy.createClassApplier('highlight', {
+      //   elementTagName: 'mark',
+      //   normalize: true
+      // });
+
+      this.button = this.document.createElement("button");
+      this.button.classList.add("medium-editor-action");
+      this.button.innerHTML = "<i class='l-svg-icons'><svg><use xlink:href='#A007-Close'></use></svg></i>H1<ul><li data-tag-action='append-h4'>H4</li><li data-tag-action='append-h5'>H5</li><li data-tag-action='append-h6'>H6</li></ul>";
+      this.on(this.button, 'click', this.handleClick.bind(this));
+    },
+  
+    getButton: function () {
+      return this.button;
+    },
+  
+    handleClick: function (event) { 
+      // Ensure the editor knows about an html change so watchers are notified
+      // ie: <textarea> elements depend on the editableInput event to stay synchronized
+
+      var action = event.target.getAttribute('data-tag-action');
+      if( 'undefined' != typeof action ) {
+        editorInstance.execAction(action);
+      }
+      
+    }
+  });
+
+  /**
+   * Custom Text HTML extension
+   */
   var TextHtmlExtension = MediumEditor.extensions.button.extend({
     name: "textHtml",
     action: "changeText",
@@ -335,9 +370,13 @@ var TextEditor = (function($) {
     editorInstance.destroy();
   };
 
+  /**
+   * Launching the medium editor
+   */
   var _createEditor = function() {
     htmlExtensionInstance = new TextHtmlExtension();
     pickerExtensionInstance = new ColorPickerExtension();
+    textTagsExtensionInstance = new TextTagExtension();
 
     editorInstance = new MediumEditor(".editable", {
       toolbar: {
@@ -357,19 +396,21 @@ var TextEditor = (function($) {
           "orderedlist",
           "unorderedlist",
           "table",
-          "textHtml"
+          "textHtml",
+          "textTags"
         ]
       },
       imageDragging: false,
       extensions: {
         colorPicker: pickerExtensionInstance,
-        textHtml: htmlExtensionInstance
+        textHtml: htmlExtensionInstance,
+        textTags: textTagsExtensionInstance
       },
       placeholder: {
         /*
-                * This example includes the default options for
-                * placeholder, if nothing is passed this is what it used
-                */
+         * This example includes the default options for
+         * placeholder, if nothing is passed this is what it used
+        */
         text: "Type here your text",
         hideOnClick: true
       }

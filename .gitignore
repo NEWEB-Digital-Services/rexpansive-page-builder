@@ -1,5 +1,6 @@
 /.sass-cache/
 /node_modules/
 /rexpansive-builder/
+.package-lock.json
 *.log
 *.zip
