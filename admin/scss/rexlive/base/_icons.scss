@@ -18,3 +18,9 @@
 .l-icon--white {
   @include fill-icon(#fff);
 }
+
+.l-svg-icons {
+  &.drop-down-icon {
+    transform: rotate(180deg);
+  }
+}

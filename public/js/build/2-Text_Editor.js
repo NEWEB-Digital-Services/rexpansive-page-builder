@@ -10,7 +10,11 @@ var TextEditor = (function($) {
 
   var pickerExtensionInstance;
   var htmlExtensionInstance;
-  var textTagsExtensionInstance;
+  var headingTagsExtensionInstance;
+  var formattingTagsExtensionInstance;
+  var justifyExtensionIntance;
+  var listExtensionInstance;
+  // var dropDownListExtensionInstance;
 
   var currentTextSelection;
 
@@ -40,8 +44,8 @@ var TextEditor = (function($) {
     });
   };
 
-  //Color picker extension
   /**
+   * //Color picker extension
    * Gets the color of the current text selection
    */
   var getCurrentTextColor = function() {
@@ -187,8 +191,11 @@ var TextEditor = (function($) {
     }
   });
 
+  /**
+   * Custom text tag extension
+   */
   var TextTagExtension = MediumEditor.extensions.button.extend({
-    name: "textTags",
+    name: "headingTags",
     action: "",
     contentDefault: "TAGS",
     init: function() {
@@ -199,7 +206,135 @@ var TextEditor = (function($) {
 
       this.button = this.document.createElement("button");
       this.button.classList.add("medium-editor-action");
-      this.button.innerHTML = "<i class='l-svg-icons'><svg><use xlink:href='#A007-Close'></use></svg></i>H1<ul><li data-tag-action='append-h4'>H4</li><li data-tag-action='append-h5'>H5</li><li data-tag-action='append-h6'>H6</li></ul>";
+      this.button.classList.add("medium-editor-action-list");
+      this.button.innerHTML = "<div class='me__heading-list-parent'><i class='l-svg-icons drop-down-icon'><svg><use xlink:href='#A007-Close'></use></svg></i>H1</div><div class='me__action-list'><div class='medium-editor-action' data-tag-action='append-h1'>h1</div><div class='medium-editor-action' data-tag-action='append-h2'>h2</div><div class='medium-editor-action' data-tag-action='append-h3'>h3</div><div class='medium-editor-action' data-tag-action='append-h4'>h4</div><div class='medium-editor-action' data-tag-action='append-h5'>h5</div><div class='medium-editor-action' data-tag-action='append-h6'>h6</div></div>";
+      this.on(this.button, 'click', this.handleClick.bind(this));
+    },
+  
+    getButton: function () {
+      return this.button;
+    },
+  
+    handleClick: function (event) { 
+      // Ensure the editor knows about an html change so watchers are notified
+      // ie: <textarea> elements depend on the editableInput event to stay synchronized
+
+      var action = event.target.getAttribute('data-tag-action');
+      if( 'undefined' != typeof action ) {
+        editorInstance.execAction(action);
+      }
+      
+    }
+  });
+
+  /**
+   * Custom extension for display list of formatting tags for text: bold, italic and underline
+   * @since 2.0.0
+   */
+  var FormattingTagExtension = MediumEditor.extensions.button.extend({
+    name: "formattingTags",
+    action: "",
+    contentDefault: "TAGS",
+    init: function() {   
+      this.button = this.document.createElement("button");
+      this.button.classList.add("medium-editor-action");
+      this.button.classList.add("medium-editor-action-list");
+      this.button.innerHTML = "<div class='me__heading-list-parent'><i class='l-svg-icons drop-down-icon'><svg><use xlink:href='#A007-Close'></use></svg></i>b</div><div class='me__action-list'><div class='medium-editor-action' data-tag-action='bold'>b</div><div class='medium-editor-action' data-tag-action='italic'>i</div><div class='medium-editor-action' data-tag-action='underline'>u</div></div>";
+      this.on(this.button, 'click', this.handleClick.bind(this));
+    },
+  
+    getButton: function () {
+      return this.button;
+    },
+  
+    handleClick: function (event) { 
+      // Ensure the editor knows about an html change so watchers are notified
+      // ie: <textarea> elements depend on the editableInput event to stay synchronized
+
+      var action = event.target.getAttribute('data-tag-action');
+      if( 'undefined' != typeof action ) {
+        editorInstance.execAction(action);
+      }
+      
+    }
+  });
+
+  /**
+   * Custom extension for display justifing text options: left, right, center, justify
+   * @since 2.0.0
+   */
+  var JustifyExtension = MediumEditor.extensions.button.extend({
+    name: "justifyDropdown",
+    action: "",
+    contentDefault: "TAGS",
+    init: function() {   
+      this.button = this.document.createElement("button");
+      this.button.classList.add("medium-editor-action");
+      this.button.classList.add("medium-editor-action-list");
+      this.button.innerHTML = "<div class='me__heading-list-parent'><i class='l-svg-icons drop-down-icon'><svg><use xlink:href='#A007-Close'></use></svg></i>j</div><div class='me__action-list'><div class='medium-editor-action' data-tag-action='justifyLeft'><i class='fa fa-align-left'></i></div><div class='medium-editor-action' data-tag-action='justifyCenter'><i class='fa fa-align-center'></i></div><div class='medium-editor-action' data-tag-action='justifyRight'><i class='fa fa-align-right'></i></div><div class='medium-editor-action' data-tag-action='justifyFull'><i class='fa fa-align-justify'></i></div></div>";
+      this.on(this.button, 'click', this.handleClick.bind(this));
+    },
+  
+    getButton: function () {
+      return this.button;
+    },
+  
+    handleClick: function (event) { 
+      // Ensure the editor knows about an html change so watchers are notified
+      // ie: <textarea> elements depend on the editableInput event to stay synchronized
+
+      var action = event.target.getAttribute('data-tag-action');
+      if( 'undefined' != typeof action ) {
+        // action applied already?
+        console.log(editorInstance.queryCommandState(action));
+        editorInstance.execAction(action);
+      }
+      
+    },
+  });
+  
+  /**
+   * Custom Button for display ordered and unordered list buttons
+   * @since 2.0.0
+   */
+  var ListExtension = MediumEditor.extensions.button.extend({
+    name: "listDropdown",
+    action: "",
+    contentDefault: "TAGS",
+    init: function() {   
+      this.button = this.document.createElement("button");
+      this.button.classList.add("medium-editor-action");
+      this.button.classList.add("medium-editor-action-list");
+      this.button.innerHTML = "<div class='me__heading-list-parent'><i class='l-svg-icons drop-down-icon'><svg><use xlink:href='#A007-Close'></use></svg></i>l</div><div class='me__action-list'><div class='medium-editor-action' data-tag-action='insertorderedlist'><i class='fa fa-list-ol'></i></div><div class='medium-editor-action' data-tag-action='insertunorderedlist'><i class='fa fa-list-ul'></i></div></div>";
+      this.on(this.button, 'click', this.handleClick.bind(this));
+    },
+  
+    getButton: function () {
+      return this.button;
+    },
+  
+    handleClick: function (event) { 
+      // Ensure the editor knows about an html change so watchers are notified
+      // ie: <textarea> elements depend on the editableInput event to stay synchronized
+
+      var action = event.target.getAttribute('data-tag-action');
+      if( 'undefined' != typeof action ) {
+        editorInstance.execAction(action);
+      }
+      
+    }
+  });
+
+  var DropDownExtension = MediumEditor.Extension.extend({
+    name: "dropDownButtonList",
+    action: "",
+
+    init: function() {
+      console.log(this.contentDefault);
+      this.button = this.document.createElement("button");
+      this.button.classList.add("medium-editor-action");
+      this.button.classList.add("medium-editor-action-list");
+      this.button.innerHTML = this.contentDefault;
       this.on(this.button, 'click', this.handleClick.bind(this));
     },
   
@@ -231,7 +366,7 @@ var TextEditor = (function($) {
     init: function() {
       this.button = this.document.createElement("button");
       this.button.classList.add("medium-editor-action");
-      this.button.innerHTML = "<b>Text Html</b>";
+      this.button.innerHTML = "<i class='l-svg-icons'><svg><use xlink:href='#A008-Code'></use></svg></i>";
 
       // use our own handleClick instead of the default one
       this.on(this.button, "click", this.handleClick.bind(this));
@@ -376,35 +511,57 @@ var TextEditor = (function($) {
   var _createEditor = function() {
     htmlExtensionInstance = new TextHtmlExtension();
     pickerExtensionInstance = new ColorPickerExtension();
-    textTagsExtensionInstance = new TextTagExtension();
+    headingTagsExtensionInstance = new TextTagExtension();
+    formattingTagsExtensionInstance = new FormattingTagExtension();
+    justifyExtensionIntance = new JustifyExtension();
+    listExtensionInstance = new ListExtension();
 
     editorInstance = new MediumEditor(".editable", {
       toolbar: {
         buttons: [
           "colorPicker",
-          "bold",
-          "italic",
-          "underline",
-          "anchor",
-          "h1",
-          "h2",
-          "h3",
-          "h4",
-          "h5",
-          "h6",
-          "quote",
-          "orderedlist",
-          "unorderedlist",
-          "table",
+          "formattingTags",
+          {
+            name: 'anchor',
+            contentDefault: '<i class="l-svg-icons"><svg><use xlink:href="#C001-Link"></use></svg></i>',
+          },
+          "headingTags",
+          {
+            name: 'quote',
+            contentDefault: '"',
+          },
+          // {
+          //   name: 'orderedlist',
+          //   contentDefault: '1.',
+          // },
+          // {
+          //   name: 'unorderedlist',
+          //   contentDefault: '&#183',
+          // },
+          "listDropdown",
+          // "table",
           "textHtml",
-          "textTags"
+          // "justifyLeft",
+          // "justifyCenter",
+          // "justifyRight",
+          // "justifyFull",
+          "justifyDropdown",
+          "removeFormat",
+          {
+            name: 'dropDownButtonList',
+            contentDefault: "<div class='me__heading-list-parent'><i class='l-svg-icons drop-down-icon'><svg><use xlink:href='#A007-Close'></use></svg></i>l</div><div class='me__action-list'><div class='medium-editor-action' data-tag-action='insertorderedlist'><i class='fa fa-list-ol'></i></div><div class='medium-editor-action' data-tag-action='insertunorderedlist'><i class='fa fa-list-ul'></i></div></div>"
+          }
         ]
       },
       imageDragging: false,
       extensions: {
         colorPicker: pickerExtensionInstance,
         textHtml: htmlExtensionInstance,
-        textTags: textTagsExtensionInstance
+        headingTags: headingTagsExtensionInstance,
+        formattingTags: formattingTagsExtensionInstance,
+        justifyDropdown: justifyExtensionIntance,
+        listDropdown: listExtensionInstance,
+        dropDownButtonList: new DropDownExtension(),
       },
       placeholder: {
         /*

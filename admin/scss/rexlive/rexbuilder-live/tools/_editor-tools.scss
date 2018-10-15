@@ -1,3 +1,38 @@
+.medium-editor-action {
+  text-transform: uppercase;
+  font-weight: normal;
+  background-color: #000;
+  border-radius: 0;
+  font-family: sans-serif;
+
+  &:hover {
+    background-color: #000;
+  }
+
+  &.medium-editor-button-first {
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+  }
+
+  &.medium-editor-button-last {
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+  }
+
+  @include fill-icon(#fff);
+
+  &.medium-editor-button-active {
+    background-color: $palette-color-1;
+  }
+
+}
+
+.medium-toolbar-arrow-under{
+  &:after {
+    border-color: #000 transparent transparent transparent;
+  }
+}
+
 .meditor-color-picker {
   background-image: url(../img/colors-hd.png);
   background-size: contain;
@@ -7,6 +42,40 @@
     opacity:0;
   }
 }
+
+.medium-editor-toolbar {
+  li {
+    &:not(:last-child) {
+      border-right: 1px solid $palette-color-4;
+    }
+    > .medium-editor-action {
+      padding: 10px;
+    }
+  }
+}
+
+.medium-editor-action-list {
+  position: relative;
+  .medium-editor-action {
+    padding: 5px;
+  }
+  .me__action-list {
+    display: none;
+    position: absolute;
+    top: 100%;
+    width: 100%;
+    left: 0;
+  }
+  .drop-down-icon {
+    margin-right: 5px;
+  }
+  &:hover {
+    .me__action-list {
+      display: block;
+    }
+  }
+}
+
 
 // .medium-editor-button-first {
 //   border-left-radius:50%;
