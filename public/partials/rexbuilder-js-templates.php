@@ -23,6 +23,12 @@ $tool_button_classes = 'tool-button';
         </div>
 
         <div class="bl_d-iflex bl_ai-c">
+            <div class="tool-button tool-button--inline edit-block-content">
+                <?php Rexbuilder_Utilities::get_icon('#B003-Text'); ?>
+            </div>
+            <div class="tool-button tool-button--inline edit-block-content-position">
+                <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
+            </div>
         </div>
 
         <div class="bl_d-iflex bl_ai-c block-toolBox__config-tools">

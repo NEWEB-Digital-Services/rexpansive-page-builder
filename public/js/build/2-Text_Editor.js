@@ -215,7 +215,7 @@ var TextEditor = (function($) {
       this.list_element = this.document.createElement("div");
       this.list_element.classList.add("me__action-list");
       
-      this.list_element.innerHTML = "<div class='medium-editor-action' data-tag-action='append-h1'>h1</div><div class='medium-editor-action' data-tag-action='append-h2'>h2</div><div class='medium-editor-action' data-tag-action='append-h3'>h3</div><div class='medium-editor-action' data-tag-action='append-h4'>h4</div><div class='medium-editor-action' data-tag-action='append-h5'>h5</div><div class='medium-editor-action' data-tag-action='append-h6'>h6</div>";
+      this.list_element.innerHTML = "<div class='medium-editor-action' data-tag-action='append-h1'>h1</div><div class='medium-editor-action' data-tag-action='append-h2'>h2</div><div class='medium-editor-action' data-tag-action='append-h3'>h3</div><div class='medium-editor-action' data-tag-action='append-h4'>h4</div><div class='medium-editor-action' data-tag-action='append-h5'>h5</div><div class='medium-editor-action' data-tag-action='append-h6'>h6</div><div class='medium-editor-action' data-tag-action='append-p'>p</div>";
 
       this.list_actions = this.list_element.querySelectorAll('.medium-editor-action');
 
@@ -233,21 +233,12 @@ var TextEditor = (function($) {
       // this.action_active = '';
       switch( node.nodeName.toLowerCase() ) {
         case 'h1':
-          this.action_active = 'append-' + node.nodeName.toLowerCase();
-          return true;
         case 'h2':
-          this.action_active = 'append-' + node.nodeName.toLowerCase();
-          return true;
         case 'h3':
-          this.action_active = 'append-' + node.nodeName.toLowerCase();
-          return true;
         case 'h4':
-          this.action_active = 'append-' + node.nodeName.toLowerCase();
-          return true;
         case 'h5':
-          this.action_active = 'append-' + node.nodeName.toLowerCase();
-          return true;
         case 'h6':
+        case 'p':
           this.action_active = 'append-' + node.nodeName.toLowerCase();
           return true;
         default:
@@ -848,14 +839,14 @@ var TextEditor = (function($) {
             contentDefault: '<i class="l-svg-icons"><svg><use xlink:href="#C001-Link"></use></svg></i>',
           },
           "headingTags",
-          {
-            name: 'quote',
-            contentDefault: '"',
-          },
+          "justifyDropdown",
+          // {
+          //   name: 'quote',
+          //   contentDefault: '"',
+          // },
           "listDropdown",
           // "table",
           "textHtml",
-          "justifyDropdown",
           // "removeFormat",
         ]
       },
