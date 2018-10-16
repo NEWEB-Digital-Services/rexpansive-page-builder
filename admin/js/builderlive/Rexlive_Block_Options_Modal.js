@@ -10,6 +10,7 @@ var BlockOptions_Modal = (function($) {
     Block_Video_Background_Modal.updateVideoModal(data.bgVideo);
     BlockPaddings_Modal.updatePaddings(data.paddings);
     // Block_Content_Positions_Modal.updatePosition(data.flexPosition);
+    Block_Image_Positions_Modal.updatePosition(data.flexImgPosition);
     Block_CustomClasses_Modal.updateCustomClasses(data.customClasses);
     Block_Url_Modal.updateBlockUrl(data.linkBlock);
     Rexlive_Modals_Utils.openModal(
@@ -46,6 +47,7 @@ var BlockOptions_Modal = (function($) {
     Block_Video_Background_Modal.init($blockOptions);
     BlockPaddings_Modal.init($blockOptions);
     // Block_Content_Positions_Modal.init($blockOptions);
+    Block_Image_Positions_Modal.init($blockOptions);
     Block_CustomClasses_Modal.init($blockOptions);
     Block_Url_Modal.init($blockOptions);
   };

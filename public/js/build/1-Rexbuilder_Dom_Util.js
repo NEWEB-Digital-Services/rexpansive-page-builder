@@ -877,6 +877,31 @@ var Rexbuilder_Dom_Util = (function($) {
     }
   };
 
+  var _updateImageFlexPostition = function($elem, flexPosition) {
+    if (!$elem.hasClass("block-has-slider")) {
+      var $scrollbarDiv = $elem.find(".rex-custom-scrollbar");
+      if ($scrollbarDiv.length != 0) {
+        var scrollbarInstance = $scrollbarDiv.overlayScrollbars();
+        if (typeof scrollbarInstance != "undefined") {
+          scrollbarInstance.update();
+        }
+      }
+      var flexClasses =
+        "rex-flex-img-top rex-flex-img-middle rex-flex-img-bottom rex-flex-img-left rex-flex-img-center rex-flex-img-right";
+      $elem.removeClass(flexClasses);
+      var $elemData = $elem.children(".rexbuilder-block-data");
+      $elemData.attr("data-block_flex_img_position", "");
+      if (flexPosition.x != "" && flexPosition.y != "") {
+        $elem.addClass("rex-flex-img-" + flexPosition.x);
+        $elem.addClass("rex-flex-img-" + flexPosition.y);
+        $elemData.attr(
+          "data-block_flex_img_position",
+          flexPosition.x + " " + flexPosition.y
+        );
+      }
+    }
+  };
+
   var _updateCustomCSS = function(newCss) {
     $("#rexpansive-builder-style-inline-css").text(newCss);
   };
@@ -1502,6 +1527,9 @@ var Rexbuilder_Dom_Util = (function($) {
       case "updateBlockFlexPosition":
         _updateFlexPostition(dataToUse.$elem, dataToUse.dataPosition);
         break;
+      case "updateBlockImageFlexPosition":
+        _updateImageFlexPostition(dataToUse.$elem, dataToUse.dataPosition);
+        break;
       case "updateBlockUrl":
         _updateBlockUrl(dataToUse.$elem, dataToUse.url);
         break;
@@ -1583,6 +1611,7 @@ var Rexbuilder_Dom_Util = (function($) {
     updateVideos: _updateVideos,
     updateBlockPaddings: _updateBlockPaddings,
     updateFlexPostition: _updateFlexPostition,
+    updateImageFlexPostition: _updateImageFlexPostition,
     updateBlockUrl: _updateBlockUrl,
     updateSectionVisibility: _updateSectionVisibility,
     fixSectionDomOrder: _fixSectionDomOrder,

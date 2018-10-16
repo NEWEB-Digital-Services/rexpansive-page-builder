@@ -27,6 +27,7 @@
      * 21) Block Video Background : rexlive:update_block_background_video
      * 22) Block Paddings : rexlive:apply_paddings_block
      * 23) Block Content Position : rexlive:apply_flex_position_block
+     * 23) Block Image Position : rexlive:apply_flex_image_position_block
      * 24) Block Custom Classes : rexlive:apply_block_custom_classes
      * 25) Block Custom Link : rexlive:apply_block_link_url
      * 26) Model : rexlive:editModel
@@ -1372,6 +1373,75 @@
         reverseData
       );
     });
+    
+    $(document).on("rexlive:apply_flex_image_position_block", function(e) {
+      var data = e.settings.data_to_send;
+
+      var target = data.target;
+      var $elem;
+
+      if (target.modelNumber != "") {
+        $elem = Rexbuilder_Util.$rexContainer
+          .find(
+            'section[data-rexlive-section-id="' +
+              target.sectionID +
+              '"][data-rexlive-model-number="' +
+              target.modelNumber +
+              '"]'
+          )
+          .find('div [data-rexbuilder-block-id="' + target.rexID + '"]');
+      } else {
+        $elem = Rexbuilder_Util.$rexContainer
+          .find('section[data-rexlive-section-id="' + target.sectionID + '"]')
+          .find('div [data-rexbuilder-block-id="' + target.rexID + '"]');
+      }
+
+      var $elemData = $elem.children(".rexbuilder-block-data");
+      var $section = $elem.parents(".rexpansive_section");
+
+      var oldFlexPosition =
+        typeof $elemData.attr("data-block_flex_img_position") == "undefined"
+          ? ""
+          : $elemData.attr("data-block_flex_img_position");
+
+      var flexPosition = {
+        x: "",
+        y: ""
+      };
+
+      if (oldFlexPosition != "") {
+        var pos = oldFlexPosition.split(" ");
+        flexPosition.x = pos[0];
+        flexPosition.y = pos[1];
+      }
+
+      var reverseData = {
+        $elem: $elem,
+        dataPosition: flexPosition
+      };
+
+      Rexbuilder_Dom_Util.updateImageFlexPostition($elem, data.position);
+
+      var actionData = {
+        $elem: $elem,
+        dataPosition: data.position
+      };
+      $elem.attr("data-rexlive-element-edited", true);
+      if (Rexbuilder_Util.activeLayout == "default") {
+        Rexbuilder_Util.updateDefaultLayoutStateSection($section);
+      }
+      var data = {
+        eventName: "rexlive:edited",
+        modelEdited: $section.hasClass("rex-model-section")
+      };
+      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      Rexbuilder_Util_Editor.pushAction(
+        $section,
+        "updateBlockImageFlexPosition",
+        actionData,
+        reverseData
+      );
+    });
 
     $(document).on("rexlive:apply_block_custom_classes", function(e) {
       var data = e.settings.data_to_send;
@@ -2274,6 +2344,22 @@
         position: blockFlexPositionString
       };
 
+      var blockFlexImgPosition =
+        typeof $elemData.attr("data-block_flex_img_position") == "undefined"
+          ? ""
+          : $elemData.attr("data-block_flex_img_position");
+      var blockFlexImgPositionArr = blockFlexImgPosition.split(" ");
+      var blockFlexImgPositionString =
+        blockFlexImgPositionArr[1] + "-" + blockFlexImgPositionArr[0];
+      var img_position = {
+        target: {
+          sectionID: sectionID,
+          modelNumber: modelNumber,
+          rexID: rex_block_id
+        },
+        position: blockFlexImgPositionString
+      };
+
       var classes =
         typeof $elemData.attr("data-block_custom_class") == "undefined"
           ? ""
@@ -2291,6 +2377,7 @@
         overlay: overlayData,
         paddings: paddingsData,
         flexPosition: position,
+        flexImgPosition: img_position,
         customClasses: {
           classes: classes,
           target: {

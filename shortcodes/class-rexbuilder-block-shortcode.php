@@ -75,7 +75,8 @@ class Rexbuilder_Block
             "rexbuilder_block_id" => "",
             "edited_from_backend" => "",
             "empty_block_backend_fix" => "false",
-            "block_flex_position" => ""
+            "block_flex_position" => "",
+            "block_flex_img_position" => "",
         ), $atts));
 
         global $post;
@@ -145,6 +146,12 @@ class Rexbuilder_Block
             if($block_flex_position != ""){
                 $flex_positioned_active = true;
                 $flex_position = explode(" ", $block_flex_position);
+            }
+
+            $flex_img_positioned_active = false;
+            if($block_flex_img_position != "") {
+                $flex_img_positioned_active = true;
+                $flex_img_position = explode(" ", $block_flex_img_position);
             }
 
             $background_img_style = "";
@@ -288,6 +295,10 @@ class Rexbuilder_Block
                 echo " rex-flex-".$flex_position[0]." rex-flex-".$flex_position[1];
             }
 
+            if($flex_img_positioned_active && !$block_has_slider){
+                echo " rex-flex-img-".$flex_img_position[0]." rex-flex-img-".$flex_img_position[1];
+            }
+
             echo (' ' != $block_custom_class ? ' ' . $block_custom_class : '');
             if ('expand' == $type):
                 echo ' wrapper-expand-effect';
@@ -410,6 +421,10 @@ class Rexbuilder_Block
 
             if($flex_positioned_active){
                 echo "data-block_flex_position=\"".$flex_position[0]." ".$flex_position[1]."\"";
+            }
+
+            if($flex_img_positioned_active) {
+                echo "data-block_flex_img_position=\"".$flex_img_position[0]." ".$flex_img_position[1]."\"";
             }
 
             echo '></div>';

@@ -372,56 +372,110 @@
   z-index: 1;
 }
 
-.rex-flex-left.rex-flex-top {
-  .rex-image-wrapper.natural-image-background {
+// .rex-flex-left.rex-flex-top {
+//   .rex-image-wrapper.natural-image-background {
+//     background-position: left top;
+//   }
+// }
+
+// .rex-flex-left.rex-flex-middle {
+//   .rex-image-wrapper.natural-image-background {
+//     background-position: left center;
+//   }
+// }
+
+// .rex-flex-left.rex-flex-bottom {
+//   .rex-image-wrapper.natural-image-background {
+//     background-position: left bottom;
+//   }
+// }
+
+// .rex-flex-center.rex-flex-top {
+//   .rex-image-wrapper.natural-image-background {
+//     background-position: center top;
+//   }
+// }
+
+// .rex-flex-center.rex-flex-middle {
+//   .rex-image-wrapper.natural-image-background {
+//     background-position: center center;
+//   }
+// }
+
+// .rex-flex-center.rex-flex-bottom {
+//   .rex-image-wrapper.natural-image-background {
+//     background-position: center bottom;
+//   }
+// }
+
+// .rex-flex-right.rex-flex-top {
+//   .rex-image-wrapper.natural-image-background {
+//     background-position: right top;
+//   }
+// }
+
+// .rex-flex-right.rex-flex-middle {
+//   .rex-image-wrapper.natural-image-background {
+//     background-position: right center;
+//   }
+// }
+
+// .rex-flex-right.rex-flex-bottom {
+//   .rex-image-wrapper.natural-image-background {
+//     background-position: right bottom;
+//   }
+// }
+
+.rex-flex-img-left.rex-flex-img-top {
+  .rex-image-wrapper {
     background-position: left top;
   }
 }
 
-.rex-flex-left.rex-flex-middle {
-  .rex-image-wrapper.natural-image-background {
+.rex-flex-img-left.rex-flex-img-middle {
+  .rex-image-wrapper {
     background-position: left center;
   }
 }
 
-.rex-flex-left.rex-flex-bottom {
-  .rex-image-wrapper.natural-image-background {
+.rex-flex-img-left.rex-flex-img-bottom {
+  .rex-image-wrapper {
     background-position: left bottom;
   }
 }
 
-.rex-flex-center.rex-flex-top {
-  .rex-image-wrapper.natural-image-background {
+.rex-flex-img-center.rex-flex-img-top {
+  .rex-image-wrapper {
     background-position: center top;
   }
 }
 
-.rex-flex-center.rex-flex-middle {
-  .rex-image-wrapper.natural-image-background {
+.rex-flex-img-center.rex-flex-img-middle {
+  .rex-image-wrapper {
     background-position: center center;
   }
 }
 
-.rex-flex-center.rex-flex-bottom {
-  .rex-image-wrapper.natural-image-background {
+.rex-flex-img-center.rex-flex-img-bottom {
+  .rex-image-wrapper {
     background-position: center bottom;
   }
 }
 
-.rex-flex-right.rex-flex-top {
-  .rex-image-wrapper.natural-image-background {
+.rex-flex-img-right.rex-flex-img-top {
+  .rex-image-wrapper {
     background-position: right top;
   }
 }
 
-.rex-flex-right.rex-flex-middle {
-  .rex-image-wrapper.natural-image-background {
+.rex-flex-img-right.rex-flex-img-middle {
+  .rex-image-wrapper {
     background-position: right center;
   }
 }
 
-.rex-flex-right.rex-flex-bottom {
-  .rex-image-wrapper.natural-image-background {
+.rex-flex-img-right.rex-flex-img-bottom {
+  .rex-image-wrapper {
     background-position: right bottom;
   }
 }

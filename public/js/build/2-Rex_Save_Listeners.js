@@ -719,6 +719,7 @@ var Rex_Save_Listeners = (function ($) {
             block_has_scrollbar = "false",
             block_dimensions_live_edited = "",
             block_flex_position = "",
+            block_flex_img_position = "",
             slider_dimension_ratio = 1,
             hide_block = false;
 
@@ -800,6 +801,8 @@ var Rex_Save_Listeners = (function ($) {
 
         block_flex_position = typeof $itemData.attr('data-block_flex_position') == "undefined" ? "" : $itemData.attr('data-block_flex_position');
 
+        block_flex_img_position = typeof $itemData.attr('data-block_flex_img_position') == "undefined" ? "" : $itemData.attr('data-block_flex_img_position');
+
         if ($elem.hasClass("block-has-slider")) {
             $itemData.attr('data-slider_ratio', ($elem.outerHeight() / $elem.outerWidth()).toFixed(3))
         } else {
@@ -879,6 +882,7 @@ var Rex_Save_Listeners = (function ($) {
                 + '" block_has_scrollbar="' + block_has_scrollbar
                 + '" block_dimensions_live_edited="' + block_dimensions_live_edited
                 + '" block_flex_position="' + block_flex_position
+                + '" block_flex_img_position="' + block_flex_img_position
                 + '"]'
                 + content
                 + '[/RexpansiveBlock]';
@@ -933,6 +937,7 @@ var Rex_Save_Listeners = (function ($) {
             props["block_has_scrollbar"] = block_has_scrollbar;
             props["block_dimensions_live_edited"] = block_dimensions_live_edited;
             props["block_flex_position"] = block_flex_position;
+            props["block_flex_img_position"] = block_flex_img_position;
             props["slider_dimension_ratio"] = slider_dimension_ratio;
             return props;
         }

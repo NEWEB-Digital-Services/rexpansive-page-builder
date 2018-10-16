@@ -371,6 +371,51 @@ defined('ABSPATH') or exit;
                         </label> -->
                     </div>
                 </div>
+
+                <div id="rex-block-image-position-editor" class="col">
+                    <div>
+                        <input id="rex-bm-image-top-left" type="radio" class="image-position with-gap" name="image-position" value="top-left" />
+                        <label for="rex-bm-image-top-left" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Top-Left">
+                            <span class="rex-ripple"></span>
+                        </label>
+                        <input id="rex-bm-image-top-center" type="radio" class="image-position with-gap" name="image-position" value="top-center" />
+                        <label for="rex-bm-image-top-center" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Top-Center">
+                            <span class="rex-ripple"></span>
+                        </label>
+                        <input id="rex-bm-image-top-right" type="radio" class="image-position with-gap" name="image-position" value="top-right"/>
+                        <label for="rex-bm-image-top-right" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Top-Right">
+                            <span class="rex-ripple"></span>
+                        </label>
+                    </div>
+                    <div>
+                        <input id="rex-bm-image-middle-left" type="radio" class="image-position with-gap" name="image-position" value="middle-left" />
+                        <label for="rex-bm-image-middle-left" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Middle-Left">
+                            <span class="rex-ripple"></span>
+                        </label>
+                        <input id="rex-bm-image-middle-center" type="radio" class="image-position with-gap" name="image-position" value="middle-center" />
+                        <label for="rex-bm-image-middle-center" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Middle-Center">
+                            <span class="rex-ripple"></span>
+                        </label>
+                        <input id="rex-bm-image-middle-right" type="radio" class="image-position with-gap" name="image-position" value="middle-right" />
+                        <label for="rex-bm-image-middle-right" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Middle-Right">
+                            <span class="rex-ripple"></span>
+                        </label>
+                    </div>
+                    <div>
+                        <input id="rex-bm-image-bottom-left" type="radio" class="image-position with-gap" name="image-position" value="bottom-left" />
+                        <label for="rex-bm-image-bottom-left" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Bottom-Left">
+                            <span class="rex-ripple"></span>
+                        </label>
+                        <input id="rex-bm-image-bottom-center" type="radio" class="image-position with-gap" name="image-position" value="bottom-center" />
+                        <label for="rex-bm-image-bottom-center" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Bottom-Center">
+                            <span class="rex-ripple"></span>
+                        </label>
+                        <input id="rex-bm-image-bottom-right" type="radio" class="image-position with-gap" name="image-position" value="bottom-right" />
+                        <label for="rex-bm-image-bottom-right" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Bottom-Right">
+                            <span class="rex-ripple"></span>
+                        </label>
+                    </div>
+                </div>
             </div>
             <!-- /BACKGROUND IMAGE -->
             <div id="background-block-set-color" class="background_set_color row valign-wrapper">
