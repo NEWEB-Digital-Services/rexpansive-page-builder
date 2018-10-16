@@ -523,6 +523,27 @@ var TextEditor = (function($) {
   });
 
   /**
+   * Custom extension that opens the builder modal to set the content position of a block
+   * @since 2.0.0
+   */
+  var ContentBlockPositionExtension = MediumEditor.extensions.button.extend({
+    name: "contentBlockPosition",
+    init: function() {
+      this.button = this.document.createElement("button");
+      this.button.classList.add("medium-editor-action");
+      this.button.innerHTML = "<i class='l-svg-icons drop-down-icon'><svg><use xlink:href='#C005-Layout'></use></svg></i>";
+
+      this.on(this.button, 'click', this.handleClick.bind(this));
+    },
+
+    handleClick: function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+      $(this.base.getFocusedElement()).parents('.grid-stack-item').find('.edit-block-content-position').trigger('click');
+    }
+  });
+
+  /**
    * Custom extension for display justifing text options: left, right, center, justify
    * @since 2.0.0
    */
@@ -846,6 +867,7 @@ var TextEditor = (function($) {
           // },
           "listDropdown",
           // "table",
+          "contentBlockPosition",
           "textHtml",
           // "removeFormat",
         ]
@@ -858,6 +880,7 @@ var TextEditor = (function($) {
         formattingTags: formattingTagsExtensionInstance,
         justifyDropdown: justifyExtensionIntance,
         listDropdown: listExtensionInstance,
+        contentBlockPosition: new ContentBlockPositionExtension()
       },
       placeholder: {
         /*

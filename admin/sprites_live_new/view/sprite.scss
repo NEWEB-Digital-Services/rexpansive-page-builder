@@ -4,7 +4,7 @@
 
 .svg-A001-Tablet {
 	@extend %svg-common;
-	background-position: 100% 42.857142857142854%;
+	background-position: 100% 57.142857142857146%;
 }
 
 .svg-A001-Tablet-dims {
@@ -24,7 +24,7 @@
 
 .svg-A003-Undo {
 	@extend %svg-common;
-	background-position: 14.184397163120567% 100%;
+	background-position: 28.368794326241133% 100%;
 }
 
 .svg-A003-Undo-dims {
@@ -252,9 +252,19 @@
 	height: 20px;
 }
 
-.svg-Z001-Plus {
+.svg-C005-Layout {
 	@extend %svg-common;
 	background-position: 100% 14.285714285714286%;
+}
+
+.svg-C005-Layout-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-Z001-Plus {
+	@extend %svg-common;
+	background-position: 100% 28.571428571428573%;
 }
 
 .svg-Z001-Plus-dims {
@@ -264,7 +274,7 @@
 
 .svg-Z002-Image-Full {
 	@extend %svg-common;
-	background-position: 100% 28.571428571428573%;
+	background-position: 100% 42.857142857142854%;
 }
 
 .svg-Z002-Image-Full-dims {
@@ -284,7 +294,7 @@
 
 .svg-Z003-RexSlider {
 	@extend %svg-common;
-	background-position: 100% 57.142857142857146%;
+	background-position: 100% 71.42857142857143%;
 }
 
 .svg-Z003-RexSlider-dims {
@@ -294,7 +304,7 @@
 
 .svg-Z004-Copy {
 	@extend %svg-common;
-	background-position: 100% 71.42857142857143%;
+	background-position: 100% 85.71428571428571%;
 }
 
 .svg-Z004-Copy-dims {
@@ -304,7 +314,7 @@
 
 .svg-Z005-Setting {
 	@extend %svg-common;
-	background-position: 100% 85.71428571428571%;
+	background-position: 0 100%;
 }
 
 .svg-Z005-Setting-dims {
@@ -314,7 +324,7 @@
 
 .svg-Z006-Video {
 	@extend %svg-common;
-	background-position: 0 100%;
+	background-position: 14.184397163120567% 100%;
 }
 
 .svg-Z006-Video-dims {
@@ -334,7 +344,7 @@
 
 .svg-_A001-Tablet {
 	@extend %svg-common;
-	background-position: 28.368794326241133% 100%;
+	background-position: 42.5531914893617% 100%;
 }
 
 .svg-_A001-Tablet-dims {
@@ -344,7 +354,7 @@
 
 .svg-_A010-Mobile {
 	@extend %svg-common;
-	background-position: 42.5531914893617% 100%;
+	background-position: 56.737588652482266% 100%;
 }
 
 .svg-_A010-Mobile-dims {
@@ -354,7 +364,7 @@
 
 .svg-_B002-Boxed {
 	@extend %svg-common;
-	background-position: 56.737588652482266% 100%;
+	background-position: 70.92198581560284% 100%;
 }
 
 .svg-_B002-Boxed-dims {
@@ -364,7 +374,7 @@
 
 .svg-_Z002-Image-Full {
 	@extend %svg-common;
-	background-position: 70.92198581560284% 100%;
+	background-position: 85.1063829787234% 100%;
 }
 
 .svg-_Z002-Image-Full-dims {
@@ -374,7 +384,7 @@
 
 .svg-_Z005-Setting {
 	@extend %svg-common;
-	background-position: 85.1063829787234% 100%;
+	background-position: 99.29078014184397% 100%;
 }
 
 .svg-_Z005-Setting-dims {
