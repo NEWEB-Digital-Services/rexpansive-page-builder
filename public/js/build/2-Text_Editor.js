@@ -657,6 +657,25 @@ var TextEditor = (function($) {
     },
   });
 
+  var CloseEditorEscapeExtension = MediumEditor.Extension.extend({
+    name: 'close-editor-escape',
+  
+    init: function () {
+      this.subscribe('editableKeydown', this.handleKeydown.bind(this));
+    },
+  
+    handleKeydown: function (event, editable) {
+      // If the user hits escape, toggle the data-allow-context-menu attribute
+      if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ESCAPE)) {
+        // Rexbuilder_Util_Editor.endEditingElement();
+        var $elem = $(this.base.getFocusedElement()).parents('.grid-stack-item');
+        Rexbuilder_Util_Editor.focusedElement = $elem;
+        var $gallery = $elem.parents('.perfect-grid-gallery');
+        $gallery.perfectGridGalleryEditor('focusElement', Rexbuilder_Util_Editor.focusedElement);
+      }
+    }
+  });
+
   /**
    * @deprecated
    */
@@ -880,7 +899,8 @@ var TextEditor = (function($) {
         formattingTags: formattingTagsExtensionInstance,
         justifyDropdown: justifyExtensionIntance,
         listDropdown: listExtensionInstance,
-        contentBlockPosition: new ContentBlockPositionExtension()
+        contentBlockPosition: new ContentBlockPositionExtension(),
+        'close-editor-escape': new CloseEditorEscapeExtension()
       },
       placeholder: {
         /*
