@@ -199,31 +199,101 @@ var TextEditor = (function($) {
     action: "",
     contentDefault: "TAGS",
     init: function() {
-      // this.classApplier = rangy.createClassApplier('highlight', {
-      //   elementTagName: 'mark',
-      //   normalize: true
-      // });
-
       this.button = this.document.createElement("button");
       this.button.classList.add("medium-editor-action");
       this.button.classList.add("medium-editor-action-list");
-      this.button.innerHTML = "<div class='me__heading-list-parent'><i class='l-svg-icons drop-down-icon'><svg><use xlink:href='#A007-Close'></use></svg></i>H1</div><div class='me__action-list'><div class='medium-editor-action' data-tag-action='append-h1'>h1</div><div class='medium-editor-action' data-tag-action='append-h2'>h2</div><div class='medium-editor-action' data-tag-action='append-h3'>h3</div><div class='medium-editor-action' data-tag-action='append-h4'>h4</div><div class='medium-editor-action' data-tag-action='append-h5'>h5</div><div class='medium-editor-action' data-tag-action='append-h6'>h6</div></div>";
+      // list parent element
+      this.list_parent = this.document.createElement("div");
+      this.list_parent.classList.add("me__heading-list-parent");
+      this.list_parent.innerHTML = "<i class='l-svg-icons drop-down-icon'><svg><use xlink:href='#A007-Close'></use></svg></i>";
+      // list parent element: active action container
+      this.list_active_action = this.document.createElement("span");
+      this.list_active_action.classList.add("me__action-active");
+      this.list_active_action.innerHTML = "h1";
+      this.list_parent.append(this.list_active_action);
+      // list element
+      this.list_element = this.document.createElement("div");
+      this.list_element.classList.add("me__action-list");
+      
+      this.list_element.innerHTML = "<div class='medium-editor-action' data-tag-action='append-h1'>h1</div><div class='medium-editor-action' data-tag-action='append-h2'>h2</div><div class='medium-editor-action' data-tag-action='append-h3'>h3</div><div class='medium-editor-action' data-tag-action='append-h4'>h4</div><div class='medium-editor-action' data-tag-action='append-h5'>h5</div><div class='medium-editor-action' data-tag-action='append-h6'>h6</div>";
+
+      this.list_actions = this.list_element.querySelectorAll('.medium-editor-action');
+
+      this.button.append(this.list_parent);
+      this.button.append(this.list_element);
+
+      this.action_active = "";
+
       this.on(this.button, 'click', this.handleClick.bind(this));
     },
-  
-    getButton: function () {
-      return this.button;
+
+    isAlreadyApplied: function (node) {
+      this.action_active = '';
+      switch( node.nodeName.toLowerCase() ) {
+        case 'h1':
+          this.action_active = 'append-' + node.nodeName.toLowerCase();
+          return true;
+        case 'h2':
+          this.action_active = 'append-' + node.nodeName.toLowerCase();
+          return true;
+        case 'h3':
+          this.action_active = 'append-' + node.nodeName.toLowerCase();
+          return true;
+        case 'h4':
+          this.action_active = 'append-' + node.nodeName.toLowerCase();
+          return true;
+        case 'h5':
+          this.action_active = 'append-' + node.nodeName.toLowerCase();
+          return true;
+        case 'h6':
+          this.action_active = 'append-' + node.nodeName.toLowerCase();
+          return true;
+        default:
+          return false;
+      }
+    },
+
+    setInactive: function () {
+      this.setActionListState();
+    },
+    
+    setActive: function () {
+      this.setActionListState();
+    },
+
+    setActionListState: function() {
+      this.clearListButtons();
+      this.activateListButtons();
+    },
+
+    clearListButtons: function() {
+      this.list_active_action.innerHTML = "h1";
+      for(var i=0; i<this.list_actions.length; i++) {
+        this.list_actions[i].classList.remove('medium-editor-button-active');
+      }
+    },
+
+    activateListButtons: function() {
+      if( "" != this.action_active ) {
+        this.list_element.querySelector('.medium-editor-action[data-tag-action="'+this.action_active+'"]').classList.add('medium-editor-button-active');
+        this.list_active_action.innerHTML = this.action_active.replace('append-','');
+      }
     },
   
     handleClick: function (event) { 
       // Ensure the editor knows about an html change so watchers are notified
       // ie: <textarea> elements depend on the editableInput event to stay synchronized
 
-      var action = event.target.getAttribute('data-tag-action');
+      var action = undefined;
+      if( event.target.hasAttribute('data-tag-action') ) {
+        action = event.target.getAttribute('data-tag-action');
+      } else if( event.target.parentNode.hasAttribute('data-tag-action') ) {
+        action = event.target.parentNode.getAttribute('data-tag-action');
+      }
+
       if( 'undefined' != typeof action ) {
         editorInstance.execAction(action);
-      }
-      
+      }  
     }
   });
 
@@ -233,30 +303,95 @@ var TextEditor = (function($) {
    */
   var FormattingTagExtension = MediumEditor.extensions.button.extend({
     name: "formattingTags",
-    action: "",
+    // action: "bold",
     contentDefault: "TAGS",
-    init: function() {   
+    useQueryState: false,
+    aria: 'Format text',
+    init: function() {
       this.button = this.document.createElement("button");
       this.button.classList.add("medium-editor-action");
       this.button.classList.add("medium-editor-action-list");
-      this.button.innerHTML = "<div class='me__heading-list-parent'><i class='l-svg-icons drop-down-icon'><svg><use xlink:href='#A007-Close'></use></svg></i>b</div><div class='me__action-list'><div class='medium-editor-action' data-tag-action='bold'>b</div><div class='medium-editor-action' data-tag-action='italic'>i</div><div class='medium-editor-action' data-tag-action='underline'>u</div></div>";
+      // list parent element
+      this.list_parent = this.document.createElement("div");
+      this.list_parent.classList.add("me__heading-list-parent");
+      this.list_parent.innerHTML = "<i class='l-svg-icons drop-down-icon'><svg><use xlink:href='#A007-Close'></use></svg></i>";
+      // list parent element: active action container
+      this.list_active_action = this.document.createElement("span");
+      this.list_active_action.classList.add("me__action-active");
+      this.list_active_action.innerHTML = "<i class='fa fa-bold'></i>";
+      this.list_parent.append(this.list_active_action);
+      // list element
+      this.list_element = this.document.createElement("div");
+      this.list_element.classList.add("me__action-list");
+      
+      this.list_element.innerHTML = "<div class='medium-editor-action' data-tag-action='bold'><i class='fa fa-bold'></i></div><div class='medium-editor-action' data-tag-action='italic'><i class='fa fa-italic'></i></div><div class='medium-editor-action' data-tag-action='underline'><i class='fa fa-underline'></i></div>";
+
+      this.list_actions = this.list_element.querySelectorAll('.medium-editor-action');
+
+      this.button.append(this.list_parent);
+      this.button.append(this.list_element);
+
+      this.action_active = [];
+
       this.on(this.button, 'click', this.handleClick.bind(this));
     },
-  
-    getButton: function () {
-      return this.button;
+
+    checkState: function(node) {
+      switch( node.nodeName.toLowerCase() ) {
+        case 'b':
+        case 'strong':
+          this.action_active.push('bold');
+          break;
+        case 'i':
+          this.action_active.push('italic');
+          break;
+        case 'u':
+          this.action_active.push('underline');
+          break;
+        case 'p':
+          this.setActionListState();
+          this.action_active = [];
+          break;
+        default:
+          break;
+      }
     },
   
-    handleClick: function (event) { 
+    handleClick: function (event) {
       // Ensure the editor knows about an html change so watchers are notified
       // ie: <textarea> elements depend on the editableInput event to stay synchronized
+      var action = undefined;
+      if( event.target.hasAttribute('data-tag-action') ) {
+        action = event.target.getAttribute('data-tag-action');
+      } else if( event.target.parentNode.hasAttribute('data-tag-action') ) {
+        action = event.target.parentNode.getAttribute('data-tag-action');
+      }
 
-      var action = event.target.getAttribute('data-tag-action');
       if( 'undefined' != typeof action ) {
         editorInstance.execAction(action);
       }
-      
-    }
+    },
+
+    setActionListState: function() {
+      this.clearListButtons();
+      this.activateListButtons();
+    },
+
+    clearListButtons: function() {
+      this.list_active_action.innerHTML = "<i class='fa fa-bold'></i>";
+      for(var i=0; i<this.list_actions.length; i++) {
+        this.list_actions[i].classList.remove('medium-editor-button-active');
+      }
+    },
+
+    activateListButtons: function() {
+      for(var i=0; i<this.action_active.length; i++) {
+        this.list_element.querySelector('.medium-editor-action[data-tag-action="'+this.action_active[i]+'"]').classList.add('medium-editor-button-active');
+        if( 0 == i ) {
+          this.list_active_action.innerHTML = "<i class='fa fa-" + this.action_active[i] + "'></i>";
+        }
+      }
+    },
   });
 
   /**
@@ -275,18 +410,19 @@ var TextEditor = (function($) {
       this.on(this.button, 'click', this.handleClick.bind(this));
     },
   
-    getButton: function () {
-      return this.button;
-    },
-  
     handleClick: function (event) { 
       // Ensure the editor knows about an html change so watchers are notified
       // ie: <textarea> elements depend on the editableInput event to stay synchronized
 
-      var action = event.target.getAttribute('data-tag-action');
+      var action = undefined;
+      if( event.target.hasAttribute('data-tag-action') ) {
+        action = event.target.getAttribute('data-tag-action');
+      } else if( event.target.parentNode.hasAttribute('data-tag-action') ) {
+        action = event.target.parentNode.getAttribute('data-tag-action');
+      }
+
       if( 'undefined' != typeof action ) {
         // action applied already?
-        console.log(editorInstance.queryCommandState(action));
         editorInstance.execAction(action);
       }
       
@@ -309,15 +445,17 @@ var TextEditor = (function($) {
       this.on(this.button, 'click', this.handleClick.bind(this));
     },
   
-    getButton: function () {
-      return this.button;
-    },
-  
     handleClick: function (event) { 
       // Ensure the editor knows about an html change so watchers are notified
       // ie: <textarea> elements depend on the editableInput event to stay synchronized
 
-      var action = event.target.getAttribute('data-tag-action');
+      var action = undefined;
+      if( event.target.hasAttribute('data-tag-action') ) {
+        action = event.target.getAttribute('data-tag-action');
+      } else if( event.target.parentNode.hasAttribute('data-tag-action') ) {
+        action = event.target.parentNode.getAttribute('data-tag-action');
+      }
+
       if( 'undefined' != typeof action ) {
         editorInstance.execAction(action);
       }
@@ -547,10 +685,6 @@ var TextEditor = (function($) {
           // "justifyFull",
           "justifyDropdown",
           "removeFormat",
-          {
-            name: 'dropDownButtonList',
-            contentDefault: "<div class='me__heading-list-parent'><i class='l-svg-icons drop-down-icon'><svg><use xlink:href='#A007-Close'></use></svg></i>l</div><div class='me__action-list'><div class='medium-editor-action' data-tag-action='insertorderedlist'><i class='fa fa-list-ol'></i></div><div class='medium-editor-action' data-tag-action='insertunorderedlist'><i class='fa fa-list-ul'></i></div></div>"
-          }
         ]
       },
       imageDragging: false,
@@ -561,7 +695,6 @@ var TextEditor = (function($) {
         formattingTags: formattingTagsExtensionInstance,
         justifyDropdown: justifyExtensionIntance,
         listDropdown: listExtensionInstance,
-        dropDownButtonList: new DropDownExtension(),
       },
       placeholder: {
         /*
