@@ -223,12 +223,14 @@ var TextEditor = (function($) {
       this.button.append(this.list_element);
 
       this.action_active = "";
+      this.all_actions = ['append-h1','append-h2','append-h3','append-h4','append-h5','append-h6'];
 
       this.on(this.button, 'click', this.handleClick.bind(this));
+      this.subscribe("showToolbar", this.resetEnv.bind(this));
     },
 
     isAlreadyApplied: function (node) {
-      this.action_active = '';
+      // this.action_active = '';
       switch( node.nodeName.toLowerCase() ) {
         case 'h1':
           this.action_active = 'append-' + node.nodeName.toLowerCase();
@@ -251,6 +253,14 @@ var TextEditor = (function($) {
         default:
           return false;
       }
+      // for(var i=0;i<this.all_actions.length;i++) {
+      //   console.log(this.base.queryCommandState(this.all_actions[i]));
+      //   if( this.base.queryCommandState(this.all_actions[i]) ) {
+      //     this.action_active = this.all_actions[i];
+      //     return true;
+      //   }
+      // }
+      // return false;
     },
 
     setInactive: function () {
@@ -278,6 +288,10 @@ var TextEditor = (function($) {
         this.list_element.querySelector('.medium-editor-action[data-tag-action="'+this.action_active+'"]').classList.add('medium-editor-button-active');
         this.list_active_action.innerHTML = this.action_active.replace('append-','');
       }
+    },
+
+    resetEnv: function() {
+      this.action_active = "";
     },
   
     handleClick: function (event) { 
@@ -334,6 +348,7 @@ var TextEditor = (function($) {
       this.action_active = [];
 
       this.on(this.button, 'click', this.handleClick.bind(this));
+      this.subscribe("showToolbar", this.clearListButtons.bind(this));
     },
 
     checkState: function(node) {
@@ -341,16 +356,31 @@ var TextEditor = (function($) {
         case 'b':
         case 'strong':
           this.action_active.push('bold');
+          this.mark_active = true;
           break;
         case 'i':
           this.action_active.push('italic');
+          this.mark_active = true;
           break;
         case 'u':
           this.action_active.push('underline');
+          this.mark_active = true;
           break;
+        case 'h1':
+        case 'h2':
+        case 'h3':
+        case 'h4':
+        case 'h5':
+        case 'h6':
         case 'p':
-          this.setActionListState();
-          this.action_active = [];
+        case 'li':
+        case 'ol':
+        case 'ul':
+          if( this.mark_active ) {
+            this.setActionListState();
+            this.action_active = [];
+            delete this.mark_active;
+          }
           break;
         default:
           break;
@@ -395,6 +425,113 @@ var TextEditor = (function($) {
   });
 
   /**
+   * Custom Button for display ordered and unordered list buttons
+   * @since 2.0.0
+   */
+  var ListExtension = MediumEditor.extensions.button.extend({
+    name: "listDropdown",
+    action: "",
+    contentDefault: "TAGS",
+    init: function() {   
+      this.button = this.document.createElement("button");
+      this.button.classList.add("medium-editor-action");
+      this.button.classList.add("medium-editor-action-list");
+      // list parent element
+      this.list_parent = this.document.createElement("div");
+      this.list_parent.classList.add("me__heading-list-parent");
+      this.list_parent.innerHTML = "<i class='l-svg-icons drop-down-icon'><svg><use xlink:href='#A007-Close'></use></svg></i>";
+      // list parent element: active action container
+      this.list_active_action = this.document.createElement("span");
+      this.list_active_action.classList.add("me__action-active");
+      this.list_active_action.innerHTML = "<i class='fa fa-list-alt'></i>";
+      this.list_parent.append(this.list_active_action);
+      // list element
+      this.list_element = this.document.createElement("div");
+      this.list_element.classList.add("me__action-list");
+      
+      this.list_element.innerHTML = "<div class='medium-editor-action' data-tag-action='insertorderedlist'><i class='fa fa-list-ol'></i></div><div class='medium-editor-action' data-tag-action='insertunorderedlist'><i class='fa fa-list-ul'></i></div>";
+
+      this.list_actions = this.list_element.querySelectorAll('.medium-editor-action');
+
+      this.button.append(this.list_parent);
+      this.button.append(this.list_element);
+
+      this.action_active = "";
+      this.all_actions = ['insertorderedlist','insertunorderedlist'];
+
+      this.on(this.button, 'click', this.handleClick.bind(this));
+      this.subscribe("showToolbar", this.resetEnv.bind(this));
+    },
+
+    isAlreadyApplied: function (node) {
+      for(var i=0;i<this.all_actions.length;i++) {
+        if( this.base.queryCommandState(this.all_actions[i]) ) {
+          this.action_active = this.all_actions[i];
+          return true;
+        }
+      }
+      return false;
+    },
+
+    setInactive: function () {
+      this.setActionListState();
+    },
+    
+    setActive: function () {
+      this.setActionListState();
+    },
+
+    setActionListState: function() {
+      this.clearListButtons();
+      this.activateListButtons();
+    },
+
+    clearListButtons: function() {
+      this.list_active_action.innerHTML = "<i class='fa fa-list-alt'></i>";
+      for(var i=0; i<this.list_actions.length; i++) {
+        this.list_actions[i].classList.remove('medium-editor-button-active');
+      }
+    },
+
+    activateListButtons: function() {
+      if( "" != this.action_active ) {
+        this.list_element.querySelector('.medium-editor-action[data-tag-action="'+this.action_active+'"]').classList.add('medium-editor-button-active');
+        switch( this.action_active ) {
+          case 'insertorderedlist':
+            this.list_active_action.innerHTML = "<i class='fa fa-list-ol'></i>";
+            break;
+          case 'insertunorderedlist':
+            this.list_active_action.innerHTML = "<i class='fa fa-list-ul'></i>";
+            break;
+          default:
+            this.list_active_action.innerHTML = "<i class='fa fa-list-alt'></i>";
+            break;
+        }
+      }
+    },
+
+    resetEnv: function() {
+      this.action_active = "";
+    },
+  
+    handleClick: function (event) { 
+      // Ensure the editor knows about an html change so watchers are notified
+      // ie: <textarea> elements depend on the editableInput event to stay synchronized
+
+      var action = undefined;
+      if( event.target.hasAttribute('data-tag-action') ) {
+        action = event.target.getAttribute('data-tag-action');
+      } else if( event.target.parentNode.hasAttribute('data-tag-action') ) {
+        action = event.target.parentNode.getAttribute('data-tag-action');
+      }
+
+      if( 'undefined' != typeof action ) {
+        editorInstance.execAction(action);
+      }
+    }
+  });
+
+  /**
    * Custom extension for display justifing text options: left, right, center, justify
    * @since 2.0.0
    */
@@ -406,8 +543,88 @@ var TextEditor = (function($) {
       this.button = this.document.createElement("button");
       this.button.classList.add("medium-editor-action");
       this.button.classList.add("medium-editor-action-list");
-      this.button.innerHTML = "<div class='me__heading-list-parent'><i class='l-svg-icons drop-down-icon'><svg><use xlink:href='#A007-Close'></use></svg></i>j</div><div class='me__action-list'><div class='medium-editor-action' data-tag-action='justifyLeft'><i class='fa fa-align-left'></i></div><div class='medium-editor-action' data-tag-action='justifyCenter'><i class='fa fa-align-center'></i></div><div class='medium-editor-action' data-tag-action='justifyRight'><i class='fa fa-align-right'></i></div><div class='medium-editor-action' data-tag-action='justifyFull'><i class='fa fa-align-justify'></i></div></div>";
+      // list parent element
+      this.list_parent = this.document.createElement("div");
+      this.list_parent.classList.add("me__heading-list-parent");
+      this.list_parent.innerHTML = "<i class='l-svg-icons drop-down-icon'><svg><use xlink:href='#A007-Close'></use></svg></i>";
+      // list parent element: active action container
+      this.list_active_action = this.document.createElement("span");
+      this.list_active_action.classList.add("me__action-active");
+      this.list_active_action.innerHTML = "<i class='fa fa-align-left'></i>";
+      this.list_parent.append(this.list_active_action);
+      // list element
+      this.list_element = this.document.createElement("div");
+      this.list_element.classList.add("me__action-list");
+      
+      this.list_element.innerHTML = "<div class='medium-editor-action' data-tag-action='justifyLeft'><i class='fa fa-align-left'></i></div><div class='medium-editor-action' data-tag-action='justifyCenter'><i class='fa fa-align-center'></i></div><div class='medium-editor-action' data-tag-action='justifyRight'><i class='fa fa-align-right'></i></div><div class='medium-editor-action' data-tag-action='justifyFull'><i class='fa fa-align-justify'></i></div>";
+
+      this.list_actions = this.list_element.querySelectorAll('.medium-editor-action');
+
+      this.action_active = '';
+      this.all_actions = ['justifyLeft','justifyCenter','justifyRight','justifyFull'];
+
+      this.button.append(this.list_parent);
+      this.button.append(this.list_element);
+
       this.on(this.button, 'click', this.handleClick.bind(this));
+      this.subscribe("showToolbar", this.resetEnv.bind(this));
+    },
+
+    isAlreadyApplied: function() {
+      for(var i=0;i<this.all_actions.length;i++) {
+        if( this.base.queryCommandState(this.all_actions[i]) ) {
+          this.action_active = this.all_actions[i];
+          return true;
+        }
+      }
+      return false;
+    },
+
+    setInactive: function () {
+      this.setActionListState();
+    },
+    
+    setActive: function () {
+      this.setActionListState();
+    },
+
+    setActionListState: function() {
+      this.clearListButtons();
+      this.activateListButtons();
+    },
+
+    clearListButtons: function() {
+      this.list_active_action.innerHTML = "<i class='fa fa-align-left'></i>";
+      for(var i=0; i<this.list_actions.length; i++) {
+        this.list_actions[i].classList.remove('medium-editor-button-active');
+      }
+    },
+
+    activateListButtons: function() {
+      if( "" != this.action_active ) {
+        this.list_element.querySelector('.medium-editor-action[data-tag-action="'+this.action_active+'"]').classList.add('medium-editor-button-active');
+        switch( this.action_active ) {
+          case 'justifyLeft':
+            this.list_active_action.innerHTML = "<i class='fa fa-align-left'></i>";
+            break;
+          case 'justifyCenter':
+            this.list_active_action.innerHTML = "<i class='fa fa-align-center'></i>";
+            break;
+          case 'justifyRight':
+            this.list_active_action.innerHTML = "<i class='fa fa-align-right'></i>";
+            break;
+          case 'justifyFull':
+            this.list_active_action.innerHTML = "<i class='fa fa-align-justify'></i>";
+            break;
+          default:
+            this.list_active_action.innerHTML = "<i class='fa fa-align-left'></i>";
+            break;
+        }
+      }
+    },
+
+    resetEnv: function() {
+      this.action_active = "";
     },
   
     handleClick: function (event) { 
@@ -425,44 +642,12 @@ var TextEditor = (function($) {
         // action applied already?
         editorInstance.execAction(action);
       }
-      
     },
   });
-  
+
   /**
-   * Custom Button for display ordered and unordered list buttons
-   * @since 2.0.0
+   * @deprecated
    */
-  var ListExtension = MediumEditor.extensions.button.extend({
-    name: "listDropdown",
-    action: "",
-    contentDefault: "TAGS",
-    init: function() {   
-      this.button = this.document.createElement("button");
-      this.button.classList.add("medium-editor-action");
-      this.button.classList.add("medium-editor-action-list");
-      this.button.innerHTML = "<div class='me__heading-list-parent'><i class='l-svg-icons drop-down-icon'><svg><use xlink:href='#A007-Close'></use></svg></i>l</div><div class='me__action-list'><div class='medium-editor-action' data-tag-action='insertorderedlist'><i class='fa fa-list-ol'></i></div><div class='medium-editor-action' data-tag-action='insertunorderedlist'><i class='fa fa-list-ul'></i></div></div>";
-      this.on(this.button, 'click', this.handleClick.bind(this));
-    },
-  
-    handleClick: function (event) { 
-      // Ensure the editor knows about an html change so watchers are notified
-      // ie: <textarea> elements depend on the editableInput event to stay synchronized
-
-      var action = undefined;
-      if( event.target.hasAttribute('data-tag-action') ) {
-        action = event.target.getAttribute('data-tag-action');
-      } else if( event.target.parentNode.hasAttribute('data-tag-action') ) {
-        action = event.target.parentNode.getAttribute('data-tag-action');
-      }
-
-      if( 'undefined' != typeof action ) {
-        editorInstance.execAction(action);
-      }
-      
-    }
-  });
-
   var DropDownExtension = MediumEditor.Extension.extend({
     name: "dropDownButtonList",
     action: "",
@@ -488,7 +673,6 @@ var TextEditor = (function($) {
       if( 'undefined' != typeof action ) {
         editorInstance.execAction(action);
       }
-      
     }
   });
 
@@ -668,23 +852,11 @@ var TextEditor = (function($) {
             name: 'quote',
             contentDefault: '"',
           },
-          // {
-          //   name: 'orderedlist',
-          //   contentDefault: '1.',
-          // },
-          // {
-          //   name: 'unorderedlist',
-          //   contentDefault: '&#183',
-          // },
           "listDropdown",
           // "table",
           "textHtml",
-          // "justifyLeft",
-          // "justifyCenter",
-          // "justifyRight",
-          // "justifyFull",
           "justifyDropdown",
-          "removeFormat",
+          // "removeFormat",
         ]
       },
       imageDragging: false,
