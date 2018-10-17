@@ -60,8 +60,8 @@ defined('ABSPATH') or exit;
 </script>
 
 <script type="text/x-tmpl" id="rexlive-tmpl-model-item-list">
-<li class="model__element" draggable="true" data-rex-model-id="{%=model.id%}">
+<li class="model__element bl_d-flex bl_ai-c" draggable="true" data-rex-model-id="{%=model.id%}">
+    <div class="model-preview" style="background-image:url({%=model.preview%})"></div>
     <div class="model-name">{%=model.name%}</div>
-    <div class="model-preview"><img class="model-thumbnail"{%=model.preview%}></div>
 </li>
 </script>

@@ -15,4 +15,58 @@
   .model-html {
     display: none;
   }
+  .rex-close-button {
+    @include fill-icon(#000);
+  }
+  .model__element {
+    padding: 10px;
+    margin-bottom: 0;
+  }
+  .model-thumbnail {
+    max-height: 50px;
+  }
+  
+  .model-name {
+    padding-left: 20px;
+  }
+
+  .model-preview {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-width: 100px;
+    height: 50px;
+  }
+}
+
+.rex-lateral-panel {
+  width: 100%;
+  max-width: 320px;
+  position: fixed;
+  top: $top-tools-height;
+  right: 0;
+  height: 100%;
+  z-index: 3500;
+  font-size: 16px;
+  color: #000;
+  transform: translateX(100%);
+
+  &.rex-lateral-panel--open {
+    animation: bounce-in-right-mod .7s both;
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.rex-lateral-panel__content {
+  background-color: #fff;
+  padding: 10px;
+  box-shadow: -5px 0 5px rgba(0,0,0,.1);
+  height: 100%;
+}
+
+.models-list-wrapper {
+  overflow: hidden;
+  overflow-y: auto;
+  height: 100%;
 }

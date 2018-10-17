@@ -1366,9 +1366,14 @@ wp_reset_postdata();
     </div>
 </div><!-- Locked feature -->
 
-<div class="rex-modal-wrap rex-fade" style="width:500px;overflow:visible;left:70%;">
-    <div id="rex-models-list" class="rex-modal rexbuilder-materialize-wrap z-depth-4">
-        <div class="modal-content">
+<!-- <div class="rex-modal-wrap rex-fade" style="width:500px;overflow:visible;left:70%;"> -->
+    <div id="rex-models-list" class="rex-lateral-panel">
+        <div class="rex-lateral-panel__content">
+            <div class="bl_d-flex bl_jc-fe">
+                <div class="tool-button tool-button--inline tool-button--flat rex-close-button">
+                    <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+                </div>
+            </div>
             <div class="models-list-wrapper">
                 <ul class="model-list">
                     <?php
@@ -1390,13 +1395,9 @@ wp_reset_postdata();
                         $model_title =  get_the_title();
                         $model_previewUrl = get_the_post_thumbnail_url();
                         ?>
-                        <li class="model__element" draggable="true" data-rex-model-id="<?php echo $model_id;?>">
+                        <li class="model__element bl_d-flex bl_ai-c" draggable="true" data-rex-model-id="<?php echo $model_id;?>">
+                            <div class="model-preview"<?php echo ( $model_previewUrl != "" ? 'style="background-image:url(' . $model_previewUrl . ');"' : '' ); ?>></div>
                             <div class="model-name"><?php echo $model_title;?></div>
-                            <div class="model-preview"><img class="model-thumbnail"<?php
-                            if($model_previewUrl != ""){
-                                echo " src=\"" . $model_previewUrl . "\"";
-                            }
-                            ?>></div>
                         </li>
                         <?php
                     }
@@ -1408,11 +1409,7 @@ wp_reset_postdata();
 
                 ?></ul>
             </div>
-            <div class="rexeditor_bottom rex-modal-footer clearfix">
-                <button class="waves-effect waves-light btn-flat grey rex-close-button" value="">
-                    <i class="rex-icon">n</i>
-                </button>
-            </div>
         </div>
     </div>
-</div><!-- Model Lists -->
+<!-- </div> -->
+<!-- Model Lists -->

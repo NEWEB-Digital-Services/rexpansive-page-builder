@@ -44,13 +44,6 @@
 
   font-size: $row-tools-size;
 
-  .tool-button {
-    &.tool-button--empty {
-      min-width: $row-tools-size;
-      min-height: $row-tools-size;
-    }
-  }
-
   // .tool-button--color {
   //   min-width: auto;
   //   min-height: auto;
@@ -60,7 +53,7 @@
 
   .tool-button_list {
     font-size: 10px;
-    left: 5px;
+    left: 2px;
     max-width: 20px;
     .tool-button--full {
       font-size: 20px;
@@ -78,6 +71,7 @@
   height: 100%;
   outline: 2px solid $palette-color-1;
   opacity: 0;
+  z-index: 1;
 }
 
 .builder-move-row {
@@ -110,8 +104,17 @@
     }
   }
 
-  .tool-button--double-icon--wrap .tool-button--double-icon {
-    font-size: 8px;
-    padding: 2px;
+  .tool-button {
+    &.tool-button--empty {
+      min-width: $row-tools-size;
+      min-height: $row-tools-size;
+    }
+  }
+
+  .tool-button--double-icon--wrap {
+    .tool-button--double-icon { 
+      font-size: 8px;
+      padding: 2px;
+    }
   }
 }
