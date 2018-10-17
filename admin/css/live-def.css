@@ -2883,7 +2883,8 @@ ul {
     color: #000;
     background-color: #00ACFF;
     padding: 5px 0;
-    display: none; }
+    display: none;
+    font-size: 13px; }
   .section-toolBox.tool-box-active {
     display: block; }
   .section-toolBox:hover .tools {

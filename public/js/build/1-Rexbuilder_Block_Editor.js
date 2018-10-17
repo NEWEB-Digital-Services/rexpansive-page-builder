@@ -216,6 +216,7 @@ var Rexbuilder_Block_Editor = (function($) {
 
       if( $btn_container.hasClass('bottom-tools') ) {
         $btn.parents('.tool-button--double-icon--wrap').addClass('tool-button--hide');
+        $btn_container.find('.edit-block-image-position').addClass('tool-button--hide');
         $elem.find('.rexlive-block-toolbox.top-tools').find('.edit-block-image').parents('.tool-button--double-icon--wrap').removeClass('tool-button--hide');
       }
 
@@ -670,19 +671,36 @@ var Rexbuilder_Block_Editor = (function($) {
   };
 
   var _updateBlockBackgroundImageTool = function( $target, data ) {
-    var $tool_top = $target
-      .parents('.grid-stack-item')
-      .find('.rexlive-block-toolbox.top-tools')
-      .find('.edit-block-image');
+    // var $tool_top = $target
+    //   .parents('.grid-stack-item')
+    //   .find('.rexlive-block-toolbox.top-tools')
+    //   .find('.edit-block-image');
 
-    var $tool_bottom = $target
+    var $edit_image_tool = $target
       .parents('.grid-stack-item')
       .find('.rexlive-block-toolbox.bottom-tools')
       .find('.edit-block-image');
 
-    $tool_bottom
+    $edit_image_tool
       .addClass('tool-button--image-preview')
       .css('background-image','url('+data.urlImage+')')
+      .parent()
+      .removeClass('tool-button--hide');
+  }
+
+  /**
+   * Make visibile the tool to edit the block image position
+   * @param {jQuery Object} $target Block Item Content
+   * @param {JS Object} data Block Image data
+   */
+  var _updateBlockImagePositionTool = function( $target, data ) {
+    var $image_position_tool = $target
+      .parents('.grid-stack-item')
+      .find('.rexlive-block-toolbox.bottom-tools')
+      .find('.edit-block-image-position');
+    
+    $image_position_tool
+      .removeClass('tool-button--hide');
   }
 
   var _updateBlockBackgroundColorToolLive = function( $target, color ) {
@@ -776,6 +794,7 @@ var Rexbuilder_Block_Editor = (function($) {
     updateBlockToolsOnRow: _updateBlockToolsOnRow,
     updateBlockTools: _updateBlockTools,
     updateBlockBackgroundImageTool: _updateBlockBackgroundImageTool,
+    updateBlockImagePositionTool: _updateBlockImagePositionTool,
     updateBlockBackgroundColorToolLive: _updateBlockBackgroundColorToolLive,
     updateBlockBackgroundColorTool: _updateBlockBackgroundColorTool
   }

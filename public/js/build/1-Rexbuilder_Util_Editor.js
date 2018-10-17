@@ -718,7 +718,6 @@ var Rexbuilder_Util_Editor = (function($) {
     animate_contents =
       typeof animate_contents !== "undefined" ? animate_contents : true;
 
-    console.log("start animation");
     if (animate_contents) {
       Rexbuilder_Util.$rexContainer
         .parent()
@@ -750,7 +749,6 @@ var Rexbuilder_Util_Editor = (function($) {
     animate_contents =
       typeof animate_contents !== "undefined" ? animate_contents : true;
 
-    console.log("and animation");
     if (animate_contents) {
       // Rexbuilder_Util.$loader.addClass('fade-out').one(Rexbuilder_Util._animationEvent, function() {
       //     Rexbuilder_Util.$loader.removeClass('active fade-out fade-in');

@@ -154,8 +154,8 @@ $tool_button_classes = 'tool-button';
 						</div>
 						
 						<div class="tool-button update-model-button tooltipped locked">
-							<span class="unlocked-icon"><?php Rexbuilder_Utilities::get_icon('#B009-Lock-Open'); ?></span>
-							<span class="locked-icon"><?php Rexbuilder_Utilities::get_icon('#B008-Lock-Close'); ?></span>
+							<span class="unlocked-icon"><?php Rexbuilder_Utilities::get_icon('#B015-UnClosed'); ?></span>
+							<span class="locked-icon"><?php Rexbuilder_Utilities::get_icon('#B014-Closed'); ?></span>
 						</div>
 					</div>
 				</div>
