@@ -44,9 +44,14 @@ var Rexbuilder_Section = (function($) {
 
     Rexbuilder_Util_Editor.removeDeletedBlocks($gallery);
 
+    tmpl.arg = "block";
+
     // removing scrollbars and text editor
     $gallery.find(".grid-stack-item").each(function(i, el) {
       var $elem = $(el);
+      var tools_info = {
+        block_type: ''
+      };
       if (!Rexbuilder_Util_Editor.insertingModel) {
         Rexbuilder_Util_Editor.generateElementNewIDs(
           $elem,
@@ -63,11 +68,13 @@ var Rexbuilder_Section = (function($) {
       if ($elem.find(".rexlive-block-toolbox").length == 0) {
         $elem
           .find(".grid-stack-item-content")
-          .after(tmpl("tmpl-toolbox-block", {}))
-          .after(tmpl("tmpl-toolbox-block-bottom", {}))
-          .after(tmpl("tmpl-toolbox-block-floating", {}));
+          .after(tmpl("tmpl-toolbox-block", tools_info))
+          .after(tmpl("tmpl-toolbox-block-bottom", tools_info))
+          .after(tmpl("tmpl-toolbox-block-floating"));
       }
     });
+
+    tmpl.arg = "section";
 
     if (!Rexbuilder_Util_Editor.insertingModel) {
       $section.attr(
@@ -953,12 +960,6 @@ var Rexbuilder_Section = (function($) {
             Rexbuilder_Util_Editor.sectionCopying = true;
             Rexbuilder_Util_Editor.insertingModel = true;
 
-            var html = $.parseHTML(modelData.model);
-            $model_to_import.after(html);
-            $model_to_import.remove();
-
-            var defaultStateSections = Rexbuilder_Util.getDefaultLayoutState();
-            var layoutsOrder = Rexbuilder_Util.getPageCustomizationsDom();
             var modelNumber = 1;
             Rexbuilder_Util.$rexContainer
               .children(
@@ -970,6 +971,13 @@ var Rexbuilder_Section = (function($) {
                   modelNumber = modelNumber + 1;
                 }
               });
+
+            var html = $.parseHTML(modelData.model);
+            $model_to_import.after(html);
+            $model_to_import.remove();
+
+            var defaultStateSections = Rexbuilder_Util.getDefaultLayoutState();
+            var layoutsOrder = Rexbuilder_Util.getPageCustomizationsDom();
 
             var $newSection = $(html);
             var newSectionRexID = $newSection.attr("data-rexlive-section-id");
