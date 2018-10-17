@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 52 (66869) - http://www.bohemiancoding.com/sketch -->
-    <title>Ico</title>
+    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
+    <title>Fill 1</title>
     <desc>Created with Sketch.</desc>
-    <g id="Ico" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <path d="M17,11 L2,11 L2,18 L-2.66453526e-15,18 L-1.49880108e-15,11 L-2.22044605e-15,9 L17,9 L10,2 L10,-9.79098459e-16 L20,10 L10,20 L10,18 L17,11 Z" id="Combined-Shape" fill=""></path>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="Mobile" fill="">
+            <path d="M8.58115257,5.13272727 L8.55915032,0 L0.000272727273,8.20454545 L8.63185342,16.3363636 L8.60793793,11.1281818 C15.162697,11.5536364 19.9933401,13.8453191 17.8887765,20 C20.4233524,17 23.4868561,8 8.58115257,5.13272727 Z" id="Fill-1" transform="translate(10.000273, 10.000000) scale(-1, 1) translate(-10.000273, -10.000000) "></path>
+        </g>
     </g>
 </svg>

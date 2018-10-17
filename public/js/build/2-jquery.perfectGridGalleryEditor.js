@@ -1195,7 +1195,6 @@
 
     createNewBlock: function(mode, w, h, block_type) {
       block_type = typeof block_type !== 'undefined' ? block_type : "";
-      console.log(block_type);
       Rexbuilder_Util_Editor.addingNewBlocks = true;
 
       var defaultBlockWidthFixed = 2;
@@ -1316,8 +1315,6 @@
       var tools_info = {
         block_type: block_type
       };
-
-      console.log(block_type);
 
       $newEl.append(tmpl("tmpl-toolbox-block",tools_info));
       $newEl.append(tmpl("tmpl-toolbox-block-bottom",tools_info));
@@ -2061,6 +2058,24 @@
           }
         }
       );
+
+      /**
+       * On Blur event on medium editor, check if there is text
+       * @since 2.0.0
+       */
+      $elem.on('blur','.medium-editor-element', function(e) {
+        var $current_textWrap = $(e.currentTarget);
+        var $top_tools = $current_textWrap.parents('.grid-stack-item').find('.block-toolBox__editor-tools');
+        var $T_tool = $top_tools.find('.edit-block-content');
+        var $content_position_tool = $top_tools.find('.edit-block-content-position');
+        if( 0 == gallery.calculateTextWrapHeight($current_textWrap) ) {
+          $T_tool.removeClass('tool-button--hide');
+          $content_position_tool.addClass('tool-button--hide');
+        } else {
+          $T_tool.addClass('tool-button--hide');
+          $content_position_tool.removeClass('tool-button--hide');
+        }
+      });
     },
 
     showBlockToolBox: function($elem) {

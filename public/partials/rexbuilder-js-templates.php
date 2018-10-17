@@ -26,7 +26,7 @@ $tool_button_classes = 'tool-button';
             <div class="tool-button tool-button--inline edit-block-content">
                 <?php Rexbuilder_Utilities::get_icon('#B003-Text'); ?>
             </div>
-            <div class="tool-button tool-button--inline edit-block-content-position">
+            <div class="tool-button tool-button--inline edit-block-content-position tool-button--hide">
                 <?php Rexbuilder_Utilities::get_icon('#C005-Layout'); ?>
             </div>
         </div>
@@ -94,6 +94,10 @@ $tool_button_classes = 'tool-button';
                     <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                 </div>
             </div><!-- // Change Block image background -->
+
+            <div class="tool-button tool-button--inline edit-block-image-position{% if(block.block_type != 'image') { %} tool-button--hide{% } %}" style="padding:5px;">
+                <?php Rexbuilder_Utilities::get_icon('#C005-Layout'); ?>
+            </div>
 
             <div class="tool-button--double-icon--wrap tool-button--hide">
                 <input class="spectrum-input-element" type="text" name="edit-block-color-background" value="">

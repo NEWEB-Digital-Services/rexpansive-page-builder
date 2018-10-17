@@ -24,6 +24,10 @@ defined( 'ABSPATH' ) or exit;
                 </div>
             </div><!-- // Change Block image background -->
 
+            <div class="tool-button tool-button--inline edit-block-image-position<?php echo ( $not_has_image ? ' tool-button--hide' : '' ); ?>" style="padding:5px;">
+                <?php Rexbuilder_Utilities::get_icon('#C005-Layout'); ?>
+            </div>
+
             <div class="tool-button--double-icon--wrap">
                 <input class="spectrum-input-element" type="text" name="edit-block-color-background" value="">
                 <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"></div>

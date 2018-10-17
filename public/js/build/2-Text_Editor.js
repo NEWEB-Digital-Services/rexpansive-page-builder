@@ -675,7 +675,6 @@ var TextEditor = (function($) {
         Rexbuilder_Util_Editor.elementIsDragging = false;
         Rexbuilder_Util_Editor.editedTextWrap.blur();
         gallery.focusElement($elem);
-
         Rexbuilder_Util_Editor.editingGallery = false;
         Rexbuilder_Util_Editor.editedGallery = null;
         Rexbuilder_Util_Editor.editingElement = false;

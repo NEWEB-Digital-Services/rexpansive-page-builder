@@ -18,10 +18,10 @@ defined( 'ABSPATH' ) or exit;
         </div>
 
         <div class="bl_d-iflex bl_ai-c block-toolBox__editor-tools">
-            <div class="tool-button tool-button--inline edit-block-content">
+            <div class="tool-button tool-button--inline edit-block-content<?php echo ( "" !== trim( $content ) ? ' tool-button--hide' : '' ); ?>">
                 <?php Rexbuilder_Utilities::get_icon('#B003-Text'); ?>
             </div>
-            <div class="tool-button tool-button--inline edit-block-content-position">
+            <div class="tool-button tool-button--inline edit-block-content-position<?php echo ( "" === trim( $content ) ? ' tool-button--hide' : '' ); ?>">
                 <?php Rexbuilder_Utilities::get_icon('#C005-Layout'); ?>
             </div>
         </div>
