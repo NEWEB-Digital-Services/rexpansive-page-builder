@@ -667,11 +667,20 @@ var TextEditor = (function($) {
     handleKeydown: function (event, editable) {
       // If the user hits escape, toggle the data-allow-context-menu attribute
       if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ESCAPE)) {
-        // Rexbuilder_Util_Editor.endEditingElement();
-        var $elem = $(this.base.getFocusedElement()).parents('.grid-stack-item');
-        Rexbuilder_Util_Editor.focusedElement = $elem;
+        var $elem = $(editable).parents('.grid-stack-item');
         var $gallery = $elem.parents('.perfect-grid-gallery');
-        $gallery.perfectGridGalleryEditor('focusElement', Rexbuilder_Util_Editor.focusedElement);
+        var gallery = $gallery.data('plugin_perfectGridGalleryEditor');
+        
+        Rexbuilder_Util_Editor.focusedElement = $elem;
+        Rexbuilder_Util_Editor.elementIsDragging = false;
+        Rexbuilder_Util_Editor.editedTextWrap.blur();
+        gallery.focusElement($elem);
+
+        Rexbuilder_Util_Editor.editingGallery = false;
+        Rexbuilder_Util_Editor.editedGallery = null;
+        Rexbuilder_Util_Editor.editingElement = false;
+        Rexbuilder_Util_Editor.editedElement = null;
+        Rexbuilder_Util_Editor.editedTextWrap = null;
       }
     }
   });
