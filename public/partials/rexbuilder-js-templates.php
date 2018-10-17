@@ -346,6 +346,11 @@ $tool_button_classes = 'tool-button';
                     </div>
                     <!-- // Add background video -->
 
+                    <div class="tool-button tool-button--flat update-model-button tooltipped locked">
+                        <span class="unlocked-icon"><?php Rexbuilder_Utilities::get_icon('#B015-UnClosed'); ?></span>
+                        <span class="locked-icon"><?php Rexbuilder_Utilities::get_icon('#B014-Closed'); ?></span>
+                    </div>
+
                 </div><!-- // fast configuration elements -->
 
                 <div class="bl_d-iflex bl_ai-c row-toolBox__tools row-toolBox__standard-configuration">
@@ -390,11 +395,6 @@ $tool_button_classes = 'tool-button';
                             
                             <div class="tool-button open-model tooltipped">
                                 <?php Rexbuilder_Utilities::get_icon('#B005-RexModel'); ?>
-                            </div>
-                            
-                            <div class="tool-button update-model-button tooltipped locked">
-                                <span class="unlocked-icon"><?php Rexbuilder_Utilities::get_icon('#B015-UnClosed'); ?></span>
-                                <span class="locked-icon"><?php Rexbuilder_Utilities::get_icon('#B014-Closed'); ?></span>
                             </div>
                         </div>
                     </div>

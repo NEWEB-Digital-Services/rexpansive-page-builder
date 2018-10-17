@@ -2878,13 +2878,12 @@ ul {
   z-index: 2000;
   display: block;
   height: 15px;
-  font-size: 20px; }
+  font-size: 13px; }
   .section-toolBox .tools {
     color: #000;
     background-color: #00ACFF;
     padding: 5px 0;
-    display: none;
-    font-size: 13px; }
+    display: none; }
   .section-toolBox.tool-box-active {
     display: block; }
   .section-toolBox:hover .tools {
@@ -2904,6 +2903,9 @@ ul {
     opacity: 1; }
   .section-toolBox .switch-toggle {
     padding-right: 10px; }
+  .section-toolBox .tool-button.tool-button--empty {
+    min-width: 13px;
+    min-height: 13px; }
   .section-toolBox .tool-button_list {
     font-size: 10px;
     left: 5px;
@@ -2929,16 +2931,18 @@ ul {
   cursor: copy; }
 
 .row-toolBox__fast-configuration .tool-button--inline {
-  max-height: 20px; }
+  max-height: 13px; }
 .row-toolBox__fast-configuration .tool-button--double-icon--wrap {
-  max-height: 20px;
+  max-height: 13px;
   margin: 0 5px; }
 .row-toolBox__fast-configuration .tool-button:not(.tool-button--double-icon) {
   padding: 0;
   overflow: hidden; }
 .row-toolBox__fast-configuration .edit-row-video-background.tool-button {
-  padding: 4px;
-  font-size: 12px; }
+  border-radius: 0; }
+.row-toolBox__fast-configuration .tool-button--double-icon--wrap .tool-button--double-icon {
+  font-size: 8px;
+  padding: 2px; }
 
 .rexlive-block-toolbox {
   position: absolute;

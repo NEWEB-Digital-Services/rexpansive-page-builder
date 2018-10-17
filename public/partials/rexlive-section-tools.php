@@ -99,7 +99,7 @@ $tool_button_classes = 'tool-button';
 				</div><!-- // Change Row overlay color -->
 
 				<div class="tool-button--double-icon--wrap">
-					<div class="<?php echo $tool_button_classes; ?> tool-button--inline edit-row-video-background">
+					<div class="<?php echo $tool_button_classes; ?> tool-button--inline tool-button--flat edit-row-video-background">
 						<?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
 					</div>
 					<div class="tool-button tool-button--inline tool-button--deactivate tool-button--double-icon deactivate-row-video-background">
@@ -107,6 +107,11 @@ $tool_button_classes = 'tool-button';
 					</div>
 				</div>
 				<!-- // Add background video -->
+
+				<div class="tool-button tool-button--flat update-model-button tooltipped locked">
+					<span class="unlocked-icon"><?php Rexbuilder_Utilities::get_icon('#B015-UnClosed'); ?></span>
+					<span class="locked-icon"><?php Rexbuilder_Utilities::get_icon('#B014-Closed'); ?></span>
+				</div>
 
 			</div><!-- // fast configuration elements -->
 
@@ -151,11 +156,6 @@ $tool_button_classes = 'tool-button';
 						
 						<div class="tool-button open-model tooltipped">
 							<?php Rexbuilder_Utilities::get_icon('#B005-RexModel'); ?>
-						</div>
-						
-						<div class="tool-button update-model-button tooltipped locked">
-							<span class="unlocked-icon"><?php Rexbuilder_Utilities::get_icon('#B015-UnClosed'); ?></span>
-							<span class="locked-icon"><?php Rexbuilder_Utilities::get_icon('#B014-Closed'); ?></span>
 						</div>
 					</div>
 				</div>

@@ -606,11 +606,12 @@ var Rexbuilder_Section = (function($) {
 
       tmpl.arg = "section";
 
-      var newSection = tmpl("tmpl-new-section", {
+      // New Row Defaults
+      var new_row_defaults = {
         rexID: rexIdSection,
-        dimension: "full",
-        dimensionClass: "full-disposition",
-        sectionWidth: "100%",
+        dimension: "boxed",
+        dimensionClass: "center-disposition",
+        sectionWidth: "80%",
         fullHeight: "false",
         blockDistance: 20,
         layout: "fixed",
@@ -618,7 +619,8 @@ var Rexbuilder_Section = (function($) {
         rowSeparatorBottom: 20,
         rowSeparatorRight: 20,
         rowSeparatorLeft: 20
-      });
+      };
+      var newSection = tmpl("tmpl-new-section", new_row_defaults);
 
       var $newSection = $(newSection);
       var $newSectionData = $newSection.children(".section-data");

@@ -20,7 +20,6 @@
     background-color: $palette-color-1;
     padding: 5px 0;
     display: none;
-    font-size: 13px;
   }
   
   &.tool-box-active {
@@ -44,6 +43,13 @@
   }
 
   font-size: $row-tools-size;
+
+  .tool-button {
+    &.tool-button--empty {
+      min-width: $row-tools-size;
+      min-height: $row-tools-size;
+    }
+  }
 
   // .tool-button--color {
   //   min-width: auto;
@@ -100,8 +106,12 @@
 
   .edit-row-video-background {
     &.tool-button {
-      padding: 4px;
-      font-size: 12px;
+      border-radius: 0;
     }
+  }
+
+  .tool-button--double-icon--wrap .tool-button--double-icon {
+    font-size: 8px;
+    padding: 2px;
   }
 }
