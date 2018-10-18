@@ -262,7 +262,7 @@ $tool_button_classes = 'tool-button';
 
 <script type="text/x-tmpl" id="tmpl-add-new-section-button">
 <div class="bl_d-flex bl_jc-c add-new-section__wrap">
-    <div class="tool-button tool-button--inline tool-button--flat tool-button--add-big add-new-section">
+    <div class="tool-button tool-button--inline tool-button--flat tool-button--add-big add-new-section" data-new-row-position="bottom">
         <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
     </div>
 </div>
@@ -316,6 +316,10 @@ $tool_button_classes = 'tool-button';
             
                             <div class="tool-button add-new-block-slider tooltipped">
                                 <?php Rexbuilder_Utilities::get_icon('#Z003-RexSlider'); ?>
+                            </div>
+
+                            <div class="tool-button tooltipped add-new-section" data-new-row-position="after">
+                                <?php Rexbuilder_Utilities::get_icon('#B006-Collapse'); ?>
                             </div>
                         </div>
                     </div>

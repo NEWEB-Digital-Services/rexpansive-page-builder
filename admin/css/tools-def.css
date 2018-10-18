@@ -3539,12 +3539,14 @@ body.rexpansive-editor .lean-overlay {
 
 .tool-option.btn-undo .l-svg-icons > svg, .tool-option.btn-redo .l-svg-icons > svg {
   fill: #979797; }
+.tool-option.btn-undo:hover .l-svg-icons > svg, .tool-option.btn-redo:hover .l-svg-icons > svg {
+  fill: #00ACFF; }
 
 .btn-undo--active .tool-option.btn-undo .l-svg-icons > svg {
-  fill: #00ACFF; }
+  fill: #000; }
 
 .btn-redo--active .tool-option.btn-redo .l-svg-icons > svg {
-  fill: #00ACFF; }
+  fill: #000; }
 
 .btn-undo {
   border-right-color: #D6D6D6;

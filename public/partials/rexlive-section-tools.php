@@ -66,6 +66,10 @@ $tool_button_classes = 'tool-button';
 						<div class="tool-button add-new-block-slider tooltipped">
 							<?php Rexbuilder_Utilities::get_icon('#Z003-RexSlider'); ?>
 						</div>
+
+						<div class="tool-button tooltipped add-new-section" data-new-row-position="after">
+							<?php Rexbuilder_Utilities::get_icon('#B006-Collapse'); ?>
+						</div>
 					</div>
 				</div>
 			</div><!-- // insert element -->

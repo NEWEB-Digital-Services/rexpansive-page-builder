@@ -598,6 +598,8 @@ var Rexbuilder_Section = (function($) {
      */
     $(document).on("click", ".add-new-section", function(e) {
       var rexIdSection = Rexbuilder_Util.createSectionID();
+      var $btn = $(this);
+      var newRowPosition = $btn.attr('data-new-row-position');
 
       var layoutsOrder = null;
       if (Rexbuilder_Util.activeLayout == "default") {
@@ -629,10 +631,19 @@ var Rexbuilder_Section = (function($) {
         tmpl("tmpl-toolbox-section", { rexID: rexIdSection })
       );
       //per ora viene aggiunta dopo l'ultima section
-      var $last = Rexbuilder_Util.$rexContainer.children("section:last");
+      switch( newRowPosition ) {
+        case 'bottom':
+          var $prevRow = Rexbuilder_Util.$rexContainer.children("section:last");
+          break;
+        case 'after':
+          var $prevRow = $btn.parents(".rexpansive_section");
+          break;
+        default:
+          break;
+      }
 
-      if ($last.length != 0) {
-        $newSection.insertAfter($last);
+      if ($prevRow.length != 0) {
+        $newSection.insertAfter($prevRow);
       } else {
         $newSection.appendTo(Rexbuilder_Util.$rexContainer);
       }

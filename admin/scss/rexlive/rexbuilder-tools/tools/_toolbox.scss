@@ -125,13 +125,16 @@
   &.btn-undo,
   &.btn-redo {
     @include fill-icon($palette-color-2);
+    &:hover {
+      @include fill-icon($palette-color-1);
+    }
   }
 }
 
 .btn-undo--active {
   .tool-option {
     &.btn-undo {
-      @include fill-icon($palette-color-1);
+      @include fill-icon(#000);
     }
   }
 }
@@ -139,7 +142,7 @@
 .btn-redo--active {
   .tool-option {
     &.btn-redo {
-      @include fill-icon($palette-color-1);
+      @include fill-icon(#000);
     }
   }
 }
