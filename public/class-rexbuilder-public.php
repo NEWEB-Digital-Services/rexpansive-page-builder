@@ -862,10 +862,12 @@ endif;
             <?php 
             if (isset($editor) && $editor == "true") {
 ?>
-                    <button class="add-new-section">
-                    ADD
-                    </button>
-                    <?php include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-loader.php"; ?>
+                <div class="bl_d-flex bl_jc-c add-new-section__wrap">
+                    <div class="tool-button tool-button--inline tool-button--flat add-new-section">
+                        <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
+                    </div>
+                </div>
+                <?php include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-loader.php"; ?>
             <?php
                 }
             ?>

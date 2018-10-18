@@ -37,7 +37,6 @@
     }
   }
 
-
   .switch-toggle {
     padding-right: 10px;
   }
@@ -115,6 +114,36 @@
     .tool-button--double-icon { 
       font-size: 8px;
       padding: 2px;
+    }
+  }
+}
+
+.empty-section {
+  // dev purpose
+  // .section-toolBox {
+  //   .tools {
+  //     @include generic-toolbar;
+  //     transform: translateY(-50%);
+  //   }
+  
+  //   + .section-toolBoox__highlight {
+  //     opacity: 1;
+  //   }
+  // }
+  // .row-toolBox__fast-configuration {
+  //   display: none;
+  // }
+}
+
+.add-new-section__wrap {
+  padding: 20px 0;
+  .add-new-section {
+    padding: 10px;
+    background-color: transparent;
+    @include fill-icon($palette-color-1);
+    border: 2px solid $palette-color-1;
+    &:hover {
+      @include fill-icon($palette-color-1);
     }
   }
 }

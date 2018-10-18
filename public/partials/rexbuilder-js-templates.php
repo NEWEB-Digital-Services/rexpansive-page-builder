@@ -261,7 +261,11 @@ $tool_button_classes = 'tool-button';
 </script>
 
 <script type="text/x-tmpl" id="tmpl-add-new-section-button">
-    <button class="add-new-section">ADD</button>
+<div class="bl_d-flex bl_jc-c add-new-section__wrap">
+    <div class="tool-button tool-button--inline tool-button--flat add-new-section">
+        <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
+    </div>
+</div>
 </script>
 
 <script type="text/x-tmpl" id="tmpl-toolbox-section">
@@ -322,7 +326,7 @@ $tool_button_classes = 'tool-button';
                         <div class="<?php echo $tool_button_classes; ?> tool-button--inline edit-row-image-background tooltipped" data-position="bottom" data-tooltip="" value="">
                             <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
                         </div>
-                        <div class="tool-button tool-button--flat tool-button--inline tool-button--double-icon tool-button--deactivate deactivate-row-image-background">
+                        <div class="tool-button tool-button--inline tool-button--double-icon tool-button--deactivate deactivate-row-image-background">
                             <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                         </div>
                     </div><!-- // Change Row background image -->
@@ -331,7 +335,7 @@ $tool_button_classes = 'tool-button';
                         <input class="spectrum-input-element" type="text" name="edit-row-color-background" value="">
                         <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"></div>
                         <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview-texture"></div>
-                        <div class="tool-button tool-button--flat tool-button--inline tool-button--double-icon tool-button--deactivate deactivate-row-color-background">
+                        <div class="tool-button tool-button--inline tool-button--double-icon tool-button--deactivate deactivate-row-color-background">
                             <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                         </div>
                     </div><!-- // Change Row background color -->
@@ -340,7 +344,7 @@ $tool_button_classes = 'tool-button';
                         <input class="spectrum-input-element" type="text" name="edit-row-overlay-color" value="">
                         <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"></div>
                         <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview-texture"></div>
-                        <div class="tool-button tool-button--flat tool-button--inline tool-button--double-icon tool-button--deactivate deactivate-row-overlay-color">
+                        <div class="tool-button tool-button--inline tool-button--double-icon tool-button--deactivate deactivate-row-overlay-color">
                             <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                         </div>
                     </div><!-- // Change Row overlay color -->

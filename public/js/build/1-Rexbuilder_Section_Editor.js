@@ -339,7 +339,7 @@ var Rexbuilder_Section_Editor = (function($) {
         ? $section.attr("data-rexlive-model-number")
         : "";
 
-    var bgColorActive = $section_data.attr('data-color_bg_section_active');
+    var bgColorActive = ( 'undefined' !== typeof $section_data.attr('data-color_bg_section_active') ? $section_data.attr('data-color_bg_section_active') : 'true' );
     var colorActive = $section_data.attr('data-color_bg_section');
     var settings = {
       // eventName: "rexlive:change_section_bg_color",
@@ -376,9 +376,7 @@ var Rexbuilder_Section_Editor = (function($) {
         flagPickerUsed = true;
       },
       change: function(color) {
-        // background_section_color_properties.$color_palette_buttons.removeClass(
-        //   "palette-color-active"
-        // );
+        // nothing to do
       },
       hide: function(color) {
         if (flagPickerUsed) {

@@ -27,9 +27,12 @@ global $layoutsAvaiable;
   <div class="tools-container-middle">
     <div class="middle-tools rexlive-responsive-buttons-wrapper">
     <?php
+      $default_layouts = "";
+      $custom_layouts = "";
       foreach( $layoutsAvaiable as $index => $layout ) {
         switch($index){
           case 0:
+            ob_start();
           ?>
             <div class="layout-container">
               <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo $layout['min']?>" data-max-width="<?php echo $layout['max']; ?>" data-name="<?php echo $layout['id'] ?>">
@@ -37,8 +40,10 @@ global $layoutsAvaiable;
               </div>
             </div>
           <?php
+            $default_layouts .= ob_get_clean();
             break;
           case 1:
+            ob_start();
           ?>
             <div class="layout-container">
               <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo $layout['min']?>" data-max-width="<?php echo $layout['max']; ?>" data-name="<?php echo $layout['id'] ?>">
@@ -46,8 +51,10 @@ global $layoutsAvaiable;
               </div>
             </div>
           <?php
+            $default_layouts .= ob_get_clean();
             break;
           case 2:
+            ob_start();
             ?>
             <div class="layout-container">
               <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="" data-max-width="" data-name="<?php echo $layout['id'] ?>">
@@ -55,8 +62,10 @@ global $layoutsAvaiable;
               </div>
             </div>
             <?php
+              $default_layouts .= ob_get_clean();
             break;
           default:
+            ob_start();
             ?>
             <div class="layout-container">
               <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo $layout['min']; ?>" data-max-width="<?php echo $layout['max']; ?>" data-name="<?php echo $layout['id'] ?>" data-layout-type="custom">
@@ -67,15 +76,18 @@ global $layoutsAvaiable;
               </div>
             </div>
             <?php
+            $custom_layouts .= ob_get_clean();
             break;
         }
       }
       ?>
+      <?php echo $default_layouts; ?>
       <div class="layout-container">
         <div class="builder-config-layouts builder-add-custom-layout">
         <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
         </div>
       </div>
+      <?php echo $custom_layouts; ?>
     </div>
   </div>
   <div class="tools-container-right">

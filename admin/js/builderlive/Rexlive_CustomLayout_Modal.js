@@ -255,7 +255,7 @@ var CustomLayouts_Modal = (function ($) {
             $layoutWrapper.parent().addClass('editing');
             $layoutWrapper.find('input[data-editable-field=true]').attr('type', 'input');
 
-            custom_layouts_modal_props.$config_layouts.parent().before(tmpl("rexlive-tmpl-custom-layout-button", {
+            custom_layouts_modal_props.$buttonsWrapper.append(tmpl("rexlive-tmpl-custom-layout-button", {
                 id: idCreated,
                 label: "",
                 minWidth: "",

@@ -3416,7 +3416,7 @@ body.rexpansive-editor .lean-overlay {
   position: relative; }
 
 .layout-custom-number {
-  color: #979797;
+  color: #000;
   font-size: 9px;
   font-weight: 700;
   line-height: 1;
@@ -3424,6 +3424,9 @@ body.rexpansive-editor .lean-overlay {
   width: 100%;
   bottom: 21px;
   left: 0; }
+
+.rexlive-toolbox .builder-add-custom-layout .l-svg-icons {
+  font-size: 16px; }
 
 .rex-number {
   text-align: center; }

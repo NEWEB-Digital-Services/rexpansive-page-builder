@@ -3205,6 +3205,17 @@ ul {
   font-size: 8px;
   padding: 2px; }
 
+.add-new-section__wrap {
+  padding: 20px 0; }
+  .add-new-section__wrap .add-new-section {
+    padding: 10px;
+    background-color: transparent;
+    border: 2px solid #00ACFF; }
+    .add-new-section__wrap .add-new-section .l-svg-icons > svg {
+      fill: #00ACFF; }
+    .add-new-section__wrap .add-new-section:hover .l-svg-icons > svg {
+      fill: #00ACFF; }
+
 .rexlive-block-toolbox {
   position: absolute;
   width: 100%;
