@@ -3,6 +3,9 @@ var Rexlive_Modals = (function ($) {
     'use strict';
 
     var init = function () {
+        // Top Tools
+        Rexlive_Top_Tools.init();
+        
         // section
         Section_Modal.init();
 

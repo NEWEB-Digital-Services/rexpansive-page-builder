@@ -1,7 +1,13 @@
-.rexlive-toolbox {
+.rexlive-toolbox__wrap {
+  width: 100%;
   position: absolute;
   top: 0;
   left: 0;
+  transition: transform 300ms;
+  z-index: 0;
+}
+
+.rexlive-toolbox {
   background-color: white;
   width: 100%;
   height: $top-tools-height;
@@ -9,7 +15,40 @@
   justify-content: space-between;
   align-items: center;
   box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
+}
+
+.rexlive-toolbox__toggle-wrap {
+  background-color: white;
+  height: $top-tools-height;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   z-index: 1;
+  font-size: 20px;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.rexlive-toolbox__toggle-wrap {
+  transition: box-shadow 300ms;
+}
+
+.close-toolbox {
+  @include fill-icon(#979797);
+  transition: transform 300ms
+}
+
+.toolbox--closed {
+  .rexlive-toolbox__toggle-wrap {
+    box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
+  }
+  .close-toolbox {
+    transform: rotate(180deg);
+  }
+  .rexlive-toolbox__wrap {
+      transform: translateY(-100%);
+  }
 }
 
 .tools-container-left {
@@ -49,7 +88,17 @@
   cursor: pointer;
   padding: 0 20px;
   height: 100%;
+}
 
+.tool-option {
+  &:hover {
+    @include fill-icon($palette-color-1);
+  }
+}
+
+.tool-option--placeholder {
+  width: 60px;
+  visibility: hidden;
 }
 
 .rexlive-toolbox .l-svg-icons{
@@ -57,38 +106,15 @@
 }
 
 .btn-save {
-  // font-size: 30px;
   @include fill-icon(#00acff);
-  // .l-svg-icons{
-  //   fill: #00acff;
-  //   > svg {
-  //     fill: #00acff;
-  //   }
-  // }
+  padding-left: 10px;
+  .l-svg-icons{
+    font-size: 30px;
+  }
   &.page-edited{
     @include fill-icon(#979797);
-    // .l-svg-icons{
-    //   fill: #979797;
-    //   > svg {
-    //     fill: #979797;
-    //   }
-    // }
-/*     
-    &.rex-saving {
-    } 
-*/
   }
 }
-
-// .builder-add-custom-layout .l-svg-icons{
-//   font-size: 16px;
-// }
-
-// .btn-undo, .btn-redo{
-//   .l-svg-icons{
-//     font-size: 20px;
-//   }
-// }
 
 .btn-undo{
   border-right-color: #D6D6D6;
@@ -96,32 +122,9 @@
   border-right-width: 1px;
 }
 
-// .btn-custom-css .l-svg-icons{
-//   font-size: 20px;
-// }
-
 .btn-builder-layout[data-layout-type="custom"]{  
   position: relative;
-  // .l-svg-icons{
-  //   font-size: 25px;
-  // }
 }
-
-// .btn-builder-layout[data-name="mobile"]{  
-//   .l-svg-icons{
-//     font-size: 26px;
-//   }
-// }
-// .btn-builder-layout[data-name="tablet"]{  
-//   .l-svg-icons{
-//     font-size: 26px;
-//   }
-// }
-// .btn-builder-layout[data-name="default"]{  
-//   .l-svg-icons{
-//     font-size: 25px;
-//   }
-// }
 
 .layout-custom-number{
   color: #000;
@@ -145,18 +148,6 @@
 .rex-number{
   text-align: center;
 }
-
-.close-toolbox {
-  @include fill-icon(#979797);
-  .l-svg-icons{
-    // font-size: 15px;
-    // fill: #979797;
-    // > svg {
-    //   fill: #979797;
-    // }
-  }
-}
-
 
 .btn-builder-layout{
   @include fill-icon(#000);

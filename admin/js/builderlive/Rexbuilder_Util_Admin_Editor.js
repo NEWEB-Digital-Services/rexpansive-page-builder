@@ -312,6 +312,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       }
       Rexbuilder_Util_Admin_Editor.activeWidth = newWidth;
     } else {
+      console.log(updatedLayoutData);
       _sendIframeBuilderMessage(updatedLayoutData);
     }
   };
@@ -446,7 +447,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     $frameContainer.on(
       Rexbuilder_Util_Admin_Editor.transitionEvent,
       function() {
-        if (updatedLayoutData !== null) {
+        if (updatedLayoutData !== null && 'undefined' !== typeof updatedLayoutData) {
           _sendIframeBuilderMessage(updatedLayoutData);
         }
       }

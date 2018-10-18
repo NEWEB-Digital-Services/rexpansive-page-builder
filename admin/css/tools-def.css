@@ -3157,7 +3157,16 @@ body.rexpansive-editor .lean-overlay {
   text-align: center;
   -webkit-transform: translateY(50%);
       -ms-transform: translateY(50%);
-          transform: translateY(50%); }
+          transform: translateY(50%);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
 
 .rex-live__row-margin-padding {
   max-width: 340px;
@@ -3325,10 +3334,19 @@ body.rexpansive-editor .lean-overlay {
 .editing-title-slider .rx__form-input {
   display: none; }
 
-.rexlive-toolbox {
+.rexlive-toolbox__wrap {
+  width: 100%;
   position: absolute;
   top: 0;
   left: 0;
+  -webkit-transition: -webkit-transform 300ms;
+  transition: -webkit-transform 300ms;
+  -o-transition: transform 300ms;
+  transition: transform 300ms;
+  transition: transform 300ms, -webkit-transform 300ms;
+  z-index: 0; }
+
+.rexlive-toolbox {
   background-color: white;
   width: 100%;
   height: 50px;
@@ -3342,8 +3360,53 @@ body.rexpansive-editor .lean-overlay {
       -ms-flex-align: center;
           align-items: center;
   -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
-          box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
-  z-index: 1; }
+          box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45); }
+
+.rexlive-toolbox__toggle-wrap {
+  background-color: white;
+  height: 50px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  z-index: 1;
+  font-size: 20px;
+  position: absolute;
+  top: 0;
+  left: 0; }
+
+.rexlive-toolbox__toggle-wrap {
+  -webkit-transition: -webkit-box-shadow 300ms;
+  transition: -webkit-box-shadow 300ms;
+  -o-transition: box-shadow 300ms;
+  transition: box-shadow 300ms;
+  transition: box-shadow 300ms, -webkit-box-shadow 300ms; }
+
+.close-toolbox {
+  -webkit-transition: -webkit-transform 300ms;
+  transition: -webkit-transform 300ms;
+  -o-transition: transform 300ms;
+  transition: transform 300ms;
+  transition: transform 300ms, -webkit-transform 300ms; }
+  .close-toolbox .l-svg-icons > svg {
+    fill: #979797; }
+
+.toolbox--closed .rexlive-toolbox__toggle-wrap {
+  -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
+          box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45); }
+.toolbox--closed .close-toolbox {
+  -webkit-transform: rotate(180deg);
+      -ms-transform: rotate(180deg);
+          transform: rotate(180deg); }
+.toolbox--closed .rexlive-toolbox__wrap {
+  -webkit-transform: translateY(-100%);
+      -ms-transform: translateY(-100%);
+          transform: translateY(-100%); }
 
 .tools-container-left {
   left: 0;
@@ -3394,16 +3457,22 @@ body.rexpansive-editor .lean-overlay {
   padding: 0 20px;
   height: 100%; }
 
+.tool-option:hover .l-svg-icons > svg {
+  fill: #00ACFF; }
+
+.tool-option--placeholder {
+  width: 60px;
+  visibility: hidden; }
+
 .rexlive-toolbox .l-svg-icons {
   font-size: 20px; }
 
-.btn-save .l-svg-icons > svg {
-  fill: #00acff; }
-.btn-save.page-edited {
-  /*     
-      &.rex-saving {
-      } 
-  */ }
+.btn-save {
+  padding-left: 10px; }
+  .btn-save .l-svg-icons > svg {
+    fill: #00acff; }
+  .btn-save .l-svg-icons {
+    font-size: 30px; }
   .btn-save.page-edited .l-svg-icons > svg {
     fill: #979797; }
 
@@ -3430,9 +3499,6 @@ body.rexpansive-editor .lean-overlay {
 
 .rex-number {
   text-align: center; }
-
-.close-toolbox .l-svg-icons > svg {
-  fill: #979797; }
 
 .btn-builder-layout .l-svg-icons > svg {
   fill: #000; }
@@ -3515,10 +3581,12 @@ body.rexpansive-editor .lean-overlay {
   100% {
     -webkit-transform: rotate(360deg);
             transform: rotate(360deg); } }
-#rexpansive-builder-backend-wrapper .rexpansive-live-frame-container {
-  -webkit-transition: width 300ms;
-  -o-transition: width 300ms;
-  transition: width 300ms; }
+#rexpansive-builder-backend-wrapper {
+  background-color: #fff; }
+  #rexpansive-builder-backend-wrapper .rexpansive-live-frame-container {
+    -webkit-transition: width 300ms, padding-top 300ms;
+    -o-transition: width 300ms, padding-top 300ms;
+    transition: width 300ms, padding-top 300ms; }
 
 .rexpansive-live-frame-container {
   width: 100%;
@@ -3526,6 +3594,9 @@ body.rexpansive-editor .lean-overlay {
   margin: 0 auto;
   padding-top: 50px;
   z-index: 0; }
+
+.toolbox--closed .rexpansive-live-frame-container {
+  padding-top: 0; }
 
 #adminmenumain,
 #wpcontent,

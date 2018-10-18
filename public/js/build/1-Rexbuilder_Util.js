@@ -1574,7 +1574,6 @@ var Rexbuilder_Util = (function($) {
                   1500,
                   galleryEditorInstance.$section
                 );
-                console.log('ROW PRONTA');
               },
               200,
               galleryEditorInstance

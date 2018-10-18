@@ -1,5 +1,8 @@
-#rexpansive-builder-backend-wrapper .rexpansive-live-frame-container {
-  transition: width 300ms;
+#rexpansive-builder-backend-wrapper {
+  background-color: #fff;
+  .rexpansive-live-frame-container {
+    transition: width 300ms, padding-top 300ms;
+  }
 }
 .rexpansive-live-frame-container {
   width: 100%;
@@ -7,4 +10,9 @@
   margin: 0 auto;
   padding-top: 50px;
   z-index: 0;
+}
+.toolbox--closed {
+  .rexpansive-live-frame-container {
+    padding-top: 0;
+  }
 }
