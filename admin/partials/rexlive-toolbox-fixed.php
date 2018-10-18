@@ -43,7 +43,7 @@ global $layoutsAvaiable;
               ob_start();
             ?>
               <div class="layout-container">
-                <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo $layout['min']?>" data-max-width="<?php echo $layout['max']; ?>" data-name="<?php echo $layout['id'] ?>">
+                <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo $layout['min']?>" data-max-width="<?php echo $layout['max']; ?>" data-name="<?php echo $layout['id'] ?>" data-label="<?php echo esc_attr( $layout['label'] ); ?>">
                   <?php Rexbuilder_Utilities::get_icon('#A010-Mobile'); ?>
                 </div>
               </div>
@@ -54,7 +54,7 @@ global $layoutsAvaiable;
               ob_start();
             ?>
               <div class="layout-container">
-                <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo $layout['min']?>" data-max-width="<?php echo $layout['max']; ?>" data-name="<?php echo $layout['id'] ?>">
+                <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo $layout['min']?>" data-max-width="<?php echo $layout['max']; ?>" data-name="<?php echo $layout['id'] ?>" data-label="<?php echo esc_attr( $layout['label'] ); ?>">
                   <?php Rexbuilder_Utilities::get_icon('#A001-Tablet'); ?>
                 </div>
               </div>
@@ -65,7 +65,7 @@ global $layoutsAvaiable;
               ob_start();
               ?>
               <div class="layout-container">
-                <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="" data-max-width="" data-name="<?php echo $layout['id'] ?>">
+                <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="" data-max-width="" data-name="<?php echo $layout['id'] ?>" data-label="<?php echo esc_attr( $layout['label'] ); ?>">
                   <?php Rexbuilder_Utilities::get_icon('#A011-Desktop'); ?>
                 </div>
               </div>
@@ -76,7 +76,7 @@ global $layoutsAvaiable;
               ob_start();
               ?>
               <div class="layout-container">
-                <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo $layout['min']; ?>" data-max-width="<?php echo $layout['max']; ?>" data-name="<?php echo $layout['id'] ?>" data-layout-type="custom">
+                <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo $layout['min']; ?>" data-max-width="<?php echo $layout['max']; ?>" data-name="<?php echo $layout['id'] ?>" data-label="<?php echo esc_attr( $layout['label'] ); ?>" data-layout-type="custom">
                   <?php Rexbuilder_Utilities::get_icon('#A009-Range'); ?>
                   <div class="layout-custom-number">
                     <div class="rex-number"><?php echo ($index-2);?></div>

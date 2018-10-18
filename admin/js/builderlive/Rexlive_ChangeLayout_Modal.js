@@ -8,8 +8,8 @@ var Change_Layout_Modal = (function ($) {
         activeLayoutPage = data.activeLayout;
         buttonData = data.buttonData;
         Rexlive_Modals_Utils.openModal(layout_changing_props.$self.parent('.rex-modal-wrap'));
-        
-        layout_changing_props.$layout_name_placholder.text(data.activeLayout);
+        console.log(data);
+        layout_changing_props.$layout_name_placholder.text(data.activeLayoutLabel);
     }
 
     var _closeModal = function () {

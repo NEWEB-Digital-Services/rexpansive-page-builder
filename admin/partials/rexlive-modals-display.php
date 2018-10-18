@@ -1337,11 +1337,11 @@ wp_reset_postdata();
             </div>
         </div>
         <div class="rex-modal__outside-footer">
-            <div class="tool-button tool-button--inline rex-change-layout-option" data-rex-option="save">
-                <span class="rex-button save-page"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
-            </div>
             <div class="tool-button tool-button--inline tool-button--black rex-change-layout-option" data-rex-option="continue">
                 <span class="rex-button continue"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
+            </div>
+            <div class="tool-button tool-button--inline rex-change-layout-option" data-rex-option="save">
+                <span class="rex-button save-page"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
             </div>
         </div>
     </div>

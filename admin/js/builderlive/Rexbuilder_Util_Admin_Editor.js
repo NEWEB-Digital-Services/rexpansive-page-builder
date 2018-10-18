@@ -5,6 +5,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   "use strict";
 
   var activeLayoutPage;
+  var activeLayoutPageLabel;
   var modelSaved;
   var pageSaved;
   var $saveBtn;
@@ -180,17 +181,17 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     $(document).on("click", ".btn-builder-layout", function(e) {
       var $btn = $(e.target).parents(".btn-builder-layout");
       var btnName = $btn.attr("data-name");
-
       if (activeLayoutPage != btnName) {
         var buttonData = {
           min: $btn.attr("data-min-width"),
           max: $btn.attr("data-max-width"),
           id: btnName,
-          label: $btn.text(),
+          label: ( 'undefined' != typeof $btn.attr('data-label') ? $btn.attr('data-label') : btnName ),
           type: _findLayoutType(btnName)
         };
         var dataObj = {
           activeLayout: activeLayoutPage,
+          activeLayoutLabel: activeLayoutPageLabel,
           buttonData: buttonData,
           modelSaved: modelSaved,
           pageSaved: pageSaved
@@ -280,7 +281,9 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   var _updateLayoutPage = function(buttonData) {
     modelSaved = true;
     pageSaved = true;
+    console.log(buttonData);
     activeLayoutPage = buttonData.id;
+    activeLayoutPageLabel = buttonData.label;
     Rexbuilder_Util_Admin_Editor.$responsiveToolbar
       .find(".btn-builder-layout.active-layout")
       .removeClass("active-layout");
@@ -432,6 +435,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     pageSaved = true;
     modelSaved = true;
     activeLayoutPage = "default";
+    activeLayoutPageLabel = "default";
     this.$responsiveToolbar
       .find(".builder-default-layout")
       .addClass("active-layout");
