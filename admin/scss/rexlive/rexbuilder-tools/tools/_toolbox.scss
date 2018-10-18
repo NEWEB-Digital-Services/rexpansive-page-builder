@@ -91,8 +91,13 @@
 }
 
 .tool-option {
+  @include fill-icon(#000);
   &:hover {
+    color: $palette-color-1;
     @include fill-icon($palette-color-1);
+    .builder-add-custom-layout {
+      border-color: $palette-color-1;
+    }
   }
 }
 
@@ -127,7 +132,7 @@
 }
 
 .layout-custom-number{
-  color: #000;
+  // color: #000;
   font-size: 9px;
   font-weight: 700;
   line-height: 1;
@@ -139,8 +144,9 @@
 
 .rexlive-toolbox {
   .builder-add-custom-layout {
+    @include bl-btn--add-small();
     .l-svg-icons {
-      font-size: 16px;
+      font-size: 11px;
     }
   }
 }
@@ -150,12 +156,12 @@
 }
 
 .btn-builder-layout{
-  @include fill-icon(#000);
+  // @include fill-icon(#000);
   &.active-layout {
     @include fill-icon($icon-active-color);
   }
 }
 
-.btn-builder-layout:hover:not(.active-layout){
-  @include fill-icon($icon-hover-color);
-}
+// .btn-builder-layout:hover:not(.active-layout){
+//   @include fill-icon($icon-hover-color);
+// }

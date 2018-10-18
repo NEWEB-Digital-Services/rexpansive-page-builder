@@ -22,24 +22,24 @@ defined('ABSPATH') or exit;
 <!-- // #builder-loading-overlay -->
 
 <div class="rex-modal-wrap rex-fade">
-    <div id="rex-css-editor" class="rexbuilder-materialize-wrap rex-modal rex-modal-draggable z-depth-4">
+    <div id="rex-css-editor" class="rexbuilder-materialize-wrap rex-modal rex-modal-draggable">
+        <div id="css-editor-cancel" class="tool-button tool-button--inline tool-button--black tool-button--close rex-cancel-button">
+            <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+        </div>
         <div class="modal-content">
             <div id="rex-css-ace-editor" class="rex-ace-editor"></div>
         </div>
-        <div class="rex-modal-footer">
-            <button id="css-editor-cancel" class="waves-effect waves-light btn-flat grey rex-cancel-button" value="">
-                <i class="rex-icon">n</i>
-            </button>
-            <button id="css-editor-save" class="waves-effect waves-light btn-flat blue darken-1 rex-save-button" value="">
-                <i class="rex-icon">m</i>
-            </button>
+        <div class="rex-modal__outside-footer">
+            <div id="css-editor-save" class="tool-button tool-button--inline tool-button--save rex-save-button">
+                <?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?>
+            </div>
         </div>
     </div>
 </div>
 <!-- CSS Editor -->
 
 <div class="rex-modal-wrap rex-fade">
-    <div id="rex-insert-new-video-block" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
+    <div id="rex-insert-new-video-block" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <div class="modal-content">
             <div id="insert-video-block-wrap-1" class="row valign-wrapper youtube-insert-wrap video-insert-wrap">
                 <div class="rex-check rex-check-icon col rex-video-type-select">
@@ -119,7 +119,7 @@ defined('ABSPATH') or exit;
 </div><!-- Insert New Block Video -->
 
 <div class="rex-modal-wrap rex-fade">
-   <div id="rex-edit-background-section" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
+   <div id="rex-edit-background-section" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <?php Rexbuilder_Utilities::close_button(); ?>
         <div class="modal-content">
             <div id="section-edit-image-bg" class="background_set_image row valign-wrapper">
@@ -257,7 +257,7 @@ defined('ABSPATH') or exit;
 <!-- Edit Section Background -->
 
 <div class="rex-modal-wrap rex-fade">
-    <div id="video-section-editor-wrapper" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
+    <div id="video-section-editor-wrapper" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <?php Rexbuilder_Utilities::close_button(); ?>
         <div class="modal-content">
             <div id="edit-video-row-wrap-1" class="row valign-wrapper youtube-insert-wrap video-insert-wrap">
@@ -305,7 +305,7 @@ defined('ABSPATH') or exit;
 </div>
 
 <div class="rex-modal-wrap rex-fade">
-    <div id="rex-block-options" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
+    <div id="rex-block-options" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <?php Rexbuilder_Utilities::close_button(); ?>
         <div class="background-options-area modal-content">
             <div id="block-edit-image-bg" class="background_set_image row valign-wrapper">
@@ -653,7 +653,7 @@ defined('ABSPATH') or exit;
 
 <!-- Block settings background settings -->
 <div class="rex-modal-wrap rex-fade">
-    <div id="rex-block-content-position-editor" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
+    <div id="rex-block-content-position-editor" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <?php Rexbuilder_Utilities::close_button(); ?>
         <div class="background-options-area modal-content">            
             <div id="block-set-class-wrap" class="row valign-wrapper">
@@ -711,7 +711,7 @@ defined('ABSPATH') or exit;
 <!-- Block settings background settings -->
 
 <div class="rex-modal-wrap rex-fade">
-    <div id="video-block-editor-wrapper" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4" data-block_tools="">
+    <div id="video-block-editor-wrapper" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable" data-block_tools="">
         <?php Rexbuilder_Utilities::close_button(); ?>
         <div class="modal-content">
             <div class="video-block-edit-wrap">
@@ -788,7 +788,7 @@ defined('ABSPATH') or exit;
 </div>
 
 <div class="rex-modal-wrap rex-fade">
-    <div id="rex-slider-block" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
+    <div id="rex-slider-block" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <div class="modal-content">
             <?php include 'rexbuilder-modal-loader.php';?>
             <div class="rex-slider__slide-list rex-modal-content__modal-area">
@@ -929,7 +929,7 @@ defined('ABSPATH') or exit;
 <!-- Insert RexSlider -->
 
 <div class="rex-modal-wrap rex-fade">
-    <div id="rex-slider__links-editor" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
+    <div id="rex-slider__links-editor" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <div class="modal-content">
             <div id="rex-slider__video-links-wrap" class="rex-modal-content__modal-area">
                 <div class="valign-wrapper rex-modal-content__modal-area__row">
@@ -1002,7 +1002,7 @@ defined('ABSPATH') or exit;
 <!-- //.rex-slider__links-editor -->
 
 <div class="rex-modal-wrap rex-fade">
-    <div id="modal-background-responsive-set" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
+    <div id="modal-background-responsive-set" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <?php Rexbuilder_Utilities::close_button(); ?>
         <div class="modal-content">
             <div id="section-config-first-row" class="row valign-wrapper">
@@ -1203,7 +1203,7 @@ defined('ABSPATH') or exit;
 </div><!-- Section settings -->
 
 <div class="rex-modal-wrap rex-fade">
-    <div id="rexeditor-modal" class="rexbuilder-materialize-wrap outside-content-modal rex-modal-draggable z-depth-4 rex-modal">
+    <div id="rexeditor-modal" class="rexbuilder-materialize-wrap outside-content-modal rex-modal-draggable rex-modal">
         <div class="modal-content-wrap">
             <div class="modal-editor-header">
                 <div class="rexeditor-modal__header__buttons-wrap">
@@ -1233,7 +1233,7 @@ defined('ABSPATH') or exit;
 </div><!-- Text Editor -->
 
 <div class="rex-modal-wrap rex-fade">
-    <div id="rex-model-block" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
+    <div id="rex-model-block" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <div class="modal-content">
 
             <?php include 'rexbuilder-modal-loader.php';?>
@@ -1308,7 +1308,7 @@ wp_reset_postdata();
     </div>
 </div><!-- RexModel modal -->
 <div class="rex-modal-wrap rex-fade">
-    <div id="rex-edit-model-choose" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
+    <div id="rex-edit-model-choose" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <div class="modal-content">
             <div class="edit-model-description">
                 Cosa vuoi fare?
@@ -1326,7 +1326,7 @@ wp_reset_postdata();
 </div><!-- Edit Model  -->
 
 <div class="rex-modal-wrap rex-fade">
-    <div id="rex-layout-page-changed" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
+    <div id="rex-layout-page-changed" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <div class="tool-button tool-button--black rex-change-layout-option tool-button--close tooltipped" data-position="bottom" data-tooltip="<?php _e( $tooltip, 'rexspansive');?>" data-rex-option="abort">
             <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
         </div>
@@ -1340,7 +1340,7 @@ wp_reset_postdata();
             <div class="tool-button tool-button--inline tool-button--black rex-change-layout-option" data-rex-option="continue">
                 <span class="rex-button continue"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
             </div>
-            <div class="tool-button tool-button--inline rex-change-layout-option" data-rex-option="save">
+            <div class="tool-button tool-button--inline tool-button--save rex-change-layout-option" data-rex-option="save">
                 <span class="rex-button save-page"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
             </div>
         </div>
@@ -1348,7 +1348,7 @@ wp_reset_postdata();
 </div><!-- Layout page Changed -->
 
 <div class="rex-modal-wrap rex-fade">
-    <div id="rex-locked-option" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
+    <div id="rex-locked-option" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <div class="modal-content">
             <div class="locked-option-changed-description">
             This feature is not avaiable until saved.

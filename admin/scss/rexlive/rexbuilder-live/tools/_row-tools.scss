@@ -137,13 +137,7 @@
 
 .add-new-section__wrap {
   padding: 20px 0;
-  .add-new-section {
-    padding: 10px;
-    background-color: transparent;
-    @include fill-icon($palette-color-1);
-    border: 2px solid $palette-color-1;
-    &:hover {
-      @include fill-icon($palette-color-1);
-    }
-  }
+  // .add-new-section {
+  //   @include bl-btn--add-big();
+  // }
 }

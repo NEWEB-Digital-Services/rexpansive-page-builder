@@ -262,7 +262,7 @@ $tool_button_classes = 'tool-button';
 
 <script type="text/x-tmpl" id="tmpl-add-new-section-button">
 <div class="bl_d-flex bl_jc-c add-new-section__wrap">
-    <div class="tool-button tool-button--inline tool-button--flat add-new-section">
+    <div class="tool-button tool-button--inline tool-button--flat tool-button--add-big add-new-section">
         <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
     </div>
 </div>

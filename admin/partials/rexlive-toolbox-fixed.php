@@ -42,7 +42,7 @@ global $layoutsAvaiable;
             case 0:
               ob_start();
             ?>
-              <div class="layout-container">
+              <div class="layout-container tool-option">
                 <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo $layout['min']?>" data-max-width="<?php echo $layout['max']; ?>" data-name="<?php echo $layout['id'] ?>" data-label="<?php echo esc_attr( $layout['label'] ); ?>">
                   <?php Rexbuilder_Utilities::get_icon('#A010-Mobile'); ?>
                 </div>
@@ -53,7 +53,7 @@ global $layoutsAvaiable;
             case 1:
               ob_start();
             ?>
-              <div class="layout-container">
+              <div class="layout-container tool-option">
                 <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo $layout['min']?>" data-max-width="<?php echo $layout['max']; ?>" data-name="<?php echo $layout['id'] ?>" data-label="<?php echo esc_attr( $layout['label'] ); ?>">
                   <?php Rexbuilder_Utilities::get_icon('#A001-Tablet'); ?>
                 </div>
@@ -64,7 +64,7 @@ global $layoutsAvaiable;
             case 2:
               ob_start();
               ?>
-              <div class="layout-container">
+              <div class="layout-container tool-option">
                 <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="" data-max-width="" data-name="<?php echo $layout['id'] ?>" data-label="<?php echo esc_attr( $layout['label'] ); ?>">
                   <?php Rexbuilder_Utilities::get_icon('#A011-Desktop'); ?>
                 </div>
@@ -75,7 +75,7 @@ global $layoutsAvaiable;
             default:
               ob_start();
               ?>
-              <div class="layout-container">
+              <div class="layout-container tool-option">
                 <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo $layout['min']; ?>" data-max-width="<?php echo $layout['max']; ?>" data-name="<?php echo $layout['id'] ?>" data-label="<?php echo esc_attr( $layout['label'] ); ?>" data-layout-type="custom">
                   <?php Rexbuilder_Utilities::get_icon('#A009-Range'); ?>
                   <div class="layout-custom-number">
@@ -90,9 +90,9 @@ global $layoutsAvaiable;
         }
         ?>
         <?php echo $default_layouts; ?>
-        <div class="layout-container">
-          <div class="builder-config-layouts builder-add-custom-layout">
-          <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
+        <div class="layout-container tool-option">
+          <div class="builder-config-layouts builder-add-custom-layout tool-button--add-small bl_d-iflex">
+            <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
           </div>
         </div>
         <?php echo $custom_layouts; ?>

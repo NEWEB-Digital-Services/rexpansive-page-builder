@@ -16,7 +16,7 @@ var Rexbuilder_Block = (function ($) {
 
             var data = {
                 eventName: "rexlive:edited",
-                modelEdited: $section.hasClass("rex-model-section")
+                modelEdited: $section.hasClass("rex-model-section"),
             }
             Rexbuilder_Util_Editor.sendParentIframeMessage(data);
         });

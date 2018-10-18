@@ -3036,6 +3036,26 @@ ul {
       display: none; }
     .tool-button.tool-button--color .sp-dd {
       display: none; }
+  .tool-button.tool-button--add-big {
+    padding: 10px;
+    background-color: transparent;
+    border: 2px solid #00ACFF; }
+    .tool-button.tool-button--add-big .l-svg-icons > svg {
+      fill: #00ACFF; }
+    .tool-button.tool-button--add-big:hover .l-svg-icons > svg {
+      fill: #00ACFF; }
+    .tool-button.tool-button--add-big .l-svg-icons {
+      font-size: 16px; }
+  .tool-button.tool-button--add-small {
+    padding: 3px;
+    border-radius: 50%;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #000; }
+    .tool-button.tool-button--add-small:hover {
+      border-color: #00ACFF; }
+    .tool-button.tool-button--add-small .l-svg-icons {
+      font-size: 16px; }
   .tool-button.tool-button--close {
     position: absolute;
     top: 0;
@@ -3207,14 +3227,6 @@ ul {
 
 .add-new-section__wrap {
   padding: 20px 0; }
-  .add-new-section__wrap .add-new-section {
-    padding: 10px;
-    background-color: transparent;
-    border: 2px solid #00ACFF; }
-    .add-new-section__wrap .add-new-section .l-svg-icons > svg {
-      fill: #00ACFF; }
-    .add-new-section__wrap .add-new-section:hover .l-svg-icons > svg {
-      fill: #00ACFF; }
 
 .rexlive-block-toolbox {
   position: absolute;

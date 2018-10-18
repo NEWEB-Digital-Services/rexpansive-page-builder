@@ -15,16 +15,36 @@ global $layoutsAvaiable;
 
 ?>
 <div class="rex-modal-wrap rex-fade">
-  <div id="rexlive-custom-layout-modal" class="rexbuilder-materialize-wrap rex-modal rex-modal-draggable z-depth-4">
+  <div id="rexlive-custom-layout-modal" class="rexbuilder-materialize-wrap rex-modal rex-modal-draggable">
+    <div class="tool-button tool-button--inline tool-button--black tool-button--close rex-cancel-button" data-rex-option="continue">
+      <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+    </div>
     <div class="modal-content">
-      <div class="b-row align-items-center">
-        <div class="b-col">
+      <!-- <div class="b-row align-items-center">
+        <div class="b-col"> -->
           <ul class="layout__list">
             <?php 
             foreach( $layoutsAvaiable as $layout ) {
               ?>
-              <li class="layout__item">
-                <div class="layout">
+              <li class="layout__item layout">
+                <!-- <div class="layout"> -->
+                  <div class="layout__setting">
+                    <?php 
+                    switch($layout['id']) {
+                      case 'mobile':
+                        Rexbuilder_Utilities::get_icon('#A010-Mobile');
+                        break;
+                      case 'tablet':
+                        Rexbuilder_Utilities::get_icon('#A001-Tablet');
+                        break;
+                      case 'default':
+                        Rexbuilder_Utilities::get_icon('#A011-Desktop');
+                        break;
+                      default:
+                        break;
+                    }
+                    ?>
+                  </div>
                   <div class="layout__setting">
                     <input type="hidden" name="rexlive-layout-id" value="<?php echo esc_attr( $layout['id'] ); ?>">
                     <input class="layout-label-input" type="hidden" name="rexlive-layout-label" data-editable-field="true" value="<?php echo esc_attr( $layout['label'] ); ?>">
@@ -43,6 +63,7 @@ global $layoutsAvaiable;
                     <input type="hidden" name="rexlive-layout-type" value="<?php echo esc_attr( $layout['type'] ); ?>">
                   </div>
                   <div class="layout__setting"></div>
+                  <div class="layout__setting"></div>
                   <?php } else { ?>
                     <div class="layout__setting">
                     <input type="hidden" name="rexlive-layout-type" value="<?php echo esc_attr( $layout['type'] ); ?>">
@@ -57,27 +78,25 @@ global $layoutsAvaiable;
                     </span>
                   </div>
                   <?php } ?>
-                </div>
+                <!-- </div> -->
               </li>
               <?php
             }
             ?>
           </ul>
         </div>
-        <div class="b-row">
-          <div class="b-col" style="text-align:center;">
-            <button id="rexlive-add-custom-layout" class="builder-button btn-floating btn light-blue darken-1 waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="Add Layout">
-              <i class="material-icons text-white">&#xE145;</i>
-            </button>
-          </div>
-        </div>
       </div>
-    </div>
-    <div class="rex-modal-footer">
-      <button class="waves-effect waves-light btn-flat grey rex-cancel-button" value="">
-        <i class="rex-icon">n</i>
-      </button>
-    </div>
+      <div class="b-row">
+        <div class="b-col" style="text-align:center;">
+          <div id="rexlive-add-custom-layout" class="tool-button tool-button--inline tool-button--flat tool-button--add-big">
+            <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
+          </div>
+          <!-- <button class="builder-button btn-floating btn light-blue darken-1 waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="Add Layout">
+            <i class="material-icons text-white">&#xE145;</i>
+          </button> -->
+        </div>
+      <!-- </div>
+    </div> -->
   </div>
 </div>
 

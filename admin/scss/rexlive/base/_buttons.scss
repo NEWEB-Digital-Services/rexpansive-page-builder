@@ -91,6 +91,20 @@
     }
   }
 
+  &.tool-button--add-big {
+    @include bl-btn--add-big();
+    #{$icon-class} {
+      font-size: 16px;
+    }
+  }
+
+  &.tool-button--add-small {
+    @include bl-btn--add-small();
+    #{$icon-class} {
+      font-size: 16px;
+    }
+  }
+
   &.tool-button--close {
     position: absolute;
     top: 0;

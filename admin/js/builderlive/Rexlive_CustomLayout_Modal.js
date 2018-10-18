@@ -310,7 +310,8 @@ var CustomLayouts_Modal = (function ($) {
             var layoutName = $item.find("input[name=\"rexlive-layout-id\"]").val();
             if (layoutName != "default" && layoutName != "tablet" && layoutName != "mobile") {
                 if ($item.find(".rexlive-layout--move").length == 0) {
-                    $item.find(".layout").append(tmpl("rexlive-tmpl-custom-layout-handle", {}));
+                    // $item.find(".layout").append(tmpl("rexlive-tmpl-custom-layout-handle", {}));
+                    $item.append(tmpl("rexlive-tmpl-custom-layout-handle", {}));
                 }
             }
         });
