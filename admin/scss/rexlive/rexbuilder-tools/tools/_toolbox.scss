@@ -111,13 +111,36 @@
 }
 
 .btn-save {
-  @include fill-icon(#00acff);
+  @include fill-icon($palette-color-1);
   padding-left: 10px;
   .l-svg-icons{
     font-size: 30px;
   }
   &.page-edited{
-    @include fill-icon(#979797);
+    @include fill-icon($palette-color-2);
+  }
+}
+
+.tool-option {
+  &.btn-undo,
+  &.btn-redo {
+    @include fill-icon($palette-color-2);
+  }
+}
+
+.btn-undo--active {
+  .tool-option {
+    &.btn-undo {
+      @include fill-icon($palette-color-1);
+    }
+  }
+}
+
+.btn-redo--active {
+  .tool-option {
+    &.btn-redo {
+      @include fill-icon($palette-color-1);
+    }
   }
 }
 

@@ -3299,6 +3299,10 @@ body.rexpansive-editor .lean-overlay {
 .layout__item .removing-item {
   display: none; }
 
+.add-custom-layout__wrap {
+  padding-top: 20px;
+  text-align: center; }
+
 .layout-page-changed-description {
   padding: 15px;
   text-align: center; }
@@ -3527,11 +3531,20 @@ body.rexpansive-editor .lean-overlay {
 .btn-save {
   padding-left: 10px; }
   .btn-save .l-svg-icons > svg {
-    fill: #00acff; }
+    fill: #00ACFF; }
   .btn-save .l-svg-icons {
     font-size: 30px; }
   .btn-save.page-edited .l-svg-icons > svg {
     fill: #979797; }
+
+.tool-option.btn-undo .l-svg-icons > svg, .tool-option.btn-redo .l-svg-icons > svg {
+  fill: #979797; }
+
+.btn-undo--active .tool-option.btn-undo .l-svg-icons > svg {
+  fill: #00ACFF; }
+
+.btn-redo--active .tool-option.btn-redo .l-svg-icons > svg {
+  fill: #00ACFF; }
 
 .btn-undo {
   border-right-color: #D6D6D6;

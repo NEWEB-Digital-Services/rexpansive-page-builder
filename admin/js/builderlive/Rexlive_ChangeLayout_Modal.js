@@ -39,6 +39,7 @@ var Change_Layout_Modal = (function ($) {
                     Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataSavePage);
                     Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataSaveModel);
                     Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage({eventName:'rexlive:startChangeLayout'});
+                    Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.removeClass('btn-redo--active btn-undo--active');
                     break;
                 case "continue":
                     var data = {
@@ -50,6 +51,7 @@ var Change_Layout_Modal = (function ($) {
                         }
                     }
                     Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
+                    Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.removeClass('btn-redo--active btn-undo--active');
                     break;
                 case "abort":
                     break;

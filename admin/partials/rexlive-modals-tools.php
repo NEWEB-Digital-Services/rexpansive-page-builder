@@ -84,19 +84,14 @@ global $layoutsAvaiable;
             }
             ?>
           </ul>
+        <!-- </div>
+      </div> -->
+      <div class="add-custom-layout__wrap">
+        <div id="rexlive-add-custom-layout" class="tool-button tool-button--inline tool-button--flat tool-button--add-big">
+          <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
         </div>
       </div>
-      <div class="b-row">
-        <div class="b-col" style="text-align:center;">
-          <div id="rexlive-add-custom-layout" class="tool-button tool-button--inline tool-button--flat tool-button--add-big">
-            <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
-          </div>
-          <!-- <button class="builder-button btn-floating btn light-blue darken-1 waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="Add Layout">
-            <i class="material-icons text-white">&#xE145;</i>
-          </button> -->
-        </div>
-      <!-- </div>
-    </div> -->
+    </div>
   </div>
 </div>
 

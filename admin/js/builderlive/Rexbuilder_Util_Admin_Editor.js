@@ -35,7 +35,25 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         } else {
           pageSaved = false;
         }
+        // get undo redo stack from iframe
+        // console.log(event.data.undoRedoStacks);
         $saveBtn.addClass("page-edited");
+      }
+
+      /**
+       * Highlighting undo/redo buttons if there are performable actions
+       */
+      if(event.data.eventName == "rexlive:undoRedoStackChange") {
+        if(event.data.stacks.undo > 0) {
+          Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.addClass('btn-undo--active');
+        } else {
+          Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.removeClass('btn-undo--active');
+        }
+        if(event.data.stacks.redo > 0) {
+          Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.addClass('btn-redo--active');
+        } else {
+          Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.removeClass('btn-redo--active');
+        }
       }
 
       if (event.data.eventName == "rexlive:openMediaUploader") {

@@ -427,7 +427,9 @@ var Rexbuilder_Util_Editor = (function($) {
         var action = undoStackArray.pop();
         Rexbuilder_Dom_Util.performAction(action, false);
         redoStackArray.push(action);
+        
       }
+      _sendUndoRedoInformation();
     });
 
     $(document).on("rexlive:redo", function(e) {
@@ -436,6 +438,7 @@ var Rexbuilder_Util_Editor = (function($) {
         Rexbuilder_Dom_Util.performAction(action, true);
         undoStackArray.push(action);
       }
+      _sendUndoRedoInformation();
     });
 
     $(document).on("rexlive:galleryReady", function(e) {
@@ -521,6 +524,19 @@ var Rexbuilder_Util_Editor = (function($) {
 
     undoStackArray.push(action);
     redoStackArray = [];
+
+    _sendUndoRedoInformation();
+  };
+
+  var _sendUndoRedoInformation = function() {
+    var ur_data = {
+      eventName: "rexlive:undoRedoStackChange",
+      stacks: {
+        undo: undoStackArray.length,
+        redo: redoStackArray.length
+      }
+    };
+    Rexbuilder_Util_Editor.sendParentIframeMessage(ur_data);
   };
 
   var getIDs = function($target) {
