@@ -48,6 +48,7 @@ var BlockOptions_Modal = (function($) {
     BlockPaddings_Modal.init($blockOptions);
     // Block_Content_Positions_Modal.init($blockOptions);
     Block_Image_Positions_Modal.init($blockOptions);
+    Block_Image_Editor_Modal.init($blockOptions);
     Block_CustomClasses_Modal.init($blockOptions);
     Block_Url_Modal.init($blockOptions);
   };

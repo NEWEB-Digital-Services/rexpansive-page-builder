@@ -425,6 +425,100 @@ var Rexbuilder_Block_Editor = (function($) {
   };
 
   /**
+   * Edit the block image settings 
+   * @since 2.0.0
+   */
+  $(document).on('click', '.edit-block-image-position', function(e) {
+    var $btn = $(e.target);
+    var $elem = $btn.parents(".grid-stack-item");
+    var $section = $elem.parents(".rexpansive_section");
+    var rex_block_id = $elem.attr("data-rexbuilder-block-id");
+    var $elemData = $elem.children(".rexbuilder-block-data");
+    var sectionID = $section.attr("data-rexlive-section-id");
+    var $itemContent = $elem.find(".grid-item-content");
+    var modelNumber =
+      typeof $section.attr("data-rexlive-model-number") != "undefined"
+        ? $section.attr("data-rexlive-model-number")
+        : "";
+
+    var idImage =
+      typeof $elemData.attr("data-id_image_bg_block") == "undefined"
+        ? ""
+        : $elemData.attr("data-id_image_bg_block");
+    var imageUrl =
+      typeof $elemData.attr("data-image_bg_block") == "undefined"
+        ? ""
+        : $elemData.attr("data-image_bg_block");
+    var width =
+      typeof $itemContent.attr("data-background_image_width") == "undefined"
+        ? ""
+        : $itemContent.attr("data-background_image_width");
+    var height =
+      typeof $itemContent.attr("data-background_image_height") == "undefined"
+        ? ""
+        : $itemContent.attr("data-background_image_height");
+    var activeImage =
+      typeof $elemData.attr("data-image_bg_elem_active") != "undefined"
+        ? $elemData.attr("data-image_bg_elem_active")
+        : true;
+    var defaultTypeImage =
+      $elem.parents(".grid-stack-row").attr("data-layout") == "fixed"
+        ? "full"
+        : "natural";
+    var typeBGimage =
+      typeof $elemData.attr("data-type_bg_block") == "undefined"
+        ? defaultTypeImage
+        : $elemData.attr("data-type_bg_block");
+    var activePhotoswipe =
+      typeof $elemData.attr("data-photoswipe") == "undefined"
+        ? ""
+        : $elemData.attr("data-photoswipe");
+    var imageData = {
+      idImage: idImage,
+      imageUrl: imageUrl,
+      width: width,
+      height: height,
+      typeBGimage: typeBGimage,
+      active: activeImage,
+      defaultTypeImage: defaultTypeImage,
+      photoswipe: activePhotoswipe,
+      target: {
+        sectionID: sectionID,
+        modelNumber: modelNumber,
+        rexID: rex_block_id
+      }
+    };
+
+    var blockFlexImgPosition =
+        typeof $elemData.attr("data-block_flex_img_position") == "undefined"
+          ? ""
+          : $elemData.attr("data-block_flex_img_position");
+      var blockFlexImgPositionArr = blockFlexImgPosition.split(" ");
+      var blockFlexImgPositionString =
+        blockFlexImgPositionArr[1] + "-" + blockFlexImgPositionArr[0];
+      var img_position = {
+        target: {
+          sectionID: sectionID,
+          modelNumber: modelNumber,
+          rexID: rex_block_id
+        },
+        position: blockFlexImgPositionString
+      };
+
+    var settings = {
+      imageBG: imageData,
+      flexImgPosition: img_position
+    }
+
+    var data = {
+      eventName: "rexlive:editBlockImageSettings",
+      activeBlockData: settings
+    };
+
+    Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+  });
+
+  /**
    * Launching the spectrum color picker on an input element, for the block background color
    * @param {DOM element} el input element in which launch the color picker
    * @since 2.0.0
