@@ -14,7 +14,7 @@ defined( 'ABSPATH' ) or exit;
 global $layoutsAvaiable;
 
 ?>
-<div class="rex-modal-wrap rex-fade">
+<div class="rex-modal-wrap">
   <div id="rexlive-custom-layout-modal" class="rexbuilder-materialize-wrap rex-modal rex-modal-draggable">
     <div class="tool-button tool-button--inline tool-button--black tool-button--close rex-cancel-button" data-rex-option="continue">
       <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
@@ -28,7 +28,7 @@ global $layoutsAvaiable;
               ?>
               <li class="layout__item layout">
                 <!-- <div class="layout"> -->
-                  <div class="layout__setting">
+                  <div class="layout__setting layout__icon">
                     <?php 
                     switch($layout['id']) {
                       case 'mobile':
@@ -41,6 +41,7 @@ global $layoutsAvaiable;
                         Rexbuilder_Utilities::get_icon('#A011-Desktop');
                         break;
                       default:
+                        Rexbuilder_Utilities::get_icon('#A009-Range');
                         break;
                     }
                     ?>
@@ -74,7 +75,7 @@ global $layoutsAvaiable;
                   </div>
                   <div class="layout__setting">
                     <span class="rexlive-layout--delete">
-                      <span class="dashicons-trash dashicons-before"></span>
+                      <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                     </span>
                   </div>
                   <?php } ?>

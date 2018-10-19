@@ -3264,7 +3264,35 @@ body.rexpansive-editor .lean-overlay {
   .rex-modal__outside-footer .tool-button {
     margin: 0 5px; }
   .rex-modal__outside-footer .tool-button--save {
-    padding: 0; }
+    padding: 0;
+    position: relative; }
+    .rex-modal__outside-footer .tool-button--save .btn-save--edited {
+      display: inline-block;
+      visibility: hidden;
+      position: absolute;
+      top: 0;
+      left: 0; }
+      .rex-modal__outside-footer .tool-button--save .btn-save--edited .l-svg-icons > svg {
+        fill: #979797; }
+      .rex-modal__outside-footer .tool-button--save .btn-save--edited:hover .l-svg-icons > svg {
+        fill: #000; }
+    .rex-modal__outside-footer .tool-button--save .btn-save--saved {
+      display: inline-block;
+      visibility: visible; }
+      .rex-modal__outside-footer .tool-button--save .btn-save--saved .l-svg-icons > svg {
+        fill: #00ACFF; }
+    .rex-modal__outside-footer .tool-button--save.page-edited .btn-save--edited {
+      visibility: visible; }
+    .rex-modal__outside-footer .tool-button--save.page-edited .btn-save--saved {
+      visibility: hidden; }
+    .setting-edited .rex-modal__outside-footer .tool-button--save .btn-save--edited {
+      visibility: visible; }
+    .setting-edited .rex-modal__outside-footer .tool-button--save .btn-save--saved {
+      visibility: hidden; }
+    .setting-saving .rex-modal__outside-footer .tool-button--save .btn-save--saved {
+      visibility: visible;
+      -webkit-animation: scale-in-center 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+              animation: scale-in-center 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
     .rex-modal__outside-footer .tool-button--save .l-svg-icons > svg {
       fill: #00ACFF; }
     .rex-modal__outside-footer .tool-button--save .l-svg-icons {
@@ -3325,7 +3353,10 @@ body.rexpansive-editor .lean-overlay {
 .layout {
   margin: 0; }
   .layout.active-on-page {
-    background-color: lightblue; }
+    background-color: #00ACFF;
+    color: #fff; }
+    .layout.active-on-page .l-svg-icons > svg {
+      fill: #fff; }
   .layout .l-svg-icons > svg {
     fill: #000; }
   .layout .dashicons,
@@ -3337,14 +3368,13 @@ body.rexpansive-editor .lean-overlay {
 .layout__list {
   display: table;
   border-collapse: collapse;
-  border-top: 1px solid #979797;
   width: 100%;
   margin: 0; }
 
 .layout__item {
   display: table-row;
   vertical-align: middle;
-  border-bottom: 1px solid #979797; }
+  border-bottom: 1px solid #daf3ff; }
   .layout__item .layout__setting:first-child {
     padding-left: 20px; }
   .layout__item .layout__setting:last-child {
@@ -3605,7 +3635,7 @@ body.rexpansive-editor .lean-overlay {
     visibility: hidden;
     position: absolute;
     top: 0;
-    left: 10px; }
+    left: 0; }
     .btn-save .btn-save--edited .l-svg-icons > svg {
       fill: #979797; }
     .btn-save .btn-save--edited:hover .l-svg-icons > svg {
@@ -3615,12 +3645,22 @@ body.rexpansive-editor .lean-overlay {
     visibility: visible; }
     .btn-save .btn-save--saved .l-svg-icons > svg {
       fill: #00ACFF; }
-  .btn-save .l-svg-icons {
-    font-size: 30px; }
   .btn-save.page-edited .btn-save--edited {
     visibility: visible; }
   .btn-save.page-edited .btn-save--saved {
     visibility: hidden; }
+  .setting-edited .btn-save .btn-save--edited {
+    visibility: visible; }
+  .setting-edited .btn-save .btn-save--saved {
+    visibility: hidden; }
+  .setting-saving .btn-save .btn-save--saved {
+    visibility: visible;
+    -webkit-animation: scale-in-center 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
+            animation: scale-in-center 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
+  .btn-save .l-svg-icons {
+    font-size: 30px; }
+  .btn-save .btn-save--edited {
+    left: 10px; }
   .btn-save.rex-saving .btn-save--edited {
     -webkit-animation: scale-out-center 0.2s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
             animation: scale-out-center 0.2s cubic-bezier(0.55, 0.085, 0.68, 0.53) both; }

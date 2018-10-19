@@ -53,6 +53,8 @@ body.rexpansive-editor {
 
   .tool-button--save {
     padding: 0;
+    @include page-edited-ui();
+
     @include fill-icon($palette-color-1);
     .l-svg-icons {
       font-size: 30px;

@@ -27,7 +27,11 @@ var Rexlive_Modals_Utils = (function ($) {
         } else {
             $target.addClass('rex-in--up');
         }
-        $target.addClass('rex-in').show();
+        
+        // $target.show().addClass('rex-in');
+        $target.fadeIn({
+            duration: 300
+        });
 
         if (additional_class.length) {
             for (var i = 0; i < additional_class.length; i++) {
@@ -53,7 +57,10 @@ var Rexlive_Modals_Utils = (function ($) {
             $('body').removeClass('rex-modal-open');
             $lean_overlay.hide();
         }
-        $target.removeClass('rex-in').hide();
+        // $target.removeClass('rex-in').hide();
+        $target.fadeOut({
+            duration: 300
+        });
         if ($target.hasClass('rex-in--up')) {
             $target.removeClass('rex-in--up');
         }

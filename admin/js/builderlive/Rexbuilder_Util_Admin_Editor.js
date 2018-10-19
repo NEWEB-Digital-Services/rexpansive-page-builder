@@ -38,6 +38,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         // get undo redo stack from iframe
         // console.log(event.data.undoRedoStacks);
         $saveBtn.addClass("page-edited");
+        // Rexbuilder_Util_Admin_Editor.$body.addClass('page-edited');
       }
 
       /**
@@ -168,6 +169,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
             false
           );
           $saveBtn.removeClass("page-edited");
+          // Rexbuilder_Util_Admin_Editor.$body.removeClass('page-edited');
           $saveBtn.removeClass("rex-saving");
           if (
             typeof event.data.buttonData !== "undefined" &&
@@ -431,11 +433,13 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
 
   var _editPageProperties = function() {
     pageSaved = false;
+    // Rexbuilder_Util_Admin_Editor.$body.addClass('page-edited');
     $saveBtn.addClass("page-edited");
   };
 
   // init the utilities
   var init = function() {
+    this.$body = $('body');
     this.$rexpansiveContainer = $("#rexpansive-builder-backend-wrapper");
     $frameContainer = this.$rexpansiveContainer.find(
       ".rexpansive-live-frame-container"

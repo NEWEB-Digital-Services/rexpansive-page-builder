@@ -2,7 +2,9 @@
   // display: flex;
   // justify-content: space-around;
   &.active-on-page {
-    background-color: lightblue;
+    background-color: $palette-color-1;
+    color: #fff;
+    @include fill-icon(#fff);
   }
 
   margin: 0;
@@ -20,7 +22,6 @@
 .layout__list {
   display: table;
   border-collapse: collapse; 
-  border-top: 1px solid $palette-color-2;
   width: 100%;
   margin: 0;
 }
@@ -28,7 +29,7 @@
 .layout__item {
   display: table-row;
   vertical-align: middle;
-  border-bottom: 1px solid $palette-color-2;
+  border-bottom: 1px solid $palette-color-5;
   .layout__setting {
     &:first-child {
       padding-left: 20px;

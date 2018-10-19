@@ -110,35 +110,14 @@
   font-size: 20px;
 }
 
-.btn-save {
-  position: relative;
-  .btn-save--edited {
-    display: inline-block;
-    visibility: hidden;
-    position: absolute;
-    top: 0;
-    left: 10px;
-    @include fill-icon($palette-color-2);
-    &:hover {
-      @include fill-icon(#000);
-    }
-  }
-  .btn-save--saved {
-    display: inline-block;
-    visibility: visible;
-    @include fill-icon($palette-color-1);
-  }
+.btn-save {  
+  @include page-edited-ui();
   padding-left: 10px;
   .l-svg-icons{
     font-size: 30px;
   }
-  &.page-edited {
-    .btn-save--edited {
-      visibility: visible;
-    }
-    .btn-save--saved {
-      visibility: hidden;
-    }
+  .btn-save--edited {
+    left: 10px;
   }
   &.rex-saving {
     .btn-save--edited {

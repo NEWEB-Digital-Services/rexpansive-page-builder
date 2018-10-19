@@ -301,7 +301,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'rexlive-util-admin', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Util_Admin_Editor.js', array( 'jquery' ), null, true );
 				global $post;
 				$source = get_permalink($post->ID);
-				wp_enqueue_script( 'tippy', 'https://unpkg.com/tippy.js@3/dist/tippy.all.min.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'tippy', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/tippy.all.min.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-start', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Starting.js', array( 'jquery' ), null, true );
 				wp_localize_script( 'rexlive-start', 'live_editor_obj', array(
 					'source_url' => $source,

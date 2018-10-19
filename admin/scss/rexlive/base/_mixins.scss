@@ -92,3 +92,48 @@
 @mixin live-fonts {
   font-family: 'Roboto', sans-serif;
 }
+
+@mixin page-edited-ui {
+  position: relative;
+  .btn-save--edited {
+    display: inline-block;
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    @include fill-icon($palette-color-2);
+    &:hover {
+      @include fill-icon(#000);
+    }
+  }
+  .btn-save--saved {
+    display: inline-block;
+    visibility: visible;
+    @include fill-icon($palette-color-1);
+  }
+  &.page-edited {
+    .btn-save--edited {
+      visibility: visible;
+    }
+    .btn-save--saved {
+      visibility: hidden;
+    }
+  }
+  .setting-edited & {
+    .btn-save--edited {
+      visibility: visible;
+    }
+    .btn-save--saved {
+      visibility: hidden;
+    }
+  }
+  .setting-saving & {
+    // .btn-save--edited {
+    //   animation: scale-out-center 0.2s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+    // }
+    .btn-save--saved {
+      visibility: visible;
+      animation: scale-in-center 0.2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+    }
+  }
+}

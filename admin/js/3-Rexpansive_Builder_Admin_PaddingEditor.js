@@ -69,7 +69,7 @@ var Rexpansive_Builder_Admin_PaddingEditor = (function($) {
       }
 
       // $text_editor.addClass('push-down-modal');
-      Rexpansive_Builder_Admin_Modals.OpenModal($modal_wrap, true);
+      Rexlive_Modals_Utils.openModal($modal_wrap, true);
     });
 
     block_content_padding_properties.$save_button.on('click', function () {

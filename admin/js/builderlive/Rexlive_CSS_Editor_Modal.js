@@ -11,6 +11,7 @@ var CssEditor_Modal = (function ($) {
             editor.setValue(customCSS);
         }
 
+        // ace_css_editor_modal_properties.$self.removeClass('setting-edited');
         editor.clearSelection();
         Rexlive_Modals_Utils.openModal(ace_css_editor_modal_properties.$modal_wrap);
     }
@@ -30,8 +31,12 @@ var CssEditor_Modal = (function ($) {
                 }
             }
             
-            Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_customCSS);
-            _closeModal();
+            ace_css_editor_modal_properties.$self.addClass('setting-saving'); // .on(Rexbuilder_Util_Admin_Editor.animationEvent, function(e) {
+            setTimeout(function() {
+                Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_customCSS);
+                _closeModal();
+                ace_css_editor_modal_properties.$self.removeClass('setting-saving');
+            }, 800);
         });
         
         ace_css_editor_modal_properties.$cancel_button.on('click', function (e) {
@@ -61,6 +66,11 @@ var CssEditor_Modal = (function ($) {
         editor.setTheme("ace/theme/monokai");
         editor.getSession().setMode("ace/mode/css");
         editor.on("change", function(e){
+            // if( e.start.row == 0 && e.start.column == 0 && e.action == 'remove' ) {
+            //     $modal.removeClass('setting-edited');
+            // } else {
+            //     $modal.addClass('setting-edited');
+            // }
             Rexbuilder_Util_Admin_Editor.editPageProperties();
         });
         defaultCss = "";

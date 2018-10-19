@@ -20,7 +20,8 @@ var Rexpansive_Builder_Admin_Modals = (function($) {
     } else {
       $target.addClass('rex-in--up');
     }
-    $target.addClass('rex-in').show();
+    console.log('ma sono io??');
+    $target.addClass('rex-in');
 
     if (additional_class.length) {
       for (var i = 0; i < additional_class.length; i++) {

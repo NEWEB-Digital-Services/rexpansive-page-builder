@@ -16,7 +16,7 @@ defined('ABSPATH') or exit;
 
 <script type="text/x-tmpl" id="rexlive-tmpl-custom-layout-modal">
 <li class="layout__item layout">
-    <div class="layout__setting"></div>
+    <div class="layout__setting layout__icon"><?php Rexbuilder_Utilities::get_icon('#A009-Range'); ?></div>
     <div class="layout__setting">
         <input type="hidden" name="rexlive-layout-id" value="{%=customLayout.id%}">
         <input class="layout-label-input" type="hidden" name="rexlive-layout-label" data-editable-field="true" value="{%=customLayout.label%}">
@@ -44,7 +44,7 @@ defined('ABSPATH') or exit;
     </div>
     <div class="layout__setting">
         <span class="rexlive-layout--move">
-            <span class="dashicons-move dashicons-before"></span>
+        <?php Rexbuilder_Utilities::get_icon('#B007-Move'); ?>
         </span>
     </div>
 </li>
@@ -53,7 +53,7 @@ defined('ABSPATH') or exit;
 <script type="text/x-tmpl" id="rexlive-tmpl-custom-layout-handle">
 <div class="layout__setting">
     <span class="rexlive-layout--move">
-        <span class="dashicons-move dashicons-before"></span>
+        <?php Rexbuilder_Utilities::get_icon('#B007-Move'); ?>
     </span>
 </div>
 </script>
