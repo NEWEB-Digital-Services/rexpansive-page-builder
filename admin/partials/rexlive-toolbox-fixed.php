@@ -15,7 +15,7 @@ global $layoutsAvaiable;
 ?>
 <div class="rexlive-toolbox__toggle-wrap">
   <div class="tools-container">
-    <div class="tool-option close-toolbox">
+    <div class="tool-option close-toolbox tippy" data-tippy-content="<?php esc_attr_e( 'Hide', 'rexpansive' ); ?>">
       <?php Rexbuilder_Utilities::get_icon('#A007-Close'); ?>
     </div>
   </div>
@@ -27,7 +27,7 @@ global $layoutsAvaiable;
         <div class="tool-option tool-option--placeholder">
           <?php Rexbuilder_Utilities::get_icon('#A007-Close'); ?>
         </div>
-        <div class="tool-option btn-custom-css" id="open-css-editor">
+        <div class="tool-option btn-custom-css tippy" id="open-css-editor" data-tippy-content="<?php esc_attr_e( 'Css', 'rexpansive' ); ?>">
           <?php Rexbuilder_Utilities::get_icon('#A008-Code'); ?>
         </div>
       </div>
@@ -42,7 +42,7 @@ global $layoutsAvaiable;
             case 0:
               ob_start();
             ?>
-              <div class="layout-container tool-option">
+              <div class="layout-container tool-option tippy" data-tippy-content="<?php echo esc_attr( $layout['label'] ); ?>">
                 <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo $layout['min']?>" data-max-width="<?php echo $layout['max']; ?>" data-name="<?php echo $layout['id'] ?>" data-label="<?php echo esc_attr( $layout['label'] ); ?>">
                   <?php Rexbuilder_Utilities::get_icon('#A010-Mobile'); ?>
                 </div>
@@ -53,7 +53,7 @@ global $layoutsAvaiable;
             case 1:
               ob_start();
             ?>
-              <div class="layout-container tool-option">
+              <div class="layout-container tool-option tippy" data-tippy-content="<?php echo esc_attr( $layout['label'] ); ?>">
                 <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo $layout['min']?>" data-max-width="<?php echo $layout['max']; ?>" data-name="<?php echo $layout['id'] ?>" data-label="<?php echo esc_attr( $layout['label'] ); ?>">
                   <?php Rexbuilder_Utilities::get_icon('#A001-Tablet'); ?>
                 </div>
@@ -64,7 +64,7 @@ global $layoutsAvaiable;
             case 2:
               ob_start();
               ?>
-              <div class="layout-container tool-option">
+              <div class="layout-container tool-option tippy" data-tippy-content="<?php echo esc_attr( $layout['label'] ); ?>">
                 <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="" data-max-width="" data-name="<?php echo $layout['id'] ?>" data-label="<?php echo esc_attr( $layout['label'] ); ?>">
                   <?php Rexbuilder_Utilities::get_icon('#A011-Desktop'); ?>
                 </div>
@@ -75,7 +75,7 @@ global $layoutsAvaiable;
             default:
               ob_start();
               ?>
-              <div class="layout-container tool-option">
+              <div class="layout-container tool-option tippy" data-tippy-content="<?php echo esc_attr( $layout['label'] ); ?>">
                 <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo $layout['min']; ?>" data-max-width="<?php echo $layout['max']; ?>" data-name="<?php echo $layout['id'] ?>" data-label="<?php echo esc_attr( $layout['label'] ); ?>" data-layout-type="custom">
                   <?php Rexbuilder_Utilities::get_icon('#A009-Range'); ?>
                   <div class="layout-custom-number">
@@ -90,8 +90,8 @@ global $layoutsAvaiable;
         }
         ?>
         <?php echo $default_layouts; ?>
-        <div class="layout-container tool-option">
-          <div class="builder-config-layouts builder-add-custom-layout tool-button--add-small bl_d-iflex">
+        <div class="layout-container tool-option tippy" data-tippy-content="<?php esc_attr_e( 'Layouts', 'rexpansive' ); ?>">
+          <div class="builder-config-layouts builder-add-custom-layout bl_d-iflex">
             <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
           </div>
         </div>
@@ -101,17 +101,18 @@ global $layoutsAvaiable;
     <div class="tools-container-right">
       <div class="right-tools rexlive-builder-actions">
         <!-- Pulsante per importare i modelli -->
-        <div class="tool-option btn-models">
+        <div class="tool-option btn-models tippy" data-tippy-content="<?php esc_attr_e( 'Models', 'rexpansive' ); ?>">
           <?php Rexbuilder_Utilities::get_icon('#A012-Models-List'); ?>
         </div>
-        <div class="tool-option btn-undo">
+        <div class="tool-option btn-undo tippy" data-tippy-content="<?php esc_attr_e( 'Undo', 'rexpansive' ); ?>">
           <?php Rexbuilder_Utilities::get_icon('#A003-Undo'); ?>
         </div>
-        <div class="tool-option btn-redo">
+        <div class="tool-option btn-redo tippy" data-tippy-content="<?php esc_attr_e( 'Redo', 'rexpansive' ); ?>">
           <?php Rexbuilder_Utilities::get_icon('#A002-Redo'); ?>
         </div>
-        <div class="tool-option btn-save">
-          <?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?>
+        <div class="tool-option btn-save tippy" data-tippy-content="<?php esc_attr_e( 'Save', 'rexpansive' ); ?>">
+          <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+          <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
         </div>
       </div>
     </div>

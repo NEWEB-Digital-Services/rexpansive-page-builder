@@ -1,6 +1,13 @@
 ; (function ($) {
     'use strict';
     $(document).ready(function () {
+        tippy('.tippy',{
+            arrow: true,
+            arrowType: 'round',
+            size: 'small',
+            theme: 'rexlive'
+        });
+        console.log('launh tippy');
         Rexbuilder_Util_Admin_Editor.init();
         Rexpansive_Builder_Admin_Config.init();
         Rexlive_Modals_Utils.init();

@@ -141,11 +141,13 @@ var CustomLayouts_Modal = (function ($) {
     }
 
     var _openModal = function () {
+        Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.addClass('layout-window--active');
         Rexpansive_Builder_Admin_Modals.OpenModal(custom_layouts_modal_props.$self.parent('.rex-modal-wrap'));
     }
 
     var _closeModal = function () {
         Rexpansive_Builder_Admin_Modals.CloseModal(custom_layouts_modal_props.$self.parent('.rex-modal-wrap'));
+        Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.removeClass('layout-window--active');
     }
 
     var _keyDownHandlerNumber = function (e) {

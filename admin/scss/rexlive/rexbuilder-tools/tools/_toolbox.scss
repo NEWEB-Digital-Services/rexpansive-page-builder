@@ -4,7 +4,7 @@
   top: 0;
   left: 0;
   transition: transform 300ms;
-  z-index: 0;
+  z-index: 10;
 }
 
 .rexlive-toolbox {
@@ -23,7 +23,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 1;
+  z-index: 20;
   font-size: 20px;
   position: absolute;
   top: 0;
@@ -95,9 +95,9 @@
   &:hover {
     color: $palette-color-1;
     @include fill-icon($palette-color-1);
-    .builder-add-custom-layout {
-      border-color: $palette-color-1;
-    }
+    // .builder-add-custom-layout {
+    //   border-color: $palette-color-1;
+    // }
   }
 }
 
@@ -111,13 +111,43 @@
 }
 
 .btn-save {
-  @include fill-icon($palette-color-1);
+  position: relative;
+  .btn-save--edited {
+    display: inline-block;
+    visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 10px;
+    @include fill-icon($palette-color-2);
+    &:hover {
+      @include fill-icon(#000);
+    }
+  }
+  .btn-save--saved {
+    display: inline-block;
+    visibility: visible;
+    @include fill-icon($palette-color-1);
+  }
   padding-left: 10px;
   .l-svg-icons{
     font-size: 30px;
   }
-  &.page-edited{
-    @include fill-icon($palette-color-2);
+  &.page-edited {
+    .btn-save--edited {
+      visibility: visible;
+    }
+    .btn-save--saved {
+      visibility: hidden;
+    }
+  }
+  &.rex-saving {
+    .btn-save--edited {
+      animation: scale-out-center 0.2s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
+    }
+    .btn-save--saved {
+      visibility: visible;
+      animation: scale-in-center 0.2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both 0.2s;
+    }
   }
 }
 
@@ -170,7 +200,7 @@
 
 .rexlive-toolbox {
   .builder-add-custom-layout {
-    @include bl-btn--add-small();
+    padding: 3px;
     .l-svg-icons {
       font-size: 11px;
     }

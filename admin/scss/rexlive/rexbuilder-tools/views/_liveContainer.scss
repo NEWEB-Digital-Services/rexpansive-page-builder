@@ -8,6 +8,12 @@
   &.toolbox--closed {
     padding-top: 0;
   }
+  &.layout-window--active {
+    .builder-config-layouts {
+      // border-color: $palette-color-1;
+      @include fill-icon($palette-color-1);
+    }
+  }
 }
 .rexpansive-live-frame-container {
   width: 100%;
