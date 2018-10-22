@@ -39,7 +39,7 @@ defined('ABSPATH') or exit;
 </div>
 <!-- CSS Editor -->
 
-<div class="rex-modal-wrap rex-fade">
+<div class="rex-modal-wrap">
     <div id="rex-insert-new-video-block" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <div class="modal-content">
             <div id="insert-video-block-wrap-1" class="row valign-wrapper youtube-insert-wrap video-insert-wrap">
@@ -119,7 +119,7 @@ defined('ABSPATH') or exit;
     </div>
 </div><!-- Insert New Block Video -->
 
-<div class="rex-modal-wrap rex-fade">
+<div class="rex-modal-wrap">
    <div id="rex-edit-background-section" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <?php Rexbuilder_Utilities::close_button(); ?>
         <div class="modal-content">
@@ -257,7 +257,7 @@ defined('ABSPATH') or exit;
 </div>
 <!-- Edit Section Background -->
 
-<div class="rex-modal-wrap rex-fade">
+<div class="rex-modal-wrap">
     <div id="video-section-editor-wrapper" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <?php Rexbuilder_Utilities::close_button(); ?>
         <div class="modal-content">
@@ -305,7 +305,7 @@ defined('ABSPATH') or exit;
     </div>
 </div>
 
-<div class="rex-modal-wrap rex-fade">
+<div class="rex-modal-wrap">
     <div id="rex-block-options" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <?php Rexbuilder_Utilities::close_button(); ?>
         <div class="background-options-area modal-content">
@@ -652,7 +652,7 @@ defined('ABSPATH') or exit;
     </div>
 </div>
 
-<div class="rex-modal-wrap rex-fade">
+<div class="rex-modal-wrap">
     <div id="rex-block-image-editor" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <?php Rexbuilder_Utilities::close_button(); ?>
         <div class="background-options-area modal-content">
@@ -767,7 +767,7 @@ defined('ABSPATH') or exit;
 </div>
 
 <!-- Block settings background settings -->
-<div class="rex-modal-wrap rex-fade">
+<div class="rex-modal-wrap">
     <div id="rex-block-content-position-editor" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <?php Rexbuilder_Utilities::close_button(); ?>
         <div class="background-options-area modal-content">            
@@ -825,7 +825,7 @@ defined('ABSPATH') or exit;
 </div>
 <!-- Block settings background settings -->
 
-<div class="rex-modal-wrap rex-fade">
+<div class="rex-modal-wrap">
     <div id="video-block-editor-wrapper" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable" data-block_tools="">
         <?php Rexbuilder_Utilities::close_button(); ?>
         <div class="modal-content">
@@ -902,7 +902,7 @@ defined('ABSPATH') or exit;
     </div>
 </div>
 
-<div class="rex-modal-wrap rex-fade">
+<div class="rex-modal-wrap">
     <div id="rex-slider-block" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <div class="modal-content">
             <?php include 'rexbuilder-modal-loader.php';?>
@@ -1043,7 +1043,7 @@ defined('ABSPATH') or exit;
 </div>
 <!-- Insert RexSlider -->
 
-<div class="rex-modal-wrap rex-fade">
+<div class="rex-modal-wrap">
     <div id="rex-slider__links-editor" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <div class="modal-content">
             <div id="rex-slider__video-links-wrap" class="rex-modal-content__modal-area">
@@ -1116,7 +1116,7 @@ defined('ABSPATH') or exit;
 </div>
 <!-- //.rex-slider__links-editor -->
 
-<div class="rex-modal-wrap rex-fade">
+<div class="rex-modal-wrap">
     <div id="modal-background-responsive-set" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <?php Rexbuilder_Utilities::close_button(); ?>
         <div class="modal-content">
@@ -1317,7 +1317,7 @@ defined('ABSPATH') or exit;
     </div>
 </div><!-- Section settings -->
 
-<div class="rex-modal-wrap rex-fade">
+<div class="rex-modal-wrap">
     <div id="rexeditor-modal" class="rexbuilder-materialize-wrap outside-content-modal rex-modal-draggable rex-modal">
         <div class="modal-content-wrap">
             <div class="modal-editor-header">
@@ -1347,7 +1347,7 @@ defined('ABSPATH') or exit;
     </div>
 </div><!-- Text Editor -->
 
-<div class="rex-modal-wrap rex-fade">
+<div class="rex-modal-wrap">
     <div id="rex-model-block" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <div class="modal-content">
 
@@ -1422,7 +1422,7 @@ wp_reset_postdata();
         </div>
     </div>
 </div><!-- RexModel modal -->
-<div class="rex-modal-wrap rex-fade">
+<div class="rex-modal-wrap">
     <div id="rex-edit-model-choose" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <div class="modal-content">
             <div class="edit-model-description">
@@ -1440,7 +1440,7 @@ wp_reset_postdata();
     </div>
 </div><!-- Edit Model  -->
 
-<div class="rex-modal-wrap rex-fade">
+<div class="rex-modal-wrap">
     <div id="rex-layout-page-changed" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <div class="tool-button tool-button--black rex-change-layout-option tool-button--close tooltipped" data-position="bottom" data-tooltip="<?php _e( $tooltip, 'rexspansive');?>" data-rex-option="abort">
             <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
@@ -1462,7 +1462,7 @@ wp_reset_postdata();
     </div>
 </div><!-- Layout page Changed -->
 
-<div class="rex-modal-wrap rex-fade">
+<div class="rex-modal-wrap">
     <div id="rex-locked-option" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <div class="modal-content">
             <div class="locked-option-changed-description">
@@ -1481,7 +1481,7 @@ wp_reset_postdata();
     </div>
 </div><!-- Locked feature -->
 
-<!-- <div class="rex-modal-wrap rex-fade" style="width:500px;overflow:visible;left:70%;"> -->
+<!-- <div class="rex-modal-wrap" style="width:500px;overflow:visible;left:70%;"> -->
     <div id="rex-models-list" class="rex-lateral-panel">
         <div class="rex-lateral-panel__content">
             <div class="bl_d-flex bl_jc-fe">

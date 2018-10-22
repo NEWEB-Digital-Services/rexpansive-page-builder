@@ -3111,6 +3111,16 @@ ul {
       fill: #00ACFF; }
     .tool-button.tool-button--add-big .l-svg-icons {
       font-size: 16px; }
+  .tool-button.tool-button--add-mdm {
+    padding: 5px;
+    background-color: transparent;
+    border: 2px solid #00ACFF; }
+    .tool-button.tool-button--add-mdm .l-svg-icons > svg {
+      fill: #00ACFF; }
+    .tool-button.tool-button--add-mdm:hover .l-svg-icons > svg {
+      fill: #00ACFF; }
+    .tool-button.tool-button--add-mdm .l-svg-icons {
+      font-size: 16px; }
   .tool-button.tool-button--add-small {
     padding: 3px;
     border-radius: 50%;

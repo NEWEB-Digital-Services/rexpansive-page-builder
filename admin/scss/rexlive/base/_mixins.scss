@@ -71,6 +71,16 @@
   }
 }
 
+@mixin bl-btn--add-mdm {
+  padding: 5px;
+  background-color: transparent;
+  @include fill-icon($palette-color-1);
+  border: 2px solid $palette-color-1;
+  &:hover {
+    @include fill-icon($palette-color-1);
+  }
+}
+
 @mixin bl-btn--add-small {
   padding: 3px;
   border-radius: 50%;

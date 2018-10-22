@@ -3111,6 +3111,16 @@ ul {
       fill: #00ACFF; }
     .tool-button.tool-button--add-big .l-svg-icons {
       font-size: 16px; }
+  .tool-button.tool-button--add-mdm {
+    padding: 5px;
+    background-color: transparent;
+    border: 2px solid #00ACFF; }
+    .tool-button.tool-button--add-mdm .l-svg-icons > svg {
+      fill: #00ACFF; }
+    .tool-button.tool-button--add-mdm:hover .l-svg-icons > svg {
+      fill: #00ACFF; }
+    .tool-button.tool-button--add-mdm .l-svg-icons {
+      font-size: 16px; }
   .tool-button.tool-button--add-small {
     padding: 3px;
     border-radius: 50%;
@@ -3352,11 +3362,18 @@ body.rexpansive-editor .lean-overlay {
 
 .layout {
   margin: 0; }
+  .layout.layout__item--standard {
+    background-color: #daf3ff; }
+  .layout.layout__item--custom {
+    background-color: #fafafa; }
   .layout.active-on-page {
     background-color: #00ACFF;
     color: #fff; }
     .layout.active-on-page .l-svg-icons > svg {
       fill: #fff; }
+    .layout.active-on-page label,
+    .layout.active-on-page input {
+      color: #fff; }
   .layout .l-svg-icons > svg {
     fill: #000; }
   .layout .dashicons,
@@ -3381,7 +3398,7 @@ body.rexpansive-editor .lean-overlay {
     padding-right: 20px; }
 
 .layout__setting {
-  text-align: right;
+  text-align: left;
   display: table-cell;
   padding: 10px; }
 
@@ -3389,20 +3406,47 @@ body.rexpansive-editor .lean-overlay {
 .rexlive-layout--delete {
   cursor: pointer; }
 
+.rexlive-layout--move {
+  cursor: move; }
+
+.rexlive-layout--edit .l-svg-icons,
+.rexlive-layout--delete .l-svg-icons,
+.rexlive-layout--move .l-svg-icons {
+  font-size: 10px; }
+
 .hide-icon {
   display: none; }
 
 .layout__item.editing .layout-value {
   display: none; }
 
-.layout__item input {
-  max-width: 45px; }
 .layout__item .removing-item {
   display: none; }
 
 .add-custom-layout__wrap {
   padding-top: 20px;
   text-align: center; }
+
+.layout-value--hide {
+  display: none; }
+
+#rexlive-custom-layout-modal.rexbuilder-materialize-wrap input[type=text] {
+  font-size: 15px;
+  line-height: 15px;
+  height: 20px;
+  margin: 0; }
+#rexlive-custom-layout-modal.rexbuilder-materialize-wrap .input-field label {
+  top: 0;
+  left: 0; }
+  #rexlive-custom-layout-modal.rexbuilder-materialize-wrap .input-field label.active {
+    font-size: 10px;
+    -webkit-transform: translateY(-100%);
+        -ms-transform: translateY(-100%);
+            transform: translateY(-100%); }
+#rexlive-custom-layout-modal.rexbuilder-materialize-wrap .rex-material-bar {
+  bottom: 1px; }
+#rexlive-custom-layout-modal .modal-content {
+  padding-top: 0; }
 
 .layout-page-changed-description {
   padding: 15px;

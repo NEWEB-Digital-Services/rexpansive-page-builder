@@ -1,10 +1,22 @@
 .layout {
   // display: flex;
   // justify-content: space-around;
+  &.layout__item--standard {
+    background-color: $palette-color-5;
+  }
+
+  &.layout__item--custom {
+    background-color: $palette-color-7;
+  }
+
   &.active-on-page {
     background-color: $palette-color-1;
     color: #fff;
     @include fill-icon(#fff);
+    label,
+    input {
+      color: #fff;
+    }
   }
 
   margin: 0;
@@ -41,7 +53,7 @@
 }
 
 .layout__setting {
-  text-align: right;
+  text-align: left;
   display: table-cell;
   padding: 10px;
 }
@@ -49,6 +61,18 @@
 .rexlive-layout--edit,
 .rexlive-layout--delete {
   cursor: pointer;
+}
+
+.rexlive-layout--move {
+  cursor: move;
+}
+
+.rexlive-layout--edit,
+.rexlive-layout--delete,
+.rexlive-layout--move {
+  #{$icon-class} {
+    font-size: 10px;
+  }
 }
 
 .hide-icon {
@@ -60,9 +84,9 @@
 }
 
 .layout__item {
-  input {
-    max-width: 45px;
-  }
+  // input {
+  //   max-width: 45px;
+  // }
   .removing-item {
     display: none;
   }
@@ -73,6 +97,37 @@
   text-align: center;
 }
 
+.layout-value--hide {
+  display: none;
+}
+
 // #rexlive-custom-layout-modal .rex-cancel-button {
 //   width: 100%;
 // }
+#rexlive-custom-layout-modal {
+  &.rexbuilder-materialize-wrap {
+    input[type=text] {
+      font-size: 15px;
+      line-height: 15px;
+      height: 20px;
+      margin: 0;
+    }
+    .input-field {
+      label {
+        top: 0;
+        left: 0;
+        &.active {
+          font-size: 10px;
+          transform: translateY(-100%);
+        }
+      }
+    }
+    .rex-material-bar {
+      bottom: 1px;
+    }
+  }
+
+  .modal-content {
+    padding-top: 0;
+  }
+}

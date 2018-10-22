@@ -18,19 +18,31 @@ defined('ABSPATH') or exit;
 <li class="layout__item layout">
     <div class="layout__setting layout__icon"><?php Rexbuilder_Utilities::get_icon('#A009-Range'); ?></div>
     <div class="layout__setting">
-        <input type="hidden" name="rexlive-layout-id" value="{%=customLayout.id%}">
-        <input class="layout-label-input" type="hidden" name="rexlive-layout-label" data-editable-field="true" value="{%=customLayout.label%}">
-        <span class="layout-value">{%=customLayout.label%}</span>
+        <div class="input-field">
+            <input type="hidden" name="rexlive-layout-id" value="{%=customLayout.id%}">
+            <input id="rexlive-layout-label-{%=customLayout.id%}" class="layout-label-input" type="text" name="rexlive-layout-label" data-editable-field="true" value="{%=customLayout.label%}">
+            <label for="rexlive-layout-label-{%=customLayout.id%}" class="{% if( "" != customLayout.label ) { %}active{% } %}"><?php _e('Label','rexpansive'); ?></label>
+            <span class="rex-material-bar"></span>
+            <span class="layout-value layout-value--hide">{%=customLayout.label%}</span>
+        </div>
     </div>
     <div class="layout__setting">
-        <input class="layout-min-input" type="hidden" name="rexlive-layout-min" data-editable-field="true" value="{%=customLayout.minWidth%}">
-        <span class="layout-value">{%=customLayout.minWidth%}px</span>
+        <div class="input-field">
+            <input id="rexlive-layout-min-{%=customLayout.id%}" class="layout-min-input" type="text" name="rexlive-layout-min" data-editable-field="true" value="{%=customLayout.minWidth%}">
+            <label for="rexlive-layout-min-{%=customLayout.id%}" class="{% if( "" != customLayout.minWidth ) { %}active{% } %}"><?php _e( 'From', 'rexpansive' ); ?></label>
+            <span class="rex-material-bar"></span>
+            <span class="layout-value layout-value--hide">{%=customLayout.minWidth%}px</span>
+        </div>
     </div>
     <div class="layout__setting">
-        <input class="layout-max-input" type="hidden" name="rexlive-layout-max" data-editable-field="true" value="{%=customLayout.maxWidth%}">
-        <span class="layout-value">&infin;</span>
+        <div class="input-field">
+            <input id="rexlive-layout-max-{%=customLayout.id%}" class="layout-max-input" type="text" name="rexlive-layout-max" data-editable-field="true" value="{% if( "" != customLayout.maxWidth ) { %}{%=customLayout.maxWidth%}{% } else { %}&infin;{% } %}">
+            <label for="rexlive-layout-max-{%=customLayout.id%}" class="active"><?php _e( 'To', 'rexpansive' ); ?></label>
+            <span class="rex-material-bar"></span>
+            <span class="layout-value layout-value--hide">&infin;</span>
+        </div>
     </div>
-    <div class="layout__setting">
+    <div class="layout__setting layout-value--hide">
         <input type="hidden" name="rexlive-layout-type" value="{%=customLayout.type%}">
         <span class="rexlive-layout--edit">
             <span class="dashicons-edit dashicons-before"></span>
@@ -38,13 +50,13 @@ defined('ABSPATH') or exit;
         </span>
     </div>
     <div class="layout__setting">
-        <span class="rexlive-layout--delete">
-            <span class="dashicons-trash dashicons-before"></span>
+        <span class="rexlive-layout--move">
+        <?php Rexbuilder_Utilities::get_icon('#B007-Move'); ?>
         </span>
     </div>
     <div class="layout__setting">
-        <span class="rexlive-layout--move">
-        <?php Rexbuilder_Utilities::get_icon('#B007-Move'); ?>
+        <span class="rexlive-layout--delete">
+        <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
         </span>
     </div>
 </li>

@@ -293,9 +293,11 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
      */
     $(document).on("blur", input_selector, function(e) {
       if ($(e.target).is(input_selector)) {
-        $(e.target)
-          .siblings("label, .prefix")
-          .removeClass("active");
+        if("" == e.target.value) {
+          $(e.target)
+            .siblings("label, .prefix")
+            .removeClass("active");
+        }
       }
     });
 
@@ -305,7 +307,6 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   var _updateLayoutPage = function(buttonData) {
     modelSaved = true;
     pageSaved = true;
-    console.log(buttonData);
     activeLayoutPage = buttonData.id;
     activeLayoutPageLabel = buttonData.label;
     Rexbuilder_Util_Admin_Editor.$responsiveToolbar

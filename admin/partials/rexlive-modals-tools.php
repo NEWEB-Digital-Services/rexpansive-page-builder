@@ -16,7 +16,7 @@ global $layoutsAvaiable;
 ?>
 <div class="rex-modal-wrap">
   <div id="rexlive-custom-layout-modal" class="rexbuilder-materialize-wrap rex-modal rex-modal-draggable">
-    <div class="tool-button tool-button--inline tool-button--black tool-button--close rex-cancel-button" data-rex-option="continue">
+    <div class="tool-button tool-button--inline tool-button--black tool-button--close rex-cancel-button tippy" data-rex-option="continue" data-tippy-content="<?php _e( 'Close', 'rexpansive' ); ?>">
       <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
     </div>
     <div class="modal-content">
@@ -26,7 +26,7 @@ global $layoutsAvaiable;
             <?php 
             foreach( $layoutsAvaiable as $layout ) {
               ?>
-              <li class="layout__item layout">
+              <li class="layout__item layout layout__item--<?php echo $layout['type']; ?>">
                 <!-- <div class="layout"> -->
                   <div class="layout__setting layout__icon">
                     <?php 
@@ -46,27 +46,56 @@ global $layoutsAvaiable;
                     }
                     ?>
                   </div>
+                  <?php
+                  if( "standard" == $layout['type'] ) {
+                  ?>
                   <div class="layout__setting">
                     <input type="hidden" name="rexlive-layout-id" value="<?php echo esc_attr( $layout['id'] ); ?>">
                     <input class="layout-label-input" type="hidden" name="rexlive-layout-label" data-editable-field="true" value="<?php echo esc_attr( $layout['label'] ); ?>">
                     <span class="layout-value"><?php echo $layout['label']; ?></span>
                   </div>
                   <div class="layout__setting">
-                    <input class="layout-min-input" type="hidden" name="rexlive-layout-min" data-editable-field="true" value="<?php echo esc_attr( $layout['min'] ); ?>">
+                    <input class="layout-min-input" type="hidden" name="rexlive-layout-min" data-editable-field="true" value="<?php echo esc_attr( $layout['min'] ); ?>" placeholder="<?php _e( 'From', 'rexpansive' ); ?>">
                     <span class="layout-value"><?php echo $layout['min']; ?>px</span>
                   </div>
                   <div class="layout__setting">
-                    <input class="layout-max-input" type="hidden" name="rexlive-layout-max" data-editable-field="true" value="<?php echo esc_attr( $layout['max'] ); ?>">
+                    <input class="layout-max-input" type="hidden" name="rexlive-layout-max" data-editable-field="true" value="<?php echo esc_attr( $layout['max'] ); ?>" placeholder="<?php _e( 'To', 'rexpansive' ); ?>">
                     <span class="layout-value"><?php echo ( "" != $layout['max'] ? $layout['max'] . 'px' : '&infin;' ); ?></span>
                   </div>
-                  <?php if( 'standard' == $layout['type'] ) { ?>
                   <div class="layout__setting">
                     <input type="hidden" name="rexlive-layout-type" value="<?php echo esc_attr( $layout['type'] ); ?>">
                   </div>
+                  <div class="layout__setting layout-value--hide"></div>
                   <div class="layout__setting"></div>
-                  <div class="layout__setting"></div>
-                  <?php } else { ?>
-                    <div class="layout__setting">
+                  <?php
+                  } else {
+                  ?>
+                  <div class="layout__setting">
+                    <div class="input-field">
+                      <input type="hidden" name="rexlive-layout-id" value="<?php echo esc_attr( $layout['id'] ); ?>">
+                      <input id="rexlive-layout-label-<?php echo $layout['id']; ?>" class="layout-label-input" type="text" name="rexlive-layout-label" data-editable-field="true" value="<?php echo esc_attr( $layout['label'] ); ?>">
+                      <label for="rexlive-layout-label-<?php echo $layout['id']; ?>" class="<?php echo ( "" != $layout['label'] ? 'active' : '' ); ?>"><?php _e('Label','rexpansive'); ?></label>
+                      <span class="rex-material-bar"></span>
+                      <span class="layout-value layout-value--hide"><?php echo $layout['label']; ?></span>
+                    </div>
+                  </div>
+                  <div class="layout__setting">
+                    <div class="input-field">
+                      <input id="rexlive-layout-min-<?php echo $layout['id']; ?>" class="layout-min-input" type="<?php echo ( 'standard' == $layout['type'] ? 'hidden' : 'text'); ?>" name="rexlive-layout-min" data-editable-field="true" value="<?php echo esc_attr( $layout['min'] ); ?>">
+                      <label for="rexlive-layout-min-<?php echo $layout['id']; ?>" class="<?php echo ( "" != $layout['min'] ? 'active' : '' ); ?>"><?php _e( 'From', 'rexpansive' ); ?></label>
+                      <span class="rex-material-bar"></span>
+                    </div>
+                    <span class="layout-value layout-value--hide"><?php echo $layout['min']; ?>px</span>
+                  </div>
+                  <div class="layout__setting">
+                    <div class="input-field">
+                      <input id="rexlive-layout-max-<?php echo $layout['id']; ?>" class="layout-max-input" type="<?php echo ( 'standard' == $layout['type'] ? 'hidden' : 'text'); ?>" name="rexlive-layout-max" data-editable-field="true" value="<?php echo ( "" != $layout['max'] ? esc_attr( $layout['max'] ) : '&infin;' ); ?>">
+                      <label for="rexlive-layout-max-<?php echo $layout['id']; ?>" class="<?php echo ( "" != $layout['max'] ? 'active' : '' ); ?>"><?php _e( 'To', 'rexpansive' ); ?></label>
+                      <span class="rex-material-bar"></span>
+                    </div>
+                    <span class="layout-value layout-value--hide"><?php echo ( "" != $layout['max'] ? $layout['max'] . 'px' : '&infin;' ); ?></span>
+                  </div>
+                  <div class="layout__setting layout-value--hide">
                     <input type="hidden" name="rexlive-layout-type" value="<?php echo esc_attr( $layout['type'] ); ?>">
                     <span class="rexlive-layout--edit">
                       <span class="dashicons-edit dashicons-before"></span>
@@ -74,11 +103,18 @@ global $layoutsAvaiable;
                     </span>
                   </div>
                   <div class="layout__setting">
+                    <span class="rexlive-layout--move">
+                    <?php Rexbuilder_Utilities::get_icon('#B007-Move'); ?>
+                    </span>
+                  </div>
+                  <div class="layout__setting">
                     <span class="rexlive-layout--delete">
                       <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                     </span>
                   </div>
-                  <?php } ?>
+                  <?php
+                  }
+                  ?>
                 <!-- </div> -->
               </li>
               <?php
@@ -88,7 +124,7 @@ global $layoutsAvaiable;
         <!-- </div>
       </div> -->
       <div class="add-custom-layout__wrap">
-        <div id="rexlive-add-custom-layout" class="tool-button tool-button--inline tool-button--flat tool-button--add-big">
+        <div id="rexlive-add-custom-layout" class="tool-button tool-button--inline tool-button--flat tool-button--add-mdm tippy" data-tippy-content="<?php _e( 'Add Layout', 'rexpansive' ); ?>">
           <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
         </div>
       </div>
