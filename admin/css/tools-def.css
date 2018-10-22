@@ -3021,6 +3021,11 @@ ul {
       -ms-flex-align: center;
           align-items: center; }
 
+.bl_ai-fe {
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end; }
+
 .tool-button--big {
   border-radius: 25px;
   -webkit-transition: -webkit-box-shadow 0.3s ease-out;
@@ -3228,11 +3233,13 @@ ul {
   font-size: 9px;
   letter-spacing: 1px;
   font-weight: 600;
-  text-transform: uppercase; }
+  text-transform: uppercase;
+  font-family: 'Roboto', sans-serif; }
 
 .rex-modal {
   max-height: none;
   max-width: 405px;
+  font-family: 'Roboto', sans-serif;
   -webkit-box-shadow: 0 0 100px 5px rgba(0, 0, 0, 0.7);
           box-shadow: 0 0 100px 5px rgba(0, 0, 0, 0.7); }
   .rex-modal .l-svg-icons {
@@ -3473,17 +3480,35 @@ body.rexpansive-editor .lean-overlay {
   fill: #000; }
 #rex-models-list .model__element {
   padding: 10px;
-  margin-bottom: 0; }
+  margin-bottom: 0;
+  border-bottom: 1px solid #D6D6D6; }
 #rex-models-list .model-thumbnail {
   max-height: 50px; }
-#rex-models-list .model-name {
-  padding-left: 20px; }
 #rex-models-list .model-preview {
+  font-size: 30px;
+  background-color: #d8d8d8;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
-  min-width: 100px;
-  height: 50px; }
+  min-width: 100%;
+  height: 150px;
+  position: relative; }
+  #rex-models-list .model-preview.model-preview--active .model-preview__placeholder {
+    visibility: hidden; }
+#rex-models-list .model-name {
+  font-family: 'Roboto', sans-serif;
+  position: absolute;
+  padding: 10px;
+  bottom: 0;
+  left: 0;
+  top: 0;
+  right: 0;
+  letter-spacing: 1px;
+  font-weight: 400;
+  font-size: 11px;
+  text-transform: uppercase;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.4); }
 
 .rex-lateral-panel {
   width: 100%;
@@ -3506,7 +3531,6 @@ body.rexpansive-editor .lean-overlay {
 
 .rex-lateral-panel__content {
   background-color: #fff;
-  padding: 10px;
   -webkit-box-shadow: -5px 0 5px rgba(0, 0, 0, 0.1);
           box-shadow: -5px 0 5px rgba(0, 0, 0, 0.1);
   height: 100%; }
@@ -3733,6 +3757,7 @@ body.rexpansive-editor .lean-overlay {
   position: relative; }
 
 .layout-custom-number {
+  font-family: 'Roboto', sans-serif;
   font-size: 9px;
   font-weight: 700;
   line-height: 1;

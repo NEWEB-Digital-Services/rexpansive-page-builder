@@ -3021,6 +3021,11 @@ ul {
       -ms-flex-align: center;
           align-items: center; }
 
+.bl_ai-fe {
+  -webkit-box-align: end;
+      -ms-flex-align: end;
+          align-items: flex-end; }
+
 .tool-button--big {
   border-radius: 25px;
   -webkit-transition: -webkit-box-shadow 0.3s ease-out;
@@ -3228,7 +3233,8 @@ ul {
   font-size: 9px;
   letter-spacing: 1px;
   font-weight: 600;
-  text-transform: uppercase; }
+  text-transform: uppercase;
+  font-family: 'Roboto', sans-serif; }
 
 .section-toolBox {
   overflow: visible;

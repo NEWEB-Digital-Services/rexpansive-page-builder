@@ -1,6 +1,7 @@
 .rex-modal {
   max-height: none;
   max-width: 405px;
+  @include live-fonts();
 
   // @include fill-icon($icon-deactive-color);
   // border: 2px solid #000;

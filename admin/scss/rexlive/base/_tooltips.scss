@@ -3,4 +3,5 @@
   letter-spacing: 1px;
   font-weight: 600;
   text-transform: uppercase;
+  @include live-fonts();
 }

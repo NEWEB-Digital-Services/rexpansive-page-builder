@@ -166,8 +166,9 @@
   position: relative;
 }
 
-.layout-custom-number{
+.layout-custom-number {
   // color: #000;
+  @include live-fonts();
   font-size: 9px;
   font-weight: 700;
   line-height: 1;
