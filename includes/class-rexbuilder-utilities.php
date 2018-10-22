@@ -96,10 +96,10 @@ class Rexbuilder_Utilities {
 		<?php
 	}
 
-	public static function close_button( $tooltip = "" ) {
+	public static function close_button( $tooltip = "Close" ) {
 		ob_start();
 ?>
-<div class="tool-button tool-button--black tool-button--close rex-modal__close-button tooltipped" data-position="bottom" data-tooltip="<?php _e( $tooltip, 'rexspansive');?>">
+<div class="tool-button tool-button--black tool-button--close rex-modal__close-button tippy" data-tippy-content="<?php _e( $tooltip, 'rexspansive');?>">
 <?php self::get_icon('#Z003-Close'); ?>
 </div>
 <?php

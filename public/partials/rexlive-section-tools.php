@@ -68,7 +68,7 @@ $tool_button_classes = 'tool-button';
 						</div>
 
 						<div class="tool-button tooltipped add-new-section" data-new-row-position="after">
-							<?php Rexbuilder_Utilities::get_icon('#B006-Collapse'); ?>
+							<?php Rexbuilder_Utilities::get_icon('#B016-New-Adjacent-Row'); ?>
 						</div>
 					</div>
 				</div>

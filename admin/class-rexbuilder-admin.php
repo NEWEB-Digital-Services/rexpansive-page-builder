@@ -174,11 +174,12 @@ class Rexbuilder_Admin {
 			wp_enqueue_style( 'rex-custom-fonts', REXPANSIVE_BUILDER_URL . 'admin/rexpansive-font/font.css', array(), null, 'all' );
 			wp_enqueue_style( 'spectrum-style', REXPANSIVE_BUILDER_URL . 'admin/spectrum/spectrum.css', array(), null, 'all' );
 
-			wp_enqueue_style( 'admin-style', REXPANSIVE_BUILDER_URL . 'admin/css/admin.css', array(), null, 'all' );
 			if( isset( $_GET['rexlive'] ) && 'true' == $_GET['rexlive'] ) {
 				wp_enqueue_style( 'rexbuilder-live-google-fonts', 'https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i', false );
 				wp_enqueue_style( 'rexliveStyle', REXPANSIVE_BUILDER_URL . 'admin/css/tools-def.css', array(), null, 'all' );
-			} 
+			} else {
+				wp_enqueue_style( 'admin-style', REXPANSIVE_BUILDER_URL . 'admin/css/admin.css', array(), null, 'all' );
+			}
 		}
 	}
 

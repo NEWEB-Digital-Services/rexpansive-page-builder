@@ -16,11 +16,12 @@ $radio-border: 2px solid $radio-fill-color;
 [type="radio"]:not(:checked) + span,
 [type="radio"]:checked + span {
   position: relative;
-  padding-left: 35px;
+  padding-left: 25px;
   cursor: pointer;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
   height: 25px;
-  line-height: 25px;
+  // line-height: 25px;
   font-size: 1em;
   transition: .28s ease;
   user-select: none;

@@ -4,7 +4,7 @@
 
 .svg-A001-Tablet {
 	@extend %svg-common;
-	background-position: 87.5776397515528% 85.71428571428571%;
+	background-position: 0 100%;
 }
 
 .svg-A001-Tablet-dims {
@@ -14,7 +14,7 @@
 
 .svg-A002-Redo {
 	@extend %svg-common;
-	background-position: 49.68944099378882% 85.71428571428571%;
+	background-position: 62.11180124223603% 85.71428571428571%;
 }
 
 .svg-A002-Redo-dims {
@@ -24,7 +24,7 @@
 
 .svg-A003-Undo {
 	@extend %svg-common;
-	background-position: 49.68944099378882% 100%;
+	background-position: 62.11180124223603% 100%;
 }
 
 .svg-A003-Undo-dims {
@@ -214,7 +214,7 @@
 
 .svg-B014-Closed {
 	@extend %svg-common;
-	background-position: 62.11180124223603% 15%;
+	background-position: 49.68944099378882% 85.71428571428571%;
 }
 
 .svg-B014-Closed-dims {
@@ -224,7 +224,7 @@
 
 .svg-B015-UnClosed {
 	@extend %svg-common;
-	background-position: 62.11180124223603% 85.71428571428571%;
+	background-position: 62.11180124223603% 15%;
 }
 
 .svg-B015-UnClosed-dims {
@@ -232,9 +232,19 @@
 	height: 20px;
 }
 
-.svg-C001-Link {
+.svg-B016-New-Adjacent-Row {
 	@extend %svg-common;
 	background-position: 74.53416149068323% 85.71428571428571%;
+}
+
+.svg-B016-New-Adjacent-Row-dims {
+	width: 20px;
+	height: 20px;
+}
+
+.svg-C001-Link {
+	@extend %svg-common;
+	background-position: 87.5776397515528% 0;
 }
 
 .svg-C001-Link-dims {
@@ -244,7 +254,7 @@
 
 .svg-C002-No-Select {
 	@extend %svg-common;
-	background-position: 87.5776397515528% 0;
+	background-position: 87.5776397515528% 14.285714285714286%;
 }
 
 .svg-C002-No-Select-dims {
@@ -254,7 +264,7 @@
 
 .svg-C003-Image-Full {
 	@extend %svg-common;
-	background-position: 87.5776397515528% 14.285714285714286%;
+	background-position: 87.5776397515528% 28.571428571428573%;
 }
 
 .svg-C003-Image-Full-dims {
@@ -264,7 +274,7 @@
 
 .svg-C004-Image-Natural {
 	@extend %svg-common;
-	background-position: 87.5776397515528% 28.571428571428573%;
+	background-position: 87.5776397515528% 42.857142857142854%;
 }
 
 .svg-C004-Image-Natural-dims {
@@ -274,7 +284,7 @@
 
 .svg-C005-Layout {
 	@extend %svg-common;
-	background-position: 87.5776397515528% 42.857142857142854%;
+	background-position: 87.5776397515528% 57.142857142857146%;
 }
 
 .svg-C005-Layout-dims {
@@ -284,7 +294,7 @@
 
 .svg-Z001-Plus {
 	@extend %svg-common;
-	background-position: 87.5776397515528% 57.142857142857146%;
+	background-position: 87.5776397515528% 71.42857142857143%;
 }
 
 .svg-Z001-Plus-dims {
@@ -294,7 +304,7 @@
 
 .svg-Z002-Image-Full {
 	@extend %svg-common;
-	background-position: 87.5776397515528% 71.42857142857143%;
+	background-position: 87.5776397515528% 85.71428571428571%;
 }
 
 .svg-Z002-Image-Full-dims {
@@ -314,7 +324,7 @@
 
 .svg-Z003-RexSlider {
 	@extend %svg-common;
-	background-position: 0 100%;
+	background-position: 12.422360248447205% 100%;
 }
 
 .svg-Z003-RexSlider-dims {
@@ -324,7 +334,7 @@
 
 .svg-Z004-Copy {
 	@extend %svg-common;
-	background-position: 12.422360248447205% 100%;
+	background-position: 24.84472049689441% 100%;
 }
 
 .svg-Z004-Copy-dims {
@@ -334,7 +344,7 @@
 
 .svg-Z005-Setting {
 	@extend %svg-common;
-	background-position: 24.84472049689441% 100%;
+	background-position: 37.267080745341616% 100%;
 }
 
 .svg-Z005-Setting-dims {
@@ -344,7 +354,7 @@
 
 .svg-Z006-Video {
 	@extend %svg-common;
-	background-position: 37.267080745341616% 100%;
+	background-position: 49.68944099378882% 100%;
 }
 
 .svg-Z006-Video-dims {
@@ -364,7 +374,7 @@
 
 .svg-_A001-Tablet {
 	@extend %svg-common;
-	background-position: 62.11180124223603% 100%;
+	background-position: 74.53416149068323% 100%;
 }
 
 .svg-_A001-Tablet-dims {
@@ -374,7 +384,7 @@
 
 .svg-_A002-Redo {
 	@extend %svg-common;
-	background-position: 74.53416149068323% 100%;
+	background-position: 86.95652173913044% 100%;
 }
 
 .svg-_A002-Redo-dims {
@@ -384,7 +394,7 @@
 
 .svg-_A003-Undo {
 	@extend %svg-common;
-	background-position: 86.95652173913044% 100%;
+	background-position: 100% 0;
 }
 
 .svg-_A003-Undo-dims {
@@ -394,7 +404,7 @@
 
 .svg-_A010-Mobile {
 	@extend %svg-common;
-	background-position: 100% 0;
+	background-position: 100% 14.285714285714286%;
 }
 
 .svg-_A010-Mobile-dims {
@@ -404,7 +414,7 @@
 
 .svg-_B002-Boxed {
 	@extend %svg-common;
-	background-position: 100% 14.285714285714286%;
+	background-position: 100% 28.571428571428573%;
 }
 
 .svg-_B002-Boxed-dims {
@@ -412,9 +422,19 @@
 	height: 20px;
 }
 
+.svg-_C005-Layout {
+	@extend %svg-common;
+	background-position: 100% 42.857142857142854%;
+}
+
+.svg-_C005-Layout-dims {
+	width: 20px;
+	height: 20px;
+}
+
 .svg-_Z002-Image-Full {
 	@extend %svg-common;
-	background-position: 100% 28.571428571428573%;
+	background-position: 100% 57.142857142857146%;
 }
 
 .svg-_Z002-Image-Full-dims {
@@ -424,7 +444,7 @@
 
 .svg-_Z005-Setting {
 	@extend %svg-common;
-	background-position: 100% 42.857142857142854%;
+	background-position: 100% 71.42857142857143%;
 }
 
 .svg-_Z005-Setting-dims {

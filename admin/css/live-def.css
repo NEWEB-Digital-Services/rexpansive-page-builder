@@ -2046,11 +2046,15 @@
 [type="radio"]:not(:checked) + span,
 [type="radio"]:checked + span {
   position: relative;
-  padding-left: 35px;
+  padding-left: 25px;
   cursor: pointer;
-  display: inline-block;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
   height: 25px;
-  line-height: 25px;
   font-size: 1em;
   -webkit-transition: .28s ease;
   -o-transition: .28s ease;
@@ -3033,6 +3037,9 @@ ul {
   line-height: 42px;
   color: #fff;
   font-size: 26px; }
+
+.bl_d-iblock {
+  display: inline-block; }
 
 .bl_d-flex {
   display: -webkit-box;

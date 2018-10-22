@@ -1,6 +1,9 @@
 @charset "UTF-8";
 
 @import "base/base";
+@import "rexbuilder-tools/materialize.min";
+@import "rexbuilder-tools/admin";
+@import "rexbuilder-tools/builder/dev";
 @import "rexbuilder-tools/modals/modals";
 @import "rexbuilder-tools/tools/tools";
 @import "rexbuilder-tools/views/views";

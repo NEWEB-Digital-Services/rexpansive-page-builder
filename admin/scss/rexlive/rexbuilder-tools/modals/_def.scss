@@ -1,3 +1,28 @@
+.bl_modal-row {
+  padding: 0 12px;
+  border-bottom: 1px solid #ddd;
+  // margin-bottom: 15px;
+  display: flex;
+}
+
+.bl_modal__single-option {
+  display: inline-block;
+}
+
+.bl_modal__option-wrap {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  &:not(:last-child) {
+    border-right: 1px solid #ddd;
+  }
+}
+
+.bl_modal__col-4 {
+  width: 33.3333%;
+}
+
 .rex-modal {
   max-height: none;
   max-width: 405px;
@@ -17,6 +42,10 @@
         font-size: 13px;
       }
     }
+  }
+
+  .input-field {
+    width: 100%;
   }
 }
 
