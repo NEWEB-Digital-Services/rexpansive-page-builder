@@ -75,9 +75,13 @@
   transform: translateX(100%);
 
   &.rex-lateral-panel--open {
-    animation: bounce-in-right-mod .7s both;
+    animation: bounce-in-right-mod .5s both;
     opacity: 1;
     visibility: visible;
+  }
+
+  &.rex-lateral-panel--close {
+    animation: slide-out-right-no-opacity 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
   }
 }
 

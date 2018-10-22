@@ -94,7 +94,12 @@ var Model_Import_Modal = (function($) {
   };
 
   var _closeModal = function() {
-    rexmodel_import_props.$self.removeClass("rex-lateral-panel--open");
+    rexmodel_import_props.$self
+      .addClass('rex-lateral-panel--close')
+      .one(Rexbuilder_Util_Admin_Editor.animationEvent, function(e) {
+        rexmodel_import_props.$self
+          .removeClass("rex-lateral-panel--open rex-lateral-panel--close");
+      })
     // Rexlive_Modals_Utils.closeModal(rexmodel_import_props.$self.parent('.rex-modal-wrap'));
   };
 
@@ -139,10 +144,15 @@ var Model_Import_Modal = (function($) {
       dragoverqueue_processtimer = setInterval(function() {
         DragDropFunctions.ProcessDragOverQueue();
       }, 100);
-      var insertingHTML =
-        '<div class="import-model" data-rex-model-id="' +
-        $(this).attr("data-rex-model-id") +
-        '"><h1>Importing Model</h1></div>';
+      // var insertingHTML =
+      //   '<div class="import-model" data-rex-model-id="' +
+      //   $(this).attr("data-rex-model-id") +
+      //   '"></div>';
+      var insertingHTML = tmpl('rexlive-tmpl-insert-model-loader', {
+        model_id: $(this).attr("data-rex-model-id")
+      });
+      console.log($(this).attr("data-rex-model-id"));
+      console.log(insertingHTML);
       event.originalEvent.dataTransfer.setData("text/plain", insertingHTML);
     });
 
@@ -513,7 +523,7 @@ var Model_Import_Modal = (function($) {
       },
 
       getPlaceHolder: function() {
-        return $("<li class='drop-marker'></li>");
+        return $("<div class='drop-marker drop-marker--view'><div class='drop-marker--ruler'></div></div>");
       },
 
       PlaceInside: function($element) {

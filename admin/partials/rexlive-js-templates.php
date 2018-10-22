@@ -78,3 +78,14 @@ defined('ABSPATH') or exit;
     </div>
 </li>
 </script>
+
+<script type="text/x-tmpl" id="rexlive-tmpl-insert-model-loader">
+<div class="import-model" data-rex-model-id="{%=o.model_id%}">
+    <div class="rexlive-loader active">
+        <div class="sk-double-bounce rexlive-loader--element">
+            <div class="sk-child sk-double-bounce1"></div>
+            <div class="sk-child sk-double-bounce2"></div>
+        </div>
+    </div>
+</div>
+</script>

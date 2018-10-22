@@ -12,11 +12,13 @@
 
   .rexlive-loader--element {
     top: 50%;
+    transform: translateY(-50%);
   }
 
   &.active {
     visibility: visible;
     z-index: 1000;
+    opacity: 1;
   }
 
   .sk-double-bounce {
