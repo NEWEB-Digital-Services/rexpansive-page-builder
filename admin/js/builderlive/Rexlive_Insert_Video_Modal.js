@@ -82,8 +82,8 @@ var Insert_Video_Modal = (function($) {
       }
     });
 
-    insert_video_properties.$self
-      .find("#rex-insert-video-block-cancel")
+    insert_video_properties
+      .$close_modal_btn
       .click(function(e) {
         e.preventDefault();
         _closeVideoModal();
@@ -173,6 +173,7 @@ var Insert_Video_Modal = (function($) {
 
     insert_video_properties = {
       $self: $videoModal,
+      $close_modal_btn: $videoModal.find('.rex-modal__close-button'),
       $linkYoutube: $videoModal.find("#rex-insert-youtube-url"),
       $linkVimeo: $videoModal.find("#rex-insert-vimeo-url"),
       $audioYoutube: $videoModal.find("#rex-new-block-video-youtube-audio"),

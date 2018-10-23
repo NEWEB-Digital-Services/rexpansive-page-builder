@@ -217,3 +217,24 @@ $radio-empty-color: #979797;
     border-color: $input-disabled-solid-color;
   }
 }
+
+[type="checkbox"] {
+  + label {
+    .bl_checked-icon {
+      display: none;
+    }
+    .bl_unchecked-icon {
+      display: block;
+    }
+  }
+  &:checked {
+    + label {
+      .bl_checked-icon {
+        display: block;
+      }
+      .bl_unchecked-icon {
+        display: none;
+      }
+    }
+  }
+}
