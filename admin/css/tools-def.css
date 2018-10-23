@@ -11207,10 +11207,6 @@ padding-right: 18px;
 
 /*.rex-modal .background_set_color,*/
 #block-set-video-wrap-2,
-#block-set-class-wrap {
-  border-bottom: 1px solid #ddd; }
-
-#block-set-video-wrap-2,
 #block-set-video-wrap {
   padding-bottom: 5px;
   margin-bottom: 8px; }
@@ -12344,20 +12340,6 @@ li {
 .rex-modal.push-down-modal {
   z-index: 1000 !important; }
 
-.rex-modal .modal-content {
-  padding: 15px 0;
-  padding: 17px 0; }
-
-.rex-modal .modal-content .row {
-  padding-left: 26px;
-  padding-right: 0; }
-
-.rex-modal .modal-content .row:last-child {
-  margin-bottom: 0; }
-
-.rex-modal .row .col {
-  padding: 0; }
-
 .rex-modal-footer .rex-icon {
   color: #fff;
   font-size: 18px;
@@ -12595,12 +12577,6 @@ transform: translate(0, 50%);*/
 .cross-style-wrap > div,
 #background_block_set #block-set-class-wrap .col:nth-child(2) > div {
   text-align: center; }
-
-#background_block_set
-#block-set-class-wrap
-.col:nth-child(2)
-> div:not(:last-child) {
-  margin-bottom: -12px; }
 
 #background_block_set #block-set-class-wrap .col:last-child {
   padding-left: 22px; }
@@ -12889,9 +12865,8 @@ input#rex-block-vimeo-url {
  *  CUSTOM FIX
  *  @todo: check the behaviour of the other windows
  */
-#rex-block-options .modal-content,
-#modal-background-responsive-set .modal-content {
-  padding: 0; }
+#rex-block-content-position-editor {
+  max-width: 125px; }
 
 #rex-block-options {
   max-width: 412px; }
@@ -14583,10 +14558,11 @@ input[type=text]:focus + .b-svg-icons {
 
 .bl_modal-row {
   padding: 0 12px;
-  border-bottom: 1px solid #ddd;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex; }
+  .bl_modal-row:not(:last-child) {
+    border-bottom: 1px solid #ddd; }
 
 .bl_modal__single-option:not(:last-child) {
   padding-right: 20px; }
@@ -14627,8 +14603,8 @@ input[type=text]:focus + .b-svg-icons {
   max-height: none;
   max-width: 405px;
   font-family: 'Roboto', sans-serif;
-  -webkit-box-shadow: 0 0 100px 5px rgba(0, 0, 0, 0.7);
-          box-shadow: 0 0 100px 5px rgba(0, 0, 0, 0.7); }
+  -webkit-box-shadow: 0 0 100px 5px rgba(0, 0, 0, 0.4);
+          box-shadow: 0 0 100px 5px rgba(0, 0, 0, 0.4); }
   .rex-modal .l-svg-icons {
     font-size: 20px; }
   .rex-modal .tool-button.tool-button--close .l-svg-icons {
@@ -14821,7 +14797,7 @@ body.rexpansive-editor .lean-overlay {
   display: none; }
 
 .add-custom-layout__wrap {
-  padding-top: 20px;
+  padding: 20px 0;
   text-align: center; }
 
 .layout-value--hide {

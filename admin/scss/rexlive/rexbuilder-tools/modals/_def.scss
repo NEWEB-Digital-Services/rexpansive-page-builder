@@ -1,8 +1,10 @@
 .bl_modal-row {
   padding: 0 12px;
-  border-bottom: 1px solid #ddd;
-  // margin-bottom: 15px;
   display: flex;
+  &:not(:last-child) {
+    border-bottom: 1px solid #ddd;
+  }
+  // margin-bottom: 15px;
 }
 
 .bl_modal__single-option {

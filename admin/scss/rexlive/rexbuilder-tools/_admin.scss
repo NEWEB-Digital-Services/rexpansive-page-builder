@@ -164,10 +164,10 @@ padding-right: 18px;
 }
 
 /*.rex-modal .background_set_color,*/
-#block-set-video-wrap-2,
-#block-set-class-wrap {
-  border-bottom: 1px solid #ddd;
-}
+// #block-set-video-wrap-2,
+// #block-set-class-wrap {
+//   border-bottom: 1px solid #ddd;
+// }
 
 #block-set-video-wrap-2,
 #block-set-video-wrap {
@@ -1553,23 +1553,10 @@ border-bottom: 1px dotted #aaa;
   z-index: 1000 !important;
 }
 
-.rex-modal .modal-content {
-  padding: 15px 0;
-  padding: 17px 0;
-}
-
-.rex-modal .modal-content .row {
-  padding-left: 26px;
-  padding-right: 0;
-}
-
-.rex-modal .modal-content .row:last-child {
-  margin-bottom: 0;
-}
-
-.rex-modal .row .col {
-  padding: 0;
-}
+// .rex-modal .modal-content {
+//   padding: 15px 0;
+//   padding: 17px 0;
+// }
 
 .rex-modal-footer .rex-icon {
   color: #fff;
@@ -1883,12 +1870,12 @@ transform: translate(0, 50%);*/
   text-align: center;
 }
 
-#background_block_set
-  #block-set-class-wrap
-  .col:nth-child(2)
-  > div:not(:last-child) {
-  margin-bottom: -12px;
-}
+// #background_block_set
+//   #block-set-class-wrap
+//   .col:nth-child(2)
+//   > div:not(:last-child) {
+//   margin-bottom: -12px;
+// }
 
 #background_block_set #block-set-class-wrap .col:last-child {
   padding-left: 22px;
@@ -2252,9 +2239,8 @@ transform: translate(0, 50%);*/
  *  CUSTOM FIX
  *  @todo: check the behaviour of the other windows
  */
-#rex-block-options .modal-content,
-#modal-background-responsive-set .modal-content {
-  padding: 0;
+#rex-block-content-position-editor {
+  max-width: 125px;
 }
 
 #rex-block-options {
