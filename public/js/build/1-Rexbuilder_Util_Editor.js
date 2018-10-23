@@ -382,13 +382,13 @@ var Rexbuilder_Util_Editor = (function($) {
         var e = jQuery.Event(event.data.eventName);
         e.settings = {};
         jQuery.extend(e.settings, event.data);
-        $(document).trigger(e);
+        Rexbuilder_Util.$document.trigger(e);
       }
     }
   };
 
   var addDocumentListeners = function() {
-    $(document).on("rexlive:changeLayout", function(event) {
+    Rexbuilder_Util.$document.on("rexlive:changeLayout", function(event) {
       var data = event.settings;
       undoStackArray = [];
       redoStackArray = [];
@@ -403,11 +403,11 @@ var Rexbuilder_Util_Editor = (function($) {
       _fixToolsVisibility(data.selectedLayoutName);
     });
 
-    $(document).on("rexlive:startChangeLayout", function(event) {
+    Rexbuilder_Util.$document.on("rexlive:startChangeLayout", function(event) {
       _startLoading();
     });
 
-    $(document).on("rexlive:updateLayoutsDimensions", function(e) {
+    Rexbuilder_Util.$document.on("rexlive:updateLayoutsDimensions", function(e) {
       var data = e.settings.data_to_send;
       $("#layout-avaiable-dimensions").text(JSON.stringify(data.layouts));
       if (data.updateHeights) {
@@ -417,7 +417,7 @@ var Rexbuilder_Util_Editor = (function($) {
       }
     });
 
-    $(document).on("rexlive:undo", function(e) {
+    Rexbuilder_Util.$document.on("rexlive:undo", function(e) {
       if (undoStackArray.length > 0) {
         var data = {
           eventName: "rexlive:edited",
@@ -432,7 +432,7 @@ var Rexbuilder_Util_Editor = (function($) {
       _sendUndoRedoInformation();
     });
 
-    $(document).on("rexlive:redo", function(e) {
+    Rexbuilder_Util.$document.on("rexlive:redo", function(e) {
       if (redoStackArray.length > 0) {
         var action = redoStackArray.pop();
         Rexbuilder_Dom_Util.performAction(action, true);
@@ -441,16 +441,16 @@ var Rexbuilder_Util_Editor = (function($) {
       _sendUndoRedoInformation();
     });
 
-    $(document).on("rexlive:galleryReady", function(e) {
+    Rexbuilder_Util.$document.on("rexlive:galleryReady", function(e) {
       console.log("Gallery " + e.galleryID + " ready");
     });
 
-    $(document).on("rexlive:updateSlider", function(e) {
+    Rexbuilder_Util.$document.on("rexlive:updateSlider", function(e) {
       var data = e.settings;
       Rexbuilder_Dom_Util.updateSliderStack(data.data_to_send);
     });
 
-    $(document).on("rexlive:change_section_bg_color", function(e) {
+    Rexbuilder_Util.$document.on("rexlive:change_section_bg_color", function(e) {
       var data = e.settings;
       Rexbuilder_Dom_Util.updateSectionBackgroundColorLive(
         data.data_to_send.sectionTarget,
@@ -458,7 +458,7 @@ var Rexbuilder_Util_Editor = (function($) {
       );
     });
 
-    $(document).on("rexlive:change_section_overlay_color", function(e) {
+    Rexbuilder_Util.$document.on("rexlive:change_section_overlay_color", function(e) {
       var data = e.settings;
       Rexbuilder_Dom_Util.updateSectionOverlayColorLive(
         data.data_to_send.sectionTarget,
@@ -466,7 +466,7 @@ var Rexbuilder_Util_Editor = (function($) {
       );
     });
 
-    $(document).on("rexlive:change_block_bg_color", function(e) {
+    Rexbuilder_Util.$document.on("rexlive:change_block_bg_color", function(e) {
       var data = e.settings;
       Rexbuilder_Dom_Util.updateBlockBackgroundColorLive(
         data.data_to_send.target,
@@ -474,7 +474,7 @@ var Rexbuilder_Util_Editor = (function($) {
       );
     });
 
-    $(document).on("rexlive:change_block_overlay_color", function(e) {
+    Rexbuilder_Util.$document.on("rexlive:change_block_overlay_color", function(e) {
       var data = e.settings;
       Rexbuilder_Dom_Util.updateBlockOverlayColorLive(
         data.data_to_send.target,
@@ -482,22 +482,22 @@ var Rexbuilder_Util_Editor = (function($) {
       );
     });
 
-    $(document).on("rexlive:newSliderSavedOnDB", function(e) {
+    Rexbuilder_Util.$document.on("rexlive:newSliderSavedOnDB", function(e) {
       var data = e.settings;
       Rexbuilder_CreateBlocks.createSlider(data.data_to_send);
     });
 
-    $(document).on("rexlive:dropChanges", function(e) {
+    Rexbuilder_Util.$document.on("rexlive:dropChanges", function(e) {
       Rexbuilder_Util_Editor.startLoading();
       var eventData = e.settings.data_to_send;
       _restorePageStartingState(eventData);
     });
 
-    $(document).on("rexlive:lockRows", function(e) {
+    Rexbuilder_Util.$document.on("rexlive:lockRows", function(e) {
       _lockRows();
     });
 
-    $(document).on("rexlive:unlockRows", function(e) {
+    Rexbuilder_Util.$document.on("rexlive:unlockRows", function(e) {
       _releaseRows();
     });
   };
@@ -841,6 +841,15 @@ var Rexbuilder_Util_Editor = (function($) {
       });
   };
 
+  var _tooltips = function() {
+    tippy(".tippy", {
+      arrow: true,
+      arrowType: "round",
+      size: "small",
+      theme: "rexlive"
+    });
+  };
+
   var init = function() {
     this.elementIsResizing = false;
     this.elementIsDragging = false;
@@ -894,6 +903,8 @@ var Rexbuilder_Util_Editor = (function($) {
 
     undoStackArray = [];
     redoStackArray = [];
+
+    _tooltips();
 
     this.$styleElement = $("#rexpansive-builder-style-inline-css");
     _fixCustomStyleElement();

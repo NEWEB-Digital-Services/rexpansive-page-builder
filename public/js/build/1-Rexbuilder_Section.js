@@ -90,7 +90,7 @@ var Rexbuilder_Section = (function($) {
   };
 
   var _addSectionToolboxListeners = function() {
-    $(document).on("click", ".builder-delete-row", function(e) {
+    Rexbuilder_Util.$document.on("click", ".builder-delete-row", function(e) {
       var $section = $(e.currentTarget).parents(".rexpansive_section");
       var layoutsOrder = null;
       var modelNumber = -1;
@@ -206,7 +206,7 @@ var Rexbuilder_Section = (function($) {
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });
 
-    $(document).on("click", ".builder-copy-row", function(e) {
+    Rexbuilder_Util.$document.on("click", ".builder-copy-row", function(e) {
       Rexbuilder_Util_Editor.sectionCopying = true;
       var $section = $(e.currentTarget).parents(".rexpansive_section");
       var $newSection = $section.clone(false);
@@ -356,7 +356,7 @@ var Rexbuilder_Section = (function($) {
       }
     });
 
-    $(document).on("click", ".collapse-grid", function(e) {
+    Rexbuilder_Util.$document.on("click", ".collapse-grid", function(e) {
       var $section = $(e.target).parents(".rexpansive_section");
 
       var gridCollapsed;
@@ -567,7 +567,7 @@ var Rexbuilder_Section = (function($) {
     /**
      * Listening collapse row end
      */
-    $(document).on("rexlive:collapsingElementsEnded", function(e) {
+    Rexbuilder_Util.$document.on("rexlive:collapsingElementsEnded", function(e) {
       var galleryEditorInstance = e.settings.galleryEditorInstance;
       var reverseData = e.settings.reverseData;
       var $section = e.settings.$section;
@@ -596,7 +596,7 @@ var Rexbuilder_Section = (function($) {
      * Adding a new row
      * @since 2.0.0
      */
-    $(document).on("click", ".add-new-section", function(e) {
+    Rexbuilder_Util.$document.on("click", ".add-new-section", function(e) {
       var rexIdSection = Rexbuilder_Util.createSectionID();
       var $btn = $(this);
       var newRowPosition = $btn.attr('data-new-row-position');
@@ -712,7 +712,7 @@ var Rexbuilder_Section = (function($) {
       }
     });
 
-    $(document).on("rexlive:applyModelSection", function(e) {
+    Rexbuilder_Util.$document.on("rexlive:applyModelSection", function(e) {
       Rexbuilder_Util_Editor.sectionCopying = true;
       Rexbuilder_Util_Editor.insertingModel = true;
 
@@ -928,7 +928,7 @@ var Rexbuilder_Section = (function($) {
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });
 
-    $(document).on("rexlive:importModels", function(e) {
+    Rexbuilder_Util.$document.on("rexlive:importModels", function(e) {
       if (Rexbuilder_Util.activeLayout != "default") {
         return;
       }

@@ -3285,7 +3285,6 @@ var Rexbuilder_Util = (function($) {
 
   var _playVideo = function($target) {
     if ($target.hasClass("mp4-player")) {
-      console.log("_playVideo: faccio play al video");
       $target.find("video")[0].play();
     } else if ($target.hasClass("vimeo-player")) {
       var vimeoPlugin = VimeoVideo.findVideo($target.find("iframe")[0]);
@@ -3366,6 +3365,7 @@ var Rexbuilder_Util = (function($) {
     }
 
     this.$window = $(window);
+    this.$document = $(document);
     this.$body = $("body");
     $modelsCustomizationsDataDiv = $("#rexbuilder-model-data")
       .children(".models-customizations")

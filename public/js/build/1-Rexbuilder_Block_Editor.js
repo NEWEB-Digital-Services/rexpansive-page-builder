@@ -17,7 +17,7 @@ var Rexbuilder_Block_Editor = (function($) {
      * Edit a block background image
      * @since 2.0.0
      */
-    $(document).on('click', '.edit-block-image', function(e) {
+    Rexbuilder_Util.$document.on('click', '.edit-block-image', function(e) {
       var $btn = $(e.target);
       var $elem = $btn.parents(".grid-stack-item");
       var $section = $elem.parents(".rexpansive_section");
@@ -114,7 +114,7 @@ var Rexbuilder_Block_Editor = (function($) {
      * Edit a block background video
      * @since 2.0.0
      */
-    $(document).on('click', '.edit-block-video-background', function(e) {
+    Rexbuilder_Util.$document.on('click', '.edit-block-video-background', function(e) {
       var $btn = $(e.target);
       var $elem = $btn.parents(".grid-stack-item");
       var $section = $elem.parents(".rexpansive_section");
@@ -201,7 +201,7 @@ var Rexbuilder_Block_Editor = (function($) {
      * Deactivate a block image
      * @since 2.0.0
      */
-    $(document).on('click', '.deactivate-block-image-background', function(e) {
+    Rexbuilder_Util.$document.on('click', '.deactivate-block-image-background', function(e) {
       var $btn = $(e.target);
       var $elem = $btn.parents(".grid-stack-item");
       var $section = $elem.parents(".rexpansive_section");
@@ -246,7 +246,7 @@ var Rexbuilder_Block_Editor = (function($) {
      * Deactivate a block color
      * @since 2.0.0
      */
-    $(document).on('click', '.deactivate-block-color-background', function(e) {
+    Rexbuilder_Util.$document.on('click', '.deactivate-block-color-background', function(e) {
       var $btn = $(e.target);
       var $elem = $btn.parents(".grid-stack-item");
       var $section = $elem.parents(".rexpansive_section");
@@ -287,7 +287,7 @@ var Rexbuilder_Block_Editor = (function($) {
      * Deactivate an overlay color
      * @since 2.0.0
      */
-    $(document).on('click', '.deactivate-block-overlay-color', function(e) {
+    Rexbuilder_Util.$document.on('click', '.deactivate-block-overlay-color', function(e) {
       var $btn = $(e.target);
       var $elem = $btn.parents(".grid-stack-item");
       var $section = $elem.parents(".rexpansive_section");
@@ -326,7 +326,7 @@ var Rexbuilder_Block_Editor = (function($) {
      * Deactivate a video background
      * @since 2.0.0
      */
-    $(document).on( 'click', '.deactivate-block-video-background', function(e) {
+    Rexbuilder_Util.$document.on( 'click', '.deactivate-block-video-background', function(e) {
       var $btn = $(e.target);
       var $elem = $btn.parents(".grid-stack-item");
       var $section = $elem.parents(".rexpansive_section");
@@ -369,7 +369,7 @@ var Rexbuilder_Block_Editor = (function($) {
      * @since 2.0.0
      * @todo
      */
-    $(document).on('click', '.edit-block-content', function(e) {
+    Rexbuilder_Util.$document.on('click', '.edit-block-content', function(e) {
       var $btn = $(e.target);
       var $elem = $btn.parents(".grid-stack-item");
       
@@ -383,7 +383,7 @@ var Rexbuilder_Block_Editor = (function($) {
      * Edit the block content position 
      * @since 2.0.0
      */
-    $(document).on('click', '.edit-block-content-position', function(e) {
+    Rexbuilder_Util.$document.on('click', '.edit-block-content-position', function(e) {
       var $btn = $(e.target);
       var $elem = $btn.parents(".grid-stack-item");
       var $section = $elem.parents(".rexpansive_section");

@@ -3,7 +3,7 @@ var Rexbuilder_Block = (function ($) {
 
     var _addBlockToolboxListeners = function () {
 
-        $(document).on('click', '.builder-delete-block', function (e) {
+        Rexbuilder_Util.$document.on('click', '.builder-delete-block', function (e) {
             e.preventDefault();
             e.stopPropagation();
             Rexbuilder_Util_Editor.removingBlocks = true;
@@ -21,7 +21,7 @@ var Rexbuilder_Block = (function ($) {
             Rexbuilder_Util_Editor.sendParentIframeMessage(data);
         });
 
-        $(document).on("click", ".builder-edit-slider", function (e) {
+        Rexbuilder_Util.$document.on("click", ".builder-edit-slider", function (e) {
             e.preventDefault();
             e.stopPropagation();
             var $elem = $(e.target).parents(".grid-stack-item");
@@ -58,7 +58,7 @@ var Rexbuilder_Block = (function ($) {
             }
         });
 
-        $(document).on('click', '.builder-copy-block', function (e) {
+        Rexbuilder_Util.$document.on('click', '.builder-copy-block', function (e) {
             e.preventDefault();
             e.stopPropagation();
 

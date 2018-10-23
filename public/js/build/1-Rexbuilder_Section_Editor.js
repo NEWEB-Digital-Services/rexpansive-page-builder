@@ -27,7 +27,7 @@ var Rexbuilder_Section_Editor = (function($) {
      * At the width selection, create a rexlive:set_section_width event with all the needed data
      * @since 2.0.0
      */
-    $(document).on('change', '.edit-row-width', function(e) {
+    Rexbuilder_Util.$document.on('change', '.edit-row-width', function(e) {
       // var rexID = e.target.name.split('-')[2];
       // var $section_data = $(e.target).parents('.rexpansive_section').children('.section-data');
       var $section = $(e.target).parents(".rexpansive_section");
@@ -59,14 +59,14 @@ var Rexbuilder_Section_Editor = (function($) {
 
       var event = jQuery.Event("rexlive:set_section_width");
       event.settings = settings;
-      $(document).trigger(event);
+      Rexbuilder_Util.$document.trigger(event);
     });
 
     /**
      * Event attached on row layout changed
      * @since 2.0.0
      */
-    $(document).on('change', '.edit-row-layout', function(e) {
+    Rexbuilder_Util.$document.on('change', '.edit-row-layout', function(e) {
       var $section = $(e.target).parents(".rexpansive_section");
       // var $section_data = $section.children('.section-data');
       var sectionID = $section.attr("data-rexlive-section-id");
@@ -88,7 +88,7 @@ var Rexbuilder_Section_Editor = (function($) {
 
       var event = jQuery.Event("rexlive:set_gallery_layout");
       event.settings = settings;
-      $(document).trigger(event);
+      Rexbuilder_Util.$document.trigger(event);
     });
 
     /**
@@ -97,7 +97,7 @@ var Rexbuilder_Section_Editor = (function($) {
      * Create a rexlive:openLiveImageUploader message to send to iframe parent
      * @since 2.0.0
      */
-    $(document).on('click', '.edit-row-image-background', function(e) {
+    Rexbuilder_Util.$document.on('click', '.edit-row-image-background', function(e) {
       var $section = $(this).parents(".rexpansive_section");
       var sectionID = $section.attr("data-rexlive-section-id");
       var modelNumber =
@@ -127,7 +127,7 @@ var Rexbuilder_Section_Editor = (function($) {
      * De-selecting the image on a background row
      * @since 2.0.0
      */
-    $(document).on('click', '.deactivate-row-image-background', function(e) {
+    Rexbuilder_Util.$document.on('click', '.deactivate-row-image-background', function(e) {
       var $section = $(e.target).parents(".rexpansive_section");
       var sectionID = $section.attr("data-rexlive-section-id");
       var modelNumber =
@@ -154,7 +154,7 @@ var Rexbuilder_Section_Editor = (function($) {
         };
         var event = jQuery.Event("rexlive:apply_background_image_section");
         event.settings = settings;
-        $(document).trigger(event);
+        Rexbuilder_Util.$document.trigger(event);
       }
     });
 
@@ -162,7 +162,7 @@ var Rexbuilder_Section_Editor = (function($) {
      * De-selecting the color on a background row
      * @since 2.0.0
      */
-    $(document).on('click', '.deactivate-row-color-background', function(e) {
+    Rexbuilder_Util.$document.on('click', '.deactivate-row-color-background', function(e) {
       var $btn = $(e.target);
       var $section = $(e.target).parents(".rexpansive_section");
       // var $section_data = $section.children('.section-data');
@@ -185,13 +185,13 @@ var Rexbuilder_Section_Editor = (function($) {
 
       var event = jQuery.Event("rexlive:apply_background_color_section");
       event.settings = settings;
-      $(document).trigger(event);
+      Rexbuilder_Util.$document.trigger(event);
     });
 
     /**
      * De-selecting the overlay color on a background row
      */
-    $(document).on('click', '.deactivate-row-overlay-color', function(e) {
+    Rexbuilder_Util.$document.on('click', '.deactivate-row-overlay-color', function(e) {
       var $section = $(e.target).parents(".rexpansive_section");
       var $section_data = $section.children('.section-data');
       var sectionID = $section.attr("data-rexlive-section-id");
@@ -213,14 +213,14 @@ var Rexbuilder_Section_Editor = (function($) {
 
       var event = jQuery.Event("rexlive:change_section_overlay");
       event.settings = settings;
-      $(document).trigger(event);
+      Rexbuilder_Util.$document.trigger(event);
     });
 
     /**
      * Open the modal to editing or insert a background video on a row
      * @since 2.0.0
      */
-    $(document).on('click', '.edit-row-video-background', function(e) {
+    Rexbuilder_Util.$document.on('click', '.edit-row-video-background', function(e) {
       e.preventDefault();
       var $section = $(e.target).parents(".rexpansive_section");
       var sectionID = $section.attr("data-rexlive-section-id");
@@ -271,7 +271,7 @@ var Rexbuilder_Section_Editor = (function($) {
      * Deactivating a video (everyone) on a background of a row
      * @since 2.0.0
      */
-    $(document).on('click', '.deactivate-row-video-background', function(e) {
+    Rexbuilder_Util.$document.on('click', '.deactivate-row-video-background', function(e) {
       e.preventDefault();
 
       var $section = $(e.target).parents(".rexpansive_section");
@@ -299,7 +299,7 @@ var Rexbuilder_Section_Editor = (function($) {
 
       var event = jQuery.Event("rexlive:update_section_background_video");
       event.settings = settings;
-      $(document).trigger(event);
+      Rexbuilder_Util.$document.trigger(event);
     });
   };
 
@@ -371,7 +371,7 @@ var Rexbuilder_Section_Editor = (function($) {
         
         var event = jQuery.Event("rexlive:change_section_bg_color");
         event.settings = settings;
-        $(document).trigger(event);
+        Rexbuilder_Util.$document.trigger(event);
 
         flagPickerUsed = true;
       },
@@ -394,7 +394,7 @@ var Rexbuilder_Section_Editor = (function($) {
   
           var event = jQuery.Event("rexlive:apply_background_color_section");
           event.settings = settings;
-          $(document).trigger(event);
+          Rexbuilder_Util.$document.trigger(event);
         }
 
         flagPickerUsed = false;
@@ -458,7 +458,7 @@ var Rexbuilder_Section_Editor = (function($) {
           var event = jQuery.Event("rexlive:change_section_overlay");
         }
         event.settings = changeColorEvent;
-        $(document).trigger(event);
+        Rexbuilder_Util.$document.trigger(event);
 
         flagPickerUsed = true;
       },
@@ -472,7 +472,7 @@ var Rexbuilder_Section_Editor = (function($) {
 
           var event = jQuery.Event("rexlive:change_section_overlay");
           event.settings = changeColorEvent;
-          $(document).trigger(event);
+          Rexbuilder_Util.$document.trigger(event);
         }
 
         flagPickerUsed = false;

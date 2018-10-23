@@ -816,7 +816,7 @@ var TextEditor = (function($) {
 
   var _linkDocumentListeners = function() {
     //function for removing textarea html editor
-    $(document).on("click", ".rex-close-html-editor", function(e) {
+    Rexbuilder_Util.$document.on("click", ".rex-close-html-editor", function(e) {
       var $wrapper = $(e.target).parents(".editing-html");
       var $textArea = $wrapper.find("textarea");
       var $html = $.parseHTML($textArea.val());
