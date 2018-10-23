@@ -661,111 +661,103 @@ defined('ABSPATH') or exit;
     <div id="rex-block-image-editor" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <?php Rexbuilder_Utilities::close_button(); ?>
         <div class="background-options-area modal-content">
-            <div id="block-edit-image-bg" class="background_set_image">
-                <div class="bl_d-flex bl_ai-c">
-                    <div class="col" style="width:100%;">
-                        <div class="bl_d-flex bl_ai-c bl_jc-sb">
-                            <div class="col">
-                                <div class="valign-wrapper">
-                                    <div class="bg-image-block-active-wrapper">
-                                        <input type="checkbox" id="image-block-active" value="color" />
-                                        <label for="image-block-active">
-                                            <span class="rex-ripple" />
-                                        </label>
-                                    </div>
-                                    <div id="bg-block-set-img-wrap" class="rex-button-with-plus">
-                                        <div id="bg-block-img-preview" class="image-preview-logo">
-                                            <!-- <i class="material-icons rex-icon">p</i> -->
-                                            <span class="l-icon--white"><?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?></span>
-                                        </div>
-                                        <button id="background-block-up-img" class="rex-plus-button btn-floating l-icon--white light-blue darken-1" value="" title="Select Image">
-                                            <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
-                                        </button>
-                                        <input name="" class="file-path" type="hidden" id="background-block-url" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col">
-                                <div id="bg-set-photoswipe" class="col rex-check-icon">
-                                    <label>
-                                        <input type="checkbox" id="background_photoswipe" name="background_photoswipe" title="<?php _e( 'Photo Zoom', 'rexpansive' ); ?>">
-                                        <span>
-                                            <?php Rexbuilder_Utilities::get_icon('#Z007-Zoom'); ?>
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
+            <div id="block-edit-image-bg" class="background_set_image bl_modal-row">
+                <div class="bl_modal__option-wrap">
+                    <div class="valign-wrapper">
+                        <div class="bg-image-block-active-wrapper tippy" data-tippy-content="<?php _e( 'Active Background Image', 'rexpansive'); ?>">
+                            <input type="checkbox" id="image-block-active" value="color" />
+                            <label for="image-block-active">
+                                <span class="rex-ripple" />
+                            </label>
                         </div>
-                        <div class="bl_d-flex bl_ai-c bl_jc-sb">
-                            <div class="col">
-                                <div id="set-image-size">
-                                    <input type="hidden" id="set-image-size-value" name="set-image-size-value" value="">
-                                </div>
-                                <div id="bg-set-img-type" class="col clearfix">
-                                    <div class="rex-background-image-type-wrap" data-rex-type-image="full">
-                                        <label>
-                                            <input id="bg-img-type-full" class="background_image_type with-gap" type="radio" name="background_image_type" value="full">
-                                            <span><?php Rexbuilder_Utilities::get_icon('#C003-Image-Full'); ?></span>
-                                        </label>
-                                    </div>
-                                    <div class="rex-background-image-type-wrap" data-rex-type-image="natural">
-                                        <label>
-                                            <input id="bg-img-type-natural" class="background_image_type with-gap" type="radio" name="background_image_type" value="natural">
-                                            <span><?php Rexbuilder_Utilities::get_icon('#C004-Image-Natural'); ?></span>
-                                        </label>
-                                    </div>
-                                </div>
+                        <div id="bg-block-set-img-wrap" class="rex-button-with-plus tippy" data-tippy-content="<?php _e( 'Background Image', 'rexpansive'); ?>">
+                            <div id="bg-block-img-preview" class="image-preview-logo">
+                                <span class="l-icon--white"><?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?></span>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col" style="width:100%;text-align:center;">
-                        <div id="rex-block-image-position-editor" class="col">
-                            <div>
-                                <input id="rex-bm-image-top-left" type="radio" class="image-position with-gap" name="image-position" value="top-left" />
-                                <label for="rex-bm-image-top-left" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Top-Left">
-                                    <span class="rex-ripple"></span>
-                                </label>
-                                <input id="rex-bm-image-top-center" type="radio" class="image-position with-gap" name="image-position" value="top-center" />
-                                <label for="rex-bm-image-top-center" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Top-Center">
-                                    <span class="rex-ripple"></span>
-                                </label>
-                                <input id="rex-bm-image-top-right" type="radio" class="image-position with-gap" name="image-position" value="top-right"/>
-                                <label for="rex-bm-image-top-right" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Top-Right">
-                                    <span class="rex-ripple"></span>
-                                </label>
-                            </div>
-                            <div>
-                                <input id="rex-bm-image-middle-left" type="radio" class="image-position with-gap" name="image-position" value="middle-left" />
-                                <label for="rex-bm-image-middle-left" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Middle-Left">
-                                    <span class="rex-ripple"></span>
-                                </label>
-                                <input id="rex-bm-image-middle-center" type="radio" class="image-position with-gap" name="image-position" value="middle-center" />
-                                <label for="rex-bm-image-middle-center" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Middle-Center">
-                                    <span class="rex-ripple"></span>
-                                </label>
-                                <input id="rex-bm-image-middle-right" type="radio" class="image-position with-gap" name="image-position" value="middle-right" />
-                                <label for="rex-bm-image-middle-right" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Middle-Right">
-                                    <span class="rex-ripple"></span>
-                                </label>
-                            </div>
-                            <div>
-                                <input id="rex-bm-image-bottom-left" type="radio" class="image-position with-gap" name="image-position" value="bottom-left" />
-                                <label for="rex-bm-image-bottom-left" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Bottom-Left">
-                                    <span class="rex-ripple"></span>
-                                </label>
-                                <input id="rex-bm-image-bottom-center" type="radio" class="image-position with-gap" name="image-position" value="bottom-center" />
-                                <label for="rex-bm-image-bottom-center" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Bottom-Center">
-                                    <span class="rex-ripple"></span>
-                                </label>
-                                <input id="rex-bm-image-bottom-right" type="radio" class="image-position with-gap" name="image-position" value="bottom-right" />
-                                <label for="rex-bm-image-bottom-right" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Bottom-Right">
-                                    <span class="rex-ripple"></span>
-                                </label>
-                            </div>
+                            <button id="background-block-up-img" class="rex-plus-button btn-floating l-icon--white light-blue darken-1" value="" title="Select Image">
+                                <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
+                            </button>
+                            <input name="" class="file-path" type="hidden" id="background-block-url" />
                         </div>
                     </div>
                 </div>
-
+                <div class="bl_modal__option-wrap bl_modal__option-wrap--fluid">
+                    <div id="set-image-size">
+                        <input type="hidden" id="set-image-size-value" name="set-image-size-value" value="">
+                    </div>
+                    <div id="bg-set-img-type" class="col clearfix">
+                        <div class="rex-background-image-type-wrap tippy" data-tippy-content="<?php _e( 'Image Full', 'rexpansive'); ?>" data-rex-type-image="full" style="margin-bottom:6px;">
+                            <label>
+                                <input id="bg-img-type-full" class="background_image_type with-gap" type="radio" name="background_image_type" value="full">
+                                <span><?php Rexbuilder_Utilities::get_icon('#C003-Image-Full'); ?></span>
+                            </label>
+                        </div>
+                        <div class="rex-background-image-type-wrap tippy" data-tippy-content="<?php _e( 'Image Natural', 'rexpansive'); ?>" data-rex-type-image="natural">
+                            <label>
+                                <input id="bg-img-type-natural" class="background_image_type with-gap" type="radio" name="background_image_type" value="natural">
+                                <span><?php Rexbuilder_Utilities::get_icon('#C004-Image-Natural'); ?></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bl_modal-row">
+                <div class="bl_modal__option-wrap bl_jc-c">
+                    <div id="rex-block-image-position-editor" class="radio-group__wrap">
+                        <div>
+                            <input id="rex-bm-image-top-left" type="radio" class="image-position small-radio with-gap" name="image-position" value="top-left" />
+                            <label for="rex-bm-image-top-left" class="rex-block-image-position tippy" data-tippy-content="<?php _e('Top-Left Image','rexpansive'); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                            <input id="rex-bm-image-top-center" type="radio" class="image-position small-radio with-gap" name="image-position" value="top-center" />
+                            <label for="rex-bm-image-top-center" class="rex-block-image-position tippy" data-tippy-content="<?php _e('Top-Center Image','rexpansive'); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                            <input id="rex-bm-image-top-right" type="radio" class="image-position small-radio with-gap" name="image-position" value="top-right"/>
+                            <label for="rex-bm-image-top-right" class="rex-block-image-position tippy" data-tippy-content="<?php _e('Top-Right Image','rexpansive'); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                        </div>
+                        <div>
+                            <input id="rex-bm-image-middle-left" type="radio" class="image-position small-radio with-gap" name="image-position" value="middle-left" />
+                            <label for="rex-bm-image-middle-left" class="rex-block-image-position tippy" data-tippy-content="<?php _e('Middle-Left Image','rexpansive'); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                            <input id="rex-bm-image-middle-center" type="radio" class="image-position small-radio with-gap" name="image-position" value="middle-center" />
+                            <label for="rex-bm-image-middle-center" class="rex-block-image-position tippy" data-tippy-content="<?php _e('Middle-Center Image','rexpansive'); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                            <input id="rex-bm-image-middle-right" type="radio" class="image-position small-radio with-gap" name="image-position" value="middle-right" />
+                            <label for="rex-bm-image-middle-right" class="rex-block-image-position tippy" data-tippy-content="<?php _e('Middle-Right Image','rexpansive'); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                        </div>
+                        <div>
+                            <input id="rex-bm-image-bottom-left" type="radio" class="image-position small-radio with-gap" name="image-position" value="bottom-left" />
+                            <label for="rex-bm-image-bottom-left" class="rex-block-image-position tippy" data-tippy-content="<?php _e('Bottom-Left Image','rexpansive'); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                            <input id="rex-bm-image-bottom-center" type="radio" class="image-position small-radio with-gap" name="image-position" value="bottom-center" />
+                            <label for="rex-bm-image-bottom-center" class="rex-block-image-position tippy" data-tippy-content="<?php _e('Bottom-Center Image','rexpansive'); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                            <input id="rex-bm-image-bottom-right" type="radio" class="image-position small-radio with-gap" name="image-position" value="bottom-right" />
+                            <label for="rex-bm-image-bottom-right" class="rex-block-image-position tippy" data-tippy-content="<?php _e('Bottom-Right Image','rexpansive'); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="bl_modal__option-wrap bl_modal__option-wrap--fluid">
+                    <div id="bg-set-photoswipe" class="rex-check-icon tippy" data-tippy-content="<?php _e( 'Photo Zoom', 'rexpansive'); ?>">
+                        <label>
+                            <input type="checkbox" id="background_photoswipe" name="background_photoswipe" title="<?php _e( 'Photo Zoom', 'rexpansive' ); ?>">
+                            <span>
+                                <?php Rexbuilder_Utilities::get_icon('#Z007-Zoom'); ?>
+                            </span>
+                        </label>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

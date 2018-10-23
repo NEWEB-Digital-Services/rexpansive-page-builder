@@ -28,7 +28,7 @@ var Block_Image_Editor_Modal = (function($) {
   var _openModal = function(data) {
     Background_Block_Image_Modal.updateImageModal(data.imageBG);
     Block_Image_Positions_Modal.updatePosition(data.flexImgPosition);
-    Rexlive_Modals_Utils.openModal($modal_wrap, true);
+    Rexlive_Modals_Utils.openModal($modal_wrap);
   };
 
   var _listen_events = function() {

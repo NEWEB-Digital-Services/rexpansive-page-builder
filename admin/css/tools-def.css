@@ -12868,6 +12868,9 @@ input#rex-block-vimeo-url {
 #rex-block-content-position-editor {
   max-width: 125px; }
 
+#rex-block-image-editor {
+  max-width: 212px; }
+
 #rex-block-options {
   max-width: 412px; }
 
@@ -14442,7 +14445,7 @@ select.rx__form-input {
 #rex-slider-block.rex-slider-block--editing .rex-slider__import--wrap {
   display: none; }
 
-.rex-slider__slide .rex-button-with-plus {
+.rex-button-with-plus {
   margin-right: 12px; }
 
 .rex-slider__slide-edit.rex-slider__slide-edit__field-active-notice {
