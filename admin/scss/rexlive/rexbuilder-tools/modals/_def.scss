@@ -29,6 +29,20 @@
   &:not(:last-child) {
     border-right: 1px solid #ddd;
   }
+  &.bl_modal__option-wrap--no-border {
+    border-right: none;
+  }
+  &.bl_modal__option-wrap--fluid {
+    width: auto;
+  }
+}
+
+.radio-group__wrap {
+  font-size: 0;
+}
+
+.small-input {
+  font-size: 11px;
 }
 
 .bl_modal__col-4 {

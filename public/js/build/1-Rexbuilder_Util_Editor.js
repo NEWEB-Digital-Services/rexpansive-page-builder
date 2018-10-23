@@ -359,6 +359,16 @@ var Rexbuilder_Util_Editor = (function($) {
       }
     });
 
+    // if "ESC" pressed tell the parent to close a window
+    Rexbuilder_Util.$document.on('keydown', function(e) {
+      if( e.keyCode === 27 ) {
+        var data = {
+          eventName: "rexlive:esc_pressed",
+        };
+        Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      }
+    });
+
     Rexbuilder_Util.$window.on("mousedown", function(event) {
       Rexbuilder_Util_Editor.mouseDown = true;
       Rexbuilder_Util_Editor.mouseUp = false;

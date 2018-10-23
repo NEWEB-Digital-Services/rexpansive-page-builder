@@ -309,16 +309,16 @@ defined('ABSPATH') or exit;
     <div id="rex-block-options" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <?php Rexbuilder_Utilities::close_button(); ?>
         <div class="background-options-area modal-content">
-            <div id="block-edit-image-bg" class="background_set_image row valign-wrapper">
-                <div class="col">
+            <div id="block-edit-image-bg" class="background_set_image bl_modal-row">
+                <div class="bl_modal__option-wrap">
                     <div class="valign-wrapper">
-                        <div class="bg-image-block-active-wrapper">
+                        <div class="bg-image-block-active-wrapper tippy" data-tippy-content="<?php _e( 'Active Background Image', 'rexpansive'); ?>">
                             <input type="checkbox" id="image-block-active" value="color" />
                             <label for="image-block-active">
                                 <span class="rex-ripple" />
                             </label>
                         </div>
-                        <div id="bg-block-set-img-wrap" class="rex-button-with-plus">
+                        <div id="bg-block-set-img-wrap" class="rex-button-with-plus tippy" data-tippy-content="<?php _e( 'Background Image', 'rexpansive'); ?>">
                             <div id="bg-block-img-preview" class="image-preview-logo">
                                 <!-- <i class="material-icons rex-icon">p</i> -->
                                 <span class="l-icon--white"><?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?></span>
@@ -330,12 +330,12 @@ defined('ABSPATH') or exit;
                         </div>
                     </div>
                 </div>
-                <div class="col">
+                <div class="bl_modal__option-wrap bl_modal__option-wrap--fluid">
                     <div id="set-image-size">
                         <input type="hidden" id="set-image-size-value" name="set-image-size-value" value="">
                     </div>
                     <div id="bg-set-img-type" class="col clearfix">
-                        <div class="rex-background-image-type-wrap" data-rex-type-image="full">
+                        <div class="rex-background-image-type-wrap tippy" data-tippy-content="<?php _e( 'Image Full', 'rexpansive'); ?>" data-rex-type-image="full" style="margin-bottom:6px;">
                             <label>
                                 <input id="bg-img-type-full" class="background_image_type with-gap" type="radio" name="background_image_type" value="full">
                                 <span><?php Rexbuilder_Utilities::get_icon('#C003-Image-Full'); ?></span>
@@ -345,7 +345,7 @@ defined('ABSPATH') or exit;
                                 <span class="rex-ripple"></span>
                             </label> -->
                         </div>
-                        <div class="rex-background-image-type-wrap" data-rex-type-image="natural">
+                        <div class="rex-background-image-type-wrap tippy" data-tippy-content="<?php _e( 'Image Natural', 'rexpansive'); ?>" data-rex-type-image="natural">
                             <label>
                                 <input id="bg-img-type-natural" class="background_image_type with-gap" type="radio" name="background_image_type" value="natural">
                                 <span><?php Rexbuilder_Utilities::get_icon('#C004-Image-Natural'); ?></span>
@@ -357,8 +357,8 @@ defined('ABSPATH') or exit;
                         </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div id="bg-set-photoswipe" class="col rex-check-icon">
+                <div class="bl_modal__option-wrap bl_modal__option-wrap--fluid">
+                    <div id="bg-set-photoswipe" class="rex-check-icon tippy" data-tippy-content="<?php _e( 'Photo Zoom', 'rexpansive'); ?>">
                         <label>
                             <input type="checkbox" id="background_photoswipe" name="background_photoswipe" title="<?php _e( 'Photo Zoom', 'rexpansive' ); ?>">
                             <span>
@@ -373,69 +373,71 @@ defined('ABSPATH') or exit;
                     </div>
                 </div>
 
-                <div id="rex-block-image-position-editor" class="col">
-                    <div>
-                        <input id="rex-bm-image-top-left" type="radio" class="image-position with-gap" name="image-position" value="top-left" />
-                        <label for="rex-bm-image-top-left" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Top-Left">
-                            <span class="rex-ripple"></span>
-                        </label>
-                        <input id="rex-bm-image-top-center" type="radio" class="image-position with-gap" name="image-position" value="top-center" />
-                        <label for="rex-bm-image-top-center" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Top-Center">
-                            <span class="rex-ripple"></span>
-                        </label>
-                        <input id="rex-bm-image-top-right" type="radio" class="image-position with-gap" name="image-position" value="top-right"/>
-                        <label for="rex-bm-image-top-right" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Top-Right">
-                            <span class="rex-ripple"></span>
-                        </label>
-                    </div>
-                    <div>
-                        <input id="rex-bm-image-middle-left" type="radio" class="image-position with-gap" name="image-position" value="middle-left" />
-                        <label for="rex-bm-image-middle-left" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Middle-Left">
-                            <span class="rex-ripple"></span>
-                        </label>
-                        <input id="rex-bm-image-middle-center" type="radio" class="image-position with-gap" name="image-position" value="middle-center" />
-                        <label for="rex-bm-image-middle-center" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Middle-Center">
-                            <span class="rex-ripple"></span>
-                        </label>
-                        <input id="rex-bm-image-middle-right" type="radio" class="image-position with-gap" name="image-position" value="middle-right" />
-                        <label for="rex-bm-image-middle-right" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Middle-Right">
-                            <span class="rex-ripple"></span>
-                        </label>
-                    </div>
-                    <div>
-                        <input id="rex-bm-image-bottom-left" type="radio" class="image-position with-gap" name="image-position" value="bottom-left" />
-                        <label for="rex-bm-image-bottom-left" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Bottom-Left">
-                            <span class="rex-ripple"></span>
-                        </label>
-                        <input id="rex-bm-image-bottom-center" type="radio" class="image-position with-gap" name="image-position" value="bottom-center" />
-                        <label for="rex-bm-image-bottom-center" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Bottom-Center">
-                            <span class="rex-ripple"></span>
-                        </label>
-                        <input id="rex-bm-image-bottom-right" type="radio" class="image-position with-gap" name="image-position" value="bottom-right" />
-                        <label for="rex-bm-image-bottom-right" class="tooltipped rex-block-image-position" data-position="bottom" data-tooltip="Bottom-Right">
-                            <span class="rex-ripple"></span>
-                        </label>
+                <div class="bl_modal__option-wrap bl_jc-c">
+                    <div id="rex-block-image-position-editor" class="radio-group__wrap">
+                        <div>
+                            <input id="rex-bm-image-top-left" type="radio" class="image-position small-radio with-gap" name="image-position" value="top-left" />
+                            <label for="rex-bm-image-top-left" class="rex-block-image-position tippy" data-tippy-content="<?php _e( 'Top-Left Image', 'rexpansive' ); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                            <input id="rex-bm-image-top-center" type="radio" class="image-position small-radio with-gap" name="image-position" value="top-center" />
+                            <label for="rex-bm-image-top-center" class="rex-block-image-position tippy" data-tippy-content="<?php _e( 'Top-Center Image', 'rexpansive' ); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                            <input id="rex-bm-image-top-right" type="radio" class="image-position small-radio with-gap" name="image-position" value="top-right"/>
+                            <label for="rex-bm-image-top-right" class="rex-block-image-position tippy" data-tippy-content="<?php _e( 'Top-Right Image', 'rexpansive' ); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                        </div>
+                        <div>
+                            <input id="rex-bm-image-middle-left" type="radio" class="image-position small-radio with-gap" name="image-position" value="middle-left" />
+                            <label for="rex-bm-image-middle-left" class="rex-block-image-position tippy" data-tippy-content="<?php _e( 'Middle-Left Image', 'rexpansive' ); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                            <input id="rex-bm-image-middle-center" type="radio" class="image-position small-radio with-gap" name="image-position" value="middle-center" />
+                            <label for="rex-bm-image-middle-center" class="rex-block-image-position tippy" data-tippy-content="<?php _e( 'Middle-Center Image', 'rexpansive' ); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                            <input id="rex-bm-image-middle-right" type="radio" class="image-position small-radio with-gap" name="image-position" value="middle-right" />
+                            <label for="rex-bm-image-middle-right" class="rex-block-image-position tippy" data-tippy-content="<?php _e( 'Middle-Right Image', 'rexpansive' ); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                        </div>
+                        <div>
+                            <input id="rex-bm-image-bottom-left" type="radio" class="image-position small-radio with-gap" name="image-position" value="bottom-left" />
+                            <label for="rex-bm-image-bottom-left" class="rex-block-image-position tippy" data-tippy-content="<?php _e( 'Bottom-Left Image', 'rexpansive' ); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                            <input id="rex-bm-image-bottom-center" type="radio" class="image-position small-radio with-gap" name="image-position" value="bottom-center" />
+                            <label for="rex-bm-image-bottom-center" class="rex-block-image-position tippy" data-tippy-content="<?php _e( 'Bottom-Center Image', 'rexpansive' ); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                            <input id="rex-bm-image-bottom-right" type="radio" class="image-position small-radio with-gap" name="image-position" value="bottom-right" />
+                            <label for="rex-bm-image-bottom-right" class="rex-block-image-position tippy" data-tippy-content="<?php _e( 'Bottom-Right Image', 'rexpansive' ); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
             <!-- /BACKGROUND IMAGE -->
-            <div id="background-block-set-color" class="background_set_color row valign-wrapper">
-                <div class="col">
+            <div id="background-block-set-color" class="background_set_color bl_modal-row">
+                <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
                     <div class="valign-wrapper">
-                        <div class="bg-color-block-active-wrapper">
+                        <div class="bg-color-block-active-wrapper tippy" data-tippy-content="<?php _e( 'Active Background Color', 'rexpansive'); ?>">
                             <input type="checkbox" id="color-block-active" value="color" />
                             <label for="color-block-active">
                                 <span class="rex-ripple" />
                             </label>
                         </div>
-                        <div class="rex-relative-col">
+                        <div class="rex-relative-col tippy" data-tippy-content="<?php _e( 'Background Color', 'rexpansive'); ?>">
                             <input type="hidden" id="background-block-color-runtime" name="background-block-color-runtime" value="" />
                             <input id="background-block-color" type="text" name="background-block-color" value="" size="10" />
                             <div id="background-block-preview-icon" class="preview-color-icon"></div>
                         </div>
                     </div>
                 </div>
-                <div class="col">
+                <div class="bl_modal__option-wrap">
                     <div id="bg-block-color-palette" class="clearfix">
                         <div class="bg-palette-selector">
                             <input class="bg-palette-value" type="hidden" value="rgba(33,150,243,1)" />
@@ -471,16 +473,16 @@ defined('ABSPATH') or exit;
                 </div>
             </div>
             <!-- /COLOR BACKGROUND BLOCK -->
-            <div id="bg-overlay-block-set-color" class="background_set_color block valign-wrapper">
-                <div class="col">
+            <div id="bg-overlay-block-set-color" class="background_set_color bl_modal-row">
+                <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
                     <div class="valign-wrapper">
-                        <div class="overlay-active-wrapper">
+                        <div class="overlay-active-wrapper tippy" data-tippy-content="<?php _e( 'Active Overlay Color', 'rexpansive'); ?>">
                             <input type="checkbox" id="overlay-block-active" value="color" />
                             <label for="overlay-block-active">
                                 <span class="rex-ripple" />
                             </label>
                         </div>
-                        <div class="rex-relative-col">
+                        <div class="rex-relative-col tippy" data-tippy-content="<?php _e( 'Overlay Color', 'rexpansive'); ?>">
                             <div class="block-overlay-preview">
                                 <input id="overlay-color-block-value" type="text" name="overlay-color-block-value" value="rgba(255,255,255,0.5)" size="10" />
                                 <div id="overlay-block-preview-icon" class="preview-color-icon"></div>
@@ -488,7 +490,7 @@ defined('ABSPATH') or exit;
                         </div>
                     </div>
                 </div>
-                <div class="col">
+                <div class="bl_modal__option-wrap">
                     <div id="bg-overlay-block-color-palette" class="col">
                         <div class="bg-palette-selector">
                             <input class="bg-palette-value" type="hidden" value="rgba(33,150,243,0.6)" />
@@ -524,55 +526,8 @@ defined('ABSPATH') or exit;
                 </div>
             </div>
             
-            <div id="block-set-class-wrap" class="row valign-wrapper">
-                <!-- <div id="block-content-positions-wrapper">
-                    <div class="col">
-                        <div>
-                            <input id="rex-bm-content-top-left" type="radio" class="content-position with-gap" name="content-position" value="top-left" />
-                            <label for="rex-bm-content-top-left" class="tooltipped rex-block-position" data-position="bottom" data-tooltip="Top-Left">
-                                <span class="rex-ripple"></span>
-                            </label>
-                            <input id="rex-bm-content-top-center" type="radio" class="content-position with-gap" name="content-position" value="top-center" />
-                            <label for="rex-bm-content-top-center" class="tooltipped rex-block-position" data-position="bottom" data-tooltip="Top-Center">
-                                <span class="rex-ripple"></span>
-                            </label>
-                            <input id="rex-bm-content-top-right" type="radio" class="content-position with-gap" name="content-position" value="top-right"/>
-                            <label for="rex-bm-content-top-right" class="tooltipped rex-block-position" data-position="bottom" data-tooltip="Top-Right">
-                                <span class="rex-ripple"></span>
-                            </label>
-                        </div>
-                        <div>
-                            <input id="rex-bm-content-middle-left" type="radio" class="content-position with-gap" name="content-position" value="middle-left" />
-                            <label for="rex-bm-content-middle-left" class="tooltipped rex-block-position" data-position="bottom" data-tooltip="Middle-Left">
-                                <span class="rex-ripple"></span>
-                            </label>
-                            <input id="rex-bm-content-middle-center" type="radio" class="content-position with-gap" name="content-position" value="middle-center" />
-                            <label for="rex-bm-content-middle-center" class="tooltipped rex-block-position" data-position="bottom" data-tooltip="Middle-Center">
-                                <span class="rex-ripple"></span>
-                            </label>
-                            <input id="rex-bm-content-middle-right" type="radio" class="content-position with-gap" name="content-position" value="middle-right" />
-                            <label for="rex-bm-content-middle-right" class="tooltipped rex-block-position" data-position="bottom" data-tooltip="Middle-Right">
-                                <span class="rex-ripple"></span>
-                            </label>
-                        </div>
-                        <div>
-                            <input id="rex-bm-content-bottom-left" type="radio" class="content-position with-gap" name="content-position" value="bottom-left" />
-                            <label for="rex-bm-content-bottom-left" class="tooltipped rex-block-position" data-position="bottom" data-tooltip="Bottom-Left">
-                                <span class="rex-ripple"></span>
-                            </label>
-                            <input id="rex-bm-content-bottom-center" type="radio" class="content-position with-gap" name="content-position" value="bottom-center" />
-                            <label for="rex-bm-content-bottom-center" class="tooltipped rex-block-position" data-position="bottom" data-tooltip="Bottom-Center">
-                                <span class="rex-ripple"></span>
-                            </label>
-                            <input id="rex-bm-content-bottom-right" type="radio" class="content-position with-gap" name="content-position" value="bottom-right" />
-                            <label for="rex-bm-content-bottom-right" class="tooltipped rex-block-position" data-position="bottom" data-tooltip="Bottom-Right">
-                                <span class="rex-ripple"></span>
-                            </label>
-                        </div>
-                    </div>
-                </div> -->
-                <!-- POSITIONS -->
-                <div id="block-paddings-wrapper">
+            <div id="block-set-class-wrap" class="bl_modal-row">
+                <div id="block-paddings-wrapper" class="bl_modal__option-wrap">
                     <div class="rex-live__block-padding-wrap">
                         <div class="bl_d-flex bl_jc-c">
                             <div class="val-wrap bl_d-iflex bl_ai-c">
@@ -623,23 +578,73 @@ defined('ABSPATH') or exit;
                     </div><!-- // block padding -->
                 </div>
                 <!-- PADDINGS -->
+                <div id="block-content-positions-wrapper" class="bl_modal__option-wrap bl_jc-c">
+                    <div class="radio-group__wrap">
+                        <div>
+                            <input id="rex-bm-content-setup-top-left" type="radio" class="content-position small-radio with-gap" name="content-position" value="top-left" />
+                            <label for="rex-bm-content-setup-top-left" class="tippy rex-block-position" data-tippy-content="<?php _e('Top-Left Content','rexpansive'); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                            <input id="rex-bm-content-setup-top-center" type="radio" class="content-position small-radio with-gap" name="content-position" value="top-center" />
+                            <label for="rex-bm-content-setup-top-center" class="tippy rex-block-position" data-tippy-content="<?php _e('Top-Center Content','rexpansive'); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                            <input id="rex-bm-content-setup-top-right" type="radio" class="content-position small-radio with-gap" name="content-position" value="top-right"/>
+                            <label for="rex-bm-content-setup-top-right" class="tippy rex-block-position" data-tippy-content="<?php _e('Top-Right Content','rexpansive'); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                        </div>
+                        <div>
+                            <input id="rex-bm-content-setup-middle-left" type="radio" class="content-position small-radio with-gap" name="content-position" value="middle-left" />
+                            <label for="rex-bm-content-setup-middle-left" class="tippy rex-block-position" data-tippy-content="<?php _e('Middle-Left Content','rexpansive'); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                            <input id="rex-bm-content-setup-middle-center" type="radio" class="content-position small-radio with-gap" name="content-position" value="middle-center" />
+                            <label for="rex-bm-content-setup-middle-center" class="tippy rex-block-position" data-tippy-content="<?php _e('Middle-Center Content','rexpansive'); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                            <input id="rex-bm-content-setup-middle-right" type="radio" class="content-position small-radio with-gap" name="content-position" value="middle-right" />
+                            <label for="rex-bm-content-setup-middle-right" class="tippy rex-block-position" data-tippy-content="<?php _e('Middle-Right Content','rexpansive'); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                        </div>
+                        <div>
+                            <input id="rex-bm-content-setup-bottom-left" type="radio" class="content-position small-radio with-gap" name="content-position" value="bottom-left" />
+                            <label for="rex-bm-content-setup-bottom-left" class="tippy rex-block-position" data-tippy-content="<?php _e('Bottom-Left Content','rexpansive'); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                            <input id="rex-bm-content-setup-bottom-center" type="radio" class="content-position small-radio with-gap" name="content-position" value="bottom-center" />
+                            <label for="rex-bm-content-setup-bottom-center" class="tippy rex-block-position" data-tippy-content="<?php _e('Bottom-Center Content','rexpansive'); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                            <input id="rex-bm-content-setup-bottom-right" type="radio" class="content-position small-radio with-gap" name="content-position" value="bottom-right" />
+                            <label for="rex-bm-content-setup-bottom-right" class="tippy rex-block-position" data-tippy-content="<?php _e('Bottom-Right Content','rexpansive'); ?>">
+                                <span class="rex-ripple"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <!-- POSITIONS -->
             </div>
             <!-- /POSITION & PADDING -->
-            <div id="bg-set-link-wrap" class="row">
-                <div class="col block-url-link-wrapper">
+            <div id="bg-set-link-wrap" class="bl_modal-row">
+                <div class="bl_modal__option-wrap block-url-link-wrapper tippy" data-tippy-content="<?php _e( 'Link', 'rexpansive'); ?>">
                     <div class="input-field rex-input-prefixed">
                         <!-- <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="Link">l</i> -->
                         <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#C001-Link'); ?></span>
-                        <input type="text" id="block_link_value" name="block_link_value" value="" size="30">
-                        <label for="block_link_value">http://www...</label>
+                        <input type="text" id="block_link_value" class="small-input" name="block_link_value" value="" size="30">
+                        <label for="block_link_value">https://www...</label>
                         <span class="rex-material-bar"></span>
                     </div>
                 </div>
-                <div class="col block-custom-class-wrapper">
-                    <div class="input-field rex-col2 rex-input-prefixed">
+            </div>
+            <!-- //LINK -->
+            <div class="bl_modal-row">
+                <div class="bl_modal__option-wrap block-custom-class-wrapper">
+                    <div class="input-field rex-input-prefixed tippy" data-tippy-content="<?php _e( 'Custom Classes', 'rexpansive'); ?>">
                         <!-- <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="Custom Class">e</i> -->
                         <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#A008-Code'); ?></span>
-                        <input type="text" id="rex_block_custom_class" name="rex_block_custom_class" value="">
+                        <input type="text" id="rex_block_custom_class" class="small-input" name="rex_block_custom_class" value="">
                         <label for="rex_block_custom_class">
                             Classes
                         </label>
@@ -647,7 +652,7 @@ defined('ABSPATH') or exit;
                     </div>
                 </div>
             </div>
-            <!-- /LINK CLASSES -->
+            <!-- //CLASSES -->
         </div>
     </div>
 </div>
@@ -1319,7 +1324,7 @@ defined('ABSPATH') or exit;
                     <div id="rex-config-id" class="input-field rex-input-prefixed tippy"  data-tippy-content="<?php _e( 'Section Name', 'rexpansive' ); ?>">
                         <!-- <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e('Section Name', 'rexpansive');?>">B</i> -->
                         <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#B013-Row-ID'); ?></span>
-                        <input type="text" id="sectionid-container" name="sectionid-container">
+                        <input type="text" id="sectionid-container" class="small-input" name="sectionid-container">
                         <span class="rex-material-bar"></span>
                     </div>
                 </div>
@@ -1327,7 +1332,7 @@ defined('ABSPATH') or exit;
                     <div id="section-set-class-wrap" class="input-field rex-input-prefixed tippy"  data-tippy-content="<?php _e( 'Custom Classes', 'rexpansive' ); ?>">
                         <!-- <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e('Custom Class', 'rexpansive');?>">e</i> -->
                         <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#A008-Code'); ?></span>
-                        <input type="text" id="section-set-custom-class" name="section-set-custom-class" value="" size="10">
+                        <input type="text" id="section-set-custom-class" name="section-set-custom-class" class="small-input" value="" size="10">
                         <label for="section-set-custom-class">
                             <?php _e('Classes', 'rexpansive');?>
                         </label>

@@ -25,7 +25,7 @@ var Rexlive_Modals = (function ($) {
         BlockOptions_Modal.init();
 
         // block content position modal
-        Block_Content_Positions_Modal.init();
+        Block_Content_Positions_Modal.init($("#rex-block-content-position-editor"));
 
         // models
         Model_Modal.init();

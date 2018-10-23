@@ -198,6 +198,10 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       if (event.data.eventName == "rexlive:animateContentsEnd") {
         NProgress.done();
       }
+
+      if(event.data.eventName == "rexlive:esc_pressed" ) {
+        Rexlive_Modals_Utils.close_focus_modal();
+      }
     }
   };
 

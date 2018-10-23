@@ -2,7 +2,7 @@
  * Setting the content position
  * @since 2.0.0
  */
-var Block_Content_Positions_Modal = (function($) {
+var Block_Content_Positions_Setting = (function($) {
   "use strict";
 
   var block_content_position_properties;
