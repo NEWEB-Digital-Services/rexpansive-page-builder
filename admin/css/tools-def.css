@@ -2041,7 +2041,7 @@
 [type="radio"]:not(:checked) + span,
 [type="radio"]:checked + span {
   position: relative;
-  padding-left: 25px;
+  padding-left: 28px;
   cursor: pointer;
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
@@ -2049,7 +2049,7 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  height: 25px;
+  height: 24px;
   font-size: 1em;
   -webkit-transition: .28s ease;
   -o-transition: .28s ease;
@@ -2065,7 +2065,7 @@
   position: absolute;
   left: 0;
   top: 0;
-  margin: 4px;
+  margin: 4px 0;
   width: 16px;
   height: 16px;
   z-index: 0;
@@ -2216,7 +2216,7 @@
   /* checkbox aspect */ }
   [type="checkbox"] + span:not(.lever) {
     position: relative;
-    padding-left: 35px;
+    padding-left: 30px;
     cursor: pointer;
     display: inline-block;
     height: 25px;
@@ -11431,16 +11431,19 @@ i {
   top: 0; }
 
 .rex-modal .rex-input-prefixed.input-field {
-  margin: 3px 0; }
+  margin: 0; }
 
 .rex-modal .rex-input-prefixed.input-field .prefix {
   width: auto;
-  font-size: 36px;
-  top: 0; }
+  font-size: 20px;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%); }
 
 .rex-modal .rex-input-prefixed.input-field .prefix ~ input {
-  margin-left: 41px;
-  width: calc(100% - 41px);
+  margin-left: 32px;
+  width: calc(100% - 32px);
   font-size: 15px;
   line-height: 15px;
   height: 20px;
@@ -11501,7 +11504,11 @@ padding-left: 22px;
   margin-right: 6px; }
 
 .block-padding-wrap {
-  position: relative; }
+  position: relative;
+  display: inline-block; }
+
+.block-padding-wrap.block-padded {
+  padding-left: 27px; }
 
 .block-padding-wrap .block-padding-label {
   position: absolute;
@@ -11526,8 +11533,6 @@ padding-left: 22px;
   display: block;
   width: 23px;
   margin-bottom: 0;
-  margin-left: 3px;
-  margin-right: 3px;
   font-size: 15px;
   line-height: 1;
   height: auto;
@@ -12517,12 +12522,6 @@ transform: translate(0, 50%);*/
   padding-bottom: 18px;
   margin-bottom: 10px; }
 
-.block-padding-wrap {
-  display: inline-block; }
-
-.block-padding-wrap.block-padded {
-  padding-left: 27px; }
-
 #bg-set-link-wrap > .col:first-child {
   width: 179px; }
 
@@ -12901,7 +12900,7 @@ input#rex-block-vimeo-url {
 
 /* ----------- SECTION SETTINGS ----------- */
 #modal-background-responsive-set {
-  max-width: 492px; }
+  max-width: 460px; }
 
 #modal-background-responsive-set .modal-content {
   padding: 0; }
@@ -13173,13 +13172,6 @@ input#section-has-overlay-large
   -ms-transform: translate(0, 3px);
       transform: translate(0, 3px); }
 
-#modal-background-responsive-set #rex-config-id #sectionid-container {
-  margin-left: 38px;
-  width: calc(100% - 38px); }
-
-#modal-background-responsive-set #rex-config-id .rex-material-bar {
-  width: calc(100% - 38px); }
-
 #modal-background-responsive-set #section-set-class-wrap .rex-icon {
   font-size: 42px;
   -webkit-transform: translate(0, -2px);
@@ -13188,18 +13180,9 @@ input#section-has-overlay-large
 
 #modal-background-responsive-set
 #section-set-class-wrap
-#section-set-custom-class {
-  margin-left: 46px;
-  width: calc(100% - 46px); }
-
-#modal-background-responsive-set
-#section-set-class-wrap
 #section-set-custom-class
 + label {
-  margin-left: 32px; }
-
-#modal-background-responsive-set #section-set-class-wrap .rex-material-bar {
-  width: calc(100% - 46px); }
+  margin-left: 20px; }
 
 input[id^="section-fixed"] + label i {
   font-size: 36px;
@@ -13590,7 +13573,7 @@ input[type="number"]:focus:not([readonly])
      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }
 
 .rexbuilder-materialize-wrap .prefix ~ .rex-material-bar {
-  width: calc(100% - 41px); }
+  width: calc(100% - 32px); }
 
 /* ------ TOOLTIP REDEFINITION -------- */
 .material-tooltip {
@@ -14631,8 +14614,15 @@ input[type=text]:focus + .b-svg-icons {
   display: -ms-flexbox;
   display: flex; }
 
-.bl_modal__single-option {
-  display: inline-block; }
+.bl_modal__single-option:not(:last-child) {
+  padding-right: 20px; }
+
+.rex-modal .rex-input-prefixed.input-field.bl_modal__input-prefixed--small {
+  max-width: 120px;
+  margin-right: 12px; }
+
+.bl_modal__single-option--vertical {
+  margin: 24px 0; }
 
 .bl_modal__option-wrap {
   width: 100%;
@@ -14734,7 +14724,8 @@ body.rexpansive-editor .lean-overlay {
 
 .rex-live__row-margin-padding {
   max-width: 340px;
-  margin: 0 auto; }
+  margin: 0 auto;
+  padding: 8px 0; }
 
 .rex-live__row-padding-wrap {
   border: 2px solid #000;

@@ -6,7 +6,19 @@
 }
 
 .bl_modal__single-option {
-  display: inline-block;
+  // display: inline-block;
+  &:not(:last-child) {
+    padding-right: 20px;
+  }
+}
+
+.rex-modal .rex-input-prefixed.input-field.bl_modal__input-prefixed--small {
+  max-width: 120px;
+  margin-right: 12px;
+}
+
+.bl_modal__single-option--vertical {
+  margin: 24px 0;
 }
 
 .bl_modal__option-wrap {

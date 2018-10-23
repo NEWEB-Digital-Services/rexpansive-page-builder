@@ -178,7 +178,7 @@ var Section_Width_Modal = (function($) {
   };
 
   var _linkDocumentListeners = function() {
-    $(document).on(
+    Rexlive_Base_Settings.$document.on(
       "click",
       "#modal-background-responsive-set .boxed-width-type-wrap",
       function(e) {
@@ -213,7 +213,7 @@ var Section_Width_Modal = (function($) {
       }
     );
 
-    $(document).on(
+    Rexlive_Base_Settings.$document.on(
       "click",
       "#modal-background-responsive-set .rexlive-section-width",
       function(e) {

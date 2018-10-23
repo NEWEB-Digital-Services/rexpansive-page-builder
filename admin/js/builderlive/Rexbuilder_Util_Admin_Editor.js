@@ -202,7 +202,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   };
 
   var _addDocumentListeners = function() {
-    $(document).on("click", ".btn-builder-layout", function(e) {
+    Rexlive_Base_Settings.$document.on("click", ".btn-builder-layout", function(e) {
       var $btn = $(e.target).parents(".btn-builder-layout");
       var btnName = $btn.attr("data-name");
       if (activeLayoutPage != btnName) {
@@ -253,7 +253,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       _sendIframeBuilderMessage(dataSave);
     });
 
-    $(document).on("click", ".btn-undo", function(e) {
+    Rexlive_Base_Settings.$document.on("click", ".btn-undo", function(e) {
       var data = {
         eventName: "rexlive:undo"
       };
@@ -261,7 +261,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       _sendIframeBuilderMessage(data);
     });
 
-    $(document).on("click", ".btn-redo", function(e) {
+    Rexlive_Base_Settings.$document.on("click", ".btn-redo", function(e) {
       var data = {
         eventName: "rexlive:redo"
       };
@@ -269,7 +269,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       _sendIframeBuilderMessage(data);
     });
 
-    $(document).on("click", ".btn-models", function(e) {
+    Rexlive_Base_Settings.$document.on("click", ".btn-models", function(e) {
       Model_Import_Modal.openModal();
     });
 
@@ -278,7 +278,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
      * Slide up the label
      * @since 2.0.0
      */
-    $(document).on("focus", input_selector, function(e) {
+    Rexlive_Base_Settings.$document.on("focus", input_selector, function(e) {
       if ($(e.target).is(input_selector)) {
         $(e.target)
           .siblings("label, .prefix")
@@ -291,7 +291,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
      * Slide down the label
      * @since 2.0.0
      */
-    $(document).on("blur", input_selector, function(e) {
+    Rexlive_Base_Settings.$document.on("blur", input_selector, function(e) {
       if ($(e.target).is(input_selector)) {
         if("" == e.target.value) {
           $(e.target)

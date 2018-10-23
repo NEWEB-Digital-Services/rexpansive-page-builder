@@ -2046,7 +2046,7 @@
 [type="radio"]:not(:checked) + span,
 [type="radio"]:checked + span {
   position: relative;
-  padding-left: 25px;
+  padding-left: 28px;
   cursor: pointer;
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
@@ -2054,7 +2054,7 @@
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  height: 25px;
+  height: 24px;
   font-size: 1em;
   -webkit-transition: .28s ease;
   -o-transition: .28s ease;
@@ -2070,7 +2070,7 @@
   position: absolute;
   left: 0;
   top: 0;
-  margin: 4px;
+  margin: 4px 0;
   width: 16px;
   height: 16px;
   z-index: 0;
@@ -2221,7 +2221,7 @@
   /* checkbox aspect */ }
   [type="checkbox"] + span:not(.lever) {
     position: relative;
-    padding-left: 35px;
+    padding-left: 30px;
     cursor: pointer;
     display: inline-block;
     height: 25px;

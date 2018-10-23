@@ -138,7 +138,7 @@ var Model_Import_Modal = (function($) {
       }
     };
 
-    $(document).on("dragstart", ".model-list li", function(event) {
+    Rexlive_Base_Settings.$document.on("dragstart", ".model-list li", function(event) {
       Rexbuilder_Util_Admin_Editor.blockIframeRows();
       event.originalEvent.dataTransfer.effectAllowed = "all";
       dragoverqueue_processtimer = setInterval(function() {
@@ -157,7 +157,7 @@ var Model_Import_Modal = (function($) {
     });
 
     // definisce quando bisogna scrollare in alto o in basso
-    $(document).on("drag", ".model-list li", function(event) {
+    Rexlive_Base_Settings.$document.on("drag", ".model-list li", function(event) {
       stop = true;
 
       if (event.clientY < 150) {
@@ -177,7 +177,7 @@ var Model_Import_Modal = (function($) {
       }
     });
 
-    $(document).on("dragend", ".model-list li", function(event) {
+    Rexlive_Base_Settings.$document.on("dragend", ".model-list li", function(event) {
       Rexbuilder_Util_Admin_Editor.releaseIframeRows();
       stop = true;
       clearInterval(dragoverqueue_processtimer);

@@ -650,7 +650,7 @@ var Rexbuilder_RexSlider = (function ($) {
         /**
          * Slider Edit Slide Event
          */
-        $(document).on('click', '.rex-slider__slide-edit', function (e) {
+        Rexlive_Base_Settings.$document.on('click', '.rex-slider__slide-edit', function (e) {
             e.preventDefault();
             var $button = $(this);
             var $slide = $button.parents('.rex-slider__slide');
@@ -872,7 +872,7 @@ var Rexbuilder_RexSlider = (function ($) {
             SlideVideoHandler(rexslider_modal_links_editor.$video_mp4);
         });
 
-        $(document).on("click", "#edit_slider_title_btn", function (e) {
+        Rexlive_Base_Settings.$document.on("click", "#edit_slider_title_btn", function (e) {
             var $button = $(e.target);
             var $selectWrap = $button.parents(".rex-slider__import--wrap").children(".rx__select-wrap");
             $selectedOptionImport = $selectWrap.children("select").find(":selected");
@@ -887,7 +887,7 @@ var Rexbuilder_RexSlider = (function ($) {
             editingSliderTitle = true;
         })
 
-        $(document).on("click", "#save_slider_title_btn", function (e) {
+        Rexlive_Base_Settings.$document.on("click", "#save_slider_title_btn", function (e) {
             var $button = $(e.target);
             var $selectWrap = $button.parents(".rex-slider__import--wrap").children(".rx__select-wrap");
 
@@ -903,7 +903,7 @@ var Rexbuilder_RexSlider = (function ($) {
             editingSliderTitle = false;
         })
 
-        $(document).on("click", "#cancel_slider_title_btn", function (e) {
+        Rexlive_Base_Settings.$document.on("click", "#cancel_slider_title_btn", function (e) {
             var $button = $(e.target);
             var $selectWrap = $button.parents(".rex-slider__import--wrap").children(".rx__select-wrap");
             var $inputField = $selectWrap.children(".title-slider");

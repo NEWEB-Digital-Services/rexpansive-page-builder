@@ -413,18 +413,24 @@ padding-left: 22px;
 }
 
 .rex-modal .rex-input-prefixed.input-field {
-  margin: 3px 0;
+  margin: 0;
 }
 
 .rex-modal .rex-input-prefixed.input-field .prefix {
   width: auto;
-  font-size: 36px;
-  top: 0;
+  // font-size: 36px;
+  font-size: 20px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 .rex-modal .rex-input-prefixed.input-field .prefix ~ input {
-  margin-left: 41px;
-  width: calc(100% - 41px);
+  // margin-left: 41px;
+  // width: calc(100% - 41px);
+  // margin-left: 38px;
+  // width: calc(100% - 38px);
+  margin-left: 32px;
+  width: calc(100% - 32px);
   font-size: 15px;
   line-height: 15px;
   height: 20px;
@@ -500,6 +506,11 @@ padding-left: 22px;
 
 .block-padding-wrap {
   position: relative;
+  display: inline-block;
+}
+
+.block-padding-wrap.block-padded {
+  padding-left: 27px;
 }
 
 .block-padding-wrap .block-padding-label {
@@ -527,8 +538,8 @@ padding-left: 22px;
   display: block;
   width: 23px;
   margin-bottom: 0;
-  margin-left: 3px;
-  margin-right: 3px;
+  // margin-left: 3px;
+  // margin-right: 3px;
   font-size: 15px;
   line-height: 1;
   height: auto;
@@ -1738,14 +1749,6 @@ transform: translate(0, 50%);*/
   margin-bottom: 10px;
 }
 
-.block-padding-wrap {
-  display: inline-block;
-}
-
-.block-padding-wrap.block-padded {
-  padding-left: 27px;
-}
-
 #bg-set-link-wrap > .col:first-child {
   width: 179px;
 }
@@ -2192,7 +2195,8 @@ transform: translate(0, 50%);*/
 
 /* ----------- SECTION SETTINGS ----------- */
 #modal-background-responsive-set {
-  max-width: 492px;
+  // max-width: 492px;
+  max-width: 460px;
 }
 
 // #modal-background-responsive-set:before {
@@ -2546,14 +2550,14 @@ width: calc(100% - 32px);
   transform: translate(0, 3px);
 }
 
-#modal-background-responsive-set #rex-config-id #sectionid-container {
-  margin-left: 38px;
-  width: calc(100% - 38px);
-}
+// #modal-background-responsive-set #rex-config-id #sectionid-container {
+//   margin-left: 38px;
+//   width: calc(100% - 38px);
+// }
 
-#modal-background-responsive-set #rex-config-id .rex-material-bar {
-  width: calc(100% - 38px);
-}
+// #modal-background-responsive-set #rex-config-id .rex-material-bar {
+//   width: calc(100% - 38px);
+// }
 
 #modal-background-responsive-set #section-set-class-wrap {
   // width: 195px;
@@ -2566,23 +2570,23 @@ width: calc(100% - 32px);
   transform: translate(0, -2px);
 }
 
-#modal-background-responsive-set
-  #section-set-class-wrap
-  #section-set-custom-class {
-  margin-left: 46px;
-  width: calc(100% - 46px);
-}
+// #modal-background-responsive-set
+//   #section-set-class-wrap
+//   #section-set-custom-class {
+//   margin-left: 46px;
+//   width: calc(100% - 46px);
+// }
 
 #modal-background-responsive-set
   #section-set-class-wrap
   #section-set-custom-class
   + label {
-  margin-left: 32px;
+  margin-left: 20px;
 }
 
-#modal-background-responsive-set #section-set-class-wrap .rex-material-bar {
-  width: calc(100% - 46px);
-}
+// #modal-background-responsive-set #section-set-class-wrap .rex-material-bar {
+//   width: calc(100% - 46px);
+// }
 
 input[id^="section-fixed"] + label i {
   font-size: 36px;
@@ -3075,7 +3079,7 @@ input[id^="section-fixed"] + label i {
 }
 
 .rexbuilder-materialize-wrap .prefix ~ .rex-material-bar {
-  width: calc(100% - 41px);
+  width: calc(100% - 32px);
 }
 
 /* ------ TOOLTIP REDEFINITION -------- */
