@@ -1,6 +1,6 @@
 .bl_check-indicator {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   position:relative;
   display: block;
   &:after {
@@ -74,13 +74,21 @@
 
 .bl_checkbox-big-icon {
   + label {
-    // max-height: 45px;
-    // .bl_check-indicator {
-    //   margin-top: -15px;
-    // }
+    max-height: 45px;
+    .bl_check-indicator--wrap {
+      margin-top: -15px;
+    }
     .rex-icon {
-      margin-bottom: -15px;
+      // margin-bottom: -15px;
       font-size: 60px;
+    }
+  }
+}
+
+.video-audio-checkbox {
+  + label {
+    .bl_check-indicator--wrap {
+      margin-top: 5px;
     }
   }
 }

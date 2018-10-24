@@ -1,0 +1,28 @@
+.rexbuilder-materialize-wrap {
+  .input-field {
+    &.input-field--small {
+      position: relative;
+      margin: 0;
+      input {
+        margin-bottom: 7px;
+        margin-top: 7px;
+        line-height: 15px;
+        height: 20px;
+        font-size: 11px;
+        ~ label {
+          // position: absolute;
+          top: 7px;
+          left: 0;
+          font-size: 15px;
+          z-index: -1;
+          // cursor: text;
+          // transition: 0.2s ease-out;
+          &.active {
+            font-size: 10px;
+            transform: translateY(-100%);
+          }
+        }
+      }
+    }
+  }
+}

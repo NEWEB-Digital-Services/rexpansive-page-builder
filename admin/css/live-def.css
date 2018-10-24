@@ -2456,8 +2456,8 @@
   display: none; }
 
 .bl_check-indicator {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   position: relative;
   display: block; }
   .bl_check-indicator:after {
@@ -2516,9 +2516,35 @@
   border: none;
   background-color: rgba(0, 0, 0, 0.26); }
 
-.bl_checkbox-big-icon + label .rex-icon {
-  margin-bottom: -15px;
-  font-size: 60px; }
+.bl_checkbox-big-icon + label {
+  max-height: 45px; }
+  .bl_checkbox-big-icon + label .bl_check-indicator--wrap {
+    margin-top: -15px; }
+  .bl_checkbox-big-icon + label .rex-icon {
+    font-size: 60px; }
+
+.video-audio-checkbox + label .bl_check-indicator--wrap {
+  margin-top: 5px; }
+
+.rexbuilder-materialize-wrap .input-field.input-field--small {
+  position: relative;
+  margin: 0; }
+  .rexbuilder-materialize-wrap .input-field.input-field--small input {
+    margin-bottom: 7px;
+    margin-top: 7px;
+    line-height: 15px;
+    height: 20px;
+    font-size: 11px; }
+    .rexbuilder-materialize-wrap .input-field.input-field--small input ~ label {
+      top: 7px;
+      left: 0;
+      font-size: 15px;
+      z-index: -1; }
+      .rexbuilder-materialize-wrap .input-field.input-field--small input ~ label.active {
+        font-size: 10px;
+        -webkit-transform: translateY(-100%);
+            -ms-transform: translateY(-100%);
+                transform: translateY(-100%); }
 
 /*
 * CSS TOGGLE SWITCH
