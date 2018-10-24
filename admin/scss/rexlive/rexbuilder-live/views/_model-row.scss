@@ -1,0 +1,59 @@
+.rexpansive_section.rex-model-section .update-model-button {
+  display: block;
+}
+
+.update-model-button.unlocked {
+  // background-color: green;
+  .locked-icon {
+    display: none;
+  }
+  .unlocked-icon {
+    display: inline;
+  }
+}
+
+.update-model-button.locked {
+  // background-color: red;
+  .locked-icon {
+    display: inline;
+  }
+  .unlocked-icon {
+    display: none;
+  }
+}
+
+.rexpansive-block-grid {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 100;
+}
+
+.rexlive-block-grid-editing {
+  .builder-move-row,
+  .builder-delete-row,
+  .update-model-button,
+  .builder-copy-row {
+    z-index: 101;
+  }
+}
+
+.rex-container.editing-model {
+  .update-model-button:not(.unlocked) {
+    z-index: 30;
+  }
+}
+
+// .section-block-noediting-ui {
+//   position: absolute;
+//   left: 0;
+//   top: 0;
+//   bottom: 0;
+//   right: 0;
+//   opacity: 0;
+//   visibility: hidden;
+//   z-index: 1000;
+//   background-color: rgba($palette-color-, 0.5);
+// }

@@ -421,6 +421,7 @@ $tool_button_classes = 'tool-button';
         </div>
     </div>
     <div class="section-toolBoox__highlight"></div>
+    <div class="section-block-noediting-ui"></div>
 </script>
 
 <script type="text/x-tmpl" id="tmpl-new-section">

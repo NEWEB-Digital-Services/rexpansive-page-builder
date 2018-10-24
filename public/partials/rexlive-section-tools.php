@@ -175,3 +175,4 @@ $tool_button_classes = 'tool-button';
 	<!-- // remove section -->
 </div>
 <div class="section-toolBoox__highlight"></div>
+<div class="section-block-noediting-ui"></div>
