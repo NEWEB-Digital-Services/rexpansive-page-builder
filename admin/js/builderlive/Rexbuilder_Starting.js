@@ -17,10 +17,10 @@
     // launch all the modals
     Rexlive_Modals.init();
     
-    // builder backend modals: useless here
-    // Rexpansive_Builder_Admin_PaddingEditor.init();
-    // Rexpansive_Builder_Admin_PositionEditor.init();
-    // Rexpansive_Builder_Admin_TextEditor.init();
+    // builder backend modals: for RexSlider
+    Rexpansive_Builder_Admin_PaddingEditor.init();
+    Rexpansive_Builder_Admin_PositionEditor.init();
+    Rexpansive_Builder_Admin_TextEditor.init();
 
     Rexbuilder_RexSlider.init();
   });
