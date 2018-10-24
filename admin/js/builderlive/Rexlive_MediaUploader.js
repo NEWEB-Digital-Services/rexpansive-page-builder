@@ -353,6 +353,8 @@ var Rexlive_MediaUploader = (function($) {
           Background_Section_Image_Modal.updateImageBackground();
         } else if ($data.parents("#block-edit-image-bg").length != 0) {
           Background_Block_Image_Modal.updateImageBackground();
+        } else if ($data.parents("#block-edit-image-setting-bg").length != 0) {
+          Background_Block_Image_Setting.updateImageBackground();
         }
       });
     });

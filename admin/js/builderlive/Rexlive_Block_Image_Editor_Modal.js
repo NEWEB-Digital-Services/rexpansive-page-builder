@@ -26,8 +26,8 @@ var Block_Image_Editor_Modal = (function($) {
   };
 
   var _openModal = function(data) {
-    Background_Block_Image_Modal.updateImageModal(data.imageBG);
-    Block_Image_Positions_Modal.updatePosition(data.flexImgPosition);
+    Background_Block_Image_Setting.updateImageModal(data.imageBG);
+    Block_Image_Positions_Setting.updatePosition(data.flexImgPosition);
     Rexlive_Modals_Utils.openModal($modal_wrap);
   };
 
@@ -42,6 +42,8 @@ var Block_Image_Editor_Modal = (function($) {
     // console.log(data);
     _cache_variables();
     _listen_events();
+    Background_Block_Image_Setting.init(block_image_editor_properties.$modal);
+    Block_Image_Positions_Setting.init(block_image_editor_properties.$modal);
   };
 
   return {
