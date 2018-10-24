@@ -279,6 +279,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
         }
 
         $el.addClass("block-has-slider");
+        $el.find('.block-toolBox__editor-tools').find('.edit-block-content').addClass('tool-button--hide');
+        $el.find('.block-toolBox__config-tools').find('.builder-edit-slider').addClass('tool-button--hide');
         $el.children(".rexbuilder-block-data").attr("data-type", "rexslider");
 
         var $sliderWrap = _createSliderWrap($textWrap, sliderData);

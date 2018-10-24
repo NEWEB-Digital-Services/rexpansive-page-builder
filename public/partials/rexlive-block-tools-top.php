@@ -21,6 +21,9 @@ defined( 'ABSPATH' ) or exit;
             <div class="tool-button tool-button--inline edit-block-content<?php echo ( "" !== trim( $content ) ? ' tool-button--hide' : '' ); ?>">
                 <?php Rexbuilder_Utilities::get_icon('#B003-Text'); ?>
             </div>
+            <div class="tool-button tool-button--inline builder-edit-slider<?php echo ( !$block_has_slider ? ' tool-button--hide' : '' ); ?>">
+                <?php Rexbuilder_Utilities::get_icon('#Z003-RexSlider'); ?>
+            </div><!-- // rexslider -->
             <div class="tool-button tool-button--inline edit-block-content-position<?php echo ( "" === trim( $content ) ? ' tool-button--hide' : '' ); ?>">
                 <?php Rexbuilder_Utilities::get_icon('#C005-Layout'); ?>
             </div>
@@ -60,7 +63,7 @@ defined( 'ABSPATH' ) or exit;
                     </div><!-- // Change Block Video background -->
 
 
-                    <div class="tool-button tool-button--inline builder-edit-slider tooltipped waves-effect waves-light">
+                    <div class="tool-button tool-button--inline builder-edit-slider">
                         <?php Rexbuilder_Utilities::get_icon('#Z003-RexSlider'); ?>
                     </div><!-- // rexslider -->
                 </div>

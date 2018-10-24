@@ -26,6 +26,9 @@ $tool_button_classes = 'tool-button';
             <div class="tool-button tool-button--inline edit-block-content">
                 <?php Rexbuilder_Utilities::get_icon('#B003-Text'); ?>
             </div>
+            <div class="tool-button tool-button--inline builder-edit-slider">
+                <?php Rexbuilder_Utilities::get_icon('#Z003-RexSlider'); ?>
+            </div>
             <div class="tool-button tool-button--inline edit-block-content-position tool-button--hide">
                 <?php Rexbuilder_Utilities::get_icon('#C005-Layout'); ?>
             </div>
@@ -43,10 +46,6 @@ $tool_button_classes = 'tool-button';
                 </div>
                 
 				<div class="tool-button_list">
-
-                    <div class="tool-button tool-button--inline builder-edit-slider tooltipped waves-effect waves-light">
-                        <?php Rexbuilder_Utilities::get_icon('#Z003-RexSlider'); ?>
-                    </div>
 
                     <div class="tool-button--double-icon--wrap{% if(block.block_type == 'image') { %} tool-button--hide{% } %}">
                         <div class="tool-button tool-button--inline edit-block-image tooltipped">
@@ -67,6 +66,10 @@ $tool_button_classes = 'tool-button';
                             <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
                         </div>
                     </div><!-- // Change Block Video background -->
+
+                    <div class="tool-button tool-button--inline builder-edit-slider">
+                        <?php Rexbuilder_Utilities::get_icon('#Z003-RexSlider'); ?>
+                    </div>
 
                 </div>
             </div>

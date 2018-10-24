@@ -747,11 +747,7 @@ var Rexbuilder_RexSlider = (function($) {
               data.eventName = "rexlive:newSliderSavedOnDB";
             }
             rexslider_modal_properties.$slider_import.append(
-              '<option value="' +
-                response.data.slider_id +
-                '">' +
-                response.data.slider_title +
-                "</option>"
+              '<option value="' + response.data.slider_id + '">' + live_editor_obj.labels.slider.list_title_prefix + response.data.slider_title + live_editor_obj.labels.slider.list_title_suffix + "</option>"
             );
             Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
           }
