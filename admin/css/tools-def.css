@@ -15027,7 +15027,13 @@ body.rexpansive-editor .lean-overlay {
   background-position: center;
   min-width: 100%;
   height: 150px;
-  position: relative; }
+  position: relative;
+  cursor: move;
+  cursor: -webkit-grab;
+  cursor: grab; }
+  #rex-models-list .model-preview:active {
+    cursor: -webkit-grabbing;
+    cursor: grabbing; }
   #rex-models-list .model-preview.model-preview--active .model-preview__placeholder {
     visibility: hidden; }
 #rex-models-list .model-name {
@@ -15076,7 +15082,7 @@ body.rexpansive-editor .lean-overlay {
 .models-list-wrapper {
   overflow: hidden;
   overflow-y: auto;
-  height: 100%; }
+  height: calc(100% - 70px); }
 
 .set-video-audio-btn {
   display: none; }
