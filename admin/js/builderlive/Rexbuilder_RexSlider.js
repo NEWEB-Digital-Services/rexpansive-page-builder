@@ -301,7 +301,7 @@ var Rexbuilder_RexSlider = (function($) {
             // setting slider options
             _setSliderGlobalOptions(response.data.rexslider_attrs);
             // setting slides
-            rexslider_modal_properties.$slide_title.val(response.data.slider.title);
+            rexslider_modal_properties.$slide_title.val(Rexlive_Base_Settings.htmlDecode(response.data.slider.title));
             rexslider_modal_properties.$slide_list.append(
               response.data.slides_markup
             );
@@ -324,7 +324,7 @@ var Rexbuilder_RexSlider = (function($) {
       rexslider_modal_properties.$save_button.attr("data-block-to-edit", "");
       rexslider_modal_properties.$save_button.attr("data-slider-to-edit", "");
 
-      rexslider_modal_properties.$slide_title.val(live_editor_obj.labels.slider.new_slider);
+      rexslider_modal_properties.$slide_title.val(live_editor_obj.labels.slider.new_slider).prop('disabled',false);
 
       rexslider_modal_properties.$slide_list.append(
         slide_tmpl
@@ -970,7 +970,7 @@ var Rexbuilder_RexSlider = (function($) {
               .empty()
               .append(response.data.slides_markup);
             rexslider_modal_properties.$slide_list.sortable("refresh");
-            rexslider_modal_properties.$slide_title.val(live_editor_obj.labels.slider.copy_slider + response.data.slider.title);
+            rexslider_modal_properties.$slide_title.val(live_editor_obj.labels.slider.copy_slider + Rexlive_Base_Settings.htmlDecode(response.data.slider.title));
             // rexslider_modal_properties.$save_button.attr(
             //   "data-slider-to-edit",
             //   slider_id
@@ -1040,7 +1040,7 @@ var Rexbuilder_RexSlider = (function($) {
               .empty()
               .append(response.data.slides_markup);
             rexslider_modal_properties.$slide_list.sortable("refresh");
-            rexslider_modal_properties.$slide_title.val(live_editor_obj.labels.slider.copy_slider + response.data.slider.title);
+            rexslider_modal_properties.$slide_title.val(live_editor_obj.labels.slider.copy_slider + Rexlive_Base_Settings.htmlDecode(response.data.slider.title));
             // rexslider_modal_properties.$save_button.attr(
             //   "data-slider-to-edit",
             //   slider_id

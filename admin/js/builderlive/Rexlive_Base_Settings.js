@@ -14,6 +14,14 @@ var Rexlive_Base_Settings = (function($) {
     });
   };
 
+  function htmlDecode(value) {
+    return $("<div/>").html(value).text();
+  }
+
+  function htmlEncode(value) {
+    return $('<div/>').text(value).html();
+  }
+
   var _init = function() {
     this.$document = $(document);
     _tooltips();
@@ -21,5 +29,7 @@ var Rexlive_Base_Settings = (function($) {
 
   return {
     init: _init,
+    htmlDecode: htmlDecode,
+    htmlEncode: htmlEncode
   };
 })(jQuery);
