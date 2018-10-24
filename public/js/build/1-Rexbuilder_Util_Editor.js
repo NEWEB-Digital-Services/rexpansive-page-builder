@@ -860,6 +860,19 @@ var Rexbuilder_Util_Editor = (function($) {
     });
   };
 
+  /**
+   * Tell the parent that the user edit the builder
+   * @param {bool} isModelEdited have we edited a model
+   */
+  var _builderEdited = function( isModelEdited ) {
+    isModelEdited = 'undefined' !== typeof isModelEdited ? isModelEdited : false;
+    var data = {
+      eventName: "rexlive:edited",
+      modelEdited: isModelEdited
+    };
+    Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+  };
+
   var init = function() {
     this.elementIsResizing = false;
     this.elementIsDragging = false;
@@ -952,6 +965,7 @@ var Rexbuilder_Util_Editor = (function($) {
     fixToolsVisibility: _fixToolsVisibility,
     clearSectionsEdited: _clearSectionsEdited,
     startLoading: _startLoading,
-    endLoading: _endLoading
+    endLoading: _endLoading,
+    builderEdited: _builderEdited
   };
 })(jQuery);

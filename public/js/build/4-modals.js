@@ -118,6 +118,9 @@
       };
       Rexbuilder_Util_Editor.updatingSectionLayout = true;
       $section.attr("data-rexlive-section-edited", true);
+
+      Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
+      
       Rexbuilder_Dom_Util.updateGridLayoutDomProperties($gallery, data.layout);
       galleryInstance.updateGridLayout(data.layout, reverseData);
     });
@@ -349,6 +352,8 @@
         singleHeight: galleryInstance.properties.singleHeight,
         blocksDisposition: $.extend(true, {}, oldDisposition)
       };
+
+      Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
 
       galleryInstance.updateSectionWidthWrap(newSectionWidth, reverseData);
       Rexbuilder_Dom_Util.updateSectionWidthData($section, {
@@ -595,11 +600,7 @@
       };
       $section.attr("data-rexlive-section-edited", true);
 
-      var data = {
-        eventName: "rexlive:edited",
-        modelEdited: $section.hasClass("rex-model-section")
-      };
-      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
       Rexbuilder_Util_Editor.pushAction(
         $section,
         "updateSectionBackgroundColor",
@@ -648,11 +649,7 @@
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
 
-      var data = {
-        eventName: "rexlive:edited",
-        modelEdited: $section.hasClass("rex-model-section")
-      };
-      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
 
       Rexbuilder_Util_Editor.pushAction(
         $section,
@@ -731,11 +728,7 @@
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
 
-      var data = {
-        eventName: "rexlive:edited",
-        modelEdited: $section.hasClass("rex-model-section")
-      };
-      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
       Rexbuilder_Util_Editor.pushAction(
         $section,
         "updateSectionImageBG",
@@ -838,11 +831,7 @@
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
-      var data = {
-        eventName: "rexlive:edited",
-        modelEdited: $section.hasClass("rex-model-section")
-      };
-      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
       Rexbuilder_Util_Editor.pushAction(
         $section,
         "updateSectionVideoBG",
@@ -898,11 +887,7 @@
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
-      var data = {
-        eventName: "rexlive:edited",
-        modelEdited: $section.hasClass("rex-model-section")
-      };
-      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
       Rexbuilder_Util_Editor.pushAction(
         $section,
         "updateBlockBackgroundColor",
@@ -960,11 +945,7 @@
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
-      var data = {
-        eventName: "rexlive:edited",
-        modelEdited: $section.hasClass("rex-model-section")
-      };
-      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
       Rexbuilder_Util_Editor.pushAction(
         $section,
         "updateBlockOverlay",
@@ -1087,11 +1068,7 @@
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
-      var data = {
-        eventName: "rexlive:edited",
-        modelEdited: $section.hasClass("rex-model-section")
-      };
-      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
       Rexbuilder_Util_Editor.pushAction(
         $section,
         "updateBlockImageBG",
@@ -1227,11 +1204,7 @@
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
-      var data = {
-        eventName: "rexlive:edited",
-        modelEdited: $section.hasClass("rex-model-section")
-      };
-      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
       Rexbuilder_Util_Editor.pushAction(
         $section,
         "updateBlockVideoBG",
@@ -1292,11 +1265,7 @@
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
-      var data = {
-        eventName: "rexlive:edited",
-        modelEdited: $section.hasClass("rex-model-section")
-      };
-      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
       Rexbuilder_Util_Editor.pushAction(
         $section,
         "updateBlockPadding",
@@ -1361,11 +1330,7 @@
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
-      var data = {
-        eventName: "rexlive:edited",
-        modelEdited: $section.hasClass("rex-model-section")
-      };
-      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
       Rexbuilder_Util_Editor.pushAction(
         $section,
         "updateBlockFlexPosition",
@@ -1430,11 +1395,7 @@
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
-      var data = {
-        eventName: "rexlive:edited",
-        modelEdited: $section.hasClass("rex-model-section")
-      };
-      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
       Rexbuilder_Util_Editor.pushAction(
         $section,
         "updateBlockImageFlexPosition",
@@ -1492,11 +1453,7 @@
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
-      var data = {
-        eventName: "rexlive:edited",
-        modelEdited: $section.hasClass("rex-model-section")
-      };
-      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
       Rexbuilder_Util_Editor.pushAction(
         $section,
         "updateCustomClasses",
@@ -1551,11 +1508,7 @@
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
-      var data = {
-        eventName: "rexlive:edited",
-        modelEdited: $section.hasClass("rex-model-section")
-      };
-      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
       Rexbuilder_Util_Editor.pushAction(
         $section,
         "updateBlockUrl",
