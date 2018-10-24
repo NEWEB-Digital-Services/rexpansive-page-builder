@@ -1203,7 +1203,7 @@ defined('ABSPATH') or exit;
                     </div>
                 </div><!-- Grid fixed or masonry -->
 
-                <div class="layout-wrap rex-edit-row-width-wrapper bl_modal__option-wrap bl_modal__col-4 ">
+                <div class="layout-wrap rex-edit-row-width rex-edit-row-width-wrapper bl_modal__option-wrap bl_modal__col-4 ">
                     <div class="rexlive-section-width bl_modal__single-option tippy" data-rex-section-width="full" data-tippy-content="<?php _e( 'Full', 'rexpansive' ); ?>">
                         <label>
                             <input type="radio" id="section-full-modal" name="section-dimension-modal" class="builder-edit-row-dimension-modal with-gap" value="full" title="Full" />

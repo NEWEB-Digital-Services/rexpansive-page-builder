@@ -51,6 +51,8 @@ var Section_Width_Modal = (function($) {
     );
     $sectionBoxedWidthTypeWrap.addClass("selected");
     $sectionBoxedWidthTypeWrap.find("input").attr("checked", true);
+
+    console.log(data);
   };
 
   var _clearSectionWidth = function() {
