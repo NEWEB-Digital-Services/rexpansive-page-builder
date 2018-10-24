@@ -219,13 +219,14 @@ var Rexbuilder_CreateBlocks = (function ($) {
     });
 
     $(document).on("rexlive:insert_new_slider", function (e) {
-        _createSlider(e.settings.data_to_send);
+        var $el = _createSlider(e.settings.data_to_send);
         var $section;
         if (e.settings.data_to_send.target.modelNumber != "") {
             $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + e.settings.data_to_send.target.sectionID + '"][data-rexlive-model-number="' + e.settings.data_to_send.target.modelNumber + '"]');
         } else {
             $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + e.settings.data_to_send.target.sectionID + '"]');
         }
+        Rexbuilder_Block_Editor.updateBlockTools($el);
         Rexbuilder_Util.updateSectionStateLive($section);
         if(Rexbuilder_Util.activeLayout == "default"){
             Rexbuilder_Util.updateDefaultLayoutStateSection($section);
@@ -349,6 +350,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
         $sliderWrap.attr("data-rex-slider-number", sliderNumber);
 
         RexSlider.initSlider($sliderWrap);
+
+        return $el;
     }
 
     var _createSliderWrap = function ($textWrap, data) {

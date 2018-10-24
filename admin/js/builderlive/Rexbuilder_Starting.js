@@ -22,6 +22,7 @@
     Rexpansive_Builder_Admin_PositionEditor.init();
     Rexpansive_Builder_Admin_TextEditor.init();
 
+    // slider modal
     Rexbuilder_RexSlider.init();
   });
 })(jQuery);

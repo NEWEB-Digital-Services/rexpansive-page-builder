@@ -15097,14 +15097,34 @@ body.rexpansive-editor .lean-overlay {
 .input-field.hide-mp4-link {
   visibility: hidden; }
 
-.title-slider {
-  display: none; }
+.bl_rex-slider__list-icon {
+  padding: 0px 15px; }
 
-.editing-title-slider .title-slider {
-  display: block; }
+.rex_edit_title_slider {
+  cursor: pointer; }
 
-.editing-title-slider .rx__form-input {
-  display: none; }
+input:disabled + .rex_edit_title_slider {
+  color: rgba(0, 0, 0, 0.26); }
+
+.bl_rex-slider__list-wrap {
+  background-color: #424242; }
+  .bl_rex-slider__list-wrap input[type=text] {
+    color: #fff; }
+  .bl_rex-slider__list-wrap select.rx__form-input {
+    color: #fff;
+    border-color: transparent; }
+    .bl_rex-slider__list-wrap select.rx__form-input:focus {
+      outline: none; }
+  .bl_rex-slider__list-wrap .rx__select-wrap select.rx__form-input + .rx__form-input__select-arrow {
+    -webkit-transform: translateY(-50%) rotate(180deg);
+        -ms-transform: translateY(-50%) rotate(180deg);
+            transform: translateY(-50%) rotate(180deg);
+    border: none;
+    width: auto;
+    height: auto;
+    margin-top: 0; }
+    .bl_rex-slider__list-wrap .rx__select-wrap select.rx__form-input + .rx__form-input__select-arrow .l-svg-icons > svg {
+      fill: #fff; }
 
 .rexlive-toolbox__wrap {
   width: 100%;

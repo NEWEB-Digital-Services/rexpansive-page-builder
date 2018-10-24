@@ -320,6 +320,12 @@ class Rexbuilder_Admin {
 					'source_url' => $source,
 					'ajaxurl'	=>	admin_url( 'admin-ajax.php' ),
 					'rexnonce'	=>	wp_create_nonce( 'rex-ajax-call-nonce' ),
+					'labels'	=>  array(
+						'slider' => array(
+							'new_slider' => __('New Slider','rexpansive'),
+							'copy_slider' => __('Copy - ','rexpansive')
+						)
+					)
 					) );
 			} else {
 				wp_enqueue_script('jquery');
@@ -937,6 +943,9 @@ class Rexbuilder_Admin {
 
 		$response['rexslider_attrs'] = $rexslider_attrs;
 		$response['slides_markup'] = $slides_markup;
+		$response['slider'] = array(
+			'title' => get_the_title($slider_id)
+		);
 
 		wp_send_json_success( $response );
 	}

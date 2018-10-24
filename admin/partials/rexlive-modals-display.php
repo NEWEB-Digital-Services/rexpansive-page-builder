@@ -992,8 +992,72 @@ defined('ABSPATH') or exit;
 
 <div class="rex-modal-wrap">
     <div id="rex-slider-block" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
+        <?php Rexbuilder_Utilities::close_button(); ?>
         <div class="modal-content">
             <?php include 'rexbuilder-modal-loader.php';?>
+            <div class="rex-slider__import--wrap rex-modal-content__modal-area--bordered">
+            <?php
+            // WP_Query arguments
+            $args = array(
+                'post_type' => array('rex_slider'),
+                'post_status' => array('publish'),
+                'posts_per_page' => '-1',
+            );
+            // The Query
+            $query = new WP_Query($args);
+            ?>
+                <div class="bl_d-flex bl_ai-c bl_jc-sb bl_rex-slider__list-wrap">
+                    <div class="bl_rex-slider__list-icon">
+                        <div class="tool-button tool-button--inline tool-button--flat" data-tippy-content="<?php esc_attr_e( 'Models', 'rexpansive' ); ?>">
+                            <?php Rexbuilder_Utilities::get_icon('#A012-Models-List'); ?>
+                        </div>
+                    </div>
+                    <div class="rx__select-wrap">
+                        <select id="rex-slider__import" class="rx__form-input">
+                            <option value="0"><?php _e('Copy from sliders', 'rexpansive-classic');?></option>
+                            <?php
+                            // Printing all sliders avaiable
+                            if ($query->have_posts()) {
+                                while ($query->have_posts()) {
+                                    $query->the_post();
+                                    ?>
+                            <option value="<?php the_ID();?>"><?php _e('Copy from ','rexpansive'); ?>"<?php the_title();?>"</option>
+                            <?php
+                                }
+                            } else {
+                                // no posts found
+                            }
+                            ?>
+                        </select>
+                        <div class="rx__form-input__select-arrow">
+                            <?php Rexbuilder_Utilities::get_icon('#A007-Close'); ?>
+                        </div>
+                    </div>
+                    <?php
+                        // Restore original Post Data
+                        wp_reset_postdata();
+                    ?>
+                </div>
+            </div>
+            <div class="rex-slider__import--wrap rex-modal-content__modal-area rex-modal-content__modal-area--bordered">
+                <div class="input-field input-field--small bl_d-flex bl_ai-c">
+                    <input class="title-slider" type="text" value="<?php _e('New Slider','rexpansive'); ?>" disabled>
+                    <div class="rex_edit_title_slider">
+                        <span id="edit_slider_title_live_btn" class="dashicons dashicons-edit"></span>
+                    </div>
+                </div>
+                <!-- <div class="rex_edit_slider_title_toolbox">
+                    <div class="rex_edit_title_slider">
+                        <button id="edit_slider_title_btn">e</button>
+                    </div>
+                    <div class="rex_save_title_slider">
+                        <button id="save_slider_title_btn">s</button>
+                    </div>
+                    <div class="rex_cancel_title_slider">
+                        <button id="cancel_slider_title_btn">c</button>
+                    </div>
+                </div> -->
+            </div>
             <div class="rex-slider__slide-list rex-modal-content__modal-area">
                 <div class="col rex-slider__slide rex-modal-content__modal-area__row" data-slider-slide-id="0" data-block_type="slide">
                     <div class="valign-wrapper space-between-wrapper">
@@ -1071,61 +1135,23 @@ defined('ABSPATH') or exit;
                     </div>
                 </div>
             </div>
-            <div class="rex-slider__import--wrap rex-modal-content__modal-area">
-            <?php
-            // WP_Query arguments
-            $args = array(
-                'post_type' => array('rex_slider'),
-                'post_status' => array('publish'),
-                'posts_per_page' => '-1',
-            );
-            // The Query
-            $query = new WP_Query($args);
-            ?>
-                <div class="rx__select-wrap">
-                    <input class="title-slider" type="text">
-                    <select id="rex-slider__import" class="rx__form-input">
-                        <option value="0"><?php _e('New Slider', 'rexpansive-classic');?></option>
-                        <?php
-                        // Printing all sliders avaiable
-                        if ($query->have_posts()) {
-                            while ($query->have_posts()) {
-                                $query->the_post();
-                                ?>
-                        <option value="<?php the_ID();?>"><?php the_title();?></option>
-                        <?php
-                            }
-                        } else {
-                            // no posts found
-                        }
-                        ?>
-                    </select>
-                    <div class="rx__form-input__select-arrow"></div>
-                </div>
-                <div class="rex_edit_slider_title_toolbox">
-                    <div class="rex_edit_title_slider">
-                        <button id="edit_slider_title_btn">e</button>
-                    </div>
-                    <div class="rex_save_title_slider">
-                        <button id="save_slider_title_btn">s</button>
-                    </div>
-                    <div class="rex_cancel_title_slider">
-                        <button id="cancel_slider_title_btn">c</button>
-                    </div>
-                </div>
-                <?php
-                    // Restore original Post Data
-                    wp_reset_postdata();
-                ?>
-            </div>
         </div>
-        <div class="rex-modal-footer">
+        <!-- <div class="rex-modal-footer">
             <button id="" class="waves-effect waves-light btn-flat grey rex-cancel-button" value="">
                 <i class="rex-icon">n</i>
             </button>
             <button id="" class="waves-effect waves-light btn-flat blue darken-1 rex-save-button" value="">
                 <i class="rex-icon">m</i>
             </button>
+        </div> -->
+        <div class="rex-modal__outside-footer">
+            <div class="tool-button tool-button--inline tool-button--black rex-undo-button tippy" data-tippy-content="<?php esc_attr_e( 'Undo', 'rexpansive' ); ?>" data-slider-to-edit="">
+                <?php Rexbuilder_Utilities::get_icon('#A003-Undo'); ?>
+            </div>
+            <div id="rex-insert-video-block-save" class="tool-button tool-button--inline tool-button--save rex-save-button tippy" data-tippy-content="<?php esc_attr_e( 'Save Slider', 'rexpansive' ); ?>">
+                <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+            </div>
         </div>
     </div>
 </div>
