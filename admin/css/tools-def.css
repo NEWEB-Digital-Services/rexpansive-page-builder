@@ -14910,6 +14910,12 @@ body.rexpansive-editor .lean-overlay {
     .layout.active-on-page label,
     .layout.active-on-page input {
       color: #fff; }
+    .layout.active-on-page input[type="text"] {
+      border-bottom-color: #fff; }
+      .layout.active-on-page input[type="text"]:focus + label {
+        color: #fff; }
+    .layout.active-on-page .rex-material-bar {
+      background-color: #fff; }
   .layout .l-svg-icons > svg {
     fill: #000; }
   .layout .dashicons,

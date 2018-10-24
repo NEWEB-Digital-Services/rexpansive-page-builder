@@ -505,10 +505,16 @@ var CustomLayouts_Modal = (function($) {
         var $layoutMoved = custom_layouts_modal_props.$buttonsWrapper
           .find('div[data-name="' + idLayoutMoved + '"]')
           .parent("div");
-        var $layoutBefore = custom_layouts_modal_props.$buttonsWrapper
-          .find('div[data-name="' + idLayoutBefore + '"]')
-          .parent("div");
-        console.log(idLayoutMoved,idLayoutBefore);
+        if( "default" !== idLayoutBefore ) {
+          var $layoutBefore = custom_layouts_modal_props.$buttonsWrapper
+            .find('div[data-name="' + idLayoutBefore + '"]')
+            .parent("div");
+        } else {
+          var $layoutBefore = custom_layouts_modal_props.$buttonsWrapper
+            .find('.builder-add-custom-layout')
+            .parent("div");
+        }
+
         $layoutBefore.after($layoutMoved.detach());
         custom_layouts_modal_props.$buttonsWrapper
           .find('.btn-builder-layout[data-layout-type="custom"]')

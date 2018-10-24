@@ -17,6 +17,17 @@
     input {
       color: #fff;
     }
+    input[type="text"] {
+      border-bottom-color: #fff;
+      &:focus {
+        + label {
+          color: #fff;
+        }
+      }
+    }
+    .rex-material-bar {
+      background-color: #fff;
+    }
   }
 
   margin: 0;
