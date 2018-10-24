@@ -36,6 +36,7 @@ var Insert_Video_Modal = (function($) {
   var _clearVideoModal = function() {
     insert_video_properties.$linkVimeo.val("");
     insert_video_properties.$linkYoutube.val("");
+    insert_video_properties.$linkMp4.val("").next('label').removeClass('active');
     _clearFocusVideo();
   };
 
@@ -56,6 +57,7 @@ var Insert_Video_Modal = (function($) {
 
   var _updateMp4VideoModal = function(videos) {
     videoMp4SelectedData = videos;
+    insert_video_properties.$linkMp4.val(videos[0].videoUrl).next('label').addClass('active');
   };
 
   var _linkDocumentListeners = function() {
@@ -176,6 +178,7 @@ var Insert_Video_Modal = (function($) {
       $close_modal_btn: $videoModal.find('.rex-modal__close-button'),
       $linkYoutube: $videoModal.find("#rex-insert-youtube-url"),
       $linkVimeo: $videoModal.find("#rex-insert-vimeo-url"),
+      $linkMp4: $videoModal.find("#rex-insert-mp4-url"),
       $audioYoutube: $videoModal.find("#rex-new-block-video-youtube-audio"),
       $audioVimeo: $videoModal.find("#rex-new-block-video-vimeo-audio"),
       $audioMp4: $videoModal.find("#rex-new-block-video-mp4-audio"),

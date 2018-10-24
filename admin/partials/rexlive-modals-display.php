@@ -109,13 +109,20 @@ defined('ABSPATH') or exit;
             </div>
             <div id="insert-video-block-wrap-3" class="bl_modal-row mp4-insert-wrap video-insert-wrap">
                 <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
-                    <div class="rex-check rex-check-icon rex-video-type-select tippy" data-tippy-content="<?php _e('Insert Mp4','rexpansive'); ?>">
+                    <div class="rex-check rex-check-icon bl_modal__option-fixed-width rex-video-type-select tippy" data-tippy-content="<?php _e('Insert Mp4','rexpansive'); ?>">
                         <input type="radio" class="rex-choose-video bl_radio bl_radio-bottom-indicator" name="rex-choose-video" value="mp4" id="rex-choose-mp4-video">
                         <label id="rex-upload-mp4-video" for="rex-choose-mp4">
                             <span class="bl_radio-indicator"></span>
                             <i class="material-icons rex-icon">A</i>
                             <!-- <span class="rex-ripple"></span> -->
                         </label>
+                    </div>
+                </div>
+                <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border" data-rex-video-type="mp4">
+                    <div class="input-field input-field--small">
+                        <input id="rex-insert-mp4-url" class="mp4-url small-input" type="text" disabled>
+                        <label id="rex-insert-mp4-url-label" for="rex-insert-mp4-url">Video URL</label>
+                        <span class="rex-material-bar"></span>
                     </div>
                 </div>
                 <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
@@ -334,7 +341,7 @@ defined('ABSPATH') or exit;
             <!-- vimeo input section-->
             <div id="edit-video-row-wrap-3" class="bl_modal-row mp4-insert-wrap video-insert-wrap">
                 <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
-                    <div class="rex-check rex-check-icon rex-video-type-select tippy" data-tippy-content="<?php _e('Active Mp4','rexpansive'); ?>">
+                    <div class="rex-check rex-check-icon bl_modal__option-fixed-width rex-video-type-select tippy" data-tippy-content="<?php _e('Active Mp4','rexpansive'); ?>">
                         <input type="checkbox" class="rex-choose-video bl_checkbox bl_checkbox-bottom-indicator" name="rex-choose-video" value="mp4" id="rex-choose-mp4-video-section" />
                         <label id="rex-upload-mp4-video-section" for="rex-choose-mp4-video-section">
                             <span class="bl_check-indicator--wrap"><span class="bl_check-indicator"></span></span>
@@ -342,6 +349,13 @@ defined('ABSPATH') or exit;
                             <!-- <span class="rex-ripple" /> -->
                         </label>
                         <input name="" class="file-path" type="hidden" id="video-section-mp4-url" />
+                    </div>
+                </div>
+                <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border" data-rex-video-type="mp4">
+                    <div class="input-field input-field--small">
+                        <input id="rex-mp4-video-section-preview" class="mp4-video-section small-input" type="text" disabled>
+                        <label id="rex-mp4-video-section-preview-label" for="rex-mp4-video-section-preview">Video URL</label>
+                        <span class="rex-material-bar"></span>
                     </div>
                 </div>
             </div>
@@ -939,7 +953,7 @@ defined('ABSPATH') or exit;
                 <!-- vimeo input block-->
                 <div id="edit-video-block-wrap-3" class="bl_modal-row mp4-insert-wrap video-insert-wrap">
                     <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
-                        <div class="rex-check rex-check-icon rex-video-type-select tippy" data-tippy-content="<?php _e('Active Mp4','rexpansive'); ?>">
+                        <div class="rex-check rex-check-icon bl_modal__option-fixed-width rex-video-type-select tippy" data-tippy-content="<?php _e('Active Mp4','rexpansive'); ?>">
                             <input type="checkbox" class="rex-choose-video bl_checkbox bl_checkbox-bottom-indicator" name="rex-choose-video" value="mp4" id="rex-choose-mp4-video-block" />
                             <label id="rex-upload-mp4-video-block" for="rex-choose-mp4-video-block">
                                 <span class="bl_check-indicator--wrap"><span class="bl_check-indicator"></span></span>
@@ -947,6 +961,13 @@ defined('ABSPATH') or exit;
                                 <!-- <span class="rex-ripple" /> -->
                             </label>
                             <input name="" class="file-path" type="hidden" id="video-block-mp4-url" />
+                        </div>
+                    </div>
+                    <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border" data-rex-video-type="mp4">
+                        <div class="input-field input-field--small">
+                            <input id="rex-mp4-video-block-preview" class="mp4-video-block small-input" type="text" disabled>
+                            <label id="rex-mp4-video-block-preview-label" for="rex-mp4-video-block-preview">Video URL</label>
+                            <span class="rex-material-bar"></span>
                         </div>
                     </div>
                     <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">

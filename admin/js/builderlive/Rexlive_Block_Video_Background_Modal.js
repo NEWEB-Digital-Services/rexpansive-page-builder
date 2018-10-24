@@ -43,6 +43,7 @@ var Block_Video_Background_Modal = (function($) {
         "data-rex-video-bg-height",
         data.mp4Data.height
       );
+      video_background_properties.$linkMp4Preview.val(data.mp4Data.linkMp4).next('label').addClass('active');
       video_background_properties.$audioMp4.prop(
         "checked",
         data.audio.toString() == "true"
@@ -54,6 +55,7 @@ var Block_Video_Background_Modal = (function($) {
       video_background_properties.$linkYoutube.val("");
       video_background_properties.$linkMp4.val("");
       video_background_properties.$linkMp4.attr("data-rex-video-bg-url", "");
+      video_background_properties.$linkMp4Preview.val("").next('label').removeClass('active');
       video_background_properties.$audioVimeo.prop(
         "checked",
         data.audio.toString() == "true"
@@ -65,6 +67,7 @@ var Block_Video_Background_Modal = (function($) {
       video_background_properties.$linkYoutube.val(data.youtubeUrl);
       video_background_properties.$linkMp4.val("");
       video_background_properties.$linkMp4.attr("data-rex-video-bg-url", "");
+      video_background_properties.$linkMp4Preview.val("").next('label').removeClass('active');
       video_background_properties.$audioYoutube.prop(
         "checked",
         data.audio.toString() == "true"
@@ -301,6 +304,7 @@ var Block_Video_Background_Modal = (function($) {
       $linkYoutube: $self.find("#rex-youtube-video-block"),
       $linkVimeo: $self.find("#rex-vimeo-video-block"),
       $linkMp4: $self.find("#video-block-mp4-url"),
+      $linkMp4Preview: $self.find('#rex-mp4-video-block-preview'),
       $checkboxChooseYoutube: $self.find("#rex-choose-youtube-video-block"),
       $checkboxChooseVimeo: $self.find("#rex-choose-vimeo-video-block"),
       $checkboxChooseMp4: $self.find("#rex-choose-mp4-video-block"),

@@ -35,6 +35,7 @@ var Section_Video_Background_Modal = (function($) {
         "data-rex-video-bg-url",
         data.mp4Video
       );
+      video_background_properties.$linkMp4Preview.val(data.mp4Video).next('label').addClass('active');
       _focusMp4();
     } else if (data.vimeoUrl != "") {
       videoChosen = "vimeo";
@@ -42,6 +43,7 @@ var Section_Video_Background_Modal = (function($) {
       video_background_properties.$linkYoutube.val("");
       video_background_properties.$linkMp4.val("");
       video_background_properties.$linkMp4.attr("data-rex-video-bg-url", "");
+      video_background_properties.$linkMp4Preview.val("").next('label').removeClass('active');
       _focusVimeo();
     } else if (data.youtubeVideo != "") {
       videoChosen = "youtube";
@@ -49,6 +51,7 @@ var Section_Video_Background_Modal = (function($) {
       video_background_properties.$linkYoutube.val(data.youtubeVideo);
       video_background_properties.$linkMp4.val("");
       video_background_properties.$linkMp4.attr("data-rex-video-bg-url", "");
+      video_background_properties.$linkMp4Preview.val("").next('label').removeClass('active');
       _focusYoutube();
     }
   };
@@ -228,6 +231,7 @@ var Section_Video_Background_Modal = (function($) {
       $linkYoutube: $self.find("#rex-youtube-video-section"),
       $linkVimeo: $self.find("#rex-vimeo-video-section"),
       $linkMp4: $self.find("#video-section-mp4-url"),
+      $linkMp4Preview: $self.find('#rex-mp4-video-section-preview'),
       $checkboxChooseYoutube: $self.find("#rex-choose-youtube-video-section"),
       $checkboxChooseVimeo: $self.find("#rex-choose-vimeo-video-section"),
       $checkboxChooseMp4: $self.find("#rex-choose-mp4-video-section"),

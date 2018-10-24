@@ -14845,6 +14845,10 @@ body.rexpansive-editor .lean-overlay {
     .rex-modal__outside-footer .tool-button--save:hover .l-svg-icons > svg {
       fill: #00ACFF; }
 
+.bl_modal__option-fixed-width {
+  width: 60px;
+  text-align: center; }
+
 .rex-live__row-margin-padding {
   max-width: 340px;
   margin: 0 auto;
