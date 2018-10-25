@@ -1108,7 +1108,7 @@ defined('ABSPATH') or exit;
                 </button>
             </div>
             <!-- // .rex-slider__add-slide__wrap -->
-            <div class="rex-slider__settings--wrap rex-modal-content__modal-area rex-modal-content__modal-area--bordered">
+            <div class="rex-slider__settings--wrap rex-modal-content__modal-area">
                 <div class="col">
                     <div class="valign-wrapper space-between-wrapper">
                         <div class="rex-check-icon">

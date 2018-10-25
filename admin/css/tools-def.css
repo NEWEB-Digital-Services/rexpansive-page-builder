@@ -9582,6 +9582,10 @@ input#rex-block-vimeo-url {
 #rex-block-options {
   max-width: 412px; }
 
+#rex-slider-block .modal-content,
+#rex-insert-new-video-block .modal-content {
+  padding-bottom: 15px; }
+
 .rex-icon-mute,
 .rex-icon-audio {
   font-size: 20px; }
@@ -11154,9 +11158,6 @@ select.rx__form-input {
 
 #rex-slider-block.rex-modal {
   z-index: 1003; }
-
-#rex-slider-block.rex-modal .modal-content {
-  padding: 0; }
 
 #rex-slider-block.rex-slider-block--editing .rex-slider__settings--wrap {
   border-bottom: none; }
@@ -15145,6 +15146,11 @@ body.rexpansive-editor .lean-overlay {
 
 .input-field.hide-mp4-link {
   visibility: hidden; }
+
+#edit_slider_title_live_btn {
+  padding: 5px; }
+  #edit_slider_title_live_btn .l-svg-icons {
+    font-size: 15px; }
 
 .bl_rex-slider__list-icon {
   padding: 0px 15px; }
