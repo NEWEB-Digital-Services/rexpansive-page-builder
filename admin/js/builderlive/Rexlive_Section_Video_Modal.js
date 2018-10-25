@@ -63,9 +63,12 @@ var Section_Video_Background_Modal = (function($) {
     video_background_properties.$checkboxChooseYoutube.attr("checked", false);
     video_background_properties.$checkboxChooseVimeo.attr("checked", false);
     video_background_properties.$checkboxChooseMp4.attr("checked", false);
-    // video_background_properties.$checkboxChooseYoutube.attr("disabled", false);
-    // video_background_properties.$checkboxChooseVimeo.attr("disabled", false);
-    // video_background_properties.$checkboxChooseMp4.attr("disabled", false);
+    video_background_properties.$checkboxChooseYoutube.attr("disabled", false);
+    video_background_properties.$checkboxChooseVimeo.attr("disabled", false);
+    video_background_properties.$checkboxChooseMp4.attr("disabled", false);
+    video_background_properties.$linkYoutube.next('label').removeClass('active');
+    video_background_properties.$linkVimeo.next('label').removeClass('active');
+    video_background_properties.$linkMp4.next('label').removeClass('active');
   };
 
   var _clearVideoModal = function() {
@@ -73,20 +76,22 @@ var Section_Video_Background_Modal = (function($) {
     videoChosen = "";
     video_background_properties.$linkVimeo.val("");
     video_background_properties.$linkYoutube.val("");
+    video_background_properties.$linkMp4Preview.val("").next('label').removeClass('active');
   };
 
   var _focusYoutube = function() {
     if (video_background_properties.$youTubeWrap.hasClass("selected")) {
       video_background_properties.$youTubeWrap.removeClass("selected");
       video_background_properties.$checkboxChooseYoutube.attr("checked", false);
-      // video_background_properties.$checkboxChooseVimeo.attr("disabled", false);
-      // video_background_properties.$checkboxChooseMp4.attr("disabled", false);
+      video_background_properties.$checkboxChooseVimeo.attr("disabled", false);
+      video_background_properties.$checkboxChooseMp4.attr("disabled", false);
       videoChosen = "";
     } else {
       video_background_properties.$checkboxChooseYoutube.attr("checked", true);
-      // video_background_properties.$checkboxChooseVimeo.attr("disabled", true);
-      // video_background_properties.$checkboxChooseMp4.attr("disabled", true);
+      video_background_properties.$checkboxChooseVimeo.attr("disabled", true);
+      video_background_properties.$checkboxChooseMp4.attr("disabled", true);
       video_background_properties.$youTubeWrap.addClass("selected");
+      video_background_properties.$linkYoutube.next('label').addClass('active');
       videoChosen = "youtube";
     }
     video_background_properties.$vimeoWrap.removeClass("selected");
@@ -97,14 +102,15 @@ var Section_Video_Background_Modal = (function($) {
     if (video_background_properties.$vimeoWrap.hasClass("selected")) {
       video_background_properties.$vimeoWrap.removeClass("selected");
       video_background_properties.$checkboxChooseVimeo.attr("checked", false);
-      // video_background_properties.$checkboxChooseYoutube.attr("disabled", false);
-      // video_background_properties.$checkboxChooseMp4.attr("disabled", false);
+      video_background_properties.$checkboxChooseYoutube.attr("disabled", false );
+      video_background_properties.$checkboxChooseMp4.attr("disabled", false);
       videoChosen = "";
     } else {
       video_background_properties.$checkboxChooseVimeo.attr("checked", true);
-      // video_background_properties.$checkboxChooseYoutube.attr("disabled", true);
-      // video_background_properties.$checkboxChooseMp4.attr("disabled", true);
+      video_background_properties.$checkboxChooseYoutube.attr("disabled", true);
+      video_background_properties.$checkboxChooseMp4.attr("disabled", true);
       video_background_properties.$vimeoWrap.addClass("selected");
+      video_background_properties.$linkVimeo.next('label').addClass('active');
       videoChosen = "vimeo";
     }
     video_background_properties.$youTubeWrap.removeClass("selected");
@@ -115,14 +121,15 @@ var Section_Video_Background_Modal = (function($) {
     if (video_background_properties.$mp4Wrap.hasClass("selected")) {
       video_background_properties.$mp4Wrap.removeClass("selected");
       video_background_properties.$checkboxChooseMp4.attr("checked", false);
-      // video_background_properties.$checkboxChooseYoutube.attr("disabled", false);
-      // video_background_properties.$checkboxChooseVimeo.attr("disabled", false);
+      video_background_properties.$checkboxChooseYoutube.attr("disabled", false );
+      video_background_properties.$checkboxChooseVimeo.attr("disabled", false);
       videoChosen = "";
     } else {
       video_background_properties.$checkboxChooseMp4.attr("checked", true);
-      // video_background_properties.$checkboxChooseYoutube.attr("disabled", true);
-      // video_background_properties.$checkboxChooseVimeo.attr("disabled", true);
+      video_background_properties.$checkboxChooseYoutube.attr("disabled", true);
+      video_background_properties.$checkboxChooseVimeo.attr("disabled", true);
       video_background_properties.$mp4Wrap.addClass("selected");
+      video_background_properties.$linkMp4.next('label').addClass('active');
       videoChosen = "mp4";
     }
     video_background_properties.$youTubeWrap.removeClass("selected");
@@ -205,10 +212,7 @@ var Section_Video_Background_Modal = (function($) {
 
     video_background_properties.$uploadMp4.click(function() {
       if (video_background_properties.$mp4Wrap.hasClass("selected")) {
-        Rexlive_MediaUploader.openMediaUploaderVideo(
-          video_background_properties.$linkMp4,
-          video_background_properties.$linkMp4.val()
-        );
+        Rexlive_MediaUploader.openMediaUploaderVideo(video_background_properties.$linkMp4, video_background_properties.$linkMp4.val());
       }
     });
 
@@ -217,6 +221,10 @@ var Section_Video_Background_Modal = (function($) {
       _closeSectionVideoBackgroundModal();
     });
   };
+
+  var _updateVideoMp4Link = function( url ) {
+    video_background_properties.$linkMp4Preview.val(url).next('label').addClass('active');
+  }
 
   var _init = function() {
     var $self = $("#video-section-editor-wrapper");
@@ -245,6 +253,7 @@ var Section_Video_Background_Modal = (function($) {
     clearVideoModal: _clearVideoModal,
     updateVideoModal: _updateVideoModal,
     updateVideoBackground: _updateVideoBackground,
-    openSectionVideoBackgroundModal: _openSectionVideoBackgroundModal
+    openSectionVideoBackgroundModal: _openSectionVideoBackgroundModal,
+    updateVideoMp4Link: _updateVideoMp4Link
   };
 })(jQuery);
