@@ -552,6 +552,7 @@ var Rexlive_MediaUploader = (function($) {
           Section_Video_Background_Modal.updateVideoMp4Link(obj_attachment.url);
         } else if ($data.parents("#video-block-editor-wrapper").length != 0) {
           Block_Video_Background_Modal.updateVideoBackground();
+          Block_Video_Background_Modal.updateVideoMp4Link(obj_attachment.url);
         }
       });
     });
