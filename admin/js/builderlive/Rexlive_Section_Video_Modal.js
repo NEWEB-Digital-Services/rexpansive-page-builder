@@ -83,6 +83,11 @@ var Section_Video_Background_Modal = (function($) {
       video_background_properties.$checkboxChooseYoutube.attr("checked", false);
       video_background_properties.$checkboxChooseVimeo.attr("disabled", false);
       video_background_properties.$checkboxChooseMp4.attr("disabled", false);
+      video_background_properties.$linkYoutube.attr("disabled", false);
+      video_background_properties.$linkVimeo.attr("disabled", false);
+      if("" === video_background_properties.$linkYoutube.val()) {
+        video_background_properties.$linkYoutube.next('label').removeClass('active');
+      }
       videoChosen = "";
     } else {
       video_background_properties.$checkboxChooseYoutube.attr("checked", true);
@@ -90,6 +95,7 @@ var Section_Video_Background_Modal = (function($) {
       video_background_properties.$checkboxChooseMp4.attr("disabled", true);
       video_background_properties.$youTubeWrap.addClass("selected");
       video_background_properties.$linkYoutube.next('label').addClass('active');
+      video_background_properties.$linkVimeo.attr("disabled", true);
       videoChosen = "youtube";
     }
     video_background_properties.$vimeoWrap.removeClass("selected");
@@ -102,6 +108,11 @@ var Section_Video_Background_Modal = (function($) {
       video_background_properties.$checkboxChooseVimeo.attr("checked", false);
       video_background_properties.$checkboxChooseYoutube.attr("disabled", false );
       video_background_properties.$checkboxChooseMp4.attr("disabled", false);
+      video_background_properties.$linkYoutube.attr("disabled", false);
+      video_background_properties.$linkVimeo.attr("disabled", false);
+      if("" === video_background_properties.$linkVimeo.val()) {
+        video_background_properties.$linkVimeo.next('label').removeClass('active');
+      }
       videoChosen = "";
     } else {
       video_background_properties.$checkboxChooseVimeo.attr("checked", true);
@@ -109,6 +120,7 @@ var Section_Video_Background_Modal = (function($) {
       video_background_properties.$checkboxChooseMp4.attr("disabled", true);
       video_background_properties.$vimeoWrap.addClass("selected");
       video_background_properties.$linkVimeo.next('label').addClass('active');
+      video_background_properties.$linkYoutube.attr("disabled", true);
       videoChosen = "vimeo";
     }
     video_background_properties.$youTubeWrap.removeClass("selected");
@@ -121,13 +133,20 @@ var Section_Video_Background_Modal = (function($) {
       video_background_properties.$checkboxChooseMp4.attr("checked", false);
       video_background_properties.$checkboxChooseYoutube.attr("disabled", false );
       video_background_properties.$checkboxChooseVimeo.attr("disabled", false);
+      video_background_properties.$linkYoutube.attr("disabled", false);
+      video_background_properties.$linkVimeo.attr("disabled", false);
+      if("" === video_background_properties.$linkMp4Preview.val()) {
+        video_background_properties.$linkMp4Preview.next('label').removeClass('active');
+      }
       videoChosen = "";
     } else {
       video_background_properties.$checkboxChooseMp4.attr("checked", true);
       video_background_properties.$checkboxChooseYoutube.attr("disabled", true);
       video_background_properties.$checkboxChooseVimeo.attr("disabled", true);
       video_background_properties.$mp4Wrap.addClass("selected");
-      video_background_properties.$linkMp4.next('label').addClass('active');
+      video_background_properties.$linkMp4Preview.next('label').addClass('active');
+      video_background_properties.$linkYoutube.attr("disabled", true);
+      video_background_properties.$linkVimeo.attr("disabled", true);
       videoChosen = "mp4";
     }
     video_background_properties.$youTubeWrap.removeClass("selected");

@@ -11139,10 +11139,14 @@ select.rx__form-input {
   border-bottom: 1px solid #ddd; }
 
 #rexeditor-modal.hide-padding-position .rexeditor-modal__header__buttons-wrap {
+  display: none;
   visibility: hidden;
   -webkit-transform: none;
   -ms-transform: none;
       transform: none;
+  height: 30px; }
+
+#rexeditor-modal.hide-padding-position .modal-editor-header {
   height: 30px; }
 
 #rex-slider-block.rex-modal {
@@ -13718,8 +13722,9 @@ select.rx__form-input {
       -ms-transform-origin: 100% 100%;
           transform-origin: 100% 100%; }
 .bl_checkbox[type="checkbox"]:not(:checked):disabled + label .bl_check-indicator:after {
-  border: none;
-  background-color: rgba(0, 0, 0, 0.26); }
+  border-color: rgba(0, 0, 0, 0.26); }
+.bl_checkbox[type="checkbox"]:not(:checked):disabled + label .rex-icon {
+  color: rgba(0, 0, 0, 0.26); }
 
 .bl_checkbox-big-icon + label {
   max-height: 45px; }

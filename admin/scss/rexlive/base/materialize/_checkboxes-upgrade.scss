@@ -63,9 +63,13 @@
       + label {
         .bl_check-indicator {
           &:after {
-            border: none;
-            background-color: rgba(0,0,0,0.26);
+            // border: none;
+            // background-color: rgba(0,0,0,0.26);
+            border-color: rgba(0,0,0,0.26);
           }
+        }
+        .rex-icon {
+          color: rgba(0,0,0,0.26);
         }
       }
     }

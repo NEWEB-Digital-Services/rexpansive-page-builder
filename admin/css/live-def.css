@@ -2513,8 +2513,9 @@
       -ms-transform-origin: 100% 100%;
           transform-origin: 100% 100%; }
 .bl_checkbox[type="checkbox"]:not(:checked):disabled + label .bl_check-indicator:after {
-  border: none;
-  background-color: rgba(0, 0, 0, 0.26); }
+  border-color: rgba(0, 0, 0, 0.26); }
+.bl_checkbox[type="checkbox"]:not(:checked):disabled + label .rex-icon {
+  color: rgba(0, 0, 0, 0.26); }
 
 .bl_checkbox-big-icon + label {
   max-height: 45px; }
