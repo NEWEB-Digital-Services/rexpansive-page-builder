@@ -117,9 +117,7 @@ var Rexbuilder_RexSlider = (function($) {
    */
   var openSlideLinksEditor = function(state, slide) {
     // clean and prepare the editor
-    rexslider_modal_links_editor.$modal.removeClass(
-      rexslider_modal_links_editor.visibility_classes.join(" ")
-    );
+    rexslider_modal_links_editor.$modal.removeClass( rexslider_modal_links_editor.visibility_classes.join(" ") );
     rexslider_modal_links_editor.$save_button.val("").val(slide);
 
     switch (state) {
@@ -273,14 +271,8 @@ var Rexbuilder_RexSlider = (function($) {
     if (id && data && slider_id) {
       // save id block information
       rexslider_modal_properties.$save_button.attr("data-block-to-edit", id);
-      rexslider_modal_properties.$save_button.attr(
-        "data-slider-to-edit",
-        slider_id
-      );
-      rexslider_modal_properties.$undo_button.attr(
-        "data-slider-to-edit",
-        slider_id
-      );
+      rexslider_modal_properties.$save_button.attr("data-slider-to-edit", slider_id);
+      rexslider_modal_properties.$undo_button.attr("data-slider-to-edit", slider_id);
       // inform the user of which slider is selected: no more!
       // rexslider_modal_properties.$slider_import.val(slider_id);
       // based on the slider shortcode, create the slider information
@@ -838,26 +830,15 @@ var Rexbuilder_RexSlider = (function($) {
               ".rex-slider__slide[data-slider-slide-id=" + slide_id + "]";
 
             // rexslider_modal_properties.$modal.addClass('push-down-modal');
-            Rexpansive_Builder_Admin_TextEditor.openTextEditor(
-              slide_selector,
-              slide_text,
-              true,
-              ["hide-padding-position"]
-            );
+            Rexpansive_Builder_Admin_TextEditor.openTextEditor(slide_selector, slide_text, true, ["hide-padding-position"]);
             break;
           case "video":
             rexslider_modal_properties.$modal.addClass("push-down-modal");
-            openSlideLinksEditor(
-              "video",
-              ".rex-slider__slide[data-slider-slide-id=" + slide_id + "]"
-            );
+            openSlideLinksEditor("video", ".rex-slider__slide[data-slider-slide-id=" + slide_id + "]");
             break;
           case "url":
             rexslider_modal_properties.$modal.addClass("push-down-modal");
-            openSlideLinksEditor(
-              "url",
-              ".rex-slider__slide[data-slider-slide-id=" + slide_id + "]"
-            );
+            openSlideLinksEditor("url", ".rex-slider__slide[data-slider-slide-id=" + slide_id + "]");
             break;
           case "copy":
             // copy slide
@@ -943,7 +924,7 @@ var Rexbuilder_RexSlider = (function($) {
         rexslider_modal_properties.$save_button.attr("data-block-to-edit", "");
         rexslider_modal_properties.$save_button.attr("data-slider-to-edit", "");
 
-        rexslider_modal_properties.$slide_title.val(live_editor_obj.labels.slider.new_slider).prop('disabled',true);
+        rexslider_modal_properties.$slide_title.val(live_editor_obj.labels.slider.new_slider);
 
         rexslider_modal_properties.$slide_list.empty().append(
           slide_tmpl
@@ -1104,11 +1085,10 @@ var Rexbuilder_RexSlider = (function($) {
      * Modal Slider Links Save Event
      */
     rexslider_modal_links_editor.$save_button.on("click", function() {
-      var $slide_reference = $(this["attributes"]["value"].value);
+      // var $slide_reference = $(this["attributes"]["value"].value);
+      var $slide_reference = $(this.value);
 
-      if (
-        rexslider_modal_links_editor.$modal.hasClass("video-links--visible")
-      ) {
+      if ( rexslider_modal_links_editor.$modal.hasClass("video-links--visible") ) {
         var video_type = rexslider_modal_links_editor.$video_type
           .filter(":checked")
           .val();
@@ -1170,11 +1150,10 @@ var Rexbuilder_RexSlider = (function($) {
         }
       }
 
+      console.log('fermi tutti');
+
       rexslider_modal_properties.$modal.removeClass("push-down-modal");
-      Rexlive_Modals_Utils.closeModal(
-        rexslider_modal_links_editor.$modal_wrap,
-        true
-      );
+      Rexlive_Modals_Utils.closeModal(rexslider_modal_links_editor.$modal_wrap, true);
     });
 
     /**

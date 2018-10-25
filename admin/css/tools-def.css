@@ -11164,7 +11164,7 @@ select.rx__form-input {
 .rex-button-with-plus {
   margin-right: 12px; }
 
-.rex-slider__slide-edit.rex-slider__slide-edit__field-active-notice {
+#rex-slider-block .rex-slider__slide-edit.rex-slider__slide-edit__field-active-notice {
   background-color: #039be5 !important; }
 
 #rex-slider__import {
@@ -14592,6 +14592,13 @@ ul {
     -webkit-transform: translate(50%, -50%);
         -ms-transform: translate(50%, -50%);
             transform: translate(50%, -50%); }
+  .tool-button.tool-button--cancel {
+    background-color: #424242;
+    padding: 6px; }
+    .tool-button.tool-button--cancel .l-svg-icons > svg {
+      fill: #fff; }
+    .tool-button.tool-button--cancel .l-svg-icons {
+      font-size: 18px; }
   .tool-button.tool-button--image-preview {
     background-position: center;
     background-repeat: no-repeat;
@@ -14835,7 +14842,7 @@ body.rexpansive-editor .lean-overlay {
       -ms-flex-align: center;
           align-items: center; }
   .rex-modal__outside-footer .tool-button {
-    margin: 0 5px; }
+    margin: 0 10px; }
   .rex-modal__outside-footer .tool-button--save {
     padding: 0;
     position: relative; }

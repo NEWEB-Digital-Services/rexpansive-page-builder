@@ -3383,6 +3383,13 @@ ul {
     -webkit-transform: translate(50%, -50%);
         -ms-transform: translate(50%, -50%);
             transform: translate(50%, -50%); }
+  .tool-button.tool-button--cancel {
+    background-color: #424242;
+    padding: 6px; }
+    .tool-button.tool-button--cancel .l-svg-icons > svg {
+      fill: #fff; }
+    .tool-button.tool-button--cancel .l-svg-icons {
+      font-size: 18px; }
   .tool-button.tool-button--image-preview {
     background-position: center;
     background-repeat: no-repeat;

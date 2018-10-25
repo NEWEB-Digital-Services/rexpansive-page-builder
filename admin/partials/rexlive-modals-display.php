@@ -1145,12 +1145,12 @@ defined('ABSPATH') or exit;
             </button>
         </div> -->
         <div class="rex-modal__outside-footer">
-            <div class="tool-button tool-button--inline tool-button--black rex-undo-button tippy" data-tippy-content="<?php esc_attr_e( 'Undo', 'rexpansive' ); ?>" data-slider-to-edit="">
-                <?php Rexbuilder_Utilities::get_icon('#A003-Undo'); ?>
-            </div>
             <div id="rex-insert-video-block-save" class="tool-button tool-button--inline tool-button--save rex-save-button tippy" data-tippy-content="<?php esc_attr_e( 'Save Slider', 'rexpansive' ); ?>">
                 <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
                 <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+            </div>
+            <div class="tool-button tool-button--inline tool-button--cancel rex-undo-button tippy" data-tippy-content="<?php esc_attr_e( 'Undo', 'rexpansive' ); ?>" data-slider-to-edit="">
+                <?php Rexbuilder_Utilities::get_icon('#A003-Undo'); ?>
             </div>
         </div>
     </div>
@@ -1159,6 +1159,9 @@ defined('ABSPATH') or exit;
 
 <div class="rex-modal-wrap">
     <div id="rex-slider__links-editor" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
+        <div class="tool-button tool-button--black rex-cancel-button tool-button--close tippy" data-tippy-content="<?php _e( 'Cancel', 'rexspansive');?>" value="">
+            <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
+        </div>
         <div class="modal-content">
             <div id="rex-slider__video-links-wrap" class="rex-modal-content__modal-area">
                 <div class="valign-wrapper rex-modal-content__modal-area__row">
@@ -1218,13 +1221,19 @@ defined('ABSPATH') or exit;
                 </div>
             </div><!-- // url links -->
         </div><!-- // modal content -->
-        <div class="rex-modal-footer">
+        <!-- <div class="rex-modal-footer">
             <button class="waves-effect waves-light btn-flat grey rex-cancel-button" value="">
                 <i class="rex-icon">n</i>
             </button>
             <button class="waves-effect waves-light btn-flat blue darken-1 rex-save-button" value="">
                 <i class="rex-icon">m</i>
             </button>
+        </div> -->
+        <div class="rex-modal__outside-footer">
+            <div class="tool-button tool-button--inline tool-button--save rex-save-button tippy" data-tippy-content="<?php esc_attr_e( 'Save Content', 'rexpansive' ); ?>" value="">
+                <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+            </div>
         </div>
     </div>
 </div>
@@ -1455,6 +1464,9 @@ defined('ABSPATH') or exit;
 
 <div class="rex-modal-wrap">
     <div id="rexeditor-modal" class="rexbuilder-materialize-wrap outside-content-modal rex-modal-draggable rex-modal">
+        <div id="editor-cancel" class="tool-button tool-button--black rex-cancel-button tool-button--close tippy" data-tippy-content="<?php _e( 'Cancel', 'rexspansive');?>">
+            <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
+        </div>
         <div class="modal-content-wrap">
             <div class="modal-editor-header">
                 <div class="rexeditor-modal__header__buttons-wrap">
@@ -1471,13 +1483,19 @@ defined('ABSPATH') or exit;
                 <?php wp_editor('', 'rexbuilder_editor', array('textarea_rows' => 20, 'wpautop' => false, 'editor_height' => 250));?>
                 </div>
             </div>
-            <div class="rexeditor_bottom rex-modal-footer clearfix">
+            <!-- <div class="rexeditor_bottom rex-modal-footer clearfix">
                 <button id="editor-cancel" class="waves-effect waves-light btn-flat grey rex-cancel-button" value="">
                     <i class="rex-icon">n</i>
                 </button>
                 <button id="editor-save" class="waves-effect waves-light btn-flat blue darken-1 rex-save-button" value="">
                     <i class="rex-icon">m</i>
                 </button>
+            </div> -->
+        </div>
+        <div class="rex-modal__outside-footer">
+            <div id="editor-save" class="tool-button tool-button--inline tool-button--save rex-save-button tippy" data-tippy-content="<?php esc_attr_e( 'Save Content', 'rexpansive' ); ?>">
+                <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
             </div>
         </div>
     </div>
@@ -1578,7 +1596,7 @@ wp_reset_postdata();
 
 <div class="rex-modal-wrap">
     <div id="rex-layout-page-changed" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
-        <div class="tool-button tool-button--black rex-change-layout-option tool-button--close tooltipped" data-position="bottom" data-tooltip="<?php _e( $tooltip, 'rexspansive');?>" data-rex-option="abort">
+        <div class="tool-button tool-button--black rex-change-layout-option tool-button--close tippy" data-position="bottom" data-tippy-content="<?php _e( 'Cancel', 'rexspansive');?>" data-rex-option="abort">
             <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
         </div>
         <div class="modal-content">
@@ -1588,11 +1606,11 @@ wp_reset_postdata();
             </div>
         </div>
         <div class="rex-modal__outside-footer">
-            <div class="tool-button tool-button--inline tool-button--black rex-change-layout-option" data-rex-option="continue">
-                <span class="rex-button continue"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
-            </div>
-            <div class="tool-button tool-button--inline tool-button--save rex-change-layout-option" data-rex-option="save">
+            <div class="tool-button tool-button--inline tool-button--save rex-change-layout-option tippy" data-tippy-content="<?php _e('Save and Continue','rexpansive'); ?>" data-rex-option="save">
                 <span class="rex-button save-page"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+            </div>
+            <div class="tool-button tool-button--inline tool-button--cancel rex-change-layout-option tippy" data-rex-option="continue" data-tippy-content="<?php _e('Continue','rexpansive'); ?>">
+                <span class="rex-button continue"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
             </div>
         </div>
     </div>

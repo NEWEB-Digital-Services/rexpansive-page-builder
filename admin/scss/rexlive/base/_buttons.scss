@@ -119,6 +119,15 @@
     transform: translate(50%,-50%);
   }
 
+  &.tool-button--cancel {
+    background-color: $palette-color-4;
+    padding: 6px;
+    @include fill-icon(#fff);
+    #{$icon-class} {
+      font-size: 18px;
+    }
+  }
+
   &.tool-button--image-preview {
     background-position: center;
     background-repeat: no-repeat;
