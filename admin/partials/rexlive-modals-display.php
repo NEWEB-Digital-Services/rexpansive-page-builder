@@ -302,9 +302,10 @@ defined('ABSPATH') or exit;
             <div id="edit-video-row-wrap-1" class="bl_modal-row youtube-insert-wrap video-insert-wrap">
                 <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
                     <div class="rex-check rex-check-icon rex-video-type-select tippy" data-tippy-content="<?php _e('Active YouTube','rexpansive'); ?>">
-                        <input type="checkbox" class="rex-choose-video bl_checkbox bl_checkbox-bottom-indicator bl_checkbox-big-icon" name="rex-choose-video" value="youtube" id="rex-choose-youtube-video-section" />
+                        <input type="radio" class="rex-choose-video bl_radio-big-icon bl_radio bl_radio-bottom-indicator" name="rex-choose-video" value="youtube" id="rex-choose-youtube-video-section" />
                         <label for="rex-choose-youtube-video-section">
-                            <span class="bl_check-indicator--wrap"><span class="bl_check-indicator"></span></span>
+                            <span class="bl_radio-indicator"></span>
+                            <!-- <span class="bl_check-indicator--wrap"><span class="bl_check-indicator"></span></span> -->
                             <i class="material-icons rex-icon">C</i>
                             <!-- <span class="rex-ripple" /> -->
                         </label>
@@ -322,9 +323,10 @@ defined('ABSPATH') or exit;
             <div id="edit-video-row-wrap-2" class="bl_modal-row vimeo-insert-wrap video-insert-wrap">
                 <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
                     <div class="rex-check rex-check-icon rex-video-type-select tippy" data-tippy-content="<?php _e('Active Vimeo','rexpansive'); ?>">
-                        <input type="checkbox" class="rex-choose-video bl_checkbox bl_checkbox-bottom-indicator bl_checkbox-big-icon" name="rex-choose-video" value="vimeo" id="rex-choose-vimeo-video-section" />
+                        <input type="radio" class="rex-choose-video bl_radio-big-icon bl_radio bl_radio-bottom-indicator" name="rex-choose-video" value="vimeo" id="rex-choose-vimeo-video-section" />
                         <label for="rex-choose-vimeo-video-section">
-                            <span class="bl_check-indicator--wrap"><span class="bl_check-indicator"></span></span>
+                            <span class="bl_radio-indicator"></span>
+                            <!-- <span class="bl_check-indicator--wrap"><span class="bl_check-indicator"></span></span> -->
                             <i class="material-icons rex-icon">Z</i>
                             <!-- <span class="rex-ripple" /> -->
                         </label>
@@ -342,9 +344,10 @@ defined('ABSPATH') or exit;
             <div id="edit-video-row-wrap-3" class="bl_modal-row mp4-insert-wrap video-insert-wrap">
                 <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
                     <div class="rex-check rex-check-icon bl_modal__option-fixed-width rex-video-type-select tippy" data-tippy-content="<?php _e('Active Mp4','rexpansive'); ?>">
-                        <input type="checkbox" class="rex-choose-video bl_checkbox bl_checkbox-bottom-indicator" name="rex-choose-video" value="mp4" id="rex-choose-mp4-video-section" />
+                        <input type="radio" class="rex-choose-video bl_radio bl_radio-bottom-indicator" name="rex-choose-video" value="mp4" id="rex-choose-mp4-video-section" />
                         <label id="rex-upload-mp4-video-section" for="rex-choose-mp4-video-section">
-                            <span class="bl_check-indicator--wrap"><span class="bl_check-indicator"></span></span>
+                            <span class="bl_radio-indicator"></span>
+                            <!-- <span class="bl_check-indicator--wrap"><span class="bl_check-indicator"></span></span> -->
                             <i class="material-icons rex-icon">A</i>
                             <!-- <span class="rex-ripple" /> -->
                         </label>

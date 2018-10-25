@@ -25,4 +25,29 @@
       }
     }
   }
+  
+  input[type=text]:disabled, 
+  input[type=text][readonly="readonly"], 
+  input[type=password]:disabled, 
+  input[type=password][readonly="readonly"], 
+  input[type=email]:disabled, 
+  input[type=email][readonly="readonly"], 
+  input[type=url]:disabled, 
+  input[type=url][readonly="readonly"], 
+  input[type=time]:disabled, 
+  input[type=time][readonly="readonly"], 
+  input[type=date]:disabled, 
+  input[type=date][readonly="readonly"], 
+  input[type=datetime-local]:disabled, 
+  input[type=datetime-local][readonly="readonly"], 
+  input[type=tel]:disabled, 
+  input[type=tel][readonly="readonly"], 
+  input[type=number]:disabled, 
+  input[type=number][readonly="readonly"], 
+  input[type=search]:disabled, 
+  input[type=search][readonly="readonly"], 
+  textarea.materialize-textarea:disabled, 
+  textarea.materialize-textarea[readonly="readonly"] {
+    border-bottom-style: solid;
+  }
 }

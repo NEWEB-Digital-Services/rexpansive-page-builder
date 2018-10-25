@@ -2545,6 +2545,29 @@
         -webkit-transform: translateY(-100%);
             -ms-transform: translateY(-100%);
                 transform: translateY(-100%); }
+.rexbuilder-materialize-wrap input[type=text]:disabled,
+.rexbuilder-materialize-wrap input[type=text][readonly="readonly"],
+.rexbuilder-materialize-wrap input[type=password]:disabled,
+.rexbuilder-materialize-wrap input[type=password][readonly="readonly"],
+.rexbuilder-materialize-wrap input[type=email]:disabled,
+.rexbuilder-materialize-wrap input[type=email][readonly="readonly"],
+.rexbuilder-materialize-wrap input[type=url]:disabled,
+.rexbuilder-materialize-wrap input[type=url][readonly="readonly"],
+.rexbuilder-materialize-wrap input[type=time]:disabled,
+.rexbuilder-materialize-wrap input[type=time][readonly="readonly"],
+.rexbuilder-materialize-wrap input[type=date]:disabled,
+.rexbuilder-materialize-wrap input[type=date][readonly="readonly"],
+.rexbuilder-materialize-wrap input[type=datetime-local]:disabled,
+.rexbuilder-materialize-wrap input[type=datetime-local][readonly="readonly"],
+.rexbuilder-materialize-wrap input[type=tel]:disabled,
+.rexbuilder-materialize-wrap input[type=tel][readonly="readonly"],
+.rexbuilder-materialize-wrap input[type=number]:disabled,
+.rexbuilder-materialize-wrap input[type=number][readonly="readonly"],
+.rexbuilder-materialize-wrap input[type=search]:disabled,
+.rexbuilder-materialize-wrap input[type=search][readonly="readonly"],
+.rexbuilder-materialize-wrap textarea.materialize-textarea:disabled,
+.rexbuilder-materialize-wrap textarea.materialize-textarea[readonly="readonly"] {
+  border-bottom-style: solid; }
 
 /*
 * CSS TOGGLE SWITCH
