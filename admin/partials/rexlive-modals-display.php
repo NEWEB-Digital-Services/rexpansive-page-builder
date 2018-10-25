@@ -1043,7 +1043,7 @@ defined('ABSPATH') or exit;
                 <div class="input-field input-field--small bl_d-flex bl_ai-c">
                     <input class="title-slider" type="text" value="<?php _e('New Slider','rexpansive'); ?>" disabled>
                     <div class="rex_edit_title_slider">
-                        <span id="edit_slider_title_live_btn" class="dashicons dashicons-edit"></span>
+                        <span id="edit_slider_title_live_btn"><?php Rexbuilder_Utilities::get_icon('#Z008-Edit'); ?></span>
                     </div>
                 </div>
                 <!-- <div class="rex_edit_slider_title_toolbox">
@@ -1503,6 +1503,9 @@ defined('ABSPATH') or exit;
 
 <div class="rex-modal-wrap">
     <div id="rex-model-block" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
+        <div class="tool-button tool-button--black rex-cancel-button tool-button--close tippy" data-tippy-content="Cancel" value="" tabindex="0">
+            <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
+        </div>
         <div class="modal-content">
 
             <?php include 'rexbuilder-modal-loader.php';?>
@@ -1566,28 +1569,56 @@ wp_reset_postdata();
             </div>
         </div>
 
-        <div class="rex-modal-footer">
+        <!-- <div class="rex-modal-footer">
             <button id="" class="waves-effect waves-light btn-flat grey rex-cancel-button" value="">
                 <i class="rex-icon">n</i>
             </button>
             <button id="" class="waves-effect waves-light btn-flat blue darken-1 rex-save-button" value="">
                 <i class="rex-icon">m</i>
             </button>
+        </div> -->
+        <div class="rex-modal__outside-footer">
+            <div class="tool-button tool-button--inline tool-button--save rex-save-button tippy" data-tippy-content="<?php esc_attr_e( 'Save Content', 'rexpansive' ); ?>">
+                <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+            </div>
         </div>
     </div>
 </div><!-- RexModel modal -->
+
 <div class="rex-modal-wrap">
     <div id="rex-edit-model-choose" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
-        <div class="modal-content">
+        <?php Rexbuilder_Utilities::close_button(); ?>
+        <div class="modal-content modal-content--text">
             <div class="edit-model-description">
-                Cosa vuoi fare?
+                <?php _e('What kind of editing do you want to make to the model:','rexpansive'); ?>
+                <span class="info-model-name__wrap"><span class="info-model-name"></span><span>?</span></span>
             </div>
-            <div>
+            <!-- <div>
                 <div class="rex-edit-model-option" data-rex-option="edit">
                     <button class="rex-button edit-model">Edita</button>
                 </div>
                 <div class="rex-edit-model-option" data-rex-option="remove">
                     <button class="rex-button remove-model">Togli</button>
+                </div>
+            </div> -->
+        </div>
+        <div class="rex-modal__outside-footer">
+            <div class="tool-button--double-icon--wrap tool-button--double-icon--active tool-button--double-icon--big rex-button edit-model rex-edit-option tippy" data-tippy-content="<?php esc_attr_e( 'Edited synchronized model', 'rexpansive' ); ?>" data-rex-option="edit">
+                <div class="tool-button tool-button--inline tool-button--blue">
+                    <?php Rexbuilder_Utilities::get_icon('#B015-UnClosed'); ?>
+                </div>
+                <div class="tool-button tool-button--inline tool-button--black tool-button--double-icon">
+                    <?php Rexbuilder_Utilities::get_icon('#Z008-Edit'); ?>
+                </div>
+            </div>
+
+            <div class="tool-button--double-icon--wrap tool-button--double-icon--active tool-button--double-icon--big rex-button remove-model rex-edit-option tippy" data-tippy-content="<?php esc_attr_e( 'Edit removing sync', 'rexpansive' ); ?>" data-rex-option="remove">
+                <div class="tool-button tool-button--inline tool-button--blue">
+                    <?php Rexbuilder_Utilities::get_icon('#B014-Closed'); ?>
+                </div>
+                <div class="tool-button tool-button--inline tool-button--black tool-button--double-icon">
+                    <?php Rexbuilder_Utilities::get_icon('#Z008-Edit'); ?>
                 </div>
             </div>
         </div>
@@ -1599,10 +1630,10 @@ wp_reset_postdata();
         <div class="tool-button tool-button--black rex-change-layout-option tool-button--close tippy" data-position="bottom" data-tippy-content="<?php _e( 'Cancel', 'rexspansive');?>" data-rex-option="abort">
             <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
         </div>
-        <div class="modal-content">
+        <div class="modal-content modal-content--text">
             <div class="layout-page-changed-description">
-                <?php _e( 'Save changes', 'rexpansive-builder' ); ?>
-                <span class="layout-name"></span><span>?</span>
+                <?php _e( 'Save changes', 'rexpansive-builder' ); ?>:
+                <span class="layout-name__wrap"><span class="layout-name"></span><span>&nbsp;?</span></span>
             </div>
         </div>
         <div class="rex-modal__outside-footer">
@@ -1618,18 +1649,26 @@ wp_reset_postdata();
 
 <div class="rex-modal-wrap">
     <div id="rex-locked-option" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
-        <div class="modal-content">
+        <div class="tool-button tool-button--inline rex-locked-option-wrapper tool-button--black tool-button--close rex-close-button tippy" data-tippy-content="<?php _e('Close','rexpansive'); ?>">
+            <span class="rex-button abort"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
+        </div>
+        <div class="modal-content modal-content--text">
             <div class="locked-option-changed-description">
-            This feature is not avaiable until saved.
-            Attention! Once you have saved from live, you can not edit from backend.
+                <?php _e('This feature is not avaiable until saved.','rexpansive'); ?>
+                <?php _e('Warning! Once you have saved from live, you can not edit from backend.','rexpansive'); ?>
             </div>
-            <div>
+            <!-- <div>
                 <div class="rex-locked-option-wrapper" data-rex-option="save">
                     <button class="rex-button save-page">save</button>
                 </div>
                 <div class="rex-locked-option-wrapper" data-rex-option="abort">
                     <button class="rex-button abort">cancel</button>
                 </div>
+            </div> -->
+        </div>
+        <div class="rex-modal__outside-footer">
+            <div class="tool-button rex-locked-option-wrapper tool-button--inline tool-button--save tippy" data-tippy-content="<?php _e('Save and continue','rexpansive'); ?>" data-rex-option="save">
+                <span class="rex-button save-page"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
             </div>
         </div>
     </div>

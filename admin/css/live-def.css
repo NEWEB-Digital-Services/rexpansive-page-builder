@@ -3317,6 +3317,11 @@ ul {
     color: #fff; }
     .tool-button.tool-button--black .l-svg-icons > svg {
       fill: #fff; }
+  .tool-button.tool-button--blue {
+    background-color: #00ACFF;
+    color: #fff; }
+    .tool-button.tool-button--blue .l-svg-icons > svg {
+      fill: #fff; }
   .tool-button.tool-button--flat {
     -webkit-box-shadow: none;
             box-shadow: none;
@@ -3427,6 +3432,8 @@ ul {
   line-height: 1; }
   .tool-button--double-icon--wrap:hover .tool-button--double-icon {
     opacity: 1; }
+  .tool-button--double-icon--wrap.tool-button--double-icon--active .tool-button--double-icon {
+    opacity: 1; }
   .tool-button--double-icon--wrap .tool-button--double-icon {
     position: absolute;
     top: 0;
@@ -3440,6 +3447,10 @@ ul {
     -webkit-transition: opacity 500ms;
     -o-transition: opacity 500ms;
     transition: opacity 500ms; }
+  .tool-button--double-icon--wrap.tool-button--double-icon--big .tool-button--double-icon {
+    padding: 5px; }
+    .tool-button--double-icon--wrap.tool-button--double-icon--big .tool-button--double-icon .l-svg-icons {
+      font-size: 10px; }
 
 .tool-button_list .tool-button--double-icon--wrap {
   margin-top: 10px; }

@@ -11099,6 +11099,9 @@ select.rx__form-input {
 
 .rex-modal .modal-content {
   position: relative; }
+  .rex-modal .modal-content.modal-content--text {
+    padding: 60px;
+    text-align: center; }
 
 .rex-modal .rex-modal__loader {
   position: absolute;
@@ -14526,6 +14529,11 @@ ul {
     color: #fff; }
     .tool-button.tool-button--black .l-svg-icons > svg {
       fill: #fff; }
+  .tool-button.tool-button--blue {
+    background-color: #00ACFF;
+    color: #fff; }
+    .tool-button.tool-button--blue .l-svg-icons > svg {
+      fill: #fff; }
   .tool-button.tool-button--flat {
     -webkit-box-shadow: none;
             box-shadow: none;
@@ -14636,6 +14644,8 @@ ul {
   line-height: 1; }
   .tool-button--double-icon--wrap:hover .tool-button--double-icon {
     opacity: 1; }
+  .tool-button--double-icon--wrap.tool-button--double-icon--active .tool-button--double-icon {
+    opacity: 1; }
   .tool-button--double-icon--wrap .tool-button--double-icon {
     position: absolute;
     top: 0;
@@ -14649,6 +14659,10 @@ ul {
     -webkit-transition: opacity 500ms;
     -o-transition: opacity 500ms;
     transition: opacity 500ms; }
+  .tool-button--double-icon--wrap.tool-button--double-icon--big .tool-button--double-icon {
+    padding: 5px; }
+    .tool-button--double-icon--wrap.tool-button--double-icon--big .tool-button--double-icon .l-svg-icons {
+      font-size: 10px; }
 
 .tool-button_list .tool-button--double-icon--wrap {
   margin-top: 10px; }
@@ -15026,13 +15040,10 @@ body.rexpansive-editor .lean-overlay {
             transform: translateY(-100%); }
 #rexlive-custom-layout-modal.rexbuilder-materialize-wrap .rex-material-bar {
   bottom: 1px; }
-#rexlive-custom-layout-modal .modal-content {
-  padding-top: 0; }
 
 .layout-page-changed-description {
-  padding: 15px;
   text-align: center; }
-  .layout-page-changed-description .layout-name {
+  .layout-page-changed-description .layout-name__wrap {
     display: block;
     text-transform: uppercase; }
 
@@ -15122,6 +15133,9 @@ body.rexpansive-editor .lean-overlay {
   overflow: hidden;
   overflow-y: auto;
   height: calc(100% - 70px); }
+
+.info-model-name__wrap {
+  display: block; }
 
 .set-video-audio-btn {
   display: none; }

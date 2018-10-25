@@ -4104,6 +4104,10 @@ select.rx__form-input {
 
 .rex-modal .modal-content {
   position: relative;
+  &.modal-content--text {
+    padding: 60px;
+    text-align: center;
+  }
 }
 
 .rex-modal .rex-modal__loader {

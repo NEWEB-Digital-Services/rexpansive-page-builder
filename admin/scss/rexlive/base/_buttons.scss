@@ -44,6 +44,10 @@
     @include bl-btn--black;
   }
 
+  &.tool-button--blue {
+    @include bl-btn--blue;
+  }
+
   &.tool-button--flat {
     box-shadow: none;
     padding: 0 5px;
@@ -188,6 +192,12 @@
     }
   }
 
+  &.tool-button--double-icon--active {
+    .tool-button--double-icon {
+      opacity: 1;
+    }
+  }
+
   .tool-button--double-icon {
     position: absolute;
     top: 0;
@@ -197,6 +207,15 @@
     transform: translate(50%, -50%)!important;
     opacity: 0;
     transition: opacity 500ms;
+  }
+
+  &.tool-button--double-icon--big {
+    .tool-button--double-icon {
+      padding: 5px;
+      #{$icon-class} {
+        font-size: 10px;
+      }
+    }
   }
 }
 
