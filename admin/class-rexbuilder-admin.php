@@ -323,7 +323,7 @@ class Rexbuilder_Admin {
 					'labels'	=>  array(
 						'slider' => array(
 							'new_slider' => __('New Slider','rexpansive'),
-							'copy_slider' => __('Copy - ','rexpansive'),
+							'copy_slider' => __('Copy-','rexpansive'),
 							'list_title_prefix' => __('Copy from "', 'rexpansive'),
 							'list_title_suffix' => __('"', 'rexpansive')
 						)

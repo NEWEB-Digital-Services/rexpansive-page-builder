@@ -747,7 +747,7 @@ var Rexbuilder_RexSlider = (function($) {
               data.eventName = "rexlive:newSliderSavedOnDB";
             }
             rexslider_modal_properties.$slider_import.append(
-              '<option value="' + response.data.slider_id + '">' + live_editor_obj.labels.slider.list_title_prefix + response.data.slider_title + live_editor_obj.labels.slider.list_title_suffix + "</option>"
+              '<option value="' + response.data.slider_id + '" data-rex-slider-title="' + response.data.slider_title + '">' + live_editor_obj.labels.slider.list_title_prefix + response.data.slider_title + live_editor_obj.labels.slider.list_title_suffix + "</option>"
             );
             Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
           }
@@ -1040,7 +1040,11 @@ var Rexbuilder_RexSlider = (function($) {
               .empty()
               .append(response.data.slides_markup);
             rexslider_modal_properties.$slide_list.sortable("refresh");
-            rexslider_modal_properties.$slide_title.val(live_editor_obj.labels.slider.copy_slider + Rexlive_Base_Settings.htmlDecode(response.data.slider.title));
+            var copy_title = Rexlive_Base_Settings.htmlDecode(response.data.slider.title);
+            // rexslider_modal_properties.$slide_title.val(live_editor_obj.labels.slider.copy_slider + copy_title);
+            var is_duplicate = _check_title(copy_title);
+            rexslider_modal_properties.$slide_title.val(live_editor_obj.labels.slider.copy_slider + ( 0 !== is_duplicate ? is_duplicate + '-' : '' ) + copy_title);
+
             // rexslider_modal_properties.$save_button.attr(
             //   "data-slider-to-edit",
             //   slider_id
@@ -1268,6 +1272,25 @@ var Rexbuilder_RexSlider = (function($) {
       }
     );
   };
+
+  /**
+   * Check if there is a title duplication on the slider list
+   * @param {string} t slider title
+   * @return {bool} duplicate
+   */
+  var _check_title = function( t ) {
+    var duplicate = 0;
+    var pattern = '(' + live_editor_obj.labels.slider.copy_slider + '(\\d-){0,1}){0,1}' + t;
+    var re = new RegExp(pattern,"");
+    rexslider_modal_properties.$slider_import.find('option').each(function(i,e) {
+      if("0" === e.value) { return true; }
+      if( null !== e.getAttribute('data-rex-slider-title').match( re ) ) {
+        duplicate++;
+        // return false;
+      }
+    });
+    return duplicate;
+  }
 
   /**
    * Init slider variables

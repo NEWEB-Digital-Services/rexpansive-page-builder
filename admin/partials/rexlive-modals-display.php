@@ -1021,7 +1021,7 @@ defined('ABSPATH') or exit;
                                 while ($query->have_posts()) {
                                     $query->the_post();
                                     ?>
-                            <option value="<?php the_ID();?>"><?php _e('Copy from ','rexpansive'); ?>"<?php the_title();?>"</option>
+                            <option value="<?php the_ID();?>" data-rex-slider-title="<?php the_title(); ?>"><?php _e('Copy from ','rexpansive'); ?>"<?php the_title();?>"</option>
                             <?php
                                 }
                             } else {
