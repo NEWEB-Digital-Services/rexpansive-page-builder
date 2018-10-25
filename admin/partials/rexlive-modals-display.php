@@ -1604,7 +1604,7 @@ wp_reset_postdata();
             </div> -->
         </div>
         <div class="rex-modal__outside-footer">
-            <div class="tool-button--double-icon--wrap tool-button--double-icon--active tool-button--double-icon--big rex-button edit-model rex-edit-option tippy" data-tippy-content="<?php esc_attr_e( 'Edited synchronized model', 'rexpansive' ); ?>" data-rex-option="edit">
+            <div class="tool-button--double-icon--wrap tool-button--double-icon--active tool-button--double-icon--big rex-button edit-model rex-edit-option tippy" data-tippy-content="<?php esc_attr_e( 'Edit synchronized model', 'rexpansive' ); ?>" data-rex-option="edit">
                 <div class="tool-button tool-button--inline tool-button--blue">
                     <?php Rexbuilder_Utilities::get_icon('#B015-UnClosed'); ?>
                 </div>
