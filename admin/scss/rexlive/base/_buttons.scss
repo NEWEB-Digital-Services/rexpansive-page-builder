@@ -69,6 +69,11 @@
     font-size: 16px;
   }
 
+  &.tool-button__text--flat,
+  &.tool-button__image--flat {
+    padding-right: 10px;
+  }
+
   &.tool-button--empty {
     min-width: $block-tools-size;
     min-height: $block-tools-size;

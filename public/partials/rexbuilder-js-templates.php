@@ -329,7 +329,8 @@ $tool_button_classes = 'tool-button';
             <div class="bl_d-flex bl_ai-c bl_jc-fe tools-area tool-area--side">
 		
                 <div class="bl_d-iflex bl_ai-c row-toolBox__tools row-toolBox__fast-configuration">
-                    <div class="tool-button--double-icon--wrap tool-button--hide">
+
+                    <div class="tool-button--double-icon--wrap tool-button--distance-fix tool-button--hide">
                         <div class="<?php echo $tool_button_classes; ?> tool-button--inline edit-row-image-background tooltipped" data-position="bottom" data-tooltip="" value="">
                             <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
                         </div>
@@ -338,7 +339,7 @@ $tool_button_classes = 'tool-button';
                         </div>
                     </div><!-- // Change Row background image -->
 
-                    <div class="tool-button--double-icon--wrap tool-button--hide">
+                    <div class="tool-button--double-icon--wrap tool-button--distance-fix tool-button--hide">
                         <input class="spectrum-input-element" type="text" name="edit-row-color-background" value="">
                         <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"></div>
                         <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview-texture"></div>
@@ -347,7 +348,7 @@ $tool_button_classes = 'tool-button';
                         </div>
                     </div><!-- // Change Row background color -->
 
-                    <div class="tool-button--double-icon--wrap tool-button--hide">
+                    <div class="tool-button--double-icon--wrap tool-button--distance-fix tool-button--hide">
                         <input class="spectrum-input-element" type="text" name="edit-row-overlay-color" value="">
                         <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"></div>
                         <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview-texture"></div>
@@ -356,12 +357,17 @@ $tool_button_classes = 'tool-button';
                         </div>
                     </div><!-- // Change Row overlay color -->
 
-                    <div class="<?php echo $tool_button_classes; ?> tool-button--hide tool-button--inline edit-row-video-background">
-                        <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
+                    <div class="tool-button--double-icon--wrap tool-button__video-fast tool-button--distance-fix">
+                        <div class="<?php echo $tool_button_classes; ?> tool-button--hide tool-button--inline edit-row-video-background">
+                            <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
+                        </div>
+                        <div class="tool-button tool-button--inline tool-button--deactivate tool-button--double-icon deactivate-row-video-background">
+                            <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+                        </div>
                     </div>
                     <!-- // Add background video -->
 
-                    <div class="tool-button tool-button--flat update-model-button tooltipped locked">
+                    <div class="tool-button tool-button--flat update-model-button tool-button--distance-fix locked">
                         <span class="unlocked-icon"><?php Rexbuilder_Utilities::get_icon('#B015-UnClosed'); ?></span>
                         <span class="locked-icon"><?php Rexbuilder_Utilities::get_icon('#B014-Closed'); ?></span>
                     </div>
@@ -378,7 +384,7 @@ $tool_button_classes = 'tool-button';
                     </div>
 
                     <div class="tool-button-floating">
-                        <div class="<?php echo $tool_button_classes_right; ?> builder-section-config tooltipped" data-position="bottom" data-tooltip="<?php _e('Row settings', 'rexpansive');?>">
+                        <div class="<?php echo $tool_button_classes_right; ?> builder-section-config tool-button--flat--distance-fix" data-position="bottom" data-tooltip="<?php _e('Row settings', 'rexpansive');?>">
                             <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>					
                         </div>
                         <div class="tool-button_list">
@@ -426,7 +432,7 @@ $tool_button_classes = 'tool-button';
     <div class="section-toolBoox__highlight"></div>
     <div class="section-block-noediting-ui">
         <div class="no-editing--indicator bl_d-flex bl_jc-c bl_ai-c">
-            <span class="update-model-button"><?php Rexbuilder_Utilities::get_icon('#B014-Closed'); ?></span>
+            <span class="call-update-model-button"><?php Rexbuilder_Utilities::get_icon('#B014-Closed'); ?></span>
         </div>
     </div>
 </script>

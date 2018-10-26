@@ -72,7 +72,7 @@ defined('ABSPATH') or exit;
 
 <script type="text/x-tmpl" id="rexlive-tmpl-model-item-list">
 <li class="model__element bl_d-flex bl_ai-c" draggable="true" data-rex-model-id="{%=model.id%}">
-    <div class="model-preview" style="background-image:url({%=model.preview%})" itemprop="contentUrl">
+    <div class="model-preview bl_d-flex bl_jc-c bl_ai-c" style="background-image:url({%=model.preview%})" itemprop="contentUrl">
         <span class="model-preview__placeholder"><?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?></span>
         <div class="model-name bl_d-flex bl_jc-c bl_ai-fe"><div>{%=model.name%}</div></div>
     </div>

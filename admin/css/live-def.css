@@ -3360,6 +3360,8 @@ ul {
     font-size: 16px; }
   .tool-button.tool-button__video--flat {
     font-size: 16px; }
+  .tool-button.tool-button__text--flat, .tool-button.tool-button__image--flat {
+    padding-right: 10px; }
   .tool-button.tool-button--empty {
     min-width: 20px;
     min-height: 20px; }
@@ -3531,7 +3533,7 @@ ul {
   position: absolute;
   z-index: 2000;
   display: block;
-  height: 18px;
+  height: 20px;
   font-size: 13px; }
   .section-toolBox .tools {
     background-color: transparent;
@@ -3555,6 +3557,8 @@ ul {
       padding-left: 6px; }
     .section-toolBox .tools-area:last-child {
       padding-right: 6px; }
+    .section-toolBox .tools-area .tool-button--flat.tool-button--flat--distance-fix {
+      padding-right: 10px; }
   .section-toolBox .tool-area--side .tool-button.tool-button--deactivate {
     background-color: #fff; }
     .section-toolBox .tool-area--side .tool-button.tool-button--deactivate .l-svg-icons > svg {
@@ -3610,6 +3614,8 @@ ul {
 .row-toolBox__fast-configuration .tool-button--double-icon--wrap {
   max-height: 18px;
   margin: 0 5px; }
+  .row-toolBox__fast-configuration .tool-button--double-icon--wrap.tool-button--distance-fix {
+    margin-right: 10px; }
 .row-toolBox__fast-configuration .tool-button:not(.tool-button--double-icon) {
   padding: 0;
   overflow: hidden; }
@@ -3621,6 +3627,10 @@ ul {
 .row-toolBox__fast-configuration .tool-button--double-icon--wrap .tool-button--double-icon {
   font-size: 8px;
   padding: 2px; }
+.row-toolBox__fast-configuration .tool-button__video-fast .tool-button--inline:first-child {
+  font-size: 14px; }
+.row-toolBox__fast-configuration .tool-button__video-fast {
+  max-height: 14px; }
 
 .add-new-section__wrap {
   padding: 20px 0; }

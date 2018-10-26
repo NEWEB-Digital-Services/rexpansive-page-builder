@@ -8,7 +8,7 @@ var Model_Edit_Modal = (function($) {
   var _openModal = function(data) {
     dataReceived = jQuery.extend(true, {}, data);
     layoutActive = data.layoutActive;
-    rexmodel_edit_props.$modelNamePreview.append('<span class="modal-info--highlight">' + data.modelName + '</span>');
+    rexmodel_edit_props.$modelNamePreview.html('<span class="modal-info--highlight">' + data.modelName + '</span>');
 
     rexmodel_edit_props.$self.find(".rex-edit-option").each(function(i, opt) {
       var $opt = $(opt);

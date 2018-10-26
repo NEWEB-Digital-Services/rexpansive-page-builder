@@ -13,7 +13,7 @@
   // transform: translateY(-50%);
   // opacity: 0; 
   // background-color: rgba(#000, 0.5);
-  height: 18px;
+  height: 20px;
 
   .tools {
     background-color: transparent;
@@ -42,6 +42,12 @@
 
     &:last-child {
       padding-right: 6px;
+    }
+
+    .tool-button--flat {
+      &.tool-button--flat--distance-fix {
+        padding-right: 10px;
+      }
     }
   }
 
@@ -122,6 +128,9 @@
   .tool-button--double-icon--wrap {
     max-height: $row-fast-config-tools-size;
     margin: 0 5px;
+    &.tool-button--distance-fix {
+      margin-right: 10px;
+    }
   }
 
   .tool-button {
@@ -149,6 +158,15 @@
       font-size: 8px;
       padding: 2px;
     }
+  }
+
+  .tool-button__video-fast {
+    .tool-button--inline:first-child {
+      font-size: 14px;
+    }
+  }
+  .tool-button__video-fast {
+    max-height: 14px;
   }
 }
 

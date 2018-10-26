@@ -2502,7 +2502,7 @@
             layoutActive: Rexbuilder_Util.activeLayout
           }
         };
-        console.log('salva modello', data);
+        
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
         
         var event = jQuery.Event("rexlive:saveModel");
