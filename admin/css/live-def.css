@@ -3778,15 +3778,20 @@ ul {
   max-height: 20px; }
 .block-toolBox__fast-configuration .tool-button--double-icon--wrap {
   max-height: 20px;
-  margin: 0 5px; }
+  margin: 0 5px;
+  margin-right: 10px; }
 .block-toolBox__fast-configuration .tool-button:not(.tool-button--double-icon) {
   padding: 0;
   overflow: hidden; }
+.block-toolBox__fast-configuration .tool-button.tool-button--block-bottom--fix {
+  margin-right: 10px;
+  margin-left: 5px;
+  padding: 5px; }
 .block-toolBox__fast-configuration .edit-block-video-background.tool-button {
   padding: 5px; }
 
 .block-toolBox__config-tools .tool-button-floating {
-  margin-left: 10px; }
+  margin-left: 15px; }
 
 .block-toolBox__editor-tools .tool-button--inline {
   margin-left: 10px; }

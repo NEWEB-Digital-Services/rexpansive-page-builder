@@ -124,6 +124,7 @@
   .tool-button--double-icon--wrap {
     max-height: $block-tools-size;
     margin: 0 5px;
+    margin-right: 10px;
   }
 
   .tool-button {
@@ -133,18 +134,25 @@
     }
   }
 
+  .tool-button {
+    &.tool-button--block-bottom--fix {
+      margin-right: 10px;
+      margin-left: 5px;
+      padding: 5px;
+    }
+  }
+
   .edit-block-video-background {
     &.tool-button {
       padding: 5px;
     }
   }
-
 }
 
 .block-toolBox__config-tools {
   .tool-button-floating {
   // .builder-delete-block {
-    margin-left: 10px;
+    margin-left: 15px;
   }
 }
 

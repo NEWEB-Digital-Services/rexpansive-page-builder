@@ -98,7 +98,7 @@ $tool_button_classes = 'tool-button';
                 </div>
             </div><!-- // Change Block image background -->
 
-            <div class="tool-button tool-button--inline edit-block-image-position{% if(block.block_type != 'image') { %} tool-button--hide{% } %}" style="padding:5px;">
+            <div class="tool-button tool-button--inline tool-button--block-bottom--fix edit-block-image-position{% if(block.block_type != 'image') { %} tool-button--hide{% } %}">
                 <?php Rexbuilder_Utilities::get_icon('#C005-Layout'); ?>
             </div>
 
