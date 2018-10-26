@@ -14370,7 +14370,7 @@ select.rx__form-input {
       fill: rgba(255, 255, 255, 0.5); }
 
   .switch-toggle.switch-live a {
-    background-color: #00ACFF;
+    background-color: transparent;
     -webkit-box-shadow: none;
             box-shadow: none; } }
 /* Bugfix for older Webkit, including mobile Webkit. Adapted from
@@ -14567,6 +14567,12 @@ ul {
       color: #fff; }
       .tool-button.tool-button--flat:hover .l-svg-icons > svg {
         fill: #fff; }
+  .tool-button.tool-button__image--flat {
+    font-size: 19px; }
+  .tool-button.tool-button__text--flat {
+    font-size: 16px; }
+  .tool-button.tool-button__video--flat {
+    font-size: 16px; }
   .tool-button.tool-button--empty {
     min-width: 20px;
     min-height: 20px; }
@@ -14631,7 +14637,8 @@ ul {
   .tool-button.tool-button--image-preview {
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover; }
+    background-size: cover;
+    border: 1px solid #fff; }
     .tool-button.tool-button--image-preview .l-svg-icons {
       opacity: 0; }
   .tool-button.tool-button--deactivate {
@@ -14641,7 +14648,8 @@ ul {
   .tool-button.tool-button--color-preview {
     position: absolute;
     top: 0;
-    z-index: -1; }
+    z-index: -1;
+    border: 1px solid #fff; }
   .tool-button.tool-button--color-preview-texture {
     position: absolute;
     top: 0;
@@ -14662,7 +14670,8 @@ ul {
 .tool-button--double-icon--wrap {
   position: relative;
   display: inline-block;
-  line-height: 1; }
+  line-height: 1;
+  z-index: 10; }
   .tool-button--double-icon--wrap:hover .tool-button--double-icon {
     opacity: 1; }
   .tool-button--double-icon--wrap.tool-button--double-icon--active .tool-button--double-icon {
@@ -14676,7 +14685,7 @@ ul {
     -webkit-transform: translate(50%, -50%) !important;
         -ms-transform: translate(50%, -50%) !important;
             transform: translate(50%, -50%) !important;
-    opacity: 0;
+    opacity: 1;
     -webkit-transition: opacity 500ms;
     -o-transition: opacity 500ms;
     transition: opacity 500ms; }

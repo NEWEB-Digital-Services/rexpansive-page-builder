@@ -45,7 +45,8 @@
 }
 
 .switch-toggle.switch-live a {
-  background-color: $icon-active-color;
+  // background-color: $icon-active-color;
+  background-color: transparent;
   box-shadow: none;
   // border: 1px solid #333;
   // border-radius: 3px;

@@ -57,6 +57,18 @@
     }
   }
 
+  &.tool-button__image--flat {
+    font-size: 19px;
+  }
+
+  &.tool-button__text--flat {
+    font-size: 16px;
+  }
+
+  &.tool-button__video--flat {
+    font-size: 16px;
+  }
+
   &.tool-button--empty {
     min-width: $block-tools-size;
     min-height: $block-tools-size;
@@ -139,6 +151,7 @@
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
+    border: 1px solid #fff;
     // background-color: transparent;
     #{$icon-class} {
       opacity: 0;
@@ -154,6 +167,7 @@
     position: absolute;
     top: 0;
     z-index: -1;
+    border: 1px solid #fff;
     // background-image:url(../img/transparent.jpg);
   }
 
@@ -188,6 +202,7 @@
   position: relative;
   display: inline-block;
   line-height: 1;
+  z-index: 10;
 
   &:hover {
     .tool-button--double-icon {
@@ -208,7 +223,7 @@
     font-size: 10px;
     padding: 3px;
     transform: translate(50%, -50%)!important;
-    opacity: 0;
+    opacity: 1;
     transition: opacity 500ms;
   }
 

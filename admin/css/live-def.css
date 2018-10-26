@@ -3157,7 +3157,7 @@
       fill: rgba(255, 255, 255, 0.5); }
 
   .switch-toggle.switch-live a {
-    background-color: #00ACFF;
+    background-color: transparent;
     -webkit-box-shadow: none;
             box-shadow: none; } }
 /* Bugfix for older Webkit, including mobile Webkit. Adapted from
@@ -3354,6 +3354,12 @@ ul {
       color: #fff; }
       .tool-button.tool-button--flat:hover .l-svg-icons > svg {
         fill: #fff; }
+  .tool-button.tool-button__image--flat {
+    font-size: 19px; }
+  .tool-button.tool-button__text--flat {
+    font-size: 16px; }
+  .tool-button.tool-button__video--flat {
+    font-size: 16px; }
   .tool-button.tool-button--empty {
     min-width: 20px;
     min-height: 20px; }
@@ -3418,7 +3424,8 @@ ul {
   .tool-button.tool-button--image-preview {
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover; }
+    background-size: cover;
+    border: 1px solid #fff; }
     .tool-button.tool-button--image-preview .l-svg-icons {
       opacity: 0; }
   .tool-button.tool-button--deactivate {
@@ -3428,7 +3435,8 @@ ul {
   .tool-button.tool-button--color-preview {
     position: absolute;
     top: 0;
-    z-index: -1; }
+    z-index: -1;
+    border: 1px solid #fff; }
   .tool-button.tool-button--color-preview-texture {
     position: absolute;
     top: 0;
@@ -3449,7 +3457,8 @@ ul {
 .tool-button--double-icon--wrap {
   position: relative;
   display: inline-block;
-  line-height: 1; }
+  line-height: 1;
+  z-index: 10; }
   .tool-button--double-icon--wrap:hover .tool-button--double-icon {
     opacity: 1; }
   .tool-button--double-icon--wrap.tool-button--double-icon--active .tool-button--double-icon {
@@ -3463,7 +3472,7 @@ ul {
     -webkit-transform: translate(50%, -50%) !important;
         -ms-transform: translate(50%, -50%) !important;
             transform: translate(50%, -50%) !important;
-    opacity: 0;
+    opacity: 1;
     -webkit-transition: opacity 500ms;
     -o-transition: opacity 500ms;
     transition: opacity 500ms; }
@@ -3522,13 +3531,34 @@ ul {
   position: absolute;
   z-index: 2000;
   display: block;
-  height: 15px;
+  height: 18px;
   font-size: 13px; }
   .section-toolBox .tools {
+    background-color: transparent;
     color: #000;
-    background-color: #00ACFF;
-    padding: 5px 0;
-    display: none; }
+    display: none;
+    margin-left: -5px;
+    margin-right: -5px; }
+  .section-toolBox .tools-area {
+    padding: 10px;
+    border-radius: 15px; }
+    .section-toolBox .tools-area.tool-area--side {
+      background-color: #424242; }
+    .section-toolBox .tools-area.tool-area--center {
+      background-color: #00ACFF;
+      position: absolute;
+      left: 50%;
+      -webkit-transform: translateX(-50%);
+          -ms-transform: translateX(-50%);
+              transform: translateX(-50%); }
+    .section-toolBox .tools-area:first-child {
+      padding-left: 6px; }
+    .section-toolBox .tools-area:last-child {
+      padding-right: 6px; }
+  .section-toolBox .tool-area--side .tool-button.tool-button--deactivate {
+    background-color: #fff; }
+    .section-toolBox .tool-area--side .tool-button.tool-button--deactivate .l-svg-icons > svg {
+      fill: #424242; }
   .section-toolBox.tool-box-active {
     display: block; }
   .section-toolBox:hover .tools {
@@ -3574,9 +3604,11 @@ ul {
   cursor: copy; }
 
 .row-toolBox__fast-configuration .tool-button--inline {
-  max-height: 13px; }
+  max-width: 18px;
+  max-height: 18px;
+  font-size: 18px; }
 .row-toolBox__fast-configuration .tool-button--double-icon--wrap {
-  max-height: 13px;
+  max-height: 18px;
   margin: 0 5px; }
 .row-toolBox__fast-configuration .tool-button:not(.tool-button--double-icon) {
   padding: 0;
@@ -3584,8 +3616,8 @@ ul {
 .row-toolBox__fast-configuration .edit-row-video-background.tool-button {
   border-radius: 0; }
 .row-toolBox__fast-configuration .tool-button.tool-button--empty {
-  min-width: 13px;
-  min-height: 13px; }
+  min-width: 18px;
+  min-height: 18px; }
 .row-toolBox__fast-configuration .tool-button--double-icon--wrap .tool-button--double-icon {
   font-size: 8px;
   padding: 2px; }
@@ -3732,6 +3764,7 @@ ul {
   display: none; }
 
 .block-toolBox__fast-configuration .tool-button--inline {
+  max-width: 20px;
   max-height: 20px; }
 .block-toolBox__fast-configuration .tool-button--double-icon--wrap {
   max-height: 20px;

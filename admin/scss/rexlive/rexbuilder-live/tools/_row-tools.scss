@@ -13,13 +13,45 @@
   // transform: translateY(-50%);
   // opacity: 0; 
   // background-color: rgba(#000, 0.5);
-  height: 15px;
+  height: 18px;
 
   .tools {
+    background-color: transparent;
     color: #000;
-    background-color: $palette-color-1;
-    padding: 5px 0;
     display: none;
+    margin-left: -5px;
+    margin-right: -5px;
+  }
+
+  .tools-area {
+    padding: 10px;
+    border-radius: 15px;
+
+    &.tool-area--side {
+      background-color: $palette-color-4;
+    }
+
+    &.tool-area--center {
+      background-color: $palette-color-1;
+      @include center-from-left-abs();
+    }
+
+    &:first-child {
+      padding-left: 6px;
+    }
+
+    &:last-child {
+      padding-right: 6px;
+    }
+  }
+
+  .tool-area--side {
+    .tool-button {
+      &.tool-button--deactivate {
+        background-color: #fff;
+        @include fill-icon($palette-color-4);
+      }
+    }
   }
   
   &.tool-box-active {
@@ -83,10 +115,12 @@
 
 .row-toolBox__fast-configuration {
   .tool-button--inline {
-    max-height: $row-tools-size;
+    max-width: $row-fast-config-tools-size;
+    max-height: $row-fast-config-tools-size;
+    font-size: $row-fast-config-tools-size;
   }
   .tool-button--double-icon--wrap {
-    max-height: $row-tools-size;
+    max-height: $row-fast-config-tools-size;
     margin: 0 5px;
   }
 
@@ -105,8 +139,8 @@
 
   .tool-button {
     &.tool-button--empty {
-      min-width: $row-tools-size;
-      min-height: $row-tools-size;
+      min-width: $row-fast-config-tools-size;
+      min-height: $row-fast-config-tools-size;
     }
   }
 
@@ -118,7 +152,7 @@
   }
 }
 
-.empty-section {
+// .empty-section {
   // dev purpose
   // .section-toolBox {
   //   .tools {
@@ -133,7 +167,7 @@
   // .row-toolBox__fast-configuration {
   //   display: none;
   // }
-}
+// }
 
 .add-new-section__wrap {
   padding: 20px 0;

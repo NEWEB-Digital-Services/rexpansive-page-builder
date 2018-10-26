@@ -865,7 +865,7 @@ endif;
             if (isset($editor) && $editor == "true") {
 ?>
                 <div class="bl_d-flex bl_jc-c add-new-section__wrap">
-                    <div class="tool-button tool-button--inline tool-button--flat tool-button--add-big add-new-section" data-new-row-position="bottom">
+                    <div class="tool-button tool-button--inline tool-button--flat tool-button--add-big add-new-section tippy" data-new-row-position="bottom" data-tippy-content="<?php _e('Add Row','rexpansive'); ?>">
                         <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                     </div>
                 </div>

@@ -856,6 +856,9 @@ var Rexbuilder_Util_Editor = (function($) {
       arrow: true,
       arrowType: "round",
       size: "small",
+      // content: 'Shared content',
+      // target: '.tippy',
+      // livePlacement: false,
       theme: "rexlive"
     });
   };

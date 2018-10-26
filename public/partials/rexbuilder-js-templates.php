@@ -275,7 +275,7 @@ $tool_button_classes = 'tool-button';
     <div class="section-toolBox">
         <div class="tools">
             
-            <div class="bl_col-6 bl_d-flex bl_ai-c">
+            <div class="bl_d-flex bl_ai-c tools-area tool-area--side">
                 <div class="switch-toggle switch-live">
                     <input type="radio" class="edit-row-width" data-section_width="full" id="row-dimension-full-{%=section.rexID%}" name="row-dimension-{%=section.rexID%}" value="100%">
                     <label for="row-dimension-full-{%=section.rexID%}"><span><?php Rexbuilder_Utilities::get_icon('#B001-Full'); ?></span></label>
@@ -296,38 +296,38 @@ $tool_button_classes = 'tool-button';
             </div>
             <!-- // right area: row dimension -->
 
-            <div class="bl_col-6 bl_d-flex bl_jc-sb bl_ai-c">
-		
-                <div class="bl_d-iflex bl_ai-c">
-                    <div class="tool-button-floating">
-                        <div class="<?php echo $tool_button_classes_right; ?> tooltipped active">
-                            <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
-                        </div>
-            
-                        <div class="tool-button_list">
-                            <div class="tool-button tool-button--full add-new-block-image tooltipped">
-                                <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
-                            </div>
-            
-                            <div class="tool-button add-new-block-text tooltipped">
-                                <?php Rexbuilder_Utilities::get_icon('#B003-Text'); ?>
-                            </div>
-                            
-                            <div class="tool-button add-new-block-video tooltipped">
-                                <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
-                            </div>
-            
-                            <div class="tool-button add-new-block-slider tooltipped">
-                                <?php Rexbuilder_Utilities::get_icon('#Z003-RexSlider'); ?>
-                            </div>
+            <div class="bl_d-flex bl_ai-c tools-area tool-area--center tippy" data-tippy-content="<?php _e('Insert Image','rexpansive'); ?>">
+                <div class="tool-button tool-button--flat tool-button--inline tool-button__image--flat add-new-block-image">
+                    <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
+                </div>
 
-                            <div class="tool-button tooltipped add-new-section" data-new-row-position="after">
-                                <?php Rexbuilder_Utilities::get_icon('#B016-New-Adjacent-Row'); ?>
-                            </div>
+                <div class="tool-button tool-button--flat tool-button__text--flat add-new-block-text tool-button--inline">
+                    <?php Rexbuilder_Utilities::get_icon('#B003-Text'); ?>
+                </div>
+
+                <div class="tool-button tool-button--flat tool-button--inline tool-button__video--flat add-new-block-video">
+                    <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
+                </div>
+
+                <div class="tool-button-floating">
+                    <div class="<?php echo $tool_button_classes_right; ?> tooltipped active">
+                        <?php Rexbuilder_Utilities::get_icon('#Z009-More'); ?>
+                    </div>
+        
+                    <div class="tool-button_list">        
+                        <div class="tool-button add-new-block-slider tooltipped">
+                            <?php Rexbuilder_Utilities::get_icon('#Z003-RexSlider'); ?>
+                        </div>
+
+                        <div class="tool-button tooltipped add-new-section" data-new-row-position="after">
+                            <?php Rexbuilder_Utilities::get_icon('#B016-New-Adjacent-Row'); ?>
                         </div>
                     </div>
-                </div><!-- // insert element -->
+                </div>
+            </div><!-- // insert element -->
 
+            <div class="bl_d-flex bl_ai-c bl_jc-fe tools-area tool-area--side">
+		
                 <div class="bl_d-iflex bl_ai-c row-toolBox__tools row-toolBox__fast-configuration">
                     <div class="tool-button--double-icon--wrap tool-button--hide">
                         <div class="<?php echo $tool_button_classes; ?> tool-button--inline edit-row-image-background tooltipped" data-position="bottom" data-tooltip="" value="">

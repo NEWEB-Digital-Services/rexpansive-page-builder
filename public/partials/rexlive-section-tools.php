@@ -18,61 +18,61 @@ $tool_button_classes = 'tool-button';
 <div class="section-toolBox">
 	<div class="tools">
 		
-		<div class="bl_col-6 bl_d-flex bl_ai-c">
+		<div class="bl_d-flex bl_ai-c tools-area tool-area--side">
 
 			<div class="switch-toggle switch-live">
 				<input type="radio" class="edit-row-width" data-section_width="full" id="row-dimension-full-<?php echo $atts['rexlive_section_id']; ?>" name="row-dimension-<?php echo $atts['rexlive_section_id']; ?>" value="100%" <?php checked('full',$atts['dimension'],true); ?>>
-				<label for="row-dimension-full-<?php echo $atts['rexlive_section_id']; ?>"><span><?php Rexbuilder_Utilities::get_icon('#B001-Full'); ?></span></label>
+				<label class="tippy" data-tippy-content="<?php _e('Full','rexpansive'); ?>" for="row-dimension-full-<?php echo $atts['rexlive_section_id']; ?>"><span><?php Rexbuilder_Utilities::get_icon('#B001-Full'); ?></span></label>
 				<input type="radio" class="edit-row-width" data-section_width="boxed" id="row-dimension-boxed-<?php echo $atts['rexlive_section_id']; ?>" name="row-dimension-<?php echo $atts['rexlive_section_id']; ?>" value="<?php echo ( 'boxed' == $atts['dimension'] ? esc_attr( $atts['section_width'] ) : '80%' ); ?>" <?php checked('boxed',$atts['dimension'],true); ?>>
-				<label for="row-dimension-boxed-<?php echo $atts['rexlive_section_id']; ?>"><span><?php Rexbuilder_Utilities::get_icon('#B002-Boxed'); ?></span></label>
+				<label class="tippy" data-tippy-content="<?php _e('Boxed','rexpansive'); ?>" for="row-dimension-boxed-<?php echo $atts['rexlive_section_id']; ?>"><span><?php Rexbuilder_Utilities::get_icon('#B002-Boxed'); ?></span></label>
 				<a></a>
 			</div><!-- // Row dimension -->
 
 			<div class="switch-toggle switch-live">
 				<input type="radio" class="edit-row-layout" data-section_layout="masonry" id="row-layout-masonry-<?php echo $atts['rexlive_section_id']; ?>" name="row-layout-<?php echo $atts['rexlive_section_id']; ?>" value="masonry" <?php checked('masonry',$atts['layout'],true); ?>>
-				<label for="row-layout-masonry-<?php echo $atts['rexlive_section_id']; ?>"><span><?php Rexbuilder_Utilities::get_icon('#B010-Masonry'); ?></span></label>
+				<label class="tippy" data-tippy-content="<?php _e('Masonry','rexpansive'); ?>" for="row-layout-masonry-<?php echo $atts['rexlive_section_id']; ?>"><span><?php Rexbuilder_Utilities::get_icon('#B010-Masonry'); ?></span></label>
 				<input type="radio" class="edit-row-layout" data-section_layout="fixed" id="row-layout-fixed-<?php echo $atts['rexlive_section_id']; ?>" name="row-layout-<?php echo $atts['rexlive_section_id']; ?>" value="fixed" <?php checked('fixed',$atts['layout'],true); ?>>
-				<label for="row-layout-fixed-<?php echo $atts['rexlive_section_id']; ?>"><span><?php Rexbuilder_Utilities::get_icon('#B011-Grid'); ?></span></label>
+				<label class="tippy" data-tippy-content="<?php _e('Grid','rexpansive'); ?>" for="row-layout-fixed-<?php echo $atts['rexlive_section_id']; ?>"><span><?php Rexbuilder_Utilities::get_icon('#B011-Grid'); ?></span></label>
 			</div><!-- // Row layout -->
 
-			<div class="<?php echo $tool_button_classes_right; ?> tool-button--inline collapse-grid tooltipped">
+			<div class="<?php echo $tool_button_classes_right; ?> tool-button--inline collapse-grid tippy" data-tippy-content="<?php _e('Collapse','rexpansive'); ?>">
 				<?php Rexbuilder_Utilities::get_icon('#B006-Collapse'); ?>
 			</div><!-- // collapse -->
 		</div>
 		<!-- // left area: row dimension, layout, collapse -->
 
-		<div class="bl_col-6 bl_d-flex bl_jc-sb bl_ai-c">
-		
-			<div class="bl_d-iflex bl_ai-c">
-				<div class="tool-button-floating">
-					<!-- to add an empty block add this class: add-new-block-empty -->
-					<div class="<?php echo $tool_button_classes_right; ?> tooltipped active">
-						<?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
-					</div>
-		
-					<div class="tool-button_list">
-						<div class="tool-button tool-button--full add-new-block-image tooltipped">
-							<?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
-						</div>
-		
-						<div class="tool-button add-new-block-text tooltipped">
-							<?php Rexbuilder_Utilities::get_icon('#B003-Text'); ?>
-						</div>
-						
-						<div class="tool-button add-new-block-video tooltipped">
-							<?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
-						</div>
-		
-						<div class="tool-button add-new-block-slider tooltipped">
-							<?php Rexbuilder_Utilities::get_icon('#Z003-RexSlider'); ?>
-						</div>
+		<div class="bl_d-flex bl_ai-c tools-area tool-area--center">
+			<div class="tool-button tool-button--flat tool-button--inline tool-button__image--flat add-new-block-image tippy" data-tippy-content="<?php _e('Insert Image','rexpansive'); ?>">
+				<?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
+			</div>
 
-						<div class="tool-button tooltipped add-new-section" data-new-row-position="after">
-							<?php Rexbuilder_Utilities::get_icon('#B016-New-Adjacent-Row'); ?>
-						</div>
+			<div class="tool-button tool-button--flat add-new-block-text tool-button__text--flat tool-button--inline tippy" data-tippy-content="<?php _e('Insert Text','rexpansive'); ?>">
+				<?php Rexbuilder_Utilities::get_icon('#B003-Text'); ?>
+			</div>
+
+			<div class="tool-button tool-button--flat tool-button--inline tool-button__video--flat add-new-block-video tippy" data-tippy-content="<?php _e('Insert Video','rexpansive'); ?>">
+				<?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
+			</div>
+
+			<div class="tool-button-floating">
+				<!-- to add an empty block add this class: add-new-block-empty -->
+				<div class="<?php echo $tool_button_classes_right; ?> active">
+					<?php Rexbuilder_Utilities::get_icon('#Z009-More'); ?>
+				</div>
+	
+				<div class="tool-button_list">
+					<div class="tool-button add-new-block-slider tippy" data-tippy-content="<?php _e('Insert Slider','rexpansive'); ?>">
+						<?php Rexbuilder_Utilities::get_icon('#Z003-RexSlider'); ?>
+					</div>
+
+					<div class="tool-button add-new-section tippy" data-tippy-content="<?php _e('Insert Row','rexpansive'); ?>" data-new-row-position="after">
+						<?php Rexbuilder_Utilities::get_icon('#B016-New-Adjacent-Row'); ?>
 					</div>
 				</div>
-			</div><!-- // insert element -->
+			</div>
+		</div><!-- // insert element -->
+
+		<div class="bl_d-flex bl_ai-c bl_jc-fe tools-area tool-area--side">
 
 			<div class="bl_d-iflex bl_ai-c row-toolBox__tools row-toolBox__fast-configuration">
 
@@ -120,20 +120,20 @@ $tool_button_classes = 'tool-button';
 			</div><!-- // fast configuration elements -->
 
 			<div class="bl_d-iflex bl_ai-c row-toolBox__tools row-toolBox__standard-configuration">
-				<div class="<?php echo $tool_button_classes_right; ?> tool-button--inline builder-copy-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy row', 'rexpansive');?>">
+				<div class="<?php echo $tool_button_classes_right; ?> tool-button--inline builder-copy-row tippy" data-tippy-content="<?php _e('Copy row', 'rexpansive');?>">
 					<?php Rexbuilder_Utilities::get_icon('#Z004-Copy'); ?>
 				</div>
 				
-				<div class="<?php echo $tool_button_classes_right; ?> tool-button--inline builder-move-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Move row', 'rexpansive');?>">
+				<div class="<?php echo $tool_button_classes_right; ?> tool-button--inline builder-move-row tippy" data-tippy-content="<?php _e('Move row', 'rexpansive');?>">
 					<?php Rexbuilder_Utilities::get_icon('#B007-Move'); ?>
 				</div>
 
 				<div class="tool-button-floating">
-					<div class="<?php echo $tool_button_classes_right; ?> builder-section-config tooltipped" data-position="bottom" data-tooltip="<?php _e('Row settings', 'rexpansive');?>">
+					<div class="<?php echo $tool_button_classes_right; ?> builder-section-config tippy" data-tippy-content="<?php _e('Row settings', 'rexpansive');?>">
 						<?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>					
 					</div>
 					<div class="tool-button_list">	
-						<div class="tool-button tool-button--full edit-background-section tooltipped tool-button--hide">
+						<div class="tool-button tool-button--full edit-background-section tippy tool-button--hide">
 							<?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
 						</div>
 
@@ -164,7 +164,7 @@ $tool_button_classes = 'tool-button';
 					</div>
 				</div>
 
-				<div class="<?php echo $tool_button_classes_right; ?> tool-button--inline builder-delete-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexspansive');?>">
+				<div class="<?php echo $tool_button_classes_right; ?> tool-button--inline builder-delete-row tippy" data-tippy-content="<?php _e('Delete row', 'rexspansive');?>">
 					<?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
 				</div>
 

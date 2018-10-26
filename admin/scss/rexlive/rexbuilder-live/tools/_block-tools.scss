@@ -118,6 +118,7 @@
 
 .block-toolBox__fast-configuration {
   .tool-button--inline {
+    max-width: $block-tools-size;
     max-height: $block-tools-size;
   }
   .tool-button--double-icon--wrap {
