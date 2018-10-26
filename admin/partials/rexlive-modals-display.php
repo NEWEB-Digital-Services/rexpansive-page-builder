@@ -1592,6 +1592,7 @@ wp_reset_postdata();
         <div class="modal-content modal-content--text">
             <div class="edit-model-description">
                 <?php _e('What kind of editing do you want to make to the model:','rexpansive'); ?>
+                <br><br>
                 <span class="info-model-name__wrap"><span class="info-model-name"></span><span>?</span></span>
             </div>
             <!-- <div>
@@ -1615,6 +1616,21 @@ wp_reset_postdata();
 
             <div class="tool-button tool-button--inline tool-button--modal tool-button--blue rex-button remove-model rex-edit-option tippy" data-tippy-content="<?php esc_attr_e( 'Edit removing sync', 'rexpansive' ); ?>" data-rex-option="remove">
                 <?php Rexbuilder_Utilities::get_icon('#Z008-Edit'); ?>
+            </div>
+        </div>
+    </div>
+</div><!-- Edit Model  -->
+
+<div class="rex-modal-wrap">
+    <div id="rex-open-models-warning" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
+        <?php Rexbuilder_Utilities::close_button(); ?>
+        <div class="modal-content modal-content--text">
+            <div class="open-models-message">
+                <?php _e( "Warning, there are some models open.", 'rexpansive' ); ?>
+                <br>
+                <?php _e( "Close them before save:", 'rexpansive'); ?>
+                <br><br>
+                <div class="open-models-list"></div>
             </div>
         </div>
     </div>

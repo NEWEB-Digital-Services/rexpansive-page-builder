@@ -10,6 +10,8 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   var pageSaved;
   var $saveBtn;
 
+  var open_models_list;
+
   var $frameContainer;
   var frameBuilderWindow;
 
@@ -151,6 +153,10 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         Model_Edit_Modal.openModal(event.data.modelData);
       }
 
+      if (event.data.eventName == "rexlive:saveAndCloseModel") {
+        _updateOpenModelsList('CLOSE',event.data.modelData);
+      }
+
       if (event.data.eventName == "rexlive:savePageEnded") {
         switch (event.data.dataSaved) {
           case "model":
@@ -164,10 +170,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         }
         if (modelSaved && pageSaved) {
           NProgress.done();
-          Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.attr(
-            "data-rex-edited-backend",
-            false
-          );
+          Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.attr( "data-rex-edited-backend", false );
           $saveBtn.removeClass("page-edited");
           // Rexbuilder_Util_Admin_Editor.$body.removeClass('page-edited');
           $saveBtn.removeClass("rex-saving");
@@ -246,15 +249,18 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     });
 
     $saveBtn.on("click", function(e) {
-      NProgress.start();
-      $(this).addClass("rex-saving");
-      var dataSave = {
-        eventName: "rexlive:savePage",
-        data_to_send: {
-          activeLayout: activeLayoutPage
+      var open_models = [];
+      for(var i=0; i<open_models_list.length; i++) {
+        if( 'open' == open_models_list[i].m_state ) {
+          open_models.push(open_models_list[i]);
         }
-      };
-      _sendIframeBuilderMessage(dataSave);
+      }
+
+      if(0 === open_models.length) {
+        _savingProcess();
+      } else {
+        Open_Models_Warning.openModal(open_models);
+      }
     });
 
     Rexlive_Base_Settings.$document.on("click", ".btn-undo", function(e) {
@@ -332,6 +338,76 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   var _updateLayoutActiveData = function(newData) {
     updatedLayoutData = newData;
   };
+
+  var _updateOpenModelsList = function(action, data) {
+    switch(action) {
+      case 'OPEN':
+        var index = null;
+        for( var i=0; i < open_models_list.length; i++ ) {
+          if( data.modelID == open_models_list[i].m_id ) {
+            index = i;
+            break;
+          }
+        }
+        if( null !== index ) {
+          open_models_list[i].m_state = 'open'
+        } else {
+          var model_info = {
+            m_id: data.modelID,
+            m_name: data.modelName,
+            m_state: 'open'
+          };
+          open_models_list.push(model_info);
+        }
+        break;
+      case 'CLOSE':
+        var index = null;
+        for( var i=0; i < open_models_list.length; i++ ) {
+          if( data.modelID == open_models_list[i].m_id ) {
+            index = i;
+            break;
+          }
+        }
+        if( null !== index ) {
+          open_models_list[i].m_state = 'close'
+        } else {
+          var model_info = {
+            m_id: data.modelID,
+            m_name: data.modelName,
+            m_state: 'close'
+          };
+          open_models_list.push(model_info);
+        }
+        break;
+      case 'REMOVE':
+        var index = null;
+        for( var i=0; i < open_models_list.length; i++ ) {
+          if( data.modelID == open_models_list[i].m_id ) {
+            index = i;
+            break;
+          }
+        }
+        if( null !== index ) {
+          open_models_list.splice(index,1);
+        }
+        break;
+      default:
+        break;
+    }
+    console.log(open_models_list);
+  }
+
+  var _savingProcess = function() {
+    NProgress.start();
+    $(this).addClass("rex-saving");
+    var dataSave = {
+      eventName: "rexlive:savePage",
+      data_to_send: {
+        activeLayout: activeLayoutPage
+      }
+    };
+    _sendIframeBuilderMessage(dataSave);
+  }
 
   var _updateIframeWidth = function(newWidth) {
     if (newWidth != Rexbuilder_Util_Admin_Editor.activeWidth) {
@@ -446,25 +522,18 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   var init = function() {
     this.$body = $('body');
     this.$rexpansiveContainer = $("#rexpansive-builder-backend-wrapper");
-    $frameContainer = this.$rexpansiveContainer.find(
-      ".rexpansive-live-frame-container"
-    );
-    this.$frameBuilder = this.$rexpansiveContainer.find(
-      "#rexpansive-live-frame"
-    );
+    $frameContainer = this.$rexpansiveContainer.find( ".rexpansive-live-frame-container" );
+    this.$frameBuilder = this.$rexpansiveContainer.find( "#rexpansive-live-frame" );
     frameBuilderWindow = this.$frameBuilder[0].contentWindow;
 
     this.transitionEvent = _whichTransitionEvent();
     this.animationEvent = _whichAnimationEvent();
 
-    this.$responsiveToolbar = this.$rexpansiveContainer.find(
-      ".rexlive-toolbox"
-    );
-    $saveBtn = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find(
-      ".btn-save"
-    );
+    this.$responsiveToolbar = this.$rexpansiveContainer.find( ".rexlive-toolbox" );
+    $saveBtn = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find( ".btn-save" );
     pageSaved = true;
     modelSaved = true;
+    open_models_list = [];
     activeLayoutPage = "default";
     activeLayoutPageLabel = "default";
     this.$responsiveToolbar
@@ -502,6 +571,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     updateLayoutActiveData: _updateLayoutActiveData,
     releaseIframeRows: _releaseIframeRows,
     blockIframeRows: _blockIframeRows,
-    editPageProperties: _editPageProperties
+    editPageProperties: _editPageProperties,
+    updateOpenModelsList: _updateOpenModelsList
   };
 })(jQuery);

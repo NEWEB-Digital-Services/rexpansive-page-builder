@@ -8,7 +8,7 @@ var Model_Edit_Modal = (function($) {
   var _openModal = function(data) {
     dataReceived = jQuery.extend(true, {}, data);
     layoutActive = data.layoutActive;
-    rexmodel_edit_props.$modelNamePreview.text(data.modelName);
+    rexmodel_edit_props.$modelNamePreview.append('<span class="modal-info--highlight">' + data.modelName + '</span>');
 
     rexmodel_edit_props.$self.find(".rex-edit-option").each(function(i, opt) {
       var $opt = $(opt);
@@ -46,9 +46,11 @@ var Model_Edit_Modal = (function($) {
       switch (optionSelected) {
         case "remove":
           data_model_modal.eventName = "rexlive:modelBecameSection";
+          Rexbuilder_Util_Admin_Editor.updateOpenModelsList('REMOVE',dataReceived);
           break;
         case "edit":
           data_model_modal.eventName = "rexlive:editModel";
+          Rexbuilder_Util_Admin_Editor.updateOpenModelsList('OPEN',dataReceived);
           break;
         default:
           break;

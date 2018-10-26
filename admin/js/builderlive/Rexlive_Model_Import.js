@@ -151,9 +151,12 @@ var Model_Import_Modal = (function($) {
       //   '<div class="import-model" data-rex-model-id="' +
       //   $(this).attr("data-rex-model-id") +
       //   '"></div>';
-      var insertingHTML = tmpl("rexlive-tmpl-insert-model-loader", {
+      tmpl.arg = "o";
+
+      var tmpl_obj = {
         model_id: $(this).attr("data-rex-model-id")
-      });
+      };
+      var insertingHTML = tmpl("rexlive-tmpl-insert-model-loader", tmpl_obj);
       event.originalEvent.dataTransfer.setData("text/plain", insertingHTML);
     });
 

@@ -33,6 +33,9 @@ var Rexlive_Modals = (function ($) {
         // models edit
         Model_Edit_Modal.init();
 
+        // models open warning
+        Open_Models_Warning.init();
+
         // layouts
         CustomLayouts_Modal.init();
 

@@ -14919,6 +14919,9 @@ body.rexpansive-editor .lean-overlay {
   width: 60px;
   text-align: center; }
 
+.modal-info--highlight {
+  text-transform: uppercase; }
+
 .rex-live__row-margin-padding {
   max-width: 340px;
   margin: 0 auto;
@@ -15200,6 +15203,11 @@ input:disabled + .rex_edit_title_slider {
     margin-top: 0; }
     .bl_rex-slider__list-wrap .rx__select-wrap select.rx__form-input + .rx__form-input__select-arrow .l-svg-icons > svg {
       fill: #fff; }
+
+#rex-edit-model-choose .tool-button--modal.remove-model {
+  padding: 7px; }
+  #rex-edit-model-choose .tool-button--modal.remove-model .l-svg-icons {
+    font-size: 16px; }
 
 .rexlive-toolbox__wrap {
   width: 100%;

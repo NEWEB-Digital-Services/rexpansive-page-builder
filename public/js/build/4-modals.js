@@ -2455,21 +2455,22 @@
     $(document).on("click", ".update-model-button", function(e) {
       var $button = $(this);
       var $section = $button.parents(".rexpansive_section");
+      
+      var sectionID = $section.attr("data-rexlive-section-id");
+      var modelID =
+        typeof $section.attr("data-rexlive-model-id") != "undefined"
+          ? $section.attr("data-rexlive-model-id")
+          : "";
+      var modelName =
+        typeof $section.attr("data-rexlive-model-name") != "undefined"
+          ? $section.attr("data-rexlive-model-name")
+          : "";
+      var modelNumber =
+        typeof $section.attr("data-rexlive-model-number") != "undefined"
+          ? $section.attr("data-rexlive-model-number")
+          : "";
 
       if ($button.hasClass("locked")) {
-        var sectionID = $section.attr("data-rexlive-section-id");
-        var modelID =
-          typeof $section.attr("data-rexlive-model-id") != "undefined"
-            ? $section.attr("data-rexlive-model-id")
-            : "";
-        var modelName =
-          typeof $section.attr("data-rexlive-model-name") != "undefined"
-            ? $section.attr("data-rexlive-model-name")
-            : "";
-        var modelNumber =
-          typeof $section.attr("data-rexlive-model-number") != "undefined"
-            ? $section.attr("data-rexlive-model-number")
-            : "";
 
         var data = {
           eventName: "rexlive:editRemoveModal",
@@ -2488,6 +2489,22 @@
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
         Rexbuilder_Util_Editor.openingModel = false;
       } else {
+        var data = {
+          eventName: "rexlive:saveAndCloseModel",
+          modelData: {
+            modelName: modelName,
+            modelNumber: modelNumber,
+            modelID: modelID,
+            sectionTarget: {
+              sectionID: sectionID,
+              modelNumber: modelNumber
+            },
+            layoutActive: Rexbuilder_Util.activeLayout
+          }
+        };
+        console.log('salva modello', data);
+        Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+        
         var event = jQuery.Event("rexlive:saveModel");
         $(document).trigger(event);
       }
