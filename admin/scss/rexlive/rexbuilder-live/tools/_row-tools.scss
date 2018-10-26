@@ -26,14 +26,27 @@
   .tools-area {
     padding: 10px;
     border-radius: 15px;
+    opacity: 0;
+    transition: box-shadow 300ms;
 
     &.tool-area--side {
       background-color: $palette-color-4;
+      animation-delay: 300ms;
+      .tool-button--flat {
+        &:hover {
+          @include fill-icon(rgba(255, 255, 255, 0.5));
+        }
+      }
     }
 
     &.tool-area--center {
       background-color: $palette-color-1;
       @include center-from-left-abs();
+      .tool-button--flat {
+        &:hover {
+          @include fill-icon(#81d7ff);
+        }
+      }
     }
 
     &:first-child {
@@ -48,6 +61,10 @@
       &.tool-button--flat--distance-fix {
         padding-right: 10px;
       }
+    }
+
+    &:hover {
+      box-shadow: $tools-area-shadow;
     }
   }
 
@@ -68,6 +85,14 @@
     .tools {
       @include generic-toolbar;
       transform: translateY(-50%);
+    }
+
+    .tool-area--center {
+      animation: fade-in 200ms ease-in-out both;
+    }
+
+    .tool-area--side {
+      animation: fade-in 200ms ease-in-out 150ms both;
     }
 
     + .section-toolBoox__highlight {

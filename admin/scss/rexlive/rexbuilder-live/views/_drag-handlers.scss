@@ -35,11 +35,8 @@
   background-color: $palette-color-3;
   border:none;
   overflow: visible;
-  -webkit-transition: all 0s ease-out;
-  -moz-transition: all 0s ease-out;
-  -o-transition: all 0s ease-out;
-  -ms-transition: all 0 ease-out;
-  transition: all 0s ease-out;
+  // transition: all 0s ease-out;
+  transition: transform 100ms;
   z-index: 20;
   position: absolute;
 
