@@ -1149,7 +1149,7 @@ defined('ABSPATH') or exit;
                 <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
                 <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
             </div>
-            <div class="tool-button tool-button--inline tool-button--cancel rex-undo-button tippy" data-tippy-content="<?php esc_attr_e( 'Undo', 'rexpansive' ); ?>" data-slider-to-edit="">
+            <div class="tool-button tool-button--inline tool-button--cancel tool-button--modal rex-undo-button tippy" data-tippy-content="<?php esc_attr_e( 'Undo', 'rexpansive' ); ?>" data-slider-to-edit="">
                 <?php Rexbuilder_Utilities::get_icon('#A003-Undo'); ?>
             </div>
         </div>
@@ -1605,7 +1605,7 @@ wp_reset_postdata();
         </div>
         <div class="rex-modal__outside-footer">
             <div class="tool-button--double-icon--wrap tool-button--double-icon--active tool-button--double-icon--big rex-button edit-model rex-edit-option tippy" data-tippy-content="<?php esc_attr_e( 'Edit synchronized model', 'rexpansive' ); ?>" data-rex-option="edit">
-                <div class="tool-button tool-button--inline tool-button--blue">
+                <div class="tool-button tool-button--inline tool-button--blue tool-button--modal">
                     <?php Rexbuilder_Utilities::get_icon('#B015-UnClosed'); ?>
                 </div>
                 <div class="tool-button tool-button--inline tool-button--black tool-button--double-icon">
@@ -1613,13 +1613,8 @@ wp_reset_postdata();
                 </div>
             </div>
 
-            <div class="tool-button--double-icon--wrap tool-button--double-icon--active tool-button--double-icon--big rex-button remove-model rex-edit-option tippy" data-tippy-content="<?php esc_attr_e( 'Edit removing sync', 'rexpansive' ); ?>" data-rex-option="remove">
-                <div class="tool-button tool-button--inline tool-button--blue">
-                    <?php Rexbuilder_Utilities::get_icon('#B014-Closed'); ?>
-                </div>
-                <div class="tool-button tool-button--inline tool-button--black tool-button--double-icon">
-                    <?php Rexbuilder_Utilities::get_icon('#Z008-Edit'); ?>
-                </div>
+            <div class="tool-button tool-button--inline tool-button--modal tool-button--blue rex-button remove-model rex-edit-option tippy" data-tippy-content="<?php esc_attr_e( 'Edit removing sync', 'rexpansive' ); ?>" data-rex-option="remove">
+                <?php Rexbuilder_Utilities::get_icon('#Z008-Edit'); ?>
             </div>
         </div>
     </div>
@@ -1640,7 +1635,7 @@ wp_reset_postdata();
             <div class="tool-button tool-button--inline tool-button--save rex-change-layout-option tippy" data-tippy-content="<?php _e('Save and Continue','rexpansive'); ?>" data-rex-option="save">
                 <span class="rex-button save-page"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
             </div>
-            <div class="tool-button tool-button--inline tool-button--cancel rex-change-layout-option tippy" data-rex-option="continue" data-tippy-content="<?php _e('Continue','rexpansive'); ?>">
+            <div class="tool-button tool-button--inline tool-button--cancel tool-button--modal rex-change-layout-option tippy" data-rex-option="continue" data-tippy-content="<?php _e('Continue','rexpansive'); ?>">
                 <span class="rex-button continue"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
             </div>
         </div>

@@ -175,4 +175,8 @@ $tool_button_classes = 'tool-button';
 	<!-- // remove section -->
 </div>
 <div class="section-toolBoox__highlight"></div>
-<div class="section-block-noediting-ui"></div>
+<div class="section-block-noediting-ui">
+	<div class="no-editing--indicator bl_d-flex bl_jc-c bl_ai-c">
+	<span class="call-update-model-button"><?php Rexbuilder_Utilities::get_icon('#B014-Closed'); ?></span>
+	</div>
+</div>

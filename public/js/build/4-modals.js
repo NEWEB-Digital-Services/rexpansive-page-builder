@@ -2448,6 +2448,10 @@
       Rexbuilder_Util_Editor.openingModel = false;
     });
 
+    $(document).on("click", ".call-update-model-button", function(e) {
+      $(this).parents('.rexpansive_section').find(".update-model-button").trigger("click");
+    });
+
     $(document).on("click", ".update-model-button", function(e) {
       var $button = $(this);
       var $section = $button.parents(".rexpansive_section");

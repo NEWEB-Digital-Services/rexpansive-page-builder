@@ -112,7 +112,8 @@
 
 .btn-save {  
   @include page-edited-ui();
-  padding-left: 10px;
+  padding: 0 10px;
+  margin-right: 10px;
   .l-svg-icons{
     font-size: 30px;
   }

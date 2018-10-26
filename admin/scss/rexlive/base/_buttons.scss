@@ -125,8 +125,11 @@
 
   &.tool-button--cancel {
     background-color: $palette-color-4;
-    padding: 6px;
     @include fill-icon(#fff);
+  }
+
+  &.tool-button--modal {
+    padding: 6px;
     #{$icon-class} {
       font-size: 18px;
     }

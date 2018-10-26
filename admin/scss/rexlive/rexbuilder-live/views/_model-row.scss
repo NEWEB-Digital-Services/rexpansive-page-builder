@@ -9,6 +9,7 @@
   }
   .unlocked-icon {
     display: inline;
+    animation: fade-out-in 1000ms ease-in-out infinite both;
   }
 }
 
@@ -46,14 +47,33 @@
   }
 }
 
-// .section-block-noediting-ui {
-//   position: absolute;
-//   left: 0;
-//   top: 0;
-//   bottom: 0;
-//   right: 0;
-//   opacity: 0;
-//   visibility: hidden;
-//   z-index: 1000;
-//   background-color: rgba($palette-color-, 0.5);
-// }
+.section-block-noediting-ui {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 1500;
+  background-color: rgba($palette-color-4, 0.5);
+
+  #{$icon-class} {
+    font-size: 30px;
+    cursor: pointer;
+  }
+
+  @include fill-icon(#fff);
+
+  .no-editing--indicator {
+    width: 100%;
+    height: 100%;
+  }
+}
+
+.rexlive-block-grid-editing {
+  .section-block-noediting-ui {
+    visibility: visible;
+    opacity: 1;
+  }
+}
