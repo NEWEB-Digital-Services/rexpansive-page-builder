@@ -47,27 +47,27 @@ $tool_button_classes = 'tool-button';
                 
 				<div class="tool-button_list">
 
-                    <div class="tool-button--double-icon--wrap{% if(block.block_type == 'image') { %} tool-button--hide{% } %}">
+                    <div class="tool-button--double-icon--wrap tool-button_list--item{% if(block.block_type == 'image') { %} tool-button--hide{% } %}">
                         <div class="tool-button tool-button--inline edit-block-image tippy">
                             <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
                         </div>
                     </div><!-- // Change Block image background -->
 
-                    <div class="tool-button--double-icon--wrap">
+                    <div class="tool-button--double-icon--wrap tool-button_list--item">
                         <input class="spectrum-input-element" type="text" name="edit-block-color-background" value="">
                     </div><!-- // Change Block color background -->
 
-                    <div class="tool-button--double-icon--wrap">
+                    <div class="tool-button--double-icon--wrap tool-button_list--item">
                         <input class="spectrum-input-element" type="text" name="edit-block-overlay-color" value="">
                     </div><!-- // Change Block overlay color -->
 
-                    <div class="tool-button--double-icon--wrap{% if(block.block_type == 'video') { %} tool-button--hide{% } %}">
+                    <div class="tool-button--double-icon--wrap tool-button_list--item{% if(block.block_type == 'video') { %} tool-button--hide{% } %}">
                         <div class="tool-button tool-button--inline edit-block-video-background">
                             <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
                         </div>
                     </div><!-- // Change Block Video background -->
 
-                    <div class="tool-button tool-button--inline builder-edit-slider">
+                    <div class="tool-button tool-button--inline tool-button_list--item builder-edit-slider">
                         <?php Rexbuilder_Utilities::get_icon('#Z003-RexSlider'); ?>
                     </div>
 
@@ -315,11 +315,11 @@ $tool_button_classes = 'tool-button';
                     </div>
         
                     <div class="tool-button_list">        
-                        <div class="tool-button add-new-block-slider tippy">
+                        <div class="tool-button add-new-block-slider tool-button_list--item tippy">
                             <?php Rexbuilder_Utilities::get_icon('#Z003-RexSlider'); ?>
                         </div>
 
-                        <div class="tool-button tippy add-new-section" data-new-row-position="after">
+                        <div class="tool-button tippy add-new-section tool-button_list--item" data-new-row-position="after">
                             <?php Rexbuilder_Utilities::get_icon('#B016-New-Adjacent-Row'); ?>
                         </div>
                     </div>
@@ -330,7 +330,7 @@ $tool_button_classes = 'tool-button';
 		
                 <div class="bl_d-iflex bl_ai-c row-toolBox__tools row-toolBox__fast-configuration">
 
-                    <div class="tool-button--double-icon--wrap tool-button--distance-fix tool-button--hide">
+                    <div class="tool-button--double-icon--wrap tool-button--distance-fix tool-button--hide tippy" data-tippy-content="<?php _e('Background Image','rexpansive'); ?>">
                         <div class="<?php echo $tool_button_classes; ?> tool-button--inline edit-row-image-background tippy" data-tippy-content="" value="">
                             <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
                         </div>
@@ -339,7 +339,7 @@ $tool_button_classes = 'tool-button';
                         </div>
                     </div><!-- // Change Row background image -->
 
-                    <div class="tool-button--double-icon--wrap tool-button--distance-fix tool-button--hide">
+                    <div class="tool-button--double-icon--wrap tool-button--distance-fix tool-button--hide tippy" data-tippy-content="<?php _e('Background Color','rexpansive'); ?>">
                         <input class="spectrum-input-element" type="text" name="edit-row-color-background" value="">
                         <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"></div>
                         <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview-texture"></div>
@@ -348,7 +348,7 @@ $tool_button_classes = 'tool-button';
                         </div>
                     </div><!-- // Change Row background color -->
 
-                    <div class="tool-button--double-icon--wrap tool-button--distance-fix tool-button--hide">
+                    <div class="tool-button--double-icon--wrap tool-button--distance-fix tool-button--hide tippy" data-tippy-content="<?php _e('Overlay','rexpansive'); ?>">
                         <input class="spectrum-input-element" type="text" name="edit-row-overlay-color" value="">
                         <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"></div>
                         <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview-texture"></div>
@@ -357,7 +357,7 @@ $tool_button_classes = 'tool-button';
                         </div>
                     </div><!-- // Change Row overlay color -->
 
-                    <div class="tool-button--double-icon--wrap tool-button__video-fast tool-button--distance-fix">
+                    <div class="tool-button--double-icon--wrap tool-button__video-fast tool-button--distance-fix tippy" data-tippy-content="<?php _e('Background Video','rexpansive'); ?>">
                         <div class="<?php echo $tool_button_classes; ?> tool-button--hide tool-button--inline edit-row-video-background">
                             <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
                         </div>
@@ -367,7 +367,7 @@ $tool_button_classes = 'tool-button';
                     </div>
                     <!-- // Add background video -->
 
-                    <div class="tool-button tool-button--flat update-model-button tool-button--distance-fix--small locked">
+                    <div class="tool-button tool-button--flat update-model-button tool-button--distance-fix--small locked tippy" data-tippy-content="<?php _e('Model','rexpansive'); ?>">
                         <span class="unlocked-icon"><?php Rexbuilder_Utilities::get_icon('#B015-UnClosed'); ?></span>
                         <span class="locked-icon"><?php Rexbuilder_Utilities::get_icon('#B014-Closed'); ?></span>
                     </div>
@@ -389,32 +389,32 @@ $tool_button_classes = 'tool-button';
                         </div>
                         <div class="tool-button_list">
                             
-                            <div class="tool-button tool-button--full edit-background-section tippy tool-button--hide">
+                            <div class="tool-button tool-button--full tool-button_list--item edit-background-section tippy tool-button--hide">
                                 <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
                             </div>
 
-                            <div class="tool-button tool-button--full edit-row-image-background tippy">
+                            <div class="tool-button tool-button--full tool-button_list--item edit-row-image-background tippy" data-tippy-content="<?php _e('Background Video','rexpansive'); ?>">
                                 <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
                             </div>
 
-                            <div class="tool-button--double-icon--wrap">
+                            <div class="tool-button--double-icon--wrap tool-button_list--item tippy" data-tippy-content="<?php _e('Background Color','rexpansive'); ?>">
                                 <input class="spectrum-input-element" type="text" name="edit-row-color-background">
                                 <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"></div>
                                 <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview-texture"></div>
                             </div><!-- // Change Row color background -->
 
-                            <div class="tool-button--double-icon--wrap">
+                            <div class="tool-button--double-icon--wrap tool-button_list--item tippy" data-tippy-content="<?php _e('Overlay','rexpansive'); ?>">
                                 <input class="spectrum-input-element" type="text" name="edit-row-overlay-color">
                                 <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"></div>
                                 <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview-texture"></div>
                             </div>
                             <!-- // Change Row overlay color -->
 
-                            <div class="tool-button edit-row-video-background">
+                            <div class="tool-button edit-row-video-background tool-button_list--item tippy" data-tippy-content="<?php _e('Background Video','rexpansive'); ?>">
                                 <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
                             </div>
                             
-                            <div class="tool-button open-model tippy">
+                            <div class="tool-button open-model tool-button_list--item tippy" data-tippy-content="<?php _e('Model','rexpansive'); ?>">
                                 <?php Rexbuilder_Utilities::get_icon('#B005-RexModel'); ?>
                             </div>
                         </div>

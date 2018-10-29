@@ -37,7 +37,7 @@ defined( 'ABSPATH' ) or exit;
                 </div>
             </div><!-- // Change Block color background -->
 
-            <div class="tool-button--double-icon--wrap<?php echo ( $not_has_overlay ? ' tool-button--hide' : ' tool-button--picker-preview' ); ?>">
+            <div class="tool-button--double-icon--wrap tool-button--opacity-preview<?php echo ( $not_has_overlay ? ' tool-button--hide' : ' tool-button--picker-preview' ); ?>">
                 <input class="spectrum-input-element" type="text" name="edit-block-overlay-color" value="<?php echo esc_attr( $atts['overlay_block_color'] ); ?>">
                 <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"<?php echo ( !$not_has_overlay ? ' style="background-color:' . $atts['overlay_block_color'] . ';"' : '' ); ?>></div>
                 <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview-texture"></div>

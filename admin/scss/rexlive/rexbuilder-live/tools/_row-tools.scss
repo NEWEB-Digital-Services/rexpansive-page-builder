@@ -41,6 +41,7 @@
 
     &.tool-area--center {
       background-color: $palette-color-1;
+      padding-left: 15px;
       @include center-from-left-abs();
       .tool-button--flat {
         &:hover {
@@ -92,7 +93,7 @@
     }
 
     .tool-area--side {
-      animation: fade-in 200ms ease-in-out 150ms both;
+      animation: fade-in 200ms ease-in-out both;
     }
 
     + .section-toolBoox__highlight {

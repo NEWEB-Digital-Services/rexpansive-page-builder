@@ -77,6 +77,7 @@
   &.tool-button--empty {
     min-width: $block-tools-size;
     min-height: $block-tools-size;
+    background-color: transparent;
   }
 
   &.tool-button--color {
@@ -84,7 +85,7 @@
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    border: none;
+    border: 1px solid #fff;
     vertical-align: initial;
 
     &.sp-replacer {
@@ -190,6 +191,17 @@
   }
 }
 
+.tool-button--opacity-preview {
+  .tool-button {
+    &.tool-button--color {
+  
+      &.sp-replacer {
+        opacity: 0.5;
+      }
+    }
+  }
+}
+
 .tool-button--picker-preview {
   .tool-button {
     &.tool-button--color {
@@ -261,11 +273,15 @@
       z-index: 10000;
       visibility: visible;
       display: block;
-      .tool-button {
+      .tool-button_list--item {
         opacity: 1;
         transform: scale(1) translateY(0) translateX(0);
       }
     }
+  }
+  .tool-button--double-icon--wrap {
+    display: block;
+    max-height: 20px;
   }
   // }
 }
@@ -276,7 +292,7 @@
   top: 100%;
   visibility: hidden;
   display: none;
-  .tool-button {
+  .tool-button_list--item {
     transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px);
     opacity: 0;
   }

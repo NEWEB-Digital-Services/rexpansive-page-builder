@@ -3433,13 +3433,14 @@ ul {
     padding-right: 10px; }
   .tool-button.tool-button--empty {
     min-width: 20px;
-    min-height: 20px; }
+    min-height: 20px;
+    background-color: transparent; }
   .tool-button.tool-button--color {
     background-image: url(../img/colors-hd.png);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    border: none;
+    border: 1px solid #fff;
     vertical-align: initial; }
     .tool-button.tool-button--color.sp-replacer {
       position: static; }
@@ -3518,6 +3519,9 @@ ul {
     overflow: hidden;
     padding: 0; }
 
+.tool-button--opacity-preview .tool-button.tool-button--color.sp-replacer {
+  opacity: 0.5; }
+
 .tool-button--picker-preview .tool-button.tool-button--color {
   background-image: none;
   background-color: transparent; }
@@ -3564,11 +3568,14 @@ ul {
     z-index: 10000;
     visibility: visible;
     display: block; }
-    .tool-button-floating:hover .tool-button_list .tool-button {
+    .tool-button-floating:hover .tool-button_list .tool-button_list--item {
       opacity: 1;
       -webkit-transform: scale(1) translateY(0) translateX(0);
           -ms-transform: scale(1) translateY(0) translateX(0);
               transform: scale(1) translateY(0) translateX(0); }
+  .tool-button-floating .tool-button--double-icon--wrap {
+    display: block;
+    max-height: 20px; }
 
 .tool-button_list {
   position: absolute;
@@ -3576,7 +3583,7 @@ ul {
   top: 100%;
   visibility: hidden;
   display: none; }
-  .tool-button_list .tool-button {
+  .tool-button_list .tool-button_list--item {
     -webkit-transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px);
         -ms-transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px);
             transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px);
@@ -3588,6 +3595,14 @@ ul {
   padding: 5px 3px;
   -webkit-backface-visibility: visible;
           backface-visibility: visible; }
+
+.sp-container,
+.sp-picker-container {
+  border: none; }
+
+.sp-container {
+  -webkit-box-shadow: 0 0 70px 0 rgba(0, 0, 0, 0.5);
+          box-shadow: 0 0 70px 0 rgba(0, 0, 0, 0.5); }
 
 .tippy-tooltip.rexlive-theme {
   font-size: 9px;
@@ -3629,6 +3644,7 @@ ul {
         fill: rgba(255, 255, 255, 0.5); }
     .section-toolBox .tools-area.tool-area--center {
       background-color: #00ACFF;
+      padding-left: 15px;
       position: absolute;
       left: 50%;
       -webkit-transform: translateX(-50%);
@@ -3668,8 +3684,8 @@ ul {
     -webkit-animation: fade-in 200ms ease-in-out both;
             animation: fade-in 200ms ease-in-out both; }
   .section-toolBox:hover .tool-area--side {
-    -webkit-animation: fade-in 200ms ease-in-out 150ms both;
-            animation: fade-in 200ms ease-in-out 150ms both; }
+    -webkit-animation: fade-in 200ms ease-in-out both;
+            animation: fade-in 200ms ease-in-out both; }
   .section-toolBox:hover + .section-toolBoox__highlight {
     opacity: 1; }
   .section-toolBox .switch-toggle {

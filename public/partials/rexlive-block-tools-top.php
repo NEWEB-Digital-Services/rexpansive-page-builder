@@ -41,29 +41,30 @@ defined( 'ABSPATH' ) or exit;
                 </div>
                 
 				<div class="tool-button_list">
-                    <div class="tool-button--double-icon--wrap<?php echo ( !$not_has_image ? ' tool-button--hide' : '' ); ?>">
+                    <div class="tool-button--double-icon--wrap tool-button_list--item<?php echo ( !$not_has_image ? ' tool-button--hide' : '' ); ?>">
                         <div class="tool-button tool-button--inline edit-block-image tippy">
                             <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
                         </div>                        
                     </div><!-- // Change Block image background -->
 
-                    <div class="tool-button--double-icon--wrap">
+                    <div class="tool-button--double-icon--wrap tool-button_list--item">
                         <input class="spectrum-input-element" type="text" name="edit-block-color-background" value="">
                     </div><!-- // Change Block color background -->
 
-                    <div class="tool-button--double-icon--wrap<?php echo ( !$not_has_overlay ? ' tool-button--hide' : '' ); ?>">
+                    <div class="tool-button--double-icon--wrap tool-button--opacity-preview tool-button_list--item<?php echo ( !$not_has_overlay ? ' tool-button--hide' : '' ); ?>">
                         <input class="spectrum-input-element" type="text" name="edit-block-overlay-color" value="<?php echo esc_attr( $atts['overlay_block_color'] ); ?>">
+                        <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview-texture"></div>
                         
                     </div><!-- // Change Block overlay color -->
 
-                    <div class="tool-button--double-icon--wrap <?php echo ( !$not_has_video ? ' tool-button--hide' : '' ); ?>">
+                    <div class="tool-button--double-icon--wrap tool-button_list--item<?php echo ( !$not_has_video ? ' tool-button--hide' : '' ); ?>">
                         <div class="tool-button tool-button--inline edit-block-video-background">
                             <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
                         </div>
                     </div><!-- // Change Block Video background -->
 
 
-                    <div class="tool-button tool-button--inline builder-edit-slider">
+                    <div class="tool-button tool-button--inline tool-button_list--item builder-edit-slider">
                         <?php Rexbuilder_Utilities::get_icon('#Z003-RexSlider'); ?>
                     </div><!-- // rexslider -->
                 </div>
