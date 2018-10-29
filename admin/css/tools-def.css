@@ -11097,7 +11097,9 @@ select.rx__form-input {
   position: relative; }
   .rex-modal .modal-content.modal-content--text {
     padding: 60px;
-    text-align: center; }
+    text-align: center;
+    font-size: 17px;
+    line-height: 1.6; }
 
 .rex-modal .rex-modal__loader {
   position: absolute;
@@ -15169,6 +15171,7 @@ body.rexpansive-editor .lean-overlay {
   text-align: center; }
   .layout-page-changed-description .layout-name__wrap {
     display: block;
+    font-weight: bold;
     text-transform: uppercase; }
 
 .rex-model__import--wrap-active {
@@ -15259,7 +15262,8 @@ body.rexpansive-editor .lean-overlay {
   height: calc(100% - 70px); }
 
 .info-model-name__wrap {
-  display: block; }
+  display: block;
+  font-weight: bold; }
 
 .set-video-audio-btn {
   display: none; }

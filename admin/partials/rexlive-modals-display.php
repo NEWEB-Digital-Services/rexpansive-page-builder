@@ -1536,8 +1536,8 @@ defined('ABSPATH') or exit;
         <div class="modal-content modal-content--text">
             <div class="edit-model-description">
                 <?php _e('What kind of editing do you want to make to the model:','rexpansive'); ?>
-                <br><br>
-                <span class="info-model-name__wrap"><span class="info-model-name"></span><span>?</span></span>
+                <br>
+                <span class="info-model-name__wrap"><span class="info-model-name"></span>&nbsp;<span>?</span></span>
             </div>
             <!-- <div>
                 <div class="rex-edit-model-option" data-rex-option="edit">
