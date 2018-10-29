@@ -404,6 +404,15 @@ var Rexbuilder_Section_Editor = (function($) {
       // chooseText: ""
     });
 
+    var close = tmpl('tmpl-tool-close', {});
+    var $close = $(close);
+    $picker.spectrum('container').append($close);
+
+    $close.on('click', function(e) {
+      e.preventDefault();
+      $picker.spectrum('hide');
+    });
+
     $picker.prev('.edit-row-color-background').on('click', function() {
       $picker.spectrum('show');
     });
@@ -481,6 +490,15 @@ var Rexbuilder_Section_Editor = (function($) {
       },
       // cancelText: "",
       // chooseText: ""
+    });
+
+    var close = tmpl('tmpl-tool-close', {});
+    var $close = $(close);
+    $picker.spectrum('container').append($close);
+
+    $close.on('click', function(e) {
+      e.preventDefault();
+      $picker.spectrum('hide');
     });
   };
 

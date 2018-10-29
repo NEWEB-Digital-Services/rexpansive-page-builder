@@ -3556,10 +3556,23 @@ ul {
     .tool-button--double-icon--wrap.tool-button--double-icon--big .tool-button--double-icon .l-svg-icons {
       font-size: 10px; }
 
-.tool-button_list .tool-button--double-icon--wrap {
-  margin-top: 10px; }
-.tool-button_list > .tool-button {
-  margin-top: 10px; }
+.tool-button_list {
+  position: absolute;
+  z-index: -10000;
+  top: 100%;
+  visibility: hidden;
+  display: none; }
+  .tool-button_list .tool-button_list--item {
+    -webkit-transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px);
+        -ms-transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px);
+            transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px);
+    opacity: 0;
+    margin-top: 10px; }
+  .tool-button_list.tool-button_list--horizontal {
+    min-width: 90px;
+    left: -69px; }
+    .tool-button_list.tool-button_list--horizontal .tool-button_list--item {
+      margin-left: 10px; }
 
 .tool-button-floating {
   position: relative;
@@ -3573,21 +3586,18 @@ ul {
       -webkit-transform: scale(1) translateY(0) translateX(0);
           -ms-transform: scale(1) translateY(0) translateX(0);
               transform: scale(1) translateY(0) translateX(0); }
+    .tool-button-floating:hover .tool-button_list.tool-button_list--horizontal {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: end;
+          -ms-flex-pack: end;
+              justify-content: flex-end;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap; }
   .tool-button-floating .tool-button--double-icon--wrap {
     display: block;
     max-height: 20px; }
-
-.tool-button_list {
-  position: absolute;
-  z-index: -10000;
-  top: 100%;
-  visibility: hidden;
-  display: none; }
-  .tool-button_list .tool-button_list--item {
-    -webkit-transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px);
-        -ms-transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px);
-            transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px);
-    opacity: 0; }
 
 .tool-indicator {
   color: #fff;
@@ -3602,7 +3612,8 @@ ul {
 
 .sp-container {
   -webkit-box-shadow: 0 0 70px 0 rgba(0, 0, 0, 0.5);
-          box-shadow: 0 0 70px 0 rgba(0, 0, 0, 0.5); }
+          box-shadow: 0 0 70px 0 rgba(0, 0, 0, 0.5);
+  overflow: visible; }
 
 .tippy-tooltip.rexlive-theme {
   font-size: 9px;
@@ -3813,6 +3824,8 @@ ul {
     font-weight: 400;
     letter-spacing: 1px;
     font-size: 10px; }
+  .rexlive-block-toolbox .tool-button_list.tool-button_list--horizontal {
+    left: -70px; }
 
 .tool-button.edit-block-image {
   padding: 0;

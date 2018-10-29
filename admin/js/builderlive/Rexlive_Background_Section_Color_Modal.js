@@ -101,6 +101,15 @@ var Background_Section_Color_Modal = (function($) {
       chooseText: ""
     });
 
+    var close = tmpl('tmpl-tool-close', {});
+    var $close = $(close);
+    background_section_color_properties.$color_value.spectrum('container').append($close);
+
+    $close.on('click', function(e) {
+      e.preventDefault();
+      background_section_color_properties.$color_value.spectrum('hide');
+    });
+
     background_section_color_properties.$color_palette_buttons.on(
       "click",
       function(event) {

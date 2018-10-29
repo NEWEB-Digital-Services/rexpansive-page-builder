@@ -83,6 +83,15 @@ var Overlay_Color_Section_Modal = (function($) {
       chooseText: ""
     });
 
+    var close = tmpl('tmpl-tool-close', {});
+    var $close = $(close);
+    background_overlay_properties.$overlay_color_value.spectrum('container').append($close);
+
+    $close.on('click', function(e) {
+      e.preventDefault();
+      background_overlay_properties.$overlay_color_value.spectrum('hide');
+    });
+
     background_overlay_properties.$overlay_color_palette_buttons.on(
       "click",
       function(event) {

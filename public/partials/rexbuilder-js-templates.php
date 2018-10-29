@@ -470,3 +470,9 @@ $tool_button_classes = 'tool-button';
 <script type="text/x-tmpl" id="tmpl-div-lock-section">
     <div class="rexpansive-lock-section"></div>
 </script>
+
+<script type="text/x-tmpl" id="tmpl-tool-close">
+<div class="tool-button tool-button--black tool-button--close rex-modal__close-button">
+<?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+</div>
+</script>

@@ -595,6 +595,15 @@ var Rexbuilder_Block_Editor = (function($) {
         $(document).trigger(event);
       },
     });
+
+    var close = tmpl('tmpl-tool-close', {});
+    var $close = $(close);
+    $picker.spectrum('container').append($close);
+
+    $close.on('click', function(e) {
+      e.preventDefault();
+      $picker.spectrum('hide');
+    });
   };
 
   /**
@@ -712,6 +721,15 @@ var Rexbuilder_Block_Editor = (function($) {
 
         flagPickerUsed = false;
       },
+    });
+
+    var close = tmpl('tmpl-tool-close', {});
+    var $close = $(close);
+    $picker.spectrum('container').append($close);
+
+    $close.on('click', function(e) {
+      e.preventDefault();
+      $picker.spectrum('hide');
     });
   };
 

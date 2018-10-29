@@ -89,3 +89,9 @@ defined('ABSPATH') or exit;
     </div>
 </div>
 </script>
+
+<script type="text/x-tmpl" id="tmpl-tool-close">
+<div class="tool-button tool-button--black tool-button--close rex-modal__close-button">
+<?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+</div>
+</script>

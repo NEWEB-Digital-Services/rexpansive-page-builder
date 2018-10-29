@@ -73,6 +73,12 @@
     font-size: 10px;
   }
 
+  .tool-button_list {
+    &.tool-button_list--horizontal {
+      left: -70px;
+    }
+  }
+
 }
 
 .tool-button {

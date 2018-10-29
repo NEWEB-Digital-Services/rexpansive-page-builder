@@ -81,6 +81,15 @@ var Overlay_Color_block_Modal = (function($) {
       chooseText: ""
     });
 
+    var close = tmpl('tmpl-tool-close', {});
+    var $close = $(close);
+    overlay_block_properties.$overlay_color_value.spectrum('container').append($close);
+
+    $close.on('click', function(e) {
+      e.preventDefault();
+      overlay_block_properties.$overlay_color_value.spectrum('hide');
+    });
+
     overlay_block_properties.$overlay_color_palette_buttons.on(
       "click",
       function(event) {
