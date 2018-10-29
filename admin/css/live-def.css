@@ -3974,6 +3974,28 @@ ul {
   .medium-editor-action.medium-editor-button-active {
     background-color: #00ACFF; }
 
+.medium-editor-toolbar-form .medium-editor-toolbar-input {
+  font-family: 'Roboto', sans-serif;
+  border: 1px solid #000; }
+  .medium-editor-toolbar-form .medium-editor-toolbar-input::-webkit-input-placeholder {
+    font-family: 'Roboto', sans-serif; }
+  .medium-editor-toolbar-form .medium-editor-toolbar-input:-moz-placeholder {
+    font-family: 'Roboto', sans-serif; }
+  .medium-editor-toolbar-form .medium-editor-toolbar-input::-moz-placeholder {
+    font-family: 'Roboto', sans-serif; }
+  .medium-editor-toolbar-form .medium-editor-toolbar-input:-ms-input-placeholder {
+    font-family: 'Roboto', sans-serif; }
+  .medium-editor-toolbar-form .medium-editor-toolbar-input:focus {
+    border: 1px solid #000; }
+.medium-editor-toolbar-form .medium-editor-toolbar-close {
+  font-size: 10px; }
+.medium-editor-toolbar-form .medium-editor-toolbar-save {
+  font-size: 16px; }
+  .medium-editor-toolbar-form .medium-editor-toolbar-save .tool-button {
+    padding: 0; }
+    .medium-editor-toolbar-form .medium-editor-toolbar-save .tool-button .l-svg-icons > svg {
+      fill: #00ACFF; }
+
 .medium-toolbar-arrow-under:after {
   border-color: #000 transparent transparent transparent; }
 

@@ -80,6 +80,9 @@ var TextEditor = (function($) {
         setColor(color);
         $picker_preview.css('background-color',color.toRgbString());
       },
+      move: function(color) {
+        setColor(color);
+      },
       hide: function(color) {
         setColor(color);
         $picker_preview.css('background-color',color.toRgbString());
@@ -924,6 +927,8 @@ var TextEditor = (function($) {
           {
             name: 'anchor',
             contentDefault: '<i class="l-svg-icons"><svg><use xlink:href="#C001-Link"></use></svg></i>',
+            formSaveLabel: '<span class="tool-button tool-button--inline"><i class="l-svg-icons"><svg><use xlink:href="#A006-Save"></use></svg></i></span>',
+            formCloseLabel: '<span class="tool-button tool-button--inline tool-button--black"><i class="l-svg-icons"><svg><use xlink:href="#Z003-Close"></use></svg></i></span>'
           },
           "headingTags",
           "justifyDropdown",
