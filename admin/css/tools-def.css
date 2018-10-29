@@ -10907,14 +10907,6 @@ float: left;
     .rex-model__import--wrap #rex-model__open-preview i {
       font-size: 25px; }
 
-#rex-model__add-new-model {
-  width: 29px;
-  margin-left: 30px;
-  height: 25px;
-  line-height: 22px; }
-  #rex-model__add-new-model i {
-    font-size: 18px; }
-
 .grey-border.border-darken-2 {
   border-color: #616161 !important; }
 

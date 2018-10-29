@@ -1502,7 +1502,7 @@ defined('ABSPATH') or exit;
 </div><!-- Text Editor -->
 
 <div class="rex-modal-wrap">
-    <div id="rex-model-block" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
+    <div id="rex-model-block" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable setting-edited">
         <div class="tool-button tool-button--black rex-cancel-button tool-button--close tippy" data-tippy-content="Cancel" value="" tabindex="0">
             <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
         </div>
@@ -1510,75 +1510,19 @@ defined('ABSPATH') or exit;
 
             <?php include 'rexbuilder-modal-loader.php';?>
 
-            <div class="rex-model__add-model__wrap rex-modal-content__modal-area--bordered rex-modal-content__modal-area" style="display:flex;">
+            <div class="rex-model__add-model__wrap rex-modal-content__modal-area" style="display:flex;">
                 <div id="rex-model__name__wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix" style="width:100%;">
                     <span class="prefix"></span>
                     <input type="text" id="rex-model__name" name="rex-model__name">
                     <label for="rex-model__name" class=""><?php _e('Model name', 'rexpansive');?></label>
                     <span class="rex-material-bar"></span>
                 </div>
-                <button id="rex-model__add-new-model" class="builder-button btn-floating btn-no-shadow btn-bordered btn-bordered--inactive tooltipped" data-position="bottom" data-tooltip="<?php _e('Add model', 'rexpansive-classic')?>">
-                    <i class="material-icons">&#xE145;</i>
-                </button>
             </div><!-- // .rex-model__add-model__wrap -->
 
-            <div class="rex-model__import--wrap rex-modal-content__modal-area">
-                <div class="rex-model__model-insert-success-wrap"></div>
-                <div class="rex-model__import--wrap-active">
-            <?php
-// WP_Query arguments
-$args = array(
-    'post_type' => array('rex_model'),
-    'post_status' => array('publish', 'private'),
-    'posts_per_page' => '-1',
-);
-
-// The Query
-$query = new WP_Query($args);
-
-?><div class="rx__select-wrap">
-                <select id="rex-model__import" class="rx__form-input">
-                <option value="0"><?php _e('New Model', 'rexpansive-classic');?></option>
-                <?php
-// The Loop
-if ($query->have_posts()) {
-    while ($query->have_posts()) {
-        $query->the_post();
-        ?>
-        <option value="<?php the_ID();?>" data-preview-url="<?php echo get_permalink(); ?>"><?php the_title();?></option>
-        <?php
-    }
-} else {
-    // no posts found
-}
-
-?>
-                </select>
-                <div class="rx__form-input__select-arrow"></div>
-            </div>
-            <?php
-
-// Restore original Post Data
-wp_reset_postdata();
-?>
-
-            <div id="rex-model__open-preview">
-                <i class="rex-icon">g</i>
-            </div>
-        </div>
-            </div>
         </div>
 
-        <!-- <div class="rex-modal-footer">
-            <button id="" class="waves-effect waves-light btn-flat grey rex-cancel-button" value="">
-                <i class="rex-icon">n</i>
-            </button>
-            <button id="" class="waves-effect waves-light btn-flat blue darken-1 rex-save-button" value="">
-                <i class="rex-icon">m</i>
-            </button>
-        </div> -->
         <div class="rex-modal__outside-footer">
-            <div class="tool-button tool-button--inline tool-button--save rex-save-button tippy" data-tippy-content="<?php esc_attr_e( 'Save Content', 'rexpansive' ); ?>">
+            <div id="rex-model__add-new-model" class="tool-button tool-button--inline tool-button--save tippy" data-tippy-content="<?php esc_attr_e( 'Create Model', 'rexpansive' ); ?>">
                 <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
                 <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
             </div>
