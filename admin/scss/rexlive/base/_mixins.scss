@@ -160,3 +160,22 @@
   left: 50%;
   transform: translateX(-50%);
 }
+
+// Row tools mixins
+@mixin view-row-tools {
+  .tools {
+    @include generic-toolbar;
+    transform: translateY(-50%);
+  }
+  .tool-area--center {
+    animation: fade-in 200ms ease-in-out both;
+  }
+
+  .tool-area--side {
+    animation: fade-in 200ms ease-in-out both;
+  }
+
+  + .section-toolBoox__highlight {
+    opacity: 1;
+  }
+}

@@ -394,7 +394,6 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       default:
         break;
     }
-    console.log(open_models_list);
   }
 
   var _savingProcess = function() {

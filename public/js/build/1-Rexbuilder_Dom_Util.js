@@ -931,7 +931,7 @@ var Rexbuilder_Dom_Util = (function($) {
       $target
         .css("background-color", color);
     }
-      
+    
     Rexbuilder_Section_Editor.updateRowBackgroundColorToolLive( $target, color );
   };
 

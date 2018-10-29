@@ -4580,6 +4580,35 @@ ul {
 .rexlive-block-grid-editing .section-block-noediting-ui {
   visibility: visible;
   opacity: 1; }
+.rexlive-block-grid-editing .section-toolBox .tool-button--model-hide {
+  display: none; }
+.rexlive-block-grid-editing .section-toolBox .tools-area.tool-area--side:first-child, .rexlive-block-grid-editing .section-toolBox .tools-area.tool-area--center {
+  display: none; }
+.rexlive-block-grid-editing:hover .section-toolBox .tools {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%); }
+.rexlive-block-grid-editing:hover .section-toolBox .tool-area--center {
+  -webkit-animation: fade-in 200ms ease-in-out both;
+          animation: fade-in 200ms ease-in-out both; }
+.rexlive-block-grid-editing:hover .section-toolBox .tool-area--side {
+  -webkit-animation: fade-in 200ms ease-in-out both;
+          animation: fade-in 200ms ease-in-out both; }
+.rexlive-block-grid-editing:hover .section-toolBox + .section-toolBoox__highlight {
+  opacity: 1; }
+.rexlive-block-grid-editing:hover .section-toolBox .tools {
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
 
 .perfect-grid-item.focused,
 .grid-stack-item.focused {

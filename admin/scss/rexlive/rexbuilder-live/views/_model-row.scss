@@ -76,4 +76,28 @@
     visibility: visible;
     opacity: 1;
   }
+
+  .section-toolBox {
+    .tool-button--model-hide {
+      display: none;
+    }
+  }
+
+  .section-toolBox {
+    .tools-area {
+      &.tool-area--side:first-child,
+      &.tool-area--center {
+        display: none;
+      }
+    }
+  }
+
+  &:hover {
+    .section-toolBox {
+      @include view-row-tools();
+      .tools {
+        justify-content: flex-end;
+      }
+    }
+  }
 }

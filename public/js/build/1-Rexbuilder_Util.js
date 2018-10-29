@@ -2313,6 +2313,8 @@ var Rexbuilder_Util = (function($) {
           : targetProps["color_bg_section_active"].toString()
     };
 
+    console.log('here update section');
+
     Rexbuilder_Dom_Util.updateSectionBackgroundColor(
       $section,
       backgroundColorOpt
@@ -2973,7 +2975,7 @@ var Rexbuilder_Util = (function($) {
       var mp4video = $target.children(".rex-video-wrap").find("video")[0];
       mp4video.currentTime = 0;
       mp4video.pause();
-      console.log("_stopVideo: faccio pause del video");
+      // console.log("_stopVideo: faccio pause del video");
     } else if ($target.hasClass("vimeo-player")) {
       VimeoVideo.findVideo(
         $target.children(".rex-video-vimeo-wrap").find("iframe")[0]
@@ -3063,7 +3065,7 @@ var Rexbuilder_Util = (function($) {
 
   var _playVideoFromBegin = function($target) {
     if ($target.hasClass("mp4-player")) {
-      console.log("_playVideoFromBegin: faccio play al video");
+      // console.log("_playVideoFromBegin: faccio play al video");
       var mp4video = $target.children(".rex-video-wrap").find("video")[0];
       mp4video.currentTime = 0;
       mp4video.play();
