@@ -68,6 +68,7 @@ var Background_Section_Color_Modal = (function($) {
       showPalette: false,
       showAlpha: true,
       showInput: true,
+      showButtons: false,
       containerClassName:
         "rexbuilder-materialize-wrap block-background-color-picker",
       show: function() {

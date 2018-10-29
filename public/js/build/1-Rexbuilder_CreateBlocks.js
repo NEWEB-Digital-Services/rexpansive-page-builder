@@ -39,6 +39,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
         TextEditor.addElementToTextEditor($el.find(".text-wrap"));
 
         Rexbuilder_Block_Editor.updateBlockTools($el);
+        Rexbuilder_Util_Editor.launchTooltips();
 
         var event = jQuery.Event("mouseup");
         event.target = $el.find(".rexlive-block-drag-handle");
@@ -122,6 +123,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
             // Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($el.find('input[name=edit-block-color-background]')[0]);
             // Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock($el.find('input[name=edit-block-overlay-color]')[0]);
             Rexbuilder_Block_Editor.updateBlockTools($el);
+            Rexbuilder_Util_Editor.launchTooltips();
         }
         Rexbuilder_Util.updateSectionStateLive($section);
         if(Rexbuilder_Util.activeLayout == "default"){
@@ -207,6 +209,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
             }
         }
         Rexbuilder_Block_Editor.updateBlockTools($el);
+        Rexbuilder_Util_Editor.launchTooltips();
         Rexbuilder_Util.updateSectionStateLive($section);
         if(Rexbuilder_Util.activeLayout == "default"){
             Rexbuilder_Util.updateDefaultLayoutStateSection($section);
@@ -227,6 +230,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
             $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + e.settings.data_to_send.target.sectionID + '"]');
         }
         Rexbuilder_Block_Editor.updateBlockTools($el);
+        Rexbuilder_Util_Editor.launchTooltips();
+        
         Rexbuilder_Util.updateSectionStateLive($section);
         if(Rexbuilder_Util.activeLayout == "default"){
             Rexbuilder_Util.updateDefaultLayoutStateSection($section);
@@ -478,6 +483,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
         // Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($newBlock.find('input[name=edit-block-color-background]')[0]);
         // Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock($newBlock.find('input[name=edit-block-overlay-color]')[0]);
         Rexbuilder_Block_Editor.updateBlockTools($newBlock);
+        Rexbuilder_Util_Editor.launchTooltips();
         Rexbuilder_Util.updateSectionStateLive($section);
         if(Rexbuilder_Util.activeLayout == "default"){
             Rexbuilder_Util.updateDefaultLayoutStateSection($section);

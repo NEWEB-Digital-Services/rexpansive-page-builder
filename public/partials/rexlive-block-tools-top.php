@@ -31,18 +31,18 @@ defined( 'ABSPATH' ) or exit;
 
         <div class="bl_d-iflex bl_ai-c block-toolBox__config-tools">
             
-            <div class="tool-button tool-button--inline builder-copy-block tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy block', 'rexpansive'); ?>">
+            <div class="tool-button tool-button--inline builder-copy-block tippy" data-tippy-content="<?php _e('Copy block', 'rexpansive'); ?>">
                 <?php Rexbuilder_Utilities::get_icon('#Z004-Copy'); ?>
             </div>
 
             <div class="tool-button-floating">
-				<div class="tool-button builder-edit-block tooltipped" data-position="bottom" data-tooltip="<?php _e('Block settings', 'rexpansive');?>">
+				<div class="tool-button builder-edit-block tippy" data-tippy-content="<?php _e('Block settings', 'rexpansive');?>">
 					<?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>					
                 </div>
                 
 				<div class="tool-button_list">
                     <div class="tool-button--double-icon--wrap<?php echo ( !$not_has_image ? ' tool-button--hide' : '' ); ?>">
-                        <div class="tool-button tool-button--inline edit-block-image tooltipped">
+                        <div class="tool-button tool-button--inline edit-block-image tippy">
                             <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
                         </div>                        
                     </div><!-- // Change Block image background -->
@@ -69,12 +69,12 @@ defined( 'ABSPATH' ) or exit;
                 </div>
             </div>
 
-            <div class="tool-button tool-button--inline builder-delete-block waves-effect tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete block', 'rexspansive'); ?>">
+            <div class="tool-button tool-button--inline builder-delete-block waves-effect tippy" data-tippy-content="<?php _e('Delete block', 'rexspansive'); ?>">
                 <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
             </div>
         </div>
     </div>
-    <div class="tool-button builder-delete-block waves-effect tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete block', 'rexspansive'); ?>">
+    <div class="tool-button builder-delete-block waves-effect tippy" data-tippy-content="<?php _e('Delete block', 'rexspansive'); ?>">
         <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
     </div>
 </div>

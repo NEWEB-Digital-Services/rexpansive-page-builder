@@ -561,6 +561,7 @@ var Rexbuilder_Block_Editor = (function($) {
       showPalette: false,
       showAlpha: true,
       showInput: true,
+      showButtons: false,
       show: function() {
         flagPickerUsed = false;
       },
@@ -672,6 +673,7 @@ var Rexbuilder_Block_Editor = (function($) {
       showPalette: false,
       showAlpha: true,
       showInput: true,
+      showButtons: false,
       show: function() {
         flagPickerUsed = false;
       },

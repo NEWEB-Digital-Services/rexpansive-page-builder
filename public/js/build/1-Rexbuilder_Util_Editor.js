@@ -852,7 +852,7 @@ var Rexbuilder_Util_Editor = (function($) {
   };
 
   var _tooltips = function() {
-    tippy(".tippy", {
+    var collection = tippy(".tippy", {
       arrow: true,
       arrowType: "round",
       size: "small",
@@ -930,7 +930,7 @@ var Rexbuilder_Util_Editor = (function($) {
     undoStackArray = [];
     redoStackArray = [];
 
-    _tooltips();
+    _tooltips();    
 
     this.$styleElement = $("#rexpansive-builder-style-inline-css");
     _fixCustomStyleElement();
@@ -969,6 +969,7 @@ var Rexbuilder_Util_Editor = (function($) {
     clearSectionsEdited: _clearSectionsEdited,
     startLoading: _startLoading,
     endLoading: _endLoading,
-    builderEdited: _builderEdited
+    builderEdited: _builderEdited,
+    launchTooltips: _tooltips
   };
 })(jQuery);

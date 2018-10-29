@@ -3562,7 +3562,8 @@ ul {
   display: inline-block; }
   .tool-button-floating:hover .tool-button_list {
     z-index: 10000;
-    visibility: visible; }
+    visibility: visible;
+    display: block; }
     .tool-button-floating:hover .tool-button_list .tool-button {
       opacity: 1;
       -webkit-transform: scale(1) translateY(0) translateX(0);
@@ -3573,7 +3574,8 @@ ul {
   position: absolute;
   z-index: -10000;
   top: 100%;
-  visibility: hidden; }
+  visibility: hidden;
+  display: none; }
   .tool-button_list .tool-button {
     -webkit-transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px);
         -ms-transform: scaleY(0.4) scaleX(0.4) translateY(40px) translateX(0px);
@@ -3689,7 +3691,10 @@ ul {
   height: 100%;
   outline: 2px solid #00ACFF;
   opacity: 0;
-  z-index: 1; }
+  z-index: 1;
+  -webkit-transition: opacity 200ms;
+  -o-transition: opacity 200ms;
+  transition: opacity 200ms; }
 
 .builder-move-row {
   cursor: move; }
@@ -3706,6 +3711,8 @@ ul {
   margin: 0 5px; }
   .row-toolBox__fast-configuration .tool-button--double-icon--wrap.tool-button--distance-fix {
     margin-right: 10px; }
+.row-toolBox__fast-configuration .tool-button--distance-fix--small {
+  margin: 0 9px 0 4px; }
 .row-toolBox__fast-configuration .tool-button:not(.tool-button--double-icon) {
   padding: 0;
   overflow: hidden; }
@@ -3731,7 +3738,11 @@ ul {
   left: 0;
   font-size: 10px;
   font-family: 'Roboto', sans-serif;
-  display: none; }
+  opacity: 0;
+  visibility: hidden;
+  -webkit-transition: opacity 300ms;
+  -o-transition: opacity 300ms;
+  transition: opacity 300ms; }
   .rexlive-block-toolbox.top-tools {
     top: 0;
     z-index: 50; }
@@ -3742,7 +3753,8 @@ ul {
     top: 0;
     z-index: 10; }
   .rexlive-block-toolbox.focused {
-    display: block; }
+    opacity: 1;
+    visibility: visible; }
   .rexlive-block-toolbox .rexlive-top-block-tools {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -3884,7 +3896,7 @@ ul {
   margin-left: 15px; }
 
 .block-toolBox__editor-tools .tool-button--inline {
-  margin-left: 10px; }
+  margin-left: 15px; }
 
 .rexlive-block-toolbox .block-toolBox__config-tools {
   font-size: 10px; }
@@ -4596,11 +4608,11 @@ ul {
   background-color: #FF0040;
   border: none;
   overflow: visible;
-  -webkit-transition: -webkit-transform 100ms;
-  transition: -webkit-transform 100ms;
-  -o-transition: transform 100ms;
-  transition: transform 100ms;
-  transition: transform 100ms, -webkit-transform 100ms;
+  -webkit-transition: -webkit-transform 200ms;
+  transition: -webkit-transform 200ms;
+  -o-transition: transform 200ms;
+  transition: transform 200ms;
+  transition: transform 200ms, -webkit-transform 200ms;
   z-index: 20;
   position: absolute; }
   .circle-handle:hover {

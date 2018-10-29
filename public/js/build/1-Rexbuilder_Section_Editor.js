@@ -360,6 +360,7 @@ var Rexbuilder_Section_Editor = (function($) {
       showPalette: false,
       showAlpha: true,
       showInput: true,
+      showButtons: false,
       // containerClassName: "rexbuilder-materialize-wrap block-background-color-picker",
       show: function() {
         flagPickerUsed = false;
@@ -445,6 +446,7 @@ var Rexbuilder_Section_Editor = (function($) {
       showPalette: false,
       showAlpha: true,
       showInput: true,
+      showButtons: false,
       // containerClassName: "rexbuilder-materialize-wrap block-overlay-color-picker",
       show: function() {
         flagPickerUsed = false;

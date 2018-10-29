@@ -112,7 +112,7 @@ $tool_button_classes = 'tool-button';
 				</div>
 				<!-- // Add background video -->
 
-				<div class="tool-button tool-button--flat update-model-button tool-button--distance-fix locked tippy">
+				<div class="tool-button tool-button--flat update-model-button tool-button--distance-fix--small locked tippy">
 					<span class="unlocked-icon"><?php Rexbuilder_Utilities::get_icon('#B015-UnClosed'); ?></span>
 					<span class="locked-icon"><?php Rexbuilder_Utilities::get_icon('#B014-Closed'); ?></span>
 				</div>

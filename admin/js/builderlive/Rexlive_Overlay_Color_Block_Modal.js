@@ -60,6 +60,7 @@ var Overlay_Color_block_Modal = (function($) {
       showPalette: false,
       showAlpha: true,
       showInput: true,
+      showButtons: false,
       containerClassName:
         "rexbuilder-materialize-wrap block-overlay-color-picker",
       move: function(color) {

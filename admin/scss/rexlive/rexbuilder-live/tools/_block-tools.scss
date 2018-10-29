@@ -21,13 +21,17 @@
     z-index: 10;
   }
 
-  display: none;
   //height: 20px;
   //background-color: #444;
   // display: block;
+  // display: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 300ms;
   
   &.focused {
-    display: block;
+    opacity: 1;
+    visibility: visible;
   }
 
   .rexlive-top-block-tools {
@@ -158,7 +162,7 @@
 
 .block-toolBox__editor-tools {
   .tool-button--inline {
-    margin-left: 10px;
+    margin-left: 15px;
   }
 }
 

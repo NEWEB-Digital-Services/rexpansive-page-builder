@@ -276,6 +276,7 @@ var Rexbuilder_Section = (function($) {
       
       Rexbuilder_Section_Editor.updateRowTools( $newSection );
       Rexbuilder_Block_Editor.updateBlockToolsOnRow( $newSection );
+      Rexbuilder_Util_Editor.launchTooltips();
 
       var reverseData = {
         show: false,
@@ -661,6 +662,7 @@ var Rexbuilder_Section = (function($) {
       Rexbuilder_Util.$rexContainer.sortable("refresh");
 
       Rexbuilder_Section_Editor.updateRowTools( $newSection );
+      Rexbuilder_Util_Editor.launchTooltips();
 
       var reverseData = {
         show: false,

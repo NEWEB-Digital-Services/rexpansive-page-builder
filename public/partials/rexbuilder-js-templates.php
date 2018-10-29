@@ -36,19 +36,19 @@ $tool_button_classes = 'tool-button';
 
         <div class="bl_d-iflex bl_ai-c block-toolBox__config-tools">
             
-            <div class="tool-button tool-button--inline btn-flat builder-copy-block tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy block', 'rexpansive'); ?>">
+            <div class="tool-button tool-button--inline btn-flat builder-copy-block tippy" data-tippy-content="<?php _e('Copy block', 'rexpansive'); ?>">
                 <?php Rexbuilder_Utilities::get_icon('#Z004-Copy'); ?>
             </div>
 
             <div class="tool-button-floating">
-				<div class="tool-button builder-edit-block tooltipped" data-position="bottom" data-tooltip="<?php _e('Block settings', 'rexpansive');?>">
+				<div class="tool-button builder-edit-block tippy" data-tippy-content="<?php _e('Block settings', 'rexpansive');?>">
 					<?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>					
                 </div>
                 
 				<div class="tool-button_list">
 
                     <div class="tool-button--double-icon--wrap{% if(block.block_type == 'image') { %} tool-button--hide{% } %}">
-                        <div class="tool-button tool-button--inline edit-block-image tooltipped">
+                        <div class="tool-button tool-button--inline edit-block-image tippy">
                             <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
                         </div>
                     </div><!-- // Change Block image background -->
@@ -74,12 +74,12 @@ $tool_button_classes = 'tool-button';
                 </div>
             </div>
 
-            <div class="tool-button tool-button--inline builder-delete-block waves-effect tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete block', 'rexspansive'); ?>">
+            <div class="tool-button tool-button--inline builder-delete-block waves-effect tippy" data-tippy-content="<?php _e('Delete block', 'rexspansive'); ?>">
                 <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
             </div>
         </div>
     </div>
-    <div class="tool-button tool-button--black builder-delete-block waves-effect tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete block', 'rexspansive'); ?>">
+    <div class="tool-button tool-button--black builder-delete-block waves-effect tippy" data-tippy-content="<?php _e('Delete block', 'rexspansive'); ?>">
         <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
     </div>
 </div>
@@ -90,7 +90,7 @@ $tool_button_classes = 'tool-button';
     <div class="rexlive-bottom-block-tools bl_d-flex bl_jc-c">
         <div class="bl_d-iflex bl_ai-c block-toolBox__fast-configuration">
             <div class="tool-button--double-icon--wrap{% if(block.block_type != 'image') { %} tool-button--hide{% } %}">
-                <div class="tool-button tool-button--inline edit-block-image tooltipped">
+                <div class="tool-button tool-button--inline edit-block-image tippy">
                     <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
                 </div>
                 <div class="tool-button tool-button--inline tool-button--double-icon tool-button--deactivate deactivate-block-image-background">
@@ -290,7 +290,7 @@ $tool_button_classes = 'tool-button';
                     <label for="row-layout-fixed-{%=section.rexID%}"><span><?php Rexbuilder_Utilities::get_icon('#B011-Grid'); ?></span></label>
                 </div><!-- // Row layout -->
 
-                <div class="<?php echo $tool_button_classes_right; ?> tool-button--inline collapse-grid tooltipped">
+                <div class="<?php echo $tool_button_classes_right; ?> tool-button--inline collapse-grid tippy">
                     <?php Rexbuilder_Utilities::get_icon('#B006-Collapse'); ?>
                 </div>
             </div>
@@ -310,16 +310,16 @@ $tool_button_classes = 'tool-button';
                 </div>
 
                 <div class="tool-button-floating">
-                    <div class="<?php echo $tool_button_classes_right; ?> tooltipped active">
+                    <div class="<?php echo $tool_button_classes_right; ?> tippy active">
                         <?php Rexbuilder_Utilities::get_icon('#Z009-More'); ?>
                     </div>
         
                     <div class="tool-button_list">        
-                        <div class="tool-button add-new-block-slider tooltipped">
+                        <div class="tool-button add-new-block-slider tippy">
                             <?php Rexbuilder_Utilities::get_icon('#Z003-RexSlider'); ?>
                         </div>
 
-                        <div class="tool-button tooltipped add-new-section" data-new-row-position="after">
+                        <div class="tool-button tippy add-new-section" data-new-row-position="after">
                             <?php Rexbuilder_Utilities::get_icon('#B016-New-Adjacent-Row'); ?>
                         </div>
                     </div>
@@ -331,7 +331,7 @@ $tool_button_classes = 'tool-button';
                 <div class="bl_d-iflex bl_ai-c row-toolBox__tools row-toolBox__fast-configuration">
 
                     <div class="tool-button--double-icon--wrap tool-button--distance-fix tool-button--hide">
-                        <div class="<?php echo $tool_button_classes; ?> tool-button--inline edit-row-image-background tooltipped" data-position="bottom" data-tooltip="" value="">
+                        <div class="<?php echo $tool_button_classes; ?> tool-button--inline edit-row-image-background tippy" data-tippy-content="" value="">
                             <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
                         </div>
                         <div class="tool-button tool-button--inline tool-button--double-icon tool-button--deactivate deactivate-row-image-background">
@@ -367,7 +367,7 @@ $tool_button_classes = 'tool-button';
                     </div>
                     <!-- // Add background video -->
 
-                    <div class="tool-button tool-button--flat update-model-button tool-button--distance-fix locked">
+                    <div class="tool-button tool-button--flat update-model-button tool-button--distance-fix--small locked">
                         <span class="unlocked-icon"><?php Rexbuilder_Utilities::get_icon('#B015-UnClosed'); ?></span>
                         <span class="locked-icon"><?php Rexbuilder_Utilities::get_icon('#B014-Closed'); ?></span>
                     </div>
@@ -375,25 +375,25 @@ $tool_button_classes = 'tool-button';
                 </div><!-- // fast configuration elements -->
 
                 <div class="bl_d-iflex bl_ai-c row-toolBox__tools row-toolBox__standard-configuration">
-                    <div class="<?php echo $tool_button_classes_right; ?> tool-button--inline builder-copy-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy row', 'rexpansive');?>">
+                    <div class="<?php echo $tool_button_classes_right; ?> tool-button--inline builder-copy-row tippy" data-tippy-content="<?php _e('Copy row', 'rexpansive');?>">
                         <?php Rexbuilder_Utilities::get_icon('#Z004-Copy'); ?>
                     </div>
                     
-                    <div class="<?php echo $tool_button_classes_right; ?> tool-button--inline builder-move-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Move row', 'rexpansive');?>">
+                    <div class="<?php echo $tool_button_classes_right; ?> tool-button--inline builder-move-row tippy" data-tippy-content="<?php _e('Move row', 'rexpansive');?>">
                         <?php Rexbuilder_Utilities::get_icon('#B007-Move'); ?>
                     </div>
 
                     <div class="tool-button-floating">
-                        <div class="<?php echo $tool_button_classes_right; ?> builder-section-config tool-button--flat--distance-fix" data-position="bottom" data-tooltip="<?php _e('Row settings', 'rexpansive');?>">
+                        <div class="<?php echo $tool_button_classes_right; ?> builder-section-config tool-button--flat--distance-fix" data-tippy-content="<?php _e('Row settings', 'rexpansive');?>">
                             <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>					
                         </div>
                         <div class="tool-button_list">
                             
-                            <div class="tool-button tool-button--full edit-background-section tooltipped tool-button--hide">
+                            <div class="tool-button tool-button--full edit-background-section tippy tool-button--hide">
                                 <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
                             </div>
 
-                            <div class="tool-button tool-button--full edit-row-image-background tooltipped">
+                            <div class="tool-button tool-button--full edit-row-image-background tippy">
                                 <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
                             </div>
 
@@ -414,13 +414,13 @@ $tool_button_classes = 'tool-button';
                                 <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
                             </div>
                             
-                            <div class="tool-button open-model tooltipped">
+                            <div class="tool-button open-model tippy">
                                 <?php Rexbuilder_Utilities::get_icon('#B005-RexModel'); ?>
                             </div>
                         </div>
                     </div>
 
-                    <div class="<?php echo $tool_button_classes_right; ?> tool-button--inline builder-delete-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexspansive');?>">
+                    <div class="<?php echo $tool_button_classes_right; ?> tool-button--inline builder-delete-row tippy" data-tippy-content="<?php _e('Delete row', 'rexspansive');?>">
                         <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                     </div>
                     <!-- // remove section -->

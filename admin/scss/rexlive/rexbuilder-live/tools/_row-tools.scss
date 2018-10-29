@@ -134,6 +134,7 @@
   outline: 2px solid $palette-color-1;
   opacity: 0;
   z-index: 1;
+  transition: opacity 200ms;
 }
 
 .builder-move-row {
@@ -156,6 +157,10 @@
     &.tool-button--distance-fix {
       margin-right: 10px;
     }
+  }
+
+  .tool-button--distance-fix--small {
+    margin: 0 9px 0 4px;
   }
 
   .tool-button {
