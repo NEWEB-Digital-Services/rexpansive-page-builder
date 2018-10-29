@@ -497,7 +497,9 @@ var Rexbuilder_Section_Editor = (function($) {
     $picker.spectrum('container').append($close);
 
     $close.on('click', function(e) {
+      e.stopPropagation();
       e.preventDefault();
+      // $picker.spectrum('revert');
       $picker.spectrum('hide');
     });
   };

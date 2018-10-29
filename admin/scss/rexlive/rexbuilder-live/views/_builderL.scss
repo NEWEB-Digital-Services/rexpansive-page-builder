@@ -1,27 +1,3 @@
-::selection {
-  color: red;
-  background: yellow;
-}
-
-.medium-insert-images.medium-insert-images-left,
-.medium-insert-images-left.mediumInsert,
-.mediumInsert.small {
-  max-width: 100%;
-}
-
-.medium-insert-images.medium-insert-images-right,
-.medium-insert-images-right.mediumInsert,
-.mediumInsert.small {
-  max-width: 100%;
-}
-
-.medium-insert-images figure,
-.mediumInsert figure,
-.medium-insert-embeds figure,
-.mediumInsert-embeds figure {
-  display: inline-block;
-}
-
 .image-text-wrap {
   width: 100%;
   height: 100%;

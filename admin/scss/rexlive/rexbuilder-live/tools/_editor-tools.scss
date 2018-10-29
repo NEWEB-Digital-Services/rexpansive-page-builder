@@ -1,3 +1,26 @@
+::selection {
+  background: rgba($palette-color-1, 0.5);
+}
+
+.medium-insert-images.medium-insert-images-left,
+.medium-insert-images-left.mediumInsert,
+.mediumInsert.small {
+  max-width: 100%;
+}
+
+.medium-insert-images.medium-insert-images-right,
+.medium-insert-images-right.mediumInsert,
+.mediumInsert.small {
+  max-width: 100%;
+}
+
+.medium-insert-images figure,
+.mediumInsert figure,
+.medium-insert-embeds figure,
+.mediumInsert-embeds figure {
+  display: inline-block;
+}
+
 .medium-editor-action {
   text-transform: uppercase;
   font-weight: normal;
@@ -38,18 +61,50 @@
   background-size: contain;
   background-position: center;
   background-repeat: no-repeat;
+  width: 20px;
+  height: 20px;
+  display: block;
+  border-radius: 50%;
+  border: 2px solid #fff;
   .meditor-color-picker__placeholder {
     opacity:0;
+  }
+}
+
+.meditor-color-picker--preview {
+  width: 20px;
+  height: 20px;
+  display: block;
+  position: absolute;
+  top: 9px;
+  left: 10px;
+  border: 2px solid white;
+  border-radius: 50%;
+  z-index: 10;
+}
+
+.meditor-spectrum-color-picker {
+  padding: 30px;
+  box-shadow: $tools-area-shadow;
+  .sp-palette-container {
+    border: none;
+  }
+  .sp-choose,
+  .sp-cancel {
+    display: none;
   }
 }
 
 .medium-editor-toolbar {
   li {
     &:not(:last-child) {
-      border-right: 1px solid $palette-color-4;
+      border-right: 1px solid #313131;
     }
     > .medium-editor-action {
       padding: 10px;
+      &.medium-editor-action--color-picker {
+        padding: 9px 10px;
+      }
     }
   }
 }
@@ -68,6 +123,11 @@
   }
   .drop-down-icon {
     margin-right: 5px;
+    font-size: 13px;
+    &.l-svg-icons > svg {
+      fill: #afafaf;
+    }
+    // @include fill-icon(#afafaf);
   }
   &:hover {
     .me__action-list {
@@ -80,3 +140,32 @@
 // .medium-editor-button-first {
 //   border-left-radius:50%;
 // }
+
+.rex-modal__outside-footer {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  text-align: center;
+  transform: translateY(50%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .tool-button {
+    margin: 0 10px;
+  }
+
+  .tool-button--save {
+    padding: 0;
+    @include page-edited-ui();
+
+    @include fill-icon($palette-color-1);
+    .l-svg-icons {
+      font-size: 30px;
+    }
+    &:hover {
+      @include fill-icon($palette-color-1);
+    }
+  }
+}

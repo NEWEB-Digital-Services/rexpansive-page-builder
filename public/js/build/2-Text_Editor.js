@@ -48,7 +48,7 @@ var TextEditor = (function($) {
    * //Color picker extension
    * Gets the color of the current text selection
    */
-  var getCurrentTextColor = function() {
+  var getCurrentTextColor = function() {  
     return $(editorInstance.getSelectedParentElement()).css("color");
   };
 
@@ -64,20 +64,25 @@ var TextEditor = (function($) {
   };
 
   var initPicker = function(element) {
-    $(element).spectrum({
+    var $picker = $(element);
+    var $picker_preview = $picker.find('.meditor-color-picker--preview');
+    $picker.spectrum({
       allowEmpty: true,
-      color: "#f00",
+      color: "#000",
       showInput: true,
       showAlpha: true,
       showPalette: true,
       showInitial: true,
       hideAfterPaletteSelect: true,
+      containerClassName: 'meditor-spectrum-color-picker',
       preferredFormat: "hex3",
       change: function(color) {
         setColor(color);
+        $picker_preview.css('background-color',color.toRgbString());
       },
       hide: function(color) {
         setColor(color);
+        $picker_preview.css('background-color',color.toRgbString());
       },
       palette: [
         ["#000", "#444", "#666", "#999", "#ccc", "#eee", "#f3f3f3", "#fff"],
@@ -144,6 +149,26 @@ var TextEditor = (function($) {
         ]
       ]
     });
+
+    var close = tmpl('tmpl-tool-close', {});
+    var $close = $(close);
+    $picker.spectrum('container').append($close);
+
+    var choose = tmpl('tmpl-tool-save', {});
+    var $choose = $(choose);
+    $picker.spectrum('container').append($choose);
+
+    $close.on('click', function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      $picker.spectrum('container').find('.sp-cancel').trigger('click');
+    });
+
+    $choose.on('click', function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      $picker.spectrum('container').find('.sp-choose').trigger('click');
+    });
   };
 
   /**
@@ -158,13 +183,15 @@ var TextEditor = (function($) {
     init: function() {
       this.button = this.document.createElement("button");
       this.button.classList.add("medium-editor-action");
-      this.button.innerHTML = "<span class='meditor-color-picker'><span class='meditor-color-picker__placeholder'>P</span></span>";
+      this.button.classList.add("medium-editor-action--color-picker");
+      this.button.innerHTML = "<span class='meditor-color-picker'><span class='meditor-color-picker__placeholder'>P</span></span><span class='meditor-color-picker--preview'></span>";
 
       // init spectrum color picker for this button
       initPicker(this.button);
 
       // use our own handleClick instead of the default one
       this.on(this.button, "click", this.handleClick.bind(this));
+      this.subscribe("showToolbar", this.handleShowToolbar.bind(this));
     },
     handleClick: function(event) {
       // keeping record of the current text selection
@@ -187,6 +214,18 @@ var TextEditor = (function($) {
 
       if (action) {
         this.execAction(action);
+      }
+    },
+
+    handleShowToolbar: function(event) {
+      // var color = $(this.button).spectrum("get").toRgbString();
+      // console.log(color);
+      var $element = $(editorInstance.getSelectedParentElement());
+      var inline_color = $element.prop('style')['color'];
+      if( "" !== inline_color ) {
+        $(this.button).find('.meditor-color-picker--preview').css('background-color', getCurrentTextColor());
+      } else {
+        $(this.button).find('.meditor-color-picker--preview').css('background-color', '');
       }
     }
   });

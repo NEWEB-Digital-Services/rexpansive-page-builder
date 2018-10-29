@@ -476,3 +476,17 @@ $tool_button_classes = 'tool-button';
 <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
 </div>
 </script>
+
+<script type="text/x-tmpl" id="tmpl-tool-save">
+<div class="rex-modal__outside-footer">
+    <div id="rex-model__add-new-model" class="tool-button tool-button--inline tool-button--save tippy"
+        data-tippy-content="Create Model" tabindex="0">
+        <span class="btn-save--edited"> 
+        <?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?>
+        </span>
+        <span class="btn-save--saved"> 
+        <?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?>
+        </span>
+    </div>
+</div>
+</script>
