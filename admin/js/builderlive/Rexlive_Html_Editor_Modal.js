@@ -26,7 +26,7 @@ var HtmlEditor_Modal = (function($) {
   var _linkDocumentListeners = function() {
     html_editor_modal_properties.$save_button.on("click", function(e) {
       e.preventDefault();
-      
+
       var customHTML = editor.getValue();
       var data_customHTML = {
         eventName: "rexlive:SetcustomHTML",
@@ -74,6 +74,9 @@ var HtmlEditor_Modal = (function($) {
     editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/html");
     editor.getSession().setUseWrapMode(true);
+
+    // var beautify = ace.require("ace/ext/beautify"); // get reference to extension
+    // beautify.beautify(editor.session);
     
     defaultHTML = "";
     _linkDocumentListeners();
