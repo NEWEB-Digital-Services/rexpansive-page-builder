@@ -111,6 +111,7 @@ body.rexpansive-editor {
 
   .tool-button--save {
     padding: 0;
+    background-color: transparent;
     @include page-edited-ui();
 
     @include fill-icon($palette-color-1);

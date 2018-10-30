@@ -31,8 +31,10 @@ defined('ABSPATH') or exit;
         </div>
         <div class="rex-modal__outside-footer">
             <div id="css-editor-save" class="tool-button tool-button--inline tool-button--save rex-save-button tippy" data-tippy-content="<?php esc_attr_e( 'Save', 'rexpansive' ); ?>">
-                <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
-                <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                <div class="btn-save--wrap">
+                    <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                    <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                </div>
             </div>
         </div>
     </div>
@@ -150,8 +152,10 @@ defined('ABSPATH') or exit;
         <!-- </div> -->
         <div class="rex-modal__outside-footer">
             <div id="rex-insert-video-block-save" class="tool-button tool-button--inline tool-button--save rex-save-button tippy" data-tippy-content="<?php esc_attr_e( 'Insert Video', 'rexpansive' ); ?>">
-                <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
-                <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                <div class="btn-save--wrap">
+                    <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                    <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                </div>
             </div>
         </div>
     </div>
@@ -1146,8 +1150,10 @@ defined('ABSPATH') or exit;
         </div> -->
         <div class="rex-modal__outside-footer">
             <div id="rex-insert-video-block-save" class="tool-button tool-button--inline tool-button--save rex-save-button tippy" data-tippy-content="<?php esc_attr_e( 'Save Slider', 'rexpansive' ); ?>">
-                <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
-                <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                <div class="btn-save--wrap">
+                    <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                    <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                </div>
             </div>
             <div class="tool-button tool-button--inline tool-button--cancel tool-button--modal rex-undo-button tippy" data-tippy-content="<?php esc_attr_e( 'Undo', 'rexpansive' ); ?>" data-slider-to-edit="">
                 <?php Rexbuilder_Utilities::get_icon('#A003-Undo'); ?>
@@ -1231,8 +1237,10 @@ defined('ABSPATH') or exit;
         </div> -->
         <div class="rex-modal__outside-footer">
             <div class="tool-button tool-button--inline tool-button--save rex-save-button tippy" data-tippy-content="<?php esc_attr_e( 'Save Content', 'rexpansive' ); ?>" value="">
-                <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
-                <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                <div class="btn-save--wrap">
+                    <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                    <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                </div>
             </div>
         </div>
     </div>
@@ -1494,8 +1502,10 @@ defined('ABSPATH') or exit;
         </div>
         <div class="rex-modal__outside-footer">
             <div id="editor-save" class="tool-button tool-button--inline tool-button--save rex-save-button tippy" data-tippy-content="<?php esc_attr_e( 'Save Content', 'rexpansive' ); ?>">
-                <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
-                <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                <div class="btn-save--wrap">
+                    <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                    <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                </div>
             </div>
         </div>
     </div>
@@ -1523,8 +1533,10 @@ defined('ABSPATH') or exit;
 
         <div class="rex-modal__outside-footer">
             <div id="rex-model__add-new-model" class="tool-button tool-button--inline tool-button--save tippy" data-tippy-content="<?php esc_attr_e( 'Create Model', 'rexpansive' ); ?>">
-                <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
-                <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                <div class="btn-save--wrap">
+                    <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                    <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                </div>
             </div>
         </div>
     </div>
@@ -1596,7 +1608,7 @@ defined('ABSPATH') or exit;
                 <span class="rex-button save-page"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
             </div>
             <div class="tool-button tool-button--inline tool-button--cancel tool-button--modal rex-change-layout-option tippy" data-rex-option="continue" data-tippy-content="<?php _e('No and Continue','rexpansive'); ?>">
-                <span class="rex-button continue"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
+                <span class="rex-button continue btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
             </div>
         </div>
     </div>

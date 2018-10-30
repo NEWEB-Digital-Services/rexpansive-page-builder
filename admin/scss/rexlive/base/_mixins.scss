@@ -112,6 +112,21 @@
 
 @mixin page-edited-ui {
   position: relative;
+  .btn-save--wrap {
+    display: block;
+    &:before {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 1px;
+      top: 1px;
+      right: 1px;
+      background-color: white;
+      border-radius: 50%;
+      z-index: -1;
+      bottom: 1px;
+    }
+  }
   .btn-save--edited {
     display: inline-block;
     visibility: hidden;

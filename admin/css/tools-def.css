@@ -14982,7 +14982,21 @@ body.rexpansive-editor .lean-overlay {
     margin: 0 10px; }
   .rex-modal__outside-footer .tool-button--save {
     padding: 0;
+    background-color: transparent;
     position: relative; }
+    .rex-modal__outside-footer .tool-button--save .btn-save--wrap {
+      display: block; }
+      .rex-modal__outside-footer .tool-button--save .btn-save--wrap:before {
+        content: '';
+        display: block;
+        position: absolute;
+        left: 1px;
+        top: 1px;
+        right: 1px;
+        background-color: white;
+        border-radius: 50%;
+        z-index: -1;
+        bottom: 1px; }
     .rex-modal__outside-footer .tool-button--save .btn-save--edited {
       display: inline-block;
       visibility: hidden;
@@ -15454,6 +15468,19 @@ input:disabled + .rex_edit_title_slider {
   position: relative;
   padding: 0 10px;
   margin-right: 10px; }
+  .btn-save .btn-save--wrap {
+    display: block; }
+    .btn-save .btn-save--wrap:before {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 1px;
+      top: 1px;
+      right: 1px;
+      background-color: white;
+      border-radius: 50%;
+      z-index: -1;
+      bottom: 1px; }
   .btn-save .btn-save--edited {
     display: inline-block;
     visibility: hidden;
