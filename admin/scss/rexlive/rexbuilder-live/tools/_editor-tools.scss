@@ -71,15 +71,52 @@
     }
   }
   .medium-editor-toolbar-close {
-    font-size: 10px;
+    #{$icon-class} {
+      font-size: 10px;
+    }
   }
   .medium-editor-toolbar-save {
-    font-size: 16px;
     .tool-button {
       padding: 0;
       @include fill-icon($palette-color-1);
     }
+    #{$icon-class} {
+      font-size: 20px;
+    }
   }
+  a {
+    margin: 0 0 0 15px;
+    font-size: 0;
+    line-height: 1;
+  }
+}
+
+.medium-editor-anchor-preview {
+  &.medium-toolbar-arrow-over{
+    &:before {
+      border-color: $tooltip-background transparent $tooltip-background transparent;
+    }
+  }
+  a {
+    font-size: 9px;
+    letter-spacing: 1px;
+    font-weight: 600;
+    text-transform: uppercase;
+    background-color: $tooltip-background;
+    border-radius: 4px;
+    padding: .2rem .4rem;
+    margin: 0;
+    display: block;
+    @include live-fonts();
+    &:hover {
+      color: #fff;
+    }
+  }
+}
+
+.medium-editor-toolbar-form-active {
+  display: flex;
+  align-items: center;
 }
 
 .medium-toolbar-arrow-under{
