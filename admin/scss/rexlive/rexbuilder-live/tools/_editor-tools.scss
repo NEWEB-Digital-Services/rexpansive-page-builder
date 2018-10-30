@@ -53,7 +53,9 @@
 .medium-editor-toolbar-form {
   .medium-editor-toolbar-input {
     @include live-fonts();
-    border: 1px solid #000;
+    border: 2px solid #000;
+    border-radius: 20px;
+    box-shadow: $modal-shadow;
     &::-webkit-input-placeholder {
       @include live-fonts();
     }
@@ -67,7 +69,9 @@
       @include live-fonts();
     }
     &:focus {
-      border: 1px solid #000;
+      border-radius: 20px;
+      border: 2px solid #000;
+      box-shadow: $modal-shadow;
     }
   }
   .medium-editor-toolbar-close {
@@ -164,7 +168,72 @@
   }
 }
 
+@mixin me-tool-btn {
+  padding: 5px;
+  border-radius: 50%;
+  background-color: #fff;
+}
+
+.medium-insert-buttons {
+  left: 50%!important;
+  position: absolute;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+
+  .medium-insert-buttons-addons {
+    display: flex;
+    margin: 0;
+    position: absolute;
+    left: 100%;
+    list-style-type: none;
+    align-items: center;
+    font-size: 0;
+    li {
+      margin-left: 15px;
+    }
+  }
+  .medium-insert-buttons-show {
+    @include me-tool-btn();
+    background-color: $palette-color-1;
+    width: 30px;
+    height: 30px;
+    @include live-fonts();
+    font-weight: 100;
+    text-align: center;
+    letter-spacing: 0;
+    font-size: 30px;
+    line-height: 20px;
+    @include bl-btn--hover-shadow;
+    // &:hover {
+    //   + .medium-insert-buttons-addons {
+    //     display: flex!important;
+    //   }
+    // }
+  }
+  .medium-insert-action {
+    @include me-tool-btn();
+    font-size: 10px;
+    @include fill-icon(#000);
+    @include bl-btn--hover-shadow;
+    
+    &[data-addon="wordpressImages"] {
+      padding: 0;
+      overflow: hidden;
+      font-size: 20px;
+    }
+  }
+}
+
+.medium-editor-element:focus {
+  outline: none;
+}
+
 .medium-editor-toolbar {
+  .medium-editor-toolbar-actions {
+    border-radius: 20px;
+    box-shadow: $modal-shadow;
+  }
   li {
     &:not(:last-child) {
       border-right: 1px solid #313131;
@@ -205,11 +274,25 @@
   }
 }
 
+.medium-insert-embeds, 
+.mediumInsert-embeds {
+  max-width: 400px;
+  margin: 0 auto;
+  border: 1px solid black;
+  background-color: #fff;
+  p {
+    margin: 0!important;
+  }
+}
 
 // .medium-editor-button-first {
 //   border-left-radius:50%;
 // }
 
+/**
+ *  Style for the color picker save button
+ *  Keep it!
+ */
 .rex-modal__outside-footer {
   position: absolute;
   width: 100%;

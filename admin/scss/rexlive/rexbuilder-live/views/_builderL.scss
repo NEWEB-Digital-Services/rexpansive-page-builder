@@ -98,10 +98,6 @@
 //   display: block;
 // }
 
-.medium-editor-element:focus {
-  outline: none;
-}
-
 // .rexpansive_section .full-disposition.focused,
 // .rexpansive_section .center-disposition.focused {
 //   overflow: visible;
@@ -495,10 +491,6 @@
 
 .rex-hide-section {
   display: none;
-}
-.medium-insert-buttons {
-  position: absolute;
-  right: 0;
 }
 
 .rex-video-vimeo-wrap,

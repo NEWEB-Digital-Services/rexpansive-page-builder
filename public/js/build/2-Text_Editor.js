@@ -26,12 +26,15 @@ var TextEditor = (function($) {
   var _addMediumInsertToElement = function($textWrap) {
     $textWrap.mediumInsert({
       editor: editorInstance,
+      label: "<i class='l-svg-icons'><svg><use xlink:href='#Z001-Plus'></use></svg></i>",
       addons: {
         images: false,
         embeds: {
-          oembedProxy: "https://medium.iframe.ly/api/oembed?iframe=1"
+          oembedProxy: "https://medium.iframe.ly/api/oembed?iframe=1",
+          label: "<i class='l-svg-icons'><svg><use xlink:href='#Z006-Video'></use></svg></i>"
         },
         wordpressImages: {
+          label: "<i class='l-svg-icons'><svg><use xlink:href='#Z002-Image-Full'></use></svg></i>",
           uploadScript: null,
           deleteScript: null,
           captions: false,
@@ -912,6 +915,17 @@ var TextEditor = (function($) {
         .eq(0)
         .unwrap();
     });
+
+    // Rexbuilder_Util.$document.on("mouseenter", ".medium-insert-buttons-show", function(e) {
+    //   var $el = $(this);
+    //   if ($el.find('.medium-insert-buttons').attr('data-active-addon') === 'images') {
+    //     $el.find('.medium-insert-buttons').find('button[data-addon="images"]').click();
+    //     return;
+    //   }
+
+    //   $el.find('.medium-insert-buttons-addons').fadeToggle();
+    //   $el.find('.medium-insert-buttons-show').toggleClass('medium-insert-buttons-rotate');
+    // });
   };
 
   var _addEditableInputEvents = function() {
@@ -969,6 +983,7 @@ var TextEditor = (function($) {
           "formattingTags",
           {
             name: 'anchor',
+            // targetCheckbox: true,
             contentDefault: '<i class="l-svg-icons"><svg><use xlink:href="#C001-Link"></use></svg></i>',
             formSaveLabel: '<span class="tool-button tool-button--inline"><i class="l-svg-icons"><svg><use xlink:href="#A006-Save"></use></svg></i></span>',
             formCloseLabel: '<span class="tool-button tool-button--inline tool-button--black"><i class="l-svg-icons"><svg><use xlink:href="#Z003-Close"></use></svg></i></span>'
