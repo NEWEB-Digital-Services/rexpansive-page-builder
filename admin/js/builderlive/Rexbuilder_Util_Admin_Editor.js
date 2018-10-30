@@ -136,11 +136,11 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       }
 
       if (event.data.eventName == "rexlive:editBlockOptions") {
-        BlockOptions_Modal.openBlockOptionsModal(event.data.activeBlockData);
+        BlockOptions_Modal.openBlockOptionsModal(event.data.activeBlockData );
       }
 
       if (event.data.eventName == "rexlive:editBlockContentPosition") {
-        Block_Content_Positions_Modal.openBlockContentPositionModal(event.data.activeBlockData);
+        Block_Content_Positions_Modal.openBlockContentPositionModal(event.data.activeBlockData, event.data.mousePosition);
       }
 
       if (event.data.eventName == "rexlive:editBlockImageSettings") {

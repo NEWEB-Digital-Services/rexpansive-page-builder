@@ -851,7 +851,7 @@ defined('ABSPATH') or exit;
 <div class="rex-modal-wrap">
     <div id="rex-block-content-position-editor" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <?php Rexbuilder_Utilities::close_button(); ?>
-        <div class="background-options-area modal-content">            
+        <div class="background-options-area modal-content"> 
             <div id="block-set-class-wrap" class="bl_modal-row">
                 <div id="block-content-positions-wrapper" class="bl_modal__option-wrap bl_jc-c">
                     <div class="radio-group__wrap">
@@ -902,6 +902,7 @@ defined('ABSPATH') or exit;
                 <!-- POSITIONS -->
             </div>
         </div>
+        <?php include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-modals-bottom-arrow.php'; ?>
     </div>
 </div>
 <!-- Block settings background settings -->
@@ -1625,7 +1626,7 @@ defined('ABSPATH') or exit;
         </div>
         <div class="rex-modal__outside-footer">
             <div class="tool-button tool-button--inline tool-button--save rex-change-layout-option tippy" data-tippy-content="<?php _e('Yes and Continue','rexpansive'); ?>" data-rex-option="save">
-                <span class="rex-button save-page"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                <span class="rex-button save-page btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
             </div>
             <div class="tool-button tool-button--inline tool-button--cancel tool-button--modal rex-change-layout-option tippy" data-rex-option="continue" data-tippy-content="<?php _e('No and Continue','rexpansive'); ?>">
                 <span class="rex-button continue btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>

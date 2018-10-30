@@ -22,6 +22,17 @@ var Rexlive_Base_Settings = (function($) {
     return $('<div/>').text(value).html();
   }
 
+  // function to detect the viewport size
+  var _viewport = function() {
+    var e = window,
+      a = "inner";
+    if (!("innerWidth" in window)) {
+      a = "client";
+      e = document.documentElement || document.body;
+    }
+    return { width: e[a + "Width"], height: e[a + "Height"] };
+  };
+
   var _init = function() {
     this.$document = $(document);
     _tooltips();
@@ -30,6 +41,7 @@ var Rexlive_Base_Settings = (function($) {
   return {
     init: _init,
     htmlDecode: htmlDecode,
-    htmlEncode: htmlEncode
+    htmlEncode: htmlEncode,
+    viewport: _viewport
   };
 })(jQuery);

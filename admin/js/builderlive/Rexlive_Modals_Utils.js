@@ -14,10 +14,10 @@ var Rexlive_Modals_Utils = (function($) {
    * @param {Array}
    *            additional_class Array of additional classes
    */
-  var _openModal = function($target, target_only, additional_class) {
+  var _openModal = function($target, target_only, additional_class, set_position) {
     target_only = typeof target_only !== "undefined" ? target_only : false;
-    additional_class =
-      typeof additional_class !== "undefined" ? additional_class : [];
+    additional_class = typeof additional_class !== "undefined" ? additional_class : [];
+    set_position = typeof set_position !== "undefined" ? set_position : false;
 
     if (!target_only) {
       $("body").addClass("rex-modal-open");
@@ -35,6 +35,10 @@ var Rexlive_Modals_Utils = (function($) {
       for (var i = 0; i < additional_class.length; i++) {
         $target.find(".rex-modal").addClass(additional_class[i]);
       }
+    }
+
+    if( set_position ) {
+      _positionModal($target.find(".rex-modal"), {x:100,y:0});
     }
 
     _resetModalDimensions($target.find(".rex-modal"));
@@ -80,6 +84,11 @@ var Rexlive_Modals_Utils = (function($) {
     $target.css("height", "auto");
     $target.css("width", "auto");
   };
+
+  var _positionModal = function($target,coord) {
+    $target.css("left",coord.x-(Rexlive_Base_Settings.viewport().width/2)+"px");
+    $target.css("top",coord.y-($target.height()/2)+"px");
+  }
 
   var _listen_events = function() {
     /**
@@ -138,6 +147,7 @@ var Rexlive_Modals_Utils = (function($) {
     openModal: _openModal,
     closeModal: _closeModal,
     resetModalDimensions: _resetModalDimensions,
-    close_focus_modal: _close_focus_modal
+    close_focus_modal: _close_focus_modal,
+    positionModal: _positionModal
   };
 })(jQuery);

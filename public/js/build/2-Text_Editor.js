@@ -584,6 +584,7 @@ var TextEditor = (function($) {
     handleClick: function(event) {
       event.preventDefault();
       event.stopPropagation();
+
       $(this.base.getFocusedElement()).parents('.grid-stack-item').find('.edit-block-content-position').trigger('click');
     }
   });
