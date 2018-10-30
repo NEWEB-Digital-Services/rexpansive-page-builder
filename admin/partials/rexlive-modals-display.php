@@ -42,6 +42,26 @@ defined('ABSPATH') or exit;
 <!-- CSS Editor -->
 
 <div class="rex-modal-wrap">
+    <div id="rex-html-text-editor" class="rexbuilder-materialize-wrap rex-modal rex-modal-draggable setting-edited">
+        <div class="tool-button tool-button--inline tool-button--black tool-button--close rex-modal__close-button tippy" data-tippy-content="<?php esc_attr_e( 'Close', 'rexpansive' ); ?>">
+            <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+        </div>
+        <div class="modal-content">
+            <div id="rex-html-ace-editor" class="rex-ace-editor"></div>
+        </div>
+        <div class="rex-modal__outside-footer">
+            <div class="tool-button tool-button--inline tool-button--save rex-modal__save-button tippy" data-tippy-content="<?php esc_attr_e( 'Save', 'rexpansive' ); ?>">
+                <div class="btn-save--wrap">
+                    <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                    <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- HTML Editor -->
+
+<div class="rex-modal-wrap">
     <div id="rex-insert-new-video-block" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <?php Rexbuilder_Utilities::close_button(); ?>
         <div class="modal-content">

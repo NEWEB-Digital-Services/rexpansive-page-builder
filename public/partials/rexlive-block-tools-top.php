@@ -17,8 +17,8 @@ defined( 'ABSPATH' ) or exit;
             <div class="el-size-viewer tool-indicator"></div>
         </div>
 
-        <div class="bl_d-iflex bl_ai-c block-toolBox__editor-tools tippy" data-tippy-content="<?php _e('Text','rexpansive'); ?>">
-            <div class="tool-button tool-button--inline edit-block-content<?php echo ( "" !== trim( $content ) ? ' tool-button--hide' : '' ); ?>">
+        <div class="bl_d-iflex bl_ai-c block-toolBox__editor-tools">
+            <div class="tool-button tool-button--inline edit-block-content<?php echo ( "" !== trim( $content ) ? ' tool-button--hide' : '' ); ?> tippy" data-tippy-content="<?php _e('Text','rexpansive'); ?>">
                 <?php Rexbuilder_Utilities::get_icon('#B003-Text'); ?>
             </div>
             <div class="tool-button tool-button--inline builder-edit-slider<?php echo ( !$block_has_slider ? ' tool-button--hide' : '' ); ?> tippy" data-tippy-content="<?php _e('RexSlider','rexpansive'); ?>">

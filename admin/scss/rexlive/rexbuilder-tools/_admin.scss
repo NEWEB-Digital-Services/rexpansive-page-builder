@@ -2742,25 +2742,6 @@ input[id^="section-fixed"] + label i {
   transform: translate(0, -20px);
 }
 
-/* --------- ACE EDITORS ------------- */
-#rex-css-editor {
-  width: 40%;
-  max-width: 40%;
-  /*transform: none;*/
-  background-color: #000;
-}
-
-#rex-css-editor .modal-content {
-  padding: 0;
-  border: 15px solid #000;
-}
-
-.rex-modal .rex-ace-editor {
-  position: relative;
-  width: 100%;
-  height: 400px;
-}
-
 /* -------- OVERLAY -------- */
 .lean-overlay {
   z-index: 1002;

@@ -519,6 +519,18 @@ var Rexbuilder_Block_Editor = (function($) {
   });
 
   /**
+   * Triggering the event on MediumEditor when the user close the HTML editor window pressing the saving button
+   * @since 2.0.0
+   */
+  $(document).on('rexlive:SetcustomHTML',function(e) {
+    TextEditor.triggerMEEvent({
+      name:"rexlive:mediumEditor:saveHTMLContent", 
+      data: e.settings.data_to_send, 
+      editable: null
+    });
+  });
+
+  /**
    * Launching the spectrum color picker on an input element, for the block background color
    * @param {DOM element} el input element in which launch the color picker
    * @since 2.0.0

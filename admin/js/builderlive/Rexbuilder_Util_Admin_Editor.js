@@ -115,6 +115,10 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         CssEditor_Modal.openModal(event.data.currentStyle);
       }
 
+      if (event.data.eventName == "rexlive:openHTMLEditor") {
+        HtmlEditor_Modal.openModal(event.data.htmlContent);
+      }
+
       if (event.data.eventName == "rexlive:openLiveImageUploader") {
         Rexlive_MediaUploader.openImageLiveMediaUploader(
           event.data.live_uploader_data

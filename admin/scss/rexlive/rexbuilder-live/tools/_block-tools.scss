@@ -104,14 +104,19 @@
 .perfect-grid-gallery[data-row-separator-top="12"],
 .perfect-grid-gallery[data-row-separator-top="13"],
 .perfect-grid-gallery[data-row-separator-top="14"],
-.perfect-grid-gallery[data-row-separator-top="15"] {
+.perfect-grid-gallery[data-row-separator-top="15"],
+.perfect-grid-gallery[data-row-separator-top="16"],
+.perfect-grid-gallery[data-row-separator-top="17"],
+.perfect-grid-gallery[data-row-separator-top="18"],
+.perfect-grid-gallery[data-row-separator-top="19"],
+.perfect-grid-gallery[data-row-separator-top="20"] {
   .grid-stack-item[data-row="1"] {
     .rexlive-top-block-tools {
       padding: 0;
     }
     .rexlive-block-toolbox {
       &.top-tools {
-        top: 20px;
+        top: 25px;
       }
       .block-toolBox__config-tools {
         .builder-delete-block {

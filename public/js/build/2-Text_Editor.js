@@ -856,6 +856,49 @@ var TextEditor = (function($) {
     }
   });
 
+  /**
+   * Custom Text HTML extension
+   */
+  var TextHtmlEditorExtension = MediumEditor.extensions.button.extend({
+    name: "textEditorHtml",
+    action: "changeText",
+    aria: "text to html",
+    contentDefault: "<span class='editor-text-html'>Text Html<span>",
+
+    init: function() {
+      this.button = this.document.createElement("button");
+      this.button.classList.add("medium-editor-action");
+      this.button.innerHTML = "<i class='l-svg-icons'><svg><use xlink:href='#A008-Code'></use></svg></i>";
+
+      // use our own handleClick instead of the default one
+      this.on(this.button, "click", this.handleClick.bind(this));
+      this.subscribe("rexlive:mediumEditor:saveHTMLContent", this.handleHtmlEditorSave.bind(this));
+    },
+
+    handleClick: function(event) {
+      event.preventDefault();
+      event.stopPropagation();
+
+      this.base.selectAllContents();
+      var index = this.base.exportSelection().editableElementIndex;
+
+      var meContents = this.base.serialize();
+      var htmlSelected = meContents['element-'+index].value;
+      htmlSelected = htmlSelected.replace('<span class="text-editor-span-fix" style="display: none;"></span>','').trim();
+
+      var data = {
+        eventName: "rexlive:openHTMLEditor",
+        htmlContent: htmlSelected
+      };
+  
+      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+    },
+
+    handleHtmlEditorSave: function(event) {
+      this.base.pasteHTML(event.customHTML);
+    }
+  });
+
   var _linkDocumentListeners = function() {
     //function for removing textarea html editor
     Rexbuilder_Util.$document.on("click", ".rex-close-html-editor", function(e) {
@@ -939,7 +982,8 @@ var TextEditor = (function($) {
           "listDropdown",
           // "table",
           "contentBlockPosition",
-          "textHtml",
+          // "textHtml",
+          "textEditorHtml"
           // "removeFormat",
         ]
       },
@@ -947,6 +991,7 @@ var TextEditor = (function($) {
       extensions: {
         colorPicker: pickerExtensionInstance,
         textHtml: htmlExtensionInstance,
+        textEditorHtml: new TextHtmlEditorExtension(),
         headingTags: headingTagsExtensionInstance,
         formattingTags: formattingTagsExtensionInstance,
         justifyDropdown: justifyExtensionIntance,
@@ -966,6 +1011,10 @@ var TextEditor = (function($) {
     _addEditableInputEvents();
   };
 
+  var _triggerMEEvent = function( event_info ) {
+    editorInstance.trigger( event_info.name, event_info.data, event_info.editable );
+  }
+
   var init = function() {
     _createToolbarContainer();
     _createEditor();
@@ -976,6 +1025,7 @@ var TextEditor = (function($) {
     init: init,
     addElementToTextEditor: _addElementToTextEditor,
     destroyMediumEditor: _destroyMediumEditor,
-    createEditor: _createEditor
+    createEditor: _createEditor,
+    triggerMEEvent: _triggerMEEvent
   };
 })(jQuery);

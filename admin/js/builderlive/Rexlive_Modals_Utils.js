@@ -123,7 +123,7 @@ var Rexlive_Modals_Utils = (function($) {
       var $modal = $(modal);
       $modal.draggable({
         cancel:
-          "input,textarea,button,select,option,.rex-check-icon, .input-field, .rex-slider__slide-edit, #rex-css-ace-editor, label",
+          "input,textarea,button,select,option,.rex-check-icon, .input-field, .rex-slider__slide-edit, #rex-css-ace-editor, #rex-html-ace-editor, label",
         stop: function(event, ui) {
           _resetModalDimensions($(this));
         }

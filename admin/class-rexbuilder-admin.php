@@ -287,6 +287,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'ace-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/ace.js', array('jquery'),  null, true );
 				wp_enqueue_script( 'ace-mode-css-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/mode-css.js', array('jquery'),  null, true );
 				wp_enqueue_script( 'rexlive-css-editor-modal', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_CSS_Editor_Modal.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexlive-html-editor-modal', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Html_Editor_Modal.js', array( 'jquery' ), null, true );
 
 				wp_enqueue_script( 'rexlive-block-color-background', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Background_Block_Color_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-overlay-color-block', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Overlay_Color_Block_Modal.js', array( 'jquery' ), null, true );

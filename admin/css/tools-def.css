@@ -9934,22 +9934,6 @@ input[id^="section-fixed"] + label i {
       -ms-transform: translate(0, -20px);
           transform: translate(0, -20px); }
 
-/* --------- ACE EDITORS ------------- */
-#rex-css-editor {
-  width: 40%;
-  max-width: 40%;
-  /*transform: none;*/
-  background-color: #000; }
-
-#rex-css-editor .modal-content {
-  padding: 0;
-  border: 15px solid #000; }
-
-.rex-modal .rex-ace-editor {
-  position: relative;
-  width: 100%;
-  height: 400px; }
-
 /* -------- OVERLAY -------- */
 .lean-overlay {
   z-index: 1002;
@@ -15038,6 +15022,22 @@ body.rexpansive-editor .lean-overlay {
 .modal-info--highlight {
   text-transform: uppercase; }
 
+/* --------- ACE EDITORS ------------- */
+#rex-css-editor {
+  width: 40%;
+  max-width: 40%;
+  /*transform: none;*/
+  background-color: #000; }
+
+#rex-css-editor .modal-content {
+  padding: 0;
+  border: 15px solid #000; }
+
+.rex-modal .rex-ace-editor {
+  position: relative;
+  width: 100%;
+  height: 400px; }
+
 .rex-live__row-margin-padding {
   max-width: 340px;
   margin: 0 auto;
@@ -15088,6 +15088,17 @@ body.rexpansive-editor .lean-overlay {
   height: 50%;
   z-index: 10;
   background-color: #fafafa; }
+
+#rex-html-text-editor {
+  width: 450px;
+  max-width: 450px; }
+  #rex-html-text-editor .modal-content {
+    padding: 0;
+    border: 15px solid #000; }
+  #rex-html-text-editor .rex-modal .rex-ace-editor {
+    position: relative;
+    width: 100%;
+    height: 450px; }
 
 .layout {
   margin: 0; }

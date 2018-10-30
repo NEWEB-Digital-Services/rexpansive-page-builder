@@ -1,0 +1,15 @@
+#rex-html-text-editor {
+  width: 450px;
+  max-width: 450px;
+  .modal-content {
+    padding: 0;
+    border: 15px solid #000;
+  }
+  .rex-modal {
+    .rex-ace-editor {
+      position: relative;
+      width: 100%;
+      height: 450px;
+    }
+  }
+}
