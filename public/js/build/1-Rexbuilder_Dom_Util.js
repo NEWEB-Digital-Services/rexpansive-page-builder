@@ -1036,31 +1036,28 @@ var Rexbuilder_Dom_Util = (function($) {
   };
 
   var _updateBlockOverlayColorLive = function(data, color) {
+    var $target;
     if (data.modelNumber != "") {
-      Rexbuilder_Util.$rexContainer
-        .find(
-          'section[data-rexlive-section-id="' +
-            data.sectionID +
-            '"][data-rexlive-model-number="' +
-            data.modelNumber +
-            '"]'
-        )
-        .find(
-          'div [data-rexbuilder-block-id="' +
-            data.rexID +
-            '"] .responsive-block-overlay'
-        )
+      var section_selector = 'section[data-rexlive-section-id="' + data.sectionID + '"][data-rexlive-model-number="' + data.modelNumber + '"]';
+      var block_selector = 'div [data-rexbuilder-block-id="' + data.rexID + '"] .responsive-block-overlay';
+      $target = Rexbuilder_Util.$rexContainer
+        .find( section_selector )
+        .find( block_selector )
+      $target
         .css("background-color", color);
     } else {
-      Rexbuilder_Util.$rexContainer
+      $target = Rexbuilder_Util.$rexContainer
         .find('section[data-rexlive-section-id="' + data.sectionID + '"]')
         .find(
           'div [data-rexbuilder-block-id="' +
             data.rexID +
             '"] .responsive-block-overlay'
         )
+      $target
         .css("background-color", color);
     }
+
+    Rexbuilder_Block_Editor.updateBlockOverlayColorToolLive( $target, color );
   };
 
   var _updateBlockOverlay = function(data) {
@@ -1081,6 +1078,8 @@ var Rexbuilder_Dom_Util = (function($) {
     } else {
       $elemOverlay.removeClass("rex-active-overlay");
     }
+
+    Rexbuilder_Block_Editor.updateBlockOverlayColorTool( $elem, color );
   };
 
   var _updateSectionBackgroundImage = function($section, data) {

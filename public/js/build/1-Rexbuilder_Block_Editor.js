@@ -172,7 +172,9 @@ var Rexbuilder_Block_Editor = (function($) {
 
       Rexbuilder_Util_Editor.manageElement = true;
 
-      var isFastButton = $(e.target).parents('.block-toolBox__fast-configuration').length;
+      // $btn.parents('.tool-button-floating').addClass('tool-button-floating--active');
+
+      var isFastButton = $btn.parents('.block-toolBox__fast-configuration').length;
       var mousePosition = null;
       if( isFastButton > 0 ) {
         mousePosition = Rexbuilder_Util_Editor.getMousePosition( e, { offset: { w: this.offsetWidth, h: this.offsetHeight } } );
@@ -594,6 +596,7 @@ var Rexbuilder_Block_Editor = (function($) {
       show: function() {
         flagPickerUsed = false;
         Rexbuilder_Util_Editor.manageElement = true;
+        $picker.parents('.tool-button-floating').addClass('tool-button-floating--active');
       },
       move: function(color) {
         settings.data_to_send.color = settings.data_to_send.active
@@ -718,6 +721,7 @@ var Rexbuilder_Block_Editor = (function($) {
       show: function() {
         flagPickerUsed = false;
         Rexbuilder_Util_Editor.manageElement = true;
+        $picker.parents('.tool-button-floating').addClass('tool-button-floating--active');
       },
       move: function(color) {
         settings.data_to_send.active = true;
@@ -927,6 +931,81 @@ var Rexbuilder_Block_Editor = (function($) {
     }
   }
 
+  var _updateBlockOverlayColorToolLive = function( $target, color ) {
+    // Set live picker
+    var $picker_top = $target
+      .parents('.grid-stack-item')
+      .find('.rexlive-block-toolbox.top-tools')
+      .find('input[name=edit-block-overlay-color]');
+
+    var $picker_bottom = $target
+      .parents('.grid-stack-item')
+      .find('.rexlive-block-toolbox.bottom-tools')
+      .find('input[name=edit-block-overlay-color]');
+
+    if( "" != color ) {
+      $picker_bottom
+        .val(color)
+        .spectrum('set',color);
+      $picker_bottom
+        .parent()
+        .addClass('tool-button--picker-preview')
+        .removeClass('tool-button--hide')
+      $picker_bottom
+        .siblings('.tool-button--color-preview')
+        .css('background-color',color);
+
+      $picker_top
+        .val(color)
+        .spectrum('set',color)
+        .parent()
+        .addClass('tool-button--hide');
+    } else {
+      $picker_top
+        .parent()
+        .removeClass('tool-button--hide');
+      $picker_bottom
+        .parent()
+        .addClass('tool-button--hide');
+    }
+  };
+
+  var _updateBlockOverlayColorTool = function($target, color) {
+    // Set tool picker
+    var $picker_top = $target
+      .find('.rexlive-block-toolbox.top-tools')
+      .find('input[name=edit-block-overlay-color]');
+
+    var $picker_bottom = $target
+      .find('.rexlive-block-toolbox.bottom-tools')
+      .find('input[name=edit-block-overlay-color]');
+
+    if( "" != color ) {
+      $picker_bottom
+        .val(color)
+        .spectrum('set',color);
+      $picker_bottom
+        .parent()
+        .addClass('tool-button--picker-preview')
+        .removeClass('tool-button--hide')
+      $picker_bottom
+        .siblings('.tool-button--color-preview')
+        .css('background-color',color);
+      $picker_top
+        .val(color)
+        .spectrum('set',color)
+        .parent()
+        .addClass('tool-button--hide');
+    } else {
+      $picker_top
+        .parent()
+        .removeClass('tool-button--hide');
+      $picker_bottom
+        .parent()
+        .addClass('tool-button--hide');
+    }
+  }
+
   /**
    * Initing the block toolbar
    */
@@ -945,6 +1024,8 @@ var Rexbuilder_Block_Editor = (function($) {
     updateBlockBackgroundImageTool: _updateBlockBackgroundImageTool,
     updateBlockImagePositionTool: _updateBlockImagePositionTool,
     updateBlockBackgroundColorToolLive: _updateBlockBackgroundColorToolLive,
-    updateBlockBackgroundColorTool: _updateBlockBackgroundColorTool
+    updateBlockBackgroundColorTool: _updateBlockBackgroundColorTool,
+    updateBlockOverlayColorToolLive: _updateBlockOverlayColorToolLive,
+    updateBlockOverlayColorTool: _updateBlockOverlayColorTool
   }
 })(jQuery);

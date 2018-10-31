@@ -137,7 +137,7 @@ $tool_button_classes = 'tool-button';
 							<?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
 						</div>
 
-						<div class="tool-button tool-button_list--item tool-button--full edit-row-image-background tippy <?php echo ( "" != $atts['id_image_bg_section'] ? ' tool-button--hide' : '' ); ?>" data-tippy-content="<?php _e('Background Video','rexpansive'); ?>">
+						<div class="tool-button tool-button_list--item tool-button--full edit-row-image-background tippy <?php echo ( "" != $atts['id_image_bg_section'] ? ' tool-button--hide' : '' ); ?>" data-tippy-content="<?php _e('Background Image','rexpansive'); ?>">
 							<?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
 						</div>
 

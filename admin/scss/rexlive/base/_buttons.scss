@@ -289,27 +289,17 @@
   position: relative;
   display: inline-block;
   &:hover {
-    .tool-button_list {
-      z-index: 10000;
-      visibility: visible;
-      display: block;
-      .tool-button_list--item {
-        opacity: 1;
-        transform: scale(1) translateY(0) translateX(0);
-      }
-
-      &.tool-button_list--horizontal {
-        display: flex;
-        justify-content: flex-end;
-        flex-wrap: wrap;
-      }
-    }
+    @include view-floating-button();
   }
   .tool-button--double-icon--wrap {
     display: block;
     max-height: 20px;
   }
   // }
+
+  &.tool-button-floating--active {
+    @include view-floating-button();
+  }
 }
 
 .tool-indicator {

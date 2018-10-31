@@ -14793,6 +14793,24 @@ ul {
   .tool-button-floating .tool-button--double-icon--wrap {
     display: block;
     max-height: 20px; }
+  .tool-button-floating.tool-button-floating--active .tool-button_list {
+    z-index: 10000;
+    visibility: visible;
+    display: block; }
+    .tool-button-floating.tool-button-floating--active .tool-button_list .tool-button_list--item {
+      opacity: 1;
+      -webkit-transform: scale(1) translateY(0) translateX(0);
+          -ms-transform: scale(1) translateY(0) translateX(0);
+              transform: scale(1) translateY(0) translateX(0); }
+    .tool-button-floating.tool-button-floating--active .tool-button_list.tool-button_list--horizontal {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: end;
+          -ms-flex-pack: end;
+              justify-content: flex-end;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap; }
 
 .tool-indicator {
   color: #fff;

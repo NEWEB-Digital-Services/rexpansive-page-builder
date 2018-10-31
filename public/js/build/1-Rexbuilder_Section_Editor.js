@@ -373,6 +373,8 @@ var Rexbuilder_Section_Editor = (function($) {
       // containerClassName: "rexbuilder-materialize-wrap block-background-color-picker",
       show: function() {
         flagPickerUsed = false;
+        $section.addClass('activeRowTools');
+        $picker.parents('.tool-button-floating').addClass('tool-button-floating--active');
       },
       move: function(color) {
         settings.data_to_send.color = bgColorActive
@@ -406,6 +408,8 @@ var Rexbuilder_Section_Editor = (function($) {
           event.settings = settings;
           Rexbuilder_Util.$document.trigger(event);
         }
+
+        Rexbuilder_Util_Editor.hideAllTools();
 
         flagPickerUsed = false;
       },
@@ -468,6 +472,8 @@ var Rexbuilder_Section_Editor = (function($) {
       // containerClassName: "rexbuilder-materialize-wrap block-overlay-color-picker",
       show: function() {
         flagPickerUsed = false;
+        $section.addClass('activeRowTools');
+        $picker.parents('.tool-button-floating').addClass('tool-button-floating--active');
       },
       move: function(color) {
         changeColorEvent.data_to_send.active = true;
@@ -494,6 +500,8 @@ var Rexbuilder_Section_Editor = (function($) {
           event.settings = changeColorEvent;
           Rexbuilder_Util.$document.trigger(event);
         }
+
+        Rexbuilder_Util_Editor.hideAllTools();
 
         flagPickerUsed = false;
       },

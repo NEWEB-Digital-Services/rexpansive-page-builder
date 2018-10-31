@@ -393,7 +393,7 @@ $tool_button_classes = 'tool-button';
                                 <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
                             </div>
 
-                            <div class="tool-button tool-button--full tool-button_list--item edit-row-image-background tippy" data-tippy-content="<?php _e('Background Video','rexpansive'); ?>">
+                            <div class="tool-button tool-button--full tool-button_list--item edit-row-image-background tippy" data-tippy-content="<?php _e('Background Image','rexpansive'); ?>">
                                 <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
                             </div>
 

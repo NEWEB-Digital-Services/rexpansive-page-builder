@@ -12,7 +12,6 @@ var Insert_Video_Modal = (function($) {
   var _openVideoModal = function(data) {
     _clearVideoModal();
     sectionTarget = data.sectionTarget;
-    console.log(data);
     Rexlive_Modals_Utils.openModal(
       insert_video_properties.$self.parent(".rex-modal-wrap")
     );
