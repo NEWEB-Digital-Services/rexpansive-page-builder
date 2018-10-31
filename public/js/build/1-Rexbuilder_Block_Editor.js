@@ -170,6 +170,8 @@ var Rexbuilder_Block_Editor = (function($) {
         type = "vimeo";
       }
 
+      var mousePosition = Rexbuilder_Util_Editor.getMousePosition( e, { offset: { w: this.offsetWidth, h: this.offsetHeight } } );
+
       var data = {
         eventName: "rexlive:editBlockVideoBackground",
         activeBlockData: {
@@ -191,7 +193,8 @@ var Rexbuilder_Block_Editor = (function($) {
             },
             tools: tools
           }
-        }
+        },
+        mousePosition: mousePosition
       };
 
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
@@ -513,9 +516,12 @@ var Rexbuilder_Block_Editor = (function($) {
       flexImgPosition: img_position
     }
 
+    var mousePosition = Rexbuilder_Util_Editor.getMousePosition( e, { offset: { w: this.offsetWidth, h: this.offsetHeight } } );
+
     var data = {
       eventName: "rexlive:editBlockImageSettings",
-      activeBlockData: settings
+      activeBlockData: settings,
+      mousePosition: mousePosition
     };
 
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);

@@ -2097,14 +2097,14 @@
     },
 
     unFocusElementEditing: function($elem) {
-      this.hideBlockToolBox($elem);
+      // this.hideBlockToolBox($elem);
       $elem.removeClass("focused");
     },
 
     focusElement: function($elem) {
-      this.showBlockToolBox($elem);
+      // this.showBlockToolBox($elem);
       $elem.addClass("focused");
-      this.$section.addClass("focused");
+      this.$section.addClass("focusedRow");
       // $elem.parent().addClass('focused');
       // $elem.parent().parent().addClass('focused');
       // $elem.parent().parent().parent().addClass('focused');
@@ -2112,9 +2112,9 @@
     },
 
     unFocusElement: function($elem) {
-      this.hideBlockToolBox($elem);
+      // this.hideBlockToolBox($elem);
       $elem.removeClass("focused");
-      this.$section.removeClass("focused");
+      this.$section.removeClass("focusedRow");
       // $elem.parent().removeClass('focused');
       // $elem.parent().parent().removeClass('focused');
       // $elem.parent().parent().parent().removeClass('focused');

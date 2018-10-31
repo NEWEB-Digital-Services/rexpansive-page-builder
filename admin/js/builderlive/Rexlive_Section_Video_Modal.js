@@ -9,12 +9,10 @@ var Section_Video_Background_Modal = (function($) {
   var videoChosen;
   var sectionTarget;
 
-  var _openSectionVideoBackgroundModal = function(data) {
+  var _openSectionVideoBackgroundModal = function(data, mousePosition) {
     _updateVideoModal(data.bgVideo);
-    console.log(data);
-    Rexlive_Modals_Utils.openModal(
-      video_background_properties.$self.parent(".rex-modal-wrap")
-    );
+    Rexlive_Modals_Utils.positionModal( video_background_properties.$self, mousePosition );
+    Rexlive_Modals_Utils.openModal( video_background_properties.$self.parent(".rex-modal-wrap") );
   };
 
   var _closeSectionVideoBackgroundModal = function() {

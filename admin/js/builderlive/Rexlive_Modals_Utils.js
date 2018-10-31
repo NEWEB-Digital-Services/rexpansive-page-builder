@@ -67,6 +67,8 @@ var Rexlive_Modals_Utils = (function($) {
       $target.removeClass("rex-in--up");
     }
 
+    $target.children().removeClass('rex-modal__bottom-arrow--active');
+
     if (additional_class.length) {
       for (var i = 0; i < additional_class.length; i++) {
         $target.find(".rex-modal").removeClass(additional_class[i]);
@@ -93,11 +95,15 @@ var Rexlive_Modals_Utils = (function($) {
    * @since 2.0.0
    */
   var _positionModal = function($target,coord) {
-    // $('.ruleX').css('top',coord.y);
-    // $('.ruleY').css('left',coord.x);
+    if( 'undefined' !== typeof coord && null !== coord ) {
+      $target.addClass('rex-modal__bottom-arrow--active');
 
-    $target.css( "left", coord.x - ( Rexlive_Base_Settings.viewport().width / 2 ) + "px" );
-    $target.css( "top", coord.y - ( $target.actual('height') ) + postionedModalOffset.y + "px" );
+      $target.css( "left", coord.x - ( Rexlive_Base_Settings.viewport().width / 2 ) + "px" );
+      $target.css( "top", coord.y - ( $target.actual('height') ) + postionedModalOffset.y + "px" );
+    } else {
+      $target.css( "left", "0px" );
+      $target.css( "top", "50px" );
+    }
   }
 
   var _listen_events = function() {

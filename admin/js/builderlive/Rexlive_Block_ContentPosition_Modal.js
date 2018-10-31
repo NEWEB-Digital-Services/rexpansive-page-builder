@@ -11,9 +11,7 @@ var Block_Content_Positions_Modal = (function($) {
 
   var _openBlockContentPositionModal = function(data, mousePosition) {
     _updatePosition(data.flexPosition);
-    if( 'undefined' !== typeof mousePosition ) {
-      Rexlive_Modals_Utils.positionModal( block_content_position_properties.$self, mousePosition );
-    }
+    Rexlive_Modals_Utils.positionModal( block_content_position_properties.$self, mousePosition );
     Rexlive_Modals_Utils.openModal( block_content_position_properties.$self.parent(".rex-modal-wrap") );
   };
 

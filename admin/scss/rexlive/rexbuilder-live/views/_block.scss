@@ -16,3 +16,12 @@
 .gridActive > .grid-stack-item.focused:hover {
   cursor: move;
 }
+
+.el-size-viewer.focused {
+  visibility: visible;
+}
+
+/** SEEMS USEFULL **/
+.el-size-settingButton.focused {
+  visibility: visible;
+}

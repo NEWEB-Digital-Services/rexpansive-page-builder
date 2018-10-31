@@ -2313,8 +2313,6 @@ var Rexbuilder_Util = (function($) {
           : targetProps["color_bg_section_active"].toString()
     };
 
-    console.log('here update section');
-
     Rexbuilder_Dom_Util.updateSectionBackgroundColor(
       $section,
       backgroundColorOpt

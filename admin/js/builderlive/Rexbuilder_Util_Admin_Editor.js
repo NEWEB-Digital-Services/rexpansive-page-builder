@@ -130,9 +130,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       }
 
       if (event.data.eventName == "rexlive:editRowVideoBackground") {
-        Section_Video_Background_Modal.openSectionVideoBackgroundModal(
-          event.data.activeBG
-        );
+        Section_Video_Background_Modal.openSectionVideoBackgroundModal( event.data.activeBG, event.data.mousePosition);
       }
 
       if (event.data.eventName == "rexlive:editBlockOptions") {
@@ -144,13 +142,11 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       }
 
       if (event.data.eventName == "rexlive:editBlockImageSettings") {
-        Block_Image_Editor_Modal.openModal(event.data.activeBlockData);
+        Block_Image_Editor_Modal.openModal(event.data.activeBlockData, event.data.mousePosition);
       }
 
       if (event.data.eventName == "rexlive:editBlockVideoBackground") {
-        Block_Video_Background_Modal.openBlockVideoBackgroundModal(
-          event.data.activeBlockData
-        );
+        Block_Video_Background_Modal.openBlockVideoBackgroundModal( event.data.activeBlockData, event.data.mousePosition );
       }
 
       if (event.data.eventName == "rexlive:editRemoveModal") {

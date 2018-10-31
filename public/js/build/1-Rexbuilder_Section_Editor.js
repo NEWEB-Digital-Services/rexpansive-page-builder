@@ -248,6 +248,12 @@ var Rexbuilder_Section_Editor = (function($) {
           ? ""
           : $sectionData.attr("data-video_bg_url_vimeo_section");
 
+      var isFastButton = $(e.target).parents('.row-toolBox__fast-configuration').length;
+      var mousePosition = null;
+      if( isFastButton > 0 ) {
+        mousePosition = Rexbuilder_Util_Editor.getMousePosition( e, { offset: { w: this.offsetWidth, h: this.offsetHeight } } );
+      }
+
       var data = {
         eventName: "rexlive:editRowVideoBackground",
         activeBG: {
@@ -261,7 +267,8 @@ var Rexbuilder_Section_Editor = (function($) {
             mp4Video: mp4Video,
             mp4VideoID: mp4VideoID
           }
-        }
+        },
+        mousePosition: mousePosition
       };
 
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);

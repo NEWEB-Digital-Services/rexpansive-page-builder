@@ -124,10 +124,33 @@ body.rexpansive-editor {
   }
 }
 
+.rex-modal__top-arrow__wrap {
+  position: absolute;
+  width: 100%;
+  bottom: 100%;
+  display: none;
+}
+
+.rex-modal__top-arrow {
+  width: 0px;
+  height: 0px;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid $palette-color-7;
+  margin: 0 auto;
+}
+
 .rex-modal__bottom-arrow__wrap {
   position: absolute;
   width: 100%;
   top: 100%;
+  display: none;
+}
+
+.rex-modal__bottom-arrow--active {
+  .rex-modal__bottom-arrow__wrap {
+    display: block;
+  }
 }
 
 .rex-modal__bottom-arrow {

@@ -29,7 +29,7 @@
   visibility: hidden;
   transition: opacity 300ms;
   
-  &.focused {
+  .focused & {
     opacity: 1;
     visibility: visible;
   }
@@ -172,6 +172,8 @@
 }
 
 .block-toolBox__editor-tools {
+  @include center-from-left-abs();
+  padding-right: 15px;
   .tool-button--inline {
     margin-left: 15px;
   }

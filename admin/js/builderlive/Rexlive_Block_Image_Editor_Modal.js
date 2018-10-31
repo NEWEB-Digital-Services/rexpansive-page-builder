@@ -25,9 +25,11 @@ var Block_Image_Editor_Modal = (function($) {
     $modal_wrap = block_image_editor_properties.$modal.parent('.rex-modal-wrap');
   };
 
-  var _openModal = function(data) {
+  var _openModal = function(data, mousePosition) {
     Background_Block_Image_Setting.updateImageModal(data.imageBG);
     Block_Image_Positions_Setting.updatePosition(data.flexImgPosition);
+    
+    Rexlive_Modals_Utils.positionModal( block_image_editor_properties.$modal, mousePosition );
     Rexlive_Modals_Utils.openModal($modal_wrap);
   };
 

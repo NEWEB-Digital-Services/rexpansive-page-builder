@@ -9,12 +9,12 @@ var Block_Video_Background_Modal = (function($) {
   var videoChosen;
   var target;
 
-  var _openBlockVideoBackgroundModal = function(data) {
+  var _openBlockVideoBackgroundModal = function(data, mousePosition) {
     _updateVideoModal(data.bgVideo);
     video_background_properties.$self.attr('data-block_tools', data.bgVideo.tools);
-    Rexlive_Modals_Utils.openModal(
-      video_background_properties.$self.parent(".rex-modal-wrap")
-    );
+    
+    Rexlive_Modals_Utils.positionModal( video_background_properties.$self, mousePosition );
+    Rexlive_Modals_Utils.openModal( video_background_properties.$self.parent(".rex-modal-wrap") );
   };
 
   var _closeBlockVideoBackgroundModal = function() {

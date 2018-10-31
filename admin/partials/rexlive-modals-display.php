@@ -386,6 +386,7 @@ defined('ABSPATH') or exit;
             <!-- mp4 input section-->
             <!-- video bg section-->
         </div>
+        <?php include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-modals-bottom-arrow.php'; ?>
     </div>
 </div>
 
@@ -844,6 +845,7 @@ defined('ABSPATH') or exit;
                 </div>
             </div>
         </div>
+        <?php include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-modals-bottom-arrow.php'; ?>
     </div>
 </div>
 
@@ -1012,6 +1014,7 @@ defined('ABSPATH') or exit;
             </div>
             <!-- /VIDEO BACKGROUND BLOCK -->
         </div>
+        <?php include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-modals-bottom-arrow.php'; ?>
     </div>
 </div>
 

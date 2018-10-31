@@ -3779,7 +3779,7 @@ ul {
   .rexlive-block-toolbox.floating-tools {
     top: 0;
     z-index: 10; }
-  .rexlive-block-toolbox.focused {
+  .focused .rexlive-block-toolbox {
     opacity: 1;
     visibility: visible; }
   .rexlive-block-toolbox .rexlive-top-block-tools {
@@ -3944,8 +3944,15 @@ ul {
 .block-toolBox__config-tools .tool-button-floating {
   margin-left: 15px; }
 
-.block-toolBox__editor-tools .tool-button--inline {
-  margin-left: 15px; }
+.block-toolBox__editor-tools {
+  position: absolute;
+  left: 50%;
+  -webkit-transform: translateX(-50%);
+      -ms-transform: translateX(-50%);
+          transform: translateX(-50%);
+  padding-right: 15px; }
+  .block-toolBox__editor-tools .tool-button--inline {
+    margin-left: 15px; }
 
 .rexlive-block-toolbox .block-toolBox__config-tools {
   font-size: 10px; }
@@ -4506,15 +4513,6 @@ ul {
   -webkit-box-sizing: inherit;
           box-sizing: inherit; }
 
-.gridActive > .grid-stack-item.focused:hover {
-  cursor: move; }
-
-.el-size-viewer.focused {
-  visibility: visible; }
-
-.el-size-settingButton.focused {
-  visibility: visible; }
-
 .text-content {
   width: 100%;
   max-height: 100%; }
@@ -4769,11 +4767,11 @@ ul {
 
 .rexbuilder-live-content--editing {
   position: relative; }
-  .rexbuilder-live-content--editing .rexpansive_section.focused {
+  .rexbuilder-live-content--editing .rexpansive_section.focusedRow {
     z-index: 20; }
-    .rexbuilder-live-content--editing .rexpansive_section.focused .rex-row__dimension {
+    .rexbuilder-live-content--editing .rexpansive_section.focusedRow .rex-row__dimension {
       overflow: visible; }
-    .rexbuilder-live-content--editing .rexpansive_section.focused .perfect-grid-gallery {
+    .rexbuilder-live-content--editing .rexpansive_section.focusedRow .perfect-grid-gallery {
       overflow: visible; }
   .rexbuilder-live-content--editing .rexpansive_section.empty-section .responsive-overlay {
     min-height: 100px; }
@@ -4783,7 +4781,7 @@ ul {
   content: ' ';
   display: table; }
 
-.perfect-grid-gallery.focused {
+.perfect-grid-gallery.focusedRow {
   overflow: visible; }
 
 .rexpansive_section.rex-model-section .update-model-button {
@@ -4884,6 +4882,13 @@ ul {
 
 .gridActive > .grid-stack-item.focused:hover {
   cursor: move; }
+
+.el-size-viewer.focused {
+  visibility: visible; }
+
+/** SEEMS USEFULL **/
+.el-size-settingButton.focused {
+  visibility: visible; }
 
 .circle-handle-e {
   top: 50%;
