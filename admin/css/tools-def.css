@@ -14591,6 +14591,8 @@ ul {
     color: #fff; }
     .tool-button.active .l-svg-icons > svg {
       fill: #fff; }
+  .tool-button:focus {
+    outline: none; }
   .tool-button.tool-button--black {
     background-color: #000;
     color: #fff; }
@@ -14727,6 +14729,8 @@ ul {
   z-index: 10; }
   .tool-button--double-icon--wrap:hover .tool-button--double-icon {
     opacity: 1; }
+  .tool-button--double-icon--wrap:focus {
+    outline: none; }
   .tool-button--double-icon--wrap.tool-button--double-icon--active .tool-button--double-icon {
     opacity: 1; }
   .tool-button--double-icon--wrap .tool-button--double-icon {

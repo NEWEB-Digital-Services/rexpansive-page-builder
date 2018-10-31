@@ -510,6 +510,16 @@ var Rexbuilder_Util_Editor = (function($) {
     Rexbuilder_Util.$document.on("rexlive:unlockRows", function(e) {
       _releaseRows();
     });
+
+    Rexbuilder_Util.$document.on("rexlive:close_modal", function(e) {
+      _hideAllTools();
+    });
+  };
+
+  var _hideAllTools = function() {
+    Rexbuilder_Util_Editor.manageElement = false;
+    Rexbuilder_Util.$rexContainer.find('.rexpansive_section').removeClass('focusedRow').removeClass('activeRowTools');
+    Rexbuilder_Util.$rexContainer.find('.grid-stack-item').removeClass('focused');
   };
 
   var _pushAction = function($target, actionName, actionData, reverseData) {
@@ -920,6 +930,7 @@ var Rexbuilder_Util_Editor = (function($) {
 
     this.editingGallery = false;
     this.editingElement = false;
+    this.manageElement = false;
 
     this.editedGallery = null;
     this.editedElement = null;
@@ -1009,6 +1020,7 @@ var Rexbuilder_Util_Editor = (function($) {
     endLoading: _endLoading,
     builderEdited: _builderEdited,
     launchTooltips: _tooltips,
-    getMousePosition: _getMousePosition
+    getMousePosition: _getMousePosition,
+    hideAllTools: _hideAllTools
   };
 })(jQuery);

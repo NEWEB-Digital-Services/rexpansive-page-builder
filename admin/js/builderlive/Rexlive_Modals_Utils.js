@@ -75,6 +75,11 @@ var Rexlive_Modals_Utils = (function($) {
       }
     }
 
+    var closeEvent = {
+      eventName: "rexlive:close_modal",
+    };
+    Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(closeEvent);
+
     _resetModalDimensions($target.find(".rex-modal"));
   };
 

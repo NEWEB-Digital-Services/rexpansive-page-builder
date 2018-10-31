@@ -145,6 +145,7 @@ class Rexbuilder {
 		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-rexslider-shortcode.php';
 		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-indicator-shortcode.php';
 		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-model-shortcode.php';
+		require_once REXPANSIVE_BUILDER_PATH . 'shortcodes/class-rexbuilder-button-shortcode.php';
 
 		$this->loader = new Rexbuilder_Loader();
 
@@ -344,6 +345,7 @@ class Rexbuilder {
 		$slider = new Rexbuilder_RexSlider();
 		$indicator = new Rexbuilder_Indicator();
 		$model = new Rexbuilder_Model();
+		$button = new Rexbuilder_Button();
 
 		$this->loader->add_shortcode( 'RexpansiveSection', $section, 'render_section' );
 		$this->loader->add_shortcode( 'RexpansiveBlock', $block, 'render_block' );
@@ -351,6 +353,7 @@ class Rexbuilder {
 		$this->loader->add_shortcode( 'RexSlider', $slider, 'render_slider' );
 		$this->loader->add_shortcode( 'RexIndicator', $indicator, 'render_indicator' );
 		$this->loader->add_shortcode( 'RexModel', $model, 'render_model' );
+		$this->loader->add_shortcode( 'RexButton', $button, 'render_button' );
 	}
 
 	/**

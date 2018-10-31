@@ -254,6 +254,8 @@ var Rexbuilder_Section_Editor = (function($) {
         mousePosition = Rexbuilder_Util_Editor.getMousePosition( e, { offset: { w: this.offsetWidth, h: this.offsetHeight } } );
       }
 
+      $section.addClass('activeRowTools');
+
       var data = {
         eventName: "rexlive:editRowVideoBackground",
         activeBG: {

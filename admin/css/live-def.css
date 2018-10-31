@@ -3400,6 +3400,8 @@ ul {
     color: #fff; }
     .tool-button.active .l-svg-icons > svg {
       fill: #fff; }
+  .tool-button:focus {
+    outline: none; }
   .tool-button.tool-button--black {
     background-color: #000;
     color: #fff; }
@@ -3536,6 +3538,8 @@ ul {
   z-index: 10; }
   .tool-button--double-icon--wrap:hover .tool-button--double-icon {
     opacity: 1; }
+  .tool-button--double-icon--wrap:focus {
+    outline: none; }
   .tool-button--double-icon--wrap.tool-button--double-icon--active .tool-button--double-icon {
     opacity: 1; }
   .tool-button--double-icon--wrap .tool-button--double-icon {
@@ -3707,6 +3711,28 @@ ul {
     max-width: 20px; }
     .section-toolBox .tool-button_list .tool-button--full {
       font-size: 20px; }
+
+.activeRowTools .section-toolBox .tools {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-transform: translateY(-50%);
+      -ms-transform: translateY(-50%);
+          transform: translateY(-50%); }
+.activeRowTools .section-toolBox .tool-area--center {
+  -webkit-animation: fade-in 200ms ease-in-out both;
+          animation: fade-in 200ms ease-in-out both; }
+.activeRowTools .section-toolBox .tool-area--side {
+  -webkit-animation: fade-in 200ms ease-in-out both;
+          animation: fade-in 200ms ease-in-out both; }
+.activeRowTools .section-toolBox + .section-toolBoox__highlight {
+  opacity: 1; }
 
 .section-toolBoox__highlight {
   position: absolute;

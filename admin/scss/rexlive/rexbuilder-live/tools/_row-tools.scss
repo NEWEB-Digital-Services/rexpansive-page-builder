@@ -109,6 +109,12 @@
   }
 }
 
+.activeRowTools {
+  .section-toolBox {
+    @include view-row-tools();
+  }
+}
+
 .section-toolBoox__highlight {
   position: absolute;
   content: '';

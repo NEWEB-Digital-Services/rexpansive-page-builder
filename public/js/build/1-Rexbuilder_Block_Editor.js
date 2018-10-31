@@ -170,7 +170,13 @@ var Rexbuilder_Block_Editor = (function($) {
         type = "vimeo";
       }
 
-      var mousePosition = Rexbuilder_Util_Editor.getMousePosition( e, { offset: { w: this.offsetWidth, h: this.offsetHeight } } );
+      Rexbuilder_Util_Editor.manageElement = true;
+
+      var isFastButton = $(e.target).parents('.block-toolBox__fast-configuration').length;
+      var mousePosition = null;
+      if( isFastButton > 0 ) {
+        mousePosition = Rexbuilder_Util_Editor.getMousePosition( e, { offset: { w: this.offsetWidth, h: this.offsetHeight } } );
+      }
 
       var data = {
         eventName: "rexlive:editBlockVideoBackground",
@@ -417,6 +423,7 @@ var Rexbuilder_Block_Editor = (function($) {
         }
       }
 
+      Rexbuilder_Util_Editor.manageElement = true;
       var mousePosition = Rexbuilder_Util_Editor.getMousePosition( e, { offset: { w: this.offsetWidth, h: this.offsetHeight } } );
 
       var data = {
@@ -496,26 +503,27 @@ var Rexbuilder_Block_Editor = (function($) {
     };
 
     var blockFlexImgPosition =
-        typeof $elemData.attr("data-block_flex_img_position") == "undefined"
-          ? ""
-          : $elemData.attr("data-block_flex_img_position");
-      var blockFlexImgPositionArr = blockFlexImgPosition.split(" ");
-      var blockFlexImgPositionString =
-        blockFlexImgPositionArr[1] + "-" + blockFlexImgPositionArr[0];
-      var img_position = {
-        target: {
-          sectionID: sectionID,
-          modelNumber: modelNumber,
-          rexID: rex_block_id
-        },
-        position: blockFlexImgPositionString
-      };
+      typeof $elemData.attr("data-block_flex_img_position") == "undefined"
+        ? ""
+        : $elemData.attr("data-block_flex_img_position");
+    var blockFlexImgPositionArr = blockFlexImgPosition.split(" ");
+    var blockFlexImgPositionString =
+      blockFlexImgPositionArr[1] + "-" + blockFlexImgPositionArr[0];
+    var img_position = {
+      target: {
+        sectionID: sectionID,
+        modelNumber: modelNumber,
+        rexID: rex_block_id
+      },
+      position: blockFlexImgPositionString
+    };
 
     var settings = {
       imageBG: imageData,
       flexImgPosition: img_position
     }
 
+    Rexbuilder_Util_Editor.manageElement = true;
     var mousePosition = Rexbuilder_Util_Editor.getMousePosition( e, { offset: { w: this.offsetWidth, h: this.offsetHeight } } );
 
     var data = {
@@ -585,6 +593,7 @@ var Rexbuilder_Block_Editor = (function($) {
       showButtons: false,
       show: function() {
         flagPickerUsed = false;
+        Rexbuilder_Util_Editor.manageElement = true;
       },
       move: function(color) {
         settings.data_to_send.color = settings.data_to_send.active
@@ -608,6 +617,8 @@ var Rexbuilder_Block_Editor = (function($) {
             $elem.find('.rexlive-block-toolbox.bottom-tools').find('input[name=edit-block-color-background]').parents('.tool-button--double-icon--wrap').removeClass('tool-button--hide');
           }
         }
+
+        Rexbuilder_Util_Editor.hideAllTools();
 
         settings.data_to_send.color = colorActive;
 
@@ -706,6 +717,7 @@ var Rexbuilder_Block_Editor = (function($) {
       showButtons: false,
       show: function() {
         flagPickerUsed = false;
+        Rexbuilder_Util_Editor.manageElement = true;
       },
       move: function(color) {
         settings.data_to_send.active = true;
@@ -739,6 +751,8 @@ var Rexbuilder_Block_Editor = (function($) {
           event.settings = settings;
           $(document).trigger(event);
         }
+
+        Rexbuilder_Util_Editor.hideAllTools();
 
         flagPickerUsed = false;
       },

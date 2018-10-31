@@ -40,6 +40,10 @@
     @include bl-btn--hover;
   }
 
+  &:focus {
+    outline: none;
+  }
+
   &.tool-button--black {
     @include bl-btn--black;
   }
@@ -225,6 +229,10 @@
     .tool-button--double-icon {
       opacity: 1;
     }
+  }
+
+  &:focus {
+    outline: none;
   }
 
   &.tool-button--double-icon--active {

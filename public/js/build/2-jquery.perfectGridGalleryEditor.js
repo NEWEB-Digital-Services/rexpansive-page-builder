@@ -2030,7 +2030,8 @@
             !(
               Rexbuilder_Util_Editor.editingElement ||
               Rexbuilder_Util_Editor.elementIsResizing ||
-              Rexbuilder_Util_Editor.elementIsDragging
+              Rexbuilder_Util_Editor.elementIsDragging ||
+              Rexbuilder_Util_Editor.manageElement
             ) ||
             (Rexbuilder_Util_Editor.editingElement &&
               Rexbuilder_Util_Editor.editedElement.data(
@@ -2046,7 +2047,8 @@
             !(
               Rexbuilder_Util_Editor.editingElement ||
               Rexbuilder_Util_Editor.elementIsResizing ||
-              Rexbuilder_Util_Editor.elementIsDragging
+              Rexbuilder_Util_Editor.elementIsDragging ||
+              Rexbuilder_Util_Editor.manageElement
             ) ||
             (Rexbuilder_Util_Editor.editingElement &&
               Rexbuilder_Util_Editor.editedElement.data(
