@@ -584,7 +584,24 @@ var TextEditor = (function($) {
     handleClick: function(event) {
       event.preventDefault();
       event.stopPropagation();
-
+      var pos = this.button.getBoundingClientRect();
+      Rexbuilder_Util_Editor.mousePosition = {
+        client: {
+          x: event.clientX,
+          y: event.clientY,
+        },
+        offset: {
+          x: event.clientX - pos.left,
+          y: event.clientY - pos.top,
+        }
+      };
+      
+      Rexbuilder_Util_Editor.mouseClickObject = {
+        offset: {
+          w: this.button.offsetWidth,
+          h: this.button.offsetHeight
+        }
+      };
       $(this.base.getFocusedElement()).parents('.grid-stack-item').find('.edit-block-content-position').trigger('click');
     }
   });

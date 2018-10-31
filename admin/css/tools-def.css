@@ -15018,8 +15018,7 @@ body.rexpansive-editor .lean-overlay {
 .rex-modal__bottom-arrow__wrap {
   position: absolute;
   width: 100%;
-  top: 100%;
-  text-align: center; }
+  top: 100%; }
 
 .rex-modal__bottom-arrow {
   width: 0px;

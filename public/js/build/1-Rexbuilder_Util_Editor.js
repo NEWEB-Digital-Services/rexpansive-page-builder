@@ -876,6 +876,40 @@ var Rexbuilder_Util_Editor = (function($) {
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
   };
 
+  /**
+   * Gets the mouse event click and returns the x,y coordinates of the pointer
+   * If no valid event is passed, get a global value set on editor click
+   * else gets the middle of the screen
+   * @param {MouseEvent} mEvent event of the click of the mouse
+   * @param {Object} target_info dimensione information for the block clicked
+   * @returns {Object} the x,y coordinates
+   * @since 2.0.0
+   */
+  var _getMousePosition = function( mEvent, target_info ) {
+    var mousePosition = {};
+    if( "undefined" !== typeof mEvent.clientX && "undefined" !== typeof mEvent.clientY && "undefined" !== typeof mEvent.offsetX && "undefined" !== typeof mEvent.offsetY && "undefined" !== typeof target_info ) {
+      var pos = mEvent.target.getBoundingClientRect();
+      mousePosition = {
+        x: mEvent.clientX - ( mEvent.clientX - pos.left ) + ( target_info.offset.w / 2 ),
+        y: mEvent.clientY - ( mEvent.clientY - pos.top ) + Rexbuilder_Util_Editor.mousePositionFrameYOffset,
+      }
+    } else if( null !== Rexbuilder_Util_Editor.mousePosition && null !== Rexbuilder_Util_Editor.mouseClickObject ) {
+      mousePosition = {
+        x: Rexbuilder_Util_Editor.mousePosition.client.x - Rexbuilder_Util_Editor.mousePosition.offset.x + ( Rexbuilder_Util_Editor.mouseClickObject.offset.w / 2 ),
+        y: Rexbuilder_Util_Editor.mousePosition.client.y - Rexbuilder_Util_Editor.mousePosition.offset.y + Rexbuilder_Util_Editor.mousePositionFrameYOffset,
+      };
+
+      Rexbuilder_Util_Editor.mousePosition = null;
+      Rexbuilder_Util_Editor.mouseClickObject = null;
+    } else {
+      mousePosition = {
+        x: viewportMeasurement.width/2,
+        y: viewportMeasurement.height/2,
+      };
+    }
+    return mousePosition;
+  }
+
   var init = function() {
     this.elementIsResizing = false;
     this.elementIsDragging = false;
@@ -898,6 +932,10 @@ var Rexbuilder_Util_Editor = (function($) {
 
     this.mouseDown = false;
     this.mouseUp = false;
+
+    this.mousePosition = null;
+    this.mouseClickObject = null;
+    this.mousePositionFrameYOffset = 50;
 
     this.elementDraggingTriggered = false;
 
@@ -970,6 +1008,7 @@ var Rexbuilder_Util_Editor = (function($) {
     startLoading: _startLoading,
     endLoading: _endLoading,
     builderEdited: _builderEdited,
-    launchTooltips: _tooltips
+    launchTooltips: _tooltips,
+    getMousePosition: _getMousePosition
   };
 })(jQuery);

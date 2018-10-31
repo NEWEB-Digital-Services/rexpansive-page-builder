@@ -44,6 +44,7 @@ if(get_post_meta($post->ID, '_save_from_backend', true) == "false"){
 }
 
 ?>
+<?php // include_once "rexlive-debug-info.php"; ?>
 <div id="rexpansive-builder-backend-wrapper" data-rex-edited-backend="<?php echo $backendEditing;?>">
 	<div id="rexbuilder-layout-data-backend" style="display: none;">
 		<div class = "available-layouts"><?php echo json_encode($layoutsAvaiable);?></div>

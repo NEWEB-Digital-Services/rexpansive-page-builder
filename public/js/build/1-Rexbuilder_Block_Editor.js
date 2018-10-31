@@ -414,15 +414,12 @@ var Rexbuilder_Block_Editor = (function($) {
         }
       }
 
-      var viewportMeasurement = Rexbuilder_Util.viewport();
+      var mousePosition = Rexbuilder_Util_Editor.getMousePosition( e, { offset: { w: this.offsetWidth, h: this.offsetHeight } } );
 
       var data = {
         eventName: "rexlive:editBlockContentPosition",
         activeBlockData: settings,
-        mousePosition: {
-          x: ( "undefined" !== typeof e.clientX ? e.clientX : viewportMeasurement.width/2 ),
-          y: ( "undefined" !== typeof e.clientY ? e.clientY : viewportMeasurement.height/2 ),
-        }
+        mousePosition: mousePosition
       };
 
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);

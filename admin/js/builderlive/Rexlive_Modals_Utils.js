@@ -3,6 +3,7 @@ var Rexlive_Modals_Utils = (function($) {
 
   var $lean_overlay;
   var $modals;
+  var postionedModalOffset;
 
   /**
    * Open a modal dialog box
@@ -85,9 +86,18 @@ var Rexlive_Modals_Utils = (function($) {
     $target.css("width", "auto");
   };
 
+  /**
+   * Position a modal window in the screen
+   * @param {jQuery Obejct} $target Window to move
+   * @param {JS Object} coord Object with the x,y coordinates of the mouse
+   * @since 2.0.0
+   */
   var _positionModal = function($target,coord) {
-    $target.css("left",coord.x-(Rexlive_Base_Settings.viewport().width/2)+"px");
-    $target.css("top",coord.y-($target.height()/2)+"px");
+    // $('.ruleX').css('top',coord.y);
+    // $('.ruleY').css('left',coord.x);
+
+    $target.css( "left", coord.x - ( Rexlive_Base_Settings.viewport().width / 2 ) + "px" );
+    $target.css( "top", coord.y - ( $target.actual('height') ) + postionedModalOffset.y + "px" );
   }
 
   var _listen_events = function() {
@@ -138,6 +148,11 @@ var Rexlive_Modals_Utils = (function($) {
         }
       });
     });
+
+    postionedModalOffset = {
+      x: 0,
+      y: -20
+    };
 
     _listen_events();
   };

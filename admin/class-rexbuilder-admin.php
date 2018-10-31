@@ -254,6 +254,8 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'nprogress', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/nprogress.js', array('jquery'), $ver, true);
 				// spectrum color picker
 				wp_enqueue_script( 'spectrum-scripts', REXPANSIVE_BUILDER_URL . 'admin/spectrum/spectrum.js', array('jquery'),  null, true );
+				// actual dimension plugion
+				wp_enqueue_script( 'jquery-actual', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/jquery.actual.min.js', array('jquery'),  null, true );
 				
 				// photoswipe
 				wp_enqueue_script('photoswipe', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Photoswipe/photoswipe.min.js', array('jquery'), $ver, true);
