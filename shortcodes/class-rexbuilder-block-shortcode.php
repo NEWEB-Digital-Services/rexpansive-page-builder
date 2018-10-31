@@ -625,6 +625,8 @@ class Rexbuilder_Block
                 include REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-block-tools-floating.php";
             }
 
+            // include REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-drag-handlers.php";
+
             echo "</div>";
 
             return ob_get_clean();
