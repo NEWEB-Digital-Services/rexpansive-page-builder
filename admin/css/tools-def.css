@@ -15478,7 +15478,15 @@ input:disabled + .rex_edit_title_slider {
   text-align: center; }
 
 .toolbox-insert-area {
-  background-color: #00ACFF; }
+  background-color: #00ACFF;
+  padding: 0 10px;
+  border-radius: 15px; }
+  .toolbox-insert-area > .tool-button {
+    border-radius: 0;
+    padding-top: 10px;
+    padding-bottom: 10px; }
+    .toolbox-insert-area > .tool-button:not(:last-child) {
+      border-right: 1px solid rgba(255, 255, 255, 0.3); }
 
 .left-tools {
   display: -webkit-box;
