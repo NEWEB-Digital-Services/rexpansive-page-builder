@@ -53,16 +53,16 @@
 
 .tools-container-left {
   left: 0;
-  width: 15%;
+  width: 20%;
 }
 
 .tools-container-right {
   right: 0;
-  width: 15%;
+  width: 20%;
 }
 
 .tools-container-middle {
-  width: 70%;
+  width: 60%;
   text-align: center;
 }
 
@@ -121,15 +121,21 @@
   visibility: hidden;
 }
 
-.rexlive-toolbox .l-svg-icons{
-  font-size: 20px;
+.rexlive-toolbox {
+  #{$icon-class} {
+    font-size: 20px;
+    &.tool-dropdown-arrow-icon  {
+      font-size: 10px;
+      transform: rotate(180deg);
+    }
+  }
 }
 
 .btn-save {  
   @include page-edited-ui();
   padding: 0 10px;
   margin-right: 10px;
-  .l-svg-icons{
+  #{$icon-class}{
     font-size: 30px;
   }
   .btn-save--edited {
@@ -197,7 +203,7 @@
 .rexlive-toolbox {
   .builder-add-custom-layout {
     padding: 3px;
-    .l-svg-icons {
+    #{$icon-class} {
       font-size: 11px;
     }
   }
@@ -207,6 +213,7 @@
   text-align: center;
 }
 
+.tool-option,
 .btn-builder-layout{
   // @include fill-icon(#000);
   &.active-layout {

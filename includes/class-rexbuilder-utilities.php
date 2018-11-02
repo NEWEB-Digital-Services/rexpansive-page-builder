@@ -90,9 +90,9 @@ class Rexbuilder_Utilities {
 		}
 	}
 
-	public static function get_icon( $id ) {
+	public static function get_icon( $id, $classes = "" ) {
 		?>
-		<i class="l-svg-icons"><svg><use xlink:href="<?php echo $id; ?>"></use></svg></i>
+		<i class="l-svg-icons<?php echo ( !empty( $classes ) ? ' ' . $classes : '' ); ?>"><svg><use xlink:href="<?php echo $id; ?>"></use></svg></i>
 		<?php
 	}
 

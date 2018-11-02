@@ -14768,6 +14768,10 @@ ul {
     left: -69px; }
     .tool-button_list.tool-button_list--horizontal .tool-button_list--item {
       margin-left: 10px; }
+  .tool-button_list.tool-button_list--dropdown .tool-button_list--item {
+    padding: 10px 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #D6D6D6; }
 
 .tool-button-floating {
   position: relative;
@@ -15467,14 +15471,14 @@ input:disabled + .rex_edit_title_slider {
 
 .tools-container-left {
   left: 0;
-  width: 15%; }
+  width: 20%; }
 
 .tools-container-right {
   right: 0;
-  width: 15%; }
+  width: 20%; }
 
 .tools-container-middle {
-  width: 70%;
+  width: 60%;
   text-align: center; }
 
 .toolbox-insert-area {
@@ -15539,6 +15543,11 @@ input:disabled + .rex_edit_title_slider {
 
 .rexlive-toolbox .l-svg-icons {
   font-size: 20px; }
+  .rexlive-toolbox .l-svg-icons.tool-dropdown-arrow-icon {
+    font-size: 10px;
+    -webkit-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+            transform: rotate(180deg); }
 
 .btn-save {
   position: relative;
@@ -15633,6 +15642,7 @@ input:disabled + .rex_edit_title_slider {
 .rex-number {
   text-align: center; }
 
+.tool-option.active-layout .l-svg-icons > svg,
 .btn-builder-layout.active-layout .l-svg-icons > svg {
   fill: #039be5; }
 

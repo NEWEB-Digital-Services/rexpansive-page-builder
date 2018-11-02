@@ -33,7 +33,7 @@ global $layoutsAvaiable;
       </div>
     </div>
     <div class="tools-container-middle">
-      <?php // include_once 'rexlive-toolbox--layout-area.php'; ?>
+      <?php // include_once 'rexlive-toolbox--layout-area-list.php'; ?>
       <?php include_once 'rexlive-toolbox--insert-area.php'; ?>
     </div>
     <div class="tools-container-right">

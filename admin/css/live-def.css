@@ -3577,6 +3577,10 @@ ul {
     left: -69px; }
     .tool-button_list.tool-button_list--horizontal .tool-button_list--item {
       margin-left: 10px; }
+  .tool-button_list.tool-button_list--dropdown .tool-button_list--item {
+    padding: 10px 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #D6D6D6; }
 
 .tool-button-floating {
   position: relative;

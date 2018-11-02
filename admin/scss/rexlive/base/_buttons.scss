@@ -282,6 +282,16 @@
       margin-left: 10px;
     }
   }
+
+  &.tool-button_list--dropdown {
+    .tool-button_list--item {
+      padding: 10px 20px;
+      background-color: #fff;
+      border-bottom: 1px solid #D6D6D6;
+      // border-left: 1px solid #D6D6D6;
+      // border-right: 1px solid #D6D6D6;
+    }
+  }
 }
 
 .tool-button-floating {

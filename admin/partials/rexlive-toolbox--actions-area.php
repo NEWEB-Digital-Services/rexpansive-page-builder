@@ -1,4 +1,5 @@
 <div class="right-tools rexlive-builder-actions">
+  <?php include_once 'rexlive-toolbox--layout-area-dropdown.php'; ?>
   <div class="tool-option btn-undo tippy" data-tippy-content="<?php esc_attr_e( 'Undo', 'rexpansive' ); ?>">
     <?php Rexbuilder_Utilities::get_icon('#A003-Undo'); ?>
   </div>
