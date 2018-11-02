@@ -15474,7 +15474,11 @@ input:disabled + .rex_edit_title_slider {
   width: 15%; }
 
 .tools-container-middle {
-  width: 70%; }
+  width: 70%;
+  text-align: center; }
+
+.toolbox-insert-area {
+  background-color: #00ACFF; }
 
 .left-tools {
   display: -webkit-box;

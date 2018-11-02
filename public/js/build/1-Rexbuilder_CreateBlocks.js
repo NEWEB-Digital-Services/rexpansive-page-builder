@@ -56,6 +56,45 @@ var Rexbuilder_CreateBlocks = (function ($) {
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });
 
+    /**
+     * Listen to insert block event coming from the parent window
+     * @since 2.0.0
+     */
+    $(document).on("rexlive:insert_new_text_block", function (e) {
+        var data = e.settings.data_to_send;
+
+        var $section;
+        if (data.sectionTarget.modelNumber != "") {
+            $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"][data-rexlive-model-number="' + data.sectionTarget.modelNumber + '"]');
+        } else {
+            $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"]');
+        }
+
+        var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
+        var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout);
+
+        galleryInstance.addScrollbar($el);
+        TextEditor.addElementToTextEditor($el.find(".text-wrap"));
+
+        Rexbuilder_Block_Editor.updateBlockTools($el);
+        Rexbuilder_Util_Editor.launchTooltips();
+
+        // var event = jQuery.Event("mouseup");
+        // event.target = $el.find(".rexlive-block-drag-handle");
+        // event.offsetY = 0;
+        // $el.trigger(event);
+
+        Rexbuilder_Util.updateSectionStateLive($section);
+        if(Rexbuilder_Util.activeLayout == "default"){
+            Rexbuilder_Util.updateDefaultLayoutStateSection($section);
+        }
+        var data = {
+            eventName: "rexlive:edited",
+            modelEdited: $section.hasClass("rex-model-section")
+        }
+        Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+    });
+
     $(document).on("rexlive:insert_image", function (e) {
         var data = e.settings.data_to_send;
         

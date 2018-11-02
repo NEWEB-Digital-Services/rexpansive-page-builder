@@ -35,6 +35,7 @@ var Rexlive_Base_Settings = (function($) {
 
   var _init = function() {
     this.$document = $(document);
+    this.$window = $(window);
     _tooltips();
   };
 

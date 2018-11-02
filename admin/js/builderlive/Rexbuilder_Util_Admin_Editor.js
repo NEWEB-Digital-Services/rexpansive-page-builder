@@ -59,7 +59,13 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         }
       }
 
+      if(event.data.eventName == "rexlive:traceVisibleRow" ) {
+        Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-id]').val(event.data.sectionTarget.sectionID);
+        Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-model-id]').val(event.data.sectionTarget.modelNumber);
+      }
+
       if (event.data.eventName == "rexlive:openMediaUploader") {
+        console.log(eventData);
         Rexlive_MediaUploader.openInsertImageBlocksMediaUploader(eventData);
       }
 
@@ -311,6 +317,110 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       }
     });
 
+    /**
+     * Add image from top Toolbox inside the highlighted row
+     * Send a message to the actual parent window to open the Wordpress Media Uploader
+     * @since 2.0.0
+     */
+    Rexlive_Base_Settings.$document.on("click", '.toolbox-add-new-block-image', function(e) {
+      e.preventDefault();
+
+      var msg = {
+        rexliveEvent: true,
+        eventName: "rexlive:openMediaUploader",
+        returnEventName: "rexlive:insert_image",
+        sectionTarget: {
+          sectionID: Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-id]').val(),
+          modelNumber: Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-model-id]').val()
+        },
+      };
+
+      window.postMessage(msg, "*");
+    });
+
+    /**
+     * Add text block from top Toolbox inside the highlighted row
+     * Send a message to the iframe to insert directly a block on the row
+     * @since 2.0.0
+     */
+    Rexlive_Base_Settings.$document.on('click', '.toolbox-add-new-block-text', function(e) {
+      e.preventDefault();
+
+      var msg = {
+        eventName: "rexlive:insert_new_text_block",
+        data_to_send: {
+          sectionTarget: {
+            sectionID: Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-id]').val(),
+            modelNumber: Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-model-id]').val()
+          },
+        }
+      };
+
+      _sendIframeBuilderMessage(msg);
+    });
+
+    /**
+     * Add Video from top Toolbox inside the highlighted row
+     * Send a message to the actual parent window to open the Video Modal
+     * @since 2.0.0
+     */
+    Rexlive_Base_Settings.$document.on("click", '.toolbox-add-new-block-video', function(e) {
+      e.preventDefault();
+
+      var msg = {
+        rexliveEvent: true,
+        eventName: "rexlive:addNewBlockVideo",
+        sectionTarget: {
+          sectionID: Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-id]').val(),
+          modelNumber: Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-model-id]').val()
+        },
+      };
+
+      window.postMessage(msg, "*");
+    });
+
+    /**
+     * Add Slider from top Toolbox inside the highlighted row
+     * Send a message to the actual parent window to open the Slider Modal
+     * @since 2.0.0
+     */
+    Rexlive_Base_Settings.$document.on("click", '.toolbox-add-new-block-slider', function(e) {
+      e.preventDefault();
+
+      var msg = {
+        rexliveEvent: true,
+        eventName: "rexlive:addNewSlider",
+        target: {
+          sectionID: Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-id]').val(),
+          modelNumber: Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-model-id]').val()
+        },
+      };
+
+      window.postMessage(msg, "*");
+    });
+
+    /**
+     * Add Row from top Toolbox after the highlighted row
+     * Send a message to the iframe to insert directly the new row
+     * @since 2.0.0
+     */
+    Rexlive_Base_Settings.$document.on('click', '.toolbox-add-new-section', function(e) {
+      e.preventDefault();
+
+      var msg = {
+        eventName: "rexlive:add_new_section_after",
+        data_to_send: {
+          sectionTarget: {
+            sectionID: Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-id]').val(),
+            modelNumber: Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-model-id]').val()
+          },
+          position: 'after'
+        }
+      };
+
+      _sendIframeBuilderMessage(msg);
+    });
+
     window.addEventListener("message", _receiveMessage, false);
   };
 
@@ -429,6 +539,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       rexliveEvent: true
     };
     jQuery.extend(infos, data);
+    // console.log(infos);
     //console.log("sending message to iframe");
     frameBuilderWindow.postMessage(infos, "*");
   };

@@ -874,6 +874,97 @@ var Rexbuilder_Util_Editor = (function($) {
     });
   };
 
+  var _checkVisibleRow = function() {
+    var ruleTop = document.createElement('div');
+    var ruleBottom = document.createElement('div');
+
+    ruleTop.className = 'ruleTop';
+    ruleTop.style.width = '100%';
+    ruleTop.style.backgroundColor = 'red';
+    ruleTop.style.position = 'fixed';
+    ruleTop.style.left = '0';
+    ruleTop.style.height = '4px';
+    ruleTop.style.zIndex = '2000';
+
+    ruleTop.className = 'ruleBottom';
+    ruleBottom.style.width = '100%';
+    ruleBottom.style.backgroundColor = 'red';
+    ruleBottom.style.position = 'fixed';
+    ruleBottom.style.left = '0';
+    ruleBottom.style.height = '4px';
+    ruleBottom.style.zIndex = '2000';
+
+    // document.getElementsByTagName('body')[0].append(ruleTop);
+    // document.getElementsByTagName('body')[0].append(ruleBottom);
+
+    Rexbuilder_Util_Editor.visibleRow = whichVisible();
+    Rexbuilder_Util_Editor.visibleRowInfo = {
+      sectionID: Rexbuilder_Util_Editor.visibleRow.getAttribute('data-rexlive-section-id'),
+      modelNumber: typeof Rexbuilder_Util_Editor.visibleRow.getAttribute("data-rexlive-model-number") != "undefined" ? Rexbuilder_Util_Editor.visibleRow.getAttribute("data-rexlive-model-number") : ""
+    };
+
+    var data = {
+      eventName: "rexlive:traceVisibleRow",
+      sectionTarget: Rexbuilder_Util_Editor.visibleRowInfo
+    };
+    Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+
+    $(Rexbuilder_Util_Editor.visibleRow).addClass('activeRowTools');
+
+    var didScroll = false;
+    $(window).on("scroll", function(e) {
+      didScroll = true;
+    });
+
+    setInterval(function() {
+      if(didScroll) {
+        var el = whichVisible();
+        if( Rexbuilder_Util_Editor.visibleRow !== el ) {
+          $(".rexpansive_section").removeClass('activeRowTools');
+          $(el).addClass('activeRowTools');
+          Rexbuilder_Util_Editor.visibleRow = el;
+          Rexbuilder_Util_Editor.visibleRowInfo = {
+            sectionID: el.getAttribute('data-rexlive-section-id'),
+            modelNumber: typeof el.getAttribute("data-rexlive-model-number") != "undefined" ? el.getAttribute("data-rexlive-model-number") : ""
+          };
+
+          var data = {
+            eventName: "rexlive:traceVisibleRow",
+            sectionTarget: Rexbuilder_Util_Editor.visibleRowInfo
+          };
+          Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+        }
+        didScroll=false;
+      }
+    },250);
+
+    function whichVisible() {
+      var win_height = $(window).height(),
+          win_height_padded_bottom,
+          win_height_padded_top;
+      win_height_padded_bottom = win_height * 0.8;
+      win_height_padded_top = win_height * 0.2;
+
+      ruleTop.style.top = win_height_padded_top + 'px';
+      ruleBottom.style.top = win_height_padded_bottom + 'px';
+      
+      var spotted;
+      
+      $(".rexpansive_section").each(function(i,el) {
+        var $element = $(el);
+        var elementPositionTop = $element.offset().top,
+          elementHeight = $element.height(),
+          scrolled = $(window).scrollTop();
+      
+        if ( ( elementPositionTop - win_height_padded_bottom < scrolled ) && ( ( elementPositionTop + elementHeight ) - win_height_padded_top > scrolled ) ) {
+          spotted = el;
+          return false;
+        }
+      });
+      return spotted;
+    }
+  };
+
   /**
    * Tell the parent that the user edit the builder
    * @param {bool} isModelEdited have we edited a model
@@ -977,10 +1068,14 @@ var Rexbuilder_Util_Editor = (function($) {
     this.openingModel = false;
     this.insertingModel = false;
 
+    this.visibleRow = null;
+    this.visibleRowInfo = {};
+
     undoStackArray = [];
     redoStackArray = [];
 
-    _tooltips();    
+    _tooltips();
+    _checkVisibleRow();
 
     this.$styleElement = $("#rexpansive-builder-style-inline-css");
     _fixCustomStyleElement();
