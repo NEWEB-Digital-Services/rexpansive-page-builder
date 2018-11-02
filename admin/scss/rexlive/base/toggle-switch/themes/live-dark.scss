@@ -1,0 +1,32 @@
+/* Live Theme
+ * 
+ **/
+
+.switch-toggle.switch-live--dark {
+  padding: 0;
+}
+
+.switch-toggle.switch-live--dark label, 
+.switch-toggle.switch-live--dark > span {
+  line-height: 0;
+}
+
+.switch-toggle.switch-live--dark input + label {
+  padding: 0 5px;
+}
+
+.switch-light.switch-live--dark input ~ span span:first-child,
+.switch-light.switch-live--dark input:checked ~ span span:nth-child(2),
+.switch-live--dark input:checked + label {
+  @include fill-icon($palette-color-4);
+}
+
+.switch-live--dark input:not(:checked) + label {
+  @include fill-icon($palette-color-2);
+  cursor: pointer;
+}
+
+.switch-toggle.switch-live--dark a {
+  background-color: transparent;
+  box-shadow: none;
+}

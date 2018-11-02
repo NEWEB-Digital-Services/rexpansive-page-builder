@@ -3228,6 +3228,34 @@
   .switch-toggle.switch-live a {
     background-color: transparent;
     -webkit-box-shadow: none;
+            box-shadow: none; }
+
+  /* Live Theme
+   * 
+   **/
+  .switch-toggle.switch-live--dark {
+    padding: 0; }
+
+  .switch-toggle.switch-live--dark label,
+  .switch-toggle.switch-live--dark > span {
+    line-height: 0; }
+
+  .switch-toggle.switch-live--dark input + label {
+    padding: 0 5px; }
+
+  .switch-light.switch-live--dark input ~ span span:first-child .l-svg-icons > svg,
+  .switch-light.switch-live--dark input:checked ~ span span:nth-child(2) .l-svg-icons > svg,
+  .switch-live--dark input:checked + label .l-svg-icons > svg {
+    fill: #424242; }
+
+  .switch-live--dark input:not(:checked) + label {
+    cursor: pointer; }
+    .switch-live--dark input:not(:checked) + label .l-svg-icons > svg {
+      fill: #979797; }
+
+  .switch-toggle.switch-live--dark a {
+    background-color: transparent;
+    -webkit-box-shadow: none;
             box-shadow: none; } }
 /* Bugfix for older Webkit, including mobile Webkit. Adapted from
  * http://css-tricks.com/webkit-sibling-bug/
@@ -3577,10 +3605,14 @@ ul {
     left: -69px; }
     .tool-button_list.tool-button_list--horizontal .tool-button_list--item {
       margin-left: 10px; }
-  .tool-button_list.tool-button_list--dropdown .tool-button_list--item {
-    padding: 10px 20px;
-    background-color: #fff;
-    border-bottom: 1px solid #D6D6D6; }
+  .tool-button_list.tool-button_list--dropdown {
+    width: 100%;
+    text-align: center; }
+    .tool-button_list.tool-button_list--dropdown .tool-button_list--item {
+      padding: 10px 20px;
+      background-color: #fff;
+      border-bottom: 1px solid #D6D6D6;
+      margin-top: 0; }
 
 .tool-button-floating {
   position: relative;

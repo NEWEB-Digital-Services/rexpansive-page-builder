@@ -14419,6 +14419,34 @@ select.rx__form-input {
   .switch-toggle.switch-live a {
     background-color: transparent;
     -webkit-box-shadow: none;
+            box-shadow: none; }
+
+  /* Live Theme
+   * 
+   **/
+  .switch-toggle.switch-live--dark {
+    padding: 0; }
+
+  .switch-toggle.switch-live--dark label,
+  .switch-toggle.switch-live--dark > span {
+    line-height: 0; }
+
+  .switch-toggle.switch-live--dark input + label {
+    padding: 0 5px; }
+
+  .switch-light.switch-live--dark input ~ span span:first-child .l-svg-icons > svg,
+  .switch-light.switch-live--dark input:checked ~ span span:nth-child(2) .l-svg-icons > svg,
+  .switch-live--dark input:checked + label .l-svg-icons > svg {
+    fill: #424242; }
+
+  .switch-live--dark input:not(:checked) + label {
+    cursor: pointer; }
+    .switch-live--dark input:not(:checked) + label .l-svg-icons > svg {
+      fill: #979797; }
+
+  .switch-toggle.switch-live--dark a {
+    background-color: transparent;
+    -webkit-box-shadow: none;
             box-shadow: none; } }
 /* Bugfix for older Webkit, including mobile Webkit. Adapted from
  * http://css-tricks.com/webkit-sibling-bug/
@@ -14768,10 +14796,14 @@ ul {
     left: -69px; }
     .tool-button_list.tool-button_list--horizontal .tool-button_list--item {
       margin-left: 10px; }
-  .tool-button_list.tool-button_list--dropdown .tool-button_list--item {
-    padding: 10px 20px;
-    background-color: #fff;
-    border-bottom: 1px solid #D6D6D6; }
+  .tool-button_list.tool-button_list--dropdown {
+    width: 100%;
+    text-align: center; }
+    .tool-button_list.tool-button_list--dropdown .tool-button_list--item {
+      padding: 10px 20px;
+      background-color: #fff;
+      border-bottom: 1px solid #D6D6D6;
+      margin-top: 0; }
 
 .tool-button-floating {
   position: relative;
@@ -15449,18 +15481,21 @@ input:disabled + .rex_edit_title_slider {
   transition: box-shadow 300ms, -webkit-box-shadow 300ms; }
 
 .close-toolbox {
-  -webkit-transition: -webkit-transform 300ms;
-  transition: -webkit-transform 300ms;
-  -o-transition: transform 300ms;
-  transition: transform 300ms;
-  transition: transform 300ms, -webkit-transform 300ms; }
+  text-align: center; }
   .close-toolbox .l-svg-icons > svg {
     fill: #979797; }
+  .close-toolbox .l-svg-icons {
+    -webkit-transition: -webkit-transform 300ms;
+    transition: -webkit-transform 300ms;
+    -o-transition: transform 300ms;
+    transition: transform 300ms;
+    transition: transform 300ms, -webkit-transform 300ms;
+    font-size: 10px; }
 
 .toolbox--closed .rexlive-toolbox__toggle-wrap {
   -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
           box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45); }
-.toolbox--closed .close-toolbox {
+.toolbox--closed .close-toolbox .l-svg-icons {
   -webkit-transform: rotate(180deg);
       -ms-transform: rotate(180deg);
           transform: rotate(180deg); }
@@ -15481,9 +15516,13 @@ input:disabled + .rex_edit_title_slider {
   width: 60%;
   text-align: center; }
 
+.rexlive-logo {
+  display: block; }
+
 .toolbox-insert-area {
   background-color: #00ACFF;
   padding: 0 10px;
+  margin: 0 20px;
   border-radius: 15px; }
   .toolbox-insert-area > .tool-button {
     border-radius: 0;
@@ -15491,6 +15530,14 @@ input:disabled + .rex_edit_title_slider {
     padding-bottom: 10px; }
     .toolbox-insert-area > .tool-button:not(:last-child) {
       border-right: 1px solid rgba(255, 255, 255, 0.3); }
+  .toolbox-insert-area .tool-button.tool-button__image--flat .l-svg-icons {
+    font-size: 19px; }
+  .toolbox-insert-area .tool-button.tool-button__text--flat .l-svg-icons {
+    font-size: 16px; }
+  .toolbox-insert-area .tool-button.tool-button__video--flat .l-svg-icons {
+    font-size: 16px; }
+  .toolbox-insert-area .tool-button-floating .l-svg-icons {
+    font-size: 13px; }
 
 .left-tools {
   display: -webkit-box;
@@ -15525,10 +15572,21 @@ input:disabled + .rex_edit_title_slider {
       -ms-flex-align: center;
           align-items: center; }
 
-.layout-container, .tool-option {
+.layout-container,
+.tool-option {
   cursor: pointer;
   padding: 0 20px;
-  height: 100%; }
+  height: 100%;
+  line-height: 1; }
+
+.tool-option--filled {
+  margin: 0 20px;
+  background-color: #424242;
+  border-radius: 50%;
+  padding: 5px;
+  line-height: 1; }
+  .tool-option--filled .l-svg-icons > svg {
+    fill: #fff; }
 
 .tool-option .l-svg-icons > svg {
   fill: #000; }
@@ -15536,6 +15594,10 @@ input:disabled + .rex_edit_title_slider {
   color: #00ACFF; }
   .tool-option:hover .l-svg-icons > svg {
     fill: #00ACFF; }
+.tool-option.tool-option--togglable .l-svg-icons > svg {
+  fill: #979797; }
+.tool-option.tool-option--togglable.active .l-svg-icons > svg {
+  fill: #424242; }
 
 .tool-option--placeholder {
   width: 60px;
@@ -15544,10 +15606,39 @@ input:disabled + .rex_edit_title_slider {
 .rexlive-toolbox .l-svg-icons {
   font-size: 20px; }
   .rexlive-toolbox .l-svg-icons.tool-dropdown-arrow-icon {
+    margin-left: 10px;
     font-size: 10px;
     -webkit-transform: rotate(180deg);
         -ms-transform: rotate(180deg);
             transform: rotate(180deg); }
+.rexlive-toolbox .toolbox-config-area .l-svg-icons {
+  font-size: 13px; }
+.rexlive-toolbox .toolbox-config-area .switch-toggle.switch-live--dark {
+  padding: 0 15px; }
+
+.tools-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+  .tools-container.tools-container-middle {
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center; }
+
+.tool-option--full {
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-right: 1px solid #D6D6D6;
+  height: 50px; }
+  .tool-option--full.btn-custom-css {
+    border-left: 1px solid #D6D6D6; }
 
 .btn-save {
   position: relative;

@@ -6,7 +6,7 @@
 defined('ABSPATH') or exit;
 ?>
 <div class="tool-button-floating rexlive-responsive-buttons-wrapper">
-  <div class="tool-option active-layout">
+  <div class="tool-option tool-option--full active-layout">
     <?php Rexbuilder_Utilities::get_icon('#A011-Desktop'); ?>
     <?php Rexbuilder_Utilities::get_icon('#A007-Close', 'tool-dropdown-arrow-icon'); ?>
   </div>

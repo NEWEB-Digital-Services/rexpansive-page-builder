@@ -35,8 +35,12 @@
 }
 
 .close-toolbox {
+  text-align: center;
   @include fill-icon(#979797);
-  transition: transform 300ms
+  #{$icon-class} {
+    transition: transform 300ms;
+    font-size: 10px;
+  }
 }
 
 .toolbox--closed {
@@ -44,10 +48,12 @@
     box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
   }
   .close-toolbox {
-    transform: rotate(180deg);
+    #{$icon-class} {
+      transform: rotate(180deg);
+    }
   }
   .rexlive-toolbox__wrap {
-      transform: translateY(-100%);
+    transform: translateY(-100%);
   }
 }
 
@@ -66,9 +72,14 @@
   text-align: center;
 }
 
+.rexlive-logo {
+  display: block;
+}
+
 .toolbox-insert-area {
   background-color: $palette-color-1;
   padding: 0 10px;
+  margin: 0 20px;
   border-radius: 15px;
   > .tool-button {
     border-radius: 0;
@@ -76,6 +87,26 @@
     padding-bottom: 10px;
     &:not(:last-child) {
       border-right: 1px solid rgba(255,255,255,0.3);
+    }
+  }
+  .tool-button.tool-button__image--flat {
+    #{$icon-class} {
+      font-size: 19px;
+    }
+  }
+  .tool-button.tool-button__text--flat {
+    #{$icon-class} {
+      font-size: 16px;
+    }
+  }
+  .tool-button.tool-button__video--flat {
+    #{$icon-class} {
+      font-size: 16px;
+    }
+  }
+  .tool-button-floating {
+    #{$icon-class} {
+      font-size: 13px;
     }
   }
 }
@@ -99,10 +130,21 @@
 }
 
 //@include item
-.layout-container, .tool-option {
+.layout-container, 
+.tool-option {
   cursor: pointer;
   padding: 0 20px;
   height: 100%;
+  line-height: 1;
+}
+
+.tool-option--filled {
+  margin: 0 20px;
+  background-color: $palette-color-4;
+  border-radius: 50%;
+  padding: 5px;
+  line-height: 1;
+  @include fill-icon(#fff);
 }
 
 .tool-option {
@@ -114,6 +156,13 @@
     //   border-color: $palette-color-1;
     // }
   }
+  
+  &.tool-option--togglable {
+    @include fill-icon($palette-color-2);
+    &.active {
+      @include fill-icon($palette-color-4);
+    }
+  }
 }
 
 .tool-option--placeholder {
@@ -124,10 +173,41 @@
 .rexlive-toolbox {
   #{$icon-class} {
     font-size: 20px;
-    &.tool-dropdown-arrow-icon  {
+    &.tool-dropdown-arrow-icon {
+      margin-left: 10px;
       font-size: 10px;
       transform: rotate(180deg);
     }
+  }
+
+  .toolbox-config-area {
+    #{$icon-class} {
+      font-size: 13px;
+    }
+    .switch-toggle.switch-live--dark {
+      padding: 0 15px;
+    }
+    // .tool-option {
+    //   height: auto;
+    // }
+  }
+}
+
+.tools-container {
+  display: flex;
+  align-items: center;
+  &.tools-container-middle {
+    justify-content: center;
+  }
+}
+
+.tool-option--full {
+  display: inline-flex;
+  align-items: center;
+  border-right: 1px solid $palette-color-9;
+  height: 50px;
+  &.btn-custom-css {
+    border-left: 1px solid $palette-color-9;
   }
 }
 
@@ -179,7 +259,7 @@
 }
 
 .btn-undo{
-  border-right-color: #D6D6D6;
+  border-right-color: $palette-color-9;
   border-right-style: solid;
   border-right-width: 1px;
 }

@@ -43,6 +43,7 @@ $em-base: 16 !default;
   @import 'themes/holo';
   @import 'themes/material';
   @import 'themes/live';
+  @import 'themes/live-dark';
 }
 
 /* Bugfix for older Webkit, including mobile Webkit. Adapted from

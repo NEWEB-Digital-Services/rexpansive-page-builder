@@ -284,12 +284,15 @@
   }
 
   &.tool-button_list--dropdown {
+    width: 100%;
+    text-align: center;
     .tool-button_list--item {
       padding: 10px 20px;
       background-color: #fff;
-      border-bottom: 1px solid #D6D6D6;
-      // border-left: 1px solid #D6D6D6;
-      // border-right: 1px solid #D6D6D6;
+      border-bottom: 1px solid $palette-color-9;
+      margin-top: 0;
+      // border-left: 1px solid $palette-color-9;
+      // border-right: 1px solid $palette-color-9;
     }
   }
 }
