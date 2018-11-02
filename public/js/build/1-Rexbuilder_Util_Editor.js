@@ -898,9 +898,11 @@ var Rexbuilder_Util_Editor = (function($) {
     // document.getElementsByTagName('body')[0].append(ruleBottom);
 
     Rexbuilder_Util_Editor.visibleRow = whichVisible();
+    // var $sectionData = Rexbuilder_Util_Editor.visibleRow.children(".section-data");
     Rexbuilder_Util_Editor.visibleRowInfo = {
       sectionID: Rexbuilder_Util_Editor.visibleRow.getAttribute('data-rexlive-section-id'),
-      modelNumber: typeof Rexbuilder_Util_Editor.visibleRow.getAttribute("data-rexlive-model-number") != "undefined" ? Rexbuilder_Util_Editor.visibleRow.getAttribute("data-rexlive-model-number") : ""
+      modelNumber: typeof Rexbuilder_Util_Editor.visibleRow.getAttribute("data-rexlive-model-number") != "undefined" ? Rexbuilder_Util_Editor.visibleRow.getAttribute("data-rexlive-model-number") : "",
+      // layout: Rexbuilder_Util_Editor.visibleRow
     };
 
     var data = {

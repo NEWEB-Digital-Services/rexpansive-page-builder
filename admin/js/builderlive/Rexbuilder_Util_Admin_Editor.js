@@ -10,6 +10,9 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   var pageSaved;
   var $saveBtn;
 
+  var $highlightSectionId
+  var $highlightModelId
+
   var open_models_list;
 
   var $frameContainer;
@@ -60,12 +63,11 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       }
 
       if(event.data.eventName == "rexlive:traceVisibleRow" ) {
-        Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-id]').val(event.data.sectionTarget.sectionID);
-        Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-model-id]').val(event.data.sectionTarget.modelNumber);
+        $highlightSectionId.val(event.data.sectionTarget.sectionID);
+        $highlightModelId.val(event.data.sectionTarget.modelNumber);
       }
 
       if (event.data.eventName == "rexlive:openMediaUploader") {
-        console.log(eventData);
         Rexlive_MediaUploader.openInsertImageBlocksMediaUploader(eventData);
       }
 
@@ -330,8 +332,8 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         eventName: "rexlive:openMediaUploader",
         returnEventName: "rexlive:insert_image",
         sectionTarget: {
-          sectionID: Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-id]').val(),
-          modelNumber: Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-model-id]').val()
+          sectionID: $highlightSectionId.val(),
+          modelNumber: $highlightModelId.val()
         },
       };
 
@@ -350,8 +352,8 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         eventName: "rexlive:insert_new_text_block",
         data_to_send: {
           sectionTarget: {
-            sectionID: Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-id]').val(),
-            modelNumber: Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-model-id]').val()
+            sectionID: $highlightSectionId.val(),
+            modelNumber: $highlightModelId.val()
           },
         }
       };
@@ -371,8 +373,8 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         rexliveEvent: true,
         eventName: "rexlive:addNewBlockVideo",
         sectionTarget: {
-          sectionID: Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-id]').val(),
-          modelNumber: Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-model-id]').val()
+          sectionID: $highlightSectionId.val(),
+          modelNumber: $highlightModelId.val()
         },
       };
 
@@ -391,8 +393,8 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         rexliveEvent: true,
         eventName: "rexlive:addNewSlider",
         target: {
-          sectionID: Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-id]').val(),
-          modelNumber: Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-model-id]').val()
+          sectionID: $highlightSectionId.val(),
+          modelNumber: $highlightModelId.val()
         },
       };
 
@@ -411,8 +413,8 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         eventName: "rexlive:add_new_section_after",
         data_to_send: {
           sectionTarget: {
-            sectionID: Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-id]').val(),
-            modelNumber: Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-model-id]').val()
+            sectionID: $highlightSectionId.val(),
+            modelNumber: $highlightModelId.val()
           },
           position: 'after'
         }
@@ -420,6 +422,52 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
 
       _sendIframeBuilderMessage(msg);
     });
+
+    Rexlive_Base_Settings.$document.on('click', '.toolbox-collapse-grid', function(e) {
+      e.preventDefault();
+
+      var msg = {
+        eventName: "rexlive:collapse_row",
+        data_to_send: {
+          sectionTarget: {
+            sectionID: $highlightSectionId.val(),
+            modelNumber: $highlightModelId.val()
+          },
+        }
+      };
+
+      _sendIframeBuilderMessage(msg);
+    });
+
+    Rexlive_Base_Settings.$document.on('change', '.toolbox-edit-row-layout', function(e) {
+      var msg = {
+        eventName: "rexlive:set_gallery_layout",
+        data_to_send: {
+          sectionTarget: {
+            sectionID: $highlightSectionId.val(),
+            modelNumber: $highlightModelId.val()
+          },
+          layout: e.target.value
+        },
+      };
+
+      _sendIframeBuilderMessage(msg);
+    });
+
+    // Rexlive_Base_Settings.$document.on('click', '.toolbox-builder-section-config', function(e) {
+    //   e.preventDefault();
+
+    //   var msg = {
+    //     rexliveEvent: true,
+    //     eventName: "rexlive:addNewSlider",
+    //     target: {
+    //       sectionID: $highlightSectionId.val(),
+    //       modelNumber: $highlightModelId.val()
+    //     },
+    //   };
+
+    //   window.postMessage(msg, "*");
+    // });
 
     window.addEventListener("message", _receiveMessage, false);
   };
@@ -640,6 +688,8 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     this.animationEvent = _whichAnimationEvent();
 
     this.$responsiveToolbar = this.$rexpansiveContainer.find( ".rexlive-toolbox" );
+    $highlightSectionId = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-id]');
+    $highlightModelId = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-model-id]');
     $saveBtn = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find( ".btn-save" );
     pageSaved = true;
     modelSaved = true;

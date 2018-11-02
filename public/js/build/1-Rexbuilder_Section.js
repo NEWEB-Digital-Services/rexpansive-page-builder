@@ -89,6 +89,217 @@ var Rexbuilder_Section = (function($) {
     Rexbuilder_Section.hideSectionToolBox($section);
   };
 
+  /**
+   * Toggle a collapse on a certain row
+   * @param {jQUery Object} $section row to toggle collapse
+   * @since 2.0.0
+   */
+  var _toggleGridCollapse = function( $section ) {
+    var gridCollapsed;
+    if (
+      typeof $section.attr("data-rex-collapse-grid") != "undefined" &&
+      $section.attr("data-rex-collapse-grid").toString() == "true"
+    ) {
+      gridCollapsed = true;
+    } else {
+      gridCollapsed = false;
+    }
+
+    var galleryEditorInstance = Rexbuilder_Util.getGalleryInstance($section);
+
+    var layout = {
+      layout: galleryEditorInstance.settings.galleryLayout,
+      fullHeight: galleryEditorInstance.settings.fullHeight,
+      singleHeight: galleryEditorInstance.properties.singleHeight
+    };
+
+    var reverseData = {
+      gridInstance: galleryEditorInstance,
+      gridLayout: layout,
+      blockDisposition: galleryEditorInstance.createActionDataMoveBlocksGrid(),
+      collapse: gridCollapsed
+    };
+
+    if (!gridCollapsed) {
+      galleryEditorInstance.collapseElementsProperties();
+      galleryEditorInstance.collapseElements(reverseData);
+    } else {
+      Rexbuilder_Util_Editor.updatingCollapsedGrid = true;
+
+      var elemetsDisposition = Rexbuilder_Util.getLayoutLiveSectionTargets(
+        $section
+      );
+      var galleryLayoutToActive = Rexbuilder_Util.getGridLayoutLive($section);
+
+      var gridstackInstance =
+        galleryEditorInstance.properties.gridstackInstance;
+      var fullHeight = galleryLayoutToActive.fullHeight.toString() == "true";
+      var singleHeight;
+
+      if (galleryLayoutToActive.layout == "masonry") {
+        singleHeight = 5;
+      } else {
+        singleHeight = galleryEditorInstance.$element.outerWidth() / 12;
+      }
+
+      var galleryLayout = {
+        layout: galleryLayoutToActive.layout,
+        fullHeight: fullHeight,
+        singleHeight: singleHeight
+      };
+
+      galleryEditorInstance.$element.attr(
+        "data-layout",
+        galleryLayout.layout
+      );
+      galleryEditorInstance.$element.attr(
+        "data-full-height",
+        galleryLayout.fullHeight
+      );
+
+      galleryEditorInstance.updateGridLayoutCollapse(galleryLayout);
+
+      galleryEditorInstance.batchGridstack();
+
+      for (var i = 1; i < elemetsDisposition.length; i++) {
+        var $elem = $section.find(
+          'div[data-rexbuilder-block-id="' + elemetsDisposition[i].name + '"]'
+        );
+        var $elemData = $elem.children(".rexbuilder-block-data");
+        var props = elemetsDisposition[i].props;
+        var postionData = {
+          x: props.gs_x,
+          y: props.gs_y,
+          w: props.gs_width,
+          h: props.gs_height,
+          startH: props.gs_start_h,
+          gridstackInstance: gridstackInstance
+        };
+        Rexbuilder_Util.updateElementDimensions(
+          $elem,
+          $elemData,
+          postionData
+        );
+      }
+
+      galleryEditorInstance.commitGridstack();
+
+      galleryEditorInstance.removeCollapseElementsProperties();
+
+      if (galleryLayout.layout == "masonry") {
+        setTimeout(
+          function() {
+            galleryEditorInstance.updateBlocksHeight();
+            setTimeout(
+              function() {
+                var actionData = {
+                  gridInstance: galleryEditorInstance,
+                  gridLayout: galleryLayout,
+                  blockDisposition: galleryEditorInstance.createActionDataMoveBlocksGrid(),
+                  collapse: false
+                };
+                galleryEditorInstance._fixImagesDimension();
+                Rexbuilder_Util_Editor.pushAction(
+                  $section,
+                  "collapseSection",
+                  actionData,
+                  reverseData
+                );
+                Rexbuilder_Util_Editor.updatingCollapsedGrid = false;
+              },
+              400,
+              reverseData,
+              $section,
+              galleryEditorInstance,
+              galleryLayout
+            );
+          },
+          300,
+          reverseData,
+          $section,
+          galleryEditorInstance,
+          galleryLayout
+        );
+      } else {
+        if (fullHeight) {
+          setTimeout(
+            function() {
+              galleryEditorInstance.properties.gridBlocksHeight = galleryEditorInstance._calculateGridHeight();
+              galleryLayout.singleHeight =
+                galleryEditorInstance._viewport().height /
+                galleryEditorInstance.properties.gridBlocksHeight;
+              galleryEditorInstance.updateGridstackStyles(
+                galleryLayout.singleHeight
+              );
+              setTimeout(
+                function() {
+                  var actionData = {
+                    gridInstance: galleryEditorInstance,
+                    gridLayout: galleryLayout,
+                    blockDisposition: galleryEditorInstance.createActionDataMoveBlocksGrid(),
+                    collapse: false
+                  };
+                  Rexbuilder_Util_Editor.pushAction(
+                    $section,
+                    "collapseSection",
+                    actionData,
+                    reverseData
+                  );
+                  galleryEditorInstance._fixImagesDimension();
+                  Rexbuilder_Util_Editor.updatingCollapsedGrid = false;
+                },
+                100,
+                reverseData,
+                $section,
+                galleryEditorInstance,
+                galleryLayout
+              );
+            },
+            300,
+            reverseData,
+            $section,
+            galleryEditorInstance,
+            galleryLayout
+          );
+        } else {
+          setTimeout(
+            function() {
+              var actionData = {
+                gridInstance: galleryEditorInstance,
+                gridLayout: galleryLayout,
+                blockDisposition: galleryEditorInstance.createActionDataMoveBlocksGrid(),
+                collapse: false
+              };
+              galleryEditorInstance._fixImagesDimension();
+              Rexbuilder_Util_Editor.pushAction(
+                $section,
+                "collapseSection",
+                actionData,
+                reverseData
+              );
+              Rexbuilder_Util_Editor.updatingCollapsedGrid = false;
+            },
+            400,
+            reverseData,
+            $section,
+            galleryEditorInstance,
+            galleryLayout
+          );
+        }
+      }
+    }
+
+    var data = {
+      eventName: "rexlive:edited",
+      modelEdited: $section.hasClass("rex-model-section")
+    };
+    Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+
+    if (Rexbuilder_Util.activeLayout == "default") {
+      Rexbuilder_Util.updateDefaultLayoutStateSection($section);
+    }
+  }
+
   var _addSectionToolboxListeners = function() {
     Rexbuilder_Util.$document.on("click", ".builder-delete-row", function(e) {
       var $section = $(e.currentTarget).parents(".rexpansive_section");
@@ -357,212 +568,31 @@ var Rexbuilder_Section = (function($) {
       }
     });
 
+    /**
+     * Listen to click on collapse row button
+     * @since 2.0.0
+     */
     Rexbuilder_Util.$document.on("click", ".collapse-grid", function(e) {
       var $section = $(e.target).parents(".rexpansive_section");
 
-      var gridCollapsed;
-      if (
-        typeof $section.attr("data-rex-collapse-grid") != "undefined" &&
-        $section.attr("data-rex-collapse-grid").toString() == "true"
-      ) {
-        gridCollapsed = true;
+      _toggleGridCollapse( $section );
+    });
+
+    /**
+     * Listen to event that launchs a collapse on a row
+     * @since 2.0.0
+     */
+    Rexbuilder_Util.$document.on("rexlive:collapse_row", function(e) {
+      var data = e.settings.data_to_send;
+
+      var $section;
+      if (data.sectionTarget.modelNumber != "") {
+        $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"][data-rexlive-model-number="' + data.sectionTarget.modelNumber + '"]');
       } else {
-        gridCollapsed = false;
+        $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"]');
       }
 
-      var galleryEditorInstance = Rexbuilder_Util.getGalleryInstance($section);
-
-      var layout = {
-        layout: galleryEditorInstance.settings.galleryLayout,
-        fullHeight: galleryEditorInstance.settings.fullHeight,
-        singleHeight: galleryEditorInstance.properties.singleHeight
-      };
-
-      var reverseData = {
-        gridInstance: galleryEditorInstance,
-        gridLayout: layout,
-        blockDisposition: galleryEditorInstance.createActionDataMoveBlocksGrid(),
-        collapse: gridCollapsed
-      };
-
-      if (!gridCollapsed) {
-        galleryEditorInstance.collapseElementsProperties();
-        galleryEditorInstance.collapseElements(reverseData);
-      } else {
-        Rexbuilder_Util_Editor.updatingCollapsedGrid = true;
-
-        var elemetsDisposition = Rexbuilder_Util.getLayoutLiveSectionTargets(
-          $section
-        );
-        var galleryLayoutToActive = Rexbuilder_Util.getGridLayoutLive($section);
-
-        var gridstackInstance =
-          galleryEditorInstance.properties.gridstackInstance;
-        var fullHeight = galleryLayoutToActive.fullHeight.toString() == "true";
-        var singleHeight;
-
-        if (galleryLayoutToActive.layout == "masonry") {
-          singleHeight = 5;
-        } else {
-          singleHeight = galleryEditorInstance.$element.outerWidth() / 12;
-        }
-
-        var galleryLayout = {
-          layout: galleryLayoutToActive.layout,
-          fullHeight: fullHeight,
-          singleHeight: singleHeight
-        };
-
-        galleryEditorInstance.$element.attr(
-          "data-layout",
-          galleryLayout.layout
-        );
-        galleryEditorInstance.$element.attr(
-          "data-full-height",
-          galleryLayout.fullHeight
-        );
-
-        galleryEditorInstance.updateGridLayoutCollapse(galleryLayout);
-
-        galleryEditorInstance.batchGridstack();
-
-        for (var i = 1; i < elemetsDisposition.length; i++) {
-          var $elem = $section.find(
-            'div[data-rexbuilder-block-id="' + elemetsDisposition[i].name + '"]'
-          );
-          var $elemData = $elem.children(".rexbuilder-block-data");
-          var props = elemetsDisposition[i].props;
-          var postionData = {
-            x: props.gs_x,
-            y: props.gs_y,
-            w: props.gs_width,
-            h: props.gs_height,
-            startH: props.gs_start_h,
-            gridstackInstance: gridstackInstance
-          };
-          Rexbuilder_Util.updateElementDimensions(
-            $elem,
-            $elemData,
-            postionData
-          );
-        }
-
-        galleryEditorInstance.commitGridstack();
-
-        galleryEditorInstance.removeCollapseElementsProperties();
-
-        if (galleryLayout.layout == "masonry") {
-          setTimeout(
-            function() {
-              galleryEditorInstance.updateBlocksHeight();
-              setTimeout(
-                function() {
-                  var actionData = {
-                    gridInstance: galleryEditorInstance,
-                    gridLayout: galleryLayout,
-                    blockDisposition: galleryEditorInstance.createActionDataMoveBlocksGrid(),
-                    collapse: false
-                  };
-                  galleryEditorInstance._fixImagesDimension();
-                  Rexbuilder_Util_Editor.pushAction(
-                    $section,
-                    "collapseSection",
-                    actionData,
-                    reverseData
-                  );
-                  Rexbuilder_Util_Editor.updatingCollapsedGrid = false;
-                },
-                400,
-                reverseData,
-                $section,
-                galleryEditorInstance,
-                galleryLayout
-              );
-            },
-            300,
-            reverseData,
-            $section,
-            galleryEditorInstance,
-            galleryLayout
-          );
-        } else {
-          if (fullHeight) {
-            setTimeout(
-              function() {
-                galleryEditorInstance.properties.gridBlocksHeight = galleryEditorInstance._calculateGridHeight();
-                galleryLayout.singleHeight =
-                  galleryEditorInstance._viewport().height /
-                  galleryEditorInstance.properties.gridBlocksHeight;
-                galleryEditorInstance.updateGridstackStyles(
-                  galleryLayout.singleHeight
-                );
-                setTimeout(
-                  function() {
-                    var actionData = {
-                      gridInstance: galleryEditorInstance,
-                      gridLayout: galleryLayout,
-                      blockDisposition: galleryEditorInstance.createActionDataMoveBlocksGrid(),
-                      collapse: false
-                    };
-                    Rexbuilder_Util_Editor.pushAction(
-                      $section,
-                      "collapseSection",
-                      actionData,
-                      reverseData
-                    );
-                    galleryEditorInstance._fixImagesDimension();
-                    Rexbuilder_Util_Editor.updatingCollapsedGrid = false;
-                  },
-                  100,
-                  reverseData,
-                  $section,
-                  galleryEditorInstance,
-                  galleryLayout
-                );
-              },
-              300,
-              reverseData,
-              $section,
-              galleryEditorInstance,
-              galleryLayout
-            );
-          } else {
-            setTimeout(
-              function() {
-                var actionData = {
-                  gridInstance: galleryEditorInstance,
-                  gridLayout: galleryLayout,
-                  blockDisposition: galleryEditorInstance.createActionDataMoveBlocksGrid(),
-                  collapse: false
-                };
-                galleryEditorInstance._fixImagesDimension();
-                Rexbuilder_Util_Editor.pushAction(
-                  $section,
-                  "collapseSection",
-                  actionData,
-                  reverseData
-                );
-                Rexbuilder_Util_Editor.updatingCollapsedGrid = false;
-              },
-              400,
-              reverseData,
-              $section,
-              galleryEditorInstance,
-              galleryLayout
-            );
-          }
-        }
-      }
-
-      var data = {
-        eventName: "rexlive:edited",
-        modelEdited: $section.hasClass("rex-model-section")
-      };
-      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-
-      if (Rexbuilder_Util.activeLayout == "default") {
-        Rexbuilder_Util.updateDefaultLayoutStateSection($section);
-      }
+      _toggleGridCollapse( $section );
     });
 
     /**
