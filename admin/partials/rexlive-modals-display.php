@@ -1714,3 +1714,22 @@ defined('ABSPATH') or exit;
     </div>
 <!-- </div> -->
 <!-- Model Lists -->
+
+<div id="rex-buttons-list" class="rex-lateral-panel">
+    <div class="rex-lateral-panel__content">
+        <div class="bl_d-flex bl_jc-fe">
+            <div class="tool-button tool-button--inline tool-button--flat rex-close-button">
+                <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+            </div>
+        </div>
+        <div class="buttons-list-wrapper">
+            <ul class="button-list button-list--pswp">
+                <li>
+                    <div>
+                        <a href="https://www.google.it">google</a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -212,3 +212,63 @@
     opacity: 1;
   }
 }
+
+//rex button
+@mixin button-definition-style {
+  background-color: $button-bg-color;
+  color: $button-text-color!important;
+
+  &.inverted {
+    background-color: $button-text-color;
+    color: $button-bg-invert-color!important;
+  }
+  &.rex-white-inverted {
+    border-color: #fff;
+    background-color: #000;
+    color: #fff!important;
+  }
+  &.rex-grey {
+    border-color: $button-bg-invert-color;
+    background-color: $button-bg-invert-color;
+    color: $button-grey-text-color!important;
+  }
+  &.rex-red {
+    border-color: $button-bg-invert-color;
+    background-color: $button-bg-invert-color;
+  }
+  &.rex-black {
+    border-color: #000;
+    background-color: #000;
+    color: #fff!important;
+  }
+  &.rex-white {
+    border-color: #fff;
+    background-color: #fff;
+    color: #000!important;
+  }
+  &.rex-grey-inverted {
+    background-color: $button-grey-text-color;
+    border-color: $button-grey-text-color;
+    color: #fff!important;
+  }
+  &.rex-black-border {
+    border: 2px solid black;
+  }
+
+  svg * {
+    fill: inherit;
+  }
+}
+
+@mixin button-definition-standard-style {
+  background-color: $button-text-color;
+  color: $button-bg-invert-color!important;
+
+  &:hover {
+    background-color: $button-text-color;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}
