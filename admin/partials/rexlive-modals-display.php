@@ -1665,14 +1665,20 @@ defined('ABSPATH') or exit;
     </div>
 </div><!-- Locked feature -->
 
-<!-- <div class="rex-modal-wrap" style="width:500px;overflow:visible;left:70%;"> -->
-    <div id="rex-models-list" class="rex-lateral-panel">
-        <div class="rex-lateral-panel__content">
-            <div class="bl_d-flex bl_jc-fe">
-                <div class="tool-button tool-button--inline tool-button--flat rex-close-button">
-                    <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
-                </div>
+<div id="rexbuilder-lateral-panel" class="rex-lateral-panel">
+    <div class="top-lateral-tools">
+        <ul class="rex-lateral-tabs-list" data-tabgroup="rex-lateral-tabs">
+            <li><a href="#" data-rex-tab-target="rex-models-list">Models</a></li>
+            <li><a href="#" data-rex-tab-target="rex-buttons-list">Buttons</a></li>
+        </ul>
+        <div class="bl_d-flex bl_jc-fe">
+            <div class="tool-button tool-button--inline tool-button--flat rex-close-button">
+                <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
             </div>
+        </div>
+    </div>
+    <div id="rex-lateral-tabs" class="tabgroup">
+        <div id="rex-models-list" class="rex-lateral-panel__content">
             <div class="models-list-wrapper">
                 <ul class="model-list model-list--pswp" itemscope itemtype="http://schema.org/ImageGallery">
                     <?php
@@ -1707,29 +1713,19 @@ defined('ABSPATH') or exit;
                 }
                 // Restore original Post Data
                 wp_reset_postdata(); 
-
                 ?></ul>
             </div>
         </div>
-    </div>
-<!-- </div> -->
-<!-- Model Lists -->
-
-<div id="rex-buttons-list" class="rex-lateral-panel">
-    <div class="rex-lateral-panel__content">
-        <div class="bl_d-flex bl_jc-fe">
-            <div class="tool-button tool-button--inline tool-button--flat rex-close-button">
-                <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+        <div id="rex-buttons-list" class="rex-lateral-panel__content">
+            <div class="buttons-list-wrapper">
+                <ul class="button-list button-list--pswp">
+                    <li>
+                        <div>
+                            <a href="https://www.google.it">google</a>
+                        </div>
+                    </li>
+                </ul>
             </div>
-        </div>
-        <div class="buttons-list-wrapper">
-            <ul class="button-list button-list--pswp">
-                <li>
-                    <div>
-                        <a href="https://www.google.it">google</a>
-                    </div>
-                </li>
-            </ul>
         </div>
     </div>
 </div>

@@ -288,7 +288,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     });
 
     Rexlive_Base_Settings.$document.on("click", ".btn-models", function(e) {
-      Model_Import_Modal.openModal();
+      Model_Lateral_Menu.openModal();
     });
 
     /**
