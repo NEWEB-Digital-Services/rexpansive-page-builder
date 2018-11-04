@@ -38,11 +38,11 @@
   </div>
 
   <!-- Pulsante per importare i modelli -->
-  <div class="tool-button tool-button--flat tool-button--inline btn-models tippy" data-tippy-content="<?php esc_attr_e( 'Models', 'rexpansive' ); ?>">
+  <div class="tool-button tool-button--flat tool-button__models--flat tool-button--inline btn-models tippy" data-tippy-content="<?php esc_attr_e( 'Models', 'rexpansive' ); ?>">
     <?php Rexbuilder_Utilities::get_icon('#A012-Models-List'); ?>
   </div>
 
-  <div class="tool-button-floating">
+  <div class="tool-button-floating tool-button__settings--flat">
     <!-- to add an empty block add this class: add-new-block-empty -->
     <div class="tool-button tool-button--flat active">
       <?php Rexbuilder_Utilities::get_icon('#Z009-More'); ?>

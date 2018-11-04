@@ -40,8 +40,10 @@
     }
 
     &.tool-area--center {
-      background-color: $palette-color-1;
+      background-color: $palette-color-4;
       padding-left: 15px;
+      padding-top: 6px;
+      padding-bottom: 8px;
       @include center-from-left-abs();
       .tool-button--flat {
         &:hover {

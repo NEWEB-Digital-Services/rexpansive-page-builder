@@ -3712,8 +3712,10 @@ ul {
       .section-toolBox .tools-area.tool-area--side .tool-button--flat:hover .l-svg-icons > svg {
         fill: rgba(255, 255, 255, 0.5); }
     .section-toolBox .tools-area.tool-area--center {
-      background-color: #00ACFF;
+      background-color: #424242;
       padding-left: 15px;
+      padding-top: 6px;
+      padding-bottom: 8px;
       position: absolute;
       left: 50%;
       -webkit-transform: translateX(-50%);

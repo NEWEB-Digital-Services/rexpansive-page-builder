@@ -90,19 +90,41 @@
     }
   }
   .tool-button.tool-button__image--flat {
+    padding-top: 8px;
+    padding-bottom: 12px;
+    padding-left: 10px;
+    padding-right: 20px;
     #{$icon-class} {
       font-size: 19px;
     }
   }
   .tool-button.tool-button__text--flat {
+    max-height: 40px;
+    padding-left: 21px;
+    padding-right: 20px;
+    padding-top: 12px;
+    padding-bottom: 12px;
     #{$icon-class} {
       font-size: 16px;
     }
   }
   .tool-button.tool-button__video--flat {
+    max-height: 40px;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 20px;
+    padding-right: 20px;
     #{$icon-class} {
       font-size: 16px;
     }
+  }
+  .tool-button.tool-button__models--flat {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .tool-button-floating.tool-button__settings--flat {
+    padding-left: 10px;
+    padding-right: 1px;
   }
   .tool-button-floating {
     #{$icon-class} {
@@ -144,6 +166,7 @@
   border-radius: 50%;
   padding: 5px;
   line-height: 1;
+  font-size: 0;
   @include fill-icon(#fff);
 }
 

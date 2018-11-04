@@ -900,9 +900,8 @@ var Rexbuilder_Util_Editor = (function($) {
     Rexbuilder_Util_Editor.visibleRow = whichVisible();
     // var $sectionData = Rexbuilder_Util_Editor.visibleRow.children(".section-data");
     Rexbuilder_Util_Editor.visibleRowInfo = {
-      sectionID: Rexbuilder_Util_Editor.visibleRow.getAttribute('data-rexlive-section-id'),
-      modelNumber: typeof Rexbuilder_Util_Editor.visibleRow.getAttribute("data-rexlive-model-number") != "undefined" ? Rexbuilder_Util_Editor.visibleRow.getAttribute("data-rexlive-model-number") : "",
-      // layout: Rexbuilder_Util_Editor.visibleRow
+      sectionID: ( null !== Rexbuilder_Util_Editor.visibleRow ? Rexbuilder_Util_Editor.visibleRow.getAttribute('data-rexlive-section-id') : null ),
+      modelNumber: ( null !== Rexbuilder_Util_Editor.visibleRow ? ( typeof Rexbuilder_Util_Editor.visibleRow.getAttribute("data-rexlive-model-number") != "undefined" ? Rexbuilder_Util_Editor.visibleRow.getAttribute("data-rexlive-model-number") : "" ) : null ),
     };
 
     var data = {
@@ -921,7 +920,7 @@ var Rexbuilder_Util_Editor = (function($) {
     setInterval(function() {
       if(didScroll) {
         var el = whichVisible();
-        if( Rexbuilder_Util_Editor.visibleRow !== el ) {
+        if( null !== el && Rexbuilder_Util_Editor.visibleRow !== el ) {
           $(".rexpansive_section").removeClass('activeRowTools');
           $(el).addClass('activeRowTools');
           Rexbuilder_Util_Editor.visibleRow = el;
@@ -950,7 +949,7 @@ var Rexbuilder_Util_Editor = (function($) {
       ruleTop.style.top = win_height_padded_top + 'px';
       ruleBottom.style.top = win_height_padded_bottom + 'px';
       
-      var spotted;
+      var spotted = null;
       
       $(".rexpansive_section").each(function(i,el) {
         var $element = $(el);
