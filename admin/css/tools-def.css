@@ -14813,9 +14813,9 @@ ul {
     .tool-button_list.tool-button_list--dropdown .tool-button_list--item {
       padding: 10px 20px;
       background-color: #fff;
-      border-bottom: 1px solid #D6D6D6;
-      border-left: 1px solid #D6D6D6;
-      border-right: 1px solid #D6D6D6;
+      border-bottom: 1px solid #efefef;
+      border-left: 1px solid #efefef;
+      border-right: 1px solid #efefef;
       margin-top: 0; }
       .tool-button_list.tool-button_list--dropdown .tool-button_list--item.tool-button_list--item--custom {
         padding-top: 14px;
@@ -15559,7 +15559,7 @@ input:disabled + .rex_edit_title_slider {
     padding-top: 10px;
     padding-bottom: 10px; }
     .toolbox-insert-area > .tool-button:not(:last-child) {
-      border-right: 1px solid rgba(255, 255, 255, 0.3); }
+      border-right: 1px solid rgba(255, 255, 255, 0.2); }
   .toolbox-insert-area .tool-button.tool-button__image--flat {
     padding-top: 7px;
     padding-bottom: 11px;
@@ -15696,12 +15696,12 @@ input:disabled + .rex_edit_title_slider {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  border-right: 1px solid #D6D6D6;
+  border-right: 1px solid #efefef;
   height: 50px; }
   .tool-option--full.btn-custom-css {
-    border-left: 1px solid #D6D6D6; }
+    border-left: 1px solid #efefef; }
   .tool-option--full.tool-option__choose-layout {
-    border-left: 1px solid #D6D6D6;
+    border-left: 1px solid #efefef;
     position: relative;
     z-index: 100000; }
 
@@ -15774,7 +15774,7 @@ input:disabled + .rex_edit_title_slider {
   fill: #000; }
 
 .btn-undo {
-  border-right-color: #D6D6D6;
+  border-right-color: #efefef;
   border-right-style: solid;
   border-right-width: 1px; }
 
