@@ -3251,7 +3251,7 @@
   .switch-live--dark input:not(:checked) + label {
     cursor: pointer; }
     .switch-live--dark input:not(:checked) + label .l-svg-icons > svg {
-      fill: #979797; }
+      fill: #ccc; }
 
   .switch-toggle.switch-live--dark a {
     background-color: transparent;
@@ -3607,11 +3607,24 @@ ul {
       margin-left: 10px; }
   .tool-button_list.tool-button_list--dropdown {
     width: 100%;
-    text-align: center; }
+    text-align: center;
+    -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45); }
+    .tool-button_list.tool-button_list--dropdown:after {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      top: -50px;
+      width: 82px;
+      height: 50px;
+      background-color: #fff; }
     .tool-button_list.tool-button_list--dropdown .tool-button_list--item {
       padding: 10px 20px;
       background-color: #fff;
       border-bottom: 1px solid #D6D6D6;
+      border-left: 1px solid #D6D6D6;
+      border-right: 1px solid #D6D6D6;
       margin-top: 0; }
       .tool-button_list.tool-button_list--dropdown .tool-button_list--item.tool-button_list--item--custom {
         padding-top: 14px;
@@ -4386,7 +4399,7 @@ ul {
     z-index: 1000;
     opacity: 1; }
   .rexlive-loader .sk-double-bounce .sk-child {
-    background-color: #FF0040; }
+    background-color: #FF0055; }
 
 .rexbuilder-live-content--loading {
   overflow: hidden; }
@@ -4916,7 +4929,7 @@ ul {
 .grid-stack-item.focused {
   overflow: visible;
   z-index: 2;
-  outline: 1px solid #FF0040;
+  outline: 1px solid #FF0055;
   -webkit-box-shadow: 0px 0px 111px 1px rgba(0, 0, 0, 0.8);
   box-shadow: 0px 0px 111px 1px rgba(0, 0, 0, 0.8); }
 
@@ -5013,7 +5026,7 @@ ul {
 .circle-handle {
   width: 10px;
   height: 10px;
-  background-color: #FF0040;
+  background-color: #FF0055;
   border: none;
   overflow: visible;
   -webkit-transition: -webkit-transform 200ms;

@@ -6,8 +6,8 @@
 defined('ABSPATH') or exit;
 ?>
 <div class="tool-button-floating rexlive-responsive-buttons-wrapper">
-  <div class="tool-option tool-option--full active-layout">
-    <?php Rexbuilder_Utilities::get_icon('#A011-Desktop'); ?>
+  <div class="tool-option tool-option--full tool-option__choose-layout active-layout">
+    <span><?php Rexbuilder_Utilities::get_icon('#A011-Desktop'); ?></span>
     <?php Rexbuilder_Utilities::get_icon('#A007-Close', 'tool-dropdown-arrow-icon'); ?>
   </div>
   <div class="tool-button_list tool-button_list--dropdown">
@@ -68,9 +68,9 @@ defined('ABSPATH') or exit;
   ?>
   <?php echo $default_layouts; ?>
   <?php echo $custom_layouts; ?>
-  <div class="layout-container tool-option tool-button_list--item tippy" data-tippy-content="<?php esc_attr_e( 'Layouts', 'rexpansive' ); ?>">
+  <div class="layout-container tool-option tool-button_list--item tool-option__layout-settings tippy" data-tippy-content="<?php esc_attr_e( 'Layouts', 'rexpansive' ); ?>">
     <div class="builder-config-layouts builder-add-custom-layout bl_d-iflex">
-      <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
+      <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
     </div>
   </div>
   </div>

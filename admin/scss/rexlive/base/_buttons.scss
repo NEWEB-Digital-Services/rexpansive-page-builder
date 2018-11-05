@@ -286,10 +286,23 @@
   &.tool-button_list--dropdown {
     width: 100%;
     text-align: center;
+    box-shadow: $main-shadow;
+    &:after {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      top: -50px;
+      width: 82px;
+      height: 50px;
+      background-color: #fff;
+    }
     .tool-button_list--item {
       padding: 10px 20px;
       background-color: #fff;
       border-bottom: 1px solid $palette-color-9;
+      border-left: 1px solid $palette-color-9;
+      border-right: 1px solid $palette-color-9;
       margin-top: 0;
       // border-left: 1px solid $palette-color-9;
       // border-right: 1px solid $palette-color-9;

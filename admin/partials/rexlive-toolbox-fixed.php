@@ -16,8 +16,9 @@ global $layoutsAvaiable;
 <div class="rexlive-toolbox__toggle-wrap">
   <div class="">
     <div class="tool-option close-toolbox tippy" data-tippy-content="<?php esc_attr_e( 'Hide', 'rexpansive' ); ?>">
-      <img class="rexlive-logo" src="<?php echo REXPANSIVE_BUILDER_URL; ?>admin/img/ico-rexpansive.png" alt="Rexpansive" width="20">
-      <?php Rexbuilder_Utilities::get_icon('#A007-Close'); ?>
+      <span class="close-toolbox__logo-wrap"><?php Rexbuilder_Utilities::get_icon('#Z010-Logo'); ?></span>
+      <!-- <img class="rexlive-logo" src="<?php // echo REXPANSIVE_BUILDER_URL; ?>admin/img/ico-rexpansive.png" alt="Rexpansive" width="20"> -->
+      <span class="close-toolbox__icon-wrap"><?php Rexbuilder_Utilities::get_icon('#A007-Close'); ?></span>
     </div>
   </div>
 </div>

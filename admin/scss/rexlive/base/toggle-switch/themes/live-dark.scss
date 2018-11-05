@@ -22,7 +22,7 @@
 }
 
 .switch-live--dark input:not(:checked) + label {
-  @include fill-icon($palette-color-2);
+  @include fill-icon($palette-color-10);
   cursor: pointer;
 }
 

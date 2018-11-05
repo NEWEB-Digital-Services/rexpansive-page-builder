@@ -14442,7 +14442,7 @@ select.rx__form-input {
   .switch-live--dark input:not(:checked) + label {
     cursor: pointer; }
     .switch-live--dark input:not(:checked) + label .l-svg-icons > svg {
-      fill: #979797; }
+      fill: #ccc; }
 
   .switch-toggle.switch-live--dark a {
     background-color: transparent;
@@ -14798,11 +14798,24 @@ ul {
       margin-left: 10px; }
   .tool-button_list.tool-button_list--dropdown {
     width: 100%;
-    text-align: center; }
+    text-align: center;
+    -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
+            box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45); }
+    .tool-button_list.tool-button_list--dropdown:after {
+      content: '';
+      display: block;
+      position: absolute;
+      left: 0;
+      top: -50px;
+      width: 82px;
+      height: 50px;
+      background-color: #fff; }
     .tool-button_list.tool-button_list--dropdown .tool-button_list--item {
       padding: 10px 20px;
       background-color: #fff;
       border-bottom: 1px solid #D6D6D6;
+      border-left: 1px solid #D6D6D6;
+      border-right: 1px solid #D6D6D6;
       margin-top: 0; }
       .tool-button_list.tool-button_list--dropdown .tool-button_list--item.tool-button_list--item--custom {
         padding-top: 14px;
@@ -15484,21 +15497,31 @@ input:disabled + .rex_edit_title_slider {
   transition: box-shadow 300ms, -webkit-box-shadow 300ms; }
 
 .close-toolbox {
-  text-align: center; }
-  .close-toolbox .l-svg-icons > svg {
-    fill: #979797; }
-  .close-toolbox .l-svg-icons {
-    -webkit-transition: -webkit-transform 300ms;
-    transition: -webkit-transform 300ms;
-    -o-transition: transform 300ms;
-    transition: transform 300ms;
-    transition: transform 300ms, -webkit-transform 300ms;
+  text-align: center;
+  position: relative; }
+  .close-toolbox .close-toolbox__icon-wrap {
+    position: absolute;
+    top: 25px;
+    left: 0;
+    width: 100%;
     font-size: 10px; }
+    .close-toolbox .close-toolbox__icon-wrap .l-svg-icons > svg {
+      fill: #979797; }
+    .close-toolbox .close-toolbox__icon-wrap .l-svg-icons {
+      -webkit-transition: -webkit-transform 300ms;
+      transition: -webkit-transform 300ms;
+      -o-transition: transform 300ms;
+      transition: transform 300ms;
+      transition: transform 300ms, -webkit-transform 300ms; }
+  .close-toolbox .close-toolbox__logo-wrap {
+    font-size: 30px; }
+  .close-toolbox:hover .close-toolbox__logo-wrap .l-svg-icons > svg {
+    fill: #FF0055; }
 
 .toolbox--closed .rexlive-toolbox__toggle-wrap {
   -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
           box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45); }
-.toolbox--closed .close-toolbox .l-svg-icons {
+.toolbox--closed .close-toolbox .close-toolbox__icon-wrap .l-svg-icons {
   -webkit-transform: rotate(180deg);
       -ms-transform: rotate(180deg);
           transform: rotate(180deg); }
@@ -15513,7 +15536,10 @@ input:disabled + .rex_edit_title_slider {
 
 .tools-container-right {
   right: 0;
-  min-width: 20%; }
+  min-width: 20%;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
 
 .tools-container-middle {
   max-width: 60%;
@@ -15526,7 +15552,8 @@ input:disabled + .rex_edit_title_slider {
   background-color: #00ACFF;
   padding: 0 10px;
   margin: 0 20px;
-  border-radius: 15px; }
+  border-radius: 15px;
+  max-height: 34px; }
   .toolbox-insert-area > .tool-button {
     border-radius: 0;
     padding-top: 10px;
@@ -15534,31 +15561,30 @@ input:disabled + .rex_edit_title_slider {
     .toolbox-insert-area > .tool-button:not(:last-child) {
       border-right: 1px solid rgba(255, 255, 255, 0.3); }
   .toolbox-insert-area .tool-button.tool-button__image--flat {
-    padding-top: 8px;
-    padding-bottom: 12px;
+    padding-top: 7px;
+    padding-bottom: 11px;
     padding-left: 10px;
-    padding-right: 20px; }
-    .toolbox-insert-area .tool-button.tool-button__image--flat .l-svg-icons {
-      font-size: 19px; }
+    padding-right: 20px;
+    font-size: 15px; }
   .toolbox-insert-area .tool-button.tool-button__text--flat {
-    max-height: 40px;
     padding-left: 21px;
     padding-right: 20px;
-    padding-top: 12px;
-    padding-bottom: 12px; }
-    .toolbox-insert-area .tool-button.tool-button__text--flat .l-svg-icons {
-      font-size: 16px; }
+    padding-top: 11px;
+    padding-bottom: 10px;
+    font-size: 13px; }
   .toolbox-insert-area .tool-button.tool-button__video--flat {
     max-height: 40px;
-    padding-top: 12px;
-    padding-bottom: 12px;
+    padding-top: 8px;
+    padding-bottom: 10px;
     padding-left: 20px;
-    padding-right: 20px; }
-    .toolbox-insert-area .tool-button.tool-button__video--flat .l-svg-icons {
-      font-size: 16px; }
+    padding-right: 20px;
+    font-size: 15px; }
   .toolbox-insert-area .tool-button.tool-button__models--flat {
     padding-left: 20px;
-    padding-right: 20px; }
+    padding-right: 20px;
+    font-size: 17px;
+    padding-top: 9px;
+    padding-bottom: 8px; }
   .toolbox-insert-area .tool-button-floating.tool-button__settings--flat {
     padding-left: 10px;
     padding-right: 1px; }
@@ -15578,7 +15604,8 @@ input:disabled + .rex_edit_title_slider {
           justify-content: flex-start;
   -webkit-box-align: center;
       -ms-flex-align: center;
-          align-items: center; }
+          align-items: center;
+  font-size: 20px; }
 
 .right-tools {
   display: -webkit-box;
@@ -15589,7 +15616,8 @@ input:disabled + .rex_edit_title_slider {
           justify-content: flex-end;
   -webkit-box-align: center;
       -ms-flex-align: center;
-          align-items: center; }
+          align-items: center;
+  font-size: 20px; }
 
 .middle-tools {
   display: -webkit-box;
@@ -15613,9 +15641,10 @@ input:disabled + .rex_edit_title_slider {
   margin: 0 20px;
   background-color: #424242;
   border-radius: 50%;
-  padding: 5px;
+  padding: 3px;
   line-height: 1;
-  font-size: 0; }
+  font-size: 12px;
+  height: 18px; }
   .tool-option--filled .l-svg-icons > svg {
     fill: #fff; }
 
@@ -15626,26 +15655,27 @@ input:disabled + .rex_edit_title_slider {
   .tool-option:hover .l-svg-icons > svg {
     fill: #00ACFF; }
 .tool-option.tool-option--togglable .l-svg-icons > svg {
-  fill: #979797; }
+  fill: #ccc; }
 .tool-option.tool-option--togglable.active .l-svg-icons > svg {
   fill: #424242; }
 
 .tool-option--placeholder {
-  width: 60px;
+  width: 70px;
   visibility: hidden; }
 
-.rexlive-toolbox .l-svg-icons {
-  font-size: 20px; }
-  .rexlive-toolbox .l-svg-icons.tool-dropdown-arrow-icon {
-    margin-left: 10px;
-    font-size: 10px;
-    -webkit-transform: rotate(180deg);
-        -ms-transform: rotate(180deg);
-            transform: rotate(180deg); }
-.rexlive-toolbox .toolbox-config-area .l-svg-icons {
-  font-size: 13px; }
-.rexlive-toolbox .toolbox-config-area .switch-toggle.switch-live--dark {
-  padding: 0 15px; }
+.rexlive-toolbox .l-svg-icons.tool-dropdown-arrow-icon {
+  margin-left: 10px;
+  font-size: 10px;
+  -webkit-transform: rotate(180deg);
+      -ms-transform: rotate(180deg);
+          transform: rotate(180deg); }
+.rexlive-toolbox .toolbox-config-area {
+  font-size: 18px; }
+
+.tool-button_list.tool-button_list--dropdown .tool-button_list--item.tool-option__layout-settings {
+  font-size: 16px;
+  padding-top: 13px;
+  padding-bottom: 13px; }
 
 .tools-container {
   display: -webkit-box;
@@ -15670,6 +15700,10 @@ input:disabled + .rex_edit_title_slider {
   height: 50px; }
   .tool-option--full.btn-custom-css {
     border-left: 1px solid #D6D6D6; }
+  .tool-option--full.tool-option__choose-layout {
+    border-left: 1px solid #D6D6D6;
+    position: relative;
+    z-index: 100000; }
 
 .btn-save {
   position: relative;
@@ -15757,11 +15791,6 @@ input:disabled + .rex_edit_title_slider {
   bottom: 21px;
   left: 0; }
 
-.rexlive-toolbox .builder-add-custom-layout {
-  padding: 3px; }
-  .rexlive-toolbox .builder-add-custom-layout .l-svg-icons {
-    font-size: 11px; }
-
 .rex-number {
   text-align: center; }
 
@@ -15773,7 +15802,7 @@ input:disabled + .rex_edit_title_slider {
   pointer-events: none; }
 
 #nprogress .bar {
-  background: #FF0040;
+  background: #FF0055;
   position: fixed;
   z-index: 1031;
   top: 0;
@@ -15816,8 +15845,8 @@ input:disabled + .rex_edit_title_slider {
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
   border: solid 2px transparent;
-  border-top-color: #FF0040;
-  border-left-color: #FF0040;
+  border-top-color: #FF0055;
+  border-left-color: #FF0055;
   border-radius: 50%;
   -webkit-animation: nprogress-spinner 400ms linear infinite;
   animation: nprogress-spinner 400ms linear infinite; }
