@@ -530,6 +530,7 @@
       var that = this;
       this.$element.find(".grid-stack-item-content").each(function(i, el) {
         that._updateElementPadding($(el));
+        that._updateHandlersPosition($(el));
       });
     },
 
@@ -1643,6 +1644,36 @@
       });
     },
 
+    _updateHandlersPosition: function($el) {
+      $el.find('.ui-resizable-e').css({
+        "top": this.properties.halfSeparatorElementTop,
+        "right": this.properties.halfSeparatorElementRight,
+        "bottom": this.properties.halfSeparatorElementBottom
+      });
+
+      $el.find('.ui-resizable-se').css({
+        "right": this.properties.halfSeparatorElementRight,
+        "bottom": this.properties.halfSeparatorElementBottom
+      });
+
+      $el.find('.ui-resizable-s').css({
+        "right": this.properties.halfSeparatorElementRight,
+        "bottom": this.properties.halfSeparatorElementBottom,
+        "left": this.properties.halfSeparatorElementLeft
+      });
+
+      $el.find('.ui-resizable-sw').css({
+        "bottom": this.properties.halfSeparatorElementBottom,
+        "left": this.properties.halfSeparatorElementLeft
+      });
+
+      $el.find('.ui-resizable-w').css({
+        "top": this.properties.halfSeparatorElementTop,
+        "bottom": this.properties.halfSeparatorElementBottom,
+        "left": this.properties.halfSeparatorElementLeft
+      });
+    },
+
     _saveBlocksPosition: function() {
       var $elem;
       var x, y, w, h;
@@ -1780,6 +1811,7 @@
       }
 
       gallery._updateElementPadding($elem.find(".grid-stack-item-content"));
+      gallery._updateHandlersPosition($elem);
       gallery._fixImageSize($elem);
     },
 
