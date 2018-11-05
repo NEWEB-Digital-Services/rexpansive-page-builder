@@ -240,10 +240,10 @@
 
   .toolbox-config-area {
     font-size: 18px;
-    #{$icon-class} {
+    // #{$icon-class} {
       // font-size: 13px;
       // font-size: inherit;
-    }
+    // }
     // .switch-toggle.switch-live--dark {
     //   padding: 0 15px;
     // }
@@ -297,7 +297,7 @@
     font-size: 30px;
   }
   .btn-save--edited {
-    left: 10px;
+    left: 20px;
   }
   &.rex-saving {
     .btn-save--edited {

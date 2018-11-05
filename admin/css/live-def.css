@@ -3737,20 +3737,25 @@ ul {
       -webkit-transform: translateX(-50%);
           -ms-transform: translateX(-50%);
               transform: translateX(-50%); }
+      .section-toolBox .tools-area.tool-area--center.row-toolBox__def-view {
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 10px; }
       .section-toolBox .tools-area.tool-area--center .tool-button--flat:hover .l-svg-icons > svg {
         fill: #81d7ff; }
     .section-toolBox .tools-area:first-child {
       padding-left: 6px; }
     .section-toolBox .tools-area:last-child {
-      padding-right: 6px; }
+      padding-right: 6px;
+      min-height: 38px; }
     .section-toolBox .tools-area .tool-button--flat.tool-button--flat--distance-fix {
       padding-right: 10px; }
     .section-toolBox .tools-area:hover {
       -webkit-box-shadow: 0 0 70px 0 rgba(0, 0, 0, 0.5);
               box-shadow: 0 0 70px 0 rgba(0, 0, 0, 0.5); }
-  .section-toolBox .tool-area--side .tool-button.tool-button--deactivate {
+  .section-toolBox .tool-button.tool-button--deactivate {
     background-color: #fff; }
-    .section-toolBox .tool-area--side .tool-button.tool-button--deactivate .l-svg-icons > svg {
+    .section-toolBox .tool-button.tool-button--deactivate .l-svg-icons > svg {
       fill: #424242; }
   .section-toolBox.tool-box-active {
     display: block; }
@@ -3783,6 +3788,15 @@ ul {
     max-width: 20px; }
     .section-toolBox .tool-button_list .tool-button--full {
       font-size: 20px; }
+
+.rexpansive_section:not(.removing_section):not(:last-child) .row-toolBox__def-hide {
+  display: none; }
+.rexpansive_section:not(.removing_section):not(:last-child) .section-toolBox .tools {
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end; }
+.rexpansive_section:not(.removing_section):last-child .row-toolBox__def-view {
+  display: none; }
 
 .activeRowTools .section-toolBox .tools {
   display: -webkit-box;

@@ -1930,8 +1930,6 @@ var Rexbuilder_Util = (function($) {
   };
 
   var _updateSectionOrderCustomLayouts = function(sectionMoved, newOrder) {
-    console.log(sectionMoved);
-    console.log(newOrder);
     var layoutsOrder = Rexbuilder_Util.getPageCustomizationsDom();
     var moveSection;
     var newSecPosition;
@@ -1946,7 +1944,7 @@ var Rexbuilder_Util = (function($) {
         break;
       }
     }
-    console.log(newSecPosition);
+
     for (i = 0; i < layoutsOrder.length; i++) {
       moveSection = false;
       for (j = 0; j < layoutsOrder[i].sections.length; j++) {
