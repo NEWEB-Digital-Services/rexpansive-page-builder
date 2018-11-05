@@ -154,6 +154,8 @@
       var data = e.settings.data_to_send;
       var $section;
 
+      console.log('rexlive:set_row_separatos', data);
+
       if (data.sectionTarget.modelNumber != "") {
         $section = Rexbuilder_Util.$rexContainer.find(
           'section[data-rexlive-section-id="' +
@@ -203,6 +205,8 @@
       var galleryInstance = e.settings.galleryEditorInstance;
       var reverseData = e.settings.reverseData;
       var $section = e.settings.$section;
+
+      console.log('rexlive:rowDistancesApplied', reverseData);
 
       var actionData = {
         rowDistances: jQuery.extend({}, true, e.settings.newDistances),

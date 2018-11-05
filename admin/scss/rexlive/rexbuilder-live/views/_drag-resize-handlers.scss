@@ -1,17 +1,17 @@
-.grid-stack > .grid-stack-item > .ui-resizable-handle {
-  visibility: hidden;
-  overflow: visible;
-  position: absolute;
-  z-index: 20;
-  box-sizing: inherit;
-}
+// .grid-stack > .grid-stack-item > .ui-resizable-handle {
+//   visibility: hidden;
+//   overflow: visible;
+//   position: absolute;
+//   z-index: 20;
+//   box-sizing: inherit;
+// }
 
 .grid-stack > .grid-stack-item > .ui-resizable-e {
   right: 0px;
   top: 0px;
   bottom: 0px;
   width: 30px;
-  height: 100%;
+  height: auto;
 }
 
 .grid-stack > .grid-stack-item > .ui-resizable-w {
@@ -19,14 +19,14 @@
   top: 0px;
   bottom: 0px;
   width: 30px;
-  height: 100%;
+  height: auto;
 }
 
 .grid-stack > .grid-stack-item > .ui-resizable-s {
   bottom: 0px;
   left: 0px;
   right: 0px;
-  width: 100%;
+  width: auto;
   height: 30px;
 }
 

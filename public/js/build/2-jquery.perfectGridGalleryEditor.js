@@ -1645,6 +1645,13 @@
     },
 
     _updateHandlersPosition: function($el) {
+      $el.find('.ui-focused-element-highlight').css({
+        "left": this.properties.halfSeparatorElementLeft,
+        "right": this.properties.halfSeparatorElementRight,
+        "top": this.properties.halfSeparatorElementTop,
+        "bottom": this.properties.halfSeparatorElementBottom
+      });
+
       $el.find('.ui-resizable-e').css({
         "top": this.properties.halfSeparatorElementTop,
         "right": this.properties.halfSeparatorElementRight,
