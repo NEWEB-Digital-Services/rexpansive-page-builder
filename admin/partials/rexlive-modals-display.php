@@ -1274,6 +1274,7 @@ defined('ABSPATH') or exit;
 <div class="rex-modal-wrap">
     <div id="modal-background-responsive-set" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <?php Rexbuilder_Utilities::close_button('Close'); ?>
+        <?php include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-modals-top-arrow.php'; ?>
         <div class="modal-content section-width-wrapper">
             <div id="section-config-first-row" class="bl_modal-row">
                 <div class="rex-edit-layout-wrap bl_modal__option-wrap bl_modal__col-4">
