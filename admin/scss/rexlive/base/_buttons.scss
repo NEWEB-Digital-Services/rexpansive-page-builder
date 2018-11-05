@@ -293,6 +293,10 @@
       margin-top: 0;
       // border-left: 1px solid $palette-color-9;
       // border-right: 1px solid $palette-color-9;
+      &.tool-button_list--item--custom {
+        padding-top: 14px;
+        padding-bottom: 6px;
+      }
     }
   }
 }

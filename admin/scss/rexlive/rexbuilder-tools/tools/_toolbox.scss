@@ -59,16 +59,16 @@
 
 .tools-container-left {
   left: 0;
-  width: 20%;
+  min-width: 20%;
 }
 
 .tools-container-right {
   right: 0;
-  width: 20%;
+  min-width: 20%;
 }
 
 .tools-container-middle {
-  width: 60%;
+  max-width: 60%;
   text-align: center;
 }
 
@@ -125,6 +125,10 @@
   .tool-button-floating.tool-button__settings--flat {
     padding-left: 10px;
     padding-right: 1px;
+    .tool-button_list--item {
+      background-color: $palette-color-1;
+      @include fill-icon(#fff);
+    }
   }
   .tool-button-floating {
     #{$icon-class} {
@@ -237,6 +241,7 @@
 .btn-save {  
   @include page-edited-ui();
   padding: 0 10px;
+  padding-left: 20px;
   margin-right: 10px;
   #{$icon-class}{
     font-size: 30px;

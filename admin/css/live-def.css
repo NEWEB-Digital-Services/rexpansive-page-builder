@@ -3613,6 +3613,9 @@ ul {
       background-color: #fff;
       border-bottom: 1px solid #D6D6D6;
       margin-top: 0; }
+      .tool-button_list.tool-button_list--dropdown .tool-button_list--item.tool-button_list--item--custom {
+        padding-top: 14px;
+        padding-bottom: 6px; }
 
 .tool-button-floating {
   position: relative;

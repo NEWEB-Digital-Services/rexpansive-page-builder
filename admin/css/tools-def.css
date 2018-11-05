@@ -14804,6 +14804,9 @@ ul {
       background-color: #fff;
       border-bottom: 1px solid #D6D6D6;
       margin-top: 0; }
+      .tool-button_list.tool-button_list--dropdown .tool-button_list--item.tool-button_list--item--custom {
+        padding-top: 14px;
+        padding-bottom: 6px; }
 
 .tool-button-floating {
   position: relative;
@@ -15506,14 +15509,14 @@ input:disabled + .rex_edit_title_slider {
 
 .tools-container-left {
   left: 0;
-  width: 20%; }
+  min-width: 20%; }
 
 .tools-container-right {
   right: 0;
-  width: 20%; }
+  min-width: 20%; }
 
 .tools-container-middle {
-  width: 60%;
+  max-width: 60%;
   text-align: center; }
 
 .rexlive-logo {
@@ -15559,6 +15562,10 @@ input:disabled + .rex_edit_title_slider {
   .toolbox-insert-area .tool-button-floating.tool-button__settings--flat {
     padding-left: 10px;
     padding-right: 1px; }
+    .toolbox-insert-area .tool-button-floating.tool-button__settings--flat .tool-button_list--item {
+      background-color: #00ACFF; }
+      .toolbox-insert-area .tool-button-floating.tool-button__settings--flat .tool-button_list--item .l-svg-icons > svg {
+        fill: #fff; }
   .toolbox-insert-area .tool-button-floating .l-svg-icons {
     font-size: 13px; }
 
@@ -15667,6 +15674,7 @@ input:disabled + .rex_edit_title_slider {
 .btn-save {
   position: relative;
   padding: 0 10px;
+  padding-left: 20px;
   margin-right: 10px; }
   .btn-save .btn-save--wrap {
     display: block; }
