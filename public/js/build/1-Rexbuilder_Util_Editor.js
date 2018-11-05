@@ -898,7 +898,13 @@ var Rexbuilder_Util_Editor = (function($) {
     // document.getElementsByTagName('body')[0].append(ruleBottom);
 
     Rexbuilder_Util_Editor.visibleRow = whichVisible();
-    // var $sectionData = Rexbuilder_Util_Editor.visibleRow.children(".section-data");
+    var visibleRowInfo = {};
+    if( null !== Rexbuilder_Util_Editor.visibleRow ) {
+      var sectionData = Rexbuilder_Util_Editor.visibleRow.children[0];   // corresponds to .section-data div
+      visibleRowInfo = _rowAttrsObj( sectionData );
+      visibleRowInfo.collapse = Rexbuilder_Util_Editor.visibleRow.getAttribute('data-rex-collapse-grid');
+    }
+
     Rexbuilder_Util_Editor.visibleRowInfo = {
       sectionID: ( null !== Rexbuilder_Util_Editor.visibleRow ? Rexbuilder_Util_Editor.visibleRow.getAttribute('data-rexlive-section-id') : null ),
       modelNumber: ( null !== Rexbuilder_Util_Editor.visibleRow ? ( typeof Rexbuilder_Util_Editor.visibleRow.getAttribute("data-rexlive-model-number") != "undefined" ? Rexbuilder_Util_Editor.visibleRow.getAttribute("data-rexlive-model-number") : "" ) : null ),
@@ -906,7 +912,8 @@ var Rexbuilder_Util_Editor = (function($) {
 
     var data = {
       eventName: "rexlive:traceVisibleRow",
-      sectionTarget: Rexbuilder_Util_Editor.visibleRowInfo
+      sectionTarget: Rexbuilder_Util_Editor.visibleRowInfo,
+      rowInfo: visibleRowInfo
     };
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 
@@ -929,9 +936,15 @@ var Rexbuilder_Util_Editor = (function($) {
             modelNumber: typeof el.getAttribute("data-rexlive-model-number") != "undefined" ? el.getAttribute("data-rexlive-model-number") : ""
           };
 
+          var visibleRowInfo = {};
+          var sectionData = el.children[0];   // corresponds to .section-data div
+          visibleRowInfo = _rowAttrsObj( sectionData );
+          visibleRowInfo.collapse = el.getAttribute('data-rex-collapse-grid');
+
           var data = {
             eventName: "rexlive:traceVisibleRow",
-            sectionTarget: Rexbuilder_Util_Editor.visibleRowInfo
+            sectionTarget: Rexbuilder_Util_Editor.visibleRowInfo,
+            rowInfo: visibleRowInfo
           };
           Rexbuilder_Util_Editor.sendParentIframeMessage(data);
         }
@@ -964,6 +977,17 @@ var Rexbuilder_Util_Editor = (function($) {
       });
       return spotted;
     }
+  };
+
+  var _rowAttrsObj = function(el) {
+    var obj = {};
+    var attrsMap = el.attributes;
+    for( var i=0; i < attrsMap.length; i++ ) {
+      if( 'class' !== attrsMap[i].name && 'style' !== attrsMap[i].name ) {
+        obj[attrsMap[i].name.replace('data-','')] = attrsMap[i].value;
+      }
+    }
+    return obj;
   };
 
   /**

@@ -11,9 +11,9 @@
   </div><!-- // collapse -->
 
   <div class="switch-toggle switch-live--dark">
-    <input type="radio" class="edit-row-width" data-section_width="full" id="row-dimension-full-toolbox" name="row-dimension-toolbox" value="100%">
+    <input type="radio" class="edit-row-width-toolbox" data-section_width="full" id="row-dimension-full-toolbox" name="row-dimension-toolbox" value="100%">
     <label class="tippy" data-tippy-content="<?php _e('Full','rexpansive'); ?>" for="row-dimension-full-toolbox"><span><?php Rexbuilder_Utilities::get_icon('#B001-Full'); ?></span></label>
-    <input type="radio" class="edit-row-width" data-section_width="boxed" id="row-dimension-boxed-toolbox" name="row-dimension-toolbox" value="80%" checked>
+    <input type="radio" class="edit-row-width-toolbox" data-section_width="boxed" id="row-dimension-boxed-toolbox" name="row-dimension-toolbox" value="80%" checked>
     <label class="tippy" data-tippy-content="<?php _e('Boxed','rexpansive'); ?>" for="row-dimension-boxed-toolbox"><span><?php Rexbuilder_Utilities::get_icon('#B002-Boxed'); ?></span></label>
     <a></a>
   </div><!-- // Row dimension -->  
@@ -62,13 +62,45 @@
 
 <div class="bl_d-iflex bl_ai-c toolbox-right-config-area toolbox-config-area">
   <div class="switch-toggle switch-live--dark">
-    <input type="radio" class="toolbox-edit-row-layout" data-section_layout="masonry" id="row-layout-masonry-toolbox" name="row-layout-toolbox" value="masonry">
+    <input type="radio" class="edit-row-layout-toolbox" data-section_layout="masonry" id="row-layout-masonry-toolbox" name="row-layout-toolbox" value="masonry">
     <label class="tippy" data-tippy-content="<?php _e('Masonry','rexpansive'); ?>" for="row-layout-masonry-toolbox"><span><?php Rexbuilder_Utilities::get_icon('#B010-Masonry'); ?></span></label>
-    <input type="radio" class="toolbox-edit-row-layout" data-section_layout="fixed" id="row-layout-fixed-toolbox" name="row-layout-toolbox" value="fixed" checked>
+    <input type="radio" class="edit-row-layout-toolbox" data-section_layout="fixed" id="row-layout-fixed-toolbox" name="row-layout-toolbox" value="fixed" checked>
     <label class="tippy" data-tippy-content="<?php _e('Grid','rexpansive'); ?>" for="row-layout-fixed-toolbox"><span><?php Rexbuilder_Utilities::get_icon('#B011-Grid'); ?></span></label>
   </div><!-- // Row layout -->
 
-  <div class="tool-option--filled tool-option--small toolbox-builder-section-config tippy" data-tippy-content="<?php _e('Row settings', 'rexpansive');?>">
-    <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>					
+  <div class="tool-button-floating tool-button--model-hide">
+    <div class="tool-option--filled tool-option--small toolbox-builder-section-config tippy" data-tippy-content="<?php _e('Row settings', 'rexpansive');?>">
+      <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>					
+    </div>
+    <div class="tool-button_list">	
+      <div class="tool-button tool-button_list--item tool-button--full edit-background-section-toolbox tippy tool-button--hide">
+          <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
+      </div>
+
+      <div class="tool-button tool-button_list--item tool-button--full edit-row-image-background-toolbox tippy" data-tippy-content="<?php _e('Background Image','rexpansive'); ?>">
+          <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
+      </div>
+
+      <div class="tool-button--double-icon--wrap tool-button_list--item tippy" data-tippy-content="<?php _e('Background Color','rexpansive'); ?>">
+          <input class="spectrum-input-element" type="text" name="edit-row-color-background-toolbox">
+          <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"></div>
+          <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview-texture"></div>
+      </div><!-- // Change Row color background -->
+
+      <div class="tool-button--double-icon--wrap tool-button_list--item tool-button--opacity-preview tippy" data-tippy-content="<?php _e('Overlay','rexpansive'); ?>">
+          <input class="spectrum-input-element" type="text" name="edit-row-overlay-color-toolbox">
+          <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"></div>
+          <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview-texture"></div>
+      </div>
+      <!-- // Change Row overlay color -->
+
+      <div class="tool-button edit-row-video-background-toolbox tool-button_list--item tippy" data-tippy-content="<?php _e('Background Video','rexpansive'); ?>">
+        <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
+      </div>
+      
+      <div class="tool-button open-model-toolbox tool-button_list--item tippy" data-tippy-content="<?php _e('Model','rexpansive'); ?>">
+        <?php Rexbuilder_Utilities::get_icon('#B005-RexModel'); ?>
+      </div>
+    </div>
   </div>
 </div>

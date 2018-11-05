@@ -14728,11 +14728,13 @@ ul {
   .tool-button.tool-button--color-preview {
     position: absolute;
     top: 0;
+    left: 0;
     z-index: -1;
     border: 1px solid #fff; }
   .tool-button.tool-button--color-preview-texture {
     position: absolute;
     top: 0;
+    left: 0;
     z-index: -2;
     background-image: url(../img/transparent.jpg);
     background-size: 10px; }
@@ -15644,9 +15646,17 @@ input:disabled + .rex_edit_title_slider {
   padding: 3px;
   line-height: 1;
   font-size: 12px;
-  height: 18px; }
+  height: 18px;
+  cursor: pointer; }
   .tool-option--filled .l-svg-icons > svg {
     fill: #fff; }
+
+.toolbox-builder-section-config + .tool-button_list {
+  left: 20px;
+  font-size: 10px;
+  max-width: 20px; }
+  .toolbox-builder-section-config + .tool-button_list .tool-button--full {
+    font-size: 20px; }
 
 .tool-option .l-svg-icons > svg {
   fill: #000; }

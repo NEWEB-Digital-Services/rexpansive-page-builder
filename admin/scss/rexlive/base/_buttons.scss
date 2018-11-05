@@ -176,6 +176,7 @@
   &.tool-button--color-preview {
     position: absolute;
     top: 0;
+    left: 0;
     z-index: -1;
     border: 1px solid #fff;
     // background-image:url(../img/transparent.jpg);
@@ -184,6 +185,7 @@
   &.tool-button--color-preview-texture {
     position: absolute;
     top: 0;
+    left: 0;
     z-index: -2;
     background-image:url(../img/transparent.jpg);
     background-size: 10px;
