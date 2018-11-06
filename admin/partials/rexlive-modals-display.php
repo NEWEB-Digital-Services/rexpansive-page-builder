@@ -322,6 +322,7 @@ defined('ABSPATH') or exit;
 <div class="rex-modal-wrap">
     <div id="video-section-editor-wrapper" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <?php Rexbuilder_Utilities::close_button(); ?>
+        <?php include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-modals-top-arrow.php'; ?>
         <div class="modal-content">
             <div id="edit-video-row-wrap-1" class="bl_modal-row youtube-insert-wrap video-insert-wrap">
                 <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">

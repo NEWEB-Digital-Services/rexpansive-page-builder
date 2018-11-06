@@ -3,9 +3,10 @@ var Section_Modal = (function($) {
 
   var section_config_modal_properties;
 
-  var _openSectionModal = function(data) {
+  var _openSectionModal = function(data, mousePosition) {
     _clearSectionModal();
     _updateSectionModal(data);
+    Rexlive_Modals_Utils.positionModal( section_config_modal_properties.$self, mousePosition );
     Rexlive_Modals_Utils.openModal(
       section_config_modal_properties.$self.parent(".rex-modal-wrap")
     );

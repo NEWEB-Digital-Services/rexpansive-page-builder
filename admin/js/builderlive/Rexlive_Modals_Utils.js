@@ -67,7 +67,7 @@ var Rexlive_Modals_Utils = (function($) {
       $target.removeClass("rex-in--up");
     }
 
-    $target.children().removeClass('rex-modal__bottom-arrow--active');
+    $target.children().removeClass('rex-modal__bottom-arrow--active').removeClass('rex-modal__top-arrow--active');
 
     if (additional_class.length) {
       for (var i = 0; i < additional_class.length; i++) {
@@ -101,10 +101,16 @@ var Rexlive_Modals_Utils = (function($) {
    */
   var _positionModal = function($target,coord) {
     if( 'undefined' !== typeof coord && null !== coord ) {
-      $target.addClass('rex-modal__bottom-arrow--active');
-
+      var t_height = $target.actual('height');
+      
       $target.css( "left", coord.x - ( Rexlive_Base_Settings.viewport().width / 2 ) + "px" );
-      $target.css( "top", coord.y - ( $target.actual('height') ) + postionedModalOffset.y + "px" );
+      if( t_height < coord.y ) {
+        $target.addClass('rex-modal__bottom-arrow--active');
+        $target.css( "top", coord.y - ( t_height ) + postionedModalOffset.y + "px" );
+      } else {
+        $target.addClass('rex-modal__top-arrow--active');
+        $target.css( "top", coord.y + postionedModalOffset.y + "px" );
+      }
     } else {
       $target.css( "left", "0px" );
       $target.css( "top", "50px" );

@@ -96,7 +96,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       }
 
       if (event.data.eventName == "rexlive:openSectionModal") {
-        Section_Modal.openSectionModal(event.data.section_options_active);
+        Section_Modal.openSectionModal(event.data.section_options_active, event.data.mousePosition);
       }
 
       if (event.data.eventName == "rexlive:openModalMenu") {
@@ -505,6 +505,8 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     Rexlive_Base_Settings.$document.on('click', '.toolbox-builder-section-config', function(e) {
       e.preventDefault();
 
+      var mousePosition = _getMousePosition( e, { offset: { w: this.offsetWidth, h: this.offsetHeight } } );
+
       var msg = {
         rexliveEvent: true,
         eventName: "rexlive:openSectionModal",
@@ -537,7 +539,8 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   
           sectionName: hightlightRowInfo.section_name,
           customClasses: hightlightRowInfo.custom_classes
-        }
+        },
+        mousePosition: mousePosition
       };
 
       window.postMessage(msg, "*");
@@ -792,6 +795,32 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     });
   }
 
+  /**
+   * Gets the mouse event click and returns the x,y coordinates of the pointer
+   * If no valid event is passed, get the middle of the screen
+   * @param {MouseEvent} mEvent event of the click of the mouse
+   * @param {Object} target_info dimensione information for the block clicked
+   * @returns {Object} the x,y coordinates
+   * @since 2.0.0
+   */
+  var _getMousePosition = function( mEvent, target_info ) {
+    var mousePosition = {};
+    if( "undefined" !== typeof mEvent.clientX && "undefined" !== typeof mEvent.clientY && "undefined" !== typeof mEvent.offsetX && "undefined" !== typeof mEvent.offsetY && "undefined" !== typeof target_info ) {
+      var pos = mEvent.target.getBoundingClientRect();
+      console.log(pos);
+      mousePosition = {
+        x: pos.left + ( target_info.offset.w / 2 ),
+        y: pos.top + Rexbuilder_Util_Admin_Editor.mousePositionFrameYOffset,
+      }
+    } else {
+      mousePosition = {
+        x: Rexbuilder_Util_Admin_Editor.viewportMeasurement.width/2,
+        y: Rexbuilder_Util_Admin_Editor.viewportMeasurement.height/2,
+      };
+    }
+    return mousePosition;
+  }
+
   // init the utilities
   var init = function() {
     this.$body = $('body');
@@ -802,6 +831,9 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
 
     this.transitionEvent = _whichTransitionEvent();
     this.animationEvent = _whichAnimationEvent();
+
+    this.mousePositionFrameYOffset = 50;
+    this.viewportMeasurement = Rexlive_Base_Settings.viewport();
 
     this.$responsiveToolbar = this.$rexpansiveContainer.find( ".rexlive-toolbox" );
     $highlightSectionId = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-id]');

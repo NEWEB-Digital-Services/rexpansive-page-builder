@@ -1017,8 +1017,8 @@ var Rexbuilder_Util_Editor = (function($) {
     if( "undefined" !== typeof mEvent.clientX && "undefined" !== typeof mEvent.clientY && "undefined" !== typeof mEvent.offsetX && "undefined" !== typeof mEvent.offsetY && "undefined" !== typeof target_info ) {
       var pos = mEvent.target.getBoundingClientRect();
       mousePosition = {
-        x: mEvent.clientX - ( mEvent.clientX - pos.left ) + ( target_info.offset.w / 2 ),
-        y: mEvent.clientY - ( mEvent.clientY - pos.top ) + Rexbuilder_Util_Editor.mousePositionFrameYOffset,
+        x: pos.left + ( target_info.offset.w / 2 ),
+        y: pos.top + Rexbuilder_Util_Editor.mousePositionFrameYOffset,
       }
     } else if( null !== Rexbuilder_Util_Editor.mousePosition && null !== Rexbuilder_Util_Editor.mouseClickObject ) {
       mousePosition = {
@@ -1030,8 +1030,8 @@ var Rexbuilder_Util_Editor = (function($) {
       Rexbuilder_Util_Editor.mouseClickObject = null;
     } else {
       mousePosition = {
-        x: viewportMeasurement.width/2,
-        y: viewportMeasurement.height/2,
+        x: Rexbuilder_Util_Editor.viewportMeasurement.width/2,
+        y: Rexbuilder_Util_Editor.viewportMeasurement.height/2,
       };
     }
     return mousePosition;
@@ -1064,6 +1064,7 @@ var Rexbuilder_Util_Editor = (function($) {
     this.mousePosition = null;
     this.mouseClickObject = null;
     this.mousePositionFrameYOffset = 50;
+    this.viewportMeasurement = Rexbuilder_Util.viewport();
 
     this.elementDraggingTriggered = false;
 

@@ -15114,6 +15114,9 @@ body.rexpansive-editor .lean-overlay {
 .rex-modal__bottom-arrow--active .rex-modal__bottom-arrow__wrap {
   display: block; }
 
+.rex-modal__top-arrow--active .rex-modal__top-arrow__wrap {
+  display: block; }
+
 .rex-modal__bottom-arrow {
   width: 0px;
   height: 0px;
