@@ -72,6 +72,7 @@
     <div class="tool-option--filled tool-option--small toolbox-builder-section-config tippy" data-tippy-content="<?php _e('Row settings', 'rexpansive');?>" data-tippy-placement="right">
       <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>					
     </div>
+
     <div class="tool-button_list">	
       <div class="tool-button tool-button_list--item tool-button--full edit-background-section-toolbox tippy tool-button--hide">
           <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
@@ -102,5 +103,29 @@
         <?php Rexbuilder_Utilities::get_icon('#B005-RexModel'); ?>
       </div>
     </div>
+
+  </div>
+</div>
+
+<div class="bl_d-iflex bl_ai-c toolbox-right-fast-config-area toolbox-config-area">
+  <div class="tool-button tool-button--full edit-row-image-background-toolbox tippy" data-tippy-content="<?php _e('Background Image','rexpansive'); ?>">
+      <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
+  </div>
+
+  <div class="tool-button--double-icon--wrap tippy" data-tippy-content="<?php _e('Background Color','rexpansive'); ?>">
+      <input class="spectrum-input-element" type="text" name="edit-row-color-background-toolbox">
+      <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"></div>
+      <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview-texture"></div>
+  </div><!-- // Change Row color background -->
+
+  <div class="tool-button--double-icon--wrap tool-button--opacity-preview tippy" data-tippy-content="<?php _e('Overlay','rexpansive'); ?>">
+      <input class="spectrum-input-element" type="text" name="edit-row-overlay-color-toolbox">
+      <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview"></div>
+      <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview-texture"></div>
+  </div>
+  <!-- // Change Row overlay color -->
+
+  <div class="tool-button edit-row-video-background-toolbox tippy" data-tippy-content="<?php _e('Background Video','rexpansive'); ?>">
+    <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
   </div>
 </div>

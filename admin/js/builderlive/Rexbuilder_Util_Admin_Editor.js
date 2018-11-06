@@ -16,9 +16,12 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   var $highlightRowSetWidth;
   var $highlightRowSetLayout;
   var $highlightRowSetCollapse;
+
   var $highlightRowSetBackgroundImg;
   var $highlightRowSetBackgroundColor;
   var $highlightRowSetOverlay;
+  var standard_config;
+  var fast_config;
 
   var open_models_list;
 
@@ -1069,10 +1072,11 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     $highlightRowSetWidth = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('.edit-row-width-toolbox');
     $highlightRowSetLayout = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('.edit-row-layout-toolbox');
     $highlightRowSetCollapse = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('.toolbox-collapse-grid');
+
     $highlightRowSetBackgroundImg = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('.edit-row-image-background-toolbox');
     $highlightRowSetBackgroundColor = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=edit-row-color-background-toolbox]');
     $highlightRowSetOverlay = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=edit-row-overlay-color-toolbox]');
-
+    
     $saveBtn = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find( ".btn-save" );
     pageSaved = true;
     modelSaved = true;
