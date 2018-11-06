@@ -3177,4 +3177,13 @@ class Rexbuilder_Admin {
 		// $actions['live-edit'] = 
 		return $actions;
 	}
+
+	/**
+	 * Add link to livebuilder directly on the post list
+	 * @since 2.0.0
+	 */
+	public function add_builderlive_link( $actions, $page_object ) {
+		$actions['rexbuilder'] = '<a target="_blank" href="' . admin_url( 'post.php?post=' . $page_object->ID . '&action=edit&rexlive=true' ) . '">RexBuilder</a>';
+		return $actions;
+	}
 }

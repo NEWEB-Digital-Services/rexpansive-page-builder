@@ -191,6 +191,7 @@ class Rexbuilder {
 		$this->loader->add_filter( 'post_row_actions', $plugin_admin, 'post_list_add_link_to_live_editor', 10, 2 );
 
 		$this->loader->add_filter( 'preview_post_link', $plugin_admin, 'change_preview_url' );
+		$this->loader->add_filter( 'page_row_actions', $plugin_admin, 'add_builderlive_link', 10, 2 );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles_production' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts_production' );
