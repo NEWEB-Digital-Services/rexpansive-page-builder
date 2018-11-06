@@ -16,6 +16,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   var $highlightRowSetWidth;
   var $highlightRowSetLayout;
   var $highlightRowSetCollapse;
+  var $highlightRowSetBackgroundImg;
 
   var open_models_list;
 
@@ -546,6 +547,61 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       window.postMessage(msg, "*");
     });
 
+    /**
+     * Open the row settings modal window
+     * Get the data from the hightlightRowInfo object
+     * @since 2.0.0
+     */
+    Rexlive_Base_Settings.$document.on('click', '.edit-row-image-background-toolbox', function(e) {
+      e.preventDefault();
+
+      var msg = {
+        rexliveEvent: true,
+        eventName: "rexlive:openLiveImageUploader",
+        live_uploader_data: {
+          sectionTarget: {
+            sectionID: $highlightSectionId.val(),
+            modelNumber: $highlightModelId.val()
+          },
+          idImage: hightlightRowInfo.id_image_bg_section,
+          returnEventName: 'rexlive:apply_background_image_section',
+          data_to_send: {
+            active: true
+          }
+        },
+      };
+
+      window.postMessage(msg, "*");
+    });
+
+    /**
+     * Open the row background video modal window
+     * Get the data from the hightlightRowInfo object
+     * @since 2.0.0
+     */
+    Rexlive_Base_Settings.$document.on('click', '.edit-row-video-background-toolbox', function(e) {
+      e.preventDefault();
+
+      var msg = {
+        rexliveEvent: true,
+        eventName: "rexlive:editRowVideoBackground",
+        activeBG: {
+          bgVideo: {
+            sectionTarget: {
+              sectionID: $highlightSectionId.val(),
+              modelNumber: $highlightModelId.val()
+            },
+            youtubeVideo: hightlightRowInfo.video_bg_url_section,
+            vimeoUrl: hightlightRowInfo.video_bg_url_vimeo_section,
+            mp4Video: hightlightRowInfo.video_mp4_url,
+            mp4VideoID: hightlightRowInfo.video_bg_id_section
+          },
+        }
+      };
+
+      window.postMessage(msg, "*");
+    });
+
     window.addEventListener("message", _receiveMessage, false);
   };
 
@@ -743,6 +799,18 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     }
     $highlightRowSetWidth.filter('[data-section_width=' + hightlightRowInfo.dimension + ']').attr('checked',true);
     $highlightRowSetLayout.filter('[value=' + hightlightRowInfo.layout + ']').attr('checked',true);
+
+    if('' !== hightlightRowInfo.id_image_bg_section && '' !== hightlightRowInfo.image_bg_section) {
+      $highlightRowSetBackgroundImg
+        .addClass('tool-button--image-preview')
+        .attr('value',hightlightRowInfo.id_image_bg_section)
+        .css('background-image','url('+hightlightRowInfo.image_bg_section+')');
+    } else {
+      $highlightRowSetBackgroundImg
+        .removeClass('tool-button--image-preview')
+        .attr('value','')
+        .css('background-image','none');
+    }
   };
 
   var _blockIframeRows = function() {
@@ -841,6 +909,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     $highlightRowSetWidth = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('.edit-row-width-toolbox');
     $highlightRowSetLayout = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('.edit-row-layout-toolbox');
     $highlightRowSetCollapse = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('.toolbox-collapse-grid');
+    $highlightRowSetBackgroundImg = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('.edit-row-image-background-toolbox');
 
     $saveBtn = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find( ".btn-save" );
     pageSaved = true;

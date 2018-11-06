@@ -69,7 +69,7 @@
   </div><!-- // Row layout -->
 
   <div class="tool-button-floating tool-button--model-hide">
-    <div class="tool-option--filled tool-option--small toolbox-builder-section-config tippy" data-tippy-content="<?php _e('Row settings', 'rexpansive');?>">
+    <div class="tool-option--filled tool-option--small toolbox-builder-section-config tippy" data-tippy-content="<?php _e('Row settings', 'rexpansive');?>" data-tippy-placement="right">
       <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>					
     </div>
     <div class="tool-button_list">	

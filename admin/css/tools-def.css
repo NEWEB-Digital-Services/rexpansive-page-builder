@@ -15804,6 +15804,9 @@ input:disabled + .rex_edit_title_slider {
   bottom: 21px;
   left: 0; }
 
+.edit-row-image-background-toolbox {
+  max-height: 20px; }
+
 .rex-number {
   text-align: center; }
 
