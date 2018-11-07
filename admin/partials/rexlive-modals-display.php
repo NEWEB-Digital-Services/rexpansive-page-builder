@@ -1719,9 +1719,9 @@ defined('ABSPATH') or exit;
         <div id="rex-buttons-list" class="rex-lateral-panel__content">
             <div class="buttons-list-wrapper">
                 <ul class="button-list button-list--pswp">
-                    <li>
-                        <div>
-                            <a href="https://www.google.it">google</a>
+                    <li draggable="true">
+                        <div class="rex-button-container">
+                            <p><a href="https://www.google.it" class="rex-theme-button" target="_self">VAI QUI</a></p>
                         </div>
                     </li>
                 </ul>

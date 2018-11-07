@@ -16,38 +16,93 @@ var Button_Import_Modal = (function ($) {
     };
 
     var _linkDraggable = function () {
-        return;
-        var currentElement, currentElementChangeFlag, elementRectangle, countdown, dragoverqueue_processtimer;
+        var currentElement,
+            currentElementChangeFlag,
+            elementRectangle,
+            countdown,
+            dragoverqueue_processtimer;
 
-        var clientFrameWindow = $('#clientframe').get(0).contentWindow;
-        $("#dragitemslistcontainer li").on('dragstart', function (event) {
-            console.log("Drag Started");
+        var clientFrameWindow = Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0)
+            .contentWindow;
+
+        var stop = true;
+        /*
+            Funzione che esegue lo scrolling nell'iframe
+            */
+        var scroll = function (step) {
+            var scrollY = $(
+                Rexbuilder_Util_Admin_Editor.$frameBuilder[0].contentWindow
+            ).scrollTop();
+            $(Rexbuilder_Util_Admin_Editor.$frameBuilder[0].contentWindow).scrollTop(
+                scrollY + step
+            );
+            if (!stop) {
+                setTimeout(function () {
+                    scroll(step);
+                }, 20);
+            }
+        };
+
+        Rexlive_Base_Settings.$document.on("dragstart", ".button-list li", function (
+            event
+        ) {
+            event.originalEvent.dataTransfer.effectAllowed = "all";
             dragoverqueue_processtimer = setInterval(function () {
                 DragDropFunctions.ProcessDragOverQueue();
             }, 100);
-            var insertingHTML = $(this).attr('data-insert-html');
-            event.originalEvent.dataTransfer.setData("Text", insertingHTML);
+
+            var insertingHTML = $(this).html();
+            console.log(insertingHTML);
+            event.originalEvent.dataTransfer.setData("text/plain", insertingHTML);
         });
-        $("#dragitemslistcontainer li").on('dragend', function () {
-            console.log("Drag End");
+
+        // definisce quando bisogna scrollare in alto o in basso
+        Rexlive_Base_Settings.$document.on("drag", ".button-list li", function (
+            event
+        ) {
+            stop = true;
+
+            if (event.clientY < 150) {
+                stop = false;
+                scroll(-1);
+            }
+
+            if (
+                event.clientY >
+                $(
+                    Rexbuilder_Util_Admin_Editor.$frameBuilder[0].contentWindow
+                ).height() -
+                150
+            ) {
+                stop = false;
+                scroll(1);
+            }
+        });
+
+        Rexlive_Base_Settings.$document.on("dragend", ".button-list li", function (
+            event
+        ) {
+            stop = true;
             clearInterval(dragoverqueue_processtimer);
             DragDropFunctions.removePlaceholder();
             DragDropFunctions.ClearContainerContext();
         });
-        $('#clientframe').load(function () {
-            //Add CSS File to iFrame
-            var style = $("<style data-reserved-styletag></style>").html(GetInsertionCSS());
-            $(clientFrameWindow.document.head).append(style);
 
-            var htmlBody = $(clientFrameWindow.document).find('body,html');
-            htmlBody.find('*').andSelf().on('dragenter', function (event) {
+        Rexbuilder_Util_Admin_Editor.$frameBuilder.load(function () {
+           // linkIframeDragListeners();
+            var $rexContainer = $(clientFrameWindow.document)
+                .find(".rex-container")
+                .eq(0);
+
+                $rexContainer.on('dragenter', ".text-wrap", function (event) {
                 event.stopPropagation();
                 currentElement = $(event.target);
                 currentElementChangeFlag = true;
                 elementRectangle = event.target.getBoundingClientRect();
                 countdown = 1;
+            });
 
-            }).on('dragover', function (event) {
+            $rexContainer.on('dragover', ".text-wrap", function (event) {
                 event.preventDefault();
                 event.stopPropagation();
                 if (countdown % 15 != 0 && currentElementChangeFlag == false) {
@@ -62,23 +117,24 @@ var Button_Import_Modal = (function ($) {
                 currentElementChangeFlag = false;
                 var mousePosition = { x: x, y: y };
                 DragDropFunctions.AddEntryToDragOverQueue(currentElement, elementRectangle, mousePosition)
-            })
+            });
 
-            $(clientFrameWindow.document).find('body,html').on('drop', function (event) {
+            $rexContainer.on('drop', ".text-wrap", function (event) {
                 event.preventDefault();
                 event.stopPropagation();
-                console.log('Drop event');
                 var e;
                 if (event.isTrigger)
                     e = triggerEvent.originalEvent;
                 else
                     var e = event.originalEvent;
                 try {
-                    var textData = e.dataTransfer.getData('text');
-                    var insertionPoint = $("#clientframe").contents().find(".drop-marker");
-                    var checkDiv = $(textData);
-                    insertionPoint.after(checkDiv);
-                    insertionPoint.remove();
+                    var textData = e.dataTransfer.getData("text/plain");
+                    var $insertionPoint = Rexbuilder_Util_Admin_Editor.$frameBuilder
+                        .contents()
+                        .find(".drop-marker");
+                    var $divInsert = $(jQuery.parseHTML(textData));
+                    $divInsert.insertAfter($insertionPoint[0]);
+                    $insertionPoint.remove();
                 }
                 catch (e) {
                     console.log(e);
@@ -110,7 +166,7 @@ var Button_Import_Modal = (function ($) {
                 var mousePercents = this.GetMouseBearingsPercentage($element, elementRect, mousePos);
                 if ((mousePercents.x > breakPointNumber.x && mousePercents.x < 100 - breakPointNumber.x) && (mousePercents.y > breakPointNumber.y && mousePercents.y < 100 - breakPointNumber.y)) {
                     //Case 1 -
-                    $tempelement = $element.clone();
+                    var $tempelement = $element.clone();
                     $tempelement.find(".drop-marker").remove();
                     if ($tempelement.html() == "" && !this.checkVoidElement($tempelement)) {
                         if (mousePercents.y < 90)
@@ -166,7 +222,7 @@ var Button_Import_Modal = (function ($) {
                  mousePercents = this.GetMouseBearingsPercentage($targetElement, $targetElement.get(0).getBoundingClientRect(), mousePos);
                  } */
 
-                $orientation = ($targetElement.css('display') == "inline" || $targetElement.css('display') == "inline-block");
+                var $orientation = ($targetElement.css('display') == "inline" || $targetElement.css('display') == "inline-block");
                 if ($targetElement.is("br"))
                     $orientation = false;
 
@@ -290,7 +346,10 @@ var Button_Import_Modal = (function ($) {
                 }
             },
             removePlaceholder: function () {
-                $("#clientframe").contents().find(".drop-marker").remove();
+                Rexbuilder_Util_Admin_Editor.$frameBuilder
+                    .contents()
+                    .find(".drop-marker")
+                    .remove();
             },
             getPlaceHolder: function () {
                 return $("<li class='drop-marker'></li>");
@@ -442,56 +501,101 @@ var Button_Import_Modal = (function ($) {
 
             },
             GetContextMarker: function () {
-                $contextMarker = $("<div data-dragcontext-marker><span data-dragcontext-marker-text></span></div>");
+                var $contextMarker = $("<div data-dragcontext-marker><span data-dragcontext-marker-text></span></div>");
                 return $contextMarker;
             },
             AddContainerContext: function ($element, position) {
-
-                $contextMarker = this.GetContextMarker();
+                var $contextMarker = this.GetContextMarker();
                 this.ClearContainerContext();
-                if ($element.is('html,body')) {
-                    position = 'inside';
-                    $element = $("#clientframe").contents().find("body");
+                if ($element.is("html,body")) {
+                    position = "inside";
+                    $element = Rexbuilder_Util_Admin_Editor.$frameBuilder
+                        .contents()
+                        .find("body");
                 }
                 switch (position) {
                     case "inside":
                         this.PositionContextMarker($contextMarker, $element);
-                        if ($element.hasClass('stackhive-nodrop-zone'))
-                            $contextMarker.addClass('invalid');
+                        if ($element.hasClass("stackhive-nodrop-zone"))
+                            $contextMarker.addClass("invalid");
                         var name = this.getElementName($element);
-                        $contextMarker.find('[data-dragcontext-marker-text]').html(name);
-                        if ($("#clientframe").contents().find("body [data-sh-parent-marker]").length != 0)
-                            $("#clientframe").contents().find("body [data-sh-parent-marker]").first().before($contextMarker);
-                        else
-                            $("#clientframe").contents().find("body").append($contextMarker);
-                        break;
+                        $contextMarker.find("[data-dragcontext-marker-text]").html(name);
+                        if (
+                            Rexbuilder_Util_Admin_Editor.$frameBuilder
+                                .contents()
+                                .find("body [data-sh-parent-marker]").length != 0
+                        )
+                            Rexbuilder_Util_Admin_Editor.$frameBuilder
+                                .contents()
+                                .find("body [data-sh-parent-marker]")
+                                .first()
+                                .before($contextMarker);
+                        // Rexbuilder_Util_Admin_Editor.$frameBuilder
+                        //   .contents()
+                        //   .find("body")
+                        //   .append($contextMarker);
+                        else break;
                     case "sibling":
                         this.PositionContextMarker($contextMarker, $element.parent());
-                        if ($element.parent().hasClass('stackhive-nodrop-zone'))
-                            $contextMarker.addClass('invalid');
+                        if ($element.parent().hasClass("stackhive-nodrop-zone"))
+                            $contextMarker.addClass("invalid");
                         var name = this.getElementName($element.parent());
-                        $contextMarker.find('[data-dragcontext-marker-text]').html(name);
+                        $contextMarker.find("[data-dragcontext-marker-text]").html(name);
                         $contextMarker.attr("data-dragcontext-marker", name.toLowerCase());
-                        if ($("#clientframe").contents().find("body [data-sh-parent-marker]").length != 0)
-                            $("#clientframe").contents().find("body [data-sh-parent-marker]").first().before($contextMarker);
-                        else
-                            $("#clientframe").contents().find("body").append($contextMarker);
-                        break;
+                        if (
+                            Rexbuilder_Util_Admin_Editor.$frameBuilder
+                                .contents()
+                                .find("body [data-sh-parent-marker]").length != 0
+                        )
+                            Rexbuilder_Util_Admin_Editor.$frameBuilder
+                                .contents()
+                                .find("body [data-sh-parent-marker]")
+                                .first()
+                                .before($contextMarker);
+                        // Rexbuilder_Util_Admin_Editor.$frameBuilder
+                        //   .contents()
+                        //   .find("body")
+                        //   .append($contextMarker);
+                        else break;
                 }
             },
             PositionContextMarker: function ($contextMarker, $element) {
                 var rect = $element.get(0).getBoundingClientRect();
                 $contextMarker.css({
-                    height: (rect.height + 4) + "px",
-                    width: (rect.width + 4) + "px",
-                    top: (rect.top + $($("#clientframe").get(0).contentWindow).scrollTop() - 2) + "px",
-                    left: (rect.left + $($("#clientframe").get(0).contentWindow).scrollLeft() - 2) + "px"
+                    height: rect.height + 4 + "px",
+                    width: rect.width + 4 + "px",
+                    top:
+                        rect.top +
+                        $(
+                            Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow
+                        ).scrollTop() -
+                        2 +
+                        "px",
+                    left:
+                        rect.left +
+                        $(
+                            Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow
+                        ).scrollLeft() -
+                        2 +
+                        "px"
                 });
-                if (rect.top + $("#clientframe").contents().find("body").scrollTop() < 24)
-                    $contextMarker.find("[data-dragcontext-marker-text]").css('top', '0px');
+                if (
+                    rect.top +
+                    Rexbuilder_Util_Admin_Editor.$frameBuilder
+                        .contents()
+                        .find("body")
+                        .scrollTop() <
+                    24
+                )
+                    $contextMarker
+                        .find("[data-dragcontext-marker-text]")
+                        .css("top", "0px");
             },
             ClearContainerContext: function () {
-                $("#clientframe").contents().find('[data-dragcontext-marker]').remove();
+                Rexbuilder_Util_Admin_Editor.$frameBuilder
+                    .contents()
+                    .find("[data-dragcontext-marker]")
+                    .remove();
             },
             getElementName: function ($element) {
                 return $element.prop('tagName');
