@@ -1152,6 +1152,7 @@ var Rexbuilder_Dom_Util = (function($) {
     if (data.isModel) {
       $section.addClass("rex-model-section");
       $section.addClass("rexlive-block-grid-editing");
+      $section.attr("data-rexlive-model-editing","false");
       if (
         $section
           .find(".grid-stack-row")
@@ -1172,6 +1173,7 @@ var Rexbuilder_Dom_Util = (function($) {
     } else {
       $section.removeClass("rex-model-section");
       $section.removeClass("rexlive-block-grid-editing");
+      $section.attr("data-rexlive-model-editing","false");
       $section
         .find(".grid-stack-row")
         .parent()
@@ -1202,6 +1204,7 @@ var Rexbuilder_Dom_Util = (function($) {
     var $section = $button.parents(".rexpansive_section");
     if (lock) {
       $section.addClass("rexlive-block-grid-editing");
+      $section.attr("data-rexlive-model-editing","false");
       if (
         $section
           .find(".grid-stack-row")
@@ -1225,6 +1228,7 @@ var Rexbuilder_Dom_Util = (function($) {
       $button.addClass("unlocked");
       $button.removeClass("locked");
       $section.removeClass("rexlive-block-grid-editing");
+      $section.attr("data-rexlive-model-editing","true");
       $section
         .find(".grid-stack-row")
         .parent()

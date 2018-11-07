@@ -335,6 +335,13 @@ var Model_Modal = (function($) {
                     modelData
                   );
 
+                  Rexbuilder_Util_Admin_Editor.highlightRowSetData({
+                    rexlive_model_id: modelID,
+                    rexlive_model_name: modelTitle
+                  });
+                  Rexbuilder_Util_Admin_Editor.updateModelId(modelID);
+                  Rexbuilder_Util_Admin_Editor.updateModelState();
+
                   model_created = true;
                   rexmodel_modal_props.$model_insert_success_wrap.text(
                     "Modello Inserito"

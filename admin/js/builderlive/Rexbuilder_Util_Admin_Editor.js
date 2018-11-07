@@ -12,6 +12,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
 
   var $highlightSectionId;
   var $highlightModelId;
+  var $highlightModelEditing;
   var hightlightRowInfo;
   var $highlightRowSetWidth;
   var $highlightRowSetLayout;
@@ -82,6 +83,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       if(event.data.eventName == "rexlive:traceVisibleRow" ) {
         $highlightSectionId.val(event.data.sectionTarget.sectionID);
         $highlightModelId.val(event.data.sectionTarget.modelNumber);
+        $highlightModelEditing.val(event.data.sectionTarget.modelEditing);
         hightlightRowInfo = event.data.rowInfo;
         _updateTopToolbar();
       }
@@ -187,6 +189,8 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
 
       if (event.data.eventName == "rexlive:saveAndCloseModel") {
         _updateOpenModelsList('CLOSE',event.data.modelData);
+        _updateModelEditing("false");
+        _updateModelState();
       }
 
       if (event.data.eventName == "rexlive:savePageEnded") {
@@ -764,6 +768,22 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       _sendIframeBuilderMessage(msg);
     });
 
+    Rexlive_Base_Settings.$document.on('click', '.open-model-toolbox', function(e) {
+      e.preventDefault();
+
+      var msg = {
+        eventName: "rexlive:openCreateModelModal",
+        data_to_send: {
+          sectionTarget: {
+            sectionID: $highlightSectionId.val(),
+            modelNumber: $highlightModelId.val()
+          },
+        }
+      };
+
+      _sendIframeBuilderMessage(msg);
+    });
+
     window.addEventListener("message", _receiveMessage, false);
   };
 
@@ -953,6 +973,22 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     }
   };
 
+  var _updateModelId = function( val ) {
+    $highlightModelId.val(val);
+  };
+
+  var _updateModelEditing = function( val ) {
+    $highlightModelEditing.val(val);
+  };
+
+  var _updateModelState = function() {
+    if( "" !== $highlightModelId.val() && "undefined" !== typeof $highlightModelId.val() && "false" === $highlightModelEditing.val() ) {
+      Rexbuilder_Util_Admin_Editor.$responsiveToolbar.addClass('rexlive-toolbox--model');
+    } else {
+      Rexbuilder_Util_Admin_Editor.$responsiveToolbar.removeClass('rexlive-toolbox--model');
+    }
+  };
+
   var _updateCollapseTool = function() {
     if('true' == hightlightRowInfo.collapse) {
       $highlightRowSetCollapse.addClass('active');
@@ -1058,6 +1094,9 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
    * @since 2.0.0
    */
   var _updateTopToolbar = function() {
+    // 0. Synch Model
+    _updateModelState();
+
     // 1. Synch Collapse
     _updateCollapseTool();
 
@@ -1289,6 +1328,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     this.$responsiveToolbar = this.$rexpansiveContainer.find( ".rexlive-toolbox" );
     $highlightSectionId = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-id]');
     $highlightModelId = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-model-id]');
+    $highlightModelEditing = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-model-editing]');
     $highlightRowSetWidth = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('.edit-row-width-toolbox');
     $highlightRowSetLayout = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('.edit-row-layout-toolbox');
     $highlightRowSetCollapse = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('.toolbox-collapse-grid');
@@ -1357,6 +1397,10 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     editPageProperties: _editPageProperties,
     updateOpenModelsList: _updateOpenModelsList,
     highlightRowSetData: _highlightRowSetData,
+    updateTopToolbar: _updateTopToolbar,
+    updateModelId: _updateModelId,
+    updateModelEditing: _updateModelEditing,
+    updateModelState: _updateModelState,
     updateWidthTool: _updateWidthTool,
     updateLayoutTool: _updateLayoutTool,
     updateBkgrImgTool: _updateBkgrImgTool,

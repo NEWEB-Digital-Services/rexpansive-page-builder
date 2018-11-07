@@ -23,6 +23,7 @@
   <div class="toolbox-insert-area--row-info">
     <input type="hidden" name="toolbox-insert-area--row-id" value="">
     <input type="hidden" name="toolbox-insert-area--row-model-id" value="">
+    <input type="hidden" name="toolbox-insert-area--row-model-editing" value="">
   </div>
 
   <div class="tool-button tool-button--flat tool-button--inline tool-button__image--flat toolbox-add-new-block-image tippy" data-tippy-content="<?php _e('Image','rexpansive'); ?>">

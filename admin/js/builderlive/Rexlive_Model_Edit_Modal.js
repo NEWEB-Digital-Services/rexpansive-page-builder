@@ -47,10 +47,18 @@ var Model_Edit_Modal = (function($) {
         case "remove":
           data_model_modal.eventName = "rexlive:modelBecameSection";
           Rexbuilder_Util_Admin_Editor.updateOpenModelsList('REMOVE',dataReceived);
+          Rexbuilder_Util_Admin_Editor.highlightRowSetData({
+            rexlive_model_id: "",
+            rexlive_model_name: ""
+          });
+          Rexbuilder_Util_Admin_Editor.updateModelId("");
+          Rexbuilder_Util_Admin_Editor.updateModelState();
           break;
         case "edit":
           data_model_modal.eventName = "rexlive:editModel";
           Rexbuilder_Util_Admin_Editor.updateOpenModelsList('OPEN',dataReceived);
+          Rexbuilder_Util_Admin_Editor.updateModelEditing("true");
+          Rexbuilder_Util_Admin_Editor.updateModelState();
           break;
         default:
           break;

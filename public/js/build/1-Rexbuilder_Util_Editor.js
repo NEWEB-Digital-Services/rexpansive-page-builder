@@ -514,6 +514,11 @@ var Rexbuilder_Util_Editor = (function($) {
     Rexbuilder_Util.$document.on("rexlive:close_modal", function(e) {
       _hideAllTools();
     });
+
+    Rexbuilder_Util.$document.on("rexlive:openCreateModelModal", function(e) {
+      var eventData = e.settings.data_to_send;
+      $('.rexpansive_section[data-rexlive-section-id=' + eventData.sectionTarget.sectionID + ']').find('.open-model').trigger('click');
+    });
   };
 
   var _hideAllTools = function() {
@@ -900,7 +905,7 @@ var Rexbuilder_Util_Editor = (function($) {
     Rexbuilder_Util_Editor.visibleRow = whichVisible();
     var visibleRowInfo = {};
     if( null !== Rexbuilder_Util_Editor.visibleRow ) {
-      var sectionData = Rexbuilder_Util_Editor.visibleRow.children[0];   // corresponds to .section-data div
+      var sectionData = $(Rexbuilder_Util_Editor.visibleRow).find('.section-data')[0];   // corresponds to .section-data div
       visibleRowInfo = _rowAttrsObj( sectionData );
       visibleRowInfo.collapse = Rexbuilder_Util_Editor.visibleRow.getAttribute('data-rex-collapse-grid');
     }
@@ -908,6 +913,7 @@ var Rexbuilder_Util_Editor = (function($) {
     Rexbuilder_Util_Editor.visibleRowInfo = {
       sectionID: ( null !== Rexbuilder_Util_Editor.visibleRow ? Rexbuilder_Util_Editor.visibleRow.getAttribute('data-rexlive-section-id') : null ),
       modelNumber: ( null !== Rexbuilder_Util_Editor.visibleRow ? ( typeof Rexbuilder_Util_Editor.visibleRow.getAttribute("data-rexlive-model-number") != "undefined" ? Rexbuilder_Util_Editor.visibleRow.getAttribute("data-rexlive-model-number") : "" ) : null ),
+      modelEditing: ( null !== Rexbuilder_Util_Editor.visibleRow ? ( typeof Rexbuilder_Util_Editor.visibleRow.getAttribute("data-rexlive-model-editing") != "undefined" ? Rexbuilder_Util_Editor.visibleRow.getAttribute("data-rexlive-model-editing") : "" ) : null ),
     };
 
     var data = {
@@ -933,11 +939,12 @@ var Rexbuilder_Util_Editor = (function($) {
           Rexbuilder_Util_Editor.visibleRow = el;
           Rexbuilder_Util_Editor.visibleRowInfo = {
             sectionID: el.getAttribute('data-rexlive-section-id'),
-            modelNumber: typeof el.getAttribute("data-rexlive-model-number") != "undefined" ? el.getAttribute("data-rexlive-model-number") : ""
+            modelNumber: typeof el.getAttribute("data-rexlive-model-number") != "undefined" ? el.getAttribute("data-rexlive-model-number") : "",
+            modelEditing: typeof el.getAttribute("data-rexlive-model-editing") != "undefined" ? el.getAttribute("data-rexlive-model-editing") : "",
           };
 
           var visibleRowInfo = {};
-          var sectionData = el.children[0];   // corresponds to .section-data div
+          var sectionData = $(el).find('.section-data')[0];   // corresponds to .section-data div
           visibleRowInfo = _rowAttrsObj( sectionData );
           visibleRowInfo.collapse = el.getAttribute('data-rex-collapse-grid');
 

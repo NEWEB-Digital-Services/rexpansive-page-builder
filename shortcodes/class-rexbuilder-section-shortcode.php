@@ -234,6 +234,8 @@ class Rexbuilder_Section
             if ($rexlive_model_name != '') {
                 echo ' data-rexlive-model-name="' . $rexlive_model_name . '"';
             }
+
+            echo ' data-rexlive-model-editing="false"';
             
             echo '>';
 

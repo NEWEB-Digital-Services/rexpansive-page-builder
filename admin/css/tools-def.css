@@ -15474,7 +15474,25 @@ input:disabled + .rex_edit_title_slider {
       -ms-flex-align: center;
           align-items: center;
   -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
-          box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45); }
+          box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
+  position: relative; }
+  .rexlive-toolbox .l-svg-icons.tool-dropdown-arrow-icon {
+    margin-left: 10px;
+    font-size: 10px;
+    -webkit-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+            transform: rotate(180deg); }
+  .rexlive-toolbox .toolbox-config-area {
+    font-size: 18px; }
+  .rexlive-toolbox.rexlive-toolbox--model:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 20%;
+    right: 20%;
+    bottom: 0;
+    z-index: 100;
+    background-color: rgba(255, 255, 255, 0.7); }
 
 .rexlive-toolbox__toggle-wrap {
   background-color: white;
@@ -15675,15 +15693,6 @@ input:disabled + .rex_edit_title_slider {
 .tool-option--placeholder {
   width: 70px;
   visibility: hidden; }
-
-.rexlive-toolbox .l-svg-icons.tool-dropdown-arrow-icon {
-  margin-left: 10px;
-  font-size: 10px;
-  -webkit-transform: rotate(180deg);
-      -ms-transform: rotate(180deg);
-          transform: rotate(180deg); }
-.rexlive-toolbox .toolbox-config-area {
-  font-size: 18px; }
 
 .toolbox-right-fast-config-area .tool-button--double-icon--wrap {
   margin: 0 8px; }
