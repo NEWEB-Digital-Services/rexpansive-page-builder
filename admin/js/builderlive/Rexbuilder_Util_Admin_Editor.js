@@ -83,7 +83,12 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         $highlightSectionId.val(event.data.sectionTarget.sectionID);
         $highlightModelId.val(event.data.sectionTarget.modelNumber);
         hightlightRowInfo = event.data.rowInfo;
-        _updateToolsInfo();
+        _updateTopToolbar();
+      }
+
+      if(event.data.eventName == "rexlive:updateTopToolbar") {
+        Rexbuilder_Util_Admin_Editor.highlightRowSetData(event.data.updateInfo);
+        _updateTopToolbar();
       }
 
       if (event.data.eventName == "rexlive:openMediaUploader") {
@@ -1052,7 +1057,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
    * Live update of the top toolbar according to the visibile row
    * @since 2.0.0
    */
-  var _updateToolsInfo = function() {
+  var _updateTopToolbar = function() {
     // 1. Synch Collapse
     _updateCollapseTool();
 

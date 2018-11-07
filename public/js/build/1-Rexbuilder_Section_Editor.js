@@ -155,6 +155,16 @@ var Rexbuilder_Section_Editor = (function($) {
         var event = jQuery.Event("rexlive:apply_background_image_section");
         event.settings = settings;
         Rexbuilder_Util.$document.trigger(event);
+
+        // Synch Top Toolbar
+        var data = {
+          eventName: "rexlive:updateTopToolbar",
+          updateInfo: {
+            image_bg_section: "",
+            image_bg_section_active: false
+          }
+        };
+        Rexbuilder_Util_Editor.sendParentIframeMessage(data);
       }
     });
 
@@ -186,6 +196,16 @@ var Rexbuilder_Section_Editor = (function($) {
       var event = jQuery.Event("rexlive:apply_background_color_section");
       event.settings = settings;
       Rexbuilder_Util.$document.trigger(event);
+
+      // Synch Top Toolbar
+      var data = {
+        eventName: "rexlive:updateTopToolbar",
+        updateInfo: {
+          color_bg_section: "",
+          color_bg_section_active: false
+        }
+      };
+      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });
 
     /**
@@ -214,6 +234,16 @@ var Rexbuilder_Section_Editor = (function($) {
       var event = jQuery.Event("rexlive:change_section_overlay");
       event.settings = settings;
       Rexbuilder_Util.$document.trigger(event);
+
+      // Synch Top Toolbar
+      var data = {
+        eventName: "rexlive:updateTopToolbar",
+        updateInfo: {
+          row_overlay_color: "",
+          row_overlay_active: false
+        }
+      };
+      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });
 
     /**
@@ -309,6 +339,18 @@ var Rexbuilder_Section_Editor = (function($) {
       var event = jQuery.Event("rexlive:update_section_background_video");
       event.settings = settings;
       Rexbuilder_Util.$document.trigger(event);
+
+      // Synch Top Toolbar
+      var data = {
+        eventName: "rexlive:updateTopToolbar",
+        updateInfo: {
+          video_bg_url_section: "",
+          video_bg_id_section: "",
+          video_bg_url_vimeo_section: "",
+          video_mp4_url: "",
+        }
+      };
+      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });
   };
 
@@ -407,6 +449,16 @@ var Rexbuilder_Section_Editor = (function($) {
           var event = jQuery.Event("rexlive:apply_background_color_section");
           event.settings = settings;
           Rexbuilder_Util.$document.trigger(event);
+
+          // Synch Top Toolbar
+          var data = {
+            eventName: "rexlive:updateTopToolbar",
+            updateInfo: {
+              color_bg_section: colorActive,
+              color_bg_section_active: bgColorActive
+            }
+          };
+          Rexbuilder_Util_Editor.sendParentIframeMessage(data);
         }
 
         Rexbuilder_Util_Editor.hideAllTools();
@@ -499,6 +551,16 @@ var Rexbuilder_Section_Editor = (function($) {
           var event = jQuery.Event("rexlive:change_section_overlay");
           event.settings = changeColorEvent;
           Rexbuilder_Util.$document.trigger(event);
+
+          // Synch Top Toolbar
+          var data = {
+            eventName: "rexlive:updateTopToolbar",
+            updateInfo: {
+              row_overlay_color: changeColorEvent.data_to_send.color,
+              row_overlay_active: true
+            }
+          };
+          Rexbuilder_Util_Editor.sendParentIframeMessage(data);
         }
 
         Rexbuilder_Util_Editor.hideAllTools();
