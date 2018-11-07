@@ -181,6 +181,15 @@ var Section_Video_Background_Modal = (function($) {
       type = "mp4";
     }
 
+    // Synch top toolbar
+    Rexbuilder_Util_Admin_Editor.highlightRowSetData({
+      video_bg_url_section: type == "" || type != "youtube" ? "" : urlYoutube,
+      video_bg_id_section: type == "" || type != "mp4" ? "" : videoMp4Data.idMp4,
+      video_bg_url_vimeo_section: type == "" || type != "vimeo" ? "" : urlVimeo,
+      video_mp4_url: type == "" || type != "mp4" ? "" : videoMp4Data.linkMp4,
+    });
+    Rexbuilder_Util_Admin_Editor.updateBkgrVidTool();
+
     var data = {
       eventName: "rexlive:update_section_background_video",
       data_to_send: {

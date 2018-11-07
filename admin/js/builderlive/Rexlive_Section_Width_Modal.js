@@ -101,6 +101,14 @@ var Section_Width_Modal = (function($) {
     var section_width_boxed_type = sectionWidthProperties.$section_boxed_width_wrap
       .children(".selected")
       .attr("data-rex-section-width-type");
+
+    // Synch top toolbar tools
+    Rexbuilder_Util_Admin_Editor.highlightRowSetData({
+      'section_width': section_width + section_width_boxed_type,
+      'dimension': ( "100%" === ( section_width + section_width_boxed_type ) ? 'full' : 'boxed' )
+    });
+    Rexbuilder_Util_Admin_Editor.updateWidthTool();
+
     var data_image = {
       eventName: "rexlive:set_section_width",
       data_to_send: {

@@ -51,6 +51,13 @@ var LayoutGrid_Modal = (function($) {
 
   var _applySectionLayout = function() {
     var layoutData = _getData();
+    
+    // Synch top toolbar tools
+    Rexbuilder_Util_Admin_Editor.highlightRowSetData({
+      'layout': layoutData.layout,
+    });
+    Rexbuilder_Util_Admin_Editor.updateLayoutTool();
+
     var data_gallery = {
       eventName: "rexlive:set_gallery_layout",
       data_to_send: {

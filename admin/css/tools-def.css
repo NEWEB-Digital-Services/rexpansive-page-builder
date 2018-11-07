@@ -15685,6 +15685,9 @@ input:disabled + .rex_edit_title_slider {
 .rexlive-toolbox .toolbox-config-area {
   font-size: 18px; }
 
+.toolbox-right-fast-config-area .tool-button--double-icon--wrap {
+  margin: 0 8px; }
+
 .tool-button_list.tool-button_list--dropdown .tool-button_list--item.tool-option__layout-settings {
   font-size: 16px;
   padding-top: 13px;

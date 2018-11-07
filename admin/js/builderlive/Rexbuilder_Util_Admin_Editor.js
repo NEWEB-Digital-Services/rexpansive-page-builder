@@ -449,6 +449,13 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     Rexlive_Base_Settings.$document.on('click', '.toolbox-collapse-grid', function(e) {
       e.preventDefault();
 
+      if( 'true' == hightlightRowInfo.collapse ) {
+        hightlightRowInfo.collapse = 'false';
+      } else {
+        hightlightRowInfo.collapse = 'true';
+      }
+      _updateCollapseTool();
+
       var msg = {
         eventName: "rexlive:collapse_row",
         data_to_send: {
@@ -467,6 +474,10 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
      * @since 2.0.0
      */
     Rexlive_Base_Settings.$document.on('change', '.edit-row-layout-toolbox', function(e) {
+      Rexbuilder_Util_Admin_Editor.highlightRowSetData({
+        layout: e.target.value,
+      });
+
       var msg = {
         eventName: "rexlive:set_gallery_layout",
         data_to_send: {
@@ -491,6 +502,11 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       var vals = e.target.value.trim().split(/(\d+)/);
       width = vals[1];
       type = vals[2];
+
+      Rexbuilder_Util_Admin_Editor.highlightRowSetData({
+        section_width: e.target.value,
+        dimension: e.target.getAttribute('data-section_width'),
+      });
 
       var msg = {
         eventName: "rexlive:set_section_width",
@@ -593,6 +609,13 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     Rexlive_Base_Settings.$document.on('click', '.deactivate-row-image-background-toolbox', function(e) {
       e.preventDefault();
 
+      Rexbuilder_Util_Admin_Editor.highlightRowSetData({
+        image_bg_section_active: "false",
+        image_bg_section: "",
+        id_image_bg_section: "",
+      });
+      _updateBkgrImgTool();
+
       var msg = {
         eventName: "rexlive:apply_background_image_section",
         data_to_send: {
@@ -618,6 +641,12 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     Rexlive_Base_Settings.$document.on('click', '.deactivate-row-color-background-toolbox', function(e) {
       e.preventDefault();
 
+      Rexbuilder_Util_Admin_Editor.highlightRowSetData({
+        color_bg_section_active: "false",
+        color_bg_section: "",
+      });
+      _updateBkgrColTool();
+
       var msg = {
         eventName: "rexlive:apply_background_color_section",
         data_to_send: {
@@ -639,6 +668,12 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
      */
     Rexlive_Base_Settings.$document.on('click', '.deactivate-row-overlay-color-toolbox', function(e) {
       e.preventDefault();
+
+      Rexbuilder_Util_Admin_Editor.highlightRowSetData({
+        row_overlay_color: "",
+        row_overlay_active: "false"
+      });
+      _updateBkgrOverlayTool();
 
       var msg = {
         eventName: "rexlive:change_section_overlay",
@@ -690,6 +725,19 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
      */
     Rexlive_Base_Settings.$document.on('click', '.deactivate-row-video-background-toolbox', function(e) {
       e.preventDefault();
+
+      Rexbuilder_Util_Admin_Editor.highlightRowSetData({
+        video_bg_url_section: "",
+        video_bg_id_section: "",
+        video_bg_url_vimeo_section: "",
+        video_mp4_url: "",
+      });
+      _updateBkgrVidTool();
+
+      hightlightRowInfo.video_bg_url_section = "";
+      hightlightRowInfo.video_bg_id_section = "";
+      hightlightRowInfo.video_bg_url_vimeo_section = "";
+      hightlightRowInfo.video_mp4_url = "";
 
       var msg = {
         eventName: "rexlive:update_section_background_video",
@@ -900,24 +948,23 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     }
   };
 
-  /**
-   * Live update of the top toolbar according to the visibile row
-   * @since 2.0.0
-   */
-  var _updateToolsInfo = function() {
-    // 1. Synch Collapse
+  var _updateCollapseTool = function() {
     if('true' == hightlightRowInfo.collapse) {
       $highlightRowSetCollapse.addClass('active');
     } else {
       $highlightRowSetCollapse.removeClass('active');
     }
+  };
 
-    // 2. Synch width
+  var _updateWidthTool = function() {
     $highlightRowSetWidth.filter('[data-section_width=' + hightlightRowInfo.dimension + ']').attr('checked',true);
-    // 3. Synch layout
-    $highlightRowSetLayout.filter('[value=' + hightlightRowInfo.layout + ']').attr('checked',true);
+  };
 
-    // 4. Synch Background Image
+  var _updateLayoutTool = function() {
+    $highlightRowSetLayout.filter('[value=' + hightlightRowInfo.layout + ']').attr('checked',true);
+  };
+
+  var _updateBkgrImgTool = function() {
     if( '' !== hightlightRowInfo.id_image_bg_section && '' !== hightlightRowInfo.image_bg_section ) {
       $highlightRowSetBackgroundImg
         .addClass('tool-button--image-preview')
@@ -933,8 +980,9 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       $configRowSetBkgrImg.removeClass('tool-button--hide');
       $fastRowSetBkgImg.parent().addClass('tool-button--hide');
     }
-
-    // 5. Synch Background Color
+  };
+  
+  var _updateBkgrColTool = function() {
     if( '' !== hightlightRowInfo.color_bg_section ) {
       $highlightRowSetBackgroundColor
         .val(hightlightRowInfo.color_bg_section)
@@ -960,8 +1008,9 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       $configRowSetBkgrCol.parent().removeClass('tool-button--hide');
       $fastRowSetBkgrCol.parent().addClass('tool-button--hide');
     }
+  };
 
-    // 6. Synch Overlay
+  var _updateBkgrOverlayTool = function() {
     if( '' !== hightlightRowInfo.row_overlay_color ) {
       $highlightRowSetOverlay
         .val(hightlightRowInfo.row_overlay_color)
@@ -987,8 +1036,9 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       $configRowSetOverlay.parent().removeClass('tool-button--hide');
       $fastRowSetOverlay.parent().addClass('tool-button--hide');
     }
+  };
 
-    // 7. Synch Video
+  var _updateBkgrVidTool = function() {
     if( ( '' !== hightlightRowInfo.video_bg_url_section && 'undefined' !== typeof hightlightRowInfo.video_bg_url_section ) || ( '' !== hightlightRowInfo.video_bg_url_vimeo_section && 'undefined' !== typeof hightlightRowInfo.video_bg_url_vimeo_section ) || ( '' !== hightlightRowInfo.video_mp4_url && 'undefined' !== typeof hightlightRowInfo.video_mp4_url ) || ( '' !== hightlightRowInfo.video_bg_id_section && 'undefined' !== typeof hightlightRowInfo.video_bg_id_section ) ) {
       $configRowSetVideo.addClass('tool-button--hide');
       $fastRowSetVideo.parent().removeClass('tool-button--hide');
@@ -996,6 +1046,33 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       $configRowSetVideo.removeClass('tool-button--hide');
       $fastRowSetVideo.parent().addClass('tool-button--hide');
     }
+  }
+
+  /**
+   * Live update of the top toolbar according to the visibile row
+   * @since 2.0.0
+   */
+  var _updateToolsInfo = function() {
+    // 1. Synch Collapse
+    _updateCollapseTool();
+
+    // 2. Synch width
+    _updateWidthTool();
+
+    // 3. Synch layout
+    _updateLayoutTool();
+
+    // 4. Synch Background Image
+    _updateBkgrImgTool();
+
+    // 5. Synch Background Color
+    _updateBkgrColTool();
+
+    // 6. Synch Overlay
+    _updateBkgrOverlayTool();
+
+    // 7. Synch Video
+    _updateBkgrVidTool();
   };
 
   var _blockIframeRows = function() {
@@ -1163,7 +1240,6 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     var mousePosition = {};
     if( "undefined" !== typeof mEvent.clientX && "undefined" !== typeof mEvent.clientY && "undefined" !== typeof mEvent.offsetX && "undefined" !== typeof mEvent.offsetY && "undefined" !== typeof target_info ) {
       var pos = mEvent.target.getBoundingClientRect();
-      console.log(pos);
       mousePosition = {
         x: pos.left + ( target_info.offset.w / 2 ),
         y: pos.top + Rexbuilder_Util_Admin_Editor.mousePositionFrameYOffset,
@@ -1176,6 +1252,20 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     }
     return mousePosition;
   }
+
+  /**
+   * Setting the value of an attribute of the Highlighted row
+   * @param {Object} attr attribute name
+   */
+  var _highlightRowSetData = function( data ) {
+    if( "" !== data ) {
+      console.log(data);
+      for( var attr in data ) {
+        console.log(attr + ' = ' + data[attr]);
+        hightlightRowInfo[attr] = data[attr];
+      }
+    }
+  };
 
   // init the utilities
   var init = function() {
@@ -1260,6 +1350,13 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     releaseIframeRows: _releaseIframeRows,
     blockIframeRows: _blockIframeRows,
     editPageProperties: _editPageProperties,
-    updateOpenModelsList: _updateOpenModelsList
+    updateOpenModelsList: _updateOpenModelsList,
+    highlightRowSetData: _highlightRowSetData,
+    updateWidthTool: _updateWidthTool,
+    updateLayoutTool: _updateLayoutTool,
+    updateBkgrImgTool: _updateBkgrImgTool,
+    updateBkgrColTool: _updateBkgrColTool,
+    updateBkgrOverlayTool: _updateBkgrOverlayTool,
+    updateBkgrVidTool: _updateBkgrVidTool,
   };
 })(jQuery);

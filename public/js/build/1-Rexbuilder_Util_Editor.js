@@ -954,8 +954,8 @@ var Rexbuilder_Util_Editor = (function($) {
 
     function whichVisible() {
       var win_height = $(window).height(),
-          win_height_padded_bottom,
-          win_height_padded_top;
+        win_height_padded_bottom,
+        win_height_padded_top;
       win_height_padded_bottom = win_height * 0.8;
       win_height_padded_top = win_height * 0.2;
 

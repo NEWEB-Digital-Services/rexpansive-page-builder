@@ -218,6 +218,14 @@ var Rexlive_MediaUploader = (function($) {
         }
       });
 
+      // Synch top toolbar tools
+      Rexbuilder_Util_Admin_Editor.highlightRowSetData({
+        image_bg_section_active: data.data_to_send.active,
+        image_bg_section: data.data_to_send.urlImage,
+        id_image_bg_section: data.data_to_send.idImage
+      });
+      Rexbuilder_Util_Admin_Editor.updateBkgrImgTool();
+
       data.data_to_send.tools = data_to_send.tools;
 
       // Launch image insert event to the iframe

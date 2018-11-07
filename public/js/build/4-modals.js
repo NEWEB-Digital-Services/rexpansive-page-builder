@@ -357,8 +357,8 @@
 
       galleryInstance.updateSectionWidthWrap(newSectionWidth, reverseData);
       Rexbuilder_Dom_Util.updateSectionWidthData($section, {
-        sectionWidth: sectionWidth,
-        widthType: widthType
+        sectionWidth: newSectionWidth,
+        widthType: ( "100%" === newSectionWidth ? 'full' : 'boxed' )
       });
 
       if('undefined' == typeof e.settings.forged) {
