@@ -126,6 +126,9 @@
 .tools-container-middle {
   max-width: 60%;
   text-align: center;
+  @if( $small-tools == true ) {
+    @include center-from-left-abs();
+  }
 }
 
 .rexlive-logo {
@@ -134,8 +137,13 @@
 
 .toolbox-insert-area {
   background-color: $palette-color-1;
-  padding: 0 10px;
-  margin: 0 20px;
+  @if( $small-tools == true ) {
+    margin: 0 10px;
+    padding: 0 5px;
+  } @else {
+    padding: 0 10px;
+    margin: 0 20px;
+  }
   border-radius: 15px;
   max-height: 34px;
   > .tool-button {
@@ -149,46 +157,64 @@
   .tool-button.tool-button__image--flat {
     padding-top: 7px;
     padding-bottom: 11px;
-    padding-left: 10px;
-    padding-right: 20px;
+    @if( $small-tools == true ) {
+      padding-left: 5px;
+      padding-right: 10px;
+    } @else {
+      padding-left: 10px;
+      padding-right: 20px;
+    }
     font-size: 15px;
-    // #{$icon-class} {
-    //   font-size: 19px;
-    // }
   }
   .tool-button.tool-button__text--flat {
     // max-height: 40px;
-    padding-left: 21px;
-    padding-right: 20px;
+    @if( $small-tools == true ) {
+      padding-left: 11px;
+      padding-right: 10px;
+    } @else {
+      padding-left: 21px;
+      padding-right: 20px;
+    }
     padding-top: 11px;
     padding-bottom: 10px;
     font-size: 13px;
-    // #{$icon-class} {
-      // font-size: 16px;
-      // font-size: 13px;
-    // }
   }
   .tool-button.tool-button__video--flat {
     max-height: 40px;
     padding-top: 8px;
     padding-bottom: 10px;
-    padding-left: 20px;
-    padding-right: 20px;
+    @if( $small-tools == true ) {
+      padding-left: 10px;
+      padding-right: 10px;
+    } @else {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
     font-size: 15px;
     // #{$icon-class} {
     //   font-size: 16px;
     // }
   }
   .tool-button.tool-button__models--flat {
-    padding-left: 20px;
-    padding-right: 20px;
+    @if( $small-tools == true ) {
+      padding-left: 10px;
+      padding-right: 10px;
+    } @else {
+      padding-left: 20px;
+      padding-right: 20px;
+    }
     font-size: 17px;
     padding-top: 9px;
     padding-bottom: 8px;
   }
   .tool-button-floating.tool-button__settings--flat {
-    padding-left: 10px;
-    padding-right: 1px;
+    @if( $small-tools == true ) {
+      padding-left: 0;
+      padding-right: 0;
+    } @else {
+      padding-left: 10px;
+      padding-right: 1px;
+    }
     .tool-button_list--item {
       background-color: $palette-color-1;
       @include fill-icon(#fff);
@@ -225,13 +251,21 @@
 .layout-container, 
 .tool-option {
   cursor: pointer;
-  padding: 0 20px;
+  @if( $small-tools == true ) {
+    padding: 0 10px;
+  } @else {
+    padding: 0 20px;
+  }
   height: 100%;
   line-height: 1;
 }
 
 .tool-option--filled {
-  margin: 0 20px;
+  @if( $small-tools == true ) {
+    margin: 0 10px;
+  } @else {
+    margin: 0 20px;
+  }
   background-color: $palette-color-4;
   border-radius: 50%;
   padding: 3px;
@@ -245,7 +279,11 @@
 
 .toolbox-builder-section-config {
   + .tool-button_list {
-    left: 20px;
+    @if( $small-tools == true ) {
+      left: 10px;
+    } @else {
+      left: 20px;
+    }
     font-size: 10px;
     max-width: 20px;
     .tool-button--full {
@@ -273,11 +311,39 @@
 }
 
 .tool-option--placeholder {
-  width: 70px;
+  @if( $small-tools == true ) {
+    width: 50px;
+  } @else {
+    width: 70px;
+  }
   visibility: hidden;
 }
 
 .toolbox-right-fast-config-area {
+  @if( $small-tools == true ) {
+    padding-right: 10px;
+  }
+  .tool-button {
+    box-shadow: none;
+    &.tool-button--color-preview {
+      border: none;
+    }
+    &.tool-button--image-preview,
+    &.tool-button--color,
+    &.edit-row-video-background-toolbox {
+      border-color: #000;
+    }
+    &.tool-button__fast-video {
+      padding: 3px;
+      line-height: 1;
+      font-size: 12px;
+      height: 20px;
+      border: 1px solid #000;
+    }
+    &:hover {
+      box-shadow: $shadow-2;
+    }
+  }
   .tool-button--double-icon--wrap {
     margin: 0 8px;
   }
@@ -321,8 +387,13 @@
 .btn-save {  
   @include page-edited-ui();
   padding: 0 10px;
-  padding-left: 20px;
-  margin-right: 10px;
+  @if( $small-tools == true ) {
+    padding: 0 10px;
+    margin-right: 0px;
+  } @else {
+    padding-left: 20px;
+    margin-right: 10px;
+  }
   #{$icon-class}{
     font-size: 30px;
   }
@@ -343,6 +414,9 @@
 .tool-option {
   &.btn-undo,
   &.btn-redo {
+    @if( $small-tools == true ) {
+      font-size: 18px;
+    }
     @include fill-icon($palette-color-2);
     &:hover {
       @include fill-icon($palette-color-1);

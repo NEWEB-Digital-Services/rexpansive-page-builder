@@ -295,7 +295,11 @@
       position: absolute;
       left: 0;
       top: -50px;
-      width: 82px;
+      @if( $small-tools == true ) {
+        width: 62px;
+      } @else {
+        width: 82px;
+      }
       height: 50px;
       background-color: #fff;
     }

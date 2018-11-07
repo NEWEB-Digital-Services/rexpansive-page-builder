@@ -11,7 +11,7 @@
 
 defined('ABSPATH') or exit;
 global $layoutsAvaiable;
-
+$small_tools = true;
 ?>
 <div class="rexlive-toolbox__toggle-wrap">
   <div class="">
