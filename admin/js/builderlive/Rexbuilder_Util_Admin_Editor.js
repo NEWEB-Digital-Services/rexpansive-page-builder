@@ -1200,6 +1200,13 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       },
       hide: function(color) {
         if(bgColorPickerUsed) {
+          // Synch top toolbar tools
+          Rexbuilder_Util_Admin_Editor.highlightRowSetData({
+            color_bg_section_active: "true",
+            color_bg_section: color.toRgbString(),
+          });
+          Rexbuilder_Util_Admin_Editor.updateBkgrColTool();
+
           eventSettings.data_to_send.active = true;
           eventSettings.data_to_send.color = color.toRgbString();
 
@@ -1260,6 +1267,13 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       },
       hide: function(color) {
         if(overlayPickerUsed) {
+          // Synch top toolbar tools
+          Rexbuilder_Util_Admin_Editor.highlightRowSetData({
+            row_overlay_active: "true",
+            row_overlay_color: color.toRgbString(),
+          });
+          Rexbuilder_Util_Admin_Editor.updateBkgrOverlayTool();
+
           eventSettings.data_to_send.active = true;
           eventSettings.data_to_send.color = color.toRgbString();
 
