@@ -224,8 +224,6 @@ var TextEditor = (function($) {
     },
 
     handleShowToolbar: function(event) {
-      // var color = $(this.button).spectrum("get").toRgbString();
-      // console.log(color);
       var $element = $(editorInstance.getSelectedParentElement());
       var inline_color = $element.prop('style')['color'];
       if( "" !== inline_color ) {
@@ -755,7 +753,6 @@ var TextEditor = (function($) {
     action: "",
 
     init: function() {
-      console.log(this.contentDefault);
       this.button = this.document.createElement("button");
       this.button.classList.add("medium-editor-action");
       this.button.classList.add("medium-editor-action-list");

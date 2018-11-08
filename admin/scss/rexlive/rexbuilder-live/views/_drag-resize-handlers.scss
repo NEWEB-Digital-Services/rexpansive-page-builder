@@ -6,6 +6,16 @@
 //   box-sizing: inherit;
 // }
 
+.grid-stack > .grid-stack-item {
+  &.ui-draggable-dragging,
+  &.ui-resizable-resizing {
+    > .grid-stack-item-content,
+    > .grid-stack-item-content {
+      box-shadow: none;
+    }
+  }
+}
+
 .grid-stack > .grid-stack-item > .ui-resizable-e {
   right: 0px;
   top: 0px;

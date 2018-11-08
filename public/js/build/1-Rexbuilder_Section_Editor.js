@@ -694,7 +694,6 @@ var Rexbuilder_Section_Editor = (function($) {
   }
 
   var _updateRowOverlayColorToolLive = function( $target, color ) {
-    console.log('_updateRowOverlayColorToolLive');
     var $picker = $target
       .find('input[name=edit-row-overlay-color]');
 

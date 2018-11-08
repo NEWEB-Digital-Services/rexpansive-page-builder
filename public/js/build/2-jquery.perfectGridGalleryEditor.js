@@ -528,9 +528,10 @@
       this._setGridPadding();
 
       var that = this;
-      this.$element.find(".grid-stack-item-content").each(function(i, el) {
-        that._updateElementPadding($(el));
-        that._updateHandlersPosition($(el));
+      this.$element.find(".grid-stack-item").each(function(i, el) {
+        var $el = $(el);
+        that._updateElementPadding($el.find(".grid-stack-item-content"));
+        that._updateHandlersPosition($el);
       });
     },
 
@@ -1948,6 +1949,7 @@
           $target.parents(".ui-resizable-handle").length == 0
         ) {
           $dragHandle.addClass("drag-up");
+          $elem.addClass("ui-draggable--drag-up");
           e.target = dragHandle;
           e.srcElement = dragHandle;
           e.toElement = dragHandle;
@@ -1970,6 +1972,7 @@
                 clearTimeout(this.downTimer);
                 this.downTimer = setTimeout(function() {
                   $dragHandle.addClass("drag-up");
+                  $elem.addClass("ui-draggable--drag-up");
 
                   Rexbuilder_Util_Editor.mouseDownEvent.target = dragHandle;
                   Rexbuilder_Util_Editor.mouseDownEvent.srcElement = dragHandle;
@@ -1994,10 +1997,12 @@
           $target.parents(".ui-resizable-handle").length == 0
         ) {
           $dragHandle.removeClass("drag-up");
+          $elem.removeClass("ui-draggable--drag-up");
         } else {
           if ($target.parents(".rexlive-block-toolbox").length == 0) {
             if (Rexbuilder_Util_Editor.elementDraggingTriggered) {
               $dragHandle.removeClass("drag-up");
+              $elem.removeClass("ui-draggable--drag-up");
               Rexbuilder_Util_Editor.elementDraggingTriggered = false;
             }
             clearTimeout(this.downTimer);

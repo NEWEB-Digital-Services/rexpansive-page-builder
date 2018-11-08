@@ -96,14 +96,6 @@
         win_height_padded_top = win_height + this.settings.offset;
       }
 
-      // console.table({
-      //   elementPositionTop: elementPositionTop,
-      //   win_height_padded_bottom: win_height_padded_bottom,
-      //   scrolled: scrolled,
-      //   elementHeight: elementHeight,
-      //   win_height_padded_top: win_height_padded_top
-      // });
-
       if ( ( elementPositionTop - win_height_padded_bottom < scrolled ) && ( ( elementPositionTop + elementHeight ) - win_height_padded_top > scrolled ) ) {
         console.log('row visibile',this.element.getAttribute('data-rexlive-section-number'));
       }

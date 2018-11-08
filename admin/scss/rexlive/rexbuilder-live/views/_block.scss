@@ -21,6 +21,22 @@
   // transition: box-sh
 }
 
+// .ui-draggable-dragging {
+//   .ui-focused-element-highlight {
+//     // cursor: pointer;
+//   }
+// }
+
+.gridActive > {
+  .grid-stack-item{
+    &.focused {
+      &.ui-draggable--drag-up {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
 .perfect-grid-item.focused > .ui-resizable-handle,
 .grid-stack-item.focused.ui-resizable-handle {
   visibility: visible;
