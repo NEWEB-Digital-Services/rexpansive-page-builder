@@ -805,7 +805,7 @@ var Rexbuilder_Section_Editor = (function($) {
    */
   var _listenRowDataChange = function() {
     // Select the data nodes to observe
-    var dataNodes = document.getElementsByClassName('section-data');
+    Rexbuilder_Section_Editor.dataNodes = document.getElementsByClassName('section-data');
 
     // Config the observer
     var config = { attributes: true, childList: false, subtree: false };
@@ -823,13 +823,20 @@ var Rexbuilder_Section_Editor = (function($) {
     Rexbuilder_Section_Editor.dataObserver = new MutationObserver(callback);
 
     // Monitor the data nodes
-    for(var i=0; i<dataNodes.length; i++) {
-      Rexbuilder_Section_Editor.dataObserver.observe(dataNodes[i], config);
+    for(var i=0; i<Rexbuilder_Section_Editor.dataNodes.length; i++) {
+      Rexbuilder_Section_Editor.dataObserver.observe(Rexbuilder_Section_Editor.dataNodes[i], config);
     }
 
     // Successivamente si può interrompere il monitoraggio
     // observer.disconnect();
   };
+
+  var _triggerRowDataChange = function() {
+    // Mutate section data to trigger the check for fast configuration
+    for(var i=0; i < Rexbuilder_Section_Editor.dataNodes.length; i++ ) {
+      Rexbuilder_Section_Editor.dataNodes[i].setAttribute('data-load','true');
+    }
+  }
 
   /**
    * Initing the row toolbar
@@ -837,6 +844,8 @@ var Rexbuilder_Section_Editor = (function($) {
   var init = function() {
     // _cache_elements();
     this.dataObserver = null;
+    this.dataNodes = null;
+
     row_picker_classes = 'tool-button tool-button--inline tool-button--empty tool-button--color tool-button--spectrum';
     _attachEvents();
     _setTools();
@@ -854,6 +863,7 @@ var Rexbuilder_Section_Editor = (function($) {
     updateRowBackgroundColorToolLive: _updateRowBackgroundColorToolLive,
     updateRowOverlayColorTool: _updateRowOverlayColorTool,
     updateRowOverlayColorToolLive: _updateRowOverlayColorToolLive,
-    updateRowBackgroundVideo: _updateRowBackgroundVideo
+    updateRowBackgroundVideo: _updateRowBackgroundVideo,
+    triggerRowDataChange: _triggerRowDataChange
   }
 })(jQuery);
