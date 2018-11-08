@@ -828,7 +828,7 @@ var Rexbuilder_Section_Editor = (function($) {
     }
 
     // Successivamente si può interrompere il monitoraggio
-    // observer.disconnect();
+    // Rexbuilder_Section_Editor.dataObserver.disconnect();
   };
 
   var _triggerRowDataChange = function() {

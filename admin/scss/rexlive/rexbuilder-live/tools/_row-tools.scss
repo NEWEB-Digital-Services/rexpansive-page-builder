@@ -92,9 +92,9 @@
     display: block;
   }
 
-  &:hover {
-    @include view-row-tools();
-  }
+  // &:hover {
+  //   @include view-row-tools();
+  // }
 
   .switch-toggle {
     padding-right: 10px;
@@ -120,6 +120,11 @@
 }
 
 .rexpansive_section {
+  &:hover {
+    .section-toolBox {
+      @include view-row-tools();
+    }
+  }
   &:not(.removing_section) {
     &:not(:last-child) {
       .row-toolBox__def-hide {
@@ -151,6 +156,14 @@
   }
 }
 
+.highLightRow {
+  .section-toolBox {
+    + .section-toolBoox__highlight {
+      opacity: 1;
+    }
+  }
+}
+
 .rowTools__hide-fast-data {
   .tool-area--center {
     &.row-toolBox__def-view {
@@ -171,6 +184,7 @@
   opacity: 0;
   z-index: 1;
   transition: opacity 200ms;
+  box-shadow: $shadow-2;
 }
 
 .builder-move-row {

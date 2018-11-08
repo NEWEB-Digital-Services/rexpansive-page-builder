@@ -27,7 +27,11 @@
   }
 
   .toolbox-config-area {
-    font-size: 18px;
+    @if( $small-tools == true ) {
+      font-size: 15px;
+    } @else {
+      font-size: 18px;
+    }
     // #{$icon-class} {
       // font-size: 13px;
       // font-size: inherit;
@@ -69,6 +73,15 @@
 
 .rexlive-toolbox__toggle-wrap {
   transition: box-shadow 300ms;
+}
+
+.tool-option {
+  &.toolbox-collapse-grid {
+    @if( $small-tools == true ) {
+      font-size: 13px;
+      padding-right: 20px;
+    }
+  }
 }
 
 .close-toolbox {
@@ -138,8 +151,8 @@
 .toolbox-insert-area {
   background-color: $palette-color-1;
   @if( $small-tools == true ) {
-    margin: 0 10px;
     padding: 0 5px;
+    margin: 0 20px;
   } @else {
     padding: 0 10px;
     margin: 0 20px;
@@ -151,7 +164,7 @@
     padding-top: 10px;
     padding-bottom: 10px;
     &:not(:last-child) {
-      border-right: 1px solid rgba(255,255,255,0.2);
+      border-right: 1px solid rgba(255,255,255,0.15);
     }
   }
   .tool-button.tool-button__image--flat {
@@ -277,6 +290,12 @@
   @include fill-icon(#fff);
 }
 
+.toolbox-builder-section-config--wrap {
+  @if( $small-tools == true ) {
+    margin-left: 10px;
+  }
+}
+
 .toolbox-builder-section-config {
   + .tool-button_list {
     @if( $small-tools == true ) {
@@ -335,20 +354,33 @@
       border-width: 2px;
     }
     &.tool-button__fast-video {
-      padding: 2px 2px 3px 4px;
+      padding: 1px 2px 3px 3px;
       line-height: 1;
       font-size: 10px;
-      max-width: 20px;
-      height: 20px;
+      max-width: 18px;
+      height: 18px;
       border: 2px solid $palette-color-4;
     }
     &:hover {
-      box-shadow: $shadow-2;
+      box-shadow: $top-tool-shadow;
     }
   }
   .tool-button--double-icon--wrap {
     margin: 0 8px;
-    max-height: 20px;
+    max-height: 18px;
+    .tool-button.tool-button--empty {
+      min-width: 18px;
+      min-height: 18px;
+      opacity: 1;
+    }
+    .tool-button--double-icon {
+      padding: 3px;
+      padding-top: 2px;
+      font-size: 8px;
+      &:hover {
+        box-shadow: none;
+      }
+    }
   }
 }
 
@@ -470,8 +502,8 @@
 }
 
 .edit-row-image-background-toolbox {
-  max-width: 20px;
-  max-height: 20px;
+  max-width: 18px;
+  max-height: 18px;
 }
 
 // .rexlive-toolbox {

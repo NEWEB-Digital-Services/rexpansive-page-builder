@@ -523,7 +523,7 @@ var Rexbuilder_Util_Editor = (function($) {
 
   var _hideAllTools = function() {
     Rexbuilder_Util_Editor.manageElement = false;
-    Rexbuilder_Util.$rexContainer.find('.rexpansive_section').removeClass('focusedRow').removeClass('activeRowTools');
+    Rexbuilder_Util.$rexContainer.find('.rexpansive_section').removeClass('focusedRow').removeClass('activeRowTools').removeClass('highLightRow');
     Rexbuilder_Util.$rexContainer.find('.grid-stack-item').removeClass('focused');
     Rexbuilder_Util.$rexContainer.find('.tool-button-floating--active').removeClass('tool-button-floating--active');
   };
@@ -924,6 +924,7 @@ var Rexbuilder_Util_Editor = (function($) {
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 
     // $(Rexbuilder_Util_Editor.visibleRow).addClass('activeRowTools');
+    $(Rexbuilder_Util_Editor.visibleRow).addClass('highLightRow');
 
     var didScroll = false;
     $(window).on("scroll", function(e) {
@@ -936,6 +937,8 @@ var Rexbuilder_Util_Editor = (function($) {
         if( null !== el && Rexbuilder_Util_Editor.visibleRow !== el ) {
           // $(".rexpansive_section").removeClass('activeRowTools');
           // $(el).addClass('activeRowTools');
+          $(".rexpansive_section").removeClass('highLightRow');
+          $(el).addClass('highLightRow');
           Rexbuilder_Util_Editor.visibleRow = el;
           Rexbuilder_Util_Editor.visibleRowInfo = {
             sectionID: el.getAttribute('data-rexlive-section-id'),

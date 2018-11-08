@@ -14432,7 +14432,7 @@ select.rx__form-input {
     line-height: 0; }
 
   .switch-toggle.switch-live--dark input + label {
-    padding: 0 5px; }
+    padding: 0 3px; }
 
   .switch-light.switch-live--dark input ~ span span:first-child .l-svg-icons > svg,
   .switch-light.switch-live--dark input:checked ~ span span:nth-child(2) .l-svg-icons > svg,
@@ -15483,7 +15483,7 @@ input:disabled + .rex_edit_title_slider {
         -ms-transform: rotate(180deg);
             transform: rotate(180deg); }
   .rexlive-toolbox .toolbox-config-area {
-    font-size: 18px; }
+    font-size: 15px; }
   .rexlive-toolbox.rexlive-toolbox--model:before {
     content: '';
     position: absolute;
@@ -15518,6 +15518,10 @@ input:disabled + .rex_edit_title_slider {
   -o-transition: box-shadow 300ms;
   transition: box-shadow 300ms;
   transition: box-shadow 300ms, -webkit-box-shadow 300ms; }
+
+.tool-option.toolbox-collapse-grid {
+  font-size: 13px;
+  padding-right: 20px; }
 
 .close-toolbox {
   text-align: center;
@@ -15578,8 +15582,8 @@ input:disabled + .rex_edit_title_slider {
 
 .toolbox-insert-area {
   background-color: #00ACFF;
-  margin: 0 10px;
   padding: 0 5px;
+  margin: 0 20px;
   border-radius: 15px;
   max-height: 34px; }
   .toolbox-insert-area > .tool-button {
@@ -15587,7 +15591,7 @@ input:disabled + .rex_edit_title_slider {
     padding-top: 10px;
     padding-bottom: 10px; }
     .toolbox-insert-area > .tool-button:not(:last-child) {
-      border-right: 1px solid rgba(255, 255, 255, 0.2); }
+      border-right: 1px solid rgba(255, 255, 255, 0.15); }
   .toolbox-insert-area .tool-button.tool-button__image--flat {
     padding-top: 7px;
     padding-bottom: 11px;
@@ -15677,6 +15681,9 @@ input:disabled + .rex_edit_title_slider {
   .tool-option--filled .l-svg-icons > svg {
     fill: #fff; }
 
+.toolbox-builder-section-config--wrap {
+  margin-left: 10px; }
+
 .toolbox-builder-section-config + .tool-button_list {
   left: 10px;
   font-size: 10px;
@@ -15710,18 +15717,29 @@ input:disabled + .rex_edit_title_slider {
       border-color: #424242;
       border-width: 2px; }
     .toolbox-right-fast-config-area .tool-button.tool-button__fast-video {
-      padding: 2px 2px 3px 4px;
+      padding: 1px 2px 3px 3px;
       line-height: 1;
       font-size: 10px;
-      max-width: 20px;
-      height: 20px;
+      max-width: 18px;
+      height: 18px;
       border: 2px solid #424242; }
     .toolbox-right-fast-config-area .tool-button:hover {
-      -webkit-box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -7px rgba(0, 0, 0, 0.2);
-              box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -7px rgba(0, 0, 0, 0.2); }
+      -webkit-box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.5);
+              box-shadow: 0 0 20px 2px rgba(0, 0, 0, 0.5); }
   .toolbox-right-fast-config-area .tool-button--double-icon--wrap {
     margin: 0 8px;
-    max-height: 20px; }
+    max-height: 18px; }
+    .toolbox-right-fast-config-area .tool-button--double-icon--wrap .tool-button.tool-button--empty {
+      min-width: 18px;
+      min-height: 18px;
+      opacity: 1; }
+    .toolbox-right-fast-config-area .tool-button--double-icon--wrap .tool-button--double-icon {
+      padding: 3px;
+      padding-top: 2px;
+      font-size: 8px; }
+      .toolbox-right-fast-config-area .tool-button--double-icon--wrap .tool-button--double-icon:hover {
+        -webkit-box-shadow: none;
+                box-shadow: none; }
 
 .tool-button_list.tool-button_list--dropdown .tool-button_list--item.tool-option__layout-settings {
   font-size: 16px;
@@ -15845,8 +15863,8 @@ input:disabled + .rex_edit_title_slider {
   left: 0; }
 
 .edit-row-image-background-toolbox {
-  max-width: 20px;
-  max-height: 20px; }
+  max-width: 18px;
+  max-height: 18px; }
 
 .rex-number {
   text-align: center; }

@@ -63,13 +63,13 @@
 
 <div class="bl_d-iflex bl_ai-c toolbox-right-config-area toolbox-config-area">
   <div class="switch-toggle switch-live--dark">
-    <input type="radio" class="edit-row-layout-toolbox" data-section_layout="masonry" id="row-layout-masonry-toolbox" name="row-layout-toolbox" value="masonry">
-    <label class="tippy" data-tippy-content="<?php _e('Masonry','rexpansive'); ?>" for="row-layout-masonry-toolbox"><span><?php Rexbuilder_Utilities::get_icon('#B010-Masonry'); ?></span></label>
     <input type="radio" class="edit-row-layout-toolbox" data-section_layout="fixed" id="row-layout-fixed-toolbox" name="row-layout-toolbox" value="fixed" checked>
     <label class="tippy" data-tippy-content="<?php _e('Grid','rexpansive'); ?>" for="row-layout-fixed-toolbox"><span><?php Rexbuilder_Utilities::get_icon('#B011-Grid'); ?></span></label>
+    <input type="radio" class="edit-row-layout-toolbox" data-section_layout="masonry" id="row-layout-masonry-toolbox" name="row-layout-toolbox" value="masonry">
+    <label class="tippy" data-tippy-content="<?php _e('Masonry','rexpansive'); ?>" for="row-layout-masonry-toolbox"><span><?php Rexbuilder_Utilities::get_icon('#B010-Masonry'); ?></span></label>
   </div><!-- // Row layout -->
 
-  <div class="tool-button-floating tool-button--model-hide">
+  <div class="tool-button-floating toolbox-builder-section-config--wrap tool-button--model-hide">
     <div class="tool-option--filled tool-option--small toolbox-builder-section-config tippy" data-tippy-content="<?php _e('Row settings', 'rexpansive');?>" data-tippy-placement="right">
       <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
     </div>

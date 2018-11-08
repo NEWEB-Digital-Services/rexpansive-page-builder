@@ -12,7 +12,11 @@
 }
 
 .switch-toggle.switch-live--dark input + label {
-  padding: 0 5px;
+  @if( $small-tools == true ) {
+    padding: 0 3px;
+  } @else {
+    padding: 0 5px;
+  }
 }
 
 .switch-light.switch-live--dark input ~ span span:first-child,
