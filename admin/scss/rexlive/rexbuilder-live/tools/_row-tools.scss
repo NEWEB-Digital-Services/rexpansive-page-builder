@@ -143,6 +143,9 @@
   .section-toolBox {
     @include view-row-tools();
   }
+  ~ .rexpansive_section {
+    z-index: 0;
+  }
 }
 
 .section-toolBoox__highlight {

@@ -186,6 +186,8 @@
 
         this._launchTextEditor();
         this._createFirstReverseStack();
+
+        this._updatePlaceholderPosition();
       }
 
       this.saveStateGrid();
@@ -531,8 +533,13 @@
       this.$element.find(".grid-stack-item").each(function(i, el) {
         var $el = $(el);
         that._updateElementPadding($el.find(".grid-stack-item-content"));
-        that._updateHandlersPosition($el);
+        if (Rexbuilder_Util.editorMode) {
+          that._updateHandlersPosition($el);
+        }
       });
+      if (Rexbuilder_Util.editorMode) {
+        this._updatePlaceholderPosition();
+      }
     },
 
     updateGrid: function() {
@@ -1682,6 +1689,15 @@
       });
     },
 
+    _updatePlaceholderPosition: function() {
+      this.properties.gridstackInstance.placeholder.children('.placeholder-content').css({
+        "left": this.properties.halfSeparatorElementLeft,
+        "right": this.properties.halfSeparatorElementRight,
+        "top": this.properties.halfSeparatorElementTop,
+        "bottom": this.properties.halfSeparatorElementBottom
+      });
+    },
+
     _saveBlocksPosition: function() {
       var $elem;
       var x, y, w, h;
@@ -1819,7 +1835,10 @@
       }
 
       gallery._updateElementPadding($elem.find(".grid-stack-item-content"));
-      gallery._updateHandlersPosition($elem);
+      if (Rexbuilder_Util.editorMode) {
+        gallery._updateHandlersPosition($elem);
+        console.log(1);
+      }
       gallery._fixImageSize($elem);
     },
 

@@ -3821,6 +3821,8 @@ ul {
           animation: fade-in 200ms ease-in-out both; }
 .activeRowTools .section-toolBox + .section-toolBoox__highlight {
   opacity: 1; }
+.activeRowTools ~ .rexpansive_section {
+  z-index: 0; }
 
 .section-toolBoox__highlight {
   position: absolute;
@@ -4976,6 +4978,10 @@ ul {
 /** SEEMS USEFULL **/
 .el-size-settingButton.focused {
   visibility: visible; }
+
+.grid-stack .grid-stack-placeholder > .placeholder-content {
+  border: none;
+  background-color: rgba(0, 0, 0, 0.1); }
 
 .grid-stack > .grid-stack-item.ui-draggable-dragging > .grid-stack-item-content,
 .grid-stack > .grid-stack-item.ui-draggable-dragging > .grid-stack-item-content, .grid-stack > .grid-stack-item.ui-resizable-resizing > .grid-stack-item-content,

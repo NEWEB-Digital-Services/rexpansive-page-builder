@@ -6,6 +6,11 @@
 //   box-sizing: inherit;
 // }
 
+.grid-stack .grid-stack-placeholder > .placeholder-content {
+  border: none;
+  background-color: rgba(#000,0.1);
+}
+
 .grid-stack > .grid-stack-item {
   &.ui-draggable-dragging,
   &.ui-resizable-resizing {
