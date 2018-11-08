@@ -528,8 +528,10 @@
       this._setGridPadding();
 
       var that = this;
-      this.$element.find(".grid-stack-item-content").each(function(i, el) {
-        that._updateElementPadding($(el));
+      this.$element.find(".grid-stack-item").each(function(i, el) {
+        var $el = $(el);
+        that._updateElementPadding($el.find(".grid-stack-item-content"));
+        that._updateHandlersPosition($el);
       });
     },
 
@@ -1643,6 +1645,43 @@
       });
     },
 
+    _updateHandlersPosition: function($el) {
+      $el.find('.ui-focused-element-highlight').css({
+        "left": this.properties.halfSeparatorElementLeft,
+        "right": this.properties.halfSeparatorElementRight,
+        "top": this.properties.halfSeparatorElementTop,
+        "bottom": this.properties.halfSeparatorElementBottom
+      });
+
+      $el.find('.ui-resizable-e').css({
+        "top": this.properties.halfSeparatorElementTop,
+        "right": this.properties.halfSeparatorElementRight,
+        "bottom": this.properties.halfSeparatorElementBottom
+      });
+
+      $el.find('.ui-resizable-se').css({
+        "right": this.properties.halfSeparatorElementRight,
+        "bottom": this.properties.halfSeparatorElementBottom
+      });
+
+      $el.find('.ui-resizable-s').css({
+        "right": this.properties.halfSeparatorElementRight,
+        "bottom": this.properties.halfSeparatorElementBottom,
+        "left": this.properties.halfSeparatorElementLeft
+      });
+
+      $el.find('.ui-resizable-sw').css({
+        "bottom": this.properties.halfSeparatorElementBottom,
+        "left": this.properties.halfSeparatorElementLeft
+      });
+
+      $el.find('.ui-resizable-w').css({
+        "top": this.properties.halfSeparatorElementTop,
+        "bottom": this.properties.halfSeparatorElementBottom,
+        "left": this.properties.halfSeparatorElementLeft
+      });
+    },
+
     _saveBlocksPosition: function() {
       var $elem;
       var x, y, w, h;
@@ -1780,6 +1819,7 @@
       }
 
       gallery._updateElementPadding($elem.find(".grid-stack-item-content"));
+      gallery._updateHandlersPosition($elem);
       gallery._fixImageSize($elem);
     },
 
@@ -1909,6 +1949,7 @@
           $target.parents(".ui-resizable-handle").length == 0
         ) {
           $dragHandle.addClass("drag-up");
+          $elem.addClass("ui-draggable--drag-up");
           e.target = dragHandle;
           e.srcElement = dragHandle;
           e.toElement = dragHandle;
@@ -1931,6 +1972,7 @@
                 clearTimeout(this.downTimer);
                 this.downTimer = setTimeout(function() {
                   $dragHandle.addClass("drag-up");
+                  $elem.addClass("ui-draggable--drag-up");
 
                   Rexbuilder_Util_Editor.mouseDownEvent.target = dragHandle;
                   Rexbuilder_Util_Editor.mouseDownEvent.srcElement = dragHandle;
@@ -1955,10 +1997,12 @@
           $target.parents(".ui-resizable-handle").length == 0
         ) {
           $dragHandle.removeClass("drag-up");
+          $elem.removeClass("ui-draggable--drag-up");
         } else {
           if ($target.parents(".rexlive-block-toolbox").length == 0) {
             if (Rexbuilder_Util_Editor.elementDraggingTriggered) {
               $dragHandle.removeClass("drag-up");
+              $elem.removeClass("ui-draggable--drag-up");
               Rexbuilder_Util_Editor.elementDraggingTriggered = false;
             }
             clearTimeout(this.downTimer);

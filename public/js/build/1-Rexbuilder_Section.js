@@ -496,7 +496,6 @@ var Rexbuilder_Section = (function($) {
       };
 
       Rexbuilder_Dom_Util.updateSectionVisibility($newSection, true);
-      console.log("layoutsOrder", jQuery.extend(true, [], layoutsOrder));
       if (layoutsOrder != null) {
         var i, j;
         var sectionObj = {

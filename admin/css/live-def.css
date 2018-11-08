@@ -4841,7 +4841,7 @@ ul {
 .rexbuilder-live-content--editing {
   position: relative; }
   .rexbuilder-live-content--editing .rexpansive_section.focusedRow {
-    z-index: 20; }
+    z-index: 30; }
     .rexbuilder-live-content--editing .rexpansive_section.focusedRow .rex-row__dimension {
       overflow: visible; }
     .rexbuilder-live-content--editing .rexpansive_section.focusedRow .perfect-grid-gallery {
@@ -4944,10 +4944,24 @@ ul {
 .perfect-grid-item.focused,
 .grid-stack-item.focused {
   overflow: visible;
-  z-index: 2;
+  z-index: 2; }
+  .perfect-grid-item.focused .ui-focused-element-highlight,
+  .grid-stack-item.focused .ui-focused-element-highlight {
+    visibility: visible; }
+
+.ui-focused-element-highlight {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  visibility: hidden;
   outline: 1px solid #FF0055;
   -webkit-box-shadow: 0px 0px 111px 1px rgba(0, 0, 0, 0.8);
-  box-shadow: 0px 0px 111px 1px rgba(0, 0, 0, 0.8); }
+          box-shadow: 0px 0px 111px 1px rgba(0, 0, 0, 0.8); }
+
+.gridActive > .grid-stack-item.focused.ui-draggable--drag-up {
+  cursor: pointer; }
 
 .perfect-grid-item.focused > .ui-resizable-handle,
 .grid-stack-item.focused.ui-resizable-handle {
@@ -4963,25 +4977,31 @@ ul {
 .el-size-settingButton.focused {
   visibility: visible; }
 
+.grid-stack > .grid-stack-item.ui-draggable-dragging > .grid-stack-item-content,
+.grid-stack > .grid-stack-item.ui-draggable-dragging > .grid-stack-item-content, .grid-stack > .grid-stack-item.ui-resizable-resizing > .grid-stack-item-content,
+.grid-stack > .grid-stack-item.ui-resizable-resizing > .grid-stack-item-content {
+  -webkit-box-shadow: none;
+          box-shadow: none; }
+
 .grid-stack > .grid-stack-item > .ui-resizable-e {
   right: 0px;
   top: 0px;
   bottom: 0px;
   width: 30px;
-  height: 100%; }
+  height: auto; }
 
 .grid-stack > .grid-stack-item > .ui-resizable-w {
   left: 0px;
   top: 0px;
   bottom: 0px;
   width: 30px;
-  height: 100%; }
+  height: auto; }
 
 .grid-stack > .grid-stack-item > .ui-resizable-s {
   bottom: 0px;
   left: 0px;
   right: 0px;
-  width: 100%;
+  width: auto;
   height: 30px; }
 
 .grid-stack > .grid-stack-item > .ui-resizable-se {
@@ -4991,8 +5011,8 @@ ul {
   right: 0px;
   background-image: none;
   -webkit-transform: rotate(0deg);
-  -ms-transform: rotate(0deg);
-  transform: rotate(0deg); }
+      -ms-transform: rotate(0deg);
+          transform: rotate(0deg); }
 
 .grid-stack > .grid-stack-item > .ui-resizable-sw {
   width: 30px;
@@ -5001,8 +5021,8 @@ ul {
   left: 0px;
   background-image: none;
   -webkit-transform: rotate(0deg);
-  -ms-transform: rotate(0deg);
-  transform: rotate(0deg); }
+      -ms-transform: rotate(0deg);
+          transform: rotate(0deg); }
 
 .circle-handle-e {
   top: 50%;
@@ -5058,25 +5078,25 @@ ul {
 
 .ui-resizable-e:hover > .circle-handle {
   -webkit-transform: scale(2) translateX(25%);
-  -ms-transform: scale(2) translateX(25%);
-      transform: scale(2) translateX(25%); }
+      -ms-transform: scale(2) translateX(25%);
+          transform: scale(2) translateX(25%); }
 
 .ui-resizable-s:hover > .circle-handle {
   -webkit-transform: scale(2) translate(-25%, 25%);
-  -ms-transform: scale(2) translate(-25%, 25%);
-      transform: scale(2) translate(-25%, 25%); }
+      -ms-transform: scale(2) translate(-25%, 25%);
+          transform: scale(2) translate(-25%, 25%); }
 
 .ui-resizable-w:hover > .circle-handle {
   -webkit-transform: scale(2) translateX(-25%);
-  -ms-transform: scale(2) translateX(-25%);
-      transform: scale(2) translateX(-25%); }
+      -ms-transform: scale(2) translateX(-25%);
+          transform: scale(2) translateX(-25%); }
 
 .ui-resizable-se:hover > .circle-handle {
   -webkit-transform: scale(2) translate(25%, 25%);
-  -ms-transform: scale(2) translate(25%, 25%);
-      transform: scale(2) translate(25%, 25%); }
+      -ms-transform: scale(2) translate(25%, 25%);
+          transform: scale(2) translate(25%, 25%); }
 
 .ui-resizable-sw:hover > .circle-handle {
   -webkit-transform: scale(2) translate(-25%, 25%);
-  -ms-transform: scale(2) translate(-25%, 25%);
-      transform: scale(2) translate(-25%, 25%); }
+      -ms-transform: scale(2) translate(-25%, 25%);
+          transform: scale(2) translate(-25%, 25%); }

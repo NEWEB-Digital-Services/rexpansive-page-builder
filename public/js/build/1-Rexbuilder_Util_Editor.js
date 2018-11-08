@@ -452,7 +452,7 @@ var Rexbuilder_Util_Editor = (function($) {
     });
 
     Rexbuilder_Util.$document.on("rexlive:galleryReady", function(e) {
-      console.log("Gallery " + e.galleryID + " ready");
+      // console.log("Gallery " + e.galleryID + " ready");
     });
 
     Rexbuilder_Util.$document.on("rexlive:updateSlider", function(e) {

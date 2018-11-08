@@ -1,9 +1,27 @@
+// .grid-stack > .grid-stack-item > .ui-resizable-handle {
+//   visibility: hidden;
+//   overflow: visible;
+//   position: absolute;
+//   z-index: 20;
+//   box-sizing: inherit;
+// }
+
+.grid-stack > .grid-stack-item {
+  &.ui-draggable-dragging,
+  &.ui-resizable-resizing {
+    > .grid-stack-item-content,
+    > .grid-stack-item-content {
+      box-shadow: none;
+    }
+  }
+}
+
 .grid-stack > .grid-stack-item > .ui-resizable-e {
   right: 0px;
   top: 0px;
   bottom: 0px;
   width: 30px;
-  height: 100%;
+  height: auto;
 }
 
 .grid-stack > .grid-stack-item > .ui-resizable-w {
@@ -11,14 +29,14 @@
   top: 0px;
   bottom: 0px;
   width: 30px;
-  height: 100%;
+  height: auto;
 }
 
 .grid-stack > .grid-stack-item > .ui-resizable-s {
   bottom: 0px;
   left: 0px;
   right: 0px;
-  width: 100%;
+  width: auto;
   height: 30px;
 }
 
@@ -28,10 +46,6 @@
   bottom: 0px;
   right: 0px;
   background-image: none;
-  -webkit-transform: rotate(0deg);
-  -moz-transform: rotate(0deg);
-  -ms-transform: rotate(0deg);
-  -o-transform: rotate(0deg);
   transform: rotate(0deg);
 }
 
@@ -41,10 +55,6 @@
   bottom: 0px;
   left: 0px;
   background-image: none;
-  -webkit-transform: rotate(0deg);
-  -moz-transform: rotate(0deg);
-  -ms-transform: rotate(0deg);
-  -o-transform: rotate(0deg);
   transform: rotate(0deg);
 }
 
@@ -95,26 +105,21 @@
 }
 
 .ui-resizable-e:hover > .circle-handle {
-  -webkit-transform: scale(2) translateX(25%);
   transform: scale(2) translateX(25%);
 }
 
 .ui-resizable-s:hover > .circle-handle {
-  -webkit-transform: scale(2) translate(-25%, 25%);
   transform: scale(2) translate(-25%, 25%);
 }
 
 .ui-resizable-w:hover > .circle-handle {
-  -webkit-transform: scale(2) translateX(-25%);
   transform: scale(2) translateX(-25%);
 }
 
 .ui-resizable-se:hover > .circle-handle {
-  -webkit-transform: scale(2) translate(25%, 25%);
   transform: scale(2) translate(25%, 25%);
 }
 
 .ui-resizable-sw:hover > .circle-handle {
-  -webkit-transform: scale(2) translate(-25%, 25%);
   transform: scale(2) translate(-25%, 25%);
 }
