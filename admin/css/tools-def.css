@@ -15801,7 +15801,7 @@ input:disabled + .rex_edit_title_slider {
   .btn-save .l-svg-icons {
     font-size: 30px; }
   .btn-save .btn-save--edited {
-    left: 20px; }
+    left: 10px; }
   .btn-save.rex-saving .btn-save--edited {
     -webkit-animation: scale-out-center 0.2s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
             animation: scale-out-center 0.2s cubic-bezier(0.55, 0.085, 0.68, 0.53) both; }

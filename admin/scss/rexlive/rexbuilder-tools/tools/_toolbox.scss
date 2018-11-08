@@ -398,7 +398,11 @@
     font-size: 30px;
   }
   .btn-save--edited {
-    left: 20px;
+    @if( $small-tools == true ) {
+      left: 10px;
+    } @else {
+      left: 20px;
+    }
   }
   &.rex-saving {
     .btn-save--edited {
