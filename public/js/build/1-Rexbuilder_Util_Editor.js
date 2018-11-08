@@ -923,7 +923,7 @@ var Rexbuilder_Util_Editor = (function($) {
     };
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 
-    $(Rexbuilder_Util_Editor.visibleRow).addClass('activeRowTools');
+    // $(Rexbuilder_Util_Editor.visibleRow).addClass('activeRowTools');
 
     var didScroll = false;
     $(window).on("scroll", function(e) {
@@ -934,8 +934,8 @@ var Rexbuilder_Util_Editor = (function($) {
       if(didScroll) {
         var el = whichVisible();
         if( null !== el && Rexbuilder_Util_Editor.visibleRow !== el ) {
-          $(".rexpansive_section").removeClass('activeRowTools');
-          $(el).addClass('activeRowTools');
+          // $(".rexpansive_section").removeClass('activeRowTools');
+          // $(el).addClass('activeRowTools');
           Rexbuilder_Util_Editor.visibleRow = el;
           Rexbuilder_Util_Editor.visibleRowInfo = {
             sectionID: el.getAttribute('data-rexlive-section-id'),
@@ -964,7 +964,7 @@ var Rexbuilder_Util_Editor = (function($) {
         win_height_padded_bottom,
         win_height_padded_top;
       win_height_padded_bottom = win_height * 0.8;
-      win_height_padded_top = win_height * 0.2;
+      win_height_padded_top = win_height * 0.3;
 
       ruleTop.style.top = win_height_padded_top + 'px';
       ruleBottom.style.top = win_height_padded_bottom + 'px';

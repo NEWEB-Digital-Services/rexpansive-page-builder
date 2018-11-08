@@ -800,13 +800,47 @@ var Rexbuilder_Section_Editor = (function($) {
   };
 
   /**
+   * Listen row data changing to show/hide fast configuration toolbar
+   * @since 2.0.0
+   */
+  var _listenRowDataChange = function() {
+    // Select the data nodes to observe
+    var dataNodes = document.getElementsByClassName('section-data');
+
+    // Config the observer
+    var config = { attributes: true, childList: false, subtree: false };
+
+    // Callback
+    var callback = function(mutationsList, observer) {
+      if( ( "false" == mutationsList[0].target.getAttribute("data-color_bg_section_active") || "" == mutationsList[0].target.getAttribute("data-color_bg_section") ) && ( "false" == mutationsList[0].target.getAttribute('data-image_bg_section_active') || "" == mutationsList[0].target.getAttribute("data-id_image_bg_section") ) && ( "false" == mutationsList[0].target.getAttribute("data-row_overlay_active") || "" == mutationsList[0].target.getAttribute("data-row_overlay_color") ) && "" == mutationsList[0].target.getAttribute("data-video_bg_url_section") && "" == mutationsList[0].target.getAttribute("data-video_bg_id_section") && "" == mutationsList[0].target.getAttribute("data-video_bg_url_vimeo_section") ) {
+        $(mutationsList[0].target.parentNode).addClass('rowTools__hide-fast-data');
+      } else {
+        $(mutationsList[0].target.parentNode).removeClass('rowTools__hide-fast-data');
+      }
+    };
+
+    // Create the MutationObserver
+    Rexbuilder_Section_Editor.dataObserver = new MutationObserver(callback);
+
+    // Monitor the data nodes
+    for(var i=0; i<dataNodes.length; i++) {
+      Rexbuilder_Section_Editor.dataObserver.observe(dataNodes[i], config);
+    }
+
+    // Successivamente si può interrompere il monitoraggio
+    // observer.disconnect();
+  };
+
+  /**
    * Initing the row toolbar
    */
   var init = function() {
     // _cache_elements();
+    this.dataObserver = null;
     row_picker_classes = 'tool-button tool-button--inline tool-button--empty tool-button--color tool-button--spectrum';
     _attachEvents();
     _setTools();
+    _listenRowDataChange();
   };
 
   return {

@@ -31,7 +31,7 @@
   .grid-stack-item{
     &.focused {
       &.ui-draggable--drag-up {
-        cursor: pointer;
+        cursor: pointer!important;
       }
     }
   }

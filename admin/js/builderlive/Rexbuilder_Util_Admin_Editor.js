@@ -1303,9 +1303,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
    */
   var _highlightRowSetData = function( data ) {
     if( "" !== data ) {
-      console.log(data);
       for( var attr in data ) {
-        console.log(attr + ' = ' + data[attr]);
         hightlightRowInfo[attr] = data[attr];
       }
     }

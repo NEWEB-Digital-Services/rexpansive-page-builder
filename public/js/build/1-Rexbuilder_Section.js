@@ -641,9 +641,9 @@ var Rexbuilder_Section = (function($) {
       // New Row Defaults
       var new_row_defaults = {
         rexID: rexIdSection,
-        dimension: "boxed",
+        dimension: "full",
         dimensionClass: "center-disposition",
-        sectionWidth: "80%",
+        sectionWidth: "100%",
         fullHeight: "false",
         blockDistance: 20,
         layout: "fixed",
@@ -769,9 +769,9 @@ var Rexbuilder_Section = (function($) {
       // New Row Defaults
       var new_row_defaults = {
         rexID: rexIdSection,
-        dimension: "boxed",
+        dimension: "full",
         dimensionClass: "center-disposition",
-        sectionWidth: "80%",
+        sectionWidth: "100%",
         fullHeight: "false",
         blockDistance: 20,
         layout: "fixed",

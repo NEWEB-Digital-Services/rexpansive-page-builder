@@ -331,14 +331,16 @@
     &.tool-button--image-preview,
     &.tool-button--color,
     &.edit-row-video-background-toolbox {
-      border-color: #000;
+      border-color: $palette-color-4;
+      border-width: 2px;
     }
     &.tool-button__fast-video {
-      padding: 3px;
+      padding: 2px 2px 3px 4px;
       line-height: 1;
-      font-size: 12px;
+      font-size: 10px;
+      max-width: 20px;
       height: 20px;
-      border: 1px solid #000;
+      border: 2px solid $palette-color-4;
     }
     &:hover {
       box-shadow: $shadow-2;
@@ -346,6 +348,7 @@
   }
   .tool-button--double-icon--wrap {
     margin: 0 8px;
+    max-height: 20px;
   }
 }
 
@@ -467,6 +470,7 @@
 }
 
 .edit-row-image-background-toolbox {
+  max-width: 20px;
   max-height: 20px;
 }
 

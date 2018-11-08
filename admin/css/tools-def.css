@@ -15707,18 +15707,21 @@ input:disabled + .rex_edit_title_slider {
     .toolbox-right-fast-config-area .tool-button.tool-button--color-preview {
       border: none; }
     .toolbox-right-fast-config-area .tool-button.tool-button--image-preview, .toolbox-right-fast-config-area .tool-button.tool-button--color, .toolbox-right-fast-config-area .tool-button.edit-row-video-background-toolbox {
-      border-color: #000; }
+      border-color: #424242;
+      border-width: 2px; }
     .toolbox-right-fast-config-area .tool-button.tool-button__fast-video {
-      padding: 3px;
+      padding: 2px 2px 3px 4px;
       line-height: 1;
-      font-size: 12px;
+      font-size: 10px;
+      max-width: 20px;
       height: 20px;
-      border: 1px solid #000; }
+      border: 2px solid #424242; }
     .toolbox-right-fast-config-area .tool-button:hover {
       -webkit-box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -7px rgba(0, 0, 0, 0.2);
               box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -7px rgba(0, 0, 0, 0.2); }
   .toolbox-right-fast-config-area .tool-button--double-icon--wrap {
-    margin: 0 8px; }
+    margin: 0 8px;
+    max-height: 20px; }
 
 .tool-button_list.tool-button_list--dropdown .tool-button_list--item.tool-option__layout-settings {
   font-size: 16px;
@@ -15842,6 +15845,7 @@ input:disabled + .rex_edit_title_slider {
   left: 0; }
 
 .edit-row-image-background-toolbox {
+  max-width: 20px;
   max-height: 20px; }
 
 .rex-number {

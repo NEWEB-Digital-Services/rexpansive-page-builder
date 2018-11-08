@@ -145,6 +145,17 @@
   }
   ~ .rexpansive_section {
     z-index: 0;
+    &:hover {
+      z-index: auto;
+    }
+  }
+}
+
+.rowTools__hide-fast-data {
+  .tool-area--center {
+    &.row-toolBox__def-view {
+      display: none;
+    }
   }
 }
 
