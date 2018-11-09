@@ -1213,7 +1213,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
           eventSettings.data_to_send.active = true;
           eventSettings.data_to_send.color = color.toRgbString();
 
-          eventSettings.eventName = "rexlive:change_section_bg_color";
+          eventSettings.eventName = "rexlive:apply_background_color_section";
           _sendIframeBuilderMessage(eventSettings);
         }
 
