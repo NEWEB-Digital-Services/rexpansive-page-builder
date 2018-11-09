@@ -33,6 +33,11 @@ var Section_CustomClasses_Modal = (function ($) {
         var newClassesString = _getData();
         newClassesString = newClassesString.trim();
         var classList = newClassesString.split(/\s+/);
+
+        Rexbuilder_Util_Admin_Editor.highlightRowSetData({
+            'custom_classes': classList,
+        });
+
         var data_customClasses = {
             eventName: "rexlive:apply_section_custom_classes",
             data_to_send: {

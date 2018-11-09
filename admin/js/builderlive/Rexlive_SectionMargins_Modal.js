@@ -43,10 +43,18 @@ var SectionMargins_Modal = (function ($) {
     }
 
     var _applySectionMargins = function () {
+        var marginsData = _getData();
+        Rexbuilder_Util_Admin_Editor.highlightRowSetData({
+            'row_margin_top': marginsData.top,
+            'row_margin_bottom': marginsData.bottom,
+            'row_margin_right': marginsData.right,
+            'row_margin_left': marginsData.left,
+        });
+
         var data_section_margins = {
             eventName: "rexlive:set_section_margins",
             data_to_send: {
-                margins: _getData(),
+                margins: marginsData,
                 sectionTarget: sectionTarget
             }
         }

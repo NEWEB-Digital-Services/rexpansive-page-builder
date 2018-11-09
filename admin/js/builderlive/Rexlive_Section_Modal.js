@@ -13,10 +13,10 @@ var Section_Modal = (function($) {
   };
 
   var _closeSectionModal = function() {
-    _clearSectionModal();
-    Rexlive_Modals_Utils.closeModal(
-      section_config_modal_properties.$self.parent(".rex-modal-wrap")
-    );
+    Rexlive_Modals_Utils.closeModal( section_config_modal_properties.$self.parent(".rex-modal-wrap") );
+    setTimeout(function() {
+      _clearSectionModal();
+    }, 300);
   };
 
   var _clearSectionModal = function() {

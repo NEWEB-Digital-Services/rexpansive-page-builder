@@ -22,6 +22,10 @@ var FullHeight_Modal = (function ($) {
     var _applyFullHeight = function () {
         var fullHeight = _getData();
 
+        Rexbuilder_Util_Admin_Editor.highlightRowSetData({
+            'full_height': fullHeight,
+        });
+
         var data_fullHeight = {
             eventName: "rexlive:set_row_fullHeight",
             data_to_send: {

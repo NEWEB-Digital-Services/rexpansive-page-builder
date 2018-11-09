@@ -22,6 +22,10 @@ var PhotoSwipe_Modal = (function ($) {
     var _applyPhotoswipeSetting = function () {
         var photoswipe = _getData();
 
+        Rexbuilder_Util_Admin_Editor.highlightRowSetData({
+            'row_active_photoswipe': photoswipe,
+        });
+
         var data_photoswipe = {
             eventName: "rexlive:set_row_photoswipe",
             data_to_send: {

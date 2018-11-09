@@ -21,6 +21,11 @@ var SectionName_Modal = (function ($) {
 
     var _applySectionName = function () {
         var sectionName = _getData();
+
+        Rexbuilder_Util_Admin_Editor.highlightRowSetData({
+            'section_name': sectionName,
+        });
+
         var data_sectionName = {
             eventName: "rexlive:change_section_name",
             data_to_send: {

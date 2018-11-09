@@ -48,6 +48,16 @@ var GridSeparators_Modal = (function ($) {
     }
     
     var _applyRowDistances = function () {
+        var rowDistances = _getData();
+
+        Rexbuilder_Util_Admin_Editor.highlightRowSetData({
+            'block_distance': rowDistances.gutter,
+            'row_separator_top': rowDistances.top,
+            'row_separator_right': rowDistances.right,
+            'row_separator_bottom': rowDistances.bottom,
+            'row_separator_left': rowDistances.left,
+        });
+
         var data_grid_distances = {
             eventName: "rexlive:set_row_separatos",
             data_to_send: {

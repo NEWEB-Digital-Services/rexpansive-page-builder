@@ -523,7 +523,8 @@ var Rexbuilder_Util_Editor = (function($) {
 
   var _hideAllTools = function() {
     Rexbuilder_Util_Editor.manageElement = false;
-    Rexbuilder_Util.$rexContainer.find('.rexpansive_section').removeClass('focusedRow').removeClass('activeRowTools').removeClass('highLightRow');
+    // Rexbuilder_Util.$rexContainer.find('.rexpansive_section').removeClass('focusedRow').removeClass('activeRowTools').removeClass('highLightRow');
+    Rexbuilder_Util.$rexContainer.find('.rexpansive_section').removeClass('focusedRow').removeClass('activeRowTools');
     Rexbuilder_Util.$rexContainer.find('.grid-stack-item').removeClass('focused');
     Rexbuilder_Util.$rexContainer.find('.tool-button-floating--active').removeClass('tool-button-floating--active');
   };
