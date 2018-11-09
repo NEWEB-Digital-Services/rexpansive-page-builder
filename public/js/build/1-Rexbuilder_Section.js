@@ -479,6 +479,8 @@ var Rexbuilder_Section = (function($) {
       $newSection.insertAfter($section);
       Rexbuilder_Section.prepareSectionCopied($newSection);
 
+      Rexbuilder_Section_Editor.listenNewRowDataChange( $newSection.children('.section-data')[0] );
+
       var $row = $newSection.find(".grid-stack-row");
 
       $row.perfectGridGalleryEditor();
@@ -805,6 +807,8 @@ var Rexbuilder_Section = (function($) {
       } else {
         $newSection.appendTo(Rexbuilder_Util.$rexContainer);
       }
+
+      Rexbuilder_Section_Editor.listenNewRowDataChange( $newSectionData[0] );
 
       Rexbuilder_Section.linkHoverSection($newSection);
 

@@ -807,9 +807,6 @@ var Rexbuilder_Section_Editor = (function($) {
     // Select the data nodes to observe
     Rexbuilder_Section_Editor.dataNodes = document.getElementsByClassName('section-data');
 
-    // Config the observer
-    var config = { attributes: true, childList: false, subtree: false };
-
     // Callback
     var callback = function(mutationsList, observer) {
       if( ( "false" == mutationsList[0].target.getAttribute("data-color_bg_section_active") || "" == mutationsList[0].target.getAttribute("data-color_bg_section") ) && ( "false" == mutationsList[0].target.getAttribute('data-image_bg_section_active') || "" == mutationsList[0].target.getAttribute("data-id_image_bg_section") ) && ( "false" == mutationsList[0].target.getAttribute("data-row_overlay_active") || "" == mutationsList[0].target.getAttribute("data-row_overlay_color") ) && "" == mutationsList[0].target.getAttribute("data-video_bg_url_section") && "" == mutationsList[0].target.getAttribute("data-video_bg_id_section") && "" == mutationsList[0].target.getAttribute("data-video_bg_url_vimeo_section") ) {
@@ -824,11 +821,21 @@ var Rexbuilder_Section_Editor = (function($) {
 
     // Monitor the data nodes
     for(var i=0; i<Rexbuilder_Section_Editor.dataNodes.length; i++) {
-      Rexbuilder_Section_Editor.dataObserver.observe(Rexbuilder_Section_Editor.dataNodes[i], config);
+      Rexbuilder_Section_Editor.dataObserver.observe(Rexbuilder_Section_Editor.dataNodes[i], Rexbuilder_Section_Editor.config);
     }
 
-    // Successivamente si può interrompere il monitoraggio
+    // Stop observe
     // Rexbuilder_Section_Editor.dataObserver.disconnect();
+  };
+
+  /**
+   * Add dynamic observer on new rows
+   * @param {HTML Node} data new row to listen
+   */
+  var _listenNewRowDataChange = function( dataEl ) {
+    Rexbuilder_Section_Editor.dataObserver.observe( dataEl, Rexbuilder_Section_Editor.config);
+    // triggering change to launch control
+    dataEl.setAttribute("data-load", "true");
   };
 
   var _triggerRowDataChange = function() {
@@ -836,7 +843,7 @@ var Rexbuilder_Section_Editor = (function($) {
     for(var i=0; i < Rexbuilder_Section_Editor.dataNodes.length; i++ ) {
       Rexbuilder_Section_Editor.dataNodes[i].setAttribute('data-load','true');
     }
-  }
+  };
 
   /**
    * Initing the row toolbar
@@ -845,6 +852,13 @@ var Rexbuilder_Section_Editor = (function($) {
     // _cache_elements();
     this.dataObserver = null;
     this.dataNodes = null;
+    // Config the observer
+    this.config = { 
+      attributes: true, 
+      childList: false, 
+      subtree: false, 
+      attributeFilter: ["data-load", "data-color_bg_section_active", "data-color_bg_section", 'data-image_bg_section_active', "data-id_image_bg_section", "data-row_overlay_active", "data-row_overlay_color", "data-video_bg_url_section", "data-video_bg_id_section", "data-video_bg_url_vimeo_section"] 
+    };
 
     row_picker_classes = 'tool-button tool-button--inline tool-button--empty tool-button--color tool-button--spectrum';
     _attachEvents();
@@ -864,6 +878,7 @@ var Rexbuilder_Section_Editor = (function($) {
     updateRowOverlayColorTool: _updateRowOverlayColorTool,
     updateRowOverlayColorToolLive: _updateRowOverlayColorToolLive,
     updateRowBackgroundVideo: _updateRowBackgroundVideo,
-    triggerRowDataChange: _triggerRowDataChange
+    triggerRowDataChange: _triggerRowDataChange,
+    listenNewRowDataChange: _listenNewRowDataChange
   }
 })(jQuery);

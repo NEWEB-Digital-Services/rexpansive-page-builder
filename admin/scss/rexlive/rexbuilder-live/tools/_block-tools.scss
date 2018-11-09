@@ -89,44 +89,46 @@
   }
 }
 
-.perfect-grid-gallery[data-row-separator-top="0"],
-.perfect-grid-gallery[data-row-separator-top="1"],
-.perfect-grid-gallery[data-row-separator-top="2"],
-.perfect-grid-gallery[data-row-separator-top="3"],
-.perfect-grid-gallery[data-row-separator-top="4"],
-.perfect-grid-gallery[data-row-separator-top="5"],
-.perfect-grid-gallery[data-row-separator-top="6"],
-.perfect-grid-gallery[data-row-separator-top="7"],
-.perfect-grid-gallery[data-row-separator-top="8"],
-.perfect-grid-gallery[data-row-separator-top="9"],
-.perfect-grid-gallery[data-row-separator-top="10"],
-.perfect-grid-gallery[data-row-separator-top="11"],
-.perfect-grid-gallery[data-row-separator-top="12"],
-.perfect-grid-gallery[data-row-separator-top="13"],
-.perfect-grid-gallery[data-row-separator-top="14"],
-.perfect-grid-gallery[data-row-separator-top="15"],
-.perfect-grid-gallery[data-row-separator-top="16"],
-.perfect-grid-gallery[data-row-separator-top="17"],
-.perfect-grid-gallery[data-row-separator-top="18"],
-.perfect-grid-gallery[data-row-separator-top="19"],
-.perfect-grid-gallery[data-row-separator-top="20"] {
-  .grid-stack-item[data-row="1"] {
-    .rexlive-top-block-tools {
-      padding: 0;
-    }
-    .rexlive-block-toolbox {
-      &.top-tools {
-        top: 25px;
+.perfect-grid-gallery {
+  &[data-row-separator-top="0"],
+  &[data-row-separator-top="1"],
+  &[data-row-separator-top="2"],
+  &[data-row-separator-top="3"],
+  &[data-row-separator-top="4"],
+  &[data-row-separator-top="5"],
+  &[data-row-separator-top="6"],
+  &[data-row-separator-top="7"],
+  &[data-row-separator-top="8"],
+  &[data-row-separator-top="9"],
+  &[data-row-separator-top="10"],
+  &[data-row-separator-top="11"],
+  &[data-row-separator-top="12"],
+  &[data-row-separator-top="13"],
+  &[data-row-separator-top="14"],
+  &[data-row-separator-top="15"],
+  &[data-row-separator-top="16"],
+  &[data-row-separator-top="17"],
+  &[data-row-separator-top="18"],
+  &[data-row-separator-top="19"],
+  &[data-row-separator-top="20"] {
+    .grid-stack-item[data-gs-y="0"] {
+      .rexlive-top-block-tools {
+        padding: 0;
       }
-      .block-toolBox__config-tools {
-        .builder-delete-block {
-          transform: translateX(10px);
-          display: inline-block;
+      .rexlive-block-toolbox {
+        &.top-tools {
+          top: 15px;
+        }
+        .block-toolBox__config-tools {
+          .builder-delete-block {
+            transform: translateX(10px);
+            display: inline-block;
+          }
         }
       }
-    }
-    .builder-delete-block {
-      display: none;
+      .builder-delete-block {
+        display: none;
+      }
     }
   }
 }
