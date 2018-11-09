@@ -43,6 +43,7 @@ var Rexlive_Base_Settings = (function($) {
     init: _init,
     htmlDecode: htmlDecode,
     htmlEncode: htmlEncode,
-    viewport: _viewport
+    viewport: _viewport,
+    launchTooltips: _tooltips
   };
 })(jQuery);

@@ -7,7 +7,7 @@ defined('ABSPATH') or exit;
 ?>
 <div class="tool-button-floating rexlive-responsive-buttons-wrapper">
   <div class="tool-option tool-option--full tool-option__choose-layout active-layout">
-    <span><?php Rexbuilder_Utilities::get_icon('#A011-Desktop'); ?></span>
+    <span class="active-layout__icon"><?php Rexbuilder_Utilities::get_icon('#A011-Desktop'); ?></span>
     <?php Rexbuilder_Utilities::get_icon('#A007-Close', 'tool-dropdown-arrow-icon'); ?>
   </div>
   <div class="tool-button_list tool-button_list--dropdown">
@@ -21,7 +21,7 @@ defined('ABSPATH') or exit;
       ?>
         <div class="layout-container tool-option tool-button_list--item tippy" data-tippy-content="<?php echo esc_attr( $layout['label'] ); ?>">
           <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo $layout['min']?>" data-max-width="<?php echo $layout['max']; ?>" data-name="<?php echo $layout['id'] ?>" data-label="<?php echo esc_attr( $layout['label'] ); ?>">
-            <?php Rexbuilder_Utilities::get_icon('#A010-Mobile'); ?>
+            <span class="layout__icon"><?php Rexbuilder_Utilities::get_icon('#A010-Mobile'); ?></span>
           </div>
         </div>
       <?php
@@ -32,7 +32,7 @@ defined('ABSPATH') or exit;
       ?>
         <div class="layout-container tool-option tool-button_list--item tippy" data-tippy-content="<?php echo esc_attr( $layout['label'] ); ?>">
           <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo $layout['min']?>" data-max-width="<?php echo $layout['max']; ?>" data-name="<?php echo $layout['id'] ?>" data-label="<?php echo esc_attr( $layout['label'] ); ?>">
-            <?php Rexbuilder_Utilities::get_icon('#A001-Tablet'); ?>
+            <span class="layout__icon"><?php Rexbuilder_Utilities::get_icon('#A001-Tablet'); ?></span>
           </div>
         </div>
       <?php
@@ -43,7 +43,7 @@ defined('ABSPATH') or exit;
         ?>
         <div class="layout-container tool-option tool-button_list--item tippy" data-tippy-content="<?php echo esc_attr( $layout['label'] ); ?>">
           <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="" data-max-width="" data-name="<?php echo $layout['id'] ?>" data-label="<?php echo esc_attr( $layout['label'] ); ?>">
-            <?php Rexbuilder_Utilities::get_icon('#A011-Desktop'); ?>
+            <span class="layout__icon"><?php Rexbuilder_Utilities::get_icon('#A011-Desktop'); ?></span>
           </div>
         </div>
         <?php
@@ -54,7 +54,7 @@ defined('ABSPATH') or exit;
         ?>
         <div class="layout-container tool-option tool-button_list--item tool-button_list--item--custom tippy" data-tippy-content="<?php echo ( "" != $layout['label'] ? esc_attr( $layout['label'] ) : 'Custom-' . $layout['id'] ); ?>">
           <div class="btn-builder-layout builder-<?php echo $layout['id'] ?>-layout" data-min-width="<?php echo $layout['min']; ?>" data-max-width="<?php echo $layout['max']; ?>" data-name="<?php echo $layout['id'] ?>" data-label="<?php echo esc_attr( $layout['label'] ); ?>" data-layout-type="custom">
-            <?php Rexbuilder_Utilities::get_icon('#A009-Range'); ?>
+            <span class="layout__icon"><?php Rexbuilder_Utilities::get_icon('#A009-Range'); ?></span>
             <div class="layout-custom-number">
               <div class="rex-number"><?php echo ($index-2);?></div>
             </div>

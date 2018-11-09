@@ -12,10 +12,10 @@
 defined( 'ABSPATH' ) or exit;
 
 global $layoutsAvaiable;
-
+$layout_list_type = "dropdown";
 ?>
 <div class="rex-modal-wrap">
-  <div id="rexlive-custom-layout-modal" class="rexbuilder-materialize-wrap rex-modal rex-modal-draggable">
+  <div id="rexlive-custom-layout-modal" class="rexbuilder-materialize-wrap rex-modal rex-modal-draggable" data-layout-list-type="<?php echo $layout_list_type; ?>">
     <div class="tool-button tool-button--inline tool-button--black tool-button--close rex-cancel-button tippy" data-rex-option="continue" data-tippy-content="<?php _e( 'Close', 'rexpansive' ); ?>">
       <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
     </div>

@@ -15624,6 +15624,8 @@ input:disabled + .rex_edit_title_slider {
       background-color: #00ACFF; }
       .toolbox-insert-area .tool-button-floating.tool-button__settings--flat .tool-button_list--item .l-svg-icons > svg {
         fill: #fff; }
+    .toolbox-insert-area .tool-button-floating.tool-button__settings--flat .tool-button_list {
+      padding-top: 10px; }
   .toolbox-insert-area .tool-button-floating .l-svg-icons {
     font-size: 13px; }
 

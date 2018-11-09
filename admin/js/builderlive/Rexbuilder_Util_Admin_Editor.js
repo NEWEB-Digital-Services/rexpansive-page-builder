@@ -247,6 +247,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   var _addDocumentListeners = function() {
     Rexlive_Base_Settings.$document.on("click", ".btn-builder-layout", function(e) {
       var $btn = $(e.target).parents(".btn-builder-layout");
+      // var $btn = $(this);
       var btnName = $btn.attr("data-name");
       if (activeLayoutPage != btnName) {
         var buttonData = {
@@ -264,11 +265,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
           pageSaved: pageSaved
         };
 
-        if (
-          Rexbuilder_Util_Admin_Editor.$rexpansiveContainer
-            .attr("data-rex-edited-backend")
-            .toString() == "true"
-        ) {
+        if ( Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.attr("data-rex-edited-backend").toString() == "true" ) {
           LockedOptionMask.openModal(dataObj);
         } else {
           if (!(modelSaved && pageSaved)) {
@@ -792,12 +789,18 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     pageSaved = true;
     activeLayoutPage = buttonData.id;
     activeLayoutPageLabel = buttonData.label;
+    var $activeLayoutBtn = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('.btn-builder-layout[data-name="' + activeLayoutPage + '"]');
     Rexbuilder_Util_Admin_Editor.$responsiveToolbar
       .find(".btn-builder-layout.active-layout")
       .removeClass("active-layout");
-    Rexbuilder_Util_Admin_Editor.$responsiveToolbar
-      .find('.btn-builder-layout[data-name="' + activeLayoutPage + '"]')
+    $activeLayoutBtn
       .addClass("active-layout");
+
+    Rexbuilder_Util_Admin_Editor.$responsiveToolbar
+      .find('.tool-option__choose-layout')
+      .find('.active-layout__icon')
+      .html(Rexbuilder_Util_Admin_Editor.$responsiveToolbar
+        .find('.btn-builder-layout[data-name="' + activeLayoutPage + '"]').find('.layout__icon').html());
 
     updatedLayoutData = {
       selectedLayoutName: activeLayoutPage,

@@ -14,6 +14,17 @@ defined('ABSPATH') or exit;
 </div>
 </script>
 
+<script type="text/x-tmpl" id="rexlive-tmpl-custom-layout-button-list">
+<div class="layout-container tool-option tool-button_list--item tippy" data-tippy-content="Custom">
+    <div class="btn-builder-layout builder-{%=customLayout.id%}-layout" data-min-width="{%=customLayout.minWidth%}" data-max-width="{%=customLayout.maxWidth%}" data-name="{%=customLayout.id%}" data-layout-type="custom">
+        <span class="layout__icon"><i class="l-svg-icons"><svg><use xlink:href="#A009-Range"></use></svg></i></span>
+        <div class="layout-custom-number">
+            <div class="rex-number"></div>
+        </div>
+    </div>
+</div>
+</script>
+
 <script type="text/x-tmpl" id="rexlive-tmpl-custom-layout-modal">
 <li class="layout__item layout">
     <div class="layout__setting layout__icon"><?php Rexbuilder_Utilities::get_icon('#A009-Range'); ?></div>

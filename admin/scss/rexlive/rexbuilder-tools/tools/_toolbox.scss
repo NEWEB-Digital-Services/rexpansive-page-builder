@@ -232,6 +232,9 @@
       background-color: $palette-color-1;
       @include fill-icon(#fff);
     }
+    .tool-button_list {
+      padding-top: 10px;
+    }
   }
   .tool-button-floating {
     #{$icon-class} {

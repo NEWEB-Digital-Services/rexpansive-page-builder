@@ -13,7 +13,7 @@
  * @package           Rexbuilder
  *
  * @wordpress-plugin
- * Plugin Name:       Rexpansive Builder (builder live)
+ * Plugin Name:       Rexpansive Builder
  * Plugin URI:        http://rexpansive.neweb.info/
  * Description:       The new and awesome plugin to build a page in 1 minute! Expand your mind!
  * Version:           2.0.0

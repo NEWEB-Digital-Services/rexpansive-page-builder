@@ -351,15 +351,33 @@ var CustomLayouts_Modal = (function($) {
           .find("input[data-editable-field=true]")
           .attr("type", "input");
 
-        custom_layouts_modal_props.$buttonsWrapper.append(
-          tmpl("rexlive-tmpl-custom-layout-button", {
-            id: idCreated,
-            label: "",
-            minWidth: "",
-            maxWidth: "",
-            type: "custom"
-          })
-        );
+        switch( custom_layouts_modal_props.layoutListType ) {
+          case 'dropdown':
+            custom_layouts_modal_props.$buttonsWrapper.find('.builder-add-custom-layout').parent().before(
+              tmpl("rexlive-tmpl-custom-layout-button-list", {
+                id: idCreated,
+                label: "",
+                minWidth: "",
+                maxWidth: "",
+                type: "custom"
+              })
+            );
+            // custom_layouts_modal_props.$buttonsWrapper.find('.active-layout__icon')[0].innerHTML = );
+            break;
+          case 'list':
+          default:
+            custom_layouts_modal_props.$buttonsWrapper.append(
+              tmpl("rexlive-tmpl-custom-layout-button", {
+                id: idCreated,
+                label: "",
+                minWidth: "",
+                maxWidth: "",
+                type: "custom"
+              })
+            );
+            break;
+        }
+        Rexlive_Base_Settings.launchTooltips();
         _updateLayoutsData();
       }
     );
@@ -485,7 +503,8 @@ var CustomLayouts_Modal = (function($) {
       $config_layouts: $buttonsWrapper.find(".builder-config-layouts"),
       $layoutDataContainer: $layoutData,
       $layoutsList: $container.find(".layout__list"),
-      $add_custom_layout_button: $container.find("#rexlive-add-custom-layout")
+      $add_custom_layout_button: $container.find("#rexlive-add-custom-layout"),
+      layoutListType: $container.attr("data-layout-list-type"),
     };
 
     _addSortableHandles();
