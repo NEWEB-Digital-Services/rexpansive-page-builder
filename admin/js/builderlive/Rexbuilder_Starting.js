@@ -18,8 +18,8 @@
     Rexlive_Modals.init();
     
     // builder backend modals: for RexSlider
-    Rexpansive_Builder_Admin_PaddingEditor.init();
-    Rexpansive_Builder_Admin_PositionEditor.init();
+    // Rexpansive_Builder_Admin_PaddingEditor.init();
+    // Rexpansive_Builder_Admin_PositionEditor.init();
     Rexpansive_Builder_Admin_TextEditor.init();
 
     // slider modal

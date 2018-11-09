@@ -116,6 +116,66 @@ gulp.task('admin-css-build', function() {
     .pipe(gulp.dest('admin/css'));
 });
 
+/** LIVE BUILDER */
+
+var live_admin_js_src = [ 
+	'admin/js/builderlive/Rexlive_MediaUploader.js',
+	'admin/js/3-Rexpansive_Builder_Admin_TextEditor.js',
+	'admin/js/builderlive/Rexlive_Modals_Utils.js',
+	'admin/js/builderlive/Rexlive_Insert_Video_Modal.js',
+	'admin/js/builderlive/Rexlive_LayoutGrid_Modal.js',
+	'admin/js/builderlive/Rexlive_Section_Width_Modal.js',
+	'admin/js/builderlive/Rexlive_GridSeparators_Modal.js',
+	'admin/js/builderlive/Rexlive_SectionMargins_Modal.js',
+	'admin/js/builderlive/Rexlive_RowPhotoswipe_Modal.js',
+	'admin/js/builderlive/Rexlive_Grid_Fullheight.js',
+	'admin/js/builderlive/Rexlive_SectionName_Modal.js',
+	'admin/js/builderlive/Rexlive_Top_Tools.js',
+	'admin/js/builderlive/Rexlive_Section_CustomClasses_Modal.js',
+	'admin/js/builderlive/Rexlive_Section_Modal.js',
+	'admin/js/builderlive/Rexlive_Background_Section_Color_Modal.js',
+	'admin/js/builderlive/Rexlive_Overlay_Color_Section_Modal.js',
+	'admin/js/builderlive/Rexlive_Section_Background_Image_Modal.js',
+	'admin/js/builderlive/Rexlive_Section_Video_Modal.js',
+	'admin/js/builderlive/Rexlive_Section_Background_Modal.js',
+	'admin/js/builderlive/Rexlive_CSS_Editor_Modal.js',
+	'admin/js/builderlive/Rexlive_Html_Editor_Modal.js',
+	'admin/js/builderlive/Rexlive_Background_Block_Color_Modal.js',
+	'admin/js/builderlive/Rexlive_Overlay_Color_Block_Modal.js',
+	'admin/js/builderlive/Rexlive_Block_Background_Image_Modal.js',
+	'admin/js/builderlive/Rexlive_Block_Background_Image_Setting.js',
+	'admin/js/builderlive/Rexlive_Block_Video_Background_Modal.js',
+	'admin/js/builderlive/Rexlive_Block_ContentPosition_Modal.js',
+	'admin/js/builderlive/Rexlive_Block_ContentPosition_Setting.js',
+	'admin/js/builderlive/Rexlive_Block_ImagePosition_Modal.js',
+	'admin/js/builderlive/Rexlive_Block_ImagePosition_Setting.js',
+	'admin/js/builderlive/Rexlive_Block_Paddings_Modal.js',
+	'admin/js/builderlive/Rexlive_Block_Custom_Classes_Modal.js',
+	'admin/js/builderlive/Rexlive_Block_Image_Editor_Modal.js',
+	'admin/js/builderlive/Rexlive_Block_Url_Modal.js',
+	'admin/js/builderlive/Rexlive_Block_Options_Modal.js',
+	'admin/js/builderlive/Rexlive_Model_Modal.js',
+	'admin/js/builderlive/Rexlive_Open_Models_Warning.js',
+	'admin/js/builderlive/Rexlive_CustomLayout_Modal.js',
+	'admin/js/builderlive/Rexlive_Model_Edit_Modal.js',
+	'admin/js/builderlive/Rexbuilder_RexSlider.js',
+	'admin/js/builderlive/Rexlive_ChangeLayout_Modal.js',
+	'admin/js/builderlive/Rexlive_LockedOption_Mask.js',
+	'admin/js/builderlive/Rexlive_Model_Import.js',
+	'admin/js/builderlive/Rexlive_Modals.js',
+	'admin/js/builderlive/Rexlive_Base_Settings.js',
+	'admin/js/builderlive/Rexbuilder_Util_Admin_Editor.js',
+	'admin/js/builderlive/Rexbuilder_Starting.js'
+];
+
+gulp.task('live-admin-scripts-build', function() {
+	return gulp.src(live_admin_js_src)
+		.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
+		.pipe(concat('live-admin.js'))
+		.pipe(size({title:'Admin JS'}))
+		.pipe(gulp.dest('admin/js'))
+});
+
 gulp.task('live-builder-style', function() {
 		sass('admin/scss/rexlive/live-def.scss',{
 		//style:'compressed'

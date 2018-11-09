@@ -1837,7 +1837,6 @@
       gallery._updateElementPadding($elem.find(".grid-stack-item-content"));
       if (Rexbuilder_Util.editorMode) {
         gallery._updateHandlersPosition($elem);
-        console.log(1);
       }
       gallery._fixImageSize($elem);
     },

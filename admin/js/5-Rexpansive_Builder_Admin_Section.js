@@ -182,7 +182,7 @@ var Rexpansive_Builder_Admin_Section = (function($) {
           break;
         case 'video':
           Rexpansive_Builder_Admin_VideoEditor.reset_editor();
-          Rexlive_Modals_Utils.openModal(Rexpansive_Builder_Admin_VideoEditor.$modal_wrap);
+          Rexpansive_Builder_Admin_Modals.OpenModal(Rexpansive_Builder_Admin_VideoEditor.$modal_wrap);
           break;
         case 'rexslider':
           // openSliderEditor();

@@ -25,7 +25,7 @@ var Rexpansive_Builder_Admin_Rxcf = (function($) {
       e.preventDefault();
 
       // open editor
-      Rexlive_Modals_Utils.openModal($modal_wrap);
+      Rexpansive_Builder_Admin_Modals.OpenModal($modal_wrap);
       $panel.addClass('rex-modal--loading');
       $editor.val('');
       

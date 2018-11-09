@@ -32,7 +32,7 @@ var Rexpansive_Builder_Admin_TextEditor = (function($) {
       tinyMCE_editor.save({ no_events: true });
     }
   
-    Rexlive_Modals_Utils.openModal($text_editor_modal_wrap, target_only, additional_classes);
+    Rexpansive_Builder_Admin_Modals.OpenModal($text_editor_modal_wrap, target_only, additional_classes);
   
     // } else {
   

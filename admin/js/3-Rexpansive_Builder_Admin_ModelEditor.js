@@ -54,7 +54,7 @@ var Rexpansive_Builder_Admin_ModelEditor = (function($) {
       if('undefined' != typeof $container_row.attr('data-section-model') && '' != $container_row.attr('data-section-model') ) {
         rexmodel_modal_props.$model_import.find('option[value='+$container_row.attr('data-section-model')+']').prop('selected',true);
       }
-      Rexlive_Modals_Utils.openModal($modal_wrap);
+      Rexpansive_Builder_Admin_Modals.OpenModal($modal_wrap);
     });
 
     rexmodel_modal_props.$model_name.on('focusout', function(e) {

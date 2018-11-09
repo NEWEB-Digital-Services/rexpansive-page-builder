@@ -51,7 +51,7 @@ var Rexpansive_Builder_Admin_PositionEditor = (function($) {
       }
 
       Rexpansive_Builder_Admin_TextEditor.$text_editor.addClass('push-down-modal');
-      Rexlive_Modals_Utils.openModal($modal_wrap, true);
+      Rexpansive_Builder_Admin_Modals.OpenModal($modal_wrap, true);
     });
 
     block_content_position_properties.$save_button.on('click', function () {
