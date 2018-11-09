@@ -460,7 +460,8 @@ class Rexbuilder_Block
                         echo $alt_tag;
                         echo "></div>";
                     }
-                    echo '<div class="rex-custom-scrollbar' . (($flex_positioned && !$block_has_slider) ? ' rex-custom-position' : '') . '">';
+                    // echo '<div class="rex-custom-scrollbar' . (($flex_positioned && !$block_has_slider) ? ' rex-custom-position' : '') . '">';
+                    echo '<div class="' . (($flex_positioned && !$block_has_slider) ? ' rex-custom-position' : '') . '">';
                     echo (($floating_border != '' && $block_link_pre != '') ? $block_link_pre : '');
                     echo $floating_border;
                     if ("" != $content):
@@ -508,7 +509,8 @@ class Rexbuilder_Block
                         echo $alt_tag;
                         echo "></div>";
                     }
-                    echo '<div class="rex-custom-scrollbar' . (($flex_positioned && !$block_has_slider) ? ' rex-custom-position' : '') . '"';
+                    // echo '<div class="rex-custom-scrollbar' . (($flex_positioned && !$block_has_slider) ? ' rex-custom-position' : '') . '"';
+                    echo '<div class="' . (($flex_positioned && !$block_has_slider) ? ' rex-custom-position' : '') . '"';
                     echo '>';
                     echo (($floating_border != '' && $block_link_pre != '') ? $block_link_pre : '');
                     echo $floating_border;
@@ -556,7 +558,8 @@ class Rexbuilder_Block
                         echo $alt_tag;
                         echo "></div>";
                     }
-                    echo '<div class="rex-custom-scrollbar' . (($flex_positioned && !$block_has_slider) ? ' rex-custom-position' : '') . '">';
+                    // echo '<div class="rex-custom-scrollbar' . (($flex_positioned && !$block_has_slider) ? ' rex-custom-position' : '') . '">';
+                    echo '<div class="' . (($flex_positioned && !$block_has_slider) ? ' rex-custom-position' : '') . '">';
                     echo (($floating_border != '' && $block_link_pre != '') ? $block_link_pre : '');
                     echo $floating_border;
                     if ("" != $content):

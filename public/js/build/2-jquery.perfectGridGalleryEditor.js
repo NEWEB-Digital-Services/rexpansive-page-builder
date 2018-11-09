@@ -2235,7 +2235,6 @@
       var $elemData;
       gallery.$element
         .on("resizestart", function(event, ui) {
-          //console.log("starting resize");
           $uiElement = $(ui.element);
           if (!$uiElement.is("span")) {
             if (Rexbuilder_Util_Editor.editingElement) {
@@ -2263,24 +2262,13 @@
               $imageWrapper.hasClass("natural-image-background");
             Rexbuilder_Util_Editor.elementIsResizing = true;
             xStart = parseInt($block.attr("data-gs-x"));
-            if (
-              gallery.properties.resizeHandle == "e" ||
-              gallery.properties.resizeHandle == "se"
-            ) {
-              $block.attr(
-                "data-gs-max-width",
-                gallery.settings.numberCol - xStart
-              );
-            } else if (
-              gallery.properties.resizeHandle == "w" ||
-              gallery.properties.resizeHandle == "sw"
+            if ( gallery.properties.resizeHandle == "e" || gallery.properties.resizeHandle == "se" ) {
+              $block.attr( "data-gs-max-width", gallery.settings.numberCol - xStart );
+            } else if ( gallery.properties.resizeHandle == "w" || gallery.properties.resizeHandle == "sw"
             ) {
               wStart = parseInt($block.attr("data-gs-width"));
             }
-            heightFactor =
-              gallery.settings.galleryLayout == "masonry"
-                ? 1
-                : gallery.properties.singleWidth;
+            heightFactor = gallery.settings.galleryLayout == "masonry" ? 1 : gallery.properties.singleWidth;
           }
         })
         .on("resize", function(event, ui) {
@@ -2297,6 +2285,13 @@
               Math.round(ui.size.width / gallery.properties.singleWidth),
               Math.round(ui.size.height / heightFactor)
             );
+
+            var needH = gallery.calculateTextWrapHeight( $block.find(".text-wrap") );
+            if( gallery.settings.galleryLayout == "masonry" ) {
+              gallery.properties.gridstackInstance.minHeight(block, Math.round( needH / 5 ) );
+            } else {
+              gallery.properties.gridstackInstance.minHeight(block, Math.round( needH / gallery.properties.singleWidth ) );
+            }
           }
         })
         .on("gsresizestop", function(event, elem) {
@@ -2320,16 +2315,8 @@
               }
             }
             gallery.updateAllElementsProperties();
-            if (
-              !$block.hasClass("block-has-slider") &&
-              !$blockContent.hasClass("block-has-slider") &&
-              !$blockContent.hasClass("youtube-player")
-            ) {
-              gallery.fixElementTextSize(
-                block,
-                gallery.properties.resizeHandle,
-                null
-              );
+            if ( !$block.hasClass("block-has-slider") && !$blockContent.hasClass("block-has-slider") && !$blockContent.hasClass("youtube-player") ) {
+              gallery.fixElementTextSize( block, gallery.properties.resizeHandle, null );
             }
 
             $block.attr("data-gs-max-width", 500);
@@ -2338,6 +2325,12 @@
             gallery.$element.attr('data-rexlive-layout-changed="true"');
             gallery.removeCollapseElementsProperties();
             var $section = gallery.$section;
+
+            gallery.properties.gridstackInstance.minHeight( block, 1 );
+
+            gallery.properties.gridstackInstance.batchUpdate();
+            gallery.properties.gridstackInstance.commit();
+
             //waiting for transition end
             setTimeout(
               function() {

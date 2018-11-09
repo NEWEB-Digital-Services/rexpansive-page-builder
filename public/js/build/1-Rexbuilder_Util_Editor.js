@@ -1108,6 +1108,8 @@ var Rexbuilder_Util_Editor = (function($) {
     this.visibleRow = null;
     this.visibleRowInfo = {};
 
+    this.scrollbarsActive = false;
+
     undoStackArray = [];
     redoStackArray = [];
 
