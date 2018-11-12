@@ -464,11 +464,11 @@ class Rexbuilder_Block
                     echo '<div class="' . (($flex_positioned && !$block_has_slider) ? ' rex-custom-position' : '') . '">';
                     echo (($floating_border != '' && $block_link_pre != '') ? $block_link_pre : '');
                     echo $floating_border;
+                    echo '<div class="text-wrap' . ("fixed" == $section_layout ? ' rex-content-resizable"' : '"') . $block_style_padding . '>';
                     if ("" != $content):
-                        echo '<div class="text-wrap' . ("fixed" == $section_layout ? ' rex-content-resizable"' : '"') . $block_style_padding . '>';
                         echo do_shortcode($content);
-                        echo '</div>';
                     endif;
+                    echo '</div>';
                     echo (($floating_border != '' && $block_link_before != '') ? $block_link_before : '');
                     echo '</div>';
                     echo '</div>';
@@ -514,11 +514,11 @@ class Rexbuilder_Block
                     echo '>';
                     echo (($floating_border != '' && $block_link_pre != '') ? $block_link_pre : '');
                     echo $floating_border;
+                    echo '<div class="text-wrap' . ("fixed" == $section_layout ? ' rex-content-resizable"' : '"') . $block_style_padding . '>';
                     if ("" != $content) {
-                        echo '<div class="text-wrap' . ("fixed" == $section_layout ? ' rex-content-resizable"' : '"') . $block_style_padding . '>';
                         echo do_shortcode($content);
-                        echo '</div>';
                     }
+                    echo '</div>';
                     echo (($floating_border != '' && $block_link_before != '') ? $block_link_before : '');
                     echo '</div>';
                     echo '</div>';

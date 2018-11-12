@@ -730,7 +730,8 @@ var Rex_Save_Listeners = (function ($) {
 
         id = $elem.attr('id') === undefined ? "" : $elem.attr('id');
         rex_id = $elem.attr('data-rexbuilder-block-id');
-        type = $itemData.attr('data-type') == "" ? "empty" : $itemData.attr('data-type');
+        // type = $itemData.attr('data-type') == "" ? "empty" : $itemData.attr('data-type');
+        type = $itemData.attr('data-type') == "" ? "text" : $itemData.attr('data-type');
         size_x = $elem.attr('data-width');
         size_y = $elem.attr('data-height');
         row = $elem.attr('data-row');
@@ -841,6 +842,8 @@ var Rex_Save_Listeners = (function ($) {
 
                 content = '[RexSlider slider_id="' + sliderID + '"]';
             }
+
+            console.log('passo da qua?');
 
             var output = '[RexpansiveBlock'
                 + ' id="' + id

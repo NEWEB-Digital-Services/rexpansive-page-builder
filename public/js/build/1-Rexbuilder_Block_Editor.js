@@ -384,7 +384,7 @@ var Rexbuilder_Block_Editor = (function($) {
       var $btn = $(e.target);
       var $elem = $btn.parents(".grid-stack-item");
       
-      var event = jQuery.Event("mouseup");
+      var event = jQuery.Event("dblclick");
       event.target = $elem.find(".rexlive-block-drag-handle");
       event.offsetY = 0;
       $elem.trigger(event);

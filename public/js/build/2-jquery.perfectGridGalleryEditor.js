@@ -2029,49 +2029,94 @@
             clearTimeout(this.downTimer);
             Rexbuilder_Util_Editor.mouseDownEvent = null;
 
-            if (
-              !(
-                Rexbuilder_Util_Editor.editingElement ||
-                Rexbuilder_Util_Editor.elementIsResizing ||
-                Rexbuilder_Util_Editor.elementIsDragging
-              ) ||
-              (Rexbuilder_Util_Editor.editingElement &&
-                Rexbuilder_Util_Editor.editedElement.data(
-                  "rexbuilder-block-id"
-                ) != $elem.data("rexbuilder-block-id"))
-            ) {
-              Rexbuilder_Util_Editor.editingElement = true;
-              Rexbuilder_Util_Editor.editedElement = $elem;
-              Rexbuilder_Util_Editor.editedTextWrap = $textWrap;
-              Rexbuilder_Util_Editor.editingGallery = true;
-              Rexbuilder_Util_Editor.editedGallery = gallery;
-              if (!$textWrap.is(":focus")) {
-                var caretPosition;
-                if ($elem.hasClass("rex-flex-top")) {
-                  caretPosition = "end";
-                } else if ($elem.hasClass("rex-flex-middle")) {
-                  var textHeight = $textWrap.innerHeight();
-                  var maxBlockHeight = $elem.innerHeight();
-                  if (e.offsetY < maxBlockHeight / 2 - textHeight / 2) {
-                    caretPosition = "begin";
-                  } else {
-                    caretPosition = "end";
-                  }
-                } else if ($elem.hasClass("rex-flex-bottom")) {
-                  caretPosition = "begin";
-                } else {
-                  caretPosition = "end";
-                }
+            // if (
+            //   !(
+            //     Rexbuilder_Util_Editor.editingElement ||
+            //     Rexbuilder_Util_Editor.elementIsResizing ||
+            //     Rexbuilder_Util_Editor.elementIsDragging
+            //   ) ||
+            //   (Rexbuilder_Util_Editor.editingElement &&
+            //     Rexbuilder_Util_Editor.editedElement.data(
+            //       "rexbuilder-block-id"
+            //     ) != $elem.data("rexbuilder-block-id"))
+            // ) {
+            //   Rexbuilder_Util_Editor.editingElement = true;
+            //   Rexbuilder_Util_Editor.editedElement = $elem;
+            //   Rexbuilder_Util_Editor.editedTextWrap = $textWrap;
+            //   Rexbuilder_Util_Editor.editingGallery = true;
+            //   Rexbuilder_Util_Editor.editedGallery = gallery;
+            //   if (!$textWrap.is(":focus")) {
+            //     var caretPosition;
+            //     if ($elem.hasClass("rex-flex-top")) {
+            //       caretPosition = "end";
+            //     } else if ($elem.hasClass("rex-flex-middle")) {
+            //       var textHeight = $textWrap.innerHeight();
+            //       var maxBlockHeight = $elem.innerHeight();
+            //       if (e.offsetY < maxBlockHeight / 2 - textHeight / 2) {
+            //         caretPosition = "begin";
+            //       } else {
+            //         caretPosition = "end";
+            //       }
+            //     } else if ($elem.hasClass("rex-flex-bottom")) {
+            //       caretPosition = "begin";
+            //     } else {
+            //       caretPosition = "end";
+            //     }
 
-                if (caretPosition == "begin") {
-                  $textWrap.focus();
-                } else {
-                  Rexbuilder_Util_Editor.setEndOfContenteditable($textWrap[0]);
-                }
+            //     if (caretPosition == "begin") {
+            //       $textWrap.focus();
+            //     } else {
+            //       Rexbuilder_Util_Editor.setEndOfContenteditable($textWrap[0]);
+            //     }
+            //   }
+            //   Rexbuilder_Util_Editor.startEditingElement();
+            // }
+          }
+        }
+      });
+
+      $elem.dblclick(function(e) {
+        if (
+          !(
+            Rexbuilder_Util_Editor.editingElement ||
+            Rexbuilder_Util_Editor.elementIsResizing ||
+            Rexbuilder_Util_Editor.elementIsDragging
+          ) ||
+          (Rexbuilder_Util_Editor.editingElement &&
+            Rexbuilder_Util_Editor.editedElement.data(
+              "rexbuilder-block-id"
+            ) != $elem.data("rexbuilder-block-id"))
+        ) {
+          Rexbuilder_Util_Editor.editingElement = true;
+          Rexbuilder_Util_Editor.editedElement = $elem;
+          Rexbuilder_Util_Editor.editedTextWrap = $textWrap;
+          Rexbuilder_Util_Editor.editingGallery = true;
+          Rexbuilder_Util_Editor.editedGallery = gallery;
+          if (!$textWrap.is(":focus")) {
+            var caretPosition;
+            if ($elem.hasClass("rex-flex-top")) {
+              caretPosition = "end";
+            } else if ($elem.hasClass("rex-flex-middle")) {
+              var textHeight = $textWrap.innerHeight();
+              var maxBlockHeight = $elem.innerHeight();
+              if (e.offsetY < maxBlockHeight / 2 - textHeight / 2) {
+                caretPosition = "begin";
+              } else {
+                caretPosition = "end";
               }
-              Rexbuilder_Util_Editor.startEditingElement();
+            } else if ($elem.hasClass("rex-flex-bottom")) {
+              caretPosition = "begin";
+            } else {
+              caretPosition = "end";
+            }
+
+            if (caretPosition == "begin") {
+              $textWrap.focus();
+            } else {
+              Rexbuilder_Util_Editor.setEndOfContenteditable($textWrap[0]);
             }
           }
+          Rexbuilder_Util_Editor.startEditingElement();
         }
       });
 
