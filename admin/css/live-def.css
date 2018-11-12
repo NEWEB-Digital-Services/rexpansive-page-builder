@@ -4029,6 +4029,10 @@ ul {
 ::selection {
   background: rgba(0, 172, 255, 0.5); }
 
+.medium-editor-placeholder:after {
+  font-family: 'Roboto', sans-serif;
+  font-size: 0.8em; }
+
 .medium-insert-images.medium-insert-images-left,
 .medium-insert-images-left.mediumInsert,
 .mediumInsert.small {

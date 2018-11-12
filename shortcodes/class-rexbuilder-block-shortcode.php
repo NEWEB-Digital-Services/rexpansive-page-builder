@@ -517,8 +517,6 @@ class Rexbuilder_Block
                     echo '<div class="text-wrap' . ("fixed" == $section_layout ? ' rex-content-resizable"' : '"') . $block_style_padding . '>';
                     if ("" != $content) {
                         echo do_shortcode($content);
-                    } else {
-                        echo '<p><br></p>';
                     }
                     echo '</div>';
                     echo (($floating_border != '' && $block_link_before != '') ? $block_link_before : '');

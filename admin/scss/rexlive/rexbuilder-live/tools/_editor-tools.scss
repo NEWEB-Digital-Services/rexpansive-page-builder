@@ -2,6 +2,11 @@
   background: rgba($palette-color-1, 0.5);
 }
 
+.medium-editor-placeholder:after {
+  @include live-fonts();
+  font-size: 0.8em;
+}
+
 .medium-insert-images.medium-insert-images-left,
 .medium-insert-images-left.mediumInsert,
 .mediumInsert.small {
