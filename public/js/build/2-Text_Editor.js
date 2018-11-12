@@ -1035,7 +1035,7 @@ var TextEditor = (function($) {
          * placeholder, if nothing is passed this is what it used
         */
         text: "Type here your text",
-        hideOnClick: true
+        hideOnClick: false
       }
     });
     _addEditableInputEvents();

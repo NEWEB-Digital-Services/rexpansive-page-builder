@@ -1207,8 +1207,8 @@
       block_type = typeof block_type !== 'undefined' ? block_type : "";
       Rexbuilder_Util_Editor.addingNewBlocks = true;
 
-      var defaultBlockWidthFixed = 2;
-      var defaultBlockHeightFixed = 2;
+      var defaultBlockWidthFixed = 6;
+      var defaultBlockHeightFixed = 4;
 
       typeof w == "undefined"
         ? (w = defaultBlockWidthFixed)
@@ -1319,7 +1319,8 @@
         backendHeight: h,
         backendWidth: w,
         backendX: x + 1,
-        backendY: y + 1
+        backendY: y + 1,
+        block_type: block_type
       });
 
       var $newEl = $(newElement);
@@ -2075,6 +2076,9 @@
         }
       });
 
+      /**
+       * Listen double click on a block to edit the text content
+       */
       $elem.dblclick(function(e) {
         if (
           !(

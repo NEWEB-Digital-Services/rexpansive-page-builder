@@ -10,7 +10,9 @@ var Rexbuilder_CreateBlocks = (function ($) {
         var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout);
         $el.find(".grid-item-content").addClass("empty-content");
         TextEditor.addElementToTextEditor($el.find(".text-wrap"));
-        galleryInstance.addScrollbar($el);
+        if( Rexbuilder_Util_Editor.scrollbarsActive ) {
+            galleryInstance.addScrollbar($el);
+        }
         // Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($el.find('input[name=edit-block-color-background]')[0]);
         // Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock($el.find('input[name=edit-block-overlay-color]')[0]);
         Rexbuilder_Block_Editor.updateBlockTools($el);
@@ -33,15 +35,17 @@ var Rexbuilder_CreateBlocks = (function ($) {
         e.stopImmediatePropagation();
         var $section = $(e.target).parents(".rexpansive_section");
         var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
-        var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout);
+        var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout, undefined, undefined, "text");
 
-        galleryInstance.addScrollbar($el);
+        if( Rexbuilder_Util_Editor.scrollbarsActive ) {
+            galleryInstance.addScrollbar($el);
+        }
         TextEditor.addElementToTextEditor($el.find(".text-wrap"));
 
         Rexbuilder_Block_Editor.updateBlockTools($el);
         Rexbuilder_Util_Editor.launchTooltips();
 
-        var event = jQuery.Event("mouseup");
+        var event = jQuery.Event("dblclick");
         event.target = $el.find(".rexlive-block-drag-handle");
         event.offsetY = 0;
         $el.trigger(event);
@@ -71,18 +75,20 @@ var Rexbuilder_CreateBlocks = (function ($) {
         }
 
         var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
-        var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout);
+        var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout, undefined, undefined, "text");
 
-        galleryInstance.addScrollbar($el);
+        if( Rexbuilder_Util_Editor.scrollbarsActive ) {
+            galleryInstance.addScrollbar($el);
+        }
         TextEditor.addElementToTextEditor($el.find(".text-wrap"));
 
         Rexbuilder_Block_Editor.updateBlockTools($el);
         Rexbuilder_Util_Editor.launchTooltips();
 
-        // var event = jQuery.Event("mouseup");
-        // event.target = $el.find(".rexlive-block-drag-handle");
-        // event.offsetY = 0;
-        // $el.trigger(event);
+        var event = jQuery.Event("dblclick");
+        event.target = $el.find(".rexlive-block-drag-handle");
+        event.offsetY = 0;
+        $el.trigger(event);
 
         Rexbuilder_Util.updateSectionStateLive($section);
         if(Rexbuilder_Util.activeLayout == "default"){
@@ -157,7 +163,9 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
             Rexbuilder_Dom_Util.updateImageBG($el.find(".grid-item-content"), dataImage);
 
-            galleryInstance.addScrollbar($el);
+            if( Rexbuilder_Util_Editor.scrollbarsActive ) {
+                galleryInstance.addScrollbar($el);
+            }
             TextEditor.addElementToTextEditor($el.find(".text-wrap"));
             // Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($el.find('input[name=edit-block-color-background]')[0]);
             // Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock($el.find('input[name=edit-block-overlay-color]')[0]);
@@ -242,7 +250,9 @@ var Rexbuilder_CreateBlocks = (function ($) {
                         typeVideo: type
                     }
                     Rexbuilder_Dom_Util.updateVideos($itemContent, videoOptions);
-                    galleryInstance.addScrollbar($el);
+                    if( Rexbuilder_Util_Editor.scrollbarsActive ) {
+                        galleryInstance.addScrollbar($el);
+                    }
                     TextEditor.addElementToTextEditor($el.find(".text-wrap"));
                 }
             }
@@ -516,7 +526,9 @@ var Rexbuilder_CreateBlocks = (function ($) {
             var sliderData = Rexbuilder_Util_Editor.createSliderData($oldSlider);
             Rexbuilder_Util_Editor.saveSliderOnDB(sliderData, true, newBlockID, target);
         } else {
-            galleryEditorInstance.addScrollbar($newBlock);
+            if( Rexbuilder_Util_Editor.scrollbarsActive ) {
+                galleryEditorInstance.addScrollbar($newBlock);
+            }
             TextEditor.addElementToTextEditor($newBlock.find(".text-wrap"));
         }
         // Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($newBlock.find('input[name=edit-block-color-background]')[0]);

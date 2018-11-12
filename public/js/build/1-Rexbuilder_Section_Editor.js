@@ -809,19 +809,6 @@ var Rexbuilder_Section_Editor = (function($) {
 
     // Callback
     var callback = function(mutationsList, observer) {
-      console.log( mutationsList[0].target.getAttribute("data-color_bg_section_active") );
-      console.log( mutationsList[0].target.getAttribute("data-color_bg_section") );
-      console.log('-----');
-      console.log( mutationsList[0].target.getAttribute('data-image_bg_section_active') );
-      console.log( mutationsList[0].target.getAttribute("data-id_image_bg_section") ) ;
-      console.log('-----');
-      console.log( mutationsList[0].target.getAttribute("data-row_overlay_active") );
-      console.log( mutationsList[0].target.getAttribute("data-row_overlay_color") ) ;
-      console.log('-----');
-      console.log( mutationsList[0].target.getAttribute("data-video_bg_url_section") );
-      console.log( mutationsList[0].target.getAttribute("data-video_bg_id_section") );
-      console.log( mutationsList[0].target.getAttribute("data-video_bg_url_vimeo_section") );
-
       if( ( "false" == mutationsList[0].target.getAttribute("data-color_bg_section_active") || "" == mutationsList[0].target.getAttribute("data-color_bg_section") ) && ( "false" == mutationsList[0].target.getAttribute('data-image_bg_section_active') || "" == mutationsList[0].target.getAttribute("data-id_image_bg_section") ) && ( "false" == mutationsList[0].target.getAttribute("data-row_overlay_active") || "" == mutationsList[0].target.getAttribute("data-row_overlay_color") ) && "" == mutationsList[0].target.getAttribute("data-video_bg_url_section") && "" == mutationsList[0].target.getAttribute("data-video_bg_id_section") && "" == mutationsList[0].target.getAttribute("data-video_bg_url_vimeo_section") ) {
         $(mutationsList[0].target.parentNode).addClass('rowTools__hide-fast-data');
       } else {

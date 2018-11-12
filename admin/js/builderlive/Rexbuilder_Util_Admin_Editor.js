@@ -386,6 +386,8 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     Rexlive_Base_Settings.$document.on('click', '.toolbox-add-new-block-text', function(e) {
       e.preventDefault();
 
+      Rexbuilder_Util_Admin_Editor.$frameBuilder.focus();
+
       var msg = {
         eventName: "rexlive:insert_new_text_block",
         data_to_send: {

@@ -240,9 +240,11 @@ $tool_button_classes = 'tool-button';
         <div class="grid-stack-item-content">
             <div class="grid-item-content rex-flexbox" style="background-color:rgba(0, 0, 0, 0);">
                 <div class="responsive-block-overlay" style="background-color:rgba(0, 0, 0, 0);">
-                    <div class="rex-custom-scrollbar rex-custom-position">
+                    <div class="rex-custom-position">
                         <div class="text-wrap">
+                            {% if(block.block_type == 'text') { %}
                             <p><br></p>
+                            {% } %}
                         </div>
                     </div>
                 </div>
