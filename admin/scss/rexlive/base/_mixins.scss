@@ -14,9 +14,9 @@
 // Buttons mixins
 @mixin bl-btn {
   background-color: $btn-base-background;
-  color: $btn-base-color;
+  color: $palette-color-4;
 
-  @include fill-icon($btn-base-color);
+  @include fill-icon($palette-color-4);
 }
 
 @mixin bl-btn-flat {
@@ -64,6 +64,7 @@
   box-shadow: $shadow-1;
   transition: box-shadow 300ms;
   &:hover {
+    @include fill-icon(#000);
     box-shadow: $shadow-2;
   }
 }

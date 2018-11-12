@@ -14581,11 +14581,11 @@ ul {
   transition: box-shadow 0.3s ease-out;
   transition: box-shadow 0.3s ease-out, -webkit-box-shadow 0.3s ease-out;
   background-color: #fff;
-  color: #979797;
+  color: #424242;
   -webkit-box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45);
           box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.45); }
   .tool-button--big .l-svg-icons > svg {
-    fill: #979797; }
+    fill: #424242; }
   .tool-button--big.tool-button--inline {
     display: inline-block; }
 
@@ -14599,7 +14599,7 @@ ul {
   cursor: pointer;
   line-height: 1;
   background-color: #fff;
-  color: #979797;
+  color: #424242;
   -webkit-box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
           box-shadow: 0 4px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.3);
   -webkit-transition: -webkit-box-shadow 300ms;
@@ -14610,10 +14610,12 @@ ul {
   .tool-button.tool-button--inline {
     display: inline-block; }
   .tool-button .l-svg-icons > svg {
-    fill: #979797; }
+    fill: #424242; }
   .tool-button:hover {
     -webkit-box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -7px rgba(0, 0, 0, 0.2);
             box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -7px rgba(0, 0, 0, 0.2); }
+    .tool-button:hover .l-svg-icons > svg {
+      fill: #000; }
   .tool-button.active {
     background-color: #00ACFF;
     color: #fff; }
@@ -15624,8 +15626,6 @@ input:disabled + .rex_edit_title_slider {
       background-color: #00ACFF; }
       .toolbox-insert-area .tool-button-floating.tool-button__settings--flat .tool-button_list--item .l-svg-icons > svg {
         fill: #fff; }
-    .toolbox-insert-area .tool-button-floating.tool-button__settings--flat .tool-button_list {
-      padding-top: 10px; }
   .toolbox-insert-area .tool-button-floating .l-svg-icons {
     font-size: 13px; }
 
