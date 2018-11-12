@@ -15686,11 +15686,11 @@ input:disabled + .rex_edit_title_slider {
 .toolbox-builder-section-config--wrap {
   margin-left: 10px; }
 
-.toolbox-builder-section-config + .tool-button_list {
+.tool-button-floating__activator + .tool-button_list {
   left: 10px;
   font-size: 10px;
   max-width: 20px; }
-  .toolbox-builder-section-config + .tool-button_list .tool-button--full {
+  .tool-button-floating__activator + .tool-button_list .tool-button--full {
     font-size: 20px; }
 
 .tool-option .l-svg-icons > svg {

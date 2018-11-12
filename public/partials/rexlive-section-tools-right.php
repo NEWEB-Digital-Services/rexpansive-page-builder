@@ -71,10 +71,14 @@ defined('ABSPATH') or exit;
         </div>
 
         <div class="tool-button-floating tool-button--model-hide row-toolBox__def-hide">
-            <div class="<?php echo $tool_button_classes_right; ?> builder-section-config tool-button--flat--distance-fix tippy" data-tippy-content="<?php _e('Row settings', 'rexpansive');?>">
-                <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>					
+            <div class="<?php echo $tool_button_classes_right; ?> tool-button--flat--distance-fix" data-tippy-content="<?php _e('Row settings', 'rexpansive');?>">
+                <?php Rexbuilder_Utilities::get_icon('#Z009-More'); ?>					
             </div>
-            <div class="tool-button_list">	
+            <div class="tool-button_list">
+                <div class="tool-button builder-section-config tool-button_list--item tippy" data-tippy-content="<?php _e('Row settings','rexpansive'); ?>">
+                    <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
+                </div>
+
                 <div class="tool-button tool-button_list--item tool-button--full edit-background-section tippy tool-button--hide">
                     <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
                 </div>

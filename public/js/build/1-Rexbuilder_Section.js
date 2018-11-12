@@ -644,7 +644,7 @@ var Rexbuilder_Section = (function($) {
       var new_row_defaults = {
         rexID: rexIdSection,
         dimension: "full",
-        dimensionClass: "center-disposition",
+        dimensionClass: "full-disposition",
         sectionWidth: "100%",
         fullHeight: "false",
         blockDistance: 20,

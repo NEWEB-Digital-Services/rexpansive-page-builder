@@ -36,11 +36,15 @@ defined( 'ABSPATH' ) or exit;
             </div>
 
             <div class="tool-button-floating">
-				<div class="tool-button builder-edit-block tippy" data-tippy-content="<?php _e('Block settings', 'rexpansive');?>">
-					<?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>					
+				<div class="tool-button" data-tippy-content="<?php _e('Block settings', 'rexpansive');?>">
+					<?php Rexbuilder_Utilities::get_icon('#Z009-More'); ?>					
                 </div>
                 
 				<div class="tool-button_list">
+                    <div class="tool-button tool-button--inline tool-button_list--item builder-edit-block tippy" data-tippy-content="<?php _e('Block settings','rexpansive'); ?>">
+                        <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
+                    </div><!-- // settings -->
+
                     <div class="tool-button--double-icon--wrap tool-button_list--item<?php echo ( !$not_has_image ? ' tool-button--hide' : '' ); ?>">
                         <div class="tool-button tool-button--inline edit-block-image tippy" data-tippy-content="<?php _e('Background Image','rexpansive'); ?>">
                             <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>

@@ -70,13 +70,17 @@
   </div><!-- // Row layout -->
 
   <div class="tool-button-floating toolbox-builder-section-config--wrap tool-button--model-hide">
-    <div class="tool-option--filled tool-option--small toolbox-builder-section-config tippy" data-tippy-content="<?php _e('Row settings', 'rexpansive');?>" data-tippy-placement="right">
-      <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
+    <div class="tool-option--filled tool-button-floating__activator tool-option--small" data-tippy-content="<?php _e('Row settings', 'rexpansive');?>" data-tippy-placement="right">
+      <?php Rexbuilder_Utilities::get_icon('#Z009-More'); ?>
     </div>
 
     <div class="tool-button_list">	
       <div class="tool-button tool-button_list--item tool-button--full edit-background-section-toolbox tippy tool-button--hide">
         <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
+      </div><!-- // Hide old tool: opens a modal with only the background settings of a row -->
+
+      <div class="tool-button tool-button_list--item toolbox-builder-section-config tippy" data-tippy-content="<?php _e('Row settings', 'rexpansive');?>">
+        <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
       </div>
 
       <div class="tool-button tool-button_list--item tool-button--full edit-row-image-background-toolbox tippy" data-tippy-content="<?php _e('Background Image','rexpansive'); ?>">

@@ -299,7 +299,7 @@
   }
 }
 
-.toolbox-builder-section-config {
+.tool-button-floating__activator {
   + .tool-button_list {
     @if( $small-tools == true ) {
       left: 10px;
