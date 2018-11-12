@@ -222,3 +222,23 @@
     opacity: 1;
   }
 }
+
+// Block tool mixins
+@mixin block-tools-position( $st ) {
+  &[data-row-separator-top="#{$st}"] {
+    .grid-stack-item[data-gs-y="0"] {
+      .rexlive-block-toolbox {
+        &.top-tools,
+        &.floating-tools {
+          top: 20px - $st;
+        }
+      }
+    }
+  }
+}
+
+@mixin blocks-tools-positions( $steps ) {
+  @for $i from 0 through $steps {
+    @include block-tools-position( $i );
+  }
+}

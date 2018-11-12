@@ -51,7 +51,7 @@
   }
 
   .tool-button {
-    @include fill-icon(#000);
+    // @include fill-icon(#000);
 
     &.tool-button--deactivate {
       @include fill-icon(#fff);
@@ -110,14 +110,24 @@
   &[data-row-separator-top="17"],
   &[data-row-separator-top="18"],
   &[data-row-separator-top="19"],
-  &[data-row-separator-top="20"] {
+  &[data-row-separator-top="20"],
+  &[data-row-separator-top="21"],
+  &[data-row-separator-top="22"],
+  &[data-row-separator-top="23"],
+  &[data-row-separator-top="24"],
+  &[data-row-separator-top="25"],
+  &[data-row-separator-top="26"],
+  &[data-row-separator-top="27"],
+  &[data-row-separator-top="28"],
+  &[data-row-separator-top="29"] {
     .grid-stack-item[data-gs-y="0"] {
       .rexlive-top-block-tools {
         padding: 0;
       }
       .rexlive-block-toolbox {
-        &.top-tools {
-          top: 15px;
+        &.top-tools,
+        &.floating-tools {
+          top: 10px;
         }
         .block-toolBox__config-tools {
           .builder-delete-block {
@@ -131,6 +141,7 @@
       }
     }
   }
+  @include blocks-tools-positions( 10 );
 }
 
 .block-toolBox__fast-configuration {

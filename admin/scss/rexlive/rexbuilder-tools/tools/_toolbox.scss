@@ -295,14 +295,28 @@
 
 .toolbox-builder-section-config--wrap {
   @if( $small-tools == true ) {
-    margin-left: 10px;
+    margin-left: 14px;
+    .tool-button_list--item {
+      &:hover {
+        @include fill-icon(#000);
+      }
+    }
   }
 }
 
 .tool-button-floating__activator {
+  background-color: transparent;
+  font-size: 13px;
+  padding: 0;
+  height: 13px;
+  height: auto;
+  line-height: 1;
+  cursor: pointer;
+  margin: 0;
+  @include fill-icon($palette-color-4);
   + .tool-button_list {
     @if( $small-tools == true ) {
-      left: 10px;
+      left: -3px;
     } @else {
       left: 20px;
     }
@@ -472,6 +486,7 @@
 .btn-save__label {
   text-transform: uppercase;
   font-size: 9px;
+  font-weight: 700;
   letter-spacing: 2px;
   @include live-fonts();
 }

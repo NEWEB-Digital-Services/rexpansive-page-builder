@@ -70,7 +70,7 @@
   </div><!-- // Row layout -->
 
   <div class="tool-button-floating toolbox-builder-section-config--wrap tool-button--model-hide">
-    <div class="tool-option--filled tool-button-floating__activator tool-option--small" data-tippy-content="<?php _e('Row settings', 'rexpansive');?>" data-tippy-placement="right">
+    <div class="tool-button-floating__activator tool-option--small" data-tippy-content="<?php _e('Row settings', 'rexpansive');?>" data-tippy-placement="right">
       <?php Rexbuilder_Utilities::get_icon('#Z009-More'); ?>
     </div>
 

@@ -15684,14 +15684,27 @@ input:disabled + .rex_edit_title_slider {
     fill: #fff; }
 
 .toolbox-builder-section-config--wrap {
-  margin-left: 10px; }
+  margin-left: 14px; }
+  .toolbox-builder-section-config--wrap .tool-button_list--item:hover .l-svg-icons > svg {
+    fill: #000; }
 
-.tool-button-floating__activator + .tool-button_list {
-  left: 10px;
-  font-size: 10px;
-  max-width: 20px; }
-  .tool-button-floating__activator + .tool-button_list .tool-button--full {
-    font-size: 20px; }
+.tool-button-floating__activator {
+  background-color: transparent;
+  font-size: 13px;
+  padding: 0;
+  height: 13px;
+  height: auto;
+  line-height: 1;
+  cursor: pointer;
+  margin: 0; }
+  .tool-button-floating__activator .l-svg-icons > svg {
+    fill: #424242; }
+  .tool-button-floating__activator + .tool-button_list {
+    left: -3px;
+    font-size: 10px;
+    max-width: 20px; }
+    .tool-button-floating__activator + .tool-button_list .tool-button--full {
+      font-size: 20px; }
 
 .tool-option .l-svg-icons > svg {
   fill: #000; }
@@ -15822,6 +15835,7 @@ input:disabled + .rex_edit_title_slider {
 .btn-save__label {
   text-transform: uppercase;
   font-size: 9px;
+  font-weight: 700;
   letter-spacing: 2px;
   font-family: 'Roboto', sans-serif; }
 
