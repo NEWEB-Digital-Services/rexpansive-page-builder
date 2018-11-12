@@ -175,7 +175,7 @@
   &.page-edited {
     background-color: $palette-color-2;
     &:hover {
-      background-color: #000;
+      background-color: $palette-color-1;
     }
   }
 }

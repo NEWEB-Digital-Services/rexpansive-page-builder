@@ -273,3 +273,9 @@
   //   @include bl-btn--add-big();
   // }
 }
+
+.add-new-section--hide {
+  .add-new-section__wrap {
+    display: none;
+  }
+}

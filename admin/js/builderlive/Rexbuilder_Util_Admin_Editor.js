@@ -241,6 +241,10 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       if(event.data.eventName == "rexlive:esc_pressed" ) {
         Rexlive_Modals_Utils.close_focus_modal();
       }
+
+      if( event.data.eventName == "rexlive:savePageWithButton" ) {
+        $saveBtn.trigger('click');
+      }
     }
   };
 
@@ -293,6 +297,15 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         _savingProcess();
       } else {
         Open_Models_Warning.openModal(open_models);
+      }
+    });
+
+    Rexlive_Base_Settings.$document.on('keydown', function(e) {
+      if ((window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)  && e.keyCode == 83) {
+        e.preventDefault();
+        // Process the event here (such as click on submit button)
+        // SAVE PAGE
+        $saveBtn.trigger('click');
       }
     });
 

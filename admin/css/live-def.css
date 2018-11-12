@@ -3885,6 +3885,9 @@ ul {
 .add-new-section__wrap {
   padding: 20px 0; }
 
+.add-new-section--hide .add-new-section__wrap {
+  display: none; }
+
 .rexlive-block-toolbox {
   position: absolute;
   width: 100%;

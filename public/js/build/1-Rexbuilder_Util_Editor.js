@@ -361,10 +361,22 @@ var Rexbuilder_Util_Editor = (function($) {
 
     // if "ESC" pressed tell the parent to close a window
     Rexbuilder_Util.$document.on('keydown', function(e) {
-      console.log(e);
       if( e.keyCode === 27 ) {
         var data = {
           eventName: "rexlive:esc_pressed",
+        };
+        Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      }
+    });
+
+    // Caputre save page
+    Rexbuilder_Util.$document.on('keydown', function(e) {
+      if ((window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)  && e.keyCode == 83) {
+        e.preventDefault();
+        // Process the event here (such as click on submit button)
+        // SAVE PAGE
+        var data = {
+          eventName: "rexlive:savePageWithButton",
         };
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
       }
@@ -991,6 +1003,11 @@ var Rexbuilder_Util_Editor = (function($) {
     }
   };
 
+  /**
+   * Get all the usefull row data
+   * @param {HTML Node} el row data
+   * @since 2.0.0
+   */
   var _rowAttrsObj = function(el) {
     var obj = {};
     var attrsMap = el.attributes;
@@ -1047,7 +1064,16 @@ var Rexbuilder_Util_Editor = (function($) {
       };
     }
     return mousePosition;
-  }
+  };
+
+  var _checkNewEmptyPage = function() {
+    var $rows = Rexbuilder_Util.$rexContainer.find(".rexpansive_section:not(removing_section)");
+    if( "1" == $rows.length && $rows.hasClass('empty-section') ) {
+      Rexbuilder_Util.$rexContainer.parent().addClass('add-new-section--hide');
+    } else {
+      Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
+    }
+  };
 
   var init = function() {
     this.elementIsResizing = false;
@@ -1116,6 +1142,7 @@ var Rexbuilder_Util_Editor = (function($) {
 
     _tooltips();
     _checkVisibleRow();
+    _checkNewEmptyPage();
 
     this.$styleElement = $("#rexpansive-builder-style-inline-css");
     _fixCustomStyleElement();
