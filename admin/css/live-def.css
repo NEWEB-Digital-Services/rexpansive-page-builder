@@ -3793,14 +3793,6 @@ ul {
           animation: fade-in 200ms ease-in-out both; }
 .rexpansive_section:hover .section-toolBox + .section-toolBoox__highlight {
   opacity: 1; }
-.rexpansive_section:not(.removing_section):not(:last-child) .row-toolBox__def-hide {
-  display: none; }
-.rexpansive_section:not(.removing_section):not(:last-child) .section-toolBox .tools {
-  -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end; }
-.rexpansive_section:not(.removing_section):last-child .row-toolBox__def-view {
-  display: none; }
 
 .activeRowTools .section-toolBox .tools {
   display: -webkit-box;

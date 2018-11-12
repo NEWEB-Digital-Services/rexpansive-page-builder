@@ -13,7 +13,7 @@
 defined('ABSPATH') or exit;
 ?>
 
-<div class="bl_d-flex bl_ai-c tools-area tool-area--side row-toolBox__def-hide">
+<div class="bl_d-flex bl_ai-c tools-area tool-area--side">
 
     <div class="switch-toggle switch-live">
         <input type="radio" class="edit-row-width" data-section_width="full" id="row-dimension-full-<?php echo $atts['rexlive_section_id']; ?>" name="row-dimension-<?php echo $atts['rexlive_section_id']; ?>" value="100%" <?php checked('full',$atts['dimension'],true); ?>>

@@ -126,23 +126,23 @@
       @include view-row-tools();
     }
   }
-  &:not(.removing_section) {
-    &:not(:last-child) {
-      .row-toolBox__def-hide {
-        display: none;
-      }
-      .section-toolBox {
-        .tools {
-          justify-content: flex-end;
-        }
-      }
-    }
-    &:last-child {
-      .row-toolBox__def-view {
-        display: none;
-      }
-    }
-  }
+  // &:not(.removing_section) {
+  //   &:not(:last-child) {
+  //     .row-toolBox__def-hide {
+  //       display: none;
+  //     }
+  //     .section-toolBox {
+  //       .tools {
+  //         justify-content: flex-end;
+  //       }
+  //     }
+  //   }
+  //   &:last-child {
+  //     .row-toolBox__def-view {
+  //       display: none;
+  //     }
+  //   }
+  // }
 }
 
 .activeRowTools {

@@ -12,7 +12,7 @@
 
 defined('ABSPATH') or exit;
 ?>
-<div class="bl_d-flex bl_ai-c tools-area tool-area--center row-toolBox__def-hide">
+<div class="bl_d-flex bl_ai-c tools-area tool-area--center">
     <div class="tool-button tool-button--flat tool-button--inline tool-button__image--flat add-new-block-image tippy" data-tippy-content="<?php _e('Image','rexpansive'); ?>">
         <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
     </div>

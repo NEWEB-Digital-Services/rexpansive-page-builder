@@ -16,7 +16,7 @@ defined('ABSPATH') or exit;
 
 <div class="bl_d-flex bl_ai-c bl_jc-fe tools-area tool-area--side">
 		
-    <div class="bl_d-iflex bl_ai-c row-toolBox__tools row-toolBox__fast-configuration row-toolBox__def-hide">
+    <div class="bl_d-iflex bl_ai-c row-toolBox__tools row-toolBox__fast-configuration">
 
         <div class="tool-button--double-icon--wrap tool-button--distance-fix tool-button--hide tool-button--model-hide tippy" data-tippy-content="<?php _e('Background Image','rexpansive'); ?>">
             <div class="<?php echo $tool_button_classes; ?> tool-button--inline edit-row-image-background tippy" data-tippy-content="" value="">

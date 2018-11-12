@@ -18,7 +18,7 @@ $tool_button_classes = 'tool-button';
 <div class="section-toolBox">
 	<div class="tools">
 		<?php include 'rexlive-section-tools-left.php'; ?>
-		<?php include 'rexlive-section-tools-center.php'; ?>
+		<?php // include 'rexlive-section-tools-center.php'; ?>
 		<?php include 'rexlive-section-tools-center-last.php'; ?>
 		<?php include 'rexlive-section-tools-right.php'; ?>
 	</div>
