@@ -94,7 +94,7 @@ var Button_Import_Modal = (function ($) {
                 .find(".rex-container")
                 .eq(0);
 
-                $rexContainer.on('dragenter', ".text-wrap", function (event) {
+            $rexContainer.on('dragenter', ".text-wrap", function (event) {
                 event.stopPropagation();
                 currentElement = $(event.target);
                 currentElementChangeFlag = true;
@@ -110,12 +110,12 @@ var Button_Import_Modal = (function ($) {
                     return;
                 }
                 event = event || window.event;
-
-                var x = event.originalEvent.clientX;
-                var y = event.originalEvent.clientY;
                 countdown = countdown + 1;
                 currentElementChangeFlag = false;
-                var mousePosition = { x: x, y: y };
+                var mousePosition = {
+                    x: event.originalEvent.clientX,
+                    y: event.originalEvent.clientY
+                };
                 DragDropFunctions.AddEntryToDragOverQueue(currentElement, elementRectangle, mousePosition)
             });
 
@@ -161,10 +161,11 @@ var Button_Import_Modal = (function ($) {
                 if ($element.is('html'))
                     $element = $element.find('body');
                 //Top and Bottom Area Percentage to trigger different case. [5% of top and bottom area gets reserved for this]
-                var breakPointNumber = { x: 5, y: 5 };
+                var breakPointNumber = { x: 50, y: 50 };
 
                 var mousePercents = this.GetMouseBearingsPercentage($element, elementRect, mousePos);
-                if ((mousePercents.x > breakPointNumber.x && mousePercents.x < 100 - breakPointNumber.x) && (mousePercents.y > breakPointNumber.y && mousePercents.y < 100 - breakPointNumber.y)) {
+                if ((mousePercents.x > breakPointNumber.x && mousePercents.x < 100 - breakPointNumber.x) 
+                && (mousePercents.y > breakPointNumber.y && mousePercents.y < 100 - breakPointNumber.y)) {
                     //Case 1 -
                     var $tempelement = $element.clone();
                     $tempelement.find(".drop-marker").remove();
@@ -190,14 +191,10 @@ var Button_Import_Modal = (function ($) {
                     }
                 }
                 else if ((mousePercents.x <= breakPointNumber.x) || (mousePercents.y <= breakPointNumber.y)) {
-                    var validElement = null
-                    if (mousePercents.y <= mousePercents.x)
-                        validElement = this.FindValidParent($element, 'top');
-                    else
-                        validElement = this.FindValidParent($element, 'left');
+                    var validElement =  validElement = this.FindValidParent($element, 'top');
 
                     if (validElement.is("body,html"))
-                        validElement = $("#clientframe").contents().find("body").children(":not(.drop-marker,[data-dragcontext-marker])").first();
+                        validElement = Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find("body").children(":not(.drop-marker,[data-dragcontext-marker])").first();
                     this.DecideBeforeAfter(validElement, mousePercents, mousePos);
                 }
                 else if ((mousePercents.x >= 100 - breakPointNumber.x) || (mousePercents.y >= 100 - breakPointNumber.y)) {
@@ -208,7 +205,7 @@ var Button_Import_Modal = (function ($) {
                         validElement = this.FindValidParent($element, 'right');
 
                     if (validElement.is("body,html"))
-                        validElement = $("#clientframe").contents().find("body").children(":not(.drop-marker,[data-dragcontext-marker])").last();
+                        validElement = Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find("body").children(":not(.drop-marker,[data-dragcontext-marker])").last();
                     this.DecideBeforeAfter(validElement, mousePercents, mousePos);
                 }
             },
@@ -261,7 +258,7 @@ var Button_Import_Modal = (function ($) {
                             var elementRect = $element.get(0).getBoundingClientRect();
                             var $tempElement = $element.parent();
                             var tempelementRect = $tempElement.get(0).getBoundingClientRect();
-                            if ($element.is("body"))
+                            if ($element.is("body") || $element.hasClass("text-wrap"))
                                 return $element;
                             if (Math.abs(tempelementRect.left - elementRect.left) == 0)
                                 $element = $element.parent();
@@ -274,7 +271,7 @@ var Button_Import_Modal = (function ($) {
                             var elementRect = $element.get(0).getBoundingClientRect();
                             var $tempElement = $element.parent();
                             var tempelementRect = $tempElement.get(0).getBoundingClientRect();
-                            if ($element.is("body"))
+                            if ($element.is("body") || $element.hasClass("text-wrap"))
                                 return $element;
                             if (Math.abs(tempelementRect.right - elementRect.right) == 0)
                                 $element = $element.parent();
@@ -287,7 +284,7 @@ var Button_Import_Modal = (function ($) {
                             var elementRect = $element.get(0).getBoundingClientRect();
                             var $tempElement = $element.parent();
                             var tempelementRect = $tempElement.get(0).getBoundingClientRect();
-                            if ($element.is("body"))
+                            if ($element.is("body") || $element.hasClass("text-wrap"))
                                 return $element;
                             if (Math.abs(tempelementRect.top - elementRect.top) == 0)
                                 $element = $element.parent();
@@ -300,7 +297,7 @@ var Button_Import_Modal = (function ($) {
                             var elementRect = $element.get(0).getBoundingClientRect();
                             var $tempElement = $element.parent();
                             var tempelementRect = $tempElement.get(0).getBoundingClientRect();
-                            if ($element.is("body"))
+                            if ($element.is("body") || $element.hasClass("text-wrap"))
                                 return $element;
                             if (Math.abs(tempelementRect.bottom - elementRect.bottom) == 0)
                                 $element = $element.parent();
@@ -317,31 +314,28 @@ var Button_Import_Modal = (function ($) {
                 switch (position) {
                     case "before":
                         placeholder.find(".message").html($element.parent().data('sh-dnd-error'));
-                        $element.before(placeholder);
-                        console.log($element);
-                        console.log("BEFORE");
+                        //buttons have to be inside text-wrap
+                        if ($element.hasClass("text-wrap")) {
+                            $element.prepend(placeholder);                            
+                        } else {
+                            $element.before(placeholder);
+                        }
                         this.AddContainerContext($element, 'sibling');
                         break;
                     case "after":
                         placeholder.find(".message").html($element.parent().data('sh-dnd-error'));
                         $element.after(placeholder);
-                        console.log($element);
-                        console.log("AFTER");
                         this.AddContainerContext($element, 'sibling');
                         break
                     case "inside-prepend":
                         placeholder.find(".message").html($element.data('sh-dnd-error'));
                         $element.prepend(placeholder);
                         this.AddContainerContext($element, 'inside');
-                        console.log($element);
-                        console.log("PREPEND");
                         break;
                     case "inside-append":
                         placeholder.find(".message").html($element.data('sh-dnd-error'));
                         $element.append(placeholder);
                         this.AddContainerContext($element, 'inside');
-                        console.log($element);
-                        console.log("APPEND");
                         break;
                 }
             },
