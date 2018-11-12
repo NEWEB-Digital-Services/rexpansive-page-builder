@@ -422,8 +422,21 @@
   }
 }
 
-.btn-save {  
-  @include page-edited-ui();
+.tool-option--full-filled {
+  height: 50px;
+  background-color: $palette-color-1;
+  display: flex;
+  align-items: center;
+  flex-flow: column;
+  justify-content: center;
+  color: #fff;
+  &:hover {
+    color: #fff;
+  }
+}
+
+.btn-save {
+  @include page-edited-ui-toolbox();
   padding: 0 10px;
   @if( $small-tools == true ) {
     padding: 0 10px;
@@ -434,6 +447,9 @@
   }
   #{$icon-class}{
     font-size: 30px;
+  }
+  .btn-save--icon {
+    @include fill-icon(#fff);
   }
   .btn-save--edited {
     @if( $small-tools == true ) {
@@ -451,6 +467,12 @@
       animation: scale-in-center 0.2s cubic-bezier(0.250, 0.460, 0.450, 0.940) both 0.2s;
     }
   }
+}
+
+.btn-save__label {
+  text-transform: uppercase;
+  font-size: 10px;
+  @include live-fonts();
 }
 
 .tool-option {

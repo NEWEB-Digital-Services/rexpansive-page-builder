@@ -11,8 +11,7 @@
   <div class="tool-option tool-option--full btn-redo tippy" data-tippy-content="<?php esc_attr_e( 'Redo', 'rexpansive' ); ?>">
     <?php Rexbuilder_Utilities::get_icon('#A002-Redo'); ?>
   </div>
-  <div class="tool-option btn-save tippy" data-tippy-content="<?php esc_attr_e( 'Save', 'rexpansive' ); ?>">
-    <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
-    <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+  <div class="tool-option tool-option--full btn-custom-css tippy" id="open-css-editor" data-tippy-content="<?php esc_attr_e( 'Css', 'rexpansive' ); ?>">
+    <?php Rexbuilder_Utilities::get_icon('#A008-Code'); ?>
   </div>
 </div>

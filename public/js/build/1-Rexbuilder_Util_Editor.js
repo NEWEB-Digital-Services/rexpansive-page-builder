@@ -361,6 +361,7 @@ var Rexbuilder_Util_Editor = (function($) {
 
     // if "ESC" pressed tell the parent to close a window
     Rexbuilder_Util.$document.on('keydown', function(e) {
+      console.log(e);
       if( e.keyCode === 27 ) {
         var data = {
           eventName: "rexlive:esc_pressed",

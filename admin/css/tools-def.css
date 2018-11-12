@@ -15776,53 +15776,39 @@ input:disabled + .rex_edit_title_slider {
     position: relative;
     z-index: 100000; }
 
+.tool-option--full-filled {
+  height: 50px;
+  background-color: #00ACFF;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-flow: column;
+          flex-flow: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  color: #fff; }
+  .tool-option--full-filled:hover {
+    color: #fff; }
+
 .btn-save {
-  position: relative;
+  background-color: #00ACFF;
   padding: 0 10px;
   padding: 0 10px;
   margin-right: 0px; }
-  .btn-save .btn-save--wrap {
-    display: block; }
-    .btn-save .btn-save--wrap:before {
-      content: '';
-      display: block;
-      position: absolute;
-      left: 1px;
-      top: 1px;
-      right: 1px;
-      background-color: white;
-      border-radius: 50%;
-      z-index: -1;
-      bottom: 1px; }
-  .btn-save .btn-save--edited {
-    display: inline-block;
-    visibility: hidden;
-    position: absolute;
-    top: 0;
-    left: 0; }
-    .btn-save .btn-save--edited .l-svg-icons > svg {
-      fill: #979797; }
-    .btn-save .btn-save--edited:hover .l-svg-icons > svg {
-      fill: #000; }
-  .btn-save .btn-save--saved {
-    display: inline-block;
-    visibility: visible; }
-    .btn-save .btn-save--saved .l-svg-icons > svg {
-      fill: #00ACFF; }
-  .btn-save.page-edited .btn-save--edited {
-    visibility: visible; }
-  .btn-save.page-edited .btn-save--saved {
-    visibility: hidden; }
-  .setting-edited .btn-save .btn-save--edited {
-    visibility: visible; }
-  .setting-edited .btn-save .btn-save--saved {
-    visibility: hidden; }
-  .setting-saving .btn-save .btn-save--saved {
-    visibility: visible;
-    -webkit-animation: scale-in-center 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
-            animation: scale-in-center 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both; }
+  .btn-save.page-edited {
+    background-color: #979797; }
+    .btn-save.page-edited:hover {
+      background-color: #000; }
   .btn-save .l-svg-icons {
     font-size: 30px; }
+  .btn-save .btn-save--icon .l-svg-icons > svg {
+    fill: #fff; }
   .btn-save .btn-save--edited {
     left: 10px; }
   .btn-save.rex-saving .btn-save--edited {
@@ -15832,6 +15818,11 @@ input:disabled + .rex_edit_title_slider {
     visibility: visible;
     -webkit-animation: scale-in-center 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both 0.2s;
             animation: scale-in-center 0.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) both 0.2s; }
+
+.btn-save__label {
+  text-transform: uppercase;
+  font-size: 10px;
+  font-family: 'Roboto', sans-serif; }
 
 .tool-option.btn-undo, .tool-option.btn-redo {
   font-size: 18px; }

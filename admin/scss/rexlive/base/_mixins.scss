@@ -170,6 +170,16 @@
   }
 }
 
+@mixin page-edited-ui-toolbox {
+  background-color: $palette-color-1;
+  &.page-edited {
+    background-color: $palette-color-2;
+    &:hover {
+      background-color: #000;
+    }
+  }
+}
+
 @mixin view-floating-button {
   .tool-button_list {
     z-index: 10000;
