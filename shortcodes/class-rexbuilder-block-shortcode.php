@@ -623,7 +623,7 @@ class Rexbuilder_Block
                 $not_has_overlay = ( 'true' != $atts['overlay_block_color_active'] || "" == $atts['overlay_block_color'] );
                 $not_has_video = ( '' == $atts['video_bg_id'] && '' == $atts['video_bg_url'] && '' == $atts['video_bg_url_vimeo'] );
 
-                echo '<div class="ui-focused-element-highlight">'; 
+                echo '<div class="ui-focused-element-highlight">';
                 include REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-block-tools-top.php";
                 include REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-block-tools-bottom.php";
                 include REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-block-tools-floating.php";

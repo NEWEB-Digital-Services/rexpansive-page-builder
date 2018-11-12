@@ -1327,9 +1327,10 @@
         block_type: block_type
       };
 
-      $newEl.append(tmpl("tmpl-toolbox-block",tools_info));
-      $newEl.append(tmpl("tmpl-toolbox-block-bottom",tools_info));
-      $newEl.append(tmpl("tmpl-toolbox-block-floating"));
+      // $newEl.append(tmpl("tmpl-toolbox-block",tools_info));
+      // $newEl.append(tmpl("tmpl-toolbox-block-bottom",tools_info));
+      // $newEl.append(tmpl("tmpl-toolbox-block-floating"));
+      $newEl.append(tmpl("tmpl-toolbox-block-wrap",tools_info));
 
       $newEl.find(".grid-item-content").prepend(tmpl("tmpl-block-drag-handle"));
 

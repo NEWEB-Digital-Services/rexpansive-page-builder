@@ -68,9 +68,10 @@ var Rexbuilder_Section = (function($) {
       if ($elem.find(".rexlive-block-toolbox").length == 0) {
         $elem
           .find(".grid-stack-item-content")
-          .after(tmpl("tmpl-toolbox-block", tools_info))
-          .after(tmpl("tmpl-toolbox-block-bottom", tools_info))
-          .after(tmpl("tmpl-toolbox-block-floating"));
+          // .after(tmpl("tmpl-toolbox-block", tools_info))
+          // .after(tmpl("tmpl-toolbox-block-bottom", tools_info))
+          // .after(tmpl("tmpl-toolbox-block-floating"));
+          .after(tmpl("tmpl-toolbox-block-wrap", tools_info));
       }
     });
 

@@ -15,6 +15,8 @@ $tool_button_classes_right = 'tool-button tool-button--flat';
 $tool_button_classes = 'tool-button';
 ?>
 
+<?php include 'js-templates/rexlive-block-tools.php'; ?>
+
 <script type="text/x-tmpl" id="tmpl-toolbox-block">
 <div class="rexlive-block-toolbox top-tools">
     <div class="rexlive-top-block-tools">
