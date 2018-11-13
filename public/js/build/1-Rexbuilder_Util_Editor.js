@@ -1109,8 +1109,11 @@ var Rexbuilder_Util_Editor = (function($) {
   var _traceVisibileRow = function(el) {
     // $(".rexpansive_section").removeClass('activeRowTools');
     // $(el).addClass('activeRowTools');
-    $(".rexpansive_section").removeClass('highLightRow'); 
-    $(el).addClass('highLightRow');
+    $(".rexpansive_section").removeClass('highLightRow');
+    // var $hovered = $(".rexpansive_section.focusedRow");
+    // if( $hovered.length == 0 ) {
+      $(el).addClass('highLightRow');
+    // }
 
     Rexbuilder_Util_Editor.visibleRow = el;
     Rexbuilder_Util_Editor.visibleRowInfo = {
