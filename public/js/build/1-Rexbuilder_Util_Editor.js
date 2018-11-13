@@ -942,7 +942,6 @@ var Rexbuilder_Util_Editor = (function($) {
 
     var didScrollHighlightEvent = false;
     var didScrollViewTopToolsEvent = false;
-    var count = 0;
     
     $(window).on("scroll", function(e) {
       didScrollHighlightEvent = true;
@@ -956,28 +955,7 @@ var Rexbuilder_Util_Editor = (function($) {
       if(didScrollHighlightEvent) {
         var el = whichVisible();
         if( null !== el && Rexbuilder_Util_Editor.visibleRow !== el ) {
-          // $(".rexpansive_section").removeClass('activeRowTools');
-          // $(el).addClass('activeRowTools');
-          $(".rexpansive_section").removeClass('highLightRow');
-          $(el).addClass('highLightRow');
-          Rexbuilder_Util_Editor.visibleRow = el;
-          Rexbuilder_Util_Editor.visibleRowInfo = {
-            sectionID: el.getAttribute('data-rexlive-section-id'),
-            modelNumber: typeof el.getAttribute("data-rexlive-model-number") != "undefined" ? el.getAttribute("data-rexlive-model-number") : "",
-            modelEditing: typeof el.getAttribute("data-rexlive-model-editing") != "undefined" ? el.getAttribute("data-rexlive-model-editing") : "",
-          };
-
-          var visibleRowInfo = {};
-          var sectionData = $(el).find('.section-data')[0];   // corresponds to .section-data div
-          visibleRowInfo = _rowAttrsObj( sectionData );
-          visibleRowInfo.collapse = el.getAttribute('data-rex-collapse-grid');
-
-          var data = {
-            eventName: "rexlive:traceVisibleRow",
-            sectionTarget: Rexbuilder_Util_Editor.visibleRowInfo,
-            rowInfo: visibleRowInfo
-          };
-          Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+          _traceVisibileRow(el);
         }
         didScrollHighlightEvent = false;
       }
@@ -1010,7 +988,7 @@ var Rexbuilder_Util_Editor = (function($) {
     }
 
     setInterval(function() {
-      if( didScrollViewTopToolsEvent && count < 1 ) {
+      if( didScrollViewTopToolsEvent && !Rexbuilder_Util.$rexContainer.hasClass("forced-top-tools") ) {
         didScrollViewTopToolsEvent = false;
         var elementPositionTop = Rexbuilder_Util.$rexContainer.offset().top,
           elementHeight = Rexbuilder_Util.$rexContainer.height(),
@@ -1027,6 +1005,48 @@ var Rexbuilder_Util_Editor = (function($) {
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
       }
     }, 250);
+
+    var $highlightedRow;
+
+    Rexbuilder_Util.$rexContainer.on("mouseenter", ".rexpansive_section", function(e) {
+      var $thisRow = $(this);
+      if( $thisRow.hasClass("highLightRow") ) {
+        
+        // Rexbuilder_Util.$rexContainer.addClass("forced-top-tools");
+        // var data = {
+        //   eventName: "rexlive:hideTopFastTools",
+        // };
+        // Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      } else {
+        $highlightedRow = Rexbuilder_Util.$rexContainer.find(".rexpansive_section.highLightRow");
+        $highlightedRow.removeClass("highLightRow");
+        Rexbuilder_Util.$rexContainer.addClass("forced-top-tools");
+        var data = {
+          eventName: "rexlive:hideTopFastTools",
+        };
+        Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      }
+    });
+
+    Rexbuilder_Util.$rexContainer.on("mouseleave", ".rexpansive_section", function(e) {
+      var $thisRow = $(this);
+      if( $thisRow.hasClass("highLightRow") ) {
+        // var data = {
+        //   eventName: "rexlive:viewTopFastTools",
+        // };
+        // Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+
+        // Rexbuilder_Util.$rexContainer.removeClass("forced-top-tools");
+      } else {
+        $highlightedRow.addClass("highLightRow");
+        var data = {
+          eventName: "rexlive:viewTopFastTools",
+        };
+        Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+
+        Rexbuilder_Util.$rexContainer.removeClass("forced-top-tools");
+      }
+    });
   };
 
   /**
@@ -1044,6 +1064,49 @@ var Rexbuilder_Util_Editor = (function($) {
     }
     return obj;
   };
+
+  /**
+   * Set a row to visibile: add highligthing, collect information, 
+   * send information to parent and set top fast tools to visible
+   * @param {NodeElement} el row to set visible
+   * @since 2.0.0
+   */
+  var _traceVisibileRow = function(el) {
+    // $(".rexpansive_section").removeClass('activeRowTools');
+    // $(el).addClass('activeRowTools');
+    $(".rexpansive_section").removeClass('highLightRow');
+    $(el).addClass('highLightRow');
+
+    Rexbuilder_Util_Editor.visibleRow = el;
+    Rexbuilder_Util_Editor.visibleRowInfo = {
+      sectionID: el.getAttribute('data-rexlive-section-id'),
+      modelNumber: typeof el.getAttribute("data-rexlive-model-number") != "undefined" ? el.getAttribute("data-rexlive-model-number") : "",
+      modelEditing: typeof el.getAttribute("data-rexlive-model-editing") != "undefined" ? el.getAttribute("data-rexlive-model-editing") : "",
+    };
+
+    var visibleRowInfo = {};
+    var sectionData = $(el).find('.section-data')[0];   // corresponds to .section-data div
+    visibleRowInfo = _rowAttrsObj( sectionData );
+    visibleRowInfo.collapse = el.getAttribute('data-rex-collapse-grid');
+
+    var data = {
+      eventName: "rexlive:traceVisibleRow",
+      sectionTarget: Rexbuilder_Util_Editor.visibleRowInfo,
+      rowInfo: visibleRowInfo
+    };
+    Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+  };
+
+  var _isElVisible = function( $el ) {
+    var elementPositionTop = $el.offset().top,
+      elementHeight = $el.height(),
+      scrolled = $(window).scrollTop();
+    if( elementPositionTop < scrolled && ( elementPositionTop + elementHeight ) > scrolled ) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   /**
    * Tell the parent that the user edit the builder
