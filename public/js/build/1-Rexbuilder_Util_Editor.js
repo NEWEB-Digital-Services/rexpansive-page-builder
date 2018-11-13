@@ -988,65 +988,101 @@ var Rexbuilder_Util_Editor = (function($) {
     }
 
     setInterval(function() {
-      if( didScrollViewTopToolsEvent && !Rexbuilder_Util.$rexContainer.hasClass("forced-top-tools") ) {
+      // if( didScrollViewTopToolsEvent && !Rexbuilder_Util.$rexContainer.hasClass("forced-top-tools") ) {
+      if( didScrollViewTopToolsEvent ) {
         didScrollViewTopToolsEvent = false;
-        var elementPositionTop = Rexbuilder_Util.$rexContainer.offset().top,
-          elementHeight = Rexbuilder_Util.$rexContainer.height(),
-          scrolled = $(window).scrollTop();
-        if( elementPositionTop < scrolled && ( elementPositionTop + elementHeight ) > scrolled ) {
-          var data = {
-            eventName: "rexlive:viewTopFastTools",
-          };
+
+        var $highlighted = Rexbuilder_Util.$rexContainer.find(".rexpansive_section.highLightRow");
+        var data;
+        if( $highlighted.length > 0 ) {
+          if( _isElVisible( $highlighted ) ) {
+            data = {
+              eventName: "rexlive:hideTopFastTools",
+            };
+          } else {
+            data = {
+              eventName: "rexlive:viewTopFastTools",
+            };
+          }
         } else {
-          var data = {
+          data = {
             eventName: "rexlive:hideTopFastTools",
           };
         }
+
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
       }
     }, 250);
 
     var $highlightedRow;
+    var $tracedHighlightRow;
 
-    Rexbuilder_Util.$rexContainer.on("mouseenter", ".rexpansive_section", function(e) {
-      var $thisRow = $(this);
-      if( $thisRow.hasClass("highLightRow") ) {
-        
-        // Rexbuilder_Util.$rexContainer.addClass("forced-top-tools");
-        // var data = {
-        //   eventName: "rexlive:hideTopFastTools",
-        // };
-        // Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-      } else {
-        $highlightedRow = Rexbuilder_Util.$rexContainer.find(".rexpansive_section.highLightRow");
-        $highlightedRow.removeClass("highLightRow");
-        Rexbuilder_Util.$rexContainer.addClass("forced-top-tools");
-        var data = {
-          eventName: "rexlive:hideTopFastTools",
-        };
-        Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-      }
-    });
+    var checkHoverIn = true;
+    var checkHoverOut = false;
 
-    Rexbuilder_Util.$rexContainer.on("mouseleave", ".rexpansive_section", function(e) {
-      var $thisRow = $(this);
-      if( $thisRow.hasClass("highLightRow") ) {
-        // var data = {
-        //   eventName: "rexlive:viewTopFastTools",
-        // };
-        // Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+    if( checkHoverIn ) {
+      Rexbuilder_Util.$rexContainer.on("mouseenter", ".rexpansive_section", function(e) {
+        var $thisRow = $(this);
+        if( $thisRow.hasClass("highLightRow") ) {
+          if( _isElVisible( $thisRow ) ) {
+            // Rexbuilder_Util.$rexContainer.addClass("forced-top-tools");
+            var data = {
+              eventName: "rexlive:hideTopFastTools",
+            };
+            Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+          } else {
+            var data = {
+              eventName: "rexlive:viewTopFastTools",
+            };
+            Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+          }
+        } else {
+          // if( _isElVisible( $thisRow ) ) {
+          //   console.log(2.1);
+          //   $highlightedRow = Rexbuilder_Util.$rexContainer.find(".rexpansive_section.highLightRow");
+          //   $highlightedRow.removeClass("highLightRow");
+          //   Rexbuilder_Util.$rexContainer.addClass("forced-top-tools");
+          //   var data = {
+          //     eventName: "rexlive:hideTopFastTools",
+          //   };
+          //   Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+          // } else {
+          //   $tracedHighlightRow = Rexbuilder_Util.$rexContainer.find(".rexpansive_section.highLightRow");
+          //   _traceVisibileRow( this );
+          // }
+        }
+      });
+    }
 
-        // Rexbuilder_Util.$rexContainer.removeClass("forced-top-tools");
-      } else {
-        $highlightedRow.addClass("highLightRow");
-        var data = {
-          eventName: "rexlive:viewTopFastTools",
-        };
-        Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-
-        Rexbuilder_Util.$rexContainer.removeClass("forced-top-tools");
-      }
-    });
+    if( checkHoverOut ) {
+      Rexbuilder_Util.$rexContainer.on("mouseleave", ".rexpansive_section", function(e) {
+        var $thisRow = $(this);
+        // if( $thisRow.hasClass("highLightRow") ) {
+        //   if( _isElVisible( $thisRow ) ) {
+        //     var data = {
+        //       eventName: "rexlive:viewTopFastTools",
+        //     };
+        //     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+    
+        //     Rexbuilder_Util.$rexContainer.removeClass("forced-top-tools");
+        //   }
+        // } else {
+          if( _isElVisible( $thisRow ) ) {
+            $highlightedRow.addClass("highLightRow");
+            var data = {
+              eventName: "rexlive:viewTopFastTools",
+            };
+            Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+            
+            Rexbuilder_Util.$rexContainer.removeClass("forced-top-tools");
+            $highlightedRow = null;
+          } else {
+            _traceVisibileRow( $tracedHighlightRow );
+            $tracedHighlightRow = null;
+          }
+        // }
+      });
+    }
   };
 
   /**
