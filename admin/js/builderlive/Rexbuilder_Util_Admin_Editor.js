@@ -88,6 +88,14 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         _updateTopToolbar();
       }
 
+      if( event.data.eventName == "rexlive:viewTopFastTools" ) {
+        Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.removeClass("top-fast-tools--hide");
+      }
+      
+      if( event.data.eventName == "rexlive:hideTopFastTools" ) {
+        Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.addClass("top-fast-tools--hide");
+      }
+
       if(event.data.eventName == "rexlive:updateTopToolbar") {
         Rexbuilder_Util_Admin_Editor.highlightRowSetData(event.data.updateInfo);
         _updateTopToolbar();

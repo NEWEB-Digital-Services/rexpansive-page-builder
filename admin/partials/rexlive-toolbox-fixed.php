@@ -39,7 +39,7 @@ $small_tools = true;
         </div>
       </div>
     </div>
-    <div class="tools-container-middle tools-container">
+    <div class="tools-container-middle tools-container tools-insert-area">
       <?php // include_once 'rexlive-toolbox--layout-area-list.php'; ?>
       <?php include_once 'rexlive-toolbox--insert-area.php'; ?>
     </div>

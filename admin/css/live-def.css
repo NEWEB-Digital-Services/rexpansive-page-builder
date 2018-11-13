@@ -3733,7 +3733,7 @@ ul {
       .section-toolBox .tools-area.tool-area--side .tool-button--flat:hover .l-svg-icons > svg {
         fill: rgba(255, 255, 255, 0.5); }
     .section-toolBox .tools-area.tool-area--center {
-      background-color: #424242;
+      background-color: #00ACFF;
       padding-left: 15px;
       padding-top: 7px;
       padding-bottom: 7px;
@@ -3748,6 +3748,10 @@ ul {
         padding-left: 10px; }
       .section-toolBox .tools-area.tool-area--center .tool-button--flat:hover .l-svg-icons > svg {
         fill: #81d7ff; }
+      .section-toolBox .tools-area.tool-area--center .tool-button_list--item {
+        background-color: #00ACFF; }
+        .section-toolBox .tools-area.tool-area--center .tool-button_list--item .l-svg-icons > svg {
+          fill: #fff; }
     .section-toolBox .tools-area:first-child {
       padding-left: 6px; }
     .section-toolBox .tools-area:last-child {

@@ -15462,6 +15462,10 @@ input:disabled + .rex_edit_title_slider {
   transition: transform 300ms, -webkit-transform 300ms;
   z-index: 10; }
 
+.top-fast-tools--hide .tools-insert-area,
+.top-fast-tools--hide .toolbox-right-fast-config-area {
+  display: none; }
+
 .rexlive-toolbox {
   background-color: white;
   width: 100%;

@@ -41,7 +41,7 @@
     }
 
     &.tool-area--center {
-      background-color: $palette-color-4;
+      background-color: $palette-color-1;
       padding-left: 15px;
       padding-top: 7px;
       padding-bottom: 7px;
@@ -56,6 +56,10 @@
         &:hover {
           @include fill-icon(#81d7ff);
         }
+      }
+      .tool-button_list--item {
+        background-color: $palette-color-1;
+        @include fill-icon(#fff);
       }
     }
 

@@ -940,13 +940,20 @@ var Rexbuilder_Util_Editor = (function($) {
     // $(Rexbuilder_Util_Editor.visibleRow).addClass('activeRowTools');
     $(Rexbuilder_Util_Editor.visibleRow).addClass('highLightRow');
 
-    var didScroll = false;
+    var didScrollHighlightEvent = false;
+    var didScrollViewTopToolsEvent = false;
+    var count = 0;
+    
     $(window).on("scroll", function(e) {
-      didScroll = true;
+      didScrollHighlightEvent = true;
+      didScrollViewTopToolsEvent = true;
     });
 
+    /**
+     * Setting interval to highlight the visible section
+     */
     setInterval(function() {
-      if(didScroll) {
+      if(didScrollHighlightEvent) {
         var el = whichVisible();
         if( null !== el && Rexbuilder_Util_Editor.visibleRow !== el ) {
           // $(".rexpansive_section").removeClass('activeRowTools');
@@ -972,7 +979,7 @@ var Rexbuilder_Util_Editor = (function($) {
           };
           Rexbuilder_Util_Editor.sendParentIframeMessage(data);
         }
-        didScroll=false;
+        didScrollHighlightEvent = false;
       }
     },250);
 
@@ -1001,6 +1008,25 @@ var Rexbuilder_Util_Editor = (function($) {
       });
       return spotted;
     }
+
+    setInterval(function() {
+      if( didScrollViewTopToolsEvent && count < 1 ) {
+        didScrollViewTopToolsEvent = false;
+        var elementPositionTop = Rexbuilder_Util.$rexContainer.offset().top,
+          elementHeight = Rexbuilder_Util.$rexContainer.height(),
+          scrolled = $(window).scrollTop();
+        if( elementPositionTop < scrolled && ( elementPositionTop + elementHeight ) > scrolled ) {
+          var data = {
+            eventName: "rexlive:viewTopFastTools",
+          };
+        } else {
+          var data = {
+            eventName: "rexlive:hideTopFastTools",
+          };
+        }
+        Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      }
+    }, 250);
   };
 
   /**

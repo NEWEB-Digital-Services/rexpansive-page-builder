@@ -1,3 +1,10 @@
+<?php
+/**
+ * Right fast configuration area
+ * 
+ * @since 2.0.0
+ */
+?>
 <div class="bl_d-iflex bl_ai-c toolbox-right-fast-config-area toolbox-config-area">
   <div class="tool-button--double-icon--wrap tool-button--hide tippy" data-tippy-content="<?php _e('Background Image','rexpansive'); ?>">
     <div class="tool-button tool-button--full edit-row-image-background-toolbox">
