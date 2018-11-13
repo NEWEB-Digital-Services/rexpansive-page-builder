@@ -993,21 +993,37 @@ var Rexbuilder_Util_Editor = (function($) {
         didScrollViewTopToolsEvent = false;
 
         var $highlighted = Rexbuilder_Util.$rexContainer.find(".rexpansive_section.highLightRow");
+        var $hovered = Rexbuilder_Util.$rexContainer.find(".rexpansive_section.focusedRow");
+        var $first = Rexbuilder_Util.$rexContainer.find(".rexpansive_section").first();
         var data;
+
         if( $highlighted.length > 0 ) {
           if( _isElVisible( $highlighted ) ) {
-            data = {
-              eventName: "rexlive:hideTopFastTools",
-            };
+            if( $highlighted.is($first) ) {
+              data = { eventName: "rexlive:hideTopFastTools" };
+            } else {
+              if( $hovered.length > 0 ) {
+                if( $highlighted.is($hovered) ) {
+                  data = { eventName: "rexlive:hideTopFastTools" };
+                }
+              } else {
+                data = { eventName: "rexlive:viewTopFastTools" };
+              }
+            }
           } else {
-            data = {
-              eventName: "rexlive:viewTopFastTools",
-            };
+            if( $hovered.length > 0 ) {
+              if( $highlighted.is($hovered) ) {
+                data = { eventName: "rexlive:viewTopFastTools" };
+              }
+              // else {
+              //   data = { eventName: "rexlive:hideTopFastTools" };
+              // }
+            } else {
+              data = { eventName: "rexlive:viewTopFastTools" };
+            }
           }
         } else {
-          data = {
-            eventName: "rexlive:hideTopFastTools",
-          };
+          data = { eventName: "rexlive:hideTopFastTools" };
         }
 
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
@@ -1018,69 +1034,52 @@ var Rexbuilder_Util_Editor = (function($) {
     var $tracedHighlightRow;
 
     var checkHoverIn = true;
-    var checkHoverOut = false;
+    var checkHoverOut = true;
 
     if( checkHoverIn ) {
       Rexbuilder_Util.$rexContainer.on("mouseenter", ".rexpansive_section", function(e) {
         var $thisRow = $(this);
+        var data;
         if( $thisRow.hasClass("highLightRow") ) {
           if( _isElVisible( $thisRow ) ) {
             // Rexbuilder_Util.$rexContainer.addClass("forced-top-tools");
-            var data = {
-              eventName: "rexlive:hideTopFastTools",
-            };
-            Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+            data = { eventName: "rexlive:hideTopFastTools" };
           } else {
-            var data = {
-              eventName: "rexlive:viewTopFastTools",
-            };
-            Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+            data = { eventName: "rexlive:viewTopFastTools" };
           }
         } else {
-          // if( _isElVisible( $thisRow ) ) {
-          //   console.log(2.1);
-          //   $highlightedRow = Rexbuilder_Util.$rexContainer.find(".rexpansive_section.highLightRow");
-          //   $highlightedRow.removeClass("highLightRow");
-          //   Rexbuilder_Util.$rexContainer.addClass("forced-top-tools");
-          //   var data = {
-          //     eventName: "rexlive:hideTopFastTools",
-          //   };
-          //   Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-          // } else {
-          //   $tracedHighlightRow = Rexbuilder_Util.$rexContainer.find(".rexpansive_section.highLightRow");
-          //   _traceVisibileRow( this );
-          // }
+          $tracedHighlightRow = Rexbuilder_Util.$rexContainer.find(".rexpansive_section.highLightRow");
+          _traceVisibileRow( this );
+
+          if( _isElVisible( $thisRow ) ) {
+            data = { eventName: "rexlive:hideTopFastTools" };
+          } else {
+            data = { eventName: "rexlive:viewTopFastTools" };
+          }
         }
+        Rexbuilder_Util_Editor.sendParentIframeMessage(data);
       });
     }
 
     if( checkHoverOut ) {
       Rexbuilder_Util.$rexContainer.on("mouseleave", ".rexpansive_section", function(e) {
         var $thisRow = $(this);
-        // if( $thisRow.hasClass("highLightRow") ) {
-        //   if( _isElVisible( $thisRow ) ) {
-        //     var data = {
-        //       eventName: "rexlive:viewTopFastTools",
-        //     };
-        //     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-    
-        //     Rexbuilder_Util.$rexContainer.removeClass("forced-top-tools");
-        //   }
-        // } else {
-          if( _isElVisible( $thisRow ) ) {
-            $highlightedRow.addClass("highLightRow");
-            var data = {
-              eventName: "rexlive:viewTopFastTools",
-            };
-            Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-            
-            Rexbuilder_Util.$rexContainer.removeClass("forced-top-tools");
-            $highlightedRow = null;
-          } else {
-            _traceVisibileRow( $tracedHighlightRow );
-            $tracedHighlightRow = null;
-          }
+        var $first = Rexbuilder_Util.$rexContainer.find(".rexpansive_section").first();
+        if( !$thisRow.is($first) ) {
+          var data;
+          data = { eventName: "rexlive:viewTopFastTools" };
+          Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+        }
+        // if( _isElVisible($thisRow) ) {
+
         // }
+        // console.log($tracedHighlightRow);
+        // if( $thisRow.hasClass("highLightRow") ) {
+        //   $tracedHighlightRow = null;
+        //   _traceVisibileRow( $tracedHighlightRow );
+        //   data = { eventName: "rexlive:hideTopFastTools" };
+        // }
+        // Rexbuilder_Util_Editor.sendParentIframeMessage(data);
       });
     }
   };
@@ -1110,7 +1109,7 @@ var Rexbuilder_Util_Editor = (function($) {
   var _traceVisibileRow = function(el) {
     // $(".rexpansive_section").removeClass('activeRowTools');
     // $(el).addClass('activeRowTools');
-    $(".rexpansive_section").removeClass('highLightRow');
+    $(".rexpansive_section").removeClass('highLightRow'); 
     $(el).addClass('highLightRow');
 
     Rexbuilder_Util_Editor.visibleRow = el;
@@ -1133,11 +1132,14 @@ var Rexbuilder_Util_Editor = (function($) {
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
   };
 
-  var _isElVisible = function( $el ) {
+  var _isElVisible = function( $el, offsetTop, offsetBottom ) {
+    offsetTop = undefined === typeof offsetTop ? offsetTop : 0;
+    offsetBottom = undefined === typeof offsetBottom ? offsetBottom : 0;
+
     var elementPositionTop = $el.offset().top,
       elementHeight = $el.height(),
       scrolled = $(window).scrollTop();
-    if( elementPositionTop < scrolled && ( elementPositionTop + elementHeight ) > scrolled ) {
+    if( ( elementPositionTop + offsetTop ) < scrolled && ( elementPositionTop + elementHeight + offsetBottom ) > scrolled ) {
       return false;
     } else {
       return true;
