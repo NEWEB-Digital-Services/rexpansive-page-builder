@@ -3824,7 +3824,7 @@ ul {
   .activeRowTools ~ .rexpansive_section:hover {
     z-index: auto; }
 
-.highLightRow .section-toolBox + .section-toolBoox__highlight {
+.rexpansive_section.highLightRow .section-toolBox + .section-toolBoox__highlight {
   opacity: 1; }
 
 .rowTools__hide-fast-data .tool-area--center.row-toolBox__def-view {
@@ -4802,7 +4802,7 @@ ul {
 .rexbuilder-live-content--editing {
   position: relative; }
   .rexbuilder-live-content--editing .rexpansive_section.focusedRow {
-    z-index: 30; }
+    z-index: 2000; }
     .rexbuilder-live-content--editing .rexpansive_section.focusedRow .rex-row__dimension {
       overflow: visible; }
     .rexbuilder-live-content--editing .rexpansive_section.focusedRow .perfect-grid-gallery {

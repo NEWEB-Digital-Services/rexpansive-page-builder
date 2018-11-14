@@ -3,7 +3,7 @@
   position: relative;
   .rexpansive_section {
     &#{$row-focused} {
-      z-index: 30;
+      z-index: 2000;
       // border: 2px solid $icon-active-color;
       .rex-row__dimension {
         overflow: visible;

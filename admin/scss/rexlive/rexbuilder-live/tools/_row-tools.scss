@@ -161,10 +161,12 @@
   }
 }
 
-.highLightRow {
-  .section-toolBox {
-    + .section-toolBoox__highlight {
-      opacity: 1;
+.rexpansive_section {
+  &.highLightRow {
+    .section-toolBox {
+      + .section-toolBoox__highlight {
+        opacity: 1;
+      }
     }
   }
 }

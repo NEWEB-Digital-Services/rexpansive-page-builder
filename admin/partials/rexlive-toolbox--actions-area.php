@@ -1,6 +1,6 @@
 <div class="right-tools rexlive-builder-actions">
   <?php
-  if( true == $small_tools ) {
+  if( false == $small_tools ) {
     include "rexlive-toolbox--fast-config-area.php";
   }
   ?>

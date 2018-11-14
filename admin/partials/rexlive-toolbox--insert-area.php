@@ -113,6 +113,6 @@
 </div>
 
 <?php
-if( false == $small_tools ) {
+if( true == $small_tools ) {
   include "rexlive-toolbox--fast-config-area.php";
 }

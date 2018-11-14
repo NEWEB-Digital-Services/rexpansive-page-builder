@@ -364,7 +364,9 @@
 
 .toolbox-right-fast-config-area {
   @if( $small-tools == true ) {
-    padding-right: 10px;
+    padding-left: 10px;
+    position: absolute;
+    left: 100%;
   }
   .tool-button {
     box-shadow: none;

@@ -972,8 +972,8 @@ var Rexbuilder_Util_Editor = (function($) {
       win_height_padded_bottom = win_height * 0.8;
       win_height_padded_top = win_height * 0.3;
 
-      ruleTop.style.top = win_height_padded_top + 'px';
-      ruleBottom.style.top = win_height_padded_bottom + 'px';
+      // ruleTop.style.top = win_height_padded_top + 'px';
+      // ruleBottom.style.top = win_height_padded_bottom + 'px';
       
       var spotted = null;
       
@@ -1038,6 +1038,12 @@ var Rexbuilder_Util_Editor = (function($) {
       }
     }, 250);
 
+    var $tracedHighlightRow;
+
+    /**
+     * Check hover in on a row
+     * @since 2.0.0
+     */
     Rexbuilder_Util.$rexContainer.on("mouseenter", ".rexpansive_section", function(e) {
       var $thisRow = $(this);
       var data;
@@ -1061,6 +1067,10 @@ var Rexbuilder_Util_Editor = (function($) {
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });
   
+    /**
+     * Check hover out from a row
+     * @since 2.0.0
+     */
     Rexbuilder_Util.$rexContainer.on("mouseleave", ".rexpansive_section", function(e) {
       var $thisRow = $(this);
       var $first = Rexbuilder_Util.$rexContainer.find(".rexpansive_section").first();
@@ -1102,7 +1112,6 @@ var Rexbuilder_Util_Editor = (function($) {
     var $thisRow = $(el);
     if( $hovered.length == 0 || $thisRow.is($hovered) ) {
       $thisRow.addClass('highLightRow');
-    
 
       Rexbuilder_Util_Editor.visibleRow = el;
       Rexbuilder_Util_Editor.visibleRowInfo = {
