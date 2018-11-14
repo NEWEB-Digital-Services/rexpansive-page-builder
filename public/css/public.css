@@ -4581,7 +4581,9 @@ a.pswp-item {
       transform: scale(0.5);
       -webkit-transition: opacity 100ms ease-out;
       -o-transition: opacity 100ms ease-out;
-      transition: opacity 100ms ease-out; }
+      transition: opacity 100ms ease-out;
+      -webkit-box-shadow: 0 2px 60px 0 rgba(0, 0, 0, 0.13);
+              box-shadow: 0 2px 60px 0 rgba(0, 0, 0, 0.13); }
       .touch .vertical-nav a .label:after,
       .no-touch .vertical-nav a .label:after {
         content: "";

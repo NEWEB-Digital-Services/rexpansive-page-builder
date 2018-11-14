@@ -59,4 +59,4 @@ if(get_post_meta($post->ID, '_save_from_backend', true) == "false"){
 <?php
 include_once("rexlive-js-templates.php");
 include_once("rexlive-modals-tools.php");
-include Rexbuilder_Utilities::get_plugin_templates_path('rexbuilder-photoswipe-template.php');
+// include Rexbuilder_Utilities::get_plugin_templates_path('rexbuilder-photoswipe-template.php');
