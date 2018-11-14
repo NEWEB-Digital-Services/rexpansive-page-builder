@@ -894,24 +894,24 @@ var Rexbuilder_Util_Editor = (function($) {
   };
 
   var _checkVisibleRow = function() {
-    var ruleTop = document.createElement('div');
-    var ruleBottom = document.createElement('div');
+    // var ruleTop = document.createElement('div');
+    // var ruleBottom = document.createElement('div');
 
-    ruleTop.className = 'ruleTop';
-    ruleTop.style.width = '100%';
-    ruleTop.style.backgroundColor = 'red';
-    ruleTop.style.position = 'fixed';
-    ruleTop.style.left = '0';
-    ruleTop.style.height = '4px';
-    ruleTop.style.zIndex = '2000';
+    // ruleTop.className = 'ruleTop';
+    // ruleTop.style.width = '100%';
+    // ruleTop.style.backgroundColor = 'red';
+    // ruleTop.style.position = 'fixed';
+    // ruleTop.style.left = '0';
+    // ruleTop.style.height = '4px';
+    // ruleTop.style.zIndex = '2000';
 
-    ruleTop.className = 'ruleBottom';
-    ruleBottom.style.width = '100%';
-    ruleBottom.style.backgroundColor = 'red';
-    ruleBottom.style.position = 'fixed';
-    ruleBottom.style.left = '0';
-    ruleBottom.style.height = '4px';
-    ruleBottom.style.zIndex = '2000';
+    // ruleTop.className = 'ruleBottom';
+    // ruleBottom.style.width = '100%';
+    // ruleBottom.style.backgroundColor = 'red';
+    // ruleBottom.style.position = 'fixed';
+    // ruleBottom.style.left = '0';
+    // ruleBottom.style.height = '4px';
+    // ruleBottom.style.zIndex = '2000';
 
     // document.getElementsByTagName('body')[0].append(ruleTop);
     // document.getElementsByTagName('body')[0].append(ruleBottom);
@@ -961,6 +961,10 @@ var Rexbuilder_Util_Editor = (function($) {
       }
     },250);
 
+    /**
+     * Find the visibile Row
+     * @since 2.0.0
+     */
     function whichVisible() {
       var win_height = $(window).height(),
         win_height_padded_bottom,
@@ -973,7 +977,7 @@ var Rexbuilder_Util_Editor = (function($) {
       
       var spotted = null;
       
-      $(".rexpansive_section").each(function(i,el) {
+      Rexbuilder_Util.$rexContainer.find(".rexpansive_section").each(function(i,el) {
         var $element = $(el);
         var elementPositionTop = $element.offset().top,
           elementHeight = $element.height(),
@@ -987,6 +991,10 @@ var Rexbuilder_Util_Editor = (function($) {
       return spotted;
     }
 
+    /**
+     * Setting interval to activate or not the top fast row tools
+     * @since 2.0.0
+     */
     setInterval(function() {
       // if( didScrollViewTopToolsEvent && !Rexbuilder_Util.$rexContainer.hasClass("forced-top-tools") ) {
       if( didScrollViewTopToolsEvent ) {
@@ -1030,58 +1038,38 @@ var Rexbuilder_Util_Editor = (function($) {
       }
     }, 250);
 
-    var $highlightedRow;
-    var $tracedHighlightRow;
-
-    var checkHoverIn = true;
-    var checkHoverOut = true;
-
-    if( checkHoverIn ) {
-      Rexbuilder_Util.$rexContainer.on("mouseenter", ".rexpansive_section", function(e) {
-        var $thisRow = $(this);
-        var data;
-        if( $thisRow.hasClass("highLightRow") ) {
-          if( _isElVisible( $thisRow ) ) {
-            // Rexbuilder_Util.$rexContainer.addClass("forced-top-tools");
-            data = { eventName: "rexlive:hideTopFastTools" };
-          } else {
-            data = { eventName: "rexlive:viewTopFastTools" };
-          }
+    Rexbuilder_Util.$rexContainer.on("mouseenter", ".rexpansive_section", function(e) {
+      var $thisRow = $(this);
+      var data;
+      if( $thisRow.hasClass("highLightRow") ) {
+        if( _isElVisible( $thisRow ) ) {
+          // Rexbuilder_Util.$rexContainer.addClass("forced-top-tools");
+          data = { eventName: "rexlive:hideTopFastTools" };
         } else {
-          $tracedHighlightRow = Rexbuilder_Util.$rexContainer.find(".rexpansive_section.highLightRow");
-          _traceVisibileRow( this );
-
-          if( _isElVisible( $thisRow ) ) {
-            data = { eventName: "rexlive:hideTopFastTools" };
-          } else {
-            data = { eventName: "rexlive:viewTopFastTools" };
-          }
-        }
-        Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-      });
-    }
-
-    if( checkHoverOut ) {
-      Rexbuilder_Util.$rexContainer.on("mouseleave", ".rexpansive_section", function(e) {
-        var $thisRow = $(this);
-        var $first = Rexbuilder_Util.$rexContainer.find(".rexpansive_section").first();
-        if( !$thisRow.is($first) ) {
-          var data;
           data = { eventName: "rexlive:viewTopFastTools" };
-          Rexbuilder_Util_Editor.sendParentIframeMessage(data);
         }
-        // if( _isElVisible($thisRow) ) {
+      } else {
+        $tracedHighlightRow = Rexbuilder_Util.$rexContainer.find(".rexpansive_section.highLightRow");
+        _traceVisibileRow( this );
 
-        // }
-        // console.log($tracedHighlightRow);
-        // if( $thisRow.hasClass("highLightRow") ) {
-        //   $tracedHighlightRow = null;
-        //   _traceVisibileRow( $tracedHighlightRow );
-        //   data = { eventName: "rexlive:hideTopFastTools" };
-        // }
-        // Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-      });
-    }
+        if( _isElVisible( $thisRow ) ) {
+          data = { eventName: "rexlive:hideTopFastTools" };
+        } else {
+          data = { eventName: "rexlive:viewTopFastTools" };
+        }
+      }
+      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+    });
+  
+    Rexbuilder_Util.$rexContainer.on("mouseleave", ".rexpansive_section", function(e) {
+      var $thisRow = $(this);
+      var $first = Rexbuilder_Util.$rexContainer.find(".rexpansive_section").first();
+      if( !$thisRow.is($first) ) {
+        var data;
+        data = { eventName: "rexlive:viewTopFastTools" };
+        Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      }
+    });
   };
 
   /**
@@ -1109,30 +1097,32 @@ var Rexbuilder_Util_Editor = (function($) {
   var _traceVisibileRow = function(el) {
     // $(".rexpansive_section").removeClass('activeRowTools');
     // $(el).addClass('activeRowTools');
-    $(".rexpansive_section").removeClass('highLightRow');
-    // var $hovered = $(".rexpansive_section.focusedRow");
-    // if( $hovered.length == 0 ) {
-      $(el).addClass('highLightRow');
-    // }
+    var $rows = Rexbuilder_Util.$rexContainer.find(".rexpansive_section").removeClass('highLightRow');
+    var $hovered = $rows.filter(".focusedRow");
+    var $thisRow = $(el);
+    if( $hovered.length == 0 || $thisRow.is($hovered) ) {
+      $thisRow.addClass('highLightRow');
+    
 
-    Rexbuilder_Util_Editor.visibleRow = el;
-    Rexbuilder_Util_Editor.visibleRowInfo = {
-      sectionID: el.getAttribute('data-rexlive-section-id'),
-      modelNumber: typeof el.getAttribute("data-rexlive-model-number") != "undefined" ? el.getAttribute("data-rexlive-model-number") : "",
-      modelEditing: typeof el.getAttribute("data-rexlive-model-editing") != "undefined" ? el.getAttribute("data-rexlive-model-editing") : "",
-    };
+      Rexbuilder_Util_Editor.visibleRow = el;
+      Rexbuilder_Util_Editor.visibleRowInfo = {
+        sectionID: el.getAttribute('data-rexlive-section-id'),
+        modelNumber: typeof el.getAttribute("data-rexlive-model-number") != "undefined" ? el.getAttribute("data-rexlive-model-number") : "",
+        modelEditing: typeof el.getAttribute("data-rexlive-model-editing") != "undefined" ? el.getAttribute("data-rexlive-model-editing") : "",
+      };
 
-    var visibleRowInfo = {};
-    var sectionData = $(el).find('.section-data')[0];   // corresponds to .section-data div
-    visibleRowInfo = _rowAttrsObj( sectionData );
-    visibleRowInfo.collapse = el.getAttribute('data-rex-collapse-grid');
+      var visibleRowInfo = {};
+      var sectionData = $thisRow.find('.section-data')[0];   // corresponds to .section-data div
+      visibleRowInfo = _rowAttrsObj( sectionData );
+      visibleRowInfo.collapse = el.getAttribute('data-rex-collapse-grid');
 
-    var data = {
-      eventName: "rexlive:traceVisibleRow",
-      sectionTarget: Rexbuilder_Util_Editor.visibleRowInfo,
-      rowInfo: visibleRowInfo
-    };
-    Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      var data = {
+        eventName: "rexlive:traceVisibleRow",
+        sectionTarget: Rexbuilder_Util_Editor.visibleRowInfo,
+        rowInfo: visibleRowInfo
+      };
+      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+    }
   };
 
   var _isElVisible = function( $el, offsetTop, offsetBottom ) {
