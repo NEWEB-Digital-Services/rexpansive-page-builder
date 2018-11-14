@@ -321,7 +321,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
             var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
             if (typeof data.target.rexID == "undefined") {
-                $el = _createBlockGrid(galleryInstance, 12, 4);
+                $el = _createBlockGrid(galleryInstance, 12, 4, "rexslider");
             } else {
                 $el = $section.find("div [data-rexbuilder-block-id=\"" + data.target.rexID + "\"]");
             }
