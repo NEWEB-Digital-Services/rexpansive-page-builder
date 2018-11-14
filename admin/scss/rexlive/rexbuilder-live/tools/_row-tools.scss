@@ -54,7 +54,7 @@
       }
       .tool-button--flat {
         &:hover {
-          @include fill-icon(#81d7ff);
+          @include fill-icon($palette-color-11);
         }
       }
       .tool-button_list--item {

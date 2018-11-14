@@ -14789,7 +14789,7 @@ ul {
     -webkit-box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -7px rgba(0, 0, 0, 0.2);
             box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -7px rgba(0, 0, 0, 0.2); }
     .tool-button:hover .l-svg-icons > svg {
-      fill: #000; }
+      fill: #00ACFF; }
   .tool-button.active {
     background-color: #00ACFF;
     color: #fff; }
@@ -15410,7 +15410,7 @@ body.rexpansive-editor .lean-overlay {
     .layout.active-on-page .rex-material-bar {
       background-color: #fff; }
   .layout .l-svg-icons > svg {
-    fill: #000; }
+    fill: #424242; }
   .layout .dashicons,
   .layout .dashicons-before:before {
     width: 16px;
@@ -15689,17 +15689,28 @@ input:disabled + .rex_edit_title_slider {
           -ms-flex-align: center;
               align-items: center;
       height: 100%; }
-  .rexlive-toolbox .bl_switch label input[type=checkbox]:checked + .lever:before, .rexlive-toolbox .bl_switch label input[type=checkbox]:checked + .lever:after {
-    left: 13px; }
+  .rexlive-toolbox .bl_switch label input[type=checkbox]:checked + .lever {
+    background-color: #81d7ff; }
+    .rexlive-toolbox .bl_switch label input[type=checkbox]:checked + .lever:before, .rexlive-toolbox .bl_switch label input[type=checkbox]:checked + .lever:after {
+      left: 13px; }
+    .rexlive-toolbox .bl_switch label input[type=checkbox]:checked + .lever:after {
+      background-color: #00ACFF; }
+  .rexlive-toolbox .bl_switch label input[type=checkbox]:checked ~ .bl_switch__icon .l-svg-icons > svg {
+    fill: #00ACFF; }
   .rexlive-toolbox .bl_switch label .lever {
     width: 26px;
     height: 10px;
-    margin: 0 10px 0 0; }
+    margin: 0 10px 0 0;
+    background-color: #ccc; }
     .rexlive-toolbox .bl_switch label .lever:before, .rexlive-toolbox .bl_switch label .lever:after {
       width: 15px;
       height: 15px;
       top: -3px;
       left: -2px; }
+    .rexlive-toolbox .bl_switch label .lever:after {
+      background-color: #979797; }
+    .rexlive-toolbox .bl_switch label .lever ~ .bl_switch__icon .l-svg-icons > svg {
+      fill: #ccc; }
 
 .rexlive-toolbox__toggle-wrap {
   background-color: white;
@@ -15799,10 +15810,12 @@ input:disabled + .rex_edit_title_slider {
     padding-bottom: 10px; }
     .toolbox-insert-area > .tool-button:not(:last-child) {
       border-right: 1px solid rgba(255, 255, 255, 0.15); }
+  .toolbox-insert-area .tool-button.tool-button--flat:hover .l-svg-icons > svg {
+    fill: #81d7ff; }
   .toolbox-insert-area .tool-button.tool-button__image--flat {
     padding-top: 7px;
     padding-bottom: 11px;
-    padding-left: 5px;
+    padding-left: 10px;
     padding-right: 10px;
     font-size: 15px; }
   .toolbox-insert-area .tool-button.tool-button__text--flat {
@@ -15831,6 +15844,8 @@ input:disabled + .rex_edit_title_slider {
       background-color: #00ACFF; }
       .toolbox-insert-area .tool-button-floating.tool-button__settings--flat .tool-button_list--item .l-svg-icons > svg {
         fill: #fff; }
+      .toolbox-insert-area .tool-button-floating.tool-button__settings--flat .tool-button_list--item:hover .l-svg-icons > svg {
+        fill: #81d7ff; }
   .toolbox-insert-area .tool-button-floating .l-svg-icons {
     font-size: 13px; }
 
@@ -15891,7 +15906,7 @@ input:disabled + .rex_edit_title_slider {
 .toolbox-builder-section-config--wrap {
   margin-left: 14px; }
   .toolbox-builder-section-config--wrap .tool-button_list--item:hover .l-svg-icons > svg {
-    fill: #000; }
+    fill: #00ACFF; }
 
 .tool-button-floating__activator {
   background-color: transparent;
@@ -15912,7 +15927,7 @@ input:disabled + .rex_edit_title_slider {
       font-size: 20px; }
 
 .tool-option .l-svg-icons > svg {
-  fill: #000; }
+  fill: #424242; }
 .tool-option:hover {
   color: #00ACFF; }
   .tool-option:hover .l-svg-icons > svg {
@@ -16049,15 +16064,15 @@ input:disabled + .rex_edit_title_slider {
 .tool-option.btn-undo, .tool-option.btn-redo {
   font-size: 18px; }
   .tool-option.btn-undo .l-svg-icons > svg, .tool-option.btn-redo .l-svg-icons > svg {
-    fill: #979797; }
+    fill: #ccc; }
   .tool-option.btn-undo:hover .l-svg-icons > svg, .tool-option.btn-redo:hover .l-svg-icons > svg {
     fill: #00ACFF; }
 
 .btn-undo--active .tool-option.btn-undo .l-svg-icons > svg {
-  fill: #000; }
+  fill: #424242; }
 
 .btn-redo--active .tool-option.btn-redo .l-svg-icons > svg {
-  fill: #000; }
+  fill: #424242; }
 
 .btn-undo {
   border-right-color: #efefef;
@@ -16084,7 +16099,6 @@ input:disabled + .rex_edit_title_slider {
 .rex-number {
   text-align: center; }
 
-.tool-option.active-layout .l-svg-icons > svg,
 .btn-builder-layout.active-layout .l-svg-icons > svg {
   fill: #039be5; }
 

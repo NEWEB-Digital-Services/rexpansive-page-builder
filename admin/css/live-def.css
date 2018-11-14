@@ -3598,7 +3598,7 @@ ul {
     -webkit-box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -7px rgba(0, 0, 0, 0.2);
             box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -7px rgba(0, 0, 0, 0.2); }
     .tool-button:hover .l-svg-icons > svg {
-      fill: #000; }
+      fill: #00ACFF; }
   .tool-button.active {
     background-color: #00ACFF;
     color: #fff; }
@@ -4424,7 +4424,7 @@ ul {
       -webkit-box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -7px rgba(0, 0, 0, 0.2);
               box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -7px rgba(0, 0, 0, 0.2); }
       .medium-insert-buttons .medium-insert-buttons-show:hover .l-svg-icons > svg {
-        fill: #000; }
+        fill: #00ACFF; }
   .medium-insert-buttons .medium-insert-action {
     padding: 5px;
     border-radius: 50%;
@@ -4443,7 +4443,7 @@ ul {
       -webkit-box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -7px rgba(0, 0, 0, 0.2);
               box-shadow: 0 16px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -7px rgba(0, 0, 0, 0.2); }
       .medium-insert-buttons .medium-insert-action:hover .l-svg-icons > svg {
-        fill: #000; }
+        fill: #00ACFF; }
     .medium-insert-buttons .medium-insert-action[data-addon="wordpressImages"] {
       padding: 0;
       overflow: hidden;

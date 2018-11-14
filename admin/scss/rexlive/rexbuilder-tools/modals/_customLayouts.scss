@@ -32,7 +32,7 @@
 
   margin: 0;
 
-  @include fill-icon(#000);
+  @include fill-icon($palette-color-4);
 
   .dashicons, 
   .dashicons-before:before {

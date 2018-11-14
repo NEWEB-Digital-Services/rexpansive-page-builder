@@ -78,16 +78,16 @@
 
   .bl_switch label input[type=checkbox] { 
     &:checked + .lever {
-      // background-color: $palette-color-2;
+      background-color: $palette-color-11;
       &:before, &:after {
         left: 13px;
       }
       &:after {
-        // background-color: #fff;
+        background-color: $palette-color-1;
       }
     }
     &:checked ~ .bl_switch__icon {
-      // @include fill-icon(#fff);
+      @include fill-icon($palette-color-1);
     }
   }
 
@@ -95,6 +95,7 @@
     width: 26px;
     height: 10px;
     margin: 0 10px 0 0;
+    background-color: $palette-color-10;
     &:before, &:after {
       width: 15px;
       height: 15px;
@@ -102,7 +103,10 @@
       left: -2px;
     }
     &:after {
-      // background-color: $palette-color-2;
+      background-color: $palette-color-2;
+    }
+    ~ .bl_switch__icon {
+      @include fill-icon($palette-color-10);
     }
   }
 }
@@ -216,11 +220,18 @@
       border-right: 1px solid rgba(255,255,255,0.15);
     }
   }
+  .tool-button{
+    &.tool-button--flat{
+      &:hover {
+        @include fill-icon($palette-color-11);
+      }
+    }
+  }
   .tool-button.tool-button__image--flat {
     padding-top: 7px;
     padding-bottom: 11px;
     @if( $small-tools == true ) {
-      padding-left: 5px;
+      padding-left: 10px;
       padding-right: 10px;
     } @else {
       padding-left: 10px;
@@ -280,6 +291,9 @@
     .tool-button_list--item {
       background-color: $palette-color-1;
       @include fill-icon(#fff);
+      &:hover {
+        @include fill-icon($palette-color-11);
+      }
     }
     // .tool-button_list {
       // padding-top: 10px;
@@ -347,7 +361,7 @@
     margin-left: 14px;
     .tool-button_list--item {
       &:hover {
-        @include fill-icon(#000);
+        @include fill-icon($palette-color-1);
       }
     }
   }
@@ -378,7 +392,7 @@
 }
 
 .tool-option {
-  @include fill-icon(#000);
+  @include fill-icon($palette-color-4);
   &:hover {
     color: $palette-color-1;
     @include fill-icon($palette-color-1);
@@ -549,7 +563,7 @@
     @if( $small-tools == true ) {
       font-size: 18px;
     }
-    @include fill-icon($palette-color-2);
+    @include fill-icon($palette-color-10);
     &:hover {
       @include fill-icon($palette-color-1);
     }
@@ -559,7 +573,7 @@
 .btn-undo--active {
   .tool-option {
     &.btn-undo {
-      @include fill-icon(#000);
+      @include fill-icon($palette-color-4);
     }
   }
 }
@@ -567,7 +581,7 @@
 .btn-redo--active {
   .tool-option {
     &.btn-redo {
-      @include fill-icon(#000);
+      @include fill-icon($palette-color-4);
     }
   }
 }
@@ -612,7 +626,7 @@
   text-align: center;
 }
 
-.tool-option,
+// .tool-option,
 .btn-builder-layout{
   // @include fill-icon(#000);
   &.active-layout {

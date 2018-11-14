@@ -64,7 +64,7 @@
   box-shadow: $shadow-1;
   transition: box-shadow 300ms;
   &:hover {
-    @include fill-icon(#000);
+    @include fill-icon($palette-color-1);
     box-shadow: $shadow-2;
   }
 }
