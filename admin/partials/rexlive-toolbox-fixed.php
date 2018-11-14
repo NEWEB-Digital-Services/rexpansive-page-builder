@@ -29,6 +29,11 @@ $small_tools = true;
         <div class="tool-option tool-option--placeholder">
           <?php Rexbuilder_Utilities::get_icon('#A007-Close'); ?>
         </div>
+
+        <div class="tool-option tool-option--full btn-models tippy" data-tippy-content="<?php esc_attr_e( 'Models', 'rexpansive' ); ?>">
+          <?php Rexbuilder_Utilities::get_icon('#A012-Models-List'); ?>
+        </div>
+
         <div class="tool-option btn-save tool-option--full-filled tippy" data-tippy-content="<?php esc_attr_e( 'Save', 'rexpansive' ); ?>">
           <span class="btn-save--icon"><?php Rexbuilder_Utilities::get_icon('#A006-Save-Clear'); ?></span>
           <!-- <span>
