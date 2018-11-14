@@ -120,6 +120,11 @@
       $section.attr("data-rexlive-section-edited", true);
 
       Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
+
+      if('undefined' == typeof e.settings.forged) {
+        var layout = ( e.target.checked ? 'fixed' : 'masonry' );
+        $section.find('.edit-row-layout-checkbox').prop('checked',layout);
+      }
       
       Rexbuilder_Dom_Util.updateGridLayoutDomProperties($gallery, data.layout);
       galleryInstance.updateGridLayout(data.layout, reverseData);

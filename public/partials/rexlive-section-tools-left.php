@@ -23,12 +23,20 @@ defined('ABSPATH') or exit;
         <a></a>
     </div><!-- // Row dimension -->
 
-    <div class="switch-toggle switch-live">
+    <div class="switch-toggle switch-live" style="display:none;">
         <input type="radio" class="edit-row-layout" data-section_layout="fixed" id="row-layout-fixed-<?php echo $atts['rexlive_section_id']; ?>" name="row-layout-<?php echo $atts['rexlive_section_id']; ?>" value="fixed" <?php checked('fixed',$atts['layout'],true); ?>>
-        <label class="tippy" data-tippy-content="<?php _e('Grid','rexpansive'); ?>" for="row-layout-fixed-<?php echo $atts['rexlive_section_id']; ?>"><span><?php Rexbuilder_Utilities::get_icon('#B011-Grid'); ?></span></label>
+        <label class="tippy" data-tippy-content="<?php _e('Grid','rexpansive'); ?>" for="row-layout-fixed-<?php echo $atts['rexlive_section_id']; ?>"><span><?php Rexbuilder_Utilities::get_icon('#B017-Grid-Layout'); ?></span></label>
         <input type="radio" class="edit-row-layout" data-section_layout="masonry" id="row-layout-masonry-<?php echo $atts['rexlive_section_id']; ?>" name="row-layout-<?php echo $atts['rexlive_section_id']; ?>" value="masonry" <?php checked('masonry',$atts['layout'],true); ?>>
         <label class="tippy" data-tippy-content="<?php _e('Masonry','rexpansive'); ?>" for="row-layout-masonry-<?php echo $atts['rexlive_section_id']; ?>"><span><?php Rexbuilder_Utilities::get_icon('#B010-Masonry'); ?></span></label>
     </div><!-- // Row layout -->
+
+    <div class="bl_switch tippy" data-tippy-content="<?php _e('Grid off/on','rexpansive'); ?>">
+        <label>
+            <input class="edit-row-layout-checkbox" type="checkbox" <?php checked('fixed',$atts['layout'],true); ?>>
+            <span class="lever"></span>
+            <span class="bl_switch__icon"><?php Rexbuilder_Utilities::get_icon('#B017-Grid-Layout'); ?></span>
+        </label>
+    </div><!-- // Row grid on/off -->
 
     <div class="<?php echo $tool_button_classes_right; ?> tool-button--inline collapse-grid tippy" data-tippy-content="<?php _e('Collapse','rexpansive'); ?>">
         <?php Rexbuilder_Utilities::get_icon('#B006-Collapse'); ?>

@@ -16,6 +16,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   var hightlightRowInfo;
   var $highlightRowSetWidth;
   var $highlightRowSetLayout;
+  var $highlightRowSetLayoutCheckbox;
   var $highlightRowSetCollapse;
 
   var $highlightRowSetBackgroundImg;
@@ -501,6 +502,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     /**
      * Change the layout of the visibile row
      * @since 2.0.0
+     * @deprecated Now we have the checkbox
      */
     Rexlive_Base_Settings.$document.on('change', '.edit-row-layout-toolbox', function(e) {
       Rexbuilder_Util_Admin_Editor.highlightRowSetData({
@@ -515,6 +517,30 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
             modelNumber: $highlightModelId.val()
           },
           layout: e.target.value
+        },
+      };
+
+      _sendIframeBuilderMessage(msg);
+    });
+
+    /**
+     * Change the layout of the visibile row with the checkbox
+     * @since 2.0.0
+     */
+    Rexlive_Base_Settings.$document.on('change', '.edit-row-layout-toolbox-checkbox', function(e) {
+      var layout = ( e.target.checked ? 'fixed' : 'masonry' );
+      Rexbuilder_Util_Admin_Editor.highlightRowSetData({
+        layout: layout
+      });
+
+      var msg = {
+        eventName: "rexlive:set_gallery_layout",
+        data_to_send: {
+          sectionTarget: {
+            sectionID: $highlightSectionId.val(),
+            modelNumber: $highlightModelId.val()
+          },
+          layout: layout
         },
       };
 
@@ -1031,6 +1057,11 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     $highlightRowSetLayout.filter('[value=' + hightlightRowInfo.layout + ']').attr('checked',true);
   };
 
+  var _updateLayoutCheckboxTool = function() {
+    var checkState = ( hightlightRowInfo.layout == 'fixed' ? true : false );
+    $highlightRowSetLayoutCheckbox.prop('checked', checkState);
+  }
+
   var _updateBkgrImgTool = function() {
     if( '' !== hightlightRowInfo.id_image_bg_section && '' !== hightlightRowInfo.image_bg_section ) {
       $highlightRowSetBackgroundImg
@@ -1131,6 +1162,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
 
     // 3. Synch layout
     _updateLayoutTool();
+    _updateLayoutCheckboxTool();
 
     // 4. Synch Background Image
     _updateBkgrImgTool();
@@ -1369,6 +1401,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     $highlightModelEditing = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-model-editing]');
     $highlightRowSetWidth = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('.edit-row-width-toolbox');
     $highlightRowSetLayout = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('.edit-row-layout-toolbox');
+    $highlightRowSetLayoutCheckbox = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('.edit-row-layout-toolbox-checkbox');
     $highlightRowSetCollapse = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('.toolbox-collapse-grid');
 
     var $toolboxConfig = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('.toolbox-right-config-area');
@@ -1441,6 +1474,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     updateModelState: _updateModelState,
     updateWidthTool: _updateWidthTool,
     updateLayoutTool: _updateLayoutTool,
+    updateLayoutCheckboxTool: _updateLayoutCheckboxTool,
     updateBkgrImgTool: _updateBkgrImgTool,
     updateBkgrColTool: _updateBkgrColTool,
     updateBkgrOverlayTool: _updateBkgrOverlayTool,

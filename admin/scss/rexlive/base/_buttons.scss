@@ -345,3 +345,9 @@
   padding: 5px 3px;
   backface-visibility: visible;
 }
+
+.tippy {
+  &:focus {
+    outline: none;
+  }
+}

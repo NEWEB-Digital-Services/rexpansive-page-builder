@@ -122,6 +122,49 @@
       font-size: 20px;
     }
   }
+
+  .bl_switch {
+    display: inline-block;
+    line-height: 1;
+    padding: 0 15px 0 0;
+    height: 13px;
+    label {
+      display: inline-flex;
+      align-items: center;
+      height: 100%;
+    }
+  }
+
+  .bl_switch label input[type=checkbox] { 
+    &:checked + .lever {
+      background-color: $palette-color-2;
+      &:before, &:after {
+        left: 13px;
+      }
+      &:after {
+        background-color: #fff;
+      }
+    }
+    &:checked ~ .bl_switch__icon {
+      @include fill-icon(#fff);
+    }
+  }
+
+  .bl_switch label .lever {
+    width: 26px;
+    height: 9px;
+    margin: 0 10px 0 5px;
+    background-color: #2a2929;
+    &:before, &:after {
+      width: 13px;
+      height: 13px;
+      top: -2px;
+      // left: 2px;
+    }
+    &:after {
+      background-color: $palette-color-2;
+    }
+  }
 }
 
 .rexpansive_section {

@@ -57,6 +57,7 @@ var LayoutGrid_Modal = (function($) {
       'layout': layoutData.layout,
     });
     Rexbuilder_Util_Admin_Editor.updateLayoutTool();
+    Rexbuilder_Util_Admin_Editor.updateLayoutCheckboxTool();
 
     var data_gallery = {
       eventName: "rexlive:set_gallery_layout",

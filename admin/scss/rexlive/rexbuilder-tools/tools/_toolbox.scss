@@ -63,6 +63,48 @@
       background-color: rgba(#fff,0.7);
     }
   }
+
+  .bl_switch {
+    display: inline-block;
+    line-height: 1;
+    padding: 0 3px;
+    height: 18px;
+    label {
+      display: inline-flex;
+      align-items: center;
+      height: 100%;
+    }
+  }
+
+  .bl_switch label input[type=checkbox] { 
+    &:checked + .lever {
+      // background-color: $palette-color-2;
+      &:before, &:after {
+        left: 13px;
+      }
+      &:after {
+        // background-color: #fff;
+      }
+    }
+    &:checked ~ .bl_switch__icon {
+      // @include fill-icon(#fff);
+    }
+  }
+
+  .bl_switch label .lever {
+    width: 26px;
+    height: 10px;
+    margin: 0 10px 0 0;
+    &:before, &:after {
+      width: 15px;
+      height: 15px;
+      top: -3px;
+      left: -2px;
+    }
+    &:after {
+      // background-color: $palette-color-2;
+    }
+  }
 }
 
 .rexlive-toolbox__toggle-wrap {

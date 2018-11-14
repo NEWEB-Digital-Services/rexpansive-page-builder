@@ -65,6 +65,7 @@ var Rexbuilder_Section_Editor = (function($) {
     /**
      * Event attached on row layout changed
      * @since 2.0.0
+     * @deprecated Now we have the checkbox
      */
     Rexbuilder_Util.$document.on('change', '.edit-row-layout', function(e) {
       var $section = $(e.target).parents(".rexpansive_section");
@@ -82,6 +83,35 @@ var Rexbuilder_Section_Editor = (function($) {
             modelNumber: modelNumber
           },
           layout: e.target.value
+        },
+        forged: true
+      };
+
+      var event = jQuery.Event("rexlive:set_gallery_layout");
+      event.settings = settings;
+      Rexbuilder_Util.$document.trigger(event);
+    });
+
+    /**
+     * Event attached on row layout changed with the checkbox
+     * @since 2.0.0
+     */
+    Rexbuilder_Util.$document.on('change', '.edit-row-layout-checkbox', function(e) {
+      var $section = $(e.target).parents(".rexpansive_section");
+      // var $section_data = $section.children('.section-data');
+      var sectionID = $section.attr("data-rexlive-section-id");
+      var modelNumber =
+        typeof $section.attr("data-rexlive-model-number") != "undefined"
+          ? $section.attr("data-rexlive-model-number")
+          : "";
+
+      var settings = {
+        data_to_send: {
+          sectionTarget: {
+            sectionID: sectionID,
+            modelNumber: modelNumber
+          },
+          layout: ( e.target.checked ? 'fixed' : 'masonry' )
         },
         forged: true
       };

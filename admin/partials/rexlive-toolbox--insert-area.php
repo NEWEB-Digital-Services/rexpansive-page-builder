@@ -62,12 +62,20 @@
 </div><!-- // insert element -->
 
 <div class="bl_d-iflex bl_ai-c toolbox-right-config-area toolbox-config-area">
-  <div class="switch-toggle switch-live--dark">
+  <div class="switch-toggle switch-live--dark" style="display:none;">
     <input type="radio" class="edit-row-layout-toolbox" data-section_layout="fixed" id="row-layout-fixed-toolbox" name="row-layout-toolbox" value="fixed" checked>
-    <label class="tippy" data-tippy-content="<?php _e('Grid','rexpansive'); ?>" for="row-layout-fixed-toolbox"><span><?php Rexbuilder_Utilities::get_icon('#B011-Grid'); ?></span></label>
+    <label class="tippy" data-tippy-content="<?php _e('Grid','rexpansive'); ?>" for="row-layout-fixed-toolbox"><span><?php Rexbuilder_Utilities::get_icon('#B017-Grid-Layout'); ?></span></label>
     <input type="radio" class="edit-row-layout-toolbox" data-section_layout="masonry" id="row-layout-masonry-toolbox" name="row-layout-toolbox" value="masonry">
     <label class="tippy" data-tippy-content="<?php _e('Masonry','rexpansive'); ?>" for="row-layout-masonry-toolbox"><span><?php Rexbuilder_Utilities::get_icon('#B010-Masonry'); ?></span></label>
   </div><!-- // Row layout -->
+
+  <div class="bl_switch tippy" data-tippy-content="<?php _e('Grid off/on','rexpansive'); ?>">
+    <label>
+      <input class="edit-row-layout-toolbox-checkbox" type="checkbox">
+      <span class="lever"></span>
+      <span class="bl_switch__icon"><?php Rexbuilder_Utilities::get_icon('#B017-Grid-Layout'); ?></span>
+    </label>
+  </div><!-- // Row grid on/off -->
 
   <div class="tool-button-floating toolbox-builder-section-config--wrap tool-button--model-hide">
     <div class="tool-button-floating__activator tool-option--small" data-tippy-content="<?php _e('Row settings', 'rexpansive');?>" data-tippy-placement="right">

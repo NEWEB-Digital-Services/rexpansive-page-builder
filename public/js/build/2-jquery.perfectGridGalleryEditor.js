@@ -857,6 +857,7 @@
      */
     removeScrollbars: function() {
       var $elem;
+      var gallery = this;
       this.$element.children(".grid-stack-item").each(function() {
         $elem = $(this);
         var $blockContent = $elem.find(".grid-item-content");
@@ -866,7 +867,7 @@
           !$blockContent.hasClass("youtube-player")
         ) {
           var scrollbarInstance = $elem
-            .find(this.settings.scrollbarWrapClass)
+            .find(gallery.settings.scrollbarWrapClass)
             .overlayScrollbars();
           if (scrollbarInstance !== undefined) {
             // //console.log("destroy " + $elem.data("rexbuilder-block-id"));
