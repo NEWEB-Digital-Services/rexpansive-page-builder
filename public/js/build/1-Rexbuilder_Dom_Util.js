@@ -36,6 +36,10 @@ var Rexbuilder_Dom_Util = (function($) {
     }
   };
 
+  /**
+   * Update a slider on the live builder with new slide and settings
+   * @param {Object} data Slider data settings
+   */
   var _updateSliderStack = function(data) {
     var $section;
 

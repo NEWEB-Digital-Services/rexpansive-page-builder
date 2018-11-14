@@ -1294,43 +1294,17 @@ var Rexbuilder_RexSlider = (function($) {
       $slider_dots: null,
       $slider_import: null
     };
-    rexslider_modal_properties.$modal_wrap = rexslider_modal_properties.$modal.parent(
-      ".rex-modal-wrap"
-    );
-
-    rexslider_modal_properties.$cancel_button = rexslider_modal_properties.$modal.find(
-      ".rex-modal__close-button"
-    );
-    rexslider_modal_properties.$save_button = rexslider_modal_properties.$modal.find(
-      ".rex-save-button"
-    );
-    rexslider_modal_properties.$undo_button = rexslider_modal_properties.$modal.find(
-      ".rex-undo-button"
-    );
-    rexslider_modal_properties.$add_new_slide = rexslider_modal_properties.$modal.find(
-      "#rex-slider__add-new-slide"
-    );
-    rexslider_modal_properties.$slide_list = rexslider_modal_properties.$modal.find(
-      ".rex-slider__slide-list"
-    );
-
-    rexslider_modal_properties.$slide_title = rexslider_modal_properties.$modal.find(
-      ".title-slider"
-    );
-
-    rexslider_modal_properties.$slider_autostart = rexslider_modal_properties.$modal.find(
-      "#rex-slider__autostart"
-    );
-    rexslider_modal_properties.$slider_prev_next = rexslider_modal_properties.$modal.find(
-      "#rex-slider__prev-next"
-    );
-    rexslider_modal_properties.$slider_dots = rexslider_modal_properties.$modal.find(
-      "#rex-slider__dots"
-    );
-
-    rexslider_modal_properties.$slider_import = rexslider_modal_properties.$modal.find(
-      "#rex-slider__import"
-    );
+    rexslider_modal_properties.$modal_wrap = rexslider_modal_properties.$modal.parent( ".rex-modal-wrap" );
+    rexslider_modal_properties.$cancel_button = rexslider_modal_properties.$modal.find( ".rex-modal__close-button" );
+    rexslider_modal_properties.$save_button = rexslider_modal_properties.$modal.find( ".rex-save-button" );
+    rexslider_modal_properties.$undo_button = rexslider_modal_properties.$modal.find( ".rex-undo-button" );
+    rexslider_modal_properties.$add_new_slide = rexslider_modal_properties.$modal.find( "#rex-slider__add-new-slide" );
+    rexslider_modal_properties.$slide_list = rexslider_modal_properties.$modal.find( ".rex-slider__slide-list" );
+    rexslider_modal_properties.$slide_title = rexslider_modal_properties.$modal.find( ".title-slider" );
+    rexslider_modal_properties.$slider_autostart = rexslider_modal_properties.$modal.find( "#rex-slider__autostart" );
+    rexslider_modal_properties.$slider_prev_next = rexslider_modal_properties.$modal.find( "#rex-slider__prev-next" );
+    rexslider_modal_properties.$slider_dots = rexslider_modal_properties.$modal.find( "#rex-slider__dots" );
+    rexslider_modal_properties.$slider_import = rexslider_modal_properties.$modal.find( "#rex-slider__import" );
 
     rexslider_modal_properties.$slide_list.sortable({
       revert: true,

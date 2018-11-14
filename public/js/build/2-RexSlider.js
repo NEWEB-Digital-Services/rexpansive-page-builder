@@ -29,8 +29,10 @@ var RexSlider = (function ($) {
         settings.setGallerySize = ('undefined' != typeof $sliderWrap.attr('data-set-gallery-size') ? JSON.parse($sliderWrap.attr('data-set-gallery-size')) : false);
 
         var auto_player = $sliderWrap.attr('data-rex-slider-animation');
-        if ('undefined' != typeof auto_player && '1' == auto_player.toString()) {
+        if ('undefined' != typeof auto_player && 'true' == auto_player.toString() ) {
             settings.autoPlay = true;
+        } else {
+            settings.autoPlay = false;
         }
 
         var prev_next = $sliderWrap.attr('data-rex-slider-prev-next');
@@ -82,7 +84,8 @@ var RexSlider = (function ($) {
             Rexbuilder_Util.playVideo($videoSlide);
         });
 
-        if (auto_player) {
+        console.log(settings.autoPlay);
+        if (settings.autoPlay) {
             $sliderWrap.flickity('playPlayer');
         }
 
