@@ -17,7 +17,8 @@
       fullHeight: "false",
       gridParentWrap: ".rexpansive_section",
       mobilePadding: "false",
-      cellHeightMasonry: 5
+      cellHeightMasonry: 5,
+      scrollbarWrapClass: ".rexlive-custom-scrollbar"
     };
 
   // The actual plugin constructor
@@ -696,7 +697,7 @@
 
     updateSrollbars: function() {
       this.$element
-        .find(".rex-custom-scrollbar")
+        .find(this.settings.scrollbarWrapClass)
         .each(function(i, rexScrollbar) {
           var scrollbarInstance = $(rexScrollbar).overlayScrollbars();
           if (typeof scrollbarInstance !== "undefined") {
@@ -708,7 +709,7 @@
     fixElementTextSize: function(block, $handler, event) {
       var $block = $(block);
       if (!$block.hasClass("block-has-slider")) {
-        var $rexScrollbar = $block.find(".rex-custom-scrollbar");
+        var $rexScrollbar = $block.find(this.settings.scrollbarWrapClass);
         if ($rexScrollbar.length == 0) {
           return;
         }
@@ -826,7 +827,7 @@
         var $block = $(this);
         if (!$block.hasClass("block-has-slider")) {
           var scrollbarInstance = $block
-            .find(".rex-custom-scrollbar")
+            .find(this.settings.scrollbarWrapClass)
             .overlayScrollbars();
           if (scrollbarInstance !== undefined) {
             //console.log("sleeping " + $block.data("rexbuilder-block-id"));
@@ -841,7 +842,7 @@
         var $block = $(this);
         if (!$block.hasClass("block-has-slider")) {
           var scrollbarInstance = $block
-            .find(".rex-custom-scrollbar")
+            .find(this.settings.scrollbarWrapClass)
             .overlayScrollbars();
           if (scrollbarInstance !== undefined) {
             //console.log("waking " + $block.data("rexbuilder-block-id"));
@@ -865,7 +866,7 @@
           !$blockContent.hasClass("youtube-player")
         ) {
           var scrollbarInstance = $elem
-            .find(".rex-custom-scrollbar")
+            .find(this.settings.scrollbarWrapClass)
             .overlayScrollbars();
           if (scrollbarInstance !== undefined) {
             // //console.log("destroy " + $elem.data("rexbuilder-block-id"));
@@ -881,7 +882,7 @@
       var gallery = this;
       this.$element.children(".grid-stack-item").each(function() {
         $elem = $(this);
-        var $rexScrollbar = $elem.find(".rex-custom-scrollbar");
+        var $rexScrollbar = $elem.find(gallery.settings.scrollbarWrapClass);
         if ($rexScrollbar.length == 0) {
           return;
         }
@@ -1291,7 +1292,7 @@
 
     addScrollbar: function($newEL) {
       var instanceScrollbar = $newEL
-        .find(".rex-custom-scrollbar")
+        .find(this.settings.scrollbarWrapClass)
         .overlayScrollbars(Rexbuilder_Util.scrollbarProperties)
         .overlayScrollbars();
       instanceScrollbar.sleep();

@@ -84,7 +84,6 @@ var RexSlider = (function ($) {
             Rexbuilder_Util.playVideo($videoSlide);
         });
 
-        console.log(settings.autoPlay);
         if (settings.autoPlay) {
             $sliderWrap.flickity('playPlayer');
         }
