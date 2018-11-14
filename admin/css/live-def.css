@@ -4640,9 +4640,6 @@ ul {
 .natural-image-background.small-width {
   background-size: 100%; }
 
-.backend-edited .collapse-grid {
-  display: none; }
-
 .tool-button.tool-button--flat.collapse-grid .l-svg-icons > svg {
   fill: rgba(255, 255, 255, 0.5); }
 .tool-button.tool-button--flat.collapse-grid.grid-collapsed .l-svg-icons > svg {
@@ -5010,9 +5007,10 @@ ul {
   bottom: 0;
   left: 0;
   visibility: hidden;
-  outline: 1px solid #FF0055;
+  outline: 2px solid #FF0055;
   -webkit-box-shadow: 0px 0px 111px 1px rgba(0, 0, 0, 0.8);
-          box-shadow: 0px 0px 111px 1px rgba(0, 0, 0, 0.8); }
+          box-shadow: 0px 0px 111px 1px rgba(0, 0, 0, 0.8);
+  outline-offset: -1px; }
 
 .gridActive > .grid-stack-item.focused.ui-draggable--drag-up {
   cursor: pointer !important; }

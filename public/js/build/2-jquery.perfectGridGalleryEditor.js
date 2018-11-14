@@ -1181,7 +1181,7 @@
       if (this.properties.numberBlocksVisibileOnGrid == 0) {
         this.$section.addClass("empty-section");
       } else {
-        this.$section.removeClass("empty-section");
+        this.$section.removeClass("empty-section").removeClass("activeRowTools");
         Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
       }
 
@@ -1302,7 +1302,7 @@
     createBlock: function(x, y, w, h, block_type) {
       block_type = typeof block_type !== 'undefined' ? block_type : "";    
       this.properties.numberBlocksVisibileOnGrid++;
-      this.$section.removeClass("empty-section");
+      this.$section.removeClass("empty-section").removeClass("activeRowTools");
       Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
       this.properties.lastIDBlock = this.properties.lastIDBlock + 1;
       var idBlock = this.properties.lastIDBlock;

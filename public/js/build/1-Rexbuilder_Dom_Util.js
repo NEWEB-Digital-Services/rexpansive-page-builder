@@ -205,6 +205,7 @@ var Rexbuilder_Dom_Util = (function($) {
 
     Rexbuilder_Section_Editor.updateRowBackgroundImageTool($section,data);
     Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
+    $section.removeClass("activeRowTools");
   };
 
   var _updateImageBlock = function($itemContent, $elemData, data) {
@@ -638,6 +639,7 @@ var Rexbuilder_Dom_Util = (function($) {
       );
       Rexbuilder_Section_Editor.updateRowBackgroundVideo( $target, videoOptions );
       Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
+      $target.removeClass("activeRowTools");
     } else if (targetType == "block") {
       $elemData.attr("data-video_bg_id", videoOptions.mp4Data.idMp4);
       $elemData.attr("data-video_mp4_url", videoOptions.mp4Data.linkMp4);
@@ -734,7 +736,7 @@ var Rexbuilder_Dom_Util = (function($) {
     if (galleryEditorInstance.properties.numberBlocksVisibileOnGrid == 0) {
       $elem.parents(".rexpansive_section").addClass("empty-section");
     } else {
-      $elem.parents(".rexpansive_section").removeClass("empty-section");
+      $elem.parents(".rexpansive_section").removeClass("empty-section").removeClass("activeRowTools");
       Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
     }
   };
@@ -952,6 +954,7 @@ var Rexbuilder_Dom_Util = (function($) {
 
     Rexbuilder_Section_Editor.updateRowBackgroundColorTool( $section, bgColor.color );
     Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
+    $section.removeClass("activeRowTools");
   };
 
   var _updateBlockBackgroundColorLive = function(data, color) {
@@ -978,6 +981,7 @@ var Rexbuilder_Dom_Util = (function($) {
 
     Rexbuilder_Block_Editor.updateBlockBackgroundColorToolLive( $target, color );
     Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
+    $target.removeClass("activeRowTools");
   };
 
   /**
@@ -1021,6 +1025,7 @@ var Rexbuilder_Dom_Util = (function($) {
     // Set live picker
     Rexbuilder_Section_Editor.updateRowOverlayColorToolLive( $target, color );
     Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
+    $target.removeClass("activeRowTools");
   };
 
   var _updateSectionOverlay = function($section, overlay) {
@@ -1040,6 +1045,7 @@ var Rexbuilder_Dom_Util = (function($) {
     
     Rexbuilder_Section_Editor.updateRowOverlayColorTool( $section, overlay );
     Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
+    $section.removeClass("activeRowTools");
   };
 
   var _updateBlockOverlayColorLive = function(data, color) {

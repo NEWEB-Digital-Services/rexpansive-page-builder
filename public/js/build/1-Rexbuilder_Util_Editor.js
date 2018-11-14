@@ -1199,6 +1199,7 @@ var Rexbuilder_Util_Editor = (function($) {
     var $rows = Rexbuilder_Util.$rexContainer.find(".rexpansive_section:not(removing_section)");
     if( "1" == $rows.length && $rows.hasClass('empty-section') ) {
       Rexbuilder_Util.$rexContainer.parent().addClass('add-new-section--hide');
+      $rows.addClass("activeRowTools");
     } else {
       Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
     }
