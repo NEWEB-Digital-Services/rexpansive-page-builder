@@ -132,4 +132,4 @@ $layout_list_type = "dropdown";
   </div>
 </div>
 
-<div class="lean-overlay" style="display:none;"></div>
+<!-- <div class="lean-overlay" style="display:none;"></div> -->

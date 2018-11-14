@@ -15882,7 +15882,7 @@ input:disabled + .rex_edit_title_slider {
   border-right: 1px solid #efefef;
   height: 50px; }
   .tool-option--full.btn-custom-css, .tool-option--full.btn-models {
-    border-left: 1px solid #efefef; }
+    border-right: 1px solid #efefef; }
   .tool-option--full.tool-option__choose-layout {
     border-left: 1px solid #efefef;
     position: relative;

@@ -830,7 +830,7 @@ var Rexbuilder_RexSlider = (function($) {
               ".rex-slider__slide[data-slider-slide-id=" + slide_id + "]";
 
             // rexslider_modal_properties.$modal.addClass('push-down-modal');
-            Rexpansive_Builder_Admin_TextEditor.openTextEditor(slide_selector, slide_text, true, ["hide-padding-position"]);
+            Rexlive_RexSlider_TextEditor.openTextEditor(slide_selector, slide_text, true, ["hide-padding-position"]);
             break;
           case "video":
             rexslider_modal_properties.$modal.addClass("push-down-modal");

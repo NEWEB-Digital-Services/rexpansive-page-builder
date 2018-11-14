@@ -63,6 +63,7 @@ var Rexlive_Modals_Utils = (function($) {
     $target.removeClass('rex-modal--active').fadeOut({
       duration: 300
     });
+
     if ($target.hasClass("rex-in--up")) {
       $target.removeClass("rex-in--up");
     }
@@ -145,9 +146,12 @@ var Rexlive_Modals_Utils = (function($) {
    */
   var _close_focus_modal = function() {
     if( Rexbuilder_Util_Admin_Editor.$body.hasClass('rex-modal-open') ) {
+      // Rexbuilder_Util_Admin_Editor.$body.find('.lean-overlay')
       var $focus_modal = Rexbuilder_Util_Admin_Editor.$body.find('.rex-modal--active');
       if( 0 < $focus_modal.length ) {
-        _closeModal($focus_modal);
+        $focus_modal.each(function(i,el){
+          _closeModal($(el));
+        });
       }
     }
   }
