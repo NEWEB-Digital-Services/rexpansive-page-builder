@@ -221,23 +221,25 @@ var Rexbuilder_Util_Editor = (function($) {
   };
 
   var _removeScrollBar = function($elem) {
-    var $elemContent = $elem.find(".grid-item-content");
-    var $div = $(document.createElement("div"));
-    var $divScrollbar = $elemContent.find(".rex-custom-scrollbar");
-    var $textWrap = $elemContent.find(".text-wrap");
+    if( true == Rexbuilder_Util_Editor.scrollbarsActive ) {
+      var $elemContent = $elem.find(".grid-item-content");
+      var $div = $(document.createElement("div"));
+      var $divScrollbar = $elemContent.find(".rex-custom-scrollbar");
+      var $textWrap = $elemContent.find(".text-wrap");
 
-    $div.addClass("rex-custom-scrollbar");
-    if ($elemContent.hasClass("rex-flexbox")) {
-      $div.addClass("rex-custom-position");
+      $div.addClass("rex-custom-scrollbar");
+      if ($elemContent.hasClass("rex-flexbox")) {
+        $div.addClass("rex-custom-position");
+      }
+      $textWrap.detach().appendTo($div);
+      $div.appendTo($divScrollbar.parent());
+      $divScrollbar.remove();
+
+      $elemContent = undefined;
+      $div = undefined;
+      $divScrollbar = undefined;
+      $textWrap = undefined;
     }
-    $textWrap.detach().appendTo($div);
-    $div.appendTo($divScrollbar.parent());
-    $divScrollbar.remove();
-
-    $elemContent = undefined;
-    $div = undefined;
-    $divScrollbar = undefined;
-    $textWrap = undefined;
   };
 
   var _removeTextEditor = function($elem) {
@@ -245,6 +247,8 @@ var Rexbuilder_Util_Editor = (function($) {
     var textWrapContent;
     var $div;
     var css;
+
+    // console.log($elem.html());
 
     if ($textWrap.length != 0 && $textWrap.hasClass("medium-editor-element")) {
       textWrapContent = $textWrap.html();

@@ -454,7 +454,7 @@ class Rexbuilder_Block
                     echo $bg_video_vimeo_markup;
                     echo $bg_youtube_video_markup;
 
-                    echo '<div class="responsive-block-overlay"'.($overlay_block_color != "" ? ' style="background-color:' .  $overlay_block_color . ';"' : '"'). '>';
+                    echo '<div class="responsive-block-overlay"'.($overlay_block_color != "" ? ' style="background-color:' .  $overlay_block_color . ';"' : ''). '>';
                     if('natural' == $type_bg_block){
                         echo "<div class=\"rex-image-wrapper natural-image-background\"".$background_img_style;
                         echo $alt_tag;
@@ -503,7 +503,7 @@ class Rexbuilder_Block
                     echo $bg_video_vimeo_markup;
                     echo $bg_youtube_video_markup;
 
-                    echo '<div class="responsive-block-overlay"'.($overlay_block_color != "" ? ' style="background-color:' .  $overlay_block_color . ';"' : '"'). '>';
+                    echo '<div class="responsive-block-overlay"'.($overlay_block_color != "" ? ' style="background-color:' .  $overlay_block_color . ';"' : ''). '>';
                     if('natural' == $type_bg_block){
                         echo "<div class=\"rex-image-wrapper natural-image-background\"".$background_img_style;
                         echo $alt_tag;
@@ -552,7 +552,7 @@ class Rexbuilder_Block
                     echo $bg_video_vimeo_markup;
                     echo $bg_youtube_video_markup;
 
-                    echo '<div class="responsive-block-overlay"'.($overlay_block_color != "" ? ' style="background-color:' .  $overlay_block_color . ';"' : '"'). '>';
+                    echo '<div class="responsive-block-overlay"'.($overlay_block_color != "" ? ' style="background-color:' .  $overlay_block_color . ';"' : ''). '>';
                     if('natural' == $type_bg_block){
                         echo "<div class=\"rex-image-wrapper natural-image-background\"".$background_img_style;
                         echo $alt_tag;
