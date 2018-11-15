@@ -13,8 +13,13 @@ defined( 'ABSPATH' ) or exit;
 ?>
 <div class="rexlive-block-toolbox top-tools">
     <div class="rexlive-top-block-tools">
-        <div style="visibility:hidden;">
-            <div class="el-size-viewer tool-indicator"></div>
+        <div>
+            <div style="visibility:hidden;display:inline-block;">
+                <div class="el-size-viewer tool-indicator"></div>
+            </div>
+            <div class="tool-button tool-button--inline drag-to-section tippy" draggable="true" data-tippy-content="<?php _e('Power Drag','rexpansive'); ?>">
+                <?php Rexbuilder_Utilities::get_icon('#B012-Full-Height'); ?>
+            </div>
         </div>
 
         <div class="bl_d-iflex bl_ai-c block-toolBox__editor-tools">

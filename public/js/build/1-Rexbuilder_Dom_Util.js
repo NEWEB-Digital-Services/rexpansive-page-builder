@@ -1407,6 +1407,17 @@ var Rexbuilder_Dom_Util = (function($) {
   var _updateSectionFullHeight = function(data) {
     data.galleryInstance.updateFullHeight(data.fullHeight.toString() == "true");
   };
+  
+  /**
+   * @param {String} HTML representing a single element
+   * @return {Element}
+   */
+  function htmlToElement(html) {
+    var template = document.createElement('template');
+    html = html.trim(); // Never return a text node of whitespace as the result
+    template.innerHTML = html;
+    return template.content.firstChild;
+  }
 
   var _performAction = function(action, flag) {
     var dataToUse;
@@ -1634,6 +1645,7 @@ var Rexbuilder_Dom_Util = (function($) {
     updateSectionWidthData: _updateSectionWidthData,
     updateSectionWidth: _updateSectionWidth,
     updateRowDistancesData: _updateRowDistancesData,
-    updateGridLayoutDomProperties: _updateGridLayoutDomProperties
+    updateGridLayoutDomProperties: _updateGridLayoutDomProperties,
+    htmlToElement: htmlToElement
   };
 })(jQuery);

@@ -184,6 +184,8 @@
         this._updateElementsSizeViewers();
         this._linkResizeEvents();
         this._linkDragEvents();
+        // this._linkDropEvents();
+        this._linkDnDEvents();
 
         this._launchTextEditor();
         this._createFirstReverseStack();
@@ -233,6 +235,8 @@
       //console.log(this.properties.numberBlocksVisibileOnGrid);
       this.triggerGalleryReady();
       this.properties.firstStartGrid = false;
+
+      // console.log(this.properties.singleHeight);
     },
 
     triggerGalleryReady: function() {
@@ -937,13 +941,16 @@
       this.properties.gridBlocksHeight = parseInt(
         this.$element.attr("data-gs-current-height")
       );
+      
       var cellHeight;
       if (active) {
-        cellHeight = this._viewport().height / this.properties.gridBlocksHeight;
+        if( this.settings.galleryLayout == "fixed" ) {
+          cellHeight = this._viewport().height / this.properties.gridBlocksHeight;
+        }
       } else {
         cellHeight = this.properties.singleWidth;
       }
-      console.log(cellHeight);
+      
       this.updateGridstackStyles(cellHeight);
       this.$element.attr("data-full-height", active);
     },
@@ -1150,17 +1157,7 @@
         $(el).remove();
       });
       this._addHandles($elem, "e, s, w, se, sw");
-      this.properties.gridstackInstance.addWidget(
-        $elem[0],
-        x,
-        y,
-        w,
-        h,
-        false,
-        1,
-        500,
-        1
-      );
+      this.properties.gridstackInstance.addWidget( $elem[0], x, y, w, h, false, 1, 500, 1 );
     },
 
     deleteBlock: function($elem) {
@@ -1244,17 +1241,7 @@
         )
       };
 
-      this.properties.gridstackInstance.addWidget(
-        $newEL[0],
-        0,
-        0,
-        w,
-        h,
-        true,
-        1,
-        500,
-        1
-      );
+      this.properties.gridstackInstance.addWidget( $newEL[0], 0, 0, w, h, true, 1, 500, 1 );
 
       var x = parseInt($newEL.attr("data-gs-x"));
       var y = parseInt($newEL.attr("data-gs-y"));
@@ -2398,8 +2385,10 @@
         });
     },
 
+    /**
+     * Listen drag events
+     */
     _linkDragEvents: function() {
-      // eventi per il drag
       var gallery = this;
       this.$element
         .on("dragstart", function(event, ui) {
@@ -2423,6 +2412,62 @@
         });
     },
 
+    _linkDropEvents: function() {
+      var gallery = this;
+      this.$element.on("dropped", function(e, previousWidget, newWidget) {
+        newWidget.el.removeClass("focused ui-draggable--drag-up");
+        gallery._prepareElement(newWidget.el[0]);
+        // this.updateSizeViewerText(newWidget.el, w, h);
+      });
+    },
+
+    /**
+     * Add Dragging from row to row
+     * @since 2.0.0
+     */
+    _linkDnDEvents: function() {
+      var $pholder;
+      var gallery = this;
+
+      gallery.$element.on('dragstart', '.drag-to-section', function(e){
+        var $originalElement = $(this).parents('.grid-stack-item');
+        $pholder = $originalElement.clone(false);
+        $pholder.find('.rexbuilder-block-data').remove();
+        $pholder.find('.ui-resizable-handle').remove();
+        $pholder.find('.grid-stack-item-content').css('height','100%');
+        $('body').append($pholder);
+        $pholder.css('position','fixed');
+        $pholder.css('left',e.clientX);
+        $pholder.css('top',e.clientY);
+        $pholder.css('width',$originalElement.width());
+        $pholder.css('height',$originalElement.height());
+      });
+
+      gallery.$element.on('drag', '.drag-to-section', function(e){
+        $pholder.css('left',e.clientX);
+        $pholder.css('top',e.clientY);
+        $pholder.css('zIndex',5000);
+      });
+
+      gallery.$element.on('dragend', '.drag-to-section', function(e){
+        var $originalElement = $(this).parents('.grid-stack-item');
+
+        $pholder.css('zIndex',-5000);
+        $pholder.css('left',e.clientX);
+        $pholder.css('top',e.clientY);
+        $pholder.remove();
+        $pholder = null;
+
+        var target = document.elementFromPoint(e.clientX, e.clientY);
+
+        var $targetSection = $(target).parents('.rexpansive_section').find('.grid-stack-row');
+        if( $targetSection.length > 0 && !$targetSection.is(gallery.$element) ) {
+          Rexbuilder_CreateBlocks.moveBlockToOtherSection( $originalElement, $targetSection );
+          $originalElement.find(".builder-delete-block").first().trigger("click");
+        }
+      });
+    },
+
     _launchGridStack: function() {
       var gallery = this;
 
@@ -2439,7 +2484,7 @@
           auto: true,
           autoHide: false,
           animate: true,
-          acceptWidgets: true,
+          acceptWidgets: false,
           alwaysShowResizeHandle: true,
           disableOneColumnMode: true,
           cellHeight: gallery.properties.singleHeight,
@@ -2465,6 +2510,7 @@
         });
 
         gallery.$element.addClass("gridActive");
+
       } else {
         //console.log("launching gridstack frontend");
         gallery.$element.gridstack({

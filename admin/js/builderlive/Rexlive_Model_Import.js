@@ -139,9 +139,7 @@ var Model_Import_Modal = (function($) {
       }
     };
 
-    Rexlive_Base_Settings.$document.on("dragstart", ".model-list li", function(
-      event
-    ) {
+    Rexlive_Base_Settings.$document.on("dragstart", ".model-list li", function( event ) {
       Rexbuilder_Util_Admin_Editor.blockIframeRows();
       event.originalEvent.dataTransfer.effectAllowed = "all";
       dragoverqueue_processtimer = setInterval(function() {
