@@ -123,8 +123,8 @@ var Model_Import_Modal = (function($) {
 
     var stop = true;
     /*
-        Funzione che esegue lo scrolling nell'iframe
-        */
+     * Funzione che esegue lo scrolling nell'iframe
+     */
     var scroll = function(step) {
       var scrollY = $(
         Rexbuilder_Util_Admin_Editor.$frameBuilder[0].contentWindow
@@ -140,6 +140,7 @@ var Model_Import_Modal = (function($) {
     };
 
     Rexlive_Base_Settings.$document.on("dragstart", ".model-list li", function( event ) {
+      console.log("tace");
       Rexbuilder_Util_Admin_Editor.blockIframeRows();
       event.originalEvent.dataTransfer.effectAllowed = "all";
       dragoverqueue_processtimer = setInterval(function() {
@@ -159,9 +160,7 @@ var Model_Import_Modal = (function($) {
     });
 
     // definisce quando bisogna scrollare in alto o in basso
-    Rexlive_Base_Settings.$document.on("drag", ".model-list li", function(
-      event
-    ) {
+    Rexlive_Base_Settings.$document.on("drag", ".model-list li", function( event ) {
       stop = true;
 
       if (event.clientY < 150) {
@@ -181,9 +180,8 @@ var Model_Import_Modal = (function($) {
       }
     });
 
-    Rexlive_Base_Settings.$document.on("dragend", ".model-list li", function(
-      event
-    ) {
+    Rexlive_Base_Settings.$document.on("dragend", ".model-list li", function( event ) {
+      console.log('vonde');
       Rexbuilder_Util_Admin_Editor.releaseIframeRows();
       stop = true;
       clearInterval(dragoverqueue_processtimer);
@@ -226,6 +224,7 @@ var Model_Import_Modal = (function($) {
       });
 
       $rexContainer.on("drop", function(event) {
+        console.log("mole");
         event.preventDefault();
         event.stopPropagation();
         var e;

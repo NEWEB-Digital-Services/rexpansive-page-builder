@@ -2429,6 +2429,20 @@
       var $pholder;
       var gallery = this;
 
+      var stop = true;
+      /*
+      * Funzione che esegue lo scrolling nell'iframe
+      */
+      var scroll = function(step) {
+        var scrollY = $(document).scrollTop();
+        $(document).scrollTop( scrollY + step );
+        if (!stop) {
+          setTimeout(function() {
+            scroll(step);
+          }, 20);
+        }
+      };
+
       gallery.$element.on('dragstart', '.drag-to-section', function(e){
         var $originalElement = $(this).parents('.grid-stack-item');
         $pholder = $originalElement.clone(false);
@@ -2447,9 +2461,22 @@
         $pholder.css('left',e.clientX);
         $pholder.css('top',e.clientY);
         $pholder.css('zIndex',5000);
+
+        stop = true;
+
+        if (event.clientY < 150) {
+          stop = false;
+          scroll(-1);
+        }
+
+        if ( event.clientY > $(document).height() - 150 ) {
+          stop = false;
+          scroll(1);
+        }
       });
 
       gallery.$element.on('dragend', '.drag-to-section', function(e){
+        stop = true;
         var $originalElement = $(this).parents('.grid-stack-item');
 
         $pholder.css('zIndex',-5000);
