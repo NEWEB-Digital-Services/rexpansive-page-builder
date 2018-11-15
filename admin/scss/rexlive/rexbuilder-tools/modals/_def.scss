@@ -75,6 +75,47 @@
   .input-field {
     width: 100%;
   }
+
+  .bl_switch {
+    label {
+      display: inline-flex;
+      align-items: center;
+    }
+  }
+
+  .bl_switch label input[type=checkbox] { 
+    &:checked + .lever {
+      background-color: $palette-color-11;
+      &:before, &:after {
+        // left: 13px;
+      }
+      &:after {
+        background-color: $palette-color-1;
+      }
+    }
+    &:checked ~ .bl_switch__icon {
+      @include fill-icon($palette-color-1);
+    }
+  }
+
+  .bl_switch label .lever {
+    // width: 26px;
+    // height: 10px;
+    // margin: 0 10px 0 0;
+    background-color: $palette-color-10;
+    &:before, &:after {
+      // width: 15px;
+      // height: 15px;
+      // top: -3px;
+      // left: -2px;
+    }
+    &:after {
+      background-color: $palette-color-2;
+    }
+    ~ .bl_switch__icon {
+      @include fill-icon($palette-color-10);
+    }
+  }
 }
 
 .bl_input-indicator {

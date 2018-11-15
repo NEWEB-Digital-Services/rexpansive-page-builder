@@ -15185,6 +15185,25 @@ input[type=text]:focus + .b-svg-icons {
     font-size: 13px; }
   .rex-modal .input-field {
     width: 100%; }
+  .rex-modal .bl_switch label {
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center; }
+  .rex-modal .bl_switch label input[type=checkbox]:checked + .lever {
+    background-color: #81d7ff; }
+    .rex-modal .bl_switch label input[type=checkbox]:checked + .lever:after {
+      background-color: #00ACFF; }
+  .rex-modal .bl_switch label input[type=checkbox]:checked ~ .bl_switch__icon .l-svg-icons > svg {
+    fill: #00ACFF; }
+  .rex-modal .bl_switch label .lever {
+    background-color: #ccc; }
+    .rex-modal .bl_switch label .lever:after {
+      background-color: #979797; }
+    .rex-modal .bl_switch label .lever ~ .bl_switch__icon .l-svg-icons > svg {
+      fill: #ccc; }
 
 .bl_input-indicator {
   font-size: 10px;

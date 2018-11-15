@@ -1279,18 +1279,25 @@ defined('ABSPATH') or exit;
         <div class="modal-content section-width-wrapper">
             <div id="section-config-first-row" class="bl_modal-row">
                 <div class="rex-edit-layout-wrap bl_modal__option-wrap bl_modal__col-4">
-                    <div class="rexlive-layout-type bl_modal__single-option tippy" data-rex-layout="fixed" data-tippy-content="<?php _e( 'Grid', 'rexpansive' ); ?>">
+                    <div class="rexlive-layout-type bl_modal__single-option tippy" data-rex-layout="fixed" data-tippy-content="<?php _e( 'Grid', 'rexpansive' ); ?>" style="display:none;">
                         <label>
                             <input type="radio" id="section-fixed" name="section-layout" class="builder-edit-row-layout with-gap" value="fixed" checked title="Grid Layout" />
                             <span><?php Rexbuilder_Utilities::get_icon('#B017-Grid-Layout'); ?></span>
                         </label>
                     </div>
-                    <div class="rexlive-layout-type bl_modal__single-option tippy" data-rex-layout="masonry" data-tippy-content="<?php _e( 'Masonry', 'rexpansive' ); ?>">
+                    <div class="rexlive-layout-type bl_modal__single-option tippy" data-rex-layout="masonry" data-tippy-content="<?php _e( 'Masonry', 'rexpansive' ); ?>" style="display:none;">
                         <label>
                             <input type="radio" id="section-masonry" name="section-layout" class="builder-edit-row-layout with-gap" value="masonry" title="Masonry Layout" />
                             <span><?php Rexbuilder_Utilities::get_icon('#B010-Masonry'); ?></span>
                         </label>
                     </div>
+                    <div class="bl_switch tippy" data-tippy-content="<?php _e('Grid off/on','rexpansive'); ?>">
+                        <label>
+                            <input class="builder-edit-row-layout-checkbox" name="builder-edit-row-layout-checkbox" type="checkbox">
+                            <span class="lever"></span>
+                            <span class="bl_switch__icon"><?php Rexbuilder_Utilities::get_icon('#B017-Grid-Layout'); ?></span>
+                        </label>
+                    </div><!-- // Row grid on/off -->
                 </div><!-- Grid fixed or masonry -->
 
                 <div class="layout-wrap rex-edit-row-width rex-edit-row-width-wrapper bl_modal__option-wrap bl_modal__col-4 ">

@@ -943,6 +943,7 @@
       } else {
         cellHeight = this.properties.singleWidth;
       }
+      console.log(cellHeight);
       this.updateGridstackStyles(cellHeight);
       this.$element.attr("data-full-height", active);
     },
@@ -2438,7 +2439,7 @@
           auto: true,
           autoHide: false,
           animate: true,
-          acceptWidgets: false,
+          acceptWidgets: true,
           alwaysShowResizeHandle: true,
           disableOneColumnMode: true,
           cellHeight: gallery.properties.singleHeight,

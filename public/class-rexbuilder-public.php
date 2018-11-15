@@ -327,6 +327,7 @@ class Rexbuilder_Public
      * Create the variuos modal editors of the builder.
      *
      * @since    1.0.0
+     * @deprecated
      */
     public function create_builder_modals()
     {
