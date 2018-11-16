@@ -53,6 +53,13 @@
   @include fill-icon(#fff);
 }
 
+@mixin bl-btn--dark {
+  background-color: $palette-color-4;
+  color: #fff;
+
+  @include fill-icon(#fff);
+}
+
 @mixin bl-btn--blue {
   background-color: $palette-color-1;
   color: #fff;

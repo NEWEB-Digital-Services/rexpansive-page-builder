@@ -1,0 +1,36 @@
+/* Live Theme
+ * 
+ **/
+
+.switch-toggle.switch-live--dark-alt {
+  padding: 0;
+}
+
+.switch-toggle.switch-live--dark-alt label, 
+.switch-toggle.switch-live--dark-alt > span {
+  line-height: 0;
+}
+
+.switch-toggle.switch-live--dark-alt input + label {
+  @if( $small-tools == true ) {
+    padding: 0 3px;
+  } @else {
+    padding: 0 5px;
+  }
+}
+
+.switch-light.switch-live--dark-alt input ~ span span:first-child,
+.switch-light.switch-live--dark-alt input:checked ~ span span:nth-child(2),
+.switch-live--dark-alt input:checked + label {
+  @include fill-icon($palette-color-1);
+}
+
+.switch-live--dark-alt input:not(:checked) + label {
+  @include fill-icon($palette-color-4);
+  cursor: pointer;
+}
+
+.switch-toggle.switch-live--dark-alt a {
+  background-color: transparent;
+  box-shadow: none;
+}

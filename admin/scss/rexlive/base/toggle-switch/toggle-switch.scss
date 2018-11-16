@@ -44,6 +44,7 @@ $em-base: 16 !default;
   @import 'themes/material';
   @import 'themes/live';
   @import 'themes/live-dark';
+  @import 'themes/live-dark-alt';
 }
 
 /* Bugfix for older Webkit, including mobile Webkit. Adapted from

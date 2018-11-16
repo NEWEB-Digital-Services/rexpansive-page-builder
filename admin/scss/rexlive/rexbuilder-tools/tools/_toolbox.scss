@@ -402,9 +402,9 @@
   }
   
   &.tool-option--togglable {
-    @include fill-icon($palette-color-10);
+    @include fill-icon($palette-color-4);
     &.active {
-      @include fill-icon($palette-color-4);
+      @include fill-icon($palette-color-1);
     }
   }
 }
@@ -563,7 +563,7 @@
     @if( $small-tools == true ) {
       font-size: 18px;
     }
-    @include fill-icon($palette-color-10);
+    @include fill-icon($palette-color-12);
     &:hover {
       @include fill-icon($palette-color-1);
     }

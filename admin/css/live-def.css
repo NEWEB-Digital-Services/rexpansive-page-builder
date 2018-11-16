@@ -2270,7 +2270,7 @@
 
 [type="radio"]:not(:checked) + span:before,
 [type="radio"]:not(:checked) + span:after {
-  border: 2px solid #979797; }
+  border: 2px solid #424242; }
 
 [type="radio"]:not(:checked) + span:after {
   -webkit-transform: scale(0);
@@ -2308,26 +2308,26 @@
 
 /* Disabled Radio With gap */
 [type="radio"].with-gap:disabled:checked + span:before {
-  border: 2px solid rgba(0, 0, 0, 0.42); }
+  border: 2px solid #bdbdbd; }
 
 [type="radio"].with-gap:disabled:checked + span:after {
   border: none;
-  background-color: rgba(0, 0, 0, 0.42); }
+  background-color: #bdbdbd; }
 
 /* Disabled style */
 [type="radio"]:disabled:not(:checked) + span:before,
 [type="radio"]:disabled:checked + span:before {
   background-color: transparent;
-  border-color: rgba(0, 0, 0, 0.42); }
+  border-color: #bdbdbd; }
 
 [type="radio"]:disabled + span {
-  color: rgba(0, 0, 0, 0.42); }
+  color: #bdbdbd; }
 
 [type="radio"]:disabled:not(:checked) + span:before {
-  border-color: rgba(0, 0, 0, 0.42); }
+  border-color: #bdbdbd; }
 
 [type="radio"]:disabled:checked + span:after {
-  background-color: rgba(0, 0, 0, 0.42);
+  background-color: #bdbdbd;
   border-color: #949494; }
 
 [type="radio"]:checked + span .l-svg-icons > svg {
@@ -2335,7 +2335,7 @@
 
 [type="radio"]:not(:checked) + span .l-svg-icons > svg,
 [type="radio"]:not(:checked) + span .l-svg-icons > svg {
-  fill: #979797; }
+  fill: #424242; }
 
 [type="radio"].flat-checkbox {
   font-size: 1em; }
@@ -2401,7 +2401,7 @@
     -o-transition: 0.28s ease;
     transition: 0.28s ease;
     border-radius: 50%;
-    border: 2px solid #757575; }
+    border: 2px solid #424242; }
   .bl_radio-indicator:after {
     position: absolute;
     top: 0;
@@ -2410,7 +2410,7 @@
         -ms-transform: scale(0);
             transform: scale(0);
     z-index: -1;
-    background-color: #757575; }
+    background-color: #424242; }
 
 .bl_radio[type="radio"]:not(:checked), .bl_radio[type="radio"]:checked {
   position: absolute;
@@ -2443,7 +2443,7 @@
           transform: scale(0.5);
   z-index: 0; }
 .bl_radio[type="radio"]:not(:checked):disabled + label .bl_radio-indicator:before {
-  border-color: rgba(0, 0, 0, 0.26); }
+  border-color: #bdbdbd; }
 
 .bl_radio-big-icon + label {
   max-height: 45px; }
@@ -2483,7 +2483,7 @@
     width: 18px;
     height: 18px;
     z-index: 0;
-    border: 2px solid #979797;
+    border: 2px solid #424242;
     border-radius: 1px;
     margin-top: 3px;
     -webkit-transition: .2s;
@@ -2496,7 +2496,7 @@
             transform: scale(0); }
   [type="checkbox"]:not(:checked):disabled + span:not(.lever):before {
     border: none;
-    background-color: rgba(0, 0, 0, 0.42); }
+    background-color: #bdbdbd; }
   [type="checkbox"].tabbed:focus + span:not(.lever):after {
     -webkit-transform: scale(1);
         -ms-transform: scale(1);
@@ -2507,7 +2507,7 @@
             box-shadow: 0 0 0 10px rgba(0, 0, 0, 0.1);
     background-color: rgba(0, 0, 0, 0.1); }
   [type="checkbox"] + span .l-svg-icons > svg {
-    fill: #979797; }
+    fill: #424242; }
 
 [type="checkbox"]:checked + span:not(.lever):before {
   top: -4px;
@@ -2527,8 +2527,8 @@
       -ms-transform-origin: 100% 100%;
           transform-origin: 100% 100%; }
 [type="checkbox"]:checked:disabled + span:before {
-  border-right: 2px solid rgba(0, 0, 0, 0.42);
-  border-bottom: 2px solid rgba(0, 0, 0, 0.42); }
+  border-right: 2px solid #bdbdbd;
+  border-bottom: 2px solid #bdbdbd; }
 [type="checkbox"]:checked + span .l-svg-icons > svg {
   fill: #00ACFF; }
 
@@ -2551,7 +2551,7 @@
       -ms-transform-origin: 100% 100%;
           transform-origin: 100% 100%; }
 [type="checkbox"]:indeterminate:disabled + span:not(.lever):before {
-  border-right: 2px solid rgba(0, 0, 0, 0.42);
+  border-right: 2px solid #bdbdbd;
   background-color: transparent; }
 
 [type="checkbox"].filled-in + span:not(.lever):after {
@@ -2582,7 +2582,7 @@
   height: 20px;
   width: 20px;
   background-color: transparent;
-  border: 2px solid #979797;
+  border: 2px solid #424242;
   top: 0px;
   z-index: 0; }
 [type="checkbox"].filled-in:checked + span:not(.lever):before {
@@ -2609,7 +2609,7 @@
   z-index: 0; }
 [type="checkbox"].filled-in.tabbed:focus + span:not(.lever):after {
   border-radius: 2px;
-  border-color: #979797;
+  border-color: #424242;
   background-color: rgba(0, 0, 0, 0.1); }
 [type="checkbox"].filled-in.tabbed:checked:focus + span:not(.lever):after {
   border-radius: 2px;
@@ -2648,7 +2648,7 @@
     position: absolute;
     width: 18px;
     height: 18px;
-    border: 2px solid #757575;
+    border: 2px solid #424242;
     border-radius: 1px;
     -webkit-transition: 0.2s;
     -o-transition: 0.2s;
@@ -2694,9 +2694,9 @@
       -ms-transform-origin: 100% 100%;
           transform-origin: 100% 100%; }
 .bl_checkbox[type="checkbox"]:not(:checked):disabled + label .bl_check-indicator:after {
-  border-color: rgba(0, 0, 0, 0.26); }
+  border-color: #bdbdbd; }
 .bl_checkbox[type="checkbox"]:not(:checked):disabled + label .rex-icon {
-  color: rgba(0, 0, 0, 0.26); }
+  color: #bdbdbd; }
 
 .bl_checkbox-big-icon + label {
   max-height: 45px; }
@@ -3430,6 +3430,34 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever::before {
   .switch-toggle.switch-live--dark a {
     background-color: transparent;
     -webkit-box-shadow: none;
+            box-shadow: none; }
+
+  /* Live Theme
+   * 
+   **/
+  .switch-toggle.switch-live--dark-alt {
+    padding: 0; }
+
+  .switch-toggle.switch-live--dark-alt label,
+  .switch-toggle.switch-live--dark-alt > span {
+    line-height: 0; }
+
+  .switch-toggle.switch-live--dark-alt input + label {
+    padding: 0 3px; }
+
+  .switch-light.switch-live--dark-alt input ~ span span:first-child .l-svg-icons > svg,
+  .switch-light.switch-live--dark-alt input:checked ~ span span:nth-child(2) .l-svg-icons > svg,
+  .switch-live--dark-alt input:checked + label .l-svg-icons > svg {
+    fill: #00ACFF; }
+
+  .switch-live--dark-alt input:not(:checked) + label {
+    cursor: pointer; }
+    .switch-live--dark-alt input:not(:checked) + label .l-svg-icons > svg {
+      fill: #424242; }
+
+  .switch-toggle.switch-live--dark-alt a {
+    background-color: transparent;
+    -webkit-box-shadow: none;
             box-shadow: none; } }
 /* Bugfix for older Webkit, including mobile Webkit. Adapted from
  * http://css-tricks.com/webkit-sibling-bug/
@@ -3607,7 +3635,7 @@ ul {
   .tool-button:focus {
     outline: none; }
   .tool-button.tool-button--black {
-    background-color: #000;
+    background-color: #424242;
     color: #fff; }
     .tool-button.tool-button--black .l-svg-icons > svg {
       fill: #fff; }

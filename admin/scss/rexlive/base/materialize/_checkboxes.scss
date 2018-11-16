@@ -1,8 +1,9 @@
 /* Checkboxes
    ========================================================================== */
 
-$radio-fill-color: #00ACFF;
-$radio-empty-color: #979797;
+$radio-fill-color: $palette-color-1;
+$radio-empty-color: $palette-color-4;
+$input-disabled-color: $palette-color-12;
 
 /* Remove default checkbox */
 [type="checkbox"]:not(:checked),

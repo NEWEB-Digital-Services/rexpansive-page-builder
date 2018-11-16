@@ -4,7 +4,7 @@
   padding: 8px 0;
 }
 .rex-live__row-padding-wrap {
-  border: 2px solid #000;
+  border: 2px solid $palette-color-12;
   margin: 5px;
   padding: 5px;
 }
@@ -15,7 +15,7 @@
 .rex-live__row-gutter-wrap {
   width:120px;
   height: 120px;
-  border: 2px dotted #000;
+  border: 2px dotted $palette-color-12;
   position:relative;
   margin: 5px;
 }
@@ -25,7 +25,7 @@
   top:0;
   left:50%;
   transform:translateX(-1px);
-  background:#000;
+  background:$palette-color-12;
   position:absolute;
   z-index: 0;
 }
@@ -35,7 +35,7 @@
   top:50%;
   left:0;
   transform:translateY(-1px);
-  background:#000;
+  background:$palette-color-12;
   position:absolute;
   z-index: 0;
 }

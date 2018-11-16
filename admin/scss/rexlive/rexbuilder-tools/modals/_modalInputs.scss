@@ -1,0 +1,62 @@
+.rex-modal {
+  .input-field {
+    .prefix {
+      @include fill-icon($palette-color-4);
+      &.active {  
+        color: $palette-color-1;
+        @include fill-icon($palette-color-1);
+      }
+    }
+
+    &.rex-input-prefixed {
+      .prefix {
+        width: auto;
+        font-size: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+
+        ~ input {
+          margin-left: 32px;
+          width: calc(100% - 32px);
+          font-size: 15px;
+          line-height: 15px;
+          height: 20px;
+          margin-bottom: 7px;
+          margin-top: 7px;
+          &.small-input {
+            font-size: 11px;
+          }
+        }
+
+        ~ label {
+          margin-left: 20px;
+          font-size: 15px;
+          top: 7px;
+          color: $palette-color-12;
+
+          &.active {
+            font-size: 10px;
+            color: $palette-color-1;
+            transform: translateY(-100%);
+          }
+        }
+      }
+    }
+  }
+
+  input[type="text"],
+  input[type="number"] {
+    color: $palette-color-4;
+    border-bottom-color: $palette-color-4;
+    &:focus {
+      &:not([readonly]) {
+        border-bottom: 1px solid $palette-color-1;
+        // box-shadow: 0 1px 0 0 $palette-color-1;
+      }
+    }
+  }
+}
+
+.rexbuilder-materialize-wrap .input-field label {
+  color: $palette-color-12;
+}

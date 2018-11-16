@@ -45,7 +45,8 @@
   }
 
   &.tool-button--black {
-    @include bl-btn--black;
+    // @include bl-btn--black;
+    @include bl-btn--dark;
   }
 
   &.tool-button--blue {

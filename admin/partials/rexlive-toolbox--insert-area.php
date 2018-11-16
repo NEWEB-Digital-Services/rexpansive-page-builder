@@ -10,7 +10,7 @@
     <?php Rexbuilder_Utilities::get_icon('#B006-Collapse'); ?>
   </div><!-- // collapse -->
 
-  <div class="switch-toggle switch-live--dark">
+  <div class="switch-toggle switch-live--dark-alt">
     <input type="radio" class="edit-row-width-toolbox" data-section_width="full" id="row-dimension-full-toolbox" name="row-dimension-toolbox" value="100%">
     <label class="tippy" data-tippy-content="<?php _e('Full','rexpansive'); ?>" for="row-dimension-full-toolbox"><span><?php Rexbuilder_Utilities::get_icon('#B001-Full'); ?></span></label>
     <input type="radio" class="edit-row-width-toolbox" data-section_width="boxed" id="row-dimension-boxed-toolbox" name="row-dimension-toolbox" value="80%" checked>
