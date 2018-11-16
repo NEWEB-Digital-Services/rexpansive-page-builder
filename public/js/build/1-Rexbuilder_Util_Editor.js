@@ -373,7 +373,7 @@ var Rexbuilder_Util_Editor = (function($) {
       }
     });
 
-    // Caputre save page
+    // capture save page
     Rexbuilder_Util.$document.on('keydown', function(e) {
       if ((window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)  && e.keyCode == 83) {
         e.preventDefault();
@@ -396,7 +396,7 @@ var Rexbuilder_Util_Editor = (function($) {
       Rexbuilder_Util_Editor.mouseUp = true;
     });
 
-    Rexbuilder_Util.$window.on("load", function(e) {});
+    // Rexbuilder_Util.$window.on("load", function(e) {});
 
     Rexbuilder_Util.$window[0].addEventListener(
       "message",
@@ -870,6 +870,7 @@ var Rexbuilder_Util_Editor = (function($) {
         $sec.parent().append(tmpl("tmpl-div-lock-section", {}));
       });
   };
+
   var _releaseRows = function() {
     Rexbuilder_Util.$rexContainer
       .find(".rexpansive_section")
@@ -884,6 +885,14 @@ var Rexbuilder_Util_Editor = (function($) {
         $sec.unwrap();
       });
   };
+
+  var _lockRowsLight = function() {
+    Rexbuilder_Util.$rexContainer.children(".rexpansive_section").addClass("rexpansive-lock-section--light");
+  }
+
+  var _releaseRowsLight = function() {
+    Rexbuilder_Util.$rexContainer.children(".rexpansive_section").removeClass("rexpansive-lock-section--light");
+  }
 
   var _tooltips = function() {
     var collection = tippy(".tippy", {
@@ -947,7 +956,7 @@ var Rexbuilder_Util_Editor = (function($) {
     var didScrollHighlightEvent = false;
     var didScrollViewTopToolsEvent = false;
     
-    $(window).on("scroll", function(e) {
+    Rexbuilder_Util.$window.on("scroll", function(e) {
       didScrollHighlightEvent = true;
       didScrollViewTopToolsEvent = true;
     });
@@ -1209,6 +1218,70 @@ var Rexbuilder_Util_Editor = (function($) {
     }
   };
 
+  /**
+   * Add events to control the drag and drop of blocks between the rows
+   * @since 2.0.0
+   */
+  var addDnDEvents = function() {
+    // /** */
+    // Rexbuilder_Util.$rexContainer.on("dragenter", function(e) {
+    //   e.stopPropagation();
+    // });
+
+    // Rexbuilder_Util.$rexContainer.on("dragover", function(e) {
+    //   e.preventDefault();
+    //   e.stopPropagation();
+    // });
+
+    /**
+     * Listen on dropping of a block inside a section
+     * @since 2.0.0
+     */
+    Rexbuilder_Util.$rexContainer.on("drop", function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      var ev;
+      if (e.isTrigger) {
+        ev = triggerEvent.originalEvent;
+      } else {
+        ev = e.originalEvent;
+      }
+      var blockData = ev.dataTransfer.getData("text/plain");
+      blockData = undefined !== typeof blockData ? JSON.parse(blockData) : null;
+      if( blockData ) {
+        var target = document.elementFromPoint(e.clientX, e.clientY);
+        var $targetSection = $(target);
+        var $originalElement;
+        var $originalSection;
+
+        if (blockData.modelNumber != "") {
+          $originalElement = Rexbuilder_Util.$rexContainer
+            .find(
+              'section[data-rexlive-section-id="' +
+                blockData.sectionID +
+                '"][data-rexlive-model-number="' +
+                blockData.modelNumber +
+                '"]'
+            )
+            .find('div [data-rexbuilder-block-id="' + blockData.rexID + '"]');
+        } else {
+          $originalElement = Rexbuilder_Util.$rexContainer
+            .find('section[data-rexlive-section-id="' + blockData.sectionID + '"]')
+            .find('div [data-rexbuilder-block-id="' + blockData.rexID + '"]');
+        }
+
+        $originalSection = $originalElement.parents(".rexpansive_section");
+
+        // var $targetSection = $(target).parents('.rexpansive_section').find('.grid-stack-row');
+        if( $targetSection.length > 0 && !$targetSection.is($originalSection) ) {
+          var $targetGallery = $targetSection.find(".grid-stack-row");
+          Rexbuilder_CreateBlocks.moveBlockToOtherSection( $originalElement, $targetGallery );
+          $originalElement.find(".builder-delete-block").first().trigger("click");
+        }
+      }
+    });
+  };
+
   var init = function() {
     this.elementIsResizing = false;
     this.elementIsDragging = false;
@@ -1295,6 +1368,7 @@ var Rexbuilder_Util_Editor = (function($) {
     removeDeletedBlocks: removeDeletedBlocks,
     addWindowListeners: addWindowListeners,
     addDocumentListeners: addDocumentListeners,
+    addDnDEvents: addDnDEvents,
     endEditingElement: endEditingElement,
     startEditingElement: startEditingElement,
     setEndOfContenteditable: setEndOfContenteditable,
@@ -1318,6 +1392,10 @@ var Rexbuilder_Util_Editor = (function($) {
     builderEdited: _builderEdited,
     launchTooltips: _tooltips,
     getMousePosition: _getMousePosition,
-    hideAllTools: _hideAllTools
+    hideAllTools: _hideAllTools,
+    lockRows: _lockRows,
+    lockRowsLight: _lockRowsLight,
+    releaseRows: _releaseRows,
+    releaseRowsLight: _releaseRowsLight    
   };
 })(jQuery);

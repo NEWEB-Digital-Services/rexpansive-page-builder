@@ -2428,11 +2428,12 @@
     _linkDnDEvents: function() {
       var $pholder;
       var gallery = this;
+      var locked = false;
 
       var stop = true;
       /*
-      * Funzione che esegue lo scrolling nell'iframe
-      */
+       * Scrolling simulation
+       */
       var scroll = function(step) {
         var scrollY = $(document).scrollTop();
         $(document).scrollTop( scrollY + step );
@@ -2443,7 +2444,22 @@
         }
       };
 
-      gallery.$element.on('dragstart', '.drag-to-section', function(e){
+      /**
+       * On dragstart on the power icon element, create the placholder for the block
+       * and blocking the editing on the rows
+       * @since 2.0.0
+       */
+      gallery.$element.on('dragstart', '.drag-to-section', function(e) {
+        if(!locked) {
+          // Locking rows on drag to premit the drag itself
+          setTimeout(function() {
+            Rexbuilder_Util_Editor.lockRowsLight();
+            locked = true;
+          },100);
+        }
+
+        e.originalEvent.dataTransfer.effectAllowed = "all";
+
         var $originalElement = $(this).parents('.grid-stack-item');
         $pholder = $originalElement.clone(false);
         $pholder.find('.rexbuilder-block-data').remove();
@@ -2455,43 +2471,69 @@
         $pholder.css('top',e.clientY);
         $pholder.css('width',$originalElement.width());
         $pholder.css('height',$originalElement.height());
+
+        var rex_block_id = $originalElement.attr("data-rexbuilder-block-id");
+        var sectionID = gallery.$section.attr("data-rexlive-section-id");
+        var modelNumber =
+          typeof gallery.$section.attr("data-rexlive-model-number") != "undefined"
+            ? gallery.$section.attr("data-rexlive-model-number")
+            : "";
+        var sectionTarget = {
+          sectionID: sectionID,
+          modelNumber: modelNumber,
+          rexID: rex_block_id
+        };
+
+        e.originalEvent.dataTransfer.setData("text/plain", JSON.stringify(sectionTarget));
       });
 
-      gallery.$element.on('drag', '.drag-to-section', function(e){
+      /**
+       * During the dragging allow to scroll the page with a simulated scroll
+       * @since 2.0.0
+       */
+      gallery.$element.on('drag', '.drag-to-section', function(e) {
         $pholder.css('left',e.clientX);
         $pholder.css('top',e.clientY);
-        $pholder.css('zIndex',5000);
+        $pholder.css('zIndex',3000);
 
         stop = true;
 
-        if (event.clientY < 150) {
+        if ( event.clientY < 150 ) {
           stop = false;
           scroll(-1);
         }
 
-        if ( event.clientY > $(document).height() - 150 ) {
+        if ( event.clientY > Rexbuilder_Util_Editor.viewportMeasurement.height - 150 ) {
           stop = false;
           scroll(1);
         }
       });
 
-      gallery.$element.on('dragend', '.drag-to-section', function(e){
+      /**
+       * On dragend release the rows and remove the placeholder
+       * @since 2.0.0
+       */
+      gallery.$element.on('dragend', '.drag-to-section', function(e) {
+        if(locked) {
+          Rexbuilder_Util_Editor.releaseRowsLight();
+          locked = false;
+        }
         stop = true;
-        var $originalElement = $(this).parents('.grid-stack-item');
+        // var $originalElement = $(this).parents('.grid-stack-item');
 
-        $pholder.css('zIndex',-5000);
+        $pholder.css('zIndex',-3000);
         $pholder.css('left',e.clientX);
         $pholder.css('top',e.clientY);
         $pholder.remove();
         $pholder = null;
 
-        var target = document.elementFromPoint(e.clientX, e.clientY);
+        // var target = document.elementFromPoint(e.clientX, e.clientY);
 
-        var $targetSection = $(target).parents('.rexpansive_section').find('.grid-stack-row');
-        if( $targetSection.length > 0 && !$targetSection.is(gallery.$element) ) {
-          Rexbuilder_CreateBlocks.moveBlockToOtherSection( $originalElement, $targetSection );
-          $originalElement.find(".builder-delete-block").first().trigger("click");
-        }
+        // var $targetSection = $(target).parents('.rexpansive_section').find('.grid-stack-row');
+        // if( $targetSection.length > 0 && !$targetSection.is(gallery.$element) ) {
+        //   Rexbuilder_CreateBlocks.moveBlockToOtherSection( $originalElement, $targetSection );
+        //   $originalElement.find(".builder-delete-block").first().trigger("click");
+        // }
       });
     },
 

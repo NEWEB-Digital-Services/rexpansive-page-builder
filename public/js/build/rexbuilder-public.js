@@ -22,6 +22,7 @@ var Rexbuilder_App = (function ($) {
 			Rexbuilder_Block_Editor.init();
 			Rexbuilder_Util_Editor.addDocumentListeners();
 			Rexbuilder_Util_Editor.addWindowListeners();
+			Rexbuilder_Util_Editor.addDnDEvents();
 			TextEditor.init();
 			Rexbuilder_Section_Editor.triggerRowDataChange();
 		}
