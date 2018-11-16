@@ -4267,6 +4267,28 @@ ul {
 .drag-to-section-simulator {
   opacity: 0; }
 
+.grid-stack-item[data-gs-width="1"] .rexlive-block-toolbox.top-tools, .grid-stack-item[data-gs-width="2"] .rexlive-block-toolbox.top-tools {
+  width: auto;
+  top: 50% !important;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+      -ms-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%); }
+  .grid-stack-item[data-gs-width="1"] .rexlive-block-toolbox.top-tools > .builder-delete-block, .grid-stack-item[data-gs-width="2"] .rexlive-block-toolbox.top-tools > .builder-delete-block {
+    display: none; }
+.grid-stack-item[data-gs-width="1"] .rexlive-block-toolbox.bottom-tools,
+.grid-stack-item[data-gs-width="1"] .block-toolBox__editor-tools,
+.grid-stack-item[data-gs-width="1"] .rexlive-block-toolbox.floating-tools,
+.grid-stack-item[data-gs-width="1"] .block-toolBox__placeholder, .grid-stack-item[data-gs-width="2"] .rexlive-block-toolbox.bottom-tools,
+.grid-stack-item[data-gs-width="2"] .block-toolBox__editor-tools,
+.grid-stack-item[data-gs-width="2"] .rexlive-block-toolbox.floating-tools,
+.grid-stack-item[data-gs-width="2"] .block-toolBox__placeholder {
+  display: none; }
+.grid-stack-item[data-gs-width="1"] .block-toolBox__config-tools > div:not(.block-toolBox__config-list), .grid-stack-item[data-gs-width="2"] .block-toolBox__config-tools > div:not(.block-toolBox__config-list) {
+  display: none !important; }
+.grid-stack-item[data-gs-width="1"] .block-toolBox__config-tools .block-toolBox__config-list, .grid-stack-item[data-gs-width="2"] .block-toolBox__config-tools .block-toolBox__config-list {
+  margin-left: 0; }
+
 ::-moz-selection {
   background: rgba(0, 172, 255, 0.5); }
 
@@ -5123,12 +5145,6 @@ ul {
   left: 0;
   z-index: 100; }
 
-.rexlive-block-grid-editing .builder-move-row,
-.rexlive-block-grid-editing .builder-delete-row,
-.rexlive-block-grid-editing .update-model-button,
-.rexlive-block-grid-editing .builder-copy-row {
-  z-index: 101; }
-
 .rex-container.editing-model .update-model-button:not(.unlocked) {
   z-index: 30; }
 
@@ -5151,6 +5167,15 @@ ul {
     width: 100%;
     height: 100%; }
 
+/**
+ *  Class when a section is a model
+ *  and can't be edited
+ */
+.rexlive-block-grid-editing .builder-move-row,
+.rexlive-block-grid-editing .builder-delete-row,
+.rexlive-block-grid-editing .update-model-button,
+.rexlive-block-grid-editing .builder-copy-row {
+  z-index: 101; }
 .rexlive-block-grid-editing .section-block-noediting-ui {
   visibility: visible;
   opacity: 1; }

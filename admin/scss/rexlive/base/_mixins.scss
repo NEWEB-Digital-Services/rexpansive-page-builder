@@ -3,6 +3,18 @@
   height: 100%;
 }
 
+@mixin hide-element {
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0s 200ms, opacity 200ms linear;
+}
+
+@mixin view-element {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 200ms linear;
+}
+
 @mixin fill-icon( $color ) {
   // .l-svg-icons,
   .l-svg-icons > svg {
@@ -228,6 +240,24 @@
 
   + .section-toolBoox__highlight {
     opacity: 1;
+  }
+}
+
+@mixin view-row-tools-new {
+  .tools {
+    @include generic-toolbar;
+    transform: translateY(-50%);
+  }
+  .tool-area--center {
+    @include view-element();
+  }
+
+  .tool-area--side {
+    @include view-element();
+  }
+
+  + .section-toolBoox__highlight {
+    @include view-element();
   }
 }
 

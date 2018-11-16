@@ -206,3 +206,35 @@
 .drag-to-section-simulator {
   opacity: 0;
 }
+
+.grid-stack-item {
+  &[data-gs-width="1"],
+  &[data-gs-width="2"] {
+    .rexlive-block-toolbox.top-tools {
+      width: auto;
+      top: 50%!important;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      > .builder-delete-block {
+        display: none;
+      }
+    }
+    .rexlive-block-toolbox.bottom-tools,
+    .block-toolBox__editor-tools,
+    .rexlive-block-toolbox.floating-tools,
+    .block-toolBox__placeholder {
+      display: none;
+    }
+    .block-toolBox__config-tools {
+      > div:not(.block-toolBox__config-list) {
+        display: none!important;
+      }
+      .block-toolBox__config-list {
+        margin-left: 0;
+      }
+    }
+    // .ui-resizable-handle {
+    //   display: none;
+    // }
+  }
+}

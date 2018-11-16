@@ -10,7 +10,8 @@
 .bl_modal__single-option {
   // display: inline-block;
   &:not(:last-child) {
-    padding-right: 20px;
+    // padding-right: 20px;
+    padding-right: 12px;
   }
 }
 

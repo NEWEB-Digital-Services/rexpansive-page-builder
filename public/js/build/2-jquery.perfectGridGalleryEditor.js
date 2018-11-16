@@ -2000,7 +2000,7 @@
                  */
                 clearTimeout(this.doubleDownTimer);
                 this.doubleDownTimer = setTimeout(function() {
-                  if( !Rexbuilder_Util_Editor.elementIsDragging && 1 === e.which ) {
+                  if( !Rexbuilder_Util_Editor.elementIsDragging && !Rexbuilder_Util_Editor.elementIsResizing && !Rexbuilder_Util_Editor.editingElement && 1 === e.which ) {
                     $elem.trigger("mouseup");
                     // gallery.properties.gridstackInstance.disable();
 

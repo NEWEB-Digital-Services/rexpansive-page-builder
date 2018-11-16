@@ -32,15 +32,6 @@
   z-index: 100;
 }
 
-.rexlive-block-grid-editing {
-  .builder-move-row,
-  .builder-delete-row,
-  .update-model-button,
-  .builder-copy-row {
-    z-index: 101;
-  }
-}
-
 .rex-container.editing-model {
   .update-model-button:not(.unlocked) {
     z-index: 30;
@@ -71,7 +62,18 @@
   }
 }
 
+/**
+ *  Class when a section is a model
+ *  and can't be edited
+ */
 .rexlive-block-grid-editing {
+  .builder-move-row,
+  .builder-delete-row,
+  .update-model-button,
+  .builder-copy-row {
+    z-index: 101;
+  }
+
   .section-block-noediting-ui {
     visibility: visible;
     opacity: 1;

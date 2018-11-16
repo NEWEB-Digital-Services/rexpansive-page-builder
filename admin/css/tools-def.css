@@ -15112,7 +15112,7 @@ input[type=text]:focus + .b-svg-icons {
     border-bottom: 1px solid #ddd; }
 
 .bl_modal__single-option:not(:last-child) {
-  padding-right: 20px; }
+  padding-right: 12px; }
 
 .rex-modal .rex-input-prefixed.input-field.bl_modal__input-prefixed--small {
   max-width: 120px;
@@ -15715,9 +15715,19 @@ input:disabled + .rex_edit_title_slider {
   transition: transform 300ms, -webkit-transform 300ms;
   z-index: 10; }
 
-.top-fast-tools--hide .tools-insert-area,
-.top-fast-tools--hide .toolbox-right-fast-config-area {
-  display: none; }
+.top-fast-tools--hide .tools-insert-area {
+  visibility: hidden;
+  opacity: 0;
+  -webkit-transition: visibility 0s 200ms, opacity 200ms linear;
+  -o-transition: visibility 0s 200ms, opacity 200ms linear;
+  transition: visibility 0s 200ms, opacity 200ms linear; }
+
+.tools-insert-area {
+  visibility: visible;
+  opacity: 1;
+  -webkit-transition: opacity 200ms linear;
+  -o-transition: opacity 200ms linear;
+  transition: opacity 200ms linear; }
 
 .rexlive-toolbox {
   background-color: white;

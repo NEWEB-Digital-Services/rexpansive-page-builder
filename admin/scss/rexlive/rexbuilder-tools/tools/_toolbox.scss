@@ -8,10 +8,14 @@
 }
 
 .top-fast-tools--hide {
-  .tools-insert-area,
-  .toolbox-right-fast-config-area {
-    display: none;
+  .tools-insert-area {
+  // .toolbox-right-fast-config-area {
+    @include hide-element();
   }
+}
+
+.tools-insert-area {
+  @include view-element();
 }
 
 .rexlive-toolbox {

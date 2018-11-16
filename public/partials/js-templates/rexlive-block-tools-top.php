@@ -1,12 +1,12 @@
 <div class="rexlive-block-toolbox top-tools">
     <div class="rexlive-top-block-tools">
-        <div>
+        <div class="block-toolBox__placeholder">
             <div style="visibility:hidden;display:inline-block;">
                 <div class="el-size-viewer tool-indicator"></div>
             </div>
-            <div class="tool-button tool-button--inline drag-to-section tippy" data-tippy-content="<?php _e('Power Drag','rexpansive'); ?>">
-                <?php Rexbuilder_Utilities::get_icon('#B012-Full-Height'); ?>
-            </div>
+            <!-- <div class="tool-button tool-button--inline drag-to-section tippy" data-tippy-content="<?php //_e('Power Drag','rexpansive'); ?>">
+                <?php //Rexbuilder_Utilities::get_icon('#B012-Full-Height'); ?>
+            </div> -->
         </div>
 
         <div class="bl_d-iflex bl_ai-c block-toolBox__editor-tools">
@@ -27,7 +27,7 @@
                 <?php Rexbuilder_Utilities::get_icon('#Z004-Copy'); ?>
             </div>
 
-            <div class="tool-button-floating">
+            <div class="tool-button-floating block-toolBox__config-list">
 				<div class="tool-button" data-tippy-content="<?php _e('Block settings', 'rexpansive');?>">
 					<?php Rexbuilder_Utilities::get_icon('#Z009-More'); ?>					
                 </div>

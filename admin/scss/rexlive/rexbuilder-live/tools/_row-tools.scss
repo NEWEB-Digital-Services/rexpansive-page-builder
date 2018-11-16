@@ -33,6 +33,7 @@
     &.tool-area--side {
       background-color: $palette-color-4;
       animation-delay: 300ms;
+      // transition-delay: 300ms;
       .tool-button--flat {
         &:hover {
           @include fill-icon(rgba(255, 255, 255, 0.5));
@@ -165,6 +166,12 @@
       background-color: $palette-color-2;
     }
   }
+
+  // .tool-area--center,
+  // .tool-area--side,
+  // + .section-toolBoox__highlight {
+  //   @include hide-element();
+  // }
 }
 
 .rexpansive_section {
