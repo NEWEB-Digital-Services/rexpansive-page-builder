@@ -21,14 +21,64 @@
     }
 
     &.rexpansive-lock-section--light {
-      &:after {
+      &:before {
         content: '';
         position: absolute;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 9999999;
+        right: 0;
+        bottom: 0;
+        z-index: 5000;
+      }
+    }
+
+    &.rexpansive-lock-section--overlay {
+      &:before {
+        opacity: 1;
+        z-index: 10;
+      }
+      .grid-stack-item {
+        &:not(.grid-stack-item--drag-to-row) {
+          .ui-focused-element-highlight {
+            visibility: visible;
+            box-shadow: none;
+            outline-color: transparent;
+            &:before {
+              opacity: 1;
+              z-index: 30;
+            }
+          }
+        }
+      }
+    }
+
+    &:before {
+      opacity: 0;
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: -30;
+      transition: opacity 0.3s;
+      background-color: rgba(0,0,0,0.7);
+    }
+
+    .grid-stack-item {
+      .ui-focused-element-highlight {
+        &:before {
+          opacity: 0;
+          content: '';
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          z-index: -30;
+          transition: opacity 0.3s;
+          background-color: rgba(0,0,0,0.7);
+        }
       }
     }
   

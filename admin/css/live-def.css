@@ -4236,6 +4236,9 @@ ul {
     position: static;
     display: none; }
 
+.drag-to-section-simulator {
+  opacity: 0; }
+
 ::-moz-selection {
   background: rgba(0, 172, 255, 0.5); }
 
@@ -5015,14 +5018,51 @@ ul {
       overflow: visible; }
   .rexbuilder-live-content--editing .rexpansive_section.empty-section .responsive-overlay {
     min-height: 100px; }
-  .rexbuilder-live-content--editing .rexpansive_section.rexpansive-lock-section--light:after {
+  .rexbuilder-live-content--editing .rexpansive_section.rexpansive-lock-section--light:before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 9999999; }
+    right: 0;
+    bottom: 0;
+    z-index: 5000; }
+  .rexbuilder-live-content--editing .rexpansive_section.rexpansive-lock-section--overlay:before {
+    opacity: 1;
+    z-index: 10; }
+  .rexbuilder-live-content--editing .rexpansive_section.rexpansive-lock-section--overlay .grid-stack-item:not(.grid-stack-item--drag-to-row) .ui-focused-element-highlight {
+    visibility: visible;
+    -webkit-box-shadow: none;
+            box-shadow: none;
+    outline-color: transparent; }
+    .rexbuilder-live-content--editing .rexpansive_section.rexpansive-lock-section--overlay .grid-stack-item:not(.grid-stack-item--drag-to-row) .ui-focused-element-highlight:before {
+      opacity: 1;
+      z-index: 30; }
+  .rexbuilder-live-content--editing .rexpansive_section:before {
+    opacity: 0;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -30;
+    -webkit-transition: opacity 0.3s;
+    -o-transition: opacity 0.3s;
+    transition: opacity 0.3s;
+    background-color: rgba(0, 0, 0, 0.7); }
+  .rexbuilder-live-content--editing .rexpansive_section .grid-stack-item .ui-focused-element-highlight:before {
+    opacity: 0;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: -30;
+    -webkit-transition: opacity 0.3s;
+    -o-transition: opacity 0.3s;
+    transition: opacity 0.3s;
+    background-color: rgba(0, 0, 0, 0.7); }
 
 .rex-row__dimension:before,
 .rex-row__dimension:after {

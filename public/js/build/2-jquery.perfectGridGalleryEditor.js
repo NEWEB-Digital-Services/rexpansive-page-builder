@@ -1994,6 +1994,29 @@
 
                   $elem.trigger(Rexbuilder_Util_Editor.mouseDownEvent);
                 }, 125);
+
+                /**
+                 * Power drag simulator
+                 */
+                clearTimeout(this.doubleDownTimer);
+                this.doubleDownTimer = setTimeout(function() {
+                  if( !Rexbuilder_Util_Editor.elementIsDragging && 1 === e.which ) {
+                    $elem.trigger("mouseup");
+                    // gallery.properties.gridstackInstance.disable();
+
+                    var btn = tmpl("tmpl-tool-drag", {});
+                    var $btn = $(btn);
+                    $btn.css("position","absolute");
+                    $btn.css("zIndex", 20);
+                    $elem.append($btn);
+                    var elemCoords = $elem[0].getBoundingClientRect();
+                    $btn.css("left", e.clientX - elemCoords.left - ( $btn[0].offsetWidth / 2 ) );
+                    $btn.css("top", e.clientY - elemCoords.top - ( $btn[0].offsetHeight / 2 ) );
+
+                    $elem.addClass("grid-stack-item--drag-to-row");
+                    gallery.$section.addClass("rexpansive-lock-section--overlay");
+                  }
+                }, 1500);
               }
             }
           }
@@ -2018,6 +2041,7 @@
               Rexbuilder_Util_Editor.elementDraggingTriggered = false;
             }
             clearTimeout(this.downTimer);
+            clearTimeout(this.doubleDownTimer);
             Rexbuilder_Util_Editor.mouseDownEvent = null;
 
             // if (
@@ -2453,7 +2477,7 @@
         if(!locked) {
           // Locking rows on drag to premit the drag itself
           setTimeout(function() {
-            Rexbuilder_Util_Editor.lockRowsLight();
+            Rexbuilder_Util_Editor.lockRowsLight( gallery.$section );
             locked = true;
           },100);
         }
@@ -2464,6 +2488,7 @@
         $pholder = $originalElement.clone(false);
         $pholder.find('.rexbuilder-block-data').remove();
         $pholder.find('.ui-resizable-handle').remove();
+        $pholder.find('.rexlive-block-toolbox').remove();
         $pholder.find('.grid-stack-item-content').css('height','100%');
         $('body').append($pholder);
         $pholder.css('position','fixed');
@@ -2471,6 +2496,8 @@
         $pholder.css('top',e.clientY);
         $pholder.css('width',$originalElement.width());
         $pholder.css('height',$originalElement.height());
+        $pholder.css('transform','scale(0.5)');
+        $pholder.css('transformOrigin','top left');
 
         var rex_block_id = $originalElement.attr("data-rexbuilder-block-id");
         var sectionID = gallery.$section.attr("data-rexlive-section-id");
@@ -2519,21 +2546,12 @@
           locked = false;
         }
         stop = true;
-        // var $originalElement = $(this).parents('.grid-stack-item');
 
         $pholder.css('zIndex',-3000);
         $pholder.css('left',e.clientX);
         $pholder.css('top',e.clientY);
         $pholder.remove();
         $pholder = null;
-
-        // var target = document.elementFromPoint(e.clientX, e.clientY);
-
-        // var $targetSection = $(target).parents('.rexpansive_section').find('.grid-stack-row');
-        // if( $targetSection.length > 0 && !$targetSection.is(gallery.$element) ) {
-        //   Rexbuilder_CreateBlocks.moveBlockToOtherSection( $originalElement, $targetSection );
-        //   $originalElement.find(".builder-delete-block").first().trigger("click");
-        // }
       });
     },
 

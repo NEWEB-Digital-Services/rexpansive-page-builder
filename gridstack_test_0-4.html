@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gridstack - v0.4 - TEST</title>
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="public/js/vendor/gridstack.js-0.4.0/dist/gridstack.css"
+    />
+    <link
+      rel="stylesheet"
+      href="public/js/vendor/gridstack.js-0.4.0/dist/gridstack-extra.css"
+    />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.0/jquery-ui.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.5.0/lodash.min.js"></script>
+    <script src="public/js/vendor/gridstack.js-0.4.0/dist/gridstack.js"></script>
+    <script src="public/js/vendor/gridstack.js-0.4.0/dist/gridstack.jQueryUI.js"></script>
+
+    <style type="text/css">
+      #grid1 {
+        background: lightgoldenrodyellow;
+      }
+
+      #grid2 {
+        background: lightcyan;
+      }
+
+      .grid-stack-item-content {
+        color: #2c3e50;
+        text-align: center;
+        background-color: #18bc9c;
+      }
+
+      #grid2 .grid-stack-item-content {
+        background-color: #9caabc;
+      }
+
+      .grid-stack-item-removing {
+        opacity: 0.5;
+      }
+
+      .sidebar {
+        background: rgba(0, 255, 0, 0.1);
+        height: 150px;
+        padding: 25px 0;
+        text-align: center;
+      }
+
+      .sidebar .grid-stack-item {
+        width: 200px;
+        height: 100px;
+        border: 2px dashed green;
+        text-align: center;
+        line-height: 100px;
+        z-index: 10;
+        background: rgba(0, 255, 0, 0.1);
+        cursor: default;
+        display: inline-block;
+      }
+
+      .sidebar .grid-stack-item .grid-stack-item-content {
+        background: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <h1>Two grids demo - v0.4</h1>
+
+      <div class="row">
+        <div class="col-md-12">
+          <button id="disable-grid" class="btn btn-default">DISABLE GRID</button>
+          <buton id="enable-grid" class="btn btn-default">ENABLE GRID</buton>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="grid-stack grid-stack-6" id="grid1">
+            <div
+              class="grid-stack-item"
+              data-gs-x="0"
+              data-gs-y="0"
+              data-gs-width="2"
+              data-gs-height="2"
+            >
+              <div class="grid-stack-item-content">0</div>
+            </div>
+            <div
+              class="grid-stack-item"
+              data-gs-x="3"
+              data-gs-y="1"
+              data-gs-width="1"
+              data-gs-height="2"
+            >
+              <div class="grid-stack-item-content">0</div>
+            </div>
+            <div
+              class="grid-stack-item"
+              data-gs-x="4"
+              data-gs-y="2"
+              data-gs-width="1"
+              data-gs-height="1"
+            >
+              <div class="grid-stack-item-content">0</div>
+            </div>
+            <div
+              class="grid-stack-item"
+              data-gs-x="2"
+              data-gs-y="3"
+              data-gs-width="3"
+              data-gs-height="1"
+            >
+              <div class="grid-stack-item-content">0</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <script type="text/javascript">
+      $(function() {
+        var $grid = $("#grid1");
+        var options = {
+          width: 6,
+          float: true
+          // removable: '.trash',
+          // removeTimeout: 100,
+          // acceptWidgets: '.grid-stack-item',
+        };
+
+        $grid.gridstack(options);
+        var grid = $grid.data('gridstack');
+
+        var $disableBtn = $("#disable-grid");
+        $disableBtn.on("click", function(e) {
+          e.preventDefault();
+          grid.disable();
+        });
+
+        var $enableBtn = $("#enable-grid");
+        $enableBtn.on("click", function(e) {
+          e.preventDefault();
+          grid.enable();
+        });
+
+        $grid.find(".grid-stack-item").on("mousedown", function(e) {
+          var $elem = $(this);
+          setTimeout(function() {
+            $elem.css("cursor","pointer");
+            $elem.find('.grid-stack-item-content').css('background-color','red');
+            $elem.trigger("mouseup");
+            // grid.disable();
+          },1000);
+        });
+      });
+    </script>
+  </body>
+</html>

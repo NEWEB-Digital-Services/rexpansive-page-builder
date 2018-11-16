@@ -333,3 +333,7 @@ $tool_button_classes = 'tool-button';
     </div>
 </div>
 </script>
+
+<script type="text/x-tmpl" id="tmpl-tool-drag">
+<div class="tool-button tool-button--inline drag-to-section drag-to-section-simulator" draggable="true"></div>
+</script>

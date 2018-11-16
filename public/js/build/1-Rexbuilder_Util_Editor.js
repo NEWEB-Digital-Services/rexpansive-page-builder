@@ -886,12 +886,28 @@ var Rexbuilder_Util_Editor = (function($) {
       });
   };
 
-  var _lockRowsLight = function() {
-    Rexbuilder_Util.$rexContainer.children(".rexpansive_section").addClass("rexpansive-lock-section--light");
+  /**
+   * Lock rows to prevent tools visibility on hover
+   * @param {jQuery Object} $exclude row to exclude from beign locked
+   */
+  var _lockRowsLight = function( $exclude ) {
+    $exclude = undefined !== typeof $exclude ? $exclude : null;
+    var $tempTargets = Rexbuilder_Util.$rexContainer.children(".rexpansive_section");
+    if( null !== $exclude ) {
+      $tempTargets.not($exclude);
+    }
+    $tempTargets.addClass("rexpansive-lock-section--light");
   }
 
+  /**
+   * Remove the lock from the rows
+   * Remove the drag button
+   * @since 2.0.0
+   */
   var _releaseRowsLight = function() {
-    Rexbuilder_Util.$rexContainer.children(".rexpansive_section").removeClass("rexpansive-lock-section--light");
+    Rexbuilder_Util.$rexContainer.children(".rexpansive_section").removeClass("rexpansive-lock-section--light").removeClass("rexpansive-lock-section--overlay");
+    Rexbuilder_Util.$rexContainer.find(".grid-stack-item--drag-to-row").removeClass("grid-stack-item--drag-to-row");
+    Rexbuilder_Util.$rexContainer.find(".drag-to-section-simulator").remove();
   }
 
   var _tooltips = function() {
