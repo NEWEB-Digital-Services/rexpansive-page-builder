@@ -1721,7 +1721,14 @@ defined('ABSPATH') or exit;
                 <ul class="button-list button-list--pswp">
                     <li draggable="true">
                         <div class="rex-button-container">
-                            <p><a href="https://www.google.it" class="rex-theme-button" target="_self">VAI QUI</a></p>
+                            <div class="rex-button-style" style="display:none;" data-rex-style=".qaz1-rex-button-container{align-items:center;display:inline-flex;padding:10px;text-decoration:none;font-size:24px;color:#fff;background-color:red;height:30px;border-style:solid;border-width:5px;border-color:rgba(0,120,255,.5);border-radius:30px;margin-top:0;margin-bottom:10px}.qaz1-rex-button-container:hover{background-color:#7800ff}"></div>
+                            <p>
+                                <!-- Tipico pulsante -->
+                                <a href="https://www.google.com" class="qaz1-rex-button-container rex-button" data-rex-button-id="qaz1">
+                                    <span class="qaz1-rex-button-data" style="display:none;" data-text-color="white" data-text-size="24px" data-background-color="red" data-background-color-hover="rgb(120,0,255)" data-border-width="5px" data-border-color="rgba(0,120,255,0.5)" data-button-align="" data-border-radius="30px" data-margin-top="0px" data-margin-bottom="10px" data-link-target="https://www.google.com" data-link-type="" data-button-model-name="Bel pulsante"></span>
+                                    <span class="qaz1-rex-button-text">LABEL</span>
+                                </a>
+                            </p>
                         </div>
                     </li>
                 </ul>
@@ -1729,3 +1736,64 @@ defined('ABSPATH') or exit;
         </div>
     </div>
 </div>
+<!-- 
+html
+<h1>Titolo</h1>
+<p>
+    <a href="https://www.google.com" class="qaz1-rex-button-container rex-button" data-rex-button-id="qaz">
+        <span class="qaz1-rex-button-data" style="display:none;" data-text-color="white" data-text-size="24px" data-background-color="red" data-background-color-hover="rgb(120,0,255)" data-border-width="5px" data-border-color="rgba(0,120,255,0.5)" data-button-align="" data-border-radius="30px" data-margin-top="0px" data-margin-bottom="10px" data-link-target="https://www.google.com" data-link-type="" data-button-model-name="Bel pulsante"></span>
+        <span class="qaz1-rex-button-text">LABEL</span>
+    </a>
+</p>
+css
+.qaz1-rex-button-container {
+  align-items:center;
+  display:inline-flex;
+  padding:10px;
+  text-decoration: none;
+  
+  font-size: 24px;
+  color: white;
+  
+  background-color: red;
+  height: 30px;
+  
+  border-style: solid;
+  border-width: 5px;
+  border-color: rgba(0,120,255,0.5);
+  
+  border-radius: 30px;
+  
+  margin-top: 0px;
+  margin-bottom: 10px;
+}
+
+.qaz1-rex-button-container:hover {
+  background-color: rgb(120,0,255);
+}
+
+js
+/*
+//IMPORTANTE
+i nomi delle DEVONO iniziare con una lettera -> gli id dei pulsanti iniziano con una lettera e 3 caratteri a caso
+colore testo
+testo
+dimensione font testo
+
+colore sfondo
+altezza totale pulsante
+colore hover
+
+colore bordo
+larghezza bordo
+
+centramento del pulsante //da capire come gestire, per ora salviamo e basta
+angolo smussamento lato
+margine top e bot
+
+link target
+tipo link
+
+nome pulsante modello
+*/
+ -->
