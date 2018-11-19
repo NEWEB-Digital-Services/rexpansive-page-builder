@@ -23,7 +23,7 @@
 
         <div class="bl_d-iflex bl_ai-c block-toolBox__config-tools">
             
-            <div class="tool-button tool-button--inline btn-flat builder-copy-block tippy" data-tippy-content="<?php _e('Copy block', 'rexpansive'); ?>">
+            <div class="tool-button tool-button--inline builder-copy-block tippy" data-tippy-content="<?php _e('Copy block', 'rexpansive'); ?>">
                 <?php Rexbuilder_Utilities::get_icon('#Z004-Copy'); ?>
             </div>
 
@@ -47,8 +47,9 @@
                         <input class="spectrum-input-element" type="text" name="edit-block-color-background" value="">
                     </div><!-- // Change Block color background -->
 
-                    <div class="tool-button--double-icon--wrap tool-button_list--item tippy" data-tippy-content="<?php _e('Overlay','rexpansive'); ?>">
+                    <div class="tool-button--double-icon--wrap tool-button--opacity-preview tool-button_list--item tippy" data-tippy-content="<?php _e('Overlay','rexpansive'); ?>">
                         <input class="spectrum-input-element" type="text" name="edit-block-overlay-color" value="">
+                        <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview-texture"></div>
                     </div><!-- // Change Block overlay color -->
 
                     <div class="tool-button--double-icon--wrap tool-button_list--item{% if(block.block_type == 'video') { %} tool-button--hide{% } %} tippy" data-tippy-content="<?php _e('Background Video','rexpansive'); ?>">

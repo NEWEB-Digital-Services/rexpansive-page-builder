@@ -63,7 +63,6 @@ defined( 'ABSPATH' ) or exit;
                     <div class="tool-button--double-icon--wrap tool-button--opacity-preview tool-button_list--item<?php echo ( !$not_has_overlay ? ' tool-button--hide' : '' ); ?> tippy" data-tippy-content="<?php _e('Overlay','rexpansive'); ?>">
                         <input class="spectrum-input-element" type="text" name="edit-block-overlay-color" value="<?php echo esc_attr( $atts['overlay_block_color'] ); ?>">
                         <div class="tool-button tool-button--inline tool-button--empty tool-button--color-preview-texture"></div>
-                        
                     </div><!-- // Change Block overlay color -->
 
                     <div class="tool-button--double-icon--wrap tool-button_list--item<?php echo ( !$not_has_video ? ' tool-button--hide' : '' ); ?> tippy" data-tippy-content="<?php _e('Background Video','rexpansive'); ?>">
