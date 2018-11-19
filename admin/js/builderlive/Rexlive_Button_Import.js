@@ -89,7 +89,7 @@ var Button_Import_Modal = (function ($) {
         });
 
         Rexbuilder_Util_Admin_Editor.$frameBuilder.load(function () {
-           // linkIframeDragListeners();
+            // linkIframeDragListeners();
             var $rexContainer = $(clientFrameWindow.document)
                 .find(".rex-container")
                 .eq(0);
@@ -133,8 +133,13 @@ var Button_Import_Modal = (function ($) {
                         .contents()
                         .find(".drop-marker");
                     var $divInsert = $(jQuery.parseHTML(textData));
+                    $divInsert.addClass("rex-loading-button");
                     $divInsert.insertAfter($insertionPoint[0]);
                     $insertionPoint.remove();
+                    var dataEndDrop = {
+                        eventName: "rexlive:importButton"
+                    };
+                    Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
                 }
                 catch (e) {
                     console.log(e);
@@ -164,8 +169,8 @@ var Button_Import_Modal = (function ($) {
                 var breakPointNumber = { x: 50, y: 50 };
 
                 var mousePercents = this.GetMouseBearingsPercentage($element, elementRect, mousePos);
-                if ((mousePercents.x > breakPointNumber.x && mousePercents.x < 100 - breakPointNumber.x) 
-                && (mousePercents.y > breakPointNumber.y && mousePercents.y < 100 - breakPointNumber.y)) {
+                if ((mousePercents.x > breakPointNumber.x && mousePercents.x < 100 - breakPointNumber.x)
+                    && (mousePercents.y > breakPointNumber.y && mousePercents.y < 100 - breakPointNumber.y)) {
                     //Case 1 -
                     var $tempelement = $element.clone();
                     $tempelement.find(".drop-marker").remove();
@@ -191,7 +196,7 @@ var Button_Import_Modal = (function ($) {
                     }
                 }
                 else if ((mousePercents.x <= breakPointNumber.x) || (mousePercents.y <= breakPointNumber.y)) {
-                    var validElement =  validElement = this.FindValidParent($element, 'top');
+                    var validElement = validElement = this.FindValidParent($element, 'top');
 
                     if (validElement.is("body,html"))
                         validElement = Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find("body").children(":not(.drop-marker,[data-dragcontext-marker])").first();
@@ -313,20 +318,25 @@ var Button_Import_Modal = (function ($) {
                 this.removePlaceholder();
                 switch (position) {
                     case "before":
-                        placeholder.find(".message").html($element.parent().data('sh-dnd-error'));
+                        placeholder.find(".message").html($element.data('sh-dnd-error'));
                         //buttons have to be inside text-wrap
                         if ($element.hasClass("text-wrap")) {
-                            $element.prepend(placeholder);                            
+                            $element.prepend(placeholder);
                         } else {
                             $element.before(placeholder);
                         }
-                        this.AddContainerContext($element, 'sibling');
+                        this.AddContainerContext($element, 'inside');
                         break;
                     case "after":
-                        placeholder.find(".message").html($element.parent().data('sh-dnd-error'));
-                        $element.after(placeholder);
-                        this.AddContainerContext($element, 'sibling');
-                        break
+                        placeholder.find(".message").html($element.data('sh-dnd-error'));
+                        //buttons have to be inside text-wrap
+                        if ($element.hasClass("text-wrap")) {
+                            $element.append(placeholder);
+                        } else {
+                            $element.after(placeholder);
+                        }
+                        this.AddContainerContext($element, 'inside');
+                        break;
                     case "inside-prepend":
                         placeholder.find(".message").html($element.data('sh-dnd-error'));
                         $element.prepend(placeholder);
@@ -524,10 +534,6 @@ var Button_Import_Modal = (function ($) {
                                 .find("body [data-sh-parent-marker]")
                                 .first()
                                 .before($contextMarker);
-                        // Rexbuilder_Util_Admin_Editor.$frameBuilder
-                        //   .contents()
-                        //   .find("body")
-                        //   .append($contextMarker);
                         else break;
                     case "sibling":
                         this.PositionContextMarker($contextMarker, $element.parent());
@@ -546,10 +552,6 @@ var Button_Import_Modal = (function ($) {
                                 .find("body [data-sh-parent-marker]")
                                 .first()
                                 .before($contextMarker);
-                        // Rexbuilder_Util_Admin_Editor.$frameBuilder
-                        //   .contents()
-                        //   .find("body")
-                        //   .append($contextMarker);
                         else break;
                 }
             },

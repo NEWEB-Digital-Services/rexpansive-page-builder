@@ -514,6 +514,10 @@ var Rexbuilder_Util_Editor = (function($) {
     Rexbuilder_Util.$document.on("rexlive:close_modal", function(e) {
       _hideAllTools();
     });
+    
+    Rexbuilder_Util.$document.on("rexlive:importButton", function (e) {
+      Rexbuilder_Rexbutton.fixImportedButton();
+    });
   };
 
   var _hideAllTools = function() {

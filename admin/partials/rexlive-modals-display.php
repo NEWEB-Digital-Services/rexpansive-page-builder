@@ -1720,15 +1720,13 @@ defined('ABSPATH') or exit;
             <div class="buttons-list-wrapper">
                 <ul class="button-list button-list--pswp">
                     <li draggable="true">
-                        <div class="rex-button-container">
-                            <div class="rex-button-style" style="display:none;" data-rex-style=".qaz1-rex-button-container{align-items:center;display:inline-flex;padding:10px;text-decoration:none;font-size:24px;color:#fff;background-color:red;height:30px;border-style:solid;border-width:5px;border-color:rgba(0,120,255,.5);border-radius:30px;margin-top:0;margin-bottom:10px}.qaz1-rex-button-container:hover{background-color:#7800ff}"></div>
-                            <p>
-                                <!-- Tipico pulsante -->
-                                <a href="https://www.google.com" class="qaz1-rex-button-container rex-button" data-rex-button-id="qaz1">
+                        <div class="rex-container">
+                            <span class="rex-button-container" data-rex-button-id="qaz1">
+                                <a href="https://www.google.com" class="qaz1-rex-button-container rex-button">
                                     <span class="qaz1-rex-button-data" style="display:none;" data-text-color="white" data-text-size="24px" data-background-color="red" data-background-color-hover="rgb(120,0,255)" data-border-width="5px" data-border-color="rgba(0,120,255,0.5)" data-button-align="" data-border-radius="30px" data-margin-top="0px" data-margin-bottom="10px" data-link-target="https://www.google.com" data-link-type="" data-button-model-name="Bel pulsante"></span>
                                     <span class="qaz1-rex-button-text">LABEL</span>
                                 </a>
-                            </p>
+                            </span>
                         </div>
                     </li>
                 </ul>
@@ -1736,6 +1734,30 @@ defined('ABSPATH') or exit;
         </div>
     </div>
 </div>
+
+<div class="rex-modal-wrap">
+    <div id="rex-button-editor" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable setting-edited">
+        <div class="tool-button tool-button--black rex-cancel-button tool-button--close tippy" data-tippy-content="Cancel" value="" tabindex="0">
+            <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
+        </div>
+        <div class="modal-content">
+            <div class="rex-button-add-model__wrap rex-modal-content__modal-area" style="display:flex;">
+                <div id="rex-button__name__wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix" style="width:100%;">
+                    <span class="prefix"></span>
+                    <input type="text" id="rex-button__name" name="rex-button__name">
+                    <label for="rex-button__name" class=""><?php _e('Button name', 'rexpansive');?></label>
+                    <span class="rex-material-bar"></span>
+                </div>
+                <button>aaa</button>
+            </div><!-- // .rex-model__add-model__wrap -->
+        </div>
+        <div class="rex-modal__outside-footer">
+        </div>
+    </div>
+</div>
+<!-- Edit Button -->
+
+
 <!-- 
 html
 <h1>Titolo</h1>
@@ -1796,4 +1818,12 @@ tipo link
 
 nome pulsante modello
 */
- -->
+
+<p class="rex-button-container">
+    <span class="rex-button-style" style="display:none;" data-rex-style=".qaz1-rex-button-container{align-items:center;display:inline-flex;padding:10px;text-decoration:none;font-size:24px;color:#fff;background-color:red;height:30px;border-style:solid;border-width:5px;border-color:rgba(0,120,255,.5);border-radius:30px;margin-top:0;margin-bottom:10px}.qaz1-rex-button-container:hover{background-color:#7800ff}" data-rex-style-json='{"qaz1_rex_button_container":{"alignItems":"center","display":"inline-flex","padding":"10px","textDecoration":"none","fontSize":"24px","color":"#fff","backgroundColor":"red","height":"30px","borderStyle":"solid","borderWidth":"5px","borderColor":"rgba(0,120,255,.5)","borderRadius":"30px","marginTop":"0","marginBottom":"10px"},"qaz1_rex_button_container_hover":{"backgroundColor":"#7800ff"}}'></span>
+    <a href="https://www.google.com" class="qaz1-rex-button-container rex-button" data-rex-button-id="qaz1">
+        <span class="qaz1-rex-button-data" style="display:none;" data-text-color="white" data-text-size="24px" data-background-color="red" data-background-color-hover="rgb(120,0,255)" data-border-width="5px" data-border-color="rgba(0,120,255,0.5)" data-button-align="" data-border-radius="30px" data-margin-top="0px" data-margin-bottom="10px" data-link-target="https://www.google.com" data-link-type="" data-button-model-name="Bel pulsante"></span>
+        <span class="qaz1-rex-button-text">LABEL</span>
+    </a>
+</p>
+-->
