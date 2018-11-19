@@ -14524,6 +14524,8 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever::before {
 
   .switch-toggle.switch-live input + label {
     padding: 0 5px; }
+    .switch-toggle.switch-live input + label:after, .switch-toggle.switch-live input + label:before {
+      content: none; }
 
   .switch-light.switch-live input ~ span span:first-child .l-svg-icons > svg,
   .switch-light.switch-live input:checked ~ span span:nth-child(2) .l-svg-icons > svg,

@@ -200,15 +200,15 @@ class Rexbuilder_Public
             wp_enqueue_script('storeVariables', REXPANSIVE_BUILDER_URL . $cartella . 'js/store.legacy.min.js', array('jquery'), $ver, true);
 
             wp_enqueue_script('1-RexUtil', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Util.js', array('jquery'), $ver, true);
-            wp_enqueue_script('1-RexUtilEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Util_Editor.js', array('jquery'), $ver, true);
-            wp_enqueue_script('1-RexCreateBlocks', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_CreateBlocks.js', array('jquery'), $ver, true);
-            wp_enqueue_script('1-RexDomUtil', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Dom_Util.js', array('jquery'), $ver, true);
-            wp_enqueue_script('2-RexSaveListeners', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/2-Rex_Save_Listeners.js', array('jquery'), $ver, true);
+            wp_enqueue_script('1-RexUtilEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/1-Rexbuilder_Util_Editor.js', array('jquery'), $ver, true);
+            wp_enqueue_script('1-RexCreateBlocks', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/1-Rexbuilder_CreateBlocks.js', array('jquery'), $ver, true);
+            wp_enqueue_script('1-RexDomUtil', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/1-Rexbuilder_Dom_Util.js', array('jquery'), $ver, true);
+            wp_enqueue_script('2-RexSaveListeners', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/2-Rex_Save_Listeners.js', array('jquery'), $ver, true);
             wp_enqueue_script('3-Navigator', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/3-Navigator.js', array('jquery'), $ver, true);
             wp_enqueue_script('5-flickity', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/flickity.pkgd.min.js', array('jquery'), $ver, true);
             wp_enqueue_script('2-RexSlider', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/2-RexSlider.js', array('jquery'), $ver, true);
+            wp_enqueue_script( 'textfill', REXPANSIVE_BUILDER_URL  . $cartella. 'js/vendor/2-jquery.textFill.js', array( 'jquery' ), $ver, true );
             wp_enqueue_script('8-VimeoVideo', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/8-VimeoVideo.js', array('jquery'), $ver, true);
-            //wp_enqueue_script( 'textfill', REXPANSIVE_BUILDER_URL  . $cartella. 'js/__jquery.textFill.js', array( 'jquery' ), $ver, true );
             //wp_enqueue_script( 'text-resize', REXPANSIVE_BUILDER_URL  . $cartella. 'js/__TextResize.js', array( 'jquery' ), $ver, true );
 
             //gridstack
@@ -219,13 +219,14 @@ class Rexbuilder_Public
             wp_enqueue_script('gridstackUI', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/gridstack.js-0.4.0/src/gridstack.jQueryUI.js', array('jquery'), $ver, true);
             //
             wp_enqueue_script('scrolled', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/4-jquery.rexScrolled.js', array('jquery'), $ver, true);
-            wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/5-jquery.rexIndicator.js', array('jquery'), $ver, true);
+            wp_enqueue_script('rex-accordion', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/6-jquery.rexAccordion.js', array('jquery'), $ver, true);
+            wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/6-jquery.rexIndicator.js', array('jquery'), $ver, true);
 
             //editor text
             wp_enqueue_script('spectrumColor', REXPANSIVE_BUILDER_URL . $cartella . 'js/spectrum.js', array('jquery'), $ver, true);
             wp_enqueue_script('medium-editor', REXPANSIVE_BUILDER_URL . $cartella . 'js/medium-editor.js', array('jquery'), $ver, true);
             wp_enqueue_script('mediumEditorToolbarStates', REXPANSIVE_BUILDER_URL . $cartella . 'js/medium-editor-toolbar-states.min.js', array('jquery'), $ver, true);
-            wp_enqueue_script('textEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/2-Text_Editor.js', array('jquery'), $ver, true);
+            wp_enqueue_script('textEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/2-Text_Editor.js', array('jquery'), $ver, true);
 
             wp_enqueue_script('handlebars-runtime', REXPANSIVE_BUILDER_URL . $cartella . 'js/handlebars.runtime.js', array('jquery'), $ver, true);
             wp_enqueue_script('jquery-fileupload', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery.fileupload.js', array('jquery'), $ver, true);
@@ -237,18 +238,18 @@ class Rexbuilder_Public
 
             wp_enqueue_script('overlay-scrollbar', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/jquery.overlayScrollbars.min.js', array('jquery'), $ver, true);
 
-            wp_enqueue_script('2-jqueryEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/2-jquery.perfectGridGalleryEditor.js', array('jquery'), $ver, true);
+            wp_enqueue_script('2-jqueryEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/2-jquery.perfectGridGalleryEditor.js', array('jquery'), $ver, true);
 
             wp_enqueue_script('3-velocity', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/3-velocity.min.js', array('jquery'), $ver, true);
             wp_enqueue_script('3-velocityui', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/3-velocity.ui.min.js', array('jquery'), $ver, true);
             wp_enqueue_script('4-jqueryScrollify', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/4-jquery.rexScrollify.js', array('jquery'), $ver, true);
 
-            wp_enqueue_script('section-js', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Section.js', array('jquery'), $ver, true);
-            wp_enqueue_script('section-editor-js', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Section_Editor.js', array('jquery'), $ver, true);
-            wp_enqueue_script('block-js', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Block.js', array('jquery'), $ver, true);
-            wp_enqueue_script('block-editor-js', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Block_Editor.js', array('jquery'), $ver, true);
+            wp_enqueue_script('section-js', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/1-Rexbuilder_Section.js', array('jquery'), $ver, true);
+            wp_enqueue_script('section-editor-js', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/1-Rexbuilder_Section_Editor.js', array('jquery'), $ver, true);
+            wp_enqueue_script('block-js', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/1-Rexbuilder_Block.js', array('jquery'), $ver, true);
+            wp_enqueue_script('block-editor-js', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/1-Rexbuilder_Block_Editor.js', array('jquery'), $ver, true);
 
-            wp_enqueue_script('4-modals', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/4-modals.js', array('jquery'), $ver, true);
+            wp_enqueue_script('4-modals', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/4-modals.js', array('jquery'), $ver, true);
 
             wp_enqueue_script('rexbuilder', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/rexbuilder-public.js', array('jquery'), $ver, true);
 
@@ -666,8 +667,9 @@ endif;
 
         $layoutsAvaiable = get_option('_rex_responsive_layouts', $defaultLayoutsAvaiable);
 
-        $defaultIDs = array();
+        $defaultIDs = null;
         $sectionsIDsJSON = get_option('_rex_section_ids_used', $defaultIDs);
+        
         $sectionsIDsUsed = json_decode($sectionsIDsJSON, true);
 
         if(isset($_GET['editor'])){

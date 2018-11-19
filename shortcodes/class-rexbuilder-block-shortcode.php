@@ -589,7 +589,7 @@ class Rexbuilder_Block
                     echo do_shortcode($content);
                     echo '</div></article>';
                     echo '<figure class="expanded-image">';
-                    echo '<div class="expanded-image-before" style="background-color:' . $color_bg_block . '"></div>';
+                    echo '<div class="expanded-image-before" ' . $block_background_style . '></div>';
                     if ($zak_foreground):
                         echo '<div class="zak-hovered-image">';
                         echo '<span class="zak-foreground-responsive-wrap">';

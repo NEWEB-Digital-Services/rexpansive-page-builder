@@ -20,6 +20,10 @@
 
 .switch-toggle.switch-live input + label {
   padding: 0 5px;
+  &:after,
+  &:before {
+    content: none;
+  }
 }
 
 // .switch-light.switch-live span span,
