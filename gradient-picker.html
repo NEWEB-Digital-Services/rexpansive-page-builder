@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.css">
+    <link rel="stylesheet" type="text/css"  href="https://cdn.rawgit.com/artf/grapick/master/dist/grapick.min.css">
+    <script src="http://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/spectrum/1.8.0/spectrum.min.js"></script>
+    <script src="https://cdn.rawgit.com/artf/grapick/master/dist/grapick.min.js"></script>
+
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        .wrap {
+            margin: 50px auto;
+            width:300px;
+        }
+        .gradient-text {
+            background: #006cb7;
+            background: -moz-linear-gradient(-45deg, #006cb7 0%, #5f9d43 100%);
+            background: -webkit-linear-gradient(-45deg, #006cb7 0%,#5f9d43 100%);
+            background: linear-gradient(135deg, #006cb7 0%,#5f9d43 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#006cb7', endColorstr='#5f9d43',GradientType=1 );
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+
+</head>
+<body>
+
+    <div class="wrap">
+        <div id="gp"></div>
+        <div>
+            <p class="gradient-text">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem sint ipsum ab, ex doloribus ducimus alias dignissimos quos soluta cupiditate cumque aperiam tempore, impedit quod. Dolore perferendis iusto veniam provident!</p>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+    const gp = new Grapick({
+        el: '#gp',
+        colorEl: '<input id="colorpicker"/>' // I'll use this for the custom color picker
+    });
+
+    const text = document.querySelector('.gradient-text');
+
+    gp.setColorPicker(handler => {
+        const el = handler.getEl().querySelector('#colorpicker');
+
+        $(el).spectrum({
+            color: handler.getColor(),
+            showAlpha: true,
+            showInput: true,
+            change(color) {
+                handler.setColor(color.toRgbString());
+                const val = gp.getPrefixedValues();
+                
+                for(let i=0; i<val.length; i++) {
+                    text.style.background = val[i];
+                }
+            },
+            move(color) {
+                handler.setColor(color.toRgbString(), 0);
+                const val = gp.getPrefixedValues();
+                
+                for(let i=0; i<val.length; i++) {
+                    text.style.background = val[i];
+                }
+            }
+        });
+    });
+    </script>
+</body>
+</html>

@@ -1029,6 +1029,10 @@ var TextEditor = (function($) {
         contentBlockPosition: new ContentBlockPositionExtension(),
         'close-editor-escape': new CloseEditorEscapeExtension()
       },
+      paste: {
+        cleanPastedHTML: true,
+        cleanAttrs: ['dir'],
+      },
       placeholder: {
         /*
          * This example includes the default options for

@@ -4322,7 +4322,8 @@ ul {
   font-weight: normal;
   background-color: #000;
   border-radius: 0;
-  font-family: sans-serif; }
+  font-family: sans-serif;
+  border: none; }
   .medium-editor-action:hover {
     background-color: #000; }
   .medium-editor-action.medium-editor-button-first {
