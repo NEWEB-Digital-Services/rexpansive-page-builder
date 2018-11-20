@@ -917,10 +917,23 @@ defined('ABSPATH') or exit;
         <div class="modal-content"> 
             <div class="bl_modal-row">
                 <div class="bl_modal__option-wrap">
+                    <div class="bl_switch tippy" data-tippy-content="<?php _e('closed/open','rexpansive'); ?>">
+                        <label>
+                            <input class="rex-accordion-open-close-val" name="rex-accordion-open-close-val" type="checkbox">
+                            <span class="lever"></span>
+                            <span class="bl_switch__icon">
+                                <span class="bl_switch__icon--checked"><?php Rexbuilder_Utilities::get_icon('#B015-UnClosed'); ?></span>
+                                <span class="bl_switch__icon--unchecked"><?php Rexbuilder_Utilities::get_icon('#B014-Closed'); ?></span>
+                            </span>
+                        </label>
+                    </div><!-- // Accordion open/closed -->
+                </div>
+            </div>
+            <div class="bl_modal-row">
+                <div class="bl_modal__option-wrap">
                     <div class="modal-editor-editorarea">
                         <?php wp_editor('', 'rex-accordion-header-val', array('textarea_rows' => 20, 'wpautop' => false, 'editor_height' => 150));?>
                     </div>
-                    <!-- <textarea name="rex-accordion-header-val" cols="30" rows="10" style="height:150px;"></textarea> -->
                 </div>
             </div>
             <div class="bl_modal-row">
@@ -928,7 +941,9 @@ defined('ABSPATH') or exit;
                     <div class="modal-editor-editorarea">
                         <?php wp_editor('', 'rex-accordion-content-val', array('textarea_rows' => 20, 'wpautop' => false, 'editor_height' => 150));?>
                     </div>
-                    <!-- <textarea name="rex-accordion-content-val" cols="30" rows="10" style="height:150px;"></textarea> -->
+                </div>
+                <div class="blo_modal__option-wrap">
+                    <span class="tool-button rex-accordion-content-gallery"><?php Rexbuilder_Utilities::get_icon('#C005-Layout'); ?></span>
                 </div>
             </div>
         </div>

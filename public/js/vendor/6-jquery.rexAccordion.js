@@ -25,7 +25,7 @@
         toggle: '.rex-accordion--toggle',
         content: '.rex-accordion--content'
       },
-      duration: 150
+      duration: 150,
     };
 
   // The actual plugin constructor
@@ -62,6 +62,16 @@
       // call them like the example bellow
       var that = this;
 
+      this.updateState();
+      
+      this.properties.$toggle.each(function(i,el) {
+        $(el).on('click', function() {
+          that._handle_click(i);
+        });
+      });
+    },
+
+    updateState: function() {
       if(this.$element.hasClass('close')) {
         this.close_all();
       }
@@ -69,12 +79,6 @@
       if(this.$element.hasClass('open')) {
         this.open_all();
       }
-      
-      this.properties.$toggle.each(function(i,el) {
-        $(el).on('click', function() {
-          that._handle_click(i);
-        });
-      });
     },
     
     _handle_click: function(item) {
@@ -85,14 +89,10 @@
           this.$element.addClass('close').removeClass('open');
           this.properties.$content.slideUp({
             duration:this.settings.duration,
-            start: function() {
-
-            },
             progress: function() {
-              var content = that.properties.$content[0];
-              var block = that.properties.$content.parents('.grid-stack-item')[0];
-              var grid = that.properties.$content.parents('.grid-stack').data("gridstack");
-              grid.resize(block,null,content.offsetHeight/5 + that.properties.$toggle[0].offsetHeight);
+              if (typeof that.settings.close.progressClbk == 'function') { 
+                that.settings.close.progressClbk.call(this, that); // brings the scope to the callback
+              }
             },
             complete: function() {
               that.$element.trigger('rex_accordion:close');
@@ -103,10 +103,9 @@
           this.properties.$content.slideDown({
             duration:this.settings.duration,
             progress: function() {
-              var content = that.properties.$content[0];
-              var block = that.properties.$content.parents('.grid-stack-item')[0];
-              var grid = that.properties.$content.parents('.grid-stack').data("gridstack");
-              grid.resize(block,null,content.offsetHeight/5 + that.properties.$toggle[0].offsetHeight);
+              if (typeof that.settings.open.progressClbk == 'function') { 
+                that.settings.open.progressClbk.call(this, that); // brings the scope to the callback
+              }
             },
             complete:function(){
               that.$element.trigger('rex_accordion:open');

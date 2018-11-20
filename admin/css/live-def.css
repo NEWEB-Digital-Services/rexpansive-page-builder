@@ -2810,6 +2810,15 @@
     -webkit-box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
             box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12); }
 
+.bl_switch label input[type=checkbox]:not(:checked) ~ .bl_switch__icon .bl_switch__icon--checked {
+  display: none; }
+.bl_switch label input[type=checkbox]:not(:checked) ~ .bl_switch__icon .bl_switch__icon--unchecked {
+  display: inline; }
+.bl_switch label input[type=checkbox]:checked ~ .bl_switch__icon .bl_switch__icon--checked {
+  display: inline; }
+.bl_switch label input[type=checkbox]:checked ~ .bl_switch__icon .bl_switch__icon--unchecked {
+  display: none; }
+
 input[type=checkbox]:checked:not(:disabled) ~ .lever:active::before,
 input[type=checkbox]:checked:not(:disabled).tabbed:focus ~ .lever::before {
   -webkit-transform: scale(2.4);

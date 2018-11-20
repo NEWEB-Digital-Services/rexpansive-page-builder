@@ -4705,6 +4705,8 @@ a.pswp-item {
   position: absolute;
   top: 0;
   right: 0; }
+  .rex-accordion .rex-accordion--toggle-icon .l-svg-icons > svg {
+    fill: #000; }
 .rex-accordion .rex-accordion--arrow-icon {
   -webkit-transition: -webkit-transform 0.5s cubic-bezier(0.28, 0.11, 0.32, 1);
   transition: -webkit-transform 0.5s cubic-bezier(0.28, 0.11, 0.32, 1);

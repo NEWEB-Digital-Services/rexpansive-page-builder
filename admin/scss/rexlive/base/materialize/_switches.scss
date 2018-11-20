@@ -64,6 +64,29 @@
   }
 }
 
+.bl_switch label input[type=checkbox] {
+  &:not(:checked) {
+    ~ .bl_switch__icon {
+      .bl_switch__icon--checked {
+        display: none;
+      }
+      .bl_switch__icon--unchecked {
+        display: inline;
+      }
+    }
+  }
+  &:checked {
+    ~ .bl_switch__icon {
+      .bl_switch__icon--checked {
+        display: inline;
+      }
+      .bl_switch__icon--unchecked {
+        display: none;
+      }
+    }
+  }
+}
+
 // Switch active style
 input[type=checkbox]:checked:not(:disabled) ~ .lever:active::before,
 input[type=checkbox]:checked:not(:disabled).tabbed:focus ~ .lever::before {

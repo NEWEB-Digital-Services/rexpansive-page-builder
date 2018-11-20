@@ -456,6 +456,7 @@ var Rexbuilder_Block_Editor = (function($) {
       var $accordion = $elem.find(".rex-accordion");
       var a_header = "";
       var a_content = "";
+      var a_state = ( $accordion.hasClass("open") ? 'open' : 'close' );
       var $temp_h = $accordion.find(".rex-accordion--toggle").clone();
       $temp_h.find(".rex-accordion--close-icon").remove();
       if($accordion.length > 0) {
@@ -472,7 +473,8 @@ var Rexbuilder_Block_Editor = (function($) {
           },
           accordion: {
             header: a_header,
-            content: a_content
+            content: a_content,
+            state: a_state
           },
         }
       };
@@ -516,6 +518,7 @@ var Rexbuilder_Block_Editor = (function($) {
       }
 
       $elem.find(".text-wrap.medium-editor-element").html(data.accordion.complete);
+      $elem.find(".rex-accordion").rexAccordion();
     });
 
     /**

@@ -108,11 +108,49 @@ var Rexbuilder_App = (function($) {
 
     Rexbuilder_Util.playAllVideos();
 
-    // if( !Rexbuilder_Util.editorMode ) {
-      $accordions.rexAccordion({
-        duration: 300
-      });
-    // }
+    var accordionSettings = {
+      duration: 300,
+    };
+
+    if( Rexbuilder_Util.editorMode ) {
+      accordionSettings.open = {
+        progressClbk: function(data) {
+          var content = data.properties.$content[0];
+          var block = data.properties.$content.parents('.grid-stack-item')[0];
+          var grid = data.properties.$content.parents('.grid-stack').data("gridstack");
+          // grid.resize(block,null,Math.round(content.offsetHeight/grid.opts.cellHeight) + data.properties.$toggle[0].offsetHeight);
+          grid.resize(block,null,Math.round( ( content.offsetHeight + data.properties.$toggle[0].offsetHeight ) / grid.opts.cellHeight ));
+        }
+      };
+      accordionSettings.close = {
+        progressClbk: function(data) {
+          var content = data.properties.$content[0];
+          var block = data.properties.$content.parents('.grid-stack-item')[0];
+          var grid = data.properties.$content.parents('.grid-stack').data("gridstack");
+          // grid.resize(block,null,Math.round(content.offsetHeight/grid.opts.cellHeight) + data.properties.$toggle[0].offsetHeight);
+          grid.resize(block,null,Math.round( ( content.offsetHeight + data.properties.$toggle[0].offsetHeight ) / grid.opts.cellHeight ));
+        }
+      };
+    } else {
+      accordionSettings.open = {
+        progressClbk: function(data) {
+          var content = data.properties.$content[0];
+          var block = data.properties.$content.parents('.grid-stack-item')[0];
+          var grid = data.properties.$content.parents('.grid-stack').data("gridstack");
+          grid.resize(block,null,Math.round( ( content.offsetHeight + data.properties.$toggle[0].offsetHeight ) / grid.opts.cellHeight ));
+        }
+      };
+      accordionSettings.close = {
+        progressClbk: function(data) {
+          var content = data.properties.$content[0];
+          var block = data.properties.$content.parents('.grid-stack-item')[0];
+          var grid = data.properties.$content.parents('.grid-stack').data("gridstack");
+          grid.resize(block,null,Math.round( ( content.offsetHeight + data.properties.$toggle[0].offsetHeight ) / grid.opts.cellHeight ));
+        }
+      };
+    }
+
+    $accordions.rexAccordion(accordionSettings);
   };
 
   var _linkDocumentListeners = function() {
