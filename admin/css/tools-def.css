@@ -15458,7 +15458,7 @@ body.rexpansive-editor .lean-overlay {
 
 #rex-html-text-editor {
   width: 450px;
-  max-width: 450px; }
+  max-width: 640px; }
   #rex-html-text-editor .modal-content {
     padding: 0;
     border: 15px solid #000; }

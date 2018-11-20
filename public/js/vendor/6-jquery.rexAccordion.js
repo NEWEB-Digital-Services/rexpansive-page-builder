@@ -62,6 +62,8 @@
       // call them like the example bellow
       var that = this;
 
+      console.log('plugin int');
+
       if(this.$element.hasClass('close')) {
         this.close_all();
       }
@@ -152,14 +154,14 @@
       }
     },
 
-    _viewport: function () {
-      var e = window, a = 'inner';
-      if (!('innerWidth' in window)) {
-        a = 'client';
-        e = document.documentElement || document.body;
-      }
-      return { width: e[a + 'Width'], height: e[a + 'Height'] };
-    },
+    // _viewport: function () {
+    //   var e = window, a = 'inner';
+    //   if (!('innerWidth' in window)) {
+    //     a = 'client';
+    //     e = document.documentElement || document.body;
+    //   }
+    //   return { width: e[a + 'Width'], height: e[a + 'Height'] };
+    // },
 
     open_all: function( ) {
       this.properties.$content.attr('data-item-status', 'open');

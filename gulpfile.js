@@ -297,6 +297,7 @@ var public_js_src = [
 	'public/js/vendor/4-jquery.rexScrollify.js',
 	'public/js/vendor/5-flickity.pkgd.min.js',
 	'public/js/vendor/5-jquery.rexIndicator.js',
+	'public/js/vendor/6-jquery.rexAccordion.js',
 	'public/js/vendor/photoswipe.min.js',
 	'public/js/vendor/photoswipe-ui-default.min.js',
 	'public/js/vendor/jquery.mb.YTPlayer.min.js',

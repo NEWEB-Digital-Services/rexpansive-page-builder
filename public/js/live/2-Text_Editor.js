@@ -9,7 +9,7 @@ var TextEditor = (function($) {
   var editorInstance;
 
   var pickerExtensionInstance;
-  var htmlExtensionInstance;
+  // var htmlExtensionInstance;
   var headingTagsExtensionInstance;
   var formattingTagsExtensionInstance;
   var justifyExtensionIntance;
@@ -777,6 +777,7 @@ var TextEditor = (function($) {
 
   /**
    * Custom Text HTML extension
+   * @deprecated
    */
   var TextHtmlExtension = MediumEditor.extensions.button.extend({
     name: "textHtml",
@@ -903,6 +904,7 @@ var TextEditor = (function($) {
       var meContents = this.base.serialize();
       var htmlSelected = meContents['element-'+index].value;
       htmlSelected = htmlSelected.replace('<span class="text-editor-span-fix" style="display: none;"></span>','').trim();
+      console.log(htmlSelected);
 
       var data = {
         eventName: "rexlive:openHTMLEditor",
@@ -913,7 +915,11 @@ var TextEditor = (function($) {
     },
 
     handleHtmlEditorSave: function(event) {
-      this.base.pasteHTML(event.customHTML);
+      console.log(event.customHTML);
+      this.base.pasteHTML(event.customHTML, {
+        cleanPastedHTML: false,
+        cleanAttrs: ['dir'],
+      });
     }
   });
 
@@ -984,7 +990,7 @@ var TextEditor = (function($) {
    * Launching the medium editor
    */
   var _createEditor = function() {
-    htmlExtensionInstance = new TextHtmlExtension();
+    // htmlExtensionInstance = new TextHtmlExtension();
     pickerExtensionInstance = new ColorPickerExtension();
     headingTagsExtensionInstance = new TextTagExtension();
     formattingTagsExtensionInstance = new FormattingTagExtension();
@@ -1020,7 +1026,7 @@ var TextEditor = (function($) {
       imageDragging: false,
       extensions: {
         colorPicker: pickerExtensionInstance,
-        textHtml: htmlExtensionInstance,
+        // textHtml: htmlExtensionInstance,
         textEditorHtml: new TextHtmlEditorExtension(),
         headingTags: headingTagsExtensionInstance,
         formattingTags: formattingTagsExtensionInstance,
@@ -1028,10 +1034,6 @@ var TextEditor = (function($) {
         listDropdown: listExtensionInstance,
         contentBlockPosition: new ContentBlockPositionExtension(),
         'close-editor-escape': new CloseEditorEscapeExtension()
-      },
-      paste: {
-        cleanPastedHTML: true,
-        cleanAttrs: ['dir'],
       },
       placeholder: {
         /*

@@ -74,6 +74,7 @@ var HtmlEditor_Modal = (function($) {
     editor.setTheme("ace/theme/monokai");
     editor.getSession().setMode("ace/mode/html");
     editor.getSession().setUseWrapMode(true);
+    editor.getSession().setTabSize(2);
 
     // var beautify = ace.require("ace/ext/beautify"); // get reference to extension
     // beautify.beautify(editor.session);
