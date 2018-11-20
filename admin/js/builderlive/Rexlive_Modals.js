@@ -30,6 +30,8 @@ var Rexlive_Modals = (function ($) {
         // block content position modal
         Block_Content_Positions_Modal.init($("#rex-block-content-position-editor"));
 
+        Rexlive_Block_Accordion.init();
+
         // models
         Model_Modal.init();
 

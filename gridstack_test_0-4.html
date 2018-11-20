@@ -26,7 +26,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.0/jquery-ui.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.5.0/lodash.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
     <script src="public/js/vendor/gridstack.js-0.4.0/dist/gridstack.js"></script>
     <script src="public/js/vendor/gridstack.js-0.4.0/dist/gridstack.jQueryUI.js"></script>
 
@@ -35,19 +35,15 @@
         background: lightgoldenrodyellow;
       }
 
-      #grid2 {
-        background: lightcyan;
-      }
-
       .grid-stack-item-content {
         color: #2c3e50;
         text-align: center;
         background-color: #18bc9c;
       }
 
-      #grid2 .grid-stack-item-content {
-        background-color: #9caabc;
-      }
+      /* .grid-stack > .grid-stack-item > .grid-stack-item-content {
+        position: static;
+      } */
 
       .grid-stack-item-removing {
         opacity: 0.5;
@@ -89,84 +85,103 @@
       </div>
 
       <div class="row">
-        <div class="col-md-6">
-          <div class="grid-stack grid-stack-6" id="grid1">
+        <div class="col-md-12">
+          <div class="grid-stack grid-stack-12" id="grid1">
             <div
               class="grid-stack-item"
               data-gs-x="0"
               data-gs-y="0"
               data-gs-width="2"
               data-gs-height="2"
-            >
-              <div class="grid-stack-item-content">0</div>
+              data-el-resized="false">
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem facere maiores necessitatibus temporibus quas voluptatum quam</div>
+              </div>
             </div>
             <div
               class="grid-stack-item"
               data-gs-x="3"
               data-gs-y="1"
               data-gs-width="1"
-              data-gs-height="2"
+              data-gs-height="3"
+              data-el-resized="false"
             >
-              <div class="grid-stack-item-content">0</div>
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">obcaecati totam deleniti velit dolores at, placeat cum voluptatem, quis praesentium. Repudiandae, illo aliquam.</div>
+              </div>
             </div>
             <div
               class="grid-stack-item"
-              data-gs-x="4"
+              data-gs-x="0"
               data-gs-y="2"
-              data-gs-width="1"
-              data-gs-height="1"
-            >
-              <div class="grid-stack-item-content">0</div>
-            </div>
-            <div
-              class="grid-stack-item"
-              data-gs-x="2"
-              data-gs-y="3"
               data-gs-width="3"
               data-gs-height="1"
+              data-el-resized="false"
             >
-              <div class="grid-stack-item-content">0</div>
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem facere maiores necessitatibus temporibus quas voluptatum quam, obcaecati totam deleniti velit dolores at, placeat cum voluptatem, quis praesentium. Repudiandae, illo aliquam.</div>
+              </div>
             </div>
-          </div>
-        </div>
-      </div>
 
     </div>
 
     <script type="text/javascript">
       $(function() {
-        var $grid = $("#grid1");
-        var options = {
-          width: 6,
-          float: true
-          // removable: '.trash',
-          // removeTimeout: 100,
-          // acceptWidgets: '.grid-stack-item',
-        };
+        $(window).on("load", function() {
+          var $grid = $("#grid1");
+          var options = {
+            width: 12,
+            float: false,
+            animate: true,
+            // cellHeight: 1
+          };
+  
+          $grid.gridstack(options);
+          var grid = $grid.data('gridstack');
+  
+          var $disableBtn = $("#disable-grid");
+          $disableBtn.on("click", function(e) {
+            e.preventDefault();
+            grid.disable();
+          });
+  
+          var $enableBtn = $("#enable-grid");
+          $enableBtn.on("click", function(e) {
+            e.preventDefault();
+            grid.enable();
+          });
 
-        $grid.gridstack(options);
-        var grid = $grid.data('gridstack');
-
-        var $disableBtn = $("#disable-grid");
-        $disableBtn.on("click", function(e) {
-          e.preventDefault();
-          grid.disable();
-        });
-
-        var $enableBtn = $("#enable-grid");
-        $enableBtn.on("click", function(e) {
-          e.preventDefault();
-          grid.enable();
-        });
-
-        $grid.find(".grid-stack-item").on("mousedown", function(e) {
-          var $elem = $(this);
-          setTimeout(function() {
-            $elem.css("cursor","pointer");
-            $elem.find('.grid-stack-item-content').css('background-color','red');
-            $elem.trigger("mouseup");
-            // grid.disable();
-          },1000);
+          // grid.batchUpdate();
+          // $grid.find(".grid-stack-item").each(function(i,el) {
+          //   var tw = el.getElementsByClassName('text-wrap')[0];
+          //   el.style.offsetHeight = tw.offsetHeight + 'px';
+          //   grid.resize(el,null,tw.offsetHeight);
+          // });
+          // grid.commit();
+  
+          $grid.find(".grid-stack-item").on("click", function(e) {
+            var w = this.getAttribute("data-gs-width");
+            var h = this.getAttribute("data-gs-height");
+            var resized = this.getAttribute("data-el-resized");
+            if( "true" == resized ) {
+              grid.update(this,null,null,w/2,h/2);
+              this.setAttribute("data-el-resized","false");
+            } else {
+              grid.update(this,null,null,w*2,h*2);
+              this.setAttribute("data-el-resized","true");
+            }
+          });
+  
+          // $grid.find(".grid-stack-item").on("mousedown", function(e) {
+          //   var $elem = $(this);
+          //   setTimeout(function() {
+          //     $elem.css("cursor","pointer");
+          //     $elem.find('.grid-stack-item-content').css('background-color','red');
+          //     $elem.trigger("mouseup");
+          //     // grid.disable();
+          //   },1000);
+          // });
+          
         });
       });
     </script>

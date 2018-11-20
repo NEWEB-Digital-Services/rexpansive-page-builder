@@ -437,117 +437,197 @@ var Rexbuilder_Block_Editor = (function($) {
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });
 
-  };
+    /**
+     * Edit the block accordion 
+     * @since 2.0.0
+     */
+    Rexbuilder_Util.$document.on('click', '.edit-block-accordion', function(e) {
+      var $btn = $(e.target);
+      var $elem = $btn.parents(".grid-stack-item");
+      var $section = $elem.parents(".rexpansive_section");
+      var rex_block_id = $elem.attr("data-rexbuilder-block-id");
+      var $elemData = $elem.children(".rexbuilder-block-data");
+      var sectionID = $section.attr("data-rexlive-section-id");
+      var modelNumber =
+        typeof $section.attr("data-rexlive-model-number") != "undefined"
+          ? $section.attr("data-rexlive-model-number")
+          : "";
 
-  /**
-   * Edit the block image settings 
-   * @since 2.0.0
-   */
-  $(document).on('click', '.edit-block-image-position', function(e) {
-    var $btn = $(e.target);
-    var $elem = $btn.parents(".grid-stack-item");
-    var $section = $elem.parents(".rexpansive_section");
-    var rex_block_id = $elem.attr("data-rexbuilder-block-id");
-    var $elemData = $elem.children(".rexbuilder-block-data");
-    var sectionID = $section.attr("data-rexlive-section-id");
-    var $itemContent = $elem.find(".grid-item-content");
-    var modelNumber =
-      typeof $section.attr("data-rexlive-model-number") != "undefined"
-        ? $section.attr("data-rexlive-model-number")
-        : "";
-
-    var idImage =
-      typeof $elemData.attr("data-id_image_bg_block") == "undefined"
-        ? ""
-        : $elemData.attr("data-id_image_bg_block");
-    var imageUrl =
-      typeof $elemData.attr("data-image_bg_block") == "undefined"
-        ? ""
-        : $elemData.attr("data-image_bg_block");
-    var width =
-      typeof $itemContent.attr("data-background_image_width") == "undefined"
-        ? ""
-        : $itemContent.attr("data-background_image_width");
-    var height =
-      typeof $itemContent.attr("data-background_image_height") == "undefined"
-        ? ""
-        : $itemContent.attr("data-background_image_height");
-    var activeImage =
-      typeof $elemData.attr("data-image_bg_elem_active") != "undefined"
-        ? $elemData.attr("data-image_bg_elem_active")
-        : true;
-    var defaultTypeImage =
-      $elem.parents(".grid-stack-row").attr("data-layout") == "fixed"
-        ? "full"
-        : "natural";
-    var typeBGimage =
-      typeof $elemData.attr("data-type_bg_block") == "undefined"
-        ? defaultTypeImage
-        : $elemData.attr("data-type_bg_block");
-    var activePhotoswipe =
-      typeof $elemData.attr("data-photoswipe") == "undefined"
-        ? ""
-        : $elemData.attr("data-photoswipe");
-    var imageData = {
-      idImage: idImage,
-      imageUrl: imageUrl,
-      width: width,
-      height: height,
-      typeBGimage: typeBGimage,
-      active: activeImage,
-      defaultTypeImage: defaultTypeImage,
-      photoswipe: activePhotoswipe,
-      target: {
-        sectionID: sectionID,
-        modelNumber: modelNumber,
-        rexID: rex_block_id
+      var $accordion = $elem.find(".rex-accordion");
+      var a_header = "";
+      var a_content = "";
+      var $temp_h = $accordion.find(".rex-accordion--toggle").clone();
+      $temp_h.find(".rex-accordion--close-icon").remove();
+      if($accordion.length > 0) {
+        a_header = $temp_h.html().trim(),
+        a_content = $accordion.find(".rex-accordion--content").html().trim();
       }
-    };
 
-    var blockFlexImgPosition =
-      typeof $elemData.attr("data-block_flex_img_position") == "undefined"
-        ? ""
-        : $elemData.attr("data-block_flex_img_position");
-    var blockFlexImgPositionArr = blockFlexImgPosition.split(" ");
-    var blockFlexImgPositionString =
-      blockFlexImgPositionArr[1] + "-" + blockFlexImgPositionArr[0];
-    var img_position = {
-      target: {
-        sectionID: sectionID,
-        modelNumber: modelNumber,
-        rexID: rex_block_id
-      },
-      position: blockFlexImgPositionString
-    };
+      var settings = {
+        blockData: {
+          target: {
+            sectionID: sectionID,
+            modelNumber: modelNumber,
+            rexID: rex_block_id
+          },
+          accordion: {
+            header: a_header,
+            content: a_content
+          },
+        }
+      };
 
-    var settings = {
-      imageBG: imageData,
-      flexImgPosition: img_position
-    }
+      Rexbuilder_Util_Editor.manageElement = true;
+      // var mousePosition = Rexbuilder_Util_Editor.getMousePosition( e, { offset: { w: this.offsetWidth, h: this.offsetHeight } } );
 
-    Rexbuilder_Util_Editor.manageElement = true;
-    var mousePosition = Rexbuilder_Util_Editor.getMousePosition( e, { offset: { w: this.offsetWidth, h: this.offsetHeight } } );
+      var data = {
+        eventName: "rexlive:editBlockAccordion",
+        activeBlockData: settings,
+        // mousePosition: mousePosition
+      };
 
-    var data = {
-      eventName: "rexlive:editBlockImageSettings",
-      activeBlockData: settings,
-      mousePosition: mousePosition
-    };
-
-    Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-  });
-
-  /**
-   * Triggering the event on MediumEditor when the user close the HTML editor window pressing the saving button
-   * @since 2.0.0
-   */
-  $(document).on('rexlive:SetcustomHTML',function(e) {
-    TextEditor.triggerMEEvent({
-      name:"rexlive:mediumEditor:saveHTMLContent", 
-      data: e.settings.data_to_send, 
-      editable: null
+      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });
-  });
+
+    /**
+     * Listen to updating accordion by the modal
+     * @since 2.0.0
+     */
+    Rexbuilder_Util.$document.on('rexlive:updateAccordion', function(e) {
+      var data = e.settings.data_to_send;
+
+      var target = data.target;
+      var $elem;
+
+      if (target.modelNumber != "") {
+        $elem = Rexbuilder_Util.$rexContainer
+          .find(
+            'section[data-rexlive-section-id="' +
+              target.sectionID +
+              '"][data-rexlive-model-number="' +
+              target.modelNumber +
+              '"]'
+          )
+          .find('div [data-rexbuilder-block-id="' + target.rexID + '"]');
+      } else {
+        $elem = Rexbuilder_Util.$rexContainer
+          .find('section[data-rexlive-section-id="' + target.sectionID + '"]')
+          .find('div [data-rexbuilder-block-id="' + target.rexID + '"]');
+      }
+
+      $elem.find(".text-wrap.medium-editor-element").html(data.accordion.complete);
+    });
+
+    /**
+     * Edit the block image settings 
+     * @since 2.0.0
+     */
+    Rexbuilder_Util.$document.on('click', '.edit-block-image-position', function(e) {
+      var $btn = $(e.target);
+      var $elem = $btn.parents(".grid-stack-item");
+      var $section = $elem.parents(".rexpansive_section");
+      var rex_block_id = $elem.attr("data-rexbuilder-block-id");
+      var $elemData = $elem.children(".rexbuilder-block-data");
+      var sectionID = $section.attr("data-rexlive-section-id");
+      var $itemContent = $elem.find(".grid-item-content");
+      var modelNumber =
+        typeof $section.attr("data-rexlive-model-number") != "undefined"
+          ? $section.attr("data-rexlive-model-number")
+          : "";
+  
+      var idImage =
+        typeof $elemData.attr("data-id_image_bg_block") == "undefined"
+          ? ""
+          : $elemData.attr("data-id_image_bg_block");
+      var imageUrl =
+        typeof $elemData.attr("data-image_bg_block") == "undefined"
+          ? ""
+          : $elemData.attr("data-image_bg_block");
+      var width =
+        typeof $itemContent.attr("data-background_image_width") == "undefined"
+          ? ""
+          : $itemContent.attr("data-background_image_width");
+      var height =
+        typeof $itemContent.attr("data-background_image_height") == "undefined"
+          ? ""
+          : $itemContent.attr("data-background_image_height");
+      var activeImage =
+        typeof $elemData.attr("data-image_bg_elem_active") != "undefined"
+          ? $elemData.attr("data-image_bg_elem_active")
+          : true;
+      var defaultTypeImage =
+        $elem.parents(".grid-stack-row").attr("data-layout") == "fixed"
+          ? "full"
+          : "natural";
+      var typeBGimage =
+        typeof $elemData.attr("data-type_bg_block") == "undefined"
+          ? defaultTypeImage
+          : $elemData.attr("data-type_bg_block");
+      var activePhotoswipe =
+        typeof $elemData.attr("data-photoswipe") == "undefined"
+          ? ""
+          : $elemData.attr("data-photoswipe");
+      var imageData = {
+        idImage: idImage,
+        imageUrl: imageUrl,
+        width: width,
+        height: height,
+        typeBGimage: typeBGimage,
+        active: activeImage,
+        defaultTypeImage: defaultTypeImage,
+        photoswipe: activePhotoswipe,
+        target: {
+          sectionID: sectionID,
+          modelNumber: modelNumber,
+          rexID: rex_block_id
+        }
+      };
+  
+      var blockFlexImgPosition =
+        typeof $elemData.attr("data-block_flex_img_position") == "undefined"
+          ? ""
+          : $elemData.attr("data-block_flex_img_position");
+      var blockFlexImgPositionArr = blockFlexImgPosition.split(" ");
+      var blockFlexImgPositionString =
+        blockFlexImgPositionArr[1] + "-" + blockFlexImgPositionArr[0];
+      var img_position = {
+        target: {
+          sectionID: sectionID,
+          modelNumber: modelNumber,
+          rexID: rex_block_id
+        },
+        position: blockFlexImgPositionString
+      };
+  
+      var settings = {
+        imageBG: imageData,
+        flexImgPosition: img_position
+      }
+  
+      Rexbuilder_Util_Editor.manageElement = true;
+      var mousePosition = Rexbuilder_Util_Editor.getMousePosition( e, { offset: { w: this.offsetWidth, h: this.offsetHeight } } );
+  
+      var data = {
+        eventName: "rexlive:editBlockImageSettings",
+        activeBlockData: settings,
+        mousePosition: mousePosition
+      };
+  
+      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+    });
+  
+    /**
+     * Triggering the event on MediumEditor when the user close the HTML editor window pressing the saving button
+     * @since 2.0.0
+     */
+    Rexbuilder_Util.$document.on('rexlive:SetcustomHTML',function(e) {
+      TextEditor.triggerMEEvent({
+        name:"rexlive:mediumEditor:saveHTMLContent", 
+        data: e.settings.data_to_send, 
+        editable: null
+      });
+    });
+  };
 
   /**
    * Launching the spectrum color picker on an input element, for the block background color

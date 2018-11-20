@@ -108,9 +108,11 @@ var Rexbuilder_App = (function($) {
 
     Rexbuilder_Util.playAllVideos();
 
-    if( !Rexbuilder_Util.editorMode ) {
-      $accordions.rexAccordion();
-    }
+    // if( !Rexbuilder_Util.editorMode ) {
+      $accordions.rexAccordion({
+        duration: 300
+      });
+    // }
   };
 
   var _linkDocumentListeners = function() {

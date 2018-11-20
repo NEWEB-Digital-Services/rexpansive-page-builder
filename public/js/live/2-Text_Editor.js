@@ -904,7 +904,6 @@ var TextEditor = (function($) {
       var meContents = this.base.serialize();
       var htmlSelected = meContents['element-'+index].value;
       htmlSelected = htmlSelected.replace('<span class="text-editor-span-fix" style="display: none;"></span>','').trim();
-      console.log(htmlSelected);
 
       var data = {
         eventName: "rexlive:openHTMLEditor",
@@ -915,7 +914,6 @@ var TextEditor = (function($) {
     },
 
     handleHtmlEditorSave: function(event) {
-      console.log(event.customHTML);
       this.base.pasteHTML(event.customHTML, {
         cleanPastedHTML: false,
         cleanAttrs: ['dir'],

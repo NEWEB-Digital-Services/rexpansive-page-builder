@@ -442,7 +442,9 @@ class Rexbuilder_Block
                     }
                     echo '>';
 
-                    echo '<div class="rexlive-block-drag-handle"></div>';
+                    if (isset($editor) && $editor == "true") {
+                        echo '<div class="rexlive-block-drag-handle"></div>';
+                    }
 
                     if ('full' == $type_bg_block) {
                         echo "<div class=\"rex-image-wrapper full-image-background\"".$background_img_style;
@@ -491,7 +493,9 @@ class Rexbuilder_Block
                     }
                     echo '>';
 
-                    echo '<div class="rexlive-block-drag-handle"></div>';
+                    if (isset($editor) && $editor == "true") {
+                        echo '<div class="rexlive-block-drag-handle"></div>';
+                    }
 
                     if ('full' == $type_bg_block) {
                         echo "<div class=\"rex-image-wrapper full-image-background\"".$background_img_style;
@@ -540,7 +544,9 @@ class Rexbuilder_Block
                     }
                     echo '>';
 
-                    echo '<div class="rexlive-block-drag-handle"></div>';
+                    if (isset($editor) && $editor == "true") {
+                        echo '<div class="rexlive-block-drag-handle"></div>';
+                    }
 
                     if ('full' == $type_bg_block) {
                         echo "<div class=\"rex-image-wrapper full-image-background\"".$background_img_style;

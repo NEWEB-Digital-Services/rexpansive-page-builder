@@ -62,8 +62,6 @@
       // call them like the example bellow
       var that = this;
 
-      console.log('plugin int');
-
       if(this.$element.hasClass('close')) {
         this.close_all();
       }
@@ -87,6 +85,15 @@
           this.$element.addClass('close').removeClass('open');
           this.properties.$content.slideUp({
             duration:this.settings.duration,
+            start: function() {
+
+            },
+            progress: function() {
+              var content = that.properties.$content[0];
+              var block = that.properties.$content.parents('.grid-stack-item')[0];
+              var grid = that.properties.$content.parents('.grid-stack').data("gridstack");
+              grid.resize(block,null,content.offsetHeight/5 + that.properties.$toggle[0].offsetHeight);
+            },
             complete: function() {
               that.$element.trigger('rex_accordion:close');
             }
@@ -95,6 +102,12 @@
           this.$element.addClass('open').removeClass('close');
           this.properties.$content.slideDown({
             duration:this.settings.duration,
+            progress: function() {
+              var content = that.properties.$content[0];
+              var block = that.properties.$content.parents('.grid-stack-item')[0];
+              var grid = that.properties.$content.parents('.grid-stack').data("gridstack");
+              grid.resize(block,null,content.offsetHeight/5 + that.properties.$toggle[0].offsetHeight);
+            },
             complete:function(){
               that.$element.trigger('rex_accordion:open');
             }

@@ -1,6 +1,13 @@
 .rex-accordion {
   .rex-accordion--toggle {
     cursor: pointer;
+    position: relative;
+  }
+
+  .rex-accordion--toggle-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
   }
 
   .rex-accordion--arrow-icon {

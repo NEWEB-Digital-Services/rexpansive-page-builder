@@ -3828,6 +3828,23 @@ http://flickity.metafizzy.co
   -webkit-animation-name: fadeInAndOut;
   animation-name: fadeInAndOut; }
 
+.l-svg-icons {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.1em;
+  line-height: 1; }
+
+.l-svg-icons > svg {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  fill: #000;
+  vertical-align: -0.1em;
+  -webkit-transition: fill 600ms ease-out;
+  -o-transition: fill 600ms ease-out;
+  transition: fill 600ms ease-out; }
+
 .sk-double-bounce {
   width: 40px;
   height: 40px;
@@ -4682,7 +4699,12 @@ a.pswp-item {
             transform: rotate(0); }
 
 .rex-accordion .rex-accordion--toggle {
-  cursor: pointer; }
+  cursor: pointer;
+  position: relative; }
+.rex-accordion .rex-accordion--toggle-icon {
+  position: absolute;
+  top: 0;
+  right: 0; }
 .rex-accordion .rex-accordion--arrow-icon {
   -webkit-transition: -webkit-transform 0.5s cubic-bezier(0.28, 0.11, 0.32, 1);
   transition: -webkit-transform 0.5s cubic-bezier(0.28, 0.11, 0.32, 1);

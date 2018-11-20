@@ -910,6 +910,41 @@ defined('ABSPATH') or exit;
 </div>
 <!-- Block settings background settings -->
 
+<!-- Block Accordion -->
+<div class="rex-modal-wrap">
+    <div id="rex-block-accordion-editor" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
+        <?php Rexbuilder_Utilities::close_button(); ?>
+        <div class="modal-content"> 
+            <div class="bl_modal-row">
+                <div class="bl_modal__option-wrap">
+                    <div class="modal-editor-editorarea">
+                        <?php wp_editor('', 'rex-accordion-header-val', array('textarea_rows' => 20, 'wpautop' => false, 'editor_height' => 150));?>
+                    </div>
+                    <!-- <textarea name="rex-accordion-header-val" cols="30" rows="10" style="height:150px;"></textarea> -->
+                </div>
+            </div>
+            <div class="bl_modal-row">
+                <div class="bl_modal__option-wrap">
+                    <div class="modal-editor-editorarea">
+                        <?php wp_editor('', 'rex-accordion-content-val', array('textarea_rows' => 20, 'wpautop' => false, 'editor_height' => 150));?>
+                    </div>
+                    <!-- <textarea name="rex-accordion-content-val" cols="30" rows="10" style="height:150px;"></textarea> -->
+                </div>
+            </div>
+        </div>
+        <div class="rex-modal__outside-footer">
+            <div class="tool-button tool-button--inline tool-button--save rex-modal__save-button tippy" data-tippy-content="<?php esc_attr_e( 'Save', 'rexpansive' ); ?>">
+                <div class="btn-save--wrap">
+                    <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                    <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+                </div>
+            </div>
+        </div>
+        <?php // include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-modals-bottom-arrow.php'; ?>
+    </div>
+</div>
+<!-- Block Accordion -->
+
 <div class="rex-modal-wrap">
     <div id="video-block-editor-wrapper" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable" data-block_tools="">
         <?php Rexbuilder_Utilities::close_button(); ?>

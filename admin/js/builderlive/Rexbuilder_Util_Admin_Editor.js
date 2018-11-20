@@ -184,6 +184,10 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         Block_Content_Positions_Modal.openBlockContentPositionModal(event.data.activeBlockData, event.data.mousePosition);
       }
 
+      if (event.data.eventName == "rexlive:editBlockAccordion") {
+        Rexlive_Block_Accordion.openModal(event.data.activeBlockData);
+      }
+
       if (event.data.eventName == "rexlive:editBlockImageSettings") {
         Block_Image_Editor_Modal.openModal(event.data.activeBlockData, event.data.mousePosition);
       }

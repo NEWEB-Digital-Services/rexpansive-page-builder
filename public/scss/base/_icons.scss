@@ -1,0 +1,17 @@
+.l-svg-icons {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  // fill: $icon-base-color;
+  vertical-align: -0.1em;
+  line-height: 1;
+}
+
+.l-svg-icons > svg {
+  display: inline-block;
+  width: 1em;
+  height: 1em;
+  fill: #000;
+  vertical-align: -0.1em;
+  transition: fill 600ms ease-out;
+}
