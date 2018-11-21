@@ -157,6 +157,10 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         Block_Video_Background_Modal.openBlockVideoBackgroundModal( event.data.activeBlockData, event.data.mousePosition );
       }
 
+      if (event.data.eventName == "rexlive:openRexButtonEditor") {
+        Button_Edit_Modal.openButtonEditorModal({});
+      }
+      
       if (event.data.eventName == "rexlive:editRemoveModal") {
         Model_Edit_Modal.openModal(event.data.modelData);
       }

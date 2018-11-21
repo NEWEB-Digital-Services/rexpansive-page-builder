@@ -6,7 +6,7 @@ var Button_Edit_Modal = (function ($) {
     "use strict";
 
     var button_editor_properties;
-    var sectionTarget;
+    var buttonTarget;
 
     var _openButtonEditorModal = function (data) {
         console.log(data);
@@ -39,8 +39,7 @@ var Button_Edit_Modal = (function ($) {
                 link_taget: "",
                 link_type: "",
                 button_name: "",
-                button_id: "",
-                sectionTarget: sectionTarget
+                buttonTarget: buttonTarget
             }
         };
 

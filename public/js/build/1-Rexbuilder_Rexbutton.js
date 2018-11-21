@@ -38,6 +38,7 @@ var Rexbuilder_Rexbutton = (function ($) {
         }
 
         $buttonContainer.unwrap();
+        $buttonContainer.wrap("<p></p>");
     }
 
     var _addHoverBackgroundColor = function (buttonID, newColor) {
@@ -68,10 +69,44 @@ var Rexbuilder_Rexbutton = (function ($) {
         return styleSheet;
     }
 
+    var _linkHoverListeners = function ($button) {
+        console.log("linking hover");
+        $button.hover(function () {
+            $button.find(".rex-edit-button").addClass("rex-show-buttons-tools");
+        }, function () {
+            $button.find(".rex-edit-button").removeClass("rex-show-buttons-tools");
+        });
+    }
+    
+    var _addToolsButton = function () {
+        Rexbuilder_Util.$rexContainer.find(".rex-button-container").each(function (i, button) {
+            var $button = $(button);
+            if ($button.find(".rex-edit-button").length == 0) {
+                var $spanEl = $(document.createElement("span"));
+                $spanEl.addClass("rex-edit-button");
+                $button.prepend($spanEl);
+            }
+            //aggiornare lista dei pulsanti nella pagina, fixare lo stile dei pulsanti solo nella pagina
+            _linkHoverListeners($button);
+        });
+    }
+    
     var init = function () {
         styleSheet = null;
         buttonsInPage = [];
         this.$buttonsStyle = $("#rexpansive-builder-rexbutton-style");
+        _addToolsButton();
+
+        Rexbuilder_Util.$document.on("click", ".rex-edit-button", function (e) {
+            var $buttonContainer = $(this).parents(".rex-button-container");
+            var buttonID = $buttonContainer.attr("data-rex-button-id");
+            var buttonNumber = 0;
+            var data = {
+                eventName: "rexlive:openRexButtonEditor"
+            };
+            $buttonContainer.parents(".text-wrap").blur();
+            Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+        });
         _fixCustomStyleElement();
     };
 
