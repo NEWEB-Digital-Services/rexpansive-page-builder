@@ -106,3 +106,15 @@ defined('ABSPATH') or exit;
 <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
 </div>
 </script>
+
+<script type="text/x-tmpl" id="tmpl-accordion-gallery-item">
+<div class="rex-accordion-gallery__item" data-gallery-item-id="{%=o.id%}" data-gallery-item-url="{%=o.url%}" data-gallery-item-size="{%=o.size%}" style="background-image:url({%=o.preview%})">
+    <div class="tool-button tool-button--inline tool-button--deactivate rex-accordion-gallery__item__remove">
+        <i class="l-svg-icons"><svg><use xlink:href="#Z003-Close"></use></svg></i>
+    </div>
+</div>
+</script>
+
+<script type="text/x-tmpl" id="tmpl-accordion-gallery-item-live">
+<img src="{%=o.url%}" alt="" data-gallery-item-id="{%=o.id%}" data-gallery-item-size="{%=o.size%}">
+</script>

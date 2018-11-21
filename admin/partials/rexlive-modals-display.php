@@ -942,8 +942,13 @@ defined('ABSPATH') or exit;
                         <?php wp_editor('', 'rex-accordion-content-val', array('textarea_rows' => 20, 'wpautop' => false, 'editor_height' => 150));?>
                     </div>
                 </div>
-                <div class="blo_modal__option-wrap">
-                    <span class="tool-button rex-accordion-content-gallery"><?php Rexbuilder_Utilities::get_icon('#C005-Layout'); ?></span>
+                <div class="bl_modal__option-wrap">
+                    <div>
+                        <span class="tool-button rex-accordion-content-gallery"><?php Rexbuilder_Utilities::get_icon('#C005-Layout'); ?></span>
+                    </div>
+                    <div class="rex-accordion-content-gallery__preview">
+                        
+                    </div>
                 </div>
             </div>
         </div>

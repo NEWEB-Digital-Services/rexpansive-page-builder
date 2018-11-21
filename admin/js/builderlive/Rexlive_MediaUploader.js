@@ -11,6 +11,7 @@ var Rexlive_MediaUploader = (function($) {
   var image_uploader_frame_direct;
   var video_multiple_uploader_frame;
   var video_uploader_frame;
+  var accordion_uploader_frame;
 
   function _openInsertImageBlocksMediaUploader(info) {
     // If the frame is already opened, return it
@@ -596,11 +597,130 @@ var Rexlive_MediaUploader = (function($) {
     video_uploader_frame.open();
   }
 
+  /**
+   * Open media uploader to insert/edit an accordion gallery
+   * @param {Object}  gallery_data  data of the accordion modal, and of the image list
+   * @since 2.0.0
+   */
+  function _openMediaUploaderAccordionGallery( gallery_data ) {
+    if (accordion_uploader_frame) {
+      // setting my custom data
+      
+      accordion_uploader_frame.state("accordion-gallery").set("gallery_data", gallery_data);
+
+      accordion_uploader_frame.open();
+      return;
+    }
+
+    //create a new Library, base on defaults
+    //you can put your attributes in
+    var uploadAccordionGallery = wp.media.controller.Library.extend({
+      defaults: _.defaults(
+        {
+          id: "accordion-gallery",
+          title: "Accordion Gallery",
+          allowLocalEdits: true,
+          displaySettings: true,
+          displayUserSettings: true,
+          multiple: true,
+          library: wp.media.query({ type: "image" }),
+          type: "image", //audio, video, application/pdf, ... etc,
+          gallery_data: gallery_data
+        },
+        wp.media.controller.Library.prototype.defaults
+      )
+    });
+
+    //Setup media frame
+    accordion_uploader_frame = wp.media({
+      button: { text: "Select" },
+      state: "accordion-gallery",
+      states: [new uploadAccordionGallery()]
+    });
+
+    //on close
+    accordion_uploader_frame.on("close", function() {
+      // var selection = accordion_uploader_frame
+      //   .state("accordion-gallery")
+      //   .get("selection");
+
+      // if (selection.models.length > 0) {
+        // for(var j=0; j < selection.models.length; j++ ) {
+        //   if( "undefined" !== typeof selection.models[j] ) {
+        //     var attachment = wp.media.attachment(selection.models[j].attributes.id);
+        //     attachment.fetch();
+        //     // selection.remove(attachment ? [attachment] : []);
+        //   }
+        // }
+      // }
+    });
+
+    accordion_uploader_frame.on("select", function() {
+      var state = accordion_uploader_frame.state("accordion-gallery");
+      var selection = state.get("selection");
+
+      if (!selection) return;
+
+      var g_data = accordion_uploader_frame.state("accordion-gallery").get("gallery_data");
+      g_data.modal_info.$accordion_preview_gallery.empty();
+
+      selection.each(function(attachment) {
+        var display = state.display(attachment).toJSON();
+        var media_info = attachment.toJSON();
+
+        // If captions are disabled, clear the caption.
+        if (!wp.media.view.settings.captions) delete media_info.caption;
+
+        var display_info = wp.media.string.props(display, media_info);
+
+        g_data.modal_info.$accordion_preview_gallery.append( tmpl("tmpl-accordion-gallery-item", {
+          id: media_info.id,
+          preview: media_info.url,
+          url: display_info.src,
+          size: display_info.size
+        }));
+      });
+    });
+
+    //reset selection in popup, when open the popup
+    accordion_uploader_frame.on("open", function() {
+      var attachment;
+      var selection = accordion_uploader_frame
+        .state("accordion-gallery")
+        .get("selection");
+
+      //remove all the selection first
+      selection.each(function(image) {
+        if( "undefined" !== typeof image ) {
+          attachment = wp.media.attachment(image.attributes.id);
+          attachment.fetch();
+          selection.remove(attachment ? [attachment] : []);
+        }
+      });
+
+      var g_data = accordion_uploader_frame.state("accordion-gallery").get("gallery_data");
+
+      // Check the already inserted image
+      if (g_data.image_info.length > 0) {
+        for( var i=0; i < g_data.image_info.length; i++ ) {
+          attachment = wp.media.attachment(g_data.image_info[i].id);
+          attachment.fetch();
+  
+          selection.add(attachment ? [attachment] : []);
+        }
+      }
+    });
+
+    //now open the popup
+    accordion_uploader_frame.open();
+  }
+
   return {
     openInsertImageBlocksMediaUploader: _openInsertImageBlocksMediaUploader,
     openEditImageMediaUploader: _openEditImageMediaUploader,
     openImageLiveMediaUploader: _openImageLiveMediaUploader,
     openInsertVideoBlocksMediaUploader: _openInsertVideoBlocksMediaUploader,
-    openMediaUploaderVideo: _openMediaUploaderVideo
+    openMediaUploaderVideo: _openMediaUploaderVideo,
+    openMediaUploaderAccordionGallery: _openMediaUploaderAccordionGallery
   };
 })(jQuery);

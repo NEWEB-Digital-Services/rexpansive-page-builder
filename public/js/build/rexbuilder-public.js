@@ -115,37 +115,39 @@ var Rexbuilder_App = (function($) {
     if( Rexbuilder_Util.editorMode ) {
       accordionSettings.open = {
         progressClbk: function(data) {
-          var content = data.properties.$content[0];
+          // var content = data.properties.$content[0];
           var block = data.properties.$content.parents('.grid-stack-item')[0];
           var grid = data.properties.$content.parents('.grid-stack').data("gridstack");
           // grid.resize(block,null,Math.round(content.offsetHeight/grid.opts.cellHeight) + data.properties.$toggle[0].offsetHeight);
-          grid.resize(block,null,Math.round( ( content.offsetHeight + data.properties.$toggle[0].offsetHeight ) / grid.opts.cellHeight ));
+          // grid.resize(block,null,Math.round( ( content.offsetHeight + data.properties.$toggle[0].offsetHeight ) / grid.opts.cellHeight ));
+          grid.resize(block,null,Math.round( data.element.parentElement.offsetHeight / grid.opts.cellHeight ));
         }
       };
       accordionSettings.close = {
         progressClbk: function(data) {
-          var content = data.properties.$content[0];
+          // var content = data.properties.$content[0];
           var block = data.properties.$content.parents('.grid-stack-item')[0];
           var grid = data.properties.$content.parents('.grid-stack').data("gridstack");
           // grid.resize(block,null,Math.round(content.offsetHeight/grid.opts.cellHeight) + data.properties.$toggle[0].offsetHeight);
-          grid.resize(block,null,Math.round( ( content.offsetHeight + data.properties.$toggle[0].offsetHeight ) / grid.opts.cellHeight ));
+          // grid.resize(block,null,Math.round( ( content.offsetHeight + data.properties.$toggle[0].offsetHeight ) / grid.opts.cellHeight ));
+          grid.resize(block,null,Math.round( data.element.parentElement.offsetHeight / grid.opts.cellHeight ));
         }
       };
     } else {
       accordionSettings.open = {
         progressClbk: function(data) {
-          var content = data.properties.$content[0];
+          // var content = data.properties.$content[0];
           var block = data.properties.$content.parents('.grid-stack-item')[0];
           var grid = data.properties.$content.parents('.grid-stack').data("gridstack");
-          grid.resize(block,null,Math.round( ( content.offsetHeight + data.properties.$toggle[0].offsetHeight ) / grid.opts.cellHeight ));
+          grid.resize(block,null,Math.round( data.element.parentElement.offsetHeight / grid.opts.cellHeight ));
         }
       };
       accordionSettings.close = {
         progressClbk: function(data) {
-          var content = data.properties.$content[0];
+          // var content = data.properties.$content[0];
           var block = data.properties.$content.parents('.grid-stack-item')[0];
           var grid = data.properties.$content.parents('.grid-stack').data("gridstack");
-          grid.resize(block,null,Math.round( ( content.offsetHeight + data.properties.$toggle[0].offsetHeight ) / grid.opts.cellHeight ));
+          grid.resize(block,null,Math.round( data.element.parentElement.offsetHeight / grid.opts.cellHeight ));
         }
       };
     }

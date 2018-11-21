@@ -9535,11 +9535,6 @@ input#rex-block-vimeo-url {
 #rex-block-options {
   max-width: 412px; }
 
-#rex-block-accordion-editor {
-  max-width: 640px; }
-  #rex-block-accordion-editor .modal-editor-editorarea {
-    width: 100%; }
-
 #rex-slider-block .modal-content,
 #rex-insert-new-video-block .modal-content {
   padding-bottom: 15px; }
@@ -15718,6 +15713,27 @@ input:disabled + .rex_edit_title_slider {
   padding: 7px; }
   #rex-edit-model-choose .tool-button--modal.remove-model .l-svg-icons {
     font-size: 16px; }
+
+#rex-block-accordion-editor {
+  max-width: 640px; }
+  #rex-block-accordion-editor .modal-editor-editorarea {
+    width: 100%; }
+
+.rex-accordion-gallery__item {
+  width: 50px;
+  height: 50px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  outline: 2px solid #424242; }
+  .rex-accordion-gallery__item .tool-button--deactivate {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 10px; }
+    .rex-accordion-gallery__item .tool-button--deactivate .l-svg-icons {
+      font-size: 10px; }
 
 .rexlive-toolbox__wrap {
   width: 100%;
