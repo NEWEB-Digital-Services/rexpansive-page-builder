@@ -914,10 +914,14 @@ var TextEditor = (function($) {
     },
 
     handleHtmlEditorSave: function(event) {
-      this.base.pasteHTML(event.customHTML, {
-        cleanPastedHTML: false,
-        cleanAttrs: ['dir'],
-      });
+      // this.base.pasteHTML(event.customHTML, {
+      //   cleanPastedHTML: false,
+      //   cleanAttrs: ['dir'],
+      // });
+
+      var index = this.base.exportSelection().editableElementIndex;
+      console.log(index);
+      this.base.setContent(event.customHTML, index);
     }
   });
 

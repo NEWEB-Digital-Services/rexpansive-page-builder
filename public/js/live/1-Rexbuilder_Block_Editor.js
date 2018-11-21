@@ -459,7 +459,7 @@ var Rexbuilder_Block_Editor = (function($) {
       var a_state = ( $accordion.hasClass("open") ? 'open' : 'close' );
       var $temp_h = $accordion.find(".rex-accordion--toggle").clone();
       var a_gallery = false;
-      $temp_h.find(".rex-accordion--close-icon").remove();
+      $temp_h.find(".rex-accordion--toggle-icon").remove();
       if($accordion.length > 0) {
         a_header = $temp_h.html().trim(),
         a_content = $accordion.find(".rex-accordion--content").html().trim();

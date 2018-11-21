@@ -26,7 +26,7 @@ var HtmlEditor_Modal = (function($) {
   var _linkDocumentListeners = function() {
     html_editor_modal_properties.$save_button.on("click", function(e) {
       e.preventDefault();
-
+      
       var customHTML = editor.getValue();
       var data_customHTML = {
         eventName: "rexlive:SetcustomHTML",
