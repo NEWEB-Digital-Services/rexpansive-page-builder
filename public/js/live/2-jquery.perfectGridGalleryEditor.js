@@ -101,18 +101,13 @@
     init: function() {
       //console.log('First Start');
 
-      if (
-        this.$section.children(".section-data").attr("data-row_edited_live") !=
-        "true"
-      ) {
+      if ( this.$section.children(".section-data").attr("data-row_edited_live") != "true" ) {
         this.properties.editedFromBackend = true;
       }
 
       this.properties.firstStartGrid = true;
 
       this._setGridID();
-
-      //console.log('First Start grid: ' + this.properties.sectionNumber);
 
       this._updateBlocksRexID();
 
@@ -2000,7 +1995,7 @@
                  */
                 clearTimeout(this.doubleDownTimer);
                 this.doubleDownTimer = setTimeout(function() {
-                  if( !Rexbuilder_Util_Editor.elementIsDragging && !Rexbuilder_Util_Editor.elementIsResizing && !Rexbuilder_Util_Editor.editingElement && 1 === e.which ) {
+                  if( !( Rexbuilder_Util_Editor.elementIsDragging || Rexbuilder_Util_Editor.elementIsResizing || Rexbuilder_Util_Editor.editingElement || $elem.hasClass('ui-resizable-resizing') || $elem.hasClass('ui-draggable-dragging') || $target.hasClass('ui-resizable-handle') || $target.hasClass('circle-handle') ) && 1 === e.which ) {
                     $elem.trigger("mouseup");
                     // gallery.properties.gridstackInstance.disable();
 
@@ -2386,8 +2381,9 @@
             }
 
             $block.attr("data-gs-max-width", 500);
-            Rexbuilder_Util_Editor.elementIsResizing = false;
             Rexbuilder_Util_Editor.elementIsDragging = false;
+            Rexbuilder_Util_Editor.elementIsResizing = false;
+
             gallery.$element.attr('data-rexlive-layout-changed="true"');
             gallery.removeCollapseElementsProperties();
             var $section = gallery.$section;
