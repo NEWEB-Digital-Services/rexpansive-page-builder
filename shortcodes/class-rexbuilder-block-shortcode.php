@@ -430,6 +430,7 @@ class Rexbuilder_Block
             echo '></div>';
 
             echo '<div class="grid-stack-item-content">';
+            echo '<div class="grid-item-content-wrap">';
             //do_shortcode( $content );
             switch ($type):
                 case 'image':
@@ -623,6 +624,7 @@ class Rexbuilder_Block
                     break;
             endswitch;
 
+            echo '</div>';
             echo '</div>';
             if (isset($editor) && $editor == "true") {
                 $not_has_image = ( 'true' != $atts['image_bg_elem_active'] || "" == $atts['id_image_bg_block'] );
