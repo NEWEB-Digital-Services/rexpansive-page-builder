@@ -1484,7 +1484,8 @@
 
     // Define usefull private properties
     _defineDynamicPrivateProperties: function() {
-      var newWidth = this.$element.outerWidth();
+      // var newWidth = this.$element.outerWidth();
+      var newWidth = this.element.offsetWidth;
 
       var collapseGrid = this.$section.attr("data-rex-collapse-grid");
       if (typeof collapseGrid == "undefined") {
@@ -1837,9 +1838,9 @@
         $blockData.attr("data-block_height_fixed", newH);
       }
       /*
-            if (this.properties.firstStartGrid || Rexbuilder_Util_Editor.updatingImageBg) {
-            } 
-            */
+      if (this.properties.firstStartGrid || Rexbuilder_Util_Editor.updatingImageBg) {
+      } 
+      */
       $blockData.attr("data-gs_start_h", newH);
       $blockData.attr("data-block_height_calculated", newH);
     },

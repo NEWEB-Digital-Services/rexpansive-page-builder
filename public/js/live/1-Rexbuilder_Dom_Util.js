@@ -194,6 +194,7 @@ var Rexbuilder_Dom_Util = (function($) {
   };
 
   var _updateImageSection = function($section, $sectionData, data) {
+    Rexbuilder_Section_Editor.updateRowBackgroundImageTool($section,data);
     if (
       data.idImage == parseInt($sectionData.attr("data-id_image_bg_section"))
     ) {
@@ -207,7 +208,6 @@ var Rexbuilder_Dom_Util = (function($) {
     $sectionData.attr("data-image_bg_section", data.urlImage);
     $sectionData.attr("data-image_bg_section_active", data.active);
 
-    Rexbuilder_Section_Editor.updateRowBackgroundImageTool($section,data);
     Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
     $section.removeClass("activeRowTools");
   };

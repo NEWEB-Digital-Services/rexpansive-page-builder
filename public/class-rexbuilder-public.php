@@ -238,7 +238,7 @@ class Rexbuilder_Public
 
             wp_enqueue_script('overlay-scrollbar', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/jquery.overlayScrollbars.min.js', array('jquery'), $ver, true);
 
-            wp_enqueue_script('2-jqueryEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/2-jquery.perfectGridGalleryEditor.js', array('jquery'), $ver, true);
+            wp_enqueue_script('2-jqueryEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/2-jquery.perfectGridGalleryEditor.js', array('jquery'), null, true);
 
             wp_enqueue_script('3-velocity', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/3-velocity.min.js', array('jquery'), $ver, true);
             wp_enqueue_script('3-velocityui', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/3-velocity.ui.min.js', array('jquery'), $ver, true);

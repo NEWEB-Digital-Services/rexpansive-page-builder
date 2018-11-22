@@ -631,6 +631,8 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         mousePosition: mousePosition
       };
 
+      console.log(msg);
+
       window.postMessage(msg, "*");
     });
 
