@@ -60,19 +60,47 @@ var Rexlive_Block_Background_Gradient = (function($) {
     });
 
     modal_props.gpicker.on("change", function(complete) {
-      // console.log(modal_props.gpicker.getValue());
-      // console.log(modal_props.gpicker.getSafeValue());
-      // console.log(modal_props.gpicker.getPrefixedValues());
       _updateLive();
+    });
+
+    modal_props.$add_palette.on("click", function(e) {
+      e.preventDefault();
+      var gradient_to_save = modal_props.gpicker.getValue();
+      var gradient_to_view = modal_props.gpicker.getSafeValue();
+      var gradient_ID = Rexbuilder_Util_Admin_Editor.createRandomID(4);
+
+      Rexlive_Ajax_Calls.savePaletteGradient( {
+        gradient: gradient_to_save,
+        ID: gradient_ID
+      });
+
+      var item = tmpl("tmpl-palette-item",{});
+      var $item = $(item);
+
+      modal_props.$add_palette.before( $item );
+      $item.css("background", gradient_to_view);
+      $item.attr("data-gradient-ID", gradient_ID);
+      $item.attr("data-gradient-value", gradient_to_save);
+    });
+
+    modal_props.$self.on("click", ".palette-item", function(e){
+      e.preventDefault();
+      var gradient = this.getAttribute("data-gradient-value");
+      _setGradientPicker( gradient, false );
     });
   };
 
   var _updateData = function(data) {
     target = data.blockData.target;
     // Display data on gradient, not trigger change event
-    if( "" !== data.blockData.gradient ) {
-      modal_props.gpicker.setValue(data.blockData.gradient, {
-        silent: true
+    _setGradientPicker( data.blockData.gradient, true );
+  };
+
+  var _setGradientPicker = function( gradient, trigger ) {
+    var trigger = undefined !== typeof trigger ? trigger : false;
+    if( "" !== gradient ) {
+      modal_props.gpicker.setValue(gradient, {
+        silent: trigger
       });
   
       var g_type = modal_props.gpicker.getType();
@@ -81,12 +109,12 @@ var Rexlive_Block_Background_Gradient = (function($) {
       modal_props.$gradient_angle.find('option[value=' + g_direction + ']').prop('selected', true);
     } else {
       modal_props.gpicker.setValue("", {
-        silent: true
+        silent: trigger
       });
       modal_props.$gradient_type.val("");
       modal_props.$gradient_angle.val("");
     }
-  };
+  }
 
   var _updateLive = function() {
     var data_updateBlockGradient = {
@@ -113,7 +141,9 @@ var Rexlive_Block_Background_Gradient = (function($) {
       gpicker_selector: gpicker_selector,
       gpicker: null,
       $gradient_type: $modal.find('#block-background-gradient-type'),
-      $gradient_angle: $modal.find('#block-background-gradient-angle')
+      $gradient_angle: $modal.find('#block-background-gradient-angle'),
+
+      $add_palette: $modal.find('.palette__add-gradient'),
     };
 
     _launchGPicker();

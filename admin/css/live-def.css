@@ -3942,6 +3942,14 @@ ul {
 :not(.sp-container-default) .sp-picker-container .sp-button-container .sp-choose .rex-icon {
   font-size: 24px; }
 
+.palette-item {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 2px solid #424242;
+  margin-right: 10px;
+  cursor: pointer; }
+
 .tippy-tooltip.rexlive-theme {
   font-size: 9px;
   letter-spacing: 1px;

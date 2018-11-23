@@ -323,7 +323,9 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'rexbuilder-admin-text-editor', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_RexSlider_TextEditor.js', array( 'jquery' ), null, true );
 				// wp_enqueue_script( 'rexbuilder-admin-padding-editor', REXPANSIVE_BUILDER_URL . 'admin/js/3-Rexpansive_Builder_Admin_PaddingEditor.js', array( 'jquery' ), null, true );
 				// wp_enqueue_script( 'rexbuilder-admin-position-editor', REXPANSIVE_BUILDER_URL . 'admin/js/3-Rexpansive_Builder_Admin_PositionEditor.js', array( 'jquery' ), null, true );
-				
+
+				wp_enqueue_script( 'rexlive-ajax-calls', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Ajax_Calls.js', array( 'jquery' ), null, true );
+			
 				wp_enqueue_script( 'rexlive-modals-utils', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Modals_Utils.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-insert-video-modal', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Insert_Video_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-layout-grid-modal', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_LayoutGrid_Modal.js', array( 'jquery' ), null, true );
@@ -763,6 +765,31 @@ class Rexbuilder_Admin {
 			return true;
 		}
 		return $active;
+	}
+
+	/**
+	 * Saving a gradient palette color to reuse it around the pages
+	 * @since 2.0.0
+	 */
+	public function rex_save_palette_gradient() {
+		$nonce = $_POST['nonce_param'];
+		$response = array(
+			'error' => false,
+			'msg' => '',
+		);
+
+		if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) {
+			$response['error'] = true;
+			$response['msg'] = 'Error!';
+			wp_send_json_error( $response );
+		}
+
+		$data = $_POST['data'];
+		$gradient_palette = get_option( '_rex_gradient_palette', array() );
+		$gradient_palette[$data['ID']] = $data[$data['gradient']];
+		update_option( '_rex_gradient_palette', $gradient_palette );
+
+		wp_send_json_success( $response );
 	}
 
 	/**

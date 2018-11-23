@@ -1013,8 +1013,6 @@ var Rexbuilder_Dom_Util = (function($) {
     var $itemContent = $elem.find(".grid-item-content");
     var $elemData = $elem.children(".rexbuilder-block-data");
 
-    console.log(data);
-
     var safeGradient = Rexbuilder_Util_Editor.getGradientSafeValue( data.color );
     $itemContent.css("background", safeGradient);
     $elemData.attr("data-color_bg_block", data.color);

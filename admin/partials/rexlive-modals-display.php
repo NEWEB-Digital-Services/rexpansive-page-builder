@@ -998,6 +998,9 @@ defined('ABSPATH') or exit;
                     </select>
                 </div>
             </div>
+            <div class="bl_modal-row">
+            <?php include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-gradient-palette.php'; ?>
+            </div><!-- PALETTE -->
         </div>
         <?php // include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-modals-bottom-arrow.php'; ?>
     </div>

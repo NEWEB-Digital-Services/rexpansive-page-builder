@@ -118,3 +118,7 @@ defined('ABSPATH') or exit;
 <script type="text/x-tmpl" id="tmpl-accordion-gallery-item-live">
 <img src="{%=o.url%}" alt="" data-gallery-item-id="{%=o.id%}" data-gallery-item-size="{%=o.size%}">
 </script>
+
+<script type="text/x-tmpl" id="tmpl-palette-item">
+<div class="palette-item"></div>
+</script>
