@@ -1004,6 +1004,25 @@ var Rexbuilder_Dom_Util = (function($) {
     Rexbuilder_Block_Editor.updateBlockBackgroundColorTool($elem,data.color);
   };
 
+  /**
+   * Updating the background gradient of a block
+   * @param {Ojbect} data object with the information on which block to update an how
+   */
+  var _updateBlockBackgroundGradient = function(data) {
+    var $elem = data.$elem;
+    var $itemContent = $elem.find(".grid-item-content");
+    var $elemData = $elem.children(".rexbuilder-block-data");
+
+    console.log(data);
+
+    var safeGradient = Rexbuilder_Util_Editor.getGradientSafeValue( data.color );
+    $itemContent.css("background", safeGradient);
+    $elemData.attr("data-color_bg_block", data.color);
+    $elemData.attr("data-color_bg_elem_active", data.active);
+
+    // Rexbuilder_Block_Editor.updateBlockBackgroundGradientTool($elem,data.color);
+  };
+
   var _updateSectionOverlayColorLive = function(data, color) {
     var $target;
     if (data.modelNumber != "") {
@@ -1517,6 +1536,9 @@ var Rexbuilder_Dom_Util = (function($) {
       case "updateBlockBackgroundColor":
         _updateBlockBackgroundColor(dataToUse);
         break;
+      case "updateBlockBackgroundGradient":
+        _updateBlockBackgroundGradient(dataToUse);
+        break;
       case "updateBlockOverlay":
         _updateBlockOverlay(dataToUse);
         break;
@@ -1630,6 +1652,7 @@ var Rexbuilder_Dom_Util = (function($) {
     updateSectionOverlayColorLive: _updateSectionOverlayColorLive,
     updateBlockBackgroundColor: _updateBlockBackgroundColor,
     updateBlockBackgroundColorLive: _updateBlockBackgroundColorLive,
+    updateBlockBackgroundGradient: _updateBlockBackgroundGradient,
     updateBlockOverlayColorLive: _updateBlockOverlayColorLive,
     updateBlockOverlay: _updateBlockOverlay,
     updateVideos: _updateVideos,

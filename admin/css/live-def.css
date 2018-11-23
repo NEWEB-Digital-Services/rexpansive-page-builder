@@ -3900,14 +3900,47 @@ ul {
 .tippy:focus {
   outline: none; }
 
-.sp-container,
-.sp-picker-container {
+:not(.sp-container-default) .sp-container {
   border: none; }
-
-.sp-container {
+:not(.sp-container-default) .sp-container {
   -webkit-box-shadow: 0 0 70px 0 rgba(0, 0, 0, 0.5);
           box-shadow: 0 0 70px 0 rgba(0, 0, 0, 0.5);
-  overflow: visible; }
+  overflow: visible;
+  background-color: #ffffff;
+  border: none; }
+:not(.sp-container-default) .sp-picker-container {
+  width: 230px;
+  border-left: none; }
+:not(.sp-container-default) .sp-picker-container a:active,
+:not(.sp-container-default) .sp-picker-container a:hover {
+  color: #343434; }
+:not(.sp-container-default) .sp-picker-container .sp-button-container {
+  float: none;
+  position: relative;
+  left: -10px;
+  width: 255px;
+  bottom: -10px; }
+:not(.sp-container-default) .sp-picker-container .sp-button-container .sp-cancel,
+:not(.sp-container-default) .sp-picker-container .sp-button-container .sp-choose {
+  border-radius: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  text-align: center; }
+:not(.sp-container-default) .sp-picker-container .sp-button-container .sp-cancel {
+  width: 127px;
+  height: 38px;
+  background-color: #9e9e9e; }
+:not(.sp-container-default) .sp-picker-container .sp-button-container .sp-cancel:hover {
+  background-color: #bdbdbd !important; }
+:not(.sp-container-default) .sp-picker-container .sp-button-container .sp-choose {
+  border: none;
+  width: 128px;
+  height: 38px;
+  background-color: #1e88e5; }
+:not(.sp-container-default) .sp-picker-container .sp-button-container .sp-choose:hover {
+  background-color: #42a5f5 !important; }
+:not(.sp-container-default) .sp-picker-container .sp-button-container .sp-choose .rex-icon {
+  font-size: 24px; }
 
 .tippy-tooltip.rexlive-theme {
   font-size: 9px;

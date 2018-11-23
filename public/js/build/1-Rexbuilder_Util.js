@@ -1336,7 +1336,11 @@ var Rexbuilder_Util = (function($) {
               : targetProps["color_bg_block_active"].toString()
         };
 
-        Rexbuilder_Dom_Util.updateBlockBackgroundColor(bgColorOpt);
+        if( -1 === bgColorOpt.color.indexOf("gradient") ) {
+          Rexbuilder_Dom_Util.updateBlockBackgroundColor(bgColorOpt);
+        } else {
+          Rexbuilder_Dom_Util.updateBlockBackgroundGradient(bgColorOpt);
+        }
 
         var overlayBlockOpt = {
           $elem: $elem,

@@ -1,9 +1,62 @@
-.sp-container,
-.sp-picker-container {
-  border: none;
-}
+:not(.sp-container-default) {
+  .sp-container {
+    border: none;
+  }
 
-.sp-container {
-  box-shadow: $tools-area-shadow;
-  overflow: visible;
+  .sp-container {
+    box-shadow: $tools-area-shadow;
+    overflow: visible;
+    background-color: #ffffff;
+    border: none;
+  }
+
+  .sp-picker-container {
+    width: 230px;
+    border-left: none;
+  }
+
+  .sp-picker-container a:active,
+  .sp-picker-container a:hover {
+    color: #343434;
+  }
+
+  .sp-picker-container .sp-button-container {
+    float: none;
+    position: relative;
+    left: -10px;
+    width: 255px;
+    bottom: -10px;
+  }
+
+  .sp-picker-container .sp-button-container .sp-cancel,
+  .sp-picker-container .sp-button-container .sp-choose {
+    border-radius: 0;
+    box-sizing: border-box;
+    text-align: center;
+  }
+
+  .sp-picker-container .sp-button-container .sp-cancel {
+    width: 127px;
+    height: 38px;
+    background-color: #9e9e9e;
+  }
+
+  .sp-picker-container .sp-button-container .sp-cancel:hover {
+    background-color: #bdbdbd !important;
+  }
+
+  .sp-picker-container .sp-button-container .sp-choose {
+    border: none;
+    width: 128px;
+    height: 38px;
+    background-color: #1e88e5;
+  }
+
+  .sp-picker-container .sp-button-container .sp-choose:hover {
+    background-color: #42a5f5 !important;
+  }
+
+  .sp-picker-container .sp-button-container .sp-choose .rex-icon {
+    font-size: 24px;
+  }
 }

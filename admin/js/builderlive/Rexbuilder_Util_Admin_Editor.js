@@ -188,6 +188,10 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         Rexlive_Block_Accordion.openModal(event.data.activeBlockData);
       }
 
+      if (event.data.eventName == "rexlive:editBlockGradient") {
+        Rexlive_Block_Background_Gradient.openModal(event.data.activeBlockData);
+      }
+
       if (event.data.eventName == "rexlive:editBlockImageSettings") {
         Block_Image_Editor_Modal.openModal(event.data.activeBlockData, event.data.mousePosition);
       }

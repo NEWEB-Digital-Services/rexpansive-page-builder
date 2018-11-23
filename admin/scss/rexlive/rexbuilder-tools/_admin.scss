@@ -242,14 +242,6 @@ padding-left: 4px;
   transform: translateY(-120%);
 }
 
-.rex-modal .sp-replacer {
-  padding: 0;
-  border: none;
-  width: 42px;
-  height: 42px;
-  background-color: transparent;
-}
-
 .rex-modal .background_set_color .btn-floating,
 .rex-modal .background_set_color .preview-color-icon {
   -webkit-transition: 0.2s ease-out;
@@ -3072,95 +3064,54 @@ input[id^="section-fixed"] + label i {
   bottom: 0;
 }
 
-.sp-container {
-  background-color: #ffffff;
-  border: none;
-}
-
-.sp-picker-container {
-  width: 230px;
-  border-left: none;
-}
-
-.sp-picker-container a:active,
-.sp-picker-container a:hover {
-  color: #343434;
-}
-
-.sp-picker-container .sp-button-container {
-  float: none;
-  position: relative;
-  left: -10px;
-  width: 255px;
-  bottom: -10px;
-}
-
-.sp-picker-container .sp-button-container .sp-cancel,
-.sp-picker-container .sp-button-container .sp-choose {
-  border-radius: 0;
-  box-sizing: border-box;
-  text-align: center;
-}
-
-.sp-picker-container .sp-button-container .sp-cancel {
-  width: 127px;
-  height: 38px;
-  background-color: #9e9e9e;
-}
-
-.sp-picker-container .sp-button-container .sp-cancel:hover {
-  background-color: #bdbdbd !important;
-}
-
-.sp-picker-container .sp-button-container .sp-choose {
-  border: none;
-  width: 128px;
-  height: 38px;
-  background-color: #1e88e5;
-}
-
-.sp-picker-container .sp-button-container .sp-choose:hover {
-  background-color: #42a5f5 !important;
-}
-
-.sp-picker-container .sp-button-container .sp-choose .rex-icon {
-  font-size: 24px;
+.rex-modal {
+  .sp-replacer {
+    &:not(.sp-replacer-default) {
+      padding: 0;
+      border: none;
+      width: 42px;
+      height: 42px;
+      background-color: transparent;
+    }
+  }
 }
 
 .sp-replacer {
-  padding: 0;
-  border: none;
-  color: transparent;
-  content: "";
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  z-index: -1;
-  background-position: center;
-  background-size: 6px;
-  background-repeat: repeat;
-  background-image: url("../img/transparent.jpg");
-}
-
-.sp-preview {
-  background-image: none;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  border: none;
-}
-
-.sp-preview-inner {
-  top: -1px;
-  right: -1px;
-  bottom: -1px;
-  left: -1px;
-}
-
-.sp-dd {
-  display: none;
+  &:not(.sp-replacer-default) {
+    padding: 0;
+    border: none;
+    color: transparent;
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    background-position: center;
+    background-size: 6px;
+    background-repeat: repeat;
+    background-image: url("../img/transparent.jpg");
+  
+    .sp-preview {
+      background-image: none;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      border: none;
+    }
+    
+    .sp-preview-inner {
+      top: -1px;
+      right: -1px;
+      bottom: -1px;
+      left: -1px;
+    }
+    
+    .sp-dd {
+      display: none;
+    }
+  }
 }
 
 /* ---------- WP EDITOR REDEFINITION ------------ */

@@ -497,6 +497,47 @@ var Rexbuilder_Block_Editor = (function($) {
     });
 
     /**
+     * Edit the block gradient 
+     * @since 2.0.0
+     */
+    Rexbuilder_Util.$document.on('click', '.edit-block-gradient', function(e) {
+      var $btn = $(e.target);
+      var $elem = $btn.parents(".grid-stack-item");
+      var $section = $elem.parents(".rexpansive_section");
+      var rex_block_id = $elem.attr("data-rexbuilder-block-id");
+      var $elemData = $elem.children(".rexbuilder-block-data");
+      var sectionID = $section.attr("data-rexlive-section-id");
+      var modelNumber =
+        typeof $section.attr("data-rexlive-model-number") != "undefined"
+          ? $section.attr("data-rexlive-model-number")
+          : "";
+
+      var bgGradientCol = $elemData.attr('data-color_bg_block');
+
+      var settings = {
+        blockData: {
+          gradient: bgGradientCol,
+          target: {
+            sectionID: sectionID,
+            modelNumber: modelNumber,
+            rexID: rex_block_id
+          },
+        }
+      };
+
+      Rexbuilder_Util_Editor.manageElement = true;
+      // var mousePosition = Rexbuilder_Util_Editor.getMousePosition( e, { offset: { w: this.offsetWidth, h: this.offsetHeight } } );
+
+      var data = {
+        eventName: "rexlive:editBlockGradient",
+        activeBlockData: settings,
+        // mousePosition: mousePosition
+      };
+
+      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+    });
+
+    /**
      * Listen to updating accordion by the modal
      * @since 2.0.0
      */
