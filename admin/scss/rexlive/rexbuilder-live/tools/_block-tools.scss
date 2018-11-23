@@ -237,4 +237,11 @@
     //   display: none;
     // }
   }
+  &[data-gs-width="3"] {
+    .rexlive-block-toolbox {
+      .rexlive-top-block-tools {
+        padding: 10px;
+      }
+    }
+  }
 }

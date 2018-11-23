@@ -1263,6 +1263,7 @@ var Rexbuilder_Util_Editor = (function($) {
         ev = e.originalEvent;
       }
       var blockData = ev.dataTransfer.getData("text/plain");
+      console.log(blockData);
       blockData = undefined !== typeof blockData ? JSON.parse(blockData) : null;
       if( blockData ) {
         var target = document.elementFromPoint(e.clientX, e.clientY);

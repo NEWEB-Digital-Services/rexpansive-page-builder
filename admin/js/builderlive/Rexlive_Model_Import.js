@@ -140,7 +140,6 @@ var Model_Import_Modal = (function($) {
     };
 
     Rexlive_Base_Settings.$document.on("dragstart", ".model-list li", function( event ) {
-      console.log("tace");
       Rexbuilder_Util_Admin_Editor.blockIframeRows();
       event.originalEvent.dataTransfer.effectAllowed = "all";
       dragoverqueue_processtimer = setInterval(function() {
@@ -156,6 +155,7 @@ var Model_Import_Modal = (function($) {
         model_id: $(this).attr("data-rex-model-id")
       };
       var insertingHTML = tmpl("rexlive-tmpl-insert-model-loader", tmpl_obj);
+      console.log(insertingHTML);
       event.originalEvent.dataTransfer.setData("text/plain", insertingHTML);
     });
 

@@ -21,12 +21,20 @@ defined('ABSPATH') or exit;
         <label class="tippy" data-tippy-content="<?php _e('Boxed','rexpansive'); ?>" for="row-dimension-boxed-{%=section.rexID%}"><span><?php Rexbuilder_Utilities::get_icon('#B002-Boxed'); ?></span></label>
     </div><!-- // Row dimension -->
 
-    <div class="switch-toggle switch-live">
+    <div class="switch-toggle switch-live" style="display:none;">
         <input type="radio" class="edit-row-layout" data-section_layout="fixed" id="row-layout-fixed-{%=section.rexID%}" name="row-layout-{%=section.rexID%}" value="fixed" checked>
         <label class="tippy" data-tippy-content="<?php _e('Grid','rexpansive'); ?>" for="row-layout-fixed-{%=section.rexID%}"><span><?php Rexbuilder_Utilities::get_icon('#B017-Grid-Layout'); ?></span></label>
         <input type="radio" class="edit-row-layout" data-section_layout="masonry" id="row-layout-masonry-{%=section.rexID%}" name="row-layout-{%=section.rexID%}" value="masonry">
         <label class="tippy" data-tippy-content="<?php _e('Masonry','rexpansive'); ?>" for="row-layout-masonry-{%=section.rexID%}"><span><?php Rexbuilder_Utilities::get_icon('#B010-Masonry'); ?></span></label>
     </div><!-- // Row layout -->
+
+    <div class="bl_switch tippy" data-tippy-content="<?php _e('Grid off/on','rexpansive'); ?>">
+        <label>
+            <input class="edit-row-layout-checkbox" type="checkbox">
+            <span class="lever"></span>
+            <span class="bl_switch__icon"><?php Rexbuilder_Utilities::get_icon('#B017-Grid-Layout'); ?></span>
+        </label>
+    </div><!-- // Row grid on/off -->
 
     <div class="<?php echo $tool_button_classes_right; ?> tool-button--inline collapse-grid tippy" data-tippy-content="<?php _e('Collapse','rexpansive'); ?>">
         <?php Rexbuilder_Utilities::get_icon('#B006-Collapse'); ?>

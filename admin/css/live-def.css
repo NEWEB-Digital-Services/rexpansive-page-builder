@@ -4299,6 +4299,8 @@ ul {
   display: none !important; }
 .grid-stack-item[data-gs-width="1"] .block-toolBox__config-tools .block-toolBox__config-list, .grid-stack-item[data-gs-width="2"] .block-toolBox__config-tools .block-toolBox__config-list {
   margin-left: 0; }
+.grid-stack-item[data-gs-width="3"] .rexlive-block-toolbox .rexlive-top-block-tools {
+  padding: 10px; }
 
 ::-moz-selection {
   background: rgba(0, 172, 255, 0.5); }
