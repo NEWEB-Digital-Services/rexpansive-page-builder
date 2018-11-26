@@ -1079,14 +1079,22 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         .attr('value',hightlightRowInfo.id_image_bg_section)
         .css('background-image','url('+hightlightRowInfo.image_bg_section+')');
       $configRowSetBkgrImg.addClass('tool-button--hide');
-      $fastRowSetBkgImg.parent().removeClass('tool-button--hide');
+      // $fastRowSetBkgImg.parent().removeClass('tool-button--hide');
+      setTimeout(function() {
+        $fastRowSetBkgImg.parent().fadeIn();
+      },300);
     } else {
-      $highlightRowSetBackgroundImg
-        .removeClass('tool-button--image-preview')
-        .attr('value','')
-        .css('background-image','none');
       $configRowSetBkgrImg.removeClass('tool-button--hide');
-      $fastRowSetBkgImg.parent().addClass('tool-button--hide');
+      // $fastRowSetBkgImg.parent().addClass('tool-button--hide');
+      $fastRowSetBkgImg.parent().fadeOut({
+        duration: 300,
+        complete: function() {
+          $highlightRowSetBackgroundImg
+            .removeClass('tool-button--image-preview')
+            .attr('value','')
+            .css('background-image','none');
+        }
+      });
     }
   };
   
@@ -1102,19 +1110,27 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         .siblings('.tool-button--color-preview')
         .css('background-color',hightlightRowInfo.color_bg_section);
       $configRowSetBkgrCol.parent().addClass('tool-button--hide');
-      $fastRowSetBkgrCol.parent().removeClass('tool-button--hide');
+      // $fastRowSetBkgrCol.parent().removeClass('tool-button--hide');
+      setTimeout(function() {
+        $fastRowSetBkgrCol.parent().fadeIn();
+      },300);
     } else {
       $highlightRowSetBackgroundColor
         .val('')
         .spectrum('set','');
-      $highlightRowSetBackgroundColor
-        .parent()
-        .removeClass('tool-button--picker-preview')
-      $highlightRowSetBackgroundColor
-        .siblings('.tool-button--color-preview')
-        .css('background-color','');
       $configRowSetBkgrCol.parent().removeClass('tool-button--hide');
-      $fastRowSetBkgrCol.parent().addClass('tool-button--hide');
+      // $fastRowSetBkgrCol.parent().addClass('tool-button--hide');
+      $fastRowSetBkgrCol.parent().fadeOut({
+        duration: 300,
+        complete: function() {
+          $highlightRowSetBackgroundColor
+            .parent()
+            .removeClass('tool-button--picker-preview')
+          $highlightRowSetBackgroundColor
+            .siblings('.tool-button--color-preview')
+            .css('background-color','');
+        }
+      });
     }
   };
 
@@ -1130,29 +1146,43 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         .siblings('.tool-button--color-preview')
         .css('background-color',hightlightRowInfo.row_overlay_color);
       $configRowSetOverlay.parent().addClass('tool-button--hide');
-      $fastRowSetOverlay.parent().removeClass('tool-button--hide');
+      // $fastRowSetOverlay.parent().removeClass('tool-button--hide');
+      setTimeout(function() {
+        $fastRowSetOverlay.parent().fadeIn();
+      }, 300);
     } else {
       $highlightRowSetOverlay
         .val('')
         .spectrum("set",'')
-      $highlightRowSetOverlay
-        .parent()
-        .removeClass('tool-button--picker-preview')
-      $highlightRowSetOverlay
-        .siblings('.tool-button--color-preview')
-        .css('background-color','');
       $configRowSetOverlay.parent().removeClass('tool-button--hide');
-      $fastRowSetOverlay.parent().addClass('tool-button--hide');
+      // $fastRowSetOverlay.parent().addClass('tool-button--hide');
+      $fastRowSetOverlay.parent().fadeOut({
+        duration: 300,
+        complete: function() {
+          $highlightRowSetOverlay
+            .parent()
+            .removeClass('tool-button--picker-preview')
+          $highlightRowSetOverlay
+            .siblings('.tool-button--color-preview')
+            .css('background-color','');
+        }
+      })
     }
   };
 
   var _updateBkgrVidTool = function() {
     if( ( '' !== hightlightRowInfo.video_bg_url_section && 'undefined' !== typeof hightlightRowInfo.video_bg_url_section ) || ( '' !== hightlightRowInfo.video_bg_url_vimeo_section && 'undefined' !== typeof hightlightRowInfo.video_bg_url_vimeo_section ) || ( '' !== hightlightRowInfo.video_mp4_url && 'undefined' !== typeof hightlightRowInfo.video_mp4_url ) || ( '' !== hightlightRowInfo.video_bg_id_section && 'undefined' !== typeof hightlightRowInfo.video_bg_id_section ) ) {
       $configRowSetVideo.addClass('tool-button--hide');
-      $fastRowSetVideo.parent().removeClass('tool-button--hide');
+      // $fastRowSetVideo.parent().removeClass('tool-button--hide');
+      setTimeout(function() {
+        $fastRowSetVideo.parent().fadeIn();
+      });
     } else {
       $configRowSetVideo.removeClass('tool-button--hide');
-      $fastRowSetVideo.parent().addClass('tool-button--hide');
+      // $fastRowSetVideo.parent().addClass('tool-button--hide');
+      $fastRowSetVideo.parent().fadeOut({
+        duration: 300
+      });
     }
   }
 

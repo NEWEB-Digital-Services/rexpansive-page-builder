@@ -843,8 +843,6 @@ var Rex_Save_Listeners = (function ($) {
                 content = '[RexSlider slider_id="' + sliderID + '"]';
             }
 
-            console.log('passo da qua?');
-
             var output = '[RexpansiveBlock'
                 + ' id="' + id
                 + '" rexbuilder_block_id="' + rex_id

@@ -14830,7 +14830,10 @@ ul {
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    border: 1px solid #fff; }
+    border: 1px solid #fff;
+    -webkit-transition: background-image 300ms;
+    -o-transition: background-image 300ms;
+    transition: background-image 300ms; }
     .tool-button.tool-button--image-preview .l-svg-icons {
       opacity: 0; }
   .tool-button.tool-button--deactivate {
@@ -14842,7 +14845,10 @@ ul {
     top: 0;
     left: 0;
     z-index: -1;
-    border: 1px solid #fff; }
+    border: 1px solid #fff;
+    -webkit-transition: background-color 300ms;
+    -o-transition: background-color 300ms;
+    transition: background-color 300ms; }
   .tool-button.tool-button--color-preview-texture {
     position: absolute;
     top: 0;
@@ -15764,6 +15770,7 @@ input:disabled + .rex_edit_title_slider {
 .top-fast-tools--hide .tools-insert-area {
   visibility: hidden;
   opacity: 0;
+  z-index: -9999;
   -webkit-transition: visibility 0s 200ms, opacity 200ms linear;
   -o-transition: visibility 0s 200ms, opacity 200ms linear;
   transition: visibility 0s 200ms, opacity 200ms linear; }
@@ -15773,7 +15780,8 @@ input:disabled + .rex_edit_title_slider {
   opacity: 1;
   -webkit-transition: opacity 200ms linear;
   -o-transition: opacity 200ms linear;
-  transition: opacity 200ms linear; }
+  transition: opacity 200ms linear;
+  z-index: auto; }
 
 .rexlive-toolbox {
   background-color: white;

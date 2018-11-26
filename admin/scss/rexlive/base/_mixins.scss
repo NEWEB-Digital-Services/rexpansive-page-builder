@@ -3,16 +3,22 @@
   height: 100%;
 }
 
-@mixin hide-element {
+@mixin hide-element($zIndex: false) {
   visibility: hidden;
   opacity: 0;
+  @if $zIndex {
+    z-index: -9999;
+  }
   transition: visibility 0s 200ms, opacity 200ms linear;
 }
 
-@mixin view-element {
+@mixin view-element($zIndex: false) {
   visibility: visible;
   opacity: 1;
   transition: opacity 200ms linear;
+  @if $zIndex {
+    z-index: auto;
+  }
 }
 
 @mixin fill-icon( $color ) {
