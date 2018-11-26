@@ -1742,13 +1742,29 @@ defined('ABSPATH') or exit;
         </div>
         <div class="modal-content">
             <div class="rex-button-add-model__wrap rex-modal-content__modal-area" style="display:flex;">
-                <div id="rex-button__name__wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix" style="width:100%;">
-                    <span class="prefix"></span>
-                    <input type="text" id="rex-button__name" name="rex-button__name">
-                    <label for="rex-button__name" class=""><?php _e('Button name', 'rexpansive');?></label>
-                    <span class="rex-material-bar"></span>
+                <div id="rex-button-link-wrap">
+                    <div class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix" style="width:100%;">
+                        <span class="prefix"></span>
+                        <input type="text" id="rex-button__url" name="rex-button__url">
+                        <label for="rex-button__url" class=""><?php _e('https://...', 'rexpansive');?></label>
+                        <span class="rex-material-bar"></span>
+                    </div>
+                    <select >
+                        <option value="">_blank</option>
+                        <option value="">_self</option>
+                        <option value="">_parent</option>
+                        <option value="">_top</option>
+                    </select>                  
                 </div>
-                <button>aaa</button>
+                <div id="rex-button-name-wrap">
+                    <div class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix" style="width:100%;">
+                        <span class="prefix"></span>
+                        <input type="text" id="rex-button__name" name="rex-button__name">
+                        <label for="rex-button__name" class=""><?php _e('Title name model button', 'rexpansive');?></label>
+                        <span class="rex-material-bar"></span>
+                    </div>
+                    <div class="rex-button add-rex-button-model">+</div>
+                </div>
             </div><!-- // .rex-model__add-model__wrap -->
         </div>
         <div class="rex-modal__outside-footer">
