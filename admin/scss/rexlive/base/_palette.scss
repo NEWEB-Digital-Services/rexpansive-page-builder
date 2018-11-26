@@ -1,4 +1,9 @@
+.sp-rex-color-palette {
+  display: none;
+}
+
 .palette-item {
+  box-sizing: border-box;
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -17,4 +22,12 @@
   #{$icon-class} {
     font-size: 8px!important;
   }
+}
+
+.palette__gradient-default {
+  background: rgb(0,0,0);
+  background: -moz-linear-gradient(-45deg, rgba(0,0,0,1) 1%, rgba(255,229,229,1) 99%);
+  background: -webkit-linear-gradient(-45deg, rgba(0,0,0,1) 1%,rgba(255,229,229,1) 99%);
+  background: linear-gradient(135deg, rgba(0,0,0,1) 1%,rgba(255,229,229,1) 99%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#ffe5e5',GradientType=1 );
 }

@@ -3942,7 +3942,12 @@ ul {
 :not(.sp-container-default) .sp-picker-container .sp-button-container .sp-choose .rex-icon {
   font-size: 24px; }
 
+.sp-rex-color-palette {
+  display: none; }
+
 .palette-item {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
   width: 20px;
   height: 20px;
   border-radius: 50%;
@@ -3959,6 +3964,12 @@ ul {
   line-height: 4px; }
   .palette-item__delete .l-svg-icons {
     font-size: 8px !important; }
+
+.palette__gradient-default {
+  background: black;
+  background: -o-linear-gradient(315deg, black 1%, #ffe5e5 99%);
+  background: linear-gradient(135deg, black 1%, #ffe5e5 99%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#ffe5e5',GradientType=1 ); }
 
 .tippy-tooltip.rexlive-theme {
   font-size: 9px;

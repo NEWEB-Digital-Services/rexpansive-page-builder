@@ -726,6 +726,8 @@ var Rexbuilder_Block_Editor = (function($) {
         flagPickerUsed = false;
         Rexbuilder_Util_Editor.manageElement = true;
         $picker.parents('.tool-button-floating').addClass('tool-button-floating--active');
+
+        Rexbuilder_Color_Palette.show($picker);
       },
       move: function(color) {
         settings.data_to_send.color = settings.data_to_send.active
@@ -742,6 +744,7 @@ var Rexbuilder_Block_Editor = (function($) {
         // 
       },
       hide: function(color) {
+        Rexbuilder_Color_Palette.hide();
         if (flagPickerUsed) {
           colorActive = color.toRgbString();
           if( $btn_container.hasClass('top-tools') ) {

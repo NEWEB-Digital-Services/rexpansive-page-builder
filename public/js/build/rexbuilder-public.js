@@ -17,6 +17,7 @@ var Rexbuilder_App = (function($) {
 
     if (Rexbuilder_Util.editorMode) {
       Rexbuilder_Util_Editor.init();
+      Rexbuilder_Color_Palette.init();
       Rexbuilder_Section.init();
       Rexbuilder_Section_Editor.init();
       Rexbuilder_Block.init();
