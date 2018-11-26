@@ -2,7 +2,7 @@
  * Add gradient experience!
  * @since 2.0.0
  */
-var Rexlive_Block_Background_Gradient = (function($) {
+var Rexlive_Block_Overlay_Gradient = (function($) {
   "use strict";
 
   var modal_props;
@@ -141,7 +141,7 @@ var Rexlive_Block_Background_Gradient = (function($) {
 
   var _updateLive = function() {
     var data_updateBlockGradient = {
-      eventName: "rexlive:updateBlockBackgroundGradient",
+      eventName: "rexlive:updateBlockOverlayGradient",
       data_to_send: {
         target: target,
         color: modal_props.gpicker.getValue(),
@@ -152,8 +152,8 @@ var Rexlive_Block_Background_Gradient = (function($) {
   };
 
   var _init = function() {
-    var $modal = $("#rex-block-background-gradient-editor");
-    var gpicker_selector = "#gp-block-background-gradient";
+    var $modal = $("#rex-block-overlay-gradient-editor");
+    var gpicker_selector = "#gp-block-overlay-gradient";
     modal_props = {
       $self: $modal,
 
@@ -163,8 +163,8 @@ var Rexlive_Block_Background_Gradient = (function($) {
       $gpicker: $modal.find(gpicker_selector),
       gpicker_selector: gpicker_selector,
       gpicker: null,
-      $gradient_type: $modal.find('#block-background-gradient-type'),
-      $gradient_angle: $modal.find('#block-background-gradient-angle'),
+      $gradient_type: $modal.find('#block-overlay-gradient-type'),
+      $gradient_angle: $modal.find('#block-overlay-gradient-angle'),
 
       $palette_list: $modal.find('.palette-list'),
       $add_palette: $modal.find('.palette__add-gradient'),

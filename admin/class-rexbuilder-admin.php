@@ -893,10 +893,10 @@ class Rexbuilder_Admin {
 		}
 
 		$data = $_POST['data'];
-		$gradient_palette = get_option( '_rex_gradient_palette', array() );
+		$gradient_palette = get_option( '_rex_color_gradient_palette', array() );
 		$gradient_palette[$data['ID']] = $data['gradient'];
 		$response['data'] = $gradient_palette;
-		update_option( '_rex_gradient_palette', $gradient_palette );
+		update_option( '_rex_color_gradient_palette', $gradient_palette );
 
 		wp_send_json_success( $response );
 	}
@@ -919,11 +919,11 @@ class Rexbuilder_Admin {
 		}
 
 		$data = $_POST['data'];
-		$gradient_palette = get_option( '_rex_gradient_palette', array() );
+		$gradient_palette = get_option( '_rex_color_gradient_palette', array() );
 		if( !empty( $gradient_palette ) ) {
 			unset( $gradient_palette[$data['ID']] );
 			$response['data'] = $gradient_palette;
-			update_option( '_rex_gradient_palette', $gradient_palette );
+			update_option( '_rex_color_gradient_palette', $gradient_palette );
 		}
 
 		wp_send_json_success( $response );

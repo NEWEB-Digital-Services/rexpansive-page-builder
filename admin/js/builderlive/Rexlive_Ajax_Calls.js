@@ -95,7 +95,7 @@ var Rexlive_Ajax_Calls = (function($) {
     });
   };
 
-  var _savePaletteGradient = function( data ) {
+  var _savePaletteColorGradient = function( data ) {
     $.ajax({
       type: "POST",
       url: live_editor_obj.ajaxurl,
@@ -115,7 +115,52 @@ var Rexlive_Ajax_Calls = (function($) {
     });
   };
 
-  var _deletePaletteGradient = function( data, callbacks ) {
+  var _deletePaletteColorGradient = function( data, callbacks ) {
+    $.ajax({
+      type: "POST",
+      url: live_editor_obj.ajaxurl,
+      data: {
+        action: "rex_delete_palette_gradient",
+        nonce_param: live_editor_obj.rexnonce,
+        data: data,
+      },
+      success: function(response) {
+        if (response.success) {
+          if( "undefined" !== typeof callbacks && "function" === typeof callbacks.success.callback ) {
+            callbacks.success.callback.call(this,callbacks.success.args);
+          }
+        }
+      },
+      error: function(response) {
+        console.log(response);
+        if( "undefined" !== typeof callbacks && "function" === typeof callbacks.error.callback ) {
+          callbacks.error.callback.call(this,callbacks.error.args);
+        }
+      }
+    });
+  };
+
+  var _savePaletteOverlayGradient = function( data ) {
+    $.ajax({
+      type: "POST",
+      url: live_editor_obj.ajaxurl,
+      data: {
+        action: "rex_save_palette_gradient",
+        nonce_param: live_editor_obj.rexnonce,
+        data: data,
+      },
+      success: function(response) {
+        if (response.success) {
+          console.log(response);
+        }
+      },
+      error: function(response) {
+        console.log(response);
+      }
+    });
+  };
+
+  var _deletePaletteOverlayGradient = function( data, callbacks ) {
     $.ajax({
       type: "POST",
       url: live_editor_obj.ajaxurl,
@@ -145,7 +190,9 @@ var Rexlive_Ajax_Calls = (function($) {
     deletePaletteColor: _deletePaletteColor,
     savePaletteOverlayColor: _savePaletteOverlayColor,
     deletePaletteOverlayColor: _deletePaletteOverlayColor,
-    savePaletteGradient: _savePaletteGradient,
-    deletePaletteGradient: _deletePaletteGradient,
+    savePaletteColorGradient: _savePaletteColorGradient,
+    deletePaletteColorGradient: _deletePaletteColorGradient,
+    savePaletteOverlayGradient: _savePaletteOverlayGradient,
+    deletePaletteOverlayGradient: _deletePaletteOverlayGradient
   };
 })(jQuery);

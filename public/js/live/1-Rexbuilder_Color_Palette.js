@@ -80,16 +80,16 @@ var Rexbuilder_Color_Palette = (function($) {
 
     props.$open_gradient_palette.on("click", function(e) {
       e.preventDefault();
-      console.log(props);
-      switch( props.action ) {
-        case "background":
+      switch( props.object ) {
+        case "block":
           Rexbuilder_Block_Editor.openBlockBackgroundGradient( props.$spicker.parents(".perfect-grid-item") );
           break;
-        case "overlay":
+        case "section":
           break;
         default:
           break;
       }
+      props.$spicker.spectrum("hide");
     });
   };
 

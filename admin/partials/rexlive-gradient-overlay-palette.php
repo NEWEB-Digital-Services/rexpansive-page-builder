@@ -10,7 +10,7 @@
  */
 
 defined('ABSPATH') or exit;
-$saved_palette = get_option( '_rex_color_gradient_palette', array() );
+$saved_palette = get_option( '_rex_overlay_gradient_palette', array() );
 ?>
 <div class="bl_modal__option-wrap palette-list">
     <?php

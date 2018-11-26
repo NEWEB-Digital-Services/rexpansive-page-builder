@@ -36,6 +36,9 @@ var Rexlive_Modals = (function ($) {
         // Block background gradient
         Rexlive_Block_Background_Gradient.init();
 
+        // Block Overlay gradient
+        Rexlive_Block_Overlay_Gradient.init();
+
         // models
         Model_Modal.init();
 
