@@ -245,6 +245,7 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_ajax_rex_get_model_list', $plugin_admin, 'rex_get_model_list' );
 
 		$this->loader->add_action( 'wp_ajax_rex_save_palette_gradient', $plugin_admin, 'rex_save_palette_gradient' );
+		$this->loader->add_action( 'wp_ajax_rex_delete_palette_gradient', $plugin_admin, 'rex_delete_palette_gradient' );
 
 		$this->loader->add_action( 'wp_ajax_rex_get_rxcf', $plugin_admin, 'rex_get_rxcf' );
 		$this->loader->add_action( 'wp_ajax_rex_save_rxcf', $plugin_admin, 'rex_save_rxcf' );

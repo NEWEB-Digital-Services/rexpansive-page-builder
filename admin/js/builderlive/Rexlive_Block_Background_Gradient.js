@@ -83,10 +83,35 @@ var Rexlive_Block_Background_Gradient = (function($) {
       $item.attr("data-gradient-value", gradient_to_save);
     });
 
-    modal_props.$self.on("click", ".palette-item", function(e){
+    modal_props.$self.on("click", ".palette-item", function(e) {
       e.preventDefault();
       var gradient = this.getAttribute("data-gradient-value");
       _setGradientPicker( gradient, false );
+    });
+
+    modal_props.$self.on("click", ".palette-item__delete", function(e) {
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      var gradientEl = this.parentElement;
+      var gradient_ID = gradientEl.getAttribute("data-gradient-id");
+      Rexlive_Ajax_Calls.deletePaletteGradient({
+        ID: gradient_ID
+      }, {
+        success: {
+          callback: Rexlive_Block_Background_Gradient.deletePaletteItem,
+          args: gradientEl,
+        }
+      });
+    });
+  };
+  
+  var _deletePaletteItem = function( el ) {
+    $(el).remove();
+  };
+
+  var _updatePalette = function() {
+    modal_props.$palette_list.find('.palette-item').each(function(i,el) {
+      el.style.background = Rexbuilder_Util_Admin_Editor.getGradientSafeValue( el.getAttribute('data-gradient-value') );
     });
   };
 
@@ -143,15 +168,18 @@ var Rexlive_Block_Background_Gradient = (function($) {
       $gradient_type: $modal.find('#block-background-gradient-type'),
       $gradient_angle: $modal.find('#block-background-gradient-angle'),
 
+      $palette_list: $modal.find('.palette-list'),
       $add_palette: $modal.find('.palette__add-gradient'),
     };
 
     _launchGPicker();
     _linkDocumentListeners();
+    _updatePalette();
   };
 
   return {
     init: _init,
-    openModal: _openModal
+    openModal: _openModal,
+    deletePaletteItem: _deletePaletteItem
   };
 })(jQuery);

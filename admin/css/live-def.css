@@ -3945,10 +3945,20 @@ ul {
 .palette-item {
   width: 20px;
   height: 20px;
-  border-radius: 4px;
+  border-radius: 50%;
   border: 2px solid #424242;
   margin-right: 10px;
-  cursor: pointer; }
+  cursor: pointer;
+  position: relative; }
+
+.palette-item__delete {
+  position: absolute;
+  top: -7px;
+  right: -7px;
+  padding: 3px;
+  line-height: 4px; }
+  .palette-item__delete .l-svg-icons {
+    font-size: 8px !important; }
 
 .tippy-tooltip.rexlive-theme {
   font-size: 9px;

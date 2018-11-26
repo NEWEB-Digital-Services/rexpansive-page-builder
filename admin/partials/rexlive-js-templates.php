@@ -120,5 +120,9 @@ defined('ABSPATH') or exit;
 </script>
 
 <script type="text/x-tmpl" id="tmpl-palette-item">
-<div class="palette-item"></div>
+<div class="palette-item">
+    <div class="tool-button tool-button--deactivate palette-item__delete">
+    <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+    </div>
+</div>
 </script>

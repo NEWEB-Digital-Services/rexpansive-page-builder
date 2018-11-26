@@ -786,8 +786,37 @@ class Rexbuilder_Admin {
 
 		$data = $_POST['data'];
 		$gradient_palette = get_option( '_rex_gradient_palette', array() );
-		$gradient_palette[$data['ID']] = $data[$data['gradient']];
+		$gradient_palette[$data['ID']] = $data['gradient'];
+		$response['data'] = $gradient_palette;
 		update_option( '_rex_gradient_palette', $gradient_palette );
+
+		wp_send_json_success( $response );
+	}
+
+	/**
+	 * Delete a gradient palette color
+	 * @since 2.0.0
+	 */
+	public function rex_delete_palette_gradient() {
+		$nonce = $_POST['nonce_param'];
+		$response = array(
+			'error' => false,
+			'msg' => '',
+		);
+
+		if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) {
+			$response['error'] = true;
+			$response['msg'] = 'Error!';
+			wp_send_json_error( $response );
+		}
+
+		$data = $_POST['data'];
+		$gradient_palette = get_option( '_rex_gradient_palette', array() );
+		if( !empty( $gradient_palette ) ) {
+			unset( $gradient_palette[$data['ID']] );
+			$response['data'] = $gradient_palette;
+			update_option( '_rex_gradient_palette', $gradient_palette );
+		}
 
 		wp_send_json_success( $response );
 	}

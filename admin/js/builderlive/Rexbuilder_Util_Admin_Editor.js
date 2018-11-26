@@ -1391,6 +1391,42 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     }
   };
 
+  /**
+   * Return the valid linear gradient CSS rule for the actual browser
+   * @param {string} gradient Gradient to safe
+   */
+  var _getGradientSafeValue = function( gradient ) {
+    var sandEl = document.createElement('div');
+
+    var style = sandEl.style;
+    var values = Rexbuilder_Util_Admin_Editor.getPrefixedValues( gradient );
+    var val;
+
+    for (var i = 0; i < values.length; i++) {
+      val = values[i];
+      style.backgroundImage = val;
+
+      if (style.backgroundImage == val) {
+          break;
+      }
+    }
+
+    return style.backgroundImage;
+  }
+
+  /**
+   * Add gradient prefix to a linear gradient
+   * @param {string} value clean linear gradient
+   */
+  var _getPrefixedValues = function(value) {
+    var prefs = ['-moz-', '-webkit-', '-o-', '-ms-'];
+    var res = [];
+    for(var i=0; i < prefs.length; i++) {
+      res.push( prefs[i] + value );
+    }
+    return res;
+  }
+
   // init the utilities
   var init = function() {
     this.$body = $('body');
@@ -1489,5 +1525,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     updateBkgrColTool: _updateBkgrColTool,
     updateBkgrOverlayTool: _updateBkgrOverlayTool,
     updateBkgrVidTool: _updateBkgrVidTool,
+    getGradientSafeValue: _getGradientSafeValue,
+    getPrefixedValues: _getPrefixedValues,
   };
 })(jQuery);
