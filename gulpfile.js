@@ -446,6 +446,7 @@ var live_file_map = [
 	'admin/ace/**/*',
 	'admin/css/**/*',
 	'admin/font-awesome-4.3.0/**/*',
+	'admin/grapick',
 	'admin/img/**/*.*',
 	'admin/js/**/*',
 	'admin/lib/**/*',

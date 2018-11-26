@@ -1651,8 +1651,7 @@ defined('ABSPATH') or exit;
             <?php include 'rexbuilder-modal-loader.php';?>
 
             <div class="rex-model__add-model__wrap rex-modal-content__modal-area" style="display:flex;">
-                <div id="rex-model__name__wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix" style="width:100%;">
-                    <span class="prefix"></span>
+                <div id="rex-model__name__wrap" class="input-field col input-field--small" style="width:100%;">
                     <input type="text" id="rex-model__name" name="rex-model__name">
                     <label for="rex-model__name" class=""><?php _e('Model name', 'rexpansive');?></label>
                     <span class="rex-material-bar"></span>

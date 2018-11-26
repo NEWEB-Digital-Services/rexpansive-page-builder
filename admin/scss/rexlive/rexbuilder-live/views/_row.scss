@@ -2,17 +2,17 @@
 
   position: relative;
   .rexpansive_section {
-    &#{$row-focused} {
-      z-index: 2000;
-      // border: 2px solid $icon-active-color;
-      .rex-row__dimension {
-        overflow: visible;
-      }
-  
-      .perfect-grid-gallery {
-        overflow: visible;
-      }
+    z-index: 2000;
+    // border: 2px solid $icon-active-color;
+    .rex-row__dimension {
+      overflow: visible;
     }
+
+    .perfect-grid-gallery {
+      overflow: visible;
+    }
+  }
+    &#{$row-focused} {
   
     &.empty-section {
       .responsive-overlay {
@@ -94,8 +94,8 @@
   display: table;
 }
 
-.perfect-grid-gallery {
-  &#{$row-focused} {
-    overflow: visible;
-  }
-}
+// .perfect-grid-gallery {
+//   &#{$row-focused} {
+//     overflow: visible;
+//   }
+// }

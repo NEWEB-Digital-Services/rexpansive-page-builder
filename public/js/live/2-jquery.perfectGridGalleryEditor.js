@@ -176,6 +176,7 @@
           }
         });
 
+        // this._linkSectionEvents();
         this._updateElementsSizeViewers();
         this._linkResizeEvents();
         this._linkDragEvents();
@@ -2231,6 +2232,7 @@
       // this.showBlockToolBox($elem);
       $elem.addClass("focused");
       this.$section.addClass("focusedRow");
+
       // $elem.parent().addClass('focused');
       // $elem.parent().parent().addClass('focused');
       // $elem.parent().parent().parent().addClass('focused');
@@ -2241,6 +2243,7 @@
       // this.hideBlockToolBox($elem);
       $elem.removeClass("focused");
       this.$section.removeClass("focusedRow");
+
       // $elem.parent().removeClass('focused');
       // $elem.parent().parent().removeClass('focused');
       // $elem.parent().parent().parent().removeClass('focused');

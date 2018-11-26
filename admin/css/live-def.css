@@ -5136,15 +5136,15 @@ ul {
 
 .rexbuilder-live-content--editing {
   position: relative; }
-  .rexbuilder-live-content--editing .rexpansive_section.focusedRow {
+  .rexbuilder-live-content--editing .rexpansive_section {
     z-index: 2000; }
-    .rexbuilder-live-content--editing .rexpansive_section.focusedRow .rex-row__dimension {
+    .rexbuilder-live-content--editing .rexpansive_section .rex-row__dimension {
       overflow: visible; }
-    .rexbuilder-live-content--editing .rexpansive_section.focusedRow .perfect-grid-gallery {
+    .rexbuilder-live-content--editing .rexpansive_section .perfect-grid-gallery {
       overflow: visible; }
-  .rexbuilder-live-content--editing .rexpansive_section.empty-section .responsive-overlay {
+  .rexbuilder-live-content--editing.focusedRow.empty-section .responsive-overlay {
     min-height: 100px; }
-  .rexbuilder-live-content--editing .rexpansive_section.rexpansive-lock-section--light:before {
+  .rexbuilder-live-content--editing.focusedRow.rexpansive-lock-section--light:before {
     content: '';
     position: absolute;
     top: 0;
@@ -5152,18 +5152,18 @@ ul {
     right: 0;
     bottom: 0;
     z-index: 5000; }
-  .rexbuilder-live-content--editing .rexpansive_section.rexpansive-lock-section--overlay:before {
+  .rexbuilder-live-content--editing.focusedRow.rexpansive-lock-section--overlay:before {
     opacity: 1;
     z-index: 10; }
-  .rexbuilder-live-content--editing .rexpansive_section.rexpansive-lock-section--overlay .grid-stack-item:not(.grid-stack-item--drag-to-row) .ui-focused-element-highlight {
+  .rexbuilder-live-content--editing.focusedRow.rexpansive-lock-section--overlay .grid-stack-item:not(.grid-stack-item--drag-to-row) .ui-focused-element-highlight {
     visibility: visible;
     -webkit-box-shadow: none;
             box-shadow: none;
     outline-color: transparent; }
-    .rexbuilder-live-content--editing .rexpansive_section.rexpansive-lock-section--overlay .grid-stack-item:not(.grid-stack-item--drag-to-row) .ui-focused-element-highlight:before {
+    .rexbuilder-live-content--editing.focusedRow.rexpansive-lock-section--overlay .grid-stack-item:not(.grid-stack-item--drag-to-row) .ui-focused-element-highlight:before {
       opacity: 1;
       z-index: 30; }
-  .rexbuilder-live-content--editing .rexpansive_section:before {
+  .rexbuilder-live-content--editing.focusedRow:before {
     opacity: 0;
     content: '';
     position: absolute;
@@ -5176,7 +5176,7 @@ ul {
     -o-transition: opacity 0.3s;
     transition: opacity 0.3s;
     background-color: rgba(0, 0, 0, 0.7); }
-  .rexbuilder-live-content--editing .rexpansive_section .grid-stack-item .ui-focused-element-highlight:before {
+  .rexbuilder-live-content--editing.focusedRow .grid-stack-item .ui-focused-element-highlight:before {
     opacity: 0;
     content: '';
     position: absolute;
@@ -5194,9 +5194,6 @@ ul {
 .rex-row__dimension:after {
   content: ' ';
   display: table; }
-
-.perfect-grid-gallery.focusedRow {
-  overflow: visible; }
 
 .rexpansive_section.rex-model-section .update-model-button {
   display: block; }
@@ -5288,10 +5285,16 @@ ul {
 .perfect-grid-item.focused,
 .grid-stack-item.focused {
   overflow: visible;
-  z-index: 2; }
+  z-index: 2;
+  -webkit-transition: overflow 300ms;
+  -o-transition: overflow 300ms;
+  transition: overflow 300ms; }
   .perfect-grid-item.focused .ui-focused-element-highlight,
   .grid-stack-item.focused .ui-focused-element-highlight {
     visibility: visible; }
+
+.rexbuilder-live-content--editing .perfect-grid-item {
+  overflow: visible; }
 
 .ui-focused-element-highlight {
   position: absolute;
