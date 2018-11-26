@@ -447,6 +447,11 @@ var Rexbuilder_Section_Editor = (function($) {
         flagPickerUsed = false;
         $section.addClass('activeRowTools');
         $picker.parents('.tool-button-floating').addClass('tool-button-floating--active');
+        Rexbuilder_Color_Palette.show({
+          $target: $picker,
+          object: "section",
+          action: "background"
+        });
       },
       move: function(color) {
         settings.data_to_send.color = bgColorActive
@@ -463,6 +468,7 @@ var Rexbuilder_Section_Editor = (function($) {
         // nothing to do
       },
       hide: function(color) {
+        Rexbuilder_Color_Palette.hide();
         if (flagPickerUsed) {
           colorActive = color.toRgbString();
           
@@ -556,6 +562,11 @@ var Rexbuilder_Section_Editor = (function($) {
         flagPickerUsed = false;
         $section.addClass('activeRowTools');
         $picker.parents('.tool-button-floating').addClass('tool-button-floating--active');
+        Rexbuilder_Overlay_Palette.show({
+          $target: $picker,
+          object: "section",
+          action: "overlay"
+        });
       },
       move: function(color) {
         changeColorEvent.data_to_send.active = true;
@@ -574,6 +585,7 @@ var Rexbuilder_Section_Editor = (function($) {
         //
       },
       hide: function(color) {
+        Rexbuilder_Overlay_Palette.hide();
         if(flagPickerUsed) {
           changeColorEvent.data_to_send.color = color.toRgbString();
           changeColorEvent.data_to_send.active = true;

@@ -1,10 +1,10 @@
 /**
- * Gradient palette color to append to Spectrum Picker.
+ * Gradient palette color to append to Spectrum Picker for an overlay.
  * With a button to open the gradient picker
  * 
  * @since 2.0.0
  */
-var Rexbuilder_Color_Palette = (function($) {
+var Rexbuilder_Overlay_Palette = (function($) {
   "use strict";
 
   var props;
@@ -29,15 +29,15 @@ var Rexbuilder_Color_Palette = (function($) {
     props.$add_color.on("click", function(e) {
       e.preventDefault();
       if( null !== props.$spicker ) {
-        var color_value = props.$spicker.spectrum("get");
-        var color_ID = Rexbuilder_Util.createRandomID(4);
-        var color_to_save = color_value.toRgbString();
+        var overlay_value = props.$spicker.spectrum("get");
+        var overlay_ID = Rexbuilder_Util.createRandomID(4);
+        var overlay_to_save = overlay_value.toRgbString();
 
         var data = {
-          eventName: "rexlive:savePaletteColor",
-          color_data: {
-            color: color_to_save,
-            ID: color_ID
+          eventName: "rexlive:savePaletteOverlayColor",
+          overlay_data: {
+            overlay: overlay_to_save,
+            ID: overlay_ID
           }
         };
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
@@ -46,15 +46,15 @@ var Rexbuilder_Color_Palette = (function($) {
         var $item = $(item);
 
         props.$add_color.before( $item );
-        $item.css("background", color_to_save);
-        $item.attr("data-color-id", color_ID);
-        $item.attr("data-color-value", color_to_save);
+        $item.css("background", overlay_to_save);
+        $item.attr("data-overlay-id", overlay_ID);
+        $item.attr("data-overlay-value", overlay_to_save);
       }
     });
 
     props.$container.on("click", ".palette-item", function(e) {
       e.preventDefault();
-      var color = this.getAttribute("data-color-value");
+      var color = this.getAttribute("data-overlay-value");
       if( color ) {
         _setColorPicker( color, true );
       }
@@ -64,23 +64,22 @@ var Rexbuilder_Color_Palette = (function($) {
       e.preventDefault();
       e.stopImmediatePropagation();
 
-      var colorEl = this.parentElement;
-      var color_ID = colorEl.getAttribute("data-color-id");
+      var overlayEl = this.parentElement;
+      var overlay_ID = overlayEl.getAttribute("data-overlay-id");
 
       var data = {
-        eventName: "rexlive:deletePaletteColor",
-        color_data: {
-          ID: color_ID
+        eventName: "rexlive:deletePaletteOverlayColor",
+        overlay_data: {
+          ID: overlay_ID
         }
       };
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 
-      Rexbuilder_Color_Palette.deletePaletteItem(colorEl);
+      Rexbuilder_Overlay_Palette.deletePaletteItem(overlayEl);
     });
 
     props.$open_gradient_palette.on("click", function(e) {
       e.preventDefault();
-      console.log(props);
       switch( props.action ) {
         case "background":
           Rexbuilder_Block_Editor.openBlockBackgroundGradient( props.$spicker.parents(".perfect-grid-item") );
@@ -108,7 +107,7 @@ var Rexbuilder_Color_Palette = (function($) {
   }
 
   var init = function() {
-    var $self = $('.sp-rex-color-palette');
+    var $self = $('.sp-rex-color-overlay-palette');
     props = {
       $spicker: null,
       object: null,

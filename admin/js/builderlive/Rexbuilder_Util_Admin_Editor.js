@@ -262,6 +262,22 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       if( event.data.eventName == "rexlive:savePageWithButton" ) {
         $saveBtn.trigger('click');
       }
+
+      if( event.data.eventName == "rexlive:savePaletteColor" ) {
+        Rexlive_Ajax_Calls.savePaletteColor(event.data.color_data);
+      }
+
+      if( event.data.eventName == "rexlive:deletePaletteColor" ) {
+        Rexlive_Ajax_Calls.deletePaletteColor(event.data.color_data);
+      }
+
+      if( event.data.eventName == "rexlive:savePaletteOverlayColor" ) {
+        Rexlive_Ajax_Calls.savePaletteOverlayColor(event.data.overlay_data);
+      }
+
+      if( event.data.eventName == "rexlive:deletePaletteOverlayColor" ) {
+        Rexlive_Ajax_Calls.deletePaletteOverlayColor(event.data.overlay_data);
+      }
     }
   };
 
@@ -1414,8 +1430,10 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
    * @param {Object} attr attribute name
    */
   var _highlightRowSetData = function( data ) {
-    if( "" !== data ) {
+    if( "" !== data && "undefined" !== typeof data ) {
       for( var attr in data ) {
+        console.log(data);
+        console.log(hightlightRowInfo);
         hightlightRowInfo[attr] = data[attr];
       }
     }

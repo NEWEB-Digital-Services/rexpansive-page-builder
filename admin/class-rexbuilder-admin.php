@@ -766,6 +766,114 @@ class Rexbuilder_Admin {
 		}
 		return $active;
 	}
+	
+	/**
+	 * Saving a palette color to reuse it around the pages
+	 * @since 2.0.0
+	 */
+	public function rex_save_palette_color() {
+		$nonce = $_POST['nonce_param'];
+		$response = array(
+			'error' => false,
+			'msg' => '',
+		);
+
+		if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) {
+			$response['error'] = true;
+			$response['msg'] = 'Error!';
+			wp_send_json_error( $response );
+		}
+
+		$data = $_POST['data'];
+		$color_palette = get_option( '_rex_color_palette', array() );
+		$color_palette[$data['ID']] = $data['color'];
+		$response['data'] = $color_palette;
+		update_option( '_rex_color_palette', $color_palette );
+
+		wp_send_json_success( $response );
+	}
+
+	/**
+	 * Delete a color palette color
+	 * @since 2.0.0
+	 */
+	public function rex_delete_palette_color() {
+		$nonce = $_POST['nonce_param'];
+		$response = array(
+			'error' => false,
+			'msg' => '',
+		);
+
+		if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) {
+			$response['error'] = true;
+			$response['msg'] = 'Error!';
+			wp_send_json_error( $response );
+		}
+
+		$data = $_POST['data'];
+		$color_palette = get_option( '_rex_color_palette', array() );
+		if( !empty( $color_palette ) ) {
+			unset( $color_palette[$data['ID']] );
+			$response['data'] = $color_palette;
+			update_option( '_rex_color_palette', $color_palette );
+		}
+
+		wp_send_json_success( $response );
+	}
+
+	/**
+	 * Saving a palette color to reuse it around the pages
+	 * @since 2.0.0
+	 */
+	public function rex_save_palette_overlay_color() {
+		$nonce = $_POST['nonce_param'];
+		$response = array(
+			'error' => false,
+			'msg' => '',
+		);
+
+		if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) {
+			$response['error'] = true;
+			$response['msg'] = 'Error!';
+			wp_send_json_error( $response );
+		}
+
+		$data = $_POST['data'];
+		$overlay_palette = get_option( '_rex_overlay_palette', array() );
+		$overlay_palette[$data['ID']] = $data['overlay'];
+		$response['data'] = $overlay_palette;
+		update_option( '_rex_overlay_palette', $overlay_palette );
+
+		wp_send_json_success( $response );
+	}
+
+	/**
+	 * Delete a color palette color
+	 * @since 2.0.0
+	 */
+	public function rex_delete_palette_overlay_color() {
+		$nonce = $_POST['nonce_param'];
+		$response = array(
+			'error' => false,
+			'msg' => '',
+		);
+
+		if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) {
+			$response['error'] = true;
+			$response['msg'] = 'Error!';
+			wp_send_json_error( $response );
+		}
+
+		$data = $_POST['data'];
+		$overlay_palette = get_option( '_rex_overlay_palette', array() );
+		if( !empty( $overlay_palette ) ) {
+			unset( $overlay_palette[$data['ID']] );
+			$response['data'] = $overlay_palette;
+			update_option( '_rex_overlay_palette', $overlay_palette );
+		}
+
+		wp_send_json_success( $response );
+	}
 
 	/**
 	 * Saving a gradient palette color to reuse it around the pages

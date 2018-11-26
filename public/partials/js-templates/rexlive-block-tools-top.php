@@ -22,7 +22,7 @@
         </div>
 
         <div class="bl_d-iflex bl_ai-c block-toolBox__config-tools">
-            <div class="tool-button tool-button--inline edit-block-gradient tippy" data-tippy-content="<?php _e('Gradient', 'rexpansive'); ?>" style="margin-right:15px">
+            <div class="tool-button tool-button--inline tool-button--hide edit-block-gradient tippy" data-tippy-content="<?php _e('Gradient', 'rexpansive'); ?>" style="margin-right:15px">
             <?php Rexbuilder_Utilities::get_icon('#Z010-Logo'); ?>
             </div>
 

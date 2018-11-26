@@ -204,6 +204,7 @@ class Rexbuilder_Public
             wp_enqueue_script('1-RexCreateBlocks', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/1-Rexbuilder_CreateBlocks.js', array('jquery'), $ver, true);
             wp_enqueue_script('1-RexDomUtil', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/1-Rexbuilder_Dom_Util.js', array('jquery'), $ver, true);
             wp_enqueue_script('1-RexColorPalette', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/1-Rexbuilder_Color_Palette.js', array('jquery'), $ver, true);
+            wp_enqueue_script('1-RexOverlayPalette', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/1-Rexbuilder_Overlay_Palette.js', array('jquery'), $ver, true);
             wp_enqueue_script('2-RexSaveListeners', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/2-Rex_Save_Listeners.js', array('jquery'), $ver, true);
             wp_enqueue_script('3-Navigator', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/3-Navigator.js', array('jquery'), $ver, true);
             wp_enqueue_script('5-flickity', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/flickity.pkgd.min.js', array('jquery'), $ver, true);
@@ -876,6 +877,7 @@ endif;
                 </div>
                 <?php include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-loader.php"; ?>
                 <?php include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-color-palette.php"; ?>
+                <?php include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-overlay-palette.php"; ?>
             <?php
                 }
             ?>

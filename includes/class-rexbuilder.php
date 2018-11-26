@@ -244,6 +244,12 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_ajax_rex_get_model', $plugin_admin, 'rex_get_model' );
 		$this->loader->add_action( 'wp_ajax_rex_get_model_list', $plugin_admin, 'rex_get_model_list' );
 
+		$this->loader->add_action( 'wp_ajax_rex_save_palette_color', $plugin_admin, 'rex_save_palette_color' );
+		$this->loader->add_action( 'wp_ajax_rex_delete_palette_color', $plugin_admin, 'rex_delete_palette_color' );
+
+		$this->loader->add_action( 'wp_ajax_rex_save_palette_overlay_color', $plugin_admin, 'rex_save_palette_overlay_color' );
+		$this->loader->add_action( 'wp_ajax_rex_delete_palette_overlay_color', $plugin_admin, 'rex_delete_palette_overlay_color' );
+
 		$this->loader->add_action( 'wp_ajax_rex_save_palette_gradient', $plugin_admin, 'rex_save_palette_gradient' );
 		$this->loader->add_action( 'wp_ajax_rex_delete_palette_gradient', $plugin_admin, 'rex_delete_palette_gradient' );
 

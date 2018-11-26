@@ -15036,8 +15036,11 @@ ul {
 :not(.sp-container-default) .sp-picker-container .sp-button-container .sp-choose .rex-icon {
   font-size: 24px; }
 
-.sp-rex-color-palette {
-  display: none; }
+.sp-rex-palette-wrap {
+  display: none;
+  float: none;
+  clear: both;
+  padding-top: 10px; }
 
 .palette-item {
   -webkit-box-sizing: border-box;
@@ -15063,7 +15066,8 @@ ul {
   background: black;
   background: -o-linear-gradient(315deg, black 1%, #ffe5e5 99%);
   background: linear-gradient(135deg, black 1%, #ffe5e5 99%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#ffe5e5',GradientType=1 ); }
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#000000', endColorstr='#ffe5e5',GradientType=1 );
+  margin: 0; }
 
 .tippy-tooltip.rexlive-theme {
   font-size: 9px;

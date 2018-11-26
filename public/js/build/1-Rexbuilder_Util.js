@@ -3507,6 +3507,7 @@ var Rexbuilder_Util = (function($) {
     getSectionNamesUsed: _getSectionNamesUsed,
     saveSectionNamesUsed: _saveSectionNamesUsed,
     addSectionID: _addSectionID,
-    removeSectionID: _removeSectionID
+    removeSectionID: _removeSectionID,
+    createRandomID: createRandomID
   };
 })(jQuery);

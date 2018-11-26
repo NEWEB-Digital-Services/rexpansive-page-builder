@@ -1,6 +1,6 @@
 <?php
 /**
- * Print the color pallete area
+ * Print the overlay color palette area
  *
  * @link       htto://www.neweb.info
  * @since      2.0.0
@@ -10,15 +10,15 @@
  */
 
 defined('ABSPATH') or exit;
-$saved_palette = get_option( '_rex_color_palette', array() );
+$saved_palette = get_option( '_rex_overlay_palette', array() );
 ?>
-<div class="bl_modal-row sp-rex-palette-wrap sp-rex-color-palette">
+<div class="bl_modal-row sp-rex-palette-wrap sp-rex-color-overlay-palette">
     <div class="bl_d-flex bl_jc-sb">
         <div class="bl_modal__option-wrap bl_d-iflex palette-list">
             <?php
-            foreach( $saved_palette as $ID => $color ) {
+            foreach( $saved_palette as $ID => $overlay ) {
                 ?>
-                <div class="palette-item" data-color-id="<?php echo esc_attr($ID); ?>" data-color-value="<?php echo esc_attr($color); ?>" style="background-color:<?php echo $color; ?>">
+                <div class="palette-item" data-overlay-id="<?php echo esc_attr($ID); ?>" data-overlay-value="<?php echo esc_attr($overlay); ?>" style="background-color:<?php echo $overlay; ?>">
                     <div class="tool-button tool-button--deactivate palette-item__delete">
                         <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                     </div>

@@ -79,7 +79,7 @@ var Rexlive_Block_Background_Gradient = (function($) {
 
       modal_props.$add_palette.before( $item );
       $item.css("background", gradient_to_view);
-      $item.attr("data-gradient-ID", gradient_ID);
+      $item.attr("data-gradient-id", gradient_ID);
       $item.attr("data-gradient-value", gradient_to_save);
     });
 
@@ -94,14 +94,12 @@ var Rexlive_Block_Background_Gradient = (function($) {
       e.stopImmediatePropagation();
       var gradientEl = this.parentElement;
       var gradient_ID = gradientEl.getAttribute("data-gradient-id");
+
       Rexlive_Ajax_Calls.deletePaletteGradient({
         ID: gradient_ID
-      }, {
-        success: {
-          callback: Rexlive_Block_Background_Gradient.deletePaletteItem,
-          args: gradientEl,
-        }
       });
+
+      Rexlive_Block_Background_Gradient.deletePaletteItem(gradientEl);
     });
   };
   

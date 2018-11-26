@@ -341,3 +341,11 @@ $tool_button_classes = 'tool-button';
 <script type="text/x-tmpl" id="tmpl-tool-drag">
 <div class="tool-button tool-button--inline drag-to-section drag-to-section-simulator" draggable="true"></div>
 </script>
+
+<script type="text/x-tmpl" id="tmpl-palette-item">
+<div class="palette-item">
+    <div class="tool-button tool-button--deactivate palette-item__delete">
+    <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+    </div>
+</div>
+</script>

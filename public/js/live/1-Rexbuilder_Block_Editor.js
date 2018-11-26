@@ -503,38 +503,7 @@ var Rexbuilder_Block_Editor = (function($) {
     Rexbuilder_Util.$document.on('click', '.edit-block-gradient', function(e) {
       var $btn = $(e.target);
       var $elem = $btn.parents(".grid-stack-item");
-      var $section = $elem.parents(".rexpansive_section");
-      var rex_block_id = $elem.attr("data-rexbuilder-block-id");
-      var $elemData = $elem.children(".rexbuilder-block-data");
-      var sectionID = $section.attr("data-rexlive-section-id");
-      var modelNumber =
-        typeof $section.attr("data-rexlive-model-number") != "undefined"
-          ? $section.attr("data-rexlive-model-number")
-          : "";
-
-      var bgGradientCol = $elemData.attr('data-color_bg_block');
-
-      var settings = {
-        blockData: {
-          gradient: bgGradientCol,
-          target: {
-            sectionID: sectionID,
-            modelNumber: modelNumber,
-            rexID: rex_block_id
-          },
-        }
-      };
-
-      Rexbuilder_Util_Editor.manageElement = true;
-      // var mousePosition = Rexbuilder_Util_Editor.getMousePosition( e, { offset: { w: this.offsetWidth, h: this.offsetHeight } } );
-
-      var data = {
-        eventName: "rexlive:editBlockGradient",
-        activeBlockData: settings,
-        // mousePosition: mousePosition
-      };
-
-      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      _openBlockBackgroundGradient( $elem );
     });
 
     /**
@@ -727,7 +696,11 @@ var Rexbuilder_Block_Editor = (function($) {
         Rexbuilder_Util_Editor.manageElement = true;
         $picker.parents('.tool-button-floating').addClass('tool-button-floating--active');
 
-        Rexbuilder_Color_Palette.show($picker);
+        Rexbuilder_Color_Palette.show({
+          $target: $picker,
+          action: "background",
+          object: "block"
+        });
       },
       move: function(color) {
         settings.data_to_send.color = settings.data_to_send.active
@@ -854,6 +827,11 @@ var Rexbuilder_Block_Editor = (function($) {
         flagPickerUsed = false;
         Rexbuilder_Util_Editor.manageElement = true;
         $picker.parents('.tool-button-floating').addClass('tool-button-floating--active');
+        Rexbuilder_Overlay_Palette.show({
+          $target: $picker,
+          action: "overlay",
+          object: "block"
+        });
       },
       move: function(color) {
         settings.data_to_send.active = true;
@@ -874,6 +852,7 @@ var Rexbuilder_Block_Editor = (function($) {
         // 
       },
       hide: function(color) {
+        Rexbuilder_Overlay_Palette.hide();
         if (flagPickerUsed) {
           settings.data_to_send.active = true;
           settings.data_to_send.color = color.toRgbString();
@@ -902,6 +881,41 @@ var Rexbuilder_Block_Editor = (function($) {
       e.preventDefault();
       $picker.spectrum('hide');
     });
+  };
+
+  var _openBlockBackgroundGradient = function( $elem ) {
+    var $section = $elem.parents(".rexpansive_section");
+    var rex_block_id = $elem.attr("data-rexbuilder-block-id");
+    var $elemData = $elem.children(".rexbuilder-block-data");
+    var sectionID = $section.attr("data-rexlive-section-id");
+    var modelNumber =
+      typeof $section.attr("data-rexlive-model-number") != "undefined"
+        ? $section.attr("data-rexlive-model-number")
+        : "";
+
+    var bgGradientCol = $elemData.attr('data-color_bg_block');
+
+    var settings = {
+      blockData: {
+        gradient: bgGradientCol,
+        target: {
+          sectionID: sectionID,
+          modelNumber: modelNumber,
+          rexID: rex_block_id
+        },
+      }
+    };
+
+    Rexbuilder_Util_Editor.manageElement = true;
+    // var mousePosition = Rexbuilder_Util_Editor.getMousePosition( e, { offset: { w: this.offsetWidth, h: this.offsetHeight } } );
+
+    var data = {
+      eventName: "rexlive:editBlockGradient",
+      activeBlockData: settings,
+      // mousePosition: mousePosition
+    };
+
+    Rexbuilder_Util_Editor.sendParentIframeMessage(data);
   };
 
   /**
@@ -1158,6 +1172,7 @@ var Rexbuilder_Block_Editor = (function($) {
     updateBlockBackgroundColorToolLive: _updateBlockBackgroundColorToolLive,
     updateBlockBackgroundColorTool: _updateBlockBackgroundColorTool,
     updateBlockOverlayColorToolLive: _updateBlockOverlayColorToolLive,
-    updateBlockOverlayColorTool: _updateBlockOverlayColorTool
+    updateBlockOverlayColorTool: _updateBlockOverlayColorTool,
+    openBlockBackgroundGradient: _openBlockBackgroundGradient
   }
 })(jQuery);
