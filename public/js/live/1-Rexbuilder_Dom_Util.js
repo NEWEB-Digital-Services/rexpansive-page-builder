@@ -969,6 +969,9 @@ var Rexbuilder_Dom_Util = (function($) {
       $target = Rexbuilder_Util.$rexContainer
         .find( section_selector )
         .find( block_selector );
+      if( -1 !== $target.css("background").indexOf("linear-gradient") ) {
+        $target.css("background","");
+      }
       $target
         .css("background-color", color);
     } else {
@@ -979,6 +982,9 @@ var Rexbuilder_Dom_Util = (function($) {
             data.rexID +
             '"] .grid-item-content'
         );
+      if( -1 !== $target.css("background").indexOf("linear-gradient") ) {
+        $target.css("background","");
+      }
       $target
         .css("background-color", color);
     }
@@ -996,6 +1002,10 @@ var Rexbuilder_Dom_Util = (function($) {
     var $elem = data.$elem;
     var $itemContent = $elem.find(".grid-item-content");
     var $elemData = $elem.children(".rexbuilder-block-data");
+
+    if( -1 !== $itemContent.css("background").indexOf("linear-gradient") ) {
+      $itemContent.css("background","");
+    }
 
     $itemContent.css("background-color", data.color);
     $elemData.attr("data-color_bg_block", data.color);

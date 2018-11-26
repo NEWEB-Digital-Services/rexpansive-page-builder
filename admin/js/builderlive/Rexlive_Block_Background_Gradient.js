@@ -123,7 +123,7 @@ var Rexlive_Block_Background_Gradient = (function($) {
 
   var _setGradientPicker = function( gradient, trigger ) {
     var trigger = undefined !== typeof trigger ? trigger : false;
-    if( "" !== gradient ) {
+    if( "" !== gradient && -1 !== gradient.indexOf("gradient") ) {
       modal_props.gpicker.setValue(gradient, {
         silent: trigger
       });
