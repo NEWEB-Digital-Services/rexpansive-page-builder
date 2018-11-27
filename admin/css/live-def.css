@@ -3948,6 +3948,12 @@ ul {
 :not(.sp-container-default) .sp-picker-container .sp-button-container .sp-choose .rex-icon {
   font-size: 24px; }
 
+.sp-draggable.ui-draggable-dragging {
+  z-index: 9999994; }
+
+.sp-meditor {
+  padding-bottom: 10px; }
+
 .sp-rex-palette-wrap {
   display: none;
   float: none;

@@ -60,3 +60,13 @@
     font-size: 24px;
   }
 }
+
+.sp-draggable {
+  &.ui-draggable-dragging {
+    z-index: 9999994;
+  }
+}
+
+.sp-meditor {
+  padding-bottom: 10px;
+}
