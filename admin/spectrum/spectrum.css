@@ -1,5 +1,5 @@
 /***
-Spectrum Colorpicker v1.7.1
+Spectrum Colorpicker v1.8.0
 https://github.com/bgrins/spectrum
 Author: Brian Grinstead
 License: MIT
@@ -418,7 +418,7 @@ See http://bgrins.github.io/spectrum/themes/ for instructions.
 
 
 /* Buttons: http://hellohappy.org/css3-buttons/ */
-/*.sp-container button {
+.sp-container button {
   background-color: #eeeeee;
   background-image: -webkit-linear-gradient(top, #eeeeee, #cccccc);
   background-image: -moz-linear-gradient(top, #eeeeee, #cccccc);
@@ -470,7 +470,7 @@ See http://bgrins.github.io/spectrum/themes/ for instructions.
 .sp-cancel:hover {
     color: #d93f3f !important;
     text-decoration: underline;
-}*/
+}
 
 
 .sp-palette span:hover, .sp-palette span.sp-thumb-active {

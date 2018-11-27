@@ -76,10 +76,10 @@ var Rexlive_Color_Palette = (function($) {
       e.preventDefault();
       switch( props.object ) {
         case "block":
-          Rexbuilder_Block_Editor.openBlockBackgroundGradient( props.$spicker.parents(".perfect-grid-item") );
+          // Rexbuilder_Block_Editor.openBlockBackgroundGradient( props.$spicker.parents(".perfect-grid-item") );
           break;
         case "section":
-          Rexbuilder_Section_Editor.openSectionBackgroundGradient( props.$spicker.parents(".rexpansive_section") );
+          Rexbuilder_Util_Admin_Editor.openRowColorPaletteModal();
           break;
         default:
           break;

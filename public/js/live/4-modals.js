@@ -697,7 +697,7 @@
 
       Rexbuilder_Dom_Util.updateSectionOverlayGradient($section, data);
       if (Rexbuilder_Util.activeLayout == "default") {
-        Rexbuilder_Util.updateSectionOverlayGradient($section);
+        Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
       var actionData = {
         color: data.color,

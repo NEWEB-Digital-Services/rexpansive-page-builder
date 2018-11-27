@@ -179,7 +179,6 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       }
 
       if(event.data.eventName == "rexlive:editRowOverlayGradient" ) {
-        console.log(event.data);
         Rexlive_Section_Overlay_Gradient.openModal(event.data.activeRowData);
       }
 
@@ -665,8 +664,6 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         },
         mousePosition: mousePosition
       };
-
-      console.log(msg);
 
       window.postMessage(msg, "*");
     });
@@ -1309,22 +1306,20 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       showInput: true,
       showButtons: false,
       show: function() {
-        console.log('mostra');
         bgColorPickerUsed = false;
         eventSettings.data_to_send.sectionTarget.sectionID = $highlightSectionId.val();
         eventSettings.data_to_send.sectionTarget.modelNumber = $highlightModelId.val();
         bgColorActive = JSON.parse( hightlightRowInfo.color_bg_section_active );
-        /*Rexlive_Color_Palette.show({
+        Rexlive_Color_Palette.show({
           $target: $fastRowSetBkgrCol,
           object: "section",
           action: "background"
-        });*/
+        });
       },
       change: function() {
-        console.log('cambia');
+        //
       },
       move: function(color) {
-        console.log('muovi');
         eventSettings.data_to_send.active = true;
         eventSettings.data_to_send.color = color.toRgbString();
         if( bgColorActive ) {
@@ -1338,8 +1333,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         bgColorPickerUsed = true;
       },
       hide: function(color) {
-        console.log('nascondi');
-        //Rexlive_Color_Palette.hide();
+        Rexlive_Color_Palette.hide();
         if(bgColorPickerUsed) {
           // Synch top toolbar tools
           Rexbuilder_Util_Admin_Editor.highlightRowSetData({
@@ -1392,11 +1386,11 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         eventSettings.data_to_send.sectionTarget.sectionID = $highlightSectionId.val();
         eventSettings.data_to_send.sectionTarget.modelNumber = $highlightModelId.val();
         overlayColorActive = JSON.parse( hightlightRowInfo.row_overlay_active );
-        /*Rexlive_Overlay_Palette.show({
+        Rexlive_Overlay_Palette.show({
           $target: $fastRowSetOverlay,
           object: "section",
           action: "overlay"
-        });*/
+        });
       },
       move: function(color) {
         eventSettings.data_to_send.active = true;
@@ -1412,7 +1406,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         overlayPickerUsed = true;
       },
       hide: function(color) {
-        //Rexlive_Overlay_Palette.hide();
+        Rexlive_Overlay_Palette.hide();
         if(overlayPickerUsed) {
           // Synch top toolbar tools
           Rexbuilder_Util_Admin_Editor.highlightRowSetData({
@@ -1470,6 +1464,28 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         hightlightRowInfo[attr] = data[attr];
       }
     }
+  };
+
+  var _openRowColorPaletteModal = function() {
+    var rowData = {
+      gradient: hightlightRowInfo.color_bg_section,
+      sectionTarget: {
+        sectionID: $highlightSectionId.val(),
+        modelNumber: $highlightModelId.val()
+      }
+    };
+    Rexlive_Section_Background_Gradient.openModal(rowData);
+  };
+
+  var _openRowOverlayPaletteModal = function() {
+    var rowData = {
+      gradient: hightlightRowInfo.row_overlay_color,
+      sectionTarget: {
+        sectionID: $highlightSectionId.val(),
+        modelNumber: $highlightModelId.val()
+      }
+    };
+    Rexlive_Section_Overlay_Gradient.openModal(rowData);
   };
 
   /**
@@ -1608,5 +1624,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     updateBkgrVidTool: _updateBkgrVidTool,
     getGradientSafeValue: _getGradientSafeValue,
     getPrefixedValues: _getPrefixedValues,
+    openRowColorPaletteModal: _openRowColorPaletteModal,
+    openRowOverlayPaletteModal: _openRowOverlayPaletteModal,
   };
 })(jQuery);

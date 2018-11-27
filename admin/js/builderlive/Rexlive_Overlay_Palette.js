@@ -75,10 +75,11 @@ var Rexlive_Overlay_Palette = (function($) {
       e.preventDefault();
       switch( props.object ) {
         case "block":
-          Rexbuilder_Block_Editor.openBlockOverlayGradient( props.$spicker.parents(".perfect-grid-item") );
+          // Rexbuilder_Block_Editor.openBlockOverlayGradient( props.$spicker.parents(".perfect-grid-item") );
           break;
         case "section":
-          Rexbuilder_Section_Editor.openRowOverlayGradient( props.$spicker.parents(".rexpansive_section") );
+          // Rexbuilder_Section_Editor.openRowOverlayGradient( props.$spicker.parents(".rexpansive_section") );
+          Rexbuilder_Util_Admin_Editor.openRowOverlayPaletteModal();
           break;
         default:
           break;
