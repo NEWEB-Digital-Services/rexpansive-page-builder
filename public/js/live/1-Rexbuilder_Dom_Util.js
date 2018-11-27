@@ -932,11 +932,17 @@ var Rexbuilder_Dom_Util = (function($) {
             data.modelNumber +
             '"]'
         );
+      if( -1 !== $target.css("background").indexOf("linear-gradient") ) {
+        $target.css("background","");
+      }
       $target
         .css("background-color", color);
     } else {
       $target = Rexbuilder_Util.$rexContainer
         .find('section[data-rexlive-section-id="' + data.sectionID + '"]');
+      if( -1 !== $target.css("background").indexOf("linear-gradient") ) {
+        $target.css("background","");
+      }
       $target
         .css("background-color", color);
     }
@@ -952,11 +958,28 @@ var Rexbuilder_Dom_Util = (function($) {
    */
   var _updateSectionBackgroundColor = function($section, bgColor) {
     var $sectionData = $section.children(".section-data");
+
+    if( -1 !== $section.css("background").indexOf("linear-gradient") ) {
+      $section.css("background","");
+    }
+
     $section.css("background-color", bgColor.color);
     $sectionData.attr("data-color_bg_section", bgColor.color);
     $sectionData.attr("data-color_bg_section_active", bgColor.active);
 
     Rexbuilder_Section_Editor.updateRowBackgroundColorTool( $section, bgColor.color );
+    Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
+    $section.removeClass("activeRowTools");
+  };
+
+  var _updateSectionBackgroundGradient = function($section, bgColor) {
+    var $sectionData = $section.children(".section-data");
+    var safeGradient = Rexbuilder_Util_Editor.getGradientSafeValue( bgColor.color );
+    $section.css("background", safeGradient);
+    $sectionData.attr("data-color_bg_section", bgColor.color);
+    $sectionData.attr("data-color_bg_section_active", bgColor.active);
+
+    Rexbuilder_Section_Editor.updateRowBackgroundGradientTool( $section, safeGradient );
     Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
     $section.removeClass("activeRowTools");
   };
@@ -1695,6 +1718,7 @@ var Rexbuilder_Dom_Util = (function($) {
     updateSectionBackgroundImage: _updateSectionBackgroundImage,
     updateSectionBackgroundColor: _updateSectionBackgroundColor,
     updateSectionBackgroundColorLive: _updateSectionBackgroundColorLive,
+    updateSectionBackgroundGradient: _updateSectionBackgroundGradient,
     updateSectionOverlay: _updateSectionOverlay,
     updateSectionOverlayColorLive: _updateSectionOverlayColorLive,
     updateBlockBackgroundColor: _updateBlockBackgroundColor,

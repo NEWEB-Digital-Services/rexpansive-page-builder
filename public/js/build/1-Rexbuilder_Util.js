@@ -2320,10 +2320,12 @@ var Rexbuilder_Util = (function($) {
           : targetProps["color_bg_section_active"].toString()
     };
 
-    Rexbuilder_Dom_Util.updateSectionBackgroundColor(
-      $section,
-      backgroundColorOpt
-    );
+    if( -1 === backgroundColorOpt.color.indexOf("gradient") ) {
+      Rexbuilder_Dom_Util.updateSectionBackgroundColor( $section, backgroundColorOpt );
+    } else {
+      Rexbuilder_Dom_Util.updateSectionBackgroundGradient( $section, backgroundColorOpt );
+    }
+
 
     Rexbuilder_Dom_Util.updateSectionOverlay($section, sectionOverlay);
 

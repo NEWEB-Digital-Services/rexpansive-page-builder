@@ -736,6 +736,46 @@ var Rexbuilder_Section_Editor = (function($) {
   };
 
   /**
+   * Setting the tool for the row color background preview
+   * @param {jQuery Object} $target edited row
+   * @param {string} color color to set
+   */
+  var _updateRowBackgroundGradientTool = function( $target, color ) {
+    var $picker_fast = $target
+      .find('.row-toolBox__fast-configuration')
+      .find('input[name=edit-row-color-background]');
+    var $picker_standard = $target
+      .find('.row-toolBox__standard-configuration')
+      .find('input[name=edit-row-color-background]');
+
+    if( "" != color ) {
+      $picker_fast
+        .val(color)
+        .spectrum('set',color);
+      $picker_fast
+        .parent()
+        .addClass('tool-button--picker-preview')
+        .removeClass('tool-button--hide')
+      $picker_fast
+        .siblings('.tool-button--color-preview')
+        .css('background',color);
+
+      $picker_standard
+        .val(color)
+        .spectrum('set',color)
+        .parent()
+        .addClass('tool-button--hide');
+    } else {
+      $picker_standard
+        .parent()
+        .removeClass('tool-button--hide');
+      $picker_fast
+        .parent()
+        .addClass('tool-button--hide');
+    }
+  };
+
+  /**
    * 
    * @param {*} $target 
    * @param {*} color 
@@ -941,6 +981,7 @@ var Rexbuilder_Section_Editor = (function($) {
     resetRowBackgroundImageTool: _resetRowBackgroundImageTool,
     updateRowBackgroundColorTool: _updateRowBackgroundColorTool,
     updateRowBackgroundColorToolLive: _updateRowBackgroundColorToolLive,
+    updateRowBackgroundGradientTool: _updateRowBackgroundGradientTool,
     updateRowOverlayColorTool: _updateRowOverlayColorTool,
     updateRowOverlayColorToolLive: _updateRowOverlayColorToolLive,
     updateRowBackgroundVideo: _updateRowBackgroundVideo,

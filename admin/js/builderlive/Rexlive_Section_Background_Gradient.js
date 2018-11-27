@@ -135,7 +135,7 @@ var Rexlive_Section_Background_Gradient = (function($) {
     var data_updateSectionGradient = {
       eventName: "rexlive:updateSectionBackgroundGradient",
       data_to_send: {
-        target: target,
+        sectionTarget: target,
         color: modal_props.gpicker.getValue(),
         active: true
       }

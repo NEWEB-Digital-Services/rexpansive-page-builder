@@ -614,6 +614,57 @@
       );
     });
 
+    $(document).on("rexlive:updateSectionBackgroundGradient", function(e) {
+      var data = e.settings.data_to_send;
+
+      var $section;
+
+      if (data.sectionTarget.modelNumber != "") {
+        $section = Rexbuilder_Util.$rexContainer.find(
+          'section[data-rexlive-section-id="' +
+            data.sectionTarget.sectionID +
+            '"][data-rexlive-model-number="' +
+            data.sectionTarget.modelNumber +
+            '"]'
+        );
+      } else {
+        $section = Rexbuilder_Util.$rexContainer.find(
+          'section[data-rexlive-section-id="' +
+            data.sectionTarget.sectionID +
+            '"]'
+        );
+      }
+
+      var $dataSection = $section.children(".section-data");
+      var oldColor = $dataSection.attr("data-color_bg_section");
+      var oldActive = $dataSection.attr("data-color_bg_section_active");
+
+      var reverseData = {
+        color: oldColor,
+        active: oldActive
+      };
+
+      console.log($section);
+
+      Rexbuilder_Dom_Util.updateSectionBackgroundGradient($section, data);
+      if (Rexbuilder_Util.activeLayout == "default") {
+        Rexbuilder_Util.updateDefaultLayoutStateSection($section);
+      }
+      var actionData = {
+        color: data.color,
+        active: data.active
+      };
+      $section.attr("data-rexlive-section-edited", true);
+
+      Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
+      Rexbuilder_Util_Editor.pushAction(
+        $section,
+        "updateSectionBackgroundGradient",
+        actionData,
+        reverseData
+      );
+    });
+
     $(document).on("rexlive:change_section_overlay", function(e) {
       var data = e.settings.data_to_send;
 
