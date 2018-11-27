@@ -648,6 +648,30 @@ endif;
         wp_send_json_success( $response );
     }
 
+    public function rexlive_save_buttons_in_page()
+    {
+        $nonce = $_POST['nonce_param'];
+
+        $response = array(
+            'error' => false,
+            'msg' => '',
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+        $response['error'] = false;
+
+        $post_id_to_update = intval($_POST['post_id_to_update']);
+        $ids_in_page = $_POST['ids'];
+
+        update_post_meta($post_id_to_update, '_rexbuilder_buttons_ids_in_page', $ids_in_page);
+        wp_send_json_success($response);
+    }
+
     public function print_post_id()
     {
         ?>
@@ -743,8 +767,14 @@ endif;
             }
         }
 
+        $buttonsIDs_used = get_option("_rex_buttons_ids", "");
+        $buttonsIDs_json = explode(" ", $buttonsIDs_used);
+
 ?>
 <div class="rexbuilder-live-content<?php echo ($editor ? ' rexbuilder-live-content--editing' : ''); ?>">
+            <div id="rex-buttons-ids-used" style="display: none;"><?php 
+                echo json_encode($buttonsIDs_json);
+            ?></div>
             <div id="sections-ids-used" style="display: none;"><?php 
             if ($sectionsIDsUsed == null) {
                 echo "[]";
@@ -919,7 +949,21 @@ endif;
             endif;
         }
     }
-
+    
+    public function print_rex_buttons_style()
+    {
+        if ($this->builder_active_on_this_post_type()) {
+            global $post;
+            $buttonsIDs = get_post_meta($post->ID, '_rexbuilder_buttons_ids_in_page', true);
+            $buttonsInPage = explode(" ", $buttonsIDs);
+            $style = "";
+            foreach ($buttonsInPage as $index => $id_button) {
+                $buttonStyle = get_option('_rex_button_'.$id_button.'_css', "");
+                $style .= $buttonStyle;
+            }
+            wp_add_inline_style('rexpansive-builder-rexbutton-style', $meta);
+        }
+    }
     /**
      *    Prepare the html template for the vertical internal navigation (dots)
      *

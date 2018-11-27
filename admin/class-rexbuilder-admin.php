@@ -1630,48 +1630,46 @@ class Rexbuilder_Admin {
 
 		wp_send_json_success( $response );
 	}		
-
+	
 	public function rex_update_button() {
 		$nonce = $_POST['nonce_param'];
-
+		
         $response = array(
-            'error' => false,
+			'error' => false,
             'msg' => '',
         );
-
+		
         if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
             $response['error'] = true;
             $response['msg'] = 'Nonce Error!';
             wp_send_json_error($response);
         endif;
-
+		
 		$response['error'] = false;
 		
 		$id_button = $response["id_button"];
 		$html_button = $response["html_button"];
 		$css_button = $response["css_button"];
-		
-		$post_buttons_id = get_option("_rex_buttons_post_id");
+		$name_button = $response["name_button"];
+		$jsonCSS_buttons = $response["jsonCSS"];
+
 		$buttons_ids = get_option("_rex_buttons_ids");
-
-		if($post_buttons_id !== false){
-			if($buttons_ids == ""){
-				$buttons_ids = "".$id_button;
-			} else {
-				if (strpos($buttons_ids, $id_button) === false) {
-					$buttons_ids .= " ".$id_button;
-				}
-			}
+		
+		if($buttons_ids === false || $buttons_ids == ""){
+			$buttons_ids = "".$id_button;
 		} else {
-			//creare post
-			// come gestire nomi dei pulsanti?
-			$post_buttons_id = -1;
-			update_option("_rex_buttons_post_id", $post_buttons_id);
+			if (strpos($buttons_ids, $id_button) === false) {
+				$buttons_ids .= " ".$id_button;
+			}
 		}
-
-		update_post_meta($post_buttons_id, '_'.$id_button.'_html', $html_button);
-		update_post_meta($post_buttons_id, '_'.$id_button.'_css', $css_button);
+		
 		update_option( '_rex_buttons_ids', $buttons_ids );
+		update_option( '_rex_buttons_styles', $jsonCSS_buttons );
+		update_option( '_rex_button_'.$id_button.'_css', $css_button );
+		update_option( '_rex_button_'.$id_button.'_html', $html_button );
+		update_option( '_rex_button_'.$id_button.'_name', $name_button );
+		$response['idButton'] = $id_button;
+		wp_send_json_success( $response );
 	}
 	
 	/**

@@ -3,6 +3,7 @@ var Rexbuilder_Rexbutton = (function ($) {
     "use strict";
     var styleSheet;
     var buttonsInPage;
+    var buttonsIDsUsed;
 
     var _fixCustomStyleElement = function () {
         if (Rexbuilder_Rexbutton.$buttonsStyle.length == 0) {
@@ -117,8 +118,8 @@ var Rexbuilder_Rexbutton = (function ($) {
     */
     var _addButtonStyle = function ($button) {
         var buttonID = $button.attr("data-rex-button-id");
-        var $buttonData = $button.find("."+buttonID+"-rex-button-data").eq(0);
-        if($buttonData.length != 0){
+        var $buttonData = $button.find("." + buttonID + "-rex-button-data").eq(0);
+        if ($buttonData.length != 0) {
             var buttonProperties = {
                 font_size: $buttonData.attr("data-text-size").toString(),
                 text_color: $buttonData.attr("data-text-color").toString(),
@@ -154,14 +155,6 @@ var Rexbuilder_Rexbutton = (function ($) {
     }
 
     var _updateButtonsInPage = function () {
-        //var arr = Rexbuilder_Util.$rexContainer.find(".buttons-style-imported").text();
-        var arr = "";
-        if (arr != "") {
-            buttonsInPage = JSON.parse(arr);
-        } else {
-            buttonsInPage = [];
-        }
-
         var j;
         var flagButtonFound = false;
         Rexbuilder_Util.$rexContainer.find(".rex-button-container").each(function (i, button) {
@@ -174,6 +167,7 @@ var Rexbuilder_Rexbutton = (function ($) {
                     break;
                 }
             }
+            flagButtonFound = false;
             if (!flagButtonFound) {
                 _addButtonStyle($button);
                 buttonsInPage.push(buttonID);
@@ -181,24 +175,101 @@ var Rexbuilder_Rexbutton = (function ($) {
         });
     }
 
+    var _generateButtonData = function ($buttonContainer) {
+        var buttonID = $buttonContainer.attr("data-rex-button-id");
+        var buttonNumber = 0;
+        var buttonName = "";
+        var $button_element = $buttonContainer.find(".rex-button").eq(0);
+        var separate = false;
+        var buttonData = {
+            text_color: "",
+            text: $button_element.find(".rex-button-text").eq(0).text(),
+            font_size: "",
+            background_color: "",
+            button_height: "",
+            hover_color: "",
+            border_color: "",
+            border_width: "",
+            border_radius: "",
+            button_position: "",
+            margin_top: "",
+            margin_bottom: "",
+            link_taget: $button_element.attr("href"),
+            link_type: $button_element.attr("type"),
+            buttonTarget: {
+                button_name: buttonName,
+                button_id: buttonID,
+                button_number: buttonNumber,
+            }
+        };
+
+        if ($buttonContainer.hasClass("rex-separate-button")) {
+            separate = true;
+            var $buttonData = $buttonContainer.find("." + buttonID + "-rex-button-data").eq(0);
+            if ($buttonData.length != 0) {
+                buttonData.font_size = $buttonData.attr("data-text-size").toString();
+                buttonData.text_color = $buttonData.attr("data-text-color").toString();
+                buttonData.background_color = $buttonData.attr("data-background-color").toString();
+                buttonData.button_height = $buttonData.attr("data-button-height").toString();
+                buttonData.hover_color = $buttonData.attr("data-background-color-hover").toString();
+                buttonData.border_color = $buttonData.attr("data-border-color").toString();
+                buttonData.border_width = $buttonData.attr("data-border-width").toString();
+                buttonData.border_radius = $buttonData.attr("data-border-radius").toString();
+                buttonData.margin_top = $buttonData.attr("data-margin-top").toString();
+                buttonData.margin_bottom = $buttonData.attr("data-margin-bottom").toString();
+            }
+        }
+
+        var data = {
+            separateButton: separate,
+            buttonInfo: buttonData
+        }
+        return data;
+    }
+
     var _linkDocumentListeners = function () {
         Rexbuilder_Util.$document.on("click", ".rex-edit-button", function (e) {
             var $buttonContainer = $(this).parents(".rex-button-container");
-            var buttonID = $buttonContainer.attr("data-rex-button-id");
-            var buttonNumber = 0;
             var data = {
-                eventName: "rexlive:openRexButtonEditor"
+                eventName: "rexlive:openRexButtonEditor",
+                buttonData: _generateButtonData($buttonContainer)
             };
             $buttonContainer.parents(".text-wrap").blur();
             Rexbuilder_Util_Editor.sendParentIframeMessage(data);
         });
     }
 
+    var _fixButtonsInPage = function () {
+        var flagButtonFound, j;
+        Rexbuilder_Util.$rexContainer.find(".rex-button-container").each(function (i, button) {
+            var $button = $(button);
+            if (!$button.hasClass("rex-separate-button")) {
+                var buttonID = $button.attr("data-rex-button-id");
+                flagButtonFound = false;
+                for (j = 0; j < buttonsInPage.length; j++) {
+                    if (buttonsInPage[j] == buttonID) {
+                        flagButtonFound = true;
+                        break;
+                    }
+                }
+                if (!flagButtonFound) {
+                    buttonsInPage.push(buttonID);
+                }
+            }
+        });
+    }
+
+    var _getButtonsInPage = function () {
+        return buttonsInPage;
+    }
+
     var init = function () {
         styleSheet = null;
         buttonsInPage = [];
+        buttonsIDsUsed = JSON.parse($("#rex-buttons-ids-used").text());
         this.$buttonsStyle = $("#rexpansive-builder-rexbutton-style");
 
+        _fixButtonsInPage();
         _fixCustomStyleElement();
         _updateButtonsInPage();
         _addToolsButton();
@@ -210,6 +281,7 @@ var Rexbuilder_Rexbutton = (function ($) {
         getActiveStyleSheet: _getActiveStyleSheet,
         addHoverBackgroundColor: _addHoverBackgroundColor,
         removeHoverBackgroundColor: _removeHoverBackgroundColor,
-        fixImportedButton: _fixImportedButton
+        fixImportedButton: _fixImportedButton,
+        getButtonsInPage: _getButtonsInPage
     };
 })(jQuery);
