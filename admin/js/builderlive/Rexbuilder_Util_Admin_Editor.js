@@ -86,6 +86,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         $highlightModelId.val(event.data.sectionTarget.modelNumber);
         $highlightModelEditing.val(event.data.sectionTarget.modelEditing);
         hightlightRowInfo = event.data.rowInfo;
+        console.log("UPDATETOPTOOLBAR -- rexlive:traceVisibleRow");
         _updateTopToolbar();
       }
 
@@ -98,6 +99,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       }
 
       if(event.data.eventName == "rexlive:updateTopToolbar") {
+        console.log("UPDATETOPTOOLBAR -- rexlive:updateTopToolbar");
         Rexbuilder_Util_Admin_Editor.highlightRowSetData(event.data.updateInfo);
         _updateTopToolbar();
       }
@@ -1164,7 +1166,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   };
 
   var _updateBkgrOverlayTool = function() {
-    if( '' !== hightlightRowInfo.row_overlay_color ) {
+    if( '' !== hightlightRowInfo.row_overlay_color && 'undefined' !== typeof hightlightRowInfo.row_overlay_color ) {
       $highlightRowSetOverlay
         .val(hightlightRowInfo.row_overlay_color)
         .spectrum("set",hightlightRowInfo.row_overlay_color)

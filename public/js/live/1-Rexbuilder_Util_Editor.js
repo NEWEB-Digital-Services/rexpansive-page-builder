@@ -1195,6 +1195,7 @@ var Rexbuilder_Util_Editor = (function($) {
         sectionTarget: Rexbuilder_Util_Editor.visibleRowInfo,
         rowInfo: visibleRowInfo
       };
+      console.log(data);
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     }
   };
