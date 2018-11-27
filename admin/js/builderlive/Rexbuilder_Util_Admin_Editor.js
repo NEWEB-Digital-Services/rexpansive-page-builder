@@ -1307,12 +1307,22 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       showInput: true,
       showButtons: false,
       show: function() {
+        console.log('mostra');
         bgColorPickerUsed = false;
         eventSettings.data_to_send.sectionTarget.sectionID = $highlightSectionId.val();
         eventSettings.data_to_send.sectionTarget.modelNumber = $highlightModelId.val();
         bgColorActive = JSON.parse( hightlightRowInfo.color_bg_section_active );
+        /*Rexlive_Color_Palette.show({
+          $target: $fastRowSetBkgrCol,
+          object: "section",
+          action: "background"
+        });*/
+      },
+      change: function() {
+        console.log('cambia');
       },
       move: function(color) {
+        console.log('muovi');
         eventSettings.data_to_send.active = true;
         eventSettings.data_to_send.color = color.toRgbString();
         if( bgColorActive ) {
@@ -1326,6 +1336,8 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         bgColorPickerUsed = true;
       },
       hide: function(color) {
+        console.log('nascondi');
+        //Rexlive_Color_Palette.hide();
         if(bgColorPickerUsed) {
           // Synch top toolbar tools
           Rexbuilder_Util_Admin_Editor.highlightRowSetData({
@@ -1378,6 +1390,11 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         eventSettings.data_to_send.sectionTarget.sectionID = $highlightSectionId.val();
         eventSettings.data_to_send.sectionTarget.modelNumber = $highlightModelId.val();
         overlayColorActive = JSON.parse( hightlightRowInfo.row_overlay_active );
+        /*Rexlive_Overlay_Palette.show({
+          $target: $fastRowSetOverlay,
+          object: "section",
+          action: "overlay"
+        });*/
       },
       move: function(color) {
         eventSettings.data_to_send.active = true;
@@ -1393,6 +1410,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         overlayPickerUsed = true;
       },
       hide: function(color) {
+        //Rexlive_Overlay_Palette.hide();
         if(overlayPickerUsed) {
           // Synch top toolbar tools
           Rexbuilder_Util_Admin_Editor.highlightRowSetData({

@@ -325,6 +325,8 @@ class Rexbuilder_Admin {
 				// wp_enqueue_script( 'rexbuilder-admin-position-editor', REXPANSIVE_BUILDER_URL . 'admin/js/3-Rexpansive_Builder_Admin_PositionEditor.js', array( 'jquery' ), null, true );
 
 				wp_enqueue_script( 'rexlive-ajax-calls', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Ajax_Calls.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexlive-color-palette', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Color_Palette.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexlive-overlay-palette', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Overlay_Palette.js', array( 'jquery' ), null, true );
 			
 				wp_enqueue_script( 'rexlive-modals-utils', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Modals_Utils.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-insert-video-modal', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Insert_Video_Modal.js', array( 'jquery' ), null, true );

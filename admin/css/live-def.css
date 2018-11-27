@@ -3974,6 +3974,7 @@ ul {
   .palette-item__delete .l-svg-icons {
     font-size: 8px !important; }
 
+.palette__add-color,
 .palette__add-gradient {
   cursor: pointer; }
 
