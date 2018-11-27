@@ -2,6 +2,8 @@
   "use strict";
 
   $(function() {
+    // Caching the document
+    var $document = $(document);
     /**
      * Listening for events to update live a row or a block
      * 1) Row Full Height : rexlive:set_row_fullHeight
@@ -35,7 +37,7 @@
      * 28) Custom CSS : rexlive:getCustomCss
      */
 
-    $(document).on("rexlive:set_row_fullHeight", function(e) {
+    $document.on("rexlive:set_row_fullHeight", function(e) {
       var data = e.settings.data_to_send;
       var $section;
 
@@ -79,7 +81,7 @@
       $section.attr("data-rexlive-section-edited", true);
     });
 
-    $(document).on("rexlive:set_gallery_layout", function(e) {
+    $document.on("rexlive:set_gallery_layout", function(e) {
       // se simone cambia idea e vuole che tornando a schiacciare su fixed senza aver fatto modifiche si torni nella configurazione con i buchi, triggerare undo
 
       var data = e.settings.data_to_send;
@@ -130,7 +132,7 @@
       galleryInstance.updateGridLayout(data.layout, reverseData);
     });
 
-    $(document).on("rexlive:galleryLayoutChanged", function(e) {
+    $document.on("rexlive:galleryLayoutChanged", function(e) {
       var galleryInstance = e.settings.galleryEditorInstance;
       var reverseData = e.settings.reverseData;
       var $section = e.settings.$section;
@@ -155,7 +157,7 @@
       );
     });
 
-    $(document).on("rexlive:set_row_separatos", function(e) {
+    $document.on("rexlive:set_row_separatos", function(e) {
       var data = e.settings.data_to_send;
       var $section;
 
@@ -204,7 +206,7 @@
       $section.attr("data-rexlive-section-edited", true);
     });
 
-    $(document).on("rexlive:rowDistancesApplied", function(e) {
+    $document.on("rexlive:rowDistancesApplied", function(e) {
       var galleryInstance = e.settings.galleryEditorInstance;
       var reverseData = e.settings.reverseData;
       var $section = e.settings.$section;
@@ -229,7 +231,7 @@
       );
     });
 
-    $(document).on("rexlive:set_section_margins", function(e) {
+    $document.on("rexlive:set_section_margins", function(e) {
       var data = e.settings.data_to_send;
       var $section;
 
@@ -289,7 +291,7 @@
       $section.attr("data-rexlive-section-edited", true);
     });
 
-    $(document).on("rexlive:sectionMarginsApplied", function(e) {
+    $document.on("rexlive:sectionMarginsApplied", function(e) {
       var galleryInstance = e.settings.galleryEditorInstance;
       var reverseData = e.settings.reverseData;
       var $section = e.settings.$section;
@@ -315,7 +317,7 @@
       );
     });
 
-    $(document).on("rexlive:set_section_width", function(e) {
+    $document.on("rexlive:set_section_width", function(e) {
       var data = e.settings.data_to_send;
       var $section;
 
@@ -373,7 +375,7 @@
       $section.attr("data-rexlive-section-edited", true);
     });
 
-    $(document).on("rexlive:sectionWidthApplyed", function(e) {
+    $document.on("rexlive:sectionWidthApplyed", function(e) {
       var galleryInstance = e.settings.galleryEditorInstance;
       var reverseData = e.settings.reverseData;
       var $section = e.settings.$section;
@@ -408,7 +410,7 @@
       );
     });
 
-    $(document).on("rexlive:set_row_photoswipe", function(e) {
+    $document.on("rexlive:set_row_photoswipe", function(e) {
       var data = e.settings.data_to_send;
       if (data.photoswipe.toString() == "true") {
         var $section;
@@ -457,7 +459,7 @@
       }
     });
 
-    $(document).on("rexlive:change_section_name", function(e) {
+    $document.on("rexlive:change_section_name", function(e) {
       var data = e.settings.data_to_send;
       var $section;
 
@@ -495,7 +497,7 @@
       );
     });
 
-    $(document).on("rexlive:apply_section_custom_classes", function(e) {
+    $document.on("rexlive:apply_section_custom_classes", function(e) {
       var data = e.settings.data_to_send;
 
       var $section;
@@ -542,7 +544,7 @@
       );
     });
 
-    $(document).on("rexlive:SetCustomCSS", function(e) {
+    $document.on("rexlive:SetCustomCSS", function(e) {
       var data = e.settings.data_to_send;
 
       var oldCSS = Rexbuilder_Util_Editor.$styleElement.text();
@@ -565,7 +567,7 @@
       );
     });
 
-    $(document).on("rexlive:apply_background_color_section", function(e) {
+    $document.on("rexlive:apply_background_color_section", function(e) {
       var data = e.settings.data_to_send;
 
       var $section;
@@ -614,7 +616,7 @@
       );
     });
 
-    $(document).on("rexlive:updateSectionBackgroundGradient", function(e) {
+    $document.on("rexlive:updateSectionBackgroundGradient", function(e) {
       var data = e.settings.data_to_send;
 
       var $section;
@@ -644,8 +646,6 @@
         active: oldActive
       };
 
-      console.log($section);
-
       Rexbuilder_Dom_Util.updateSectionBackgroundGradient($section, data);
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
@@ -664,8 +664,57 @@
         reverseData
       );
     });
+    
+    $document.on("rexlive:updateSectionOverlayGradient", function(e) {
+      var data = e.settings.data_to_send;
 
-    $(document).on("rexlive:change_section_overlay", function(e) {
+      var $section;
+
+      if (data.sectionTarget.modelNumber != "") {
+        $section = Rexbuilder_Util.$rexContainer.find(
+          'section[data-rexlive-section-id="' +
+            data.sectionTarget.sectionID +
+            '"][data-rexlive-model-number="' +
+            data.sectionTarget.modelNumber +
+            '"]'
+        );
+      } else {
+        $section = Rexbuilder_Util.$rexContainer.find(
+          'section[data-rexlive-section-id="' +
+            data.sectionTarget.sectionID +
+            '"]'
+        );
+      }
+
+      var $dataSection = $section.children(".section-data");
+      var oldColor = $dataSection.attr("data-row_overlay_color");
+      var oldActive = $dataSection.attr("data-row_overlay_active");
+
+      var reverseData = {
+        color: oldColor,
+        active: oldActive
+      };
+
+      Rexbuilder_Dom_Util.updateSectionOverlayGradient($section, data);
+      if (Rexbuilder_Util.activeLayout == "default") {
+        Rexbuilder_Util.updateSectionOverlayGradient($section);
+      }
+      var actionData = {
+        color: data.color,
+        active: data.active
+      };
+      $section.attr("data-rexlive-section-edited", true);
+
+      Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
+      Rexbuilder_Util_Editor.pushAction(
+        $section,
+        "updateSectionOverlayGradient",
+        actionData,
+        reverseData
+      );
+    });
+
+    $document.on("rexlive:change_section_overlay", function(e) {
       var data = e.settings.data_to_send;
 
       var $section;
@@ -719,7 +768,7 @@
      * Listen event to apply an image on a row
      * @since 2.0.0
      */
-    $(document).on("rexlive:apply_background_image_section", function(e) {
+    $document.on("rexlive:apply_background_image_section", function(e) {
       var data = e.settings.data_to_send;
 
       var $section;
@@ -793,7 +842,7 @@
       );
     });
 
-    $(document).on("rexlive:update_section_background_video", function(e) {
+    $document.on("rexlive:update_section_background_video", function(e) {
       var data = e.settings.data_to_send;
 
       var $section;
@@ -896,7 +945,7 @@
       );
     });
 
-    $(document).on("rexlive:apply_background_color_block", function(e) {
+    $document.on("rexlive:apply_background_color_block", function(e) {
       var data = e.settings.data_to_send;
       var target = data.target;
 
@@ -952,7 +1001,7 @@
       );
     });
 
-    $(document).on("rexlive:updateBlockBackgroundGradient", function(e) {
+    $document.on("rexlive:updateBlockBackgroundGradient", function(e) {
       var data = e.settings.data_to_send;
       var target = data.target;
 
@@ -1008,7 +1057,7 @@
       );
     });
 
-    $(document).on("rexlive:updateBlockOverlayGradient", function(e) {
+    $document.on("rexlive:updateBlockOverlayGradient", function(e) {
       var data = e.settings.data_to_send;
       var target = data.target;
 
@@ -1064,7 +1113,7 @@
       );
     });
 
-    $(document).on("rexlive:change_block_overlay", function(e) {
+    $document.on("rexlive:change_block_overlay", function(e) {
       var data = e.settings.data_to_send;
       var target = data.target;
       var $elem;
@@ -1122,7 +1171,7 @@
       );
     });
 
-    $(document).on("rexlive:apply_background_image_block", function(e) {    
+    $document.on("rexlive:apply_background_image_block", function(e) {    
       var data = e.settings.data_to_send;
       Rexbuilder_Util_Editor.updatingImageBg = true;
       var target = data.target;
@@ -1250,7 +1299,7 @@
      * Updating the background of a block with a video: YouTube, Vimeo, mp4
      * @since 2.0.0
      */
-    $(document).on("rexlive:update_block_background_video", function(e) {
+    $document.on("rexlive:update_block_background_video", function(e) {
       var data = e.settings.data_to_send;
       var target = data.target;
       var $elem;
@@ -1381,7 +1430,7 @@
       );
     });
 
-    $(document).on("rexlive:apply_paddings_block", function(e) {
+    $document.on("rexlive:apply_paddings_block", function(e) {
       var data = e.settings.data_to_send;
 
       var target = data.target;
@@ -1442,7 +1491,7 @@
       );
     });
 
-    $(document).on("rexlive:apply_flex_position_block", function(e) {
+    $document.on("rexlive:apply_flex_position_block", function(e) {
       var data = e.settings.data_to_send;
 
       var target = data.target;
@@ -1507,7 +1556,7 @@
       );
     });
     
-    $(document).on("rexlive:apply_flex_image_position_block", function(e) {
+    $document.on("rexlive:apply_flex_image_position_block", function(e) {
       var data = e.settings.data_to_send;
 
       var target = data.target;
@@ -1572,7 +1621,7 @@
       );
     });
 
-    $(document).on("rexlive:apply_block_custom_classes", function(e) {
+    $document.on("rexlive:apply_block_custom_classes", function(e) {
       var data = e.settings.data_to_send;
 
       var target = data.target;
@@ -1630,7 +1679,7 @@
       );
     });
 
-    $(document).on("rexlive:apply_block_link_url", function(e) {
+    $document.on("rexlive:apply_block_link_url", function(e) {
       var data = e.settings.data_to_send;
 
       var target = data.target;
@@ -1685,7 +1734,7 @@
       );
     });
 
-    $(document).on("rexlive:editModel", function(e) {
+    $document.on("rexlive:editModel", function(e) {
       var data = e.settings.data_to_send;
       var $section;
 
@@ -1728,7 +1777,7 @@
       );
     });
 
-    $(document).on("rexlive:modelBecameSection", function(e) {
+    $document.on("rexlive:modelBecameSection", function(e) {
       var data = e.settings.data_to_send;
       var $section;
       var defaultStateSections = null;
@@ -1880,7 +1929,7 @@
     ///////////////////////////////////////////////////////////////////////////////////////
 
     // Launch to the iframe parent the event to open the CSS editor
-    $(document).on("rexlive:getCustomCss", function() {
+    $document.on("rexlive:getCustomCss", function() {
       var currentStyle = $("#rexpansive-builder-style-inline-css")
         .text()
         .replace(/^\s+|\s+$/g, "");
@@ -1892,7 +1941,7 @@
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });
 
-    $(document).on("click", ".builder-section-config", function(e) {
+    $document.on("click", ".builder-section-config", function(e) {
       e.preventDefault();
 
       var $section = $(e.target).parents(".rexpansive_section");
@@ -1990,7 +2039,7 @@
     });
 
     // Launch to the iframe parent the event to open the Media Uploader
-    $(document).on("click", ".add-new-block-image", function(e) {
+    $document.on("click", ".add-new-block-image", function(e) {
       e.preventDefault();
       var $section = $(e.target).parents(".rexpansive_section");
       var sectionID = $section.attr("data-rexlive-section-id");
@@ -2011,7 +2060,7 @@
     });
 
     // Launch to the iframe parent the event to open the add video modal
-    $(document).on("click", ".add-new-block-video", function(e) {
+    $document.on("click", ".add-new-block-video", function(e) {
       e.preventDefault();
       var $section = $(e.target).parents(".rexpansive_section");
       var sectionID = $section.attr("data-rexlive-section-id");
@@ -2030,7 +2079,7 @@
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });
 
-    $(document).on("click", ".add-new-block-slider", function(e) {
+    $document.on("click", ".add-new-block-slider", function(e) {
       e.preventDefault();
       var $section = $(e.target).parents(".rexpansive_section");
       var sectionID = $section.attr("data-rexlive-section-id");
@@ -2049,7 +2098,7 @@
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });
 
-    $(document).on("click", ".edit-background-section", function(e) {
+    $document.on("click", ".edit-background-section", function(e) {
       e.preventDefault();
       var $section = $(e.target).parents(".rexpansive_section");
       var sectionID = $section.attr("data-rexlive-section-id");
@@ -2229,7 +2278,7 @@
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });
 
-    $(document).on("click", ".builder-edit-block", function(e) {
+    $document.on("click", ".builder-edit-block", function(e) {
       e.preventDefault();
 
       var $elem = $(e.target).parents(".grid-stack-item");
@@ -2528,7 +2577,7 @@
       return;
     });
 
-    $(document).on("click", ".open-model", function(e) {
+    $document.on("click", ".open-model", function(e) {
       Rexbuilder_Util_Editor.openingModel = true;
       var $section = $(e.target).parents(".rexpansive_section");
       var sectionID = $section.attr("data-rexlive-section-id");
@@ -2618,11 +2667,11 @@
       Rexbuilder_Util_Editor.openingModel = false;
     });
 
-    $(document).on("click", ".call-update-model-button", function(e) {
+    $document.on("click", ".call-update-model-button", function(e) {
       $(this).parents('.rexpansive_section').find(".update-model-button").trigger("click");
     });
 
-    $(document).on("click", ".update-model-button", function(e) {
+    $document.on("click", ".update-model-button", function(e) {
       var $button = $(this);
       var $section = $button.parents(".rexpansive_section");
       
@@ -2676,7 +2725,7 @@
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
         
         var event = jQuery.Event("rexlive:saveModel");
-        $(document).trigger(event);
+        $document.trigger(event);
       }
     });
   }); // End of the DOM ready

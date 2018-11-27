@@ -2326,8 +2326,11 @@ var Rexbuilder_Util = (function($) {
       Rexbuilder_Dom_Util.updateSectionBackgroundGradient( $section, backgroundColorOpt );
     }
 
-
-    Rexbuilder_Dom_Util.updateSectionOverlay($section, sectionOverlay);
+    if( -1 === sectionOverlay.color.indexOf("gradient") ) {
+      Rexbuilder_Dom_Util.updateSectionOverlay($section, sectionOverlay);
+    } else {
+      Rexbuilder_Dom_Util.updateSectionOverlayGradient($section, sectionOverlay);
+    }
 
     var margins = {
       top: isNaN(parseInt(targetProps["row_margin_top"]))

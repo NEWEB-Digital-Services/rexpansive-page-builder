@@ -837,6 +837,47 @@ var Rexbuilder_Section_Editor = (function($) {
     }
   }
 
+  /**
+   * Update the overlay tools
+   * @param {jQuery Object} $target row edited
+   * @param {JS Object} overlay_data object with the overlay data
+   */
+  var _updateRowOverlayGradientTool = function( $target, overlay_data ) {
+    var $picker_fast = $target
+      .find('.row-toolBox__fast-configuration')
+      .find('input[name=edit-row-overlay-color]');
+    var $picker_standard = $target
+      .find('.row-toolBox__standard-configuration')
+      .find('input[name=edit-row-overlay-color]');
+
+    if( overlay_data.active.toString() == "true" ) {
+      $picker_fast
+        .val(overlay_data.color)
+        .spectrum("set",overlay_data.color)
+
+      $picker_fast
+        .parent()
+        .addClass('tool-button--picker-preview')
+        .removeClass('tool-button--hide')
+      $picker_fast
+        .siblings('.tool-button--color-preview')
+        .css('background',overlay_data.color);
+
+      $picker_standard
+        .val(overlay_data.color)
+        .spectrum('set',overlay_data.color)
+        .parent()
+        .addClass('tool-button--hide');
+    } else {
+      $picker_standard
+        .parent()
+        .removeClass('tool-button--hide');
+      $picker_fast
+        .parent()
+        .addClass('tool-button--hide');
+    }
+  }
+
   var _updateRowOverlayColorToolLive = function( $target, color ) {
     var $picker = $target
       .find('input[name=edit-row-overlay-color]');
@@ -899,6 +940,28 @@ var Rexbuilder_Section_Editor = (function($) {
           sectionID: sectionID,
           modelNumber: modelNumber
         },
+      }
+    };
+
+    Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+  };
+
+  var _openRowOverlayGradient = function( $section ) {  
+    var $section_data = $section.children('.section-data');
+    var sectionID = $section.attr("data-rexlive-section-id");
+    var modelNumber =
+      typeof $section.attr("data-rexlive-model-number") != "undefined"
+        ? $section.attr("data-rexlive-model-number")
+        : "";
+
+    var data = {
+      eventName: "rexlive:editRowOverlayGradient",
+      activeRowData: {
+        gradient: $section_data.attr('data-row_overlay_color'),        
+        sectionTarget: {
+          sectionID: sectionID,
+          modelNumber: modelNumber
+        }
       }
     };
 
@@ -984,9 +1047,11 @@ var Rexbuilder_Section_Editor = (function($) {
     updateRowBackgroundGradientTool: _updateRowBackgroundGradientTool,
     updateRowOverlayColorTool: _updateRowOverlayColorTool,
     updateRowOverlayColorToolLive: _updateRowOverlayColorToolLive,
+    updateRowOverlayGradientTool: _updateRowOverlayGradientTool,
     updateRowBackgroundVideo: _updateRowBackgroundVideo,
     triggerRowDataChange: _triggerRowDataChange,
     listenNewRowDataChange: _listenNewRowDataChange,
-    openSectionBackgroundGradient: _openSectionBackgroundGradient
+    openSectionBackgroundGradient: _openSectionBackgroundGradient,
+    openRowOverlayGradient: _openRowOverlayGradient
   }
 })(jQuery);

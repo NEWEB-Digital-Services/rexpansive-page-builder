@@ -1007,7 +1007,7 @@ defined('ABSPATH') or exit;
 </div>
 <!-- // Block Background Gradient -->
 
-<!-- Section Background Gradient -->
+<!-- Section Overlay Gradient -->
 <div class="rex-modal-wrap">
     <div id="rex-section-background-gradient-editor" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <?php Rexbuilder_Utilities::close_button(); ?>
@@ -1042,6 +1042,48 @@ defined('ABSPATH') or exit;
             </div>
             <div class="bl_modal-row">
             <?php include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-gradient-palette.php'; ?>
+            </div><!-- PALETTE -->
+        </div>
+        <?php // include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-modals-bottom-arrow.php'; ?>
+    </div>
+</div>
+<!-- // Section Gradient -->
+
+<!-- Section Overlay Gradient -->
+<div class="rex-modal-wrap">
+    <div id="rex-section-overlay-gradient-editor" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
+        <?php Rexbuilder_Utilities::close_button(); ?>
+        <div class="modal-content">
+            <div class="bl_modal-row">
+                <div class="bl_modal__option-wrap">
+                    <div id="gp-section-overlay-gradient" class="no-draggable" style="width:100%;"></div>
+                </div>
+            </div>
+            <div class="bl_modal-row">
+                <div class="bl_modal__option-wrap">
+                    <select class="browser-default" id="section-overlay-gradient-type">
+                        <option value="">Select Type</option>
+                        <option value="radial">Radial</option>
+                        <option value="linear">Linear</option>
+                        <option value="repeating-radial">Repeating Radial</option>
+                        <option value="repeating-linear">Repeating Linear</option>
+                    </select>
+                </div>
+                <div class="bl_modal__option-wrap">
+                    <select class="browser-default" id="section-overlay-gradient-angle">
+                        <option value="">Select Direction</option>
+                        <option value="top">Top</option>
+                        <option value="right">Right</option>
+                        <option value="center">Center</option>
+                        <option value="bottom">Bottom</option>
+                        <option value="left">Left</option>
+                        <option value="135deg">Diagonal</option>
+                        <option value="315deg">Revers Diagonal</option>
+                    </select>
+                </div>
+            </div>
+            <div class="bl_modal-row">
+            <?php include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-gradient-overlay-palette.php'; ?>
             </div><!-- PALETTE -->
         </div>
         <?php // include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-modals-bottom-arrow.php'; ?>

@@ -1065,12 +1065,18 @@ var Rexbuilder_Dom_Util = (function($) {
             data.modelNumber +
             '"]'
         );
+      if( -1 !== $target.children(".responsive-overlay").css("background").indexOf("linear-gradient") ) {
+        $target.children(".responsive-overlay").css("background","");
+      }
       $target
         .children(".responsive-overlay")
         .css("background-color", color);
     } else {
       $target = Rexbuilder_Util.$rexContainer
         .find('section[data-rexlive-section-id="' + data.sectionID + '"]');
+      if( -1 !== $target.children(".responsive-overlay").css("background").indexOf("linear-gradient") ) {
+        $target.children(".responsive-overlay").css("background","");
+      }
       $target
         .children(".responsive-overlay")
         .css("background-color", color);
@@ -1085,6 +1091,10 @@ var Rexbuilder_Dom_Util = (function($) {
   var _updateSectionOverlay = function($section, overlay) {
     var $overlayElem = $section.children(".responsive-overlay");
     var $sectionData = $section.children(".section-data");
+
+    if( -1 !== $overlayElem.css("background").indexOf("linear-gradient") ) {
+      $overlayElem.css("background","");
+    }
     $overlayElem.css("background-color", overlay.color);
 
     $sectionData.attr("data-row_overlay_color", overlay.color);
@@ -1098,6 +1108,31 @@ var Rexbuilder_Dom_Util = (function($) {
     }
     
     Rexbuilder_Section_Editor.updateRowOverlayColorTool( $section, overlay );
+    Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
+    $section.removeClass("activeRowTools");
+  };
+
+  var _updateSectionOverlayGradient = function($section, overlay) {
+    var $sectionData = $section.children(".section-data");
+    var $overlayElem = $section.children(".responsive-overlay");
+
+    var safeGradient = Rexbuilder_Util_Editor.getGradientSafeValue( overlay.color );
+    $overlayElem.css("background", safeGradient);
+
+    $sectionData.attr("data-row_overlay_color", overlay.color);
+    $sectionData.attr("data-row_overlay_active", overlay.active);
+
+    if (overlay.active.toString() == "true") {
+      $overlayElem.addClass("rex-active-overlay");
+      // Set tools
+    } else {
+      $overlayElem.removeClass("rex-active-overlay");
+    }
+
+    Rexbuilder_Section_Editor.updateRowOverlayGradientTool( $section, {
+      active: overlay.active,
+      color: safeGradient
+    } );
     Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
     $section.removeClass("activeRowTools");
   };
@@ -1721,6 +1756,7 @@ var Rexbuilder_Dom_Util = (function($) {
     updateSectionBackgroundGradient: _updateSectionBackgroundGradient,
     updateSectionOverlay: _updateSectionOverlay,
     updateSectionOverlayColorLive: _updateSectionOverlayColorLive,
+    updateSectionOverlayGradient: _updateSectionOverlayGradient,
     updateBlockBackgroundColor: _updateBlockBackgroundColor,
     updateBlockBackgroundColorLive: _updateBlockBackgroundColorLive,
     updateBlockBackgroundGradient: _updateBlockBackgroundGradient,
