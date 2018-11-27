@@ -4388,6 +4388,14 @@ ul {
   font-family: 'Roboto', sans-serif;
   font-size: 0.8em; }
 
+/**
+ *  Allow medium editor placeholder only on blocks without image background
+ */
+.rexbuilder-block-data:not([data-id_image_bg_block='']) ~ .grid-stack-item-content .medium-editor-placeholder:after {
+  opacity: 0; }
+.rexbuilder-block-data:not([data-id_image_bg_block='']) ~ .grid-stack-item-content .medium-editor-placeholder[data-medium-focused=true]:after {
+  opacity: 1; }
+
 .medium-insert-images.medium-insert-images-left,
 .medium-insert-images-left.mediumInsert,
 .mediumInsert.small {

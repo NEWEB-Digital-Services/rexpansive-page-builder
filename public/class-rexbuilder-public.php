@@ -180,7 +180,7 @@ class Rexbuilder_Public
          */
 
         if ($this->builder_active_on_this_post_type()) {
-            $ver = time();
+            $ver = null;
 
             $cartella = "public/";
             //include media libray

@@ -159,16 +159,15 @@ var Rexbuilder_CreateBlocks = (function ($) {
                 height: h,
                 typeBGimage: type,
                 active: "true"
-            }
+            };
 
-            Rexbuilder_Dom_Util.updateImageBG($el.find(".grid-item-content"), dataImage);
+            Rexbuilder_Dom_Util.updateImageBG( $el.find(".grid-item-content" ), dataImage );
 
             if( Rexbuilder_Util_Editor.scrollbarsActive ) {
                 galleryInstance.addScrollbar($el);
             }
-            TextEditor.addElementToTextEditor($el.find(".text-wrap"));
-            // Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($el.find('input[name=edit-block-color-background]')[0]);
-            // Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock($el.find('input[name=edit-block-overlay-color]')[0]);
+            TextEditor.addElementToTextEditor( $el.find(".text-wrap") );
+
             Rexbuilder_Block_Editor.updateBlockTools($el);
             Rexbuilder_Util_Editor.launchTooltips();
         }

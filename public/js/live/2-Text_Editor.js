@@ -1038,13 +1038,9 @@ var TextEditor = (function($) {
         'close-editor-escape': new CloseEditorEscapeExtension()
       },
       placeholder: {
-        /*
-         * This example includes the default options for
-         * placeholder, if nothing is passed this is what it used
-        */
         text: "Type here your text",
         hideOnClick: false
-      }
+      },
     });
     _addEditableInputEvents();
   };
