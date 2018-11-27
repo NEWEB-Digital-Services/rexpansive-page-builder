@@ -13,6 +13,7 @@ var Rexbuilder_Color_Palette = (function($) {
     props.$spicker = data.$target;
     props.action = data.action;
     props.object = data.object;
+    props.textSelection = undefined !== data.textSelection ? data.textSelection : null;
 
     var $spickerContainer = props.$spicker.spectrum("container").find(".sp-picker-container");
     props.$container.show().detach().appendTo( $spickerContainer );
@@ -23,6 +24,7 @@ var Rexbuilder_Color_Palette = (function($) {
     props.$spicker = null;
     props.action = null;
     props.object = null;
+    props.textSelection = null;
   };
 
   var _listenEvents = function() {
@@ -89,6 +91,7 @@ var Rexbuilder_Color_Palette = (function($) {
           break;
         case "text":
           // to open a new modal, must handle the text differently
+          TextEditor.openTextGradientColor();
           break;
         default:
           break;
