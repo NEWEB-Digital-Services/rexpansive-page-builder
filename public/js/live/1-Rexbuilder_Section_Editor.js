@@ -841,6 +841,30 @@ var Rexbuilder_Section_Editor = (function($) {
     }
   };
 
+  var _openSectionBackgroundGradient = function( $section ) {  
+    var sectionID = $section.attr("data-rexlive-section-id");
+    var modelNumber =
+      typeof $section.attr("data-rexlive-model-number") != "undefined"
+        ? $section.attr("data-rexlive-model-number")
+        : "";
+    var $section_data = $section.children('.section-data');
+
+    var colorActive = $section_data.attr('data-color_bg_section');
+
+    var data = {
+      eventName: "rexlive:editSectionBackgroundGradient",
+      activeRowData: {
+        gradient: colorActive,
+        sectionTarget: {
+          sectionID: sectionID,
+          modelNumber: modelNumber
+        },
+      }
+    };
+
+    Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+  };
+
   /**
    * Listen row data changing to show/hide fast configuration toolbar
    * @since 2.0.0
@@ -921,6 +945,7 @@ var Rexbuilder_Section_Editor = (function($) {
     updateRowOverlayColorToolLive: _updateRowOverlayColorToolLive,
     updateRowBackgroundVideo: _updateRowBackgroundVideo,
     triggerRowDataChange: _triggerRowDataChange,
-    listenNewRowDataChange: _listenNewRowDataChange
+    listenNewRowDataChange: _listenNewRowDataChange,
+    openSectionBackgroundGradient: _openSectionBackgroundGradient
   }
 })(jQuery);

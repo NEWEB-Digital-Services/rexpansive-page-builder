@@ -27,6 +27,10 @@
   }
 }
 
+.palette__add-gradient {
+  cursor: pointer;
+}
+
 .palette__gradient-default {
   background: rgb(0,0,0);
   background: -moz-linear-gradient(-45deg, rgba(0,0,0,1) 1%, rgba(255,229,229,1) 99%);

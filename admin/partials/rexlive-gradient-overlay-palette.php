@@ -12,7 +12,7 @@
 defined('ABSPATH') or exit;
 $saved_palette = get_option( '_rex_overlay_gradient_palette', array() );
 ?>
-<div class="bl_modal__option-wrap palette-list">
+<div class="bl_modal__option-wrap palette-list palette-list__overlay-gradient">
     <?php
     foreach( $saved_palette as $ID => $gradient ) {
         ?>

@@ -85,6 +85,7 @@ var Rexbuilder_Color_Palette = (function($) {
           Rexbuilder_Block_Editor.openBlockBackgroundGradient( props.$spicker.parents(".perfect-grid-item") );
           break;
         case "section":
+          Rexbuilder_Section_Editor.openSectionBackgroundGradient( props.$spicker.parents(".rexpansive_section") );
           break;
         default:
           break;

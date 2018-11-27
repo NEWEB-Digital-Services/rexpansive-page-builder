@@ -3974,6 +3974,9 @@ ul {
   .palette-item__delete .l-svg-icons {
     font-size: 8px !important; }
 
+.palette__add-gradient {
+  cursor: pointer; }
+
 .palette__gradient-default {
   background: black;
   background: -o-linear-gradient(315deg, black 1%, #ffe5e5 99%);

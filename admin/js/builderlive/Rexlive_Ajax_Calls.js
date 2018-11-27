@@ -130,7 +130,17 @@ var Rexlive_Ajax_Calls = (function($) {
       },
       success: function(response) {
         if (response.success) {
-          console.log(response);
+          $(".palette-list__gradient").each(function(i,el) {
+            var $list = $(el);
+            var item = tmpl("tmpl-palette-item",{});
+            var $item = $(item);
+
+            $list.find(".palette__add-gradient").before( $item );
+  
+            $item.css("background", data.gradient_preview);
+            $item.attr("data-gradient-id", data.ID);
+            $item.attr("data-gradient-value", data.gradient);
+          });
         }
       },
       error: function(response) {
@@ -142,10 +152,8 @@ var Rexlive_Ajax_Calls = (function($) {
   /**
    * Delete a gradient palette by ID
    * @param {Object} data object with ID of the gradient to delete
-   * @param {Object} callbacks object with a list of callbacks to call and parameter 
-   *                            to assign in case of success or error
    */
-  var _deletePaletteColorGradient = function( data, callbacks ) {
+  var _deletePaletteColorGradient = function( data ) {
     $.ajax({
       type: "POST",
       url: live_editor_obj.ajaxurl,
@@ -156,16 +164,14 @@ var Rexlive_Ajax_Calls = (function($) {
       },
       success: function(response) {
         if (response.success) {
-          if( "undefined" !== typeof callbacks && "function" === typeof callbacks.success.callback ) {
-            callbacks.success.callback.call(this,callbacks.success.args);
-          }
+          $(".palette-list__gradient").find(".palette-item[data-gradient-id=" + data.ID + "]").each(function(i,el) {
+            $(el).remove();
+          });
         }
       },
       error: function(response) {
         console.log(response);
-        if( "undefined" !== typeof callbacks && "function" === typeof callbacks.error.callback ) {
-          callbacks.error.callback.call(this,callbacks.error.args);
-        }
+        
       }
     });
   };
@@ -185,7 +191,17 @@ var Rexlive_Ajax_Calls = (function($) {
       },
       success: function(response) {
         if (response.success) {
-          console.log(response);
+          $(".palette-list__overlay-gradient").each(function(i,el) {
+            var $list = $(el);
+            var item = tmpl("tmpl-palette-item",{});
+            var $item = $(item);
+
+            $list.find(".palette__add-gradient").before( $item );
+  
+            $item.css("background", data.gradient_preview);
+            $item.attr("data-gradient-id", data.ID);
+            $item.attr("data-gradient-value", data.gradient);
+          });
         }
       },
       error: function(response) {
@@ -197,10 +213,8 @@ var Rexlive_Ajax_Calls = (function($) {
   /**
    * Delete a gradient overlay palette by ID
    * @param {Object} data object with ID of the gradient to delete
-   * @param {Object} callbacks object with a list of callbacks to call and parameter 
-   *                            to assign in case of success or error
    */
-  var _deletePaletteOverlayGradient = function( data, callbacks ) {
+  var _deletePaletteOverlayGradient = function( data ) {
     $.ajax({
       type: "POST",
       url: live_editor_obj.ajaxurl,
@@ -211,16 +225,13 @@ var Rexlive_Ajax_Calls = (function($) {
       },
       success: function(response) {
         if (response.success) {
-          if( "undefined" !== typeof callbacks && "function" === typeof callbacks.success.callback ) {
-            callbacks.success.callback.call(this,callbacks.success.args);
-          }
+          $(".palette-list__overlay-gradient").find(".palette-item[data-gradient-id=" + data.ID + "]").each(function(i,el) {
+            $(el).remove();
+          });
         }
       },
       error: function(response) {
         console.log(response);
-        if( "undefined" !== typeof callbacks && "function" === typeof callbacks.error.callback ) {
-          callbacks.error.callback.call(this,callbacks.error.args);
-        }
       }
     });
   };

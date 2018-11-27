@@ -2,7 +2,7 @@
  * Add gradient experience!
  * @since 2.0.0
  */
-var Rexlive_Block_Overlay_Gradient = (function($) {
+var Rexlive_Section_Background_Gradient = (function($) {
   "use strict";
 
   var modal_props;
@@ -13,7 +13,7 @@ var Rexlive_Block_Overlay_Gradient = (function($) {
     Rexlive_Modals_Utils.openModal(modal_props.$self.parent(".rex-modal-wrap"));
   };
 
-  var _closeBlockOptionsModal = function() {
+  var _closeSectionOptionsModal = function() {
     Rexlive_Modals_Utils.closeModal(
       modal_props.$self.parent(".rex-modal-wrap")
     );
@@ -49,7 +49,7 @@ var Rexlive_Block_Overlay_Gradient = (function($) {
   var _linkDocumentListeners = function() {
     modal_props.$close_button.on("click", function(e) {
       e.preventDefault();
-      _closeBlockOptionsModal();
+      _closeSectionOptionsModal();
     });
 
     modal_props.$gradient_type.on('change', function(e) {
@@ -70,7 +70,7 @@ var Rexlive_Block_Overlay_Gradient = (function($) {
       var gradient_to_view = modal_props.gpicker.getSafeValue();
       var gradient_ID = Rexbuilder_Util_Admin_Editor.createRandomID(4);
 
-      Rexlive_Ajax_Calls.savePaletteOverlayGradient( {
+      Rexlive_Ajax_Calls.savePaletteColorGradient( {
         gradient: gradient_to_save,
         gradient_preview: gradient_to_view,
         ID: gradient_ID
@@ -89,7 +89,7 @@ var Rexlive_Block_Overlay_Gradient = (function($) {
       var gradientEl = this.parentElement;
       var gradient_ID = gradientEl.getAttribute("data-gradient-id");
 
-      Rexlive_Ajax_Calls.deletePaletteOverlayGradient({
+      Rexlive_Ajax_Calls.deletePaletteColorGradient({
         ID: gradient_ID
       });
     });
@@ -106,9 +106,9 @@ var Rexlive_Block_Overlay_Gradient = (function($) {
   };
 
   var _updateData = function(data) {
-    target = data.blockData.target;
+    target = data.sectionTarget;
     // Display data on gradient, not trigger change event
-    _setGradientPicker( data.blockData.gradient, true );
+    _setGradientPicker( data.gradient, true );
   };
 
   var _setGradientPicker = function( gradient, trigger ) {
@@ -132,20 +132,20 @@ var Rexlive_Block_Overlay_Gradient = (function($) {
   }
 
   var _updateLive = function() {
-    var data_updateBlockGradient = {
-      eventName: "rexlive:updateBlockOverlayGradient",
+    var data_updateSectionGradient = {
+      eventName: "rexlive:updateSectionBackgroundGradient",
       data_to_send: {
         target: target,
         color: modal_props.gpicker.getValue(),
         active: true
       }
     };
-    Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_updateBlockGradient);
+    Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_updateSectionGradient);
   };
 
   var _init = function() {
-    var $modal = $("#rex-block-overlay-gradient-editor");
-    var gpicker_selector = "#gp-block-overlay-gradient";
+    var $modal = $("#rex-section-background-gradient-editor");
+    var gpicker_selector = "#gp-section-background-gradient";
     modal_props = {
       $self: $modal,
 
@@ -155,8 +155,8 @@ var Rexlive_Block_Overlay_Gradient = (function($) {
       $gpicker: $modal.find(gpicker_selector),
       gpicker_selector: gpicker_selector,
       gpicker: null,
-      $gradient_type: $modal.find('#block-overlay-gradient-type'),
-      $gradient_angle: $modal.find('#block-overlay-gradient-angle'),
+      $gradient_type: $modal.find('#section-background-gradient-type'),
+      $gradient_angle: $modal.find('#section-background-gradient-angle'),
 
       $palette_list: $modal.find('.palette-list'),
       $add_palette: $modal.find('.palette__add-gradient'),

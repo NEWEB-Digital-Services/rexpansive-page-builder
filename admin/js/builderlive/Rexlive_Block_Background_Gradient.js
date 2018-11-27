@@ -35,6 +35,7 @@ var Rexlive_Block_Background_Gradient = (function($) {
         containerClassName: 'sp-container-default',
         replacerClassName: 'sp-replacer-default',
         clickoutFiresChange: true,
+        preferredFormat: "hex",
         change(color) {
           handler.setColor(color.toRgbString());
         },
@@ -71,16 +72,9 @@ var Rexlive_Block_Background_Gradient = (function($) {
 
       Rexlive_Ajax_Calls.savePaletteColorGradient( {
         gradient: gradient_to_save,
+        gradient_preview: gradient_to_view,
         ID: gradient_ID
       });
-
-      var item = tmpl("tmpl-palette-item",{});
-      var $item = $(item);
-
-      modal_props.$add_palette.before( $item );
-      $item.css("background", gradient_to_view);
-      $item.attr("data-gradient-id", gradient_ID);
-      $item.attr("data-gradient-value", gradient_to_save);
     });
 
     modal_props.$self.on("click", ".palette-item", function(e) {
@@ -98,8 +92,6 @@ var Rexlive_Block_Background_Gradient = (function($) {
       Rexlive_Ajax_Calls.deletePaletteColorGradient({
         ID: gradient_ID
       });
-
-      Rexlive_Block_Background_Gradient.deletePaletteItem(gradientEl);
     });
   };
   
@@ -114,6 +106,7 @@ var Rexlive_Block_Background_Gradient = (function($) {
   };
 
   var _updateData = function(data) {
+    console.log(data);
     target = data.blockData.target;
     // Display data on gradient, not trigger change event
     _setGradientPicker( data.blockData.gradient, true );

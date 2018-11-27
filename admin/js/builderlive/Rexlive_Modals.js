@@ -21,6 +21,9 @@ var Rexlive_Modals = (function ($) {
         // background row
         SectionBackground_Modal.init();
 
+        // Section background gradient
+        Rexlive_Section_Background_Gradient.init();
+
         // background video row
         Section_Video_Background_Modal.init();
 
