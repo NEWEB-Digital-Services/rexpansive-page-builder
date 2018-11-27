@@ -1351,7 +1351,12 @@ var Rexbuilder_Util = (function($) {
               : targetProps["overlay_block_color_active"].toString()
         };
 
-        Rexbuilder_Dom_Util.updateBlockOverlay(overlayBlockOpt);
+        if( -1 === overlayBlockOpt.color.indexOf("gradient") ) {
+          Rexbuilder_Dom_Util.updateBlockOverlay(overlayBlockOpt);
+        } else {
+          Rexbuilder_Dom_Util.updateBlockOverlayGradient(overlayBlockOpt);
+        }
+
 
         Rexbuilder_Dom_Util.updateBlockPaddings(
           $elem,

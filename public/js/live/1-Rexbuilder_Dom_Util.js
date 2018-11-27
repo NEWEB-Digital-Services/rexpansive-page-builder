@@ -1028,7 +1028,7 @@ var Rexbuilder_Dom_Util = (function($) {
     $elemData.attr("data-color_bg_block", data.color);
     $elemData.attr("data-color_bg_elem_active", data.active);
 
-    // Rexbuilder_Block_Editor.updateBlockBackgroundGradientTool($elem,data.color);
+    Rexbuilder_Block_Editor.updateBlockBackgroundGradientTool($elem,safeGradient);
   };
 
   var _updateSectionOverlayColorLive = function(data, color) {
@@ -1086,7 +1086,10 @@ var Rexbuilder_Dom_Util = (function($) {
       var block_selector = 'div [data-rexbuilder-block-id="' + data.rexID + '"] .responsive-block-overlay';
       $target = Rexbuilder_Util.$rexContainer
         .find( section_selector )
-        .find( block_selector )
+        .find( block_selector );
+      if( -1 !== $target.css("background").indexOf("linear-gradient") ) {
+        $target.css("background","");
+      }
       $target
         .css("background-color", color);
     } else {
@@ -1096,7 +1099,10 @@ var Rexbuilder_Dom_Util = (function($) {
           'div [data-rexbuilder-block-id="' +
             data.rexID +
             '"] .responsive-block-overlay'
-        )
+        );
+      if( -1 !== $target.css("background").indexOf("linear-gradient") ) {
+        $target.css("background","");
+      }
       $target
         .css("background-color", color);
     }
@@ -1112,6 +1118,9 @@ var Rexbuilder_Dom_Util = (function($) {
     var $elemData = $elem.children(".rexbuilder-block-data");
     var $elemOverlay = $elem.find(".responsive-block-overlay");
 
+    if( -1 !== $elemOverlay.css("background").indexOf("linear-gradient") ) {
+      $elemOverlay.css("background","");
+    }
     $elemOverlay.css("background-color", color);
 
     $elemData.attr("data-overlay_block_color", color);
@@ -1124,6 +1133,33 @@ var Rexbuilder_Dom_Util = (function($) {
     }
 
     Rexbuilder_Block_Editor.updateBlockOverlayColorTool( $elem, color );
+  };
+
+  /**
+   * Updating the overlay gradient of a block
+   * @param {Ojbect} data object with the information on which block to update an how
+   */
+  var _updateBlockOverlayGradient = function(data) {
+    var color = data.color;
+    var active = data.active;
+
+    var $elem = data.$elem;
+    var $elemData = $elem.children(".rexbuilder-block-data");
+    var $elemOverlay = $elem.find(".responsive-block-overlay");
+
+    var safeGradient = Rexbuilder_Util_Editor.getGradientSafeValue( data.color );
+    $elemOverlay.css("background", safeGradient);
+
+    $elemData.attr("data-overlay_block_color", color);
+    $elemData.attr("data-overlay_block_color_active", active);
+
+    if (active.toString() == "true") {
+      $elemOverlay.addClass("rex-active-overlay");
+    } else {
+      $elemOverlay.removeClass("rex-active-overlay");
+    }
+
+    Rexbuilder_Block_Editor.updateBlockOverlayGradientTool( $elem, safeGradient );
   };
 
   var _updateSectionBackgroundImage = function($section, data) {
@@ -1547,6 +1583,9 @@ var Rexbuilder_Dom_Util = (function($) {
       case "updateBlockBackgroundGradient":
         _updateBlockBackgroundGradient(dataToUse);
         break;
+      case "updateBlockOverlayGradient":
+        _updateBlockOverlayGradient(dataToUse);
+        break;
       case "updateBlockOverlay":
         _updateBlockOverlay(dataToUse);
         break;
@@ -1663,6 +1702,7 @@ var Rexbuilder_Dom_Util = (function($) {
     updateBlockBackgroundGradient: _updateBlockBackgroundGradient,
     updateBlockOverlayColorLive: _updateBlockOverlayColorLive,
     updateBlockOverlay: _updateBlockOverlay,
+    updateBlockOverlayGradient: _updateBlockOverlayGradient,
     updateVideos: _updateVideos,
     updateBlockPaddings: _updateBlockPaddings,
     updateFlexPostition: _updateFlexPostition,

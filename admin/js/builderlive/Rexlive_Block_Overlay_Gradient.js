@@ -69,7 +69,7 @@ var Rexlive_Block_Overlay_Gradient = (function($) {
       var gradient_to_view = modal_props.gpicker.getSafeValue();
       var gradient_ID = Rexbuilder_Util_Admin_Editor.createRandomID(4);
 
-      Rexlive_Ajax_Calls.savePaletteColorGradient( {
+      Rexlive_Ajax_Calls.savePaletteOverlayGradient( {
         gradient: gradient_to_save,
         ID: gradient_ID
       });
@@ -95,11 +95,11 @@ var Rexlive_Block_Overlay_Gradient = (function($) {
       var gradientEl = this.parentElement;
       var gradient_ID = gradientEl.getAttribute("data-gradient-id");
 
-      Rexlive_Ajax_Calls.deletePaletteColorGradient({
+      Rexlive_Ajax_Calls.deletePaletteOverlayGradient({
         ID: gradient_ID
       });
 
-      Rexlive_Block_Background_Gradient.deletePaletteItem(gradientEl);
+      Rexlive_Block_Overlay_Gradient.deletePaletteItem(gradientEl);
     });
   };
   

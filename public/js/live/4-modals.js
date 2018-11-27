@@ -957,6 +957,62 @@
       );
     });
 
+    $(document).on("rexlive:updateBlockOverlayGradient", function(e) {
+      var data = e.settings.data_to_send;
+      var target = data.target;
+
+      var $elem;
+
+      if (target.modelNumber != "") {
+        $elem = Rexbuilder_Util.$rexContainer
+          .find(
+            'section[data-rexlive-section-id="' +
+              target.sectionID +
+              '"][data-rexlive-model-number="' +
+              target.modelNumber +
+              '"]'
+          )
+          .find('div [data-rexbuilder-block-id="' + target.rexID + '"]');
+      } else {
+        $elem = Rexbuilder_Util.$rexContainer
+          .find('section[data-rexlive-section-id="' + target.sectionID + '"]')
+          .find('div [data-rexbuilder-block-id="' + target.rexID + '"]');
+      }
+
+      var $elemData = $elem.children(".rexbuilder-block-data");
+      var $section = $elem.parents(".rexpansive_section");
+      var oldColor = $elemData.attr("data-overlay_block_color");
+      var oldActive =
+        typeof $elemData.attr("data-overlay_block_color_active") != "undefined"
+          ? $elemData.attr("data-overlay_block_color_active")
+          : true;
+
+      var reverseData = {
+        $elem: $elem,
+        color: oldColor,
+        active: oldActive
+      };
+
+      var actionData = {
+        $elem: $elem,
+        color: data.color,
+        active: data.active
+      };
+
+      Rexbuilder_Dom_Util.updateBlockOverlayGradient(actionData);
+      $elem.attr("data-rexlive-element-edited", true);
+      if (Rexbuilder_Util.activeLayout == "default") {
+        Rexbuilder_Util.updateDefaultLayoutStateSection($section);
+      }
+      Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
+      Rexbuilder_Util_Editor.pushAction(
+        $section,
+        "updateBlockOverlayGradient",
+        actionData,
+        reverseData
+      );
+    });
+
     $(document).on("rexlive:change_block_overlay", function(e) {
       var data = e.settings.data_to_send;
       var target = data.target;

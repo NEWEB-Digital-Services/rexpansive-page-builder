@@ -318,7 +318,7 @@ var Rexbuilder_Block_Editor = (function($) {
 
       var settings = {
         data_to_send: {
-          color: null,
+          color: "",
           active: false,
           target: {
             sectionID: sectionID,
@@ -918,6 +918,41 @@ var Rexbuilder_Block_Editor = (function($) {
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
   };
 
+  var _openBlockOverlayGradient = function( $elem ) {
+    var $section = $elem.parents(".rexpansive_section");
+    var rex_block_id = $elem.attr("data-rexbuilder-block-id");
+    var $elemData = $elem.children(".rexbuilder-block-data");
+    var sectionID = $section.attr("data-rexlive-section-id");
+    var modelNumber =
+      typeof $section.attr("data-rexlive-model-number") != "undefined"
+        ? $section.attr("data-rexlive-model-number")
+        : "";
+
+    var overlayGradientCol = $elemData.attr('data-overlay_block_color');
+
+    var settings = {
+      blockData: {
+        gradient: overlayGradientCol,
+        target: {
+          sectionID: sectionID,
+          modelNumber: modelNumber,
+          rexID: rex_block_id
+        },
+      }
+    };
+
+    Rexbuilder_Util_Editor.manageElement = true;
+    // var mousePosition = Rexbuilder_Util_Editor.getMousePosition( e, { offset: { w: this.offsetWidth, h: this.offsetHeight } } );
+
+    var data = {
+      eventName: "rexlive:editBlockOverlayGradient",
+      activeBlockData: settings,
+      // mousePosition: mousePosition
+    };
+
+    Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+  };
+
   /**
    * Setting the block live color pickers for the background
    * @since 2.0.0
@@ -1077,6 +1112,42 @@ var Rexbuilder_Block_Editor = (function($) {
     }
   }
 
+  var _updateBlockBackgroundGradientTool = function($target, color) {
+    // Set tool picker
+    var $picker_top = $target
+      .find('.rexlive-block-toolbox.top-tools')
+      .find('input[name=edit-block-color-background]');
+
+    var $picker_bottom = $target
+      .find('.rexlive-block-toolbox.bottom-tools')
+      .find('input[name=edit-block-color-background]');
+
+    if( "" != color ) {
+      $picker_bottom
+        .val(color)
+        .spectrum('set',color);
+      $picker_bottom
+        .parent()
+        .addClass('tool-button--picker-preview')
+        .removeClass('tool-button--hide')
+      $picker_bottom
+        .siblings('.tool-button--color-preview')
+        .css('background',color);
+      $picker_top
+        .val(color)
+        .spectrum('set',color)
+        .parent()
+        .addClass('tool-button--hide');
+    } else {
+      $picker_top
+        .parent()
+        .removeClass('tool-button--hide');
+      $picker_bottom
+        .parent()
+        .addClass('tool-button--hide');
+    }
+  }
+
   var _updateBlockOverlayColorToolLive = function( $target, color ) {
     // Set live picker
     var $picker_top = $target
@@ -1152,6 +1223,42 @@ var Rexbuilder_Block_Editor = (function($) {
     }
   }
 
+  var _updateBlockOverlayGradientTool = function($target, color) {
+    // Set tool picker
+    var $picker_top = $target
+      .find('.rexlive-block-toolbox.top-tools')
+      .find('input[name=edit-block-overlay-color]');
+
+    var $picker_bottom = $target
+      .find('.rexlive-block-toolbox.bottom-tools')
+      .find('input[name=edit-block-overlay-color]');
+
+    if( "" != color ) {
+      $picker_bottom
+        .val(color)
+        .spectrum('set',color);
+      $picker_bottom
+        .parent()
+        .addClass('tool-button--picker-preview')
+        .removeClass('tool-button--hide')
+      $picker_bottom
+        .siblings('.tool-button--color-preview')
+        .css('background',color);
+      $picker_top
+        .val(color)
+        .spectrum('set',color)
+        .parent()
+        .addClass('tool-button--hide');
+    } else {
+      $picker_top
+        .parent()
+        .removeClass('tool-button--hide');
+      $picker_bottom
+        .parent()
+        .addClass('tool-button--hide');
+    }
+  }
+
   /**
    * Initing the block toolbar
    */
@@ -1171,8 +1278,11 @@ var Rexbuilder_Block_Editor = (function($) {
     updateBlockImagePositionTool: _updateBlockImagePositionTool,
     updateBlockBackgroundColorToolLive: _updateBlockBackgroundColorToolLive,
     updateBlockBackgroundColorTool: _updateBlockBackgroundColorTool,
+    updateBlockBackgroundGradientTool: _updateBlockBackgroundGradientTool,
     updateBlockOverlayColorToolLive: _updateBlockOverlayColorToolLive,
     updateBlockOverlayColorTool: _updateBlockOverlayColorTool,
-    openBlockBackgroundGradient: _openBlockBackgroundGradient
+    updateBlockOverlayGradientTool: _updateBlockOverlayGradientTool,
+    openBlockBackgroundGradient: _openBlockBackgroundGradient,
+    openBlockOverlayGradient: _openBlockOverlayGradient
   }
 })(jQuery);

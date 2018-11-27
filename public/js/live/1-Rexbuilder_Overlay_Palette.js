@@ -82,7 +82,7 @@ var Rexbuilder_Overlay_Palette = (function($) {
       e.preventDefault();
       switch( props.object ) {
         case "block":
-          Rexbuilder_Block_Editor.openBlockBackgroundGradient( props.$spicker.parents(".perfect-grid-item") );
+          Rexbuilder_Block_Editor.openBlockOverlayGradient( props.$spicker.parents(".perfect-grid-item") );
           break;
         case "section":
           break;

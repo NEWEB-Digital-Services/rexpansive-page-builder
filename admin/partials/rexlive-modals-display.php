@@ -969,7 +969,7 @@ defined('ABSPATH') or exit;
 <div class="rex-modal-wrap">
     <div id="rex-block-background-gradient-editor" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <?php Rexbuilder_Utilities::close_button(); ?>
-        <div class="modal-content"> 
+        <div class="modal-content">
             <div class="bl_modal-row">
                 <div class="bl_modal__option-wrap">
                     <div id="gp-block-background-gradient" class="no-draggable" style="width:100%;"></div>
@@ -1011,7 +1011,7 @@ defined('ABSPATH') or exit;
 <div class="rex-modal-wrap">
     <div id="rex-block-overlay-gradient-editor" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <?php Rexbuilder_Utilities::close_button(); ?>
-        <div class="modal-content"> 
+        <div class="modal-content">
             <div class="bl_modal-row">
                 <div class="bl_modal__option-wrap">
                     <div id="gp-block-overlay-gradient" class="no-draggable" style="width:100%;"></div>

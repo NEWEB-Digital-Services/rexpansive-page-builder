@@ -361,6 +361,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'rexlive-block-image-editor', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Block_Image_Editor_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-block-accordion-editor', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Block_Accordion.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-block-gradient-editor', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Block_Background_Gradient.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexlive-block-overlay-gradient-editor', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Block_Overlay_Gradient.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-block-link-url', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Block_Url_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-block-options', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Block_Options_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-model-options', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Model_Modal.js', array( 'jquery' ), null, true );
@@ -924,6 +925,60 @@ class Rexbuilder_Admin {
 			unset( $gradient_palette[$data['ID']] );
 			$response['data'] = $gradient_palette;
 			update_option( '_rex_color_gradient_palette', $gradient_palette );
+		}
+
+		wp_send_json_success( $response );
+	}
+
+	/**
+	 * Saving a gradient palette color to reuse it around the pages
+	 * @since 2.0.0
+	 */
+	public function rex_save_palette_overlay_gradient() {
+		$nonce = $_POST['nonce_param'];
+		$response = array(
+			'error' => false,
+			'msg' => '',
+		);
+
+		if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) {
+			$response['error'] = true;
+			$response['msg'] = 'Error!';
+			wp_send_json_error( $response );
+		}
+
+		$data = $_POST['data'];
+		$gradient_palette = get_option( '_rex_overlay_gradient_palette', array() );
+		$gradient_palette[$data['ID']] = $data['gradient'];
+		$response['data'] = $gradient_palette;
+		update_option( '_rex_overlay_gradient_palette', $gradient_palette );
+
+		wp_send_json_success( $response );
+	}
+
+	/**
+	 * Delete a gradient palette color
+	 * @since 2.0.0
+	 */
+	public function rex_delete_palette_overlay_gradient() {
+		$nonce = $_POST['nonce_param'];
+		$response = array(
+			'error' => false,
+			'msg' => '',
+		);
+
+		if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) {
+			$response['error'] = true;
+			$response['msg'] = 'Error!';
+			wp_send_json_error( $response );
+		}
+
+		$data = $_POST['data'];
+		$gradient_palette = get_option( '_rex_overlay_gradient_palette', array() );
+		if( !empty( $gradient_palette ) ) {
+			unset( $gradient_palette[$data['ID']] );
+			$response['data'] = $gradient_palette;
+			update_option( '_rex_overlay_gradient_palette', $gradient_palette );
 		}
 
 		wp_send_json_success( $response );

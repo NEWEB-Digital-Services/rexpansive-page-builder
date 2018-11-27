@@ -5,6 +5,10 @@
 var Rexlive_Ajax_Calls = (function($) {
   "use strict";
 
+  /**
+   * Saving a color in the color palette
+   * @param {Object} data object with ID and value for a color to save
+   */
   var _savePaletteColor = function( data ) {
     $.ajax({
       type: "POST",
@@ -25,6 +29,12 @@ var Rexlive_Ajax_Calls = (function($) {
     });
   };
 
+  /**
+   * Delete a color palette by ID
+   * @param {Object} data object with ID of the color to delete
+   * @param {Object} callbacks object with a list of callbacks to call and parameter 
+   *                            to assign in case of success or error
+   */
   var _deletePaletteColor = function( data, callbacks ) {
     $.ajax({
       type: "POST",
@@ -50,6 +60,10 @@ var Rexlive_Ajax_Calls = (function($) {
     });
   };
 
+  /**
+   * Saving a color in the overlay palette
+   * @param {Object} data object with ID and value for a overlay to save
+   */
   var _savePaletteOverlayColor = function( data ) {
     $.ajax({
       type: "POST",
@@ -70,6 +84,12 @@ var Rexlive_Ajax_Calls = (function($) {
     });
   };
 
+  /**
+   * Delete an overlay palette by ID
+   * @param {Object} data object with ID of the overlay to delete
+   * @param {Object} callbacks object with a list of callbacks to call and parameter 
+   *                            to assign in case of success or error
+   */
   var _deletePaletteOverlayColor = function( data, callbacks ) {
     $.ajax({
       type: "POST",
@@ -95,6 +115,10 @@ var Rexlive_Ajax_Calls = (function($) {
     });
   };
 
+  /**
+   * Saving a gradient in the gradient palette
+   * @param {Object} data object with ID and value for a gradient to save
+   */
   var _savePaletteColorGradient = function( data ) {
     $.ajax({
       type: "POST",
@@ -115,6 +139,12 @@ var Rexlive_Ajax_Calls = (function($) {
     });
   };
 
+  /**
+   * Delete a gradient palette by ID
+   * @param {Object} data object with ID of the gradient to delete
+   * @param {Object} callbacks object with a list of callbacks to call and parameter 
+   *                            to assign in case of success or error
+   */
   var _deletePaletteColorGradient = function( data, callbacks ) {
     $.ajax({
       type: "POST",
@@ -140,12 +170,16 @@ var Rexlive_Ajax_Calls = (function($) {
     });
   };
 
+  /**
+   * Saving a gradient in the gradient overlay palette
+   * @param {Object} data object with ID and value for a gradient to save
+   */
   var _savePaletteOverlayGradient = function( data ) {
     $.ajax({
       type: "POST",
       url: live_editor_obj.ajaxurl,
       data: {
-        action: "rex_save_palette_gradient",
+        action: "rex_save_palette_overlay_gradient",
         nonce_param: live_editor_obj.rexnonce,
         data: data,
       },
@@ -160,12 +194,18 @@ var Rexlive_Ajax_Calls = (function($) {
     });
   };
 
+  /**
+   * Delete a gradient overlay palette by ID
+   * @param {Object} data object with ID of the gradient to delete
+   * @param {Object} callbacks object with a list of callbacks to call and parameter 
+   *                            to assign in case of success or error
+   */
   var _deletePaletteOverlayGradient = function( data, callbacks ) {
     $.ajax({
       type: "POST",
       url: live_editor_obj.ajaxurl,
       data: {
-        action: "rex_delete_palette_gradient",
+        action: "rex_delete_palette_overlay_gradient",
         nonce_param: live_editor_obj.rexnonce,
         data: data,
       },
