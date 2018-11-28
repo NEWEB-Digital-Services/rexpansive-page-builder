@@ -91,7 +91,7 @@ var Rexbuilder_Color_Palette = (function($) {
           break;
         case "text":
           // to open a new modal, must handle the text differently
-          TextEditor.openTextGradientColor();
+          TextEditor.openTextGradientColor( props.$spicker.parents(".perfect-grid-item") );
           break;
         default:
           break;

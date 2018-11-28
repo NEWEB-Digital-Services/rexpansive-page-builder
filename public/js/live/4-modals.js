@@ -20,21 +20,26 @@
      * 12) Row Custom Classes : rexlive:apply_section_custom_classes
      * 13) Custom CSS : rexlive:SetCustomCSS
      * 14) Row Background Color : rexlive:apply_background_color_section
-     * 15) Row Overlay : rexlive:change_section_overlay
-     * 16) Row Image Background : rexlive:apply_background_image_section
-     * 17) Row Video Background : rexlive:update_section_background_video
-     * 18) Block Background Color : rexlive:apply_background_color_block
-     * 19) Block Overlay : rexlive:change_block_overlay
-     * 20) Block Image : rexlive:apply_background_image_block
-     * 21) Block Video Background : rexlive:update_block_background_video
-     * 22) Block Paddings : rexlive:apply_paddings_block
-     * 23) Block Content Position : rexlive:apply_flex_position_block
-     * 23) Block Image Position : rexlive:apply_flex_image_position_block
-     * 24) Block Custom Classes : rexlive:apply_block_custom_classes
-     * 25) Block Custom Link : rexlive:apply_block_link_url
-     * 26) Model : rexlive:editModel
-     * 27) Model : rexlive:modelBecameSection
-     * 28) Custom CSS : rexlive:getCustomCss
+     * 15) Row Background Gradient: rexlive:updateSectionBackgroundGradient
+     * 16) Row Overlay Gradient: rexlive:updateSectionOverlayGradient
+     * 17) Row Overlay : rexlive:change_section_overlay
+     * 18) Row Image Background : rexlive:apply_background_image_section
+     * 19) Row Video Background : rexlive:update_section_background_video
+     * 20) Block Background Color : rexlive:apply_background_color_block
+     * 21) Block Background Gradient: rexlive:updateBlockBackgroundGradient
+     * 22) Block Overlay Gradient: rexlive:updateBlockOverlayGradient
+     * 23) Block Overlay : rexlive:change_block_overlay
+     * 24) Block Image : rexlive:apply_background_image_block
+     * 25) Block Video Background : rexlive:update_block_background_video
+     * 26) Block Paddings : rexlive:apply_paddings_block
+     * 27) Block Content Position : rexlive:apply_flex_position_block
+     * 28) Block Image Position : rexlive:apply_flex_image_position_block
+     * 29) Block Custom Classes : rexlive:apply_block_custom_classes
+     * 30) Block Custom Link : rexlive:apply_block_link_url
+     * **) Text Gradient: 
+     * 31) Model : rexlive:editModel
+     * 32) Model : rexlive:modelBecameSection
+     * 33) Custom CSS : rexlive:getCustomCss
      */
 
     $document.on("rexlive:set_row_fullHeight", function(e) {
@@ -1171,7 +1176,7 @@
       );
     });
 
-    $document.on("rexlive:apply_background_image_block", function(e) {    
+    $document.on("rexlive:apply_background_image_block", function(e) {  
       var data = e.settings.data_to_send;
       Rexbuilder_Util_Editor.updatingImageBg = true;
       var target = data.target;
@@ -1732,6 +1737,14 @@
         actionData,
         reverseData
       );
+    });
+
+    $document.on("rexlive:setTextGradient", function(e) {
+      TextEditor.triggerMEEvent({
+        name:"rexlive:mediumeditor:setTextGradient", 
+        data: e.settings.data_to_send, 
+        editable: null
+      });
     });
 
     $document.on("rexlive:editModel", function(e) {

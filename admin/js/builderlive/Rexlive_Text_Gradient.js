@@ -2,7 +2,7 @@
  * Add gradient experience!
  * @since 2.0.0
  */
-var Rexlive_Section_Background_Gradient = (function($) {
+var Rexlive_Text_Gradient = (function($) {
   "use strict";
 
   var modal_props;
@@ -13,7 +13,7 @@ var Rexlive_Section_Background_Gradient = (function($) {
     Rexlive_Modals_Utils.openModal(modal_props.$self.parent(".rex-modal-wrap"));
   };
 
-  var _closeSectionOptionsModal = function() {
+  var _closeBlockOptionsModal = function() {
     Rexlive_Modals_Utils.closeModal(
       modal_props.$self.parent(".rex-modal-wrap")
     );
@@ -49,7 +49,7 @@ var Rexlive_Section_Background_Gradient = (function($) {
   var _linkDocumentListeners = function() {
     modal_props.$close_button.on("click", function(e) {
       e.preventDefault();
-      _closeSectionOptionsModal();
+      _closeBlockOptionsModal();
     });
 
     modal_props.$gradient_type.on('change', function(e) {
@@ -106,9 +106,9 @@ var Rexlive_Section_Background_Gradient = (function($) {
   };
 
   var _updateData = function(data) {
-    target = data.sectionTarget;
+    target = data.blockData.target;
     // Display data on gradient, not trigger change event
-    _setGradientPicker( data.gradient, true );
+    _setGradientPicker( data.blockData.gradient, true );
   };
 
   var _setGradientPicker = function( gradient, trigger ) {
@@ -133,20 +133,20 @@ var Rexlive_Section_Background_Gradient = (function($) {
   }
 
   var _updateLive = function() {
-    var data_updateSectionGradient = {
-      eventName: "rexlive:updateSectionBackgroundGradient",
+    var data_updateBlockGradient = {
+      eventName: "rexlive:setTextGradient",
       data_to_send: {
-        sectionTarget: target,
+        target: target,
         color: modal_props.gpicker.getValue(),
         active: true
       }
     };
-    Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_updateSectionGradient);
+    Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_updateBlockGradient);
   };
 
   var _init = function() {
-    var $modal = $("#rex-section-background-gradient-editor");
-    var gpicker_selector = "#gp-section-background-gradient";
+    var $modal = $("#rex-text-gradient-editor");
+    var gpicker_selector = "#gp-text-gradient";
     modal_props = {
       $self: $modal,
 
@@ -156,8 +156,8 @@ var Rexlive_Section_Background_Gradient = (function($) {
       $gpicker: $modal.find(gpicker_selector),
       gpicker_selector: gpicker_selector,
       gpicker: null,
-      $gradient_type: $modal.find('#section-background-gradient-type'),
-      $gradient_angle: $modal.find('#section-background-gradient-angle'),
+      $gradient_type: $modal.find('#text-gradient-type'),
+      $gradient_angle: $modal.find('#text-gradient-angle'),
 
       $palette_list: $modal.find('.palette-list'),
       $add_palette: $modal.find('.palette__add-gradient'),

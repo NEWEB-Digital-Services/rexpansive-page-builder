@@ -68,39 +68,39 @@ var TextEditor = (function($) {
     pickerExtensionInstance.document.execCommand("backColor", false, gradient);
   };
 
-  var _openTextGradientColor = function() {
-    // var $section = $elem.parents(".rexpansive_section");
-    // var rex_block_id = $elem.attr("data-rexbuilder-block-id");
-    // var $elemData = $elem.children(".rexbuilder-block-data");
-    // var sectionID = $section.attr("data-rexlive-section-id");
-    // var modelNumber =
-    //   typeof $section.attr("data-rexlive-model-number") != "undefined"
-    //     ? $section.attr("data-rexlive-model-number")
-    //     : "";
+  var _openTextGradientColor = function( $elem ) {
+    var $section = $elem.parents(".rexpansive_section");
+    var rex_block_id = $elem.attr("data-rexbuilder-block-id");
+    var $elemData = $elem.children(".rexbuilder-block-data");
+    var sectionID = $section.attr("data-rexlive-section-id");
+    var modelNumber =
+      typeof $section.attr("data-rexlive-model-number") != "undefined"
+        ? $section.attr("data-rexlive-model-number")
+        : "";
 
-    // var bgGradientCol = $elemData.attr('data-color_bg_block');
+    var bgGradientCol = $elemData.attr('data-color_bg_block');
 
-    // var settings = {
-    //   blockData: {
-    //     gradient: bgGradientCol,
-    //     target: {
-    //       sectionID: sectionID,
-    //       modelNumber: modelNumber,
-    //       rexID: rex_block_id
-    //     },
-    //   }
-    // };
+    var settings = {
+      blockData: {
+        gradient: bgGradientCol,
+        target: {
+          sectionID: sectionID,
+          modelNumber: modelNumber,
+          rexID: rex_block_id
+        },
+      }
+    };
 
-    // Rexbuilder_Util_Editor.manageElement = true;
-    // // var mousePosition = Rexbuilder_Util_Editor.getMousePosition( e, { offset: { w: this.offsetWidth, h: this.offsetHeight } } );
+    Rexbuilder_Util_Editor.manageElement = true;
+    // var mousePosition = Rexbuilder_Util_Editor.getMousePosition( e, { offset: { w: this.offsetWidth, h: this.offsetHeight } } );
 
-    // var data = {
-    //   eventName: "rexlive:editBlockGradient",
-    //   activeBlockData: settings,
-    //   // mousePosition: mousePosition
-    // };
+    var data = {
+      eventName: "rexlive:editTextGradient",
+      activeBlockData: settings,
+      // mousePosition: mousePosition
+    };
 
-    // Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+    Rexbuilder_Util_Editor.sendParentIframeMessage(data);
   };
 
   var initPicker = function(element) {
@@ -108,7 +108,7 @@ var TextEditor = (function($) {
     var $picker_preview = $picker.find('.meditor-color-picker--preview');
     $picker.spectrum({
       // allowEmpty: true,
-      color: "#000",
+      // color: "#000",
       preferredFormat: "hex",
       showPalette: false,
       showAlpha: true,
@@ -123,7 +123,6 @@ var TextEditor = (function($) {
           object: "text",
           textSelection: editorInstance.exportSelection()
         });
-        // setGradient("-webkit-linear-gradient(90deg, rgba(45, 216, 118, 0.72) 22.1289%, rgb(123, 220, 88) 81.7927%)");
       },
       change: function(color) {
         setColor(color);
@@ -731,6 +730,36 @@ var TextEditor = (function($) {
   });
 
   /**
+   * Handling the set of a gradient text
+   * @since 2.0.0
+   */
+  var TextGradientExtension = MediumEditor.Extension.extend({
+    name: "textGradient",
+
+    init: function() {
+      this.subscribe('rexlive:mediumeditor:setTextGradient', this.handleGradient.bind(this));
+    },
+
+    handleGradient: function(event, editable) {
+      // var toolbar = editorInstance.getExtensionByName("textGradient");
+      // currentTextSelection = editorInstance.exportSelection();
+      var index = this.base.exportSelection().editableElementIndex;
+      var meContents = this.base.serialize();
+      var htmlSelected = meContents['element-'+index].value;
+      htmlSelected = htmlSelected.replace('<span class="text-editor-span-fix" style="display: none;"></span>','').trim();
+      console.log("<span class='text-gradient'>"+ htmlSelected +"</span>");
+      console.log(document.getSelection());
+
+      // this.base.pasteHTML("<span class='text-gradient'>"+ htmlSelected +"</span>", {
+      //   cleanPastedHTML: false,
+      //   cleanAttrs: ['dir'],
+      // });
+      this.document.execCommand("styleWithCSS", false, false);
+      this.document.execCommand("insertHTML", false, "<span class='text-gradient'>"+ document.getSelection()+"</span>");
+    }
+  });
+
+  /**
    * @deprecated
    */
   var DropDownExtension = MediumEditor.Extension.extend({
@@ -1019,7 +1048,8 @@ var TextEditor = (function($) {
         justifyDropdown: justifyExtensionIntance,
         listDropdown: listExtensionInstance,
         contentBlockPosition: new ContentBlockPositionExtension(),
-        'close-editor-escape': new CloseEditorEscapeExtension()
+        'close-editor-escape': new CloseEditorEscapeExtension(),
+        textGradient: new TextGradientExtension()
       },
       placeholder: {
         text: "Type here your text",

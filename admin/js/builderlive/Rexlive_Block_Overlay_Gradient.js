@@ -112,7 +112,8 @@ var Rexlive_Block_Overlay_Gradient = (function($) {
   };
 
   var _setGradientPicker = function( gradient, trigger ) {
-    var trigger = undefined !== typeof trigger ? trigger : false;
+    var trigger = "undefined" !== typeof trigger ? trigger : false;
+    gradient = "undefined" !== typeof gradient ? gradient : "";
     if( "" !== gradient && -1 !== gradient.indexOf("gradient") ) {
       modal_props.gpicker.setValue(gradient, {
         silent: trigger

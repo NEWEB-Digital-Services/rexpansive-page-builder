@@ -106,14 +106,14 @@ var Rexlive_Block_Background_Gradient = (function($) {
   };
 
   var _updateData = function(data) {
-    console.log(data);
     target = data.blockData.target;
     // Display data on gradient, not trigger change event
     _setGradientPicker( data.blockData.gradient, true );
   };
 
   var _setGradientPicker = function( gradient, trigger ) {
-    var trigger = undefined !== typeof trigger ? trigger : false;
+    var trigger = "undefined" !== typeof trigger ? trigger : false;
+    gradient = "undefined" !== typeof gradient ? gradient : "";
     if( "" !== gradient && -1 !== gradient.indexOf("gradient") ) {
       modal_props.gpicker.setValue(gradient, {
         silent: trigger

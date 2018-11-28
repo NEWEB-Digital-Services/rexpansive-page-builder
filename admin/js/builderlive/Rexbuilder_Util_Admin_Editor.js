@@ -202,6 +202,10 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         Rexlive_Block_Background_Gradient.openModal(event.data.activeBlockData);
       }
 
+      if (event.data.eventName == "rexlive:editTextGradient") {
+        Rexlive_Text_Gradient.openModal(event.data.activeBlockData);
+      }
+
       if (event.data.eventName == "rexlive:editBlockOverlayGradient") {
         Rexlive_Block_Overlay_Gradient.openModal(event.data.activeBlockData);
       }
