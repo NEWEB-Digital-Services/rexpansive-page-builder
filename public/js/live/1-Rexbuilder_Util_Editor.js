@@ -946,6 +946,17 @@ var Rexbuilder_Util_Editor = (function($) {
     return res;
   }
 
+  var _synchGradient = function() {
+    $(".text-gradient").each(function(i,el) {
+      var gradient = el.getAttribute("data-gradient");
+      gradient = _getGradientSafeValue( gradient );
+      var $el = $(el);
+      $el.css("background",gradient);
+      $el.css("-webkit-background-clip", "text");
+      $el.css("-webkit-text-fill-color", "transparent"); 
+    });
+  }
+
   var _tooltips = function() {
     var collection = tippy(".tippy", {
       arrow: true,
@@ -1195,7 +1206,7 @@ var Rexbuilder_Util_Editor = (function($) {
         sectionTarget: Rexbuilder_Util_Editor.visibleRowInfo,
         rowInfo: visibleRowInfo
       };
-      console.log(data);
+      // console.log(data);
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     }
   };
@@ -1407,6 +1418,7 @@ var Rexbuilder_Util_Editor = (function($) {
 
     this.$styleElement = $("#rexpansive-builder-style-inline-css");
     _fixCustomStyleElement();
+    _synchGradient();
   };
   _generateElementNewIDs;
   _fixCopiedElementSlider;
@@ -1452,6 +1464,7 @@ var Rexbuilder_Util_Editor = (function($) {
     releaseRows: _releaseRows,
     releaseRowsLight: _releaseRowsLight,
     getGradientSafeValue: _getGradientSafeValue,
-    getPrefixedValues: _getPrefixedValues
+    getPrefixedValues: _getPrefixedValues,
+    synchGradient: _synchGradient
   };
 })(jQuery);

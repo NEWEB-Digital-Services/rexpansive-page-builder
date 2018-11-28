@@ -111,21 +111,23 @@ var Rexlive_Text_Gradient = (function($) {
     _setGradientPicker( data.blockData.gradient, true );
   };
 
-  var _setGradientPicker = function( gradient, trigger ) {
-    trigger = "undefined" !== typeof trigger ? trigger : false;
+  var _setGradientPicker = function( gradient, silent ) {
+    silent = "undefined" !== typeof silent ? silent : false;
     gradient = "undefined" !== typeof gradient ? gradient : "";
+
     if( "" !== gradient && -1 !== gradient.indexOf("gradient") ) {
-      modal_props.gpicker.setValue(gradient, {
-        silent: trigger
-      });
+      modal_props.gpicker.setValue(gradient, { silent: true });
   
       var g_type = modal_props.gpicker.getType();
       var g_direction = modal_props.gpicker.getDirection();
       modal_props.$gradient_type.find('option[value=' + g_type + ']').prop('selected', true);
       modal_props.$gradient_angle.find('option[value=' + g_direction + ']').prop('selected', true);
+      if( !silent ) {
+        modal_props.gpicker.change();
+      }
     } else {
       modal_props.gpicker.setValue("", {
-        silent: trigger
+        silent: silent
       });
       modal_props.$gradient_type.val("");
       modal_props.$gradient_angle.val("");
@@ -133,15 +135,22 @@ var Rexlive_Text_Gradient = (function($) {
   }
 
   var _updateLive = function() {
-    var data_updateBlockGradient = {
-      eventName: "rexlive:setTextGradient",
-      data_to_send: {
-        target: target,
-        color: modal_props.gpicker.getValue(),
-        active: true
-      }
-    };
-    Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_updateBlockGradient);
+    var value = modal_props.gpicker.getValue();
+    if( "" !== value ) {
+      var data_updateBlockGradient = {
+        eventName: "rexlive:setTextGradient",
+        data_to_send: {
+          target: target,
+          color: value,
+          active: true
+        }
+      };
+      Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_updateBlockGradient);
+    }
+  };
+
+  var _getProps = function(){
+    return modal_props;
   };
 
   var _init = function() {
@@ -171,6 +180,7 @@ var Rexlive_Text_Gradient = (function($) {
   return {
     init: _init,
     openModal: _openModal,
-    deletePaletteItem: _deletePaletteItem
+    deletePaletteItem: _deletePaletteItem,
+    getProps: _getProps
   };
 })(jQuery);

@@ -6,15 +6,15 @@
     var $document = $(document);
     /**
      * Listening for events to update live a row or a block
-     * 1) Row Full Height : rexlive:set_row_fullHeight
-     * 2) Row Layout : rexlive:set_gallery_layout
-     * 3) Row Layout : rexlive:galleryLayoutChanged
-     * 4) Row Gutter : rexlive:set_row_separatos
-     * 5) Row Gutter : rexlive:rowDistancesApplied
-     * 6) Row Margins : rexlive:set_section_margins
-     * 7) Row Margins : rexlive:sectionMarginsApplied
-     * 8) Row Width : rexlive:set_section_width
-     * 9) Row Width : rexlive:sectionWidthApplyed
+     * 01) Row Full Height : rexlive:set_row_fullHeight
+     * 02) Row Layout : rexlive:set_gallery_layout
+     * 03) Row Layout : rexlive:galleryLayoutChanged
+     * 04) Row Gutter : rexlive:set_row_separatos
+     * 05) Row Gutter : rexlive:rowDistancesApplied
+     * 06) Row Margins : rexlive:set_section_margins
+     * 07) Row Margins : rexlive:sectionMarginsApplied
+     * 08) Row Width : rexlive:set_section_width
+     * 09) Row Width : rexlive:sectionWidthApplyed
      * 10) Row Photoswipe : rexlive:set_row_photoswipe
      * 11) Row Name : rexlive:change_section_name
      * 12) Row Custom Classes : rexlive:apply_section_custom_classes
@@ -36,10 +36,10 @@
      * 28) Block Image Position : rexlive:apply_flex_image_position_block
      * 29) Block Custom Classes : rexlive:apply_block_custom_classes
      * 30) Block Custom Link : rexlive:apply_block_link_url
-     * **) Text Gradient: 
-     * 31) Model : rexlive:editModel
-     * 32) Model : rexlive:modelBecameSection
-     * 33) Custom CSS : rexlive:getCustomCss
+     * 31) Text Gradient: rexlive:setTextGradient
+     * 32) Model : rexlive:editModel
+     * 33) Model : rexlive:modelBecameSection
+     * 34) Custom CSS : rexlive:getCustomCss
      */
 
     $document.on("rexlive:set_row_fullHeight", function(e) {
@@ -1739,6 +1739,10 @@
       );
     });
 
+    /**
+     * Setting the text gradient with Medium Editor
+     * @since 2.0.0
+     */
     $document.on("rexlive:setTextGradient", function(e) {
       TextEditor.triggerMEEvent({
         name:"rexlive:mediumeditor:setTextGradient", 

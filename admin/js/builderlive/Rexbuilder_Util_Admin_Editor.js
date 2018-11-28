@@ -86,7 +86,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         $highlightModelId.val(event.data.sectionTarget.modelNumber);
         $highlightModelEditing.val(event.data.sectionTarget.modelEditing);
         hightlightRowInfo = event.data.rowInfo;
-        console.log("UPDATETOPTOOLBAR -- rexlive:traceVisibleRow");
+        // console.log("UPDATETOPTOOLBAR -- rexlive:traceVisibleRow");
         _updateTopToolbar();
       }
 

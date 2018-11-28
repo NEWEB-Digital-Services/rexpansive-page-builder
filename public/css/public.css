@@ -3832,10 +3832,6 @@ http://flickity.metafizzy.co
   -webkit-animation-name: fadeInAndOut;
   animation-name: fadeInAndOut; }
 
-.text-gradient {
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent; }
-
 .l-svg-icons {
   display: inline-block;
   width: 1em;

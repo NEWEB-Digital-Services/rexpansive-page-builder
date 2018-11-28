@@ -186,19 +186,28 @@ class Rexbuilder_Public
             //include media libray
             wp_enqueue_media();
 
+            // JS TMPL
             wp_enqueue_script('tmpl', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/tmpl.min.js', array('jquery'), $ver, true);
 
+            // PHOTOSWIPE
             wp_enqueue_script('photoswipe', REXPANSIVE_BUILDER_URL . $cartella . 'Photoswipe/photoswipe.min.js', array('jquery'), $ver, true);
             wp_enqueue_script('photoswipe-ui', REXPANSIVE_BUILDER_URL . $cartella . 'Photoswipe/photoswipe-ui-default.min.js', array('jquery'), $ver, true);
 
-            // tooltips
+            // TIPPY
             wp_enqueue_script( 'tippy', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/tippy.all.min.js', array( 'jquery' ), null, true );
 
+            // RANGY
+            wp_enqueue_script( 'rangy-core', REXPANSIVE_BUILDER_URL . $cartella . 'rangy-1.3.0/rangy-core.js', array( 'jquery' ), null, true );
+            wp_enqueue_script( 'rangy-classapplier', REXPANSIVE_BUILDER_URL . $cartella . 'rangy-1.3.0/rangy-classapplier.js', array( 'jquery' ), null, true );
+
+            // YTPLAYER
             wp_enqueue_script('YTPlayer', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/jquery.mb.YTPlayer.min.js', array('jquery'), $ver, true);
             //wp_enqueue_script('YTPlayer', REXPANSIVE_BUILDER_URL . $cartella . 'jquery.mb.YTPlayer/jquery.mb.YTPlayer.min.js', array('jquery'), $ver, true);
 
+            // STORE JS
             wp_enqueue_script('storeVariables', REXPANSIVE_BUILDER_URL . $cartella . 'js/store.legacy.min.js', array('jquery'), $ver, true);
 
+            // REXBUILDER
             wp_enqueue_script('1-RexUtil', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Util.js', array('jquery'), $ver, true);
             wp_enqueue_script('1-RexUtilEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/1-Rexbuilder_Util_Editor.js', array('jquery'), $ver, true);
             wp_enqueue_script('1-RexCreateBlocks', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/1-Rexbuilder_CreateBlocks.js', array('jquery'), $ver, true);
@@ -224,8 +233,9 @@ class Rexbuilder_Public
             wp_enqueue_script('rex-accordion', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/6-jquery.rexAccordion.js', array('jquery'), $ver, true);
             wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/6-jquery.rexIndicator.js', array('jquery'), $ver, true);
 
-            //editor text
+            // SPECTRUM COLOR PICKER
             wp_enqueue_script('spectrumColor', REXPANSIVE_BUILDER_URL . $cartella . 'js/spectrum.js', array('jquery'), $ver, true);
+            // MEDIUM EDITOR
             wp_enqueue_script('medium-editor', REXPANSIVE_BUILDER_URL . $cartella . 'js/medium-editor.js', array('jquery'), $ver, true);
             wp_enqueue_script('mediumEditorToolbarStates', REXPANSIVE_BUILDER_URL . $cartella . 'js/medium-editor-toolbar-states.min.js', array('jquery'), $ver, true);
             wp_enqueue_script('textEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/2-Text_Editor.js', array('jquery'), $ver, true);

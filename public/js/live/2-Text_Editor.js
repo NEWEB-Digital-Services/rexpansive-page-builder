@@ -737,25 +737,56 @@ var TextEditor = (function($) {
     name: "textGradient",
 
     init: function() {
+      this.gradientClassApplier = rangy.createClassApplier('text-gradient', {
+        elementTagName: 'span',
+        normalize: true,
+        elementAttributes: {
+          "data-gradient": "",
+          "style": "",
+        }
+      });
       this.subscribe('rexlive:mediumeditor:setTextGradient', this.handleGradient.bind(this));
     },
 
     handleGradient: function(event, editable) {
       // var toolbar = editorInstance.getExtensionByName("textGradient");
       // currentTextSelection = editorInstance.exportSelection();
-      var index = this.base.exportSelection().editableElementIndex;
-      var meContents = this.base.serialize();
-      var htmlSelected = meContents['element-'+index].value;
-      htmlSelected = htmlSelected.replace('<span class="text-editor-span-fix" style="display: none;"></span>','').trim();
-      console.log("<span class='text-gradient'>"+ htmlSelected +"</span>");
-      console.log(document.getSelection());
+
+      // 1) with pasteHTML
+      // var index = this.base.exportSelection().editableElementIndex;
+      // var meContents = this.base.serialize();
+      // var htmlSelected = meContents['element-'+index].value;
+      // htmlSelected = htmlSelected.replace('<span class="text-editor-span-fix" style="display: none;"></span>','').trim();
+      // console.log("<span class='text-gradient'>"+ htmlSelected +"</span>");
+      // console.log(document.getSelection());
 
       // this.base.pasteHTML("<span class='text-gradient'>"+ htmlSelected +"</span>", {
       //   cleanPastedHTML: false,
       //   cleanAttrs: ['dir'],
       // });
-      this.document.execCommand("styleWithCSS", false, false);
-      this.document.execCommand("insertHTML", false, "<span class='text-gradient'>"+ document.getSelection()+"</span>");
+
+      // 2) width insertHTML
+      // console.log("<span class='text-gradient'>"+ document.getSelection()+"</span>");
+      // this.document.execCommand("styleWithCSS", false, false);
+      // this.document.execCommand("insertHTML", false, "<span class='text-gradient'>"+ document.getSelection()+"</span>");
+
+      // 3) RANGY
+      console.log(this.gradientClassApplier.isAppliedToSelection());
+      if( this.gradientClassApplier.isAppliedToSelection() ) {
+        if( this.gradientClassApplier.elementAttributes["data-gradient"] !== event.color ) {
+          console.log(this.gradientClassApplier.elementAttributes);
+          console.log(event.color);
+          // var sel = rangy.getSelection();
+          // console.log(sel.toHtml());
+          this.gradientClassApplier.undoToSelection();
+        }
+      }
+      // if( this.gradientClassApplier.elementAttributes["data-gradient"] !== event.color ) {
+      //   this.gradientClassApplier.undoToSelection();
+      //   this.gradientClassApplier.elementAttributes["data-gradient"] = event.color;
+      //   this.gradientClassApplier.applyToSelection();
+      //   Rexbuilder_Util_Editor.synchGradient();
+      // }
     }
   });
 
@@ -1064,6 +1095,7 @@ var TextEditor = (function($) {
   }
 
   var init = function() {
+    rangy.init();
     _createToolbarContainer();
     _createEditor();
     _linkDocumentListeners();
