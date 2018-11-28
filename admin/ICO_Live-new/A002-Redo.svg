@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <!-- Generator: Sketch 52.2 (67145) - http://www.bohemiancoding.com/sketch -->
-    <title>Fill 1</title>
+    <!-- Generator: Sketch 52.4 (67378) - http://www.bohemiancoding.com/sketch -->
+    <title>Mobile</title>
     <desc>Created with Sketch.</desc>
-    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g id="Mobile" fill="">
-            <path d="M8.58115257,5.13272727 L8.55915032,0 L0.000272727273,8.20454545 L8.63185342,16.3363636 L8.60793793,11.1281818 C15.162697,11.5536364 19.9933401,13.8453191 17.8887765,20 C20.4233524,17 23.4868561,8 8.58115257,5.13272727 Z" id="Fill-1" transform="translate(10.000273, 10.000000) scale(-1, 1) translate(-10.000273, -10.000000) "></path>
+    <g id="Mobile" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="icon" transform="translate(10.000000, 10.500000) scale(-1, 1) translate(-10.000000, -10.500000) translate(0.000000, 4.000000)" fill="">
+            <path d="M19.6067308,12.6923077 C19.4354701,12.6923077 17.1011118,8.84615385 8.40313251,8.84615385 L8.40313251,11.9230769 C8.40313251,12.0823718 0,6.35641026 0,6.2150641 C0,6.07222222 8.40313251,-0.000623497596 8.40313251,0.154184195 L8.40313251,3.361253 C9.80945809,3.45392845 12.5097656,3.45392845 15.3846154,5.76923077 C18.7843009,8.50721725 19.7415702,12.5791343 19.6067308,12.6063034 C19.5790598,12.6107906 19.6336538,12.6923077 19.6067308,12.6923077 Z" id="Path"></path>
         </g>
     </g>
 </svg>
