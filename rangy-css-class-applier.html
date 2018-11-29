@@ -43,10 +43,11 @@
         function styleSelection() {
             var sel = rangy.getSelection();
             console.log(sel.toHtml());
-            // var spans = document.getElementsByClassName('someClass');
-            // for(var i=0; i<spans.length; i++) {
-            //     spans[0].style.backgroundColor = "#ccc";
-            // }
+            var spans = document.getElementsByClassName('someClass');
+            for(var i=0; i<spans.length; i++) {
+                // spans[0].style.backgroundColor = "#ccc";
+                // spans[0].classList.add("anotherSomeClass");
+            }
         }
     </script>
 </body>

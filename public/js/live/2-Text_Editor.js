@@ -55,17 +55,20 @@ var TextEditor = (function($) {
     return $(editorInstance.getSelectedParentElement()).css("color");
   };
 
+  var getCurrentGradientValue = function() {
+    return editorInstance.getSelectedParentElement().getAttribute("data-gradient");
+  };
+
   var setColor = function(color) {
     var finalColor = color ? color.toRgbString() : "rgba(0,0,0,0)";
+    _triggerMEEvent({
+      name: 'rexlive:mediumeditor:removeGradient',
+      data: {},
+      editable: null
+    });
     pickerExtensionInstance.base.importSelection(currentTextSelection);
     pickerExtensionInstance.document.execCommand("styleWithCSS", false, true);
     pickerExtensionInstance.document.execCommand("foreColor", false, finalColor);
-  };
-
-  var setGradient = function(gradient) {
-    pickerExtensionInstance.base.importSelection(currentTextSelection);
-    pickerExtensionInstance.document.execCommand("styleWithCSS", false, true);
-    pickerExtensionInstance.document.execCommand("backColor", false, gradient);
   };
 
   var _openTextGradientColor = function( $elem ) {
@@ -78,7 +81,8 @@ var TextEditor = (function($) {
         ? $section.attr("data-rexlive-model-number")
         : "";
 
-    var bgGradientCol = $elemData.attr('data-color_bg_block');
+    // var bgGradientCol = $elemData.attr('data-color_bg_block');
+    var bgGradientCol = $elem.attr("data-selection-gradient");
 
     var settings = {
       blockData: {
@@ -195,6 +199,15 @@ var TextEditor = (function($) {
       // sets the color of the current selection on the color
       // picker
       $(this.button).spectrum("set", getCurrentTextColor());
+      var currentGradient = getCurrentGradientValue();
+      this.button.setAttribute("data-selection-gradient", currentGradient);
+      _triggerMEEvent({
+        name: "rexlive:mediumeditor:traceTextGradient",
+        data: {
+          gradient: currentGradient
+        },
+        editable: null
+      })
 
       // from here on, it was taken form the default handleClick
       event.preventDefault();
@@ -215,6 +228,83 @@ var TextEditor = (function($) {
       } else {
         $(this.button).find('.meditor-color-picker--preview').css('background-color', '');
       }
+    }
+  });
+
+  /**
+   * Handling the set of a gradient text
+   * @since 2.0.0
+   */
+  var TextGradientExtension = MediumEditor.Extension.extend({
+    name: "textGradient",
+
+    init: function() {
+      this.gradientClassApplier = rangy.createClassApplier('text-gradient', {
+        elementTagName: 'span',
+        normalize: true,
+        elementAttributes: {
+          "data-gradient": "",
+          "style": "",
+        }
+      });
+      this.subscribe('rexlive:mediumeditor:setTextGradient', this.handleGradient.bind(this));
+      this.subscribe('rexlive:mediumeditor:traceTextGradient', this.traceGradient.bind(this));
+      this.subscribe('rexlive:mediumeditor:removeGradient', this.removeGradient.bind(this));
+    },
+
+    handleGradient: function(event, editable) {
+      // var toolbar = editorInstance.getExtensionByName("textGradient");
+      // currentTextSelection = editorInstance.exportSelection();
+
+      // 1) with pasteHTML
+      // var index = this.base.exportSelection().editableElementIndex;
+      // var meContents = this.base.serialize();
+      // var htmlSelected = meContents['element-'+index].value;
+      // htmlSelected = htmlSelected.replace('<span class="text-editor-span-fix" style="display: none;"></span>','').trim();
+      // console.log("<span class='text-gradient'>"+ htmlSelected +"</span>");
+      // console.log(document.getSelection());
+
+      // this.base.pasteHTML("<span class='text-gradient'>"+ htmlSelected +"</span>", {
+      //   cleanPastedHTML: false,
+      //   cleanAttrs: ['dir'],
+      // });
+
+      // 2) width insertHTML
+      // console.log("<span class='text-gradient'>"+ document.getSelection()+"</span>");
+      // this.document.execCommand("styleWithCSS", false, false);
+      // this.document.execCommand("insertHTML", false, "<span class='text-gradient'>"+ document.getSelection()+"</span>");
+
+      // 3) RANGY
+      console.log(this.gradientClassApplier.isAppliedToSelection());
+      if( this.gradientClassApplier.isAppliedToSelection() ) {
+        if( this.gradientClassApplier.elementAttributes["data-gradient"] !== event.color ) {
+          // var sel = rangy.getSelection();
+          // console.log(sel.toHtml());
+          
+        }
+      }
+
+      console.log(this.gradientClassApplier.elementAttributes);
+      this.gradientClassApplier.undoToSelection();
+
+      this.gradientClassApplier.elementAttributes["data-gradient"] = event.color;
+      this.gradientClassApplier.elementAttributes["style"] = "background:" + event.color + ";-webkit-background-clip: text;-webkit-text-fill-color: transparent;";
+      this.gradientClassApplier.applyToSelection();
+      // if( this.gradientClassApplier.elementAttributes["data-gradient"] !== event.color ) {
+      //   this.gradientClassApplier.undoToSelection();
+      //   this.gradientClassApplier.elementAttributes["data-gradient"] = event.color;
+      //   this.gradientClassApplier.applyToSelection();
+      //   Rexbuilder_Util_Editor.synchGradient();
+      // }
+    },
+
+    traceGradient: function(event, editable) {
+      this.gradientClassApplier.elementAttributes["data-gradient"] = event.gradient;
+      this.gradientClassApplier.elementAttributes["style"] = "background:" + event.gradient + ";-webkit-background-clip: text;-webkit-text-fill-color: transparent;";
+    },
+
+    removeGradient: function(event, editable) {
+      this.gradientClassApplier.undoToSelection();
     }
   });
 
@@ -726,67 +816,6 @@ var TextEditor = (function($) {
         Rexbuilder_Util_Editor.editedElement = null;
         Rexbuilder_Util_Editor.editedTextWrap = null;
       }
-    }
-  });
-
-  /**
-   * Handling the set of a gradient text
-   * @since 2.0.0
-   */
-  var TextGradientExtension = MediumEditor.Extension.extend({
-    name: "textGradient",
-
-    init: function() {
-      this.gradientClassApplier = rangy.createClassApplier('text-gradient', {
-        elementTagName: 'span',
-        normalize: true,
-        elementAttributes: {
-          "data-gradient": "",
-          "style": "",
-        }
-      });
-      this.subscribe('rexlive:mediumeditor:setTextGradient', this.handleGradient.bind(this));
-    },
-
-    handleGradient: function(event, editable) {
-      // var toolbar = editorInstance.getExtensionByName("textGradient");
-      // currentTextSelection = editorInstance.exportSelection();
-
-      // 1) with pasteHTML
-      // var index = this.base.exportSelection().editableElementIndex;
-      // var meContents = this.base.serialize();
-      // var htmlSelected = meContents['element-'+index].value;
-      // htmlSelected = htmlSelected.replace('<span class="text-editor-span-fix" style="display: none;"></span>','').trim();
-      // console.log("<span class='text-gradient'>"+ htmlSelected +"</span>");
-      // console.log(document.getSelection());
-
-      // this.base.pasteHTML("<span class='text-gradient'>"+ htmlSelected +"</span>", {
-      //   cleanPastedHTML: false,
-      //   cleanAttrs: ['dir'],
-      // });
-
-      // 2) width insertHTML
-      // console.log("<span class='text-gradient'>"+ document.getSelection()+"</span>");
-      // this.document.execCommand("styleWithCSS", false, false);
-      // this.document.execCommand("insertHTML", false, "<span class='text-gradient'>"+ document.getSelection()+"</span>");
-
-      // 3) RANGY
-      console.log(this.gradientClassApplier.isAppliedToSelection());
-      if( this.gradientClassApplier.isAppliedToSelection() ) {
-        if( this.gradientClassApplier.elementAttributes["data-gradient"] !== event.color ) {
-          console.log(this.gradientClassApplier.elementAttributes);
-          console.log(event.color);
-          // var sel = rangy.getSelection();
-          // console.log(sel.toHtml());
-          this.gradientClassApplier.undoToSelection();
-        }
-      }
-      // if( this.gradientClassApplier.elementAttributes["data-gradient"] !== event.color ) {
-      //   this.gradientClassApplier.undoToSelection();
-      //   this.gradientClassApplier.elementAttributes["data-gradient"] = event.color;
-      //   this.gradientClassApplier.applyToSelection();
-      //   Rexbuilder_Util_Editor.synchGradient();
-      // }
     }
   });
 

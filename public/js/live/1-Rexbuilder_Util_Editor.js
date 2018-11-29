@@ -1418,7 +1418,7 @@ var Rexbuilder_Util_Editor = (function($) {
 
     this.$styleElement = $("#rexpansive-builder-style-inline-css");
     _fixCustomStyleElement();
-    _synchGradient();
+    // _synchGradient();
   };
   _generateElementNewIDs;
   _fixCopiedElementSlider;

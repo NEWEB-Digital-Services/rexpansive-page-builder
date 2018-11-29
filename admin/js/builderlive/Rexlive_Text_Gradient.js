@@ -136,6 +136,7 @@ var Rexlive_Text_Gradient = (function($) {
 
   var _updateLive = function() {
     var value = modal_props.gpicker.getValue();
+    console.log(value);
     if( "" !== value ) {
       var data_updateBlockGradient = {
         eventName: "rexlive:setTextGradient",

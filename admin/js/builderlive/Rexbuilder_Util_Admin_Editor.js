@@ -1528,6 +1528,129 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     return res;
   }
 
+  var _getGradientRuleset = function(orientation, handlers) {
+    return 'background:' + _getGradientOldBrowser(handlers) + 'background:' + _getGradientFF36(orientation,handlers) + 'background:' + _getGradientChromeSafari4(orientation,handlers) + 'background:' + _getGradientChrome10Safari15(orientation,handlers) + 'background:' + _getGradientOpera1110(orientation,handlers) + 'background:' + _getGradientIE10(orientation,handlers) + 'background:' + _getGradientW3C(orientation,handlers) + 'filter:' + _getGradientIE69(orientation,handlers);
+  };
+
+  var _getGradientOldBrowser = function( handlers ) {
+    return handlers[0].color + ';';
+  };
+
+  var _getGradientFF36 = function( orientation, handlers ) {
+    return _templateCssCode(orientation, handlers, ['-moz-linear-gradient', '-moz-radial-gradient']);
+  };
+
+  var _getGradientChrome10Safari15 = function( orientation, handlers ) {
+    return _templateCssCode(orientation, handlers, ['-webkit-linear-gradient', '-webkit-radial-gradient']);
+  };
+
+  var _getGradientOpera1110 = function(orientation, handlers) {
+    return _templateCssCode(orientation, handlers, ['-o-linear-gradient', '-o-radial-gradient']);
+  };
+
+  var _getGradientIE10 = function(orientation, handlers) {
+    return _templateCssCode(orientation, handlers, ['-ms-linear-gradient', '-ms-radial-gradient']);
+  };
+
+  var _getGradientChromeSafari4 = function(orientation, handlers) {
+    var text = '-webkit-gradient(';
+    var i = 0;
+
+    if (orientation == 'horizontal') {
+        text += 'left top, right top';
+    } else if (orientation == 'vertical') {
+        text += 'left top, left bottom';
+    } else if (orientation == 'diagonal') {
+        text += 'left top, right bottom';
+    } else if (orientation == 'diagonal-bottom') {
+        text += 'left bottom, right top';
+    } else if (orientation == 'radial') {
+        text += 'radial, center center, 0px, center center, 100%';
+    }
+
+    text += ', color-stop(' + handlers[0].position + '%, ';
+    text += handlers[0].color + ')';
+    for (i = 1; i < handlers.length; i++) {
+        text += ', color-stop(' + handlers[0].position + '%, ';
+        text += handlers[0].color + ')';
+    }
+    text += ');';
+    return text;
+  };
+
+  var _getGradientW3C = function(orientation, handlers) {
+    var startMessage = ['linear-gradient', 'radial-gradient'];
+    var i = 0;
+    var text = '';
+
+    if (orientation == 'horizontal') {
+        text += startMessage[0] + '(' + 'to right';
+    } else if (orientation == 'vertical') {
+        text += startMessage[0] + '(' + 'to bottom';
+    } else if (orientation == 'diagonal') {
+        text += startMessage[0] + '(' + '135deg';
+    } else if (orientation == 'diagonal-bottom') {
+        text += startMessage[0] + '(' + '45deg';
+    } else if (orientation == 'radial') {
+        text += startMessage[1] + '(' + 'ellipse at center';
+    }
+
+    text += ', ' + _displayColorStop(handlers[0].color, handlers[0].position);
+    for (i = 1; i < handlers.length; i++) {
+        text += ', ' + _displayColorStop(handlers[i].color, handlers[i].position);
+    }
+    text += ');';
+    return text;
+  };
+
+  var _getGradientIE69 = function(orientation, handlers) {
+    var startColor = handlers[0].color;
+    var endColor = handlers[handlers.length - 1].color;
+    var text = 'progid:DXImageTransform.Microsoft.gradient( ';
+
+    // text += 'startColorstr=\'' + startColor.displayColor('hex') + '\', endColorstr=\'';
+    // text += endColor.displayColor('hex') + '\', ';
+    text += 'startColorstr=\'' + startColor + '\', endColorstr=\'';
+    text += endColor + '\', ';
+    text += 'GradientType=';
+
+    if (orientation == 'vertical') {
+        text += '0 );';
+    } else {
+        text += '1 );';
+    }
+
+    return text;
+  };
+
+  function _templateCssCode(orientation, handlers, startMessage) {
+    var text = '';
+    var i = 0;
+
+    if (orientation == 'horizontal') {
+        text = startMessage[0] + '(' + 'left';
+    } else if (orientation == 'vertical') {
+        text = startMessage[0] + '(' + 'top';
+    } else if (orientation == 'diagonal') {
+        text = startMessage[0] + '(' + '-45deg';
+    } else if (orientation == 'diagonal-bottom') {
+        text = startMessage[0] + '(' + '45deg';
+    } else if (orientation == 'radial') {
+        text = startMessage[1] + '(' + 'center, ellipse cover';
+    }
+
+    text += ', ' + _displayColorStop(handlers[0].color, handlers[0].position);
+    for (i = 1; i < handlers.length; i++) {
+        text += ', ' + _displayColorStop(handlers[i].color, handlers[i].position);
+    }
+    text += ');';
+    return text;
+  }
+
+  function _displayColorStop(color, location){
+    return color + ' ' + location + '%';
+  }
+
   // init the utilities
   var init = function() {
     this.$body = $('body');
@@ -1628,6 +1751,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     updateBkgrVidTool: _updateBkgrVidTool,
     getGradientSafeValue: _getGradientSafeValue,
     getPrefixedValues: _getPrefixedValues,
+    getGradientRuleset: _getGradientRuleset,
     openRowColorPaletteModal: _openRowColorPaletteModal,
     openRowOverlayPaletteModal: _openRowOverlayPaletteModal,
   };
