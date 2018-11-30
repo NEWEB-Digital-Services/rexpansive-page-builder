@@ -675,7 +675,7 @@ var Rexbuilder_Block_Editor = (function($) {
     var settings = {
       data_to_send: {
         color: bgColorActive ? colorActive : "",
-        active: bgColorActive,
+        active: true,
         target: {
           sectionID: sectionID,
           modelNumber: modelNumber,
@@ -706,6 +706,8 @@ var Rexbuilder_Block_Editor = (function($) {
         settings.data_to_send.color = settings.data_to_send.active
           ? color.toRgbString()
           : "";
+
+        console.log(settings);
 
         var event = jQuery.Event("rexlive:change_block_bg_color");
         event.settings = settings;
