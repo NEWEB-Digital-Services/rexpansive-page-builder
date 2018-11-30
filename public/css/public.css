@@ -4728,14 +4728,14 @@ a.pswp-item {
       -ms-transform: rotate(-90deg);
           transform: rotate(-90deg); }
 .rex-accordion.close .rex-accordion--close-icon {
-  -webkit-transform: rotate(-45deg);
-      -ms-transform: rotate(-45deg);
-          transform: rotate(-45deg); }
+  -webkit-transform: rotate(0);
+      -ms-transform: rotate(0);
+          transform: rotate(0); }
 .rex-accordion.open .rex-accordion--arrow-icon {
   -webkit-transform: rotate(90deg);
       -ms-transform: rotate(90deg);
           transform: rotate(90deg); }
 .rex-accordion.open .rex-accordion--close-icon {
-  -webkit-transform: rotate(0);
-      -ms-transform: rotate(0);
-          transform: rotate(0); }
+  -webkit-transform: rotate(-45deg);
+      -ms-transform: rotate(-45deg);
+          transform: rotate(-45deg); }

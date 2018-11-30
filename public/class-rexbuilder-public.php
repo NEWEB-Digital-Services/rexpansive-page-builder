@@ -88,7 +88,7 @@ class Rexbuilder_Public
 
         if ($this->builder_active_on_this_post_type()) {
 
-            $ver = time();
+            $ver = null;
 
             if (!is_404()) { // TODO
                 // if( Rexpansive_Classic_Utilities::find_property_inside_content( 'vimeo', $post->post_content ) > 0 || Rexpansive_Classic_Utilities::find_property_inside_content( 'vimeo_slide', $post->post_content ) > 0 ) {

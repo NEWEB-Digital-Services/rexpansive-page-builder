@@ -24,7 +24,7 @@
       transform: rotate(-90deg);
     }
     .rex-accordion--close-icon {
-      transform: rotate(-45deg); 
+      transform: rotate(0); 
     }
   }
 
@@ -33,7 +33,7 @@
       transform: rotate(90deg);
     }
     .rex-accordion--close-icon {
-      transform: rotate(0); 
+      transform: rotate(-45deg); 
     }
   }
 
