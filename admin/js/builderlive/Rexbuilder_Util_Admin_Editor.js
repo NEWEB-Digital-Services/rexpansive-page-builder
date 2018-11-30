@@ -1528,6 +1528,31 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     return res;
   }
 
+  var _addSpectrumCustomSaveButton = function( $picker ) {
+    var choose = tmpl('tmpl-tool-simple-save', {});
+    var $choose = $(choose);
+    $picker.spectrum('container').append($choose);
+
+    $choose.on('click', function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      $picker.spectrum('container').find('.sp-choose').trigger('click');
+    });
+  };
+
+  var _addSpectrumCustomCloseButton = function( $picker ) {
+    var close = tmpl('tmpl-tool-close', {});
+    var $close = $(close);
+    $picker.spectrum('container').append($close);
+
+    $close.on('click', function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      $picker.attr("data-revert", true);
+      $picker.spectrum('container').find('.sp-cancel').trigger('click');
+    });
+  };
+
   // init the utilities
   var init = function() {
     this.$body = $('body');
@@ -1630,5 +1655,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     getPrefixedValues: _getPrefixedValues,
     openRowColorPaletteModal: _openRowColorPaletteModal,
     openRowOverlayPaletteModal: _openRowOverlayPaletteModal,
+    addSpectrumCustomSaveButton: _addSpectrumCustomSaveButton,
+    addSpectrumCustomCloseButton: _addSpectrumCustomCloseButton
   };
 })(jQuery);

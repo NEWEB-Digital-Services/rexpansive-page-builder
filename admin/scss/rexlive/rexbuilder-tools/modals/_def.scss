@@ -126,6 +126,14 @@ body.rexpansive-editor {
   }
 }
 
+.sp-container {
+  .rex-modal__outside-footer {
+    .tool-button--save {
+      background-color: #fff;
+    }
+  }
+}
+
 .rex-modal__top-arrow__wrap {
   position: absolute;
   width: 100%;

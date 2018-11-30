@@ -30,6 +30,10 @@
 .palette__add-color,
 .palette__add-gradient {
   cursor: pointer;
+  margin-left: 5px;
+  #{$icon-class} {
+    font-size: 15px!important;
+  }
 }
 
 .palette__gradient-default {

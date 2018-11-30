@@ -946,6 +946,31 @@ var Rexbuilder_Util_Editor = (function($) {
     return res;
   }
 
+  var _addSpectrumCustomSaveButton = function( $picker ) {
+    var choose = tmpl('tmpl-tool-save', {});
+    var $choose = $(choose);
+    $picker.spectrum('container').append($choose);
+
+    $choose.on('click', function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      $picker.spectrum('container').find('.sp-choose').trigger('click');
+    });
+  };
+
+  var _addSpectrumCustomCloseButton = function( $picker ) {
+    var close = tmpl('tmpl-tool-close', {});
+    var $close = $(close);
+    $picker.spectrum('container').append($close);
+
+    $close.on('click', function(e) {
+      e.stopPropagation();
+      e.preventDefault();
+      $picker.attr("data-revert", true);
+      $picker.spectrum('container').find('.sp-cancel').trigger('click');
+    });
+  };
+
   var _synchGradient = function() {
     $(".text-gradient").each(function(i,el) {
       var gradient = el.getAttribute("data-gradient");
@@ -1465,6 +1490,8 @@ var Rexbuilder_Util_Editor = (function($) {
     releaseRowsLight: _releaseRowsLight,
     getGradientSafeValue: _getGradientSafeValue,
     getPrefixedValues: _getPrefixedValues,
-    synchGradient: _synchGradient
+    synchGradient: _synchGradient,
+    addSpectrumCustomSaveButton: _addSpectrumCustomSaveButton,
+    addSpectrumCustomCloseButton: _addSpectrumCustomCloseButton
   };
 })(jQuery);

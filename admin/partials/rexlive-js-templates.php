@@ -126,3 +126,16 @@ defined('ABSPATH') or exit;
     </div>
 </div>
 </script>
+
+<script type="text/x-tmpl" id="tmpl-tool-simple-save">
+<div class="rex-modal__outside-footer">
+    <div id="rex-model__add-new-model" class="tool-button tool-button--inline tool-button--save">
+        <span class="btn-save--edited"> 
+        <?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?>
+        </span>
+        <span class="btn-save--saved"> 
+        <?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?>
+        </span>
+    </div>
+</div>
+</script>

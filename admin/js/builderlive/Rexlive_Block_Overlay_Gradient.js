@@ -27,22 +27,36 @@ var Rexlive_Block_Overlay_Gradient = (function($) {
 
     modal_props.gpicker.setColorPicker(handler => {
       var el = handler.getEl().querySelector("#colorpicker");
+      var $el = $(el);
 
-      $(el).spectrum({
+      $el.spectrum({
         color: handler.getColor(),
         showAlpha: true,
         showInput: true,
+        showButtons: false,
         containerClassName: 'sp-container-default',
-        replacerClassName: 'sp-replacer-default',
+        replacerClassName: 'sp-replacer__gradient',
         clickoutFiresChange: true,
         preferredFormat: "hex",
+        show: function() {
+          this.setAttribute("data-revert", false);
+          this.setAttribute("data-color-on-show", $el.spectrum("get").toRgbString());
+        },
         change(color) {
           handler.setColor(color.toRgbString());
         },
         move(color) {
           handler.setColor(color.toRgbString(), 0);
+        },
+        hide() {
+          if("true" == this.getAttribute("data-revert")) {
+            handler.setColor(this.getAttribute("data-color-on-show"), 0);
+          }
         }
       });
+
+      Rexbuilder_Util_Admin_Editor.addSpectrumCustomSaveButton($el);
+      Rexbuilder_Util_Admin_Editor.addSpectrumCustomCloseButton($el);
     });
   };
 

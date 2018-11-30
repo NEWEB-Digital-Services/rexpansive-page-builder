@@ -64,7 +64,8 @@ var TextEditor = (function($) {
   }
 
   var setColor = function(color) {
-    var finalColor = color ? color.toRgbString() : "rgba(0,0,0,0)";
+    // var finalColor = color ? color.toRgbString() : "rgba(0,0,0,0)";
+    var finalColor = color ? color : "rgba(0,0,0,0)";
     _triggerMEEvent({
       name: 'rexlive:mediumeditor:removeGradient',
       data: {},
@@ -125,6 +126,8 @@ var TextEditor = (function($) {
       // containerClassName: 'meditor-spectrum-color-picker',
       containerClassName: "sp-draggable sp-meditor",
       show: function() {
+        this.setAttribute("data-revert", false);
+        // this.setAttribute("data-color-on-show", $picker.spectrum("get").toRgbString());
         Rexbuilder_Color_Palette.show({
           $target: $picker,
           action: "color",
@@ -133,41 +136,26 @@ var TextEditor = (function($) {
         });
       },
       change: function(color) {
-        setColor(color);
+        setColor(color.toRgbString());
         $picker_preview.css('background-color',color.toRgbString());
       },
       move: function(color) {
-        setColor(color);
+        setColor(color.toRgbString());
       },
       hide: function(color) {
         var currentGradient = $picker.attr("data-selection-gradient");
-        if( null == currentGradient ) {
-          setColor(color);
-          $picker_preview.css('background-color',color.toRgbString());
+        var revertData = this.getAttribute("data-revert");
+        if( "null" == currentGradient ) {
+          var to_set = "true" == revertData ? this.getAttribute("data-color-on-show") : color.toRgbString();
+          setColor(to_set);
+          $picker_preview.css('background-color',to_set);
         }
         Rexbuilder_Color_Palette.hide();
       },
     });
 
-    var close = tmpl('tmpl-tool-close', {});
-    var $close = $(close);
-    $picker.spectrum('container').append($close);
-
-    var choose = tmpl('tmpl-tool-save', {});
-    var $choose = $(choose);
-    $picker.spectrum('container').append($choose);
-
-    $close.on('click', function(e) {
-      e.stopPropagation();
-      e.preventDefault();
-      $picker.spectrum('container').find('.sp-cancel').trigger('click');
-    });
-
-    $choose.on('click', function(e) {
-      e.stopPropagation();
-      e.preventDefault();
-      $picker.spectrum('container').find('.sp-choose').trigger('click');
-    });
+    Rexbuilder_Util_Editor.addSpectrumCustomSaveButton($picker);
+    Rexbuilder_Util_Editor.addSpectrumCustomCloseButton($picker);
 
     $picker.spectrum("container").draggable();
   };
@@ -205,7 +193,10 @@ var TextEditor = (function($) {
 
       // sets the color of the current selection on the color
       // picker
-      $(this.button).spectrum("set", getCurrentTextColor());
+      var textCurrentColor = getCurrentTextColor();
+      $(this.button).spectrum("set", textCurrentColor);
+      this.button.setAttribute("data-color-on-show", textCurrentColor);
+
       var currentGradient = getCurrentGradientValue();
       var currentStyle = getCurrentStyle();
       this.button.setAttribute("data-selection-gradient", currentGradient);
@@ -284,7 +275,7 @@ var TextEditor = (function($) {
       // this.document.execCommand("insertHTML", false, "<span class='text-gradient'>"+ document.getSelection()+"</span>");
 
       // 3) RANGY
-      console.log(this.gradientClassApplier.isAppliedToSelection());
+      // console.log(this.gradientClassApplier.isAppliedToSelection());
       // if( this.gradientClassApplier.isAppliedToSelection() ) {
       //   if( this.gradientClassApplier.elementAttributes["data-gradient"] !== event.color ) {
       //     // var sel = rangy.getSelection();

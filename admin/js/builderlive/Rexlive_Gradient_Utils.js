@@ -1,3 +1,7 @@
+/**
+ * Gradient Utilitis, mainlly to generate browser compatible CSS rules
+ * @since 2.0.0
+ */
 var Rexlive_Gradient_Utils = (function($) {
   var shape = "ellipse";
 
@@ -301,7 +305,6 @@ var Rexlive_Gradient_Utils = (function($) {
   }
 
   function getMarkup(gradientType, inputPos, handlers, inputSize) {
-    console.log(gradientType, inputPos, handlers, inputSize);
     if (gradientType == "linear") {
       w3c = lineargradient_w3c(inputPos, handlers);
       gecko = lineargradient_gecko(inputPos, handlers);
