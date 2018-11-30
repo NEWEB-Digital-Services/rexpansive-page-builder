@@ -1023,8 +1023,8 @@ defined('ABSPATH') or exit;
                         <option value="">Select Type</option>
                         <option value="radial">Radial</option>
                         <option value="linear">Linear</option>
-                        <option value="repeating-radial">Repeating Radial</option>
-                        <option value="repeating-linear">Repeating Linear</option>
+                        <!-- <option value="repeating-radial">Repeating Radial</option>
+                        <option value="repeating-linear">Repeating Linear</option> -->
                     </select>
                 </div>
                 <div class="bl_modal__option-wrap">

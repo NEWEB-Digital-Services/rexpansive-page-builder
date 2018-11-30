@@ -380,6 +380,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'rexlive-modals', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Modals.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-base-settings', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Base_Settings.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-util-admin', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Util_Admin_Editor.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexlive-gradient-utils', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Gradient_Utils.js', array( 'jquery' ), null, true );
 				global $post;
 				$source = get_permalink($post->ID);
 				

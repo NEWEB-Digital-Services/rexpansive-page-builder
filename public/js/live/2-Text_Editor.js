@@ -59,6 +59,10 @@ var TextEditor = (function($) {
     return editorInstance.getSelectedParentElement().getAttribute("data-gradient");
   };
 
+  var getCurrentStyle = function() {
+    return editorInstance.getSelectedParentElement().getAttribute("style");
+  }
+
   var setColor = function(color) {
     var finalColor = color ? color.toRgbString() : "rgba(0,0,0,0)";
     _triggerMEEvent({
@@ -136,8 +140,11 @@ var TextEditor = (function($) {
         setColor(color);
       },
       hide: function(color) {
-        setColor(color);
-        $picker_preview.css('background-color',color.toRgbString());
+        var currentGradient = $picker.attr("data-selection-gradient");
+        if( null == currentGradient ) {
+          setColor(color);
+          $picker_preview.css('background-color',color.toRgbString());
+        }
         Rexbuilder_Color_Palette.hide();
       },
     });
@@ -200,11 +207,13 @@ var TextEditor = (function($) {
       // picker
       $(this.button).spectrum("set", getCurrentTextColor());
       var currentGradient = getCurrentGradientValue();
+      var currentStyle = getCurrentStyle();
       this.button.setAttribute("data-selection-gradient", currentGradient);
       _triggerMEEvent({
         name: "rexlive:mediumeditor:traceTextGradient",
         data: {
-          gradient: currentGradient
+          gradient: currentGradient,
+          style: currentStyle
         },
         editable: null
       })
@@ -276,19 +285,18 @@ var TextEditor = (function($) {
 
       // 3) RANGY
       console.log(this.gradientClassApplier.isAppliedToSelection());
-      if( this.gradientClassApplier.isAppliedToSelection() ) {
-        if( this.gradientClassApplier.elementAttributes["data-gradient"] !== event.color ) {
-          // var sel = rangy.getSelection();
-          // console.log(sel.toHtml());
+      // if( this.gradientClassApplier.isAppliedToSelection() ) {
+      //   if( this.gradientClassApplier.elementAttributes["data-gradient"] !== event.color ) {
+      //     // var sel = rangy.getSelection();
+      //     // console.log(sel.toHtml());
           
-        }
-      }
+      //   }
+      // }
 
-      console.log(this.gradientClassApplier.elementAttributes);
       this.gradientClassApplier.undoToSelection();
 
       this.gradientClassApplier.elementAttributes["data-gradient"] = event.color;
-      this.gradientClassApplier.elementAttributes["style"] = "background:" + event.color + ";-webkit-background-clip: text;-webkit-text-fill-color: transparent;";
+      this.gradientClassApplier.elementAttributes["style"] = event.style;
       this.gradientClassApplier.applyToSelection();
       // if( this.gradientClassApplier.elementAttributes["data-gradient"] !== event.color ) {
       //   this.gradientClassApplier.undoToSelection();
@@ -300,7 +308,7 @@ var TextEditor = (function($) {
 
     traceGradient: function(event, editable) {
       this.gradientClassApplier.elementAttributes["data-gradient"] = event.gradient;
-      this.gradientClassApplier.elementAttributes["style"] = "background:" + event.gradient + ";-webkit-background-clip: text;-webkit-text-fill-color: transparent;";
+      this.gradientClassApplier.elementAttributes["style"] = event.style;
     },
 
     removeGradient: function(event, editable) {

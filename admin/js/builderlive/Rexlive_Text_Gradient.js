@@ -136,13 +136,18 @@ var Rexlive_Text_Gradient = (function($) {
 
   var _updateLive = function() {
     var value = modal_props.gpicker.getValue();
-    console.log(value);
+    var type = modal_props.$gradient_type.val();
+    var direction = modal_props.$gradient_angle.val();
+    direction = "135deg" === direction ? "top left" : direction;
+    direction = "315deg" === direction ? "bottom right" : direction;
+    var styleGradient = Rexlive_Gradient_Utils.getMarkup(type, direction, modal_props.gpicker.getHandlers(),"cover");
     if( "" !== value ) {
       var data_updateBlockGradient = {
         eventName: "rexlive:setTextGradient",
         data_to_send: {
           target: target,
           color: value,
+          style: styleGradient,
           active: true
         }
       };
