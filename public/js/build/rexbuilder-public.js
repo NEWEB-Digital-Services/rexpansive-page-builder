@@ -322,23 +322,29 @@ var Rexbuilder_App = (function($) {
 
     $grids.find(".rex-indicator__placeholder").rexIndicator();
 
-    $sections.rexScrolled({
-      callback: function(el) {
-        if (Rexbuilder_Util.has_class(el, "rex-element--animated")) {
-          var $el = $(el);
-          $el
-            .addClass("run-animation")
-            .on(Rexbuilder_Util.transitionEvent, function(e) {});
+    if( false == _plugin_frontend_settings.user.editing ) {
+      $sections.rexScrolled({
+        callback: function(el) {
+          if (Rexbuilder_Util.has_class(el, "rex-element--animated")) {
+            var $el = $(el);
+            $el
+              .addClass("run-animation")
+              .on(Rexbuilder_Util.transitionEvent, function(e) {});
+          }
         }
-      }
-    });
+      });
+    }
 
     if (typeof _plugin_frontend_settings !== "undefined") {
-      if (1 == _plugin_frontend_settings.animations) {
-        // Activate animations
-        $(".rs-animation").rexScrollify({
-          mobile: false
-        });
+      if (1 == _plugin_frontend_settings.animations ) {
+        if( false == _plugin_frontend_settings.user.editing ) {
+          // Activate animations
+          $(".rs-animation").rexScrollify({
+            mobile: false
+          });
+        } else {
+          $(".rs-animation").removeClass("has-rs-animation");
+        }
       }
     }
 

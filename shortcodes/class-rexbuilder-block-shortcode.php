@@ -283,9 +283,9 @@ class Rexbuilder_Block
             echo (("" == $block_background_style && "" == $id_image_bg_block && "" == $content && (empty($video_bg_id) || 'undefined' == $video_bg_id) && (empty($video_bg_url) || 'undefined' == $video_bg_url) && (empty($video_bg_url_vimeo) || 'undefined' == $video_bg_url_vimeo)) ? ' real-empty' : '');
             echo ((('full' == $type_bg_block && "" != $id_image_bg_block && "" == $content && $section_layout == 'fixed') || (!empty($video_bg_id) && "" == $content) || (!empty($video_bg_url) && "" == $content) || (!empty($video_bg_url_vimeo) && "" == $content)) ? ' only-background' : '');
             echo (('full' == $type_bg_block && $section_layout == 'masonry' && "" == $content) ? ' natural-fluid-image' : '');
-            if ($animation == 1 && $block_animation && !$block_is_static):
+            if ($animation == 1 && $block_animation && !$block_is_static) {
                 echo ' ' . ' has-rs-animation rs-animation';
-            endif;
+            }
             echo ' w' . $size_x;
 
             // aggiunta classe per editor di testo

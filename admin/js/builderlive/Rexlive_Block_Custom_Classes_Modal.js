@@ -8,7 +8,7 @@ var Block_CustomClasses_Modal = (function ($) {
     var targetSection;
 
     var _resetCustomClasses = function () {
-        custom_classes_modal_properties.$classes.val(defaultClasses);
+        custom_classes_modal_properties.$classes.val(defaultClasses).trigger("focusout");
     }
 
     var _updateCustomClasses = function (data) {
@@ -30,7 +30,7 @@ var Block_CustomClasses_Modal = (function ($) {
             newClasses = newClasses.replace("active-small-block-overlay", "");
         }
 
-        custom_classes_modal_properties.$classes.val(newClasses);
+        custom_classes_modal_properties.$classes.val(newClasses).trigger("focusout");
     }
 
     var _applyCustomClasses = function () {

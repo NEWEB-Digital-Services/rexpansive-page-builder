@@ -14,7 +14,7 @@
 
 .svg-A002-Redo {
 	@extend %svg-common;
-	background-position: 87.8048780487805% 0;
+	background-position: 87.8048780487805% 12.5%;
 }
 
 .svg-A002-Redo-dims {
@@ -44,7 +44,7 @@
 
 .svg-A006-Save-Clear {
 	@extend %svg-common;
-	background-position: 60.97560975609756% 31.25%;
+	background-position: 100% 12.5%;
 }
 
 .svg-A006-Save-Clear-dims {
@@ -54,7 +54,7 @@
 
 .svg-A007-Close {
 	@extend %svg-common;
-	background-position: 60.97560975609756% 43.75%;
+	background-position: 60.97560975609756% 45.625%;
 }
 
 .svg-A007-Close-dims {
@@ -254,7 +254,7 @@
 
 .svg-C001-Link {
 	@extend %svg-common;
-	background-position: 60.97560975609756% 18.75%;
+	background-position: 87.8048780487805% 0;
 }
 
 .svg-C001-Link-dims {
@@ -264,7 +264,7 @@
 
 .svg-C002-No-Select {
 	@extend %svg-common;
-	background-position: 87.8048780487805% 12.5%;
+	background-position: 60.97560975609756% 33.125%;
 }
 
 .svg-C002-No-Select-dims {
@@ -374,7 +374,7 @@
 
 .svg-Z007-Zoom {
 	@extend %svg-common;
-	background-position: 61.34969325153374% 5.660377358490566%;
+	background-position: 61.34969325153374% 20.12578616352201%;
 }
 
 .svg-Z007-Zoom-dims {
@@ -412,9 +412,19 @@
 	height: 9px;
 }
 
+.svg-Z011-Arrow {
+	@extend %svg-common;
+	background-position: 59.523809523809526% 5.732484076433121%;
+}
+
+.svg-Z011-Arrow-dims {
+	width: 16px;
+	height: 23px;
+}
+
 .svg-_A001-Tablet {
 	@extend %svg-common;
-	background-position: 100% 12.5%;
+	background-position: 100% 25%;
 }
 
 .svg-_A001-Tablet-dims {
@@ -424,7 +434,7 @@
 
 .svg-_A002-Redo {
 	@extend %svg-common;
-	background-position: 100% 25%;
+	background-position: 100% 37.5%;
 }
 
 .svg-_A002-Redo-dims {
@@ -434,7 +444,7 @@
 
 .svg-_A003-Undo {
 	@extend %svg-common;
-	background-position: 100% 37.5%;
+	background-position: 100% 50%;
 }
 
 .svg-_A003-Undo-dims {
@@ -444,7 +454,7 @@
 
 .svg-_A010-Mobile {
 	@extend %svg-common;
-	background-position: 100% 50%;
+	background-position: 100% 62.5%;
 }
 
 .svg-_A010-Mobile-dims {
@@ -454,7 +464,7 @@
 
 .svg-_B002-Boxed {
 	@extend %svg-common;
-	background-position: 100% 62.5%;
+	background-position: 100% 75%;
 }
 
 .svg-_B002-Boxed-dims {
@@ -464,7 +474,7 @@
 
 .svg-_C005-Layout {
 	@extend %svg-common;
-	background-position: 100% 75%;
+	background-position: 100% 87.5%;
 }
 
 .svg-_C005-Layout-dims {
@@ -474,7 +484,7 @@
 
 .svg-_Z002-Image-Full {
 	@extend %svg-common;
-	background-position: 100% 87.5%;
+	background-position: 0 100%;
 }
 
 .svg-_Z002-Image-Full-dims {
@@ -484,7 +494,7 @@
 
 .svg-_Z005-Setting {
 	@extend %svg-common;
-	background-position: 0 100%;
+	background-position: 12.195121951219512% 100%;
 }
 
 .svg-_Z005-Setting-dims {
@@ -494,7 +504,7 @@
 
 .svg-__A002-Redo {
 	@extend %svg-common;
-	background-position: 12.195121951219512% 100%;
+	background-position: 24.390243902439025% 100%;
 }
 
 .svg-__A002-Redo-dims {
@@ -504,7 +514,7 @@
 
 .svg-__A003-Undo {
 	@extend %svg-common;
-	background-position: 24.390243902439025% 100%;
+	background-position: 36.58536585365854% 100%;
 }
 
 .svg-__A003-Undo-dims {
