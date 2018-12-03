@@ -518,6 +518,10 @@ var Rexbuilder_Util_Editor = (function($) {
     Rexbuilder_Util.$document.on("rexlive:importButton", function (e) {
       Rexbuilder_Rexbutton.fixImportedButton();
     });
+    
+    Rexbuilder_Util.$document.on("rexlive:updateButtonLive", function(e){
+      Rexbuilder_Rexbutton.updateButtonStyleLive(e.settings.data_to_send);
+    });
   };
 
   var _hideAllTools = function() {
