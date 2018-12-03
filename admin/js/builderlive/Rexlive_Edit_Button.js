@@ -8,6 +8,8 @@ var Button_Edit_Modal = (function ($) {
     var button_editor_properties;
     var buttonData;
     var rexButtonsJSON;
+    var buttonsIDsUsed;
+    var defaultButtonData;
 
     var _openButtonEditorModal = function (data) {
         console.log(data);
@@ -75,6 +77,7 @@ var Button_Edit_Modal = (function ($) {
     }
 
     var _saveButtonOnDB = function () {
+        _updateIDs();
         _updateJSONCSS();
         $.ajax({
             type: "POST",
@@ -87,13 +90,31 @@ var Button_Edit_Modal = (function ($) {
                 html_button: buttonData.html,
                 css_button: _createCSSbutton(),
                 name_button: buttonData.buttonTarget.button_name,
-                jsonCSS: JSON.stringify(rexButtonsJSON)
+                jsonCSS: JSON.stringify(rexButtonsJSON),
             },
             success: function (response) {
                 // solo togliere il loader sul pulsante di salvataggio
             },
             error: function (response) { },
             complete: function (response) { }
+        });
+    }
+
+    var _updateIDs = function () {
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: live_editor_obj.ajaxurl,
+            data: {
+                action: "rex_update_buttons_ids",
+                nonce_param: live_editor_obj.rexnonce,
+                ids_used: JSON.stringify(buttonsIDsUsed),
+            },
+            success: function () {
+                // solo togliere il loader sul pulsante di salvataggio
+            },
+            error: function () { },
+            complete: function () { }
         });
     }
 
@@ -136,21 +157,29 @@ var Button_Edit_Modal = (function ($) {
         var buttonID = buttonData.buttonTarget.button_id;
         var buttonCSS = "";
 
-        buttonCSS += "." + buttonID + "-rex-button-container{";
+        buttonCSS = ".rex-button-wrapper[data-rex-button-id="+buttonID+"]";
+        buttonCSS += " .rex-button-container{";
         buttonCSS += "font-size: " + buttonData.font_size + ";";
         buttonCSS += "color: " + buttonData.text_color + ";";
-        buttonCSS += "background-color: " + buttonData.background_color + ";";
         buttonCSS += "height: " + buttonData.button_height + ";";
+        buttonCSS += "margin-top: " + buttonData.margin_top + ";";
+        buttonCSS += "margin-bottom: " + buttonData.margin_bottom + ";";
+        buttonCSS += "}";
+        
+        buttonCSS = ".rex-button-wrapper[data-rex-button-id=" + buttonID + "]";
+        buttonCSS += " .rex-button-background{";
+        buttonCSS += "background-color: " + buttonData.background_color + ";";
+        //background-image
+        //background-gradient
         buttonCSS += "border-width: " + buttonData.border_width + ";";
         buttonCSS += "border-color: " + buttonData.border_color + ";";
         buttonCSS += "border-radius: " + buttonData.border_radius + ";";
-        buttonCSS += "margin-top: " + buttonData.margin_top + ";";
-        buttonCSS += "margin-bottom: " + buttonData.margin_bottom + ";";
-        buttonCSS += "}"
-        
-        buttonCSS += "." + buttonID + "-rex-button-container:hover{";
+        buttonCSS += "border-style: solid;";
+        buttonCSS += "}";
+
+        buttonCSS = ".rex-button-wrapper[data-rex-button-id=" + buttonID + "]";
+        buttonCSS += " .rex-button-background:hover{";
         buttonCSS += "background-color: " + buttonData.hover_color + ";";
-        buttonCSS += "color: " + buttonData.text_color + ";";
         buttonCSS += "}";
         return buttonCSS;
     }
@@ -170,12 +199,29 @@ var Button_Edit_Modal = (function ($) {
     };
 
     var _linkDocumentListeners = function () {
+        // Quando chiedo se staccare il pulsante dalla sincronia?
+        button_editor_properties.$create_new_button.on("click", function () {
+            // aprire il pannello con i dati del pulsante di default
+            _openButtonEditorModal(defaultButtonData);
+        });
         button_editor_properties.$close_button.on("click", function () {
+            //chiudere il pannello
             _closeModal();
         });
         button_editor_properties.$cancel_button.on("click", function () {
+            //chiudere il pannello
+            //annullare modifiche?
             _closeModal();
-        })
+        });
+        button_editor_properties.$add_model_button.on("click", function () {
+            //recuperare nome modello inserito
+            //se arriva pulsante in pagina nulla / se arriva da + creare nuovo ID
+            //salvare nel db
+            //aggiornare pulsanti nella pagina (cambiare gli id) (?)
+        });
+        button_editor_properties.$apply_changes_button.on("click", function () {
+            //chiudi pallello
+        });
     };
 
     var _init = function () {
@@ -184,10 +230,14 @@ var Button_Edit_Modal = (function ($) {
         button_editor_properties = {
             $self: $self,
             $close_button: $container.find(".rex-modal__close-button"),
-            $cancel_button: $container.find(".rex-cancel-button")
+            $cancel_button: $container.find(".rex-cancel-button"),
+            $create_new_button: $("#rex-add-new-button"),
+            $add_model_button: $container.find(".add-rex-button-model"),
+            $apply_changes_button: $container.find(".rex-apply-button-edits"),
         };
-        rexButtonsJSON = JSON.parse($("#rex-buttons-json-css").text());
 
+        rexButtonsJSON = JSON.parse($("#rex-buttons-json-css").text());
+        buttonsIDsUsed = JSON.parse($("#rex-buttons-ids-used").text());
         _linkDocumentListeners();
 
         buttonData = {
@@ -210,6 +260,30 @@ var Button_Edit_Modal = (function ($) {
                 button_number: 0,
             }
         };
+
+        defaultButtonData = {
+            separateButton: true,
+            buttonInfo: {
+                text_color: "white",
+                text: "LABEL",
+                font_size: "24px",
+                background_color: "#ff6868",
+                button_height: "60px",
+                hover_color: "#003fff",
+                border_color: "rgb(0,120,255)",
+                border_width: "5px",
+                border_radius: "30px",
+                margin_top: "0px",
+                margin_bottom: "10px",
+                link_taget: "",
+                link_type: "",
+                buttonTarget: {
+                    button_name: "",
+                    button_id: "",
+                    button_number: 0,
+                }
+            }
+        }
     };
 
     return {

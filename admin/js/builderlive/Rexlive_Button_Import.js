@@ -135,7 +135,7 @@ var Button_Import_Modal = (function ($) {
                     var $divInsert = $(jQuery.parseHTML(textData));
                     var $spanEl = $(document.createElement("span"));
                     $spanEl.addClass("rex-edit-button");
-                    $divInsert.find(".rex-button-container").prepend($spanEl);
+                    $divInsert.find(".rex-button-wrapper").prepend($spanEl);
                     $divInsert.addClass("rex-loading-button");
                     $divInsert.insertAfter($insertionPoint[0]);
                     $insertionPoint.remove();

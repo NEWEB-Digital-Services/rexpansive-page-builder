@@ -43,13 +43,18 @@ if(get_post_meta($post->ID, '_save_from_backend', true) == "false"){
 	$backendEditing = "false";
 }
 
-$buttonsStyles = get_option("_rex_buttons_styles", "[]");
+$buttonsStyles = get_option("_rex_buttons_json_styles", "[]");
 $buttonsStylesArray = json_decode($buttonsStyles, true);
 
+$buttonsIDs_used = get_option("_rex_buttons_ids", "");
+$buttonsIDs_json = explode(" ", $buttonsIDs_used);
 ?>
 <?php // include_once "rexlive-debug-info.php"; ?>
 <div id="rexpansive-builder-backend-wrapper" data-rex-edited-backend="<?php echo $backendEditing;?>">
-	<div id="rex-buttons-json-css" style="display: none;"><?php echo json_encode($buttonsStylesArray);?></div>
+	<div>
+		<div id="rex-buttons-json-css" style="display: none;"><?php echo json_encode($buttonsStylesArray);?></div>
+		<div id="rex-buttons-ids-used" style="display: none;"><?php echo json_encode($buttonsIDs_json);?></div>
+	</div>
 	<div id="rexbuilder-layout-data-backend" style="display: none;">
 		<div class = "available-layouts"><?php echo json_encode($layoutsAvaiable);?></div>
 	</div>

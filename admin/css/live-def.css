@@ -5133,3 +5133,31 @@ span.rex-theme-button,
   -webkit-transform: scale(2) translate(-25%, 25%);
   -ms-transform: scale(2) translate(-25%, 25%);
       transform: scale(2) translate(-25%, 25%); }
+
+.rex-button-wrapper {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex; }
+  .rex-button-wrapper .rex-button-container {
+    text-decoration: none;
+    position: relative;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex; }
+  .rex-button-wrapper .rex-button-background {
+    width: 100%;
+    height: 100%;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    display: -webkit-inline-box;
+    display: -ms-inline-flexbox;
+    display: inline-flex; }
+  .rex-button-wrapper .rex-button-text {
+    padding: 10px; }

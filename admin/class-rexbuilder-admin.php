@@ -1647,28 +1647,37 @@ class Rexbuilder_Admin {
 		
 		$response['error'] = false;
 		
-		$id_button = $response["id_button"];
-		$html_button = $response["html_button"];
-		$css_button = $response["css_button"];
-		$name_button = $response["name_button"];
-		$jsonCSS_buttons = $response["jsonCSS"];
+		$id_button = $_POST["id_button"];
+		$html_button = $_POST["html_button"];
+		$css_button = $_POST["css_button"];
+		$name_button = $_POST["name_button"];
+		$jsonCSS_buttons = $_POST["jsonCSS"];
 
-		$buttons_ids = get_option("_rex_buttons_ids");
-		
-		if($buttons_ids === false || $buttons_ids == ""){
-			$buttons_ids = "".$id_button;
-		} else {
-			if (strpos($buttons_ids, $id_button) === false) {
-				$buttons_ids .= " ".$id_button;
-			}
-		}
-		
-		update_option( '_rex_buttons_ids', $buttons_ids );
 		update_option( '_rex_buttons_styles', $jsonCSS_buttons );
 		update_option( '_rex_button_'.$id_button.'_css', $css_button );
 		update_option( '_rex_button_'.$id_button.'_html', $html_button );
 		update_option( '_rex_button_'.$id_button.'_name', $name_button );
 		$response['idButton'] = $id_button;
+		wp_send_json_success( $response );
+	}
+	
+	public function	rex_update_buttons_ids(){
+		$nonce = $_POST['nonce_param'];
+		
+        $response = array(
+			'error' => false,
+            'msg' => '',
+        );
+		
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+		
+		$response['error'] = false;
+		$buttons_ids = $_POST["ids_used"];
+		update_option( '_rex_buttons_ids', $buttons_ids );
 		wp_send_json_success( $response );
 	}
 	

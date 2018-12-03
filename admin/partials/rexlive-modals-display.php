@@ -1718,13 +1718,18 @@ defined('ABSPATH') or exit;
         </div>
         <div id="rex-buttons-list" class="rex-lateral-panel__content">
             <div class="buttons-list-wrapper">
+                <div id="rex-add-new-button">
+                    +
+                </div>
                 <ul class="button-list button-list--pswp">
                     <li draggable="true">
                         <div class="rex-container">
-                            <span class="rex-button-container" data-rex-button-id="qaz1">
-                                <a href="https://www.google.com" class="qaz1-rex-button-container rex-button">
-                                    <span class="qaz1-rex-button-data" style="display:none;" data-text-color="white" data-text-size="24px" data-background-color="red" data-background-color-hover="rgb(120,0,255)" data-border-width="5px" data-border-color="rgba(0,120,255,0.5)" data-button-align="" data-border-radius="30px" data-button-height="30px" data-margin-top="0px" data-margin-bottom="10px" data-link-target="https://www.google.com" data-link-type="" data-button-model-name="Bel pulsante"></span>
-                                    <span class="rex-button-text">LABEL</span>
+                            <span class="rex-button-wrapper" data-rex-button-id="qaz1">
+                                <span class="rex-button-data" style="display:none;" data-text-color="white" data-text-size="24px" data-background-color="rgba(1,1,1,0.3)" data-background-color-hover="rgb(120,0,255)" data-border-width="5px" data-border-color="rgba(0,120,255,0.5)" data-border-radius="30px" data-button-height="30px" data-margin-top="0px" data-margin-bottom="10px" data-link-target="https://www.google.com" data-link-type="" data-button-model-name="Bel pulsante" data-background-gradient-colors="#bf6e4e 0%,#74f765 100%" data-background-gradient-direction="left top"></span>
+                                <a href="https://www.google.com" class="rex-button-container" type="">
+                                    <span class="rex-button-background">
+                                        <span class="rex-button-text">LABELS</span>
+                                    </span>
                                 </a>
                             </span>
                         </div>
@@ -1772,7 +1777,9 @@ defined('ABSPATH') or exit;
     </div>
 </div>
 <!-- Edit Button -->
-
+background-color: #bf6e4e;
+@include filter-gradient(#bf6e4e, #74f765, horizontal);
+@include background-image(linear-gradient(left top, #bf6e4e 0%,#74f765 100%));
 
 <!-- 
 html
@@ -1784,7 +1791,7 @@ html
     </a>
 </p>
 css
-.qaz1-rex-button-container {
+.rex-button-container[data-rex-id="qaz1"] {
   align-items:center;
   display:inline-flex;
   padding:10px;
@@ -1799,14 +1806,25 @@ css
   border-style: solid;
   border-width: 5px;
   border-color: rgba(0,120,255,0.5);
-  
   border-radius: 30px;
   
+  //gradiente
+  background: #003fff;
+background: -moz-linear-gradient(-45deg, #003fff 0%, #ff6868 100%);
+background: -webkit-linear-gradient(-45deg, #003fff 0%,#ff6868 100%);
+background: linear-gradient(135deg, #003fff 0%,#ff6868 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#003fff', endColorstr='#ff6868',GradientType=1 );
+
+//immagine bg
+  background-image: url("https://wallpapercave.com/wp/wp1864352.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+
   margin-top: 0px;
   margin-bottom: 10px;
 }
 
-.qaz1-rex-button-container:hover {
+.rex-button-container[data-rex-id="qaz1"]:hover {
   background-color: rgb(120,0,255);
 }
 
@@ -1825,7 +1843,6 @@ colore hover
 colore bordo
 larghezza bordo
 
-centramento del pulsante //da capire come gestire, per ora salviamo e basta
 angolo smussamento lato
 margine top e bot
 

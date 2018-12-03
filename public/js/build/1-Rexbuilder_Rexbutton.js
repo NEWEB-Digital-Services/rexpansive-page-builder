@@ -30,16 +30,21 @@ var Rexbuilder_Rexbutton = (function ($) {
     };
 
     var _fixImportedButton = function () {
-        var $buttonContainer = Rexbuilder_Util.$rexContainer.find(".rex-loading-button .rex-button-container");
-        var $textWrap = $buttonContainer.parents(".text-wrap");
+        var $buttonWrapper = Rexbuilder_Util.$rexContainer.find(".rex-loading-button .rex-button-wrapper");
+        var $buttonContainer = $buttonWrapper.find(".rex-button-container").eq(0);
+        var $textWrap = $buttonWrapper.parents(".text-wrap");
+
         // fixing position of medium buttons
+        // inutile?
+        /*
         var $insertButtons = $textWrap.find(".medium-insert-buttons");
         if ($insertButtons.length == 1 && !$insertButtons.is(':last-child')) {
             $insertButtons.detach().appendTo($textWrap);
         }
-
-        $buttonContainer.unwrap();
-        $buttonContainer.wrap("<p></p>");
+        */
+       
+        $buttonWrapper.unwrap();
+        $buttonWrapper.wrap("<p></p>");
 
         var buttonID = $buttonContainer.attr("data-rex-button-id");
         var flagButtonFound = false;
@@ -53,7 +58,7 @@ var Rexbuilder_Rexbutton = (function ($) {
             _addButtonStyle($buttonContainer);
             buttonsInPage.push(buttonID);
         }
-        _linkHoverListeners($buttonContainer);
+        _linkHoverListeners($buttonWrapper);
     }
 
     var _addHoverBackgroundColor = function (buttonID, newColor) {
@@ -61,11 +66,11 @@ var Rexbuilder_Rexbutton = (function ($) {
     }
 
     var _addHoverRule = function (buttonID, property) {
-        styleSheet.insertRule("." + buttonID + "-rex-button-container:hover{" + property + ";}", styleSheet.cssRules.length);
+        styleSheet.insertRule(".rex-button-container[data-rex-button-id=\"" + buttonID +"\"]:hover{" + property + ";}", styleSheet.cssRules.length);
     }
 
     var _addStyleRule = function (buttonID, property) {
-        styleSheet.insertRule("." + buttonID + "-rex-button-container{" + property + ";}", styleSheet.cssRules.length);
+        styleSheet.insertRule(".rex-button-container[data-rex-button-id=\"" + buttonID+"\"]{" + property + ";}", styleSheet.cssRules.length);
     }
 
     var _removeHoverBackgroundColor = function (buttonID) {
@@ -76,7 +81,7 @@ var Rexbuilder_Rexbutton = (function ($) {
         var index = 0;
         // rimuove tutte le regole che si applicano su property name
         for (var i = 0; i < styleSheet.cssRules.length; i++) {
-            if (styleSheet.cssRules[i].selectorText == "." + buttonID + "-rex-button-container:hover"
+            if (styleSheet.cssRules[i].selectorText == ".rex-button-container[data-rex-button-id=\"" + buttonID +"\"]:hover"
                 && styleSheet.cssRules[i].style[0] == propertyName) {
                 index = i;
                 styleSheet.deleteRule(index);
@@ -108,17 +113,9 @@ var Rexbuilder_Rexbutton = (function ($) {
         });
     }
 
-    /**
-    <span class="rex-button-container" data-rex-button-id="qaz1">
-        <a href="https://www.google.com" class="qaz1-rex-button-container rex-button">
-            <span class="qaz1-rex-button-data" style="display:none;" data-text-color="white" data-text-size="24px" data-background-color="red" data-background-color-hover="rgb(120,0,255)" data-border-width="5px" data-border-color="rgba(0,120,255,0.5)" data-border-radius="30px" data-button-height="30px" data-margin-top="0px" data-margin-bottom="10px" data-link-target="https://www.google.com" data-link-type="" data-button-model-name="Bel pulsante"></span>
-            <span class="qaz1-rex-button-text">LABEL</span>
-        </a>
-    </span>
-    */
     var _addButtonStyle = function ($button) {
         var buttonID = $button.attr("data-rex-button-id");
-        var $buttonData = $button.find("." + buttonID + "-rex-button-data").eq(0);
+        var $buttonData = $button.find(".rex-button-data").eq(0);
         if ($buttonData.length != 0) {
             var buttonProperties = {
                 font_size: $buttonData.attr("data-text-size").toString(),
@@ -152,27 +149,6 @@ var Rexbuilder_Rexbutton = (function ($) {
 
     var _removeButtonStyle = function () {
 
-    }
-
-    var _updateButtonsInPage = function () {
-        var j;
-        var flagButtonFound = false;
-        Rexbuilder_Util.$rexContainer.find(".rex-button-container").each(function (i, button) {
-            var $button = $(button);
-            var buttonID = $button.attr("data-rex-button-id");
-            flagButtonFound = false;
-            for (j = 0; j < buttonsInPage.length; j++) {
-                if (buttonsInPage[j] == buttonID) {
-                    flagButtonFound = true;
-                    break;
-                }
-            }
-            flagButtonFound = false;
-            if (!flagButtonFound) {
-                _addButtonStyle($button);
-                buttonsInPage.push(buttonID);
-            }
-        });
     }
 
     var _generateButtonData = function ($buttonContainer) {
@@ -239,21 +215,24 @@ var Rexbuilder_Rexbutton = (function ($) {
         });
     }
 
-    var _fixButtonsInPage = function () {
-        var flagButtonFound, j;
+    var _updateButtonListInPage = function () {
+        var j;
+        var flagButtonFound = false;
         Rexbuilder_Util.$rexContainer.find(".rex-button-container").each(function (i, button) {
             var $button = $(button);
-            if (!$button.hasClass("rex-separate-button")) {
-                var buttonID = $button.attr("data-rex-button-id");
-                flagButtonFound = false;
-                for (j = 0; j < buttonsInPage.length; j++) {
-                    if (buttonsInPage[j] == buttonID) {
-                        flagButtonFound = true;
-                        break;
-                    }
+            var buttonID = $button.attr("data-rex-button-id");
+            flagButtonFound = false;
+            for (j = 0; j < buttonsInPage.length; j++) {
+                if (buttonsInPage[j] == buttonID) {
+                    flagButtonFound = true;
+                    break;
                 }
-                if (!flagButtonFound) {
-                    buttonsInPage.push(buttonID);
+            }
+            flagButtonFound = false;
+            if (!flagButtonFound) {
+                buttonsInPage.push(buttonID);
+                if ($button.hasClass("rex-separate-button")) {
+                    _addButtonStyle($button);
                 }
             }
         });
@@ -267,11 +246,11 @@ var Rexbuilder_Rexbutton = (function ($) {
         styleSheet = null;
         buttonsInPage = [];
         buttonsIDsUsed = JSON.parse($("#rex-buttons-ids-used").text());
-        this.$buttonsStyle = $("#rexpansive-builder-rexbutton-style");
 
-        _fixButtonsInPage();
+        this.$buttonsStyle = $("#rexpansive-builder-rexbutton-style");
         _fixCustomStyleElement();
-        _updateButtonsInPage();
+
+        _updateButtonListInPage();
         _addToolsButton();
         _linkDocumentListeners();
     };
