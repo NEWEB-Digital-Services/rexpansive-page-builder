@@ -320,7 +320,7 @@ var Rexlive_Gradient_Utils = (function($) {
       opera = gecko.replace("-moz-", "-o-");
       ms = gecko.replace("-moz-", "-ms-");
     } else {
-      return;
+      return "";
     }
     markup = "";
 

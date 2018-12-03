@@ -283,7 +283,7 @@ var TextEditor = (function($) {
           
       //   }
       // }
-
+      
       this.gradientClassApplier.undoToSelection();
 
       this.gradientClassApplier.elementAttributes["data-gradient"] = event.color;
