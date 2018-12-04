@@ -129,10 +129,9 @@ var Rexbuilder_App = (function($) {
         progressClbk: function(data) {
           // var content = data.properties.$content[0];
           var block = data.properties.$content.parents('.grid-stack-item')[0];
+          var start_h = block.children[0].getAttribute('data-gs_start_h');
           var grid = data.properties.$content.parents('.grid-stack').data("gridstack");
-          // grid.resize(block,null,Math.round(content.offsetHeight/grid.opts.cellHeight) + data.properties.$toggle[0].offsetHeight);
-          // grid.resize(block,null,Math.round( ( content.offsetHeight + data.properties.$toggle[0].offsetHeight ) / grid.opts.cellHeight ));
-          grid.resize(block,null,Math.round( data.element.parentElement.offsetHeight / grid.opts.cellHeight ));
+          grid.resize(block,null,Math.round( parseInt(start_h) ));
         }
       };
     } else {
@@ -148,8 +147,9 @@ var Rexbuilder_App = (function($) {
         progressClbk: function(data) {
           // var content = data.properties.$content[0];
           var block = data.properties.$content.parents('.grid-stack-item')[0];
+          var start_h = block.children[0].getAttribute('data-gs_start_h');
           var grid = data.properties.$content.parents('.grid-stack').data("gridstack");
-          grid.resize(block,null,Math.round( data.element.parentElement.offsetHeight / grid.opts.cellHeight ));
+          grid.resize( block,null,Math.round( data.element.parentElement.offsetHeight * 1.3 / grid.opts.cellHeight ) );
         }
       };
     }
