@@ -1,0 +1,107 @@
+.rex-indicator__placeholder {
+  visibility: hidden;
+  @media screen and (max-width: 900px ){
+    &:first-child,
+    &:last-child {
+      min-height: 50px;
+    }
+  }
+}
+
+.rex-indicator__wrap--static {
+  &[data-ri-to=left],
+  &[data-ri-to=right] {
+    margin-right: 16px;
+  }
+}
+
+.rex-indicator__wrap--absolute {
+  position:absolute;
+  z-index:100;
+  transition: top 0.2s, left 0.2s;
+}
+
+.rex-indicator__standard {
+  display: flex;
+  align-items: center;
+}
+
+.rex-indicator__wrap--horizontal {
+  display:flex;
+  align-items:center;
+}
+.rex-indicator__wrap--vertical {
+  display:inline-flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.rex-indicator__dot {
+  background-color:#009ddf;
+  width:$indicator-dot-width;
+  height:$indicator-dot-width;
+  display:block;
+  border-radius:50%;
+}
+.rex-indicator__line {
+  background-color:#009ddf;
+  display:block;
+}
+.rex-indicator__wrap--horizontal {
+  min-width: $indicator-line-dimension + $indicator-dot-width;
+  .rex-indicator__line {
+    width:$indicator-line-dimension;
+    height:1px;
+  }
+}
+.rex-indicator__wrap--vertical {
+  min-height: $indicator-line-dimension + $indicator-dot-width;
+  .rex-indicator__line {
+    width:1px;
+    height:$indicator-line-dimension;
+  }
+}
+
+.rex-indicator--animate-line {
+  .rex-indicator__dot {
+    opacity: 0;
+    transition: opacity $indicator-dot-in-duration ease-in-out;
+  }
+  .rex-indicator__wrap--horizontal {
+    .rex-indicator__line {
+      width: 0;
+      transition: width $indicator-line-in-duration $expo-ease;
+    }
+  }
+  .rex-indicator__wrap--vertical {
+    .rex-indicator__line {
+      height: 0;
+      transition: height $indicator-line-in-duration $expo-ease;
+    }
+  }
+  &.run-animation {
+    .rex-indicator__dot {
+      opacity: 1;
+    }
+    .rex-indicator__wrap--horizontal {
+      .rex-indicator__line {
+        width: $indicator-line-dimension;
+      }
+    }
+    .rex-indicator__wrap--vertical {
+      .rex-indicator__line {
+        height: $indicator-line-dimension;
+      }
+    }
+  }
+}
+
+/** RESPONSIVNESS **/
+@media screen and (max-width:$small) {
+  .rex-indicator__wrap--absolute {
+    &[data-ri-to=left],
+    &[data-ri-to=right] {
+      transform: rotate(90deg);
+    }
+  }
+}

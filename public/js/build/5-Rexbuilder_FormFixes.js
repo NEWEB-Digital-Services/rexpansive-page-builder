@@ -7,7 +7,7 @@ var Rexbuilder_FormFixes = (function($) {
   var $forms;
 
   var _cache_variables = function() {
-    $forms = Rexbuilder_Util.$rexContainer.find('.wpcf7-form');
+    $forms = $('.wpcf7-form');
   };
   
   var _fix_checkboxes = function() {
@@ -15,17 +15,17 @@ var Rexbuilder_FormFixes = (function($) {
       var $this = $(e);
       if($this.hasClass('rxcf7-custom-checkbox')) {
         $this.find('.wpcf7-checkbox').each(function(i,e) {
-          if($(e).find('label').length>0) {
+          if($(e).find('label').length>0 && 0 == $(e).find('.rex-checkbox__indicator').length) {
             $(e).find('input[type=checkbox]').after('<span class="rex-checkbox__indicator"></span>');
           }
         });
         $this.find('.wpcf7-acceptance').each(function(i,e) {
-          if($(e).find('label').length>0) {
+          if($(e).find('label').length>0 && 0 == $(e).find('.rex-checkbox__indicator').length) {
             $(e).find('input[type=checkbox]').after('<span class="rex-checkbox__indicator"></span>');
           }
         });
       }
-      if($this.hasClass('rxcf7-custom-loader')) {
+      if($this.hasClass('rxcf7-custom-loader') && 0 == $this.find('.sk-double-bounce').length) {
         $this.find('.ajax-loader').append('<div class="sk-double-bounce"><div class="sk-child sk-double-bounce1"></div><div class="sk-child sk-double-bounce2"></div></div>');
       }
     });

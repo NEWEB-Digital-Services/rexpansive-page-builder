@@ -7,12 +7,42 @@ $large: 1025px;
 $form-custom-style: 'rxcf7-custom-style';
 $form-custom-loader: 'rxcf7-custom-loader';
 $form-custom-checkboxes: 'rxcf7-custom-checkbox';
+$form-custom-hide-tips: 'rxcf7-hide-tips';
 $form-custom-radio: 'rxcf7-custom-radio' ;
 $form-custom-select: 'rxcf7-custom-select';
 
 $spinkit-spinner-margin: 0 auto !default;
 $spinkit-size: 40px !default;
 $spinkit-spinner-color: #333 !default;
+
+/** REXSLIDER **/
+$pw-nav-width: 24px;
+$pw-nav-height: 24px;
+$pw-nav-color-1: #D8D8D8;
+$pw-nav-color-2: #A7ACAF;
+$blunt-slider-shadow: 0 2px 35px 0 rgba(0,0,0,0.7);
+
+/** ANIMATIONS **/
+$slide-duration: 1500ms;
+$slide-opacity-duration: 400ms;
+$border-in-duration: 800ms;
+$indicator-dot-in-duration: 400ms;
+$indicator-line-in-duration: 400ms;
+$expo-ease: cubic-bezier(1, 0, 0, 1);
+$expo-ease-out: cubic-bezier(0.19, 1, 0.22, 1);
+$ease-in-cubic: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+$ease-in-out-quad: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+$experiment: cubic-bezier(0.77, 0, 0.175, 1);
+$ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
+$ease-out-quint:cubic-bezier(0.23, 1, 0.32, 1);
+
+$fade-all-ease: cubic-bezier(0.71, 0.35, 0.26, 0.83);
+$fade-all-duration: 0.3s;
+$fade-up-ease: cubic-bezier(0.19, 1, 0.22, 1);
+
+/** INDICATOR **/
+$indicator-dot-width: 11px;
+$indicator-line-dimension: 85px;
 
 @mixin backgroundCover {
 	background-size: cover;

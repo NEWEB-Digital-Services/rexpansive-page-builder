@@ -216,6 +216,7 @@ class Rexbuilder_Public
             wp_enqueue_script('1-RexOverlayPalette', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/1-Rexbuilder_Overlay_Palette.js', array('jquery'), $ver, true);
             wp_enqueue_script('2-RexSaveListeners', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/2-Rex_Save_Listeners.js', array('jquery'), $ver, true);
             wp_enqueue_script('3-Navigator', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/3-Navigator.js', array('jquery'), $ver, true);
+            wp_enqueue_script('5-FormFixes', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/5-Rexbuilder_FormFixes.js', array('jquery'), $ver, true);
             wp_enqueue_script('5-flickity', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/flickity.pkgd.min.js', array('jquery'), $ver, true);
             wp_enqueue_script('2-RexSlider', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/2-RexSlider.js', array('jquery'), $ver, true);
             wp_enqueue_script( 'textfill', REXPANSIVE_BUILDER_URL  . $cartella. 'js/vendor/2-jquery.textFill.js', array( 'jquery' ), $ver, true );
@@ -232,6 +233,8 @@ class Rexbuilder_Public
             wp_enqueue_script('scrolled', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/4-jquery.rexScrolled.js', array('jquery'), $ver, true);
             wp_enqueue_script('rex-accordion', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/6-jquery.rexAccordion.js', array('jquery'), $ver, true);
             wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/6-jquery.rexIndicator.js', array('jquery'), $ver, true);
+            wp_enqueue_script('pixi', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/pixi.min.js', array('jquery'), $ver, true);
+            wp_enqueue_script('effect', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/jquery.rexEffect.js', array('jquery'), $ver, true);
 
             // SPECTRUM COLOR PICKER
             wp_enqueue_script('spectrumColor', REXPANSIVE_BUILDER_URL . $cartella . 'js/spectrum.js', array('jquery'), $ver, true);
@@ -1006,259 +1009,553 @@ endif;
     }
 
     /**
-     * Searching for custom attributes inside cf7 shortcode, to style the modules
-     * Searching for
-     * - form_background
-     * - form_padding
-     * - text_color
-     * - link_color
-     * - input_color
-     * - input_background
-     * - input_border
-     * - input_border_width
-     * - input_border_radius
-     * - placeholder_color
-     * - submit_color
-     * - submit_background
-     * - submit_border
-     * - submit_width
-     * - submit_height
-     * - error_color
-     * - error_background
-     * - error_border
-     * - success_color
-     * - success_background
-     * - success_border
-     * - acceptance_color
-     * - checkbox_border
-     * - checkbox_border_width
-     * - checkbox_background
-     * - loader_background
-     * - loader_color
-     *
-     * @param array $out
-     * @param array $pairs
-     * @param array $atts
-     * @param string $shortcode
-     * @return array
-     * @since 1.1.2
-     */
-    public function cf7_custom_style($out, $pairs, $atts, $shortcode)
-    {
-        $cstyle = '';
+	 * Searching for custom attributes inside cf7 shortcode, to style the modules
+	 * Searching for
+	 * - form_background
+	 * - form_padding
+	 * - form_width
+	 * - form_font_size
+	 * - form_text_align
+	 * - text_color
+	 * - link_color
+	 * - input_color
+	 * - input_width
+	 * - input_height
+	 * - input_background
+	 * - input_border
+	 * - input_border_width
+	 * - input_border_radius
+	 * - input_font_size
+	 * - input_font_weight
+	 * - input_letter_spacing
+	 * - input_padding
+	 * - input_required_color
+	 * - input_required_background
+	 * - input_required_border
+	 * - placeholder_color
+	 * - placeholder_font_weight
+	 * - placeholder_letter_spacing
+	 * - placeholder_text_transform
+	 * - submit_color
+	 * - submit_background
+	 * - submit_border
+	 * - submit_border_radius
+	 * - submit_width
+	 * - submit_height
+	 * - submit_font_size
+	 * - submit_font_weight
+	 * - submit_letter_spacing
+	 * - submit_padding
+	 * - reset_color
+	 * - reset_background
+	 * - reset_border
+	 * - reset_border_radius
+	 * - reset_width
+	 * - reset_height
+	 * - reset_font_size
+	 * - reset_font_weight
+	 * - reset_letter_spacing
+	 * - reset_padding
+	 * - error_color
+	 * - error_background
+	 * - error_border
+	 * - success_color
+	 * - success_background
+	 * - success_border
+	 * - acceptance_color
+	 * - acceptance_font_size
+	 * - acceptance_letter_spacing
+	 * - acceptance_line_height
+	 * - acceptance_text_align
+	 * - checkbox_border
+	 * - checkbox_border_width
+	 * - checkbox_background
+	 * - loader_background
+	 * - loader_color
+	 *
+	 * @param array $out
+	 * @param array $pairs
+	 * @param array $atts
+	 * @param string $shortcode
+	 * @return array
+	 * @since 1.1.2
+	 */
+	public function cf7_custom_style($out, $pairs, $atts, $shortcode) {
+		$cstyle = '';
+		
+		$cclass = 'rxcf7-custom-style-' . $atts['id'];
+		
+		if( isset( $atts['input_color'] ) || isset( $atts['input_width'] ) || isset( $atts['input_height'] ) || isset( $atts['input_font_size'] ) || isset( $atts['input_font_weight'] ) || isset( $atts['input_letter_spacing'] ) || isset( $atts['input_padding'] ) || isset( $atts['input_border'] ) || isset( $atts['input_border_width'] ) || isset( $atts['input_border_radius'] ) || isset( $atts['input_background'] ) || isset( $atts['input_required_color'] ) || isset( $atts['input_required_background'] ) || isset( $atts['input_required_border'] ) || isset( $atts['form_background'] ) || isset( $atts['form_padding'] ) || isset( $atts['form_font_size'] ) || isset( $atts['form_text_align'] ) || isset( $atts['form_width'] ) || isset( $atts['placeholder_color'] ) || isset( $atts['placeholder_font_weight'] ) || isset( $atts['placeholder_letter_spacing'] ) || isset( $atts['placeholder_text_transform'] ) || isset( $atts['text_color'] ) || isset( $atts['link_color'] ) || isset( $atts['submit_color'] ) || isset( $atts['submit_background'] ) || isset( $atts['submit_border'] ) || isset( $atts['submit_border_radius'] ) || isset( $atts['submit_padding'] ) || isset( $atts['submit_width'] ) || isset( $atts['submit_font_size'] ) || isset( $atts['submit_font_weight'] ) || isset( $atts['submit_letter_spacing'] ) || isset( $atts['submit_height'] ) || isset( $atts['reset_color'] ) || isset( $atts['reset_background'] ) || isset( $atts['reset_border'] ) || isset( $atts['reset_border_radius'] ) || isset( $atts['reset_padding'] ) || isset( $atts['reset_width'] ) || isset( $atts['reset_font_size'] ) || isset( $atts['reset_height'] ) || isset( $atts['error_color'] ) || isset( $atts['error_background'] ) || isset( $atts['error_border'] ) || isset( $atts['success_color'] ) || isset( $atts['success_background'] ) || isset( $atts['success_border'] ) || isset( $atts['acceptance_color'] ) || isset( $atts['acceptance_line_height'] ) || isset( $atts['acceptance_text_align'] ) || isset( $atts['acceptance_letter_spacing'] ) || isset( $atts['acceptance_font_size'] ) || isset( $atts['checkbox_border'] ) || isset( $atts['checkbox_border_width'] ) || isset( $atts['checkbox_background'] ) || isset( $atts['loader_background'] ) || isset( $atts['loader_color'] ) ) {
+			ob_start();
 
-        if (isset($atts['input_color']) || isset($atts['input_border']) || isset($atts['input_border_width']) || isset($atts['input_border_radius']) || isset($atts['input_background']) || isset($atts['form_background']) || isset($atts['form_padding']) || isset($atts['placeholder_color']) || isset($atts['text_color']) || isset($atts['link_color']) || isset($atts['submit_color']) || isset($atts['submit_background']) || isset($atts['submit_border']) || isset($atts['submit_width']) || isset($atts['submit_height']) || isset($atts['error_color']) || isset($atts['error_background']) || isset($atts['error_border']) || isset($atts['success_color']) || isset($atts['success_background']) || isset($atts['success_border']) || isset($atts['acceptance_color']) || isset($atts['checkbox_border']) || isset($atts['checkbox_border_width']) || isset($atts['checkbox_background']) || isset($atts['loader_background']) || isset($atts['loader_color'])) {
-            ob_start();
+			?><style><?php
 
-            ?><style><?php
-
-            /* Input and textarea text color */
-            if (isset($atts['input_color'])) {
-                ?>
-			.wpcf7 .wpcf7-form.rxcf7-custom-style input, .wpcf7 .wpcf7-form.rxcf7-custom-style textarea { color: <?php echo $atts['input_color']; ?>;	}
+			/* Form background_color */
+			if( isset( $atts['form_background'] ) && "" !== $atts['form_background'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> {	background-color: <?php echo $atts['form_background']; ?>; }
 			<?php
-}
+			}
 
-            /* Input and textarea background */
-            if (isset($atts['input_background'])) {
-                ?>
-			.wpcf7 .wpcf7-form.rxcf7-custom-style input, .wpcf7 .wpcf7-form.rxcf7-custom-style textarea { background-color: <?php echo $atts['input_background']; ?>; }
+			/* Form background_color */
+			if( isset( $atts['form_padding'] ) && "" !== $atts['form_padding'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> {	padding: <?php echo $atts['form_padding']; ?>; }
 			<?php
-}
+			}
 
-            /* Input and textarea border color */
-            if (isset($atts['input_border'])) {
-                ?>
-			.wpcf7 .wpcf7-form.rxcf7-custom-style input, .wpcf7 .wpcf7-form.rxcf7-custom-style textarea { border-color: <?php echo $atts['input_border']; ?>;	}
+			/* Form width */
+			if( isset( $atts['form_width'] ) && "" !== $atts['form_width'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> {	max-width: <?php echo $atts['form_width']; ?>; }
 			<?php
-}
+			}
 
-            /* Input and textarea border color */
-            if (isset($atts['input_border_width'])) {
-                ?>
-			.wpcf7 .wpcf7-form.rxcf7-custom-style input, .wpcf7 .wpcf7-form.rxcf7-custom-style textarea { border-width: <?php echo $atts['input_border_width']; ?>px;	}
+			/* Form width */
+			if( isset( $atts['form_font_size'] ) && "" !== $atts['form_font_size'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> {	font-size: <?php echo $atts['form_font_size']; ?>; }
 			<?php
-}
+			}
 
-            /* Input and textarea border color */
-            if (isset($atts['input_border_radius'])) {
-                ?>
-			.wpcf7 .wpcf7-form.rxcf7-custom-style input, .wpcf7 .wpcf7-form.rxcf7-custom-style textarea { border-radius: <?php echo $atts['input_border_radius']; ?>;	}
+			/* Form width */
+			if( isset( $atts['form_text_align'] ) && "" !== $atts['form_text_align'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> {	text-align: <?php echo $atts['form_text_align']; ?>; }
 			<?php
-}
+			}
 
-            /* Form text color */
-            if (isset($atts['text_color'])) {
-                ?>
-			.wpcf7 .wpcf7-form.rxcf7-custom-style {	color: <?php echo $atts['text_color']; ?>; }
+			/* Input and textarea text color */
+			if( isset( $atts['input_color'] ) && "" !== $atts['input_color'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { color: <?php echo $atts['input_color']; ?>;	}
 			<?php
-}
+			}
 
-            /* Form links color */
-            if (isset($atts['link_color'])) {
-                ?>
-			.wpcf7 .wpcf7-form.rxcf7-custom-style a {	color: <?php echo $atts['link_color']; ?>; }
+			/* Input and textarea text color */
+			if( isset( $atts['input_width'] ) && "" !== $atts['input_width'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { width: <?php echo $atts['input_width']; ?>;	}
 			<?php
-}
+			}
 
-            /* Form background_color */
-            if (isset($atts['form_background'])) {
-                ?>
-			.wpcf7 .wpcf7-form.rxcf7-custom-style {	background-color: <?php echo $atts['form_background']; ?>; }
+			/* Input and textarea text color */
+			if( isset( $atts['input_height'] ) && "" !== $atts['input_height'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { min-height: <?php echo $atts['input_height']; ?>;	}
 			<?php
-}
+			}
 
-            /* Form background_color */
-            if (isset($atts['form_padding'])) {
-                ?>
-			.wpcf7 .wpcf7-form.rxcf7-custom-style {	padding: <?php echo $atts['form_padding']; ?>; }
+			/* Input and textarea font size */
+			if( isset( $atts['input_font_size'] ) && "" !== $atts['input_font_size'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { font-size: <?php echo $atts['input_font_size']; ?>;	}
 			<?php
-}
+			}
 
-            /* Form text color */
-            if (isset($atts['placeholder_color'])) {
-                ?>
-			.wpcf7 .wpcf7-form.rxcf7-custom-style input::-webkit-input-placeholder { color: <?php echo $atts['placeholder_color']; ?>; }
-			.wpcf7 .wpcf7-form.rxcf7-custom-style input::-moz-placeholder {	color: <?php echo $atts['placeholder_color']; ?>; }
-			.wpcf7 .wpcf7-form.rxcf7-custom-style input:-ms-input-placeholder {	color: <?php echo $atts['placeholder_color']; ?>; }
-			.wpcf7 .wpcf7-form.rxcf7-custom-style input::placeholder { color: <?php echo $atts['placeholder_color']; ?>; }
-			.wpcf7 .wpcf7-form.rxcf7-custom-style textarea::-webkit-input-placeholder { color: <?php echo $atts['placeholder_color']; ?>; }
-			.wpcf7 .wpcf7-form.rxcf7-custom-style textarea::-moz-placeholder { color: <?php echo $atts['placeholder_color']; ?>; }
-			.wpcf7 .wpcf7-form.rxcf7-custom-style textarea:-ms-input-placeholder { color: <?php echo $atts['placeholder_color']; ?>; }
-			.wpcf7 .wpcf7-form.rxcf7-custom-style textarea::placeholder { color: <?php echo $atts['placeholder_color']; ?>;	}
+			/* Input and textarea font size */
+			if( isset( $atts['input_font_weight'] ) && "" !== $atts['input_font_weight'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { font-weight: <?php echo $atts['input_font_weight']; ?>;	}
 			<?php
-}
+			}
 
-            /* Submit text color */
-            if (isset($atts['submit_color'])) {
-                ?>
-			.wpcf7 .wpcf7-form.rxcf7-custom-style input[type="submit"] { color: <?php echo $atts['submit_color']; ?>; }
+			/* Input and textarea letter spacing */
+			if( isset( $atts['input_letter_spacing'] ) && "" !== $atts['input_letter_spacing'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { letter-spacing: <?php echo $atts['input_letter_spacing']; ?>;	}
 			<?php
-}
+			}
 
-            /* Submit background color */
-            if (isset($atts['submit_background'])) {
-                ?>
-			.wpcf7 .wpcf7-form.rxcf7-custom-style input[type="submit"] { background-color: <?php echo $atts['submit_background']; ?>; }
+			/* Input and textarea font size */
+			if( isset( $atts['input_padding'] ) && "" !== $atts['input_padding'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { padding: <?php echo $atts['input_padding']; ?>;	}
 			<?php
-}
+			}
 
-            /* Submit border color */
-            if (isset($atts['submit_border'])) {
-                ?>
-			.wpcf7 .wpcf7-form.rxcf7-custom-style input[type="submit"] { border-color: <?php echo $atts['submit_border']; ?>; }
+			/* Input and textarea background */
+			if( isset( $atts['input_background'] ) && "" !== $atts['input_background'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { background-color: <?php echo $atts['input_background']; ?>; }
 			<?php
-}
+			}
 
-            /* Submit width */
-            if (isset($atts['submit_width'])) {
-                ?>
-			.wpcf7 .wpcf7-form.rxcf7-custom-style input[type="submit"] { width: <?php echo $atts['submit_width']; ?>; }
+			/* Input and textarea border color */
+			if( isset( $atts['input_border'] ) && "" !== $atts['input_border'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { border-color: <?php echo $atts['input_border']; ?>;	}
 			<?php
-}
+			}
 
-            /* Submit height */
-            if (isset($atts['submit_height'])) {
-                ?>
-			.wpcf7 .wpcf7-form.rxcf7-custom-style input[type="submit"] { height: <?php echo $atts['submit_height']; ?>; }
+			/* Input and textarea border color */
+			if( isset( $atts['input_border_width'] ) && "" !== $atts['input_border_width'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { border-width: <?php echo $atts['input_border_width']; ?>px;	}
 			<?php
-}
+			}
 
-            /* Error color */
-            if (isset($atts['error_color'])) {
-                ?>
-			.wpcf7 .wpcf7-form.rxcf7-custom-style div.wpcf7-validation-errors, .wpcf7 .wpcf7-form.rxcf7-custom-style div.wpcf7-acceptance-missing { color:<?php echo $atts['error_color']; ?>; }
+			/* Input and textarea border color */
+			if( isset( $atts['input_border_radius'] ) && "" !== $atts['input_border_radius'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea { border-radius: <?php echo $atts['input_border_radius']; ?>;	}
 			<?php
-}
+			}
 
-            /* Error background */
-            if (isset($atts['error_background'])) {
-                ?>
-			.wpcf7 .wpcf7-form.rxcf7-custom-style div.wpcf7-validation-errors, .wpcf7 .wpcf7-form.rxcf7-custom-style div.wpcf7-acceptance-missing { background-color:<?php echo $atts['error_background']; ?>; }
+			/* Input and textarea required text color */
+			if( isset( $atts['input_required_color'] ) && "" !== $atts['input_required_color'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input[aria-required=true], .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea[aria-required=true] { color: <?php echo $atts['input_required_color']; ?>;	}
 			<?php
-}
+			}
 
-            /* Error border */
-            if (isset($atts['error_border'])) {
-                ?>
-			.wpcf7 .wpcf7-form.rxcf7-custom-style div.wpcf7-validation-errors, .wpcf7 .wpcf7-form.rxcf7-custom-style div.wpcf7-acceptance-missing { border-color:<?php echo $atts['error_border']; ?>; }
+			/* Input and textarea required background */
+			if( isset( $atts['input_required_background'] ) && "" !== $atts['input_required_background'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input[aria-required=true], .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea[aria-required=true] { background-color: <?php echo $atts['input_required_background']; ?>; }
 			<?php
-}
+			}
 
-            /* Success color */
-            if (isset($atts['success_color'])) {
-                ?>
-			.wpcf7 .wpcf7-form.rxcf7-custom-style div.wpcf7-mail-sent-ok { color:<?php echo $atts['success_color']; ?>; }
+			/* Input and textarea required border color */
+			if( isset( $atts['input_required_border'] ) && "" !== $atts['input_required_border'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input[aria-required=true], .wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea[aria-required=true] { border-color: <?php echo $atts['input_required_border']; ?>;	}
 			<?php
-}
+			}
 
-            /* Success background */
-            if (isset($atts['success_background'])) {
-                ?>
-			.wpcf7 .wpcf7-form.rxcf7-custom-style div.wpcf7-mail-sent-ok { background-color:<?php echo $atts['success_background']; ?>; }
+			/* Form text color */
+			if( isset( $atts['text_color'] ) && "" !== $atts['text_color'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> {	color: <?php echo $atts['text_color']; ?>; }
 			<?php
-}
+			}
 
-            /* Success border */
-            if (isset($atts['success_border'])) {
-                ?>
-			.wpcf7 .wpcf7-form.rxcf7-custom-style div.wpcf7-mail-sent-ok { border-color:<?php echo $atts['success_border']; ?>; }
+			/* Form links color */
+			if( isset( $atts['link_color'] ) && "" !== $atts['link_color'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> a {	color: <?php echo $atts['link_color']; ?>; }
 			<?php
-}
+			}
 
-            /* Acceptance text color */
-            if (isset($atts['acceptance_color'])) {
-                ?>
-			.wpcf7 .wpcf7-form.rxcf7-custom-style .wpcf7-acceptance .wpcf7-list-item-label { color:<?php echo $atts['acceptance_color']; ?>; }
+			/* Placeholder color */
+			if( isset( $atts['placeholder_color'] ) && "" !== $atts['placeholder_color'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input::-webkit-input-placeholder { color: <?php echo $atts['placeholder_color']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input::-moz-placeholder {	color: <?php echo $atts['placeholder_color']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input:-ms-input-placeholder {	color: <?php echo $atts['placeholder_color']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input::placeholder { color: <?php echo $atts['placeholder_color']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea::-webkit-input-placeholder { color: <?php echo $atts['placeholder_color']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea::-moz-placeholder { color: <?php echo $atts['placeholder_color']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea:-ms-input-placeholder { color: <?php echo $atts['placeholder_color']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea::placeholder { color: <?php echo $atts['placeholder_color']; ?>;	}
 			<?php
-}
+			}
 
-            /* Checkbox border color */
-            if (isset($atts['checkbox_border'])) {
-                ?>
-			.wpcf7 .wpcf7-form.rxcf7-custom-checkbox .rex-checkbox__indicator{outline-color:<?php echo $atts['checkbox_border']; ?>;}
-			.wpcf7 .wpcf7-form.rxcf7-custom-checkbox .rex-checkbox__indicator:after{border-color:<?php echo $atts['checkbox_border']; ?>;}
+			/* Placeholder font weight */
+			if( isset( $atts['placeholder_font_weight'] ) && "" !== $atts['placeholder_font_weight'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input::-webkit-input-placeholder { font-weight: <?php echo $atts['placeholder_font_weight']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input::-moz-placeholder {	font-weight: <?php echo $atts['placeholder_font_weight']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input:-ms-input-placeholder {	font-weight: <?php echo $atts['placeholder_font_weight']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input::placeholder { font-weight: <?php echo $atts['placeholder_font_weight']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea::-webkit-input-placeholder { font-weight: <?php echo $atts['placeholder_font_weight']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea::-moz-placeholder { font-weight: <?php echo $atts['placeholder_font_weight']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea:-ms-input-placeholder { font-weight: <?php echo $atts['placeholder_font_weight']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea::placeholder { font-weight: <?php echo $atts['placeholder_font_weight']; ?>;	}
 			<?php
-}
+			}
 
-            /* Checkbox border color */
-            if (isset($atts['checkbox_border_width'])) {
-                ?>
-			.wpcf7 .wpcf7-form.rxcf7-custom-checkbox .rex-checkbox__indicator{outline-width:<?php echo $atts['checkbox_border_width']; ?>px;}
-			.wpcf7 .wpcf7-form.rxcf7-custom-checkbox .rex-checkbox__indicator:after{border-width:0 <?php echo $atts['checkbox_border_width']; ?>px <?php echo $atts['checkbox_border_width']; ?>px 0;}
+			/* Placeholder letter spacing */
+			if( isset( $atts['placeholder_letter_spacing'] ) && "" !== $atts['placeholder_letter_spacing'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input::-webkit-input-placeholder { letter-spacing: <?php echo $atts['placeholder_letter_spacing']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input::-moz-placeholder {	letter-spacing: <?php echo $atts['placeholder_letter_spacing']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input:-ms-input-placeholder {	letter-spacing: <?php echo $atts['placeholder_letter_spacing']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input::placeholder { letter-spacing: <?php echo $atts['placeholder_letter_spacing']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea::-webkit-input-placeholder { letter-spacing: <?php echo $atts['placeholder_letter_spacing']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea::-moz-placeholder { letter-spacing: <?php echo $atts['placeholder_letter_spacing']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea:-ms-input-placeholder { letter-spacing: <?php echo $atts['placeholder_letter_spacing']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea::placeholder { letter-spacing: <?php echo $atts['placeholder_letter_spacing']; ?>;	}
 			<?php
-}
+			}
 
-            /* Checkbox background color */
-            if (isset($atts['checkbox_background'])) {
-                ?>
-			.wpcf7 .wpcf7-form.rxcf7-custom-checkbox .rex-checkbox__indicator{background-color:<?php echo $atts['checkbox_background']; ?>;}
+			/* Placeholder text transform */
+			if( isset( $atts['placeholder_text_transform'] ) && "" !== $atts['placeholder_text_transform'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input::-webkit-input-placeholder { text-transform: <?php echo $atts['placeholder_text_transform']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input::-moz-placeholder {	text-transform: <?php echo $atts['placeholder_text_transform']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input:-ms-input-placeholder {	text-transform: <?php echo $atts['placeholder_text_transform']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input::placeholder { text-transform: <?php echo $atts['placeholder_text_transform']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea::-webkit-input-placeholder { text-transform: <?php echo $atts['placeholder_text_transform']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea::-moz-placeholder { text-transform: <?php echo $atts['placeholder_text_transform']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea:-ms-input-placeholder { text-transform: <?php echo $atts['placeholder_text_transform']; ?>; }
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> textarea::placeholder { text-transform: <?php echo $atts['placeholder_text_transform']; ?>;	}
 			<?php
-}
+			}
 
-            /* Loader background color */
-            if (isset($atts['loader_background'])) {
-                ?>
+			/* Submit text color */
+			if( isset( $atts['submit_color'] ) && "" !== $atts['submit_color'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input[type="submit"] { color: <?php echo $atts['submit_color']; ?>; }
+			<?php
+			}
+
+			/* Submit background color */
+			if( isset( $atts['submit_background'] ) && "" !== $atts['submit_background'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input[type="submit"] { background-color: <?php echo $atts['submit_background']; ?>; }
+			<?php
+			}
+
+			/* Submit border color */
+			if( isset( $atts['submit_border'] ) && "" !== $atts['submit_border'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input[type="submit"] { border-color: <?php echo $atts['submit_border']; ?>; }
+			<?php
+			}
+
+			/* Submit border radius */
+			if( isset( $atts['submit_border_radius'] ) && "" !== $atts['submit_border_radius'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input[type="submit"] { border-radius: <?php echo $atts['submit_border_radius']; ?>;	}
+			<?php
+			}
+
+			/* Submit width */
+			if( isset( $atts['submit_width'] ) && "" !== $atts['submit_width']  ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input[type="submit"] { width: <?php echo $atts['submit_width']; ?>; }
+			<?php
+			}
+
+			/* Submit height */
+			if( isset( $atts['submit_height'] ) && "" !== $atts['submit_height'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input[type="submit"] { height: <?php echo $atts['submit_height']; ?>; }
+			<?php
+			}
+
+			/* Submit font size */
+			if( isset( $atts['submit_font_size'] ) && "" !== $atts['submit_font_size'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input[type="submit"] { font-size: <?php echo $atts['submit_font_size']; ?>; }
+			<?php
+			}
+
+			/* Submit font weight */
+			if( isset( $atts['submit_font_weight'] ) && "" !== $atts['submit_font_weight'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input[type="submit"] { font-weight: <?php echo $atts['submit_font_weight']; ?>; }
+			<?php
+			}
+
+			/* Submit letter spacing */
+			if( isset( $atts['submit_letter_spacing'] ) && "" !== $atts['submit_letter_spacing'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input[type="submit"] { letter-spacing: <?php echo $atts['submit_letter_spacing']; ?>; }
+			<?php
+			}
+
+			/* Submit padding */
+			if( isset( $atts['submit_padding'] ) && "" !== $atts['submit_padding'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input[type="submit"] { padding: <?php echo $atts['submit_padding']; ?>; }
+			<?php
+			}
+
+			/* reset text color */
+			if( isset( $atts['reset_color'] ) && "" !== $atts['reset_color'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input[type="reset"] { color: <?php echo $atts['reset_color']; ?>; }
+			<?php
+			}
+
+			/* reset background color */
+			if( isset( $atts['reset_background'] ) && "" !== $atts['reset_background'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input[type="reset"] { background-color: <?php echo $atts['reset_background']; ?>; }
+			<?php
+			}
+
+			/* reset border color */
+			if( isset( $atts['reset_border'] ) && "" !== $atts['reset_border'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input[type="reset"] { border-color: <?php echo $atts['reset_border']; ?>; }
+			<?php
+			}
+
+			/* reset border radius */
+			if( isset( $atts['reset_border_radius'] ) && "" !== $atts['reset_border_radius'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input[type="reset"] { border-radius: <?php echo $atts['reset_border_radius']; ?>;	}
+			<?php
+			}
+
+			/* reset width */
+			if( isset( $atts['reset_width'] ) && "" !== $atts['reset_width']  ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input[type="reset"] { width: <?php echo $atts['reset_width']; ?>; }
+			<?php
+			}
+
+			/* reset height */
+			if( isset( $atts['reset_height'] ) && "" !== $atts['reset_height'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input[type="reset"] { height: <?php echo $atts['reset_height']; ?>; }
+			<?php
+			}
+
+			/* reset font size */
+			if( isset( $atts['reset_font_size'] ) && "" !== $atts['reset_font_size'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input[type="reset"] { font-size: <?php echo $atts['reset_font_size']; ?>; }
+			<?php
+			}
+
+			/* Reset font weight */
+			if( isset( $atts['reset_font_weight'] ) && "" !== $atts['reset_font_weight'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input[type="reset"] { font-weight: <?php echo $atts['reset_font_weight']; ?>; }
+			<?php
+			}
+
+			/* Reset letter spacing */
+			if( isset( $atts['reset_letter_spacing'] ) && "" !== $atts['reset_letter_spacing'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input[type="reset"] { letter-spacing: <?php echo $atts['reset_letter_spacing']; ?>; }
+			<?php
+			}
+
+			/* reset padding */
+			if( isset( $atts['reset_padding'] ) && "" !== $atts['reset_padding'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> input[type="reset"] { padding: <?php echo $atts['reset_padding']; ?>; }
+			<?php
+			}
+
+			/* Error color */
+			if( isset( $atts['error_color'] ) && "" !== $atts['error_color'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-validation-errors, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-acceptance-missing { color:<?php echo $atts['error_color']; ?>; }
+			<?php
+			}
+			
+			/* Error background */
+			if( isset( $atts['error_background'] ) && "" !== $atts['error_background'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-validation-errors, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-acceptance-missing { background-color:<?php echo $atts['error_background']; ?>; }
+			<?php
+			}
+
+			/* Error border */
+			if( isset( $atts['error_border'] ) && "" !== $atts['error_border'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-validation-errors, .wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-acceptance-missing { border-color:<?php echo $atts['error_border']; ?>; }
+			<?php
+			}
+
+			/* Success color */
+			if( isset( $atts['success_color'] ) && "" !== $atts['success_color'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-mail-sent-ok { color:<?php echo $atts['success_color']; ?>; }
+			<?php
+			}
+			
+			/* Success background */
+			if( isset( $atts['success_background'] ) && "" !== $atts['success_background'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-mail-sent-ok { background-color:<?php echo $atts['success_background']; ?>; }
+			<?php
+			}
+
+			/* Success border */
+			if( isset( $atts['success_border'] ) && "" !== $atts['success_border'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> div.wpcf7-mail-sent-ok { border-color:<?php echo $atts['success_border']; ?>; }
+			<?php
+			}
+
+			/* Acceptance text color */
+			if( isset( $atts['acceptance_color'] ) && "" !== $atts['acceptance_color'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> .wpcf7-acceptance .wpcf7-list-item-label { color:<?php echo $atts['acceptance_color']; ?>; }
+			<?php
+			}
+
+			/* Acceptance text font size */
+			if( isset( $atts['acceptance_font_size'] ) && "" !== $atts['acceptance_font_size'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> .wpcf7-acceptance .wpcf7-list-item-label { font-size:<?php echo $atts['acceptance_font_size']; ?>; }
+			<?php
+			}
+
+			/* Acceptance text font size */
+			if( isset( $atts['acceptance_letter_spacing'] ) && "" !== $atts['acceptance_letter_spacing'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> .wpcf7-acceptance .wpcf7-list-item-label { letter-spacing:<?php echo $atts['acceptance_letter_spacing']; ?>; }
+			<?php
+			}
+
+			/* Acceptance text font size */
+			if( isset( $atts['acceptance_line_height'] ) && "" !== $atts['acceptance_line_height'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> .wpcf7-acceptance .wpcf7-list-item { line-height:<?php echo $atts['acceptance_line_height']; ?>; }
+			<?php
+			}
+
+			/* Acceptance text align */
+			if( isset( $atts['acceptance_text_align'] ) && "" !== $atts['acceptance_text_align'] ) {
+			?>
+			.wpcf7 .wpcf7-form.<?php echo $cclass; ?> .wpcf7-acceptance .wpcf7-list-item { text-align:<?php echo $atts['acceptance_text_align']; ?>; }
+			<?php
+			}
+
+			/* Checkbox border color */
+			if( isset( $atts['checkbox_border'] ) && "" !== $atts['checkbox_border'] ) {
+			?>
+			.wpcf7 .wpcf7-form.rxcf7-custom-checkbox.<?php echo $cclass; ?> .rex-checkbox__indicator{outline-color:<?php echo $atts['checkbox_border']; ?>;}
+			.wpcf7 .wpcf7-form.rxcf7-custom-checkbox.<?php echo $cclass; ?> .rex-checkbox__indicator:after{border-color:<?php echo $atts['checkbox_border']; ?>;}
+			<?php
+			}
+
+			/* Checkbox border color */
+			if( isset( $atts['checkbox_border_width'] ) && "" !== $atts['checkbox_border_width'] ) {
+			?>
+			.wpcf7 .wpcf7-form.rxcf7-custom-checkbox.<?php echo $cclass; ?> .rex-checkbox__indicator{outline-width:<?php echo $atts['checkbox_border_width']; ?>px;}
+			.wpcf7 .wpcf7-form.rxcf7-custom-checkbox.<?php echo $cclass; ?> .rex-checkbox__indicator:after{border-width:0 <?php echo $atts['checkbox_border_width']; ?>px <?php echo $atts['checkbox_border_width']; ?>px 0;}
+			<?php
+			}
+			
+			/* Checkbox background color */
+			if( isset( $atts['checkbox_background'] ) && "" !== $atts['checkbox_background'] ) {
+			?>
+			.wpcf7 .wpcf7-form.rxcf7-custom-checkbox.<?php echo $cclass; ?> .rex-checkbox__indicator{background-color:<?php echo $atts['checkbox_background']; ?>;}
+			<?php
+			}
+
+			/* Loader background color */
+			if( isset( $atts['loader_background'] ) && "" !== $atts['loader_background'] ) {
+			?>
 			div.wpcf7 .rxcf7-custom-loader .ajax-loader{background-color:<?php echo $atts['loader_background']; ?>;}
 			<?php
-}
+			}
 
-            /* Loader color */
-            if (isset($atts['loader_color'])) {
-                ?>
-			.rxcf7-custom-loader .sk-double-bounce .sk-child{background-color:<?php echo $atts['loader_color']; ?>;}
+			/* Loader color */
+			if( isset( $atts['loader_color'] ) && "" !== $atts['loader_color'] ) {
+			?>
+			.rxcf7-custom-loader.<?php echo $cclass; ?> .sk-double-bounce .sk-child{background-color:<?php echo $atts['loader_color']; ?>;}
 			<?php
-}
+			}
 
-            ?></style><?php
+			?></style><?php
 
-            $cstyle = ob_get_clean();
-        }
+			$cstyle = ob_get_clean();
 
-        echo trim($cstyle);
+			$out['html_class'] .= ' rxcf7-custom-style ' . $cclass;
+		}
 
-        $out['html_class'] .= ' rxcf7-custom-style';
+		echo trim( $cstyle );
 
-        return $out;
-    }
+		return $out;
+	}
 }

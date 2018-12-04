@@ -1,10 +1,49 @@
 .#{$form-custom-style} {
+  margin: 0 auto;
   div.wpcf7-response-output {
     margin-left: 0;
     margin-right: 0;
+    margin-top: 1em;
+    margin-bottom: 0;
   }
   span.wpcf7-not-valid-tip {
     padding-top: 10px;
+  }
+  &.#{$form-custom-hide-tips} {
+    span.wpcf7-not-valid-tip {
+      display: none;
+    }
+  }
+  textarea,
+  input,
+  button, input[type=button], input[type=reset], input[type=submit],
+  a {
+    font-size: inherit;
+    font-family: inherit;
+  }
+  textarea,
+  input,
+  button, input[type=button], input[type=reset], input[type=submit] {
+    letter-spacing: 2px;
+  }
+  input, textarea {
+    &:focus {
+      outline: none;
+    }
+  }
+  .wpcf7-list-item {
+    label {
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+    }
+  }
+  .wpcf7-form-control-wrap {
+    margin-bottom: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    width: 100%;
   }
 }
 div.wpcf7 {
@@ -26,5 +65,24 @@ div.wpcf7 {
       top: 50%;
       transform: translateY(-50%);
     }
+  }
+  .#{$form-custom-style} {
+    p {
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+.rex-flex-left {
+  .#{$form-custom-style} {
+    margin-left: 0;
+  }
+}
+
+.rex-flex-right {
+  .#{$form-custom-style} {
+    margin-right: 0;
   }
 }
