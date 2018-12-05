@@ -158,7 +158,7 @@ var Rexbuilder_Rexbutton = (function ($) {
         _addButtonBackgroundRuleHover(buttonID, "background-color: " + buttonProperties.hover_color);
     }
 
-    var _updateButtonStyleLive = function (data) {
+    var _updateButtonLive = function (data) {
         //per i gradienti
         /*
         if(data.propertyName == "gradient"){
@@ -168,7 +168,11 @@ var Rexbuilder_Rexbutton = (function ($) {
         data type:
        
        {
-        buttonID: "qaz1",
+        buttonTarget: {
+            buttonID: "qaz1",
+            buttonNumber: "",
+            buttonName: ""
+        },
         propertyType: "container",
         propertyName: "height",
         newValue: "30px"
@@ -177,25 +181,44 @@ var Rexbuilder_Rexbutton = (function ($) {
 
         switch (data.propertyType) {
             case "container":
-                _removeButtonContainerRule(data.buttonID, data.propertyName);
-                _addButtonContainerRule(data.buttonID, data.propertyName + ": " + data.newValue);
+                _removeButtonContainerRule(data.buttonTarget.buttonID, data.propertyName);
+                _addButtonContainerRule(data.buttonTarget.buttonID, data.propertyName + ": " + data.newValue);
                 break;
             case "background":
-                _removeButtonBackgroundRule(data.buttonID, data.propertyName);
-                _addButtonBackgroundRule(data.buttonID, data.propertyName + ": " + data.newValue);
+                _removeButtonBackgroundRule(data.buttonTarget.buttonID, data.propertyName);
+                _addButtonBackgroundRule(data.buttonTarget.buttonID, data.propertyName + ": " + data.newValue);
                 break;
             case "backgroundHover":
-                _removeButtonBackgroundRuleHover(data.buttonID, data.propertyName);
-                _addButtonBackgroundRuleHover(data.buttonID, data.propertyName + ": " + data.newValue);
+                _removeButtonBackgroundRuleHover(data.buttonTarget.buttonID, data.propertyName);
+                _addButtonBackgroundRuleHover(data.buttonTarget.buttonID, data.propertyName + ": " + data.newValue);
+                break;
+            case "button":
+                var $buttonContainer = Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"][data-rex-button-number=\"" + data.buttonTarget.button_number + "\"]");
+                switch (data.propertyName) {
+                    case "link_target":
+                        $buttonContainer.find("a.rex-button-container").eq(0).attr("href", data.newValue);
+                        break;
+                    case "link_type":
+                        $buttonContainer.find("a.rex-button-container").eq(0).attr("type", data.newValue);
+                        break;
+                    case "button_label":
+                        $buttonContainer.find(".rex-button-text").eq(0).text(data.newValue);
+                        break;
+                    case "button_name":
+                        $buttonContainer.find(".rex-button-data").eq(0).attr("data-button-model-name", data.newValue);
+                        break;
+                    default:
+                        break;
+                }
                 break;
             default:
                 break;
         }
     }
 
-    var _updateButton = function(data){      
-        var buttonProperties = data;
-        var buttonID =  buttonProperties.buttonTarget.buttonID;
+    var _updateButton = function (data) {
+        var buttonProperties = data.buttonProperties;
+        var buttonID = buttonProperties.buttonTarget.buttonID;
         _removeButtonContainerRule(buttonID, "font-size");
         _addButtonContainerRule(buttonID, "font-size: " + buttonProperties.font_size);
         _removeButtonContainerRule(buttonID, "color");
@@ -206,32 +229,43 @@ var Rexbuilder_Rexbutton = (function ($) {
         _addButtonContainerRule(buttonID, "margin-top: " + buttonProperties.margin_top);
         _removeButtonContainerRule(buttonID, "margin-bottom");
         _addButtonContainerRule(buttonID, "margin-bottom: " + buttonProperties.margin_bottom);
-        
+
         _removeButtonBackgroundRule(buttonID, "border-width");
         _addButtonBackgroundRule(buttonID, "border-width: " + buttonProperties.border_width);
         _removeButtonBackgroundRule(buttonID, "border-color");
-        _addButtonBackgroundRule(buttonID, "border-color: " + buttonProperties.border_color);        
+        _addButtonBackgroundRule(buttonID, "border-color: " + buttonProperties.border_color);
         _removeButtonBackgroundRule(buttonID, "border-radius");
         _addButtonBackgroundRule(buttonID, "border-radius: " + buttonProperties.border_radius);
         _removeButtonBackgroundRule(buttonID, "background-color");
         _addButtonBackgroundRule(buttonID, "background-color: " + buttonProperties.background_color);
-        
+
         _removeButtonBackgroundRuleHover(buttonID, "background-color");
         _addButtonBackgroundRuleHover(buttonID, "background-color: " + buttonProperties.hover_color);
 
-        $buttonContainer = Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"][data-rex-button-number=\"" + data.buttonTarget.button_number + "\"]");
-        $buttonData = $buttonContainer.find(".rex-button-data").eq(0);
-        $buttonData.attr("data-button-name", data.buttonTarget.buttonName);
-        $buttonData.attr("data-text-size");
-        $buttonData.attr("data-text-color");
-        $buttonData.attr("data-background-color");
-        $buttonData.attr("data-button-height");
-        $buttonData.attr("data-background-color-hover");
-        $buttonData.attr("data-border-color");
-        $buttonData.attr("data-border-width");
-        $buttonData.attr("data-border-radius");
-        $buttonData.attr("data-margin-top");
-        $buttonData.attr("data-margin-bottom");
+        var $buttonContainer = Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"][data-rex-button-number=\"" + data.buttonTarget.button_number + "\"]");
+        $buttonContainer.find(".rex-button-text").eq(0).text(buttonProperties.text);
+        $buttonContainer.find("a.rex-button-container").eq(0).attr("href", buttonProperties.link_taget);
+        $buttonContainer.find("a.rex-button-container").eq(0).attr("type", buttonProperties.link_type);
+
+        if ($buttonContainer.hasClass("rex-separate-button")) {
+            var $buttonData = $buttonContainer.find(".rex-button-data").eq(0);
+            $buttonData.attr("data-button-model-name", data.buttonTarget.buttonName);
+            $buttonData.attr("data-text-size", buttonProperties.font_size);
+            $buttonData.attr("data-text-color", buttonProperties.text_color);
+            $buttonData.attr("data-button-height", buttonProperties.button_height);
+            $buttonData.attr("data-margin-top", buttonProperties.margin_top);
+            $buttonData.attr("data-margin-bottom", buttonProperties.margin_bottom);
+
+            $buttonData.attr("data-background-color", buttonProperties.background_color);
+            $buttonData.attr("data-border-color", buttonProperties.border_color);
+            $buttonData.attr("data-border-width", buttonProperties.border_width);
+            $buttonData.attr("data-border-radius", buttonProperties.border_radius);
+
+            $buttonData.attr("data-background-color-hover", buttonProperties.hover_color);
+
+            $buttonData.attr("data-link-target", buttonProperties.link_taget);
+            $buttonData.attr("data-link-type", buttonProperties.link_type);
+        }
     }
 
     var _removeButtonStyle = function (buttonID) {
@@ -252,14 +286,15 @@ var Rexbuilder_Rexbutton = (function ($) {
 
     var _generateButtonData = function ($buttonContainer) {
         //da fixare
+        var $buttonData = $buttonContainer.find(".rex-button-data").eq(0);
         var buttonID = $buttonContainer.attr("data-rex-button-id");
-        var buttonNumber = 0;
+        var buttonNumber = $buttonContainer.attr("data-rex-button-number");
         var buttonName = "";
-        var $button_element = $buttonContainer.find(".rex-button").eq(0);
         var separate = false;
+
         var buttonData = {
             text_color: "",
-            text: $button_element.find(".rex-button-text").eq(0).text(),
+            text: $buttonContainer.find(".rex-button-text").eq(0).text(),
             font_size: "",
             background_color: "",
             button_height: "",
@@ -267,11 +302,10 @@ var Rexbuilder_Rexbutton = (function ($) {
             border_color: "",
             border_width: "",
             border_radius: "",
-            button_position: "",
             margin_top: "",
             margin_bottom: "",
-            link_taget: $button_element.attr("href"),
-            link_type: $button_element.attr("type"),
+            link_taget: $buttonData.attr("data-link-target"),
+            link_type: $buttonData.attr("data-link-type"),
             buttonTarget: {
                 button_name: buttonName,
                 button_id: buttonID,
@@ -281,19 +315,17 @@ var Rexbuilder_Rexbutton = (function ($) {
 
         if ($buttonContainer.hasClass("rex-separate-button")) {
             separate = true;
-            var $buttonData = $buttonContainer.find("." + buttonID + "-rex-button-data").eq(0);
-            if ($buttonData.length != 0) {
-                buttonData.font_size = $buttonData.attr("data-text-size").toString();
-                buttonData.text_color = $buttonData.attr("data-text-color").toString();
-                buttonData.background_color = $buttonData.attr("data-background-color").toString();
-                buttonData.button_height = $buttonData.attr("data-button-height").toString();
-                buttonData.hover_color = $buttonData.attr("data-background-color-hover").toString();
-                buttonData.border_color = $buttonData.attr("data-border-color").toString();
-                buttonData.border_width = $buttonData.attr("data-border-width").toString();
-                buttonData.border_radius = $buttonData.attr("data-border-radius").toString();
-                buttonData.margin_top = $buttonData.attr("data-margin-top").toString();
-                buttonData.margin_bottom = $buttonData.attr("data-margin-bottom").toString();
-            }
+            buttonData.font_size = $buttonData.attr("data-text-size").toString();
+            buttonData.text_color = $buttonData.attr("data-text-color").toString();
+            buttonData.background_color = $buttonData.attr("data-background-color").toString();
+            buttonData.button_height = $buttonData.attr("data-button-height").toString();
+            buttonData.hover_color = $buttonData.attr("data-background-color-hover").toString();
+            buttonData.border_color = $buttonData.attr("data-border-color").toString();
+            buttonData.border_width = $buttonData.attr("data-border-width").toString();
+            buttonData.border_radius = $buttonData.attr("data-border-radius").toString();
+            buttonData.margin_top = $buttonData.attr("data-margin-top").toString();
+            buttonData.margin_bottom = $buttonData.attr("data-margin-bottom").toString();
+            buttonData.buttonTarget.button_name = $buttonData.attr("data-button-model-name").toString();
         }
 
         var data = {
@@ -310,7 +342,7 @@ var Rexbuilder_Rexbutton = (function ($) {
                 eventName: "rexlive:openRexButtonEditor",
                 buttonData: _generateButtonData($buttonWrapper)
             };
-            $buttonContainer.parents(".text-wrap").blur();
+            $buttonWrapper.parents(".text-wrap").blur();
             Rexbuilder_Util_Editor.sendParentIframeMessage(data);
         });
     }
@@ -321,19 +353,26 @@ var Rexbuilder_Rexbutton = (function ($) {
         Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper").each(function (i, button) {
             var $buttonWrapper = $(button);
             var buttonID = $buttonWrapper.attr("data-rex-button-id");
+            var buttonNumber = parseInt($buttonWrapper.attr("data-rex-button-number"));
             flagButtonFound = false;
             for (j = 0; j < buttonsInPage.length; j++) {
-                if (buttonsInPage[j] == buttonID) {
+                if (buttonsInPage[j].id == buttonID) {
                     flagButtonFound = true;
                     break;
                 }
             }
             flagButtonFound = false;
             if (!flagButtonFound) {
-                buttonsInPage.push(buttonID);
+                buttonsInPage.push({
+                    id: buttonID,
+                    number: buttonNumber
+                });
                 if ($buttonWrapper.hasClass("rex-separate-button")) {
+                    _addButtonStyle($buttonWrapper);
                 }
-                _addButtonStyle($buttonWrapper);
+            }
+            if (buttonsInPage[j].number < buttonNumber) {
+                buttonsInPage[j].number = buttonNumber;
             }
         });
     }
@@ -360,6 +399,7 @@ var Rexbuilder_Rexbutton = (function ($) {
         getActiveStyleSheet: _getActiveStyleSheet,
         fixImportedButton: _fixImportedButton,
         getButtonsInPage: _getButtonsInPage,
-        updateButtonStyleLive: _updateButtonStyleLive
+        updateButtonLive: _updateButtonLive,
+        updateButton: _updateButton
     };
 })(jQuery);

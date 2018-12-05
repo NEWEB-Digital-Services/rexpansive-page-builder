@@ -10,7 +10,7 @@ var Button_Edit_Modal = (function ($) {
     var rexButtonsJSON;
     var buttonsIDsUsed;
     var defaultButtonData;
-
+    var reverseData;
     var _openButtonEditorModal = function (data) {
         console.log(data);
         _updateButtonEditorModal(data);
@@ -51,6 +51,7 @@ var Button_Edit_Modal = (function ($) {
                 }
             }
         }
+        reverseData = jQuery.extend(true, {}, buttonData);
     }
 
     var _clearButtonData = function(){
@@ -187,8 +188,12 @@ var Button_Edit_Modal = (function ($) {
     var _applyData = function () {
         var buttonDataToIframe = {
             eventName: "rexlive:update_button",
-            data_to_send: jQuery.extend(true, {}, buttonData)
+            data_to_send: {
+                reverseButtonData: jQuery.extend(true, {}, reverseData),
+                actionButtonData: jQuery.extend(true, {}, buttonData)
+            }
         };
+        reverseData = jQuery.extend(true, {}, buttonDataToIframe.data_to_send.actionButtonData);
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(buttonDataToIframe);
     };
 

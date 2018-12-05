@@ -158,7 +158,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       }
 
       if (event.data.eventName == "rexlive:openRexButtonEditor") {
-        Button_Edit_Modal.openButtonEditorModal({});
+        Button_Edit_Modal.openButtonEditorModal(event.data.buttonData);
       }
       
       if (event.data.eventName == "rexlive:editRemoveModal") {

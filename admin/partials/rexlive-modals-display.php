@@ -1747,6 +1747,20 @@ defined('ABSPATH') or exit;
         </div>
         <div class="modal-content">
             <div class="rex-button-add-model__wrap rex-modal-content__modal-area" style="display:flex;">
+                <div id="rex-button-text-color-wrap">
+                    <div class="open-menu-wrap">+</div>
+                    <div class="rex-relative-col tippy" data-tippy-content="<?php _e( 'Background Color', 'rexpansive'); ?>">
+                            <input type="hidden" id="rex-button-color-runtime" name="rex-button-text-color-runtime" value="" />
+                            <input id="rex-button-text-color" type="text" name="rex-button-text-color" value="" size="10" />
+                            <div id="rex-button-color-preview-icon" class="preview-color-icon"></div>
+                            <span class="prefix"></span>
+                            <input type="text" id="rex-button__label" name="rex-button__label">
+                            <input type="text" id="rex-button_text_font_size" name="rex-button_text_font_size"> 
+                    </div>
+                </div>
+                <div id="rex-button-background-wrap"></div>
+                <div id="rex-button-border-wrap"></div>
+                <div id="rex-button-options-wrap"></div>
                 <div id="rex-button-link-wrap">
                     <div class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix" style="width:100%;">
                         <span class="prefix"></span>

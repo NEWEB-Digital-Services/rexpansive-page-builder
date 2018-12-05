@@ -1704,6 +1704,22 @@
       );
     });
 
+    $(document).on("rexlive:updateRexButton", function(e) {
+      var data = e.settings.data_to_send;
+      console.log(data);
+      var reverseData = {
+        buttonProperties: data.reverseButtonData
+      };
+      var actionData = {
+        buttonProperties: data.actionButtonProperties
+      }
+      Rexbuilder_Util_Editor.pushAction(
+        "document",
+        "updateRexButton",
+        actionData,
+        reverseData
+      );
+    });
     ///////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////
