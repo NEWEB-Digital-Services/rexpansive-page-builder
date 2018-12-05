@@ -5,3 +5,11 @@
     // stroke: $btn-base-color;
   }
 }
+
+@mixin clearfix() {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+}

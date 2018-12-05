@@ -1,4 +1,5 @@
 .rex-accordion {
+  @include clearfix();
   .rex-accordion--toggle {
     cursor: pointer;
     position: relative;

@@ -4811,6 +4811,10 @@ a.pswp-item {
         -ms-transform: rotate(0);
             transform: rotate(0); }
 
+.rex-accordion:after {
+  content: "";
+  display: table;
+  clear: both; }
 .rex-accordion .rex-accordion--toggle {
   cursor: pointer;
   position: relative; }

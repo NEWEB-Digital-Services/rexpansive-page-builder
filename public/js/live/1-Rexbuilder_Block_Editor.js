@@ -707,8 +707,6 @@ var Rexbuilder_Block_Editor = (function($) {
           ? color.toRgbString()
           : "";
 
-        console.log(settings);
-
         var event = jQuery.Event("rexlive:change_block_bg_color");
         event.settings = settings;
         $(document).trigger(event);

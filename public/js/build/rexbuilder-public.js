@@ -136,21 +136,38 @@ var Rexbuilder_App = (function($) {
       };
     } else {
       accordionSettings.open = {
-        progressClbk: function(data) {
+        progressClbk: function(data, step) {
           // var content = data.properties.$content[0];
           var block = data.properties.$content.parents('.grid-stack-item')[0];
-          var grid = data.properties.$content.parents('.grid-stack').data("gridstack");
-          grid.resize(block,null,Math.round( data.element.parentElement.offsetHeight / grid.opts.cellHeight ));
+          var start_h = parseInt( block.children[0].getAttribute('data-gs_start_h') );
+          var $grid = data.properties.$content.parents('.grid-stack');
+          var pgge = $grid.data("plugin_perfectGridGalleryEditor");
+          var grid = pgge.properties.gridstackInstance;
+
+          var base_h = ( 0 !== step ? data.element.parentElement.offsetHeight : 0 );
+          var fstart_h = ( 0 === step ? start_h : 0 );
+          var temp = Math.round( ( base_h + ( fstart_h * grid.opts.cellHeight ) ) / grid.opts.cellHeight );
+          temp = temp < start_h ? start_h : temp;
+          
+          grid.resize(block,null,temp);
         }
       };
       accordionSettings.close = {
-        progressClbk: function(data) {
+        progressClbk: function(data, step) {
           // var content = data.properties.$content[0];
           var block = data.properties.$content.parents('.grid-stack-item')[0];
-          var start_h = block.children[0].getAttribute('data-gs_start_h');
-          var grid = data.properties.$content.parents('.grid-stack').data("gridstack");
-          grid.resize( block,null,Math.round( data.element.parentElement.offsetHeight * 1.3 / grid.opts.cellHeight ) );
-        }
+          var start_h = parseInt( block.children[0].getAttribute('data-gs_start_h') );
+          var $grid = data.properties.$content.parents('.grid-stack');
+          var pgge = $grid.data("plugin_perfectGridGalleryEditor");
+          var grid = pgge.properties.gridstackInstance;
+
+          var base_h = ( 1 !== step ? data.element.parentElement.offsetHeight : 0 );
+          var fstart_h = ( 1 === step ? start_h : 0 );
+          var temp = Math.round( ( base_h + ( fstart_h * grid.opts.cellHeight ) ) / grid.opts.cellHeight );
+          temp = temp > start_h ? temp : start_h;
+
+          grid.resize( block,null,temp );
+        },
       };
     }
 

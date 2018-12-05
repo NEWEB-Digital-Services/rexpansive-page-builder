@@ -2353,9 +2353,9 @@
 
             var needH = gallery.calculateTextWrapHeight( $block.find(".text-wrap") );
             if( gallery.settings.galleryLayout == "masonry" ) {
-              gallery.properties.gridstackInstance.minHeight(block, Math.round( needH / 5 ) );
+              gallery.properties.gridstackInstance.minHeight(block, Math.round( ( needH + gallery.properties.gutter ) / 5 ) );
             } else {
-              gallery.properties.gridstackInstance.minHeight(block, Math.round( needH / gallery.properties.singleWidth ) );
+              gallery.properties.gridstackInstance.minHeight(block, Math.ceil( ( needH + gallery.properties.gutter ) / gallery.properties.singleWidth ) );
             }
           }
         })
