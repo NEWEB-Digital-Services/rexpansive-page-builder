@@ -88,15 +88,15 @@
             appendTo: appendTo,
           };
 
-          this.settings.effect.properties = {
-            $imageWrapper: this.$element.find(".rex-image-wrapper"),
-            alreadyVisible: false,
-            launched: false,
-            fadingIn: false,
-            fadingOut: false,
-            stopTimeout: 2000,
-            effectMode: "scrollVisible" // oneTime | scrollAll | scrollVisible
-          };
+          // this.settings.effect.properties = {
+            this.settings.effect.properties.$imageWrapper = this.$element.find(".rex-image-wrapper");
+            this.settings.effect.properties.alreadyVisible = false;
+            this.settings.effect.properties.launched = false;
+            this.settings.effect.properties.fadingIn = false;
+            this.settings.effect.properties.fadingOut = false;
+            this.settings.effect.properties.stopTimeout = 3000;
+            this.settings.effect.properties.effectMode = "scrollVisible"; // oneTime | scrollAll | scrollVisible
+          // };
 
           break;
         default:
@@ -458,10 +458,20 @@
       });
 
       // this.settings.effect.properties.ticker.start();
+      if( 0 === this.settings.effect.properties.startDelay ) {
+        this._distortionStart();
+      } else {
+        setTimeout(function() {
+          that._distortionStart();
+        }, this.settings.effect.properties.startDelay);
+      }
+    },
 
+    _distortionStart: function() {
       if ( this.isVisibile() ) {
-        this.settings.effect.properties.$imageWrapper[0].style.opacity = "0";
-        this.settings.effect.properties.ticker.start();
+        // this.settings.effect.properties.$imageWrapper[0].style.opacity = "0";
+        // this.settings.effect.properties.ticker.start();
+        this._fadeInDistortion();
         this._timeoutDistortionTicker();
         this.settings.effect.properties.launched = true;
         this.settings.effect.properties.alreadyVisible = true;

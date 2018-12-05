@@ -196,7 +196,8 @@
 
 .grid-item-content-wrap {
   width: 100%;
-  height: 100%; }
+  height: 100%;
+  position: relative; }
 
 /*
 @media screen and (max-width: 767px) {
@@ -3903,6 +3904,44 @@ http://flickity.metafizzy.co
   50% {
     -webkit-transform: scale(1);
             transform: scale(1); } }
+.border-space-animated .grid-item-content-wrap:before, .border-space-animated .grid-item-content-wrap:after {
+  content: '';
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0; }
+.border-space-animated .grid-item-content-wrap:before {
+  top: 0;
+  left: 0;
+  border-top-width: 3px;
+  border-right-width: 3px;
+  border-bottom-width: 0;
+  border-left-width: 0;
+  border-top-style: solid;
+  border-right-style: solid; }
+.border-space-animated .grid-item-content-wrap:after {
+  bottom: 0;
+  right: 0;
+  border-bottom-width: 3px;
+  border-left-width: 3px;
+  border-bottom-style: solid;
+  border-left-style: solid;
+  border-top-width: 0;
+  border-right-width: 0;
+  opacity: 0; }
+.border-space-animated.border-active .grid-item-content-wrap:before, .border-space-animated.border-active .grid-item-content-wrap:after {
+  width: 100%;
+  height: 100%;
+  opacity: 1; }
+.border-space-animated.border-active .grid-item-content-wrap:before {
+  -webkit-transition: opacity 1s ease-out, width 0.5s ease-out, height 0.5s ease-out 0.5s;
+  -o-transition: opacity 1s ease-out, width 0.5s ease-out, height 0.5s ease-out 0.5s;
+  transition: opacity 1s ease-out, width 0.5s ease-out, height 0.5s ease-out 0.5s; }
+.border-space-animated.border-active .grid-item-content-wrap:after {
+  -webkit-transition: opacity 1s ease-out 0.5s, width 0.5s ease-out 1s, height 0.5s ease-out 1.5s;
+  -o-transition: opacity 1s ease-out 0.5s, width 0.5s ease-out 1s, height 0.5s ease-out 1.5s;
+  transition: opacity 1s ease-out 0.5s, width 0.5s ease-out 1s, height 0.5s ease-out 1.5s; }
+
 .rex-checkbox__indicator {
   position: relative;
   display: inline-block;
