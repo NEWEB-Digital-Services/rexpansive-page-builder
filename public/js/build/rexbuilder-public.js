@@ -366,8 +366,10 @@ var Rexbuilder_App = (function($) {
     }
 
     if( false == _plugin_frontend_settings.user.editing ) {
-      $(".rex-effect-distortion").rexEffect({
-        effect: { name: 'distortion' }
+      $(".rex-effect-distortion").each(function(i,el) {
+        $(el).rexEffect({
+          effect: { name: 'distortion' }
+        });
       });
     }
 
