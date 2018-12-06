@@ -207,6 +207,16 @@ var Model_Modal = (function($) {
       }
     });
 
+    /**
+     * Saving a model with ENTER key
+     */
+    rexmodel_modal_props.$model_name.on("keyup", function(e) {
+      var key = 'which' in e ? e.which : e.keyCode;
+      if( key === 13 ) {
+        rexmodel_modal_props.$add_new_model.trigger("click");
+      }
+    });
+
     rexmodel_modal_props.$model_name.on("focusout", function(e) {
       e.preventDefault();
       rexmodel_modal_props.$model_name.parent().removeClass("input-active");
@@ -361,12 +371,8 @@ var Model_Modal = (function($) {
             }
           },
           error: function(response) {
-            rexmodel_modal_props.$model_import_wrap.addClass(
-              "hide-import-wrap"
-            );
-            rexmodel_modal_props.$model_insert_success_wrap.text(
-              "Nome già presente"
-            );
+            rexmodel_modal_props.$model_import_wrap.addClass( "hide-import-wrap" );
+            rexmodel_modal_props.$model_name.val( live_editor_obj.labels.models.name_error );
           },
           complete: function(response) {}
         });

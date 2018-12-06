@@ -166,6 +166,7 @@ class Rexbuilder_Admin {
 	 */
 	public function enqueue_styles_production( $hook ) {
 		$page_info = get_current_screen();
+		$ver = null;
 
 		if( $this->builder_active_on_this_post_type( $page_info ) ) {
 			wp_enqueue_style( 'material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), null, 'all' );
@@ -245,8 +246,11 @@ class Rexbuilder_Admin {
 							'copy_slider' => __('Copy-','rexpansive'),
 							'list_title_prefix' => __('Copy from "', 'rexpansive'),
 							'list_title_suffix' => __('"', 'rexpansive')
+						),
+						'models' => array(
+							'name_error' => __( 'Name already exists!', 'rexpansive' )
 						)
-					)
+					),
 				) );
 			} else {
 				// wp_enqueue_media();
@@ -395,6 +399,9 @@ class Rexbuilder_Admin {
 							'copy_slider' => __('Copy-','rexpansive'),
 							'list_title_prefix' => __('Copy from "', 'rexpansive'),
 							'list_title_suffix' => __('"', 'rexpansive')
+						),
+						'models' => array(
+							'name_error' => __( 'Name already exists!', 'rexpansive' )
 						)
 					)
 				) );

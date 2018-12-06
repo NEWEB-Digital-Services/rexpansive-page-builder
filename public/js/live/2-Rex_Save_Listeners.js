@@ -828,7 +828,7 @@ var Rex_Save_Listeners = (function ($) {
                 if ($savingBlock.text().trim() == "") {
                     content = "";
                 } else {
-                    content = $savingBlock.html();
+                    content = $savingBlock.html().trim();
                 }
                 // console.log(content);
             } else {

@@ -2,7 +2,7 @@
 /**
  * Print the markup of the row toolbar buttons for JS template
  * Right Config Area, the fast config area and the settings button
- * are visible only for thelast row to prevent end of page bugs
+ * are visible only for the last row to prevent end of page bugs
  *
  * @link       htto://www.neweb.info
  * @since      2.0.0
@@ -17,6 +17,11 @@ defined('ABSPATH') or exit;
 <div class="bl_d-flex bl_ai-c bl_jc-fe tools-area tool-area--side">
 		
     <div class="bl_d-iflex bl_ai-c row-toolBox__tools row-toolBox__fast-configuration">
+
+        <div class="tool-button tool-button--flat update-model-button tool-button--distance-fix--small locked tippy" data-tippy-content="<?php _e('Model','rexpansive'); ?>">
+            <span class="unlocked-icon"><?php Rexbuilder_Utilities::get_icon('#B015-UnClosed'); ?></span>
+            <span class="locked-icon"><?php Rexbuilder_Utilities::get_icon('#B014-Closed'); ?></span>
+        </div>
 
         <div class="tool-button--double-icon--wrap tool-button--distance-fix tool-button--hide tool-button--model-hide tippy" data-tippy-content="<?php _e('Background Image','rexpansive'); ?>">
             <div class="<?php echo $tool_button_classes; ?> tool-button--inline edit-row-image-background tippy" data-tippy-content="" value="">
@@ -54,11 +59,6 @@ defined('ABSPATH') or exit;
             </div>
         </div>
         <!-- // Add background video -->
-
-        <div class="tool-button tool-button--flat update-model-button tool-button--distance-fix--small locked tippy" data-tippy-content="<?php _e('Model','rexpansive'); ?>">
-            <span class="unlocked-icon"><?php Rexbuilder_Utilities::get_icon('#B015-UnClosed'); ?></span>
-            <span class="locked-icon"><?php Rexbuilder_Utilities::get_icon('#B014-Closed'); ?></span>
-        </div>
 
     </div><!-- // fast configuration elements -->
 

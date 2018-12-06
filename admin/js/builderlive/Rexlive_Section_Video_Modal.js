@@ -205,6 +205,9 @@ var Section_Video_Background_Modal = (function($) {
   };
 
   var _linkDocumentListeners = function() {
+    /**
+     * Handle checkboxes
+     */
     video_background_properties.$chooseVideoWrapper.click(function(e) {
       e.preventDefault();
       var $target = $(e.target);
@@ -234,6 +237,9 @@ var Section_Video_Background_Modal = (function($) {
       }
     });
 
+    /**
+     * Upload Video Mp4
+     */
     video_background_properties.$uploadMp4.click(function() {
       if (video_background_properties.$mp4Wrap.hasClass("selected")) {
         Rexlive_MediaUploader.openMediaUploaderVideo(video_background_properties.$linkMp4, video_background_properties.$linkMp4.val());
@@ -262,7 +268,7 @@ var Section_Video_Background_Modal = (function($) {
       $checkboxChooseVimeo: $self.find("#rex-choose-vimeo-video-section"),
       $checkboxChooseMp4: $self.find("#rex-choose-mp4-video-section"),
       $chooseVideoWrapper: $self.find(".rex-video-type-select"),
-      $uploadMp4: $self.find("#rex-upload-mp4-video-section i"),
+      $uploadMp4: $self.find("#rex-upload-mp4-video-section"),
       $youTubeWrap: $self.find("#edit-video-row-wrap-1"),
       $vimeoWrap: $self.find("#edit-video-row-wrap-2"),
       $mp4Wrap: $self.find("#edit-video-row-wrap-3"),

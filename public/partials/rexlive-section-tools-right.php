@@ -17,6 +17,10 @@ defined('ABSPATH') or exit;
 <div class="bl_d-flex bl_ai-c bl_jc-fe tools-area tool-area--side">
 
     <div class="bl_d-iflex bl_ai-c row-toolBox__tools row-toolBox__fast-configuration">
+        <div class="tool-button tool-button--flat update-model-button tool-button--distance-fix--small locked tippy" data-tippy-content="<?php _e('Model','rexpansive'); ?>">
+            <span class="unlocked-icon"><?php Rexbuilder_Utilities::get_icon('#B015-UnClosed'); ?></span>
+            <span class="locked-icon"><?php Rexbuilder_Utilities::get_icon('#B014-Closed'); ?></span>
+        </div>
 
         <div class="tool-button--double-icon--wrap tool-button--distance-fix tool-button--hide tool-button--model-hide tippy" data-tippy-content="<?php _e('Background Image','rexpansive'); ?>">
             <div class="<?php echo $tool_button_classes; ?> tool-button--inline edit-row-image-background<?php echo ( "" != $atts['id_image_bg_section'] ? ' tool-button--image-preview' : '' ); ?>" value="<?php echo esc_attr( $atts['id_image_bg_section'] ); ?>"<?php echo ( "" != $atts['id_image_bg_section'] ? ' style="background-image:url(' . $atts['image_bg_section'] . ');"' : '' ); ?>>
@@ -53,11 +57,6 @@ defined('ABSPATH') or exit;
             </div>
         </div>
         <!-- // Add background video -->
-
-        <div class="tool-button tool-button--flat update-model-button tool-button--distance-fix--small locked tippy" data-tippy-content="<?php _e('Model','rexpansive'); ?>">
-            <span class="unlocked-icon"><?php Rexbuilder_Utilities::get_icon('#B015-UnClosed'); ?></span>
-            <span class="locked-icon"><?php Rexbuilder_Utilities::get_icon('#B014-Closed'); ?></span>
-        </div>
 
     </div><!-- // fast configuration elements -->
 

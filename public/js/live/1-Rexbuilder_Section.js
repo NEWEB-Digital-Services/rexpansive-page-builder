@@ -966,8 +966,8 @@ var Rexbuilder_Section = (function($) {
 
       $row.perfectGridGalleryEditor();
 
-      Rexbuilder_Section_Editor.updateRowTools( $newSection );
-      Rexbuilder_Block_Editor.updateBlockToolsOnRow( $newSection );
+      // Launching and Updating tools
+      Rexbuilder_Util_Editor.updateModelSectionTools( $newSection, $newSectionData );
 
       //starting sliders after grid is up
       setTimeout(
@@ -1175,9 +1175,7 @@ var Rexbuilder_Section = (function($) {
               customizations: modelData.customizationsData
             };
 
-            Rexbuilder_Util.updateModelsCustomizationsData(
-              addingModelCustomizationsData
-            );
+            Rexbuilder_Util.updateModelsCustomizationsData( addingModelCustomizationsData );
 
             Rexbuilder_Section.prepareSectionCopied($newSection);
             var $newSectionData = $newSection.children(".section-data");
@@ -1189,8 +1187,8 @@ var Rexbuilder_Section = (function($) {
 
             $row.perfectGridGalleryEditor();
 
-            Rexbuilder_Section_Editor.updateRowTools( $newSection );
-            Rexbuilder_Block_Editor.updateBlockToolsOnRow( $newSection );
+            // Launching and Updating tools
+            Rexbuilder_Util_Editor.updateModelSectionTools( $newSection, $newSectionData );
 
             //starting sliders after grid is up
             setTimeout(

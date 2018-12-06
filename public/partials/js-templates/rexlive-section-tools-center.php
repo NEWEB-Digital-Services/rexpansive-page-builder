@@ -15,6 +15,10 @@ defined('ABSPATH') or exit;
 
 <div class="bl_d-flex bl_ai-c tools-area tool-area--center row-toolBox__def-view">
     <div class="bl_d-iflex bl_ai-c row-toolBox__tools row-toolBox__fast-configuration">
+        <div class="tool-button tool-button--flat update-model-button tool-button--distance-fix--small locked tippy" data-tippy-content="<?php _e('Model','rexpansive'); ?>">
+            <span class="unlocked-icon"><?php Rexbuilder_Utilities::get_icon('#B015-UnClosed'); ?></span>
+            <span class="locked-icon"><?php Rexbuilder_Utilities::get_icon('#B014-Closed'); ?></span>
+        </div>
 
         <div class="tool-button--double-icon--wrap tool-button--distance-fix tool-button--hide tool-button--model-hide tippy" data-tippy-content="<?php _e('Background Image','rexpansive'); ?>">
             <div class="<?php echo $tool_button_classes; ?> tool-button--inline edit-row-image-background tippy" data-tippy-content="" value="">
@@ -51,12 +55,7 @@ defined('ABSPATH') or exit;
                 <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
             </div>
         </div>
-        <!-- // Add background video -->
-
-        <div class="tool-button tool-button--flat update-model-button tool-button--distance-fix--small locked tippy" data-tippy-content="<?php _e('Model','rexpansive'); ?>">
-            <span class="unlocked-icon"><?php Rexbuilder_Utilities::get_icon('#B015-UnClosed'); ?></span>
-            <span class="locked-icon"><?php Rexbuilder_Utilities::get_icon('#B014-Closed'); ?></span>
-        </div>
+        <!-- // Add background video -->     
 
     </div><!-- // fast configuration elements -->
 </div>
