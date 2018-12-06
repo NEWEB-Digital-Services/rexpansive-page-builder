@@ -1722,18 +1722,24 @@ defined('ABSPATH') or exit;
                     +
                 </div>
                 <ul class="button-list button-list--pswp">
-                    <li draggable="true">
-                        <div class="rex-container">
-                            <span class="rex-button-wrapper" data-rex-button-id="qaz1">
-                                <span class="rex-button-data" style="display:none;" data-text-color="white" data-text-size="24px" data-background-color="rgba(1,1,1,0.3)" data-background-color-hover="rgb(120,0,255)" data-border-width="5px" data-border-color="rgba(0,120,255,0.5)" data-border-radius="30px" data-button-height="30px" data-margin-top="0px" data-margin-bottom="10px" data-link-target="https://www.google.com" data-link-type="" data-button-model-name="Bel pulsante" data-background-gradient-colors="#bf6e4e 0%,#74f765 100%" data-background-gradient-direction="left top"></span>
-                                <a href="https://www.google.com" class="rex-button-container" type="">
-                                    <span class="rex-button-background">
-                                        <span class="rex-button-text">LABELS</span>
-                                    </span>
-                                </a>
-                            </span>
-                        </div>
-                    </li>
+                        <?php 
+                        // è possibile fare query del tipo '_rex_button_%%_html0'?
+                    $defaultButtonsIDs = array();
+                    $buttonsIDsJSON = get_option('_rex_buttons_ids', $defaultButtonsIDs);
+                    $buttonsIDsJSON = stripslashes($buttonsIDsJSON);
+                    $buttonsIDsUsed = json_decode($buttonsIDsJSON, true);
+                    foreach ($buttonsIDsUsed as $index => $id_button) {
+                        $buttonHTML = get_option('_rex_button_'.$id_button.'_html', "");
+                        if($buttonHTML != ""){
+                            $buttonHTML = stripslashes($buttonHTML);
+                            ?>
+                            <li draggable="true">
+                                <div class="rex-container"><?php echo $buttonHTML ?></div>
+                            </li>
+                            <?php
+                        }
+                    }
+                    ?>
                 </ul>
             </div>
         </div>
@@ -1746,131 +1752,115 @@ defined('ABSPATH') or exit;
             <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
         </div>
         <div class="modal-content">
-            <div class="rex-button-add-model__wrap rex-modal-content__modal-area" style="display:flex;">
-                <div id="rex-button-text-color-wrap">
-                    <div class="open-menu-wrap">+</div>
-                    <div class="rex-relative-col tippy" data-tippy-content="<?php _e( 'Background Color', 'rexpansive'); ?>">
-                            <input type="hidden" id="rex-button-color-runtime" name="rex-button-text-color-runtime" value="" />
-                            <input id="rex-button-text-color" type="text" name="rex-button-text-color" value="" size="10" />
-                            <div id="rex-button-color-preview-icon" class="preview-color-icon"></div>
-                            <span class="prefix"></span>
-                            <input type="text" id="rex-button__label" name="rex-button__label">
-                            <input type="text" id="rex-button_text_font_size" name="rex-button_text_font_size"> 
+            <div class="bl_modal-row">
+                <div class="open-menu-wrap">+/-</div>
+                <div class="rex-relative-col tippy" data-tippy-content="Text Color" tabindex="0">
+                    <input type="hidden" id="rex-button-text-color-runtime" name="rex-button-text-color-runtime" value="" />
+                    <input id="rex-button-text-color" type="text" name="rex-button-text-color" value="" size="10" />
+                    <div id="rex-button-color-preview-icon" class="preview-color-icon"></div>
+                </div>
+                <div id="rex-button-label-wrap">
+                    <input type="text" id="rex-button__label" name="rex-button__label"/>
+                </div>
+                <div id="rex-button-font-size-wrap" style="display: flex;">
+                    <input type="text" id="rex-button_text_font_size" name="rex-button_text_font_size"/>
+                    <div class="label-px">px</div>
+                </div>
+            </div>
+            <div class="bl_modal-row">
+                <div class="open-menu-wrap">+/-</div>
+                <div class="rex-relative-col tippy" data-tippy-content="Background Color" tabindex="0">
+                    <input type="hidden" id="rex-button-background-color-runtime" name="rex-button-background-color-runtime" value="" />
+                    <input id="rex-button-background-color" type="text" name="rex-button-background-color" value="" size="10" />
+                    <div id="rex-button-background-color-preview-icon" class="preview-color-icon"></div>
+                </div>
+                <div id="rex-button-background-preview-wrap">
+                    <div id="rex-button-preview-background" style="width: 200px;height: 40px;background-color: black;border-radius: 20px;"></div>
+                </div>
+                <div id="rex-button-height-wrap" style="display: flex;">
+                    <div class="">>.<</div>
+                    <input type="text" id="rex-button-height" name="rex-button-height"/>
+                    <div class="label-px">px</div>
+                </div>
+            </div>
+            <div class="bl_modal-row">
+                <div class="label">hover</div>
+                <div class="rex-relative-col tippy" data-tippy-content="Background Hover Color" tabindex="0">
+                    <input type="hidden" id="rex-button-background-hover-color-runtime" name="rex-button-background-hover-color-runtime" value="" />
+                    <input id="rex-button-background-hover-color" type="text" name="rex-button-background-hover-color" value="" size="10" />
+                    <div id="rex-button-background-hover-color-preview-icon" class="preview-color-icon"></div>
+                </div>
+                <div id="rex-button-background-hover-preview-wrap">
+                    <div id="rex-button-preview-background-hover" style="width: 200px;height: 40px;background-color: grey;border-radius: 20px;"></div>
+                </div>
+            </div>
+            <div class="bl_modal-row">
+                <div class="open-menu-wrap">+/-</div>
+                <div class="rex-relative-col tippy" data-tippy-content="Border Color" tabindex="0">
+                    <input type="hidden" id="rex-button-border-color-runtime" name="rex-button-border-color-runtime" value="" />
+                    <input id="rex-button-border-color" type="text" name="rex-button-border-color" value="" size="10" />
+                    <div id="rex-button-color-preview-icon" class="preview-color-icon"></div>
+                </div>
+                <div id="rex-button-border-preview-wrap">
+                    <div id="rex-button-border-preview" style="width: 200px;height: 40px;border-color: blue;border-radius: 20px;border-style: solid;border-width: 2px;"></div>
+                </div>
+                <div id="rex-button-border-width-wrap" style="display: flex;">
+                    <input type="text" id="rex-button-border-width" name="rex-button-border-width"/>
+                    <div class="label-px">px</div>
+                </div>
+            </div>
+            <div class="bl_modal-row">
+                <div id="rex-button-border-radius-wrap" style="display: flex;">
+                    <div class="border-icon">90</div>
+                    <input type="text" id="rex-button-border-radius" name="rex-button-border-radius"/>
+                </div>
+                <div id="rex-button-margins-wrap">
+                    <div id="rex-button-margin-top-wrap" style="display: flex;">
+                        <div class="border-icon">up</div>
+                        <input type="text" id="rex-button-margin-top-radius" name="rex-button-margin-top-radius"/>
+                    </div>
+                    <div id="rex-button-preview-empty" style="width: 50px;height: 20px;background-color: grey;border-radius: 20px;"></div>
+                    <div id="rex-button-margin-bottom-wrap" style="display: flex;">
+                        <div class="border-icon">down</div>
+                        <input type="text" id="rex-button-margin-bottom-radius" name="rex-button-margin-bottom-radius"/>
                     </div>
                 </div>
-                <div id="rex-button-background-wrap"></div>
-                <div id="rex-button-border-wrap"></div>
-                <div id="rex-button-options-wrap"></div>
-                <div id="rex-button-link-wrap">
-                    <div class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix" style="width:100%;">
+            </div>
+            <div class="bl_modal-row">
+                <div id="rex-button-link-target-wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix" style="width:100%;">
                         <span class="prefix"></span>
-                        <input type="text" id="rex-button__url" name="rex-button__url">
-                        <label for="rex-button__url" class=""><?php _e('https://...', 'rexpansive');?></label>
+                        <input type="text" id="rex-button-link-target" name="rex-button-link-target">
+                        <label for="rex-button-link-target" class=""><?php _e('https://...', 'rexpansive');?></label>
                         <span class="rex-material-bar"></span>
-                    </div>
-                    <select >
-                        <option value="">_blank</option>
-                        <option value="">_self</option>
-                        <option value="">_parent</option>
-                        <option value="">_top</option>
-                    </select>                  
                 </div>
-                <div id="rex-button-name-wrap">
-                    <div class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix" style="width:100%;">
-                        <span class="prefix"></span>
-                        <input type="text" id="rex-button__name" name="rex-button__name">
-                        <label for="rex-button__name" class=""><?php _e('Title name model button', 'rexpansive');?></label>
-                        <span class="rex-material-bar"></span>
+                <div id="rex-button-link-type-wrap" class="rx__select-wrap">
+                    <select id="rex-button-link-type" class="rx__form-input">
+                        <option value="_blank">_blank</option>
+                        <option value="_self">_self</option>
+                        <option value="_parent">_parent</option>
+                        <option value="_top">_top</option>
+                    </select>  
+                    <div class="rx__form-input__select-arrow">
+                        <i class="l-svg-icons"><svg><use xlink:href="#A007-Close"></use></svg></i>
                     </div>
-                    <div class="rex-button add-rex-button-model">+</div>
+                </div>
+            </div>
+            <div class="bl_modal-row">
+                <div id="rex-button-name-wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix" style="width:100%;">
+                    <span class="prefix"></span>
+                    <input type="text" id="rex-button__name" name="rex-button__name">
+                    <label for="rex-button__name" class=""><?php _e('Title name model button', 'rexpansive');?></label>
+                    <span class="rex-material-bar"></span>
+                </div>
+                <div id="rex-button-add-model-wrap" class="add-rex-button-model">
+                    <div class="add-label">+</div>
                 </div>
             </div><!-- // .rex-model__add-model__wrap -->
         </div>
         <div class="rex-modal__outside-footer">
+            <div class="rex-reset-button" style="width: 30px; background-color: grey; border-radius: 50%">res</div>
+            <div class="rex-apply-button" style="width: 30px; background-color: blue; border-radius: 50%">res</div>
         </div>
     </div>
 </div>
 <!-- Edit Button -->
-background-color: #bf6e4e;
-@include filter-gradient(#bf6e4e, #74f765, horizontal);
-@include background-image(linear-gradient(left top, #bf6e4e 0%,#74f765 100%));
-
-<!-- 
-html
-<h1>Titolo</h1>
-<p>
-    <a href="https://www.google.com" class="qaz1-rex-button-container rex-button" data-rex-button-id="qaz">
-        <span class="qaz1-rex-button-data" style="display:none;" data-text-color="white" data-text-size="24px" data-background-color="red" data-background-color-hover="rgb(120,0,255)" data-border-width="5px" data-border-color="rgba(0,120,255,0.5)" data-button-align="" data-border-radius="30px" data-margin-top="0px" data-margin-bottom="10px" data-link-target="https://www.google.com" data-link-type="" data-button-model-name="Bel pulsante"></span>
-        <span class="qaz1-rex-button-text">LABEL</span>
-    </a>
-</p>
-css
-.rex-button-container[data-rex-id="qaz1"] {
-  align-items:center;
-  display:inline-flex;
-  padding:10px;
-  text-decoration: none;
-  
-  font-size: 24px;
-  color: white;
-  
-  background-color: red;
-  height: 30px;
-  
-  border-style: solid;
-  border-width: 5px;
-  border-color: rgba(0,120,255,0.5);
-  border-radius: 30px;
-  
-  //gradiente
-  background: #003fff;
-background: -moz-linear-gradient(-45deg, #003fff 0%, #ff6868 100%);
-background: -webkit-linear-gradient(-45deg, #003fff 0%,#ff6868 100%);
-background: linear-gradient(135deg, #003fff 0%,#ff6868 100%);
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#003fff', endColorstr='#ff6868',GradientType=1 );
-
-//immagine bg
-  background-image: url("https://wallpapercave.com/wp/wp1864352.jpg");
-  background-repeat: no-repeat;
-  background-size: cover;
-
-  margin-top: 0px;
-  margin-bottom: 10px;
-}
-
-.rex-button-container[data-rex-id="qaz1"]:hover {
-  background-color: rgb(120,0,255);
-}
-
-js
-/*
-//IMPORTANTE
-i nomi delle DEVONO iniziare con una lettera -> gli id dei pulsanti iniziano con una lettera e 3 caratteri a caso
-colore testo
-testo
-dimensione font testo
-
-colore sfondo
-altezza totale pulsante
-colore hover
-
-colore bordo
-larghezza bordo
-
-angolo smussamento lato
-margine top e bot
-
-link target
-tipo link
-
-nome pulsante modello
-*/
-
-<p class="rex-button-container">
-    <span class="rex-button-style" style="display:none;" data-rex-style=".qaz1-rex-button-container{align-items:center;display:inline-flex;padding:10px;text-decoration:none;font-size:24px;color:#fff;background-color:red;height:30px;border-style:solid;border-width:5px;border-color:rgba(0,120,255,.5);border-radius:30px;margin-top:0;margin-bottom:10px}.qaz1-rex-button-container:hover{background-color:#7800ff}" data-rex-style-json='{"qaz1_rex_button_container":{"alignItems":"center","display":"inline-flex","padding":"10px","textDecoration":"none","fontSize":"24px","color":"#fff","backgroundColor":"red","height":"30px","borderStyle":"solid","borderWidth":"5px","borderColor":"rgba(0,120,255,.5)","borderRadius":"30px","marginTop":"0","marginBottom":"10px"},"qaz1_rex_button_container_hover":{"backgroundColor":"#7800ff"}}'></span>
-    <a href="https://www.google.com" class="qaz1-rex-button-container rex-button" data-rex-button-id="qaz1">
-        <span class="qaz1-rex-button-data" style="display:none;" data-text-color="white" data-text-size="24px" data-background-color="red" data-background-color-hover="rgb(120,0,255)" data-border-width="5px" data-border-color="rgba(0,120,255,0.5)" data-button-align="" data-border-radius="30px" data-margin-top="0px" data-margin-bottom="10px" data-link-target="https://www.google.com" data-link-type="" data-button-model-name="Bel pulsante"></span>
-        <span class="qaz1-rex-button-text">LABEL</span>
-    </a>
-</p>
--->

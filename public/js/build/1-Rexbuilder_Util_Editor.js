@@ -522,6 +522,14 @@ var Rexbuilder_Util_Editor = (function($) {
     Rexbuilder_Util.$document.on("rexlive:updateButtonLive", function(e){
       Rexbuilder_Rexbutton.updateButtonLive(e.settings.data_to_send);
     });
+
+    Rexbuilder_Util.$document.on("rexlive:remove_separate_button", function (e) {
+      Rexbuilder_Rexbutton.removeSeparateButton(e.settings.data_to_send);
+    });
+
+    Rexbuilder_Util.$document.on("rexlive:separate_rex_button", function (e) {
+      Rexbuilder_Rexbutton.separateRexButton(e.settings.data_to_send);
+    });
   };
 
   var _hideAllTools = function() {

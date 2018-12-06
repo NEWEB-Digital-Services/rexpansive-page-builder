@@ -290,6 +290,7 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'print_post_custom_styles' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'print_rex_buttons_style' );
 
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_photoswipe_template' );
 		

@@ -4609,7 +4609,7 @@ span.rex-theme-button,
   -webkit-box-shadow: 1px 0 2px rgba(255, 255, 255, 0.4), -1px 0 2px rgba(255, 255, 255, 0.4);
           box-shadow: 1px 0 2px rgba(255, 255, 255, 0.4), -1px 0 2px rgba(255, 255, 255, 0.4); }
 
-.rex-edit-button.rex-show-buttons-tools {
+.rex-edit-button-tools.rex-show-buttons-tools {
   position: absolute;
   width: 20px;
   height: 20px;

@@ -1650,13 +1650,11 @@ class Rexbuilder_Admin {
 		$id_button = $_POST["id_button"];
 		$html_button = $_POST["html_button"];
 		$css_button = $_POST["css_button"];
-		$name_button = $_POST["name_button"];
-		$jsonCSS_buttons = $_POST["jsonCSS"];
+		$jsonRexButtons_buttons = $_POST["jsonRexButtons"];
 
-		update_option( '_rex_buttons_styles', $jsonCSS_buttons );
+		update_option( '_rex_buttons_styles', $jsonRexButtons_buttons );
 		update_option( '_rex_button_'.$id_button.'_css', $css_button );
 		update_option( '_rex_button_'.$id_button.'_html', $html_button );
-		update_option( '_rex_button_'.$id_button.'_name', $name_button );
 		$response['idButton'] = $id_button;
 		wp_send_json_success( $response );
 	}
@@ -1678,6 +1676,7 @@ class Rexbuilder_Admin {
 		$response['error'] = false;
 		$buttons_ids = $_POST["ids_used"];
 		update_option( '_rex_buttons_ids', $buttons_ids );
+		$response['backIDS'] = $buttons_ids;
 		wp_send_json_success( $response );
 	}
 	

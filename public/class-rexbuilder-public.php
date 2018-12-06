@@ -128,6 +128,7 @@ class Rexbuilder_Public
 
             wp_enqueue_style('input-spinner', REXPANSIVE_BUILDER_URL . $cartella . 'css/input-spinner.css', array(), $ver, 'all');
 
+            wp_enqueue_style('rexpansive-builder-rexbutton-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/rex_buttons.css', array(), $ver, 'all');
             wp_enqueue_style('rexpansive-builder-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/public.css', array(), $ver, 'all');
 
             wp_enqueue_style( 'rexbuilder-live-google-fonts', 'https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i', false );
@@ -669,6 +670,7 @@ endif;
         $ids_in_page = $_POST['ids'];
 
         update_post_meta($post_id_to_update, '_rexbuilder_buttons_ids_in_page', $ids_in_page);
+        $response['backIDS'] = $ids_in_page;
         wp_send_json_success($response);
     }
 
@@ -693,7 +695,6 @@ endif;
         $defaultIDs = array();
         $sectionsIDsJSON = get_option('_rex_section_ids_used', $defaultIDs);
         $sectionsIDsUsed = json_decode($sectionsIDsJSON, true);
-
         if(isset($_GET['editor'])){
             $editor = $_GET['editor'];
         } else{
@@ -767,13 +768,18 @@ endif;
             }
         }
 
-        $buttonsIDs_used = get_option("_rex_buttons_ids", "");
-        $buttonsIDs_json = explode(" ", $buttonsIDs_used);
-
+        $defaultButtonsIDs = array();
+        $buttonsIDsJSON = get_option('_rex_buttons_ids', $defaultButtonsIDs);
+        $stripped = stripslashes($buttonsIDsJSON);
+        $buttonsIDsUsed = json_decode($stripped, true);
 ?>
 <div class="rexbuilder-live-content<?php echo ($editor ? ' rexbuilder-live-content--editing' : ''); ?>">
             <div id="rex-buttons-ids-used" style="display: none;"><?php 
-                echo json_encode($buttonsIDs_json);
+            if ($buttonsIDsUsed == null) {
+                echo "[]";
+            } else {
+                echo json_encode($buttonsIDsUsed);
+            }
             ?></div>
             <div id="sections-ids-used" style="display: none;"><?php 
             if ($sectionsIDsUsed == null) {
@@ -955,13 +961,16 @@ endif;
         if ($this->builder_active_on_this_post_type()) {
             global $post;
             $buttonsIDs = get_post_meta($post->ID, '_rexbuilder_buttons_ids_in_page', true);
-            $buttonsInPage = explode(" ", $buttonsIDs);
+            $buttonsInPage = json_decode($buttonsIDs, true);
             $style = "";
             foreach ($buttonsInPage as $index => $id_button) {
                 $buttonStyle = get_option('_rex_button_'.$id_button.'_css', "");
+                $buttonStyle = stripslashes($buttonStyle);
                 $style .= $buttonStyle;
             }
-            wp_add_inline_style('rexpansive-builder-rexbutton-style', $meta);
+            if($style != ''){
+                wp_add_inline_style('rexpansive-builder-rexbutton-style', $style);
+            }
         }
     }
     /**

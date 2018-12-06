@@ -38,15 +38,11 @@ var Rex_Save_Listeners = (function ($) {
 
             //rex-buttons in page
             var rexButtonsInPage = Rexbuilder_Rexbutton.getButtonsInPage();
-            var buttonsIDS = "";
-            for (i = 0; i < rexButtonsInPage.length; i++) {
-                if (i == rexButtonsInPage.length - 1) {
-                    buttonsIDS += rexButtonsInPage[i];
-                } else {
-                    buttonsIDS += rexButtonsInPage[i] + " ";
-                }
+            var rexButtonsIDsInPage = [];
+            for (i = 0; i < rexButtonsInPage.length; i++){
+                rexButtonsIDsInPage.push(rexButtonsInPage[i].id);
             }
-
+            console.log(rexButtonsIDsInPage);
             ajaxCalls.push(
                 $.ajax({
                     type: 'POST',
@@ -56,7 +52,7 @@ var Rex_Save_Listeners = (function ($) {
                         action: 'rexlive_save_buttons_in_page',
                         nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
                         post_id_to_update: idPost,
-                        ids: buttonsIDS
+                        ids: JSON.stringify(rexButtonsIDsInPage)
                     },
                     success: function (response) {
                         if (response.success) {
