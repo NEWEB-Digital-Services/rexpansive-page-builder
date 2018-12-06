@@ -533,7 +533,7 @@ var Rexbuilder_Block_Editor = (function($) {
       }
 
       $elem.find(".text-wrap.medium-editor-element").html(data.accordion.complete);
-      $elem.find(".rex-accordion").rexAccordion();
+      // $elem.find(".rex-accordion").rexAccordion();
     });
 
     /**

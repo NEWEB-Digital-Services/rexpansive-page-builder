@@ -1997,6 +1997,16 @@
                  */
                 clearTimeout(this.doubleDownTimer);
                 this.doubleDownTimer = setTimeout(function() {
+                  console.table({
+                    elementIsDragging: Rexbuilder_Util_Editor.elementIsDragging,
+                    elementIsResizing: Rexbuilder_Util_Editor.elementIsResizing,
+                    editingElement: Rexbuilder_Util_Editor.editingElement,
+                    'ui-resizable-resizing': $elem.hasClass('ui-resizable-resizing'),
+                    'ui-draggable-dragging': $elem.hasClass('ui-draggable-dragging'),
+                    'ui-resizable-handle': $target.hasClass('ui-resizable-handle'),
+                    'circle-handle': $target.hasClass('circle-handle'),
+                    which: e.which
+                  });
                   if( !( Rexbuilder_Util_Editor.elementIsDragging || Rexbuilder_Util_Editor.elementIsResizing || Rexbuilder_Util_Editor.editingElement || $elem.hasClass('ui-resizable-resizing') || $elem.hasClass('ui-draggable-dragging') || $target.hasClass('ui-resizable-handle') || $target.hasClass('circle-handle') ) && 1 === e.which ) {
                     $elem.trigger("mouseup");
                     // gallery.properties.gridstackInstance.disable();

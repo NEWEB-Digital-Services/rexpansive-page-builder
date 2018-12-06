@@ -169,9 +169,8 @@ var Rexbuilder_App = (function($) {
           grid.resize( block,null,temp );
         },
       };
+      $accordions.rexAccordion(accordionSettings);
     }
-
-    $accordions.rexAccordion(accordionSettings);
   };
 
   var _linkDocumentListeners = function() {

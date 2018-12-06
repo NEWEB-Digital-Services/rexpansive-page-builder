@@ -12,7 +12,8 @@
       overflow: visible;
     }
   }
-    &#{$row-focused} {
+  
+  &#{$row-focused} {
   
     &.empty-section {
       .responsive-overlay {
