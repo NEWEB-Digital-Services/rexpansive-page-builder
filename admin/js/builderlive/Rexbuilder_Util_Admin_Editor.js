@@ -9,6 +9,8 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   var modelSaved;
   var pageSaved;
   var $saveBtn;
+  var $undoBtn;
+  var $redoBtn;
 
   var $highlightSectionId;
   var $highlightModelId;
@@ -281,6 +283,14 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         $saveBtn.trigger('click');
       }
 
+      if( event.data.eventName == "rexlive:undoWithButton" ) {
+        $undoBtn.trigger('click');
+      }
+
+      if( event.data.eventName == "rexlive:redoWithButton" ) {
+        $redoBtn.trigger('click');
+      }
+
       if( event.data.eventName == "rexlive:savePaletteColor" ) {
         Rexlive_Ajax_Calls.savePaletteColor(event.data.color_data);
       }
@@ -351,12 +361,33 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       }
     });
 
+    // Save with keyboard
     Rexlive_Base_Settings.$document.on('keydown', function(e) {
       if ((window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)  && e.keyCode == 83) {
         e.preventDefault();
         // Process the event here (such as click on submit button)
         // SAVE PAGE
         $saveBtn.trigger('click');
+      }
+    });
+
+    // Undo with keyboard
+    Rexlive_Base_Settings.$document.on('keydown', function(e) {
+      if ((window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) && !e.shiftKey && e.keyCode == 90) {
+        e.preventDefault();
+        // Process the event here (such as click on submit button)
+        // SAVE PAGE
+        $undoBtn.trigger('click');
+      }
+    });
+
+    // Redo with keyboard
+    Rexlive_Base_Settings.$document.on('keydown', function(e) {
+      if ( ( (window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) && e.shiftKey && e.keyCode == 90 ) || ( (window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) && e.keyCode == 89 ) ) {
+        e.preventDefault();
+        // Process the event here (such as click on submit button)
+        // SAVE PAGE
+        $redoBtn.trigger('click');
       }
     });
 
@@ -1596,6 +1627,8 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     $highlightRowSetVideo = $configRowSetVideo.add($fastRowSetVideo);
     
     $saveBtn = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find( ".btn-save" );
+    $undoBtn = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find( ".btn-undo" );
+    $redoBtn = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find( ".btn-redo" );
     pageSaved = true;
     modelSaved = true;
     open_models_list = [];

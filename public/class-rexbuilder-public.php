@@ -285,9 +285,10 @@ class Rexbuilder_Public
                 ),
                 'defaultSettings' => array(
                     'collapseWidth' => 768,
+                ),
+                'siteurl' => get_site_url(),
                 )
-            )
-            ));
+            ) );
 
         }
     }

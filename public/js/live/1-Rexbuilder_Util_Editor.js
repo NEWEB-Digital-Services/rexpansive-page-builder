@@ -386,6 +386,32 @@ var Rexbuilder_Util_Editor = (function($) {
       }
     });
 
+    // capture undo
+    Rexbuilder_Util.$document.on('keydown', function(e) {
+      if ((window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) && !e.shiftKey && e.keyCode == 90) {
+        e.preventDefault();
+        // Process the event here (such as click on submit button)
+        // SAVE PAGE
+        var data = {
+          eventName: "rexlive:undoWithButton",
+        };
+        Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      }
+    });
+
+    // capture redo
+    Rexbuilder_Util.$document.on('keydown', function(e) {
+      if ( ( (window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) && e.shiftKey && e.keyCode == 90 ) || ( (window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) && e.keyCode == 89 ) ) {
+        e.preventDefault();
+        // Process the event here (such as click on submit button)
+        // SAVE PAGE
+        var data = {
+          eventName: "rexlive:redoWithButton",
+        };
+        Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      }
+    });
+
     Rexbuilder_Util.$window.on("mousedown", function(event) {
       Rexbuilder_Util_Editor.mouseDown = true;
       Rexbuilder_Util_Editor.mouseUp = false;
@@ -1305,6 +1331,10 @@ var Rexbuilder_Util_Editor = (function($) {
     } else {
       Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
     }
+  };
+
+  var updateLinks = function() {
+
   };
 
   /**
