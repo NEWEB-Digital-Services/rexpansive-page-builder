@@ -12,6 +12,7 @@
     <div class="editable">
 Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil sapiente minima dolorem? Suscipit aperiam est excepturi harum? Autem adipisci corporis pariatur sint mollitia impedit explicabo praesentium, distinctio ducimus quos sed?
     </div>
+    <div class="editable2"></div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="public/js/jquery-ui.min.js"></script>
     <script src="public/js/medium-editor.js"></script>
@@ -22,10 +23,10 @@ Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil sapiente minima 
     <script src="public/js/vendor/medium-editor-insert-plugin.js"></script>
     <script type="text/javascript">
     var editor = new MediumEditor('.editable');
+    editor.addElements( $('.editable2' ) );
 
     $(function () {
-        console.log('fnacul');
-        $('.editable').mediumInsert({
+        $('.editable2').mediumInsert({
             editor: editor,
             addons: {
                 images: {

@@ -26,9 +26,20 @@ var TextEditor = (function($) {
   var _addMediumInsertToElement = function($textWrap) {
     $textWrap.mediumInsert({
       editor: editorInstance,
+      beginning: true,
       label: "<i class='l-svg-icons'><svg><use xlink:href='#Z001-Plus'></use></svg></i>",
       addons: {
-        images: false,
+        images: { 
+          useDragAndDrop: false,
+          actions: {
+            replace: {
+              label: '<span class="fa fa-pencil"></span>',
+              clicked: function($el) {
+                console.log('merdasasx');
+              }
+            }
+          }
+        },
         embeds: {
           oembedProxy: "https://medium.iframe.ly/api/oembed?iframe=1",
           label: "<i class='l-svg-icons'><svg><use xlink:href='#Z006-Video'></use></svg></i>"
@@ -41,8 +52,9 @@ var TextEditor = (function($) {
           captionPlaceholder: false,
           actions: null,
           preview: false
-        }
+        },
         // tables: {}
+        // CustomAddon: {}
       }
     });
   };
