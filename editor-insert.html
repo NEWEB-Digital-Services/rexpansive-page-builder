@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="public/css/medium-editor.min.css">
+    <link rel="stylesheet" href="public/css/medium-editor-insert-plugin.min.css">
+</head>
+<body>
+    <div class="editable">
+Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nihil sapiente minima dolorem? Suscipit aperiam est excepturi harum? Autem adipisci corporis pariatur sint mollitia impedit explicabo praesentium, distinctio ducimus quos sed?
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="public/js/jquery-ui.min.js"></script>
+    <script src="public/js/medium-editor.js"></script>
+    <script src="public/js/handlebars.runtime.js"></script>
+    <script src="public/js/jquery.fileupload.js"></script>
+    <script src="public/js/jquery.cycle2.min.js"></script>
+    <script src="public/js/jquery.cycle2.center.min.js"></script>
+    <script src="public/js/vendor/medium-editor-insert-plugin.js"></script>
+    <script type="text/javascript">
+    var editor = new MediumEditor('.editable');
+
+    $(function () {
+        console.log('fnacul');
+        $('.editable').mediumInsert({
+            editor: editor,
+            addons: {
+                images: {
+                    uploadScript: null,
+                    deleteScript: null,
+                    captionPlaceholder: 'Type caption for image',
+                    actions: null
+                }
+            }
+        });
+    });
+    </script>
+</body>
+</html>

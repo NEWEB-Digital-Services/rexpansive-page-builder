@@ -219,6 +219,7 @@
   .medium-insert-buttons-show {
     @include me-tool-btn();
     background-color: $palette-color-1;
+    color: #fff;
     width: 30px;
     height: 30px;
     @include live-fonts();

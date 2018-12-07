@@ -180,8 +180,9 @@
         this._updateElementsSizeViewers();
         this._linkResizeEvents();
         this._linkDragEvents();
-        // this._linkDropEvents();
         this._linkDnDEvents();
+
+        // this._linkDropEvents();
 
         this._launchTextEditor();
         this._createFirstReverseStack();

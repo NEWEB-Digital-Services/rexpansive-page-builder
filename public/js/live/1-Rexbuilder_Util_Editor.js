@@ -1020,6 +1020,10 @@ var Rexbuilder_Util_Editor = (function($) {
     });
   };
 
+  var noop = function() {
+
+  }
+
   var _checkVisibleRow = function() {
     // var ruleTop = document.createElement('div');
     // var ruleBottom = document.createElement('div');

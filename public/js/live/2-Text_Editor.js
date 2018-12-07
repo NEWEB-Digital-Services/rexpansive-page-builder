@@ -1100,7 +1100,6 @@ var TextEditor = (function($) {
       imageDragging: false,
       extensions: {
         colorPicker: pickerExtensionInstance,
-        // textHtml: htmlExtensionInstance,
         textEditorHtml: new TextHtmlEditorExtension(),
         headingTags: headingTagsExtensionInstance,
         formattingTags: formattingTagsExtensionInstance,
