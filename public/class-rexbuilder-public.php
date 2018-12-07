@@ -66,6 +66,14 @@ class Rexbuilder_Public
         $this->plugin_options = get_option($this->plugin_name . '_options');
     }
 
+    public function rexlive_body_class( $classes ) {
+        if( Rexbuilder_Utilities::isBuilderLive() ) {
+            // array_push( $classes, 'rexbuilder-live-active' );
+            $classes[] = 'rexbuilder-live-active';
+        }
+        return $classes;
+    }
+
     /**
      * Register the stylesheets for the public-facing side of the site.
      *
@@ -183,22 +191,25 @@ class Rexbuilder_Public
             $ver = null;
 
             $cartella = "public/";
-            //include media libray
-            wp_enqueue_media();
+            if( Rexbuilder_Utilities::isBuilderLive() ) {
+                //include media libray
+                wp_enqueue_media();
 
-            // JS TMPL
-            wp_enqueue_script('tmpl', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/tmpl.min.js', array('jquery'), $ver, true);
+                // JS TMPL
+                wp_enqueue_script('tmpl', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/tmpl.min.js', array('jquery'), $ver, true);
+                
+                // TIPPY
+                wp_enqueue_script( 'tippy', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/tippy.all.min.js', array( 'jquery' ), null, true );
+    
+                // RANGY
+                wp_enqueue_script( 'rangy-core', REXPANSIVE_BUILDER_URL . $cartella . 'rangy-1.3.0/rangy-core.js', array( 'jquery' ), null, true );
+                wp_enqueue_script( 'rangy-classapplier', REXPANSIVE_BUILDER_URL . $cartella . 'rangy-1.3.0/rangy-classapplier.js', array( 'jquery' ), null, true );
+            }
 
             // PHOTOSWIPE
             wp_enqueue_script('photoswipe', REXPANSIVE_BUILDER_URL . $cartella . 'Photoswipe/photoswipe.min.js', array('jquery'), $ver, true);
             wp_enqueue_script('photoswipe-ui', REXPANSIVE_BUILDER_URL . $cartella . 'Photoswipe/photoswipe-ui-default.min.js', array('jquery'), $ver, true);
 
-            // TIPPY
-            wp_enqueue_script( 'tippy', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/tippy.all.min.js', array( 'jquery' ), null, true );
-
-            // RANGY
-            wp_enqueue_script( 'rangy-core', REXPANSIVE_BUILDER_URL . $cartella . 'rangy-1.3.0/rangy-core.js', array( 'jquery' ), null, true );
-            wp_enqueue_script( 'rangy-classapplier', REXPANSIVE_BUILDER_URL . $cartella . 'rangy-1.3.0/rangy-classapplier.js', array( 'jquery' ), null, true );
 
             // YTPLAYER
             wp_enqueue_script('YTPlayer', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/jquery.mb.YTPlayer.min.js', array('jquery'), $ver, true);
@@ -338,39 +349,9 @@ class Rexbuilder_Public
         if (!isset($this->plugin_options['post_types'])) {
             return;
         }
-        include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexbuilder-js-templates.php";
-    }
-    /**
-     * Create the variuos modal editors of the builder.
-     *
-     * @since    1.0.0
-     * @deprecated
-     */
-    public function create_builder_modals()
-    {
-
-        //$page_info = get_current_screen();
-
-        if (!current_user_can('edit_posts') && !current_user_can('edit_pages')) {
-            return;
+        if ( Rexbuilder_Utilities::isBuilderLive() ) {
+            include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexbuilder-js-templates.php";
         }
-        if (!isset($this->plugin_options['post_types'])) {
-            return;
-        }
-
-        include_once 'partials/rexbuilder-modals-display.php';
-
-
-/*
-if ( get_user_option('rich_editing') == 'true') {
-$post_to_activate = $this->plugin_options['post_types'];
-if( isset( $post_to_activate[$page_info->id] ) ) :
-if( ( $post_to_activate[$page_info->id] == 1 ) &&
-( $post_to_activate[$page_info->post_type] == 1 ) ) :
-
-endif;
-endif;
-} */
     }
 
     /**
@@ -672,8 +653,11 @@ endif;
         <?php
     }
     
-    public function generate_builder_content($content)
-    {
+    /**
+     * Filtering post_content to add builder live information
+     * @since 2.0.0
+     */
+    public function generate_builder_content($content) {
         global $post;
 
         $mobile = array("id" => "mobile", "label" => "Mobile", "min" => "320", "max" => "767", "type" => "standard");
@@ -688,7 +672,7 @@ endif;
         
         $sectionsIDsUsed = json_decode($sectionsIDsJSON, true);
 
-        if(isset($_GET['editor'])){
+        if( Rexbuilder_Utilities::isBuilderLive() ){
             $editor = $_GET['editor'];
         } else{
             $editor = false;
@@ -763,139 +747,139 @@ endif;
 
 ?>
 <div class="rexbuilder-live-content<?php echo ($editor ? ' rexbuilder-live-content--editing add-new-section--hide' : ''); ?>">
-            <div id="sections-ids-used" style="display: none;"><?php 
-            if ($sectionsIDsUsed == null) {
-                echo "[]";
-            } else {
-                echo json_encode($sectionsIDsUsed);
+    <div id="sections-ids-used" style="display: none;"><?php 
+        if ($sectionsIDsUsed == null) {
+            echo "[]";
+        } else {
+            echo json_encode($sectionsIDsUsed);
+        }
+        ?></div>
+        <div id="layout-avaiable-dimensions" style="display: none;"><?php echo json_encode($layoutsAvaiable); ?></div>
+        <div id="rexbuilder-model-data" style="display: none;">
+            <div class = "models-customizations" <?php
+            if (!$flag_models) {
+                echo 'data-empty-models-customizations="true">';
+            } else { ?>>
+                <?php
+                foreach ($models_customizations as $model) {
+                    $idModel = $model['id'];
+                    echo '<div class="model-customizations-container" data-model-id="'. $idModel .'">';
+                    $customizations = $model['customizations'];
+                    foreach($customizations as $custom){
+                        $customName = $custom['name'];
+                        $customTargets = $custom['targets'];
+
+                        if(isset($custom["targets"])){
+                            $customTargets = $custom["targets"];
+                        } else{
+                            $customTargets = "";
+                        }
+                        
+                        echo '<div class="model-customization-data" data-model-layout-name="' . $customName . '">';
+                        
+                        if($customTargets != ""){
+                            echo json_encode($customTargets);
+                        } else{
+                            echo '[]';
+                        }
+                        echo '</div>';
+                    }
+                    echo '</div>';
+                }
             }
             ?></div>
-            <div id="layout-avaiable-dimensions" style="display: none;"><?php echo json_encode($layoutsAvaiable); ?></div>
-            <div id="rexbuilder-model-data" style="display: none;">
-                <div class = "models-customizations" <?php
-                if (!$flag_models) {
-                    echo 'data-empty-models-customizations="true">';
-                } else { ?>>
-                    <?php
-                    foreach ($models_customizations as $model) {
-                        $idModel = $model['id'];
-                        echo '<div class="model-customizations-container" data-model-id="'. $idModel .'">';
-                        $customizations = $model['customizations'];
-                        foreach($customizations as $custom){
-                            $customName = $custom['name'];
-                            $customTargets = $custom['targets'];
-
-                            if(isset($custom["targets"])){
-                                $customTargets = $custom["targets"];
-                            } else{
-                                $customTargets = "";
-                            }
-                            
-                            echo '<div class="model-customization-data" data-model-layout-name="' . $customName . '">';
-                            
-                            if($customTargets != ""){
-                                echo json_encode($customTargets);
-                            } else{
-                                echo '[]';
-                            }
-                            echo '</div>';
-                        }
-                        echo '</div>';
-                    }
-                }
-                ?></div>
-                <div class = "available-models-customizations-names"><?php echo json_encode($models_customizations_avaiable);?></div>
-            </div>
-            <div id="rexbuilder-layout-data" style="display: none;">
-                <div class="layouts-customizations" <?php
-                if (!$flag_page_customization) {
-                    echo 'data-empty-customizations="true">';
-                } else {?>>
-                    <?php
-                    foreach ($customizations_array as $customization) {
-                        $customization_name = $customization['name'];
-                        echo '<div class="customization-wrap" data-customization-name="'.$customization_name.'">';
-                        $sections = $customization['sections'];
-                        foreach($sections as $section_targets){
-                            $sectionRexID = $section_targets["section_rex_id"];
-                            $sectionModelNumber = $section_targets["section_model_number"];
-                            $sectionModelID = $section_targets["section_model_id"];
-                            
-                            if(isset($section_targets["section_hide"])){
-                                $hideSection = $section_targets["section_hide"];
-                            } else {
-                                $hideSection = "false";
-                            }
-
-                            if(isset($section_targets["section_created_live"])){
-                                $createdLive = $section_targets["section_created_live"];
-                            } else {
-                                $createdLive = "false";
-                            }
-
-                            if(isset($section_targets["targets"])){
-                                $targets = $section_targets["targets"];
-                            } else{
-                                $targets = "";
-                            }
-
-                            echo '<div class="section-targets"';
-                            echo ' data-section-rex-id="' . $sectionRexID . '"';
-                            echo ' data-model-id="'.$sectionModelID.'"';
-                            echo ' data-model-number="'.$sectionModelNumber.'"';
-                            echo ' data-section-hide="'.$hideSection.'"';
-                            echo ' data-section-created-live="'.$createdLive.'"';
-                            echo '>';
-
-                            if($targets != ""){
-                                echo json_encode($targets);
-                            } else {
-                                echo "[]";
-                            }
-                            echo '</div>';
-                        }
-                        echo '</div>';
-                    }
-                }
-                ?></div>
-                <div class="available-layouts-names"><?php 
-                if($customizations_names != ""){
-                    echo json_encode($customizations_names); 
-                }else{
-                    echo "[]";
-                }
-                ?></div>
-            </div>
-            <div id="rexbuilder-layout-data-live" style="display: none;"></div>
-            <div id="rexbuilder-layouts-sections-order" style="display: none;"></div>
-            <div id="rexbuilder-default-layout-state" style="display: none;" data-empty-default-customization="true"></div>
-            <?php
-
-            $backendEditing = "true";
-            if(get_post_meta($post->ID, '_save_from_backend', true) == "false"){
-                $backendEditing = "false";
-            }
-            ?>
-            <div class="rex-container" data-rex-layout-selected="" data-backend-edited="<?php echo $backendEditing;?>">
-            <?php
-    echo do_shortcode($rexbuilderShortcode);
-            ?>
-            </div>
-            <?php 
-            if (isset($editor) && $editor == "true") {
-?>
-                <div class="bl_d-flex bl_jc-c add-new-section__wrap">
-                    <div class="tool-button tool-button--inline tool-button--flat tool-button--add-big add-new-section tippy" data-new-row-position="bottom" data-tippy-content="<?php _e('Add Row','rexpansive'); ?>">
-                        <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
-                    </div>
-                </div>
-                <?php include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-loader.php"; ?>
-                <?php include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-color-palette.php"; ?>
-                <?php include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-overlay-palette.php"; ?>
-            <?php
-                }
-            ?>
+            <div class = "available-models-customizations-names"><?php echo json_encode($models_customizations_avaiable);?></div>
         </div>
+        <div id="rexbuilder-layout-data" style="display: none;">
+            <div class="layouts-customizations" <?php
+            if (!$flag_page_customization) {
+                echo 'data-empty-customizations="true">';
+            } else {?>>
+                <?php
+                foreach ($customizations_array as $customization) {
+                    $customization_name = $customization['name'];
+                    echo '<div class="customization-wrap" data-customization-name="'.$customization_name.'">';
+                    $sections = $customization['sections'];
+                    foreach($sections as $section_targets){
+                        $sectionRexID = $section_targets["section_rex_id"];
+                        $sectionModelNumber = $section_targets["section_model_number"];
+                        $sectionModelID = $section_targets["section_model_id"];
+                        
+                        if(isset($section_targets["section_hide"])){
+                            $hideSection = $section_targets["section_hide"];
+                        } else {
+                            $hideSection = "false";
+                        }
+
+                        if(isset($section_targets["section_created_live"])){
+                            $createdLive = $section_targets["section_created_live"];
+                        } else {
+                            $createdLive = "false";
+                        }
+
+                        if(isset($section_targets["targets"])){
+                            $targets = $section_targets["targets"];
+                        } else{
+                            $targets = "";
+                        }
+
+                        echo '<div class="section-targets"';
+                        echo ' data-section-rex-id="' . $sectionRexID . '"';
+                        echo ' data-model-id="'.$sectionModelID.'"';
+                        echo ' data-model-number="'.$sectionModelNumber.'"';
+                        echo ' data-section-hide="'.$hideSection.'"';
+                        echo ' data-section-created-live="'.$createdLive.'"';
+                        echo '>';
+
+                        if($targets != ""){
+                            echo json_encode($targets);
+                        } else {
+                            echo "[]";
+                        }
+                        echo '</div>';
+                    }
+                    echo '</div>';
+                }
+            }
+            ?></div>
+            <div class="available-layouts-names"><?php 
+            if($customizations_names != ""){
+                echo json_encode($customizations_names); 
+            }else{
+                echo "[]";
+            }
+            ?></div>
+        </div>
+        <div id="rexbuilder-layout-data-live" style="display: none;"></div>
+        <div id="rexbuilder-layouts-sections-order" style="display: none;"></div>
+        <div id="rexbuilder-default-layout-state" style="display: none;" data-empty-default-customization="true"></div>
+        <?php
+
+        $backendEditing = "true";
+        if(get_post_meta($post->ID, '_save_from_backend', true) == "false"){
+            $backendEditing = "false";
+        }
+        ?>
+        <div class="rex-container" data-rex-layout-selected="" data-backend-edited="<?php echo $backendEditing;?>">
+        <?php
+        echo do_shortcode($rexbuilderShortcode);
+        ?>
+        </div>
+        <?php 
+        if (isset($editor) && $editor == "true") {
+?>
+            <div class="bl_d-flex bl_jc-c add-new-section__wrap">
+                <div class="tool-button tool-button--inline tool-button--flat tool-button--add-big add-new-section tippy" data-new-row-position="bottom" data-tippy-content="<?php _e('Add Row','rexpansive'); ?>">
+                    <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
+                </div>
+            </div>
+            <?php include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-loader.php"; ?>
+            <?php include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-color-palette.php"; ?>
+            <?php include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-overlay-palette.php"; ?>
+        <?php
+            }
+        ?>
+    </div>
 	<?php
 
     }
@@ -973,7 +957,7 @@ endif;
                 if (count($titles) > 0) {
                     include Rexbuilder_Utilities::get_plugin_templates_path('rexbuilder-' . $nav . '-template.php');
                 } else{
-                    if (isset($_GET['editor']) && $_GET['editor'] == "true"){
+                    if ( Rexbuilder_Utilities::isBuilderLive() ){
                         ?> 
                         <nav class="vertical-nav nav-editor-mode-enable">
                             <ul>
@@ -983,7 +967,7 @@ endif;
                     }
                 }
             } else {
-                if(isset($_GET['editor']) && $_GET['editor'] == "true"){
+                if( Rexbuilder_Utilities::isBuilderLive() ){
                     ?> 
                     <nav class="vertical-nav nav-editor-mode-disable">
                         <ul>

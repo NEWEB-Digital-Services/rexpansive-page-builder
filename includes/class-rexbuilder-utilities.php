@@ -105,5 +105,12 @@ class Rexbuilder_Utilities {
 <?php
 		echo ob_get_clean();
 	}
-	
+
+	/**
+	 * Is the page in editor mode (and the user logged)?
+	 * @return bool
+	 */
+	public static function isBuilderLive() {
+		return is_user_logged_in() && isset( $_GET['editor'] ) && $_GET['editor'] == "true";
+	}
 }

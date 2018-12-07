@@ -12,11 +12,15 @@
 defined('ABSPATH') or exit;
 ?>
 <?php
-global $post;
-global $pagenow;
+// global $post;
 
-$source = get_permalink($post->ID);
-if( get_post_status( $post->ID ) == "auto-draft"){
+$post_id = 0;
+if( isset($_GET['post']) && "" !== $_GET['post'] ) {
+	$post_id = $_GET['post'];
+}
+
+$source = get_permalink($post_id);
+if( get_post_status( $post_id ) == "auto-draft"){
 //	$source .= "&preview=true&editor=true";
 	$source= add_query_arg( array(
 			'preview' => 'true',
@@ -39,7 +43,7 @@ $defaultLayoutsAvaiable = array($mobile, $tablet, $default);
 $layoutsAvaiable = get_option('_rex_responsive_layouts', $defaultLayoutsAvaiable);
 
 $backendEditing = "true";
-if(get_post_meta($post->ID, '_save_from_backend', true) == "false"){
+if(get_post_meta($post_id, '_save_from_backend', true) == "false"){
 	$backendEditing = "false";
 }
 

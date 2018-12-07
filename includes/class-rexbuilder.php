@@ -189,9 +189,8 @@ class Rexbuilder {
 		$this->loader->add_filter( 'manage_rex_slider_posts_columns', $plugin_admin, 'rexpansive_slider_columns_reorder' );
 		$this->loader->add_action( 'manage_rex_slider_posts_custom_column', $plugin_admin, 'rexpansive_slider_columns_content', 10, 2 );
 
-		$this->loader->add_filter( 'post_row_actions', $plugin_admin, 'post_list_add_link_to_live_editor', 10, 2 );
-
 		$this->loader->add_filter( 'preview_post_link', $plugin_admin, 'change_preview_url' );
+		$this->loader->add_filter( 'post_row_actions', $plugin_admin, 'add_builderlive_link', 10, 2 );
 		$this->loader->add_filter( 'page_row_actions', $plugin_admin, 'add_builderlive_link', 10, 2 );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles_production' );
@@ -295,7 +294,7 @@ class Rexbuilder {
 				echo "<script type='text/javascript'>alert('Welcome, visitor');</script>";
 			}
  */
-
+		$this->loader->add_filter( 'body_class', $plugin_public, 'rexlive_body_class', 10, 1 );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 

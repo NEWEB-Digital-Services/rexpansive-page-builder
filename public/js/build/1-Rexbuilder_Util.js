@@ -32,7 +32,7 @@ var Rexbuilder_Util = (function($) {
   };
 
   var _storeNamesUsed = function() {
-    sectionIDSused = JSON.parse($usedIDSContainer.text());
+    sectionIDSused = ( $usedIDSContainer.length > 0 ? JSON.parse($usedIDSContainer.text()) : [] );
   };
 
   var _saveSectionNamesUsed = function() {
@@ -502,15 +502,12 @@ var Rexbuilder_Util = (function($) {
 
     var windowWidth = _viewport().width;
     var i, j, k;
-    var allLayoutsDimensions = JSON.parse(
-      $("#layout-avaiable-dimensions").text()
-    );
-    var allModelsCustomizationsNames = JSON.parse(
-      $modelData.children(".available-models-customizations-names").text()
-    );
-    var avaiableNames = JSON.parse(
-      $responsiveData.children(".available-layouts-names").text()
-    );
+    var $availableDims = $("#layout-avaiable-dimensions");
+    var allLayoutsDimensions = ( $availableDims.length > 0 ? JSON.parse( $availableDims.text() ) : [] );
+    var $availableModelsNames = $modelData.children(".available-models-customizations-names");
+    var allModelsCustomizationsNames = ( $availableModelsNames.length > 0 ? JSON.parse( $availableModelsNames.text() ) : [] );
+    var $availableLayoutNames = $responsiveData.children(".available-layouts-names");
+    var avaiableNames = ( $availableLayoutNames.length > 0 ? JSON.parse( $availableLayoutNames.text() ) : [] );
 
     var layoutsPageNames = [];
     var flag_insert;
@@ -3363,15 +3360,13 @@ var Rexbuilder_Util = (function($) {
     this.firstStart = true;
     _plugin_frontend_settings.scroll_animation_offset = 0;
 
-    if (
-      _plugin_frontend_settings.user.logged &&
-      _plugin_frontend_settings.user.editing
-    ) {
+    if ( _plugin_frontend_settings.user.logged && _plugin_frontend_settings.user.editing ) {
       this.editorMode = true;
     } else {
       this.editorMode = false;
       changedFrontLayout = false;
-      frontAvailableLayouts = JSON.parse($("#layout-avaiable-dimensions").text());
+      var $availableDims = $("#layout-avaiable-dimensions");
+      frontAvailableLayouts = ( $availableDims.length > 0 ? JSON.parse( $availableDims.text() ) : [] );
       startFrontLayout = _findFrontLayout();
       console.log(frontAvailableLayouts);
       console.log(startFrontLayout);
@@ -3394,10 +3389,7 @@ var Rexbuilder_Util = (function($) {
     this.$rexContainer = $(".rex-container");
     this.$loader = $(".rexlive-loader");
     this.backendEdited = false;
-    if (
-      Rexbuilder_Util.$rexContainer.attr("data-backend-edited").toString() ==
-      "true"
-    ) {
+    if ( Rexbuilder_Util.$rexContainer.length > 0 && Rexbuilder_Util.$rexContainer.attr("data-backend-edited").toString() == "true" ) {
       Rexbuilder_Util.$rexContainer.addClass("backend-edited");
       this.backendEdited = true;
     }

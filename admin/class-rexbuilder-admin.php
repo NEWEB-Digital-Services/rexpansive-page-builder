@@ -3450,7 +3450,7 @@ class Rexbuilder_Admin {
 		}
 	   }
 	   	   
-   	public function include_live_editing($post_id) {
+   	public function include_live_editing() {
 		include_once( 'partials/rexbuilder-live-editing.php' );
     }
 
@@ -3458,18 +3458,14 @@ class Rexbuilder_Admin {
 	   $classes .= ' rexpansive-editor ';
 	   return $classes;
 	}
-	
-	public function post_list_add_link_to_live_editor( $actions, $Post ) {
-		// $actions['live-edit'] = 
-		return $actions;
-	}
 
 	/**
 	 * Add link to livebuilder directly on the post list
 	 * @since 2.0.0
 	 */
-	public function add_builderlive_link( $actions, $page_object ) {
-		$actions['rexbuilder'] = '<a target="_blank" href="' . admin_url( 'post.php?post=' . $page_object->ID . '&action=edit&rexlive=true' ) . '">RexBuilder</a>';
+	public function add_builderlive_link( $actions, $post_object ) {
+		$page_info = get_current_screen();
+		$actions['rexbuilder'] = '<a target="_blank" href="' . admin_url( 'post.php?post=' . $post_object->ID . '&action=edit&rexlive=true' ) . '">RexBuilder</a>';
 		return $actions;
 	}
 }

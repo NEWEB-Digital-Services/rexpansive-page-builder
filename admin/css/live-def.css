@@ -4397,6 +4397,8 @@ ul {
           transform: translate(-50%, -50%); }
   .grid-stack-item[data-gs-width="1"] .rexlive-block-toolbox.top-tools > .builder-delete-block, .grid-stack-item[data-gs-width="2"] .rexlive-block-toolbox.top-tools > .builder-delete-block {
     display: none; }
+.grid-stack-item[data-gs-width="1"] .rexlive-top-block-tools, .grid-stack-item[data-gs-width="2"] .rexlive-top-block-tools {
+  padding: 0; }
 .grid-stack-item[data-gs-width="1"] .rexlive-block-toolbox.bottom-tools,
 .grid-stack-item[data-gs-width="1"] .block-toolBox__editor-tools,
 .grid-stack-item[data-gs-width="1"] .rexlive-block-toolbox.floating-tools,
