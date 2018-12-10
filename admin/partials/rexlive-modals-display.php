@@ -1942,7 +1942,7 @@ defined('ABSPATH') or exit;
     <div id="rex-models-list" class="rex-lateral-panel">
         <div class="rex-lateral-panel__content">
             <div class="bl_d-flex bl_jc-fe">
-                <div class="tool-button tool-button--inline tool-button--flat rex-close-button">
+                <div class="tool-button tool-button--black tool-button--close rex-close-button">
                     <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                 </div>
             </div>

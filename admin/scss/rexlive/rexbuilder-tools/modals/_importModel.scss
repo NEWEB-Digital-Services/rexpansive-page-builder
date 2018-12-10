@@ -16,8 +16,10 @@
     display: none;
   }
   .rex-close-button {
-    @include fill-icon(#000);
+    // @include fill-icon(#000);
+    font-size: 13px;
   }
+
   .model__element {
     padding: 10px;
     margin-bottom: 0;
@@ -71,13 +73,13 @@
   width: 100%;
   max-width: 320px;
   position: fixed;
-  top: $top-tools-height;
+  top: $top-tools-height + 13px;
   @if ( $panel-side == 'right' ) {
     right: 0;
-    transform: translateX(100%);
+    transform: translateX(calc(100% + 15px));
   } @else if ( $panel-side == 'left' ) {
     left: 0;
-    transform: translateX(-100%);
+    transform: translateX(calc(-100% - 15px));
   }
   height: 100%;
   z-index: 3500;

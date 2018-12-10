@@ -15654,8 +15654,8 @@ body.rexpansive-editor .lean-overlay {
 
 #rex-models-list .model-html {
   display: none; }
-#rex-models-list .rex-close-button .l-svg-icons > svg {
-  fill: #000; }
+#rex-models-list .rex-close-button {
+  font-size: 13px; }
 #rex-models-list .model__element {
   padding: 10px;
   margin-bottom: 0;
@@ -15698,11 +15698,11 @@ body.rexpansive-editor .lean-overlay {
   width: 100%;
   max-width: 320px;
   position: fixed;
-  top: 50px;
+  top: 63px;
   left: 0;
-  -webkit-transform: translateX(-100%);
-      -ms-transform: translateX(-100%);
-          transform: translateX(-100%);
+  -webkit-transform: translateX(calc(-100% - 15px));
+      -ms-transform: translateX(calc(-100% - 15px));
+          transform: translateX(calc(-100% - 15px));
   height: 100%;
   z-index: 3500;
   font-size: 16px;
