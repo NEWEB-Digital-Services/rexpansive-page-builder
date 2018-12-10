@@ -9,6 +9,7 @@ var Rexlive_MediaUploader = (function($) {
   var image_multiple_uploader_frame;
   var image_uploader_frame;
   var image_uploader_frame_direct;
+  var image_uploader_me_frame;
   var video_multiple_uploader_frame;
   var video_uploader_frame;
   var accordion_uploader_frame;
@@ -264,6 +265,129 @@ var Rexlive_MediaUploader = (function($) {
 
     //now open the popup
     image_uploader_frame_direct.open();
+  } // openMediaUploader IMAGE END
+
+  /**
+   * Live insert/edit a single inline image inside a Medium Editor
+   * 
+   * @since 2.0.0
+   * @param {Object}  info
+   */
+  function _openImageMEMediaUploader(info) {
+    // If the frame is already opened, return it
+    if (image_uploader_me_frame) {
+      image_uploader_me_frame
+        .state("me-image")
+        .set("inlineImageSettings", info)
+      image_uploader_me_frame.open();
+      return;
+    }
+
+    //create a new Library, base on defaults
+    //you can put your attributes in
+    var insertImage = wp.media.controller.Library.extend({
+      defaults: _.defaults(
+        {
+          id: "me-image",
+          title: "Insert Image",
+          allowLocalEdits: true,
+          displaySettings: true,
+          displayUserSettings: true,
+          multiple: false,
+          library: wp.media.query({ type: "image" }),
+          type: "image", //audio, video, application/pdf, ... etc
+          inlineImageSettings: info.settings
+        },
+        wp.media.controller.Library.prototype.defaults
+      )
+    }); 
+
+    //Setup media frame
+    image_uploader_me_frame = wp.media({
+      button: { text: "Select" },
+      state: "me-image",
+      states: [new insertImage()]
+    });
+
+    image_uploader_me_frame.on("select", function() {
+      var state = image_uploader_me_frame.state("me-image");
+      var imageSettings = state.get("inlineImageSettings"); 
+
+      var selection = state.get("selection");
+      var imgData = {};
+
+      if (!selection) return;
+
+      //to get right side attachment UI info, such as: size and alignments
+      //org code from /wp-includes/js/media-editor.js, arround `line 603 -- send: { ... attachment: function( props, attachment ) { ... `
+      selection.each(function(attachment) {
+        var display = state.display(attachment).toJSON();
+        var obj_attachment = attachment.toJSON();
+
+        // If captions are disabled, clear the caption.
+        if (!wp.media.view.settings.captions) delete obj_attachment.caption;
+
+        display = wp.media.string.props(display, obj_attachment);
+
+        imgData.idImage = obj_attachment.id;
+        imgData.urlImage = display.src;
+        if( "undefined" == typeof imageSettings ) {
+          imgData.width = display.width;
+        } else {
+          imgData.width = imageSettings.width.replace("px","");
+        }
+
+        if( "undefined" == typeof imageSettings ) {
+          imgData.height = display.height;
+        } else {
+          imgData.height = imageSettings.height.replace("px","");
+        }
+      });
+
+      var data = {
+        eventName: "rexlive:inlineImageEdit",
+        data_to_send: {
+          imgData: imgData
+        }
+      };
+
+      // // Launch image insert event to the iframe
+      Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
+    });
+
+    image_uploader_me_frame.on("close", function() {});
+
+    //reset selection in popup, when open the popup
+    image_uploader_me_frame.on("open", function() {
+      var attachment;
+      var selection = image_uploader_me_frame
+        .state("me-image")
+        .get("selection");
+
+      //remove all the selection first
+      selection.each(function(video) {
+        attachment = wp.media.attachment(video.attributes.id);
+        attachment.fetch();
+        selection.remove(attachment ? [attachment] : []);
+      });
+
+      var imageSettings = image_uploader_me_frame.state("me-image").get("inlineImageSettings");
+      var image_id = null;
+      if( "undefined" !== typeof imageSettings ) {
+        image_id = ( "undefined" !== typeof imageSettings.image_id ? imageSettings.image_id : null );
+      }
+
+      // Check the already inserted image
+      if (image_id) {
+        attachment = wp.media.attachment(image_id);
+        attachment.fetch();
+
+        selection.add(attachment ? [attachment] : []);
+      }
+    });
+
+    //now open the popup
+    image_uploader_me_frame.open();
   } // openMediaUploader IMAGE END
 
   /**
@@ -719,6 +843,7 @@ var Rexlive_MediaUploader = (function($) {
     openInsertImageBlocksMediaUploader: _openInsertImageBlocksMediaUploader,
     openEditImageMediaUploader: _openEditImageMediaUploader,
     openImageLiveMediaUploader: _openImageLiveMediaUploader,
+    openImageMEMediaUploader: _openImageMEMediaUploader,
     openInsertVideoBlocksMediaUploader: _openInsertVideoBlocksMediaUploader,
     openMediaUploaderVideo: _openMediaUploaderVideo,
     openMediaUploaderAccordionGallery: _openMediaUploaderAccordionGallery

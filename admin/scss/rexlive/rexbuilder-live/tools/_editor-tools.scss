@@ -251,6 +251,16 @@
 
 .medium-editor-element:focus {
   outline: none;
+  &[data-medium-focused=true] {
+    position: relative;
+  }
+}
+
+.me-insert-media-button {
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  bottom: 0;
 }
 
 .medium-editor-toolbar {

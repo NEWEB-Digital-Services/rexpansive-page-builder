@@ -172,6 +172,10 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         );
       }
 
+      if (event.data.eventName == "rexlive:openMEImageUploader") {
+        Rexlive_MediaUploader.openImageMEMediaUploader(event.data.settings);
+      }
+
       if (event.data.eventName == "rexlive:editBackgroundSection") {
         SectionBackground_Modal.openSectionBackgroundModal(event.data.activeBG);
       }

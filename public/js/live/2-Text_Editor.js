@@ -20,9 +20,13 @@ var TextEditor = (function($) {
 
   var _addElementToTextEditor = function($textWrap) {
     editorInstance.addElements($textWrap);
-    _addMediumInsertToElement($textWrap);
+    // _addMediumInsertToElement($textWrap);
   };
 
+  /**
+   * @deprecated
+   * @param {jQuery Element} $textWrap 
+   */
   var _addMediumInsertToElement = function($textWrap) {
     $textWrap.mediumInsert({
       editor: editorInstance,
@@ -32,12 +36,7 @@ var TextEditor = (function($) {
         images: { 
           useDragAndDrop: false,
           actions: {
-            replace: {
-              label: '<span class="fa fa-pencil"></span>',
-              clicked: function($el) {
-                console.log('merdasasx');
-              }
-            }
+            replace : {},
           }
         },
         embeds: {
@@ -50,7 +49,15 @@ var TextEditor = (function($) {
           deleteScript: null,
           captions: false,
           captionPlaceholder: false,
-          actions: null,
+          actions: {
+            replace: {
+              label: '<span class="fa fa-pencil"></span>',
+              clicked: function($el) {
+                console.log($el);
+                console.log('qhaz');
+              }
+            },
+          },
           preview: false
         },
         // tables: {}
@@ -1009,6 +1016,220 @@ var TextEditor = (function($) {
     }
   });
 
+  /**
+   * 
+   * @since 2.0.0
+   */
+  var InsertMediaExtension = MediumEditor.Extension.extend({
+    name: 'insert-media',
+  
+    init: function () {
+      this.insertionPoint = null;
+      this.traceImg = null;
+
+      this.imageEditToolbar = document.createElement( "div" );
+      this.imageEditToolbar.classList.add("medium-editor-toolbar");
+      this.imageEditToolbar.classList.add("medium-toolbar-arrow-under");
+      this.imageEditToolbar.innerHTML = tmpl("tmpl-me-image-edit",{});
+      document.getElementsByTagName("body")[0].append(this.imageEditToolbar);
+
+      this.btn = document.createElement( "div" );
+      this.btn.contentEditable = false;
+      this.btn.classList.add("me-insert-media-button");
+      this.btn.style.display = "none";
+      this.btn.innerHTML = tmpl("tmpl-me-insert-media-button", {});
+
+      // View/Hide the Media Insert button
+      this.subscribe("blur", this.handleBlur.bind(this));
+      this.subscribe("focus", this.handleFocus.bind(this));
+
+      // Trace the cursor position
+      this.subscribe("editableClick", this.traceInput.bind(this));
+      this.subscribe("editableKeydown", this.traceInput.bind(this));
+
+      // Insert the IMG html tag
+      this.subscribe("rexlive:mediumEditor:inlineImageEdit", this.handleImageInsertReplace.bind(this));
+
+      // Add image with Wordpress Media Library
+      this.on(this.btn, "click", this.handleClick.bind(this));
+      this.on(this.imageEditToolbar, "click", this.handleImageEdit.bind(this));
+    },
+
+    /**
+     * @todo
+     * @param {EVENT} event 
+     */
+    handleBlur: function(event) {
+      // console.log('parte blur');
+      // var editor = this.base.getFocusedElement();
+      // editor.remove(this.btn);
+      this.btn.style.display = "none";
+      $(this.btn).detach();
+      document.getElementsByTagName("body")[0].append(this.btn);
+    },
+
+    handleFocus: function(event, editable) {
+      var editor = this.base.getFocusedElement();
+      editor.append(this.btn);
+      this.btn.style.display = "block";
+    },
+
+    traceInput: function(event) {
+      // If the event happens on the text editor, save the selection
+      if( 0 === $(event.target).parents('.me-insert-media-button').length ) {
+        this.base.saveSelection();
+      }
+
+      // If i click on an image open the image toolbar
+      if( "click" == event.type ) {
+        if( "IMG" == event.target.nodeName ) {
+          this.viewEditImgToolbar(event.target);
+          this.imageResizableEnable();
+        } else {
+          this.hideEditImgToolbar();
+        }
+      }
+    },
+
+    handleClick: function(event) {
+      var data = {
+        eventName: "rexlive:openMEImageUploader",
+        settings: {}
+      };
+  
+      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+    },
+
+    handleImageInsertReplace: function(event) {
+      var editor = this.base.getFocusedElement();
+      this.base.restoreSelection();
+      var imgHTML = '<img class="wp-image-' + event.imgData.idImage + ' alignnone" data-image-id="' + event.imgData.idImage + '" src="' + event.imgData.urlImage + '" alt="" width="' + event.imgData.width + '" height="' + event.imgData.height + '">';
+
+      if( this.traceImg ) {
+        $(this.traceImg).remove();
+      }
+
+      this.base.pasteHTML(imgHTML, {
+        cleanPastedHTML: false,
+        cleanAttrs: ['dir']
+      });
+
+      this.hideEditImgToolbar();
+    },
+
+    handleImageEdit: function(event) {
+      var $el = $(event.target);
+      if( !$el.hasClass("medium-editor-action") ) {
+        $el = $el.parents(".medium-editor-action");
+      }
+
+      if( $el.hasClass("me-image-align-left") ) {
+        this.traceImg.classList.remove("alignleft");
+        this.traceImg.classList.remove("aligncenter");
+        this.traceImg.classList.remove("alignright");
+        this.traceImg.classList.remove("alignnone");
+
+        this.traceImg.classList.add("alignleft");
+        this.positionEditImgToolbar();
+      }
+
+      if( $el.hasClass("me-image-align-center") ) {
+        this.traceImg.classList.remove("alignleft");
+        this.traceImg.classList.remove("aligncenter");
+        this.traceImg.classList.remove("alignright");
+        this.traceImg.classList.remove("alignnone");
+
+        this.traceImg.classList.add("aligncenter");
+        this.positionEditImgToolbar();
+      }
+
+      if( $el.hasClass("me-image-align-right") ) {
+        this.traceImg.classList.remove("alignleft");
+        this.traceImg.classList.remove("aligncenter");
+        this.traceImg.classList.remove("alignright");
+        this.traceImg.classList.remove("alignnone");
+
+        this.traceImg.classList.add("alignright");
+        this.positionEditImgToolbar();
+      }
+
+      if( $el.hasClass("me-image-align-none") ) {
+        this.traceImg.classList.remove("alignleft");
+        this.traceImg.classList.remove("aligncenter");
+        this.traceImg.classList.remove("alignright");
+        this.traceImg.classList.remove("alignnone");
+
+        this.traceImg.classList.add("alignnone");
+        this.positionEditImgToolbar();
+      }
+
+      if( $el.hasClass("me-image-replace") ) {
+        var data = {
+          eventName: "rexlive:openMEImageUploader",
+          settings: {
+            image_id: this.traceImg.getAttribute("data-image-id"),
+            width: this.traceImg.style.width,
+            height: this.traceImg.style.height,
+          }
+        };
+    
+        Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      }
+
+      if( $el.hasClass("me-image-delete") ) {
+        $(this.traceImg).remove();
+        this.hideEditImgToolbar();
+      }
+    },
+
+    viewEditImgToolbar: function( target ) {
+      this.traceImg = target;
+      // var editor = this.base.getFocusedElement();
+      // editor.append(this.imageEditToolbar);
+      this.positionEditImgToolbar();
+      this.imageEditToolbar.classList.add("medium-editor-toolbar-active");
+    },
+
+    imageResizableEnable: function() {
+      $(this.traceImg).resizable({ 
+        aspectRatio: true,
+        handles: "e, s, se",
+        create: function( event, ui ) {
+          event.target.style.display = "inline-block";
+          event.target.style.verticalAlign = "middle";
+          // event.target.style.overflow = "visibile";
+          var $wrapper = $(event.target);
+          $wrapper.find(".ui-resizable-e").append('<span class="img-resize-handle img-resize-handle-e" data-axis="e"></span>');
+          $wrapper.find(".ui-resizable-se").append('<span class="img-resize-handle img-resize-handle-se" data-axis="se"></span>');
+          $wrapper.find(".ui-resizable-s").append('<span class="img-resize-handle img-resize-handle-s" data-axis="s"></span>');
+          // $wrapper.find(".ui-resizable-w").append('<span class="img-resize-handle img-resize-handle-w" data-axis="w"></span>');
+          // $wrapper.find(".ui-resizable-sw").append('<span class="img-resize-handle img-resize-handle-sw" data-axis="sw"></span>');
+        },
+      });
+    },
+
+    positionEditImgToolbar: function() {
+      var targetCoords = this.traceImg.getBoundingClientRect();
+      this.imageEditToolbar.style.left = ( targetCoords.left + ( ( targetCoords.width - this.imageEditToolbar.offsetWidth ) / 2 ) ) + "px";
+      this.imageEditToolbar.style.top = ( window.scrollY + targetCoords.top - this.imageEditToolbar.offsetHeight - 8 ) + "px";
+    },
+
+    hideEditImgToolbar: function() {
+      if( this.traceImg ) {
+        $(this.traceImg).resizable("destroy");
+
+        this.traceImg.style.display = "";
+        this.traceImg.style.margin = "";
+        this.traceImg.style.position = "";
+        this.traceImg.style.top = "";
+        this.traceImg.style.left = "";
+      }
+
+      this.traceImg = null;
+      this.imageEditToolbar.classList.remove("medium-editor-toolbar-active");
+    }
+  });
+
   var _linkDocumentListeners = function() {
     //function for removing textarea html editor
     Rexbuilder_Util.$document.on("click", ".rex-close-html-editor", function(e) {
@@ -1119,6 +1340,7 @@ var TextEditor = (function($) {
         listDropdown: listExtensionInstance,
         contentBlockPosition: new ContentBlockPositionExtension(),
         'close-editor-escape': new CloseEditorEscapeExtension(),
+        'insert-media': new InsertMediaExtension(),
         textGradient: new TextGradientExtension()
       },
       placeholder: {

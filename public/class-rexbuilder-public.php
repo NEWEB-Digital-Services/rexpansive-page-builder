@@ -252,7 +252,7 @@ class Rexbuilder_Public
             // MEDIUM EDITOR
             wp_enqueue_script('medium-editor', REXPANSIVE_BUILDER_URL . $cartella . 'js/medium-editor.js', array('jquery'), $ver, true);
             wp_enqueue_script('mediumEditorToolbarStates', REXPANSIVE_BUILDER_URL . $cartella . 'js/medium-editor-toolbar-states.min.js', array('jquery'), $ver, true);
-            wp_enqueue_script('medium-editor-insert-addon', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/MediumEditorInsertAddon.js', array('jquery'), $ver, true);
+            // wp_enqueue_script('medium-editor-insert-addon', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/MediumEditorInsertAddon.js', array('jquery'), $ver, true);
             wp_enqueue_script('textEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/2-Text_Editor.js', array('jquery'), $ver, true);
 
             wp_enqueue_script('handlebars-runtime', REXPANSIVE_BUILDER_URL . $cartella . 'js/handlebars.runtime.js', array('jquery'), $ver, true);

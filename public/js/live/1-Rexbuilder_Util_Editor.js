@@ -388,10 +388,8 @@ var Rexbuilder_Util_Editor = (function($) {
 
     // capture undo
     Rexbuilder_Util.$document.on('keydown', function(e) {
-      if ((window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) && !e.shiftKey && e.keyCode == 90) {
+      if ( "BODY" == e.target.nodeName && (window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) && !e.shiftKey && e.keyCode == 90) {
         e.preventDefault();
-        // Process the event here (such as click on submit button)
-        // SAVE PAGE
         var data = {
           eventName: "rexlive:undoWithButton",
         };
@@ -401,10 +399,8 @@ var Rexbuilder_Util_Editor = (function($) {
 
     // capture redo
     Rexbuilder_Util.$document.on('keydown', function(e) {
-      if ( ( (window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) && e.shiftKey && e.keyCode == 90 ) || ( (window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) && e.keyCode == 89 ) ) {
+      if ( "BODY" == e.target.nodeName && ( ( (window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) && e.shiftKey && e.keyCode == 90 ) || ( (window.navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) && e.keyCode == 89 ) ) ) {
         e.preventDefault();
-        // Process the event here (such as click on submit button)
-        // SAVE PAGE
         var data = {
           eventName: "rexlive:redoWithButton",
         };

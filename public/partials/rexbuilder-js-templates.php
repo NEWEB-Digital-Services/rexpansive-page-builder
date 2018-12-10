@@ -349,3 +349,55 @@ $tool_button_classes = 'tool-button';
     </div>
 </div>
 </script>
+
+<script type="text/x-tmpl" id="tmpl-me-insert-media-button">
+<div class="tool-button-floating">
+    <div class="tool-button">
+    <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
+    </div>
+    <div class="tool-button_list">
+        <div class="tool-button tool-button_list--item me-insert-image">
+        <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
+        </div>
+        <div class="tool-button tool-button_list--item">
+        <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
+        </div>
+    </div>
+</div>
+</script>
+
+<!-- <div id="" class="medium-editor-toolbar medium-editor-stalker-toolbar medium-editor-toolbar-active medium-toolbar-arrow-under"> -->
+<script type="text/x-tmpl" id="tmpl-me-image-edit">
+<ul id="" class="medium-editor-toolbar-actions">
+    <li>
+      <button class="medium-editor-action me-image-align-left medium-editor-button-first">
+        <i class="fa fa-align-left"></i>
+      </button>
+    </li>
+    <li>
+      <button class="medium-editor-action me-image-align-center">
+        <i class="fa fa-align-center"></i>
+      </button>
+    </li>
+    <li>
+      <button class="medium-editor-action me-image-align-right">
+        <i class="fa fa-align-right"></i>
+      </button>
+    </li>
+    <li>
+      <button class="medium-editor-action me-image-align-none">
+        <i class="fa fa-align-justify"></i>
+      </button>
+    </li>
+    <li>
+      <button class="medium-editor-action me-image-replace">
+        <i class="fa fa-pencil"></i>
+      </button>
+    </li>
+    <li>
+      <button class="medium-editor-action me-image-delete medium-editor-button-last">
+        <i class="fa fa-times"></i>
+      </button>
+    </li>
+</ul>
+</script>
