@@ -334,13 +334,19 @@ var Rexlive_MediaUploader = (function($) {
         if( "undefined" === typeof imageSettings.width ) {
           imgData.width = display.width;
         } else {
-          imgData.width = imageSettings.width.replace("px","");
+          imgData.width = ( "string" === typeof imageSettings ? imageSettings.width.replace("px","") : imageSettings.width );
         }
 
         if( "undefined" === typeof imageSettings.height ) {
           imgData.height = display.height;
         } else {
-          imgData.height = imageSettings.height.replace("px","");
+          imgData.height = ( "string" === typeof imageSettings ? imageSettings.height.replace("px","") : imageSettings.height );
+        }
+
+        if( "undefined" === typeof imageSettings.align ) {
+          imgData.align = "alignnone";
+        } else {
+          imgData.align = imageSettings.align;
         }
       });
 

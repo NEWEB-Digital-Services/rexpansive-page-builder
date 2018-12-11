@@ -1037,6 +1037,7 @@ var TextEditor = (function($) {
       this.resizeSizes.classList.add("me-resize-sizes");
 
       this.imageEditToolbar = document.createElement( "div" );
+      this.imageEditToolbar.id = "me-edit-inline-image-toolbar";
       this.imageEditToolbar.classList.add("medium-editor-toolbar");
       this.imageEditToolbar.classList.add("medium-toolbar-arrow-under");
       this.imageEditToolbar.innerHTML = tmpl("tmpl-me-image-edit",{});
@@ -1072,12 +1073,10 @@ var TextEditor = (function($) {
      * @param {EVENT} event 
      */
     handleBlur: function(event) {
-      // console.log('parte blur');
-      // var editor = this.base.getFocusedElement();
-      // editor.remove(this.mediaBtn);
-      // $(this.mediaBtn).detach();
-      // document.getElementsByTagName("body")[0].append(this.mediaBtn);
-      this.mediaBtn.style.display = "none";
+      if( $(event.target).parents("#me-edit-inline-image-toolbar").length == 0 ) {
+        this.mediaBtn.style.display = "none";
+        this.hideEditImgToolbar();
+      }
     },
 
     handleFocus: function(event, editable) {
@@ -1102,7 +1101,6 @@ var TextEditor = (function($) {
       // If i click on an image open the image toolbar
       if( "click" == event.type ) {
         if( "IMG" == event.target.nodeName ) {
-          // this.base.selectElement(event.target);
           this.viewEditImgToolbar(event.target);
           this.imageResizableEnable();
         } else {
@@ -1123,9 +1121,10 @@ var TextEditor = (function($) {
     handleImageInsertReplace: function(event) {
       // var editor = this.base.getFocusedElement();
       this.base.restoreSelection();
-      var imgHTML = '<img class="wp-image-' + event.imgData.idImage + ' alignnone" data-image-id="' + event.imgData.idImage + '" src="' + event.imgData.urlImage + '" alt="" width="' + event.imgData.width + '" height="' + event.imgData.height + '">';
+      var imgHTML = '<img class="wp-image-' + event.imgData.idImage + ' ' + event.imgData.align + '" data-image-id="' + event.imgData.idImage + '" src="' + event.imgData.urlImage + '" alt="" width="' + event.imgData.width + '" height="' + event.imgData.height + '">';
 
       if( this.traceImg ) {
+        this.base.selectElement(this.traceImg);
         $(this.traceImg).remove();
       }
 
@@ -1205,12 +1204,27 @@ var TextEditor = (function($) {
       }
 
       if( $el.hasClass("me-image-replace") ) {
+        var align = "";
+        if(this.traceImg.classList.contains("alignleft")) {
+          align = "alignleft";
+        }
+        if(this.traceImg.classList.contains("aligncenter")) {
+          align = "aligncenter";
+        }
+        if(this.traceImg.classList.contains("alignright")) {
+          align = "alignright";
+        }
+        if(this.traceImg.classList.contains("alignnone")) {
+          align = "alignnone";
+        }
+
         var data = {
           eventName: "rexlive:openMEImageUploader",
           img_data: {
             image_id: this.traceImg.getAttribute("data-image-id"),
-            width: this.traceImg.style.width,
-            height: this.traceImg.style.height,
+            width: this.traceImg.width,
+            height: this.traceImg.height,
+            align: align
           }
         };
     
