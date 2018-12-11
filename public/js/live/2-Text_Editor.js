@@ -826,7 +826,9 @@ var TextEditor = (function($) {
         
         Rexbuilder_Util_Editor.focusedElement = $elem;
         Rexbuilder_Util_Editor.elementIsDragging = false;
-        Rexbuilder_Util_Editor.editedTextWrap.blur();
+        if( Rexbuilder_Util_Editor.editedTextWrap ) {
+          Rexbuilder_Util_Editor.editedTextWrap.blur();
+        }
         gallery.focusElement($elem);
         Rexbuilder_Util_Editor.editingGallery = false;
         Rexbuilder_Util_Editor.editedGallery = null;
@@ -1027,17 +1029,27 @@ var TextEditor = (function($) {
       this.insertionPoint = null;
       this.traceImg = null;
 
+      this.mirrorResize = document.createElement('img');
+      this.mirrorResize.classList.add("me-resize-mirror");
+      document.getElementsByTagName("body")[0].append(this.mirrorResize);
+
+      this.resizeSizes = document.createElement('span');
+      this.resizeSizes.classList.add("me-resize-sizes");
+
       this.imageEditToolbar = document.createElement( "div" );
       this.imageEditToolbar.classList.add("medium-editor-toolbar");
       this.imageEditToolbar.classList.add("medium-toolbar-arrow-under");
       this.imageEditToolbar.innerHTML = tmpl("tmpl-me-image-edit",{});
       document.getElementsByTagName("body")[0].append(this.imageEditToolbar);
 
-      this.btn = document.createElement( "div" );
-      this.btn.contentEditable = false;
-      this.btn.classList.add("me-insert-media-button");
-      this.btn.style.display = "none";
-      this.btn.innerHTML = tmpl("tmpl-me-insert-media-button", {});
+      this.mediaBtn = document.createElement( "div" );
+      this.mediaBtn.contentEditable = false;
+      this.mediaBtn.classList.add("me-insert-media-button");
+      this.mediaBtn.style.display = "none";
+      this.mediaBtn.innerHTML = tmpl("tmpl-me-insert-media-button", {});
+      document.getElementsByTagName("body")[0].append(this.mediaBtn);
+      
+      this.mediaLibraryBtn = $(this.mediaBtn).find(".me-insert-image")[0];
 
       // View/Hide the Media Insert button
       this.subscribe("blur", this.handleBlur.bind(this));
@@ -1051,7 +1063,7 @@ var TextEditor = (function($) {
       this.subscribe("rexlive:mediumEditor:inlineImageEdit", this.handleImageInsertReplace.bind(this));
 
       // Add image with Wordpress Media Library
-      this.on(this.btn, "click", this.handleClick.bind(this));
+      this.on(this.mediaLibraryBtn, "click", this.handleClickImage.bind(this));
       this.on(this.imageEditToolbar, "click", this.handleImageEdit.bind(this));
     },
 
@@ -1062,16 +1074,23 @@ var TextEditor = (function($) {
     handleBlur: function(event) {
       // console.log('parte blur');
       // var editor = this.base.getFocusedElement();
-      // editor.remove(this.btn);
-      this.btn.style.display = "none";
-      $(this.btn).detach();
-      document.getElementsByTagName("body")[0].append(this.btn);
+      // editor.remove(this.mediaBtn);
+      // $(this.mediaBtn).detach();
+      // document.getElementsByTagName("body")[0].append(this.mediaBtn);
+      this.mediaBtn.style.display = "none";
     },
 
     handleFocus: function(event, editable) {
+      // editor.append(this.mediaBtn);
+      this.mediaBtn.style.display = "block";
+      this.placeMediaBtn();
+    },
+
+    placeMediaBtn: function() {
       var editor = this.base.getFocusedElement();
-      editor.append(this.btn);
-      this.btn.style.display = "block";
+      var targetCoords = editor.getBoundingClientRect();
+      this.mediaBtn.style.left = ( targetCoords.left + ( ( targetCoords.width - this.mediaBtn.offsetWidth ) / 2 ) ) + "px";
+      this.mediaBtn.style.top = ( window.scrollY + targetCoords.top + targetCoords.height - this.mediaBtn.offsetHeight ) + "px";
     },
 
     traceInput: function(event) {
@@ -1083,6 +1102,7 @@ var TextEditor = (function($) {
       // If i click on an image open the image toolbar
       if( "click" == event.type ) {
         if( "IMG" == event.target.nodeName ) {
+          // this.base.selectElement(event.target);
           this.viewEditImgToolbar(event.target);
           this.imageResizableEnable();
         } else {
@@ -1091,17 +1111,17 @@ var TextEditor = (function($) {
       }
     },
 
-    handleClick: function(event) {
+    handleClickImage: function(event) {
       var data = {
         eventName: "rexlive:openMEImageUploader",
-        settings: {}
+        img_data: {}
       };
   
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     },
 
     handleImageInsertReplace: function(event) {
-      var editor = this.base.getFocusedElement();
+      // var editor = this.base.getFocusedElement();
       this.base.restoreSelection();
       var imgHTML = '<img class="wp-image-' + event.imgData.idImage + ' alignnone" data-image-id="' + event.imgData.idImage + '" src="' + event.imgData.urlImage + '" alt="" width="' + event.imgData.width + '" height="' + event.imgData.height + '">';
 
@@ -1115,6 +1135,7 @@ var TextEditor = (function($) {
       });
 
       this.hideEditImgToolbar();
+      this.mediaBtn.style.display = "none";
     },
 
     handleImageEdit: function(event) {
@@ -1130,7 +1151,12 @@ var TextEditor = (function($) {
         this.traceImg.classList.remove("alignnone");
 
         this.traceImg.classList.add("alignleft");
-        this.positionEditImgToolbar();
+        if( this.mirrorResize.classList.contains("ui-resizable") && this.mirrorResize.parentElement.classList.contains("ui-wrapper") ) {
+          this.placeMirrorImg(this.mirrorResize.parentElement);
+        } else {
+          this.placeMirrorImg(this.mirrorResize);
+        }
+        this.placeEditImgToolbar();
       }
 
       if( $el.hasClass("me-image-align-center") ) {
@@ -1140,7 +1166,12 @@ var TextEditor = (function($) {
         this.traceImg.classList.remove("alignnone");
 
         this.traceImg.classList.add("aligncenter");
-        this.positionEditImgToolbar();
+        if( this.mirrorResize.classList.contains("ui-resizable") && this.mirrorResize.parentElement.classList.contains("ui-wrapper") ) {
+          this.placeMirrorImg(this.mirrorResize.parentElement);
+        } else {
+          this.placeMirrorImg(this.mirrorResize);
+        }
+        this.placeEditImgToolbar();
       }
 
       if( $el.hasClass("me-image-align-right") ) {
@@ -1150,7 +1181,12 @@ var TextEditor = (function($) {
         this.traceImg.classList.remove("alignnone");
 
         this.traceImg.classList.add("alignright");
-        this.positionEditImgToolbar();
+        if( this.mirrorResize.classList.contains("ui-resizable") && this.mirrorResize.parentElement.classList.contains("ui-wrapper") ) {
+          this.placeMirrorImg(this.mirrorResize.parentElement);
+        } else {
+          this.placeMirrorImg(this.mirrorResize);
+        }
+        this.placeEditImgToolbar();
       }
 
       if( $el.hasClass("me-image-align-none") ) {
@@ -1160,13 +1196,18 @@ var TextEditor = (function($) {
         this.traceImg.classList.remove("alignnone");
 
         this.traceImg.classList.add("alignnone");
-        this.positionEditImgToolbar();
+        if( this.mirrorResize.classList.contains("ui-resizable") && this.mirrorResize.parentElement.classList.contains("ui-wrapper") ) {
+          this.placeMirrorImg(this.mirrorResize.parentElement);
+        } else {
+          this.placeMirrorImg(this.mirrorResize);
+        }
+        this.placeEditImgToolbar();
       }
 
       if( $el.hasClass("me-image-replace") ) {
         var data = {
           eventName: "rexlive:openMEImageUploader",
-          settings: {
+          img_data: {
             image_id: this.traceImg.getAttribute("data-image-id"),
             width: this.traceImg.style.width,
             height: this.traceImg.style.height,
@@ -1186,29 +1227,60 @@ var TextEditor = (function($) {
       this.traceImg = target;
       // var editor = this.base.getFocusedElement();
       // editor.append(this.imageEditToolbar);
-      this.positionEditImgToolbar();
+      this.placeEditImgToolbar();
       this.imageEditToolbar.classList.add("medium-editor-toolbar-active");
     },
 
     imageResizableEnable: function() {
-      $(this.traceImg).resizable({ 
+      var that = this;
+      var imageCoords = this.traceImg.getBoundingClientRect();
+      
+      this.mirrorResize.style.width = imageCoords.width + "px";
+      this.mirrorResize.style.height = imageCoords.height + "px";
+      this.mirrorResize.style.top = imageCoords.top + window.scrollY + "px";
+      this.mirrorResize.style.left = imageCoords.left + window.scrollX + "px";
+
+      this.mirrorResize.style.display = "block";
+      
+      var $mirrorResize = $(this.mirrorResize);
+      var $resizable = $(this.traceImg);
+
+      $mirrorResize.resizable({ 
         aspectRatio: true,
         handles: "e, s, se",
-        create: function( event, ui ) {
-          event.target.style.display = "inline-block";
-          event.target.style.verticalAlign = "middle";
-          // event.target.style.overflow = "visibile";
+        alsoResize: $resizable,
+        create: function( event, ui ) {         
           var $wrapper = $(event.target);
+          $wrapper.addClass("me-ui-custom-wrapper");
+          $wrapper.append(that.resizeSizes);
+
           $wrapper.find(".ui-resizable-e").append('<span class="img-resize-handle img-resize-handle-e" data-axis="e"></span>');
           $wrapper.find(".ui-resizable-se").append('<span class="img-resize-handle img-resize-handle-se" data-axis="se"></span>');
           $wrapper.find(".ui-resizable-s").append('<span class="img-resize-handle img-resize-handle-s" data-axis="s"></span>');
           // $wrapper.find(".ui-resizable-w").append('<span class="img-resize-handle img-resize-handle-w" data-axis="w"></span>');
           // $wrapper.find(".ui-resizable-sw").append('<span class="img-resize-handle img-resize-handle-sw" data-axis="sw"></span>');
         },
+        start: function(event, ui) {
+          that.resizeSizes.style.display = "block";
+        },
+        resize: function(event,ui) {
+          that.placeMirrorImg(event.target);
+          that.placeEditImgToolbar();
+          that.resizeSizes.textContent = ui.size.width + ' x ' + ui.size.height;
+        },
+        stop: function(event, ui) {
+          that.resizeSizes.style.display = "none";
+        },
       });
     },
 
-    positionEditImgToolbar: function() {
+    placeMirrorImg: function(el) {
+      var imageCoords = this.traceImg.getBoundingClientRect();
+      el.style.top = imageCoords.top + window.scrollY + "px";
+      el.style.left = imageCoords.left + window.scrollX + "px";
+    },
+
+    placeEditImgToolbar: function() {
       var targetCoords = this.traceImg.getBoundingClientRect();
       this.imageEditToolbar.style.left = ( targetCoords.left + ( ( targetCoords.width - this.imageEditToolbar.offsetWidth ) / 2 ) ) + "px";
       this.imageEditToolbar.style.top = ( window.scrollY + targetCoords.top - this.imageEditToolbar.offsetHeight - 8 ) + "px";
@@ -1216,13 +1288,16 @@ var TextEditor = (function($) {
 
     hideEditImgToolbar: function() {
       if( this.traceImg ) {
-        $(this.traceImg).resizable("destroy");
-
-        this.traceImg.style.display = "";
-        this.traceImg.style.margin = "";
-        this.traceImg.style.position = "";
-        this.traceImg.style.top = "";
-        this.traceImg.style.left = "";
+        if( 'undefined' !== typeof $(this.mirrorResize).data('uiResizable') ) {
+          $(this.mirrorResize).resizable("destroy");
+        }
+        
+        this.mirrorResize.style.display = "";
+        this.mirrorResize.style.display = "";
+        this.mirrorResize.style.margin = "";
+        this.mirrorResize.style.position = "";
+        this.mirrorResize.style.top = "";
+        this.mirrorResize.style.left = "";
       }
 
       this.traceImg = null;

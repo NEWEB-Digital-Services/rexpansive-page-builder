@@ -271,14 +271,14 @@ var Rexlive_MediaUploader = (function($) {
    * Live insert/edit a single inline image inside a Medium Editor
    * 
    * @since 2.0.0
-   * @param {Object}  info
+   * @param {Object}  img_data
    */
-  function _openImageMEMediaUploader(info) {
+  function _openImageMEMediaUploader(img_data) {
     // If the frame is already opened, return it
     if (image_uploader_me_frame) {
       image_uploader_me_frame
         .state("me-image")
-        .set("inlineImageSettings", info)
+        .set("inlineImgData", img_data)
       image_uploader_me_frame.open();
       return;
     }
@@ -296,7 +296,7 @@ var Rexlive_MediaUploader = (function($) {
           multiple: false,
           library: wp.media.query({ type: "image" }),
           type: "image", //audio, video, application/pdf, ... etc
-          inlineImageSettings: info.settings
+          inlineImgData: img_data
         },
         wp.media.controller.Library.prototype.defaults
       )
@@ -311,7 +311,7 @@ var Rexlive_MediaUploader = (function($) {
 
     image_uploader_me_frame.on("select", function() {
       var state = image_uploader_me_frame.state("me-image");
-      var imageSettings = state.get("inlineImageSettings"); 
+      var imageSettings = state.get("inlineImgData"); 
 
       var selection = state.get("selection");
       var imgData = {};
@@ -331,13 +331,13 @@ var Rexlive_MediaUploader = (function($) {
 
         imgData.idImage = obj_attachment.id;
         imgData.urlImage = display.src;
-        if( "undefined" == typeof imageSettings ) {
+        if( "undefined" === typeof imageSettings.width ) {
           imgData.width = display.width;
         } else {
           imgData.width = imageSettings.width.replace("px","");
         }
 
-        if( "undefined" == typeof imageSettings ) {
+        if( "undefined" === typeof imageSettings.height ) {
           imgData.height = display.height;
         } else {
           imgData.height = imageSettings.height.replace("px","");
@@ -371,7 +371,7 @@ var Rexlive_MediaUploader = (function($) {
         selection.remove(attachment ? [attachment] : []);
       });
 
-      var imageSettings = image_uploader_me_frame.state("me-image").get("inlineImageSettings");
+      var imageSettings = image_uploader_me_frame.state("me-image").get("inlineImgData");
       var image_id = null;
       if( "undefined" !== typeof imageSettings ) {
         image_id = ( "undefined" !== typeof imageSettings.image_id ? imageSettings.image_id : null );

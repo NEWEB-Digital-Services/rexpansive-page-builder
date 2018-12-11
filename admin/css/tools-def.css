@@ -14912,10 +14912,11 @@ ul {
     opacity: 0;
     margin-top: 10px; }
   .tool-button_list.tool-button_list--horizontal {
-    min-width: 90px;
-    left: -69px; }
+    top: 0;
+    left: 100%; }
     .tool-button_list.tool-button_list--horizontal .tool-button_list--item {
-      margin-left: 10px; }
+      margin-left: 10px;
+      margin-top: 0; }
   .tool-button_list.tool-button_list--dropdown {
     width: 100%;
     text-align: center;
@@ -14959,9 +14960,7 @@ ul {
       display: flex;
       -webkit-box-pack: end;
           -ms-flex-pack: end;
-              justify-content: flex-end;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap; }
+              justify-content: flex-end; }
   .tool-button-floating .tool-button--double-icon--wrap {
     display: block;
     max-height: 20px; }
@@ -14980,9 +14979,7 @@ ul {
       display: flex;
       -webkit-box-pack: end;
           -ms-flex-pack: end;
-              justify-content: flex-end;
-      -ms-flex-wrap: wrap;
-          flex-wrap: wrap; }
+              justify-content: flex-end; }
 
 .tool-indicator {
   color: #fff;

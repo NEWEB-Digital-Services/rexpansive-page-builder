@@ -173,7 +173,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       }
 
       if (event.data.eventName == "rexlive:openMEImageUploader") {
-        Rexlive_MediaUploader.openImageMEMediaUploader(event.data.settings);
+        Rexlive_MediaUploader.openImageMEMediaUploader(event.data.img_data);
       }
 
       if (event.data.eventName == "rexlive:editBackgroundSection") {

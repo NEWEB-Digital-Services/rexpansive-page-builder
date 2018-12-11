@@ -355,11 +355,11 @@ $tool_button_classes = 'tool-button';
     <div class="tool-button">
     <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
     </div>
-    <div class="tool-button_list">
+    <div class="tool-button_list tool-button_list--horizontal">
         <div class="tool-button tool-button_list--item me-insert-image">
         <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
         </div>
-        <div class="tool-button tool-button_list--item">
+        <div class="tool-button tool-button_list--item me-insert-iframe" style="display:none;">
         <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
         </div>
     </div>

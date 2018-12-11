@@ -10,13 +10,38 @@
     .bl_d-ib {
         display: inline-block!important;
     }
+    .alignleft {
+        float: left;
+        margin: 6px 28px 28px 0;
+    }
+    .ui-custom-wrapper {
+        overflow: visible!important;
+    }
+    .mirror {
+        opacity: 0.5;
+        z-index: 20;
+        position: absolute;
+    }
+    .sizes {
+        position: absolute;
+        top: 100%;
+        left: 100%;
+        background-color: #000;
+        color: #fff;
+        padding: 5px;
+        display: none;
+        z-index: 20;
+        border-radius: 5px;
+        font-size: 10px;
+        white-space: nowrap;
+    }
     </style>
 </head>
 <body>
     <div class="wrap">
         <p>
             Lorem ipsum dolor sit amet consectetur, adipisicing elit. Porro excepturi quasi magnam atque odio debitis necessitatibus, perferendis eaque explicabo! Culpa, delectus facilis nostrum itaque deserunt doloribus. Quam doloremque dignissimos blanditiis?
-            <img class="resizable" src="https://i.ytimg.com/vi/hsrrmdQvuYU/maxresdefault.jpg" alt="" width="200" height="112">
+            <img class="resizable alignleft" src="https://i.ytimg.com/vi/hsrrmdQvuYU/maxresdefault.jpg" alt="" width="200" height="112">
             Lorem ipsum dolor, sit amet consectetur adipisicing elit. Numquam sapiente suscipit ex maxime iste laudantium accusantium omnis nulla sit quisquam. Illum modi aspernatur ut pariatur magnam rerum ex quidem ipsa.
         </p>
     </div>
@@ -28,13 +53,38 @@
     (function() {
         $('#add').on("click", function(e) {
             e.preventDefault();
-            $('.resizable').resizable({
+            var $resizable = $('.resizable');
+            var resizable = $resizable[0];
+            var resizableCoords = resizable.getBoundingClientRect();
+            var mirror = document.createElement('img');
+            mirror.width = resizableCoords.width;
+            mirror.height = resizableCoords.height;
+            mirror.style.top = resizableCoords.top + window.scrollY + "px";
+            mirror.style.left = resizableCoords.left + window.scrollX + "px";
+            
+            var $mirror = $(mirror);
+            $mirror.addClass("mirror");
+            $resizable.after($mirror);
+
+            $mirror.resizable({
+                alsoResize: $resizable,
                 create: function(event, ui) {
-                    event.target.classList.add("bl_d-ib");
-                    // var $wrapper = $(event.target);
+                    // event.target.classList.add("bl_d-ib");
+                    var $wrapper = $(event.target);
+                    $wrapper.addClass("ui-custom-wrapper");
+                    $wrapper.append('<span class="sizes"></span>');
                     // $wrapper.append('<div class="ui-resizable-handle ui-resizable-e" data-axis="e"><span class="circle-handle circle-handle-e" data-axis="e"></span></div>');
                     // $wrapper.append('<div class="ui-resizable-handle ui-resizable-s" data-axis="s"><span class="circle-handle circle-handle-s" data-axis="e"></span></div>');
                     // $wrapper.append('<div class="ui-resizable-handle ui-resizable-w" data-axis="w"><span class="circle-handle circle-handle-w" data-axis="e"></span></div>');
+                },
+                start: function(event, ui) {
+                    $(event.target).find(".sizes").css("display","block");
+                },
+                resize: function(event,ui) {
+                    $(event.target).find(".sizes").text(ui.size.width + ' x ' + ui.size.height);
+                },
+                stop: function(event, ui) {
+                    $(event.target).find(".sizes").css("display","none");
                 },
                 handles: "e, s, w, sw, se"
             });
@@ -42,7 +92,7 @@
 
         $("#remove").on("click", function(e) {
             e.preventDefault();
-            $(".resizable").resizable("destroy");
+            $(".mirror").resizable("destroy").remove();
         })
     })();
     </script>
