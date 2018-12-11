@@ -648,6 +648,10 @@
       return JSON.stringify(this.serializedData, null, "    ");
     },
 
+    getGridstackNodes: function() {
+      return this.properties.gridstackInstance.grid.nodes;
+    },
+
     getElementBottomTop: function() {
       var nodes = [];
       this.$element.children(".grid-stack-item").each(function(i, e) {

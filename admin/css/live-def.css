@@ -4657,6 +4657,9 @@ ul {
     right: -5px; }
   .me-ui-custom-wrapper .ui-resizable-s {
     height: 10px; }
+  .me-ui-custom-wrapper .ui-resizable-se {
+    right: -5px;
+    bottom: -5px; }
   .me-ui-custom-wrapper .ui-icon {
     background-image: none; }
 
@@ -5533,10 +5536,7 @@ ul {
 
 .img-resize-handle-se {
   bottom: 0%;
-  right: 0%;
-  -webkit-transform: translate(50%, 50%);
-      -ms-transform: translate(50%, 50%);
-          transform: translate(50%, 50%); }
+  right: 0%; }
 
 .img-resize-handle-sw {
   bottom: 0%;
