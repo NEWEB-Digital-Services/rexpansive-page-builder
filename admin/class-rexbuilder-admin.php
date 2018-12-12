@@ -684,7 +684,7 @@ class Rexbuilder_Admin {
 		<?php
 			$savedFromBackend = get_post_meta( get_the_id(), '_save_from_backend', true);
 			if(isset($savedFromBackend) && $savedFromBackend == "false"){
-				echo "<div style=\"text-align:center\">Hei, guarda che hai salvato dal live, ora non puoi modificare il contenuto della pagina dal vecchio builder</div>";
+				echo "<div style=\"text-align:center\">" . __("You saved from the live builder, now you can not change the page content from the old builder", "rexpansive") . "</div>";
 			}
 				endif;
 			endif;

@@ -56,6 +56,7 @@ class Rexbuilder_Section
             "layout" => "fixed",
             'responsive_background' => '',
             'custom_classes' => '',
+            'grid_custom_classes' => '',
             'section_width' => '80%',
             'row_separator_top' => '',
             'row_separator_bottom' => '',
@@ -277,7 +278,7 @@ class Rexbuilder_Section
 
             do_action('rexpansive_section_before_grid', array(&$parsed_atts));
 
-            echo '<div class="perfect-grid-gallery grid-stack grid-stack-row" data-separator="' . $block_distance . '" data-layout="' . $layout . '" data-full-height="' . (('true' == $full_height) ? 'true' : 'false') . '"' . $row_separators . '>';
+            echo '<div class="perfect-grid-gallery grid-stack grid-stack-row' . ( !empty( $grid_custom_classes ) ? ' ' . $grid_custom_classes : '' ) . '" data-separator="' . $block_distance . '" data-layout="' . $layout . '" data-full-height="' . (('true' == $full_height) ? 'true' : 'false') . '"' . $row_separators . '>';
             echo '<div class="perfect-grid-sizer"></div>';
             echo do_shortcode($content);
             echo '</div>';
