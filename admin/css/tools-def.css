@@ -15526,6 +15526,11 @@ input:disabled + .rex_edit_title_slider {
           box-shadow: -5px 0 5px rgba(0, 0, 0, 0.1);
   height: 100%; }
 
+#rex-button-editor .add-rex-button-model {
+  background-color: green; }
+  #rex-button-editor .add-rex-button-model.saving-rex-button {
+    background-color: blue; }
+
 .rexlive-toolbox__wrap {
   width: 100%;
   position: absolute;

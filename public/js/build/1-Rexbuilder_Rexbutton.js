@@ -279,6 +279,7 @@ var Rexbuilder_Rexbutton = (function ($) {
     var _updateButtonLive = function (data) {
         //per i gradienti
         /*
+        rexlive:updateButtonLive
        {
         buttonTarget: {
             buttonID: "qaz1",
@@ -289,32 +290,33 @@ var Rexbuilder_Rexbutton = (function ($) {
         propertyName: "height",
         newValue: "30px"
        }
-       */
-
+       type = ["container", "background", "backgroundHover", "button"];
+       propertyName = ["link_target", "link_type", "button_label", "button_name"]
+         */
         switch (data.propertyType) {
             case "container":
-                _updateButtonContainerRule(data.buttonTarget.buttonID, data.propertyName, data.newValue);
+                _updateButtonContainerRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
                 break;
             case "background":
-                _updateButtonBackgroundRule(data.buttonTarget.buttonID, data.propertyName, data.newValue);
+                _updateButtonBackgroundRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
                 break;
             case "backgroundHover":
-                _updateButtonBackgroundHoverRule(data.buttonTarget.buttonID, data.propertyName, data.newValue);
+                _updateButtonBackgroundHoverRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
                 break;
             case "button":
-                var $buttonContainer = Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"][data-rex-button-number=\"" + data.buttonTarget.button_number + "\"]");
+                var $buttonWrapper = Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper[data-rex-button-id=\"" + data.buttonTarget.button_id + "\"][data-rex-button-number=\"" + data.buttonTarget.button_number + "\"]");
                 switch (data.propertyName) {
                     case "link_target":
-                        $buttonContainer.find("a.rex-button-container").eq(0).attr("href", data.newValue);
+                        $buttonWrapper.find("a.rex-button-container").eq(0).attr("href", data.newValue);
                         break;
                     case "link_type":
-                        $buttonContainer.find("a.rex-button-container").eq(0).attr("type", data.newValue);
+                        $buttonWrapper.find("a.rex-button-container").eq(0).attr("type", data.newValue);
                         break;
                     case "button_label":
-                        $buttonContainer.find(".rex-button-text").eq(0).text(data.newValue);
+                        $buttonWrapper.find(".rex-button-text").eq(0).text(data.newValue);
                         break;
                     case "button_name":
-                        $buttonContainer.find(".rex-button-data").eq(0).attr("data-button-name", data.newValue);
+                        $buttonWrapper.find(".rex-button-data").eq(0).attr("data-button-name", data.newValue);
                         break;
                     default:
                         break;
@@ -387,7 +389,7 @@ var Rexbuilder_Rexbutton = (function ($) {
     }
 
     var _removeSeparateButton = function (data) {
-        var buttonID = data.buttonTarget.buttonID;
+        var buttonID = data.buttonTarget.button_id;
         var $buttonWrapper = Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"]");
         $buttonWrapper.removeClass("rex-separate-button");
         _removeModelData($buttonWrapper);
@@ -397,7 +399,6 @@ var Rexbuilder_Rexbutton = (function ($) {
         var buttonData = data.buttonData;
         var newID = data.newID;
         var buttonID = buttonData.buttonTarget.button_id;
-        console.log(data);
         var $buttonWrapper = Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"][data-rex-button-number=\"" + buttonData.buttonTarget.button_number + "\"]");
         $buttonWrapper.addClass("rex-separate-button");
         $buttonWrapper.attr("data-rex-button-id", newID); 

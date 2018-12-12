@@ -1757,10 +1757,10 @@ defined('ABSPATH') or exit;
                 <div class="rex-relative-col tippy" data-tippy-content="Text Color" tabindex="0">
                     <input type="hidden" id="rex-button-text-color-runtime" name="rex-button-text-color-runtime" value="" />
                     <input id="rex-button-text-color" type="text" name="rex-button-text-color" value="" size="10" />
-                    <div id="rex-button-color-preview-icon" class="preview-color-icon"></div>
+                    <div id="rex-button-text-color-preview-icon" class="preview-color-icon"></div>
                 </div>
                 <div id="rex-button-label-wrap">
-                    <input type="text" id="rex-button__label" name="rex-button__label"/>
+                    <input type="text" id="rex-button__label" name="rex-button__label" style="text-shadow: 2px 2px 4px black !important"/>
                 </div>
                 <div id="rex-button-font-size-wrap" style="display: flex;">
                     <input type="text" id="rex-button_text_font_size" name="rex-button_text_font_size"/>
@@ -1864,3 +1864,50 @@ defined('ABSPATH') or exit;
     </div>
 </div>
 <!-- Edit Button -->
+
+<div class="rex-modal-wrap">
+    <div id="rex-button-model-choose" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
+        <?php Rexbuilder_Utilities::close_button(); ?>
+        <div class="modal-content modal-content--text">
+            <div class="edit-button-model-choose">
+                <?php _e('Gabibbo, guarda che stai modificando lo stile di un modello, che vuoi fare?','rexpansive'); ?>
+                <br>
+                <span class="info-model-name__wrap"><span class="info-model-name"></span>&nbsp;<span>?</span></span>
+            </div>
+            <div>
+                <div class="rex-edit-button-model-option" data-rex-option="edit">
+                    <button class="rex-button edit-button-model">Mantieni</button>
+                </div>
+                <div class="rex-edit-button-model-option" data-rex-option="remove">
+                    <button class="rex-button remove-button-model">Stacca</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Edit button Model  -->
+
+<!-- Ok il pannellino in più, ma se invece faccio semplicemente un controllo per vedere che inserisca un nome?
+Evidenzio di rosso se non l'ha messo e pace-->
+<div class="rex-modal-wrap">
+    <div id="rex-add-button-name-modal" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
+        <?php Rexbuilder_Utilities::close_button(); ?>
+        <div class="modal-content modal-content--text">
+            <div class="add-button-name-model">
+                <?php _e('Gabibbo, guarda che hai creato un nuovo pulsante, mi serve un nome','rexpansive'); ?>
+                <br>
+                <span class="info-model-name__wrap"><span class="info-model-name"></span>&nbsp;<span>?</span></span>
+            </div>
+            <div>
+                <div id="rex-button-name-model-wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix" style="width:100%;">
+                    <span class="prefix"></span>
+                    <input type="text" id="rex-button__name_model" name="rex-button__name_model">
+                    <label for="rex-button__name_model" class=""><?php _e('Title name model button', 'rexpansive');?></label>
+                    <span class="rex-material-bar"></span>
+                </div>
+                <div id="rex-button-name-add-model-wrap" class="add-rex-name-button-model">
+                    <div class="add-label">+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Add button name Model  -->

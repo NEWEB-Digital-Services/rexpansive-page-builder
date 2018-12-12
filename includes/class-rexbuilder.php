@@ -168,7 +168,7 @@ class Rexbuilder {
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
 	}
-
+	
 	/**
 	 * Register all of the hooks related to the admin area functionality
 	 * of the plugin.
@@ -177,9 +177,9 @@ class Rexbuilder {
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
-
+		
 		$plugin_admin = new Rexbuilder_Admin( $this->get_plugin_name(), $this->get_version() );
-
+		
 		// Slider custom post type
 		$this->loader->add_action( 'init', $plugin_admin, 'rexpansive_slider_definition' );
 		$this->loader->add_action( 'init', $plugin_admin, 'rexpansive_models_defintion' );
@@ -187,24 +187,24 @@ class Rexbuilder {
 		$this->loader->add_filter( 'manage_rex_slider_posts_columns', $plugin_admin, 'rexpansive_slider_columns_head_add_column' );
 		$this->loader->add_filter( 'manage_rex_slider_posts_columns', $plugin_admin, 'rexpansive_slider_columns_reorder' );
 		$this->loader->add_action( 'manage_rex_slider_posts_custom_column', $plugin_admin, 'rexpansive_slider_columns_content', 10, 2 );
-
+		
 		$this->loader->add_filter( 'post_row_actions', $plugin_admin, 'post_list_add_link_to_live_editor', 10, 2 );
-
+		
 		$this->loader->add_filter( 'preview_post_link', $plugin_admin, 'change_preview_url' );
-
+		
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles_production' );
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts_production' );
 
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_plugin_options_menu' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'update_notifier_menu' );
-
+		
 		$this->loader->add_action( 'admin_bar_menu', $plugin_admin, 'add_top_bar_plugin_options_menu', 1000 );
-
+		
 		$plugin_basename = plugin_basename( plugin_dir_path( __DIR__ ) . $this->plugin_name . '.php' );
 		$this->loader->add_filter( 'plugin_action_links_' . $plugin_basename, $plugin_admin, 'add_action_links' );
-
+		
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'plugin_options_update' );
-
+		
 		// live builder		
 		$this->loader->add_filter( 'content_save_pre', $plugin_admin, 'rex_fix_post_content' );
 		
@@ -212,8 +212,9 @@ class Rexbuilder {
 			$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_sprites_live' );
 			$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_live_editing' );
 			$this->loader->add_filter( 'admin_body_class', $plugin_admin, 'rexlive_body_fix' );
+			$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'print_rex_buttons_style_backend' );
 		}
-
+		
 		$this->loader->add_action( 'admin_footer', $plugin_admin, 'create_builder_modals' );
 		$this->loader->add_action( 'admin_footer', $plugin_admin, 'create_builder_templates' );
 		$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_sprites' );

@@ -57,6 +57,8 @@ var Rexlive_Modals = (function ($) {
         Button_Import_Modal.init();
 
         Button_Edit_Modal.init();
+        
+        Button_Name_Modal.init();
     }
 
     return {
