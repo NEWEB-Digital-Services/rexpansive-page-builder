@@ -1704,15 +1704,16 @@
       );
     });
 
-    $(document).on("rexlive:updateRexButton", function(e) {
+    $(document).on("rexlive:update_button_page", function(e) {
       var data = e.settings.data_to_send;
-      console.log(data);
       var reverseData = {
-        buttonProperties: data.reverseButtonData
+        buttonProperties: jQuery.extend(true, {}, data.reverseButtonData)
       };
       var actionData = {
-        buttonProperties: data.actionButtonProperties
+        buttonProperties: jQuery.extend(true, {}, data.actionButtonData)
       }
+      Rexbuilder_Rexbutton.updateButton(actionData);
+
       Rexbuilder_Util_Editor.pushAction(
         "document",
         "updateRexButton",

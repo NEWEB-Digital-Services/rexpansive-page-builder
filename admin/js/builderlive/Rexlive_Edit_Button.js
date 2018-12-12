@@ -70,9 +70,35 @@ var Button_Edit_Modal = (function ($) {
         button_editor_properties.$button_link_target.val(buttonData.link_taget);
         button_editor_properties.$button_link_type.val(buttonData.link_type);
         button_editor_properties.$button_name.val(buttonData.buttonTarget.button_name);
+        button_editor_properties.$button_preview_background_hover.css("background-color", buttonData.hover_color);
+        button_editor_properties.$button_preview_background.css("background-color", buttonData.background_color);
+        button_editor_properties.$button_preview_border.css("border-color", buttonData.border_color);
+        //lasciarlo aggiornato? o fixato a 5px?
+        button_editor_properties.$button_preview_border.css("border-width", buttonData.border_width);
     }
 
     var _buttonTextEditor = function () {
+        button_editor_properties.$button_label_text.on("change", function (e) {
+            
+        });
+        
+        button_editor_properties.$button_label_text.on("blur", function (e) {
+            if(button_editor_properties.$button_label_text.val() != buttonData.text){
+                buttonData.text = button_editor_properties.$button_label_text.val();
+                _applyData();
+            }
+        });
+
+        button_editor_properties.$button_label_text_size.on("change", function (e) {
+            
+        });
+        
+        button_editor_properties.$button_label_text_size.on("blur", function (e) {
+            if(button_editor_properties.$button_label_text_size.val() != buttonData.font_size.replace('px', '')){
+                buttonData.font_size = button_editor_properties.$button_label_text_size.val() + "px";
+                _applyData();
+            }
+        });
         
     }
     
@@ -256,13 +282,14 @@ var Button_Edit_Modal = (function ($) {
 
     var _applyData = function () {
         var buttonDataToIframe = {
-            eventName: "rexlive:update_button",
+            eventName: "rexlive:update_button_page",
             data_to_send: {
                 reverseButtonData: jQuery.extend(true, {}, reverseData),
                 actionButtonData: jQuery.extend(true, {}, buttonData)
             }
         };
         reverseData = jQuery.extend(true, {}, buttonDataToIframe.data_to_send.actionButtonData);
+        console.log(buttonDataToIframe);
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(buttonDataToIframe);
     };
 
@@ -295,7 +322,9 @@ var Button_Edit_Modal = (function ($) {
         });
         button_editor_properties.$reset_button.on("click", function () {
             //resetta le modifiche (quindi serve salvare stato iniziale)
-            console.log("reset button");
+            buttonData = jQuery.extend(true, {}, resetData);
+            _updatePanel();
+            //resettare anche il pulsante in live?
         });
         button_editor_properties.$add_model_button.on("click", function () {
             //recuperare nome modello inserito
@@ -376,8 +405,6 @@ var Button_Edit_Modal = (function ($) {
 
         rexButtonsJSON = JSON.parse($("#rex-buttons-json-css").text());
         buttonsIDsUsed = JSON.parse($("#rex-buttons-ids-used").text());
-        console.log(rexButtonsJSON);
-        console.log(buttonsIDsUsed);
         _linkDocumentListeners();
 
         buttonData = {
@@ -424,6 +451,7 @@ var Button_Edit_Modal = (function ($) {
                 }
             }
         }
+        _buttonTextEditor();
     };
 
     return {
