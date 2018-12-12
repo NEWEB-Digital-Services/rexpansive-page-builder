@@ -3309,6 +3309,10 @@
       });
     },
 
+    filter: function(options) {
+      this.$element.find(this.settings.itemSelector).css("display","block").not(options.filter).css("display","none");
+    },
+
     destroyGridGallery: function() {
       this.destroyGridstack();
       this.removeScrollbars();
