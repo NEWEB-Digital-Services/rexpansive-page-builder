@@ -350,7 +350,7 @@ $tool_button_classes = 'tool-button';
 </div>
 </script>
 
-<script type="text/x-tmpl" id="tmpl-me-insert-media-button">
+<script type="text/x-tmpl" id="tmpl-me-insert-media-button-full">
 <div class="tool-button-floating">
     <div class="tool-button">
     <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
@@ -362,6 +362,14 @@ $tool_button_classes = 'tool-button';
         <div class="tool-button tool-button_list--item me-insert-iframe" style="display:none;">
         <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
         </div>
+    </div>
+</div>
+</script>
+
+<script type="text/x-tmpl" id="tmpl-me-insert-media-button">
+<div class="tool-button-floating">
+    <div class="tool-button me-insert-image">
+    <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
     </div>
 </div>
 </script>

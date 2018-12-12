@@ -6575,7 +6575,6 @@ MediumEditor.extensions = {};
     }
 
     function handleDisabledEnterKeydown(event, element) {
-        console.log(10);
         if (this.options.disableReturn || element.getAttribute('data-disable-return')) {
             event.preventDefault();
         } else if (this.options.disableDoubleReturn || element.getAttribute('data-disable-double-return')) {
@@ -6618,9 +6617,6 @@ MediumEditor.extensions = {};
             tagName = node.nodeName.toLowerCase(),
             isEmpty = /^(\s+|<br\/?>)?$/i,
             isHeader = /h\d/i;
-        
-            console.log(node);
-            console.log(tagName);
 
         if (MediumEditor.util.isKey(event, [MediumEditor.util.keyCode.BACKSPACE, MediumEditor.util.keyCode.ENTER]) &&
                 // has a preceeding sibling
@@ -6698,6 +6694,7 @@ MediumEditor.extensions = {};
         } else if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.BACKSPACE) &&
                 (MediumEditor.util.getClosestTag(node, 'blockquote') !== false) &&
                 MediumEditor.selection.getCaretOffsets(node).left === 0) {
+
             // when cursor is at the begining of the element and the element is <blockquote>
             // then pressing backspace key should change the <blockquote> to a <p> tag
             event.preventDefault();
@@ -6705,6 +6702,7 @@ MediumEditor.extensions = {};
         } else if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER) &&
                 (MediumEditor.util.getClosestTag(node, 'blockquote') !== false) &&
                 MediumEditor.selection.getCaretOffsets(node).right === 0) {
+
             // when cursor is at the end of <blockquote>,
             // then pressing enter key should create <p> tag, not <blockquote>
             p = this.options.ownerDocument.createElement('p');
@@ -6720,6 +6718,7 @@ MediumEditor.extensions = {};
                 !node.previousElementSibling &&
                 node.nextElementSibling &&
                 isEmpty.test(node.innerHTML)) {
+
             // when cursor is in the first element, it's empty and user presses backspace,
             // do delete action instead to get rid of the first element and move caret to 2nd
             event.preventDefault();
@@ -6739,22 +6738,21 @@ MediumEditor.extensions = {};
         // https://github.com/yabwe/medium-editor/issues/994
         // Firefox thrown an error when calling `formatBlock` on an empty editable blockContainer that's not a <div>
         if (MediumEditor.util.isMediumEditorElement(node) && node.children.length === 0 && !MediumEditor.util.isBlockContainer(node)) {
-            console.log('A');
             this.options.ownerDocument.execCommand('formatBlock', false, 'p');
         }
 
         // https://github.com/yabwe/medium-editor/issues/834
         // https://github.com/yabwe/medium-editor/pull/382
         // Don't call format block if this is a block element (ie h1, figCaption, etc.)
-        // Also check on parent elements
         if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER) &&
             !MediumEditor.util.isListItem(node) &&
             !MediumEditor.util.isBlockContainer(node)) {
+
             tagName = node.nodeName.toLowerCase();
             // For anchor tags, unlink
             if (tagName === 'a') {
                 this.options.ownerDocument.execCommand('unlink', false, null);
-            } else if (!event.shiftKey && !event.ctrlKey && !checkParentHeaderElement(node, this.getFocusedElement()) ) {
+            } else if (!event.shiftKey && !event.ctrlKey) {
                 this.options.ownerDocument.execCommand('formatBlock', false, 'p');
             }
         }
@@ -6768,20 +6766,6 @@ MediumEditor.extensions = {};
     }
 
     // Internal helper methods which shouldn't be exposed externally
-
-    function checkParentHeaderElement(node, editor) {
-        var tagName = node.nodeName.toLowerCase();
-        var isHeader = /h\d/i;
-        if( editor === node ) {
-            return false;
-        } else {
-            if( isHeader.test(tagName) ) {
-                return true;
-            } else {
-                return checkParentHeaderElement(node.parentNode, editor);
-            }
-        }
-    }
 
     function addToEditors(win) {
         if (!win._mediumEditors) {

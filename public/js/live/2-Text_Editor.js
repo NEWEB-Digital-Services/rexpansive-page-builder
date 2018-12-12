@@ -1085,11 +1085,26 @@ var TextEditor = (function($) {
       this.placeMediaBtn();
     },
 
-    placeMediaBtn: function() {
+    /**
+     * Place the media button on the bottom of the TextEditor
+     * @deprecated
+     */
+    placeMediaBtnBottomTextEditor: function() {
       var editor = this.base.getFocusedElement();
       var targetCoords = editor.getBoundingClientRect();
       this.mediaBtn.style.left = ( targetCoords.left + ( ( targetCoords.width - this.mediaBtn.offsetWidth ) / 2 ) ) + "px";
       this.mediaBtn.style.top = ( window.scrollY + targetCoords.top + targetCoords.height - this.mediaBtn.offsetHeight ) + "px";
+    },
+
+    /**
+     * Place the media button on top of the block
+     */
+    placeMediaBtn: function() {
+      var editor = this.base.getFocusedElement();
+      var $content_wrap = $(editor).parents(".grid-item-content-wrap");
+      var targetCoords = $content_wrap[0].getBoundingClientRect();
+      this.mediaBtn.style.left = ( targetCoords.left + ( ( targetCoords.width - this.mediaBtn.offsetWidth ) / 2 ) ) + "px";
+      this.mediaBtn.style.top = ( window.scrollY + targetCoords.top + 15 ) + "px";
     },
 
     traceInput: function(event) {
@@ -1121,12 +1136,15 @@ var TextEditor = (function($) {
     handleImageInsertReplace: function(event) {
       // var editor = this.base.getFocusedElement();
       this.base.restoreSelection();
+      // console.log(this.base.)
       var imgHTML = '<img class="wp-image-' + event.imgData.idImage + ' ' + event.imgData.align + '" data-image-id="' + event.imgData.idImage + '" src="' + event.imgData.urlImage + '" alt="" width="' + event.imgData.width + '" height="' + event.imgData.height + '">';
 
       if( this.traceImg ) {
         this.base.selectElement(this.traceImg);
         $(this.traceImg).remove();
       }
+
+      console.log(this.base.exportSelection());
 
       this.base.pasteHTML(imgHTML, {
         cleanPastedHTML: false,
@@ -1418,7 +1436,7 @@ var TextEditor = (function($) {
           "textEditorHtml"
           // "removeFormat",
         ]
-      },
+      }, 
       imageDragging: false,
       extensions: {
         colorPicker: pickerExtensionInstance,
@@ -1444,6 +1462,10 @@ var TextEditor = (function($) {
     editorInstance.trigger( event_info.name, event_info.data, event_info.editable );
   }
 
+  var _getEditorInstance = function() {
+    return editorInstance;
+  };
+
   var init = function() {
     rangy.init();
     _createToolbarContainer();
@@ -1455,6 +1477,7 @@ var TextEditor = (function($) {
     init: init,
     addElementToTextEditor: _addElementToTextEditor,
     destroyMediumEditor: _destroyMediumEditor,
+    getEditorInstance: _getEditorInstance,
     createEditor: _createEditor,
     triggerMEEvent: _triggerMEEvent,
     openTextGradientColor: _openTextGradientColor
