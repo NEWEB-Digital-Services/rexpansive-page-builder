@@ -29,9 +29,6 @@ defined( 'ABSPATH' ) or exit;
             <div class="tool-button tool-button--inline builder-edit-slider<?php echo ( !$block_has_slider ? ' tool-button--hide' : '' ); ?> tippy" data-tippy-content="<?php _e('RexSlider','rexpansive'); ?>">
                 <?php Rexbuilder_Utilities::get_icon('#Z003-RexSlider'); ?>
             </div><!-- // rexslider -->
-            <div class="tool-button tool-button--inline edit-block-content-position<?php echo ( "" === trim( $content ) ? ' tool-button--hide' : '' ); ?> tippy" data-tippy-content="<?php _e('Content Position','rexpansive'); ?>">
-                <?php Rexbuilder_Utilities::get_icon('#C005-Layout'); ?>
-            </div>
         </div>
 
         <div class="bl_d-iflex bl_ai-c block-toolBox__config-tools">
@@ -41,6 +38,10 @@ defined( 'ABSPATH' ) or exit;
 
             <div class="tool-button tool-button--inline edit-block-accordion tippy" data-tippy-content="<?php _e('Accordion', 'rexpansive'); ?>" style="margin-right:15px">
             <?php Rexbuilder_Utilities::get_icon('#Z010-Logo'); ?>
+            </div>
+
+            <div class="tool-button tool-button--inline edit-block-content-position<?php echo ( "" === trim( $content ) ? ' tool-button--hide' : '' ); ?> tippy" data-tippy-content="<?php _e('Content Position','rexpansive'); ?>" style="margin-right:15px">
+                <?php Rexbuilder_Utilities::get_icon('#C005-Layout'); ?>
             </div>
             
             <div class="tool-button tool-button--inline builder-copy-block tippy" data-tippy-content="<?php _e('Copy block', 'rexpansive'); ?>">

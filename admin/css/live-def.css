@@ -3829,6 +3829,14 @@ ul {
     .tool-button_list.tool-button_list--horizontal .tool-button_list--item {
       margin-left: 10px;
       margin-top: 0; }
+  .tool-button_list.tool-button_list--vertical_top {
+    top: auto;
+    left: 0;
+    display: block;
+    bottom: 100%; }
+    .tool-button_list.tool-button_list--vertical_top .tool-button_list--item {
+      margin-left: 0;
+      margin-bottom: 10px; }
   .tool-button_list.tool-button_list--dropdown {
     width: 100%;
     text-align: center;

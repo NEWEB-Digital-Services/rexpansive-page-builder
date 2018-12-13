@@ -1099,12 +1099,23 @@ var TextEditor = (function($) {
     /**
      * Place the media button on top of the block
      */
-    placeMediaBtn: function() {
+    placeMediaBtnTopCenterTextEditor: function() {
       var editor = this.base.getFocusedElement();
       var $content_wrap = $(editor).parents(".grid-item-content-wrap");
       var targetCoords = $content_wrap[0].getBoundingClientRect();
       this.mediaBtn.style.left = ( targetCoords.left + ( ( targetCoords.width - this.mediaBtn.offsetWidth ) / 2 ) ) + "px";
       this.mediaBtn.style.top = ( window.scrollY + targetCoords.top + 15 ) + "px";
+    },
+
+    /**
+     * Place the media button on top of the block
+     */
+    placeMediaBtn: function() {
+      var editor = this.base.getFocusedElement();
+      var $content_wrap = $(editor).parents(".grid-item-content-wrap");
+      var targetCoords = $content_wrap[0].getBoundingClientRect();
+      this.mediaBtn.style.left = ( window.scrollX + targetCoords.left + targetCoords.width - this.mediaBtn.offsetWidth - 15 ) + "px";
+      this.mediaBtn.style.top = ( window.scrollY + targetCoords.top + targetCoords.height - this.mediaBtn.offsetHeight - 15 ) + "px";
     },
 
     traceInput: function(event) {
