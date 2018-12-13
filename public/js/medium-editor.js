@@ -1342,6 +1342,8 @@ MediumEditor.extensions = {};
             return element && element.nodeType !== 3 && Util.blockContainerElementNames.indexOf(element.nodeName.toLowerCase()) !== -1;
         },
 
+        
+
         /* Finds the closest ancestor which is a block container element
          * If element is within editor element but not within any other block element,
          * the editor element is returned
@@ -6619,8 +6621,7 @@ MediumEditor.extensions = {};
             isEmpty = /^(\s+|<br\/?>)?$/i,
             isHeader = /h\d/i;
         
-            console.log(node);
-            console.log(tagName);
+        var parentElementHeader = checkParentHeaderElement(node);
 
         if (MediumEditor.util.isKey(event, [MediumEditor.util.keyCode.BACKSPACE, MediumEditor.util.keyCode.ENTER]) &&
                 // has a preceeding sibling
@@ -6725,6 +6726,36 @@ MediumEditor.extensions = {};
             event.preventDefault();
             MediumEditor.selection.moveCursor(this.options.ownerDocument, node.nextSibling);
             node.parentElement.removeChild(node);
+        } else if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.BACKSPACE) &&
+                parentElementHeader && 
+                parentElementHeader.previousElementSibling && 
+                MediumEditor.selection.getCaretOffsets(node).left === 0) {
+            // cursor is at the beginning of an header element
+            // and not the first element
+            event.preventDefault();
+
+            // Remove childs if previous element as empty childs to prevent remains
+            // of spans and br
+            if( 0 === parentElementHeader.previousElementSibling.innerText.trim().length ) {
+                while (parentElementHeader.previousElementSibling.firstChild) {
+                    parentElementHeader.previousElementSibling.removeChild(parentElementHeader.previousElementSibling.firstChild);
+                }
+                MediumEditor.selection.moveCursor(this.options.ownerDocument, parentElementHeader.previousElementSibling);
+            } else {
+                // Else, move the cursor to the correct position, that is the last char on the last text node
+                // of the parent header siblings element
+                var lastTextNode = textNodesUnder(parentElementHeader.previousElementSibling);
+                customMoveCursor( lastTextNode[lastTextNode.length-1], lastTextNode[lastTextNode.length-1].length );
+            }
+            
+            // Move node childs to the previous sibling
+            while( parentElementHeader.childNodes.length > 0 ) {
+                parentElementHeader.previousElementSibling.appendChild(parentElementHeader.childNodes[0]);
+            }
+
+            // Remove the remain element
+            // removeNodeFromContentEditable(parentElementHeader);
+            parentElementHeader.remove();
         }
     }
 
@@ -6739,7 +6770,6 @@ MediumEditor.extensions = {};
         // https://github.com/yabwe/medium-editor/issues/994
         // Firefox thrown an error when calling `formatBlock` on an empty editable blockContainer that's not a <div>
         if (MediumEditor.util.isMediumEditorElement(node) && node.children.length === 0 && !MediumEditor.util.isBlockContainer(node)) {
-            console.log('A');
             this.options.ownerDocument.execCommand('formatBlock', false, 'p');
         }
 
@@ -6754,7 +6784,7 @@ MediumEditor.extensions = {};
             // For anchor tags, unlink
             if (tagName === 'a') {
                 this.options.ownerDocument.execCommand('unlink', false, null);
-            } else if (!event.shiftKey && !event.ctrlKey && !checkParentHeaderElement(node, this.getFocusedElement()) ) {
+            } else if (!event.shiftKey && !event.ctrlKey && !checkParentHeaderElement(node) ) {
                 this.options.ownerDocument.execCommand('formatBlock', false, 'p');
             }
         }
@@ -6769,18 +6799,53 @@ MediumEditor.extensions = {};
 
     // Internal helper methods which shouldn't be exposed externally
 
-    function checkParentHeaderElement(node, editor) {
+    /**
+     * Check if a node is child of an header
+     * @param {Node} node node element to start search
+     * @return bool|node    returns false if the node is not child of header, 
+     *                        otherwise returns the header node
+     */
+    function checkParentHeaderElement(node) {
         var tagName = node.nodeName.toLowerCase();
         var isHeader = /h\d/i;
-        if( editor === node ) {
+        if( MediumEditor.util.isMediumEditorElement(node) ) {
             return false;
         } else {
             if( isHeader.test(tagName) ) {
-                return true;
+                return node;
             } else {
-                return checkParentHeaderElement(node.parentNode, editor);
+                return checkParentHeaderElement(node.parentNode);
             }
         }
+    }
+
+    function textNodesUnder(el){
+        var n, a=[], walk=document.createTreeWalker(el,NodeFilter.SHOW_TEXT,null,false);
+        while(n=walk.nextNode()) a.push(n);
+        return a;
+    }
+    
+    function customMoveCursor(el, offset) {
+        offset = "undefined" !== typeof offset ? offset : 0;
+        var range = document.createRange();
+        var sel = window.getSelection();
+        range.setStart(el, offset);
+        range.collapse(true);
+        sel.removeAllRanges();
+        sel.addRange(range);  
+    }
+
+    /**
+     * Removes too much
+     * @param {Node} node 
+     */
+    function removeNodeFromContentEditable(node) {
+        var sel = window.getSelection(),
+        range = document.createRange();
+        range.selectNode(node);
+        sel.removeAllRanges();
+        sel.addRange(range);
+        document.execCommand('delete', false)
     }
 
     function addToEditors(win) {
