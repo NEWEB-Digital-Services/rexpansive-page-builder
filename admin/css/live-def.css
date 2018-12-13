@@ -5247,7 +5247,9 @@ ul {
 .rexbuilder-live-content--editing {
   position: relative; }
   .rexbuilder-live-content--editing .rexpansive_section {
-    z-index: 2000; }
+    z-index: 0; }
+    .rexbuilder-live-content--editing .rexpansive_section.highLightRow {
+      z-index: 10; }
     .rexbuilder-live-content--editing .rexpansive_section .rex-row__dimension {
       overflow: visible; }
     .rexbuilder-live-content--editing .rexpansive_section .perfect-grid-gallery {

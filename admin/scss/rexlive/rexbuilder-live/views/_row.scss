@@ -2,7 +2,11 @@
 
   position: relative;
   .rexpansive_section {
-    z-index: 2000;
+    z-index: 0;
+    &.highLightRow {
+      z-index: 10;
+    }
+    // z-index: 2000;
     // border: 2px solid $icon-active-color;
     .rex-row__dimension {
       overflow: visible;
@@ -12,6 +16,14 @@
       overflow: visible;
     }
   }
+
+  // .rex-video-section-wrap {
+  //   z-index: 0;
+  // }
+
+  // .responsive-overlay {
+  //   z-index: auto;
+  // }
   
   &#{$row-focused} {
   
