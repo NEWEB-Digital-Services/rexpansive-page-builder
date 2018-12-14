@@ -356,8 +356,8 @@ $tool_button_classes = 'tool-button';
     <div class="tool-button">
     <?php Rexbuilder_Utilities::get_icon('#Z009-More'); ?>
     </div>
-    <div class="tool-button_list tool-button_list--vertical_top me-insert-embed">
-        <div class="tool-button tool-button_list--item me-insert-iframe">
+    <div class="tool-button_list tool-button_list--vertical_top">
+        <div class="tool-button tool-button_list--item me-insert-embed">
         <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
         </div>
         <div class="tool-button tool-button_list--item me-insert-image">

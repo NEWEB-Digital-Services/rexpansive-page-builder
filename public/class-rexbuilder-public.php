@@ -204,6 +204,7 @@ class Rexbuilder_Public
                 // RANGY
                 wp_enqueue_script( 'rangy-core', REXPANSIVE_BUILDER_URL . $cartella . 'rangy-1.3.0/rangy-core.js', array( 'jquery' ), null, true );
                 wp_enqueue_script( 'rangy-classapplier', REXPANSIVE_BUILDER_URL . $cartella . 'rangy-1.3.0/rangy-classapplier.js', array( 'jquery' ), null, true );
+                wp_enqueue_script( 'rangy-selectionsaverestore', REXPANSIVE_BUILDER_URL . $cartella . 'rangy-1.3.0/rangy-selectionsaverestore.js', array( 'jquery' ), null, true );
             }
 
             // PHOTOSWIPE
@@ -599,7 +600,7 @@ class Rexbuilder_Public
         endif;
 
         $url_to_embed = $_GET['url_to_embed'];
-        if( "" === $url_to_embed ) {
+        if( false === wp_http_validate_url( $url_to_embed ) ) {
             $response['error'] = true;
             $response['msg'] = 'Error!';
             wp_send_json_error( $response );

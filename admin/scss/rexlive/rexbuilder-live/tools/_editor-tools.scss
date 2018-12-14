@@ -356,15 +356,32 @@
   }
 }
 
-// .me-insert-embed__value {
-//   display: none;
-// }
+input.me-insert-embed__value[type=text] {
+  position: absolute;
+  bottom: 100%;
+  padding: 0;
+  width: 150px;
+  max-width: none;
+  background-color: #fff;
+  border: 1px solid $palette-color-1;
+  // transform: translateX(-50%);
+  // left: 50%;
+  right: 0;
+  padding: 2px;
+  font-size: 12px;
+  color: #000;
+  display: none;
 
-// .embed-value-visibile {
-//   .me-insert-embed__value {
-//     display: inline-block;
-//   }
-// }
+  &.embed-loading {
+    background-color: rgba($palette-color-1,0.5);
+  }
+}
+
+.embed-value-visibile {
+  input.me-insert-embed__value[type=text] {
+    display: inline-block;
+  }
+}
 
 .medium-insert-embeds, 
 .mediumInsert-embeds {

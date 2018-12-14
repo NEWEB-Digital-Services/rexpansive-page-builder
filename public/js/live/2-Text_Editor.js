@@ -1031,12 +1031,12 @@ var TextEditor = (function($) {
       this.subscribe("focus", this.handleFocus.bind(this));
     },
 
-    handleBlur: function(event) {
-      $(event.target).parents(".rexpansive_section").removeClass("block-editing");
+    handleBlur: function(event,editable) {
+      $(editable).parents(".rexpansive_section").removeClass("block-editing");
     },
 
-    handleFocus: function(event) {
-      $(event.target).parents(".rexpansive_section").addClass("block-editing");
+    handleFocus: function(event,editable) {
+      $(editable).parents(".rexpansive_section").addClass("block-editing");
     }
   });
 
@@ -1050,6 +1050,7 @@ var TextEditor = (function($) {
     init: function () {
       this.insertionPoint = null;
       this.traceImg = null;
+      this.traceSelection = null;
 
       this.mirrorResize = document.createElement('img');
       this.mirrorResize.classList.add("me-resize-mirror");
@@ -1090,9 +1091,11 @@ var TextEditor = (function($) {
       // Add image with Wordpress Media Library
       this.on(this.mediaLibraryBtn, "click", this.handleClickImage.bind(this));
       this.on(this.imageEditToolbar, "click", this.handleImageEdit.bind(this));
+      console.log(this.mediaEmbedBtn);
       this.on(this.mediaEmbedBtn, "click", this.handleClickEmbed.bind(this));
       if( "undefined" !== typeof this.mediaEmbedInput ) {
         this.on(this.mediaEmbedInput, "keydown", this.getEmbedCode.bind(this));
+        this.on(this.mediaEmbedInput, "blur", this.mediaEmbedInputBlur.bind(this));
       }
     },
 
@@ -1100,8 +1103,9 @@ var TextEditor = (function($) {
      * @param {EVENT} event 
      */
     handleBlur: function(event) {
-      if( $(event.target).parents("#me-edit-inline-image-toolbar").length == 0 && !$(event.target).is("#me-insert-embed__value") ) {
+      if( $(event.target).parents("#me-edit-inline-image-toolbar").length == 0 && !$(event.target).is(".me-insert-embed__value") && 0 == $(event.target).parents(".me-insert-embed").length ) {
         this.mediaBtn.style.display = "none";
+        this.mediaBtn.classList.remove("embed-value-visibile");
         this.hideEditImgToolbar();
       }
     },
@@ -1149,6 +1153,7 @@ var TextEditor = (function($) {
       // If the event happens on the text editor, save the selection
       if( 0 === $(event.target).parents('.me-insert-media-button').length ) {
         this.base.saveSelection();
+        this.traceSelection = rangy.saveSelection();
       }
 
       // If i click on an image open the image toolbar
@@ -1173,8 +1178,9 @@ var TextEditor = (function($) {
 
     handleImageInsertReplace: function(event) {
       // var editor = this.base.getFocusedElement();
-      this.base.restoreSelection();
-      // console.log(this.base.)
+
+      // this.base.restoreSelection();
+      
       var imgHTML = '<img class="wp-image-' + event.imgData.idImage + ' ' + event.imgData.align + '" data-image-id="' + event.imgData.idImage + '" src="' + event.imgData.urlImage + '" alt="" width="' + event.imgData.width + '" height="' + event.imgData.height + '">';
 
       if( this.traceImg ) {
@@ -1182,13 +1188,28 @@ var TextEditor = (function($) {
         $(this.traceImg).remove();
       }
 
-      this.base.pasteHTML(imgHTML, {
-        cleanPastedHTML: false,
-        cleanAttrs: ['dir']
-      });
+      var range = this.getFirstRange();
+      var imgNode = Rexbuilder_Dom_Util.htmlToElement(imgHTML);
+      range.insertNode(imgNode);
+      console.log(this.traceSelection);
+      rangy.restoreSelection(this.traceSelection).setSingleRange(range);
+
+      // 1) Method insertHTMLCommand
+      // MediumEditor.util.insertHTMLCommand(document, imgHTML);
+
+      // 2) Methdo pasteHTML
+      // this.base.pasteHTML(imgHTML, {
+      //   cleanPastedHTML: false,
+      //   cleanAttrs: ['dir']
+      // });
 
       this.hideEditImgToolbar();
       this.mediaBtn.style.display = "none";
+    },
+
+    getFirstRange: function() {
+      var sel = rangy.getSelection();
+      return sel.rangeCount ? sel.getRangeAt(0) : null;
     },
 
     handleImageEdit: function(event) {
@@ -1375,24 +1396,30 @@ var TextEditor = (function($) {
     pasteMediaHTML: function(html) {
       this.base.restoreSelection();
 
+      html = '<div class="media-embed-wrap">' + html + '</div>';
+
       this.base.pasteHTML(html, {
         cleanPastedHTML: false,
         cleanAttrs: ['dir']
       });
 
       this.hideEditImgToolbar();
+      this.mediaBtn.classList.remove("embed-value-visibile");
       this.mediaBtn.style.display = "none";
     },
 
     handleClickEmbed: function(ev) {
+      console.log('click embed');
       // var url_to_embed = this.mediaEmbedBtn.getAttribute("data-foo");
-      // this.mediaBtn.classList.add("embed-value-visibile");
+      this.mediaBtn.classList.add("embed-value-visibile");
+      this.mediaEmbedInput.focus();
     },
 
     getEmbedCode: function(event) {
       var that = this;
       if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER)) {
         if( "" !== event.target.value ) {
+          this.mediaEmbedInput.classList.add("embed-loading");
           $.ajax({
             type: "GET",
             dataType: "json",
@@ -1403,18 +1430,25 @@ var TextEditor = (function($) {
               url_to_embed: event.target.value,
             },
             success: function(response) {
+              event.target.value = "";
               if (response.success) {
                 if("" !== response.data.embed) {
-                  event.target.value = "";
                   that.pasteMediaHTML(response.data.embed);
                 }
               }
             },
-            error: function(response) {}
+            error: function(response) {},
+            complete: function() {
+              that.mediaEmbedInput.classList.remove("embed-loading");
+            }
           });
         }
       }
-    }
+    },
+
+    mediaEmbedInputBlur: function(event) { 
+      this.mediaBtn.classList.remove("embed-value-visibile");
+    },
   });
 
   var _linkDocumentListeners = function() {
