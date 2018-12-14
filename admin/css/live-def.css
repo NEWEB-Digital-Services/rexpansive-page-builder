@@ -4155,7 +4155,7 @@ ul {
     .section-toolBox .bl_switch label .lever:after {
       background-color: #979797; }
 
-.rexpansive_section:hover .section-toolBox .tools {
+.rexpansive_section:hover:not(.block-editing) .section-toolBox .tools {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -4168,13 +4168,13 @@ ul {
   -webkit-transform: translateY(-50%);
       -ms-transform: translateY(-50%);
           transform: translateY(-50%); }
-.rexpansive_section:hover .section-toolBox .tool-area--center {
+.rexpansive_section:hover:not(.block-editing) .section-toolBox .tool-area--center {
   -webkit-animation: fade-in 200ms ease-in-out both;
           animation: fade-in 200ms ease-in-out both; }
-.rexpansive_section:hover .section-toolBox .tool-area--side {
+.rexpansive_section:hover:not(.block-editing) .section-toolBox .tool-area--side {
   -webkit-animation: fade-in 200ms ease-in-out both;
           animation: fade-in 200ms ease-in-out both; }
-.rexpansive_section:hover .section-toolBox + .section-toolBoox__highlight {
+.rexpansive_section:hover:not(.block-editing) .section-toolBox + .section-toolBoox__highlight {
   opacity: 1; }
 
 .activeRowTools .section-toolBox .tools {
@@ -4203,7 +4203,7 @@ ul {
   .activeRowTools ~ .rexpansive_section:hover {
     z-index: auto; }
 
-.rexpansive_section.highLightRow .section-toolBox + .section-toolBoox__highlight {
+.rexpansive_section.highLightRow:not(.block-editing) .section-toolBox + .section-toolBoox__highlight {
   opacity: 1; }
 
 .rowTools__hide-fast-data .tool-area--center.row-toolBox__def-view {
@@ -4333,7 +4333,9 @@ ul {
   .rexlive-block-toolbox .el-size-viewer {
     font-weight: 400;
     letter-spacing: 1px;
-    font-size: 10px; }
+    font-size: 10px;
+    padding-left: 4px;
+    padding-right: 4px; }
   .rexlive-block-toolbox .tool-button_list.tool-button_list--horizontal {
     left: -70px; }
 
@@ -4456,7 +4458,7 @@ ul {
   font-family: 'Roboto', sans-serif;
   font-size: 1em;
   letter-spacing: 1px;
-  color: rgba(0, 0, 0, 0.5);
+  color: rgba(0, 0, 0, 0.3);
   font-weight: bold; }
 
 /**

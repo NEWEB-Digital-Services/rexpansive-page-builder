@@ -54,7 +54,6 @@ var TextEditor = (function($) {
               label: '<span class="fa fa-pencil"></span>',
               clicked: function($el) {
                 console.log($el);
-                console.log('qhaz');
               }
             },
           },
@@ -826,6 +825,13 @@ var TextEditor = (function($) {
         
         Rexbuilder_Util_Editor.focusedElement = $elem;
         Rexbuilder_Util_Editor.elementIsDragging = false;
+         
+        TextEditor.triggerMEEvent({
+          "name":"blur",
+          "data":event,
+          editable:editable
+        });
+
         if( Rexbuilder_Util_Editor.editedTextWrap ) {
           Rexbuilder_Util_Editor.editedTextWrap.blur();
         }
@@ -1018,6 +1024,22 @@ var TextEditor = (function($) {
     }
   });
 
+  var HideRowToolsOnEditing = MediumEditor.Extension.extend({
+    name: 'hide-row-tools-on-editing',
+    init: function() {
+      this.subscribe("blur", this.handleBlur.bind(this));
+      this.subscribe("focus", this.handleFocus.bind(this));
+    },
+
+    handleBlur: function(event) {
+      $(event.target).parents(".rexpansive_section").removeClass("block-editing");
+    },
+
+    handleFocus: function(event) {
+      $(event.target).parents(".rexpansive_section").addClass("block-editing");
+    }
+  });
+
   /**
    * 
    * @since 2.0.0
@@ -1051,6 +1073,8 @@ var TextEditor = (function($) {
       document.getElementsByTagName("body")[0].append(this.mediaBtn);
       
       this.mediaLibraryBtn = $(this.mediaBtn).find(".me-insert-image")[0];
+      this.mediaEmbedBtn = $(this.mediaBtn).find(".me-insert-embed")[0];
+      this.mediaEmbedInput = $(this.mediaBtn).find(".me-insert-embed__value")[0];
 
       // View/Hide the Media Insert button
       this.subscribe("blur", this.handleBlur.bind(this));
@@ -1066,14 +1090,17 @@ var TextEditor = (function($) {
       // Add image with Wordpress Media Library
       this.on(this.mediaLibraryBtn, "click", this.handleClickImage.bind(this));
       this.on(this.imageEditToolbar, "click", this.handleImageEdit.bind(this));
+      this.on(this.mediaEmbedBtn, "click", this.handleClickEmbed.bind(this));
+      if( "undefined" !== typeof this.mediaEmbedInput ) {
+        this.on(this.mediaEmbedInput, "keydown", this.getEmbedCode.bind(this));
+      }
     },
 
     /**
-     * @todo
      * @param {EVENT} event 
      */
     handleBlur: function(event) {
-      if( $(event.target).parents("#me-edit-inline-image-toolbar").length == 0 ) {
+      if( $(event.target).parents("#me-edit-inline-image-toolbar").length == 0 && !$(event.target).is("#me-insert-embed__value") ) {
         this.mediaBtn.style.display = "none";
         this.hideEditImgToolbar();
       }
@@ -1154,8 +1181,6 @@ var TextEditor = (function($) {
         this.base.selectElement(this.traceImg);
         $(this.traceImg).remove();
       }
-
-      console.log(this.base.exportSelection());
 
       this.base.pasteHTML(imgHTML, {
         cleanPastedHTML: false,
@@ -1345,6 +1370,50 @@ var TextEditor = (function($) {
 
       this.traceImg = null;
       this.imageEditToolbar.classList.remove("medium-editor-toolbar-active");
+    },
+
+    pasteMediaHTML: function(html) {
+      this.base.restoreSelection();
+
+      this.base.pasteHTML(html, {
+        cleanPastedHTML: false,
+        cleanAttrs: ['dir']
+      });
+
+      this.hideEditImgToolbar();
+      this.mediaBtn.style.display = "none";
+    },
+
+    handleClickEmbed: function(ev) {
+      // var url_to_embed = this.mediaEmbedBtn.getAttribute("data-foo");
+      // this.mediaBtn.classList.add("embed-value-visibile");
+    },
+
+    getEmbedCode: function(event) {
+      var that = this;
+      if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER)) {
+        if( "" !== event.target.value ) {
+          $.ajax({
+            type: "GET",
+            dataType: "json",
+            url: _plugin_frontend_settings.rexajax.ajaxurl,
+            data: {
+              action: "rexlive_get_embed_code",
+              nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+              url_to_embed: event.target.value,
+            },
+            success: function(response) {
+              if (response.success) {
+                if("" !== response.data.embed) {
+                  event.target.value = "";
+                  that.pasteMediaHTML(response.data.embed);
+                }
+              }
+            },
+            error: function(response) {}
+          });
+        }
+      }
     }
   });
 
@@ -1459,7 +1528,8 @@ var TextEditor = (function($) {
         contentBlockPosition: new ContentBlockPositionExtension(),
         'close-editor-escape': new CloseEditorEscapeExtension(),
         'insert-media': new InsertMediaExtension(),
-        textGradient: new TextGradientExtension()
+        textGradient: new TextGradientExtension(),
+        'hide-row-tools-on-editing': new HideRowToolsOnEditing()
       },
       placeholder: {
         text: "Type here your text",

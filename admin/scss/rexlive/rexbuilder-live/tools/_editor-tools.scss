@@ -6,7 +6,7 @@
   @include live-fonts();
   font-size: 1em;
   letter-spacing: 1px;
-  color: rgba(0,0,0,0.5);
+  color: rgba(0,0,0,0.3);
   font-weight: bold;
 }
 
@@ -355,6 +355,16 @@
     }
   }
 }
+
+// .me-insert-embed__value {
+//   display: none;
+// }
+
+// .embed-value-visibile {
+//   .me-insert-embed__value {
+//     display: inline-block;
+//   }
+// }
 
 .medium-insert-embeds, 
 .mediumInsert-embeds {

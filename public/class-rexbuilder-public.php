@@ -580,6 +580,42 @@ class Rexbuilder_Public
         wp_send_json_success($response);
     }
 
+    /**
+     * Using Wordpress embed feature to get an embed iframe from an url
+     * @since 2.0.0
+     */
+    public function rexlive_get_embed_code() {
+        $nonce = $_GET['nonce_param'];
+
+        $response = array(
+            'error' => false,
+            'msg' => '',
+        );
+
+        if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) :
+            $response['error'] = true;
+            $response['msg'] = 'Error!';
+            wp_send_json_error( $response );
+        endif;
+
+        $url_to_embed = $_GET['url_to_embed'];
+        if( "" === $url_to_embed ) {
+            $response['error'] = true;
+            $response['msg'] = 'Error!';
+            wp_send_json_error( $response );
+        }
+
+        $embed = '[embed]' . $url_to_embed . '[/embed]';
+
+        $response['shortcode'] = $embed;
+        // Must run the shortcode in this manner
+        // Cause do_shortcode do not work for [embed]
+        global $wp_embed;
+        $response['embed'] = $wp_embed->run_shortcode($embed);
+
+        wp_send_json_success($response);
+    }
+
     public function rexlive_edit_model_shortcode_builder()
     {
         $nonce = $_POST['nonce_param'];

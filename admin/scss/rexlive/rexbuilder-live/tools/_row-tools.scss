@@ -176,8 +176,10 @@
 
 .rexpansive_section {
   &:hover {
-    .section-toolBox {
-      @include view-row-tools();
+    &:not(.block-editing) {
+      .section-toolBox {
+        @include view-row-tools();
+      }
     }
   }
   // &:not(.removing_section) {
@@ -213,9 +215,11 @@
 
 .rexpansive_section {
   &.highLightRow {
-    .section-toolBox {
-      + .section-toolBoox__highlight {
-        opacity: 1;
+    &:not(.block-editing) {
+      .section-toolBox {
+        + .section-toolBoox__highlight {
+          opacity: 1;
+        }
       }
     }
   }
