@@ -1517,7 +1517,6 @@ var Rexbuilder_Util = (function($) {
       }
     }
 
-    console.log('updateSection');
     updateSection(
       $section,
       $gallery,

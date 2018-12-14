@@ -648,6 +648,33 @@ var Rexbuilder_Section_Editor = (function($) {
   };
 
   /**
+   * Setting section dimension tools
+   * @param {jQuery Element} $target Section target
+   * @param {JS Object} data Section dimension data
+   */
+  var _updateSectionDimensionTool = function( $target, data ) {
+    $target.find(".edit-row-width[data-section_width=" + data.dimension + "]").prop('checked',true);
+  };
+
+  /**
+   * Setting section layout tool
+   * @param {jQuery Element} $target Section target
+   * @param {JS Object} data Section layout data
+   */
+  var _updateSectionLayoutTool = function( $target, data ) {
+    switch(data.layout) {
+      case "masonry":
+        $target.find(".edit-row-layout-checkbox").prop("checked",false);
+        break;
+      case "fixed":
+        $target.find(".edit-row-layout-checkbox").prop("checked",true);
+        break;
+      default:
+        break;
+    }
+  }
+
+  /**
    * Setting the tool for the row image background preview
    * @param {jQuery Object} $target edited row
    * @param {JS object} data background image data
@@ -1040,6 +1067,8 @@ var Rexbuilder_Section_Editor = (function($) {
     launchSpectrumPickerBackgorundColorRow: _launchSpectrumPickerBackgorundColorRow,
     launchSpectrumPickerOverlayColorRow: _launchSpectrumPickerOverlayColorRow,
     updateRowTools: _updateRowTools,
+    updateSectionDimensionTool: _updateSectionDimensionTool,
+    updateSectionLayoutTool: _updateSectionLayoutTool,
     updateRowBackgroundImageTool: _updateRowBackgroundImageTool,
     resetRowBackgroundImageTool: _resetRowBackgroundImageTool,
     updateRowBackgroundColorTool: _updateRowBackgroundColorTool,

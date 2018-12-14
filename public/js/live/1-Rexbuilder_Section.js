@@ -627,6 +627,7 @@ var Rexbuilder_Section = (function($) {
 
     /**
      * Adding a new row
+     * Here are the new row defaults
      * @since 2.0.0
      */
     Rexbuilder_Util.$document.on("click", ".add-new-section", function(e) {
@@ -649,7 +650,7 @@ var Rexbuilder_Section = (function($) {
         sectionWidth: "100%",
         fullHeight: "false",
         blockDistance: 20,
-        layout: "fixed",
+        layout: "masonry",
         rowSeparatorTop: 20,
         rowSeparatorBottom: 20,
         rowSeparatorRight: 20,

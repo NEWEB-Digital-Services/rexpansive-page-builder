@@ -127,11 +127,12 @@
       $section.attr("data-rexlive-section-edited", true);
 
       Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
+      Rexbuilder_Section_Editor.updateSectionLayoutTool($section,data);
 
-      if('undefined' == typeof e.settings.forged) {
-        var layout = ( e.target.checked ? 'fixed' : 'masonry' );
-        $section.find('.edit-row-layout-checkbox').prop('checked',layout);
-      }
+      // if('undefined' == typeof e.settings.forged) {
+      //   var layout = ( e.target.checked ? 'fixed' : 'masonry' );
+      //   $section.find('.edit-row-layout-checkbox').prop('checked',layout);
+      // }
       
       Rexbuilder_Dom_Util.updateGridLayoutDomProperties($gallery, data.layout);
       galleryInstance.updateGridLayout(data.layout, reverseData);
@@ -367,15 +368,19 @@
 
       Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
 
+      Rexbuilder_Section_Editor.updateSectionDimensionTool( $section, {
+        dimension: ( "100%" === newSectionWidth ? 'full' : 'boxed' )
+      } );
+
       galleryInstance.updateSectionWidthWrap(newSectionWidth, reverseData);
       Rexbuilder_Dom_Util.updateSectionWidthData($section, {
         sectionWidth: newSectionWidth,
         widthType: ( "100%" === newSectionWidth ? 'full' : 'boxed' )
       });
 
-      if('undefined' == typeof e.settings.forged) {
-        $section.find('.edit-row-width[data-section_width='+widthType+']').prop('checked',true).val(sectionWidth);
-      }
+      // if('undefined' == typeof e.settings.forged) {
+      //   $section.find('.edit-row-width[data-section_width='+widthType+']').prop('checked',true).val(sectionWidth);
+      // }
       
       $section.attr("data-rexlive-section-edited", true);
     });

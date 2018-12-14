@@ -1371,6 +1371,8 @@ var Rexbuilder_Util_Editor = (function($) {
     }
 
     Rexbuilder_Section_Editor.updateRowTools( $section );
+    Rexbuilder_Section_Editor.updateSectionDimensionTool( $section, sectionDataObj );
+    Rexbuilder_Section_Editor.updateSectionLayoutTool( $section, sectionDataObj );
 
     if( "" !== bgImgOptions.idImage ) {
       Rexbuilder_Section_Editor.updateRowBackgroundImageTool( $section, bgImgOptions );
@@ -1433,6 +1435,7 @@ var Rexbuilder_Util_Editor = (function($) {
 
     /**
      * Listen on dropping of a block inside a section
+     * Add try catch to prevent listen of drop of a model
      * @since 2.0.0
      */
     Rexbuilder_Util.$rexContainer.on("drop", function(e) {
@@ -1445,8 +1448,13 @@ var Rexbuilder_Util_Editor = (function($) {
         ev = e.originalEvent;
       }
       var blockData = ev.dataTransfer.getData("text/plain");
-      console.log(blockData);
-      blockData = undefined !== typeof blockData ? JSON.parse(blockData) : null;
+      // var blockDataElement = Rexbuilder_Dom_Util.htmlToElement(blockData);
+      try {
+        blockData = undefined !== typeof blockData ? JSON.parse(blockData) : null;
+      } catch(e) {
+        blockData = null;
+      }
+
       if( blockData ) {
         var target = document.elementFromPoint(e.clientX, e.clientY);
         var $targetSection = $(target);

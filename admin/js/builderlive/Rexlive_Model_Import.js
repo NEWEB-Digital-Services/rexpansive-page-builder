@@ -155,7 +155,6 @@ var Model_Import_Modal = (function($) {
         model_id: $(this).attr("data-rex-model-id")
       };
       var insertingHTML = tmpl("rexlive-tmpl-insert-model-loader", tmpl_obj);
-      console.log(insertingHTML);
       event.originalEvent.dataTransfer.setData("text/plain", insertingHTML);
     });
 

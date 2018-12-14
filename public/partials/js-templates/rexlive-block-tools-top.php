@@ -15,7 +15,7 @@
             <div class="tool-button tool-button--inline edit-block-content">
                 <?php Rexbuilder_Utilities::get_icon('#B003-Text'); ?>
             </div>
-            <div class="tool-button tool-button--inline builder-edit-slider">
+            <div class="tool-button tool-button--inline builder-edit-slider{% if( block.block_type !== 'rexslider' ) { %} tool-button--hide{% } %}">
                 <?php Rexbuilder_Utilities::get_icon('#Z003-RexSlider'); ?>
             </div>
         </div>
