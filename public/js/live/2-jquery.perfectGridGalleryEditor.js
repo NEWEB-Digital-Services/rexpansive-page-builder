@@ -1956,7 +1956,7 @@
         var $target = $(e.target);
         if (
           Rexbuilder_Util.activeLayout != "default" &&
-          $target.parents(".rexlive-block-toolbox").length == 0 &&
+          // $target.parents(".rexlive-block-toolbox").length == 0 &&
           !$target.hasClass("ui-resizable-handle") &&
           $target.parents(".ui-resizable-handle").length == 0
         ) {
@@ -1966,7 +1966,7 @@
           e.srcElement = dragHandle;
           e.toElement = dragHandle;
         } else {
-          if ($target.parents(".rexlive-block-toolbox").length == 0) {
+          // if ($target.parents(".rexlive-block-toolbox").length == 0) {
             useDBclick = false;
             Rexbuilder_Util_Editor.mouseDownEvent = e;
             if (
@@ -2029,7 +2029,7 @@
                 }, 1500);
               }
             }
-          }
+          // }
         }
       });
 
@@ -2037,14 +2037,14 @@
         var $target = $(e.target);
         if (
           Rexbuilder_Util.activeLayout != "default" &&
-          $target.parents(".rexlive-block-toolbox").length == 0 &&
+          // $target.parents(".rexlive-block-toolbox").length == 0 &&
           !$target.hasClass("ui-resizable-handle") &&
           $target.parents(".ui-resizable-handle").length == 0
         ) {
           $dragHandle.removeClass("drag-up");
           $elem.removeClass("ui-draggable--drag-up");
         } else {
-          if ($target.parents(".rexlive-block-toolbox").length == 0) {
+          // if ($target.parents(".rexlive-block-toolbox").length == 0) {
             if (Rexbuilder_Util_Editor.elementDraggingTriggered) {
               $dragHandle.removeClass("drag-up");
               $elem.removeClass("ui-draggable--drag-up");
@@ -2096,7 +2096,7 @@
             //   }
             //   Rexbuilder_Util_Editor.startEditingElement();
             // }
-          }
+          // }
         }
       });
 
