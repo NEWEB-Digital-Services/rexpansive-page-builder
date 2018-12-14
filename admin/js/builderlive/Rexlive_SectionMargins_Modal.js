@@ -70,7 +70,10 @@ var SectionMargins_Modal = (function ($) {
                 // Allow: Ctrl+A, Command+A
                 (e.keyCode === 65 && (e.ctrlKey === true || e.metaKey === true)) ||
                 // Allow: home, end, left, right, down, up
-                (e.keyCode >= 35 && e.keyCode <= 40)) {
+                (e.keyCode >= 35 && e.keyCode <= 40) ||
+                // Allow: -
+                (e.key == "-")) {
+
                 // let it happen, don't do anything
                 if (e.keyCode == 38) { // up
                     e.preventDefault();
@@ -79,7 +82,7 @@ var SectionMargins_Modal = (function ($) {
 
                 if (e.keyCode == 40) { //down
                     e.preventDefault();
-                    $input.val(Math.max(isNaN(parseInt($input.val())) ? 0 : parseInt($input.val()) - 1, 0));
+                    $input.val(isNaN(parseInt($input.val())) ? 0 : parseInt($input.val() - 1));
                 }
                 return;
             }
