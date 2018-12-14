@@ -14991,7 +14991,8 @@ ul {
 
 .tool-indicator {
   color: #fff;
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: #FF0055;
+  border-radius: 10px;
   padding: 5px 3px;
   -webkit-backface-visibility: visible;
           backface-visibility: visible; }

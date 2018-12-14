@@ -9,6 +9,7 @@
   &.top-tools {
     top: 0;
     z-index: 50;
+    transform: translateY(-50%);
   }
 
   &.bottom-tools {
@@ -36,7 +37,7 @@
 
   .rexlive-top-block-tools {
     @include generic-toolbar;
-    padding: 10px 20px;
+    padding: 0px 20px;
     position: relative;
   }
 
@@ -60,8 +61,10 @@
 
   .builder-delete-block {
     position: absolute;
-    top: -10px;
+    top: 50%;
     right: -10px;
+    transform: translateY(-50%);
+
     font-size: 10px;
     background-color: $palette-color-4;
     @include fill-icon(#fff);
@@ -129,6 +132,7 @@
         &.top-tools,
         &.floating-tools {
           top: 10px;
+          transform: none;
         }
         .block-toolBox__config-tools {
           .builder-delete-block {
@@ -214,7 +218,7 @@
       width: auto;
       top: 50%!important;
       left: 50%;
-      transform: translate(-50%,-50%);
+      transform: translate(-50%,-50%)!important;
       > .builder-delete-block {
         display: none;
       }
@@ -225,7 +229,8 @@
     .rexlive-block-toolbox.bottom-tools,
     .block-toolBox__editor-tools,
     .rexlive-block-toolbox.floating-tools,
-    .block-toolBox__placeholder {
+    .block-toolBox__placeholder,
+    .el-size-viewer {
       display: none;
     }
     .block-toolBox__config-tools {

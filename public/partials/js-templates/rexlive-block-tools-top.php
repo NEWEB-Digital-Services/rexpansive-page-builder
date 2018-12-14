@@ -1,13 +1,15 @@
 <div class="rexlive-block-toolbox top-tools">
     <div class="rexlive-top-block-tools">
-        <div class="block-toolBox__placeholder">
+        <!-- <div class="block-toolBox__placeholder">
             <div style="visibility:hidden;display:inline-block;">
                 <div class="el-size-viewer tool-indicator"></div>
             </div>
-            <!-- <div class="tool-button tool-button--inline drag-to-section tippy" data-tippy-content="<?php //_e('Power Drag','rexpansive'); ?>">
+            <div class="tool-button tool-button--inline drag-to-section tippy" data-tippy-content="<?php //_e('Power Drag','rexpansive'); ?>">
                 <?php //Rexbuilder_Utilities::get_icon('#B012-Full-Height'); ?>
-            </div> -->
-        </div>
+            </div>
+        </div> -->
+
+        <div class="el-size-viewer tool-indicator"></div>
 
         <div class="bl_d-iflex bl_ai-c block-toolBox__editor-tools">
             <div class="tool-button tool-button--inline edit-block-content">
