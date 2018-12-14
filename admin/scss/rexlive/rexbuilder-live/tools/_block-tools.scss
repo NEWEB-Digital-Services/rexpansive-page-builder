@@ -74,8 +74,13 @@
     font-weight: 400;
     letter-spacing: 1px;
     font-size: 10px;
-    padding-left: 4px;
-    padding-right: 4px;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+
+  .el-size-viewer__um {
+    font-size: 8px;
+    display: none;
   }
 
   .tool-button_list {
@@ -83,7 +88,14 @@
       left: -70px;
     }
   }
+}
 
+.perfect-grid-gallery {
+  &[data-layout="masonry"] {
+    .el-size-viewer__um {
+      display: inline;
+    }
+  }
 }
 
 .tool-button {

@@ -22,7 +22,7 @@ defined( 'ABSPATH' ) or exit;
             </div>
         </div> -->
 
-        <div class="el-size-viewer tool-indicator"></div>
+        <div class="el-size-viewer tool-indicator"><span class="el-size-viewer__val"></span> <span class="el-size-viewer__um">PX</span></div>
 
         <div class="bl_d-iflex bl_ai-c block-toolBox__editor-tools">
             <div class="tool-button tool-button--inline edit-block-content<?php echo ( "" !== trim( $content ) ? ' tool-button--hide' : '' ); ?> tippy" data-tippy-content="<?php _e('Text','rexpansive'); ?>">

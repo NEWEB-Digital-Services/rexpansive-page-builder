@@ -2282,7 +2282,7 @@
           y = Math.round(y * this.properties.singleHeight);
         }
       }
-      $elem.find(".el-size-viewer").text(x + " x " + y);
+      $elem.find(".el-size-viewer .el-size-viewer__val").text(x + " x " + y);
     },
 
     updateSizeViewerSizes: function($block) {
@@ -3308,7 +3308,7 @@
         $elem = $(this);
         h = that.updateElementHeight($elem);
         $elem.css("height", h + "px");
-        $elem.find(".el-size-viewer").text("12 x " + Math.round(h));
+        $elem.find(".el-size-viewer .el-size-viewer__val").text("12 x " + Math.round(h));
       });
     },
 

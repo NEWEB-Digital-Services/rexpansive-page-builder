@@ -3919,7 +3919,7 @@ ul {
 .tool-indicator {
   color: #fff;
   background-color: #FF0055;
-  border-radius: 10px;
+  border-radius: 13px;
   padding: 5px 3px;
   -webkit-backface-visibility: visible;
           backface-visibility: visible; }
@@ -4334,10 +4334,16 @@ ul {
     font-weight: 400;
     letter-spacing: 1px;
     font-size: 10px;
-    padding-left: 4px;
-    padding-right: 4px; }
+    padding-left: 8px;
+    padding-right: 8px; }
+  .rexlive-block-toolbox .el-size-viewer__um {
+    font-size: 8px;
+    display: none; }
   .rexlive-block-toolbox .tool-button_list.tool-button_list--horizontal {
     left: -70px; }
+
+.perfect-grid-gallery[data-layout="masonry"] .el-size-viewer__um {
+  display: inline; }
 
 .tool-button.edit-block-image {
   padding: 0;

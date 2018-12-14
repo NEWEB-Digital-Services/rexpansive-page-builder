@@ -22,7 +22,7 @@ $tool_button_classes = 'tool-button';
     <div class="rexlive-top-block-tools">
         <div class="block-toolBox__placeholder">
             <div style="visibility:hidden;">
-                <div class="el-size-viewer tool-indicator"></div>
+                <div class="el-size-viewer tool-indicator"><span class="el-size-viewer__val"></span> <span class="el-size-viewer__um">PX</span></div>
             </div>
         </div>
 
@@ -139,7 +139,7 @@ $tool_button_classes = 'tool-button';
 <script type="text/x-tmpl" id="tmpl-toolbox-block-floating">
 <div class="rexlive-block-toolbox floating-tools">
     <div class="rexlive-floating-block-tools">
-        <div class="el-size-viewer tool-indicator"></div>
+        <div class="el-size-viewer tool-indicator"><span class="el-size-viewer__val"></span> <span class="el-size-viewer__um">PX</span></div>
     </div>
 </div>
 </script>
