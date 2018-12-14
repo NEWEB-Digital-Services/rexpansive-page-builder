@@ -10,6 +10,16 @@
   }
 }
 
+.grid-stack-item {
+  &.insert-block-animation {
+    .ui-focused-element-highlight {
+      box-shadow: none;
+      visibility: visible;
+      animation: ttest 2500ms ease-in-out both;
+    }
+  }
+}
+
 .rexbuilder-live-content--editing {
   .perfect-grid-item {
     overflow: visible;

@@ -589,6 +589,21 @@
   -webkit-animation: heartbeat 1.5s ease-in-out infinite both;
           animation: heartbeat 1.5s ease-in-out infinite both; }
 
+@-webkit-keyframes ttest {
+  0% {
+    outline-color: transparent; }
+  50% {
+    outline-color: #ff0055; }
+  100% {
+    outline-color: transparent; } }
+
+@keyframes ttest {
+  0% {
+    outline-color: transparent; }
+  50% {
+    outline-color: #ff0055; }
+  100% {
+    outline-color: transparent; } }
 .l-svg-icons {
   display: inline-block;
   width: 1em;
@@ -4439,7 +4454,10 @@ ul {
 
 .medium-editor-placeholder:after {
   font-family: 'Roboto', sans-serif;
-  font-size: 0.8em; }
+  font-size: 1em;
+  letter-spacing: 1px;
+  color: rgba(0, 0, 0, 0.5);
+  font-weight: bold; }
 
 /**
  *  Allow medium editor placeholder only on blocks without image background
@@ -5416,6 +5434,13 @@ ul {
   .perfect-grid-item.focused .ui-focused-element-highlight,
   .grid-stack-item.focused .ui-focused-element-highlight {
     visibility: visible; }
+
+.grid-stack-item.insert-block-animation .ui-focused-element-highlight {
+  -webkit-box-shadow: none;
+          box-shadow: none;
+  visibility: visible;
+  -webkit-animation: ttest 2500ms ease-in-out both;
+          animation: ttest 2500ms ease-in-out both; }
 
 .rexbuilder-live-content--editing .perfect-grid-item {
   overflow: visible; }

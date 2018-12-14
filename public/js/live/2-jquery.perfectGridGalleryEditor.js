@@ -1241,6 +1241,9 @@
       };
 
       this.properties.gridstackInstance.addWidget( $newEL[0], 0, 0, w, h, true, 1, 500, 1 );
+      $newEL.filter(".insert-block-animation").one(Rexbuilder_Util._animationEvent, function(ev) {
+        this.classList.remove("insert-block-animation");
+      });
 
       var x = parseInt($newEL.attr("data-gs-x"));
       var y = parseInt($newEL.attr("data-gs-y"));
@@ -1956,7 +1959,7 @@
         var $target = $(e.target);
         if (
           Rexbuilder_Util.activeLayout != "default" &&
-          // $target.parents(".rexlive-block-toolbox").length == 0 &&
+          $target.parents(".tool-button").length == 0 &&
           !$target.hasClass("ui-resizable-handle") &&
           $target.parents(".ui-resizable-handle").length == 0
         ) {
@@ -1966,7 +1969,7 @@
           e.srcElement = dragHandle;
           e.toElement = dragHandle;
         } else {
-          // if ($target.parents(".rexlive-block-toolbox").length == 0) {
+          if ($target.parents(".tool-button").length == 0) {
             useDBclick = false;
             Rexbuilder_Util_Editor.mouseDownEvent = e;
             if (
@@ -2029,7 +2032,7 @@
                 }, 1500);
               }
             }
-          // }
+          }
         }
       });
 
@@ -2037,14 +2040,14 @@
         var $target = $(e.target);
         if (
           Rexbuilder_Util.activeLayout != "default" &&
-          // $target.parents(".rexlive-block-toolbox").length == 0 &&
+          $target.parents(".tool-button").length == 0 &&
           !$target.hasClass("ui-resizable-handle") &&
           $target.parents(".ui-resizable-handle").length == 0
         ) {
           $dragHandle.removeClass("drag-up");
           $elem.removeClass("ui-draggable--drag-up");
         } else {
-          // if ($target.parents(".rexlive-block-toolbox").length == 0) {
+          if ($target.parents(".tool-button").length == 0) {
             if (Rexbuilder_Util_Editor.elementDraggingTriggered) {
               $dragHandle.removeClass("drag-up");
               $elem.removeClass("ui-draggable--drag-up");
@@ -2096,7 +2099,7 @@
             //   }
             //   Rexbuilder_Util_Editor.startEditingElement();
             // }
-          // }
+          }
         }
       });
 

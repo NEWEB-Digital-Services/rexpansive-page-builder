@@ -377,3 +377,15 @@
 .heartbeat {
 	animation: heartbeat 1.5s ease-in-out infinite both;
 }
+
+@keyframes ttest {
+  0% {
+    outline-color: transparent;
+  }
+  50% {
+    outline-color: #ff0055;
+  }
+  100% {
+    outline-color: transparent;
+  }
+}
