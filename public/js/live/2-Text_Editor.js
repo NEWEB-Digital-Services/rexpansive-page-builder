@@ -1041,7 +1041,16 @@ var TextEditor = (function($) {
   });
 
   /**
+   * Custom MediumEditor extension to handle Wordpress Media Library insert
+   * and oembed iframes
    * 
+   * Insert Media from Library, 4 dev methods
+   * 1) Insert HTML command form Medium Editor
+   * 2) Paste HTML from Medium Editor
+   * 3) Save/Restore selection from Rangy (cons: creates a lot of spans to memorize selection ranges)
+   * 4) TextRange from Rangy
+   * 
+   * Insert Embed from input text
    * @since 2.0.0
    */
   var InsertMediaExtension = MediumEditor.Extension.extend({
@@ -1051,6 +1060,9 @@ var TextEditor = (function($) {
       this.insertionPoint = null;
       this.traceImg = null;
       this.traceSelection = null;
+      this.traceEditor = null;
+      this.method = 4;
+      this.submethod = 3;
 
       this.mirrorResize = document.createElement('img');
       this.mirrorResize.classList.add("me-resize-mirror");
@@ -1091,7 +1103,6 @@ var TextEditor = (function($) {
       // Add image with Wordpress Media Library
       this.on(this.mediaLibraryBtn, "click", this.handleClickImage.bind(this));
       this.on(this.imageEditToolbar, "click", this.handleImageEdit.bind(this));
-      console.log(this.mediaEmbedBtn);
       this.on(this.mediaEmbedBtn, "click", this.handleClickEmbed.bind(this));
       if( "undefined" !== typeof this.mediaEmbedInput ) {
         this.on(this.mediaEmbedInput, "keydown", this.getEmbedCode.bind(this));
@@ -1113,6 +1124,10 @@ var TextEditor = (function($) {
     handleFocus: function(event, editable) {
       // editor.append(this.mediaBtn);
       this.mediaBtn.style.display = "block";
+      if( 4 == this.method ) {
+        // Method 4)
+        this.traceEditor = this.base.getFocusedElement();
+      }
       this.placeMediaBtn();
     },
 
@@ -1152,8 +1167,27 @@ var TextEditor = (function($) {
     traceInput: function(event) {
       // If the event happens on the text editor, save the selection
       if( 0 === $(event.target).parents('.me-insert-media-button').length ) {
-        this.base.saveSelection();
-        this.traceSelection = rangy.saveSelection();
+        switch( this.method ) {
+          case 1:
+          case 2:
+            // Method 1) and 2)
+            this.base.saveSelection();
+            break;
+          case 3:
+            // Method 3)
+            if( this.traceSelection ) {
+              rangy.removeMarkers(this.traceSelection);
+            }
+            this.traceSelection = rangy.saveSelection();
+            break;
+          case 4:
+            // Method 4)
+            var editor = this.base.getFocusedElement();
+            this.traceSelection = rangy.getSelection().saveCharacterRanges(editor);
+            break;
+          default:
+            break;
+        }
       }
 
       // If i click on an image open the image toolbar
@@ -1177,31 +1211,123 @@ var TextEditor = (function($) {
     },
 
     handleImageInsertReplace: function(event) {
-      // var editor = this.base.getFocusedElement();
-
-      // this.base.restoreSelection();
-      
       var imgHTML = '<img class="wp-image-' + event.imgData.idImage + ' ' + event.imgData.align + '" data-image-id="' + event.imgData.idImage + '" src="' + event.imgData.urlImage + '" alt="" width="' + event.imgData.width + '" height="' + event.imgData.height + '">';
 
-      if( this.traceImg ) {
-        this.base.selectElement(this.traceImg);
-        $(this.traceImg).remove();
+      switch( this.method ) {
+        case 1:
+        case 2:
+          // Method 1) and 2)
+          this.base.restoreSelection();
+          break;
+        case 3:
+          // Method 3)
+          if(this.traceSelection) {
+            rangy.restoreSelection(this.traceSelection);
+            var range = this.getFirstRange();
+          }
+          break;
+        case 4:
+          // Method 4)
+          if( this.traceSelection ) {
+            rangy.getSelection().restoreCharacterRanges(this.traceEditor, this.traceSelection);
+            var range = this.getFirstRange();
+            range.refresh();
+          }
+          break;
+        default:
+          break;
       }
 
-      var range = this.getFirstRange();
-      var imgNode = Rexbuilder_Dom_Util.htmlToElement(imgHTML);
-      range.insertNode(imgNode);
-      console.log(this.traceSelection);
-      rangy.restoreSelection(this.traceSelection).setSingleRange(range);
+      if( this.traceImg ) {
+        switch( this.method ) {
+          case 1:
+          case 2:
+          case 3:
+            this.base.selectElement(this.traceImg);
+            break;
+          case 4:
+            // Change the range selection
+            // And the insert method
+            var restoreRange = rangy.createRange();
+            restoreRange.selectNode(this.traceImg);
+            range = restoreRange;
+            this.submethod = 1;
+            break;
+          default:
+            break;
+        }
+        rangy.dom.removeNode(this.traceImg);
+      }
 
-      // 1) Method insertHTMLCommand
-      // MediumEditor.util.insertHTMLCommand(document, imgHTML);
+      switch( this.method ) {
+        case 1:
+          // 1) Method insertHTMLCommand
+          MediumEditor.util.insertHTMLCommand(document, imgHTML);
+          break;
+        case 2:
+          // 2) Method pasteHTML
+          this.base.pasteHTML(imgHTML, {
+            cleanPastedHTML: false,
+            cleanAttrs: ['dir']
+          });
+          break;
+        case 3:
+          // 3) Method save/restore selection with rangy
+          if(range) {
+            var imgNode = Rexbuilder_Dom_Util.htmlToElement(imgHTML);
+            range.insertNode(imgNode);
+          }
+          break;
+        case 4:
+          // 4) Method text-range with rangy
+          if( range ) {
+            switch(this.submethod) {
+              case 1:
+                // Insert HTML method
+                range.pasteHtml(imgHTML);
+                break;
+              case 2:
+                // Insert Node method
+                var imgNode = Rexbuilder_Dom_Util.htmlToElement(imgHTML);
+                range.insertNode(imgNode);
+                break;
+              case 3:
+                // Insert Node Cool Method
+                var imgNode = Rexbuilder_Dom_Util.htmlToElement(imgHTML);
+                range.insertNode(imgNode);
+                if( imgNode.parentElement === this.traceEditor ) {
+                  var prevEl = imgNode.previousElementSibling;
+                  var nextEl = imgNode.nextElementSibling;
+                  var wrapTagName = "";
 
-      // 2) Methdo pasteHTML
-      // this.base.pasteHTML(imgHTML, {
-      //   cleanPastedHTML: false,
-      //   cleanAttrs: ['dir']
-      // });
+                  if( nextEl ) {
+                    wrapTagName = nextEl.tagName.toLowerCase();
+                  } else if ( prevEl ) {
+                    wrapTagName = prevEl.tagName.toLowerCase();
+                  }
+                  
+                  if( this.emptyLine(nextEl) ) {
+                    rangy.dom.removeNode(nextEl);
+                  }
+
+                  if( this.emptyLine(prevEl) ) {
+                    rangy.dom.removeNode(prevEl);
+                  }
+
+                  if( "div" === wrapTagName || "span" === wrapTagName || "" === wrapTagName ) {
+                    wrapTagName = "p";
+                  }
+
+                  this.wrap( imgNode, document.createElement(wrapTagName) );
+                }
+              default:
+                break;
+            }
+          }
+          break;
+        default:
+          break;
+      }
 
       this.hideEditImgToolbar();
       this.mediaBtn.style.display = "none";
@@ -1210,6 +1336,27 @@ var TextEditor = (function($) {
     getFirstRange: function() {
       var sel = rangy.getSelection();
       return sel.rangeCount ? sel.getRangeAt(0) : null;
+    },
+
+    wrap: function(el, wrapper) {
+      el.parentNode.insertBefore(wrapper, el);
+      wrapper.appendChild(el);
+    },
+
+    /**
+     * Check if a node is an empty line, usually a header or a p with a br or &nbsp
+     * @param {HTML node} node node to check
+     * @since 2.0.0
+     */
+    emptyLine: function(node) {
+      if( node && 
+        1 === node.childNodes.length && 
+        ( ( 1 === node.childNodes[0].nodeType && "br" === node.childNodes[0].tagName.toLowerCase() ) ||
+         ( 3 === node.childNodes[0].nodeType && 0 === node.childNodes[0].textContent.trim().length ) ) 
+        ) {
+        return true;
+      }
+      return false;
     },
 
     handleImageEdit: function(event) {
@@ -1409,9 +1556,9 @@ var TextEditor = (function($) {
     },
 
     handleClickEmbed: function(ev) {
-      console.log('click embed');
       // var url_to_embed = this.mediaEmbedBtn.getAttribute("data-foo");
       this.mediaBtn.classList.add("embed-value-visibile");
+      this.mediaEmbedInput.value = "";
       this.mediaEmbedInput.focus();
     },
 

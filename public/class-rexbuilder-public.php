@@ -205,6 +205,7 @@ class Rexbuilder_Public
                 wp_enqueue_script( 'rangy-core', REXPANSIVE_BUILDER_URL . $cartella . 'rangy-1.3.0/rangy-core.js', array( 'jquery' ), null, true );
                 wp_enqueue_script( 'rangy-classapplier', REXPANSIVE_BUILDER_URL . $cartella . 'rangy-1.3.0/rangy-classapplier.js', array( 'jquery' ), null, true );
                 wp_enqueue_script( 'rangy-selectionsaverestore', REXPANSIVE_BUILDER_URL . $cartella . 'rangy-1.3.0/rangy-selectionsaverestore.js', array( 'jquery' ), null, true );
+                wp_enqueue_script( 'rangy-textrange', REXPANSIVE_BUILDER_URL . $cartella . 'rangy-1.3.0/rangy-textrange.js', array( 'jquery' ), null, true );
             }
 
             // PHOTOSWIPE
