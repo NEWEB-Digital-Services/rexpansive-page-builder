@@ -152,6 +152,12 @@ var Button_Edit_Modal = (function ($) {
         );
     };
 
+    var _closeModal = function () {
+        Rexlive_Modals_Utils.closeModal(
+            button_editor_properties.$self.parent(".rex-modal-wrap")
+        );
+    };
+
     var _updateButtonEditorModal = function (data) {
         editingModelButton = false;
         addingNewButton = false;
@@ -159,6 +165,29 @@ var Button_Edit_Modal = (function ($) {
         _updateButtonData(data);
         _updatePanel();
     };
+
+    var _clearButtonData = function () {
+        buttonData = {
+            text_color: "",
+            text: "",
+            font_size: "",
+            background_color: "",
+            button_height: "",
+            hover_color: "",
+            border_color: "",
+            border_width: "",
+            border_radius: "",
+            margin_top: "",
+            margin_bottom: "",
+            link_taget: "",
+            link_type: "",
+            buttonTarget: {
+                button_name: "",
+                button_id: "",
+                button_number: 0,
+            }
+        };
+    }
 
     var _updateButtonData = function (data) {
         if (data.separateButton.toString() == "true") {
@@ -204,13 +233,28 @@ var Button_Edit_Modal = (function ($) {
         button_editor_properties.$button_link_target.val(buttonData.link_taget);
         button_editor_properties.$button_link_type.val(buttonData.link_type);
         button_editor_properties.$button_name.val(buttonData.buttonTarget.button_name);
-
-        button_editor_properties.$button_label_text.css("color", buttonData.text_color);
-        button_editor_properties.$button_preview_background_hover.css("background-color", buttonData.hover_color);
-        button_editor_properties.$button_preview_background.css("background-color", buttonData.background_color);
-        button_editor_properties.$button_preview_border.css("border-color", buttonData.border_color);
         //lasciarlo aggiornato? o fixato a 5px?
         button_editor_properties.$button_preview_border.css("border-width", buttonData.border_width);
+
+        button_editor_properties.$button_label_text.css("color", buttonData.text_color);
+        button_editor_properties.$button_label_text_color_value.val(buttonData.text_color);
+        button_editor_properties.$button_label_text_color_preview.hide();
+        button_editor_properties.$button_label_text_color_value.spectrum("set", buttonData.text_color);
+
+        button_editor_properties.$button_preview_background_hover.css("background-color", buttonData.hover_color);
+        button_editor_properties.$button_background_hover_color_value.val(buttonData.hover_color);
+        button_editor_properties.$button_background_hover_color_value.spectrum("set", buttonData.hover_color);
+        button_editor_properties.$button_background_hover_color_preview.hide();
+
+        button_editor_properties.$button_preview_background.css("background-color", buttonData.background_color);
+        button_editor_properties.$button_background_color_value.val(buttonData.background_color);
+        button_editor_properties.$button_background_color_preview.hide();
+        button_editor_properties.$button_background_color_value.spectrum("set", buttonData.background_color);
+
+        button_editor_properties.$button_preview_border.css("border-color", buttonData.border_color);
+        button_editor_properties.$button_border_color_value.val(buttonData.border_color);
+        button_editor_properties.$button_border_color_preview.hide();
+        button_editor_properties.$button_border_color_value.spectrum("set", buttonData.border_color);
     };
 
     var _updateButtonDataFromPanel = function () {
@@ -222,16 +266,11 @@ var Button_Edit_Modal = (function ($) {
         buttonData.margin_bottom = button_editor_properties.$button_margin_bottom.val() + "px";
 
         buttonData.buttonTarget.button_name = button_editor_properties.$button_name.val();
-        /* 
-                buttonData.hover_color = ;
-                buttonData.background_color = ;
-                buttonData.border_color = ; 
-                buttonData.text_color = ;
-                    */
-
         buttonData.text = button_editor_properties.$button_label_text.val();
         buttonData.link_taget = button_editor_properties.$button_link_target.val();
         buttonData.link_type = button_editor_properties.$button_link_type.val();
+
+        //colors data are already updated
     };
 
     /**
@@ -245,12 +284,16 @@ var Button_Edit_Modal = (function ($) {
             resetData.margin_top == buttonData.margin_top &&
             resetData.margin_bottom == buttonData.margin_bottom &&
             resetData.buttonTarget.button_name == buttonData.buttonTarget.button_name &&
+            //colors
             resetData.hover_color == buttonData.hover_color &&
             resetData.background_color == buttonData.background_color &&
             resetData.border_color == buttonData.border_color &&
             resetData.text_color == buttonData.text_color;
     };
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    // Linking panel tools
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
     var _linkTextInputs = function () {
         // LABEL
         button_editor_properties.$button_label_text.on("keyup", function (e) {
@@ -272,7 +315,7 @@ var Button_Edit_Modal = (function ($) {
 
         // BUTTON NAME
         button_editor_properties.$button_name.on("keyup", function (e) {
-            if(!editingModelButton){
+            if (!editingModelButton) {
                 _updateButtonLive({
                     type: "button",
                     name: "button_name",
@@ -349,7 +392,7 @@ var Button_Edit_Modal = (function ($) {
         _linkKeyDownListenerInputNumber(button_editor_properties.$button_margin_bottom, false);
         _linkKeyUpListenerInputNumber(button_editor_properties.$button_margin_bottom, _updateMarginBottom, false);
     }
-    
+
     var _linkDropDownMenus = function () {
         button_editor_properties.$button_link_type.on("change", function (e) {
             _updateButtonLive({
@@ -361,6 +404,7 @@ var Button_Edit_Modal = (function ($) {
     }
 
     var _linkTextColorEditor = function () {
+        var colorTEXT;
         button_editor_properties.$button_label_text_color_value.spectrum({
             replacerClassName: "btn-floating",
             preferredFormat: "hex",
@@ -373,16 +417,19 @@ var Button_Edit_Modal = (function ($) {
             show: function () {
             },
             move: function (color) {
+                colorTEXT = color.toRgbString();
                 button_editor_properties.$button_label_text_color_preview.hide();
+                button_editor_properties.$button_label_text.css("color", colorTEXT);
                 _updateButtonLive({
                     type: "container",
                     name: "color",
-                    value: color.toRgbString()
+                    value: colorTEXT
                 });
             },
             change: function (color) {
             },
             hide: function (color) {
+                buttonData.text_color = color.toRgbString();
             },
             cancelText: "",
             chooseText: ""
@@ -397,38 +444,174 @@ var Button_Edit_Modal = (function ($) {
             button_editor_properties.$button_label_text_color_value.spectrum('hide');
         });
 
+        //cosa fa sta funzione?
         button_editor_properties.$button_label_text_color_preview.on(
             "click",
             function () {
-                console.log("dovrei aprirmi");
                 button_editor_properties.$button_label_text_color_value.spectrum("show");
                 return false;
             }
         );
     }
 
-    var _clearButtonData = function () {
-        buttonData = {
-            text_color: "",
-            text: "",
-            font_size: "",
-            background_color: "",
-            button_height: "",
-            hover_color: "",
-            border_color: "",
-            border_width: "",
-            border_radius: "",
-            margin_top: "",
-            margin_bottom: "",
-            link_taget: "",
-            link_type: "",
-            buttonTarget: {
-                button_name: "",
-                button_id: "",
-                button_number: 0,
+    var _linkBackgroundColorEditor = function () {
+        var colorTEXT;
+        button_editor_properties.$button_background_color_value.spectrum({
+            replacerClassName: "btn-floating",
+            preferredFormat: "hex",
+            showPalette: false,
+            showAlpha: true,
+            showInput: true,
+            showButtons: false,
+            containerClassName:
+                "rexbuilder-materialize-wrap block-background-color-picker",
+            show: function () {
+            },
+            move: function (color) {
+                colorTEXT = color.toRgbString();
+                button_editor_properties.$button_background_color_preview.hide();
+                button_editor_properties.$button_preview_background.css("background-color", colorTEXT);
+                _updateButtonLive({
+                    type: "background",
+                    name: "background-color",
+                    value: colorTEXT
+                });
+            },
+            change: function (color) {
+            },
+            hide: function (color) {
+                buttonData.background_color = color.toRgbString();
+            },
+            cancelText: "",
+            chooseText: ""
+        });
+
+        var close = tmpl('tmpl-tool-close', {});
+        var $close = $(close);
+        button_editor_properties.$button_background_color_value.spectrum('container').append($close);
+
+        $close.on('click', function (e) {
+            e.preventDefault();
+            button_editor_properties.$button_background_color_value.spectrum('hide');
+        });
+
+        //cosa fa sta funzione?
+        button_editor_properties.$button_background_color_preview.on(
+            "click",
+            function () {
+                button_editor_properties.$button_background_color_value.spectrum("show");
+                return false;
             }
-        };
+        );
     }
+
+    var _linkBackgroundHoverColorEditor = function () {
+        var colorTEXT;
+        button_editor_properties.$button_background_hover_color_value.spectrum({
+            replacerClassName: "btn-floating",
+            preferredFormat: "hex",
+            showPalette: false,
+            showAlpha: true,
+            showInput: true,
+            showButtons: false,
+            containerClassName:
+                "rexbuilder-materialize-wrap block-background-color-picker",
+            show: function () {
+            },
+            move: function (color) {
+                colorTEXT = color.toRgbString();
+                button_editor_properties.$button_background_hover_color_preview.hide();
+                button_editor_properties.$button_preview_background_hover.css("background-color", colorTEXT);
+                _updateButtonLive({
+                    type: "backgroundHover",
+                    name: "background-color",
+                    value: colorTEXT
+                });
+            },
+            change: function (color) {
+            },
+            hide: function (color) {
+                buttonData.hover_color = color.toRgbString();
+            },
+            cancelText: "",
+            chooseText: ""
+        });
+
+        var close = tmpl('tmpl-tool-close', {});
+        var $close = $(close);
+        button_editor_properties.$button_background_hover_color_value.spectrum('container').append($close);
+
+        $close.on('click', function (e) {
+            e.preventDefault();
+            button_editor_properties.$button_background_hover_color_value.spectrum('hide');
+        });
+
+        //cosa fa sta funzione?
+        button_editor_properties.$button_background_color_preview.on(
+            "click",
+            function () {
+                button_editor_properties.$button_background_hover_color_value.spectrum("show");
+                return false;
+            }
+        );
+    }
+
+    var _linkBorderColorEditor = function () {
+
+        var colorTEXT;
+        button_editor_properties.$button_border_color_value.spectrum({
+            replacerClassName: "btn-floating",
+            preferredFormat: "hex",
+            showPalette: false,
+            showAlpha: true,
+            showInput: true,
+            showButtons: false,
+            containerClassName:
+                "rexbuilder-materialize-wrap block-background-color-picker",
+            show: function () {
+            },
+            move: function (color) {
+                colorTEXT = color.toRgbString();
+                button_editor_properties.$button_border_color_preview.hide();
+                button_editor_properties.$button_preview_border.css("border-color", colorTEXT);
+                _updateButtonLive({
+                    type: "background",
+                    name: "border-color",
+                    value: colorTEXT
+                });
+            },
+            change: function (color) {
+            },
+            hide: function (color) {
+                buttonData.border_color = color.toRgbString();
+            },
+            cancelText: "",
+            chooseText: ""
+        });
+
+        var close = tmpl('tmpl-tool-close', {});
+        var $close = $(close);
+        button_editor_properties.$button_border_color_value.spectrum('container').append($close);
+
+        $close.on('click', function (e) {
+            e.preventDefault();
+            button_editor_properties.$button_border_color_value.spectrum('hide');
+        });
+
+        //cosa fa sta funzione?
+        button_editor_properties.$button_border_color_preview.on(
+            "click",
+            function () {
+                button_editor_properties.$button_border_color_value.spectrum("show");
+                return false;
+            }
+        );
+    }
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Saving functions, here are also functions to manage ids of buttons
+    /////////////////////////////////////////////////////////////////////////////////////////////////////
 
     var _saveButtonOnDB = function () {
 
@@ -438,6 +621,7 @@ var Button_Edit_Modal = (function ($) {
         var css_button = _createCSSbutton();
         var jsonRexButtons = JSON.stringify(rexButtonsJSON);
         var buttonID = buttonData.buttonTarget.button_id;
+
         button_editor_properties.$add_model_button.addClass("saving-rex-button");
         $.ajax({
             type: "POST",
@@ -457,7 +641,7 @@ var Button_Edit_Modal = (function ($) {
                     html: html_button,
                     buttonData: buttonData
                 });
-                if (!editingModelButton){
+                if (!editingModelButton) {
                     _removeSeparateButton();
                 }
                 // togliere loader
@@ -476,6 +660,11 @@ var Button_Edit_Modal = (function ($) {
             name: name
         });
     };
+
+    var _separateButton = function () {
+        var newID = _createNewButtonID();
+        _updateButtonsIDSUsed({ id: newID });
+    }
 
     var _updateButtonsIDSUsed = function (data) {
         var newID = data.id;
@@ -497,7 +686,7 @@ var Button_Edit_Modal = (function ($) {
             },
             success: function () {
                 // aggiorna in live
-                if (editingModelButton){
+                if (editingModelButton) {
                     var buttonDataToIframe = {
                         eventName: "rexlive:separate_rex_button",
                         data_to_send: {
@@ -505,10 +694,10 @@ var Button_Edit_Modal = (function ($) {
                             buttonData: buttonData
                         }
                     };
-                    Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(buttonDataToIframe); 
+                    Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(buttonDataToIframe);
                     _closeModal();
                 }
-                if (addingNewButton){
+                if (addingNewButton) {
                     _saveButtonOnDB();
                 }
             },
@@ -517,6 +706,26 @@ var Button_Edit_Modal = (function ($) {
         })
     }
 
+    var _createNewButtonID = function () {
+        var newID = "";
+        var flag;
+        var i;
+        do {
+            flag = true;
+            newID = Rexbuilder_Util_Admin_Editor.createRandomID(4);
+            for (i = 0; i < buttonsIDsUsed.length; i++) {
+                if (newID == buttonsIDsUsed[i]) {
+                    flag = false;
+                    break;
+                }
+            }
+        } while (!flag);
+        return newID;
+    }
+
+    /**
+     * Updates array containing buttons models options, used to gain css of models
+     */
     var _updatejsonRexButtons = function () {
         var buttonID = buttonData.buttonTarget.button_id;
         var i;
@@ -607,6 +816,10 @@ var Button_Edit_Modal = (function ($) {
         return buttonHTML;
     }
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    // Functions that tells to iframe what to do
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+
     var _applyData = function () {
         var buttonDataToIframe = {
             eventName: "rexlive:update_button_page",
@@ -644,16 +857,9 @@ var Button_Edit_Modal = (function ($) {
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(buttonDataToIframe);
     }
 
-    var _separateButton = function () {
-        var newID = _createNewButtonID();
-        _updateButtonsIDSUsed({id: newID});
-    }
-
-    var _closeModal = function () {
-        Rexlive_Modals_Utils.closeModal(
-            button_editor_properties.$self.parent(".rex-modal-wrap")
-        );
-    };
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    // 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     var _linkDocumentListeners = function () {
         button_editor_properties.$create_new_button.on("click", function () {
@@ -667,7 +873,7 @@ var Button_Edit_Modal = (function ($) {
                 button_editor_properties.$self.parent(".rex-modal-wrap")
             );
         });
-        
+
         button_editor_properties.$reset_button.on("click", function () {
             //resetta le modifiche (quindi serve salvare stato iniziale)
             buttonData = jQuery.extend(true, {}, resetData);
@@ -675,7 +881,7 @@ var Button_Edit_Modal = (function ($) {
             _applyData();
             //resettare anche il pulsante in live? si
         });
-        
+
         button_editor_properties.$add_model_button.on("click", function () {
             //recuperare nome modello inserito
             //se arriva pulsante in pagina nulla / se arriva da + creare nuovo ID
@@ -683,8 +889,8 @@ var Button_Edit_Modal = (function ($) {
             // chiude
             console.log("add model button");
             _updateButtonDataFromPanel();
-            if (!addingNewButton){
-                if (!editingModelButton){
+            if (!addingNewButton) {
+                if (!editingModelButton) {
                     _saveButtonOnDB();
                 } else {
                     //crea nuovo modello?
@@ -715,6 +921,8 @@ var Button_Edit_Modal = (function ($) {
             if (!addingNewButton) {
                 console.log("apply button");
                 _updateButtonDataFromPanel();
+                console.log("editingModelButton", editingModelButton);
+                console.log("edits", _checkEditsModel());
                 if (editingModelButton && !(_checkEditsModel())) {
                     _openChooseButtonEdit();
                 } else {
@@ -726,23 +934,6 @@ var Button_Edit_Modal = (function ($) {
             }
         });
     };
-
-    var _createNewButtonID = function () {
-        var newID = "";
-        var flag;
-        var i;
-        do {
-            flag = true;
-            newID = Rexbuilder_Util_Admin_Editor.createRandomID(4);
-            for (i = 0; i < buttonsIDsUsed.length; i++) {
-                if (newID == buttonsIDsUsed[i]) {
-                    flag = false;
-                    break;
-                }
-            }
-        } while (!flag);
-        return newID;
-    }
 
     var _init = function () {
         var $self = $("#rex-button-editor");
@@ -762,12 +953,22 @@ var Button_Edit_Modal = (function ($) {
             $button_label_text_color_preview: $container.find("#rex-button-text-color-preview-icon"),
 
             $button_preview_background: $container.find("#rex-button-preview-background"),
+            $button_background_color_value: $container.find("#rex-button-background-color"),
+            $button_background_color_runtime: $container.find("#rex-button-background-color-runtime"),
+            $button_background_color_preview: $container.find("#rex-button-background-color-preview-icon"),
 
             $button_height: $container.find("#rex-button-height"),
 
             $button_preview_background_hover: $container.find("#rex-button-preview-background-hover"),
+            $button_background_hover_color_value: $container.find("#rex-button-background-hover-color"),
+            $button_background_hover_color_runtime: $container.find("#rex-button-background-hover-color-runtime"),
+            $button_background_hover_color_preview: $container.find("#rex-button-background-hover-color-preview-icon"),
 
             $button_preview_border: $container.find("#rex-button-border-preview"),
+            $button_border_color_value: $container.find("#rex-button-border-color"),
+            $button_border_color_runtime: $container.find("#rex-button-border-color-runtime"),
+            $button_border_color_preview: $container.find("#rex-button-color-preview-icon"),
+
             $button_border_width: $container.find("#rex-button-border-width"),
             $button_border_radius: $container.find("#rex-button-border-radius"),
 
@@ -805,6 +1006,7 @@ var Button_Edit_Modal = (function ($) {
             }
         };
 
+        //default button data, used when creating new button
         defaultButtonData = {
             separateButton: true,
             buttonInfo: {
@@ -832,8 +1034,12 @@ var Button_Edit_Modal = (function ($) {
         _linkTextInputs();
         _linkNumberInputs();
         _linkDropDownMenus();
+
         _linkTextColorEditor();
-        
+        _linkBackgroundColorEditor();
+        _linkBackgroundHoverColorEditor();
+        _linkBorderColorEditor();
+
         _initPanelChoose();
     };
 
@@ -841,9 +1047,5 @@ var Button_Edit_Modal = (function ($) {
         init: _init,
         openButtonEditorModal: _openButtonEditorModal,
         createNewButton: _createNewButton,
-        // servono per il debug, dopo non verranno esportate
-        applyData: _applyData,
-        createCSSbutton: _createCSSbutton,
-        createButtonHtml: _createButtonHtml
     };
 })(jQuery);
