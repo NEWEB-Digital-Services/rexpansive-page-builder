@@ -41,7 +41,9 @@ var Rexbuilder_App = (function($) {
 
     /* -- Launching the grid -- */
     // $grids.find(".wrapper-expand-effect").expandEffect();
-    $grids.perfectGridGalleryEditor();
+    if( $grids ) {
+      $grids.perfectGridGalleryEditor();
+    }
 
     /* -- Launching Photoswipe -- */
     if (!Rexbuilder_Util.editorMode) {
@@ -336,7 +338,9 @@ var Rexbuilder_App = (function($) {
     /* -- Launching TextResize ------ */
     //$grids.textResize();
 
-    $grids.find(".rex-indicator__placeholder").rexIndicator();
+    if( $grids ) {
+      $grids.find(".rex-indicator__placeholder").rexIndicator();
+    }
 
     if( false == _plugin_frontend_settings.user.editing ) {
       $sections.rexScrolled({

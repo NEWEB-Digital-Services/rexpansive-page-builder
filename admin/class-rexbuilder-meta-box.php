@@ -99,6 +99,7 @@ class Rexbuilder_Meta_Box {
 
       switch( $field['type']) {
         case 'rexbuilder_header':
+          do_action( 'rexpansive_builder_before_rexbuilder_header', $post->ID );
     ?>
     <tr id="rexbuilder-header">
         <td class="row valign-wrapper">

@@ -3358,7 +3358,7 @@ var Rexbuilder_Util = (function($) {
   var init = function() {
     this.firstStart = true;
     _plugin_frontend_settings.scroll_animation_offset = 0;
-
+    
     if ( _plugin_frontend_settings.user.logged && _plugin_frontend_settings.user.editing ) {
       this.editorMode = true;
     } else {

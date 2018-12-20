@@ -113,4 +113,13 @@ class Rexbuilder_Utilities {
 	public static function isBuilderLive() {
 		return is_user_logged_in() && isset( $_GET['editor'] ) && $_GET['editor'] == "true";
 	}
+
+	/**
+	 * Checking thw wordpress version, usefull to handle Gutenberg compatibility
+	 * @since 2.0.0
+	 */
+	public static function is_version( $operator = '>=', $version = '5.0' ) {
+		global $wp_version;
+		return version_compare( $wp_version, $version, $operator );
+	}
 }

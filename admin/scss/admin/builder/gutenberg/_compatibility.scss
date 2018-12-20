@@ -1,0 +1,17 @@
+.hide-gutenberg {
+  .edit-post-header {
+    z-index: 1000;
+  }
+  .block-editor__container {
+    position: static;
+  }
+  .edit-post-layout__content {
+    overscroll-behavior-y: auto;
+  }
+  .editor-block-list__layout {
+    display: none;
+  }
+  .components-notice-list {
+    z-index: 1000;
+  }
+}

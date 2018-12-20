@@ -253,6 +253,11 @@ class Rexbuilder_Admin {
 					),
 				) );
 			} else {
+				include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+
+				$wp_isFive = Rexbuilder_Utilities::is_version();
+				$classicEditor_Active = is_plugin_active('classic-editor/classic-editor.php');
+
 				// wp_enqueue_media();
 				wp_enqueue_script('jquery');
 				wp_enqueue_script("jquery-ui-draggable");
@@ -268,12 +273,17 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'rexbuilder', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder.js', array('jquery'),  null, true );
 				wp_localize_script( 'rexbuilder', '_plugin_backend_settings', array(
 					'activate_builder'	=>	'true',
+					'wp_isFive' => $wp_isFive,
+					'classic_editor_active' => $classicEditor_Active
 				) );
 				wp_localize_script( 'rexbuilder', 'rexajax', array(
 					'ajaxurl'	=>	admin_url( 'admin-ajax.php' ),
 					'rexnonce'	=>	wp_create_nonce( 'rex-ajax-call-nonce' ),
 				) );
 				wp_enqueue_script( 'rexbuilder-admin', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin.js', array( 'jquery' ), null, true );
+				if( $wp_isFive && empty($classicEditor_Active) ) {
+					wp_enqueue_script( 'rexbuilder-admin-gutenfix', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin-gutenfix.js', array( 'jquery' ), null, true );
+				}
 			}
 		}
 	}
@@ -406,6 +416,11 @@ class Rexbuilder_Admin {
 					)
 				) );
 			} else {
+				include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+
+				$wp_isFive = Rexbuilder_Utilities::is_version();
+				$classicEditor_Active = is_plugin_active('classic-editor/classic-editor.php');
+
 				wp_enqueue_script('jquery');
 				wp_enqueue_script("jquery-ui-draggable");
 
@@ -415,14 +430,31 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'admin-plugins', REXPANSIVE_BUILDER_URL . 'admin/js/plugins.js', array('jquery'),  null, true );
 				wp_localize_script( 'admin-plugins', '_plugin_backend_settings', array(
 					'activate_builder'	=>	'true',
+					'wp_isFive' => $wp_isFive,
+					'classic_editor_active' => $classicEditor_Active
 				) );
 				wp_localize_script( 'admin-plugins', 'rexajax', array(
 					'ajaxurl'	=>	admin_url( 'admin-ajax.php' ),
 					'rexnonce'	=>	wp_create_nonce( 'rex-ajax-call-nonce' ),
 				) );
 				wp_enqueue_script( 'rexbuilder-admin', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin.js', array( 'jquery' ), null, true );
+				if( $wp_isFive && empty($classicEditor_Active) ) {
+					wp_enqueue_script( 'rexbuilder-admin-gutenfix', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin-gutenfix.js', array( 'jquery' ), null, true );
+				}
 			}
 		}
+	}
+
+	/**
+	 * Disable Gutenberg on live builder
+	 * 
+	 * @since 2.0.0
+	 */
+	public function disable_gutenberg_on_live( $state ) {
+		if( isset( $_GET['rexlive'] ) && $_GET['rexlive'] == 'true' ) {
+			return false;
+		}
+		return $state;
 	}
 
 	/**
@@ -630,6 +662,7 @@ class Rexbuilder_Admin {
 	 *	Add a swtich button under the post title/permalink to activate/deactivate the builder
 	 *
 	 * 	@since    1.0.0
+	 * 	@version	2.0.0	Add Go Live button
 	 */
 	public function add_switch_under_post_title() {
 		$page_info = get_current_screen();
@@ -660,7 +693,7 @@ class Rexbuilder_Admin {
 			</div>
 		</div>
 		<div style="text-align:center">
-			<a href="<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>" class="button button-primary button-large go-live <?php echo ( 'auto-draft' == get_post_status(get_the_id()) ? ' draft' : '' ); ?>" target="_blank"><?php _e( 'Go Live', 'rexpansive' ); ?></a>
+			<a href="<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>" class="button button-primary button-large go-live<?php echo ( 'auto-draft' == get_post_status(get_the_id()) ? ' draft' : '' ); ?>" target="_blank"><?php _e( 'Go Live', 'rexpansive' ); ?></a>
 			<input type="hidden" name="force_live" value="">
 			<script>
 				;(function ($) {

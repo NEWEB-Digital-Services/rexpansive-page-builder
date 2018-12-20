@@ -34,30 +34,58 @@
 		var $postdivrich = $('#postdivrich');
 		var $rexbuilder = $('#rexbuilder');
 		var $rexbuilder_active = $('#_rexbuilder_active');
-		var $builder_switch = $('#builder-switch');
+		var $builder_switch_wrap = $(".builder-heading");
+		var $rexbuilder_wrap = $builder_switch_wrap.next();
+		var $builder_switch = $builder_switch_wrap.find('#builder-switch');
 
-		if( ( 'true' == _plugin_backend_settings.activate_builder ) && 
-			( 'true' == $rexbuilder_active.val() ) ) {	// Check this global variable to hide the default worpdress text editor
-			$postdivrich.hide();
-			$rexbuilder.show();
+		// Check WP version to use correctly Gutenberg editor
+		if( "1" === _plugin_backend_settings.wp_isFive && "1" !== _plugin_backend_settings.classic_editor_active ) {
+			if( ( 'true' == _plugin_backend_settings.activate_builder ) && 
+				( 'true' == $rexbuilder_active.val() ) ) {	// Check this global variable to hide the default worpdress text editor
+				$("body").addClass("hide-gutenberg");
+				$rexbuilder_wrap.show();
+			} else {
+				$("body").removeClass("hide-gutenberg");
+				$rexbuilder_wrap.hide();
+				$builder_switch.prop('checked', false);
+			}
+
+			$builder_switch.on('change', function() {
+				if( $(this).prop('checked') ) {
+					$("body").addClass("hide-gutenberg");
+					$rexbuilder_wrap.show();
+					$rexbuilder_active.val('true');
+				} else {
+					$("body").removeClass("hide-gutenberg");
+					$rexbuilder_wrap.hide();
+					$rexbuilder_active.val('false');
+					$(window).resize();
+				}
+			});
 		} else {
-			$postdivrich.show();
-			$rexbuilder.hide();
-			$builder_switch.prop('checked', false);
-		}
-
-		$builder_switch.on('change', function() {
-			if( $(this).prop('checked') ) {
+			if( ( 'true' == _plugin_backend_settings.activate_builder ) && 
+				( 'true' == $rexbuilder_active.val() ) ) {	// Check this global variable to hide the default worpdress text editor
 				$postdivrich.hide();
 				$rexbuilder.show();
-				$rexbuilder_active.val('true');
 			} else {
 				$postdivrich.show();
 				$rexbuilder.hide();
-				$rexbuilder_active.val('false');
-				$(window).resize();
+				$builder_switch.prop('checked', false);
 			}
-		});
+
+			$builder_switch.on('change', function() {
+				if( $(this).prop('checked') ) {
+					$postdivrich.hide();
+					$rexbuilder.show();
+					$rexbuilder_active.val('true');
+				} else {
+					$postdivrich.show();
+					$rexbuilder.hide();
+					$rexbuilder_active.val('false');
+					$(window).resize();
+				}
+			});
+		}
 	});
 
 })( jQuery );

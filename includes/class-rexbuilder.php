@@ -181,6 +181,9 @@ class Rexbuilder {
 
 		$plugin_admin = new Rexbuilder_Admin( $this->get_plugin_name(), $this->get_version() );
 
+		// Gutenberg
+		$this->loader->add_filter( 'use_block_editor_for_post', $plugin_admin, 'disable_gutenberg_on_live' );
+
 		// Slider custom post type
 		$this->loader->add_action( 'init', $plugin_admin, 'rexpansive_slider_definition' );
 		$this->loader->add_action( 'init', $plugin_admin, 'rexpansive_models_defintion' );
@@ -221,6 +224,10 @@ class Rexbuilder {
 		
 		$this->loader->add_action( 'admin_head', $plugin_admin, 'rexbuilder_add_custom_buttons' );
 		
+		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+		if( Rexbuilder_Utilities::is_version() && !is_plugin_active('classic-editor/classic-editor.php') ) {
+			$this->loader->add_action( 'rexpansive_builder_before_rexbuilder_header', $plugin_admin, 'add_switch_under_post_title' );
+		}
 		$this->loader->add_action( 'edit_form_after_title', $plugin_admin, 'add_switch_under_post_title' );
 		
 		$this->loader->add_filter( 'upload_mimes', $plugin_admin, 'register_xml_json_mime_type' );
@@ -264,7 +271,6 @@ class Rexbuilder {
 		$this->loader->add_filter( 'acf/location/rule_types', $plugin_admin, 'acf_rule_type_rexpansive_builder' );
 		$this->loader->add_filter( 'acf/location/rule_values/rexpansive_builder', $plugin_admin, 'acf_rule_values_rexpansive_builder' );
 		$this->loader->add_filter( 'acf/location/rule_match/rexpansive_builder', $plugin_admin, 'acf_rule_match_rexpansive_builder', 10, 3 );
-		
 	}
 	
 	/**
@@ -341,7 +347,9 @@ class Rexbuilder {
 
 		// $this->loader->add_action( 'wpcf7_contact_form', $plugin_public, 'cf7_custom_script_guard' );
 		$this->loader->add_action( 'shortcode_atts_wpcf7', $plugin_public, 'cf7_custom_style', 10, 4 );
-		$this->loader->add_filter( "the_content", $plugin_public, "generate_builder_content");
+		if(!is_admin()) {
+			$this->loader->add_filter( "the_content", $plugin_public, "generate_builder_content");
+		}
 	}
 
 	/**

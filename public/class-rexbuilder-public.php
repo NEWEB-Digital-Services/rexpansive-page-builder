@@ -239,7 +239,7 @@ class Rexbuilder_Public
             //gridstack
             wp_enqueue_script('jquery-ui', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery-ui.min.js', array('jquery'), $ver, true);
             wp_enqueue_script('touchPunch', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery.ui.touch-punch.js', array('jquery'), $ver, true);
-            wp_enqueue_script('lodash', REXPANSIVE_BUILDER_URL . $cartella . 'js/lodash.js', array('jquery'), $ver, true);
+            wp_enqueue_script('lodash-live', REXPANSIVE_BUILDER_URL . $cartella . 'js/lodash.js', array('jquery'), $ver, true);
             wp_enqueue_script('gridstack', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/gridstack.js-0.4.0/src/gridstack.js', array('jquery'), $ver, true);
             wp_enqueue_script('gridstackUI', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/gridstack.js-0.4.0/src/gridstack.jQueryUI.js', array('jquery'), $ver, true);
             //
