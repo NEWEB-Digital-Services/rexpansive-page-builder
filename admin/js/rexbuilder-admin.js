@@ -1,91 +1,62 @@
-;(function( $ ) {
-	'use strict';
+(function($) {
+  "use strict";
 
-	/**
-	 * All of the code for your admin-specific JavaScript source
-	 * should reside in this file.
-	 *
-	 * Note that this assume you're going to use jQuery, so it prepares
-	 * the $ function reference to be used within the scope of this
-	 * function.
-	 *
-	 * From here, you're able to define handlers for when the DOM is
-	 * ready:
-	 *
-	 * $(function() {
-	 *
-	 * });
-	 *
-	 * Or when the window is loaded:
-	 *
-	 * $( window ).load(function() {
-	 *
-	 * });
-	 *
-	 * ...and so on.
-	 *
-	 * Remember that ideally, we should not attach any more than a single DOM-ready or window-load handler
-	 * for any particular page. Though other scripts in WordPress core, other plugins, and other themes may
-	 * be doing this, we should try to minimize doing that in our own work.
-	 */
+  /**
+   * All of the code for your admin-specific JavaScript source
+   * should reside in this file.
+   *
+   * Note that this assume you're going to use jQuery, so it prepares
+   * the $ function reference to be used within the scope of this
+   * function.
+   *
+   * From here, you're able to define handlers for when the DOM is
+   * ready:
+   *
+   * $(function() {
+   *
+   * });
+   *
+   * Or when the window is loaded:
+   *
+   * $( window ).load(function() {
+   *
+   * });
+   *
+   * ...and so on.
+   *
+   * Remember that ideally, we should not attach any more than a single DOM-ready or window-load handler
+   * for any particular page. Though other scripts in WordPress core, other plugins, and other themes may
+   * be doing this, we should try to minimize doing that in our own work.
+   */
 
-	
-	$(function() {
-		var $postdivrich = $('#postdivrich');
-		var $rexbuilder = $('#rexbuilder');
-		var $rexbuilder_active = $('#_rexbuilder_active');
-		var $builder_switch_wrap = $(".builder-heading");
-		var $rexbuilder_wrap = $builder_switch_wrap.next();
-		var $builder_switch = $builder_switch_wrap.find('#builder-switch');
+  $(function() {
+    var $postdivrich = $("#postdivrich");
+    var $rexbuilder = $("#rexbuilder");
+    var $rexbuilder_active = $("#_rexbuilder_active");
+    var $builder_switch_wrap = $(".builder-heading");
+		var $builder_switch = $builder_switch_wrap.find("#builder-switch");
+    
+    if ( "true" == _plugin_backend_settings.activate_builder && "true" == $rexbuilder_active.val() ) {
+      // Check this global variable to hide the default worpdress text editor
+      $postdivrich.hide();
+      $rexbuilder.show();
+    } else {
+      $postdivrich.show();
+      $rexbuilder.hide();
+      $builder_switch.prop("checked", false);
+    }
 
-		// Check WP version to use correctly Gutenberg editor
-		if( "1" === _plugin_backend_settings.wp_isFive && "1" !== _plugin_backend_settings.classic_editor_active ) {
-			if( ( 'true' == _plugin_backend_settings.activate_builder ) && 
-				( 'true' == $rexbuilder_active.val() ) ) {	// Check this global variable to hide the default worpdress text editor
-				$("body").addClass("hide-gutenberg");
-				$rexbuilder_wrap.show();
-			} else {
-				$("body").removeClass("hide-gutenberg");
-				$rexbuilder_wrap.hide();
-				$builder_switch.prop('checked', false);
-			}
-
-			$builder_switch.on('change', function() {
-				if( $(this).prop('checked') ) {
-					$("body").addClass("hide-gutenberg");
-					$rexbuilder_wrap.show();
-					$rexbuilder_active.val('true');
-				} else {
-					$("body").removeClass("hide-gutenberg");
-					$rexbuilder_wrap.hide();
-					$rexbuilder_active.val('false');
-					$(window).resize();
-				}
-			});
-		} else {
-			if( ( 'true' == _plugin_backend_settings.activate_builder ) && 
-				( 'true' == $rexbuilder_active.val() ) ) {	// Check this global variable to hide the default worpdress text editor
-				$postdivrich.hide();
-				$rexbuilder.show();
-			} else {
-				$postdivrich.show();
-				$rexbuilder.hide();
-				$builder_switch.prop('checked', false);
-			}
-
-			$builder_switch.on('change', function() {
-				if( $(this).prop('checked') ) {
-					$postdivrich.hide();
-					$rexbuilder.show();
-					$rexbuilder_active.val('true');
-				} else {
-					$postdivrich.show();
-					$rexbuilder.hide();
-					$rexbuilder_active.val('false');
-					$(window).resize();
-				}
-			});
-		}
-	});
-
-})( jQuery );
+    $builder_switch.on("change", function() {
+      if ($(this).prop("checked")) {
+        $postdivrich.hide();
+        $rexbuilder.show();
+        $rexbuilder_active.val("true");
+      } else {
+        $postdivrich.show();
+        $rexbuilder.hide();
+        $rexbuilder_active.val("false");
+        $(window).resize();
+      }
+    });
+  });
+})(jQuery);

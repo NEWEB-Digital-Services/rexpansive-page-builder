@@ -699,90 +699,97 @@ class Rexbuilder_Public
     public function generate_builder_content($content) {
         global $post;
 
-        $mobile = array("id" => "mobile", "label" => "Mobile", "min" => "320", "max" => "767", "type" => "standard");
-        $tablet = array("id" => "tablet", "label" => "Tablet", "min" => "768", "max" => "1024", "type" => "standard");
-        $default = array("id" => "default", "label" => "My Desktop", "min" => "1025", "max" => "", "type" => "standard");
-        $defaultLayoutsAvaiable = array($mobile, $tablet, $default);
+        $builder_active = apply_filters('rexbuilder_post_active', get_post_meta($post->ID, '_rexbuilder_active', true));
+        if ('true' == $builder_active) {
 
-        $layoutsAvaiable = get_option('_rex_responsive_layouts', $defaultLayoutsAvaiable);
+            ob_start();
 
-        $defaultIDs = null;
-        $sectionsIDsJSON = get_option('_rex_section_ids_used', $defaultIDs);
-        
-        $sectionsIDsUsed = json_decode($sectionsIDsJSON, true);
+            $mobile = array("id" => "mobile", "label" => "Mobile", "min" => "320", "max" => "767", "type" => "standard");
+            $tablet = array("id" => "tablet", "label" => "Tablet", "min" => "768", "max" => "1024", "type" => "standard");
+            $default = array("id" => "default", "label" => "My Desktop", "min" => "1025", "max" => "", "type" => "standard");
+            $defaultLayoutsAvaiable = array($mobile, $tablet, $default);
 
-        if( Rexbuilder_Utilities::isBuilderLive() ){
-            $editor = $_GET['editor'];
-        } else{
-            $editor = false;
-        }
-        
-        $rexbuilderShortcode = get_post_meta($post->ID, '_rexbuilder_shortcode', true);
+            $layoutsAvaiable = get_option('_rex_responsive_layouts', $defaultLayoutsAvaiable);
 
-        if ($rexbuilderShortcode == "") {
-            $rexbuilderShortcode = $post->post_content;
-        }
+            $defaultIDs = null;
+            $sectionsIDsJSON = get_option('_rex_section_ids_used', $defaultIDs);
+            
+            $sectionsIDsUsed = json_decode($sectionsIDsJSON, true);
 
-        // find models ids in page
-        $models_ids = array();
-        $pattern = get_shortcode_regex();
-        preg_match_all("/$pattern/", $rexbuilderShortcode, $matches);
-        foreach ($matches[2] as $index => $shortcode) {
-            if ($shortcode == "RexModel") {
-                $result = shortcode_parse_atts(trim($matches[3][$index]));
-                array_push($models_ids, $result["id"]);
+            if( Rexbuilder_Utilities::isBuilderLive() ){
+                $editor = $_GET['editor'];
+            } else{
+                $editor = false;
             }
-        }
-        
-        $models_ids = array_unique($models_ids);
+            
+            $rexbuilderShortcode = get_post_meta($post->ID, '_rexbuilder_shortcode', true);
 
-        $models_customizations = array();
-        $models_customizations_avaiable = array();
-
-        $flag_models = false;
-
-        foreach($models_ids as $id){
-            // Names
-            $modelCustomizationsNames = get_post_meta($id, '_rex_model_customization_names', true);
-            if($modelCustomizationsNames == ""){
-                $modelCustomizationsNames = array();
-            }
-            $modelNames = array("id" => $id, "names" => $modelCustomizationsNames);
-            array_push($models_customizations_avaiable, $modelNames);
-
-            //Customizations Data
-            $model_layouts = array();
-            if (!empty($modelCustomizationsNames)) {
-                $flag_models = true;
-                foreach ($modelCustomizationsNames as $name) {
-                    $customization = array();
-                    $customization["name"] = $name;
-                    $customizationTargetsJSON = get_post_meta($id, '_rex_model_customization_' . $name, true);
-                    $targetsDecoded = json_decode($customizationTargetsJSON, true);
-                    $customization["targets"] = $targetsDecoded;
-                    array_push($model_layouts, $customization);
+            if ($rexbuilderShortcode == "") {
+                if( has_shortcode( $post->post_content, "RexpansiveSection" ) ) {
+                    $rexbuilderShortcode = $post->post_content;
                 }
             }
 
-            $modelCustomizations = array("id" => $id, "customizations" => $model_layouts);
-
-            array_push($models_customizations, $modelCustomizations);
-        }
-
-        $customizations_array = array();
-        $customizations_names = get_post_meta($post->ID, '_rex_responsive_layouts_names', true);
-        $flag_page_customization = false;
-        if (!empty($customizations_names)) {
-            $flag_page_customization = true;
-            foreach ($customizations_names as $name) {
-                $customization = array();
-                $customization["name"] = $name;
-                $customizationSectionsJSON = get_post_meta($post->ID, '_rex_customization_' . $name, true);
-                $sectionsDecoded = json_decode($customizationSectionsJSON, true);
-                $customization["sections"] = $sectionsDecoded;
-                array_push($customizations_array, $customization);
+            // find models ids in page
+            $models_ids = array();
+            $pattern = get_shortcode_regex();
+            preg_match_all("/$pattern/", $rexbuilderShortcode, $matches);
+            foreach ($matches[2] as $index => $shortcode) {
+                if ($shortcode == "RexModel") {
+                    $result = shortcode_parse_atts(trim($matches[3][$index]));
+                    array_push($models_ids, $result["id"]);
+                }
             }
-        }
+            
+            $models_ids = array_unique($models_ids);
+
+            $models_customizations = array();
+            $models_customizations_avaiable = array();
+
+            $flag_models = false;
+
+            foreach($models_ids as $id){
+                // Names
+                $modelCustomizationsNames = get_post_meta($id, '_rex_model_customization_names', true);
+                if($modelCustomizationsNames == ""){
+                    $modelCustomizationsNames = array();
+                }
+                $modelNames = array("id" => $id, "names" => $modelCustomizationsNames);
+                array_push($models_customizations_avaiable, $modelNames);
+
+                //Customizations Data
+                $model_layouts = array();
+                if (!empty($modelCustomizationsNames)) {
+                    $flag_models = true;
+                    foreach ($modelCustomizationsNames as $name) {
+                        $customization = array();
+                        $customization["name"] = $name;
+                        $customizationTargetsJSON = get_post_meta($id, '_rex_model_customization_' . $name, true);
+                        $targetsDecoded = json_decode($customizationTargetsJSON, true);
+                        $customization["targets"] = $targetsDecoded;
+                        array_push($model_layouts, $customization);
+                    }
+                }
+
+                $modelCustomizations = array("id" => $id, "customizations" => $model_layouts);
+
+                array_push($models_customizations, $modelCustomizations);
+            }
+
+            $customizations_array = array();
+            $customizations_names = get_post_meta($post->ID, '_rex_responsive_layouts_names', true);
+            $flag_page_customization = false;
+            if (!empty($customizations_names)) {
+                $flag_page_customization = true;
+                foreach ($customizations_names as $name) {
+                    $customization = array();
+                    $customization["name"] = $name;
+                    $customizationSectionsJSON = get_post_meta($post->ID, '_rex_customization_' . $name, true);
+                    $sectionsDecoded = json_decode($customizationSectionsJSON, true);
+                    $customization["sections"] = $sectionsDecoded;
+                    array_push($customizations_array, $customization);
+                }
+            }
 
 ?>
 <div class="rexbuilder-live-content<?php echo ($editor ? ' rexbuilder-live-content--editing add-new-section--hide' : ''); ?>">
@@ -919,8 +926,11 @@ class Rexbuilder_Public
             }
         ?>
     </div>
-	<?php
-
+    <?php
+            return ob_get_clean();
+        } else {
+            return $content;
+        }
     }
     /**
      * This filter insures users only see their own media

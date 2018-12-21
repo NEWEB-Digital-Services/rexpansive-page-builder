@@ -192,6 +192,8 @@ class Rexbuilder {
 		$this->loader->add_filter( 'manage_rex_slider_posts_columns', $plugin_admin, 'rexpansive_slider_columns_reorder' );
 		$this->loader->add_action( 'manage_rex_slider_posts_custom_column', $plugin_admin, 'rexpansive_slider_columns_content', 10, 2 );
 
+		$this->loader->add_action( 'init', $plugin_admin, 'define_custom_post_metas' );
+
 		$this->loader->add_filter( 'preview_post_link', $plugin_admin, 'change_preview_url' );
 		$this->loader->add_filter( 'post_row_actions', $plugin_admin, 'add_builderlive_link', 10, 2 );
 		$this->loader->add_filter( 'page_row_actions', $plugin_admin, 'add_builderlive_link', 10, 2 );
@@ -347,9 +349,7 @@ class Rexbuilder {
 
 		// $this->loader->add_action( 'wpcf7_contact_form', $plugin_public, 'cf7_custom_script_guard' );
 		$this->loader->add_action( 'shortcode_atts_wpcf7', $plugin_public, 'cf7_custom_style', 10, 4 );
-		if(!is_admin()) {
-			$this->loader->add_filter( "the_content", $plugin_public, "generate_builder_content");
-		}
+		$this->loader->add_filter( "the_content", $plugin_public, "generate_builder_content");
 	}
 
 	/**

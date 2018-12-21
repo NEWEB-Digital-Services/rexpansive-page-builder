@@ -80,9 +80,9 @@ class Rexbuilder_Block
         ), $atts));
 
         global $post;
-        $builder_active = apply_filters('rexbuilder_post_active', get_post_meta($post->ID, '_rexbuilder_active', true));
+        // $builder_active = apply_filters('rexbuilder_post_active', get_post_meta($post->ID, '_rexbuilder_active', true));
 
-        if ('true' == $builder_active) {
+        // if ('true' == $builder_active) {
             if($empty_block_backend_fix == "true"){
                 ob_start();
                 echo "";
@@ -92,7 +92,6 @@ class Rexbuilder_Block
             if(isset($_GET['editor'])){
                 $editor = $_GET['editor'];
             }
-
 
             global $section_layout;
 
@@ -644,10 +643,10 @@ class Rexbuilder_Block
 
             return ob_get_clean();
 
-        } else {
-            ob_start();
-            echo do_shortcode($content);
-            return ob_get_clean();
-        }
+        // } else {
+        //     ob_start();
+        //     echo do_shortcode($content);
+        //     return ob_get_clean();
+        // }
     }
 }

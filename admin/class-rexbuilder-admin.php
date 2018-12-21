@@ -182,6 +182,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_style( 'rexliveStyle', REXPANSIVE_BUILDER_URL . 'admin/css/tools-def.css', array(), null, 'all' );
 			} else {
 				wp_enqueue_style( 'admin-style', REXPANSIVE_BUILDER_URL . 'admin/css/admin.css', array(), null, 'all' );
+				wp_enqueue_style( 'admin-live-style', REXPANSIVE_BUILDER_URL . 'admin/css/admin-live.css', array(), null, 'all' );
 			}
 		}
 	}
@@ -280,9 +281,10 @@ class Rexbuilder_Admin {
 					'ajaxurl'	=>	admin_url( 'admin-ajax.php' ),
 					'rexnonce'	=>	wp_create_nonce( 'rex-ajax-call-nonce' ),
 				) );
-				wp_enqueue_script( 'rexbuilder-admin', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin.js', array( 'jquery' ), null, true );
 				if( $wp_isFive && empty($classicEditor_Active) ) {
 					wp_enqueue_script( 'rexbuilder-admin-gutenfix', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin-gutenfix.js', array( 'jquery' ), null, true );
+				} else {
+					wp_enqueue_script( 'rexbuilder-admin', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin.js', array( 'jquery' ), null, true );
 				}
 			}
 		}
@@ -437,9 +439,10 @@ class Rexbuilder_Admin {
 					'ajaxurl'	=>	admin_url( 'admin-ajax.php' ),
 					'rexnonce'	=>	wp_create_nonce( 'rex-ajax-call-nonce' ),
 				) );
-				wp_enqueue_script( 'rexbuilder-admin', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin.js', array( 'jquery' ), null, true );
 				if( $wp_isFive && empty($classicEditor_Active) ) {
 					wp_enqueue_script( 'rexbuilder-admin-gutenfix', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin-gutenfix.js', array( 'jquery' ), null, true );
+				} else {
+					wp_enqueue_script( 'rexbuilder-admin', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin.js', array( 'jquery' ), null, true );
 				}
 			}
 		}
@@ -692,33 +695,41 @@ class Rexbuilder_Admin {
 				</div>
 			</div>
 		</div>
-		<div style="text-align:center">
-			<a href="<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>" class="button button-primary button-large go-live<?php echo ( 'auto-draft' == get_post_status(get_the_id()) ? ' draft' : '' ); ?>" target="_blank"><?php _e( 'Go Live', 'rexpansive' ); ?></a>
-			<input type="hidden" name="force_live" value="">
-			<script>
-				;(function ($) {
-				'use strict';
-				// Waiting until the ready of the DOM
-				$(function () {
-					$('.go-live.draft').on('click', function(e) {
-						e.preventDefault();
-						$('#wp-preview').val(true);
-						$('input[name=force_live]').val("do_force_live");
-						$('#post-preview')
-							//.attr('href','<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>')
-							.trigger('click');
-						$('input[name=force_live]').val("");
+		<div class="rexbuilder-table">
+			<div class="go-live-advice">
+				<a href="<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>" class="cool-btn cool-bnt--primary go-live<?php echo ( 'auto-draft' == get_post_status(get_the_id()) ? ' draft' : '' ); ?>" target="_blank"><?php _e( 'Live', 'rexpansive' ); ?></a>
+				<input type="hidden" name="force_live" value="">
+				<script>
+					;(function ($) {
+					'use strict';
+					// Waiting until the ready of the DOM
+					$(function () {
+						$('.go-live.draft').on('click', function(e) {
+							e.preventDefault();
+							$('#wp-preview').val(true);
+							$('input[name=force_live]').val("do_force_live");
+							$('#post-preview')
+								//.attr('href','<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>')
+								.trigger('click');
+							$('input[name=force_live]').val("");
+						});
 					});
-				});
-				})(jQuery);
-
-			</script>
+					})(jQuery);
+	
+				</script>
+			</div>
+			<?php
+$savedFromBackend = get_post_meta( get_the_id(), '_save_from_backend', true);
+if(isset($savedFromBackend) && $savedFromBackend == "false") {
+?>
+<div class="go-live-advice">
+	<p><?php _e( "You saved from the live builder, now you can not change the page content from the old builder",  "rexpansive" ); ?></p>
+</div>
+<?php
+}
+			?>
 		</div>
 		<?php
-			$savedFromBackend = get_post_meta( get_the_id(), '_save_from_backend', true);
-			if(isset($savedFromBackend) && $savedFromBackend == "false"){
-				echo "<div style=\"text-align:center\">" . __("You saved from the live builder, now you can not change the page content from the old builder", "rexpansive") . "</div>";
-			}
 				endif;
 			endif;
 		endif;
@@ -1562,6 +1573,17 @@ class Rexbuilder_Admin {
 	}
 
 	/**
+	 * Registering Custom Post Meta
+	 * Necessary to expose some metas to the Rest API
+	 * @since 2.0.0
+	 */
+	function define_custom_post_metas() {
+		register_meta( 'post', '_rexbuilder_active', array(
+			'show_in_rest' => true
+		));
+	}
+
+	/**
 	 *	Define the Models Custom Post Type
 	 *
 	 *	@since 	1.1.2
@@ -1746,17 +1768,18 @@ class Rexbuilder_Admin {
 		} // end if
 	}
 
-	function rex_fix_post_content($content)
-	{
-		$screen = get_current_screen();
-		if (is_a($screen, 'WP_Screen')) {
-			$idPost = get_the_ID();
-			$savedFromBackend = get_post_meta($idPost, '_save_from_backend', true);
-			if (isset($savedFromBackend) && $savedFromBackend == "false") {
-				$newContent = "";
-				$post = get_post( (int)$idPost );
-				$newContent =  $post->post_content;
-				return $newContent;
+	function rex_fix_post_content($content) {
+		if( function_exists( 'get_current_screen' ) ) {
+			$screen = get_current_screen();
+			if (is_a($screen, 'WP_Screen')) {
+				$idPost = get_the_ID();
+				$savedFromBackend = get_post_meta($idPost, '_save_from_backend', true);
+				if (isset($savedFromBackend) && $savedFromBackend == "false") {
+					$newContent = "";
+					$post = get_post( (int)$idPost );
+					$newContent =  $post->post_content;
+					return $newContent;
+				}
 			}
 		}
 		return $content;

@@ -85,7 +85,7 @@ class Rexbuilder_Meta_Box {
 
     ob_start();
     ?>
-    <table class='form-table context-<?php echo $this->context; ?>'>
+    <table class='form-table rexbuilder-table context-<?php echo $this->context; ?>'>
     <?php
 
     foreach($this->fields as $field) :

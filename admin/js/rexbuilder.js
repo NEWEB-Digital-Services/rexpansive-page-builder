@@ -11,7 +11,7 @@
   // Global reference for the actual edited block
   var $actual_block_ref = null;
 
-  $(function () {
+  var launchRexpansiveBuilder = function() {
     // Define the draggable panels
     $('.rex-modal-draggable').draggable({
       cancel: "input,textarea,button,select,option,.rex-check-icon, .input-field, .rex-slider__slide-edit, #rex-css-ace-editor, label"
@@ -1881,7 +1881,6 @@
         
         $(Rexpansive_Builder_Admin_Utilities.meta_box_selector).val(sectionGrid);
 
-
         var ed = tinyMCE.get('content');
 
         if (typeof ed === "undefined" || ed === null) { // text editor
@@ -1891,6 +1890,8 @@
           ed.setContent(sectionGrid);
           ed.save({ no_events: true });
         }
+
+        return sectionGrid;
       }
     };
 
@@ -3966,7 +3967,45 @@
       }
     });
 
+    /**
+     * Listen to rexbuilder:save_content that simulate the old post form submit
+     * @since 1.1.4
+     */
+    $(document).on("rexbuilder:save_content", function(ev) {
+      var i;
+      if (_plugin_backend_settings.activate_builder && $('#builder-switch').prop('checked')) {
+        for (i = 0; i < Rexpansive_Builder_Admin_Config.collect.length; i++) {
+          Rexpansive_Builder_Admin_Config.collect[i].fillEmptyCells();
+          Rexpansive_Builder_Admin_Config.collect[i].collectGridData();
+        }
+        var createdShortcode = saveAllData();
+
+        var registered_actions = Rexpansive_Builder_Admin_Hooks.get_save_actions();
+        for( var i=0; i < registered_actions.length; i++ ) {
+          registered_actions[i]['action']();
+        }
+
+        // GUTENBERG CALL SAVE
+        if( "undefined" !== typeof wp.data ) {
+          wp.data.dispatch('core/editor').editPost( { content: createdShortcode } );
+          wp.data.dispatch('core/editor').savePost();
+        }
+      }
+    });
+
     $page_template.on("change", function() {
+      var registered_actions = Rexpansive_Builder_Admin_Hooks.get_switch_actions();
+      for( var i=0; i < registered_actions.length; i++ ) {
+        registered_actions[i]['action']();
+      }
+    });
+
+    /**
+     * Listen to rexbuilder:change_page_template event that simulates the old
+     * page template select element change
+     * @since 1.1.4
+     */
+    $(document).on("rexbuilder:change_page_template", function() {
       var registered_actions = Rexpansive_Builder_Admin_Hooks.get_switch_actions();
       for( var i=0; i < registered_actions.length; i++ ) {
         registered_actions[i]['action']();
@@ -5339,6 +5378,14 @@
       slide_uploader_video_frame.open();
     }	// SlideVideoHandler END
 
+  }
+
+  $(function () {
+    // launchRexpansiveBuilder();
   });	// End of the DOM ready
+
+  $(window).load(function () {
+    launchRexpansiveBuilder();
+  });
 
 })(jQuery);

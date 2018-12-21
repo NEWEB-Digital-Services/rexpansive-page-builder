@@ -1565,6 +1565,11 @@ label:active .rex-ripple:after,
   line-height: 40px;
 }
 
+#rexeditor-modal .wp-editor-container textarea.wp-editor-area,
+#rexeditor-modal iframe {
+  min-height: 250px;
+}
+
 /* -------- BLOCK SETTINGS ------------ */
 #bg-img-preview {
   width: 42px;

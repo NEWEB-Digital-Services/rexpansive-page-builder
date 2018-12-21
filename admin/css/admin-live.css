@@ -1,0 +1,23 @@
+.go-live-advice {
+  text-align: center;
+}
+
+.cool-btn {
+  padding: 10px 20px;
+  display: inline-block;
+  transition: all 0.3s ease-out;
+  font-size: 14px;
+  line-height: 1;
+  border-radius: 25px;
+  font-weight: normal;
+  margin: 0 7px;
+  width: auto;
+}
+
+.cool-btn.cool-bnt--primary {
+  background-color: #ff0055;
+  color: #fff;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}

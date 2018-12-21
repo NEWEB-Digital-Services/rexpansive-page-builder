@@ -4046,6 +4046,8 @@ ul {
   font-weight: 600;
   text-transform: uppercase;
   font-family: 'Roboto', sans-serif; }
+  .tippy-tooltip.rexlive-theme .tippy-roundarrow * {
+    fill: #333; }
 
 .section-toolBox {
   overflow: visible;

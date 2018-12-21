@@ -82,9 +82,9 @@ class Rexbuilder_Section
         $content = apply_filters('rexpansive_filter_section', $content, array(&$parsed_atts));
 
         global $post;
-        $builder_active = apply_filters('rexbuilder_post_active', get_post_meta($post->ID, '_rexbuilder_active', true));
+        // $builder_active = apply_filters('rexbuilder_post_active', get_post_meta($post->ID, '_rexbuilder_active', true));
 
-        if ('true' == $builder_active) {
+        // if ('true' == $builder_active) {
 
             global $section_layout;
             $section_layout = $layout;
@@ -135,18 +135,26 @@ class Rexbuilder_Section
             $row_separators = '';
             if ('' != $row_separator_top) {
                 $row_separators .= ' data-row-separator-top="' . $row_separator_top . '"';
+            } else {
+                $row_separators .= ' data-row-separator-top="' . $block_distance . '"';
             }
 
             if ('' != $row_separator_right) {
                 $row_separators .= ' data-row-separator-right="' . $row_separator_right . '"';
+            } else {
+                $row_separators .= ' data-row-separator-right="' . $block_distance . '"';
             }
 
             if ('' != $row_separator_bottom) {
                 $row_separators .= ' data-row-separator-bottom="' . $row_separator_bottom . '"';
+            } else {
+                $row_separators .= ' data-row-separator-bottom="' . $block_distance . '"';
             }
 
             if ('' != $row_separator_left) {
                 $row_separators .= ' data-row-separator-left="' . $row_separator_left . '"';
+            } else {
+                $row_separators .= ' data-row-separator-left="' . $block_distance . '"';
             }
 
             $videoTypeActive = '';
@@ -290,10 +298,10 @@ class Rexbuilder_Section
 
             echo '</section>';
             return ob_get_clean();
-        } else {
-            ob_start();
-            echo do_shortcode($content);
-            return ob_get_clean();
-        }
+        // } else {
+        //     ob_start();
+        //     echo do_shortcode($content);
+        //     return ob_get_clean();
+        // }
     }
 }
