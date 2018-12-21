@@ -916,7 +916,9 @@ var TextEditor = (function($) {
     },
 
     handleHtmlEditorSave: function(event) {
-      this.base.pasteHTML(event.customHTML);
+      var index = this.base.exportSelection().editableElementIndex;
+      this.base.setContent(event.customHTML, index);
+//      this.base.pasteHTML(event.customHTML);
     }
   });
 
