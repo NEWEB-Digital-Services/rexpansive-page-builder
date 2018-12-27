@@ -89,6 +89,9 @@
      */
     $(document).on("change", "#builder-switch", function(e) {
       var activate = this.checked;
+
+      // GUTENBERG APIs (gives error)
+      /*
       const currentMeta = wp.data.select('core/editor').getEditedPostAttribute( 'meta' );
       const newMeta = {
         ...currentMeta,
@@ -98,6 +101,25 @@
       // GUTENBERG save
       wp.data.dispatch('core/editor').editPost( { meta: newMeta } );
       wp.data.dispatch('core/editor').savePost();
+      */
+
+      // STANDARD AJAX
+      $.ajax({
+        type: "POST",
+        url: rexajax.ajaxurl,
+        data: {
+          action: "rex_change_builder_activation_status",
+          nonce_param: rexajax.rexnonce,
+          post_id: wp.data.select('core/editor').getCurrentPostId(),
+          status: activate
+        },
+        success: function(response) {
+          
+        },
+        error: function(response) {
+          
+        }
+      });
     });
   });
 })(jQuery);

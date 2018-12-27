@@ -192,7 +192,7 @@ class Rexbuilder {
 		$this->loader->add_filter( 'manage_rex_slider_posts_columns', $plugin_admin, 'rexpansive_slider_columns_reorder' );
 		$this->loader->add_action( 'manage_rex_slider_posts_custom_column', $plugin_admin, 'rexpansive_slider_columns_content', 10, 2 );
 
-		$this->loader->add_action( 'init', $plugin_admin, 'define_custom_post_metas' );
+		// $this->loader->add_action( 'init', $plugin_admin, 'define_custom_post_metas' );
 
 		$this->loader->add_filter( 'preview_post_link', $plugin_admin, 'change_preview_url' );
 		$this->loader->add_filter( 'post_row_actions', $plugin_admin, 'add_builderlive_link', 10, 2 );
@@ -239,6 +239,8 @@ class Rexbuilder {
 		$this->loader->add_filter( 'rexbuilder_admin_post_type_active', $plugin_admin, 'add_builder_assets_on_contact_form_page' );
 		
 		// Ajax functions
+		$this->loader->add_action( 'wp_ajax_rex_change_builder_activation_status', $plugin_admin, 'rex_change_builder_activation_status' );
+		
 		$this->loader->add_action( 'wp_ajax_rex_edit_slider_from_builder', $plugin_admin, 'rex_edit_slider_from_builder' );
 		$this->loader->add_action( 'wp_ajax_rex_create_slider_from_builder', $plugin_admin, 'rex_create_slider_from_builder' );
 		$this->loader->add_action( 'wp_ajax_rex_create_rexslider_admin_markup', $plugin_admin, 'rex_create_rexslider_admin_markup' );

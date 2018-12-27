@@ -570,13 +570,13 @@ class Rexbuilder_Public
             'post_content' => $cleanPost,
         );
 
-        $update = wp_update_post($args);
+        // $update = wp_update_post($args);
+        // $response['update'] = $update;
 
         update_post_meta($post_id_to_update, '_rexbuilder_shortcode', $shortcode);
 
         update_post_meta($post_id_to_update, '_save_from_backend', "false" );
 
-        $response['update'] = $update;
         $response['id_received'] = $post_id_to_update;
 
         wp_send_json_success($response);
