@@ -194,9 +194,6 @@ class Rexbuilder_Public
             if( Rexbuilder_Utilities::isBuilderLive() ) {
                 //include media libray
                 wp_enqueue_media();
-
-                // JS TMPL
-                wp_enqueue_script('tmpl', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/tmpl.min.js', array('jquery'), $ver, true);
                 
                 // TIPPY
                 wp_enqueue_script( 'tippy', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/tippy.all.min.js', array( 'jquery' ), null, true );
@@ -207,6 +204,9 @@ class Rexbuilder_Public
                 wp_enqueue_script( 'rangy-selectionsaverestore', REXPANSIVE_BUILDER_URL . $cartella . 'rangy-1.3.0/rangy-selectionsaverestore.js', array( 'jquery' ), null, true );
                 wp_enqueue_script( 'rangy-textrange', REXPANSIVE_BUILDER_URL . $cartella . 'rangy-1.3.0/rangy-textrange.js', array( 'jquery' ), null, true );
             }
+
+            // JS TMPL
+            wp_enqueue_script('tmpl', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/tmpl.min.js', array('jquery'), $ver, true);
 
             // PHOTOSWIPE
             wp_enqueue_script('photoswipe', REXPANSIVE_BUILDER_URL . $cartella . 'Photoswipe/photoswipe.min.js', array('jquery'), $ver, true);
@@ -352,9 +352,9 @@ class Rexbuilder_Public
         if (!isset($this->plugin_options['post_types'])) {
             return;
         }
-        if ( Rexbuilder_Utilities::isBuilderLive() ) {
+        // if ( Rexbuilder_Utilities::isBuilderLive() ) {
             include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexbuilder-js-templates.php";
-        }
+        // }
     }
 
     /**
@@ -727,6 +727,10 @@ class Rexbuilder_Public
             if ($rexbuilderShortcode == "") {
                 if( has_shortcode( $post->post_content, "RexpansiveSection" ) ) {
                     $rexbuilderShortcode = $post->post_content;
+                }
+            } else {
+                if( !has_shortcode( $rexbuilderShortcode, "RexpansiveSection" ) ) {
+                    $rexbuilderShortcode = "";
                 }
             }
 

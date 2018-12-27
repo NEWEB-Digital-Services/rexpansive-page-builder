@@ -61,7 +61,8 @@
     } );
 
     /**
-     * Test for tracing change page template
+     * Subscribe on core editor to tracing change page template
+     * @since 2.0.0
      */
     var editorCore = wp.data.select('core/editor');
     var lastPageTemplate = editorCore.getCurrentPostAttribute("template");

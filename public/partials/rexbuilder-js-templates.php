@@ -181,34 +181,6 @@ $tool_button_classes = 'tool-button';
     </div>
 </script>
 
-<script type="text/x-tmpl" id="tmpl-photoswipe-block">
-    <figure class="pswp-figure" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-        <a class="pswp-item" href="{%=image.link%}" itemprop="contentUrl" data-size="{%=image.width%}x{%=image.height%}">
-            <div class="pswp-item-thumb" data-thumb-image-type="{%=image.type%}" data-thumburl="{%=image.link%}" itemprop="thumbnail">
-            </div>
-
-        </a>
-        <figcaption class="pswp-item-caption" itemprop="caption description">
-        </figcaption>
-    </figure>
-</script>
-
-<script type="text/x-tmpl" id="tmpl-link-block">
-    <a class="element-link hovered" href="{%=link.url%}" title="{%=link.url%}">
-    </a>
-</script>
-
-<script type="text/x-tmpl" id="tmpl-navigator-item">
-    <li>
-        <a href="#{%=navigator.sectionID%}" class="vertical-nav-link not-smooth-anchor-scroll" data-number="{%=navigator.number%}">
-            <span class="dot-cont">
-                <span class="dot"></span>
-            </span>
-            <p class="label white-black">{%=navigator.sectionName%}</p>
-        </a>
-	</li>
-</script>
-
 <script type="text/x-tmpl" id="tmpl-block-resize-handles">
     <div class="ui-resizable-handle ui-resizable-e" data-axis="e" id="{%=block.rexID%}_handle_e">
         <span class="circle-handle circle-handle-e" data-axis="e">
@@ -409,4 +381,34 @@ $tool_button_classes = 'tool-button';
       </button>
     </li>
 </ul>
+</script>
+
+<!-- No Editor templates -->
+
+<script type="text/x-tmpl" id="tmpl-photoswipe-block">
+    <figure class="pswp-figure" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+        <a class="pswp-item" href="{%=image.link%}" itemprop="contentUrl" data-size="{%=image.width%}x{%=image.height%}">
+            <div class="pswp-item-thumb" data-thumb-image-type="{%=image.type%}" data-thumburl="{%=image.link%}" itemprop="thumbnail">
+            </div>
+
+        </a>
+        <figcaption class="pswp-item-caption" itemprop="caption description">
+        </figcaption>
+    </figure>
+</script>
+
+<script type="text/x-tmpl" id="tmpl-link-block">
+    <a class="element-link hovered" href="{%=link.url%}" title="{%=link.url%}">
+    </a>
+</script>
+
+<script type="text/x-tmpl" id="tmpl-navigator-item">
+    <li>
+        <a href="#{%=navigator.sectionID%}" class="vertical-nav-link not-smooth-anchor-scroll" data-number="{%=navigator.number%}">
+            <span class="dot-cont">
+                <span class="dot"></span>
+            </span>
+            <p class="label white-black">{%=navigator.sectionName%}</p>
+        </a>
+    </li>
 </script>

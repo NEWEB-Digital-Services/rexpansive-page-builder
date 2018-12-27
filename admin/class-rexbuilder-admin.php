@@ -720,6 +720,8 @@ class Rexbuilder_Admin {
 			</div>
 			<?php
 $savedFromBackend = get_post_meta( get_the_id(), '_save_from_backend', true);
+?>
+<input type="hidden" name="builder-save-from-backend" value="<?php echo $savedFromBackend; ?>"><?php
 if(isset($savedFromBackend) && $savedFromBackend == "false") {
 ?>
 <div class="go-live-advice">

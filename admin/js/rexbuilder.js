@@ -1846,7 +1846,13 @@
       handle: '.builder-move-row'
     });
 
-    //Function that saves the datas of all the sections
+    /**
+     *  Function that saves the datas of all the sections
+     *
+     *  @since 1.0.0
+     *  @version 2.0.0 Removed the save on post content, to maintain the post content
+     *                  separate from the builder content
+     */
     var saveAllData = function () {
       var ready = $builderArea.sortable('instance');
       var i;
@@ -1881,7 +1887,7 @@
         
         $(Rexpansive_Builder_Admin_Utilities.meta_box_selector).val(sectionGrid);
 
-        var ed = tinyMCE.get('content');
+        /*var ed = tinyMCE.get('content');
 
         if (typeof ed === "undefined" || ed === null) { // text editor
           $('#content').val(sectionGrid);
@@ -1889,7 +1895,7 @@
         } else if (typeof sectionGrid != "undefined" && sectionGrid !== null) {
           ed.setContent(sectionGrid);
           ed.save({ no_events: true });
-        }
+        }*/
 
         return sectionGrid;
       }
@@ -3950,7 +3956,9 @@
 		 */
     $('#post').on('submit', function (e) {      
       var i;
+
       if (_plugin_backend_settings.activate_builder && $('#builder-switch').prop('checked')) {
+
         for (i = 0; i < Rexpansive_Builder_Admin_Config.collect.length; i++) {
           Rexpansive_Builder_Admin_Config.collect[i].fillEmptyCells();
           Rexpansive_Builder_Admin_Config.collect[i].collectGridData();
@@ -3973,6 +3981,7 @@
      */
     $(document).on("rexbuilder:save_content", function(ev) {
       var i;
+      console.log('casvo qui');
       if (_plugin_backend_settings.activate_builder && $('#builder-switch').prop('checked')) {
         for (i = 0; i < Rexpansive_Builder_Admin_Config.collect.length; i++) {
           Rexpansive_Builder_Admin_Config.collect[i].fillEmptyCells();
@@ -3986,10 +3995,10 @@
         }
 
         // GUTENBERG CALL SAVE
-        if( "undefined" !== typeof wp.data ) {
+        /*if( "undefined" !== typeof wp.data ) {
           wp.data.dispatch('core/editor').editPost( { content: createdShortcode } );
           wp.data.dispatch('core/editor').savePost();
-        }
+        }*/
       }
     });
 
