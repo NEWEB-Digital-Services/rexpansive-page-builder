@@ -15135,6 +15135,13 @@ ul {
   text-transform: uppercase;
   font-family: 'Roboto', sans-serif; }
 
+.tippy-tooltip.rexlive-theme {
+  font-size: 9px;
+  letter-spacing: 1px;
+  font-weight: 600;
+  text-transform: uppercase;
+  font-family: 'Roboto', sans-serif; }
+
 a.rex-theme-button,
 span.rex-theme-button,
 .rex-slider-wrap .rex-slider-element-title .rex-theme-button {
@@ -15822,6 +15829,10 @@ body.rexpansive-editor .lean-overlay {
           box-shadow: -5px 0 5px rgba(0, 0, 0, 0.1);
   height: 100%; }
 
+.info-model-name__wrap {
+  display: block;
+  font-weight: bold; }
+
 .models-list-wrapper {
   overflow: hidden;
   overflow-y: auto;
@@ -15896,6 +15907,7 @@ input:disabled + .rex_edit_title_slider {
     font-size: 10px; }
     .rex-accordion-gallery__item .tool-button--deactivate .l-svg-icons {
       font-size: 10px; }
+
 .rex-lateral-panel {
   background-color: #fff;
   width: 100%;

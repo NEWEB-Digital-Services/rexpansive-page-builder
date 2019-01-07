@@ -284,6 +284,8 @@
 @mixin blocks-tools-positions( $steps ) {
   @for $i from 0 through $steps {
     @include block-tools-position( $i );
+  }
+}
 //rex button
 
 @mixin button-definition {

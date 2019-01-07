@@ -179,7 +179,7 @@ gulp.task('live-admin-scripts-build', function() {
 gulp.task('live-builder-style', function() {
 	sass('admin/scss/rexlive/live-def.scss',{
 		sourcemap: false
-	//style:'compressed'
+		//style:'compressed'
 	})
 	.pipe(plumber())
     .pipe(autoprefixer({
