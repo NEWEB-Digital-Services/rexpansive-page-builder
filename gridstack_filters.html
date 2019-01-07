@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gridstack - v0.4 - TEST</title>
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="public/js/vendor/gridstack.js-0.4.0/dist/gridstack.css"
+    />
+    <link
+      rel="stylesheet"
+      href="public/js/vendor/gridstack.js-0.4.0/dist/gridstack-extra.css"
+    />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.0/jquery-ui.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
+    <script src="public/js/vendor/gridstack.js-0.4.0/dist/gridstack.js"></script>
+    <script src="public/js/vendor/gridstack.js-0.4.0/dist/gridstack.jQueryUI.js"></script>
+
+    <style>
+      #grid1 {
+        background: lightgoldenrodyellow;
+      }
+
+      .grid-stack-item-content {
+        color: #2c3e50;
+        text-align: center;
+        background-color: #18bc9c;
+      }
+
+      .grid-stack-item.red-block .grid-stack-item-content {
+        background: rgba(255, 0, 0, 1);
+      }
+
+      .grid-stack-item.green-block .grid-stack-item-content {
+        background: rgba(0, 255, 0, 1);
+      }
+
+      .grid-stack-item.blue-block .grid-stack-item-content {
+        background: rgba(0, 0, 255, 1);
+      }
+
+      /* .grid-stack > .grid-stack-item > .grid-stack-item-content {
+        position: static;
+      } */
+
+      .grid-stack-item-removing {
+        opacity: 0.5;
+      }
+
+      .sidebar {
+        background: rgba(0, 255, 0, 0.1);
+        height: 150px;
+        padding: 25px 0;
+        text-align: center;
+      }
+
+      .sidebar .grid-stack-item {
+        width: 200px;
+        height: 100px;
+        border: 2px dashed green;
+        text-align: center;
+        line-height: 100px;
+        z-index: 10;
+        background: rgba(0, 255, 0, 0.1);
+        cursor: default;
+        display: inline-block;
+      }
+
+      .sidebar .grid-stack-item .grid-stack-item-content {
+        background: none;
+      }
+
+      .filter {
+        cursor: pointer;
+        display: inline-block;
+        padding: 10px;
+        border: 1px solid black;
+      }
+
+      .filter:hover {
+        background-color:#eee;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Two grids demo - v0.4</h1>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="filter-list">
+            <li class="filter" data-filter="*">All</li>
+            <li class="filter" data-filter=".red-block">Red</li>
+            <li class="filter" data-filter=".green-block">Green</li>
+            <li class="filter" data-filter=".blue-block">Blue</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="grid-stack grid-stack-12" id="grid1">
+            <div
+              class="grid-stack-item red-block"
+              data-gs-x="0"
+              data-gs-y="0"
+              data-gs-width="3"
+              data-gs-height="2"
+              data-el-resized="false"
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap"></div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item green-block"
+              data-gs-x="3"
+              data-gs-y="0"
+              data-gs-width="3"
+              data-gs-height="3"
+              data-el-resized="false"
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap"></div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item red-block"
+              data-gs-x="6"
+              data-gs-y="0"
+              data-gs-width="3"
+              data-gs-height="3"
+              data-el-resized="false"
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap"></div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item blue-block"
+              data-gs-x="9"
+              data-gs-y="0"
+              data-gs-width="3"
+              data-gs-height="5"
+              data-el-resized="false"
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap"></div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item blue-block"
+              data-gs-x="0"
+              data-gs-y="2"
+              data-gs-width="3"
+              data-gs-height="3"
+              data-el-resized="false"
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap"></div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item green-block"
+              data-gs-x="3"
+              data-gs-y="3"
+              data-gs-width="6"
+              data-gs-height="2"
+              data-el-resized="false"
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      $(function() {
+        $(window).on("load", function() {
+          var $grid = $("#grid1");
+          var options = {
+            width: 12,
+            float: false,
+            animate: true,
+          };
+
+          $grid.gridstack(options);
+          var grid = $grid.data("gridstack");
+          var initialStateGrid = grid.grid.nodes;
+
+          var $fliter_list = $('.filter-list');
+          $fliter_list.on("click", ".filter", function(e) {
+            e.preventDefault();
+
+            var filterClass = this.getAttribute("data-filter");
+            filtering(filterClass);
+          });
+
+          function filtering(filterClass) {
+            var $items = $grid.find(".grid-stack-item");
+            var $toMaintain = $items.filter(filterClass);
+            var $toRemove = $items.not(filterClass);
+
+            grid.batchUpdate();
+            $items.css("display","block");
+            $toRemove.css("display","none");
+            grid.removeAll(false);
+            // $toRemove.each(function(i,el) {
+            //   grid.removeWidget(el,false);
+            // });
+
+            // for(var i=0; i<grid.grid.nodes.length; i++) {
+            //   grid.grid.nodes[i].el.setAttribute("data-gs-auto-position","1");
+            //   grid.addWidget(grid.grid.nodes[i].el);
+            // }
+
+            if("*" === filterClass) {
+              for(var i=0; i<initialStateGrid.length; i++) {
+                initialStateGrid[i].el[0].removeAttribute("data-gs-auto-position");
+                grid.addWidget(initialStateGrid[i].el[0],initialStateGrid[i].x,initialStateGrid[i].y,initialStateGrid[i].width,initialStateGrid[i].height,initialStateGrid[i].autoPosition,initialStateGrid[i].minWidth,initialStateGrid[i].maxWidht,initialStateGrid[i].minHeight,initialStateGrid[i].maxHeight,initialStateGrid[i].id);
+              }
+            } else {
+              // $($toMaintain.get().reverse()).each(function(i,el) {
+              $toMaintain.each(function(i,el) {
+                el.setAttribute("data-gs-auto-position","1");
+                grid.addWidget(el);
+              });
+            }
+
+            grid.commit();
+            // $grid.find(".grid-stack-item").css("display","block").not(filterClass).css("display","none");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
