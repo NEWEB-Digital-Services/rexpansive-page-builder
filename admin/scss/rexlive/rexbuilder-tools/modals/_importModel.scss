@@ -110,15 +110,14 @@
   // padding: 10px;
   box-shadow: -5px 0 5px rgba(0,0,0,.1);
   height: 100%;
+.info-model-name__wrap {
+  display: block;
+  font-weight: bold;
 }
 
 .models-list-wrapper {
   overflow: hidden;
   overflow-y: auto;
   height: calc(100% - 70px);
-}
-
-.info-model-name__wrap {
-  display: block;
-  font-weight: bold;
+  width: 100%;
 }

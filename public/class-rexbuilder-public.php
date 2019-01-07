@@ -136,6 +136,7 @@ class Rexbuilder_Public
 
             wp_enqueue_style('input-spinner', REXPANSIVE_BUILDER_URL . $cartella . 'css/input-spinner.css', array(), $ver, 'all');
 
+            wp_enqueue_style('rexpansive-builder-rexbutton-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/rex_buttons.css', array(), $ver, 'all');
             wp_enqueue_style('rexpansive-builder-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/public.css', array(), $ver, 'all');
 
             wp_enqueue_style( 'rexbuilder-live-google-fonts', 'https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i', false );
@@ -226,6 +227,7 @@ class Rexbuilder_Public
             wp_enqueue_script('1-RexCreateBlocks', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/1-Rexbuilder_CreateBlocks.js', array('jquery'), $ver, true);
             wp_enqueue_script('1-RexDomUtil', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/1-Rexbuilder_Dom_Util.js', array('jquery'), $ver, true);
             wp_enqueue_script('1-RexColorPalette', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/1-Rexbuilder_Color_Palette.js', array('jquery'), $ver, true);
+            wp_enqueue_script('1-Rexbutton', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Rexbutton.js', array('jquery'), $ver, true);
             wp_enqueue_script('1-RexOverlayPalette', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/1-Rexbuilder_Overlay_Palette.js', array('jquery'), $ver, true);
             wp_enqueue_script('2-RexSaveListeners', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/2-Rex_Save_Listeners.js', array('jquery'), $ver, true);
             wp_enqueue_script('3-Navigator', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/3-Navigator.js', array('jquery'), $ver, true);
@@ -685,6 +687,31 @@ class Rexbuilder_Public
         wp_send_json_success( $response );
     }
 
+    public function rexlive_save_buttons_in_page()
+    {
+        $nonce = $_POST['nonce_param'];
+
+        $response = array(
+            'error' => false,
+            'msg' => '',
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+        $response['error'] = false;
+
+        $post_id_to_update = intval($_POST['post_id_to_update']);
+        $ids_in_page = $_POST['ids'];
+
+        update_post_meta($post_id_to_update, '_rexbuilder_buttons_ids_in_page', $ids_in_page);
+        $response['backIDS'] = $ids_in_page;
+        wp_send_json_success($response);
+    }
+
     public function print_post_id()
     {
         ?>
@@ -784,57 +811,65 @@ class Rexbuilder_Public
             }
         }
 
+        $defaultButtonsIDs = array();
+        $buttonsIDsJSON = get_option('_rex_buttons_ids', $defaultButtonsIDs);
+        $stripped = stripslashes($buttonsIDsJSON);
+        $buttonsIDsUsed = json_decode($stripped, true);
 ?>
 <div class="rexbuilder-live-content<?php echo ($editor ? ' rexbuilder-live-content--editing add-new-section--hide' : ''); ?>">
+    <div id="rex-buttons-ids-used" style="display: none;"><?php 
+    if ($buttonsIDsUsed == null) {
+        echo "[]";
+    } else {
+        echo json_encode($buttonsIDsUsed);
+    }
+    ?></div>
     <div id="sections-ids-used" style="display: none;"><?php 
-        if ($sectionsIDsUsed == null) {
-            echo "[]";
-        } else {
-            echo json_encode($sectionsIDsUsed);
-        }
-        ?></div>
-        <div id="layout-avaiable-dimensions" style="display: none;"><?php echo json_encode($layoutsAvaiable); ?></div>
-        <div id="rexbuilder-model-data" style="display: none;">
-            <div class = "models-customizations" <?php
-            if (!$flag_models) {
-                echo 'data-empty-models-customizations="true">';
-            } else { ?>>
-                <?php
-                foreach ($models_customizations as $model) {
-                    $idModel = $model['id'];
-                    echo '<div class="model-customizations-container" data-model-id="'. $idModel .'">';
-                    $customizations = $model['customizations'];
-                    foreach($customizations as $custom){
-                        $customName = $custom['name'];
-                        $customTargets = $custom['targets'];
+    if ($sectionsIDsUsed == null) {
+        echo "[]";
+    } else {
+        echo json_encode($sectionsIDsUsed);
+    }
+    ?></div>
+    <div id="layout-avaiable-dimensions" style="display: none;">
+        <?php echo json_encode($layoutsAvaiable); ?>
+    </div>
+    <div id="rexbuilder-model-data" style="display: none;">
+        <div class="models-customizations" data-empty-models-customizations="<?php echo !$flag_models?"true":"false";?>"><?php
+        if ($flag_models) {
+            foreach ($models_customizations as $model) {
+                $idModel = $model['id'];
+                echo '<div class="model-customizations-container" data-model-id="'. $idModel .'">';
+                $customizations = $model['customizations'];
+                foreach($customizations as $custom){
+                    $customName = $custom['name'];
+                    $customTargets = $custom['targets'];
 
-                        if(isset($custom["targets"])){
-                            $customTargets = $custom["targets"];
-                        } else{
-                            $customTargets = "";
-                        }
-                        
-                        echo '<div class="model-customization-data" data-model-layout-name="' . $customName . '">';
-                        
-                        if($customTargets != ""){
-                            echo json_encode($customTargets);
-                        } else{
-                            echo '[]';
-                        }
-                        echo '</div>';
+                    if(isset($custom["targets"])){
+                        $customTargets = $custom["targets"];
+                    } else{
+                        $customTargets = "";
+                    }
+                    
+                    echo '<div class="model-customization-data" data-model-layout-name="' . $customName . '">';
+                    
+                    if($customTargets != ""){
+                        echo json_encode($customTargets);
+                    } else{
+                        echo '[]';
                     }
                     echo '</div>';
                 }
+                echo '</div>';
             }
-            ?></div>
-            <div class = "available-models-customizations-names"><?php echo json_encode($models_customizations_avaiable);?></div>
-        </div>
+        }
+    ?></div>
+        <div class="available-models-customizations-names"><?php echo json_encode($models_customizations_avaiable);?></div>
+    </div>
         <div id="rexbuilder-layout-data" style="display: none;">
-            <div class="layouts-customizations" <?php
-            if (!$flag_page_customization) {
-                echo 'data-empty-customizations="true">';
-            } else {?>>
-                <?php
+            <div class="layouts-customizations" data-empty-customizations="<?php echo !$flag_page_customization?"true":"false";?>">
+            <?php
+            if ($flag_page_customization) {
                 foreach ($customizations_array as $customization) {
                     $customization_name = $customization['name'];
                     echo '<div class="customization-wrap" data-customization-name="'.$customization_name.'">';
@@ -962,7 +997,24 @@ class Rexbuilder_Public
             endif;
         }
     }
-
+    
+    public function print_rex_buttons_style()
+    {
+        if ($this->builder_active_on_this_post_type()) {
+            global $post;
+            $buttonsIDs = get_post_meta($post->ID, '_rexbuilder_buttons_ids_in_page', true);
+            $buttonsInPage = json_decode($buttonsIDs, true);
+            $style = "";
+            foreach ($buttonsInPage as $index => $id_button) {
+                $buttonStyle = get_option('_rex_button_'.$id_button.'_css', "");
+                $buttonStyle = stripslashes($buttonStyle);
+                $style .= $buttonStyle;
+            }
+            if($style != ''){
+                wp_add_inline_style('rexpansive-builder-rexbutton-style', $style);
+            }
+        }
+    }
     /**
      *    Prepare the html template for the vertical internal navigation (dots)
      *

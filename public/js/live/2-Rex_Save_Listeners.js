@@ -37,6 +37,33 @@ var Rex_Save_Listeners = (function($) {
 
       var ajaxCalls = [];
 
+      //rex-buttons in page
+      var rexButtonsInPage = Rexbuilder_Rexbutton.getButtonsInPage();
+      var rexButtonsIDsInPage = [];
+      for (i = 0; i < rexButtonsInPage.length; i++) {
+        rexButtonsIDsInPage.push(rexButtonsInPage[i].id);
+      }
+      console.log(rexButtonsIDsInPage);
+      ajaxCalls.push(
+        $.ajax({
+          type: "POST",
+          dataType: "json",
+          url: _plugin_frontend_settings.rexajax.ajaxurl,
+          data: {
+            action: "rexlive_save_buttons_in_page",
+            nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+            post_id_to_update: idPost,
+            ids: JSON.stringify(rexButtonsIDsInPage)
+          },
+          success: function(response) {
+            if (response.success) {
+              console.log("rex buttons ids nella pagina aggiornati!");
+            }
+          },
+          error: function(response) {}
+        })
+      );
+
       //avaiable custom layouts
       ajaxCalls.push(
         $.ajax({

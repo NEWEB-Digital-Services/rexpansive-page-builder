@@ -1938,14 +1938,20 @@ defined('ABSPATH') or exit;
     </div>
 </div><!-- Locked feature -->
 
-<!-- <div class="rex-modal-wrap" style="width:500px;overflow:visible;left:70%;"> -->
-    <div id="rex-models-list" class="rex-lateral-panel">
-        <div class="rex-lateral-panel__content">
-            <div class="bl_d-flex bl_jc-fe">
-                <div class="tool-button tool-button--black tool-button--close rex-close-button">
-                    <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
-                </div>
+<div id="rexbuilder-lateral-panel" class="rex-lateral-panel">
+    <div class="top-lateral-tools">
+        <ul class="rex-lateral-tabs-list" data-tabgroup="rex-lateral-tabs">
+            <li><a href="#" data-rex-tab-target="rex-models-list">Models</a></li>
+            <li><a href="#" data-rex-tab-target="rex-buttons-list">Buttons</a></li>
+        </ul>
+        <div class="bl_d-flex bl_jc-fe">
+            <div class="tool-button tool-button--black tool-button--close rex-close-button">
+                <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
             </div>
+        </div>
+    </div>
+    <div id="rex-lateral-tabs" class="tabgroup">
+        <div id="rex-models-list" class="rex-lateral-panel__content">
             <div class="models-list-wrapper">
                 <ul class="model-list model-list--pswp" itemscope itemtype="http://schema.org/ImageGallery">
                     <?php
@@ -1980,10 +1986,201 @@ defined('ABSPATH') or exit;
                 }
                 // Restore original Post Data
                 wp_reset_postdata(); 
-
                 ?></ul>
             </div>
         </div>
+        <div id="rex-buttons-list" class="rex-lateral-panel__content">
+            <div class="buttons-list-wrapper">
+                <div id="rex-add-new-button">
+                    +
+                </div>
+                <ul class="button-list button-list--pswp">
+                        <?php 
+                        // è possibile fare query del tipo '_rex_button_%%_html0'?
+                    $defaultButtonsIDs = array();
+                    $buttonsIDsJSON = get_option('_rex_buttons_ids', $defaultButtonsIDs);
+                    $buttonsIDsJSON = stripslashes($buttonsIDsJSON);
+                    $buttonsIDsUsed = json_decode($buttonsIDsJSON, true);
+                    foreach ($buttonsIDsUsed as $index => $id_button) {
+                        $buttonHTML = get_option('_rex_button_'.$id_button.'_html', "");
+                        if($buttonHTML != ""){
+                            $buttonHTML = stripslashes($buttonHTML);
+                            ?>
+                            <li draggable="true">
+                                <div class="rex-container"><?php echo $buttonHTML ?></div>
+                            </li>
+                            <?php
+                        }
+                    }
+                    ?>
+                </ul>
+            </div>
+        </div>
     </div>
-<!-- </div> -->
-<!-- Model Lists -->
+</div>
+
+<div class="rex-modal-wrap">
+    <div id="rex-button-editor" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable setting-edited">
+        <div class="tool-button tool-button--black rex-cancel-button tool-button--close tippy" data-tippy-content="Cancel" value="" tabindex="0">
+            <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
+        </div>
+        <div class="modal-content">
+            <div class="bl_modal-row">
+                <div class="open-menu-wrap">+/-</div>
+                <div class="rex-relative-col tippy" data-tippy-content="Text Color" tabindex="0">
+                    <input type="hidden" id="rex-button-text-color-runtime" name="rex-button-text-color-runtime" value="" />
+                    <input id="rex-button-text-color" type="text" name="rex-button-text-color" value="" size="10" />
+                    <div id="rex-button-text-color-preview-icon" class="preview-color-icon"></div>
+                </div>
+                <div id="rex-button-label-wrap">
+                    <input type="text" id="rex-button__label" name="rex-button__label" style="text-shadow: 2px 2px 4px black !important"/>
+                </div>
+                <div id="rex-button-font-size-wrap" style="display: flex;">
+                    <input type="text" id="rex-button_text_font_size" name="rex-button_text_font_size"/>
+                    <div class="label-px">px</div>
+                </div>
+            </div>
+            <div class="bl_modal-row">
+                <div class="open-menu-wrap">+/-</div>
+                <div class="rex-relative-col tippy" data-tippy-content="Background Color" tabindex="0">
+                    <input type="hidden" id="rex-button-background-color-runtime" name="rex-button-background-color-runtime" value="" />
+                    <input id="rex-button-background-color" type="text" name="rex-button-background-color" value="" size="10" />
+                    <div id="rex-button-background-color-preview-icon" class="preview-color-icon"></div>
+                </div>
+                <div id="rex-button-background-preview-wrap">
+                    <div id="rex-button-preview-background" style="width: 200px;height: 40px;background-color: black;border-radius: 20px;"></div>
+                </div>
+                <div id="rex-button-height-wrap" style="display: flex;">
+                    <div class="">>.<</div>
+                    <input type="text" id="rex-button-height" name="rex-button-height"/>
+                    <div class="label-px">px</div>
+                </div>
+            </div>
+            <div class="bl_modal-row">
+                <div class="label">hover</div>
+                <div class="rex-relative-col tippy" data-tippy-content="Background Hover Color" tabindex="0">
+                    <input type="hidden" id="rex-button-background-hover-color-runtime" name="rex-button-background-hover-color-runtime" value="" />
+                    <input id="rex-button-background-hover-color" type="text" name="rex-button-background-hover-color" value="" size="10" />
+                    <div id="rex-button-background-hover-color-preview-icon" class="preview-color-icon"></div>
+                </div>
+                <div id="rex-button-background-hover-preview-wrap">
+                    <div id="rex-button-preview-background-hover" style="width: 200px;height: 40px;background-color: grey;border-radius: 20px;"></div>
+                </div>
+            </div>
+            <div class="bl_modal-row">
+                <div class="open-menu-wrap">+/-</div>
+                <div class="rex-relative-col tippy" data-tippy-content="Border Color" tabindex="0">
+                    <input type="hidden" id="rex-button-border-color-runtime" name="rex-button-border-color-runtime" value="" />
+                    <input id="rex-button-border-color" type="text" name="rex-button-border-color" value="" size="10" />
+                    <div id="rex-button-color-preview-icon" class="preview-color-icon"></div>
+                </div>
+                <div id="rex-button-border-preview-wrap">
+                    <div id="rex-button-border-preview" style="width: 200px;height: 40px;border-color: blue;border-radius: 20px;border-style: solid;border-width: 2px;"></div>
+                </div>
+                <div id="rex-button-border-width-wrap" style="display: flex;">
+                    <input type="text" id="rex-button-border-width" name="rex-button-border-width"/>
+                    <div class="label-px">px</div>
+                </div>
+            </div>
+            <div class="bl_modal-row">
+                <div id="rex-button-border-radius-wrap" style="display: flex;">
+                    <div class="border-icon">90</div>
+                    <input type="text" id="rex-button-border-radius" name="rex-button-border-radius"/>
+                </div>
+                <div id="rex-button-margins-wrap">
+                    <div id="rex-button-margin-top-wrap" style="display: flex;">
+                        <div class="border-icon">up</div>
+                        <input type="text" id="rex-button-margin-top-radius" name="rex-button-margin-top-radius"/>
+                    </div>
+                    <div id="rex-button-preview-empty" style="width: 50px;height: 20px;background-color: grey;border-radius: 20px;"></div>
+                    <div id="rex-button-margin-bottom-wrap" style="display: flex;">
+                        <div class="border-icon">down</div>
+                        <input type="text" id="rex-button-margin-bottom-radius" name="rex-button-margin-bottom-radius"/>
+                    </div>
+                </div>
+            </div>
+            <div class="bl_modal-row">
+                <div id="rex-button-link-target-wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix" style="width:100%;">
+                        <span class="prefix"></span>
+                        <input type="text" id="rex-button-link-target" name="rex-button-link-target">
+                        <label for="rex-button-link-target" class=""><?php _e('https://...', 'rexpansive');?></label>
+                        <span class="rex-material-bar"></span>
+                </div>
+                <div id="rex-button-link-type-wrap" class="rx__select-wrap">
+                    <select id="rex-button-link-type" class="rx__form-input">
+                        <option value="_blank">_blank</option>
+                        <option value="_self">_self</option>
+                        <option value="_parent">_parent</option>
+                        <option value="_top">_top</option>
+                    </select>  
+                    <div class="rx__form-input__select-arrow">
+                        <i class="l-svg-icons"><svg><use xlink:href="#A007-Close"></use></svg></i>
+                    </div>
+                </div>
+            </div>
+            <div class="bl_modal-row">
+                <div id="rex-button-name-wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix" style="width:100%;">
+                    <span class="prefix"></span>
+                    <input type="text" id="rex-button__name" name="rex-button__name">
+                    <label for="rex-button__name" class=""><?php _e('Title name model button', 'rexpansive');?></label>
+                    <span class="rex-material-bar"></span>
+                </div>
+                <div id="rex-button-add-model-wrap" class="add-rex-button-model">
+                    <div class="add-label">+</div>
+                </div>
+            </div><!-- // .rex-model__add-model__wrap -->
+        </div>
+        <div class="rex-modal__outside-footer">
+            <div class="rex-reset-button" style="width: 30px; background-color: grey; border-radius: 50%">res</div>
+            <div class="rex-apply-button" style="width: 30px; background-color: blue; border-radius: 50%">res</div>
+        </div>
+    </div>
+</div>
+<!-- Edit Button -->
+
+<div class="rex-modal-wrap">
+    <div id="rex-button-model-choose" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
+        <?php Rexbuilder_Utilities::close_button(); ?>
+        <div class="modal-content modal-content--text">
+            <div class="edit-button-model-choose">
+                <?php _e('Gabibbo, guarda che stai modificando lo stile di un modello, che vuoi fare?','rexpansive'); ?>
+                <br>
+                <span class="info-model-name__wrap"><span class="info-model-name"></span>&nbsp;<span>?</span></span>
+            </div>
+            <div>
+                <div class="rex-edit-button-model-option" data-rex-option="edit">
+                    <button class="rex-button edit-button-model">Mantieni</button>
+                </div>
+                <div class="rex-edit-button-model-option" data-rex-option="remove">
+                    <button class="rex-button remove-button-model">Stacca</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Edit button Model  -->
+
+<!-- Ok il pannellino in più, ma se invece faccio semplicemente un controllo per vedere che inserisca un nome?
+Evidenzio di rosso se non l'ha messo e pace-->
+<div class="rex-modal-wrap">
+    <div id="rex-add-button-name-modal" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
+        <?php Rexbuilder_Utilities::close_button(); ?>
+        <div class="modal-content modal-content--text">
+            <div class="add-button-name-model">
+                <?php _e('Gabibbo, guarda che hai creato un nuovo pulsante, mi serve un nome','rexpansive'); ?>
+                <br>
+                <span class="info-model-name__wrap"><span class="info-model-name"></span>&nbsp;<span>?</span></span>
+            </div>
+            <div>
+                <div id="rex-button-name-model-wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix" style="width:100%;">
+                    <span class="prefix"></span>
+                    <input type="text" id="rex-button__name_model" name="rex-button__name_model">
+                    <label for="rex-button__name_model" class=""><?php _e('Title name model button', 'rexpansive');?></label>
+                    <span class="rex-material-bar"></span>
+                </div>
+                <div id="rex-button-name-add-model-wrap" class="add-rex-name-button-model">
+                    <div class="add-label">+</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div><!-- Add button name Model  -->

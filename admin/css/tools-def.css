@@ -15135,6 +15135,85 @@ ul {
   text-transform: uppercase;
   font-family: 'Roboto', sans-serif; }
 
+a.rex-theme-button,
+span.rex-theme-button,
+.rex-slider-wrap .rex-slider-element-title .rex-theme-button {
+  background-color: transparent;
+  color: #FF0055 !important;
+  border: 1px solid transparent;
+  padding: 15px 20px;
+  display: inline-block;
+  -webkit-transition: all 0.3s ease-out;
+  -o-transition: all 0.3s ease-out;
+  transition: all 0.3s ease-out;
+  font-size: 14px;
+  line-height: 1;
+  border-radius: 25px;
+  font-weight: normal;
+  margin: 0 7px;
+  width: auto; }
+  a.rex-theme-button.inverted,
+  span.rex-theme-button.inverted,
+  .rex-slider-wrap .rex-slider-element-title .rex-theme-button.inverted {
+    background-color: #FF0055;
+    color: #FFFFFF !important; }
+  a.rex-theme-button.rex-white-inverted,
+  span.rex-theme-button.rex-white-inverted,
+  .rex-slider-wrap .rex-slider-element-title .rex-theme-button.rex-white-inverted {
+    border-color: #fff;
+    background-color: #000;
+    color: #fff !important; }
+  a.rex-theme-button.rex-grey,
+  span.rex-theme-button.rex-grey,
+  .rex-slider-wrap .rex-slider-element-title .rex-theme-button.rex-grey {
+    border-color: #FFFFFF;
+    background-color: #FFFFFF;
+    color: #555555 !important; }
+  a.rex-theme-button.rex-red,
+  span.rex-theme-button.rex-red,
+  .rex-slider-wrap .rex-slider-element-title .rex-theme-button.rex-red {
+    border-color: #FFFFFF;
+    background-color: #FFFFFF; }
+  a.rex-theme-button.rex-black,
+  span.rex-theme-button.rex-black,
+  .rex-slider-wrap .rex-slider-element-title .rex-theme-button.rex-black {
+    border-color: #000;
+    background-color: #000;
+    color: #fff !important; }
+  a.rex-theme-button.rex-white,
+  span.rex-theme-button.rex-white,
+  .rex-slider-wrap .rex-slider-element-title .rex-theme-button.rex-white {
+    border-color: #fff;
+    background-color: #fff;
+    color: #000 !important; }
+  a.rex-theme-button.rex-grey-inverted,
+  span.rex-theme-button.rex-grey-inverted,
+  .rex-slider-wrap .rex-slider-element-title .rex-theme-button.rex-grey-inverted {
+    background-color: #555555;
+    border-color: #555555;
+    color: #fff !important; }
+  a.rex-theme-button.rex-black-border,
+  span.rex-theme-button.rex-black-border,
+  .rex-slider-wrap .rex-slider-element-title .rex-theme-button.rex-black-border {
+    border: 2px solid black; }
+  a.rex-theme-button svg *,
+  span.rex-theme-button svg *,
+  .rex-slider-wrap .rex-slider-element-title .rex-theme-button svg * {
+    fill: inherit; }
+  a.rex-theme-button:hover,
+  span.rex-theme-button:hover,
+  .rex-slider-wrap .rex-slider-element-title .rex-theme-button:hover {
+    color: inherit; }
+  @media screen and (max-width: 450px) {
+    a.rex-theme-button,
+    span.rex-theme-button,
+    .rex-slider-wrap .rex-slider-element-title .rex-theme-button {
+      padding: 15px; }
+      a.rex-theme-button ~ .rex-theme-button,
+      span.rex-theme-button ~ .rex-theme-button,
+      .rex-slider-wrap .rex-slider-element-title .rex-theme-button ~ .rex-theme-button {
+        margin-top: 1em; } }
+
 .b-svg-icons {
   display: inline-block;
   width: 1em;
@@ -15715,6 +15794,7 @@ body.rexpansive-editor .lean-overlay {
   color: #fff;
   background-color: rgba(0, 0, 0, 0.4); }
 
+<<<<<<< HEAD
 .rex-lateral-panel {
   width: 100%;
   max-width: 320px;
@@ -15742,15 +15822,17 @@ body.rexpansive-editor .lean-overlay {
   -webkit-box-shadow: -5px 0 5px rgba(0, 0, 0, 0.1);
           box-shadow: -5px 0 5px rgba(0, 0, 0, 0.1);
   height: 100%; }
+=======
+.info-model-name__wrap {
+  display: block;
+  font-weight: bold; }
+>>>>>>> Adding_buttons_models
 
 .models-list-wrapper {
   overflow: hidden;
   overflow-y: auto;
-  height: calc(100% - 70px); }
-
-.info-model-name__wrap {
-  display: block;
-  font-weight: bold; }
+  height: calc(100% - 70px);
+  width: 100%; }
 
 .set-video-audio-btn {
   display: none; }
@@ -15800,6 +15882,7 @@ input:disabled + .rex_edit_title_slider {
   #rex-edit-model-choose .tool-button--modal.remove-model .l-svg-icons {
     font-size: 16px; }
 
+<<<<<<< HEAD
 #rex-block-accordion-editor {
   max-width: 640px; }
   #rex-block-accordion-editor .modal-editor-editorarea {
@@ -15820,6 +15903,59 @@ input:disabled + .rex_edit_title_slider {
     font-size: 10px; }
     .rex-accordion-gallery__item .tool-button--deactivate .l-svg-icons {
       font-size: 10px; }
+=======
+.rex-lateral-panel {
+  background-color: #fff;
+  width: 100%;
+  max-width: 320px;
+  position: fixed;
+  top: 50px;
+  right: 0;
+  height: 100%;
+  z-index: 3500;
+  font-size: 16px;
+  -webkit-transform: translateX(100%);
+      -ms-transform: translateX(100%);
+          transform: translateX(100%); }
+  .rex-lateral-panel.rex-lateral-panel--open {
+    -webkit-animation: bounce-in-right-mod .5s both;
+            animation: bounce-in-right-mod .5s both;
+    opacity: 1;
+    visibility: visible; }
+  .rex-lateral-panel.rex-lateral-panel--close {
+    -webkit-animation: slide-out-right-no-opacity 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+            animation: slide-out-right-no-opacity 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53) both; }
+  .rex-lateral-panel .tabgroup {
+    height: 100%; }
+  .rex-lateral-panel .tool-button .l-svg-icons > svg {
+    fill: black; }
+
+.rex-lateral-tabs-list li {
+  float: left;
+  width: 33%; }
+.rex-lateral-tabs-list a {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #888;
+  padding: 10px 0;
+  border-bottom: 2px solid #888;
+  background: #f7f7f7; }
+  .rex-lateral-tabs-list a:hover, .rex-lateral-tabs-list a.active {
+    background: #ddd; }
+
+.rex-lateral-panel__content {
+  background-color: #fff;
+  -webkit-box-shadow: -5px 0 5px rgba(0, 0, 0, 0.1);
+          box-shadow: -5px 0 5px rgba(0, 0, 0, 0.1);
+  height: 100%; }
+
+#rex-button-editor .add-rex-button-model {
+  background-color: green; }
+  #rex-button-editor .add-rex-button-model.saving-rex-button {
+    background-color: blue; }
+>>>>>>> Adding_buttons_models
 
 .rexlive-toolbox__wrap {
   width: 100%;

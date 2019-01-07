@@ -224,6 +224,10 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         Block_Video_Background_Modal.openBlockVideoBackgroundModal( event.data.activeBlockData, event.data.mousePosition );
       }
 
+      if (event.data.eventName == "rexlive:openRexButtonEditor") {
+        Button_Edit_Modal.openButtonEditorModal(event.data.buttonData);
+      }
+      
       if (event.data.eventName == "rexlive:editRemoveModal") {
         Model_Edit_Modal.openModal(event.data.modelData);
       }
@@ -412,7 +416,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     });
 
     Rexlive_Base_Settings.$document.on("click", ".btn-models", function(e) {
-      Model_Import_Modal.openModal();
+      Model_Lateral_Menu.openModal();
     });
 
     /**

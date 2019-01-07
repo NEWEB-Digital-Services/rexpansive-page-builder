@@ -169,7 +169,7 @@ class Rexbuilder {
 		$this->loader->add_action( 'plugins_loaded', $plugin_i18n, 'load_plugin_textdomain' );
 
 	}
-
+	
 	/**
 	 * Register all of the hooks related to the admin area functionality
 	 * of the plugin.
@@ -178,9 +178,9 @@ class Rexbuilder {
 	 * @access   private
 	 */
 	private function define_admin_hooks() {
-
+		
 		$plugin_admin = new Rexbuilder_Admin( $this->get_plugin_name(), $this->get_version() );
-
+		
 		// Slider custom post type
 		$this->loader->add_action( 'init', $plugin_admin, 'rexpansive_slider_definition' );
 		$this->loader->add_action( 'init', $plugin_admin, 'rexpansive_models_defintion' );
@@ -198,14 +198,14 @@ class Rexbuilder {
 
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_plugin_options_menu' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'update_notifier_menu' );
-
+		
 		$this->loader->add_action( 'admin_bar_menu', $plugin_admin, 'add_top_bar_plugin_options_menu', 1000 );
-
+		
 		$plugin_basename = plugin_basename( plugin_dir_path( __DIR__ ) . $this->plugin_name . '.php' );
 		$this->loader->add_filter( 'plugin_action_links_' . $plugin_basename, $plugin_admin, 'add_action_links' );
-
+		
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'plugin_options_update' );
-
+		
 		// live builder		
 		$this->loader->add_filter( 'content_save_pre', $plugin_admin, 'rex_fix_post_content' );
 		
@@ -213,8 +213,9 @@ class Rexbuilder {
 			$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_sprites_live' );
 			$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_live_editing' );
 			$this->loader->add_filter( 'admin_body_class', $plugin_admin, 'rexlive_body_fix' );
+			$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'print_rex_buttons_style_backend' );
 		}
-
+		
 		$this->loader->add_action( 'admin_footer', $plugin_admin, 'create_builder_modals' );
 		$this->loader->add_action( 'admin_footer', $plugin_admin, 'create_builder_templates' );
 		$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_sprites' );
@@ -242,6 +243,8 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_ajax_rex_save_custom_layouts', $plugin_admin, 'rex_save_custom_layouts' );
 		$this->loader->add_action( 'wp_ajax_rex_get_model', $plugin_admin, 'rex_get_model' );
 		$this->loader->add_action( 'wp_ajax_rex_get_model_list', $plugin_admin, 'rex_get_model_list' );
+		$this->loader->add_action( 'wp_ajax_rex_update_buttons_ids', $plugin_admin, 'rex_update_buttons_ids' );
+		$this->loader->add_action( 'wp_ajax_rex_update_button', $plugin_admin, 'rex_update_button' );
 
 		// COLOR PALETTE APIs
 		$this->loader->add_action( 'wp_ajax_rex_save_palette_color', $plugin_admin, 'rex_save_palette_color' );
@@ -299,6 +302,7 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'print_post_custom_styles' );
+		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'print_rex_buttons_style' );
 
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_photoswipe_template' );
 		
@@ -338,6 +342,8 @@ class Rexbuilder {
 
 		$this->loader->add_action( 'wp_ajax_rexlive_get_embed_code', $plugin_public, 'rexlive_get_embed_code' );
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_get_embed_code', $plugin_public, 'rexlive_get_embed_code' );
+		$this->loader->add_action( 'wp_ajax_rexlive_save_buttons_in_page', $plugin_public, 'rexlive_save_buttons_in_page' );
+		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_buttons_in_page', $plugin_public, 'rexlive_save_buttons_in_page' );
 
 		// $this->loader->add_action( 'wpcf7_contact_form', $plugin_public, 'cf7_custom_script_guard' );
 		$this->loader->add_action( 'shortcode_atts_wpcf7', $plugin_public, 'cf7_custom_style', 10, 4 );

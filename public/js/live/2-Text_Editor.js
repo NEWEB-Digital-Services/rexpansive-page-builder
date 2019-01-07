@@ -1700,6 +1700,7 @@ var TextEditor = (function($) {
       }, 
       imageDragging: false,
       extensions: {
+        'imageDragging': {}, // fix for disable drag extension of medium editor
         colorPicker: pickerExtensionInstance,
         textEditorHtml: new TextHtmlEditorExtension(),
         headingTags: headingTagsExtensionInstance,

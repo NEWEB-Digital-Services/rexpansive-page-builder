@@ -1943,6 +1943,23 @@
       );
     });
 
+    $(document).on("rexlive:update_button_page", function(e) {
+      var data = e.settings.data_to_send;
+      var reverseData = {
+        buttonProperties: jQuery.extend(true, {}, data.reverseButtonData)
+      };
+      var actionData = {
+        buttonProperties: jQuery.extend(true, {}, data.actionButtonData)
+      }
+      Rexbuilder_Rexbutton.updateButton(actionData);
+
+      Rexbuilder_Util_Editor.pushAction(
+        "document",
+        "updateRexButton",
+        actionData,
+        reverseData
+      );
+    });
     ///////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////

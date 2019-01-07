@@ -558,6 +558,22 @@ var Rexbuilder_Util_Editor = (function($) {
       var eventData = e.settings.data_to_send;
       $('.rexpansive_section[data-rexlive-section-id=' + eventData.sectionTarget.sectionID + ']').find('.open-model').trigger('click');
     });
+    
+    Rexbuilder_Util.$document.on("rexlive:importButton", function (e) {
+      Rexbuilder_Rexbutton.fixImportedButton();
+    });
+    
+    Rexbuilder_Util.$document.on("rexlive:updateButtonLive", function(e){
+      Rexbuilder_Rexbutton.updateButtonLive(e.settings.data_to_send);
+    });
+
+    Rexbuilder_Util.$document.on("rexlive:remove_separate_button", function (e) {
+      Rexbuilder_Rexbutton.removeSeparateButton(e.settings.data_to_send);
+    });
+
+    Rexbuilder_Util.$document.on("rexlive:separate_rex_button", function (e) {
+      Rexbuilder_Rexbutton.separateRexButton(e.settings.data_to_send);
+    });
   };
 
   var _hideAllTools = function() {

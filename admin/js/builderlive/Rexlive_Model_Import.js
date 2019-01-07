@@ -77,9 +77,9 @@ var Model_Import_Modal = (function($) {
                 .remove();
             }
           }
-
-          rexmodel_import_props.$self.addClass("rex-lateral-panel--open");
-          // Rexlive_Modals_Utils.openModal(rexmodel_import_props.$self.parent('.rex-modal-wrap'), true);
+          
+          var event = jQuery.Event("rexlive:lateralMenuReady");
+          $(document).trigger(event);
         }
       },
       error: function(response) {},
@@ -89,26 +89,7 @@ var Model_Import_Modal = (function($) {
     });
   };
 
-  var _openModal = function() {
-    _updateModelList();
-  };
-
-  var _closeModal = function() {
-    rexmodel_import_props.$self
-      .addClass("rex-lateral-panel--close")
-      .one(Rexbuilder_Util_Admin_Editor.animationEvent, function(e) {
-        rexmodel_import_props.$self.removeClass(
-          "rex-lateral-panel--open rex-lateral-panel--close"
-        );
-      });
-    // Rexlive_Modals_Utils.closeModal(rexmodel_import_props.$self.parent('.rex-modal-wrap'));
-  };
-
   var _linkDocumentListeners = function() {
-    rexmodel_import_props.$close_button.click(function(e) {
-      e.preventDefault();
-      _closeModal();
-    });
   };
 
   var _linkDraggable = function() {
@@ -1027,7 +1008,6 @@ var Model_Import_Modal = (function($) {
     var $self = $("#rex-models-list");
     rexmodel_import_props = {
       $self: $self,
-      $close_button: $self.find(".rex-close-button")
     };
     _linkDocumentListeners();
     _linkDraggable();
@@ -1037,7 +1017,6 @@ var Model_Import_Modal = (function($) {
 
   return {
     init: _init,
-    openModal: _openModal,
-    closeModal: _closeModal
+    updateModelList: _updateModelList
   };
 })(jQuery);

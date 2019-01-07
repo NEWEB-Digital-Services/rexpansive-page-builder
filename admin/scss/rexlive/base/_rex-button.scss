@@ -1,0 +1,6 @@
+a.rex-theme-button,
+span.rex-theme-button,
+.rex-slider-wrap .rex-slider-element-title .rex-theme-button {
+    @include button-definition-style();
+    @include button-definition();
+}

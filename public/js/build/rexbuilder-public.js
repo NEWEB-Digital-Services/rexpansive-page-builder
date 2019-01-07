@@ -14,7 +14,10 @@ var Rexbuilder_App = (function($) {
   var init = function() {
     Rexbuilder_Util.init();
     Rexbuilder_Dom_Util.init();
-
+    
+    console.log("starting buttons js");
+    Rexbuilder_Rexbutton.init();
+    
     if (Rexbuilder_Util.editorMode) {
       Rexbuilder_Util_Editor.init();
       Rexbuilder_Color_Palette.init();

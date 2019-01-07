@@ -1540,6 +1540,10 @@ var Rexbuilder_Dom_Util = (function($) {
     return template.content.firstChild;
   }
 
+  var _updateRexButton= function(data){
+    Rexbuilder_Rexbutton.updateButton(data);
+  }
+
   var _performAction = function(action, flag) {
     var dataToUse;
 
@@ -1716,6 +1720,9 @@ var Rexbuilder_Dom_Util = (function($) {
         break;
       case "updateSectionMargins":
         _updateSectionMargins($section, dataToUse);
+        break;
+      case "updateRexButton":
+        _updateRexButton(dataToUse);
         break;
       default:
         break;
