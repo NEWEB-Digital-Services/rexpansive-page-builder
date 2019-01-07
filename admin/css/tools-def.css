@@ -15794,7 +15794,6 @@ body.rexpansive-editor .lean-overlay {
   color: #fff;
   background-color: rgba(0, 0, 0, 0.4); }
 
-<<<<<<< HEAD
 .rex-lateral-panel {
   width: 100%;
   max-width: 320px;
@@ -15822,11 +15821,6 @@ body.rexpansive-editor .lean-overlay {
   -webkit-box-shadow: -5px 0 5px rgba(0, 0, 0, 0.1);
           box-shadow: -5px 0 5px rgba(0, 0, 0, 0.1);
   height: 100%; }
-=======
-.info-model-name__wrap {
-  display: block;
-  font-weight: bold; }
->>>>>>> Adding_buttons_models
 
 .models-list-wrapper {
   overflow: hidden;
@@ -15882,7 +15876,6 @@ input:disabled + .rex_edit_title_slider {
   #rex-edit-model-choose .tool-button--modal.remove-model .l-svg-icons {
     font-size: 16px; }
 
-<<<<<<< HEAD
 #rex-block-accordion-editor {
   max-width: 640px; }
   #rex-block-accordion-editor .modal-editor-editorarea {
@@ -15903,7 +15896,6 @@ input:disabled + .rex_edit_title_slider {
     font-size: 10px; }
     .rex-accordion-gallery__item .tool-button--deactivate .l-svg-icons {
       font-size: 10px; }
-=======
 .rex-lateral-panel {
   background-color: #fff;
   width: 100%;
@@ -15955,7 +15947,6 @@ input:disabled + .rex_edit_title_slider {
   background-color: green; }
   #rex-button-editor .add-rex-button-model.saving-rex-button {
     background-color: blue; }
->>>>>>> Adding_buttons_models
 
 .rexlive-toolbox__wrap {
   width: 100%;
