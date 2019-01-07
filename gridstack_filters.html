@@ -36,7 +36,7 @@
       }
 
       .grid-stack-item-content {
-        color: #2c3e50;
+        color: #fff;
         text-align: center;
         background-color: #18bc9c;
       }
@@ -93,6 +93,7 @@
 
       .filter:hover {
         background-color:#eee;
+        color: #aaa;
       }
     </style>
   </head>
@@ -111,6 +112,12 @@
         </div>
       </div>
 
+      <!-- <div class="row">
+        <div class="col-md-12">
+          <button id="moveTest">TEST</button>
+        </div>
+      </div> -->
+
       <div class="row">
         <div class="col-md-12">
           <div class="grid-stack grid-stack-12" id="grid1">
@@ -123,7 +130,7 @@
               data-el-resized="false"
             >
               <div class="grid-stack-item-content">
-                <div class="text-wrap"></div>
+                <div class="text-wrap">R1: 3x2</div>
               </div>
             </div>
             <div
@@ -135,7 +142,7 @@
               data-el-resized="false"
             >
               <div class="grid-stack-item-content">
-                <div class="text-wrap"></div>
+                <div class="text-wrap">G1: 3x3</div>
               </div>
             </div>
             <div
@@ -147,7 +154,7 @@
               data-el-resized="false"
             >
               <div class="grid-stack-item-content">
-                <div class="text-wrap"></div>
+                <div class="text-wrap">R2: 3x3</div>
               </div>
             </div>
             <div
@@ -159,7 +166,7 @@
               data-el-resized="false"
             >
               <div class="grid-stack-item-content">
-                <div class="text-wrap"></div>
+                <div class="text-wrap">B1: 3x5</div>
               </div>
             </div>
             <div
@@ -171,7 +178,7 @@
               data-el-resized="false"
             >
               <div class="grid-stack-item-content">
-                <div class="text-wrap"></div>
+                <div class="text-wrap">B2: 3x3</div>
               </div>
             </div>
             <div
@@ -183,7 +190,19 @@
               data-el-resized="false"
             >
               <div class="grid-stack-item-content">
-                <div class="text-wrap"></div>
+                <div class="text-wrap">G2: 6x2</div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item green-block"
+              data-gs-x="0"
+              data-gs-y="5"
+              data-gs-width="7"
+              data-gs-height="1"
+              data-el-resized="false"
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">G3: 7x1</div>
               </div>
             </div>
           </div>
@@ -205,6 +224,19 @@
           var grid = $grid.data("gridstack");
           var initialStateGrid = grid.grid.nodes;
 
+          // Initial grid (as an array)
+          var M = [];
+          var M2 = [];
+          for(var j=0; j<grid.grid.nodes.length; j++) {
+            var thisNode = grid.grid.nodes[j];
+            for(var w=0; w<thisNode.height; w++) {
+              for(var z=0; z<thisNode.width; z++) {
+                M[( grid.grid.width * ( w + thisNode.y ) ) + z + thisNode.x] = 1;
+                M2[( grid.grid.width * ( w + thisNode.y ) ) + z + thisNode.x] = 0;
+              }
+            }
+          }
+          
           var $fliter_list = $('.filter-list');
           $fliter_list.on("click", ".filter", function(e) {
             e.preventDefault();
@@ -222,6 +254,7 @@
             $items.css("display","block");
             $toRemove.css("display","none");
             grid.removeAll(false);
+
             // $toRemove.each(function(i,el) {
             //   grid.removeWidget(el,false);
             // });
@@ -234,18 +267,61 @@
             if("*" === filterClass) {
               for(var i=0; i<initialStateGrid.length; i++) {
                 initialStateGrid[i].el[0].removeAttribute("data-gs-auto-position");
-                grid.addWidget(initialStateGrid[i].el[0],initialStateGrid[i].x,initialStateGrid[i].y,initialStateGrid[i].width,initialStateGrid[i].height,initialStateGrid[i].autoPosition,initialStateGrid[i].minWidth,initialStateGrid[i].maxWidht,initialStateGrid[i].minHeight,initialStateGrid[i].maxHeight,initialStateGrid[i].id);
+                grid.addWidget(initialStateGrid[i].el[0], initialStateGrid[i].x, initialStateGrid[i].y, initialStateGrid[i].width, initialStateGrid[i].height, initialStateGrid[i].autoPosition, initialStateGrid[i].minWidth, initialStateGrid[i].maxWidht, initialStateGrid[i].minHeight, initialStateGrid[i].maxHeight, initialStateGrid[i].id);
               }
             } else {
               // $($toMaintain.get().reverse()).each(function(i,el) {
               $toMaintain.each(function(i,el) {
-                el.setAttribute("data-gs-auto-position","1");
-                grid.addWidget(el);
+                // el.setAttribute("data-gs-auto-position","1");
+                var newCoords = placeEl(el);
+                var coords = {
+                  x: parseInt(el.getAttribute("data-gs-x")),
+                  y: parseInt(el.getAttribute("data-gs-y")),
+                  width: parseInt(el.getAttribute("data-gs-width")),
+                  height: parseInt(el.getAttribute("data-gs-height")),
+                };
+
+                /*
+                for(var w=0; w<coords.height; w++) {
+                  for(var z=0; z<coords.width; z++) {
+                    M2[( grid.grid.width * ( w + coords.y ) ) + z + coords.x] = 1;
+                  }
+                }
+                */
+
+                grid.addWidget(el, coords.x, coords.y);
+                grid.update(el, newCoords.x, newCoords.y);
               });
             }
 
+            console.log(M2);
+
             grid.commit();
             // $grid.find(".grid-stack-item").css("display","block").not(filterClass).css("display","none");
+          }
+
+          function placeEl(node) {
+            var response = {
+              x: 0,
+              y: 0,
+            }
+            for (var i = 0;; ++i) {
+              var x = i % grid.grid.width;
+              var y = Math.floor(i / grid.grid.width);
+              if (x + node.width > grid.grid.width) {
+                continue;
+              }
+              if (!_.find(grid.grid.nodes, _.bind(GridStackUI.Utils._isAddNodeIntercepted, {x: x, y: y, node: node}))) {
+                response.x = x;
+                response.y = y;
+                break;
+              }
+            }
+            return response;
+          }
+
+          function isIntercepted(a, b) {
+            return !(a.x + a.width <= b.x || b.x + b.width <= a.x || a.y + a.height <= b.y || b.y + b.height <= a.y);
           }
         });
       });
