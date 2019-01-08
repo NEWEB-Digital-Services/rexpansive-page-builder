@@ -194,7 +194,7 @@
               </div>
             </div>
             <div
-              class="grid-stack-item green-block"
+              class="grid-stack-item green-block blue-block"
               data-gs-x="0"
               data-gs-y="5"
               data-gs-width="7"
@@ -223,19 +223,20 @@
           $grid.gridstack(options);
           var grid = $grid.data("gridstack");
           var initialStateGrid = grid.grid.nodes;
+          var mirrorStateGrid = [];
 
           // Initial grid (as an array)
-          var M = [];
-          var M2 = [];
-          for(var j=0; j<grid.grid.nodes.length; j++) {
-            var thisNode = grid.grid.nodes[j];
-            for(var w=0; w<thisNode.height; w++) {
-              for(var z=0; z<thisNode.width; z++) {
-                M[( grid.grid.width * ( w + thisNode.y ) ) + z + thisNode.x] = 1;
-                M2[( grid.grid.width * ( w + thisNode.y ) ) + z + thisNode.x] = 0;
-              }
-            }
-          }
+          // var M = [];
+          // var M2 = [];
+          // for(var j=0; j<grid.grid.nodes.length; j++) {
+          //   var thisNode = grid.grid.nodes[j];
+          //   for(var w=0; w<thisNode.height; w++) {
+          //     for(var z=0; z<thisNode.width; z++) {
+          //       M[( grid.grid.width * ( w + thisNode.y ) ) + z + thisNode.x] = 1;
+          //       M2[( grid.grid.width * ( w + thisNode.y ) ) + z + thisNode.x] = 0;
+          //     }
+          //   }
+          // }
           
           var $fliter_list = $('.filter-list');
           $fliter_list.on("click", ".filter", function(e) {
@@ -255,6 +256,11 @@
             $toRemove.css("display","none");
             grid.removeAll(false);
 
+            $items.each(function(i,el) {
+              el.style.left = "";
+              el.style.top = "";
+            });
+
             // $toRemove.each(function(i,el) {
             //   grid.removeWidget(el,false);
             // });
@@ -264,16 +270,30 @@
             //   grid.addWidget(grid.grid.nodes[i].el);
             // }
 
+            // Remove filtering
             if("*" === filterClass) {
               for(var i=0; i<initialStateGrid.length; i++) {
-                initialStateGrid[i].el[0].removeAttribute("data-gs-auto-position");
+                // initialStateGrid[i].el[0].removeAttribute("data-gs-auto-position");
                 grid.addWidget(initialStateGrid[i].el[0], initialStateGrid[i].x, initialStateGrid[i].y, initialStateGrid[i].width, initialStateGrid[i].height, initialStateGrid[i].autoPosition, initialStateGrid[i].minWidth, initialStateGrid[i].maxWidht, initialStateGrid[i].minHeight, initialStateGrid[i].maxHeight, initialStateGrid[i].id);
               }
             } else {
+              mirrorStateGrid = [];
+
+              $toMaintain.each(function(i,el) {
+                var newCoords = placeElMirror(el);
+                mirrorStateGrid.push({
+                  x: newCoords.x,
+                  y: newCoords.y,
+                  el: el,
+                  width: parseInt(el.getAttribute("data-gs-width")),
+                  height: parseInt(el.getAttribute("data-gs-height")),
+                });
+              });
+
               // $($toMaintain.get().reverse()).each(function(i,el) {
               $toMaintain.each(function(i,el) {
                 // el.setAttribute("data-gs-auto-position","1");
-                var newCoords = placeEl(el);
+                // var newCoords = placeEl(el);
                 var coords = {
                   x: parseInt(el.getAttribute("data-gs-x")),
                   y: parseInt(el.getAttribute("data-gs-y")),
@@ -281,23 +301,56 @@
                   height: parseInt(el.getAttribute("data-gs-height")),
                 };
 
-                /*
-                for(var w=0; w<coords.height; w++) {
-                  for(var z=0; z<coords.width; z++) {
-                    M2[( grid.grid.width * ( w + coords.y ) ) + z + coords.x] = 1;
-                  }
-                }
-                */
-
                 grid.addWidget(el, coords.x, coords.y);
-                grid.update(el, newCoords.x, newCoords.y);
+                // grid.update(el, newCoords.x, newCoords.y);
               });
-            }
 
-            console.log(M2);
+              console.log(grid.grid.nodes);
+              console.log(mirrorStateGrid);
+
+              // $toMaintain.each(function(i,el) {
+              //   // console.table({el:el,x:mirrorStateGrid[i].x,y:mirrorStateGrid[i].y});
+              //   el.style.left = (grid.cellWidth() * mirrorStateGrid[i].x) + "px";
+              //   el.style.top = (grid.cellWidth() * mirrorStateGrid[i].y) + "px";
+              //   // $(el).one("transitionend", function(e){
+              //   //   grid.update(el, mirrorStateGrid[i].x, mirrorStateGrid[i].y);
+              //   //   this.style.left = "";
+              //   //   this.style.top = "";
+              //   // });
+              // });
+            }
 
             grid.commit();
             // $grid.find(".grid-stack-item").css("display","block").not(filterClass).css("display","none");
+          }
+
+          function placeElMirror(node) {
+            // grid.grid._sortNodes();
+            var response = {
+              x: 0,
+              y: 0,
+            }
+            for (var i = 0;; ++i) {
+              var x = i % grid.grid.width;
+              var y = Math.floor(i / grid.grid.width);
+              if (x + node.width > grid.grid.width) {
+                continue;
+              }
+              if (!_.find(mirrorStateGrid, _.bind(GridStackUI.Utils._isAddNodeIntercepted, {x: x, y: y, node: node}))) {
+                response.x = x;
+                response.y = y;
+                break;
+              }
+            }
+            return response;
+          }
+
+          function _isAddNodeIntercepted(n) {
+            return isIntercepted({x: this.x, y: this.y, width: this.node.width, height: this.node.height}, n);
+          }
+
+          function isIntercepted(a, b) {
+            return !(a.x + a.width <= b.x || b.x + b.width <= a.x || a.y + a.height <= b.y || b.y + b.height <= a.y);
           }
 
           function placeEl(node) {
@@ -318,10 +371,6 @@
               }
             }
             return response;
-          }
-
-          function isIntercepted(a, b) {
-            return !(a.x + a.width <= b.x || b.x + b.width <= a.x || a.y + a.height <= b.y || b.y + b.height <= a.y);
           }
         });
       });
