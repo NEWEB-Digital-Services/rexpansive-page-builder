@@ -1939,7 +1939,7 @@ defined('ABSPATH') or exit;
 </div><!-- Locked feature -->
 
 <div id="rexbuilder-lateral-panel" class="rex-lateral-panel">
-    <div class="top-lateral-tools">
+    <div class="top-lateral-tools clearfix">
         <ul class="rex-lateral-tabs-list" data-tabgroup="rex-lateral-tabs">
             <li><a href="#" data-rex-tab-target="rex-models-list">Models</a></li>
             <li><a href="#" data-rex-tab-target="rex-buttons-list">Buttons</a></li>
@@ -1991,9 +1991,6 @@ defined('ABSPATH') or exit;
         </div>
         <div id="rex-buttons-list" class="rex-lateral-panel__content">
             <div class="buttons-list-wrapper">
-                <div id="rex-add-new-button">
-                    +
-                </div>
                 <ul class="button-list button-list--pswp">
                         <?php 
                         // è possibile fare query del tipo '_rex_button_%%_html0'?
@@ -2033,9 +2030,9 @@ defined('ABSPATH') or exit;
                     <div id="rex-button-text-color-preview-icon" class="preview-color-icon"></div>
                 </div>
                 <div id="rex-button-label-wrap">
-                    <input type="text" id="rex-button__label" name="rex-button__label" style="text-shadow: 2px 2px 4px black !important"/>
+                    <input type="text" id="rex-button__label" name="rex-button__label"/>
                 </div>
-                <div id="rex-button-font-size-wrap" style="display: flex;">
+                <div id="rex-button-font-size-wrap">
                     <input type="text" id="rex-button_text_font_size" name="rex-button_text_font_size"/>
                     <div class="label-px">px</div>
                 </div>
@@ -2048,9 +2045,9 @@ defined('ABSPATH') or exit;
                     <div id="rex-button-background-color-preview-icon" class="preview-color-icon"></div>
                 </div>
                 <div id="rex-button-background-preview-wrap">
-                    <div id="rex-button-preview-background" style="width: 200px;height: 40px;background-color: black;border-radius: 20px;"></div>
+                    <div id="rex-button-preview-background"></div>
                 </div>
-                <div id="rex-button-height-wrap" style="display: flex;">
+                <div id="rex-button-height-wrap">
                     <div class="">>.<</div>
                     <input type="text" id="rex-button-height" name="rex-button-height"/>
                     <div class="label-px">px</div>
@@ -2064,7 +2061,7 @@ defined('ABSPATH') or exit;
                     <div id="rex-button-background-hover-color-preview-icon" class="preview-color-icon"></div>
                 </div>
                 <div id="rex-button-background-hover-preview-wrap">
-                    <div id="rex-button-preview-background-hover" style="width: 200px;height: 40px;background-color: grey;border-radius: 20px;"></div>
+                    <div id="rex-button-preview-background-hover"></div>
                 </div>
             </div>
             <div class="bl_modal-row">
@@ -2075,32 +2072,32 @@ defined('ABSPATH') or exit;
                     <div id="rex-button-color-preview-icon" class="preview-color-icon"></div>
                 </div>
                 <div id="rex-button-border-preview-wrap">
-                    <div id="rex-button-border-preview" style="width: 200px;height: 40px;border-color: blue;border-radius: 20px;border-style: solid;border-width: 2px;"></div>
+                    <div id="rex-button-border-preview"></div>
                 </div>
-                <div id="rex-button-border-width-wrap" style="display: flex;">
+                <div id="rex-button-border-width-wrap">
                     <input type="text" id="rex-button-border-width" name="rex-button-border-width"/>
                     <div class="label-px">px</div>
                 </div>
             </div>
             <div class="bl_modal-row">
-                <div id="rex-button-border-radius-wrap" style="display: flex;">
+                <div id="rex-button-border-radius-wrap">
                     <div class="border-icon">90</div>
                     <input type="text" id="rex-button-border-radius" name="rex-button-border-radius"/>
                 </div>
                 <div id="rex-button-margins-wrap">
-                    <div id="rex-button-margin-top-wrap" style="display: flex;">
+                    <div id="rex-button-margin-top-wrap">
                         <div class="border-icon">up</div>
                         <input type="text" id="rex-button-margin-top-radius" name="rex-button-margin-top-radius"/>
                     </div>
-                    <div id="rex-button-preview-empty" style="width: 50px;height: 20px;background-color: grey;border-radius: 20px;"></div>
-                    <div id="rex-button-margin-bottom-wrap" style="display: flex;">
+                    <div id="rex-button-preview-empty"></div>
+                    <div id="rex-button-margin-bottom-wrap">
                         <div class="border-icon">down</div>
                         <input type="text" id="rex-button-margin-bottom-radius" name="rex-button-margin-bottom-radius"/>
                     </div>
                 </div>
             </div>
             <div class="bl_modal-row">
-                <div id="rex-button-link-target-wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix" style="width:100%;">
+                <div id="rex-button-link-target-wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix">
                         <span class="prefix"></span>
                         <input type="text" id="rex-button-link-target" name="rex-button-link-target">
                         <label for="rex-button-link-target" class=""><?php _e('https://...', 'rexpansive');?></label>
@@ -2119,7 +2116,7 @@ defined('ABSPATH') or exit;
                 </div>
             </div>
             <div class="bl_modal-row">
-                <div id="rex-button-name-wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix" style="width:100%;">
+                <div id="rex-button-name-wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix">
                     <span class="prefix"></span>
                     <input type="text" id="rex-button__name" name="rex-button__name">
                     <label for="rex-button__name" class=""><?php _e('Title name model button', 'rexpansive');?></label>
@@ -2131,8 +2128,8 @@ defined('ABSPATH') or exit;
             </div><!-- // .rex-model__add-model__wrap -->
         </div>
         <div class="rex-modal__outside-footer">
-            <div class="rex-reset-button" style="width: 30px; background-color: grey; border-radius: 50%">res</div>
-            <div class="rex-apply-button" style="width: 30px; background-color: blue; border-radius: 50%">res</div>
+            <div class="rex-reset-button">res</div>
+            <div class="rex-apply-button">app</div>
         </div>
     </div>
 </div>
@@ -2171,7 +2168,7 @@ Evidenzio di rosso se non l'ha messo e pace-->
                 <span class="info-model-name__wrap"><span class="info-model-name"></span>&nbsp;<span>?</span></span>
             </div>
             <div>
-                <div id="rex-button-name-model-wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix" style="width:100%;">
+                <div id="rex-button-name-model-wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix">
                     <span class="prefix"></span>
                     <input type="text" id="rex-button__name_model" name="rex-button__name_model">
                     <label for="rex-button__name_model" class=""><?php _e('Title name model button', 'rexpansive');?></label>

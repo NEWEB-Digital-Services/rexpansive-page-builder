@@ -72,6 +72,10 @@ var Rexbuilder_Rexbutton = (function ($) {
         $buttonData.removeAttr("data-button-name");
     }
 
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    // CSS RULES EDITING
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    
     var _addButtonContainerRule = function (buttonID, property) {
         if ("insertRule" in styleSheet) {
             styleSheet.insertRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container{" + property + "}", styleSheet.cssRules.length);
@@ -209,6 +213,8 @@ var Rexbuilder_Rexbutton = (function ($) {
             }
         }
     }
+    
+    //////////////////////////////////////////////////////////////////////////////////////////////
 
     var _getActiveStyleSheet = function () {
         return styleSheet;

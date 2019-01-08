@@ -4,3 +4,92 @@
         background-color: blue;
     }
 }
+.add-rex-button-model.editing-model{
+    display: none;
+}
+
+#rex-button__label{
+    text-shadow: 2px 2px 4px black !important;
+}
+
+#rex-button-font-size-wrap{
+    display: flex;   
+}
+
+#rex-button-preview-background{
+    width: 200px;
+    height: 40px;
+    background-color: black;
+    border-radius: 20px;
+}
+
+#rex-button-height-wrap{
+    display: flex;
+}
+
+#rex-button-preview-background-hover{
+    width: 200px;
+    height: 40px;
+    background-color: grey;
+    border-radius: 20px;
+}
+
+#rex-button-border-preview{
+    width: 200px;
+    height: 40px;
+    border-color: blue;
+    border-radius: 20px;
+    border-style: solid;
+    border-width: 2px;
+}
+
+#rex-button-border-width-wrap{
+    display: flex;
+}
+#rex-button-border-radius-wrap{
+    display: flex;
+}
+#rex-button-margin-top-wrap{
+    display: flex;
+}
+#rex-button-preview-empty{
+    width: 50px;
+    height: 20px;
+    background-color: grey;
+    border-radius: 20px;
+}
+#rex-button-margin-bottom-wrap{
+    display: flex;
+}
+
+#rex-button-link-target-wrap{
+    width:100%;
+}
+
+#rex-button-name-wrap{
+    width: 100%;
+}
+
+.rex-reset-button{
+    width: 30px; 
+    background-color: grey; 
+    border-radius: 50%
+}
+.rex-apply-button{
+    width: 30px; 
+    background-color: blue; 
+    border-radius: 50%
+}
+
+
+#rex-button-name-model-wrap{
+    width:100%;
+}
+
+#rex-button-add-model-wrap{
+    width: 50px;
+}
+#rex-button-add-model-wrap:hover{
+    background-color: orange; 
+    width: 50px;
+}

@@ -108,8 +108,12 @@ var Button_Edit_Modal = (function ($) {
                     _separateButton();
                     break;
                 case "edit":
+                    editingModelButton = true;
                     console.log("MANTIENIH");
-                    _saveButtonOnDB();
+                    button_editor_properties.$add_model_button.addClass("editing-model");
+                    Rexlive_Modals_Utils.openModal(
+                        button_editor_properties.$self.parent(".rex-modal-wrap")
+                    );
                     break;
                 default:
                     break;
@@ -138,18 +142,19 @@ var Button_Edit_Modal = (function ($) {
     var buttonData;
     var rexButtonsJSON;
     var buttonsIDsUsed;
-    var defaultButtonData;
     var reverseData;
     var resetData;
     var editingModelButton;
-    var addingNewButton;
 
     var _openButtonEditorModal = function (data) {
         _updateButtonEditorModal(data);
-
-        Rexlive_Modals_Utils.openModal(
-            button_editor_properties.$self.parent(".rex-modal-wrap")
-        );
+        if (!editingModelButton) {
+            Rexlive_Modals_Utils.openModal(
+                button_editor_properties.$self.parent(".rex-modal-wrap")
+            );
+        } else {
+            _openChooseButtonEdit();
+        }
     };
 
     var _closeModal = function () {
@@ -160,7 +165,6 @@ var Button_Edit_Modal = (function ($) {
 
     var _updateButtonEditorModal = function (data) {
         editingModelButton = false;
-        addingNewButton = false;
         _clearButtonData();
         _updateButtonData(data);
         _updatePanel();
@@ -255,6 +259,7 @@ var Button_Edit_Modal = (function ($) {
         button_editor_properties.$button_border_color_value.val(buttonData.border_color);
         button_editor_properties.$button_border_color_preview.hide();
         button_editor_properties.$button_border_color_value.spectrum("set", buttonData.border_color);
+        button_editor_properties.$add_model_button.removeClass("editing-model");
     };
 
     var _updateButtonDataFromPanel = function () {
@@ -654,13 +659,6 @@ var Button_Edit_Modal = (function ($) {
         });
     }
 
-    var _createNewButton = function (name) {
-        _updateButtonsIDSUsed({
-            id: "",
-            name: name
-        });
-    };
-
     var _separateButton = function () {
         var newID = _createNewButtonID();
         _updateButtonsIDSUsed({ id: newID });
@@ -668,11 +666,6 @@ var Button_Edit_Modal = (function ($) {
 
     var _updateButtonsIDSUsed = function (data) {
         var newID = data.id;
-        if (addingNewButton) {
-            newID = _createNewButtonID();
-            buttonData.buttonTarget.button_id = newID;
-            buttonData.button_name = data.name;
-        }
 
         buttonsIDsUsed.push(newID);
         $.ajax({
@@ -685,25 +678,29 @@ var Button_Edit_Modal = (function ($) {
                 ids_used: JSON.stringify(buttonsIDsUsed),
             },
             success: function () {
-                // aggiorna in live
-                if (editingModelButton) {
-                    var buttonDataToIframe = {
-                        eventName: "rexlive:separate_rex_button",
-                        data_to_send: {
-                            newID: newID,
-                            buttonData: buttonData
-                        }
-                    };
-                    Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(buttonDataToIframe);
-                    _closeModal();
-                }
-                if (addingNewButton) {
-                    _saveButtonOnDB();
-                }
+                var buttonDataToIframe = {
+                    eventName: "rexlive:separate_rex_button",
+                    data_to_send: {
+                        newID: newID,
+                        buttonData: buttonData
+                    }
+                };
+                Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(buttonDataToIframe);
+                _updateTarget(newID);
+                editingModelButton = false;
+                Rexlive_Modals_Utils.openModal(
+                    button_editor_properties.$self.parent(".rex-modal-wrap")
+                );
+
             },
             error: function () { },
             complete: function () { }
         })
+    }
+
+    var _updateTarget = function (newID) {
+        buttonData.buttonTarget.button_id = newID;
+        buttonData.buttonTarget.button_number = 1;
     }
 
     var _createNewButtonID = function () {
@@ -796,9 +793,10 @@ var Button_Edit_Modal = (function ($) {
     var _createButtonHtml = function () {
         var buttonHTML = "";
         tmpl.arg = "button";
-        buttonHTML = tmpl("tmpl-rex-button", {
+
+        var data = {
             text_color: buttonData.text_color,
-            text: "Rex Button", //Cosa ci metto altrimenti? è il testo del modello
+            text: "Learn More",
             font_size: buttonData.font_size,
             button_height: buttonData.button_height,
             background_color: buttonData.background_color,
@@ -812,7 +810,8 @@ var Button_Edit_Modal = (function ($) {
             link_type: "_blank",
             button_name: buttonData.buttonTarget.button_name,
             id: buttonData.buttonTarget.button_id,
-        });
+        }
+        buttonHTML = tmpl("tmpl-rex-button", data);
         return buttonHTML;
     }
 
@@ -858,28 +857,16 @@ var Button_Edit_Modal = (function ($) {
     }
 
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
-    // 
+    //  DOCUMENT LISTENERS
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     var _linkDocumentListeners = function () {
-        button_editor_properties.$create_new_button.on("click", function () {
-            // aprire il pannello con i dati del pulsante di default, poi chiede il nome
-            addingNewButton = true;
-            editingModelButton = false;
-            _clearButtonData();
-            _updateButtonData(defaultButtonData);
-            _updatePanel();
-            Rexlive_Modals_Utils.openModal(
-                button_editor_properties.$self.parent(".rex-modal-wrap")
-            );
-        });
 
         button_editor_properties.$reset_button.on("click", function () {
             //resetta le modifiche (quindi serve salvare stato iniziale)
             buttonData = jQuery.extend(true, {}, resetData);
             _updatePanel();
             _applyData();
-            //resettare anche il pulsante in live? si
         });
 
         button_editor_properties.$add_model_button.on("click", function () {
@@ -889,49 +876,31 @@ var Button_Edit_Modal = (function ($) {
             // chiude
             console.log("add model button");
             _updateButtonDataFromPanel();
-            if (!addingNewButton) {
-                if (!editingModelButton) {
-                    _saveButtonOnDB();
-                } else {
-                    //crea nuovo modello?
-                }
-            }
+            _saveButtonOnDB();
         });
 
         // Quando chiedo se staccare il pulsante dalla sincronia -> alla chiusura del pannello col tasto in basso o in alto
         button_editor_properties.$close_button.on("click", function () {
             //chiudere il pannello
             console.log("close button");
-            if (!addingNewButton) {
-                _updateButtonDataFromPanel();
-                if (editingModelButton && !(_checkEditsModel())) {
-                    _openChooseButtonEdit();
-                } else {
-                    _applyData();
-                    _closeModal();
-                }
-            } else {
-                _closeModal();
+            _updateButtonDataFromPanel();
+            _applyData();
+            if (editingModelButton) {
+                _saveButtonOnDB();
             }
+            _closeModal();
         });
 
         button_editor_properties.$apply_changes_button.on("click", function () {
             // - se ha modificato un pulsante modello si chiede all'utente se staccare o sincronizzare crea ID
             // - chiude
-            if (!addingNewButton) {
-                console.log("apply button");
-                _updateButtonDataFromPanel();
-                console.log("editingModelButton", editingModelButton);
-                console.log("edits", _checkEditsModel());
-                if (editingModelButton && !(_checkEditsModel())) {
-                    _openChooseButtonEdit();
-                } else {
-                    _applyData();
-                    _closeModal();
-                }
-            } else {
-                Button_Name_Modal.openModal();
+            _updateButtonDataFromPanel();
+            _applyData();
+            if (editingModelButton) {
+                _saveButtonOnDB();
             }
+
+            _closeModal();
         });
     };
 
@@ -1006,31 +975,6 @@ var Button_Edit_Modal = (function ($) {
             }
         };
 
-        //default button data, used when creating new button
-        defaultButtonData = {
-            separateButton: true,
-            buttonInfo: {
-                text_color: "white",
-                text: "LABEL",
-                font_size: "24px",
-                background_color: "#ff6868",
-                button_height: "60px",
-                hover_color: "#003fff",
-                border_color: "rgb(0,120,255)",
-                border_width: "5px",
-                border_radius: "30px",
-                margin_top: "0px",
-                margin_bottom: "10px",
-                link_taget: "",
-                link_type: "_parent",
-                buttonTarget: {
-                    button_name: "",
-                    button_id: "",
-                    button_number: 0,
-                }
-            }
-        }
-
         _linkTextInputs();
         _linkNumberInputs();
         _linkDropDownMenus();
@@ -1045,7 +989,6 @@ var Button_Edit_Modal = (function ($) {
 
     return {
         init: _init,
-        openButtonEditorModal: _openButtonEditorModal,
-        createNewButton: _createNewButton,
+        openButtonEditorModal: _openButtonEditorModal
     };
 })(jQuery);

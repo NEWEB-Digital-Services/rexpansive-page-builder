@@ -138,6 +138,7 @@ defined('ABSPATH') or exit;
         </span>
     </div>
 </div>
+</script>
 <script type="text/x-tmpl" id="tmpl-rex-button">
 <span class="rex-button-wrapper" data-rex-button-id="{%=button.id%}">
     <span class="rex-button-data" style="display:none;" data-text-color="{%=button.text_color%}" data-text-size="{%=button.font_size%}" data-background-color="{%=button.background_color%}" data-background-color-hover="{%=button.hover_color%}" data-border-width="{%=button.border_width%}" data-border-color="{%=button.border_color%}" data-border-radius="{%=button.border_radius%}" data-button-height="{%=button.button_height%}" data-margin-top="{%=button.margin_top%}" data-margin-bottom="{%=button.margin_bottom%}" data-link-target="{%=button.link_taget%}" data-link-type="{%=button.link_type%}" data-button-name="{%=button.button_name%}"></span>

@@ -26,8 +26,6 @@ var Model_Lateral_Menu = (function ($) {
 
     var _linkDocumentListeners = function () {
         $(document).on("rexlive:lateralMenuReady", function () {
-            console.log("porcodio apriti");
-            console.log(rexmodel_lateral_menu.$self);
             rexmodel_lateral_menu.$self.addClass("rex-lateral-panel--open");
             rexmodel_lateral_menu.$tabs.eq(0).show();
         });

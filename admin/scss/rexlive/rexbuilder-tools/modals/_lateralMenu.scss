@@ -1,26 +1,5 @@
 
 .rex-lateral-panel {
-  background-color: #fff;
-  width: 100%;
-  max-width: 320px;
-  position: fixed;
-  top: $top-tools-height;
-  right: 0;
-  height: 100%;
-  z-index: 3500;
-  font-size: 16px;
-  transform: translateX(100%);
-
-  &.rex-lateral-panel--open {
-    animation: bounce-in-right-mod .5s both;
-    opacity: 1;
-    visibility: visible;
-  }
-
-  &.rex-lateral-panel--close {
-    animation: slide-out-right-no-opacity 0.5s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
-  }
-
   .tabgroup{
     height: 100%;
   }
