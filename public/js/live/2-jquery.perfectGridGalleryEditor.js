@@ -2,7 +2,7 @@
  *  Perfect Grid Gallery Editor
  */
 
-(function($, window, document, undefined) {
+(function($, window, document, _, undefined) {
   "use strict";
 
   // Create the defaults once
@@ -87,7 +87,9 @@
       numberBlocksVisibileOnGrid: 0,
       beforeCollapseWasFixed: false,
       dispositionBeforeCollapsing: {},
-      layoutBeforeCollapsing: {}
+      layoutBeforeCollapsing: {},
+      initialStateGrid: null,
+      mirrorStateGrid: null,
     };
 
     this.$section = this.$element.parents(this._defaults.gridParentWrap);
@@ -229,11 +231,11 @@
           }
         }
       });
-      //console.log(this.properties.numberBlocksVisibileOnGrid);
+
+      this.properties.initialStateGrid = this.properties.gridstackInstance.grid.nodes;
+
       this.triggerGalleryReady();
       this.properties.firstStartGrid = false;
-
-      // console.log(this.properties.singleHeight);
     },
 
     triggerGalleryReady: function() {
@@ -620,6 +622,7 @@
 
     /**
      * Funzione chiamata per il salvataggio della griglia
+     * @deprecated
      */
     saveGrid: function() {
       var gallery = this;
@@ -3312,8 +3315,179 @@
       });
     },
 
+    /**
+     * Filtering the blocks and animate them according to
+     * Some filtering rule
+     * @param {Object} options filtering information
+     */
     filter: function(options) {
-      this.$element.find(this.settings.itemSelector).css("display","block").not(options.filter).css("display","none");
+      var $items = this.$element.find(".grid-stack-item");
+      var $toMaintain = $items.filter(options.filter);
+      var $toRemoves = $items.not(options.filter);
+      var that = this;
+
+      // Animate entering and exiting blocks
+      $toMaintain.each(function(i,el) {
+        if( "0" === el.style.opacity ) {
+          var $item = $(el);
+          $item.velocity({
+            // transform: ["scale(1)","scale(0)"],
+            scale: 1,
+            opacity: 1
+          }, {
+            duration: 200,
+          });
+        } else {
+          el.style.opacity = 1;
+        }
+      });
+
+      $toRemoves.each(function(i,el) {
+        if( "0" !== el.style.opacity ) {
+          var $toRemove = $(el);
+          $toRemove.velocity({
+            // transform: ["scale(0)","scale(1)"],
+            scale: 0,
+            opacity: 0
+          }, {
+            duration: 200,
+          });
+        } else {
+          el.style.opacity = 0;
+        }
+      });
+
+      this.properties.gridstackInstance.batchUpdate();
+
+      // Remove all blocks from gridstack instance
+      this.properties.gridstackInstance.removeAll(false);
+
+      // Remove position styling
+      $items.each(function(i,el) {
+        el.style.left = "";
+        el.style.top = "";
+      });
+
+      // Check filter type: all (*) || other
+      if("*" === options.filter ) {
+        $items.each(function(i,el) {
+          var node = {
+            x: parseInt(el.getAttribute("data-gs-x")),
+            y: parseInt(el.getAttribute("data-gs-y")),
+            widht: parseInt(el.getAttribute("data-gs-width")),
+            height: parseInt(el.getAttribute("data-gs-height")),
+            autoPosition: el.getAttribute("data-gs-auto-position"),
+            minWidht: el.getAttribute("data-gs-min-width"),
+            maxWidth: el.getAttribute("data-gs-max-width"),
+            minHeight: el.getAttribute("data-gs-min-height"),
+            maxHeight: el.getAttribute("data-gs-max-height"),
+            id: el.getAttribute("data-gs-id"),
+          }
+          that.properties.gridstackInstance.addWidget(el, node.x, node.y, node.widht, node.height, node.autoPosition, node.minWidht, node.maxWidth, node.minHeight, node.maxHeight, node.id);
+        });
+
+        for(var i=0; i<this.properties.initialStateGrid.length; i++) {
+          var el = this.properties.initialStateGrid[i].el[0];
+          var pos = that.get_pixel_position({x:this.properties.initialStateGrid[i].x, y:this.properties.initialStateGrid[i].y});
+          el.style.left = pos.left;
+          el.style.top = pos.top;
+          this.properties.gridstackInstance.update(el, this.properties.initialStateGrid[i].x, this.properties.initialStateGrid[i].y);
+        }
+      } else {
+        this.properties.mirrorStateGrid = [];
+
+        $toMaintain.each(function(i,el) {
+          var node = {
+            x: parseInt(el.getAttribute("data-gs-x")),
+            y: parseInt(el.getAttribute("data-gs-y")),
+            el: el,
+            width: parseInt(el.getAttribute("data-gs-width")),
+            height: parseInt(el.getAttribute("data-gs-height")),
+          }
+          var newCoords = that.placeElMirror(node);
+          that.properties.mirrorStateGrid.push({
+            x: newCoords.x,
+            y: newCoords.y,
+            el: el,
+            width: parseInt(el.getAttribute("data-gs-width")),
+            height: parseInt(el.getAttribute("data-gs-height")),
+          });
+        });
+
+        $toMaintain.each(function(i,el) {
+          var node = {
+            x: parseInt(el.getAttribute("data-gs-x")),
+            y: parseInt(el.getAttribute("data-gs-y")),
+            width: parseInt(el.getAttribute("data-gs-width")),
+            height: parseInt(el.getAttribute("data-gs-height")),
+            el: el,
+          };
+
+          that.properties.gridstackInstance.addWidget(el, node.x, node.y);
+        });
+
+        $toMaintain.each(function(i,el) {
+          var pos = that.get_pixel_position({x:that.properties.mirrorStateGrid[i].x, y:that.properties.mirrorStateGrid[i].y});
+          el.style.left = pos.left;
+          el.style.top = pos.top;
+          that.properties.gridstackInstance.update(el, that.properties.mirrorStateGrid[i].x, that.properties.mirrorStateGrid[i].y);
+        });
+      }
+
+      this.properties.gridstackInstance.commit();
+
+      // this.$element.find(this.settings.itemSelector).css("display","block").not(options.filter).css("display","none");
+    },
+
+    /**
+     * Search the first avaiable position in gridstack for a node
+     * searching a mirroring state grid object
+     * @param {Object} node grid stack item
+     */
+    placeElMirror: function(node) {
+      // var thatMirrorStateGrid = this.properties.mirrorStateGrid;
+      var response = {
+        x: 0,
+        y: 0,
+      }
+      for (var i = 0;; ++i) {
+        var x = i % this.properties.gridstackInstance.grid.width;
+        var y = Math.floor(i / this.properties.gridstackInstance.grid.width);
+        if (x + node.width > this.properties.gridstackInstance.grid.width) {
+          continue;
+        }
+
+        if (!_.find(this.properties.mirrorStateGrid, _.bind(GridStackUI.Utils._isAddNodeIntercepted, {x: x, y: y, node: node}))) {
+          response.x = x;
+          response.y = y;
+          break;
+        }
+      }
+      return response;
+    },
+
+    /**
+     * Getting the pixel value for a x,y gridstack coordinate
+     * @param {Object} coords x and y gridstack coordinate
+     */
+    get_pixel_position: function( coords ) {
+      var result = {
+        left: "0",
+        top: "0"
+      };
+
+      result.left = (this.properties.gridstackInstance.cellWidth() * coords.x) + "px";
+      result.top = (this.properties.gridstackInstance.cellHeight() * coords.y + ( this.properties.gridstackInstance.opts.verticalMargin * coords.y ) ) + "px";
+
+      return result;
+    },
+
+    save_grid_state: function() {
+      this.properties.initialStateGrid = this.properties.gridstackInstance.grid.nodes;
+    },
+
+    set_grid_initial_state: function( nodes ) {
+      this.properties.initialStateGrid.push(nodes);
     },
 
     destroyGridGallery: function() {
@@ -3381,4 +3555,4 @@
       return returns !== undefined ? returns : this;
     }
   };
-})(jQuery, window, document);
+})(jQuery, window, document, _);

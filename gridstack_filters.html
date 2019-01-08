@@ -25,7 +25,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.0/jquery-ui.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/2.0.5/velocity.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
     <script src="public/js/vendor/gridstack.js-0.4.0/dist/gridstack.js"></script>
     <script src="public/js/vendor/gridstack.js-0.4.0/dist/gridstack.jQueryUI.js"></script>
@@ -105,9 +105,10 @@
         <div class="col-md-12">
           <ul class="filter-list">
             <li class="filter" data-filter="*">All</li>
-            <li class="filter" data-filter=".red-block">Red</li>
             <li class="filter" data-filter=".green-block">Green</li>
+            <li class="filter" data-filter=".red-block">Red</li>
             <li class="filter" data-filter=".blue-block">Blue</li>
+            <li class="filter" data-filter=".pippo">Pippo</li>
           </ul>
         </div>
       </div>
@@ -115,6 +116,7 @@
       <!-- <div class="row">
         <div class="col-md-12">
           <button id="moveTest">TEST</button>
+          <button id="scaleTest">TEST</button>
         </div>
       </div> -->
 
@@ -125,84 +127,108 @@
               class="grid-stack-item red-block"
               data-gs-x="0"
               data-gs-y="0"
-              data-gs-width="3"
-              data-gs-height="2"
+              data-gs-width="4"
+              data-gs-height="4"
               data-el-resized="false"
             >
               <div class="grid-stack-item-content">
-                <div class="text-wrap">R1: 3x2</div>
+                <div class="text-wrap">(1)</div>
               </div>
             </div>
             <div
               class="grid-stack-item green-block"
-              data-gs-x="3"
+              data-gs-x="4"
               data-gs-y="0"
+              data-gs-width="4"
+              data-gs-height="4"
+              data-el-resized="false"
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">(2)</div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item blue-block"
+              data-gs-x="8"
+              data-gs-y="0"
+              data-gs-width="4"
+              data-gs-height="4"
+              data-el-resized="false"
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">(3)</div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item blue-block"
+              data-gs-x="0"
+              data-gs-y="4"
               data-gs-width="3"
               data-gs-height="3"
               data-el-resized="false"
             >
               <div class="grid-stack-item-content">
-                <div class="text-wrap">G1: 3x3</div>
+                <div class="text-wrap">(4)</div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item blue-block"
+              data-gs-x="3"
+              data-gs-y="4"
+              data-gs-width="3"
+              data-gs-height="3"
+              data-el-resized="false"
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">(5)</div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item blue-block"
+              data-gs-x="6"
+              data-gs-y="4"
+              data-gs-width="6"
+              data-gs-height="3"
+              data-el-resized="false"
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">(6)</div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item blue-block"
+              data-gs-x="0"
+              data-gs-y="7"
+              data-gs-width="6"
+              data-gs-height="4"
+              data-el-resized="false"
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">(7)</div>
               </div>
             </div>
             <div
               class="grid-stack-item red-block"
               data-gs-x="6"
-              data-gs-y="0"
+              data-gs-y="7"
               data-gs-width="3"
-              data-gs-height="3"
+              data-gs-height="4"
               data-el-resized="false"
             >
               <div class="grid-stack-item-content">
-                <div class="text-wrap">R2: 3x3</div>
+                <div class="text-wrap">(8)</div>
               </div>
             </div>
             <div
               class="grid-stack-item blue-block"
-              data-gs-x="9"
-              data-gs-y="0"
+              data-gs-x="10"
+              data-gs-y="7"
               data-gs-width="3"
-              data-gs-height="5"
+              data-gs-height="4"
               data-el-resized="false"
             >
               <div class="grid-stack-item-content">
-                <div class="text-wrap">B1: 3x5</div>
-              </div>
-            </div>
-            <div
-              class="grid-stack-item blue-block"
-              data-gs-x="0"
-              data-gs-y="2"
-              data-gs-width="3"
-              data-gs-height="3"
-              data-el-resized="false"
-            >
-              <div class="grid-stack-item-content">
-                <div class="text-wrap">B2: 3x3</div>
-              </div>
-            </div>
-            <div
-              class="grid-stack-item green-block"
-              data-gs-x="3"
-              data-gs-y="3"
-              data-gs-width="6"
-              data-gs-height="2"
-              data-el-resized="false"
-            >
-              <div class="grid-stack-item-content">
-                <div class="text-wrap">G2: 6x2</div>
-              </div>
-            </div>
-            <div
-              class="grid-stack-item green-block blue-block"
-              data-gs-x="0"
-              data-gs-y="5"
-              data-gs-width="7"
-              data-gs-height="1"
-              data-el-resized="false"
-            >
-              <div class="grid-stack-item-content">
-                <div class="text-wrap">G3: 7x1</div>
+                <div class="text-wrap">(9)</div>
               </div>
             </div>
           </div>
@@ -225,19 +251,6 @@
           var initialStateGrid = grid.grid.nodes;
           var mirrorStateGrid = [];
 
-          // Initial grid (as an array)
-          // var M = [];
-          // var M2 = [];
-          // for(var j=0; j<grid.grid.nodes.length; j++) {
-          //   var thisNode = grid.grid.nodes[j];
-          //   for(var w=0; w<thisNode.height; w++) {
-          //     for(var z=0; z<thisNode.width; z++) {
-          //       M[( grid.grid.width * ( w + thisNode.y ) ) + z + thisNode.x] = 1;
-          //       M2[( grid.grid.width * ( w + thisNode.y ) ) + z + thisNode.x] = 0;
-          //     }
-          //   }
-          // }
-          
           var $fliter_list = $('.filter-list');
           $fliter_list.on("click", ".filter", function(e) {
             e.preventDefault();
@@ -249,11 +262,40 @@
           function filtering(filterClass) {
             var $items = $grid.find(".grid-stack-item");
             var $toMaintain = $items.filter(filterClass);
-            var $toRemove = $items.not(filterClass);
+            var $toRemoves = $items.not(filterClass);
+
+            // $items.css("display","block");
+            $toMaintain.each(function(i,el) {
+              if( "0" === el.style.opacity ) {
+                var $item = $(el);
+                $item.velocity({
+                  transform: ["scale(1)","scale(0)"],
+                  opacity: 1
+                }, {
+                  duration: 200,
+                });
+              } else {
+                el.style.opacity = 1;
+              }
+            });
+
+            // $toRemoves.css("display","none");
+            $toRemoves.each(function(i,el) {
+              if( "0" !== el.style.opacity ) {
+                var $toRemove = $(el);
+                $toRemove.velocity({
+                  transform: ["scale(0)","scale(1)"],
+                  opacity: 0
+                }, {
+                  duration: 200,
+                });
+              } else {
+                el.style.opacity = 0;
+              }
+            });
 
             grid.batchUpdate();
-            $items.css("display","block");
-            $toRemove.css("display","none");
+
             grid.removeAll(false);
 
             $items.each(function(i,el) {
@@ -261,26 +303,43 @@
               el.style.top = "";
             });
 
-            // $toRemove.each(function(i,el) {
-            //   grid.removeWidget(el,false);
-            // });
-
-            // for(var i=0; i<grid.grid.nodes.length; i++) {
-            //   grid.grid.nodes[i].el.setAttribute("data-gs-auto-position","1");
-            //   grid.addWidget(grid.grid.nodes[i].el);
-            // }
-
             // Remove filtering
-            if("*" === filterClass) {
+            if("*" === filterClass ) {
+              $items.each(function(i,el) {
+                var node = {
+                  x: parseInt(el.getAttribute("data-gs-x")),
+                  y: parseInt(el.getAttribute("data-gs-y")),
+                  widht: parseInt(el.getAttribute("data-gs-width")),
+                  height: parseInt(el.getAttribute("data-gs-height")),
+                  autoPosition: el.getAttribute("data-gs-auto-position"),
+                  minWidht: el.getAttribute("data-gs-min-width"),
+                  maxWidth: el.getAttribute("data-gs-max-width"),
+                  minHeight: el.getAttribute("data-gs-min-height"),
+                  maxHeight: el.getAttribute("data-gs-max-height"),
+                  id: el.getAttribute("data-gs-id"),
+                }
+                grid.addWidget(el, node.x, node.y, node.widht, node.height, node.autoPosition, node.minWidht, node.maxWidth, node.minHeight, node.maxHeight, node.id);
+              })
+
               for(var i=0; i<initialStateGrid.length; i++) {
-                // initialStateGrid[i].el[0].removeAttribute("data-gs-auto-position");
-                grid.addWidget(initialStateGrid[i].el[0], initialStateGrid[i].x, initialStateGrid[i].y, initialStateGrid[i].width, initialStateGrid[i].height, initialStateGrid[i].autoPosition, initialStateGrid[i].minWidth, initialStateGrid[i].maxWidht, initialStateGrid[i].minHeight, initialStateGrid[i].maxHeight, initialStateGrid[i].id);
+                var el = initialStateGrid[i].el[0];
+                var pos = get_pixel_position({x:initialStateGrid[i].x, y:initialStateGrid[i].y});
+                el.style.left = pos.left;
+                el.style.top = pos.top;
+                grid.update(el, initialStateGrid[i].x, initialStateGrid[i].y);
               }
             } else {
               mirrorStateGrid = [];
 
               $toMaintain.each(function(i,el) {
-                var newCoords = placeElMirror(el);
+                var node = {
+                  x: parseInt(el.getAttribute("data-gs-x")),
+                  y: parseInt(el.getAttribute("data-gs-y")),
+                  el: el,
+                  width: parseInt(el.getAttribute("data-gs-width")),
+                  height: parseInt(el.getAttribute("data-gs-height")),
+                }
+                var newCoords = placeElMirror(node);
                 mirrorStateGrid.push({
                   x: newCoords.x,
                   y: newCoords.y,
@@ -290,38 +349,39 @@
                 });
               });
 
-              // $($toMaintain.get().reverse()).each(function(i,el) {
               $toMaintain.each(function(i,el) {
-                // el.setAttribute("data-gs-auto-position","1");
-                // var newCoords = placeEl(el);
-                var coords = {
+                var node = {
                   x: parseInt(el.getAttribute("data-gs-x")),
                   y: parseInt(el.getAttribute("data-gs-y")),
                   width: parseInt(el.getAttribute("data-gs-width")),
                   height: parseInt(el.getAttribute("data-gs-height")),
+                  el: el,
                 };
 
-                grid.addWidget(el, coords.x, coords.y);
-                // grid.update(el, newCoords.x, newCoords.y);
+                grid.addWidget(el, node.x, node.y);
               });
 
-              console.log(grid.grid.nodes);
-              console.log(mirrorStateGrid);
-
-              // $toMaintain.each(function(i,el) {
-              //   // console.table({el:el,x:mirrorStateGrid[i].x,y:mirrorStateGrid[i].y});
-              //   el.style.left = (grid.cellWidth() * mirrorStateGrid[i].x) + "px";
-              //   el.style.top = (grid.cellWidth() * mirrorStateGrid[i].y) + "px";
-              //   // $(el).one("transitionend", function(e){
-              //   //   grid.update(el, mirrorStateGrid[i].x, mirrorStateGrid[i].y);
-              //   //   this.style.left = "";
-              //   //   this.style.top = "";
-              //   // });
-              // });
+              $toMaintain.each(function(i,el) {
+                var pos = get_pixel_position({x:mirrorStateGrid[i].x, y:mirrorStateGrid[i].y});
+                el.style.left = pos.left;
+                el.style.top = pos.top;
+                grid.update(el, mirrorStateGrid[i].x, mirrorStateGrid[i].y);
+              });
             }
 
             grid.commit();
-            // $grid.find(".grid-stack-item").css("display","block").not(filterClass).css("display","none");
+          }
+
+          function get_pixel_position( coords ) {
+            var result = {
+              left: "0",
+              top: "0"
+            };
+
+            result.left = (grid.cellWidth() * coords.x) + "px";
+            result.top = (grid.cellHeight() * coords.y + ( grid.opts.verticalMargin * coords.y ) ) + "px";
+
+            return result;
           }
 
           function placeElMirror(node) {
@@ -372,6 +432,13 @@
             }
             return response;
           }
+
+          // $("#scaleTest").on("click", function(e) {
+          //   e.preventDefault();
+          //   $(".grid-stack-item").velocity({
+          //     transform: ["scale(0)","scale(1)"]
+          //   });
+          // })
         });
       });
     </script>
