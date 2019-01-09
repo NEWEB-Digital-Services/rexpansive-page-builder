@@ -3319,6 +3319,7 @@
      * Filtering the blocks and animate them according to
      * Some filtering rule
      * @param {Object} options filtering information
+     * @since 2.0.0
      */
     filter: function(options) {
       var $items = this.$element.find(".grid-stack-item");
@@ -3382,7 +3383,7 @@
             minHeight: el.getAttribute("data-gs-min-height"),
             maxHeight: el.getAttribute("data-gs-max-height"),
             id: el.getAttribute("data-gs-id"),
-          }
+          };
           that.properties.gridstackInstance.addWidget(el, node.x, node.y, node.widht, node.height, node.autoPosition, node.minWidht, node.maxWidth, node.minHeight, node.maxHeight, node.id);
         });
 
@@ -3435,14 +3436,13 @@
       }
 
       this.properties.gridstackInstance.commit();
-
-      // this.$element.find(this.settings.itemSelector).css("display","block").not(options.filter).css("display","none");
     },
 
     /**
      * Search the first avaiable position in gridstack for a node
      * searching a mirroring state grid object
      * @param {Object} node grid stack item
+     * @since 2.0.0
      */
     placeElMirror: function(node) {
       // var thatMirrorStateGrid = this.properties.mirrorStateGrid;
@@ -3469,6 +3469,7 @@
     /**
      * Getting the pixel value for a x,y gridstack coordinate
      * @param {Object} coords x and y gridstack coordinate
+     * @since 2.0.0
      */
     get_pixel_position: function( coords ) {
       var result = {
@@ -3486,8 +3487,13 @@
       this.properties.initialStateGrid = this.properties.gridstackInstance.grid.nodes;
     },
 
+    /**
+     * Concatenating existent initial state with other nodes
+     * @param {Array} nodes array of Gridstack nodes
+     * @since 2.0.0
+     */
     set_grid_initial_state: function( nodes ) {
-      this.properties.initialStateGrid.push(nodes);
+      this.properties.initialStateGrid = this.properties.initialStateGrid.concat(nodes);
     },
 
     destroyGridGallery: function() {
