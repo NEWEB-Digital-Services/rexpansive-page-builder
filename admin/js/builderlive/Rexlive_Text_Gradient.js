@@ -25,7 +25,7 @@ var Rexlive_Text_Gradient = (function($) {
       colorEl: '<input id="colorpicker"/>'
     });
 
-    modal_props.gpicker.setColorPicker(handler => {
+    modal_props.gpicker.setColorPicker(function(handler) {
       var el = handler.getEl().querySelector("#colorpicker");
       var $el = $(el);
 

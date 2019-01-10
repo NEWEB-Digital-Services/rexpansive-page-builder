@@ -68,14 +68,30 @@ var Rexbuilder_CreateBlocks = (function ($) {
         var data = e.settings.data_to_send;
 
         var $section;
-        if (data.sectionTarget.modelNumber != "") {
-            $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"][data-rexlive-model-number="' + data.sectionTarget.modelNumber + '"]');
+
+        var blockWidth;
+        var blockHeight;
+        var addBlockButton = false;
+        if (typeof data.addBlockButton !== "undefined" && data.addBlockButton.toString() == "true") {
+            addBlockButton = true;
+            $section = data.$section;
         } else {
-            $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"]');
+            if (data.sectionTarget.modelNumber != "") {
+                $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"][data-rexlive-model-number="' + data.sectionTarget.modelNumber + '"]');
+            } else {
+                $section = Rexbuilder_Util.$rexContainer.find('section[data-rexlive-section-id="' + data.sectionTarget.sectionID + '"]');
+            }
         }
 
         var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
-        var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout, undefined, undefined, "text");
+        if (addBlockButton) {
+            blockWidth = Math.ceil(data.blockDimensions.w / galleryInstance.properties.singleWidth);
+            if(galleryInstance.settings.galleryLayout == "fixed"){
+                blockHeight = Math.ceil(data.blockDimensions.h / galleryInstance.properties.singleHeight);
+            }
+        }
+
+        var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout, blockWidth, blockHeight, "text");
 
         if( Rexbuilder_Util_Editor.scrollbarsActive ) {
             galleryInstance.addScrollbar($el);
@@ -94,11 +110,28 @@ var Rexbuilder_CreateBlocks = (function ($) {
         if(Rexbuilder_Util.activeLayout == "default"){
             Rexbuilder_Util.updateDefaultLayoutStateSection($section);
         }
-        var data = {
+
+        var dataToParent = {
             eventName: "rexlive:edited",
             modelEdited: $section.hasClass("rex-model-section")
         }
-        Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+        Rexbuilder_Util_Editor.sendParentIframeMessage(dataToParent);
+
+        if(addBlockButton){
+            var ev = jQuery.Event("rexlive:completeImportButton");
+            ev.settings = {
+                $buttonWrapper: data.$buttonWrapper,
+                $blockAdded: $el
+            }
+            var gridstackInstance = galleryInstance.properties.gridstackInstance;
+            var mouseCell = gridstackInstance.getCellFromPixel({
+                left: data.mousePosition.x,
+                top: data.mousePosition.y
+            }, true);
+
+            gridstackInstance.move($el[0], Math.max(0, mouseCell.x-Math.round(blockWidth/2)), Math.max(0,  mouseCell.y-Math.round(blockHeight/2)));
+            Rexbuilder_Util.$document.trigger(ev);
+        }
     });
 
     $(document).on("rexlive:insert_image", function (e) {

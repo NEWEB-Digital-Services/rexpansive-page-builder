@@ -560,7 +560,7 @@ var Rexbuilder_Util_Editor = (function($) {
     });
     
     Rexbuilder_Util.$document.on("rexlive:importButton", function (e) {
-      Rexbuilder_Rexbutton.fixImportedButton();
+      Rexbuilder_Rexbutton.fixImportedButton(e.settings.data_to_send);
     });
     
     Rexbuilder_Util.$document.on("rexlive:updateButtonLive", function(e){

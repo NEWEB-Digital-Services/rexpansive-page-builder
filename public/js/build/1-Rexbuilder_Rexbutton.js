@@ -28,11 +28,78 @@ var Rexbuilder_Rexbutton = (function ($) {
         }
     };
 
-    var _fixImportedButton = function () {
+    var _fixImportedButton = function (data) {
         var $buttonWrapper = Rexbuilder_Util.$rexContainer.find(".rex-loading-button .rex-button-wrapper");
-
         $buttonWrapper.unwrap();
-        $buttonWrapper.wrap("<p></p>");
+        console.log(data);
+        //casi:
+        /**
+         * 1: dentro blocco già esistente
+         * 2: dentro testo
+         * 
+         * // implica creare un nuovo blocco // dimensione calcolare in base alla grandezza del pulsante, come fare?
+         * // me li faccio passare dall'iframe sopra visto che il menu sa già le dimensioni
+         * intanto 12*2
+         * 3: dentro row
+         * 4: dentro pulsate per nuova row
+         */
+        var $textWrap = $buttonWrapper.parents(".text-wrap").eq(0);
+        var $gridGallery = $buttonWrapper.parents(".grid-stack-row").eq(0);
+        var $section = $buttonWrapper.parents(".rexpansive_section").eq(0);
+        var buttonDimensionCalculated = jQuery.extend(true, {}, data.buttonDimensions);
+
+        var margins = {
+            top: parseInt($buttonWrapper.find(".rex-button-data").eq(0).attr("data-margin-top").replace("px", "")),
+            bottom: parseInt($buttonWrapper.find(".rex-button-data").eq(0).attr("data-margin-bottom").replace("px", ""))
+        }
+        margins.top = isNaN(margins.top) ? 0 : margins.top;
+        margins.bottom = isNaN(margins.bottom) ? 0 : margins.bottom;
+        buttonDimensionCalculated.height = buttonDimensionCalculated.height + margins.top + margins.bottom;
+
+        var caso;
+        if ($textWrap.length == 0) {
+            if ($gridGallery.length != 0) {
+                caso = "inside-row";
+            } else {
+                caso = "inside-new-row";
+            }
+        } else {
+            caso = "inside-block";
+        }
+        switch (caso) {
+            case "inside-block":
+                console.log("dentro blocco");
+                _endFixingButtonImported($buttonWrapper);
+                break;
+            case "inside-text":
+                console.log("dentro testo");
+                break;
+            case "inside-row":
+                var ev = jQuery.Event("rexlive:insert_new_text_block");
+                ev.settings = {
+                    data_to_send: {
+                        $buttonWrapper: $buttonWrapper,
+                        $section: $section,
+                        addBlockButton: true,
+                        mousePosition: data.mousePosition,
+                        blockDimensions: {
+                            w: buttonDimensionCalculated.width,
+                            h: buttonDimensionCalculated.height
+                        }
+                    }
+                };
+                Rexbuilder_Util.$document.trigger(ev);
+                break;
+            case "inside-new-row":
+                console.log("dentro nuova row");
+                break;
+            default:
+                break;
+        }
+    }
+    
+    var _endFixingButtonImported = function($buttonWrapper){
+        //$buttonWrapper.wrap("<span></span>");
 
         var buttonID = $buttonWrapper.attr("data-rex-button-id");
         var flagButtonFound = false;
@@ -56,7 +123,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 
         _linkHoverListeners($buttonWrapper);
     }
-    
+
     var _removeModelData = function ($buttonWrapper) {
         var $buttonData = $buttonWrapper.find(".rex-button-data").eq(0); 
         $buttonData.removeAttr("data-text-color");
@@ -538,6 +605,14 @@ var Rexbuilder_Rexbutton = (function ($) {
             $buttonWrapper.parents(".text-wrap").blur();
             Rexbuilder_Util_Editor.sendParentIframeMessage(data);
         });
+
+        Rexbuilder_Util.$document.on("rexlive:completeImportButton", function(e){
+            var data = e.settings;
+            var $newElement = data.$blockAdded;
+            var $buttonWrapper = data.$buttonWrapper;
+            $buttonWrapper.detach().prependTo($newElement.find(".text-wrap").eq(0));
+            _endFixingButtonImported($buttonWrapper);
+        });
     }
 
     var _updateButtonListInPage = function () {
@@ -584,6 +659,7 @@ var Rexbuilder_Rexbutton = (function ($) {
         _updateButtonListInPage();
         _addToolsButton();
         _linkDocumentListeners();
+        $("#secondary").remove();
     };
 
     return {

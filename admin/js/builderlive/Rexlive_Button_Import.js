@@ -9,6 +9,10 @@ var Button_Import_Modal = (function ($) {
     var rexbutton_import_props;
     var styleSheet;
 
+    /////////////////////////////////////////////////////////////////////////////////////////
+    // CSS FUNCTIONS
+    /////////////////////////////////////////////////////////////////////////////////////////
+
     var _fixCustomStyleElement = function () {
         if (Button_Import_Modal.$buttonsStyle.length == 0) {
             var css = "",
@@ -83,24 +87,24 @@ var Button_Import_Modal = (function ($) {
     }
 
     var _removeButtonContainerRule = function (buttonID) {
-        for(var i=0; i< styleSheet.cssRules.length; i++){
-            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container"){
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container") {
                 styleSheet.deleteRule(i);
                 break;
             }
         }
     }
     var _removeButtonBackgroundRule = function (buttonID) {
-        for(var i=0; i< styleSheet.cssRules.length; i++){
-            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background"){
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background") {
                 styleSheet.deleteRule(i);
                 break;
             }
         }
     }
     var _removeButtonBackgroundHoverRule = function (buttonID) {
-        for(var i=0; i< styleSheet.cssRules.length; i++){
-            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background:hover"){
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background:hover") {
                 styleSheet.deleteRule(i);
                 break;
             }
@@ -117,6 +121,9 @@ var Button_Import_Modal = (function ($) {
         return styleSheet;
     }
 
+    /////////////////////////////////////////////////////////////////////////////////////////
+    // Buttons Functions
+    /////////////////////////////////////////////////////////////////////////////////////////
     var _updateButtonList = function (data) {
         var buttonData = data.buttonData;
         var buttonID = buttonData.buttonTarget.button_id;
@@ -135,18 +142,17 @@ var Button_Import_Modal = (function ($) {
             $div.addClass("rex-container");
             $div.appendTo($liEL);
             $liEL.appendTo(rexbutton_import_props.$buttonList);
-        } else{
+        } else {
             var $buttonParent = $buttonEL.parent();
             $buttonEL.remove();
             $buttonParent.append($(jQuery.parseHTML(buttonHTML)));
         }
     };
 
-    var _linkDocumentListeners = function () {
+    /////////////////////////////////////////////////////////////////////////////////////////
+    // Function for drag & drop
+    /////////////////////////////////////////////////////////////////////////////////////////
 
-    };
-
-    /**Function for drag & drop */
     var _linkDraggable = function () {
         var currentElement,
             currentElementChangeFlag,
@@ -154,18 +160,22 @@ var Button_Import_Modal = (function ($) {
             countdown,
             dragoverqueue_processtimer;
 
-        var clientFrameWindow = Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0)
-            .contentWindow;
+        var clientFrameWindow = Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow;
+        var $frameContentWindow = $(clientFrameWindow);
 
         var stop = true;
+        var buttonDimensions = {
+            width: 0,
+            height: 0
+        }
+
+        var breakPointNumber = { x: 25, y: 25 };
         /*
             Funzione che esegue lo scrolling nell'iframe
             */
         var scroll = function (step) {
-            var scrollY = $(
-                Rexbuilder_Util_Admin_Editor.$frameBuilder[0].contentWindow
-            ).scrollTop();
-            $(Rexbuilder_Util_Admin_Editor.$frameBuilder[0].contentWindow).scrollTop(
+            var scrollY = $frameContentWindow.scrollTop();
+            $frameContentWindow.scrollTop(
                 scrollY + step
             );
             if (!stop) {
@@ -174,7 +184,7 @@ var Button_Import_Modal = (function ($) {
                 }, 20);
             }
         };
-
+        var $imgPreview;
         Rexlive_Base_Settings.$document.on("dragstart", ".button-list li", function (
             event
         ) {
@@ -184,7 +194,9 @@ var Button_Import_Modal = (function ($) {
             }, 100);
 
             var insertingHTML = $(this).html();
-            console.log(insertingHTML);
+            var $buttonBackground = $(this).find(".rex-button-background").eq(0);
+            buttonDimensions.width = $buttonBackground.outerWidth();
+            buttonDimensions.height = $buttonBackground.outerHeight();
             event.originalEvent.dataTransfer.setData("text/plain", insertingHTML);
         });
 
@@ -199,21 +211,13 @@ var Button_Import_Modal = (function ($) {
                 scroll(-1);
             }
 
-            if (
-                event.clientY >
-                $(
-                    Rexbuilder_Util_Admin_Editor.$frameBuilder[0].contentWindow
-                ).height() -
-                150
-            ) {
+            if (event.clientY > $frameContentWindow.height() - 150) {
                 stop = false;
                 scroll(1);
             }
         });
 
-        Rexlive_Base_Settings.$document.on("dragend", ".button-list li", function (
-            event
-        ) {
+        Rexlive_Base_Settings.$document.on("dragend", ".button-list li", function (event) {
             stop = true;
             clearInterval(dragoverqueue_processtimer);
             DragDropFunctions.removePlaceholder();
@@ -225,8 +229,9 @@ var Button_Import_Modal = (function ($) {
             var $rexContainer = $(clientFrameWindow.document)
                 .find(".rex-container")
                 .eq(0);
-
-            $rexContainer.on('dragenter', ".text-wrap", function (event) {
+            var mousePosition = {};
+            var mousePositionToIFrame = {};
+            $rexContainer.on('dragenter', ".grid-stack-row", function (event) {
                 event.stopPropagation();
                 currentElement = $(event.target);
                 currentElementChangeFlag = true;
@@ -234,7 +239,7 @@ var Button_Import_Modal = (function ($) {
                 countdown = 1;
             });
 
-            $rexContainer.on('dragover', ".text-wrap", function (event) {
+            $rexContainer.on('dragover', ".grid-stack-row", function (event) {
                 event.preventDefault();
                 event.stopPropagation();
                 if (countdown % 15 != 0 && currentElementChangeFlag == false) {
@@ -244,14 +249,16 @@ var Button_Import_Modal = (function ($) {
                 event = event || window.event;
                 countdown = countdown + 1;
                 currentElementChangeFlag = false;
-                var mousePosition = {
-                    x: event.originalEvent.clientX,
-                    y: event.originalEvent.clientY
-                };
+
+                mousePosition.x = event.originalEvent.clientX;
+                mousePosition.y = event.originalEvent.clientY;
+
+                mousePositionToIFrame.x = event.originalEvent.pageX
+                mousePositionToIFrame.y = event.originalEvent.pageY;
                 DragDropFunctions.AddEntryToDragOverQueue(currentElement, elementRectangle, mousePosition)
             });
 
-            $rexContainer.on('drop', ".text-wrap", function (event) {
+            $rexContainer.on('drop', ".grid-stack-row", function (event) {
                 event.preventDefault();
                 event.stopPropagation();
                 var e;
@@ -264,15 +271,21 @@ var Button_Import_Modal = (function ($) {
                     var $insertionPoint = Rexbuilder_Util_Admin_Editor.$frameBuilder
                         .contents()
                         .find(".drop-marker");
+                    
                     var $divInsert = $(jQuery.parseHTML(textData));
                     var $spanEl = $(document.createElement("span"));
                     $spanEl.addClass("rex-edit-button-tools");
                     $divInsert.find(".rex-button-wrapper").prepend($spanEl);
                     $divInsert.addClass("rex-loading-button");
+
                     $divInsert.insertAfter($insertionPoint[0]);
                     $insertionPoint.remove();
                     var dataEndDrop = {
-                        eventName: "rexlive:importButton"
+                        eventName: "rexlive:importButton",
+                        data_to_send: {
+                            buttonDimensions: buttonDimensions,
+                            mousePosition: mousePositionToIFrame
+                        }
                     };
                     Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
                 }
@@ -286,12 +299,13 @@ var Button_Import_Modal = (function ($) {
         {
             dragoverqueue: [],
             GetMouseBearingsPercentage: function ($element, elementRect, mousePos) {
-                if (!elementRect)
+                if (!elementRect){
                     elementRect = $element.get(0).getBoundingClientRect();
-                var mousePosPercent_X = ((mousePos.x - elementRect.left) / (elementRect.right - elementRect.left)) * 100;
-                var mousePosPercent_Y = ((mousePos.y - elementRect.top) / (elementRect.bottom - elementRect.top)) * 100;
-
-                return { x: mousePosPercent_X, y: mousePosPercent_Y };
+                }
+                return { 
+                    x: ((mousePos.x - elementRect.left) / (elementRect.right - elementRect.left)) * 100, 
+                    y: ((mousePos.y - elementRect.top) / (elementRect.bottom - elementRect.top)) * 100 
+                };
             },
             OrchestrateDragDrop: function ($element, elementRect, mousePos) {
                 //If no element is hovered or element hovered is the placeholder -> not valid -> return false;
@@ -301,7 +315,6 @@ var Button_Import_Modal = (function ($) {
                 if ($element.is('html'))
                     $element = $element.find('body');
                 //Top and Bottom Area Percentage to trigger different case. [5% of top and bottom area gets reserved for this]
-                var breakPointNumber = { x: 50, y: 50 };
 
                 var mousePercents = this.GetMouseBearingsPercentage($element, elementRect, mousePos);
                 if ((mousePercents.x > breakPointNumber.x && mousePercents.x < 100 - breakPointNumber.x)
@@ -398,7 +411,7 @@ var Button_Import_Modal = (function ($) {
                             var elementRect = $element.get(0).getBoundingClientRect();
                             var $tempElement = $element.parent();
                             var tempelementRect = $tempElement.get(0).getBoundingClientRect();
-                            if ($element.is("body") || $element.hasClass("text-wrap"))
+                            if ($element.is("body") || $element.hasClass("grid-stack-row"))
                                 return $element;
                             if (Math.abs(tempelementRect.left - elementRect.left) == 0)
                                 $element = $element.parent();
@@ -411,7 +424,7 @@ var Button_Import_Modal = (function ($) {
                             var elementRect = $element.get(0).getBoundingClientRect();
                             var $tempElement = $element.parent();
                             var tempelementRect = $tempElement.get(0).getBoundingClientRect();
-                            if ($element.is("body") || $element.hasClass("text-wrap"))
+                            if ($element.is("body") || $element.hasClass("grid-stack-row"))
                                 return $element;
                             if (Math.abs(tempelementRect.right - elementRect.right) == 0)
                                 $element = $element.parent();
@@ -424,7 +437,7 @@ var Button_Import_Modal = (function ($) {
                             var elementRect = $element.get(0).getBoundingClientRect();
                             var $tempElement = $element.parent();
                             var tempelementRect = $tempElement.get(0).getBoundingClientRect();
-                            if ($element.is("body") || $element.hasClass("text-wrap"))
+                            if ($element.is("body") || $element.hasClass("grid-stack-row"))
                                 return $element;
                             if (Math.abs(tempelementRect.top - elementRect.top) == 0)
                                 $element = $element.parent();
@@ -437,7 +450,7 @@ var Button_Import_Modal = (function ($) {
                             var elementRect = $element.get(0).getBoundingClientRect();
                             var $tempElement = $element.parent();
                             var tempelementRect = $tempElement.get(0).getBoundingClientRect();
-                            if ($element.is("body") || $element.hasClass("text-wrap"))
+                            if ($element.is("body") || $element.hasClass("grid-stack-row"))
                                 return $element;
                             if (Math.abs(tempelementRect.bottom - elementRect.bottom) == 0)
                                 $element = $element.parent();
@@ -454,8 +467,8 @@ var Button_Import_Modal = (function ($) {
                 switch (position) {
                     case "before":
                         placeholder.find(".message").html($element.data('sh-dnd-error'));
-                        //buttons have to be inside text-wrap
-                        if ($element.hasClass("text-wrap")) {
+                        //buttons have to be inside grid-stack-row
+                        if ($element.hasClass("grid-stack-row")) {
                             $element.prepend(placeholder);
                         } else {
                             $element.before(placeholder);
@@ -464,8 +477,8 @@ var Button_Import_Modal = (function ($) {
                         break;
                     case "after":
                         placeholder.find(".message").html($element.data('sh-dnd-error'));
-                        //buttons have to be inside text-wrap
-                        if ($element.hasClass("text-wrap")) {
+                        //buttons have to be inside grid-stack-row
+                        if ($element.hasClass("grid-stack-row")) {
                             $element.append(placeholder);
                         } else {
                             $element.after(placeholder);
@@ -697,16 +710,12 @@ var Button_Import_Modal = (function ($) {
                     width: rect.width + 4 + "px",
                     top:
                         rect.top +
-                        $(
-                            Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow
-                        ).scrollTop() -
+                        $frameContentWindow.scrollTop() -
                         2 +
                         "px",
                     left:
                         rect.left +
-                        $(
-                            Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow
-                        ).scrollLeft() -
+                        $frameContentWindow.scrollLeft() -
                         2 +
                         "px"
                 });
@@ -744,7 +753,6 @@ var Button_Import_Modal = (function ($) {
         this.$buttonsStyle = $("#rexliveStyle-inline-css");
         _fixCustomStyleElement();
 
-        _linkDocumentListeners();
         _linkDraggable();
     };
 

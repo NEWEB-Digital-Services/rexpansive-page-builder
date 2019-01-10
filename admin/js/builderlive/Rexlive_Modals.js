@@ -69,14 +69,14 @@ var Rexlive_Modals = (function ($) {
         // lateral menu
         Model_Lateral_Menu.init();
 
-        // change active layout
+        // Model import tab
         Model_Import_Modal.init();
 
+        // Button import tab
         Button_Import_Modal.init();
 
+        //editor button
         Button_Edit_Modal.init();
-        
-        Button_Name_Modal.init();
     }
 
     return {

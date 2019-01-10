@@ -562,6 +562,7 @@ MediumEditor.extensions = {};
          * not affected in any way.
          */
         findOrCreateMatchingTextNodes: function (document, element, match) {
+            console.log("WUJU");
             var treeWalker = document.createTreeWalker(element, NodeFilter.SHOW_ALL, null, false),
                 matchedNodes = [],
                 currentTextIndex = 0,
@@ -6620,16 +6621,58 @@ MediumEditor.extensions = {};
             tagName = node.nodeName.toLowerCase(),
             isEmpty = /^(\s+|<br\/?>)?$/i,
             isHeader = /h\d/i;
-        
+            
         var parentElementHeader = checkParentHeaderElement(node);
+        /**
+         * Fix for rexpansive buttons
+         */
+        if (
+            //il nodo prima è un pulsante
+            $(node.previousElementSibling).hasClass("rex-button-wrapper") &&
+            //il cursore è all'inizio dell'elemento
+            MediumEditor.selection.getCaretOffsets(node).left === 0 &&
+            //è stato premuto canc
+            MediumEditor.util.isKey(event, MediumEditor.util.keyCode.BACKSPACE)
+        ) {
+            var $rexButton = $(node.previousElementSibling).detach();
+            $rexButton.prependTo($(node));
+            event.preventDefault();
+            return;
+        }
+        
+        if(false){
+            event.preventDefault();
+            console.log("sono qua");
+            console.log(node);
+            var range = document.createRange();
+            var sel = window.getSelection();
+            console.log(sel.focusOffset);
+            var n = sel.focusOffset;
+            if (n == 0) {
+                n = 1;
+            }
 
+            var m = MediumEditor.selection.getCaretOffsets(node).left;
+            var sonNumber = 0;
+            while (true) {
+                //trovato il figlio giusto!
+                break;
+            }
+
+            range.setStart(node.childNodes[sonNumber], n-1);
+            range.collapse(true);
+            sel.removeAllRanges();
+            sel.addRange(range);
+            node.focus();
+            return;
+        }
         if (MediumEditor.util.isKey(event, [MediumEditor.util.keyCode.BACKSPACE, MediumEditor.util.keyCode.ENTER]) &&
-                // has a preceeding sibling
-                node.previousElementSibling &&
-                // in a header
-                isHeader.test(tagName) &&
-                // at the very end of the block
-                MediumEditor.selection.getCaretOffsets(node).left === 0) {
+            // has a preceeding sibling
+            node.previousElementSibling &&
+            // in a header
+            isHeader.test(tagName) &&
+            // at the very end of the block
+            MediumEditor.selection.getCaretOffsets(node).left === 0) {
             if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.BACKSPACE) && isEmpty.test(node.previousElementSibling.innerHTML)) {
                 // backspacing the begining of a header into an empty previous element will
                 // change the tagName of the current node to prevent one
@@ -6645,15 +6688,16 @@ MediumEditor.extensions = {};
                 event.preventDefault();
             }
         } else if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.DELETE) &&
-                    // between two sibling elements
-                    node.nextElementSibling &&
-                    node.previousElementSibling &&
-                    // not in a header
-                    !isHeader.test(tagName) &&
-                    // in an empty tag
-                    isEmpty.test(node.innerHTML) &&
-                    // when the next tag *is* a header
-                    isHeader.test(node.nextElementSibling.nodeName.toLowerCase())) {
+            // between two sibling elements
+            node.nextElementSibling &&
+            node.previousElementSibling &&
+            // not in a header
+            !isHeader.test(tagName) &&
+            // in an empty tag
+            isEmpty.test(node.innerHTML) &&
+            // when the next tag *is* a header
+            isHeader.test(node.nextElementSibling.nodeName.toLowerCase())) {
+                console.log("0");
             // hitting delete in an empty element preceding a header, ex:
             //  <p>[CURSOR]</p><h1>Header</h1>
             // Will cause the h1 to become a paragraph.
@@ -6666,16 +6710,18 @@ MediumEditor.extensions = {};
 
             event.preventDefault();
         } else if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.BACKSPACE) &&
-                tagName === 'li' &&
-                // hitting backspace inside an empty li
-                isEmpty.test(node.innerHTML) &&
-                // is first element (no preceeding siblings)
-                !node.previousElementSibling &&
-                // parent also does not have a sibling
-                !node.parentElement.previousElementSibling &&
-                // is not the only li in a list
-                node.nextElementSibling &&
-                node.nextElementSibling.nodeName.toLowerCase() === 'li') {
+            tagName === 'li' &&
+            // hitting backspace inside an empty li
+            isEmpty.test(node.innerHTML) &&
+            // is first element (no preceeding siblings)
+            !node.previousElementSibling &&
+            // parent also does not have a sibling
+            !node.parentElement.previousElementSibling &&
+            // is not the only li in a list
+            node.nextElementSibling &&
+            node.nextElementSibling.nodeName.toLowerCase() === 'li') {
+            console.log("1");
+
             // backspacing in an empty first list element in the first list (with more elements) ex:
             //  <ul><li>[CURSOR]</li><li>List Item 2</li></ul>
             // will remove the first <li> but add some extra element before (varies based on browser)
@@ -6697,15 +6743,17 @@ MediumEditor.extensions = {};
 
             event.preventDefault();
         } else if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.BACKSPACE) &&
-                (MediumEditor.util.getClosestTag(node, 'blockquote') !== false) &&
-                MediumEditor.selection.getCaretOffsets(node).left === 0) {
+            (MediumEditor.util.getClosestTag(node, 'blockquote') !== false) &&
+            MediumEditor.selection.getCaretOffsets(node).left === 0) {
+            console.log("2");
+
             // when cursor is at the begining of the element and the element is <blockquote>
             // then pressing backspace key should change the <blockquote> to a <p> tag
             event.preventDefault();
             MediumEditor.util.execFormatBlock(this.options.ownerDocument, 'p');
         } else if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER) &&
-                (MediumEditor.util.getClosestTag(node, 'blockquote') !== false) &&
-                MediumEditor.selection.getCaretOffsets(node).right === 0) {
+            (MediumEditor.util.getClosestTag(node, 'blockquote') !== false) &&
+            MediumEditor.selection.getCaretOffsets(node).right === 0) {
             // when cursor is at the end of <blockquote>,
             // then pressing enter key should create <p> tag, not <blockquote>
             p = this.options.ownerDocument.createElement('p');
@@ -6717,26 +6765,29 @@ MediumEditor.extensions = {};
 
             event.preventDefault();
         } else if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.BACKSPACE) &&
-                MediumEditor.util.isMediumEditorElement(node.parentElement) &&
-                !node.previousElementSibling &&
-                node.nextElementSibling &&
-                isEmpty.test(node.innerHTML)) {
+            MediumEditor.util.isMediumEditorElement(node.parentElement) &&
+            !node.previousElementSibling &&
+            node.nextElementSibling &&
+            isEmpty.test(node.innerHTML)) {
+            console.log("3");
+
             // when cursor is in the first element, it's empty and user presses backspace,
             // do delete action instead to get rid of the first element and move caret to 2nd
             event.preventDefault();
             MediumEditor.selection.moveCursor(this.options.ownerDocument, node.nextSibling);
             node.parentElement.removeChild(node);
         } else if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.BACKSPACE) &&
-                parentElementHeader && 
-                parentElementHeader.previousElementSibling && 
-                MediumEditor.selection.getCaretOffsets(node).left === 0) {
+            parentElementHeader &&
+            parentElementHeader.previousElementSibling &&
+            MediumEditor.selection.getCaretOffsets(node).left === 0) {
+
             // cursor is at the beginning of an header element
             // and not the first element
             event.preventDefault();
 
             // Remove childs if previous element as empty childs to prevent remains
             // of spans and br
-            if( 0 === parentElementHeader.previousElementSibling.innerText.trim().length ) {
+            if (0 === parentElementHeader.previousElementSibling.innerText.trim().length) {
                 while (parentElementHeader.previousElementSibling.firstChild) {
                     parentElementHeader.previousElementSibling.removeChild(parentElementHeader.previousElementSibling.firstChild);
                 }
@@ -6745,11 +6796,11 @@ MediumEditor.extensions = {};
                 // Else, move the cursor to the correct position, that is the last char on the last text node
                 // of the parent header siblings element
                 var lastTextNode = textNodesUnder(parentElementHeader.previousElementSibling);
-                customMoveCursor( lastTextNode[lastTextNode.length-1], lastTextNode[lastTextNode.length-1].length );
+                customMoveCursor(lastTextNode[lastTextNode.length - 1], lastTextNode[lastTextNode.length - 1].length);
             }
-            
+
             // Move node childs to the previous sibling
-            while( parentElementHeader.childNodes.length > 0 ) {
+            while (parentElementHeader.childNodes.length > 0) {
                 parentElementHeader.previousElementSibling.appendChild(parentElementHeader.childNodes[0]);
             }
 
@@ -6757,6 +6808,7 @@ MediumEditor.extensions = {};
             // removeNodeFromContentEditable(parentElementHeader);
             parentElementHeader.remove();
         }
+        console.log("5");
     }
 
     function handleKeyup(event) {

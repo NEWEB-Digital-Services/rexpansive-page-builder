@@ -344,7 +344,7 @@ var TextEditor = (function($) {
       this.list_active_action = this.document.createElement("span");
       this.list_active_action.classList.add("me__action-active");
       this.list_active_action.innerHTML = "h1";
-      this.list_parent.append(this.list_active_action);
+      $(this.list_parent).append(this.list_active_action);
       // list element
       this.list_element = this.document.createElement("div");
       this.list_element.classList.add("me__action-list");
@@ -353,8 +353,8 @@ var TextEditor = (function($) {
 
       this.list_actions = this.list_element.querySelectorAll('.medium-editor-action');
 
-      this.button.append(this.list_parent);
-      this.button.append(this.list_element);
+      $(this.button).append(this.list_parent);
+      $(this.button).append(this.list_element);
 
       this.action_active = "";
       this.all_actions = ['append-h1','append-h2','append-h3','append-h4','append-h5','append-h6'];
@@ -458,7 +458,7 @@ var TextEditor = (function($) {
       this.list_active_action = this.document.createElement("span");
       this.list_active_action.classList.add("me__action-active");
       this.list_active_action.innerHTML = "<i class='fa fa-bold'></i>";
-      this.list_parent.append(this.list_active_action);
+      $(this.list_parent).append(this.list_active_action);
       // list element
       this.list_element = this.document.createElement("div");
       this.list_element.classList.add("me__action-list");
@@ -467,8 +467,8 @@ var TextEditor = (function($) {
 
       this.list_actions = this.list_element.querySelectorAll('.medium-editor-action');
 
-      this.button.append(this.list_parent);
-      this.button.append(this.list_element);
+      $(this.button).append(this.list_parent);
+      $(this.button).append(this.list_element);
 
       this.action_active = [];
 
@@ -569,7 +569,7 @@ var TextEditor = (function($) {
       this.list_active_action = this.document.createElement("span");
       this.list_active_action.classList.add("me__action-active");
       this.list_active_action.innerHTML = "<i class='fa fa-list-alt'></i>";
-      this.list_parent.append(this.list_active_action);
+      $(this.list_parent).append(this.list_active_action);
       // list element
       this.list_element = this.document.createElement("div");
       this.list_element.classList.add("me__action-list");
@@ -578,8 +578,8 @@ var TextEditor = (function($) {
 
       this.list_actions = this.list_element.querySelectorAll('.medium-editor-action');
 
-      this.button.append(this.list_parent);
-      this.button.append(this.list_element);
+      $(this.button).append(this.list_parent);
+      $(this.button).append(this.list_element);
 
       this.action_active = "";
       this.all_actions = ['insertorderedlist','insertunorderedlist'];
@@ -715,7 +715,7 @@ var TextEditor = (function($) {
       this.list_active_action = this.document.createElement("span");
       this.list_active_action.classList.add("me__action-active");
       this.list_active_action.innerHTML = "<i class='fa fa-align-left'></i>";
-      this.list_parent.append(this.list_active_action);
+      $(this.list_parent).append(this.list_active_action);
       // list element
       this.list_element = this.document.createElement("div");
       this.list_element.classList.add("me__action-list");
@@ -727,8 +727,8 @@ var TextEditor = (function($) {
       this.action_active = '';
       this.all_actions = ['justifyLeft','justifyCenter','justifyRight','justifyFull'];
 
-      this.button.append(this.list_parent);
-      this.button.append(this.list_element);
+      $(this.button).append(this.list_parent);
+      $(this.button).append(this.list_element);
 
       this.on(this.button, 'click', this.handleClick.bind(this));
       this.subscribe("showToolbar", this.resetEnv.bind(this));
@@ -1066,7 +1066,7 @@ var TextEditor = (function($) {
 
       this.mirrorResize = document.createElement('img');
       this.mirrorResize.classList.add("me-resize-mirror");
-      document.getElementsByTagName("body")[0].append(this.mirrorResize);
+      $(document.getElementsByTagName("body")[0]).append(this.mirrorResize);
 
       this.resizeSizes = document.createElement('span');
       this.resizeSizes.classList.add("me-resize-sizes");
@@ -1076,14 +1076,14 @@ var TextEditor = (function($) {
       this.imageEditToolbar.classList.add("medium-editor-toolbar");
       this.imageEditToolbar.classList.add("medium-toolbar-arrow-under");
       this.imageEditToolbar.innerHTML = tmpl("tmpl-me-image-edit",{});
-      document.getElementsByTagName("body")[0].append(this.imageEditToolbar);
+      $(document.getElementsByTagName("body")[0]).append(this.imageEditToolbar);
 
       this.mediaBtn = document.createElement( "div" );
       this.mediaBtn.contentEditable = false;
       this.mediaBtn.classList.add("me-insert-media-button");
       this.mediaBtn.style.display = "none";
       this.mediaBtn.innerHTML = tmpl("tmpl-me-insert-media-button", {});
-      document.getElementsByTagName("body")[0].append(this.mediaBtn);
+      $(document.getElementsByTagName("body")[0]).append(this.mediaBtn);
       
       this.mediaLibraryBtn = $(this.mediaBtn).find(".me-insert-image")[0];
       this.mediaEmbedBtn = $(this.mediaBtn).find(".me-insert-embed")[0];
