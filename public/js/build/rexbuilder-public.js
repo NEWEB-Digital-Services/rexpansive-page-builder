@@ -5,6 +5,7 @@ var lodash = _.noConflict();
  * @since 1.1.3
  */
 var Rexbuilder_App = (function($) {
+  console.log('heisenberg');
   "use strict";
 
   var $sections = null;
@@ -41,6 +42,7 @@ var Rexbuilder_App = (function($) {
 
     /* -- Launching the grid -- */
     // $grids.find(".wrapper-expand-effect").expandEffect();
+    console.log('launchg gallerties');
     $grids.perfectGridGalleryEditor();
 
     /* -- Launching Photoswipe -- */
@@ -716,6 +718,7 @@ var Rexbuilder_App = (function($) {
    */
   // Waiting until the ready of the DOM
   $(function() {
+    console.log('DOM CONTENT LOAD');
     Rexbuilder_App.init();
   });
 

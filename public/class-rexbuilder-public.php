@@ -920,7 +920,6 @@ class Rexbuilder_Public
         ?>
     </div>
 	<?php
-
     }
     /**
      * This filter insures users only see their own media

@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gridstack - v0.4 - REORDER</title>
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="public/js/vendor/gridstack.js-0.4.0/dist/gridstack.css"
+    />
+    <link
+      rel="stylesheet"
+      href="public/js/vendor/gridstack.js-0.4.0/dist/gridstack-extra.css"
+    />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.0/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/2.0.5/velocity.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
+    <script src="public/js/vendor/gridstack.js-0.4.0/dist/gridstack.js"></script>
+    <script src="public/js/vendor/gridstack.js-0.4.0/dist/gridstack.jQueryUI.js"></script>
+
+    <style>
+      #grid1 {
+        background: lightgoldenrodyellow;
+      }
+
+      .grid-stack-item-content {
+        color: #fff;
+        text-align: center;
+        background-color: #18bc9c;
+      }
+
+      .grid-stack-item.red-block .grid-stack-item-content {
+        background: rgba(255, 0, 0, 1);
+      }
+
+      .grid-stack-item.green-block .grid-stack-item-content {
+        background: rgba(0, 255, 0, 1);
+      }
+
+      .grid-stack-item.blue-block .grid-stack-item-content {
+        background: rgba(0, 0, 255, 1);
+      }
+
+      .grid-stack-item.water-block .grid-stack-item-content {
+        background: rgba(0, 255, 255, 1);
+      }
+
+      /* .grid-stack > .grid-stack-item > .grid-stack-item-content {
+        position: static;
+      } */
+
+      .grid-stack-item-removing {
+        opacity: 0.5;
+      }
+
+      .sidebar {
+        background: rgba(0, 255, 0, 0.1);
+        height: 150px;
+        padding: 25px 0;
+        text-align: center;
+      }
+
+      .sidebar .grid-stack-item {
+        width: 200px;
+        height: 100px;
+        border: 2px dashed green;
+        text-align: center;
+        line-height: 100px;
+        z-index: 10;
+        background: rgba(0, 255, 0, 0.1);
+        cursor: default;
+        display: inline-block;
+      }
+
+      .sidebar .grid-stack-item .grid-stack-item-content {
+        background: none;
+      }
+
+      .filter {
+        cursor: pointer;
+        display: inline-block;
+        padding: 10px;
+        border: 1px solid black;
+      }
+
+      .filter:hover {
+        background-color:#eee;
+        color: #aaa;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Two grids demo - v0.4</h1>
+
+      <div class="row">
+        <div class="col-12">
+          <p class="text-center"><button id="insert-btn" class="btn btn-primary">Insert</button></p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="grid-stack grid-stack-12" id="grid1">
+            <div
+              class="grid-stack-item red-block"
+              data-gs-x="0"
+              data-gs-y="0"
+              data-gs-width="4"
+              data-gs-height="4"
+              
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">(0)</div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item green-block"
+              data-gs-x="4"
+              data-gs-y="0"
+              data-gs-width="4"
+              data-gs-height="4"
+              
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">(1)</div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item blue-block"
+              data-gs-x="8"
+              data-gs-y="0"
+              data-gs-width="4"
+              data-gs-height="4"
+              
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">(2)</div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item blue-block"
+              data-gs-x="0"
+              data-gs-y="4"
+              data-gs-width="3"
+              data-gs-height="3"
+              
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">(3)</div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item blue-block"
+              data-gs-x="3"
+              data-gs-y="4"
+              data-gs-width="3"
+              data-gs-height="3"
+              
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">(4)</div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item blue-block"
+              data-gs-x="6"
+              data-gs-y="4"
+              data-gs-width="6"
+              data-gs-height="3"
+              
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">(5)</div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item blue-block"
+              data-gs-x="0"
+              data-gs-y="7"
+              data-gs-width="6"
+              data-gs-height="4"
+              
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">(6)</div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item red-block"
+              data-gs-x="6"
+              data-gs-y="7"
+              data-gs-width="3"
+              data-gs-height="4"
+              
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">(7)</div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item blue-block"
+              data-gs-x="10"
+              data-gs-y="7"
+              data-gs-width="3"
+              data-gs-height="4"
+              
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">(8)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      Array.prototype.insertionSort = function() {
+        var length = this.length;
+        
+        for(var i = 1, j; i < length; i++) {
+          var temp = this[i];
+          for(var j = i - 1; j >= 0 && this[j] > temp; j--) {
+            this[j+1] = this[j];
+          }
+          this[j+1] = temp;
+        }
+      }
+
+      Array.prototype.setGrid = function(x,y,w,h) {
+        for(var i=0; i<h; i++) {
+          for(var j=0; j<w; j++) {
+            this.push(x+j+(i*12));
+          }
+        }
+        this.insertionSort();
+      }
+
+      function mergeSort(arr) {
+        if (arr.length < 2) {
+          return arr;
+        }
+
+        var mid = Math.floor(arr.length / 2);
+        var subLeft = mergeSort(arr.slice(0, mid));
+        var subRight = mergeSort(arr.slice(mid));
+
+        return merge(subLeft, subRight);
+      }
+
+      function merge (node1, node2) {
+        var result = [];
+        while (node1.length > 0 && node2.length > 0) {
+          result.push(node1[0] < node2[0]? node1.shift() : node2.shift());
+        }
+        return result.concat(node1.length? node1 : node2);
+      }
+
+      $(function() {
+        var findHole = function(arr, start) {
+          start = "undefined" !== typeof start ? start : 0;
+          for(var i=start; i<arr.length; i++) {
+            if( arr[i] + 1 !== arr[i+1]) {
+              return i;
+            }
+          }
+        };
+
+        var willFit = function(arr,start,w,h) {
+          for( var i=0; i<h; i++ ) {
+            for( var j=0; j<w; j++ ) {
+              if( -1 !== arr.indexOf( arr[start]+1+j+(i*12) ) ) {
+                return false;
+              }
+            }
+          }
+          return true;
+        };
+
+        var getCoord = function( val, maxWidth ) {
+          return {
+            x: val % maxWidth,
+            y: Math.floor( val / maxWidth )
+          }
+        };
+        
+        $(window).on("load", function() {
+          var $grid = $("#grid1");
+          var options = {
+            width: 12,
+            float: true,
+            animate: true,
+          };
+
+          $grid.gridstack(options);
+          var grid = $grid.data("gridstack");          
+
+          $insertBtn = $('#insert-btn');
+          $insertBtn.on("click", function(e) {
+            e.preventDefault();
+            var newNode = {
+              x: 0,
+              y: 0,
+              width: 3,
+              height: 4
+            };
+
+            var markGrid = [];
+            markGrid.setGrid(newNode.x, newNode.y, newNode.width, newNode.height);
+
+            var nextX = newNode.x + newNode.width;
+            var nextY = newNode.y + newNode.height;
+
+            var newPositions = [];
+
+            for(var i=0; i<grid.grid.nodes.length; i++) {
+              var newPosition = {};
+              // Find elements to move
+              if( ( grid.grid.nodes[i].x + ( grid.grid.width * grid.grid.nodes[i].y ) ) >= ( newNode.x + ( grid.grid.width * newNode.y ) ) ) {
+                // Node overflows grid ?
+                var startSearch = findHole(markGrid);
+                if( willFit( markGrid, startSearch, grid.grid.nodes[i].width, grid.grid.nodes[i].height ) ) {
+                  var newCoords = getCoord(markGrid[startSearch]+1,12);
+                  newPosition.x = newCoords.x;
+                  newPosition.y = newCoords.y;
+                  markGrid.setGrid( newCoords.x, newCoords.y, grid.grid.nodes[i].width, grid.grid.nodes[i].height);
+                }
+
+                // while( !willFit( markGrid, startSearch, grid.grid.nodes[i].width, grid.grid.nodes[i].height ) ) {
+
+                // }
+
+                // if( ( grid.grid.nodes[i].x + nextX + grid.grid.nodes[i].width ) > 12 ) {
+                //   // newPosition.x = grid.grid.nodes[i].x;
+                //   newPosition.x = 0;
+                //   newPosition.y = grid.grid.nodes[i].y + nextY;
+                // } else {
+                //   newPosition.x = grid.grid.nodes[i].x + nextX;
+                //   newPosition.y = grid.grid.nodes[i].y;
+                // }
+              }
+              newPositions.push(newPosition);
+            }
+
+            console.log(newPositions);
+
+            grid.batchUpdate();
+
+            // for(var j=0; j<grid.grid.nodes.length; j++) {
+            //   if( newPositions[j].hasOwnProperty('x') && newPositions[j].hasOwnProperty('y') ) {
+            //     grid.move( grid.grid.nodes[j].el, newPositions[j].x, newPositions[j].y );
+            //   }
+            // }
+
+            // grid.addWidget('<div class="water-block" data-gs-x="' + newNode.x + '" data-gs-y="' + newNode.y + '" data-gs-width="' + newNode.width + '" data-gs-height="' + newNode.height + '"><div class="grid-stack-item-content"><div class="text-wrap">(9)</div></div></div></div>');
+
+            grid.commit();
+          });
+        });
+      });
+    </script>
+  </body>
+</html>
