@@ -25,7 +25,6 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.0/jquery-ui.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/2.0.5/velocity.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
     <script src="public/js/vendor/gridstack.js-0.4.0/dist/gridstack.js"></script>
     <script src="public/js/vendor/gridstack.js-0.4.0/dist/gridstack.jQueryUI.js"></script>
@@ -243,7 +242,7 @@
       Array.prototype.setGrid = function(x,y,w,h) {
         for(var i=0; i<h; i++) {
           for(var j=0; j<w; j++) {
-            this.push(x+j+(i*12));
+            this.push((x+j)+((y+i)*12));
           }
         }
         this.insertionSort();
@@ -273,20 +272,61 @@
         var findHole = function(arr, start) {
           start = "undefined" !== typeof start ? start : 0;
           for(var i=start; i<arr.length; i++) {
-            if( arr[i] + 1 !== arr[i+1]) {
-              return i;
+            if( arr[i] + 1 !== arr[i+1] ) {
+              if( "undefined" !== typeof arr[i+1] ) {
+                // console.log('pos index found:',i,'grid pos found',arr[i]);
+                return i;
+              } else {
+                // console.log('pos index guess:',arr.length - 1,'grid pos guess',arr[arr.length-1]);
+                return arr.length-1;
+              }
+              // return arr[i];
             }
           }
+          return arr.length-1;
+          // return arr[arr.length-1];
         };
 
-        var willFit = function(arr,start,w,h) {
+        var willFit = function(arr,start,w,h,steps) {
+          steps = "undefined" !== typeof steps ? steps : 0;
+
+          var startRow = Math.floor( ( arr[start]+1 ) / 12 );
+          var endRow = Math.floor( ( arr[start]+1+w ) / 12 );
+          
+          console.log(start);
+          console.log(arr[start]);
+          console.log(startRow, endRow);
+          console.log(startRow !== endRow);
+          
+          if( ( startRow !== endRow ) && ( !isNaN(startRow) && !isNaN(endRow) ) ) {
+            console.log('elemento sborda');
+            return false;
+          }
+
+          if( start == arr.length-1 ) {
+            start = start + steps;
+          }
+
+          console.log(start);
+          console.log(arr[start]);
+
+          // console.log(steps);
+
+          // if( "undefined" === typeof arr[start] ) {
+          //   start = start + steps;
+          // }
+
+          console.log(start);
+
           for( var i=0; i<h; i++ ) {
             for( var j=0; j<w; j++ ) {
-              if( -1 !== arr.indexOf( arr[start]+1+j+(i*12) ) ) {
+              var temp = arr[start]+1+j+(i*12);
+              if( -1 !== arr.indexOf( temp ) ) {
                 return false;
               }
             }
           }
+
           return true;
         };
 
@@ -321,8 +361,8 @@
             var markGrid = [];
             markGrid.setGrid(newNode.x, newNode.y, newNode.width, newNode.height);
 
-            var nextX = newNode.x + newNode.width;
-            var nextY = newNode.y + newNode.height;
+            // var nextX = newNode.x + newNode.width;
+            // var nextY = newNode.y + newNode.height;
 
             var newPositions = [];
 
@@ -332,12 +372,31 @@
               if( ( grid.grid.nodes[i].x + ( grid.grid.width * grid.grid.nodes[i].y ) ) >= ( newNode.x + ( grid.grid.width * newNode.y ) ) ) {
                 // Node overflows grid ?
                 var startSearch = findHole(markGrid);
-                if( willFit( markGrid, startSearch, grid.grid.nodes[i].width, grid.grid.nodes[i].height ) ) {
-                  var newCoords = getCoord(markGrid[startSearch]+1,12);
-                  newPosition.x = newCoords.x;
-                  newPosition.y = newCoords.y;
-                  markGrid.setGrid( newCoords.x, newCoords.y, grid.grid.nodes[i].width, grid.grid.nodes[i].height);
-                }
+                var spins = 0;
+                var steps = 0;
+                do {
+                  if( willFit( markGrid, startSearch, grid.grid.nodes[i].width, grid.grid.nodes[i].height, steps ) ) {
+                    var newCoords;
+                    if(!markGrid.hasOwnProperty(startSearch)) {
+                      newCoords = getCoord(markGrid[markGrid.length-1]+1,12);
+                    } else {
+                      newCoords = getCoord(markGrid[startSearch]+1,12);
+                    }
+                    
+                    newPosition.x = newCoords.x;
+                    newPosition.y = newCoords.y;
+                    
+                    markGrid.setGrid( newCoords.x, newCoords.y, grid.grid.nodes[i].width, grid.grid.nodes[i].height);
+                    break;
+                  } 
+                  
+                  var nextStart = startSearch+1;
+                  startSearch = findHole(markGrid, nextStart);
+                  
+                  spins = spins+1;
+                  steps = steps+1;
+                  if(spins>10) {console.log('spinato');break;}
+                } while( startSearch <= markGrid[markGrid.length-1] );
 
                 // while( !willFit( markGrid, startSearch, grid.grid.nodes[i].width, grid.grid.nodes[i].height ) ) {
 
@@ -359,13 +418,13 @@
 
             grid.batchUpdate();
 
-            // for(var j=0; j<grid.grid.nodes.length; j++) {
-            //   if( newPositions[j].hasOwnProperty('x') && newPositions[j].hasOwnProperty('y') ) {
-            //     grid.move( grid.grid.nodes[j].el, newPositions[j].x, newPositions[j].y );
-            //   }
-            // }
+            for(var j=0; j<grid.grid.nodes.length; j++) {
+              if( newPositions[j].hasOwnProperty('x') && newPositions[j].hasOwnProperty('y') ) {
+                grid.move( grid.grid.nodes[j].el, newPositions[j].x, newPositions[j].y );
+              }
+            }
 
-            // grid.addWidget('<div class="water-block" data-gs-x="' + newNode.x + '" data-gs-y="' + newNode.y + '" data-gs-width="' + newNode.width + '" data-gs-height="' + newNode.height + '"><div class="grid-stack-item-content"><div class="text-wrap">(9)</div></div></div></div>');
+            grid.addWidget('<div class="water-block" data-gs-x="' + newNode.x + '" data-gs-y="' + newNode.y + '" data-gs-width="' + newNode.width + '" data-gs-height="' + newNode.height + '"><div class="grid-stack-item-content"><div class="text-wrap">(9)</div></div></div></div>');
 
             grid.commit();
           });
