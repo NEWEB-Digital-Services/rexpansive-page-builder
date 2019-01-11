@@ -102,7 +102,7 @@
   </head>
   <body>
     <div class="container">
-      <h1>Two grids demo - v0.4</h1>
+      <h1>INSERT ELEMENT - TEST 1</h1>
 
       <div class="row">
         <div class="col-12">
@@ -113,110 +113,47 @@
       <div class="row">
         <div class="col-md-12">
           <div class="grid-stack grid-stack-12" id="grid1">
-            <div
-              class="grid-stack-item red-block"
-              data-gs-x="0"
-              data-gs-y="0"
-              data-gs-width="4"
-              data-gs-height="4"
-              
-            >
+            <div class="grid-stack-item red-block" data-gs-x="0" data-gs-y="0" data-gs-width="4" data-gs-height="4">
               <div class="grid-stack-item-content">
                 <div class="text-wrap">(0)</div>
               </div>
             </div>
-            <div
-              class="grid-stack-item green-block"
-              data-gs-x="4"
-              data-gs-y="0"
-              data-gs-width="4"
-              data-gs-height="4"
-              
-            >
+            <div class="grid-stack-item green-block" data-gs-x="4" data-gs-y="0" data-gs-width="4" data-gs-height="4">
               <div class="grid-stack-item-content">
                 <div class="text-wrap">(1)</div>
               </div>
             </div>
-            <div
-              class="grid-stack-item blue-block"
-              data-gs-x="8"
-              data-gs-y="0"
-              data-gs-width="4"
-              data-gs-height="4"
-              
-            >
+            <div class="grid-stack-item blue-block" data-gs-x="8" data-gs-y="0" data-gs-width="4" data-gs-height="4">
               <div class="grid-stack-item-content">
                 <div class="text-wrap">(2)</div>
               </div>
             </div>
-            <div
-              class="grid-stack-item blue-block"
-              data-gs-x="0"
-              data-gs-y="4"
-              data-gs-width="3"
-              data-gs-height="3"
-              
-            >
+            <div class="grid-stack-item blue-block" data-gs-x="0" data-gs-y="4" data-gs-width="3" data-gs-height="3">
               <div class="grid-stack-item-content">
                 <div class="text-wrap">(3)</div>
               </div>
             </div>
-            <div
-              class="grid-stack-item blue-block"
-              data-gs-x="3"
-              data-gs-y="4"
-              data-gs-width="3"
-              data-gs-height="3"
-              
-            >
+            <div class="grid-stack-item blue-block" data-gs-x="3" data-gs-y="4" data-gs-width="3" data-gs-height="3">
               <div class="grid-stack-item-content">
                 <div class="text-wrap">(4)</div>
               </div>
             </div>
-            <div
-              class="grid-stack-item blue-block"
-              data-gs-x="6"
-              data-gs-y="4"
-              data-gs-width="6"
-              data-gs-height="3"
-              
-            >
+            <div class="grid-stack-item blue-block" data-gs-x="6" data-gs-y="4" data-gs-width="6" data-gs-height="3">
               <div class="grid-stack-item-content">
                 <div class="text-wrap">(5)</div>
               </div>
             </div>
-            <div
-              class="grid-stack-item blue-block"
-              data-gs-x="0"
-              data-gs-y="7"
-              data-gs-width="6"
-              data-gs-height="4"
-              
-            >
+            <div class="grid-stack-item blue-block" data-gs-x="0" data-gs-y="7" data-gs-width="6" data-gs-height="4">
               <div class="grid-stack-item-content">
                 <div class="text-wrap">(6)</div>
               </div>
             </div>
-            <div
-              class="grid-stack-item red-block"
-              data-gs-x="6"
-              data-gs-y="7"
-              data-gs-width="3"
-              data-gs-height="4"
-              
-            >
+            <div class="grid-stack-item red-block" data-gs-x="6" data-gs-y="7" data-gs-width="3" data-gs-height="4">
               <div class="grid-stack-item-content">
                 <div class="text-wrap">(7)</div>
               </div>
             </div>
-            <div
-              class="grid-stack-item blue-block"
-              data-gs-x="10"
-              data-gs-y="7"
-              data-gs-width="3"
-              data-gs-height="4"
-              
-            >
+            <div class="grid-stack-item blue-block" data-gs-x="10" data-gs-y="7" data-gs-width="3" data-gs-height="4">
               <div class="grid-stack-item-content">
                 <div class="text-wrap">(8)</div>
               </div>
@@ -248,6 +185,10 @@
         this.insertionSort();
       }
 
+      Array.prototype.checkGrid = function(x,y) {
+        console.log(getIndex([x,y],12));
+      }
+
       function mergeSort(arr) {
         if (arr.length < 2) {
           return arr;
@@ -268,74 +209,76 @@
         return result.concat(node1.length? node1 : node2);
       }
 
+      var getCoord = function( val, maxWidth ) {
+        return {
+          x: val % maxWidth,
+          y: Math.floor( val / maxWidth )
+        }
+      };
+
+      var getIndex = function(coord, maxWidth) {
+        return coord[0] + ( coord[1] * maxWidth );
+      }
+
       $(function() {
         var findHole = function(arr, start) {
           start = "undefined" !== typeof start ? start : 0;
           for(var i=start; i<arr.length; i++) {
             if( arr[i] + 1 !== arr[i+1] ) {
               if( "undefined" !== typeof arr[i+1] ) {
-                // console.log('pos index found:',i,'grid pos found',arr[i]);
                 return i;
               } else {
-                // console.log('pos index guess:',arr.length - 1,'grid pos guess',arr[arr.length-1]);
                 return arr.length-1;
               }
-              // return arr[i];
             }
           }
           return arr.length-1;
-          // return arr[arr.length-1];
         };
 
-        var willFit = function(arr,start,w,h,steps) {
-          steps = "undefined" !== typeof steps ? steps : 0;
+        var willFit = function(arr,start,w,h) {
+          var response = {
+            answer: false,
+            index: null
+          };
 
-          var startRow = Math.floor( ( arr[start]+1 ) / 12 );
-          var endRow = Math.floor( ( arr[start]+1+w ) / 12 );
-          
-          console.log(start);
-          console.log(arr[start]);
-          console.log(startRow, endRow);
-          console.log(startRow !== endRow);
-          
-          if( ( startRow !== endRow ) && ( !isNaN(startRow) && !isNaN(endRow) ) ) {
-            console.log('elemento sborda');
-            return false;
-          }
-
+          // I reach the end of the array
           if( start == arr.length-1 ) {
-            start = start + steps;
+            var lastElement = arr[start] + 1;
+            do {
+              var lastStartRow = Math.floor( ( lastElement ) / 12 );
+              var lastEndRow = Math.floor( ( ( lastElement ) + w ) / 12 );
+
+              if( lastStartRow === lastEndRow ) {
+                response.answer = true;
+                response.index = lastElement;
+                return response;
+              } else {
+                lastElement = lastElement + 1;
+              }
+            } while( true );
           }
 
-          console.log(start);
-          console.log(arr[start]);
+          var startRow = Math.floor( ( arr[start] ) / 12 );
+          var endRow = Math.floor( ( arr[start]+w ) / 12 );
 
-          // console.log(steps);
-
-          // if( "undefined" === typeof arr[start] ) {
-          //   start = start + steps;
-          // }
-
-          console.log(start);
+          if( startRow !== endRow ) {
+            response.answer = false;
+            return response;
+          }
 
           for( var i=0; i<h; i++ ) {
             for( var j=0; j<w; j++ ) {
               var temp = arr[start]+1+j+(i*12);
               if( -1 !== arr.indexOf( temp ) ) {
-                return false;
+                response.answer = false;
+                return response;
               }
             }
           }
 
-          return true;
-        };
-
-        var getCoord = function( val, maxWidth ) {
-          return {
-            x: val % maxWidth,
-            y: Math.floor( val / maxWidth )
-          }
-        };
+          response.answer = true;
+          return response;
+        };        
         
         $(window).on("load", function() {
           var $grid = $("#grid1");
@@ -361,9 +304,6 @@
             var markGrid = [];
             markGrid.setGrid(newNode.x, newNode.y, newNode.width, newNode.height);
 
-            // var nextX = newNode.x + newNode.width;
-            // var nextY = newNode.y + newNode.height;
-
             var newPositions = [];
 
             for(var i=0; i<grid.grid.nodes.length; i++) {
@@ -373,18 +313,19 @@
                 // Node overflows grid ?
                 var startSearch = findHole(markGrid);
                 var spins = 0;
-                var steps = 0;
                 do {
-                  if( willFit( markGrid, startSearch, grid.grid.nodes[i].width, grid.grid.nodes[i].height, steps ) ) {
+                  var doesFit = willFit( markGrid, startSearch, grid.grid.nodes[i].width, grid.grid.nodes[i].height );
+                  if( doesFit.answer ) {
                     var newCoords;
-                    if(!markGrid.hasOwnProperty(startSearch)) {
-                      newCoords = getCoord(markGrid[markGrid.length-1]+1,12);
+                    if( null !== doesFit.index ) {
+                      newCoords = getCoord(doesFit.index,12);
                     } else {
                       newCoords = getCoord(markGrid[startSearch]+1,12);
                     }
                     
                     newPosition.x = newCoords.x;
                     newPosition.y = newCoords.y;
+                    newPosition.el = grid.grid.nodes[i];
                     
                     markGrid.setGrid( newCoords.x, newCoords.y, grid.grid.nodes[i].width, grid.grid.nodes[i].height);
                     break;
@@ -394,39 +335,24 @@
                   startSearch = findHole(markGrid, nextStart);
                   
                   spins = spins+1;
-                  steps = steps+1;
-                  if(spins>10) {console.log('spinato');break;}
+                  if(spins>50) {console.log('breKKato');break;}
                 } while( startSearch <= markGrid[markGrid.length-1] );
-
-                // while( !willFit( markGrid, startSearch, grid.grid.nodes[i].width, grid.grid.nodes[i].height ) ) {
-
-                // }
-
-                // if( ( grid.grid.nodes[i].x + nextX + grid.grid.nodes[i].width ) > 12 ) {
-                //   // newPosition.x = grid.grid.nodes[i].x;
-                //   newPosition.x = 0;
-                //   newPosition.y = grid.grid.nodes[i].y + nextY;
-                // } else {
-                //   newPosition.x = grid.grid.nodes[i].x + nextX;
-                //   newPosition.y = grid.grid.nodes[i].y;
-                // }
               }
               newPositions.push(newPosition);
             }
 
             console.log(newPositions);
-
             grid.batchUpdate();
 
-            for(var j=0; j<grid.grid.nodes.length; j++) {
-              if( newPositions[j].hasOwnProperty('x') && newPositions[j].hasOwnProperty('y') ) {
-                grid.move( grid.grid.nodes[j].el, newPositions[j].x, newPositions[j].y );
+            for(var j=0; j<newPositions.length; j++) {
+              if( newPositions[j].hasOwnProperty('x') && newPositions[j].hasOwnProperty('y') && newPositions[j].hasOwnProperty('el') ) {
+                grid.move( newPositions[j].el.el, newPositions[j].x, newPositions[j].y );
               }
             }
 
-            grid.addWidget('<div class="water-block" data-gs-x="' + newNode.x + '" data-gs-y="' + newNode.y + '" data-gs-width="' + newNode.width + '" data-gs-height="' + newNode.height + '"><div class="grid-stack-item-content"><div class="text-wrap">(9)</div></div></div></div>');
-
             grid.commit();
+
+            grid.addWidget('<div class="water-block" data-gs-x="' + newNode.x + '" data-gs-y="' + newNode.y + '" data-gs-width="' + newNode.width + '" data-gs-height="' + newNode.height + '"><div class="grid-stack-item-content"><div class="text-wrap">(9)</div></div></div></div>');            
           });
         });
       });
