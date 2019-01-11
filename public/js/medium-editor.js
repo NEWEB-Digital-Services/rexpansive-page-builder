@@ -6640,30 +6640,58 @@ MediumEditor.extensions = {};
             return;
         }
         
-        if(false){
-            event.preventDefault();
+        if(true){
             console.log("sono qua");
             console.log(node);
             var range = document.createRange();
             var sel = window.getSelection();
             console.log(sel.focusOffset);
             var n = sel.focusOffset;
-            if (n == 0) {
-                n = 1;
+            var k = MediumEditor.selection.getCaretOffsets(node).left;
+            var pos = 0;
+            var nodes = node.childNodes;
+            console.log(nodes);
+            console.log(k);
+            event.preventDefault();
+            if (n == 0) {          
+                console.log(node.previousSibling);      
+                while(true){
+                    console.log("current data");
+                    console.log(nodes[pos].length, k);
+                    console.log($(nodes[pos]).is("text"));
+                    if(nodes[pos].length > k){
+                        break;
+                    }
+                    k -= nodes[pos].length;
+                    pos = pos+1;
+                    if(pos == nodes.length){
+                        break;
+                    }
+                }
+                console.log(pos, k);
             }
-
-            var m = MediumEditor.selection.getCaretOffsets(node).left;
+            return;
             var sonNumber = 0;
             while (true) {
                 //trovato il figlio giusto!
                 break;
             }
-
-            range.setStart(node.childNodes[sonNumber], n-1);
+            //recupero tuttu i figli di mio padre
+            // vedo che figlio sono
+            console.log("sono il figlio numero", sonNumber);
+            console.log("nella posizione", pos);
+            // DEL
+            // capisco se sono nella posizione 0
+            // vedo se il fratello prima di me è rexbutton
+            // CANC
+            // vedo se sono nell'ultima posizione
+            // vedo se il fratello dopo di me è rexbutton
+            
+/*             range.setStart(node.childNodes[sonNumber], n-1);
             range.collapse(true);
             sel.removeAllRanges();
             sel.addRange(range);
-            node.focus();
+            node.focus(); */
             return;
         }
         if (MediumEditor.util.isKey(event, [MediumEditor.util.keyCode.BACKSPACE, MediumEditor.util.keyCode.ENTER]) &&
