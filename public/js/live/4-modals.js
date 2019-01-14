@@ -2055,7 +2055,7 @@
         }
       };
 
-      console.log(data);
+      // console.log(data);
 
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });

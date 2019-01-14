@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Gridstack - v0.4 - TEST</title>
+
+    <link
+      rel="stylesheet"
+      href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="public/js/vendor/gridstack.js-0.4.0/dist/gridstack.css"
+    />
+    <link
+      rel="stylesheet"
+      href="public/js/vendor/gridstack.js-0.4.0/dist/gridstack-extra.css"
+    />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.0/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/2.0.5/velocity.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
+    <script src="public/js/vendor/gridstack.js-0.4.0/dist/gridstack.js"></script>
+    <script src="public/js/vendor/gridstack.js-0.4.0/dist/gridstack.jQueryUI.js"></script>
+
+    <style>
+      #grid1 {
+        background: lightgoldenrodyellow;
+      }
+
+      .grid-stack-item-content {
+        color: #fff;
+        text-align: center;
+        background-color: #18bc9c;
+      }
+
+      .grid-stack-item.red-block .grid-stack-item-content {
+        background: rgba(255, 0, 0, 1);
+      }
+
+      .grid-stack-item.green-block .grid-stack-item-content {
+        background: rgba(0, 255, 0, 1);
+      }
+
+      .grid-stack-item.blue-block .grid-stack-item-content {
+        background: rgba(0, 0, 255, 1);
+      }
+
+      /* .grid-stack > .grid-stack-item > .grid-stack-item-content {
+        position: static;
+      } */
+
+      .grid-stack-item-removing {
+        opacity: 0.5;
+      }
+
+      .sidebar {
+        background: rgba(0, 255, 0, 0.1);
+        height: 150px;
+        padding: 25px 0;
+        text-align: center;
+      }
+
+      .sidebar .grid-stack-item {
+        width: 200px;
+        height: 100px;
+        border: 2px dashed green;
+        text-align: center;
+        line-height: 100px;
+        z-index: 10;
+        background: rgba(0, 255, 0, 0.1);
+        cursor: default;
+        display: inline-block;
+      }
+
+      .sidebar .grid-stack-item .grid-stack-item-content {
+        background: none;
+      }
+
+      .filter {
+        cursor: pointer;
+        display: inline-block;
+        padding: 10px;
+        border: 1px solid black;
+      }
+
+      .filter:hover {
+        background-color:#eee;
+        color: #aaa;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Two grids demo - v0.4</h1>
+
+      <div class="row">
+        <div class="col-md-12">
+          <ul class="filter-list">
+            <li class="filter" data-filter="*">All</li>
+            <li class="filter" data-filter=".green-block">Green</li>
+            <li class="filter" data-filter=".red-block">Red</li>
+            <li class="filter" data-filter=".blue-block">Blue</li>
+            <li class="filter" data-filter=".pippo">Pippo</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- <div class="row">
+        <div class="col-md-12">
+          <button id="moveTest">TEST</button>
+          <button id="scaleTest">TEST</button>
+        </div>
+      </div> -->
+
+      <div class="row">
+        <div class="col-md-12">
+          <div class="grid-stack grid-stack-12" id="grid1">
+            <div
+              class="grid-stack-item red-block"
+              data-gs-x="0"
+              data-gs-y="0"
+              data-gs-width="4"
+              data-gs-height="4"
+              data-el-resized="false"
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">(1)</div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item green-block"
+              data-gs-x="4"
+              data-gs-y="0"
+              data-gs-width="4"
+              data-gs-height="4"
+              data-el-resized="false"
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">(2)</div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item blue-block"
+              data-gs-x="8"
+              data-gs-y="0"
+              data-gs-width="4"
+              data-gs-height="4"
+              data-el-resized="false"
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">(3)</div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item blue-block"
+              data-gs-x="0"
+              data-gs-y="4"
+              data-gs-width="3"
+              data-gs-height="3"
+              data-el-resized="false"
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">(4)</div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item blue-block"
+              data-gs-x="3"
+              data-gs-y="4"
+              data-gs-width="3"
+              data-gs-height="3"
+              data-el-resized="false"
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">(5)</div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item blue-block"
+              data-gs-x="6"
+              data-gs-y="4"
+              data-gs-width="6"
+              data-gs-height="3"
+              data-el-resized="false"
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">(6)</div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item blue-block"
+              data-gs-x="0"
+              data-gs-y="7"
+              data-gs-width="6"
+              data-gs-height="4"
+              data-el-resized="false"
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">(7)</div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item red-block"
+              data-gs-x="6"
+              data-gs-y="7"
+              data-gs-width="3"
+              data-gs-height="4"
+              data-el-resized="false"
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">(8)</div>
+              </div>
+            </div>
+            <div
+              class="grid-stack-item blue-block"
+              data-gs-x="10"
+              data-gs-y="7"
+              data-gs-width="3"
+              data-gs-height="4"
+              data-el-resized="false"
+            >
+              <div class="grid-stack-item-content">
+                <div class="text-wrap">(9)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      $(function() {
+        $(window).on("load", function() {
+          var $grid = $("#grid1");
+          var options = {
+            width: 12,
+            float: false,
+            animate: true,
+          };
+
+          $grid.gridstack(options);
+          var grid = $grid.data("gridstack");
+          var initialStateGrid = grid.grid.nodes;
+          var mirrorStateGrid = [];
+
+          var $fliter_list = $('.filter-list');
+          $fliter_list.on("click", ".filter", function(e) {
+            e.preventDefault();
+
+            var filterClass = this.getAttribute("data-filter");
+            filtering(filterClass);
+          });
+
+          function filtering(filterClass) {
+            var $items = $grid.find(".grid-stack-item");
+            var $toMaintain = $items.filter(filterClass);
+            var $toRemoves = $items.not(filterClass);
+
+            // $items.css("display","block");
+            $toMaintain.each(function(i,el) {
+              if( "0" === el.style.opacity ) {
+                var $item = $(el);
+                $item.velocity({
+                  transform: ["scale(1)","scale(0)"],
+                  opacity: 1
+                }, {
+                  duration: 200,
+                });
+              } else {
+                el.style.opacity = 1;
+              }
+            });
+
+            // $toRemoves.css("display","none");
+            $toRemoves.each(function(i,el) {
+              if( "0" !== el.style.opacity ) {
+                var $toRemove = $(el);
+                $toRemove.velocity({
+                  transform: ["scale(0)","scale(1)"],
+                  opacity: 0
+                }, {
+                  duration: 200,
+                });
+              } else {
+                el.style.opacity = 0;
+              }
+            });
+
+            grid.batchUpdate();
+
+            grid.removeAll(false);
+
+            $items.each(function(i,el) {
+              el.style.left = "";
+              el.style.top = "";
+            });
+
+            // Remove filtering
+            if("*" === filterClass ) {
+              $items.each(function(i,el) {
+                var node = {
+                  x: parseInt(el.getAttribute("data-gs-x")),
+                  y: parseInt(el.getAttribute("data-gs-y")),
+                  widht: parseInt(el.getAttribute("data-gs-width")),
+                  height: parseInt(el.getAttribute("data-gs-height")),
+                  autoPosition: el.getAttribute("data-gs-auto-position"),
+                  minWidht: el.getAttribute("data-gs-min-width"),
+                  maxWidth: el.getAttribute("data-gs-max-width"),
+                  minHeight: el.getAttribute("data-gs-min-height"),
+                  maxHeight: el.getAttribute("data-gs-max-height"),
+                  id: el.getAttribute("data-gs-id"),
+                }
+                grid.addWidget(el, node.x, node.y, node.widht, node.height, node.autoPosition, node.minWidht, node.maxWidth, node.minHeight, node.maxHeight, node.id);
+              })
+
+              for(var i=0; i<initialStateGrid.length; i++) {
+                var el = initialStateGrid[i].el[0];
+                var pos = get_pixel_position({x:initialStateGrid[i].x, y:initialStateGrid[i].y});
+                el.style.left = pos.left;
+                el.style.top = pos.top;
+                grid.update(el, initialStateGrid[i].x, initialStateGrid[i].y);
+              }
+            } else {
+              mirrorStateGrid = [];
+
+              $toMaintain.each(function(i,el) {
+                var node = {
+                  x: parseInt(el.getAttribute("data-gs-x")),
+                  y: parseInt(el.getAttribute("data-gs-y")),
+                  el: el,
+                  width: parseInt(el.getAttribute("data-gs-width")),
+                  height: parseInt(el.getAttribute("data-gs-height")),
+                }
+                var newCoords = placeElMirror(node);
+                mirrorStateGrid.push({
+                  x: newCoords.x,
+                  y: newCoords.y,
+                  el: el,
+                  width: parseInt(el.getAttribute("data-gs-width")),
+                  height: parseInt(el.getAttribute("data-gs-height")),
+                });
+              });
+
+              $toMaintain.each(function(i,el) {
+                var node = {
+                  x: parseInt(el.getAttribute("data-gs-x")),
+                  y: parseInt(el.getAttribute("data-gs-y")),
+                  width: parseInt(el.getAttribute("data-gs-width")),
+                  height: parseInt(el.getAttribute("data-gs-height")),
+                  el: el,
+                };
+
+                grid.addWidget(el, node.x, node.y);
+              });
+
+              $toMaintain.each(function(i,el) {
+                var pos = get_pixel_position({x:mirrorStateGrid[i].x, y:mirrorStateGrid[i].y});
+                el.style.left = pos.left;
+                el.style.top = pos.top;
+                grid.update(el, mirrorStateGrid[i].x, mirrorStateGrid[i].y);
+              });
+            }
+
+            grid.commit();
+          }
+
+          function get_pixel_position( coords ) {
+            var result = {
+              left: "0",
+              top: "0"
+            };
+
+            result.left = (grid.cellWidth() * coords.x) + "px";
+            result.top = (grid.cellHeight() * coords.y + ( grid.opts.verticalMargin * coords.y ) ) + "px";
+
+            return result;
+          }
+
+          function placeElMirror(node) {
+            // grid.grid._sortNodes();
+            var response = {
+              x: 0,
+              y: 0,
+            }
+            for (var i = 0;; ++i) {
+              var x = i % grid.grid.width;
+              var y = Math.floor(i / grid.grid.width);
+              if (x + node.width > grid.grid.width) {
+                continue;
+              }
+              if (!_.find(mirrorStateGrid, _.bind(GridStackUI.Utils._isAddNodeIntercepted, {x: x, y: y, node: node}))) {
+                response.x = x;
+                response.y = y;
+                break;
+              }
+            }
+            return response;
+          }
+
+          function _isAddNodeIntercepted(n) {
+            return isIntercepted({x: this.x, y: this.y, width: this.node.width, height: this.node.height}, n);
+          }
+
+          function isIntercepted(a, b) {
+            return !(a.x + a.width <= b.x || b.x + b.width <= a.x || a.y + a.height <= b.y || b.y + b.height <= a.y);
+          }
+
+          function placeEl(node) {
+            var response = {
+              x: 0,
+              y: 0,
+            }
+            for (var i = 0;; ++i) {
+              var x = i % grid.grid.width;
+              var y = Math.floor(i / grid.grid.width);
+              if (x + node.width > grid.grid.width) {
+                continue;
+              }
+              if (!_.find(grid.grid.nodes, _.bind(GridStackUI.Utils._isAddNodeIntercepted, {x: x, y: y, node: node}))) {
+                response.x = x;
+                response.y = y;
+                break;
+              }
+            }
+            return response;
+          }
+
+          // $("#scaleTest").on("click", function(e) {
+          //   e.preventDefault();
+          //   $(".grid-stack-item").velocity({
+          //     transform: ["scale(0)","scale(1)"]
+          //   });
+          // })
+        });
+      });
+    </script>
+  </body>
+</html>

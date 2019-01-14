@@ -1808,7 +1808,8 @@ if(isset($savedFromBackend) && $savedFromBackend == "false") {
 		} // end if
 	}
 
-	function rex_fix_post_content($content) {
+	function rex_fix_post_content($content)
+	{
 		if( function_exists( 'get_current_screen' ) ) {
 			$screen = get_current_screen();
 			if (is_a($screen, 'WP_Screen')) {

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>DOM LOAD TEST</title>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+</head>
+<body>
+  <div>HELLO WORLD</div>
+  <script>
+  (function( $ ) {
+    'use strict';
+    $(function() {
+      console.log("DOM CONTENT LOADED UNO");
+      setTimeout(function() {
+        console.log("UNO: 3000");
+      },3000);
+    });
+  })( jQuery );
+  </script>
+  <script>
+  (function( $ ) {
+    'use strict';
+    $(function() {
+      console.log("DOM CONTENT LOADED DUE");
+      setTimeout(function() {
+        console.log("DUE: 1500");
+      },1500);
+    });
+  })( jQuery );
+  </script>
+</body>
+</html>

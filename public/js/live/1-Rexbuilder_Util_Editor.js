@@ -1613,6 +1613,6 @@ var Rexbuilder_Util_Editor = (function($) {
     getPrefixedValues: _getPrefixedValues,
     synchGradient: _synchGradient,
     addSpectrumCustomSaveButton: _addSpectrumCustomSaveButton,
-    addSpectrumCustomCloseButton: _addSpectrumCustomCloseButton
+    addSpectrumCustomCloseButton: _addSpectrumCustomCloseButton,
   };
 })(jQuery);

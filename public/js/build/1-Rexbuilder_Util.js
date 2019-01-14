@@ -1108,7 +1108,7 @@ var Rexbuilder_Util = (function($) {
       console.log("layoutSelectedSections", layoutSelectedSections);
       console.log("defaultLayoutSections", defaultLayoutSections);
     */
-    console.log("mergedEdits", mergedEdits);
+    // console.log("mergedEdits", mergedEdits);
 
     Rexbuilder_Util.domUpdaiting = true;
     var forceCollapseElementsGrid = false;
@@ -1157,7 +1157,7 @@ var Rexbuilder_Util = (function($) {
         }
       }
     });
-    console.log("dom applied order", jQuery.extend(true, [], sectionDomOrder));
+    // console.log("dom applied order", jQuery.extend(true, [], sectionDomOrder));
     Rexbuilder_Dom_Util.fixSectionDomOrder(sectionDomOrder, true);
 
     Rexbuilder_Util.domUpdaiting = false;
@@ -3367,8 +3367,8 @@ var Rexbuilder_Util = (function($) {
       var $availableDims = $("#layout-avaiable-dimensions");
       frontAvailableLayouts = ( $availableDims.length > 0 ? JSON.parse( $availableDims.text() ) : [] );
       startFrontLayout = _findFrontLayout();
-      console.log(frontAvailableLayouts);
-      console.log(startFrontLayout);
+      // console.log(frontAvailableLayouts);
+      // console.log(startFrontLayout);
     }
 
     this.$window = $(window);
