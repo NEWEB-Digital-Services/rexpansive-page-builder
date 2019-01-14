@@ -3319,7 +3319,7 @@
      * Reposition the grid elements, after the insertion of certain node
      */
     repositionElements: function(newNode) {
-      var markGrid = [];
+      var markGrid = new IndexedGrid(this.settings.numberCol);
       markGrid.setGrid(newNode.x, newNode.y, newNode.width, newNode.height);
 
       var newPositions = [];

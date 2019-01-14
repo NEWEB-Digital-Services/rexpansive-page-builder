@@ -1,25 +1,29 @@
 /**
- * insertion sort algorithm implementation
+ * JS Object to manipulate and reorder a grid
+ * @param {int} maxWidth max column width
+ * @since 2.0.0
  */
-Array.prototype.insertionSort = function () {
-  var length = this.length;
+function IndexedGrid( maxWidth ) {
+  this.grid = [];
+  this.maxWidth = maxWidth;
+}
+
+IndexedGrid.prototype.insertionSort = function () {
+  var length = this.grid.length;
 
   for (var i = 1, j; i < length; i++) {
-    var temp = this[i];
-    for (var j = i - 1; j >= 0 && this[j] > temp; j--) {
-      this[j + 1] = this[j];
+    var temp = this.grid[i];
+    for (var j = i - 1; j >= 0 && this.grid[j] > temp; j--) {
+      this.grid[j + 1] = this.grid[j];
     }
-    this[j + 1] = temp;
+    this.grid[j + 1] = temp;
   }
 }
 
-/**
- * Setting the grid-index positions
- */
-Array.prototype.setGrid = function (x, y, w, h) {
+IndexedGrid.prototype.setGrid = function (x, y, w, h) {
   for (var i = 0; i < h; i++) {
     for (var j = 0; j < w; j++) {
-      this.push((x + j) + ((y + i) * 12));
+      this.grid.push((x + j) + ((y + i) * this.maxWidth));
     }
   }
   this.insertionSort();
@@ -29,24 +33,24 @@ Array.prototype.setGrid = function (x, y, w, h) {
  * Fill the grid from a starting point to prevent insertions
  * in previous place
  */
-Array.prototype.checkGrid = function (place) {
+IndexedGrid.prototype.checkGrid = function (place) {
   var i = 0;
-  while (this[i] < place) {
-    var last = this[i];
-    if (last !== this[i + 1]) {
-      this.push(last + 1);
+  while (this.grid[i] < place) {
+    var last = this.grid[i];
+    if (last !== this.grid[i + 1]) {
+      this.grid.push(last + 1);
     }
     i++;
   }
   this.insertionSort();
 }
 
-Array.prototype.willFit = function (width, height) {
+IndexedGrid.prototype.willFit = function (width, height) {
   var holes = this.findHoles();
 
   // Search in the holes for a free space
   for (var z = 0; z < holes.length; z++) {
-    for (var w = this[holes[z]] + 1; w < this[holes[z] + 1]; w++) {
+    for (var w = this.grid[holes[z]] + 1; w < this.grid[holes[z] + 1]; w++) {
       var free = this.searchFreeSpace(w, width, height);
       if (free) { return w; }
     }
@@ -54,7 +58,7 @@ Array.prototype.willFit = function (width, height) {
 
   // No free spaces in the holes
   // Search the index starting from the last non-free index
-  var lastFreeElement = this[this.length - 1] + 1;
+  var lastFreeElement = this.grid[this.grid.length - 1] + 1;
   var startRow = Math.floor((lastFreeElement) / 12);
   var endRow = Math.floor(((lastFreeElement) + (width - 1)) / 12);
 
@@ -70,10 +74,10 @@ Array.prototype.willFit = function (width, height) {
 /**
  * Finding the holes from a grid-index array
  */
-Array.prototype.findHoles = function () {
+IndexedGrid.prototype.findHoles = function () {
   var result = [];
-  for (var i = 0; i < this.length; i++) {
-    if (this[i] + 1 !== this[i + 1]) {
+  for (var i = 0; i < this.grid.length; i++) {
+    if (this.grid[i] + 1 !== this.grid[i + 1]) {
       result.push(i);
     }
   }
@@ -83,7 +87,7 @@ Array.prototype.findHoles = function () {
 /**
  * Searching if a block can fit the grid starting from a certain index
  */
-Array.prototype.searchFreeSpace = function (start, width, height) {
+IndexedGrid.prototype.searchFreeSpace = function (start, width, height) {
   // Check if the element overflows the grid
   var startRow = Math.floor((start) / 12);
   var endRow = Math.floor((start + width - 1) / 12);
@@ -96,7 +100,7 @@ Array.prototype.searchFreeSpace = function (start, width, height) {
   for (var i = 0; i < height; i++) {
     for (var j = 0; j < width; j++) {
       var temp = start + j + (i * 12);
-      if (-1 !== this.indexOf(temp)) {
+      if (-1 !== this.grid.indexOf(temp)) {
         return false;
       }
     }

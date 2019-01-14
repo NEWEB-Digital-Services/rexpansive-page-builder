@@ -636,10 +636,12 @@ var Rexbuilder_CreateBlocks = (function ($) {
             // Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock($newBlock.find('input[name=edit-block-overlay-color]')[0]);
             Rexbuilder_Block_Editor.updateBlockTools($newBlock);
             Rexbuilder_Util_Editor.launchTooltips();
-            Rexbuilder_Util.updateSectionStateLive($section);
-            if(Rexbuilder_Util.activeLayout == "default"){
-                Rexbuilder_Util.updateDefaultLayoutStateSection($section);
-            }
+            
+            // @todo TO FIX I MUST MAINTAIN IT
+            // Rexbuilder_Util.updateSectionStateLive($section);
+            // if(Rexbuilder_Util.activeLayout == "default"){
+            //     Rexbuilder_Util.updateDefaultLayoutStateSection($section);
+            // }
         }
     }
 
