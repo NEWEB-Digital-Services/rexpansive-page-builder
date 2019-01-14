@@ -2606,6 +2606,7 @@ MediumEditor.extensions = {};
         },
 
         triggerCustomEvent: function (name, data, editable) {
+            console.log("triggering event", name);
             if (this.customEvents[name] && !this.disabledEvents[name]) {
                 this.customEvents[name].forEach(function (listener) {
                     listener(data, editable);
@@ -2755,6 +2756,7 @@ MediumEditor.extensions = {};
                     this.setupListener('externalInteraction');
                     break;
                 case 'editableInput':
+                    console.log("sei qua stronzo");
                     // setup cache for knowing when the content has changed
                     this.contentCache = {};
                     this.base.elements.forEach(function (element) {
@@ -2915,15 +2917,18 @@ MediumEditor.extensions = {};
         },
 
         updateInput: function (target, eventObj) {
+            console.log("DIOPORCO");
             if (!this.contentCache) {
                 return;
             }
+            console.log("qua ci arrivi?");
             // An event triggered which signifies that the user may have changed someting
             // Look in our cache of input for the contenteditables to see if something changed
             var index = target.getAttribute('medium-editor-index'),
                 html = target.innerHTML;
 
             if (html !== this.contentCache[index]) {
+                console.log("e qua?");
                 // The content has changed since the last time we checked, fire the event
                 this.triggerCustomEvent('editableInput', eventObj, target);
             }
@@ -3006,6 +3011,11 @@ MediumEditor.extensions = {};
         },
 
         handleKeyup: function (event) {
+            console.log("invio up");
+            event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+            return;
             this.triggerCustomEvent('editableKeyup', event, event.currentTarget);
         },
 
@@ -3026,7 +3036,11 @@ MediumEditor.extensions = {};
         },
 
         handleKeydown: function (event) {
-
+            console.log("invio down");
+            event.preventDefault();
+            event.stopPropagation();
+            event.stopImmediatePropagation();
+            return;
             this.triggerCustomEvent('editableKeydown', event, event.currentTarget);
 
             if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.SPACE)) {
@@ -6578,7 +6592,6 @@ MediumEditor.extensions = {};
     }
 
     function handleDisabledEnterKeydown(event, element) {
-        console.log(10);
         if (this.options.disableReturn || element.getAttribute('data-disable-return')) {
             event.preventDefault();
         } else if (this.options.disableDoubleReturn || element.getAttribute('data-disable-double-return')) {
@@ -6616,83 +6629,74 @@ MediumEditor.extensions = {};
         }
     }
 
+    function isElementBefore(node, offset, class_name){
+        console.log(node);
+        // if caret is at beginning of node
+        var pos = 0;
+        var nodes = node.childNodes;
+        var nCharacters;
+        //get in which node is
+        while (true) {
+            nCharacters = parseInt(nodes[pos].length);
+            if (isNaN(nCharacters)) {
+                nCharacters = $(nodes[pos]).text().length;
+            }
+            if (nCharacters > offset) {
+                break;
+            }
+            offset -= nCharacters;
+            pos = pos + 1;
+            if (pos == nodes.length) {
+                break;
+            }
+        }
+        if(pos>0){
+            var nodeLength = parseInt(nodes[pos - 1].length);
+            // if is not text node
+            if (isNaN(nodeLength)) {
+                // if is rex button
+                if ($(nodes[pos - 1]).hasClass(class_name)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
     function handleBlockDeleteKeydowns(event) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+        return;
         var p, node = MediumEditor.selection.getSelectionStart(this.options.ownerDocument),
             tagName = node.nodeName.toLowerCase(),
             isEmpty = /^(\s+|<br\/?>)?$/i,
             isHeader = /h\d/i;
-            
+
         var parentElementHeader = checkParentHeaderElement(node);
+
         /**
          * Fix for rexpansive buttons
          */
-        if (
-            //il nodo prima è un pulsante
-            $(node.previousElementSibling).hasClass("rex-button-wrapper") &&
-            //il cursore è all'inizio dell'elemento
-            MediumEditor.selection.getCaretOffsets(node).left === 0 &&
-            //è stato premuto canc
-            MediumEditor.util.isKey(event, MediumEditor.util.keyCode.BACKSPACE)
-        ) {
-            var $rexButton = $(node.previousElementSibling).detach();
-            $rexButton.prependTo($(node));
-            event.preventDefault();
-            return;
-        }
-        
-        if(true){
-            console.log("sono qua");
-            console.log(node);
-            var range = document.createRange();
-            var sel = window.getSelection();
-            console.log(sel.focusOffset);
-            var n = sel.focusOffset;
-            var k = MediumEditor.selection.getCaretOffsets(node).left;
-            var pos = 0;
-            var nodes = node.childNodes;
-            console.log(nodes);
-            console.log(k);
-            event.preventDefault();
-            if (n == 0) {          
-                console.log(node.previousSibling);      
-                while(true){
-                    console.log("current data");
-                    console.log(nodes[pos].length, k);
-                    console.log($(nodes[pos]).is("text"));
-                    if(nodes[pos].length > k){
-                        break;
-                    }
-                    k -= nodes[pos].length;
-                    pos = pos+1;
-                    if(pos == nodes.length){
-                        break;
-                    }
-                }
-                console.log(pos, k);
+        if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.BACKSPACE) && 
+            window.getSelection().focusOffset == 0) {
+            console.log("focusOffset", window.getSelection().focusOffset);
+            console.log("mediumOffset", MediumEditor.selection.getCaretOffsets(node).left);
+            var mediumEditorOffset = MediumEditor.selection.getCaretOffsets(node).left;
+            if (//il cursore è all'inizio dell'elemento
+            mediumEditorOffset === 0 
+                // il nodo prima è un rexbutton
+                && $(node.previousElementSibling).hasClass("rex-button-wrapper")) {
+                var $rexButton = $(node.previousElementSibling).detach();
+                $rexButton.prependTo($(node));
+                event.preventDefault();
+                return;
             }
-            return;
-            var sonNumber = 0;
-            while (true) {
-                //trovato il figlio giusto!
-                break;
+
+            if(isElementBefore(node, mediumEditorOffset, "rex-button-wrapper")){
+                event.preventDefault();
+                return;
             }
-            //recupero tuttu i figli di mio padre
-            // vedo che figlio sono
-            console.log("sono il figlio numero", sonNumber);
-            console.log("nella posizione", pos);
-            // DEL
-            // capisco se sono nella posizione 0
-            // vedo se il fratello prima di me è rexbutton
-            // CANC
-            // vedo se sono nell'ultima posizione
-            // vedo se il fratello dopo di me è rexbutton
-            
-/*             range.setStart(node.childNodes[sonNumber], n-1);
-            range.collapse(true);
-            sel.removeAllRanges();
-            sel.addRange(range);
-            node.focus(); */
-            return;
         }
         if (MediumEditor.util.isKey(event, [MediumEditor.util.keyCode.BACKSPACE, MediumEditor.util.keyCode.ENTER]) &&
             // has a preceeding sibling
@@ -6725,7 +6729,6 @@ MediumEditor.extensions = {};
             isEmpty.test(node.innerHTML) &&
             // when the next tag *is* a header
             isHeader.test(node.nextElementSibling.nodeName.toLowerCase())) {
-                console.log("0");
             // hitting delete in an empty element preceding a header, ex:
             //  <p>[CURSOR]</p><h1>Header</h1>
             // Will cause the h1 to become a paragraph.
@@ -6748,7 +6751,6 @@ MediumEditor.extensions = {};
             // is not the only li in a list
             node.nextElementSibling &&
             node.nextElementSibling.nodeName.toLowerCase() === 'li') {
-            console.log("1");
 
             // backspacing in an empty first list element in the first list (with more elements) ex:
             //  <ul><li>[CURSOR]</li><li>List Item 2</li></ul>
@@ -6773,7 +6775,6 @@ MediumEditor.extensions = {};
         } else if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.BACKSPACE) &&
             (MediumEditor.util.getClosestTag(node, 'blockquote') !== false) &&
             MediumEditor.selection.getCaretOffsets(node).left === 0) {
-            console.log("2");
 
             // when cursor is at the begining of the element and the element is <blockquote>
             // then pressing backspace key should change the <blockquote> to a <p> tag
@@ -6797,8 +6798,6 @@ MediumEditor.extensions = {};
             !node.previousElementSibling &&
             node.nextElementSibling &&
             isEmpty.test(node.innerHTML)) {
-            console.log("3");
-
             // when cursor is in the first element, it's empty and user presses backspace,
             // do delete action instead to get rid of the first element and move caret to 2nd
             event.preventDefault();
@@ -6836,7 +6835,6 @@ MediumEditor.extensions = {};
             // removeNodeFromContentEditable(parentElementHeader);
             parentElementHeader.remove();
         }
-        console.log("5");
     }
 
     function handleKeyup(event) {
