@@ -1715,15 +1715,17 @@ class Rexbuilder_Admin {
 
 	function rex_fix_post_content($content)
 	{
-		$screen = get_current_screen();
-		if (is_a($screen, 'WP_Screen')) {
-			$idPost = get_the_ID();
-			$savedFromBackend = get_post_meta($idPost, '_save_from_backend', true);
-			if (isset($savedFromBackend) && $savedFromBackend == "false") {
-				$newContent = "";
-				$post = get_post( (int)$idPost );
-				$newContent =  $post->post_content;
-				return $newContent;
+		if( function_exists( 'get_current_screen' ) ) {
+			$screen = get_current_screen();
+			if (is_a($screen, 'WP_Screen')) {
+				$idPost = get_the_ID();
+				$savedFromBackend = get_post_meta($idPost, '_save_from_backend', true);
+				if (isset($savedFromBackend) && $savedFromBackend == "false") {
+					$newContent = "";
+					$post = get_post( (int)$idPost );
+					$newContent =  $post->post_content;
+					return $newContent;
+				}
 			}
 		}
 		return $content;

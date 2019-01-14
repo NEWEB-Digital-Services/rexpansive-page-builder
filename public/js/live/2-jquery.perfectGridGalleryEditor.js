@@ -3316,6 +3316,41 @@
     },
 
     /**
+     * Reposition the grid elements, after the insertion of certain node
+     */
+    repositionElements: function(newNode) {
+      var markGrid = [];
+      markGrid.setGrid(newNode.x, newNode.y, newNode.width, newNode.height);
+
+      var newPositions = [];
+
+      for(var i=0; i<this.properties.gridstackInstance.grid.nodes.length; i++) {
+        var newPosition = {};
+        // Find elements to move
+        if( ( this.properties.gridstackInstance.grid.nodes[i].x + ( this.properties.gridstackInstance.grid.width * this.properties.gridstackInstance.grid.nodes[i].y ) ) >= ( newNode.x + ( this.properties.gridstackInstance.grid.width * newNode.y ) ) ) {
+          var linearCoord = markGrid.willFit(this.properties.gridstackInstance.grid.nodes[i].width,this.properties.gridstackInstance.grid.nodes[i].height);
+          var newCoords = this._getCoord(linearCoord,12);
+          newPosition.x = newCoords.x;
+          newPosition.y = newCoords.y;
+          newPosition.el = this.properties.gridstackInstance.grid.nodes[i];
+          markGrid.setGrid( newCoords.x, newCoords.y, this.properties.gridstackInstance.grid.nodes[i].width, this.properties.gridstackInstance.grid.nodes[i].height);
+          markGrid.checkGrid(linearCoord);
+        }
+        newPositions.push(newPosition);
+      }
+
+      this.properties.gridstackInstance.batchUpdate();
+
+      for(var j=0; j<newPositions.length; j++) {
+        if( newPositions[j].hasOwnProperty('x') && newPositions[j].hasOwnProperty('y') && newPositions[j].hasOwnProperty('el') ) {
+          this.properties.gridstackInstance.move( newPositions[j].el.el, newPositions[j].x, newPositions[j].y );
+        }
+      }
+
+      this.properties.gridstackInstance.commit();
+    },
+
+    /**
      * Filtering the blocks and animate them according to
      * Some filtering rule
      * @param {Object} options filtering information
@@ -3494,6 +3529,17 @@
      */
     set_grid_initial_state: function( nodes ) {
       this.properties.initialStateGrid = this.properties.initialStateGrid.concat(nodes);
+    },
+
+    _getCoord: function( val, maxWidth ) {
+      return {
+        x: val % maxWidth,
+        y: Math.floor( val / maxWidth )
+      }
+    },
+  
+    _getIndex: function(coord, maxWidth) {
+      return coord[0] + ( coord[1] * maxWidth );
     },
 
     destroyGridGallery: function() {

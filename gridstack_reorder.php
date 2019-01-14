@@ -38,6 +38,7 @@
         color: #fff;
         text-align: center;
         background-color: #18bc9c;
+        outline: 3px dotted black;
       }
 
       .grid-stack-item.red-block .grid-stack-item-content {
@@ -97,6 +98,41 @@
       .filter:hover {
         background-color:#eee;
         color: #aaa;
+      }
+
+      .mask {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        position: absolute;
+        z-index: 10;
+      }
+
+      .mask-col {
+        min-width: 8.3333333333%;
+        height: 100%;
+        float: left;
+      }
+
+      .mask-col:not(:last-child) {
+        border-right: 1px solid rgba(221,221,221,0.5);
+      }
+
+      .mask-row {
+        width: 100%;
+        height: 60px;
+        border-bottom: 1px solid rgba(221,221,221,0.5);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .num {
+        width: 8.3333333333%;
+        text-align: center;
+        font-size: 30px;
+        font-weight:bold;
       }
     </style>
   </head>
@@ -158,12 +194,35 @@
                 <div class="text-wrap">(8)</div>
               </div>
             </div>
+            <div class="mask">
+              <?php
+              for($j=0; $j<12; $j++) {
+                ?><div class="mask-col"></div><?php
+              }
+              ?>
+            </div>
+            <div class="mask">
+              <?php
+              $z = 0;
+              for($i=0; $i<18; $i++) {
+                ?><div class="mask-row"><?php
+                for($j=0; $j<12; $j++) {
+                  ?><span class="num"><?php echo $z; ?></span><?php
+                  $z++;
+                }
+                ?></div><?php
+              }
+              ?>
+            </div>
           </div>
         </div>
       </div>
     </div>
 
     <script>
+      /**
+       * insertion sort algorithm implementation
+       */
       Array.prototype.insertionSort = function() {
         var length = this.length;
         
@@ -176,6 +235,9 @@
         }
       }
 
+      /**
+       * Setting the grid-index positions
+       */
       Array.prototype.setGrid = function(x,y,w,h) {
         for(var i=0; i<h; i++) {
           for(var j=0; j<w; j++) {
@@ -185,28 +247,84 @@
         this.insertionSort();
       }
 
-      Array.prototype.checkGrid = function(x,y) {
-        console.log(getIndex([x,y],12));
+      /**
+       * Fill the grid from a starting point to prevent insertions
+       * in previous place
+       */
+      Array.prototype.checkGrid = function(place) {
+        var i=0;
+        while(this[i] < place) {
+          var last = this[i];
+          if( last !== this[i+1] ) {
+            this.push(last+1);
+          }
+          i++;
+        }
+        this.insertionSort();
       }
 
-      function mergeSort(arr) {
-        if (arr.length < 2) {
-          return arr;
+      Array.prototype.willFit = function(width,height) {
+        var holes = this.findHoles();
+
+        // Search in the holes for a free space
+        for(var z=0; z<holes.length; z++) {
+          for(var w=this[holes[z]]+1; w<this[holes[z]+1]; w++) {
+            var free = this.searchFreeSpace(w,width,height);
+            if(free) {return w;}
+          }
         }
 
-        var mid = Math.floor(arr.length / 2);
-        var subLeft = mergeSort(arr.slice(0, mid));
-        var subRight = mergeSort(arr.slice(mid));
+        // No free spaces in the holes
+        // Search the index starting from the last non-free index
+        var lastFreeElement = this[this.length-1] + 1;
+        var startRow = Math.floor( ( lastFreeElement ) / 12 );
+        var endRow = Math.floor( ( ( lastFreeElement ) + ( width - 1 ) ) / 12 );      
 
-        return merge(subLeft, subRight);
+        while( startRow !== endRow ) {
+          lastFreeElement = lastFreeElement + 1;
+          startRow = Math.floor( ( lastFreeElement ) / 12 );
+          endRow = Math.floor( ( ( lastFreeElement ) + ( width - 1 ) ) / 12 );
+        }
+
+        return lastFreeElement;
       }
 
-      function merge (node1, node2) {
+      /**
+       * Finding the holes from a grid-index array
+       */
+      Array.prototype.findHoles = function() {
         var result = [];
-        while (node1.length > 0 && node2.length > 0) {
-          result.push(node1[0] < node2[0]? node1.shift() : node2.shift());
+        for( var i=0; i<this.length; i++) {
+          if( this[i] + 1 !== this[i+1] ) {
+            result.push(i);
+          }
         }
-        return result.concat(node1.length? node1 : node2);
+        return result;
+      }
+
+      /**
+       * Searching if a block can fit the grid starting from a certain index
+       */
+      Array.prototype.searchFreeSpace = function(start,width,height) {
+        // Check if the element overflows the grid
+        var startRow = Math.floor( ( start ) / 12 );
+        var endRow = Math.floor( ( start+width-1 ) / 12 );
+
+        if( startRow !== endRow ) {
+          return false;
+        }
+
+        // Check if the element fits or the spaces are already occupied
+        for( var i=0; i<height; i++ ) {
+          for( var j=0; j<width; j++ ) {
+            var temp = start+j+(i*12);
+            if( -1 !== this.indexOf( temp ) ) {
+              return false;
+            }
+          }
+        }
+
+        return true;
       }
 
       var getCoord = function( val, maxWidth ) {
@@ -234,51 +352,6 @@
           }
           return arr.length-1;
         };
-
-        var willFit = function(arr,start,w,h) {
-          var response = {
-            answer: false,
-            index: null
-          };
-
-          // I reach the end of the array
-          if( start == arr.length-1 ) {
-            var lastElement = arr[start] + 1;
-            do {
-              var lastStartRow = Math.floor( ( lastElement ) / 12 );
-              var lastEndRow = Math.floor( ( ( lastElement ) + w ) / 12 );
-
-              if( lastStartRow === lastEndRow ) {
-                response.answer = true;
-                response.index = lastElement;
-                return response;
-              } else {
-                lastElement = lastElement + 1;
-              }
-            } while( true );
-          }
-
-          var startRow = Math.floor( ( arr[start] ) / 12 );
-          var endRow = Math.floor( ( arr[start]+w ) / 12 );
-
-          if( startRow !== endRow ) {
-            response.answer = false;
-            return response;
-          }
-
-          for( var i=0; i<h; i++ ) {
-            for( var j=0; j<w; j++ ) {
-              var temp = arr[start]+1+j+(i*12);
-              if( -1 !== arr.indexOf( temp ) ) {
-                response.answer = false;
-                return response;
-              }
-            }
-          }
-
-          response.answer = true;
-          return response;
-        };        
         
         $(window).on("load", function() {
           var $grid = $("#grid1");
@@ -286,10 +359,13 @@
             width: 12,
             float: true,
             animate: true,
+            verticalMargin: 0
           };
 
           $grid.gridstack(options);
-          var grid = $grid.data("gridstack");          
+          var grid = $grid.data("gridstack");
+
+          var newNodeIndex = $grid.find('.grid-stack-item').length;
 
           $insertBtn = $('#insert-btn');
           $insertBtn.on("click", function(e) {
@@ -298,7 +374,9 @@
               x: 0,
               y: 0,
               width: 3,
-              height: 4
+              height: 4,
+              // width: Math.floor(Math.random()*12),
+              // height: Math.floor(Math.random()*12)
             };
 
             var markGrid = [];
@@ -310,38 +388,17 @@
               var newPosition = {};
               // Find elements to move
               if( ( grid.grid.nodes[i].x + ( grid.grid.width * grid.grid.nodes[i].y ) ) >= ( newNode.x + ( grid.grid.width * newNode.y ) ) ) {
-                // Node overflows grid ?
-                var startSearch = findHole(markGrid);
-                var spins = 0;
-                do {
-                  var doesFit = willFit( markGrid, startSearch, grid.grid.nodes[i].width, grid.grid.nodes[i].height );
-                  if( doesFit.answer ) {
-                    var newCoords;
-                    if( null !== doesFit.index ) {
-                      newCoords = getCoord(doesFit.index,12);
-                    } else {
-                      newCoords = getCoord(markGrid[startSearch]+1,12);
-                    }
-                    
-                    newPosition.x = newCoords.x;
-                    newPosition.y = newCoords.y;
-                    newPosition.el = grid.grid.nodes[i];
-                    
-                    markGrid.setGrid( newCoords.x, newCoords.y, grid.grid.nodes[i].width, grid.grid.nodes[i].height);
-                    break;
-                  } 
-                  
-                  var nextStart = startSearch+1;
-                  startSearch = findHole(markGrid, nextStart);
-                  
-                  spins = spins+1;
-                  if(spins>50) {console.log('breKKato');break;}
-                } while( startSearch <= markGrid[markGrid.length-1] );
+                var linearCoord = markGrid.willFit(grid.grid.nodes[i].width,grid.grid.nodes[i].height);
+                var newCoords = getCoord(linearCoord,12);
+                newPosition.x = newCoords.x;
+                newPosition.y = newCoords.y;
+                newPosition.el = grid.grid.nodes[i];
+                markGrid.setGrid( newCoords.x, newCoords.y, grid.grid.nodes[i].width, grid.grid.nodes[i].height);
+                markGrid.checkGrid(linearCoord);
               }
               newPositions.push(newPosition);
             }
 
-            console.log(newPositions);
             grid.batchUpdate();
 
             for(var j=0; j<newPositions.length; j++) {
@@ -352,7 +409,8 @@
 
             grid.commit();
 
-            grid.addWidget('<div class="water-block" data-gs-x="' + newNode.x + '" data-gs-y="' + newNode.y + '" data-gs-width="' + newNode.width + '" data-gs-height="' + newNode.height + '"><div class="grid-stack-item-content"><div class="text-wrap">(9)</div></div></div></div>');            
+            grid.addWidget('<div class="water-block" data-gs-x="' + newNode.x + '" data-gs-y="' + newNode.y + '" data-gs-width="' + newNode.width + '" data-gs-height="' + newNode.height + '"><div class="grid-stack-item-content"><div class="text-wrap">(' + newNodeIndex + ')</div></div></div></div>');
+            newNodeIndex = newNodeIndex + 1;
           });
         });
       });
