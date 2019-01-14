@@ -1115,6 +1115,7 @@ var Rexbuilder_Util = (function($) {
     var sectionDomOrder = [];
 
     $.each(mergedEdits, function(q, section) {
+      console.log(section);
       if (!section.notInSection || chosenLayoutName == "default") {
         var sectionObj = {
           rexID: section.section_rex_id,
