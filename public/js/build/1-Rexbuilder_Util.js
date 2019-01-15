@@ -69,7 +69,6 @@ var Rexbuilder_Util = (function($) {
   };
 
   var _createSectionID = function() {
-    console.log("creating new id");
     var id;
     var flag;
     var idLength = 4;
@@ -1209,303 +1208,14 @@ var Rexbuilder_Util = (function($) {
       if (!targets[i].notDisplay || Rexbuilder_Util.activeLayout == "default") {
         var targetName = targets[i].name;
         var targetProps = targets[i].props;
+        
         var $elem = $gallery.children(
           'div[data-rexbuilder-block-id="' + targetName + '"]'
         );
         var $itemData = $elem.children(".rexbuilder-block-data");
         var $itemContent = $elem.find(".grid-item-content");
-        var positionDataActive = {
-          x: $elem.attr("data-gs-x"),
-          y: $elem.attr("data-gs-y"),
-          w: $elem.attr("data-gs-width"),
-          h: $elem.attr("data-gs-height"),
-          startH: $itemData.attr("data-gs_start_h")
-        };
-        var positionData = {
-          x:
-            typeof targetProps["gs_x"] == "undefined"
-              ? positionDataActive.x
-              : targetProps["gs_x"],
-          y:
-            typeof targetProps["gs_y"] == "undefined"
-              ? positionDataActive.y
-              : targetProps["gs_y"],
-          w:
-            typeof targetProps["gs_width"] == "undefined"
-              ? positionDataActive.w
-              : targetProps["gs_width"],
-          h:
-            typeof targetProps["gs_height"] == "undefined"
-              ? positionDataActive.h
-              : targetProps["gs_height"],
-          startH:
-            typeof targetProps["gs_start_h"] == "undefined"
-              ? positionDataActive.startH
-              : targetProps["gs_start_h"],
-          gridstackInstance: gridstackInstance
-        };
-        _updateElementDimensions($elem, $itemData, positionData);
 
-        var mp4ID = !isNaN(parseInt(targetProps["video_bg_id"]))
-          ? parseInt(targetProps["video_bg_id"])
-          : "";
-        var youtubeUrl =
-          typeof targetProps["video_bg_url_youtube"] == "undefined"
-            ? ""
-            : targetProps["video_bg_url_youtube"];
-        var vimeoUrl =
-          typeof targetProps["video_bg_url_vimeo"] == "undefined"
-            ? ""
-            : targetProps["video_bg_url_vimeo"];
-        var type = "";
-
-        if (mp4ID != "") {
-          type = "mp4";
-        } else if (vimeoUrl != "") {
-          type = "vimeo";
-        } else if (youtubeUrl != "") {
-          type = "youtube";
-        }
-
-        var videoOptions = {
-          mp4Data: {
-            idMp4: mp4ID,
-            linkMp4:
-              typeof targetProps["video_mp4_url"] == "undefined"
-                ? ""
-                : targetProps["video_mp4_url"],
-            width: isNaN(parseInt(targetProps["video_bg_width"]))
-              ? parseInt(targetProps["video_bg_width"])
-              : "",
-            height: isNaN(parseInt(targetProps["video_bg_height"]))
-              ? parseInt(targetProps["video_bg_height"])
-              : ""
-          },
-          vimeoUrl: vimeoUrl,
-          youtubeUrl: youtubeUrl,
-          audio:
-            typeof targetProps["video_has_audio"] == "undefined"
-              ? ""
-              : targetProps["video_has_audio"] == "1" ||
-                targetProps["video_has_audio"].toString() == "true"
-                ? true
-                : false,
-          typeVideo: type
-        };
-
-        Rexbuilder_Dom_Util.updateVideos($itemContent, videoOptions);
-
-        var activeImage =
-          typeof targetProps["image_bg_elem_active"] == "undefined"
-            ? true
-            : targetProps["color_bg_block_active"].toString() == "true";
-
-        var imageOptions = {
-          active: activeImage,
-          idImage: activeImage
-            ? !isNaN(parseInt(targetProps["id_image_bg"]))
-              ? parseInt(targetProps["id_image_bg"])
-              : ""
-            : "",
-          urlImage: activeImage ? targetProps["image_bg_url"] : "",
-          width: activeImage
-            ? !isNaN(parseInt(targetProps["image_width"]))
-              ? parseInt(targetProps["image_width"])
-              : ""
-            : "",
-          height: activeImage
-            ? !isNaN(parseInt(targetProps["image_height"]))
-              ? parseInt(targetProps["image_height"])
-              : ""
-            : "",
-          typeBGimage: activeImage ? targetProps["type_bg_image"] : "",
-          photoswipe: activeImage ? targetProps["photoswipe"] : ""
-        };
-
-        Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOptions);
-
-        var bgColorOpt = {
-          $elem: $elem,
-          color: targetProps["color_bg_block"],
-          active:
-            typeof targetProps["color_bg_block_active"] == "undefined"
-              ? true
-              : targetProps["color_bg_block_active"].toString()
-        };
-
-        if( -1 === bgColorOpt.color.indexOf("gradient") ) {
-          Rexbuilder_Dom_Util.updateBlockBackgroundColor(bgColorOpt);
-        } else {
-          Rexbuilder_Dom_Util.updateBlockBackgroundGradient(bgColorOpt);
-        }
-
-        var overlayBlockOpt = {
-          $elem: $elem,
-          color: targetProps["overlay_block_color"],
-          active:
-            typeof targetProps["overlay_block_color_active"] == "undefined"
-              ? false
-              : targetProps["overlay_block_color_active"].toString()
-        };
-
-        if( -1 === overlayBlockOpt.color.indexOf("gradient") ) {
-          Rexbuilder_Dom_Util.updateBlockOverlay(overlayBlockOpt);
-        } else {
-          Rexbuilder_Dom_Util.updateBlockOverlayGradient(overlayBlockOpt);
-        }
-
-
-        Rexbuilder_Dom_Util.updateBlockPaddings(
-          $elem,
-          _getPaddingsDataString(
-            typeof targetProps["block_padding"] != "undefined"
-              ? targetProps["block_padding"]
-              : ""
-          )
-        );
-
-        var newClasses =
-          typeof targetProps["block_custom_class"] == "undefined"
-            ? ""
-            : targetProps["block_custom_class"];
-        var classList = [];
-        if (newClasses != "") {
-          newClasses = newClasses.trim();
-          classList = newClasses.split(/\s+/);
-        }
-        Rexbuilder_Dom_Util.updateCustomClasses($elem, classList);
-
-        var pos =
-          typeof targetProps["block_flex_position"] != "undefined"
-            ? targetProps["block_flex_position"].split(" ")
-            : "";
-
-        var flexPosition = {
-          x: pos[0],
-          y: pos[1]
-        };
-
-        Rexbuilder_Dom_Util.updateFlexPostition($elem, flexPosition);
-
-        var sliderRatio =
-          typeof targetProps["slider_dimension_ratio"] == "undefined"
-            ? ""
-            : targetProps["slider_dimension_ratio"];
-        $itemData.attr("data-slider_ratio", sliderRatio);
-
-        var blockEdited =
-          typeof targetProps["block_dimensions_live_edited"] == "undefined"
-            ? ""
-            : targetProps["block_dimensions_live_edited"];
-        $itemData.attr("data-block_dimensions_live_edited", blockEdited);
-
-        var hideBlock =
-          typeof targetProps["hide"] == "undefined"
-            ? false
-            : targetProps["hide"].toString() == "true"
-              ? true
-              : false;
-
-        if (hideBlock) {
-          if (!$elem.hasClass("rex-hide-element")) {
-            $elem.addClass("rex-hide-element");
-          }
-          Rexbuilder_Util.stopBlockVideos($elem);
-        } else {
-          if ($elem.hasClass("rex-hide-element")) {
-            $elem.removeClass("rex-hide-element");
-          }
-          Rexbuilder_Util.playBlockVideos($elem);
-        }
-
-        var elementEdited =
-          typeof targetProps["element_edited"] == "undefined"
-            ? false
-            : targetProps["element_edited"].toString() == "true"
-              ? true
-              : false;
-        $elem.attr("data-rexlive-element-edited", elementEdited);
-
-        for (var propName in targetProps) {
-          switch (propName) {
-            case "type":
-              $itemData.attr("data-type", targetProps["type"]);
-              break;
-
-            case "size_x":
-              $elem.attr("data-width", targetProps["size_x"]);
-              break;
-
-            case "size_y":
-              $elem.attr("data-height", targetProps["size_y"]);
-              break;
-
-            case "row":
-              $elem.attr("data-row", targetProps["row"]);
-              break;
-
-            case "col":
-              $elem.attr("data-col", targetProps["col"]);
-              break;
-            case "photoswipe":
-              if (!Rexbuilder_Util.editorMode) {
-                if (targetProps["photoswipe"] == "true") {
-                  addPhotoSwipeElement(
-                    $itemContent,
-                    targetProps["image_bg_block"],
-                    parseInt(targetProps["image_width"]),
-                    parseInt(targetProps["image_height"]),
-                    targetProps["image_size"]
-                  );
-                  $section.addClass("photoswipe-gallery");
-                } else {
-                  removePhotoSwipeElement($itemContent);
-                }
-                $itemData.attr("data-photoswipe", targetProps["photoswipe"]);
-              }
-              break;
-            case "linkurl":
-              if (!Rexbuilder_Util.editorMode) {
-                var $linkEl = $itemContent.parents(".element-link");
-                if (targetProps["linkurl"] != "") {
-                  if ($linkEl.length != 0) {
-                    //console.log("already a link");
-                    $linkEl.attr("href", targetProps["linkurl"]);
-                    $linkEl.attr("title", targetProps["linkurl"]);
-                  } else {
-                    //console.log("not a block link");
-                    var $itemContentParent = $itemContent.parent();
-                    tmpl.arg = "link";
-                    $itemContentParent.append(
-                      tmpl("tmpl-link-block", {
-                        url: targetProps["linkurl"]
-                      })
-                    );
-                    var $link = $itemContentParent.children(".element-link");
-                    $itemContent.detach().appendTo($link);
-                  }
-                } else {
-                  if ($linkEl.length != 0) {
-                    $linkEl.children().unwrap();
-                  }
-                }
-              }
-              Rexbuilder_Dom_Util.updateBlockUrl($elem, targetProps["linkurl"]);
-              break;
-            case "zak_background":
-            case "zak_side":
-            case "zak_title":
-            case "zak_icon":
-            case "zak_foreground":
-              break;
-            case "block_animation":
-              break;
-            case "block_has_scrollbar":
-              break;
-            default:
-              break;
-          }
-        }
+        _updateDOMSingleElement($elem,targetProps,$itemData,$itemContent,gridstackInstance,{positionAndSize:true});
       } else {
         var $el = $gallery.children(
           'div[data-rexbuilder-block-id="' + targetName + '"]'
@@ -1593,6 +1303,319 @@ var Rexbuilder_Util = (function($) {
 
     return collapse;
   };
+
+  /**
+   * Updating a single block element according with the saved info
+   * @param {jQuery} $elem block to edit
+   * @param {Object} targetProps block properties
+   * @param {jQuery} $itemData properties object
+   * @param {jQuery} $itemContent block content
+   * @param {Object} gridstackInstance grid instance
+   * @since 2.0.0
+   */
+  var _updateDOMSingleElement = function($elem,targetProps,$itemData,$itemContent,gridstackInstance,opts) {
+    // Update block position and size
+    if( opts.positionAndSize ) {
+      var positionDataActive = {
+        x: $elem.attr("data-gs-x"),
+        y: $elem.attr("data-gs-y"),
+        w: $elem.attr("data-gs-width"),
+        h: $elem.attr("data-gs-height"),
+        startH: $itemData.attr("data-gs_start_h")
+      };
+      var positionData = {
+        x:
+          typeof targetProps["gs_x"] == "undefined"
+            ? positionDataActive.x
+            : targetProps["gs_x"],
+        y:
+          typeof targetProps["gs_y"] == "undefined"
+            ? positionDataActive.y
+            : targetProps["gs_y"],
+        w:
+          typeof targetProps["gs_width"] == "undefined"
+            ? positionDataActive.w
+            : targetProps["gs_width"],
+        h:
+          typeof targetProps["gs_height"] == "undefined"
+            ? positionDataActive.h
+            : targetProps["gs_height"],
+        startH:
+          typeof targetProps["gs_start_h"] == "undefined"
+            ? positionDataActive.startH
+            : targetProps["gs_start_h"],
+        gridstackInstance: gridstackInstance
+      };
+      _updateElementDimensions($elem, $itemData, positionData);
+    }
+
+    // Update block video
+    var mp4ID = !isNaN(parseInt(targetProps["video_bg_id"]))
+      ? parseInt(targetProps["video_bg_id"])
+      : "";
+    var youtubeUrl =
+      typeof targetProps["video_bg_url_youtube"] == "undefined"
+        ? ""
+        : targetProps["video_bg_url_youtube"];
+    var vimeoUrl =
+      typeof targetProps["video_bg_url_vimeo"] == "undefined"
+        ? ""
+        : targetProps["video_bg_url_vimeo"];
+    var type = "";
+
+    if (mp4ID != "") {
+      type = "mp4";
+    } else if (vimeoUrl != "") {
+      type = "vimeo";
+    } else if (youtubeUrl != "") {
+      type = "youtube";
+    }
+
+    var videoOptions = {
+      mp4Data: {
+        idMp4: mp4ID,
+        linkMp4:
+          typeof targetProps["video_mp4_url"] == "undefined"
+            ? ""
+            : targetProps["video_mp4_url"],
+        width: isNaN(parseInt(targetProps["video_bg_width"]))
+          ? parseInt(targetProps["video_bg_width"])
+          : "",
+        height: isNaN(parseInt(targetProps["video_bg_height"]))
+          ? parseInt(targetProps["video_bg_height"])
+          : ""
+      },
+      vimeoUrl: vimeoUrl,
+      youtubeUrl: youtubeUrl,
+      audio:
+        typeof targetProps["video_has_audio"] == "undefined"
+          ? ""
+          : targetProps["video_has_audio"] == "1" ||
+            targetProps["video_has_audio"].toString() == "true"
+            ? true
+            : false,
+      typeVideo: type
+    };
+
+    Rexbuilder_Dom_Util.updateVideos($itemContent, videoOptions);
+
+    // Update block image
+    var activeImage =
+      typeof targetProps["image_bg_elem_active"] == "undefined"
+        ? true
+        : targetProps["color_bg_block_active"].toString() == "true";
+
+    var imageOptions = {
+      active: activeImage,
+      idImage: activeImage
+        ? !isNaN(parseInt(targetProps["id_image_bg"]))
+          ? parseInt(targetProps["id_image_bg"])
+          : ""
+        : "",
+      urlImage: activeImage ? targetProps["image_bg_url"] : "",
+      width: activeImage
+        ? !isNaN(parseInt(targetProps["image_width"]))
+          ? parseInt(targetProps["image_width"])
+          : ""
+        : "",
+      height: activeImage
+        ? !isNaN(parseInt(targetProps["image_height"]))
+          ? parseInt(targetProps["image_height"])
+          : ""
+        : "",
+      typeBGimage: activeImage ? targetProps["type_bg_image"] : "",
+      photoswipe: activeImage ? targetProps["photoswipe"] : ""
+    };
+
+    Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOptions);
+
+    // Update block background
+    var bgColorOpt = {
+      $elem: $elem,
+      color: targetProps["color_bg_block"],
+      active:
+        typeof targetProps["color_bg_block_active"] == "undefined"
+          ? true
+          : targetProps["color_bg_block_active"].toString()
+    };
+
+    if( -1 === bgColorOpt.color.indexOf("gradient") ) {
+      Rexbuilder_Dom_Util.updateBlockBackgroundColor(bgColorOpt);
+    } else {
+      Rexbuilder_Dom_Util.updateBlockBackgroundGradient(bgColorOpt);
+    }
+
+    // Update block overlay
+    var overlayBlockOpt = {
+      $elem: $elem,
+      color: targetProps["overlay_block_color"],
+      active:
+        typeof targetProps["overlay_block_color_active"] == "undefined"
+          ? false
+          : targetProps["overlay_block_color_active"].toString()
+    };
+
+    if( -1 === overlayBlockOpt.color.indexOf("gradient") ) {
+      Rexbuilder_Dom_Util.updateBlockOverlay(overlayBlockOpt);
+    } else {
+      Rexbuilder_Dom_Util.updateBlockOverlayGradient(overlayBlockOpt);
+    }
+
+    // Update block padding
+    Rexbuilder_Dom_Util.updateBlockPaddings(
+      $elem,
+      _getPaddingsDataString(
+        typeof targetProps["block_padding"] != "undefined"
+          ? targetProps["block_padding"]
+          : ""
+      )
+    );
+
+    // Update block custom classes
+    var newClasses =
+      typeof targetProps["block_custom_class"] == "undefined"
+        ? ""
+        : targetProps["block_custom_class"];
+    var classList = [];
+    if (newClasses != "") {
+      newClasses = newClasses.trim();
+      classList = newClasses.split(/\s+/);
+    }
+    Rexbuilder_Dom_Util.updateCustomClasses($elem, classList);
+
+    // Update block content position
+    var pos =
+      typeof targetProps["block_flex_position"] != "undefined"
+        ? targetProps["block_flex_position"].split(" ")
+        : "";
+
+    var flexPosition = {
+      x: pos[0],
+      y: pos[1]
+    };
+
+    Rexbuilder_Dom_Util.updateFlexPostition($elem, flexPosition);
+
+    var sliderRatio =
+      typeof targetProps["slider_dimension_ratio"] == "undefined"
+        ? ""
+        : targetProps["slider_dimension_ratio"];
+    $itemData.attr("data-slider_ratio", sliderRatio);
+
+    var blockEdited =
+      typeof targetProps["block_dimensions_live_edited"] == "undefined"
+        ? ""
+        : targetProps["block_dimensions_live_edited"];
+    $itemData.attr("data-block_dimensions_live_edited", blockEdited);
+
+    var hideBlock =
+      typeof targetProps["hide"] == "undefined"
+        ? false
+        : targetProps["hide"].toString() == "true"
+          ? true
+          : false;
+
+    if (hideBlock) {
+      if (!$elem.hasClass("rex-hide-element")) {
+        $elem.addClass("rex-hide-element");
+      }
+      Rexbuilder_Util.stopBlockVideos($elem);
+    } else {
+      if ($elem.hasClass("rex-hide-element")) {
+        $elem.removeClass("rex-hide-element");
+      }
+      Rexbuilder_Util.playBlockVideos($elem);
+    }
+
+    var elementEdited =
+      typeof targetProps["element_edited"] == "undefined"
+        ? false
+        : targetProps["element_edited"].toString() == "true"
+          ? true
+          : false;
+    $elem.attr("data-rexlive-element-edited", elementEdited);
+
+    for (var propName in targetProps) {
+      switch (propName) {
+        case "type":
+          $itemData.attr("data-type", targetProps["type"]);
+          break;
+
+        case "size_x":
+          $elem.attr("data-width", targetProps["size_x"]);
+          break;
+
+        case "size_y":
+          $elem.attr("data-height", targetProps["size_y"]);
+          break;
+
+        case "row":
+          $elem.attr("data-row", targetProps["row"]);
+          break;
+
+        case "col":
+          $elem.attr("data-col", targetProps["col"]);
+          break;
+        case "photoswipe":
+          if (!Rexbuilder_Util.editorMode) {
+            if (targetProps["photoswipe"] == "true") {
+              addPhotoSwipeElement(
+                $itemContent,
+                targetProps["image_bg_block"],
+                parseInt(targetProps["image_width"]),
+                parseInt(targetProps["image_height"]),
+                targetProps["image_size"]
+              );
+              $section.addClass("photoswipe-gallery");
+            } else {
+              removePhotoSwipeElement($itemContent);
+            }
+            $itemData.attr("data-photoswipe", targetProps["photoswipe"]);
+          }
+          break;
+        case "linkurl":
+          if (!Rexbuilder_Util.editorMode) {
+            var $linkEl = $itemContent.parents(".element-link");
+            if (targetProps["linkurl"] != "") {
+              if ($linkEl.length != 0) {
+                //console.log("already a link");
+                $linkEl.attr("href", targetProps["linkurl"]);
+                $linkEl.attr("title", targetProps["linkurl"]);
+              } else {
+                //console.log("not a block link");
+                var $itemContentParent = $itemContent.parent();
+                tmpl.arg = "link";
+                $itemContentParent.append(
+                  tmpl("tmpl-link-block", {
+                    url: targetProps["linkurl"]
+                  })
+                );
+                var $link = $itemContentParent.children(".element-link");
+                $itemContent.detach().appendTo($link);
+              }
+            } else {
+              if ($linkEl.length != 0) {
+                $linkEl.children().unwrap();
+              }
+            }
+          }
+          Rexbuilder_Dom_Util.updateBlockUrl($elem, targetProps["linkurl"]);
+          break;
+        case "zak_background":
+        case "zak_side":
+        case "zak_title":
+        case "zak_icon":
+        case "zak_foreground":
+          break;
+        case "block_animation":
+          break;
+        case "block_has_scrollbar":
+          break;
+        default:
+          break;
+      }
+    }
+  }
 
   var _updateModelsLive = function(idModel, targets, editedModelNumber) {
     Rexbuilder_Util.domUpdaiting = true;
@@ -3510,6 +3533,7 @@ var Rexbuilder_Util = (function($) {
     saveSectionNamesUsed: _saveSectionNamesUsed,
     addSectionID: _addSectionID,
     removeSectionID: _removeSectionID,
-    createRandomID: createRandomID
+    createRandomID: createRandomID,
+    updateDOMSingleElement: _updateDOMSingleElement
   };
 })(jQuery);

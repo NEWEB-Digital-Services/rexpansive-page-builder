@@ -1137,6 +1137,11 @@ var Rexbuilder_Dom_Util = (function($) {
     $section.removeClass("activeRowTools");
   };
 
+  /**
+   * Updating the overlay color visualization on the builder
+   * @param {Object} data block info
+   * @param {Object} color overlay color info
+   */
   var _updateBlockOverlayColorLive = function(data, color) {
     var $target;
     if (data.modelNumber != "") {
@@ -1168,6 +1173,10 @@ var Rexbuilder_Dom_Util = (function($) {
     Rexbuilder_Block_Editor.updateBlockOverlayColorToolLive( $target, color );
   };
 
+  /**
+   * Update the overlay color visualization on the front end
+   * @param {Object} data block info data
+   */
   var _updateBlockOverlay = function(data) {
     var color = data.color;
     var active = data.active;

@@ -793,7 +793,14 @@ var Rex_Save_Listeners = (function($) {
     return post;
   };
 
+  /**
+   * Retrieve all the properties of a block, in JSON or SHORTCODE format
+   * @param {jQuery Object} $elem block element to start
+   * @param {string} mode customLayout|shortcode
+   * @param {jQuery Object} $gridGallery parent gallery of the element
+   */
   var createBlockProperties = function($elem, mode, $gridGallery) {
+    $gridGallery = "undefined" !== typeof $gridGallery ? $gridGallery : $elem.parent('.grid-stack-row');
     var id = "",
       rex_id = "",
       type = "text",
@@ -1620,6 +1627,7 @@ var Rex_Save_Listeners = (function($) {
   return {
     createSectionProperties: createSectionProperties,
     createTargets: createTargets,
+    createBlockProperties: createBlockProperties,
     updateModel: updateModel
   };
 })(jQuery);

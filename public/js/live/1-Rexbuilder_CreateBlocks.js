@@ -548,7 +548,6 @@ var Rexbuilder_CreateBlocks = (function ($) {
      */
     var _insertHTMLBlock = function ($elem, $gallery) {
         if( $gallery.length > 0 ) {
-            // var $gallery = $elem.parents('.grid-stack-row');
             var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
             var gridstack = $gallery.data("gridstack");
             var $section = $gallery.parents(".rexpansive_section");
@@ -567,9 +566,11 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
             $newBlock.attr("data-rexbuilder-block-id", newRexID);
             $newBlockData.attr("data-rexbuilder_block_id", newRexID);
-            $newBlock.attr("id", newBlockID);
-            $newBlockData.attr("data-id", newBlockID);
-            $newBlockData.attr("id", newBlockID + "-builder-data");
+            if( "" === $newBlock.attr("id") ) {
+                $newBlock.attr("id", newBlockID);
+                $newBlockData.attr("data-id", newBlockID);
+                $newBlockData.attr("id", newBlockID + "-builder-data");
+            }
 
             $newBlock.appendTo($gallery.eq(0));
 
