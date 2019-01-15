@@ -4269,15 +4269,15 @@ ul {
 
 .rexlive-block-toolbox {
   position: absolute;
-  width: 100%;
   left: 0;
-  font-size: 10px;
-  font-family: 'Roboto', sans-serif;
+  width: 100%;
   opacity: 0;
   visibility: hidden;
   -webkit-transition: opacity 300ms;
   -o-transition: opacity 300ms;
-  transition: opacity 300ms; }
+  transition: opacity 300ms;
+  font-size: 10px;
+  font-family: 'Roboto', sans-serif; }
   .rexlive-block-toolbox.top-tools {
     top: 0;
     z-index: 50;

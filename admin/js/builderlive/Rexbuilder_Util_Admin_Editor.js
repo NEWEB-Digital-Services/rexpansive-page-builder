@@ -1140,7 +1140,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   }
 
   var _updateBkgrImgTool = function() {
-    if( '' !== hightlightRowInfo.id_image_bg_section && '' !== hightlightRowInfo.image_bg_section ) {
+    if( '' !== hightlightRowInfo.id_image_bg_section && '' !== hightlightRowInfo.image_bg_section && 'undefined' !== typeof hightlightRowInfo.id_image_bg_section && 'undefined' !== typeof hightlightRowInfo.image_bg_section ) {
       $highlightRowSetBackgroundImg
         .addClass('tool-button--image-preview')
         .attr('value',hightlightRowInfo.id_image_bg_section)

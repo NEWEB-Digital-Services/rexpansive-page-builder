@@ -5,7 +5,6 @@ var lodash = _.noConflict();
  * @since 1.1.3
  */
 var Rexbuilder_App = (function($) {
-  console.log('heisenberg');
   "use strict";
 
   var $sections = null;
@@ -721,7 +720,6 @@ var Rexbuilder_App = (function($) {
    */
   // Waiting until the ready of the DOM
   $(function() {
-    console.log('DOM CONTENT LOAD');
     Rexbuilder_App.init();
   });
 

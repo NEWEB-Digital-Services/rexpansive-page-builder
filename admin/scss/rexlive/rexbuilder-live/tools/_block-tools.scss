@@ -1,9 +1,16 @@
 .rexlive-block-toolbox {
   position: absolute;
-  width: 100%;
   left: 0;
+  width: 100%;
+  //height: 20px;
+  //background-color: #444;
+  // display: block;
+  // display: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 300ms;
+  
   font-size: 10px;
-
   @include live-fonts();
 
   &.top-tools {
@@ -21,14 +28,6 @@
     top: 0;
     z-index: 10;
   }
-
-  //height: 20px;
-  //background-color: #444;
-  // display: block;
-  // display: none;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 300ms;
   
   .focused & {
     opacity: 1;

@@ -540,12 +540,18 @@ var Rexbuilder_CreateBlocks = (function ($) {
         }
     }
 
+    /**
+     * Insert a new block in gridstack starting from an html element
+     * @param {jQuery Object} $elem element to insert
+     * @param {jQuery Object} $gallery gallery where insert
+     * @since 2.0.0
+     */
     var _insertHTMLBlock = function ($elem, $gallery) {
         if( $gallery.length > 0 ) {
             // var $gallery = $elem.parents('.grid-stack-row');
             var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
             var gridstack = $gallery.data("gridstack");
-            var $section = $elem.parents(".rexpansive_section");
+            var $section = $gallery.parents(".rexpansive_section");
             var $newBlock;
 
             $newBlock = $elem;
@@ -593,6 +599,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
             gridstack.update($newBlock[0], x, y, w, h);
             gridstack.commit();
 
+            galleryEditorInstance._updateElementsSizeViewers();
+
             galleryEditorInstance._createFirstReverseStack();
             galleryEditorInstance.properties.numberBlocksVisibileOnGrid = galleryEditorInstance.properties.numberBlocksVisibileOnGrid + 1;
             var actionData = {
@@ -637,11 +645,10 @@ var Rexbuilder_CreateBlocks = (function ($) {
             Rexbuilder_Block_Editor.updateBlockTools($newBlock);
             Rexbuilder_Util_Editor.launchTooltips();
             
-            // @todo TO FIX I MUST MAINTAIN IT
-            // Rexbuilder_Util.updateSectionStateLive($section);
-            // if(Rexbuilder_Util.activeLayout == "default"){
-            //     Rexbuilder_Util.updateDefaultLayoutStateSection($section);
-            // }
+            Rexbuilder_Util.updateSectionStateLive($section);
+            if(Rexbuilder_Util.activeLayout == "default"){
+                Rexbuilder_Util.updateDefaultLayoutStateSection($section);
+            }
         }
     }
 
