@@ -594,6 +594,10 @@ var Rexbuilder_CreateBlocks = (function ($) {
                 blocksDisposition: $.extend(true, {}, galleryEditorInstance.properties.reverseDataGridDisposition)
             };
 
+            if('masonry' === galleryEditorInstance.settings.galleryLayout) {
+                h = Math.floor( h * galleryEditorInstance.properties.singleWidth / galleryEditorInstance.properties.singleHeight );
+            }
+
             gridstack.addWidget($newBlock[0], 0, 0, w, h, true, 1, 500, 1);
 
             gridstack.batchUpdate();

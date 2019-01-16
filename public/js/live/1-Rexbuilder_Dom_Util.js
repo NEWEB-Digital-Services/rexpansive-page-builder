@@ -1184,8 +1184,9 @@ var Rexbuilder_Dom_Util = (function($) {
     var $elem = data.$elem;
     var $elemData = $elem.children(".rexbuilder-block-data");
     var $elemOverlay = $elem.find(".responsive-block-overlay");
+    var actualOverlay = $elemOverlay.css("background");
 
-    if( -1 !== $elemOverlay.css("background").indexOf("linear-gradient") ) {
+    if( -1 !== actualOverlay.indexOf("linear-gradient") ) {
       $elemOverlay.css("background","");
     }
     $elemOverlay.css("background-color", color);

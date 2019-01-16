@@ -145,7 +145,7 @@ var Rexpansive_Builder_Admin_Templates=function(e){"use strict";var t,i=function
 /**
  * Object that contains all the callbacks that anyone can register to the builder
  */
-var Rexpansive_Builder_Admin_Hooks=function(t){"use strict";var n,i,s=function(){return n},c=function(t){n.push(t)},e=function(){return i},u=function(t){i.push(t)},o=function(){n=[],i=[],this.collect=[]};return{init:o,get_switch_actions:s,set_switch_actions:c,get_save_actions:e,set_save_actions:u}}(jQuery);
+var Rexpansive_Builder_Admin_Hooks=function(t){"use strict";var n,i,e=function(){return n},o=function(t){console.log("tentativo di set"),n.push(t)},s=function(){return i},c=function(t){i.push(t)},u=function(){console.log("Rexpansive_Builder_Admin_Hooks init"),n=[],i=[],this.collect=[]};return{init:u,get_switch_actions:e,set_switch_actions:o,get_save_actions:s,set_save_actions:c}}(jQuery);
 /**
  * Object that contains the modals utilities
  */
