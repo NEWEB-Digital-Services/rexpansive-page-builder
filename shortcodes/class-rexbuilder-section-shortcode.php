@@ -80,6 +80,7 @@ class Rexbuilder_Section
         // Applying a filter to the content
         // Passing all the attributes as reference to edit them based on the content
         $content = apply_filters('rexpansive_filter_section', $content, array(&$parsed_atts));
+        $grid_custom_classes = apply_filters('rexpansive_section_grid_custom_class',$grid_custom_classes);
 
         global $post;
         // $builder_active = apply_filters('rexbuilder_post_active', get_post_meta($post->ID, '_rexbuilder_active', true));

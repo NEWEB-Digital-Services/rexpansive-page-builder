@@ -364,6 +364,7 @@ var Rexbuilder_App = (function($) {
           });
         } else {
           $(".rs-animation").removeClass("has-rs-animation");
+          $(".has-rs-animation").removeClass("has-rs-animation");
         }
       }
     }

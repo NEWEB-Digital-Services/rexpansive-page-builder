@@ -98,6 +98,10 @@ class Rexbuilder_Block
             $options = get_option($this->plugin_name . '_options');
             $animation = apply_filters('rexbuilder_animation_enabled', $options['animation']);
 
+            $element_link_cc = apply_filters('rexpansive_block_element_link_custom_class', '');
+            $grid_item_content_cc = apply_filters('rexpansive_block_grid_item_content_custom_class', '');
+            $text_wrap_cc = apply_filters('rexpansive_block_text_wrap_custom_class', '');
+
             $section = explode('_', $id);
             $section = $section[1];
 
@@ -185,7 +189,7 @@ class Rexbuilder_Block
                     $content = strip_tags($content, '<p><h1><h2><h3><h4><h5><h6><strong><i><hr><div><span><pre><b><blockquote><address><cite><code><del><q><small><sub><sup><time><img><canvas><video><ul><ol><li><br>');
                 endif;
                 if ($linkurl != ''):
-                    $block_link_pre .= '<a class="element-link hovered" href="' . $linkurl . '" title="' . trim(strip_tags($linkurl)) . '">';
+                    $block_link_pre .= '<a class="element-link hovered' . $element_link_cc . '" href="' . $linkurl . '" title="' . trim(strip_tags($linkurl)) . '">';
                     //$block_link_pre .= '<div class="element-link-effect-before"></div>';
                     //$block_link_before .= '<div class="element-link-effect-after"></div>';
                     $block_link_before .= '</a>';
@@ -283,7 +287,7 @@ class Rexbuilder_Block
             echo ((('full' == $type_bg_block && "" != $id_image_bg_block && "" == $content && $section_layout == 'fixed') || (!empty($video_bg_id) && "" == $content) || (!empty($video_bg_url) && "" == $content) || (!empty($video_bg_url_vimeo) && "" == $content)) ? ' only-background' : '');
             echo (('full' == $type_bg_block && $section_layout == 'masonry' && "" == $content) ? ' natural-fluid-image' : '');
             if ($animation == 1 && $block_animation && !$block_is_static) {
-                echo ' ' . ' has-rs-animation rs-animation';
+                echo ' has-rs-animation rs-animation';
             }
             echo ' w' . $size_x;
 
@@ -435,7 +439,10 @@ class Rexbuilder_Block
                 case 'image':
                     echo ($floating_border == '' ? $block_link_pre : '');
                     echo '<div class="grid-item-content image-content ' . (($flex_positioned && !$block_has_slider) ? 'rex-flexbox ' : '');
-                    echo $videoTypeActive.'" ' . $block_background_style;
+                    echo $videoTypeActive;
+                    echo $grid_item_content_cc;
+                    echo '"'; // close class attribute
+                    echo $block_background_style;
                     if ("" != $id_image_bg_block) {
                         echo ' data-background_image_width="' . $img_attrs[1] . '" ';
                         echo ' data-background_image_height="' . $img_attrs[2]. '"';
@@ -466,7 +473,11 @@ class Rexbuilder_Block
                     // echo '<div class="' . (($flex_positioned && !$block_has_slider) ? ' rex-custom-position' : '') . '">';
                     echo (($floating_border != '' && $block_link_pre != '') ? $block_link_pre : '');
                     echo $floating_border;
-                    echo '<div class="text-wrap' . ("fixed" == $section_layout ? ' rex-content-resizable"' : '"') . $block_style_padding . '>';
+                    echo '<div class="text-wrap' . ("fixed" == $section_layout ? ' rex-content-resizable' : '');
+                    echo $text_wrap_cc;
+                    echo '"'; 
+                    echo $block_style_padding;
+                    echo '>';
                     if ("" != $content):
                         echo do_shortcode($content);
                     endif;
@@ -486,7 +497,9 @@ class Rexbuilder_Block
                     echo ($floating_border == '' ? $block_link_pre : '');
                     echo '<div class="grid-item-content text-content ' . (($flex_positioned && !$block_has_slider) ? 'rex-flexbox ' : '');
                     echo $videoTypeActive != "" ? $videoTypeActive . " " : "";
-                    echo '" ' . $block_background_style;
+                    echo $grid_item_content_cc;
+                    echo '"'; // close class attr
+                    echo $block_background_style;
                     if ("" != $id_image_bg_block) {
                         echo ' data-background_image_width="' . $img_attrs[1] . '" ';
                         echo ' data-background_image_height="' . $img_attrs[2]. '"';
@@ -518,7 +531,11 @@ class Rexbuilder_Block
                     echo '>';
                     echo (($floating_border != '' && $block_link_pre != '') ? $block_link_pre : '');
                     echo $floating_border;
-                    echo '<div class="text-wrap' . ("fixed" == $section_layout ? ' rex-content-resizable"' : '"') . $block_style_padding . '>';
+                    echo '<div class="text-wrap' . ("fixed" == $section_layout ? ' rex-content-resizable' : '');
+                    echo $text_wrap_cc;
+                    echo '"';
+                    echo $block_style_padding;
+                    echo '>';
                     if ("" != $content) {
                         echo do_shortcode($content);
                     }
@@ -537,7 +554,10 @@ class Rexbuilder_Block
                     echo '<div class="grid-item-content empty-content';
                     echo (("" == $block_background_style && "" == $id_image_bg_block && "" == $content) ? ' real-empty' : '');
                     echo ($flex_positioned && !$block_has_slider)? ' rex-flexbox ' : ' ';
-                    echo $videoTypeActive.'" ' . $block_background_style;
+                    echo $videoTypeActive;
+                    echo $grid_item_content_cc;
+                    echo '"'; // close class attr
+                    echo $block_background_style;
                     if ("" != $id_image_bg_block) {
                         echo ' data-background_image_width="' . $img_attrs[1] . '" ';
                         echo ' data-background_image_height="' . $img_attrs[2]. '"';
@@ -569,7 +589,11 @@ class Rexbuilder_Block
                     echo (($floating_border != '' && $block_link_pre != '') ? $block_link_pre : '');
                     echo $floating_border;
                     if ("" != $content):
-                        echo '<div class="text-wrap' . ("fixed" == $section_layout ? ' rex-content-resizable"' : '"') . $block_style_padding . '>';
+                        echo '<div class="text-wrap' . ("fixed" == $section_layout ? ' rex-content-resizable' : '');
+                        echo $text_wrap_cc;
+                        echo '"';
+                        echo $block_style_padding;
+                        echo '>';
                         echo do_shortcode( $content );
                         echo '</div>';
                     endif;
