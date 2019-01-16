@@ -562,7 +562,6 @@ MediumEditor.extensions = {};
          * not affected in any way.
          */
         findOrCreateMatchingTextNodes: function (document, element, match) {
-            console.log("WUJU");
             var treeWalker = document.createTreeWalker(element, NodeFilter.SHOW_ALL, null, false),
                 matchedNodes = [],
                 currentTextIndex = 0,
@@ -2606,7 +2605,9 @@ MediumEditor.extensions = {};
         },
 
         triggerCustomEvent: function (name, data, editable) {
-            console.log("triggering event", name);
+            if (name == "editableInput") {
+                console.log("triggering event", name);
+            }
             if (this.customEvents[name] && !this.disabledEvents[name]) {
                 this.customEvents[name].forEach(function (listener) {
                     listener(data, editable);
@@ -2756,7 +2757,6 @@ MediumEditor.extensions = {};
                     this.setupListener('externalInteraction');
                     break;
                 case 'editableInput':
-                    console.log("sei qua stronzo");
                     // setup cache for knowing when the content has changed
                     this.contentCache = {};
                     this.base.elements.forEach(function (element) {
@@ -2917,18 +2917,15 @@ MediumEditor.extensions = {};
         },
 
         updateInput: function (target, eventObj) {
-            console.log("DIOPORCO");
             if (!this.contentCache) {
                 return;
             }
-            console.log("qua ci arrivi?");
             // An event triggered which signifies that the user may have changed someting
             // Look in our cache of input for the contenteditables to see if something changed
             var index = target.getAttribute('medium-editor-index'),
                 html = target.innerHTML;
 
             if (html !== this.contentCache[index]) {
-                console.log("e qua?");
                 // The content has changed since the last time we checked, fire the event
                 this.triggerCustomEvent('editableInput', eventObj, target);
             }
@@ -3011,11 +3008,6 @@ MediumEditor.extensions = {};
         },
 
         handleKeyup: function (event) {
-            console.log("invio up");
-            event.preventDefault();
-            event.stopPropagation();
-            event.stopImmediatePropagation();
-            return;
             this.triggerCustomEvent('editableKeyup', event, event.currentTarget);
         },
 
@@ -3036,11 +3028,6 @@ MediumEditor.extensions = {};
         },
 
         handleKeydown: function (event) {
-            console.log("invio down");
-            event.preventDefault();
-            event.stopPropagation();
-            event.stopImmediatePropagation();
-            return;
             this.triggerCustomEvent('editableKeydown', event, event.currentTarget);
 
             if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.SPACE)) {
@@ -6629,8 +6616,8 @@ MediumEditor.extensions = {};
         }
     }
 
-    function isElementBefore(node, offset, class_name){
-        console.log(node);
+    //check inside an element if node before caret has given class
+    function isNodeBefore(node, offset, class_name){
         // if caret is at beginning of node
         var pos = 0;
         var nodes = node.childNodes;
@@ -6663,41 +6650,116 @@ MediumEditor.extensions = {};
         return false;
     }
 
+    function isElementBefore(node, class_name) {
+        var $node = $(node);
+        if ($node.prev().hasClass(class_name)){
+            return true;
+        }
+        while (!$node.is("body") && !$node.parent().hasClass("medium-editor-element")){
+            $node = $node.parent();
+        };
+        return $node.prev().hasClass(class_name);
+    }
+
+    function isSafeInsert(node){
+        var $node = $(node);
+        if ($node.hasClass("rex-button-text")){
+            return false;
+        }
+        if ($node.prev().hasClass("rex-button-wrapper") && !$node.parent().hasClass("medium-editor-element")) {
+            return false;
+        }
+        return true;
+    }
+
     function handleBlockDeleteKeydowns(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        event.stopImmediatePropagation();
-        return;
         var p, node = MediumEditor.selection.getSelectionStart(this.options.ownerDocument),
             tagName = node.nodeName.toLowerCase(),
             isEmpty = /^(\s+|<br\/?>)?$/i,
             isHeader = /h\d/i;
 
         var parentElementHeader = checkParentHeaderElement(node);
-
+        var mediumEditorOffset = MediumEditor.selection.getCaretOffsets(node).left;
+        
         /**
          * Fix for rexpansive buttons
          */
         if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.BACKSPACE) && 
-            window.getSelection().focusOffset == 0) {
-            console.log("focusOffset", window.getSelection().focusOffset);
-            console.log("mediumOffset", MediumEditor.selection.getCaretOffsets(node).left);
-            var mediumEditorOffset = MediumEditor.selection.getCaretOffsets(node).left;
+        window.getSelection().focusOffset == 0) {
             if (//il cursore è all'inizio dell'elemento
-            mediumEditorOffset === 0 
-                // il nodo prima è un rexbutton
-                && $(node.previousElementSibling).hasClass("rex-button-wrapper")) {
-                var $rexButton = $(node.previousElementSibling).detach();
-                $rexButton.prependTo($(node));
+                mediumEditorOffset === 0 
+                // l'elemento prima è un rexbutton
+                && isElementBefore(node, "rex-button-wrapper")) {
+                var $node = $(node);
+                if ($node.prev().hasClass("rex-button-wrapper") && !$node.parent().hasClass("medium-editor-element")){
+                    event.preventDefault();
+                    return;
+                }
+
+                while (!$node.is("body") && !$node.parent().hasClass("medium-editor-element")) {
+                    $node = $node.parent();
+                };
+
+                if($node.is("body")){
+                    event.preventDefault();
+                    return;
+                }
+
+                var $rexButton = $node.prev().detach();
+                $rexButton.prependTo($node);
                 event.preventDefault();
                 return;
             }
-
-            if(isElementBefore(node, mediumEditorOffset, "rex-button-wrapper")){
+            
+            if (isNodeBefore(node, mediumEditorOffset, "rex-button-wrapper")){
                 event.preventDefault();
                 return;
             }
         }
+        
+        if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER)) {
+            var stopEvent = false;
+            var continueChecks = true;
+            //se siamo dentro un rexbutton non deve fare nulla
+            if ($(node).hasClass("rex-button-text")) {
+                //se siamo all'ultimo carattere del rexbutton cosa facciamo?
+                stopEvent = true;
+            } else if (
+                //se ci troviamo all'inizio del nodo
+                window.getSelection().focusOffset == 0) {
+                // il nodo prima è un rexbutton
+                if (
+                    //all'inizio del primo nodo dell'elemento
+                    mediumEditorOffset === 0
+                    // il nodo prima è un rexbutton
+                    && isElementBefore(node, "rex-button-wrapper")) {
+                    var $node = $(node);
+                    console.log(1);
+                    if (!($node.prev().hasClass("rex-button-wrapper") && $node.parent().hasClass("medium-editor-element"))) {
+                        console.log(3);
+                        console.log("elemento prima c'era rex button");
+                        stopEvent = true;
+                    }
+                    continueChecks = false;
+                }
+
+                //se siamo dentro un elemento con uno span rexbutton prima
+                if (continueChecks && isNodeBefore(node, mediumEditorOffset, "rex-button-wrapper")) {
+                    //capire in che elemento siamo
+                    // chiuderlo
+                    // inserire sotto di lui uno uguale con il resto del contenuto il resto
+                    // aggiungere br?
+                    console.log("nodo prima c'era rex button");
+                    stopEvent = true;
+                }
+            }
+            if (stopEvent) {
+                console.log("stopping event");
+                event.preventDefault();
+                return;
+            }
+        }
+
         if (MediumEditor.util.isKey(event, [MediumEditor.util.keyCode.BACKSPACE, MediumEditor.util.keyCode.ENTER]) &&
             // has a preceeding sibling
             node.previousElementSibling &&
@@ -6842,6 +6904,12 @@ MediumEditor.extensions = {};
             tagName;
 
         if (!node) {
+            return;
+        }
+
+        // check if is safe to insert something
+        if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER) && !isSafeInsert(node)) {
+            event.preventDefault();
             return;
         }
 
