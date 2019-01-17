@@ -3981,7 +3981,6 @@
      */
     $(document).on("rexbuilder:save_content", function(ev) {
       var i;
-      console.log('casvo qui');
       if (_plugin_backend_settings.activate_builder && $('#builder-switch').prop('checked')) {
         for (i = 0; i < Rexpansive_Builder_Admin_Config.collect.length; i++) {
           Rexpansive_Builder_Admin_Config.collect[i].fillEmptyCells();

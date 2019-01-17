@@ -570,11 +570,13 @@ class Rexbuilder_Admin {
 	 */
 	public function update_notifier_menu() {  
 		$xml = $this->get_latest_theme_version(21600); // This tells the function to cache the remote call for 21600 seconds (6 hours)
-		
-		$theme_data = get_plugin_data( WP_PLUGIN_DIR . '/rexpansive-builder/rexpansive-builder.php' ); // Get theme data from style.css (current version is what we want)
-		
-		if(version_compare($theme_data['Version'], $xml->latest) == -1) {
-			add_dashboard_page( $theme_data['Name'] . 'Plugin Updates', $theme_data['Name'] . '<span class="update-plugins count-1"><span class="update-count">Updates</span></span>', 'administrator', strtolower($theme_data['Name']) . '-updates', array( $this, 'update_notifier' ) );
+
+		if( isset($xml) && $xml ) {
+			$theme_data = get_plugin_data( WP_PLUGIN_DIR . '/rexpansive-builder/rexpansive-builder.php' ); // Get theme data from style.css (current version is what we want)
+			
+			if(version_compare($theme_data['Version'], $xml->latest) == -1) {
+				add_dashboard_page( $theme_data['Name'] . 'Plugin Updates', $theme_data['Name'] . '<span class="update-plugins count-1"><span class="update-count">Updates</span></span>', 'administrator', strtolower($theme_data['Name']) . '-updates', array( $this, 'update_notifier' ) );
+			}
 		}
 	}
 
@@ -623,7 +625,7 @@ class Rexbuilder_Admin {
 	// For performance reasons this function caches the xml content in the database for XX seconds ($interval variable)
 	public function get_latest_theme_version($interval) {
 		// remote xml file location
-		$notifier_file_url = 'https://rexpansive.neweb.info/notifier-builder-premium.xml';
+		$notifier_file_url = 'https://www.neweb.info/notifier-builder-premium.xml';
 		
 		$db_cache_field = 'rexpansive-builder-premium-notifier-cache';
 		$db_cache_field_last_updated = 'rexpansive-builder-premium-notifier-last-updated';
@@ -642,7 +644,7 @@ class Rexbuilder_Admin {
 			} else {
 				$cache = file_get_contents($notifier_file_url); // ...if not, use the common file_get_contents()
 			}
-			
+
 			if ($cache) {			
 				// we got good results
 				update_option( $db_cache_field, $cache );
