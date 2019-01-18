@@ -2618,7 +2618,6 @@
         gallery.$element.addClass("gridActive");
 
       } else {
-        //console.log("launching gridstack frontend");
         gallery.$element.gridstack({
           auto: true,
           disableOneColumnMode: true,

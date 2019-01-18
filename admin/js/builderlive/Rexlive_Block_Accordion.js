@@ -168,7 +168,7 @@ var Rexlive_Block_Accordion = (function($) {
       header: block_accordion_properties.$accordion_header.val(),
       content: block_accordion_properties.$accordion_content.val(),
       icon: "",
-      complete: '<div class="rex-accordion' + ( true === state ? ' open' : ' close' ) + '"><div class="rex-accordion--toggle">' + block_accordion_properties.$accordion_header.val() + '<span class="rex-accordion--toggle-icon"><i class="rex-accordion--close-icon l-svg-icons"><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#Z001-Plus"></use></svg></i></span></div><div class="rex-accordion--content' + ( "" !== gallery_content ? " rex-accordion--gallery" : "" ) + '"' + ( true !== state ? ' style="display:none;"' : '' ) + '>' + ( "" !== gallery_content ? gallery_content : block_accordion_properties.$accordion_content() ) + '</div></div>',
+      complete: '<div class="rex-accordion' + ( true === state ? ' open' : ' close' ) + '"><div class="rex-accordion--toggle">' + block_accordion_properties.$accordion_header.val() + '<span class="rex-accordion--toggle-icon"><i class="rex-accordion--close-icon l-svg-icons"><svg><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#Z001-Plus"></use></svg></i></span></div><div class="rex-accordion--content' + ( "" !== gallery_content ? " rex-accordion--gallery" : "" ) + '"' + ( true !== state ? ' style="display:none;"' : '' ) + '>' + ( "" !== gallery_content ? gallery_content : block_accordion_properties.$accordion_content.val() ) + '</div></div>',
     };
     
     var data_updateAccordion = {
