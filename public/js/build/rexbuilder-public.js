@@ -146,9 +146,9 @@ var Rexbuilder_App = (function($) {
           var pgge = $grid.data("plugin_perfectGridGalleryEditor");
           var grid = pgge.properties.gridstackInstance;
 
-          var base_h = ( 0 !== step ? data.element.parentElement.offsetHeight : 0 );
+          var base_h = ( 0 !== step ? data.element.parentElement.offsetHeight + pgge.properties.gutter : 0 );
           var fstart_h = ( 0 === step ? start_h : 0 );
-          var temp = Math.round( ( base_h + ( fstart_h * grid.opts.cellHeight ) ) / grid.opts.cellHeight );
+          var temp = Math.ceil( ( base_h + ( fstart_h * grid.opts.cellHeight ) ) / grid.opts.cellHeight );
           temp = temp < start_h ? start_h : temp;
           
           grid.resize(block,null,temp);
@@ -163,9 +163,9 @@ var Rexbuilder_App = (function($) {
           var pgge = $grid.data("plugin_perfectGridGalleryEditor");
           var grid = pgge.properties.gridstackInstance;
 
-          var base_h = ( 1 !== step ? data.element.parentElement.offsetHeight : 0 );
+          var base_h = ( 1 !== step ? data.element.parentElement.offsetHeight + pgge.properties.gutter : 0 );
           var fstart_h = ( 1 === step ? start_h : 0 );
-          var temp = Math.round( ( base_h + ( fstart_h * grid.opts.cellHeight ) ) / grid.opts.cellHeight );
+          var temp = Math.ceil( ( base_h + ( fstart_h * grid.opts.cellHeight ) ) / grid.opts.cellHeight );
           temp = temp > start_h ? temp : start_h;
 
           grid.resize( block,null,temp );

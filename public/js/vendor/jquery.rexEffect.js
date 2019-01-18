@@ -379,7 +379,7 @@
         loader.add(i.toString(), rSprites[i]);
       }
 
-      loader.load((loader, resources) => {
+      loader.load(function(loader, resources) {
         for( var res in resources ) {
           var image = new PIXI.Sprite( resources[res].texture );
           // image.anchor.set(0.5);
