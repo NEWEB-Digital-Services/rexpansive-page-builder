@@ -138,6 +138,9 @@ var Rexbuilder_App = (function($) {
       };
     } else {
       accordionSettings.open = {
+        startClbk: function(data) {
+          data.$element.parents('.grid-stack-item-content').css('position','relative');
+        },
         progressClbk: function(data, step) {
           // var content = data.properties.$content[0];
           var block = data.properties.$content.parents('.grid-stack-item')[0];
@@ -150,8 +153,10 @@ var Rexbuilder_App = (function($) {
           var fstart_h = ( 0 === step ? start_h : 0 );
           var temp = Math.ceil( ( base_h + ( fstart_h * grid.opts.cellHeight ) ) / grid.opts.cellHeight );
           temp = temp < start_h ? start_h : temp;
-          
-          grid.resize(block,null,temp);
+
+          if( temp > parseInt(block.getAttribute('data-gs-height')) ) {
+            grid.resize(block,null,temp);
+          }
         }
       };
       accordionSettings.close = {
@@ -168,8 +173,13 @@ var Rexbuilder_App = (function($) {
           var temp = Math.ceil( ( base_h + ( fstart_h * grid.opts.cellHeight ) ) / grid.opts.cellHeight );
           temp = temp > start_h ? temp : start_h;
 
-          grid.resize( block,null,temp );
+          if( temp < parseInt(block.getAttribute('data-gs-height')) ) {
+            grid.resize( block,null,temp );
+          }
         },
+        completeClbk: function(data) {
+          data.$element.parents('.grid-stack-item-content').css('position','');
+        }
       };
       $accordions.rexAccordion(accordionSettings);
     }

@@ -89,6 +89,11 @@
           this.$element.addClass('close').removeClass('open');
           this.properties.$content.slideUp({
             duration:this.settings.duration,
+            start: function(animation) {
+              if (typeof that.settings.close.startClbk == 'function') { 
+                that.settings.close.startClbk.call(this, that); // brings the scope to the callback
+              }
+            },
             progress: function(animation,step,remain) {
               if (typeof that.settings.close.progressClbk == 'function') { 
                 that.settings.close.progressClbk.call(this, that, step); // brings the scope to the callback
@@ -105,6 +110,11 @@
           this.$element.addClass('open').removeClass('close');
           this.properties.$content.slideDown({
             duration:this.settings.duration,
+            start: function(animation) {
+              if (typeof that.settings.open.startClbk == 'function') { 
+                that.settings.open.startClbk.call(this, that); // brings the scope to the callback
+              }
+            },
             progress: function(animation,step,remain) {
               if (typeof that.settings.open.progressClbk == 'function') { 
                 that.settings.open.progressClbk.call(this, that, step); // brings the scope to the callback

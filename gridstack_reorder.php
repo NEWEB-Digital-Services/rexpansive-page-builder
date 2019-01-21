@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Gridstack - v0.4 - REORDER</title>
+    <title>Test Griglia</title>
 
     <link
       rel="stylesheet"
@@ -138,7 +138,7 @@
   </head>
   <body>
     <div class="container">
-      <h1>INSERT ELEMENT - TEST 1</h1>
+      <h1>Test inserimento elemento</h1>
 
       <div class="row">
         <div class="col-12">
