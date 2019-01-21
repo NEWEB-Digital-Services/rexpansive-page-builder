@@ -1003,11 +1003,13 @@
         var $elem;
         gridstack.destroy(false);
 
-        this.$element.children(".grid-stack-item").each(function() {
-          $elem = $(this);
-          $elem.draggable("destroy");
-          $elem.resizable("destroy");
-        });
+        if (Rexbuilder_Util.editorMode) {
+          this.$element.children(".grid-stack-item").each(function() {
+            $elem = $(this);
+            $elem.draggable("destroy");
+            $elem.resizable("destroy");
+          });
+        }
 
         this.$element.removeClass(
           "grid-stack-instance-" + this.properties.gridstackInstanceID
@@ -3562,6 +3564,22 @@
     // check if the parent wrap of the grd has a particular class
     _check_parent_class: function(c) {
       return this.$element.parents(this.settings.gridParentWrap).hasClass(c);
+    },
+
+    /**
+     * Util function to print the blocks infos of this row
+     * @since 2.0.0
+     */
+    _log_block_infos: function() {
+      this.$element.find('.grid-stack-item').each(function(i,el) {
+        console.table({
+          id: el.getAttribute('id'),
+          x: el.getAttribute('data-gs-x'),
+          y: el.getAttribute('data-gs-y'),
+          w: el.getAttribute('data-gs-width'),
+          h: el.getAttribute('data-gs-height')
+        });
+      })
     }
   });
 
