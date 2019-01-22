@@ -1,0 +1,9 @@
+@media screen and (max-width:767px) {
+  body {
+    -ms-overflow-style: none;  // IE 10+
+    overflow: -moz-scrollbars-none;  // Firefox
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+}

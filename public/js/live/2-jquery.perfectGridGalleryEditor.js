@@ -2373,6 +2373,7 @@
             );
 
             var needH = gallery.calculateTextWrapHeight( $block.find(".text-wrap") );
+            console.log(needH);
             if( gallery.settings.galleryLayout == "masonry" ) {
               gallery.properties.gridstackInstance.minHeight(block, Math.round( ( needH + gallery.properties.gutter ) / 5 ) );
             } else {
@@ -2687,13 +2688,22 @@
           $(this.properties.blocksBottomTop).each(function(i, e) {
             $elem = $(e);
             $elemData = $elem.children(".rexbuilder-block-data");
+            // if(e.getAttribute('data-rexbuilder-block-id') == '6VVT') {
+            //   console.log(gallery.settings.galleryLayout);
+            //   console.log($elemData.attr("data-block_dimensions_live_edited"));
+            //   console.log($elemData.attr("data-block_dimensions_live_edited").toString());
+            //   console.log(Rexbuilder_Util.backendEdited);
+            //   console.log(Rexbuilder_Util_Editor.updatingSectionLayout);
+            // }
             if (
               (gallery.settings.galleryLayout == "masonry" &&
-                ((typeof $elemData.attr("data-block_dimensions_live_edited") !=
+                (
+                  (typeof $elemData.attr("data-block_dimensions_live_edited") !=
                   "undefined" &&
                   $elemData
                     .attr("data-block_dimensions_live_edited")
                     .toString() != "true") ||
+                  // true || 
                   Rexbuilder_Util.backendEdited)) ||
               Rexbuilder_Util_Editor.updatingSectionLayout
             ) {
@@ -2704,6 +2714,10 @@
                 )
               )
                 gallery.updateElementHeight($elem);
+            } else {
+              if( gallery.settings.galleryLayout == "masonry" && (typeof $elemData.attr("data-block_dimensions_live_edited") != "undefined" && $elemData.attr("data-block_dimensions_live_edited").toString() == "true") ) {
+                console.log(e.getAttribute('data-gs-height')*gallery.properties.singleHeight, gallery.calculateTextWrapHeight($elem.find('.text-wrap')));
+              }
             }
           });
 
@@ -2890,11 +2904,6 @@
     },
 
     updateElementHeight: function($elem) {
-      // console.log(
-      //   "calculating " + $elem.attr("data-rexbuilder-block-id") + " height"
-      // );
-      // console.log($elem.attr("data-gs-width"));
-      // console.log("elem width", $elem.outerWidth());
       if (Rexbuilder_Util.editorMode && !this.properties.oneColumModeActive) {
         Rexbuilder_Util_Editor.elementIsResizing = true;
       }
@@ -3033,14 +3042,16 @@
         emptyBlockFlag = true;
       }
 
-      // console.log(
-      //   startH,
-      //   backgroundHeight,
-      //   videoHeight,
-      //   defaultHeight,
-      //   textHeight,
-      //   sliderHeight
-      // );
+      console.log(elem.getAttribute('id'));
+      // console.table({
+      //   startH: startH,
+      //   backgroundHeight: backgroundHeight,
+      //   videoHeight: videoHeight,
+      //   defaultHeight: defaultHeight,
+      //   textHeight: textHeight,
+      //   sliderHeight: sliderHeight
+      // });
+      console.log('-----');
 
       newH = Math.max(
         startH,
@@ -3116,13 +3127,15 @@
               !$textWrap.hasClass("medium-editor-placeholder")) ||
             $textWrap.parents(".pswp-item").length != 0
           ) {
-            textHeight = $textWrap.innerHeight();
+            var gicwStyles = window.getComputedStyle( $textWrap.parents('.grid-item-content-wrap')[0] );
+            textHeight = $textWrap.innerHeight() + Math.ceil(parseFloat(gicwStyles['padding-top'])) + Math.ceil(parseFloat(gicwStyles['padding-bottom']));
           }
         }
         return textHeight;
       } else {
         if ($textWrap.text().trim().length != 0) {
-          return $textWrap.innerHeight();
+          var gicwStyles = window.getComputedStyle( $textWrap.parents('.grid-item-content-wrap')[0] );
+          return $textWrap.innerHeight() + Math.ceil(parseFloat(gicwStyles['padding-top'])) + Math.ceil(parseFloat(gicwStyles['padding-bottom']));
         } else {
           return 0;
         }

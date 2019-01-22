@@ -5034,6 +5034,12 @@ input.me-insert-embed__value[type=text] {
   -webkit-box-shadow: 1px 0 2px rgba(255, 255, 255, 0.4), -1px 0 2px rgba(255, 255, 255, 0.4);
           box-shadow: 1px 0 2px rgba(255, 255, 255, 0.4), -1px 0 2px rgba(255, 255, 255, 0.4); }
 
+@media screen and (max-width: 767px) {
+  body {
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none; }
+    body::-webkit-scrollbar {
+      display: none; } }
 .image-text-wrap {
   width: 100%;
   height: 100%; }

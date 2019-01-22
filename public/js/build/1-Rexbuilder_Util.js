@@ -2914,6 +2914,7 @@ var Rexbuilder_Util = (function($) {
         if(changedFrontLayout) {
           setTimeout(function() {
             var resize_info = _edit_dom_layout(chooseLayout());
+            console.log('change layout',resize_info);
             _updateGridsHeights();
     
             if(changedFrontLayout) {
@@ -2929,6 +2930,7 @@ var Rexbuilder_Util = (function($) {
           }, 300);
         } else {
           var resize_info = _edit_dom_layout(chooseLayout());
+          console.log('same layout',resize_info);
           _updateGridsHeights();
         }
 
@@ -2946,6 +2948,7 @@ var Rexbuilder_Util = (function($) {
         var galleryEditorInstance = $(row).data()
           .plugin_perfectGridGalleryEditor;
         if (galleryEditorInstance !== undefined) {
+          console.log('dovro lavorare qui');
           galleryEditorInstance.batchGridstack();
           galleryEditorInstance._defineDynamicPrivateProperties();
           galleryEditorInstance.updateGridstackStyles();

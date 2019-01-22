@@ -353,6 +353,7 @@ var Rexbuilder_App = (function($) {
     }
 
     if( false == _plugin_frontend_settings.user.editing ) {
+      // console.log('lancio scrolled');
       $sections.rexScrolled({
         callback: function(el) {
           if (Rexbuilder_Util.has_class(el, "rex-element--animated")) {
@@ -403,21 +404,25 @@ var Rexbuilder_App = (function($) {
     }
 
     if( false == _plugin_frontend_settings.user.editing ) {
+      // console.log('ascolto eventi scroll');
       $('[class*=border-space-animated-]').each(function(i,el) {
         var $el = $(el);
         $el.addClass("border-space-animated");
         if (1 == _plugin_frontend_settings.animations ) {
           if( Rexbuilder_Util.viewport().width > 768 ) {
             $el.one("rs-animation-complete", function() {
+              // console.log('animazione completata');
               $el.addClass("border-active");
             });
           } else {
             $el.parents(".rexpansive_section").one("rs-scrolled-complete", function() {
+              // console.log('riga scrollata 1');
               $el.addClass("border-active");
             });
           }
         } else {
           $el.parents(".rexpansive_section").one("rs-scrolled-complete", function() {
+            console.log('riga scrollata 2');
             $el.addClass("border-active");
           });
         }
