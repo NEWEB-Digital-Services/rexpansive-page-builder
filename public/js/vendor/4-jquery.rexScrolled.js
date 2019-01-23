@@ -77,7 +77,6 @@
       } else {
         var that = this;
         if (!that.properties.launched) {
-          // console.log('hai scrollato per caso?');
           var win_height = $(window).height(),
             win_height_padded_bottom,
             win_height_padded_top,
@@ -97,7 +96,6 @@
           }
 
           if (((blockPosition - win_height_padded_bottom < scrolled) && ((blockPosition + blockHeight) - win_height_padded_top > scrolled)) || that.settings.force_launch) {
-            // console.log(this.element);
             that.properties.launched = true;
             that.$element.trigger('rs-scrolled-complete');
             if( this.settings.callback && 'function' === typeof this.settings.callback ) {

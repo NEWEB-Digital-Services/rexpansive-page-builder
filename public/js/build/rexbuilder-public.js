@@ -353,6 +353,51 @@ var Rexbuilder_App = (function($) {
     }
 
     if( false == _plugin_frontend_settings.user.editing ) {
+      $(".rex-effect-distortion").each(function(i,el) {
+        var $el = $(el);
+        if (1 == _plugin_frontend_settings.animations ) {
+          $el.one("rs-animation-complete", function() {
+            $el.rexEffect({
+              effect: { 
+                name: 'distortion',
+                properties: { startDelay: 2500 }
+              }
+            });
+          });
+        } else {
+          $el.rexEffect({
+            effect: { 
+              name: 'distortion',
+              properties: { startDelay: 2500 }
+            }
+          });
+        }
+      });
+    }
+
+    if( false == _plugin_frontend_settings.user.editing ) {
+      $('[class*=border-space-animated-]').each(function(i,el) {
+        var $el = $(el);
+        $el.addClass("border-space-animated");
+        if (1 == _plugin_frontend_settings.animations ) {
+          if( Rexbuilder_Util.viewport().width > 768 ) {
+            $el.one("rs-animation-complete", function() {
+              $el.addClass("border-active");
+            });
+          } else {
+            $el.parents(".rexpansive_section").one("rs-scrolled-complete", function() {
+              $el.addClass("border-active");
+            });
+          }
+        } else {
+          $el.parents(".rexpansive_section").one("rs-scrolled-complete", function() {
+            $el.addClass("border-active");
+          });
+        }
+      });
+    }
+
+    if( false == _plugin_frontend_settings.user.editing ) {
       // console.log('lancio scrolled');
       $sections.rexScrolled({
         callback: function(el) {
@@ -378,55 +423,6 @@ var Rexbuilder_App = (function($) {
           $(".has-rs-animation").removeClass("has-rs-animation");
         }
       }
-    }
-
-    if( false == _plugin_frontend_settings.user.editing ) {
-      $(".rex-effect-distortion").each(function(i,el) {
-        var $el = $(el);
-        if (1 == _plugin_frontend_settings.animations ) {
-          $el.one("rs-animation-complete", function() {
-            $el.rexEffect({
-              effect: { 
-                name: 'distortion',
-                properties: { startDelay: 2500 }
-              }
-            });
-          });
-        } else {
-          $el.rexEffect({
-            effect: { 
-              name: 'distortion',
-              properties: { startDelay: 2500 }
-            }
-          });
-        }
-      });
-    }
-
-    if( false == _plugin_frontend_settings.user.editing ) {
-      // console.log('ascolto eventi scroll');
-      $('[class*=border-space-animated-]').each(function(i,el) {
-        var $el = $(el);
-        $el.addClass("border-space-animated");
-        if (1 == _plugin_frontend_settings.animations ) {
-          if( Rexbuilder_Util.viewport().width > 768 ) {
-            $el.one("rs-animation-complete", function() {
-              // console.log('animazione completata');
-              $el.addClass("border-active");
-            });
-          } else {
-            $el.parents(".rexpansive_section").one("rs-scrolled-complete", function() {
-              // console.log('riga scrollata 1');
-              $el.addClass("border-active");
-            });
-          }
-        } else {
-          $el.parents(".rexpansive_section").one("rs-scrolled-complete", function() {
-            console.log('riga scrollata 2');
-            $el.addClass("border-active");
-          });
-        }
-      });
     }
 
     Rexbuilder_Util.galleryPluginActive = true;
