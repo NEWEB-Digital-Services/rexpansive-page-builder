@@ -252,10 +252,13 @@
   }
 }
 
-.medium-editor-element:focus {
-  outline: none;
-  &[data-medium-focused=true] {
-    position: relative;
+.medium-editor-element {
+  word-wrap: normal;
+  &:focus {
+    outline: none;
+    &[data-medium-focused=true] {
+      position: relative;
+    }
   }
 }
 

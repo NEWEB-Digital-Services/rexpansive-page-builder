@@ -4685,10 +4685,12 @@ ul {
       overflow: hidden;
       font-size: 20px; }
 
-.medium-editor-element:focus {
-  outline: none; }
-  .medium-editor-element:focus[data-medium-focused=true] {
-    position: relative; }
+.medium-editor-element {
+  word-wrap: normal; }
+  .medium-editor-element:focus {
+    outline: none; }
+    .medium-editor-element:focus[data-medium-focused=true] {
+      position: relative; }
 
 .me-insert-media-button {
   position: absolute;

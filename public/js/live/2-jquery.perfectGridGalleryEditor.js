@@ -2373,9 +2373,8 @@
             );
 
             var needH = gallery.calculateTextWrapHeight( $block.find(".text-wrap") );
-            console.log(needH);
             if( gallery.settings.galleryLayout == "masonry" ) {
-              gallery.properties.gridstackInstance.minHeight(block, Math.round( ( needH + gallery.properties.gutter ) / 5 ) );
+              gallery.properties.gridstackInstance.minHeight(block, Math.round( ( needH + gallery.properties.gutter ) / gallery.properties.singleHeight ) );
             } else {
               gallery.properties.gridstackInstance.minHeight(block, Math.ceil( ( needH + gallery.properties.gutter ) / gallery.properties.singleWidth ) );
             }
@@ -2413,6 +2412,10 @@
             gallery.$element.attr('data-rexlive-layout-changed="true"');
             gallery.removeCollapseElementsProperties();
             var $section = gallery.$section;
+
+            // if gs-min-height and gs-height are the same the user wants a real fluid masonry
+            // I can trace this information
+            console.log(block.getAttribute('data-gs-min-height'),block.getAttribute('data-gs-height'));
 
             gallery.properties.gridstackInstance.minHeight( block, 1 );
 
@@ -2688,13 +2691,6 @@
           $(this.properties.blocksBottomTop).each(function(i, e) {
             $elem = $(e);
             $elemData = $elem.children(".rexbuilder-block-data");
-            // if(e.getAttribute('data-rexbuilder-block-id') == '6VVT') {
-            //   console.log(gallery.settings.galleryLayout);
-            //   console.log($elemData.attr("data-block_dimensions_live_edited"));
-            //   console.log($elemData.attr("data-block_dimensions_live_edited").toString());
-            //   console.log(Rexbuilder_Util.backendEdited);
-            //   console.log(Rexbuilder_Util_Editor.updatingSectionLayout);
-            // }
             if (
               (gallery.settings.galleryLayout == "masonry" &&
                 (
@@ -2713,10 +2709,21 @@
                   $elem.hasClass("removing_block")
                 )
               )
+                  console.log('peter fixing');
                 gallery.updateElementHeight($elem);
             } else {
+              // Rexbuilder_Util.chosenLayoutData.min) === Rexbuilder_Util.$window[0].innerWidth \\ if they are the same we are at the start of the layout customization;
               if( gallery.settings.galleryLayout == "masonry" && (typeof $elemData.attr("data-block_dimensions_live_edited") != "undefined" && $elemData.attr("data-block_dimensions_live_edited").toString() == "true") ) {
-                console.log(e.getAttribute('data-gs-height')*gallery.properties.singleHeight, gallery.calculateTextWrapHeight($elem.find('.text-wrap')));
+                var blockTextHeight = gallery.calculateTextWrapHeight($elem.find('.text-wrap'));
+                if( 0 !== blockTextHeight ) {
+                  var blockActualHeight = e.getAttribute('data-gs-height')*gallery.properties.singleHeight;
+                  if( ( blockActualHeight - ( blockTextHeight + gallery.properties.gutter ) ) > gallery.properties.singleHeight ) {
+                    console.log('to fix: ', e.getAttribute('data-rexbuilder-block-id'),blockActualHeight, blockTextHeight + gallery.properties.gutter);
+
+                    // gallery.updateElementHeight($elem);
+                  }
+                }
+                // console.log(e.getAttribute('data-rexbuilder-block-id'), e.getAttribute('data-gs-height')*gallery.properties.singleHeight, gallery.calculateTextWrapHeight($elem.find('.text-wrap'))+gallery.properties.gutter);
               }
             }
           });
@@ -3114,8 +3121,14 @@
         Rexbuilder_Util_Editor.elementIsResizing = false;
       }
     },
-
-    //Da sistemare mettendo un unico return
+ 
+    /**
+     * Calculate the height of the text content of the block
+     * Add the padding of the parent blocks
+     * @param {jQuery Object} $textWrap object that contains the text content of the block
+     * @since 2.0.0
+     * @todo Da sistemare mettendo un unico return
+     */
     calculateTextWrapHeight: function($textWrap) {
       if ($textWrap.hasClass("medium-editor-element")) {
         var textHeight = 0;
