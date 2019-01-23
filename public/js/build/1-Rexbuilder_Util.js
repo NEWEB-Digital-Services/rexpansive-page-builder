@@ -555,7 +555,7 @@ var Rexbuilder_Util = (function($) {
     for (i = 0; i < ordered.length; i++) {
       if (windowWidth >= ordered[i].min) {
         if (ordered[i].max != "") {
-          if (windowWidth < ordered[i].max) {
+          if (windowWidth <= ordered[i].max) {
             selectedLayoutName = ordered[i].id;
             Rexbuilder_Util.chosenLayoutData = ordered[i];
           }
@@ -564,7 +564,7 @@ var Rexbuilder_Util = (function($) {
           Rexbuilder_Util.chosenLayoutData = ordered[i];
         }
       }
-    }
+    } 
 
     if (selectedLayoutName === "") {
       selectedLayoutName = "default";
@@ -2927,7 +2927,6 @@ var Rexbuilder_Util = (function($) {
         if(changedFrontLayout) {
           setTimeout(function() {
             var resize_info = _edit_dom_layout(chooseLayout());
-            // console.log('change layout',resize_info);
             _updateGridsHeights();
     
             if(changedFrontLayout) {
