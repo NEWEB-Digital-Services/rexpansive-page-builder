@@ -755,6 +755,8 @@ var Rex_Save_Listeners = (function($) {
         case "gs_y":
         case "gs_x":
         case "block_dimensions_live_edited":
+        case "element_height_increased":
+        case "element_real_fluid":
           break;
         case "element_edited":
           props["element_edited"] = false;
@@ -844,7 +846,9 @@ var Rex_Save_Listeners = (function($) {
       block_flex_position = "",
       block_flex_img_position = "",
       slider_dimension_ratio = 1,
-      hide_block = false;
+      hide_block = false,
+      element_height_increased = 0,
+      element_real_fluid = 0;
 
     var content = "";
     var $textWrap;
@@ -1027,6 +1031,16 @@ var Rex_Save_Listeners = (function($) {
 
     hide_block = $elem.hasClass("rex-hide-element");
 
+    var parsedHeightIncreased = parseInt($itemData.attr("data-element_height_increased"));
+    element_height_increased = isNaN(parsedHeightIncreased) ? 0 : parsedHeightIncreased;
+    
+    var parsedElementRealFluid = parseInt( $itemData.attr("data-element_real_fluid") );
+    console.log($itemData.attr("data-element_real_fluid"));
+    console.log(parsedElementRealFluid);
+    element_real_fluid = ( isNaN( parsedElementRealFluid ) ? 0 : parsedElementRealFluid );
+    console.log(element_real_fluid);
+    console.log('-------');
+
     if (mode == "shortcode") {
       $textWrap = $itemContent.find(".text-wrap");
       if (!$elem.hasClass("block-has-slider")) {
@@ -1086,6 +1100,10 @@ var Rex_Save_Listeners = (function($) {
         gs_y +
         '" gs_x="' +
         gs_x +
+        '" element_height_increased="' +
+        element_height_increased +
+        '" element_real_fluid="' +
+        element_real_fluid +
         '" color_bg_block="' +
         color_bg_block +
         '" color_bg_block_active="' +
@@ -1166,6 +1184,8 @@ var Rex_Save_Listeners = (function($) {
       props["gs_height"] = gs_height;
       props["gs_y"] = gs_y;
       props["gs_x"] = gs_x;
+      props["element_height_increased"] = element_height_increased;
+      props["element_real_fluid"] = element_real_fluid;
       props["color_bg_block"] = color_bg_block;
       props["color_bg_block_active"] = color_bg_block_active;
       props["image_bg_url"] = image_bg_block;

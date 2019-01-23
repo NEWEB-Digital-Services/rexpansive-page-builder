@@ -2399,6 +2399,18 @@
               ) {
                 $elemData.attr("data-block_dimensions_live_edited", "true");
               }
+
+              switch(gallery.properties.resizeHandle){
+                case "s":
+                case "se":
+                case "sw":
+                  $elemData.attr("data-element_height_increased", $block.attr("data-gs-height"));
+                  break;
+                default: break;
+              }
+
+              console.log('setto sto bastaerd');
+              $elemData.attr("data-element_real_fluid", ( block.getAttribute('data-gs-min-height') == block.getAttribute('data-gs-height') ? 1 : 0 ) );
             }
             gallery.updateAllElementsProperties();
             if ( !$block.hasClass("block-has-slider") && !$blockContent.hasClass("block-has-slider") && !$blockContent.hasClass("youtube-player") ) {
@@ -2415,7 +2427,7 @@
 
             // if gs-min-height and gs-height are the same the user wants a real fluid masonry
             // I can trace this information
-            console.log(block.getAttribute('data-gs-min-height'),block.getAttribute('data-gs-height'));
+            // console.log(block.getAttribute('data-gs-min-height'), block.getAttribute('data-gs-height'), block.getAttribute('data-gs-min-height') == block.getAttribute('data-gs-height'));
 
             gallery.properties.gridstackInstance.minHeight( block, 1 );
 
@@ -2699,7 +2711,6 @@
                   $elemData
                     .attr("data-block_dimensions_live_edited")
                     .toString() != "true") ||
-                  // true || 
                   Rexbuilder_Util.backendEdited)) ||
               Rexbuilder_Util_Editor.updatingSectionLayout
             ) {
@@ -2709,7 +2720,6 @@
                   $elem.hasClass("removing_block")
                 )
               )
-                  console.log('peter fixing');
                 gallery.updateElementHeight($elem);
             } else {
               // Rexbuilder_Util.chosenLayoutData.min) === Rexbuilder_Util.$window[0].innerWidth \\ if they are the same we are at the start of the layout customization;
@@ -2717,13 +2727,11 @@
                 var blockTextHeight = gallery.calculateTextWrapHeight($elem.find('.text-wrap'));
                 if( 0 !== blockTextHeight ) {
                   var blockActualHeight = e.getAttribute('data-gs-height')*gallery.properties.singleHeight;
-                  if( ( blockActualHeight - ( blockTextHeight + gallery.properties.gutter ) ) > gallery.properties.singleHeight ) {
-                    console.log('to fix: ', e.getAttribute('data-rexbuilder-block-id'),blockActualHeight, blockTextHeight + gallery.properties.gutter);
 
-                    // gallery.updateElementHeight($elem);
+                  if( 1 == parseInt($elemData[0].getAttribute('data-element_real_fluid')) || ( blockActualHeight - ( blockTextHeight + gallery.properties.gutter ) ) < 0 ) {
+                    gallery.updateElementHeight($elem);
                   }
                 }
-                // console.log(e.getAttribute('data-rexbuilder-block-id'), e.getAttribute('data-gs-height')*gallery.properties.singleHeight, gallery.calculateTextWrapHeight($elem.find('.text-wrap'))+gallery.properties.gutter);
               }
             }
           });
@@ -2947,6 +2955,10 @@
       var $itemContent = $elem.find(".grid-item-content");
       var $imageWrapper = $itemContent.find(".rex-image-wrapper");
       var w = parseInt($elem.attr("data-gs-width"));
+      if(this.settings.galleryLayout == "masonry"){
+        var parsedHeight = parseInt($blockData.attr("data-element_height_increased"))
+        var increasedHeight = isNaN(parsedHeight) ? 0 : parsedHeight;
+      }
       var backgroundHeight = 0;
       var videoHeight = 0;
       var defaultHeight = 0;
@@ -3049,24 +3061,14 @@
         emptyBlockFlag = true;
       }
 
-      console.log(elem.getAttribute('id'));
-      // console.table({
-      //   startH: startH,
-      //   backgroundHeight: backgroundHeight,
-      //   videoHeight: videoHeight,
-      //   defaultHeight: defaultHeight,
-      //   textHeight: textHeight,
-      //   sliderHeight: sliderHeight
-      // });
-      console.log('-----');
-
       newH = Math.max(
         startH,
         backgroundHeight,
         videoHeight,
         defaultHeight,
         textHeight,
-        sliderHeight
+        sliderHeight,
+        increasedHeight
       );
       if (
         this.properties.oneColumModeActive &&
