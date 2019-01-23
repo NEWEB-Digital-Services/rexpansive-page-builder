@@ -1219,7 +1219,8 @@ var Rexbuilder_Util = (function($) {
           y: $elem.attr("data-gs-y"),
           w: $elem.attr("data-gs-width"),
           h: $elem.attr("data-gs-height"),
-          startH: $itemData.attr("data-gs_start_h")
+          startH: $itemData.attr("data-gs_start_h"),
+          increaseHeight: $itemData.attr("data-element_height_increased"),
         };
         var positionData = {
           x:
@@ -1242,6 +1243,10 @@ var Rexbuilder_Util = (function($) {
             typeof targetProps["gs_start_h"] == "undefined"
               ? positionDataActive.startH
               : targetProps["gs_start_h"],
+          increaseHeight: typeof targetProps["element_height_increased"] == "undefined"
+              ? positionDataActive.increaseHeight
+              : targetProps["element_height_increased"],
+
           gridstackInstance: gridstackInstance
         };
         _updateElementDimensions($elem, $itemData, positionData);
@@ -2407,6 +2412,8 @@ var Rexbuilder_Util = (function($) {
     var w = parseInt(posData.w);
     var h = parseInt(posData.h);
     var startH = parseInt(posData.startH);
+    var increaseHeight = parseInt(posData.increaseHeight);
+
     if (typeof posData.gridstackInstance != "undefined") {
       posData.gridstackInstance.update($elem[0], x, y, w, h);
     } else {
@@ -2420,6 +2427,7 @@ var Rexbuilder_Util = (function($) {
     $elemData.attr("data-gs_height", h);
     $elemData.attr("data-gs_y", y);
     $elemData.attr("data-gs_x", x);
+    $elemData.attr("data-element_height_increased", increaseHeight);
   };
 
   var addPhotoSwipeElement = function($itemContent, url, w, h, t) {

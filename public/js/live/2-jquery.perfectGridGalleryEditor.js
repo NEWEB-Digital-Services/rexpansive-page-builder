@@ -2379,6 +2379,7 @@
           if (Rexbuilder_Util_Editor.elementIsResizing) {
             gallery.updateSizeViewerText($block);
             if (gallery.settings.galleryLayout == "masonry") {
+
               $block.attr(
                 "data-height",
                 Math.round(
@@ -2394,6 +2395,16 @@
               ) {
                 $elemData.attr("data-block_dimensions_live_edited", "true");
               }
+
+              switch(gallery.properties.resizeHandle){
+                case "s":
+                case "se":
+                case "sw":
+                  $elemData.attr("data-element_height_increased", $block.attr("data-gs-height"));
+                  break;
+                default: break;
+              }
+
             }
             gallery.updateAllElementsProperties();
             if ( !$block.hasClass("block-has-slider") && !$blockContent.hasClass("block-has-slider") && !$blockContent.hasClass("youtube-player") ) {
@@ -2927,6 +2938,11 @@
       var $itemContent = $elem.find(".grid-item-content");
       var $imageWrapper = $itemContent.find(".rex-image-wrapper");
       var w = parseInt($elem.attr("data-gs-width"));
+      var increasedHeight = 0;
+      if(this.settings.galleryLayout == "masonry"){
+        var parsedHeight = parseInt($blockData.attr("data-element_height_increased"))
+        increasedHeight = isNaN(parsedHeight) ? 0 : parsedHeight;
+      }
       var backgroundHeight = 0;
       var videoHeight = 0;
       var defaultHeight = 0;
@@ -3044,7 +3060,8 @@
         videoHeight,
         defaultHeight,
         textHeight,
-        sliderHeight
+        sliderHeight,
+        increasedHeight
       );
       if (
         this.properties.oneColumModeActive &&
