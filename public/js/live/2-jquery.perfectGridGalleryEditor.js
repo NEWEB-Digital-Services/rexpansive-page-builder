@@ -2409,7 +2409,6 @@
                 default: break;
               }
 
-              console.log('setto sto bastaerd');
               $elemData.attr("data-element_real_fluid", ( block.getAttribute('data-gs-min-height') == block.getAttribute('data-gs-height') ? 1 : 0 ) );
             }
             gallery.updateAllElementsProperties();
@@ -3428,10 +3427,10 @@
       this.properties.gridstackInstance.removeAll(false);
 
       // Remove position styling
-      $items.each(function(i,el) {
-        el.style.left = "";
-        el.style.top = "";
-      });
+      // $items.each(function(i,el) {
+      //   el.style.left = "";
+      //   el.style.top = "";
+      // });
 
       // Check filter type: all (*) || other
       if("*" === options.filter ) {
@@ -3453,9 +3452,9 @@
 
         for(var i=0; i<this.properties.initialStateGrid.length; i++) {
           var el = this.properties.initialStateGrid[i].el[0];
-          var pos = that.get_pixel_position({x:this.properties.initialStateGrid[i].x, y:this.properties.initialStateGrid[i].y});
-          el.style.left = pos.left;
-          el.style.top = pos.top;
+          // var pos = that.get_pixel_position({x:this.properties.initialStateGrid[i].x, y:this.properties.initialStateGrid[i].y});
+          // el.style.left = pos.left;
+          // el.style.top = pos.top;
           this.properties.gridstackInstance.update(el, this.properties.initialStateGrid[i].x, this.properties.initialStateGrid[i].y);
         }
       } else {
@@ -3492,9 +3491,9 @@
         });
 
         $toMaintain.each(function(i,el) {
-          var pos = that.get_pixel_position({x:that.properties.mirrorStateGrid[i].x, y:that.properties.mirrorStateGrid[i].y});
-          el.style.left = pos.left;
-          el.style.top = pos.top;
+          // var pos = that.get_pixel_position({x:that.properties.mirrorStateGrid[i].x, y:that.properties.mirrorStateGrid[i].y});
+          // el.style.left = pos.left;
+          // el.style.top = pos.top;
           that.properties.gridstackInstance.update(el, that.properties.mirrorStateGrid[i].x, that.properties.mirrorStateGrid[i].y);
         });
       }

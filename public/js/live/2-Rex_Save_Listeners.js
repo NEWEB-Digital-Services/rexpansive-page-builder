@@ -1035,11 +1035,7 @@ var Rex_Save_Listeners = (function($) {
     element_height_increased = isNaN(parsedHeightIncreased) ? 0 : parsedHeightIncreased;
     
     var parsedElementRealFluid = parseInt( $itemData.attr("data-element_real_fluid") );
-    console.log($itemData.attr("data-element_real_fluid"));
-    console.log(parsedElementRealFluid);
     element_real_fluid = ( isNaN( parsedElementRealFluid ) ? 0 : parsedElementRealFluid );
-    console.log(element_real_fluid);
-    console.log('-------');
 
     if (mode == "shortcode") {
       $textWrap = $itemContent.find(".text-wrap");

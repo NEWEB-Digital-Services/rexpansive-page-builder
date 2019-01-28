@@ -57,7 +57,12 @@ gulp
 	.pipe(gulp.dest("./admin/sprites_live_new"));
 });
 
-
+gulp.task("ico-test", function() {
+gulp
+	.src("./admin/ICO-test/**/*.svg")
+	.pipe(svgSprite(config))
+	.pipe(gulp.dest("./admin/sprites_test"));
+});
 
 var banner = ['/**',
 	' * <%= pkg.name %> v<%= pkg.version %>',
