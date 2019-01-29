@@ -573,6 +573,19 @@ var Rexbuilder_Util = (function($) {
     return selectedLayoutName;
   };
 
+  /**
+   * Predict the acutal layout based on browser size
+   */
+  var predictLayout = function() {
+    var w = _viewport().width;
+    if( w <= 767 ) {
+      return 'mobile';
+    } else if( w <= 1024 ) {
+      return 'tablet';
+    }
+    return 'default';
+  }
+
   var _createEmptyTargets = function(targetsToEmpty) {
     var emptyTargets = [];
     var i;
@@ -1215,7 +1228,9 @@ var Rexbuilder_Util = (function($) {
         var $itemData = $elem.children(".rexbuilder-block-data");
         var $itemContent = $elem.find(".grid-item-content");
 
-        _updateDOMSingleElement($elem,targetProps,$itemData,$itemContent,gridstackInstance,{positionAndSize:true});
+        if( $elem.length>0 ) {
+          _updateDOMSingleElement($elem,targetProps,$itemData,$itemContent,gridstackInstance,{positionAndSize:true});
+        }
       } else {
         var $el = $gallery.children(
           'div[data-rexbuilder-block-id="' + targetName + '"]'
@@ -1623,6 +1638,61 @@ var Rexbuilder_Util = (function($) {
           break;
       }
     }
+  }
+
+  /**
+   * Define the default measures for a block to inseret inside a specific Section
+   * In particular caluclate the height for masonry
+   * @param {string} sectionRexID section ID
+   * @return {object} measures
+   */
+  var _getDefaultBlockMeasure = function( sectionRexID ) {
+    sectionRexID = "undefined" !== typeof sectionRexID ? sectionRexID : "";
+    var defs = {
+      defDefaultWidth: 3,
+      defDefaultHeight: 4,
+      defMobileWidth: 12,
+      defMobileHeight: null
+    }
+
+    if( "" !== sectionRexID ) {
+      var $layouts = $pageCustomizationsDataDiv.find('.customization-wrap');
+
+      $layouts.each(function(i,el) {
+        var $l = $(el);
+        var thisLayout = el.getAttribute('data-customization-name');
+        var setts = JSON.parse( $l.find('.section-targets[data-section-rex-id=' + sectionRexID + ']').text() );
+        for( var j=0; j<setts.length; j++ ) {
+          if( setts[j].name === 'self' ) {
+            switch(setts[j].props.layout) {
+              case 'masonry':
+                if( 'mobile' == thisLayout ) {
+                  defs.defMobileHeight = 52;
+                } else {
+                  defs.defDefaultHeight = Math.ceil( ( setts[j].props.grid_cell_width * 4 ) / 5 );
+                }
+                break;
+              case 'fixed':
+                if( 'mobile' == thisLayout ) {
+                  defs.defMobileHeight = 4;
+                } else {
+                  defs.defDefaultHeight = 4;
+                }
+                break;
+              default:
+            }
+            break;
+          }
+        }
+      });
+    }
+
+    // No mobile definition, means a default section masonry
+    if( !defs.defMobileHeight ) {
+      defs.defMobileHeight = 52;
+    }
+
+    return defs;
   }
 
   var _updateModelsLive = function(idModel, targets, editedModelNumber) {
@@ -3492,6 +3562,7 @@ var Rexbuilder_Util = (function($) {
     stopBlockVideos: _stopBlockVideos,
     playBlockVideos: _playBlockVideos,
     chooseLayout: chooseLayout,
+    predictLayout: predictLayout,
     setContainer: setContainer,
     createSectionID: _createSectionID,
     createBlockID: createBlockID,
@@ -3547,6 +3618,7 @@ var Rexbuilder_Util = (function($) {
     addSectionID: _addSectionID,
     removeSectionID: _removeSectionID,
     createRandomID: createRandomID,
-    updateDOMSingleElement: _updateDOMSingleElement
+    updateDOMSingleElement: _updateDOMSingleElement,
+    getDefaultBlockMeasure: _getDefaultBlockMeasure
   };
 })(jQuery);
