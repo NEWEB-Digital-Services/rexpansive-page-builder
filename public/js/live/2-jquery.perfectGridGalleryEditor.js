@@ -2975,7 +2975,9 @@
         w = 12;
       }
 
-      if (textHeight == 0) {
+      // check for custom type of blocks
+      var trueHeight = ( "undefined" !== typeof $blockData.attr('data-calc_true_height') ? $blockData.attr('data-calc_true_height') : "0" );
+      if (textHeight == 0 || trueHeight == "1") {
         if ($imageWrapper.length != 0) {
           var imageWidth = parseInt(
             $itemContent.attr("data-background_image_width")
@@ -3073,7 +3075,6 @@
         this.properties.oneColumModeActive &&
         !Rexbuilder_Util.windowIsResizing
       ) {
-
         return {
           height: newH,
           empty: emptyBlockFlag
@@ -3128,7 +3129,7 @@
      * Add the padding of the parent blocks
      * @param {jQuery Object} $textWrap object that contains the text content of the block
      * @since 2.0.0
-     * @todo Da sistemare mettendo un unico return
+     * @todo To be fixed by putting a single return
      */
     calculateTextWrapHeight: function($textWrap) {
       if ($textWrap.hasClass("medium-editor-element")) {
@@ -3607,6 +3608,25 @@
           h: el.getAttribute('data-gs-height')
         });
       })
+    },
+
+    /**
+     * Util function to get the blocks infos of this row
+     * @since 2.0.0
+     */
+    _get_block_infos: function() {
+      var nodes = [];
+      this.$element.find('.grid-stack-item').each(function(i,el) {
+        nodes.push({
+          id: el.getAttribute('id'),
+          rexId: el.getAttribute('data-rexbuilder-block-id'),
+          x: parseInt( el.getAttribute('data-gs-x') ),
+          y: parseInt( el.getAttribute('data-gs-y') ),
+          w: parseInt( el.getAttribute('data-gs-width') ),
+          h: parseInt( el.getAttribute('data-gs-height') )
+        });
+      });
+      return nodes;
     }
   });
 

@@ -193,8 +193,8 @@ if ($sectionsIDsUsed == null) {
     }
     ?></div>
 </div>
-<div id="rexbuilder-layout-data-live" style="display: none;"></div>
-<div id="rexbuilder-layouts-sections-order" style="display: none;"></div>
+<div id="rexbuilder-layout-data-live" style="display: none;"></div><!-- // Current data of the builder -->
+<div id="rexbuilder-layouts-sections-order" style="display: none;"></div><!-- // Current order of the sections -->
 <div id="rexbuilder-default-layout-state" style="display: none;" data-empty-default-customization="true"></div>
 <?php
 do_action('rexpansive_builder_live_after_page_information', Rexbuilder_Utilities::isBuilderLive() );

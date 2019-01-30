@@ -2967,6 +2967,7 @@ var Rexbuilder_Util = (function($) {
      * @since 2.0.0
      */
     function doneResizing() {
+      console.log(Rexbuilder_Util.activeLayout);
       Rexbuilder_Util.windowIsResizing = true;
       if (Rexbuilder_Util.editorMode && !Rexbuilder_Util_Editor.buttonResized) {
         Rexbuilder_Util.windowIsResizing = false;
@@ -2987,6 +2988,8 @@ var Rexbuilder_Util = (function($) {
         }
       } else {    // Front end resize logic
         var actualLayout = _findFrontLayout();
+
+        console.log(startFrontLayout,actualLayout);
         
         if(startFrontLayout != actualLayout) {
           changedFrontLayout = true;
@@ -2994,9 +2997,12 @@ var Rexbuilder_Util = (function($) {
           Rexbuilder_Util_Editor.startLoading();
         }
 
+        console.log(changedFrontLayout);
+
         if(changedFrontLayout) {
           setTimeout(function() {
             var resize_info = _edit_dom_layout(chooseLayout());
+            console.log(resize_info);
             _updateGridsHeights();
     
             if(changedFrontLayout) {
