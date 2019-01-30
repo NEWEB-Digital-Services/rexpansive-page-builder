@@ -2605,7 +2605,7 @@ MediumEditor.extensions = {};
         },
 
         triggerCustomEvent: function (name, data, editable) {
-            if (name == "editableInput") {
+            if (name == "editableInput" && data.inputType != "insertParagraph") {
                 console.log("triggering event", name);
             }
             if (this.customEvents[name] && !this.disabledEvents[name]) {
@@ -6616,197 +6616,13 @@ MediumEditor.extensions = {};
         }
     }
 
-    //check inside an element if node before caret has given class
-    function isNodeBefore(node, offset, class_name){
-        // if caret is at beginning of node
-        var pos = 0;
-        var nodes = node.childNodes;
-        var nCharacters;
-        //get in which node is
-        while (true) {
-            nCharacters = parseInt(nodes[pos].length);
-            if (isNaN(nCharacters)) {
-                nCharacters = $(nodes[pos]).text().length;
-            }
-            if (nCharacters > offset) {
-                break;
-            }
-            offset -= nCharacters;
-            pos = pos + 1;
-            if (pos == nodes.length) {
-                break;
-            }
-        }
-        if(pos>0){
-            var nodeLength = parseInt(nodes[pos - 1].length);
-            // if is not text node
-            if (isNaN(nodeLength)) {
-                // if is rex button
-                if ($(nodes[pos - 1]).hasClass(class_name)) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
-    function isElementBefore(node, class_name) {
-        var $node = $(node);
-        if ($node.prev().hasClass(class_name)){
-            return true;
-        }
-        while (!$node.is("body") && !$node.parent().hasClass("medium-editor-element")){
-            $node = $node.parent();
-        };
-        return $node.prev().hasClass(class_name);
-    }
-
-    /**
-     * Checks if there is rexbutton after or before cursor
-     * @param {*} node 
-     */
-    function isSafeInsert(node) {
-        var $node = $(node);
-        var mediumEditorOffset = MediumEditor.selection.getCaretOffsets(node).left;
-        var safe = true;
-        if ($node.hasClass("rex-button-text")) {
-            //siamo dentro un rexbutton
-            safe = false;
-        } else if ($node.prev().hasClass("rex-button-wrapper") && !$node.parent().hasClass("medium-editor-element")) {
-            //prima c'è un rexbutton e non siamo nel contenitore dell'editor
-            safe = false;
-        } else if (isNodeBefore(node, mediumEditorOffset, "rex-button-wrapper")) {
-            //il nodo prima è un rexbutton
-            safe = false;
-        }
-        return safe;
-    }
-
-    function fixNewElement(MediumEditorInstance){
-        var nodeToFix = MediumEditor.selection.getSelectionStart(MediumEditorInstance.options.ownerDocument);
-        var $node = $(nodeToFix);
-
-        while (!$node.is("body") && !$node.parent().hasClass("medium-editor-element")) {
-            $node = $node.parent();
-        };
-
-        if($node.is("body")){
-            event.preventDefault();
-            return;
-        }
-        var nodeFixing = $node[0];
-        var $newNode = $(nodeFixing.childNodes[nodeFixing.childNodes.length-1]);
-        $newNode.detach().insertAfter($node);
-
-        //fixing focus position
-        customMoveCursor($newNode[0]);
-    }
-
     function handleBlockDeleteKeydowns(event) {
-        console.log(this);
         var p, node = MediumEditor.selection.getSelectionStart(this.options.ownerDocument),
             tagName = node.nodeName.toLowerCase(),
             isEmpty = /^(\s+|<br\/?>)?$/i,
             isHeader = /h\d/i;
 
         var parentElementHeader = checkParentHeaderElement(node);
-        var mediumEditorOffset = MediumEditor.selection.getCaretOffsets(node).left;
-        
-        /**
-         * Fix for rexpansive buttons
-         */
-        if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.BACKSPACE) && 
-        window.getSelection().focusOffset == 0) {
-            if (//il cursore è all'inizio dell'elemento
-                mediumEditorOffset === 0 
-                // l'elemento prima è un rexbutton
-                && isElementBefore(node, "rex-button-wrapper")) {
-                var $node = $(node);
-                console.log("mio modo");
-                // se siamo dentro un elemento che non è il contenitore dell'editor
-                if ($node.prev().hasClass("rex-button-wrapper") && !$node.parent().hasClass("medium-editor-element")){
-                    event.preventDefault();
-                    return;
-                }
-
-                while (!$node.is("body") && !$node.parent().hasClass("medium-editor-element")) {
-                    $node = $node.parent();
-                };
-
-                if($node.is("body")){
-                    event.preventDefault();
-                    return;
-                }
-
-                var $rexButton = $node.prev().detach();
-                $rexButton.prependTo($node);
-                event.preventDefault();
-                return;
-            }
-            
-            if (isNodeBefore(node, mediumEditorOffset, "rex-button-wrapper")){
-                console.log("modo mio modo");
-                event.preventDefault();
-                return;
-            }
-        }
-        
-        if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER)) {
-            var stopEvent = false;
-            var continueChecks = true;
-            //se siamo dentro un rexbutton non deve fare nulla
-            if ($(node).hasClass("rex-button-text")) {
-                console.log("modo mio modo");
-                //se siamo all'ultimo carattere del rexbutton cosa facciamo?
-                stopEvent = true;
-            } else if (
-                //se ci troviamo all'inizio del nodo
-                window.getSelection().focusOffset == 0) {
-                // il nodo prima è un rexbutton
-                if (
-                    //all'inizio del primo nodo dell'elemento
-                    mediumEditorOffset === 0
-                    // il nodo prima è un rexbutton
-                    && isElementBefore(node, "rex-button-wrapper")) {
-                        console.log("modo mio modo");
-                    var $node = $(node);
-                    console.log(1);
-                    if (!($node.prev().hasClass("rex-button-wrapper") && $node.parent().hasClass("medium-editor-element"))) {
-                        console.log(3);
-                        console.log("elemento prima c'era rex button");
-                        stopEvent = true;
-                    }
-                    continueChecks = false;
-                }
-
-                //se siamo dentro un elemento con uno span rexbutton prima
-                if (continueChecks && isNodeBefore(node, mediumEditorOffset, "rex-button-wrapper")) {
-                    console.log("modo mio modo");
-                    //capire in che elemento siamo
-                    // chiuderlo
-                    // inserire sotto di lui uno uguale con il resto del contenuto il resto
-                    // aggiungere br?
-                    var $node = $(node);
-                    while (!$node.is("body") && !$node.parent().hasClass("medium-editor-element")) {
-                        $node = $node.parent();
-                    };
-    
-                    if($node.is("body")){
-                        event.preventDefault();
-                        return;
-                    }
-                    var $nodeBefore = jQuery.extend(true, {}, $node.prev());
-                    console.log($nodeBefore);
-                    console.log("nodo prima c'era rex button");
-                    stopEvent = true;
-                }
-            }
-            if (stopEvent) {
-                console.log("stopping event");
-                 event.preventDefault();
-                return;
-            }
-        }
 
         if (MediumEditor.util.isKey(event, [MediumEditor.util.keyCode.BACKSPACE, MediumEditor.util.keyCode.ENTER]) &&
             // has a preceeding sibling
@@ -6955,17 +6771,6 @@ MediumEditor.extensions = {};
             return;
         }
 
-        // check if is safe to insert something
-        var fixNewLine = false;
-        if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER) && !isSafeInsert(node)) {
-            fixNewLine = true;
-            if($(node).hasClass("rex-button-text")){
-                event.preventDefault();
-                return;
-            }
-            console.log("c'è un rexbutton prima o dopo");
-        }
-
         // https://github.com/yabwe/medium-editor/issues/994
         // Firefox thrown an error when calling `formatBlock` on an empty editable blockContainer that's not a <div>
         if (MediumEditor.util.isMediumEditorElement(node) && node.children.length === 0 && !MediumEditor.util.isBlockContainer(node)) {
@@ -6985,9 +6790,6 @@ MediumEditor.extensions = {};
                 this.options.ownerDocument.execCommand('unlink', false, null);
             } else if (!event.shiftKey && !event.ctrlKey && !checkParentHeaderElement(node) ) {
                 this.options.ownerDocument.execCommand('formatBlock', false, 'p');
-                if(fixNewLine){
-                   // fixNewElement(this);
-                }
             }
         }
     }

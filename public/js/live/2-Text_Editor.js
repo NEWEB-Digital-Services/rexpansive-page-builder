@@ -1040,6 +1040,243 @@ var TextEditor = (function($) {
     }
   });
 
+  ///////////////////////////////////////////////////////////////////////////////////////////////
+  // Rexpansive buttons logics
+  ///////////////////////////////////////////////////////////////////////////////////////////////
+
+  var RexButtonEditableInput = MediumEditor.Extension.extend({
+    name: 'rexbutton-input',
+    init: function () {
+      this.fixNodesEnter = false;
+      this.primaCeraRex = false;
+      this.subscribe("editableInput", this.handleEventInput.bind(this));
+      this.subscribe("editableKeydown", this.handleEventKeyDown.bind(this));
+      this.subscribe("editableKeyup", this.handleEventKeyUp.bind(this));
+      this.subscribe("keyup", this.handleEventKeyUp.bind(this));
+    },
+
+    handleEventInput: function (eventObj, target) {
+      switch (eventObj.inputType) {
+        case "deleteContentBackward":
+        case "historyRedo":
+          console.log("tocca fixare");
+          var $target = $(target);
+          $target.find(".rex-button-text").each(function (i, buttonText) {
+            var $buttonWrapper = $(buttonText).parents(".rex-button-wrapper");
+            var $buttonChildren = $(buttonText).children();
+            if ($buttonChildren.length != 0) {
+              $buttonChildren.detach().insertAfter($buttonWrapper[0]);
+            }
+          });
+          break;
+        default:
+          console.log(eventObj);
+          break;
+      }
+      if (this.fixNodesEnter) {
+        var nodeToFix = MediumEditor.selection.getSelectionStart(MediumEditorInstance.options.ownerDocument);
+        var $node = $(nodeToFix);
+
+        while (!$node.is("body") && !$node.parent().hasClass("medium-editor-element")) {
+          $node = $node.parent();
+        };
+
+        if ($node.is("body")) {
+          event.preventDefault();
+          return;
+        }
+        var nodeFixing = $node[0];
+        var $newNode = $(nodeFixing.childNodes[nodeFixing.childNodes.length - 1]);
+        $newNode.detach().insertAfter($node);
+
+        //fixing focus position
+        this.customMoveCursor($newNode[0]);
+        this.fixNodesEnter = false;
+      }
+    },
+    handleEventKeyUp: function (event, target) {
+      var node = MediumEditor.selection.getSelectionStart(this.base.options.ownerDocument);
+      if(this.primaCeraRex){
+        console.log("aye");
+        event.preventDefault();
+        return;
+      }
+      if (!node) {
+        return;
+      }
+
+      if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER) && !this.isSafeInsert(node)) {
+        if ($(node).hasClass("rex-button-text")) {
+          event.preventDefault();
+          return;
+        }
+        this.fixNodesEnter = true;
+      }
+    },
+    handleEventKeyDown: function (event, target) {
+      var node = MediumEditor.selection.getSelectionStart(this.base.options.ownerDocument);
+      var mediumEditorOffset = MediumEditor.selection.getCaretOffsets(node).left;
+
+      /**
+       * Fix for rexpansive buttons
+       */
+      if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.BACKSPACE) &&
+        window.getSelection().focusOffset == 0) {
+        if (//il cursore è all'inizio dell'elemento
+          mediumEditorOffset === 0) {
+          if (// l'elemento prima è un rexbutton
+            this.isElementBefore(node, "rex-button-wrapper")) {
+            console.log("sarei qwertyuio");
+            /*
+            // se siamo dentro un elemento che non è il contenitore dell'editor
+            var $node = $(node);
+            console.log("elemento prima di me è un rexbutton");
+            while (!$node.is("body") && !$node.parent().hasClass("medium-editor-element")) {
+                $node = $node.parent();
+            };
+            
+            if ($node.is("body")) {
+                event.preventDefault();
+                return;
+            }
+            
+            var $rexButton = $node.prev().detach();
+            $rexButton.prependTo($node);
+            */
+          } else {
+            console.log("sarei asdfghjkl");
+            // se nel nodo prima di me c'è un rexbutton come ultimo elemento 
+            // lascio fare e sistemo al keyup
+          }
+        } else
+          //check all'interno di un elemento (assume offeset diverso da 0)
+          if (this.isNodeBefore(node, mediumEditorOffset, "rex-button-wrapper")) {
+            console.log("modo mio modo");
+            console.log("sarei zxcvbnm");
+
+          }
+      }
+
+      if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER)) {
+        var stopEvent = false;
+        var continueChecks = true;
+        //se siamo dentro un rexbutton non deve fare nulla
+        if ($(node).hasClass("rex-button-text")) {
+          console.log("modo mio modo");
+          //se siamo all'ultimo carattere del rexbutton cosa facciamo?
+          stopEvent = true;
+        } else if (
+          //se ci troviamo all'inizio del nodo
+          window.getSelection().focusOffset == 0) {
+          // il nodo prima è un rexbutton
+          if (
+            //all'inizio del primo nodo dell'elemento
+            mediumEditorOffset === 0
+            // il nodo prima è un rexbutton
+            && this.isElementBefore(node, "rex-button-wrapper")) {
+            var $node = $(node);
+            console.log(1);
+            if (!($node.prev().hasClass("rex-button-wrapper") && $node.parent().hasClass("medium-editor-element"))) {
+              console.log(3);
+              console.log("elemento prima c'era rex button");
+              this.primaCeraRex = true;
+              this.stopEvent = true;
+            }
+            continueChecks = false;
+          }
+
+          //se siamo dentro un elemento con uno span rexbutton prima
+          if (continueChecks && this.isNodeBefore(node, mediumEditorOffset, "rex-button-wrapper")) {
+            console.log("CHECAZZO STA SUCCEDENTDO");
+            stopEvent= true;
+          }
+        }
+        if (stopEvent) {
+          console.log("stopping event");
+          event.preventDefault();
+          return;
+        }
+      }
+    },
+
+    customMoveCursor: function (el, offset) {
+      offset = "undefined" !== typeof offset ? offset : 0;
+      var range = document.createRange();
+      var sel = window.getSelection();
+      range.setStart(el, offset);
+      range.collapse(true);
+      sel.removeAllRanges();
+      sel.addRange(range);
+    },
+    
+    /**
+     * Checks if there is rexbutton after or before cursor
+     * @param {*} node 
+     */
+    isSafeInsert: function (node) {
+      var $node = $(node);
+      var mediumEditorOffset = MediumEditor.selection.getCaretOffsets(node).left;
+      var safe = true;
+      if ($node.hasClass("rex-button-text")) {
+        //siamo dentro un rexbutton
+        safe = false;
+      } else if ($node.prev().hasClass("rex-button-wrapper") && !$node.parent().hasClass("medium-editor-element")) {
+        //prima c'è un rexbutton e non siamo nel contenitore dell'editor
+        safe = false;
+      } else if (this.isNodeBefore(node, mediumEditorOffset, "rex-button-wrapper")) {
+        //il nodo prima è un rexbutton
+        safe = false;
+      }
+      return safe;
+    },
+
+    //check inside an element if node before caret has given class
+    isNodeBefore: function (node, offset, class_name) {
+      // if caret is at beginning of node
+      var pos = 0;
+      var nodes = node.childNodes;
+      var nCharacters;
+      //get in which node is
+      while (true) {
+        nCharacters = parseInt(nodes[pos].length);
+        if (isNaN(nCharacters)) {
+          nCharacters = $(nodes[pos]).text().length;
+        }
+        if (nCharacters > offset) {
+          break;
+        }
+        offset -= nCharacters;
+        pos = pos + 1;
+        if (pos == nodes.length) {
+          break;
+        }
+      }
+      if (pos > 0) {
+        var nodeLength = parseInt(nodes[pos - 1].length);
+        // if is not text node
+        if (isNaN(nodeLength)) {
+          // if is rex button
+          if ($(nodes[pos - 1]).hasClass(class_name)) {
+            return true;
+          }
+        }
+      }
+      return false;
+    },
+
+    isElementBefore: function (node, class_name) {
+      var $node = $(node);
+      if ($node.prev().hasClass(class_name)) {
+        return true;
+      }
+      while (!$node.is("body") && !$node.parent().hasClass("medium-editor-element")) {
+        $node = $node.parent();
+      };
+      return $node.prev().hasClass(class_name);
+    },
+  });
+  ///////////////////////////////////////////////////////////////////////////////////////////////
+
   /**
    * Custom MediumEditor extension to handle Wordpress Media Library insert
    * and oembed iframes
@@ -1711,7 +1948,8 @@ var TextEditor = (function($) {
         'close-editor-escape': new CloseEditorEscapeExtension(),
         'insert-media': new InsertMediaExtension(),
         textGradient: new TextGradientExtension(),
-        'hide-row-tools-on-editing': new HideRowToolsOnEditing()
+        'hide-row-tools-on-editing': new HideRowToolsOnEditing(),
+        'rexbutton-input': new RexButtonEditableInput()
       },
       placeholder: {
         text: "Type here your text",
