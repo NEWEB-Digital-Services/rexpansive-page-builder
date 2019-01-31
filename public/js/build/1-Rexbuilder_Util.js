@@ -1,7 +1,7 @@
 var Rexbuilder_Util = (function($) {
   "use strict";
 
-  var $window = $(window);
+  // var $window = $(window);
 
   var fixSectionWidth = 0;
   var editorMode = false;
@@ -546,7 +546,7 @@ var Rexbuilder_Util = (function($) {
     }
 
     var selectedLayoutName = "";
-    var ordered = lodash.sortBy(layoutsPageNames, [
+    var ordered = _.sortBy(layoutsPageNames, [
       function(o) {
         return parseInt(o.min);
       }
@@ -870,7 +870,7 @@ var Rexbuilder_Util = (function($) {
                     }
                   }
 
-                  sectionCustom.targets[m].props = lodash.merge(
+                  sectionCustom.targets[m].props = _.merge(
                     {},
                     sectionDefault.targets[n].props,
                     sectionCustom.targets[m].props
@@ -2939,9 +2939,9 @@ var Rexbuilder_Util = (function($) {
     var timeout;
     Rexbuilder_Util.$window.on("resize", function(event) {
       if (!Rexbuilder_Util_Editor.elementIsResizing) {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        event.stopPropagation();
+        // event.preventDefault();
+        // event.stopImmediatePropagation();
+        // event.stopPropagation();
 
         Rexbuilder_Util.windowIsResizing = true;
         if (firstResize) {
@@ -2967,7 +2967,6 @@ var Rexbuilder_Util = (function($) {
      * @since 2.0.0
      */
     function doneResizing() {
-      console.log(Rexbuilder_Util.activeLayout);
       Rexbuilder_Util.windowIsResizing = true;
       if (Rexbuilder_Util.editorMode && !Rexbuilder_Util_Editor.buttonResized) {
         Rexbuilder_Util.windowIsResizing = false;
@@ -2988,16 +2987,12 @@ var Rexbuilder_Util = (function($) {
         }
       } else {    // Front end resize logic
         var actualLayout = _findFrontLayout();
-
-        console.log(startFrontLayout,actualLayout);
         
         if(startFrontLayout != actualLayout) {
           changedFrontLayout = true;
           startFrontLayout = actualLayout;
           Rexbuilder_Util_Editor.startLoading();
         }
-
-        console.log(changedFrontLayout);
 
         if(changedFrontLayout) {
           setTimeout(function() {
@@ -3555,7 +3550,7 @@ var Rexbuilder_Util = (function($) {
     checkPresentationPage: _checkPresentationPage,
     checkStaticPresentationPage: _checkStaticPresentationPage,
     checkPost: _checkPost,
-    $window: $window,
+    // $window: $window,
     scroll_timing: _scroll_timing,
     fixSectionWidth: fixSectionWidth,
     editorMode: editorMode,

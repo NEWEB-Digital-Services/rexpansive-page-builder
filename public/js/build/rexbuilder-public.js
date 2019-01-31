@@ -1,4 +1,4 @@
-var lodash = _.noConflict();
+// var lodash = _.noConflict();
 
 /**
  * Add Object to wrap the DOMContentLoad and WindowLoad logic

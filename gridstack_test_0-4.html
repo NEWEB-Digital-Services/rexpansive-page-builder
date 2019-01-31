@@ -126,7 +126,56 @@
     </div>
 
     <script type="text/javascript">
-      $(function() {
+    var App = (function($) {
+        "use strict";
+
+        var $window = $(window);
+
+        var _app_dcl_resize = function() {
+            console.log('APP DCL resize');
+        }
+
+        var _app_dcl_resize_2 = function() {
+            console.log('APP DCL resize 2');
+        }
+
+        var _app_win_resize = function() {
+            console.log('APP WIN resize');
+        }
+
+        var _app_win_resize_2 = function() {
+            console.log('APP WIN resize 2');
+        }
+
+        var _app_win_resize_3 = function() {
+            console.log('APP WIN resize 3');
+        }
+        
+        var start = function() {
+            console.log('APP start');
+            $window.on('resize', _app_dcl_resize );
+            $window.on('resize', _app_dcl_resize_2 );
+        };
+
+        var winStart = function() {
+            console.log('APP win start');
+            $window.on('resize', _app_win_resize);
+            $window.on('resize', _app_win_resize_2);
+            $window.on('resize', _app_win_resize_3);
+        };
+
+        return {
+            start: start,
+            winStart: winStart
+        };
+    })(jQuery);
+
+      (function($) {
+        $(function() {
+          console.log('attach DOM CONTENT LOAD');
+          App.start();
+        }); // DOM Ready
+
         $(window).on("load", function() {
           var $grid = $("#grid1");
           var options = {
@@ -181,9 +230,11 @@
           //     // grid.disable();
           //   },1000);
           // });
+
+          App.winStart();
           
         });
-      });
+      })(jQuery);
     </script>
   </body>
 </html>

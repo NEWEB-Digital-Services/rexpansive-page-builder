@@ -669,7 +669,7 @@
           nodes.push(el);
         }
       });
-      return lodash
+      return _
         .sortBy(nodes, [
           function(o) {
             return o.yh;
@@ -691,7 +691,7 @@
           nodes.push(el);
         }
       });
-      return lodash.sortBy(nodes, [
+      return _.sortBy(nodes, [
         function(o) {
           return o.y;
         },
@@ -961,6 +961,7 @@
       if (newH !== undefined) {
         this.properties.singleHeight = newH;
       }
+      // console.log(this.properties.singleHeight);
       var gridstack = this.properties.gridstackInstance;
       gridstack.cellHeight(this.properties.singleHeight);
       gridstack._initStyles();
@@ -2644,6 +2645,9 @@
             handle: ".rexlive-block-drag-handle"
           },
           disableResize: true,
+          resizable: {
+            disabled: true
+          },
           float: floating,
           verticalMargin: 0,
           staticGrid: true,

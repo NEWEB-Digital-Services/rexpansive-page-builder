@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>DOM LOAD TEST</title>
+    <link rel="stylesheet" href="https://unpkg.com/flickity@2.2.0/dist/flickity.css">
+</head>
+<body>
+    <div class="container">
+        <h4>Hello</h4>
+        <div class="main-carousel">
+            <div class="carousel-cell">
+                <img src="https://www.lastampa.it/rf/image_lowres/Pub/p4/2018/09/27/LaZampa/Foto/RitagliWeb/a63cdfda-c215-11e8-a3ed-486762a1e8de_lion-3576045_960_720-k2KH-U1120557561076QkH-1024x576%40LaStampa.it.jpg" alt="L1">
+            </div>
+            <div class="carousel-cell">
+                <img src="https://images2.corriereobjects.it/methode_image/2018/10/22/Scienze/Foto%20Scienze%20-%20Trattate/44342812_10157980994157576_6700183109570134016_n-kFuF-U3050261839009jNF-1224x916@Corriere-Web-Sezioni-593x443.jpg?v=20181026102221" alt="L2">
+            </div>
+            <div class="carousel-cell">
+                <img src="http://www.valledaostaglocal.it/typo3temp/pics/L_edbbff464d.jpg" alt="L3">
+            </div>
+        </div>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-migrate/1.4.1/jquery-migrate.min.js"></script>
+    <script src="https://unpkg.com/flickity@2.2.0/dist/flickity.pkgd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lodash@4.17.11/lodash.min.js"></script>
+    <script src="./public/js/vendor/gridstack.js-0.4.0/src/gridstack.js"></script>
+    <script src="./public/js/vendor/gridstack.js-0.4.0/src/gridstack.jQueryUI.js"></script>
+    <script type="text/javascript">
+var App = (function($) {
+    "use strict";
+
+    var $window = $(window);
+
+    var _launch_flickty = function() {
+        $('.main-carousel').flickity({
+            // options
+            cellAlign: 'left',
+            contain: true
+        });
+    }
+
+    var _app_dcl_resize = function() {
+        console.log('APP DCL resize');
+    }
+
+    var _app_dcl_resize_2 = function() {
+        console.log('APP DCL resize 2');
+    }
+
+    var _app_win_resize = function() {
+        console.log('APP WIN resize');
+    }
+
+    var _app_win_resize_2 = function() {
+        console.log('APP WIN resize 2');
+    }
+
+    var _app_win_resize_3 = function() {
+        console.log('APP WIN resize 3');
+    }
+    
+    var start = function() {
+        console.log('APP start');
+        $window.on('resize', _app_dcl_resize );
+        $window.on('resize', _app_dcl_resize_2 );
+    };
+
+    var winStart = function() {
+        console.log('APP win start');
+        _launch_flickty();
+        $window.on('resize', _app_win_resize);
+        $window.on('resize', _app_win_resize_2);
+        $window.on('resize', _app_win_resize_3);
+    };
+
+    return {
+        start: start,
+        winStart: winStart
+    };
+})(jQuery);
+(function($) {
+    "use strict";
+        
+    $(function() {
+        console.log('attach DOM CONTENT LOAD');
+        App.start();
+    }); // DOM Ready
+
+    $(window).load(function() {
+        console.log('attach WIN LOAD');
+        App.winStart();
+    }); // Entire content loaded
+})(jQuery);
+    </script>
+</body>
+</html>

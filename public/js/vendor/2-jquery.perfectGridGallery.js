@@ -146,7 +146,7 @@
         },
 
         destroyGrid: function() {
-            $(window).off('resize');
+            // $(window).off('resize');
             this.$element.isotope('destroy');
         },
 
