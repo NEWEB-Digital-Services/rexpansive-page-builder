@@ -19,6 +19,8 @@ var Rexbuilder_Util = (function($) {
   var startFrontLayout;
   var changedFrontLayout;
 
+  var loadWidth;
+
   var createRandomID = function(n) {
     var text = "";
     var possible =
@@ -2937,6 +2939,7 @@ var Rexbuilder_Util = (function($) {
   var addWindowListeners = function() {
     var firstResize = true;
     var timeout;
+    
     Rexbuilder_Util.$window.on("resize", function(event) {
       if (!Rexbuilder_Util_Editor.elementIsResizing) {
         // event.preventDefault();
@@ -2957,8 +2960,10 @@ var Rexbuilder_Util = (function($) {
           firstResize = false;
         }
 
-        clearTimeout(timeout);
-        timeout = setTimeout(doneResizing, 1000);
+        if( loadWidth !== Rexbuilder_Util.viewport().width ) {
+          clearTimeout(timeout);
+          timeout = setTimeout(doneResizing, 1000);
+        }
       }
     });
 
@@ -3020,6 +3025,7 @@ var Rexbuilder_Util = (function($) {
 
       Rexbuilder_Util.windowIsResizing = false;
       firstResize = true;
+      loadWidth =  Rexbuilder_Util.viewport().width;
     }
   };
 
@@ -3538,6 +3544,8 @@ var Rexbuilder_Util = (function($) {
     };
     this.galleryPluginActive = false;
     this.firstStart = false;
+
+    loadWidth = Rexbuilder_Util.viewport().width;
   };
 
   return {

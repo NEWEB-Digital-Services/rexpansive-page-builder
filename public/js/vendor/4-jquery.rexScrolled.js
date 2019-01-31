@@ -105,6 +105,7 @@
         }
       }
     },
+
     _viewport: function () {
       var e = window, a = 'inner';
       if (!('innerWidth' in window)) {

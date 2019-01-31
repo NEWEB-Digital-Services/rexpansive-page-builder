@@ -302,6 +302,7 @@ class Rexbuilder_Public
                     'collapseWidth' => 768,
                 ),
                 'siteurl' => get_site_url(),
+                'plugin_base_url' => REXPANSIVE_BUILDER_URL
                 )
             ) );
 
@@ -340,6 +341,18 @@ class Rexbuilder_Public
                     'font_weight' => 'bold',
                 ),
                 'native_scroll_animation' => true,
+                'user' => array(
+                    'logged' => is_user_logged_in(),
+                    'editing' => ((isset($_GET['editor']) && $_GET['editor'] == "true") ? true : false),
+                ),
+                'rexajax' => array(
+                    'ajaxurl' => admin_url('admin-ajax.php'),
+                    'rexnonce' => wp_create_nonce('rex-ajax-call-nonce'),
+                ),
+                'defaultSettings' => array(
+                    'collapseWidth' => 768,
+                ),
+                'siteurl' => get_site_url(),
             )));
             wp_enqueue_script('rexbuilder-public', REXPANSIVE_BUILDER_URL . 'public/js/public.js', array('jquery'), null, true);
         }

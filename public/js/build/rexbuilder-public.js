@@ -373,6 +373,27 @@ var Rexbuilder_App = (function($) {
           });
         }
       });
+
+      $(".rex-effect-distortion-section").each(function(i,el) {
+        var $el = $(el);
+        if (1 == _plugin_frontend_settings.animations ) {
+          $el.one("rs-scrolled-complete", function() {
+            $el.rexEffect({
+              effect: { 
+                name: 'distortion-section',
+                properties: { startDelay: 2500 }
+              }
+            });
+          });
+        } else {
+          $el.rexEffect({
+            effect: { 
+              name: 'distortion-section',
+              properties: { startDelay: 2500 }
+            }
+          });
+        }
+      });
     }
 
     if( false == _plugin_frontend_settings.user.editing ) {
@@ -398,7 +419,6 @@ var Rexbuilder_App = (function($) {
     }
 
     if( false == _plugin_frontend_settings.user.editing ) {
-      // console.log('lancio scrolled');
       $sections.rexScrolled({
         callback: function(el) {
           if (Rexbuilder_Util.has_class(el, "rex-element--animated")) {

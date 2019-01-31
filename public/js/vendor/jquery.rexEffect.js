@@ -80,7 +80,7 @@
             sprites: spriteImagesSrc,
             spritePosition: spritePosition,
             spriteDimension: spriteDimension,
-            displacementImage: "wp-content/plugins/rexpansive-builder/public/img/clouds.jpg",
+            displacementImage: _plugin_frontend_settings.plugin_base_url + "public/img/clouds.jpg",
             autoPlay: true,
             autoPlaySpeed: [10, 3],
             displacementCenter: true,
@@ -89,6 +89,7 @@
           };
 
           // this.settings.effect.properties = {
+            this.settings.effect.properties.viewHideContainer = true;
             this.settings.effect.properties.$imageWrapper = this.$element.find(".rex-image-wrapper");
             this.settings.effect.properties.alreadyVisible = false;
             this.settings.effect.properties.launched = false;
@@ -96,8 +97,48 @@
             this.settings.effect.properties.fadingOut = false;
             this.settings.effect.properties.stopTimeout = 3000;
             this.settings.effect.properties.effectMode = "scrollVisible"; // oneTime | scrollAll | scrollVisible
+
+            this.settings.effect.properties.canvasZIndex = '-1';
           // };
 
+          break;
+        case 'distortion-section':
+          var spriteImagesSrc = [];
+          var appendTo = this.element;
+          var elementSizes = appendTo.getBoundingClientRect();
+
+          var block_data = this.element.children[0];
+          spriteImagesSrc.push(block_data.getAttribute("data-image_bg_section"));
+
+          var spritePosition = ["center","middle"];
+          var spriteDimension = ["full"];
+
+          this.settings.effect.settings = {
+            stageWidth: elementSizes.width,
+            stageHeight: elementSizes.height,
+            sprites: spriteImagesSrc,
+            spritePosition: spritePosition,
+            spriteDimension: spriteDimension,
+            displacementImage: _plugin_frontend_settings.plugin_base_url + "public/img/clouds.jpg",
+            autoPlay: true,
+            autoPlaySpeed: [10, 3],
+            displacementCenter: true,
+            displaceAutoFit: false,
+            appendTo: appendTo,
+          };
+
+          // this.settings.effect.properties = {
+            this.settings.effect.properties.viewHideContainer = false;
+            this.settings.effect.properties.$imageWrapper = this.$element;
+            this.settings.effect.properties.alreadyVisible = false;
+            this.settings.effect.properties.launched = false;
+            this.settings.effect.properties.fadingIn = false;
+            this.settings.effect.properties.fadingOut = false;
+            this.settings.effect.properties.stopTimeout = 3000;
+            this.settings.effect.properties.effectMode = "scrollVisible"; // oneTime | scrollAll | scrollVisible
+
+            this.settings.effect.properties.canvasZIndex = '0';
+          // };
           break;
         default:
           break;
@@ -107,6 +148,9 @@
     runEffect: function() {
       switch( this.settings.effect.name ) {
         case 'distortion':
+          this.distortion();
+          break;
+        case 'distortion-section':
           this.distortion();
           break;
         default:
@@ -291,14 +335,18 @@
         this.settings.effect.properties.fadingIn = true;
         this.settings.effect.properties.ticker.start();
         $(this.settings.effect.properties.renderer.view).addClass(this.settings.animationClasses.fadeIn).one("animationend", function() {
-          this.style.opacity = "1";
+          if(that.settings.effect.properties.viewHideContainer) {
+            this.style.opacity = "1";
+          }
           $(this).removeClass(that.settings.animationClasses.fadeIn);
           that.settings.effect.properties.fadingIn = false;
         });
-        this.settings.effect.properties.$imageWrapper.addClass(this.settings.animationClasses.fadeOut).one("animationend", function() {
-          this.style.opacity = "0";
-          $(this).removeClass(that.settings.animationClasses.fadeOut);
-        });
+        if(that.settings.effect.properties.viewHideContainer) {
+          this.settings.effect.properties.$imageWrapper.addClass(this.settings.animationClasses.fadeOut).one("animationend", function() {
+            this.style.opacity = "0";
+            $(this).removeClass(that.settings.animationClasses.fadeOut);
+          });
+        }
       }
     },
 
@@ -307,15 +355,19 @@
         this.settings.effect.properties.fadingOut = true;
         var that = this;
         $(this.settings.effect.properties.renderer.view).addClass(this.settings.animationClasses.fadeOut).one("animationend", function() {
-          this.style.opacity = "0";
+          if(that.settings.effect.properties.viewHideContainer) {
+            this.style.opacity = "0";
+          }
           $(this).removeClass(that.settings.animationClasses.fadeOut);
           that.settings.effect.properties.fadingOut = false;
           that.settings.effect.properties.ticker.stop();
         });
-        this.settings.effect.properties.$imageWrapper.addClass(this.settings.animationClasses.fadeIn).one("animationend", function() {
-          this.style.opacity = "1";
-          $(this).removeClass(that.settings.animationClasses.fadeIn);
-        });
+        if(that.settings.effect.properties.viewHideContainer) {
+          this.settings.effect.properties.$imageWrapper.addClass(this.settings.animationClasses.fadeIn).one("animationend", function() {
+            this.style.opacity = "1";
+            $(this).removeClass(that.settings.animationClasses.fadeIn);
+          });
+        }
       }
     },
 
@@ -345,7 +397,7 @@
       this.settings.effect.properties.renderer.view.style.left      = '0';
       this.settings.effect.properties.renderer.view.style.position      = 'absolute';
       this.settings.effect.properties.renderer.view.style.display      = 'block';
-      this.settings.effect.properties.renderer.view.style.zIndex      = '-1';
+      this.settings.effect.properties.renderer.view.style.zIndex      = this.settings.effect.properties.canvasZIndex;
 
       this.settings.effect.properties.renderer.autoResize = true;
 
