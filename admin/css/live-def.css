@@ -5271,6 +5271,8 @@ input.me-insert-embed__value[type=text] {
 .rex-hide-responsive-tools > .rexpansive_section .rexlive-block-toolbox .rexlive-top-block-tools .builder-edit-slider,
 .rex-hide-responsive-tools > .rexpansive_section .rexlive-block-toolbox .rexlive-top-block-tools .builder-copy-block {
   display: none; }
+.rex-hide-responsive-tools > .rexpansive_section .section-toolBox .tools-area.tool-area--center {
+  padding-left: 10px; }
 
 .rexbuilder-live-content.rex-hide-responsive-tools > .add-new-section {
   display: none; }
