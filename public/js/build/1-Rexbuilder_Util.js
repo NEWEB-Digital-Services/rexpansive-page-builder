@@ -1339,7 +1339,7 @@ var Rexbuilder_Util = (function($) {
         w: $elem.attr("data-gs-width"),
         h: $elem.attr("data-gs-height"),
         startH: $itemData.attr("data-gs_start_h"),
-        increaseHeight: $itemData.attr("data-element_height_increased"),
+        // increaseHeight: $itemData.attr("data-element_height_increased"),
         realFluid: $itemData.attr("data-element_real_fluid"),
       };
       var positionData = {
@@ -1363,9 +1363,9 @@ var Rexbuilder_Util = (function($) {
           typeof targetProps["gs_start_h"] == "undefined"
             ? positionDataActive.startH
             : targetProps["gs_start_h"],
-        increaseHeight: typeof targetProps["element_height_increased"] == "undefined"
-          ? positionDataActive.increaseHeight
-          : targetProps["element_height_increased"],
+        // increaseHeight: typeof targetProps["element_height_increased"] == "undefined"
+        //   ? positionDataActive.increaseHeight
+        //   : targetProps["element_height_increased"],
         realFluid: typeof targetProps["element_real_fluid"] == "undefined"
           ? positionDataActive.realFluid
           : targetProps["element_real_fluid"],
@@ -2526,7 +2526,7 @@ var Rexbuilder_Util = (function($) {
     $elemData.attr("data-gs_height", h);
     $elemData.attr("data-gs_y", y);
     $elemData.attr("data-gs_x", x);
-    $elemData.attr("data-element_height_increased", increaseHeight);
+    // $elemData.attr("data-element_height_increased", increaseHeight);
     $elemData.attr("data-element_real_fluid", realFluid);
   };
 

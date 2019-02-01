@@ -2401,14 +2401,14 @@
                 $elemData.attr("data-block_dimensions_live_edited", "true");
               }
 
-              switch(gallery.properties.resizeHandle){
-                case "s":
-                case "se":
-                case "sw":
-                  $elemData.attr("data-element_height_increased", $block.attr("data-gs-height"));
-                  break;
-                default: break;
-              }
+              // switch(gallery.properties.resizeHandle){
+              //   case "s":
+              //   case "se":
+              //   case "sw":
+              //     $elemData.attr("data-element_height_increased", $block.attr("data-gs-height"));
+              //     break;
+              //   default: break;
+              // }
 
               $elemData.attr("data-element_real_fluid", ( block.getAttribute('data-gs-min-height') == block.getAttribute('data-gs-height') ? 1 : 0 ) );
             }
@@ -2958,10 +2958,10 @@
       var $itemContent = $elem.find(".grid-item-content");
       var $imageWrapper = $itemContent.find(".rex-image-wrapper");
       var w = parseInt($elem.attr("data-gs-width"));
-      if(this.settings.galleryLayout == "masonry"){
-        var parsedHeight = parseInt($blockData.attr("data-element_height_increased"))
-        var increasedHeight = isNaN(parsedHeight) ? 0 : parsedHeight;
-      }
+      // if(this.settings.galleryLayout == "masonry"){
+      //   var parsedHeight = parseInt($blockData.attr("data-element_height_increased"))
+      //   var increasedHeight = isNaN(parsedHeight) ? 0 : parsedHeight;
+      // }
       var backgroundHeight = 0;
       var videoHeight = 0;
       var defaultHeight = 0;
@@ -3073,7 +3073,7 @@
         defaultHeight,
         textHeight,
         sliderHeight,
-        increasedHeight
+        // increasedHeight
       );
       if (
         this.properties.oneColumModeActive &&
@@ -3094,7 +3094,7 @@
       } else {
         newH = Math.ceil(newH / this.properties.singleHeight);
       }
-      this.updateElementDataHeightProperties($blockData, newH);
+      this.updateElementDataHeightProperties($blockData, newH); 
 
       var gridstack = this.properties.gridstackInstance;
       if (gridstack !== undefined) {
