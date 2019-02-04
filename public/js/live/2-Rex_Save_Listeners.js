@@ -1644,6 +1644,7 @@ var Rex_Save_Listeners = (function($) {
     createSectionProperties: createSectionProperties,
     createTargets: createTargets,
     createBlockProperties: createBlockProperties,
+    clearPropsElem: clearPropsElem,
     createCustomization: createCustomization,
     updateModel: updateModel
   };

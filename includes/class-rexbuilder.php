@@ -285,7 +285,7 @@ class Rexbuilder {
 	 * @access   private
 	 */
 	private function define_public_hooks() {
-
+		$production = true;
 		$plugin_public = new Rexbuilder_Public( $this->get_plugin_name(), $this->get_version() );
 
 		//per la release
@@ -305,8 +305,14 @@ class Rexbuilder {
 			}
  */
 		$this->loader->add_filter( 'body_class', $plugin_public, 'rexlive_body_class', 10, 1 );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
-		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+
+		if( true === $production ) {
+			$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles_production' );
+			$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts_production' );
+		} else {
+			$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
+			$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
+		}
 
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'print_post_custom_styles' );
 

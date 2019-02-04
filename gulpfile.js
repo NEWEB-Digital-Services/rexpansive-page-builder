@@ -10,6 +10,7 @@ var gulp = require('gulp'),
 	pkg = require('./package.json'),
 	jshint = require('gulp-jshint'),
 	uglify = require('gulp-uglify'),
+	uglifyCSS = require('gulp-uglifycss'),
 	clean = require('gulp-clean'),
 	zip = require('gulp-zip'),
 	size = require('gulp-size'),
@@ -272,6 +273,130 @@ gulp.task('sprites', function() {
 		.pipe(svgSprite(config))
 		.pipe(gulp.dest('./admin/sprites'));
 });
+
+/**
+ * BUILDERLIVE
+ * @since 2.0.0
+ */
+
+var builderlive_public_editor = [
+	'public/js/vendor/tippy.all.min.js',
+	'public/rangy-1.3.0/rangy-core.js',
+	'public/rangy-1.3.0/rangy-classapplier.js',
+	'public/rangy-1.3.0/rangy-selectionsaverestore.js',
+	'public/rangy-1.3.0/rangy-textrange.js',
+];
+
+var builderlive_public = [
+	'public/js/vendor/tmpl.min.js',
+	'public/Photoswipe/photoswipe.min.js',
+	'public/Photoswipe/photoswipe-ui-default.min.js',
+	'public/js/vendor/jquery.mb.YTPlayer.min.js',
+	'public/js/store.legacy.min.js',
+	'public/js/live/0-Rexbuilder_Array_Utilities.js',
+	'public/js/build/1-Rexbuilder_Util.js',
+	'public/js/live/1-Rexbuilder_Util_Editor.js',
+	'public/js/live/1-Rexbuilder_CreateBlocks.js',
+	'public/js/live/1-Rexbuilder_Dom_Util.js',
+	'public/js/live/1-Rexbuilder_Color_Palette.js',
+	'public/js/live/1-Rexbuilder_Overlay_Palette.js',
+	'public/js/live/2-Rex_Save_Listeners.js',
+	'public/js/build/3-Navigator.js',
+	'public/js/build/5-Rexbuilder_FormFixes.js',
+	'public/js/vendor/flickity.pkgd.min.js',
+	'public/js/build/2-RexSlider.js',
+	'public/js/vendor/2-jquery.textFill.js',
+	'public/js/build/8-VimeoVideo.js',
+	'public/js/jquery-ui.min.js',
+	'public/js/jquery.ui.touch-punch.js',
+	'public/js/lodash.js',
+	'public/js/vendor/gridstack.js-0.4.0/src/gridstack.js',
+	'public/js/vendor/gridstack.js-0.4.0/src/gridstack.jQueryUI.js',
+	'public/js/vendor/4-jquery.rexScrolled.js',
+	'public/js/vendor/6-jquery.rexAccordion.js',
+	'public/js/vendor/6-jquery.rexIndicator.js',
+	'public/js/vendor/pixi.min.js',
+	'public/js/vendor/jquery.rexEffect.js',
+	'public/js/spectrum.js',
+	'public/js/medium-editor.js',
+	'public/js/medium-editor-toolbar-states.min.js',
+	'public/js/live/2-Text_Editor.js',
+	'public/js/handlebars.runtime.js',
+	'public/js/jquery.fileupload.js',
+	'public/js/jquery.cycle2.min.js',
+	'public/js/jquery.cycle2.center.min.js',
+	'public/js/vendor/medium-editor-insert-plugin.js',
+	'public/js/utilities.js',
+	'public/js/vendor/jquery.overlayScrollbars.min.js',
+	'public/js/live/2-jquery.perfectGridGalleryEditor.js',
+	'public/js/vendor/3-velocity.min.js',
+	'public/js/vendor/3-velocity.ui.min.js',
+	'public/js/vendor/4-jquery.rexScrollify.js',
+	'public/js/live/1-Rexbuilder_Section.js',
+	'public/js/live/1-Rexbuilder_Section_Editor.js',
+	'public/js/live/1-Rexbuilder_Block.js',
+	'public/js/live/1-Rexbuilder_Block_Editor.js',
+	'public/js/live/4-modals.js',
+	'public/js/build/rexbuilder-public.js',
+];
+
+var builderlive_public_editor_style = [
+	'admin/rexpansive-font/font.css',
+	'admin/public/css/builder.css',
+	'admin/css/rex-custom-editor-buttons.css',
+	'admin/spectrum/spectrum.css',
+	'public/css/medium-editor.css',
+	'public/css/medium-editor-insert-plugin-frontend.css'
+];
+
+var builderlive_public_style = [
+	'public/Photoswipe/default-skin/default-skin.css',
+	'public/jquery.mb.YTPlayer/css/jquery.mb.YTPlayer.min.css',
+	'public/css/animate.css',
+	'public/css/textFill.css',
+	'public/css/jquery-ui.min.css',
+	'public/css/gridstack.css',
+	'public/css/input-spinner.css',
+	'public/css/public.css',
+	'admin/css/live-def.css'
+];
+
+var x = builderlive_public_editor.concat(builderlive_public);
+var y = builderlive_public_editor_style.concat(builderlive_public_style);
+
+gulp.task('builderlive-editor', function() {
+	return gulp.src(x)
+		.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
+		.pipe(concat('builderlive-editor.js'))
+		.pipe(size({title:'Builderlive Editor'}))
+		.pipe(gulp.dest('public/js'))
+});
+
+gulp.task('builderlive', function() {
+	return gulp.src(builderlive_public)
+		.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
+		.pipe(concat('builderlive.js'))
+		.pipe(size({title:'Builderlive'}))
+		.pipe(gulp.dest('public/js'))
+});
+
+gulp.task('builderlive-editor-style', function() {
+	return gulp.src(y)
+		.pipe(concat('builderlive-editor.css'))
+		.pipe(uglifyCSS({preserveComments: 'license'}).on('error', gulpUtil.log))
+		.pipe(size({title:'Builderlive Editor Style'}))
+		.pipe(gulp.dest('admin/css'))
+});
+
+gulp.task('builderlive-style', function() {
+	return gulp.src(builderlive_public_style)
+		.pipe(concat('builderlive.css'))
+		.pipe(uglifyCSS({preserveComments: 'license'}).on('error', gulpUtil.log))
+		.pipe(size({title:'Builderlive Style'}))
+		.pipe(gulp.dest('public/css'))
+});
+
+gulp.task('live-production', ['builderlive-editor','builderlive','builderlive-editor-style','builderlive-style']);
 
 /* --- BUILD PUBLIC SCRIPTS AND STYLES ------ */
 

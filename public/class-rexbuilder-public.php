@@ -107,38 +107,36 @@ class Rexbuilder_Public
             $cartella = "public/";
             $cartella_admin = "admin/";
 
-            wp_enqueue_style('material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $ver, 'all');
+            if( Rexbuilder_Utilities::isBuilderLive() ) {
+                wp_enqueue_style( 'rexbuilder-live-google-fonts', 'https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i', false );
+                wp_enqueue_style('material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $ver, 'all');
+                wp_enqueue_style('font-awesome', REXPANSIVE_BUILDER_URL . $cartella_admin . 'font-awesome-4.3.0/css/font-awesome.min.css', array(), $ver, 'all');
+
+                wp_enqueue_style('rex-custom-fonts', REXPANSIVE_BUILDER_URL . $cartella_admin . 'rexpansive-font/font.css', array(), $ver, 'all');
+
+                wp_enqueue_style('rexbuilder-style', REXPANSIVE_BUILDER_URL . $cartella_admin . 'css/builder.css', array(), $ver, 'all');
+                wp_enqueue_style('custom-editor-buttons-style', REXPANSIVE_BUILDER_URL . $cartella_admin . 'css/rex-custom-editor-buttons.css', array(), $ver, 'all');
+
+                wp_enqueue_style('spectrum-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/spectrum.css', array(), $ver, 'all');
+                wp_enqueue_style('medium-editor-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/medium-editor.css', array(), $ver, 'all');
+                wp_enqueue_style('medium-editor-insert-frontend-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/medium-editor-insert-plugin-frontend.css', array(), $ver, 'all');
+            }
 
             wp_enqueue_style('photoswipe-skin', REXPANSIVE_BUILDER_URL . $cartella . 'Photoswipe/default-skin/default-skin.css', array(), $ver, 'all');
 
-            wp_enqueue_style('jquery.mb.YTPlayer-style', REXPANSIVE_BUILDER_URL . $cartella . 'jquery.mb.YTPlayer/css/jquery.mb.YTPlayer.min.css', array(), $ver, 'all');
+            wp_enqueue_style('jquery.mb.YTPlayer-style', REXPANSIVE_BUILDER_URL . $cartella . 'jquery.mb.YTPlayer/css/jquery.mb.YTPlayer.min.css', array(), $ver, 'all');       
 
-            wp_enqueue_style('rex-custom-fonts', REXPANSIVE_BUILDER_URL . $cartella_admin . 'rexpansive-font/font.css', array(), $ver, 'all');
-
-            wp_enqueue_style('font-awesome', REXPANSIVE_BUILDER_URL . $cartella_admin . 'font-awesome-4.3.0/css/font-awesome.min.css', array(), $ver, 'all');
-
-            wp_enqueue_style('overlay-scrollbar-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/OverlayScrollbars.min.css', array(), $ver, 'all');
+            // wp_enqueue_style('overlay-scrollbar-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/OverlayScrollbars.min.css', array(), $ver, 'all');
 
             wp_enqueue_style('animate-css', REXPANSIVE_BUILDER_URL . $cartella . 'css/animate.css', array(), $ver, 'all');
             wp_enqueue_style('textfill-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/textFill.css', array(), $ver, 'all');
-            wp_enqueue_style('rexbuilder-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/builder.css', array(), $ver, 'all');
-            wp_enqueue_style('custom-editor-buttons-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/rex-custom-editor-buttons.css', array(), $ver, 'all');
 
             wp_enqueue_style('jquery-ui-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/jquery-ui.min.css', array(), $ver, 'all');
             wp_enqueue_style('gridstack-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/gridstack.css', array(), $ver, 'all');
 
-            wp_enqueue_style('spectrum-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/spectrum.css', array(), $ver, 'all');
-
-            wp_enqueue_style('medium-editor-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/medium-editor.css', array(), $ver, 'all');
-            
-            //wp_enqueue_style( 'medium-editor-instert-style', REXPANSIVE_BUILDER_URL  . $cartella. 'css/medium-editor-insert-plugin.css', array(), $ver, 'all' );
-            wp_enqueue_style('medium-editor-insert-frontend-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/medium-editor-insert-plugin-frontend.css', array(), $ver, 'all');
-
             wp_enqueue_style('input-spinner', REXPANSIVE_BUILDER_URL . $cartella . 'css/input-spinner.css', array(), $ver, 'all');
 
             wp_enqueue_style('rexpansive-builder-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/public.css', array(), $ver, 'all');
-
-            wp_enqueue_style( 'rexbuilder-live-google-fonts', 'https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i', false );
 
             wp_enqueue_style('rexpansive-builder-editor-style', REXPANSIVE_BUILDER_URL .'admin/css/live-def.css', array(), $ver, 'all');
         }
@@ -159,11 +157,15 @@ class Rexbuilder_Public
                 // }
             }
 
-            wp_enqueue_style('photoswipe-skin', REXPANSIVE_BUILDER_URL . 'public/Photoswipe/default-skin/default-skin.css', array(), null, 'all');
+            if( Rexbuilder_Utilities::isBuilderLive() ) {
+                wp_enqueue_style( 'rexbuilder-live-google-fonts', 'https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i', false );
+                wp_enqueue_style('material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), $ver, 'all');
+                wp_enqueue_style('font-awesome', REXPANSIVE_BUILDER_URL . 'admin/font-awesome-4.3.0/css/font-awesome.min.css', array(), $ver, 'all');
 
-            wp_enqueue_style('jquery.mb.YTPlayer-style', REXPANSIVE_BUILDER_URL . 'public/jquery.mb.YTPlayer/css/jquery.mb.YTPlayer.min.css', array(), null, 'all');
-
-            wp_enqueue_style('rexpansive-builder-style', REXPANSIVE_BUILDER_URL . 'public/css/public.css', array(), null, 'all');
+                wp_enqueue_style($this->plugin_name . '-style', REXPANSIVE_BUILDER_URL . 'admin/css/builderlive-editor.css', array(), null, 'all');
+            } else {
+                wp_enqueue_style($this->plugin_name . '-style', REXPANSIVE_BUILDER_URL . 'public/css/builderlive.css', array(), null, 'all');
+            }
         }
     }
 
@@ -305,7 +307,6 @@ class Rexbuilder_Public
                 'plugin_base_url' => REXPANSIVE_BUILDER_URL
                 )
             ) );
-
         }
     }
 
@@ -316,9 +317,6 @@ class Rexbuilder_Public
      */
     public function enqueue_scripts_production()
     {
-
-        $message = "right answer";
-        echo "<script type='text/javascript'>alert('$message');</script>";
         /**
          * This function is provided for demonstration purposes only.
          *
@@ -332,9 +330,13 @@ class Rexbuilder_Public
          */
 
         if ($this->builder_active_on_this_post_type()) {
-            wp_enqueue_script('jquery');
-            wp_enqueue_script('public-plugins', REXPANSIVE_BUILDER_URL . 'public/js/plugins.js', array('jquery'), null, true);
-            wp_localize_script('public-plugins', '_plugin_frontend_settings', apply_filters('rexbuilder_js_settings', array(
+            if( Rexbuilder_Utilities::isBuilderLive() ) {
+                wp_enqueue_script( $this->plugin_name, REXPANSIVE_BUILDER_URL . 'public/js/builderlive-editor.js', array( 'jquery' ), null, true );
+            } else {
+                wp_enqueue_script( $this->plugin_name, REXPANSIVE_BUILDER_URL . 'public/js/builderlive.js', array( 'jquery' ), null, true );
+            }
+
+            wp_localize_script( $this->plugin_name, '_plugin_frontend_settings', apply_filters('rexbuilder_js_settings', array(
                 'animations' => apply_filters('rexbuilder_animation_enabled', $this->plugin_options['animation']),
                 'textFill' => array(
                     'font_family' => 'sans-serif',
@@ -353,8 +355,9 @@ class Rexbuilder_Public
                     'collapseWidth' => 768,
                 ),
                 'siteurl' => get_site_url(),
-            )));
-            wp_enqueue_script('rexbuilder-public', REXPANSIVE_BUILDER_URL . 'public/js/public.js', array('jquery'), null, true);
+                'plugin_base_url' => REXPANSIVE_BUILDER_URL
+                )
+            ) );
         }
     }
 
@@ -797,7 +800,7 @@ class Rexbuilder_Public
             global $post;
             $meta = get_post_meta($post->ID, '_rexbuilder_custom_css', true);
             if ($meta != ''):
-                wp_add_inline_style('rexpansive-builder-style', $meta);
+                wp_add_inline_style( $this->plugin_name . '-style', $meta);
             endif;
         }
     }

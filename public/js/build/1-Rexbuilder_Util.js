@@ -1235,7 +1235,6 @@ var Rexbuilder_Util = (function($) {
           _updateDOMSingleElement($elem,targetProps,$itemData,$itemContent,gridstackInstance,{positionAndSize:true});
         }
       } else {
-        console.log(targetName);
         var $el = $gallery.children(
           'div[data-rexbuilder-block-id="' + targetName + '"]'
         );
@@ -1653,8 +1652,8 @@ var Rexbuilder_Util = (function($) {
   var _getDefaultBlockMeasure = function( sectionRexID ) {
     sectionRexID = "undefined" !== typeof sectionRexID ? sectionRexID : "";
     var defs = {
-      defDefaultWidth: 3,
-      defDefaultHeight: 4,
+      defDefaultWidth: 4,
+      defDefaultHeight: 5,
       defMobileWidth: 12,
       defMobileHeight: null
     }
@@ -2994,7 +2993,6 @@ var Rexbuilder_Util = (function($) {
       }
     } else {    // Front end resize logic
       var actualLayout = _findFrontLayout();
-      
       if(startFrontLayout != actualLayout) {
         changedFrontLayout = true;
         startFrontLayout = actualLayout;

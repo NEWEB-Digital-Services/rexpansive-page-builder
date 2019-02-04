@@ -3072,7 +3072,7 @@
         videoHeight,
         defaultHeight,
         textHeight,
-        sliderHeight,
+        sliderHeight
         // increasedHeight
       );
       if (
