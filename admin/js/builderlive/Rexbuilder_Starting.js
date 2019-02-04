@@ -27,5 +27,15 @@
 
     // slider modal
     Rexbuilder_RexSlider.init();
+
+    var bloccapopupricaricamento = function(e) {
+      var messaggiodidefault = "\o/";
+
+      (e || window.event).returnValue = messaggiodidefault; // Gecko + IE
+      console.log("ATTENZIONE: Prima di chiudere la scheda in corso/prima di cambiare pagina verifica di aver salvato il tuo progetto.");
+      return messaggiodidefault; // Webkit, Safari, Chrome etc.
+    };
+    window.addEventListener("beforeunload", bloccapopupricaricamento);
+
   });
 })(jQuery);
