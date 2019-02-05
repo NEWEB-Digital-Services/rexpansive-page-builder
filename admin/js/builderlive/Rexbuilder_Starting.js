@@ -15,8 +15,12 @@
     // Rexpansive_Builder_Admin_Config.init();
 
     // modal utilities: open, close
+    Change_OnBeforeUnload_Modal.init();
     Rexlive_Modals_Utils.init();
+    
 
+    console.log("RICHIAMO LA FUNZIONE: Change_OnBeforeUnload_Modal.init()");
+    
     // launch all the modals
     Rexlive_Modals.init();
     
