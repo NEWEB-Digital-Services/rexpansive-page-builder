@@ -433,7 +433,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
      * Slide down the label
      * @since 2.0.0
      */
-    Rexlive_Base_Settings.$document.on("blur", input_selector, function(e) {
+    Rexlive_Base_Settings.$document.on("blur", input_selector, function(e) {      
       if ($(e.target).is(input_selector)) {
         if("" == e.target.value) {
           $(e.target)

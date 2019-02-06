@@ -19,7 +19,7 @@
     Rexlive_Modals_Utils.init();
     
 
-    console.log("RICHIAMO LA FUNZIONE: Change_OnBeforeUnload_Modal.init()");
+    //console.log("RICHIAMO LA FUNZIONE: Change_OnBeforeUnload_Modal.init()");
     
     // launch all the modals
     Rexlive_Modals.init();

@@ -16,6 +16,7 @@ var BlockOptions_Modal = (function($) {
     Rexlive_Modals_Utils.openModal(
       block_options_properties.$self.parent(".rex-modal-wrap")
     );
+
   };
 
   var _closeBlockOptionsModal = function() {

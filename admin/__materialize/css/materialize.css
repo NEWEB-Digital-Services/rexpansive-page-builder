@@ -6331,7 +6331,8 @@ input[type=text], input[type=password], input[type=email], input[type=url], inpu
     -moz-transform: translateY(-140%);
     -ms-transform: translateY(-140%);
     -o-transform: translateY(-140%);
-    transform: translateY(-140%); }
+    transform: translateY(-140%);
+    color: #26a69a; }
   .input-field .prefix {
     position: absolute;
     width: 3rem;

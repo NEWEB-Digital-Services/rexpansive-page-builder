@@ -26,7 +26,25 @@ var Section_CustomClasses_Modal = (function ($) {
             hiddenClasses += " active-small-overlay";
             newClasses = newClasses.replace("active-small-overlay", "");
         }
+
+        if(data.customClasses == ""){
+            custom_classes_modal_properties.$classes
+                .siblings("label, .prefix")
+                .removeClass("active");
+                console.log('case: sectionTarget == nothing');
+        }else{
+            custom_classes_modal_properties.$classes
+                .siblings("label, .prefix")
+                .addClass("active");
+                console.log('case: sectionTarget != nothing');
+        }
+
+        console.log("stamp || newClasses:" + newClasses);
+        console.log("stamp || data.sectionTarger:" + data.sectionTarget);
+        console.log("stamp || data.customClasses:" + data.customClasses);
+
         custom_classes_modal_properties.$classes.val(newClasses);
+        
     }
 
     var _applyCustomClasses = function () {
@@ -63,7 +81,6 @@ var Section_CustomClasses_Modal = (function ($) {
 
     var _init = function ($container) {
         custom_classes_modal_properties = {
-
             // ID and navigator configuration
             $classes: $container.find('#section-set-custom-class'),
         }

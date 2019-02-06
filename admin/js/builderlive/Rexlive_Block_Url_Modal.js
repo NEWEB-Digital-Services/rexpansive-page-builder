@@ -12,6 +12,19 @@ var Block_Url_Modal = (function ($) {
     var _updateBlockUrl = function (data) {
         target = data.target;
         block_url_modal_properties.$urlInput.val(data.link);
+
+        if(data.link == ""){
+            block_url_modal_properties.$urlInput
+                .siblings("label, .prefix")
+                .removeClass("active");
+                console.log('case: data.link == nothing');
+        }else{
+            block_url_modal_properties.$urlInput
+                .siblings("label, .prefix")
+                .addClass("active");
+                console.log('case: data.link != nothing');
+        }
+
     }
 
     var _applyBlockUrl = function () {
