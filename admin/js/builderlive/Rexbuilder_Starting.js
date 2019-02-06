@@ -32,14 +32,19 @@
     // slider modal
     Rexbuilder_RexSlider.init();
 
-    var bloccapopupricaricamento = function(e) {
+     /*var bloccapopupricaricamento = function(e) {
+
+      e.preventDefault();
       var messaggiodidefault = "\o/";
+
+      Change_OnBeforeUnload_Modal.openModal();
 
       (e || window.event).returnValue = messaggiodidefault; // Gecko + IE
       console.log("ATTENZIONE: Prima di chiudere la scheda in corso/prima di cambiare pagina verifica di aver salvato il tuo progetto.");
+      return null;
       return messaggiodidefault; // Webkit, Safari, Chrome etc.
     };
-    window.addEventListener("beforeunload", bloccapopupricaricamento);
+    window.addEventListener("beforeunload", bloccapopupricaricamento);*/
 
   });
 })(jQuery);

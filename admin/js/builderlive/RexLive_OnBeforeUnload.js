@@ -5,12 +5,12 @@ var Change_OnBeforeUnload_Modal = (function($) {
   var buttonData;
 
   var _openModal = function(data) {
-    activeLayoutPage = data.activeLayout;
-    buttonData = data.buttonData;
+    //activeLayoutPage = data.activeLayout;
+    //buttonData = data.buttonData;
     Rexlive_Modals_Utils.openModal(
       layout_changing_props.$self.parent(".rex-modal-wrap")     
     );
-    layout_changing_props.$layout_name_placholder.text(data.activeLayoutLabel);
+    //layout_changing_props.$layout_name_placholder.text(data.activeLayoutLabel);
   };
 
   var _closeModal = function() {

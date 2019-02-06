@@ -1912,7 +1912,7 @@ defined('ABSPATH') or exit;
 </div><!-- Layout page Changed -->
 
 <div class="rex-modal-wrap">
-    <div id="#rexlive-onbeforeunload" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
+    <div id="rexlive-onbeforeunload" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <div class="tool-button tool-button--black rex-change-layout-option tool-button--close tippy" data-position="bottom" data-tippy-content="<?php _e( 'Cancel', 'rexspansive');?>" data-rex-option="hide">
             <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
         </div>
