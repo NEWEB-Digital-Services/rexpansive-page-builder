@@ -59,7 +59,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         if (event.data.modelEdited) {
           modelSaved = false;
         } else {
-          pageSaved = false;
+          Rexbuilder_Util_Admin_Editor.pageSaved = false;
         }
         // get undo redo stack from iframe
         // console.log(event.data.undoRedoStacks);
@@ -240,12 +240,12 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
             modelSaved = true;
             break;
           case "page":
-            pageSaved = true;
+            Rexbuilder_Util_Admin_Editor.pageSaved = true;
             break;
           default:
             break;
         }
-        if (modelSaved && pageSaved) {
+        if (modelSaved && Rexbuilder_Util_Admin_Editor.pageSaved) {
           NProgress.done();
           Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.attr( "data-rex-edited-backend", false );
           $saveBtn.removeClass("page-edited");
@@ -262,7 +262,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
 
       if (event.data.eventName == "rexlive:restoreStateEnded") {
         modelSaved = true;
-        pageSaved = true;
+        Rexbuilder_Util_Admin_Editor.pageSaved = true;
         if (
           typeof event.data.buttonData !== "undefined" &&
           typeof event.data.buttonData != ""
@@ -331,7 +331,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
           activeLayoutLabel: activeLayoutPageLabel,
           buttonData: buttonData,
           modelSaved: modelSaved,
-          pageSaved: pageSaved
+          pageSaved: Rexbuilder_Util_Admin_Editor.pageSaved
         };
 
         if ( Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.attr("data-rex-edited-backend").toString() == "true" ) {
@@ -912,7 +912,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
 
   var _updateLayoutPage = function(buttonData) {
     modelSaved = true;
-    pageSaved = true;
+    Rexbuilder_Util_Admin_Editor.pageSaved = true;
     activeLayoutPage = buttonData.id;
     activeLayoutPageLabel = buttonData.label;
     var $activeLayoutBtn = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('.btn-builder-layout[data-name="' + activeLayoutPage + '"]');
@@ -1301,7 +1301,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   };
 
   var _editPageProperties = function() {
-    pageSaved = false;
+
     // Rexbuilder_Util_Admin_Editor.$body.addClass('page-edited');
     $saveBtn.addClass("page-edited");
   };
@@ -1633,7 +1633,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     $saveBtn = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find( ".btn-save" );
     $undoBtn = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find( ".btn-undo" );
     $redoBtn = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find( ".btn-redo" );
-    pageSaved = true;
+    Rexbuilder_Util_Admin_Editor.pageSaved = true;
     modelSaved = true;
     open_models_list = [];
     activeLayoutPage = "default";
@@ -1665,6 +1665,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
 
   return {
     init: init,
+    pageSaved: pageSaved,
     createRandomID: _createRandomID,
     sendIframeBuilderMessage: _sendIframeBuilderMessage,
     updateLayoutPage: _updateLayoutPage,
