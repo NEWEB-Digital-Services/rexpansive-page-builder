@@ -30,7 +30,8 @@
 
 .responsive-block-overlay {
 	position: relative;
-	visibility: hidden;
+	// visibility: hidden;
+	background-color:transparent;
 	width: 100%;
 	height: inherit;
 	display: inherit;
@@ -54,4 +55,4 @@
 			visibility: visible;
 		}
 	}
-}		
+}

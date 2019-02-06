@@ -4159,7 +4159,7 @@ div.wpcf7 .rxcf7-custom-style p:last-of-type {
 
 .responsive-block-overlay {
   position: relative;
-  visibility: hidden;
+  background-color: transparent;
   width: 100%;
   height: inherit;
   display: inherit;

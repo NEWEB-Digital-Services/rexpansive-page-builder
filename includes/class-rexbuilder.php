@@ -285,7 +285,7 @@ class Rexbuilder {
 	 * @access   private
 	 */
 	private function define_public_hooks() {
-		$production = true;
+		$production = false;
 		$plugin_public = new Rexbuilder_Public( $this->get_plugin_name(), $this->get_version() );
 
 		//per la release

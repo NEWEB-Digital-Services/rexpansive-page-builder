@@ -37,7 +37,7 @@ IndexedGrid.prototype.checkGrid = function (place) {
   var i = 0;
   while (this.grid[i] < place) {
     var last = this.grid[i];
-    if (last !== this.grid[i + 1]) {
+    if ((last+1) !== this.grid[i + 1]) {
       this.grid.push(last + 1);
     }
     i++;
