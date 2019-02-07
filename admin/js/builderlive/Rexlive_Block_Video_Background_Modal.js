@@ -14,38 +14,38 @@ var Block_Video_Background_Modal = (function($) {
     video_background_properties.$self.attr('data-block_tools', data.bgVideo.tools);  
     Rexlive_Modals_Utils.positionModal( video_background_properties.$self, mousePosition );
     Rexlive_Modals_Utils.openModal( video_background_properties.$self.parent(".rex-modal-wrap") );
+    console.log("passed || openBlockVideoBackgroundModal");
 
     if(data.youtubeUrl == ""){
       video_background_properties.$linkYoutube
           .blur();
-      console.log('focus: data.youtubeUrl == nothing');
+      console.log('focusOpen: data.youtubeUrl == nothing');
     }else{
       video_background_properties.$linkYoutube
           .focus()
-      console.log('focus: data.youtubeUrl != nothing');
+      console.log('focusOpen: data.youtubeUrl != nothing');
     }
 
     if(data.vimeoUrl == ""){
       video_background_properties.$linkVimeo
           .blur();
-      console.log('focus: data.vimeoUrl == nothing');
+      console.log('focusOpen: data.vimeoUrl == nothing');
     }else{
       video_background_properties.$linkVimeo
           .focus()
-      console.log('focus: data.vimeoUrl != nothing');
+      console.log('focusOpen: data.vimeoUrl != nothing');
     }
 
-    if(data.mp4Data.linkMp4 == ""){
-      video_background_properties.$linkMp4Preview
-          .blur();
-      console.log('focus: data.mp4Data.linkMp4 == nothing');
-    }else{
+    if(data.mp4Data == ""){
       video_background_properties.$linkMp4Preview
           .focus()
-      console.log('focus: data.mp4Data.linkMp4 != nothing');
+      console.log('focusOpen: data.mp4Data.linkMp4 == nothing');
+    }else{
+      video_background_properties.$linkMp4Preview
+          .blur();
+      console.log('focusOpen: data.mp4Data.linkMp4 != nothing');
     }
 
-    console.log("passed || openBlockVideoBackgroundModal");
   };
 
   var _closeBlockVideoBackgroundModal = function() {
@@ -53,7 +53,8 @@ var Block_Video_Background_Modal = (function($) {
     Rexlive_Modals_Utils.closeModal(
       video_background_properties.$self.parent(".rex-modal-wrap")
     );
-    console.log("passed || closeBlockVideoBackgroundModal");
+
+  console.log("passed || closeBlockVideoBackgroundModal");
   };
 
   var _updateVideoModal = function(data) {
@@ -331,7 +332,7 @@ var Block_Video_Background_Modal = (function($) {
         videoMp4: type == "" || type != "mp4" ? emptyMp4Data : videoMp4Data,
         audio: type == "" ? "" : audio,
         typeVideo: type,
-        tools: video_background_properties.$self.attr('data-block_tools')
+        tols: video_background_properties.$self.attr('data-block_tools')
       }
     };
 
@@ -366,6 +367,7 @@ var Block_Video_Background_Modal = (function($) {
         _focusMp4();
         _updateVideoBackground();
       }
+      
     });
 
     video_background_properties.$uploadMp4.click(function() {

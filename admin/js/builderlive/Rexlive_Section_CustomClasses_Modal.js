@@ -39,9 +39,9 @@ var Section_CustomClasses_Modal = (function ($) {
                 console.log('case: sectionTarget != nothing');
         }
 
-        console.log("stamp || newClasses:" + newClasses);
-        console.log("stamp || data.sectionTarger:" + data.sectionTarget);
-        console.log("stamp || data.customClasses:" + data.customClasses);
+        //console.log("stamp || newClasses:" + newClasses);
+        //console.log("stamp || data.sectionTarger:" + data.sectionTarget);
+        //console.log("stamp || data.customClasses:" + data.customClasses);
 
         custom_classes_modal_properties.$classes.val(newClasses);
         
@@ -51,6 +51,8 @@ var Section_CustomClasses_Modal = (function ($) {
         var newClassesString = _getData();
         newClassesString = newClassesString.trim();
         var classList = newClassesString.split(/\s+/);
+
+        console.log("passed || applyCustomClasses()");
 
         Rexbuilder_Util_Admin_Editor.highlightRowSetData({
             'custom_classes': classList,

@@ -14,6 +14,21 @@ var SectionName_Modal = (function ($) {
         section_name_modal_properties.$section_id.val(data.sectionName);
     }
 
+    var _editstatusnameboxfocus = function (data) {
+
+        _init();
+
+        if(data.sectionName != ""){
+            section_name_modal_properties.$section_id
+                .focus();
+        }else{
+            section_name_modal_properties.$section_id
+                .blur();
+        }
+
+        console.log(data.sectionName);
+    }
+
     var _getData = function () {
         var newName = section_name_modal_properties.$section_id.val();
         return newName;
@@ -58,6 +73,7 @@ var SectionName_Modal = (function ($) {
 
     return {
         init: _init,
+        editstatusnameboxfocus: _editstatusnameboxfocus,
         updateSectionName: _updateSectionName,
         resetSectionName: _resetSectionName,
         getData: _getData

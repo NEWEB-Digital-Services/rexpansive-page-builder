@@ -42,21 +42,37 @@ var Insert_Video_Modal = (function($) {
   var _focusYoutube = function() {
     insert_video_properties.$youTubeWrap.addClass("selected");
     insert_video_properties.$radioChooseYoutube.attr("checked", true);
+
+    insert_video_properties.$linkYoutube.trigger("focus");
+    console.log("passed || [INSERT] _focusYoutube()");
+    
   };
 
   var _focusVimeo = function() {
     insert_video_properties.$vimeoWrap.addClass("selected");
     insert_video_properties.$radioChooseVimeo.attr("checked", true);
+
+    insert_video_properties.$linkVimeo.trigger("focus");
+    console.log("passed || [INSERT] _focusVimeo()");
+
   };
 
   var _focusMp4 = function() {
     insert_video_properties.$mp4Wrap.addClass("selected");
     insert_video_properties.$radioChooseMp4.attr("checked", true);
+
+    //insert_video_properties.$linkMp4.trigger("focus");
+    //console.log("passed || [INSERT] _focusMp4()");
+
   };
 
   var _updateMp4VideoModal = function(videos) {
     videoMp4SelectedData = videos;
     insert_video_properties.$linkMp4.val(videos[0].videoUrl).next('label').addClass('active');
+
+    insert_video_properties.$linkMp4.trigger("focus");
+    console.log("passed || [INSERT] _updateMp4VideoModal())");
+
   };
 
   var _linkDocumentListeners = function() {
