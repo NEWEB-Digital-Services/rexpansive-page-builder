@@ -1259,7 +1259,7 @@ defined('ABSPATH') or exit;
                     <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border" data-rex-video-type="mp4">
                         <div class="input-field input-field--small">
                             <input id="rex-mp4-video-block-preview" class="mp4-video-block small-input" type="text" disabled>
-                            <label id="rex-mp4-video-block-preview-label" for="rex-mp4-video-block-preview">VIDEO URL</label>
+                            <label id="rex-mp4-video-block-preview-label" for="rex-mp4-video-block-preview">Video URL</label>
                             <span class="rex-material-bar"></span>
                         </div>
                     </div>

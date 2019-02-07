@@ -10,10 +10,7 @@ var Section_Modal = (function($) {
     Rexlive_Modals_Utils.openModal(
       section_config_modal_properties.$self.parent(".rex-modal-wrap")
     );
-    
-    SectionName_Modal.editstatusnameboxfocus();
-    
-  };
+};
 
   var _closeSectionModal = function() {
     Rexlive_Modals_Utils.closeModal( section_config_modal_properties.$self.parent(".rex-modal-wrap") );
