@@ -139,6 +139,7 @@ var Rexbuilder_App = (function($) {
     } else {
       accordionSettings.open = {
         startClbk: function(data) {
+          data.element.setAttribute('data-toggle-height', data.properties.$toggle[0].offsetHeight + parseInt(data.element.parentElement.style.paddingTop) + parseInt(data.element.parentElement.style.paddingBottom) );
           data.$element.parents('.grid-stack-item-content').css('position','relative');
         },
         progressClbk: function(data, step) {
@@ -148,11 +149,12 @@ var Rexbuilder_App = (function($) {
           var $grid = data.properties.$content.parents('.grid-stack');
           var pgge = $grid.data("plugin_perfectGridGalleryEditor");
           var grid = pgge.properties.gridstackInstance;
+          var toggleHeight = parseInt( data.element.getAttribute('data-toggle-height') ) + parseInt( data.properties.$content[0].style.height );
 
-          var base_h = ( 0 !== step ? data.element.parentElement.offsetHeight + pgge.properties.gutter : 0 );
+          var base_h = ( 0 !== step ? toggleHeight + pgge.properties.gutter : 0 );
           var fstart_h = ( 0 === step ? start_h : 0 );
           var temp = Math.ceil( ( base_h + ( fstart_h * grid.opts.cellHeight ) ) / grid.opts.cellHeight );
-          temp = temp < start_h ? start_h : temp;
+          temp = temp < start_h ? start_h : temp;          
 
           if( temp > parseInt(block.getAttribute('data-gs-height')) ) {
             grid.batchUpdate();
@@ -162,6 +164,9 @@ var Rexbuilder_App = (function($) {
         }
       };
       accordionSettings.close = {
+        startClbk: function(data) {
+          data.element.setAttribute('data-toggle-height', data.properties.$toggle[0].offsetHeight + parseInt(data.element.parentElement.style.paddingTop) + parseInt(data.element.parentElement.style.paddingBottom) );
+        },
         progressClbk: function(data, step) {
           // var content = data.properties.$content[0];
           var block = data.properties.$content.parents('.grid-stack-item')[0];
@@ -169,8 +174,9 @@ var Rexbuilder_App = (function($) {
           var $grid = data.properties.$content.parents('.grid-stack');
           var pgge = $grid.data("plugin_perfectGridGalleryEditor");
           var grid = pgge.properties.gridstackInstance;
+          var toggleHeight = parseInt( data.element.getAttribute('data-toggle-height') ) + parseInt( data.properties.$content[0].style.height );
 
-          var base_h = ( 1 !== step ? data.element.parentElement.offsetHeight + pgge.properties.gutter : 0 );
+          var base_h = ( 1 !== step ? toggleHeight + pgge.properties.gutter : 0 );
           var fstart_h = ( 1 === step ? start_h : 0 );
           var temp = Math.ceil( ( base_h + ( fstart_h * grid.opts.cellHeight ) ) / grid.opts.cellHeight );
           temp = temp > start_h ? temp : start_h;
