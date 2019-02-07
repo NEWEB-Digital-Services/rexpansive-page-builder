@@ -1296,9 +1296,9 @@ var Rexbuilder_Util = (function($) {
                 galleryEditorInstance.properties.dispositionBeforeCollapsing = galleryEditorInstance.createActionDataMoveBlocksGrid();
                 galleryEditorInstance._createFirstReverseStack();
                 galleryEditorInstance._fixImagesDimension();
-                if (Rexbuilder_Util.editorMode) {
-                  galleryEditorInstance.createScrollbars();
-                }
+                // if (Rexbuilder_Util.editorMode) {
+                  // galleryEditorInstance.createScrollbars();
+                // }
                 galleryEditorInstance._updateElementsSizeViewers();
                 Rexbuilder_Util.playAllVideos();
                 setTimeout(
@@ -2949,15 +2949,14 @@ var Rexbuilder_Util = (function($) {
 
         Rexbuilder_Util.windowIsResizing = true;
         if (Rexbuilder_Util.firstResize) {
-          Rexbuilder_Util.$rexContainer
-            .find(".grid-stack-row")
-            .each(function(e, row) {
-              var galleryEditorInstance = $(row).data()
-                .plugin_perfectGridGalleryEditor;
-              if (galleryEditorInstance !== undefined) {
-                galleryEditorInstance.removeScrollbars();
-              }
-            });
+          // Rexbuilder_Util.$rexContainer
+          //   .find(".grid-stack-row")
+          //   .each(function(e, row) {
+              // var galleryEditorInstance = $(row).data().plugin_perfectGridGalleryEditor;
+              // if (galleryEditorInstance !== undefined) {
+                // galleryEditorInstance.removeScrollbars();
+              // }
+            // });
           Rexbuilder_Util.firstResize = false;
         }
 
@@ -3040,7 +3039,7 @@ var Rexbuilder_Util = (function($) {
           galleryEditorInstance.updateBlocksHeight();
           galleryEditorInstance.commitGridstack();
           //waiting for gridstack commit
-          setTimeout(galleryEditorInstance.createScrollbars(), 200);
+          // setTimeout(galleryEditorInstance.createScrollbars(), 200);
         }
       });
   };

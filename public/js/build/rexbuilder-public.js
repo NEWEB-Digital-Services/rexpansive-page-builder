@@ -155,7 +155,9 @@ var Rexbuilder_App = (function($) {
           temp = temp < start_h ? start_h : temp;
 
           if( temp > parseInt(block.getAttribute('data-gs-height')) ) {
+            grid.batchUpdate();
             grid.resize(block,null,temp);
+            grid.commit();
           }
         }
       };
@@ -174,7 +176,9 @@ var Rexbuilder_App = (function($) {
           temp = temp > start_h ? temp : start_h;
 
           if( temp < parseInt(block.getAttribute('data-gs-height')) ) {
+            grid.batchUpdate();
             grid.resize( block,null,temp );
+            grid.commit();
           }
         },
         completeClbk: function(data) {

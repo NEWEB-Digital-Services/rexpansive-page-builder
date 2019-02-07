@@ -172,8 +172,8 @@ var TextEditor = (function($) {
       },
     });
 
-    Rexbuilder_Util_Editor.addSpectrumCustomSaveButton($picker);
-    Rexbuilder_Util_Editor.addSpectrumCustomCloseButton($picker);
+    Rexbuilder_Util_Editor_Utilities.addSpectrumCustomSaveButton($picker);
+    Rexbuilder_Util_Editor_Utilities.addSpectrumCustomCloseButton($picker);
 
     $picker.spectrum("container").draggable();
   };

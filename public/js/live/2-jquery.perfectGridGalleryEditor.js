@@ -130,7 +130,7 @@
 
       this._launchGridStack();
 
-      this.createScrollbars();
+      // this.createScrollbars();
 
       if (Rexbuilder_Util.editorMode) {
         var that = this;
@@ -380,7 +380,7 @@
         this.properties.oldCellHeight = this.properties.singleHeight;
         this.properties.oldLayout = this.settings.galleryLayout;
         this.properties.oldFullHeight = this.settings.fullHeight;
-        this.removeScrollbars();
+        // this.removeScrollbars();
         this.settings.galleryLayout = layout;
         this.settings.fullHeight = "false";
         this._defineDynamicPrivateProperties();
@@ -401,7 +401,7 @@
                 reverseData: reverseData
               };
 
-              that.createScrollbars();
+              // that.createScrollbars();
               that.properties.oldLayout = "";
               that.properties.oldCellHeight = that.properties.singleHeight;
               $(document).trigger(event);
@@ -701,6 +701,9 @@
       ]);
     },
 
+    /**
+     * @deprecated
+     */
     updateSrollbars: function() {
       this.$element
         .find(this.settings.scrollbarWrapClass)
@@ -719,30 +722,31 @@
         if ($rexScrollbar.length == 0) {
           return;
         }
-        if ($handler !== null) {
-          var scrollbarInstance = $rexScrollbar.overlayScrollbars();
-          if (typeof scrollbarInstance !== "undefined") {
-            var textHeight = 0;
-            var $blockContent = $block.find(".grid-item-content");
-            var maxBlockHeight = $blockContent.height();
-            var $textWrap = $blockContent.find(".text-wrap");
-            if ($textWrap.length != 0) {
-              textHeight = this.calculateTextWrapHeight($textWrap);
-            }
-            if (textHeight < maxBlockHeight) {
-              scrollbarInstance.sleep();
-            } else {
-              scrollbarInstance.update();
-            }
-          }
-        } else {
+        // if ($handler !== null) {
+          // var scrollbarInstance = $rexScrollbar.overlayScrollbars();
+          // if (typeof scrollbarInstance !== "undefined") {
+          //   var textHeight = 0;
+          //   var $blockContent = $block.find(".grid-item-content");
+          //   var maxBlockHeight = $blockContent.height();
+          //   var $textWrap = $blockContent.find(".text-wrap");
+          //   if ($textWrap.length != 0) {
+          //     textHeight = this.calculateTextWrapHeight($textWrap);
+          //   }
+          //   if (textHeight < maxBlockHeight) {
+          //     scrollbarInstance.sleep();
+          //   } else {
+          //     scrollbarInstance.update();
+          //   }
+          // }
+        // } else {
+        if($handler === null) {
           if (
             $block.find("." + Rexbuilder_Util.scrollbarProperties.className)
               .length === 0
           ) {
           } else {
             // successive modifiche dovute al cambiamento del contenuto
-            var scrollbarInstance = $rexScrollbar.overlayScrollbars();
+            // var scrollbarInstance = $rexScrollbar.overlayScrollbars();
             if (
               !$rexScrollbar.hasClass(
                 Rexbuilder_Util.scrollbarProperties.className
@@ -816,11 +820,11 @@
                   this.properties.elementStartingH = h;
                 }
               }
-              scrollbarInstance.scroll({ y: "50%" }, 100);
-              scrollbarInstance.update();
+              // scrollbarInstance.scroll({ y: "50%" }, 100);
+              // scrollbarInstance.update();
             } else {
-              scrollbarInstance.scroll({ y: "100%" }, 100);
-              scrollbarInstance.update();
+              // scrollbarInstance.scroll({ y: "100%" }, 100);
+              // scrollbarInstance.update();
             }
           }
         }
@@ -828,6 +832,9 @@
       $block = undefined;
     },
 
+    /**
+     * @deprecated
+     */
     disableTextScrollbars: function() {
       this.$element.children(".grid-stack-item").each(function() {
         var $block = $(this);
@@ -843,6 +850,9 @@
       });
     },
 
+    /**
+     * @deprecated
+     */
     enableTextScrollbars: function() {
       this.$element.children(".grid-stack-item").each(function() {
         var $block = $(this);
@@ -859,7 +869,8 @@
     },
 
     /**
-     * Funzione che rimuove le scrollbar dai blocchi
+     * Function that removes scrollbar from blocks
+     * @deprecated
      */
     removeScrollbars: function() {
       var $elem;
@@ -883,6 +894,9 @@
       });
     },
 
+    /**
+     * @deprecated
+     */
     createScrollbars: function() {
       //console.log("lancio scrollbar grid: " + this.properties.sectionNumber);
       var $elem;
@@ -1287,6 +1301,11 @@
       return $newEL;
     },
 
+    /**
+     * Add scrollbar to a block
+     * @param {Object} $newEL element to add scrollbar
+     * @deprecated
+     */
     addScrollbar: function($newEL) {
       var instanceScrollbar = $newEL
         .find(this.settings.scrollbarWrapClass)

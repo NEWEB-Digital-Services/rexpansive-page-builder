@@ -59,7 +59,7 @@ var Rexbuilder_Section = (function($) {
           Rexbuilder_Util.lastSectionNumber
         );
       }
-      Rexbuilder_Util_Editor.removeScrollBar($elem);
+      // Rexbuilder_Util_Editor.removeScrollBar($elem);
       Rexbuilder_Util_Editor.removeHandles($elem);
       Rexbuilder_Util_Editor.removeTextEditor($elem);
       if (!Rexbuilder_Util_Editor.insertingModel) {
@@ -475,7 +475,7 @@ var Rexbuilder_Section = (function($) {
         Rexbuilder_Dom_Util.updateLockEditModel($buttonModel, true);
       }
 
-      Rexbuilder_Util_Editor.removeColorPicker($newSection);
+      Rexbuilder_Util_Editor_Utilities.removeColorPicker($newSection);
 
       $newSection.insertAfter($section);
       Rexbuilder_Section.prepareSectionCopied($newSection);

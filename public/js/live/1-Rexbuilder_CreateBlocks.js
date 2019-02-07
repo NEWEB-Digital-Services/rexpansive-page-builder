@@ -10,9 +10,9 @@ var Rexbuilder_CreateBlocks = (function ($) {
         var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout);
         $el.find(".grid-item-content").addClass("empty-content");
         TextEditor.addElementToTextEditor($el.find(".text-wrap"));
-        if( Rexbuilder_Util_Editor.scrollbarsActive ) {
-            galleryInstance.addScrollbar($el);
-        }
+        // if( Rexbuilder_Util_Editor.scrollbarsActive ) {
+        //     galleryInstance.addScrollbar($el);
+        // }
         // Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($el.find('input[name=edit-block-color-background]')[0]);
         // Rexbuilder_Block_Editor.launchSpectrumPickerOverlayColorBlock($el.find('input[name=edit-block-overlay-color]')[0]);
         Rexbuilder_Block_Editor.updateBlockTools($el);
@@ -37,9 +37,9 @@ var Rexbuilder_CreateBlocks = (function ($) {
         var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
         var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout, undefined, undefined, "text");
 
-        if( Rexbuilder_Util_Editor.scrollbarsActive ) {
-            galleryInstance.addScrollbar($el);
-        }
+        // if( Rexbuilder_Util_Editor.scrollbarsActive ) {
+        //     galleryInstance.addScrollbar($el);
+        // }
         TextEditor.addElementToTextEditor($el.find(".text-wrap"));
 
         Rexbuilder_Block_Editor.updateBlockTools($el);
@@ -77,9 +77,9 @@ var Rexbuilder_CreateBlocks = (function ($) {
         var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
         var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout, undefined, undefined, "text");
 
-        if( Rexbuilder_Util_Editor.scrollbarsActive ) {
-            galleryInstance.addScrollbar($el);
-        }
+        // if( Rexbuilder_Util_Editor.scrollbarsActive ) {
+        //     galleryInstance.addScrollbar($el);
+        // }
         TextEditor.addElementToTextEditor($el.find(".text-wrap"));
 
         Rexbuilder_Block_Editor.updateBlockTools($el);
@@ -163,9 +163,9 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
             Rexbuilder_Dom_Util.updateImageBG( $el.find(".grid-item-content" ), dataImage );
 
-            if( Rexbuilder_Util_Editor.scrollbarsActive ) {
-                galleryInstance.addScrollbar($el);
-            }
+            // if( Rexbuilder_Util_Editor.scrollbarsActive ) {
+            //     galleryInstance.addScrollbar($el);
+            // }
             TextEditor.addElementToTextEditor( $el.find(".text-wrap") );
 
             Rexbuilder_Block_Editor.updateBlockTools($el);
@@ -225,7 +225,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
                     typeVideo: type
                 }
                 Rexbuilder_Dom_Util.updateVideos($itemContent, videoOptions);
-                galleryInstance.addScrollbar($el);
+                // galleryInstance.addScrollbar($el);
                 TextEditor.addElementToTextEditor($el.find(".text-wrap"));
             } else {
                 for (var i = 0; i < videoMp4.length; i++) {
@@ -249,9 +249,9 @@ var Rexbuilder_CreateBlocks = (function ($) {
                         typeVideo: type
                     }
                     Rexbuilder_Dom_Util.updateVideos($itemContent, videoOptions);
-                    if( Rexbuilder_Util_Editor.scrollbarsActive ) {
-                        galleryInstance.addScrollbar($el);
-                    }
+                    // if( Rexbuilder_Util_Editor.scrollbarsActive ) {
+                    //     galleryInstance.addScrollbar($el);
+                    // }
                     TextEditor.addElementToTextEditor($el.find(".text-wrap"));
                 }
             }
@@ -469,9 +469,9 @@ var Rexbuilder_CreateBlocks = (function ($) {
         var $itemContent = $newBlock.find(".grid-item-content");
         var videoTypeActive = Rexbuilder_Util.destroyVideo($itemContent, false);
 
-        Rexbuilder_Util_Editor.removeScrollBar($newBlock);
+        // Rexbuilder_Util_Editor.removeScrollBar($newBlock);
         Rexbuilder_Util_Editor.removeTextEditor($newBlock);
-        Rexbuilder_Util_Editor.removeColorPicker($newBlock);
+        Rexbuilder_Util_Editor_Utilities.removeColorPicker($newBlock);
         galleryEditorInstance._prepareElement($newBlock.eq(0));
         galleryEditorInstance.unFocusElementEditing($newBlock);
 
@@ -525,9 +525,9 @@ var Rexbuilder_CreateBlocks = (function ($) {
             var sliderData = Rexbuilder_Util_Editor.createSliderData($oldSlider);
             Rexbuilder_Util_Editor.saveSliderOnDB(sliderData, true, newBlockID, target);
         } else {
-            if( Rexbuilder_Util_Editor.scrollbarsActive ) {
-                galleryEditorInstance.addScrollbar($newBlock);
-            }
+            // if( Rexbuilder_Util_Editor.scrollbarsActive ) {
+            //     galleryEditorInstance.addScrollbar($newBlock);
+            // }
             TextEditor.addElementToTextEditor($newBlock.find(".text-wrap"));
         }
         // Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($newBlock.find('input[name=edit-block-color-background]')[0]);
@@ -581,9 +581,9 @@ var Rexbuilder_CreateBlocks = (function ($) {
             var $itemContent = $newBlock.find(".grid-item-content");
             var videoTypeActive = Rexbuilder_Util.destroyVideo($itemContent, false);
 
-            Rexbuilder_Util_Editor.removeScrollBar($newBlock);
+            // Rexbuilder_Util_Editor.removeScrollBar($newBlock);
             Rexbuilder_Util_Editor.removeTextEditor($newBlock);
-            Rexbuilder_Util_Editor.removeColorPicker($newBlock);
+            Rexbuilder_Util_Editor_Utilities.removeColorPicker($newBlock);
             galleryEditorInstance._prepareElement($newBlock.eq(0));
             galleryEditorInstance.unFocusElementEditing($newBlock);
 
@@ -640,9 +640,9 @@ var Rexbuilder_CreateBlocks = (function ($) {
                 var sliderData = Rexbuilder_Util_Editor.createSliderData($oldSlider);
                 Rexbuilder_Util_Editor.saveSliderOnDB(sliderData, true, newBlockID, target);
             } else {
-                if( Rexbuilder_Util_Editor.scrollbarsActive ) {
-                    galleryEditorInstance.addScrollbar($newBlock);
-                }
+                // if( Rexbuilder_Util_Editor.scrollbarsActive ) {
+                //     galleryEditorInstance.addScrollbar($newBlock);
+                // }
                 TextEditor.addElementToTextEditor($newBlock.find(".text-wrap"));
             }
             // Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($newBlock.find('input[name=edit-block-color-background]')[0]);
@@ -688,9 +688,9 @@ var Rexbuilder_CreateBlocks = (function ($) {
         var $itemContent = $newBlock.find(".grid-item-content");
         var videoTypeActive = Rexbuilder_Util.destroyVideo($itemContent, false);
 
-        Rexbuilder_Util_Editor.removeScrollBar($newBlock);
+        // Rexbuilder_Util_Editor.removeScrollBar($newBlock);
         Rexbuilder_Util_Editor.removeTextEditor($newBlock);
-        Rexbuilder_Util_Editor.removeColorPicker($newBlock);
+        Rexbuilder_Util_Editor_Utilities.removeColorPicker($newBlock);
         galleryEditorInstance._prepareElement($newBlock.eq(0));
         galleryEditorInstance.unFocusElementEditing($newBlock);
 
@@ -744,9 +744,9 @@ var Rexbuilder_CreateBlocks = (function ($) {
             var sliderData = Rexbuilder_Util_Editor.createSliderData($oldSlider);
             Rexbuilder_Util_Editor.saveSliderOnDB(sliderData, true, newBlockID, target);
         } else {
-            if( Rexbuilder_Util_Editor.scrollbarsActive ) {
-                galleryEditorInstance.addScrollbar($newBlock);
-            }
+            // if( Rexbuilder_Util_Editor.scrollbarsActive ) {
+            //     galleryEditorInstance.addScrollbar($newBlock);
+            // }
             TextEditor.addElementToTextEditor($newBlock.find(".text-wrap"));
         }
         // Rexbuilder_Block_Editor.launchSpectrumPickerBackgorundColorBlock($newBlock.find('input[name=edit-block-color-background]')[0]);
