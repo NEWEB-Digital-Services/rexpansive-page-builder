@@ -7,7 +7,7 @@ var Section_CustomClasses_Modal = (function ($) {
     var sectionTarget;
     
     var _resetCustomClasses = function () {
-        custom_classes_modal_properties.$classes.val(defaultClasses);
+        //custom_classes_modal_properties.$classes.val(defaultClasses);
     }
 
     var _updateCustomClasses = function (data) {
