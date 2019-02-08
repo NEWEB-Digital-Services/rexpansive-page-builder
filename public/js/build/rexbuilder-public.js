@@ -113,7 +113,7 @@ var Rexbuilder_App = (function($) {
     Rexbuilder_Util.playAllVideos();
 
     var accordionSettings = {
-      duration: 300,
+      duration: 1,
     };
 
     if( Rexbuilder_Util.editorMode ) {
@@ -139,56 +139,108 @@ var Rexbuilder_App = (function($) {
     } else {
       accordionSettings.open = {
         startClbk: function(data) {
-          data.element.setAttribute('data-toggle-height', data.properties.$toggle[0].offsetHeight + parseInt(data.element.parentElement.style.paddingTop) + parseInt(data.element.parentElement.style.paddingBottom) );
-          data.$element.parents('.grid-stack-item-content').css('position','relative');
+          console.log(data.element.offsetHeight);
+          // data.element.setAttribute('data-toggle-height', data.properties.$toggle[0].offsetHeight + parseInt(data.element.parentElement.style.paddingTop) + parseInt(data.element.parentElement.style.paddingBottom) );
+          // data.$element.parents('.grid-stack-item-content').css('position','relative');
+
+          // var $grid = data.properties.$content.parents('.grid-stack');
+          // var pgge = $grid.data("plugin_perfectGridGalleryEditor");
+          // var grid = pgge.properties.gridstackInstance;
+          // grid.batchUpdate();
         },
-        progressClbk: function(data, step) {
-          // var content = data.properties.$content[0];
+        // progressClbk: function(data, step) {
+        //   // var content = data.properties.$content[0];
+        //   var block = data.properties.$content.parents('.grid-stack-item')[0];
+        //   var start_h = parseInt( block.children[0].getAttribute('data-gs_start_h') );
+        //   var $grid = data.properties.$content.parents('.grid-stack');
+        //   var pgge = $grid.data("plugin_perfectGridGalleryEditor");
+        //   var grid = pgge.properties.gridstackInstance;
+        //   var toggleHeight = parseInt( data.element.getAttribute('data-toggle-height') ) + parseInt( data.properties.$content[0].style.height );
+
+        //   var base_h = ( 0 !== step ? toggleHeight + pgge.properties.gutter : 0 );
+        //   var fstart_h = ( 0 === step ? start_h : 0 );
+        //   var temp = Math.ceil( ( base_h + ( fstart_h * grid.opts.cellHeight ) ) / grid.opts.cellHeight );
+        //   temp = temp < start_h ? start_h : temp;
+
+        //   if( temp > parseInt(block.getAttribute('data-gs-height')) ) {
+        //     // grid.batchUpdate();
+        //     grid.resize(block,null,temp);
+        //     // grid.commit();
+        //   }
+        // },
+        completeClbk: function(data) {
+          var block_height = data.element.offsetHeight;
+
           var block = data.properties.$content.parents('.grid-stack-item')[0];
-          var start_h = parseInt( block.children[0].getAttribute('data-gs_start_h') );
-          var $grid = data.properties.$content.parents('.grid-stack');
-          var pgge = $grid.data("plugin_perfectGridGalleryEditor");
+          var pgge = data.properties.$content.parents('.grid-stack').data("plugin_perfectGridGalleryEditor");
           var grid = pgge.properties.gridstackInstance;
-          var toggleHeight = parseInt( data.element.getAttribute('data-toggle-height') ) + parseInt( data.properties.$content[0].style.height );
 
-          var base_h = ( 0 !== step ? toggleHeight + pgge.properties.gutter : 0 );
-          var fstart_h = ( 0 === step ? start_h : 0 );
-          var temp = Math.ceil( ( base_h + ( fstart_h * grid.opts.cellHeight ) ) / grid.opts.cellHeight );
-          temp = temp < start_h ? start_h : temp;          
+          var temp = Math.ceil( ( block_height + pgge.properties.gutter ) / grid.opts.cellHeight );
+          grid.batchUpdate();
+          grid.resize(block,null,temp);
+          grid.commit();
 
-          if( temp > parseInt(block.getAttribute('data-gs-height')) ) {
-            grid.batchUpdate();
-            grid.resize(block,null,temp);
-            grid.commit();
-          }
+          data.properties.$content.addClass('slide-in-top').one(Rexbuilder_Util._animationEvent, function() {
+            // $(this).removeClass('slide-in-top');
+          });
+          
+        //   var $grid = data.properties.$content.parents('.grid-stack');
+        //   var pgge = $grid.data("plugin_perfectGridGalleryEditor");
+        //   var grid = pgge.properties.gridstackInstance;
+        //   grid.commit();
         }
       };
       accordionSettings.close = {
         startClbk: function(data) {
-          data.element.setAttribute('data-toggle-height', data.properties.$toggle[0].offsetHeight + parseInt(data.element.parentElement.style.paddingTop) + parseInt(data.element.parentElement.style.paddingBottom) );
+          console.log(data.element.offsetHeight);
+          // data.element.setAttribute('data-toggle-height', data.properties.$toggle[0].offsetHeight + parseInt(data.element.parentElement.style.paddingTop) + parseInt(data.element.parentElement.style.paddingBottom) );
+          
+          // var $grid = data.properties.$content.parents('.grid-stack');
+          // var pgge = $grid.data("plugin_perfectGridGalleryEditor");
+          // var grid = pgge.properties.gridstackInstance;
+          // grid.batchUpdate();
         },
-        progressClbk: function(data, step) {
-          // var content = data.properties.$content[0];
-          var block = data.properties.$content.parents('.grid-stack-item')[0];
-          var start_h = parseInt( block.children[0].getAttribute('data-gs_start_h') );
-          var $grid = data.properties.$content.parents('.grid-stack');
-          var pgge = $grid.data("plugin_perfectGridGalleryEditor");
-          var grid = pgge.properties.gridstackInstance;
-          var toggleHeight = parseInt( data.element.getAttribute('data-toggle-height') ) + parseInt( data.properties.$content[0].style.height );
+        // progressClbk: function(data, step) {
+        //   // var content = data.properties.$content[0];
+        //   var block = data.properties.$content.parents('.grid-stack-item')[0];
+        //   var start_h = parseInt( block.children[0].getAttribute('data-gs_start_h') );
+        //   var $grid = data.properties.$content.parents('.grid-stack');
+        //   var pgge = $grid.data("plugin_perfectGridGalleryEditor");
+        //   var grid = pgge.properties.gridstackInstance;
+        //   var toggleHeight = parseInt( data.element.getAttribute('data-toggle-height') ) + parseInt( data.properties.$content[0].style.height );
 
-          var base_h = ( 1 !== step ? toggleHeight + pgge.properties.gutter : 0 );
-          var fstart_h = ( 1 === step ? start_h : 0 );
-          var temp = Math.ceil( ( base_h + ( fstart_h * grid.opts.cellHeight ) ) / grid.opts.cellHeight );
-          temp = temp > start_h ? temp : start_h;
+        //   var base_h = ( 1 !== step ? toggleHeight + pgge.properties.gutter : 0 );
+        //   var fstart_h = ( 1 === step ? start_h : 0 );
+        //   var temp = Math.ceil( ( base_h + ( fstart_h * grid.opts.cellHeight ) ) / grid.opts.cellHeight );
+        //   temp = temp > start_h ? temp : start_h;
 
-          if( temp < parseInt(block.getAttribute('data-gs-height')) ) {
-            grid.batchUpdate();
-            grid.resize( block,null,temp );
-            grid.commit();
-          }
-        },
+        //   if( temp < parseInt(block.getAttribute('data-gs-height')) ) {
+        //     // grid.batchUpdate();
+        //     grid.resize( block,null,temp );
+        //     // grid.commit();
+        //   }
+        // },
         completeClbk: function(data) {
-          data.$element.parents('.grid-stack-item-content').css('position','');
+          data.properties.$content.addClass('slide-out-top').one(Rexbuilder_Util._animationEvent, function() {
+            $(this).removeClass('slide-out-top');
+          });
+          
+          var block_height = data.element.offsetHeight;
+
+          var block = data.properties.$content.parents('.grid-stack-item')[0];
+          var pgge = data.properties.$content.parents('.grid-stack').data("plugin_perfectGridGalleryEditor");
+          var grid = pgge.properties.gridstackInstance;
+
+          var temp = Math.ceil( ( block_height + pgge.properties.gutter ) / grid.opts.cellHeight );
+          grid.batchUpdate();
+          grid.resize(block,null,temp);
+          grid.commit();
+          
+        //   data.$element.parents('.grid-stack-item-content').css('position','');
+        //   var $grid = data.properties.$content.parents('.grid-stack');
+        //   var pgge = $grid.data("plugin_perfectGridGalleryEditor");
+        //   var grid = pgge.properties.gridstackInstance;
+        //   grid.commit();
         }
       };
       $accordions.rexAccordion(accordionSettings);

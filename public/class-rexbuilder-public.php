@@ -229,6 +229,8 @@ class Rexbuilder_Public
                 wp_enqueue_script('block-editor-js', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/1-Rexbuilder_Block_Editor.js', array('jquery'), $ver, true);
                 wp_enqueue_script('4-modals', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/4-modals.js', array('jquery'), $ver, true);
             }
+            // requestanimationframe
+            wp_enqueue_script('jquery-requestanimationframe', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/jquery.requestanimationframe.min.js', array('jquery'), $ver, true);
             // JS TMPL
             wp_enqueue_script('tmpl', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/tmpl.min.js', array('jquery'), $ver, true);
 

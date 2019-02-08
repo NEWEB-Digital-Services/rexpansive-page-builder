@@ -2993,7 +2993,6 @@
         textHeight = 0;
       }
 
-      //console.log(textHeight);
       if (this.properties.oneColumModeActive) {
         w = 12;
       }
