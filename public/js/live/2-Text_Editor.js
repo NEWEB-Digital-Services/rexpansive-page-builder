@@ -1188,6 +1188,7 @@ var TextEditor = (function($) {
           default:
             break;
         }
+        console.log("passed || traceInput: function(event)");
       }
 
       // If i click on an image open the image toolbar
@@ -1206,6 +1207,8 @@ var TextEditor = (function($) {
         eventName: "rexlive:openMEImageUploader",
         img_data: {}
       };
+
+      console.log("passed || handleClickImage: function(event)");
   
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     },
@@ -1213,11 +1216,14 @@ var TextEditor = (function($) {
     handleImageInsertReplace: function(event) {
       var imgHTML = '<img class="wp-image-' + event.imgData.idImage + ' ' + event.imgData.align + '" data-image-id="' + event.imgData.idImage + '" src="' + event.imgData.urlImage + '" alt="" width="' + event.imgData.width + '" height="' + event.imgData.height + '">';
 
+      console.log("print || ID: "+event.imgData.idImage+", ALIGN: "+event.imgData.align+", URL: "+event.imgData.urlImage+", WIDTH: "+event.imgData.width+", HEIGHT: "+event.imgData.height);
+
       switch( this.method ) {
         case 1:
         case 2:
           // Method 1) and 2)
           this.base.restoreSelection();
+          console.log("this.method || case: 2");
           break;
         case 3:
           // Method 3)
@@ -1225,6 +1231,7 @@ var TextEditor = (function($) {
             rangy.restoreSelection(this.traceSelection);
             var range = this.getFirstRange();
           }
+          console.log("this.method || case: 3");
           break;
         case 4:
           // Method 4)
@@ -1233,6 +1240,7 @@ var TextEditor = (function($) {
             var range = this.getFirstRange();
             range.refresh();
           }
+          console.log("this.method || case: 4");
           break;
         default:
           break;
@@ -1244,6 +1252,7 @@ var TextEditor = (function($) {
           case 2:
           case 3:
             this.base.selectElement(this.traceImg);
+            console.log("this.traceImg || case: 3");
             break;
           case 4:
             // Change the range selection
@@ -1252,6 +1261,7 @@ var TextEditor = (function($) {
             restoreRange.selectNode(this.traceImg);
             range = restoreRange;
             this.submethod = 1;
+            console.log("this.traceImg || case: 4");
             break;
           default:
             break;
@@ -1263,6 +1273,7 @@ var TextEditor = (function($) {
         case 1:
           // 1) Method insertHTMLCommand
           MediumEditor.util.insertHTMLCommand(document, imgHTML);
+          console.log("this.method || case: 1 (B)");
           break;
         case 2:
           // 2) Method pasteHTML
@@ -1270,6 +1281,7 @@ var TextEditor = (function($) {
             cleanPastedHTML: false,
             cleanAttrs: ['dir']
           });
+          console.log("this.method || case: 2 (B)");
           break;
         case 3:
           // 3) Method save/restore selection with rangy
@@ -1277,24 +1289,29 @@ var TextEditor = (function($) {
             var imgNode = Rexbuilder_Dom_Util.htmlToElement(imgHTML);
             range.insertNode(imgNode);
           }
+          console.log("this.method || case: 3 (B)");
           break;
         case 4:
           // 4) Method text-range with rangy
           if( range ) {
+            console.log("if(range) == "+range);
             switch(this.submethod) {
               case 1:
                 // Insert HTML method
                 range.pasteHtml(imgHTML);
+                console.log("this.submethod || case: 1");
                 break;
               case 2:
                 // Insert Node method
                 var imgNode = Rexbuilder_Dom_Util.htmlToElement(imgHTML);
                 range.insertNode(imgNode);
+                console.log("this.submethod || case: 2");
                 break;
               case 3:
                 // Insert Node Cool Method
                 var imgNode = Rexbuilder_Dom_Util.htmlToElement(imgHTML);
                 range.insertNode(imgNode);
+                console.log("case: 3 >> "+range);
                 if( imgNode.parentElement === this.traceEditor ) {
                   var prevEl = imgNode.previousElementSibling;
                   var nextEl = imgNode.nextElementSibling;
@@ -1319,10 +1336,12 @@ var TextEditor = (function($) {
                   }
 
                   this.wrap( imgNode, document.createElement(wrapTagName) );
-                }
+                  
+                }                
               default:
-                break;
+                break;                
             }
+            console.log("this.method || case: 3 (B)");
           }
           break;
         default:
@@ -1331,6 +1350,8 @@ var TextEditor = (function($) {
 
       this.hideEditImgToolbar();
       this.mediaBtn.style.display = "none";
+
+      console.log("passed || handleImageInsertReplace: function(event)");
     },
 
     getFirstRange: function() {
@@ -1560,12 +1581,13 @@ var TextEditor = (function($) {
       this.mediaBtn.classList.add("embed-value-visibile");
       this.mediaEmbedInput.value = "";
       this.mediaEmbedInput.focus();
+      console.log("passed || handleClickEmbed() || mediaEmbedInput == nothing");
     },
 
     getEmbedCode: function(event) {
       var that = this;
       if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER)) {
-        if( "" !== event.target.value ) {
+        if( event.target.value !== "" ) {
           this.mediaEmbedInput.classList.add("embed-loading");
           $.ajax({
             type: "GET",
@@ -1576,18 +1598,19 @@ var TextEditor = (function($) {
               nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
               url_to_embed: event.target.value,
             },
+            // CODICE CHE CARICA IL VIDEO INLINE NEL DIV
             success: function(response) {
               event.target.value = "";
               if (response.success) {
-                if("" !== response.data.embed) {
+                if(response.data.embed !== "") {
                   that.pasteMediaHTML(response.data.embed);
+                  console.log(response.data.embed);
                 }
               }
             },
             error: function(response) {},
             complete: function() {
-              that.mediaEmbedInput.classList.remove("embed-loading");
-            }
+              that.mediaEmbedInput.classList.remove("embed-loading");            }
           });
         }
       }
