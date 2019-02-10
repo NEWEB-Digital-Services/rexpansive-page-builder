@@ -1578,45 +1578,50 @@ var TextEditor = (function($) {
 
     handleClickEmbed: function(ev) {
       // var url_to_embed = this.mediaEmbedBtn.getAttribute("data-foo");
-      this.mediaBtn.classList.add("embed-value-visibile");
-      this.mediaEmbedInput.value = "";
-      this.mediaEmbedInput.focus();
-      console.log("passed || handleClickEmbed() || mediaEmbedInput == nothing");
+      this.mediaBtn.classList.add("embed-value-visibile");    // aggiungi una classe al mediaBTN
+      this.mediaEmbedInput.value = "";    // imposta il valore di mediaEmbedInput a nothing per l'avvio della casella di testo
+      this.mediaEmbedInput.focus();       // mostra l'input per l'inserimento dell'url correlato al video da caricare
+      console.log("passed || handleClickEmbed() || mediaEmbedInput == nothing");                                // NOTIFICA
     },
 
     getEmbedCode: function(event) {
-      var that = this;
-      if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER)) {
-        if( event.target.value !== "" ) {
-          this.mediaEmbedInput.classList.add("embed-loading");
+      var that = this;  // la variabile 'that' assume il valore di 'this'
+      if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER)) {                                    // IMPORTANT : ???
+        console.log("passed || if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER))");          // NOTIFICA
+        if( event.target.value !== "" ) {   // verifica se event.target.value è diverso da nothing
+          console.log('passed || if( event.target.value !== "" )');                                             // NOTIFICA
+          this.mediaEmbedInput.classList.add("embed-loading");  // aggiungi la classe "embed-loading" a this
           $.ajax({
-            type: "GET",
-            dataType: "json",
-            url: _plugin_frontend_settings.rexajax.ajaxurl,
+            type: "GET",        // tipologia di passaggio dei dati  (1)
+            dataType: "json",   // tipologia di passaggio dei dati  (2)
+            url: _plugin_frontend_settings.rexajax.ajaxurl,   // raccolta dei dati per l'url tramite AJAX
             data: {
-              action: "rexlive_get_embed_code",
-              nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-              url_to_embed: event.target.value,
+              action: "rexlive_get_embed_code",   // nome dell'azione che dev'essere effettuata con tramite l'AJAX
+              nonce_param: _plugin_frontend_settings.rexajax.rexnonce,  // definizione del parametro $nonce - vedi PHP:612
+              url_to_embed: event.target.value,                         // definizione del parametro $url_to_embed - vedi PHP:618
             },
             // CODICE CHE CARICA IL VIDEO INLINE NEL DIV
             success: function(response) {
-              event.target.value = "";
-              if (response.success) {
-                if(response.data.embed !== "") {
-                  that.pasteMediaHTML(response.data.embed);
-                  console.log(response.data.embed);
+              event.target.value = "";  // Imposta la variabile value dell'evento 'event' come un nothing
+              if (response.success) {   // Verifica se il procedimento iniziale è terminato con successo
+                if(response.data.embed !== "") {  // Verifica se il nuovo embed è diverso da nothing
+                  that.pasteMediaHTML(response.data.embed);   // Sovrascrivi il contenuto dell'HTML modificandolo con l'embed
+                  console.log(response.data.embed);                                                             // NOTIFICA 
                 }
               }
             },
-            error: function(response) {},
-            complete: function() {
-              that.mediaEmbedInput.classList.remove("embed-loading");            }
+            error: function(response) {},   // azione che viene svolta in caso di errore durante l'operazione
+            complete: function() {  // azione che viene svolta al completamento dell'operazione
+              that.mediaEmbedInput.classList.remove("embed-loading");   // rimuovi la classe "embed-loading" a this
+              console.log('passed || complete: function() { that...remove("embed-loading"); }');                // NOTIFICA
+            }
           });
         }
       }
+      console.log("passed || END:1621");                                                                        // NOTIFICA
     },
 
-    mediaEmbedInputBlur: function(event) { 
+    mediaEmbedInputBlur: function(event) {
       this.mediaBtn.classList.remove("embed-value-visibile");
     },
   });
