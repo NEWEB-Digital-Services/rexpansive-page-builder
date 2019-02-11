@@ -26,6 +26,8 @@
         content: '.rex-accordion--content'
       },
       duration: 150,
+      durationOpen: null,
+      durationClose: null
     };
 
   // The actual plugin constructor
@@ -41,6 +43,14 @@
     this.settings = $.extend({}, defaults, options);
     this._defaults = defaults;
     this._name = pluginName;
+
+    if( null == this.settings.durationOpen ) {
+      this.settings.durationOpen = this.settings.duration;
+    }
+    
+    if( null == this.settings.durationClose ) {
+      this.settings.durationClose = this.settings.duration;
+    }
 
     this.properties = {
       $toggle: this.$element.find(this.settings.selectors.toggle),
@@ -88,7 +98,7 @@
         if( this.$element.hasClass('open') ) {
           this.$element.addClass('close').removeClass('open');
           this.properties.$content.slideUp({
-            duration:this.settings.duration,
+            duration:this.settings.durationClose,
             start: function(animation) {
               if (typeof that.settings.close.startClbk == 'function') { 
                 that.settings.close.startClbk.call(this, that); // brings the scope to the callback
@@ -109,7 +119,7 @@
         } else if ( this.$element.hasClass('close' ) ) {
           this.$element.addClass('open').removeClass('close');
           this.properties.$content.slideDown({
-            duration:this.settings.duration,
+            duration:this.settings.durationOpen,
             start: function(animation) {
               if (typeof that.settings.open.startClbk == 'function') { 
                 that.settings.open.startClbk.call(this, that); // brings the scope to the callback
@@ -134,7 +144,7 @@
           if("open" == this.properties.$content.eq(item).attr('data-item-status')) {
             this.$element.addClass('close').removeClass('open');
             this.properties.$content.eq(item).slideUp({
-              duration:this.settings.duration,
+              duration:this.settings.durationClose,
               complete:function() {
                 that.$element.trigger('rex_accordion:close');
               }  
@@ -142,13 +152,13 @@
           } else {
             this.$element.addClass('close').removeClass('close');
             this.properties.$content.not(item).slideUp({
-              duration:this.settings.duration,
+              duration:this.settings.durationClose,
               complete:function() {
                 that.$element.trigger('rex_accordion:close');
               }
             }).attr('data-item-status','close');
             this.properties.$content.eq(item).slideDown({
-              duration:this.settings.duration,
+              duration:this.settings.durationOpen,
               complete:function() {
                 that.$element.trigger('rex_accordion:open');
               }
@@ -158,7 +168,7 @@
           if("close" == this.properties.$content.eq(item).attr('data-item-status')) {
             this.$element.addClass('open').removeClass('close');
             this.properties.$content.eq(item).slideDown({
-              duration:this.settings.duration,
+              duration:this.settings.durationOpen,
               complete:function() {
                 that.$element.trigger('rex_accordion:open');
               }
@@ -172,7 +182,7 @@
               }
             }).attr('data-item-status','close');
             this.properties.$content.not(item).slideDown({
-              duration:this.settings.duration,
+              duration:this.settings.durationOpen,
               complete:function() {
                 that.$element.trigger('rex_accordion:open');
               }

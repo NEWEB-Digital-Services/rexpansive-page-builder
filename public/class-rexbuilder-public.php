@@ -122,9 +122,11 @@ class Rexbuilder_Public
                 wp_enqueue_style('medium-editor-insert-frontend-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/medium-editor-insert-plugin-frontend.css', array(), $ver, 'all');
             }
 
+            // wp_enqueue_style('jquery-dumb-accordion', REXPANSIVE_BUILDER_URL . $cartella . 'css/jquery.accordion.css', array(), $ver, 'all');
+
             wp_enqueue_style('photoswipe-skin', REXPANSIVE_BUILDER_URL . $cartella . 'Photoswipe/default-skin/default-skin.css', array(), $ver, 'all');
 
-            wp_enqueue_style('jquery.mb.YTPlayer-style', REXPANSIVE_BUILDER_URL . $cartella . 'jquery.mb.YTPlayer/css/jquery.mb.YTPlayer.min.css', array(), $ver, 'all');       
+            wp_enqueue_style('jquery.mb.YTPlayer-style', REXPANSIVE_BUILDER_URL . $cartella . 'jquery.mb.YTPlayer/css/jquery.mb.YTPlayer.min.css', array(), $ver, 'all');
 
             // wp_enqueue_style('overlay-scrollbar-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/OverlayScrollbars.min.css', array(), $ver, 'all');
 
@@ -206,14 +208,17 @@ class Rexbuilder_Public
                 wp_enqueue_script( 'rangy-selectionsaverestore', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/rangy-1.3.0/rangy-selectionsaverestore.js', array( 'jquery' ), null, true );
                 wp_enqueue_script( 'rangy-textrange', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/rangy-1.3.0/rangy-textrange.js', array( 'jquery' ), null, true );
 
+                // SPECTRUM COLOR PICKER
+                wp_enqueue_script('spectrumColor', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/spectrum.js', array('jquery'), $ver, true);
+
                 // MEDIUM EDITOR
                 wp_enqueue_script('medium-editor', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/medium-editor.js', array('jquery'), $ver, true);
                 wp_enqueue_script('mediumEditorToolbarStates', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/medium-editor-toolbar-states.min.js', array('jquery'), $ver, true);
-                wp_enqueue_script('handlebars-runtime', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/handlebars.runtime.js', array('jquery'), $ver, true);
-                wp_enqueue_script('jquery-fileupload', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/jquery.fileupload.js', array('jquery'), $ver, true);
-                wp_enqueue_script('jquery-cycle2', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/jquery.cycle2.min.js', array('jquery'), $ver, true);
-                wp_enqueue_script('cycle2-center', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/jquery.cycle2.center.min.js', array('jquery'), $ver, true);
-                wp_enqueue_script('medium-editor-insert', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/medium-editor-insert-plugin.js', array('jquery'), $ver, true);
+                // wp_enqueue_script('handlebars-runtime', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/handlebars.runtime.js', array('jquery'), $ver, true);
+                // wp_enqueue_script('jquery-fileupload', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/jquery.fileupload.js', array('jquery'), $ver, true);
+                // wp_enqueue_script('jquery-cycle2', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/jquery.cycle2.min.js', array('jquery'), $ver, true);
+                // wp_enqueue_script('cycle2-center', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/jquery.cycle2.center.min.js', array('jquery'), $ver, true);
+                // wp_enqueue_script('medium-editor-insert', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/medium-editor-insert-plugin.js', array('jquery'), $ver, true);
 
                 // Rexbuilder
                 wp_enqueue_script('1-RexUtilEditorUtilities', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/1-Rexbuilder_Util_Editor_Utilities.js', array('jquery'), $ver, true);
@@ -229,6 +234,11 @@ class Rexbuilder_Public
                 wp_enqueue_script('block-editor-js', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/1-Rexbuilder_Block_Editor.js', array('jquery'), $ver, true);
                 wp_enqueue_script('4-modals', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/4-modals.js', array('jquery'), $ver, true);
             }
+
+            // wp_enqueue_script('jquery-dumb-accordion', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/jquery.accordion.js', array('jquery'), $ver, true);
+
+            // imagesloaded
+            // wp_enqueue_script('imagesloaded', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/imagesloaded.pkgd.min.js', array('jquery'), $ver, true);
             // requestanimationframe
             wp_enqueue_script('jquery-requestanimationframe', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/jquery.requestanimationframe.min.js', array('jquery'), $ver, true);
             // JS TMPL
@@ -243,9 +253,6 @@ class Rexbuilder_Public
 
             // STORE JS
             wp_enqueue_script('storeVariables', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/store.legacy.min.js', array('jquery'), $ver, true);
-
-            // SPECTRUM COLOR PICKER
-            wp_enqueue_script('spectrumColor', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/spectrum.js', array('jquery'), $ver, true);
 
             // REXBUILDER
             wp_enqueue_script('1-RexUtil', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Util.js', array('jquery'), $ver, true);

@@ -285,13 +285,14 @@ var builderlive_public_editor = [
 	'public/js/vendor/rangy-1.3.0/rangy-classapplier.js',
 	'public/js/vendor/rangy-1.3.0/rangy-selectionsaverestore.js',
 	'public/js/vendor/rangy-1.3.0/rangy-textrange.js',
+	'public/js/vendor/spectrum.js',
 	'public/js/vendor/medium-editor.js',
 	'public/js/vendor/medium-editor-toolbar-states.min.js',
-	'public/js/vendor/handlebars.runtime.js',
-	'public/js/vendor/jquery.fileupload.js',
-	'public/js/vendor/jquery.cycle2.min.js',
-	'public/js/vendor/jquery.cycle2.center.min.js',
-	'public/js/vendor/medium-editor-insert-plugin.js',
+	// 'public/js/vendor/handlebars.runtime.js',
+	// 'public/js/vendor/jquery.fileupload.js',
+	// 'public/js/vendor/jquery.cycle2.min.js',
+	// 'public/js/vendor/jquery.cycle2.center.min.js',
+	// 'public/js/vendor/medium-editor-insert-plugin.js',
 	'public/js/live/1-Rexbuilder_Util_Editor_Utilities.js',
 	'public/js/live/0-Rexbuilder_Array_Utilities.js',
 	'public/js/live/1-Rexbuilder_Color_Palette.js',
@@ -305,6 +306,7 @@ var builderlive_public_editor = [
 ];
 
 var builderlive_public = [
+	'public/js/vendor/jquery.requestanimationframe.min.js',
 	'public/js/vendor/tmpl.min.js',
 	'public/Photoswipe/photoswipe.min.js',
 	'public/Photoswipe/photoswipe-ui-default.min.js',

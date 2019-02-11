@@ -113,7 +113,8 @@ var Rexbuilder_App = (function($) {
     Rexbuilder_Util.playAllVideos();
 
     var accordionSettings = {
-      duration: 500,
+      durationOpen: 10,
+      durationClose: 300
     };
 
     if( Rexbuilder_Util.editorMode ) {
@@ -243,8 +244,103 @@ var Rexbuilder_App = (function($) {
         //   grid.commit();
         }
       };
-      $accordions.rexAccordion(accordionSettings);
     }
+    
+    $accordions.rexAccordion(accordionSettings);
+
+    // Other accordion plugin
+    // var collapseSettings = {
+    //   duration: 500,
+    //   open: function() {
+    //     var $content = $(this);
+    //     $content.css('display','block');
+    //     $content.imagesLoaded(function() {
+    //       console.log('magini garicatre');
+    //       var block_height = $content.parents('.text-wrap')[0].offsetHeight;
+  
+    //       var block = $content.parents('.grid-stack-item')[0];
+    //       var pgge = $content.parents('.grid-stack').data("plugin_perfectGridGalleryEditor");
+    //       if(pgge) {
+    //         var grid = pgge.properties.gridstackInstance;
+  
+    //         var temp = Math.ceil( ( block_height + pgge.properties.gutter ) / grid.opts.cellHeight );
+    //         grid.batchUpdate();
+    //         grid.resize(block,null,temp);
+    //         grid.commit();
+    //       }
+  
+    //       $content.addClass('rSlideInTop').one(Rexbuilder_Util._animationEvent, function() {
+    //         $(this).removeClass('rSlideInTop');
+    //       });
+    //     });
+    //   },
+    //   close: function() {
+    //     var $content = $(this);
+    //     $content.addClass('rSlideOutTop').one(Rexbuilder_Util._animationEvent, function() {
+    //       $content.removeClass('rSlideOutTop').css('display','none');
+    //       var block_height = $content.parents('.text-wrap')[0].offsetHeight;
+  
+    //       var block = $content.parents('.grid-stack-item')[0];
+    //       var pgge = $content.parents('.grid-stack').data("plugin_perfectGridGalleryEditor");
+    //       if(pgge) {
+    //         var grid = pgge.properties.gridstackInstance;
+  
+    //         var temp = Math.ceil( ( block_height + pgge.properties.gutter ) / grid.opts.cellHeight );
+    //         grid.batchUpdate();
+    //         grid.resize(block,null,temp);
+    //         grid.commit();
+    //       }
+    //     });        
+    //   }
+    // };
+
+    // $accordions.collapse(collapseSettings);
+
+    // Another accordion plugin
+
+    // $accordions.dumbAccordion({
+    //   controlElement: '.rex-accordion--toggle',
+    //   contentElement: '.rex-accordion--content'
+    // }).on('open', function() {
+    //   var $content = $(this);
+    //   $content.css('display','block');
+    //   $content.imagesLoaded(function() {
+    //     console.log('magini garicatre');
+    //     var block_height = $content.parents('.text-wrap')[0].offsetHeight;
+
+    //     var block = $content.parents('.grid-stack-item')[0];
+    //     var pgge = $content.parents('.grid-stack').data("plugin_perfectGridGalleryEditor");
+    //     if(pgge) {
+    //       var grid = pgge.properties.gridstackInstance;
+
+    //       var temp = Math.ceil( ( block_height + pgge.properties.gutter ) / grid.opts.cellHeight );
+    //       grid.batchUpdate();
+    //       grid.resize(block,null,temp);
+    //       grid.commit();
+    //     }
+
+    //     $content.addClass('rSlideInTop').one(Rexbuilder_Util._animationEvent, function() {
+    //       $(this).removeClass('rSlideInTop');
+    //     });
+    //   });
+    // }).on('close',function() {
+    //   var $content = $(this);
+    //   $content.addClass('rSlideOutTop').one(Rexbuilder_Util._animationEvent, function() {
+    //     $content.removeClass('rSlideOutTop').css('display','none');
+    //     var block_height = $content.parents('.text-wrap')[0].offsetHeight;
+
+    //     var block = $content.parents('.grid-stack-item')[0];
+    //     var pgge = $content.parents('.grid-stack').data("plugin_perfectGridGalleryEditor");
+    //     if(pgge) {
+    //       var grid = pgge.properties.gridstackInstance;
+
+    //       var temp = Math.ceil( ( block_height + pgge.properties.gutter ) / grid.opts.cellHeight );
+    //       grid.batchUpdate();
+    //       grid.resize(block,null,temp);
+    //       grid.commit();
+    //     }
+    //   });
+    // });
   };
 
   var _linkDocumentListeners = function() {
