@@ -3,12 +3,20 @@
 //   -webkit-text-fill-color: transparent;
 // }
 .fadeIn {
-    animation-duration: 1.2s;
-    animation-timing-function: cubic-bezier(.39,.575,.565,1.000);
-    animation-fill-mode: both;
+  animation-duration: 1.2s;
+  animation-timing-function: cubic-bezier(.39,.575,.565,1.000);
+  animation-fill-mode: both;
 }
 .fadeOut {
-    animation-duration: 1s;
-    animation-timing-function: ease-out;
-    animation-fill-mode: both;
+  animation-duration: 1s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: both;
+}
+
+.rSlideInTop {
+  animation: rSlideInTop 0.25s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+}
+
+.rSlideOutTop {
+	animation: rSlideOutTop 0.25s cubic-bezier(0.550, 0.085, 0.680, 0.530) both;
 }

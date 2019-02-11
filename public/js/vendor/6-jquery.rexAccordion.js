@@ -125,7 +125,7 @@
                 that.settings.open.completeClbk.call(this, that); // brings the scope to the callback
               }
               that.$element.trigger('rex_accordion:open');
-            }
+            },
           }).attr('data-item-status','open');
         }
       // else if there are more than one accordion, handle this opening one and closing the others
