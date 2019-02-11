@@ -4,46 +4,54 @@
  */
 var HtmlEditor_Modal = (function($) {
   "use strict";
+
+  // dichiarare le variabili iniziali per poi poterle richiamare ove necessario
   var html_editor_modal_properties;
   var editor;
   var defaultHTML;
 
-  var _openModal = function(customHTML) {
-    if (typeof customHTML == "undefined" || customHTML.trim() == "") {
-      editor.setValue(defaultHTML);
+  var _openModal = function(customHTML) { // funzione per l'apertura della finestra contenente l'Editor HTML
+    if (typeof customHTML == "undefined" || customHTML.trim() == "") {  // verificare se il valore customHTML non è definito, rimozione degli spazi con .trim()
+      editor.setValue(defaultHTML);   // attribuire il valore di default all'editor, caricare i dati base prestabiliti
+      console.log('editorHTML || if (customHTML == "undefined") { "'+defaultHTML+'" }');                                      // NOTIFICA
     } else {
-      editor.setValue(customHTML);
+      editor.setValue(customHTML);  // attribuire un valore all'editor, caricare i dati html degli elementi presenti all'interno dell'elemento
+      console.log('editorHTML || else { customHTML = "'+customHTML+'" }');                                                    // NOTIFICA
     }
 
-    editor.clearSelection();
-    Rexlive_Modals_Utils.openModal(html_editor_modal_properties.$modal_wrap);
+    editor.clearSelection();  // funzione per la pulizia/reset del seguente elemento: "rex-html-ace-editor"                                     JavaScript:81
+    Rexlive_Modals_Utils.openModal(html_editor_modal_properties.$modal_wrap); // elemento collegato all'apertura di ".rex-modal-wrap"           JavaScript:79
+    console.log("editorHTML || _openModal()");                                                                              // NOTIFICA
   };
 
-  var _closeModal = function() {
-    Rexlive_Modals_Utils.closeModal( html_editor_modal_properties.$modal_wrap );
+  var _closeModal = function() {  // funzione per la chiusura della finestra contenente l'Editor HTML
+    Rexlive_Modals_Utils.closeModal( html_editor_modal_properties.$modal_wrap );  // elemento collegato alla chiusura di ".rex-modal-wrap"      JavaScript:79
+    console.log("editorHTML || _closeModal()");                                                                             // NOTIFICA
   };
 
-  var _linkDocumentListeners = function() {
-    html_editor_modal_properties.$save_button.on("click", function(e) {
-      e.preventDefault();
+  var _linkDocumentListeners = function() { // funzione per l'analisi e il salvataggio dei dati inseriti/rimossi dall'Editor HTML
+    html_editor_modal_properties.$save_button.on("click", function(e) { // funzione eseguibile al click sul pulsante di salvataggio, cliccatosi dall'utente
+      e.preventDefault(); // impostare i valori di default alla variabile "e"
       
-      var customHTML = editor.getValue();
-      var data_customHTML = {
-        eventName: "rexlive:SetcustomHTML",
-        data_to_send: {
-          customHTML: customHTML
+      var customHTML = editor.getValue();   // stabilire che la variabile "customHTML" deve contenere i dati presenti all'interno dell'elemento "#rex-html-ace-editor"
+      var data_customHTML = {               // raccogliere i dati utili/necessari all'interno della variabile "data_customHTML"
+        eventName: "rexlive:SetcustomHTML", // impostare l'evento da eseguire per il corretto salvataggio dei dati inseriti nell'Editor HTML
+        data_to_send: {                     
+          customHTML: customHTML            // sovrascrivere i vecchi dati di customHTML con quelli più recenti
         }
       };
-      Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_customHTML);
+
+      console.log("publicHTML || "+customHTML)                                                                               // NOTIFICA
+      Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_customHTML);   // inviare i dati della variabile "data_customHTML"
 
       html_editor_modal_properties.$self.addClass("setting-saving").on(Rexbuilder_Util_Admin_Editor.animationEvent, function(e) {
-        _closeModal();
-        html_editor_modal_properties.$self.removeClass("setting-saving");
+        _closeModal();  // eseguire la funzione di chiusura dell'Editor HTML
+        html_editor_modal_properties.$self.removeClass("setting-saving");   // rimuovere la classe setting-saving dalle proprietà
       });
     });
 
-    html_editor_modal_properties.$close_button.on("click", function(e) {
-      _closeModal();
+    html_editor_modal_properties.$close_button.on("click", function(e) {  // funzione eseguibile al click sul pulsante di chiusura, cliccatosi dall'utente
+      _closeModal();    // eseguire la funzione di chiusura dell'Editor HTML
     });
 
     // html_editor_modal_properties.$open_button.on("click", function(e) {

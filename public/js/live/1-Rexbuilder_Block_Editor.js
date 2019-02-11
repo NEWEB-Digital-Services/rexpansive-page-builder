@@ -642,8 +642,9 @@ var Rexbuilder_Block_Editor = (function($) {
       TextEditor.triggerMEEvent({
         name:"rexlive:mediumEditor:saveHTMLContent", 
         data: e.settings.data_to_send, 
-        editable: null
+        editable: null        
       });
+      console.log("passed || Rexbuilder_Util.$document.on('rexlive:SetcustomHTML',function(e) { ... }");
     });
 
     /**

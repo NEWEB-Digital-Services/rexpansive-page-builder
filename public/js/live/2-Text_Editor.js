@@ -1014,13 +1014,15 @@ var TextEditor = (function($) {
     },
 
     handleHtmlEditorSave: function(event) {
+
       // this.base.pasteHTML(event.customHTML, {
       //   cleanPastedHTML: false,
       //   cleanAttrs: ['dir'],
       // });
 
-      var index = this.base.exportSelection().editableElementIndex;
-      this.base.setContent(event.customHTML, index);
+      var index = this.base.exportSelection().editableElementIndex; // restituisce un valore in base alle modifiche fatte (0/1)
+      this.base.setContent(event.customHTML, index);                // codice che aggiorna l'HTML dell'elemento
+      console.log("passed || andleHtmlEditorSave: function(event)");                                                    // NOTIFICA
     }
   });
 
@@ -1230,6 +1232,7 @@ var TextEditor = (function($) {
           if(this.traceSelection) {
             rangy.restoreSelection(this.traceSelection);
             var range = this.getFirstRange();
+            
           }
           console.log("this.method || case: 3");
           break;
@@ -1237,7 +1240,7 @@ var TextEditor = (function($) {
           // Method 4)
           if( this.traceSelection ) {
             rangy.getSelection().restoreCharacterRanges(this.traceEditor, this.traceSelection);
-            var range = this.getFirstRange();
+            var range = this.getFirstRange();            
             range.refresh();
           }
           console.log("this.method || case: 4");
@@ -1257,9 +1260,11 @@ var TextEditor = (function($) {
           case 4:
             // Change the range selection
             // And the insert method
+            console.log("range || "+range);
             var restoreRange = rangy.createRange();
             restoreRange.selectNode(this.traceImg);
             range = restoreRange;
+            console.log("restoreRange || "+restoreRange);
             this.submethod = 1;
             console.log("this.traceImg || case: 4");
             break;
@@ -1311,7 +1316,7 @@ var TextEditor = (function($) {
                 // Insert Node Cool Method
                 var imgNode = Rexbuilder_Dom_Util.htmlToElement(imgHTML);
                 range.insertNode(imgNode);
-                console.log("case: 3 >> "+range);
+                console.log("case: 3 >> ",range);
                 if( imgNode.parentElement === this.traceEditor ) {
                   var prevEl = imgNode.previousElementSibling;
                   var nextEl = imgNode.nextElementSibling;
@@ -1335,6 +1340,7 @@ var TextEditor = (function($) {
                     wrapTagName = "p";
                   }
 
+                  console.log(this);
                   this.wrap( imgNode, document.createElement(wrapTagName) );
                   
                 }                
@@ -1544,59 +1550,54 @@ var TextEditor = (function($) {
     },
 
     hideEditImgToolbar: function() {
-      if( this.traceImg ) {
-        if( 'undefined' !== typeof $(this.mirrorResize).data('uiResizable') ) {
-          $(this.mirrorResize).resizable("destroy");
-        }
-        
-        this.mirrorResize.style.display = "";
-        this.mirrorResize.style.display = "";
-        this.mirrorResize.style.margin = "";
-        this.mirrorResize.style.position = "";
-        this.mirrorResize.style.top = "";
-        this.mirrorResize.style.left = "";
+      if( this.traceImg ) {   // verifica se è presente un elemento, in tal caso prosegui con il codice
+        if( 'undefined' !== typeof $(this.mirrorResize).data('uiResizable') ) {   // verifica se il mirrorResize è diverso da 'undefined', in tal caso ...
+          $(this.mirrorResize).resizable("destroy");    // modifica la proprietà resizable dell'elemento $(this.mirrorResize) con valore = destroy
+        }        
+        this.mirrorResize.style.display = "";       // imposta il display del mirrorResize di this con valore = nothing
+        this.mirrorResize.style.margin = "";        // imposta il margine del mirrorResize di this con valore = nothing
+        this.mirrorResize.style.position = "";      // imposta il tipo di posizione del mirrorResize di this con valore = nothing
+        this.mirrorResize.style.top = "";           // imposta la posizione TOP del mirrorResize di this con valore = nothing
+        this.mirrorResize.style.left = "";          // imposta la posizione LEFT del mirrorResize di this con valore = nothing
       }
-
-      this.traceImg = null;
-      this.imageEditToolbar.classList.remove("medium-editor-toolbar-active");
+      this.traceImg = null;   // imposta il valore del traceImg come nullo (null/nothing)
+      this.imageEditToolbar.classList.remove("medium-editor-toolbar-active");   // rimuovi la classe all'imageEditToolbar
     },
 
-    pasteMediaHTML: function(html) {
-      this.base.restoreSelection();
-
-      html = '<div class="media-embed-wrap">' + html + '</div>';
-
+    pasteMediaHTML: function(html) {  
+      this.base.restoreSelection(); // esegui la funzione .restoreSelection() sull'elemento this
+      html = '<div class="media-embed-wrap">' + html + '</div>';  // sovrascrivi i dati di 'html' modificandoli come definito
+      console.log("publicHTML:1567 || "+html);                                                                  // NOTIFICA
       this.base.pasteHTML(html, {
         cleanPastedHTML: false,
-        cleanAttrs: ['dir']
+        cleanAttrs: ['dir']       
       });
-
-      this.hideEditImgToolbar();
-      this.mediaBtn.classList.remove("embed-value-visibile");
-      this.mediaBtn.style.display = "none";
+      this.hideEditImgToolbar();                                // attiva la funzione hideEditImgToolbar() JS:1546
+      this.mediaBtn.classList.remove("embed-value-visibile");   // rimuovi una classe al mediaBTN
+      this.mediaBtn.style.display = "none";                     // modifica il display del pulsante (mediaBTN) in "display:none;"
+      //console.log("passed || pasteMediaHTML: function(html) { ... }");                                           // NOTIFICA
     },
 
     handleClickEmbed: function(ev) {
-      // var url_to_embed = this.mediaEmbedBtn.getAttribute("data-foo");
       this.mediaBtn.classList.add("embed-value-visibile");    // aggiungi una classe al mediaBTN
       this.mediaEmbedInput.value = "";    // imposta il valore di mediaEmbedInput a nothing per l'avvio della casella di testo
       this.mediaEmbedInput.focus();       // mostra l'input per l'inserimento dell'url correlato al video da caricare
-      console.log("passed || handleClickEmbed() || mediaEmbedInput == nothing");                                // NOTIFICA
+      //console.log("passed || handleClickEmbed() || mediaEmbedInput == nothing");                                // NOTIFICA
     },
 
     getEmbedCode: function(event) {
       var that = this;  // la variabile 'that' assume il valore di 'this'
       if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER)) {                                    // IMPORTANT : ???
-        console.log("passed || if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER))");          // NOTIFICA
+        //console.log("passed || if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER))");          // NOTIFICA
         if( event.target.value !== "" ) {   // verifica se event.target.value è diverso da nothing
-          console.log('passed || if( event.target.value !== "" )');                                             // NOTIFICA
+          //console.log('passed || if( event.target.value !== "" )');                                             // NOTIFICA
           this.mediaEmbedInput.classList.add("embed-loading");  // aggiungi la classe "embed-loading" a this
           $.ajax({
             type: "GET",        // tipologia di passaggio dei dati  (1)
             dataType: "json",   // tipologia di passaggio dei dati  (2)
             url: _plugin_frontend_settings.rexajax.ajaxurl,   // raccolta dei dati per l'url tramite AJAX
             data: {
-              action: "rexlive_get_embed_code",   // nome dell'azione che dev'essere effettuata con tramite l'AJAX
+              action: "rexlive_get_embed_code",   // nome dell'azione che dev'essere effettuata tramite l'AJAX
               nonce_param: _plugin_frontend_settings.rexajax.rexnonce,  // definizione del parametro $nonce - vedi PHP:612
               url_to_embed: event.target.value,                         // definizione del parametro $url_to_embed - vedi PHP:618
             },
@@ -1605,24 +1606,34 @@ var TextEditor = (function($) {
               event.target.value = "";  // Imposta la variabile value dell'evento 'event' come un nothing
               if (response.success) {   // Verifica se il procedimento iniziale è terminato con successo
                 if(response.data.embed !== "") {  // Verifica se il nuovo embed è diverso da nothing
-                  that.pasteMediaHTML(response.data.embed);   // Sovrascrivi il contenuto dell'HTML modificandolo con l'embed
-                  console.log(response.data.embed);                                                             // NOTIFICA 
+                  if(that.traceSelection) {
+                    rangy.getSelection().restoreCharacterRanges(that.traceEditor, that.traceSelection);
+                    var range = that.getFirstRange();  
+                    range.refresh();
+                    var wrapTagName = "p";         
+                  }
+                  var videoNode = Rexbuilder_Dom_Util.htmlToElement(response.data.embed);
+                    range.insertNode(videoNode);
+                    that.wrap( videoNode, document.createElement(wrapTagName));
+                  //console.log(that)                          
+                  //console.log("printVideoNODE || videoNode = "+videoNode);
+                  //console.log("publicHTML:1616 || "+response.data.embed);
                 }
               }
             },
             error: function(response) {},   // azione che viene svolta in caso di errore durante l'operazione
-            complete: function() {  // azione che viene svolta al completamento dell'operazione
+            complete: function() {          // azione che viene svolta al completamento dell'operazione
               that.mediaEmbedInput.classList.remove("embed-loading");   // rimuovi la classe "embed-loading" a this
-              console.log('passed || complete: function() { that...remove("embed-loading"); }');                // NOTIFICA
+              //console.log('passed || complete: function() { that...remove("embed-loading"); }');                // NOTIFICA
             }
           });
         }
       }
-      console.log("passed || END:1621");                                                                        // NOTIFICA
+      //console.log("passed || END:1621");                                                                        // NOTIFICA
     },
 
-    mediaEmbedInputBlur: function(event) {
-      this.mediaBtn.classList.remove("embed-value-visibile");
+    mediaEmbedInputBlur: function(event) {                      // funzione(evento) per impostare l'effetto BLUR al mediaBTN
+      this.mediaBtn.classList.remove("embed-value-visibile");   // rimuovere l'effetto di visibilità al mediaBTN
     },
   });
 

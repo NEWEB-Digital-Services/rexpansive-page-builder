@@ -557,6 +557,7 @@ class Rexbuilder_Public
      *    Ajax call to save sections status
      *
      *    @since 1.0.15
+     * 
      */
     public function rexlive_save_shortcode()
     {
@@ -604,7 +605,7 @@ class Rexbuilder_Public
 
         $nonce = $_GET['nonce_param'];  // $nonce è un dato che viene ricevuto da un form tramite un method=GET
 
-        $response = array(  // $response è un array contenente due valori che sono error e msg
+        $response = array(  // $response è un raccoglitore contenente due valori che sono 'error' e 'msg'
             'error' => false,   // 'error' è settato false come valore iniziale
             'msg' => '',        // 'msg' è settato come un nothing
         );
