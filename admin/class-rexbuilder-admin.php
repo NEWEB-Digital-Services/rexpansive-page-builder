@@ -392,8 +392,11 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'Rexbuilder-Slider', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_RexSlider.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-ChangeLayout', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_ChangeLayout_Modal.js', array( 'jquery' ), null, true );
 
-					// Importo il file Javascript per la gestione del Popup.
+					// Importo il file Javascript per la gestione del Popup ONUNLOADEVENT.
 				wp_enqueue_script( 'Rexlive-onbeforeunload', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_OnBeforeUnload.js', array( 'jquery' ), null, true );
+
+				// Importo il file Javascript per la gestione del Popup UPDATEVIDEOINLINE.
+				wp_enqueue_script( 'Rexlive-updatevideoinline', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_UpdateVideoInline.js', array( 'jquery' ), null, true );
 
 				wp_enqueue_script( 'Rexlive-LockedOption-Mask', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_LockedOption_Mask.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Model-Import', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Model_Import.js', array( 'jquery' ), null, true );

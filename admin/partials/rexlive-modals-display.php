@@ -1931,7 +1931,21 @@ defined('ABSPATH') or exit;
             </div>
         </div>
     </div>
-</div><!-- Layout OnBeforeUnload Popup -->
+</div> <!-- Layout OnBeforeUnload Popup -->
+
+<div class="rex-modal-wrap">
+    <div id="rexlive-updatevideoinline" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
+        <div class="tool-button tool-button--black rex-change-layout-option tool-button--close tippy" data-position="bottom" data-tippy-content="<?php _e( 'Cancel', 'rexspansive');?>" data-rex-option="hide">
+            <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
+        </div>
+        <div class="modal-content modal-content--text">
+            <div class="layout-page-changed-description">
+                <b><?php _e( 'INSERISCI VIDEO URL', 'rexpansive-builder' ); ?></b><br>
+                <input type="text" class="me-insert-embed__value">
+            </div>
+        </div>
+    </div>
+</div> <!-- Layout UpdateVideoInline Popup -->
 
 <div class="rex-modal-wrap">
     <div id="rex-locked-option" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">

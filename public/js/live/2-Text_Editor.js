@@ -1078,6 +1078,7 @@ var TextEditor = (function($) {
       this.imageEditToolbar.classList.add("medium-editor-toolbar");
       this.imageEditToolbar.classList.add("medium-toolbar-arrow-under");
       this.imageEditToolbar.innerHTML = tmpl("tmpl-me-image-edit",{});
+      //console.log(this.imageEditToolbar.innerHTML);
       document.getElementsByTagName("body")[0].append(this.imageEditToolbar);
 
       this.mediaBtn = document.createElement( "div" );
@@ -1575,23 +1576,26 @@ var TextEditor = (function($) {
       this.hideEditImgToolbar();                                // attiva la funzione hideEditImgToolbar() JS:1546
       this.mediaBtn.classList.remove("embed-value-visibile");   // rimuovi una classe al mediaBTN
       this.mediaBtn.style.display = "none";                     // modifica il display del pulsante (mediaBTN) in "display:none;"
-      //console.log("passed || pasteMediaHTML: function(html) { ... }");                                           // NOTIFICA
+      //console.log("passed || pasteMediaHTML: function(html) { ... }");                                         // NOTIFICA
     },
 
     handleClickEmbed: function(ev) {
       this.mediaBtn.classList.add("embed-value-visibile");    // aggiungi una classe al mediaBTN
       this.mediaEmbedInput.value = "";    // imposta il valore di mediaEmbedInput a nothing per l'avvio della casella di testo
       this.mediaEmbedInput.focus();       // mostra l'input per l'inserimento dell'url correlato al video da caricare
-      //console.log("passed || handleClickEmbed() || mediaEmbedInput == nothing");                                // NOTIFICA
+      //console.log("passed || handleClickEmbed() || mediaEmbedInput == nothing");
+
+      Change_UpdateVideoInline_Modal.openModal();
+
     },
 
     getEmbedCode: function(event) {
       var that = this;  // la variabile 'that' assume il valore di 'this'
       if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER)) {                                    // IMPORTANT : ???
-        //console.log("passed || if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER))");          // NOTIFICA
+        //console.log("passed || if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER))");        // NOTIFICA
         if( event.target.value !== "" ) {   // verifica se event.target.value è diverso da nothing
-          //console.log('passed || if( event.target.value !== "" )');                                             // NOTIFICA
-          this.mediaEmbedInput.classList.add("embed-loading");  // aggiungi la classe "embed-loading" a this
+          //console.log('passed || if( event.target.value !== "" )');                                           // NOTIFICA
+          this.mediaEmbedInput.classList.remove("embed-loading");  // aggiungi la classe "embed-loading" a this
           $.ajax({
             type: "GET",        // tipologia di passaggio dei dati  (1)
             dataType: "json",   // tipologia di passaggio dei dati  (2)
@@ -1615,6 +1619,7 @@ var TextEditor = (function($) {
                   var videoNode = Rexbuilder_Dom_Util.htmlToElement(response.data.embed);
                     range.insertNode(videoNode);
                     that.wrap( videoNode, document.createElement(wrapTagName));
+                    
                   //console.log(that)                          
                   //console.log("printVideoNODE || videoNode = "+videoNode);
                   //console.log("publicHTML:1616 || "+response.data.embed);
