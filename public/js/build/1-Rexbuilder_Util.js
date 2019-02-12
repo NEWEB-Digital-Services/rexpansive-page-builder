@@ -1652,8 +1652,8 @@ var Rexbuilder_Util = (function($) {
   var _getDefaultBlockMeasure = function( sectionRexID ) {
     sectionRexID = "undefined" !== typeof sectionRexID ? sectionRexID : "";
     var defs = {
-      defDefaultWidth: 4,
-      defDefaultHeight: 5,
+      defDefaultWidth: 3,
+      defDefaultHeight: 4,
       defMobileWidth: 12,
       defMobileHeight: null
     }

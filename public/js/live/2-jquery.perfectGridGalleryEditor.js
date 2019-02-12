@@ -101,8 +101,6 @@
   // Avoid Plugin.prototype conflicts
   $.extend(perfectGridGalleryEditor.prototype, {
     init: function() {
-      //console.log('First Start');
-
       if ( this.$section.children(".section-data").attr("data-row_edited_live") != "true" ) {
         this.properties.editedFromBackend = true;
       }
@@ -196,6 +194,7 @@
 
       this.properties.startingLayout = this.settings.galleryLayout;
 
+      // Creating layout before collapsing info for resize purpose
       var collapseGrid = this.$section.attr("data-rex-collapse-grid");
       this.properties.dispositionBeforeCollapsing = this.createActionDataMoveBlocksGrid();
       this.properties.layoutBeforeCollapsing = {
@@ -238,11 +237,64 @@
       this.properties.firstStartGrid = false;
     },
 
+    /**
+     * Not accurate due to the time that gridstack takes to create the grid
+     * @deprecated  Never used for now
+     */
     triggerGalleryReady: function() {
       var event = jQuery.Event("rexlive:galleryReady");
       event.gallery = this;
       event.galleryID = this.properties.sectionNumber;
       $(document).trigger(event);
+    },
+
+    /**
+     * Re launch the grid for the front end area
+     * @param {Object}  opts  optional parameters to set
+     * @since 2.0.0
+     */
+    reInitGridFront: function( opts ) {
+      opts = "undefined" !== typeof opts ? opts : {};
+      this.settings.galleryLayout = opts.galleryLayout;
+      this._prepareElements();
+
+      this._launchGridStack();
+
+      this.properties.startingLayout = opts.galleryLayout;
+
+      // Creating layout before collapsing info for resize purpose
+      var collapseGrid = this.$section.attr("data-rex-collapse-grid");
+      this.properties.dispositionBeforeCollapsing = this.createActionDataMoveBlocksGrid();
+      this.properties.layoutBeforeCollapsing = {
+        layout: opts.galleryLayout,
+        fullHeight: opts.fullHeight,
+        singleHeight: this.properties.singleHeight
+      };
+
+      if ( Rexbuilder_Util.activeLayout == "default" && this._viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
+        console.log(collapseGrid);
+        if (typeof collapseGrid == "undefined") {
+          this.collapseElements();
+        } else {
+          if (collapseGrid.toString() == "true") {
+            this.collapseElements();
+          }
+        }
+      }
+
+      this.$element.find(".rex-image-wrapper").each(function(i, el) {
+        var $el = $(el);
+        if ($el.hasClass("natural-image-background")) {
+          var width = parseInt( $el.parents(".grid-item-content").attr("data-background_image_width") );
+          if (width > $el.outerWidth()) {
+            $el.addClass("small-width");
+          }
+        }
+      });
+
+      this.properties.initialStateGrid = this.properties.gridstackInstance.grid.nodes;
+
+      this.triggerGalleryReady();
     },
 
     createActionDataMoveBlocksGrid: function() {
@@ -550,6 +602,10 @@
       //console.log("update grid");
     },
 
+    /**
+     * @deprecated
+     * @version 2.0.0
+     */
     refreshGrid: function() {
       this._defineDynamicPrivateProperties();
 
@@ -558,6 +614,11 @@
       this._fixHeightAllElements();
     },
 
+    /**
+     * Count the number of blocks inside the grid
+     * Necessary for the editing, to trace the correct number of blocks
+     * @since 2.0.0
+     */
     _countBlocks: function() {
       var number = 0;
 
@@ -597,11 +658,20 @@
       return this.properties.sectionNumber;
     },
 
+    /**
+     * Get the section number ID from the data attribute on the section
+     * and adds a class to it
+     * @since 2.0.0
+     */
     _setGridID: function() {
       this.properties.sectionNumber = parseInt( this.$section.attr("data-rexlive-section-number") );
       this.$element.addClass("grid-number-" + this.properties.sectionNumber);
     },
 
+    /**
+     * If a block have not a RexID creates it
+     * @since 2.0.0
+     */
     _updateBlocksRexID: function() {
       var id;
       var $elem;
@@ -975,7 +1045,6 @@
       if (newH !== undefined) {
         this.properties.singleHeight = newH;
       }
-      // console.log(this.properties.singleHeight);
       var gridstack = this.properties.gridstackInstance;
       gridstack.cellHeight(this.properties.singleHeight);
       gridstack._initStyles();
@@ -1516,7 +1585,7 @@
 
     // Define usefull private properties
     _defineDynamicPrivateProperties: function() {
-      // var newWidth = this.$element.outerWidth();
+
       var newWidth = this.element.offsetWidth;
 
       var collapseGrid = this.$section.attr("data-rex-collapse-grid");
@@ -1550,21 +1619,17 @@
       } else {
         var oldSingleHeight = this.properties.singleHeight;
         var newSingleHeight;
-        // //console.log("GRID LAYOUTS");
         if (this.settings.fullHeight.toString() == "true") {
-          // //console.log("&&&fullheight&&&");
           this.properties.gridBlocksHeight = this._calculateGridHeight();
           newSingleHeight =
             this._viewport().height / this.properties.gridBlocksHeight;
         } else {
           newSingleHeight = this.properties.singleWidth;
         }
-        // //console.log(newSingleHeight, oldSingleHeight);
         if (oldSingleHeight == newSingleHeight) {
           return false;
         }
         this.properties.singleHeight = newSingleHeight;
-        // //console.log(this.properties.singleHeight);
       }
       return true;
     },
@@ -3197,7 +3262,7 @@
       this.settings.galleryLayout = layoutData.layout;
       this.settings.fullHeight = layoutData.fullHeight;
       this.properties.singleHeight = layoutData.singleHeight;
-      this.$element.attr("data-full-height", layoutData.fullHeight);
+      this.$element.attr("data-full-height", layoutData.fullHeight); 
       this.$element.attr("data-layout", layoutData.layout);
       this.batchGridstack();
       this.updateGridstackStyles();
@@ -3595,7 +3660,7 @@
 
     destroyGridGallery: function() {
       this.destroyGridstack();
-      this.removeScrollbars();
+      // this.removeScrollbars();
       this.clearStateGrid();
       this.$element.removeClass("grid-number-" + this.properties.sectionNumber);
     },
