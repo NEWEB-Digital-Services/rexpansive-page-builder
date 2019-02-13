@@ -1941,7 +1941,12 @@ defined('ABSPATH') or exit;
         <div class="modal-content modal-content--text">
             <div class="layout-page-changed-description">
                 <b><?php _e( 'INSERISCI VIDEO URL', 'rexpansive-builder' ); ?></b><br>
-                <input type="text" class="me-insert-embed__value">
+                <input type="text" id="me-insert-embed-inline-video-text" class="me-insert-embed__value" placeholder="Youtube, Vimeo, Instagram,...">
+            </div>
+        </div>
+        <div class="rex-modal__outside-footer">
+            <div class="tool-button tool-button--inline tool-button--save rex-change-layout-option tippy" data-tippy-content="<?php _e('Yes and Continue','rexpansive'); ?>" data-rex-option="uploadvideo">
+                <span class="rex-button save-page btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
             </div>
         </div>
     </div>

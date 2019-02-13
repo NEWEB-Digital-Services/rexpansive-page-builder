@@ -132,6 +132,22 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         Section_Modal.openSectionModal(event.data.section_options_active, event.data.mousePosition);
       }
 
+      // GESTIRE L'EVENTO >>> rexlive:inlineVideoEditor
+      if (event.data.eventName == "rexlive:inlineVideoEditor") {
+        Change_UpdateVideoInline_Modal.openModal(event.data.modelData);
+        // console.log('passed || event.data.eventName = "rexlive:mediumeditor:inlineVideoEdit"');
+        //console.log("passed:0139 || Rexbuilder_Util_Admin_Editor.js:REICEVE");
+      }
+
+      // GESTIRE L'EVENTO >>> rexlive:mediumEditor:inlineVideoEditor
+  /*
+      if (event.data.eventName == "rexlive:mediumEditor:inlineVideoEditor") {
+        Change_UpdateVideoInline_Modal.openModal(event.data.modelData);
+        // console.log('passed || event.data.eventName = "rexlive:mediumeditor:inlineVideoEdit"');
+        console.log("passed:0139 || Rexbuilder_Util_Admin_Editor.js:SEND");
+      }
+  */
+
       if (event.data.eventName == "rexlive:openModalMenu") {
         Model_Modal.openModal(event.data.modelData);
       }

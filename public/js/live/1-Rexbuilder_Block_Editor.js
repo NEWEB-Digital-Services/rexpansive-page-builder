@@ -658,6 +658,21 @@ var Rexbuilder_Block_Editor = (function($) {
         editable: null
       });
     });
+
+    /**
+     * Triggering the event on MediumEditor when the user selects a media from the Video Library
+     * @since 2.0.0
+     */
+    Rexbuilder_Util.$document.on('rexlive:mediumEditor:inlineVideoEditor',function(e) {
+      TextEditor.triggerMEEvent({
+        name:"rexlive:mediumEditor:inlineVideoEditor:Transfer", 
+        data: e.settings.data_to_send, 
+        editable: null
+      });
+      //console.log("1-Rexbuilder_Block_Editor.js >> transfer\n", e.settings.data_to_send)
+      //console.log("passed:0672 || 1-Rexbuilder_Block_Editor.js");
+    });
+
   };
 
   /**

@@ -1087,7 +1087,7 @@ var TextEditor = (function($) {
       this.mediaBtn.style.display = "none";
       this.mediaBtn.innerHTML = tmpl("tmpl-me-insert-media-button", {});
       document.getElementsByTagName("body")[0].append(this.mediaBtn);
-      
+
       this.mediaLibraryBtn = $(this.mediaBtn).find(".me-insert-image")[0];
       this.mediaEmbedBtn = $(this.mediaBtn).find(".me-insert-embed")[0];
       this.mediaEmbedInput = $(this.mediaBtn).find(".me-insert-embed__value")[0];
@@ -1102,6 +1102,8 @@ var TextEditor = (function($) {
 
       // Insert the IMG html tag
       this.subscribe("rexlive:mediumEditor:inlineImageEdit", this.handleImageInsertReplace.bind(this));
+
+      this.subscribe("rexlive:mediumEditor:inlineVideoEditor:Transfer", this.getEmbedCode.bind(this));
 
       // Add image with Wordpress Media Library
       this.on(this.mediaLibraryBtn, "click", this.handleClickImage.bind(this));
@@ -1191,7 +1193,7 @@ var TextEditor = (function($) {
           default:
             break;
         }
-        console.log("passed || traceInput: function(event)");
+        //console.log("passed || traceInput: function(event)");
       }
 
       // If i click on an image open the image toolbar
@@ -1214,6 +1216,7 @@ var TextEditor = (function($) {
       console.log("passed || handleClickImage: function(event)");
   
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+
     },
 
     handleImageInsertReplace: function(event) {
@@ -1580,21 +1583,55 @@ var TextEditor = (function($) {
     },
 
     handleClickEmbed: function(ev) {
-      this.mediaBtn.classList.add("embed-value-visibile");    // aggiungi una classe al mediaBTN
-      this.mediaEmbedInput.value = "";    // imposta il valore di mediaEmbedInput a nothing per l'avvio della casella di testo
-      this.mediaEmbedInput.focus();       // mostra l'input per l'inserimento dell'url correlato al video da caricare
-      //console.log("passed || handleClickEmbed() || mediaEmbedInput == nothing");
+      // COMMENTO IL VECCHIO CODICE, PERCHE' INTERAGISCO CON I VIDEO INLINE TRAMITE UN POPUP
+      //this.mediaBtn.classList.add("embed-value-visibile");
+      //this.mediaEmbedInput.value = "";
+      //this.mediaEmbedInput.focus();
 
-      Change_UpdateVideoInline_Modal.openModal();
+      // DEFINISCO LA VARIABILE data, dando un nome all'evento che gestisce.
+      var data = {
+        eventName: "rexlive:inlineVideoEditor",
+        lastCursorPosition: this.traceSelection,
+      };
+      // INVIO I DATI CONTENUTI NELLA VARIABILE DATA AL GESTORE: Rexbuilder_Util_Editor
+      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+
+      var controlCursorPosition = data.lastCursorPosition;
+      console.log(controlCursorPosition);
+
+      if( controlCursorPosition == null) {
+        console.log("POSITION == NOTHING");
+
+        //var x = rangy.getSelection().inspect("start", "0");
+        //var y = rangy.getSelection().inspect("end", "0");
+
+        //console.log(x, y);
+
+        // this.clientLastCursorPosition = VALORE ;
+
+      } else {
+        console.log("POSITION != NOTHING");
+
+        this.clientLastCursorPosition = controlCursorPosition;
+
+      }   
+      
+console.log("passed || handleCLickEmbed() || clientLastCursorPosition\n", this.clientLastCursorPosition);
 
     },
 
+    /*handleVideoInsertReplace: function(eve){
+      var TransferVideoUrl = eve.valueUrl;
+      console.log("OUTPUT:", TransferVideoUrl);
+    },*/
+
     getEmbedCode: function(event) {
       var that = this;  // la variabile 'that' assume il valore di 'this'
-      if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER)) {                                    // IMPORTANT : ???
-        //console.log("passed || if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER))");        // NOTIFICA
-        if( event.target.value !== "" ) {   // verifica se event.target.value è diverso da nothing
-          //console.log('passed || if( event.target.value !== "" )');                                           // NOTIFICA
+      var TransferVideoUrl = event.valueUrl;
+
+      //if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER)) {
+
+        if( TransferVideoUrl !== "" ) {   // verifica se event.target.value è diverso da nothing
           this.mediaEmbedInput.classList.remove("embed-loading");  // aggiungi la classe "embed-loading" a this
           $.ajax({
             type: "GET",        // tipologia di passaggio dei dati  (1)
@@ -1603,23 +1640,22 @@ var TextEditor = (function($) {
             data: {
               action: "rexlive_get_embed_code",   // nome dell'azione che dev'essere effettuata tramite l'AJAX
               nonce_param: _plugin_frontend_settings.rexajax.rexnonce,  // definizione del parametro $nonce - vedi PHP:612
-              url_to_embed: event.target.value,                         // definizione del parametro $url_to_embed - vedi PHP:618
+              url_to_embed: TransferVideoUrl,                         // definizione del parametro $url_to_embed - vedi PHP:618
             },
             // CODICE CHE CARICA IL VIDEO INLINE NEL DIV
             success: function(response) {
-              event.target.value = "";  // Imposta la variabile value dell'evento 'event' come un nothing
+              TransferVideoUrl = "";  // Imposta la variabile value dell'evento 'event' come un nothing
               if (response.success) {   // Verifica se il procedimento iniziale è terminato con successo
                 if(response.data.embed !== "") {  // Verifica se il nuovo embed è diverso da nothing
                   if(that.traceSelection) {
-                    rangy.getSelection().restoreCharacterRanges(that.traceEditor, that.traceSelection);
-                    var range = that.getFirstRange();  
+                    rangy.getSelection().restoreCharacterRanges(that.traceEditor, that.clientLastCursorPosition);
+                    var range = that.getFirstRange(); 
                     range.refresh();
                     var wrapTagName = "p";         
                   }
                   var videoNode = Rexbuilder_Dom_Util.htmlToElement(response.data.embed);
-                    range.insertNode(videoNode);
-                    that.wrap( videoNode, document.createElement(wrapTagName));
-                    
+                  range.insertNode(videoNode);
+                    that.wrap( videoNode, document.createElement(wrapTagName));               
                   //console.log(that)                          
                   //console.log("printVideoNODE || videoNode = "+videoNode);
                   //console.log("publicHTML:1616 || "+response.data.embed);
@@ -1632,9 +1668,9 @@ var TextEditor = (function($) {
               //console.log('passed || complete: function() { that...remove("embed-loading"); }');                // NOTIFICA
             }
           });
-        }
-      }
-      //console.log("passed || END:1621");                                                                        // NOTIFICA
+        }        
+      // Questa parentesi chiude l'elemento "IF" a riga 1613, se si riattiva la funzione descritta, va riattivato.
+      // }
     },
 
     mediaEmbedInputBlur: function(event) {                      // funzione(evento) per impostare l'effetto BLUR al mediaBTN

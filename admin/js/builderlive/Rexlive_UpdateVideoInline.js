@@ -1,15 +1,15 @@
 var Change_UpdateVideoInline_Modal = (function($) {
   "use strict";
   var layout_changing_props;
-  var activeLayoutPage;
-  var buttonData;
 
   var _openModal = function(data) {
     //activeLayoutPage = data.activeLayout;
     //buttonData = data.buttonData;
     Rexlive_Modals_Utils.openModal(
-      layout_changing_props.$self.parent(".rex-modal-wrap")     
+      layout_changing_props.$self.parent(".rex-modal-wrap")
     );
+    // RESETTA LA TEXTBOX OGNI VOLTA CHE APRI IL POPUP PER L'INSERIMENTO DEL VIDEO URL
+    document.getElementById("me-insert-embed-inline-video-text").value = "";
     //layout_changing_props.$layout_name_placholder.text(data.activeLayoutLabel);
   };
 
@@ -27,49 +27,22 @@ var Change_UpdateVideoInline_Modal = (function($) {
         .attr("data-rex-option");
 
       switch (optionSelected) {
-        case "saveandclose":
-          Rexbuilder_Util_Admin_Editor.$responsiveToolbar
-            .find(".btn-save")
-            .addClass("rex-saving");
-          var dataSavePage = {
-            eventName: "rexlive:savePage",
-            data_to_send: {
-              buttonData: buttonData
-            }
-          };
-          var dataSaveModel = {
-            eventName: "rexlive:saveModel",
-            data_to_send: {
-              buttonData: buttonData
-            }
-          };
-          Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataSavePage);
-          Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataSaveModel);
-          Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage({
-            eventName: "rexlive:startChangeLayout"
-          });
-          Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.removeClass(
-            "btn-redo--active btn-undo--active"
-          );
-          break;
-        case "cancelandclose":
-          var data = {
-            eventName: "rexlive:dropChanges",
-            data_to_send: {
-              selected: activeLayoutPage,
-              eventName: "",
-              buttonData: buttonData
-            }
-          };
-          Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
-          Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.removeClass(
-            "btn-redo--active btn-undo--active"
-          );
-          break;
+        case "uploadvideo":
+            // AVVIO IL CASE: "uploadvideo", $inlinevideourlvalue assume il valore compilato dall'utent
+            var inlinevideourlvalue = document.getElementById("me-insert-embed-inline-video-text").value;
+            // CREO UN EVENTO PER INVIARE I DATI DA "admin" A "public"
+            var settings = {
+              eventName: "rexlive:mediumEditor:inlineVideoEditor",
+              data_to_send: {
+                valueUrl: inlinevideourlvalue,
+              }
+            };
+            Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(settings);            
+            break;
         case "hide":
-          break;
+            break;
         default:
-          break;
+            break;
       }
 
       _closeModal();
@@ -78,6 +51,10 @@ var Change_UpdateVideoInline_Modal = (function($) {
 
   var _init = function() {
     var $self = $("#rexlive-updatevideoinline");
+
+    // CARICO I DATI DELL'IMPUT TRAMITE L'ID: me-insert-embed-inline-video-text
+    var $inlinevideourl = document.getElementById("me-insert-embed-inline-video-text");
+
     var $container = $self;
     layout_changing_props = {
       $self: $self,
