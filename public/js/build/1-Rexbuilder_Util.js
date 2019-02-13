@@ -2991,6 +2991,7 @@ var Rexbuilder_Util = (function($) {
         });
       }
     } else {    // Front end resize logic
+
       var actualLayout = _findFrontLayout();
       if(startFrontLayout != actualLayout) {
         changedFrontLayout = true;
@@ -2999,8 +3000,11 @@ var Rexbuilder_Util = (function($) {
       }
 
       if(changedFrontLayout) {
+        var choosedLayout = chooseLayout();
+        _set_initial_grids_state( choosedLayout );
+
         setTimeout(function() {
-          var resize_info = _edit_dom_layout(chooseLayout());
+          var resize_info = _edit_dom_layout(choosedLayout);
           _updateGridsHeights();
   
           if(changedFrontLayout) {
@@ -3018,13 +3022,59 @@ var Rexbuilder_Util = (function($) {
         var resize_info = _edit_dom_layout(chooseLayout());
         _updateGridsHeights();
       }
-
     }
 
     Rexbuilder_Util.windowIsResizing = false;
     Rexbuilder_Util.firstResize = true;
     loadWidth =  Rexbuilder_Util.viewport().width;
   }
+
+  /**
+   * Set the internal initial grid state for every row
+   * based on the actual active customization
+   * @param {string} layout Layout active
+   * @since 2.0.0
+   */
+  var _set_initial_grids_state = function( layout ) {
+    layout = "undefined" !== typeof layout ? layout : "default";
+    Rexbuilder_Util.$rexContainer.find(".rexpansive_section").each(function(index, row) {
+      var $row = $(row);
+      var $grid = $row.find('.grid-stack-row');
+      var galleryEditorInstance = $grid.data().plugin_perfectGridGalleryEditor;
+      var rowCustomizations = Rexbuilder_Util.getSectionCustomLayouts( row.getAttribute('data-rexlive-section-id') );
+      var index = null;
+      var tempIndex = null;
+
+      // Searching for the available layout of this row
+      for(var i=0; i<rowCustomizations.length; i++) {
+        if( rowCustomizations[i].name === "default" ) {
+          tempIndex = i;
+        }
+        if( rowCustomizations[i].name === layout ) {
+          index = i;
+          break;
+        }
+        if( i == rowCustomizations.length-1 ) {
+          index = tempIndex;
+        }
+      }
+      
+      // generation grid state
+      var state = [];
+      for(var i=0; i<rowCustomizations[index].targets.length; i++) {
+        if( "self" !== rowCustomizations[index].targets[i].name ) {
+          var temp = {};
+          temp.el = $row.find('.perfect-grid-item[data-rexbuilder-block-id='+rowCustomizations[index].targets[i].name+']');
+          temp.x = parseInt(rowCustomizations[index].targets[i].props.gs_x);
+          temp.y = parseInt(rowCustomizations[index].targets[i].props.gs_y);
+          temp.width = parseInt(rowCustomizations[index].targets[i].props.gs_width);
+          temp.height = parseInt(rowCustomizations[index].targets[i].props.gs_height);
+          state.push(temp);
+        }
+      }
+      galleryEditorInstance.set_grid_initial_state(state);
+    });
+  };
 
   var _updateGridsHeights = function() {
     Rexbuilder_Util.$rexContainer

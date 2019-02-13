@@ -231,7 +231,7 @@
         }
       });
 
-      this.properties.initialStateGrid = this.properties.gridstackInstance.grid.nodes;
+      this.save_grid_state();
 
       this.triggerGalleryReady();
       this.properties.firstStartGrid = false;
@@ -272,7 +272,6 @@
       };
 
       if ( Rexbuilder_Util.activeLayout == "default" && this._viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
-        console.log(collapseGrid);
         if (typeof collapseGrid == "undefined") {
           this.collapseElements();
         } else {
@@ -292,7 +291,7 @@
         }
       });
 
-      this.properties.initialStateGrid = this.properties.gridstackInstance.grid.nodes;
+      this.save_grid_state();
 
       this.triggerGalleryReady();
     },
@@ -3526,16 +3525,16 @@
           var node = {
             x: parseInt(el.getAttribute("data-gs-x")),
             y: parseInt(el.getAttribute("data-gs-y")),
-            widht: parseInt(el.getAttribute("data-gs-width")),
+            width: parseInt(el.getAttribute("data-gs-width")),
             height: parseInt(el.getAttribute("data-gs-height")),
             autoPosition: el.getAttribute("data-gs-auto-position"),
-            minWidht: el.getAttribute("data-gs-min-width"),
+            minWidth: el.getAttribute("data-gs-min-width"),
             maxWidth: el.getAttribute("data-gs-max-width"),
             minHeight: el.getAttribute("data-gs-min-height"),
             maxHeight: el.getAttribute("data-gs-max-height"),
             id: el.getAttribute("data-gs-id"),
           };
-          that.properties.gridstackInstance.addWidget(el, node.x, node.y, node.widht, node.height, node.autoPosition, node.minWidht, node.maxWidth, node.minHeight, node.maxHeight, node.id);
+          that.properties.gridstackInstance.addWidget(el, node.x, node.y, node.width, node.height, node.autoPosition, node.minWidth, node.maxWidth, node.minHeight, node.maxHeight, node.id);
         });
 
         for(var i=0; i<this.properties.initialStateGrid.length; i++) {
@@ -3634,8 +3633,21 @@
       return result;
     },
 
+    /**
+     * Saving the grid state, based on the gridsatck nodes positions
+     * @since 2.0.0
+     */
     save_grid_state: function() {
       this.properties.initialStateGrid = this.properties.gridstackInstance.grid.nodes;
+    },
+
+    /**
+     * Setting the initialStateGrid property with an array of nodes infos
+     * @param {Array} state array of nodes info
+     * @since 2.0.0
+     */
+    set_grid_initial_state: function( state ) {
+      this.properties.initialStateGrid = state;
     },
 
     /**
@@ -3643,7 +3655,7 @@
      * @param {Array} nodes array of Gridstack nodes
      * @since 2.0.0
      */
-    set_grid_initial_state: function( nodes ) {
+    merge_grid_initial_state: function( nodes ) {
       this.properties.initialStateGrid = this.properties.initialStateGrid.concat(nodes);
     },
 
