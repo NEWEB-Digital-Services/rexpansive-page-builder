@@ -998,6 +998,7 @@ var TextEditor = (function($) {
       event.preventDefault();
       event.stopPropagation();
 
+      this.traceEditor = this.base.getFocusedElement();
       this.base.selectAllContents();
       var index = this.base.exportSelection().editableElementIndex;
 
@@ -1103,6 +1104,7 @@ var TextEditor = (function($) {
       // Insert the IMG html tag
       this.subscribe("rexlive:mediumEditor:inlineImageEdit", this.handleImageInsertReplace.bind(this));
 
+      // Insert the VIDEO html tag
       this.subscribe("rexlive:mediumEditor:inlineVideoEditor:Transfer", this.getEmbedCode.bind(this));
 
       // Add image with Wordpress Media Library
@@ -1119,21 +1121,29 @@ var TextEditor = (function($) {
      * @param {EVENT} event 
      */
     handleBlur: function(event) {
+      //console.log("enter || handleBlur() ");
       if( $(event.target).parents("#me-edit-inline-image-toolbar").length == 0 && !$(event.target).is(".me-insert-embed__value") && 0 == $(event.target).parents(".me-insert-embed").length ) {
         this.mediaBtn.style.display = "none";
         this.mediaBtn.classList.remove("embed-value-visibile");
         this.hideEditImgToolbar();
       }
+      //console.log("ends || handleBlur() ");
     },
 
     handleFocus: function(event, editable) {
+      //console.log("enter || handleFocus() ");
       // editor.append(this.mediaBtn);
       this.mediaBtn.style.display = "block";
       if( 4 == this.method ) {
         // Method 4)
         this.traceEditor = this.base.getFocusedElement();
+        // TRACCIA IL CURSORE INIZIALE ANCHE DOPO UN REFRESH DELLA SCHEDA
+        var editor = this.base.getFocusedElement();
+        this.traceSelection = rangy.getSelection().saveCharacterRanges(editor);
+        //console.log(this.traceEditor);
       }
       this.placeMediaBtn();
+      //console.log("ends || handleFocus() ");
     },
 
     /**
@@ -1189,6 +1199,7 @@ var TextEditor = (function($) {
             // Method 4)
             var editor = this.base.getFocusedElement();
             this.traceSelection = rangy.getSelection().saveCharacterRanges(editor);
+            //console.log(this.traceSelection);
             break;
           default:
             break;
@@ -1596,27 +1607,8 @@ var TextEditor = (function($) {
       // INVIO I DATI CONTENUTI NELLA VARIABILE DATA AL GESTORE: Rexbuilder_Util_Editor
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
 
-      var controlCursorPosition = data.lastCursorPosition;
-      console.log(controlCursorPosition);
-
-      if( controlCursorPosition == null) {
-        console.log("POSITION == NOTHING");
-
-        //var x = rangy.getSelection().inspect("start", "0");
-        //var y = rangy.getSelection().inspect("end", "0");
-
-        //console.log(x, y);
-
-        // this.clientLastCursorPosition = VALORE ;
-
-      } else {
-        console.log("POSITION != NOTHING");
-
-        this.clientLastCursorPosition = controlCursorPosition;
-
-      }   
-      
-console.log("passed || handleCLickEmbed() || clientLastCursorPosition\n", this.clientLastCursorPosition);
+      this.clientLastCursorPosition = data.lastCursorPosition;     
+      //console.log("passed || handleCLickEmbed() || clientLastCursorPosition\n", this.clientLastCursorPosition);
 
     },
 
@@ -1640,7 +1632,7 @@ console.log("passed || handleCLickEmbed() || clientLastCursorPosition\n", this.c
             data: {
               action: "rexlive_get_embed_code",   // nome dell'azione che dev'essere effettuata tramite l'AJAX
               nonce_param: _plugin_frontend_settings.rexajax.rexnonce,  // definizione del parametro $nonce - vedi PHP:612
-              url_to_embed: TransferVideoUrl,                         // definizione del parametro $url_to_embed - vedi PHP:618
+              url_to_embed: TransferVideoUrl,                           // definizione del parametro $url_to_embed - vedi PHP:618
             },
             // CODICE CHE CARICA IL VIDEO INLINE NEL DIV
             success: function(response) {
@@ -1655,10 +1647,15 @@ console.log("passed || handleCLickEmbed() || clientLastCursorPosition\n", this.c
                   }
                   var videoNode = Rexbuilder_Dom_Util.htmlToElement(response.data.embed);
                   range.insertNode(videoNode);
-                    that.wrap( videoNode, document.createElement(wrapTagName));               
+                    that.wrap( videoNode, document.createElement(wrapTagName));
+                    that.traceSelection.setAttribute('data-medium-focused', true);
+
+
+
                   //console.log(that)                          
                   //console.log("printVideoNODE || videoNode = "+videoNode);
                   //console.log("publicHTML:1616 || "+response.data.embed);
+
                 }
               }
             },
