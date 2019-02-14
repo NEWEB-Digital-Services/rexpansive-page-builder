@@ -19,9 +19,6 @@
     Change_UpdateVideoInline_Modal.init();
     Rexlive_Modals_Utils.init();
     
-
-    //console.log("RICHIAMO LA FUNZIONE: Change_OnBeforeUnload_Modal.init()");
-    
     // launch all the modals
     Rexlive_Modals.init();
     
@@ -40,7 +37,7 @@
         e.preventDefault();
         var message = "\o/";    
         (e || window.event).returnValue = message;
-        console.log("ATTENZIONE: Prima di chiudere la scheda in corso verifica di aver salvato il tuo progetto.");
+        console.log("ATTENTION: Before closing the page verify that you have saved the changes.");
         return message;
       }
     }    

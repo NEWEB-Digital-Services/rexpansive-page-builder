@@ -1676,8 +1676,6 @@
         classes: data.customClasses
       };
 
-      console.log(data.customClasses);
-
       $elem.attr("data-rexlive-element-edited", true);
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
@@ -2056,8 +2054,6 @@
           customClasses: customClasses
         }
       };
-
-      // console.log(data);
 
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });

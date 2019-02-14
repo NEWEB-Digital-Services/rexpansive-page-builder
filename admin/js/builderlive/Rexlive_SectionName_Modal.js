@@ -7,7 +7,6 @@ var SectionName_Modal = (function ($) {
     
     var _resetSectionName = function () {
         section_name_modal_properties.$section_id.val(defaultName);
-        //console.log("passed || resetSectionName()");
     }
     
     var _updateSectionName = function(data) {
@@ -17,11 +16,9 @@ var SectionName_Modal = (function ($) {
         if(data.sectionName != ""){
             section_name_modal_properties.$section_id
                 .focus();
-                //console.log("focus: data.sectionName != nothing");
         }else{
             section_name_modal_properties.$section_id
                 .blur();
-                //console.log("focus: data.sectionName == nothing");
         }
     }
 

@@ -1021,9 +1021,10 @@ var TextEditor = (function($) {
       //   cleanAttrs: ['dir'],
       // });
 
-      var index = this.base.exportSelection().editableElementIndex; // restituisce un valore in base alle modifiche fatte (0/1)
-      this.base.setContent(event.customHTML, index);                // codice che aggiorna l'HTML dell'elemento
-      console.log("passed || andleHtmlEditorSave: function(event)");                                                    // NOTIFICA
+      var index = this.base.exportSelection().editableElementIndex;
+      this.base.setContent(event.customHTML, index);
+      console.log("passed || andleHtmlEditorSave: function(event)");
+      
     }
   });
 
@@ -1079,7 +1080,6 @@ var TextEditor = (function($) {
       this.imageEditToolbar.classList.add("medium-editor-toolbar");
       this.imageEditToolbar.classList.add("medium-toolbar-arrow-under");
       this.imageEditToolbar.innerHTML = tmpl("tmpl-me-image-edit",{});
-      //console.log(this.imageEditToolbar.innerHTML);
       document.getElementsByTagName("body")[0].append(this.imageEditToolbar);
 
       this.mediaBtn = document.createElement( "div" );
@@ -1104,7 +1104,7 @@ var TextEditor = (function($) {
       // Insert the IMG html tag
       this.subscribe("rexlive:mediumEditor:inlineImageEdit", this.handleImageInsertReplace.bind(this));
 
-      // Insert the VIDEO html tag
+      // Insert the VIDEO html tag -A
       this.subscribe("rexlive:mediumEditor:inlineVideoEditor:Transfer", this.getEmbedCode.bind(this));
 
       // Add image with Wordpress Media Library
@@ -1121,29 +1121,24 @@ var TextEditor = (function($) {
      * @param {EVENT} event 
      */
     handleBlur: function(event) {
-      //console.log("enter || handleBlur() ");
       if( $(event.target).parents("#me-edit-inline-image-toolbar").length == 0 && !$(event.target).is(".me-insert-embed__value") && 0 == $(event.target).parents(".me-insert-embed").length ) {
         this.mediaBtn.style.display = "none";
         this.mediaBtn.classList.remove("embed-value-visibile");
         this.hideEditImgToolbar();
       }
-      //console.log("ends || handleBlur() ");
     },
 
     handleFocus: function(event, editable) {
-      //console.log("enter || handleFocus() ");
       // editor.append(this.mediaBtn);
       this.mediaBtn.style.display = "block";
       if( 4 == this.method ) {
         // Method 4)
         this.traceEditor = this.base.getFocusedElement();
-        // TRACCIA IL CURSORE INIZIALE ANCHE DOPO UN REFRESH DELLA SCHEDA
+        // This function draws the cursor once it has interacted with the editor. -A
         var editor = this.base.getFocusedElement();
         this.traceSelection = rangy.getSelection().saveCharacterRanges(editor);
-        //console.log(this.traceEditor);
       }
       this.placeMediaBtn();
-      //console.log("ends || handleFocus() ");
     },
 
     /**
@@ -1199,12 +1194,10 @@ var TextEditor = (function($) {
             // Method 4)
             var editor = this.base.getFocusedElement();
             this.traceSelection = rangy.getSelection().saveCharacterRanges(editor);
-            //console.log(this.traceSelection);
             break;
           default:
             break;
         }
-        //console.log("passed || traceInput: function(event)");
       }
 
       // If i click on an image open the image toolbar
@@ -1223,33 +1216,23 @@ var TextEditor = (function($) {
         eventName: "rexlive:openMEImageUploader",
         img_data: {}
       };
-
-      console.log("passed || handleClickImage: function(event)");
-  
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-
     },
 
     handleImageInsertReplace: function(event) {
       var imgHTML = '<img class="wp-image-' + event.imgData.idImage + ' ' + event.imgData.align + '" data-image-id="' + event.imgData.idImage + '" src="' + event.imgData.urlImage + '" alt="" width="' + event.imgData.width + '" height="' + event.imgData.height + '">';
-
-      console.log("print || ID: "+event.imgData.idImage+", ALIGN: "+event.imgData.align+", URL: "+event.imgData.urlImage+", WIDTH: "+event.imgData.width+", HEIGHT: "+event.imgData.height);
-
       switch( this.method ) {
         case 1:
         case 2:
           // Method 1) and 2)
           this.base.restoreSelection();
-          console.log("this.method || case: 2");
           break;
         case 3:
           // Method 3)
           if(this.traceSelection) {
             rangy.restoreSelection(this.traceSelection);
-            var range = this.getFirstRange();
-            
+            var range = this.getFirstRange();        
           }
-          console.log("this.method || case: 3");
           break;
         case 4:
           // Method 4)
@@ -1258,7 +1241,6 @@ var TextEditor = (function($) {
             var range = this.getFirstRange();            
             range.refresh();
           }
-          console.log("this.method || case: 4");
           break;
         default:
           break;
@@ -1270,18 +1252,14 @@ var TextEditor = (function($) {
           case 2:
           case 3:
             this.base.selectElement(this.traceImg);
-            console.log("this.traceImg || case: 3");
             break;
           case 4:
             // Change the range selection
             // And the insert method
-            console.log("range || "+range);
             var restoreRange = rangy.createRange();
             restoreRange.selectNode(this.traceImg);
             range = restoreRange;
-            console.log("restoreRange || "+restoreRange);
             this.submethod = 1;
-            console.log("this.traceImg || case: 4");
             break;
           default:
             break;
@@ -1293,7 +1271,6 @@ var TextEditor = (function($) {
         case 1:
           // 1) Method insertHTMLCommand
           MediumEditor.util.insertHTMLCommand(document, imgHTML);
-          console.log("this.method || case: 1 (B)");
           break;
         case 2:
           // 2) Method pasteHTML
@@ -1301,7 +1278,6 @@ var TextEditor = (function($) {
             cleanPastedHTML: false,
             cleanAttrs: ['dir']
           });
-          console.log("this.method || case: 2 (B)");
           break;
         case 3:
           // 3) Method save/restore selection with rangy
@@ -1309,29 +1285,23 @@ var TextEditor = (function($) {
             var imgNode = Rexbuilder_Dom_Util.htmlToElement(imgHTML);
             range.insertNode(imgNode);
           }
-          console.log("this.method || case: 3 (B)");
           break;
         case 4:
           // 4) Method text-range with rangy
           if( range ) {
-            console.log("if(range) == "+range);
             switch(this.submethod) {
               case 1:
                 // Insert HTML method
                 range.pasteHtml(imgHTML);
-                console.log("this.submethod || case: 1");
                 break;
               case 2:
                 // Insert Node method
                 var imgNode = Rexbuilder_Dom_Util.htmlToElement(imgHTML);
-                range.insertNode(imgNode);
-                console.log("this.submethod || case: 2");
                 break;
               case 3:
                 // Insert Node Cool Method
                 var imgNode = Rexbuilder_Dom_Util.htmlToElement(imgHTML);
                 range.insertNode(imgNode);
-                console.log("case: 3 >> ",range);
                 if( imgNode.parentElement === this.traceEditor ) {
                   var prevEl = imgNode.previousElementSibling;
                   var nextEl = imgNode.nextElementSibling;
@@ -1355,14 +1325,11 @@ var TextEditor = (function($) {
                     wrapTagName = "p";
                   }
 
-                  console.log(this);
-                  this.wrap( imgNode, document.createElement(wrapTagName) );
-                  
+                  this.wrap( imgNode, document.createElement(wrapTagName) );                  
                 }                
               default:
                 break;                
             }
-            console.log("this.method || case: 3 (B)");
           }
           break;
         default:
@@ -1371,8 +1338,6 @@ var TextEditor = (function($) {
 
       this.hideEditImgToolbar();
       this.mediaBtn.style.display = "none";
-
-      console.log("passed || handleImageInsertReplace: function(event)");
     },
 
     getFirstRange: function() {
@@ -1565,113 +1530,122 @@ var TextEditor = (function($) {
     },
 
     hideEditImgToolbar: function() {
-      if( this.traceImg ) {   // verifica se è presente un elemento, in tal caso prosegui con il codice
-        if( 'undefined' !== typeof $(this.mirrorResize).data('uiResizable') ) {   // verifica se il mirrorResize è diverso da 'undefined', in tal caso ...
-          $(this.mirrorResize).resizable("destroy");    // modifica la proprietà resizable dell'elemento $(this.mirrorResize) con valore = destroy
+      if( this.traceImg ) {
+        if( 'undefined' !== typeof $(this.mirrorResize).data('uiResizable') ) {
+          $(this.mirrorResize).resizable("destroy");
         }        
-        this.mirrorResize.style.display = "";       // imposta il display del mirrorResize di this con valore = nothing
-        this.mirrorResize.style.margin = "";        // imposta il margine del mirrorResize di this con valore = nothing
-        this.mirrorResize.style.position = "";      // imposta il tipo di posizione del mirrorResize di this con valore = nothing
-        this.mirrorResize.style.top = "";           // imposta la posizione TOP del mirrorResize di this con valore = nothing
-        this.mirrorResize.style.left = "";          // imposta la posizione LEFT del mirrorResize di this con valore = nothing
+        this.mirrorResize.style.display = "";
+        this.mirrorResize.style.margin = "";
+        this.mirrorResize.style.position = "";
+        this.mirrorResize.style.top = "";
+        this.mirrorResize.style.left = "";
       }
-      this.traceImg = null;   // imposta il valore del traceImg come nullo (null/nothing)
-      this.imageEditToolbar.classList.remove("medium-editor-toolbar-active");   // rimuovi la classe all'imageEditToolbar
+      this.traceImg = null;
+      this.imageEditToolbar.classList.remove("medium-editor-toolbar-active");
     },
 
     pasteMediaHTML: function(html) {  
-      this.base.restoreSelection(); // esegui la funzione .restoreSelection() sull'elemento this
-      html = '<div class="media-embed-wrap">' + html + '</div>';  // sovrascrivi i dati di 'html' modificandoli come definito
-      console.log("publicHTML:1567 || "+html);                                                                  // NOTIFICA
+      this.base.restoreSelection();
+      html = '<div class="media-embed-wrap">' + html + '</div>';
       this.base.pasteHTML(html, {
         cleanPastedHTML: false,
-        cleanAttrs: ['dir']       
+        cleanAttrs: ['dir']   
       });
-      this.hideEditImgToolbar();                                // attiva la funzione hideEditImgToolbar() JS:1546
-      this.mediaBtn.classList.remove("embed-value-visibile");   // rimuovi una classe al mediaBTN
-      this.mediaBtn.style.display = "none";                     // modifica il display del pulsante (mediaBTN) in "display:none;"
-      //console.log("passed || pasteMediaHTML: function(html) { ... }");                                         // NOTIFICA
+      this.hideEditImgToolbar();
+      this.mediaBtn.classList.remove("embed-value-visibile");
+      this.mediaBtn.style.display = "none";
     },
 
     handleClickEmbed: function(ev) {
-      // COMMENTO IL VECCHIO CODICE, PERCHE' INTERAGISCO CON I VIDEO INLINE TRAMITE UN POPUP
+      // This is the code of the old system for uploading inline videos. -A
       //this.mediaBtn.classList.add("embed-value-visibile");
       //this.mediaEmbedInput.value = "";
       //this.mediaEmbedInput.focus();
 
-      // DEFINISCO LA VARIABILE data, dando un nome all'evento che gestisce.
       var data = {
         eventName: "rexlive:inlineVideoEditor",
         lastCursorPosition: this.traceSelection,
       };
-      // INVIO I DATI CONTENUTI NELLA VARIABILE DATA AL GESTORE: Rexbuilder_Util_Editor
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-
-      this.clientLastCursorPosition = data.lastCursorPosition;     
-      //console.log("passed || handleCLickEmbed() || clientLastCursorPosition\n", this.clientLastCursorPosition);
-
+      this.clientLastCursorPosition = data.lastCursorPosition;
     },
 
+    // This is the code of a test for data transfer for the inline videos. -A
     /*handleVideoInsertReplace: function(eve){
       var TransferVideoUrl = eve.valueUrl;
       console.log("OUTPUT:", TransferVideoUrl);
     },*/
 
     getEmbedCode: function(event) {
-      var that = this;  // la variabile 'that' assume il valore di 'this'
+      var that = this;
       var TransferVideoUrl = event.valueUrl;
 
+      // This code was used to start loading the inline video using the keyboard [ENTER]. -A
       //if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER)) {
 
-        if( TransferVideoUrl !== "" ) {   // verifica se event.target.value è diverso da nothing
-          this.mediaEmbedInput.classList.remove("embed-loading");  // aggiungi la classe "embed-loading" a this
+        if( TransferVideoUrl !== "" ) {
+          this.mediaEmbedInput.classList.remove("embed-loading");
           $.ajax({
-            type: "GET",        // tipologia di passaggio dei dati  (1)
-            dataType: "json",   // tipologia di passaggio dei dati  (2)
-            url: _plugin_frontend_settings.rexajax.ajaxurl,   // raccolta dei dati per l'url tramite AJAX
+            type: "GET",
+            dataType: "json",
+            url: _plugin_frontend_settings.rexajax.ajaxurl,
             data: {
-              action: "rexlive_get_embed_code",   // nome dell'azione che dev'essere effettuata tramite l'AJAX
-              nonce_param: _plugin_frontend_settings.rexajax.rexnonce,  // definizione del parametro $nonce - vedi PHP:612
-              url_to_embed: TransferVideoUrl,                           // definizione del parametro $url_to_embed - vedi PHP:618
+              action: "rexlive_get_embed_code",
+              nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+              url_to_embed: TransferVideoUrl,
             },
-            // CODICE CHE CARICA IL VIDEO INLINE NEL DIV
+            // This code loads the inline video into the editor. -A
             success: function(response) {
-              TransferVideoUrl = "";  // Imposta la variabile value dell'evento 'event' come un nothing
-              if (response.success) {   // Verifica se il procedimento iniziale è terminato con successo
-                if(response.data.embed !== "") {  // Verifica se il nuovo embed è diverso da nothing
+              TransferVideoUrl = "";
+              if (response.success) {
+                if(response.data.embed !== "") {
                   if(that.traceSelection) {
                     rangy.getSelection().restoreCharacterRanges(that.traceEditor, that.clientLastCursorPosition);
-                    var range = that.getFirstRange(); 
+                    var range = that.getFirstRange();
                     range.refresh();
-                    var wrapTagName = "p";         
+                    // This is the type of tag that must contain the uploaded video. -A
+                    var wrapTagName = "p";
                   }
                   var videoNode = Rexbuilder_Dom_Util.htmlToElement(response.data.embed);
                   range.insertNode(videoNode);
                     that.wrap( videoNode, document.createElement(wrapTagName));
-                    that.traceSelection.setAttribute('data-medium-focused', true);
+                    //that.traceEditor.focus();
 
+                    /*
+                    
+                    editorInstance.subscribe("editableInput", function(e, elem) {
+                      var $elem = $(elem).parents(".grid-stack-item");
+                      var galleryInstance = $elem.parent().data()
+                        .plugin_perfectGridGalleryEditor;
+                      galleryInstance.fixElementTextSize($elem[0], null, null);
+                
+                      var data = {
+                        eventName: "rexlive:edited",
+                        modelEdited: $elem
+                          .parents(".rexpansive_section")
+                          .hasClass("rex-model-section")
+                      };
+                      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+                    });
 
-
-                  //console.log(that)                          
-                  //console.log("printVideoNODE || videoNode = "+videoNode);
-                  //console.log("publicHTML:1616 || "+response.data.embed);
+                    */
 
                 }
               }
             },
-            error: function(response) {},   // azione che viene svolta in caso di errore durante l'operazione
-            complete: function() {          // azione che viene svolta al completamento dell'operazione
-              that.mediaEmbedInput.classList.remove("embed-loading");   // rimuovi la classe "embed-loading" a this
-              //console.log('passed || complete: function() { that...remove("embed-loading"); }');                // NOTIFICA
+            error: function(response) {},
+            complete: function() {
+              that.mediaEmbedInput.classList.remove("embed-loading");
+              that.traceEditor.focus();
             }
           });
         }        
-      // Questa parentesi chiude l'elemento "IF" a riga 1613, se si riattiva la funzione descritta, va riattivato.
+      // This brace closes the "IF" element on line 1613. -A
       // }
     },
 
-    mediaEmbedInputBlur: function(event) {                      // funzione(evento) per impostare l'effetto BLUR al mediaBTN
-      this.mediaBtn.classList.remove("embed-value-visibile");   // rimuovere l'effetto di visibilità al mediaBTN
+    mediaEmbedInputBlur: function(event) {
+      this.mediaBtn.classList.remove("embed-value-visibile");
     },
   });
 

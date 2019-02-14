@@ -14,38 +14,29 @@ var Block_Video_Background_Modal = (function($) {
     video_background_properties.$self.attr('data-block_tools', data.bgVideo.tools);  
     Rexlive_Modals_Utils.positionModal( video_background_properties.$self, mousePosition );
     Rexlive_Modals_Utils.openModal( video_background_properties.$self.parent(".rex-modal-wrap") );
-    console.log("passed || openBlockVideoBackgroundModal");
 
     if(data.youtubeUrl == ""){
       video_background_properties.$linkYoutube
           .blur();
-      console.log('focusOpen: data.youtubeUrl == nothing');
     }else{
       video_background_properties.$linkYoutube
           .focus()
-      console.log('focusOpen: data.youtubeUrl != nothing');
     }
 
     if(data.vimeoUrl == ""){
       video_background_properties.$linkVimeo
           .blur();
-      console.log('focusOpen: data.vimeoUrl == nothing');
     }else{
       video_background_properties.$linkVimeo
           .focus()
-      console.log('focusOpen: data.vimeoUrl != nothing');
     }
-
-console.log(data.mp4Data);
 
     if(data.mp4Data == ""){
       video_background_properties.$linkMp4Preview
           .blur()
-      console.log('focusOpen: data.mp4Data.linkMp4 == nothing');
     }else{
       video_background_properties.$linkMp4Preview
           .focus();
-      console.log('focusOpen: data.mp4Data.linkMp4 != nothing');
     }
 
   };
@@ -55,8 +46,6 @@ console.log(data.mp4Data);
     Rexlive_Modals_Utils.closeModal(
       video_background_properties.$self.parent(".rex-modal-wrap")
     );
-
-  console.log("passed || closeBlockVideoBackgroundModal");
   };
 
   var _updateVideoModal = function(data) {
@@ -75,7 +64,6 @@ console.log(data.mp4Data);
         data.audio.toString() == "true"
       );
       _focusMp4();
-      console.log("vdtype || data.type == mp4");
 
     } else if (data.type == "vimeo") {
       videoChosen = "vimeo";
@@ -86,8 +74,6 @@ console.log(data.mp4Data);
       video_background_properties.$linkMp4Preview.val("").next('label').removeClass('active');
       video_background_properties.$audioVimeo.prop("checked", data.audio.toString() == "true");
       _focusVimeo();
-      console.log("vdtype || data.type == vimeo");
-
     } else if (data.type == "youtube") {
       videoChosen = "youtube";
       video_background_properties.$linkVimeo.val("");
@@ -97,8 +83,6 @@ console.log(data.mp4Data);
       video_background_properties.$linkMp4Preview.val("").next('label').removeClass('active');
       video_background_properties.$audioYoutube.prop("checked", data.audio.toString() == "true");
       _focusYoutube();
-      console.log("vdtype || data.type == youtube");
-
     }
 
 // YOUTUBE VIDEOS - Case & Focus
@@ -108,13 +92,11 @@ console.log(data.mp4Data);
       //    .trigger('blur');
       video_background_properties.$linkYoutubeLabel
           .removeClass("active");
-      console.log('case: data.youtubeUrl == nothing');
     }else{
       //video_background_properties.$linkYoutubeFocus
       //    .trigger('focus');
       video_background_properties.$linkYoutubeLabel
           .addClass("active");
-      console.log('case: data.youtubeUrl != nothing');
     }
 
 // VIMEO VIDEOS - Case & Focus
@@ -124,13 +106,11 @@ console.log(data.mp4Data);
       //    .trigger('blur');
       video_background_properties.$linkVimeoLabel
           .removeClass("active");
-      console.log('case: data.vimeoUrl == nothing');
     }else{
       //video_background_properties.$linkVimeo
       //    .trigger('focus');
       video_background_properties.$linkVimeoLabel
           .addClass("active");
-      console.log('case: data.vimeoUrl != nothing');
     }
 
 // URL VIDEOS - Case & Focus
@@ -140,13 +120,11 @@ console.log(data.mp4Data);
       //    .trigger('blur');
       video_background_properties.$linkMp4PreviewLabel
           .removeClass("active");
-      console.log('case: data.mp4Data.linkMp4 == nothing');
     }else{
       //video_background_properties.$linkMp4Preview
       //    .trigger('focus');
       video_background_properties.$linkMp4PreviewLabel
           .addClass("active");
-      console.log('case: data.mp4Data.linkMp4 != nothing');
     }
 
     target = data.target;    
@@ -166,8 +144,6 @@ console.log(data.mp4Data);
     //video_background_properties.$linkYoutube.next('label').removeClass('active');
     //video_background_properties.$linkVimeo.next('label').removeClass('active');
     //video_background_properties.$linkMp4Preview.next('label').removeClass('active');
-
-    console.log("passed || clearFocusVideo");
   };
 
   var _clearVideoModal = function() {
@@ -177,7 +153,6 @@ console.log(data.mp4Data);
     video_background_properties.$linkYoutube.val("");
     video_background_properties.$linkMp4.val("");
     video_background_properties.$linkMp4Preview.val("").next('label').removeClass('active');
-    console.log("passed || clearVideoModal");
   };
 
   var _focusYoutube = function() {
@@ -207,8 +182,6 @@ console.log(data.mp4Data);
     }
     video_background_properties.$vimeoWrap.removeClass("selected");
     video_background_properties.$mp4Wrap.removeClass("selected");
-
-    console.log("passed || _focusYoutube");
   };
 
   var _focusVimeo = function() {
@@ -236,8 +209,6 @@ console.log(data.mp4Data);
     }
     video_background_properties.$youTubeWrap.removeClass("selected");
     video_background_properties.$mp4Wrap.removeClass("selected");
-
-    console.log("passed || _focusVimeo");
   };
 
   var _focusMp4 = function() {
@@ -264,8 +235,6 @@ console.log(data.mp4Data);
     }
     video_background_properties.$youTubeWrap.removeClass("selected");
     video_background_properties.$vimeoWrap.removeClass("selected");
-
-    console.log("passed || _focusMp4");
   };
 
   var _updateVideoBackground = function() {
