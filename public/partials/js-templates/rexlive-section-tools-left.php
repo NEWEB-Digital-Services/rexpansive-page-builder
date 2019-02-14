@@ -13,7 +13,7 @@
 defined('ABSPATH') or exit;
 ?>
 
-<div class="bl_d-flex bl_ai-c tools-area tool-area--side">
+<div class="bl_d-flex bl_ai-c tools-area tool-area--side tool-area--left">
     <div class="switch-toggle switch-live">
         <input type="radio" class="edit-row-width" data-section_width="full" id="row-dimension-full-{%=section.rexID%}" name="row-dimension-{%=section.rexID%}" value="100%" checked>
         <label class="tippy" data-tippy-content="<?php _e('Full','rexpansive'); ?>" for="row-dimension-full-{%=section.rexID%}"><span><?php Rexbuilder_Utilities::get_icon('#B001-Full'); ?></span></label>

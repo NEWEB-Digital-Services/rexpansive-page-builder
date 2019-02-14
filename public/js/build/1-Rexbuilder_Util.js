@@ -135,9 +135,31 @@ var Rexbuilder_Util = (function($) {
         ) {
           id = _createSectionID();
           $sec.attr("data-rexlive-section-id", id);
+          _fix_tools_ids( $sec, id );          
         }
       });
   };
+
+  /**
+   * Fix tools IDs for a new page section
+   * - Width tool
+   * - Layout tool
+   * @param {Object} $section jquery object for a section
+   * @param {string} id unique character id
+   */
+  var _fix_tools_ids = function( $section, id ) {
+    var $left_tools = $section.find('.tool-area--side.tool-area--left');
+    $left_tools.find('.edit-row-width').each(function(i,el) {
+      el.setAttribute('id', el.getAttribute('id') + id );
+      el.setAttribute('name', el.getAttribute('name') + id );
+      el.nextElementSibling.setAttribute('for', el.nextElementSibling.getAttribute('for') + id );
+    });
+    $left_tools.find('.edit-row-layout').each(function(i,el) {
+      el.setAttribute('id', el.getAttribute('id') + id );
+      el.setAttribute('name', el.getAttribute('name') + id );
+      el.nextElementSibling.setAttribute('for', el.nextElementSibling.getAttribute('for') + id );
+    });
+  }
 
   var _updateSectionsNumber = function() {
     var last = -1;
