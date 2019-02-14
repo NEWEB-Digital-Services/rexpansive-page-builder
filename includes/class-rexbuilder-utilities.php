@@ -122,4 +122,66 @@ class Rexbuilder_Utilities {
 		global $wp_version;
 		return version_compare( $wp_version, $version, $operator );
 	}
+	
+	/**
+	 * Create a new Rexbuilder valid ID, checking if not already present on 
+	 * a common pool of ids
+	 *
+	 * @param Array $pool
+	 * @return string
+	 * @since 2.0.0
+	 */
+	public static function createValidRexID( $pool )
+	{
+		$id;
+		$flag;
+		$idLength = 4;
+		
+		do
+		{
+			$flag = true;
+			$id = self::createRandomID($idLength);
+			if ($id == "self") {
+				$flag = false;
+			}
+			else
+			{
+				if( false === array_search( $id, $pool ) )
+				{
+					$flag = true;
+				}
+				else
+				{
+					$flag = false;
+				}
+			}
+		} while (!$flag);
+	
+		return $id;
+	}
+	
+	/**
+	 * Create a random string with a certain width
+	 * with numbers and chars
+	 *
+	 * @param int $n
+	 * @return string
+	 * @since 2.0.0
+	 */
+	public static function createRandomID($n)
+	{
+		$text = "";
+		$possible =
+		  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+		$possibleLength = strlen($possible);
+	
+		for ($i = 0; $i < $n; $i++)
+		{
+			$rnum = mt_rand() / (mt_getrandmax() + 1);
+			$temp = (floor($rnum * $possibleLength));
+			$text .= $possible{$temp};
+		}
+	
+		return $text;
+	}
 }

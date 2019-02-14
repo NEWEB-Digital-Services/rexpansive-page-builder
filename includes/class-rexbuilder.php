@@ -114,6 +114,11 @@ class Rexbuilder {
 		require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-utilities.php';
 
 		/**
+		 * Class that give the possibilitie to manipulate a two dimensional grid as an array
+		 */
+		require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-indexed-grid.php';
+
+		/**
 		 * The class responsible for orchestrating the actions and filters of the
 		 * core plugin.
 		 */
@@ -288,16 +293,16 @@ class Rexbuilder {
 		$production = false;
 		$plugin_public = new Rexbuilder_Public( $this->get_plugin_name(), $this->get_version() );
 
-		//per la release
+		//for the release
 //		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles_production' );
 //		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts_production' );
 
-		//per lo sviluppo
+		//for development
 		// filter for the media library
 		//$this->loader->add_filter( 'ajax_query_attachments_args', $plugin_public, 'filter_media' );
 		
 		/* 			
-			funzione per vedere se un utente è loggato
+			Function to check if a user is logged
 			if ( is_user_logged_in() ) {
 				echo "<script type='text/javascript'>alert('Welcome, registered user');</script>";
 			} else {
