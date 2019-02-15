@@ -1941,7 +1941,10 @@ defined('ABSPATH') or exit;
         <div class="modal-content modal-content--text">
             <div class="layout-page-changed-description">
                 <b><?php _e( 'INSERISCI VIDEO URL', 'rexpansive-builder' ); ?></b><br>
-                <input type="text" id="me-insert-embed-inline-video-text" class="me-insert-embed__value" placeholder="Youtube, Vimeo, Instagram,...">
+                <input type="text" id="me-insert-embed-inline-video-text" class="me-insert-embed__value" placeholder="Youtube, Vimeo, Instagram,..."><br>
+                <span id="me-insert-embed-url-isnot-valid" style="transition:1s;">
+                    <b style="color:#b22222;">This value isn't a valid URL.</b>
+                </span>                
             </div>
         </div>
         <div class="rex-modal__outside-footer">

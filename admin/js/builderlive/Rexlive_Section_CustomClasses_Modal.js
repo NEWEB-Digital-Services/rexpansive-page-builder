@@ -31,12 +31,10 @@ var Section_CustomClasses_Modal = (function ($) {
             custom_classes_modal_properties.$classes
                 .siblings("label, .prefix")
                 .removeClass("active");
-                console.log('case: sectionTarget == nothing');
         }else{
             custom_classes_modal_properties.$classes
                 .siblings("label, .prefix")
                 .addClass("active");
-                console.log('case: sectionTarget != nothing');
         }
 
         //console.log("stamp || newClasses:" + newClasses);

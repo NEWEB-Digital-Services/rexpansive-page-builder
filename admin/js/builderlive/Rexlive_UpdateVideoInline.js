@@ -8,8 +8,10 @@ var Change_UpdateVideoInline_Modal = (function($) {
     Rexlive_Modals_Utils.openModal(
       layout_changing_props.$self.parent(".rex-modal-wrap")
     );
-    // RESETTA LA TEXTBOX OGNI VOLTA CHE APRI IL POPUP PER L'INSERIMENTO DEL VIDEO URL
-    document.getElementById("me-insert-embed-inline-video-text").value = "";
+    // Reset Input when the popup opens -A
+   document.getElementById("me-insert-embed-inline-video-text").value = "";
+    // Hide the text that warns the invalidity of the entered value. -A
+    $("#me-insert-embed-url-isnot-valid").css("display","none");
     //layout_changing_props.$layout_name_placholder.text(data.activeLayoutLabel);
   };
 
@@ -28,33 +30,53 @@ var Change_UpdateVideoInline_Modal = (function($) {
 
       switch (optionSelected) {
         case "uploadvideo":
-            // AVVIO IL CASE: "uploadvideo", $inlinevideourlvalue assume il valore compilato dall'utent
             var inlinevideourlvalue = document.getElementById("me-insert-embed-inline-video-text").value;
-            // CREO UN EVENTO PER INVIARE I DATI DA "admin" A "public"
+            // This function verifies the validity of the value based on the references below. -A
+            function isUrlValid(url) {
+              return /^(https?|s?ftp):\/\/(((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:)*@)?(((\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5])\.(\d|[1-9]\d|1\d\d|2[0-4]\d|25[0-5]))|((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?)(:\d*)?)(\/((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)+(\/(([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)*)*)?)?(\?((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|[\uE000-\uF8FF]|\/|\?)*)?(#((([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(%[\da-f]{2})|[!\$&'\(\)\*\+,;=]|:|@)|\/|\?)*)?$/i.test(url);
+            }
+            // This string checks the validity of the URL. -A
+            var isUrl = isUrlValid(inlinevideourlvalue);
+            // This function specifies the actions that must be performed depending on the positive or negative (true/false) value of the validation. -A
+            if( isUrl == false ){
+              $("#me-insert-embed-url-isnot-valid").css("display","block");
+              document.getElementById("me-insert-embed-inline-video-text").value = "";
+              console.log("InsertVIDEO || The value has an error, it isn't a valid URL\nValue:",inlinevideourlvalue,"\nisUrl:",isUrl);
+              $("#me-insert-embed-url-isnot-valid").fadeOut(3000);
+            } else {
+              var settings = {
+                eventName: "rexlive:mediumEditor:inlineVideoEditor",
+                data_to_send: {
+                  valueUrl: inlinevideourlvalue,
+                }
+              };
+              Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(settings);
+              console.log("InsertVIDEO || The value has been validated\nValue:",inlinevideourlvalue,"\nisUrl:",isUrl);
+              _closeModal();
+            }
+
+        /*  Copy of the original code without adding the function to manage the validity of the URL. -A
             var settings = {
               eventName: "rexlive:mediumEditor:inlineVideoEditor",
               data_to_send: {
                 valueUrl: inlinevideourlvalue,
               }
             };
-            Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(settings);            
-            break;
+            Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(settings);  */
+
+            break;             
         case "hide":
+            _closeModal();
             break;
         default:
+            _closeModal();
             break;
       }
-
-      _closeModal();
     });
   };
 
   var _init = function() {
     var $self = $("#rexlive-updatevideoinline");
-
-    // CARICO I DATI DELL'IMPUT TRAMITE L'ID: me-insert-embed-inline-video-text
-    var $inlinevideourl = document.getElementById("me-insert-embed-inline-video-text");
-
     var $container = $self;
     layout_changing_props = {
       $self: $self,

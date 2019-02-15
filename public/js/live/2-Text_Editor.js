@@ -1595,7 +1595,7 @@ var TextEditor = (function($) {
               url_to_embed: TransferVideoUrl,
             },
             // This code loads the inline video into the editor. -A
-            success: function(response) {
+            success: function(response, elem) {
               TransferVideoUrl = "";
               if (response.success) {
                 if(response.data.embed !== "") {
@@ -1611,25 +1611,21 @@ var TextEditor = (function($) {
                     that.wrap( videoNode, document.createElement(wrapTagName));
                     //that.traceEditor.focus();
 
-                    /*
-                    
-                    editorInstance.subscribe("editableInput", function(e, elem) {
-                      var $elem = $(elem).parents(".grid-stack-item");
-                      var galleryInstance = $elem.parent().data()
-                        .plugin_perfectGridGalleryEditor;
-                      galleryInstance.fixElementTextSize($elem[0], null, null);
-                
-                      var data = {
-                        eventName: "rexlive:edited",
-                        modelEdited: $elem
-                          .parents(".rexpansive_section")
-                          .hasClass("rex-model-section")
-                      };
-                      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-                    });
+                    // console.log("_addEditableInputEvents();");
+                    // _addEditableInputEvents();
 
-                    */
-
+                    var $elem = $(elem).parents(".grid-stack-item");  
+                    // var galleryInstance = $elem.parent().data()
+                    //  .plugin_perfectGridGalleryEditor;
+                    // galleryInstance.fixElementTextSize($elem[0], null, null);             
+                    var data = {
+                      eventName: "rexlive:edited",
+                      modelEdited: $elem
+                        .parents(".rexpansive_section")
+                        .hasClass("rex-model-section")
+                    };
+                    Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+                          
                 }
               }
             },

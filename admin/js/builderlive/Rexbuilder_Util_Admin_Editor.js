@@ -64,9 +64,6 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         // get undo redo stack from iframe
         // console.log(event.data.undoRedoStacks);
         $saveBtn.addClass("page-edited");
-
-        console.log('addclasse("page-edited")');
-
         // Rexbuilder_Util_Admin_Editor.$body.addClass('page-edited');
       }
 
@@ -251,11 +248,9 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         switch (event.data.dataSaved) {
           case "model":
             modelSaved = true;
-            console.log("savepage-control-1");
             break;
           case "page":
             Rexbuilder_Util_Admin_Editor.pageSaved = true;
-            console.log("savepage-control-2");
             break;
           default:
             break;
@@ -266,10 +261,8 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
           $saveBtn.removeClass("page-edited");
           // Rexbuilder_Util_Admin_Editor.$body.removeClass('page-edited');
           $saveBtn.removeClass("rex-saving");
-          console.log("savepage-control-3");
           if ( typeof event.data.buttonData !== "undefined" && event.data.buttonData != "" ) {
             _updateLayoutPage(event.data.buttonData);
-            console.log("savepage-control-4");
           }
         }
       }
