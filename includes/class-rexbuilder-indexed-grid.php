@@ -111,6 +111,11 @@ class Rexbuilder_Indexed_Grid
 	 */
 	public function willFit( $width, $height )
 	{
+		if( 0 == count( $this->grid ) )
+		{
+			return 0;
+		}
+
 		$holes = $this->findHoles();
 		$holes_length = count( $holes );
 

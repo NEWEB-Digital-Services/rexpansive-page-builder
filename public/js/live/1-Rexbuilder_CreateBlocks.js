@@ -558,14 +558,17 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
       galleryEditorInstance._removeHandles($newBlock);
 
-      var newRexID = Rexbuilder_Util.createBlockID();
-
       galleryEditorInstance.properties.lastIDBlock = galleryEditorInstance.properties.lastIDBlock + 1;
 
       var newBlockID = "block_" + galleryEditorInstance.properties.sectionNumber + "_" + galleryEditorInstance.properties.lastIDBlock;
 
-      $newBlock.attr("data-rexbuilder-block-id", newRexID);
-      $newBlockData.attr("data-rexbuilder_block_id", newRexID);
+      var blockRexID = $newBlock.attr("data-rexbuilder-block-id");
+      if( "" === blockRexID ) {
+        blockRexID = Rexbuilder_Util.createBlockID();
+        $newBlock.attr("data-rexbuilder-block-id", blockRexID);
+        $newBlockData.attr("data-rexbuilder_block_id", blockRexID);
+      }
+
       if ("" === $newBlock.attr("id")) {
         $newBlock.attr("id", newBlockID);
         $newBlockData.attr("data-id", newBlockID);
@@ -629,7 +632,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
         $textWrap.children().remove();
         var sectionID = $section.attr("data-rexlive-section-id");
         var modelNumber = typeof $section.attr("data-rexlive-model-number") != "undefined" ? $section.attr("data-rexlive-model-number") : "";
-        var rex_block_id = newRexID;
+        var rex_block_id = blockRexID;
 
         var target = {
           sectionID: sectionID,
