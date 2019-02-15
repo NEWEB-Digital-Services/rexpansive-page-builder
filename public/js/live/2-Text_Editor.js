@@ -3,7 +3,7 @@
  * 
  * @since 2.0.0
  */
-var TextEditor = (function($) {
+var TextEditor = (function ($) {
   "use strict";
 
   var editorInstance;
@@ -18,7 +18,7 @@ var TextEditor = (function($) {
 
   var currentTextSelection;
 
-  var _addElementToTextEditor = function($textWrap) {
+  var _addElementToTextEditor = function ($textWrap) {
     editorInstance.addElements($textWrap);
     // _addMediumInsertToElement($textWrap);
   };
@@ -27,16 +27,16 @@ var TextEditor = (function($) {
    * @deprecated
    * @param {jQuery Element} $textWrap 
    */
-  var _addMediumInsertToElement = function($textWrap) {
+  var _addMediumInsertToElement = function ($textWrap) {
     $textWrap.mediumInsert({
       editor: editorInstance,
       beginning: true,
       label: "<i class='l-svg-icons'><svg><use xlink:href='#Z001-Plus'></use></svg></i>",
       addons: {
-        images: { 
+        images: {
           useDragAndDrop: false,
           actions: {
-            replace : {},
+            replace: {},
           }
         },
         embeds: {
@@ -52,7 +52,7 @@ var TextEditor = (function($) {
           actions: {
             replace: {
               label: '<span class="fa fa-pencil"></span>',
-              clicked: function($el) {
+              clicked: function ($el) {
                 console.log($el);
               }
             },
@@ -69,19 +69,19 @@ var TextEditor = (function($) {
    * //Color picker extension
    * Gets the color of the current text selection
    */
-  var getCurrentTextColor = function() {  
+  var getCurrentTextColor = function () {
     return $(editorInstance.getSelectedParentElement()).css("color");
   };
 
-  var getCurrentGradientValue = function() {
+  var getCurrentGradientValue = function () {
     return editorInstance.getSelectedParentElement().getAttribute("data-gradient");
   };
 
-  var getCurrentStyle = function() {
+  var getCurrentStyle = function () {
     return editorInstance.getSelectedParentElement().getAttribute("style");
   }
 
-  var setColor = function(color) {
+  var setColor = function (color) {
     // var finalColor = color ? color.toRgbString() : "rgba(0,0,0,0)";
     var finalColor = color ? color : "rgba(0,0,0,0)";
     _triggerMEEvent({
@@ -94,7 +94,7 @@ var TextEditor = (function($) {
     pickerExtensionInstance.document.execCommand("foreColor", false, finalColor);
   };
 
-  var _openTextGradientColor = function( $elem ) {
+  var _openTextGradientColor = function ($elem) {
     var $section = $elem.parents(".rexpansive_section");
     var rex_block_id = $elem.attr("data-rexbuilder-block-id");
     var $elemData = $elem.children(".rexbuilder-block-data");
@@ -130,7 +130,7 @@ var TextEditor = (function($) {
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
   };
 
-  var initPicker = function(element) {
+  var initPicker = function (element) {
     var $picker = $(element);
     var $picker_preview = $picker.find('.meditor-color-picker--preview');
     $picker.spectrum({
@@ -143,7 +143,7 @@ var TextEditor = (function($) {
       showButtons: false,
       // containerClassName: 'meditor-spectrum-color-picker',
       containerClassName: "sp-draggable sp-meditor",
-      show: function() {
+      show: function () {
         this.setAttribute("data-revert", false);
         // this.setAttribute("data-color-on-show", $picker.spectrum("get").toRgbString());
         Rexbuilder_Color_Palette.show({
@@ -153,20 +153,20 @@ var TextEditor = (function($) {
           textSelection: editorInstance.exportSelection()
         });
       },
-      change: function(color) {
+      change: function (color) {
         setColor(color.toRgbString());
-        $picker_preview.css('background-color',color.toRgbString());
+        $picker_preview.css('background-color', color.toRgbString());
       },
-      move: function(color) {
+      move: function (color) {
         setColor(color.toRgbString());
       },
-      hide: function(color) {
+      hide: function (color) {
         var currentGradient = $picker.attr("data-selection-gradient");
         var revertData = this.getAttribute("data-revert");
-        if( "null" == currentGradient ) {
+        if ("null" == currentGradient) {
           var to_set = "true" == revertData ? this.getAttribute("data-color-on-show") : color.toRgbString();
           setColor(to_set);
-          $picker_preview.css('background-color',to_set);
+          $picker_preview.css('background-color', to_set);
         }
         Rexbuilder_Color_Palette.hide();
       },
@@ -187,7 +187,7 @@ var TextEditor = (function($) {
     aria: "color picker",
     contentDefault: "<span class='editor-color-picker'>Text Color<span>",
 
-    init: function() {
+    init: function () {
       this.button = this.document.createElement("button");
       this.button.classList.add("medium-editor-action");
       this.button.classList.add("medium-editor-action--color-picker");
@@ -200,7 +200,7 @@ var TextEditor = (function($) {
       this.on(this.button, "click", this.handleClick.bind(this));
       this.subscribe("showToolbar", this.handleShowToolbar.bind(this));
     },
-    handleClick: function(event) {
+    handleClick: function (event) {
       // keeping record of the current text selection
       var toolbar = editorInstance.getExtensionByName("toolbar");
       if (toolbar) {
@@ -238,10 +238,10 @@ var TextEditor = (function($) {
       }
     },
 
-    handleShowToolbar: function(event) {
+    handleShowToolbar: function (event) {
       var $element = $(editorInstance.getSelectedParentElement());
       var inline_color = $element.prop('style')['color'];
-      if( "" !== inline_color ) {
+      if ("" !== inline_color) {
         $(this.button).find('.meditor-color-picker--preview').css('background-color', getCurrentTextColor());
       } else {
         $(this.button).find('.meditor-color-picker--preview').css('background-color', '');
@@ -256,7 +256,7 @@ var TextEditor = (function($) {
   var TextGradientExtension = MediumEditor.Extension.extend({
     name: "textGradient",
 
-    init: function() {
+    init: function () {
       this.gradientClassApplier = rangy.createClassApplier('text-gradient', {
         elementTagName: 'span',
         normalize: true,
@@ -270,7 +270,7 @@ var TextEditor = (function($) {
       this.subscribe('rexlive:mediumeditor:removeGradient', this.removeGradient.bind(this));
     },
 
-    handleGradient: function(event, editable) {
+    handleGradient: function (event, editable) {
       // var toolbar = editorInstance.getExtensionByName("textGradient");
       // currentTextSelection = editorInstance.exportSelection();
 
@@ -298,10 +298,10 @@ var TextEditor = (function($) {
       //   if( this.gradientClassApplier.elementAttributes["data-gradient"] !== event.color ) {
       //     // var sel = rangy.getSelection();
       //     // console.log(sel.toHtml());
-          
+
       //   }
       // }
-      
+
       this.gradientClassApplier.undoToSelection();
 
       this.gradientClassApplier.elementAttributes["data-gradient"] = event.color;
@@ -315,12 +315,12 @@ var TextEditor = (function($) {
       // }
     },
 
-    traceGradient: function(event, editable) {
+    traceGradient: function (event, editable) {
       this.gradientClassApplier.elementAttributes["data-gradient"] = event.gradient;
       this.gradientClassApplier.elementAttributes["style"] = event.style;
     },
 
-    removeGradient: function(event, editable) {
+    removeGradient: function (event, editable) {
       this.gradientClassApplier.undoToSelection();
     }
   });
@@ -332,7 +332,7 @@ var TextEditor = (function($) {
     name: "headingTags",
     action: "",
     contentDefault: "TAGS",
-    init: function() {
+    init: function () {
       this.button = this.document.createElement("button");
       this.button.classList.add("medium-editor-action");
       this.button.classList.add("medium-editor-action-list");
@@ -348,7 +348,7 @@ var TextEditor = (function($) {
       // list element
       this.list_element = this.document.createElement("div");
       this.list_element.classList.add("me__action-list");
-      
+
       this.list_element.innerHTML = "<div class='medium-editor-action' data-tag-action='append-h1'>h1</div><div class='medium-editor-action' data-tag-action='append-h2'>h2</div><div class='medium-editor-action' data-tag-action='append-h3'>h3</div><div class='medium-editor-action' data-tag-action='append-h4'>h4</div><div class='medium-editor-action' data-tag-action='append-h5'>h5</div><div class='medium-editor-action' data-tag-action='append-h6'>h6</div><div class='medium-editor-action' data-tag-action='append-p'>p</div>";
 
       this.list_actions = this.list_element.querySelectorAll('.medium-editor-action');
@@ -357,7 +357,7 @@ var TextEditor = (function($) {
       $(this.button).append(this.list_element);
 
       this.action_active = "";
-      this.all_actions = ['append-h1','append-h2','append-h3','append-h4','append-h5','append-h6'];
+      this.all_actions = ['append-h1', 'append-h2', 'append-h3', 'append-h4', 'append-h5', 'append-h6'];
 
       this.on(this.button, 'click', this.handleClick.bind(this));
       this.subscribe("showToolbar", this.resetEnv.bind(this));
@@ -365,7 +365,7 @@ var TextEditor = (function($) {
 
     isAlreadyApplied: function (node) {
       // this.action_active = '';
-      switch( node.nodeName.toLowerCase() ) {
+      switch (node.nodeName.toLowerCase()) {
         case 'h1':
         case 'h2':
         case 'h3':
@@ -391,48 +391,48 @@ var TextEditor = (function($) {
     setInactive: function () {
       this.setActionListState();
     },
-    
+
     setActive: function () {
       this.setActionListState();
     },
 
-    setActionListState: function() {
+    setActionListState: function () {
       this.clearListButtons();
       this.activateListButtons();
     },
 
-    clearListButtons: function() {
+    clearListButtons: function () {
       this.list_active_action.innerHTML = "h1";
-      for(var i=0; i<this.list_actions.length; i++) {
+      for (var i = 0; i < this.list_actions.length; i++) {
         this.list_actions[i].classList.remove('medium-editor-button-active');
       }
     },
 
-    activateListButtons: function() {
-      if( "" != this.action_active ) {
-        this.list_element.querySelector('.medium-editor-action[data-tag-action="'+this.action_active+'"]').classList.add('medium-editor-button-active');
-        this.list_active_action.innerHTML = this.action_active.replace('append-','');
+    activateListButtons: function () {
+      if ("" != this.action_active) {
+        this.list_element.querySelector('.medium-editor-action[data-tag-action="' + this.action_active + '"]').classList.add('medium-editor-button-active');
+        this.list_active_action.innerHTML = this.action_active.replace('append-', '');
       }
     },
 
-    resetEnv: function() {
+    resetEnv: function () {
       this.action_active = "";
     },
-  
-    handleClick: function (event) { 
+
+    handleClick: function (event) {
       // Ensure the editor knows about an html change so watchers are notified
       // ie: <textarea> elements depend on the editableInput event to stay synchronized
 
       var action = undefined;
-      if( event.target.hasAttribute('data-tag-action') ) {
+      if (event.target.hasAttribute('data-tag-action')) {
         action = event.target.getAttribute('data-tag-action');
-      } else if( event.target.parentNode.hasAttribute('data-tag-action') ) {
+      } else if (event.target.parentNode.hasAttribute('data-tag-action')) {
         action = event.target.parentNode.getAttribute('data-tag-action');
       }
 
-      if( 'undefined' != typeof action ) {
+      if ('undefined' != typeof action) {
         editorInstance.execAction(action);
-      }  
+      }
     }
   });
 
@@ -446,7 +446,7 @@ var TextEditor = (function($) {
     contentDefault: "TAGS",
     useQueryState: false,
     aria: 'Format text',
-    init: function() {
+    init: function () {
       this.button = this.document.createElement("button");
       this.button.classList.add("medium-editor-action");
       this.button.classList.add("medium-editor-action-list");
@@ -462,7 +462,7 @@ var TextEditor = (function($) {
       // list element
       this.list_element = this.document.createElement("div");
       this.list_element.classList.add("me__action-list");
-      
+
       this.list_element.innerHTML = "<div class='medium-editor-action' data-tag-action='bold'><i class='fa fa-bold'></i></div><div class='medium-editor-action' data-tag-action='italic'><i class='fa fa-italic'></i></div><div class='medium-editor-action' data-tag-action='underline'><i class='fa fa-underline'></i></div>";
 
       this.list_actions = this.list_element.querySelectorAll('.medium-editor-action');
@@ -476,8 +476,8 @@ var TextEditor = (function($) {
       this.subscribe("showToolbar", this.clearListButtons.bind(this));
     },
 
-    checkState: function(node) {
-      switch( node.nodeName.toLowerCase() ) {
+    checkState: function (node) {
+      switch (node.nodeName.toLowerCase()) {
         case 'b':
         case 'strong':
           this.action_active.push('bold');
@@ -501,7 +501,7 @@ var TextEditor = (function($) {
         case 'li':
         case 'ol':
         case 'ul':
-          if( this.mark_active ) {
+          if (this.mark_active) {
             this.setActionListState();
             this.action_active = [];
             delete this.mark_active;
@@ -511,38 +511,38 @@ var TextEditor = (function($) {
           break;
       }
     },
-  
+
     handleClick: function (event) {
       // Ensure the editor knows about an html change so watchers are notified
       // ie: <textarea> elements depend on the editableInput event to stay synchronized
       var action = undefined;
-      if( event.target.hasAttribute('data-tag-action') ) {
+      if (event.target.hasAttribute('data-tag-action')) {
         action = event.target.getAttribute('data-tag-action');
-      } else if( event.target.parentNode.hasAttribute('data-tag-action') ) {
+      } else if (event.target.parentNode.hasAttribute('data-tag-action')) {
         action = event.target.parentNode.getAttribute('data-tag-action');
       }
 
-      if( 'undefined' != typeof action ) {
+      if ('undefined' != typeof action) {
         editorInstance.execAction(action);
       }
     },
 
-    setActionListState: function() {
+    setActionListState: function () {
       this.clearListButtons();
       this.activateListButtons();
     },
 
-    clearListButtons: function() {
+    clearListButtons: function () {
       this.list_active_action.innerHTML = "<i class='fa fa-bold'></i>";
-      for(var i=0; i<this.list_actions.length; i++) {
+      for (var i = 0; i < this.list_actions.length; i++) {
         this.list_actions[i].classList.remove('medium-editor-button-active');
       }
     },
 
-    activateListButtons: function() {
-      for(var i=0; i<this.action_active.length; i++) {
-        this.list_element.querySelector('.medium-editor-action[data-tag-action="'+this.action_active[i]+'"]').classList.add('medium-editor-button-active');
-        if( 0 == i ) {
+    activateListButtons: function () {
+      for (var i = 0; i < this.action_active.length; i++) {
+        this.list_element.querySelector('.medium-editor-action[data-tag-action="' + this.action_active[i] + '"]').classList.add('medium-editor-button-active');
+        if (0 == i) {
           this.list_active_action.innerHTML = "<i class='fa fa-" + this.action_active[i] + "'></i>";
         }
       }
@@ -557,7 +557,7 @@ var TextEditor = (function($) {
     name: "listDropdown",
     action: "",
     contentDefault: "TAGS",
-    init: function() {   
+    init: function () {
       this.button = this.document.createElement("button");
       this.button.classList.add("medium-editor-action");
       this.button.classList.add("medium-editor-action-list");
@@ -573,7 +573,7 @@ var TextEditor = (function($) {
       // list element
       this.list_element = this.document.createElement("div");
       this.list_element.classList.add("me__action-list");
-      
+
       this.list_element.innerHTML = "<div class='medium-editor-action' data-tag-action='insertorderedlist'><i class='fa fa-list-ol'></i></div><div class='medium-editor-action' data-tag-action='insertunorderedlist'><i class='fa fa-list-ul'></i></div>";
 
       this.list_actions = this.list_element.querySelectorAll('.medium-editor-action');
@@ -582,15 +582,15 @@ var TextEditor = (function($) {
       $(this.button).append(this.list_element);
 
       this.action_active = "";
-      this.all_actions = ['insertorderedlist','insertunorderedlist'];
+      this.all_actions = ['insertorderedlist', 'insertunorderedlist'];
 
       this.on(this.button, 'click', this.handleClick.bind(this));
       this.subscribe("showToolbar", this.resetEnv.bind(this));
     },
 
     isAlreadyApplied: function (node) {
-      for(var i=0;i<this.all_actions.length;i++) {
-        if( this.base.queryCommandState(this.all_actions[i]) ) {
+      for (var i = 0; i < this.all_actions.length; i++) {
+        if (this.base.queryCommandState(this.all_actions[i])) {
           this.action_active = this.all_actions[i];
           return true;
         }
@@ -601,27 +601,27 @@ var TextEditor = (function($) {
     setInactive: function () {
       this.setActionListState();
     },
-    
+
     setActive: function () {
       this.setActionListState();
     },
 
-    setActionListState: function() {
+    setActionListState: function () {
       this.clearListButtons();
       this.activateListButtons();
     },
 
-    clearListButtons: function() {
+    clearListButtons: function () {
       this.list_active_action.innerHTML = "<i class='fa fa-list-alt'></i>";
-      for(var i=0; i<this.list_actions.length; i++) {
+      for (var i = 0; i < this.list_actions.length; i++) {
         this.list_actions[i].classList.remove('medium-editor-button-active');
       }
     },
 
-    activateListButtons: function() {
-      if( "" != this.action_active ) {
-        this.list_element.querySelector('.medium-editor-action[data-tag-action="'+this.action_active+'"]').classList.add('medium-editor-button-active');
-        switch( this.action_active ) {
+    activateListButtons: function () {
+      if ("" != this.action_active) {
+        this.list_element.querySelector('.medium-editor-action[data-tag-action="' + this.action_active + '"]').classList.add('medium-editor-button-active');
+        switch (this.action_active) {
           case 'insertorderedlist':
             this.list_active_action.innerHTML = "<i class='fa fa-list-ol'></i>";
             break;
@@ -635,22 +635,22 @@ var TextEditor = (function($) {
       }
     },
 
-    resetEnv: function() {
+    resetEnv: function () {
       this.action_active = "";
     },
-  
-    handleClick: function (event) { 
+
+    handleClick: function (event) {
       // Ensure the editor knows about an html change so watchers are notified
       // ie: <textarea> elements depend on the editableInput event to stay synchronized
 
       var action = undefined;
-      if( event.target.hasAttribute('data-tag-action') ) {
+      if (event.target.hasAttribute('data-tag-action')) {
         action = event.target.getAttribute('data-tag-action');
-      } else if( event.target.parentNode.hasAttribute('data-tag-action') ) {
+      } else if (event.target.parentNode.hasAttribute('data-tag-action')) {
         action = event.target.parentNode.getAttribute('data-tag-action');
       }
 
-      if( 'undefined' != typeof action ) {
+      if ('undefined' != typeof action) {
         editorInstance.execAction(action);
       }
     }
@@ -662,7 +662,7 @@ var TextEditor = (function($) {
    */
   var ContentBlockPositionExtension = MediumEditor.extensions.button.extend({
     name: "contentBlockPosition",
-    init: function() {
+    init: function () {
       this.button = this.document.createElement("button");
       this.button.classList.add("medium-editor-action");
       this.button.innerHTML = "<i class='l-svg-icons drop-down-icon'><svg><use xlink:href='#C005-Layout'></use></svg></i>";
@@ -670,7 +670,7 @@ var TextEditor = (function($) {
       this.on(this.button, 'click', this.handleClick.bind(this));
     },
 
-    handleClick: function(event) {
+    handleClick: function (event) {
       event.preventDefault();
       event.stopPropagation();
       var pos = this.button.getBoundingClientRect();
@@ -684,7 +684,7 @@ var TextEditor = (function($) {
           y: event.clientY - pos.top,
         }
       };
-      
+
       Rexbuilder_Util_Editor.mouseClickObject = {
         offset: {
           w: this.button.offsetWidth,
@@ -703,7 +703,7 @@ var TextEditor = (function($) {
     name: "justifyDropdown",
     action: "",
     contentDefault: "TAGS",
-    init: function() {   
+    init: function () {
       this.button = this.document.createElement("button");
       this.button.classList.add("medium-editor-action");
       this.button.classList.add("medium-editor-action-list");
@@ -719,13 +719,13 @@ var TextEditor = (function($) {
       // list element
       this.list_element = this.document.createElement("div");
       this.list_element.classList.add("me__action-list");
-      
+
       this.list_element.innerHTML = "<div class='medium-editor-action' data-tag-action='justifyLeft'><i class='fa fa-align-left'></i></div><div class='medium-editor-action' data-tag-action='justifyCenter'><i class='fa fa-align-center'></i></div><div class='medium-editor-action' data-tag-action='justifyRight'><i class='fa fa-align-right'></i></div><div class='medium-editor-action' data-tag-action='justifyFull'><i class='fa fa-align-justify'></i></div>";
 
       this.list_actions = this.list_element.querySelectorAll('.medium-editor-action');
 
       this.action_active = '';
-      this.all_actions = ['justifyLeft','justifyCenter','justifyRight','justifyFull'];
+      this.all_actions = ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'];
 
       $(this.button).append(this.list_parent);
       $(this.button).append(this.list_element);
@@ -734,9 +734,9 @@ var TextEditor = (function($) {
       this.subscribe("showToolbar", this.resetEnv.bind(this));
     },
 
-    isAlreadyApplied: function() {
-      for(var i=0;i<this.all_actions.length;i++) {
-        if( this.base.queryCommandState(this.all_actions[i]) ) {
+    isAlreadyApplied: function () {
+      for (var i = 0; i < this.all_actions.length; i++) {
+        if (this.base.queryCommandState(this.all_actions[i])) {
           this.action_active = this.all_actions[i];
           return true;
         }
@@ -747,27 +747,27 @@ var TextEditor = (function($) {
     setInactive: function () {
       this.setActionListState();
     },
-    
+
     setActive: function () {
       this.setActionListState();
     },
 
-    setActionListState: function() {
+    setActionListState: function () {
       this.clearListButtons();
       this.activateListButtons();
     },
 
-    clearListButtons: function() {
+    clearListButtons: function () {
       this.list_active_action.innerHTML = "<i class='fa fa-align-left'></i>";
-      for(var i=0; i<this.list_actions.length; i++) {
+      for (var i = 0; i < this.list_actions.length; i++) {
         this.list_actions[i].classList.remove('medium-editor-button-active');
       }
     },
 
-    activateListButtons: function() {
-      if( "" != this.action_active ) {
-        this.list_element.querySelector('.medium-editor-action[data-tag-action="'+this.action_active+'"]').classList.add('medium-editor-button-active');
-        switch( this.action_active ) {
+    activateListButtons: function () {
+      if ("" != this.action_active) {
+        this.list_element.querySelector('.medium-editor-action[data-tag-action="' + this.action_active + '"]').classList.add('medium-editor-button-active');
+        switch (this.action_active) {
           case 'justifyLeft':
             this.list_active_action.innerHTML = "<i class='fa fa-align-left'></i>";
             break;
@@ -787,22 +787,22 @@ var TextEditor = (function($) {
       }
     },
 
-    resetEnv: function() {
+    resetEnv: function () {
       this.action_active = "";
     },
-  
-    handleClick: function (event) { 
+
+    handleClick: function (event) {
       // Ensure the editor knows about an html change so watchers are notified
       // ie: <textarea> elements depend on the editableInput event to stay synchronized
 
       var action = undefined;
-      if( event.target.hasAttribute('data-tag-action') ) {
+      if (event.target.hasAttribute('data-tag-action')) {
         action = event.target.getAttribute('data-tag-action');
-      } else if( event.target.parentNode.hasAttribute('data-tag-action') ) {
+      } else if (event.target.parentNode.hasAttribute('data-tag-action')) {
         action = event.target.parentNode.getAttribute('data-tag-action');
       }
 
-      if( 'undefined' != typeof action ) {
+      if ('undefined' != typeof action) {
         // action applied already?
         editorInstance.execAction(action);
       }
@@ -811,28 +811,28 @@ var TextEditor = (function($) {
 
   var CloseEditorEscapeExtension = MediumEditor.Extension.extend({
     name: 'close-editor-escape',
-  
+
     init: function () {
       this.subscribe('editableKeydown', this.handleKeydown.bind(this));
     },
-  
+
     handleKeydown: function (event, editable) {
       // If the user hits escape, toggle the data-allow-context-menu attribute
       if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ESCAPE)) {
         var $elem = $(editable).parents('.grid-stack-item');
         var $gallery = $elem.parents('.perfect-grid-gallery');
         var gallery = $gallery.data('plugin_perfectGridGalleryEditor');
-        
+
         Rexbuilder_Util_Editor.focusedElement = $elem;
         Rexbuilder_Util_Editor.elementIsDragging = false;
-         
+
         TextEditor.triggerMEEvent({
-          "name":"blur",
-          "data":event,
-          editable:editable
+          "name": "blur",
+          "data": event,
+          editable: editable
         });
 
-        if( Rexbuilder_Util_Editor.editedTextWrap ) {
+        if (Rexbuilder_Util_Editor.editedTextWrap) {
           Rexbuilder_Util_Editor.editedTextWrap.blur();
         }
         gallery.focusElement($elem);
@@ -852,24 +852,24 @@ var TextEditor = (function($) {
     name: "dropDownButtonList",
     action: "",
 
-    init: function() {
+    init: function () {
       this.button = this.document.createElement("button");
       this.button.classList.add("medium-editor-action");
       this.button.classList.add("medium-editor-action-list");
       this.button.innerHTML = this.contentDefault;
       this.on(this.button, 'click', this.handleClick.bind(this));
     },
-  
+
     getButton: function () {
       return this.button;
     },
-  
-    handleClick: function (event) { 
+
+    handleClick: function (event) {
       // Ensure the editor knows about an html change so watchers are notified
       // ie: <textarea> elements depend on the editableInput event to stay synchronized
 
       var action = event.target.getAttribute('data-tag-action');
-      if( 'undefined' != typeof action ) {
+      if ('undefined' != typeof action) {
         editorInstance.execAction(action);
       }
     }
@@ -885,7 +885,7 @@ var TextEditor = (function($) {
     aria: "text to html",
     contentDefault: "<span class='editor-text-html'>Text Html<span>",
 
-    init: function() {
+    init: function () {
       this.button = this.document.createElement("button");
       this.button.classList.add("medium-editor-action");
       this.button.innerHTML = "<i class='l-svg-icons'><svg><use xlink:href='#A008-Code'></use></svg></i>";
@@ -894,7 +894,7 @@ var TextEditor = (function($) {
       this.on(this.button, "click", this.handleClick.bind(this));
     },
 
-    handleClick: function(event) {
+    handleClick: function (event) {
       event.preventDefault();
       event.stopPropagation();
       var selection = editorInstance.exportSelection();
@@ -984,7 +984,7 @@ var TextEditor = (function($) {
     aria: "text to html",
     contentDefault: "<span class='editor-text-html'>Text Html<span>",
 
-    init: function() {
+    init: function () {
       this.button = this.document.createElement("button");
       this.button.classList.add("medium-editor-action");
       this.button.innerHTML = "<i class='l-svg-icons'><svg><use xlink:href='#A008-Code'></use></svg></i>";
@@ -994,7 +994,7 @@ var TextEditor = (function($) {
       this.subscribe("rexlive:mediumEditor:saveHTMLContent", this.handleHtmlEditorSave.bind(this));
     },
 
-    handleClick: function(event) {
+    handleClick: function (event) {
       event.preventDefault();
       event.stopPropagation();
 
@@ -1002,18 +1002,18 @@ var TextEditor = (function($) {
       var index = this.base.exportSelection().editableElementIndex;
 
       var meContents = this.base.serialize();
-      var htmlSelected = meContents['element-'+index].value;
-      htmlSelected = htmlSelected.replace('<span class="text-editor-span-fix" style="display: none;"></span>','').trim();
+      var htmlSelected = meContents['element-' + index].value;
+      htmlSelected = htmlSelected.replace('<span class="text-editor-span-fix" style="display: none;"></span>', '').trim();
 
       var data = {
         eventName: "rexlive:openHTMLEditor",
         htmlContent: htmlSelected
       };
-  
+
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     },
 
-    handleHtmlEditorSave: function(event) {
+    handleHtmlEditorSave: function (event) {
       // this.base.pasteHTML(event.customHTML, {
       //   cleanPastedHTML: false,
       //   cleanAttrs: ['dir'],
@@ -1026,16 +1026,16 @@ var TextEditor = (function($) {
 
   var HideRowToolsOnEditing = MediumEditor.Extension.extend({
     name: 'hide-row-tools-on-editing',
-    init: function() {
+    init: function () {
       this.subscribe("blur", this.handleBlur.bind(this));
       this.subscribe("focus", this.handleFocus.bind(this));
     },
 
-    handleBlur: function(event,editable) {
+    handleBlur: function (event, editable) {
       $(editable).parents(".rexpansive_section").removeClass("block-editing");
     },
 
-    handleFocus: function(event,editable) {
+    handleFocus: function (event, editable) {
       $(editable).parents(".rexpansive_section").addClass("block-editing");
     }
   });
@@ -1048,6 +1048,7 @@ var TextEditor = (function($) {
     name: 'rexbutton-input',
     init: function () {
       this.fixNodesEnter = false;
+      this.fixButtonsClasses = false;
       this.primaCeraRex = false;
       this.subscribe("editableInput", this.handleEventInput.bind(this));
       this.subscribe("editableKeydown", this.handleEventKeyDown.bind(this));
@@ -1056,6 +1057,9 @@ var TextEditor = (function($) {
     },
 
     handleEventInput: function (eventObj, target) {
+      return;
+      console.log(eventObj);
+      console.log(target);
       switch (eventObj.inputType) {
         case "deleteContentBackward":
         case "historyRedo":
@@ -1068,54 +1072,115 @@ var TextEditor = (function($) {
               $buttonChildren.detach().insertAfter($buttonWrapper[0]);
             }
           });
+          this.fixNodesEnter = true;
+          break;
+        case "historyUndo":
+          this.fixButtonsClasses = true;
           break;
         default:
           console.log(eventObj);
           break;
       }
+      console.log(1);
       if (this.fixNodesEnter) {
-        var nodeToFix = MediumEditor.selection.getSelectionStart(MediumEditorInstance.options.ownerDocument);
+        var nodeToFix = MediumEditor.selection.getSelectionStart(this.base.options.ownerDocument);
         var $node = $(nodeToFix);
 
-        while (!$node.is("body") && !$node.parent().hasClass("medium-editor-element")) {
+        while (!$node.is("p") && !$node.is("body") && !$node.parent().hasClass("medium-editor-element")) {
           $node = $node.parent();
         };
 
         if ($node.is("body")) {
-          event.preventDefault();
           return;
         }
+
+        console.log("current node", $node[0].nodeName);
+        var $tmp = $node.parents("p");
+        if ($tmp.length != 0) {
+          $node.detach().insertAfter($tmp.eq(0));
+          this.customMoveCursor($node[0]);
+        }
+        this.fixNodesEnter = false;
+        console.log("fixed");
+        return;
         var nodeFixing = $node[0];
         var $newNode = $(nodeFixing.childNodes[nodeFixing.childNodes.length - 1]);
         $newNode.detach().insertAfter($node);
+        this.customMoveCursor($newNode[0]);
 
         //fixing focus position
-        this.customMoveCursor($newNode[0]);
-        this.fixNodesEnter = false;
+      }
+      
+      if (this.fixButtonsClasses) {
+        this.replaceClasses($(target), "rex-text-editor-button-fixed-wrapper", "rex-button-wrapper");
+        this.fixButtonsClasses = false;
       }
     },
+
     handleEventKeyUp: function (event, target) {
+      var nodeToFix = MediumEditor.selection.getSelectionStart(this.base.options.ownerDocument);
+      var $node = $(nodeToFix);
+
+      while (!$node.is("body") && !$node.hasClass("medium-editor-element")) {
+        $node = $node.parent();
+      };
+
+      if ($node.is("body")) {
+        return;
+      }
+
+      //this.replaceClasses($node, "rex-text-editor-button-fixed-wrapper", "rex-button-wrapper");
+      return;
+
       var node = MediumEditor.selection.getSelectionStart(this.base.options.ownerDocument);
-      if(this.primaCeraRex){
-        console.log("aye");
+      if (this.primaCeraRex) {
+        console.log("prima di me c'era rexbutton");
         event.preventDefault();
         return;
       }
       if (!node) {
         return;
       }
-
+      console.log("a");
       if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER) && !this.isSafeInsert(node)) {
         if ($(node).hasClass("rex-button-text")) {
+          console.log("b");
           event.preventDefault();
           return;
         }
+        console.log("c");
         this.fixNodesEnter = true;
       }
+      this.replaceClasses($(target), "rex-text-editor-button-fixed-wrapper", "rex-button-wrapper");
     },
+
     handleEventKeyDown: function (event, target) {
-      var node = MediumEditor.selection.getSelectionStart(this.base.options.ownerDocument);
-      var mediumEditorOffset = MediumEditor.selection.getCaretOffsets(node).left;
+      var nodeToFix = MediumEditor.selection.getSelectionStart(this.base.options.ownerDocument);
+      var mediumEditorOffset = MediumEditor.selection.getCaretOffsets(nodeToFix).left;
+      var $node = $(nodeToFix);
+
+      while (!$node.is("body") && !$node.hasClass("medium-editor-element")) {
+        $node = $node.parent();
+      };
+
+      if ($node.is("body")) {
+        return;
+      }
+      //this.replaceClasses($node, "rex-button-wrapper", "rex-text-editor-button-fixed-wrapper");
+      //event.preventDefault();
+      console.log(1);
+      if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.BACKSPACE) &&
+        window.getSelection().focusOffset == 0) {
+        console.log(2);
+        if (mediumEditorOffset === 0) {
+          console.log(3);
+          if (this.isElementBefore(nodeToFix, "rex-buttons-paragraph")) {
+            console.log("have to block");
+            event.preventDefault();
+          }
+        }
+      }
+      return;
 
       /**
        * Fix for rexpansive buttons
@@ -1126,34 +1191,16 @@ var TextEditor = (function($) {
           mediumEditorOffset === 0) {
           if (// l'elemento prima è un rexbutton
             this.isElementBefore(node, "rex-button-wrapper")) {
-            console.log("sarei qwertyuio");
-            /*
-            // se siamo dentro un elemento che non è il contenitore dell'editor
-            var $node = $(node);
-            console.log("elemento prima di me è un rexbutton");
-            while (!$node.is("body") && !$node.parent().hasClass("medium-editor-element")) {
-                $node = $node.parent();
-            };
-            
-            if ($node.is("body")) {
-                event.preventDefault();
-                return;
-            }
-            
-            var $rexButton = $node.prev().detach();
-            $rexButton.prependTo($node);
-            */
+            console.log("caso back-1");
           } else {
-            console.log("sarei asdfghjkl");
-            // se nel nodo prima di me c'è un rexbutton come ultimo elemento 
-            // lascio fare e sistemo al keyup
+            console.log("caso back-2");
+            this.replaceClasses($(node), "rex-button-wrapper", "rex-text-editor-button-fixed-wrapper");
+            this.fixButtonsClasses = true;
           }
         } else
           //check all'interno di un elemento (assume offeset diverso da 0)
           if (this.isNodeBefore(node, mediumEditorOffset, "rex-button-wrapper")) {
-            console.log("modo mio modo");
-            console.log("sarei zxcvbnm");
-
+            console.log("caso back-3");
           }
       }
 
@@ -1162,24 +1209,24 @@ var TextEditor = (function($) {
         var continueChecks = true;
         //se siamo dentro un rexbutton non deve fare nulla
         if ($(node).hasClass("rex-button-text")) {
-          console.log("modo mio modo");
+          console.log("caso enter-1");
           //se siamo all'ultimo carattere del rexbutton cosa facciamo?
           stopEvent = true;
         } else if (
           //se ci troviamo all'inizio del nodo
           window.getSelection().focusOffset == 0) {
+            console.log("inizio del nodo");
           // il nodo prima è un rexbutton
           if (
             //all'inizio del primo nodo dell'elemento
             mediumEditorOffset === 0
             // il nodo prima è un rexbutton
             && this.isElementBefore(node, "rex-button-wrapper")) {
+            console.log("il nodo prima di me è un rexbutton");
             var $node = $(node);
-            console.log(1);
             if (!($node.prev().hasClass("rex-button-wrapper") && $node.parent().hasClass("medium-editor-element"))) {
-              console.log(3);
-              console.log("elemento prima c'era rex button");
-              this.primaCeraRex = true;
+              console.log("caso enter-2");
+              //this.primaCeraRex = true;
               this.stopEvent = true;
             }
             continueChecks = false;
@@ -1187,16 +1234,21 @@ var TextEditor = (function($) {
 
           //se siamo dentro un elemento con uno span rexbutton prima
           if (continueChecks && this.isNodeBefore(node, mediumEditorOffset, "rex-button-wrapper")) {
-            console.log("CHECAZZO STA SUCCEDENTDO");
-            stopEvent= true;
+            console.log("caso enter-3");
+            stopEvent = true;
           }
         }
         if (stopEvent) {
-          console.log("stopping event");
+          console.log("caso enter-4");
           event.preventDefault();
           return;
         }
+        this.replaceClasses($(node), "rex-button-wrapper", "rex-text-editor-button-fixed-wrapper");
       }
+    },
+
+    replaceClasses: function ($wrapper, previousClass, newClass) {
+      $wrapper.find("." + previousClass).removeClass(previousClass).addClass(newClass);
     },
 
     customMoveCursor: function (el, offset) {
@@ -1208,7 +1260,7 @@ var TextEditor = (function($) {
       sel.removeAllRanges();
       sel.addRange(range);
     },
-    
+
     /**
      * Checks if there is rexbutton after or before cursor
      * @param {*} node 
@@ -1274,6 +1326,22 @@ var TextEditor = (function($) {
       };
       return $node.prev().hasClass(class_name);
     },
+
+    /**
+     * returns true if inside a rex button
+     * false otherwise
+     */
+    updateEnterFixState: function (node) {
+      return false;
+      if (!this.isSafeInsert(node)) {
+        if ($(node).hasClass("rex-button-text")) {
+          event.preventDefault();
+          return true;
+        }
+        this.fixNodesEnter = true; 
+      }
+      return false;
+    }
   });
   ///////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -1292,7 +1360,7 @@ var TextEditor = (function($) {
    */
   var InsertMediaExtension = MediumEditor.Extension.extend({
     name: 'insert-media',
-  
+
     init: function () {
       this.insertionPoint = null;
       this.traceImg = null;
@@ -1308,20 +1376,20 @@ var TextEditor = (function($) {
       this.resizeSizes = document.createElement('span');
       this.resizeSizes.classList.add("me-resize-sizes");
 
-      this.imageEditToolbar = document.createElement( "div" );
+      this.imageEditToolbar = document.createElement("div");
       this.imageEditToolbar.id = "me-edit-inline-image-toolbar";
       this.imageEditToolbar.classList.add("medium-editor-toolbar");
       this.imageEditToolbar.classList.add("medium-toolbar-arrow-under");
-      this.imageEditToolbar.innerHTML = tmpl("tmpl-me-image-edit",{});
+      this.imageEditToolbar.innerHTML = tmpl("tmpl-me-image-edit", {});
       $(document.getElementsByTagName("body")[0]).append(this.imageEditToolbar);
 
-      this.mediaBtn = document.createElement( "div" );
+      this.mediaBtn = document.createElement("div");
       this.mediaBtn.contentEditable = false;
       this.mediaBtn.classList.add("me-insert-media-button");
       this.mediaBtn.style.display = "none";
       this.mediaBtn.innerHTML = tmpl("tmpl-me-insert-media-button", {});
       $(document.getElementsByTagName("body")[0]).append(this.mediaBtn);
-      
+
       this.mediaLibraryBtn = $(this.mediaBtn).find(".me-insert-image")[0];
       this.mediaEmbedBtn = $(this.mediaBtn).find(".me-insert-embed")[0];
       this.mediaEmbedInput = $(this.mediaBtn).find(".me-insert-embed__value")[0];
@@ -1341,7 +1409,7 @@ var TextEditor = (function($) {
       this.on(this.mediaLibraryBtn, "click", this.handleClickImage.bind(this));
       this.on(this.imageEditToolbar, "click", this.handleImageEdit.bind(this));
       this.on(this.mediaEmbedBtn, "click", this.handleClickEmbed.bind(this));
-      if( "undefined" !== typeof this.mediaEmbedInput ) {
+      if ("undefined" !== typeof this.mediaEmbedInput) {
         this.on(this.mediaEmbedInput, "keydown", this.getEmbedCode.bind(this));
         this.on(this.mediaEmbedInput, "blur", this.mediaEmbedInputBlur.bind(this));
       }
@@ -1350,18 +1418,18 @@ var TextEditor = (function($) {
     /**
      * @param {EVENT} event 
      */
-    handleBlur: function(event) {
-      if( $(event.target).parents("#me-edit-inline-image-toolbar").length == 0 && !$(event.target).is(".me-insert-embed__value") && 0 == $(event.target).parents(".me-insert-embed").length ) {
+    handleBlur: function (event) {
+      if ($(event.target).parents("#me-edit-inline-image-toolbar").length == 0 && !$(event.target).is(".me-insert-embed__value") && 0 == $(event.target).parents(".me-insert-embed").length) {
         this.mediaBtn.style.display = "none";
         this.mediaBtn.classList.remove("embed-value-visibile");
         this.hideEditImgToolbar();
       }
     },
 
-    handleFocus: function(event, editable) {
+    handleFocus: function (event, editable) {
       // editor.append(this.mediaBtn);
       this.mediaBtn.style.display = "block";
-      if( 4 == this.method ) {
+      if (4 == this.method) {
         // Method 4)
         this.traceEditor = this.base.getFocusedElement();
       }
@@ -1372,39 +1440,39 @@ var TextEditor = (function($) {
      * Place the media button on the bottom of the TextEditor
      * @deprecated
      */
-    placeMediaBtnBottomTextEditor: function() {
+    placeMediaBtnBottomTextEditor: function () {
       var editor = this.base.getFocusedElement();
       var targetCoords = editor.getBoundingClientRect();
-      this.mediaBtn.style.left = ( targetCoords.left + ( ( targetCoords.width - this.mediaBtn.offsetWidth ) / 2 ) ) + "px";
-      this.mediaBtn.style.top = ( window.scrollY + targetCoords.top + targetCoords.height - this.mediaBtn.offsetHeight ) + "px";
+      this.mediaBtn.style.left = (targetCoords.left + ((targetCoords.width - this.mediaBtn.offsetWidth) / 2)) + "px";
+      this.mediaBtn.style.top = (window.scrollY + targetCoords.top + targetCoords.height - this.mediaBtn.offsetHeight) + "px";
     },
 
     /**
      * Place the media button on top of the block
      */
-    placeMediaBtnTopCenterTextEditor: function() {
+    placeMediaBtnTopCenterTextEditor: function () {
       var editor = this.base.getFocusedElement();
       var $content_wrap = $(editor).parents(".grid-item-content-wrap");
       var targetCoords = $content_wrap[0].getBoundingClientRect();
-      this.mediaBtn.style.left = ( targetCoords.left + ( ( targetCoords.width - this.mediaBtn.offsetWidth ) / 2 ) ) + "px";
-      this.mediaBtn.style.top = ( window.scrollY + targetCoords.top + 15 ) + "px";
+      this.mediaBtn.style.left = (targetCoords.left + ((targetCoords.width - this.mediaBtn.offsetWidth) / 2)) + "px";
+      this.mediaBtn.style.top = (window.scrollY + targetCoords.top + 15) + "px";
     },
 
     /**
      * Place the media button on top of the block
      */
-    placeMediaBtn: function() {
+    placeMediaBtn: function () {
       var editor = this.base.getFocusedElement();
       var $content_wrap = $(editor).parents(".grid-item-content-wrap");
       var targetCoords = $content_wrap[0].getBoundingClientRect();
-      this.mediaBtn.style.left = ( window.scrollX + targetCoords.left + targetCoords.width - this.mediaBtn.offsetWidth - 15 ) + "px";
-      this.mediaBtn.style.top = ( window.scrollY + targetCoords.top + targetCoords.height - this.mediaBtn.offsetHeight - 15 ) + "px";
+      this.mediaBtn.style.left = (window.scrollX + targetCoords.left + targetCoords.width - this.mediaBtn.offsetWidth - 15) + "px";
+      this.mediaBtn.style.top = (window.scrollY + targetCoords.top + targetCoords.height - this.mediaBtn.offsetHeight - 15) + "px";
     },
 
-    traceInput: function(event) {
+    traceInput: function (event) {
       // If the event happens on the text editor, save the selection
-      if( 0 === $(event.target).parents('.me-insert-media-button').length ) {
-        switch( this.method ) {
+      if (0 === $(event.target).parents('.me-insert-media-button').length) {
+        switch (this.method) {
           case 1:
           case 2:
             // Method 1) and 2)
@@ -1412,7 +1480,7 @@ var TextEditor = (function($) {
             break;
           case 3:
             // Method 3)
-            if( this.traceSelection ) {
+            if (this.traceSelection) {
               rangy.removeMarkers(this.traceSelection);
             }
             this.traceSelection = rangy.saveSelection();
@@ -1428,8 +1496,8 @@ var TextEditor = (function($) {
       }
 
       // If i click on an image open the image toolbar
-      if( "click" == event.type ) {
-        if( "IMG" == event.target.nodeName ) {
+      if ("click" == event.type) {
+        if ("IMG" == event.target.nodeName) {
           this.viewEditImgToolbar(event.target);
           this.imageResizableEnable();
         } else {
@@ -1438,19 +1506,19 @@ var TextEditor = (function($) {
       }
     },
 
-    handleClickImage: function(event) {
+    handleClickImage: function (event) {
       var data = {
         eventName: "rexlive:openMEImageUploader",
         img_data: {}
       };
-  
+
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     },
 
-    handleImageInsertReplace: function(event) {
+    handleImageInsertReplace: function (event) {
       var imgHTML = '<img class="wp-image-' + event.imgData.idImage + ' ' + event.imgData.align + '" data-image-id="' + event.imgData.idImage + '" src="' + event.imgData.urlImage + '" alt="" width="' + event.imgData.width + '" height="' + event.imgData.height + '">';
 
-      switch( this.method ) {
+      switch (this.method) {
         case 1:
         case 2:
           // Method 1) and 2)
@@ -1458,14 +1526,14 @@ var TextEditor = (function($) {
           break;
         case 3:
           // Method 3)
-          if(this.traceSelection) {
+          if (this.traceSelection) {
             rangy.restoreSelection(this.traceSelection);
             var range = this.getFirstRange();
           }
           break;
         case 4:
           // Method 4)
-          if( this.traceSelection ) {
+          if (this.traceSelection) {
             rangy.getSelection().restoreCharacterRanges(this.traceEditor, this.traceSelection);
             var range = this.getFirstRange();
             range.refresh();
@@ -1475,8 +1543,8 @@ var TextEditor = (function($) {
           break;
       }
 
-      if( this.traceImg ) {
-        switch( this.method ) {
+      if (this.traceImg) {
+        switch (this.method) {
           case 1:
           case 2:
           case 3:
@@ -1496,7 +1564,7 @@ var TextEditor = (function($) {
         rangy.dom.removeNode(this.traceImg);
       }
 
-      switch( this.method ) {
+      switch (this.method) {
         case 1:
           // 1) Method insertHTMLCommand
           MediumEditor.util.insertHTMLCommand(document, imgHTML);
@@ -1510,15 +1578,15 @@ var TextEditor = (function($) {
           break;
         case 3:
           // 3) Method save/restore selection with rangy
-          if(range) {
+          if (range) {
             var imgNode = Rexbuilder_Dom_Util.htmlToElement(imgHTML);
             range.insertNode(imgNode);
           }
           break;
         case 4:
           // 4) Method text-range with rangy
-          if( range ) {
-            switch(this.submethod) {
+          if (range) {
+            switch (this.submethod) {
               case 1:
                 // Insert HTML method
                 range.pasteHtml(imgHTML);
@@ -1532,30 +1600,30 @@ var TextEditor = (function($) {
                 // Insert Node Cool Method
                 var imgNode = Rexbuilder_Dom_Util.htmlToElement(imgHTML);
                 range.insertNode(imgNode);
-                if( imgNode.parentElement === this.traceEditor ) {
+                if (imgNode.parentElement === this.traceEditor) {
                   var prevEl = imgNode.previousElementSibling;
                   var nextEl = imgNode.nextElementSibling;
                   var wrapTagName = "";
 
-                  if( nextEl ) {
+                  if (nextEl) {
                     wrapTagName = nextEl.tagName.toLowerCase();
-                  } else if ( prevEl ) {
+                  } else if (prevEl) {
                     wrapTagName = prevEl.tagName.toLowerCase();
                   }
-                  
-                  if( this.emptyLine(nextEl) ) {
+
+                  if (this.emptyLine(nextEl)) {
                     rangy.dom.removeNode(nextEl);
                   }
 
-                  if( this.emptyLine(prevEl) ) {
+                  if (this.emptyLine(prevEl)) {
                     rangy.dom.removeNode(prevEl);
                   }
 
-                  if( "div" === wrapTagName || "span" === wrapTagName || "" === wrapTagName ) {
+                  if ("div" === wrapTagName || "span" === wrapTagName || "" === wrapTagName) {
                     wrapTagName = "p";
                   }
 
-                  this.wrap( imgNode, document.createElement(wrapTagName) );
+                  this.wrap(imgNode, document.createElement(wrapTagName));
                 }
               default:
                 break;
@@ -1570,12 +1638,12 @@ var TextEditor = (function($) {
       this.mediaBtn.style.display = "none";
     },
 
-    getFirstRange: function() {
+    getFirstRange: function () {
       var sel = rangy.getSelection();
       return sel.rangeCount ? sel.getRangeAt(0) : null;
     },
 
-    wrap: function(el, wrapper) {
+    wrap: function (el, wrapper) {
       el.parentNode.insertBefore(wrapper, el);
       wrapper.appendChild(el);
     },
@@ -1585,31 +1653,31 @@ var TextEditor = (function($) {
      * @param {HTML node} node node to check
      * @since 2.0.0
      */
-    emptyLine: function(node) {
-      if( node && 
-        1 === node.childNodes.length && 
-        ( ( 1 === node.childNodes[0].nodeType && "br" === node.childNodes[0].tagName.toLowerCase() ) ||
-         ( 3 === node.childNodes[0].nodeType && 0 === node.childNodes[0].textContent.trim().length ) ) 
-        ) {
+    emptyLine: function (node) {
+      if (node &&
+        1 === node.childNodes.length &&
+        ((1 === node.childNodes[0].nodeType && "br" === node.childNodes[0].tagName.toLowerCase()) ||
+          (3 === node.childNodes[0].nodeType && 0 === node.childNodes[0].textContent.trim().length))
+      ) {
         return true;
       }
       return false;
     },
 
-    handleImageEdit: function(event) {
+    handleImageEdit: function (event) {
       var $el = $(event.target);
-      if( !$el.hasClass("medium-editor-action") ) {
+      if (!$el.hasClass("medium-editor-action")) {
         $el = $el.parents(".medium-editor-action");
       }
 
-      if( $el.hasClass("me-image-align-left") ) {
+      if ($el.hasClass("me-image-align-left")) {
         this.traceImg.classList.remove("alignleft");
         this.traceImg.classList.remove("aligncenter");
         this.traceImg.classList.remove("alignright");
         this.traceImg.classList.remove("alignnone");
 
         this.traceImg.classList.add("alignleft");
-        if( this.mirrorResize.classList.contains("ui-resizable") && this.mirrorResize.parentElement.classList.contains("ui-wrapper") ) {
+        if (this.mirrorResize.classList.contains("ui-resizable") && this.mirrorResize.parentElement.classList.contains("ui-wrapper")) {
           this.placeMirrorImg(this.mirrorResize.parentElement);
         } else {
           this.placeMirrorImg(this.mirrorResize);
@@ -1617,14 +1685,14 @@ var TextEditor = (function($) {
         this.placeEditImgToolbar();
       }
 
-      if( $el.hasClass("me-image-align-center") ) {
+      if ($el.hasClass("me-image-align-center")) {
         this.traceImg.classList.remove("alignleft");
         this.traceImg.classList.remove("aligncenter");
         this.traceImg.classList.remove("alignright");
         this.traceImg.classList.remove("alignnone");
 
         this.traceImg.classList.add("aligncenter");
-        if( this.mirrorResize.classList.contains("ui-resizable") && this.mirrorResize.parentElement.classList.contains("ui-wrapper") ) {
+        if (this.mirrorResize.classList.contains("ui-resizable") && this.mirrorResize.parentElement.classList.contains("ui-wrapper")) {
           this.placeMirrorImg(this.mirrorResize.parentElement);
         } else {
           this.placeMirrorImg(this.mirrorResize);
@@ -1632,14 +1700,14 @@ var TextEditor = (function($) {
         this.placeEditImgToolbar();
       }
 
-      if( $el.hasClass("me-image-align-right") ) {
+      if ($el.hasClass("me-image-align-right")) {
         this.traceImg.classList.remove("alignleft");
         this.traceImg.classList.remove("aligncenter");
         this.traceImg.classList.remove("alignright");
         this.traceImg.classList.remove("alignnone");
 
         this.traceImg.classList.add("alignright");
-        if( this.mirrorResize.classList.contains("ui-resizable") && this.mirrorResize.parentElement.classList.contains("ui-wrapper") ) {
+        if (this.mirrorResize.classList.contains("ui-resizable") && this.mirrorResize.parentElement.classList.contains("ui-wrapper")) {
           this.placeMirrorImg(this.mirrorResize.parentElement);
         } else {
           this.placeMirrorImg(this.mirrorResize);
@@ -1647,14 +1715,14 @@ var TextEditor = (function($) {
         this.placeEditImgToolbar();
       }
 
-      if( $el.hasClass("me-image-align-none") ) {
+      if ($el.hasClass("me-image-align-none")) {
         this.traceImg.classList.remove("alignleft");
         this.traceImg.classList.remove("aligncenter");
         this.traceImg.classList.remove("alignright");
         this.traceImg.classList.remove("alignnone");
 
         this.traceImg.classList.add("alignnone");
-        if( this.mirrorResize.classList.contains("ui-resizable") && this.mirrorResize.parentElement.classList.contains("ui-wrapper") ) {
+        if (this.mirrorResize.classList.contains("ui-resizable") && this.mirrorResize.parentElement.classList.contains("ui-wrapper")) {
           this.placeMirrorImg(this.mirrorResize.parentElement);
         } else {
           this.placeMirrorImg(this.mirrorResize);
@@ -1662,18 +1730,18 @@ var TextEditor = (function($) {
         this.placeEditImgToolbar();
       }
 
-      if( $el.hasClass("me-image-replace") ) {
+      if ($el.hasClass("me-image-replace")) {
         var align = "";
-        if(this.traceImg.classList.contains("alignleft")) {
+        if (this.traceImg.classList.contains("alignleft")) {
           align = "alignleft";
         }
-        if(this.traceImg.classList.contains("aligncenter")) {
+        if (this.traceImg.classList.contains("aligncenter")) {
           align = "aligncenter";
         }
-        if(this.traceImg.classList.contains("alignright")) {
+        if (this.traceImg.classList.contains("alignright")) {
           align = "alignright";
         }
-        if(this.traceImg.classList.contains("alignnone")) {
+        if (this.traceImg.classList.contains("alignnone")) {
           align = "alignnone";
         }
 
@@ -1686,17 +1754,17 @@ var TextEditor = (function($) {
             align: align
           }
         };
-    
+
         Rexbuilder_Util_Editor.sendParentIframeMessage(data);
       }
 
-      if( $el.hasClass("me-image-delete") ) {
+      if ($el.hasClass("me-image-delete")) {
         $(this.traceImg).remove();
         this.hideEditImgToolbar();
       }
     },
 
-    viewEditImgToolbar: function( target ) {
+    viewEditImgToolbar: function (target) {
       this.traceImg = target;
       // var editor = this.base.getFocusedElement();
       // editor.append(this.imageEditToolbar);
@@ -1704,25 +1772,25 @@ var TextEditor = (function($) {
       this.imageEditToolbar.classList.add("medium-editor-toolbar-active");
     },
 
-    imageResizableEnable: function() {
+    imageResizableEnable: function () {
       var that = this;
       var imageCoords = this.traceImg.getBoundingClientRect();
-      
+
       this.mirrorResize.style.width = imageCoords.width + "px";
       this.mirrorResize.style.height = imageCoords.height + "px";
       this.mirrorResize.style.top = imageCoords.top + window.scrollY + "px";
       this.mirrorResize.style.left = imageCoords.left + window.scrollX + "px";
 
       this.mirrorResize.style.display = "block";
-      
+
       var $mirrorResize = $(this.mirrorResize);
       var $resizable = $(this.traceImg);
 
-      $mirrorResize.resizable({ 
+      $mirrorResize.resizable({
         aspectRatio: true,
         handles: "e, s, se",
         alsoResize: $resizable,
-        create: function( event, ui ) {         
+        create: function (event, ui) {
           var $wrapper = $(event.target);
           $wrapper.addClass("me-ui-custom-wrapper");
           $wrapper.append(that.resizeSizes);
@@ -1733,38 +1801,38 @@ var TextEditor = (function($) {
           // $wrapper.find(".ui-resizable-w").append('<span class="img-resize-handle img-resize-handle-w" data-axis="w"></span>');
           // $wrapper.find(".ui-resizable-sw").append('<span class="img-resize-handle img-resize-handle-sw" data-axis="sw"></span>');
         },
-        start: function(event, ui) {
+        start: function (event, ui) {
           that.resizeSizes.style.display = "block";
         },
-        resize: function(event,ui) {
+        resize: function (event, ui) {
           that.placeMirrorImg(event.target);
           that.placeEditImgToolbar();
           that.resizeSizes.textContent = ui.size.width + ' x ' + ui.size.height;
         },
-        stop: function(event, ui) {
+        stop: function (event, ui) {
           that.resizeSizes.style.display = "none";
         },
       });
     },
 
-    placeMirrorImg: function(el) {
+    placeMirrorImg: function (el) {
       var imageCoords = this.traceImg.getBoundingClientRect();
       el.style.top = imageCoords.top + window.scrollY + "px";
       el.style.left = imageCoords.left + window.scrollX + "px";
     },
 
-    placeEditImgToolbar: function() {
+    placeEditImgToolbar: function () {
       var targetCoords = this.traceImg.getBoundingClientRect();
-      this.imageEditToolbar.style.left = ( targetCoords.left + ( ( targetCoords.width - this.imageEditToolbar.offsetWidth ) / 2 ) ) + "px";
-      this.imageEditToolbar.style.top = ( window.scrollY + targetCoords.top - this.imageEditToolbar.offsetHeight - 8 ) + "px";
+      this.imageEditToolbar.style.left = (targetCoords.left + ((targetCoords.width - this.imageEditToolbar.offsetWidth) / 2)) + "px";
+      this.imageEditToolbar.style.top = (window.scrollY + targetCoords.top - this.imageEditToolbar.offsetHeight - 8) + "px";
     },
 
-    hideEditImgToolbar: function() {
-      if( this.traceImg ) {
-        if( 'undefined' !== typeof $(this.mirrorResize).data('uiResizable') ) {
+    hideEditImgToolbar: function () {
+      if (this.traceImg) {
+        if ('undefined' !== typeof $(this.mirrorResize).data('uiResizable')) {
           $(this.mirrorResize).resizable("destroy");
         }
-        
+
         this.mirrorResize.style.display = "";
         this.mirrorResize.style.display = "";
         this.mirrorResize.style.margin = "";
@@ -1777,7 +1845,7 @@ var TextEditor = (function($) {
       this.imageEditToolbar.classList.remove("medium-editor-toolbar-active");
     },
 
-    pasteMediaHTML: function(html) {
+    pasteMediaHTML: function (html) {
       this.base.restoreSelection();
 
       html = '<div class="media-embed-wrap">' + html + '</div>';
@@ -1792,17 +1860,17 @@ var TextEditor = (function($) {
       this.mediaBtn.style.display = "none";
     },
 
-    handleClickEmbed: function(ev) {
+    handleClickEmbed: function (ev) {
       // var url_to_embed = this.mediaEmbedBtn.getAttribute("data-foo");
       this.mediaBtn.classList.add("embed-value-visibile");
       this.mediaEmbedInput.value = "";
       this.mediaEmbedInput.focus();
     },
 
-    getEmbedCode: function(event) {
+    getEmbedCode: function (event) {
       var that = this;
       if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER)) {
-        if( "" !== event.target.value ) {
+        if ("" !== event.target.value) {
           this.mediaEmbedInput.classList.add("embed-loading");
           $.ajax({
             type: "GET",
@@ -1813,16 +1881,16 @@ var TextEditor = (function($) {
               nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
               url_to_embed: event.target.value,
             },
-            success: function(response) {
+            success: function (response) {
               event.target.value = "";
               if (response.success) {
-                if("" !== response.data.embed) {
+                if ("" !== response.data.embed) {
                   that.pasteMediaHTML(response.data.embed);
                 }
               }
             },
-            error: function(response) {},
-            complete: function() {
+            error: function (response) { },
+            complete: function () {
               that.mediaEmbedInput.classList.remove("embed-loading");
             }
           });
@@ -1830,14 +1898,14 @@ var TextEditor = (function($) {
       }
     },
 
-    mediaEmbedInputBlur: function(event) { 
+    mediaEmbedInputBlur: function (event) {
       this.mediaBtn.classList.remove("embed-value-visibile");
     },
   });
 
-  var _linkDocumentListeners = function() {
+  var _linkDocumentListeners = function () {
     //function for removing textarea html editor
-    Rexbuilder_Util.$document.on("click", ".rex-close-html-editor", function(e) {
+    Rexbuilder_Util.$document.on("click", ".rex-close-html-editor", function (e) {
       var $wrapper = $(e.target).parents(".editing-html");
       var $textArea = $wrapper.find("textarea");
       var $html = $.parseHTML($textArea.val());
@@ -1861,8 +1929,8 @@ var TextEditor = (function($) {
     // });
   };
 
-  var _addEditableInputEvents = function() {
-    editorInstance.subscribe("editableInput", function(e, elem) {
+  var _addEditableInputEvents = function () {
+    editorInstance.subscribe("editableInput", function (e, elem) {
       var $elem = $(elem).parents(".grid-stack-item");
       var galleryInstance = $elem.parent().data()
         .plugin_perfectGridGalleryEditor;
@@ -1878,7 +1946,7 @@ var TextEditor = (function($) {
     });
   };
 
-  var _createToolbarContainer = function() {
+  var _createToolbarContainer = function () {
     var id = "textEditorToolbar";
     if (
       Rexbuilder_Util.$rexContainer.children('.editable[id="' + id + '"]')
@@ -1894,21 +1962,25 @@ var TextEditor = (function($) {
     }
   };
 
-  var _destroyMediumEditor = function() {
+  var _destroyMediumEditor = function () {
     editorInstance.destroy();
   };
 
   /**
    * Launching the medium editor
    */
-  var _createEditor = function() {
+  var _createEditor = function () {
+    let debugTestEditor = false;
     // htmlExtensionInstance = new TextHtmlExtension();
     pickerExtensionInstance = new ColorPickerExtension();
     headingTagsExtensionInstance = new TextTagExtension();
     formattingTagsExtensionInstance = new FormattingTagExtension();
     justifyExtensionIntance = new JustifyExtension();
     listExtensionInstance = new ListExtension();
-
+    if(debugTestEditor){
+      editorInstance = new MediumEditor(".editable", {});
+      return;
+    }
     editorInstance = new MediumEditor(".editable", {
       toolbar: {
         buttons: [
@@ -1934,7 +2006,7 @@ var TextEditor = (function($) {
           "textEditorHtml"
           // "removeFormat",
         ]
-      }, 
+      },
       imageDragging: false,
       extensions: {
         'imageDragging': {}, // fix for disable drag extension of medium editor
@@ -1959,15 +2031,15 @@ var TextEditor = (function($) {
     _addEditableInputEvents();
   };
 
-  var _triggerMEEvent = function( event_info ) {
-    editorInstance.trigger( event_info.name, event_info.data, event_info.editable );
+  var _triggerMEEvent = function (event_info) {
+    editorInstance.trigger(event_info.name, event_info.data, event_info.editable);
   }
 
-  var _getEditorInstance = function() {
+  var _getEditorInstance = function () {
     return editorInstance;
   };
 
-  var init = function() {
+  var init = function () {
     rangy.init();
     _createToolbarContainer();
     _createEditor();

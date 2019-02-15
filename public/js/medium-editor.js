@@ -6771,6 +6771,13 @@ MediumEditor.extensions = {};
             return;
         }
 
+        if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER)) {
+            if (this.options.extensions['rexbutton-input'].updateEnterFixState(node)) {
+                event.preventDefault();
+                return;
+            }
+        }
+
         // https://github.com/yabwe/medium-editor/issues/994
         // Firefox thrown an error when calling `formatBlock` on an empty editable blockContainer that's not a <div>
         if (MediumEditor.util.isMediumEditorElement(node) && node.children.length === 0 && !MediumEditor.util.isBlockContainer(node)) {

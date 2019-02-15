@@ -99,8 +99,8 @@ var Rexbuilder_Rexbutton = (function ($) {
     }
     
     var _endFixingButtonImported = function($buttonWrapper){
-        //$buttonWrapper.wrap("<span></span>");
-
+        $buttonWrapper.wrap("<p></p>");
+        $buttonWrapper.parent().addClass("rex-buttons-paragraph");
         var buttonID = $buttonWrapper.attr("data-rex-button-id");
         var flagButtonFound = false;
         $buttonWrapper.attr("data-rex-button-number", 1);
@@ -659,7 +659,7 @@ var Rexbuilder_Rexbutton = (function ($) {
         _updateButtonListInPage();
         _addToolsButton();
         _linkDocumentListeners();
-        $("#secondary").remove();
+        //$("#secondary").remove();
     };
 
     return {
