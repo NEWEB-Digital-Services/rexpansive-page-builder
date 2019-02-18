@@ -17,12 +17,10 @@ var Block_Url_Modal = (function ($) {
             block_url_modal_properties.$urlInput
                 .siblings("label, .prefix")
                 .removeClass("active");
-                console.log('case: data.link == nothing');
         }else{
             block_url_modal_properties.$urlInput
                 .siblings("label, .prefix")
                 .addClass("active");
-                console.log('case: data.link != nothing');
         }
 
     }

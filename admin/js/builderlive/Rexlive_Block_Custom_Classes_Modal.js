@@ -34,12 +34,10 @@ var Block_CustomClasses_Modal = (function ($) {
             custom_classes_modal_properties.$classes
                 .siblings("label, .prefix")
                 .removeClass("active");
-                console.log('case: data.classes == nothing');
         }else{
             custom_classes_modal_properties.$classes
                 .siblings("label, .prefix")
                 .addClass("active");
-                console.log('case: data.classes != nothing');
         }
 
         custom_classes_modal_properties.$classes.val(newClasses).trigger("focusout");

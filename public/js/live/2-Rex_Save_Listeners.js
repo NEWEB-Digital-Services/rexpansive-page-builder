@@ -1053,14 +1053,11 @@ var Rex_Save_Listeners = (function($) {
         if ($savingBlock.text().trim() == "") {
           if( $savingBlock.find("iframe").length > 0 || $savingBlock.find("img").length > 0 ){
             content = $savingBlock.html().trim();
-            //console.log('passed || $savingBlock.text().childNode == "iframe"');
           } else {
             content = "";
-            //console.log('passed || $savingBlock.text().trim() == no-text/nothing');
           }
         } else {
           content = $savingBlock.html().trim();
-          //console.log('passed || $savingBlock.text().trim() == contain-text');
         }
 
       } else {

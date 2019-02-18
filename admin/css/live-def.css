@@ -2859,7 +2859,7 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever::before {
 /*
 * CSS TOGGLE SWITCH
 *
-* Ionuț Colceriu - ghinda.net
+* Ionu╚ø Colceriu - ghinda.net
 * https://github.com/ghinda/css-toggle-switch
 *
 */
@@ -4866,6 +4866,23 @@ input.me-insert-embed__value[type=text] {
       font-size: 30px; }
     .rex-modal__outside-footer .tool-button--save:hover .l-svg-icons > svg {
       fill: #00ACFF; }
+
+.overlay-status-for-video-inline {
+  display: inline-block;
+  position: relative; }
+
+.overlay-status-set-active {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #000080;
+  opacity: 0.3;
+  width: 100%;
+  height: 100%;
+  z-index: 500;
+  display: block; }
 
 .rexlive-loader {
   position: absolute;
