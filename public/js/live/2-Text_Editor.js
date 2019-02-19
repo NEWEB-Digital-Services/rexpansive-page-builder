@@ -1063,6 +1063,7 @@ var TextEditor = (function($) {
     init: function () {
       this.insertionPoint = null;
       this.traceImg = null;
+      this.traceVideo = null;
       this.traceSelection = null;
       this.traceEditor = null;
       this.method = 4;
@@ -1071,18 +1072,15 @@ var TextEditor = (function($) {
       this.mirrorResize = document.createElement('img');
       this.mirrorResize.classList.add("me-resize-mirror");
       document.getElementsByTagName("body")[0].append(this.mirrorResize);
-      
-  /*
-      // Create a paragraph (<p>) that manages the resize of the uploaded video. -A
-      this.mirrorVideoResize = document.createElement('p');
-      this.mirrorVideoResize.classList.add("me-resize-video-mirror");
+
+      this.mirrorVideoResize = document.createElement("span");
+      this.mirrorVideoResize.classList.add("me-resize-mirror");
       document.getElementsByTagName("body")[0].append(this.mirrorVideoResize);
-  */
 
       this.resizeSizes = document.createElement('span');
       this.resizeSizes.classList.add("me-resize-sizes");
 
-      this.imageEditToolbar = document.createElement( "div" );
+      this.imageEditToolbar = document.createElement("div");
       this.imageEditToolbar.id = "me-edit-inline-image-toolbar";
       this.imageEditToolbar.classList.add("medium-editor-toolbar");
       this.imageEditToolbar.classList.add("medium-toolbar-arrow-under");
@@ -1205,29 +1203,34 @@ var TextEditor = (function($) {
           default:
             break;
         }
-      }
+      }      
 
-      
-
-      // If i click on an image open the image toolbar
-      if( "click" == event.type ) {                               
+      // RESIZING TOOLS - LAUNCH/INITIALIT
+      if( "click" == event.type ) {
+        // Check if the clicked object is an <img>. -A
         if( "IMG" == event.target.nodeName ) {
           this.viewEditImgToolbar(event.target);
-          console.log(event.target.nodeName);
+          console.log("case 1:",event.target.nodeName);
           this.imageResizableEnable();
-        } else {
-          if( "SPAN" == event.target.nodeName && event.target.className == "overlay-status-set-active") {
-            // this.viewEditImgToolbar(event.target);
-            console.log(event.target.nodeName," - ",event.target.className);
-            //this.videoResizableEnable();
-          } else {
-            console.log(event.target.nodeName);
-            //this.hideEditImgToolbar();
-            //console.log("passed: videoResizableEnable()");
-          }
-        }
-      }
+          this.hideEditVideoToolbar();
 
+
+        } else { // Check if the clicked object is an <span> with the class "overlay-status-set-active". -A
+          if( "SPAN" == event.target.nodeName && event.target.className == "overlay-status-set-active") {
+            this.viewEditVideoToolbar(event.target);
+            console.log("case 2:",event.target.nodeName,",",event.target.className);
+            this.videoResizableEnable();
+            this.hideEditImgToolbar();
+
+
+          } else { // If no positive results is received. -A
+            console.log("case 3:",event.target.nodeName);
+            this.hideEditImgToolbar();
+            this.hideEditVideoToolbar();
+            
+          }
+        } 
+      }
     },
 
     handleClickImage: function(event) {
@@ -1485,7 +1488,7 @@ var TextEditor = (function($) {
       }
     },
 
-    viewEditImgToolbar: function( target ) {
+    viewEditImgToolbar: function(target) {
       this.traceImg = target;
       // var editor = this.base.getFocusedElement();
       // editor.append(this.imageEditToolbar);
@@ -1493,26 +1496,27 @@ var TextEditor = (function($) {
       this.imageEditToolbar.classList.add("medium-editor-toolbar-active");
     },
 
+    viewEditVideoToolbar: function(target) {
+      this.traceVideo = target.parentElement;
+    },
+
     imageResizableEnable: function() {
       var that = this;
-      var imageCoords = this.traceImg.getBoundingClientRect();                    // TRACCIA LE COORDINATE DELL'ELEMENTO <img>
+      var imageCoords = this.traceImg.getBoundingClientRect();
       
-      this.mirrorResize.style.width = imageCoords.width + "px";                   // LUNGHEZZA
-      this.mirrorResize.style.height = imageCoords.height + "px";                 // ALTEZZA
-      this.mirrorResize.style.top = imageCoords.top + window.scrollY + "px";      // COORDINATE Y
-      this.mirrorResize.style.left = imageCoords.left + window.scrollX + "px";    // COORDINATE X
-
-      this.mirrorResize.style.display = "block";                                  // (?)
+      this.mirrorResize.style.width = imageCoords.width + "px";
+      this.mirrorResize.style.height = imageCoords.height + "px";
+      this.mirrorResize.style.top = imageCoords.top + window.scrollY + "px";
+      this.mirrorResize.style.left = imageCoords.left + window.scrollX + "px";
+      this.mirrorResize.style.display = "block";
       
-      var $mirrorResize = $(this.mirrorResize);                                   // DEFINISCI LE VARIABILI PRINCIPALI
-      var $resizable = $(this.traceImg);                                          // "       " "" "       " "        "
+      var $mirrorResize = $(this.mirrorResize);
+      var $resizable = $(this.traceImg);
 
-      console.log("(A) PRE-$mirrorResize.resizable(){...}");
-
-      $mirrorResize.resizable({                                                   // INIZIO DELL'EVENTO DI RESIZING fun(x)
-        aspectRatio: true,                                                        // (?)
-        handles: "e, s, se",                                                      // (?)
-        alsoResize: $resizable,                                                   // (?)
+      $mirrorResize.resizable({
+        aspectRatio: true,
+        handles: "e, s, se",
+        alsoResize: $resizable,
         create: function( event, ui ) {
           var $wrapper = $(event.target);
           $wrapper.addClass("me-ui-custom-wrapper");
@@ -1523,30 +1527,77 @@ var TextEditor = (function($) {
           $wrapper.find(".ui-resizable-s").append('<span class="img-resize-handle img-resize-handle-s" data-axis="s"></span>');
           // $wrapper.find(".ui-resizable-w").append('<span class="img-resize-handle img-resize-handle-w" data-axis="w"></span>');
           // $wrapper.find(".ui-resizable-sw").append('<span class="img-resize-handle img-resize-handle-sw" data-axis="sw"></span>');
-
-          console.log("(1) Create Box");
         },
         start: function(event, ui) {
-          that.resizeSizes.style.display = "block";                               // MOSTRA IL DIV CHE GESTISCE IL RESIZING
-          console.log("(2) Start Resizing Box\nwidth:",ui.size.width,"pixels\nheight:",ui.size.height,"pixels")
+          that.resizeSizes.style.display = "block";
+          console.log("START Resizing ||",ui.size.width,"||",ui.size.height,"|| px,w,h");
         },
         resize: function(event,ui) {
           that.placeMirrorImg(event.target);
           that.placeEditImgToolbar();
           that.resizeSizes.textContent = ui.size.width + ' x ' + ui.size.height;
-          console.log("(3) Resizing");
         },
         stop: function(event, ui) {
           that.resizeSizes.style.display = "none";
-          console.log("(4) Stop Resizing Box\nwidth:",ui.size.width,"pixels\nheight:",ui.size.height,"pixels");
+          console.log("STOP Resizing ||",ui.size.width,"||",ui.size.height,"|| px,w,h");
         },
       });
     },
 
+    videoResizableEnable: function() {
+      var that = this;
+      var videoCoords = this.traceVideo.getBoundingClientRect();
+      
+      this.mirrorVideoResize.style.width = videoCoords.width + "px";
+      this.mirrorVideoResize.style.height = videoCoords.height + "px";
+      this.mirrorVideoResize.style.top = videoCoords.top + window.scrollY + "px"; 
+      this.mirrorVideoResize.style.left = videoCoords.left + window.scrollX + "px";
+      this.mirrorVideoResize.style.display = "block";
+      
+      var $mirrorVideoResize = $(this.mirrorVideoResize);
+      var $resizable = $(this.traceVideo);
+
+      $mirrorVideoResize.resizable({
+        aspectRatio: true,
+        handles: "e, s, se",
+        alsoResize: $resizable,
+        create: function(event, ui) {
+          var $wrapper = $(event.target);
+          $wrapper.addClass("me-ui-custom-wrapper");
+          $wrapper.append(that.resizeSizes);
+          $wrapper.find(".ui-resizable-e").append('<span class="img-resize-handle img-resize-handle-e" data-axis="e"></span>');
+          $wrapper.find(".ui-resizable-se").append('<span class="img-resize-handle img-resize-handle-se" data-axis="se"></span>');
+          $wrapper.find(".ui-resizable-s").append('<span class="img-resize-handle img-resize-handle-s" data-axis="s"></span>');
+          // $wrapper.find(".ui-resizable-w").append('<span class="img-resize-handle img-resize-handle-w" data-axis="w"></span>');
+          // $wrapper.find(".ui-resizable-sw").append('<span class="img-resize-handle img-resize-handle-sw" data-axis="sw"></span>');
+        },
+        start: function(event, ui) {
+          that.resizeSizes.style.display = "block";
+          console.log("START Resizing ||",ui.size.width,"||",ui.size.height,"|| px,w,h");
+        },
+        resize: function(event,ui) {
+          that.placeMirrorVideo(event.target);
+          that.resizeSizes.textContent = ui.size.width + ' x ' + ui.size.height;
+          $resizable.find("iframe").height(ui.size.height);
+        },
+        stop: function(event, ui) {
+          that.resizeSizes.style.display = "none";
+          console.log("STOP Resizing ||",ui.size.width,"||",ui.size.height,"|| px,w,h");
+        },
+      });
+    },   
+    
     placeMirrorImg: function(el) {
       var imageCoords = this.traceImg.getBoundingClientRect();
       el.style.top = imageCoords.top + window.scrollY + "px";
       el.style.left = imageCoords.left + window.scrollX + "px";
+      // console.log(el.style.top,"\n",el.style.left)
+    },
+
+    placeMirrorVideo: function(el) {
+      var videoCoords = this.traceVideo.getBoundingClientRect();
+      el.style.top = videoCoords.top + window.scrollY + "px";
+      el.style.left = videoCoords.left + window.scrollX + "px";
       // console.log(el.style.top,"\n",el.style.left)
     },
 
@@ -1556,30 +1607,52 @@ var TextEditor = (function($) {
       this.imageEditToolbar.style.top = ( window.scrollY + targetCoords.top - this.imageEditToolbar.offsetHeight - 8 ) + "px";
     },
 
+    placeEditVideoToolbar: function() {
+      var targetCoords = this.traceVideo.getBoundingClientRect();
+      this.imageEditToolbar.style.left = ( targetCoords.left + ( ( targetCoords.width - this.imageEditToolbar.offsetWidth ) / 2 ) ) + "px";
+      this.imageEditToolbar.style.top = ( window.scrollY + targetCoords.top - this.imageEditToolbar.offsetHeight - 8 ) + "px";
+    },
+
     hideEditImgToolbar: function() {
       if( this.traceImg ) {
         if( 'undefined' !== typeof $(this.mirrorResize).data('uiResizable') ) {
           $(this.mirrorResize).resizable("destroy");
-          console.log("(B) if( 'undefined' !== typeof $(this.mirrorResize).data('uiResizable')) {...}");
         }        
         this.mirrorResize.style.display = "";
         this.mirrorResize.style.margin = "";
         this.mirrorResize.style.position = "";
         this.mirrorResize.style.top = "";
         this.mirrorResize.style.left = "";
-        console.log("(C) SET: display,margin,position,top,left = nothing");
       }
       this.traceImg = null;
       this.imageEditToolbar.classList.remove("medium-editor-toolbar-active");
-      console.log("(D) SET: traceImg = null & remove(.medium-editor-toolbar-active)");
+    },
+
+    hideEditVideoToolbar: function() {
+      if(this.traceVideo) {
+        console.log(this.traceVideo);
+        if( 'undefined'!== typeof $(this.mirrorVideoResize).data('uiResizable') ) {
+          $(this.mirrorVideoResize).resizable("destroy");
+          console.log("(1)");
+        }        
+        this.mirrorVideoResize.style.display = "";
+        this.mirrorVideoResize.style.margin = "";
+        this.mirrorVideoResize.style.position = "";
+        this.mirrorVideoResize.style.top = "";
+        this.mirrorVideoResize.style.left = "";
+        console.log("(2)");
+      }
+      this.traceVideo = null;
+      this.imageEditToolbar.classList.remove("medium-editor-toolbar-active");
+      console.log("(3)");
     },
 
     pasteMediaHTML: function(html) {  
       this.base.restoreSelection();
-      html = '<div class="media-embed-wrap"> ciao alex' + html + '</div>';
+      html = '<div class="media-embed-wrap">' + html + '</div>';
       this.base.pasteHTML(html, {
         cleanPastedHTML: false,
-        cleanAttrs: ['dir']   
+        cleanAttrs: ['dir'] 
       });
       this.hideEditImgToolbar();
       this.mediaBtn.classList.remove("embed-value-visibile");
@@ -1645,21 +1718,11 @@ var TextEditor = (function($) {
 
                   var wrapSetAsActive = document.createElement("span");
                   wrapSetAsActive.className = "overlay-status-set-active";
+
                   wrapElement.appendChild(wrapSetAsActive)
-                  //console.log(wrapElement);
-                  //console.log(wrapSetAsActive);
-
                   that.wrap( videoNode, wrapElement);
-
-                // ALCUNI TEST EFFETTUATI - ARCHIVIATI
-                    //console.log(that);
-                    //console.log(wrapTagName);
-                    //var aaa = $(".medium-editor-element").find("p");
-                    //aaa.addClass("overlay-status-for-video-inline");             
-                    //aaa.createElement("span");
-                    // that.traceEditor.focus();
-                    // console.log("_addEditableInputEvents();");
-                    // _addEditableInputEvents();
+                  
+                  //console.log(wrapElement);
 
                     var $elem = $(elem).parents(".grid-stack-item");  
                     // var galleryInstance = $elem.parent().data()
@@ -1690,58 +1753,6 @@ var TextEditor = (function($) {
     mediaEmbedInputBlur: function(event) {
       this.mediaBtn.classList.remove("embed-value-visibile");
     },
-
-    imageResizableEnable: function() {
-      var that = this;
-      var imageCoords = this.traceImg.getBoundingClientRect();                    // TRACCIA LE COORDINATE DELL'ELEMENTO <img>
-      
-      this.mirrorResize.style.width = imageCoords.width + "px";                   // LUNGHEZZA
-      this.mirrorResize.style.height = imageCoords.height + "px";                 // ALTEZZA
-      this.mirrorResize.style.top = imageCoords.top + window.scrollY + "px";      // COORDINATE Y
-      this.mirrorResize.style.left = imageCoords.left + window.scrollX + "px";    // COORDINATE X
-
-      this.mirrorResize.style.display = "block";                                  // (?)
-      
-      var $mirrorResize = $(this.mirrorResize);                                   // DEFINISCI LE VARIABILI PRINCIPALI
-      var $resizable = $(this.traceImg);                                          // "       " "" "       " "        "
-
-      console.log("(A) PRE-$mirrorResize.resizable(){...}");
-
-      $mirrorResize.resizable({                                                   // INIZIO DELL'EVENTO DI RESIZING fun(x)
-        aspectRatio: true,                                                        // (?)
-        handles: "e, s, se",                                                      // (?)
-        alsoResize: $resizable,                                                   // (?)
-        create: function( event, ui ) {
-          var $wrapper = $(event.target);
-          $wrapper.addClass("me-ui-custom-wrapper");
-          $wrapper.append(that.resizeSizes);
-
-          $wrapper.find(".ui-resizable-e").append('<span class="img-resize-handle img-resize-handle-e" data-axis="e"></span>');
-          $wrapper.find(".ui-resizable-se").append('<span class="img-resize-handle img-resize-handle-se" data-axis="se"></span>');
-          $wrapper.find(".ui-resizable-s").append('<span class="img-resize-handle img-resize-handle-s" data-axis="s"></span>');
-          // $wrapper.find(".ui-resizable-w").append('<span class="img-resize-handle img-resize-handle-w" data-axis="w"></span>');
-          // $wrapper.find(".ui-resizable-sw").append('<span class="img-resize-handle img-resize-handle-sw" data-axis="sw"></span>');
-
-          console.log("(1) Create Box");
-        },
-        start: function(event, ui) {
-          that.resizeSizes.style.display = "block";                               // MOSTRA IL DIV CHE GESTISCE IL RESIZING
-          console.log("(2) Start Resizing Box\nwidth:",ui.size.width,"pixels\nheight:",ui.size.height,"pixels")
-        },
-        resize: function(event,ui) {
-          that.placeMirrorImg(event.target);
-          that.placeEditImgToolbar();
-          that.resizeSizes.textContent = ui.size.width + ' x ' + ui.size.height;
-          console.log("(3) Resizing");
-        },
-        stop: function(event, ui) {
-          that.resizeSizes.style.display = "none";
-          console.log("(4) Stop Resizing Box\nwidth:",ui.size.width,"pixels\nheight:",ui.size.height,"pixels");
-        },
-      });
-    },
-
-
   });
 
   var _linkDocumentListeners = function() {
