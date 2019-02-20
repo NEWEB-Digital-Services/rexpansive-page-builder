@@ -1498,8 +1498,6 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   var _highlightRowSetData = function( data ) {
     if( "" !== data && "undefined" !== typeof data ) {
       for( var attr in data ) {
-        console.log(data);
-        console.log(hightlightRowInfo);
         hightlightRowInfo[attr] = data[attr];
       }
     }
