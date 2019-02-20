@@ -439,13 +439,8 @@ input.me-insert-embed__value[type=text] {
   display:inline-block;
   position:relative;
 }
-/*
-.overlay-status-for-video-inline iframe{
-  margin:0px 0px 0px 0px;
-  padding:0px 0px 0px 0px;
-}
-*/
-.overlay-status-for-video-inline .overlay-status-set-active{
+.overlay-status-for-video-inline::after{
+  content:'';
   position:absolute;
   top:0;
   bottom:0;
@@ -455,13 +450,4 @@ input.me-insert-embed__value[type=text] {
   height:100%;
   z-index:200;
   display:block;
-  //transition:1s;
 }
-/*
-.overlay-status-for-video-inline .overlay-status-set-active:hover{
-  background-color:#b22222;
-  -webkit-box-shadow: inset 0px 0px 8px 2px rgba(69,69,69,0.8);
-  -moz-box-shadow: inset 0px 0px 8px 2px rgba(69,69,69,0.8);
-  box-shadow: inset 0px 0px 8px 2px rgba(69,69,69,0.8);
-}
-*/

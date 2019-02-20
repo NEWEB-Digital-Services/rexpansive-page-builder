@@ -1023,7 +1023,6 @@ var TextEditor = (function($) {
 
       var index = this.base.exportSelection().editableElementIndex;
       this.base.setContent(event.customHTML, index);
-      console.log("passed || andleHtmlEditorSave: function(event)");
       
     }
   });
@@ -1073,7 +1072,7 @@ var TextEditor = (function($) {
       this.mirrorResize.classList.add("me-resize-mirror");
       document.getElementsByTagName("body")[0].append(this.mirrorResize);
 
-      this.mirrorVideoResize = document.createElement("span");
+      this.mirrorVideoResize = document.createElement('span');
       this.mirrorVideoResize.classList.add("me-resize-mirror");
       document.getElementsByTagName("body")[0].append(this.mirrorVideoResize);
 
@@ -1086,6 +1085,14 @@ var TextEditor = (function($) {
       this.imageEditToolbar.classList.add("medium-toolbar-arrow-under");
       this.imageEditToolbar.innerHTML = tmpl("tmpl-me-image-edit",{});
       document.getElementsByTagName("body")[0].append(this.imageEditToolbar);
+
+      // Creation of the Inline Video Management Toolbar. -A
+      //this.videoEditToolbar = document.createElement("div");
+      //this.videoEditToolbar.id = "me-edit-inline-image-toolbar";
+      //this.videoEditToolbar.classList.add("medium-editor-toolbar");
+      //this.videoEditToolbar.classList.add("medium-toolbar-arrow-under");
+      //this.videoEditToolbar.innerHTML = tmpl("tmpl-me-image-edit",{});
+      //document.getElementsByTagName("body")[0].append(this.videoEditToolbar);
 
       this.mediaBtn = document.createElement("div");
       this.mediaBtn.contentEditable = false;
@@ -1112,9 +1119,13 @@ var TextEditor = (function($) {
       // Insert the VIDEO html tag -A
       this.subscribe("rexlive:mediumEditor:inlineVideoEditor:Transfer", this.getEmbedCode.bind(this));
 
-      // Add image with Wordpress Media Library
+      // Function that verifies the deletion of images and inline videos. -A
+      this.subscribe("editableKeydown", this.handleRemoveInlineElement.bind(this));
+
+      // Add image and video with Wordpress Media Library
       this.on(this.mediaLibraryBtn, "click", this.handleClickImage.bind(this));
       this.on(this.imageEditToolbar, "click", this.handleImageEdit.bind(this));
+      //this.on(this.videoEditToolbar, "click", this.handleVideoEdit.bind(this));
       this.on(this.mediaEmbedBtn, "click", this.handleClickEmbed.bind(this));
       if( "undefined" !== typeof this.mediaEmbedInput ) {
         this.on(this.mediaEmbedInput, "keydown", this.getEmbedCode.bind(this));
@@ -1125,11 +1136,13 @@ var TextEditor = (function($) {
     /**
      * @param {EVENT} event 
      */
+
     handleBlur: function(event) {
       if( $(event.target).parents("#me-edit-inline-image-toolbar").length == 0 && !$(event.target).is(".me-insert-embed__value") && 0 == $(event.target).parents(".me-insert-embed").length ) {
         this.mediaBtn.style.display = "none";
         this.mediaBtn.classList.remove("embed-value-visibile");
         this.hideEditImgToolbar();
+        this.hideEditVideoToolbar();
       }
     },
 
@@ -1210,24 +1223,16 @@ var TextEditor = (function($) {
         // Check if the clicked object is an <img>. -A
         if( "IMG" == event.target.nodeName ) {
           this.viewEditImgToolbar(event.target);
-          console.log("case 1:",event.target.nodeName);
           this.imageResizableEnable();
           this.hideEditVideoToolbar();
-
-
         } else { // Check if the clicked object is an <span> with the class "overlay-status-set-active". -A
-          if( "SPAN" == event.target.nodeName && event.target.className == "overlay-status-set-active") {
+          if( "SPAN" == event.target.nodeName /*&& event.target.className == "overlay-status-set-active"*/) {
             this.viewEditVideoToolbar(event.target);
-            console.log("case 2:",event.target.nodeName,",",event.target.className);
             this.videoResizableEnable();
             this.hideEditImgToolbar();
-
-
           } else { // If no positive results is received. -A
-            console.log("case 3:",event.target.nodeName);
             this.hideEditImgToolbar();
-            this.hideEditVideoToolbar();
-            
+            this.hideEditVideoToolbar();            
           }
         } 
       }
@@ -1359,6 +1364,7 @@ var TextEditor = (function($) {
       }
 
       this.hideEditImgToolbar();
+      // this.hideEditVideoToolbar();
       this.mediaBtn.style.display = "none";
     },
 
@@ -1488,6 +1494,14 @@ var TextEditor = (function($) {
       }
     },
 
+    /*handleVideoEdit: function(event) {
+      var $vdl = $(event.target);
+      if( $vdl.hasClass("me-image-delete") ) {
+          $(this.traceVideo).remove();
+          this.hideEditVideoToolbar();
+      }
+    },*/
+
     viewEditImgToolbar: function(target) {
       this.traceImg = target;
       // var editor = this.base.getFocusedElement();
@@ -1497,7 +1511,11 @@ var TextEditor = (function($) {
     },
 
     viewEditVideoToolbar: function(target) {
-      this.traceVideo = target.parentElement;
+      this.traceVideo = target;
+      //this.traceVideo = target.parentElement;
+      // These strings change the display status of the Inline Video Management Toolbar. -A
+      //this.placeEditVideoToolbar();
+      //this.videoEditToolbar.classList.add("medium-editor-toolbar-active");
     },
 
     imageResizableEnable: function() {
@@ -1530,7 +1548,7 @@ var TextEditor = (function($) {
         },
         start: function(event, ui) {
           that.resizeSizes.style.display = "block";
-          console.log("START Resizing ||",ui.size.width,"||",ui.size.height,"|| px,w,h");
+          //console.log("START Resizing ||",ui.size.width,"||",ui.size.height,"|| px,w,h");
         },
         resize: function(event,ui) {
           that.placeMirrorImg(event.target);
@@ -1539,7 +1557,7 @@ var TextEditor = (function($) {
         },
         stop: function(event, ui) {
           that.resizeSizes.style.display = "none";
-          console.log("STOP Resizing ||",ui.size.width,"||",ui.size.height,"|| px,w,h");
+          //console.log("STOP Resizing ||",ui.size.width,"||",ui.size.height,"|| px,w,h");
         },
       });
     },
@@ -1573,20 +1591,44 @@ var TextEditor = (function($) {
         },
         start: function(event, ui) {
           that.resizeSizes.style.display = "block";
-          console.log("START Resizing ||",ui.size.width,"||",ui.size.height,"|| px,w,h");
+          //console.log("START Resizing ||",ui.size.width,"||",ui.size.height,"|| px,w,h");
         },
         resize: function(event,ui) {
           that.placeMirrorVideo(event.target);
           that.resizeSizes.textContent = ui.size.width + ' x ' + ui.size.height;
           $resizable.find("iframe").height(ui.size.height);
+          $resizable.find("iframe").width(ui.size.width);
         },
         stop: function(event, ui) {
           that.resizeSizes.style.display = "none";
-          console.log("STOP Resizing ||",ui.size.width,"||",ui.size.height,"|| px,w,h");
+          //console.log("STOP Resizing ||",ui.size.width,"||",ui.size.height,"|| px,w,h");
         },
       });
-    },   
-    
+    },
+
+    handleRemoveInlineElement: function(event){
+
+      this.hideEditImgToolbar();
+      this.hideEditVideoToolbar();
+      
+  /*  var baseElementsOneInnerHTML = this.base.elements[1].innerHTML;
+      var baseElementsOneInnerTEXT = this.base.elements[1].innerText;    
+      console.log(this.base.elements[1].innerHTML);
+      console.log(this.base.elements[1].innerText);
+      if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.BACKSPACE) || MediumEditor.util.isKey(event, MediumEditor.util.keyCode.DELETE)) {
+        // MediumEditor.util.isKey == 8, 446
+        if(baseElementsOneInnerTEXT != "" && baseElementsOneInnerHTML != "<p><br></p>") {
+          this.hideEditImgToolbar();
+          this.hideEditVideoToolbar();
+          if(baseElementsOneInnerHTML != "<p><br></p>") {
+            this.hideEditImgToolbar();
+            this.hideEditVideoToolbar();
+          }
+        }
+      }   */
+
+    },
+
     placeMirrorImg: function(el) {
       var imageCoords = this.traceImg.getBoundingClientRect();
       el.style.top = imageCoords.top + window.scrollY + "px";
@@ -1607,11 +1649,14 @@ var TextEditor = (function($) {
       this.imageEditToolbar.style.top = ( window.scrollY + targetCoords.top - this.imageEditToolbar.offsetHeight - 8 ) + "px";
     },
 
+    // This function set the position of the Inline Video Management Toolbar. -A
+    /*
     placeEditVideoToolbar: function() {
       var targetCoords = this.traceVideo.getBoundingClientRect();
-      this.imageEditToolbar.style.left = ( targetCoords.left + ( ( targetCoords.width - this.imageEditToolbar.offsetWidth ) / 2 ) ) + "px";
-      this.imageEditToolbar.style.top = ( window.scrollY + targetCoords.top - this.imageEditToolbar.offsetHeight - 8 ) + "px";
+      this.videoEditToolbar.style.left = ( targetCoords.left + ( ( targetCoords.width - this.videoEditToolbar.offsetWidth ) / 2 ) ) + "px";
+      this.videoEditToolbar.style.top = ( window.scrollY + targetCoords.top - this.videoEditToolbar.offsetHeight - 8 ) + "px";
     },
+    */
 
     hideEditImgToolbar: function() {
       if( this.traceImg ) {
@@ -1629,22 +1674,18 @@ var TextEditor = (function($) {
     },
 
     hideEditVideoToolbar: function() {
-      if(this.traceVideo) {
-        console.log(this.traceVideo);
-        if( 'undefined'!== typeof $(this.mirrorVideoResize).data('uiResizable') ) {
+      if( this.traceVideo ) {
+        if( 'undefined' !== typeof $(this.mirrorVideoResize).data('uiResizable') ) {
           $(this.mirrorVideoResize).resizable("destroy");
-          console.log("(1)");
-        }        
+        }       
         this.mirrorVideoResize.style.display = "";
         this.mirrorVideoResize.style.margin = "";
         this.mirrorVideoResize.style.position = "";
         this.mirrorVideoResize.style.top = "";
         this.mirrorVideoResize.style.left = "";
-        console.log("(2)");
       }
-      this.traceVideo = null;
-      this.imageEditToolbar.classList.remove("medium-editor-toolbar-active");
-      console.log("(3)");
+      this.traceVideo = null;     
+      //this.videoEditToolbar.classList.remove("medium-editor-toolbar-active");
     },
 
     pasteMediaHTML: function(html) {  
@@ -1655,6 +1696,7 @@ var TextEditor = (function($) {
         cleanAttrs: ['dir'] 
       });
       this.hideEditImgToolbar();
+      this.hideEditVideoToolbar();
       this.mediaBtn.classList.remove("embed-value-visibile");
       this.mediaBtn.style.display = "none";
     },
@@ -1698,7 +1740,7 @@ var TextEditor = (function($) {
               url_to_embed: TransferVideoUrl,
             },
             // This code loads the inline video into the editor. -A
-            success: function(response, elem) {
+            success: function(response, elem,) {
               TransferVideoUrl = "";
               if (response.success) {
                 if(response.data.embed !== "") {
@@ -1709,21 +1751,14 @@ var TextEditor = (function($) {
                     // This is the type of tag that must contain the uploaded video. -A
                     var wrapTagName = "span";
                   }
-                  //console.log(response.data.embed);
                   var videoNode = Rexbuilder_Dom_Util.htmlToElement(response.data.embed);
                   range.insertNode(videoNode);
-
                   var wrapElement = document.createElement(wrapTagName);
                   wrapElement.className = "overlay-status-for-video-inline";
-
-                  var wrapSetAsActive = document.createElement("span");
-                  wrapSetAsActive.className = "overlay-status-set-active";
-
-                  wrapElement.appendChild(wrapSetAsActive)
+                  //var wrapSetAsActive = document.createElement("span");
+                  //wrapSetAsActive.className = "overlay-status-set-active";
+                  //wrapElement.appendChild(wrapSetAsActive);
                   that.wrap( videoNode, wrapElement);
-                  
-                  //console.log(wrapElement);
-
                     var $elem = $(elem).parents(".grid-stack-item");  
                     // var galleryInstance = $elem.parent().data()
                     //  .plugin_perfectGridGalleryEditor;
