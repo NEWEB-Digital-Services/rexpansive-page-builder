@@ -2663,7 +2663,7 @@ if(isset($savedFromBackend) && $savedFromBackend == "false") {
 	 */
 	public function acf_rule_match_rexpansive_builder( $match, $rule, $options ) {
 			
-		if ( ! $options['post_id'] ) {
+		if ( !isset( $options['post_id'] ) || ! $options['post_id'] ) {
 			return false;
 		}
 		

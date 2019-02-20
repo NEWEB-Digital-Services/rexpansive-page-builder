@@ -1,0 +1,12 @@
+.acf-field {
+  &.rex-acf-inline-checkbox {  
+    display: flex;
+    justify-content: space-between;
+    .acf-label {
+      margin-bottom:0;
+    }
+    input[type="checkbox"] {
+      margin-right:0;
+    }
+  }
+}
