@@ -2487,20 +2487,24 @@
      * @since 2.0.0
      */
     _linkDnDEvents: function() {
+      
+            // DEFINISCO LE VARIABILI PRINCIPALI
       var $pholder;
       var gallery = this;
       var locked = false;
-
       var stop = true;
       /*
        * Scrolling simulation
        */
       var scroll = function(step) {
         var scrollY = $(document).scrollTop();
+
+        //console.log(scrollY);   // MOSTRA LE COORDINATE DI SCROLLING PER OGNI SINGOLO MOVIMENTO.
+
         $(document).scrollTop( scrollY + step );
         if (!stop) {
           setTimeout(function() {
-            scroll(step);
+            scroll(step);         // GLI STEP SONO LA POSITIVITA' O LA NEGATIVITA' DELL'AZIONE (su/giu).
           }, 20);
         }
       };
@@ -2510,7 +2514,8 @@
        * and blocking the editing on the rows
        * @since 2.0.0
        */
-      gallery.$element.on('dragstart', '.drag-to-section', function(e) {
+      gallery.$element.on('dragstart', '.drag-to-section', function(e) {  // AVVIA L'EVENTO CHE GESTISCE IL DRAG
+        console.log("Status: START\ngallery.$element.on('dragstart', '.drag-to-section', function(e) { ... }");
         if(!locked) {
           // Locking rows on drag to premit the drag itself
           setTimeout(function() {
@@ -2556,6 +2561,7 @@
        * @since 2.0.0
        */
       gallery.$element.on('drag', '.drag-to-section', function(e) {
+        console.log("Status: DEFINE DRAG STYLE\ngallery.$element.on('drag', '.drag-to-section', function(e) { ... }")
         $pholder.css('left',e.clientX);
         $pholder.css('top',e.clientY);
         $pholder.css('zIndex',3000);
@@ -2577,7 +2583,9 @@
        * On dragend release the rows and remove the placeholder
        * @since 2.0.0
        */
+      
       gallery.$element.on('dragend', '.drag-to-section', function(e) {
+      console.log("Status: END\ngallery.$element.on('dragend', '.drag-to-section', function(e) { ... }");
         if(locked) {
           Rexbuilder_Util_Editor.releaseRowsLight();
           locked = false;
