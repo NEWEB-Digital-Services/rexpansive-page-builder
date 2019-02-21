@@ -25,7 +25,7 @@
   //   z-index: auto;
   // }
   
-  &#{$row-focused} {
+  #{$row-focused} {
   
     &.empty-section {
       .responsive-overlay {
@@ -75,7 +75,7 @@
       bottom: 0;
       z-index: -30;
       transition: opacity 0.3s;
-      background-color: rgba(0,0,0,0.7);
+      background-color: rgba(0,0,0,1);
     }
 
     .grid-stack-item {

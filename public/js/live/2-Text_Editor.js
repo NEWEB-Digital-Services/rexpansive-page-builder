@@ -19,7 +19,7 @@ var TextEditor = (function($) {
   var currentTextSelection;
 
   var _addElementToTextEditor = function($textWrap) {
-    editorInstance.addElements($textWrap);
+    //editorInstance.addElements($textWrap);
     // _addMediumInsertToElement($textWrap);
   };
 

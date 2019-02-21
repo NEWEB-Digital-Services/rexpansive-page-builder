@@ -258,11 +258,11 @@ class Rexbuilder_Public
             // wp_enqueue_script('medium-editor-insert-addon', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/MediumEditorInsertAddon.js', array('jquery'), $ver, true);
             wp_enqueue_script('textEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/2-Text_Editor.js', array('jquery'), $ver, true);
 
-            wp_enqueue_script('handlebars-runtime', REXPANSIVE_BUILDER_URL . $cartella . 'js/handlebars.runtime.js', array('jquery'), $ver, true);
-            wp_enqueue_script('jquery-fileupload', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery.fileupload.js', array('jquery'), $ver, true);
-            wp_enqueue_script('jquery-cycle2', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery.cycle2.min.js', array('jquery'), $ver, true);
-            wp_enqueue_script('cycle2-center', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery.cycle2.center.min.js', array('jquery'), $ver, true);
-            wp_enqueue_script('medium-editor-insert', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/medium-editor-insert-plugin.js', array('jquery'), $ver, true);
+            //wp_enqueue_script('handlebars-runtime', REXPANSIVE_BUILDER_URL . $cartella . 'js/handlebars.runtime.js', array('jquery'), $ver, true);
+            //wp_enqueue_script('jquery-fileupload', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery.fileupload.js', array('jquery'), $ver, true);
+            //wp_enqueue_script('jquery-cycle2', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery.cycle2.min.js', array('jquery'), $ver, true);
+            //wp_enqueue_script('cycle2-center', REXPANSIVE_BUILDER_URL . $cartella . 'js/jquery.cycle2.center.min.js', array('jquery'), $ver, true);
+            //wp_enqueue_script('medium-editor-insert', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/medium-editor-insert-plugin.js', array('jquery'), $ver, true);
 
             wp_enqueue_script('utilities', REXPANSIVE_BUILDER_URL . $cartella . 'js/utilities.js', array('jquery'), $ver, true);
 

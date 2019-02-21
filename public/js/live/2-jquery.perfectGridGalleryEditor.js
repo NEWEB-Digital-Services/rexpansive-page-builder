@@ -2019,10 +2019,15 @@
                   //   'circle-handle': $target.hasClass('circle-handle'),
                   //   which: e.which
                   // });
+
+                  console.log("Rexbuilder_Util_Editor.elementIsDragging -",Rexbuilder_Util_Editor.elementIsDragging,"\nRexbuilder_Util_Editor.elementIsResizing -",Rexbuilder_Util_Editor.elementIsResizing,"\nRexbuilder_Util_Editor.editingElement -",Rexbuilder_Util_Editor.editingElement);
+
                   if( !( Rexbuilder_Util_Editor.elementIsDragging || Rexbuilder_Util_Editor.elementIsResizing || Rexbuilder_Util_Editor.editingElement || $elem.hasClass('ui-resizable-resizing') || $elem.hasClass('ui-draggable-dragging') || $target.hasClass('ui-resizable-handle') || $target.hasClass('circle-handle') ) && 1 === e.which ) {
                     $elem.trigger("mouseup");
                     // gallery.properties.gridstackInstance.disable();
 
+                    console.log("Rexbuilder_Util_Editor.elementIsDragging -",Rexbuilder_Util_Editor.elementIsDragging,"\nRexbuilder_Util_Editor.elementIsResizing -",Rexbuilder_Util_Editor.elementIsResizing,"\nRexbuilder_Util_Editor.editingElement -",Rexbuilder_Util_Editor.editingElement);
+                    
                     var btn = tmpl("tmpl-tool-drag", {});
                     var $btn = $(btn);
                     $btn.css("position","absolute");
@@ -2031,7 +2036,6 @@
                     var elemCoords = $elem[0].getBoundingClientRect();
                     $btn.css("left", e.clientX - elemCoords.left - ( $btn[0].offsetWidth / 2 ) );
                     $btn.css("top", e.clientY - elemCoords.top - ( $btn[0].offsetHeight / 2 ) );
-
                     $elem.addClass("grid-stack-item--drag-to-row");
                     gallery.$section.addClass("rexpansive-lock-section--overlay");
                   }
