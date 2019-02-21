@@ -5325,9 +5325,9 @@ input.me-insert-embed__value[type=text] {
       overflow: visible; }
     .rexbuilder-live-content--editing .rexpansive_section .perfect-grid-gallery {
       overflow: visible; }
-  .rexbuilder-live-content--editing.focusedRow.empty-section .responsive-overlay {
+  .rexbuilder-live-content--editing .focusedRow.empty-section .responsive-overlay {
     min-height: 100px; }
-  .rexbuilder-live-content--editing.focusedRow.rexpansive-lock-section--light:before {
+  .rexbuilder-live-content--editing .focusedRow.rexpansive-lock-section--light:before {
     content: '';
     position: absolute;
     top: 0;
@@ -5335,18 +5335,18 @@ input.me-insert-embed__value[type=text] {
     right: 0;
     bottom: 0;
     z-index: 5000; }
-  .rexbuilder-live-content--editing.focusedRow.rexpansive-lock-section--overlay:before {
+  .rexbuilder-live-content--editing .focusedRow.rexpansive-lock-section--overlay:before {
     opacity: 1;
     z-index: 10; }
-  .rexbuilder-live-content--editing.focusedRow.rexpansive-lock-section--overlay .grid-stack-item:not(.grid-stack-item--drag-to-row) .ui-focused-element-highlight {
+  .rexbuilder-live-content--editing .focusedRow.rexpansive-lock-section--overlay .grid-stack-item:not(.grid-stack-item--drag-to-row) .ui-focused-element-highlight {
     visibility: visible;
     -webkit-box-shadow: none;
             box-shadow: none;
     outline-color: transparent; }
-    .rexbuilder-live-content--editing.focusedRow.rexpansive-lock-section--overlay .grid-stack-item:not(.grid-stack-item--drag-to-row) .ui-focused-element-highlight:before {
+    .rexbuilder-live-content--editing .focusedRow.rexpansive-lock-section--overlay .grid-stack-item:not(.grid-stack-item--drag-to-row) .ui-focused-element-highlight:before {
       opacity: 1;
       z-index: 30; }
-  .rexbuilder-live-content--editing.focusedRow:before {
+  .rexbuilder-live-content--editing .focusedRow:before {
     opacity: 0;
     content: '';
     position: absolute;
@@ -5359,7 +5359,7 @@ input.me-insert-embed__value[type=text] {
     -o-transition: opacity 0.3s;
     transition: opacity 0.3s;
     background-color: rgba(0, 0, 0, 0.7); }
-  .rexbuilder-live-content--editing.focusedRow .grid-stack-item .ui-focused-element-highlight:before {
+  .rexbuilder-live-content--editing .focusedRow .grid-stack-item .ui-focused-element-highlight:before {
     opacity: 0;
     content: '';
     position: absolute;

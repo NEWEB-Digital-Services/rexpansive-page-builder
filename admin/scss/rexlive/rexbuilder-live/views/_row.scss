@@ -25,7 +25,7 @@
   //   z-index: auto;
   // }
   
-  &#{$row-focused} {
+  #{$row-focused} {
   
     &.empty-section {
       .responsive-overlay {
