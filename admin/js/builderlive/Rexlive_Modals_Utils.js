@@ -76,6 +76,11 @@ var Rexlive_Modals_Utils = (function($) {
       }
     }
 
+    var data = {
+      $modal: $target
+    };
+    Rexlive_Base_Settings.$document.trigger('rexlive:modal_closed', [data]);
+
     var closeEvent = {
       eventName: "rexlive:close_modal",
     };
