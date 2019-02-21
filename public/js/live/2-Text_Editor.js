@@ -1032,10 +1032,12 @@ var TextEditor = (function($) {
     },
 
     handleBlur: function(event,editable) {
+      $(editable).parents('.grid-stack-item').removeClass('item--me-focus');
       $(editable).parents(".rexpansive_section").removeClass("block-editing");
     },
 
     handleFocus: function(event,editable) {
+      $(editable).parents('.grid-stack-item').addClass('item--me-focus');
       $(editable).parents(".rexpansive_section").addClass("block-editing");
     }
   });
