@@ -171,8 +171,7 @@ class Rexbuilder_Utilities {
 	public static function createRandomID($n)
 	{
 		$text = "";
-		$possible =
-		  "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+		$possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 		$possibleLength = strlen($possible);
 	
 		for ($i = 0; $i < $n; $i++)
