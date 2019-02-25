@@ -391,6 +391,10 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'rexlive-edit-modals', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Model_Edit_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexbuilder-Slider', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_RexSlider.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-ChangeLayout', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_ChangeLayout_Modal.js', array( 'jquery' ), null, true );
+					// Import the Javascript file to manage the ONUNLOADEVENT Popup. -A
+				wp_enqueue_script( 'Rexlive-onbeforeunload', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_OnBeforeUnload.js', array( 'jquery' ), null, true );
+					// Import the Javascript file to manage the UPDATEVIDEOINLINE Popup. -A
+				wp_enqueue_script( 'Rexlive-updatevideoinline', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_UpdateVideoInline.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-LockedOption-Mask', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_LockedOption_Mask.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Model-Import', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Model_Import.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-modals', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Modals.js', array( 'jquery' ), null, true );

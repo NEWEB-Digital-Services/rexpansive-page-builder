@@ -998,6 +998,7 @@ var TextEditor = (function($) {
       event.preventDefault();
       event.stopPropagation();
 
+      this.traceEditor = this.base.getFocusedElement();
       this.base.selectAllContents();
       var index = this.base.exportSelection().editableElementIndex;
 
@@ -1014,6 +1015,7 @@ var TextEditor = (function($) {
     },
 
     handleHtmlEditorSave: function(event) {
+
       // this.base.pasteHTML(event.customHTML, {
       //   cleanPastedHTML: false,
       //   cleanAttrs: ['dir'],
@@ -1021,6 +1023,7 @@ var TextEditor = (function($) {
 
       var index = this.base.exportSelection().editableElementIndex;
       this.base.setContent(event.customHTML, index);
+      
     }
   });
 
@@ -1061,6 +1064,7 @@ var TextEditor = (function($) {
     init: function () {
       this.insertionPoint = null;
       this.traceImg = null;
+      this.traceVideo = null;
       this.traceSelection = null;
       this.traceEditor = null;
       this.method = 4;
@@ -1070,23 +1074,35 @@ var TextEditor = (function($) {
       this.mirrorResize.classList.add("me-resize-mirror");
       document.getElementsByTagName("body")[0].append(this.mirrorResize);
 
+      this.mirrorVideoResize = document.createElement('span');
+      this.mirrorVideoResize.classList.add("me-resize-mirror");
+      document.getElementsByTagName("body")[0].append(this.mirrorVideoResize);
+
       this.resizeSizes = document.createElement('span');
       this.resizeSizes.classList.add("me-resize-sizes");
 
-      this.imageEditToolbar = document.createElement( "div" );
+      this.imageEditToolbar = document.createElement("div");
       this.imageEditToolbar.id = "me-edit-inline-image-toolbar";
       this.imageEditToolbar.classList.add("medium-editor-toolbar");
       this.imageEditToolbar.classList.add("medium-toolbar-arrow-under");
       this.imageEditToolbar.innerHTML = tmpl("tmpl-me-image-edit",{});
       document.getElementsByTagName("body")[0].append(this.imageEditToolbar);
 
-      this.mediaBtn = document.createElement( "div" );
+      // Creation of the Inline Video Management Toolbar. -A
+      //this.videoEditToolbar = document.createElement("div");
+      //this.videoEditToolbar.id = "me-edit-inline-image-toolbar";
+      //this.videoEditToolbar.classList.add("medium-editor-toolbar");
+      //this.videoEditToolbar.classList.add("medium-toolbar-arrow-under");
+      //this.videoEditToolbar.innerHTML = tmpl("tmpl-me-image-edit",{});
+      //document.getElementsByTagName("body")[0].append(this.videoEditToolbar);
+
+      this.mediaBtn = document.createElement("div");
       this.mediaBtn.contentEditable = false;
       this.mediaBtn.classList.add("me-insert-media-button");
       this.mediaBtn.style.display = "none";
       this.mediaBtn.innerHTML = tmpl("tmpl-me-insert-media-button", {});
       document.getElementsByTagName("body")[0].append(this.mediaBtn);
-      
+
       this.mediaLibraryBtn = $(this.mediaBtn).find(".me-insert-image")[0];
       this.mediaEmbedBtn = $(this.mediaBtn).find(".me-insert-embed")[0];
       this.mediaEmbedInput = $(this.mediaBtn).find(".me-insert-embed__value")[0];
@@ -1102,9 +1118,16 @@ var TextEditor = (function($) {
       // Insert the IMG html tag
       this.subscribe("rexlive:mediumEditor:inlineImageEdit", this.handleImageInsertReplace.bind(this));
 
-      // Add image with Wordpress Media Library
+      // Insert the VIDEO html tag -A
+      this.subscribe("rexlive:mediumEditor:inlineVideoEditor:Transfer", this.getEmbedCode.bind(this));
+
+      // Function that verifies the deletion of images and inline videos. -A
+      this.subscribe("editableKeydown", this.handleRemoveInlineElement.bind(this));
+
+      // Add image and video with Wordpress Media Library
       this.on(this.mediaLibraryBtn, "click", this.handleClickImage.bind(this));
       this.on(this.imageEditToolbar, "click", this.handleImageEdit.bind(this));
+      //this.on(this.videoEditToolbar, "click", this.handleVideoEdit.bind(this));
       this.on(this.mediaEmbedBtn, "click", this.handleClickEmbed.bind(this));
       if( "undefined" !== typeof this.mediaEmbedInput ) {
         this.on(this.mediaEmbedInput, "keydown", this.getEmbedCode.bind(this));
@@ -1115,11 +1138,13 @@ var TextEditor = (function($) {
     /**
      * @param {EVENT} event 
      */
+
     handleBlur: function(event) {
       if( $(event.target).parents("#me-edit-inline-image-toolbar").length == 0 && !$(event.target).is(".me-insert-embed__value") && 0 == $(event.target).parents(".me-insert-embed").length ) {
         this.mediaBtn.style.display = "none";
         this.mediaBtn.classList.remove("embed-value-visibile");
         this.hideEditImgToolbar();
+        this.hideEditVideoToolbar();
       }
     },
 
@@ -1129,6 +1154,9 @@ var TextEditor = (function($) {
       if( 4 == this.method ) {
         // Method 4)
         this.traceEditor = this.base.getFocusedElement();
+        // This function draws the cursor once it has interacted with the editor. -A
+        var editor = this.base.getFocusedElement();
+        this.traceSelection = rangy.getSelection().saveCharacterRanges(editor);
       }
       this.placeMediaBtn();
     },
@@ -1190,16 +1218,25 @@ var TextEditor = (function($) {
           default:
             break;
         }
-      }
+      }      
 
-      // If i click on an image open the image toolbar
+      // RESIZING TOOLS - LAUNCH/INITIALIT
       if( "click" == event.type ) {
+        // Check if the clicked object is an <img>. -A
         if( "IMG" == event.target.nodeName ) {
           this.viewEditImgToolbar(event.target);
           this.imageResizableEnable();
-        } else {
-          this.hideEditImgToolbar();
-        }
+          this.hideEditVideoToolbar();
+        } else { // Check if the clicked object is an <span> with the class "overlay-status-set-active". -A
+          if( "SPAN" == event.target.nodeName /*&& event.target.className == "overlay-status-set-active"*/) {
+            this.viewEditVideoToolbar(event.target);
+            this.videoResizableEnable();
+            this.hideEditImgToolbar();
+          } else { // If no positive results is received. -A
+            this.hideEditImgToolbar();
+            this.hideEditVideoToolbar();            
+          }
+        } 
       }
     },
 
@@ -1208,13 +1245,11 @@ var TextEditor = (function($) {
         eventName: "rexlive:openMEImageUploader",
         img_data: {}
       };
-  
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     },
 
     handleImageInsertReplace: function(event) {
       var imgHTML = '<img class="wp-image-' + event.imgData.idImage + ' ' + event.imgData.align + '" data-image-id="' + event.imgData.idImage + '" src="' + event.imgData.urlImage + '" alt="" width="' + event.imgData.width + '" height="' + event.imgData.height + '">';
-
       switch( this.method ) {
         case 1:
         case 2:
@@ -1225,14 +1260,14 @@ var TextEditor = (function($) {
           // Method 3)
           if(this.traceSelection) {
             rangy.restoreSelection(this.traceSelection);
-            var range = this.getFirstRange();
+            var range = this.getFirstRange();        
           }
           break;
         case 4:
           // Method 4)
           if( this.traceSelection ) {
             rangy.getSelection().restoreCharacterRanges(this.traceEditor, this.traceSelection);
-            var range = this.getFirstRange();
+            var range = this.getFirstRange();            
             range.refresh();
           }
           break;
@@ -1291,7 +1326,6 @@ var TextEditor = (function($) {
               case 2:
                 // Insert Node method
                 var imgNode = Rexbuilder_Dom_Util.htmlToElement(imgHTML);
-                range.insertNode(imgNode);
                 break;
               case 3:
                 // Insert Node Cool Method
@@ -1320,10 +1354,10 @@ var TextEditor = (function($) {
                     wrapTagName = "p";
                   }
 
-                  this.wrap( imgNode, document.createElement(wrapTagName) );
-                }
+                  this.wrap( imgNode, document.createElement(wrapTagName) );                  
+                }                
               default:
-                break;
+                break;                
             }
           }
           break;
@@ -1332,6 +1366,7 @@ var TextEditor = (function($) {
       }
 
       this.hideEditImgToolbar();
+      // this.hideEditVideoToolbar();
       this.mediaBtn.style.display = "none";
     },
 
@@ -1461,12 +1496,28 @@ var TextEditor = (function($) {
       }
     },
 
-    viewEditImgToolbar: function( target ) {
+    /*handleVideoEdit: function(event) {
+      var $vdl = $(event.target);
+      if( $vdl.hasClass("me-image-delete") ) {
+          $(this.traceVideo).remove();
+          this.hideEditVideoToolbar();
+      }
+    },*/
+
+    viewEditImgToolbar: function(target) {
       this.traceImg = target;
       // var editor = this.base.getFocusedElement();
       // editor.append(this.imageEditToolbar);
       this.placeEditImgToolbar();
       this.imageEditToolbar.classList.add("medium-editor-toolbar-active");
+    },
+
+    viewEditVideoToolbar: function(target) {
+      this.traceVideo = target;
+      //this.traceVideo = target.parentElement;
+      // These strings change the display status of the Inline Video Management Toolbar. -A
+      //this.placeEditVideoToolbar();
+      //this.videoEditToolbar.classList.add("medium-editor-toolbar-active");
     },
 
     imageResizableEnable: function() {
@@ -1477,17 +1528,16 @@ var TextEditor = (function($) {
       this.mirrorResize.style.height = imageCoords.height + "px";
       this.mirrorResize.style.top = imageCoords.top + window.scrollY + "px";
       this.mirrorResize.style.left = imageCoords.left + window.scrollX + "px";
-
       this.mirrorResize.style.display = "block";
       
       var $mirrorResize = $(this.mirrorResize);
       var $resizable = $(this.traceImg);
 
-      $mirrorResize.resizable({ 
+      $mirrorResize.resizable({
         aspectRatio: true,
         handles: "e, s, se",
         alsoResize: $resizable,
-        create: function( event, ui ) {         
+        create: function( event, ui ) {
           var $wrapper = $(event.target);
           $wrapper.addClass("me-ui-custom-wrapper");
           $wrapper.append(that.resizeSizes);
@@ -1500,6 +1550,7 @@ var TextEditor = (function($) {
         },
         start: function(event, ui) {
           that.resizeSizes.style.display = "block";
+          //console.log("START Resizing ||",ui.size.width,"||",ui.size.height,"|| px,w,h");
         },
         resize: function(event,ui) {
           that.placeMirrorImg(event.target);
@@ -1508,14 +1559,90 @@ var TextEditor = (function($) {
         },
         stop: function(event, ui) {
           that.resizeSizes.style.display = "none";
+          //console.log("STOP Resizing ||",ui.size.width,"||",ui.size.height,"|| px,w,h");
         },
       });
+    },
+
+    videoResizableEnable: function() {
+      var that = this;
+      var videoCoords = this.traceVideo.getBoundingClientRect();
+      
+      this.mirrorVideoResize.style.width = videoCoords.width + "px";
+      this.mirrorVideoResize.style.height = videoCoords.height + "px";
+      this.mirrorVideoResize.style.top = videoCoords.top + window.scrollY + "px"; 
+      this.mirrorVideoResize.style.left = videoCoords.left + window.scrollX + "px";
+      this.mirrorVideoResize.style.display = "block";
+      
+      var $mirrorVideoResize = $(this.mirrorVideoResize);
+      var $resizable = $(this.traceVideo);
+
+      $mirrorVideoResize.resizable({
+        aspectRatio: true,
+        handles: "e, s, se",
+        alsoResize: $resizable,
+        create: function(event, ui) {
+          var $wrapper = $(event.target);
+          $wrapper.addClass("me-ui-custom-wrapper");
+          $wrapper.append(that.resizeSizes);
+          $wrapper.find(".ui-resizable-e").append('<span class="img-resize-handle img-resize-handle-e" data-axis="e"></span>');
+          $wrapper.find(".ui-resizable-se").append('<span class="img-resize-handle img-resize-handle-se" data-axis="se"></span>');
+          $wrapper.find(".ui-resizable-s").append('<span class="img-resize-handle img-resize-handle-s" data-axis="s"></span>');
+          // $wrapper.find(".ui-resizable-w").append('<span class="img-resize-handle img-resize-handle-w" data-axis="w"></span>');
+          // $wrapper.find(".ui-resizable-sw").append('<span class="img-resize-handle img-resize-handle-sw" data-axis="sw"></span>');
+        },
+        start: function(event, ui) {
+          that.resizeSizes.style.display = "block";
+          //console.log("START Resizing ||",ui.size.width,"||",ui.size.height,"|| px,w,h");
+        },
+        resize: function(event,ui) {
+          that.placeMirrorVideo(event.target);
+          that.resizeSizes.textContent = ui.size.width + ' x ' + ui.size.height;
+          $resizable.find("iframe").height(ui.size.height);
+          $resizable.find("iframe").width(ui.size.width);
+        },
+        stop: function(event, ui) {
+          that.resizeSizes.style.display = "none";
+          //console.log("STOP Resizing ||",ui.size.width,"||",ui.size.height,"|| px,w,h");
+        },
+      });
+    },
+
+    handleRemoveInlineElement: function(event){
+
+      this.hideEditImgToolbar();
+      this.hideEditVideoToolbar();
+      
+  /*  var baseElementsOneInnerHTML = this.base.elements[1].innerHTML;
+      var baseElementsOneInnerTEXT = this.base.elements[1].innerText;    
+      console.log(this.base.elements[1].innerHTML);
+      console.log(this.base.elements[1].innerText);
+      if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.BACKSPACE) || MediumEditor.util.isKey(event, MediumEditor.util.keyCode.DELETE)) {
+        // MediumEditor.util.isKey == 8, 446
+        if(baseElementsOneInnerTEXT != "" && baseElementsOneInnerHTML != "<p><br></p>") {
+          this.hideEditImgToolbar();
+          this.hideEditVideoToolbar();
+          if(baseElementsOneInnerHTML != "<p><br></p>") {
+            this.hideEditImgToolbar();
+            this.hideEditVideoToolbar();
+          }
+        }
+      }   */
+
     },
 
     placeMirrorImg: function(el) {
       var imageCoords = this.traceImg.getBoundingClientRect();
       el.style.top = imageCoords.top + window.scrollY + "px";
       el.style.left = imageCoords.left + window.scrollX + "px";
+      // console.log(el.style.top,"\n",el.style.left)
+    },
+
+    placeMirrorVideo: function(el) {
+      var videoCoords = this.traceVideo.getBoundingClientRect();
+      el.style.top = videoCoords.top + window.scrollY + "px";
+      el.style.left = videoCoords.left + window.scrollX + "px";
+      // console.log(el.style.top,"\n",el.style.left)
     },
 
     placeEditImgToolbar: function() {
@@ -1524,51 +1651,87 @@ var TextEditor = (function($) {
       this.imageEditToolbar.style.top = ( window.scrollY + targetCoords.top - this.imageEditToolbar.offsetHeight - 8 ) + "px";
     },
 
+    // This function set the position of the Inline Video Management Toolbar. -A
+    /*
+    placeEditVideoToolbar: function() {
+      var targetCoords = this.traceVideo.getBoundingClientRect();
+      this.videoEditToolbar.style.left = ( targetCoords.left + ( ( targetCoords.width - this.videoEditToolbar.offsetWidth ) / 2 ) ) + "px";
+      this.videoEditToolbar.style.top = ( window.scrollY + targetCoords.top - this.videoEditToolbar.offsetHeight - 8 ) + "px";
+    },
+    */
+
     hideEditImgToolbar: function() {
       if( this.traceImg ) {
         if( 'undefined' !== typeof $(this.mirrorResize).data('uiResizable') ) {
           $(this.mirrorResize).resizable("destroy");
-        }
-        
-        this.mirrorResize.style.display = "";
+        }        
         this.mirrorResize.style.display = "";
         this.mirrorResize.style.margin = "";
         this.mirrorResize.style.position = "";
         this.mirrorResize.style.top = "";
         this.mirrorResize.style.left = "";
       }
-
       this.traceImg = null;
       this.imageEditToolbar.classList.remove("medium-editor-toolbar-active");
     },
 
-    pasteMediaHTML: function(html) {
+    hideEditVideoToolbar: function() {
+      if( this.traceVideo ) {
+        if( 'undefined' !== typeof $(this.mirrorVideoResize).data('uiResizable') ) {
+          $(this.mirrorVideoResize).resizable("destroy");
+        }       
+        this.mirrorVideoResize.style.display = "";
+        this.mirrorVideoResize.style.margin = "";
+        this.mirrorVideoResize.style.position = "";
+        this.mirrorVideoResize.style.top = "";
+        this.mirrorVideoResize.style.left = "";
+      }
+      this.traceVideo = null;     
+      //this.videoEditToolbar.classList.remove("medium-editor-toolbar-active");
+    },
+
+    pasteMediaHTML: function(html) {  
       this.base.restoreSelection();
-
       html = '<div class="media-embed-wrap">' + html + '</div>';
-
       this.base.pasteHTML(html, {
         cleanPastedHTML: false,
-        cleanAttrs: ['dir']
+        cleanAttrs: ['dir'] 
       });
-
       this.hideEditImgToolbar();
+      this.hideEditVideoToolbar();
       this.mediaBtn.classList.remove("embed-value-visibile");
       this.mediaBtn.style.display = "none";
     },
 
     handleClickEmbed: function(ev) {
-      // var url_to_embed = this.mediaEmbedBtn.getAttribute("data-foo");
-      this.mediaBtn.classList.add("embed-value-visibile");
-      this.mediaEmbedInput.value = "";
-      this.mediaEmbedInput.focus();
+      // This is the code of the old system for uploading inline videos. -A
+      //this.mediaBtn.classList.add("embed-value-visibile");
+      //this.mediaEmbedInput.value = "";
+      //this.mediaEmbedInput.focus();
+
+      var data = {
+        eventName: "rexlive:inlineVideoEditor",
+        lastCursorPosition: this.traceSelection,
+      };
+      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      this.clientLastCursorPosition = data.lastCursorPosition;
     },
+
+    // This is the code of a test for data transfer for the inline videos. -A
+    /*handleVideoInsertReplace: function(eve){
+      var TransferVideoUrl = eve.valueUrl;
+      console.log("OUTPUT:", TransferVideoUrl);
+    },*/
 
     getEmbedCode: function(event) {
       var that = this;
-      if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER)) {
-        if( "" !== event.target.value ) {
-          this.mediaEmbedInput.classList.add("embed-loading");
+      var TransferVideoUrl = event.valueUrl;
+
+      // This code was used to start loading the inline video using the keyboard [ENTER]. -A
+      //if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER)) {
+
+        if( TransferVideoUrl !== "" ) {
+          this.mediaEmbedInput.classList.remove("embed-loading");
           $.ajax({
             type: "GET",
             dataType: "json",
@@ -1576,26 +1739,55 @@ var TextEditor = (function($) {
             data: {
               action: "rexlive_get_embed_code",
               nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-              url_to_embed: event.target.value,
+              url_to_embed: TransferVideoUrl,
             },
-            success: function(response) {
-              event.target.value = "";
+            // This code loads the inline video into the editor. -A
+            success: function(response, elem,) {
+              TransferVideoUrl = "";
               if (response.success) {
-                if("" !== response.data.embed) {
-                  that.pasteMediaHTML(response.data.embed);
+                if(response.data.embed !== "") {
+                  if(that.traceSelection) {
+                    rangy.getSelection().restoreCharacterRanges(that.traceEditor, that.clientLastCursorPosition);
+                    var range = that.getFirstRange();
+                    range.refresh();
+                    // This is the type of tag that must contain the uploaded video. -A
+                    var wrapTagName = "span";
+                  }
+                  var videoNode = Rexbuilder_Dom_Util.htmlToElement(response.data.embed);
+                  range.insertNode(videoNode);
+                  var wrapElement = document.createElement(wrapTagName);
+                  wrapElement.className = "overlay-status-for-video-inline";
+                  //var wrapSetAsActive = document.createElement("span");
+                  //wrapSetAsActive.className = "overlay-status-set-active";
+                  //wrapElement.appendChild(wrapSetAsActive);
+                  that.wrap( videoNode, wrapElement);
+                    var $elem = $(elem).parents(".grid-stack-item");  
+                    // var galleryInstance = $elem.parent().data()
+                    //  .plugin_perfectGridGalleryEditor;
+                    // galleryInstance.fixElementTextSize($elem[0], null, null);             
+                    var data = {
+                      eventName: "rexlive:edited",
+                      modelEdited: $elem
+                        .parents(".rexpansive_section")
+                        .hasClass("rex-model-section")
+                    };
+                    Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+                          
                 }
               }
             },
             error: function(response) {},
             complete: function() {
               that.mediaEmbedInput.classList.remove("embed-loading");
+              that.traceEditor.focus();
             }
           });
-        }
-      }
+        }        
+      // This brace closes the "IF" element on line 1613. -A
+      // }
     },
 
-    mediaEmbedInputBlur: function(event) { 
+    mediaEmbedInputBlur: function(event) {
       this.mediaBtn.classList.remove("embed-value-visibile");
     },
   });

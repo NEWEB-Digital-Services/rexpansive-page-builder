@@ -15,8 +15,10 @@
     // Rexpansive_Builder_Admin_Config.init();
 
     // modal utilities: open, close
+    Change_OnBeforeUnload_Modal.init();
+    Change_UpdateVideoInline_Modal.init();
     Rexlive_Modals_Utils.init();
-
+    
     // launch all the modals
     Rexlive_Modals.init();
     
@@ -27,5 +29,19 @@
 
     // slider modal
     Rexbuilder_RexSlider.init();
+
+    var verificasalvataggio;
+    verificasalvataggio = function(e){        
+      if(Rexbuilder_Util_Admin_Editor.pageSaved == false){        
+        //Change_OnBeforeUnload_Modal.openModal();        
+        e.preventDefault();
+        var message = "\o/";    
+        (e || window.event).returnValue = message;
+        console.log("ATTENTION: Before closing the page verify that you have saved the changes.");
+        return message;
+      }
+    }    
+    window.addEventListener("beforeunload", verificasalvataggio);
+
   });
 })(jQuery);

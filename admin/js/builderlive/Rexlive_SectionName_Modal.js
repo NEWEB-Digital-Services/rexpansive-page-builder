@@ -9,9 +9,17 @@ var SectionName_Modal = (function ($) {
         section_name_modal_properties.$section_id.val(defaultName);
     }
     
-    var _updateSectionName = function (data) {
+    var _updateSectionName = function(data) {
         sectionTarget = data.sectionTarget;
         section_name_modal_properties.$section_id.val(data.sectionName);
+
+        if(data.sectionName != ""){
+            section_name_modal_properties.$section_id
+                .focus();
+        }else{
+            section_name_modal_properties.$section_id
+                .blur();
+        }
     }
 
     var _getData = function () {

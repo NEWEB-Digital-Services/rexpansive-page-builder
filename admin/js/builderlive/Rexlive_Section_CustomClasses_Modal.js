@@ -7,7 +7,7 @@ var Section_CustomClasses_Modal = (function ($) {
     var sectionTarget;
     
     var _resetCustomClasses = function () {
-        custom_classes_modal_properties.$classes.val(defaultClasses);
+        //custom_classes_modal_properties.$classes.val(defaultClasses);
     }
 
     var _updateCustomClasses = function (data) {
@@ -26,13 +26,31 @@ var Section_CustomClasses_Modal = (function ($) {
             hiddenClasses += " active-small-overlay";
             newClasses = newClasses.replace("active-small-overlay", "");
         }
+
+        if(data.customClasses == ""){
+            custom_classes_modal_properties.$classes
+                .siblings("label, .prefix")
+                .removeClass("active");
+        }else{
+            custom_classes_modal_properties.$classes
+                .siblings("label, .prefix")
+                .addClass("active");
+        }
+
+        //console.log("stamp || newClasses:" + newClasses);
+        //console.log("stamp || data.sectionTarger:" + data.sectionTarget);
+        //console.log("stamp || data.customClasses:" + data.customClasses);
+
         custom_classes_modal_properties.$classes.val(newClasses);
+        
     }
 
     var _applyCustomClasses = function () {
         var newClassesString = _getData();
         newClassesString = newClassesString.trim();
         var classList = newClassesString.split(/\s+/);
+
+        console.log("passed || applyCustomClasses()");
 
         Rexbuilder_Util_Admin_Editor.highlightRowSetData({
             'custom_classes': classList,
@@ -63,7 +81,6 @@ var Section_CustomClasses_Modal = (function ($) {
 
     var _init = function ($container) {
         custom_classes_modal_properties = {
-
             // ID and navigator configuration
             $classes: $container.find('#section-set-custom-class'),
         }

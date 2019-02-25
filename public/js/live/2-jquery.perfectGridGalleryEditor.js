@@ -2570,20 +2570,24 @@
      * @since 2.0.0
      */
     _linkDnDEvents: function() {
+      
+            // DEFINISCO LE VARIABILI PRINCIPALI
       var $pholder;
       var gallery = this;
       var locked = false;
-
       var stop = true;
       /*
        * Scrolling simulation
        */
       var scroll = function(step) {
         var scrollY = $(document).scrollTop();
+
+        //console.log(scrollY);   // MOSTRA LE COORDINATE DI SCROLLING PER OGNI SINGOLO MOVIMENTO.
+
         $(document).scrollTop( scrollY + step );
         if (!stop) {
           setTimeout(function() {
-            scroll(step);
+            scroll(step);         // GLI STEP SONO LA POSITIVITA' O LA NEGATIVITA' DELL'AZIONE (su/giu).
           }, 20);
         }
       };
@@ -2593,31 +2597,31 @@
        * and blocking the editing on the rows
        * @since 2.0.0
        */
-      gallery.$element.on('dragstart', '.drag-to-section', function(e) {
+      gallery.$element.on('dragstart', '.drag-to-section', function(e) {  // AVVIA L'EVENTO CHE GESTISCE IL DRAG
         if(!locked) {
           // Locking rows on drag to premit the drag itself
           setTimeout(function() {
-            Rexbuilder_Util_Editor.lockRowsLight( gallery.$section );
+            Rexbuilder_Util_Editor.lockRowsLight(gallery.$section);
             locked = true;
           },100);
         }
 
         e.originalEvent.dataTransfer.effectAllowed = "all";
 
-        var $originalElement = $(this).parents('.grid-stack-item');
+        var $originalElement = $(this).parents('.grid-stack-item');         // DEFINISCO LA VARIABILE COLLEGANDOLA AL CONT DELLA ROW
         $pholder = $originalElement.clone(false);
-        $pholder.find('.rexbuilder-block-data').remove();
-        $pholder.find('.ui-resizable-handle').remove();
-        $pholder.find('.rexlive-block-toolbox').remove();
+        $pholder.find('.rexbuilder-block-data').remove();                   // RIMUOVO LA CLASS
+        $pholder.find('.ui-resizable-handle').remove();                     // "              "
+        $pholder.find('.rexlive-block-toolbox').remove();                   // "              "
         $pholder.find('.grid-stack-item-content').css('height','100%');
-        $('body').append($pholder);
-        $pholder.css('position','fixed');
-        $pholder.css('left',e.clientX);
-        $pholder.css('top',e.clientY);
-        $pholder.css('width',$originalElement.width());
-        $pholder.css('height',$originalElement.height());
-        $pholder.css('transform','scale(0.5)');
-        $pholder.css('transformOrigin','top left');
+        $('body').append($pholder);                                         // APPENDO AL <body> L'ELEMENTO CREATO/CLONATO
+        $pholder.css('position','fixed');                                   // Position::FIXED, PER POTERLO MUOVERE SENZA LIMITAZIONI
+        $pholder.css('left',e.clientX);                                     // COORDINATE VERTICALI
+        $pholder.css('top',e.clientY);                                      // COORDINATE ORIZZONTALI
+        $pholder.css('width',$originalElement.width());                     // LUNGHEZZA ORIGINALE DELL'ELEMENTO  (verrà ridimensionato)
+        $pholder.css('height',$originalElement.height());                   // ALTEZZA ORIGINALE DELL'ELEMENTO    (verrà ridimensionato)
+        $pholder.css('transform','scale(0.5)');                             // MODIFICO LA SCALA DEL POPUP IN BASE ALLE DIM. ORIGINALI
+        $pholder.css('transformOrigin','top left');                         // MODIFICO IL PUNTO DI ANCORAGGIO DEL POPUP SUL CONTENITORE
 
         var rex_block_id = $originalElement.attr("data-rexbuilder-block-id");
         var sectionID = gallery.$section.attr("data-rexlive-section-id");
@@ -2632,6 +2636,7 @@
         };
 
         e.originalEvent.dataTransfer.setData("text/plain", JSON.stringify(sectionTarget));
+        console.log("Status: START\ngallery.$element.on('dragstart', '.drag-to-section', function(e)\n{",event.clientX,event.clientY,"(x,y)}");
       });
 
       /**
@@ -2639,20 +2644,22 @@
        * @since 2.0.0
        */
       gallery.$element.on('drag', '.drag-to-section', function(e) {
+        //console.log("Status: DEFINE DRAG STYLE\ngallery.$element.on('drag', '.drag-to-section', function(e) { ... }")
         $pholder.css('left',e.clientX);
         $pholder.css('top',e.clientY);
         $pholder.css('zIndex',3000);
 
         stop = true;
 
-        if ( event.clientY < 150 ) {
+        // GESTIONE DELLO SCROLL IN BASE ALLO SPOSTAMENTO DEL POPUP, FASE NEGATIVA
+        if ( event.clientY < 150 ) {  
           stop = false;
-          scroll(-1);
+          scroll(-1);       // LO SCROLL E' IMPOSTATO A -1, DI CONSEGUENZA LA PAGINA SCORRERA' PX PER PX VERSO L'ALTO
         }
-
+        // GESTIONE DELLO SCROLL IN BASE ALLO SPOSTAMENTO DEL POPUP, FASE POSITIVA
         if ( event.clientY > Rexbuilder_Util_Editor.viewportMeasurement.height - 150 ) {
           stop = false;
-          scroll(1);
+          scroll(1);        // LO SCROLL E' IMPOSTATO A -1, DI CONSEGUENZA LA PAGINA SCORRERA' PX PER PX VERSO L'ALTO
         }
       });
 
@@ -2660,6 +2667,7 @@
        * On dragend release the rows and remove the placeholder
        * @since 2.0.0
        */
+      
       gallery.$element.on('dragend', '.drag-to-section', function(e) {
         if(locked) {
           Rexbuilder_Util_Editor.releaseRowsLight();
@@ -2672,6 +2680,8 @@
         $pholder.css('top',e.clientY);
         $pholder.remove();
         $pholder = null;
+
+        console.log("Status: END\ngallery.$element.on('dragend', '.drag-to-section', function(e)\n{",event.clientX,event.clientY,"(x,y)}");
       });
     },
 

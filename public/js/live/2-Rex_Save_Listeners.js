@@ -1051,11 +1051,15 @@ var Rex_Save_Listeners = (function($) {
         $savingBlock.find("figure").removeAttr("class");
 
         if ($savingBlock.text().trim() == "") {
-          content = "";
+          if( $savingBlock.find("iframe").length > 0 || $savingBlock.find("img").length > 0 ){
+            content = $savingBlock.html().trim();
+          } else {
+            content = "";
+          }
         } else {
           content = $savingBlock.html().trim();
         }
-        // console.log(content);
+
       } else {
         var $sliderToSave = $textWrap.children(
           '.rex-slider-wrap[data-rex-slider-active="true"]'

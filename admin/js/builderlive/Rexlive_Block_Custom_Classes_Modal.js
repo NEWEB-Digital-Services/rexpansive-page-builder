@@ -30,6 +30,16 @@ var Block_CustomClasses_Modal = (function ($) {
             newClasses = newClasses.replace("active-small-block-overlay", "");
         }
 
+        if(data.classes == ""){
+            custom_classes_modal_properties.$classes
+                .siblings("label, .prefix")
+                .removeClass("active");
+        }else{
+            custom_classes_modal_properties.$classes
+                .siblings("label, .prefix")
+                .addClass("active");
+        }
+
         custom_classes_modal_properties.$classes.val(newClasses).trigger("focusout");
     }
 
@@ -45,7 +55,7 @@ var Block_CustomClasses_Modal = (function ($) {
                 target: targetSection
             }
         }
-
+        //console.log("passed || applyCustomClasses() || Block_CC_Modals")
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_customClasses);
     }
 
