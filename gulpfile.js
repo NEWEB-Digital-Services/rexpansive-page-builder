@@ -332,6 +332,8 @@ var builderlive_public = [
 	'public/js/vendor/6-jquery.rexAccordion.js',
 	'public/js/vendor/6-jquery.rexIndicator.js',
 	'public/js/vendor/pixi.min.js',
+	'public/js/vendor/odometer.min.js',
+	// 'public/js/vendor/numscroller-1.0.js',
 	'public/js/vendor/jquery.rexEffect.js',
 	'public/js/vendor/spectrum.js',
 	'public/js/vendor/utilities.js',

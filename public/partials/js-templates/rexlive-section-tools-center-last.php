@@ -36,7 +36,7 @@ defined('ABSPATH') or exit;
                 <?php Rexbuilder_Utilities::get_icon('#Z003-RexSlider'); ?>
             </div>
 
-            <div class="tool-button tippy add-new-section tool-button_list--item" data-tippy-content="<?php _e('Slider','rexpansive'); ?>" data-new-row-position="after">
+            <div class="tool-button tippy add-new-section tool-button_list--item" data-tippy-content="<?php _e('Insert Row','rexpansive'); ?>" data-new-row-position="after">
                 <?php Rexbuilder_Utilities::get_icon('#B016-New-Adjacent-Row'); ?>
             </div>
         </div>

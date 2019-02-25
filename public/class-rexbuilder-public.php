@@ -280,6 +280,7 @@ class Rexbuilder_Public
             wp_enqueue_script('rex-accordion', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/6-jquery.rexAccordion.js', array('jquery'), $ver, true);
             wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/6-jquery.rexIndicator.js', array('jquery'), $ver, true);
             wp_enqueue_script('pixi', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/pixi.min.js', array('jquery'), $ver, true);
+            wp_enqueue_script('odometer', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/odometer.min.js', array('jquery'), $ver, true);
             wp_enqueue_script('effect', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/jquery.rexEffect.js', array('jquery'), $ver, true);
 
             wp_enqueue_script('utilities', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/utilities.js', array('jquery'), $ver, true);

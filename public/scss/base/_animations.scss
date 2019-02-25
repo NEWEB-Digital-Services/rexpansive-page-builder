@@ -243,7 +243,7 @@
 .border-fade-in__animation {
   &:before {
     content: '';
-    transition: border-width $border-in-duration $experiment $fade-content-duration, z-index 10ms ease ( $border-in-duration + $fade-content-duration );
+    transition: border-width $border-in-duration $experiment, z-index 10ms ease ( $border-in-duration + $fade-content-duration );
     position: absolute;
     top: 0;
     left: 0;
@@ -258,7 +258,7 @@
   }
   .perfect-grid-item {
     opacity: 0;
-    transition: opacity $fade-content-duration $ease-in-cubic;
+    transition: opacity $fade-content-duration $ease-in-cubic $fade-content-duration;
   }
   &.run-animation {
     &:before {

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="http://github.hubspot.com/odometer/themes/odometer-theme-digital.css" />
+    <style>
+    .container {
+        max-width: 500px;
+        margin:0 auto;
+        font-size: 30px;
+    }
+    .odometer.odometer-auto-theme, .odometer.odometer-theme-digital {
+        background-image: none;
+        background-color: #004894;
+        color: white;
+    }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <p>FIAT PUNTO <span id="odometer" class="odometer">1</span></p>
+        <button id="spin">SPIN</button>
+    </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="./public/js/vendor/odometer.min.js"></script>
+    <script>
+    window.odometerOptions = {
+        format: '(.ddd),dd'
+    };
+    var btn = document.getElementById('spin');
+    var odom = document.getElementById('odometer');
+
+    spin.addEventListener('click', function(e) {
+        e.preventDefault();
+        odom.innerText = 2500;
+    });
+    </script>
+</body>
+</html>

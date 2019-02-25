@@ -2,6 +2,7 @@
  *		PERFECT GRID GALLERY
  ** ===============================================**/
 /* New version */
+@import url("//fonts.googleapis.com/css?family=Wallpoet");
 .perfect-grid-sizer {
   width: 8.33333333%; }
 
@@ -3754,6 +3755,101 @@ http://flickity.metafizzy.co
   color: #CCC;
   text-decoration: underline; }
 
+.odometer.odometer-auto-theme, .odometer.odometer-theme-digital {
+  display: -moz-inline-box;
+  display: inline-block;
+  vertical-align: middle;
+  vertical-align: auto;
+  position: relative; }
+
+.odometer.odometer-auto-theme, .odometer.odometer-theme-digital {
+  display: inline; }
+
+.odometer.odometer-auto-theme .odometer-digit, .odometer.odometer-theme-digital .odometer-digit {
+  display: -moz-inline-box;
+  display: inline-block;
+  vertical-align: middle;
+  vertical-align: auto;
+  position: relative; }
+
+.odometer.odometer-auto-theme .odometer-digit, .odometer.odometer-theme-digital .odometer-digit {
+  display: inline; }
+
+.odometer.odometer-auto-theme .odometer-digit .odometer-digit-spacer, .odometer.odometer-theme-digital .odometer-digit .odometer-digit-spacer {
+  display: -moz-inline-box;
+  display: inline-block;
+  vertical-align: middle;
+  vertical-align: auto;
+  visibility: hidden; }
+
+.odometer.odometer-auto-theme .odometer-digit .odometer-digit-spacer, .odometer.odometer-theme-digital .odometer-digit .odometer-digit-spacer {
+  display: inline; }
+
+.odometer.odometer-auto-theme .odometer-digit .odometer-digit-inner, .odometer.odometer-theme-digital .odometer-digit .odometer-digit-inner {
+  text-align: left;
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden; }
+
+.odometer.odometer-auto-theme .odometer-digit .odometer-ribbon, .odometer.odometer-theme-digital .odometer-digit .odometer-ribbon {
+  display: block; }
+
+.odometer.odometer-auto-theme .odometer-digit .odometer-ribbon-inner, .odometer.odometer-theme-digital .odometer-digit .odometer-ribbon-inner {
+  display: block;
+  -webkit-backface-visibility: hidden; }
+
+.odometer.odometer-auto-theme .odometer-digit .odometer-value, .odometer.odometer-theme-digital .odometer-digit .odometer-value {
+  display: block;
+  -webkit-transform: translateZ(0); }
+
+.odometer.odometer-auto-theme .odometer-digit .odometer-value.odometer-last-value, .odometer.odometer-theme-digital .odometer-digit .odometer-value.odometer-last-value {
+  position: absolute; }
+
+.odometer.odometer-auto-theme.odometer-animating-up .odometer-ribbon-inner, .odometer.odometer-theme-digital.odometer-animating-up .odometer-ribbon-inner {
+  -webkit-transition: -webkit-transform 2s;
+  -o-transition: -o-transform 2s;
+  transition: -webkit-transform 2s;
+  -o-transition: transform 2s;
+  transition: transform 2s;
+  transition: transform 2s, -webkit-transform 2s; }
+
+.odometer.odometer-auto-theme.odometer-animating-up.odometer-animating .odometer-ribbon-inner, .odometer.odometer-theme-digital.odometer-animating-up.odometer-animating .odometer-ribbon-inner {
+  -webkit-transform: translateY(-100%);
+  -ms-transform: translateY(-100%);
+  transform: translateY(-100%); }
+
+.odometer.odometer-auto-theme.odometer-animating-down .odometer-ribbon-inner, .odometer.odometer-theme-digital.odometer-animating-down .odometer-ribbon-inner {
+  -webkit-transform: translateY(-100%);
+  -ms-transform: translateY(-100%);
+  transform: translateY(-100%); }
+
+.odometer.odometer-auto-theme.odometer-animating-down.odometer-animating .odometer-ribbon-inner, .odometer.odometer-theme-digital.odometer-animating-down.odometer-animating .odometer-ribbon-inner {
+  -webkit-transition: -webkit-transform 2s;
+  -o-transition: -o-transform 2s;
+  transition: -webkit-transform 2s;
+  -o-transition: transform 2s;
+  transition: transform 2s;
+  transition: transform 2s, -webkit-transform 2s;
+  -webkit-transform: translateY(0);
+  -ms-transform: translateY(0);
+  transform: translateY(0); }
+
+.odometer.odometer-auto-theme, .odometer.odometer-theme-digital {
+  background-image: -o-radial-gradient(rgba(139, 245, 165, 0.4), #000000);
+  background-image: radial-gradient(rgba(139, 245, 165, 0.4), #000000);
+  background-color: black;
+  font-family: "Wallpoet", monospace;
+  padding: 0 0.2em;
+  line-height: 1.1em;
+  color: #8bf5a5; }
+
+.odometer.odometer-auto-theme .odometer-digit + .odometer-digit, .odometer.odometer-theme-digital .odometer-digit + .odometer-digit {
+  margin-left: 0.1em; }
+
 /** FORMS **/
 /** REXSLIDER **/
 /** ANIMATIONS **/
@@ -4194,9 +4290,9 @@ http://flickity.metafizzy.co
 
 .border-fade-in__animation:before {
   content: '';
-  -webkit-transition: border-width 800ms cubic-bezier(0.77, 0, 0.175, 1) 500ms, z-index 10ms ease 1300ms;
-  -o-transition: border-width 800ms cubic-bezier(0.77, 0, 0.175, 1) 500ms, z-index 10ms ease 1300ms;
-  transition: border-width 800ms cubic-bezier(0.77, 0, 0.175, 1) 500ms, z-index 10ms ease 1300ms;
+  -webkit-transition: border-width 800ms cubic-bezier(0.77, 0, 0.175, 1), z-index 10ms ease 1300ms;
+  -o-transition: border-width 800ms cubic-bezier(0.77, 0, 0.175, 1), z-index 10ms ease 1300ms;
+  transition: border-width 800ms cubic-bezier(0.77, 0, 0.175, 1), z-index 10ms ease 1300ms;
   position: absolute;
   top: 0;
   left: 0;
@@ -4209,9 +4305,9 @@ http://flickity.metafizzy.co
   border-style: solid; }
 .border-fade-in__animation .perfect-grid-item {
   opacity: 0;
-  -webkit-transition: opacity 500ms cubic-bezier(0.55, 0.055, 0.675, 0.19);
-  -o-transition: opacity 500ms cubic-bezier(0.55, 0.055, 0.675, 0.19);
-  transition: opacity 500ms cubic-bezier(0.55, 0.055, 0.675, 0.19); }
+  -webkit-transition: opacity 500ms cubic-bezier(0.55, 0.055, 0.675, 0.19) 500ms;
+  -o-transition: opacity 500ms cubic-bezier(0.55, 0.055, 0.675, 0.19) 500ms;
+  transition: opacity 500ms cubic-bezier(0.55, 0.055, 0.675, 0.19) 500ms; }
 .border-fade-in__animation.run-animation:before {
   border-width: 0;
   z-index: -1000; }
