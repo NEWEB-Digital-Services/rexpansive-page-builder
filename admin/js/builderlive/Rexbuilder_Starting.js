@@ -30,8 +30,8 @@
     // slider modal
     Rexbuilder_RexSlider.init();
 
-    var verificasalvataggio;
-    verificasalvataggio = function(e){        
+    var verify_saving;
+    verify_saving = function(e){        
       if(Rexbuilder_Util_Admin_Editor.pageSaved == false){        
         //Change_OnBeforeUnload_Modal.openModal();        
         e.preventDefault();
@@ -41,7 +41,7 @@
         return message;
       }
     }    
-    window.addEventListener("beforeunload", verificasalvataggio);
+    window.addEventListener("beforeunload", verify_saving);
 
   });
 })(jQuery);

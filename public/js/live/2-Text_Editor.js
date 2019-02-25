@@ -1742,7 +1742,7 @@ var TextEditor = (function($) {
               url_to_embed: TransferVideoUrl,
             },
             // This code loads the inline video into the editor. -A
-            success: function(response, elem,) {
+            success: function(response, elem) {
               TransferVideoUrl = "";
               if (response.success) {
                 if(response.data.embed !== "") {
