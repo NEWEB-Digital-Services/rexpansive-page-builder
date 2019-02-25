@@ -325,6 +325,8 @@ var Rexbuilder_Util_Editor = (function($) {
     Rexbuilder_Util_Editor.editingElement = false;
     Rexbuilder_Util_Editor.editedElement = null;
     Rexbuilder_Util_Editor.editedTextWrap = null;
+
+    console.log("passed || endEditingElement()");
   };
 
   var startEditingElement = function() {
@@ -1428,16 +1430,19 @@ var Rexbuilder_Util_Editor = (function($) {
    * Add events to control the drag and drop of blocks between the rows
    * @since 2.0.0
    */
+
   var addDnDEvents = function() {
     
     /** */
     Rexbuilder_Util.$rexContainer.on("dragenter", function(e) {
       e.stopPropagation();
+      //console.log("passed - $rexContainer - .on(dragenter)");
     });
 
     Rexbuilder_Util.$rexContainer.on("dragover", function(e) {
       e.preventDefault();
       e.stopPropagation();
+      //console.log("passed - $rexContainer - .on(dragover)");
     });
 
     /**
@@ -1446,11 +1451,8 @@ var Rexbuilder_Util_Editor = (function($) {
      * @since 2.0.0
      */
 
-    console.log(Rexbuilder_Util.$rexContainer.children());
-
     Rexbuilder_Util.$rexContainer.on("drop", function(e) {
       console.log("sono entrato in (DROP)");
-      console.log(e);
       e.preventDefault();
       e.stopPropagation();
       var ev;

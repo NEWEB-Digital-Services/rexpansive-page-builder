@@ -184,7 +184,7 @@
         this._linkDragEvents();
         this._linkDnDEvents();
 
-        // this._linkDropEvents();
+        //this._linkDropEvents();
 
         this._launchTextEditor();
         this._createFirstReverseStack();
@@ -1346,6 +1346,7 @@
 
     // Updating elements properties
     updateAllElementsProperties: function() {
+      console.log("passed - updateAllElementsProperties");
       var gallery = this;
       this.properties.editedFromBackend = false;
       this.properties.startingLayout = this.settings.galleryLayout;
@@ -1378,6 +1379,7 @@
       this._updateElementSize(elem, "y");
       this._updateElementSize(elem, "w");
       this._updateElementSize(elem, "h");
+      console.log("passed - updateElementAllProperties");
     },
 
     _updateElementSize: function(elem, $case) {
@@ -2020,18 +2022,19 @@
                   //   which: e.which
                   // });
 
-                  console.log("Rexbuilder_Util_Editor.elementIsDragging -",Rexbuilder_Util_Editor.elementIsDragging,"\nRexbuilder_Util_Editor.elementIsResizing -",Rexbuilder_Util_Editor.elementIsResizing,"\nRexbuilder_Util_Editor.editingElement -",Rexbuilder_Util_Editor.editingElement);
+                  console.log("pre(IF)\nRexbuilder_Util_Editor.elementIsDragging -",Rexbuilder_Util_Editor.elementIsDragging,"\nRexbuilder_Util_Editor.elementIsResizing -",Rexbuilder_Util_Editor.elementIsResizing,"\nRexbuilder_Util_Editor.editingElement -",Rexbuilder_Util_Editor.editingElement);
 
                   if( !( Rexbuilder_Util_Editor.elementIsDragging || Rexbuilder_Util_Editor.elementIsResizing || Rexbuilder_Util_Editor.editingElement || $elem.hasClass('ui-resizable-resizing') || $elem.hasClass('ui-draggable-dragging') || $target.hasClass('ui-resizable-handle') || $target.hasClass('circle-handle') ) && 1 === e.which ) {
                     $elem.trigger("mouseup");
                     // gallery.properties.gridstackInstance.disable();
 
-                    console.log("Rexbuilder_Util_Editor.elementIsDragging -",Rexbuilder_Util_Editor.elementIsDragging,"\nRexbuilder_Util_Editor.elementIsResizing -",Rexbuilder_Util_Editor.elementIsResizing,"\nRexbuilder_Util_Editor.editingElement -",Rexbuilder_Util_Editor.editingElement);
+                    console.log("post(IF)\nRexbuilder_Util_Editor.elementIsDragging -",Rexbuilder_Util_Editor.elementIsDragging,"\nRexbuilder_Util_Editor.elementIsResizing -",Rexbuilder_Util_Editor.elementIsResizing,"\nRexbuilder_Util_Editor.editingElement -",Rexbuilder_Util_Editor.editingElement);
                     
                     var btn = tmpl("tmpl-tool-drag", {});
                     var $btn = $(btn);
                     $btn.css("position","absolute");
                     $btn.css("zIndex", 20);
+                    //console.log("$elem\n",$elem);
                     $elem.append($btn);
                     var elemCoords = $elem[0].getBoundingClientRect();
                     $btn.css("left", e.clientX - elemCoords.left - ( $btn[0].offsetWidth / 2 ) );
@@ -2455,8 +2458,10 @@
      */
     _linkDragEvents: function() {
       var gallery = this;
+      //console.log(this.$element);
       this.$element
         .on("dragstart", function(event, ui) {
+          console.log("dragstart");
           if (typeof ui !== "undefined") {
             Rexbuilder_Util_Editor.elementIsDragging = true;
             ui.helper
@@ -2468,20 +2473,28 @@
             }
           }
         })
-        .on("drag", function(event, ui) {})
+        .on("drag", function(event, ui) {
+          console.log("drag");
+        })
         .on("dragstop", function(event, ui) {
+          console.log("dragstop", ui);
           if (typeof ui !== "undefined") {
             gallery.updateAllElementsProperties();
+            console.log("dragstop2");
             Rexbuilder_Util_Editor.elementIsDragging = false;
           }
         });
     },
 
+    // @deprecated
     _linkDropEvents: function() {
       var gallery = this;
+      console.log("passed - linkDropEvents");
       this.$element.on("dropped", function(e, previousWidget, newWidget) {
         newWidget.el.removeClass("focused ui-draggable--drag-up");
         gallery._prepareElement(newWidget.el[0]);
+
+        console.log("passed - linkDropEvents - .on(dropped)");
         // this.updateSizeViewerText(newWidget.el, w, h);
       });
     },
@@ -2544,6 +2557,8 @@
         $pholder.css('transform','scale(0.5)');                             // MODIFICO LA SCALA DEL POPUP IN BASE ALLE DIM. ORIGINALI
         $pholder.css('transformOrigin','top left');                         // MODIFICO IL PUNTO DI ANCORAGGIO DEL POPUP SUL CONTENITORE
 
+        //console.log("$section\n",gallery.$section);
+
         var rex_block_id = $originalElement.attr("data-rexbuilder-block-id");
         var sectionID = gallery.$section.attr("data-rexlive-section-id");
         var modelNumber =
@@ -2566,8 +2581,8 @@
        */
       gallery.$element.on('drag', '.drag-to-section', function(e) {
         //console.log("Status: DEFINE DRAG STYLE\ngallery.$element.on('drag', '.drag-to-section', function(e) { ... }")
-        $pholder.css('left',e.clientX);
-        $pholder.css('top',e.clientY);
+        $pholder.css('left',e.clientX + 10);
+        $pholder.css('top',e.clientY + 10);
         $pholder.css('zIndex',3000);
 
         stop = true;
