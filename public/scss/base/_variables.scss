@@ -35,6 +35,7 @@ $ease-in-out-quad: cubic-bezier(0.455, 0.03, 0.515, 0.955);
 $experiment: cubic-bezier(0.77, 0, 0.175, 1);
 $ease-in-out-cubic: cubic-bezier(0.645, 0.045, 0.355, 1);
 $ease-out-quint:cubic-bezier(0.23, 1, 0.32, 1);
+$fade-content-duration: 500ms;
 
 $fade-all-ease: cubic-bezier(0.71, 0.35, 0.26, 0.83);
 $fade-all-duration: 0.3s;

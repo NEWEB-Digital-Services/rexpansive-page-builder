@@ -85,6 +85,14 @@ defined( 'ABSPATH' ) or exit;
                     <div class="tool-button tool-button--inline tool-button_list--item builder-edit-slider tippy" data-tippy-content="<?php _e('RexSlider','rexpansive'); ?>">
                         <?php Rexbuilder_Utilities::get_icon('#Z003-RexSlider'); ?>
                     </div><!-- // rexslider -->
+
+                    <div class="tool-button tool-button--inline tool-button_list--item builder-copy-block tippy" data-tippy-content="<?php _e('Copy block', 'rexpansive'); ?>">
+                        <?php Rexbuilder_Utilities::get_icon('#Z004-Copy'); ?>
+                    </div>
+
+                    <div class="tool-button tool-button--inline tool-button_list--item builder-delete-block waves-effect tippy" data-tippy-content="<?php _e('Delete block', 'rexspansive'); ?>">
+                        <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+                    </div>
                 </div>
             </div>
 
