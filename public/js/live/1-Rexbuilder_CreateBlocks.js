@@ -658,8 +658,15 @@ var Rexbuilder_CreateBlocks = (function ($) {
     }
 
     var _moveBlockToOtherSection = function ($elem, $targetSection) {
-        // var $gallery = $elem.parents('.grid-stack-row');
+
+        //var $gallery = $elem.parents('.grid-stack-row');
+
+        console.log($targetSection);
+
         var galleryEditorInstance = $targetSection.data().plugin_perfectGridGalleryEditor;
+
+        console.log(galleryEditorInstance);
+
         var gridstack = $targetSection.data("gridstack");
         var $section = $elem.parents(".rexpansive_section");
         var $newBlock;

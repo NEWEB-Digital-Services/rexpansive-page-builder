@@ -1452,25 +1452,25 @@ var Rexbuilder_Util_Editor = (function($) {
      */
 
     Rexbuilder_Util.$rexContainer.on("drop", function(e) {
-      console.log("sono entrato in (DROP)");
+      console.log("drop");
       e.preventDefault();
       e.stopPropagation();
       var ev;
       if (e.isTrigger) {
         ev = triggerEvent.originalEvent;
-        console.log("line:1451 ev = triggerEvent.originalEvent;");
+        console.log("drop- ev = isTrigger");
       } else {
         ev = e.originalEvent;
-        console.log("line:1454 ev = e.originalEvent");
+        console.log("drop- ev = originalEvent");
       }
       var blockData = ev.dataTransfer.getData("text/plain");
       // var blockDataElement = Rexbuilder_Dom_Util.htmlToElement(blockData);
       try {
         blockData = undefined !== typeof blockData ? JSON.parse(blockData) : null;
-        console.log("line:1460 blockData = undefined !== typeoff blockData ? ...");
+        console.log("drop- blockData !== undefined !== typeoff blockData ? ...");
       } catch(e) {
         blockData = null;
-        console.log("line:1463 blockData = null");
+        console.log("drop- blockData = null");
       }
 
       if(blockData) {
@@ -1495,12 +1495,13 @@ var Rexbuilder_Util_Editor = (function($) {
             .find('div [data-rexbuilder-block-id="' + blockData.rexID + '"]');
         }
 
-        $originalSection = $originalElement.parents(".rexpansive_section");
-
+        $originalSection = $originalElement.parents(".grid-stack-row");
+        $targetSection = $targetSection.parents('.rexpansive_section').find('.grid-stack-row');
         // var $targetSection = $(target).parents('.rexpansive_section').find('.grid-stack-row');
+
         if( $targetSection.length > 0 && !$targetSection.is($originalSection) ) {
-          var $targetGallery = $targetSection.find(".grid-stack-row");
-          Rexbuilder_CreateBlocks.moveBlockToOtherSection( $originalElement, $targetGallery );    //FUNZIONE CHE DOVREBBE INSERIRE
+
+          Rexbuilder_CreateBlocks.moveBlockToOtherSection( $originalElement, $targetSection );
           $originalElement.find(".builder-delete-block").first().trigger("click");
         }
       }

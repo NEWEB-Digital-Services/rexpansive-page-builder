@@ -2581,8 +2581,8 @@
        */
       gallery.$element.on('drag', '.drag-to-section', function(e) {
         //console.log("Status: DEFINE DRAG STYLE\ngallery.$element.on('drag', '.drag-to-section', function(e) { ... }")
-        $pholder.css('left',e.clientX + 10);
-        $pholder.css('top',e.clientY + 10);
+        $pholder.css('left',e.clientX + 5);
+        $pholder.css('top',e.clientY + 5);
         $pholder.css('zIndex',3000);
 
         stop = true;
@@ -2612,8 +2612,8 @@
         stop = true;
 
         $pholder.css('zIndex',-3000);
-        $pholder.css('left',e.clientX);
-        $pholder.css('top',e.clientY);
+        $pholder.css('left',e.clientX + 5);
+        $pholder.css('top',e.clientY + 5);
         $pholder.remove();
         $pholder = null;
 
