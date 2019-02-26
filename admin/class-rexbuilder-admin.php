@@ -691,11 +691,11 @@ class Rexbuilder_Admin {
 					}
 		?>
 		<div class="builder-heading rexpansive-builder rexbuilder-materialize-wrap">
-			<img src="<?php echo plugin_dir_url( __FILE__ ); ?>img/rexpansive-builder.png" alt="logo" width="260" />
+			<img src="<?php echo plugin_dir_url( __FILE__ ); ?>img/rexpansive-builder.png" alt="logo" width="260" />	<!-- LOGO REXPANSIVE -->
 			<div class="builder-switch-wrap">
 				<div class="switch">
 					<label>
-						<input type="checkbox" id="builder-switch" <?php checked( 'true', $builder_active ); ?>/>
+						<input type="checkbox" id="builder-switch" <?php checked( 'true', $builder_active ); ?>/>	<!-- SWITCH ENABLE/DISABLE -->
 						<span class="lever"></span>
 					</label>
 				</div>
@@ -705,24 +705,34 @@ class Rexbuilder_Admin {
 			<div class="go-live-advice">
 				<a href="<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>" class="cool-btn cool-bnt--primary go-live<?php echo ( 'auto-draft' == get_post_status(get_the_id()) ? ' draft' : '' ); ?>" target="_blank"><?php _e( 'Live', 'rexpansive' ); ?></a>
 				<input type="hidden" name="force_live" value="">
+
+
 				<script>
 					;(function ($) {
 					'use strict';
-					// Waiting until the ready of the DOM
-					$(function () {
-						$('.go-live.draft').on('click', function(e) {
-							e.preventDefault();
-							$('#wp-preview').val(true);
-							$('input[name=force_live]').val("do_force_live");
-							$('#post-preview')
-								//.attr('href','<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>')
-								.trigger('click');
-							$('input[name=force_live]').val("");
+						$(function () {
+
+							$('.go-live.draft').on('click', function(e) {
+
+								e.preventDefault();
+
+								$('#wp-preview').val(true);
+
+								$('input[name=force_live]').val("do_force_live");
+
+								$('#post-preview')
+									/*.attr('href','<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>')*/
+									.trigger('click');
+
+								$('input[name=force_live]').val("");
+
+							});
 						});
-					});
 					})(jQuery);
 	
 				</script>
+
+
 			</div>
 			<?php
 $savedFromBackend = get_post_meta( get_the_id(), '_save_from_backend', true);
@@ -3566,9 +3576,9 @@ if(isset($savedFromBackend) && $savedFromBackend == "false") {
 	 * Add link to livebuilder directly on the post list
 	 * @since 2.0.0
 	 */
-	public function add_builderlive_link( $actions, $post_object ) {
+	public function add_builderlive_link( $actions, $post_object ) {	// AGGIUNGE IL LINK A REXPANSIVE TRAMITE LA OVERVIEW DEGLI ARTICOLI
 		$page_info = get_current_screen();
-		$actions['rexbuilder'] = '<a target="_blank" href="' . admin_url( 'post.php?post=' . $post_object->ID . '&action=edit&rexlive=true' ) . '">RexBuilder</a>';
+		$actions['rexbuilder'] = '<b><a target="_blank" href="' . admin_url( 'post.php?post=' . $post_object->ID . '&action=edit&rexlive=true' ) . '">REXPANSIVE</a></b>';
 		return $actions;
 	}
 }

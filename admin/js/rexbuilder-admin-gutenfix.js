@@ -4,30 +4,35 @@
  */
 ;(function($) {
 
-  // DOMContent LOAD  
+  // DEFINISCO LE VARIABILI E LE COLLEGO AL PHP UTILIZZATO 
   $(function() {
     var $rexbuilder_active = $("#_rexbuilder_active");
     var $builder_switch_wrap = $(".builder-heading");
     var $rexbuilder_wrap = $builder_switch_wrap.nextAll(".rexbuilder-table");
 		var $builder_switch = $builder_switch_wrap.find("#builder-switch");
 
-    // Check WP version to use correctly Gutenberg editor
+    // VERIFICA LA VERSIONE ATTUALE DI WORDPRESS E CONTROLLA SE "#_rexbuilder_active" = "true".
     if ( "true" == _plugin_backend_settings.activate_builder && "true" == $rexbuilder_active.val() ) {
-      // Check this global variable to hide the default worpdress text editor
+      console.log("Rexpansive- wpVersion-\npbs.avb ==", _plugin_backend_settings.activate_builder,"&& rb_a.v ==",$rexbuilder_active.val())
+      // CONTROLLA LA VARIABILE GLOBALE PER NASCONDERE L'EVENTUALE EDITOR DI TESTO PREDEFINITO
       $("body").addClass("hide-gutenberg");
       $rexbuilder_wrap.show();
     } else {
+      console.log("Rexpansive- wpVersion-\npbs.avb !=", _plugin_backend_settings.activate_builder,"|| rb_a.v !=",$rexbuilder_active.val())
       $("body").removeClass("hide-gutenberg");
       $rexbuilder_wrap.hide();
       $builder_switch.prop("checked", false);
     }
 
+    // FUNZIONE CHE SI ATTIVA CON L'INTERAZIONE DELLA SWITCH PER ABILITARE/DISABILITARE REXPANSIVE.
     $builder_switch.on("change", function() {
       if ($(this).prop("checked")) {
+        console.log("Rexpansive- switch- status- true");
         $("body").addClass("hide-gutenberg");
         $rexbuilder_wrap.show();
         $rexbuilder_active.val("true");
       } else {
+        console.log("Rexpansive- switch- status- false");
         $("body").removeClass("hide-gutenberg");
         $rexbuilder_wrap.hide();
         $rexbuilder_active.val("false");
@@ -39,7 +44,6 @@
   // Window LOAD
   $(window).load(function () {
     $(window).trigger('resize');
-
     /**
      * Subscribe on core edit-post to check if sidebar is open
      * @since 2.0.0
@@ -79,8 +83,11 @@
      * Triggering save event on Publish button click
      * @since 2.0.0
      */
+
+    // FUNZIONE CHE SI AVVIA AL CLICK SUL PULSANTE DI SALVATAGGIO DELLA PAGINA POSTO NEL TEMPLATE DI WORDPRESS.
     $(document).on("click", '.editor-post-publish-button', function() {
       $(document).trigger("rexbuilder:save_content");
+      console.log("WordPress- launch- rexbuilder:save_content");
     });
 
     /**
@@ -115,8 +122,12 @@
         },
         success: function(response) {
           
+          console.log("Rexpansive- switch- ajax- success");
+
         },
         error: function(response) {
+        
+          console.log("Rexpansive- switch- ajax- error");
           
         }
       });
