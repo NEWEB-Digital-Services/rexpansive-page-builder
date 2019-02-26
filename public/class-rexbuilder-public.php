@@ -294,6 +294,7 @@ class Rexbuilder_Public
             wp_enqueue_script('rexbuilder', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/rexbuilder-public.js', array('jquery'), $ver, true);
 
             wp_localize_script('rexbuilder', '_plugin_frontend_settings', apply_filters('rexbuilder_js_settings', array(
+                'plugin_base_url' => REXPANSIVE_BUILDER_URL,
                 'animations' => apply_filters('rexbuilder_animation_enabled', $this->plugin_options['animation']),
                 'textFill' => array(
                     'font_family' => 'sans-serif',
@@ -312,8 +313,11 @@ class Rexbuilder_Public
                     'collapseWidth' => 768,
                 ),
                 'siteurl' => get_site_url(),
-                'plugin_base_url' => REXPANSIVE_BUILDER_URL
+                'odometer' => array(
+                    'theme' => 'digital',
+                    'format' => '(.ddd),dd'
                 )
+            )
             ) );
         }
     }
@@ -363,7 +367,11 @@ class Rexbuilder_Public
                     'collapseWidth' => 768,
                 ),
                 'siteurl' => get_site_url(),
-                'plugin_base_url' => REXPANSIVE_BUILDER_URL
+                'plugin_base_url' => REXPANSIVE_BUILDER_URL,
+                'odometer' => array(
+                    'theme' => 'digital',
+                    'format' => '(.ddd),dd'
+                )
                 )
             ) );
         }

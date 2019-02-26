@@ -1228,7 +1228,7 @@ var TextEditor = (function($) {
           this.imageResizableEnable();
           this.hideEditVideoToolbar();
         } else { // Check if the clicked object is an <span> with the class "overlay-status-set-active". -A
-          if( "SPAN" == event.target.nodeName /*&& event.target.className == "overlay-status-set-active"*/) {
+          if( "SPAN" == event.target.nodeName && event.target.className == "overlay-status-for-video-inline") {
             this.viewEditVideoToolbar(event.target);
             this.videoResizableEnable();
             this.hideEditImgToolbar();

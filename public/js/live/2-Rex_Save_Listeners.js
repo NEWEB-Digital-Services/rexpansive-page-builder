@@ -1061,14 +1061,15 @@ var Rex_Save_Listeners = (function($) {
         }
 
       } else {
-        var $sliderToSave = $textWrap.children(
-          '.rex-slider-wrap[data-rex-slider-active="true"]'
-        );
+        var $sliderToSave = $textWrap.children('.rex-slider-wrap[data-rex-slider-active="true"]');
 
-        var sliderID = parseInt($sliderToSave.attr("data-slider-id"));
-        var sliderData = Rexbuilder_Util_Editor.createSliderData($sliderToSave);
-        if (!Rexbuilder_Util_Editor.openingModel) {
-          Rexbuilder_Util_Editor.saveSliderOnDB(sliderData, false);
+        if ( $sliderToSave.length > 0 )
+        {
+          var sliderID = parseInt($sliderToSave.attr("data-slider-id"));
+          var sliderData = Rexbuilder_Util_Editor.createSliderData($sliderToSave);
+          if (!Rexbuilder_Util_Editor.openingModel) {
+            Rexbuilder_Util_Editor.saveSliderOnDB(sliderData, false);
+          }
         }
 
         content = '[RexSlider slider_id="' + sliderID + '"]';

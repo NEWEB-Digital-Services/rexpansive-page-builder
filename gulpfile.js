@@ -333,7 +333,6 @@ var builderlive_public = [
 	'public/js/vendor/6-jquery.rexIndicator.js',
 	'public/js/vendor/pixi.min.js',
 	'public/js/vendor/odometer.min.js',
-	// 'public/js/vendor/numscroller-1.0.js',
 	'public/js/vendor/jquery.rexEffect.js',
 	'public/js/vendor/spectrum.js',
 	'public/js/vendor/utilities.js',
@@ -402,6 +401,11 @@ gulp.task('builderlive-style', function() {
 });
 
 gulp.task('live-production', ['builderlive-editor','builderlive','builderlive-editor-style','builderlive-style']);
+
+gulp.task('watch-live-production', ['builderlive-editor','builderlive'] ,function() {
+	gulp.watch(['public/js/build/**/*.js','public/js/live/**/*.js','public/js/vendor/**/*.js'], ['builderlive-editor']);
+	gulp.watch(['public/js/build/**/*.js','public/js/live/**/*.js','public/js/vendor/**/*.js'], ['builderlive']);
+});
 
 /* --- BUILD PUBLIC SCRIPTS AND STYLES ------ */
 

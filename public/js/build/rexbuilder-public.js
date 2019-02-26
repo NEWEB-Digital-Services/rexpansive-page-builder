@@ -10,6 +10,7 @@ var Rexbuilder_App = (function($) {
   var $sections = null;
   var $grids = null;
   var $accordions = null;
+  var odometers = null;
 
   var init = function() {
     Rexbuilder_Util.init();
@@ -45,8 +46,9 @@ var Rexbuilder_App = (function($) {
       $grids.perfectGridGalleryEditor();
     }
 
-    /* -- Launching Photoswipe -- */
+    /** -- Launching plugins only on "real" frontend */
     if (!Rexbuilder_Util.editorMode) {
+      /* -- Launching Photoswipe -- */
       // prevent pswp errors
       $sections.each(function(i, e) {
         var pswchilds = e.getElementsByClassName("pswp-figure");
@@ -55,6 +57,12 @@ var Rexbuilder_App = (function($) {
         }
       });
       initPhotoSwipeFromDOM(".photoswipe-gallery");
+
+      /** -- Launching Odomter -- */
+      // Rexbuilder_Util.$body.find('.rex-num-spin').each(function(i,el) {
+      //   var oElement = launch_odometer(el);
+      //   odometers.push(oElement);
+      // });
     }
 
     if (true == _plugin_frontend_settings.native_scroll_animation) {
@@ -604,6 +612,34 @@ var Rexbuilder_App = (function($) {
     }
 
     Rexbuilder_Util.galleryPluginActive = true;
+  };
+
+  /**
+   * Launching odometer with some options
+   * Store globally the odometer elements for future use
+   * @param {NODE} target element on which launch odometer
+   * @since 2.0.0
+   * @date 26-02-2019
+   */
+  var launch_odometer = function( target )
+  {
+    if ( 'undefined' !== Odometer )
+    {
+      target.setAttribute('data-start-value', target.innerText);
+      var tval = "";
+      for (var i=0; i<target.innerText.length; i++)
+      {
+        tval += "1";
+      }
+      var oElement = new Odometer({
+        el: target,
+        value: tval,
+        format: _plugin_frontend_settings.odometer.format,
+        theme: _plugin_frontend_settings.odometer.theme,
+      });
+      // odometers.push(oElement);
+      return oElement;
+    }
   };
 
   // Launch Photoswipe

@@ -22,6 +22,11 @@ var Rexbuilder_Section = (function($) {
     // );
   };
 
+  /**
+   * Fix the copied row
+   * @param {Object} $section jQuery section copied
+   * @since 2.0.0
+   */
   var _prepareSectionCopied = function($section) {
     var oldSectionNumber = parseInt(
       $section.attr("data-rexlive-section-number")
@@ -43,6 +48,16 @@ var Rexbuilder_Section = (function($) {
     });
 
     Rexbuilder_Util_Editor.removeDeletedBlocks($gallery);
+
+    // Change section rexID
+    // Do this first to prevent synch bugs
+    if (!Rexbuilder_Util_Editor.insertingModel) {
+      $section.attr(
+        "data-rexlive-section-id",
+        Rexbuilder_Util.createSectionID()
+      );
+      $section.attr("data-rexlive-section-name", "");
+    }
 
     tmpl.arg = "block";
 
@@ -76,14 +91,6 @@ var Rexbuilder_Section = (function($) {
     });
 
     tmpl.arg = "section";
-
-    if (!Rexbuilder_Util_Editor.insertingModel) {
-      $section.attr(
-        "data-rexlive-section-id",
-        Rexbuilder_Util.createSectionID()
-      );
-      $section.attr("data-rexlive-section-name", "");
-    }
 
     Rexbuilder_Section.linkHoverSection($section);
 

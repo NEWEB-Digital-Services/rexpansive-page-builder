@@ -90,10 +90,8 @@ var Rexbuilder_Util_Editor = (function($) {
   };
 
   var _createSliderData = function($sliderWrapper) {
-    var auto_start =
-      $sliderWrapper.attr("data-rex-slider-animation").toString() == "true";
-    var prev_next =
-      $sliderWrapper.attr("data-rex-slider-prev-next").toString() == "1";
+    var auto_start = $sliderWrapper.attr("data-rex-slider-animation").toString() == "true";
+    var prev_next = $sliderWrapper.attr("data-rex-slider-prev-next").toString() == "1";
     var dots = $sliderWrapper.attr("data-rex-slider-dots").toString() == "1";
 
     var data = {
@@ -205,12 +203,25 @@ var Rexbuilder_Util_Editor = (function($) {
     if ($elem.hasClass("block-has-slider")) {
       var $textWrap = $elem.find(".text-wrap");
       var blockID = $elem.attr("data-rexbuilder-block-id");
-      var $oldSlider = $textWrap.children(
-        '.rex-slider-wrap[data-rex-slider-active="true"]'
-      );
+      var $oldSlider = $textWrap.children( '.rex-slider-wrap[data-rex-slider-active="true"]' );
       $textWrap.children().remove();
+
+      var $section = $elem.parents('.rexpansive_section');
+      var sectionID = $section.attr("data-rexlive-section-id");
+      var modelNumber = typeof $section.attr("data-rexlive-model-number") != "undefined" ? $section.attr("data-rexlive-model-number") : "";
+
+      var target = {
+        sectionID: sectionID,
+        modelNumber: modelNumber,
+        rexID: blockID
+      };
+
+      console.log($section.attr("data-rexlive-section-id"));
+      console.log(target);
+      
       var sliderData = Rexbuilder_Util_Editor.createSliderData($oldSlider);
-      Rexbuilder_Util_Editor.saveSliderOnDB(sliderData, true, blockID);
+      console.log(sliderData);
+      Rexbuilder_Util_Editor.saveSliderOnDB(sliderData, true, blockID, target);
     }
   };
 
@@ -1416,7 +1427,6 @@ var Rexbuilder_Util_Editor = (function($) {
      * Add try catch to prevent listen of drop of a model
      * @since 2.0.0
      */
-console.log(Rexbuilder_Util.$rexContainer);
 
     Rexbuilder_Util.$rexContainer.on("drop", function(e) {
       console.log("enter in DROP"),

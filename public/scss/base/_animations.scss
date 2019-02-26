@@ -239,32 +239,37 @@
   }
 }
 
-// Border out animation, content fade in
+// Border in animation, content fade in
 .border-fade-in__animation {
-  &:before {
-    content: '';
-    transition: border-width $border-in-duration $experiment, z-index 10ms ease ( $border-in-duration + $fade-content-duration );
-    position: absolute;
-    top: 0;
-    left: 0;
-    // opacity: 1;
-    width: 100%;
-    height: 100%;
-    z-index: 100;
-    background-color: transparent;
-    border-color: #fff;
-    border-width: 40px 70px 30px 70px;
-    border-style: solid;
-  }
+  transition: border-width $border-in-duration $experiment;
+  border-color: #fff;
+  border-width: 0;
+  border-style: solid;
+  // &:before {
+  //   content: '';
+  //   transition: border-width $border-in-duration $experiment, z-index 10ms ease ( $border-in-duration + $fade-content-duration );
+  //   position: absolute;
+  //   top: 0;
+  //   left: 0;
+  //   // opacity: 1;
+  //   width: 100%;
+  //   height: 100%;
+  //   z-index: 100;
+  //   background-color: transparent;
+  //   border-color: #fff;
+  //   border-width: 0;
+  //   border-style: solid;
+  // }
   .perfect-grid-item {
     opacity: 0;
-    transition: opacity $fade-content-duration $ease-in-cubic $fade-content-duration;
+    transition: opacity $fade-content-duration $ease-in-cubic ( $border-in-duration + $fade-content-duration );
   }
   &.run-animation {
-    &:before {
-      border-width: 0;
-      z-index: -1000;
-    }
+    border-width: 40px 70px 30px 70px;
+    // &:before {
+    //   border-width: 40px 70px 30px 70px;
+    //   z-index: -1000;
+    // }
     .perfect-grid-item {
       opacity: 1;
     }

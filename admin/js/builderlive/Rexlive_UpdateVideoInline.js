@@ -9,7 +9,7 @@ var Change_UpdateVideoInline_Modal = (function($) {
       layout_changing_props.$self.parent(".rex-modal-wrap")
     );
     // Reset Input when the popup opens -A
-   document.getElementById("me-insert-embed-inline-video-text").value = "";
+    document.getElementById("me-insert-embed-inline-video-text").value = "";
     // Hide the text that warns the invalidity of the entered value. -A
     $("#me-insert-embed-url-isnot-valid").css("display","none");
     //layout_changing_props.$layout_name_placholder.text(data.activeLayoutLabel);

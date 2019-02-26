@@ -21,21 +21,31 @@
 </head>
 <body>
     <div class="container">
-        <p>FIAT PUNTO <span id="odometer" class="odometer">1</span></p>
+        <p>FIAT PUNTO <span id="c-odometer" class="c-odometer">583</span></p>
         <button id="spin">SPIN</button>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="./public/js/vendor/odometer.min.js"></script>
     <script>
-    window.odometerOptions = {
-        format: '(.ddd),dd'
-    };
     var btn = document.getElementById('spin');
-    var odom = document.getElementById('odometer');
+    var odom = document.getElementById('c-odometer');
+
+    odom.setAttribute('data-start-value', odom.innerText);
+    var oval = "";
+    for(var i=0; i<odom.innerText.length; i++)
+    {
+        oval += "1";
+    }
+
+    var ODOM = new Odometer({
+        el: odom,
+        format: '(.ddd),dd',
+        value: oval
+    });
 
     spin.addEventListener('click', function(e) {
         e.preventDefault();
-        odom.innerText = 2500;
+        odom.innerText = odom.getAttribute('data-start-value');
     });
     </script>
 </body>

@@ -3759,31 +3759,31 @@ http://flickity.metafizzy.co
   display: -moz-inline-box;
   display: inline-block;
   vertical-align: middle;
-  vertical-align: auto;
+  *vertical-align: auto;
   position: relative; }
 
 .odometer.odometer-auto-theme, .odometer.odometer-theme-digital {
-  display: inline; }
+  *display: inline; }
 
 .odometer.odometer-auto-theme .odometer-digit, .odometer.odometer-theme-digital .odometer-digit {
   display: -moz-inline-box;
   display: inline-block;
   vertical-align: middle;
-  vertical-align: auto;
+  *vertical-align: auto;
   position: relative; }
 
 .odometer.odometer-auto-theme .odometer-digit, .odometer.odometer-theme-digital .odometer-digit {
-  display: inline; }
+  *display: inline; }
 
 .odometer.odometer-auto-theme .odometer-digit .odometer-digit-spacer, .odometer.odometer-theme-digital .odometer-digit .odometer-digit-spacer {
   display: -moz-inline-box;
   display: inline-block;
   vertical-align: middle;
-  vertical-align: auto;
+  *vertical-align: auto;
   visibility: hidden; }
 
 .odometer.odometer-auto-theme .odometer-digit .odometer-digit-spacer, .odometer.odometer-theme-digital .odometer-digit .odometer-digit-spacer {
-  display: inline; }
+  *display: inline; }
 
 .odometer.odometer-auto-theme .odometer-digit .odometer-digit-inner, .odometer.odometer-theme-digital .odometer-digit .odometer-digit-inner {
   text-align: left;
@@ -4288,31 +4288,22 @@ http://flickity.metafizzy.co
        -o-transition-delay: 2300ms;
           transition-delay: 2300ms; }
 
-.border-fade-in__animation:before {
-  content: '';
-  -webkit-transition: border-width 800ms cubic-bezier(0.77, 0, 0.175, 1), z-index 10ms ease 1300ms;
-  -o-transition: border-width 800ms cubic-bezier(0.77, 0, 0.175, 1), z-index 10ms ease 1300ms;
-  transition: border-width 800ms cubic-bezier(0.77, 0, 0.175, 1), z-index 10ms ease 1300ms;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 100;
-  background-color: transparent;
+.border-fade-in__animation {
+  -webkit-transition: border-width 800ms cubic-bezier(0.77, 0, 0.175, 1);
+  -o-transition: border-width 800ms cubic-bezier(0.77, 0, 0.175, 1);
+  transition: border-width 800ms cubic-bezier(0.77, 0, 0.175, 1);
   border-color: #fff;
-  border-width: 40px 70px 30px 70px;
-  border-style: solid; }
-.border-fade-in__animation .perfect-grid-item {
-  opacity: 0;
-  -webkit-transition: opacity 500ms cubic-bezier(0.55, 0.055, 0.675, 0.19) 500ms;
-  -o-transition: opacity 500ms cubic-bezier(0.55, 0.055, 0.675, 0.19) 500ms;
-  transition: opacity 500ms cubic-bezier(0.55, 0.055, 0.675, 0.19) 500ms; }
-.border-fade-in__animation.run-animation:before {
   border-width: 0;
-  z-index: -1000; }
-.border-fade-in__animation.run-animation .perfect-grid-item {
-  opacity: 1; }
+  border-style: solid; }
+  .border-fade-in__animation .perfect-grid-item {
+    opacity: 0;
+    -webkit-transition: opacity 500ms cubic-bezier(0.55, 0.055, 0.675, 0.19) 1300ms;
+    -o-transition: opacity 500ms cubic-bezier(0.55, 0.055, 0.675, 0.19) 1300ms;
+    transition: opacity 500ms cubic-bezier(0.55, 0.055, 0.675, 0.19) 1300ms; }
+  .border-fade-in__animation.run-animation {
+    border-width: 40px 70px 30px 70px; }
+    .border-fade-in__animation.run-animation .perfect-grid-item {
+      opacity: 1; }
 
 .fade-in-contents-animation .perfect-grid-item {
   opacity: 0;
