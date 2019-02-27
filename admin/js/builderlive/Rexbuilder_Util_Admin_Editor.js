@@ -137,6 +137,11 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         Change_UpdateVideoInline_Modal.openModal(event.data.modelData);
       }
 
+      if (event.data.eventName == 'rexlive:inlineSVG' )
+      {
+        Rexlive_Inline_SVG.openModal( event.data.inlineSVGData );
+      }
+
       // EVENT MANAGER >>> rexlive:mediumEditor:inlineVideoEditor -A
       /*  if (event.data.eventName == "rexlive:mediumEditor:inlineVideoEditor") {
         Change_UpdateVideoInline_Modal.openModal(event.data.modelData);

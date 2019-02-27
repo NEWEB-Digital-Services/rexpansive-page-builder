@@ -644,7 +644,6 @@ var Rexbuilder_Block_Editor = (function($) {
         data: e.settings.data_to_send, 
         editable: null        
       });
-      console.log("passed || Rexbuilder_Util.$document.on('rexlive:SetcustomHTML',function(e) { ... }");
     });
 
     /**
@@ -671,6 +670,18 @@ var Rexbuilder_Block_Editor = (function($) {
       });
       //console.log("1-Rexbuilder_Block_Editor.js >> transfer\n", e.settings.data_to_send)
       //console.log("passed:0672 || 1-Rexbuilder_Block_Editor.js");
+    });
+
+    /**
+     * Triggering the event on MediumEditor when user selects an icon from the icon list
+     * @since 2.0.0
+     */
+    Rexbuilder_Util.$document.on('rexlive:mediumEditor:inlineSVG',function(e) {
+      TextEditor.triggerMEEvent({
+        name:"rexlive:mediumEditor:inlineSVG:transfer", 
+        data: e.settings.data_to_send, 
+        editable: null
+      });
     });
 
   };

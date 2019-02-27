@@ -13,20 +13,16 @@ var HtmlEditor_Modal = (function($) {
   var _openModal = function(customHTML) { // funzione per l'apertura della finestra contenente l'Editor HTML
     if (typeof customHTML == "undefined" || customHTML.trim() == "") {  // verificare se il valore customHTML non è definito, rimozione degli spazi con .trim()
       editor.setValue(defaultHTML);   // attribuire il valore di default all'editor, caricare i dati base prestabiliti
-      console.log('editorHTML || if (customHTML == "undefined") { "'+defaultHTML+'" }');                                      // NOTIFICA
     } else {
       editor.setValue(customHTML);  // attribuire un valore all'editor, caricare i dati html degli elementi presenti all'interno dell'elemento
-      console.log('editorHTML || else { customHTML = "'+customHTML+'" }');                                                    // NOTIFICA
     }
 
     editor.clearSelection();  // funzione per la pulizia/reset del seguente elemento: "rex-html-ace-editor"                                     JavaScript:81
     Rexlive_Modals_Utils.openModal(html_editor_modal_properties.$modal_wrap); // elemento collegato all'apertura di ".rex-modal-wrap"           JavaScript:79
-    console.log("editorHTML || _openModal()");                                                                              // NOTIFICA
   };
 
   var _closeModal = function() {  // funzione per la chiusura della finestra contenente l'Editor HTML
     Rexlive_Modals_Utils.closeModal( html_editor_modal_properties.$modal_wrap );  // elemento collegato alla chiusura di ".rex-modal-wrap"      JavaScript:79
-    console.log("editorHTML || _closeModal()");                                                                             // NOTIFICA
   };
 
   var _linkDocumentListeners = function() { // funzione per l'analisi e il salvataggio dei dati inseriti/rimossi dall'Editor HTML

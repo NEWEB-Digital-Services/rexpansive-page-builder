@@ -51,7 +51,6 @@ var Change_UpdateVideoInline_Modal = (function($) {
                 }
               };
               Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(settings);
-              console.log("InsertVIDEO || The value has been validated\nValue:",inlinevideourlvalue,"\nisUrl:",isUrl);
               _closeModal();
             }
 

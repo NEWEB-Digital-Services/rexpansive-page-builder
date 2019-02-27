@@ -337,6 +337,9 @@ $tool_button_classes = 'tool-button';
     <?php Rexbuilder_Utilities::get_icon('#Z009-More'); ?>
     </div>
     <div class="tool-button_list tool-button_list--vertical_top">
+        <div class="tool-button tool-button_list--item me-insert-inline-svg">
+        <?php Rexbuilder_Utilities::get_icon('#B016-New-Adjacent-Row'); ?>
+        </div>
         <div class="tool-button tool-button_list--item me-insert-embed">
         <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
         </div>
@@ -345,6 +348,10 @@ $tool_button_classes = 'tool-button';
         </div>
     </div>
 </div>
+</script>
+
+<script type="text/x-tmpl" id="tmpl-insert-inline-svg">
+<i class="{%=o.class%}"><svg><use xlink:href="#{%=o.icon%}"></use></svg></i>
 </script>
 
 <script type="text/x-tmpl" id="tmpl-me-insert-media-button-simple">
@@ -385,6 +392,27 @@ $tool_button_classes = 'tool-button';
     </li>
     <li>
       <button class="medium-editor-action me-image-delete medium-editor-button-last">
+        <i class="fa fa-times"></i>
+      </button>
+    </li>
+</ul>
+</script>
+
+<script type="text/x-tmpl" id="tmpl-me-inline-svg-edit">
+<ul id="" class="medium-editor-toolbar-actions">
+    <li>
+        <button class="medium-editor-action me-svg-color medium-editor-button-first">
+            <span class="meditor-color-picker"><span class="meditor-color-picker__placeholder">P</span></span>
+            <span class="meditor-color-picker--preview"></span>
+        </button>
+    </li>
+    <li style="display:none;">
+      <button class="medium-editor-action me-svg-replace">
+        <i class="fa fa-pencil"></i>
+      </button>
+    </li>
+    <li>
+      <button class="medium-editor-action me-svg-delete medium-editor-button-last">
         <i class="fa fa-times"></i>
       </button>
     </li>

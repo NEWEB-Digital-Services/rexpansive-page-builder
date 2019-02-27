@@ -1940,7 +1940,7 @@ defined('ABSPATH') or exit;
         </div>
         <div class="modal-content modal-content--text">
             <div class="layout-page-changed-description">
-                <b><?php _e( 'INSERISCI VIDEO URL', 'rexpansive-builder' ); ?></b><br>
+                <b><?php _e( 'Insert video url', 'rexpansive-builder' ); ?></b><br>
                 <input type="text" id="me-insert-embed-inline-video-text" class="me-insert-embed__value" placeholder="Youtube, Vimeo, DailyMotion,..."><br>
                 <span id="me-insert-embed-url-isnot-valid" style="transition:1s;">
                     <b style="color:#b22222;">This value isn't a valid URL.</b>
@@ -1949,6 +1949,37 @@ defined('ABSPATH') or exit;
         </div>
         <div class="rex-modal__outside-footer">
             <div class="tool-button tool-button--inline tool-button--save rex-change-layout-option tippy" data-tippy-content="<?php _e('Yes and Continue','rexpansive'); ?>" data-rex-option="uploadvideo">
+                <span class="rex-button save-page btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+            </div>
+        </div>
+    </div>
+</div> <!-- Layout UpdateVideoInline Popup -->
+
+<div class="rex-modal-wrap">
+    <div id="rexlive-inline-svg" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
+        <div class="tool-button tool-button--black tool-button--close tippy" data-position="bottom" data-tippy-content="<?php _e( 'Cancel', 'rexspansive');?>" data-rex-option="hide">
+            <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
+        </div>
+        <div class="modal-content modal-content--text">
+            <div class="rx__select-wrap">                        
+                <select name="rexlive-inline-svg-select" id="rexlive-inline-svg-select" class="rx__form-input">
+                    <option value=""><?php _e( 'Choose Icon', 'rexpansive-builder' ); ?></option>
+                <?php
+                $icons = Rexbuilder_Utilities::get_icon_list();
+                foreach( $icons as $icon_group => $icons )
+                {
+                    foreach( $icons as $icon )
+                    {
+                        ?><option value="<?php echo esc_attr( $icon ); ?>" data-svg-class="<?php echo esc_attr( $icon_group ); ?>"><?php echo $icon; ?></option><?php
+                    }
+                }
+                ?>
+                </select>
+                <div class="rx__form-input__select-arrow"></div>
+            </div>
+        </div>
+        <div class="rex-modal__outside-footer">
+            <div class="tool-button tool-button--inline tool-button--save tippy" data-tippy-content="<?php _e('Yes and Continue','rexpansive'); ?>" data-rex-option="uploadvideo">
                 <span class="rex-button save-page btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
             </div>
         </div>

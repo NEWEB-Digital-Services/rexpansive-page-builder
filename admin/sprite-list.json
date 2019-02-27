@@ -1,0 +1,4 @@
+{
+    "l-svg-icons": [ "A001-Tablet","A002-Redo","A003-Undo","A006-Save","A007-Close","A008-Code","A009-Range","A010-Mobile","A011-Desktop","B001-Full","B002-Boxed","B003-Text","B005-RexModel","B006-Collapse","B007-Move","B010-Masonry","B011-Grid","B014-Closed","B015-UnClosed","C001-Link","C005-Layout","Z001-Plus","Z003-Close","Z003-RexSlider","Z004-Copy","Z005-Setting","Z006-Video","Z007-Zoom","Z008-Edit","Z009-More","Z010-Logo","Z011-Arrow" ],
+    "rex-svg-icons": [ "environment", "hydrogeology", "power_lines", "road_cadastre", "sound", "transport" ]
+}

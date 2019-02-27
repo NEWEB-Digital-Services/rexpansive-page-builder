@@ -68,6 +68,9 @@ var Rexlive_Modals = (function ($) {
 
         // change active layout
         Model_Import_Modal.init();
+
+        // Inline SVG Modal
+        Rexlive_Inline_SVG.init();
     }
 
     return {

@@ -183,4 +183,11 @@ class Rexbuilder_Utilities {
 	
 		return $text;
 	}
+
+	public static function get_icon_list()
+	{
+		$sprite_list = file_get_contents( REXPANSIVE_BUILDER_PATH . '/admin/sprite-list.json' );
+		$sprite_a = json_decode( $sprite_list, true );
+		return $sprite_a;
+	}
 }
