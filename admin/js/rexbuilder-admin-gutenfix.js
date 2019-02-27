@@ -4,35 +4,31 @@
  */
 ;(function($) {
 
-  // DEFINISCO LE VARIABILI E LE COLLEGO AL PHP UTILIZZATO 
   $(function() {
     var $rexbuilder_active = $("#_rexbuilder_active");
     var $builder_switch_wrap = $(".builder-heading");
     var $rexbuilder_wrap = $builder_switch_wrap.nextAll(".rexbuilder-table");
 		var $builder_switch = $builder_switch_wrap.find("#builder-switch");
 
-    // VERIFICA LA VERSIONE ATTUALE DI WORDPRESS E CONTROLLA SE "#_rexbuilder_active" = "true".
     if ( "true" == _plugin_backend_settings.activate_builder && "true" == $rexbuilder_active.val() ) {
-      console.log("Rexpansive- wpVersion-\npbs.avb ==", _plugin_backend_settings.activate_builder,"&& rb_a.v ==",$rexbuilder_active.val())
-      // CONTROLLA LA VARIABILE GLOBALE PER NASCONDERE L'EVENTUALE EDITOR DI TESTO PREDEFINITO
+      //console.log("Rexpansive- wpVersion-\npbs.avb ==", _plugin_backend_settings.activate_builder,"&& rb_a.v ==",$rexbuilder_active.val())
       $("body").addClass("hide-gutenberg");
       $rexbuilder_wrap.show();
     } else {
-      console.log("Rexpansive- wpVersion-\npbs.avb !=", _plugin_backend_settings.activate_builder,"|| rb_a.v !=",$rexbuilder_active.val())
+      //console.log("Rexpansive- wpVersion-\npbs.avb !=", _plugin_backend_settings.activate_builder,"|| rb_a.v !=",$rexbuilder_active.val())
       $("body").removeClass("hide-gutenberg");
       $rexbuilder_wrap.hide();
       $builder_switch.prop("checked", false);
     }
 
-    // FUNZIONE CHE SI ATTIVA CON L'INTERAZIONE DELLA SWITCH PER ABILITARE/DISABILITARE REXPANSIVE.
     $builder_switch.on("change", function() {
       if ($(this).prop("checked")) {
-        console.log("Rexpansive- switch- status- true");
+        //console.log("Rexpansive- switch- status- true");
         $("body").addClass("hide-gutenberg");
         $rexbuilder_wrap.show();
         $rexbuilder_active.val("true");
       } else {
-        console.log("Rexpansive- switch- status- false");
+        //console.log("Rexpansive- switch- status- false");
         $("body").removeClass("hide-gutenberg");
         $rexbuilder_wrap.hide();
         $rexbuilder_active.val("false");
@@ -40,9 +36,24 @@
       }
     });
   });
-  
+
+
   // Window LOAD
   $(window).load(function () {
+
+    // Updates the status of the "LIVE" button when the page loads.
+    var pageName_LoadPage = $("#post-title-0").val();
+    var pageName_LoadPage_Trim = pageName_LoadPage.trim();
+    if( pageName_LoadPage_Trim == "" ){
+      //console.log('pageName_LoadPage_Trim == ""');
+      $(".go-live-advice-overlay-status").css("display","block");
+      $("#go-live-client-button").addClass("glaCC-false").removeClass("glaCC-true");
+    } else {
+      //console.log('pageName_LoadPage_Trim != "'+pageName_LoadPage+'"');
+      $(".go-live-advice-overlay-status").css("display","none");
+      $("#go-live-client-button").addClass("glaCC-true").removeClass("glaCC-false");
+    }
+
     $(window).trigger('resize');
     /**
      * Subscribe on core edit-post to check if sidebar is open
@@ -50,17 +61,14 @@
      */
     var editPost = wp.data.select( 'core/edit-post' ),
       lastSidebarState = editPost.isEditorSidebarOpened();
-
-    wp.data.subscribe( function() {
+      wp.data.subscribe( function() {
       var sidebarState = editPost.isEditorSidebarOpened();
-
       if ( sidebarState !== lastSidebarState ) {
         lastSidebarState = sidebarState;
         setTimeout(function() {
           $(window).trigger('resize');
         },500);
       }
-
       lastSidebarState = sidebarState;
     } );
 
@@ -70,6 +78,7 @@
      */
     var editorCore = wp.data.select('core/editor');
     var lastPageTemplate = editorCore.getCurrentPostAttribute("template");
+    var lastPostTitle = editorCore.getCurrentPostAttribute("title");
 
     wp.data.subscribe( function() {
       var pageTemplateState = editorCore.getEditedPostAttribute("template");
@@ -79,12 +88,30 @@
       lastPageTemplate = pageTemplateState;
     });
 
+    // Changes the status of the "LIVE" button according to the WordPress NamePage Textbox value.
+    wp.data.subscribe( function() {
+      var postTitle = editorCore.getEditedPostAttribute("title");
+      if( postTitle !== lastPostTitle ) {
+      var pageName_KeyPress = $("#post-title-0").val();
+      var pageName_KeyPress_Trim = pageName_KeyPress.trim();
+        if( pageName_KeyPress_Trim == "" ){
+          //console.log('pageName_KeyPress_Trim == ""');
+          $(".go-live-advice-overlay-status").css("display","block");
+          $("#go-live-client-button").addClass("glaCC-false").removeClass("glaCC-true");
+        } else {
+          //console.log('pageName_KeyPress_Trim == ""');
+          $(".go-live-advice-overlay-status").css("display","none");
+          $("#go-live-client-button").addClass("glaCC-true").removeClass("glaCC-false");
+        }
+      }
+      lastPostTitle = postTitle;
+    });
+
     /**
      * Triggering save event on Publish button click
      * @since 2.0.0
      */
 
-    // FUNZIONE CHE SI AVVIA AL CLICK SUL PULSANTE DI SALVATAGGIO DELLA PAGINA POSTO NEL TEMPLATE DI WORDPRESS.
     $(document).on("click", '.editor-post-publish-button', function() {
       $(document).trigger("rexbuilder:save_content");
       console.log("WordPress- launch- rexbuilder:save_content");
@@ -121,14 +148,10 @@
           status: activate
         },
         success: function(response) {
-          
-          console.log("Rexpansive- switch- ajax- success");
-
+          //console.log("Rexpansive- switch- ajax- success");
         },
-        error: function(response) {
-        
-          console.log("Rexpansive- switch- ajax- error");
-          
+        error: function(response) {    
+          //console.log("Rexpansive- switch- ajax- error");       
         }
       });
     });

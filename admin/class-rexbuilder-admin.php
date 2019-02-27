@@ -691,61 +691,86 @@ class Rexbuilder_Admin {
 					}
 		?>
 		<div class="builder-heading rexpansive-builder rexbuilder-materialize-wrap">
-			<img src="<?php echo plugin_dir_url( __FILE__ ); ?>img/rexpansive-builder.png" alt="logo" width="260" />	<!-- LOGO REXPANSIVE -->
+			<img src="<?php echo plugin_dir_url( __FILE__ ); ?>img/rexpansive-builder.png" alt="logo" width="260" />
 			<div class="builder-switch-wrap">
 				<div class="switch">
 					<label>
-						<input type="checkbox" id="builder-switch" <?php checked( 'true', $builder_active ); ?>/>	<!-- SWITCH ENABLE/DISABLE -->
+						<input type="checkbox" id="builder-switch" <?php checked( 'true', $builder_active ); ?>/>
 						<span class="lever"></span>
 					</label>
 				</div>
 			</div>
 		</div>
 		<div class="rexbuilder-table">
-			<div class="go-live-advice">
-				<a href="<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>" class="cool-btn cool-bnt--primary go-live<?php echo ( 'auto-draft' == get_post_status(get_the_id()) ? ' draft' : '' ); ?>" target="_blank"><?php _e( 'Live', 'rexpansive' ); ?></a>
-				<input type="hidden" name="force_live" value="">
 
+			<?php 
+				$wp_isFive = Rexbuilder_Utilities::is_version();
+				$classicEditor_Active = is_plugin_active('classic-editor/classic-editor.php');
+				if( $wp_isFive && empty($classicEditor_Active) ) { ?>
 
-				<script>
-					;(function ($) {
-					'use strict';
-						$(function () {
+					<div class="go-live-advice">
+						<div class="go-live-advice-overlay-status">
+							<div class="go-live-advice-overlay-alert"></div>
+						</div>
+						<a href="#" id="go-live-client-button" class="cool-btn cool-bnt--primary go-live<?php echo ( 'auto-draft' == get_post_status(get_the_id()) ? ' draft' : '' ); ?>" target="_blank"><?php _e( 'Live', 'rexpansive' ); ?></a>
+						<input type="hidden" name="force_live" value="">
+						<!-- GUTTENBERG EDITOR ACTIVE and WORDPRESS VERSION 5+ -->
+						<script>
+							;(function ($) {
+							'use strict';
+								$(function () {
+									$('.go-live').on('click', function(e) {
+										$(document).trigger("rexbuilder:save_content");								
+										var pageName_WindowOpen = $("#post-title-0").val();
+										var pageName_WindowOpen_Trim = pageName_WindowOpen.trim();
+										if(pageName_WindowOpen_Trim == "") {
+											console.log("error");
+										} else {
+											e.preventDefault();									
+											$('#wp-preview').val(true);		
+											$('input[name=force_live]').val("do_force_live");
+											window.open('<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>');
+											//$(location)
+												//.attr('href','<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>')
+												//.attr('target','_blank');
+												//.trigger('click');
+											$('input[name=force_live]').val("");
+										}
+									});
+								});
+							})(jQuery);
+							</script>
+					</div>
 
-							$('.go-live.draft').on('click', function(e) {
-
-								e.preventDefault();
-
-								$('#wp-preview').val(true);
-
-								$('input[name=force_live]').val("do_force_live");
-
-								$('#post-preview')
-									/*.attr('href','<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>')*/
-									.trigger('click');
-
-								$('input[name=force_live]').val("");
-
-							});
-						});
-					})(jQuery);
-	
-				</script>
-
-
-			</div>
-			<?php
-$savedFromBackend = get_post_meta( get_the_id(), '_save_from_backend', true);
-?>
-<input type="hidden" name="builder-save-from-backend" value="<?php echo $savedFromBackend; ?>"><?php
-if(isset($savedFromBackend) && $savedFromBackend == "false") {
-?>
-<div class="go-live-advice">
-	<p><?php _e( "You saved from the live builder, now you can not change the page content from the old builder",  "rexpansive" ); ?></p>
-</div>
-<?php
-}
-			?>
+				<?php } else { ?>
+					<div class="go-live-advice">
+						<a href="<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>" class="cool-btn cool-bnt--primary go-live<?php echo ( 'auto-draft' == get_post_status(get_the_id()) ? ' draft' : '' ); ?>" target="_blank"><?php _e( 'Live', 'rexpansive' ); ?></a>
+						<input type="hidden" name="force_live" value="">
+						<!-- CLASSIC EDITOR ACTIVE or WORDPRESS VERSION 5- -->
+						<script>
+							;(function ($) {
+								'use strict';
+								$(function () {
+									$('.go-live.draft').on('click', function(e) {
+										e.preventDefault();
+										$('#wp-preview').val(true);
+										$('input[name=force_live]').val("do_force_live");
+										$('#post-preview')
+											/*.attr('href','<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>')*/
+											.trigger('click');
+										$('input[name=force_live]').val("");
+									});
+								});
+							})(jQuery);	
+						</script>
+					</div>
+				<?php }	$savedFromBackend = get_post_meta( get_the_id(), '_save_from_backend', true); ?>
+			<input type="hidden" name="builder-save-from-backend" value="<?php echo $savedFromBackend; ?>">
+			<?php if(isset($savedFromBackend) && $savedFromBackend == "false") { ?>
+				<div class="go-live-advice">
+					<p><?php _e( "You saved from the live builder, now you can not change the page content from the old builder",  "rexpansive" ); ?></p>
+				</div>
+			<?php	}	?>
 		</div>
 		<?php
 				endif;
@@ -760,6 +785,7 @@ if(isset($savedFromBackend) && $savedFromBackend == "false") {
 	 * @return string $url
 	 * @since 1.1.0
 	 */
+
 	public function change_preview_url( $url ) {
 		if( isset( $_POST['wp-preview'] ) && "dopreview" == $_POST['wp-preview'] && isset( $_POST['force_live'] ) && "do_force_live" == $_POST['force_live'] ) {
 			return admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' );

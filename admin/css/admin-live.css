@@ -1,5 +1,28 @@
 .go-live-advice {
   text-align: center;
+  position:relative;
+}
+
+.go-live-advice-overlay-status{
+  width:100%;
+  height:36px;
+  position:absolute;
+  top:0;
+  left:0;
+  z-index:200;
+}
+
+.go-live-advice-overlay-status .go-live-advice-overlay-alert{
+  width:80px;
+  height:36px;
+  border-radius:25px;
+  margin:0px auto 0px auto;
+  transition:1s;
+  z-index:225;
+}
+
+.go-live-advice-overlay-status .go-live-advice-overlay-alert:hover .go-live-showalert-content{  
+    display:block;
 }
 
 .cool-btn {
@@ -15,9 +38,13 @@
 }
 
 .cool-btn.cool-bnt--primary {
-  background-color: #ff0055;
+  /*background-color: #ff0055;*/
   color: #fff;
   font-weight: 900;
   text-transform: uppercase;
   letter-spacing: 2px;
 }
+
+/*.glaCC-overlay-grey{background-color:#505050;}*/
+.glaCC-true{background-color:#ff0055;}
+.glaCC-false{background-color:#404040;}
