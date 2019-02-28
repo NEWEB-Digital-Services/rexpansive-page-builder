@@ -1,3 +1,6 @@
+// Cleaning version of builder public css to use in the editor
+// Removing animations logic in the editor
+
 @charset "UTF-8";
 
 @import "scss/vendor/perfectGridGallery";
@@ -7,4 +10,4 @@
 @import "scss/vendor/flickity.min";
 @import "scss/vendor/photoswipe";
 @import "scss/vendor/odometer/odometer-theme-digital";
-@import "scss/rexbuilder-public";
+@import "scss/rexbuilder-editor-public";

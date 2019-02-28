@@ -3363,8 +3363,7 @@ var Rexbuilder_Util = (function($) {
   }
 
   var _getGalleryInstance = function($section) {
-    return $section.find(".grid-stack-row").data()
-      .plugin_perfectGridGalleryEditor;
+    return $section.find(".grid-stack-row").data().plugin_perfectGridGalleryEditor;
   };
 
   var removeCollapsedGrids = function() {

@@ -4,35 +4,35 @@
 	width: 100%;
 	max-height: 100%;
 	overflow: hidden;
-	.mCSB_scrollTools {
-		right: 10px;
-		// visibility: hidden;
-		.mCSB_draggerContainer {
-			margin: 20px 0;
-/* 			margin-top: 5%;
-			margin-bottom: 5%;
- */		}
-		.mCSB_dragger {
-			.mCSB_dragger_bar {
-				width: 3px;
-				background-color: #686868;
-			}
-			&:hover,
-			&.mCSB_dragger_onDrag,
-			&:active {
-				.mCSB_dragger_bar {
-					background-color: #454545;
-				}
-			}
-		}
-		.mCSB_draggerRail {
-			width: 5px;
-			background-color: #fbfbfb;
-		}
-	}
-	@media screen and (max-width: $small) {
-		.mCSB_scrollTools {
-			right: 0px;
-		}
-	}
+	// .mCSB_scrollTools {
+	// 	right: 10px;
+	// 	// visibility: hidden;
+	// 	.mCSB_draggerContainer {
+	// 		margin: 20px 0;
+ 	// 		/*margin-top: 5%;
+	// 		margin-bottom: 5%;*/
+	// 	}
+	// 	.mCSB_dragger {
+	// 		.mCSB_dragger_bar {
+	// 			width: 3px;
+	// 			background-color: #686868;
+	// 		}
+	// 		&:hover,
+	// 		&.mCSB_dragger_onDrag,
+	// 		&:active {
+	// 			.mCSB_dragger_bar {
+	// 				background-color: #454545;
+	// 			}
+	// 		}
+	// 	}
+	// 	.mCSB_draggerRail {
+	// 		width: 5px;
+	// 		background-color: #fbfbfb;
+	// 	}
+	// }
+	// @media screen and (max-width: $small) {
+	// 	.mCSB_scrollTools {
+	// 		right: 0px;
+	// 	}
+	// }
 }

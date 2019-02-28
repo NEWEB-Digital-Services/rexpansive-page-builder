@@ -345,12 +345,21 @@ var builderlive_public = [
 ];
 
 var builderlive_public_editor_style = [
-	'admin/rexpansive-font/font.css',
+	// 'admin/rexpansive-font/font.css',
 	'admin/public/css/builder.css',
 	'admin/css/rex-custom-editor-buttons.css',
 	'admin/spectrum/spectrum.css',
 	'public/css/medium-editor.css',
-	'public/css/medium-editor-insert-plugin-frontend.css'
+	'public/css/medium-editor-insert-plugin-frontend.css',
+	'public/Photoswipe/default-skin/default-skin.css',
+	'public/jquery.mb.YTPlayer/css/jquery.mb.YTPlayer.min.css',
+	'public/css/animate.css',
+	'public/css/textFill.css',
+	'public/css/jquery-ui.min.css',
+	'public/css/gridstack.css',
+	'public/css/input-spinner.css',
+	'public/css/public-editor.css',
+	'admin/css/live-def.css'
 ];
 
 var builderlive_public_style = [
@@ -365,11 +374,24 @@ var builderlive_public_style = [
 	'admin/css/live-def.css'
 ];
 
-var x = builderlive_public_editor.concat(builderlive_public);
-var y = builderlive_public_editor_style.concat(builderlive_public_style);
+var public_res = builderlive_public_editor.concat(builderlive_public);
+var public_editor_res = builderlive_public_editor_style;
+
+gulp.task('public-editor-css', function() {
+	sass('public/public-editor.scss',{
+		//style:'compressed'
+	})
+	.pipe(plumber())
+    .pipe(autoprefixer({
+      browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
+  	}))
+    .pipe(plumber.stop())
+	.pipe(size({title: 'Public CSS'}))
+    .pipe(gulp.dest('public/css'));
+});
 
 gulp.task('builderlive-editor', function() {
-	return gulp.src(x)
+	return gulp.src(public_res)
 		.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
 		.pipe(concat('builderlive-editor.js'))
 		.pipe(size({title:'Builderlive Editor'}))
@@ -385,7 +407,7 @@ gulp.task('builderlive', function() {
 });
 
 gulp.task('builderlive-editor-style', function() {
-	return gulp.src(y)
+	return gulp.src(public_editor_res)
 		.pipe(concat('builderlive-editor.css'))
 		.pipe(uglifyCSS({preserveComments: 'license'}).on('error', gulpUtil.log))
 		.pipe(size({title:'Builderlive Editor Style'}))

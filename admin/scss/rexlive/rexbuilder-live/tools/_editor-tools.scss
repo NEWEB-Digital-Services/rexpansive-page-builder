@@ -293,9 +293,11 @@
     background-image: none;
   }
 }
+// Inline editor elements resize
 .me-resize-mirror {
   position: absolute;
   display: none;
+  outline: 1px dotted $palette-color-3;
 }
 .me-resize-sizes {
   position: absolute;

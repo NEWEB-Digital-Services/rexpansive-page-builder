@@ -1,0 +1,31 @@
+// Cleaning version of builder public css to use in the editor
+// Removing animations logic in the editor
+
+@charset "UTF-8";
+
+// base scss clean
+@import "base/variables";
+@import "base/mixins";
+@import "base/classes";
+@import "base/_linear-gradient.scss";
+@import "base/icons";
+@import "base/double-bounce";
+
+// modules scss clean
+@import "models/checkboxes";
+@import "models/form";
+@import "models/section";
+@import "models/alignement";
+@import "models/overlay";
+@import "models/custom-scrollbar";
+@import "models/video";
+@import "models/_rex-slider.scss";
+@import "models/photoswipe";
+@import "models/vertical-navigation";
+@import "models/_verticalNav.scss";
+@import "models/accordion";
+@import "models/rex-accordion";
+@import "models/indicator";
+@import "models/timeline";
+@import "models/list";
+@import "models/inline-gallery";
