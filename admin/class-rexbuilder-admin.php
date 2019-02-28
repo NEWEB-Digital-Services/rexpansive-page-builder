@@ -720,20 +720,20 @@ class Rexbuilder_Admin {
 							'use strict';
 								$(function () {
 									$('.go-live').on('click', function(e) {
-										$(document).trigger("rexbuilder:save_content");								
+										// Saving the page before redirecting to Rexpansive Builder.
+										wp.data.dispatch('core/editor').savePost();
+										//$(document).trigger("rexbuilder:save_content");										
 										var pageName_WindowOpen = $("#post-title-0").val();
 										var pageName_WindowOpen_Trim = pageName_WindowOpen.trim();
 										if(pageName_WindowOpen_Trim == "") {
-											console.log("error");
+											// ERROR TITLE - Check the presence of valid text inserted in to the page name textbox.
+											console.log("WARNING: Unable to start Rexpansive Builder, make sure you have entered the page name correctly.");
 										} else {
 											e.preventDefault();									
 											$('#wp-preview').val(true);		
 											$('input[name=force_live]').val("do_force_live");
 											window.open('<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>');
-											//$(location)
-												//.attr('href','<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>')
-												//.attr('target','_blank');
-												//.trigger('click');
+											//$(location).attr('href','<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>').trigger('click');
 											$('input[name=force_live]').val("");
 										}
 									});
@@ -741,7 +741,6 @@ class Rexbuilder_Admin {
 							})(jQuery);
 							</script>
 					</div>
-
 				<?php } else { ?>
 					<div class="go-live-advice">
 						<a href="<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>" class="cool-btn cool-bnt--primary go-live<?php echo ( 'auto-draft' == get_post_status(get_the_id()) ? ' draft' : '' ); ?>" target="_blank"><?php _e( 'Live', 'rexpansive' ); ?></a>
@@ -768,9 +767,16 @@ class Rexbuilder_Admin {
 			<input type="hidden" name="builder-save-from-backend" value="<?php echo $savedFromBackend; ?>">
 			<?php if(isset($savedFromBackend) && $savedFromBackend == "false") { ?>
 				<div class="go-live-advice">
-					<p><?php _e( "You saved from the live builder, now you can not change the page content from the old builder",  "rexpansive" ); ?></p>
+					<p><?php _e( "You saved from the live builder, now you can not change the page content from the old builder.",  "rexpansive" ); ?></p>
 				</div>
-			<?php	}	?>
+			<?php	}			
+			$savedFromBackend = get_post_meta( get_the_id(), '_save_from_backend', true); ?>
+			<input type="hidden" name="builder-save-from-backend" value="<?php echo $savedFromBackend; ?>">
+			<?php if(isset($savedFromBackend) && $savedFromBackend == "") { ?>
+				<div class="go-live-advice">
+					<p><?php _e( "Save this page with the live builder.",  "rexpansive" ); ?></p>
+				</div>
+			<?php	} ?>
 		</div>
 		<?php
 				endif;
@@ -784,6 +790,7 @@ class Rexbuilder_Admin {
 	 * @param string $url
 	 * @return string $url
 	 * @since 1.1.0
+	 *
 	 */
 
 	public function change_preview_url( $url ) {

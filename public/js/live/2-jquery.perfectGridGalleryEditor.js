@@ -1346,7 +1346,6 @@
 
     // Updating elements properties
     updateAllElementsProperties: function() {
-      console.log("passed - updateAllElementsProperties");
       var gallery = this;
       this.properties.editedFromBackend = false;
       this.properties.startingLayout = this.settings.galleryLayout;
@@ -1379,7 +1378,6 @@
       this._updateElementSize(elem, "y");
       this._updateElementSize(elem, "w");
       this._updateElementSize(elem, "h");
-      console.log("passed - updateElementAllProperties");
     },
 
     _updateElementSize: function(elem, $case) {
