@@ -37,13 +37,22 @@ var Rex_Save_Listeners = (function($) {
 
       var ajaxCalls = [];
 
-      //rex-buttons in page
+      //rex-buttons in page, removing duplicates
       var rexButtonsInPage = Rexbuilder_Rexbutton.getButtonsInPage();
       var rexButtonsIDsInPage = [];
+      var buttonFound = false;
       for (i = 0; i < rexButtonsInPage.length; i++) {
-        rexButtonsIDsInPage.push(rexButtonsInPage[i].id);
+        for (j = 0; j < rexButtonsIDsInPage.length; j++) {
+          if (rexButtonsInPage[i].id == rexButtonsIDsInPage[j]) {
+            buttonFound = true;
+          }
+        }
+        if (!buttonFound) {
+          rexButtonsIDsInPage.push(rexButtonsInPage[i].id);
+        }
+        buttonFound = false;
       }
-      console.log(rexButtonsIDsInPage);
+
       ajaxCalls.push(
         $.ajax({
           type: "POST",

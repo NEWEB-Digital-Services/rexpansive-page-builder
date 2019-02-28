@@ -133,8 +133,8 @@ var Button_Import_Modal = (function ($) {
         // chiedere a stefano come far andare height anche qua
 
         //togliere l'elemento se c'è già e aggiungere quello nuovo
-        var $buttonEL = rexbutton_import_props.$buttonList.find(".rex-button-wrapper[data-rex-button-id=\"" + buttonID+"\"]");
-        if($buttonEL.length == 0){
+        var $buttonEL = rexbutton_import_props.$buttonList.find(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"]");
+        if ($buttonEL.length == 0) {
             var $liEL = $(document.createElement("li"));
             $liEL.attr("draggable", true);
             var $div = $(document.createElement("div"));
@@ -169,10 +169,10 @@ var Button_Import_Modal = (function ($) {
             height: 0
         }
 
-        var breakPointNumber = { x: 25, y: 25 };
+        var breakPointNumber = { x: 10, y: 10 };
         /*
             Funzione che esegue lo scrolling nell'iframe
-            */
+        */
         var scroll = function (step) {
             var scrollY = $frameContentWindow.scrollTop();
             $frameContentWindow.scrollTop(
@@ -184,6 +184,9 @@ var Button_Import_Modal = (function ($) {
                 }, 20);
             }
         };
+        /*
+        da capire come fare, servirà per il pulsante vicino al mouse durante il drag
+        */
         var $imgPreview;
         Rexlive_Base_Settings.$document.on("dragstart", ".button-list li", function (
             event
@@ -233,6 +236,7 @@ var Button_Import_Modal = (function ($) {
             var mousePositionToIFrame = {};
             $rexContainer.on('dragenter', ".grid-stack-row", function (event) {
                 event.stopPropagation();
+                $rexContainer.addClass("rex-dragging-button");
                 currentElement = $(event.target);
                 currentElementChangeFlag = true;
                 elementRectangle = event.target.getBoundingClientRect();
@@ -259,22 +263,23 @@ var Button_Import_Modal = (function ($) {
             });
 
             $rexContainer.on('drop', ".grid-stack-row", function (event) {
+                $rexContainer.removeClass("rex-dragging-button");
                 event.preventDefault();
                 event.stopPropagation();
                 var e;
-                if (event.isTrigger)
+                if (event.isTrigger) {
                     e = triggerEvent.originalEvent;
-                else
-                    var e = event.originalEvent;
+                } else {
+                    e = event.originalEvent;
+                }
                 try {
                     var textData = e.dataTransfer.getData("text/plain");
                     var $insertionPoint = Rexbuilder_Util_Admin_Editor.$frameBuilder
                         .contents()
                         .find(".drop-marker");
-                    
+
                     var $divInsert = $(jQuery.parseHTML(textData));
                     $divInsert.addClass("rex-loading-button");
-
                     $divInsert.insertAfter($insertionPoint[0]);
                     $insertionPoint.remove();
                     var dataEndDrop = {
@@ -296,67 +301,87 @@ var Button_Import_Modal = (function ($) {
         {
             dragoverqueue: [],
             GetMouseBearingsPercentage: function ($element, elementRect, mousePos) {
-                if (!elementRect){
+                if (!elementRect) {
                     elementRect = $element.get(0).getBoundingClientRect();
                 }
-                return { 
-                    x: ((mousePos.x - elementRect.left) / (elementRect.right - elementRect.left)) * 100, 
-                    y: ((mousePos.y - elementRect.top) / (elementRect.bottom - elementRect.top)) * 100 
+                return {
+                    x: ((mousePos.x - elementRect.left) / (elementRect.right - elementRect.left)) * 100,
+                    y: ((mousePos.y - elementRect.top) / (elementRect.bottom - elementRect.top)) * 100
                 };
             },
             OrchestrateDragDrop: function ($element, elementRect, mousePos) {
                 //If no element is hovered or element hovered is the placeholder -> not valid -> return false;
-                if (!$element || $element.length == 0 || !elementRect || !mousePos)
+                if (!$element || $element.length == 0 || !elementRect || !mousePos) {
                     return false;
+                }
 
-                if ($element.is('html'))
+                if ($element.is('html')) {
                     $element = $element.find('body');
+                }
                 //Top and Bottom Area Percentage to trigger different case. [5% of top and bottom area gets reserved for this]
 
                 var mousePercents = this.GetMouseBearingsPercentage($element, elementRect, mousePos);
+
+                // se devo entrare dentro l'elemento
+                if ($element.hasClass("rex-button-wrapper") || $element.parents(".rex-button-wrapper").length != 0) {
+                    $element = $element.hasClass("rex-button-wrapper") ? $element : $element.parents(".rex-button-wrapper").eq(0);
+                    var oldBreaks = jQuery.extend(true, {}, breakPointNumber);
+                    var elementFixed = true;
+                    breakPointNumber.x = 50;
+                    breakPointNumber.y = 50;
+                }
                 if ((mousePercents.x > breakPointNumber.x && mousePercents.x < 100 - breakPointNumber.x)
                     && (mousePercents.y > breakPointNumber.y && mousePercents.y < 100 - breakPointNumber.y)) {
                     //Case 1 -
                     var $tempelement = $element.clone();
                     $tempelement.find(".drop-marker").remove();
                     if ($tempelement.html() == "" && !this.checkVoidElement($tempelement)) {
-                        if (mousePercents.y < 90)
+                        if (mousePercents.y < 90) {
                             return this.PlaceInside($element);
-                    }
-                    else if ($tempelement.children().length == 0) {
+                        }
+                    } else if ($tempelement.children().length == 0) {
                         //text element detected
-                        //console.log("Text Element");
                         this.DecideBeforeAfter($element, mousePercents);
-                    }
-                    else if ($tempelement.children().length == 1) {
+                    } else if ($tempelement.children().length == 1) {
                         //only 1 child element detected
-                        //console.log("1 Child Element");
-                        this.DecideBeforeAfter($element.children(":not(.drop-marker,[data-dragcontext-marker])").first(), mousePercents);
-                    }
-                    else {
+                        if ($tempelement.hasClass("rex-buttons-paragraph")) {
+                            var positionAndElement = this.findNearestElement($element, mousePos.x, mousePos.y);
+                            this.DecideBeforeAfter(positionAndElement.el, mousePercents, mousePos);
+                        } else {
+                            this.DecideBeforeAfter($element.children(":not(.drop-marker,[data-dragcontext-marker])").first(), mousePercents);
+                        }
+                    } else {
                         var positionAndElement = this.findNearestElement($element, mousePos.x, mousePos.y);
                         this.DecideBeforeAfter(positionAndElement.el, mousePercents, mousePos);
-                        //more than 1 child element present
-                        //console.log("More than 1 child detected");
                     }
-                }
-                else if ((mousePercents.x <= breakPointNumber.x) || (mousePercents.y <= breakPointNumber.y)) {
-                    var validElement = validElement = this.FindValidParent($element, 'top');
+                } else if ((mousePercents.x <= breakPointNumber.x) || (mousePercents.y <= breakPointNumber.y)) {
+                    if (mousePercents.y <= mousePercents.x) {
+                        validElement = this.FindValidParent($element, 'top');
+                    } else {
+                        validElement = this.FindValidParent($element, 'left');
+                    }
 
-                    if (validElement.is("body,html"))
+                    if (validElement.is("body,html")) {
                         validElement = Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find("body").children(":not(.drop-marker,[data-dragcontext-marker])").first();
+                    }
+                    this.DecideBeforeAfter(validElement, mousePercents, mousePos);
+                } else if ((mousePercents.x >= 100 - breakPointNumber.x) || (mousePercents.y >= 100 - breakPointNumber.y)) {
+                    var validElement = null;
+                    if (mousePercents.y >= mousePercents.x) {
+                        validElement = this.FindValidParent($element, 'bottom');
+                    } else {
+                        validElement = this.FindValidParent($element, 'right');
+                    }
+
+                    if (validElement.is("body,html")) {
+                        validElement = Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find("body").children(":not(.drop-marker,[data-dragcontext-marker])").last();
+                    }
                     this.DecideBeforeAfter(validElement, mousePercents, mousePos);
                 }
-                else if ((mousePercents.x >= 100 - breakPointNumber.x) || (mousePercents.y >= 100 - breakPointNumber.y)) {
-                    var validElement = null
-                    if (mousePercents.y >= mousePercents.x)
-                        validElement = this.FindValidParent($element, 'bottom');
-                    else
-                        validElement = this.FindValidParent($element, 'right');
-
-                    if (validElement.is("body,html"))
-                        validElement = Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find("body").children(":not(.drop-marker,[data-dragcontext-marker])").last();
-                    this.DecideBeforeAfter(validElement, mousePercents, mousePos);
+                if (typeof elementFixed != "undefined" && elementFixed) {
+                    breakPointNumber.x = oldBreaks.x;
+                    breakPointNumber.y = oldBreaks.y;
+                    elementFixed = false;
                 }
             },
             DecideBeforeAfter: function ($targetElement, mousePercents, mousePos) {
@@ -369,9 +394,10 @@ var Button_Import_Modal = (function ($) {
                  mousePercents = this.GetMouseBearingsPercentage($targetElement, $targetElement.get(0).getBoundingClientRect(), mousePos);
                  } */
 
-                var $orientation = ($targetElement.css('display') == "inline" || $targetElement.css('display') == "inline-block");
-                if ($targetElement.is("br"))
+                var $orientation = ($targetElement.css('display') == "inline" || $targetElement.css('display') == "inline-block" || $targetElement.css('display') == "inline-flex");
+                if ($targetElement.is("br")) {
                     $orientation = false;
+                }
 
                 if ($orientation) {
                     if (mousePercents.x < 50) {
@@ -393,10 +419,7 @@ var Button_Import_Modal = (function ($) {
             checkVoidElement: function ($element) {
                 var voidelements = ['i', 'area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'keygen', 'link', 'meta', 'param', 'video', 'iframe', 'source', 'track', 'wbr'];
                 var selector = voidelements.join(",")
-                if ($element.is(selector))
-                    return true;
-                else
-                    return false;
+                return $element.is(selector);
             },
             calculateDistance: function (elementData, mouseX, mouseY) {
                 return Math.sqrt(Math.pow(elementData.x - mouseX, 2) + Math.pow(elementData.y - mouseY, 2));
@@ -408,12 +431,17 @@ var Button_Import_Modal = (function ($) {
                             var elementRect = $element.get(0).getBoundingClientRect();
                             var $tempElement = $element.parent();
                             var tempelementRect = $tempElement.get(0).getBoundingClientRect();
-                            if ($element.is("body") || $element.hasClass("grid-stack-row"))
+                            if ($element.is("body") || $element.hasClass("grid-stack-row") || $tempElement.hasClass("rex-buttons-paragraph")) {
                                 return $element;
-                            if (Math.abs(tempelementRect.left - elementRect.left) == 0)
+                            }
+                            if (Math.abs(tempelementRect.left - elementRect.left) == 0) {
                                 $element = $element.parent();
-                            else
+                            } else {
+                                if ($element.parents(".rex-button-wrapper").length != 0) {
+                                    return $element.parents(".rex-button-wrapper").eq(0);
+                                }
                                 return $element;
+                            }
                         }
                         break;
                     case "right":
@@ -421,12 +449,18 @@ var Button_Import_Modal = (function ($) {
                             var elementRect = $element.get(0).getBoundingClientRect();
                             var $tempElement = $element.parent();
                             var tempelementRect = $tempElement.get(0).getBoundingClientRect();
-                            if ($element.is("body") || $element.hasClass("grid-stack-row"))
+                            if ($element.is("body") || $element.hasClass("grid-stack-row") || $tempElement.hasClass("rex-buttons-paragraph")) {
+                                console.log($element);
                                 return $element;
-                            if (Math.abs(tempelementRect.right - elementRect.right) == 0)
+                            }
+                            if (Math.abs(tempelementRect.right - elementRect.right) == 0) {
                                 $element = $element.parent();
-                            else
+                            } else {
+                                if ($element.parents(".rex-button-wrapper").length != 0) {
+                                    return $element.parents(".rex-button-wrapper").eq(0);
+                                }
                                 return $element;
+                            }
                         }
                         break;
                     case "top":
@@ -434,12 +468,17 @@ var Button_Import_Modal = (function ($) {
                             var elementRect = $element.get(0).getBoundingClientRect();
                             var $tempElement = $element.parent();
                             var tempelementRect = $tempElement.get(0).getBoundingClientRect();
-                            if ($element.is("body") || $element.hasClass("grid-stack-row"))
+                            if ($element.is("body") || $element.hasClass("grid-stack-row") || $tempElement.hasClass("rex-buttons-paragraph")) {
                                 return $element;
-                            if (Math.abs(tempelementRect.top - elementRect.top) == 0)
+                            }
+                            if (Math.abs(tempelementRect.top - elementRect.top) == 0) {
                                 $element = $element.parent();
-                            else
+                            } else {
+                                if ($element.parents(".rex-button-wrapper").length != 0) {
+                                    return $element.parents(".rex-button-wrapper").eq(0);
+                                }
                                 return $element;
+                            }
                         }
                         break;
                     case "bottom":
@@ -447,13 +486,19 @@ var Button_Import_Modal = (function ($) {
                             var elementRect = $element.get(0).getBoundingClientRect();
                             var $tempElement = $element.parent();
                             var tempelementRect = $tempElement.get(0).getBoundingClientRect();
-                            if ($element.is("body") || $element.hasClass("grid-stack-row"))
+                            if ($element.is("body") || $element.hasClass("grid-stack-row") || $tempElement.hasClass("rex-buttons-paragraph"))
                                 return $element;
-                            if (Math.abs(tempelementRect.bottom - elementRect.bottom) == 0)
+                            if (Math.abs(tempelementRect.bottom - elementRect.bottom) == 0) {
                                 $element = $element.parent();
-                            else
+                            } else {
+                                if ($element.parents(".rex-button-wrapper").length != 0) {
+                                    return $element.parents(".rex-button-wrapper").eq(0);
+                                }
                                 return $element;
+                            }
                         }
+                        break;
+                    default:
                         break;
                 }
             },
@@ -470,7 +515,7 @@ var Button_Import_Modal = (function ($) {
                         } else {
                             $element.before(placeholder);
                         }
-                        this.AddContainerContext($element, 'inside');
+                        this.AddContainerContext($element, 'sibling');
                         break;
                     case "after":
                         placeholder.find(".message").html($element.data('sh-dnd-error'));
@@ -480,7 +525,7 @@ var Button_Import_Modal = (function ($) {
                         } else {
                             $element.after(placeholder);
                         }
-                        this.AddContainerContext($element, 'inside');
+                        this.AddContainerContext($element, 'sibling');
                         break;
                     case "inside-prepend":
                         placeholder.find(".message").html($element.data('sh-dnd-error'));
@@ -510,7 +555,8 @@ var Button_Import_Modal = (function ($) {
             },
             PlaceBefore: function ($element) {
                 var placeholder = this.getPlaceHolder();
-                var inlinePlaceholder = ($element.css('display') == "inline" || $element.css('display') == "inline-block");
+
+                var inlinePlaceholder = ($element.css('display') == "inline" || $element.css('display') == "inline-block" || $element.css('display') == "inline-flex");
                 if ($element.is("br")) {
                     inlinePlaceholder = false;
                 }
@@ -518,16 +564,17 @@ var Button_Import_Modal = (function ($) {
                     placeholder.addClass('horizontal').css('width', $element.width() + "px");
                     return this.addPlaceHolder($element, "inside-prepend", placeholder);
                 }
-                if (inlinePlaceholder)
+                if (inlinePlaceholder) {
                     placeholder.addClass("vertical").css('height', $element.innerHeight() + "px");
-                else
+                } else {
                     placeholder.addClass("horizontal").css('width', $element.parent().width() + "px");
+                }
                 this.addPlaceHolder($element, "before", placeholder);
             },
 
             PlaceAfter: function ($element) {
                 var placeholder = this.getPlaceHolder();
-                var inlinePlaceholder = ($element.css('display') == "inline" || $element.css('display') == "inline-block");
+                var inlinePlaceholder = ($element.css('display') == "inline" || $element.css('display') == "inline-block" || $element.css('display') == "inline-flex");
                 if ($element.is("br")) {
                     inlinePlaceholder = false;
                 }
@@ -541,6 +588,7 @@ var Button_Import_Modal = (function ($) {
                     placeholder.addClass("horizontal").css('width', $element.parent().width() + "px");
                 this.addPlaceHolder($element, "after", placeholder);
             },
+
             findNearestElement: function ($container, clientX, clientY) {
                 var _this = this;
                 var previousElData = null;
@@ -623,11 +671,22 @@ var Button_Import_Modal = (function ($) {
                                 return true; //continue statement
                             }
                         }
-                        previousElData = { 'el': this, 'distance': distance, 'xPosition1': xPosition1, 'xPosition2': xPosition2, 'yPosition1': yPosition1, 'yPosition2': yPosition2, 'position': position }
+                        previousElData = {
+                            'el': this,
+                            'distance': distance,
+                            'xPosition1': xPosition1,
+                            'xPosition2': xPosition2,
+                            'yPosition1': yPosition1,
+                            'yPosition2': yPosition2,
+                            'position': position
+                        };
                     });
                     if (previousElData !== null) {
                         var position = previousElData.position;
-                        return { 'el': $(previousElData.el), 'position': position };
+                        return {
+                            'el': $(previousElData.el),
+                            'position': position
+                        };
                     }
                     else {
                         return false;
@@ -643,9 +702,9 @@ var Button_Import_Modal = (function ($) {
                 this.dragoverqueue = [];
                 if (processing && processing.length == 3) {
                     var $el = processing[0];
-                    var $elRect = processing[1];
+                    var elRect = processing[1];
                     var mousePos = processing[2];
-                    this.OrchestrateDragDrop($el, $elRect, mousePos);
+                    this.OrchestrateDragDrop($el, elRect, mousePos);
                 }
 
             },
@@ -673,13 +732,16 @@ var Button_Import_Modal = (function ($) {
                             Rexbuilder_Util_Admin_Editor.$frameBuilder
                                 .contents()
                                 .find("body [data-sh-parent-marker]").length != 0
-                        )
+                        ) {
                             Rexbuilder_Util_Admin_Editor.$frameBuilder
                                 .contents()
                                 .find("body [data-sh-parent-marker]")
                                 .first()
                                 .before($contextMarker);
-                        else break;
+                        } else {
+
+                        }
+                        break;
                     case "sibling":
                         this.PositionContextMarker($contextMarker, $element.parent());
                         if ($element.parent().hasClass("stackhive-nodrop-zone"))
@@ -691,13 +753,19 @@ var Button_Import_Modal = (function ($) {
                             Rexbuilder_Util_Admin_Editor.$frameBuilder
                                 .contents()
                                 .find("body [data-sh-parent-marker]").length != 0
-                        )
+                        ) {
+
                             Rexbuilder_Util_Admin_Editor.$frameBuilder
                                 .contents()
                                 .find("body [data-sh-parent-marker]")
                                 .first()
                                 .before($contextMarker);
-                        else break;
+                        } else {
+
+                        }
+                        break;
+                    default:
+                        break;
                 }
             },
             PositionContextMarker: function ($contextMarker, $element) {

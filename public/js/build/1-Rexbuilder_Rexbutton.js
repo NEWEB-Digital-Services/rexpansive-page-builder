@@ -43,6 +43,7 @@ var Rexbuilder_Rexbutton = (function ($) {
          * 3: dentro row
          * 4: dentro pulsate per nuova row
          */
+        var $buttonsParagraph = $buttonWrapper.parents(".rex-buttons-paragraph").eq(0);
         var $textWrap = $buttonWrapper.parents(".text-wrap").eq(0);
         var $gridGallery = $buttonWrapper.parents(".grid-stack-row").eq(0);
         var $section = $buttonWrapper.parents(".rexpansive_section").eq(0);
@@ -63,17 +64,22 @@ var Rexbuilder_Rexbutton = (function ($) {
             } else {
                 caso = "inside-new-row";
             }
+        } else if ($buttonsParagraph.length != 0) {
+            caso = "inside-paragraph";
         } else {
             caso = "inside-block";
         }
         switch (caso) {
             case "inside-block":
                 console.log("dentro blocco");
+                $buttonWrapper.wrap("<p class=\"rex-buttons-paragraph\"></p>");
                 _endFixingButtonImported($buttonWrapper);
                 Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
                 break;
-            case "inside-text":
-                console.log("dentro testo");
+            case "inside-paragraph":
+                console.log("dentro paragrafo rexbutton");
+                _endFixingButtonImported($buttonWrapper);
+                Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
                 break;
             case "inside-row":
                 var ev = jQuery.Event("rexlive:insert_new_text_block");
@@ -100,7 +106,6 @@ var Rexbuilder_Rexbutton = (function ($) {
     }
     
     var _endFixingButtonImported = function($buttonWrapper){
-        $buttonWrapper.wrap("<p class=\"rex-buttons-paragraph\"></p>");
         var buttonID = $buttonWrapper.attr("data-rex-button-id");
         var flagButtonFound = false;
         $buttonWrapper.attr("data-rex-button-number", 1);
@@ -120,8 +125,6 @@ var Rexbuilder_Rexbutton = (function ($) {
             });
         }
         _removeModelData($buttonWrapper);
-
-        _linkHoverListeners($buttonWrapper);
     }
 
     var _removeModelData = function ($buttonWrapper) {
@@ -330,9 +333,10 @@ var Rexbuilder_Rexbutton = (function ($) {
     }
 
     var _updateButtonLive = function (data) {
+        console.log(data);
          switch (data.propertyType) {
             case "container":
-                _updateButtonContainerRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
+            _updateButtonContainerRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
                 break;
             case "background":
                 _updateButtonBackgroundRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
