@@ -20,11 +20,11 @@ var Rexlive_Ajax_Calls = (function($) {
       },
       success: function(response) {
         if (response.success) {
-          console.log(response);
+          // console.log(response);
         }
       },
       error: function(response) {
-        console.log(response);
+        // console.log(response);
       }
     });
   };

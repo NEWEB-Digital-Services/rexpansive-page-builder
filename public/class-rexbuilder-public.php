@@ -403,6 +403,16 @@ class Rexbuilder_Public
 
     public function include_sprites_live() {
 		?><div style="display:none"><?php include_once( REXPANSIVE_BUILDER_PATH .  'admin/sprites_live_new/symbol/svg/sprite.symbol.svg' ); ?></div><?php
+    }
+    
+    /**
+     * Test purpose
+     *
+     * @return void
+     * @todo    Remove me on production
+     */
+    public function include_sprites_test() {
+		?><div style="display:none"><?php include_once( REXPANSIVE_BUILDER_PATH .  'admin/sprites_test_2/sprite.symbol.svg' ); ?></div><?php
 	}
 
     public function rexlive_save_sections_rexids()

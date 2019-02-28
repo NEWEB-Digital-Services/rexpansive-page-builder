@@ -37,7 +37,6 @@ var HtmlEditor_Modal = (function($) {
         }
       };
 
-      console.log("publicHTML || "+customHTML)                                                                               // NOTIFICA
       Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_customHTML);   // inviare i dati della variabile "data_customHTML"
 
       html_editor_modal_properties.$self.addClass("setting-saving").on(Rexbuilder_Util_Admin_Editor.animationEvent, function(e) {

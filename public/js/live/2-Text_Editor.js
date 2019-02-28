@@ -1256,7 +1256,7 @@ var TextEditor = (function($) {
           default:
             break;
         }
-      }      
+      }
 
       // RESIZING TOOLS - LAUNCH/INITIALIT
       if( "click" == event.type ) {
@@ -1273,8 +1273,17 @@ var TextEditor = (function($) {
 
           this.hideEditImgToolbar();
           this.hideEditInlineSVGToolbar();
-        } else if( 'USE' == event.target.nodeName.toUpperCase() && '' !== event.target.getAttribute('xlink:href') ) {
-          this.viewEditInlineSVGToolbar(event.target);
+        } else if( ( 'USE' == event.target.nodeName.toUpperCase() && '' !== event.target.getAttribute('xlink:href') ) || ( 'SVG' === event.target.nodeName.toUpperCase() && 'I' === event.target.parentNode.nodeName.toUpperCase() ) ) {
+          var target;
+          if ( 'SVG' === event.target.nodeName.toUpperCase() )
+          {
+            target = event.target.children[0];
+          }
+          else
+          {
+            target = event.target;
+          }
+          this.viewEditInlineSVGToolbar(target);
           this.inlineSVGResizableEnable();
 
           this.hideEditVideoToolbar();
@@ -1999,7 +2008,7 @@ var TextEditor = (function($) {
       // If cursor is valid
       if( this.traceSelection ) {
         rangy.getSelection().restoreCharacterRanges(this.traceEditor, this.traceSelection);
-        var range = this.getFirstRange();            
+        var range = this.getFirstRange();
         range.refresh();
       }
 
