@@ -410,3 +410,8 @@ $tool_button_classes = 'tool-button';
     </li>
 </ul>
 </script>
+
+<script type="text/x-tmpl" id="tmpl-rexbutton-tools">
+    <div class="rex-delete-button">X</div>
+    <div class="rex-edit-button">E</div>
+</script>

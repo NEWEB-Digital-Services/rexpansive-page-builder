@@ -1050,10 +1050,94 @@ var TextEditor = (function ($) {
       this.fixNodesEnter = false;
       this.fixButtonsClasses = false;
       this.primaCeraRex = false;
+
+      this.traceBTN = null;
+      this.traceEditor = null;
+
       this.subscribe("editableInput", this.handleEventInput.bind(this));
       this.subscribe("editableKeydown", this.handleEventKeyDown.bind(this));
       this.subscribe("editableKeyup", this.handleEventKeyUp.bind(this));
       this.subscribe("keyup", this.handleEventKeyUp.bind(this));
+
+      this.rexbuttonTools = document.createElement("div");
+      this.rexbuttonTools.contentEditable = false;
+      this.rexbuttonTools.classList.add("rexbutton-tools");
+      this.rexbuttonTools.style.display = "none";
+      this.rexbuttonTools.innerHTML = tmpl("tmpl-rexbutton-tools", {});
+      $(document.getElementsByTagName("body")[0]).append(this.rexbuttonTools);
+
+      this.deleteRexbuttonBtn = $(this.rexbuttonTools).find(".rex-delete-button")[0];
+      this.editRexbuttonBtn = $(this.rexbuttonTools).find(".rex-edit-button")[0];
+
+      // View/Hide the Media Insert button
+      this.subscribe("blur", this.handleBlur.bind(this));
+
+      // Trace the cursor position
+      this.subscribe("editableClick", this.traceInput.bind(this));
+  
+      // Link click listeners
+      this.on(this.deleteRexbuttonBtn, "click", this.handleClickDeleteRexbutton.bind(this));
+      this.on(this.editRexbuttonBtn, "click", this.handleClickEditRexbutton.bind(this));
+
+    },
+    
+    viewRexbuttonToolbar: function (event) {
+      this.rexbuttonTools.style.display = "block";
+      this.placeRexbuttonToolbar();
+    },
+    
+    hideRexbuttonToolbar: function (event) {
+      this.rexbuttonTools.style.display = "none";
+    },
+
+    traceInput: function (event) {
+      if ("click" == event.type) {
+        // check if cursor is inside rexbutton
+        var nodeToFix = MediumEditor.selection.getSelectionStart(this.base.options.ownerDocument);
+        if ($(event.target).hasClass("rex-button-text")) {
+          this.traceBTN = $(event.target).parents(".rex-button-container")[0];
+          this.viewRexbuttonToolbar();
+        } else if ($(nodeToFix).parents(".rex-button-container").length != 0) {
+          this.traceBTN = $(nodeToFix).parents(".rex-button-container")[0];
+          this.viewRexbuttonToolbar();
+        } else {
+          this.handleBlur(event);
+        }
+      }
+    },
+
+    handleBlur: function (event) {
+      if ($(event.target).parents(".rex-button-wrapper").length == 0) {
+        this.hideRexbuttonToolbar();
+      }
+    },
+
+    /**
+     * Place the media button on top of the block
+     */
+    placeRexbuttonToolbar: function () {
+      var targetCoords = this.traceBTN.getBoundingClientRect();
+      this.rexbuttonTools.style.left = (targetCoords.left + ((targetCoords.width - this.rexbuttonTools.offsetWidth) / 2)) + "px";
+      this.rexbuttonTools.style.top = (window.scrollY + targetCoords.top - this.rexbuttonTools.offsetHeight - 8) + "px";
+    },
+
+    handleClickDeleteRexbutton: function(e){
+      var $buttonContainer = $(this.traceBTN).parents(".rex-button-wrapper");
+      var $paragraphContainer = $buttonContainer.parents("p.rex-buttons-paragraph");
+      $buttonContainer.remove();
+      if($paragraphContainer.find(".rex-button-wrapper").length == 0){
+        $paragraphContainer.remove();
+      }
+    },
+
+    handleClickEditRexbutton: function(e){
+      var $buttonWrapper = $(this.traceBTN).parents(".rex-button-wrapper");
+      var data = {
+          eventName: "rexlive:openRexButtonEditor",
+          buttonData: Rexbuilder_Rexbutton.generateButtonData($buttonWrapper)
+      };
+      $buttonWrapper.parents(".text-wrap").blur();
+      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     },
 
     handleEventInput: function (eventObj, target) {
@@ -1121,6 +1205,37 @@ var TextEditor = (function ($) {
       var nodeToFix = MediumEditor.selection.getSelectionStart(this.base.options.ownerDocument);
       var $node = $(nodeToFix);
 
+      //incollato testo, bisogna aggiornare altezza blocco
+      if(event.key == "v" && event.ctrlKey.toString() == "true"){
+        Rexbuilder_Util_Editor.updateBlockContainerHeight($(target));
+      }
+
+      if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER) && $(nodeToFix).hasClass("rex-button-text")) {
+        //se siamo all'ultimo carattere del rexbutton cosa facciamo?
+//        console.log("dentro rexbutton, che famo?");
+        var mediumEditorOffsetRight = MediumEditor.selection.getCaretOffsets(nodeToFix).right;
+//        console.log(mediumEditorOffsetRight);
+        if(mediumEditorOffsetRight === 0){
+
+          /*           
+          console.log($node);
+          console.log("sono alla fine del pulsante");
+          */
+          // aggiungi paragrafo dopo di me e sposta il cursore
+          // versione hard (da finire): exec command e fixare
+          //          this.base.options.ownerDocument.execCommand('insertParagraph', false, '');
+
+          // versione easy
+
+          var $newParagraph = $("<p><br></p>");
+          $node.parents(".rex-buttons-paragraph").after($newParagraph);
+          this.customMoveCursor($newParagraph[0], 0);
+        }
+        event.preventDefault();
+      }
+      //this.replaceClasses($node, "rex-text-editor-button-fixed-wrapper", "rex-button-wrapper");
+      return;
+
       while (!$node.is("body") && !$node.hasClass("medium-editor-element")) {
         $node = $node.parent();
       };
@@ -1128,9 +1243,6 @@ var TextEditor = (function ($) {
       if ($node.is("body")) {
         return;
       }
-
-      //this.replaceClasses($node, "rex-text-editor-button-fixed-wrapper", "rex-button-wrapper");
-      return;
 
       var node = MediumEditor.selection.getSelectionStart(this.base.options.ownerDocument);
       if (this.primaCeraRex) {
@@ -1153,35 +1265,50 @@ var TextEditor = (function ($) {
       }
       this.replaceClasses($(target), "rex-text-editor-button-fixed-wrapper", "rex-button-wrapper");
     },
-
+    
     handleEventKeyDown: function (event, target) {
       var nodeToFix = MediumEditor.selection.getSelectionStart(this.base.options.ownerDocument);
-      var mediumEditorOffset = MediumEditor.selection.getCaretOffsets(nodeToFix).left;
-      var $node = $(nodeToFix);
-
-      while (!$node.is("body") && !$node.hasClass("medium-editor-element")) {
-        $node = $node.parent();
-      };
-
-      if ($node.is("body")) {
-        return;
-      }
-      //this.replaceClasses($node, "rex-button-wrapper", "rex-text-editor-button-fixed-wrapper");
-      //event.preventDefault();
-      console.log(1);
+      var mediumEditorOffsetLeft = MediumEditor.selection.getCaretOffsets(nodeToFix).left;
+      var mediumEditorOffsetRight = MediumEditor.selection.getCaretOffsets(nodeToFix).right;
+      
       if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.BACKSPACE) &&
-        window.getSelection().focusOffset == 0) {
-        console.log(2);
-        if (mediumEditorOffset === 0) {
-          console.log(3);
+      window.getSelection().focusOffset == 0) {
+        if (mediumEditorOffsetLeft === 0) {
           if (this.isElementBefore(nodeToFix, "rex-buttons-paragraph")) {
-            console.log("have to block");
+//            console.log("element befor is rex-buttons-paragraph");
             event.preventDefault();
           }
         }
       }
+      
+      if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER)) {
+        if (this.insideRexButton(nodeToFix)) {
+          //se siamo dentro un rexbutton non deve fare nulla
+//          console.log("keydown Enter inside rexButton");
+          event.preventDefault();
+          return;
+        }
+      }
+      
+      if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.DELETE)) {
+        if(mediumEditorOffsetRight === 0){
+          if (this.isElementAfter(nodeToFix, "rex-buttons-paragraph")) {
+//            console.log("element after is rex-buttons-paragraph");
+            event.preventDefault();
+          }
+        }
+      }
+      
       return;
 
+      var $node = $(nodeToFix);
+      while (!$node.is("body") && !$node.hasClass("medium-editor-element")) {
+        $node = $node.parent();
+      };
+      
+      if ($node.is("body")) {
+        return;
+      }
       /**
        * Fix for rexpansive buttons
        */
@@ -1250,7 +1377,11 @@ var TextEditor = (function ($) {
     replaceClasses: function ($wrapper, previousClass, newClass) {
       $wrapper.find("." + previousClass).removeClass(previousClass).addClass(newClass);
     },
-
+/**
+ * 
+ * @param {js OBJ} el element to move caret
+ * @param {integer} offset caret position
+ */
     customMoveCursor: function (el, offset) {
       offset = "undefined" !== typeof offset ? offset : 0;
       var range = document.createRange();
@@ -1327,12 +1458,23 @@ var TextEditor = (function ($) {
       return $node.prev().hasClass(class_name);
     },
 
+    isElementAfter: function (node, class_name) {
+      var $node = $(node);
+      if ($node.next().hasClass(class_name)) {
+        return true;
+      }
+      while (!$node.is("body") && !$node.parent().hasClass("medium-editor-element")) {
+        $node = $node.parent();
+      };
+      return $node.next().hasClass(class_name);
+    },
+
     /**
      * returns true if inside a rex button
      * false otherwise
      */
-    updateEnterFixState: function (node) {
-      return false;
+    insideRexButton: function (node) {
+      return $(node).hasClass("rex-button-text");
       if (!this.isSafeInsert(node)) {
         if ($(node).hasClass("rex-button-text")) {
           event.preventDefault();

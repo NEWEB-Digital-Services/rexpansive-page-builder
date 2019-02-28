@@ -1206,7 +1206,7 @@
       block_type = typeof block_type !== 'undefined' ? block_type : "";
       Rexbuilder_Util_Editor.addingNewBlocks = true;
 
-      var defaultBlockWidthFixed = 6;
+      var defaultBlockWidthFixed = block_type == "text" ? 12 : 6;
       var defaultBlockHeightFixed = 4;
 
       typeof w == "undefined"

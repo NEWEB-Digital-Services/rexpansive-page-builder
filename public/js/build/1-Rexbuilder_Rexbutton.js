@@ -70,6 +70,7 @@ var Rexbuilder_Rexbutton = (function ($) {
             case "inside-block":
                 console.log("dentro blocco");
                 _endFixingButtonImported($buttonWrapper);
+                Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
                 break;
             case "inside-text":
                 console.log("dentro testo");
@@ -99,8 +100,7 @@ var Rexbuilder_Rexbutton = (function ($) {
     }
     
     var _endFixingButtonImported = function($buttonWrapper){
-        $buttonWrapper.wrap("<p></p>");
-        $buttonWrapper.parent().addClass("rex-buttons-paragraph");
+        $buttonWrapper.wrap("<p class=\"rex-buttons-paragraph\"></p>");
         var buttonID = $buttonWrapper.attr("data-rex-button-id");
         var flagButtonFound = false;
         $buttonWrapper.attr("data-rex-button-number", 1);
@@ -285,26 +285,6 @@ var Rexbuilder_Rexbutton = (function ($) {
 
     var _getActiveStyleSheet = function () {
         return styleSheet;
-    }
-
-    var _linkHoverListeners = function ($button) {
-        $button.hover(function () {
-            $button.find(".rex-edit-button-tools").addClass("rex-show-buttons-tools");
-        }, function () {
-            $button.find(".rex-edit-button-tools").removeClass("rex-show-buttons-tools");
-        });
-    }
-
-    var _addToolsButton = function () {
-        Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper").each(function (i, button) {
-            var $button = $(button);
-            if ($button.find(".rex-edit-button-tools").length == 0) {
-                var $spanEl = $(document.createElement("span"));
-                $spanEl.addClass("rex-edit-button-tools");
-                $button.prepend($spanEl);
-            }
-            _linkHoverListeners($button);
-        });
     }
 
     var _addButtonStyle = function ($buttonWrapper) {
@@ -596,15 +576,6 @@ var Rexbuilder_Rexbutton = (function ($) {
     }
 
     var _linkDocumentListeners = function () {
-        Rexbuilder_Util.$document.on("click", ".rex-edit-button-tools", function (e) {
-            var $buttonWrapper = $(this).parents(".rex-button-wrapper");
-            var data = {
-                eventName: "rexlive:openRexButtonEditor",
-                buttonData: _generateButtonData($buttonWrapper)
-            };
-            $buttonWrapper.parents(".text-wrap").blur();
-            Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-        });
 
         Rexbuilder_Util.$document.on("rexlive:completeImportButton", function(e){
             var data = e.settings;
@@ -657,7 +628,7 @@ var Rexbuilder_Rexbutton = (function ($) {
         _fixCustomStyleElement();
 
         _updateButtonListInPage();
-        _addToolsButton();
+
         _linkDocumentListeners();
         //$("#secondary").remove();
     };
@@ -676,6 +647,7 @@ var Rexbuilder_Rexbutton = (function ($) {
         updateButtonBackgroundRule: _updateButtonBackgroundRule,
         updateButtonBackgroundHoverRule: _updateButtonBackgroundHoverRule,
 
-        getDataFromButtonDom: _getDataFromButtonDom
+        getDataFromButtonDom: _getDataFromButtonDom,
+        generateButtonData: _generateButtonData,
     };
 })(jQuery);

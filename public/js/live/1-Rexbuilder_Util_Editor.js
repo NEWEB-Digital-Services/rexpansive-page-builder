@@ -8,6 +8,14 @@ var Rexbuilder_Util_Editor = (function($) {
   var undoStackArray;
   var redoStackArray;
 
+  /**
+   * @param {jQuery} $textWrap Text-wrap whose container block height has to be update
+   */
+  var _updateBlockContainerHeight = function($textWrap){
+    var galleryInstance = Rexbuilder_Util.getGalleryInstance($textWrap.parents(".rexpansive_section").eq(0));
+    galleryInstance.updateElementHeight($textWrap.parents(".grid-stack-item"));
+  }
+
   var setEndOfContenteditable = function(contentEditableElement) {
     var range, selection;
     if (document.createRange) {
@@ -1629,6 +1637,7 @@ var Rexbuilder_Util_Editor = (function($) {
     getPrefixedValues: _getPrefixedValues,
     synchGradient: _synchGradient,
     addSpectrumCustomSaveButton: _addSpectrumCustomSaveButton,
-    addSpectrumCustomCloseButton: _addSpectrumCustomCloseButton
+    addSpectrumCustomCloseButton: _addSpectrumCustomCloseButton,
+    updateBlockContainerHeight: _updateBlockContainerHeight
   };
 })(jQuery);

@@ -6772,8 +6772,8 @@ MediumEditor.extensions = {};
         }
 
         if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.ENTER)) {
-            if (this.options.extensions['rexbutton-input'].updateEnterFixState(node)) {
-                event.preventDefault();
+            if (this.options.extensions['rexbutton-input'].insideRexButton(node)) {
+//                event.preventDefault();
                 return;
             }
         }

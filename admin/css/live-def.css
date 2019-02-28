@@ -5118,11 +5118,8 @@ input.me-insert-embed__value[type=text] {
   -webkit-box-shadow: 1px 0 2px rgba(255, 255, 255, 0.4), -1px 0 2px rgba(255, 255, 255, 0.4);
           box-shadow: 1px 0 2px rgba(255, 255, 255, 0.4), -1px 0 2px rgba(255, 255, 255, 0.4); }
 
-.rex-edit-button-tools.rex-show-buttons-tools {
+.rexbutton-tools {
   position: absolute;
-  width: 20px;
-  height: 20px;
-  background-color: green;
   z-index: 10;
   cursor: pointer; }
 
