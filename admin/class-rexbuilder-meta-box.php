@@ -100,7 +100,17 @@ class Rexbuilder_Meta_Box {
       switch( $field['type']) {
         case 'rexbuilder_header':
           do_action( 'rexpansive_builder_before_rexbuilder_header', $post->ID );
-    ?>
+          break;
+        case 'rexpansive_plugin':
+        // I memorize the ID value of the current post/page.
+        $post_id = $post->ID;
+        $save_from_back = get_post_meta( $post_id, '_save_from_backend', true );
+        // I memorize if the post has just been created or is old.
+        $control_page_act_status = get_current_screen();
+        $print_page_act_status = $control_page_act_status->action;
+        // Check if the post was created with the old editor and if it is a newly created post.
+        if( null == $save_from_back && $print_page_act_status != "add" ) {
+          /* CLASSIC EDITOR ACTIVE and WORDPRESS VERSION 5- */?>
     <tr id="rexbuilder-header">
         <td class="row valign-wrapper">
           <div class="col s4">
@@ -117,10 +127,6 @@ class Rexbuilder_Meta_Box {
           <div class="col s4"></div>
         </td>
       </tr>
-    <?php
-          break;
-        case 'rexpansive_plugin':
-    ?>
       <tr>
         <input type="hidden" 
           name="<?php echo $field['id']; ?>" 
@@ -607,7 +613,7 @@ class Rexbuilder_Meta_Box {
                                                 endif;
                                               ?>
                                             </div>
-                                      <?php
+                                            <?php
                                             break;
                                           case 'default':
                                             break;
@@ -736,15 +742,10 @@ class Rexbuilder_Meta_Box {
       </div>
     </div>
   </div>
-</div>
-          
-          <?php
-            endif;
-            
-          }
-          ?>
+</div>         
+          <?php endif; } ?>
         </td>
-      </tr>
+      </tr>  
       <tr>
         <td colspan="" rowspan="" headers="">
           <div class="builder-add-row-wrap">
@@ -754,8 +755,7 @@ class Rexbuilder_Meta_Box {
           </div>
         </td>
       </tr>
-
-    <?php
+        <?php } else { /* GUTTENBERG EDITOR ACTIVE and WORDPRESS VERSION 5+ */ } 
         break;
       case 'hidden_field':
       ?>

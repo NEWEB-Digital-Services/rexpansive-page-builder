@@ -336,6 +336,8 @@ var Rexbuilder_Util_Editor = (function($) {
     Rexbuilder_Util_Editor.editingElement = false;
     Rexbuilder_Util_Editor.editedElement = null;
     Rexbuilder_Util_Editor.editedTextWrap = null;
+
+    console.log("passed || endEditingElement()");
   };
 
   var startEditingElement = function() {
@@ -929,8 +931,9 @@ var Rexbuilder_Util_Editor = (function($) {
     if( null !== $exclude ) {
       $tempTargets.not($exclude);
     }
+    //console.log($tempTargets);
+
     $tempTargets.addClass("rexpansive-lock-section--light");
-    console.log("_lockRowsLight()");
   }
 
   /**
@@ -940,10 +943,12 @@ var Rexbuilder_Util_Editor = (function($) {
    */
 
   var _releaseRowsLight = function() {
+
+    //console.log(Rexbuilder_Util.$rexContainer);
+
     Rexbuilder_Util.$rexContainer.children(".rexpansive_section").removeClass("rexpansive-lock-section--light").removeClass("rexpansive-lock-section--overlay");
     Rexbuilder_Util.$rexContainer.find(".grid-stack-item--drag-to-row").removeClass("grid-stack-item--drag-to-row");
     Rexbuilder_Util.$rexContainer.find(".drag-to-section-simulator").remove();
-    console.log("_relaseRowsLight()");
   }
 
   /**
@@ -1411,16 +1416,20 @@ var Rexbuilder_Util_Editor = (function($) {
    * Add events to control the drag and drop of blocks between the rows
    * @since 2.0.0
    */
-  var addDnDEvents = function() {
-    // /** */
-    // Rexbuilder_Util.$rexContainer.on("dragenter", function(e) {
-    //   e.stopPropagation();
-    // });
 
-    // Rexbuilder_Util.$rexContainer.on("dragover", function(e) {
-    //   e.preventDefault();
-    //   e.stopPropagation();
-    // });
+  var addDnDEvents = function() {
+    
+    /** */
+    Rexbuilder_Util.$rexContainer.on("dragenter", function(e) {
+      e.stopPropagation();
+      //console.log("passed - $rexContainer - .on(dragenter)");
+    });
+
+    Rexbuilder_Util.$rexContainer.on("dragover", function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      //console.log("passed - $rexContainer - .on(dragover)");
+    });
 
     /**
      * Listen on dropping of a block inside a section
@@ -1429,28 +1438,28 @@ var Rexbuilder_Util_Editor = (function($) {
      */
 
     Rexbuilder_Util.$rexContainer.on("drop", function(e) {
-      console.log("enter in DROP"),
+      console.log("drop");
       e.preventDefault();
       e.stopPropagation();
       var ev;
       if (e.isTrigger) {
         ev = triggerEvent.originalEvent;
-        console.log("line:1451 ev = triggerEvent.originalEvent;");
+        console.log("drop- ev = isTrigger");
       } else {
         ev = e.originalEvent;
-        console.log("line:1454 ev = e.originalEvent");
+        console.log("drop- ev = originalEvent");
       }
       var blockData = ev.dataTransfer.getData("text/plain");
       // var blockDataElement = Rexbuilder_Dom_Util.htmlToElement(blockData);
       try {
         blockData = undefined !== typeof blockData ? JSON.parse(blockData) : null;
-        console.log(":1460 blockData = undefined !== typeoff blockData ? ...");
+        console.log("drop- blockData !== undefined !== typeoff blockData ? ...");
       } catch(e) {
         blockData = null;
-        console.log("line:1463 blockData = null");
+        console.log("drop- blockData = null");
       }
 
-      if( blockData ) {
+      if(blockData) {
         var target = document.elementFromPoint(e.clientX, e.clientY);
         var $targetSection = $(target);
         var $originalElement;
@@ -1472,12 +1481,13 @@ var Rexbuilder_Util_Editor = (function($) {
             .find('div [data-rexbuilder-block-id="' + blockData.rexID + '"]');
         }
 
-        $originalSection = $originalElement.parents(".rexpansive_section");
-
+        $originalSection = $originalElement.parents(".grid-stack-row");
+        $targetSection = $targetSection.parents('.rexpansive_section').find('.grid-stack-row');
         // var $targetSection = $(target).parents('.rexpansive_section').find('.grid-stack-row');
+
         if( $targetSection.length > 0 && !$targetSection.is($originalSection) ) {
-          var $targetGallery = $targetSection.find(".grid-stack-row");
-          Rexbuilder_CreateBlocks.moveBlockToOtherSection( $originalElement, $targetGallery );    //FUNZIONE CHE DOVREBBE INSERIRE
+
+          Rexbuilder_CreateBlocks.moveBlockToOtherSection( $originalElement, $targetSection );
           $originalElement.find(".builder-delete-block").first().trigger("click");
         }
       }

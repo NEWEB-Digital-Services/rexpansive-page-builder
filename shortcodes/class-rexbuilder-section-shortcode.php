@@ -262,7 +262,7 @@ class Rexbuilder_Section
             echo '></div>';
             
             if (isset($editor) && $editor == "true") {
-                include REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-section-tools.php";
+               include REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-section-tools.php";
             }
 
             echo $bg_video_markup;
