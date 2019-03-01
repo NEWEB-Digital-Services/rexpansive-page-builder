@@ -85,10 +85,9 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
         var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
         if (addBlockButton) {
-            blockWidth = Math.ceil(data.blockDimensions.w / galleryInstance.properties.singleWidth);
-            if(galleryInstance.settings.galleryLayout == "fixed"){
-                blockHeight = Math.ceil(data.blockDimensions.h / galleryInstance.properties.singleHeight);
-            }
+            blockWidth = 4;
+            blockHeight = 100;
+            blockHeight = Math.ceil(blockHeight / galleryInstance.properties.singleHeight);
         }
 
         var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout, blockWidth, blockHeight, "text");

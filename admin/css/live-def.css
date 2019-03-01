@@ -4949,6 +4949,9 @@ input.me-insert-embed__value[type=text] {
     .rex-modal__outside-footer .tool-button--save:hover .l-svg-icons > svg {
       fill: #00ACFF; }
 
+.medium-editor-toolbar.medium-toolbar-hover-rexbutton .hide-tool-rexbutton {
+  display: none; }
+
 .rexlive-loader {
   position: absolute;
   top: 0;

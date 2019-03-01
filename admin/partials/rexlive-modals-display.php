@@ -2048,7 +2048,7 @@ defined('ABSPATH') or exit;
                     <div id="rex-button-preview-background"></div>
                 </div>
                 <div id="rex-button-height-wrap">
-                    <div class="">>.<</div>
+                    <div class="">heightIcon</div>
                     <input type="text" id="rex-button-height" name="rex-button-height"/>
                     <div class="label-px">px</div>
                 </div>
@@ -2085,14 +2085,22 @@ defined('ABSPATH') or exit;
                     <input type="text" id="rex-button-border-radius" name="rex-button-border-radius"/>
                 </div>
                 <div id="rex-button-margins-wrap">
+                    <div id="rex-button-preview-empty"></div>
                     <div id="rex-button-margin-top-wrap">
                         <div class="border-icon">up</div>
                         <input type="text" id="rex-button-margin-top-radius" name="rex-button-margin-top-radius"/>
                     </div>
-                    <div id="rex-button-preview-empty"></div>
+                    <div id="rex-button-margin-right-wrap">
+                        <div class="border-icon">right</div>
+                        <input type="text" id="rex-button-margin-right-radius" name="rex-button-margin-right-radius"/>
+                    </div>
                     <div id="rex-button-margin-bottom-wrap">
                         <div class="border-icon">down</div>
                         <input type="text" id="rex-button-margin-bottom-radius" name="rex-button-margin-bottom-radius"/>
+                    </div>
+                    <div id="rex-button-margin-left-wrap">
+                        <div class="border-icon">left</div>
+                        <input type="text" id="rex-button-margin-left-radius" name="rex-button-margin-left-radius"/>
                     </div>
                 </div>
             </div>

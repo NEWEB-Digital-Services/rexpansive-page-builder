@@ -71,6 +71,8 @@ var Button_Import_Modal = (function ($) {
         containerRule += "height: " + buttonProperties.button_height + ";";
         containerRule += "margin-top: " + buttonProperties.margin_top + ";";
         containerRule += "margin-bottom: " + buttonProperties.margin_bottom + ";";
+        containerRule += "margin-left: " + buttonProperties.margin_left + ";";
+        containerRule += "margin-right: " + buttonProperties.margin_right + ";";
         _addButtonContainerRule(buttonID, containerRule);
 
         var backgroundRule = "";
@@ -154,6 +156,22 @@ var Button_Import_Modal = (function ($) {
     /////////////////////////////////////////////////////////////////////////////////////////
 
     var _linkDraggable = function () {
+
+        var $rexContainerInstance;
+
+        /**
+         * @param {String} class_name class name to add
+         */
+        var addContainerClass = function(class_name){
+            $rexContainerInstance.addClass(class_name);
+        }
+        /**
+         * @param {String} class_name class name to remove
+         */
+        var removeContainerClass = function(class_name){
+            $rexContainerInstance.removeClass(class_name);
+        }
+
         var currentElement,
             currentElementChangeFlag,
             elementRectangle,
@@ -168,8 +186,11 @@ var Button_Import_Modal = (function ($) {
             width: 0,
             height: 0
         }
-
+        
         var breakPointNumber = { x: 10, y: 10 };
+        var fixedBreakPoints = false;
+        var customBreakPoints = { x: 50, y: 50 };
+
         /*
             Funzione che esegue lo scrolling nell'iframe
         */
@@ -195,12 +216,13 @@ var Button_Import_Modal = (function ($) {
             dragoverqueue_processtimer = setInterval(function () {
                 DragDropFunctions.ProcessDragOverQueue();
             }, 100);
-
+            
             var insertingHTML = $(this).html();
             var $buttonBackground = $(this).find(".rex-button-background").eq(0);
             buttonDimensions.width = $buttonBackground.outerWidth();
             buttonDimensions.height = $buttonBackground.outerHeight();
             event.originalEvent.dataTransfer.setData("text/plain", insertingHTML);
+            addContainerClass("rex-dragging-button");
         });
 
         // definisce quando bisogna scrollare in alto o in basso
@@ -225,6 +247,7 @@ var Button_Import_Modal = (function ($) {
             clearInterval(dragoverqueue_processtimer);
             DragDropFunctions.removePlaceholder();
             DragDropFunctions.ClearContainerContext();
+            removeContainerClass("rex-dragging-button");
         });
 
         Rexbuilder_Util_Admin_Editor.$frameBuilder.load(function () {
@@ -232,6 +255,7 @@ var Button_Import_Modal = (function ($) {
             var $rexContainer = $(clientFrameWindow.document)
                 .find(".rex-container")
                 .eq(0);
+            $rexContainerInstance = $rexContainer;
             var mousePosition = {};
             var mousePositionToIFrame = {};
             $rexContainer.on('dragenter', ".grid-stack-row", function (event) {
@@ -325,8 +349,8 @@ var Button_Import_Modal = (function ($) {
                 // se devo entrare dentro l'elemento
                 if ($element.hasClass("rex-button-wrapper") || $element.parents(".rex-button-wrapper").length != 0) {
                     $element = $element.hasClass("rex-button-wrapper") ? $element : $element.parents(".rex-button-wrapper").eq(0);
-                    var oldBreaks = jQuery.extend(true, {}, breakPointNumber);
-                    var elementFixed = true;
+                    customBreakPoints = jQuery.extend(true, {}, breakPointNumber);
+                    fixedBreakPoints = true;
                     breakPointNumber.x = 50;
                     breakPointNumber.y = 50;
                 }
@@ -378,10 +402,23 @@ var Button_Import_Modal = (function ($) {
                     }
                     this.DecideBeforeAfter(validElement, mousePercents, mousePos);
                 }
-                if (typeof elementFixed != "undefined" && elementFixed) {
-                    breakPointNumber.x = oldBreaks.x;
-                    breakPointNumber.y = oldBreaks.y;
-                    elementFixed = false;
+                if (fixedBreakPoints) {
+                    breakPointNumber.x = customBreakPoints.x;
+                    breakPointNumber.y = customBreakPoints.y;
+                    fixedBreakPoints = false;
+                }
+
+                /**
+                 * Checks if current element, where placeholder is, is a valid element. If not checks if has a grid-stack-item as parent. If has moves placeholder in right position
+                 */
+                if (!$element.hasClass("rex-buttons-paragraph") && !$element.hasClass("text-wrap")) {
+                    var $gridItem = $element.parents(".grid-stack-item");
+                    if ($gridItem.length != 0) {
+                        var $textWrap = $gridItem.find(".text-wrap").eq(0);
+                        this.removePlaceholder();
+                        var placeholder = this.getPlaceHolder();
+                        $textWrap.append(placeholder);
+                    }
                 }
             },
             DecideBeforeAfter: function ($targetElement, mousePercents, mousePos) {

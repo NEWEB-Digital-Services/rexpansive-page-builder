@@ -1078,6 +1078,9 @@ var Rex_Save_Listeners = (function($) {
           content = "";
         } else {
           content = $savingBlock.html().trim();
+          $savingBlock.find(".rex-button-data").each(function (i, buttonData) {
+            $(buttonData).removeAttr("data-synchronize");
+          });
         }
         // console.log(content);
       } else {

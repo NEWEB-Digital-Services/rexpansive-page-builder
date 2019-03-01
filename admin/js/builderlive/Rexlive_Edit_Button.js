@@ -101,19 +101,17 @@ var Button_Edit_Modal = (function ($) {
     var _linkDocumentPanelChooseListeners = function () {
         rex_edit_model_button_panel_properties.$button.on("click", function (e) {
             var optionSelected = $(this).parents(".rex-edit-button-model-option").attr("data-rex-option");
-            console.log(optionSelected);
             switch (optionSelected) {
                 case "remove":
-                    console.log("STACCAH STACCAH");
                     _separateButton();
                     break;
                 case "edit":
                     editingModelButton = true;
-                    console.log("MANTIENIH");
                     button_editor_properties.$add_model_button.addClass("editing-model");
                     Rexlive_Modals_Utils.openModal(
                         button_editor_properties.$self.parent(".rex-modal-wrap")
                     );
+                    _staySynchronized();
                     break;
                 default:
                     break;
@@ -145,10 +143,12 @@ var Button_Edit_Modal = (function ($) {
     var reverseData;
     var resetData;
     var editingModelButton;
+    var alreadyChooseToSynchronize;
 
     var _openButtonEditorModal = function (data) {
+        alreadyChooseToSynchronize = false;
         _updateButtonEditorModal(data);
-        if (!editingModelButton) {
+        if (!editingModelButton || alreadyChooseToSynchronize) {
             Rexlive_Modals_Utils.openModal(
                 button_editor_properties.$self.parent(".rex-modal-wrap")
             );
@@ -183,6 +183,8 @@ var Button_Edit_Modal = (function ($) {
             border_radius: "",
             margin_top: "",
             margin_bottom: "",
+            margin_right: "",
+            margin_left: "",
             link_taget: "",
             link_type: "",
             buttonTarget: {
@@ -217,9 +219,14 @@ var Button_Edit_Modal = (function ($) {
                     buttonData.border_radius = rexButtonsJSON[i].rules.element.border_radius;
                     buttonData.margin_top = rexButtonsJSON[i].rules.element.margin_top;
                     buttonData.margin_bottom = rexButtonsJSON[i].rules.element.margin_bottom;
+                    buttonData.margin_right = rexButtonsJSON[i].rules.element.margin_right;
+                    buttonData.margin_left = rexButtonsJSON[i].rules.element.margin_left;
                     buttonData.buttonTarget.button_name = rexButtonsJSON[i].buttonName;
                     break;
                 }
+            }
+            if (typeof data.buttonInfo.synchronize != "undefined") {
+                alreadyChooseToSynchronize = data.buttonInfo.synchronize.toString() == "true";
             }
         }
         reverseData = jQuery.extend(true, {}, buttonData);
@@ -233,6 +240,8 @@ var Button_Edit_Modal = (function ($) {
         button_editor_properties.$button_border_width.val(buttonData.border_width.replace('px', ''));
         button_editor_properties.$button_border_radius.val(buttonData.border_radius.replace('px', ''));
         button_editor_properties.$button_margin_top.val(buttonData.margin_top.replace('px', ''));
+        button_editor_properties.$button_margin_right.val(buttonData.margin_right.replace('px', ''));
+        button_editor_properties.$button_margin_left.val(buttonData.margin_left.replace('px', ''));
         button_editor_properties.$button_margin_bottom.val(buttonData.margin_bottom.replace('px', ''));
         button_editor_properties.$button_link_target.val(buttonData.link_taget);
         button_editor_properties.$button_link_type.val(buttonData.link_type);
@@ -269,6 +278,8 @@ var Button_Edit_Modal = (function ($) {
         buttonData.border_radius = button_editor_properties.$button_border_radius.val() + "px";
         buttonData.margin_top = button_editor_properties.$button_margin_top.val() + "px";
         buttonData.margin_bottom = button_editor_properties.$button_margin_bottom.val() + "px";
+        buttonData.margin_right = button_editor_properties.$button_margin_right.val() + "px";
+        buttonData.margin_left = button_editor_properties.$button_margin_left.val() + "px";
 
         buttonData.buttonTarget.button_name = button_editor_properties.$button_name.val();
         buttonData.text = button_editor_properties.$button_label_text.val();
@@ -288,6 +299,8 @@ var Button_Edit_Modal = (function ($) {
             resetData.border_radius == buttonData.border_radius &&
             resetData.margin_top == buttonData.margin_top &&
             resetData.margin_bottom == buttonData.margin_bottom &&
+            resetData.margin_right == buttonData.margin_right &&
+            resetData.margin_left == buttonData.margin_left &&
             resetData.buttonTarget.button_name == buttonData.buttonTarget.button_name &&
             //colors
             resetData.hover_color == buttonData.hover_color &&
@@ -396,6 +409,28 @@ var Button_Edit_Modal = (function ($) {
         };
         _linkKeyDownListenerInputNumber(button_editor_properties.$button_margin_bottom, false);
         _linkKeyUpListenerInputNumber(button_editor_properties.$button_margin_bottom, _updateMarginBottom, false);
+
+        // MARGIN LEFT
+        var _updateMarginLeft = function (newMarginLeft) {
+            _updateButtonLive({
+                type: "container",
+                name: "margin-left",
+                value: newMarginLeft + "px"
+            });
+        };
+        _linkKeyDownListenerInputNumber(button_editor_properties.$button_margin_left, false);
+        _linkKeyUpListenerInputNumber(button_editor_properties.$button_margin_left, _updateMarginLeft, false);
+
+        // MARGIN RIGHT
+        var _updateMarginRight = function (newMarginRight) {
+            _updateButtonLive({
+                type: "container",
+                name: "margin-right",
+                value: newMarginRight + "px"
+            });
+        };
+        _linkKeyDownListenerInputNumber(button_editor_properties.$button_margin_right, false);
+        _linkKeyUpListenerInputNumber(button_editor_properties.$button_margin_right, _updateMarginRight, false);
     }
 
     var _linkDropDownMenus = function () {
@@ -750,6 +785,8 @@ var Button_Edit_Modal = (function ($) {
                     border_radius: buttonData.border_radius,
                     margin_top: buttonData.margin_top,
                     margin_bottom: buttonData.margin_bottom,
+                    margin_right: buttonData.margin_right,
+                    margin_left: buttonData.margin_left,
                 },
                 hover: {
                     background_color: buttonData.hover_color,
@@ -770,6 +807,8 @@ var Button_Edit_Modal = (function ($) {
         buttonCSS += "height: " + buttonData.button_height + ";";
         buttonCSS += "margin-top: " + buttonData.margin_top + ";";
         buttonCSS += "margin-bottom: " + buttonData.margin_bottom + ";";
+        buttonCSS += "margin-left: " + buttonData.margin_left + ";";
+        buttonCSS += "margin-right: " + buttonData.margin_right + ";";
         buttonCSS += "}";
 
         buttonCSS += ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"]";
@@ -806,6 +845,8 @@ var Button_Edit_Modal = (function ($) {
             border_radius: buttonData.border_radius,
             margin_top: buttonData.margin_top,
             margin_bottom: buttonData.margin_bottom,
+            margin_right: buttonData.margin_right,
+            margin_left: buttonData.margin_left,
             link_taget: "#",
             link_type: "_blank",
             button_name: buttonData.buttonTarget.button_name,
@@ -819,6 +860,16 @@ var Button_Edit_Modal = (function ($) {
     // Functions that tells to iframe what to do
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    var _staySynchronized = function () {
+        var buttonDataToIframe = {
+            eventName: "rexlive:lock_synchronize_on_button",
+            data_to_send: {
+                buttonTarget: buttonData.buttonTarget
+            }
+        };
+        Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(buttonDataToIframe);
+    }
+
     var _applyData = function () {
         var buttonDataToIframe = {
             eventName: "rexlive:update_button_page",
@@ -828,7 +879,6 @@ var Button_Edit_Modal = (function ($) {
             }
         };
         reverseData = jQuery.extend(true, {}, buttonDataToIframe.data_to_send.actionButtonData);
-        console.log(buttonDataToIframe);
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(buttonDataToIframe);
     };
 
@@ -842,7 +892,6 @@ var Button_Edit_Modal = (function ($) {
                 newValue: data.value
             }
         };
-        console.log(buttonDataToIframe);
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(buttonDataToIframe);
     }
 
@@ -942,7 +991,9 @@ var Button_Edit_Modal = (function ($) {
             $button_border_radius: $container.find("#rex-button-border-radius"),
 
             $button_margin_top: $container.find("#rex-button-margin-top-radius"),
+            $button_margin_right: $container.find("#rex-button-margin-right-radius"),
             $button_margin_bottom: $container.find("#rex-button-margin-bottom-radius"),
+            $button_margin_left: $container.find("#rex-button-margin-left-radius"),
 
             $button_link_target: $container.find("#rex-button-link-target"),
             $button_link_type: $container.find("#rex-button-link-type"),
@@ -966,6 +1017,8 @@ var Button_Edit_Modal = (function ($) {
             border_radius: "",
             margin_top: "",
             margin_bottom: "",
+            margin_left: "",
+            margin_right: "",
             link_taget: "",
             link_type: "",
             buttonTarget: {

@@ -14,6 +14,13 @@ var Rexbuilder_Util_Editor = (function($) {
   var _updateBlockContainerHeight = function($textWrap){
     var galleryInstance = Rexbuilder_Util.getGalleryInstance($textWrap.parents(".rexpansive_section").eq(0));
     galleryInstance.updateElementHeight($textWrap.parents(".grid-stack-item"));
+    // updating insertButton position
+    console.log("updating height");
+    var insertButton = TextEditor.getEditorInstance().getExtensionByName('insert-media');
+    if (insertButton) {
+      var $wrapper = $textWrap.parents(".grid-item-content-wrap");
+      insertButton.placeMediaBtn($wrapper);
+    }
   }
 
   var setEndOfContenteditable = function(contentEditableElement) {
@@ -581,6 +588,10 @@ var Rexbuilder_Util_Editor = (function($) {
 
     Rexbuilder_Util.$document.on("rexlive:separate_rex_button", function (e) {
       Rexbuilder_Rexbutton.separateRexButton(e.settings.data_to_send);
+    });
+
+    Rexbuilder_Util.$document.on("rexlive:lock_synchronize_on_button", function (e) {
+      Rexbuilder_Rexbutton.lockSynchronize(e.settings.data_to_send);
     });
   };
 

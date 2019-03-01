@@ -3063,6 +3063,8 @@
         sliderHeight,
         increasedHeight
       );
+      console.log(newH);
+
       if (
         this.properties.oneColumModeActive &&
         !Rexbuilder_Util.windowIsResizing

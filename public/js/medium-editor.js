@@ -3716,6 +3716,9 @@ MediumEditor.extensions = {};
         init: function () {
             MediumEditor.extensions.form.prototype.init.apply(this, arguments);
 
+            //Adding class to hide this tool if toolbar is showed over a rexbutton
+            this.button.classList.add("hide-tool-rexbutton");
+
             this.subscribe('editableKeydown', this.handleKeydown.bind(this));
         },
 
