@@ -5379,7 +5379,7 @@ input.me-insert-embed__value[type=text] {
     -webkit-transition: opacity 0.3s;
     -o-transition: opacity 0.3s;
     transition: opacity 0.3s;
-    background-color: rgba(0, 0, 0, 0.7); }
+    background-color: black; }
   .rexbuilder-live-content--editing .focusedRow .grid-stack-item .ui-focused-element-highlight:before {
     opacity: 0;
     content: '';
