@@ -66,11 +66,19 @@ var Rexlive_Modals = (function ($) {
         // change active layout
         LockedOptionMask.init();
 
-        // change active layout
+        // lateral menu
+        Model_Lateral_Menu.init();
+
+        // Model import tab
         Model_Import_Modal.init();
 
         // Inline SVG Modal
         Rexlive_Inline_SVG.init();
+        // Button import tab
+        Button_Import_Modal.init();
+
+        //editor button
+        Button_Edit_Modal.init();
     }
 
     return {

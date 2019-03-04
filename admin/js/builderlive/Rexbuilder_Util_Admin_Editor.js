@@ -11,7 +11,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   var $saveBtn;
   var $undoBtn;
   var $redoBtn;
-
+  
   var $highlightSectionId;
   var $highlightModelId;
   var $highlightModelEditing;
@@ -20,7 +20,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
   var $highlightRowSetLayout;
   var $highlightRowSetLayoutCheckbox;
   var $highlightRowSetCollapse;
-
+  
   var $highlightRowSetBackgroundImg;
   var $highlightRowSetBackgroundColor;
   var $highlightRowSetOverlay;
@@ -38,10 +38,48 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
 
   var $frameContainer;
   var frameBuilderWindow;
+  var $frameBuilderWindow;
 
   var updatedLayoutData;
 
   var input_selector;
+
+  /**
+   * Adds a class to Rexcontainer in the iframe
+   * @param {string} class_name class name to add to rexContainer in the iframe
+   */
+  var _addClassToLiveFrameRexContainer = function(class_name){
+    if(!Rexbuilder_Util_Admin_Editor.$liveFrameRexContainer.hasClass(class_name)){
+      Rexbuilder_Util_Admin_Editor.$liveFrameRexContainer.addClass(class_name);
+    }
+  }
+  /**
+   * Removes a class to Rexcontainer in the iframe
+   * @param {string} class_name class name to remove to rexContainer in the iframe
+   */
+  var _removeClassToLiveFrameRexContainer = function(class_name){
+    if(Rexbuilder_Util_Admin_Editor.$liveFrameRexContainer.hasClass(class_name)){
+      Rexbuilder_Util_Admin_Editor.$liveFrameRexContainer.removeClass(class_name);
+    }
+  }
+
+  var _setScroll = function(stop){
+    this.stopScrolling = stop;
+  }
+  
+  var scrollY;
+
+  var _scrollFrame = function (step) {
+    scrollY = $frameBuilderWindow.scrollTop();
+    $frameBuilderWindow.scrollTop(
+      scrollY + step
+    );
+    if (!Rexbuilder_Util_Admin_Editor.stopScrolling) {
+      setTimeout(function () {
+        _scrollFrame(step);
+      }, 20);
+    }
+  };
 
   var _findLayoutType = function(name) {
     if (name == "default" || name == "mobile" || name == "tablet") {
@@ -239,6 +277,10 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         Block_Video_Background_Modal.openBlockVideoBackgroundModal( event.data.activeBlockData, event.data.mousePosition );
       }
 
+      if (event.data.eventName == "rexlive:openRexButtonEditor") {
+        Button_Edit_Modal.openButtonEditorModal(event.data.buttonData);
+      }
+      
       if (event.data.eventName == "rexlive:editRemoveModal") {
         Model_Edit_Modal.openModal(event.data.modelData);
       }
@@ -424,7 +466,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     });
 
     Rexlive_Base_Settings.$document.on("click", ".btn-models", function(e) {
-      Model_Import_Modal.openModal();
+      Model_Lateral_Menu.openModal();
     });
 
     /**
@@ -1598,6 +1640,16 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     });
   };
 
+  var _forceTriggerLoad = function () {
+    var isIE = /*@cc_on!@*/false || !!document.documentMode;
+    if(isIE){
+      if(!this.triggeredLoad){
+        this.triggeredLoad = true;
+        this.$frameBuilder.trigger("load");
+      }
+    }
+  }
+
   // init the utilities
   var init = function() {
     this.$body = $('body');
@@ -1605,6 +1657,12 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     $frameContainer = this.$rexpansiveContainer.find( ".rexpansive-live-frame-container" );
     this.$frameBuilder = this.$rexpansiveContainer.find( "#rexpansive-live-frame" );
     frameBuilderWindow = this.$frameBuilder[0].contentWindow;
+    $frameBuilderWindow = $(frameBuilderWindow);
+
+    this.triggeredLoad = false;
+    this.$liveFrameRexContainer = {};
+    this.dragImportType = "";
+    this.stopScrolling = true;
 
     this.transitionEvent = _whichTransitionEvent();
     this.animationEvent = _whichAnimationEvent();
@@ -1668,6 +1726,10 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         }
       }
     );
+    
+    this.$frameBuilder.load(function () {
+      Rexbuilder_Util_Admin_Editor.$liveFrameRexContainer = $(Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow.document).find(".rex-container").eq(0);
+    });
 
     _initToolbar();
     _addDocumentListeners();
@@ -1704,6 +1766,11 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     openRowColorPaletteModal: _openRowColorPaletteModal,
     openRowOverlayPaletteModal: _openRowOverlayPaletteModal,
     addSpectrumCustomSaveButton: _addSpectrumCustomSaveButton,
-    addSpectrumCustomCloseButton: _addSpectrumCustomCloseButton
+    addSpectrumCustomCloseButton: _addSpectrumCustomCloseButton,
+    scrollFrame: _scrollFrame,
+    setScroll: _setScroll,
+    addClassToLiveFrameRexContainer: _addClassToLiveFrameRexContainer,
+    removeClassToLiveFrameRexContainer: _removeClassToLiveFrameRexContainer,
+    forceTriggerLoad: _forceTriggerLoad
   };
 })(jQuery);

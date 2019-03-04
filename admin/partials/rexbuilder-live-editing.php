@@ -47,9 +47,34 @@ if(get_post_meta($post_id, '_save_from_backend', true) == "false"){
 	$backendEditing = "false";
 }
 
+$defaultButtonsStyles = array();
+$buttonsStylesJSON = get_option('_rex_buttons_styles', $defaultButtonsStyles);
+$buttonsStylesJSON = stripslashes($buttonsStylesJSON);
+$buttonsStylesArray = json_decode($buttonsStylesJSON, true);
+
+$defaultButtonsIDs = array();
+$buttonsIDsJSON = get_option('_rex_buttons_ids', $defaultButtonsIDs);
+$buttonsIDsJSON = stripslashes($buttonsIDsJSON);
+$buttonsIDsUsed = json_decode($buttonsIDsJSON, true);
 ?>
 <?php // include_once "rexlive-debug-info.php"; ?>
 <div id="rexpansive-builder-backend-wrapper" class="top-fast-tools--hide" data-rex-edited-backend="<?php echo $backendEditing;?>">
+	<div>
+		<div id="rex-buttons-json-css" style="display: none;"><?php
+			if ($buttonsStylesArray == null) {
+                echo "[]";
+            } else {
+                echo json_encode($buttonsStylesArray);
+            }
+		?></div>
+		<div id="rex-buttons-ids-used" style="display: none;"><?php 
+		    if ($buttonsIDsUsed == null) {
+                echo "[]";
+            } else {
+                echo json_encode($buttonsIDsUsed);
+            }
+		?></div>
+	</div>
 	<div id="rexbuilder-layout-data-backend" style="display: none;">
 		<div class = "available-layouts"><?php echo json_encode($layoutsAvaiable);?></div>
 	</div>
@@ -57,7 +82,7 @@ if(get_post_meta($post_id, '_save_from_backend', true) == "false"){
 	include_once "rexlive-toolbox-fixed.php";
 	?>
 	<div class="rexpansive-live-frame-container">
-		<iframe id="rexpansive-live-frame" src="<?php echo $source; ?>" allowfullscreen="1" style="width:100%;height:100%;border: 0px;"></iframe>
+		<iframe id="rexpansive-live-frame" src="<?php echo $source; ?>" allowfullscreen="1" style="width:100%;height:100%;border: 0px;" onload="Rexbuilder_Util_Admin_Editor.forceTriggerLoad()"></iframe>
 	</div>
 </div>
 <?php

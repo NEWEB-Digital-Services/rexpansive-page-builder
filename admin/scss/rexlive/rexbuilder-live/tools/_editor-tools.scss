@@ -453,3 +453,8 @@ input.me-insert-embed__value[type=text] {
   z-index:200;
   display:block;
 }
+.medium-editor-toolbar.medium-toolbar-hover-rexbutton{
+  .hide-tool-rexbutton{
+    display: none;
+  }
+}

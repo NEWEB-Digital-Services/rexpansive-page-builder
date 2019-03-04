@@ -1100,7 +1100,7 @@ function _importCssCodeGetListPoints(cssCode) {
         listPoints.push(point);
     }
 
-    if (listPoints.length < 2)Â {
+    if (listPoints.length < 2) {
         return [];
     }
 
@@ -1139,7 +1139,7 @@ function _importCssCodeGetListPointsCS(cssCode) {
         listPoints.push(point);
     }
 
-    if (listPoints.length < 2)Â {
+    if (listPoints.length < 2) {
         return [];
     }
 

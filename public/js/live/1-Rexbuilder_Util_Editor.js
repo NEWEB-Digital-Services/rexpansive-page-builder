@@ -8,6 +8,20 @@ var Rexbuilder_Util_Editor = (function($) {
   var undoStackArray;
   var redoStackArray;
 
+  /**
+   * @param {jQuery} $textWrap Text-wrap whose container block height has to be update
+   */
+  var _updateBlockContainerHeight = function($textWrap){
+    var galleryInstance = Rexbuilder_Util.getGalleryInstance($textWrap.parents(".rexpansive_section").eq(0));
+    galleryInstance.updateElementHeight($textWrap.parents(".grid-stack-item"));
+    // updating insertButton position
+    var insertButton = TextEditor.getEditorInstance().getExtensionByName('insert-media');
+    if (insertButton) {
+      var $wrapper = $textWrap.parents(".grid-item-content-wrap");
+      insertButton.placeMediaBtn($wrapper);
+    }
+  }
+
   var setEndOfContenteditable = function(contentEditableElement) {
     var range, selection;
     if (document.createRange) {
@@ -570,6 +584,34 @@ var Rexbuilder_Util_Editor = (function($) {
     Rexbuilder_Util.$document.on("rexlive:openCreateModelModal", function(e) {
       var eventData = e.settings.data_to_send;
       $('.rexpansive_section[data-rexlive-section-id=' + eventData.sectionTarget.sectionID + ']').find('.open-model').trigger('click');
+    });
+    
+    Rexbuilder_Util.$document.on("rexlive:importButton", function (e) {
+      Rexbuilder_Rexbutton.fixImportedButton(e.settings.data_to_send);
+    });
+    
+    Rexbuilder_Util.$document.on("rexlive:updateButtonLive", function(e){
+      Rexbuilder_Rexbutton.updateButtonLive(e.settings.data_to_send);
+    });
+
+    Rexbuilder_Util.$document.on("rexlive:remove_separate_button", function (e) {
+      Rexbuilder_Rexbutton.removeSeparateButton(e.settings.data_to_send);
+    });
+
+    Rexbuilder_Util.$document.on("rexlive:separate_rex_button", function (e) {
+      Rexbuilder_Rexbutton.separateRexButton(e.settings.data_to_send);
+    });
+
+    Rexbuilder_Util.$document.on("rexlive:lock_synchronize_on_button", function (e) {
+      Rexbuilder_Rexbutton.lockSynchronize(e.settings.data_to_send);
+    });
+    
+    Rexbuilder_Util.$document.on("rexlive:drag_drop_starded", function (e) {
+      Rexbuilder_Util_Editor.dragAndDropFromParent = true;
+    });
+    
+    Rexbuilder_Util.$document.on("rexlive:drag_drop_ended", function (e) {
+      Rexbuilder_Util_Editor.dragAndDropFromParent = false;
     });
   };
 
@@ -1421,11 +1463,17 @@ var Rexbuilder_Util_Editor = (function($) {
     
     /** */
     Rexbuilder_Util.$rexContainer.on("dragenter", function(e) {
+      if (Rexbuilder_Util_Editor.dragAndDropFromParent) {
+        return;
+      }
       e.stopPropagation();
       //console.log("passed - $rexContainer - .on(dragenter)");
     });
 
     Rexbuilder_Util.$rexContainer.on("dragover", function(e) {
+      if (Rexbuilder_Util_Editor.dragAndDropFromParent) {
+        return;
+      }
       e.preventDefault();
       e.stopPropagation();
       //console.log("passed - $rexContainer - .on(dragover)");
@@ -1438,6 +1486,9 @@ var Rexbuilder_Util_Editor = (function($) {
      */
 
     Rexbuilder_Util.$rexContainer.on("drop", function(e) {
+      if (Rexbuilder_Util_Editor.dragAndDropFromParent) {
+        return;
+      }
       console.log("drop");
       e.preventDefault();
       e.stopPropagation();
@@ -1556,6 +1607,7 @@ var Rexbuilder_Util_Editor = (function($) {
 
     this.scrollbarsActive = false;
 
+    this.dragAndDropFromParent = false;
     undoStackArray = [];
     redoStackArray = [];
 
@@ -1615,6 +1667,7 @@ var Rexbuilder_Util_Editor = (function($) {
     releaseRowsLight: _releaseRowsLight,
     getGradientSafeValue: _getGradientSafeValue,
     getPrefixedValues: _getPrefixedValues,
-    synchGradient: _synchGradient
+    synchGradient: _synchGradient,
+    updateBlockContainerHeight: _updateBlockContainerHeight
   };
 })(jQuery);

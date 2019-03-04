@@ -25,7 +25,7 @@ var Rexlive_Text_Gradient = (function($) {
       colorEl: '<input id="colorpicker"/>'
     });
 
-    modal_props.gpicker.setColorPicker(handler => {
+    modal_props.gpicker.setColorPicker(function(handler) {
       var el = handler.getEl().querySelector("#colorpicker");
       var $el = $(el);
 
@@ -42,13 +42,13 @@ var Rexlive_Text_Gradient = (function($) {
           this.setAttribute("data-revert", false);
           this.setAttribute("data-color-on-show", $el.spectrum("get").toRgbString());
         },
-        change(color) {
+        change: function (color) {
           handler.setColor(color.toRgbString());
         },
-        move(color) {
+        move: function(color) {
           handler.setColor(color.toRgbString(), 0);
         },
-        hide() {
+        hide: function() {
           if("true" == this.getAttribute("data-revert")) {
             handler.setColor(this.getAttribute("data-color-on-show"), 0);
           }

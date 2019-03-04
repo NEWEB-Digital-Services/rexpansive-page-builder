@@ -1,0 +1,36 @@
+.rex-button-wrapper {
+    align-items: center;
+    display: inline-flex;
+    .rex-button-container {
+        text-decoration: none;
+        position: relative;
+        align-items: center;
+        display: inline-flex;
+    }
+    .rex-button-background {
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        display: inline-flex;
+    }
+    .rex-button-text {
+        padding: 10px;
+    }
+}
+
+.rex-dragging-button .rex-button-wrapper:after {
+    content:"";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    z-index: 123456;
+    background-color: rgba(0,0,0,0.5);
+  }
+  
+  .rex-dragging-button .rex-button-wrapper{
+    position: relative;
+  }

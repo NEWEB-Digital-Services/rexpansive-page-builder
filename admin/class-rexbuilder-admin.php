@@ -398,6 +398,9 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'Rexlive-updatevideoinline', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_UpdateVideoInline.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-LockedOption-Mask', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_LockedOption_Mask.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Model-Import', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Model_Import.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'Rexlive-Button-Import', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Button_Import.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'Rexlive-Button-Edit', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Edit_Button.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'Rexlive-Lateral-Menu', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Lateral_Menu.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-modals', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Modals.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-base-settings', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Base_Settings.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-util-admin', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Util_Admin_Editor.js', array( 'jquery' ), null, true );
@@ -1878,7 +1881,25 @@ class Rexbuilder_Admin {
 		}
 		return $content;
 	}
-
+	
+	//da rivedere con stefano
+    public function print_rex_buttons_style_backend()
+    {
+		$defaultButtonsIDs = array();
+		$buttonsIDsJSON = get_option('_rex_buttons_ids', $defaultButtonsIDs);
+		$buttonsIDsJSON = stripslashes($buttonsIDsJSON);
+		$buttonsIDsUsed = json_decode($buttonsIDsJSON, true);
+		$style = "";
+		foreach ($buttonsIDsUsed as $index => $id_button) {
+			$buttonStyle = get_option('_rex_button_'.$id_button.'_css', "");
+			$buttonStyle = stripslashes($buttonStyle);
+			$style .= $buttonStyle;
+		}
+		if($style != ''){
+			wp_add_inline_style('rexliveStyle', $style);
+		}	
+	}
+	
 	public function rex_get_model_list(){
 		$nonce = $_GET['nonce_param'];
 
@@ -2063,6 +2084,56 @@ class Rexbuilder_Admin {
 
 		wp_send_json_success( $response );
 	}		
+	
+	public function rex_update_button() {
+		$nonce = $_POST['nonce_param'];
+		
+        $response = array(
+			'error' => false,
+            'msg' => '',
+        );
+		
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+		
+		$response['error'] = false;
+		
+		$id_button = $_POST["id_button"];
+		$html_button = $_POST["html_button"];
+		$css_button = $_POST["css_button"];
+		$jsonRexButtons_buttons = $_POST["jsonRexButtons"];
+
+		update_option( '_rex_buttons_styles', $jsonRexButtons_buttons );
+		update_option( '_rex_button_'.$id_button.'_css', $css_button );
+		update_option( '_rex_button_'.$id_button.'_html', $html_button );
+		$response['idButton'] = $id_button;
+		wp_send_json_success( $response );
+	}
+	
+	public function	rex_update_buttons_ids(){
+		$nonce = $_POST['nonce_param'];
+		
+        $response = array(
+			'error' => false,
+            'msg' => '',
+        );
+		
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+		
+		$response['error'] = false;
+		$buttons_ids = $_POST["ids_used"];
+		update_option( '_rex_buttons_ids', $buttons_ids );
+		$response['backIDS'] = $buttons_ids;
+		wp_send_json_success( $response );
+	}
+	
 	/**
 	 * Ajax call to get a rex_model and insert in the builder
 	 * 

@@ -286,3 +286,89 @@
     @include block-tools-position( $i );
   }
 }
+//rex button
+
+@mixin button-definition {
+  border: 1px solid transparent;
+  padding: 15px 20px;
+  display: inline-block;
+  transition: all 0.3s ease-out;
+  font-size: 14px;
+  line-height: 1;
+  border-radius: $button-border-radius;
+  font-weight: normal;
+  margin: 0 7px;
+  width: auto;
+
+  &:hover {
+    color: inherit;
+    // box-shadow: 0 5px 11px 0 rgba(0, 0, 0, 0.18), 0 4px 15px 0 rgba(0, 0, 0, 0.15);
+  }
+
+  @media screen and (max-width: 450px) {
+    padding: 15px;
+    // margin: 7px 0;
+    ~ .rex-theme-button {
+      margin-top: 1em;
+    }
+  }
+}
+
+@mixin button-definition-style {
+  background-color: $button-bg-color;
+  color: $button-text-color!important;
+
+  &.inverted {
+    background-color: $button-text-color;
+    color: $button-bg-invert-color!important;
+  }
+  &.rex-white-inverted {
+    border-color: #fff;
+    background-color: #000;
+    color: #fff!important;
+  }
+  &.rex-grey {
+    border-color: $button-bg-invert-color;
+    background-color: $button-bg-invert-color;
+    color: $button-grey-text-color!important;
+  }
+  &.rex-red {
+    border-color: $button-bg-invert-color;
+    background-color: $button-bg-invert-color;
+  }
+  &.rex-black {
+    border-color: #000;
+    background-color: #000;
+    color: #fff!important;
+  }
+  &.rex-white {
+    border-color: #fff;
+    background-color: #fff;
+    color: #000!important;
+  }
+  &.rex-grey-inverted {
+    background-color: $button-grey-text-color;
+    border-color: $button-grey-text-color;
+    color: #fff!important;
+  }
+  &.rex-black-border {
+    border: 2px solid black;
+  }
+
+  svg * {
+    fill: inherit;
+  }
+}
+
+@mixin button-definition-standard-style {
+  background-color: $button-text-color;
+  color: $button-bg-invert-color!important;
+
+  &:hover {
+    background-color: $button-text-color;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}

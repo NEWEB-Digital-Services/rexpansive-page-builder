@@ -37,6 +37,42 @@ var Rex_Save_Listeners = (function($) {
 
       var ajaxCalls = [];
 
+      //rex-buttons in page, removing duplicates
+      var rexButtonsInPage = Rexbuilder_Rexbutton.getButtonsInPage();
+      var rexButtonsIDsInPage = [];
+      var buttonFound = false;
+      for (i = 0; i < rexButtonsInPage.length; i++) {
+        for (j = 0; j < rexButtonsIDsInPage.length; j++) {
+          if (rexButtonsInPage[i].id == rexButtonsIDsInPage[j]) {
+            buttonFound = true;
+          }
+        }
+        if (!buttonFound) {
+          rexButtonsIDsInPage.push(rexButtonsInPage[i].id);
+        }
+        buttonFound = false;
+      }
+
+      ajaxCalls.push(
+        $.ajax({
+          type: "POST",
+          dataType: "json",
+          url: _plugin_frontend_settings.rexajax.ajaxurl,
+          data: {
+            action: "rexlive_save_buttons_in_page",
+            nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+            post_id_to_update: idPost,
+            ids: JSON.stringify(rexButtonsIDsInPage)
+          },
+          success: function(response) {
+            if (response.success) {
+              console.log("rex buttons ids nella pagina aggiornati!");
+            }
+          },
+          error: function(response) {}
+        })
+      );
+
       //avaiable custom layouts
       ajaxCalls.push(
         $.ajax({
@@ -1058,6 +1094,9 @@ var Rex_Save_Listeners = (function($) {
           }
         } else {
           content = $savingBlock.html().trim();
+          $savingBlock.find(".rex-button-data").each(function (i, buttonData) {
+            $(buttonData).removeAttr("data-synchronize");
+          });
         }
 
       } else {

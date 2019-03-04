@@ -1856,7 +1856,7 @@
     var saveAllData = function () {
       var ready = $builderArea.sortable('instance');
       var i;
-      if (typeof ready != "undefined" && ready !== null) {
+      if (typeof ready != "undefined" && ready !== null && 0 !== ready.length ) {
         var sectionGrid = $builderArea.sortable('toArray', { attribute: 'data-gridcontent' });
         var sectionBackground = $builderArea.sortable('toArray', { attribute: 'data-gridproperties' });
         var sectionDimension = $builderArea.sortable('toArray', { attribute: 'data-griddimension' });

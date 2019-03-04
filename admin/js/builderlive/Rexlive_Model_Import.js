@@ -77,9 +77,9 @@ var Model_Import_Modal = (function($) {
                 .remove();
             }
           }
-
-          rexmodel_import_props.$self.addClass("rex-lateral-panel--open");
-          // Rexlive_Modals_Utils.openModal(rexmodel_import_props.$self.parent('.rex-modal-wrap'), true);
+          
+          var event = jQuery.Event("rexlive:lateralMenuReady");
+          $(document).trigger(event);
         }
       },
       error: function(response) {},
@@ -89,26 +89,7 @@ var Model_Import_Modal = (function($) {
     });
   };
 
-  var _openModal = function() {
-    _updateModelList();
-  };
-
-  var _closeModal = function() {
-    rexmodel_import_props.$self
-      .addClass("rex-lateral-panel--close")
-      .one(Rexbuilder_Util_Admin_Editor.animationEvent, function(e) {
-        rexmodel_import_props.$self.removeClass(
-          "rex-lateral-panel--open rex-lateral-panel--close"
-        );
-      });
-    // Rexlive_Modals_Utils.closeModal(rexmodel_import_props.$self.parent('.rex-modal-wrap'));
-  };
-
   var _linkDocumentListeners = function() {
-    rexmodel_import_props.$close_button.click(function(e) {
-      e.preventDefault();
-      _closeModal();
-    });
   };
 
   var _linkDraggable = function() {
@@ -118,28 +99,14 @@ var Model_Import_Modal = (function($) {
       countdown,
       dragoverqueue_processtimer;
 
-    var clientFrameWindow = Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0)
-      .contentWindow;
-
-    var stop = true;
-    /*
-     * Funzione che esegue lo scrolling nell'iframe
-     */
-    var scroll = function(step) {
-      var scrollY = $(
-        Rexbuilder_Util_Admin_Editor.$frameBuilder[0].contentWindow
-      ).scrollTop();
-      $(Rexbuilder_Util_Admin_Editor.$frameBuilder[0].contentWindow).scrollTop(
-        scrollY + step
-      );
-      if (!stop) {
-        setTimeout(function() {
-          scroll(step);
-        }, 20);
-      }
-    };
+    var clientFrameWindow = Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow;
+    var $frameContentWindow = $(clientFrameWindow);
+    var isIE = /*@cc_on!@*/false || !!document.documentMode;
+    var mouseClientX = 0,
+        mouseClientY = 0;
 
     Rexlive_Base_Settings.$document.on("dragstart", ".model-list li", function( event ) {
+      Rexbuilder_Util_Admin_Editor.dragImportType = "rexmodel";
       Rexbuilder_Util_Admin_Editor.blockIframeRows();
       event.originalEvent.dataTransfer.effectAllowed = "all";
       dragoverqueue_processtimer = setInterval(function() {
@@ -155,115 +122,137 @@ var Model_Import_Modal = (function($) {
         model_id: $(this).attr("data-rex-model-id")
       };
       var insertingHTML = tmpl("rexlive-tmpl-insert-model-loader", tmpl_obj);
-      event.originalEvent.dataTransfer.setData("text/plain", insertingHTML);
+      if (isIE) {
+        event.originalEvent.dataTransfer.setData("text", insertingHTML);
+      } else {
+        event.originalEvent.dataTransfer.setData("text/plain", insertingHTML);
+      }
+      var dataDnDstart = {
+        eventName: "rexlive:drag_drop_starded",
+        data_to_send: {}
+      };
+      Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDstart);
     });
 
     // definisce quando bisogna scrollare in alto o in basso
     Rexlive_Base_Settings.$document.on("drag", ".model-list li", function( event ) {
-      stop = true;
+      Rexbuilder_Util_Admin_Editor.setScroll(true);
 
-      if (event.clientY < 150) {
-        stop = false;
-        scroll(-1);
+      if (mouseClientY < 150) {
+          Rexbuilder_Util_Admin_Editor.setScroll(false);
+          Rexbuilder_Util_Admin_Editor.scrollFrame(-1);
       }
 
-      if (
-        event.clientY >
-        $(
-          Rexbuilder_Util_Admin_Editor.$frameBuilder[0].contentWindow
-        ).height() -
-          150
-      ) {
-        stop = false;
-        scroll(1);
+      if (mouseClientY > $frameContentWindow.height() - 150) {
+          Rexbuilder_Util_Admin_Editor.setScroll(false);
+          Rexbuilder_Util_Admin_Editor.scrollFrame(1);
       }
     });
 
     Rexlive_Base_Settings.$document.on("dragend", ".model-list li", function( event ) {
       console.log('vonde');
       Rexbuilder_Util_Admin_Editor.releaseIframeRows();
-      stop = true;
       clearInterval(dragoverqueue_processtimer);
       DragDropFunctions.removePlaceholder();
       DragDropFunctions.ClearContainerContext();
+      Rexbuilder_Util_Admin_Editor.dragImportType = "";
+      var dataDnDend = {
+        eventName: "rexlive:drag_drop_ended",
+        data_to_send: {}
+      };
+      Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataDnDend);
     });
 
     Rexbuilder_Util_Admin_Editor.$frameBuilder.load(function() {
+
       var $rexContainer = $(clientFrameWindow.document)
         .find(".rex-container")
         .eq(0);
 
+      var mousePosition = {};
+
+      $frameContentWindow.on('dragover', function (event) {
+          if (Rexbuilder_Util_Admin_Editor.dragImportType == "rexmodel") {
+              // mouse position for scrolling
+              event.preventDefault();
+              event.stopPropagation();
+              mouseClientX = event.originalEvent.clientX;
+              mouseClientY = event.originalEvent.clientY;
+          }
+      });
+
       $rexContainer.on("dragenter", function(event) {
-        event.stopPropagation();
-        currentElement = $(event.target);
-        currentElementChangeFlag = true;
-        elementRectangle = event.target.getBoundingClientRect();
-        countdown = 1;
+        if (Rexbuilder_Util_Admin_Editor.dragImportType == "rexmodel") {
+          event.stopPropagation();
+          currentElement = $(event.target);
+          currentElementChangeFlag = true;
+          elementRectangle = event.target.getBoundingClientRect();
+          countdown = 1;
+        }
       });
 
       $rexContainer.on("dragover", function(event) {
-        event.preventDefault();
-        event.stopPropagation();
-        if (countdown % 15 != 0 && currentElementChangeFlag == false) {
+        if (Rexbuilder_Util_Admin_Editor.dragImportType == "rexmodel") {
+
+          if (countdown % 15 != 0 && currentElementChangeFlag == false) {
+            countdown = countdown + 1;
+            return;
+          }
+          event = event || window.event;
           countdown = countdown + 1;
-          return;
+          currentElementChangeFlag = false;
+
+          mousePosition.x = event.originalEvent.clientX;
+          mousePosition.y = event.originalEvent.clientY;
+
+          DragDropFunctions.AddEntryToDragOverQueue(currentElement, elementRectangle, mousePosition);
         }
-        event = event || window.event;
-        countdown = countdown + 1;
-        currentElementChangeFlag = false;
-        var mousePosition = {
-          x: event.originalEvent.clientX,
-          y: event.originalEvent.clientY
-        };
-        DragDropFunctions.AddEntryToDragOverQueue(
-          currentElement,
-          elementRectangle,
-          mousePosition
-        );
       });
 
       $rexContainer.on("drop", function(event) {
-        console.log("mole");
-        event.preventDefault();
-        event.stopPropagation();
-        var e;
-        if (event.isTrigger) {
-          e = triggerEvent.originalEvent;
-        } else {
-          e = event.originalEvent;
-        }
-        try {
-          var textData = e.dataTransfer.getData("text/plain");
-          var $insertionPoint = Rexbuilder_Util_Admin_Editor.$frameBuilder
-            .contents()
-            .find(".drop-marker");
-          var $divInsert = $(jQuery.parseHTML(textData));
-          $divInsert.insertAfter($insertionPoint[0]);
-          $insertionPoint.remove();
-          var dataEndDrop = {
-            eventName: "rexlive:importModels"
-          };
-          Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
-        } catch (e) {
-          console.log(e);
+        if (Rexbuilder_Util_Admin_Editor.dragImportType == "rexmodel") {
+          console.log("mole");
+          event.preventDefault();
+          event.stopPropagation();
+          var e;
+          if (event.isTrigger) {
+            e = triggerEvent.originalEvent;
+          } else {
+            e = event.originalEvent;
+          }
+          try {
+            var textData = e.dataTransfer.getData("text/plain");
+            var $insertionPoint = Rexbuilder_Util_Admin_Editor.$frameBuilder
+              .contents()
+              .find(".drop-marker");
+            var $divInsert = $(jQuery.parseHTML(textData));
+            $divInsert.insertAfter($insertionPoint[0]);
+            $insertionPoint.remove();
+            var dataEndDrop = {
+              eventName: "rexlive:importModels"
+            };
+            Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(dataEndDrop);
+          } catch (e) {
+            console.log(e);
+          }
         }
       });
     });
+    
+    var mousePercents;
+    var voidelements = ['i', 'area', 'base', 'br', 'col', 'command', 'embed', 'hr', 'img', 'input', 'keygen', 'link', 'meta', 'param', 'video', 'iframe', 'source', 'track', 'wbr'];
+    var selectorVoidElements = voidelements.join(",");
 
     var DragDropFunctions = {
       dragoverqueue: [],
-      GetMouseBearingsPercentage: function($element, elementRect, mousePos) {
-        if (!elementRect) elementRect = $element.get(0).getBoundingClientRect();
-        var mousePosPercent_X =
-          ((mousePos.x - elementRect.left) /
-            (elementRect.right - elementRect.left)) *
-          100;
-        var mousePosPercent_Y =
-          ((mousePos.y - elementRect.top) /
-            (elementRect.bottom - elementRect.top)) *
-          100;
-
-        return { x: mousePosPercent_X, y: mousePosPercent_Y };
+      GetMouseBearingsPercentage: function ($element, elementRect, mousePos) {
+          if (!elementRect) {
+              elementRect = $element.get(0).getBoundingClientRect();
+          }
+          return {
+              x: ((mousePos.x - elementRect.left) / (elementRect.right - elementRect.left)) * 100,
+              y: ((mousePos.y - elementRect.top) / (elementRect.bottom - elementRect.top)) * 100
+          };
       },
       OrchestrateDragDrop: function($element, elementRect, mousePos) {
         //If no element is hovered or element hovered is the placeholder -> not valid -> return false;
@@ -277,7 +266,7 @@ var Model_Import_Modal = (function($) {
 
         //Top and Bottom Area Percentage to trigger different case. [5% of top and bottom area gets reserved for this]
         var breakPointNumber = { x: 50, y: 50 };
-        var mousePercents = this.GetMouseBearingsPercentage(
+        mousePercents = this.GetMouseBearingsPercentage(
           $element,
           elementRect,
           mousePos
@@ -378,34 +367,8 @@ var Model_Import_Modal = (function($) {
           }
         }
       },
-      checkVoidElement: function($element) {
-        var voidelements = [
-          "i",
-          "area",
-          "base",
-          "br",
-          "col",
-          "command",
-          "embed",
-          "hr",
-          "img",
-          "input",
-          "keygen",
-          "link",
-          "meta",
-          "param",
-          "video",
-          "iframe",
-          "source",
-          "track",
-          "wbr"
-        ];
-        var selector = voidelements.join(",");
-        if ($element.is(selector)) {
-          return true;
-        } else {
-          return false;
-        }
+      checkVoidElement: function ($element) {
+        return $element.is(selectorVoidElements);
       },
       calculateDistance: function(elementData, mouseX, mouseY) {
         return Math.sqrt(
@@ -1027,7 +990,6 @@ var Model_Import_Modal = (function($) {
     var $self = $("#rex-models-list");
     rexmodel_import_props = {
       $self: $self,
-      $close_button: $self.find(".rex-close-button")
     };
     _linkDocumentListeners();
     _linkDraggable();
@@ -1037,7 +999,6 @@ var Model_Import_Modal = (function($) {
 
   return {
     init: _init,
-    openModal: _openModal,
-    closeModal: _closeModal
+    updateModelList: _updateModelList
   };
 })(jQuery);

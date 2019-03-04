@@ -1294,7 +1294,7 @@
       block_type = typeof block_type !== 'undefined' ? block_type : "";
       Rexbuilder_Util_Editor.addingNewBlocks = true;
 
-      var defaultBlockWidthFixed = 6;
+      var defaultBlockWidthFixed = block_type == "text" ? 12 : 6;
       var defaultBlockHeightFixed = 4;
 
       typeof w == "undefined"
@@ -2473,6 +2473,7 @@
           if (Rexbuilder_Util_Editor.elementIsResizing) {
             gallery.updateSizeViewerText($block);
             if (gallery.settings.galleryLayout == "masonry") {
+
               $block.attr(
                 "data-height",
                 Math.round(
@@ -2613,6 +2614,9 @@
        * @since 2.0.0
        */
       gallery.$element.on('dragstart', '.drag-to-section', function(e) {  // AVVIA L'EVENTO CHE GESTISCE IL DRAG
+        if (Rexbuilder_Util_Editor.dragAndDropFromParent) {
+          return;
+        }
         if(!locked) {
           // Locking rows on drag to premit the drag itself
           setTimeout(function() {
@@ -2662,6 +2666,9 @@
        */
       gallery.$element.on('drag', '.drag-to-section', function(e) {
         //console.log("Status: DEFINE DRAG STYLE\ngallery.$element.on('drag', '.drag-to-section', function(e) { ... }")
+        if (Rexbuilder_Util_Editor.dragAndDropFromParent) {
+          return;
+        }
         $pholder.css('left',e.clientX + 5);
         $pholder.css('top',e.clientY + 5);
         $pholder.css('zIndex',3000);
@@ -2686,6 +2693,9 @@
        */
       
       gallery.$element.on('dragend', '.drag-to-section', function(e) {
+        if (Rexbuilder_Util_Editor.dragAndDropFromParent) {
+          return;
+        }
         if(locked) {
           Rexbuilder_Util_Editor.releaseRowsLight();
           locked = false;
@@ -3184,6 +3194,8 @@
         sliderHeight
         // increasedHeight
       );
+      console.log(newH);
+
       if (
         this.properties.oneColumModeActive &&
         !Rexbuilder_Util.windowIsResizing

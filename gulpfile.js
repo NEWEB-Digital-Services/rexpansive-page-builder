@@ -183,7 +183,8 @@ gulp.task('live-admin-scripts-build', function() {
 });
 
 gulp.task('live-builder-style', function() {
-		sass('admin/scss/rexlive/live-def.scss',{
+	sass('admin/scss/rexlive/live-def.scss',{
+		sourcemap: false
 		//style:'compressed'
 	})
 	.pipe(plumber())
@@ -197,6 +198,7 @@ gulp.task('live-builder-style', function() {
 
 gulp.task('admin-builder-style', function() {
 	sass('admin/scss/rexlive/tools-def.scss',{
+		sourcemap: false
 		//style:'compressed'
 	})
 	.pipe(plumber())

@@ -138,6 +138,7 @@ class Rexbuilder_Public
 
             wp_enqueue_style('input-spinner', REXPANSIVE_BUILDER_URL . $cartella . 'css/input-spinner.css', array(), $ver, 'all');
 
+            wp_enqueue_style('rexpansive-builder-rexbutton-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/rex_buttons.css', array(), $ver, 'all');
             wp_enqueue_style('rexpansive-builder-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/public.css', array(), $ver, 'all');
 
             wp_enqueue_style('rexpansive-builder-editor-style', REXPANSIVE_BUILDER_URL .'admin/css/live-def.css', array(), $ver, 'all');
@@ -259,6 +260,9 @@ class Rexbuilder_Public
             wp_enqueue_script('1-RexUtilEditor', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/1-Rexbuilder_Util_Editor.js', array('jquery'), $ver, true);
             wp_enqueue_script('1-RexCreateBlocks', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/1-Rexbuilder_CreateBlocks.js', array('jquery'), $ver, true);
             wp_enqueue_script('1-RexDomUtil', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/1-Rexbuilder_Dom_Util.js', array('jquery'), $ver, true);
+            wp_enqueue_script('1-RexColorPalette', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/1-Rexbuilder_Color_Palette.js', array('jquery'), $ver, true);
+            wp_enqueue_script('1-Rexbutton', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/1-Rexbuilder_Rexbutton.js', array('jquery'), $ver, true);
+            wp_enqueue_script('1-RexOverlayPalette', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/1-Rexbuilder_Overlay_Palette.js', array('jquery'), $ver, true);
             wp_enqueue_script('2-RexSaveListeners', REXPANSIVE_BUILDER_URL . $cartella . 'js/live/2-Rex_Save_Listeners.js', array('jquery'), $ver, true);
 
             //gridstack
@@ -732,6 +736,31 @@ class Rexbuilder_Public
         wp_send_json_success( $response );
     }
 
+    public function rexlive_save_buttons_in_page()
+    {
+        $nonce = $_POST['nonce_param'];
+
+        $response = array(
+            'error' => false,
+            'msg' => '',
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+        $response['error'] = false;
+
+        $post_id_to_update = intval($_POST['post_id_to_update']);
+        $ids_in_page = $_POST['ids'];
+
+        update_post_meta($post_id_to_update, '_rexbuilder_buttons_ids_in_page', $ids_in_page);
+        $response['backIDS'] = $ids_in_page;
+        wp_send_json_success($response);
+    }
+
     public function print_post_id()
     {
         ?>
@@ -758,6 +787,10 @@ class Rexbuilder_Public
                 $editor = false;
             }
 
+        $defaultButtonsIDs = array();
+        $buttonsIDsJSON = get_option('_rex_buttons_ids', $defaultButtonsIDs);
+        $stripped = stripslashes($buttonsIDsJSON);
+        $buttonsIDsUsed = json_decode($stripped, true);
 ?>
     <div class="rexbuilder-live-content<?php echo ($editor ? ' rexbuilder-live-content--editing add-new-section--hide' : ''); ?>">
         <?php
@@ -834,7 +867,24 @@ class Rexbuilder_Public
             endif;
         }
     }
-
+    
+    public function print_rex_buttons_style()
+    {
+        if ($this->builder_active_on_this_post_type()) {
+            global $post;
+            $buttonsIDs = get_post_meta($post->ID, '_rexbuilder_buttons_ids_in_page', true);
+            $buttonsInPage = json_decode($buttonsIDs, true);
+            $style = "";
+            foreach ($buttonsInPage as $index => $id_button) {
+                $buttonStyle = get_option('_rex_button_'.$id_button.'_css', "");
+                $buttonStyle = stripslashes($buttonStyle);
+                $style .= $buttonStyle;
+            }
+            if($style != ''){
+                wp_add_inline_style('rexpansive-builder-rexbutton-style', $style);
+            }
+        }
+    }
     /**
      *    Prepare the html template for the vertical internal navigation (dots)
      *
