@@ -1882,7 +1882,12 @@ class Rexbuilder_Admin {
 		return $content;
 	}
 	
-	//da rivedere con stefano
+	/**
+	 * Undocumented function
+	 *
+	 * @return 
+	 * @todo Review with spani85
+	 */
     public function print_rex_buttons_style_backend()
     {
 		$defaultButtonsIDs = array();
@@ -1890,7 +1895,8 @@ class Rexbuilder_Admin {
 		$buttonsIDsJSON = stripslashes($buttonsIDsJSON);
 		$buttonsIDsUsed = json_decode($buttonsIDsJSON, true);
 		$style = "";
-		foreach ($buttonsIDsUsed as $index => $id_button) {
+
+		foreach ( $buttonsIDsUsed as $index => $id_button ) {
 			$buttonStyle = get_option('_rex_button_'.$id_button.'_css', "");
 			$buttonStyle = stripslashes($buttonStyle);
 			$style .= $buttonStyle;

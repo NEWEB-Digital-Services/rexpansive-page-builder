@@ -229,12 +229,8 @@ var Rexbuilder_Util_Editor = (function($) {
         modelNumber: modelNumber,
         rexID: blockID
       };
-
-      console.log($section.attr("data-rexlive-section-id"));
-      console.log(target);
-      
+     
       var sliderData = Rexbuilder_Util_Editor.createSliderData($oldSlider);
-      console.log(sliderData);
       Rexbuilder_Util_Editor.saveSliderOnDB(sliderData, true, blockID, target);
     }
   };
@@ -350,8 +346,6 @@ var Rexbuilder_Util_Editor = (function($) {
     Rexbuilder_Util_Editor.editingElement = false;
     Rexbuilder_Util_Editor.editedElement = null;
     Rexbuilder_Util_Editor.editedTextWrap = null;
-
-    console.log("passed || endEditingElement()");
   };
 
   var startEditingElement = function() {
@@ -1489,25 +1483,20 @@ var Rexbuilder_Util_Editor = (function($) {
       if (Rexbuilder_Util_Editor.dragAndDropFromParent) {
         return;
       }
-      console.log("drop");
       e.preventDefault();
       e.stopPropagation();
       var ev;
       if (e.isTrigger) {
         ev = triggerEvent.originalEvent;
-        console.log("drop- ev = isTrigger");
       } else {
         ev = e.originalEvent;
-        console.log("drop- ev = originalEvent");
       }
       var blockData = ev.dataTransfer.getData("text/plain");
       // var blockDataElement = Rexbuilder_Dom_Util.htmlToElement(blockData);
       try {
         blockData = undefined !== typeof blockData ? JSON.parse(blockData) : null;
-        console.log("drop- blockData !== undefined !== typeoff blockData ? ...");
       } catch(e) {
         blockData = null;
-        console.log("drop- blockData = null");
       }
 
       if(blockData) {

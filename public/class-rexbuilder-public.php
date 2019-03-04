@@ -761,10 +761,27 @@ class Rexbuilder_Public
         wp_send_json_success($response);
     }
 
+    /**
+     * Get the post ID. Check if WooCommerce is active and if the current page is a shop page
+     * to correctly retreive its id
+     *
+     * @return void
+     * @since 2.0.0
+     * @edit 04-02-2019
+     */
     public function print_post_id()
     {
+        $page_id = null;
+        if ( function_exists( 'is_shop' ) && is_shop() && function_exists( 'wc_get_page_id' ) )
+        {
+            $page_id = wc_get_page_id( 'shop' );
+        }
+        else
+        {
+            $page_id = get_the_ID();
+        }
         ?>
-        <div id="id-post" data-post-id="<?php echo esc_attr(get_the_ID()); ?>"></div>
+        <div id="id-post" data-post-id="<?php echo esc_attr( $page_id ); ?>"></div>
         <?php
     }
     
@@ -875,10 +892,13 @@ class Rexbuilder_Public
             $buttonsIDs = get_post_meta($post->ID, '_rexbuilder_buttons_ids_in_page', true);
             $buttonsInPage = json_decode($buttonsIDs, true);
             $style = "";
-            foreach ($buttonsInPage as $index => $id_button) {
-                $buttonStyle = get_option('_rex_button_'.$id_button.'_css', "");
-                $buttonStyle = stripslashes($buttonStyle);
-                $style .= $buttonStyle;
+            if ( null !== $buttonsInPage )
+            {
+                foreach ( $buttonsInPage as $index => $id_button ) {
+                    $buttonStyle = get_option('_rex_button_'.$id_button.'_css', "");
+                    $buttonStyle = stripslashes($buttonStyle);
+                    $style .= $buttonStyle;
+                }
             }
             if($style != ''){
                 wp_add_inline_style('rexpansive-builder-rexbutton-style', $style);

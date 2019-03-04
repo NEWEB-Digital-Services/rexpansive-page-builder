@@ -91,10 +91,10 @@ if (!empty($customizations_names)) {
 }
 ?>
 <div id="rex-buttons-ids-used" style="display: none;"><?php 
-if ($buttonsIDsUsed == null) {
+if ( $buttonsIDsUsed == null ) {
     echo "[]";
 } else {
-    echo json_encode($buttonsIDsUsed);
+    echo json_encode( $buttonsIDsUsed );
 }
 ?></div>
 <div id="sections-ids-used" style="display: none;"><?php 

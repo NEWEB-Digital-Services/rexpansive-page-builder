@@ -2615,6 +2615,7 @@
        */
       gallery.$element.on('dragstart', '.drag-to-section', function(e) {  // AVVIA L'EVENTO CHE GESTISCE IL DRAG
         if (Rexbuilder_Util_Editor.dragAndDropFromParent) {
+          console.log('esci uscendo', Rexbuilder_Util_Editor.dragAndDropFromParent);
           return;
         }
         if(!locked) {
