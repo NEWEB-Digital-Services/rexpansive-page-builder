@@ -2069,7 +2069,7 @@ defined('ABSPATH') or exit;
                 <ul class="button-list button-list--pswp">
                         <?php 
                         // è possibile fare query del tipo '_rex_button_%%_html0'?
-                    $defaultButtonsIDs = array();
+                    $defaultButtonsIDs = '[]';
                     $buttonsIDsJSON = get_option('_rex_buttons_ids', $defaultButtonsIDs);
                     $buttonsIDsJSON = stripslashes($buttonsIDsJSON);
                     $buttonsIDsUsed = json_decode($buttonsIDsJSON, true);

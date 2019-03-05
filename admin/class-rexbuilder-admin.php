@@ -583,7 +583,7 @@ class Rexbuilder_Admin {
 		$xml = $this->get_latest_theme_version(21600); // This tells the function to cache the remote call for 21600 seconds (6 hours)
 
 		if( isset($xml) && $xml ) {
-			$theme_data = get_plugin_data( WP_PLUGIN_DIR . '/rexpansive-builder/rexpansive-builder.php' ); // Get theme data from style.css (current version is what we want)
+			$theme_data = get_plugin_data( REXPANSIVE_BUILDER_PATH . 'rexpansive-builder.php' ); // Get theme data from style.css (current version is what we want)
 			
 			if(version_compare($theme_data['Version'], $xml->latest) == -1) {
 				add_dashboard_page( $theme_data['Name'] . 'Plugin Updates', $theme_data['Name'] . '<span class="update-plugins count-1"><span class="update-count">Updates</span></span>', 'administrator', strtolower($theme_data['Name']) . '-updates', array( $this, 'update_notifier' ) );
@@ -596,7 +596,7 @@ class Rexbuilder_Admin {
 	 */
 	public function update_notifier() { 
 		$xml = $this->get_latest_theme_version(21600); // This tells the function to cache the remote call for 21600 seconds (6 hours)
-		$theme_data = get_plugin_data( WP_PLUGIN_DIR . '/rexpansive-builder/rexpansive-builder.php' ) // Get theme data from style.css (current version is what we want) ?>
+		$theme_data = get_plugin_data( REXPANSIVE_BUILDER_PATH . 'rexpansive-builder.php' ) // Get theme data from style.css (current version is what we want) ?>
 
 		<div class="wrap">
 		
@@ -1890,10 +1890,10 @@ class Rexbuilder_Admin {
 	 */
     public function print_rex_buttons_style_backend()
     {
-		$defaultButtonsIDs = array();
+		$defaultButtonsIDs = '[]';
 		$buttonsIDsJSON = get_option('_rex_buttons_ids', $defaultButtonsIDs);
-		$buttonsIDsJSON = stripslashes($buttonsIDsJSON);
-		$buttonsIDsUsed = json_decode($buttonsIDsJSON, true);
+		$buttonsIDsJSON = stripslashes( $buttonsIDsJSON );
+		$buttonsIDsUsed = json_decode( $buttonsIDsJSON, true );
 		$style = "";
 
 		foreach ( $buttonsIDsUsed as $index => $id_button ) {

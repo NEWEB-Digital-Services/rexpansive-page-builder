@@ -804,9 +804,9 @@ class Rexbuilder_Public
                 $editor = false;
             }
 
-        $defaultButtonsIDs = array();
-        $buttonsIDsJSON = get_option('_rex_buttons_ids', $defaultButtonsIDs);
-        $stripped = stripslashes($buttonsIDsJSON);
+        $defaultButtonsIDs = '[]';
+        $buttonsIDsJSON = get_option( '_rex_buttons_ids', $defaultButtonsIDs );
+        $stripped = stripslashes( $buttonsIDsJSON );
         $buttonsIDsUsed = json_decode($stripped, true);
 ?>
     <div class="rexbuilder-live-content<?php echo ($editor ? ' rexbuilder-live-content--editing add-new-section--hide' : ''); ?>">

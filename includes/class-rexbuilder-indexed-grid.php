@@ -157,7 +157,7 @@ class Rexbuilder_Indexed_Grid
 		$grid_lenght = count( $this->grid );
 		for ($i = 0; $i < $grid_lenght; $i++)
 		{
-			if ( $this->grid[$i] + 1 !== $this->grid[$i + 1] )
+			if ( !isset( $this->grid[$i + 1] ) || ( $this->grid[$i] + 1 !== $this->grid[$i + 1] ) )
 			{
 			  	array_push( $result, $i );
 		  	}
