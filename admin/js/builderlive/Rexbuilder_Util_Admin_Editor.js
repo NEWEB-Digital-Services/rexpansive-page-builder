@@ -391,7 +391,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         if ( Rexbuilder_Util_Admin_Editor.$rexpansiveContainer.attr("data-rex-edited-backend").toString() == "true" ) {
           LockedOptionMask.openModal(dataObj);
         } else {
-          if (!(modelSaved && pageSaved)) {
+          if (!(modelSaved && dataObj.pageSaved)) {
             Change_Layout_Modal.openModal(dataObj);
             return;
           }

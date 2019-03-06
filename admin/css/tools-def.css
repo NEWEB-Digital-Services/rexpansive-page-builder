@@ -16327,7 +16327,15 @@ input:disabled + .rex_edit_title_slider {
       -ms-flex-align: center;
           align-items: center; }
 
-.layout-container,
+.layout-container {
+  cursor: pointer;
+  height: 100%;
+  line-height: 1;
+  padding: 0 !important; }
+  .layout-container .btn-builder-layout,
+  .layout-container .builder-config-layouts {
+    padding: 10px 20px; }
+
 .tool-option {
   cursor: pointer;
   padding: 0 10px;

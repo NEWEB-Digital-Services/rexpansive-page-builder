@@ -3272,7 +3272,7 @@ http://flickity.metafizzy.co
     -o-transition: opacity 500ms cubic-bezier(0.55, 0.055, 0.675, 0.19) 1300ms;
     transition: opacity 500ms cubic-bezier(0.55, 0.055, 0.675, 0.19) 1300ms; }
   .border-fade-in__animation.run-animation {
-    border-width: 40px 70px 30px 70px; }
+    border-width: 40px 70px 0 70px; }
     .border-fade-in__animation.run-animation .perfect-grid-item {
       opacity: 1; }
 

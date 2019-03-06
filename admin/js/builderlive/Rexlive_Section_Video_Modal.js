@@ -30,7 +30,7 @@ var Section_Video_Background_Modal = (function($) {
       video_background_properties.$linkYoutube.val("");
       video_background_properties.$linkMp4.val(data.mp4VideoID);
       video_background_properties.$linkMp4.attr("data-rex-video-bg-url", data.mp4Video);
-      video_background_properties.$linkMp4PreviewLabel.val(data.mp4Video).addClass('active');
+      video_background_properties.$linkMp4Preview.val(data.mp4Video).next('label').addClass('active');
       _focusMp4();
     } else if (data.vimeoUrl != "") {
       videoChosen = "vimeo";

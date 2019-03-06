@@ -331,7 +331,16 @@
 }
 
 //@include item
-.layout-container, 
+.layout-container {
+  cursor: pointer;
+  height: 100%;
+  line-height: 1;
+  padding: 0!important;
+  .btn-builder-layout,
+  .builder-config-layouts {
+    padding: 10px 20px;
+  }
+}
 .tool-option {
   cursor: pointer;
   @if( $small-tools == true ) {

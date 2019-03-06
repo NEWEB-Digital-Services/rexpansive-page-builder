@@ -265,7 +265,8 @@
     transition: opacity $fade-content-duration $ease-in-cubic ( $border-in-duration + $fade-content-duration );
   }
   &.run-animation {
-    border-width: 40px 70px 30px 70px;
+    // border-width: 40px 70px 30px 70px;
+    border-width: 40px 70px 0 70px;
     // &:before {
     //   border-width: 40px 70px 30px 70px;
     //   z-index: -1000;
