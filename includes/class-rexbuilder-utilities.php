@@ -122,6 +122,20 @@ class Rexbuilder_Utilities {
 		global $wp_version;
 		return version_compare( $wp_version, $version, $operator );
 	}
+
+	/**
+	 * Checking if a plugin with a given name is active
+	 *
+	 * @param string $plugin_name
+	 * @return bool
+	 * @since 2.0.0
+	 * @date 06-03-2019
+	 */
+	public static function check_plugin_active( $plugin_name )
+	{
+		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+		return is_plugin_active( $plugin_name );
+	}
 	
 	/**
 	 * Create a new Rexbuilder valid ID, checking if not already present on 

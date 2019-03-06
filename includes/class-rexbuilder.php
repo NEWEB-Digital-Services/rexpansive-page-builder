@@ -181,6 +181,8 @@ class Rexbuilder {
 	 *
 	 * @since    1.0.0
 	 * @access   private
+	 * @version 2.0.0	Add builderlive resources and Gutenberg fixes
+	 * @edit 06-03-2019
 	 */
 	private function define_admin_hooks() {
 		
@@ -188,7 +190,6 @@ class Rexbuilder {
 
 		// Gutenberg
 		$this->loader->add_filter( 'use_block_editor_for_post', $plugin_admin, 'disable_gutenberg_on_live' );
-
 		
 		// Slider custom post type
 		$this->loader->add_action( 'init', $plugin_admin, 'rexpansive_slider_definition' );
@@ -233,9 +234,25 @@ class Rexbuilder {
 		
 		$this->loader->add_action( 'admin_head', $plugin_admin, 'rexbuilder_add_custom_buttons' );
 		
-		include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
-		if( Rexbuilder_Utilities::is_version() && !is_plugin_active('classic-editor/classic-editor.php') ) {
-			$this->loader->add_action( 'rexpansive_builder_before_rexbuilder_header', $plugin_admin, 'add_switch_under_post_title' );
+		// The if is here to prevent conflicts between versions and Gutenberg
+		if( Rexbuilder_Utilities::is_version( '>=', '5.0' ) && ! Rexbuilder_Utilities::check_plugin_active( 'classic-editor/classic-editor.php' ) )
+		{
+			// Checks if WC product
+			// If post is already saved, get the post_type
+			$post_id = ( isset( $_GET['post'] ) ? $_GET['post'] : null );
+			if ( null !== $post_id )
+			{
+				$post_type = get_post_type( (int)$post_id );
+			}
+			else
+			// else its a new post, get the post_type from the $_GET param
+			{
+				$post_type = ( isset( $_GET['post_type'] ) ? $_GET['post_type'] : null );
+			}
+			if ( 'product' !== $post_type )
+			{
+				$this->loader->add_action( 'rexpansive_builder_before_rexbuilder_header', $plugin_admin, 'add_switch_under_post_title' );
+			}
 		}
 		$this->loader->add_action( 'edit_form_after_title', $plugin_admin, 'add_switch_under_post_title' );
 		

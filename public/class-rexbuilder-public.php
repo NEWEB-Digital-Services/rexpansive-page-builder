@@ -136,7 +136,7 @@ class Rexbuilder_Public
             wp_enqueue_style('jquery-ui-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/jquery-ui.min.css', array(), $ver, 'all');
             wp_enqueue_style('gridstack-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/gridstack.css', array(), $ver, 'all');
 
-            wp_enqueue_style('input-spinner', REXPANSIVE_BUILDER_URL . $cartella . 'css/input-spinner.css', array(), $ver, 'all');
+            // wp_enqueue_style('input-spinner', REXPANSIVE_BUILDER_URL . $cartella . 'css/input-spinner.css', array(), $ver, 'all');
 
             wp_enqueue_style('rexpansive-builder-rexbutton-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/rex_buttons.css', array(), $ver, 'all');
             wp_enqueue_style('rexpansive-builder-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/public.css', array(), $ver, 'all');

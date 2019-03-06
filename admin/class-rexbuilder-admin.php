@@ -254,10 +254,10 @@ class Rexbuilder_Admin {
 					),
 				) );
 			} else {
-				include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+				global $post;
 
 				$wp_isFive = Rexbuilder_Utilities::is_version();
-				$classicEditor_Active = is_plugin_active('classic-editor/classic-editor.php');
+				$classicEditor_Active = Rexbuilder_Utilities::check_plugin_active( 'classic-editor/classic-editor.php' );
 
 				// wp_enqueue_media();
 				wp_enqueue_script('jquery');
@@ -281,7 +281,7 @@ class Rexbuilder_Admin {
 					'ajaxurl'	=>	admin_url( 'admin-ajax.php' ),
 					'rexnonce'	=>	wp_create_nonce( 'rex-ajax-call-nonce' ),
 				) );
-				if( $wp_isFive && empty($classicEditor_Active) ) {
+				if( $wp_isFive && empty($classicEditor_Active) && 'product' !== $post->post_type ) {
 					wp_enqueue_script( 'rexbuilder-admin-gutenfix', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin-gutenfix.js', array( 'jquery' ), null, true );
 				} else {
 					wp_enqueue_script( 'rexbuilder-admin', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin.js', array( 'jquery' ), null, true );
@@ -294,10 +294,8 @@ class Rexbuilder_Admin {
 	 * Register the JavaScript for the admin area for production version
 	 *
 	 * @since    1.0.0
-	 * 
-	 * 
-	*			include_once("rexlive-js-templates.php");
-	*			include_once("rexlive-modals-tools.php");
+	 * @version 2.0.0	Adding the builderlive scripts. Handling Gutenberg integration
+	 * @edit 06-03-2019
 	 */
 	public function enqueue_scripts_production( $hook ) {
 		$page_info = get_current_screen();
@@ -429,10 +427,10 @@ class Rexbuilder_Admin {
 					)
 				) );
 			} else {
-				include_once( ABSPATH . 'wp-admin/includes/plugin.php' );
+				global $post;
 
 				$wp_isFive = Rexbuilder_Utilities::is_version();
-				$classicEditor_Active = is_plugin_active('classic-editor/classic-editor.php');
+				$classicEditor_Active = Rexbuilder_Utilities::check_plugin_active( 'classic-editor/classic-editor.php' );
 
 				wp_enqueue_script('jquery');
 				wp_enqueue_script("jquery-ui-draggable");
@@ -450,7 +448,8 @@ class Rexbuilder_Admin {
 					'ajaxurl'	=>	admin_url( 'admin-ajax.php' ),
 					'rexnonce'	=>	wp_create_nonce( 'rex-ajax-call-nonce' ),
 				) );
-				if( $wp_isFive && empty($classicEditor_Active) ) {
+
+				if( $wp_isFive && empty( $classicEditor_Active ) && 'product' !== $post->post_type ) {
 					wp_enqueue_script( 'rexbuilder-admin-gutenfix', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin-gutenfix.js', array( 'jquery' ), null, true );
 				} else {
 					wp_enqueue_script( 'rexbuilder-admin', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin.js', array( 'jquery' ), null, true );
@@ -683,13 +682,14 @@ class Rexbuilder_Admin {
 	public function add_switch_under_post_title() {
 		$page_info = get_current_screen();
 
-		if( isset( $this->plugin_options['post_types'] ) ) :
-
+		if( isset( $this->plugin_options['post_types'] ) )
+		{
 			$post_to_activate = $this->plugin_options['post_types'];
 
-			if( isset( $post_to_activate[$page_info->id] ) ) : 
-				if( ( $post_to_activate[$page_info->id] == 1 ) && 
-					( $post_to_activate[$page_info->post_type] == 1 ) ) :
+			if( isset( $post_to_activate[$page_info->id] ) )
+			{
+				if( ( $post_to_activate[$page_info->id] == 1 ) && ( $post_to_activate[$page_info->post_type] == 1 ) )
+				{
 					$builder_active = get_post_meta( get_the_id(), '_rexbuilder_active', true);
 					if( $this->is_edit_page('new') ) {
 						$builder_active = 'true';
@@ -745,9 +745,9 @@ if(isset($savedFromBackend) && $savedFromBackend == "false") {
 			?>
 		</div>
 		<?php
-				endif;
-			endif;
-		endif;
+				}
+			}
+		}
 	}
 
 	/**
