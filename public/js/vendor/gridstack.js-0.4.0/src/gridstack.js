@@ -1017,6 +1017,8 @@
         var self = this;
         var getHeight;
 
+        console.log(maxHeight);
+
         if (typeof maxHeight == 'undefined') {
             maxHeight = this._styles._max;
         }
@@ -1030,6 +1032,7 @@
         }
 
         if (!this.opts.verticalMargin || this.opts.cellHeightUnit === this.opts.verticalMarginUnit) {
+            console.log('DECLARE getHeight 1');
             getHeight = function(nbRows, nbMargins) {
                 return (self.opts.cellHeight * nbRows + self.opts.verticalMargin * nbMargins) +
                     self.opts.cellHeightUnit;
@@ -1048,6 +1051,8 @@
         if (this._styles._max === 0) {
             Utils.insertCSSRule(this._styles, prefix, 'min-height: ' + getHeight(1, 0) + ';', 0);
         }
+
+        console.log(maxHeight, this._styles._max);
 
         if (maxHeight > this._styles._max) {
             for (var i = this._styles._max; i < maxHeight; ++i) {

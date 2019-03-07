@@ -827,6 +827,12 @@ var Rexbuilder_Util_Editor = (function($) {
     return elementsPhotoswipe;
   };
 
+  /**
+   * Add class on live container to hide some tools on layouts different from default
+   * 
+   * @param {string} activeLayout layout
+   * @since 2.0.0
+   */
   var _fixToolsVisibility = function(activeLayout) {
     if (activeLayout == "default") {
       Rexbuilder_Util.$rexContainer.removeClass("rex-hide-responsive-tools");
@@ -901,6 +907,12 @@ var Rexbuilder_Util_Editor = (function($) {
     }
   };
 
+  /**
+   * Clear editing info for the sections
+   * Used at change layout
+   * 
+   * @since 2.0.0
+   */
   var _clearSectionsEdited = function() {
     Rexbuilder_Util.$rexContainer
       .children(".rexpansive_section")

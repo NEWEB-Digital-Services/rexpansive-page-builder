@@ -412,6 +412,7 @@ var Rexbuilder_Util = (function($) {
   };
 
   var _updatePageCustomizationsData = function(updatedPageCustomizationsData) {
+    console.log(updatedPageCustomizationsData);
     var layoutNameToUpdate = updatedPageCustomizationsData.name;
     var $customizationWrapper = $pageCustomizationsDataDiv.children(
       '.customization-wrap[data-customization-name="' +

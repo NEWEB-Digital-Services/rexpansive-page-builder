@@ -41,7 +41,7 @@ class Rexbuilder_Utilities {
 	 *	@since 1.1.0
 	 */
 	public static function shortcode_black_list() {
-		return array( 'RexFacebookGallery' );
+		return apply_filters( 'rexpansive_shortcode_black_list', array( 'RexFacebookGallery' ) );
 	}
 
 	/**
@@ -203,5 +203,34 @@ class Rexbuilder_Utilities {
 		$sprite_list = file_get_contents( REXPANSIVE_BUILDER_PATH . '/admin/sprite-list.json' );
 		$sprite_a = json_decode( $sprite_list, true );
 		return $sprite_a;
+	}
+
+	public static function get_registered_scripts_styles() {
+
+		$result = [];
+		$result['scripts'] = [];
+		$result['styles'] = [];
+	
+		// Print all loaded Scripts
+		global $wp_scripts;
+		foreach( $wp_scripts->queue as $script ) 
+		{
+			$result['scripts'][] =  array(
+				'handle' => $wp_scripts->registered[$script]->handle,
+				'script' => $wp_scripts->registered[$script]->src
+			);
+		}
+	
+		// Print all loaded Styles (CSS)
+		global $wp_styles;
+		foreach( $wp_styles->queue as $style )
+		{
+			$result['styles'][] =  array(
+				'handle' => $wp_styles->registered[$style]->handle,
+				'style' => $wp_styles->registered[$style]->src
+			);
+		}
+	
+		return $result;
 	}
 }

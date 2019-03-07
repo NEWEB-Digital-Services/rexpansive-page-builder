@@ -459,6 +459,22 @@ class Rexbuilder_Admin {
 	}
 
 	/**
+	 * Dequeue from LIVE area some admin scripts that can cause bugs
+	 * - WPML popover tooltip
+	 *
+	 * @return void
+	 * @since 2.0.0
+	 * @date 07-03-2019
+	 */
+	public function dequeue_scripts()
+	{
+		if ( isset( $_GET['rexlive'] ) && $_GET['rexlive'] == 'true' )
+		{
+			wp_dequeue_script( 'otgsPopoverTooltip' );
+		}
+	}
+
+	/**
 	 * Disable Gutenberg on live builder
 	 * 
 	 * @since 2.0.0

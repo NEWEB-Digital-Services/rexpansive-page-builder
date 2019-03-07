@@ -1519,6 +1519,12 @@ var Rexbuilder_Dom_Util = (function($) {
     Rexbuilder_Util_Editor.updatingGridstack = false;
   };
 
+  /**
+   * Setting the css margins of a section
+   * @param {jQuery Object} $section section to edit
+   * @param {Object} margins values to set
+   * @since 2.0.0
+   */
   var _updateSectionMarginsData = function($section, margins) {
     $section.css("margin-top", margins.top + "px");
     $section.css("margin-right", margins.right + "px");

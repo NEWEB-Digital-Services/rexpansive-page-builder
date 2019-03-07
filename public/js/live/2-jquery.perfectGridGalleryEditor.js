@@ -481,10 +481,11 @@
       this.batchGridstack();
       this._defineDynamicPrivateProperties();
       this.updateGridstackStyles();
-      if (!Rexbuilder_Util.domUpdaiting) {
+      if ( !Rexbuilder_Util.domUpdaiting ) {
         this.updateBlocksHeight();
       }
       this.commitGridstack();
+      console.log('======= END updateGridstack');
     },
 
     updateSectionWidthWrap: function(newWidthParent, reverseData) {
@@ -1041,6 +1042,8 @@
     },
 
     updateGridstackStyles: function(newH) {
+      console.log('--------> GUILTY _initStyles');
+      console.log('--------> GUILTY _updateStyles');
       if (newH !== undefined) {
         this.properties.singleHeight = newH;
       }
@@ -1613,7 +1616,7 @@
       this.properties.wrapWidth = newWidth;
       this.properties.singleWidth = newWidth * this.settings.gridItemWidth;
 
-      if (this.settings.galleryLayout == "masonry") {
+      if (this.settings.galleryLayout == "masonry") {        
         this.properties.singleHeight = this.settings.cellHeightMasonry;
       } else {
         var oldSingleHeight = this.properties.singleHeight;
@@ -2864,6 +2867,7 @@
             !Rexbuilder_Util.windowIsResizing &&
             !this.properties.updatingSection
           ) {
+            console.log('COMMITTO GRIGLIA');
             this.commitGridstack();
           }
         }
@@ -3195,7 +3199,7 @@
         sliderHeight
         // increasedHeight
       );
-      console.log(newH);
+      // console.log(newH);
 
       if (
         this.properties.oneColumModeActive &&
