@@ -5,9 +5,11 @@
  * "option_value"
 
 
+
 _rex_buttons_ids
 
 [\"PtAh\"]
+
 
 
 _rex_buttons_styles
@@ -15,9 +17,11 @@ _rex_buttons_styles
 [{\"rexID\":\"PtAh\",\"buttonName\":\"Rex Purple\",\"rules\":{\"element\":{\"text_color\":\"rgb(242, 175, 255)\",\"font_size\":\"22px\",\"background_color\":\"rgb(224, 108, 246)\",\"button_height\":\"70px\",\"border_color\":\"rgb(216, 74, 74)\",\"border_width\":\"7px\",\"border_radius\":\"15px\",\"margin_top\":\"25px\",\"margin_bottom\":\"15px\",\"margin_right\":\"5px\",\"margin_left\":\"10px\"},\"hover\":{\"background_color\":\"rgb(156, 0, 255)\"}}}]
 
 
+
 _rex_button_PtAh_css
 
 .rex-button-wrapper[data-rex-button-id=\"PtAh\"] .rex-button-container{font-size: 22px;color: rgb(242, 175, 255);height: 70px;margin-top: 25px;margin-bottom: 15px;margin-left: 10px;margin-right: 5px;}.rex-button-wrapper[data-rex-button-id=\"PtAh\"] .rex-button-background{background-color: rgb(224, 108, 246);border-width: 7px;border-color: rgb(216, 74, 74);border-radius: 15px;border-style: solid;}.rex-button-wrapper[data-rex-button-id=\"PtAh\"] .rex-button-background:hover{background-color: rgb(156, 0, 255);}
+
 
 
 _rex_button_PtAh_html
@@ -30,7 +34,6 @@ _rex_button_PtAh_html
         </span>
     </a>
 </span>
-
 
  */
 var Rexbuilder_Rexbutton = (function ($) {

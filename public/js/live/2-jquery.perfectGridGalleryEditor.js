@@ -2102,15 +2102,12 @@
                   //   'circle-handle': $target.hasClass('circle-handle'),
                   //   which: e.which
                   // });
-
-                  console.log("pre(IF)\nRexbuilder_Util_Editor.elementIsDragging -",Rexbuilder_Util_Editor.elementIsDragging,"\nRexbuilder_Util_Editor.elementIsResizing -",Rexbuilder_Util_Editor.elementIsResizing,"\nRexbuilder_Util_Editor.editingElement -",Rexbuilder_Util_Editor.editingElement);
+                  //console.log("pre(IF)\nRexbuilder_Util_Editor.elementIsDragging -",Rexbuilder_Util_Editor.elementIsDragging,"\nRexbuilder_Util_Editor.elementIsResizing -",Rexbuilder_Util_Editor.elementIsResizing,"\nRexbuilder_Util_Editor.editingElement -",Rexbuilder_Util_Editor.editingElement);
 
                   if( !( Rexbuilder_Util_Editor.elementIsDragging || Rexbuilder_Util_Editor.elementIsResizing || Rexbuilder_Util_Editor.editingElement || $elem.hasClass('ui-resizable-resizing') || $elem.hasClass('ui-draggable-dragging') || $target.hasClass('ui-resizable-handle') || $target.hasClass('circle-handle') ) && 1 === e.which ) {
                     $elem.trigger("mouseup");
                     // gallery.properties.gridstackInstance.disable();
-
-                    console.log("post(IF)\nRexbuilder_Util_Editor.elementIsDragging -",Rexbuilder_Util_Editor.elementIsDragging,"\nRexbuilder_Util_Editor.elementIsResizing -",Rexbuilder_Util_Editor.elementIsResizing,"\nRexbuilder_Util_Editor.editingElement -",Rexbuilder_Util_Editor.editingElement);
-                    
+                    //console.log("post(IF)\nRexbuilder_Util_Editor.elementIsDragging -",Rexbuilder_Util_Editor.elementIsDragging,"\nRexbuilder_Util_Editor.elementIsResizing -",Rexbuilder_Util_Editor.elementIsResizing,"\nRexbuilder_Util_Editor.editingElement -",Rexbuilder_Util_Editor.editingElement);                    
                     var btn = tmpl("tmpl-tool-drag", {});
                     var $btn = $(btn);
                     $btn.css("position","absolute");
@@ -2543,7 +2540,7 @@
       //console.log(this.$element);
       this.$element
         .on("dragstart", function(event, ui) {
-          console.log("dragstart");
+          //console.log("dragstart");
           if (typeof ui !== "undefined") {
             Rexbuilder_Util_Editor.elementIsDragging = true;
             ui.helper
@@ -2556,13 +2553,13 @@
           }
         })
         .on("drag", function(event, ui) {
-          console.log("drag");
+          //console.log("drag");
         })
         .on("dragstop", function(event, ui) {
-          console.log("dragstop", ui);
+          //console.log("dragstop", ui);
           if (typeof ui !== "undefined") {
             gallery.updateAllElementsProperties();
-            console.log("dragstop2");
+            //console.log("dragstop2");
             Rexbuilder_Util_Editor.elementIsDragging = false;
           }
         });
@@ -2571,12 +2568,12 @@
     // @deprecated
     _linkDropEvents: function() {
       var gallery = this;
-      console.log("passed - linkDropEvents");
+      //console.log("passed - linkDropEvents");
       this.$element.on("dropped", function(e, previousWidget, newWidget) {
         newWidget.el.removeClass("focused ui-draggable--drag-up");
         gallery._prepareElement(newWidget.el[0]);
 
-        console.log("passed - linkDropEvents - .on(dropped)");
+        //console.log("passed - linkDropEvents - .on(dropped)");
         // this.updateSizeViewerText(newWidget.el, w, h);
       });
     },
@@ -2658,7 +2655,7 @@
         };
 
         e.originalEvent.dataTransfer.setData("text/plain", JSON.stringify(sectionTarget));
-        console.log("Status: START\ngallery.$element.on('dragstart', '.drag-to-section', function(e)\n{",event.clientX,event.clientY,"(x,y)}");
+        //console.log("Status: START\ngallery.$element.on('dragstart', '.drag-to-section', function(e)\n{",event.clientX,event.clientY,"(x,y)}");
       });
 
       /**
@@ -2709,7 +2706,7 @@
         $pholder.remove();
         $pholder = null;
 
-        console.log("Status: END\ngallery.$element.on('dragend', '.drag-to-section', function(e)\n{",event.clientX,event.clientY,"(x,y)}");
+        //console.log("Status: END\ngallery.$element.on('dragend', '.drag-to-section', function(e)\n{",event.clientX,event.clientY,"(x,y)}");
       });
     },
 

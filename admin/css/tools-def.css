@@ -13947,7 +13947,7 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever::before {
 /*
 * CSS TOGGLE SWITCH
 *
-* Ionuț Colceriu - ghinda.net
+* Ionu╚ø Colceriu - ghinda.net
 * https://github.com/ghinda/css-toggle-switch
 *
 */
@@ -15294,6 +15294,39 @@ input[type=text]:focus + .b-svg-icons {
   display: flex; }
   .bl_modal-row:not(:last-child) {
     border-bottom: 1px solid #ddd; }
+
+.bl_modal-row .rexbutton-cont_row {
+  width: 381px;
+  margin: 12px auto; }
+
+.bl_modal-row .rexbutton-cont_row .rexbutton-count-column_1 {
+  width: 42px;
+  height: 42px;
+  margin-right: 12px;
+  float: left; }
+
+.bl_modal-row .rexbutton-cont_row .rexbutton-count-column_2 {
+  width: 201px;
+  height: 42px;
+  margin-right: 12px;
+  float: left; }
+
+.bl_modal-row .rexbutton-cont_row .rexbutton-count-column_3 {
+  width: 20px;
+  height: 42px;
+  margin-right: 12px;
+  float: left; }
+
+.bl_modal-row .rexbutton-cont_row .rexbutton-count-column_4 {
+  width: 50px;
+  height: 42px;
+  margin-right: 12px;
+  float: left; }
+
+.bl_modal-row .rexbutton-cont_row .rexbutton-count-column_5 {
+  width: 20px;
+  height: 42px;
+  float: left; }
 
 .bl_modal__single-option:not(:last-child) {
   padding-right: 12px; }

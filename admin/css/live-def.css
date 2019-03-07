@@ -2859,7 +2859,7 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever::before {
 /*
 * CSS TOGGLE SWITCH
 *
-* Ionuț Colceriu - ghinda.net
+* Ionu╚ø Colceriu - ghinda.net
 * https://github.com/ghinda/css-toggle-switch
 *
 */
@@ -5152,6 +5152,30 @@ input.me-insert-embed__value[type=text] {
   position: absolute;
   z-index: 10;
   cursor: pointer; }
+
+.rex-button-tools-container {
+  width: 100%;
+  height: 22px;
+  font-size: 10px; }
+
+.rexbutton-tools .rex-button-tools-container .rex-edit-button {
+  position: absolute;
+  /* (ACTIVE) Use this code to align the edit button to the centre. */
+  top: 0px;
+  right: 50%;
+  margin: 0px -10px 0px 0px;
+  /* Use this code to align the edit button to the left/right. */
+  /* <<< - top:0px;left:0px; */
+  /* >>> - top:0px;right:0px; */ }
+
+.rexbutton-tools .rex-button-tools-container .rex-delete-button {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  background-color: #424242; }
+
+.rexbutton-tools .rex-button-tools-container .rex-delete-button .l-svg-icons > svg {
+  fill: #ffffff; }
 
 @media screen and (max-width: 1024px) {
   body {
