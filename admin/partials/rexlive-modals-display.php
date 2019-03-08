@@ -2101,7 +2101,7 @@ defined('ABSPATH') or exit;
         <div class="modal-content">
             <!-- Prima row -->
             <div class="bl_modal-row">
-                <div class="rexbutton-cont_row">
+                <div class="rexbutton-cont_row10">
                     <div class="rexbutton-count-column_1">
                         <div class="rex-relative-col tippy" data-tippy-content="Text Color" tabindex="0">
                             <input type="hidden" id="rex-button-text-color-runtime" name="rex-button-text-color-runtime" value="" />
@@ -2111,14 +2111,14 @@ defined('ABSPATH') or exit;
                     </div>
                     <div class="rexbutton-count-column_2">
                         <div id="rex-button-label-wrap">
-                            <input type="text" id="rex-button__label" name="rex-button__label"/>
+                            <input type="text" id="rex-button__label" name="rex-button__label" class="rexbutton-upd-textbox"/>
                         </div></div>
                     <div class="rexbutton-count-column_3">
                         <!-- SPAZIO PER LE ICONE -->
                     </div>
                     <div class="rexbutton-count-column_4">
                         <div id="rex-button-font-size-wrap">
-                            <input type="text" id="rex-button_text_font_size" name="rex-button_text_font_size"/>
+                            <input type="text" id="rex-button_text_font_size" name="rex-button_text_font_size" class="rexbutton-upd-textbox"/>
                         </div>
                     </div>
                     <div class="rexbutton-count-column_5">
@@ -2128,7 +2128,7 @@ defined('ABSPATH') or exit;
             </div>
             <!-- Seconda row -->
             <div class="bl_modal-row">
-            <div class="rexbutton-cont_row">
+            <div class="rexbutton-cont_row10">
                     <div class="rexbutton-count-column_1">
                         <div class="rex-relative-col tippy" data-tippy-content="Background Color" tabindex="0">
                             <input type="hidden" id="rex-button-background-color-runtime" name="rex-button-background-color-runtime" value="" />
@@ -2142,20 +2142,20 @@ defined('ABSPATH') or exit;
                         </div>
                     </div>
                     <div class="rexbutton-count-column_3">
-                        icon
+                        <i class="fas fa-arrows-alt-v"></i>
                     </div>
                     <div class="rexbutton-count-column_4">
-                        <input type="text" id="rex-button-height" name="rex-button-height"/>
+                        <input type="text" id="rex-button-height" name="rex-button-height" class="rexbutton-upd-textbox"/>
                     </div>
                     <div class="rexbutton-count-column_5">
-                        <div class="label-px">px</div>
+                        <div class="label-px">h</div>
                     </div>
                 </div>
             </div>
             <!-- terza row -->
             <div class="bl_modal-row">
                 <!--<div class="label">hover</div>-->
-                <div class="rexbutton-cont_row">
+                <div class="rexbutton-cont_row10">
                     <div class="rexbutton-count-column_1">
                     <div class="rex-relative-col tippy" data-tippy-content="Background Hover Color" tabindex="0">
                     <input type="hidden" id="rex-button-background-hover-color-runtime" name="rex-button-background-hover-color-runtime" value="" />
@@ -2168,91 +2168,155 @@ defined('ABSPATH') or exit;
                             <div id="rex-button-preview-background-hover"></div>
                         </div>
                     </div>
-                    <div class="rexbutton-count-column_3">
-                        <!-- SPAZIO PER LE ICONE -->
-                    </div>
-                    <div class="rexbutton-count-column_4"></div>
-                    <div class="rexbutton-count-column_5"></div>
+                    <div class="rexbutton-count-column_3"><!-- SPAZIO PER LE ICONE --></div>
+                    <div class="rexbutton-count-column_4"><!-- SPAZIO PER LE DIMENSIONI --></div>
+                    <div class="rexbutton-count-column_5"><!-- SPAZIO PER L'UNITA' DI MISURA --></div>
                 </div>
             </div>
             <!-- quarta row -->
-            <div class="bl_modal-row" style="background-color:orange;">
-                <!--<div class="open-menu-wrap">+/-</div>-->
-                <div class="rex-relative-col tippy" data-tippy-content="Border Color" tabindex="0">
-                    <input type="hidden" id="rex-button-border-color-runtime" name="rex-button-border-color-runtime" value="" />
-                    <input id="rex-button-border-color" type="text" name="rex-button-border-color" value="" size="10" />
-                    <div id="rex-button-color-preview-icon" class="preview-color-icon"></div>
-                </div>
-                <div id="rex-button-border-preview-wrap">
-                    <div id="rex-button-border-preview"></div>
-                </div>
-                <div id="rex-button-border-width-wrap">
-                    <input type="text" id="rex-button-border-width" name="rex-button-border-width"/>
-                    <div class="label-px">px</div>
+            <div class="bl_modal-row">
+
+            <div class="rexbutton-cont_row10">
+                    <div class="rexbutton-count-column_1">
+                        <div class="rex-relative-col tippy" data-tippy-content="Border Color" tabindex="0">
+                            <input type="hidden" id="rex-button-border-color-runtime" name="rex-button-border-color-runtime" value="" />
+                            <input id="rex-button-border-color" type="text" name="rex-button-border-color" value="" size="10" />
+                            <div id="rex-button-color-preview-icon" class="preview-color-icon"></div>
+                        </div>
+                    </div>
+                    <div class="rexbutton-count-column_2">
+                        <div id="rex-button-border-preview-wrap">
+                            <div id="rex-button-border-preview"></div>
+                        </div>
+                    </div>
+                    <div class="rexbutton-count-column_3">
+                        <!-- SPAZIO PER LE ICONE -->
+                    </div>
+                    <div class="rexbutton-count-column_4">
+                        <div id="rex-button-border-width-wrap">
+                            <input type="text" id="rex-button-border-width" name="rex-button-border-width" class="rexbutton-upd-textbox"/>
+                        </div>
+                    </div>
+                    <div class="rexbutton-count-column_5">
+                        <div class="label-px">px</div>
+                    </div>
                 </div>
             </div>
             <!-- quinta row -->
-            <div class="bl_modal-row" style="background-color:yellow;">
-                <div id="rex-button-border-radius-wrap">
-                    <div class="border-icon">90</div>
-                    <input type="text" id="rex-button-border-radius" name="rex-button-border-radius"/>
-                </div>
-                <div id="rex-button-margins-wrap">
-                    <div id="rex-button-preview-empty"></div>
-                    <div id="rex-button-margin-top-wrap">
-                        <div class="border-icon">up</div>
-                        <input type="text" id="rex-button-margin-top-radius" name="rex-button-margin-top-radius"/>
+            <div class="bl_modal-row">
+                <div class="rexbutton-cont_row23">
+                    <div class="rexbutton-count-column_6">
+                        <div class="rexbutton-count-column_aligner">
+                            
+                            <div class="rexbutton-contbox-align_editor">
+                                sx
+                            </div>
+                            <div class="rexbutton-contbox-align_editor">
+                                cc
+                            </div>
+                            <div class="rexbutton-contbox-align_editor">
+                                dx
+                            </div>
+
+                        </div>
                     </div>
-                    <div id="rex-button-margin-right-wrap">
-                        <div class="border-icon">right</div>
-                        <input type="text" id="rex-button-margin-right-radius" name="rex-button-margin-right-radius"/>
+                    <div class="rexbutton-count-column_7">
+                        <div class="rexbutton-count-column_aligner">
+                            <div id="rex-button-border-radius-wrap">
+                                <div class="rexbutton-border-radius-contBox">
+                                    <div class="rx__form-input__select-arrow">
+                                        <i class="l-svg-icons"><svg><use xlink:href="#A007-Close"></use></svg></i>
+                                    </div>
+                                </div>
+                                <input type="text" id="rex-button-border-radius" name="rex-button-border-radius" class="rexbutton-upd-textbox"/>
+                            </div>
+                        </div>
                     </div>
-                    <div id="rex-button-margin-bottom-wrap">
-                        <div class="border-icon">down</div>
-                        <input type="text" id="rex-button-margin-bottom-radius" name="rex-button-margin-bottom-radius"/>
-                    </div>
-                    <div id="rex-button-margin-left-wrap">
-                        <div class="border-icon">left</div>
-                        <input type="text" id="rex-button-margin-left-radius" name="rex-button-margin-left-radius"/>
+                    <div class="rexbutton-count-column_8">
+                        <div class="subRow8_1">
+                            <div class="subColum1">
+                                <input type="text" id="rex-button-margin-top-radius" name="rex-button-margin-top-radius" class="rexbutton-upd-small_textbox" placeholder="top"/>
+                            </div>
+                        </div>                      
+                        <div class="subRow8_2">
+                            <div class="subColum2">
+                                <input type="text" id="rex-button-margin-left-radius" name="rex-button-margin-left-radius" class="rexbutton-upd-small_textbox" placeholder="left"/>
+                            </div>
+                            <div class="subColum3">
+                                <div id="rex-button-preview-empty"></div>
+                            </div>
+                            <div class="subColum2">
+                                <input type="text" id="rex-button-margin-right-radius" name="rex-button-margin-right-radius" class="rexbutton-upd-small_textbox" placeholder="right"/>
+                            </div>
+                        </div>
+                        <div class="subRow8_3">
+                            <div class="subColum1">
+                                <input type="text" id="rex-button-margin-bottom-radius" name="rex-button-margin-bottom-radius" class="rexbutton-upd-small_textbox" placeholder="bottom"/>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
             <!-- sesta row -->
-            <div class="bl_modal-row" style="background-color:orange;">
-                <div id="rex-button-link-target-wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix">
-                        <span class="prefix"></span>
-                        <input type="text" id="rex-button-link-target" name="rex-button-link-target">
-                        <label for="rex-button-link-target" class=""><?php _e('https://...', 'rexpansive');?></label>
-                        <span class="rex-material-bar"></span>
-                </div>
-                <div id="rex-button-link-type-wrap" class="rx__select-wrap">
-                    <select id="rex-button-link-type" class="rx__form-input">
-                        <option value="_blank">_blank</option>
-                        <option value="_self">_self</option>
-                        <option value="_parent">_parent</option>
-                        <option value="_top">_top</option>
-                    </select>  
-                    <div class="rx__form-input__select-arrow">
-                        <i class="l-svg-icons"><svg><use xlink:href="#A007-Close"></use></svg></i>
+            <div class="bl_modal-row">
+                <div class="rexbutton-cont_row45">
+                    <div class="rexbutton-count-column_9">
+                        <div id="rex-button-link-target-wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix">
+                            <span class="prefix"></span>
+                            <input type="text" id="rex-button-link-target" name="rex-button-link-target" class="rexbutton-upd-textbox_resize">
+                            <label for="rex-button-link-target" class="rexbutton-upd-textbox_resize"><?php _e('https://...', 'rexpansive');?></label>
+                            <span class="rex-material-bar"></span>
+                        </div>
+                    </div>
+                    <div class="rexbutton-count-column_10">
+                        <div id="rex-button-link-type-wrap" class="rx__select-wrap">
+                            <select id="rex-button-link-type" class="rx__form-input rexbutton-upd-combobox">
+                                <option value="_blank">_blank</option>
+                                <option value="_self">_self</option>
+                                <option value="_parent">_parent</option>
+                                <option value="_top">_top</option>
+                            </select>
+                            <div class="rx__form-input__select-arrow">
+                                <i class="l-svg-icons"><svg><use xlink:href="#A007-Close"></use></svg></i>
+                            </div> 
+                        </div>
                     </div>
                 </div>
             </div>
             <!-- settima row -->
-            <div class="bl_modal-row" style="background-color:yellow;">
-                <div id="rex-button-name-wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix">
-                    <span class="prefix"></span>
-                    <input type="text" id="rex-button__name" name="rex-button__name">
-                    <label for="rex-button__name" class=""><?php _e('Title name model button', 'rexpansive');?></label>
-                    <span class="rex-material-bar"></span>
+            <div class="bl_modal-row">
+                <div class="rexbutton-cont_row77">
+
+                    <div class="rexbutton-cont_row">
+
+                        <div id="rex-button-add-model-wrap" class="add-rex-button-model">
+                            <div class="add-label">aggiungi</div>
+                        </div>
+
+                        <div id="rex-button-name-wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix">
+
+                            <span class="prefix"></span>
+
+                            <input type="text" id="rex-button__name" name="rex-button__name" class="rexbutton-upd-actiontextbox">
+
+                            <label for="rex-button__name" class=""><?php _e('Title name model button', 'rexpansive');?></label>
+
+                            <span class="rex-material-bar"></span>
+                            
+                        </div>
+                    </div>
+                
                 </div>
-                <div id="rex-button-add-model-wrap" class="add-rex-button-model">
-                    <div class="add-label">+</div>
-                </div>
-            </div><!-- // .rex-model__add-model__wrap -->
+            </div>
         </div>
         <div class="rex-modal__outside-footer">
-            <div class="rex-reset-button">reset</div>
-            <div class="rex-apply-button">apply</div>
+            <div class="tool-button tool-button--inline tool-button--save rex-apply-button tippy" data-tippy-content="<?php _e('save','rexpansive'); ?>" data-rex-option="save">
+                <span class="rex-button save-page btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+            </div>
+            <div class="tool-button tool-button--inline tool-button--cancel rex-reset-button tippy" data-rex-option="continue" data-tippy-content="<?php _e('reset','rexpansive'); ?>">
+                <span class="rex-button continue btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
+            </div>
+
         </div>
     </div>
 </div>
