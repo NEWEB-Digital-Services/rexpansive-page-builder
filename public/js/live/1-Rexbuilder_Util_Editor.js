@@ -462,7 +462,7 @@ var Rexbuilder_Util_Editor = (function($) {
       var data = event.settings;
       undoStackArray = [];
       redoStackArray = [];
-      _clearSectionsEdited();
+      // _clearSectionsEdited();
       Rexbuilder_Util.chosenLayoutData = jQuery.extend(
         true,
         {},

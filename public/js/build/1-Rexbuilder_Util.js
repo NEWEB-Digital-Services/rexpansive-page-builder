@@ -412,7 +412,6 @@ var Rexbuilder_Util = (function($) {
   };
 
   var _updatePageCustomizationsData = function(updatedPageCustomizationsData) {
-    console.log(updatedPageCustomizationsData);
     var layoutNameToUpdate = updatedPageCustomizationsData.name;
     var $customizationWrapper = $pageCustomizationsDataDiv.children(
       '.customization-wrap[data-customization-name="' +
@@ -1132,6 +1131,8 @@ var Rexbuilder_Util = (function($) {
       }
     }
 
+    Rexbuilder_Util_Editor.clearSectionsEdited();
+
     var mergedEdits = _mergeSections(
       layoutSelectedSections,
       defaultLayoutSections
@@ -1214,6 +1215,11 @@ var Rexbuilder_Util = (function($) {
   ) {
     var $gallery = $section.find(".grid-stack-row");
     var galleryData = $gallery.data();
+
+    if( targets[0].props.gridEdited ) {
+      $gallery.attr("data-rexlive-layout-changed", true);
+    }
+
     if (galleryData !== undefined) {
       var galleryEditorInstance = galleryData.plugin_perfectGridGalleryEditor;
       if (galleryEditorInstance !== undefined) {
@@ -1769,7 +1775,6 @@ var Rexbuilder_Util = (function($) {
   };
 
   var _updatePageCustomizationsDomOrder = function(layoutsData) {
-    console.log("layoutsData", layoutsData);
     for (var i = 0; i < layoutsData.length; i++) {
       $layoutsDomOrder
         .children(

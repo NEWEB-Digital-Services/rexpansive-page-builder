@@ -69,7 +69,7 @@
       editedFromBackend: false,
       oneColumMode: false,
       oneColumModeActive: false,
-      gridstackBatchMode: false,
+      // gridstackBatchMode: false,
       updatingSection: false,
       oldLayout: "",
       oldCellHeight: 0,
@@ -485,7 +485,6 @@
         this.updateBlocksHeight();
       }
       this.commitGridstack();
-      console.log('======= END updateGridstack');
     },
 
     updateSectionWidthWrap: function(newWidthParent, reverseData) {
@@ -1004,12 +1003,12 @@
     },
 
     batchGridstack: function() {
-      if (!this.properties.gridstackBatchMode) {
+      // if (!this.properties.gridstackBatchMode) {
         if (this.properties.gridstackInstance !== null) {
           this.properties.gridstackInstance.batchUpdate();
         }
         this.properties.gridstackBatchMode = true;
-      }
+      // }
     },
 
     commitGridstack: function() {
@@ -1017,7 +1016,7 @@
         if (this.properties.gridstackInstance !== null) {
           this.properties.gridstackInstance.commit();
         }
-        this.properties.gridstackBatchMode = false;
+        // this.properties.gridstackBatchMode = false;
       }
     },
 
@@ -1042,8 +1041,6 @@
     },
 
     updateGridstackStyles: function(newH) {
-      console.log('--------> GUILTY _initStyles');
-      console.log('--------> GUILTY _updateStyles');
       if (newH !== undefined) {
         this.properties.singleHeight = newH;
       }
@@ -2867,7 +2864,6 @@
             !Rexbuilder_Util.windowIsResizing &&
             !this.properties.updatingSection
           ) {
-            console.log('COMMITTO GRIGLIA');
             this.commitGridstack();
           }
         }

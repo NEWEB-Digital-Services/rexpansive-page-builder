@@ -315,6 +315,7 @@ var builderlive_public = [
 	'public/js/vendor/jquery.mb.YTPlayer.min.js',
 	'public/js/vendor/store.legacy.min.js',
 	'public/js/build/1-Rexbuilder_Util.js',
+	'public/js/build/1-Rexbuilder_Rexbutton.js',
 	'public/js/live/1-Rexbuilder_Util_Editor.js',
 	'public/js/live/1-Rexbuilder_CreateBlocks.js',
 	'public/js/live/1-Rexbuilder_Dom_Util.js',
