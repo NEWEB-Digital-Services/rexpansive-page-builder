@@ -1182,18 +1182,18 @@ var TextEditor = (function ($) {
 
     viewRexbuttonToolbox: function (event) {
       this.rexbuttonTools.style.display = "block";
-      console.log("viewRexbuttonToolbox()");
+      //console.log("viewRexbuttonToolbox()");
       this.placeRexbuttonToolbox();
     },
 
     hideRexbuttonToolbox: function (event) {
       this.rexbuttonTools.style.display = "none";
-      console.log("hideRexbuttonToolbox()");
+      //console.log("hideRexbuttonToolbox()");
     },
 
     traceInputRexButton: function (event) {
       if ("click" == event.type) {
-        console.log("traceInputRexButton()");
+        //console.log("traceInputRexButton()");
         // check if cursor is inside rexbutton
         var nodeToFix = MediumEditor.selection.getSelectionStart(this.base.options.ownerDocument);
         if ($(event.target).hasClass("rex-button-text")) {
@@ -1246,7 +1246,7 @@ var TextEditor = (function ($) {
     },
 
     handleEventInput: function (eventObj, target) {
-      console.log("handleEventInput()");
+      //console.log("handleEventInput()");
     },
 
     handleEventKeyUp: function (event, target) {

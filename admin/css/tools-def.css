@@ -15295,10 +15295,37 @@ input[type=text]:focus + .b-svg-icons {
   .bl_modal-row:not(:last-child) {
     border-bottom: 1px solid #ddd; }
 
-/* BUTTON EDITOR - CSS Row 1-2-3-4 */
+#rex-button-editor .rex-accordion--content {
+  border-bottom: 1px solid #ddd; }
+
+/* BUTTON EDITOR - CSS Row 1-2-3-4-5-6 */
 .bl_modal-row .rexbutton-cont_row10 {
   width: 381px;
   margin: 12px auto; }
+
+.bl_modal-row .rexbutton-cont_row10 .rexbutton-count-colum_accord {
+  width: 30px;
+  height: 42px;
+  margin-right: 12px;
+  float: left;
+  position: relative; }
+
+.bl_modal-row .rexbutton-cont_row10 .rexbutton-count-colum_accord .rexbutton-upd-accord_button {
+  width: 30px;
+  height: 42px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  text-align: center;
+  font-size: 34px;
+  padding: 12px 0px 0px 0px;
+  color: #979797; }
+
+.bl_modal-row .rexbutton-cont_row10 .rexbutton-count-colum_accord .rexbutton-upd-accord_button:hover {
+  color: #00ACFF;
+  -webkit-transition: 1s;
+  -o-transition: 1s;
+  transition: 1s; }
 
 .bl_modal-row .rexbutton-cont_row10 .rexbutton-count-column_1 {
   width: 42px;
@@ -15307,7 +15334,7 @@ input[type=text]:focus + .b-svg-icons {
   float: left; }
 
 .bl_modal-row .rexbutton-cont_row10 .rexbutton-count-column_2 {
-  width: 201px;
+  width: 181px;
   height: 42px;
   margin-right: 12px;
   float: left; }
@@ -15315,13 +15342,13 @@ input[type=text]:focus + .b-svg-icons {
 .bl_modal-row .rexbutton-cont_row10 .rexbutton-count-column_3 {
   width: 20px;
   height: 42px;
-  margin-right: 12px;
+  margin-right: 6px;
   float: left; }
 
 .bl_modal-row .rexbutton-cont_row10 .rexbutton-count-column_4 {
-  width: 50px;
+  width: 40px;
   height: 42px;
-  margin-right: 12px;
+  margin-right: 6px;
   float: left; }
 
 .bl_modal-row .rexbutton-cont_row10 .rexbutton-count-column_5 {
@@ -15345,9 +15372,13 @@ input[type=text]:focus + .b-svg-icons {
   font-size: 1rem;
   -webkit-box-sizing: content-box;
   box-sizing: content-box;
+  text-align: center;
   /*box-sizing:border-box;*/ }
 
-/* BUTTON EDITOR - CSS Row 5 */
+.bl_modal-row .rexbutton-cont_row10 .rexbutton-count-column_2 .rexbutton-upd-textbox {
+  text-align: left; }
+
+/* BUTTON EDITOR - CSS Row 7 */
 .bl_modal-row .rexbutton-cont_row23 {
   width: 381px; }
 
@@ -15453,7 +15484,7 @@ input[type=text]:focus + .b-svg-icons {
   box-sizing: content-box;
   /*box-sizing:border-box;*/ }
 
-/* BUTTON EDITOR - CSS Row 6 */
+/* BUTTON EDITOR - CSS Row 8 */
 .bl_modal-row .rexbutton-cont_row45 {
   width: 381px; }
 
@@ -15478,6 +15509,10 @@ input[type=text]:focus + .b-svg-icons {
 .bl_modal-row .rexbutton-cont_row45 .rexbutton-upd-textbox_resize {
   height: 42px; }
 
+.bl_modal-row .rexbutton-cont_row45 .active {
+  padding-top: 2px;
+  height: 40px; }
+
 .rex-modal .rexbutton-cont_row45 .input-field.rex-input-prefixed .prefix ~ input {
   width: 100%;
   font-size: 15px;
@@ -15500,11 +15535,22 @@ input[type=text]:focus + .b-svg-icons {
   -ms-transform: translateY(-16px);
   transform: translateY(-16px); }
 
-/* BUTTON EDITOR - CSS Row 7 */
+/* BUTTON EDITOR - CSS Row 9 */
 .bl_modal-row .rexbutton-cont_row77 {
   width: 381px;
   height: 42px;
   margin: 12px auto 24px auto; }
+
+.bl_modal-row .rexbutton-cont_row77 .rexbutton-count-column_11 {
+  width: 339px;
+  height: 42px;
+  float: left; }
+
+.bl_modal-row .rexbutton-cont_row77 .rexbutton-count-column_12 {
+  width: 30px;
+  height: 42px;
+  margin-left: 12px;
+  float: left; }
 
 .rex-modal .rexbutton-cont_row77 .input-field.rex-input-prefixed .prefix ~ input {
   width: 100%;
@@ -16171,9 +16217,9 @@ input:disabled + .rex_edit_title_slider {
   height: 100%; }
 
 #rex-button-editor .add-rex-button-model {
-  background-color: green; }
+  background-color: #00be00; }
   #rex-button-editor .add-rex-button-model.saving-rex-button {
-    background-color: blue; }
+    background-color: #00be00; }
 
 .add-rex-button-model.editing-model {
   display: none; }
@@ -16187,8 +16233,8 @@ input:disabled + .rex_edit_title_slider {
   display: flex; }
 
 #rex-button-preview-background {
-  width: 200px;
-  height: 40px;
+  width: 181px;
+  height: 42px;
   background-color: black;
   border-radius: 20px; }
 
@@ -16198,14 +16244,14 @@ input:disabled + .rex_edit_title_slider {
   display: flex; }
 
 #rex-button-preview-background-hover {
-  width: 200px;
-  height: 40px;
+  width: 181px;
+  height: 42px;
   background-color: grey;
   border-radius: 20px; }
 
 #rex-button-border-preview {
-  width: 200px;
-  height: 40px;
+  width: 181px;
+  height: 42px;
   border-color: blue;
   border-radius: 20px;
   border-style: solid;
@@ -16257,12 +16303,21 @@ input:disabled + .rex_edit_title_slider {
   width: 100%; }
 
 #rex-button-add-model-wrap {
-  width: 50px;
-  height: 50px;
-  background-color: yellow; }
+  display: block;
+  width: 30px;
+  height: 30px;
+  font-size: 24px;
+  text-align: center;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 6px 0px 6px 0px;
+  padding: 6px 0px 0px 0px;
+  color: #FFFFFF; }
 
 #rex-button-add-model-wrap:hover {
-  background-color: orange; }
+  cursor: pointer; }
 
 .rex-button-wrapper {
   -webkit-box-align: center;

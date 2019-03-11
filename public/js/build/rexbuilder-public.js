@@ -16,7 +16,7 @@ var Rexbuilder_App = (function($) {
     Rexbuilder_Util.init();
     Rexbuilder_Dom_Util.init();
     
-    console.log("starting buttons js");
+    //console.log("starting buttons js");
     Rexbuilder_Rexbutton.init();
     
     if (Rexbuilder_Util.editorMode) {
@@ -352,6 +352,10 @@ var Rexbuilder_App = (function($) {
     //     }
     //   });
     // });
+
+    /* $accordions.rexAccordion();
+    console.log("init - rexAccordion()"); */
+
   };
 
   var _linkDocumentListeners = function() {

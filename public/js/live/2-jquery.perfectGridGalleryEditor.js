@@ -3192,7 +3192,7 @@
         sliderHeight
         // increasedHeight
       );
-      console.log(newH);
+      //console.log(newH);
 
       if (
         this.properties.oneColumModeActive &&

@@ -1032,6 +1032,7 @@ var Button_Edit_Modal = (function ($) {
 
     var _init = function () {
         var $self = $("#rex-button-editor");
+        var $accordions = $self.find('.rexpansive-accordion');
         var $container = $self;
         button_editor_properties = {
             $self: $self,
@@ -1115,6 +1116,10 @@ var Button_Edit_Modal = (function ($) {
         _linkBorderColorEditor();
 
         _initPanelChoose();
+
+        $accordions.rexAccordion({open:{},close:{},});
+        //console.log("$accordions:",$accordions);
+
     };
 
     return {

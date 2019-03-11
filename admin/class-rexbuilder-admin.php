@@ -323,6 +323,9 @@ class Rexbuilder_Admin {
 				// tippy
 				wp_enqueue_script( 'tippy', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/tippy.all.min.js', array( 'jquery' ), null, true );
 
+				// editorBTT - rexAccordion
+				wp_enqueue_script( 'rexAccordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexAccordion.js', array( 'jquery' ), null, true );
+
 				// tmpl
 				wp_enqueue_script( 'template-util', REXPANSIVE_BUILDER_URL . 'public/js/vendor/tmpl.min.js', array( 'jquery' ), null, true );
 
