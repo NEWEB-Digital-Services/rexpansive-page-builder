@@ -205,30 +205,45 @@ class Rexbuilder_Utilities {
 		return $sprite_a;
 	}
 
-	public static function get_registered_scripts_styles() {
+	/**
+	 * Printing all scripts and styles enqueued at a certain moment
+	 *
+	 * @param boolean $scripts
+	 * @param boolean $styles
+	 * @return array
+	 * @since 2.0.0
+	 * @date 11-03-2019
+	 */
+	public static function get_registered_scripts_styles( $scripts = true, $styles = true ) {
 
 		$result = [];
 		$result['scripts'] = [];
 		$result['styles'] = [];
 	
 		// Print all loaded Scripts
-		global $wp_scripts;
-		foreach( $wp_scripts->queue as $script ) 
+		if ( $scripts )
 		{
-			$result['scripts'][] =  array(
-				'handle' => $wp_scripts->registered[$script]->handle,
-				'script' => $wp_scripts->registered[$script]->src
-			);
+			global $wp_scripts;
+			foreach( $wp_scripts->queue as $script ) 
+			{
+				$result['scripts'][] =  array(
+					'handle' => $wp_scripts->registered[$script]->handle,
+					'script' => $wp_scripts->registered[$script]->src
+				);
+			}
 		}
 	
 		// Print all loaded Styles (CSS)
-		global $wp_styles;
-		foreach( $wp_styles->queue as $style )
+		if ( $styles )
 		{
-			$result['styles'][] =  array(
-				'handle' => $wp_styles->registered[$style]->handle,
-				'style' => $wp_styles->registered[$style]->src
-			);
+			global $wp_styles;
+			foreach( $wp_styles->queue as $style )
+			{
+				$result['styles'][] =  array(
+					'handle' => $wp_styles->registered[$style]->handle,
+					'style' => $wp_styles->registered[$style]->src
+				);
+			}
 		}
 	
 		return $result;

@@ -2383,6 +2383,7 @@ var TextEditor = (function ($) {
       //   icon: event.svg_ID
       // });
       // Use html string due to tmpl bugs
+      console.log(event);
       var icon_html = '<i class="' + event.svg_class + '"><svg><use xlink:href="#' + event.svg_ID + '"></use></svg></i>';
 
       // If cursor is valid
