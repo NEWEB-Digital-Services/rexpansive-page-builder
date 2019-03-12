@@ -295,6 +295,10 @@ class Rexbuilder_Public
             wp_enqueue_script('3-velocityui', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/3-velocity.ui.min.js', array('jquery'), $ver, true);
             wp_enqueue_script('4-jqueryScrollify', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/4-jquery.rexScrollify.js', array('jquery'), $ver, true);
 
+            if( ! Rexbuilder_Utilities::isBuilderLive() ) {
+                wp_enqueue_script('futuristic-particle', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/futuristic-particle.js', array('jquery'), $ver, true);
+            }
+            
             wp_enqueue_script('rexbuilder', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/rexbuilder-public.js', array('jquery'), $ver, true);
 
             wp_localize_script('rexbuilder', '_plugin_frontend_settings', apply_filters('rexbuilder_js_settings', array(
