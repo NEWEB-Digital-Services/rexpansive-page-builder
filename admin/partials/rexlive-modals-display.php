@@ -2274,8 +2274,8 @@ defined('ABSPATH') or exit;
                     </div>
                     </div>
                     <div class="rexbutton-count-column_2">
-                        <div id="rex-button-background-hover-preview-wrap">
-                            <div id="rex-button-preview-background-hover"></div>
+                        <div id="rex-button-border-hover-preview-wrap">
+                            <div id="rex-button-preview-border-hover"></div>
                         </div>
                     </div>
                     <div class="rexbutton-count-column_3"><!-- SPAZIO PER LE ICONE --></div>

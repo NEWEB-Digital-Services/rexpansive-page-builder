@@ -19,8 +19,15 @@
 #rex-button-preview-background{
     width: 181px;
     height: 42px;
-    background-color: black;
+    background-color: blue;
     border-radius: 20px;
+}
+
+#rex-button-preview-text-hover{
+    width: 181px;
+    height: 42px;
+    background-color: blue;
+    border-radius: 20px; 
 }
 
 #rex-button-height-wrap{
@@ -30,7 +37,7 @@
 #rex-button-preview-background-hover{
     width: 181px;
     height: 42px;
-    background-color: grey;
+    background-color: blue;
     border-radius: 20px;
 }
 
@@ -41,6 +48,13 @@
     border-radius: 20px;
     border-style: solid;
     border-width: 2px;
+}
+
+#rex-button-preview-border-hover{
+    width: 181px;
+    height: 42px;
+    background-color: blue;
+    border-radius: 20px;
 }
 
 #rex-button-border-width-wrap{

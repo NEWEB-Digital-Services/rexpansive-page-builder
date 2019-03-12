@@ -178,6 +178,8 @@ var Button_Edit_Modal = (function ($) {
             background_color: "",
             button_height: "",
             hover_color: "",
+            hover_text: "",
+            hover_border: "",
             border_color: "",
             border_width: "",
             border_radius: "",
@@ -214,6 +216,8 @@ var Button_Edit_Modal = (function ($) {
                     buttonData.background_color = rexButtonsJSON[i].rules.element.background_color;
                     buttonData.button_height = rexButtonsJSON[i].rules.element.button_height;
                     buttonData.hover_color = rexButtonsJSON[i].rules.hover.background_color;
+                    buttonData.hover_text = rexButtonsJSON[i].rules.hover.text_color;
+                    buttonData.hover_border = rexButtonsJSON[i].rules.hover.border_color;
                     buttonData.border_color = rexButtonsJSON[i].rules.element.border_color;
                     buttonData.border_width = rexButtonsJSON[i].rules.element.border_width;
                     buttonData.border_radius = rexButtonsJSON[i].rules.element.border_radius;
@@ -259,6 +263,16 @@ var Button_Edit_Modal = (function ($) {
         button_editor_properties.$button_background_hover_color_value.spectrum("set", buttonData.hover_color);
         button_editor_properties.$button_background_hover_color_preview.hide();
 
+        button_editor_properties.$button_preview_text_hover.css("background-color", buttonData.hover_text);
+        button_editor_properties.$button_text_hover_color_value.val(buttonData.hover_text);
+        button_editor_properties.$button_text_hover_color_value.spectrum("set", buttonData.hover_text);
+        button_editor_properties.$button_text_hover_color_preview.hide();
+
+        button_editor_properties.$button_preview_border_hover.css("background-color", buttonData.hover_border);
+        button_editor_properties.$button_border_hover_color_value.val(buttonData.hover_border);
+        button_editor_properties.$button_border_hover_color_value.spectrum("set", buttonData.hover_border);
+        button_editor_properties.$button_border_hover_color_preview.hide();
+
         button_editor_properties.$button_preview_background.css("background-color", buttonData.background_color);
         button_editor_properties.$button_background_color_value.val(buttonData.background_color);
         button_editor_properties.$button_background_color_preview.hide();
@@ -292,13 +306,13 @@ var Button_Edit_Modal = (function ($) {
         buttonData.text = button_editor_properties.$button_label_text.val();
         buttonData.link_target = button_editor_properties.$button_link_target.val();
         buttonData.link_type = button_editor_properties.$button_link_type.val();
-
         //colors data are already updated
     };
 
     /**
      * checks if buttons properties 
      */
+
     var _checkEditsModel = function () {
         if (
             // border
@@ -320,7 +334,11 @@ var Button_Edit_Modal = (function ($) {
             // background            
             resetData.background_color == buttonData.background_color &&
             // hover
-            resetData.hover_color == buttonData.hover_color
+            resetData.hover_color == buttonData.hover_color &&
+            // hover
+            resetData.hover_text == buttonData.hover_text &&
+            // hover
+            resetData.hover_border == buttonData.hover_border
         ) {
             return true;
         }
@@ -330,6 +348,7 @@ var Button_Edit_Modal = (function ($) {
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     // Linking panel tools
     ///////////////////////////////////////////////////////////////////////////////////////////////////
+
     var _linkTextInputs = function () {
         // LABEL
         button_editor_properties.$button_label_text.on("keyup", function (e) {
@@ -611,6 +630,106 @@ var Button_Edit_Modal = (function ($) {
         );
     }
 
+    var _linkBorderHoverColorEditor = function () {
+        var colorTEXT;
+        button_editor_properties.$button_border_hover_color_value.spectrum({
+            replacerClassName: "btn-floating",
+            preferredFormat: "hex",
+            showPalette: false,
+            showAlpha: true,
+            showInput: true,
+            showButtons: false,
+            containerClassName:
+                "rexbuilder-materialize-wrap block-border-color-picker",
+            show: function () {
+            },
+            move: function (color) {
+                colorTEXT = color.toRgbString();
+                button_editor_properties.$button_border_hover_color_preview.hide();
+                button_editor_properties.$button_preview_border_hover.css("background-color", colorTEXT);
+                _updateButtonLive({
+                    type: "borderHover",
+                    name: "border-color",
+                    value: colorTEXT
+                });
+            },
+            change: function (color) {
+            },
+            hide: function (color) {
+                buttonData.hover_border = color.toRgbString();
+            },
+            cancelText: "",
+            chooseText: ""
+        });
+
+        var close = tmpl('tmpl-tool-close', {});
+        var $close = $(close);
+        button_editor_properties.$button_border_hover_color_value.spectrum('container').append($close);
+
+        $close.on('click', function (e) {
+            e.preventDefault();
+            button_editor_properties.$button_border_hover_color_value.spectrum('hide');
+        });
+
+        button_editor_properties.$button_border_color_preview.on(
+            "click",
+            function () {
+                button_editor_properties.$button_border_hover_color_value.spectrum("show");
+                return false;
+            }
+        );
+    }
+
+    var _linkTextHoverColorEditor = function () {
+        var colorTEXT;
+        button_editor_properties.$button_text_hover_color_value.spectrum({
+            replacerClassName: "btn-floating",
+            preferredFormat: "hex",
+            showPalette: false,
+            showAlpha: true,
+            showInput: true,
+            showButtons: false,
+            containerClassName:
+                "rexbuilder-materialize-wrap block-text-color-picker",
+            show: function () {
+            },
+            move: function (color) {
+                colorTEXT = color.toRgbString();
+                button_editor_properties.$button_text_hover_color_preview.hide();
+                button_editor_properties.$button_preview_text_hover.css("background-color", colorTEXT);
+                _updateButtonLive({
+                    type: "textHover",
+                    name: "color",
+                    value: colorTEXT
+                });
+            },
+            change: function (color) {
+            },
+            hide: function (color) {
+                buttonData.hover_text = color.toRgbString();
+            },
+            cancelText: "",
+            chooseText: ""
+        });
+
+        var close = tmpl('tmpl-tool-close', {});
+        var $close = $(close);
+        button_editor_properties.$button_text_hover_color_value.spectrum('container').append($close);
+
+        $close.on('click', function (e) {
+            e.preventDefault();
+            button_editor_properties.$button_text_hover_color_value.spectrum('hide');
+        });
+
+        button_editor_properties.$button_text_hover_color_preview.on(
+            "click",
+            function () {
+                button_editor_properties.$button_text_hover_color_value.spectrum("show");
+                return false;
+            }
+        );
+    }
+
     var _linkBorderColorEditor = function () {
 
         var colorTEXT;
@@ -847,6 +966,8 @@ var Button_Edit_Modal = (function ($) {
                 },
                 hover: {
                     background_color: buttonData.hover_color,
+                    text_color: buttonData.hover_text,
+                    border_color: buttonData.hover_border,
                 }
             }
         }
@@ -886,7 +1007,10 @@ var Button_Edit_Modal = (function ($) {
         buttonCSS += ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"]";
         buttonCSS += " .rex-button-background:hover{";
         buttonCSS += "background-color: " + buttonData.hover_color + ";";
+        buttonCSS += "border-color: " + buttonData.hover_border + ";";
+        buttonCSS += "color: " + buttonData.hover_text + ";";
         buttonCSS += "}";
+
         return buttonCSS;
     }
 
@@ -907,6 +1031,8 @@ var Button_Edit_Modal = (function ($) {
             button_height: buttonData.button_height,
             background_color: buttonData.background_color,
             hover_color: buttonData.hover_color,
+            hover_text: buttonData.hover_text,
+            hover_border: buttonData.hover_border,
             border_color: buttonData.border_color,
             border_width: buttonData.border_width,
             border_radius: buttonData.border_radius,
@@ -1060,6 +1186,16 @@ var Button_Edit_Modal = (function ($) {
             $button_background_hover_color_runtime: $container.find("#rex-button-background-hover-color-runtime"),
             $button_background_hover_color_preview: $container.find("#rex-button-background-hover-color-preview-icon"),
 
+$button_preview_text_hover: $container.find("#rex-button-preview-text-hover"),
+$button_text_hover_color_value: $container.find("#rex-button-text-hover-color"),
+$button_text_hover_color_runtime: $container.find("#rex-button-text-hover-color-runtime"),
+$button_text_hover_color_preview: $container.find("#rex-button-text-hover-color-preview-icon"),
+
+$button_preview_border_hover: $container.find("#rex-button-preview-border-hover"),
+$button_border_hover_color_value: $container.find("#rex-button-border-hover-color"),
+$button_border_hover_color_runtime: $container.find("#rex-button-border-hover-color-runtime"),
+$button_border_hover_color_preview: $container.find("#rex-button-border-hover-color-preview-icon"),
+
             $button_preview_border: $container.find("#rex-button-border-preview"),
             $button_border_color_value: $container.find("#rex-button-border-color"),
             $button_border_color_runtime: $container.find("#rex-button-border-color-runtime"),
@@ -1090,6 +1226,8 @@ var Button_Edit_Modal = (function ($) {
             background_color: "",
             button_height: "",
             hover_color: "",
+            hover_text: "",
+            hover_border: "",
             border_color: "",
             border_width: "",
             border_radius: "",
@@ -1113,13 +1251,14 @@ var Button_Edit_Modal = (function ($) {
         _linkTextColorEditor();
         _linkBackgroundColorEditor();
         _linkBackgroundHoverColorEditor();
+        _linkBorderHoverColorEditor();
+        _linkTextHoverColorEditor();
         _linkBorderColorEditor();
 
         _initPanelChoose();
 
         $accordions.rexAccordion({open:{},close:{},});
         //console.log("$accordions:",$accordions);
-
     };
 
     return {
