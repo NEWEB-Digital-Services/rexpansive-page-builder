@@ -139,7 +139,14 @@ class Rexbuilder_Public
             // wp_enqueue_style('input-spinner', REXPANSIVE_BUILDER_URL . $cartella . 'css/input-spinner.css', array(), $ver, 'all');
 
             wp_enqueue_style('rexpansive-builder-rexbutton-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/rex_buttons.css', array(), $ver, 'all');
-            wp_enqueue_style('rexpansive-builder-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/public.css', array(), $ver, 'all');
+            if( Rexbuilder_Utilities::isBuilderLive() ) 
+            {
+                wp_enqueue_style('rexpansive-builder-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/public-editor.css', array(), $ver, 'all');
+            }
+            else
+            {
+                wp_enqueue_style('rexpansive-builder-style', REXPANSIVE_BUILDER_URL . $cartella . 'css/public.css', array(), $ver, 'all');
+            }
 
             wp_enqueue_style('rexpansive-builder-editor-style', REXPANSIVE_BUILDER_URL .'admin/css/live-def.css', array(), $ver, 'all');
         }
@@ -296,7 +303,7 @@ class Rexbuilder_Public
             wp_enqueue_script('4-jqueryScrollify', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/4-jquery.rexScrollify.js', array('jquery'), $ver, true);
 
             if( ! Rexbuilder_Utilities::isBuilderLive() ) {
-                wp_enqueue_script('futuristic-particle', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/futuristic-particle.js', array('jquery'), $ver, true);
+                // wp_enqueue_script('futuristic-particle', REXPANSIVE_BUILDER_URL . $cartella . 'js/vendor/futuristic-particle.js', array('jquery'), $ver, true);
             }
             
             wp_enqueue_script('rexbuilder', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/rexbuilder-public.js', array('jquery'), $ver, true);

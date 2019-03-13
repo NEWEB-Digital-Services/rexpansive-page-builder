@@ -981,9 +981,9 @@
           var maxBlockHeight = $blockContent.height();
           var textHeight = 0;
           var $textWrap = $elem.find(".text-wrap");
-          if ($textWrap.length != 0) {
+          // if ($textWrap.length != 0) {
             textHeight = gallery.calculateTextWrapHeight($textWrap);
-          }
+          // }
           if (Rexbuilder_Util.editorMode) {
             var instanceScrollbar = $rexScrollbar
               .overlayScrollbars(Rexbuilder_Util.scrollbarProperties)
@@ -3089,11 +3089,12 @@
       var sliderHeight = 0;
       var textHeight;
       var emptyBlockFlag = false;
-      if ($textWrap.length != 0) {
+      // if ($textWrap.length != 0) {
         textHeight = this.calculateTextWrapHeight($textWrap);
-      } else {
-        textHeight = 0;
-      }
+      // } else {
+      //   textHeight = 0;
+      // }
+      console.log(textHeight);
 
       if (this.properties.oneColumModeActive) {
         w = 12;
@@ -3262,12 +3263,8 @@
         var textHeight = 0;
         var textCalculate = $textWrap.clone(false);
         textCalculate.children(".medium-insert-buttons").remove();
-        if (textCalculate.text().trim().length != 0) {
-          if (
-            ($textWrap.hasClass("medium-editor-element") &&
-              !$textWrap.hasClass("medium-editor-placeholder")) ||
-            $textWrap.parents(".pswp-item").length != 0
-          ) {
+        if (textCalculate.text().trim().length != 0 || 0 !== textCalculate.find('img').length ) {
+          if ( ($textWrap.hasClass("medium-editor-element") && !$textWrap.hasClass("medium-editor-placeholder")) || $textWrap.parents(".pswp-item").length != 0 ) {
             var gicwStyles = window.getComputedStyle( $textWrap.parents('.grid-item-content-wrap')[0] );
             textHeight = $textWrap.innerHeight() + Math.ceil(parseFloat(gicwStyles['padding-top'])) + Math.ceil(parseFloat(gicwStyles['padding-bottom']));
           }
