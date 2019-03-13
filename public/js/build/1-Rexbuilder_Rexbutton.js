@@ -583,7 +583,10 @@ var Rexbuilder_Rexbutton = (function ($) {
         _updateButtonContainerRule(buttonID, "margin-bottom", buttonProperties.margin_bottom);
         _updateButtonContainerRule(buttonID, "margin-right", buttonProperties.margin_right);
         _updateButtonContainerRule(buttonID, "margin-left", buttonProperties.margin_left);
-
+        /* _updateButtonContainerRule(buttonID, "padding-top", buttonProperties.padding_top);
+        _updateButtonContainerRule(buttonID, "padding-bottom", buttonProperties.padding_bottom);
+        _updateButtonContainerRule(buttonID, "padding-right", buttonProperties.padding_right);
+        _updateButtonContainerRule(buttonID, "padding-left", buttonProperties.padding_left); */
         _updateButtonContainerRule(buttonID, "border-width", buttonProperties.border_width);
         _updateButtonContainerRule(buttonID, "border-color", buttonProperties.border_color);
         _updateButtonContainerRule(buttonID, "border-radius", buttonProperties.border_radius);
@@ -635,7 +638,10 @@ var Rexbuilder_Rexbutton = (function ($) {
         _updateButtonContainerRule(buttonID, "margin-bottom", "");
         _updateButtonContainerRule(buttonID, "margin-right", "");
         _updateButtonContainerRule(buttonID, "margin-left", "");
-
+        /* _updateButtonContainerRule(buttonID, "padding-top", "");
+        _updateButtonContainerRule(buttonID, "padding-bottom", "");
+        _updateButtonContainerRule(buttonID, "padding-right", "");
+        _updateButtonContainerRule(buttonID, "padding-left", ""); */
         _updateButtonContainerRule(buttonID, "border-width", "");
         _updateButtonContainerRule(buttonID, "border-color", "");
         _updateButtonContainerRule(buttonID, "border-radius", "");
