@@ -2402,6 +2402,13 @@
       var startingElementWidth;
       var $block;
       var imageWidth;
+      var imageHeight;
+
+      var imageHeightNeed;
+      var textWrapHeightNeed;
+      var needH;
+      var currentWidth;
+
       var $blockContent;
       var $uiElement;
       var heightFactor;
@@ -2431,6 +2438,13 @@
             )
               ? 0
               : parseInt($blockContent.attr("data-background_image_width"));
+            
+            imageHeight = isNaN(
+              parseInt($blockContent.attr("data-background_image_height"))
+            )
+              ? 0
+              : parseInt($blockContent.attr("data-background_image_height"));
+
             $imageWrapper = $blockContent.find(".rex-image-wrapper");
             naturalImage =
               $imageWrapper.length != 0 &&
@@ -2443,10 +2457,12 @@
             ) {
               wStart = parseInt($block.attr("data-gs-width"));
             }
+            textWrapHeightNeed = 0;
+            imageHeightNeed = 0;
             heightFactor = gallery.settings.galleryLayout == "masonry" ? 1 : gallery.properties.singleWidth;
           }
         })
-        .on("resize", function(event, ui) {
+        .on("resize", function (event, ui) {
           if (!$uiElement.is("span")) {
             if (naturalImage) {
               if (ui.size.width < imageWidth) {
@@ -2461,11 +2477,24 @@
               Math.round(ui.size.height / heightFactor)
             );
 
-            var needH = gallery.calculateTextWrapHeight( $block.find(".text-wrap") );
-            if( gallery.settings.galleryLayout == "masonry" ) {
-              gallery.properties.gridstackInstance.minHeight(block, Math.round( ( needH + gallery.properties.gutter ) / gallery.properties.singleHeight ) );
+            // In masonry all images have not to be cut
+            if (gallery.settings.galleryLayout == "masonry") {
+              currentWidth = $block.outerWidth();
+              if (currentWidth < imageWidth) {
+                imageHeightNeed = (imageHeight * currentWidth) / imageWidth;
+              } else {
+                imageHeightNeed = imageHeight + gallery.properties.gutter;
+              }
+            }
+
+            textWrapHeightNeed = gallery.calculateTextWrapHeight($block.find(".text-wrap"));
+            console.log(textWrapHeightNeed, imageHeightNeed);
+            needH = Math.max(textWrapHeightNeed, imageHeightNeed);
+
+            if (gallery.settings.galleryLayout == "masonry") {
+              gallery.properties.gridstackInstance.minHeight(block, Math.round((needH + gallery.properties.gutter) / gallery.properties.singleHeight));
             } else {
-              gallery.properties.gridstackInstance.minHeight(block, Math.ceil( ( needH + gallery.properties.gutter ) / gallery.properties.singleWidth ) );
+              gallery.properties.gridstackInstance.minHeight(block, Math.ceil((needH + gallery.properties.gutter) / gallery.properties.singleWidth));
             }
           }
         })
