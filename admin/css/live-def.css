@@ -621,6 +621,12 @@
   -o-transition: fill 600ms ease-out;
   transition: fill 600ms ease-out; }
 
+#rex-button-editor .rexbutton-cont_row10 .l-svg-icons > svg {
+  -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
+  cursor: pointer; }
+
 .l-icon--white .l-svg-icons > svg {
   fill: #fff; }
 

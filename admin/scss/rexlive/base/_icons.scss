@@ -15,6 +15,10 @@
   vertical-align: -0.1em;
   transition: fill 600ms ease-out;
 }
+#rex-button-editor .rexbutton-cont_row10 .l-svg-icons > svg {
+  transform: rotate(45deg);
+  cursor:pointer;
+}
 
 .l-icon--white {
   @include fill-icon(#fff);

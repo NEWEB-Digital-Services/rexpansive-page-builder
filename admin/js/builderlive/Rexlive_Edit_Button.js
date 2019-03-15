@@ -172,24 +172,24 @@ var Button_Edit_Modal = (function ($) {
     };        
 
     /* Change the status of textbox when the user change the link textbox */
-    $("#rex-button-link-target").on("change", function() {
+    /* $("#rex-button-link-target").on("change", function() {
         var valueRefreshTargetLinkBox = $("#rex-button-link-target").val();
         if(valueRefreshTargetLinkBox == "" || valueRefreshTargetLinkBox == null || valueRefreshTargetLinkBox == undefined){
             $(".rexbutton-cont_row45").find("#rex-button-link-target").removeClass("activeinput");
         } else {
             $(".rexbutton-cont_row45").find("#rex-button-link-target").addClass("activeinput");
         }
-    });
+    }); */
 
     /* Change the status of textbox when the user change the name model textbox */
-    $("#rex-button__name").on("change", function() {
+    /* $("#rex-button__name").on("change", function() {
         var valueRefreshButtonNameBox = $("#rex-button__name").val();
         if(valueRefreshButtonNameBox == "" || valueRefreshButtonNameBox == null || valueRefreshButtonNameBox == undefined){
             $(".rexbutton-cont_row77").find("#rex-button__name").removeClass("activeinput");
         } else {
             $(".rexbutton-cont_row77").find("#rex-button__name").addClass("activeinput");
         }
-    });
+    }); */
 
     /* Change the status of the two textbox (link, namemodel) depending on the value they contain */
     var _verifyTextBoxEffectsOnOpenModal = function () {
@@ -198,20 +198,20 @@ var Button_Edit_Modal = (function ($) {
         if(valueIntoTargetLinkBox == "" || valueIntoTargetLinkBox == null || valueIntoTargetLinkBox == undefined){
             $(".rexbutton-cont_row45").find(".prefix").removeClass("active");
             $(".rexbutton-cont_row45").find("#rex-button-link-target-label").removeClass("active");
-            $(".rexbutton-cont_row45").find("#rex-button-link-target").removeClass("activeinput");
+            //$(".rexbutton-cont_row45").find("#rex-button-link-target").removeClass("activeinput");
         } else {
             $(".rexbutton-cont_row45").find(".prefix").addClass("active");
             $(".rexbutton-cont_row45").find("#rex-button-link-target-label").addClass("active");
-            $(".rexbutton-cont_row45").find("#rex-button-link-target").addClass("activeinput");
+            //$(".rexbutton-cont_row45").find("#rex-button-link-target").addClass("activeinput");
         }
         if(valueIntoButtonNameBox == "" || valueIntoButtonNameBox == null || valueIntoButtonNameBox == undefined){
             $(".rexbutton-cont_row77").find(".prefix").removeClass("active");
             $(".rexbutton-cont_row77").find("#rex-button__name-label").removeClass("active");
-            $(".rexbutton-cont_row77").find("#rex-button__name").removeClass("activeinput");
+            //$(".rexbutton-cont_row77").find("#rex-button__name").removeClass("activeinput");
         } else {
             $(".rexbutton-cont_row77").find(".prefix").addClass("active");
             $(".rexbutton-cont_row77").find("#rex-button__name-label").addClass("active");
-            $(".rexbutton-cont_row77").find("#rex-button__name").addClass("activeinput");
+            //$(".rexbutton-cont_row77").find("#rex-button__name").addClass("activeinput");
         }
     }
 
