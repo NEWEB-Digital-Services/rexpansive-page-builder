@@ -819,8 +819,32 @@ class Rexbuilder_Public
         $buttonsIDsJSON = get_option( '_rex_buttons_ids', $defaultButtonsIDs );
         $stripped = stripslashes( $buttonsIDsJSON );
         $buttonsIDsUsed = json_decode($stripped, true);
+
+        $rexContainerMargins = "";
+        if($editor){
+            $fixTopMargins = false;
+            $globalMargins = get_option("_rex_global_margins_container", "");
+            $pageMargins = get_post_meta($post->ID, '_margins_container', true);
+            $globalMarginsStripped = stripslashes( $globalMargins );
+            $globalMarginsDecoded = json_decode($globalMarginsStripped, true);
+            $pageMarginsStripped = stripslashes( $pageMargins );
+            $pageMarginsDecoded = json_decode($pageMarginsStripped, true);
+            
+            if($pageMarginsDecoded !== null){
+                $rexContainerMargins = "margin-top: ".$pageMarginsDecoded["top"]."px";
+                if($pageMarginsDecoded["top"] > 0){
+                    $fixTopMargins = true;
+                }
+            } else if($globalMarginsDecoded !== null){
+                $rexContainerMargins = "margin-top: ".$globalMarginsDecoded["top"]."px";
+                if($globalMarginsDecoded["top"] > 0){
+                    $fixTopMargins = true;
+                }
+            }
+        }
+
 ?>
-    <div class="rexbuilder-live-content<?php echo ($editor ? ' rexbuilder-live-content--editing add-new-section--hide' : ''); ?>">
+    <div class="rexbuilder-live-content<?php echo ($editor ? ' rexbuilder-live-content--editing add-new-section--hide'.($fixTopMargins ? ' fix-tools-first-row' : '') : ''); ?>"<?php echo ($rexContainerMargins != "" ? " style=".$rexContainerMargins."\"" : "");?>>
         <?php
         require REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-page-information.php";
 

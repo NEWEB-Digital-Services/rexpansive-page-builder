@@ -79,6 +79,11 @@ var Rexlive_Modals = (function ($) {
 
         //editor button
         Button_Edit_Modal.init();
+
+        //more tools
+        var $container = $(".rexlive-toolbox__toggle-wrap");
+        Container_Margins.init($container);
+
     }
 
     return {

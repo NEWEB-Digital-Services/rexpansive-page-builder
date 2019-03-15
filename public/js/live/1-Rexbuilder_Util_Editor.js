@@ -607,7 +607,22 @@ var Rexbuilder_Util_Editor = (function($) {
     Rexbuilder_Util.$document.on("rexlive:drag_drop_ended", function (e) {
       Rexbuilder_Util_Editor.dragAndDropFromParent = false;
     });
+
+    Rexbuilder_Util.$document.on("rexlive:set_container_margins", function(e) {
+      Rexbuilder_Util_Editor.updateContainerMargins(e.settings.data_to_send);
+    });
   };
+
+  var _updateContainerMargins = function(data){
+    var $parentContainer = Rexbuilder_Util.$rexContainer.parents(".rexbuilder-live-content").eq(0);
+    if(data.distances.top > 0){
+      $parentContainer.addClass("fix-tools-first-row");
+    } else{
+      $parentContainer.removeClass("fix-tools-first-row");
+    }
+    $parentContainer.css("margin-top", data.distances.top);
+    // @todo aggiungere il margin al container
+  }
 
   var _hideAllTools = function() {
     Rexbuilder_Util_Editor.manageElement = false;
@@ -1669,6 +1684,7 @@ var Rexbuilder_Util_Editor = (function($) {
     getGradientSafeValue: _getGradientSafeValue,
     getPrefixedValues: _getPrefixedValues,
     synchGradient: _synchGradient,
-    updateBlockContainerHeight: _updateBlockContainerHeight
+    updateBlockContainerHeight: _updateBlockContainerHeight,
+    updateContainerMargins: _updateContainerMargins,
   };
 })(jQuery);

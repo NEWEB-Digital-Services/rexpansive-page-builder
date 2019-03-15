@@ -20,6 +20,10 @@ $small_tools = true;
       <!-- <img class="rexlive-logo" src="<?php // echo REXPANSIVE_BUILDER_URL; ?>admin/img/ico-rexpansive.png" alt="Rexpansive" width="20"> -->
       <span class="close-toolbox__icon-wrap"><?php Rexbuilder_Utilities::get_icon('#A007-Close'); ?></span>
     </div>
+    <br>
+    <div>
+      <span><input id="margin-rexlive-content" type="text"><input type="checkbox" id="margin-rexlive-all-pages"></span>
+    </div>
   </div>
 </div>
 <div class="rexlive-toolbox__wrap">
