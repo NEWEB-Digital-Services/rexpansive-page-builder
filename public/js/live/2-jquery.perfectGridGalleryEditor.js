@@ -2479,15 +2479,17 @@
 
             // In masonry all images have not to be cut
             if (gallery.settings.galleryLayout == "masonry") {
-              currentWidth = $block.outerWidth();
-              if (currentWidth < imageWidth || !naturalImage) {
-                imageHeightNeed = (imageHeight * currentWidth) / imageWidth;
-              } else {
-                imageHeightNeed = imageHeight + gallery.properties.gutter;
+              if(naturalImage){
+                currentWidth = $block.outerWidth();
+                if (currentWidth < imageWidth) {
+                  imageHeightNeed = (imageHeight * currentWidth) / imageWidth;
+                } else {
+                  imageHeightNeed = imageHeight + gallery.properties.gutter;
+                }
+                imageHeightNeed = isNaN(imageHeightNeed) ? 0 : imageHeightNeed;
               }
-              imageHeightNeed = isNaN(imageHeightNeed) ? 0 : imageHeightNeed;
             }
-            
+
             textWrapHeightNeed = gallery.calculateTextWrapHeight($block.find(".text-wrap"));
             needH = Math.max(textWrapHeightNeed, imageHeightNeed);
 
@@ -2841,7 +2843,7 @@
       }
     },
 
-    updateBlocksHeight: function() {
+    updateBlocksHeight: function () {
       var gallery = this;
       var $elem;
       var $elemData;
@@ -2853,35 +2855,29 @@
           Rexbuilder_Util.windowIsResizing
         ) {
           this.batchGridstack();
-          $(this.properties.blocksBottomTop).each(function(i, e) {
+          $(this.properties.blocksBottomTop).each(function (i, e) {
             $elem = $(e);
             $elemData = $elem.children(".rexbuilder-block-data");
-            if (
-              (gallery.settings.galleryLayout == "masonry" &&
-                (
-                  (typeof $elemData.attr("data-block_dimensions_live_edited") !=
-                  "undefined" &&
-                  $elemData
-                    .attr("data-block_dimensions_live_edited")
-                    .toString() != "true") ||
-                  Rexbuilder_Util.backendEdited)) ||
-              Rexbuilder_Util_Editor.updatingSectionLayout
-            ) {
-              if (
-                !(
-                  $elem.hasClass("rex-hide-element") ||
-                  $elem.hasClass("removing_block")
-                )
-              )
-                gallery.updateElementHeight($elem);
-            } else {
-              // Rexbuilder_Util.chosenLayoutData.min) === Rexbuilder_Util.$window[0].innerWidth \\ if they are the same we are at the start of the layout customization;
-              if( gallery.settings.galleryLayout == "masonry" && (typeof $elemData.attr("data-block_dimensions_live_edited") != "undefined" && $elemData.attr("data-block_dimensions_live_edited").toString() == "true") ) {
+            if (gallery.settings.galleryLayout == "masonry") {
+              var elementEdited = typeof $elemData.attr("data-block_dimensions_live_edited") != "undefined" && $elemData.attr("data-block_dimensions_live_edited").toString() == "true";
+              if (elementEdited) {
+                // Rexbuilder_Util.chosenLayoutData.min) === Rexbuilder_Util.$window[0].innerWidth \\ if they are the same we are at the start of the layout customization;
                 var blockTextHeight = gallery.calculateTextWrapHeight($elem.find('.text-wrap'));
-                if( 0 !== blockTextHeight ) {
-                  var blockActualHeight = e.getAttribute('data-gs-height')*gallery.properties.singleHeight;
+                var blockRatio = parseInt($elemData.attr("data-block_ratio"));
+                blockRatio = isNaN(blockRatio) ? 0 : blockRatio;
 
-                  if( 1 == parseInt($elemData[0].getAttribute('data-element_real_fluid')) || ( blockActualHeight - ( blockTextHeight + gallery.properties.gutter ) ) < 0 ) {
+                if (0 !== blockTextHeight) {
+                  var blockActualHeight = e.getAttribute('data-gs-height') * gallery.properties.singleHeight;
+                  if (1 == parseInt($elemData[0].getAttribute('data-element_real_fluid'))
+                    || (blockActualHeight - (blockTextHeight + gallery.properties.gutter)) < 0) {
+                    gallery.updateElementHeight($elem);
+                  }
+                } else {
+                  gallery.updateElementHeight($elem, blockRatio);
+                }
+              } else {
+                if (Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout) {
+                  if (!($elem.hasClass("rex-hide-element") || $elem.hasClass("removing_block"))) {
                     gallery.updateElementHeight($elem);
                   }
                 }
@@ -3071,7 +3067,7 @@
         */
     },
 
-    updateElementHeight: function($elem) {
+    updateElementHeight: function($elem, blockRatio) {
       if (Rexbuilder_Util.editorMode && !this.properties.oneColumModeActive) {
         Rexbuilder_Util_Editor.elementIsResizing = true;
       }
@@ -3144,11 +3140,11 @@
                         backgroundHeight = (imageHeight * w * sw) / imageWidth;
                     } else if ($imageWrapper.hasClass('natural-image-background')) {
                     }*/
-          if ($elem.outerWidth() < imageWidth || $imageWrapper.hasClass('full-image-background')) {
-            backgroundHeight = (imageHeight * w * sw) / imageWidth;
-          } else {
-            backgroundHeight = imageHeight + gutter;
-          }
+            if ($elem.outerWidth() < imageWidth) {
+              backgroundHeight = (imageHeight * w * sw) / imageWidth;
+            } else {
+              backgroundHeight = imageHeight + gutter;
+            }
         }
 
         var defaultRatio = 3 / 4;
@@ -3235,6 +3231,10 @@
           height: newH,
           empty: emptyBlockFlag
         };
+      }
+
+      if(typeof blockRatio != "undefined" && blockRatio !=0){
+        newH = w * sw * blockRatio;
       }
 
       if (this.settings.galleryLayout == "fixed") {

@@ -1557,6 +1557,12 @@ var Rexbuilder_Util = (function($) {
         : targetProps["slider_dimension_ratio"];
     $itemData.attr("data-slider_ratio", sliderRatio);
 
+    var blockRatio =
+      typeof targetProps["block_ratio"] == "undefined"
+        ? ""
+        : targetProps["block_ratio"];
+    $itemData.attr("data-block_ratio", blockRatio);
+
     var blockEdited =
       typeof targetProps["block_dimensions_live_edited"] == "undefined"
         ? ""

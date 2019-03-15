@@ -882,6 +882,7 @@ var Rex_Save_Listeners = (function($) {
       block_flex_position = "",
       block_flex_img_position = "",
       slider_dimension_ratio = 1,
+      block_ratio = 1,
       hide_block = false,
       // element_height_increased = 0,
       element_real_fluid = 0;
@@ -1064,6 +1065,8 @@ var Rex_Save_Listeners = (function($) {
       typeof $itemData.attr("data-slider_ratio") == "undefined"
         ? ""
         : $itemData.attr("data-slider_ratio");
+
+    block_ratio = ($elem.outerHeight() / $elem.outerWidth()).toFixed(3)
 
     hide_block = $elem.hasClass("rex-hide-element");
 
@@ -1257,6 +1260,7 @@ var Rex_Save_Listeners = (function($) {
       props["block_flex_position"] = block_flex_position;
       props["block_flex_img_position"] = block_flex_img_position;
       props["slider_dimension_ratio"] = slider_dimension_ratio;
+      props["block_ratio"] = block_ratio;
       return props;
     }
   };
