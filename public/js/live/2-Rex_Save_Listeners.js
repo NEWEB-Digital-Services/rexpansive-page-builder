@@ -41,8 +41,8 @@ var Rex_Save_Listeners = (function($) {
       var rexButtonsInPage = Rexbuilder_Rexbutton.getButtonsInPage();
       var rexButtonsIDsInPage = [];
       var buttonFound = false;
-      for (i = 0; i < rexButtonsInPage.length; i++) {
-        for (j = 0; j < rexButtonsIDsInPage.length; j++) {
+      for (var i = 0; i < rexButtonsInPage.length; i++) {
+        for (var j = 0; j < rexButtonsIDsInPage.length; j++) {
           if (rexButtonsInPage[i].id == rexButtonsIDsInPage[j]) {
             buttonFound = true;
           }

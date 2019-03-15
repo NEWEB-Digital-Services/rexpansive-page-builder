@@ -2846,7 +2846,7 @@
               if (elementEdited) {
                 // Rexbuilder_Util.chosenLayoutData.min) === Rexbuilder_Util.$window[0].innerWidth \\ if they are the same we are at the start of the layout customization;
                 var blockTextHeight = gallery.calculateTextWrapHeight($elem.find('.text-wrap'));
-                var blockRatio = parseInt($elemData.attr("data-block_ratio"));
+                var blockRatio = parseFloat($elemData.attr("data-block_ratio"));
                 blockRatio = isNaN(blockRatio) ? 0 : blockRatio;
 
                 if (0 !== blockTextHeight) {
@@ -3215,7 +3215,7 @@
         };
       }
 
-      if(typeof blockRatio != "undefined" && blockRatio !=0){
+      if(typeof blockRatio != "undefined" && blockRatio !=0) {
         newH = w * sw * blockRatio;
       }
 
