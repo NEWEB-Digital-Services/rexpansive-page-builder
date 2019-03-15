@@ -406,6 +406,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'rexlive-update-video-inline', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_UpdateVideoInline.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-on-before-unload', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_OnBeforeUnload.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-gradient-utils', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Gradient_Utils.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexlive-container-margins', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Container_Margins.js', array( 'jquery' ), null, true );
 				global $post;
 				$source = get_permalink($post->ID);
 				
@@ -1857,7 +1858,34 @@ if(isset($savedFromBackend) && $savedFromBackend == "false") {
 		}
 		return $content;
 	}
-	
+	/**
+	 * Ajax call for container margins
+	 */
+	public function rex_update_container_margins(){
+		$nonce = $_POST['nonce_param'];
+		$response = array(
+			'error' => false,
+			'msg' => '',
+		);
+
+		if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) :
+			$response['error'] = true;
+			$response['msg'] = 'Error!';
+			wp_send_json_error( $response , 500);
+		endif;
+
+		$pageID = $_POST["pageID"];
+		$selected_margins = $_POST["selected_margins"];
+		$container_margins = $_POST["container_margins"];
+
+		if($selected_margins == "global"){
+			update_option( "_rex_global_margins_container" , $container_margins, true);
+			update_post_meta( $pageID, '_margins_container', "" );
+		}else{
+			update_post_meta( $pageID, '_margins_container', $container_margins );
+		}
+	}
+
 	/**
 	 * Undocumented function
 	 *
