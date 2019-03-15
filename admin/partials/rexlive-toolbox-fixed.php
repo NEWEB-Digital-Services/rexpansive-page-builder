@@ -21,7 +21,13 @@ $small_tools = true;
       <span class="close-toolbox__icon-wrap"><?php Rexbuilder_Utilities::get_icon('#A007-Close'); ?></span>
     </div>
   </div>
+  <div class="rexlive-toolbox__toggle-wrap-submenu">
+    <div class="rexlive-toolbox__item open-distancer-tool tippy" data-tippy-content="<?php esc_attr_e( 'khabib', 'rexpansive' ); ?>">
+      <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
+    </div>
+  </div>
 </div>
+
 <div class="rexlive-toolbox__wrap">
   <div class="rexlive-toolbox">
     <div class="tools-container-left tools-container">

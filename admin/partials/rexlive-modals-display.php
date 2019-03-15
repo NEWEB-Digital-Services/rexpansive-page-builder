@@ -2511,3 +2511,45 @@ Evidenzio di rosso se non l'ha messo e pace-->
         </div>
     </div>
 </div><!-- Add button name Model  -->
+
+<div class="rex-modal-wrap rex-modal-resize-min">
+    <div id="toolbox-distancer-panel" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable setting-edited">
+        <div class="tool-button tool-button--black rex-cancel-button tool-button--close tippy" data-tippy-content="Close" value="" tabindex="0">
+            <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
+        </div>
+        <div class="modal-content">
+        <div class="toolbox-distancer-aligner">
+            <div class="toolbox-distancer-container">
+                <div class="toolbox-distancer-column1">
+                    <?php Rexbuilder_Utilities::get_icon('#Z012-HeightBars'); ?>
+                </div>
+                <div class="toolbox-distancer-column2">
+                    <input id="bb" type="radio" name="select-page-or-global" value="percentage" checked="checked">
+                    <input id="aa" type="radio" name="select-page-or-global" value="pixel">
+                    <input type="radio"name="section-width-type" checked="checked">
+                    <input type="radio"name="section-width-type">
+                </div>
+                <div class="toolbox-distancer-column3">
+
+<div class="toolbox-distancer-row">
+    <input type="text" id="abc" name="abc" placeholder="10" class="distancer-textbox tippy" data-tippy-content="<?php _e('page height bar','rexpansive'); ?>">
+</div>                    
+<div class="toolbox-distancer-row">
+    <input type="text" id="def" name="def" placeholder="20" class="distancer-textbox tippy" data-tippy-content="<?php _e('global height bar','rexpansive'); ?>">
+</div>
+
+                </div>
+            </div>
+        </div>
+        </div>
+        <!-- FOOTER
+        <div class="rex-modal__outside-footer">
+            <div class="tool-button tool-button--inline tool-button--save rex-apply-button tippy" data-tippy-content="<?php _e('save','rexpansive'); ?>" data-rex-option="save">
+                <span class="rex-button save-page btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+            </div>
+                <div class="tool-button tool-button--inline tool-button--cancel rex-reset-button tippy" data-rex-option="continue" data-tippy-content="<?php _e('reset','rexpansive'); ?>">
+                <span class="rex-button continue btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
+            </div>
+        </div> -->
+    </div>
+</div>

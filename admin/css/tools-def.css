@@ -15320,6 +15320,53 @@ input[type=text]:focus + .b-svg-icons {
   width: 20px !important;
   height: 20px !important; }
 
+/* EDIT HEIGHT BARS TOOL PANNEL */
+.toolbox-distancer-aligner {
+  width: 100%;
+  padding: 12px;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box; }
+
+.toolbox-distancer-container {
+  width: 100%;
+  height: 400px;
+  /* PROVVISIORIO */
+  background-color: pink;
+  overflow: auto; }
+
+.toolbox-distancer-row {
+  width: 100%;
+  height: 20px;
+  background-color: yellow; }
+
+.toolbox-distancer-row .distancer-textbox {
+  height: 20px;
+  width: 100%; }
+
+.toolbox-distancer-column1 {
+  width: 30px;
+  height: 100px;
+  float: left;
+  background-color: #dedede;
+  font-size: 50px;
+  margin: 0px 12px 0px 0px; }
+
+.toolbox-distancer-column1 .l-svg-icons > svg {
+  font-size: 30px; }
+
+.toolbox-distancer-column2 {
+  width: 30px;
+  height: 100px;
+  float: left;
+  background-color: #cecece;
+  margin: 0px 12px 0px 0px; }
+
+.toolbox-distancer-column3 {
+  width: 100px;
+  height: 100px;
+  float: left;
+  background-color: #454545; }
+
 /* BUTTON EDITOR - CSS Row 1-2-3-4-5-6 */
 .bl_modal-row .rexbutton-cont_row10 {
   width: 381px;
@@ -16554,6 +16601,35 @@ input:disabled + .rex_edit_title_slider {
   -o-transition: box-shadow 300ms;
   transition: box-shadow 300ms;
   transition: box-shadow 300ms, -webkit-box-shadow 300ms; }
+
+.rexlive-toolbox__toggle-wrap-submenu {
+  width: 50px;
+  position: absolute;
+  top: 50px;
+  left: 0px;
+  background-color: #fff;
+  z-index: 50;
+  opacity: 0; }
+
+.rexlive-toolbox__item {
+  padding: 15px 0px;
+  border-bottom: 1px solid #efefef;
+  border-left: 1px solid #efefef;
+  border-right: 1px solid #efefef;
+  border-bottom: 1px solid #efefef;
+  margin-top: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  text-align: center; }
+
+.rexlive-toolbox__item .l-svg-icons > svg {
+  fill: #424242; }
+
+.rexlive-toolbox__item:hover .l-svg-icons > svg {
+  fill: #00ACFF; }
+
+.rexlive-toolbox__toggle-wrap:hover .rexlive-toolbox__toggle-wrap-submenu {
+  opacity: 1; }
 
 .tool-option.toolbox-collapse-grid {
   font-size: 13px;

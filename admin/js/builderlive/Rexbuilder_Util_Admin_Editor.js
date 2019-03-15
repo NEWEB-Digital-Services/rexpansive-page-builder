@@ -467,6 +467,10 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       Model_Lateral_Menu.openModal();
     });
 
+    Rexlive_Base_Settings.$document.on("click", ".open-distancer-tool", function(e) {
+      Rexlive_Modals_Utils.openModal($("#toolbox-distancer-panel").parent(".rex-modal-wrap"));
+    });
+
     /**
      * Material design input field animation on focus
      * Slide up the label
