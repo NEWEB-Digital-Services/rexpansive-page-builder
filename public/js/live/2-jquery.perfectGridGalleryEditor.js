@@ -2480,15 +2480,15 @@
             // In masonry all images have not to be cut
             if (gallery.settings.galleryLayout == "masonry") {
               currentWidth = $block.outerWidth();
-              if (currentWidth < imageWidth) {
+              if (currentWidth < imageWidth || !naturalImage) {
                 imageHeightNeed = (imageHeight * currentWidth) / imageWidth;
               } else {
                 imageHeightNeed = imageHeight + gallery.properties.gutter;
               }
+              imageHeightNeed = isNaN(imageHeightNeed) ? 0 : imageHeightNeed;
             }
-
+            
             textWrapHeightNeed = gallery.calculateTextWrapHeight($block.find(".text-wrap"));
-            console.log(textWrapHeightNeed, imageHeightNeed);
             needH = Math.max(textWrapHeightNeed, imageHeightNeed);
 
             if (gallery.settings.galleryLayout == "masonry") {
@@ -3144,7 +3144,7 @@
                         backgroundHeight = (imageHeight * w * sw) / imageWidth;
                     } else if ($imageWrapper.hasClass('natural-image-background')) {
                     }*/
-          if ($elem.outerWidth() < imageWidth) {
+          if ($elem.outerWidth() < imageWidth || $imageWrapper.hasClass('full-image-background')) {
             backgroundHeight = (imageHeight * w * sw) / imageWidth;
           } else {
             backgroundHeight = imageHeight + gutter;
