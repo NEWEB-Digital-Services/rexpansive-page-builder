@@ -80,7 +80,7 @@ var CustomLayouts_Modal = (function($) {
     var layoutFounded = false;
     var updateHeights = false;
 
-    for (i = 0; i < data.length; i++) {
+    for (var i = 0; i < data.length; i++) {
       if (activeLayoutData.id == data[i].id) {
         layoutFounded = true;
         if (activeLayoutData.min != data[i].min && data[i].id != "default") {

@@ -2422,14 +2422,10 @@
             if (Rexbuilder_Util_Editor.editingElement) {
               Rexbuilder_Util_Editor.endEditingElement();
             }
-            gallery.properties.resizeHandle = $(event.toElement).attr(
-              "data-axis"
-            );
+            gallery.properties.resizeHandle = $(event.toElement).attr( "data-axis" );
             block = event.target;
             startingElementHeight = ui.size.height;
-            startingElementWidth = Math.round(
-              ui.size.width / gallery.properties.singleWidth
-            );
+            startingElementWidth = Math.round( ui.size.width / gallery.properties.singleWidth );
             $block = $(block);
             $elemData = $block.find(".rexbuilder-block-data");
             $blockContent = $block.find(".grid-item-content");
@@ -2446,9 +2442,7 @@
               : parseInt($blockContent.attr("data-background_image_height"));
 
             $imageWrapper = $blockContent.find(".rex-image-wrapper");
-            naturalImage =
-              $imageWrapper.length != 0 &&
-              $imageWrapper.hasClass("natural-image-background");
+            naturalImage = $imageWrapper.length != 0 && $imageWrapper.hasClass("natural-image-background");
             Rexbuilder_Util_Editor.elementIsResizing = true;
             xStart = parseInt($block.attr("data-gs-x"));
             if ( gallery.properties.resizeHandle == "e" || gallery.properties.resizeHandle == "se" ) {
@@ -2471,11 +2465,7 @@
                 $imageWrapper.removeClass("small-width");
               }
             }
-            gallery.updateSizeViewerText(
-              $block,
-              Math.round(ui.size.width / gallery.properties.singleWidth),
-              Math.round(ui.size.height / heightFactor)
-            );
+            gallery.updateSizeViewerText( $block, Math.round(ui.size.width / gallery.properties.singleWidth), Math.round(ui.size.height / heightFactor) );
 
             // In masonry all images have not to be cut
             if (gallery.settings.galleryLayout == "masonry") {
@@ -2505,18 +2495,10 @@
             gallery.updateSizeViewerText($block);
             if (gallery.settings.galleryLayout == "masonry") {
 
-              $block.attr(
-                "data-height",
-                Math.round(
-                  $block.attr("data-gs-height") / gallery.properties.singleWidth
-                )
-              );
+              $block.attr( "data-height", Math.round( $block.attr("data-gs-height") / gallery.properties.singleWidth ) );
               if (
                 startingElementHeight != $block.outerHeight() ||
-                startingElementWidth !=
-                  Math.round(
-                    $block.outerWidth() / gallery.properties.singleWidth
-                  )
+                startingElementWidth != Math.round( $block.outerWidth() / gallery.properties.singleWidth )
               ) {
                 $elemData.attr("data-block_dimensions_live_edited", "true");
               }
@@ -2532,6 +2514,7 @@
 
               $elemData.attr("data-element_real_fluid", ( block.getAttribute('data-gs-min-height') == block.getAttribute('data-gs-height') ? 1 : 0 ) );
             }
+
             gallery.updateAllElementsProperties();
             if ( !$block.hasClass("block-has-slider") && !$blockContent.hasClass("block-has-slider") && !$blockContent.hasClass("youtube-player") ) {
               gallery.fixElementTextSize( block, gallery.properties.resizeHandle, null );
@@ -3119,7 +3102,6 @@
       // } else {
       //   textHeight = 0;
       // }
-      console.log(textHeight);
 
       if (this.properties.oneColumModeActive) {
         w = 12;
@@ -3292,7 +3274,7 @@
         var textHeight = 0;
         var textCalculate = $textWrap.clone(false);
         textCalculate.children(".medium-insert-buttons").remove();
-        if (textCalculate.text().trim().length != 0 || 0 !== textCalculate.find('img').length ) {
+        if (textCalculate.text().trim().length != 0 || 0 !== textCalculate.find('img,iframe,i').length ) {
           if ( ($textWrap.hasClass("medium-editor-element") && !$textWrap.hasClass("medium-editor-placeholder")) || $textWrap.parents(".pswp-item").length != 0 ) {
             var gicwStyles = window.getComputedStyle( $textWrap.parents('.grid-item-content-wrap')[0] );
             textHeight = $textWrap.innerHeight() + Math.ceil(parseFloat(gicwStyles['padding-top'])) + Math.ceil(parseFloat(gicwStyles['padding-bottom']));
@@ -3300,7 +3282,7 @@
         }
         return textHeight;
       } else {
-        if ($textWrap.text().trim().length != 0) {
+        if ($textWrap.text().trim().length != 0 || 0 !== $textWrap.find('img,iframe,i').length ) {
           var gicwStyles = window.getComputedStyle( $textWrap.parents('.grid-item-content-wrap')[0] );
           return $textWrap.innerHeight() + Math.ceil(parseFloat(gicwStyles['padding-top'])) + Math.ceil(parseFloat(gicwStyles['padding-bottom']));
         } else {
