@@ -3050,6 +3050,13 @@ var Rexbuilder_Util = (function($) {
               });
             }
           }
+
+          if ( 'undefined' !== typeof futuristicParticles )
+          {
+            console.log(futuristicParticles);
+            futuristicParticles.resize();
+          }
+
           changedFrontLayout = false;
         }, 300);
       } else {
