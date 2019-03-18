@@ -57,12 +57,12 @@ class Rexbuilder_Accordion {
         <?php echo do_shortcode( $content ); ?>
         <?php if( "true" == $view_toggle ) { ?>
         <span class="rexpansive-accordion__toggle">
-            <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
-            <!-- <i class="rex-svg-icons" style="fill:<?php // echo $color; ?>">
+            <!-- <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?> -->
+            <i class="rex-svg-icons" style="fill:<?php // echo $color; ?>">
                 <svg style="fill:<?php // echo $color; ?>">
                     <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#plus"></use>
                 </svg>
-            </i> -->
+            </i>
         </span>
         <?php } ?>
     </div>

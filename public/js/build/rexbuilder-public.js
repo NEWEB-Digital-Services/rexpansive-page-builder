@@ -351,6 +351,10 @@ var Rexbuilder_App = (function($) {
     //     }
     //   });
     // });
+
+    /* $accordions.rexAccordion();
+    console.log("init - rexAccordion()"); */
+
   };
 
   var _linkDocumentListeners = function() {

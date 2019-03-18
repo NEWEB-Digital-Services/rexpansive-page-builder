@@ -2557,7 +2557,7 @@
       //console.log(this.$element);
       this.$element
         .on("dragstart", function(event, ui) {
-          console.log("dragstart");
+          //console.log("dragstart");
           if (typeof ui !== "undefined") {
             Rexbuilder_Util_Editor.elementIsDragging = true;
             ui.helper

@@ -25,7 +25,13 @@ $small_tools = true;
       <span><input id="margin-rexlive-content" type="text"><input type="checkbox" id="margin-rexlive-all-pages"></span>
     </div>
   </div>
+  <div class="rexlive-toolbox__toggle-wrap-submenu">
+    <div class="rexlive-toolbox__item open-distancer-tool tippy" data-tippy-content="<?php esc_attr_e( 'khabib', 'rexpansive' ); ?>">
+      <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
+    </div>
+  </div>
 </div>
+
 <div class="rexlive-toolbox__wrap">
   <div class="rexlive-toolbox">
     <div class="tools-container-left tools-container">

@@ -1182,15 +1182,18 @@ var TextEditor = (function ($) {
 
     viewRexbuttonToolbox: function (event) {
       this.rexbuttonTools.style.display = "block";
+      //console.log("viewRexbuttonToolbox()");
       this.placeRexbuttonToolbox();
     },
 
     hideRexbuttonToolbox: function (event) {
       this.rexbuttonTools.style.display = "none";
+      //console.log("hideRexbuttonToolbox()");
     },
 
     traceInputRexButton: function (event) {
       if ("click" == event.type) {
+        //console.log("traceInputRexButton()");
         // check if cursor is inside rexbutton
         var nodeToFix = MediumEditor.selection.getSelectionStart(this.base.options.ownerDocument);
         if ($(event.target).hasClass("rex-button-text")) {
@@ -1216,8 +1219,11 @@ var TextEditor = (function ($) {
      */
     placeRexbuttonToolbox: function () {
       var targetCoords = this.traceBTN.getBoundingClientRect();
+      this.rexbuttonTools.style.width = targetCoords.width + "px";
       this.rexbuttonTools.style.left = (targetCoords.left + ((targetCoords.width - this.rexbuttonTools.offsetWidth) / 2)) + "px";
-      this.rexbuttonTools.style.top = (window.scrollY + targetCoords.top - this.rexbuttonTools.offsetHeight - 8) + "px";
+      this.rexbuttonTools.style.top = (window.scrollY + targetCoords.top - this.rexbuttonTools.offsetHeight) + "px";
+      //this.rexbuttonTools.style.top = (window.scrollY + targetCoords.top - this.rexbuttonTools.offsetHeight + 8) + "px";
+      //this.rexbuttonTools.style.top = (window.scrollY + targetCoords.top - this.rexbuttonTools.offsetHeight - 8) + "px";
     },
 
     handleClickDeleteRexbutton: function (e) {
@@ -1240,7 +1246,7 @@ var TextEditor = (function ($) {
     },
 
     handleEventInput: function (eventObj, target) {
-      ;
+      //console.log("handleEventInput()");
     },
 
     handleEventKeyUp: function (event, target) {

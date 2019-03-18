@@ -126,7 +126,6 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         $highlightModelId.val(event.data.sectionTarget.modelNumber);
         $highlightModelEditing.val(event.data.sectionTarget.modelEditing);
         hightlightRowInfo = event.data.rowInfo;
-        // console.log("UPDATETOPTOOLBAR -- rexlive:traceVisibleRow");
         _updateTopToolbar();
       }
 
@@ -139,7 +138,6 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       }
 
       if(event.data.eventName == "rexlive:updateTopToolbar") {
-        console.log("UPDATETOPTOOLBAR -- rexlive:updateTopToolbar");
         Rexbuilder_Util_Admin_Editor.highlightRowSetData(event.data.updateInfo);
         _updateTopToolbar();
       }
@@ -467,6 +465,10 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
 
     Rexlive_Base_Settings.$document.on("click", ".btn-models", function(e) {
       Model_Lateral_Menu.openModal();
+    });
+
+    Rexlive_Base_Settings.$document.on("click", ".open-distancer-tool", function(e) {
+      Rexlive_Modals_Utils.openModal($("#toolbox-distancer-panel").parent(".rex-modal-wrap"));
     });
 
     /**

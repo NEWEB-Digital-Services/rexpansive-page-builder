@@ -132,6 +132,34 @@
   transition: box-shadow 300ms;
 }
 
+.rexlive-toolbox__toggle-wrap-submenu{
+  width:50px;
+  position: absolute;
+  top:50px;left:0px;
+  background-color:#fff;
+  z-index:50;
+  opacity:0;
+}
+
+.rexlive-toolbox__item{
+    padding: 15px 0px;
+    border-bottom: 1px solid #efefef;
+    border-left: 1px solid #efefef;
+    border-right: 1px solid #efefef;
+    border-bottom: 1px solid #efefef;
+    margin-top: 0;
+    box-sizing:border-box;
+    text-align:center;
+}
+.rexlive-toolbox__item .l-svg-icons > svg{fill:#424242;}
+.rexlive-toolbox__item:hover .l-svg-icons > svg{fill:#00ACFF;}
+
+.rexlive-toolbox__toggle-wrap:hover{
+  .rexlive-toolbox__toggle-wrap-submenu{
+    opacity:1;
+  }
+}
+
 .tool-option {
   &.toolbox-collapse-grid {
     @if( $small-tools == true ) {

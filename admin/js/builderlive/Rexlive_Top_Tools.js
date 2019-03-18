@@ -18,7 +18,7 @@ var Rexlive_Top_Tools = (function ($) {
     _cacheVariables();
     _linkDocumentListeners();
   }
-
+  
   return {
     init: init,
   };
