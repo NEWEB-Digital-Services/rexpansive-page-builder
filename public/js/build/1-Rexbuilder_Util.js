@@ -3025,7 +3025,6 @@ var Rexbuilder_Util = (function($) {
         });
       }
     } else {    // Front end resize logic
-
       var actualLayout = _findFrontLayout();
       if(startFrontLayout != actualLayout) {
         changedFrontLayout = true;
@@ -3049,12 +3048,6 @@ var Rexbuilder_Util = (function($) {
                 Rexbuilder_Util_Editor.endLoading();
               });
             }
-          }
-
-          if ( 'undefined' !== typeof futuristicParticles )
-          {
-            console.log(futuristicParticles);
-            futuristicParticles.resize();
           }
 
           changedFrontLayout = false;
@@ -3121,7 +3114,8 @@ var Rexbuilder_Util = (function($) {
     Rexbuilder_Util.$rexContainer
       .find(".grid-stack-row")
       .each(function(index, row) {
-        var galleryEditorInstance = $(row).data()
+        var $row = $(row);
+        var galleryEditorInstance = $row.data()
           .plugin_perfectGridGalleryEditor;
         if (galleryEditorInstance !== undefined) {
           galleryEditorInstance.batchGridstack();
@@ -3132,6 +3126,13 @@ var Rexbuilder_Util = (function($) {
           //waiting for gridstack commit
           // setTimeout(galleryEditorInstance.createScrollbars(), 200);
         }
+
+        // Triggering event after a row resize
+        var ev = jQuery.Event("rexlive:updateGridsHeights");
+        ev.settings = {
+          $row: $row,
+        };
+        Rexbuilder_Util.$document.trigger(ev);
       });
   };
 

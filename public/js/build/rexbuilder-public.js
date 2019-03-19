@@ -61,10 +61,10 @@ var Rexbuilder_App = (function($) {
       initPhotoSwipeFromDOM(".photoswipe-gallery");
 
       /** -- Launching Odomter -- */
-      // Rexbuilder_Util.$body.find('.rex-num-spin').each(function(i,el) {
-      //   var oElement = launch_odometer(el);
-      //   odometers.push(oElement);
-      // });
+      Rexbuilder_Util.$body.find('.rex-num-spin').each(function(i,el) {
+        var oElement = launch_odometer(el);
+        odometers.push(oElement);
+      });
     }
 
     if (true == _plugin_frontend_settings.native_scroll_animation) {
