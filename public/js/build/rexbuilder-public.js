@@ -10,7 +10,7 @@ var Rexbuilder_App = (function($) {
   var $sections = null;
   var $grids = null;
   var $accordions = null;
-  var odometers = null;
+  var odometers = [];
 
   var init = function() {
     Rexbuilder_Util.init();
@@ -64,6 +64,12 @@ var Rexbuilder_App = (function($) {
       Rexbuilder_Util.$body.find('.rex-num-spin').each(function(i,el) {
         var oElement = launch_odometer(el);
         odometers.push(oElement);
+        $(el).rexScrolled({
+          callback: function(el)
+          {
+            el.innerHTML = el.getAttribute('data-final-value');
+          }
+        })
       });
     }
 
@@ -631,11 +637,16 @@ var Rexbuilder_App = (function($) {
   {
     if ( 'undefined' !== Odometer )
     {
-      target.setAttribute('data-start-value', target.innerText);
-      var tval = "";
-      for (var i=0; i<target.innerText.length; i++)
+      target.setAttribute('data-final-value', target.innerText);
+      var tval = target.getAttribute('data-start-value');
+      if ( null == tval )
       {
-        tval += "1";
+        tval = '';
+        console.log(target.innerText, target.innerText.length);
+        for (var i=0; i<target.innerText.length; i++)
+        {
+          tval += "1";
+        }
       }
       var oElement = new Odometer({
         el: target,
