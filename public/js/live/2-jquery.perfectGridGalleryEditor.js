@@ -2847,7 +2847,7 @@
                 // Rexbuilder_Util.chosenLayoutData.min) === Rexbuilder_Util.$window[0].innerWidth \\ if they are the same we are at the start of the layout customization;
                 var blockTextHeight = gallery.calculateTextWrapHeight($elem.find('.text-wrap'));
                 var blockRatio = parseFloat($elemData.attr("data-block_ratio"));
-                blockRatio = isNaN(blockRatio) ? 0 : blockRatio;
+                blockRatio = isNaN(blockRatio) ? 1 : blockRatio;
 
                 if (0 !== blockTextHeight) {
                   var blockActualHeight = e.getAttribute('data-gs-height') * gallery.properties.singleHeight;
@@ -2858,6 +2858,12 @@
                 } else {
                   gallery.updateElementHeight($elem, blockRatio);
                 }
+              } else{
+                if (Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout) {
+                  if (!($elem.hasClass("rex-hide-element") || $elem.hasClass("removing_block"))) {
+                    gallery.updateElementHeight($elem);
+                  }
+                }  
               }
             }
             else 
