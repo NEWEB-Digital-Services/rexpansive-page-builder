@@ -115,6 +115,21 @@ class Rexbuilder_Utilities {
 	}
 
 	/**
+	 * If the post was never saved on live, returns true
+	 * otherwise false
+	 *
+	 * @return bool
+	 * @since 2.0.0
+	 * @date 20-03-2019
+	 */
+	public static function postSavedFromBackend()
+	{
+		global $post;
+		$savedFromBackend = get_post_meta( get_the_id(), '_save_from_backend', true);
+		return ( isset( $savedFromBackend ) && $savedFromBackend == "false" ? false : true );
+	}
+
+	/**
 	 * Checking thw wordpress version, usefull to handle Gutenberg compatibility
 	 * @since 2.0.0
 	 */

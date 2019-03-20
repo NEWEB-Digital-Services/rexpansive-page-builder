@@ -258,6 +258,7 @@ class Rexbuilder_Admin {
 
 				$wp_isFive = Rexbuilder_Utilities::is_version();
 				$classicEditor_Active = Rexbuilder_Utilities::check_plugin_active( 'classic-editor/classic-editor.php' );
+				$savedFromBackend = get_post_meta( get_the_id(), '_save_from_backend', true);
 
 				// wp_enqueue_media();
 				wp_enqueue_script('jquery');
@@ -274,6 +275,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'rexbuilder', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder.js', array('jquery'),  null, true );
 				wp_localize_script( 'rexbuilder', '_plugin_backend_settings', array(
 					'activate_builder'	=>	'true',
+					'saved_from_backend' => ( isset( $savedFromBackend ) && $savedFromBackend == "false" ? 'false' : 'true' ),
 					'wp_isFive' => $wp_isFive,
 					'classic_editor_active' => $classicEditor_Active
 				) );
@@ -435,6 +437,7 @@ class Rexbuilder_Admin {
 
 				$wp_isFive = Rexbuilder_Utilities::is_version();
 				$classicEditor_Active = Rexbuilder_Utilities::check_plugin_active( 'classic-editor/classic-editor.php' );
+				$savedFromBackend = get_post_meta( get_the_id(), '_save_from_backend', true);
 
 				wp_enqueue_script('jquery');
 				wp_enqueue_script("jquery-ui-draggable");
@@ -445,6 +448,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'admin-plugins', REXPANSIVE_BUILDER_URL . 'admin/js/plugins.js', array('jquery'),  null, true );
 				wp_localize_script( 'admin-plugins', '_plugin_backend_settings', array(
 					'activate_builder'	=>	'true',
+					'saved_from_backend' => ( isset( $savedFromBackend ) && $savedFromBackend == "false" ? 'false' : 'true' ),
 					'wp_isFive' => $wp_isFive,
 					'classic_editor_active' => $classicEditor_Active
 				) );
@@ -712,6 +716,8 @@ class Rexbuilder_Admin {
 				if( ( $post_to_activate[$page_info->id] == 1 ) && ( $post_to_activate[$page_info->post_type] == 1 ) )
 				{
 					$builder_active = get_post_meta( get_the_id(), '_rexbuilder_active', true);
+					$savedFromBackend = get_post_meta( get_the_id(), '_save_from_backend', true);
+
 					if( $this->is_edit_page('new') ) {
 						$builder_active = 'true';
 					} else {
@@ -729,16 +735,17 @@ class Rexbuilder_Admin {
 				</div>
 			</div>
 		</div>
-		<div class="rexbuilder-table">
+		<div class="live-info-wrap <?php echo ( isset( $savedFromBackend ) && $savedFromBackend == "false" ? ' live-saved' : '' ); ?>">
 			<div class="go-live-advice">
-				<a href="<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>" class="cool-btn cool-bnt--primary go-live<?php echo ( 'auto-draft' == get_post_status(get_the_id()) ? ' draft' : '' ); ?>" target="_blank"><?php _e( 'Live', 'rexpansive' ); ?></a>
+				<a id="go-live-client-button" href="<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>" class="cool-btn cool-bnt--primary go-live<?php echo ( 'auto-draft' == get_post_status(get_the_id()) ? ' draft' : '' ); ?>" target="_blank"><?php _e( 'Live', 'rexpansive' ); ?></a>
 				<input type="hidden" name="force_live" value="">
 				<script>
 					;(function ($) {
 					'use strict';
 					// Waiting until the ready of the DOM
 					$(function () {
-						$('.go-live.draft').on('click', function(e) {
+						$(document).on('click', '.go-live.draft.glaCC-false', function(e) {
+							console.log('am i here?');
 							e.preventDefault();
 							$('#wp-preview').val(true);
 							$('input[name=force_live]').val("do_force_live");
@@ -753,10 +760,9 @@ class Rexbuilder_Admin {
 				</script>
 			</div>
 			<?php
-$savedFromBackend = get_post_meta( get_the_id(), '_save_from_backend', true);
 ?>
 <input type="hidden" name="builder-save-from-backend" value="<?php echo $savedFromBackend; ?>"><?php
-if(isset($savedFromBackend) && $savedFromBackend == "false") {
+if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 ?>
 <div class="go-live-advice">
 	<p><?php _e( "You saved from the live builder, now you can not change the page content from the old builder",  "rexpansive" ); ?></p>

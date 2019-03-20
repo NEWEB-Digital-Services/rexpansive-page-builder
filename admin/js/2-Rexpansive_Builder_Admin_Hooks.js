@@ -16,7 +16,6 @@ var Rexpansive_Builder_Admin_Hooks = (function($) {
   }
 
   var _get_save_actions = function() {
-    console.log(save_actions);
     return save_actions;
   }
 

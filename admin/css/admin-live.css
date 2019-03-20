@@ -1,3 +1,7 @@
+.live-info-wrap.live-saved + .form-table.rexbuilder-table {
+  display: none;
+}
+
 .go-live-advice {
   text-align: center;
   position:relative;
@@ -46,5 +50,5 @@
 }
 
 /*.glaCC-overlay-grey{background-color:#505050;}*/
-.glaCC-true{background-color:#ff0055;}
-.glaCC-false{background-color:#404040;}
+.cool-btn.cool-bnt--primary.glaCC-true{background-color:#ff0055;}
+.cool-btn.cool-bnt--primary.glaCC-false{background-color:#404040;}
