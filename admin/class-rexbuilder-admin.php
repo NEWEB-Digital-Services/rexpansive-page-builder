@@ -395,8 +395,6 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'Rexbuilder-Slider', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_RexSlider.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-ChangeLayout', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_ChangeLayout_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Inline-SVG', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Inline_SVG.js', array( 'jquery' ), null, true );
-					// Import the Javascript file to manage the ONUNLOADEVENT Popup. -A
-				wp_enqueue_script( 'Rexlive-onbeforeunload', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_OnBeforeUnload.js', array( 'jquery' ), null, true );
 					// Import the Javascript file to manage the UPDATEVIDEOINLINE Popup. -A
 				wp_enqueue_script( 'Rexlive-updatevideoinline', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_UpdateVideoInline.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-LockedOption-Mask', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_LockedOption_Mask.js', array( 'jquery' ), null, true );
@@ -409,6 +407,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'rexlive-util-admin', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Util_Admin_Editor.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-util-admin', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Util_Admin_Editor.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-update-video-inline', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_UpdateVideoInline.js', array( 'jquery' ), null, true );
+				// Import the Javascript file to manage the ONUNLOADEVENT Popup. -A
 				wp_enqueue_script( 'rexlive-on-before-unload', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_OnBeforeUnload.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-gradient-utils', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Gradient_Utils.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-container-margins', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Container_Margins.js', array( 'jquery' ), null, true );
@@ -744,7 +743,7 @@ class Rexbuilder_Admin {
 					'use strict';
 					// Waiting until the ready of the DOM
 					$(function () {
-						$(document).on('click', '.go-live.draft.glaCC-false', function(e) {
+						$(document).on('click', '.go-live.draft', function(e) {
 							console.log('am i here?');
 							e.preventDefault();
 							$('#wp-preview').val(true);
@@ -765,7 +764,7 @@ class Rexbuilder_Admin {
 if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 ?>
 <div class="go-live-advice">
-	<p><?php _e( "You saved from the live builder, now you can not change the page content from the old builder",  "rexpansive" ); ?></p>
+	<p><?php _e( "You saved from the live builder, now you can not change the page content from the old builder.",  "rexpansive" ); ?></p>
 </div>
 <?php
 }
@@ -2725,7 +2724,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 */
 	public function acf_settings_path( $path ) {
 		// update path
-		$path = plugin_dir_url( __FILE__ ) . '/lib/acf/advanced-custom-fields/';
+		$path = plugin_dir_url( __FILE__ ) . 'lib/acf/advanced-custom-fields/';
 		
 		// return
 		return $path;
@@ -2733,7 +2732,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 
 	public function acf_settings_dir( $dir ) {
 		// update path
-		$dir = plugin_dir_url( __FILE__ ) . '/lib/acf/advanced-custom-fields/';
+		$dir = plugin_dir_url( __FILE__ ) . 'lib/acf/advanced-custom-fields/';
 		
 		// return
 		return $dir;
