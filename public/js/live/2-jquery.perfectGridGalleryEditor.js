@@ -2841,9 +2841,9 @@
           $(this.properties.blocksBottomTop).each(function (i, e) {
             $elem = $(e);
             $elemData = $elem.children(".rexbuilder-block-data");
-            if (gallery.settings.galleryLayout == "masonry") {
+            if ( gallery.settings.galleryLayout == "masonry" ) {
               var elementEdited = typeof $elemData.attr("data-block_dimensions_live_edited") != "undefined" && $elemData.attr("data-block_dimensions_live_edited").toString() == "true";
-              if (elementEdited) {
+              if ( elementEdited ) {
                 // Rexbuilder_Util.chosenLayoutData.min) === Rexbuilder_Util.$window[0].innerWidth \\ if they are the same we are at the start of the layout customization;
                 var blockTextHeight = gallery.calculateTextWrapHeight($elem.find('.text-wrap'));
                 var blockRatio = parseFloat($elemData.attr("data-block_ratio"));
@@ -2858,11 +2858,13 @@
                 } else {
                   gallery.updateElementHeight($elem, blockRatio);
                 }
-              } else {
-                if (Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout) {
-                  if (!($elem.hasClass("rex-hide-element") || $elem.hasClass("removing_block"))) {
-                    gallery.updateElementHeight($elem);
-                  }
+              }
+            }
+            else 
+            {
+              if (Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout) {
+                if (!($elem.hasClass("rex-hide-element") || $elem.hasClass("removing_block"))) {
+                  gallery.updateElementHeight($elem);
                 }
               }
             }
@@ -3051,6 +3053,7 @@
     },
 
     updateElementHeight: function($elem, blockRatio) {
+      console.log($elem, blockRatio)
       if (Rexbuilder_Util.editorMode && !this.properties.oneColumModeActive) {
         Rexbuilder_Util_Editor.elementIsResizing = true;
       }
