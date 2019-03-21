@@ -3643,6 +3643,12 @@
       }
 
       this.properties.gridstackInstance.commit();
+
+      var event = jQuery.Event("rexlive:galleryFiltered");
+      event.settings = {
+        galleryEditorInstance: this
+      };
+      $(document).trigger(event);
     },
 
     /**
