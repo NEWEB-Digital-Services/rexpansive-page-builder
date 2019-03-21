@@ -13,7 +13,10 @@
     if ( "true" == _plugin_backend_settings.activate_builder && "true" == $rexbuilder_active.val() ) {
       //console.log("Rexpansive- wpVersion-\npbs.avb ==", _plugin_backend_settings.activate_builder,"&& rb_a.v ==",$rexbuilder_active.val())
       $("body").addClass("hide-gutenberg");
-      $rexbuilder_wrap.show();
+      if( 'true' === _plugin_backend_settings.saved_from_backend )
+      {
+        $rexbuilder_wrap.show();
+      }
     } else {
       //console.log("Rexpansive- wpVersion-\npbs.avb !=", _plugin_backend_settings.activate_builder,"|| rb_a.v !=",$rexbuilder_active.val())
       $("body").removeClass("hide-gutenberg");
@@ -25,7 +28,10 @@
       if ($(this).prop("checked")) {
         //console.log("Rexpansive- switch- status- true");
         $("body").addClass("hide-gutenberg");
-        $rexbuilder_wrap.show();
+        if( 'true' === _plugin_backend_settings.saved_from_backend )
+        {
+          $rexbuilder_wrap.show();
+        }
         $rexbuilder_active.val("true");
       } else {
         //console.log("Rexpansive- switch- status- false");
@@ -55,8 +61,10 @@
     }
 
     $(window).trigger('resize');
+
     /**
      * Subscribe on core edit-post to check if sidebar is open
+     * Launch a resize window, to correctly refresh the builder
      * @since 2.0.0
      */
     var editPost = wp.data.select( 'core/edit-post' ),
@@ -89,20 +97,34 @@
     });
 
     // Changes the status of the "LIVE" button according to the WordPress NamePage Textbox value.
+    var $go_live_button = $("#go-live-client-button");
     wp.data.subscribe( function() {
       var postTitle = editorCore.getEditedPostAttribute("title");
       if( postTitle !== lastPostTitle ) {
-      var pageName_KeyPress = $("#post-title-0").val();
-      var pageName_KeyPress_Trim = pageName_KeyPress.trim();
-        if( pageName_KeyPress_Trim == "" ){
-          //console.log('pageName_KeyPress_Trim == ""');
-          $(".go-live-advice-overlay-status").css("display","block");
-          $("#go-live-client-button").addClass("glaCC-false").removeClass("glaCC-true");
-        } else {
-          //console.log('pageName_KeyPress_Trim == ""');
+        var pageName_KeyPress = $("#post-title-0").val();
+        var pageName_KeyPress_Trim = pageName_KeyPress.trim();
+        if ( pageName_KeyPress_Trim !== "" && !$go_live_button.hasClass('draft') )
+        {
           $(".go-live-advice-overlay-status").css("display","none");
-          $("#go-live-client-button").addClass("glaCC-true").removeClass("glaCC-false");
+          $go_live_button.addClass("glaCC-true").removeClass("glaCC-false");
         }
+        else
+        {
+          $(".go-live-advice-overlay-status").css("display","block");
+          $go_live_button.addClass("glaCC-false").removeClass("glaCC-true");
+        }
+        
+        // if( pageName_KeyPress_Trim == "" ) {
+        //   $(".go-live-advice-overlay-status").css("display","block");
+        //   $go_live_button.addClass("glaCC-false").removeClass("glaCC-true");
+        // } else {
+        //   console.log(!$go_live_button.hasClass('draft'));
+        //   if ( !$go_live_button.hasClass('draft') )
+        //   {
+        //     $(".go-live-advice-overlay-status").css("display","none");
+        //     $go_live_button.addClass("glaCC-true").removeClass("glaCC-false");
+        //   }
+        // }
       }
       lastPostTitle = postTitle;
     });
@@ -114,6 +136,7 @@
 
     $(document).on("click", '.editor-post-publish-button', function() {
       $(document).trigger("rexbuilder:save_content");
+      $go_live_button.removeClass('draft').addClass("glaCC-true").removeClass("glaCC-false");
       console.log("WordPress- launch- rexbuilder:save_content");
     });
 
