@@ -73,6 +73,7 @@ IndexedGrid.prototype.willFit = function (width, height) {
 
 /**
  * Finding the holes from a grid-index array
+ * returns the index of an hole
  */
 IndexedGrid.prototype.findHoles = function () {
   var result = [];
@@ -107,4 +108,21 @@ IndexedGrid.prototype.searchFreeSpace = function (start, width, height) {
   }
 
   return true;
+}
+
+IndexedGrid.prototype.negativeGrid = function()
+{
+  // var last = this.grid[this.grid.length-1];
+  var temp = [];
+  for ( var j=0; j < this.grid.length; j++ )
+  {
+    if ( this.grid[j]+1 !== this.grid[j+1] )
+    {
+      for( var z = this.grid[j]+1; z < this.grid[j+1]; z++ )
+      {
+        temp.push(z);
+      }
+    }
+  }
+  return temp;
 }

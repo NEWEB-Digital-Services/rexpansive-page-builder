@@ -3059,7 +3059,6 @@
     },
 
     updateElementHeight: function($elem, blockRatio) {
-      console.log($elem, blockRatio)
       if (Rexbuilder_Util.editorMode && !this.properties.oneColumModeActive) {
         Rexbuilder_Util_Editor.elementIsResizing = true;
       }

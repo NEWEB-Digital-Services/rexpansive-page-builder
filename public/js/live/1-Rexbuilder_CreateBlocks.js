@@ -29,13 +29,40 @@ var Rexbuilder_CreateBlocks = (function ($) {
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
   });
 
+  /**
+   * Handle the user insert new text block
+   * @since 2.0.0
+   * @edit  22-03-2019  Finding the best text block width
+   */
   $(document).on("click", ".add-new-block-text", function (e) {
     e.preventDefault();
     e.stopPropagation();
     e.stopImmediatePropagation();
     var $section = $(e.target).parents(".rexpansive_section");
     var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
-    var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout, undefined, undefined, "text");
+    
+    // calculate the new block dimensions
+    var indx = new IndexedGrid(12);
+    var bs = galleryInstance.getGridstackNodes();
+    for(var i=0;i<bs.length; i++) {
+      console.log(bs[i]);
+      indx.setGrid(bs[i].x,bs[i].y,bs[i].width,bs[i].height);
+    }
+    // try to fit a 1x1 block to find the first available position
+    // var i_pos = indx.willFit(2,2)
+    // var pos = galleryInstance._getCoord(i_pos,12);
+    var negGrid = indx.negativeGrid();
+    console.log(negGrid[0]);
+    if ( negGrid[0] % 12 < 11 )
+    {
+      var new_w = 12 - negGrid[0];
+    }
+    else
+    {
+      var new_w = undefined;
+    }
+    
+    var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout, new_w, undefined, "text");
 
     // if( Rexbuilder_Util_Editor.scrollbarsActive ) {
     //     galleryInstance.addScrollbar($el);
