@@ -8,6 +8,12 @@ function IndexedGrid( maxWidth ) {
   this.maxWidth = maxWidth;
 }
 
+/**
+ * Insertion sort algorithm on the grid
+ *
+ * @return void
+ * @since 2.0.0
+ */
 IndexedGrid.prototype.insertionSort = function () {
   var length = this.grid.length;
 
@@ -20,6 +26,17 @@ IndexedGrid.prototype.insertionSort = function () {
   }
 }
 
+/**
+ * Set the array-grid with an element defined by
+ * [x,y] coordinates, width and height
+ *
+ * @param int $x
+ * @param int $y
+ * @param int $w
+ * @param int $h
+ * @return void
+ * @since 2.0.0
+ */
 IndexedGrid.prototype.setGrid = function (x, y, w, h) {
   for (var i = 0; i < h; i++) {
     for (var j = 0; j < w; j++) {
@@ -30,8 +47,12 @@ IndexedGrid.prototype.setGrid = function (x, y, w, h) {
 }
 
 /**
- * Fill the grid from a starting point to prevent insertions
- * in previous place
+ * Check on the grid if there are empty spaces before some point
+ * Fill them if there are then reorder the grid
+ *
+ * @param int $place
+ * @return void
+ * @since 2.0.0
  */
 IndexedGrid.prototype.checkGrid = function (place) {
   var i = 0;
@@ -45,7 +66,21 @@ IndexedGrid.prototype.checkGrid = function (place) {
   this.insertionSort();
 }
 
+/**
+ * Check in the array-grid the first available position for a block
+ * with a certain widht and height
+ *
+ * @param int $width
+ * @param int $height
+ * @return int
+ * @since 2.0.0
+ */
 IndexedGrid.prototype.willFit = function (width, height) {
+  if( 0 == this.grid.length )
+  {
+    return 0;
+  }
+
   var holes = this.findHoles();
 
   // Search in the holes for a free space
@@ -72,13 +107,15 @@ IndexedGrid.prototype.willFit = function (width, height) {
 }
 
 /**
- * Finding the holes from a grid-index array
- * returns the index of an hole
+ * Find the possibile holes on the array-grid
+ *
+ * @return int
+ * @since 2.0.0
  */
 IndexedGrid.prototype.findHoles = function () {
   var result = [];
   for (var i = 0; i < this.grid.length; i++) {
-    if (this.grid[i] + 1 !== this.grid[i + 1]) {
+    if ( "undefined" == typeof this.grid[i + 1] || this.grid[i] + 1 !== this.grid[i + 1]) {
       result.push(i);
     }
   }
@@ -86,7 +123,13 @@ IndexedGrid.prototype.findHoles = function () {
 }
 
 /**
- * Searching if a block can fit the grid starting from a certain index
+ * Check if a block can stay on a start position
+ *
+ * @param int $start
+ * @param int $width
+ * @param int $height
+ * @return bool
+ * @since 2.0.0
  */
 IndexedGrid.prototype.searchFreeSpace = function (start, width, height) {
   // Check if the element overflows the grid

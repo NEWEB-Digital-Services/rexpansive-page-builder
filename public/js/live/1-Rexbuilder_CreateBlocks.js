@@ -45,24 +45,24 @@ var Rexbuilder_CreateBlocks = (function ($) {
     var indx = new IndexedGrid(12);
     var bs = galleryInstance.getGridstackNodes();
     for(var i=0;i<bs.length; i++) {
-      console.log(bs[i]);
       indx.setGrid(bs[i].x,bs[i].y,bs[i].width,bs[i].height);
+      // indx.checkGrid( ( 12 * bs[i].y ) + bs[i].x );
     }
     // try to fit a 1x1 block to find the first available position
     // var i_pos = indx.willFit(2,2)
     // var pos = galleryInstance._getCoord(i_pos,12);
+    var holes = indx.findHoles();
     var negGrid = indx.negativeGrid();
-    console.log(negGrid[0]);
-    if ( negGrid[0] % 12 < 11 )
-    {
-      var new_w = 12 - negGrid[0];
-    }
-    else
-    {
-      var new_w = undefined;
+    var new_dim = _findDimension( holes, negGrid );
+    var new_w = undefined;
+    var new_h = undefined;
+    
+    if( new_dim.w > 2 && new_dim.h > 2 ) { 
+      new_w = new_dim.w;
+      new_h = new_dim.h;
     }
     
-    var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout, new_w, undefined, "text");
+    var $el = galleryInstance.createNewBlock(galleryInstance.settings.galleryLayout, new_w, new_h, "text");
 
     // if( Rexbuilder_Util_Editor.scrollbarsActive ) {
     //     galleryInstance.addScrollbar($el);
@@ -346,6 +346,39 @@ var Rexbuilder_CreateBlocks = (function ($) {
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
   });
 
+  /**
+   * Find the dimension of a new block to fit an empty space
+   * @param {array} holes list of empty start indexes
+   * @param {array} negativeGrid list of empty indexes
+   */
+  var _findDimension = function( holes, negativeGrid )
+  {
+    var w = 0;
+    var h = 0;
+    for( var j=0; j<holes.length; j++ )
+    {
+      var start = negativeGrid.indexOf( holes[j] + 1 );
+      var end = start;
+      while( end < negativeGrid.length )
+      {
+        end++;
+        if ( negativeGrid[end] + 1 == negativeGrid[end+1] )
+        { } else { break; }
+      }
+      w = negativeGrid[end]-negativeGrid[start]+1;
+      if ( w <= 2 ) { continue; }
+      h = 0;
+      while( true ) {
+        h++;
+        if( -1 !== negativeGrid.indexOf( negativeGrid[start] + (12 * h) ) && -1 !== negativeGrid.indexOf( negativeGrid[end] + (12 * h) ) )
+        { } else { break; }
+      }
+      if ( h <= 2 ) { continue; } else { break; }
+    }
+    // h++;
+    return { w: w, h: h };
+  }
+
   var _createSlider = function (data, $elem, numberSlider) {
     var sliderNumber;
 
@@ -461,7 +494,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
     RexSlider.initSlider($sliderWrap);
 
-    console.log(data);
+    // console.log(data);
 
     return $el;
   }

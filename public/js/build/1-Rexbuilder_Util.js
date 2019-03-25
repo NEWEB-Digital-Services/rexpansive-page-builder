@@ -3555,6 +3555,15 @@ var Rexbuilder_Util = (function($) {
     return output;
   };
 
+  var getCoord = function( val, maxWidth )
+	{
+    maxWidth = 'undefined' !== typeof maxWidth ? maxWidth : 12;
+		return {
+			x: val % maxWidth,
+			y: Math.floor( val / maxWidth )
+    }
+	}
+
   // init the utilities
   var init = function() {
     this.firstStart = true;
@@ -3718,6 +3727,7 @@ var Rexbuilder_Util = (function($) {
     createRandomID: createRandomID,
     updateDOMSingleElement: _updateDOMSingleElement,
     getDefaultBlockMeasure: _getDefaultBlockMeasure,
-    doneResizing: doneResizing 
+    doneResizing: doneResizing,
+    getCoord: getCoord
   };
 })(jQuery);
