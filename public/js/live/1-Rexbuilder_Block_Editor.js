@@ -497,6 +497,53 @@ var Rexbuilder_Block_Editor = (function($) {
     });
 
     /**
+     * Edit a block slideshow
+     * @since 2.0.0
+     */
+    Rexbuilder_Util.$document.on('click', '.edit-block-slideshow', function(e) {
+      var $btn = $(e.target);
+      var $elem = $btn.parents(".grid-stack-item");
+      var $section = $elem.parents(".rexpansive_section");
+      var rex_block_id = $elem.attr("data-rexbuilder-block-id");
+      var $elemData = $elem.children(".rexbuilder-block-data");
+      var sectionID = $section.attr("data-rexlive-section-id");
+      var modelNumber =
+        typeof $section.attr("data-rexlive-model-number") != "undefined"
+          ? $section.attr("data-rexlive-model-number")
+          : "";
+      
+      var slides = [];
+      var $slideshow = $elem.find('.rex-slideshow');
+      if ( $slideshow.length > 0 )
+      {
+        $slideshow.find('.slide').each(function(i,el) {
+          slides.push( el.innerHTML );
+        });
+      }
+
+      var settings = {
+        blockData: {
+          target: {
+            sectionID: sectionID,
+            modelNumber: modelNumber,
+            rexID: rex_block_id
+          },
+          slideshow: {
+            slides: slides
+          },
+        }
+      };
+      
+      var data = {
+        eventName: "rexlive:editBlockSlideshow",
+        activeBlockData: settings,
+        // mousePosition: mousePosition
+      };
+
+      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+    });    
+
+    /**
      * Edit the block gradient 
      * @since 2.0.0
      */

@@ -13953,7 +13953,7 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever::before {
 /*
 * CSS TOGGLE SWITCH
 *
-* Ionu╚ø Colceriu - ghinda.net
+* Ionuț Colceriu - ghinda.net
 * https://github.com/ghinda/css-toggle-switch
 *
 */
@@ -15727,6 +15727,8 @@ input[type=text]:focus + .b-svg-icons {
   font-family: 'Roboto', sans-serif;
   -webkit-box-shadow: 0 0 100px 5px rgba(0, 0, 0, 0.4);
           box-shadow: 0 0 100px 5px rgba(0, 0, 0, 0.4); }
+  .rex-modal.rex-modal--big {
+    min-width: 640px; }
   .rex-modal .l-svg-icons {
     font-size: 20px; }
   .rex-modal .tool-button.tool-button--close .l-svg-icons {

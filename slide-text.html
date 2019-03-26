@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+html,body {
+    margin: 0;
+    padding: 0;
+}
+body {
+    font-family: sans-serif;
+    font-size: 20px;
+}
+.container {
+    max-width: 650px;
+    margin:100px auto;
+}
+.wrap {
+    border:1px solid black;
+    background-color:#eee;
+    padding: 20px;
+    min-height: 94px;
+}
+.slide {
+    width: 100%;
+}
+.slide:nth-child(1) {color:grey;}
+.slide:nth-child(2) {color:green;}
+.slide:nth-child(3) {color:red;}
+.slide:not(:first-child) {
+    display: none;
+}
+    </style>
+</head>
+<body>
+        - Posso utilizzare logica finestra slider, con numerini e riordinamento
+        - volendo anche tinymce per i testi...
+        - HTML deve nascondere le "slide" non al primo posto (direi display none)
+        - occhio a front e live
+        - se c'è del contenuto non formattato a "slide" va nella prima
+        - metterei classe sul bloccone
+        - possibilità cambiare transizione per future aggiunte
+        - 
+    <div class="container">
+        <div class="wrap" data-enter-animation="fadeIn" data-enter-animation-duration="1000" data-enter-animation-delay="0" data-exit-animation="fadeOut" data-exit-animation-duration="1000" data-exit-animation-delay="500">
+            <div class="slide"><p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cupiditate minus aliquid amet? Cupiditate eum ducimus, corporis minima quas repudiandae, libero vero quidem, sunt illum et tenetur aut molestias odio veritatis?</p></div>
+            <div class="slide"><p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cupiditate minus aliquid amet? Cupiditate eum ducimus, corporis minima quas repudiandae, libero vero quidem, sunt illum et tenetur aut molestias odio veritatis?</p></div>
+            <div class="slide"><p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Cupiditate minus aliquid amet? Cupiditate eum ducimus, corporis minima quas repudiandae, libero vero quidem, sunt illum et tenetur aut molestias odio veritatis?</p></div>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.5.2/velocity.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/velocity/1.5.2/velocity.ui.min.js"></script>
+    <script src="public/js/vendor/6-jquery.rexSlideshow.js"></script>
+    <script>
+
+;(function ($) {
+    'use strict';
+    
+    var $slideshow = $('.wrap');
+    
+    // Waiting until the ready of the DOM
+    $(function () {
+        $slideshow.rexSlideshow();
+    });
+    
+    // Waiting for the complete load of the window
+    $(window).load(function () {
+        
+    });
+})(jQuery);
+    </script>
+</body>
+</html>

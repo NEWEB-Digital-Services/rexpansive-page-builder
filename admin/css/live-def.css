@@ -2865,7 +2865,7 @@ input[type=checkbox]:not(:disabled).tabbed:focus ~ .lever::before {
 /*
 * CSS TOGGLE SWITCH
 *
-* Ionu╚ø Colceriu - ghinda.net
+* Ionuț Colceriu - ghinda.net
 * https://github.com/ghinda/css-toggle-switch
 *
 */
@@ -4691,6 +4691,12 @@ span.rex-theme-button,
 
 .medium-toolbar-arrow-under:after {
   border-color: #000 transparent transparent transparent; }
+
+.medium-toolbar-arrow-over:before {
+  border-top-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: #000;
+  border-left-color: transparent; }
 
 .meditor-color-picker {
   background-image: url(../img/colors-hd.png);

@@ -39,6 +39,9 @@ var Rexlive_Modals = (function ($) {
         // Block accordion element
         Rexlive_Block_Accordion.init();
 
+        // Block slideshow element
+        Rexlive_Block_Slideshow.init();
+
         // Text gradient
         Rexlive_Text_Gradient.init();
         

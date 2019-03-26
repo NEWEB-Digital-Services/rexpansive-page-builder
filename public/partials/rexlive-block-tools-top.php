@@ -42,6 +42,10 @@ defined( 'ABSPATH' ) or exit;
             <?php Rexbuilder_Utilities::get_icon('#Z010-Logo'); ?>
             </div>
 
+            <div class="tool-button tool-button--inline edit-block-slideshow tippy" data-tippy-content="<?php _e('Slideshow', 'rexpansive'); ?>" style="margin-right:15px">
+            <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
+            </div>
+
             <div class="tool-button tool-button--inline edit-block-content-position<?php echo ( "" === trim( $content ) ? ' tool-button--hide' : '' ); ?> tippy" data-tippy-content="<?php _e('Content Position','rexpansive'); ?>" style="margin-right:15px">
                 <?php Rexbuilder_Utilities::get_icon('#C005-Layout'); ?>
             </div>

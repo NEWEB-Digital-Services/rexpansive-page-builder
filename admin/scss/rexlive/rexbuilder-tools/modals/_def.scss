@@ -387,6 +387,9 @@
 .rex-modal {
   max-height: none;
   max-width: 405px;
+  &.rex-modal--big {
+    min-width: 640px;
+  }
   @include live-fonts();
 
   // @include fill-icon($icon-deactive-color);

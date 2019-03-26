@@ -32,6 +32,10 @@
             <div class="tool-button tool-button--inline edit-block-accordion tippy" data-tippy-content="<?php _e('Accordion', 'rexpansive'); ?>" style="margin-right:15px">
             <?php Rexbuilder_Utilities::get_icon('#Z010-Logo'); ?>
             </div>
+
+            <div class="tool-button tool-button--inline edit-block-slideshow tippy" data-tippy-content="<?php _e('Slideshow', 'rexpansive'); ?>" style="margin-right:15px">
+            <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
+            </div>
             
             <div class="tool-button tool-button--inline builder-copy-block tippy" data-tippy-content="<?php _e('Copy block', 'rexpansive'); ?>">
                 <?php Rexbuilder_Utilities::get_icon('#Z004-Copy'); ?>
