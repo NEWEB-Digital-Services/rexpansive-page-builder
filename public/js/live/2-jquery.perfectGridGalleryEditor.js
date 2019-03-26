@@ -809,22 +809,12 @@
           // }
         // } else {
         if($handler === null) {
-          if (
-            $block.find("." + Rexbuilder_Util.scrollbarProperties.className)
-              .length === 0
-          ) {
+          if ( $block.find("." + Rexbuilder_Util.scrollbarProperties.className).length === 0 ) {
           } else {
             // successive modifiche dovute al cambiamento del contenuto
             // var scrollbarInstance = $rexScrollbar.overlayScrollbars();
-            if (
-              !$rexScrollbar.hasClass(
-                Rexbuilder_Util.scrollbarProperties.className
-              ) ||
-              $rexScrollbar.hasClass("os-host-scrollbar-vertical-hidden")
-            ) {
-              var maxBlockHeight = $rexScrollbar
-                .parents(".grid-item-content")
-                .height();
+            if ( !$rexScrollbar.hasClass( Rexbuilder_Util.scrollbarProperties.className ) || $rexScrollbar.hasClass("os-host-scrollbar-vertical-hidden") ) {
+              var maxBlockHeight = $rexScrollbar.parents(".grid-item-content").height();
               var textHeight = $block.find(".text-wrap").innerHeight();
               var w = parseInt($block.attr("data-gs-width"));
               var h = this.properties.elementStartingH;
@@ -832,50 +822,19 @@
 
               if (this.settings.galleryLayout == "masonry") {
                 if (textHeight >= maxBlockHeight) {
-                  h =
-                    h +
-                    Math.ceil(
-                      (textHeight - maxBlockHeight) /
-                        this.properties.singleHeight
-                    );
+                  h = h + Math.ceil( (textHeight - maxBlockHeight) / this.properties.singleHeight );
                 } else {
-                  h = Math.max(
-                    h -
-                      Math.floor(
-                        (maxBlockHeight - textHeight) /
-                          this.properties.singleHeight
-                      ),
-                    isNaN(
-                      parseInt($dataBlock.attr("data-block_height_calculated"))
-                    )
-                      ? 0
-                      : parseInt(
-                          $dataBlock.attr("data-block_height_calculated")
-                        )
+                  h = Math.max( h - Math.floor( (maxBlockHeight - textHeight) / this.properties.singleHeight ),
+                    isNaN( parseInt($dataBlock.attr("data-block_height_calculated")) ) ? 0 : parseInt( $dataBlock.attr("data-block_height_calculated") )
                   );
                 }
               } else {
                 if (textHeight >= maxBlockHeight) {
-                  h =
-                    h +
-                    Math.ceil(
-                      (textHeight - maxBlockHeight) /
-                        this.properties.singleHeight
-                    );
+                  h = h + Math.ceil( (textHeight - maxBlockHeight) / this.properties.singleHeight );
                 } else {
                   h = Math.max(
-                    h -
-                      Math.floor(
-                        (maxBlockHeight - textHeight) /
-                          this.properties.singleHeight
-                      ),
-                    isNaN(
-                      parseInt($dataBlock.attr("data-block_height_calculated"))
-                    )
-                      ? 0
-                      : parseInt(
-                          $dataBlock.attr("data-block_height_calculated")
-                        )
+                    h - Math.floor( (maxBlockHeight - textHeight) / this.properties.singleHeight ),
+                    isNaN( parseInt($dataBlock.attr("data-block_height_calculated")) ) ? 0 : parseInt( $dataBlock.attr("data-block_height_calculated") )
                   );
                 }
                 //console.log("new block fixed h: " + h);

@@ -306,32 +306,7 @@ class Rexbuilder_Public
             
             wp_enqueue_script('rexbuilder', REXPANSIVE_BUILDER_URL . $cartella . 'js/build/rexbuilder-public.js', array('jquery'), $ver, true);
 
-            wp_localize_script('rexbuilder', '_plugin_frontend_settings', apply_filters('rexbuilder_js_settings', array(
-                'plugin_base_url' => REXPANSIVE_BUILDER_URL,
-                'animations' => apply_filters('rexbuilder_animation_enabled', $this->plugin_options['animation']),
-                'textFill' => array(
-                    'font_family' => 'sans-serif',
-                    'font_weight' => 'bold',
-                ),
-                'native_scroll_animation' => true,
-                'user' => array(
-                    'logged' => is_user_logged_in(),
-                    'editing' => ((isset($_GET['editor']) && $_GET['editor'] == "true") ? true : false),
-                ),
-                'rexajax' => array(
-                    'ajaxurl' => admin_url('admin-ajax.php'),
-                    'rexnonce' => wp_create_nonce('rex-ajax-call-nonce'),
-                ),
-                'defaultSettings' => array(
-                    'collapseWidth' => 768,
-                ),
-                'siteurl' => get_site_url(),
-                'odometer' => array(
-                    'theme' => 'digital',
-                    'format' => '(.ddd),dd'
-                )
-            )
-            ) );
+            wp_localize_script('rexbuilder', '_plugin_frontend_settings', apply_filters('rexbuilder_js_settings', $this->get_plugin_frontend_settings() ) );
         }
     }
 
@@ -361,33 +336,45 @@ class Rexbuilder_Public
                 wp_enqueue_script( $this->plugin_name, REXPANSIVE_BUILDER_URL . 'public/js/builderlive.js', array( 'jquery' ), null, true );
             }
 
-            wp_localize_script( $this->plugin_name, '_plugin_frontend_settings', apply_filters('rexbuilder_js_settings', array(
-                'animations' => apply_filters('rexbuilder_animation_enabled', $this->plugin_options['animation']),
-                'textFill' => array(
-                    'font_family' => 'sans-serif',
-                    'font_weight' => 'bold',
-                ),
-                'native_scroll_animation' => true,
-                'user' => array(
-                    'logged' => is_user_logged_in(),
-                    'editing' => ((isset($_GET['editor']) && $_GET['editor'] == "true") ? true : false),
-                ),
-                'rexajax' => array(
-                    'ajaxurl' => admin_url('admin-ajax.php'),
-                    'rexnonce' => wp_create_nonce('rex-ajax-call-nonce'),
-                ),
-                'defaultSettings' => array(
-                    'collapseWidth' => 768,
-                ),
-                'siteurl' => get_site_url(),
-                'plugin_base_url' => REXPANSIVE_BUILDER_URL,
-                'odometer' => array(
-                    'theme' => 'digital',
-                    'format' => '(.ddd),dd'
-                )
-                )
-            ) );
+            wp_localize_script( $this->plugin_name, '_plugin_frontend_settings', apply_filters('rexbuilder_js_settings', $this->get_plugin_frontend_settings() ) );
         }
+    }
+
+    /**
+     * Generating a JS global object to store plugins settings
+     *
+     * @return  Array
+     * @since   2.0.0
+     * @date    26-03-2019
+     */
+    private function get_plugin_frontend_settings()
+    {
+        return array(
+            'animations' => apply_filters('rexbuilder_animation_enabled', $this->plugin_options['animation']),
+            'textFill' => array(
+                'font_family' => 'sans-serif',
+                'font_weight' => 'bold',
+            ),
+            'native_scroll_animation' => true,
+            'user' => array(
+                'logged' => is_user_logged_in(),
+                'editing' => ((isset($_GET['editor']) && $_GET['editor'] == "true") ? true : false),
+            ),
+            'rexajax' => array(
+                'ajaxurl' => admin_url('admin-ajax.php'),
+                'rexnonce' => wp_create_nonce('rex-ajax-call-nonce'),
+            ),
+            'defaultSettings' => array(
+                'collapseWidth' => 768,
+            ),
+            'siteurl' => get_site_url(),
+            'plugin_base_url' => REXPANSIVE_BUILDER_URL,
+            'sitedate' => '01/01/2019',
+            'odometer' => array(
+                'theme' => 'digital',
+                'format' => '(.ddd),dd'
+            )
+        );
     }
 
     public function include_js_template()

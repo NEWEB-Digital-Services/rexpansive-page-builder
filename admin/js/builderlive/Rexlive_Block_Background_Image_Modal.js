@@ -122,11 +122,12 @@ var Background_Block_Image_Modal = (function($) {
         width: backgroundImageActive ? width : "",
         height: backgroundImageActive ? height : "",
         typeBGimage: backgroundImageActive ? typeBGimage : "",
-        photoswipe: backgroundImageActive ? photoswipe : "",
+        // photoswipe: backgroundImageActive ? photoswipe : "",
+        photoswipe: photoswipe,
         active: backgroundImageActive,
         target: target
       }
-    };
+    }; 
 
     Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_image);
   };

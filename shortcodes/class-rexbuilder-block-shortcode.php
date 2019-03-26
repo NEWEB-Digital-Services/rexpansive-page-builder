@@ -179,7 +179,7 @@ class Rexbuilder_Block
             }
 
             if (!isset($editor)) {
-                if ($photoswipe == 'true' && '' == $video_bg_id && '' == $video_bg_url && isset($img_attrs[0]) && '' != $img_attrs[0]):
+                if ($photoswipe == 'true' && '' == $video_bg_id && '' == $video_bg_url && isset($img_attrs[0]) && '' != $img_attrs[0]) {
                     $block_link_pre .= '<figure class="pswp-figure" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">';
                     $block_link_pre .= '<a class="pswp-item" href="' . $img_attrs[0] . '" itemprop="contentUrl" data-size="' . $img_attrs[1] . 'x' . $img_attrs[2] . '">';
                     $block_link_pre .= '<div class="pswp-item-thumb" data-thumb-image-type="' . $type_bg_block . '" data-thumburl="' . $img_attrs[0] . '" itemprop="thumbnail"></div>';
@@ -187,7 +187,7 @@ class Rexbuilder_Block
                     $block_link_before .= '<figcaption class="pswp-item-caption" itemprop="caption description"></figcaption>';
                     $block_link_before .= '</figure>';
                     $content = strip_tags($content, '<p><h1><h2><h3><h4><h5><h6><strong><i><hr><div><span><pre><b><blockquote><address><cite><code><del><q><small><sub><sup><time><img><canvas><video><ul><ol><li><br>');
-                endif;
+                }
                 if ($linkurl != ''):
                     $block_link_pre .= '<a class="element-link hovered' . $element_link_cc . '" href="' . $linkurl . '" title="' . trim(strip_tags($linkurl)) . '">';
                     //$block_link_pre .= '<div class="element-link-effect-before"></div>';

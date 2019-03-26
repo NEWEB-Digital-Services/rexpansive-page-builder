@@ -63,14 +63,9 @@ var Background_Block_Image_Setting = (function($) {
       ""
     );
     backgroundImageActive = true;
-    background_block_image_properties.$image_active.prop("checked", true);
-    background_block_image_properties.$checkboxPhotoswipe.prop(
-      "checked",
-      false
-    );
-    background_block_image_properties.$image_type_typeWrap.removeClass(
-      "selected"
-    );
+    background_block_image_properties.$image_active.prop( "checked", true );
+    background_block_image_properties.$checkboxPhotoswipe.prop( "checked", false );
+    background_block_image_properties.$image_type_typeWrap.removeClass( "selected" );
   };
 
   var _updateImageBackground = function() {

@@ -1627,6 +1627,7 @@ var Rexbuilder_Util = (function($) {
                 parseInt(targetProps["image_height"]),
                 targetProps["image_size"]
               );
+              var $section = $elem.parents('.rexpansive_section');
               $section.addClass("photoswipe-gallery");
             } else {
               removePhotoSwipeElement($itemContent);
@@ -2566,26 +2567,29 @@ var Rexbuilder_Util = (function($) {
   };
 
   var addPhotoSwipeElement = function($itemContent, url, w, h, t) {
-    tmpl.arg = "image";
-    var $gridstackItemContent = $itemContent.parents(
-      ".grid-stack-item-content"
-    );
-    //console.log("checking if is already photoswipe");
-    console.log("have to add photoswipe?");
-    if ($itemContent.parents(".pswp-figure").length == 0) {
-      console.log("yes?");
-
-      //console.log("not");
-      $itemContent.parent().prepend(
-        tmpl("tmpl-photoswipe-block", {
-          link: url,
-          width: w,
-          height: h,
-          type: t
-        })
+    if ( !$itemContent.parents('.grid-stack-item').hasClass('block-has-slider') )
+    {
+      tmpl.arg = "image";
+      var $gridstackItemContent = $itemContent.parents(
+        ".grid-stack-item-content"
       );
-      var $pspwItem = $gridstackItemContent.find(".pswp-item");
-      $itemContent.detach().appendTo($pspwItem);
+      //console.log("checking if is already photoswipe");
+      // console.log("have to add photoswipe?");
+      if ($itemContent.parents(".pswp-figure").length == 0) {
+        // console.log("yes?");
+
+        //console.log("not");
+        $itemContent.parent().prepend(
+          tmpl("tmpl-photoswipe-block", {
+            link: url,
+            width: w,
+            height: h,
+            type: t
+          })
+        );
+        var $pspwItem = $gridstackItemContent.find(".pswp-item");
+        $itemContent.detach().appendTo($pspwItem);
+      }
     }
   };
 

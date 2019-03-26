@@ -658,12 +658,27 @@ var Rexbuilder_App = (function($) {
   {
     if ( 'undefined' !== Odometer )
     {
-      target.setAttribute('data-final-value', target.innerText);
+      var fval = target.innerText;
+      // Check if user want yearly increment of value
+      if ( null !== target.getAttribute( 'data-yearly-inc' ) )
+      {
+        // if exists get the value, comparing today to the site date pubblication
+        if ( '' !== _plugin_frontend_settings.sitedate )
+        {
+          var siteDate = new Date( _plugin_frontend_settings.sitedate );
+          var today = new Date();
+          var mult = today.getFullYear() - siteDate.getFullYear();
+
+          var y_inc = target.getAttribute( 'data-yearly-inc' );
+          fval = parseInt( fval ) + ( parseInt( y_inc ) * mult );
+        }
+      }
+      target.setAttribute('data-final-value', fval);
       var tval = target.getAttribute('data-start-value');
       if ( null == tval )
       {
         tval = '';
-        console.log(target.innerText, target.innerText.length);
+        // console.log(target.innerText, target.innerText.length);
         for (var i=0; i<target.innerText.length; i++)
         {
           tval += "1";

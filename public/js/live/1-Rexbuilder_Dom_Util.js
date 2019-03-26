@@ -174,6 +174,7 @@ var Rexbuilder_Dom_Util = (function($) {
   };
 
   var _updateImageBG = function($target, data) {
+    
     if ($target.hasClass("rexpansive_section")) {
       var $sectionData = $target.children(".section-data");
       if (data.idImage == "" || data.active.toString() != "true") {
@@ -182,11 +183,10 @@ var Rexbuilder_Dom_Util = (function($) {
         _updateImageSection($target, $sectionData, data);
       }
     } else if ($target.hasClass("grid-item-content")) {
-      var $elemData = $target
-        .parents(".grid-stack-item")
-        .children(".rexbuilder-block-data");
+      var $elem = $target.parents(".grid-stack-item");
+      var $elemData = $elem.children(".rexbuilder-block-data");
       if (data.idImage == "" || data.active.toString() != "true") {
-        _resetImageBlock($target, $elemData);
+        _resetImageBlock($target, $elemData, data);
       } else {
         _updateImageBlock($target, $elemData, data);
       }
@@ -297,12 +297,19 @@ var Rexbuilder_Dom_Util = (function($) {
     }
   };
 
-  var _resetImageBlock = function($itemContent, $elemData) {
+  var _resetImageBlock = function($itemContent, $elemData, data) {
     $elemData.attr("data-id_image_bg_block", "");
     $elemData.attr("data-type_bg_block", "");
     $elemData.attr("data-image_bg_block", "");
     $elemData.attr("data-image_size", "");
-    $elemData.attr("data-photoswipe", "");
+    if ( $itemContent.parents('.grid-stack-item').hasClass('block-has-slider') )
+    {
+      $elemData.attr("data-photoswipe", data.photoswipe);
+    }
+    else
+    {
+      $elemData.attr("data-photoswipe", "");
+    }
     $elemData.attr("data-image_bg_elem_active", "");
     _removeImageBlock($itemContent);
     $itemContent.attr("data-background_image_width", "");

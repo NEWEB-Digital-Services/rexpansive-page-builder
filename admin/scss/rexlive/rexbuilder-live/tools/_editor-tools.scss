@@ -155,6 +155,15 @@
   }
 }
 
+.medium-toolbar-arrow-over{
+  &:before {
+    border-top-color: transparent;
+    border-right-color: transparent;
+    border-bottom-color: #000;
+    border-left-color: transparent;
+  }
+}
+
 .meditor-color-picker {
   background-image: url(../img/colors-hd.png);
   background-size: contain;
