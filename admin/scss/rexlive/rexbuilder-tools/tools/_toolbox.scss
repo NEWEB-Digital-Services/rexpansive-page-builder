@@ -142,7 +142,7 @@
 }
 
 .rexlive-toolbox__item{
-    padding: 15px 0px;
+    padding: 9px 0px;
     border-bottom: 1px solid #efefef;
     border-left: 1px solid #efefef;
     border-right: 1px solid #efefef;
@@ -150,6 +150,8 @@
     margin-top: 0;
     box-sizing:border-box;
     text-align:center;
+    font-size: 16px;
+    cursor: pointer;
 }
 .rexlive-toolbox__item .l-svg-icons > svg{fill:#424242;}
 .rexlive-toolbox__item:hover .l-svg-icons > svg{fill:#00ACFF;}

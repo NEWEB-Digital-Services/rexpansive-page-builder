@@ -78,9 +78,8 @@ $buttonsIDsUsed = json_decode($buttonsIDsJSON, true);
 	<div id="rexbuilder-layout-data-backend" style="display: none;">
 		<div class = "available-layouts"><?php echo json_encode($layoutsAvaiable);?></div>
 	</div>
-	<?php
-	include_once "rexlive-toolbox-fixed.php";
-	?>
+	<?php include_once "rexlive-page-settings.php"; ?>
+	<?php include_once "rexlive-toolbox-fixed.php"; ?>
 	<div class="rexpansive-live-frame-container">
 		<iframe id="rexpansive-live-frame" src="<?php echo $source; ?>" allowfullscreen="1" style="width:100%;height:100%;border: 0px;" onload="Rexbuilder_Util_Admin_Editor.forceTriggerLoad()"></iframe>
 	</div>

@@ -472,7 +472,8 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     });
 
     Rexlive_Base_Settings.$document.on("click", ".open-distancer-tool", function(e) {
-      Rexlive_Modals_Utils.openModal($("#toolbox-distancer-panel").parent(".rex-modal-wrap"));
+      Rexlive_Page_Settings_Modal.open();
+      // Rexlive_Modals_Utils.openModal($("#rex-page-settings-modal").parent(".rex-modal-wrap"));
     });
 
     /**
@@ -1675,6 +1676,9 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
 
     this.mousePositionFrameYOffset = 50;
     this.viewportMeasurement = Rexlive_Base_Settings.viewport();
+
+    this.$page_global_settings = this.$rexpansiveContainer.find( "#rexlive-page-settings--global" );
+    this.$page_custom_settings = this.$rexpansiveContainer.find( "#rexlive-page-settings--custom" );
 
     this.$responsiveToolbar = this.$rexpansiveContainer.find( ".rexlive-toolbox" );
     $highlightSectionId = Rexbuilder_Util_Admin_Editor.$responsiveToolbar.find('input[name=toolbox-insert-area--row-id]');

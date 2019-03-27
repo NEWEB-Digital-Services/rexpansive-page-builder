@@ -2729,6 +2729,18 @@
 .video-audio-checkbox + label .bl_check-indicator--wrap {
   margin-top: 5px; }
 
+.rexbuilder-materialize-wrap .input-field.input-field--medium {
+  margin: 0;
+  width: auto; }
+  .rexbuilder-materialize-wrap .input-field.input-field--medium input {
+    margin: 0;
+    line-height: 1;
+    font-size: 15px;
+    height: auto;
+    max-width: 30px;
+    text-align: center; }
+    .rexbuilder-materialize-wrap .input-field.input-field--medium input:focus {
+      color: #00ACFF; }
 .rexbuilder-materialize-wrap .input-field.input-field--small {
   position: relative;
   margin: 0; }

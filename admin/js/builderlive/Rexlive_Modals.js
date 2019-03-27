@@ -72,6 +72,9 @@ var Rexlive_Modals = (function ($) {
         // lateral menu
         Model_Lateral_Menu.init();
 
+        // Page tools
+        Rexlive_Page_Settings_Modal.init();
+
         // Model import tab
         Model_Import_Modal.init();
 
@@ -82,11 +85,6 @@ var Rexlive_Modals = (function ($) {
 
         //editor button
         Button_Edit_Modal.init();
-
-        //more tools
-        var $container = $(".rexlive-toolbox__toggle-wrap");
-        Container_Margins.init($container);
-
     }
 
     return {

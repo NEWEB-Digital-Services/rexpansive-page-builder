@@ -613,12 +613,12 @@ var Rexbuilder_Util_Editor = (function($) {
 
   var _updateContainerMargins = function(data){
     var $parentContainer = Rexbuilder_Util.$rexContainer.parents(".rexbuilder-live-content").eq(0);
-    if(data.distances.top > 0){
+    if(data.distances.vals.top > 0){
       $parentContainer.addClass("fix-tools-first-row");
     } else{
       $parentContainer.removeClass("fix-tools-first-row");
     }
-    $parentContainer.css("margin-top", data.distances.top);
+    $parentContainer.css("margin-top", data.distances.vals.top);
     // @todo aggiungere il margin al container
   }
 

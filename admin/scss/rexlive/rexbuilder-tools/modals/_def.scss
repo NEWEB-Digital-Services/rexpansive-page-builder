@@ -5,6 +5,9 @@
     border-bottom: 1px solid #ddd;
   }
   // margin-bottom: 15px;
+  &.bl_modal-row--no-padding {
+    padding: 0;
+  }
 }
 .no12dx{padding:0px 0px 0px 12px}
 
@@ -387,6 +390,9 @@
 .rex-modal {
   max-height: none;
   max-width: 405px;
+  &.rex-modal--small {
+    max-width: 230px;
+  }
   &.rex-modal--big {
     min-width: 640px;
   }
@@ -398,6 +404,9 @@
 
   .l-svg-icons {
     font-size: 20px;
+    &.l-svg-icons--big {
+      font-size: 40px;
+    }
   }
 
   .tool-button{

@@ -411,7 +411,8 @@ class Rexbuilder_Admin {
 				// Import the Javascript file to manage the ONUNLOADEVENT Popup. -A
 				wp_enqueue_script( 'rexlive-on-before-unload', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_OnBeforeUnload.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-gradient-utils', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Gradient_Utils.js', array( 'jquery' ), null, true );
-				wp_enqueue_script( 'rexlive-container-margins', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Container_Margins.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexlive-page-margins', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Page_Margins.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexlive-page-settings-modal', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Page_Settings_Modal.js', array( 'jquery' ), null, true );
 				global $post;
 				$source = get_permalink($post->ID);
 				
@@ -1884,15 +1885,33 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		endif;
 
 		$pageID = $_POST["pageID"];
-		$selected_margins = $_POST["selected_margins"];
+		// $selected_margins = $_POST["selected_margins"];
 		$container_margins = $_POST["container_margins"];
 
-		if($selected_margins == "global"){
-			update_option( "_rex_global_margins_container" , $container_margins, true);
-			update_post_meta( $pageID, '_margins_container', "" );
-		}else{
-			update_post_meta( $pageID, '_margins_container', $container_margins );
+		$global_settings = json_decode( stripslashes( get_option( '_rex_global_page_settings', '[]' ) ), true );
+		$custom_settings = json_decode( stripslashes( get_post_meta( $pageID, '_rex_custom_page_settings', true ) ), true );
+
+		switch( $container_margins['context'] )
+		{
+			case 'global':
+				$global_settings['container_distancer']['top'] = $container_margins['vals']['top'];
+				update_option( '_rex_global_page_settings' , json_encode( $global_settings ), true);
+
+				$custom_settings['container_distancer']['top'] = '';
+				update_post_meta( $pageID, '_rex_custom_page_settings', json_encode( $custom_settings ) );
+				break;
+			case 'custom':
+				$custom_settings['container_distancer']['top'] = $container_margins['vals']['top'];
+				update_post_meta( $pageID, '_rex_custom_page_settings', json_encode( $custom_settings ) );
+				break;
+			default:
+				break;
 		}
+
+		$response['global_settings'] = $global_settings;
+		$response['custom_settings'] = $custom_settings;
+
+		wp_send_json_success( $response );
 	}
 
 	/**

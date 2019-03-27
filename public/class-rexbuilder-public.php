@@ -828,10 +828,24 @@ class Rexbuilder_Public
                     $fixTopMargins = true;
                 }
             }
+
+            $global_settings = json_decode( stripslashes( get_option( '_rex_global_page_settings', '[]' ) ), true );
+            $custom_settings = json_decode( stripslashes( get_post_meta( $post->ID, '_rex_custom_page_settings', true ) ), true );
+
+            if ( isset( $custom_settings['container_distancer']['top'] ) && '' !== $custom_settings['container_distancer']['top'] )
+            {
+                $fixTopMargins = true;
+                $custom_style = ' style="margin-top:' . $custom_settings['container_distancer']['top'] . 'px;"';
+            }
+            else if ( isset( $global_settings['container_distancer']['top'] ) && '' !== $global_settings['container_distancer']['top'] )
+            {
+                $fixTopMargins = true;
+                $custom_style = ' style="margin-top:' . $global_settings['container_distancer']['top'] . 'px;"';
+            }
         }
 
 ?>
-    <div class="rexbuilder-live-content<?php echo ($editor ? ' rexbuilder-live-content--editing add-new-section--hide'.($fixTopMargins ? ' fix-tools-first-row' : '') : ''); ?>"<?php echo ($rexContainerMargins != "" ? " style=".$rexContainerMargins."\"" : "");?>>
+    <div class="rexbuilder-live-content<?php echo ($editor ? ' rexbuilder-live-content--editing add-new-section--hide'.($fixTopMargins ? ' fix-tools-first-row' : '') : ''); ?>"<?php echo ( $editor && $fixTopMargins ? $custom_style : ''); ?>>
         <?php
         require REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-page-information.php";
 

@@ -13,20 +13,14 @@ defined('ABSPATH') or exit;
 global $layoutsAvaiable;
 $small_tools = true;
 ?>
-<div class="rexlive-toolbox__toggle-wrap">
-  <div class="">
-    <div class="tool-option close-toolbox tippy" data-tippy-content="<?php esc_attr_e( 'Hide', 'rexpansive' ); ?>">
-      <span class="close-toolbox__logo-wrap"><?php Rexbuilder_Utilities::get_icon('#Z010-Logo'); ?></span>
-      <!-- <img class="rexlive-logo" src="<?php // echo REXPANSIVE_BUILDER_URL; ?>admin/img/ico-rexpansive.png" alt="Rexpansive" width="20"> -->
-      <span class="close-toolbox__icon-wrap"><?php Rexbuilder_Utilities::get_icon('#A007-Close'); ?></span>
-    </div>
-    <br>
-    <div style="display:none;">
-      <span><input id="margin-rexlive-content" type="text"><input type="checkbox" id="margin-rexlive-all-pages"></span>
-    </div>
+<div class="rexlive-toolbox__toggle-wrap"> 
+  <div class="tool-option close-toolbox tippy" data-tippy-content="<?php esc_attr_e( 'Hide', 'rexpansive' ); ?>" data-tippy-placement="right">
+    <span class="close-toolbox__logo-wrap"><?php Rexbuilder_Utilities::get_icon('#Z010-Logo'); ?></span>
+    <!-- <img class="rexlive-logo" src="<?php // echo REXPANSIVE_BUILDER_URL; ?>admin/img/ico-rexpansive.png" alt="Rexpansive" width="20"> -->
+    <span class="close-toolbox__icon-wrap"><?php Rexbuilder_Utilities::get_icon('#A007-Close'); ?></span>
   </div>
-  <div class="rexlive-toolbox__toggle-wrap-submenu" style="display:none;">
-    <div class="rexlive-toolbox__item open-distancer-tool tippy" data-tippy-content="<?php esc_attr_e( 'khabib', 'rexpansive' ); ?>">
+  <div class="rexlive-toolbox__toggle-wrap-submenu">
+    <div class="rexlive-toolbox__item open-distancer-tool tippy" data-tippy-content="<?php esc_attr_e( 'Page Settings', 'rexpansive' ); ?>" data-tippy-placement="right">
       <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
     </div>
   </div>
