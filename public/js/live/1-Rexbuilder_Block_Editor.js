@@ -516,7 +516,7 @@ var Rexbuilder_Block_Editor = (function($) {
       var $slideshow = $elem.find('.rex-slideshow');
       if ( $slideshow.length > 0 )
       {
-        $slideshow.find('.slide').each(function(i,el) {
+        $slideshow.find('.rex-slideshow__slide').each(function(i,el) {
           slides.push( el.innerHTML );
         });
       }
@@ -541,7 +541,37 @@ var Rexbuilder_Block_Editor = (function($) {
       };
 
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-    });    
+    });
+
+    /**
+     * Listen to updating slideshow by the modal
+     * @since 2.0.0
+     */
+    Rexbuilder_Util.$document.on('rexlive:updateSlideshow', function(e) {
+      var data = e.settings.data_to_send;
+
+      var target = data.target;
+      var $elem;
+
+      if (target.modelNumber != "") {
+        $elem = Rexbuilder_Util.$rexContainer
+          .find(
+            'section[data-rexlive-section-id="' +
+              target.sectionID +
+              '"][data-rexlive-model-number="' +
+              target.modelNumber +
+              '"]'
+          )
+          .find('div [data-rexbuilder-block-id="' + target.rexID + '"]');
+      } else {
+        $elem = Rexbuilder_Util.$rexContainer
+          .find('section[data-rexlive-section-id="' + target.sectionID + '"]')
+          .find('div [data-rexbuilder-block-id="' + target.rexID + '"]');
+      }
+
+      $elem.find(".text-wrap.medium-editor-element").html(data.slideshow.slides);
+      // $elem.find(".rex-accordion").rexAccordion();
+    });
 
     /**
      * Edit the block gradient 
@@ -686,6 +716,7 @@ var Rexbuilder_Block_Editor = (function($) {
      * @since 2.0.0
      */
     Rexbuilder_Util.$document.on('rexlive:SetcustomHTML',function(e) {
+      console.log(e);
       TextEditor.triggerMEEvent({
         name:"rexlive:mediumEditor:saveHTMLContent", 
         data: e.settings.data_to_send, 

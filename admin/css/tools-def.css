@@ -16305,6 +16305,17 @@ input:disabled + .rex_edit_title_slider {
     .rex-accordion-gallery__item .tool-button--deactivate .l-svg-icons {
       font-size: 10px; }
 
+.rex-slideshow__slide-list {
+  width: 100%; }
+
+.rex-slideshow__slide {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center; }
+
 .rex-lateral-panel .tabgroup {
   height: 100%; }
 .rex-lateral-panel .tool-button .l-svg-icons > svg {

@@ -32,7 +32,7 @@
 
     this.properties = {
       launched: false,
-      $slides: this.$element.find('.slide'),
+      $slides: this.$element.find('.rex-slideshow__slide'),
       slideCount: 0,
     };
 
@@ -46,7 +46,7 @@
     this.settings.exitSettings.delay = this.element.getAttribute('data-exit-animation-delay') || this.settings.exitSettings.delay;
     var that = this;
     this.settings.exitSettings.complete = function () {
-      that.settings.slideCount < that.settings.totalSlides - 1 ? that.settings.slideCount++ : that.settings.slideCount = 0;
+      that.properties.slideCount < that.properties.totalSlides - 1 ? that.properties.slideCount++ : that.properties.slideCount = 0;
       that.slideShow();
     }
 

@@ -92,6 +92,13 @@ var Rexbuilder_App = (function($) {
           }
         })
       });
+
+      /** -- Launching slideshow -- **/
+      var $slideshow = Rexbuilder_Util.$body.find('.rex-slideshow');
+      if ( $slideshow.length > 0 )
+      {
+        $slideshow.rexSlideshow();
+      }
     }
 
     if (true == _plugin_frontend_settings.native_scroll_animation) {

@@ -2,6 +2,7 @@ var Rexlive_Block_Slideshow = (function($) {
   "use strict";
 
   var block_slideshow_properties;
+  var target;
 
   var _openModal = function(data) {
     _updateData(data);
@@ -29,8 +30,10 @@ var Rexlive_Block_Slideshow = (function($) {
     });
 
     block_slideshow_properties.$add_slide.on('click', function() {
+      var count = block_slideshow_properties.$slide_list.find('.rex-slideshow__slide').length;
       var new_slide_tmpl = tmpl('tmpl-slideshow-item', {
-        slide_id: 0
+        slide_id: count,
+        slide_id_label: count + 1,
       });
       block_slideshow_properties.$slide_list.append(new_slide_tmpl);
       block_slideshow_properties.$slide_list.sortable("refresh");
@@ -54,14 +57,21 @@ var Rexlive_Block_Slideshow = (function($) {
 
   };
 
+  /**
+   * Tracing block data, and creating slidshow items in the modal, if present
+   * @param {Object} data slideshow data present, if present
+   */
   var _updateData = function(data)
   {
+    target = data.blockData.target;
+    block_slideshow_properties.$slide_list.empty();
     if ( data.blockData.slideshow.slides.length > 0 )
     {
       for( var i=0; i<data.blockData.slideshow.slides.length; i++)
       {
         var new_slide_tmpl = tmpl('tmpl-slideshow-item', {
-          slide_id: 0,
+          slide_id: i,
+          slide_id_label: i+1,
           slide_content: data.blockData.slideshow.slides[i]
         });
         block_slideshow_properties.$slide_list.append(new_slide_tmpl);
@@ -72,6 +82,7 @@ var Rexlive_Block_Slideshow = (function($) {
     {
       var new_slide_tmpl = tmpl('tmpl-slideshow-item', {
         slide_id: 0,
+        slide_id_label: 1,
         slide_content: ''
       });
       block_slideshow_properties.$slide_list.append(new_slide_tmpl);
@@ -83,19 +94,38 @@ var Rexlive_Block_Slideshow = (function($) {
   {
     var html = '<div class="rex-slideshow">';
     block_slideshow_properties.$slide_list.find('.rex-slideshow__slide').each(function(i,el){
-      html += '<div class="slide">' + $(el).find('textarea[name=rex-slideshow--slide-text]').val() + '</div>';
+      html += '<div class="rex-slideshow__slide">' + $(el).find('textarea[name=rex-slideshow--slide-text]').val() + '</div>';
     });
     html += '</div>';
 
     var data_updateSlideshow = {
       eventName: "rexlive:updateSlideshow",
       data_to_send: {
-        slideshow: html,
+        slideshow: {
+          slides: html
+        },
         target: target
       }
     };
     Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_updateSlideshow);
   }
+
+  /**
+   * Update the index of the slides at every sort
+   * @param {Event} event slider update event
+   * @param {Object} ui jQueryUI Object
+   */
+  var _update_slide_list_index = function(event, ui) {
+    var $this_slides = $(ui.item)
+      .siblings()
+      .add($(ui.item));
+    $this_slides.each(function(i, e) {
+      $(e)
+        .attr("data-slideshow-slide-id", i)
+        .find(".rex-slideshow__slide-index")
+        .text(i + 1);
+    });
+  };
 
   var _initList = function()
   {
@@ -103,7 +133,7 @@ var Rexlive_Block_Slideshow = (function($) {
       revert: true,
       handle: ".rex-slideshow__slide-edit[value=move]",
       update: function(e, ui) {
-        // _update_slide_list_index(e, ui);
+        _update_slide_list_index(e, ui);
       }
     });
   }

@@ -121,23 +121,21 @@ defined('ABSPATH') or exit;
 
 <script type="text/x-tmpl" id="tmpl-slideshow-item">
 <div class="rex-slideshow__slide" data-slideshow-slide-id="{%=o.slide_id%}">
-    <button class="rex-slideshow__slide-index btn-circle btn-small btn-bordered grey-border border-darken-2 waves-effect waves-light white grey-text text-darken-2">{%=o.slide_id_label%}</button>
+    <div class="rex-slideshow__slide-index tool-button tool-button--inline">{%=o.slide_id_label%}</div>
 
     <textarea name="rex-slideshow--slide-text" rows="10">{%=o.slide_content%}</textarea>
 
-    <div>
-        <button class="rex-slideshow__slide-edit btn-flat tippy" value="copy" data-tippy-content="Copy slide">
-        <?php Rexbuilder_Utilities::get_icon('#Z004-Copy'); ?>
-        </button>
+    <button class="rex-slideshow__slide-edit btn-flat tippy" value="copy" data-tippy-content="Copy slide" style="display:none">
+    <?php Rexbuilder_Utilities::get_icon('#Z004-Copy'); ?>
+    </button>
 
-        <div class="rex-slideshow__slide-edit btn-flat tippy" value="move" data-tippy-content="Move slide">
-        <?php Rexbuilder_Utilities::get_icon('#B007-Move'); ?>
-        </div>
-
-        <button class="rex-slideshow__slide-edit btn-flat tippy" value="delete" data-tippy-content="Delete slide">
-        <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
-        </button>
+    <div class="rex-slideshow__slide-edit btn-flat tippy" value="move" data-tippy-content="Move slide">
+    <?php Rexbuilder_Utilities::get_icon('#B007-Move'); ?>
     </div>
+
+    <button class="rex-slideshow__slide-edit btn-flat tippy" value="delete" data-tippy-content="Delete slide">
+    <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+    </button>
 
     <div class="rex-slideshow__slide-data" style="display:none;">
         <input type="hidden" name="rex-slideshow--slide-id" value="">

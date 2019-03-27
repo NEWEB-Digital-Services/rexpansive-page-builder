@@ -979,7 +979,7 @@ defined('ABSPATH') or exit;
             </div>
             <div class="bl_modal-row">
                 <div class="bl_modal__option-wrap">
-                    <button id="rex-slideshow__add-new-slide" class="builder-button btn-floating btn light-blue darken-1 waves-effect waves-light tippy"  data-tippy-content="Add slide">
+                    <button id="rex-slideshow__add-new-slide" class="tool-button tool-button--inline tippy"  data-tippy-content="Add slide">
                     <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
                     </button>
                 </div>
