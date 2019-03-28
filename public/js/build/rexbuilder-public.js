@@ -680,6 +680,21 @@ var Rexbuilder_App = (function($) {
           fval = parseInt( fval ) + ( parseInt( y_inc ) * mult );
         }
       }
+
+      if ( null !== target.getAttribute( 'data-montly-inc' ) )
+      {
+        // if exists get the value, comparing today to the site date pubblication
+        if ( '' !== _plugin_frontend_settings.sitedate )
+        {
+          var siteDate = new Date( _plugin_frontend_settings.sitedate );
+          var today = new Date();
+          var mult = today.getMonth() - siteDate.getMonth();
+
+          var m_inc = target.getAttribute( 'data-montly-inc' );
+          fval = parseInt( fval ) + ( parseInt( m_inc ) * mult );
+        }
+      }
+
       target.setAttribute('data-final-value', fval);
       var tval = target.getAttribute('data-start-value');
       if ( null == tval )
