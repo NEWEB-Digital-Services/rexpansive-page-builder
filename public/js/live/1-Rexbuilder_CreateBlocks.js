@@ -750,11 +750,19 @@ var Rexbuilder_CreateBlocks = (function ($) {
     }
   }
 
+  /**
+   * Move a block from a section to another
+   * @param {jQuery Object} $elem Elemtn to move
+   * @param {jQuery Object} $targetSection Section of destination
+   */
   var _moveBlockToOtherSection = function ($elem, $targetSection) {
     // var $gallery = $elem.parents('.grid-stack-row');
     var galleryEditorInstance = $targetSection.data().plugin_perfectGridGalleryEditor;
     var gridstack = $targetSection.data("gridstack");
     var $section = $elem.parents(".rexpansive_section");
+    var previousGalleryInstance = $section.find('.perfect-grid-gallery').data().plugin_perfectGridGalleryEditor;
+    var previousLayout = previousGalleryInstance.settings.galleryLayout;
+    var nextLayout = galleryEditorInstance.settings.galleryLayout;
     var $newBlock;
 
     $newBlock = $elem.clone(false);
@@ -778,6 +786,22 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
     var w = parseInt($newBlock.attr("data-gs-width"));
     var h = parseInt($newBlock.attr("data-gs-height"));
+    if ( previousLayout !== nextLayout )
+    {
+      switch( nextLayout )
+      {
+        case 'fixed':
+          // from masonry to fixed
+          h = Math.floor( ( h * 5 ) / galleryEditorInstance.properties.singleHeight );
+          break;
+        case 'masonry':
+          h = Math.floor( ( h * previousGalleryInstance.properties.singleHeight ) / 5 );
+          // from fixed to masonry
+          break;
+        default:
+          break;
+      }
+    }
     var $itemContent = $newBlock.find(".grid-item-content");
     var videoTypeActive = Rexbuilder_Util.destroyVideo($itemContent, false);
 
@@ -795,6 +819,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
     };
 
     gridstack.addWidget($newBlock[0], 0, 0, w, h, true, 1, 500, 1);
+
+    galleryEditorInstance._updateElementsSizeViewers();
 
     var x = parseInt($newBlock.attr("data-gs-x"));
     var y = parseInt($newBlock.attr("data-gs-y"));

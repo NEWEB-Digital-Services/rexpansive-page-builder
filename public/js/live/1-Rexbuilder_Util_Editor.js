@@ -334,6 +334,7 @@ var Rexbuilder_Util_Editor = (function($) {
   var endEditingElement = function() {
     var galleryEditorInstance = Rexbuilder_Util_Editor.editedGallery;
 
+    clearTimeout(galleryEditorInstance.doubleDownTimer);
     Rexbuilder_Util_Editor.elementIsDragging = false;
     Rexbuilder_Util_Editor.editedTextWrap.blur();
 
@@ -1002,11 +1003,7 @@ var Rexbuilder_Util_Editor = (function($) {
    * Remove the drag button
    * @since 2.0.0
    */
-
   var _releaseRowsLight = function() {
-
-    //console.log(Rexbuilder_Util.$rexContainer);
-
     Rexbuilder_Util.$rexContainer.children(".rexpansive_section").removeClass("rexpansive-lock-section--light").removeClass("rexpansive-lock-section--overlay");
     Rexbuilder_Util.$rexContainer.find(".grid-stack-item--drag-to-row").removeClass("grid-stack-item--drag-to-row");
     Rexbuilder_Util.$rexContainer.find(".drag-to-section-simulator").remove();

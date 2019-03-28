@@ -2049,32 +2049,16 @@
                 /**
                  * Power drag simulator
                  */
-                clearTimeout(this.doubleDownTimer);
-                this.doubleDownTimer = setTimeout(function() {
-                  // console.table({
-                  //   elementIsDragging: Rexbuilder_Util_Editor.elementIsDragging,
-                  //   elementIsResizing: Rexbuilder_Util_Editor.elementIsResizing,
-                  //   editingElement: Rexbuilder_Util_Editor.editingElement,
-                  //   'ui-resizable-resizing': $elem.hasClass('ui-resizable-resizing'),
-                  //   'ui-draggable-dragging': $elem.hasClass('ui-draggable-dragging'),
-                  //   'ui-resizable-handle': $target.hasClass('ui-resizable-handle'),
-                  //   'circle-handle': $target.hasClass('circle-handle'),
-                  //   which: e.which
-                  // });
-
-                  // console.log("pre(IF)\nRexbuilder_Util_Editor.elementIsDragging -",Rexbuilder_Util_Editor.elementIsDragging,"\nRexbuilder_Util_Editor.elementIsResizing -",Rexbuilder_Util_Editor.elementIsResizing,"\nRexbuilder_Util_Editor.editingElement -",Rexbuilder_Util_Editor.editingElement);
-
+                clearTimeout(gallery.doubleDownTimer);
+                gallery.doubleDownTimer = setTimeout(function() {
                   if( !( Rexbuilder_Util_Editor.elementIsDragging || Rexbuilder_Util_Editor.elementIsResizing || Rexbuilder_Util_Editor.editingElement || $elem.hasClass('ui-resizable-resizing') || $elem.hasClass('ui-draggable-dragging') || $target.hasClass('ui-resizable-handle') || $target.hasClass('circle-handle') ) && 1 === e.which ) {
                     $elem.trigger("mouseup");
-                    // gallery.properties.gridstackInstance.disable();
-
-                    // console.log("post(IF)\nRexbuilder_Util_Editor.elementIsDragging -",Rexbuilder_Util_Editor.elementIsDragging,"\nRexbuilder_Util_Editor.elementIsResizing -",Rexbuilder_Util_Editor.elementIsResizing,"\nRexbuilder_Util_Editor.editingElement -",Rexbuilder_Util_Editor.editingElement);
                     
                     var btn = tmpl("tmpl-tool-drag", {});
                     var $btn = $(btn);
                     $btn.css("position","absolute");
                     $btn.css("zIndex", 20);
-                    //console.log("$elem\n",$elem);
+                    
                     $elem.append($btn);
                     var elemCoords = $elem[0].getBoundingClientRect();
                     $btn.css("left", e.clientX - elemCoords.left - ( $btn[0].offsetWidth / 2 ) );
@@ -2107,7 +2091,7 @@
               Rexbuilder_Util_Editor.elementDraggingTriggered = false;
             }
             clearTimeout(this.downTimer);
-            clearTimeout(this.doubleDownTimer);
+            clearTimeout(gallery.doubleDownTimer);
             Rexbuilder_Util_Editor.mouseDownEvent = null;
 
             // if (
@@ -2480,6 +2464,7 @@
             }
 
             $block.attr("data-gs-max-width", 500);
+            clearTimeout(gallery.doubleDownTimer);
             Rexbuilder_Util_Editor.elementIsDragging = false;
             Rexbuilder_Util_Editor.elementIsResizing = false;
 
@@ -2535,8 +2520,8 @@
           // console.log("dragstop", ui);
           if (typeof ui !== "undefined") {
             gallery.updateAllElementsProperties();
-            // console.log("dragstop2");
             Rexbuilder_Util_Editor.elementIsDragging = false;
+            clearTimeout(gallery.doubleDownTimer);
           }
         });
     },
@@ -2588,7 +2573,6 @@
        */
       gallery.$element.on('dragstart', '.drag-to-section', function(e) {  // AVVIA L'EVENTO CHE GESTISCE IL DRAG
         if (Rexbuilder_Util_Editor.dragAndDropFromParent) {
-          // console.log('esci uscendo', Rexbuilder_Util_Editor.dragAndDropFromParent);
           return;
         }
         if(!locked) {
@@ -2680,9 +2664,7 @@
         $pholder.css('left',e.clientX + 5);
         $pholder.css('top',e.clientY + 5);
         $pholder.remove();
-        $pholder = null;
-
-        // console.log("Status: END\ngallery.$element.on('dragend', '.drag-to-section', function(e)\n{",event.clientX,event.clientY,"(x,y)}");
+        $pholder = null; 
       });
     },
 
