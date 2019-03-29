@@ -1268,10 +1268,13 @@ var Rexbuilder_Util_Editor = (function($) {
    */
   var _rowAttrsObj = function(el) {
     var obj = {};
-    var attrsMap = el.attributes;
-    for( var i=0; i < attrsMap.length; i++ ) {
-      if( 'class' !== attrsMap[i].name && 'style' !== attrsMap[i].name ) {
-        obj[attrsMap[i].name.replace('data-','')] = attrsMap[i].value;
+    if ( 'undefined' !== typeof el )
+    {
+      var attrsMap = el.attributes;
+      for( var i=0; i < attrsMap.length; i++ ) {
+        if( 'class' !== attrsMap[i].name && 'style' !== attrsMap[i].name ) {
+          obj[attrsMap[i].name.replace('data-','')] = attrsMap[i].value;
+        }
       }
     }
     return obj;

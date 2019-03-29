@@ -5,10 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <style>
+        .wrap {
+            max-width:650px;
+            margin:0 auto;
+        }
+        .block {
+            width: 300px;
+            height: 300px;
+            background-color: #eee;
+            position: relative;
+        }
+        .icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 30px;
+            height: 30px;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            align-items: center;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            justify-content: center;
+            opacity: 1;
+            background-color: #FFD201;
+            color: #004894;
+            font-size: 30px;
+            font-weight: 800;
+            font-style: italic;
+            -webkit-transform: translate(-50%,-50%);
+            transform: translate(-50%,-50%);
+            -webkit-transition: opacity 0.2s;
+            transition: opacity 0.2s;
+            -webkit-box-shadow: 0 24px 38px 3px rgba(0,0,0,0.14), 0 9px 46px 8px rgba(0,0,0,0.12), 0 11px 15px -7px rgba(0,0,0,0.2);
+            box-shadow:0 24px 80px 20px rgba(0, 0, 0, 0.25), 0 9px 45px 30px rgba(0, 0, 0, 0.23), 0 11px 20px -7px rgba(0, 0, 0, 0.28);
+        }
+        .block2 {
+            width: 300px;
+            height: 300px;
+            background-image: radial-gradient(52% 88%, rgba(0,0,0,0.56) 50%, rgba(0,0,0,0.00) 89%);
+        }
+    </style>
 </head>
 <body>
     <button id="stopT">Stop Timeout</button>
-    <div id="wrap"></div>
+    <div id="wrap">
+        <div class="block">
+            <div class="icon">+</div>
+        </div>
+        <div class="block2"></div>
+    </div>
     <script>
 var timeout;
 var wrap = document.getElementById('wrap');
@@ -21,7 +71,7 @@ var startTimer = function()
     }, 5000);
 }
 
-startTimer();
+// startTimer();
 
 stopT.addEventListener('click', function(e) {
     e.preventDefault();
