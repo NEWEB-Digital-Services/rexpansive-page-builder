@@ -2606,7 +2606,7 @@ MediumEditor.extensions = {};
 
         triggerCustomEvent: function (name, data, editable) {
             if (name == "editableInput" && data.inputType != "insertParagraph") {
-                console.log("triggering event", name);
+                // console.log("triggering event", name);
             }
             if (this.customEvents[name] && !this.disabledEvents[name]) {
                 this.customEvents[name].forEach(function (listener) {

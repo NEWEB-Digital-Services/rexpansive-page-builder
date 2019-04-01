@@ -416,21 +416,33 @@ var Rexbuilder_Dom_Util = (function($) {
     }
   };
 
+  /**
+   * Add a mp4 video to a rexpansive-builder object (section or block)
+   * @param {jQuery Object} $target destination in which insert a video, section or block
+   * @param {Object} mp4Data mp4 video data
+   * @param {Boolean} hasAudio the video has audio?
+   * @since 2.0.0
+   * @edit  01-02-2019  Check if the user is in live or front area, to append correctly the video wrap
+   */
   var _addMp4Video = function($target, mp4Data, hasAudio) {
     var $videoWrap = $target.children(".rex-video-wrap");
     var $toggleAudio = $target.children(".rex-video-toggle-audio");
 
     $target.addClass("mp4-player");
 
-    if (
-      ($videoWrap.length != 0 &&
-        $videoWrap.find("source").attr("src") != mp4Data.linkMp4) ||
-      $videoWrap.length == 0
-    ) {
+    if ( ($videoWrap.length != 0 && $videoWrap.find("source").attr("src") != mp4Data.linkMp4) || $videoWrap.length == 0 ) {
       _removeMp4Video($target, true);
       tmpl.arg = "video";
       if ($target.is("section")) {
-        var insert_after = ".section-toolBox";
+        var insert_after = "";
+        if ( Rexbuilder_Util.editorMode )
+        {
+          insert_after = ".section-toolBox";
+        } 
+        else
+        {
+          insert_after = ".section-data";
+        }
         $target
           .children(insert_after)
           .after(

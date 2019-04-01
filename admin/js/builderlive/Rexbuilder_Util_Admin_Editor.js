@@ -369,10 +369,18 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     }
   };
 
+  /**
+   * Add listeners on admin toolbar
+   * @since 2.0.0
+   */
   var _addDocumentListeners = function() {
+    /**
+     * Listen to layout change
+     * @since 2.0.0
+     */
     Rexlive_Base_Settings.$document.on("click", ".btn-builder-layout", function(e) {
-      var $btn = $(e.target).parents(".btn-builder-layout");
-      // var $btn = $(this);
+      // var $btn = $(e.target).parents(".btn-builder-layout");
+      var $btn = $(this);
       var btnName = $btn.attr("data-name");
       if (activeLayoutPage != btnName) {
         var buttonData = {

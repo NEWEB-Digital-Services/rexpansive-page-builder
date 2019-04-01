@@ -22,7 +22,8 @@ var Rex_Save_Listeners = (function($) {
       //updating customizations avaiable names
       var layoutsNames = Rexbuilder_Util.getPageAvaiableLayoutsNames();
       var flagNames = false;
-      for (i = 0; i < layoutsNames.length; i++) {
+      var tot_layoutsNames;
+      for (i = 0, tot_layoutsNames = layoutsNames.length; i < tot_layoutsNames; i++) {
         if (layoutsNames[i] == newCustomization.name) {
           flagNames = true;
           break;
@@ -41,8 +42,9 @@ var Rex_Save_Listeners = (function($) {
       var rexButtonsInPage = Rexbuilder_Rexbutton.getButtonsInPage();
       var rexButtonsIDsInPage = [];
       var buttonFound = false;
-      for (var i = 0; i < rexButtonsInPage.length; i++) {
-        for (var j = 0; j < rexButtonsIDsInPage.length; j++) {
+      var tot_rexButtonsInPage, tot_rexButtonsIDsInPage;
+      for (var i = 0, tot_rexButtonsInPage = rexButtonsInPage.length; i < tot_rexButtonsInPage; i++) {
+        for (var j = 0, tot_rexButtonsIDsInPage = rexButtonsIDsInPage.length; j < tot_rexButtonsIDsInPage; j++) {
           if (rexButtonsInPage[i].id == rexButtonsIDsInPage[j]) {
             buttonFound = true;
           }
@@ -66,7 +68,7 @@ var Rex_Save_Listeners = (function($) {
           },
           success: function(response) {
             if (response.success) {
-              console.log("rex buttons ids nella pagina aggiornati!");
+              // console.log("rex buttons ids nella pagina aggiornati!");
             }
           },
           error: function(response) {}
@@ -87,7 +89,7 @@ var Rex_Save_Listeners = (function($) {
           },
           success: function(response) {
             if (response.success) {
-              console.log("nomi layout aggiornati!");
+              // console.log("nomi layout aggiornati!");
             }
           },
           error: function(response) {}
@@ -108,7 +110,7 @@ var Rex_Save_Listeners = (function($) {
           },
           success: function(response) {
             if (response.success) {
-              console.log("custom css aggiornato!");
+              // console.log("custom css aggiornato!");
             }
           },
           error: function(response) {}
@@ -150,11 +152,12 @@ var Rex_Save_Listeners = (function($) {
         // var flagSection;
         var flagTarget;
         customizationsArray = Rexbuilder_Util.getPageCustomizationsDom();
-        for (i = 0; i < customizationsArray.length; i++) {
+        var tot_customizationsArray, tot_newCustomization_sections, tot_customizationsArray_sections;
+        for (i = 0, tot_customizationsArray = customizationsArray.length; i < tot_customizationsArray; i++) {
           var modelsNumbers = _countModels(customizationsArray[i].sections);
-          for (j = 0; j < newCustomization.sections.length; j++) {
+          for (j = 0, tot_newCustomization_sections = newCustomization.sections.length; j < tot_newCustomization_sections; j++) {
             //flagSection = false;
-            for (k = 0; k < customizationsArray[i].sections.length; k++) {
+            for (k = 0, tot_customizationsArray_sections = customizationsArray[i].sections.length; k < tot_customizationsArray_sections; k++) {
               if (
                 newCustomization.sections[j].section_rex_id ==
                 customizationsArray[i].sections[k].section_rex_id
@@ -254,9 +257,9 @@ var Rex_Save_Listeners = (function($) {
               },
               success: function(response) {
                 if (response.success) {
-                  console.log(
-                    "layout " + response.data.layoutName + " aggiornato!"
-                  );
+                  // console.log(
+                  //   "layout " + response.data.layoutName + " aggiornato!"
+                  // );
                 }
               },
               error: function(response) {}
@@ -279,7 +282,7 @@ var Rex_Save_Listeners = (function($) {
             },
             success: function(response) {
               if (response.success) {
-                console.log("shortcode pagina aggiornato!");
+                // console.log("shortcode pagina aggiornato!");
                 Rexbuilder_Util.$rexContainer.removeClass("backend-edited");
                 Rexbuilder_Util.backendEdited = false;
               }
@@ -303,7 +306,7 @@ var Rex_Save_Listeners = (function($) {
             },
             success: function(response) {
               if (response.success) {
-                console.log("nomi delle section utilizzati salvati!");
+                // console.log("nomi delle section utilizzati salvati!");
               }
             },
             error: function(response) {}
@@ -325,10 +328,10 @@ var Rex_Save_Listeners = (function($) {
             },
             success: function(response) {
               if (response.success) {
-                console.log(
-                  "layout " + response.data.layoutName + " aggiornato!"
-                );
-                console.log(newCustomization.sections);
+                // console.log(
+                //   "layout " + response.data.layoutName + " aggiornato!"
+                // );
+                // console.log(newCustomization.sections);
               }
             },
             error: function(response) {}
@@ -433,7 +436,7 @@ var Rex_Save_Listeners = (function($) {
           },
           success: function(response) {
             if (response.success) {
-              console.log("nomi layout modello aggiornati!");
+              // console.log("nomi layout modello aggiornati!");
             }
           },
           error: function(response) {}
@@ -466,7 +469,7 @@ var Rex_Save_Listeners = (function($) {
                 },
                 success: function(response) {
                   if (response.success) {
-                    console.log("layout custom modello aggiornato!");
+                    // console.log("layout custom modello aggiornato!");
                   }
                 },
                 error: function(response) {}
@@ -502,7 +505,7 @@ var Rex_Save_Listeners = (function($) {
             },
             success: function(response) {
               if (response.success) {
-                console.log("shortcode modello aggiornato!");
+                // console.log("shortcode modello aggiornato!");
                 dataModel.html = response.data.model_html;
                 Rexbuilder_Section.updateModelsHtmlLive(dataModel);
               }
@@ -532,9 +535,9 @@ var Rex_Save_Listeners = (function($) {
               },
               success: function(response) {
                 if (response.success) {
-                  console.log(
-                    "layout " + response.data.layoutName + " aggiornato!"
-                  );
+                  // console.log(
+                  //   "layout " + response.data.layoutName + " aggiornato!"
+                  // );
                 }
               },
               error: function(response) {}
@@ -563,7 +566,7 @@ var Rex_Save_Listeners = (function($) {
                 : ""
           };
           Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-          console.log("salvataggio modello finito!");
+          // console.log("salvataggio modello finito!");
         })
         .fail(function() {
           // Probably want to catch failure
@@ -806,7 +809,7 @@ var Rex_Save_Listeners = (function($) {
 
   var createCleanPost = function() {
     var post = "";
-    console.log("creating clean post");
+    // console.log("creating clean post");
     Rexbuilder_Util.$rexContainer.find(".grid-stack-row").each(function() {
       $(this)
         .children(".grid-stack-item")
@@ -1665,17 +1668,18 @@ var Rex_Save_Listeners = (function($) {
   var _countModels = function(sections) {
     var models = [];
     var i, j;
+    var tot_sections, tot_models;
 
-    for (i = 0; i < sections.length; i++) {
+    for (i = 0, tot_sections = sections.length; i < tot_sections; i++) {
       if (sections[i].section_is_model.toString() == "true") {
         var modelID = sections[i].section_model_id;
-        for (j = 0; j < models.length; j++) {
+        for (j = 0, tot_models = models.length; j < tot_models; j++) {
           if (models[j].id == modelID) {
             models[j].number = models[j].number + 1;
             break;
           }
         }
-        if (j == models.length) {
+        if (j == tot_models) {
           var model = {
             id: modelID,
             number: 1

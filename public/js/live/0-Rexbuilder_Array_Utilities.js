@@ -84,7 +84,7 @@ IndexedGrid.prototype.willFit = function (width, height) {
   var holes = this.findHoles();
 
   // Search in the holes for a free space
-  for (var z = 0; z < holes.length; z++) {
+  for (var z = 0, tot_holes = holes.length; z < tot_holes; z++) {
     for (var w = this.grid[holes[z]] + 1; w < this.grid[holes[z] + 1]; w++) {
       var free = this.searchFreeSpace(w, width, height);
       if (free) { return w; }
@@ -114,7 +114,7 @@ IndexedGrid.prototype.willFit = function (width, height) {
  */
 IndexedGrid.prototype.findHoles = function () {
   var result = [];
-  for (var i = 0; i < this.grid.length; i++) {
+  for (var i = 0, grid_length = this.grid.length; i < grid_length; i++) {
     if ( "undefined" == typeof this.grid[i + 1] || this.grid[i] + 1 !== this.grid[i + 1]) {
       result.push(i);
     }
@@ -157,7 +157,7 @@ IndexedGrid.prototype.negativeGrid = function()
 {
   // var last = this.grid[this.grid.length-1];
   var temp = [];
-  for ( var j=0; j < this.grid.length; j++ )
+  for ( var j=0, grid_length = this.grid.length; j < grid_length; j++ )
   {
     if ( this.grid[j]+1 !== this.grid[j+1] )
     {

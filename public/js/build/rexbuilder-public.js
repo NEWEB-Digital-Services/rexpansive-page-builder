@@ -112,7 +112,7 @@ var Rexbuilder_App = (function($) {
 
       // Smooth scroll on all internal links
       var $linksToSmooth = Rexbuilder_Util.$body.find('a[href*="#"]');
-      for (var i = 0; i < excluded_links.length; i++) {
+      for (var i = 0, tot_excluded_links = excluded_links.length; i < tot_excluded_links; i++) {
         $linksToSmooth = $linksToSmooth.not(excluded_links[i]);
       }
 
@@ -701,7 +701,7 @@ var Rexbuilder_App = (function($) {
       {
         tval = '';
         // console.log(target.innerText, target.innerText.length);
-        for (var i=0; i<target.innerText.length; i++)
+        for (var i=0, tot_nums = target.innerText.length; i<tot_nums; i++)
         {
           tval += "1";
         }
@@ -862,7 +862,7 @@ var Rexbuilder_App = (function($) {
       }
 
       var vars = hash.split("&");
-      for (var i = 0; i < vars.length; i++) {
+      for (var i = 0, tot_vars = vars.length; i < tot_vars; i++) {
         if (!vars[i]) {
           continue;
         }
@@ -929,7 +929,7 @@ var Rexbuilder_App = (function($) {
         if (options.galleryPIDs) {
           // parse real index when custom PIDs are used
           // http://photoswipe.com/documentation/faq.html#custom-pid-in-url
-          for (var j = 0; j < items.length; j++) {
+          for (var j = 0, tot_items = items.length; j < tot_items; j++) {
             if (items[j].pid == index) {
               options.index = j;
               break;

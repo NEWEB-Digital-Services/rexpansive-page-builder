@@ -189,6 +189,8 @@ var Background_Block_Image_Setting = (function($) {
       }
     });
 
+    console.log(background_block_image_properties.$is_photoswipe);
+
     background_block_image_properties.$is_photoswipe.click(function(e) {
       e.preventDefault();
       var status =

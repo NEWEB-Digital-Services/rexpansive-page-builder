@@ -1158,7 +1158,8 @@
         }
       }
       var width = this.properties.singleWidth;
-      for (i = 0; i < emptyBlocks.length; i++) {
+      var tot_emptyBlocks = emptyBlocks.length;
+      for (i = 0; i < tot_emptyBlocks; i++) {
         gridstack.removeWidget(emptyBlocks[i].el, true);
         if (this.settings.galleryLayout == "masonry") {
           emptyBlocks[i].y =
@@ -2759,7 +2760,7 @@
       var gallery = this;
       var classList = this.$element.attr("class").split(/\s+/);
       var classNameParts;
-      for (var i = 0; i < classList.length; i++) {
+      for (var i = 0, tot_classList = classList.length; i < tot_classList; i++) {
         classNameParts = classList[i].split("-");
         if (classNameParts[2] != undefined && classNameParts[2] == "instance") {
           gallery.properties.gridstackInstanceID = classNameParts[3];
@@ -3348,7 +3349,8 @@
       var orderedElements = this.getElementsTopBottom();
       var currentY = 0;
       var i;
-      for (i = 0; i < orderedElements.length; i++) {
+      var tot_orderedElements = orderedElements.length;
+      for (i = 0; i < tot_orderedElements; i++) {
         var $el = $(orderedElements[i]);
         this.properties.gridstackInstance.update(
           $el[0],
@@ -3386,8 +3388,10 @@
       var nodes = [];
       var elem;
       var i, j;
+      var tot_orderedElements = orderedElements.length;
+      var tot_rexIDS, tot_nodes;
 
-      for (i = 0; i < orderedElements.length; i++) {
+      for (i = 0; i < tot_orderedElements; i++) {
         var block = {
           rexID: $(orderedElements[i]).attr("data-rexbuilder-block-id"),
           added: false
@@ -3403,8 +3407,8 @@
         nodes.push(elemObj);
       });
 
-      for (i = 0; i < rexIDS.length; i++) {
-        for (j = 0; j < nodes.length; j++) {
+      for (i = 0, tot_rexIDS = rexIDS.length; i < tot_rexIDS; i++) {
+        for (j = 0, tot_nodes = nodes.length; j < tot_nodes; j++) {
           if (nodes[j].rexID == rexIDS[i].rexID) {
             elem = nodes[j].element;
             break;
@@ -3436,7 +3440,7 @@
 
       var newPositions = [];
 
-      for(var i=0; i<this.properties.gridstackInstance.grid.nodes.length; i++) {
+      for(var i=0, tot_nodes = this.properties.gridstackInstance.grid.nodes.length; i<tot_nodes; i++) {
         var newPosition = {};
         // Find elements to move
         if( ( this.properties.gridstackInstance.grid.nodes[i].x + ( this.properties.gridstackInstance.grid.width * this.properties.gridstackInstance.grid.nodes[i].y ) ) >= ( newNode.x + ( this.properties.gridstackInstance.grid.width * newNode.y ) ) ) {
@@ -3453,7 +3457,7 @@
 
       this.properties.gridstackInstance.batchUpdate();
 
-      for(var j=0; j<newPositions.length; j++) {
+      for(var j=0, tot_newPositions = newPositions.length; j<tot_newPositions; j++) {
         if( newPositions[j].hasOwnProperty('x') && newPositions[j].hasOwnProperty('y') && newPositions[j].hasOwnProperty('el') ) {
           this.properties.gridstackInstance.move( newPositions[j].el.el, newPositions[j].x, newPositions[j].y );
         }
@@ -3534,7 +3538,7 @@
           that.properties.gridstackInstance.addWidget(el, node.x, node.y, node.width, node.height, node.autoPosition, node.minWidth, node.maxWidth, node.minHeight, node.maxHeight, node.id);
         });
 
-        for(var i=0; i<this.properties.initialStateGrid.length; i++) {
+        for(var i=0, tot_initialStateGrid = this.properties.initialStateGrid.length; i<tot_initialStateGrid; i++) {
           var el = this.properties.initialStateGrid[i].el[0];
           // var pos = that.get_pixel_position({x:this.properties.initialStateGrid[i].x, y:this.properties.initialStateGrid[i].y});
           // el.style.left = pos.left;

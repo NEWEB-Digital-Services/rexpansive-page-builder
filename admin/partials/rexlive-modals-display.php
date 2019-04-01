@@ -746,8 +746,8 @@ defined('ABSPATH') or exit;
 <div class="rex-modal-wrap">
     <div id="rex-block-image-editor" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <?php Rexbuilder_Utilities::close_button(); ?>
-        <div class="background-options-area modal-content">
-            <div id="block-edit-image-setting-bg" class="background_set_image bl_modal-row">
+        <div class="background-options-area modal-content background_set_image">
+            <div id="block-edit-image-setting-bg" class="bl_modal-row">
                 <div class="bl_modal__option-wrap">
                     <div class="valign-wrapper">
                         <div class="bg-image-block-active-wrapper tippy" data-tippy-content="<?php _e( 'Active Background Image', 'rexpansive'); ?>">
