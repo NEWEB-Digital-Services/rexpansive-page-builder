@@ -1149,6 +1149,8 @@ var Rexbuilder_Util = (function($) {
       defaultLayoutSections
     );
 
+    console.log(mergedEdits);
+
     // removing collapsed from grid
     Rexbuilder_Util.removeCollapsedGrids();
     /* 
@@ -1197,6 +1199,7 @@ var Rexbuilder_Util = (function($) {
             $section.addClass("rex-hide-section");
           } else {
             $section.removeClass("rex-hide-section");
+            console.log(section.targets);
             response.collapse_needed += _updateDOMelements(
               $section,
               section.targets,
@@ -1466,6 +1469,7 @@ var Rexbuilder_Util = (function($) {
     Rexbuilder_Dom_Util.updateVideos($itemContent, videoOptions);
 
     // Update block image
+    console.log(targetProps);
     var activeImage =
       typeof targetProps["image_bg_elem_active"] == "undefined"
         ? true
@@ -3029,7 +3033,6 @@ var Rexbuilder_Util = (function($) {
    * @since 2.0.0
    */
   var doneResizing = function() {
-    console.log('doneResizing');
     Rexbuilder_Util.windowIsResizing = true;
     if (Rexbuilder_Util.editorMode && !Rexbuilder_Util_Editor.buttonResized) {
       Rexbuilder_Util.windowIsResizing = false;
@@ -3077,6 +3080,7 @@ var Rexbuilder_Util = (function($) {
           changedFrontLayout = false;
         }, 300);
       } else {
+        var l = chooseLayout();
         var resize_info = _edit_dom_layout(chooseLayout());
         _updateGridsHeights();
       }

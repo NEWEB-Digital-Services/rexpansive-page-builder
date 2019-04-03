@@ -894,8 +894,7 @@ var Rexbuilder_Block_Editor = (function($) {
       overlayActive = false;
     } else {
       overlayActive =
-        typeof $elemData.attr("data-overlay_block_color_active") !=
-        "undefined"
+        typeof $elemData.attr("data-overlay_block_color_active") != "undefined" && "" !== $elemData.attr("data-overlay_block_color_active")
           ? JSON.parse( $elemData.attr("data-overlay_block_color_active") )
           : false;
     }
