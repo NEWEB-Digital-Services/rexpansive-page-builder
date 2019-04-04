@@ -652,7 +652,7 @@ class Rexbuilder_Block
             if (isset($editor) && $editor == "true") {
                 $not_has_image = ( 'true' != $atts['image_bg_elem_active'] || "" == $atts['id_image_bg_block'] );
                 $not_has_overlay = ( 'true' != $atts['overlay_block_color_active'] || "" == $atts['overlay_block_color'] );
-                $not_has_video = ( '' == $atts['video_bg_id'] && '' == $atts['video_bg_url'] && '' == $atts['video_bg_url_vimeo'] );
+                $not_has_video = ( '' == $video_bg_id && '' == $video_bg_url && '' == $video_bg_url_vimeo );
 
                 echo '<div class="ui-focused-element-highlight">';
                 include REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-block-tools-top.php";

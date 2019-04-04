@@ -37,6 +37,7 @@ var VimeoVideo = (function($){
      */
     var _initBlockVideos = function( reference ) {
         var VimeoObj = reference;
+        console.log(reference);
         if( $vimeoBlockVideos.length > 0 ) {
             // cycle foreach section
             $vimeoBlockVideos.each(function(i, el) {

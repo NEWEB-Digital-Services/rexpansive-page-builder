@@ -1149,8 +1149,6 @@ var Rexbuilder_Util = (function($) {
       defaultLayoutSections
     );
 
-    console.log(mergedEdits);
-
     // removing collapsed from grid
     Rexbuilder_Util.removeCollapsedGrids();
     /* 
@@ -1199,7 +1197,7 @@ var Rexbuilder_Util = (function($) {
             $section.addClass("rex-hide-section");
           } else {
             $section.removeClass("rex-hide-section");
-            console.log(section.targets);
+            // console.log(section.targets);
             response.collapse_needed += _updateDOMelements(
               $section,
               section.targets,
@@ -1469,7 +1467,6 @@ var Rexbuilder_Util = (function($) {
     Rexbuilder_Dom_Util.updateVideos($itemContent, videoOptions);
 
     // Update block image
-    console.log(targetProps);
     var activeImage =
       typeof targetProps["image_bg_elem_active"] == "undefined"
         ? true
@@ -3310,7 +3307,10 @@ var Rexbuilder_Util = (function($) {
       var vimPlayer = VimeoVideo.findVideo(
         $target.children(".rex-video-vimeo-wrap").find("iframe")[0]
       );
-      vimPlayer.play();
+      if ( null !== vimPlayer )
+      {
+        vimPlayer.play();
+      }
     } else if ($target.hasClass("youtube-player")) {
       var ytpObj = $target.children(".rex-youtube-wrap");
       if (ytpObj.length != 0) {
@@ -3374,6 +3374,7 @@ var Rexbuilder_Util = (function($) {
       // $('.rex-video-wrap').getVideoThumbnail();
     }
 
+    console.log('VimeoVideo.init');
     VimeoVideo.init();
   };
 
@@ -3482,10 +3483,10 @@ var Rexbuilder_Util = (function($) {
         .children(".rex-video-wrap")
         .find("video")[0]
         .pause();
-      console.log("_pauseVideo: faccio pause del video");
+      // console.log("_pauseVideo: faccio pause del video");
     } else if ($target.hasClass("vimeo-player")) {
       var vimeoPlugin = VimeoVideo.findVideo(
-        $target.children(".rex-video-vimeo-wrap").find("iframe")[0]
+        $target.find(".rex-video-vimeo-wrap").find("iframe")[0]
       );
       vimeoPlugin.pause();
     } else if ($target.hasClass("youtube-player")) {
