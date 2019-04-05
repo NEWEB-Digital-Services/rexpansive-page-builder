@@ -3059,6 +3059,9 @@
 
       // check for custom type of blocks
       var trueHeight = ( "undefined" !== typeof $blockData.attr('data-calc_true_height') ? $blockData.attr('data-calc_true_height') : "0" );
+
+      // console.table({calc_true_height: $blockData.attr('data-calc_true_height')});
+      
       if (textHeight == 0 || trueHeight == "1") {
         if ($imageWrapper.length != 0) {
           var imageWidth = parseInt(
@@ -3067,16 +3070,16 @@
           var imageHeight = parseInt(
             $itemContent.attr("data-background_image_height")
           );
-          /*                  
-                    if ($imageWrapper.hasClass('full-image-background')) {
-                        backgroundHeight = (imageHeight * w * sw) / imageWidth;
-                    } else if ($imageWrapper.hasClass('natural-image-background')) {
-                    }*/
-            if ($elem.outerWidth() < imageWidth) {
+          /*
+          if ($imageWrapper.hasClass('full-image-background')) {
               backgroundHeight = (imageHeight * w * sw) / imageWidth;
-            } else {
-              backgroundHeight = imageHeight + gutter;
-            }
+          } else if ($imageWrapper.hasClass('natural-image-background')) {
+          }*/
+          if ($elem.outerWidth() < imageWidth) {
+            backgroundHeight = (imageHeight * w * sw) / imageWidth;
+          } else {
+            backgroundHeight = imageHeight + gutter;
+          }
         }
 
         var defaultRatio = 3 / 4;
@@ -3143,6 +3146,15 @@
       ) {
         emptyBlockFlag = true;
       }
+
+      // console.table({
+      //   startH: startH,
+      //   backgroundHeight: backgroundHeight,
+      //   videoHeight: videoHeight,
+      //   defaultHeight: defaultHeight,
+      //   textHeight: textHeight,
+      //   sliderHeight: sliderHeight
+      // });
 
       newH = Math.max(
         startH,
@@ -3371,9 +3383,9 @@
         .each(function(i, el) {
           var $el = $(el);
           var blockHeight = that.updateElementHeight($el);
-          var height = Math.ceil(
-            blockHeight.height / that.settings.cellHeightMasonry
-          );
+          // console.log(blockHeight.height)
+          // console.log(that.settings.cellHeightMasonry)
+          var height = Math.ceil( blockHeight.height / that.settings.cellHeightMasonry );
           if (!blockHeight.empty) {
             that.properties.gridstackInstance.resize($el[0], 12, height);
           } else {

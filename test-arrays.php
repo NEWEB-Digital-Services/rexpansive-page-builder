@@ -1,5 +1,17 @@
 <?php
-error_reporting( E_ALL ); 
+error_reporting( E_ALL );
+function array_clone($array) {
+  return array_map(function($element) {
+    return ((is_array($element))
+      ? array_clone($element)
+      : ((is_object($element))
+        ? clone $element
+        : $element
+      )
+    );
+  }, $array);
+}
+
 $needed_layout = array( 'default', 'tablet', 'mobile' );
 $founded_layouts = array( 'default', 'peter-custom' );
 foreach( $founded_layouts as $layout )
@@ -11,8 +23,8 @@ foreach( $founded_layouts as $layout )
     }
 }
 
-$settings = '{' .
-    '\"section_rex_id\":\"\",' .
+$settings = '[{' .
+    '\"section_rex_id\":\"Ok3j\",' .
     '\"targets\":[' .
       '{' .
         '\"name\":\"self\",' .
@@ -61,8 +73,19 @@ $settings = '{' .
     '\"section_model_number\":-1,' .
     '\"section_hide\":false,' .
     '\"section_created_live\":false' .
-'}';
+'}]';
 
-echo $settings;
-echo stripslashes( $settings );
-var_dump(json_decode(stripslashes($settings)));
+$obj1 = json_decode(stripslashes($settings));
+var_dump($obj1);
+
+$opts = array(
+  'collapse_grid' => true,
+  'layout' => 'masonry'
+);
+foreach( $opts as $prop => $val )
+{
+  $obj1[0]->targets[0]->props->$prop = $val;
+}
+var_dump($obj1);
+
+echo "\n";

@@ -1736,6 +1736,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       template: '<div class="bar" role="bar"><div class="peg"></div></div>'
     });
 
+    // Trigger to the Live iframe that the it finished to resize
     $frameContainer.on(
       Rexbuilder_Util_Admin_Editor.transitionEvent,
       function() {

@@ -457,6 +457,9 @@ var Rexbuilder_Util_Editor = (function($) {
   };
 
   var addDocumentListeners = function() {
+    /**
+     * Listen a complete change layout event
+     */
     Rexbuilder_Util.$document.on("rexlive:changeLayout", function(event) {
       var data = event.settings;
       undoStackArray = [];

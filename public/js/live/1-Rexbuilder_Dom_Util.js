@@ -91,12 +91,7 @@ var Rexbuilder_Dom_Util = (function($) {
     );
   };
 
-  var _updateRow = function(
-    $section,
-    $sectionData,
-    $galleryElement,
-    rowSettings
-  ) {
+  var _updateRow = function( $section, $sectionData, $galleryElement, rowSettings ) {
     var grid_gutter = parseInt(rowSettings.gutter);
     var grid_separator_top = parseInt(rowSettings.top);
     var grid_separator_right = parseInt(rowSettings.right);
@@ -171,6 +166,14 @@ var Rexbuilder_Dom_Util = (function($) {
         galleryEditorInstance.updateGridSettingsChangeLayout(rowSettings);
       }
     }
+
+    // update row tools: dimension, layout and collapse
+    if ( Rexbuilder_Util.editorMode )
+    {
+      Rexbuilder_Section_Editor.updateSectionDimensionTool( $section, rowSettings );
+      Rexbuilder_Section_Editor.updateSectionLayoutTool( $section, rowSettings );
+      Rexbuilder_Section_Editor.updateCollapseSectionTool( $section, rowSettings );
+    }      
   };
 
   var _updateImageBG = function($target, data) {

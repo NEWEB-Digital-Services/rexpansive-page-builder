@@ -1198,11 +1198,7 @@ var Rexbuilder_Util = (function($) {
           } else {
             $section.removeClass("rex-hide-section");
             // console.log(section.targets);
-            response.collapse_needed += _updateDOMelements(
-              $section,
-              section.targets,
-              forceCollapseElementsGrid
-            );
+            response.collapse_needed += _updateDOMelements( $section, section.targets, forceCollapseElementsGrid );
           }
           sectionDomOrder.push(sectionObj);
         }
@@ -1220,11 +1216,7 @@ var Rexbuilder_Util = (function($) {
     return response;
   };
 
-  var _updateDOMelements = function(
-    $section,
-    targets,
-    forceCollapseElementsGrid
-  ) {
+  var _updateDOMelements = function( $section, targets, forceCollapseElementsGrid ) {
     var $gallery = $section.find(".grid-stack-row");
     var galleryData = $gallery.data();
 
@@ -1286,12 +1278,7 @@ var Rexbuilder_Util = (function($) {
       }
     }
 
-    updateSection(
-      $section,
-      $gallery,
-      targets[0].props,
-      forceCollapseElementsGrid
-    );
+    updateSection( $section, $gallery, targets[0].props, forceCollapseElementsGrid );
     var collapse =
       typeof targets[0].props.collapse_grid == "undefined"
         ? false
@@ -2398,12 +2385,7 @@ var Rexbuilder_Util = (function($) {
     return exists;
   };
 
-  var updateSection = function(
-    $section,
-    $gallery,
-    targetProps,
-    forceCollapseElementsGrid
-  ) {
+  var updateSection = function( $section, $gallery, targetProps, forceCollapseElementsGrid ) {
     var $sectionData = $section.children(".section-data");
 
     var mp4ID = !isNaN(parseInt(targetProps["video_bg_id"]))
@@ -2525,12 +2507,7 @@ var Rexbuilder_Util = (function($) {
             forceCollapseElementsGrid
     };
 
-    Rexbuilder_Dom_Util.updateRow(
-      $section,
-      $sectionData,
-      $gallery,
-      rowSettings
-    );
+    Rexbuilder_Dom_Util.updateRow( $section, $sectionData, $gallery, rowSettings );
 
     var newName =
       typeof targetProps["section_name"] == "undefined"

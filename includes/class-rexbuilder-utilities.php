@@ -278,4 +278,24 @@ class Rexbuilder_Utilities {
 	
 		return $result;
 	}
+
+	/**
+	 * Utility function to clone an array of objects
+	 *
+	 * @param array $array
+	 * @return array
+	 * @since 2.0.0
+	 * @date 05-04-2019
+	 */
+	public static function array_clone( $array ) {
+		return array_map( function( $element ) {
+			return ( ( is_array( $element ) )
+				? array_clone( $element )
+				: ( ( is_object( $element ) )
+					? clone $element
+					: $element
+				)
+			);
+		}, $array );
+	}
 }
