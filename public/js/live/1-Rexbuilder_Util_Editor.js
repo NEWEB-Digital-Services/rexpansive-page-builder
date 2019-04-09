@@ -513,9 +513,9 @@ var Rexbuilder_Util_Editor = (function($) {
       _sendUndoRedoInformation();
     });
 
-    Rexbuilder_Util.$document.on("rexlive:galleryReady", function(e) {
+    // Rexbuilder_Util.$document.on("rexlive:galleryReady", function(e) {
 
-    });
+    // });
 
     Rexbuilder_Util.$document.on("rexlive:updateSlider", function(e) {
       var data = e.settings;

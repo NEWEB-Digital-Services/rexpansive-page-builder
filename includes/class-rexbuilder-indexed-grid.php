@@ -108,6 +108,7 @@ class Rexbuilder_Indexed_Grid
 	 * @param int $height
 	 * @return int
 	 * @since 2.0.0
+	 * @edit 09-05-2019	Add controls to prevent array indexing warnings
 	 */
 	public function willFit( $width, $height )
 	{
@@ -122,10 +123,15 @@ class Rexbuilder_Indexed_Grid
 		// Search in the holes for a free space
 		for ($z = 0; $z < $holes_length; $z++)
 		{
-			for ($w = $this->grid[$holes[$z]] + 1; $w < $this->grid[$holes[$z] + 1]; $w++)
+			$s_index = $holes[$z];
+			$e_index = $holes[$z] + 1;
+			if ( isset( $this->grid[$s_index] ) && isset( $this->grid[$e_index] ) )
 			{
-				$free = $this->searchFreeSpace($w, $width, $height);
-				if ($free) { return $w; }
+				for ($w = $this->grid[$s_index] + 1; $w < $this->grid[$e_index]; $w++)
+				{
+					$free = $this->searchFreeSpace($w, $width, $height);
+					if ($free) { return $w; }
+				}
 			}
 		}
 

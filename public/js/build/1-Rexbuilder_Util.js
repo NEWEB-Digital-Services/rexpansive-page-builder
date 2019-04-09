@@ -3351,7 +3351,6 @@ var Rexbuilder_Util = (function($) {
       // $('.rex-video-wrap').getVideoThumbnail();
     }
 
-    console.log('VimeoVideo.init');
     VimeoVideo.init();
   };
 
@@ -3572,7 +3571,48 @@ var Rexbuilder_Util = (function($) {
 			x: val % maxWidth,
 			y: Math.floor( val / maxWidth )
     }
-	}
+  }
+  
+  /**
+   * Compare N strings to find the unique words inside
+   * @param {Array} s_arr array of strings to diff
+   * @param {String} separator string that separates the words inside the strings
+   * @return {Array} array of strings that occurence one time
+   * @since 2.0.0
+   * @date 09-05-2019
+   */
+  var _diffStrings = function( s_arr, separator )
+  {
+    separator = 'undefined' !== typeof separator ? separator : ' ';
+    // join the strings
+    var c = s_arr.join(' ');
+
+    // create an array of strings to check
+    var c_pool = c.split( separator );
+
+    var res_obj = {};
+    var res_pool = [];
+    // var result = '';
+
+    // count the string occurencies
+    for( var i=0, c_tot = c_pool.length; i < c_tot; i++ ) {
+      res_obj[c_pool[i]] = ( 'undefined' !== typeof res_obj[c_pool[i]] ? res_obj[c_pool[i]] + 1 : 1 );
+    }
+
+    // if there is only one occurency, save it
+    for( var occurency in res_obj )
+    {
+      if ( 1 === res_obj[occurency] )
+      {
+        res_pool.push(occurency)
+      }
+    }
+
+    // return the string of words that occurenc only one time
+    // result = res_pool.join(' ');
+    // return the array of words that occurenc only one time
+    return res_pool;
+  }
 
   // init the utilities
   var init = function() {
@@ -3738,6 +3778,7 @@ var Rexbuilder_Util = (function($) {
     updateDOMSingleElement: _updateDOMSingleElement,
     getDefaultBlockMeasure: _getDefaultBlockMeasure,
     doneResizing: doneResizing,
-    getCoord: getCoord
+    getCoord: getCoord,
+    diffStrings: _diffStrings
   };
 })(jQuery);
