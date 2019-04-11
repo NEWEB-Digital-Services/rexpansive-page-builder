@@ -3060,24 +3060,36 @@ var Rexbuilder_Util = (function($) {
    */
   var doneResizing = function() {
     Rexbuilder_Util.windowIsResizing = true;
-    if (Rexbuilder_Util.editorMode && !Rexbuilder_Util_Editor.buttonResized) {
-      Rexbuilder_Util.windowIsResizing = false;
-      return;
-    }
+    console.log('waddafux');
+    console.log(Rexbuilder_Util.editorMode);
+    console.log(Rexbuilder_Util_Editor.changedLayout);
+    // if (Rexbuilder_Util.editorMode && !Rexbuilder_Util_Editor.changedLayout) {
+    //   Rexbuilder_Util.windowIsResizing = false;
+    //   return;
+    // }
 
     // Live editor resize logic
     if (Rexbuilder_Util.editorMode) {
-      Rexbuilder_Util_Editor.buttonResized = false;
-      var resize_info = _edit_dom_layout(Rexbuilder_Util_Editor.clickedLayoutID);
-
-      if( 0 === resize_info.collapse_needed ) {
-        Rexbuilder_Util_Editor.endLoading();
-      } else {
-        $(document).one("rexlive:collapsingElementsEnded", function(e) {
+      if ( Rexbuilder_Util_Editor.changedLayout )
+      {
+        Rexbuilder_Util_Editor.changedLayout = false;
+        var resize_info = _edit_dom_layout(Rexbuilder_Util_Editor.clickedLayoutID);
+  
+        if( 0 === resize_info.collapse_needed ) {
           Rexbuilder_Util_Editor.endLoading();
-        });
+        } else {
+          $(document).one("rexlive:collapsingElementsEnded", function(e) {
+            Rexbuilder_Util_Editor.endLoading();
+          });
+        }
+      }
+      else
+      {
+        Rexbuilder_Util.windowIsResizing = false;
+        return;
       }
     } else {    // Front end resize logic
+      console.log('fronz')
       var actualLayout = _findFrontLayout();
       if(startFrontLayout != actualLayout) {
         changedFrontLayout = true;

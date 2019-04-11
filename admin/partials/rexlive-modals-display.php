@@ -2048,14 +2048,12 @@ defined('ABSPATH') or exit;
 
 <div id="rexbuilder-lateral-panel" class="rex-lateral-panel">
     <div class="top-lateral-tools clearfix">
-        <ul class="rex-lateral-tabs-list" data-tabgroup="rex-lateral-tabs">
-            <li><a href="#" data-rex-tab-target="rex-models-list">Models</a></li>
-            <li><a href="#" data-rex-tab-target="rex-buttons-list">Buttons</a></li>
+        <ul class="rex-lateral-tabs-list bl_d-flex" data-tabgroup="rex-lateral-tabs">
+            <li><a href="#" data-rex-tab-target="rex-models-list" class="active"><?php _e( 'Models', '' ); ?></a></li>
+            <li><a href="#" data-rex-tab-target="rex-buttons-list"><?php _e( 'Buttons', '' ); ?></a></li>
         </ul>
-        <div class="bl_d-flex bl_jc-fe">
-            <div class="tool-button tool-button--black tool-button--close rex-close-button">
-                <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
-            </div>
+        <div class="tool-button tool-button--black tool-button--close rex-close-button">
+            <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
         </div>
     </div>
     <div id="rex-lateral-tabs" class="tabgroup">

@@ -470,7 +470,7 @@ var Rexbuilder_Util_Editor = (function($) {
         {},
         data.layoutData
       );
-      Rexbuilder_Util_Editor.buttonResized = true;
+      Rexbuilder_Util_Editor.changedLayout = true;
       Rexbuilder_Util_Editor.clickedLayoutID = data.selectedLayoutName;
       _fixToolsVisibility(data.selectedLayoutName);
     });
@@ -1594,7 +1594,7 @@ var Rexbuilder_Util_Editor = (function($) {
     this.focusedElement = null;
 
     this.hasResized = false;
-    this.buttonResized = false;
+    this.changedLayout = false;
     this.clickedLayoutID = "";
     this.undoActive = false;
     this.redoActive = false;

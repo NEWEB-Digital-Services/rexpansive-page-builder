@@ -53,7 +53,6 @@ var Rexbuilder_Section = (function($) {
    * @date 11-05-2019
    */
   var _fixBlockToolsAccordingToSeparator = function( $section, settings ) {
-    console.log(settings.top);
     if ( settings.top > 25 )
     {
       $section.removeClass('ui-tools--near-top');
