@@ -211,6 +211,7 @@
 
       Rexbuilder_Dom_Util.updateRowDistancesData($gallery, data.distances);
       galleryInstance.updateRowDistances(data.distances, reverseData);
+      Rexbuilder_Section.fixBlockToolsAccordingToSeparator($section, data.distances);
       $section.attr("data-rexlive-section-edited", true);
       Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
     });
@@ -296,6 +297,7 @@
 
       Rexbuilder_Dom_Util.updateSectionMarginsData($section, data.margins);
       galleryInstance.updateRowSectionMargins(data.margins, reverseData);
+      Rexbuilder_Section.fixSectionToolbox($section, data.margins);
 
       $section.attr("data-rexlive-section-edited", true);
       Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));

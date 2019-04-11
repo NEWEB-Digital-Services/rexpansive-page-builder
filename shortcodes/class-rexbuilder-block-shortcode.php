@@ -657,6 +657,7 @@ class Rexbuilder_Block
                 echo '<div class="ui-focused-element-highlight">';
                 include REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-block-tools-top.php";
                 include REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-block-tools-bottom.php";
+                include REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-block-tools-mobile.php";
                 // include REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-block-tools-floating.php";
                 echo '</div>';
             }

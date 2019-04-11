@@ -3,10 +3,10 @@
  * Print the markup of the modals of the builder
  *
  * @link       htto://www.neweb.info
- * @since      1.0.10
+ * @since      2.0.0
  *
  * @package    Rexbuilder
- * @subpackage Rexbuilder/admin/partials
+ * @subpackage Rexbuilder/public/partials
  */
 
 defined( 'ABSPATH' ) or exit;

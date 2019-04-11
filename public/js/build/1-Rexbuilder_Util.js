@@ -1279,6 +1279,10 @@ var Rexbuilder_Util = (function($) {
     }
 
     updateSection( $section, $gallery, targets[0].props, forceCollapseElementsGrid );
+    if( Rexbuilder_Util.editorMode )
+    {
+      updateSectionTools( $section, $gallery, targets[0].props, forceCollapseElementsGrid );
+    }
     var collapse =
       typeof targets[0].props.collapse_grid == "undefined"
         ? false
@@ -2536,6 +2540,54 @@ var Rexbuilder_Util = (function($) {
           : false;
     $section.attr("data-rexlive-section-edited", sectionEdited);
   };
+
+  /**
+   * Updating the tools of a row, just in case
+   * @param {jQuery Object} $section section
+   * @param {jQuery Object} $gallery gallery
+   * @param {JS Oject} targetProps all section properties
+   * @param {bool} forceCollapseElementsGrid force collapsing info
+   */
+  var updateSectionTools = function( $section, $gallery, targetProps, forceCollapseElementsGrid ) {
+    var margins = {
+      top: isNaN(parseInt(targetProps["row_margin_top"]))
+        ? 0
+        : parseInt(targetProps["row_margin_top"]),
+      right: isNaN(parseInt(targetProps["row_margin_right"]))
+        ? 0
+        : parseInt(targetProps["row_margin_right"]),
+      bottom: isNaN(parseInt(targetProps["row_margin_bottom"]))
+        ? 0
+        : parseInt(targetProps["row_margin_bottom"]),
+      left: isNaN(parseInt(targetProps["row_margin_left"]))
+        ? 0
+        : parseInt(targetProps["row_margin_left"])
+    };
+
+    Rexbuilder_Section.fixSectionToolbox($section, margins);
+
+    var rowSettings = {
+      gutter: targetProps["block_distance"],
+      top: targetProps["row_separator_top"],
+      bottom: targetProps["row_separator_bottom"],
+      right: targetProps["row_separator_right"],
+      left: targetProps["row_separator_left"],
+
+      full_height: targetProps["full_height"],
+      layout: targetProps["layout"],
+
+      section_width: targetProps["section_width"],
+      dimension: targetProps["dimension"],
+
+      collapse_grid:
+        typeof targetProps["collapse_grid"] == "undefined"
+          ? false
+          : targetProps["collapse_grid"].toString() == "true" ||
+            forceCollapseElementsGrid
+    };
+
+    Rexbuilder_Section.fixBlockToolsAccordingToSeparator( $section, rowSettings );
+  }
 
   var _updateElementDimensions = function($elem, $elemData, posData) {
     var x = parseInt(posData.x);

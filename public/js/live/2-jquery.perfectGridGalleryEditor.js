@@ -2307,7 +2307,9 @@
     _updateElementsSizeViewers: function() {
       var gallery = this;
       this.$element.children(".grid-stack-item").each(function() {
-        gallery.updateSizeViewerSizes($(this));
+        var $block = $(this);
+        gallery.updateSizeViewerSizes($block);
+        gallery.checkBlockDimension($block);
       });
     },
 
@@ -2320,7 +2322,10 @@
           y = Math.round(y * this.properties.singleHeight);
         }
       }
-      $elem.find(".el-size-viewer .el-size-viewer__val").text(x + " x " + y);
+      var size_text = (x + " x " + y);
+      var size_text_mobile = (x + "x" + y);
+      $elem.find(".top-tools .el-size-viewer .el-size-viewer__val").text(size_text);
+      $elem.find(".mobile-tools .el-size-viewer .el-size-viewer__val").text(size_text_mobile);
     },
 
     updateSizeViewerSizes: function($block) {
@@ -2336,6 +2341,39 @@
         return $block.outerHeight();
       } else {
         return Math.round($block.outerHeight() / this.properties.singleHeight);
+      }
+    },
+
+    /**
+     * Check the width of a block element and decide if
+     * hide or view the size viewer, cause it can overlaps
+     * the other tools
+     * 
+     * @param {Node} block DOM block element
+     * @since 2.0.0
+     * @date 11-04-2019
+     */
+    checkBlockDimension: function($block)
+    {
+      // checking block dimension to correctly display the tools
+      var block_width = $block[0].offsetWidth;
+
+      if ( block_width < 170 ) 
+      {
+        $block.addClass('ui-tools--view-mobile');
+      }
+      else
+      {
+        $block.removeClass('ui-tools--view-mobile');
+      }
+
+      if ( block_width < 100 )
+      {
+        $block.addClass('ui-hide-mobile-size-viewer');
+      }
+      else
+      {
+        $block.removeClass('ui-hide-mobile-size-viewer');
       }
     },
 
@@ -2410,7 +2448,7 @@
               }
             }
             gallery.updateSizeViewerText( $block, Math.round(ui.size.width / gallery.properties.singleWidth), Math.round(ui.size.height / heightFactor) );
-
+            gallery.checkBlockDimension($block);
             // In masonry all images have not to be cut
             if (gallery.settings.galleryLayout == "masonry") {
               if(naturalImage){
@@ -2437,6 +2475,7 @@
         .on("gsresizestop", function(event, elem) {
           if (Rexbuilder_Util_Editor.elementIsResizing) {
             gallery.updateSizeViewerText($block);
+            gallery.checkBlockDimension($block);
             if (gallery.settings.galleryLayout == "masonry") {
 
               $block.attr( "data-height", Math.round( $block.attr("data-gs-height") / gallery.properties.singleWidth ) );
@@ -3439,7 +3478,10 @@
         $elem = $(this);
         h = that.updateElementHeight($elem);
         $elem.css("height", h + "px");
-        $elem.find(".el-size-viewer .el-size-viewer__val").text("12 x " + Math.round(h));
+        var size_text = "12 x " + Math.round(h);
+        var size_text_mobile = "12x" + Math.round(h);
+        $elem.find(".top-tools .el-size-viewer .el-size-viewer__val").text(size_text);
+        $elem.find(".mobile-tools .el-size-viewer .el-size-viewer__val").text(size_text_mobile);
       });
     },
 

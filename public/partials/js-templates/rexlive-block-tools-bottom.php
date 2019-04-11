@@ -1,3 +1,17 @@
+<?php
+/**
+ * Print the JS template for the block bottom toolbox
+ *
+ * @link       htto://www.neweb.info
+ * @since      2.0.0
+ *
+ * @package    Rexbuilder
+ * @subpackage Rexbuilder/public/partials/js-templates
+ */
+
+defined('ABSPATH') or exit;
+?>
+
 <div class="rexlive-block-toolbox bottom-tools" data-block_type="{%=block.block_type%}">
     <div class="rexlive-bottom-block-tools bl_d-flex bl_jc-c">
         <div class="bl_d-iflex bl_ai-c block-toolBox__fast-configuration">

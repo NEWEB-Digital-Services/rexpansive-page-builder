@@ -1,0 +1,40 @@
+Abbiamo top tools, bottom tools e, adesso, mobile tools
+al momento i top tools, raggiunta una certa larghezza dei blocchi (1,2), si spostano al centro, lasciando visibile solamente il menu a tre puntini
+il pulsante di eliminazione blocco viene nascosto se:
+    1) dimensione blocco (1,2)
+    2) separatore tra i blocchi troppo piccolo per farci stare il pulsante (<25)
+
+tools delle row attaccati o meno alla row
+
+Vecchie regole per i top tools dei blocchi in caso di padding top molto ravvicinato
+// .perfect-grid-gallery {
+//   &[data-row-separator-top="0"],
+//   &[data-row-separator-top="1"],
+//   &[data-row-separator-top="2"],
+//   &[data-row-separator-top="3"],
+//   &[data-row-separator-top="4"],
+//   &[data-row-separator-top="5"],
+//   &[data-row-separator-top="6"],
+//   &[data-row-separator-top="7"],
+//   &[data-row-separator-top="8"],
+//   &[data-row-separator-top="9"],
+//   &[data-row-separator-top="10"],
+//   &[data-row-separator-top="11"],
+//   &[data-row-separator-top="12"],
+//   &[data-row-separator-top="13"],
+//   &[data-row-separator-top="14"],
+//   &[data-row-separator-top="15"],
+//   &[data-row-separator-top="16"],
+//   &[data-row-separator-top="17"],
+//   &[data-row-separator-top="18"],
+//   &[data-row-separator-top="19"],
+//   &[data-row-separator-top="20"],
+//   &[data-row-separator-top="21"],
+//   &[data-row-separator-top="22"],
+//   &[data-row-separator-top="23"],
+//   &[data-row-separator-top="24"],
+//   &[data-row-separator-top="25"],
+  // &[data-row-separator-top="26"],
+  // &[data-row-separator-top="27"],
+  // &[data-row-separator-top="28"],
+  // &[data-row-separator-top="29"] 

@@ -50,6 +50,8 @@ class Rexbuilder_Public
      */
     private $plugin_options;
 
+    private $experimental_tools;
+
     /**
      * Initialize the class and set its properties.
      *
@@ -64,12 +66,27 @@ class Rexbuilder_Public
         $this->version = $version;
 
         $this->plugin_options = get_option($this->plugin_name . '_options');
+
+        // $ex_tools = array( 'accordion', 'slideshow' );
+        $ex_tools = array();
+        $this->experimental_tools = apply_filters( 'rexbuilder_live_experimental_tools', $ex_tools );
     }
 
+    /**
+     * Add classes to the public body of a page
+     *
+     * @param array $classes
+     * @return array
+     * @since 2.0.0
+     */
     public function rexlive_body_class( $classes ) {
         if( Rexbuilder_Utilities::isBuilderLive() ) {
             // array_push( $classes, 'rexbuilder-live-active' );
             $classes[] = 'rexbuilder-live-active';
+            foreach( $this->experimental_tools as $tool )
+            {
+                $classes[] = "rexbuilder-live-{$tool}--active";
+            }
         }
         return $classes;
     }

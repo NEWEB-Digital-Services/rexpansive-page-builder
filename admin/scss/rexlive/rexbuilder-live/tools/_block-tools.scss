@@ -31,6 +31,10 @@
     z-index: 10;
   }
 
+  &.mobile-tools {
+    display: none;
+  }
+
   .rexlive-top-block-tools {
     @include generic-toolbar;
     padding: 0px 20px;
@@ -55,12 +59,24 @@
     }
   }
 
-  .builder-delete-block {
-    position: absolute;
-    top: 50%;
-    right: -10px;
-    transform: translateY(-50%);
+  &.top-tools {
+    .builder-delete-block {
+      position: absolute;
+      top: 50%;
+      right: -10px;
+      transform: translateY(-50%);
+    }
+  }
 
+  &.mobile-tools {
+    .builder-delete-block {
+      position: absolute;
+      right: -10px;
+      top: -10px;
+    }
+  }
+
+  .builder-delete-block {
     font-size: 10px;
     background-color: $palette-color-4;
     @include fill-icon(#fff);
@@ -74,6 +90,16 @@
     padding-right: 8px;
   }
 
+  &.mobile-tools {
+    .el-size-viewer {
+      margin-left: 0!important;
+      line-height: 1;
+      position: absolute;
+      left: -10px;
+      top: -10px;
+    }
+  }
+
   .el-size-viewer__um {
     font-size: 8px;
     display: none;
@@ -82,6 +108,24 @@
   .tool-button_list {
     &.tool-button_list--horizontal {
       left: -70px;
+    }
+  }
+}
+
+.rex-container {
+  &:not([data-rex-layout-selected=default]) {
+    .block-toolBox__editor-tools {
+      display: none;
+    }
+  }
+}
+
+.ui-hide-mobile-size-viewer {
+  .rexlive-block-toolbox {
+    &.mobile-tools {
+      .el-size-viewer {
+        display: none;
+      }
     }
   }
 }
@@ -106,6 +150,10 @@
     &.bottom-tools {
       z-index: 50;
     }
+
+    &.mobile-tools {
+      z-index: 50;
+    }
   }
 }
 
@@ -117,38 +165,8 @@
   }
 }
 
-.perfect-grid-gallery {
-  &[data-row-separator-top="0"],
-  &[data-row-separator-top="1"],
-  &[data-row-separator-top="2"],
-  &[data-row-separator-top="3"],
-  &[data-row-separator-top="4"],
-  &[data-row-separator-top="5"],
-  &[data-row-separator-top="6"],
-  &[data-row-separator-top="7"],
-  &[data-row-separator-top="8"],
-  &[data-row-separator-top="9"],
-  &[data-row-separator-top="10"],
-  &[data-row-separator-top="11"],
-  &[data-row-separator-top="12"],
-  &[data-row-separator-top="13"],
-  &[data-row-separator-top="14"],
-  &[data-row-separator-top="15"],
-  &[data-row-separator-top="16"],
-  &[data-row-separator-top="17"],
-  &[data-row-separator-top="18"],
-  &[data-row-separator-top="19"],
-  &[data-row-separator-top="20"],
-  &[data-row-separator-top="21"],
-  &[data-row-separator-top="22"],
-  &[data-row-separator-top="23"],
-  &[data-row-separator-top="24"],
-  &[data-row-separator-top="25"],
-  // &[data-row-separator-top="26"],
-  // &[data-row-separator-top="27"],
-  // &[data-row-separator-top="28"],
-  // &[data-row-separator-top="29"] 
-  {
+.rexpansive_section {
+  &.ui-tools--near-top {
     .grid-stack-item[data-gs-y="0"] {
       .rexlive-top-block-tools {
         padding: 0;
@@ -158,6 +176,9 @@
         &.floating-tools {
           top: 10px;
           transform: none;
+        }
+        &.mobile-tools {
+          top: 20px;
         }
         .el-size-viewer {
           margin-left: 15px;
@@ -169,8 +190,10 @@
           }
         }
       }
-      .builder-delete-block {
-        display: none;
+      .top-tools {
+        .builder-delete-block {
+          display: none;
+        }
       }
     }
   }
@@ -240,8 +263,9 @@
 }
 
 .grid-stack-item {
-  &[data-gs-width="1"],
-  &[data-gs-width="2"] {
+  // &[data-gs-width="1"],
+  // &[data-gs-width="2"] {
+  &.ui-tools--view-mobile {
     .rexlive-block-toolbox.top-tools {
       width: auto;
       top: 50%!important;
@@ -250,17 +274,20 @@
       > .builder-delete-block {
         display: none;
       }
+      .el-size-viewer {
+        display: none;
+      }
     }
     .rexlive-top-block-tools {
       padding: 0;
+    }
+    .rexlive-block-toolbox.mobile-tools {
+      display: block;
     }
     .rexlive-block-toolbox.bottom-tools,
     .block-toolBox__editor-tools,
     .rexlive-block-toolbox.floating-tools,
     .block-toolBox__placeholder,
-    .el-size-viewer {
-      display: none;
-    }
     .block-toolBox__config-tools {
       > div:not(.block-toolBox__config-list) {
         display: none!important;
@@ -289,5 +316,26 @@
         padding: 10px;
       }
     }
+  }
+}
+
+.tool-button {
+  &.edit-block-accordion,
+  &.edit-block-slideshow {
+    display: none;
+  }
+}
+
+.rexbuilder-live-accordion--active {
+  .tool-button {
+    &.edit-block-accordion {
+      display: inline-block;
+    }
+  }
+}
+
+.rexbuilder-live-slideshow--active {
+  &.edit-block-slideshow {
+    display: inline-block;
   }
 }

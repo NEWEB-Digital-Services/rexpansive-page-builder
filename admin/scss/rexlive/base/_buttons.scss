@@ -120,9 +120,9 @@
 
   &.tool-button--add-big {
     @include bl-btn--add-big();
-    #{$icon-class} {
-      font-size: 16px;
-    }
+    font-size: 16px;
+    // #{$icon-class} {
+    // }
   }
 
   &.tool-button--add-mdm {

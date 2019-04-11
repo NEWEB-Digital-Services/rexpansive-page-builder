@@ -1,14 +1,19 @@
+<?php
+/**
+ * Print the JS template for the block top toolbox
+ *
+ * @link       htto://www.neweb.info
+ * @since      2.0.0
+ *
+ * @package    Rexbuilder
+ * @subpackage Rexbuilder/public/partials/js-templates
+ */
+
+defined('ABSPATH') or exit;
+?>
+
 <div class="rexlive-block-toolbox top-tools">
     <div class="rexlive-top-block-tools">
-        <!-- <div class="block-toolBox__placeholder">
-            <div style="visibility:hidden;display:inline-block;">
-                <div class="el-size-viewer tool-indicator"></div>
-            </div>
-            <div class="tool-button tool-button--inline drag-to-section tippy" data-tippy-content="<?php //_e('Power Drag','rexpansive'); ?>">
-                <?php //Rexbuilder_Utilities::get_icon('#B012-Full-Height'); ?>
-            </div>
-        </div> -->
-
         <div class="el-size-viewer tool-indicator"><span class="el-size-viewer__val"></span> <span class="el-size-viewer__um">PX</span></div>
 
         <div class="bl_d-iflex bl_ai-c block-toolBox__editor-tools">
@@ -79,11 +84,6 @@
                     <div class="tool-button tool-button--inline tool-button_list--item builder-copy-block tippy" data-tippy-content="<?php _e('Copy block', 'rexpansive'); ?>">
                         <?php Rexbuilder_Utilities::get_icon('#Z004-Copy'); ?>
                     </div>
-
-                    <div class="tool-button tool-button--inline tool-button_list--item builder-delete-block waves-effect tippy" data-tippy-content="<?php _e('Delete block', 'rexspansive'); ?>">
-                        <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
-                    </div>
-
                 </div>
             </div>
 

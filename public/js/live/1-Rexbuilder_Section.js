@@ -23,6 +23,48 @@ var Rexbuilder_Section = (function($) {
   };
 
   /**
+   * Position correctly the section to toolbox
+   * If in mobile, take care of an eventually section margin
+   * to prevent overlapping tools
+   * @param {jQuery Object} $section section to fix
+   * @since 2.0.0
+   * @date 11-05-2019
+   */
+  var _fixSectionToolbox = function( $section, margins ) {
+    var toolBox = $section.find('.section-toolBox')[0];
+    if ( 'mobile' === Rexbuilder_Util.activeLayout )
+    {
+      toolBox.style.marginLeft = '-' + margins.left + 'px';
+      toolBox.style.marginRight = '-' + margins.right + 'px';
+    }
+    else
+    {
+      toolBox.style.marginLeft = '';
+      toolBox.style.marginRight = '';
+    }
+  };
+
+  /**
+   * Check the top padding of a section, to tell the block
+   * tools that is or not enought space to view them
+   * @param {jQuery Object} $section section to check
+   * @param {JS Object} settings section settings
+   * @since 2.0.0
+   * @date 11-05-2019
+   */
+  var _fixBlockToolsAccordingToSeparator = function( $section, settings ) {
+    console.log(settings.top);
+    if ( settings.top > 25 )
+    {
+      $section.removeClass('ui-tools--near-top');
+    }
+    else
+    {
+      $section.addClass('ui-tools--near-top');
+    }
+  };
+
+  /**
    * Fix the copied row
    * @param {Object} $section jQuery section copied
    * @since 2.0.0
@@ -1526,6 +1568,8 @@ var Rexbuilder_Section = (function($) {
     showSectionToolBox: _showSectionToolBox,
     hideSectionToolBox: _hideSectionToolBox,
     linkHoverSection: _linkHoverSection,
-    updateModelsHtmlLive: _updateModelsHtmlLive
+    updateModelsHtmlLive: _updateModelsHtmlLive,
+    fixSectionToolbox : _fixSectionToolbox,
+    fixBlockToolsAccordingToSeparator: _fixBlockToolsAccordingToSeparator
   };
 })(jQuery);
