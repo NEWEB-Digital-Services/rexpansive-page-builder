@@ -10,7 +10,7 @@
  */
 var generic_callback = function(e)
 {
-  console.log({el: this, type: e.type });
+  console.log({el: this, type: e.type, data: e.data });
 }
 
 // get all page nodes

@@ -39,7 +39,8 @@
      * 31) Text Gradient: rexlive:setTextGradient
      * 32) Model : rexlive:editModel
      * 33) Model : rexlive:modelBecameSection
-     * 34) Custom CSS : rexlive:getCustomCss
+     * 34) Buttons: rexlive:update_button_page
+     * 35) Custom CSS : rexlive:getCustomCss
      */
 
     $document.on("rexlive:set_row_fullHeight", function(e) {
@@ -84,6 +85,7 @@
         reverseData
       );
       $section.attr("data-rexlive-section-edited", true);
+      Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
     });
 
     $document.on("rexlive:set_gallery_layout", function(e) {
@@ -210,6 +212,7 @@
       Rexbuilder_Dom_Util.updateRowDistancesData($gallery, data.distances);
       galleryInstance.updateRowDistances(data.distances, reverseData);
       $section.attr("data-rexlive-section-edited", true);
+      Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
     });
 
     $document.on("rexlive:rowDistancesApplied", function(e) {
@@ -295,6 +298,7 @@
       galleryInstance.updateRowSectionMargins(data.margins, reverseData);
 
       $section.attr("data-rexlive-section-edited", true);
+      Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
     });
 
     $document.on("rexlive:sectionMarginsApplied", function(e) {
@@ -466,6 +470,7 @@
           reverseData
         );
         $section.attr("data-rexlive-section-edited", true);
+        Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
       }
     });
 
@@ -499,6 +504,7 @@
         sectionName: data.sectionName
       };
       $section.attr("data-rexlive-section-edited", true);
+      Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
       Rexbuilder_Util_Editor.pushAction(
         $section,
         "updateSectionName",
@@ -546,6 +552,7 @@
         classes: data.customClasses
       };
       $section.attr("data-rexlive-section-edited", true);
+      Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
       Rexbuilder_Util_Editor.pushAction(
         $section,
         "updateCustomClasses",
@@ -1943,7 +1950,7 @@
       );
     });
 
-    $(document).on("rexlive:update_button_page", function(e) {
+    $(document).on("Buttons: rexlive:update_button_page", function(e) {
       var data = e.settings.data_to_send;
       var reverseData = {
         buttonProperties: jQuery.extend(true, {}, data.reverseButtonData)
