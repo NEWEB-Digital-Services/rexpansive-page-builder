@@ -710,19 +710,20 @@ var Rexbuilder_Section = (function($) {
         sectionWidth: "100%",
         fullHeight: "false",
         blockDistance: 20,
-        layout: "masonry",
+        layout: "fixed",
         rowSeparatorTop: 20,
         rowSeparatorBottom: 20,
         rowSeparatorRight: 20,
         rowSeparatorLeft: 20
       };
+
       var newSection = tmpl("tmpl-new-section", new_row_defaults);
 
       var $newSection = $(newSection);
       var $newSectionData = $newSection.children(".section-data");
 
       $newSectionData.after(
-        tmpl("tmpl-toolbox-section", { rexID: rexIdSection })
+        tmpl("tmpl-toolbox-section", new_row_defaults)
       );
       //per ora viene aggiunta dopo l'ultima section
       switch( newRowPosition ) {
@@ -759,8 +760,7 @@ var Rexbuilder_Section = (function($) {
 
       var reverseData = {
         show: false,
-        layoutsOrder:
-          layoutsOrder != null ? jQuery.extend(true, [], layoutsOrder) : null
+        layoutsOrder: layoutsOrder != null ? jQuery.extend(true, [], layoutsOrder) : null
       };
 
       Rexbuilder_Dom_Util.updateSectionVisibility($newSection, true);
@@ -844,13 +844,15 @@ var Rexbuilder_Section = (function($) {
         rowSeparatorRight: 20,
         rowSeparatorLeft: 20
       };
+      console.log(new_row_defaults);
       var newSection = tmpl("tmpl-new-section", new_row_defaults);
 
       var $newSection = $(newSection);
       var $newSectionData = $newSection.children(".section-data");
 
+      console.log(new_row_defaults);
       $newSectionData.after(
-        tmpl("tmpl-toolbox-section", { rexID: rexIdSection })
+        tmpl("tmpl-toolbox-section", new_row_defaults)
       );
       //per ora viene aggiunta dopo l'ultima section
       switch( newRowPosition ) {

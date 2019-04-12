@@ -2479,12 +2479,17 @@
             if (gallery.settings.galleryLayout == "masonry") {
 
               $block.attr( "data-height", Math.round( $block.attr("data-gs-height") / gallery.properties.singleWidth ) );
-              if (
-                startingElementHeight != $block.outerHeight() ||
-                startingElementWidth != Math.round( $block.outerWidth() / gallery.properties.singleWidth )
-              ) {
-                $elemData.attr("data-block_dimensions_live_edited", "true");
-              }
+              // @date 12-05-2019
+              // Remove this proprerty set.
+              // TODO Deeply check: is this correct?
+
+              // if (
+              //   startingElementHeight != $block.outerHeight() ||
+              //   startingElementWidth != Math.round( $block.outerWidth() / gallery.properties.singleWidth )
+              // ) {
+                // $elemData.attr("data-block_dimensions_live_edited", "true");
+                // console.log('on("gsresizestop")');
+              // }
 
               // switch(gallery.properties.resizeHandle){
               //   case "s":
@@ -2837,7 +2842,7 @@
                     gallery.updateElementHeight($elem);
                   }
                 } else {
-                  console.log('call here');
+                  // console.log('call here');
                   gallery.updateElementHeight($elem, blockRatio);
                 }
               } else{
@@ -3187,16 +3192,16 @@
         emptyBlockFlag = true;
       }
 
-      console.table({
-        blockRatio: blockRatio,
-        startH: startH,
-        backgroundHeight: backgroundHeight,
-        videoHeight: videoHeight,
-        defaultHeight: defaultHeight,
-        textHeight: textHeight,
-        sliderHeight: sliderHeight,
-        test: startH * this.properties.singleHeight
-      });
+      // console.table({
+      //   blockRatio: blockRatio,
+      //   startH: startH,
+      //   backgroundHeight: backgroundHeight,
+      //   videoHeight: videoHeight,
+      //   defaultHeight: defaultHeight,
+      //   textHeight: textHeight,
+      //   sliderHeight: sliderHeight,
+      //   test: startH * this.properties.singleHeight
+      // });
 
       newH = Math.max(
         startH,

@@ -1043,7 +1043,7 @@ var Rex_Save_Listeners = (function($) {
           : $itemData.attr("data-block_dimensions_live_edited");
     } else {
       block_dimensions_live_edited = "";
-    }
+    } 
 
     block_flex_position =
       typeof $itemData.attr("data-block_flex_position") == "undefined"
