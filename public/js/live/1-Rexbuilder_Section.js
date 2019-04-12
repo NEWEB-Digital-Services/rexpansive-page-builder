@@ -338,6 +338,9 @@ var Rexbuilder_Section = (function($) {
       }
     }
 
+    // Rexbuilder_Section_Editor.updateSectionDimensionTool( $section );
+    // Rexbuilder_Section_Editor.updateSectionLayoutTool( $section );
+
     var data = {
       eventName: "rexlive:edited",
       modelEdited: $section.hasClass("rex-model-section")

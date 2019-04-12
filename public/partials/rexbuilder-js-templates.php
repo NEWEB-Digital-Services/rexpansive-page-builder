@@ -265,7 +265,7 @@ $tool_button_classes = 'tool-button';
 <?php include 'js-templates/rexlive-section-tools.php'; ?>
 
 <script type="text/x-tmpl" id="tmpl-new-section">
-    <section class="rexpansive_section empty-section" data-rexlive-section-id="{%=section.rexID%}" data-rexlive-section-name="">
+    <section class="rexpansive_section empty-section{% if( section.rowSeparatorTop < 25 ) { %} ui-tools--near-top {% } %}" data-rexlive-section-id="{%=section.rexID%}" data-rexlive-section-name="">
         <div class="section-data" style="display: none;" data-section_name="" data-type="perfect-grid" data-color_bg_section="" data-color_bg_section_active="true"
             data-dimension="{%=section.dimension%}" data-image_bg_section_active="true" data-image_bg_section="" data-id_image_bg_section=""
             data-video_bg_url_section="" data-video_bg_id_section="" data-video_bg_url_vimeo_section="" data-full_height="{%=section.fullHeight%}"

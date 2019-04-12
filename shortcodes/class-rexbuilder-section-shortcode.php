@@ -220,6 +220,7 @@ class Rexbuilder_Section
             (($content_has_floating_blocks !== false) ? ' rex-section-has-floating-blocks' : '') .
             (($content_has_static_block !== false) ? ' rex-section-has-static-blocks' : '') .
             ((false !== $row_has_accordion) ? ' rex-section-has-accordion' : '') .
+            ( isset($editor) && $editor == "true" ? ( $row_separator_top < 25 ? ' ui-tools--near-top' : '' ) : '' ) .
             apply_filters('rexpansive_builder_section_class', '', $parsed_atts) . '"' .
                 (($content_has_photoswipe > 0) ? ' itemscope itemtype="http://schema.org/ImageGallery"' : '') .
                 (strlen($section_style) > 7 ? ' ' . $section_style . '"' : '');

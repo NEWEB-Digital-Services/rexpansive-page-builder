@@ -653,6 +653,12 @@ var Rexbuilder_Section_Editor = (function($) {
    * @param {JS Object} data Section dimension data
    */
   var _updateSectionDimensionTool = function( $target, data ) {
+    data = 'undefined' !== typeof data ? data : null;
+    if ( null === data )
+    {
+      data = {};
+      data.dimension = $target.find('.section-data').attr('data-dimension');
+    }
     $target.find(".edit-row-width[data-section_width=" + data.dimension + "]").prop('checked',true);
   };
 
@@ -662,6 +668,13 @@ var Rexbuilder_Section_Editor = (function($) {
    * @param {JS Object} data Section layout data
    */
   var _updateSectionLayoutTool = function( $target, data ) {
+    data = 'undefined' !== typeof data ? data : null;
+    if ( null === data )
+    {
+      data = {};
+      data.layout = $target.find('.section-data').attr('data-layout');
+    }
+
     switch(data.layout) {
       case "masonry":
         $target.find(".edit-row-layout-checkbox").prop("checked",false);

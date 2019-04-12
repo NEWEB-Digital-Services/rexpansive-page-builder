@@ -993,7 +993,9 @@ var Rexbuilder_Util = (function($) {
           _viewport().width <
             _plugin_frontend_settings.defaultSettings.collapseWidth
         ) {
+          // default mobile section props
           layoutSelectedSections[i].targets[0].props.collapse_grid = true;
+          layoutSelectedSections[i].targets[0].props.layout = "masonry";
         }
       }
     }
@@ -1190,14 +1192,10 @@ var Rexbuilder_Util = (function($) {
         }
 
         if ($section.length != 0 && !$section.hasClass("removing_section")) {
-          if (
-            typeof section.section_hide != "undefined" &&
-            section.section_hide.toString() == "true"
-          ) {
+          if ( typeof section.section_hide != "undefined" && section.section_hide.toString() == "true" ) {
             $section.addClass("rex-hide-section");
           } else {
             $section.removeClass("rex-hide-section");
-            // console.log(section.targets);
             response.collapse_needed += _updateDOMelements( $section, section.targets, forceCollapseElementsGrid );
           }
           sectionDomOrder.push(sectionObj);

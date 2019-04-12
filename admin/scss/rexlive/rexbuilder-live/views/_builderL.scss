@@ -38,8 +38,18 @@
   &.collapse-grid {
     @include fill-icon(rgba(255, 255, 255, 0.5));
     // left: 25%;
-    &.grid-collapsed {
-      @include fill-icon(#fff);
+    // &.grid-collapsed {
+    //   @include fill-icon(#fff);
+    // }
+  }
+}
+
+.rexpansive_section {
+  &[data-rex-collapse-grid=true] {
+    .tool-button.tool-button--flat {
+      &.collapse-grid {
+        @include fill-icon(#fff);
+      }
     }
   }
 }

@@ -5292,7 +5292,8 @@ input.me-insert-embed__value[type=text] {
 
 .tool-button.tool-button--flat.collapse-grid .l-svg-icons > svg {
   fill: rgba(255, 255, 255, 0.5); }
-.tool-button.tool-button--flat.collapse-grid.grid-collapsed .l-svg-icons > svg {
+
+.rexpansive_section[data-rex-collapse-grid=true] .tool-button.tool-button--flat.collapse-grid .l-svg-icons > svg {
   fill: #fff; }
 
 .add-new-block-empty {
