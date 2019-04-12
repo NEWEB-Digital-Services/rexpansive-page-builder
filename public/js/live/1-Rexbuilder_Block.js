@@ -14,6 +14,15 @@ var Rexbuilder_Block = (function ($) {
             $elem.attr("data-rexlive-element-edited", true);
             Rexbuilder_Util_Editor.removingBlocks = false;
 
+            if ( 0 === $section.find('.perfect-grid-item').not('.rex-hide-element').length )
+            {
+                $section.addClass('empty-section');
+            }
+            else
+            {
+                $section.removeClass('empty-section');
+            }
+
             var data = {
                 eventName: "rexlive:edited",
                 modelEdited: $section.hasClass("rex-model-section"),

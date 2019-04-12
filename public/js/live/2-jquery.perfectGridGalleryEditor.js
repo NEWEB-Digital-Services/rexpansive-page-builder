@@ -2837,6 +2837,7 @@
                     gallery.updateElementHeight($elem);
                   }
                 } else {
+                  console.log('call here');
                   gallery.updateElementHeight($elem, blockRatio);
                 }
               } else{
@@ -3186,14 +3187,16 @@
         emptyBlockFlag = true;
       }
 
-      // console.table({
-      //   startH: startH,
-      //   backgroundHeight: backgroundHeight,
-      //   videoHeight: videoHeight,
-      //   defaultHeight: defaultHeight,
-      //   textHeight: textHeight,
-      //   sliderHeight: sliderHeight
-      // });
+      console.table({
+        blockRatio: blockRatio,
+        startH: startH,
+        backgroundHeight: backgroundHeight,
+        videoHeight: videoHeight,
+        defaultHeight: defaultHeight,
+        textHeight: textHeight,
+        sliderHeight: sliderHeight,
+        test: startH * this.properties.singleHeight
+      });
 
       newH = Math.max(
         startH,

@@ -469,6 +469,10 @@ var Rexbuilder_Section = (function($) {
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });
 
+    /**
+     * Handling the copy of a section
+     * @since 2.0.0
+     */
     Rexbuilder_Util.$document.on("click", ".builder-copy-row", function(e) {
       Rexbuilder_Util_Editor.sectionCopying = true;
       var $section = $(e.currentTarget).parents(".rexpansive_section");
@@ -489,6 +493,7 @@ var Rexbuilder_Section = (function($) {
       }
       var newSectionNumber = -1;
 
+      // search the copyed section index
       Rexbuilder_Util.$rexContainer
         .children(".rexpansive_section:not(.removing_section)")
         .each(function(i, sec) {
@@ -528,6 +533,7 @@ var Rexbuilder_Section = (function($) {
 
       Rexbuilder_Util_Editor_Utilities.removeColorPicker($newSection);
 
+      // insert the copyed row
       $newSection.insertAfter($section);
       Rexbuilder_Section.prepareSectionCopied($newSection);
 
@@ -535,10 +541,13 @@ var Rexbuilder_Section = (function($) {
 
       var $row = $newSection.find(".grid-stack-row");
 
+      // launch the grid on the new section
       $row.perfectGridGalleryEditor();
 
+      // relaunch sortable
       Rexbuilder_Util.$rexContainer.sortable("refresh");
       
+      // update the tools
       Rexbuilder_Section_Editor.updateRowTools( $newSection );
       Rexbuilder_Block_Editor.updateBlockToolsOnRow( $newSection );
       Rexbuilder_Util_Editor.launchTooltips();
