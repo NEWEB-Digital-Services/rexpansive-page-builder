@@ -3060,9 +3060,6 @@ var Rexbuilder_Util = (function($) {
    */
   var doneResizing = function() {
     Rexbuilder_Util.windowIsResizing = true;
-    console.log('waddafux');
-    console.log(Rexbuilder_Util.editorMode);
-    console.log(Rexbuilder_Util_Editor.changedLayout);
     // if (Rexbuilder_Util.editorMode && !Rexbuilder_Util_Editor.changedLayout) {
     //   Rexbuilder_Util.windowIsResizing = false;
     //   return;
@@ -3070,6 +3067,7 @@ var Rexbuilder_Util = (function($) {
 
     // Live editor resize logic
     if (Rexbuilder_Util.editorMode) {
+      // If layout changed
       if ( Rexbuilder_Util_Editor.changedLayout )
       {
         Rexbuilder_Util_Editor.changedLayout = false;
@@ -3085,11 +3083,13 @@ var Rexbuilder_Util = (function($) {
       }
       else
       {
+        if( 'default' === Rexbuilder_Util.chosenLayoutData.id ) {
+          _updateGridsHeights();
+        }
         Rexbuilder_Util.windowIsResizing = false;
         return;
       }
     } else {    // Front end resize logic
-      console.log('fronz')
       var actualLayout = _findFrontLayout();
       if(startFrontLayout != actualLayout) {
         changedFrontLayout = true;

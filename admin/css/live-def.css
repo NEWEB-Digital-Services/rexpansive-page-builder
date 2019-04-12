@@ -4626,7 +4626,7 @@ span.rex-theme-button,
 .rexbuilder-live-accordion--active .tool-button.edit-block-accordion {
   display: inline-block; }
 
-.rexbuilder-live-slideshow--active.edit-block-slideshow {
+.rexbuilder-live-slideshow--active .edit-block-slideshow {
   display: inline-block; }
 
 ::-moz-selection {

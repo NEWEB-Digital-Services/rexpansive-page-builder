@@ -50,8 +50,6 @@ class Rexbuilder_Public
      */
     private $plugin_options;
 
-    private $experimental_tools;
-
     /**
      * Initialize the class and set its properties.
      *
@@ -68,8 +66,8 @@ class Rexbuilder_Public
         $this->plugin_options = get_option($this->plugin_name . '_options');
 
         // $ex_tools = array( 'accordion', 'slideshow' );
-        $ex_tools = array();
-        $this->experimental_tools = apply_filters( 'rexbuilder_live_experimental_tools', $ex_tools );
+        // $ex_tools = array();
+        // $this->experimental_tools = apply_filters( 'rexbuilder_live_experimental_tools', $ex_tools );
     }
 
     /**
@@ -83,7 +81,10 @@ class Rexbuilder_Public
         if( Rexbuilder_Utilities::isBuilderLive() ) {
             // array_push( $classes, 'rexbuilder-live-active' );
             $classes[] = 'rexbuilder-live-active';
-            foreach( $this->experimental_tools as $tool )
+            // $ex_tools = array( 'accordion', 'slideshow' );
+            $ex_tools = array();
+            $experimental_tools = apply_filters( 'rexbuilder_live_experimental_tools', $ex_tools );
+            foreach( $experimental_tools as $tool )
             {
                 $classes[] = "rexbuilder-live-{$tool}--active";
             }
