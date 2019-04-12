@@ -584,6 +584,8 @@
         actionData,
         reverseData
       );
+
+      Rexbuilder_Util_Editor.builderEdited( false );
     });
 
     $document.on("rexlive:apply_background_color_section", function(e) {

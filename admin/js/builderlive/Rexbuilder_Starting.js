@@ -37,7 +37,7 @@
         e.preventDefault();
         var message = "\o/";    
         (e || window.event).returnValue = message;
-        console.log("ATTENTION: Before closing the page verify that you have saved the changes.");
+        console.log("WARNING: Before closing the page verify that you have saved the changes.");
         return message;
       }
     }    
