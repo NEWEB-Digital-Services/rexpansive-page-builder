@@ -688,25 +688,6 @@ var Rexbuilder_Section_Editor = (function($) {
   };
 
   /**
-   * Setting section collapse indicator
-   * @param {jQuery Element} $target Section target
-   * @param {JS Object} data Section collapse data
-   * @since 2.0.0
-   * @date 05-04-2019
-   */
-  var _updateCollapseSectionTool = function( $target, data )
-  {
-    if( data.collapse_grid )
-    {
-      $target.find(".collapse-grid").addClass("grid-collapsed");
-    }
-    else
-    {
-      $target.find(".collapse-grid").removeClass("grid-collapsed");
-    }
-  }
-
-  /**
    * Setting the tool for the row image background preview
    * @param {jQuery Object} $target edited row
    * @param {JS object} data background image data
@@ -1101,7 +1082,6 @@ var Rexbuilder_Section_Editor = (function($) {
     updateRowTools: _updateRowTools,
     updateSectionDimensionTool: _updateSectionDimensionTool,
     updateSectionLayoutTool: _updateSectionLayoutTool,
-    updateCollapseSectionTool: _updateCollapseSectionTool,
     updateRowBackgroundImageTool: _updateRowBackgroundImageTool,
     resetRowBackgroundImageTool: _resetRowBackgroundImageTool,
     updateRowBackgroundColorTool: _updateRowBackgroundColorTool,

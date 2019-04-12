@@ -707,6 +707,7 @@ var Rex_Save_Listeners = (function($) {
     data-rexlive-element-edited="true"
     */
   var checkEditsElement = function($elem) {
+    console.log($elem.attr("data-rexlive-element-edited"));
     return $elem.attr("data-rexlive-element-edited") == "true";
   };
 
@@ -755,11 +756,12 @@ var Rex_Save_Listeners = (function($) {
           name: blockRexID,
           props: {}
         };
+        var check_edit = checkEditsElement($elem);
 
         if (
           layoutName == "default" ||
           saveBlockDisposition ||
-          checkEditsElement($elem)
+          check_edit
         ) {
           block_props.props = createBlockProperties(
             $elem,
@@ -767,14 +769,17 @@ var Rex_Save_Listeners = (function($) {
             $gridGallery
           );
         }
+
         if (
           layoutName != "default" &&
           saveBlockDisposition &&
-          !checkEditsElement($elem)
+          !check_edit
         ) {
           clearPropsElem(block_props.props);
         }
+
         targets.push(block_props);
+        console.log(block_props);
       }
     });
     return targets;

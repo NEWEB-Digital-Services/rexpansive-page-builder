@@ -171,8 +171,7 @@ var Rexbuilder_Dom_Util = (function($) {
     if ( Rexbuilder_Util.editorMode )
     {
       Rexbuilder_Section_Editor.updateSectionDimensionTool( $section, rowSettings );
-      Rexbuilder_Section_Editor.updateSectionLayoutTool( $section, rowSettings );
-      // Rexbuilder_Section_Editor.updateCollapseSectionTool( $section, rowSettings );
+      Rexbuilder_Section_Editor.updateSectionLayoutTool( $section, rowSettings ); 
     }      
   };
 

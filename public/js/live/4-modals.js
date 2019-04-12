@@ -1009,7 +1009,7 @@
       };
 
       Rexbuilder_Dom_Util.updateBlockBackgroundColor(actionData);
-      $elem.attr("data-rexlive-element-edited", true);
+      $elem.attr("data-rexlive-element-edited", true); 
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
@@ -1065,7 +1065,7 @@
       };
 
       Rexbuilder_Dom_Util.updateBlockBackgroundGradient(actionData);
-      $elem.attr("data-rexlive-element-edited", true);
+      $elem.attr("data-rexlive-element-edited", true);      
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
@@ -1121,7 +1121,7 @@
       };
 
       Rexbuilder_Dom_Util.updateBlockOverlayGradient(actionData);
-      $elem.attr("data-rexlive-element-edited", true);
+      $elem.attr("data-rexlive-element-edited", true);      
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
@@ -1179,7 +1179,7 @@
       };
 
       Rexbuilder_Dom_Util.updateBlockOverlay(actionData);
-      $elem.attr("data-rexlive-element-edited", true);
+      $elem.attr("data-rexlive-element-edited", true);      
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
@@ -1302,7 +1302,7 @@
         $itemContent: $itemContent,
         imageOpt: imageOpt
       };
-      $elem.attr("data-rexlive-element-edited", true);
+      $elem.attr("data-rexlive-element-edited", true);     
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
@@ -1438,7 +1438,7 @@
         $itemContent: $itemContent,
         videoOpt: videoOptions
       };
-      $elem.attr("data-rexlive-element-edited", true);
+      $elem.attr("data-rexlive-element-edited", true);      
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
@@ -1499,7 +1499,7 @@
         $elem: $elem,
         dataPadding: data.paddings
       };
-      $elem.attr("data-rexlive-element-edited", true);
+      $elem.attr("data-rexlive-element-edited", true);      
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
@@ -1629,7 +1629,7 @@
         $elem: $elem,
         dataPosition: data.position
       };
-      $elem.attr("data-rexlive-element-edited", true);
+      $elem.attr("data-rexlive-element-edited", true);      
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
@@ -1687,7 +1687,7 @@
         classes: data.customClasses
       };
 
-      $elem.attr("data-rexlive-element-edited", true);
+      $elem.attr("data-rexlive-element-edited", true);      
       if (Rexbuilder_Util.activeLayout == "default") {
         Rexbuilder_Util.updateDefaultLayoutStateSection($section);
       }
