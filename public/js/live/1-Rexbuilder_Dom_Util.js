@@ -1737,7 +1737,7 @@ var Rexbuilder_Dom_Util = (function($) {
         _updateBlockPaddings(dataToUse.$elem, dataToUse.dataPadding);
         if (galleryEditorInstance !== undefined) {
           if (galleryEditorInstance.settings.galleryLayout == "masonry") {
-            galleryEditorInstance.updateElementHeight(dataToUse.$elem);
+            galleryEditorInstance.updateElementHeight(dataToUse.$elem, 0, true);
           }
         }
         Rexbuilder_Util_Editor.updatingPaddingBlock = false;

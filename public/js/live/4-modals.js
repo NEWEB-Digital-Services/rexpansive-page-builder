@@ -1491,7 +1491,7 @@
       Rexbuilder_Util_Editor.updatingPaddingBlock = true;
       Rexbuilder_Dom_Util.updateBlockPaddings($elem, data.paddings);
       if (galleryEditorInstance.settings.galleryLayout == "masonry") {
-        galleryEditorInstance.updateElementHeight($elem);
+        galleryEditorInstance.updateElementHeight($elem, 0, true);
       }
       Rexbuilder_Util_Editor.updatingPaddingBlock = false;
 

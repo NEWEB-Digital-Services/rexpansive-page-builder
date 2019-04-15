@@ -3046,7 +3046,12 @@
         */
     },
 
-    updateElementHeight: function($elem, blockRatio) {
+  /**
+   * @param {Object} $elem Element to update height
+   * @param {Number} blockRatio Ratio block has to maintain
+   * @param {Boolean} editingBlock Flag to consider also starting height
+   */
+    updateElementHeight: function($elem, blockRatio, editingBlock) {
       if (Rexbuilder_Util.editorMode && !this.properties.oneColumModeActive) {
         Rexbuilder_Util_Editor.elementIsResizing = true;
       }
@@ -3054,7 +3059,7 @@
       var elem = $elem[0];
       var $blockData = $elem.children(".rexbuilder-block-data");
       var startH;
-
+      editingBlock = typeof editingBlock !== "undefined" ? editingBlock : false;
       if (this.properties.updatingSection) {
         if (this.settings.galleryLayout == "fixed") {
           startH = parseInt($blockData.attr("data-block_height_masonry"));
@@ -3192,17 +3197,23 @@
       ) {
         emptyBlockFlag = true;
       }
-
-      // console.table({
-      //   blockRatio: blockRatio,
-      //   startH: startH,
-      //   backgroundHeight: backgroundHeight,
-      //   videoHeight: videoHeight,
-      //   defaultHeight: defaultHeight,
-      //   textHeight: textHeight,
-      //   sliderHeight: sliderHeight,
-      //   test: startH * this.properties.singleHeight
-      // });
+/* 
+      console.table({
+        blockRatio: blockRatio,
+        startH: startH,
+        backgroundHeight: backgroundHeight,
+        videoHeight: videoHeight,
+        defaultHeight: defaultHeight,
+        textHeight: textHeight,
+        sliderHeight: sliderHeight,
+        test: startH * this.properties.singleHeight
+      });
+ */
+      if (editingBlock) {
+        startH *= this.properties.singleHeight;
+      } else {
+        startH = 0;
+      }
 
       newH = Math.max(
         startH,
