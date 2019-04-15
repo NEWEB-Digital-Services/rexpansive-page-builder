@@ -1097,8 +1097,10 @@ var Rex_Save_Listeners = (function($) {
         $savingBlock.find("figure").removeAttr("style");
         $savingBlock.find("figure").removeAttr("class");
 
+        // retrieve the block content
+        // if there is some, or there is an img, an iframe or an icon inline
         if ($savingBlock.text().trim() == "") {
-          if( $savingBlock.find("iframe").length > 0 || $savingBlock.find("img").length > 0 ){
+          if( $savingBlock.find("iframe").length > 0 || $savingBlock.find("img").length > 0 || $savingBlock.find("i").length > 0 ){
             content = $savingBlock.html().trim();
           } else {
             content = "";
@@ -1570,6 +1572,7 @@ var Rex_Save_Listeners = (function($) {
 
       var elementsOrdered = galleryIstance.getElementsTopBottom();
 
+      // create elements shortcode
       $(elementsOrdered).each(function() {
         var $elem = $(this);
         if (!$elem.hasClass("removing_block")) {
