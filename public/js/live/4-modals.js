@@ -1451,6 +1451,10 @@
       );
     });
 
+    /**
+     * Listen to changing block paddings
+     * @since 2.0.0
+     */
     $document.on("rexlive:apply_paddings_block", function(e) {
       var data = e.settings.data_to_send;
 
@@ -1490,6 +1494,7 @@
 
       Rexbuilder_Util_Editor.updatingPaddingBlock = true;
       Rexbuilder_Dom_Util.updateBlockPaddings($elem, data.paddings);
+      // TODO : here is the place to study to fix the padding problem
       if (galleryEditorInstance.settings.galleryLayout == "masonry") {
         galleryEditorInstance.updateElementHeight($elem);
       }

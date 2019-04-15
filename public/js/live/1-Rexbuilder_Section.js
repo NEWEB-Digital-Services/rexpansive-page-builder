@@ -166,19 +166,18 @@ var Rexbuilder_Section = (function($) {
       collapse: gridCollapsed
     };
 
+    // console.log(reverseData);
+
     if (!gridCollapsed) {
       galleryEditorInstance.collapseElementsProperties();
       galleryEditorInstance.collapseElements(reverseData);
     } else {
       Rexbuilder_Util_Editor.updatingCollapsedGrid = true;
 
-      var elemetsDisposition = Rexbuilder_Util.getLayoutLiveSectionTargets(
-        $section
-      );
+      var elemetsDisposition = Rexbuilder_Util.getLayoutLiveSectionTargets($section);
       var galleryLayoutToActive = Rexbuilder_Util.getGridLayoutLive($section);
 
-      var gridstackInstance =
-        galleryEditorInstance.properties.gridstackInstance;
+      var gridstackInstance = galleryEditorInstance.properties.gridstackInstance;
       var fullHeight = galleryLayoutToActive.fullHeight.toString() == "true";
       var singleHeight;
 
@@ -229,6 +228,8 @@ var Rexbuilder_Section = (function($) {
       }
 
       galleryEditorInstance.commitGridstack();
+
+      // console.log('nnnananando')
 
       galleryEditorInstance.removeCollapseElementsProperties();
 

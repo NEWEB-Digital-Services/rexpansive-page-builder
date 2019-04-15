@@ -707,7 +707,7 @@ var Rex_Save_Listeners = (function($) {
     data-rexlive-element-edited="true"
     */
   var checkEditsElement = function($elem) {
-    console.log($elem.attr("data-rexlive-element-edited"));
+    // console.log($elem.attr("data-rexlive-element-edited"));
     return $elem.attr("data-rexlive-element-edited") == "true";
   };
 
@@ -779,7 +779,7 @@ var Rex_Save_Listeners = (function($) {
         }
 
         targets.push(block_props);
-        console.log(block_props);
+        // console.log(block_props);
       }
     });
     return targets;
