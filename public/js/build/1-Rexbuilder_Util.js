@@ -996,6 +996,8 @@ var Rexbuilder_Util = (function($) {
           // default mobile section props
           layoutSelectedSections[i].targets[0].props.collapse_grid = true;
           layoutSelectedSections[i].targets[0].props.layout = "masonry";
+          // todo fix proposal
+          // layoutSelectedSections[i].targets[0].props.gridEdited = false;
         }
       }
     }
