@@ -1462,6 +1462,8 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			wp_update_post( $argsSlider );
 
 			$response['slider_id'] = $slider_to_edit;
+			$response['slider_title'] = $new_slider_title;
+
 			$this->rex_clear_slider_fields( array(
 				'field_564f1f0c050be',
 				'field_5948cb2270b0f',
@@ -1471,6 +1473,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			$response['edit_results'] = $this->rex_add_slider_fields( $slider_settings, $slider_to_edit );
 		} else {
 			$response['slider_id'] = -1;
+			$response['slider_title'] = '';
 		}
 
 		wp_send_json_success( $response );
