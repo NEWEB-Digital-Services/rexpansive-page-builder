@@ -1570,7 +1570,7 @@ var Rexbuilder_Util = (function($) {
         : targetProps["block_dimensions_live_edited"];
     $itemData.attr("data-block_dimensions_live_edited", blockEdited);
 
-    console.log('updateDOMSingleElement', blockEdited);
+    // console.log('updateDOMSingleElement', blockEdited);
 
     var hideBlock =
       typeof targetProps["hide"] == "undefined"

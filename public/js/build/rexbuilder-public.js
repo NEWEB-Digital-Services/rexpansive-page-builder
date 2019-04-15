@@ -798,19 +798,12 @@ var Rexbuilder_App = (function($) {
       e = e || window.event;
 
       // Bug fix for Block links and links inside blocks
-      if (
-        $(e.target)
-          .parents(".perfect-grid-item")
-          .find(".element-link").length > 0 ||
-        $(e.target).is("a")
-      ) {
+      if ( $(e.target).parents(".perfect-grid-item").find(".element-link").length > 0 || $(e.target).is("a") ) {
         return;
       }
 
-      e.preventDefault ? e.preventDefault() : (e.returnValue = false);
-
       var eTarget = e.target || e.srcElement;
-
+      
       // find root element of slide
       var clickedListItem = closest(eTarget, function(el) {
         return el.tagName && el.tagName.toUpperCase() === "FIGURE";
@@ -819,6 +812,10 @@ var Rexbuilder_App = (function($) {
       if (!clickedListItem) {
         return;
       }
+
+      // move the prevent default here, cause if the element clicked can't be
+      // a photoswipe element, we must prevent default after decided that
+      e.preventDefault ? e.preventDefault() : (e.returnValue = false);
 
       // find index of clicked item by looping through all child nodes
       // alternatively, you may define index via data- attribute
