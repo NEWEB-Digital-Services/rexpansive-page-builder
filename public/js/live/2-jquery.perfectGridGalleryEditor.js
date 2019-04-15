@@ -2455,21 +2455,16 @@
               if(naturalImage){
                 currentWidth = $block.outerWidth();
                 if (currentWidth < imageWidth) {
-                  imageHeightNeed = (imageHeight * currentWidth) / imageWidth;
+                  imageHeightNeed = (imageHeight * ( currentWidth - gallery.properties.gutter ) ) / imageWidth;
                 } else {
-                  imageHeightNeed = imageHeight + gallery.properties.gutter;
+                  // imageHeightNeed = imageHeight + gallery.properties.gutter;
+                  imageHeightNeed = imageHeight;
                 }
-                console.table({
-                  currentWidth: currentWidth,
-                  imageWidth: imageWidth,
-                  imageHeight: imageHeight,
-                  imageHeightNeed: imageHeightNeed,
-                  gutter: gallery.properties.gutter
-                });
+
                 imageHeightNeed = isNaN(imageHeightNeed) ? 0 : imageHeightNeed;
               }
             }
-
+            
             textWrapHeightNeed = gallery.calculateTextWrapHeight($block.find(".text-wrap"));
             needH = Math.max(textWrapHeightNeed, imageHeightNeed);
 
