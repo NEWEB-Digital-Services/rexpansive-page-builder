@@ -2839,7 +2839,7 @@
                 if (0 !== blockTextHeight) {
                   var blockActualHeight = e.getAttribute('data-gs-height') * gallery.properties.singleHeight;
                   if (1 == parseInt($elemData[0].getAttribute('data-element_real_fluid'))
-                    || (blockActualHeight - (blockTextHeight + gallery.properties.gutter)) < 0) {
+                  || (blockActualHeight - (blockTextHeight + gallery.properties.gutter)) < 0) {
                     gallery.updateElementHeight($elem);
                   }
                 } else {
@@ -2847,7 +2847,7 @@
                   gallery.updateElementHeight($elem, blockRatio);
                 }
               } else{
-                if (Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout) {
+                if (Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout || Rexbuilder_Util_Editor.updatingCollapsedGrid) {
                   if (!($elem.hasClass("rex-hide-element") || $elem.hasClass("removing_block"))) {
                     gallery.updateElementHeight($elem);
                   }
@@ -2856,7 +2856,7 @@
             }
             else 
             {
-              if (Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout) {
+              if (Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout || Rexbuilder_Util_Editor.updatingCollapsedGrid) {
                 if (!($elem.hasClass("rex-hide-element") || $elem.hasClass("removing_block"))) {
                   gallery.updateElementHeight($elem);
                 }

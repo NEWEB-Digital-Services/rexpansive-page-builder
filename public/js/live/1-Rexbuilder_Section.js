@@ -176,6 +176,9 @@ var Rexbuilder_Section = (function($) {
         $section
       );
       var galleryLayoutToActive = Rexbuilder_Util.getGridLayoutLive($section);
+      if(typeof elemetsDisposition[0].props.pickDefaultSizeCollapse !== "undefined" && elemetsDisposition[0].props.pickDefaultSizeCollapse.toString() == "true"){
+        Rexbuilder_Util.applyDefaultBlocksDimentions($section, elemetsDisposition, galleryLayoutToActive);
+      }
 
       var gridstackInstance =
         galleryEditorInstance.properties.gridstackInstance;

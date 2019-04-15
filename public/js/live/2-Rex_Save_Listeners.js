@@ -721,17 +721,23 @@ var Rex_Save_Listeners = (function($) {
 
     var $gridGallery = $section.find(".grid-stack-row");
     var saveBlockDisposition = checkEditsLayoutGrid($gridGallery);
-    if ($section.attr("data-rex-collapse-grid") == "true") {
-      saveBlockDisposition = true;
-      section_props.props.collapse_grid = true;
-    }
 
     if (layoutName == "default" || checkEditsSection($section)) {
       section_props.props = createSectionProperties(
         $section,
         "customLayout",
         null
-      );
+        );
+      }      
+
+    if ($section.attr("data-rex-collapse-grid") == "true") {
+      section_props.props.collapse_grid = true;      
+      if(!saveBlockDisposition && Rexbuilder_Util.isMobile()){
+        section_props.props.pickDefaultSizeCollapse = true;     
+        saveBlockDisposition = false;
+      } else{
+        section_props.props.pickDefaultSizeCollapse = false;     
+      }
     }
 
     if (saveBlockDisposition) {
