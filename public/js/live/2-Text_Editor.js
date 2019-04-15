@@ -1690,6 +1690,14 @@ var TextEditor = (function ($) {
 
     handleImageInsertReplace: function (event) {
       var imgHTML = '<img class="wp-image-' + event.imgData.idImage + ' ' + event.imgData.align + '" data-image-id="' + event.imgData.idImage + '" src="' + event.imgData.urlImage + '" alt="" width="' + event.imgData.width + '" height="' + event.imgData.height + '">';
+      
+      // handling image with external link inside
+      if( '' !== event.displayData.linkUrl )
+      {
+        imgHTML = '<a href="' + event.displayData.linkUrl + '">' + imgHTML + '</a>';
+      }
+
+      // restore the selection
       switch( this.method ) {
         case 1:
         case 2:
@@ -1715,6 +1723,7 @@ var TextEditor = (function ($) {
           break;
       }
 
+      // If the user wants to replace the acutal inline image
       if (this.traceImg) {
         switch (this.method) {
           case 1:
@@ -1726,7 +1735,15 @@ var TextEditor = (function ($) {
             // Change the range selection
             // And the insert method
             var restoreRange = rangy.createRange();
-            restoreRange.selectNode(this.traceImg);
+            // select the wrapping link if present
+            if ( event.displayData.previousLink )
+            {
+              restoreRange.selectNode(this.traceImg.parentElement);  
+            }
+            else
+            {
+              restoreRange.selectNode(this.traceImg);
+            }
             range = restoreRange;
             this.submethod = 1;
             break;
@@ -1795,7 +1812,7 @@ var TextEditor = (function ($) {
                   }
 
                   this.wrap( imgNode, document.createElement(wrapTagName) );                  
-                }                
+                }
               default:
                 break;                
             }
@@ -1917,13 +1934,20 @@ var TextEditor = (function ($) {
           align = "alignnone";
         }
 
+        var imgInsideLink = false;
+        if ( 'A' === this.traceImg.parentElement.tagName )
+        {
+          imgInsideLink = true;
+        }
+
         var data = {
           eventName: "rexlive:openMEImageUploader",
           img_data: {
             image_id: this.traceImg.getAttribute("data-image-id"),
             width: this.traceImg.width,
             height: this.traceImg.height,
-            align: align
+            align: align,
+            imgInsideLink: imgInsideLink
           }
         };
 

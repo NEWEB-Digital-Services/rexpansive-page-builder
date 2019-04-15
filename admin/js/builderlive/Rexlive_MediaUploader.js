@@ -315,6 +315,7 @@ var Rexlive_MediaUploader = (function($) {
 
       var selection = state.get("selection");
       var imgData = {};
+      var displayData = {};
 
       if (!selection) return;
 
@@ -328,6 +329,8 @@ var Rexlive_MediaUploader = (function($) {
         if (!wp.media.view.settings.captions) delete obj_attachment.caption;
 
         display = wp.media.string.props(display, obj_attachment);
+
+        displayData = display;
 
         imgData.idImage = obj_attachment.id;
         imgData.urlImage = display.src;
@@ -348,12 +351,22 @@ var Rexlive_MediaUploader = (function($) {
         } else {
           imgData.align = imageSettings.align;
         }
+
+        if( 'undefined' === typeof imageSettings.imgInsideLink )
+        {
+          displayData.previousLink = false;
+        }
+        else
+        {
+          displayData.previousLink = true;
+        }
       });
 
       var data = {
         eventName: "rexlive:inlineImageEdit",
         data_to_send: {
-          imgData: imgData
+          imgData: imgData,
+          displayData: displayData
         }
       };
 
