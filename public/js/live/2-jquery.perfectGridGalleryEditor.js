@@ -3209,17 +3209,17 @@
         emptyBlockFlag = true;
       }
 
-      console.table({
-        blockRatio: blockRatio,
-        startH: startH,
-        backgroundHeight: backgroundHeight,
-        videoHeight: videoHeight,
-        defaultHeight: defaultHeight,
-        textHeight: textHeight,
-        sliderHeight: sliderHeight,
-        test: startH * this.properties.singleHeight,
-        increasedHeight: increasedHeight
-      });
+      // console.table({
+      //   blockRatio: blockRatio,
+      //   startH: startH,
+      //   backgroundHeight: backgroundHeight,
+      //   videoHeight: videoHeight,
+      //   defaultHeight: defaultHeight,
+      //   textHeight: textHeight,
+      //   sliderHeight: sliderHeight,
+      //   test: startH * this.properties.singleHeight,
+      //   increasedHeight: increasedHeight
+      // });
 
       newH = Math.max(
         startH,
@@ -3246,7 +3246,7 @@
         newH = w * sw * blockRatio;
       }
 
-      console.log(newH)
+      // console.log(newH)
 
       if (this.settings.galleryLayout == "fixed") {
         if (emptyBlockFlag) {
@@ -3257,7 +3257,7 @@
       } else {
         newH = Math.ceil(newH / this.properties.singleHeight);
       }
-      console.log(newH)
+      // console.log(newH)
 
       this.updateElementDataHeightProperties($blockData, newH); 
 
