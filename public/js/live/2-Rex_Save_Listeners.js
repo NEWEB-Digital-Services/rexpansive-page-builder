@@ -728,14 +728,14 @@ var Rex_Save_Listeners = (function($) {
         "customLayout",
         null
         );
-      }      
+    }
 
     if ($section.attr("data-rex-collapse-grid") == "true") {
-      section_props.props.collapse_grid = true;      
+      section_props.props.collapse_grid = true;
       if(!saveBlockDisposition && Rexbuilder_Util.isMobile()){
-        section_props.props.pickDefaultSizeCollapse = true;     
+        section_props.props.pickDefaultSizeCollapse = true;
         saveBlockDisposition = false;
-      } else{
+      } else {
         section_props.props.pickDefaultSizeCollapse = false;     
       }
     }

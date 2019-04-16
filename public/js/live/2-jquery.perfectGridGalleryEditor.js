@@ -321,7 +321,7 @@
             w: w,
             h: h
           };
-          console.log(blockObj);
+          // console.log(blockObj);
           blocksDimensions.push(blockObj);
         });
       var actionData = {

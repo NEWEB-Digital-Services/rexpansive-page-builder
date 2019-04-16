@@ -1009,6 +1009,7 @@ var Rexbuilder_Util = (function($) {
   var _isMobile = function(){
     return _viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth;
   }
+  
   var _edit_dom_layout = function(chosenLayoutName) {
     var response = {
       collapse_needed: false,
@@ -1157,7 +1158,7 @@ var Rexbuilder_Util = (function($) {
       layoutSelectedSections,
       defaultLayoutSections
     );
-    console.log($.extend(true, {}, mergedEdits));
+    // console.log($.extend(true, {}, mergedEdits));
     // removing collapsed from grid
     Rexbuilder_Util.removeCollapsedGrids();
     /* 
@@ -1833,12 +1834,12 @@ var Rexbuilder_Util = (function($) {
     return targets;
   };
 
-/**
- * Applyes default layout blocks dimensions
-* @param {Object} $section
-* @param {Object} blocks
-* @param {Object} galleryLayout
-*/
+  /**
+   * Applyes default layout blocks dimensions
+  * @param {Object} $section
+  * @param {Object} blocks
+  * @param {Object} galleryLayout
+  */
   var _applyDefaultBlocksDimentions = function ($section, elemetsDisposition, galleryLayout) {
     var defaultData = _getDefaultLayoutState();
     var sectionID = $section.attr("data-rexlive-section-id");
@@ -1865,7 +1866,7 @@ var Rexbuilder_Util = (function($) {
       }
     }
 
-    return "Happy!";
+    // return "Happy!";
   }
 
   var _createDefaultLayoutState = function(sectionsData) {
