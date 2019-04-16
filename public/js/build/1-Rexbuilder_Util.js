@@ -1467,7 +1467,7 @@ var Rexbuilder_Util = (function($) {
     var activeImage =
       typeof targetProps["image_bg_elem_active"] == "undefined"
         ? true
-        : targetProps["color_bg_block_active"].toString() == "true";
+        : targetProps["image_bg_elem_active"].toString() == "true";
 
     var imageOptions = {
       active: activeImage,
