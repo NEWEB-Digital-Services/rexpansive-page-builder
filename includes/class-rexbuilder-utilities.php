@@ -169,7 +169,7 @@ class Rexbuilder_Utilities {
 		do
 		{
 			$flag = true;
-			$id = self::createRandomID($idLength);
+			$id = self::createRandomID( $idLength );
 			if ($id == "self") {
 				$flag = false;
 			}
