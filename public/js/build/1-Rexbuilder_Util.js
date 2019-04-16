@@ -996,12 +996,20 @@ var Rexbuilder_Util = (function($) {
           // default mobile section props
           layoutSelectedSections[i].targets[0].props.collapse_grid = true;
           layoutSelectedSections[i].targets[0].props.layout = "masonry";
+          // todo fix proposal
+          // layoutSelectedSections[i].targets[0].props.gridEdited = false;
         }
       }
     }
     return jQuery.extend(true, {}, layoutSelectedSections);
   };
-
+  /**
+   * Checks if viewport width is under collapsing width
+   */
+  var _isMobile = function(){
+    return _viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth;
+  }
+  
   var _edit_dom_layout = function(chosenLayoutName) {
     var response = {
       collapse_needed: false,
@@ -1150,7 +1158,7 @@ var Rexbuilder_Util = (function($) {
       layoutSelectedSections,
       defaultLayoutSections
     );
-
+    // console.log($.extend(true, {}, mergedEdits));
     // removing collapsed from grid
     Rexbuilder_Util.removeCollapsedGrids();
     /* 
@@ -1825,6 +1833,41 @@ var Rexbuilder_Util = (function($) {
 
     return targets;
   };
+
+  /**
+   * Applyes default layout blocks dimensions
+  * @param {Object} $section
+  * @param {Object} blocks
+  * @param {Object} galleryLayout
+  */
+  var _applyDefaultBlocksDimentions = function ($section, elemetsDisposition, galleryLayout) {
+    var defaultData = _getDefaultLayoutState();
+    var sectionID = $section.attr("data-rexlive-section-id");
+    for(var i=0, total_setions = defaultData.length; i< total_setions; i++){
+      if(sectionID == defaultData[i].section_rex_id){
+        var sectionDefaultData = defaultData[i];
+        var targets = sectionDefaultData.targets;
+        galleryLayout.layout = targets[0].props.layout;
+        galleryLayout.fullHeight = targets[0].props.full_height;
+        galleryLayout.collapsed = typeof targets[0].props.collapsed === "undefined" ? false : targets[0].props.collapsed;
+        for(var j=1, total_blocks = elemetsDisposition.length; j< total_blocks; j++){
+          for(var k = 0, total_default_blocks = targets.length; k< total_default_blocks; k++){
+            var currentEl = elemetsDisposition[j];
+            if(currentEl.name == targets[k].name){
+              currentEl.props.gs_x = targets[k].props.gs_x;
+              currentEl.props.gs_y = targets[k].props.gs_y;
+              currentEl.props.gs_width = targets[k].props.gs_width;
+              currentEl.props.gs_height = targets[k].props.gs_height;
+              currentEl.props.gs_start_h = targets[k].props.gs_start_h;
+            }
+          }
+        }
+        break;
+      }
+    }
+
+    // return "Happy!";
+  }
 
   var _createDefaultLayoutState = function(sectionsData) {
     $defaultLayoutState.children().remove();
@@ -3843,6 +3886,8 @@ var Rexbuilder_Util = (function($) {
     getDefaultBlockMeasure: _getDefaultBlockMeasure,
     doneResizing: doneResizing,
     getCoord: getCoord,
-    diffStrings: _diffStrings
+    diffStrings: _diffStrings,
+    applyDefaultBlocksDimentions: _applyDefaultBlocksDimentions,
+    isMobile: _isMobile
   };
 })(jQuery);

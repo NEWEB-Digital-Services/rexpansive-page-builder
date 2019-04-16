@@ -2845,7 +2845,7 @@
                 if (0 !== blockTextHeight) {
                   var blockActualHeight = e.getAttribute('data-gs-height') * gallery.properties.singleHeight;
                   if (1 == parseInt($elemData[0].getAttribute('data-element_real_fluid'))
-                    || (blockActualHeight - (blockTextHeight + gallery.properties.gutter)) < 0) {
+                  || (blockActualHeight - (blockTextHeight + gallery.properties.gutter)) < 0) {
                     gallery.updateElementHeight($elem);
                   }
                 } else {
@@ -2853,16 +2853,16 @@
                   gallery.updateElementHeight($elem, blockRatio);
                 }
               } else{
-                if (Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout) {
+                if (Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout || Rexbuilder_Util_Editor.updatingCollapsedGrid) {
                   if (!($elem.hasClass("rex-hide-element") || $elem.hasClass("removing_block"))) {
                     gallery.updateElementHeight($elem);
                   }
                 }  
               }
             }
-            else
-            { 
-              if (Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout) {
+            else 
+            {
+              if (Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout || Rexbuilder_Util_Editor.updatingCollapsedGrid) {
                 if (!($elem.hasClass("rex-hide-element") || $elem.hasClass("removing_block"))) {
                   gallery.updateElementHeight($elem);
                 }
@@ -3052,13 +3052,12 @@
         */
     },
 
-    /**
-     * Resize a block in height according to the builder rules
-     * @param {jQuery Object} $elem block to resize
-     * @param {int} blockRatio width/height ratio
-     * @since 2.0.0
-     */
-    updateElementHeight: function($elem, blockRatio) {
+  /**
+   * @param {Object} $elem Element to update height
+   * @param {Number} blockRatio Ratio block has to maintain
+   * @param {Boolean} editingBlock Flag to consider also starting height
+   */
+    updateElementHeight: function($elem, blockRatio, editingBlock) {
       if (Rexbuilder_Util.editorMode && !this.properties.oneColumModeActive) {
         Rexbuilder_Util_Editor.elementIsResizing = true;
       }
@@ -3066,7 +3065,7 @@
       var elem = $elem[0];
       var $blockData = $elem.children(".rexbuilder-block-data");
       var startH;
-
+      editingBlock = typeof editingBlock !== "undefined" ? editingBlock : false;
       if (this.properties.updatingSection) {
         if (this.settings.galleryLayout == "fixed") {
           startH = parseInt($blockData.attr("data-block_height_masonry"));
@@ -3212,18 +3211,23 @@
       if ( !$elem.hasClass("block-has-slider") && backgroundHeight == 0 && videoHeight == 0 && textHeight == 0 ) {
         emptyBlockFlag = true;
       }
-
-      // console.table({
-      //   blockRatio: blockRatio,
-      //   startH: startH,
-      //   backgroundHeight: backgroundHeight,
-      //   videoHeight: videoHeight,
-      //   defaultHeight: defaultHeight,
-      //   textHeight: textHeight,
-      //   sliderHeight: sliderHeight,
-      //   test: startH * this.properties.singleHeight,
-      //   increasedHeight: increasedHeight
-      // });
+/* 
+      console.table({
+        blockRatio: blockRatio,
+        startH: startH,
+        backgroundHeight: backgroundHeight,
+        videoHeight: videoHeight,
+        defaultHeight: defaultHeight,
+        textHeight: textHeight,
+        sliderHeight: sliderHeight,
+        test: startH * this.properties.singleHeight
+      });
+ */
+      if (editingBlock) {
+        startH *= this.properties.singleHeight;
+      } else {
+        startH = 0;
+      }
 
       newH = Math.max(
         startH,

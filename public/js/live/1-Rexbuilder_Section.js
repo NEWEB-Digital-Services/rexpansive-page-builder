@@ -144,6 +144,7 @@ var Rexbuilder_Section = (function($) {
    * @since 2.0.0
    */
   var _toggleGridCollapse = function( $section ) {
+    // actual section collapsing state
     var gridCollapsed;
     if ( typeof $section.attr("data-rex-collapse-grid") != "undefined" && $section.attr("data-rex-collapse-grid").toString() == "true" ) {
       gridCollapsed = true;
@@ -168,14 +169,20 @@ var Rexbuilder_Section = (function($) {
 
     // console.log(reverseData);
 
+    // if the section is NOT collapsed
     if (!gridCollapsed) {
       galleryEditorInstance.collapseElementsProperties();
       galleryEditorInstance.collapseElements(reverseData);
     } else {
       Rexbuilder_Util_Editor.updatingCollapsedGrid = true;
 
-      var elemetsDisposition = Rexbuilder_Util.getLayoutLiveSectionTargets($section);
+      var elemetsDisposition = Rexbuilder_Util.getLayoutLiveSectionTargets( $section );
       var galleryLayoutToActive = Rexbuilder_Util.getGridLayoutLive($section);
+
+      // if(typeof elemetsDisposition[0].props.pickDefaultSizeCollapse !== "undefined" && elemetsDisposition[0].props.pickDefaultSizeCollapse.toString() == "true"){
+      if ( 'mobile' === Rexbuilder_Util.activeLayout || Rexbuilder_Util.isMobile() ) {
+        Rexbuilder_Util.applyDefaultBlocksDimentions($section, elemetsDisposition, galleryLayoutToActive);
+      }
 
       var gridstackInstance = galleryEditorInstance.properties.gridstackInstance;
       var fullHeight = galleryLayoutToActive.fullHeight.toString() == "true";
