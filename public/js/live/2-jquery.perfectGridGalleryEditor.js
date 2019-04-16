@@ -1574,7 +1574,7 @@
       this.properties.wrapWidth = newWidth;
       this.properties.singleWidth = newWidth * this.settings.gridItemWidth;
 
-      if (this.settings.galleryLayout == "masonry") {        
+      if (this.settings.galleryLayout == "masonry") {
         this.properties.singleHeight = this.settings.cellHeightMasonry;
       } else {
         var oldSingleHeight = this.properties.singleHeight;
@@ -1846,7 +1846,7 @@
     _prepareElements: function() {
       var gallery = this;
 
-      if (this.properties.editedFromBackend) {
+      if (this.properties.editedFromBackend && ('undefined' === typeof Rexbuilder_Util_Editor.sectionCopying || false === Rexbuilder_Util_Editor.sectionCopying ) ) {
         var $elem;
         gallery.$element.children(".grid-stack-item").each(function() {
           $elem = $(this);
@@ -1859,6 +1859,12 @@
 
       gallery.$element.children(".grid-stack-item").each(function() {
         var $elem = $(this);
+        // console.table({
+        //   gs_x:$elem.attr("data-gs-x"),
+        //   gs_y:$elem.attr("data-gs-y"),
+        //   gs_width:$elem.attr("data-gs-width"),
+        //   gs_height:$elem.attr("data-gs-height")
+        // });
         gallery._prepareElement(this);
         if (
           $elem.children(".rexbuilder-block-data").attr("data-gs_start_h") ===
@@ -2359,7 +2365,7 @@
       // checking block dimension to correctly display the tools
       var block_width = $block[0].offsetWidth;
 
-      if ( block_width < 170 ) 
+      if ( block_width < 190 ) 
       {
         $block.addClass('ui-tools--view-mobile');
       }
@@ -2782,14 +2788,15 @@
       this.setGridstackIstanceNumber();
       this.properties.gridstackInstance = this.$element.data("gridstack");
 
-      //Rimozione elementi da nascondere
+      // Remove elements to hide
       var gridstack = this.properties.gridstackInstance;
       this.$element.children(".grid-stack-item").each(function(i, elem) {
         if ($(elem).hasClass("rex-hide-element")) {
           gridstack.removeWidget(elem, false);
         }
       });
-      if (!Rexbuilder_Util.domUpdaiting) {
+      // if (!Rexbuilder_Util.domUpdaiting) {
+      if (!Rexbuilder_Util.domUpdaiting && ('undefined' === typeof Rexbuilder_Util_Editor.sectionCopying || false === Rexbuilder_Util_Editor.sectionCopying )) {
         this.updateBlocksHeight();
       }
 
@@ -2822,10 +2829,7 @@
       var gridstack = this.properties.gridstackInstance;
       if (typeof gridstack !== "null") {
         this.properties.blocksBottomTop = this.getElementBottomTop();
-        if (
-          !this.properties.updatingSectionSameGrid ||
-          Rexbuilder_Util.windowIsResizing
-        ) {
+        if ( !this.properties.updatingSectionSameGrid || Rexbuilder_Util.windowIsResizing ) {
           this.batchGridstack();
           $(this.properties.blocksBottomTop).each(function (i, e) {
             $elem = $(e);
@@ -2856,8 +2860,8 @@
                 }  
               }
             }
-            else 
-            {
+            else
+            { 
               if (Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout) {
                 if (!($elem.hasClass("rex-hide-element") || $elem.hasClass("removing_block"))) {
                   gallery.updateElementHeight($elem);
@@ -3049,7 +3053,7 @@
     },
 
     /**
-     * Resize a block in height according to some builder rules
+     * Resize a block in height according to the builder rules
      * @param {jQuery Object} $elem block to resize
      * @param {int} blockRatio width/height ratio
      * @since 2.0.0
