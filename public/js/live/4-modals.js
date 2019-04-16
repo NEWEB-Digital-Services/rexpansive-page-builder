@@ -426,54 +426,61 @@
       );
     });
 
+    /**
+     * Handling the set/unset of photoswipe on an entire section
+     * @since 2.0.0
+     * @edit 16-04-2019 Handling the unset of photoswipe
+     */
     $document.on("rexlive:set_row_photoswipe", function(e) {
       var data = e.settings.data_to_send;
-      if (data.photoswipe.toString() == "true") {
-        var $section;
+      var $section;
 
-        if (data.sectionTarget.modelNumber != "") {
-          $section = Rexbuilder_Util.$rexContainer.find(
-            'section[data-rexlive-section-id="' +
-              data.sectionTarget.sectionID +
-              '"][data-rexlive-model-number="' +
-              data.sectionTarget.modelNumber +
-              '"]'
-          );
-        } else {
-          $section = Rexbuilder_Util.$rexContainer.find(
-            'section[data-rexlive-section-id="' +
-              data.sectionTarget.sectionID +
-              '"]'
-          );
-        }
-
-        var $gallery = $section.find(".grid-stack-row");
-
-        var elementsBefore = Rexbuilder_Util_Editor.getElementsPhotoswipe(
-          $gallery
+      if (data.sectionTarget.modelNumber != "") {
+        $section = Rexbuilder_Util.$rexContainer.find(
+          'section[data-rexlive-section-id="' +
+            data.sectionTarget.sectionID +
+            '"][data-rexlive-model-number="' +
+            data.sectionTarget.modelNumber +
+            '"]'
         );
-        var reverseData = {
-          elements: elementsBefore
-        };
-
-        Rexbuilder_Dom_Util.enablePhotoswipeAllBlocksSection($section);
-
-        //actionData: STATO DOPO
-        var elementsAfter = Rexbuilder_Util_Editor.getElementsPhotoswipe(
-          $gallery
+      } else {
+        $section = Rexbuilder_Util.$rexContainer.find(
+          'section[data-rexlive-section-id="' +
+            data.sectionTarget.sectionID +
+            '"]'
         );
-        var actionData = {
-          elements: elementsAfter
-        };
-        Rexbuilder_Util_Editor.pushAction(
-          $section,
-          "updateSectionPhotoswipe",
-          actionData,
-          reverseData
-        );
-        $section.attr("data-rexlive-section-edited", true);
-        Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
       }
+
+      var $gallery = $section.find(".grid-stack-row");
+
+      var elementsBefore = Rexbuilder_Util_Editor.getElementsPhotoswipe( $gallery );
+      var reverseData = {
+        elements: elementsBefore
+      };
+      
+      if (data.photoswipe.toString() == "true") {   // add photoswipe to all blocks
+        Rexbuilder_Dom_Util.enablePhotoswipeAllBlocksSection($section);
+      }
+      else if ( data.photoswipe.toString() == "false" )   // remove photoswipe from all blocks
+      {
+        Rexbuilder_Dom_Util.removePhotoswipeAllBlocksSection($section);
+      }
+
+      //actionData: state after
+      var elementsAfter = Rexbuilder_Util_Editor.getElementsPhotoswipe(
+        $gallery
+      );
+      var actionData = {
+        elements: elementsAfter
+      };
+      Rexbuilder_Util_Editor.pushAction(
+        $section,
+        "updateSectionPhotoswipe",
+        actionData,
+        reverseData
+      );
+      $section.attr("data-rexlive-section-edited", true);
+      Rexbuilder_Util_Editor.builderEdited($section.hasClass("rex-model-section"));
     });
 
     $document.on("rexlive:change_section_name", function(e) {
@@ -1996,6 +2003,10 @@
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     });
 
+    /**
+     * Handling the click on section configuration button
+     * @since 2.0.0
+     */
     $document.on("click", ".builder-section-config", function(e) {
       e.preventDefault();
 
@@ -2031,7 +2042,7 @@
 
       var photoswipe = true;
 
-      //i blocchi che possono avere photoswipe
+      //the blocks that can have photoswipe
       var imageBloks = [];
 
       $gridElement

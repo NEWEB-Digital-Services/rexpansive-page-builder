@@ -830,6 +830,11 @@ var Rexbuilder_Dom_Util = (function($) {
     }
   };
 
+  /**
+   * Add photoswipe to all blocks of a section
+   * @param {jQuery Object} $section section to edit
+   * @since 2.0.0
+   */
   var _enablePhotoswipeAllBlocksSection = function($section) {
     var $gallery = $section.find(".grid-stack-row");
     $gallery
@@ -840,6 +845,22 @@ var Rexbuilder_Dom_Util = (function($) {
         if ($elData.attr("data-image_bg_block") != "" && textWrapLength == 0) {
           $elData.attr("data-photoswipe", true);
         }
+      });
+  };
+
+  /**
+   * Remove photoswipe from all blocks of a section
+   * @param {jQuery Object} $section section to edit
+   * @since 2.0.0
+   * @date 16-05-2019
+   */
+  var _removePhotoswipeAllBlocksSection = function($section) {
+    var $gallery = $section.find(".grid-stack-row");
+    $gallery
+      .children(".grid-stack-item:not(.removing_block)")
+      .each(function(i, el) {
+        var $elData = $(el).children(".rexbuilder-block-data");
+        $elData.attr("data-photoswipe", false);
       });
   };
 
@@ -1822,6 +1843,7 @@ var Rexbuilder_Dom_Util = (function($) {
     updateSliderStack: _updateSliderStack,
     updateSectionName: _updateSectionName,
     enablePhotoswipeAllBlocksSection: _enablePhotoswipeAllBlocksSection,
+    removePhotoswipeAllBlocksSection: _removePhotoswipeAllBlocksSection,
     updateCustomClasses: _updateCustomClasses,
     collapseGrid: _collapseGrid,
     updateCustomCSS: _updateCustomCSS,
