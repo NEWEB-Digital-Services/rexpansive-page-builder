@@ -2,5 +2,12 @@
 	<custom-fields>
 		<custom-field action="translate">_rexbuilder_custom_css</custom-field>
 		<custom-field action="copy-once">_rexbuilder_active</custom-field> 
+		<custom-field action="copy-once">_rex_responsive_layouts_names</custom-field> 
+		<custom-field action="copy-once">_rex_customization_default</custom-field> 
+		<custom-field action="copy-once">_rexbuilder_shortcode</custom-field> 
+		<custom-field action="copy-once">_save_from_backend</custom-field> 
+		<custom-field action="copy-once">_rex_customization_mobile</custom-field> 
+		<custom-field action="copy-once">_rexbuilder_buttons_ids_in_page</custom-field> 
+		<custom-field action="copy-once">_rex_customization_tablet</custom-field> 
     </custom-fields>
 </wpml-config>

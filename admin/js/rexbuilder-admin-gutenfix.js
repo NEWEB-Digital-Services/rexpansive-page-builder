@@ -174,7 +174,7 @@
           //console.log("Rexpansive- switch- ajax- success");
         },
         error: function(response) {    
-          //console.log("Rexpansive- switch- ajax- error");       
+          //console.log("Rexpansive- switch- ajax- error");
         }
       });
     });

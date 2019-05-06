@@ -3,18 +3,6 @@ if( !defined( 'ACF_LITE' ) ) {
     define( 'ACF_LITE', true );
 }
 
-if (!function_exists('write_log')) {
-    function write_log ( $log )  {
-        if ( true === WP_DEBUG ) {
-            if ( is_array( $log ) || is_object( $log ) ) {
-                error_log( print_r( $log, true ) );
-            } else {
-                error_log( $log );
-            }
-        }
-    }
-}
-
 // 4. Include ACF
 include_once( REXPANSIVE_BUILDER_PATH . 'admin/lib/acf/advanced-custom-fields/acf.php' );
 

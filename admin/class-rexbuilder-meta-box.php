@@ -802,6 +802,7 @@ class Rexbuilder_Meta_Box {
       
       if('rexpansive_plugin' == $field["type"] ){
         $savedFromBackend = get_post_meta( get_the_id(), '_save_from_backend', true);
+        Rexbuilder_Utilities::write_log($savedFromBackend);
         if(isset($savedFromBackend) && $savedFromBackend == "false"){
           return $post_id;
         }

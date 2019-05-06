@@ -298,4 +298,11 @@ class Rexbuilder_Utilities {
 			);
 		}, $array );
 	}
+
+	public static function public_builder_active_on_this_post_type( ) {
+		$post_to_activate = get_option('rexpansive-builder_options');
+        $this_post_type = get_post_type();
+
+        return (apply_filters('rexbuilder_post_type_active', isset($post_to_activate) && $this_post_type && array_key_exists($this_post_type, $post_to_activate)));
+	}
 }

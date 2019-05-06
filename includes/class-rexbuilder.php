@@ -332,6 +332,8 @@ class Rexbuilder {
 				echo "<script type='text/javascript'>alert('Welcome, visitor');</script>";
 			}
  */
+		$this->loader->add_action( 'after_setup_theme', $plugin_public, 'remove_shortcodes_from_live' );
+
 		$this->loader->add_filter( 'body_class', $plugin_public, 'rexlive_body_class', 10, 1 );
 
 		if( true === $production ) {

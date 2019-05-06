@@ -397,6 +397,20 @@ class Rexbuilder_Public
         );
     }
 
+    /**
+     * Prevent rendering of some shortcodes on builderlive side
+     * To avoid style or scripts errors
+     *
+     * @return void
+     * @since 2.0.0
+     * @date 03-05-2019
+     */
+    public function remove_shortcodes_from_live() {
+        if ( Rexbuilder_Utilities::isBuilderLive() ) {
+            remove_shortcode( 'RexEstateSearch' );
+        }
+    }
+
     public function include_js_template()
     {
         if (!current_user_can('edit_posts') && !current_user_can('edit_pages')) {

@@ -650,6 +650,7 @@ var live_file_map = [
 	'README.txt',
 	'rexpansive-builder.php',
 	'uninstall.php',
+	'wpml-config.xml',
 ];
 
 gulp.task('create-temp-live-folder', function(cb) {
