@@ -457,12 +457,14 @@ var Rexbuilder_Block_Editor = (function($) {
       var a_header = "";
       var a_content = "";
       var a_state = ( $accordion.hasClass("open") ? 'open' : 'close' );
-      var $temp_h = $accordion.find(".rex-accordion--toggle").clone();
+      var a_icon = "";
       var a_gallery = false;
+      var $temp_h = $accordion.find(".rex-accordion--toggle").clone();
       $temp_h.find(".rex-accordion--toggle-icon").remove();
       if($accordion.length > 0) {
         a_header = $temp_h.html().trim(),
         a_content = $accordion.find(".rex-accordion--content").html().trim();
+        a_icon = $accordion.find(".rex-accordion--toggle-icon").html().trim();
         if( $accordion.find(".rex-accordion--content").hasClass("rex-accordion--gallery") ) {
           a_gallery = true;
         }
@@ -477,6 +479,7 @@ var Rexbuilder_Block_Editor = (function($) {
           },
           accordion: {
             header: a_header,
+            icon: a_icon,
             content: a_content,
             state: a_state,
             is_gallery: a_gallery

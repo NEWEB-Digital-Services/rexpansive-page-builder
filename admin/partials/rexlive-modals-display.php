@@ -928,6 +928,9 @@ defined('ABSPATH') or exit;
                         </label>
                     </div><!-- // Accordion open/closed -->
                 </div>
+                <div class="bl_modal__option-wrap" style="display:none;">
+                    <input type="hidden" name="rex-accordion-toggle-icon-val">
+                </div>
             </div>
             <div class="bl_modal-row">
                 <div class="bl_modal__option-wrap">
