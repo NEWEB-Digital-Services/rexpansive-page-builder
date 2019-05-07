@@ -779,6 +779,14 @@ class Rexbuilder_Meta_Box {
     echo ob_get_clean();
   }
 
+  /**
+   * Handling saving custom post meta
+   *
+   * @param Integer $post_id
+   * @return void|Integer
+   * @since 1.0.0
+   * @version 2.0.0 Handling live and old builder
+   */
   public function save_builder_meta( $post_id ) {
     if( !isset( $_POST[ 'rexbuilder_meta_nonce' ] ) || 
       !wp_verify_nonce( $_POST[ 'rexbuilder_meta_nonce' ], basename( __FILE__ ) ) ) {
@@ -802,7 +810,6 @@ class Rexbuilder_Meta_Box {
       
       if('rexpansive_plugin' == $field["type"] ){
         $savedFromBackend = get_post_meta( get_the_id(), '_save_from_backend', true);
-        Rexbuilder_Utilities::write_log($savedFromBackend);
         if(isset($savedFromBackend) && $savedFromBackend == "false"){
           return $post_id;
         }

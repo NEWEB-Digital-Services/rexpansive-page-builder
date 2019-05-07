@@ -4732,7 +4732,7 @@ span.rex-theme-button,
   margin: 0;
   display: block;
   font-family: 'Roboto', sans-serif; }
-  .medium-editor-anchor-preview a:hover {
+  .medium-editor-anchor-preview a:hover, .medium-editor-anchor-preview a:visited, .medium-editor-anchor-preview a:focus {
     color: #fff; }
 
 .medium-editor-toolbar-form-active {

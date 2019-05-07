@@ -138,7 +138,9 @@
     margin: 0;
     display: block;
     @include live-fonts();
-    &:hover {
+    &:hover,
+    &:visited,
+    &:focus {
       color: #fff;
     }
   }

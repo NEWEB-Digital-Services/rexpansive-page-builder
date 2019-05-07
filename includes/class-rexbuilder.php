@@ -188,6 +188,8 @@ class Rexbuilder {
 		
 		$plugin_admin = new Rexbuilder_Admin( $this->get_plugin_name(), $this->get_version() );
 
+		$this->loader->add_action( 'wpml_translation_update', $plugin_admin, 'wpml_translation_update_fix' );
+
 		// Gutenberg
 		$this->loader->add_filter( 'use_block_editor_for_post', $plugin_admin, 'disable_gutenberg_on_live' );
 		
