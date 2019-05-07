@@ -134,14 +134,36 @@ class Rexbuilder_Admin {
 		// Insert fix
 		if ( 'insert' === $obj['type'] && 'post' === $obj['context'] ) 
 		{
+			// getting the code details of the translation
+			$post_type_info = explode( '_', $obj['element_type'] );
+			$args = array('element_id' => $obj['element_id'], 'element_type' => $post_type_info[1] );
+			$language_code_details = apply_filters( 'wpml_element_language_details', null, $args );
+
+			// query the database to find the original source of the translation
+			global $wpdb;
+			$result = $wpdb->get_row(
+				$wpdb->prepare( 
+					"
+					SELECT * 
+					FROM {$wpdb->prefix}icl_translations 
+					WHERE element_type LIKE %s
+					AND trid = %d
+					AND language_code = %s
+					LIMIT 1
+					",
+					$obj['element_type'], $obj['trid'], $language_code_details->source_language_code
+				),
+				ARRAY_A
+			);
+
 			// save from baackend original status
-			$original_savedFromBackend = get_post_meta( $obj['trid'], '_save_from_backend', true );
+			$original_savedFromBackend = get_post_meta( $result['element_id'], '_save_from_backend', true );
 			update_post_meta( $obj['element_id'], '_save_from_backend', $original_savedFromBackend );
 			// original shortcode
-			$original_shortcode = get_post_meta( $obj['trid'], '_rexbuilder_shortcode', true );
+			$original_shortcode = get_post_meta( $result['element_id'], '_rexbuilder_shortcode', true );
 			update_post_meta( $obj['element_id'], '_rexbuilder_shortcode', $original_shortcode );
 			// original CSS
-			$original_customCSS = get_post_meta( $obj['trid'], '_rexbuilder_custom_css', true );
+			$original_customCSS = get_post_meta( $result['element_id'], '_rexbuilder_custom_css', true );
 			update_post_meta( $obj['element_id'], '_rexbuilder_custom_css', $original_customCSS );
 		}
 	}
