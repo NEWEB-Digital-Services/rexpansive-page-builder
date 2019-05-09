@@ -407,7 +407,10 @@ class Rexbuilder_Public
      */
     public function remove_shortcodes_from_live() {
         if ( Rexbuilder_Utilities::isBuilderLive() ) {
-            remove_shortcode( 'RexEstateSearch' );
+            $shortcodes = apply_filters( 'rexpansive_builder_remove_shortcodes_live', array() );
+            foreach( $shortcodes as $shortcode ) {
+                remove_shortcode( $shortcode );
+            }
         }
     }
 

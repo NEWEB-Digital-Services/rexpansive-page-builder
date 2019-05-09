@@ -2002,11 +2002,14 @@ defined('ABSPATH') or exit;
                     <option value=""><?php _e( 'Choose Icon', 'rexpansive-builder' ); ?></option>
                 <?php
                 $icons = Rexbuilder_Utilities::get_icon_list();
-                foreach( $icons as $icon_group => $icons )
+                if ( $icons )
                 {
-                    foreach( $icons as $icon )
+                    foreach( $icons as $icon_group => $icons )
                     {
-                        ?><option value="<?php echo esc_attr( $icon ); ?>" data-svg-class="<?php echo esc_attr( $icon_group ); ?>"><?php echo $icon; ?></option><?php
+                        foreach( $icons as $icon )
+                        {
+                            ?><option value="<?php echo esc_attr( $icon ); ?>" data-svg-class="<?php echo esc_attr( $icon_group ); ?>"><?php echo $icon; ?></option><?php
+                        }
                     }
                 }
                 ?>
