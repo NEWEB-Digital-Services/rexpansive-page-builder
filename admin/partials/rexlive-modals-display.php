@@ -2001,7 +2001,7 @@ defined('ABSPATH') or exit;
                 <select name="rexlive-inline-svg-select" id="rexlive-inline-svg-select" class="rx__form-input">
                     <option value=""><?php _e( 'Choose Icon', 'rexpansive-builder' ); ?></option>
                 <?php
-                $icons = Rexbuilder_Utilities::get_icon_list();
+                $icons = apply_filters( 'rexpansive_builder_live_inline_icon_list', Rexbuilder_Utilities::get_icon_list() );
                 if ( $icons )
                 {
                     foreach( $icons as $icon_group => $icons )

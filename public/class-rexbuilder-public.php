@@ -1119,8 +1119,19 @@ class Rexbuilder_Public
 	 */
 	public function cf7_custom_style($out, $pairs, $atts, $shortcode) {
 		$cstyle = '';
-		
-		$cclass = 'rxcf7-custom-style-' . $atts['id'];
+        
+        // adding a global suffix, to prevent duplicate 
+        // contact forms on the same page conflicts
+        global $rsuffix;
+        if ( !isset ( $rsuffix ) )
+        {
+            $rsuffix = 0;
+        }
+        else
+        {
+            $rsuffix++;
+        }
+		$cclass = 'rxcf7-custom-style-' . $atts['id'] . '-' . $rsuffix;
 		
 		if( isset( $atts['input_color'] ) || isset( $atts['input_width'] ) || isset( $atts['input_height'] ) || isset( $atts['input_font_size'] ) || isset( $atts['input_font_weight'] ) || isset( $atts['input_letter_spacing'] ) || isset( $atts['input_padding'] ) || isset( $atts['input_border'] ) || isset( $atts['input_border_width'] ) || isset( $atts['input_border_radius'] ) || isset( $atts['input_background'] ) || isset( $atts['input_required_color'] ) || isset( $atts['input_required_background'] ) || isset( $atts['input_required_border'] ) || isset( $atts['form_background'] ) || isset( $atts['form_padding'] ) || isset( $atts['form_font_size'] ) || isset( $atts['form_text_align'] ) || isset( $atts['form_width'] ) || isset( $atts['placeholder_color'] ) || isset( $atts['placeholder_font_weight'] ) || isset( $atts['placeholder_letter_spacing'] ) || isset( $atts['placeholder_text_transform'] ) || isset( $atts['text_color'] ) || isset( $atts['link_color'] ) || isset( $atts['submit_color'] ) || isset( $atts['submit_background'] ) || isset( $atts['submit_border'] ) || isset( $atts['submit_border_radius'] ) || isset( $atts['submit_padding'] ) || isset( $atts['submit_width'] ) || isset( $atts['submit_font_size'] ) || isset( $atts['submit_font_weight'] ) || isset( $atts['submit_letter_spacing'] ) || isset( $atts['submit_height'] ) || isset( $atts['reset_color'] ) || isset( $atts['reset_background'] ) || isset( $atts['reset_border'] ) || isset( $atts['reset_border_radius'] ) || isset( $atts['reset_padding'] ) || isset( $atts['reset_width'] ) || isset( $atts['reset_font_size'] ) || isset( $atts['reset_height'] ) || isset( $atts['error_color'] ) || isset( $atts['error_background'] ) || isset( $atts['error_border'] ) || isset( $atts['success_color'] ) || isset( $atts['success_background'] ) || isset( $atts['success_border'] ) || isset( $atts['acceptance_color'] ) || isset( $atts['acceptance_line_height'] ) || isset( $atts['acceptance_text_align'] ) || isset( $atts['acceptance_letter_spacing'] ) || isset( $atts['acceptance_font_size'] ) || isset( $atts['checkbox_border'] ) || isset( $atts['checkbox_border_width'] ) || isset( $atts['checkbox_background'] ) || isset( $atts['loader_background'] ) || isset( $atts['loader_color'] ) ) {
 			ob_start();
