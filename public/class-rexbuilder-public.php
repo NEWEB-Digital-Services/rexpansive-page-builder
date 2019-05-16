@@ -822,62 +822,64 @@ class Rexbuilder_Public
      * Filtering post_content to add builder live information
      * @since 2.0.0
      */
-    public function generate_builder_content($content) {
+    public function generate_builder_content( $content ) {
         global $post;      
 
-        $builder_active = apply_filters('rexbuilder_post_active', get_post_meta($post->ID, '_rexbuilder_active', true));
-        
-        if ('true' == $builder_active) {
-
-            ob_start();
-
-            if( Rexbuilder_Utilities::isBuilderLive() ){
-                $editor = $_GET['editor'];
-            } else{
-                $editor = false;
-            }
-
-        $defaultButtonsIDs = '[]';
-        $buttonsIDsJSON = get_option( '_rex_buttons_ids', $defaultButtonsIDs );
-        $stripped = stripslashes( $buttonsIDsJSON );
-        $buttonsIDsUsed = json_decode($stripped, true);
-
-        $rexContainerMargins = "";
-        if($editor){
-            $fixTopMargins = false;
-            $globalMargins = get_option("_rex_global_margins_container", "");
-            $pageMargins = get_post_meta($post->ID, '_margins_container', true);
-            $globalMarginsStripped = stripslashes( $globalMargins );
-            $globalMarginsDecoded = json_decode($globalMarginsStripped, true);
-            $pageMarginsStripped = stripslashes( $pageMargins );
-            $pageMarginsDecoded = json_decode($pageMarginsStripped, true);
+        if ( isset ( $post ) )
+        {
+            $builder_active = apply_filters('rexbuilder_post_active', get_post_meta($post->ID, '_rexbuilder_active', true));
             
-            if($pageMarginsDecoded !== null){
-                $rexContainerMargins = "margin-top: ".$pageMarginsDecoded["top"]."px";
-                if($pageMarginsDecoded["top"] > 0){
-                    $fixTopMargins = true;
-                }
-            } else if($globalMarginsDecoded !== null){
-                $rexContainerMargins = "margin-top: ".$globalMarginsDecoded["top"]."px";
-                if($globalMarginsDecoded["top"] > 0){
-                    $fixTopMargins = true;
-                }
-            }
-
-            $global_settings = json_decode( stripslashes( get_option( '_rex_global_page_settings', '[]' ) ), true );
-            $custom_settings = json_decode( stripslashes( get_post_meta( $post->ID, '_rex_custom_page_settings', true ) ), true );
-
-            if ( isset( $custom_settings['container_distancer']['top'] ) && '' !== $custom_settings['container_distancer']['top'] )
+            if ('true' == $builder_active) 
             {
-                $fixTopMargins = true;
-                $custom_style = ' style="margin-top:' . $custom_settings['container_distancer']['top'] . 'px;"';
-            }
-            else if ( isset( $global_settings['container_distancer']['top'] ) && '' !== $global_settings['container_distancer']['top'] )
-            {
-                $fixTopMargins = true;
-                $custom_style = ' style="margin-top:' . $global_settings['container_distancer']['top'] . 'px;"';
-            }
-        }
+                ob_start();
+
+                if( Rexbuilder_Utilities::isBuilderLive() ){
+                    $editor = $_GET['editor'];
+                } else{
+                    $editor = false;
+                }
+
+                $defaultButtonsIDs = '[]';
+                $buttonsIDsJSON = get_option( '_rex_buttons_ids', $defaultButtonsIDs );
+                $stripped = stripslashes( $buttonsIDsJSON );
+                $buttonsIDsUsed = json_decode($stripped, true);
+
+                $rexContainerMargins = "";
+                if($editor){
+                    $fixTopMargins = false;
+                    $globalMargins = get_option("_rex_global_margins_container", "");
+                    $pageMargins = get_post_meta($post->ID, '_margins_container', true);
+                    $globalMarginsStripped = stripslashes( $globalMargins );
+                    $globalMarginsDecoded = json_decode($globalMarginsStripped, true);
+                    $pageMarginsStripped = stripslashes( $pageMargins );
+                    $pageMarginsDecoded = json_decode($pageMarginsStripped, true);
+                    
+                    if($pageMarginsDecoded !== null){
+                        $rexContainerMargins = "margin-top: ".$pageMarginsDecoded["top"]."px";
+                        if($pageMarginsDecoded["top"] > 0){
+                            $fixTopMargins = true;
+                        }
+                    } else if($globalMarginsDecoded !== null){
+                        $rexContainerMargins = "margin-top: ".$globalMarginsDecoded["top"]."px";
+                        if($globalMarginsDecoded["top"] > 0){
+                            $fixTopMargins = true;
+                        }
+                    }
+
+                    $global_settings = json_decode( stripslashes( get_option( '_rex_global_page_settings', '[]' ) ), true );
+                    $custom_settings = json_decode( stripslashes( get_post_meta( $post->ID, '_rex_custom_page_settings', true ) ), true );
+
+                    if ( isset( $custom_settings['container_distancer']['top'] ) && '' !== $custom_settings['container_distancer']['top'] )
+                    {
+                        $fixTopMargins = true;
+                        $custom_style = ' style="margin-top:' . $custom_settings['container_distancer']['top'] . 'px;"';
+                    }
+                    else if ( isset( $global_settings['container_distancer']['top'] ) && '' !== $global_settings['container_distancer']['top'] )
+                    {
+                        $fixTopMargins = true;
+                        $custom_style = ' style="margin-top:' . $global_settings['container_distancer']['top'] . 'px;"';
+                    }
+                }
 
 ?>
     <div class="rexbuilder-live-content<?php echo ($editor ? ' rexbuilder-live-content--editing add-new-section--hide'.($fixTopMargins ? ' fix-tools-first-row' : '') : ''); ?>"<?php echo ( $editor && $fixTopMargins ? $custom_style : ''); ?>>
@@ -910,10 +912,11 @@ class Rexbuilder_Public
         ?>
     </div>
     <?php
-            return ob_get_clean();
-        } else {
-            return $content;
-        }
+                return ob_get_clean();
+            }
+        } 
+        
+        return $content;
     }
     /**
      * This filter insures users only see their own media

@@ -540,6 +540,7 @@ var plugin_premium_file_map = [
 	'admin/class-rexbuilder-admin.php',
 	'admin/class-rexbuilder-meta-box.php',
 	'admin/index.php',
+	'admin/sprite-list.json',
 	'includes/**/*',
 	'languages/**/*',
 	'Licensing/**/*',
