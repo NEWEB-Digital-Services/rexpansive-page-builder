@@ -229,7 +229,7 @@ class Rexbuilder_Utilities {
 		}
 		else
 		{
-			$sprite_list = file_get_contents( REXPANSIVE_BUILDER_PATH . '/admin/sprite-list.json' );
+			$sprite_list = file_get_contents( REXPANSIVE_BUILDER_PATH . 'admin/sprite-list.json' );
 		}
 		$sprite_a = json_decode( $sprite_list, true );
 		return $sprite_a;

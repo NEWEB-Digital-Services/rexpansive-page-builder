@@ -57,12 +57,15 @@ class Rexbuilder_RexSlider {
 			$nav_previewed = get_post_meta( $slider_id, '_rex_slider_previewed_nav', true );
 			$nav_previewed_html = '';
 
+			$set_gallery_size = get_post_meta( $slider_id, '_rex_slider_set_gallery_size', true );
+			$wrap_around = get_post_meta( $slider_id, '_rex_slider_wrap_around', true );
+
 			$re = '/^((https?|ftp|file):\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/';
 
 			if( !empty( $slider_gallery ) ) :
 				$num_slides = count( $slider_gallery );
 			?>
-			<div data-slider-id="<?php echo $slider_id;?>" class="rex-slider-wrap<?php echo ( 1 == $nav_previewed ? ' rex-slider--bottom-interface' . ( 1 !== $num_slides ? ' rex-slider--bottom-interface--active' : '' ) : '' ); ?><?php echo ' rex-slider--' . $num_slides . '-slides'; ?>" data-rex-slider-animation="<?php echo ( is_array( $slider_animation ) ? 'true': ( "0" == $slider_animation ? 'true' : 'false' ) ); ?>" data-rex-slider-prev-next="<?php echo ( is_array( $slider_prev_next ) ? '1': ( "0" == $slider_prev_next ? 'true' : 'false' ) ); ?>" data-rex-slider-dots="<?php echo ( is_array( $slider_dots ) ? '1': ( "0" == $slider_dots ? 'true' : 'false' ) ); ?>" data-set-gallery-size="<?php echo esc_attr( 1 == $nav_previewed ? 'true' : 'false' ); ?>">
+			<div data-slider-id="<?php echo $slider_id;?>" class="rex-slider-wrap<?php echo ( 1 == $nav_previewed ? ' rex-slider--bottom-interface' . ( 1 !== $num_slides ? ' rex-slider--bottom-interface--active' : '' ) : '' ); ?><?php echo ' rex-slider--' . $num_slides . '-slides'; ?>" data-rex-slider-animation="<?php echo ( is_array( $slider_animation ) ? 'true': ( "0" == $slider_animation ? 'true' : 'false' ) ); ?>" data-rex-slider-prev-next="<?php echo ( is_array( $slider_prev_next ) ? '1': ( "0" == $slider_prev_next ? 'true' : 'false' ) ); ?>" data-rex-slider-dots="<?php echo ( is_array( $slider_dots ) ? '1': ( "0" == $slider_dots ? 'true' : 'false' ) ); ?>" data-set-gallery-size="<?php echo esc_attr( ( 1 == $nav_previewed || 1 == $set_gallery_size ) ? 'true' : 'false' ); ?>"<?php echo ( '' !== $wrap_around ? ' data-wrap-around="' . $wrap_around . '"' : '' ); ?>>
 			<?php
 
 			foreach( $slider_gallery as $key => $slide ) :

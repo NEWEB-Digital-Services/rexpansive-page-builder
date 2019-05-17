@@ -24,6 +24,11 @@
   .perfect-grid-item {
     overflow: visible;
   }
+  .grid-item-content{
+    &:active {
+      cursor: pointer;
+    }
+  }
 }
 
 .ui-focused-element-highlight {
