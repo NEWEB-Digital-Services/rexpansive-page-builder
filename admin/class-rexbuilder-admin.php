@@ -902,6 +902,27 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	}
 
 	/**
+	 * Check if the builder is active on an admin list of generic posts
+	 *
+	 * @param String $post_type
+	 * @return Bool
+	 * @since 2.0.0
+	 * @date 22-05-2019
+	 */
+	public function builder_active_on_this_post_type_list( $post_type ) {
+		$active = false;
+		if( isset( $this->plugin_options['post_types'] ) ) {
+
+			$post_to_activate = $this->plugin_options['post_types'];
+
+			if( isset( $post_to_activate[$post_type] ) && $post_to_activate[$post_type] == 1 ) { 
+				$active = true;
+			}
+		}
+		return $active;
+	}
+
+	/**
 	 * Enqueuing the assets of the builder on the contact form custom page
 	 * to add some functionallities (like modals)
 	 *
@@ -3772,7 +3793,11 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 */
 	public function add_builderlive_link( $actions, $post_object ) {	// AGGIUNGE IL LINK A REXPANSIVE TRAMITE LA OVERVIEW DEGLI ARTICOLI
 		$page_info = get_current_screen();
-		$actions['rexbuilder'] = '<b><a target="_blank" href="' . admin_url( 'post.php?post=' . $post_object->ID . '&action=edit&rexlive=true' ) . '">REXPANSIVE</a></b>';
+
+		if ( $this->builder_active_on_this_post_type_list( $page_info->post_type ) ) {
+			$actions['rexbuilder'] = '<b><a target="_blank" href="' . admin_url( 'post.php?post=' . $post_object->ID . '&action=edit&rexlive=true' ) . '">REXPANSIVE</a></b>';
+		}
+
 		return $actions;
 	}
 }
