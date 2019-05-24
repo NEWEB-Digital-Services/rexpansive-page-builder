@@ -4,6 +4,7 @@
  * @since 2.0.0
  */
 function IndexedGrid( maxWidth ) {
+  maxWidth = 'undefined' !== typeof maxWidth ? maxWidth : 12;
   this.grid = [];
   this.maxWidth = maxWidth;
 }
@@ -85,22 +86,26 @@ IndexedGrid.prototype.willFit = function (width, height) {
 
   // Search in the holes for a free space
   for (var z = 0, tot_holes = holes.length; z < tot_holes; z++) {
-    for (var w = this.grid[holes[z]] + 1; w < this.grid[holes[z] + 1]; w++) {
-      var free = this.searchFreeSpace(w, width, height);
-      if (free) { return w; }
+    var s_index = holes[z];
+    var e_index = holes[z] + 1;
+    if ( 'undefined' !== typeof s_index && 'undefined' !== typeof e_index ) {
+      for (var w = this.grid[s_index] + 1; w < this.grid[e_index]; w++) {
+        var free = this.searchFreeSpace(w, width, height);
+        if (free) { return w; }
+      }
     }
   }
 
   // No free spaces in the holes
   // Search the index starting from the last non-free index
   var lastFreeElement = this.grid[this.grid.length - 1] + 1;
-  var startRow = Math.floor((lastFreeElement) / 12);
-  var endRow = Math.floor(((lastFreeElement) + (width - 1)) / 12);
+  var startRow = Math.floor((lastFreeElement) / this.maxWidth);
+  var endRow = Math.floor(((lastFreeElement) + (width - 1)) / this.maxWidth);
 
   while (startRow !== endRow) {
     lastFreeElement = lastFreeElement + 1;
-    startRow = Math.floor((lastFreeElement) / 12);
-    endRow = Math.floor(((lastFreeElement) + (width - 1)) / 12);
+    startRow = Math.floor((lastFreeElement) / this.maxWidth);
+    endRow = Math.floor(((lastFreeElement) + (width - 1)) / this.maxWidth);
   }
 
   return lastFreeElement;
@@ -133,8 +138,8 @@ IndexedGrid.prototype.findHoles = function () {
  */
 IndexedGrid.prototype.searchFreeSpace = function (start, width, height) {
   // Check if the element overflows the grid
-  var startRow = Math.floor((start) / 12);
-  var endRow = Math.floor((start + width - 1) / 12);
+  var startRow = Math.floor((start) / this.maxWidth);
+  var endRow = Math.floor((start + width - 1) / this.maxWidth);
 
   if (startRow !== endRow) {
     return false;
@@ -143,7 +148,7 @@ IndexedGrid.prototype.searchFreeSpace = function (start, width, height) {
   // Check if the element fits or the spaces are already occupied
   for (var i = 0; i < height; i++) {
     for (var j = 0; j < width; j++) {
-      var temp = start + j + (i * 12);
+      var temp = start + j + (i * this.maxWidth);
       if (-1 !== this.grid.indexOf(temp)) {
         return false;
       }

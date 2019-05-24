@@ -3565,7 +3565,16 @@
      * @since 2.0.0
      */
     filter: function(options) {
-      var $items = this.$element.find(".grid-stack-item");
+      // get the initial state of the grid
+      // to have the correct order of the blocks in the DOM
+      var initialStateItems = [];
+      var totNodes = this.properties.initialStateGrid.length;
+      for ( var i=0; i < totNodes; i++ ) {
+        initialStateItems.push(this.properties.initialStateGrid[i].el);
+      }
+      
+      // var $items = this.$element.find(".grid-stack-item");
+      var $items = $(initialStateItems).map( function() { return this.toArray(); });
       var $toMaintain = $items.filter(options.filter);
       var $toRemoves = $items.not(options.filter);
       var that = this;
