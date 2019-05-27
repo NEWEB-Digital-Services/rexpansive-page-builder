@@ -1,3 +1,10 @@
+/**
+ * Attaching handlers on events that creates blocks
+ * of text, image, video ...
+ * Contains utility function to handle the moving of blocks
+ * between rows
+ * @since 2.0.0
+ */
 var Rexbuilder_CreateBlocks = (function ($) {
   'use strict';
 

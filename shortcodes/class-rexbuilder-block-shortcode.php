@@ -97,6 +97,7 @@ class Rexbuilder_Block
 
             $options = get_option($this->plugin_name . '_options');
             $animation = apply_filters('rexbuilder_animation_enabled', $options['animation']);
+            $fast_load = $options['fast_load'];
 
             $element_link_cc = apply_filters('rexpansive_block_element_link_custom_class', '');
             $grid_item_content_cc = apply_filters('rexpansive_block_grid_item_content_custom_class', '');
@@ -160,7 +161,7 @@ class Rexbuilder_Block
             $background_img_style = "";
             $alt_tag = '';
             if ("" != $id_image_bg_block) {
-                $backgroundImagePos = "";
+                // $backgroundImagePos = "";
 /*                 if(('natural' == $type_bg_block)){
                     if($flex_positioned){
                         $posX = $flex_position[1] == "middle" ? "center" : $flex_position[1] ;
@@ -170,7 +171,11 @@ class Rexbuilder_Block
                 } */
                 $img_attrs = wp_get_attachment_image_src($id_image_bg_block, $image_size);
                 $alt_value = get_post_meta($id_image_bg_block, '_wp_attachment_image_alt', true);
-                $background_img_style = ' style="background-image:url(\'' . $img_attrs[0] . '\');'. $backgroundImagePos .'"';
+                if ( 1 == $fast_load && ! Rexbuilder_Utilities::isBuilderLive() ) {
+                    $background_img_style = ' data-src="' . $img_attrs[0] . '"';
+                } else {
+                    $background_img_style = ' style="background-image:url(\'' . $img_attrs[0] . '\');"';
+                }
                 if ("" !== $alt_value) {
                     $alt_tag = ' alt="' . esc_attr($alt_value) . '" ';
                 }
@@ -375,19 +380,22 @@ class Rexbuilder_Block
             $videoTypeActive = '';
 
             $bg_video_markup = '';
-            if ('' != $video_bg_id && 'undefined' != $video_bg_id):
+            if ('' != $video_bg_id && 'undefined' != $video_bg_id) {
                 $videoTypeActive = 'mp4-player';
                 $video_mp4_url = wp_get_attachment_url($video_bg_id);
                 $videoMP4Data = wp_get_attachment_metadata($video_bg_id);
                 $videoMp4Width = $videoMP4Data["width"];
                 $videoMp4Height = $videoMP4Data["height"];
                 $bg_video_markup .= '<div class="rex-video-wrap" data-rex-video-width="'.$videoMp4Width.'" data-rex-video-height="'.$videoMp4Height.'">';
-                $bg_video_markup .= '<video class="rex-video-container" preload autoplay loop playsinline'.            ($bg_video_toggle_audio_markup != "" ? "": " muted").'>';
-                $bg_video_markup .= '<source type="video/mp4" src="' . $video_mp4_url . '" />';
+                $bg_video_markup .= '<video class="rex-video-container"' . ( 1 == $fast_load ? ' preload="none"' : ' preload' ) . ' autoplay loop playsinline'. ($bg_video_toggle_audio_markup != "" ? "": " muted").'>';
+                if ( 1 == $fast_load && ! Rexbuilder_Utilities::isBuilderLive() ) {
+                    $bg_video_markup .= '<source type="video/mp4" data-src="' . $video_mp4_url . '" />';
+                } else {
+                    $bg_video_markup .= '<source type="video/mp4" src="' . $video_mp4_url . '" />';
+                }
                 $bg_video_markup .= '</video>';
                 $bg_video_markup .= '</div>';
-
-            endif;
+            }
 
             $bg_youtube_video_markup = '';
 
@@ -649,7 +657,8 @@ class Rexbuilder_Block
 
             echo '</div>';
             echo '</div>';
-            if (isset($editor) && $editor == "true") {
+            // if (isset($editor) && $editor == "true") {
+            if ( Rexbuilder_Utilities::isBuilderLive() ) {
                 $not_has_image = ( 'true' != $atts['image_bg_elem_active'] || "" == $atts['id_image_bg_block'] );
                 $not_has_overlay = ( 'true' != $atts['overlay_block_color_active'] || "" == $atts['overlay_block_color'] );
                 $not_has_video = ( '' == $video_bg_id && '' == $video_bg_url && '' == $video_bg_url_vimeo );

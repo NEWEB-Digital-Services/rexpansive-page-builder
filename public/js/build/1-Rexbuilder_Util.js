@@ -1461,7 +1461,9 @@ var Rexbuilder_Util = (function($) {
       typeVideo: type
     };
 
-    Rexbuilder_Dom_Util.updateVideos($itemContent, videoOptions);
+    if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
+      Rexbuilder_Dom_Util.updateVideos($itemContent, videoOptions);
+    }
 
     // Update block image
     var activeImage =
@@ -2472,7 +2474,9 @@ var Rexbuilder_Util = (function($) {
       typeVideo: type
     };
 
-    Rexbuilder_Dom_Util.updateSectionVideoBackground($section, videoOptions);
+    if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
+      Rexbuilder_Dom_Util.updateSectionVideoBackground($section, videoOptions);
+    }
 
     var imageOptions = {
       active:
@@ -3275,9 +3279,11 @@ var Rexbuilder_Util = (function($) {
     var $vimeoVideos = $section.find(".vimeo-player");
     var $youtubeVideos = $section.find(".youtube-player");
 
-    $.each($mp4Videos, function(i, video) {
-      Rexbuilder_Util.playVideoFromBegin($(video));
-    });
+    if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
+      $.each($mp4Videos, function(i, video) {
+        Rexbuilder_Util.playVideoFromBegin($(video));
+      });
+    }
 
     $.each($vimeoVideos, function(i, video) {
       Rexbuilder_Util.playVideoFromBegin($(video));
@@ -3580,7 +3586,9 @@ var Rexbuilder_Util = (function($) {
     }
   };
 
-  //todo da finire ( non far partire video nascosti )
+  /**
+   * todo to finish ( hide video did not start ) 
+   */
   var _playAllVideos = function() {
     Rexbuilder_Util.$rexContainer
       .children(".rexpansive_section")
@@ -3590,9 +3598,11 @@ var Rexbuilder_Util = (function($) {
         var $vimeoVideos = $section.find(".vimeo-player");
         var $youtubeVideos = $section.find(".youtube-player");
 
-        $.each($mp4Videos, function(i, video) {
-          Rexbuilder_Util.playVideo($(video));
-        });
+        if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
+          $.each($mp4Videos, function(i, video) {
+            Rexbuilder_Util.playVideo($(video));
+          });
+        }
 
         $.each($vimeoVideos, function(i, video) {
           Rexbuilder_Util.playVideo($(video));
