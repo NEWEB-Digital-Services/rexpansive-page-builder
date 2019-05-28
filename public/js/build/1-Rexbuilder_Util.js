@@ -1493,7 +1493,9 @@ var Rexbuilder_Util = (function($) {
       photoswipe: activeImage ? targetProps["photoswipe"] : ""
     };
 
-    Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOptions);
+    if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
+      Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOptions);
+    }
 
     // Update block background
     var bgColorOpt = {
@@ -2499,7 +2501,9 @@ var Rexbuilder_Util = (function($) {
           : targetProps["row_overlay_active"].toString()
     };
 
-    Rexbuilder_Dom_Util.updateImageBG($section, imageOptions);
+    if ( !( '1' == _plugin_frontend_settings.fast_load && !Rexbuilder_Util.editorMode ) ) {
+      Rexbuilder_Dom_Util.updateImageBG($section, imageOptions);
+    }
 
     var backgroundColorOpt = {
       color: targetProps["color_bg_section"],

@@ -87,243 +87,228 @@ class Rexbuilder_Section
         $grid_custom_classes = apply_filters('rexpansive_section_grid_custom_class', $grid_custom_classes, array(&$parsed_atts) );
 
         global $post;
-        // $builder_active = apply_filters('rexbuilder_post_active', get_post_meta($post->ID, '_rexbuilder_active', true));
+        global $section_layout;
+        $section_layout = $layout;
 
-        // if ('true' == $builder_active) {
-
-            global $section_layout;
-            $section_layout = $layout;
-            // if(isset($_GET['editor'])){
-            //     $editor = $_GET['editor'];
-            // } else{
-            //     $editor = false;
-            // }
-
-            $section_style = 'style="';
-            $section_fast_load = '';
-            if ("" != $id_image_bg_section) {
-                $img_attrs = wp_get_attachment_image_src($id_image_bg_section, $image_size);
-                if ( 1 == $fast_load && !$editor ) {
-                    $section_fast_load = 'data-src="' . $img_attrs[0] . '"';
-                } else {
-                    $section_style .= 'background-image:url(\'' . $img_attrs[0] . '\');';
-                }
-            } else if (!empty($color_bg_section)) {
-                $section_style .= 'background-color:' . $color_bg_section . ';';
+        $section_style = 'style="';
+        $section_fast_load = '';
+        if ("" != $id_image_bg_section) {
+            $img_attrs = wp_get_attachment_image_src($id_image_bg_section, $image_size);
+            if ( 1 == $fast_load && !$editor ) {
+                $section_fast_load = 'data-src="' . $img_attrs[0] . '"';
+            } else {
+                $section_style .= 'background-image:url(\'' . $img_attrs[0] . '\');';
             }
+        } else if (!empty($color_bg_section)) {
+            $section_style .= 'background-color:' . $color_bg_section . ';';
+        }
 
-            if ('' != $row_margin_top) {
-                $section_style .= 'margin-top:' . $row_margin_top . 'px;';
-            }
+        if ('' != $row_margin_top) {
+            $section_style .= 'margin-top:' . $row_margin_top . 'px;';
+        }
 
-            if ('' != $row_margin_right) {
-                $section_style .= 'margin-right:' . $row_margin_right . 'px;';
-            }
+        if ('' != $row_margin_right) {
+            $section_style .= 'margin-right:' . $row_margin_right . 'px;';
+        }
 
-            if ('' != $row_margin_bottom) {
-                $section_style .= 'margin-bottom:' . $row_margin_bottom . 'px;';
-            }
+        if ('' != $row_margin_bottom) {
+            $section_style .= 'margin-bottom:' . $row_margin_bottom . 'px;';
+        }
 
-            if ('' != $row_margin_left) {
-                $section_style .= 'margin-left:' . $row_margin_left . 'px;';
-            }
+        if ('' != $row_margin_left) {
+            $section_style .= 'margin-left:' . $row_margin_left . 'px;';
+        }
 
-            $section_responsive_style = '';
-            if ("" != $responsive_background):
-                $section_responsive_style = ' style="background-color:' . $responsive_background . ';"';
-            endif;
+        $section_responsive_style = '';
+        if ("" != $responsive_background) {
+            $section_responsive_style = ' style="background-color:' . $responsive_background . ';"';
+        }
 
+        $custom_classes = trim($custom_classes);
+
+        if (strpos($custom_classes, "rex-block-grid") !== false) {
+            $custom_classes = str_replace("rex-block-grid", "", $custom_classes);
             $custom_classes = trim($custom_classes);
+            $atts['custom_classes'] = $custom_classes;
+            $rexlive_collapse_grid = false;
+        }
 
-            if (strpos($custom_classes, "rex-block-grid") !== false) {
-                $custom_classes = str_replace("rex-block-grid", "", $custom_classes);
-                $custom_classes = trim($custom_classes);
-                $atts['custom_classes'] = $custom_classes;
-                $rexlive_collapse_grid = false;
-            }
+        $row_separators = '';
+        if ('' != $row_separator_top) {
+            $row_separators .= ' data-row-separator-top="' . $row_separator_top . '"';
+        } else {
+            $row_separators .= ' data-row-separator-top="' . $block_distance . '"';
+        }
 
-            $row_separators = '';
-            if ('' != $row_separator_top) {
-                $row_separators .= ' data-row-separator-top="' . $row_separator_top . '"';
-            } else {
-                $row_separators .= ' data-row-separator-top="' . $block_distance . '"';
-            }
+        if ('' != $row_separator_right) {
+            $row_separators .= ' data-row-separator-right="' . $row_separator_right . '"';
+        } else {
+            $row_separators .= ' data-row-separator-right="' . $block_distance . '"';
+        }
 
-            if ('' != $row_separator_right) {
-                $row_separators .= ' data-row-separator-right="' . $row_separator_right . '"';
-            } else {
-                $row_separators .= ' data-row-separator-right="' . $block_distance . '"';
-            }
+        if ('' != $row_separator_bottom) {
+            $row_separators .= ' data-row-separator-bottom="' . $row_separator_bottom . '"';
+        } else {
+            $row_separators .= ' data-row-separator-bottom="' . $block_distance . '"';
+        }
 
-            if ('' != $row_separator_bottom) {
-                $row_separators .= ' data-row-separator-bottom="' . $row_separator_bottom . '"';
-            } else {
-                $row_separators .= ' data-row-separator-bottom="' . $block_distance . '"';
-            }
+        if ('' != $row_separator_left) {
+            $row_separators .= ' data-row-separator-left="' . $row_separator_left . '"';
+        } else {
+            $row_separators .= ' data-row-separator-left="' . $block_distance . '"';
+        }
 
-            if ('' != $row_separator_left) {
-                $row_separators .= ' data-row-separator-left="' . $row_separator_left . '"';
-            } else {
-                $row_separators .= ' data-row-separator-left="' . $block_distance . '"';
-            }
+        $videoTypeActive = '';
 
-            $videoTypeActive = '';
-
-            $bg_video_markup = '';
-            if ('' != $video_bg_id_section && 'undefined' != $video_bg_id_section){
-                $videoTypeActive = 'mp4-player';
-                $video_mp4_url = wp_get_attachment_url($video_bg_id_section);
-                $bg_video_markup .= '<div class="rex-video-wrap">';
-                $bg_video_markup .= '<video class="rex-video-container"' . ( 1 == $fast_load ? ' preload="none"' : ' preload' ) . ' autoplay loop muted playsinline>';
-                if ( 1 == $fast_load && !$editor ) {
-                    $bg_video_markup .= '<source type="video/mp4" data-src="' . $video_mp4_url . '" />';
-                } else {
-                    $bg_video_markup .= '<source type="video/mp4" src="' . $video_mp4_url . '" />';
-                }
+        $bg_video_markup = '';
+        if ('' != $video_bg_id_section && 'undefined' != $video_bg_id_section) {
+            $videoTypeActive = 'mp4-player';
+            $video_mp4_url = wp_get_attachment_url($video_bg_id_section);
+            $bg_video_markup .= '<div class="rex-video-wrap">';
+            $bg_video_markup .= '<video class="rex-video-container"' . ( 1 == $fast_load ? ' preload="none"' : ' preload' ) . ' autoplay loop muted playsinline>';
+            if ( 1 == $fast_load && !$editor ) {
+                $bg_video_markup .= '<source type="video/mp4" data-src="' . $video_mp4_url . '" />';
                 $bg_video_markup .= '</video>';
-                if ( 1 == $fast_load && !$editor ) {
-                    $bg_video_markup .= '<div class="rex-video__controls"><span class="loader rotate-center loader--view"></span></div>';
-                }
-                $bg_video_markup .= '</div>';
-            }
-            
-            $bg_youtube_video_markup = '';
-            
-            if ('' != $video_bg_url_section && 'undefined' != $video_bg_url_section){
-                
-                $videoTypeActive = 'youtube-player';
-                $bg_youtube_video_markup .= '<div class="rex-youtube-wrap" data-property="{videoURL:\'' . $video_bg_url_section . '\',containment:\'self\',startAt:0,mute:\'true\',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"></div>';
-            }
-                        
-            $bg_video_vimeo_markup = '';
-            if ('' != $video_bg_url_vimeo_section && 'undefined' != $video_bg_url_vimeo_section) {
-                $videoTypeActive = 'vimeo-player';
-                $bg_video_vimeo_markup .= '<div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--section">';
-                $bg_video_vimeo_markup .= '<iframe src="' . $video_bg_url_vimeo_section . '?autoplay=1&loop=1&title=0&byline=0&portrait=0&autopause=0&muted=1" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
-                $bg_video_vimeo_markup .= '</div>';
-            }
-
-            ob_start();
-
-            echo '<section';
-
-            if ($section_name != '' && $section_name != "undefined") {
-                $x = preg_replace('/[\W\s+]/', '', $section_name);
-                echo ' data-rexlive-section-name="' . $section_name . '"';
-                echo ' href="#' . $x . '" id="' . $x . '"';
-            }
-
-            if($content == ""){
-                $empty_section = true;
-            } else{
-                $empty_section = false;
-            }
-
-            $content_has_photoswipe = strpos($content, 'photoswipe="true"');
-
-            $content_has_floating_blocks = strpos($content, 'rex-floating-');
-
-            $content_has_static_block = strpos($content, 'rex-static-block');
-
-            $row_has_accordion = has_shortcode($content, 'RexAccordion');
-
-            echo ' class="rexpansive_section' . ($empty_section ? ' empty-section' : '')
-            . ($videoTypeActive!= "" ? " ".$videoTypeActive : "") .
-            (("" != $rexlive_model_id) ? " rex-model-section" : "") .
-            (($content_has_photoswipe > 0) ? ' photoswipe-gallery' : '') .
-            (('' != $custom_classes) ? ' ' . $custom_classes : '') .
-            (('true' == $full_height) ? ' full-height-section' : '') .
-            (($content_has_floating_blocks !== false) ? ' rex-section-has-floating-blocks' : '') .
-            (($content_has_static_block !== false) ? ' rex-section-has-static-blocks' : '') .
-            ((false !== $row_has_accordion) ? ' rex-section-has-accordion' : '') .
-            ( $editor ? ( $row_separator_top < 25 ? ' ui-tools--near-top' : '' ) : '' ) .
-            apply_filters('rexpansive_builder_section_class', '', $parsed_atts) . '"' .
-                (($content_has_photoswipe > 0) ? ' itemscope itemtype="http://schema.org/ImageGallery"' : '') .
-                (strlen($section_style) > 7 ? ' ' . $section_style . '"' : '');
-
-            if ( '' !== $section_fast_load ) {
-                echo ' ' . $section_fast_load;
-            }
-
-            if ("" != $id_image_bg_section) {
-                echo ' data-background_image_width="' . $img_attrs[1] . '" ';
-                echo ' data-background_image_height="' . $img_attrs[2] . '" ';
-            }
-
-            if ($rexlive_section_id != '') {
-                echo ' data-rexlive-section-id="' . $rexlive_section_id . '"';
-            }
-            
-            if (isset($rexlive_collapse_grid)) {
-                echo ' data-rex-collapse-grid="false"';
-            }
-
-            if ($rexlive_model_id != '') {
-                echo ' data-rexlive-model-id="' . $rexlive_model_id . '"';
-            }
-
-            if ($rexlive_model_name != '') {
-                echo ' data-rexlive-model-name="' . $rexlive_model_name . '"';
-            }
-
-            echo ' data-rexlive-model-editing="false"';
-            
-            echo '>';
-
-            echo '<div class="section-data" style="display: none;" ';
-            foreach ($atts as $property_name => $value_property) {
-                echo 'data-' . $property_name . '="' . ($value_property != "undefined"? $value_property : "" ). '" ';
-            }
-
-            unset($property_name);
-            unset($value_property);
-            if ('' != $video_bg_id_section && 'undefined' != $video_bg_id_section) {
-                echo 'data-video_mp4_url="' . $video_mp4_url . '"';
-            }
-            echo '></div>';
-            
-            if ( $editor ) {
-               include REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-section-tools.php";
-            }
-
-            echo $bg_video_markup;
-            echo $bg_youtube_video_markup;
-            echo $bg_video_vimeo_markup;
-            
-            echo '<div class="responsive-overlay"';
-            if ("" != $responsive_background) {
-                echo $section_responsive_style;
-            }
-            echo '>';
-
-            if ('boxed' == $dimension) {
-                echo '<div class="rex-row__dimension center-disposition"';
-                if ('' != $section_width) {
-                    echo ' style="max-width:' . $section_width . ';"';
-                }
-                echo '>';
+                // adding video controllers
+                $bg_video_markup .= '<div class="rex-video__controls"><span class="loader rotate-center loader--view"></span></div>';
             } else {
-                echo '<div class="rex-row__dimension full-disposition">';
+                $bg_video_markup .= '<source type="video/mp4" src="' . $video_mp4_url . '" />';
+                $bg_video_markup .= '</video>';
             }
+            $bg_video_markup .= '</div>';
+        }
+        
+        $bg_youtube_video_markup = '';
+        
+        if ('' != $video_bg_url_section && 'undefined' != $video_bg_url_section) {
+            $videoTypeActive = 'youtube-player';
+            $bg_youtube_video_markup .= '<div class="rex-youtube-wrap" data-property="{videoURL:\'' . $video_bg_url_section . '\',containment:\'self\',startAt:0,mute:\'true\',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"></div>';
+        }
+                    
+        $bg_video_vimeo_markup = '';
+        if ('' != $video_bg_url_vimeo_section && 'undefined' != $video_bg_url_vimeo_section) {
+            $videoTypeActive = 'vimeo-player';
+            $bg_video_vimeo_markup .= '<div class="rex-video-vimeo-wrap rex-video-vimeo-wrap--section">';
+            $bg_video_vimeo_markup .= '<iframe src="' . $video_bg_url_vimeo_section . '?autoplay=1&loop=1&title=0&byline=0&portrait=0&autopause=0&muted=1" width="640" height="360" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen></iframe>';
+            $bg_video_vimeo_markup .= '</div>';
+        }
 
-            do_action('rexpansive_section_before_grid', array(&$parsed_atts));
+        ob_start();
 
-            echo '<div class="perfect-grid-gallery grid-stack grid-stack-row' . ( !empty( $grid_custom_classes ) ? ' ' . $grid_custom_classes : '' ) . '" data-separator="' . $block_distance . '" data-layout="' . $layout . '" data-full-height="' . (('true' == $full_height) ? 'true' : 'false') . '"' . $row_separators . '>';
-            echo '<div class="perfect-grid-sizer"></div>';
-            echo do_shortcode($content);
-            echo '</div>';
-            echo '</div>';
+        echo '<section';
 
-            if ("" != $responsive_background) {
-                echo '</div>';
+        if ($section_name != '' && $section_name != "undefined") {
+            $x = preg_replace('/[\W\s+]/', '', $section_name);
+            echo ' data-rexlive-section-name="' . $section_name . '"';
+            echo ' href="#' . $x . '" id="' . $x . '"';
+        }
+
+        if($content == ""){
+            $empty_section = true;
+        } else{
+            $empty_section = false;
+        }
+
+        $content_has_photoswipe = strpos($content, 'photoswipe="true"');
+
+        $content_has_floating_blocks = strpos($content, 'rex-floating-');
+
+        $content_has_static_block = strpos($content, 'rex-static-block');
+
+        $row_has_accordion = has_shortcode($content, 'RexAccordion');
+
+        echo ' class="rexpansive_section' . ($empty_section ? ' empty-section' : '')
+        . ($videoTypeActive!= "" ? " ".$videoTypeActive : "") .
+        (("" != $rexlive_model_id) ? " rex-model-section" : "") .
+        (($content_has_photoswipe > 0) ? ' photoswipe-gallery' : '') .
+        (('' != $custom_classes) ? ' ' . $custom_classes : '') .
+        (('true' == $full_height) ? ' full-height-section' : '') .
+        (($content_has_floating_blocks !== false) ? ' rex-section-has-floating-blocks' : '') .
+        (($content_has_static_block !== false) ? ' rex-section-has-static-blocks' : '') .
+        ((false !== $row_has_accordion) ? ' rex-section-has-accordion' : '') .
+        ( $editor ? ( $row_separator_top < 25 ? ' ui-tools--near-top' : '' ) : '' ) .
+        apply_filters('rexpansive_builder_section_class', '', $parsed_atts) . '"' .
+            (($content_has_photoswipe > 0) ? ' itemscope itemtype="http://schema.org/ImageGallery"' : '') .
+            (strlen($section_style) > 7 ? ' ' . $section_style . '"' : '');
+
+        if ( '' !== $section_fast_load ) {
+            echo ' ' . $section_fast_load;
+        }
+
+        if ("" != $id_image_bg_section) {
+            echo ' data-background_image_width="' . $img_attrs[1] . '" ';
+            echo ' data-background_image_height="' . $img_attrs[2] . '" ';
+        }
+
+        if ($rexlive_section_id != '') {
+            echo ' data-rexlive-section-id="' . $rexlive_section_id . '"';
+        }
+        
+        if (isset($rexlive_collapse_grid)) {
+            echo ' data-rex-collapse-grid="false"';
+        }
+
+        if ($rexlive_model_id != '') {
+            echo ' data-rexlive-model-id="' . $rexlive_model_id . '"';
+        }
+
+        if ($rexlive_model_name != '') {
+            echo ' data-rexlive-model-name="' . $rexlive_model_name . '"';
+        }
+
+        echo ' data-rexlive-model-editing="false"';
+        
+        echo '>';
+
+        echo '<div class="section-data" style="display: none;" ';
+        foreach ($atts as $property_name => $value_property) {
+            echo 'data-' . $property_name . '="' . ($value_property != "undefined"? $value_property : "" ). '" ';
+        }
+
+        unset($property_name);
+        unset($value_property);
+        if ('' != $video_bg_id_section && 'undefined' != $video_bg_id_section) {
+            echo 'data-video_mp4_url="' . $video_mp4_url . '"';
+        }
+        echo '></div>';
+        
+        if ( $editor ) {
+            include REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-section-tools.php";
+        }
+
+        echo $bg_video_markup;
+        echo $bg_youtube_video_markup;
+        echo $bg_video_vimeo_markup;
+        
+        echo '<div class="responsive-overlay"';
+        if ("" != $responsive_background) {
+            echo $section_responsive_style;
+        }
+        echo '>';
+
+        if ('boxed' == $dimension) {
+            echo '<div class="rex-row__dimension center-disposition"';
+            if ('' != $section_width) {
+                echo ' style="max-width:' . $section_width . ';"';
             }
+            echo '>';
+        } else {
+            echo '<div class="rex-row__dimension full-disposition">';
+        }
 
-            echo '</section>';
-            return ob_get_clean();
-        // } else {
-        //     ob_start();
-        //     echo do_shortcode($content);
-        //     return ob_get_clean();
-        // }
+        do_action('rexpansive_section_before_grid', array(&$parsed_atts));
+
+        echo '<div class="perfect-grid-gallery grid-stack grid-stack-row' . ( !empty( $grid_custom_classes ) ? ' ' . $grid_custom_classes : '' ) . '" data-separator="' . $block_distance . '" data-layout="' . $layout . '" data-full-height="' . (('true' == $full_height) ? 'true' : 'false') . '"' . $row_separators . '>';
+        echo '<div class="perfect-grid-sizer"></div>';
+        echo do_shortcode($content);
+        echo '</div>';
+        echo '</div>';
+
+        if ("" != $responsive_background) {
+            echo '</div>';
+        }
+
+        echo '</section>';
+        return ob_get_clean();
     }
 }
