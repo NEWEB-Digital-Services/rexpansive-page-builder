@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <button id="premi">CLIM KE</button>
+    <script>
+;(function() {
+    var btn = document.getElementById('premi');
+    var counter = 0;
+
+    var clickResponse = function(event) {
+        console.log('ho premuto');
+        counter++;
+        if ( counter > 5 ) {
+            event.currentTarget.removeEventListener(event.type, cb);
+        }
+    };
+
+    var cb = clickResponse.bind(this);
+    btn.addEventListener('click', cb);
+}());
+    </script>
+</body>
+</html>

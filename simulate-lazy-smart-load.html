@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Smart Lazy Load</title>
+    <style>
+    html, body {
+        margin: 0;
+        padding: 0;
+    }
+    .row {
+        width: 100%;
+        height: 100vh;
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        font-family: sans-serif;
+        font-size: 30px;
+        letter-spacing: 2px;
+        position: relative;
+    }
+    .row:nth-child(1) { background-color: #999; }
+    .row:nth-child(2) { background-color: #aaa; }
+    .row:nth-child(3) { background-color: #bbb; }
+    .row:nth-child(4) { background-color: #ccc; }
+    .row:nth-child(5) { background-color: #ddd; }
+    .row:nth-child(6) { background-color: #eee; }
+    .rex-video-container {
+        width: 100%;
+        height: 100%;
+    }
+    .state {
+        position: absolute;
+        color: red;
+        top: 0;
+        left: 0;
+    }
+    #report {
+        width:150px;
+        height:320px;
+        background-color:#fff;
+        position: fixed;
+        top: 0;
+        right: 0;
+        padding: 10px;
+        overflow: scroll;
+        z-index: 30;
+        border-left: 1px dotted black;
+        border-bottom: 1px dotted black;
+    }
+    #report p {
+        margin: 0;
+    }
+    </style>
+</head>
+<body>
+    <div id="report"></div>
+    <div class="wrap">
+        <section class="row">
+            <video class="rex-video-container hero__bgvideo" preload="none" loop muted playsinline data-video="video1">
+                <source type="video/mp4" data-src="https://dem.neweb.info/wp-content/uploads/2019/05/landscape.mp4" />
+            </video>
+            <div class="state"></div>
+        </section>
+        <section class="row">
+            <video class="rex-video-container hero__bgvideo" preload="none" loop muted playsinline data-video="video2">
+                <source type="video/mp4" data-src="https://dem.neweb.info/wp-content/uploads/2019/05/workout.mp4" />
+            </video>
+            <div class="state"></div>
+        </section>
+        <section class="row">
+            <video class="rex-video-container hero__bgvideo" preload="none" loop muted playsinline data-video="video3">
+                <source type="video/mp4" data-src="https://dem.neweb.info/wp-content/uploads/2019/05/connect.mp4" />
+            </video>
+            <div class="state"></div>
+        </section>
+        <section class="row">
+            <video class="rex-video-container hero__bgvideo" preload="none" loop muted playsinline data-video="video4">
+                <source type="video/mp4" data-src="https://dem.neweb.info/wp-content/uploads/2019/05/activity.mp4" />
+            </video>
+            <div class="state"></div>
+        </section>
+        <section class="row">
+            <video class="rex-video-container hero__bgvideo" preload="none" loop muted playsinline data-video="video5">
+                <source type="video/mp4" data-src="https://dem.neweb.info/wp-content/uploads/2019/05/health.mp4" />
+            </video>
+            <div class="state"></div>
+        </section>
+        <section class="row">
+            <video class="rex-video-container hero__bgvideo" preload="none" loop muted playsinline data-video="video6">
+                <source type="video/mp4" data-src="https://dem.neweb.info/wp-content/uploads/2019/05/design.mp4" />
+            </video>
+            <div class="state"></div>
+        </section>
+    </div>
+    <script src="./public/js/vendor/intersection-observer.js"></script>
+    <script>
+    ;(function() {
+        var scrollobserverSections;
+        var report;
+        var playingVideos;
+
+        var cacheVars = function() {
+            report = document.getElementById('report');
+        }
+
+        var addVideoListeners = function( el ) {
+            var handleLoad = function(event) {
+                event.currentTarget.nextElementSibling.innerText = 'LOADING';
+                addReport('Loading... ' + event.currentTarget.getAttribute('data-video'));
+            };
+
+            var handleCanPlayThrough = function(event) {
+                event.currentTarget.play();
+            };
+
+            var handleError = function(event) {
+                event.currentTarget.nextElementSibling.innerText = 'ERROR';
+                addReport('Error... ' + event.currentTarget.getAttribute('data-video'));
+                for ( var source in el.children ) {
+                    var videoSource = el.children[source];
+                    if (typeof videoSource.tagName === "string" && videoSource.tagName === "SOURCE") {
+                        var src = videoSource.getAttribute('data-src');
+                        if ( src ) {
+                            videoSource.removeAttribute(src);
+                        }
+                    }
+                }
+                // el.load();
+            }
+
+            var handleStalled = function(event) {
+                event.currentTarget.nextElementSibling.innerText = 'STALLED';
+                addReport('Stalled... ' + event.currentTarget.getAttribute('data-video')); 
+            }
+            
+            var handleSuspend = function(event) {
+                event.currentTarget.nextElementSibling.innerText = 'SUSPEND';
+                addReport('Suspend... ' + event.currentTarget.getAttribute('data-video')); 
+            }
+
+            var handlePlay = function(event) {
+                event.currentTarget.nextElementSibling.innerText = 'PLAYING';
+                addReport('Playing... ' + event.currentTarget.getAttribute('data-video')); 
+            }
+
+            var handlePause = function(event) {
+                event.currentTarget.nextElementSibling.innerText = 'PAUSING';
+                addReport('Pausing... ' + event.currentTarget.getAttribute('data-video')); 
+            }
+
+            el.addEventListener('loadstart', handleLoad);
+            el.addEventListener('canplaythrough', handleCanPlayThrough);
+            el.addEventListener('error', handleError);
+            el.addEventListener('stalled', handleStalled);
+            // el.addEventListener('suspend', handleSuspend);
+            el.addEventListener('play', handlePlay);
+            el.addEventListener('pause', handlePause);
+        }
+
+        var addReport = function( text ) {
+            report.innerHTML += '<p>' + text + '</p>';
+            report.scrollTop = report.scrollHeight;
+        }
+
+        var lazyLoadVideoHTML = function( el ) {
+            if ( el ) {
+                console.log(el.children[0].src, el.paused);
+                if ( 0 === el.readyState ) {
+                    for ( var source in el.children ) {
+                        var videoSource = el.children[source];
+                        if (typeof videoSource.tagName === "string" && videoSource.tagName === "SOURCE") {
+                            var src = videoSource.getAttribute('data-src');
+                            if ( src ) {
+                                videoSource.setAttribute( 'src', src );
+                            }
+                        }
+                    }
+                    el.load();
+                } else {
+                    el.play();
+                }
+            }
+        }
+
+        var handleObserver = function() {
+            if ("IntersectionObserver" in window) {
+                var sections = [].slice.call(document.querySelectorAll('.row'));
+                scrollobserverSections = new IntersectionObserver(function(entries, observer) {
+                    entries.forEach(function(entry) {
+                        var videoWrapper = entry.target.querySelector('.rex-video-container');
+                        // check video background
+                        if ( videoWrapper ) {
+                            if ( entry.isIntersecting ) {
+                                lazyLoadVideoHTML( videoWrapper );
+                            } else {
+                                videoWrapper.pause();
+                            }
+                        }
+                    })
+                });
+
+                sections.forEach(function(section) {
+                    var videoWrapper = section.querySelector('.rex-video-container');
+                    if ( videoWrapper ) {
+                        addVideoListeners( videoWrapper );
+                    }
+
+                    scrollobserverSections.observe(section);
+                });
+            }
+        }
+
+        var init = function() {
+            cacheVars();
+            handleObserver();
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+
+    }());
+    </script>
+</body>
+</html>
