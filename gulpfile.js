@@ -438,7 +438,7 @@ gulp.task('watch-live-production', ['builderlive-editor','builderlive'] ,functio
 
 gulp.task('public-css-build', function() {
 	sass('public/public.scss',{
-		//style:'compressed'
+		style:'compressed'
 	})
 	.pipe(plumber())
     .pipe(autoprefixer({

@@ -719,7 +719,6 @@ var Rexbuilder_Block_Editor = (function($) {
      * @since 2.0.0
      */
     Rexbuilder_Util.$document.on('rexlive:SetcustomHTML',function(e) {
-      console.log(e);
       TextEditor.triggerMEEvent({
         name:"rexlive:mediumEditor:saveHTMLContent", 
         data: e.settings.data_to_send, 
