@@ -258,6 +258,7 @@ class Rexbuilder_Public
                 wp_enqueue_script('block-js', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Block.js', array('jquery'), $ver, true);
                 wp_enqueue_script('block-editor-js', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Block_Editor.js', array('jquery'), $ver, true);
                 wp_enqueue_script('4-modals', REXPANSIVE_BUILDER_URL . 'public/js/live/4-modals.js', array('jquery'), $ver, true);
+                wp_enqueue_script('live-post-edit', REXPANSIVE_BUILDER_URL . 'public/js/live/4-Rexbuilder_Live_Post_Edit.js', array('jquery'), $ver, true);
             }
             else
             {
@@ -630,6 +631,70 @@ class Rexbuilder_Public
 
         $response['id_received'] = $post_id_to_update;
         $response['layoutName'] = $layout_name;
+
+        wp_send_json_success($response);
+    }
+
+    /**
+     * Saving editable fields changes
+     *
+     * @return JSON
+     * @since 2.0.0
+     * @date 31-05-2019
+     */
+    public function rexlive_save_editable_fields() {
+        $nonce = $_REQUEST['nonce_param'];
+
+        $response = array(
+            'error' => false,
+            'msg' => '',
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+        if ( ! isset( $_REQUEST['fieldData'] ) || ! isset( $_REQUEST['postID'] ) ) {
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        }
+
+        $response['error'] = false;
+        $fieldDataEncoded = $_REQUEST['fieldData'];
+        $postID = $_REQUEST['postID'];
+
+        if ( ! empty( $fieldDataEncoded ) ) {
+            $fieldDataEncodedStripped = stripslashes( $fieldDataEncoded );
+            $fiedlData = json_decode( $fieldDataEncodedStripped, true );
+
+            $update_post = false;
+            $post_args = array(
+                'ID' => $postID
+            );
+            
+            foreach( $fiedlData as $field ) {
+                switch( $field['info']['table'] ) {
+                    case 'post':
+                        $update_post = true;
+                        $post_args[$field['info']['field']] = $field['value'];
+                        break;
+                    case 'postmeta':
+                        update_post_meta( $postID, $field['info']['field'], $field['value'] );
+                        break;
+                    default:
+                        break;
+                }
+            }
+
+            $response['update_post'] = $post_args;
+
+            if ( $update_post ) {
+                $update_post_response = wp_update_post( $post_args );
+            }
+        }
 
         wp_send_json_success($response);
     }
