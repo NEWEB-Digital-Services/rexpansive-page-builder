@@ -1,0 +1,14 @@
+- su le pagine adatte, ci saranno alcuni elementi modificabili
+- devo avere un modo per:
+    - identificare tali elementi (classe)
+    - identificare la tabella su cui è presente tale elemento (opzione, post, postmeta,...) e il relativo campo (occhio ai dati "array"!!)
+        - se è un valore da lista (autore, categoria, tassonomia) devo gestire anche sta cosa
+        - dovrei gestire anche il TIPO di valore (come la data)
+- una volta identificati i valori devo 
+    - attivare l'editor di testo su di essi
+    - l'editor, al momento, mi permetterà di modificare solamente il valore (gestire stili, tipo di testo, ... rischia di diventare complesso (e quindi lento da fare))
+    - devo identificare il momento in cui salverò il valore:
+        - alla "chiusura" dell'editor?
+        - oppure al salvataggio della pagina?
+            - in questo caso, potrei costruire una coda di lavori, da processare al momento del salvataggio della pagina
+    - devo tenere conto che layout diversi non possono e non devono influire sul valore, se cambia per un layout cambia per tutto

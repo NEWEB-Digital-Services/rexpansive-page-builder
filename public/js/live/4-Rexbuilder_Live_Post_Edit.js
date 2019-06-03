@@ -1,4 +1,4 @@
-;(function ($) {
+;(function () {
   var fieldsEditable;
   var postID;
 
@@ -12,8 +12,21 @@
   };
 
   var makeFieldsEditable = function() {
-    fieldsEditable.forEach(function(field) {
-      field.setAttribute('contenteditable', true);
+    fieldsEditable.forEach(function(field, index) {
+      var editableType = field.getAttribute('data-editable-type');
+      switch( editableType ) {
+        case 'html':
+        case 'float':
+        case 'text':
+          field.setAttribute('contenteditable', true);
+          break;
+        case 'media':
+          field.setAttribute('data-editable-id', editableType + index);
+          field.addEventListener('click', handleMediaClick);
+          break;
+        default:
+          break;
+      }
       
       // field.addEventListener('blur', function(event) {
       //   console.log(event);
@@ -21,22 +34,57 @@
     });
   };
 
+  /**
+   * Handling the click on a editable media
+   * Opening the wordpress media uploader to edit
+   * @param {Event} event click event
+   */
+  var handleMediaClick = function(event) {
+    event.preventDefault();
+
+    var data = {
+      eventName: "rexlive:openPostEditMediaUploader",
+      mediaData: {
+        mediaId: event.currentTarget.getAttribute( 'data-editable-value' ),
+        fieldId: event.currentTarget.getAttribute( 'data-editable-id' )
+      }
+    };
+
+    Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+  };
+
+  var handleMediaEdit = function( data ) {
+    var target = document.querySelector( '.builderlive-editable-field[data-editable-id="' + data.media_data.fieldId + '"]' );
+    target.setAttribute( 'data-editable-value', data.imgData[0].media_info.id );
+  };
+
   var getFieldData = function() {
     var data = [];
     fieldsEditable.forEach(function(field) {
       var editableInfo = field.getAttribute('data-editable-info');
       var editableType = field.getAttribute('data-editable-type');
+      var editableFormat = field.getAttribute('data-editable-format');
+
       var temp = {
         value: null,
         info: ( '' !== editableInfo ? JSON.parse( editableInfo ) : [] )
       };
 
       switch( editableType ) {
+        case 'media':
+          temp.value = field.getAttribute('data-editable-value');
+          break;
         case 'html':
           temp.value = field.innerHTML.trim();
           break;
         case 'float':
-          temp.value = parseFloat( field.innerText.trim() );
+          var tempVal = field.innerText.trim();
+          if ( null !== editableFormat ) {
+            var separators = editableFormat.split('x');
+            tempVal = tempVal.replace(separators[1], '');
+            tempVal = tempVal.replace(separators[2], '.');
+          }
+          temp.value = parseFloat( tempVal );
           break;
         case 'text':
         default:
@@ -45,9 +93,14 @@
       }
       data.push(temp);
     });
+
     return data;
   };
 
+  /**
+   * Prepare data for a XHR request encoding it
+   * @param {Object} data data to encode
+   */
   var encodeData = function( data ) {
     var urlEncodedData = "";
     var urlEncodedDataPairs = [];
@@ -65,9 +118,15 @@
     return urlEncodedData;
   }
 
+  /**
+   * Listening to the message communication between iframe
+   * and parent window to save the changed data
+   * @param {Event} event window iframe message
+   */
   var handleSavePage = function(event) {
     if (event.data.rexliveEvent) {
-      if (event.data.eventName == "rexlive:savePage") {
+      // saving post live edit information
+      if ( 'rexlive:savePage' === event.data.eventName ) {
         var fieldData = getFieldData();
         
         var data = {
@@ -101,6 +160,16 @@
         request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
         request.send(encodedData);
       }
+
+      // handling media uploading
+      if ( 'rexlive:liveMediaEdit' === event.data.eventName ) {
+        handleMediaEdit(event.data.data_to_send);
+        console.log(event.data.data_to_send);
+      }
+
+      // if ( 'rexlive:closeLiveMediaUploader' === event.data.eventName ) {
+      //   console.log('closing');
+      // }
     }
   };
 
@@ -109,7 +178,6 @@
   };
 
   document.addEventListener('DOMContentLoaded', init);
-  // $(document).on('rexlive:savePage', handleSavePage);
   window.addEventListener('message', handleSavePage, false);
   window.addEventListener('load', load);
-}(jQuery));
+}());

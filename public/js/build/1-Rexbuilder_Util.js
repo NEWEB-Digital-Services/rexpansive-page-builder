@@ -1807,9 +1807,7 @@ var Rexbuilder_Util = (function($) {
   };
 
   var _getPageAvaiableLayoutsNames = function() {
-    var $pageLayoutsNamesDiv = $(
-      "#rexbuilder-layout-data .available-layouts-names"
-    );
+    var $pageLayoutsNamesDiv = $( "#rexbuilder-layout-data .available-layouts-names" );
     return JSON.parse($pageLayoutsNamesDiv.text());
   };
 

@@ -438,9 +438,9 @@ class Rexbuilder_Public
         if (!isset($this->plugin_options['post_types'])) {
             return;
         }
-        // if ( Rexbuilder_Utilities::isBuilderLive() ) {
+        if ( Rexbuilder_Utilities::isBuilderLive() ) {
             include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexbuilder-js-templates.php";
-        // }
+        }
     }
 
     /**
@@ -668,24 +668,32 @@ class Rexbuilder_Public
 
         if ( ! empty( $fieldDataEncoded ) ) {
             $fieldDataEncodedStripped = stripslashes( $fieldDataEncoded );
-            $fiedlData = json_decode( $fieldDataEncodedStripped, true );
+            $fieldData = json_decode( $fieldDataEncodedStripped, true );
 
             $update_post = false;
             $post_args = array(
                 'ID' => $postID
             );
             
-            foreach( $fiedlData as $field ) {
-                switch( $field['info']['table'] ) {
-                    case 'post':
-                        $update_post = true;
-                        $post_args[$field['info']['field']] = $field['value'];
-                        break;
-                    case 'postmeta':
-                        update_post_meta( $postID, $field['info']['field'], $field['value'] );
-                        break;
-                    default:
-                        break;
+            foreach( $fieldData as $field ) {
+                foreach( $field['info'] as $info ) {
+                    switch( $info['table'] ) {
+                        case 'post':
+                            $update_post = true;
+                            $post_args[$info['field']] = $field['value'];
+                            break;
+                        case 'postmeta':
+                            $temp = array(
+                                'field' => $info['field'],
+                                'value' => $field['value'],
+                                'result' => null
+                            );
+                            $temp['result'] = update_post_meta( $postID, $info['field'], $field['value'] );
+                            $response['update_post_meta'][] = $temp;
+                            break;
+                        default:
+                            break;
+                    }
                 }
             }
 
