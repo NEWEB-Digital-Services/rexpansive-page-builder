@@ -419,6 +419,19 @@ $tool_button_classes = 'tool-button';
 </ul>
 </script>
 
+<script type="text/x-tmpl" id="tmpl-editable-media-toolbar">
+<span class="builderlive-editable-media__toolbar">
+    {% if ( o.type == 'media_list' ) { %}
+    <span class="tool-button tool-button--inline tool-button--cancel" data-action="add">
+        <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
+    </span>
+    {% } %}
+    <span class="tool-button tool-button--inline tool-button--cancel" data-action="remove">
+        <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+    </span>
+</span>
+</script>
+
 <!-- No Editor templates -->
 
 <script type="text/x-tmpl" id="tmpl-photoswipe-block">

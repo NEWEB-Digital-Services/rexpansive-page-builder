@@ -200,6 +200,11 @@
   height: 100%;
   position: relative; }
 
+.element-link {
+  display: block;
+  width: 100%;
+  height: 100%; }
+
 /*
 @media screen and (max-width: 767px) {
 	.rexpansive_section:not(.rex-block-grid) .perfect-grid-sizer, 

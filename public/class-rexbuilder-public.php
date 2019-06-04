@@ -686,9 +686,24 @@ class Rexbuilder_Public
                             $temp = array(
                                 'field' => $info['field'],
                                 'value' => $field['value'],
+                                'prev_value' => $field['prev_value'],
+                                'type' => $field['type'],
                                 'result' => null
                             );
-                            $temp['result'] = update_post_meta( $postID, $info['field'], $field['value'] );
+
+                            // handling particular field types
+                            $update_value;
+                            switch( $field['type'] ) {
+                                case 'media_list':
+                                    $old_value = get_post_meta( $postID, $info['field'], true );
+                                    $update_value = str_replace( $field['prev_value'], $field['value'], $old_value );
+                                    break;
+                                default:
+                                    $update_value = $field['value'];
+                                    break;
+                            }
+
+                            $temp['result'] = update_post_meta( $postID, $info['field'], $update_value );
                             $response['update_post_meta'][] = $temp;
                             break;
                         default:
@@ -702,6 +717,8 @@ class Rexbuilder_Public
             if ( $update_post ) {
                 $update_post_response = wp_update_post( $post_args );
             }
+
+            do_action( 'rexpansive_builder_live_after_save_editable_fields', $postID, $response );
         }
 
         wp_send_json_success($response);

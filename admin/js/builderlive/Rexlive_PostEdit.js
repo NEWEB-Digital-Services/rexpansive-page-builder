@@ -48,7 +48,6 @@ var Rexlive_PostEdit = (function ($) {
       if (!selection) return;
 
       var g_data = liveMediaEditUploader.state("live-media-edit").get("media_data");
-      var $gallery = g_data.$gallery;
       var action = g_data.action;
       var imgs = [];
 
@@ -63,8 +62,6 @@ var Rexlive_PostEdit = (function ($) {
           display_info:display_info
         });
       });
-
-      console.log(imgs);
 
       var data = {
         eventName: "rexlive:liveMediaEdit",

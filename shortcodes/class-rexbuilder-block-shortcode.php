@@ -657,7 +657,7 @@ class Rexbuilder_Block
         echo '</div>';
         
         if ( $editor ) {
-            $not_has_image = ( 'true' != $atts['image_bg_elem_active'] || "" == $atts['id_image_bg_block'] );
+            $not_has_image = ( ! isset( $atts['image_bg_elem_active'] ) || 'true' != $atts['image_bg_elem_active'] || "" == $atts['id_image_bg_block'] );
             $not_has_overlay = ( 'true' != $atts['overlay_block_color_active'] || "" == $atts['overlay_block_color'] );
             $not_has_video = ( '' == $video_bg_id && '' == $video_bg_url && '' == $video_bg_url_vimeo );
 
