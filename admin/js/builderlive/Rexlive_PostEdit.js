@@ -78,19 +78,6 @@ var Rexlive_PostEdit = (function ($) {
 
     //on close
     liveMediaEditUploader.on("close", function() {
-      // var selection = liveMediaEditUploader
-      //   .state("live-media-edit")
-      //   .get("selection");
-
-      // if (selection.models.length > 0) {
-        // for(var j=0; j < selection.models.length; j++ ) {
-        //   if( "undefined" !== typeof selection.models[j] ) {
-        //     var attachment = wp.media.attachment(selection.models[j].attributes.id);
-        //     attachment.fetch();
-        //     // selection.remove(attachment ? [attachment] : []);
-        //   }
-        // }
-      // }
       var data = {
         eventName: "rexlive:closeLiveMediaUploader",
       };

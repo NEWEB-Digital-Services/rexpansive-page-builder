@@ -1,4 +1,4 @@
-;(function () {
+;(function ($) {
   var fieldsEditable;
   var postID;
 
@@ -108,10 +108,18 @@
   };
 
   var openEditMedia = function( field ) {
+    var action = '';
+    var value = field.getAttribute( 'data-editable-value' );
+    if ( '' !== value ) {
+      action = 'edit';
+    } else {
+      action = 'add';
+    }
     var data = {
       eventName: "rexlive:openPostEditMediaUploader",
       mediaData: {
-        mediaId: field.getAttribute( 'data-editable-value' ),
+        action: action,
+        mediaId: value,
         fieldId: field.getAttribute( 'data-editable-id' )
       }
     };
@@ -164,9 +172,6 @@
     var target = document.querySelector( '.builderlive-editable-field[data-editable-id="' + data.media_data.fieldId + '"]' );
     
     target.setAttribute( 'data-editable-value', data.imgData[0].media_info.id );
-    if ( 'media_list' === target.getAttribute( 'data-editable-type' ) ) {
-      target.setAttribute( 'data-editable-prev-value', data.imgData[0].media_info.id );
-    }
 
     switch( target.tagName.toLowerCase() ) {
       case 'img':
@@ -282,7 +287,7 @@
    * and parent window to save the changed data
    * @param {Event} event window iframe message
    */
-  var handleSavePage = function(event) {
+  var handleIframeMessage = function(event) {
     if (event.data.rexliveEvent) {
       // saving post live edit information
       if ( 'rexlive:savePage' === event.data.eventName ) {
@@ -327,7 +332,9 @@
                   }
             
                   // setting hash code
+                  // and prev value to the actual, cause the page was saved
                   field.setAttribute('data-editable-hash', hashCode );
+                  field.setAttribute('data-editable-prev-value', field.getAttribute('data-editable-value'));
                 });
               }
             } else {
@@ -349,6 +356,10 @@
         handleMediaEdit(event.data.data_to_send);
       }
 
+      if ( 'rexlive:liveMediaAdd' === event.data.eventName ) {
+        handleMediaAdd(event.data.data_to_send);
+      }
+
       // if ( 'rexlive:closeLiveMediaUploader' === event.data.eventName ) {
       //   console.log('closing');
       // }
@@ -360,6 +371,6 @@
   };
 
   document.addEventListener('DOMContentLoaded', init);
-  window.addEventListener('message', handleSavePage, false);
+  window.addEventListener('message', handleIframeMessage, false);
   window.addEventListener('load', load);
-}());
+}(jQuery));

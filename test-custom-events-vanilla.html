@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>VANILLA EVENTS</title>
+</head>
+<body>
+    <button id="custom-vanilla">PREMI</button>
+    <script>
+;(function() {
+    var btn = document.getElementById('custom-vanilla');
+    btn.addEventListener('click', function(event){
+        event.preventDefault();
+
+    });
+    // document.addEventListener('')
+}());
+    </script>
+</body>
+</html>
