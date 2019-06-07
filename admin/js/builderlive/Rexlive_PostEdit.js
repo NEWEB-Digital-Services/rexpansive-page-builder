@@ -4,13 +4,11 @@ var Rexlive_PostEdit = (function ($) {
   var liveMediaEditUploader;
 
   var _openMediaUploader = function( media_data ) {
-    var multiple = false;
 
     if (liveMediaEditUploader) {
       // setting my custom data
       liveMediaEditUploader.state("live-media-edit").set("media_data", media_data);
-      liveMediaEditUploader.state("live-media-edit").set("multiple", multiple);
-
+      
       liveMediaEditUploader.open();
       return;
     }
@@ -25,7 +23,7 @@ var Rexlive_PostEdit = (function ($) {
           allowLocalEdits: true,
           displaySettings: true,
           displayUserSettings: true,
-          multiple: multiple,
+          multiple: false,
           library: wp.media.query({ type: "image" }),
           type: "image", //audio, video, application/pdf, ... etc,
           media_data: media_data
@@ -39,51 +37,6 @@ var Rexlive_PostEdit = (function ($) {
       button: { text: "Select" },
       state: "live-media-edit",
       states: [new postEditLiveMedia()]
-    });
-
-    liveMediaEditUploader.on("select", function() {
-      var state = liveMediaEditUploader.state("live-media-edit");
-      var selection = state.get("selection");
-
-      if (!selection) return;
-
-      var g_data = liveMediaEditUploader.state("live-media-edit").get("media_data");
-      var action = g_data.action;
-      var imgs = [];
-
-      selection.each(function(attachment) {
-        var display = state.display(attachment).toJSON();
-        var media_info = attachment.toJSON();
-        // If captions are disabled, clear the caption.
-        if (!wp.media.view.settings.captions) delete media_info.caption;
-        var display_info = wp.media.string.props(display, media_info);
-        imgs.push({
-          media_info:media_info,
-          display_info:display_info
-        });
-      });
-
-      var data = {
-        eventName: "rexlive:liveMediaEdit",
-        data_to_send: {
-          imgData: imgs,
-          media_data: media_data
-          // displayData: displayData
-        }
-      };
-
-      // Launch image insert event to the iframe
-      Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
-    });
-
-    //on close
-    liveMediaEditUploader.on("close", function() {
-      var data = {
-        eventName: "rexlive:closeLiveMediaUploader",
-      };
-
-      // Launch image insert event to the iframe
-      Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
     });
 
     //reset selection in popup, when open the popup
@@ -103,7 +56,6 @@ var Rexlive_PostEdit = (function ($) {
       });
 
       var g_data = liveMediaEditUploader.state("live-media-edit").get("media_data");
-
       // Check the already inserted image
       if ( 'undefined' !== typeof g_data.mediaId && '' !== g_data.mediaId ) {
         attachment = wp.media.attachment(g_data.mediaId);
@@ -111,6 +63,63 @@ var Rexlive_PostEdit = (function ($) {
 
         selection.add(attachment ? [attachment] : []);
       }
+    });
+
+    liveMediaEditUploader.on("select", function() {
+      var state = liveMediaEditUploader.state("live-media-edit");
+      var selection = state.get("selection");
+
+      if (!selection) return;
+
+      var g_data = state.get("media_data");
+      var action = g_data.action;
+      var imgs = [];
+
+      selection.each(function(attachment) {
+        var display = state.display(attachment).toJSON();
+        var media_info = attachment.toJSON();
+        // If captions are disabled, clear the caption.
+        if (!wp.media.view.settings.captions) delete media_info.caption;
+        var display_info = wp.media.string.props(display, media_info);
+        imgs.push({
+          media_info:media_info,
+          display_info:display_info
+        });
+      });
+
+      var eventName = '';
+      switch( action ) {
+        case 'add':
+          eventName = 'rexlive:liveMediaAdd';
+          break;
+        case 'edit':
+          eventName = 'rexlive:liveMediaEdit';
+          break;
+        default:
+          break;
+      }
+
+      var data = {
+        eventName: eventName,
+        data_to_send: {
+          imgData: imgs,
+          media_data: g_data
+          // displayData: displayData
+        }
+      };
+
+      // Launch image insert event to the iframe
+      Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
+    });
+
+    //on close
+    liveMediaEditUploader.on("close", function() {
+      // var data = {
+      //   eventName: "rexlive:closeLiveMediaUploader",
+      // };
+
+      // // Launch image insert event to the iframe
+      // Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
     });
 
     //now open the popup

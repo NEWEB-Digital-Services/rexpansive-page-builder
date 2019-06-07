@@ -18,6 +18,21 @@
   };
 
   /**
+   * Executing a function by its name, searching inside a context
+   * @param {String} functionName function to execute
+   * @param {Object} context context in which search the string by name
+   */
+  function executeFunctionByName(functionName, context /*, args */) {
+    var args = Array.prototype.slice.call(arguments, 2);
+    var namespaces = functionName.split(".");
+    var func = namespaces.pop();
+    for(var i = 0; i < namespaces.length; i++) {
+      context = context[namespaces[i]];
+    }
+    return context[func].apply(context, args);
+  }
+
+  /**
    * wrapping a media element and create a toolbar
    * to add a delete button
    * @param {Node} toWrap element to wrap
@@ -107,26 +122,42 @@
     openEditMedia(event.currentTarget);
   };
 
+  /**
+   * Send a message to the iframe parent to open the media uploader
+   * @param {Element} field field to edit, if present
+   * @since 2.0.0
+   */
   var openEditMedia = function( field ) {
+    field = 'undefined' !== typeof field ? field : null;
     var action = '';
-    var value = field.getAttribute( 'data-editable-value' );
-    if ( '' !== value ) {
+    var value = '';
+    var id = '';
+
+    if ( field ) {
       action = 'edit';
+      value = field.getAttribute( 'data-editable-value' );
+      id = field.getAttribute( 'data-editable-id' );
     } else {
       action = 'add';
     }
+    
     var data = {
       eventName: "rexlive:openPostEditMediaUploader",
       mediaData: {
         action: action,
         mediaId: value,
-        fieldId: field.getAttribute( 'data-editable-id' )
+        fieldId: id
       }
     };
 
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-  }
+  };
 
+  /**
+   * Handle click on media tools
+   * @param {Event} event events on tools
+   * @since 2.0.0
+   */
   var handleMediaTools = function(event) {
     event.preventDefault();
     var action = event.currentTarget.getAttribute('data-action');
@@ -141,15 +172,15 @@
         break;
       case 'add':
         if ( media ) {
-          var addedMedia = media.cloneNode(true);
-          addedMedia.setAttribute('data-editable-value','');
-          addedMedia.setAttribute('data-editable-prev-value','');
-          addedMedia.setAttribute('src','');
-          addedMedia.setAttribute('srcset','');
-          addedMedia.setAttribute('data-editable-id', 'bl_' + addedMedia.getAttribute('data-editable-type') + '_' + ( fieldsEditable.length + 1 ) );
-          addedMedia.setAttribute('data-editable-hash', '0' );
-          this.appendChild(addedMedia);
-          openEditMedia(addedMedia);
+          // var addedMedia = media.cloneNode(true);
+          // addedMedia.setAttribute('data-editable-value','');
+          // addedMedia.setAttribute('data-editable-prev-value','');
+          // addedMedia.setAttribute('src','');
+          // addedMedia.setAttribute('srcset','');
+          // addedMedia.setAttribute('data-editable-id', 'bl_' + addedMedia.getAttribute('data-editable-type') + '_' + ( fieldsEditable.length + 1 ) );
+          // addedMedia.setAttribute('data-editable-hash', '0' );
+          // this.appendChild(addedMedia);
+          openEditMedia();
         }
       default:
         break;  
@@ -187,6 +218,38 @@
   };
 
   /**
+   * Reacting to add live media event
+   * @param {Object} data add data media object
+   */
+  var handleMediaAdd = function( data ) {
+    var destionationEl = document.querySelector( data.media_data.destinationSelector );
+    var elData = executeFunctionByName( data.media_data.tmplDataGeneration, window, data );
+    var newHTMLEl = tmpl( data.media_data.addTmplId, elData );
+
+    // generate Node element from html
+    var tempWrap = document.createElement('DIV');
+    tempWrap.innerHTML = newHTMLEl;
+    var newEl = tempWrap.children[0];
+    
+    var field;
+    if ( -1 !== newEl.className.indexOf( 'builderlive-editable-field' ) ) {
+      field = newEl;
+    } else {
+      field = newEl.querySelector('.builderlive-editable-field');
+    }
+
+    var editableType = field.getAttribute('data-editable-type');
+    var index = document.getElementsByClassName('builderlive-editable-field');
+    field.setAttribute('data-editable-id', 'bl_' + editableType + '_' + index);
+    var result = wrapMediaTools( field, editableType );
+    field.addEventListener('click', handleMediaClick);
+    
+    destionationEl.appendChild( newEl );
+
+    executeFunctionByName( data.media_data.completeAddCallback, window, newEl, elData );
+  };
+
+  /**
    * Getting the field data, manipulating them according to their type
    * 1) media: getting the media ID
    * 2) media_list: getting the actual media ID and the previous value, to replace from the list
@@ -196,6 +259,9 @@
    */
   var getFieldData = function() {
     var data = [];
+
+    // realunch find fields, to get dinamic generated fields
+    findFields();
 
     fieldsEditable.forEach(function(field) {
       var editableType = field.getAttribute('data-editable-type');
@@ -359,10 +425,6 @@
       if ( 'rexlive:liveMediaAdd' === event.data.eventName ) {
         handleMediaAdd(event.data.data_to_send);
       }
-
-      // if ( 'rexlive:closeLiveMediaUploader' === event.data.eventName ) {
-      //   console.log('closing');
-      // }
     }
   };
 

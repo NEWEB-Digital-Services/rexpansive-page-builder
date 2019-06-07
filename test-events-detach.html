@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>DETACTH REATTACH</title>
+    <style>
+    .wrap {
+        display: flex;
+        justify-content: center;
+    }
+    .els {
+        width: 50%;
+    }
+    #uno {
+        display: flex;
+        width: 250px;
+        height: 250px;
+        background-color: rosybrown;
+        border: 1px dotted black;
+        cursor: pointer;
+        justify-content: center;
+        align-items: center;
+    }
+    </style>
+</head>
+<body>
+    <div class="wrap">
+        <div id="wrapStart" class="els">
+            <span id="uno"></span>
+        </div>
+        <div id="wrapEnd" class="els"></div>
+    </div>
+    <button id="move">MOVE</button>
+    <script>
+var elUno = document.getElementById('uno');
+var move = document.getElementById('move');
+var wrapStart = document.getElementById('wrapStart');
+var wrapEnd = document.getElementById('wrapEnd');
+var list = [
+    'red', 'green', 'blueroyal', 'bisque', 'teal', 'rosybrown'
+];
+
+elUno.addEventListener('click', function(ev) {
+    ev.preventDefault();
+    var index = Math.floor( Math.random()*6 );
+    elUno.innerText = index;
+    elUno.style.backgroundColor = list[index];
+});
+
+move.addEventListener('click', function(ev) {
+    ev.preventDefault();
+    elUno.parentElement.removeChild(elUno);
+    wrapEnd.appendChild(elUno);
+});
+    </script>
+</body>
+</html>

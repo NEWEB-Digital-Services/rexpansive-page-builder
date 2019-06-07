@@ -698,19 +698,22 @@ class Rexbuilder_Public
                                 case 'media_list':
                                     $old_value = get_post_meta( $postID, $info['field'], true );
                                     $explode_old_value = explode( ',', $old_value );
-                                    foreach( $explode_old_value as $i => $media_list_id ) {
-                                        if ( $field['prev_value'] == $media_list_id ) {
-                                            if ( ! empty( $field['value'] ) ) {
-                                                $explode_old_value[$i] = $field['value'];
-                                            } else {
-                                                unset( $explode_old_value[$i] );
+                                    if ( ! empty( $field['prev_value'] ) ) {
+                                        foreach( $explode_old_value as $i => $media_list_id ) {
+                                            if ( $field['prev_value'] == $media_list_id ) {
+                                                // handling media replace
+                                                if ( ! empty( $field['value'] ) ) {
+                                                    $explode_old_value[$i] = $field['value'];
+                                                } else {    // handling media remove
+                                                    unset( $explode_old_value[$i] );
+                                                }
                                             }
                                         }
+                                    } else {
+                                        // handling media add
+                                        $explode_old_value[] = $field['value'];
                                     }
                                     $update_value = implode( ',', $explode_old_value );
-                                    Rexbuilder_Utilities::write_log( $old_value );
-                                    Rexbuilder_Utilities::write_log( $update_value );
-                                    // $update_value = str_replace( $field['prev_value'], $field['value'], $old_value );
                                     break;
                                 default:
                                     $update_value = $field['value'];
