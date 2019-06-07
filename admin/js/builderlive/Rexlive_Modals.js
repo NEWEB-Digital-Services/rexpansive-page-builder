@@ -85,6 +85,9 @@ var Rexlive_Modals = (function ($) {
 
         //editor button
         Button_Edit_Modal.init();
+
+        // live media list
+        Rexlive_PostEdit_MediaList.init();
     }
 
     return {

@@ -231,6 +231,10 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         Rexlive_PostEdit.openMediaUploader(event.data.mediaData);
       }
 
+      if ( 'rexlive:openPostEditMediaReorder' === event.data.eventName ) {
+        Rexlive_PostEdit_MediaList.openModal(event.data.mediaList);
+      }
+
       if (event.data.eventName == "rexlive:editBackgroundSection") {
         SectionBackground_Modal.openSectionBackgroundModal(event.data.activeBG);
       }

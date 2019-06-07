@@ -435,4 +435,26 @@
   document.addEventListener('DOMContentLoaded', init);
   window.addEventListener('message', handleIframeMessage, false);
   window.addEventListener('load', load);
+
+  var test = document.getElementById('live-edit-media__reorder-wc-gallery');
+  test.addEventListener('click', function(event) {
+    event.preventDefault();
+
+    var mediaList = [];
+    var mediaListElements = [].slice.call(document.querySelectorAll('.builderlive-editable-field[data-editable-type="media_list"]'));
+    mediaListElements.forEach(function( element, index ) {
+      var temp = {
+        src: element.getAttribute('src'),
+        id: element.getAttribute('data-editable-id')
+      };
+      mediaList.push(temp);
+    });
+
+    var data = {
+      eventName: "rexlive:openPostEditMediaReorder",
+      mediaList: mediaList
+    };
+
+    Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+  });
 }(jQuery));

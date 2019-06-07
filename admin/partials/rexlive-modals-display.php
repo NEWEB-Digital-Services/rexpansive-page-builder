@@ -2634,4 +2634,17 @@ defined('ABSPATH') or exit;
             </div>
         </div> -->
     </div>
+</div><!-- page settings -->
+
+<div class="rex-modal-wrap">
+    <div id="rex-live-media-list" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
+        <?php Rexbuilder_Utilities::close_button(); ?>
+        <div class="modal-content">
+            <div class="bl_modal-row">
+                <div class="bl_modal__option-wrap">
+                    <ul id="rex-live-media-list__wrap"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
