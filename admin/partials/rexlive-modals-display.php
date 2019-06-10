@@ -2642,8 +2642,15 @@ defined('ABSPATH') or exit;
         <div class="modal-content">
             <div class="bl_modal-row">
                 <div class="bl_modal__option-wrap">
-                    <ul id="rex-live-media-list__wrap"></ul>
+                    <div id="rex-live-media-list__wrap" class="rex-modal-content__modal-area"></div>
                 </div>
+            </div>
+            <div class="bl_modal-row">
+                <div class="media-gallery__add-item__wrap rex-modal-content__modal-area--bordered">
+                    <button id="media-gallery__add-new-item" class="builder-button btn-floating btn light-blue darken-1 waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Add item', 'rexpansive-classic' ) ?>">
+                        <i class="material-icons text-white">&#xE145;</i>
+                    </button>
+                </div><!-- // .rex-slider__add-slide__wrap -->
             </div>
         </div>
     </div>

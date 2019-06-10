@@ -174,3 +174,26 @@ defined('ABSPATH') or exit;
     </a>
 </span>
 </script>
+
+
+<script type="text/x-tmpl" id="tmpl-editable-media-gallery-list-item">
+<div class="media-gallery__item col rex-modal-content__modal-area__row" data-media-gallery-item-index="{%=o.index%}" data-media-gallery-item-element-id="{%=o.id%}">
+    <div class="valign-wrapper space-between-wrapper">
+        <button class="media-gallery__item-index btn-circle btn-small btn-bordered grey-border border-darken-2 waves-effect waves-light white grey-text text-darken-2">{%=o.index%}</button>
+        
+        <button class="media-gallery__item-edit media-gallery__item__image-preview btn-floating waves-effect waves-light tooltipped grey darken-2{% if ( '' !== o.src ) { %} media-gallery__item__image-preview--active{% } %}" value="edit-media" data-position="bottom" data-tooltip="<?php _e( 'Image', 'rexpansive' ); ?>" style="background-image:url({%=o.src%});">
+            <i class="material-icons rex-icon">p</i>
+        </button>
+
+        <div>
+			<div class="media-gallery__item-edit btn-flat tooltipped" data-position="bottom" value="move" data-tooltip="<?php _e('Move image', 'rexpansive'); ?>">
+				<i class="material-icons grey-text text-darken-2">&#xE8D5;</i>
+			</div>
+
+			<button class="media-gallery__item-edit btn-flat tooltipped" value="delete" data-position="bottom" data-tooltip="<?php _e('Delete image', 'rexpansive'); ?>">
+				<i class="material-icons grey-text text-darken-2">&#xE5CD;</i>
+			</button>
+		</div>
+    </div>
+</div>
+</script>

@@ -231,8 +231,16 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         Rexlive_PostEdit.openMediaUploader(event.data.mediaData);
       }
 
-      if ( 'rexlive:openPostEditMediaReorder' === event.data.eventName ) {
-        Rexlive_PostEdit_MediaList.openModal(event.data.mediaList);
+      if ( 'rexlive:openPostEditMediaList' === event.data.eventName ) {
+        Rexlive_PostEdit_MediaList.openModal(event.data.data_to_send);
+      }
+
+      if ( 'rexlive:liveMediaAddFromListComplete' === event.data.eventName ) {
+        Rexlive_PostEdit_MediaList.addMediaItem(event.data.mediaData);
+      }
+
+      if ( 'rexlive:liveMediaEditFromListComplete' === event.data.eventName ) {
+        Rexlive_PostEdit_MediaList.editMediaItem(event.data.mediaData);
       }
 
       if (event.data.eventName == "rexlive:editBackgroundSection") {

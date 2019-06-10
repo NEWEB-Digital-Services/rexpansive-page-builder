@@ -1,0 +1,26 @@
+#rex-live-media-list {
+  &.rex-modal {
+    max-width: 270px;
+  }
+}
+
+#rex-live-media-list__wrap {
+  width: 100%;
+}
+
+.media-gallery__add-item__wrap {
+  width: 100%;
+  padding: 27px;
+  text-align: center;
+}
+
+.media-gallery__item__image-preview {
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  &.media-gallery__item__image-preview--active {
+    .rex-icon {
+      display: none;
+    }
+  }
+}

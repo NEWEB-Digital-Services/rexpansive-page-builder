@@ -83,7 +83,7 @@
 
       // common setups
       field.setAttribute('data-editable-id', 'bl_' + editableType + '_' + index);
-      var hashCode;
+      var hashCode = null;
 
       switch( editableType ) {
         case 'html':
@@ -98,6 +98,9 @@
           wrapMediaTools( field, editableType );
           hashCode = field.getAttribute('data-editable-value').hashCode();
           field.addEventListener('click', handleMediaClick);
+          break;
+        case 'media_list_aggregate':
+          hashCode = field.getAttribute('data-editable-value').hashCode();
           break;
         default:
           break;
@@ -127,8 +130,9 @@
    * @param {Element} field field to edit, if present
    * @since 2.0.0
    */
-  var openEditMedia = function( field ) {
+  var openEditMedia = function( field, fromMediaListModal ) {
     field = 'undefined' !== typeof field ? field : null;
+    fromMediaListModal = 'undefined' !== typeof fromMediaListModal ? fromMediaListModal : false;
     var action = '';
     var value = '';
     var id = '';
@@ -146,7 +150,8 @@
       mediaData: {
         action: action,
         mediaId: value,
-        fieldId: id
+        fieldId: id,
+        fromMediaListModal: fromMediaListModal
       }
     };
 
@@ -172,14 +177,6 @@
         break;
       case 'add':
         if ( media ) {
-          // var addedMedia = media.cloneNode(true);
-          // addedMedia.setAttribute('data-editable-value','');
-          // addedMedia.setAttribute('data-editable-prev-value','');
-          // addedMedia.setAttribute('src','');
-          // addedMedia.setAttribute('srcset','');
-          // addedMedia.setAttribute('data-editable-id', 'bl_' + addedMedia.getAttribute('data-editable-type') + '_' + ( fieldsEditable.length + 1 ) );
-          // addedMedia.setAttribute('data-editable-hash', '0' );
-          // this.appendChild(addedMedia);
           openEditMedia();
         }
       default:
@@ -215,6 +212,18 @@
         target.style.backgroundImage = 'url(' + data.imgData[0].display_info.src + ')';
         break;
     }
+
+    if ( 'undefined' !== data.media_data.fromMediaListModal && data.media_data.fromMediaListModal ) {
+      var msgData = {
+        eventName: "rexlive:liveMediaEditFromListComplete",
+        mediaData: {
+          src: data.imgData[0].display_info.src,
+          fieldId: data.media_data.fieldId
+        }
+      };
+  
+      Rexbuilder_Util_Editor.sendParentIframeMessage(msgData);
+    }
   };
 
   /**
@@ -240,13 +249,27 @@
 
     var editableType = field.getAttribute('data-editable-type');
     var index = document.getElementsByClassName('builderlive-editable-field');
-    field.setAttribute('data-editable-id', 'bl_' + editableType + '_' + index);
+    var id = 'bl_' + editableType + '_' + index.length;
+    field.setAttribute('data-editable-id', id );
     var result = wrapMediaTools( field, editableType );
     field.addEventListener('click', handleMediaClick);
     
     destionationEl.appendChild( newEl );
 
     executeFunctionByName( data.media_data.completeAddCallback, window, newEl, elData );
+
+    // if the call comes from the media list modal, add the item to the list
+    if ( 'undefined' !== data.media_data.fromMediaListModal && data.media_data.fromMediaListModal ) {
+      var msgData = {
+        eventName: "rexlive:liveMediaAddFromListComplete",
+        mediaData: {
+          src: data.imgData[0].display_info.src,
+          fieldId: id
+        }
+      };
+  
+      Rexbuilder_Util_Editor.sendParentIframeMessage(msgData);
+    }
   };
 
   /**
@@ -261,6 +284,7 @@
     var data = [];
 
     // realunch find fields, to get dinamic generated fields
+    // or reordered ones
     findFields();
 
     fieldsEditable.forEach(function(field) {
@@ -277,6 +301,7 @@
           break;
         case 'media':
         case 'media_list':
+        case 'media_list_aggregate':
           hashCode = field.getAttribute('data-editable-value').hashCode();
           break;
         default:
@@ -300,6 +325,7 @@
             temp.value = field.getAttribute('data-editable-value');
             break;
           case 'media_list':
+          case 'media_list_aggregate':
             temp.prev_value = field.getAttribute('data-editable-prev-value');
             temp.value = field.getAttribute('data-editable-value');
             break;
@@ -381,7 +407,7 @@
                 fieldsEditable.forEach(function(field, index) {
                   var editableType = field.getAttribute('data-editable-type');
                   editableType = ( null === editableType ? 'text' : editableType );
-                  var hashCode;
+                  var hashCode = null;
             
                   switch( editableType ) {
                     case 'html':
@@ -391,6 +417,7 @@
                       break;
                     case 'media':
                     case 'media_list':
+                    case 'media_list_aggregate':
                       hashCode = field.getAttribute('data-editable-value').hashCode();
                       break;
                     default:
@@ -425,6 +452,38 @@
       if ( 'rexlive:liveMediaAdd' === event.data.eventName ) {
         handleMediaAdd(event.data.data_to_send);
       }
+
+      // handle media edit from modal
+      if ( 'rexlive:liveMediaOpenEdit' === event.data.eventName ) {
+        var media = document.querySelector('.builderlive-editable-field[data-editable-id="' + event.data.data_to_send.elId + '"]');
+        if ( media ) {
+          openEditMedia(media, event.data.data_to_send.fromMediaListModal);
+        }
+      }
+
+      if ( 'rexlive:liveMediaReorder' === event.data.eventName ) {
+        if ( event.data.data_to_send ) {
+          // launch a callback
+          executeFunctionByName( event.data.data_to_send.completeReorderCallback, window, event.data.data_to_send );
+        }
+      }
+
+      // handle media removing from modal
+      if ( 'rexlive:liveMediaDelete' === event.data.eventName ) {
+        var media = document.querySelector('.builderlive-editable-field[data-editable-id="' + event.data.data_to_send.elId + '"]');
+        if ( media ) {
+          var value = media.getAttribute('data-editable-value');
+          media.setAttribute('data-editable-value', '');
+          media.style.visibility = 'hidden';
+
+          // launch a callback
+          var callbackData = {
+            mediaListAggregateSelector: event.data.data_to_send.mediaListAggregateSelector,
+            value: value
+          };
+          executeFunctionByName( event.data.data_to_send.completeRemoveCallback, window, callbackData );
+        }
+      }
     }
   };
 
@@ -434,27 +493,5 @@
 
   document.addEventListener('DOMContentLoaded', init);
   window.addEventListener('message', handleIframeMessage, false);
-  window.addEventListener('load', load);
-
-  var test = document.getElementById('live-edit-media__reorder-wc-gallery');
-  test.addEventListener('click', function(event) {
-    event.preventDefault();
-
-    var mediaList = [];
-    var mediaListElements = [].slice.call(document.querySelectorAll('.builderlive-editable-field[data-editable-type="media_list"]'));
-    mediaListElements.forEach(function( element, index ) {
-      var temp = {
-        src: element.getAttribute('src'),
-        id: element.getAttribute('data-editable-id')
-      };
-      mediaList.push(temp);
-    });
-
-    var data = {
-      eventName: "rexlive:openPostEditMediaReorder",
-      mediaList: mediaList
-    };
-
-    Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-  });
+  window.addEventListener('load', load);  
 }(jQuery));

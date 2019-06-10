@@ -97,7 +97,7 @@ var Rexlive_PostEdit = (function ($) {
           break;
         default:
           break;
-      }
+      };
 
       var data = {
         eventName: eventName,
