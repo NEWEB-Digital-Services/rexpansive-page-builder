@@ -205,7 +205,7 @@ var Rexlive_PostEdit_MediaList = (function($) {
     var media = tmpl('tmpl-editable-media-gallery-list-item', {
       index: newIndex + 1,
       src: data.src,
-      fieldId: data.fieldId,
+      id: data.fieldId,
     });
 
     media_list_properties.$listWrap.append(media);

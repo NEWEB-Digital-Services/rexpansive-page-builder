@@ -704,11 +704,15 @@ class Rexbuilder_Public
 
                             // handling particular field types
                             $update_value;
-                            Rexbuilder_Utilities::write_log( $field );
+                            // Rexbuilder_Utilities::write_log( $field );
                             switch( $field['type'] ) {
                                 case 'media_list':
                                     $old_value = get_post_meta( $postID, $info['field'], true );
-                                    $explode_old_value = explode( ',', $old_value );
+                                    if ( ! empty( $old_value ) ) {
+                                        $explode_old_value = explode( ',', $old_value );
+                                    } else {
+                                        $explode_old_value = array();   
+                                    }
                                     if ( ! empty( $field['prev_value'] ) ) {
                                         foreach( $explode_old_value as $i => $media_list_id ) {
                                             if ( $field['prev_value'] == $media_list_id ) {
@@ -800,39 +804,39 @@ class Rexbuilder_Public
      * Using Wordpress embed feature to get an embed iframe from an url
      * @since 2.0.0
      */
-    public function rexlive_get_embed_code() {  // Funzione pubblica che permette il caricamento del video inline nell'elemento
+    public function rexlive_get_embed_code() {  // Public function that allows inline video to be loaded into the element
 
-        $nonce = $_GET['nonce_param'];  // $nonce è un dato che viene ricevuto da un form tramite un method=GET
+        $nonce = $_GET['nonce_param'];  // $nonce is a data that is received by a form via a method = GET
 
-        $response = array(  // $response è un raccoglitore contenente due valori che sono 'error' e 'msg'
-            'error' => false,   // 'error' è settato false come valore iniziale
-            'msg' => '',        // 'msg' è settato come un nothing
+        $response = array(  // $response is a binder containing two values which are 'error' and 'msg'
+            'error' => false,   // 'error' is set to false as an initial value
+            'msg' => '',        // 'msg' it is set as a nothing
         );
 
-        if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) : // Si verifica la presenza del valore inviato dall'imput
-            $response['error'] = true;          // 'error' cambia lo stato di default è viene abilitato a 'true'
-            $response['msg'] = 'Error!';        // 'msg' assume un valore testuale    
-            wp_send_json_error( $response );    // viene mandato l'errore tramite json, denominato "$response"
-        endif;                                  // termina la verifica
+        if ( ! wp_verify_nonce( $nonce, 'rex-ajax-call-nonce' ) ) : // The presence of the value sent by the input is verified
+            $response['error'] = true;          // 'error' change the default status is enabled to 'true'
+            $response['msg'] = 'Error!';        // 'msg' takes a textual value
+            wp_send_json_error( $response );    // viene sent the error via json, named "$ response"
+        endif;                                  // the verification ends
 
         $url_to_embed = $_GET['url_to_embed'];  // $url_to_embed è il valore che viene preso al momento del caricamento del video
         if( false === wp_http_validate_url( $url_to_embed ) ) { // SE, in seguito al controllo, si verifica l'invalidità del valore
-            $response['error'] = true;          // 'error' cambia lo stato di default è viene abilitato a 'true'
-            $response['msg'] = 'Error!';        // 'msg' assume un valore testuale
-            wp_send_json_error( $response );    // viene mandato l'errore tramite json, denominato "$response"
+            $response['error'] = true;          // 'error' change the default status is enabled to 'true'
+            $response['msg'] = 'Error!';        // 'msg' takes a textual value
+            wp_send_json_error( $response );    // viene sent the error via json, named "$ response"
         }
 
-        $embed = '[embed]' . $url_to_embed . '[/embed]';    // Viene costruita la struttura html/php per il valore finale
+        $embed = '[embed]' . $url_to_embed . '[/embed]';    // The html / php structure is constructed for the final value
 
-        $response['shortcode'] = $embed;    // $response['shortcode'] è uguale al valore di $embed preconfigurato qua sopra
+        $response['shortcode'] = $embed;    // $response['shortcode'] is equal to the value of $ embed preconfigured above
         
         // Must run the shortcode in this manner
         // Cause do_shortcode do not work for [embed]
 
-        global $wp_embed;   // Si richiama $wp_embed
-        $response['embed'] = $wp_embed->run_shortcode($embed);  // Si comprime $response['embed'] in $embed, tramite $wp_embed
+        global $wp_embed;   // It calls back $wp_embed
+        $response['embed'] = $wp_embed->run_shortcode($embed);  // $response['embed'] is compressed into $embed, via $wp_embed
 
-        wp_send_json_success($response);    // viene mandato il risultato tramite json, denominato "$response"
+        wp_send_json_success($response);    // the result is sent via json, called "$response"
     }
 
     public function rexlive_edit_model_shortcode_builder()
