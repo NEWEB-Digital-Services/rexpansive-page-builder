@@ -459,10 +459,10 @@ $tool_button_classes = 'tool-button';
 
 <script type="text/x-tmpl" id="tmpl-rexbutton-tools">
     <div class="rex-button-tools-container">        
-        <div class="tool-button builder-section-config tool-button_list--item tippy rex-edit-button" data-tippy-content="<?php _e('alex', 'rexpansive'); ?>">
+        <div class="tool-button tool-button_list--item tippy rex-edit-button" data-tippy-content="<?php _e('Config', 'rexpansive'); ?>">
             <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
         </div>
-        <div class="tool-button rex-delete-button tippy" data-tippy-content="<?php _e('khabib', 'rexpansive'); ?>">
+        <div class="tool-button rex-delete-button tippy" data-tippy-content="<?php _e('Delete', 'rexpansive'); ?>">
             <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
         </div>
     </div>

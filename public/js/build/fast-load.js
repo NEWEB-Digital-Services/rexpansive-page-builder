@@ -81,8 +81,8 @@
     }
 
     var onCanPlayThroughCallback = function(event) {
-      console.log('%c canplaythrough', 'font-weight:bold;color:green;text-transform:uppercase;');
-      console.log(event.currentTarget.children[0].src);
+      // console.log('%c canplaythrough', 'font-weight:bold;color:green;text-transform:uppercase;');
+      // console.log(event.currentTarget.children[0].src);
       event.currentTarget.play();
       if ( queuing ) { videoProcessingCounter--; }
       // remove data-src attribute only if the
@@ -99,8 +99,8 @@
     }
 
     var onErrorCallback = function(event) {
-      console.log('%c error', 'font-weight:bold;color:red;text-transform:uppercase;');
-      console.log(event.currentTarget.children[0].src);
+      // console.log('%c error', 'font-weight:bold;color:red;text-transform:uppercase;');
+      // console.log(event.currentTarget.children[0].src);
       // reset the video
       for ( var source in event.currentTarget.children ) {
         var videoSource = event.currentTarget.children[source];
@@ -121,8 +121,8 @@
     el.addEventListener('error', onErrorCallback);
 
     var testCb = function(event) {
-      console.log(event.type);
-      console.log(event.currentTarget.children[0].src);
+      // console.log(event.type);
+      // console.log(event.currentTarget.children[0].src);
     }
 
     el.addEventListener('stalled',testCb);
@@ -152,7 +152,7 @@
 
   var handleIntersectionObserver = function()
   {
-    console.log(queuing);
+    // console.log(queuing);
     if ('1' === _plugin_frontend_settings.fast_load )
     {
       if ("IntersectionObserver" in window) {

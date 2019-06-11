@@ -986,6 +986,8 @@
       this.properties.gridBlocksHeight = parseInt(
         this.$element.attr("data-gs-current-height")
       );
+
+      this.properties.gridBlocksHeight = ( 0 === this.properties.gridBlocksHeight ? 1 : this.properties.gridBlocksHeight );
       
       var cellHeight;
       if (active) {

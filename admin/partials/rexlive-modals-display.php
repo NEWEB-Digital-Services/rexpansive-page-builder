@@ -2507,16 +2507,16 @@ defined('ABSPATH') or exit;
         <?php Rexbuilder_Utilities::close_button(); ?>
         <div class="modal-content modal-content--text">
             <div class="edit-button-model-choose">
-                <?php _e('Gabibbo, guarda che stai modificando lo stile di un modello, che vuoi fare?','rexpansive'); ?>
+                <?php _e('Warning, you are about to change the style of a model! What do you want to do?','rexpansive'); ?>
                 <br>
                 <span class="info-model-name__wrap"><span class="info-model-name"></span>&nbsp;<span>?</span></span>
             </div>
             <div>
                 <div class="rex-edit-button-model-option" data-rex-option="edit">
-                    <button class="rex-button edit-button-model">Mantieni</button>
+                    <button class="rex-button edit-button-model"><?php _e( 'Maintain', 'rexpansive' ); ?></button>
                 </div>
                 <div class="rex-edit-button-model-option" data-rex-option="remove">
-                    <button class="rex-button remove-button-model">Stacca</button>
+                    <button class="rex-button remove-button-model"><?php _e( 'Separate', 'rexpansive' ); ?></button>
                 </div>
             </div>
         </div>

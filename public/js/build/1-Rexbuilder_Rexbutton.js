@@ -415,24 +415,26 @@ var Rexbuilder_Rexbutton = (function ($) {
     var _addButtonStyle = function ($buttonWrapper) {
         var buttonID = $buttonWrapper.attr("data-rex-button-id");
         var $buttonData = $buttonWrapper.find(".rex-button-data").eq(0);
+        var buttonData = $buttonData[0];
+        console.log(buttonData);
         if ($buttonData.length != 0) {
             var buttonProperties = {
-                font_size: $buttonData.attr("data-text-size").toString(),
-                text_color: $buttonData.attr("data-text-color").toString(),
-                background_color: $buttonData.attr("data-background-color").toString(),
-                button_height: $buttonData.attr("data-button-height").toString(),
+                font_size: ( buttonData.getAttribute('data-text-size') ? buttonData.getAttribute('data-text-size').toString() : '' ),
+                text_color: ( buttonData.getAttribute('data-text-color') ? buttonData.getAttribute('data-text-color').toString() : '' ),
+                background_color: ( buttonData.getAttribute("data-background-color") ? buttonData.getAttribute("data-background-color").toString() : '' ),
+                button_height: ( buttonData.getAttribute("data-button-height") ? buttonData.getAttribute("data-button-height").toString() : '' ),
 
-                hover_color: $buttonData.attr("data-background-color-hover").toString(),
-                hover_text: $buttonData.attr("data-text-color-hover").toString(),
-                hover_border: $buttonData.attr("data-border-color-hover").toString(),
+                hover_color: ( buttonData.getAttribute("data-background-color-hover") ? buttonData.getAttribute("data-background-color-hover").toString() : '' ),
+                hover_text: ( buttonData.getAttribute("data-text-color-hover") ? buttonData.getAttribute("data-text-color-hover").toString() : '' ),
+                hover_border: ( buttonData.getAttribute("data-border-color-hover") ? buttonData.getAttribute("data-border-color-hover").toString() : '' ),
 
-                border_color: $buttonData.attr("data-border-color").toString(),
-                border_width: $buttonData.attr("data-border-width").toString(),
-                border_radius: $buttonData.attr("data-border-radius").toString(),
-                margin_top: $buttonData.attr("data-margin-top").toString(),
-                margin_bottom: $buttonData.attr("data-margin-bottom").toString(),
-                margin_left: $buttonData.attr("data-margin-left").toString(),
-                margin_right: $buttonData.attr("data-margin-right").toString()
+                border_color: ( buttonData.getAttribute("data-border-color") ? buttonData.getAttribute("data-border-color").toString() : '' ),
+                border_width: ( buttonData.getAttribute("data-border-width") ? buttonData.getAttribute("data-border-width").toString() : '' ),
+                border_radius: ( buttonData.getAttribute("data-border-radius") ? buttonData.getAttribute("data-border-radius").toString() : '' ),
+                margin_top: ( buttonData.getAttribute("data-margin-top") ? buttonData.getAttribute("data-margin-top").toString() : '' ),
+                margin_bottom: ( buttonData.getAttribute("data-margin-bottom") ? buttonData.getAttribute("data-margin-bottom").toString() : '' ),
+                margin_left: ( buttonData.getAttribute("data-margin-left") ? buttonData.getAttribute("data-margin-left").toString() : '' ),
+                margin_right: ( buttonData.getAttribute("data-margin-right") ? buttonData.getAttribute("data-margin-right").toString() : '' )
             };
             _addCSSRules(buttonID, buttonProperties);
         }
@@ -715,6 +717,7 @@ var Rexbuilder_Rexbutton = (function ($) {
         var buttonNumber = $buttonContainer.attr("data-rex-button-number");
         var separate = false;
         var buttonName = "";
+        var buttonDataEl = $buttonData[0];
         
         var buttonData = {
             text_color: "",
@@ -743,21 +746,21 @@ var Rexbuilder_Rexbutton = (function ($) {
 
         if ($buttonContainer.hasClass("rex-separate-button")) {
             separate = true;
-            buttonData.font_size = $buttonData.attr("data-text-size").toString();
-            buttonData.text_color = $buttonData.attr("data-text-color").toString();
-            buttonData.background_color = $buttonData.attr("data-background-color").toString();
-            buttonData.button_height = $buttonData.attr("data-button-height").toString();
-            buttonData.hover_color = $buttonData.attr("data-background-color-hover").toString();
-            buttonData.hover_border = $buttonData.attr("data-border-color-hover").toString();
-            buttonData.hover_text = $buttonData.attr("data-text-color-hover").toString();
-            buttonData.border_color = $buttonData.attr("data-border-color").toString();
-            buttonData.border_width = $buttonData.attr("data-border-width").toString();
-            buttonData.border_radius = $buttonData.attr("data-border-radius").toString();
-            buttonData.margin_top = $buttonData.attr("data-margin-top").toString();
-            buttonData.margin_bottom = $buttonData.attr("data-margin-bottom").toString();
-            buttonData.margin_right = $buttonData.attr("data-margin-right").toString();
-            buttonData.margin_left = $buttonData.attr("data-margin-left").toString();
-            buttonData.buttonTarget.button_name = $buttonData.attr("data-button-name").toString();
+            buttonData.font_size = ( buttonDataEl.getAttribute("data-text-size") ? buttonDataEl.getAttribute("data-text-size").toString() : '' );
+            buttonData.text_color = ( buttonDataEl.getAttribute("data-text-color") ? buttonDataEl.getAttribute("data-text-color").toString() : '' );
+            buttonData.background_color = ( buttonDataEl.getAttribute("data-background-color") ? buttonDataEl.getAttribute("data-background-color").toString() : '' );
+            buttonData.button_height = ( buttonDataEl.getAttribute("data-button-height") ? buttonDataEl.getAttribute("data-button-height").toString() : '' );
+            buttonData.hover_color = ( buttonDataEl.getAttribute("data-background-color-hover") ? buttonDataEl.getAttribute("data-background-color-hover").toString() : '' );
+            buttonData.hover_border = ( buttonDataEl.getAttribute("data-border-color-hover") ? buttonDataEl.getAttribute("data-border-color-hover").toString() : '' );
+            buttonData.hover_text = ( buttonDataEl.getAttribute("data-text-color-hover") ? buttonDataEl.getAttribute("data-text-color-hover").toString() : '' );
+            buttonData.border_color = ( buttonDataEl.getAttribute("data-border-color") ? buttonDataEl.getAttribute("data-border-color").toString() : '' );
+            buttonData.border_width = ( buttonDataEl.getAttribute("data-border-width") ? buttonDataEl.getAttribute("data-border-width").toString() : '' );
+            buttonData.border_radius = ( buttonDataEl.getAttribute("data-border-radius") ? buttonDataEl.getAttribute("data-border-radius").toString() : '' );
+            buttonData.margin_top = ( buttonDataEl.getAttribute("data-margin-top") ? buttonDataEl.getAttribute("data-margin-top").toString() : '' );
+            buttonData.margin_bottom = ( buttonDataEl.getAttribute("data-margin-bottom") ? buttonDataEl.getAttribute("data-margin-bottom").toString() : '' );
+            buttonData.margin_right = ( buttonDataEl.getAttribute("data-margin-right") ? buttonDataEl.getAttribute("data-margin-right").toString() : '' );
+            buttonData.margin_left = ( buttonDataEl.getAttribute("data-margin-left") ? buttonDataEl.getAttribute("data-margin-left").toString() : '' );
+            buttonData.buttonTarget.button_name = ( buttonDataEl.getAttribute("data-button-name") ? buttonDataEl.getAttribute("data-button-name").toString() : '' );
         } else{
             buttonData.synchronize = typeof $buttonData.attr("data-synchronize") == "undefined" ? false : $buttonData.attr("data-synchronize").toString();
         }

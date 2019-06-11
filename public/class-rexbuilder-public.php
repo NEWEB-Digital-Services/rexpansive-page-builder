@@ -219,6 +219,8 @@ class Rexbuilder_Public
 
         if ($this->builder_active_on_this_post_type()) {
             $ver = null;
+            global $post;
+            $rexbuilderShortcode = get_post_meta( $post->ID, '_rexbuilder_shortcode', true );
 
             if( Rexbuilder_Utilities::isBuilderLive() ) {
                 //include media libray
@@ -319,11 +321,20 @@ class Rexbuilder_Public
             wp_enqueue_script('scrolled', REXPANSIVE_BUILDER_URL . 'public/js/vendor/4-jquery.rexScrolled.js', array('jquery'), $ver, true);
             wp_enqueue_script('rex-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexAccordion.js', array('jquery'), $ver, true);
             wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.js', array('jquery'), $ver, true);
-            wp_enqueue_script('pixi', REXPANSIVE_BUILDER_URL . 'public/js/vendor/pixi.min.js', array('jquery'), $ver, true);
 
+            
             if( !Rexbuilder_Utilities::isBuilderLive() ) {
-                wp_enqueue_script('odometer', REXPANSIVE_BUILDER_URL . 'public/js/vendor/odometer.min.js', array('jquery'), $ver, true);
-                wp_enqueue_script('rex-slideshow', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexSlideshow.js', array('jquery'), $ver, true);
+                if ( false !== strpos( $rexbuilderShortcode, 'rex-effect-' ) ) {
+                    wp_enqueue_script('pixi', REXPANSIVE_BUILDER_URL . 'public/js/vendor/pixi.min.js', array('jquery'), $ver, true);
+                }
+
+                if ( false !== strpos( $rexbuilderShortcode, 'rex-num-spin' ) ) {
+                    wp_enqueue_script('odometer', REXPANSIVE_BUILDER_URL . 'public/js/vendor/odometer.min.js', array('jquery'), $ver, true);
+                }
+                
+                if ( false !== strpos( $rexbuilderShortcode, 'rex-slideshow' ) ) {
+                    wp_enqueue_script('rex-slideshow', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexSlideshow.js', array('jquery'), $ver, true);
+                }
             }
             wp_enqueue_script('effect', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.rexEffect.js', array('jquery'), $ver, true);
 
