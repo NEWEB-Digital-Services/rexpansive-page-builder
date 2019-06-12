@@ -1,4 +1,4 @@
-;(function ($) {
+;(function () {
   var fieldsEditable;
   var postID;
 
@@ -68,6 +68,9 @@
     fieldsEditable = [].slice.call(document.querySelectorAll('.builderlive-editable-field'));
   };
 
+  /**
+   * On DOMContentLoaded event
+   */
   var init = function() {
     findFields();
     postID = parseInt( document.getElementById( 'id-post' ).getAttribute( 'data-post-id' ) );
@@ -97,6 +100,7 @@
           hashCode = field.innerText.trim().hashCode();
           field.setAttribute('contenteditable', true);
           field.addEventListener('click', handleContentEditableClick);
+          field.addEventListener('input', handleContentEditableInput);
           break;
         case 'media':
         case 'media_list':
@@ -199,6 +203,18 @@
    */
   var handleContentEditableClick = function(event) {
     event.stopPropagation();
+  };
+
+  /**
+   * On contenteditable change, warn the builder of the modification
+   * @param {Event} event input event
+   */
+  var handleContentEditableInput = function(event) {
+    var data = {
+      eventName: "rexlive:edited",
+      modelEdited: false
+    }
+    Rexbuilder_Util_Editor.sendParentIframeMessage(data);
   };
 
   /**
@@ -456,10 +472,12 @@
       // handling media uploading
       if ( 'rexlive:liveMediaEdit' === event.data.eventName ) {
         handleMediaEdit(event.data.data_to_send);
+        handleContentEditableInput();
       }
 
       if ( 'rexlive:liveMediaAdd' === event.data.eventName ) {
         handleMediaAdd(event.data.data_to_send);
+        handleContentEditableInput();
       }
 
       // handle media edit from modal
@@ -474,6 +492,7 @@
         if ( event.data.data_to_send ) {
           // launch a callback
           executeFunctionByName( event.data.data_to_send.completeReorderCallback, window, event.data.data_to_send );
+          handleContentEditableInput();
         }
       }
 
@@ -491,11 +510,15 @@
             value: value
           };
           executeFunctionByName( event.data.data_to_send.completeRemoveCallback, window, callbackData );
+          handleContentEditableInput();
         }
       }
     }
   };
 
+  /**
+   * On Window load event
+   */
   var load = function() {
     makeFieldsEditable();
   };
@@ -503,4 +526,4 @@
   document.addEventListener('DOMContentLoaded', init);
   window.addEventListener('message', handleIframeMessage, false);
   window.addEventListener('load', load);  
-}(jQuery));
+}());
