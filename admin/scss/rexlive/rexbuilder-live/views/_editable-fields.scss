@@ -22,5 +22,6 @@ span {
   position: absolute;
   top: 0;
   right: 0;
-  @include fill-icon(#fff);
+  font-size: 10px;
+  // @include fill-icon(#fff);
 }

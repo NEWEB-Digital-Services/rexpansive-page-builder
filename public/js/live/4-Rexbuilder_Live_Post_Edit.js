@@ -52,6 +52,11 @@
       add.addEventListener('click', handleMediaTools.bind(wrapper));
     }
 
+    var edit = wrapper.querySelector('[data-action="edit"]');
+    if ( edit ) {
+      edit.addEventListener('click', handleMediaTools.bind(wrapper));
+    }
+
     toWrap.parentNode.appendChild(wrapper);
     return wrapper.appendChild(toWrap);
   }
@@ -178,6 +183,10 @@
       case 'add':
         if ( media ) {
           openEditMedia();
+        }
+      case 'edit':
+        if ( media ) {
+          openEditMedia( media );
         }
       default:
         break;  
