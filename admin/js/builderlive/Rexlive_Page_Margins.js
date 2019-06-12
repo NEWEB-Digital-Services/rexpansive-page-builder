@@ -214,7 +214,7 @@ var Rexlive_Page_Margins = (function ($) {
           // selected_margins: container_margins_modal_properties.selected_margins,
         },
         success: function () {
-          console.log("finito!");
+          // console.log("end!");
         },
         error: function () { },
         complete: function () { }
