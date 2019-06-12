@@ -791,7 +791,6 @@ class Rexbuilder_Admin {
 					// Waiting until the ready of the DOM
 					$(function () {
 						$(document).on('click', '.go-live.draft', function(e) {
-							console.log('am i here?');
 							e.preventDefault();
 							$('#wp-preview').val(true);
 							$('input[name=force_live]').val("do_force_live");

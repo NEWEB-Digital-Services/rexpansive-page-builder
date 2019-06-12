@@ -93,11 +93,31 @@ var Rexbuilder_Section = (function($) {
     // Change section rexID
     // Do this first to prevent synch bugs
     if (!Rexbuilder_Util_Editor.insertingModel) {
-      $section.attr(
-        "data-rexlive-section-id",
-        Rexbuilder_Util.createSectionID()
-      );
+      var newSectionId = Rexbuilder_Util.createSectionID();
+      $section.attr( "data-rexlive-section-id", newSectionId);
       $section.attr("data-rexlive-section-name", "");
+
+      // fix section data id
+      var sectionData = $section[0].querySelector('.section-data');
+      sectionData.setAttribute('data-rexlive_section_id',newSectionId);
+
+      // fix sectiom width tool
+      var sectionWidthTools = [].slice.call( $section[0].querySelectorAll('.edit-row-width') );
+      sectionWidthTools.forEach( function(el,i) {
+        var fieldId = 'row-dimension-' + el.getAttribute('data-section_width') + '-' + newSectionId;
+        el.setAttribute('name', 'row-dimension-' + newSectionId);
+        el.setAttribute('id', fieldId);
+        el.nextElementSibling.setAttribute('for',fieldId);
+      });
+
+      // fix section layout tool
+      var sectionLayoutTools = [].slice.call( $section[0].querySelectorAll('.edit-row-layout') );
+      sectionLayoutTools.forEach( function(el,i) {
+        var fieldId = 'row-layout-' + el.getAttribute('data-section_layout') + '-' + newSectionId;
+        el.setAttribute('name', 'row-layout-' + newSectionId);
+        el.setAttribute('id', fieldId);
+        el.nextElementSibling.setAttribute('for',fieldId);
+      });
     }
 
     tmpl.arg = "block";
@@ -133,9 +153,9 @@ var Rexbuilder_Section = (function($) {
 
     tmpl.arg = "section";
 
-    Rexbuilder_Section.linkHoverSection($section);
+    // Rexbuilder_Section.linkHoverSection($section);
 
-    Rexbuilder_Section.hideSectionToolBox($section);
+    // Rexbuilder_Section.hideSectionToolBox($section);
   };
 
   /**
@@ -745,7 +765,7 @@ var Rexbuilder_Section = (function($) {
         $newSection.appendTo(Rexbuilder_Util.$rexContainer);
       }
 
-      Rexbuilder_Section.linkHoverSection($newSection);
+      // Rexbuilder_Section.linkHoverSection($newSection);
 
       Rexbuilder_Util.lastSectionNumber = Rexbuilder_Util.lastSectionNumber + 1;
 
@@ -876,7 +896,7 @@ var Rexbuilder_Section = (function($) {
 
       Rexbuilder_Section_Editor.listenNewRowDataChange( $newSectionData[0] );
 
-      Rexbuilder_Section.linkHoverSection($newSection);
+      // Rexbuilder_Section.linkHoverSection($newSection);
 
       Rexbuilder_Util.lastSectionNumber = Rexbuilder_Util.lastSectionNumber + 1;
 
@@ -1447,7 +1467,7 @@ var Rexbuilder_Section = (function($) {
       .children(".rexpansive_section")
       .each(function(i, section) {
         var $section = $(section);
-        Rexbuilder_Section.linkHoverSection($section);
+        // Rexbuilder_Section.linkHoverSection($section);
         if ($section.hasClass("rex-model-section")) {
           $section.addClass("rexlive-block-grid-editing");
           $section
@@ -1581,8 +1601,8 @@ var Rexbuilder_Section = (function($) {
     init: init,
     prepareSectionCopied: _prepareSectionCopied,
     showSectionToolBox: _showSectionToolBox,
-    hideSectionToolBox: _hideSectionToolBox,
-    linkHoverSection: _linkHoverSection,
+    // hideSectionToolBox: _hideSectionToolBox,
+    // linkHoverSection: _linkHoverSection,
     updateModelsHtmlLive: _updateModelsHtmlLive,
     fixSectionToolbox : _fixSectionToolbox,
     fixBlockToolsAccordingToSeparator: _fixBlockToolsAccordingToSeparator
