@@ -643,7 +643,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
    * @param {jQuery Object} $gallery gallery where insert
    * @since 2.0.0
    */
-  var _insertHTMLBlock = function ($elem, $gallery) {
+  var _insertHTMLBlock = function ($elem, $gallery, updatePosition) {
+    updatePosition = 'undefined' !== typeof updatePosition ? updatePosition : true;
     if ($gallery.length > 0) {
       var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
       var gridstack = $gallery.data("gridstack");
@@ -698,11 +699,13 @@ var Rexbuilder_CreateBlocks = (function ($) {
         h = Math.floor(h * galleryEditorInstance.properties.singleWidth / galleryEditorInstance.properties.singleHeight);
       }
 
-      gridstack.addWidget($newBlock[0], 0, 0, w, h, true, 1, 500, 1);
+      gridstack.addWidget($newBlock[0], 0, 0, w, h, true, 1, 500, 1); 
 
-      gridstack.batchUpdate();
-      gridstack.update($newBlock[0], x, y, w, h);
-      gridstack.commit();
+      if ( updatePosition ) {
+        gridstack.batchUpdate();
+        gridstack.update($newBlock[0], x, y, w, h);
+        gridstack.commit();
+      }
 
       galleryEditorInstance._updateElementsSizeViewers();
 
