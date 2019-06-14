@@ -3096,6 +3096,11 @@
       var $itemContent = $elem.find(".grid-item-content");
       var $imageWrapper = $itemContent.find(".rex-image-wrapper");
       var w = parseInt($elem.attr("data-gs-width"));
+      var increasedHeight = 0;
+      if(this.settings.galleryLayout == "masonry"){
+        var parsedHeight = parseInt($blockData.attr("data-element_height_increased"))
+        increasedHeight = isNaN(parsedHeight) ? 0 : parsedHeight;
+      }
       var backgroundHeight = 0;
       var videoHeight = 0;
       var defaultHeight = 0;

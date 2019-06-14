@@ -170,13 +170,26 @@ var Button_Import_Modal = (function ($) {
             width: 0,
             height: 0
         }
-
         var breakPointNumber = { x: 10, y: 10 };
         var fixedBreakPoints = false;
         var customBreakPoints = { x: 50, y: 50 };
 
         var isIE = /*@cc_on!@*/false || !!document.documentMode;
 
+        /*
+            Funzione che esegue lo scrolling nell'iframe
+        */
+        var scroll = function (step) {
+            var scrollY = $frameContentWindow.scrollTop();
+            $frameContentWindow.scrollTop(
+                scrollY + step
+            );
+            if (!stop) {
+                setTimeout(function () {
+                    scroll(step);
+                }, 20);
+            }
+        };
         /*
         da capire come fare, servirà per il pulsante vicino al mouse durante il drag
         */
@@ -194,6 +207,7 @@ var Button_Import_Modal = (function ($) {
                 DragDropFunctions.ProcessDragOverQueue();
             }, 100);
 
+            
             var insertingHTML = $(this).html();
             var $buttonBackground = $(this).find(".rex-button-background").eq(0);
             buttonDimensions.width = $buttonBackground.outerWidth();

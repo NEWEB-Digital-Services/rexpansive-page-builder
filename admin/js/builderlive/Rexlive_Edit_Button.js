@@ -307,7 +307,7 @@ var Button_Edit_Modal = (function ($) {
         button_editor_properties.$button_link_target.val(buttonData.link_target);
         button_editor_properties.$button_link_type.val(buttonData.link_type);
         button_editor_properties.$button_name.val(buttonData.buttonTarget.button_name);
-        //lasciarlo aggiornato? o fixato a 5px?
+
         button_editor_properties.$button_preview_border.css("border-width", buttonData.border_width);
 
         button_editor_properties.$button_label_text.css("color", buttonData.text_color);

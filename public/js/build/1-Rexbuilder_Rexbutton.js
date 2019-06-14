@@ -326,7 +326,6 @@ var Rexbuilder_Rexbutton = (function ($) {
                         styleSheet.cssRules[i].style.borderTopRightRadius = value;
                         styleSheet.cssRules[i].style.borderBottomLeftRadius = value;
                         styleSheet.cssRules[i].style.borderBottomRightRadius = value;
-
                         styleSheet.cssRules[i].style.webkitBorderRadius = value;
 
                         styleSheet.cssRules[i].style.webkitBorderTopLeftRadius = value;
@@ -574,7 +573,6 @@ var Rexbuilder_Rexbutton = (function ($) {
     }
 
     var _updateButton = function (data) {
-
         var buttonProperties = data.buttonProperties;
         var buttonID = buttonProperties.buttonTarget.button_id;
 
