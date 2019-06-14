@@ -151,6 +151,7 @@ var Model_Import_Modal = (function($) {
 
     Rexlive_Base_Settings.$document.on("dragend", ".model-list li", function( event ) {
       console.log('vonde');
+      Rexbuilder_Util_Admin_Editor.setScroll(true);
       Rexbuilder_Util_Admin_Editor.releaseIframeRows();
       clearInterval(dragoverqueue_processtimer);
       DragDropFunctions.removePlaceholder();

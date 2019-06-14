@@ -68,7 +68,7 @@ var Button_Import_Modal = (function ($) {
         var containerRule = "";
         containerRule += "font-size: " + buttonProperties.font_size + ";";
         containerRule += "color: " + buttonProperties.text_color + ";";
-        containerRule += "height: " + buttonProperties.button_height + ";";
+        containerRule += "min-height: " + buttonProperties.button_height + ";";
         containerRule += "margin-top: " + buttonProperties.margin_top + ";";
         containerRule += "margin-bottom: " + buttonProperties.margin_bottom + ";";
         containerRule += "margin-left: " + buttonProperties.margin_left + ";";
@@ -177,20 +177,6 @@ var Button_Import_Modal = (function ($) {
         var isIE = /*@cc_on!@*/false || !!document.documentMode;
 
         /*
-            Funzione che esegue lo scrolling nell'iframe
-        */
-        var scroll = function (step) {
-            var scrollY = $frameContentWindow.scrollTop();
-            $frameContentWindow.scrollTop(
-                scrollY + step
-            );
-            if (!stop) {
-                setTimeout(function () {
-                    scroll(step);
-                }, 20);
-            }
-        };
-        /*
         da capire come fare, servirà per il pulsante vicino al mouse durante il drag
         */
         var $imgPreview;
@@ -245,6 +231,9 @@ var Button_Import_Modal = (function ($) {
 
         Rexlive_Base_Settings.$document.on("dragend", ".button-list li", function (event) {
             clearInterval(dragoverqueue_processtimer);
+
+            Rexbuilder_Util_Admin_Editor.setScroll(true);
+
             DragDropFunctions.removePlaceholder();
             DragDropFunctions.ClearContainerContext();
             Rexbuilder_Util_Admin_Editor.removeClassToLiveFrameRexContainer("rex-dragging-button");

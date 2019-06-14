@@ -147,12 +147,17 @@ var Button_Edit_Modal = (function ($) {
 
     var _openButtonEditorModal = function (data) {
         alreadyChooseToSynchronize = false;
+        console.log(data);
+        console.log("before",editingModelButton, alreadyChooseToSynchronize);
         _updateButtonEditorModal(data);
+        console.log("after",editingModelButton, alreadyChooseToSynchronize);
         if (!editingModelButton || alreadyChooseToSynchronize) {
+            console.log("aoooooooo");
             Rexlive_Modals_Utils.openModal(
                 button_editor_properties.$self.parent(".rex-modal-wrap")
-            );
+                );
         } else {
+                console.log("qwwwwwwwwwwww");
             _openChooseButtonEdit();
         }
     };
@@ -232,10 +237,10 @@ var Button_Edit_Modal = (function ($) {
             margin_bottom: "",
             margin_right: "",
             margin_left: "",
-            /* padding_top: "",
+            padding_top: "",
             padding_bottom: "",
             padding_right: "",
-            padding_left: "", */
+            padding_left: "",
             link_target: "",
             link_type: "",
             buttonTarget: {
@@ -248,9 +253,11 @@ var Button_Edit_Modal = (function ($) {
 
     var _updateButtonData = function (data) {
         if (data.separateButton.toString() == "true") {
+            console.log("separate");
             buttonData = jQuery.extend(true, {}, data.buttonInfo);
             editingModelButton = false;
         } else {
+            console.log("model");
             var i;
             var buttonID = data.buttonInfo.buttonTarget.button_id;
             editingModelButton = true;
@@ -274,10 +281,10 @@ var Button_Edit_Modal = (function ($) {
                     buttonData.margin_bottom = rexButtonsJSON[i].rules.element.margin_bottom;
                     buttonData.margin_right = rexButtonsJSON[i].rules.element.margin_right;
                     buttonData.margin_left = rexButtonsJSON[i].rules.element.margin_left;
-                    /* buttonData.padding_top = rexButtonsJSON[i].rules.element.padding_top;
-                    buttonData.padding_bottom = rexButtonsJSON[i].rules.element.padding_bottom;
-                    buttonData.padding_right = rexButtonsJSON[i].rules.element.padding_right;
-                    buttonData.padding_left = rexButtonsJSON[i].rules.element.padding_left; */
+                    buttonData.padding_top = typeof rexButtonsJSON[i].rules.element.padding_top === "undefined"? "" : rexButtonsJSON[i].rules.element.padding_top;
+                    buttonData.padding_bottom = typeof rexButtonsJSON[i].rules.element.padding_bottom === "undefined"? "" : rexButtonsJSON[i].rules.element.padding_bottom;
+                    buttonData.padding_right = typeof rexButtonsJSON[i].rules.element.padding_right === "undefined"? "" : rexButtonsJSON[i].rules.element.padding_right;
+                    buttonData.padding_left = typeof rexButtonsJSON[i].rules.element.padding_left === "undefined"? "" : rexButtonsJSON[i].rules.element.padding_left;
                     buttonData.buttonTarget.button_name = rexButtonsJSON[i].buttonName;
                     break;
                 }
@@ -300,10 +307,11 @@ var Button_Edit_Modal = (function ($) {
         button_editor_properties.$button_margin_right.val(buttonData.margin_right.replace('px', ''));
         button_editor_properties.$button_margin_left.val(buttonData.margin_left.replace('px', ''));
         button_editor_properties.$button_margin_bottom.val(buttonData.margin_bottom.replace('px', ''));
-        /* button_editor_properties.$button_padding_top.val(buttonData.padding_top.replace('px', ''));
+        button_editor_properties.$button_padding_top.val(buttonData.padding_top.replace('px', ''));
         button_editor_properties.$button_padding_right.val(buttonData.padding_right.replace('px', ''));
         button_editor_properties.$button_padding_left.val(buttonData.padding_left.replace('px', ''));
-        button_editor_properties.$button_padding_bottom.val(buttonData.padding_bottom.replace('px', '')); */
+        button_editor_properties.$button_padding_bottom.val(buttonData.padding_bottom.replace('px', '')); 
+
         button_editor_properties.$button_link_target.val(buttonData.link_target);
         button_editor_properties.$button_link_type.val(buttonData.link_type);
         button_editor_properties.$button_name.val(buttonData.buttonTarget.button_name);
@@ -358,10 +366,10 @@ var Button_Edit_Modal = (function ($) {
         buttonData.margin_bottom = button_editor_properties.$button_margin_bottom.val() + "px";
         buttonData.margin_right = button_editor_properties.$button_margin_right.val() + "px";
         buttonData.margin_left = button_editor_properties.$button_margin_left.val() + "px";
-        /* buttonData.padding_top = button_editor_properties.$button_padding_top.val() + "px";
+        buttonData.padding_top = button_editor_properties.$button_padding_top.val() + "px";
         buttonData.padding_bottom = button_editor_properties.$button_padding_bottom.val() + "px";
         buttonData.padding_right = button_editor_properties.$button_padding_right.val() + "px";
-        buttonData.padding_left = button_editor_properties.$button_padding_left.val() + "px"; */
+        buttonData.padding_left = button_editor_properties.$button_padding_left.val() + "px";
         buttonData.buttonTarget.button_name = button_editor_properties.$button_name.val();
         buttonData.text = button_editor_properties.$button_label_text.val();
         buttonData.link_target = button_editor_properties.$button_link_target.val();
@@ -385,10 +393,10 @@ var Button_Edit_Modal = (function ($) {
             resetData.margin_right == buttonData.margin_right &&
             resetData.margin_left == buttonData.margin_left &&
             // paddings
-            /* resetData.padding_top == buttonData.padding_top &&
+            resetData.padding_top == buttonData.padding_top &&
             resetData.padding_bottom == buttonData.padding_bottom &&
             resetData.padding_right == buttonData.padding_right &&
-            resetData.padding_left == buttonData.padding_left && */
+            resetData.padding_left == buttonData.padding_left && 
             // name
             resetData.buttonTarget.button_name == buttonData.buttonTarget.button_name &&
             // button text
@@ -502,15 +510,15 @@ var Button_Edit_Modal = (function ($) {
         _linkKeyUpListenerInputNumber(button_editor_properties.$button_margin_top, _updateMarginTop, false);
 
         // PADDING TOP
-        /* var _updatePaddingTop = function (newPaddingTop) {
+        var _updatePaddingTop = function (newPaddingTop) {
             _updateButtonLive({
-                type: "container",
+                type: "text",
                 name: "padding-top",
                 value: newPaddingTop + "px"
             });
         };
         _linkKeyDownListenerInputNumber(button_editor_properties.$button_padding_top, false);
-        _linkKeyUpListenerInputNumber(button_editor_properties.$button_padding_top, _updatePaddingTop, false); */
+        _linkKeyUpListenerInputNumber(button_editor_properties.$button_padding_top, _updatePaddingTop, false); 
 
         // MARGIN BOTTOM
         var _updateMarginBottom = function (newMarginBottom) {
@@ -524,15 +532,15 @@ var Button_Edit_Modal = (function ($) {
         _linkKeyUpListenerInputNumber(button_editor_properties.$button_margin_bottom, _updateMarginBottom, false);
 
         // PADDING BOTTOM
-        /* var _updatePaddingBottom = function (newPaddingBottom) {
+        var _updatePaddingBottom = function (newPaddingBottom) {
             _updateButtonLive({
-                type: "container",
+                type: "text",
                 name: "padding-bottom",
                 value: newPaddingBottom + "px"
             });
         };
         _linkKeyDownListenerInputNumber(button_editor_properties.$button_padding_bottom, false);
-        _linkKeyUpListenerInputNumber(button_editor_properties.$button_padding_bottom, _updatePaddingBottom, false); */
+        _linkKeyUpListenerInputNumber(button_editor_properties.$button_padding_bottom, _updatePaddingBottom, false);
 
         // MARGIN LEFT
         var _updateMarginLeft = function (newMarginLeft) {
@@ -546,15 +554,15 @@ var Button_Edit_Modal = (function ($) {
         _linkKeyUpListenerInputNumber(button_editor_properties.$button_margin_left, _updateMarginLeft, false);
 
         // PADDING LEFT
-        /* var _updatePaddingLeft = function (newPaddingLeft) {
+        var _updatePaddingLeft = function (newPaddingLeft) {
             _updateButtonLive({
-                type: "container",
+                type: "text",
                 name: "padding-left",
                 value: newPaddingLeft + "px"
             });
         };
         _linkKeyDownListenerInputNumber(button_editor_properties.$button_padding_left, false);
-        _linkKeyUpListenerInputNumber(button_editor_properties.$button_padding_left, _updatePaddingLeft, false); */
+        _linkKeyUpListenerInputNumber(button_editor_properties.$button_padding_left, _updatePaddingLeft, false);
 
         // MARGIN RIGHT
         var _updateMarginRight = function (newMarginRight) {
@@ -568,15 +576,15 @@ var Button_Edit_Modal = (function ($) {
         _linkKeyUpListenerInputNumber(button_editor_properties.$button_margin_right, _updateMarginRight, false);
 
         // PADDING RIGHT
-        /* var _updatePaddingRight = function (newPaddingRight) {
+        var _updatePaddingRight = function (newPaddingRight) {
             _updateButtonLive({
-                type: "container",
+                type: "text",
                 name: "padding-right",
                 value: newPaddingRight + "px"
             });
         };
         _linkKeyDownListenerInputNumber(button_editor_properties.$button_padding_right, false);
-        _linkKeyUpListenerInputNumber(button_editor_properties.$button_padding_right, _updatePaddingRight, false); */
+        _linkKeyUpListenerInputNumber(button_editor_properties.$button_padding_right, _updatePaddingRight, false);
 
 
     }
@@ -1074,10 +1082,10 @@ var Button_Edit_Modal = (function ($) {
                     margin_bottom: buttonData.margin_bottom,
                     margin_right: buttonData.margin_right,
                     margin_left: buttonData.margin_left,
-                    /* padding_top: buttonData.padding_top,
+                    padding_top: buttonData.padding_top,
                     padding_bottom: buttonData.padding_bottom,
                     padding_right: buttonData.padding_right,
-                    padding_left: buttonData.padding_left, */
+                    padding_left: buttonData.padding_left,
                 },
                 hover: {
                     background_color: buttonData.hover_color,
@@ -1101,15 +1109,19 @@ var Button_Edit_Modal = (function ($) {
         buttonCSS += " .rex-button-container{";
         buttonCSS += "font-size: " + buttonData.font_size + ";";
         buttonCSS += "color: " + buttonData.text_color + ";";
-        buttonCSS += "height: " + buttonData.button_height + ";";
+        buttonCSS += "min-height: " + buttonData.button_height + ";";
         buttonCSS += "margin-top: " + buttonData.margin_top + ";";
         buttonCSS += "margin-bottom: " + buttonData.margin_bottom + ";";
         buttonCSS += "margin-left: " + buttonData.margin_left + ";";
         buttonCSS += "margin-right: " + buttonData.margin_right + ";";
-        /* buttonCSS += "padding-top: " + buttonData.padding_top + ";";
+        buttonCSS += "}";
+                
+        buttonCSS += ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"]";
+        buttonCSS += " .rex-button-text{";
+        buttonCSS += "padding-top: " + buttonData.padding_top + ";";
         buttonCSS += "padding-bottom: " + buttonData.padding_bottom + ";";
         buttonCSS += "padding-left: " + buttonData.padding_left + ";";
-        buttonCSS += "padding-right: " + buttonData.padding_right + ";"; */
+        buttonCSS += "padding-right: " + buttonData.padding_right + ";";
         buttonCSS += "}";
 
         buttonCSS += ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"]";
@@ -1127,6 +1139,10 @@ var Button_Edit_Modal = (function ($) {
         buttonCSS += " .rex-button-background:hover{";
         buttonCSS += "background-color: " + buttonData.hover_color + ";";
         buttonCSS += "border-color: " + buttonData.hover_border + ";";
+        buttonCSS += "}";
+
+        buttonCSS += ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"]";
+        buttonCSS += " .rex-button-container:hover{";
         buttonCSS += "color: " + buttonData.hover_text + ";";
         buttonCSS += "}";
 
@@ -1159,10 +1175,10 @@ var Button_Edit_Modal = (function ($) {
             margin_bottom: buttonData.margin_bottom,
             margin_right: buttonData.margin_right,
             margin_left: buttonData.margin_left,
-            /* padding_top: buttonData.padding_top,
+            padding_top: buttonData.padding_top,
             padding_bottom: buttonData.padding_bottom,
             padding_right: buttonData.padding_right,
-            padding_left: buttonData.padding_left, */
+            padding_left: buttonData.padding_left,
             link_target: defaults.link_target,
             link_type: defaults.link_type,
             button_name: buttonData.buttonTarget.button_name,
@@ -1195,6 +1211,7 @@ var Button_Edit_Modal = (function ($) {
                 actionButtonData: jQuery.extend(true, {}, buttonData)
             }
         };
+        console.log(buttonDataToIframe);
         reverseData = jQuery.extend(true, {}, buttonDataToIframe.data_to_send.actionButtonData);
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(buttonDataToIframe);
     };
@@ -1230,6 +1247,7 @@ var Button_Edit_Modal = (function ($) {
                 buttonData: buttonData
             }
         };
+        console.log(buttonDataToIframe);
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(buttonDataToIframe);
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1332,10 +1350,10 @@ var Button_Edit_Modal = (function ($) {
             $button_margin_bottom: $container.find("#rex-button-margin-bottom-radius"),
             $button_margin_left: $container.find("#rex-button-margin-left-radius"),
 
-            /* $button_padding_top: $container.find("#rex-button-padding-top-radius"),
+            $button_padding_top: $container.find("#rex-button-padding-top-radius"),
             $button_padding_right: $container.find("#rex-button-padding-right-radius"),
             $button_padding_bottom: $container.find("#rex-button-padding-bottom-radius"),
-            $button_padding_left: $container.find("#rex-button-padding-left-radius"), */
+            $button_padding_left: $container.find("#rex-button-padding-left-radius"),
 
             $button_link_target: $container.find("#rex-button-link-target"),
             $button_link_type: $container.find("#rex-button-link-type"),
@@ -1363,10 +1381,10 @@ var Button_Edit_Modal = (function ($) {
             margin_bottom: "",
             margin_left: "",
             margin_right: "",
-            /* padding_top: "",
+            padding_top: "",
             padding_bottom: "",
             padding_left: "",
-            padding_right: "", */
+            padding_right: "",
             link_target: "",
             link_type: "",
             buttonTarget: {

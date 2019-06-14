@@ -821,7 +821,6 @@ var TextEditor = (function ($) {
         action = event.target.getAttribute('data-tag-action');
       } else if (event.target.parentNode.hasAttribute('data-tag-action')) {
         action = event.target.parentNode.getAttribute('data-tag-action');
-        $target = $(event.target.parentNode);
       }
 
       if ('undefined' != typeof action) {

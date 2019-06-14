@@ -62,7 +62,12 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       Rexbuilder_Util_Admin_Editor.$liveFrameRexContainer.removeClass(class_name);
     }
   }
-
+/**
+ * Blocks iframe scrolling.
+ * If true iframe will stop autoscrolling.
+ * If false iframe will scroll alone
+ * @param {Boolean} stop true if stop false if need scroll
+ */
   var _setScroll = function(stop){
     this.stopScrolling = stop;
   }

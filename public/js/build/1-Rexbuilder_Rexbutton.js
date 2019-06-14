@@ -172,6 +172,8 @@ var Rexbuilder_Rexbutton = (function ($) {
         $buttonData.removeAttr("data-text-size");
         $buttonData.removeAttr("data-background-color");
         $buttonData.removeAttr("data-background-color-hover");
+        $buttonData.removeAttr("data-border-color-hover");
+        $buttonData.removeAttr("data-text-color-hover");
         $buttonData.removeAttr("data-border-width");
         $buttonData.removeAttr("data-border-color");
         $buttonData.removeAttr("data-border-radius");
@@ -214,21 +216,39 @@ var Rexbuilder_Rexbutton = (function ($) {
         }
     }
 
-    var _addButtonTextHoverRule = function (buttonID, property) {
+    var _addButtonContainerHoverRule = function (buttonID, property) {
         if ("insertRule" in styleSheet) {
-            styleSheet.insertRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background:hover{" + property + "}", styleSheet.cssRules.length);
+            styleSheet.insertRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container:hover{" + property + "}", styleSheet.cssRules.length);
         }
+        
         else if ("addRule" in styleSheet) {
-            styleSheet.addRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background:hover{" + property + "}", styleSheet.cssRules.length);
+            styleSheet.addRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container:hover{" + property + "}", styleSheet.cssRules.length);
         }
     }
 
-    var _addButtonBorderHoverRule = function (buttonID, property) {
-        if ("insertRule" in styleSheet) {
-            styleSheet.insertRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background:hover{" + property + "}", styleSheet.cssRules.length);
-        }
-        else if ("addRule" in styleSheet) {
-            styleSheet.addRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background:hover{" + property + "}", styleSheet.cssRules.length);
+    var _updateButtonTextRule = function (buttonID, rule, value) {
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+            if (
+                //chrome firefox
+                styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-text" ||
+                // edge
+                styleSheet.cssRules[i].selectorText == "[data-rex-button-id='" + buttonID + "'].rex-button-wrapper .rex-button-text"
+            ) {
+                switch (rule) {
+                    case "padding-left":
+                        styleSheet.cssRules[i].style.paddingLeft = value;
+                        break;
+                    case "padding-right":
+                        styleSheet.cssRules[i].style.paddingRight = value;
+                        break;
+                    case "padding-top":
+                        styleSheet.cssRules[i].style.paddingTop = value;
+                        break;
+                    case "padding-bottom":
+                        styleSheet.cssRules[i].style.paddingBottom = value;
+                        break;
+                }
+            }
         }
     }
 
@@ -248,8 +268,8 @@ var Rexbuilder_Rexbutton = (function ($) {
                     case "color":
                         styleSheet.cssRules[i].style.color = value;
                         break;
-                    case "height":
-                        styleSheet.cssRules[i].style.height = value;
+                    case "min-height":
+                        styleSheet.cssRules[i].style.minHeight = value;
                         break;
                     case "margin-top":
                         styleSheet.cssRules[i].style.marginTop = value;
@@ -301,10 +321,6 @@ var Rexbuilder_Rexbutton = (function ($) {
                         styleSheet.cssRules[i].style.borderRightColor = value;
                         styleSheet.cssRules[i].style.borderBottomColor = value;
 
-                        styleSheet.cssRules[i].style.borderTop = styleSheet.cssRules[i].style.borderTopWidth + " " + styleSheet.cssRules[i].style.borderTopStyle + " " + value;
-                        styleSheet.cssRules[i].style.borderLeft = styleSheet.cssRules[i].style.borderLeftWidth + " " + styleSheet.cssRules[i].style.borderLeftStyle + " " + value;
-                        styleSheet.cssRules[i].style.borderRight = styleSheet.cssRules[i].style.borderRightWidth + " " + styleSheet.cssRules[i].style.borderRightStyle + " " + value;
-                        styleSheet.cssRules[i].style.borderBottom = styleSheet.cssRules[i].style.borderBottomWidth + " " + styleSheet.cssRules[i].style.borderBottomStyle + " " + value;
                         break;
                     case "border-style":
                         styleSheet.cssRules[i].style.borderStyle = value;
@@ -344,34 +360,13 @@ var Rexbuilder_Rexbutton = (function ($) {
         }
     }
 
-    var _updateButtonBorderHoverRule = function (buttonID, rule, value) {
-        
+    var _updateContainerHoverRule = function (buttonID, rule, value) {
         for (var i = 0; i < styleSheet.cssRules.length; i++) {
             if (
                 //chrome firefox
-                styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background:hover" ||
+                styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container:hover" ||
                 // edge
-                styleSheet.cssRules[i].selectorText == "[data-rex-button-id='" + buttonID + "'].rex-button-wrapper .rex-button-background:hover"
-            ) {
-                switch (rule) {
-                    case "border-color":
-                        styleSheet.cssRules[i].style.borderColor = value;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            }
-        }
-    }
-
-    var _updateButtonTextHoverRule = function (buttonID, rule, value) {
-        for (var i = 0; i < styleSheet.cssRules.length; i++) {
-            if (
-                //chrome firefox
-                styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background:hover" ||
-                // edge
-                styleSheet.cssRules[i].selectorText == "[data-rex-button-id='" + buttonID + "'].rex-button-wrapper .rex-button-background:hover"
+                styleSheet.cssRules[i].selectorText == "[data-rex-button-id='" + buttonID + "'].rex-button-wrapper .rex-button-container:hover"
             ) {
                 switch (rule) {
                     case "color":
@@ -386,6 +381,8 @@ var Rexbuilder_Rexbutton = (function ($) {
     }
 
     var _updateButtonBackgroundHoverRule = function (buttonID, rule, value) {
+        console.log("updating background hover rule");
+        console.log(buttonID, rule, value);
         for (var i = 0; i < styleSheet.cssRules.length; i++) {
             if (
                 //chrome firefox
@@ -396,6 +393,29 @@ var Rexbuilder_Rexbutton = (function ($) {
                 switch (rule) {
                     case "background-color":
                         styleSheet.cssRules[i].style.backgroundColor = value;
+                        break;
+                    case "border-color":
+                            styleSheet.cssRules[i].style.borderColor = value;
+
+                            styleSheet.cssRules[i].style.borderTopColor = value;
+                            styleSheet.cssRules[i].style.borderLeftColor = value;
+                            styleSheet.cssRules[i].style.borderRightColor = value;
+                            styleSheet.cssRules[i].style.borderBottomColor = value;
+
+                        break;
+                    case "border-style":
+
+                        styleSheet.cssRules[i].style.borderStyle = value;
+
+                        styleSheet.cssRules[i].style.borderTopStyle = value;
+                        styleSheet.cssRules[i].style.borderLeftStyle = value;
+                        styleSheet.cssRules[i].style.borderRightStyle = value;
+                        styleSheet.cssRules[i].style.borderBottomStyle = value;
+
+                        styleSheet.cssRules[i].style.borderTop = styleSheet.cssRules[i].style.borderTopWidth + " " + value + " " + styleSheet.cssRules[i].style.borderTopColor;
+                        styleSheet.cssRules[i].style.borderLeft = styleSheet.cssRules[i].style.borderLeftWidth + " " + value + " " + styleSheet.cssRules[i].style.borderLeftColor;
+                        styleSheet.cssRules[i].style.borderRight = styleSheet.cssRules[i].style.borderRightWidth + " " + value + " " + styleSheet.cssRules[i].style.borderRightColor;
+                        styleSheet.cssRules[i].style.borderBottom = styleSheet.cssRules[i].style.borderBottomWidth + " " + value + " " + styleSheet.cssRules[i].style.borderBottomColor;
                         break;
                     default:
                         break;
@@ -443,7 +463,7 @@ var Rexbuilder_Rexbutton = (function ($) {
         var containerRule = "";
         containerRule += "font-size: " + buttonProperties.font_size + ";";
         containerRule += "color: " + buttonProperties.text_color + ";";
-        containerRule += "height: " + buttonProperties.button_height + ";";
+        containerRule += "min-height: " + buttonProperties.button_height + ";";
         containerRule += "margin-top: " + buttonProperties.margin_top + ";";
         containerRule += "margin-bottom: " + buttonProperties.margin_bottom + ";";
         containerRule += "margin-left: " + buttonProperties.margin_left + ";";
@@ -460,21 +480,20 @@ var Rexbuilder_Rexbutton = (function ($) {
         
         var backgroundHoverRule = "";
         backgroundHoverRule += "background-color: " + buttonProperties.hover_color + ";";
+        backgroundHoverRule += "border-color: " + buttonProperties.hover_border + ";";
         _addButtonBackgroundHoverRule(buttonID, backgroundHoverRule);
 
-        var textHoverRule = "";
-        textHoverRule += "color: " + buttonProperties.hover_text + ";";
-        _addButtonTextHoverRule(buttonID, textHoverRule);
-
-        var borderHoverRule = "";
-        borderHoverRule += "border-color: " + buttonProperties.hover_border + ";";
-        _addButtonBorderHoverRule(buttonID, borderHoverRule);
-       
+        var containerHoverRule = "";
+        containerHoverRule += "color: " + buttonProperties.hover_text + ";";
+        _addButtonContainerHoverRule(buttonID, containerHoverRule);
     }
 
     var _updateButtonLive = function (data) {
-        //console.log(data);
-         switch (data.propertyType) {
+        console.log(data);
+        switch (data.propertyType) {
+            case "text":
+                _updateButtonTextRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
+                break;
             case "container":
                 _updateButtonContainerRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
                 break;
@@ -482,13 +501,11 @@ var Rexbuilder_Rexbutton = (function ($) {
                 _updateButtonBackgroundRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
                 break;
             case "backgroundHover":
+            case "borderHover":
                 _updateButtonBackgroundHoverRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
                 break;
-            case "borderHover":
-                _updateButtonBorderHoverRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
-                break;
             case "textHover":
-                _updateButtonTextHoverRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
+                _updateContainerHoverRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
                 break;
             case "button":
                 var $buttonWrapper = Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper[data-rex-button-id=\"" + data.buttonTarget.button_id + "\"][data-rex-button-number=\"" + data.buttonTarget.button_number + "\"]");
@@ -531,6 +548,10 @@ var Rexbuilder_Rexbutton = (function ($) {
             margin_bottom: "",
             margin_right: "",
             margin_left: "",
+            padding_top: "",
+            padding_bottom: "",
+            padding_right: "",
+            padding_left: "",
             link_target: "",
             link_type: "",
             buttonTarget: {
@@ -552,6 +573,10 @@ var Rexbuilder_Rexbutton = (function ($) {
         buttonProperties.margin_bottom = $buttonData.attr("data-margin-bottom");
         buttonProperties.margin_left = $buttonData.attr("data-margin-left");
         buttonProperties.margin_right = $buttonData.attr("data-margin-right");
+        buttonProperties.padding_top = $buttonData.attr("data-padding-top");
+        buttonProperties.padding_bottom = $buttonData.attr("data-padding-bottom");
+        buttonProperties.padding_left = $buttonData.attr("data-padding-left");
+        buttonProperties.padding_right = $buttonData.attr("data-padding-right");
         buttonProperties.background_color = $buttonData.attr("data-background-color");
         buttonProperties.border_color = $buttonData.attr("data-border-color");
         buttonProperties.border_width = $buttonData.attr("data-border-width");
@@ -578,23 +603,23 @@ var Rexbuilder_Rexbutton = (function ($) {
 
         _updateButtonContainerRule(buttonID, "font-size", buttonProperties.font_size);
         _updateButtonContainerRule(buttonID, "color", buttonProperties.text_color);
-        _updateButtonContainerRule(buttonID, "height", buttonProperties.button_height);
+        _updateButtonContainerRule(buttonID, "min-height", buttonProperties.button_height);
         _updateButtonContainerRule(buttonID, "margin-top", buttonProperties.margin_top);
         _updateButtonContainerRule(buttonID, "margin-bottom", buttonProperties.margin_bottom);
         _updateButtonContainerRule(buttonID, "margin-right", buttonProperties.margin_right);
         _updateButtonContainerRule(buttonID, "margin-left", buttonProperties.margin_left);
-        /* _updateButtonContainerRule(buttonID, "padding-top", buttonProperties.padding_top);
+        _updateButtonContainerRule(buttonID, "padding-top", buttonProperties.padding_top);
         _updateButtonContainerRule(buttonID, "padding-bottom", buttonProperties.padding_bottom);
         _updateButtonContainerRule(buttonID, "padding-right", buttonProperties.padding_right);
-        _updateButtonContainerRule(buttonID, "padding-left", buttonProperties.padding_left); */
+        _updateButtonContainerRule(buttonID, "padding-left", buttonProperties.padding_left);
         _updateButtonContainerRule(buttonID, "border-width", buttonProperties.border_width);
         _updateButtonContainerRule(buttonID, "border-color", buttonProperties.border_color);
         _updateButtonContainerRule(buttonID, "border-radius", buttonProperties.border_radius);
         _updateButtonContainerRule(buttonID, "background-color", buttonProperties.background_color);
 
         _updateButtonBackgroundHoverRule(buttonID, "background-color", buttonProperties.hover_color);
-        _updateButtonBorderHoverRule(buttonID, "border-color", buttonProperties.hover_border);
-        _updateButtonTextHoverRule(buttonID, "color", buttonProperties.hover_text);
+        _updateButtonBackgroundHoverRule(buttonID, "border-color", buttonProperties.hover_border);
+        _updateContainerHoverRule(buttonID, "color", buttonProperties.hover_text);
 
         var $buttonWrapper = Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"][data-rex-button-number=\"" + buttonProperties.buttonTarget.button_number + "\"]");
         var $buttonData = $buttonWrapper.find(".rex-button-data").eq(0);
@@ -615,6 +640,10 @@ var Rexbuilder_Rexbutton = (function ($) {
             $buttonData.attr("data-margin-bottom", buttonProperties.margin_bottom);
             $buttonData.attr("data-margin-left", buttonProperties.margin_left);
             $buttonData.attr("data-margin-right", buttonProperties.margin_right);
+            $buttonData.attr("data-padding-top", buttonProperties.padding_top);
+            $buttonData.attr("data-padding-bottom", buttonProperties.padding_bottom);
+            $buttonData.attr("data-padding-left", buttonProperties.padding_left);
+            $buttonData.attr("data-padding-right", buttonProperties.padding_right);
 
             $buttonData.attr("data-background-color", buttonProperties.background_color);
             $buttonData.attr("data-border-color", buttonProperties.border_color);
@@ -633,15 +662,15 @@ var Rexbuilder_Rexbutton = (function ($) {
     var _removeButtonStyle = function (buttonID) {
         _updateButtonContainerRule(buttonID, "font-size", "");
         _updateButtonContainerRule(buttonID, "color", "");
-        _updateButtonContainerRule(buttonID, "height", "");
+        _updateButtonContainerRule(buttonID, "min-height", "");
         _updateButtonContainerRule(buttonID, "margin-top", "");
         _updateButtonContainerRule(buttonID, "margin-bottom", "");
         _updateButtonContainerRule(buttonID, "margin-right", "");
         _updateButtonContainerRule(buttonID, "margin-left", "");
-        /* _updateButtonContainerRule(buttonID, "padding-top", "");
+        _updateButtonContainerRule(buttonID, "padding-top", "");
         _updateButtonContainerRule(buttonID, "padding-bottom", "");
         _updateButtonContainerRule(buttonID, "padding-right", "");
-        _updateButtonContainerRule(buttonID, "padding-left", ""); */
+        _updateButtonContainerRule(buttonID, "padding-left", "");
         _updateButtonContainerRule(buttonID, "border-width", "");
         _updateButtonContainerRule(buttonID, "border-color", "");
         _updateButtonContainerRule(buttonID, "border-radius", "");
@@ -649,8 +678,8 @@ var Rexbuilder_Rexbutton = (function ($) {
         _updateButtonContainerRule(buttonID, "background-color", "");
 
         _updateButtonBackgroundHoverRule(buttonID, "background-color", "");
-        _updateButtonBorderHoverRule(buttonID, "border-color", "");
-        _updateButtonTextHoverRule(buttonID, "color", "");
+        _updateButtonBackgroundHoverRule(buttonID, "border-color", "");
+        _updateContainerHoverRule(buttonID, "color", "");
     }
 
     var _removeSeparateButton = function (data) {
@@ -706,6 +735,10 @@ var Rexbuilder_Rexbutton = (function ($) {
         $buttonData.attr("data-margin-bottom", buttonData.margin_bottom);
         $buttonData.attr("data-margin-right", buttonData.margin_right);
         $buttonData.attr("data-margin-left", buttonData.margin_left);
+        $buttonData.attr("data-padding-top", buttonData.padding_top);
+        $buttonData.attr("data-padding-bottom", buttonData.padding_bottom);
+        $buttonData.attr("data-padding-right", buttonData.padding_right);
+        $buttonData.attr("data-padding-left", buttonData.padding_left);
         $buttonData.attr("data-button-name", buttonData.buttonTarget.button_name);
     }
 
@@ -733,6 +766,10 @@ var Rexbuilder_Rexbutton = (function ($) {
             margin_bottom: "",
             margin_right: "",
             margin_left: "",
+            padding_top: "",
+            padding_bottom: "",
+            padding_right: "",
+            padding_left: "",
             link_target: $buttonData.attr("data-link-target"),
             link_type: $buttonData.attr("data-link-type"),
             buttonTarget: {
@@ -758,6 +795,10 @@ var Rexbuilder_Rexbutton = (function ($) {
             buttonData.margin_bottom = ( buttonDataEl.getAttribute("data-margin-bottom") ? buttonDataEl.getAttribute("data-margin-bottom").toString() : '' );
             buttonData.margin_right = ( buttonDataEl.getAttribute("data-margin-right") ? buttonDataEl.getAttribute("data-margin-right").toString() : '' );
             buttonData.margin_left = ( buttonDataEl.getAttribute("data-margin-left") ? buttonDataEl.getAttribute("data-margin-left").toString() : '' );
+            buttonData.padding_top = ( buttonDataEl.getAttribute("data-padding-top") ? buttonDataEl.getAttribute("data-padding-top").toString() : '' );
+            buttonData.padding_bottom = ( buttonDataEl.getAttribute("data-padding-bottom") ? buttonDataEl.getAttribute("data-padding-bottom").toString() : '' );
+            buttonData.padding_right = ( buttonDataEl.getAttribute("data-padding-right") ? buttonDataEl.getAttribute("data-padding-right").toString() : '' );
+            buttonData.padding_left = ( buttonDataEl.getAttribute("data-padding-left") ? buttonDataEl.getAttribute("data-padding-left").toString() : '' );
             buttonData.buttonTarget.button_name = ( buttonDataEl.getAttribute("data-button-name") ? buttonDataEl.getAttribute("data-button-name").toString() : '' );
         } else{
             buttonData.synchronize = typeof $buttonData.attr("data-synchronize") == "undefined" ? false : $buttonData.attr("data-synchronize").toString();
@@ -849,8 +890,7 @@ var Rexbuilder_Rexbutton = (function ($) {
         updateButtonContainerRule: _updateButtonContainerRule,
         updateButtonBackgroundRule: _updateButtonBackgroundRule,
         updateButtonBackgroundHoverRule: _updateButtonBackgroundHoverRule,
-        updateButtonBorderHoverRule: _updateButtonBorderHoverRule,
-        updateButtonTextHoverRule: _updateButtonTextHoverRule,
+        updateContainerHoverRule: _updateContainerHoverRule,
 
         getDataFromButtonDom: _getDataFromButtonDom,
         generateButtonData: _generateButtonData,
