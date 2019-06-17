@@ -501,8 +501,6 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
     RexSlider.initSlider($sliderWrap);
 
-    // console.log(data);
-
     return $el;
   }
 
