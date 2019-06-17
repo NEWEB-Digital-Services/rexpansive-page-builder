@@ -78,7 +78,7 @@ class Rexbuilder_Section
         extract($parsed_atts);
 
         $options = get_option($this->plugin_name . '_options');
-        $fast_load = $options['fast_load'];
+        $fast_load = ( isset( $options['fast_load'] ) ? $options['fast_load'] : 0 );
         $editor = Rexbuilder_Utilities::isBuilderLive();
 
         // Applying a filter to the content

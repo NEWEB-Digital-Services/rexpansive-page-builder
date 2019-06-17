@@ -643,8 +643,10 @@ var Rexbuilder_CreateBlocks = (function ($) {
    * @param {jQuery Object} $gallery gallery where insert
    * @since 2.0.0
    */
-  var _insertHTMLBlock = function ($elem, $gallery, updatePosition) {
+  var _insertHTMLBlock = function ($elem, $gallery, updatePosition, updateHeight) {
     updatePosition = 'undefined' !== typeof updatePosition ? updatePosition : true;
+    updateHeight = 'undefined' !== typeof updateHeight ? updateHeight : true;
+    
     if ($gallery.length > 0) {
       var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
       var gridstack = $gallery.data("gridstack");
@@ -695,8 +697,10 @@ var Rexbuilder_CreateBlocks = (function ($) {
         blocksDisposition: $.extend(true, {}, galleryEditorInstance.properties.reverseDataGridDisposition)
       };
 
-      if ('masonry' === galleryEditorInstance.settings.galleryLayout) {
-        h = Math.floor(h * galleryEditorInstance.properties.singleWidth / galleryEditorInstance.properties.singleHeight);
+      if ( updateHeight ) {
+        if ('masonry' === galleryEditorInstance.settings.galleryLayout) {
+          h = Math.floor(h * galleryEditorInstance.properties.singleWidth / galleryEditorInstance.properties.singleHeight);
+        }
       }
 
       gridstack.addWidget($newBlock[0], 0, 0, w, h, true, 1, 500, 1); 

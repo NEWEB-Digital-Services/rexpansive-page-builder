@@ -3531,21 +3531,36 @@
     repositionElements: function(newNode) {
       var markGrid = new IndexedGrid(this.settings.numberCol);
       markGrid.setGrid(newNode.x, newNode.y, newNode.width, newNode.height);
+      
+      // console.log('insert', newNode.el.getAttribute('id'), '[' + newNode.x + ',' + newNode.y + ']', newNode.width + 'x' + newNode.height );
 
-      console.log('insert', newNode.el.getAttribute('id'), '[' + newNode.x + ',' + newNode.y + ']', newNode.width + 'x' + newNode.height );
+      // generate ordered grid nodes list
+      // based on DOM order
+      var orderedGridNodes = [];
+      var tempGridNodes = this.properties.gridstackInstance.grid.nodes;
+      var tempGridNodesLenght = tempGridNodes.length;
+      this.$element.find('.perfect-grid-item').each( function( i, el ) {
+        for( var i=0; i < tempGridNodesLenght; i++ ) {
+          if ( tempGridNodes[i].el.is( el ) ) {
+            orderedGridNodes.push( tempGridNodes[i] );
+            break;
+          }
+        }
+      });
 
       var newPositions = [];
 
-      for(var i=0, tot_nodes = this.properties.gridstackInstance.grid.nodes.length; i<tot_nodes; i++) {
+      for(var i=0, tot_nodes = orderedGridNodes.length; i<tot_nodes; i++) {
         var newPosition = {};
+        // console.log('check', orderedGridNodes[i].el.attr('id'));
         // Find elements to move
-        if( ( this.properties.gridstackInstance.grid.nodes[i].x + ( this.properties.gridstackInstance.grid.width * this.properties.gridstackInstance.grid.nodes[i].y ) ) >= ( newNode.x + ( this.properties.gridstackInstance.grid.width * newNode.y ) ) ) {
-          var linearCoord = markGrid.willFit(this.properties.gridstackInstance.grid.nodes[i].width,this.properties.gridstackInstance.grid.nodes[i].height);
+        if( ( orderedGridNodes[i].x + ( this.properties.gridstackInstance.grid.width * orderedGridNodes[i].y ) ) >= ( newNode.x + ( this.properties.gridstackInstance.grid.width * newNode.y ) ) ) {
+          var linearCoord = markGrid.willFit(orderedGridNodes[i].width,orderedGridNodes[i].height);
           var newCoords = this._getCoord(linearCoord,12);          
           newPosition.x = newCoords.x;
           newPosition.y = newCoords.y;
-          newPosition.el = this.properties.gridstackInstance.grid.nodes[i];
-          markGrid.setGrid( newCoords.x, newCoords.y, this.properties.gridstackInstance.grid.nodes[i].width, this.properties.gridstackInstance.grid.nodes[i].height);
+          newPosition.el = orderedGridNodes[i];
+          markGrid.setGrid( newCoords.x, newCoords.y, orderedGridNodes[i].width, orderedGridNodes[i].height);
           markGrid.checkGrid(linearCoord);
         }
         newPositions.push(newPosition);
@@ -3555,7 +3570,7 @@
 
       for(var j=0, tot_newPositions = newPositions.length; j<tot_newPositions; j++) {
         if( newPositions[j].hasOwnProperty('x') && newPositions[j].hasOwnProperty('y') && newPositions[j].hasOwnProperty('el') ) {
-          console.log('move', newPositions[j].el.el.attr('id'), '[' + newPositions[j].x + ',' + newPositions[j].y + ']', newPositions[j].el.width + 'x' + newPositions[j].el.height );
+          // console.log('move', newPositions[j].el.el.attr('id'), '[' + newPositions[j].x + ',' + newPositions[j].y + ']', newPositions[j].el.width + 'x' + newPositions[j].el.height );
           this.properties.gridstackInstance.move( newPositions[j].el.el, newPositions[j].x, newPositions[j].y );
         }
       }

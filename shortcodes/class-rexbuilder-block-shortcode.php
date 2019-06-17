@@ -93,7 +93,7 @@ class Rexbuilder_Block
 
         $options = get_option($this->plugin_name . '_options');
         $animation = apply_filters('rexbuilder_animation_enabled', $options['animation']);
-        $fast_load = $options['fast_load'];
+        $fast_load = ( isset( $options['fast_load'] ) ? $options['fast_load'] : 0 );
 
         $element_link_cc = apply_filters('rexpansive_block_element_link_custom_class', '');
         $grid_item_content_cc = apply_filters('rexpansive_block_grid_item_content_custom_class', '');
@@ -656,8 +656,8 @@ class Rexbuilder_Block
         echo '</div>';
         echo '</div>';
         
-        if ( $editor ) {
-            $not_has_image = ( ! isset( $atts['image_bg_elem_active'] ) || 'true' != $atts['image_bg_elem_active'] || "" == $atts['id_image_bg_block'] );
+        if ( $editor ) {          
+            $not_has_image = ( ! isset( $atts['image_bg_elem_active'] ) || 'true' != $atts['image_bg_elem_active'] || "" == $id_image_bg_block );
             $not_has_overlay = ( 'true' != $atts['overlay_block_color_active'] || "" == $atts['overlay_block_color'] );
             $not_has_video = ( '' == $video_bg_id && '' == $video_bg_url && '' == $video_bg_url_vimeo );
 
