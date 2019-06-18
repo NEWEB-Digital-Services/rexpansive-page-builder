@@ -3213,18 +3213,18 @@
       if ( !$elem.hasClass("block-has-slider") && backgroundHeight == 0 && videoHeight == 0 && textHeight == 0 ) {
         emptyBlockFlag = true;
       }
-/* 
-      console.table({
-        blockRatio: blockRatio,
-        startH: startH,
-        backgroundHeight: backgroundHeight,
-        videoHeight: videoHeight,
-        defaultHeight: defaultHeight,
-        textHeight: textHeight,
-        sliderHeight: sliderHeight,
-        test: startH * this.properties.singleHeight
-      });
- */
+
+      // console.table({
+      //   blockRatio: blockRatio,
+      //   startH: startH,
+      //   backgroundHeight: backgroundHeight,
+      //   videoHeight: videoHeight,
+      //   defaultHeight: defaultHeight,
+      //   textHeight: textHeight,
+      //   sliderHeight: sliderHeight,
+      //   test: startH * this.properties.singleHeight
+      // });
+
       if (editingBlock) {
         startH *= this.properties.singleHeight;
       } else {
@@ -3316,7 +3316,7 @@
         var textCalculate = $textWrap.clone(false);
         textCalculate.children(".medium-insert-buttons").remove();
         if (textCalculate.text().trim().length != 0 || 0 !== textCalculate.find('img,iframe,i').length ) {
-          if ( ($textWrap.hasClass("medium-editor-element") && !$textWrap.hasClass("medium-editor-placeholder")) || $textWrap.parents(".pswp-item").length != 0 ) {
+          if ( ($textWrap.hasClass("medium-editor-element") && (!$textWrap.hasClass("medium-editor-placeholder") || $textWrap[0].childElementCount > 1)) || $textWrap.parents(".pswp-item").length != 0 ) {
             var gicwStyles = window.getComputedStyle( $textWrap.parents('.grid-item-content-wrap')[0] );
             textHeight = $textWrap.innerHeight() + Math.ceil(parseFloat(gicwStyles['padding-top'])) + Math.ceil(parseFloat(gicwStyles['padding-bottom']));
           }
