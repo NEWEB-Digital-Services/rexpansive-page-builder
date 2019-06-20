@@ -217,19 +217,28 @@ class Rexbuilder_Section
 
         $row_has_accordion = has_shortcode($content, 'RexAccordion');
 
-        echo ' class="rexpansive_section' . ($empty_section ? ' empty-section' : '')
-        . ($videoTypeActive!= "" ? " ".$videoTypeActive : "") .
-        (("" != $rexlive_model_id) ? " rex-model-section" : "") .
-        (($content_has_photoswipe > 0) ? ' photoswipe-gallery' : '') .
-        (('' != $custom_classes) ? ' ' . $custom_classes : '') .
-        (('true' == $full_height) ? ' full-height-section' : '') .
-        (($content_has_floating_blocks !== false) ? ' rex-section-has-floating-blocks' : '') .
-        (($content_has_static_block !== false) ? ' rex-section-has-static-blocks' : '') .
-        ((false !== $row_has_accordion) ? ' rex-section-has-accordion' : '') .
-        ( $editor ? ( $row_separator_top < 25 ? ' ui-tools--near-top' : '' ) : '' ) .
-        apply_filters('rexpansive_builder_section_class', '', $parsed_atts) . '"' .
-            (($content_has_photoswipe > 0) ? ' itemscope itemtype="http://schema.org/ImageGallery"' : '') .
-            (strlen($section_style) > 7 ? ' ' . $section_style . '"' : '');
+        // echo classes
+        echo ' class="rexpansive_section' . ($empty_section ? ' empty-section' : '');
+        echo ($videoTypeActive!= "" ? " ".$videoTypeActive : "");
+        echo (("" != $rexlive_model_id) ? " rex-model-section" : "");
+        echo (($content_has_photoswipe > 0) ? ' photoswipe-gallery' : '');
+        echo (('' != $custom_classes) ? ' ' . $custom_classes : '');
+        echo (('true' == $full_height) ? ' full-height-section' : '');
+        echo (($content_has_floating_blocks !== false) ? ' rex-section-has-floating-blocks' : '');
+        echo (($content_has_static_block !== false) ? ' rex-section-has-static-blocks' : '');
+        echo ((false !== $row_has_accordion) ? ' rex-section-has-accordion' : '');
+        echo ( $editor ? ( $row_separator_top < 25 ? ' ui-tools--near-top' : '' ) : '' );
+
+        echo ( $fast_load && '' !== $id_image_bg_section ? ' section-w-image' : '' );
+        echo ( $fast_load && '' != $video_bg_id_section && 'undefined' != $video_bg_id_section ? ' section-w-html-video' : '' );
+        // custom classes filter
+        echo apply_filters('rexpansive_builder_section_class', '', $parsed_atts) . '"';
+
+        // photoswipe gallery check
+        echo (($content_has_photoswipe > 0) ? ' itemscope itemtype="http://schema.org/ImageGallery"' : '');
+        
+        // section style
+        echo (strlen($section_style) > 7 ? ' ' . $section_style . '"' : '');
 
         if ( '' !== $section_fast_load ) {
             echo ' ' . $section_fast_load;

@@ -294,6 +294,9 @@ class Rexbuilder_Block
         }
         echo ' w' . $size_x;
 
+        echo ( $fast_load && '' !== $id_image_bg_block ? ' block-w-image' : '' );
+        echo ( $fast_load && '' != $video_bg_id && 'undefined' != $video_bg_id ? ' block-w-html-video' : '' );
+
         // adding class for text editor
         echo ($block_has_slider ? ' block-has-slider' : ' rex-text-editable');
         
@@ -658,7 +661,7 @@ class Rexbuilder_Block
         echo '</div>';
         echo '</div>';
         
-        if ( $editor ) {          
+        if ( $editor ) {
             $not_has_image = ( ! isset( $image_bg_elem_active ) || 'true' != $image_bg_elem_active || "" == $id_image_bg_block );
             $not_has_overlay = ( 'true' != $overlay_block_color_active || "" == $overlay_block_color );
             $not_has_video = ( '' == $video_bg_id && '' == $video_bg_url && '' == $video_bg_url_vimeo );

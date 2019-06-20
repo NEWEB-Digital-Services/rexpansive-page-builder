@@ -330,6 +330,8 @@ class Rexbuilder_Public
                 }
             }
 
+            wp_enqueue_script('parallax-video', REXPANSIVE_BUILDER_URL . 'public/js/build/parallax-video.js', array(), $ver, true);
+
             wp_enqueue_script('utilities', REXPANSIVE_BUILDER_URL . 'public/js/vendor/utilities.js', array('jquery'), $ver, true);
             // wp_enqueue_script('overlay-scrollbar', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.overlayScrollbars.min.js', array('jquery'), $ver, true);
             wp_enqueue_script('2-jqueryEditor', REXPANSIVE_BUILDER_URL . 'public/js/live/2-jquery.perfectGridGalleryEditor.js', array('jquery'), null, true);

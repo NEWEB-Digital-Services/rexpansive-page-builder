@@ -25,9 +25,12 @@
         document.styleSheets[0].insertRule('#wrap1 { background-color:' + color + '; }');
     }
 
+    // I AM THE SPEED!
+    // this method is the faster
     var fillwrap2 = function() {
         var wrap = document.getElementById('wrap2');
-        wrap.style.backgroundColor = wrap.getAttribute('data-background');
+        var color = wrap.getAttribute('data-background');
+        wrap.style.backgroundColor = color;
     }
 
     var fillwrap3 = function() {
