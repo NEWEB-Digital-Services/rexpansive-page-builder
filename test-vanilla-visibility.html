@@ -114,10 +114,17 @@
         </div>
     </div>
 
-    <div class="section" data-section-id="3" style="background-image:url(http://localhost:8888/local/wp-content/uploads/2019/01/CINGHIALE-7.jpg);">
+    <div class="section parallax" data-section-id="3">
+        <div class="video">
+            <video preload autoplay loop muted playsinline>
+                <source type="video/mp4" src="http://localhost:8888/local/wp-content/uploads/2019/06/landscape.mp4" />
+            </video>
+        </div>
         <div class="content">
-            <div class="block">
+            <div class="block" style="color:black;">
                 <h1>LOREM SECTION 3</h1>
+                <h3>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iste accusantium ea natus neque ad ullam blanditiis explicabo at quos, ipsam eveniet libero repellendus omnis exercitationem distinctio consectetur ut quasi voluptate?</h3>
+                <h3>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iste accusantium ea natus neque ad ullam blanditiis explicabo at quos, ipsam eveniet libero repellendus omnis exercitationem distinctio consectetur ut quasi voluptate?</h3>
                 <h3>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iste accusantium ea natus neque ad ullam blanditiis explicabo at quos, ipsam eveniet libero repellendus omnis exercitationem distinctio consectetur ut quasi voluptate?</h3>
                 <h3>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iste accusantium ea natus neque ad ullam blanditiis explicabo at quos, ipsam eveniet libero repellendus omnis exercitationem distinctio consectetur ut quasi voluptate?</h3>
                 <h3>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iste accusantium ea natus neque ad ullam blanditiis explicabo at quos, ipsam eveniet libero repellendus omnis exercitationem distinctio consectetur ut quasi voluptate?</h3>
@@ -142,7 +149,8 @@
     function init() {
         var sections = [].slice.call(document.querySelectorAll('.section.parallax'));
         sections.forEach(function (el) {
-            new ParallaxSection(el);
+            var ps = new ParallaxSection(el);
+            console.log(ps);
         });
     }
 

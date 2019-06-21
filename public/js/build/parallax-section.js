@@ -1,17 +1,21 @@
 ; (function () {
   this.ParallaxSection = function () {
 
-    // @todo check section initial position and add relative
+    // @todo fix empty spaces on scroll 
+    // @done
+
+    // @todo check section initial position and add relative 
     // vtest-top or vtest-bottom class (to fix empty spaces)
+    // @done
+
     // @todo border animation
+
     // @todo text transform opacity animation
 
     this.element = null;
-    this.debugLabel = '';
     this.goingUp = false;
     this.goingDown = false;
-    this.scrollLastPosition = null;
-    this.originalHeight = null;
+    this.scrollLastPosition = null; 
 
     // get element as first argument
     if (arguments[0]) {
@@ -30,20 +34,26 @@
       this.options = defaults;
     }
 
-    this.scrollLastPosition = scrollDocumentPosition().top;
-    this.debugLabel = this.element.getAttribute('data-section-id');
-    this.originalHeight = this.element.scrollHeight;
+    this.scrollLastPosition = scrollDocumentPositionTop();
     // this.element.style.maxHeight = '100vh';
 
     // first load check
-    handleScroll.call(this);
-    window.addEventListener('scroll', handleScroll.bind(this));
+    handleParallax.call(this);
+    window.addEventListener('scroll', handleParallax.bind(this));
   }
 
-  function handleScroll(event) {
-    var windowInnerHeight = document.documentElement.clientHeight;
+  // private shared vars
+  var windowInnerHeight = document.documentElement.clientHeight;
+  window.addEventListener('resize', updateWindowInnerHeight);
 
-    var windowScrollTop = scrollDocumentPosition().top;
+  /**
+   * Handling the scrolling of the viewport and the parallax logic
+   * @param {ScrollEvent} event scroll event, if present
+   */
+  function handleParallax( event ) {
+    // var windowInnerHeight = document.documentElement.clientHeight;
+
+    var windowScrollTop = scrollDocumentPositionTop();
     var windowScrollBottom = windowScrollTop + windowInnerHeight;
 
     // check scroll direction
@@ -57,26 +67,22 @@
 
     // calc scrolling step to add a correct offset to determinate the element
     // top or bottom pass away
-    var step = Math.abs(this.scrollLastPosition-windowScrollTop);
-    console.log(step);
+    var step = Math.abs(this.scrollLastPosition - windowScrollTop);
 
     this.scrollLastPosition = windowScrollTop;
+
+    // element scroll information
+    var elScrollTop = offsetTop(this.element, windowScrollTop);
+    var elScrollBottom = elScrollTop + this.element.offsetHeight;
 
     // eventually offset
     var windowOffset = windowInnerHeight * this.options.offset;
     windowScrollTop = windowScrollTop + windowOffset;
     windowScrollBottom = windowScrollBottom - windowOffset;
 
-    // element scroll information
-    var elScrollTop = offset(this.element).top;
-    var elScrollBottom = elScrollTop + this.element.offsetHeight;
-
     // check if is visible
     var bottomInViewport = elScrollBottom > windowScrollTop;
     var topInViewport = elScrollTop < windowScrollBottom;
-
-    // console.log(windowScrollTop, windowScrollBottom);
-    // console.log(elScrollTop, elScrollBottom)
 
     if (bottomInViewport && topInViewport) {
       // element visibile
@@ -86,37 +92,87 @@
       removeClass(this.element, 'visibile');
     }
 
+    if ( !this.goingDown && !this.goingUp ) {
+      if ( windowScrollTop < elScrollTop ) {
+        addClass(this.element, 'vtest-top');
+      } else if ( windowScrollBottom > elScrollBottom ) {
+        addClass(this.element, 'vtest-bottom');
+      }
+    }
+
+    // if the top element reaches the top view
     if ( elScrollTop >= (windowScrollTop - step) && elScrollTop <= (windowScrollTop + step) ) {
       if ( this.goingDown ) {
         addClass(this.element, 'sticky');
       } else if ( this.goingUp ) {
-        removeClass(this.element, 'sticky');
-        removeClass(this.element, 'vtest-bottom');
-        addClass(this.element, 'vtest-top');
+        // prevent empty spaces
+        if ( elScrollTop >= windowScrollTop ) {
+          removeClass(this.element, 'sticky');
+          removeClass(this.element, 'vtest-bottom');
+          addClass(this.element, 'vtest-top');
+        }
       }
-    } else if ( elScrollBottom >= (windowScrollBottom - step) && elScrollBottom <= (windowScrollBottom + step) ) {
+    } 
+    // else if the bottom element reaches the bottom view
+    else if ( elScrollBottom >= (windowScrollBottom - step) && elScrollBottom <= (windowScrollBottom + step) )
+    {
       if ( this.goingDown ) {
-        removeClass(this.element, 'sticky');
-        removeClass(this.element, 'vtest-top');
-        addClass(this.element, 'vtest-bottom');
-      } else if (this.goingUp ) {
+        // prevent empty spaces
+        if ( elScrollBottom <= windowScrollBottom ) {
+          removeClass(this.element, 'sticky');
+          removeClass(this.element, 'vtest-top');
+          addClass(this.element, 'vtest-bottom');
+        }
+      } else if ( this.goingUp ) {
         addClass(this.element, 'sticky');
       }
     }
   };
 
-  // window scroll value
+  /**
+   * Updating the window inner height only if occurs a window resize
+   * @param {ResizeEvent} event resize event
+   */
+  function updateWindowInnerHeight(event) {
+    windowInnerHeight = document.documentElement.clientHeight;
+  }
+
+  /**
+   * Find the viewport scroll values
+   */
   function scrollDocumentPosition() {
     var scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
       scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     return { top: scrollTop, left: scrollLeft };
   }
 
+  /**
+   * Find the viewport scroll top value
+   */
+  function scrollDocumentPositionTop() {
+    return window.pageYOffset || document.documentElement.scrollTop;
+  }
+
+  /**
+   * Find the element offsets in the viewport
+   * @param {Element} el element to analize
+   */
   function offset(el) {
     var rect = el.getBoundingClientRect(),
       scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
       scrollTop = window.pageYOffset || document.documentElement.scrollTop;
     return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
+  }
+
+  /**
+   * Find the element offset top in the viewport
+   * @param {Element} el element to analize
+   * @param {Int} scrollTop window scroll top value
+   */
+  function offsetTop( el, scrollTop ) {
+    scrollTop = 'undefined' !== typeof scrollTop ? scrollTop : ( window.pageYOffset || document.documentElement.scrollTop );
+    var rect = el.getBoundingClientRect();
+    return rect.top + scrollTop;
   }
 
   // Utility method to extend defaults with user options
@@ -130,6 +186,9 @@
     return source;
   }
 
+  /**
+   * Class manipulation methods
+   */
   var hasClass, addClass, removeClass;
 
   if ('classList' in document.documentElement) {
