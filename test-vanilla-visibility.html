@@ -45,6 +45,11 @@
             box-sizing: border-box;
             position: relative;
         }
+        @media screen and (max-width:1024px) {
+            .content {
+                width: 100%;
+            }
+        }
         /* .section.parallax .content {
             opacity: 0;
             transform: translateY(80%);
@@ -83,11 +88,60 @@
             width: 25%;
             color: #fff;
         }
+
+        /** parallax border animation **/
+        .parallax__border-animation__wrap {
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 40;
+        }
+
+        .parallax__border-animation__top,
+        .parallax__border-animation__right,
+        .parallax__border-animation__bottom,
+        .parallax__border-animation__left {
+            position: absolute;
+            background-color:tan;
+            transform: scale(1,1);
+        }
+        .parallax__border-animation__top {
+            top: 0;
+            transform-origin: top;
+        }
+        .parallax__border-animation__bottom {
+            bottom: 0;
+            transform-origin: bottom;
+        }
+        .parallax__border-animation__top,
+        .parallax__border-animation__bottom {
+            left: 0;
+            right: 0;
+            width: 100%;
+            height: 90px;
+        }
+        .parallax__border-animation__right {
+            right: 0;
+            transform-origin: right;
+        }
+        .parallax__border-animation__left {
+            left: 0;
+            transform-origin: left;
+        }
+        .parallax__border-animation__right,
+        .parallax__border-animation__left {
+            top: 0;
+            bottom: 0;
+            width: 90px;
+            height: 100%;
+        }
     </style>
 </head>
 
 <body>
-    <div class="section" data-section-id="1" style="background-image:url(http://localhost:8888/local/wp-content/uploads/2019/03/montagne.jpg);">
+    <div class="section" data-section-id="1" style="background-image:url(./test-res/montagne.jpg);">
         <div class="content">
             <div class="block">
                 <h1>LOREM SECTION 1</h1>
@@ -101,7 +155,7 @@
     <div class="section parallax" data-section-id="2">
         <div class="video">
             <video preload autoplay loop muted playsinline>
-                <source type="video/mp4" src="http://localhost:8888/local/wp-content/uploads/2019/06/design.mp4" />
+                <source type="video/mp4" src="./test-res/design.mp4" />
             </video>
         </div>
         <div class="content">
@@ -117,7 +171,7 @@
     <div class="section parallax" data-section-id="3">
         <div class="video">
             <video preload autoplay loop muted playsinline>
-                <source type="video/mp4" src="http://localhost:8888/local/wp-content/uploads/2019/06/landscape.mp4" />
+                <source type="video/mp4" src="./test-res/landscape.mp4" />
             </video>
         </div>
         <div class="content">
@@ -132,7 +186,7 @@
         </div>
     </div>
 
-    <div class="section" data-section-id="4" style="background-image:url(http://localhost:8888/local/wp-content/uploads/2019/03/le-montagne-piu-alte-italia-per-regione-14392-3.jpg)">
+    <div class="section" data-section-id="4" style="background-image:url(./test-res/le-montagne-piu-alte-italia-per-regione-14392-3.jpg)">
         <div class="content">
             <div class="block">
                 <h1>LOREM SECTION 4</h1>
@@ -149,8 +203,10 @@
     function init() {
         var sections = [].slice.call(document.querySelectorAll('.section.parallax'));
         sections.forEach(function (el) {
-            var ps = new ParallaxSection(el);
-            console.log(ps);
+            var ps = new ParallaxSection(el, {
+                borderAnimation: true
+            });
+            // console.log(ps);
         });
     }
 

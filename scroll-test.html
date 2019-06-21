@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SCROLLTEST</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+    .spacer {
+        width: 100%;
+        height: 450px;
+    }
+    .container {
+        width: 100%;
+        padding: 150px 0;
+    }
+    #block {
+        width: 150px;
+        height: 150px;
+        background-color: mediumspringgreen;
+        margin: 0 auto;
+        transform: scale(1,1);
+    }
+    .trigger {
+        position: fixed;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        border-bottom: 1px dotted blue;
+    }
+    </style>
+</head>
+<body>
+    <div class="spacer" style="background-color: skyblue"></div>
+    <div class="spacer" style="background-color: thistle"></div>
+    <div class="container">
+        <div id="block"></div>
+    </div>
+    <div class="spacer" style="background-color: tomato"></div>
+    <div class="spacer" style="background-color: springgreen"></div>
+    <div class="trigger"></div>
+    <script>
+;(function() {
+    var block = document.getElementById('block');
+    var container = block.parentElement;
+    var windowInnerHeight = document.documentElement.clientHeight;
+    var containerOffsetTop = offsetTop(container);
+    var containerOffsetBottom = containerOffsetTop + container.offsetHeight;
+
+    function offsetTop( el, scrollTop ) {
+        scrollTop = 'undefined' !== typeof scrollTop ? scrollTop : ( window.pageYOffset || document.documentElement.scrollTop );
+        var rect = el.getBoundingClientRect();
+        return rect.top + scrollTop;
+    }
+
+    function handleScroll(event) {
+        var scrollPos = scrollDocumentPositionTop();
+        var spt = scrollPos+(windowInnerHeight/2)
+        console.log( containerOffsetTop, containerOffsetBottom, spt );
+        if ( ! ( spt > containerOffsetTop && spt < containerOffsetBottom ) ) {
+            container.style.backgroundColor = 'transparent';
+            if ( spt < containerOffsetTop ) {
+                block.style.transform = 'scale(1,1)';
+            } else if ( spt > containerOffsetBottom ) {
+                block.style.transform = 'scale(0,0)';
+            }
+        } else {
+            container.style.backgroundColor = 'yellow';
+            var v = 1 - ( spt - containerOffsetTop ) / container.offsetHeight;
+            block.style.transform = 'scale(' + v + ',' + v + ')';
+        }
+    }
+
+    function scrollDocumentPositionTop() {
+        return window.pageYOffset || document.documentElement.scrollTop;
+    }
+    window.addEventListener('scroll', handleScroll);
+}());
+    </script>
+</body>
+</html>
