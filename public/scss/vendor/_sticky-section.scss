@@ -1,0 +1,56 @@
+.rexpansive_section {
+  &.sticky-section {
+    .rex-video-wrap {
+      max-height: 100vh;
+    }
+  }
+}
+/** sticky border animation **/
+.sticky__border-animation__wrap {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 40;
+}
+
+.sticky__border-animation__top,
+.sticky__border-animation__right,
+.sticky__border-animation__bottom,
+.sticky__border-animation__left {
+  position: absolute;
+  transform: scale(1,1);
+  background-color: #fff;
+  transition: transform 400ms cubic-bezier(0.075, 0.82, 0.165, 1);
+}
+.sticky__border-animation__top {
+  top: 0;
+  transform-origin: top;
+}
+.sticky__border-animation__bottom {
+  bottom: 0;
+  transform-origin: bottom;
+}
+.sticky__border-animation__top,
+.sticky__border-animation__bottom {
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 90px;
+}
+.sticky__border-animation__right {
+  right: 0;
+  transform-origin: right;
+}
+.sticky__border-animation__left {
+  left: 0;
+  transform-origin: left;
+}
+.sticky__border-animation__right,
+.sticky__border-animation__left {
+  top: 0;
+  bottom: 0;
+  width: 90px;
+  height: 100%;
+}

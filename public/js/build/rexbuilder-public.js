@@ -651,8 +651,24 @@ var Rexbuilder_App = (function($) {
       }
     }
 
+    // sticky sections
+    launchStickySections();
+
     Rexbuilder_Util.galleryPluginActive = true;
   };
+
+  /**
+   * Launch sticky sections if any
+   */
+  var launchStickySections = function() {
+    var stickySections = [].slice.call(document.querySelectorAll('.sticky-section'));
+    stickySections.forEach(function (el, index) {
+      var stickySection = new StickySection(el, {
+        borderAnimation: true,
+        stickyElementSelector: '.rex-video-wrap'
+      });
+    });
+  }
 
   /**
    * Launching odometer with some options
