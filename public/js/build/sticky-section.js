@@ -97,26 +97,41 @@
       removeClass(this.element, 'visibile');
     }
 
+    // stick section
     if ( windowScrollTop > elScrollTop && windowScrollBottom < elScrollBottom ) {
-      var percentage = ( windowScrollTop - elScrollTop) * 100 / ( ( elHeight - windowInnerHeight ) * 0.8 );
+      var percentage = ( windowScrollTop - elScrollTop) * 100 / ( elHeight - windowInnerHeight );
       stickElement.call( this, windowScrollTop - elScrollTop);
-      if (this.options.borderAnimation) {
-        var sv = 1 - (1 * percentage / 100);
-        scaleBorder.call(this, sv);
-      }
     } else {
       if ( windowScrollTop < elScrollTop) {
         stickElement.call( this, 0 );
-        if (this.options.borderAnimation) {
-          scaleBorder.call(this, 1);
-        }
       } else if (windowScrollBottom > elScrollBottom ) {
         stickElement.call( this, elHeight - windowInnerHeight );
-        if (this.options.borderAnimation) {
+      }
+    }
+
+    // animate border
+    if ( this.options.borderAnimation ) {
+      if ( windowScrollTop > elScrollTop && windowScrollBottom < elScrollBottom ) {
+        var percentage = ( windowScrollTop - elScrollTop) * 100 / ( elHeight - windowInnerHeight );
+        // var sv = 1 - (1 * percentage / 100);
+        var sv = ( ( -1 * percentage ) / 10 ) + 1;
+        console.log(percentage, sv);
+        if ( sv <= 1 && sv > 0 ) {
+          scaleBorder.call(this, sv);
+        } else {
           scaleBorder.call(this, 0);
         }
+      } else {
+        if ( windowScrollTop < elScrollTop) {
+          if (this.options.borderAnimation) {
+            scaleBorder.call(this, 1);
+          }
+        } else if (windowScrollBottom > elScrollBottom ) {
+          if (this.options.borderAnimation) {
+            scaleBorder.call(this, 0);
+          }
+        }
       }
-
     }
   };
 
