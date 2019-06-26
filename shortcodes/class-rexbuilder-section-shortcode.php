@@ -68,7 +68,7 @@ class Rexbuilder_Section
             'row_margin_left' => '',
             'section_model' => '',
             'row_edited_live' => '',
-            'section_model' => '',
+            // 'section_model' => '',
             'rexlive_section_id' => '',
             'row_active_photoswipe' => '',
             'rexlive_model_id' => '',

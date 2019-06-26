@@ -3542,7 +3542,7 @@
       this.$element.find('.perfect-grid-item').each( function( i, el ) {
         for( var i=0; i < tempGridNodesLenght; i++ ) {
           if ( tempGridNodes[i].el.is( el ) ) {
-            orderedGridNodes.unshift( tempGridNodes[i] );
+            orderedGridNodes.push( tempGridNodes[i] );
             break;
           }
         }
