@@ -27,6 +27,40 @@
       callback: null,
     };
 
+  // window height shared var
+  // the window height do not depends on the elements to scroll position
+  // its the same for everyone
+  // so I can share it between the plugin instances and update it on the page resize
+  var windowInnerHeight = document.documentElement.clientHeight;
+  window.addEventListener('resize', updateWindowInnerHeight);
+
+  /**
+   * Updating the window inner height only if occurs a window resize
+   * @param {ResizeEvent} event resize event
+   */
+  function updateWindowInnerHeight(event) {
+    windowInnerHeight = document.documentElement.clientHeight;
+  }
+
+  /**
+   * Find the viewport scroll top value
+   */
+  function scrollDocumentPositionTop() {
+    return window.pageYOffset || document.documentElement.scrollTop;
+  }
+
+  /**
+   * Calculate viewport window and height
+   */
+  function viewport() {
+    var e = window, a = 'inner';
+    if (!('innerWidth' in window)) {
+      a = 'client';
+      e = document.documentElement || document.body;
+    }
+    return { width: e[a + 'Width'], height: e[a + 'Height'] };
+  };
+
   // The actual plugin constructor
   function rexScrolled(element, options) {
     this.element = element;
@@ -45,8 +79,8 @@
       launched: false
     };
 
-    this.settings.offset = parseInt($(this.element).attr('data-rs-animation-offset') || this.settings.offset);
-    this.settings.force_launch = $(this.element).attr('data-rs-animation-force-launch') || this.settings.force_launch;
+    this.settings.offset = parseInt(this.$element.attr('data-rs-animation-offset') || this.settings.offset);
+    this.settings.force_launch = this.$element.attr('data-rs-animation-force-launch') || this.settings.force_launch;
 
     this.init();
   }
@@ -61,28 +95,25 @@
       // and this.settings
       // you can add more functions like the one below and
       // call them like the example bellow
-      var that = this;
-
       this.has_scrolled();
 
-      $(window).on('scroll', function () {
-        that.has_scrolled();
-      });
+      // vanilla binding
+      window.addEventListener('scroll', this.has_scrolled.bind(this));
     },
     has_scrolled: function () {
-      if (this._viewport().width <= 767 && !this.settings.mobile) {
+      if (viewport().width <= 767 && !this.settings.mobile) {
 
         this.properties.launched = true;
 
       } else {
         var that = this;
         if (!that.properties.launched) {
-          var win_height = $(window).height(),
+          var win_height = windowInnerHeight,
             win_height_padded_bottom,
             win_height_padded_top,
             blockPosition = this.$element.offset().top,
             blockHeight = this.$element.height(),
-            scrolled = $(window).scrollTop();
+            scrolled = scrollDocumentPositionTop();
 
           if (this.settings.offset === 0) {
             win_height_padded_bottom = win_height * 0.7;
@@ -104,15 +135,6 @@
           }
         }
       }
-    },
-
-    _viewport: function () {
-      var e = window, a = 'inner';
-      if (!('innerWidth' in window)) {
-        a = 'client';
-        e = document.documentElement || document.body;
-      }
-      return { width: e[a + 'Width'], height: e[a + 'Height'] };
     },
   });
 

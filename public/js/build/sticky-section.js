@@ -99,12 +99,18 @@
 
     // stick section
     if ( windowScrollTop > elScrollTop && windowScrollBottom < elScrollBottom ) {
-      var percentage = ( windowScrollTop - elScrollTop) * 100 / ( elHeight - windowInnerHeight );
-      stickElement.call( this, windowScrollTop - elScrollTop);
+      // stick dynamic
+      var val = windowScrollTop - elScrollTop;
+      console.log(this.element.id,val,'dynamic');
+      stickElement.call( this, val );
     } else {
       if ( windowScrollTop < elScrollTop) {
+        console.log(this.element.id,'top');
+        // stick to top of the parent
         stickElement.call( this, 0 );
       } else if (windowScrollBottom > elScrollBottom ) {
+        // stick at the end of the parent
+        console.log(this.element.id,'bottom');
         stickElement.call( this, elHeight - windowInnerHeight );
       }
     }
@@ -112,10 +118,13 @@
     // animate border
     if ( this.options.borderAnimation ) {
       if ( windowScrollTop > elScrollTop && windowScrollBottom < elScrollBottom ) {
+        // percentage of the section height reached during the scroll
         var percentage = ( windowScrollTop - elScrollTop) * 100 / ( elHeight - windowInnerHeight );
-        // var sv = 1 - (1 * percentage / 100);
-        var sv = ( ( -1 * percentage ) / 10 ) + 1;
-        console.log(percentage, sv);
+        // scale value, relative to the height reached
+        // divide by 100 to make the animation last until the end of the section
+        // otherwise play with the value (now its 10)
+        var sv = 1 - (1 * percentage / 10);
+        // console.log(this.element.id, percentage, sv);
         if ( sv <= 1 && sv > 0 ) {
           scaleBorder.call(this, sv);
         } else {
@@ -137,10 +146,10 @@
 
   /**
    * Set the top value of an element to sticky it to the top
-   * @param {Integer} val value in pixel
+   * @param {Integer} topVal value in pixel
    */
-  function stickElement(val) {
-    this.stickyElement.style.top = val + 'px';
+  function stickElement(topVal) {
+    this.stickyElement.style.top = topVal + 'px';
   }
 
   /**

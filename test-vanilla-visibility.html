@@ -14,6 +14,7 @@
         h1 {
             font-size: 80px;
             line-height: 84px;
+            word-break: break-all;
         }
         h2 {
             font-size: 32px;
@@ -34,15 +35,11 @@
 
         .section.sticky .video {
             height: 100vh;
-        }
-
-        .section.sticky .video {
-            /* position: fixed; */
-            top: 0;
             left: 0;
             right: 0;
-            bottom: 0;
-            /* z-index: 1; */
+            /* bottom: 0; */
+            z-index: 5;
+            backface-visibility: hidden;
         }
 
         .content {
@@ -52,6 +49,7 @@
             padding: 40px;
             box-sizing: border-box;
             position: relative;
+            z-index: 10;
         }
         @media screen and (max-width:1024px) {
             .content {
@@ -82,6 +80,62 @@
         .block {
             width: 100%;
             color: #fff;
+        }
+
+        #ruler {
+            width: 100%;
+            position: fixed;
+            left: 0;
+            top: 75vh;
+            border-bottom: 1px dotted royalblue;
+            display: none;
+        }
+
+        #s2 .content {
+            width:1190px;
+        }
+
+        #s2 .block {
+            padding-top:400px;
+            padding-bottom:25%;
+            max-width:50%;
+        }
+
+        @media screen and (max-width:1190px) {
+            #s2 .content {
+                width: 100%;
+            }
+            #s2 .block {
+                max-width:none;
+            }
+        }
+
+        #s3 .block {
+            color:#ababab;
+            padding-top:450px;
+            max-width: 50%;
+        }
+
+        @media screen and (max-width:1024px) {
+            #s3 .block {
+                max-width: none;
+            }
+        }
+
+        .block-content.fadeUpTextCSS > * {
+            opacity: 0;
+            transform: translateY(350px);
+            transition: opacity 7.5s cubic-bezier(0.075, 0.82, 0.165, 1), transform 3.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+        }
+
+        .block-content.fadeUpTextCSS.forward-animation > * {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .block-content.fadeUpTextCSS.backward-animation > * {
+            opacity: 0;
+            transform: translateY(350px);
         }
 
         /** sticky border animation **/
@@ -151,29 +205,36 @@
         </div>
     </div>
 
-    <div class="section sticky" data-section-id="2">
+    <div id="s2" class="section sticky" data-section-id="2" style="background-color:tomato">
         <div class="video">
-            <video preload autoplay loop muted playsinline>
+            <div style="background-image:url(http://www.tarvisiano.org/ProxyVFS.axd/main,main/r31903/montagne_showreel-jpg?ext=.jpg);background-position:center;background-repeat:no-repeat;background-size:cover;width:100%;height:100%;"></div>
+            <!-- <video preload autoplay loop muted playsinline>
                 <source type="video/mp4" src="./test-res/design.mp4" />
-            </video>
+            </video> -->
         </div>
-        <div class="content" style="width:1190px;">
-            <div class="block" style="padding-top:400px;padding-bottom:25%;max-width:50%;">
-                <h2>Design completamente rinnovato</h2>
-                <h1>Più che evoluto, trasformato.</h1>
-                <p>Il display più grande mai visto su Apple Watch. Sensore elettrico per il monitoraggio del battito cardiaco. Digital Crown riprogettata con feedback aptico. È tutto un altro Apple Watch, ma ti sarà subito familiare: Apple Watch Series 4 ridefinisce quello che ti aspetti da un orologio.</p>
+        <div class="content">
+            <div class="block">
+                <div class="block-content fadeUpTextCSS">
+                    <h2>Design completamente rinnovato</h2>
+                    <h1>Più che evoluto, trasformato.</h1>
+                    <p>Il display più grande mai visto su Apple Watch. Sensore elettrico per il monitoraggio del battito cardiaco. Digital Crown riprogettata con feedback aptico. È tutto un altro Apple Watch, ma ti sarà subito familiare: Apple Watch Series 4 ridefinisce quello che ti aspetti da un orologio.</p>
+                    <p>Il display più grande mai visto su Apple Watch. Sensore elettrico per il monitoraggio del battito cardiaco. Digital Crown riprogettata con feedback aptico. È tutto un altro Apple Watch, ma ti sarà subito familiare: Apple Watch Series 4 ridefinisce quello che ti aspetti da un orologio.</p>
+                    <p>Il display più grande mai visto su Apple Watch. Sensore elettrico per il monitoraggio del battito cardiaco. Digital Crown riprogettata con feedback aptico. È tutto un altro Apple Watch, ma ti sarà subito familiare: Apple Watch Series 4 ridefinisce quello che ti aspetti da un orologio.</p>
+                    <p>Il display più grande mai visto su Apple Watch. Sensore elettrico per il monitoraggio del battito cardiaco. Digital Crown riprogettata con feedback aptico. È tutto un altro Apple Watch, ma ti sarà subito familiare: Apple Watch Series 4 ridefinisce quello che ti aspetti da un orologio.</p>
+                    <p>Il display più grande mai visto su Apple Watch. Sensore elettrico per il monitoraggio del battito cardiaco. Digital Crown riprogettata con feedback aptico. È tutto un altro Apple Watch, ma ti sarà subito familiare: Apple Watch Series 4 ridefinisce quello che ti aspetti da un orologio.</p>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="section sticky" data-section-id="3">
+    <div id="s3" class="section sticky" data-section-id="3">
         <div class="video">
             <video preload autoplay loop muted playsinline>
                 <source type="video/mp4" src="./test-res/landscape.mp4" />
             </video>
         </div>
         <div class="content">
-            <div class="block" style="color:black;padding-top:250px;">
+            <div class="block">
                 <h1>LOREM SECTION 3</h1>
                 <h3>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iste accusantium ea natus neque ad ullam blanditiis explicabo at quos, ipsam eveniet libero repellendus omnis exercitationem distinctio consectetur ut quasi voluptate?</h3>
                 <h3>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Iste accusantium ea natus neque ad ullam blanditiis explicabo at quos, ipsam eveniet libero repellendus omnis exercitationem distinctio consectetur ut quasi voluptate?</h3>
@@ -191,11 +252,146 @@
             </div>
         </div>
     </div>
+    <div id="ruler"></div>
 </body>
 <script src="./public/js/build/sticky-section.js"></script>
 <script>
 ; (function () {
-    function init() {
+    this.ScrollCSSAnimation = function () {
+        this.element = null;
+        this.launched = false;
+        // get element as first argument
+        if (arguments[0]) {
+            this.element = arguments[0];
+        }
+
+        var defaults = {
+            offset: 0,
+            backAndForth: true,
+            forwardAnimationClass: 'forward-animation',
+            backwardAnimationClass: 'backward-animation',
+        };
+
+        // Create options by extending defaults with the passed in arugments
+        // get options as second argument
+        if (arguments[1] && typeof arguments[1] === 'object') {
+            this.options = extendDefaults(defaults, arguments[1]);
+        } else {
+            this.options = defaults;
+        }
+        
+        handleAnimation.call(this);
+        window.addEventListener('scroll', handleAnimation.bind(this));
+    }
+
+    function handleAnimation() {
+        var windowScrollTop = scrollDocumentPositionTop();
+        
+        // element scroll information
+        var elScrollTop = offsetTop(this.element, windowScrollTop);
+        var elHeight = this.element.offsetHeight;
+        var elScrollBottom = elScrollTop + elHeight;
+
+        // eventually offset
+        var offset = windowInnerHeight * this.options.offset;
+        windowScrollTop = windowScrollTop + offset;
+
+        if ( windowScrollTop > elScrollTop && windowScrollTop < elScrollBottom ) {
+            if ( ! this.launched ) {
+                addClass( this.element, this.options.forwardAnimationClass );
+                removeClass( this.element, this.options.backwardAnimationClass );
+                this.launched = true;
+            }
+        } else {
+            if ( windowScrollTop < elScrollTop ) {
+                if ( this.launched ) {
+                    addClass( this.element, this.options.backwardAnimationClass );
+                    removeClass( this.element, this.options.forwardAnimationClass );
+                    this.launched = false;
+                }
+            }
+        }
+    }
+
+    // private shared vars
+    var windowInnerHeight = document.documentElement.clientHeight;
+    window.addEventListener('resize', updateWindowInnerHeight);
+
+    /**
+     * Updating the window inner height only if occurs a window resize
+     * @param {ResizeEvent} event resize event
+     */
+    function updateWindowInnerHeight(event) {
+        windowInnerHeight = document.documentElement.clientHeight;
+    }
+
+    /**
+     * Find the viewport scroll top value
+     */
+    function scrollDocumentPositionTop() {
+        return window.pageYOffset || document.documentElement.scrollTop;
+    }
+
+    /**
+     * Find the element offset top in the viewport
+     * @param {Element} el element to analize
+     * @param {Int} scrollTop window scroll top value
+     */
+    function offsetTop(el, scrollTop) {
+        scrollTop = 'undefined' !== typeof scrollTop ? scrollTop : (window.pageYOffset || document.documentElement.scrollTop);
+        var rect = el.getBoundingClientRect();
+        return rect.top + scrollTop;
+    }
+
+    // Utility method to extend defaults with user options
+    function extendDefaults(source, properties) {
+        var property;
+        for (property in properties) {
+            if (properties.hasOwnProperty(property)) {
+                source[property] = properties[property];
+            }
+        }
+        return source;
+    }
+
+    /**
+     * Class manipulation methods
+     */
+    var hasClass, addClass, removeClass;
+
+    if ('classList' in document.documentElement) {
+        hasClass = function (el, className) { return el.classList.contains(className); };
+        addClass = function (el, className) { el.classList.add(className); };
+        removeClass = function (el, className) { el.classList.remove(className); };
+    } else {
+        hasClass = function (el, className) {
+            return new RegExp('\\b' + className + '\\b').test(el.className);
+        };
+        addClass = function (el, className) {
+            if (!hasClass(el, className)) { el.className += ' ' + className; }
+        };
+        removeClass = function (el, className) {
+            el.className = el.className.replace(new RegExp('\\b' + className + '\\b', 'g'), '');
+        };
+    }
+
+    var toggleClass = function (el, className) {
+        if (hasClass(el, className)) {
+            removeClass(el, className);
+        } else {
+            addClass(el, className);
+        }
+    }
+}());
+;(function () {
+    function load() {
+        
+    }
+    
+    window.addEventListener('load', load);  // Entire content loaded
+})();
+; (function () {
+    function load() {
         var sections = [].slice.call(document.querySelectorAll('.section.sticky'));
         sections.forEach(function (el) {
             var ps = new StickySection(el, {
@@ -203,12 +399,20 @@
                 borderCustomClass: 'customize__sticky-border',
                 stickyElementSelector: '.video'
             });
-            console.log(ps);
+            // console.log(ps);
         });
+
+        var fadesUps = [].slice.call(document.querySelectorAll('.fadeUpTextCSS'));
+        fadesUps.forEach(function(el) {
+            // var fu = new ScrollCSSAnimation(el,{
+            //     offset: 0.75
+            // });
+        })
     }
 
-    window.addEventListener('load', init);
+    window.addEventListener('load', load);
 }());
+
 </script>
 
 </html>
