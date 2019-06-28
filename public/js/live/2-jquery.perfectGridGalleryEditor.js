@@ -2601,7 +2601,7 @@
      */
     _linkDnDEvents: function() {
       
-            // DEFINISCO LE VARIABILI PRINCIPALI
+      // DEFINISCO LE VARIABILI PRINCIPALI
       var $pholder;
       var gallery = this;
       var locked = false;
@@ -2838,6 +2838,7 @@
             $elemData = $elem.children(".rexbuilder-block-data");
             if ( gallery.settings.galleryLayout == "masonry" ) {
               var elementEdited = typeof $elemData.attr("data-block_dimensions_live_edited") != "undefined" && $elemData.attr("data-block_dimensions_live_edited").toString() == "true";
+              
               if ( elementEdited ) {
                 // Rexbuilder_Util.chosenLayoutData.min) === Rexbuilder_Util.$window[0].innerWidth \\ if they are the same we are at the start of the layout customization;
                 var blockTextHeight = gallery.calculateTextWrapHeight($elem.find('.text-wrap'));
@@ -3102,6 +3103,7 @@
       var sliderHeight = 0;
       var textHeight;
       var emptyBlockFlag = false;
+      var backImgType = $blockData.attr('data-type_bg_block');
       // if ($textWrap.length != 0) {
 
       // calculate text content height
@@ -3111,10 +3113,14 @@
       //   textHeight = 0;
       // }
 
+      // if the block has a full image background, without text
+      // do not calculate a new height
+      if ( 'full' === backImgType && 0 === textHeight ) { return; }
+
       // test purpose
       if(this.settings.galleryLayout == "masonry"){
         var parsedHeight = parseInt($blockData.attr("data-element_height_increased"))
-        var increasedHeight = isNaN(parsedHeight) ? 0 : parsedHeight;
+        // var increasedHeight = isNaN(parsedHeight) ? 0 : parsedHeight;
       }
 
       if (this.properties.oneColumModeActive) {
@@ -3256,8 +3262,6 @@
         newH = w * sw * blockRatio;
       }
 
-      // console.log(newH)
-
       if (this.settings.galleryLayout == "fixed") {
         if (emptyBlockFlag) {
           newH = Math.round(newH / this.properties.singleHeight);
@@ -3266,8 +3270,7 @@
         }
       } else {
         newH = Math.ceil(newH / this.properties.singleHeight);
-      }
-      // console.log(newH)
+      }      
 
       this.updateElementDataHeightProperties($blockData, newH); 
 

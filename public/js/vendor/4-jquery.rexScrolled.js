@@ -49,18 +49,6 @@
     return window.pageYOffset || document.documentElement.scrollTop;
   }
 
-  /**
-   * Calculate viewport window and height
-   */
-  function viewport() {
-    var e = window, a = 'inner';
-    if (!('innerWidth' in window)) {
-      a = 'client';
-      e = document.documentElement || document.body;
-    }
-    return { width: e[a + 'Width'], height: e[a + 'Height'] };
-  };
-
   // The actual plugin constructor
   function rexScrolled(element, options) {
     this.element = element;
@@ -101,7 +89,7 @@
       window.addEventListener('scroll', this.has_scrolled.bind(this));
     },
     has_scrolled: function () {
-      if (viewport().width <= 767 && !this.settings.mobile) {
+      if (this._viewport().width <= 767 && !this.settings.mobile) {
 
         this.properties.launched = true;
 
@@ -136,6 +124,14 @@
         }
       }
     },
+    _viewport: function() {
+      var e = window, a = 'inner';
+      if (!('innerWidth' in window)) {
+        a = 'client';
+        e = document.documentElement || document.body;
+      }
+      return { width: e[a + 'Width'], height: e[a + 'Height'] };
+    }
   });
 
   // A really lightweight plugin wrapper around the constructor,
