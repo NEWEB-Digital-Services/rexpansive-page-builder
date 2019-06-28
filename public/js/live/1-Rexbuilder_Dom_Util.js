@@ -330,6 +330,7 @@ var Rexbuilder_Dom_Util = (function($) {
           $ytpWrapper.YTPPlayerDestroy();
         }
         $ytpWrapper.remove();
+        console.log('_removeYoutubeVideo');
         if ($toggleAudio.length != 0) {
           $toggleAudio.remove();
         }

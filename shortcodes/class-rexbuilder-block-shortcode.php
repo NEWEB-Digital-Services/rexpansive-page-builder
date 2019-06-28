@@ -402,11 +402,11 @@ class Rexbuilder_Block
 
         $bg_youtube_video_markup = '';
 
-        if ('' != $video_bg_url && 'undefined' != $video_bg_url):
+        if ('' != $video_bg_url && 'undefined' != $video_bg_url) {
             $videoTypeActive = 'youtube-player';
             $mute = ($bg_video_toggle_audio_markup != "" ? "false" : "true");
             $bg_youtube_video_markup .= '<div class="rex-youtube-wrap" data-property="{videoURL:\'' . $video_bg_url . '\',containment:\'self\',startAt:0,mute:' . $mute . ',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"></div>';
-        endif;
+        }
 
         
         $bg_video_vimeo_markup = '';

@@ -158,6 +158,15 @@ class Rexbuilder_Section
             $row_separators .= ' data-row-separator-left="' . $block_distance . '"';
         }
 
+        $video_has_audio = strpos( $custom_classes, "rex-video--with-audio" );
+        $bg_video_toggle_audio_markup = "";
+
+        if ( false !== $video_has_audio ) {
+            $bg_video_toggle_audio_markup .= '<div class="rex-video-toggle-audio">';
+            $bg_video_toggle_audio_markup .= '<div class="rex-video-toggle-audio-shadow"></div>';
+            $bg_video_toggle_audio_markup .= '</div>';
+        }
+
         $videoTypeActive = '';
 
         $bg_video_markup = '';
@@ -182,7 +191,8 @@ class Rexbuilder_Section
         
         if ('' != $video_bg_url_section && 'undefined' != $video_bg_url_section) {
             $videoTypeActive = 'youtube-player';
-            $bg_youtube_video_markup .= '<div class="rex-youtube-wrap" data-property="{videoURL:\'' . $video_bg_url_section . '\',containment:\'self\',startAt:0,mute:\'true\',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"></div>';
+            $mute = ($bg_video_toggle_audio_markup != "" ? "false" : "true");
+            $bg_youtube_video_markup .= '<div class="rex-youtube-wrap" data-property="{videoURL:\'' . $video_bg_url_section . '\',containment:\'self\',startAt:0,mute:' . $mute . ',autoPlay:true,loop:true,opacity:1,showControls:false,showYTLogo:false}"></div>';
         }
                     
         $bg_video_vimeo_markup = '';
@@ -288,6 +298,7 @@ class Rexbuilder_Section
         echo $bg_video_markup;
         echo $bg_youtube_video_markup;
         echo $bg_video_vimeo_markup;
+        echo $bg_video_toggle_audio_markup;
         
         echo '<div class="responsive-overlay"';
         if ("" != $responsive_background) {
