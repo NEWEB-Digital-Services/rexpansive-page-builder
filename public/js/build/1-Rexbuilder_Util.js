@@ -2458,6 +2458,8 @@ var Rexbuilder_Util = (function($) {
       type = "youtube";
     }
 
+    var hasAudio = 'undefined' !== targetProps['custom_classes'] ? ( -1 !== targetProps['custom_classes'].indexOf('rex-video--with-audio') ? true : false ) : false;
+
     var videoOptions = {
       mp4Data: {
         idMp4: mp4ID,
@@ -2470,7 +2472,7 @@ var Rexbuilder_Util = (function($) {
       },
       vimeoUrl: vimeoUrl,
       youtubeUrl: youtubeUrl,
-      audio: false,
+      audio: hasAudio,
       typeVideo: type
     };
 
