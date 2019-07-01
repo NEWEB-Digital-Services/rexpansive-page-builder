@@ -70,6 +70,7 @@
    * @param {ScrollEvent} event scroll event, if present
    */
   function handleSticky(event) {
+    console.log('------ HANDLA --------');
     // var windowInnerHeight = document.documentElement.clientHeight;
 
     var windowScrollTop = scrollDocumentPositionTop();
@@ -85,6 +86,32 @@
     windowScrollTop = windowScrollTop + windowOffset;
     windowScrollBottom = windowScrollBottom - windowOffset;
 
+    var topViewport = windowScrollTop >= elScrollTop;
+    var bottomViewport = windowScrollBottom <= elScrollBottom;
+    var beforeViewport = windowScrollTop <= elScrollTop;
+    var afterViewport = windowScrollBottom >= elScrollBottom;
+
+    console.log('viewport', windowScrollTop,windowScrollBottom);
+    console.log('element', elScrollTop,elScrollBottom);
+
+    // stick section
+    if ( topViewport && bottomViewport ) {
+      // stick dynamic
+      var val = windowScrollTop - elScrollTop;
+      console.log(this.element.id,val,'dynamic');
+      stickElement.call( this, val );
+    } else {
+      if ( beforeViewport ) {
+        console.log(this.element.id,'top');
+        // stick to top of the parent
+        stickElement.call( this, 0 );
+      } else if ( afterViewport ) {
+        // stick at the end of the parent
+        console.log(this.element.id,'bottom');
+        stickElement.call( this, elHeight - windowInnerHeight );
+      }
+    }
+
     // check if is visible
     var bottomInViewport = elScrollBottom > windowScrollTop;
     var topInViewport = elScrollTop < windowScrollBottom;
@@ -97,33 +124,15 @@
       removeClass(this.element, 'visibile');
     }
 
-    // stick section
-    if ( windowScrollTop > elScrollTop && windowScrollBottom < elScrollBottom ) {
-      // stick dynamic
-      var val = windowScrollTop - elScrollTop;
-      console.log(this.element.id,val,'dynamic');
-      stickElement.call( this, val );
-    } else {
-      if ( windowScrollTop < elScrollTop) {
-        console.log(this.element.id,'top');
-        // stick to top of the parent
-        stickElement.call( this, 0 );
-      } else if (windowScrollBottom > elScrollBottom ) {
-        // stick at the end of the parent
-        console.log(this.element.id,'bottom');
-        stickElement.call( this, elHeight - windowInnerHeight );
-      }
-    }
-
     // animate border
     if ( this.options.borderAnimation ) {
-      if ( windowScrollTop > elScrollTop && windowScrollBottom < elScrollBottom ) {
+      if ( topViewport && bottomViewport ) {
         // percentage of the section height reached during the scroll
         var percentage = ( windowScrollTop - elScrollTop) * 100 / ( elHeight - windowInnerHeight );
         // scale value, relative to the height reached
         // divide by 100 to make the animation last until the end of the section
         // otherwise play with the value (now its 10)
-        var sv = 1 - (1 * percentage / 10);
+        var sv = 1 - (1 * percentage / 5);
         // console.log(this.element.id, percentage, sv);
         if ( sv <= 1 && sv > 0 ) {
           scaleBorder.call(this, sv);
@@ -131,11 +140,11 @@
           scaleBorder.call(this, 0);
         }
       } else {
-        if ( windowScrollTop < elScrollTop) {
+        if ( beforeViewport ) {
           if (this.options.borderAnimation) {
             scaleBorder.call(this, 1);
           }
-        } else if (windowScrollBottom > elScrollBottom ) {
+        } else if ( afterViewport ) {
           if (this.options.borderAnimation) {
             scaleBorder.call(this, 0);
           }
@@ -146,10 +155,15 @@
 
   /**
    * Set the top value of an element to sticky it to the top
+   * Optionally set also the bottom value
    * @param {Integer} topVal value in pixel
+   * @param {Integer} bottomVal value in pixel
    */
-  function stickElement(topVal) {
+  function stickElement(topVal, bottomVal) {
     this.stickyElement.style.top = topVal + 'px';
+    if ( 'undefined' !== typeof bottomVal ) {
+      this.stickyElement.style.bottom = bottomVal + 'px';
+    }
   }
 
   /**

@@ -652,7 +652,14 @@ var Rexbuilder_App = (function($) {
     }
 
     // sticky sections
-    launchStickySections();
+    if( false == _plugin_frontend_settings.user.editing ) {
+      launchStickySections();    
+    }
+    
+    // launch scrollCSSAnimations
+    if( false == _plugin_frontend_settings.user.editing ) {
+      launchScrollCSSAnimations();
+    }
 
     Rexbuilder_Util.galleryPluginActive = true;
   };
@@ -661,13 +668,29 @@ var Rexbuilder_App = (function($) {
    * Launch sticky sections if any
    */
   var launchStickySections = function() {
-    var stickySections = [].slice.call(document.querySelectorAll('.sticky-section'));
-    stickySections.forEach(function (el, index) {
-      var stickySection = new StickySection(el, {
-        borderAnimation: true,
-        stickyElementSelector: '.rex-video-wrap'
+    if ( 'undefined' !== typeof StickySection ) {
+      var stickySections = [].slice.call(document.querySelectorAll('.sticky-section'));
+      stickySections.forEach(function (el, index) {
+        var stickySection = new StickySection(el, {
+          borderAnimation: true,
+          stickyElementSelector: '.rex-video-wrap'
+        });
       });
-    });
+    }
+  };
+
+  /**
+   * Launch eventually scroll animations
+   */
+  var launchScrollCSSAnimations = function() {
+    if ( 'undefined' !== typeof ScrollCSSAnimation ) {
+      var fadesUps = [].slice.call(document.querySelectorAll('.fadeUpTextCSS'));
+      fadesUps.forEach(function(el) {
+        var fu = new ScrollCSSAnimation(el,{
+          offset: 0.75
+        });
+      });
+    }
   }
 
   /**

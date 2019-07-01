@@ -1,0 +1,27 @@
+.perfect-grid-item {
+  &.fadeUpTextCSS {
+    .text-wrap {
+      > * {
+        opacity: 0;
+        transform: translateY(350px);
+        transition: opacity 3.5s cubic-bezier(0.075, 0.82, 0.165, 1), transform 3.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+      }
+    }
+  }
+  &.forward-animation {
+    .text-wrap {
+      > * {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+  }
+  &.backward-animation {
+    .text-wrap {
+      > * {
+        opacity: 0;
+        transform: translateY(350px);
+      }
+    }
+  }
+}
