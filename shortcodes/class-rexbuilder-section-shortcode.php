@@ -179,7 +179,7 @@ class Rexbuilder_Section
                 $bg_video_markup .= '<source type="video/mp4" data-src="' . $video_mp4_url . '" />';
                 $bg_video_markup .= '</video>';
                 // adding video controllers
-                $bg_video_markup .= '<div class="rex-video__controls"><span class="loader rotate-center loader--view"></span></div>';
+                $bg_video_markup .= '<div class="rex-video__controls"><div class="loader video-tool video-tool--view"></div><div class="pause video-tool"><div class="indicator"></div></div><div class="play video-tool"><div class="indicator"></div></div></div>';
             } else {
                 $bg_video_markup .= '<source type="video/mp4" src="' . $video_mp4_url . '" />';
                 $bg_video_markup .= '</video>';

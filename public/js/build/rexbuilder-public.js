@@ -531,6 +531,27 @@ var Rexbuilder_App = (function($) {
         }
       }
     });
+
+    // video controller tools
+    // play video
+    $(document).on('click', '.rex-video__controls .pause', function(ev) {
+      var $tool = $(ev.currentTarget);
+      var $play_tool = $tool.parent().children('.play');
+      var $target = $tool.parents('.rexpansive_section');
+      $tool.removeClass('video-tool--view');
+      $play_tool.addClass('video-tool--view');
+      Rexbuilder_Util.pauseVideo( $target );
+    });
+
+    // pause video
+    $(document).on('click', '.rex-video__controls .play', function(ev) {
+      var $tool = $(ev.currentTarget);
+      var $pause_tool = $tool.parent().children('.pause');
+      var $target = $tool.parents('.rexpansive_section');
+      $tool.removeClass('video-tool--view');
+      $pause_tool.addClass('video-tool--view');
+      Rexbuilder_Util.playVideo( $target );
+    });
   };
 
   var load = function() {

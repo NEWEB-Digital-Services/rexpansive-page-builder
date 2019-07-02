@@ -75,11 +75,13 @@
     var controls = el.nextElementSibling;
     if ( controls ) {
       var loader = controls.querySelector('.loader');
+      var pause = controls.querySelector('.pause');
       if ( loader ) {
         // tracing the callback to succesfully remove it
         // after the call
         el.addEventListener('play', function cb(event) {
-          loader.className = loader.className.replace('loader--view','').trim();
+          loader.className = loader.className.replace('video-tool--view','').trim();
+          pause.className = pause.className + ' video-tool--view';
           event.currentTarget.removeEventListener(event.type, cb);
         });
       }
@@ -125,13 +127,13 @@
     // if error, try to reload the resource
     el.addEventListener('error', onErrorCallback);
 
-    var testCb = function(event) {
+    // var testCb = function(event) {
       // console.log(event.type);
       // console.log(event.currentTarget.children[0].src);
-    }
+    // }
 
-    el.addEventListener('stalled',testCb);
-    el.addEventListener('suspend',testCb);
+    // el.addEventListener('stalled',testCb);
+    // el.addEventListener('suspend',testCb);
     // el.addEventListener('waiting',testCb);
   }
 

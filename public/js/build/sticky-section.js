@@ -75,7 +75,7 @@
    * @param {ScrollEvent} event scroll event, if present
    */
   function handleSticky(event) {
-    console.log('------ HANDLA --------');
+    // console.log('------ HANDLA --------');
     // var windowInnerHeight = document.documentElement.clientHeight;
 
     var windowScrollTop = scrollDocumentPositionTop();
@@ -96,23 +96,23 @@
     var beforeViewport = windowScrollTop <= elScrollTop;
     var afterViewport = windowScrollBottom >= elScrollBottom;
 
-    console.log('viewport', windowScrollTop,windowScrollBottom);
-    console.log('element', elScrollTop,elScrollBottom);
+    // console.log('viewport', windowScrollTop,windowScrollBottom);
+    // console.log('element', elScrollTop,elScrollBottom);
 
     // stick section
     if ( topViewport && bottomViewport ) {
       // stick dynamic
       var val = windowScrollTop - elScrollTop;
-      console.log(this.element.id,val,'dynamic');
+      // console.log(this.element.id,val,'dynamic');
       stickElement.call( this, val );
     } else {
       if ( beforeViewport ) {
-        console.log(this.element.id,'top');
+        // console.log(this.element.id,'top');
         // stick to top of the parent
         stickElement.call( this, 0 );
       } else if ( afterViewport ) {
         // stick at the end of the parent
-        console.log(this.element.id,'bottom');
+        // console.log(this.element.id,'bottom');
         stickElement.call( this, elHeight - windowInnerHeight );
       }
     }

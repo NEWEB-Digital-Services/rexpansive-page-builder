@@ -143,3 +143,114 @@ video.rex-video-container {
     }
   }
 }
+
+/**
+ * ----------------------------------------
+ * animation rotate-center
+ * ----------------------------------------
+ */
+@-webkit-keyframes rotate-center {
+  0% {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+@keyframes rotate-center {
+  0% {
+    -webkit-transform: rotate(0);
+            transform: rotate(0);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+
+// .rotate-center {
+//   -webkit-animation: rotate-center 1s linear infinite both;
+//   animation: rotate-center 1s linear infinite both;
+// }
+
+.rex-video__controls {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin-right: 30px;
+  margin-bottom: 30px;
+  z-index: 50;
+
+  .video-tool {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #fff;
+    position: relative;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    
+    &.video-tool--view {
+      display:flex;
+    }
+  }
+
+  .loader {
+    border-color:rgba(255,255,255,0.3);
+
+    &:before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      bottom: -2px;
+      right: -2px;
+      border-left: 2px solid #fff;
+      border-top-left-radius: 50%;
+      border-bottom-left-radius: 50%;
+      -webkit-animation: rotate-center 1s linear infinite both;
+      animation: rotate-center 1s linear infinite both;
+    }
+  }
+
+  .indicator {
+    position: relative;
+  }
+
+  .pause {
+    .indicator {
+      width: 10px;
+      height: 15px;
+
+      &:before {
+        content: '';
+        position: absolute;
+        width: 2px;
+        height: 100%;
+        left: 0;
+        background-color: #fff;
+      }
+
+      &:after {
+        content: '';
+        position: absolute;
+        width: 2px;
+        height: 100%;
+        right: 0;
+        background-color: #fff;
+      }
+    }
+  }
+
+  .play {
+    .indicator {
+      border-top: 7px solid transparent;
+      border-bottom: 7px solid transparent;
+      border-left: 10px solid #fff;
+    }
+  }
+}
