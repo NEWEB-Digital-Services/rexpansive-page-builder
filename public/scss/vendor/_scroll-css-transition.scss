@@ -1,10 +1,17 @@
-.perfect-grid-item {
+.perfect-grid-item,
+.rexpansive_section {
   &.fadeUpTextCSS {
+    .perfect-grid-item,
+    .grid-stack-item-content,
+    .grid-item-content,
+    .rex-custom-scrollbar {
+      overflow: visible!important;
+    }
     .text-wrap {
       > * {
         opacity: 0;
-        transform: translateY(350px);
-        transition: opacity 3.5s cubic-bezier(0.075, 0.82, 0.165, 1), transform 3.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+        transform: translateY(120px);
+        transition: opacity 500ms $easeOutSine, transform 600ms $easeOutCirc;
       }
     }
   }
@@ -12,6 +19,7 @@
     .text-wrap {
       > * {
         opacity: 1;
+        transition: opacity 3000ms $easeOutSine, transform 2500ms $easeOutCirc;
         transform: translateY(0);
       }
     }
@@ -20,7 +28,8 @@
     .text-wrap {
       > * {
         opacity: 0;
-        transform: translateY(350px);
+        transform: translateY(120px);
+        transition: opacity 500ms $easeOutSine, transform 600ms $easeOutCirc;
       }
     }
   }

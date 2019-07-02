@@ -44,7 +44,7 @@
   var lazyLoadBkgrImg = function( el ) {
     // if ( el ) {
       var src = el.getAttribute('data-src');
-      if ( src ) {
+      if ( null !== src ) {
         var tempImg = new Image();
         tempImg.src = el.getAttribute('data-src');
         tempImg.onload = function() {
@@ -60,6 +60,7 @@
         // on case of loading error, repush the image on the visibile queue
         // so the next interval can be reprocessed
         tempImg.onerror = function() {
+          console.log('errure')
           imgVisibleQueue.push( el );
         };
       }

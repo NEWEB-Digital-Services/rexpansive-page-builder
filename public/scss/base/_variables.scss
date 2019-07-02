@@ -41,6 +41,12 @@ $fade-all-ease: cubic-bezier(0.71, 0.35, 0.26, 0.83);
 $fade-all-duration: 0.3s;
 $fade-up-ease: cubic-bezier(0.19, 1, 0.22, 1);
 
+// eases
+$easeOutSine: cubic-bezier(0.39, 0.575, 0.565, 1);
+$easeOutCirc: cubic-bezier(0.075, 0.82, 0.165, 1);
+$easeInCubic: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+$easeInCirc: cubic-bezier(0.6, 0.04, 0.98, 0.335);
+
 /** INDICATOR **/
 $indicator-dot-width: 11px;
 $indicator-line-dimension: 85px;

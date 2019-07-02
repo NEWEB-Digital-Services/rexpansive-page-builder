@@ -75,7 +75,6 @@
    * @param {ScrollEvent} event scroll event, if present
    */
   function handleSticky(event) {
-    // console.log('------ HANDLA --------');
     // var windowInnerHeight = document.documentElement.clientHeight;
 
     var windowScrollTop = scrollDocumentPositionTop();
