@@ -94,6 +94,10 @@
             display: none;
         }
 
+        #s2 {
+            margin-top: 40px;
+            margin-bottom: 40px;
+        }
         #s2 .content {
             width:1190px;
         }
@@ -159,6 +163,7 @@
             transform: scale(1,1);
             background-color: #fff;
             transition: transform 400ms cubic-bezier(0.075, 0.82, 0.165, 1);
+            z-index: 29;
         }
         .sticky__border-animation__top {
             top: 0;
@@ -266,7 +271,7 @@
         sections.forEach(function (el) {
             var ps = new StickySection(el, {
                 borderAnimation: true,
-                borderCustomClass: 'customize__sticky-border',
+                // borderCustomClass: 'customize__sticky-border',
                 stickyElementSelector: '.video'
             });
             // console.log(ps);

@@ -27,21 +27,22 @@
     // find element to stick
     this.stickyElement = ('' !== this.options.stickyElementSelector ? this.element.querySelector(this.options.stickyElementSelector) : null);
 
-    // prepare animations if prsents
+    // prepare border animation if prsents
     if (this.options.borderAnimation) {
       this.borderAnimationEl.el = document.createElement('div');
       addClass(this.borderAnimationEl.el, 'sticky__border-animation__wrap');
       this.borderAnimationEl.bt = document.createElement('div');
       addClass(this.borderAnimationEl.bt, 'sticky__border-animation__top');
-      this.borderAnimationEl.el.appendChild(this.borderAnimationEl.bt);
       this.borderAnimationEl.br = document.createElement('div');
       addClass(this.borderAnimationEl.br, 'sticky__border-animation__right');
-      this.borderAnimationEl.el.appendChild(this.borderAnimationEl.br);
       this.borderAnimationEl.bb = document.createElement('div');
       addClass(this.borderAnimationEl.bb, 'sticky__border-animation__bottom');
-      this.borderAnimationEl.el.appendChild(this.borderAnimationEl.bb);
       this.borderAnimationEl.bl = document.createElement('div');
       addClass(this.borderAnimationEl.bl, 'sticky__border-animation__left');
+
+      this.borderAnimationEl.el.appendChild(this.borderAnimationEl.bt);
+      this.borderAnimationEl.el.appendChild(this.borderAnimationEl.br);
+      this.borderAnimationEl.el.appendChild(this.borderAnimationEl.bb);
       this.borderAnimationEl.el.appendChild(this.borderAnimationEl.bl);
 
       // customization
@@ -50,7 +51,11 @@
         addClass( this.borderAnimationEl.el, this.options.borderCustomClass );
       }
       
-      this.element.appendChild(this.borderAnimationEl.el);
+      this.element.insertBefore(this.borderAnimationEl.el, this.element.firstChild);
+      // this.element.insertBefore(this.borderAnimationEl.bl, this.element.firstChild);
+      // this.element.insertBefore(this.borderAnimationEl.bb, this.element.firstChild);
+      // this.element.insertBefore(this.borderAnimationEl.br, this.element.firstChild);
+      // this.element.insertBefore(this.borderAnimationEl.bt, this.element.firstChild);
     }
 
     // first load check
