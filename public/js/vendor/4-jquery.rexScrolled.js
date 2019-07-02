@@ -49,6 +49,17 @@
     return window.pageYOffset || document.documentElement.scrollTop;
   }
 
+  /**
+   * Find the element offset top in the viewport
+   * @param {Element} el element to analize
+   * @param {Int} scrollTop window scroll top value
+   */
+  function offsetTop(el, scrollTop) {
+    scrollTop = 'undefined' !== typeof scrollTop ? scrollTop : (window.pageYOffset || document.documentElement.scrollTop);
+    var rect = el.getBoundingClientRect();
+    return rect.top + scrollTop;
+  }
+
   // The actual plugin constructor
   function rexScrolled(element, options) {
     this.element = element;
@@ -67,8 +78,8 @@
       launched: false
     };
 
-    this.settings.offset = parseInt(this.$element.attr('data-rs-animation-offset') || this.settings.offset);
-    this.settings.force_launch = this.$element.attr('data-rs-animation-force-launch') || this.settings.force_launch;
+    this.settings.offset = parseInt(this.element.getAttribute('data-rs-animation-offset') || this.settings.offset);
+    this.settings.force_launch = this.element.getAttribute('data-rs-animation-force-launch') || this.settings.force_launch;
 
     this.init();
   }
@@ -99,9 +110,9 @@
           var win_height = windowInnerHeight,
             win_height_padded_bottom,
             win_height_padded_top,
-            blockPosition = this.$element.offset().top,
-            blockHeight = this.$element.height(),
-            scrolled = scrollDocumentPositionTop();
+            scrolled = scrollDocumentPositionTop(),
+            blockPosition = offsetTop(this.element, scrolled),
+            blockHeight = this.element.offsetHeight;
 
           if (this.settings.offset === 0) {
             win_height_padded_bottom = win_height * 0.7;

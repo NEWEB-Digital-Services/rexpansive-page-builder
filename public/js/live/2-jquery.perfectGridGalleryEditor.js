@@ -338,8 +338,9 @@
 
     clearStateGrid: function() {
       var rexID;
-      this.$element.children(".grid-stack-item").each(function(i, el) {
-        rexID = $(el).attr("data-rexbuilder-block-id");
+      var items = [].slice.call(this.element.querySelectorAll('.grid-stack-item'));
+      items.forEach(function(el) {
+        rexID = el.getAttribute('data-rexbuilder-block-id');
         store.remove(rexID);
         store.remove(rexID + "_noEdits");
       });
@@ -664,7 +665,7 @@
      * @since 2.0.0
      */
     _setGridID: function() {
-      this.properties.sectionNumber = parseInt( this.$section.attr("data-rexlive-section-number") );
+      this.properties.sectionNumber = parseInt( this.section.getAttribute("data-rexlive-section-number") );
       this.$element.addClass("grid-number-" + this.properties.sectionNumber);
     },
 
@@ -678,14 +679,12 @@
       this.$element.find(".grid-stack-item").each(function(i, e) {
         $elem = $(e);
         if (
-          $elem.attr("data-rexbuilder-block-id") === undefined ||
-          $elem.attr("data-rexbuilder-block-id") == ""
+          e.getAttribute("data-rexbuilder-block-id") === undefined ||
+          e.getAttribute("data-rexbuilder-block-id") == ""
         ) {
           id = Rexbuilder_Util.createBlockID();
-          $elem.attr("data-rexbuilder-block-id", id);
-          $elem
-            .children(".rexbuilder-block-data")
-            .attr("data-rexbuilder_block_id", id);
+          e.setAttribute("data-rexbuilder-block-id", id);
+          $elem.children(".rexbuilder-block-data").attr("data-rexbuilder_block_id", id);
         }
       });
     },
@@ -1496,7 +1495,7 @@
           block["attributes"]["data-height"].value = h;
 
           this.updateElementDataHeightProperties(
-            $dataBlock,
+            $dataBlock[0],
             parseInt(block["attributes"]["data-gs-height"].value)
           );
           // updating element class
@@ -1525,23 +1524,17 @@
     // Override options set by the jquery call with the html data
     // attributes, if presents
     _defineDataSettings: function() {
-      if ("undefined" != typeof this.$element.attr("data-separator")) {
-        this.properties.gutter = parseInt(this.$element.attr("data-separator"));
+      if (this.element.getAttribute("data-separator")) {
+        this.properties.gutter = parseInt(this.element.getAttribute("data-separator"));
       }
-      if ("undefined" != typeof this.$element.attr("data-layout")) {
-        this.settings.galleryLayout = this.$element
-          .attr("data-layout")
-          .toString();
+      if (this.element.getAttribute("data-layout")) {
+        this.settings.galleryLayout = this.element.getAttribute("data-layout").toString();
       }
-      if ("undefined" != typeof this.$element.attr("data-full-height")) {
-        this.settings.fullHeight = this.$element
-          .attr("data-full-height")
-          .toString();
+      if (this.element.getAttribute("data-full-height")) {
+        this.settings.fullHeight = this.element.getAttribute("data-full-height").toString();
       }
-      if ("undefined" != typeof this.$element.attr("data-mobile-padding")) {
-        this.settings.mobilePadding = this.$element
-          .attr("data-mobile-padding")
-          .toString();
+      if (this.element.getAttribute("data-mobile-padding")) {
+        this.settings.mobilePadding = this.element.getAttribute("data-mobile-padding").toString();
       }
     },
 
@@ -1550,8 +1543,9 @@
 
       var newWidth = this.element.offsetWidth;
 
-      var collapseGrid = this.$section.attr("data-rex-collapse-grid");
-      if (typeof collapseGrid == "undefined") {
+      // var collapseGrid = this.$section.attr("data-rex-collapse-grid");
+      var collapseGrid = this.section.getAttribute("data-rex-collapse-grid");
+      if ( collapseGrid ) {
         if (
           Rexbuilder_Util.activeLayout == "default" &&
           this._viewport().width <=
@@ -1561,13 +1555,8 @@
         } else {
           this.properties.oneColumModeActive = false;
         }
-      } else if (
-        (Rexbuilder_Util.activeLayout == "default" &&
-          this._viewport().width <=
-            _plugin_frontend_settings.defaultSettings.collapseWidth &&
-          collapseGrid.toString() == "true") ||
-        collapseGrid.toString() == "true"
-      ) {
+      } else if ( collapseGrid && (
+        (Rexbuilder_Util.activeLayout == "default" && this._viewport().width <= _plugin_frontend_settings.defaultSettings.collapseWidth && collapseGrid.toString() == "true") || collapseGrid.toString() == "true" ) ) {
         this.properties.oneColumModeActive = true;
       } else {
         this.properties.oneColumModeActive = false;
@@ -1636,27 +1625,26 @@
         );
       }
 
-      this.properties.paddingTopBottom = this.$section.hasClass(
-        "distance-block-top-bottom"
-      );
+      // this.properties.paddingTopBottom = this.$section.hasClass("distance-block-top-bottom");
+      this.properties.paddingTopBottom = -1 !== this.section.className.indexOf('distance-block-top-bottom');
     },
 
     _defineRowSeparator: function() {
       this.properties.gridTopSeparator =
-        "undefined" !== typeof this.$element.attr("data-row-separator-top")
-          ? parseInt(this.$element.attr("data-row-separator-top"))
+        this.element.getAttribute("data-row-separator-top")
+          ? parseInt(this.element.getAttribute("data-row-separator-top"))
           : null;
       this.properties.gridRightSeparator =
-        "undefined" !== typeof this.$element.attr("data-row-separator-right")
-          ? parseInt(this.$element.attr("data-row-separator-right"))
+        this.element.getAttribute("data-row-separator-right")
+          ? parseInt(this.element.getAttribute("data-row-separator-right"))
           : null;
       this.properties.gridBottomSeparator =
-        "undefined" !== typeof this.$element.attr("data-row-separator-bottom")
-          ? parseInt(this.$element.attr("data-row-separator-bottom"))
+        this.element.getAttribute("data-row-separator-bottom")
+          ? parseInt(this.element.getAttribute("data-row-separator-bottom"))
           : null;
       this.properties.gridLeftSeparator =
-        "undefined" !== typeof this.$element.attr("data-row-separator-left")
-          ? parseInt(this.$element.attr("data-row-separator-left"))
+        this.element.getAttribute("data-row-separator-left")
+          ? parseInt(this.element.getAttribute("data-row-separator-left"))
           : null;
     },
 
@@ -1847,36 +1835,47 @@
 
     _prepareElements: function() {
       var gallery = this;
+      var items = [].slice.call( gallery.element.querySelectorAll('.grid-stack-item') );
 
       if (this.properties.editedFromBackend && ('undefined' === typeof Rexbuilder_Util_Editor.sectionCopying || false === Rexbuilder_Util_Editor.sectionCopying ) ) {
-        var $elem;
-        gallery.$element.children(".grid-stack-item").each(function() {
-          $elem = $(this);
-          $elem.attr("data-gs-x", $elem.data("col") - 1);
-          $elem.attr("data-gs-y", $elem.data("row") - 1);
-          $elem.attr("data-gs-width", $elem.data("width"));
-          $elem.attr("data-gs-height", $elem.data("height"));
+        // var $elem;
+        items.forEach( function(el) {
+          el.setAttribute('data-gs-x', parseInt( el.getAttribute('data-col') ) - 1);
+          el.setAttribute('data-gs-y', parseInt( el.getAttribute('data-row') ) - 1);
+          el.setAttribute('data-gs-width', el.getAttribute('data-width'));
+          el.setAttribute('data-gs-height', el.getAttribute('data-height'));
         });
+
+        // gallery.$element.children(".grid-stack-item").each(function() {
+        //   $elem = $(this);
+        //   $elem.attr("data-gs-x", $elem.data("col") - 1);
+        //   $elem.attr("data-gs-y", $elem.data("row") - 1);
+        //   $elem.attr("data-gs-width", $elem.data("width"));
+        //   $elem.attr("data-gs-height", $elem.data("height"));
+        // });
       }
 
-      gallery.$element.children(".grid-stack-item").each(function() {
-        var $elem = $(this);
-        // console.table({
-        //   gs_x:$elem.attr("data-gs-x"),
-        //   gs_y:$elem.attr("data-gs-y"),
-        //   gs_width:$elem.attr("data-gs-width"),
-        //   gs_height:$elem.attr("data-gs-height")
-        // });
-        gallery._prepareElement(this);
-        if (
-          $elem.children(".rexbuilder-block-data").attr("data-gs_start_h") ===
-          undefined
-        ) {
-          $elem
-            .children(".rexbuilder-block-data")
-            .attr("data-gs_start_h", parseInt($elem.attr("data-gs-height")));
+      items.forEach(function(el) {
+        gallery._prepareElement(el);
+        var blockData = el.querySelector('.rexbuilder-block-data');
+        if ( null === blockData.getAttribute('data-gs_start_h') ) {
+          blockData.setAttribute( 'data-gs_start_h', parseInt( el.getAttribute('data-gs-height') ) );
         }
       });
+
+      // gallery.$element.children(".grid-stack-item").each(function() {
+      //   var $elem = $(this);
+
+      //   gallery._prepareElement(this);
+      //   if (
+      //     $elem.children(".rexbuilder-block-data").attr("data-gs_start_h") ===
+      //     undefined
+      //   ) {
+      //     $elem
+      //       .children(".rexbuilder-block-data")
+      //       .attr("data-gs_start_h", parseInt($elem.attr("data-gs-height")));
+      //   }
+      // });
     },
 
     /**
@@ -1896,18 +1895,18 @@
       gallery._fixImageSize($elem);
     },
 
-    updateElementDataHeightProperties: function($blockData, newH) {
+    updateElementDataHeightProperties: function(blockData, newH) {
       if (this.settings.galleryLayout == "masonry") {
-        $blockData.attr("data-block_height_masonry", newH);
+        blockData.setAttribute("data-block_height_masonry", newH);
       } else {
-        $blockData.attr("data-block_height_fixed", newH);
+        blockData.setAttribute("data-block_height_fixed", newH);
       }
       /*
       if (this.properties.firstStartGrid || Rexbuilder_Util_Editor.updatingImageBg) {
       } 
       */
-      $blockData.attr("data-gs_start_h", newH);
-      $blockData.attr("data-block_height_calculated", newH);
+      blockData.setAttribute("data-gs_start_h", newH);
+      blockData.setAttribute("data-block_height_calculated", newH);
     },
 
     _prepareElementEditing: function($elem) {
@@ -2689,15 +2688,15 @@
 
         stop = true;
 
-        // GESTIONE DELLO SCROLL IN BASE ALLO SPOSTAMENTO DEL POPUP, FASE NEGATIVA
+        // handling scroll relative to popup position, negative case
         if ( event.clientY < 150 ) {  
           stop = false;
-          scroll(-1);       // LO SCROLL E' IMPOSTATO A -1, DI CONSEGUENZA LA PAGINA SCORRERA' PX PER PX VERSO L'ALTO
+          scroll(-1);       // scroll set to -1, the page scroll upwards
         }
-        // GESTIONE DELLO SCROLL IN BASE ALLO SPOSTAMENTO DEL POPUP, FASE POSITIVA
+        // handling scroll relative to popup position, positive case
         if ( event.clientY > Rexbuilder_Util_Editor.viewportMeasurement.height - 150 ) {
           stop = false;
-          scroll(1);        // LO SCROLL E' IMPOSTATO A -1, DI CONSEGUENZA LA PAGINA SCORRERA' PX PER PX VERSO L'ALTO
+          scroll(1);        // scroll set to -1, the page scroll upwards
         }
       });
 
@@ -2733,10 +2732,11 @@
       } else {
         floating = true;
       }
+      var test;
       if (Rexbuilder_Util.editorMode) {
         //console.log("launching gridstack backend");
 
-        gallery.$element.gridstack({
+        test = gallery.$element.gridstack({
           auto: true,
           autoHide: false,
           animate: true,
@@ -2768,7 +2768,7 @@
         gallery.$element.addClass("gridActive");
 
       } else {
-        gallery.$element.gridstack({
+        test = gallery.$element.gridstack({
           auto: true,
           disableOneColumnMode: true,
           cellHeight: gallery.properties.singleHeight,
@@ -2792,16 +2792,32 @@
 
       // Remove elements to hide
       var gridstack = this.properties.gridstackInstance;
+      var items = [].slice.call( this.element.querySelectorAll('.grid-stack-item') );
+      items.forEach( function(el) {
+        if ( -1 !== el.className.indexOf('rex-hide-element') ) {
+          gridstack.removeWidget(el, false);
+        }
+      });
+
+      /*
       this.$element.children(".grid-stack-item").each(function(i, elem) {
         if ($(elem).hasClass("rex-hide-element")) {
           gridstack.removeWidget(elem, false);
         }
       });
+      */
+
       // if (!Rexbuilder_Util.domUpdaiting) {
       if (!Rexbuilder_Util.domUpdaiting && ('undefined' === typeof Rexbuilder_Util_Editor.sectionCopying || false === Rexbuilder_Util_Editor.sectionCopying )) {
         this.updateBlocksHeight();
       }
 
+      items.forEach( function(el) {
+        var blockData = el.querySelector('.rexbuilder-block-data');
+        gallery.updateElementDataHeightProperties( blockData, parseInt( el.getAttribute('data-gs-height') ) );
+      });
+
+      /*
       this.$element.children(".grid-stack-item").each(function(i, el) {
         var $el = $(el);
         var $blockData = $el.children(".rexbuilder-block-data");
@@ -2810,6 +2826,7 @@
           parseInt($el.attr("data-gs-height"))
         );
       });
+      */
     },
 
     setGridstackIstanceNumber: function() {
@@ -2962,59 +2979,46 @@
         !this.properties.setDesktopPadding ||
         (!this.properties.setDesktopPadding &&
           !this.properties.setMobilePadding &&
-          this.$section.attr("data-rex-collapse-grid") == "true")
+          this.section.getAttribute("data-rex-collapse-grid") == "true")
       ) {
         this.properties.setDesktopPadding = true;
-        if (this.$section.attr("data-rex-collapse-grid") == "true") {
+        if (this.section.getAttribute("data-rex-collapse-grid") == "true") {
           this.properties.setMobilePadding = true;
         } else {
           this.properties.setMobilePadding = false;
         }
 
         if (null !== this.properties.gridTopSeparator) {
-          this.$element.css(
-            "margin-top",
-            this.properties.gridTopSeparator - this.properties.halfSeparatorTop
-          );
+          this.element.style.marginTop = ( this.properties.gridTopSeparator - this.properties.halfSeparatorTop ) + 'px';
+          // this.$element.css("margin-top",this.properties.gridTopSeparator - this.properties.halfSeparatorTop);
         } else {
-          this.$element.css("margin-top", this.properties.halfSeparatorTop);
+          this.element.style.marginTop = this.properties.halfSeparatorTop + 'px';
+          // this.$element.css("margin-top", this.properties.halfSeparatorTop);
         }
 
         if (null !== this.properties.gridBottomSeparator) {
-          this.$element.css(
-            "margin-bottom",
-            this.properties.gridBottomSeparator -
-              this.properties.halfSeparatorBottom
-          );
+          // this.$element.css("margin-bottom",this.properties.gridBottomSeparator - this.properties.halfSeparatorBottom);
+          this.element.style.marginBottom = ( this.properties.gridBottomSeparator - this.properties.halfSeparatorBottom ) + 'px';
         } else {
-          this.$element.css(
-            "margin-bottom",
-            this.properties.halfSeparatorBottom
-          );
+          // this.$element.css("margin-bottom",this.properties.halfSeparatorBottom);
+          this.element.style.marginBottom = this.properties.halfSeparatorBottom + 'px';
         }
 
         if (!this.properties.paddingTopBottom) {
           if (null !== this.properties.gridLeftSeparator) {
-            this.$element.css(
-              "margin-left",
-              this.properties.gridLeftSeparator -
-                this.properties.halfSeparatorLeft
-            );
+            this.element.style.marginLeft = ( this.properties.gridLeftSeparator - this.properties.halfSeparatorLeft ) + 'px';
+            // this.$element.css("margin-left",this.properties.gridLeftSeparator - this.properties.halfSeparatorLeft);
           } else {
-            this.$element.css("margin-left", this.properties.halfSeparatorLeft);
+            this.element.style.marginLeft = this.properties.halfSeparatorLeft + 'px';
+            // this.$element.css("margin-left", this.properties.halfSeparatorLeft);
           }
 
           if (null !== this.properties.gridRightSeparator) {
-            this.$element.css(
-              "margin-right",
-              this.properties.gridRightSeparator -
-                this.properties.halfSeparatorRight
-            );
+            this.element.style.marginRight = ( this.properties.gridRightSeparator - this.properties.halfSeparatorRight ) + 'px';
+            // this.$element.css("margin-right",this.properties.gridRightSeparator - this.properties.halfSeparatorRight);
           } else {
-            this.$element.css(
-              "margin-right",
-              this.properties.halfSeparatorRight
-            );
+            this.element.style.marginRight = this.properties.halfSeparatorRight + 'px';
+            // this.$element.css("margin-right",this.properties.halfSeparatorRight);
           }
         }
       }
@@ -3272,7 +3276,7 @@
         newH = Math.ceil(newH / this.properties.singleHeight);
       }      
 
-      this.updateElementDataHeightProperties($blockData, newH); 
+      this.updateElementDataHeightProperties($blockData[0], newH); 
 
       var gridstack = this.properties.gridstackInstance;
       if (gridstack !== undefined) {
