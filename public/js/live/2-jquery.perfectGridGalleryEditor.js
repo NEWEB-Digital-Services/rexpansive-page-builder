@@ -195,7 +195,8 @@
       this.properties.startingLayout = this.settings.galleryLayout;
 
       // Creating layout before collapsing info for resize purpose
-      var collapseGrid = this.$section.attr("data-rex-collapse-grid");
+      var collapseGrid = this.section.getAttribute('data-rex-collapse-grid');
+
       this.properties.dispositionBeforeCollapsing = this.createActionDataMoveBlocksGrid();
       this.properties.layoutBeforeCollapsing = {
         layout: this.settings.galleryLayout,
@@ -203,33 +204,17 @@
         singleHeight: this.properties.singleHeight
       };
 
-      if (
-        Rexbuilder_Util.activeLayout == "default" &&
-        this._viewport().width <
-          _plugin_frontend_settings.defaultSettings.collapseWidth
-      ) {
-        if (typeof collapseGrid == "undefined") {
+      if ( Rexbuilder_Util.activeLayout == "default" && this._viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
+        if ( null === collapseGrid ) {
           this.collapseElements();
         } else {
-          if (collapseGrid.toString() == "true") {
+          if ( collapseGrid.toString() == "true" ) {
             this.collapseElements();
           }
         }
       }
-
-      this.$element.find(".rex-image-wrapper").each(function(i, el) {
-        var $el = $(el);
-        if ($el.hasClass("natural-image-background")) {
-          var width = parseInt(
-            $el
-              .parents(".grid-item-content")
-              .attr("data-background_image_width")
-          );
-          if (width > $el.outerWidth()) {
-            $el.addClass("small-width");
-          }
-        }
-      });
+      
+      this.fix_natural_image_blocks();
 
       this.save_grid_state();
 
@@ -239,7 +224,6 @@
 
     /**
      * Not accurate due to the time that gridstack takes to create the grid
-     * @deprecated  Never used for now
      */
     triggerGalleryReady: function() {
       var event = jQuery.Event("rexlive:galleryReady");
@@ -281,15 +265,7 @@
         }
       }
 
-      this.$element.find(".rex-image-wrapper").each(function(i, el) {
-        var $el = $(el);
-        if ($el.hasClass("natural-image-background")) {
-          var width = parseInt( $el.parents(".grid-item-content").attr("data-background_image_width") );
-          if (width > $el.outerWidth()) {
-            $el.addClass("small-width");
-          }
-        }
-      });
+      this.fix_natural_image_blocks();
 
       this.save_grid_state();
 
@@ -1780,7 +1756,6 @@
           elDim = store.get(
             $elem.attr("data-rexbuilder-block-id") + "_noEdits"
           );
-          //console.log("%%%%%%%%%% picking old dim %%%%%%%%%%%%%%");
         } else {
           elDim = store.get($elem.attr("data-rexbuilder-block-id"));
         }
@@ -1838,44 +1813,22 @@
       var items = [].slice.call( gallery.element.querySelectorAll('.grid-stack-item') );
 
       if (this.properties.editedFromBackend && ('undefined' === typeof Rexbuilder_Util_Editor.sectionCopying || false === Rexbuilder_Util_Editor.sectionCopying ) ) {
-        // var $elem;
         items.forEach( function(el) {
           el.setAttribute('data-gs-x', parseInt( el.getAttribute('data-col') ) - 1);
           el.setAttribute('data-gs-y', parseInt( el.getAttribute('data-row') ) - 1);
           el.setAttribute('data-gs-width', el.getAttribute('data-width'));
           el.setAttribute('data-gs-height', el.getAttribute('data-height'));
         });
-
-        // gallery.$element.children(".grid-stack-item").each(function() {
-        //   $elem = $(this);
-        //   $elem.attr("data-gs-x", $elem.data("col") - 1);
-        //   $elem.attr("data-gs-y", $elem.data("row") - 1);
-        //   $elem.attr("data-gs-width", $elem.data("width"));
-        //   $elem.attr("data-gs-height", $elem.data("height"));
-        // });
       }
 
+      var blockData;
       items.forEach(function(el) {
         gallery._prepareElement(el);
-        var blockData = el.querySelector('.rexbuilder-block-data');
+        blockData = el.querySelector('.rexbuilder-block-data');
         if ( null === blockData.getAttribute('data-gs_start_h') ) {
           blockData.setAttribute( 'data-gs_start_h', parseInt( el.getAttribute('data-gs-height') ) );
         }
       });
-
-      // gallery.$element.children(".grid-stack-item").each(function() {
-      //   var $elem = $(this);
-
-      //   gallery._prepareElement(this);
-      //   if (
-      //     $elem.children(".rexbuilder-block-data").attr("data-gs_start_h") ===
-      //     undefined
-      //   ) {
-      //     $elem
-      //       .children(".rexbuilder-block-data")
-      //       .attr("data-gs_start_h", parseInt($elem.attr("data-gs-height")));
-      //   }
-      // });
     },
 
     /**
@@ -2890,31 +2843,37 @@
             }
           });
 
-          if (
-            !Rexbuilder_Util.windowIsResizing &&
-            !this.properties.updatingSection
-          ) {
+          if ( !Rexbuilder_Util.windowIsResizing && !this.properties.updatingSection )
+          {
             this.commitGridstack();
           }
         }
       }
     },
 
+    /**
+     *  Launching MediumEditor inside the blocks that can have it
+     *
+     */
     _launchTextEditor: function() {
-      this.$element.find(".rex-text-editable").each(function() {
-        var $elem = $(this);
-        if (
-          $elem.find(".pswp-figure").length === 0 &&
-          $elem.find(".rex-slider-wrap").length === 0
-        ) {
-          TextEditor.addElementToTextEditor($elem.find(".text-wrap"));
+      var editors = [].slice.call( this.element.querySelectorAll('.rex-text-editable') );
+      var hasPswp, hasSlider, textWrap;
+      editors.forEach( function(el) {
+        hasPswp = el.querySelectorAll('.pswp-figure');
+        hasSlider = el.querySelectorAll('.rex-slider-wrap');
+        if ( 0 === hasPswp.length && 0 === hasSlider.length ) {
+          textWrap = el.querySelector('.text-wrap');
+          TextEditor.addElementToTextEditor( textWrap );
         }
       });
     },
 
+    /**
+     *  seems @deprecated
+     *  @date 03-07-2019
+     */
     _setParentGridPadding: function() {
       var $parent = this.$element.parent();
-      //console.log('setting parent padding');
       if (
         (this._viewport().width >=
           _plugin_frontend_settings.defaultSettings.collapseWidth &&
@@ -2923,7 +2882,6 @@
           !this.properties.setMobilePadding &&
           this.$section.attr("data-rex-collapse-grid") == "true")
       ) {
-        //console.log('setting parent padding');
         this.properties.setDesktopPadding = true;
         if (this.$section.attr("data-rex-collapse-grid") == "true") {
           this.properties.setMobilePadding = true;
@@ -2990,35 +2948,27 @@
 
         if (null !== this.properties.gridTopSeparator) {
           this.element.style.marginTop = ( this.properties.gridTopSeparator - this.properties.halfSeparatorTop ) + 'px';
-          // this.$element.css("margin-top",this.properties.gridTopSeparator - this.properties.halfSeparatorTop);
         } else {
           this.element.style.marginTop = this.properties.halfSeparatorTop + 'px';
-          // this.$element.css("margin-top", this.properties.halfSeparatorTop);
         }
 
         if (null !== this.properties.gridBottomSeparator) {
-          // this.$element.css("margin-bottom",this.properties.gridBottomSeparator - this.properties.halfSeparatorBottom);
           this.element.style.marginBottom = ( this.properties.gridBottomSeparator - this.properties.halfSeparatorBottom ) + 'px';
         } else {
-          // this.$element.css("margin-bottom",this.properties.halfSeparatorBottom);
           this.element.style.marginBottom = this.properties.halfSeparatorBottom + 'px';
         }
 
         if (!this.properties.paddingTopBottom) {
           if (null !== this.properties.gridLeftSeparator) {
             this.element.style.marginLeft = ( this.properties.gridLeftSeparator - this.properties.halfSeparatorLeft ) + 'px';
-            // this.$element.css("margin-left",this.properties.gridLeftSeparator - this.properties.halfSeparatorLeft);
           } else {
             this.element.style.marginLeft = this.properties.halfSeparatorLeft + 'px';
-            // this.$element.css("margin-left", this.properties.halfSeparatorLeft);
           }
 
           if (null !== this.properties.gridRightSeparator) {
             this.element.style.marginRight = ( this.properties.gridRightSeparator - this.properties.halfSeparatorRight ) + 'px';
-            // this.$element.css("margin-right",this.properties.gridRightSeparator - this.properties.halfSeparatorRight);
           } else {
             this.element.style.marginRight = this.properties.halfSeparatorRight + 'px';
-            // this.$element.css("margin-right",this.properties.halfSeparatorRight);
           }
         }
       }
@@ -3274,7 +3224,7 @@
         }
       } else {
         newH = Math.ceil(newH / this.properties.singleHeight);
-      }      
+      }
 
       this.updateElementDataHeightProperties($blockData[0], newH); 
 
@@ -3774,6 +3724,18 @@
      */
     save_grid_state: function() {
       this.properties.initialStateGrid = this.properties.gridstackInstance.grid.nodes;
+    },
+
+    fix_natural_image_blocks: function() {
+      this.$element.find(".rex-image-wrapper").each(function(i, el) {
+        var $el = $(el);
+        if ($el.hasClass("natural-image-background")) {
+          var width = parseInt( $el.parents(".grid-item-content").attr("data-background_image_width") );
+          if (width > $el.outerWidth()) {
+            $el.addClass("small-width");
+          }
+        }
+      });
     },
 
     /**
