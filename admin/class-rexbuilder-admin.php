@@ -509,6 +509,10 @@ class Rexbuilder_Admin {
 				}
 			}
 		}
+		else if ( 'toplevel_page_' . $this->plugin_name === $page_info->id )
+		{
+			wp_enqueue_script( 'svgo-browser', REXPANSIVE_BUILDER_URL . 'admin/js/settings/svgo.js' );
+		}
 	}
 
 	/**
@@ -589,6 +593,7 @@ class Rexbuilder_Admin {
 	 */
 	public function display_plugin_options_page() {
 		include_once( 'partials/rexbuilder-admin-display.php' );
+		include_once( 'partials/test.php' );
 	}
 
 	/**
