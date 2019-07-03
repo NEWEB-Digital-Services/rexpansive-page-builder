@@ -1172,6 +1172,30 @@ class Rexbuilder_Public
     }
 
     /**
+     *  Filtering YOAST SEO plugin meta description generator
+     *  @since 2.0.0
+     */
+    public function filter_yoast_seo_description( $description ) {
+        global $post;
+        if ( $this->builder_active_on_this_post_type() ) {
+            $content = get_post_meta( $post->ID, '_rexbuilder_shortcode', true );
+            $stripped_content = preg_replace('#\[[^\]]+\]#', '', $content);
+            $stripped_content = strip_tags($stripped_content);
+            
+            $stripped_content_lenght = strlen( $stripped_content );
+            if ( 0 === $stripped_content_lenght ) {
+                $stripped_content = get_the_title();
+            } else if ( $stripped_content_lenght > 340 ) {
+                $stripped_content = substr( $stripped_content, 0, 340 );
+            }
+
+            return $stripped_content;
+        }
+
+        return $description;
+    }
+
+    /**
      * Check if the builder is active on this post type
      *
      * @return bool
