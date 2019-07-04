@@ -224,11 +224,12 @@ class Rexbuilder {
 		// live builder		
 		$this->loader->add_filter( 'content_save_pre', $plugin_admin, 'rex_fix_post_content' );
 		
+		// attaching some filters and actions only if there is a livebuilder page
 		if( isset( $_GET['rexlive'] ) && 'true' == $_GET['rexlive'] ) {
-			$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_sprites_live' );
-			$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_live_editing' );
 			$this->loader->add_filter( 'admin_body_class', $plugin_admin, 'rexlive_body_fix' );
 			$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'print_rex_buttons_style_backend' );
+			$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_sprites_live' );
+			$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_live_editing' );
 		}
 		
 		$this->loader->add_action( 'admin_footer', $plugin_admin, 'create_builder_modals' );
@@ -266,6 +267,11 @@ class Rexbuilder {
 		$this->loader->add_filter( 'rexbuilder_admin_post_type_active', $plugin_admin, 'add_builder_assets_on_contact_form_page' );
 		
 		// Ajax functions
+		// settings
+		$this->loader->add_action( 'wp_ajax_rexpansive_upload_sprite_icons', $plugin_admin, 'rexpansive_upload_sprite_icons' );
+		$this->loader->add_action( 'wp_ajax_rexpansive_remove_sprite_icons', $plugin_admin, 'rexpansive_remove_sprite_icons' );
+
+		// Live builder
 		$this->loader->add_action( 'wp_ajax_rex_change_builder_activation_status', $plugin_admin, 'rex_change_builder_activation_status' );
 		
 		$this->loader->add_action( 'wp_ajax_rex_edit_slider_from_builder', $plugin_admin, 'rex_edit_slider_from_builder' );
@@ -321,19 +327,7 @@ class Rexbuilder {
 		//for the release
 //		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles_production' );
 //		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts_production' );
-
-		//for development
-		// filter for the media library
-		//$this->loader->add_filter( 'ajax_query_attachments_args', $plugin_public, 'filter_media' );
 		
-		/* 			
-			Function to check if a user is logged
-			if ( is_user_logged_in() ) {
-				echo "<script type='text/javascript'>alert('Welcome, registered user');</script>";
-			} else {
-				echo "<script type='text/javascript'>alert('Welcome, visitor');</script>";
-			}
- */
 		$this->loader->add_action( 'after_setup_theme', $plugin_public, 'remove_shortcodes_from_live' );
 
 		$this->loader->add_filter( 'wpseo_metadesc', $plugin_public, 'filter_yoast_seo_description' );
@@ -360,9 +354,9 @@ class Rexbuilder {
 		//$this->loader->add_action( 'wp_footer', $plugin_public, 'create_builder_modals' );
 		
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'include_js_template' );
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'include_sprites' );
+		// $this->loader->add_action( 'wp_footer', $plugin_public, 'include_sprites' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'include_sprites_live' );
-		// $this->loader->add_action( 'wp_footer', $plugin_public, 'include_sprites_test' );
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'include_custom_sprites' );
 
 		// ajax logic
 		$this->loader->add_action( 'wp_ajax_rexlive_save_shortcode', $plugin_public, 'rexlive_save_shortcode' );

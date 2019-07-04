@@ -458,27 +458,32 @@ class Rexbuilder_Public
      * Including the new sprites
      *
      * @return void
-     * @since 1.1.3
+     * @since 2.0.0
      */
-    public function include_sprites()
-    {
-        ?><div style="display:none"><?php include_once REXPANSIVE_BUILDER_PATH . 'admin/sprites/symbol/svg/sprite.symbol.svg';?></div><?php
-    }
-
     public function include_sprites_live() {
 		?><div style="display:none"><?php include_once( REXPANSIVE_BUILDER_PATH .  'admin/sprites_live_new/symbol/svg/sprite.symbol.svg' ); ?></div><?php
     }
-    
-    /**
-     * Test purpose
-     *
-     * @return void
-     * @todo    Remove me on production
-     */
-    public function include_sprites_test() {
-		?><div style="display:none"><?php include_once( REXPANSIVE_BUILDER_PATH .  'admin/sprites_test_2/sprite.symbol.svg' ); ?></div><?php
-	}
 
+    /**
+     * Including eventually custom sprites
+     * uploaded on the backend
+     *
+     * @since 2.0.0
+     */
+    public function include_custom_sprites() {
+        if ( file_exists( REXPANSIVE_BUILDER_PATH . 'shared/assets/symbol/sprite.symbol.svg' ) ) 
+        {
+        ?>
+        <div style="display:none"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><?php include_once( REXPANSIVE_BUILDER_PATH . 'shared/assets/symbol/sprite.symbol.svg' ); ?></svg></div>
+        <?php
+        }
+    }
+
+    /**
+     * Save section rexids
+     *
+     * @since 2.0.0
+     */
     public function rexlive_save_sections_rexids()
     {
         $nonce = $_POST['nonce_param'];

@@ -230,6 +230,11 @@ class Rexbuilder_Admin {
 				wp_enqueue_style( 'admin-live-style', REXPANSIVE_BUILDER_URL . 'admin/css/admin-live.css', array(), null, 'all' );
 			}
 		}
+		// settings page resources
+		else if ( 'toplevel_page_' . $this->plugin_name === $page_info->id )
+		{
+			wp_enqueue_style( 'admin-settings', REXPANSIVE_BUILDER_URL . 'admin/css/admin-settings.css', array(), null, 'all' );
+		}
 	}
 
 	/**
@@ -509,9 +514,22 @@ class Rexbuilder_Admin {
 				}
 			}
 		}
+		// settings page resourcers
 		else if ( 'toplevel_page_' . $this->plugin_name === $page_info->id )
 		{
 			wp_enqueue_script( 'svgo-browser', REXPANSIVE_BUILDER_URL . 'admin/js/settings/svgo.js' );
+			wp_enqueue_script( 'admin-settings', REXPANSIVE_BUILDER_URL . 'admin/js/settings/admin-settings.js' );
+			wp_localize_script( 'admin-settings', 'admin_settings_vars', array(
+				'labels' => array(
+					'optimize_correct' => __( 'correctly optimized', 'rexpansive-builder' ),
+					'existing_sprite' => __( 'already uploaded', 'rexpansive-builder' ),
+					'upload_succesfull' => __( 'All icons correctly uploaded', 'rexpansive-builder' ),
+					'upload_error' => __( 'Uploaded error', 'rexpansive-builder' ),
+					'no_selection' => __( 'No icons selected', 'rexpansive-builder' ),
+					'remove_succesfull' => __( 'Icons correctly removed', 'rexpansive-builder' ),
+					'remove_error' => __( 'Remove error', 'rexpansive-builder' )
+				)
+			) );
 		}
 	}
 
@@ -593,7 +611,6 @@ class Rexbuilder_Admin {
 	 */
 	public function display_plugin_options_page() {
 		include_once( 'partials/rexbuilder-admin-display.php' );
-		include_once( 'partials/test.php' );
 	}
 
 	/**
@@ -607,7 +624,7 @@ class Rexbuilder_Admin {
 	}
 
 	/**
-	 * Including the new sprites
+	 * Including the new sprites for builder 1.0
 	 *
 	 * @return void
 	 * @since 1.1.3
@@ -616,6 +633,11 @@ class Rexbuilder_Admin {
 		?><div style="display:none"><?php include_once( REXPANSIVE_BUILDER_PATH .  'admin/sprites/symbol/svg/sprite.symbol.svg' ); ?></div><?php
 	}
 
+	/**
+	 * Including the sprites for live builder tools
+	 *
+	 * @since 2.0.0
+	 */
 	public function include_sprites_live() {
 		?><div style="display:none"><?php include_once( REXPANSIVE_BUILDER_PATH .  'admin/sprites_live_new/symbol/svg/sprite.symbol.svg' ); ?></div><?php
 	}
@@ -938,6 +960,139 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			return true;
 		}
 		return $active;
+	}
+
+	/**
+	 * Saving custom sprites to reuse with live builder
+	 *
+	 * @since 2.0.0
+	 */
+	public function rexpansive_upload_sprite_icons() {
+		$nonce = $_POST['nonce_param'];
+		$response = array(
+			'error' => false,
+			'msg' => '',
+		);
+
+		if ( ! wp_verify_nonce( $nonce, 'upload-icons-nonce' ) ) {
+			$response['error'] = true;
+			$response['msg'] = 'Error!';
+			wp_send_json_error( $response );
+		}
+
+		// get the optimized sprites
+		$sprites = $_REQUEST['sprites'];
+
+        if ( ! empty( $sprites ) ) {
+            $spritesStripped = stripslashes( $sprites );
+            $spritesData = json_decode( $spritesStripped, true );
+
+            $response['path'] = REXPANSIVE_BUILDER_PATH . 'shared/assets/symbol/sprite.symbol.svg';
+            $response['path_ids'] = REXPANSIVE_BUILDER_PATH . 'shared/assets/sprite-list.json';
+
+            // get sprite ids JSON
+            if ( file_exists( $response['path_ids'] ) )
+            {
+            	$sprite_list = file_get_contents( $response['path_ids'] );
+            	$symbolsIdJSON = json_decode( $sprite_list, true );
+            }
+            else
+            {
+	         	$symbolsIdJSON = array(
+	         		'l-svg-icons' => array()
+	         	);
+            }
+         
+            $symbolsHTML = '';
+
+            foreach ($spritesData as $index => $spriteData) {
+            	// prevent duplicates
+            	if ( false === array_search( $spriteData['id'], $symbolsIdJSON['l-svg-icons']) ) {
+	            	$symbolsHTML .= $spriteData['data'];
+	            	array_push( $symbolsIdJSON['l-svg-icons'], $spriteData['id'] );
+            	}
+            }
+
+            $response['ids'] = $symbolsIdJSON;
+
+            // save svg symbols
+            $symbolFile = fopen( $response['path'], 'a') or die( "Unable to open file!" );
+            fwrite( $symbolFile, $symbolsHTML );
+            fclose( $symbolFile );
+
+            // save id list
+            $listFile = fopen( $response['path_ids'], 'w') or die( "Unable to open file!" );
+			fwrite( $listFile, json_encode( $symbolsIdJSON ) );
+            fclose( $listFile );
+        }
+
+		wp_send_json_success( $response );
+	}
+
+	/**
+	 * Removing custom sprites icons
+	 *
+	 * @since 2.0.0
+	 */
+	public function rexpansive_remove_sprite_icons() {
+		$nonce = $_POST['nonce_param'];
+		$response = array(
+			'error' => false,
+			'msg' => '',
+		);
+
+		if ( ! wp_verify_nonce( $nonce, 'upload-icons-nonce' ) ) {
+			$response['error'] = true;
+			$response['msg'] = 'Error!';
+			wp_send_json_error( $response );
+		}
+
+		// get the optimized sprites
+		$deleteList = $_REQUEST['deleteList'];
+
+        if ( ! empty( $deleteList ) ) {
+            $deleteListStripped = stripslashes( $deleteList );
+            $deleteListData = json_decode( $deleteListStripped, true );
+
+            $response['path'] = REXPANSIVE_BUILDER_PATH . 'shared/assets/symbol/sprite.symbol.svg';
+            $response['path_ids'] = REXPANSIVE_BUILDER_PATH . 'shared/assets/sprite-list.json';
+
+            // get sprite ids JSON
+            if ( file_exists( $response['path_ids'] ) && file_exists( $response['path'] ) )
+            {
+            	$sprite_list = file_get_contents( $response['path_ids'] );
+            	$symbolsIdJSON = json_decode( $sprite_list, true );
+         
+	            $symbolsHTML = '';
+
+	            foreach ($spritesData as $index => $spriteData) {
+	            	// prevent duplicates
+	            	if ( false === array_search( $spriteData['id'], $symbolsIdJSON['l-svg-icons']) ) {
+		            	$symbolsHTML .= $spriteData['data'];
+		            	array_push( $symbolsIdJSON['l-svg-icons'], $spriteData['id'] );
+	            	}
+	            }
+
+	            $response['ids'] = $symbolsIdJSON;
+
+	            // save svg symbols
+	            $symbolFile = fopen( $response['path'], 'a') or die( "Unable to open file!" );
+	            fwrite( $symbolFile, $symbolsHTML );
+	            fclose( $symbolFile );
+
+	            // save id list
+	            $listFile = fopen( $response['path_ids'], 'w') or die( "Unable to open file!" );
+				fwrite( $listFile, json_encode( $symbolsIdJSON ) );
+	            fclose( $listFile );
+	        }
+	        else
+	        {
+	        	$response['msg'] = 'No sprites!';
+				wp_send_json_error( $response );
+	        }
+        }
+
+		wp_send_json_success( $response );
 	}
 	
 	/**
@@ -3749,8 +3904,6 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			if( "1" != $imported ) {
 				require_once REXPANSIVE_BUILDER_PATH . 'admin/class-importheme-import-utilities.php';
 				require_once REXPANSIVE_BUILDER_PATH . 'admin/class-importheme-import-xml-content.php';
-		
-				// $xml_bundled_url = REXPANSIVE_BUILDER_URL . 'admin/models/contact-forms.xml';
 
 				$forms_url = 'http://demo.neweb.info/wp-content/uploads/rexpansive-builder-uploads/contact-forms.xml';
 				$xml_file = Rexpansive_Classic_Import_Utilities::upload_media_file( $forms_url, 'xml' );

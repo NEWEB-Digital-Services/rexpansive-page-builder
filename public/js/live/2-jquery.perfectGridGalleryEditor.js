@@ -1,5 +1,6 @@
 /*
  *  Perfect Grid Gallery Editor
+ *  @since 2.0.0
  */
 
 (function($, window, document, _, undefined) {
