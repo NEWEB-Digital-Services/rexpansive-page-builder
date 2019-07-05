@@ -2554,7 +2554,7 @@
      */
     _linkDnDEvents: function() {
       
-      // DEFINISCO LE VARIABILI PRINCIPALI
+      // Define the main vars
       var $pholder;
       var gallery = this;
       var locked = false;
@@ -2686,11 +2686,10 @@
       } else {
         floating = true;
       }
-      var test;
       if (Rexbuilder_Util.editorMode) {
         //console.log("launching gridstack backend");
 
-        test = gallery.$element.gridstack({
+        gallery.$element.gridstack({
           auto: true,
           autoHide: false,
           animate: true,
@@ -2722,7 +2721,7 @@
         gallery.$element.addClass("gridActive");
 
       } else {
-        test = gallery.$element.gridstack({
+        gallery.$element.gridstack({
           auto: true,
           disableOneColumnMode: true,
           cellHeight: gallery.properties.singleHeight,

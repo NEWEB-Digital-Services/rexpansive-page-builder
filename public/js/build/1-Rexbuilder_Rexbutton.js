@@ -28,7 +28,7 @@ _rex_button_PtAh_html
 
 <span class=\"rex-button-wrapper\" data-rex-button-id=\"PtAh\">
     <span class=\"rex-button-data\" style=\"display:none;\" data-text-color=\"rgb(242, 175, 255)\" data-text-size=\"22px\" data-background-color=\"rgb(224, 108, 246)\" data-background-color-hover=\"rgb(156, 0, 255)\" data-border-width=\"7px\" data-border-color=\"rgb(216, 74, 74)\" data-border-radius=\"15px\" data-button-height=\"70px\" data-margin-top=\"25px\" data-margin-bottom=\"15px\" data-margin-left=\"10px\" data-margin-right=\"5px\" data-link-target=\"#\" data-link-type=\"_blank\" data-button-name=\"Rex Purple\"></span>
-    <a href=\"#\" class=\"rex-button-container\" type=\"_blank\">
+    <a href=\"#\" class=\"rex-button-container\" target=\"_blank\">
         <span class=\"rex-button-background\">
             <span class=\"rex-button-text\">Learn More</span>
         </span>
