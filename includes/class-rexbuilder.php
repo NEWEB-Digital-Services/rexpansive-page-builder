@@ -229,6 +229,7 @@ class Rexbuilder {
 			$this->loader->add_filter( 'admin_body_class', $plugin_admin, 'rexlive_body_fix' );
 			$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'print_rex_buttons_style_backend' );
 			$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_sprites_live' );
+			$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_custom_sprites' );
 			$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_live_editing' );
 		}
 		

@@ -643,6 +643,21 @@ class Rexbuilder_Admin {
 	}
 
 	/**
+     * Including eventually custom sprites
+     * uploaded on the backend
+     *
+     * @since 2.0.0
+     */
+    public function include_custom_sprites() {
+        if ( file_exists( REXPANSIVE_BUILDER_PATH . 'shared/assets/symbol/sprite.symbol.svg' ) ) 
+        {
+        ?>
+        <div style="display:none"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><?php include_once( REXPANSIVE_BUILDER_PATH . 'shared/assets/symbol/sprite.symbol.svg' ); ?></svg></div>
+        <?php
+        }
+    }
+
+	/**
 	 *	Validate the plugin settings
 	 *
 	 * 	@since    1.0.0
