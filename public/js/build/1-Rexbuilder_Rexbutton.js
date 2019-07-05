@@ -1,7 +1,6 @@
 /**
-
- valori da inserire nel db per il primo pulsante. Vanno tutti nella "wp_options"
- I dati sono nella forma
+ Values to insert on "wp_options" to work with rexbuttons
+ Data are in form
  "option_name"
  "option_value"
 
@@ -23,11 +22,11 @@ _rex_button_9UEc_css
 
 _rex_button_9UEc_html
 
-<span class="rex-button-wrapper" data-rex-button-id="9UEc">
-    <span class="rex-button-data" style="display:none;" data-text-color="rgb(111, 115, 181)" data-text-size="22px" data-background-color="rgb(0, 238, 255)" data-background-color-hover="rgb(165, 0, 146)" data-border-color-hover="rgb(0, 255, 15)" data-text-color-hover="rgb(0, 60, 255)" data-border-width="8px" data-border-color="rgb(165, 0, 255)" data-border-radius="20px" data-button-height="50px" data-margin-top="30px" data-margin-bottom="10px" data-margin-left="15px" data-margin-right="10px" data-padding-left="px" data-padding-right="37px" data-padding-top="26px" data-padding-bottom="px" data-link-target="#" data-link-type="_blank" data-button-name="Rex Funny v23"></span>
-    <a href="#" class="rex-button-container" type="_blank">
-        <span class="rex-button-background">
-            <span class="rex-button-text">Learn More</span>
+<span class=\"rex-button-wrapper\" data-rex-button-id=\"9UEc\">
+    <span class=\"rex-button-data\" style=\"display:none;\" data-text-color=\"rgb(111, 115, 181)\" data-text-size=\"22px\" data-background-color=\"rgb(0, 238, 255)\" data-background-color-hover=\"rgb(165, 0, 146)\" data-border-color-hover=\"rgb(0, 255, 15)\" data-text-color-hover=\"rgb(0, 60, 255)\" data-border-width=\"8px\" data-border-color=\"rgb(165, 0, 255)\" data-border-radius=\"20px\" data-button-height=\"50px\" data-margin-top=\"30px\" data-margin-bottom=\"10px\" data-margin-left=\"15px\" data-margin-right=\"10px\" data-padding-left=\"px\" data-padding-right=\"37px\" data-padding-top=\"26px\" data-padding-bottom=\"px\" data-link-target=\"#\" data-link-type=\"_blank\" data-button-name=\"Rex Funny v23\"></span>
+    <a href=\"#\" class=\"rex-button-container\" target=\"_blank\">
+        <span class=\"rex-button-background\">
+            <span class=\"rex-button-text\">Learn More</span>
         </span>
     </a>
 </span>
