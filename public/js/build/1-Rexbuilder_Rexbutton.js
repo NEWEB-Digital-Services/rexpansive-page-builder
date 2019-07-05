@@ -435,7 +435,7 @@ var Rexbuilder_Rexbutton = (function ($) {
         var buttonID = $buttonWrapper.attr("data-rex-button-id");
         var $buttonData = $buttonWrapper.find(".rex-button-data").eq(0);
         var buttonData = $buttonData[0];
-        console.log(buttonData);
+
         if ($buttonData.length != 0) {
             var buttonProperties = {
                 font_size: ( buttonData.getAttribute('data-text-size') ? buttonData.getAttribute('data-text-size').toString() : '' ),

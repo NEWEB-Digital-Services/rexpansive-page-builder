@@ -30,6 +30,39 @@
       force_launch: false,
     };
 
+  // window height shared var
+  // the window height do not depends on the elements to scroll position
+  // its the same for everyone
+  // so I can share it between the plugin instances and update it on the page resize
+  var windowInnerHeight = document.documentElement.clientHeight;
+  window.addEventListener('resize', updateWindowInnerHeight);
+
+  /**
+   * Updating the window inner height only if occurs a window resize
+   * @param {ResizeEvent} event resize event
+   */
+  function updateWindowInnerHeight(event) {
+    windowInnerHeight = document.documentElement.clientHeight;
+  }
+
+  /**
+   * Find the viewport scroll top value
+   */
+  function scrollDocumentPositionTop() {
+    return window.pageYOffset || document.documentElement.scrollTop;
+  }
+
+  /**
+   * Find the element offset top in the viewport
+   * @param {Element} el element to analize
+   * @param {Int} scrollTop window scroll top value
+   */
+  function offsetTop(el, scrollTop) {
+    scrollTop = 'undefined' !== typeof scrollTop ? scrollTop : (window.pageYOffset || document.documentElement.scrollTop);
+    var rect = el.getBoundingClientRect();
+    return rect.top + scrollTop;
+  }
+
   // The actual plugin constructor
   function rexScrollify(element, options) {
     this.element = element;
@@ -48,12 +81,12 @@
       launched: false
     };
 
-    this.settings.animation = $(this.element).attr('data-rs-animation') || this.settings.animation;
-    this.settings.duration = $(this.element).attr('data-rs-animation-duration') || this.settings.duration;
-    this.settings.offset = parseInt($(this.element).attr('data-rs-animation-offset') || this.settings.offset);
-    this.settings.delay = parseInt($(this.element).attr('data-rs-animation-delay') || this.settings.delay);
-    this.settings.stagger = parseInt($(this.element).attr('data-rs-animation-stagger') || this.settings.stagger);
-    this.settings.force_launch = $(this.element).attr('data-rs-animation-force-launch') || this.settings.force_launch;
+    this.settings.animation = this.element.getAttribute('data-rs-animation') || this.settings.animation;
+    this.settings.duration = this.element.getAttribute('data-rs-animation-duration') || this.settings.duration;
+    this.settings.offset = parseInt(this.element.getAttribute('data-rs-animation-offset') || this.settings.offset);
+    this.settings.delay = parseInt(this.element.getAttribute('data-rs-animation-delay') || this.settings.delay);
+    this.settings.stagger = parseInt(this.element.getAttribute('data-rs-animation-stagger') || this.settings.stagger);
+    this.settings.force_launch = this.element.getAttribute('data-rs-animation-force-launch') || this.settings.force_launch;
 
     this.init();
   }
@@ -68,13 +101,11 @@
       // and this.settings
       // you can add more functions like the one below and
       // call them like the example bellow
-      var that = this;
 
       this.launchScrollingAnimation();
 
-      $(window).on('scroll', function () {
-        that.launchScrollingAnimation();
-      });
+      // vanilla binding
+      window.addEventListener('scroll', this.launchScrollingAnimation.bind(this));
     },
     launchScrollingAnimation: function () {
       if (this._viewport().width <= 767 && !this.settings.mobile) {
@@ -87,12 +118,12 @@
 
         if (!that.properties.launched) {
 
-          var win_height = $(window).height(),
+          var win_height = windowInnerHeight,
             win_height_padded_bottom,
             win_height_padded_top,
-            blockPosition = this.$element.offset().top,
-            blockHeight = this.$element.height(),
-            scrolled = $(window).scrollTop();
+            scrolled = scrollDocumentPositionTop(),
+            blockPosition = offsetTop(this.element, scrolled),
+            blockHeight = this.element.offsetHeight;
 
           if (this.settings.offset === 0) {
             win_height_padded_bottom = win_height * 0.7;

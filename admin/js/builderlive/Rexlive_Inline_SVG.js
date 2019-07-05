@@ -16,7 +16,12 @@ var Rexlive_Inline_SVG = (function($) {
     // If passing an svg id, select the relative option
     if ( 'undefined' !== typeof data.id )
     {
-      inline_svg_props.$icon_select.find('option[value='+data.id+']').attr('selected','selected');
+      // inline_svg_props.$icon_select.find('option[value='+data.id+']').attr('selected','selected');
+      inline_svg_props.$icon_select_box.find('.select-box__input[value="'+data.id+'"]').prop('checked', true);
+    }
+    else
+    {
+      inline_svg_props.$icon_select_box.find('.select-box__input[value=""]').prop('checked', true);
     }
 
     Rexlive_Modals_Utils.openModal(
@@ -54,11 +59,13 @@ var Rexlive_Inline_SVG = (function($) {
      * @event click
      */
     inline_svg_props.$save_button.on('click', function(e) {
-      var icon_to_insert = inline_svg_props.$icon_select.val();
+      // var icon_to_insert = inline_svg_props.$icon_select.val();
+      var $icon_to_insert_el = inline_svg_props.$icon_select_box.find('.select-box__input:checked');
+      var icon_to_insert = $icon_to_insert_el.val();
       // If icon was choosen
       if( '' !== icon_to_insert )
       {
-        var icon_class = inline_svg_props.$icon_select.find('option[value='+icon_to_insert+']').attr('data-svg-class');
+        var icon_class = $icon_to_insert_el.attr('data-svg-class');
         var settings = {
           eventName: "rexlive:mediumEditor:inlineSVG",
           data_to_send: {
@@ -81,6 +88,7 @@ var Rexlive_Inline_SVG = (function($) {
       $close_button: $container.find(".tool-button--close"),
       $save_button: $container.find(".tool-button--save"),
       $icon_select: $container.find("#rexlive-inline-svg-select"),
+      $icon_select_box: $container.find('.select-box__current'),
       selected_icon: null
     };
     _linkDocumentListeners();

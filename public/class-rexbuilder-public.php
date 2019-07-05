@@ -116,12 +116,6 @@ class Rexbuilder_Public
 
             $ver = null;
 
-            if (!is_404()) { // TODO
-                // if( Rexpansive_Classic_Utilities::find_property_inside_content( 'vimeo', $post->post_content ) > 0 || Rexpansive_Classic_Utilities::find_property_inside_content( 'vimeo_slide', $post->post_content ) > 0 ) {
-                wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), '20120206', true);
-                // }
-            }
-
             $folder = "public/";
             $folder_admin = "admin/";
 
@@ -179,12 +173,6 @@ class Rexbuilder_Public
     {
         if ($this->builder_active_on_this_post_type()) {
 
-            if (!is_404()) { // TODO
-                // if( Rexpansive_Classic_Utilities::find_property_inside_content( 'vimeo', $post->post_content ) > 0 || Rexpansive_Classic_Utilities::find_property_inside_content( 'vimeo_slide', $post->post_content ) > 0 ) {
-                wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), '20120206', true);
-                // }
-            }
-
             if( Rexbuilder_Utilities::isBuilderLive() ) {
                 wp_enqueue_style( 'rexbuilder-live-google-fonts', 'https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i', false );
                 wp_enqueue_style('material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), false, 'all');
@@ -222,6 +210,7 @@ class Rexbuilder_Public
             global $post;
             $rexbuilderShortcode = get_post_meta( $post->ID, '_rexbuilder_shortcode', true );
 
+            wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), '20120206', true);
             if( Rexbuilder_Utilities::isBuilderLive() ) {
                 //include media libray
                 wp_enqueue_media();
@@ -264,6 +253,9 @@ class Rexbuilder_Public
             }
             else
             {
+                // if ( false !== strpos( $rexbuilderShortcode, 'rex-video-vimeo-wrap-' ) ) {
+                //     wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), '20120206', true);
+                // }
                 wp_enqueue_script('0-Rexbuilder_Array_Utilities', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Array_Utilities.js', array('jquery'), $ver, true);
                 wp_enqueue_script('intersection-observer', REXPANSIVE_BUILDER_URL . 'public/js/vendor/intersection-observer.js', array(), $ver, true);
             }
@@ -326,6 +318,7 @@ class Rexbuilder_Public
             if( !Rexbuilder_Utilities::isBuilderLive() ) {
                 if ( false !== strpos( $rexbuilderShortcode, 'rex-effect-' ) ) {
                     wp_enqueue_script('pixi', REXPANSIVE_BUILDER_URL . 'public/js/vendor/pixi.min.js', array('jquery'), $ver, true);
+                    wp_enqueue_script('effect', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.rexEffect.js', array('jquery'), $ver, true);
                 }
 
                 if ( false !== strpos( $rexbuilderShortcode, 'rex-num-spin' ) ) {
@@ -336,7 +329,9 @@ class Rexbuilder_Public
                     wp_enqueue_script('rex-slideshow', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexSlideshow.js', array('jquery'), $ver, true);
                 }
             }
-            wp_enqueue_script('effect', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.rexEffect.js', array('jquery'), $ver, true);
+
+            wp_enqueue_script('sticky-section', REXPANSIVE_BUILDER_URL . 'public/js/build/sticky-section.js', array(), $ver, true);
+            wp_enqueue_script('scroll-css-animation', REXPANSIVE_BUILDER_URL . 'public/js/build/scroll-css-animation.js', array(), $ver, true);
 
             wp_enqueue_script('utilities', REXPANSIVE_BUILDER_URL . 'public/js/vendor/utilities.js', array('jquery'), $ver, true);
             // wp_enqueue_script('overlay-scrollbar', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.overlayScrollbars.min.js', array('jquery'), $ver, true);
@@ -375,10 +370,15 @@ class Rexbuilder_Public
          * class.
          */
 
-        if ($this->builder_active_on_this_post_type()) {
+        if ($this->builder_active_on_this_post_type()) {          
+            
+            wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), '20120206', true);
             if( Rexbuilder_Utilities::isBuilderLive() ) {
                 wp_enqueue_script( $this->plugin_name, REXPANSIVE_BUILDER_URL . 'public/js/builderlive-editor.js', array( 'jquery' ), null, true );
             } else {
+                // if ( false !== strpos( $rexbuilderShortcode, 'rex-video-vimeo-wrap-' ) ) {
+                //     wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), '20120206', true);
+                // }
                 wp_enqueue_script( $this->plugin_name, REXPANSIVE_BUILDER_URL . 'public/js/builderlive.js', array( 'jquery' ), null, true );
             }
 
@@ -458,27 +458,32 @@ class Rexbuilder_Public
      * Including the new sprites
      *
      * @return void
-     * @since 1.1.3
+     * @since 2.0.0
      */
-    public function include_sprites()
-    {
-        ?><div style="display:none"><?php include_once REXPANSIVE_BUILDER_PATH . 'admin/sprites/symbol/svg/sprite.symbol.svg';?></div><?php
-    }
-
     public function include_sprites_live() {
 		?><div style="display:none"><?php include_once( REXPANSIVE_BUILDER_PATH .  'admin/sprites_live_new/symbol/svg/sprite.symbol.svg' ); ?></div><?php
     }
-    
-    /**
-     * Test purpose
-     *
-     * @return void
-     * @todo    Remove me on production
-     */
-    public function include_sprites_test() {
-		?><div style="display:none"><?php include_once( REXPANSIVE_BUILDER_PATH .  'admin/sprites_test_2/sprite.symbol.svg' ); ?></div><?php
-	}
 
+    /**
+     * Including eventually custom sprites
+     * uploaded on the backend
+     *
+     * @since 2.0.0
+     */
+    public function include_custom_sprites() {
+        if ( file_exists( REXPANSIVE_BUILDER_PATH . 'shared/assets/symbol/sprite.symbol.svg' ) ) 
+        {
+        ?>
+        <div style="display:none"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><?php include_once( REXPANSIVE_BUILDER_PATH . 'shared/assets/symbol/sprite.symbol.svg' ); ?></svg></div>
+        <?php
+        }
+    }
+
+    /**
+     * Save section rexids
+     *
+     * @since 2.0.0
+     */
     public function rexlive_save_sections_rexids()
     {
         $nonce = $_POST['nonce_param'];
@@ -1169,6 +1174,30 @@ class Rexbuilder_Public
                 }
             }
         }
+    }
+
+    /**
+     *  Filtering YOAST SEO plugin meta description generator
+     *  @since 2.0.0
+     */
+    public function filter_yoast_seo_description( $description ) {
+        global $post;
+        if ( $this->builder_active_on_this_post_type() ) {
+            $content = get_post_meta( $post->ID, '_rexbuilder_shortcode', true );
+            $stripped_content = preg_replace('#\[[^\]]+\]#', '', $content);
+            $stripped_content = strip_tags($stripped_content);
+            
+            $stripped_content_lenght = strlen( $stripped_content );
+            if ( 0 === $stripped_content_lenght ) {
+                $stripped_content = get_the_title();
+            } else if ( $stripped_content_lenght > 340 ) {
+                $stripped_content = substr( $stripped_content, 0, 340 );
+            }
+
+            return $stripped_content;
+        }
+
+        return $description;
     }
 
     /**

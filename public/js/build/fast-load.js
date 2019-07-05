@@ -42,23 +42,29 @@
    * @param {Node} el element to lazy load a background image
    */
   var lazyLoadBkgrImg = function( el ) {
-    if ( el ) {
+    // if ( el ) {
       var src = el.getAttribute('data-src');
-      if ( src ) {
+      if ( null !== src ) {
         var tempImg = new Image();
         tempImg.src = el.getAttribute('data-src');
         tempImg.onload = function() {
           el.style.backgroundImage = 'url(' + el.getAttribute('data-src') + ')';
           el.removeAttribute('data-src');
+          // if ( observable.getAttribute('data-rexbuilder-block-id') ) {
+
+          // } else if ( observable.getAttribute('data-rexlive-section-id') ) {
+
+          // }
         };
 
         // on case of loading error, repush the image on the visibile queue
         // so the next interval can be reprocessed
         tempImg.onerror = function() {
+          console.log('errure')
           imgVisibleQueue.push( el );
         };
       }
-    }
+    // }
   }
 
   /**
@@ -70,11 +76,13 @@
     var controls = el.nextElementSibling;
     if ( controls ) {
       var loader = controls.querySelector('.loader');
+      var pause = controls.querySelector('.pause');
       if ( loader ) {
         // tracing the callback to succesfully remove it
         // after the call
         el.addEventListener('play', function cb(event) {
-          loader.className = loader.className.replace('loader--view','').trim();
+          loader.className = loader.className.replace('video-tool--view','').trim();
+          pause.className = pause.className + ' video-tool--view';
           event.currentTarget.removeEventListener(event.type, cb);
         });
       }
@@ -120,13 +128,13 @@
     // if error, try to reload the resource
     el.addEventListener('error', onErrorCallback);
 
-    var testCb = function(event) {
+    // var testCb = function(event) {
       // console.log(event.type);
       // console.log(event.currentTarget.children[0].src);
-    }
+    // }
 
-    el.addEventListener('stalled',testCb);
-    el.addEventListener('suspend',testCb);
+    // el.addEventListener('stalled',testCb);
+    // el.addEventListener('suspend',testCb);
     // el.addEventListener('waiting',testCb);
   }
 
@@ -135,7 +143,7 @@
    * @param {Node} el element to lazy load a video/source
    */
   var lazyLoadVideoHTML = function( el ) {
-    if ( el ) {
+    if ( 0 === el.readyState ) {
       for ( var source in el.children ) {
         var videoSource = el.children[source];
         if (typeof videoSource.tagName === "string" && videoSource.tagName === "SOURCE") {
@@ -150,6 +158,9 @@
     }
   }
 
+  /**
+   * Handling all the intersections
+   */
   var handleIntersectionObserver = function()
   {
     // console.log(queuing);
@@ -180,8 +191,12 @@
               else
               {
                 // check images background
-                var imgWrapper = entry.target;
-                lazyLoadBkgrImg( imgWrapper );
+                if ( -1 !== entry.target.className.indexOf('section-w-image') ) {
+                  var imgWrapper = entry.target;
+                  if ( imgWrapper ) {
+                    lazyLoadBkgrImg( imgWrapper );
+                  }
+                }
     
                 // check video background
                 var videoWrapper = entry.target.querySelector('.rex-video-container');
@@ -224,12 +239,18 @@
               else
               {
                 // check images background
-                var imgWrapper = entry.target.querySelector('.rex-image-wrapper');
-                lazyLoadBkgrImg( imgWrapper );
+                if ( -1 !== entry.target.className.indexOf('block-w-image') ) {
+                  var imgWrapper = entry.target.querySelector('.rex-image-wrapper');
+                  if ( imgWrapper ) {
+                    lazyLoadBkgrImg( imgWrapper );
+                  }
+                }
 
                 // check video background
                 var videoWrapper = entry.target.querySelector('.rex-video-container');
-                lazyLoadVideoHTML( videoWrapper );
+                if ( videoWrapper ) {
+                  lazyLoadVideoHTML( videoWrapper );
+                }
               }
   
               // stop observing block
@@ -239,6 +260,135 @@
         });
   
         blocks.forEach(function(block) {
+          scrollobserverBlock.observe(block);
+        });
+      }
+    }
+  }
+
+  /**
+   * New intersection observer handler
+   * checking going in viewport and going out
+   * 
+   */
+  var handleIntersectionObserverSmart = function()
+  {
+    // console.log(queuing);
+    if ('1' === _plugin_frontend_settings.fast_load )
+    {
+      if ("IntersectionObserver" in window) {
+        // observer sections
+        var sections = [].slice.call(document.querySelectorAll('.rexpansive_section'));
+  
+        scrollobserverSection = new IntersectionObserver(function(entries, observer) {
+          entries.forEach(function(entry) {
+            var imgWrapper = null;
+            var videoWrapper = null;
+
+            if ( -1 !== entry.target.className.indexOf('section-w-image') ) {
+              imgWrapper = entry.target;
+            }
+
+            // check video background
+            if ( -1 !== entry.target.className.indexOf('section-w-html-video') ) {
+              videoWrapper = entry.target.querySelector('.rex-video-container');
+            }
+
+            // element becomes visible
+            if( entry.isIntersecting ) {
+
+              // check images background
+              if ( imgWrapper ) {
+                lazyLoadBkgrImg( imgWrapper );
+              }
+  
+              if ( videoWrapper ) {
+                if ( entry.intersectionRatio >= 0.5 && 0 !== videoWrapper.readyState && videoWrapper.paused ) {
+                  videoWrapper.play();
+                } else {
+                  lazyLoadVideoHTML( videoWrapper );
+                }
+              }
+            }
+            // element goes invisible 
+            else {
+              if ( videoWrapper ) {
+                videoWrapper.pause();
+              }
+            }
+
+            // stop observing section
+            // scrollobserverSection.unobserve(entry.target);
+          });
+        }, {
+          threshold: [0, 0.5 ,1]
+        });
+  
+        sections.forEach(function(section) {
+          // adding listeners only one time
+          if ( -1 !== section.className.indexOf('section-w-html-video') ) {
+            var videoWrapper = section.querySelector('.rex-video-container');
+            if ( videoWrapper ) {
+              addLazyVideoListeners( videoWrapper );
+            }
+          }
+
+          scrollobserverSection.observe(section);
+        });
+  
+        // observe blocks
+        var blocks = [].slice.call(document.querySelectorAll('.perfect-grid-item'));
+  
+        scrollobserverBlock = new IntersectionObserver(function(entries, observer) {
+          entries.forEach(function(entry) {
+            var imgWrapper = null;
+            var videoWrapper = null;
+
+            if ( -1 !== entry.target.className.indexOf('block-w-image') ) {
+              imgWrapper = entry.target.querySelector('.rex-image-wrapper');
+            }
+
+            // check video background
+            if ( -1 !== entry.target.className.indexOf('block-w-html-video') ) {
+              videoWrapper = entry.target.querySelector('.rex-video-container');
+            }
+
+            if ( entry.isIntersecting ) 
+            {
+              // check images background
+              if ( imgWrapper ) {
+                lazyLoadBkgrImg( imgWrapper );
+              }
+
+              if ( videoWrapper ) {
+                if ( entry.intersectionRatio >= 0.5 && 0 !== videoWrapper.readyState && videoWrapper.paused ) {
+                  videoWrapper.play();
+                } else {
+                  lazyLoadVideoHTML( videoWrapper );
+                }
+              }
+  
+              // stop observing block
+              // scrollobserverBlock.unobserve(entry.target);
+            }
+            else {
+              if ( videoWrapper ) {
+                videoWrapper.pause();
+              }
+            }
+          });
+        },  {
+          threshold: [0, 0.5 ,1]
+        });
+  
+        blocks.forEach(function(block) {
+          if ( -1 !== block.className.indexOf('block-w-html-video') ) {
+            var videoWrapper = block.querySelector('.rex-video-container');
+            if ( videoWrapper ) {
+              addLazyVideoListeners( videoWrapper );
+            }
+          }
+
           scrollobserverBlock.observe(block);
         });
       }
@@ -348,5 +498,6 @@
   if ( queuing ) {
     document.addEventListener('DOMContentLoaded', handlingQueues);
   }
-  window.addEventListener('load', handleIntersectionObserver);
+  // window.addEventListener('load', handleIntersectionObserver);
+  window.addEventListener('load', handleIntersectionObserverSmart);
 }());

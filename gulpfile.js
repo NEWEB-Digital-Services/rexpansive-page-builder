@@ -623,7 +623,6 @@ var live_file_map = [
 	'admin/rexpansive-font/**/*.*',
 	'admin/spectrum/**/*',
 	'admin/sprites/symbol/svg/sprite.symbol.svg',
-	'admin/sprites_live/symbol/svg/sprite.symbol.svg',
 	'admin/sprites_live_new/symbol/svg/sprite.symbol.svg',
 	'admin/class-importheme-import-utilities.php',
 	'admin/class-importheme-import-xml-content.php',

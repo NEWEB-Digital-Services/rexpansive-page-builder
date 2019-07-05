@@ -68,7 +68,7 @@ class Rexbuilder_Section
             'row_margin_left' => '',
             'section_model' => '',
             'row_edited_live' => '',
-            'section_model' => '',
+            // 'section_model' => '',
             'rexlive_section_id' => '',
             'row_active_photoswipe' => '',
             'rexlive_model_id' => '',
@@ -78,7 +78,7 @@ class Rexbuilder_Section
         extract($parsed_atts);
 
         $options = get_option($this->plugin_name . '_options');
-        $fast_load = $options['fast_load'];
+        $fast_load = ( isset( $options['fast_load'] ) ? $options['fast_load'] : 0 );
         $editor = Rexbuilder_Utilities::isBuilderLive();
 
         // Applying a filter to the content
@@ -158,6 +158,15 @@ class Rexbuilder_Section
             $row_separators .= ' data-row-separator-left="' . $block_distance . '"';
         }
 
+        $video_has_audio = strpos( $custom_classes, "rex-video--with-audio" );
+        $bg_video_toggle_audio_markup = "";
+
+        if ( false !== $video_has_audio ) {
+            $bg_video_toggle_audio_markup .= '<div class="rex-video-toggle-audio">';
+            $bg_video_toggle_audio_markup .= '<div class="rex-video-toggle-audio-shadow"></div>';
+            $bg_video_toggle_audio_markup .= '</div>';
+        }
+
         $videoTypeActive = '';
 
         $bg_video_markup = '';
@@ -170,7 +179,7 @@ class Rexbuilder_Section
                 $bg_video_markup .= '<source type="video/mp4" data-src="' . $video_mp4_url . '" />';
                 $bg_video_markup .= '</video>';
                 // adding video controllers
-                $bg_video_markup .= '<div class="rex-video__controls"><span class="loader rotate-center loader--view"></span></div>';
+                $bg_video_markup .= '<div class="rex-video__controls"><div class="loader video-tool video-tool--view"></div><div class="pause video-tool"><div class="indicator"></div></div><div class="play video-tool"><div class="indicator"></div></div></div>';
             } else {
                 $bg_video_markup .= '<source type="video/mp4" src="' . $video_mp4_url . '" />';
                 $bg_video_markup .= '</video>';
@@ -182,7 +191,8 @@ class Rexbuilder_Section
         
         if ('' != $video_bg_url_section && 'undefined' != $video_bg_url_section) {
             $videoTypeActive = 'youtube-player';
-            $bg_youtube_video_markup .= '<div class="rex-youtube-wrap" data-property="{videoURL:\'' . $video_bg_url_section . '\',containment:\'self\',startAt:0,mute:\'true\',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"></div>';
+            $mute = ($bg_video_toggle_audio_markup != "" ? "false" : "true");
+            $bg_youtube_video_markup .= '<div class="rex-youtube-wrap" data-property="{videoURL:\'' . $video_bg_url_section . '\',containment:\'self\',startAt:0,mute:' . $mute . ',autoPlay:true,loop:true,opacity:1,showControls:false,showYTLogo:false}"></div>';
         }
                     
         $bg_video_vimeo_markup = '';
@@ -217,19 +227,28 @@ class Rexbuilder_Section
 
         $row_has_accordion = has_shortcode($content, 'RexAccordion');
 
-        echo ' class="rexpansive_section' . ($empty_section ? ' empty-section' : '')
-        . ($videoTypeActive!= "" ? " ".$videoTypeActive : "") .
-        (("" != $rexlive_model_id) ? " rex-model-section" : "") .
-        (($content_has_photoswipe > 0) ? ' photoswipe-gallery' : '') .
-        (('' != $custom_classes) ? ' ' . $custom_classes : '') .
-        (('true' == $full_height) ? ' full-height-section' : '') .
-        (($content_has_floating_blocks !== false) ? ' rex-section-has-floating-blocks' : '') .
-        (($content_has_static_block !== false) ? ' rex-section-has-static-blocks' : '') .
-        ((false !== $row_has_accordion) ? ' rex-section-has-accordion' : '') .
-        ( $editor ? ( $row_separator_top < 25 ? ' ui-tools--near-top' : '' ) : '' ) .
-        apply_filters('rexpansive_builder_section_class', '', $parsed_atts) . '"' .
-            (($content_has_photoswipe > 0) ? ' itemscope itemtype="http://schema.org/ImageGallery"' : '') .
-            (strlen($section_style) > 7 ? ' ' . $section_style . '"' : '');
+        // echo classes
+        echo ' class="rexpansive_section' . ($empty_section ? ' empty-section' : '');
+        echo ($videoTypeActive!= "" ? " ".$videoTypeActive : "");
+        echo (("" != $rexlive_model_id) ? " rex-model-section" : "");
+        echo (($content_has_photoswipe > 0) ? ' photoswipe-gallery' : '');
+        echo (('' != $custom_classes) ? ' ' . $custom_classes : '');
+        echo (('true' == $full_height) ? ' full-height-section' : '');
+        echo (($content_has_floating_blocks !== false) ? ' rex-section-has-floating-blocks' : '');
+        echo (($content_has_static_block !== false) ? ' rex-section-has-static-blocks' : '');
+        echo ((false !== $row_has_accordion) ? ' rex-section-has-accordion' : '');
+        echo ( $editor ? ( $row_separator_top < 25 ? ' ui-tools--near-top' : '' ) : '' );
+
+        echo ( $fast_load && '' !== $id_image_bg_section ? ' section-w-image' : '' );
+        echo ( $fast_load && '' != $video_bg_id_section && 'undefined' != $video_bg_id_section ? ' section-w-html-video' : '' );
+        // custom classes filter
+        echo apply_filters('rexpansive_builder_section_class', '', $parsed_atts) . '"';
+
+        // photoswipe gallery check
+        echo (($content_has_photoswipe > 0) ? ' itemscope itemtype="http://schema.org/ImageGallery"' : '');
+        
+        // section style
+        echo (strlen($section_style) > 7 ? ' ' . $section_style . '"' : '');
 
         if ( '' !== $section_fast_load ) {
             echo ' ' . $section_fast_load;
@@ -279,6 +298,7 @@ class Rexbuilder_Section
         echo $bg_video_markup;
         echo $bg_youtube_video_markup;
         echo $bg_video_vimeo_markup;
+        echo $bg_video_toggle_audio_markup;
         
         echo '<div class="responsive-overlay"';
         if ("" != $responsive_background) {

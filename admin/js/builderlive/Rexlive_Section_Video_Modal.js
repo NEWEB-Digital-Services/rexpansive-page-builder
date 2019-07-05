@@ -254,7 +254,7 @@ var Section_Video_Background_Modal = (function($) {
 
   var _updateVideoMp4Link = function( url ) {
     video_background_properties.$linkMp4Preview.val(url).next('label').addClass('active');
-  }
+  };
 
   var _init = function() {
     var $self = $("#video-section-editor-wrapper");

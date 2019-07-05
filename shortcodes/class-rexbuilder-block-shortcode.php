@@ -55,6 +55,7 @@ class Rexbuilder_Block
             "color_bg_block" => "#ffffff",
             "image_bg_block" => "",
             "id_image_bg_block" => "",
+            'image_bg_elem_active' => '',
             'video_bg_id' => "",
             "video_bg_url" => "",
             "video_bg_url_vimeo" => "",
@@ -65,6 +66,7 @@ class Rexbuilder_Block
             'block_custom_class' => '',
             'block_padding' => '',
             'overlay_block_color' => '',
+            'overlay_block_color_active' => '',
             "zak_background" => "",
             "zak_side" => "",
             "zak_title" => "",
@@ -93,7 +95,7 @@ class Rexbuilder_Block
 
         $options = get_option($this->plugin_name . '_options');
         $animation = apply_filters('rexbuilder_animation_enabled', $options['animation']);
-        $fast_load = $options['fast_load'];
+        $fast_load = ( isset( $options['fast_load'] ) ? $options['fast_load'] : 0 );
 
         $element_link_cc = apply_filters('rexpansive_block_element_link_custom_class', '');
         $grid_item_content_cc = apply_filters('rexpansive_block_grid_item_content_custom_class', '');
@@ -292,6 +294,9 @@ class Rexbuilder_Block
         }
         echo ' w' . $size_x;
 
+        echo ( $fast_load && '' !== $id_image_bg_block ? ' block-w-image' : '' );
+        echo ( $fast_load && '' != $video_bg_id && 'undefined' != $video_bg_id ? ' block-w-html-video' : '' );
+
         // adding class for text editor
         echo ($block_has_slider ? ' block-has-slider' : ' rex-text-editable');
         
@@ -397,11 +402,11 @@ class Rexbuilder_Block
 
         $bg_youtube_video_markup = '';
 
-        if ('' != $video_bg_url && 'undefined' != $video_bg_url):
+        if ('' != $video_bg_url && 'undefined' != $video_bg_url) {
             $videoTypeActive = 'youtube-player';
             $mute = ($bg_video_toggle_audio_markup != "" ? "false" : "true");
             $bg_youtube_video_markup .= '<div class="rex-youtube-wrap" data-property="{videoURL:\'' . $video_bg_url . '\',containment:\'self\',startAt:0,mute:' . $mute . ',autoPlay:true,loop:true,opacity:1,showControls:false, showYTLogo:false}"></div>';
-        endif;
+        }
 
         
         $bg_video_vimeo_markup = '';
@@ -657,8 +662,8 @@ class Rexbuilder_Block
         echo '</div>';
         
         if ( $editor ) {
-            $not_has_image = ( ! isset( $atts['image_bg_elem_active'] ) || 'true' != $atts['image_bg_elem_active'] || "" == $atts['id_image_bg_block'] );
-            $not_has_overlay = ( 'true' != $atts['overlay_block_color_active'] || "" == $atts['overlay_block_color'] );
+            $not_has_image = ( ! isset( $image_bg_elem_active ) || 'true' != $image_bg_elem_active || "" == $id_image_bg_block );
+            $not_has_overlay = ( 'true' != $overlay_block_color_active || "" == $overlay_block_color );
             $not_has_video = ( '' == $video_bg_id && '' == $video_bg_url && '' == $video_bg_url_vimeo );
 
             echo '<div class="ui-focused-element-highlight">';

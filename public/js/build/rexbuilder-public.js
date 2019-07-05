@@ -531,6 +531,27 @@ var Rexbuilder_App = (function($) {
         }
       }
     });
+
+    // video controller tools
+    // play video
+    $(document).on('click', '.rex-video__controls .pause', function(ev) {
+      var $tool = $(ev.currentTarget);
+      var $play_tool = $tool.parent().children('.play');
+      var $target = $tool.parents('.rexpansive_section');
+      $tool.removeClass('video-tool--view');
+      $play_tool.addClass('video-tool--view');
+      Rexbuilder_Util.pauseVideo( $target );
+    });
+
+    // pause video
+    $(document).on('click', '.rex-video__controls .play', function(ev) {
+      var $tool = $(ev.currentTarget);
+      var $pause_tool = $tool.parent().children('.pause');
+      var $target = $tool.parents('.rexpansive_section');
+      $tool.removeClass('video-tool--view');
+      $pause_tool.addClass('video-tool--view');
+      Rexbuilder_Util.playVideo( $target );
+    });
   };
 
   var load = function() {
@@ -651,8 +672,47 @@ var Rexbuilder_App = (function($) {
       }
     }
 
+    // sticky sections
+    if( false == _plugin_frontend_settings.user.editing ) {
+      launchStickySections();    
+    }
+    
+    // launch scrollCSSAnimations
+    if( false == _plugin_frontend_settings.user.editing ) {
+      launchScrollCSSAnimations();
+    }
+
     Rexbuilder_Util.galleryPluginActive = true;
   };
+
+  /**
+   * Launch sticky sections if any
+   */
+  var launchStickySections = function() {
+    if ( 'undefined' !== typeof StickySection ) {
+      var stickySections = [].slice.call(document.querySelectorAll('.sticky-section'));
+      stickySections.forEach(function (el, index) {
+        var stickySection = new StickySection(el, {
+          borderAnimation: true,
+          stickyElementSelector: '.rex-video-wrap'
+        });
+      });
+    }
+  };
+
+  /**
+   * Launch eventually scroll animations
+   */
+  var launchScrollCSSAnimations = function() {
+    if ( 'undefined' !== typeof ScrollCSSAnimation ) {
+      var fadesUps = [].slice.call(document.querySelectorAll('.fadeUpTextCSS'));
+      fadesUps.forEach(function(el) {
+        var fu = new ScrollCSSAnimation(el,{
+          offset: 0.75
+        });
+      });
+    }
+  }
 
   /**
    * Launching odometer with some options

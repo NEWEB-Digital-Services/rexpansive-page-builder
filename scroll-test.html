@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>SCROLLTEST</title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+        }
+    .spacer {
+        width: 100%;
+        height: 450px;
+    }
+    .container {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        /* padding: 150px 0; */
+        /* min-height: 150vh; */
+        position: relative;
+    }
+    .backgroundcontent {
+        position: absolute;
+        z-index: -1;
+        top: 0;right: 0;bottom: 0;left: 0;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+        /* background-image: url(https://www.parcoprealpigiulie.it/public/image/Panorami%20foto%20home/Pan_Casera_Canin_2019.jpg);
+        background-position: center;
+        background-size: cover;
+        background-repeat: no-repeat; */
+    }
+    .backgroundcontent video {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+        z-index: 0;
+        -webkit-transform: translateX(-50%) translateY(-50%);
+        -ms-transform: translateX(-50%) translateY(-50%);
+        transform: translateX(-50%) translateY(-50%);
+        margin: 0;
+    }
+    .borders {
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        /* display: none; */
+    }
+    .borders > div {
+        background-color: slateblue;
+        position: absolute;
+        transform: scale(1,1);
+        transition: transform 400ms cubic-bezier(0.075, 0.82, 0.165, 1);
+    }
+    .borders-fixed {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        /* display: none; */
+    }
+    .borders-fixed > div {
+        background-color: slateblue;
+        position: absolute;
+        transform: scale(1,1);
+        transition: transform 400ms cubic-bezier(0.075, 0.82, 0.165, 1);
+    }
+    .borders-bt,
+    .borders-bb {
+        width: 100%;
+        height: 90px;
+        left: 0;
+        right: 0;
+    }
+    .borders-br,
+    .borders-bl {
+        width: 90px;
+        height: 100%;
+        top: 0;
+        bottom: 0;
+    }
+    .borders-bt {
+        top: 0;
+        transform-origin: top;
+    }
+    .borders-bb {
+        bottom: 0;
+        transform-origin: bottom;
+    }
+    .borders-br {
+        right: 0;
+        transform-origin: right;
+    }
+    .borders-bl {
+        left: 0;
+        transform-origin: left;
+    }
+    #block {
+        width: 150px;
+        height: 150px;
+        background-color: mediumspringgreen;
+        margin: 0 auto;
+        transform: scale(1,1);
+        display: none;
+    }
+    .textcontent {
+        width: 50%;
+        padding-top: 250px;
+        padding-bottom: 200px;
+        padding-left: 120px;
+        color: royalblue;
+        text-shadow: 2px 2px 0 moccasin;
+    }
+    .trigger {
+        position: fixed;
+        top: 50%;
+        left: 0;
+        width: 100%;
+        border-bottom: 1px dotted blue;
+        display: none;
+    }
+    </style>
+</head>
+<body>
+    <div class="spacer" style="background-color: skyblue"></div>
+    <div class="spacer" style="background-color: thistle"></div>
+    <div class="container">
+        <div id="block"></div>
+        <div class="backgroundcontent">
+            <video preload autoplay loop muted playsinline>
+                <source type="video/mp4" src="./test-res/landscape.mp4" />
+            </video>
+        </div>
+        <div class="textcontent">
+            <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Cupiditate optio sequi vel, cumque magnam cum voluptas tenetur nihil debitis dolore. Placeat porro explicabo eum totam, doloribus voluptate. Laudantium, esse minus.</h1>
+            <h2>Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio voluptates esse excepturi, fugiat quia consequuntur molestias labore, itaque hic unde distinctio necessitatibus magni sit commodi explicabo molestiae, maxime assumenda sed?</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Incidunt laudantium, cumque debitis aperiam dolorem, delectus, natus magnam quasi quas similique eos nam inventore officia ad! Numquam dolores necessitatibus corrupti sed?</p>
+        </div>
+        <div class="borders">
+            <div class="borders-bt"></div>
+            <div class="borders-br"></div>
+            <div class="borders-bb"></div>
+            <div class="borders-bl"></div>
+        </div>
+    </div>
+    <!-- <div id="b-fixed" class="borders-fixed">
+        <div class="borders-bt"></div>
+        <div class="borders-br"></div>
+        <div class="borders-bb"></div>
+        <div class="borders-bl"></div>
+    </div> -->
+    <div class="spacer" style="background-color: tomato"></div>
+    <div class="spacer" style="background-color: springgreen"></div>
+    <div class="trigger"></div>
+    <script>
+;(function() {
+    var block = document.getElementById('block');
+    var container = block.parentElement;
+    var windowInnerHeight = document.documentElement.clientHeight;
+    var containerOffsetTop = offsetTop(container);
+    var containerOffsetBottom = containerOffsetTop + container.offsetHeight;
+
+    var borderWrap = container.querySelector('.borders');
+    // var borderWrap = document.getElementById('b-fixed');
+    var borders = [].slice.call( borderWrap.children );
+
+    var containerToFix = container.querySelector('.backgroundcontent');
+
+    function scaleBorders( val ) {
+        borders.forEach(function(el,index) {
+            if ( index === 0 || index === 2 ) {
+                el.style.transform = 'scale(' + 1 + ',' + val + ')';
+            } else {
+                el.style.transform = 'scale(' + val + ',' + 1 + ')';
+            }
+        });
+    }
+
+    function offsetTop( el, scrollTop ) {
+        scrollTop = 'undefined' !== typeof scrollTop ? scrollTop : ( window.pageYOffset || document.documentElement.scrollTop );
+        var rect = el.getBoundingClientRect();
+        return rect.top + scrollTop;
+    }
+
+    function handleScrollOneTrigger(event) {
+        var scrollPos = scrollDocumentPositionTop();
+        var spt = scrollPos+(windowInnerHeight/2);   // trigger
+        var sptTop = scrollPos;
+        var sptBottom = scrollPos + (windowInnerHeight);
+        console.log( containerOffsetTop, containerOffsetBottom, spt );
+        if ( ! ( spt > containerOffsetTop && spt < containerOffsetBottom ) ) {
+            container.style.backgroundColor = 'transparent';
+            if ( spt < containerOffsetTop ) {
+                block.style.transform = 'scale(1,1)';
+                scaleBorders(1);
+            } else if ( spt > containerOffsetBottom ) {
+                block.style.transform = 'scale(0,0)';
+                scaleBorders(0);
+            }
+        } else {
+            container.style.backgroundColor = 'yellow';
+            var v = 1 - ( spt - containerOffsetTop ) / container.offsetHeight;
+            block.style.transform = 'scale(' + v + ',' + v + ')';
+            scaleBorders(v);
+        }
+    }
+
+    function handleScrollTwoTriggers(event) {
+        var sptTop = scrollDocumentPositionTop();
+        // var sptTop = scrollPos;
+        var sptBottom = sptTop + (windowInnerHeight);
+        
+        // useless
+        var spt = sptTop+(windowInnerHeight/2);   // trigger
+
+        if ( sptTop > containerOffsetTop && sptBottom < containerOffsetBottom ) {
+            // container.offsetHeight - windowInnerHeight
+            // var percentage = ( sptTop - containerOffsetTop ) * 100 / container.offsetHeight;
+            var percentage = ( sptTop - containerOffsetTop ) * 100 / ( container.offsetHeight - windowInnerHeight );
+            // var cv = 255 - ( 255 * percentage / 100 );
+            // container.style.backgroundColor = 'rgb(255,255,' + cv + ')';
+            containerToFix.style.top = ( sptTop - containerOffsetTop ) + 'px';
+            var sv = 1 - ( 1 * percentage / 100 ) ;            
+            scaleBorders(sv);
+        } else {            
+            if ( sptTop < containerOffsetTop ) {
+                // container.style.backgroundColor = 'rgb(255,255,255)';
+                containerToFix.style.top = 0;
+                scaleBorders(1);
+            } else if ( sptBottom > containerOffsetBottom ) {
+                containerToFix.style.top = ( container.offsetHeight - windowInnerHeight ) + 'px';
+                // container.style.backgroundColor = 'rgb(255,255,0)';
+                scaleBorders(0);
+            }
+            
+        }
+    }
+
+    function scrollDocumentPositionTop() {
+        return window.pageYOffset || document.documentElement.scrollTop;
+    }
+    // window.addEventListener('scroll', handleScrollOneTrigger);
+    window.addEventListener('scroll', handleScrollTwoTriggers);
+    window.addEventListener('resize', function() {
+        windowInnerHeight = document.documentElement.clientHeight;
+    } );
+}());
+    </script>
+</body>
+</html>

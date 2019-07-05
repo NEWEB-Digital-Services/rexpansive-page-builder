@@ -223,13 +223,14 @@ class Rexbuilder_Utilities {
 	 */
 	public static function get_icon_list()
 	{
+		$sprite_list = '[]';
 		if ( file_exists( get_stylesheet_directory() . '/assets/sprites/sprite-list.json' ) )
 		{
 			$sprite_list = file_get_contents( get_stylesheet_directory() . '/assets/sprites/sprite-list.json' );
 		}
-		else
+		else if ( file_exists( REXPANSIVE_BUILDER_PATH . 'shared/assets/sprite-list.json' ) )
 		{
-			$sprite_list = file_get_contents( REXPANSIVE_BUILDER_PATH . 'admin/sprite-list.json' );
+			$sprite_list = file_get_contents( REXPANSIVE_BUILDER_PATH . 'shared/assets/sprite-list.json' );
 		}
 		$sprite_a = json_decode( $sprite_list, true );
 		return $sprite_a;

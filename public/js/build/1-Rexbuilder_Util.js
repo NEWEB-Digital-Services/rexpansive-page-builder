@@ -2458,6 +2458,8 @@ var Rexbuilder_Util = (function($) {
       type = "youtube";
     }
 
+    var hasAudio = 'undefined' !== targetProps['custom_classes'] ? ( -1 !== targetProps['custom_classes'].indexOf('rex-video--with-audio') ? true : false ) : false;
+
     var videoOptions = {
       mp4Data: {
         idMp4: mp4ID,
@@ -2470,7 +2472,7 @@ var Rexbuilder_Util = (function($) {
       },
       vimeoUrl: vimeoUrl,
       youtubeUrl: youtubeUrl,
-      audio: false,
+      audio: hasAudio,
       typeVideo: type
     };
 
@@ -3753,12 +3755,8 @@ var Rexbuilder_Util = (function($) {
     this.$window = $(window);
     this.$document = $(document);
     this.$body = $("body");
-    $modelsCustomizationsDataDiv = $("#rexbuilder-model-data")
-      .children(".models-customizations")
-      .eq(0);
-    $pageCustomizationsDataDiv = $("#rexbuilder-layout-data")
-      .children(".layouts-customizations")
-      .eq(0);
+    $modelsCustomizationsDataDiv = $("#rexbuilder-model-data").children(".models-customizations").eq(0);
+    $pageCustomizationsDataDiv = $("#rexbuilder-layout-data").children(".layouts-customizations").eq(0);
     $liveDataContainer = $("#rexbuilder-layout-data-live");
     $layoutsDomOrder = $("#rexbuilder-layouts-sections-order");
     $defaultLayoutState = $("#rexbuilder-default-layout-state");
@@ -3776,11 +3774,8 @@ var Rexbuilder_Util = (function($) {
     this.activeLayout = "";
     this.domUpdaiting = false;
 
-    //da fixare, per adesso prende in cosiderazione solo la prima row, non tutte
-    var oldResposiveBlockGrid = this.$rexContainer
-      .children(".rexpansive_section")
-      .eq(0)
-      .attr("data-rex-collapse-grid");
+    // to fix, now considers only the first row, not the entire
+    var oldResposiveBlockGrid = this.$rexContainer.children(".rexpansive_section").eq(0).attr("data-rex-collapse-grid");
     this.blockGridUnder768 =
       typeof oldResposiveBlockGrid != "undefined"
         ? oldResposiveBlockGrid.toString() == "false"

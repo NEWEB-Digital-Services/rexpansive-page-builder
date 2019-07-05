@@ -137,7 +137,7 @@
     $(document).on("click", '.editor-post-publish-button', function() {
       $(document).trigger("rexbuilder:save_content");
       $go_live_button.removeClass('draft').addClass("glaCC-true").removeClass("glaCC-false");
-      console.log("WordPress- launch- rexbuilder:save_content");
+      // console.log("WordPress- launch- rexbuilder:save_content");
     });
 
     /**

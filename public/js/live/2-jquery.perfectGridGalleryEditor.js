@@ -1,5 +1,6 @@
 /*
  *  Perfect Grid Gallery Editor
+ *  @since 2.0.0
  */
 
 (function($, window, document, _, undefined) {
@@ -195,7 +196,8 @@
       this.properties.startingLayout = this.settings.galleryLayout;
 
       // Creating layout before collapsing info for resize purpose
-      var collapseGrid = this.$section.attr("data-rex-collapse-grid");
+      var collapseGrid = this.section.getAttribute('data-rex-collapse-grid');
+
       this.properties.dispositionBeforeCollapsing = this.createActionDataMoveBlocksGrid();
       this.properties.layoutBeforeCollapsing = {
         layout: this.settings.galleryLayout,
@@ -203,33 +205,17 @@
         singleHeight: this.properties.singleHeight
       };
 
-      if (
-        Rexbuilder_Util.activeLayout == "default" &&
-        this._viewport().width <
-          _plugin_frontend_settings.defaultSettings.collapseWidth
-      ) {
-        if (typeof collapseGrid == "undefined") {
+      if ( Rexbuilder_Util.activeLayout == "default" && this._viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
+        if ( null === collapseGrid ) {
           this.collapseElements();
         } else {
-          if (collapseGrid.toString() == "true") {
+          if ( collapseGrid.toString() == "true" ) {
             this.collapseElements();
           }
         }
       }
-
-      this.$element.find(".rex-image-wrapper").each(function(i, el) {
-        var $el = $(el);
-        if ($el.hasClass("natural-image-background")) {
-          var width = parseInt(
-            $el
-              .parents(".grid-item-content")
-              .attr("data-background_image_width")
-          );
-          if (width > $el.outerWidth()) {
-            $el.addClass("small-width");
-          }
-        }
-      });
+      
+      this.fix_natural_image_blocks();
 
       this.save_grid_state();
 
@@ -239,7 +225,6 @@
 
     /**
      * Not accurate due to the time that gridstack takes to create the grid
-     * @deprecated  Never used for now
      */
     triggerGalleryReady: function() {
       var event = jQuery.Event("rexlive:galleryReady");
@@ -281,15 +266,7 @@
         }
       }
 
-      this.$element.find(".rex-image-wrapper").each(function(i, el) {
-        var $el = $(el);
-        if ($el.hasClass("natural-image-background")) {
-          var width = parseInt( $el.parents(".grid-item-content").attr("data-background_image_width") );
-          if (width > $el.outerWidth()) {
-            $el.addClass("small-width");
-          }
-        }
-      });
+      this.fix_natural_image_blocks();
 
       this.save_grid_state();
 
@@ -338,8 +315,9 @@
 
     clearStateGrid: function() {
       var rexID;
-      this.$element.children(".grid-stack-item").each(function(i, el) {
-        rexID = $(el).attr("data-rexbuilder-block-id");
+      var items = [].slice.call(this.element.querySelectorAll('.grid-stack-item'));
+      items.forEach(function(el) {
+        rexID = el.getAttribute('data-rexbuilder-block-id');
         store.remove(rexID);
         store.remove(rexID + "_noEdits");
       });
@@ -664,7 +642,7 @@
      * @since 2.0.0
      */
     _setGridID: function() {
-      this.properties.sectionNumber = parseInt( this.$section.attr("data-rexlive-section-number") );
+      this.properties.sectionNumber = parseInt( this.section.getAttribute("data-rexlive-section-number") );
       this.$element.addClass("grid-number-" + this.properties.sectionNumber);
     },
 
@@ -678,14 +656,12 @@
       this.$element.find(".grid-stack-item").each(function(i, e) {
         $elem = $(e);
         if (
-          $elem.attr("data-rexbuilder-block-id") === undefined ||
-          $elem.attr("data-rexbuilder-block-id") == ""
+          e.getAttribute("data-rexbuilder-block-id") === undefined ||
+          e.getAttribute("data-rexbuilder-block-id") == ""
         ) {
           id = Rexbuilder_Util.createBlockID();
-          $elem.attr("data-rexbuilder-block-id", id);
-          $elem
-            .children(".rexbuilder-block-data")
-            .attr("data-rexbuilder_block_id", id);
+          e.setAttribute("data-rexbuilder-block-id", id);
+          $elem.children(".rexbuilder-block-data").attr("data-rexbuilder_block_id", id);
         }
       });
     },
@@ -1496,7 +1472,7 @@
           block["attributes"]["data-height"].value = h;
 
           this.updateElementDataHeightProperties(
-            $dataBlock,
+            $dataBlock[0],
             parseInt(block["attributes"]["data-gs-height"].value)
           );
           // updating element class
@@ -1525,23 +1501,17 @@
     // Override options set by the jquery call with the html data
     // attributes, if presents
     _defineDataSettings: function() {
-      if ("undefined" != typeof this.$element.attr("data-separator")) {
-        this.properties.gutter = parseInt(this.$element.attr("data-separator"));
+      if (this.element.getAttribute("data-separator")) {
+        this.properties.gutter = parseInt(this.element.getAttribute("data-separator"));
       }
-      if ("undefined" != typeof this.$element.attr("data-layout")) {
-        this.settings.galleryLayout = this.$element
-          .attr("data-layout")
-          .toString();
+      if (this.element.getAttribute("data-layout")) {
+        this.settings.galleryLayout = this.element.getAttribute("data-layout").toString();
       }
-      if ("undefined" != typeof this.$element.attr("data-full-height")) {
-        this.settings.fullHeight = this.$element
-          .attr("data-full-height")
-          .toString();
+      if (this.element.getAttribute("data-full-height")) {
+        this.settings.fullHeight = this.element.getAttribute("data-full-height").toString();
       }
-      if ("undefined" != typeof this.$element.attr("data-mobile-padding")) {
-        this.settings.mobilePadding = this.$element
-          .attr("data-mobile-padding")
-          .toString();
+      if (this.element.getAttribute("data-mobile-padding")) {
+        this.settings.mobilePadding = this.element.getAttribute("data-mobile-padding").toString();
       }
     },
 
@@ -1550,8 +1520,9 @@
 
       var newWidth = this.element.offsetWidth;
 
-      var collapseGrid = this.$section.attr("data-rex-collapse-grid");
-      if (typeof collapseGrid == "undefined") {
+      // var collapseGrid = this.$section.attr("data-rex-collapse-grid");
+      var collapseGrid = this.section.getAttribute("data-rex-collapse-grid");
+      if ( collapseGrid ) {
         if (
           Rexbuilder_Util.activeLayout == "default" &&
           this._viewport().width <=
@@ -1561,13 +1532,8 @@
         } else {
           this.properties.oneColumModeActive = false;
         }
-      } else if (
-        (Rexbuilder_Util.activeLayout == "default" &&
-          this._viewport().width <=
-            _plugin_frontend_settings.defaultSettings.collapseWidth &&
-          collapseGrid.toString() == "true") ||
-        collapseGrid.toString() == "true"
-      ) {
+      } else if ( collapseGrid && (
+        (Rexbuilder_Util.activeLayout == "default" && this._viewport().width <= _plugin_frontend_settings.defaultSettings.collapseWidth && collapseGrid.toString() == "true") || collapseGrid.toString() == "true" ) ) {
         this.properties.oneColumModeActive = true;
       } else {
         this.properties.oneColumModeActive = false;
@@ -1636,27 +1602,26 @@
         );
       }
 
-      this.properties.paddingTopBottom = this.$section.hasClass(
-        "distance-block-top-bottom"
-      );
+      // this.properties.paddingTopBottom = this.$section.hasClass("distance-block-top-bottom");
+      this.properties.paddingTopBottom = -1 !== this.section.className.indexOf('distance-block-top-bottom');
     },
 
     _defineRowSeparator: function() {
       this.properties.gridTopSeparator =
-        "undefined" !== typeof this.$element.attr("data-row-separator-top")
-          ? parseInt(this.$element.attr("data-row-separator-top"))
+        this.element.getAttribute("data-row-separator-top")
+          ? parseInt(this.element.getAttribute("data-row-separator-top"))
           : null;
       this.properties.gridRightSeparator =
-        "undefined" !== typeof this.$element.attr("data-row-separator-right")
-          ? parseInt(this.$element.attr("data-row-separator-right"))
+        this.element.getAttribute("data-row-separator-right")
+          ? parseInt(this.element.getAttribute("data-row-separator-right"))
           : null;
       this.properties.gridBottomSeparator =
-        "undefined" !== typeof this.$element.attr("data-row-separator-bottom")
-          ? parseInt(this.$element.attr("data-row-separator-bottom"))
+        this.element.getAttribute("data-row-separator-bottom")
+          ? parseInt(this.element.getAttribute("data-row-separator-bottom"))
           : null;
       this.properties.gridLeftSeparator =
-        "undefined" !== typeof this.$element.attr("data-row-separator-left")
-          ? parseInt(this.$element.attr("data-row-separator-left"))
+        this.element.getAttribute("data-row-separator-left")
+          ? parseInt(this.element.getAttribute("data-row-separator-left"))
           : null;
     },
 
@@ -1792,7 +1757,6 @@
           elDim = store.get(
             $elem.attr("data-rexbuilder-block-id") + "_noEdits"
           );
-          //console.log("%%%%%%%%%% picking old dim %%%%%%%%%%%%%%");
         } else {
           elDim = store.get($elem.attr("data-rexbuilder-block-id"));
         }
@@ -1847,34 +1811,23 @@
 
     _prepareElements: function() {
       var gallery = this;
+      var items = [].slice.call( gallery.element.querySelectorAll('.grid-stack-item') );
 
       if (this.properties.editedFromBackend && ('undefined' === typeof Rexbuilder_Util_Editor.sectionCopying || false === Rexbuilder_Util_Editor.sectionCopying ) ) {
-        var $elem;
-        gallery.$element.children(".grid-stack-item").each(function() {
-          $elem = $(this);
-          $elem.attr("data-gs-x", $elem.data("col") - 1);
-          $elem.attr("data-gs-y", $elem.data("row") - 1);
-          $elem.attr("data-gs-width", $elem.data("width"));
-          $elem.attr("data-gs-height", $elem.data("height"));
+        items.forEach( function(el) {
+          el.setAttribute('data-gs-x', parseInt( el.getAttribute('data-col') ) - 1);
+          el.setAttribute('data-gs-y', parseInt( el.getAttribute('data-row') ) - 1);
+          el.setAttribute('data-gs-width', el.getAttribute('data-width'));
+          el.setAttribute('data-gs-height', el.getAttribute('data-height'));
         });
       }
 
-      gallery.$element.children(".grid-stack-item").each(function() {
-        var $elem = $(this);
-        // console.table({
-        //   gs_x:$elem.attr("data-gs-x"),
-        //   gs_y:$elem.attr("data-gs-y"),
-        //   gs_width:$elem.attr("data-gs-width"),
-        //   gs_height:$elem.attr("data-gs-height")
-        // });
-        gallery._prepareElement(this);
-        if (
-          $elem.children(".rexbuilder-block-data").attr("data-gs_start_h") ===
-          undefined
-        ) {
-          $elem
-            .children(".rexbuilder-block-data")
-            .attr("data-gs_start_h", parseInt($elem.attr("data-gs-height")));
+      var blockData;
+      items.forEach(function(el) {
+        gallery._prepareElement(el);
+        blockData = el.querySelector('.rexbuilder-block-data');
+        if ( null === blockData.getAttribute('data-gs_start_h') ) {
+          blockData.setAttribute( 'data-gs_start_h', parseInt( el.getAttribute('data-gs-height') ) );
         }
       });
     },
@@ -1896,18 +1849,18 @@
       gallery._fixImageSize($elem);
     },
 
-    updateElementDataHeightProperties: function($blockData, newH) {
+    updateElementDataHeightProperties: function(blockData, newH) {
       if (this.settings.galleryLayout == "masonry") {
-        $blockData.attr("data-block_height_masonry", newH);
+        blockData.setAttribute("data-block_height_masonry", newH);
       } else {
-        $blockData.attr("data-block_height_fixed", newH);
+        blockData.setAttribute("data-block_height_fixed", newH);
       }
       /*
       if (this.properties.firstStartGrid || Rexbuilder_Util_Editor.updatingImageBg) {
       } 
       */
-      $blockData.attr("data-gs_start_h", newH);
-      $blockData.attr("data-block_height_calculated", newH);
+      blockData.setAttribute("data-gs_start_h", newH);
+      blockData.setAttribute("data-block_height_calculated", newH);
     },
 
     _prepareElementEditing: function($elem) {
@@ -2601,7 +2554,7 @@
      */
     _linkDnDEvents: function() {
       
-            // DEFINISCO LE VARIABILI PRINCIPALI
+      // DEFINISCO LE VARIABILI PRINCIPALI
       var $pholder;
       var gallery = this;
       var locked = false;
@@ -2689,15 +2642,15 @@
 
         stop = true;
 
-        // GESTIONE DELLO SCROLL IN BASE ALLO SPOSTAMENTO DEL POPUP, FASE NEGATIVA
+        // handling scroll relative to popup position, negative case
         if ( event.clientY < 150 ) {  
           stop = false;
-          scroll(-1);       // LO SCROLL E' IMPOSTATO A -1, DI CONSEGUENZA LA PAGINA SCORRERA' PX PER PX VERSO L'ALTO
+          scroll(-1);       // scroll set to -1, the page scroll upwards
         }
-        // GESTIONE DELLO SCROLL IN BASE ALLO SPOSTAMENTO DEL POPUP, FASE POSITIVA
+        // handling scroll relative to popup position, positive case
         if ( event.clientY > Rexbuilder_Util_Editor.viewportMeasurement.height - 150 ) {
           stop = false;
-          scroll(1);        // LO SCROLL E' IMPOSTATO A -1, DI CONSEGUENZA LA PAGINA SCORRERA' PX PER PX VERSO L'ALTO
+          scroll(1);        // scroll set to -1, the page scroll upwards
         }
       });
 
@@ -2733,10 +2686,11 @@
       } else {
         floating = true;
       }
+      var test;
       if (Rexbuilder_Util.editorMode) {
         //console.log("launching gridstack backend");
 
-        gallery.$element.gridstack({
+        test = gallery.$element.gridstack({
           auto: true,
           autoHide: false,
           animate: true,
@@ -2768,7 +2722,7 @@
         gallery.$element.addClass("gridActive");
 
       } else {
-        gallery.$element.gridstack({
+        test = gallery.$element.gridstack({
           auto: true,
           disableOneColumnMode: true,
           cellHeight: gallery.properties.singleHeight,
@@ -2792,16 +2746,32 @@
 
       // Remove elements to hide
       var gridstack = this.properties.gridstackInstance;
+      var items = [].slice.call( this.element.querySelectorAll('.grid-stack-item') );
+      items.forEach( function(el) {
+        if ( -1 !== el.className.indexOf('rex-hide-element') ) {
+          gridstack.removeWidget(el, false);
+        }
+      });
+
+      /*
       this.$element.children(".grid-stack-item").each(function(i, elem) {
         if ($(elem).hasClass("rex-hide-element")) {
           gridstack.removeWidget(elem, false);
         }
       });
+      */
+
       // if (!Rexbuilder_Util.domUpdaiting) {
       if (!Rexbuilder_Util.domUpdaiting && ('undefined' === typeof Rexbuilder_Util_Editor.sectionCopying || false === Rexbuilder_Util_Editor.sectionCopying )) {
         this.updateBlocksHeight();
       }
 
+      items.forEach( function(el) {
+        var blockData = el.querySelector('.rexbuilder-block-data');
+        gallery.updateElementDataHeightProperties( blockData, parseInt( el.getAttribute('data-gs-height') ) );
+      });
+
+      /*
       this.$element.children(".grid-stack-item").each(function(i, el) {
         var $el = $(el);
         var $blockData = $el.children(".rexbuilder-block-data");
@@ -2810,6 +2780,7 @@
           parseInt($el.attr("data-gs-height"))
         );
       });
+      */
     },
 
     setGridstackIstanceNumber: function() {
@@ -2838,6 +2809,7 @@
             $elemData = $elem.children(".rexbuilder-block-data");
             if ( gallery.settings.galleryLayout == "masonry" ) {
               var elementEdited = typeof $elemData.attr("data-block_dimensions_live_edited") != "undefined" && $elemData.attr("data-block_dimensions_live_edited").toString() == "true";
+              
               if ( elementEdited ) {
                 // Rexbuilder_Util.chosenLayoutData.min) === Rexbuilder_Util.$window[0].innerWidth \\ if they are the same we are at the start of the layout customization;
                 var blockTextHeight = gallery.calculateTextWrapHeight($elem.find('.text-wrap'));
@@ -2872,31 +2844,37 @@
             }
           });
 
-          if (
-            !Rexbuilder_Util.windowIsResizing &&
-            !this.properties.updatingSection
-          ) {
+          if ( !Rexbuilder_Util.windowIsResizing && !this.properties.updatingSection )
+          {
             this.commitGridstack();
           }
         }
       }
     },
 
+    /**
+     *  Launching MediumEditor inside the blocks that can have it
+     *
+     */
     _launchTextEditor: function() {
-      this.$element.find(".rex-text-editable").each(function() {
-        var $elem = $(this);
-        if (
-          $elem.find(".pswp-figure").length === 0 &&
-          $elem.find(".rex-slider-wrap").length === 0
-        ) {
-          TextEditor.addElementToTextEditor($elem.find(".text-wrap"));
+      var editors = [].slice.call( this.element.querySelectorAll('.rex-text-editable') );
+      var hasPswp, hasSlider, textWrap;
+      editors.forEach( function(el) {
+        hasPswp = el.querySelectorAll('.pswp-figure');
+        hasSlider = el.querySelectorAll('.rex-slider-wrap');
+        if ( 0 === hasPswp.length && 0 === hasSlider.length ) {
+          textWrap = el.querySelector('.text-wrap');
+          TextEditor.addElementToTextEditor( textWrap );
         }
       });
     },
 
+    /**
+     *  seems @deprecated
+     *  @date 03-07-2019
+     */
     _setParentGridPadding: function() {
       var $parent = this.$element.parent();
-      //console.log('setting parent padding');
       if (
         (this._viewport().width >=
           _plugin_frontend_settings.defaultSettings.collapseWidth &&
@@ -2905,7 +2883,6 @@
           !this.properties.setMobilePadding &&
           this.$section.attr("data-rex-collapse-grid") == "true")
       ) {
-        //console.log('setting parent padding');
         this.properties.setDesktopPadding = true;
         if (this.$section.attr("data-rex-collapse-grid") == "true") {
           this.properties.setMobilePadding = true;
@@ -2961,59 +2938,38 @@
         !this.properties.setDesktopPadding ||
         (!this.properties.setDesktopPadding &&
           !this.properties.setMobilePadding &&
-          this.$section.attr("data-rex-collapse-grid") == "true")
+          this.section.getAttribute("data-rex-collapse-grid") == "true")
       ) {
         this.properties.setDesktopPadding = true;
-        if (this.$section.attr("data-rex-collapse-grid") == "true") {
+        if (this.section.getAttribute("data-rex-collapse-grid") == "true") {
           this.properties.setMobilePadding = true;
         } else {
           this.properties.setMobilePadding = false;
         }
 
         if (null !== this.properties.gridTopSeparator) {
-          this.$element.css(
-            "margin-top",
-            this.properties.gridTopSeparator - this.properties.halfSeparatorTop
-          );
+          this.element.style.marginTop = ( this.properties.gridTopSeparator - this.properties.halfSeparatorTop ) + 'px';
         } else {
-          this.$element.css("margin-top", this.properties.halfSeparatorTop);
+          this.element.style.marginTop = this.properties.halfSeparatorTop + 'px';
         }
 
         if (null !== this.properties.gridBottomSeparator) {
-          this.$element.css(
-            "margin-bottom",
-            this.properties.gridBottomSeparator -
-              this.properties.halfSeparatorBottom
-          );
+          this.element.style.marginBottom = ( this.properties.gridBottomSeparator - this.properties.halfSeparatorBottom ) + 'px';
         } else {
-          this.$element.css(
-            "margin-bottom",
-            this.properties.halfSeparatorBottom
-          );
+          this.element.style.marginBottom = this.properties.halfSeparatorBottom + 'px';
         }
 
         if (!this.properties.paddingTopBottom) {
           if (null !== this.properties.gridLeftSeparator) {
-            this.$element.css(
-              "margin-left",
-              this.properties.gridLeftSeparator -
-                this.properties.halfSeparatorLeft
-            );
+            this.element.style.marginLeft = ( this.properties.gridLeftSeparator - this.properties.halfSeparatorLeft ) + 'px';
           } else {
-            this.$element.css("margin-left", this.properties.halfSeparatorLeft);
+            this.element.style.marginLeft = this.properties.halfSeparatorLeft + 'px';
           }
 
           if (null !== this.properties.gridRightSeparator) {
-            this.$element.css(
-              "margin-right",
-              this.properties.gridRightSeparator -
-                this.properties.halfSeparatorRight
-            );
+            this.element.style.marginRight = ( this.properties.gridRightSeparator - this.properties.halfSeparatorRight ) + 'px';
           } else {
-            this.$element.css(
-              "margin-right",
-              this.properties.halfSeparatorRight
-            );
+            this.element.style.marginRight = this.properties.halfSeparatorRight + 'px';
           }
         }
       }
@@ -3107,6 +3063,7 @@
       var sliderHeight = 0;
       var textHeight;
       var emptyBlockFlag = false;
+      var backImgType = $blockData.attr('data-type_bg_block');
       // if ($textWrap.length != 0) {
 
       // calculate text content height
@@ -3116,10 +3073,14 @@
       //   textHeight = 0;
       // }
 
+      // if the block has a full image background, without text
+      // do not calculate a new height
+      if ( 'full' === backImgType && 0 === textHeight ) { return; }
+
       // test purpose
       if(this.settings.galleryLayout == "masonry"){
         var parsedHeight = parseInt($blockData.attr("data-element_height_increased"))
-        var increasedHeight = isNaN(parsedHeight) ? 0 : parsedHeight;
+        // var increasedHeight = isNaN(parsedHeight) ? 0 : parsedHeight;
       }
 
       if (this.properties.oneColumModeActive) {
@@ -3218,18 +3179,18 @@
       if ( !$elem.hasClass("block-has-slider") && backgroundHeight == 0 && videoHeight == 0 && textHeight == 0 ) {
         emptyBlockFlag = true;
       }
-/* 
-      console.table({
-        blockRatio: blockRatio,
-        startH: startH,
-        backgroundHeight: backgroundHeight,
-        videoHeight: videoHeight,
-        defaultHeight: defaultHeight,
-        textHeight: textHeight,
-        sliderHeight: sliderHeight,
-        test: startH * this.properties.singleHeight
-      });
- */
+
+      // console.table({
+      //   blockRatio: blockRatio,
+      //   startH: startH,
+      //   backgroundHeight: backgroundHeight,
+      //   videoHeight: videoHeight,
+      //   defaultHeight: defaultHeight,
+      //   textHeight: textHeight,
+      //   sliderHeight: sliderHeight,
+      //   test: startH * this.properties.singleHeight
+      // });
+
       if (editingBlock) {
         startH *= this.properties.singleHeight;
       } else {
@@ -3261,8 +3222,6 @@
         newH = w * sw * blockRatio;
       }
 
-      // console.log(newH)
-
       if (this.settings.galleryLayout == "fixed") {
         if (emptyBlockFlag) {
           newH = Math.round(newH / this.properties.singleHeight);
@@ -3272,9 +3231,8 @@
       } else {
         newH = Math.ceil(newH / this.properties.singleHeight);
       }
-      // console.log(newH)
 
-      this.updateElementDataHeightProperties($blockData, newH); 
+      this.updateElementDataHeightProperties($blockData[0], newH); 
 
       var gridstack = this.properties.gridstackInstance;
       if (gridstack !== undefined) {
@@ -3321,7 +3279,7 @@
         var textCalculate = $textWrap.clone(false);
         textCalculate.children(".medium-insert-buttons").remove();
         if (textCalculate.text().trim().length != 0 || 0 !== textCalculate.find('img,iframe,i').length ) {
-          if ( ($textWrap.hasClass("medium-editor-element") && !$textWrap.hasClass("medium-editor-placeholder")) || $textWrap.parents(".pswp-item").length != 0 ) {
+          if ( ($textWrap.hasClass("medium-editor-element") && (!$textWrap.hasClass("medium-editor-placeholder") || $textWrap[0].childElementCount > 1)) || $textWrap.parents(".pswp-item").length != 0 ) {
             var gicwStyles = window.getComputedStyle( $textWrap.parents('.grid-item-content-wrap')[0] );
             textHeight = $textWrap.innerHeight() + Math.ceil(parseFloat(gicwStyles['padding-top'])) + Math.ceil(parseFloat(gicwStyles['padding-bottom']));
           }
@@ -3536,19 +3494,36 @@
     repositionElements: function(newNode) {
       var markGrid = new IndexedGrid(this.settings.numberCol);
       markGrid.setGrid(newNode.x, newNode.y, newNode.width, newNode.height);
+      
+      console.log('insert', newNode.el.getAttribute('id'), '[' + newNode.x + ',' + newNode.y + ']', newNode.width + 'x' + newNode.height );
+
+      // generate ordered grid nodes list
+      // based on DOM order
+      var orderedGridNodes = [];
+      var tempGridNodes = this.properties.gridstackInstance.grid.nodes;
+      var tempGridNodesLenght = tempGridNodes.length;
+      this.$element.find('.perfect-grid-item').each( function( i, el ) {
+        for( var i=0; i < tempGridNodesLenght; i++ ) {
+          if ( tempGridNodes[i].el.is( el ) ) {
+            orderedGridNodes.push( tempGridNodes[i] );
+            break;
+          }
+        }
+      });
 
       var newPositions = [];
 
-      for(var i=0, tot_nodes = this.properties.gridstackInstance.grid.nodes.length; i<tot_nodes; i++) {
+      for(var i=0, tot_nodes = orderedGridNodes.length; i<tot_nodes; i++) {
         var newPosition = {};
         // Find elements to move
-        if( ( this.properties.gridstackInstance.grid.nodes[i].x + ( this.properties.gridstackInstance.grid.width * this.properties.gridstackInstance.grid.nodes[i].y ) ) >= ( newNode.x + ( this.properties.gridstackInstance.grid.width * newNode.y ) ) ) {
-          var linearCoord = markGrid.willFit(this.properties.gridstackInstance.grid.nodes[i].width,this.properties.gridstackInstance.grid.nodes[i].height);
-          var newCoords = this._getCoord(linearCoord,12);
+        if( ( orderedGridNodes[i].x + ( this.properties.gridstackInstance.grid.width * orderedGridNodes[i].y ) ) >= ( newNode.x + ( this.properties.gridstackInstance.grid.width * newNode.y ) ) && newNode.el !== orderedGridNodes[i].el[0] ) {
+          console.log('check', orderedGridNodes[i].el.attr('id'));
+          var linearCoord = markGrid.willFit(orderedGridNodes[i].width,orderedGridNodes[i].height);
+          var newCoords = this._getCoord(linearCoord,12);          
           newPosition.x = newCoords.x;
           newPosition.y = newCoords.y;
-          newPosition.el = this.properties.gridstackInstance.grid.nodes[i];
-          markGrid.setGrid( newCoords.x, newCoords.y, this.properties.gridstackInstance.grid.nodes[i].width, this.properties.gridstackInstance.grid.nodes[i].height);
+          newPosition.el = orderedGridNodes[i];
+          markGrid.setGrid( newCoords.x, newCoords.y, orderedGridNodes[i].width, orderedGridNodes[i].height);
           markGrid.checkGrid(linearCoord);
         }
         newPositions.push(newPosition);
@@ -3558,6 +3533,7 @@
 
       for(var j=0, tot_newPositions = newPositions.length; j<tot_newPositions; j++) {
         if( newPositions[j].hasOwnProperty('x') && newPositions[j].hasOwnProperty('y') && newPositions[j].hasOwnProperty('el') ) {
+          console.log('move', newPositions[j].el.el.attr('id'), '[' + newPositions[j].x + ',' + newPositions[j].y + ']', newPositions[j].el.width + 'x' + newPositions[j].el.height );
           this.properties.gridstackInstance.move( newPositions[j].el.el, newPositions[j].x, newPositions[j].y );
         }
       }
@@ -3754,6 +3730,18 @@
      */
     save_grid_state: function() {
       this.properties.initialStateGrid = this.properties.gridstackInstance.grid.nodes;
+    },
+
+    fix_natural_image_blocks: function() {
+      this.$element.find(".rex-image-wrapper").each(function(i, el) {
+        var $el = $(el);
+        if ($el.hasClass("natural-image-background")) {
+          var width = parseInt( $el.parents(".grid-item-content").attr("data-background_image_width") );
+          if (width > $el.outerWidth()) {
+            $el.addClass("small-width");
+          }
+        }
+      });
     },
 
     /**

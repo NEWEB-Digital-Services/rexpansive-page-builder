@@ -147,4 +147,5 @@
 	<?php do_action('rexpansive_builder_after_settings'); ?>
 	<?php submit_button( 'Save', 'primary', 'submit', TRUE ); ?>
 	</form>
+	<?php include_once( 'rexbuilder-admin-icons-uploader.php' ); ?>
 </div>

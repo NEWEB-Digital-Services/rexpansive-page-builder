@@ -2471,6 +2471,63 @@ var TextEditor = (function ($) {
     }
   });
 
+  /**
+   * Extension to check blocks of text that have only a inline svg icon inside
+   * In this case the blocks is no longer editable. Fix that with this extension
+   *
+   * @since 2.0.0
+   * @date 03-07-2019
+   */
+  var OnlySVGFixExtension = MediumEditor.Extension.extend({
+    name: 'onlySVGFixExtension',
+
+    init: function () {
+      this.subscribe("editableClick", this.checkContent.bind(this));
+    },
+
+    checkContent: function(event) {
+      if ("click" == event.type) {
+        var editor = this.base.getFocusedElement();
+        if ( this.checkOnlyIcons(editor) ) {
+          var svg = event.currentTarget;
+
+          // go deep until the element has no childs
+          while( svg.childElementCount !== 0 ) {
+            svg = svg.children[0];
+          }
+
+          // going up until the parent I tag
+          if ( svg.tagName.toUpperCase() === 'USE' ) {
+            svg = svg.parentNode;
+          }
+
+          if ( svg.tagName.toUpperCase() === 'SVG' ) {
+            svg = svg.parentNode;
+          }          
+
+          // create a space to allow the editing
+          var fix = document.createElement('span');
+          fix.innerHTML = '&nbsp;';
+
+          svg.parentNode.append(fix);
+
+          // place the cursor after the space created
+          var range = document.createRange();
+          var sel = window.getSelection();
+          range.setStart(fix, 1);
+          range.collapse(true);
+          sel.removeAllRanges();
+          sel.addRange(range);
+        }
+      }
+    },
+
+    checkOnlyIcons: function( el ) {
+      var svgs = el.querySelectorAll('svg');
+      return ( svgs.length !== 0 && el.innerText == "" );
+    }
+  });
+
   var _linkDocumentListeners = function () {
     //function for removing textarea html editor
     Rexbuilder_Util.$document.on("click", ".rex-close-html-editor", function (e) {
@@ -2586,7 +2643,8 @@ var TextEditor = (function ($) {
         'insert-media': insertMediaExtensionInstance,
         textGradient: new TextGradientExtension(),
         'hide-row-tools-on-editing': new HideRowToolsOnEditing(),
-        'rexbutton-input': new RexButtonExtension()
+        'rexbutton-input': new RexButtonExtension(),
+        onlySVGFixExtension : new OnlySVGFixExtension(),
       },
       placeholder: {
         text: "Type here your text",
