@@ -338,7 +338,7 @@ $tool_button_classes = 'tool-button';
     </div>
     <div class="tool-button_list tool-button_list--vertical_top">
         <div class="tool-button tool-button_list--item me-insert-inline-svg">
-        <?php Rexbuilder_Utilities::get_icon('#B016-New-Adjacent-Row'); ?>
+        <?php Rexbuilder_Utilities::get_icon('#C008-Star'); ?>
         </div>
         <div class="tool-button tool-button_list--item me-insert-embed">
         <?php Rexbuilder_Utilities::get_icon('#Z006-Video'); ?>
