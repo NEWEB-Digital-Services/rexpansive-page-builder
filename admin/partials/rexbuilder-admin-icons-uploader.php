@@ -27,6 +27,7 @@ defined('ABSPATH') or exit;
 				<!-- </td> -->
 				<td>
 					<input id="removeIcons" class="button" type="button" value="<?php _e( 'Remove selected', 'rexpansive-builder' ); ?>">
+					<div id="iconsSpinner" class="spinner"></div>
 					<div id="iconsPreview">
 					<?php
 					if ( file_exists( REXPANSIVE_BUILDER_PATH . 'shared/assets/sprite-list.json' ) )

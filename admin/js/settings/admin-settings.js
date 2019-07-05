@@ -7,6 +7,7 @@
   var iconsPreview;
   var iconsNum;
   var uploadIconsMsgs;
+  var iconsSpinner;
 
   // SVGO optimizire intance
   var svgoInstance;
@@ -87,6 +88,7 @@
     iconsPreview = document.getElementById('iconsPreview');
     iconsNum = document.getElementById('icons-num');
     uploadIconsMsgs = document.getElementById('uploadIconsMsgs');
+    iconsSpinner = document.getElementById('iconsSpinner');
 
     totalSprites = 0;
     spritesObj = [];
@@ -115,6 +117,8 @@
     ev.preventDefault();
     var previewsSelected = [].slice.call( iconsPreview.querySelectorAll('.preview-wrap.selected') );
     if ( 0 !== previewsSelected.length ) {
+      startLoading();
+
       var deleteList = [];
       previewsSelected.forEach( function(el) {
         deleteList.push( el.getAttribute( 'data-sprite-id' ) );
@@ -156,6 +160,11 @@
         // There was a connection error of some sort
         writeMessage( admin_settings_vars.labels.remove_error );
       };
+
+      // request end
+      request.onloadend = function() {
+        stopLoading();
+      }
       // send request
       request.send(encodedData);
     }
@@ -171,6 +180,8 @@
    */
   function handleSubmitIcons(ev) {
     ev.preventDefault();
+
+    startLoading();
 
     // start timeout to check optimization complete
     checkOptimizationComplete();
@@ -334,8 +345,17 @@
         // There was a connection error of some sort
         writeMessage( admin_settings_vars.labels.upload_error );
       };
+
+      // end request
+      request.onloadend = function() {
+        stopLoading();
+      }
       // send request
       request.send(encodedData);
+    }
+    else
+    {
+      stopLoading();
     }
   }
 
@@ -389,6 +409,14 @@
     var msgEl = document.createElement('p');
     msgEl.innerText = msg;
     uploadIconsMsgs.appendChild( msgEl );
+  }
+
+  function startLoading() {
+    iconsSpinner.style.visibility = 'visible';
+  }
+
+  function stopLoading() {
+    iconsSpinner.style.visibility = ''; 
   }
 
   /**
