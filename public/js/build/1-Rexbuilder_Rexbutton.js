@@ -1,36 +1,33 @@
 /**
- * valori da inserire nel db per il primo pulsante. Vanno tutti nella "wp_options"
- * I dati sono nella forma
- * "option_name"
- * "option_value"
 
+ valori da inserire nel db per il primo pulsante. Vanno tutti nella "wp_options"
+ I dati sono nella forma
+ "option_name"
+ "option_value"
 
 
 _rex_buttons_ids
 
-[\"PtAh\"]
-
+[\"9UEc\"]
 
 
 _rex_buttons_styles
 
-[{\"rexID\":\"PtAh\",\"buttonName\":\"Rex Purple\",\"rules\":{\"element\":{\"text_color\":\"rgb(242, 175, 255)\",\"font_size\":\"22px\",\"background_color\":\"rgb(224, 108, 246)\",\"button_height\":\"70px\",\"border_color\":\"rgb(216, 74, 74)\",\"border_width\":\"7px\",\"border_radius\":\"15px\",\"margin_top\":\"25px\",\"margin_bottom\":\"15px\",\"margin_right\":\"5px\",\"margin_left\":\"10px\"},\"hover\":{\"background_color\":\"rgb(156, 0, 255)\"}}}]
+[{\"rexID\":\"9UEc\",\"buttonName\":\"Rex Funny v23\",\"rules\":{\"element\":{\"text_color\":\"rgb(111, 115, 181)\",\"font_size\":\"22px\",\"background_color\":\"rgb(0, 238, 255)\",\"button_height\":\"50px\",\"border_color\":\"rgb(165, 0, 255)\",\"border_width\":\"8px\",\"border_radius\":\"20px\",\"margin_top\":\"30px\",\"margin_bottom\":\"10px\",\"margin_right\":\"10px\",\"margin_left\":\"15px\",\"padding_top\":\"26px\",\"padding_bottom\":\"px\",\"padding_right\":\"37px\",\"padding_left\":\"px\"},\"hover\":{\"background_color\":\"rgb(165, 0, 146)\",\"text_color\":\"rgb(0, 60, 255)\",\"border_color\":\"rgb(0, 255, 15)\"}}}]
 
 
+_rex_button_9UEc_css
 
-_rex_button_PtAh_css
-
-.rex-button-wrapper[data-rex-button-id=\"PtAh\"] .rex-button-container{font-size: 22px;color: rgb(242, 175, 255);height: 70px;margin-top: 25px;margin-bottom: 15px;margin-left: 10px;margin-right: 5px;}.rex-button-wrapper[data-rex-button-id=\"PtAh\"] .rex-button-background{background-color: rgb(224, 108, 246);border-width: 7px;border-color: rgb(216, 74, 74);border-radius: 15px;border-style: solid;}.rex-button-wrapper[data-rex-button-id=\"PtAh\"] .rex-button-background:hover{background-color: rgb(156, 0, 255);}
-
+.rex-button-wrapper[data-rex-button-id=\"9UEc\"] .rex-button-container{font-size: 22px;color: rgb(111, 115, 181);min-height: 50px;margin-top: 30px;margin-bottom: 10px;margin-left: 15px;margin-right: 10px;}.rex-button-wrapper[data-rex-button-id=\"9UEc\"] .rex-button-text{padding-top: 26px;padding-bottom: px;padding-left: px;padding-right: 37px;}.rex-button-wrapper[data-rex-button-id=\"9UEc\"] .rex-button-background{background-color: rgb(0, 238, 255);border-width: 8px;border-color: rgb(165, 0, 255);border-radius: 20px;border-style: solid;}.rex-button-wrapper[data-rex-button-id=\"9UEc\"] .rex-button-background:hover{background-color: rgb(165, 0, 146);border-color: rgb(0, 255, 15);}.rex-button-wrapper[data-rex-button-id=\"9UEc\"] .rex-button-container:hover{color: rgb(0, 60, 255);}
 
 
-_rex_button_PtAh_html
+_rex_button_9UEc_html
 
-<span class=\"rex-button-wrapper\" data-rex-button-id=\"PtAh\">
-    <span class=\"rex-button-data\" style=\"display:none;\" data-text-color=\"rgb(242, 175, 255)\" data-text-size=\"22px\" data-background-color=\"rgb(224, 108, 246)\" data-background-color-hover=\"rgb(156, 0, 255)\" data-border-width=\"7px\" data-border-color=\"rgb(216, 74, 74)\" data-border-radius=\"15px\" data-button-height=\"70px\" data-margin-top=\"25px\" data-margin-bottom=\"15px\" data-margin-left=\"10px\" data-margin-right=\"5px\" data-link-target=\"#\" data-link-type=\"_blank\" data-button-name=\"Rex Purple\"></span>
-    <a href=\"#\" class=\"rex-button-container\" target=\"_blank\">
-        <span class=\"rex-button-background\">
-            <span class=\"rex-button-text\">Learn More</span>
+<span class="rex-button-wrapper" data-rex-button-id="9UEc">
+    <span class="rex-button-data" style="display:none;" data-text-color="rgb(111, 115, 181)" data-text-size="22px" data-background-color="rgb(0, 238, 255)" data-background-color-hover="rgb(165, 0, 146)" data-border-color-hover="rgb(0, 255, 15)" data-text-color-hover="rgb(0, 60, 255)" data-border-width="8px" data-border-color="rgb(165, 0, 255)" data-border-radius="20px" data-button-height="50px" data-margin-top="30px" data-margin-bottom="10px" data-margin-left="15px" data-margin-right="10px" data-padding-left="px" data-padding-right="37px" data-padding-top="26px" data-padding-bottom="px" data-link-target="#" data-link-type="_blank" data-button-name="Rex Funny v23"></span>
+    <a href="#" class="rex-button-container" type="_blank">
+        <span class="rex-button-background">
+            <span class="rex-button-text">Learn More</span>
         </span>
     </a>
 </span>
@@ -87,8 +84,21 @@ var Rexbuilder_Rexbutton = (function ($) {
         margins.left = isNaN(margins.left) ? 0 : margins.left;
         margins.right = isNaN(margins.right) ? 0 : margins.right;
 
-        buttonDimensionCalculated.height = buttonDimensionCalculated.height + margins.top + margins.bottom;
-        buttonDimensionCalculated.width = buttonDimensionCalculated.width + margins.left + margins.right;
+        var paddings = {
+            top: parseInt($buttonData.attr("data-padding-top").replace("px", "")),
+            bottom: parseInt($buttonData.attr("data-padding-bottom").replace("px", "")),
+            left: parseInt($buttonData.attr("data-padding-left").replace("px", "")),
+            right: parseInt($buttonData.attr("data-padding-right").replace("px", "")),
+        }
+        paddings.top = isNaN(paddings.top) ? 0 : paddings.top;
+        paddings.bottom = isNaN(paddings.bottom) ? 0 : paddings.bottom;
+        paddings.left = isNaN(paddings.left) ? 0 : paddings.left;
+        paddings.right = isNaN(paddings.right) ? 0 : paddings.right;
+
+        buttonDimensionCalculated.height = 
+            buttonDimensionCalculated.height + margins.top + margins.bottom + paddings.top + paddings.bottom;
+        buttonDimensionCalculated.width = 
+            buttonDimensionCalculated.width + margins.left + margins.right + paddings.left + paddings.right;
 
         var dropType;
         if ($textWrap.length == 0) {
@@ -158,14 +168,15 @@ var Rexbuilder_Rexbutton = (function ($) {
             });
         }
         _removeModelData($buttonWrapper);   
-
+        
         //removes medium editor placeholder if there
         var $textWrap = $buttonWrapper.parents(".text-wrap");             
         if($textWrap.length != 0){
             TextEditor.removePlaceholder($textWrap.eq(0));
         }
+        console.log(buttonsInPage);
     }
-
+    
     var _removeModelData = function ($buttonWrapper) {
         var $buttonData = $buttonWrapper.find(".rex-button-data").eq(0); 
         $buttonData.removeAttr("data-text-color");
@@ -182,6 +193,10 @@ var Rexbuilder_Rexbutton = (function ($) {
         $buttonData.removeAttr("data-margin-bottom"); 
         $buttonData.removeAttr("data-margin-left"); 
         $buttonData.removeAttr("data-margin-right"); 
+        $buttonData.removeAttr("data-padding-top");
+        $buttonData.removeAttr("data-padding-bottom"); 
+        $buttonData.removeAttr("data-padding-left"); 
+        $buttonData.removeAttr("data-padding-right"); 
         $buttonData.removeAttr("data-button-name");
     }
 
@@ -223,6 +238,16 @@ var Rexbuilder_Rexbutton = (function ($) {
         
         else if ("addRule" in styleSheet) {
             styleSheet.addRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container:hover{" + property + "}", styleSheet.cssRules.length);
+        }
+    }
+
+    var _addButtonTextRule = function (buttonID, property) {
+        if ("insertRule" in styleSheet) {
+            styleSheet.insertRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-text{" + property + "}", styleSheet.cssRules.length);
+        }
+        
+        else if ("addRule" in styleSheet) {
+            styleSheet.addRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-text{" + property + "}", styleSheet.cssRules.length);
         }
     }
 
@@ -453,7 +478,11 @@ var Rexbuilder_Rexbutton = (function ($) {
                 margin_top: ( buttonData.getAttribute("data-margin-top") ? buttonData.getAttribute("data-margin-top").toString() : '' ),
                 margin_bottom: ( buttonData.getAttribute("data-margin-bottom") ? buttonData.getAttribute("data-margin-bottom").toString() : '' ),
                 margin_left: ( buttonData.getAttribute("data-margin-left") ? buttonData.getAttribute("data-margin-left").toString() : '' ),
-                margin_right: ( buttonData.getAttribute("data-margin-right") ? buttonData.getAttribute("data-margin-right").toString() : '' )
+                margin_right: ( buttonData.getAttribute("data-margin-right") ? buttonData.getAttribute("data-margin-right").toString() : '' ),
+                padding_top: ( buttonData.getAttribute("data-padding-top") ? buttonData.getAttribute("data-padding-top").toString() : '' ),
+                padding_bottom: ( buttonData.getAttribute("data-padding-bottom") ? buttonData.getAttribute("data-padding-bottom").toString() : '' ),
+                padding_left: ( buttonData.getAttribute("data-padding-left") ? buttonData.getAttribute("data-padding-left").toString() : '' ),
+                padding_right: ( buttonData.getAttribute("data-padding-right") ? buttonData.getAttribute("data-padding-right").toString() : '' )
             };
             _addCSSRules(buttonID, buttonProperties);
         }
@@ -486,6 +515,13 @@ var Rexbuilder_Rexbutton = (function ($) {
         var containerHoverRule = "";
         containerHoverRule += "color: " + buttonProperties.hover_text + ";";
         _addButtonContainerHoverRule(buttonID, containerHoverRule);
+        
+        var textRule = "";
+        textRule += "padding-top: " + buttonProperties.padding_top + ";";
+        textRule += "padding-bottom: " + buttonProperties.padding_bottom + ";";
+        textRule += "padding-left: " + buttonProperties.padding_left + ";";
+        textRule += "padding-right: " + buttonProperties.padding_right + ";";
+        _addButtonTextRule(buttonID, textRule);
     }
 
     var _updateButtonLive = function (data) {

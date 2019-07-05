@@ -1111,7 +1111,6 @@ var TextEditor = (function ($) {
       this.arrowKeys = [37, 38, 39, 40];
       this.fixNodesEnter = false;
       this.fixButtonsClasses = false;
-      this.primaCeraRex = false;
 
       this.traceBTN = null;
       this.traceEditor = null;
@@ -1133,7 +1132,8 @@ var TextEditor = (function ($) {
 
       this.deleteRexbuttonBtn = $(this.rexbuttonTools).find(".rex-delete-button")[0];
       this.editRexbuttonBtn = $(this.rexbuttonTools).find(".rex-edit-button")[0];
-
+      console.log("DIOCANE");
+      console.log(this.editRexbuttonBtn);
       // View/Hide the Media Insert button
       this.subscribe("blur", this.handleBlur.bind(this));
 
@@ -1208,7 +1208,7 @@ var TextEditor = (function ($) {
     },
 
     handleBlur: function (event) {
-      if ($(event.target).parents(".rex-button-wrapper").length == 0) {
+      if ($(event.target).parents(".rex-button-wrapper").length == 0 && $(event.target).parents(".rexbutton-tools").length == 0) {
         this.hideRexbuttonToolbox();
       }
     },
@@ -1226,6 +1226,7 @@ var TextEditor = (function ($) {
     },
 
     handleClickDeleteRexbutton: function (e) {
+      this.hideRexbuttonToolbox();
       var $buttonContainer = $(this.traceBTN).parents(".rex-button-wrapper");
       var $paragraphContainer = $buttonContainer.parents("p.rex-buttons-paragraph");
       $buttonContainer.remove();
@@ -1235,6 +1236,7 @@ var TextEditor = (function ($) {
     },
 
     handleClickEditRexbutton: function (e) {
+      this.hideRexbuttonToolbox();
       var $buttonWrapper = $(this.traceBTN).parents(".rex-button-wrapper");
       var data = {
         eventName: "rexlive:openRexButtonEditor",
