@@ -1062,22 +1062,25 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
             {
             	$sprite_list = file_get_contents( $response['path_ids'] );
             	$symbolsIdJSON = json_decode( $sprite_list, true );
-         
-	            $symbolsHTML = '';
 
-	            foreach ($spritesData as $index => $spriteData) {
-	            	// prevent duplicates
-	            	if ( false === array_search( $spriteData['id'], $symbolsIdJSON['l-svg-icons']) ) {
-		            	$symbolsHTML .= $spriteData['data'];
-		            	array_push( $symbolsIdJSON['l-svg-icons'], $spriteData['id'] );
-	            	}
+            	$spriteDefinitions = file_get_contents( $response['path'] );
+
+	            foreach ( $deleteListData as $key ) {
+	            	// remove symbol
+	            	$re = '/<\s*symbol[^>]*id="' . $key . '"[^>]*>(?:.*?)<\s*\/\s*symbol>/m';
+	            	$spriteDefinitions = preg_replace( $re, '', $spriteDefinitions );
+
+	            	// remove index
+	            	$idxDel = array_search( $key, $symbolsIdJSON['l-svg-icons'] );
+	            	array_splice( $symbolsIdJSON['l-svg-icons'], $idxDel, 1 );
 	            }
 
 	            $response['ids'] = $symbolsIdJSON;
+	            $response['deleteList'] = $deleteListData;
 
 	            // save svg symbols
-	            $symbolFile = fopen( $response['path'], 'a') or die( "Unable to open file!" );
-	            fwrite( $symbolFile, $symbolsHTML );
+	            $symbolFile = fopen( $response['path'], 'w') or die( "Unable to open file!" );
+	            fwrite( $symbolFile, $spriteDefinitions );
 	            fclose( $symbolFile );
 
 	            // save id list

@@ -22,13 +22,11 @@ defined('ABSPATH') or exit;
 					<div id="uploadIconsMsgs">
 					</div>
 				</th>
+				<!-- <td> -->
+					<?php // submit_button( __( 'Add Icons', 'rexpansive-builder' ), 'primary', 'submitIcons', true, array( 'id' => 'submitIcons' ) ); ?>
+				<!-- </td> -->
 				<td>
-					<?php
-					submit_button( __( 'Add Icons', 'rexpansive-builder' ), 'primary', 'submitIcons', true, array( 'id' => 'submitIcons' ) );
-					?>
 					<input id="removeIcons" class="button" type="button" value="<?php _e( 'Remove selected', 'rexpansive-builder' ); ?>">
-				</td>
-				<td>
 					<div id="iconsPreview">
 					<?php
 					if ( file_exists( REXPANSIVE_BUILDER_PATH . 'shared/assets/sprite-list.json' ) )

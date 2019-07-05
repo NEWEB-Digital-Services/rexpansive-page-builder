@@ -14,7 +14,7 @@
   // request information reference
   var timeoutSimulator;
 
-  // global sprites counter
+  // global sprites counter and storage
   var totalSprites;
   var spritesObj;
 
@@ -95,15 +95,21 @@
   /**
    * handle upload icons from os file window
    * 
+   * @param {Event} file element input event
    */
   function handleUploadIcons(ev) {
     uploadIconsMsgs.innerHTML = '';
     iconsNum.innerText = ev.currentTarget.files.length;
+
+    var event = document.createEvent('HTMLEvents');
+    event.initEvent('submit', true, false);
+    uploadIconsForm.dispatchEvent(event);
   };
 
   /**
    * Handling remove icons
    *
+   * @param {Event} remove button click event
    */
   function handleRemoveIcons(ev) {
     ev.preventDefault();
@@ -132,33 +138,36 @@
         if (request.status >= 200 && request.status < 400) {
           // Success!
           var response = JSON.parse(request.responseText);
+
+          // remove previews
+          response.data.deleteList.forEach( function(spriteId) {
+            var toRemove = iconsPreview.querySelector('.preview-wrap[data-sprite-id="' + spriteId + '"]');
+            if ( toRemove ) {
+              toRemove.parentNode.removeChild(toRemove);
+            }
+          });
           
-          // successful uploaded
-          var msg = document.createElement('p');
-          msg.innerText = admin_settings_vars.labels.remove_succesfull;
-          uploadIconsMsgs.appendChild( msg );
+          // successful removed
+          writeMessage( response.data.deleteList.length + ' ' + admin_settings_vars.labels.remove_succesfull )
         }
       }
       // handling error
       request.onerror = function() {
         // There was a connection error of some sort
-        var msg = document.createElement('p');
-        msg.innerText = admin_settings_vars.labels.remove_error;
-        uploadIconsMsgs.appendChild( msg );
+        writeMessage( admin_settings_vars.labels.remove_error );
       };
       // send request
       request.send(encodedData);
     }
     else {
-      var msg = document.createElement('p');
-      msg.innerText = admin_settings_vars.labels.no_selection;
-      uploadIconsMsgs.appendChild( msg );
+      writeMessage( admin_settings_vars.labels.no_selection );
     }
   }
 
   /**
    * Optimize the icons before save them
    *
+   * @param {Event} form submit event
    */
   function handleSubmitIcons(ev) {
     ev.preventDefault();
@@ -170,7 +179,7 @@
     for( var i=0, tot = files.length; i < tot; i++ ) {
       var spriteId = files[i].name.replace('.svg','');
       // check if sprite already exists
-      var previewSprite = [].slice.call( document.querySelectorAll('.preview-wrap[data-sprite-id="' + spriteId + '"]') );
+      var previewSprite = [].slice.call( iconsPreview.querySelectorAll('.preview-wrap[data-sprite-id="' + spriteId + '"]') );
       if ( previewSprite.length === 0 ) {
         // update sprite global counter
         totalSprites++;
@@ -186,9 +195,7 @@
         reader.readAsText(files[i]);
       } else {
         // already existing sprite
-        var msg = document.createElement('p');
-        msg.innerText = spriteId + ' ' + admin_settings_vars.labels.existing_sprite;
-        uploadIconsMsgs.appendChild( msg );
+        writeMessage( spriteId + ' ' + admin_settings_vars.labels.existing_sprite );
       }
     }
   };
@@ -196,6 +203,8 @@
   /**
    * Handling the load of a file with the FileReader API
    *
+   * @param {Object} temp object to represent current icon
+   * @param {Event} load event of FileReader
    */
   function handleFileLoader(temp, ev) {
     // once a file is loaded, optimize it with SVGO
@@ -236,9 +245,7 @@
       symbolWrapper.appendChild(symbol);
 
       // succesfull message
-      var msg = document.createElement('p');
-      msg.innerText = temp.id + ' ' + admin_settings_vars.labels.optimize_correct;
-      uploadIconsMsgs.appendChild( msg );
+      writeMessage( temp.id + ' ' + admin_settings_vars.labels.optimize_correct );
 
       temp.data = symbolWrapper.innerHTML;
       spritesObj.push(temp);
@@ -255,6 +262,7 @@
     uploadIconsForm.addEventListener('submit', handleSubmitIcons);
     removeIcons.addEventListener('click', handleRemoveIcons);
 
+    // icon selection to delete
     var previews = [].slice.call( iconsPreview.querySelectorAll('.preview-wrap') );
     previews.forEach( function(el) {
       el.addEventListener('click', handlePreviewSelect);
@@ -318,17 +326,13 @@
           var response = JSON.parse(request.responseText);
           
           // successful uploaded
-          var msg = document.createElement('p');
-          msg.innerText = admin_settings_vars.labels.upload_succesfull;
-          uploadIconsMsgs.appendChild( msg );
+          writeMessage( admin_settings_vars.labels.upload_succesfull );
         }
       }
       // handling error
       request.onerror = function() {
         // There was a connection error of some sort
-        var msg = document.createElement('p');
-        msg.innerText = admin_settings_vars.labels.upload_error;
-        uploadIconsMsgs.appendChild( msg );
+        writeMessage( admin_settings_vars.labels.upload_error );
       };
       // send request
       request.send(encodedData);
@@ -362,6 +366,10 @@
     runInterval();
   };
 
+  /**
+   * select an icon or deselect it on click
+   *
+   */
   function handlePreviewSelect(ev) {
     if ( -1 === ev.currentTarget.className.indexOf( 'selected' ) )
     {
@@ -371,6 +379,16 @@
     {
       ev.currentTarget.className = ev.currentTarget.className.replace('selected','').trim();
     }
+  }
+
+  /** 
+   * Helper function to write messages to the user
+   *
+   */
+  function writeMessage( msg ) {
+    var msgEl = document.createElement('p');
+    msgEl.innerText = msg;
+    uploadIconsMsgs.appendChild( msgEl );
   }
 
   /**

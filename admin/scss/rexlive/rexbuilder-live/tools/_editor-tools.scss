@@ -338,7 +338,8 @@
     }
     > .medium-editor-action {
       padding: 10px;
-      &.medium-editor-action--color-picker {
+      &.medium-editor-action--color-picker,
+      &.me-svg-color {
         padding: 9px 10px;
       }
     }
