@@ -15,7 +15,7 @@
     // Rexpansive_Builder_Admin_Config.init();
 
     // modal utilities: open, close
-    Change_OnBeforeUnload_Modal.init();
+    // Change_OnBeforeUnload_Modal.init();
     Change_UpdateVideoInline_Modal.init();
     Rexlive_Modals_Utils.init();
     

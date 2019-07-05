@@ -21,45 +21,8 @@ defined('ABSPATH') or exit;
 </div>
 <!-- // #builder-loading-overlay -->
 
-<div class="rex-modal-wrap">
-    <div id="rex-css-editor" class="rexbuilder-materialize-wrap rex-modal rex-modal-draggable setting-edited">
-        <div id="css-editor-cancel" class="tool-button tool-button--inline tool-button--black tool-button--close rex-cancel-button tippy" data-tippy-content="<?php esc_attr_e( 'Close', 'rexpansive' ); ?>">
-            <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
-        </div>
-        <div class="modal-content">
-            <div id="rex-css-ace-editor" class="rex-ace-editor"></div>
-        </div>
-        <div class="rex-modal__outside-footer">
-            <div id="css-editor-save" class="tool-button tool-button--inline tool-button--save rex-save-button tippy" data-tippy-content="<?php esc_attr_e( 'Save', 'rexpansive' ); ?>">
-                <div class="btn-save--wrap">
-                    <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
-                    <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- CSS Editor -->
-
-<div class="rex-modal-wrap">
-    <div id="rex-html-text-editor" class="rexbuilder-materialize-wrap rex-modal rex-modal-draggable setting-edited">
-        <div class="tool-button tool-button--inline tool-button--black tool-button--close rex-modal__close-button tippy" data-tippy-content="<?php esc_attr_e( 'Close', 'rexpansive' ); ?>">
-            <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
-        </div>
-        <div class="modal-content">
-            <div id="rex-html-ace-editor" class="rex-ace-editor"></div>
-        </div>
-        <div class="rex-modal__outside-footer">
-            <div class="tool-button tool-button--inline tool-button--save rex-modal__save-button tippy" data-tippy-content="<?php esc_attr_e( 'Save', 'rexpansive' ); ?>">
-                <div class="btn-save--wrap">
-                    <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
-                    <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- HTML Editor -->
+<?php include_once( 'modals/rexlive-css-editor-modal.php' ); ?>
+<?php include_once( 'modals/rexlive-html-editor-modal.php' ); ?>
 
 <div class="rex-modal-wrap">
     <div id="rex-insert-new-video-block" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
@@ -1001,215 +964,11 @@ defined('ABSPATH') or exit;
 </div>
 <!-- // Block Slideshow -->
 
-<!-- Block Background Gradient -->
-<div class="rex-modal-wrap">
-    <div id="rex-block-background-gradient-editor" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
-        <?php Rexbuilder_Utilities::close_button(); ?>
-        <div class="modal-content">
-            <div class="bl_modal-row">
-                <div class="bl_modal__option-wrap">
-                    <div id="gp-block-background-gradient" class="no-draggable" style="width:100%;"></div>
-                </div>
-            </div>
-            <div class="bl_modal-row">
-                <div class="bl_modal__option-wrap">
-                    <select class="browser-default" id="block-background-gradient-type">
-                        <option value="">Select Type</option>
-                        <option value="radial">Radial</option>
-                        <option value="linear">Linear</option>
-                        <option value="repeating-radial">Repeating Radial</option>
-                        <option value="repeating-linear">Repeating Linear</option>
-                    </select>
-                </div>
-                <div class="bl_modal__option-wrap">
-                    <select class="browser-default" id="block-background-gradient-angle">
-                        <option value="">Select Direction</option>
-                        <option value="top">Top</option>
-                        <option value="right">Right</option>
-                        <option value="center">Center</option>
-                        <option value="bottom">Bottom</option>
-                        <option value="left">Left</option>
-                        <option value="135deg">Diagonal</option>
-                        <option value="315deg">Revers Diagonal</option>
-                    </select>
-                </div>
-            </div>
-            <div class="bl_modal-row">
-            <?php include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-gradient-palette.php'; ?>
-            </div><!-- PALETTE -->
-        </div>
-        <?php // include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-modals-bottom-arrow.php'; ?>
-    </div>
-</div>
-<!-- // Block Background Gradient -->
-
-<!-- Text Gradient -->
-<div class="rex-modal-wrap">
-    <div id="rex-text-gradient-editor" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
-        <?php Rexbuilder_Utilities::close_button(); ?>
-        <div class="modal-content">
-            <div class="bl_modal-row">
-                <div class="bl_modal__option-wrap">
-                    <div id="gp-text-gradient" class="no-draggable" style="width:100%;"></div>
-                </div>
-            </div>
-            <div class="bl_modal-row">
-                <div class="bl_modal__option-wrap">
-                    <select class="browser-default" id="text-gradient-type">
-                        <option value="">Select Type</option>
-                        <option value="radial">Radial</option>
-                        <option value="linear">Linear</option>
-                        <!-- <option value="repeating-radial">Repeating Radial</option>
-                        <option value="repeating-linear">Repeating Linear</option> -->
-                    </select>
-                </div>
-                <div class="bl_modal__option-wrap">
-                    <select class="browser-default" id="text-gradient-angle">
-                        <option value="">Select Direction</option>
-                        <option value="top">Top</option>
-                        <option value="right">Right</option>
-                        <option value="center">Center</option>
-                        <option value="bottom">Bottom</option>
-                        <option value="left">Left</option>
-                        <option value="135deg">Diagonal</option>
-                        <option value="315deg">Revers Diagonal</option>
-                    </select>
-                </div>
-            </div>
-            <div class="bl_modal-row">
-            <?php include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-gradient-palette.php'; ?>
-            </div><!-- PALETTE -->
-        </div>
-        <?php // include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-modals-bottom-arrow.php'; ?>
-    </div>
-</div>
-<!-- // Text Gradient -->
-
-<!-- Section Overlay Gradient -->
-<div class="rex-modal-wrap">
-    <div id="rex-section-background-gradient-editor" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
-        <?php Rexbuilder_Utilities::close_button(); ?>
-        <div class="modal-content">
-            <div class="bl_modal-row">
-                <div class="bl_modal__option-wrap">
-                    <div id="gp-section-background-gradient" class="no-draggable" style="width:100%;"></div>
-                </div>
-            </div>
-            <div class="bl_modal-row">
-                <div class="bl_modal__option-wrap">
-                    <select class="browser-default" id="section-background-gradient-type">
-                        <option value="">Select Type</option>
-                        <option value="radial">Radial</option>
-                        <option value="linear">Linear</option>
-                        <option value="repeating-radial">Repeating Radial</option>
-                        <option value="repeating-linear">Repeating Linear</option>
-                    </select>
-                </div>
-                <div class="bl_modal__option-wrap">
-                    <select class="browser-default" id="section-background-gradient-angle">
-                        <option value="">Select Direction</option>
-                        <option value="top">Top</option>
-                        <option value="right">Right</option>
-                        <option value="center">Center</option>
-                        <option value="bottom">Bottom</option>
-                        <option value="left">Left</option>
-                        <option value="135deg">Diagonal</option>
-                        <option value="315deg">Revers Diagonal</option>
-                    </select>
-                </div>
-            </div>
-            <div class="bl_modal-row">
-            <?php include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-gradient-palette.php'; ?>
-            </div><!-- PALETTE -->
-        </div>
-        <?php // include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-modals-bottom-arrow.php'; ?>
-    </div>
-</div>
-<!-- // Section Gradient -->
-
-<!-- Section Overlay Gradient -->
-<div class="rex-modal-wrap">
-    <div id="rex-section-overlay-gradient-editor" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
-        <?php Rexbuilder_Utilities::close_button(); ?>
-        <div class="modal-content">
-            <div class="bl_modal-row">
-                <div class="bl_modal__option-wrap">
-                    <div id="gp-section-overlay-gradient" class="no-draggable" style="width:100%;"></div>
-                </div>
-            </div>
-            <div class="bl_modal-row">
-                <div class="bl_modal__option-wrap">
-                    <select class="browser-default" id="section-overlay-gradient-type">
-                        <option value="">Select Type</option>
-                        <option value="radial">Radial</option>
-                        <option value="linear">Linear</option>
-                        <option value="repeating-radial">Repeating Radial</option>
-                        <option value="repeating-linear">Repeating Linear</option>
-                    </select>
-                </div>
-                <div class="bl_modal__option-wrap">
-                    <select class="browser-default" id="section-overlay-gradient-angle">
-                        <option value="">Select Direction</option>
-                        <option value="top">Top</option>
-                        <option value="right">Right</option>
-                        <option value="center">Center</option>
-                        <option value="bottom">Bottom</option>
-                        <option value="left">Left</option>
-                        <option value="135deg">Diagonal</option>
-                        <option value="315deg">Revers Diagonal</option>
-                    </select>
-                </div>
-            </div>
-            <div class="bl_modal-row">
-            <?php include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-gradient-overlay-palette.php'; ?>
-            </div><!-- PALETTE -->
-        </div>
-        <?php // include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-modals-bottom-arrow.php'; ?>
-    </div>
-</div>
-<!-- // Section Gradient -->
-
-<!-- Block Overlay Gradient -->
-<div class="rex-modal-wrap">
-    <div id="rex-block-overlay-gradient-editor" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
-        <?php Rexbuilder_Utilities::close_button(); ?>
-        <div class="modal-content">
-            <div class="bl_modal-row">
-                <div class="bl_modal__option-wrap">
-                    <div id="gp-block-overlay-gradient" class="no-draggable" style="width:100%;"></div>
-                </div>
-            </div>
-            <div class="bl_modal-row">
-                <div class="bl_modal__option-wrap">
-                    <select class="browser-default" id="block-overlay-gradient-type">
-                        <option value="">Select Type</option>
-                        <option value="radial">Radial</option>
-                        <option value="linear">Linear</option>
-                        <option value="repeating-radial">Repeating Radial</option>
-                        <option value="repeating-linear">Repeating Linear</option>
-                    </select>
-                </div>
-                <div class="bl_modal__option-wrap">
-                    <select class="browser-default" id="block-overlay-gradient-angle">
-                        <option value="">Select Direction</option>
-                        <option value="top">Top</option>
-                        <option value="right">Right</option>
-                        <option value="center">Center</option>
-                        <option value="bottom">Bottom</option>
-                        <option value="left">Left</option>
-                        <option value="135deg">Diagonal</option>
-                        <option value="315deg">Revers Diagonal</option>
-                    </select>
-                </div>
-            </div>
-            <div class="bl_modal-row">
-            <?php include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-gradient-overlay-palette.php'; ?>
-            </div><!-- PALETTE -->
-        </div>
-        <?php // include REXPANSIVE_BUILDER_PATH . 'admin/partials/rexlive-modals-bottom-arrow.php'; ?>
-    </div>
-</div>
-<!-- // Block Overlay Gradient -->
+<?php include_once( 'modals/rexlive-section-background-gradient-modal.php' ); ?>
+<?php include_once( 'modals/rexlive-section-overlay-gradient-modal.php' ); ?>
+<?php include_once( 'modals/rexlive-block-background-gradient-modal.php' ); ?>
+<?php include_once( 'modals/rexlive-block-overlay-gradient-modal.php' ); ?>
+<?php include_once( 'modals/rexlive-text-color-gradient-modal.php' ); ?>
 
 <div class="rex-modal-wrap">
     <div id="video-block-editor-wrapper" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable" data-block_tools="">
@@ -1925,27 +1684,7 @@ defined('ABSPATH') or exit;
     </div>
 </div><!-- Edit Model  -->
 
-<div class="rex-modal-wrap">
-    <div id="rex-layout-page-changed" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
-        <div class="tool-button tool-button--black rex-change-layout-option tool-button--close tippy" data-position="bottom" data-tippy-content="<?php _e( 'Cancel', 'rexspansive');?>" data-rex-option="abort">
-            <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
-        </div>
-        <div class="modal-content modal-content--text">
-            <div class="layout-page-changed-description">
-                <?php _e( 'Save changes', 'rexpansive-builder' ); ?>:
-                <span class="layout-name__wrap"><span class="layout-name"></span><span>&nbsp;?</span></span>
-            </div>
-        </div>
-        <div class="rex-modal__outside-footer">
-            <div class="tool-button tool-button--inline tool-button--save rex-change-layout-option tippy" data-tippy-content="<?php _e('Yes and Continue','rexpansive'); ?>" data-rex-option="save">
-                <span class="rex-button save-page btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
-            </div>
-            <div class="tool-button tool-button--inline tool-button--cancel tool-button--modal rex-change-layout-option tippy" data-rex-option="continue" data-tippy-content="<?php _e('No and Continue','rexpansive'); ?>">
-                <span class="rex-button continue btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
-            </div>
-        </div>
-    </div>
-</div><!-- Layout page Changed -->
+<?php include_once( 'modals/rexlive-change-layout-modal.php' ); ?>
 
 <div class="rex-modal-wrap">
     <div id="rexlive-onbeforeunload" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
@@ -1969,61 +1708,8 @@ defined('ABSPATH') or exit;
     </div>
 </div> <!-- Layout OnBeforeUnload Popup -->
 
-<div class="rex-modal-wrap">
-    <div id="rexlive-updatevideoinline" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
-        <div class="tool-button tool-button--black rex-change-layout-option tool-button--close tippy" data-position="bottom" data-tippy-content="<?php _e( 'Cancel', 'rexspansive');?>" data-rex-option="hide">
-            <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
-        </div>
-        <div class="modal-content modal-content--text">
-            <div class="layout-page-changed-description">
-                <b><?php _e( 'Insert video url', 'rexpansive-builder' ); ?></b><br>
-                <input type="text" id="me-insert-embed-inline-video-text" class="me-insert-embed__value" placeholder="Youtube, Vimeo, DailyMotion,..."><br>
-                <span id="me-insert-embed-url-isnot-valid" style="transition:1s;">
-                    <b style="color:#b22222;">This value isn't a valid URL.</b>
-                </span>                
-            </div>
-        </div>
-        <div class="rex-modal__outside-footer">
-            <div class="tool-button tool-button--inline tool-button--save rex-change-layout-option tippy" data-tippy-content="<?php _e('Yes and Continue','rexpansive'); ?>" data-rex-option="uploadvideo">
-                <span class="rex-button save-page btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
-            </div>
-        </div>
-    </div>
-</div> <!-- Layout UpdateVideoInline Popup -->
-
-<div class="rex-modal-wrap">
-    <div id="rexlive-inline-svg" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
-        <div class="tool-button tool-button--black tool-button--close tippy" data-position="bottom" data-tippy-content="<?php _e( 'Cancel', 'rexspansive');?>" data-rex-option="hide">
-            <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
-        </div>
-        <div class="modal-content modal-content--text">
-            <div class="rx__select-wrap">                        
-                <select name="rexlive-inline-svg-select" id="rexlive-inline-svg-select" class="rx__form-input">
-                    <option value=""><?php _e( 'Choose Icon', 'rexpansive-builder' ); ?></option>
-                <?php
-                $icons = apply_filters( 'rexpansive_builder_live_inline_icon_list', Rexbuilder_Utilities::get_icon_list() );
-                if ( $icons )
-                {
-                    foreach( $icons as $icon_group => $icons )
-                    {
-                        foreach( $icons as $icon )
-                        {
-                            ?><option value="<?php echo esc_attr( $icon ); ?>" data-svg-class="<?php echo esc_attr( $icon_group ); ?>"><?php echo $icon; ?></option><?php
-                        }
-                    }
-                }
-                ?>
-                </select>
-                <div class="rx__form-input__select-arrow"></div>
-            </div>
-        </div>
-        <div class="rex-modal__outside-footer">
-            <div class="tool-button tool-button--inline tool-button--save tippy" data-tippy-content="<?php _e('Yes and Continue','rexpansive'); ?>" data-rex-option="uploadvideo">
-                <span class="rex-button save-page btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
-            </div>
-        </div>
-    </div>
-</div> <!-- Layout UpdateVideoInline Popup -->
+<?php include_once( 'modals/rexlive-inline-video-modal.php' ); ?>
+<?php include_once( 'modals/rexlive-inline-svg-modal.php' ); ?>
 
 <div class="rex-modal-wrap">
     <div id="rex-locked-option" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
@@ -2416,7 +2102,7 @@ defined('ABSPATH') or exit;
                             <div class="subRow7_3">PX</div>
                         </div>                
                     </div>                    
-                    <!--    VECCHIO CODICE PER LA GESTIONE DEI MARGINI DEL PULSANTE
+                    <!--    old code for handling buttons margin
                     <div class="rexbutton-count-column_8">
                         <div class="subRow8_1">
                             <div class="subColum1">
@@ -2442,7 +2128,7 @@ defined('ABSPATH') or exit;
                     </div>  -->
                 </div>
             </div>
-            <!-- OTTAVA ROW -->
+            <!-- eighty ROW -->
             <div class="bl_modal-row">
                 <div class="rexbutton-cont_row45">
                     <div class="rexbutton-count-column_9">
@@ -2523,7 +2209,6 @@ defined('ABSPATH') or exit;
     </div>
 </div><!-- Edit button Model  -->
 
-<!--  -->
 <div class="rex-modal-wrap">
     <div id="rex-add-button-name-modal" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <?php Rexbuilder_Utilities::close_button(); ?>
@@ -2548,93 +2233,7 @@ defined('ABSPATH') or exit;
     </div>
 </div><!-- Add button name Model  -->
 
-<div class="rex-modal-wrap rex-modal-resize-min">
-    <div id="rex-page-settings-modal" class="rex-modal rex-modal--small rexbuilder-materialize-wrap rex-modal-draggable setting-edited">
-        <div class="tool-button tool-button--black rex-cancel-button rex-modal__close-button tool-button--close tippy" data-tippy-content="<?php _e( 'Close', 'rexpansive' ); ?>" tabindex="0">
-            <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
-        </div>
-        <div class="modal-content">
-            <div class="bl_modal-row bl_modal-row--no-padding">
-                <div class="bl_modal__option-wrap bl_modal__option-wrap--fluid">
-                    <div class="tippy" data-tippy-content="<?php _e( 'Top Distance', 'rexpansive' ); ?>">
-                        <?php Rexbuilder_Utilities::get_icon('#Z012-HeightBars', 'l-svg-icons--big'); ?>
-                    </div>
-                </div>
-                <div class="">
-                    <div style="width:100%;">
-                        <div class="bl_modal-row">
-                            <div class="bl_modal__option-wrap bl_modal__option-wrap--fluid">
-                                <div class="rex-check rex-check-icon tippy" data-tippy-content="<?php _e( 'All pages', 'rexpansive' ); ?>">
-                                    <label>
-                                        <input type="radio" name="container-distancer" value="global" class="with-gap">
-                                        <span>
-                                            <?php Rexbuilder_Utilities::get_icon('#Z013-Pages'); ?>
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="bl_modal__option-wrap">
-                                <div class="input-field input-field--medium">
-                                    <input type="text" id="container-distancer--global-mtop" data-context="global" name="container-distancer--mtop">
-                                </div>
-                                <span class="bl_input-indicator">PX</span>
-                            </div>
-                        </div>
-                        <div class="bl_modal-row">
-                            <div class="bl_modal__option-wrap bl_modal__option-wrap--fluid">
-                                <div class="rex-check rex-check-icon tippy" data-tippy-content="<?php _e( 'This page', 'rexpansive' ); ?>">
-                                    <label>
-                                        <input type="radio" name="container-distancer" value="custom" class="with-gap">
-                                        <span>
-                                            <?php Rexbuilder_Utilities::get_icon('#Z012-Page'); ?>
-                                        </span>
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="bl_modal__option-wrap">
-                                <div class="input-field input-field--medium">
-                                    <input type="text" id="container-distancer--custom-mtop" data-context="custom" name="container-distancer--mtop">
-                                </div>
-                                <span class="bl_input-indicator">PX</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- <div class="toolbox-distancer-aligner">
-                <div class="toolbox-distancer-container">
-                    <div class="toolbox-distancer-column1">
-                        <?php Rexbuilder_Utilities::get_icon('#Z012-HeightBars'); ?>
-                    </div>
-                    <div class="toolbox-distancer-column2">
-                        <input id="bb" type="radio" name="select-page-or-global" value="percentage" checked="checked">
-                        <input id="aa" type="radio" name="select-page-or-global" value="pixel">
-                        <input type="radio"name="section-width-type" checked="checked">
-                        <input type="radio"name="section-width-type">
-                    </div>
-                    <div class="toolbox-distancer-column3">
-                        <div class="toolbox-distancer-row">
-                            <input type="text" id="abc" name="abc" placeholder="10" class="distancer-textbox tippy" data-tippy-content="<?php _e('page height bar','rexpansive'); ?>">
-                        </div>                    
-                        <div class="toolbox-distancer-row">
-                            <input type="text" id="def" name="def" placeholder="20" class="distancer-textbox tippy" data-tippy-content="<?php _e('global height bar','rexpansive'); ?>">
-                        </div>
-                </div>
-            </div> -->
-        </div>
-        </div>
-        <!-- FOOTER
-        <div class="rex-modal__outside-footer">
-            <div class="tool-button tool-button--inline tool-button--save rex-apply-button tippy" data-tippy-content="<?php _e('save','rexpansive'); ?>" data-rex-option="save">
-                <span class="rex-button save-page btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
-            </div>
-                <div class="tool-button tool-button--inline tool-button--cancel rex-reset-button tippy" data-rex-option="continue" data-tippy-content="<?php _e('reset','rexpansive'); ?>">
-                <span class="rex-button continue btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
-            </div>
-        </div> -->
-    </div>
-</div><!-- page settings -->
+<?php include_once( 'modals/rexlive-page-settings-modal.php' ); ?>
 
 <div class="rex-modal-wrap">
     <div id="rex-live-media-list" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">

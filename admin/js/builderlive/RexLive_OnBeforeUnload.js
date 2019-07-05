@@ -1,3 +1,6 @@
+/**
+ * @deprecated 05-07-2019
+ */
 var Change_OnBeforeUnload_Modal = (function($) {
   "use strict";
   var layout_changing_props;
