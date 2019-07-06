@@ -147,17 +147,12 @@ var Button_Edit_Modal = (function ($) {
 
     var _openButtonEditorModal = function (data) {
         alreadyChooseToSynchronize = false;
-        console.log(data);
-        console.log("before",editingModelButton, alreadyChooseToSynchronize);
         _updateButtonEditorModal(data);
-        console.log("after",editingModelButton, alreadyChooseToSynchronize);
         if (!editingModelButton || alreadyChooseToSynchronize) {
-            console.log("aoooooooo");
             Rexlive_Modals_Utils.openModal(
                 button_editor_properties.$self.parent(".rex-modal-wrap")
-                );
+            );
         } else {
-                console.log("qwwwwwwwwwwww");
             _openChooseButtonEdit();
         }
     };
@@ -252,12 +247,12 @@ var Button_Edit_Modal = (function ($) {
     }
 
     var _updateButtonData = function (data) {
+        // if button is separate button, data will be obtained from it
+        // if button is a model, data will be obtained from rexButtonsJSON array
         if (data.separateButton.toString() == "true") {
-            console.log("separate");
             buttonData = jQuery.extend(true, {}, data.buttonInfo);
             editingModelButton = false;
         } else {
-            console.log("model");
             var i;
             var buttonID = data.buttonInfo.buttonTarget.button_id;
             editingModelButton = true;
@@ -267,24 +262,24 @@ var Button_Edit_Modal = (function ($) {
             buttonData.link_type = data.buttonInfo.link_type;
             for (i = 0; i < rexButtonsJSON.length; i++) {
                 if (buttonID == rexButtonsJSON[i].rexID) {
-                    buttonData.text_color = rexButtonsJSON[i].rules.element.text_color;
-                    buttonData.font_size = rexButtonsJSON[i].rules.element.font_size;
-                    buttonData.background_color = rexButtonsJSON[i].rules.element.background_color;
-                    buttonData.button_height = rexButtonsJSON[i].rules.element.button_height;
-                    buttonData.hover_color = rexButtonsJSON[i].rules.hover.background_color;
-                    buttonData.hover_text = rexButtonsJSON[i].rules.hover.text_color;
-                    buttonData.hover_border = rexButtonsJSON[i].rules.hover.border_color;
-                    buttonData.border_color = rexButtonsJSON[i].rules.element.border_color;
-                    buttonData.border_width = rexButtonsJSON[i].rules.element.border_width;
-                    buttonData.border_radius = rexButtonsJSON[i].rules.element.border_radius;
-                    buttonData.margin_top = rexButtonsJSON[i].rules.element.margin_top;
-                    buttonData.margin_bottom = rexButtonsJSON[i].rules.element.margin_bottom;
-                    buttonData.margin_right = rexButtonsJSON[i].rules.element.margin_right;
-                    buttonData.margin_left = rexButtonsJSON[i].rules.element.margin_left;
-                    buttonData.padding_top = typeof rexButtonsJSON[i].rules.element.padding_top === "undefined"? "" : rexButtonsJSON[i].rules.element.padding_top;
-                    buttonData.padding_bottom = typeof rexButtonsJSON[i].rules.element.padding_bottom === "undefined"? "" : rexButtonsJSON[i].rules.element.padding_bottom;
-                    buttonData.padding_right = typeof rexButtonsJSON[i].rules.element.padding_right === "undefined"? "" : rexButtonsJSON[i].rules.element.padding_right;
-                    buttonData.padding_left = typeof rexButtonsJSON[i].rules.element.padding_left === "undefined"? "" : rexButtonsJSON[i].rules.element.padding_left;
+                    buttonData.text_color = typeof rexButtonsJSON[i].rules.element.text_color === "undefined" ? "" : rexButtonsJSON[i].rules.element.text_color;
+                    buttonData.font_size = typeof rexButtonsJSON[i].rules.element.font_size === "undefined" ? "" : rexButtonsJSON[i].rules.element.font_size;
+                    buttonData.background_color = typeof rexButtonsJSON[i].rules.element.background_color === "undefined" ? "" : rexButtonsJSON[i].rules.element.background_color;
+                    buttonData.button_height = typeof rexButtonsJSON[i].rules.element.button_height === "undefined" ? "" : rexButtonsJSON[i].rules.element.button_height;
+                    buttonData.hover_color = typeof rexButtonsJSON[i].rules.hover.background_color === "undefined" ? "" : rexButtonsJSON[i].rules.hover.background_color;
+                    buttonData.hover_text = typeof rexButtonsJSON[i].rules.hover.text_color === "undefined" ? "" : rexButtonsJSON[i].rules.hover.text_color;
+                    buttonData.hover_border = typeof rexButtonsJSON[i].rules.hover.border_color === "undefined" ? "" : rexButtonsJSON[i].rules.hover.border_color;
+                    buttonData.border_color = typeof rexButtonsJSON[i].rules.element.border_color === "undefined" ? "" : rexButtonsJSON[i].rules.element.border_color;
+                    buttonData.border_width = typeof rexButtonsJSON[i].rules.element.border_width === "undefined" ? "" : rexButtonsJSON[i].rules.element.border_width;
+                    buttonData.border_radius = typeof rexButtonsJSON[i].rules.element.border_radius === "undefined" ? "" : rexButtonsJSON[i].rules.element.border_radius;
+                    buttonData.margin_top = typeof rexButtonsJSON[i].rules.element.margin_top === "undefined" ? "" : rexButtonsJSON[i].rules.element.margin_top;
+                    buttonData.margin_bottom = typeof rexButtonsJSON[i].rules.element.margin_bottom === "undefined" ? "" : rexButtonsJSON[i].rules.element.margin_bottom;
+                    buttonData.margin_right = typeof rexButtonsJSON[i].rules.element.margin_right === "undefined" ? "" : rexButtonsJSON[i].rules.element.margin_right;
+                    buttonData.margin_left = typeof rexButtonsJSON[i].rules.element.margin_left === "undefined" ? "" : rexButtonsJSON[i].rules.element.margin_left;
+                    buttonData.padding_top = typeof rexButtonsJSON[i].rules.element.padding_top === "undefined" ? "" : rexButtonsJSON[i].rules.element.padding_top;
+                    buttonData.padding_bottom = typeof rexButtonsJSON[i].rules.element.padding_bottom === "undefined" ? "" : rexButtonsJSON[i].rules.element.padding_bottom;
+                    buttonData.padding_right = typeof rexButtonsJSON[i].rules.element.padding_right === "undefined" ? "" : rexButtonsJSON[i].rules.element.padding_right;
+                    buttonData.padding_left = typeof rexButtonsJSON[i].rules.element.padding_left === "undefined" ? "" : rexButtonsJSON[i].rules.element.padding_left;
                     buttonData.buttonTarget.button_name = rexButtonsJSON[i].buttonName;
                     break;
                 }
@@ -469,7 +464,7 @@ var Button_Edit_Modal = (function ($) {
         var _updateButtonHeight = function (newButtonHeight) {
             _updateButtonLive({
                 type: "container",
-                name: "height",
+                name: "min-height",
                 value: newButtonHeight + "px"
             });
         };
@@ -1211,11 +1206,16 @@ var Button_Edit_Modal = (function ($) {
                 actionButtonData: jQuery.extend(true, {}, buttonData)
             }
         };
-        console.log(buttonDataToIframe);
         reverseData = jQuery.extend(true, {}, buttonDataToIframe.data_to_send.actionButtonData);
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(buttonDataToIframe);
     };
 
+    /**
+     * @param {Object} data 
+     * @param {String} data.type Container type to update
+     * @param {String} data.propertyName Css rule to update
+     * @param {*} data.newValue New value of css rule
+     */
     var _updateButtonLive = function (data) {
         var buttonDataToIframe = {
             eventName: "rexlive:updateButtonLive",
@@ -1247,7 +1247,6 @@ var Button_Edit_Modal = (function ($) {
                 buttonData: buttonData
             }
         };
-        console.log(buttonDataToIframe);
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(buttonDataToIframe);
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////////////
