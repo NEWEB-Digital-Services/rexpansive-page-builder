@@ -12,7 +12,106 @@ var Button_Import_Modal = (function ($) {
     /////////////////////////////////////////////////////////////////////////////////////////
     // CSS FUNCTIONS
     /////////////////////////////////////////////////////////////////////////////////////////
+    
 
+    /////////////////////////////////////////////////////////////////////////////////////////
+    // Adding rules
+    var _addButtonContainerRule = function (buttonID, property) {
+        if ("insertRule" in styleSheet) {
+            styleSheet.insertRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container{" + property + "}", styleSheet.cssRules.length);
+        }
+        else if ("addRule" in styleSheet) {
+            styleSheet.addRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container{" + property + "}", styleSheet.cssRules.length);
+        }
+    }
+
+    var _addButtonBackgroundRule = function (buttonID, property) {
+        if ("insertRule" in styleSheet) {
+            styleSheet.insertRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background{" + property + "}", styleSheet.cssRules.length);
+        }
+        else if ("addRule" in styleSheet) {
+            styleSheet.addRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background{" + property + "}", styleSheet.cssRules.length);
+        }
+    }
+
+    var _addButtonTextRule = function (buttonID, property) {
+        if ("insertRule" in styleSheet) {
+            styleSheet.insertRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-text{" + property + "}", styleSheet.cssRules.length);
+        }
+
+        else if ("addRule" in styleSheet) {
+            styleSheet.addRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-text{" + property + "}", styleSheet.cssRules.length);
+        }
+    }
+
+    var _addButtonBackgroundHoverRule = function (buttonID, property) {
+        if ("insertRule" in styleSheet) {
+            styleSheet.insertRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background:hover{" + property + "}", styleSheet.cssRules.length);
+        }
+        else if ("addRule" in styleSheet) {
+            styleSheet.addRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background:hover{" + property + "}", styleSheet.cssRules.length);
+        }
+    }
+
+    var _addButtonContainerHoverRule = function (buttonID, property) {
+        if ("insertRule" in styleSheet) {
+            styleSheet.insertRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container:hover{" + property + "}", styleSheet.cssRules.length);
+        }
+
+        else if ("addRule" in styleSheet) {
+            styleSheet.addRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container:hover{" + property + "}", styleSheet.cssRules.length);
+        }
+    }    
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    // Removing rules
+
+    var _removeButtonContainerRule = function (buttonID) {
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container") {
+                styleSheet.deleteRule(i);
+                break;
+            }
+        }
+    }
+
+    var _removeButtonBackgroundRule = function (buttonID) {
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background") {
+                styleSheet.deleteRule(i);
+                break;
+            }
+        }
+    }
+
+    var _removeButtonTextRule = function (buttonID, property) {
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-text") {
+                styleSheet.deleteRule(i);
+                break;
+            }
+        }
+    }
+
+    var _removeButtonBackgroundHoverRule = function (buttonID) {
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background:hover") {
+                styleSheet.deleteRule(i);
+                break;
+            }
+        }
+    }
+
+    var _removeButtonContainerHoverRule = function (buttonID, property) {
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container:hover") {
+                styleSheet.deleteRule(i);
+                break;
+            }
+        }
+    }    
+
+    /////////////////////////////////////////////////////////////////////////////////////////
     var _fixCustomStyleElement = function () {
         if (Button_Import_Modal.$buttonsStyle.length == 0) {
             var css = "",
@@ -37,33 +136,6 @@ var Button_Import_Modal = (function ($) {
         }
     };
 
-    var _addButtonContainerRule = function (buttonID, property) {
-        if ("insertRule" in styleSheet) {
-            styleSheet.insertRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container{" + property + "}", styleSheet.cssRules.length);
-        }
-        else if ("addRule" in styleSheet) {
-            styleSheet.addRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container{" + property + "}", styleSheet.cssRules.length);
-        }
-    }
-
-    var _addButtonBackgroundRule = function (buttonID, property) {
-        if ("insertRule" in styleSheet) {
-            styleSheet.insertRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background{" + property + "}", styleSheet.cssRules.length);
-        }
-        else if ("addRule" in styleSheet) {
-            styleSheet.addRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background{" + property + "}", styleSheet.cssRules.length);
-        }
-    }
-
-    var _addButtonBackgroundHoverRule = function (buttonID, property) {
-        if ("insertRule" in styleSheet) {
-            styleSheet.insertRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background:hover{" + property + "}", styleSheet.cssRules.length);
-        }
-        else if ("addRule" in styleSheet) {
-            styleSheet.addRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background:hover{" + property + "}", styleSheet.cssRules.length);
-        }
-    }
-
     var _addCSSRules = function (buttonID, buttonProperties) {
         var containerRule = "";
         containerRule += "font-size: " + buttonProperties.font_size + ";";
@@ -83,40 +155,29 @@ var Button_Import_Modal = (function ($) {
         backgroundRule += "background-color: " + buttonProperties.background_color + ";";
         _addButtonBackgroundRule(buttonID, backgroundRule);
 
+        var textRule = "";
+        textRule += "padding-top: " + buttonProperties.padding_top + ";";
+        textRule += "padding-bottom: " + buttonProperties.padding_bottom + ";";
+        textRule += "padding-left: " + buttonProperties.padding_left + ";";
+        textRule += "padding-right: " + buttonProperties.padding_right + ";";
+        _addButtonTextRule(buttonID, textRule);
+
         var backgroundHoverRule = "";
         backgroundHoverRule += "background-color: " + buttonProperties.hover_color + ";";
+        backgroundHoverRule += "border-color: " + buttonProperties.hover_border + ";";
         _addButtonBackgroundHoverRule(buttonID, backgroundHoverRule);
-    }
 
-    var _removeButtonContainerRule = function (buttonID) {
-        for (var i = 0; i < styleSheet.cssRules.length; i++) {
-            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container") {
-                styleSheet.deleteRule(i);
-                break;
-            }
-        }
-    }
-    var _removeButtonBackgroundRule = function (buttonID) {
-        for (var i = 0; i < styleSheet.cssRules.length; i++) {
-            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background") {
-                styleSheet.deleteRule(i);
-                break;
-            }
-        }
-    }
-    var _removeButtonBackgroundHoverRule = function (buttonID) {
-        for (var i = 0; i < styleSheet.cssRules.length; i++) {
-            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background:hover") {
-                styleSheet.deleteRule(i);
-                break;
-            }
-        }
+        var containerHoverRule = "";
+        containerHoverRule += "color: " + buttonProperties.hover_text + ";";
+        _addButtonContainerHoverRule(buttonID, containerHoverRule);
     }
 
     var _removeCSSRules = function (buttonID) {
         _removeButtonContainerRule(buttonID);
         _removeButtonBackgroundRule(buttonID);
         _removeButtonBackgroundHoverRule(buttonID);
+        _removeButtonTextRule(buttonID);
+        _removeButtonContainerHoverRule(buttonID);
     }
 
     var _getActiveStyleSheet = function () {
@@ -132,9 +193,8 @@ var Button_Import_Modal = (function ($) {
         var buttonHTML = data.html;
         _removeCSSRules(buttonID);
         _addCSSRules(buttonID, buttonData);
-        // chiedere a stefano come far andare height anche qua
 
-        //togliere l'elemento se c'è già e aggiungere quello nuovo
+        //if button was already there, remove it and readd
         var $buttonEL = rexbutton_import_props.$buttonList.find(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"]");
         if ($buttonEL.length == 0) {
             var $liEL = $(document.createElement("li"));
@@ -498,7 +558,6 @@ var Button_Import_Modal = (function ($) {
                             var $tempElement = $element.parent();
                             var tempelementRect = $tempElement.get(0).getBoundingClientRect();
                             if ($element.is("body") || $element.hasClass("grid-stack-row") || $tempElement.hasClass("rex-buttons-paragraph")) {
-                                console.log($element);
                                 return $element;
                             }
                             if (Math.abs(tempelementRect.right - elementRect.right) == 0) {

@@ -458,34 +458,10 @@ var Rexbuilder_Rexbutton = (function ($) {
     }
 
     var _addButtonStyle = function ($buttonWrapper) {
-        var buttonID = $buttonWrapper.attr("data-rex-button-id");
-        var $buttonData = $buttonWrapper.find(".rex-button-data").eq(0);
-        var buttonData = $buttonData[0];
-
-        if ($buttonData.length != 0) {
-            var buttonProperties = {
-                font_size: ( buttonData.getAttribute('data-text-size') ? buttonData.getAttribute('data-text-size').toString() : '' ),
-                text_color: ( buttonData.getAttribute('data-text-color') ? buttonData.getAttribute('data-text-color').toString() : '' ),
-                background_color: ( buttonData.getAttribute("data-background-color") ? buttonData.getAttribute("data-background-color").toString() : '' ),
-                button_height: ( buttonData.getAttribute("data-button-height") ? buttonData.getAttribute("data-button-height").toString() : '' ),
-
-                hover_color: ( buttonData.getAttribute("data-background-color-hover") ? buttonData.getAttribute("data-background-color-hover").toString() : '' ),
-                hover_text: ( buttonData.getAttribute("data-text-color-hover") ? buttonData.getAttribute("data-text-color-hover").toString() : '' ),
-                hover_border: ( buttonData.getAttribute("data-border-color-hover") ? buttonData.getAttribute("data-border-color-hover").toString() : '' ),
-
-                border_color: ( buttonData.getAttribute("data-border-color") ? buttonData.getAttribute("data-border-color").toString() : '' ),
-                border_width: ( buttonData.getAttribute("data-border-width") ? buttonData.getAttribute("data-border-width").toString() : '' ),
-                border_radius: ( buttonData.getAttribute("data-border-radius") ? buttonData.getAttribute("data-border-radius").toString() : '' ),
-                margin_top: ( buttonData.getAttribute("data-margin-top") ? buttonData.getAttribute("data-margin-top").toString() : '' ),
-                margin_bottom: ( buttonData.getAttribute("data-margin-bottom") ? buttonData.getAttribute("data-margin-bottom").toString() : '' ),
-                margin_left: ( buttonData.getAttribute("data-margin-left") ? buttonData.getAttribute("data-margin-left").toString() : '' ),
-                margin_right: ( buttonData.getAttribute("data-margin-right") ? buttonData.getAttribute("data-margin-right").toString() : '' ),
-                padding_top: ( buttonData.getAttribute("data-padding-top") ? buttonData.getAttribute("data-padding-top").toString() : '' ),
-                padding_bottom: ( buttonData.getAttribute("data-padding-bottom") ? buttonData.getAttribute("data-padding-bottom").toString() : '' ),
-                padding_left: ( buttonData.getAttribute("data-padding-left") ? buttonData.getAttribute("data-padding-left").toString() : '' ),
-                padding_right: ( buttonData.getAttribute("data-padding-right") ? buttonData.getAttribute("data-padding-right").toString() : '' )
-            };
-            _addCSSRules(buttonID, buttonProperties);
+        if ($buttonWrapper.find(".rex-button-data").eq(0).length != 0) {
+            var buttonProperties = _generateButtonData($buttonWrapper, true);
+            var buttonID = buttonProperties.buttonInfo.buttonTarget.button_id;
+            _addCSSRules(buttonID, buttonProperties.buttonInfo);
         }
     }
 
@@ -565,72 +541,6 @@ var Rexbuilder_Rexbutton = (function ($) {
             default:
                 break;
         }
-    }
-
-    var _getDataFromButtonDom = function($buttonWrapper){
-        var buttonProperties = {
-            text_color: "",
-            text: "",
-            font_size: "",
-            background_color: "",
-            button_height: "",
-            hover_color: "",
-            hover_border: "",
-            hover_text: "",
-            border_color: "",
-            border_width: "",
-            border_radius: "",
-            margin_top: "",
-            margin_bottom: "",
-            margin_right: "",
-            margin_left: "",
-            padding_top: "",
-            padding_bottom: "",
-            padding_right: "",
-            padding_left: "",
-            link_target: "",
-            link_type: "",
-            buttonTarget: {
-                button_name: "",
-                button_id: "",
-                button_number: "",
-            }
-        };
-        
-        var $buttonData = $buttonWrapper.find(".rex-button-data").eq(0);
-        buttonProperties.buttonTarget.button_name = $buttonData.attr("data-button-name");
-        buttonProperties.buttonTarget.button_id = $buttonWrapper.attr("data-rex-button-id");
-        buttonProperties.buttonTarget.button_number = parseInt($buttonWrapper.attr("data-rex-button-number"));
-
-        buttonProperties.font_size = $buttonData.attr("data-text-size");
-        buttonProperties.text_color = $buttonData.attr("data-text-color");
-        buttonProperties.button_height = $buttonData.attr("data-button-height");
-        buttonProperties.margin_top = $buttonData.attr("data-margin-top");
-        buttonProperties.margin_bottom = $buttonData.attr("data-margin-bottom");
-        buttonProperties.margin_left = $buttonData.attr("data-margin-left");
-        buttonProperties.margin_right = $buttonData.attr("data-margin-right");
-        buttonProperties.padding_top = $buttonData.attr("data-padding-top");
-        buttonProperties.padding_bottom = $buttonData.attr("data-padding-bottom");
-        buttonProperties.padding_left = $buttonData.attr("data-padding-left");
-        buttonProperties.padding_right = $buttonData.attr("data-padding-right");
-        buttonProperties.background_color = $buttonData.attr("data-background-color");
-        buttonProperties.border_color = $buttonData.attr("data-border-color");
-        buttonProperties.border_width = $buttonData.attr("data-border-width");
-        buttonProperties.border_radius = $buttonData.attr("data-border-radius");
-
-        buttonProperties.hover_color = $buttonData.attr("data-background-color-hover");
-        buttonProperties.hover_border = $buttonData.attr("data-border-color-hover");
-        buttonProperties.hover_text = $buttonData.attr("data-text-color-hover");
-
-        buttonProperties.border_radius = $buttonData.attr("data-border-radius");
-        buttonProperties.border_radius = $buttonData.attr("data-border-radius");
-        buttonProperties.border_radius = $buttonData.attr("data-border-radius");
-
-        buttonProperties.text = $buttonData.parents(".rex-button-wrapper").eq(0).find(".rex-button-text").eq(0).text();
-        buttonProperties.link_target= $buttonData.attr("data-link-target");
-        buttonProperties.link_type = $buttonData.attr("data-link-type");
-
-        return buttonProperties;
     }
 
     var _updateButton = function (data) {
@@ -743,7 +653,7 @@ var Rexbuilder_Rexbutton = (function ($) {
             number: 1
         });
 
-        //se era l'ultimo pulsante di quel modello, lo tolgo dalla lista degli id dei pulsanti nella pagina
+        //if button was last of that model in page, remove it form buttonsInPage array
         if (Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"]").length == 0){
             var i;
             for (i = 0; i < buttonsInPage.length; i++){
@@ -783,17 +693,25 @@ var Rexbuilder_Rexbutton = (function ($) {
         $buttonData.attr("data-button-name", buttonData.buttonTarget.button_name);
     }
 
-    var _generateButtonData = function ($buttonContainer) {
-        var $buttonData = $buttonContainer.find(".rex-button-data").eq(0);
-        var buttonID = $buttonContainer.attr("data-rex-button-id");
-        var buttonNumber = $buttonContainer.attr("data-rex-button-number");
-        var separate = false;
-        var buttonName = "";
-        var buttonDataEl = $buttonData[0];
-        
-        var buttonData = {
+    /**
+     * Generate button data from Dom
+     * If getAllData is true, will get data from dom even if button is a model
+     * 
+     * The obtained object has 2 fields:
+     * 
+     * separateButton - true if button is separate, false if it is a model
+     * 
+     * buttonInfo - properties of button
+     * 
+     * @param {*} $buttonContainer dom button container (with class "rex-button-wrapper")
+     * @param {Boolean} getAllData flag to generate all data
+     * @returns {Object} data
+     */
+    var _generateButtonData = function ($buttonContainer, getAllData) {
+        getAllData = typeof getAllData === "undefined" ? false : getAllData.toString() == "true";
+        var buttonProperties = {
             text_color: "",
-            text: $buttonContainer.find(".rex-button-text").eq(0).text(),
+            text: "",
             font_size: "",
             background_color: "",
             button_height: "",
@@ -811,43 +729,56 @@ var Rexbuilder_Rexbutton = (function ($) {
             padding_bottom: "",
             padding_right: "",
             padding_left: "",
-            link_target: $buttonData.attr("data-link-target"),
-            link_type: $buttonData.attr("data-link-type"),
+            link_target: "",
+            link_type: "",
             buttonTarget: {
-                button_name: buttonName,
-                button_id: buttonID,
-                button_number: buttonNumber,
+                button_name: "",
+                button_id: "",
+                button_number: "",
             }
         };
 
-        if ($buttonContainer.hasClass("rex-separate-button")) {
+        var $buttonData = $buttonContainer.find(".rex-button-data").eq(0);
+        buttonProperties.buttonTarget.button_id = $buttonContainer.attr("data-rex-button-id");
+        buttonProperties.buttonTarget.button_number = parseInt($buttonContainer.attr("data-rex-button-number"));
+        var buttonDataEl = $buttonData[0];
+        var separate = false;
+
+        if ($buttonContainer.hasClass("rex-separate-button") || getAllData) {
+            buttonProperties.font_size = (buttonDataEl.getAttribute("data-text-size") ? buttonDataEl.getAttribute("data-text-size").toString() : '');
+            buttonProperties.text_color = (buttonDataEl.getAttribute("data-text-color") ? buttonDataEl.getAttribute("data-text-color").toString() : '');
+            buttonProperties.button_height = (buttonDataEl.getAttribute("data-button-height") ? buttonDataEl.getAttribute("data-button-height").toString() : '');
+            buttonProperties.margin_top = (buttonDataEl.getAttribute("data-margin-top") ? buttonDataEl.getAttribute("data-margin-top").toString() : '');
+            buttonProperties.margin_bottom = (buttonDataEl.getAttribute("data-margin-bottom") ? buttonDataEl.getAttribute("data-margin-bottom").toString() : '');
+            buttonProperties.margin_right = (buttonDataEl.getAttribute("data-margin-right") ? buttonDataEl.getAttribute("data-margin-right").toString() : '');
+            buttonProperties.margin_left = (buttonDataEl.getAttribute("data-margin-left") ? buttonDataEl.getAttribute("data-margin-left").toString() : '');
+
+            buttonProperties.border_color = (buttonDataEl.getAttribute("data-border-color") ? buttonDataEl.getAttribute("data-border-color").toString() : '');
+            buttonProperties.border_width = (buttonDataEl.getAttribute("data-border-width") ? buttonDataEl.getAttribute("data-border-width").toString() : '');
+            buttonProperties.border_radius = (buttonDataEl.getAttribute("data-border-radius") ? buttonDataEl.getAttribute("data-border-radius").toString() : '');
+            buttonProperties.background_color = (buttonDataEl.getAttribute("data-background-color") ? buttonDataEl.getAttribute("data-background-color").toString() : '');
+
+            buttonProperties.padding_top = (buttonDataEl.getAttribute("data-padding-top") ? buttonDataEl.getAttribute("data-padding-top").toString() : '');
+            buttonProperties.padding_bottom = (buttonDataEl.getAttribute("data-padding-bottom") ? buttonDataEl.getAttribute("data-padding-bottom").toString() : '');
+            buttonProperties.padding_right = (buttonDataEl.getAttribute("data-padding-right") ? buttonDataEl.getAttribute("data-padding-right").toString() : '');
+            buttonProperties.padding_left = (buttonDataEl.getAttribute("data-padding-left") ? buttonDataEl.getAttribute("data-padding-left").toString() : '');
+
+            buttonProperties.hover_color = (buttonDataEl.getAttribute("data-background-color-hover") ? buttonDataEl.getAttribute("data-background-color-hover").toString() : '');
+            buttonProperties.hover_border = (buttonDataEl.getAttribute("data-border-color-hover") ? buttonDataEl.getAttribute("data-border-color-hover").toString() : '');
+            buttonProperties.hover_text = (buttonDataEl.getAttribute("data-text-color-hover") ? buttonDataEl.getAttribute("data-text-color-hover").toString() : '');
+
+            buttonProperties.buttonTarget.button_name = (buttonDataEl.getAttribute("data-button-name") ? buttonDataEl.getAttribute("data-button-name").toString() : '');
             separate = true;
-            buttonData.font_size = ( buttonDataEl.getAttribute("data-text-size") ? buttonDataEl.getAttribute("data-text-size").toString() : '' );
-            buttonData.text_color = ( buttonDataEl.getAttribute("data-text-color") ? buttonDataEl.getAttribute("data-text-color").toString() : '' );
-            buttonData.background_color = ( buttonDataEl.getAttribute("data-background-color") ? buttonDataEl.getAttribute("data-background-color").toString() : '' );
-            buttonData.button_height = ( buttonDataEl.getAttribute("data-button-height") ? buttonDataEl.getAttribute("data-button-height").toString() : '' );
-            buttonData.hover_color = ( buttonDataEl.getAttribute("data-background-color-hover") ? buttonDataEl.getAttribute("data-background-color-hover").toString() : '' );
-            buttonData.hover_border = ( buttonDataEl.getAttribute("data-border-color-hover") ? buttonDataEl.getAttribute("data-border-color-hover").toString() : '' );
-            buttonData.hover_text = ( buttonDataEl.getAttribute("data-text-color-hover") ? buttonDataEl.getAttribute("data-text-color-hover").toString() : '' );
-            buttonData.border_color = ( buttonDataEl.getAttribute("data-border-color") ? buttonDataEl.getAttribute("data-border-color").toString() : '' );
-            buttonData.border_width = ( buttonDataEl.getAttribute("data-border-width") ? buttonDataEl.getAttribute("data-border-width").toString() : '' );
-            buttonData.border_radius = ( buttonDataEl.getAttribute("data-border-radius") ? buttonDataEl.getAttribute("data-border-radius").toString() : '' );
-            buttonData.margin_top = ( buttonDataEl.getAttribute("data-margin-top") ? buttonDataEl.getAttribute("data-margin-top").toString() : '' );
-            buttonData.margin_bottom = ( buttonDataEl.getAttribute("data-margin-bottom") ? buttonDataEl.getAttribute("data-margin-bottom").toString() : '' );
-            buttonData.margin_right = ( buttonDataEl.getAttribute("data-margin-right") ? buttonDataEl.getAttribute("data-margin-right").toString() : '' );
-            buttonData.margin_left = ( buttonDataEl.getAttribute("data-margin-left") ? buttonDataEl.getAttribute("data-margin-left").toString() : '' );
-            buttonData.padding_top = ( buttonDataEl.getAttribute("data-padding-top") ? buttonDataEl.getAttribute("data-padding-top").toString() : '' );
-            buttonData.padding_bottom = ( buttonDataEl.getAttribute("data-padding-bottom") ? buttonDataEl.getAttribute("data-padding-bottom").toString() : '' );
-            buttonData.padding_right = ( buttonDataEl.getAttribute("data-padding-right") ? buttonDataEl.getAttribute("data-padding-right").toString() : '' );
-            buttonData.padding_left = ( buttonDataEl.getAttribute("data-padding-left") ? buttonDataEl.getAttribute("data-padding-left").toString() : '' );
-            buttonData.buttonTarget.button_name = ( buttonDataEl.getAttribute("data-button-name") ? buttonDataEl.getAttribute("data-button-name").toString() : '' );
-        } else{
-            buttonData.synchronize = typeof $buttonData.attr("data-synchronize") == "undefined" ? false : $buttonData.attr("data-synchronize").toString();
+        } else {
+            buttonProperties.synchronize = typeof $buttonData.attr("data-synchronize") == "undefined" ? false : $buttonData.attr("data-synchronize").toString();
         }
+        buttonProperties.text = $buttonContainer.find(".rex-button-text").eq(0).text();
+        buttonProperties.link_target = $buttonData.attr("data-link-target");
+        buttonProperties.link_type = $buttonData.attr("data-link-type");
 
         var data = {
             separateButton: separate,
-            buttonInfo: buttonData
+            buttonInfo: buttonProperties
         }
         return data;
     }
@@ -926,13 +857,11 @@ var Rexbuilder_Rexbutton = (function ($) {
         updateButton: _updateButton,
         removeSeparateButton: _removeSeparateButton,
         separateRexButton: _separateRexButton,
+        generateButtonData: _generateButtonData,
 
         updateButtonContainerRule: _updateButtonContainerRule,
         updateButtonBackgroundRule: _updateButtonBackgroundRule,
         updateButtonBackgroundHoverRule: _updateButtonBackgroundHoverRule,
         updateContainerHoverRule: _updateContainerHoverRule,
-
-        getDataFromButtonDom: _getDataFromButtonDom,
-        generateButtonData: _generateButtonData,
     };
 })(jQuery);
