@@ -1132,8 +1132,22 @@ var TextEditor = (function ($) {
 
       this.deleteRexbuttonBtn = $(this.rexbuttonTools).find(".rex-delete-button")[0];
       this.editRexbuttonBtn = $(this.rexbuttonTools).find(".rex-edit-button")[0];
-      console.log("DIOCANE");
-      console.log(this.editRexbuttonBtn);
+
+      // Hiding anchor preview of text editor when mouse is over a rexbutton
+      // Timeout is needed because anchor will stay under button for about 500-600 ms
+      var showAnchorTimeout = null;
+      Rexbuilder_Util.$document.on("mouseenter", ".rex-button-wrapper", function (e) {
+        hideAnchorPreview();
+        if (showAnchorTimeout !== null) {
+          clearTimeout(showAnchorTimeout);
+          showAnchorTimeout = null;
+        }
+      });
+
+      Rexbuilder_Util.$document.on("mouseleave", ".rex-button-wrapper", function (e) {
+        showAnchorTimeout = setTimeout(showAnchorPreview, 1000);
+      });
+
       // View/Hide the Media Insert button
       this.subscribe("blur", this.handleBlur.bind(this));
 
@@ -1144,6 +1158,20 @@ var TextEditor = (function ($) {
       this.on(this.deleteRexbuttonBtn, "click", this.handleClickDeleteRexbutton.bind(this));
       this.on(this.editRexbuttonBtn, "click", this.handleClickEditRexbutton.bind(this));
 
+    },
+    
+    hideAnchorPreview: function (event) {
+      var anchorLinkPreview = document.getElementsByClassName("medium-editor-anchor-preview");
+      for (var i = 0; i < anchorLinkPreview.length; i++) {
+        anchorLinkPreview[i].style.display = "none";
+      }
+    },
+
+    showAnchorPreview: function (event) {
+      var anchorLinkPreview = document.getElementsByClassName("medium-editor-anchor-preview");
+      for (var i = 0; i < anchorLinkPreview.length; i++) {
+        anchorLinkPreview[i].style.display = "block";
+      }
     },
 
     handlePositionToolbar: function (event) {
