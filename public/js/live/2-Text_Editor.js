@@ -1109,8 +1109,6 @@ var TextEditor = (function ($) {
 
       this.keyCode = MediumEditor.util.keyCode;
       this.arrowKeys = [37, 38, 39, 40];
-      this.fixNodesEnter = false;
-      this.fixButtonsClasses = false;
 
       this.traceBTN = null;
       this.traceEditor = null;
@@ -1290,10 +1288,18 @@ var TextEditor = (function ($) {
 
       if (MediumEditor.util.isKey(event, this.keyCode.ENTER) && this.insideRexButton(nodeToFix)) {
         var mediumEditorOffsetRight = MediumEditor.selection.getCaretOffsets(nodeToFix).right;
-        if (mediumEditorOffsetRight === 0) {
+        var mediumEditorOffsetLeft = MediumEditor.selection.getCaretOffsets(nodeToFix).left;
+
+        if (mediumEditorOffsetRight === 0 && $node.parents(".rex-button-wrapper").eq(0).is(':last-child')) {
           var $newParagraph = $("<p><br></p>");
           $node.parents(".rex-buttons-paragraph").after($newParagraph);
           this.customMoveCursor($newParagraph[0], 0);
+        } else {
+          if (mediumEditorOffsetLeft === 0 && $node.parents(".rex-button-wrapper").eq(0).is(':first-child')) {
+            var $newParagraph = $("<p><br></p>");
+            $node.parents(".rex-buttons-paragraph").before($newParagraph);
+            this.customMoveCursor($newParagraph[0], 0);
+          }
         }
         event.preventDefault();
       }
@@ -1306,7 +1312,7 @@ var TextEditor = (function ($) {
 
       if (MediumEditor.util.isKey(event, this.keyCode.BACKSPACE) &&
         (window.getSelection().focusOffset == 0 || window.getSelection().focusOffset == 1)) {
-        if (//il cursore è all'inizio dell'elemento
+        if (//cursor is at the beginning of the element
           mediumEditorOffsetLeft === 0) {
           if (this.isElementBefore(nodeToFix, "rex-buttons-paragraph")) {
             var isEmpty = /^(\s+|<br\/?>)?$/i;
@@ -1314,10 +1320,12 @@ var TextEditor = (function ($) {
               event.preventDefault();
             }
           } else {
-            ;
+            if (this.insideRexButton(nodeToFix)){
+              event.preventDefault();
+            }
           }
         } else {
-          //check all'interno di un elemento (assume offeset diverso da 0)
+          //check inside an element (assumes offeset different from 0)
           if (this.isNodeBefore(nodeToFix, mediumEditorOffsetLeft, "rex-button-wrapper")) {
             event.preventDefault();
           }
@@ -1332,8 +1340,25 @@ var TextEditor = (function ($) {
       }
 
       if (MediumEditor.util.isKey(event, this.keyCode.DELETE)) {
-        if (mediumEditorOffsetRight === 0 && this.isElementAfter(nodeToFix, "rex-buttons-paragraph")) {
-          event.preventDefault();
+        if (mediumEditorOffsetRight === 0) {
+          var isEmpty = /^(\s+|<br\/?>)?$/i;
+          if (this.insideRexButton(nodeToFix)) {
+            var $node = $(nodeToFix);
+            if ($node.parents(".rex-button-wrapper").eq(0).is(':last-child')) {
+              var $buttonsParagraph = $node.parents(".rex-buttons-paragraph").eq(0);
+              var $nextBrother = $buttonsParagraph.next();
+              if (!isEmpty.test($nextBrother[0].innerHTML)) {
+                event.preventDefault();
+                return;
+              }
+            } else{
+              event.preventDefault();
+              return;
+            }
+          }
+          if (!isEmpty.test(nodeToFix.innerHTML) && this.isElementAfter(nodeToFix, "rex-buttons-paragraph")) {
+            event.preventDefault();
+          }
         }
       }
 
