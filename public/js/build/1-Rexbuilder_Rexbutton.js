@@ -12,24 +12,24 @@ _rex_buttons_ids
 
 _rex_buttons_styles
 
-[{\"rexID\":\"9UEc\",\"buttonName\":\"Rex Funny v23\",\"rules\":{\"element\":{\"text_color\":\"rgb(111, 115, 181)\",\"font_size\":\"22px\",\"background_color\":\"rgb(0, 238, 255)\",\"button_height\":\"50px\",\"border_color\":\"rgb(165, 0, 255)\",\"border_width\":\"8px\",\"border_radius\":\"20px\",\"margin_top\":\"30px\",\"margin_bottom\":\"10px\",\"margin_right\":\"10px\",\"margin_left\":\"15px\",\"padding_top\":\"26px\",\"padding_bottom\":\"px\",\"padding_right\":\"37px\",\"padding_left\":\"px\"},\"hover\":{\"background_color\":\"rgb(165, 0, 146)\",\"text_color\":\"rgb(0, 60, 255)\",\"border_color\":\"rgb(0, 255, 15)\"}}}]
+[{\"rexID\":\"9UEc\",\"buttonName\":\"Rex Funny v23\",\"rules\":{\"element\":{\"text_color\":\"rgb(111, 115, 181)\",\"font_size\":\"22px\",\"background_color\":\"rgb(0, 238, 255)\",\"button_height\":\"px\",\"border_color\":\"rgb(165, 0, 255)\",\"border_width\":\"8px\",\"border_radius\":\"px\",\"margin_top\":\"px\",\"margin_bottom\":\"px\",\"margin_right\":\"px\",\"margin_left\":\"px\",\"padding_top\":\"px\",\"padding_bottom\":\"px\",\"padding_right\":\"px\",\"padding_left\":\"px\"},\"hover\":{\"background_color\":\"rgb(165, 0, 146)\",\"text_color\":\"rgb(0, 60, 255)\",\"border_color\":\"rgb(0, 255, 15)\"}}}]
 
 
 _rex_button_9UEc_css
 
-.rex-button-wrapper[data-rex-button-id=\"9UEc\"] .rex-button-container{font-size: 22px;color: rgb(111, 115, 181);min-height: 50px;margin-top: 30px;margin-bottom: 10px;margin-left: 15px;margin-right: 10px;}.rex-button-wrapper[data-rex-button-id=\"9UEc\"] .rex-button-text{padding-top: 26px;padding-bottom: px;padding-left: px;padding-right: 37px;}.rex-button-wrapper[data-rex-button-id=\"9UEc\"] .rex-button-background{background-color: rgb(0, 238, 255);border-width: 8px;border-color: rgb(165, 0, 255);border-radius: 20px;border-style: solid;}.rex-button-wrapper[data-rex-button-id=\"9UEc\"] .rex-button-background:hover{background-color: rgb(165, 0, 146);border-color: rgb(0, 255, 15);}.rex-button-wrapper[data-rex-button-id=\"9UEc\"] .rex-button-container:hover{color: rgb(0, 60, 255);}
-
+.rex-button-wrapper[data-rex-button-id=\"9UEc\"] .rex-button-container{font-size: 22px;color: rgb(111, 115, 181);min-height: 70px;margin-top: 20px;margin-right: 20px;margin-bottom: 20px;margin-left: 20px;}.rex-button-wrapper[data-rex-button-id=\"9UEc\"] .rex-button-text{padding-top: 20px;padding-right: 20px;padding-bottom: 20px;padding-left: 20px;}.rex-button-wrapper[data-rex-button-id=\"9UEc\"] .rex-button-background{background-color: rgb(0, 238, 255);border-width: 8px;border-color: rgb(165, 0, 255);border-radius: 10px;border-style: solid;}.rex-button-wrapper[data-rex-button-id=\"9UEc\"] .rex-button-background:hover{background-color: rgb(165, 0, 146);border-color: rgb(0, 255, 15);}.rex-button-wrapper[data-rex-button-id=\"9UEc\"] .rex-button-container:hover{color: rgb(0, 60, 255);}
 
 _rex_button_9UEc_html
 
 <span class=\"rex-button-wrapper\" data-rex-button-id=\"9UEc\">
-    <span class=\"rex-button-data\" style=\"display:none;\" data-text-color=\"rgb(111, 115, 181)\" data-text-size=\"22px\" data-background-color=\"rgb(0, 238, 255)\" data-background-color-hover=\"rgb(165, 0, 146)\" data-border-color-hover=\"rgb(0, 255, 15)\" data-text-color-hover=\"rgb(0, 60, 255)\" data-border-width=\"8px\" data-border-color=\"rgb(165, 0, 255)\" data-border-radius=\"20px\" data-button-height=\"50px\" data-margin-top=\"30px\" data-margin-bottom=\"10px\" data-margin-left=\"15px\" data-margin-right=\"10px\" data-padding-left=\"px\" data-padding-right=\"37px\" data-padding-top=\"26px\" data-padding-bottom=\"px\" data-link-target=\"#\" data-link-type=\"_blank\" data-button-name=\"Rex Funny v23\"></span>
+    <span class=\"rex-button-data\" style=\"display:none;\" data-text-color=\"rgb(111, 115, 181)\" data-text-size=\"22px\" data-background-color=\"rgb(0, 238, 255)\" data-background-color-hover=\"rgb(165, 0, 146)\" data-border-color-hover=\"rgb(0, 255, 15)\" data-text-color-hover=\"rgb(0, 60, 255)\" data-border-width=\"8px\" data-border-color=\"rgb(165, 0, 255)\" data-border-radius=\"px\" data-button-height=\"px\" data-margin-top=\"px\" data-margin-bottom=\"px\" data-margin-left=\"px\" data-margin-right=\"px\" data-padding-left=\"px\" data-padding-right=\"px\" data-padding-top=\"px\" data-padding-bottom=\"px\" data-link-target=\"#\" data-link-type=\"_blank\" data-button-name=\"Rex Funny v23\"></span>
     <a href=\"#\" class=\"rex-button-container\" target=\"_blank\">
         <span class=\"rex-button-background\">
             <span class=\"rex-button-text\">Learn More</span>
         </span>
     </a>
 </span>
+
 
  */
 var Rexbuilder_Rexbutton = (function ($) {
@@ -489,29 +489,66 @@ var Rexbuilder_Rexbutton = (function ($) {
     }
 
     var _addCSSRules = function (buttonID, buttonProperties) {
+        var defaultButtonValues = {
+            margins: {
+                top: "20px",
+                right: "20px",
+                bottom: "20px",
+                left: "20px",
+            },
+            paddings: {
+                top: "20px",
+                right: "20px",
+                bottom: "20px",
+                left: "20px",
+            },
+            height: "70px",
+            borderRadius: "10px",
+        }
+        var currentMargin = "";
+        var currentPadding = "";
+        var currentHeight = "";
+        var currentBorderRadius = "";
+
         var containerRule = "";
         containerRule += "font-size: " + buttonProperties.font_size + ";";
         containerRule += "color: " + buttonProperties.text_color + ";";
-        containerRule += "min-height: " + buttonProperties.button_height + ";";
-        containerRule += "margin-top: " + buttonProperties.margin_top + ";";
-        containerRule += "margin-bottom: " + buttonProperties.margin_bottom + ";";
-        containerRule += "margin-left: " + buttonProperties.margin_left + ";";
-        containerRule += "margin-right: " + buttonProperties.margin_right + ";";
+        // checking button height, if value is not valid default height will be applied
+        currentHeight = isNaN(parseInt(buttonProperties.button_height.replace("px", ""))) ? defaultButtonValues.height : buttonProperties.button_height;
+        containerRule += "min-height: " + currentHeight + ";";
+        // checking margins, if they are not valid default value will be applied
+        currentMargin = isNaN(parseInt(buttonProperties.margin_top.replace("px", ""))) ? defaultButtonValues.margins.top : buttonProperties.margin_top;
+        containerRule += "margin-top: " + currentMargin + ";";
+        currentMargin = isNaN(parseInt(buttonProperties.margin_right.replace("px", ""))) ? defaultButtonValues.margins.right : buttonProperties.margin_right;
+        containerRule += "margin-right: " + currentMargin + ";";
+        currentMargin = isNaN(parseInt(buttonProperties.margin_bottom.replace("px", ""))) ? defaultButtonValues.margins.bottom : buttonProperties.margin_bottom;
+        containerRule += "margin-bottom: " + currentMargin + ";";
+        currentMargin = isNaN(parseInt(buttonProperties.margin_left.replace("px", ""))) ? defaultButtonValues.margins.left : buttonProperties.margin_left;
+        containerRule += "margin-left: " + currentMargin + ";";
+
         _addButtonContainerRule(buttonID, containerRule);
 
         var backgroundRule = "";
         backgroundRule += "border-width: " + buttonProperties.border_width + ";";
         backgroundRule += "border-color: " + buttonProperties.border_color + ";";
         backgroundRule += "border-style: " + "solid" + ";";
-        backgroundRule += "border-radius: " + buttonProperties.border_radius + ";";
+        // checking border radius, if they are not valid default value will be applied
+        currentBorderRadius = isNaN(parseInt(buttonProperties.border_radius.replace("px", ""))) ? defaultButtonValues.borderRadius : buttonProperties.border_radius;
+        backgroundRule += "border-radius: " + currentBorderRadius + ";";
         backgroundRule += "background-color: " + buttonProperties.background_color + ";";
         _addButtonBackgroundRule(buttonID, backgroundRule);
 
         var textRule = "";
-        textRule += "padding-top: " + buttonProperties.padding_top + ";";
-        textRule += "padding-bottom: " + buttonProperties.padding_bottom + ";";
-        textRule += "padding-left: " + buttonProperties.padding_left + ";";
-        textRule += "padding-right: " + buttonProperties.padding_right + ";";
+
+        // checking paddings, if they are not valid default value will be applied
+        currentPadding = isNaN(parseInt(buttonProperties.padding_top.replace("px", ""))) ? defaultButtonValues.paddings.top : buttonProperties.padding_top;
+        textRule += "padding-top: " + currentPadding + ";";
+        currentPadding = isNaN(parseInt(buttonProperties.padding_right.replace("px", ""))) ? defaultButtonValues.paddings.right : buttonProperties.padding_right;
+        textRule += "padding-right: " + currentPadding + ";";
+        currentPadding = isNaN(parseInt(buttonProperties.padding_bottom.replace("px", ""))) ? defaultButtonValues.paddings.bottom : buttonProperties.padding_bottom;
+        textRule += "padding-bottom: " + currentPadding + ";";
+        currentPadding = isNaN(parseInt(buttonProperties.padding_left.replace("px", ""))) ? defaultButtonValues.paddings.left : buttonProperties.padding_left;
+        textRule += "padding-left: " + currentPadding + ";";
         _addButtonTextRule(buttonID, textRule);
 
         var backgroundHoverRule = "";

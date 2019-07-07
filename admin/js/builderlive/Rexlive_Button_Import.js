@@ -137,29 +137,66 @@ var Button_Import_Modal = (function ($) {
     };
 
     var _addCSSRules = function (buttonID, buttonProperties) {
+        var defaultButtonValues = {
+            margins: {
+                top: "20px",
+                right: "20px",
+                bottom: "20px",
+                left: "20px",
+            },
+            paddings: {
+                top: "20px",
+                right: "20px",
+                bottom: "20px",
+                left: "20px",
+            },
+            height: "70px",
+            borderRadius: "10px",
+        }
+        var currentMargin = "";
+        var currentPadding = "";
+        var currentHeight = "";
+        var currentBorderRadius = "";
+
         var containerRule = "";
         containerRule += "font-size: " + buttonProperties.font_size + ";";
-        containerRule += "color: " + buttonProperties.text_color + ";";
-        containerRule += "min-height: " + buttonProperties.button_height + ";";
-        containerRule += "margin-top: " + buttonProperties.margin_top + ";";
-        containerRule += "margin-bottom: " + buttonProperties.margin_bottom + ";";
-        containerRule += "margin-left: " + buttonProperties.margin_left + ";";
-        containerRule += "margin-right: " + buttonProperties.margin_right + ";";
+        containerRule += "color: " + buttonProperties.text_color + ";";    
+        // checking button height, if value is not valid default height will be applied
+        currentHeight = isNaN(parseInt(buttonProperties.button_height.replace("px", ""))) ? defaultButtonValues.height : buttonProperties.button_height;
+        containerRule += "min-height: " + currentHeight + ";";
+        // checking margins, if they are not valid default value will be applied
+        currentMargin = isNaN(parseInt(buttonProperties.margin_top.replace("px", ""))) ? defaultButtonValues.margins.top : buttonProperties.margin_top;
+        containerRule += "margin-top: " + currentMargin + ";";
+        currentMargin = isNaN(parseInt(buttonProperties.margin_right.replace("px", ""))) ? defaultButtonValues.margins.right : buttonProperties.margin_right;
+        containerRule += "margin-right: " + currentMargin + ";";
+        currentMargin = isNaN(parseInt(buttonProperties.margin_bottom.replace("px", ""))) ? defaultButtonValues.margins.bottom : buttonProperties.margin_bottom;
+        containerRule += "margin-bottom: " + currentMargin + ";";
+        currentMargin = isNaN(parseInt(buttonProperties.margin_left.replace("px", ""))) ? defaultButtonValues.margins.left : buttonProperties.margin_left;
+        containerRule += "margin-left: " + currentMargin + ";";
+
         _addButtonContainerRule(buttonID, containerRule);
 
         var backgroundRule = "";
         backgroundRule += "border-width: " + buttonProperties.border_width + ";";
         backgroundRule += "border-color: " + buttonProperties.border_color + ";";
         backgroundRule += "border-style: " + "solid" + ";";
-        backgroundRule += "border-radius: " + buttonProperties.border_radius + ";";
+        // checking border radius, if they are not valid default value will be applied
+        currentBorderRadius = isNaN(parseInt(buttonProperties.border_radius.replace("px", ""))) ? defaultButtonValues.borderRadius : buttonProperties.border_radius;
+        backgroundRule += "border-radius: " + currentBorderRadius + ";";
         backgroundRule += "background-color: " + buttonProperties.background_color + ";";
         _addButtonBackgroundRule(buttonID, backgroundRule);
 
         var textRule = "";
-        textRule += "padding-top: " + buttonProperties.padding_top + ";";
-        textRule += "padding-bottom: " + buttonProperties.padding_bottom + ";";
-        textRule += "padding-left: " + buttonProperties.padding_left + ";";
-        textRule += "padding-right: " + buttonProperties.padding_right + ";";
+
+        // checking paddings, if they are not valid default value will be applied
+        currentPadding = isNaN(parseInt(buttonProperties.padding_top.replace("px", ""))) ? defaultButtonValues.paddings.top : buttonProperties.padding_top;
+        textRule += "padding-top: " + currentPadding + ";";
+        currentPadding = isNaN(parseInt(buttonProperties.padding_right.replace("px", ""))) ? defaultButtonValues.paddings.right : buttonProperties.padding_right;
+        textRule += "padding-right: " + currentPadding + ";";
+        currentPadding = isNaN(parseInt(buttonProperties.padding_bottom.replace("px", ""))) ? defaultButtonValues.paddings.bottom : buttonProperties.padding_bottom;
+        textRule += "padding-bottom: " + currentPadding + ";";
+        currentPadding = isNaN(parseInt(buttonProperties.padding_left.replace("px", ""))) ? defaultButtonValues.paddings.left : buttonProperties.padding_left;
+        textRule += "padding-left: " + currentPadding + ";";
         _addButtonTextRule(buttonID, textRule);
 
         var backgroundHoverRule = "";

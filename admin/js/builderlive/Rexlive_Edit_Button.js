@@ -144,6 +144,7 @@ var Button_Edit_Modal = (function ($) {
     var resetData;
     var editingModelButton;
     var alreadyChooseToSynchronize;
+    var defaultButtonValues;
 
     var _openButtonEditorModal = function (data) {
         alreadyChooseToSynchronize = false;
@@ -449,6 +450,7 @@ var Button_Edit_Modal = (function ($) {
     };
 
     var _linkNumberInputs = function () {
+        var outputString = "";
         // FONT SIZE
         var _updateFontSizeButton = function (newFontSize) {
             _updateButtonLive({
@@ -462,10 +464,11 @@ var Button_Edit_Modal = (function ($) {
 
         // BUTTON HEIGHT
         var _updateButtonHeight = function (newButtonHeight) {
+            outputString = isNaN(parseInt(newButtonHeight)) ? defaultButtonValues.height : newButtonHeight + "px";
             _updateButtonLive({
                 type: "container",
                 name: "min-height",
-                value: newButtonHeight + "px"
+                value: outputString
             });
         };
         _linkKeyDownListenerInputNumber(button_editor_properties.$button_height, false);
@@ -484,10 +487,11 @@ var Button_Edit_Modal = (function ($) {
 
         // BORDER RADIUS
         var _updateBorderRadius = function (newBorderRadius) {
+            outputString = isNaN(parseInt(newBorderRadius)) ? defaultButtonValues.borderRadius : newBorderRadius + "px";
             _updateButtonLive({
                 type: "background",
                 name: "border-radius",
-                value: newBorderRadius + "px"
+                value: outputString
             });
         };
         _linkKeyDownListenerInputNumber(button_editor_properties.$button_border_radius, false);
@@ -495,10 +499,11 @@ var Button_Edit_Modal = (function ($) {
 
         // MARGIN TOP
         var _updateMarginTop = function (newMarginTop) {
+            outputString = isNaN(parseInt(newMarginTop)) ? defaultButtonValues.margins.top : newMarginTop + "px";
             _updateButtonLive({
                 type: "container",
                 name: "margin-top",
-                value: newMarginTop + "px"
+                value: outputString
             });
         };
         _linkKeyDownListenerInputNumber(button_editor_properties.$button_margin_top, false);
@@ -506,10 +511,11 @@ var Button_Edit_Modal = (function ($) {
 
         // PADDING TOP
         var _updatePaddingTop = function (newPaddingTop) {
+            outputString = isNaN(parseInt(newPaddingTop)) ? defaultButtonValues.paddings.top : newPaddingTop + "px";
             _updateButtonLive({
                 type: "text",
                 name: "padding-top",
-                value: newPaddingTop + "px"
+                value: outputString
             });
         };
         _linkKeyDownListenerInputNumber(button_editor_properties.$button_padding_top, false);
@@ -517,10 +523,11 @@ var Button_Edit_Modal = (function ($) {
 
         // MARGIN BOTTOM
         var _updateMarginBottom = function (newMarginBottom) {
+            outputString = isNaN(parseInt(newMarginBottom)) ? defaultButtonValues.margins.bottom : newMarginBottom + "px";
             _updateButtonLive({
                 type: "container",
                 name: "margin-bottom",
-                value: newMarginBottom + "px"
+                value: outputString
             });
         };
         _linkKeyDownListenerInputNumber(button_editor_properties.$button_margin_bottom, false);
@@ -528,10 +535,11 @@ var Button_Edit_Modal = (function ($) {
 
         // PADDING BOTTOM
         var _updatePaddingBottom = function (newPaddingBottom) {
+            outputString = isNaN(parseInt(newPaddingBottom)) ? defaultButtonValues.paddings.top : newPaddingBottom + "px";
             _updateButtonLive({
                 type: "text",
                 name: "padding-bottom",
-                value: newPaddingBottom + "px"
+                value: outputString
             });
         };
         _linkKeyDownListenerInputNumber(button_editor_properties.$button_padding_bottom, false);
@@ -539,10 +547,11 @@ var Button_Edit_Modal = (function ($) {
 
         // MARGIN LEFT
         var _updateMarginLeft = function (newMarginLeft) {
+            outputString = isNaN(parseInt(newMarginLeft)) ? defaultButtonValues.margins.left : newMarginLeft + "px";
             _updateButtonLive({
                 type: "container",
                 name: "margin-left",
-                value: newMarginLeft + "px"
+                value: outputString
             });
         };
         _linkKeyDownListenerInputNumber(button_editor_properties.$button_margin_left, false);
@@ -550,10 +559,11 @@ var Button_Edit_Modal = (function ($) {
 
         // PADDING LEFT
         var _updatePaddingLeft = function (newPaddingLeft) {
+            outputString = isNaN(parseInt(newPaddingLeft)) ? defaultButtonValues.paddings.left : newPaddingLeft + "px";
             _updateButtonLive({
                 type: "text",
                 name: "padding-left",
-                value: newPaddingLeft + "px"
+                value: outputString
             });
         };
         _linkKeyDownListenerInputNumber(button_editor_properties.$button_padding_left, false);
@@ -561,10 +571,11 @@ var Button_Edit_Modal = (function ($) {
 
         // MARGIN RIGHT
         var _updateMarginRight = function (newMarginRight) {
+            outputString = isNaN(parseInt(newMarginRight)) ? defaultButtonValues.margins.right : newMarginRight + "px";
             _updateButtonLive({
                 type: "container",
                 name: "margin-right",
-                value: newMarginRight + "px"
+                value: outputString
             });
         };
         _linkKeyDownListenerInputNumber(button_editor_properties.$button_margin_right, false);
@@ -572,15 +583,15 @@ var Button_Edit_Modal = (function ($) {
 
         // PADDING RIGHT
         var _updatePaddingRight = function (newPaddingRight) {
+            outputString = isNaN(parseInt(newPaddingRight)) ? defaultButtonValues.paddings.right : newPaddingRight + "px";
             _updateButtonLive({
                 type: "text",
                 name: "padding-right",
-                value: newPaddingRight + "px"
+                value: outputString
             });
         };
         _linkKeyDownListenerInputNumber(button_editor_properties.$button_padding_right, false);
         _linkKeyUpListenerInputNumber(button_editor_properties.$button_padding_right, _updatePaddingRight, false);
-
 
     }
 
@@ -1107,26 +1118,42 @@ var Button_Edit_Modal = (function ($) {
     var _createCSSbutton = function () {
         var buttonID = buttonData.buttonTarget.button_id;
         var buttonCSS = "";
+        var currentMargin = "";
+        var currentPadding = "";
+        var currentHeight = "";
+        var currentBorderRadius = "";
 
         buttonCSS = ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"]";
         buttonCSS += " .rex-button-container{";
         buttonCSS += "font-size: " + buttonData.font_size + ";";
         buttonCSS += "color: " + buttonData.text_color + ";";
-        buttonCSS += "min-height: " + buttonData.button_height + ";";
-        buttonCSS += "margin-top: " + buttonData.margin_top + ";";
-        buttonCSS += "margin-bottom: " + buttonData.margin_bottom + ";";
-        buttonCSS += "margin-left: " + buttonData.margin_left + ";";
-        buttonCSS += "margin-right: " + buttonData.margin_right + ";";
+        // checking button height, if value is not valid default height will be applied
+        currentHeight = isNaN(parseInt(buttonData.button_height.replace("px", ""))) ? defaultButtonValues.height : buttonData.button_height;
+        buttonCSS += "min-height: " + currentHeight + ";";
+        // checking margins, if they are not valid default value will be applied
+        currentMargin = isNaN(parseInt(buttonData.margin_top.replace("px", ""))) ? defaultButtonValues.margins.top : buttonData.margin_top;
+        buttonCSS += "margin-top: " + currentMargin + ";";
+        currentMargin = isNaN(parseInt(buttonData.margin_right.replace("px", ""))) ? defaultButtonValues.margins.right : buttonData.margin_right;
+        buttonCSS += "margin-right: " + currentMargin + ";";
+        currentMargin = isNaN(parseInt(buttonData.margin_bottom.replace("px", ""))) ? defaultButtonValues.margins.bottom : buttonData.margin_bottom;
+        buttonCSS += "margin-bottom: " + currentMargin + ";";
+        currentMargin = isNaN(parseInt(buttonData.margin_left.replace("px", ""))) ? defaultButtonValues.margins.left : buttonData.margin_left;
+        buttonCSS += "margin-left: " + currentMargin + ";";
         buttonCSS += "}";
                 
         buttonCSS += ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"]";
         buttonCSS += " .rex-button-text{";
-        buttonCSS += "padding-top: " + buttonData.padding_top + ";";
-        buttonCSS += "padding-bottom: " + buttonData.padding_bottom + ";";
-        buttonCSS += "padding-left: " + buttonData.padding_left + ";";
-        buttonCSS += "padding-right: " + buttonData.padding_right + ";";
+        // checking paddings, if they are not valid default value will be applied
+        currentPadding = isNaN(parseInt(buttonData.padding_top.replace("px", ""))) ? defaultButtonValues.paddings.top : buttonData.padding_top;
+        buttonCSS += "padding-top: " + currentPadding + ";";
+        currentPadding = isNaN(parseInt(buttonData.padding_right.replace("px", ""))) ? defaultButtonValues.paddings.right : buttonData.padding_right;
+        buttonCSS += "padding-right: " + currentPadding + ";";
+        currentPadding = isNaN(parseInt(buttonData.padding_bottom.replace("px", ""))) ? defaultButtonValues.paddings.bottom : buttonData.padding_bottom;
+        buttonCSS += "padding-bottom: " + currentPadding + ";";
+        currentPadding = isNaN(parseInt(buttonData.padding_left.replace("px", ""))) ? defaultButtonValues.paddings.left : buttonData.padding_left;
+        buttonCSS += "padding-left: " + currentPadding + ";";
         buttonCSS += "}";
-
+        
         buttonCSS += ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"]";
         buttonCSS += " .rex-button-background{";
         buttonCSS += "background-color: " + buttonData.background_color + ";";
@@ -1134,7 +1161,10 @@ var Button_Edit_Modal = (function ($) {
         //background-gradient
         buttonCSS += "border-width: " + buttonData.border_width + ";";
         buttonCSS += "border-color: " + buttonData.border_color + ";";
-        buttonCSS += "border-radius: " + buttonData.border_radius + ";";
+
+        // checking border radius, if they are not valid default value will be applied
+        currentBorderRadius = isNaN(parseInt(buttonData.border_radius.replace("px", ""))) ? defaultButtonValues.borderRadius : buttonData.border_radius;
+        buttonCSS += "border-radius: " + currentBorderRadius + ";";
         buttonCSS += "border-style: solid;";
         buttonCSS += "}";
 
@@ -1371,6 +1401,22 @@ var Button_Edit_Modal = (function ($) {
         rexButtonsJSON = JSON.parse($("#rex-buttons-json-css").text());
         buttonsIDsUsed = JSON.parse($("#rex-buttons-ids-used").text());
         _linkDocumentListeners();
+        defaultButtonValues = {
+            margins: {
+                top: "20px",
+                right: "20px",
+                bottom: "20px",
+                left: "20px",
+            },
+            paddings: {
+                top: "20px",
+                right: "20px",
+                bottom: "20px",
+                left: "20px",
+            },
+            height: "70px",
+            borderRadius: "10px",
+        }
 
         buttonData = {
             text_color: "",
