@@ -36,6 +36,7 @@ var Rexbuilder_Rexbutton = (function ($) {
     "use strict";
     var styleSheet;
     var buttonsInPage;
+    var defaultButtonValues;
 
     //////////////////////////////////////////////////////////////////////////////////////////////
     // CSS RULES EDITING
@@ -489,22 +490,6 @@ var Rexbuilder_Rexbutton = (function ($) {
     }
 
     var _addCSSRules = function (buttonID, buttonProperties) {
-        var defaultButtonValues = {
-            margins: {
-                top: "20px",
-                right: "20px",
-                bottom: "20px",
-                left: "20px",
-            },
-            paddings: {
-                top: "20px",
-                right: "20px",
-                bottom: "20px",
-                left: "20px",
-            },
-            height: "70px",
-            borderRadius: "10px",
-        }
         var currentMargin = "";
         var currentPadding = "";
         var currentHeight = "";
@@ -606,24 +591,39 @@ var Rexbuilder_Rexbutton = (function ($) {
     var _updateButton = function (data) {
         var buttonProperties = data.buttonProperties;
         var buttonID = buttonProperties.buttonTarget.button_id;
+        var currentMargin = "";
+        var currentPadding = "";
+        var currentHeight = "";
+        var currentBorderRadius = "";
 
         _updateButtonContainerRule(buttonID, "font-size", buttonProperties.font_size);
         _updateButtonContainerRule(buttonID, "color", buttonProperties.text_color);
-        _updateButtonContainerRule(buttonID, "min-height", buttonProperties.button_height);
-        _updateButtonContainerRule(buttonID, "margin-top", buttonProperties.margin_top);
-        _updateButtonContainerRule(buttonID, "margin-bottom", buttonProperties.margin_bottom);
-        _updateButtonContainerRule(buttonID, "margin-right", buttonProperties.margin_right);
-        _updateButtonContainerRule(buttonID, "margin-left", buttonProperties.margin_left);
+        currentHeight = isNaN(parseInt(buttonProperties.button_height.replace("px", ""))) ? defaultButtonValues.height : buttonProperties.button_height;
+        _updateButtonContainerRule(buttonID, "min-height", currentHeight);
+
+        currentMargin = isNaN(parseInt(buttonProperties.margin_top.replace("px", ""))) ? defaultButtonValues.margins.top : buttonProperties.margin_top;
+        _updateButtonContainerRule(buttonID, "margin-top", currentMargin);
+        currentMargin = isNaN(parseInt(buttonProperties.margin_right.replace("px", ""))) ? defaultButtonValues.margins.right : buttonProperties.margin_right;
+        _updateButtonContainerRule(buttonID, "margin-right", currentMargin);
+        currentMargin = isNaN(parseInt(buttonProperties.margin_bottom.replace("px", ""))) ? defaultButtonValues.margins.bottom : buttonProperties.margin_bottom;
+        _updateButtonContainerRule(buttonID, "margin-bottom", currentMargin);
+        currentMargin = isNaN(parseInt(buttonProperties.margin_left.replace("px", ""))) ? defaultButtonValues.margins.left : buttonProperties.margin_left;
+        _updateButtonContainerRule(buttonID, "margin-left", currentMargin);
 
         _updateButtonBackgroundRule(buttonID, "border-width", buttonProperties.border_width);
         _updateButtonBackgroundRule(buttonID, "border-color", buttonProperties.border_color);
-        _updateButtonBackgroundRule(buttonID, "border-radius", buttonProperties.border_radius);
+        currentBorderRadius = isNaN(parseInt(buttonProperties.border_radius.replace("px", ""))) ? defaultButtonValues.borderRadius : buttonProperties.border_radius;
+        _updateButtonBackgroundRule(buttonID, "border-radius", currentBorderRadius);
         _updateButtonBackgroundRule(buttonID, "background-color", buttonProperties.background_color);
 
-        _updateButtonTextRule(buttonID, "padding-top", buttonProperties.padding_top);
-        _updateButtonTextRule(buttonID, "padding-bottom", buttonProperties.padding_bottom);
-        _updateButtonTextRule(buttonID, "padding-right", buttonProperties.padding_right);
-        _updateButtonTextRule(buttonID, "padding-left", buttonProperties.padding_left);
+        currentPadding = isNaN(parseInt(buttonProperties.padding_top.replace("px", ""))) ? defaultButtonValues.paddings.top : buttonProperties.padding_top;
+        _updateButtonTextRule(buttonID, "padding-top", currentPadding);
+        currentPadding = isNaN(parseInt(buttonProperties.padding_right.replace("px", ""))) ? defaultButtonValues.paddings.right : buttonProperties.padding_right;
+        _updateButtonTextRule(buttonID, "padding-right", currentPadding);
+        currentPadding = isNaN(parseInt(buttonProperties.padding_bottom.replace("px", ""))) ? defaultButtonValues.paddings.bottom : buttonProperties.padding_bottom;
+        _updateButtonTextRule(buttonID, "padding-bottom", currentPadding);
+        currentPadding = isNaN(parseInt(buttonProperties.padding_left.replace("px", ""))) ? defaultButtonValues.paddings.left : buttonProperties.padding_left;
+        _updateButtonTextRule(buttonID, "padding-left", currentPadding);
 
         _updateButtonBackgroundHoverRule(buttonID, "background-color", buttonProperties.hover_color);
         _updateButtonBackgroundHoverRule(buttonID, "border-color", buttonProperties.hover_border);
@@ -640,29 +640,7 @@ var Rexbuilder_Rexbutton = (function ($) {
         $buttonData.attr("data-link-type", buttonProperties.link_type);
 
         if ($buttonWrapper.hasClass("rex-separate-button")) {
-
-            $buttonData.attr("data-button-name", buttonProperties.buttonTarget.button_name);
-            $buttonData.attr("data-text-size", buttonProperties.font_size);
-            $buttonData.attr("data-text-color", buttonProperties.text_color);
-            $buttonData.attr("data-button-height", buttonProperties.button_height);
-            $buttonData.attr("data-margin-top", buttonProperties.margin_top);
-            $buttonData.attr("data-margin-bottom", buttonProperties.margin_bottom);
-            $buttonData.attr("data-margin-left", buttonProperties.margin_left);
-            $buttonData.attr("data-margin-right", buttonProperties.margin_right);
-            $buttonData.attr("data-padding-top", buttonProperties.padding_top);
-            $buttonData.attr("data-padding-bottom", buttonProperties.padding_bottom);
-            $buttonData.attr("data-padding-left", buttonProperties.padding_left);
-            $buttonData.attr("data-padding-right", buttonProperties.padding_right);
-
-            $buttonData.attr("data-background-color", buttonProperties.background_color);
-            $buttonData.attr("data-border-color", buttonProperties.border_color);
-            $buttonData.attr("data-border-width", buttonProperties.border_width);
-            $buttonData.attr("data-border-radius", buttonProperties.border_radius);
-
-            $buttonData.attr("data-background-color-hover", buttonProperties.hover_color);
-            $buttonData.attr("data-border-color-hover", buttonProperties.hover_border);
-            $buttonData.attr("data-text-color-hover", buttonProperties.hover_text);
-
+            _addSeparateAttributes($buttonWrapper, buttonProperties);
         } else {
             _removeModelData($buttonWrapper);
         }
@@ -904,6 +882,22 @@ var Rexbuilder_Rexbutton = (function ($) {
     var init = function () {
         styleSheet = null;
         buttonsInPage = [];
+        defaultButtonValues = {
+            margins: {
+                top: "20px",
+                right: "20px",
+                bottom: "20px",
+                left: "20px",
+            },
+            paddings: {
+                top: "20px",
+                right: "20px",
+                bottom: "20px",
+                left: "20px",
+            },
+            height: "70px",
+            borderRadius: "10px",
+        }
 
         this.$buttonsStyle = $("#rexpansive-builder-rexbutton-style-inline-css");
         _fixCustomStyleElement();
