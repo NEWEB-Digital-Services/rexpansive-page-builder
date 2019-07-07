@@ -943,15 +943,23 @@ var Button_Edit_Modal = (function ($) {
     }
 
     /**
-     * Updates array of ids used removing the passed ID.
+     * Updates array of ids used removing the passed ID and, if flag is set to "true", DB.
      * 
-     * @param {string} rexID Rexbutton ID to remove
+     * @param {Object} data
+     * @param {String} data.rexID Button ID to remove
+     * @param {Boolean} data.updateDB true if update DB
+     * @returns {String} removedID
      */
-    var _removeIDButton = function(rexID){
-        var pos = buttonsIDsUsed.indexOf(rexID)
+    var _removeIDButton = function(data){
+        var pos = buttonsIDsUsed.indexOf(data.rexID)
         if(pos != -1){
             buttonsIDsUsed.splice(pos, 1);
+            if (data.updateDB){
+                _updateButtonsIDSUsed();
+            }
+            return data.rexID;
         }
+        return null;
     }
     /**
      * Updates array of ids used adding the passed ID.
@@ -1412,6 +1420,7 @@ var Button_Edit_Modal = (function ($) {
 
     return {
         init: _init,
-        openButtonEditorModal: _openButtonEditorModal
+        openButtonEditorModal: _openButtonEditorModal,
+        removeIDButton: _removeIDButton
     };
 })(jQuery);

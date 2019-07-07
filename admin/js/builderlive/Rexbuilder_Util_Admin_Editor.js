@@ -1679,6 +1679,26 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     });
   };
 
+  /**
+   * On ie does not work, fix propose
+
+  In main "Rexbuilder_Util_Admin_Editor" function
+   var triggeredLoad;
+
+  In "_forceTriggerLoad" function
+  if(!triggeredLoad){
+    triggeredLoad = true;
+    Rexbuilder_Util_Admin_Editor.$frameBuilder.trigger("load");
+  }
+
+  In init function
+  triggeredLoad = false;
+  this.$frameBuilder[0].onload = _forceTriggerLoad();
+
+  In "rexbuilder-live-editing.php" file change iframe with this one
+  <iframe id="rexpansive-live-frame" src="<?php echo $source; ?>" allowfullscreen="1" style="width:100%;height:100%;border: 0px;"></iframe>
+  */
+ 
   var _forceTriggerLoad = function () {
     var isIE = /*@cc_on!@*/false || !!document.documentMode;
     if(isIE){

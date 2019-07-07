@@ -1136,8 +1136,9 @@ var TextEditor = (function ($) {
       // Hiding anchor preview of text editor when mouse is over a rexbutton
       // Timeout is needed because anchor will stay under button for about 500-600 ms
       var showAnchorTimeout = null;
+      var extensionIstance = this;
       Rexbuilder_Util.$document.on("mouseenter", ".rex-button-wrapper", function (e) {
-        hideAnchorPreview();
+        extensionIstance.hideAnchorPreview();
         if (showAnchorTimeout !== null) {
           clearTimeout(showAnchorTimeout);
           showAnchorTimeout = null;
@@ -1145,7 +1146,7 @@ var TextEditor = (function ($) {
       });
 
       Rexbuilder_Util.$document.on("mouseleave", ".rex-button-wrapper", function (e) {
-        showAnchorTimeout = setTimeout(showAnchorPreview, 1000);
+        showAnchorTimeout = setTimeout(extensionIstance.showAnchorPreview, 1000);
       });
 
       // View/Hide the Media Insert button

@@ -37,6 +37,10 @@ var Rexbuilder_Rexbutton = (function ($) {
     var styleSheet;
     var buttonsInPage;
 
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    // CSS RULES EDITING
+    //////////////////////////////////////////////////////////////////////////////////////////////
+
     var _fixCustomStyleElement = function () {
         if (Rexbuilder_Rexbutton.$buttonsStyle.length == 0) {
             var css = "",
@@ -61,147 +65,10 @@ var Rexbuilder_Rexbutton = (function ($) {
         }
     };
 
-    var _fixImportedButton = function (data) {
-        var $buttonWrapper = Rexbuilder_Util.$rexContainer.find(".rex-loading-button .rex-button-wrapper");
-        $buttonWrapper.unwrap();
-
-        var $buttonsParagraph = $buttonWrapper.parents(".rex-buttons-paragraph").eq(0);
-        var $textWrap = $buttonWrapper.parents(".text-wrap").eq(0);
-        var $gridGallery = $buttonWrapper.parents(".grid-stack-row").eq(0);
-        var $section = $buttonWrapper.parents(".rexpansive_section").eq(0);
-        var buttonDimensionCalculated = jQuery.extend(true, {}, data.buttonDimensions);
-
-        var $buttonData = $buttonWrapper.find(".rex-button-data").eq(0);
-        var margins = {
-            top: parseInt($buttonData.attr("data-margin-top").replace("px", "")),
-            bottom: parseInt($buttonData.attr("data-margin-bottom").replace("px", "")),
-            left: parseInt($buttonData.attr("data-margin-left").replace("px", "")),
-            right: parseInt($buttonData.attr("data-margin-right").replace("px", "")),
-        }
-        margins.top = isNaN(margins.top) ? 0 : margins.top;
-        margins.bottom = isNaN(margins.bottom) ? 0 : margins.bottom;
-        margins.left = isNaN(margins.left) ? 0 : margins.left;
-        margins.right = isNaN(margins.right) ? 0 : margins.right;
-
-        var paddings = {
-            top: parseInt($buttonData.attr("data-padding-top").replace("px", "")),
-            bottom: parseInt($buttonData.attr("data-padding-bottom").replace("px", "")),
-            left: parseInt($buttonData.attr("data-padding-left").replace("px", "")),
-            right: parseInt($buttonData.attr("data-padding-right").replace("px", "")),
-        }
-        paddings.top = isNaN(paddings.top) ? 0 : paddings.top;
-        paddings.bottom = isNaN(paddings.bottom) ? 0 : paddings.bottom;
-        paddings.left = isNaN(paddings.left) ? 0 : paddings.left;
-        paddings.right = isNaN(paddings.right) ? 0 : paddings.right;
-
-        buttonDimensionCalculated.height = 
-            buttonDimensionCalculated.height + margins.top + margins.bottom + paddings.top + paddings.bottom;
-        buttonDimensionCalculated.width = 
-            buttonDimensionCalculated.width + margins.left + margins.right + paddings.left + paddings.right;
-
-        var dropType;
-        if ($textWrap.length == 0) {
-            if ($gridGallery.length != 0) {
-                dropType = "inside-row";
-            } else {
-                dropType = "inside-new-row";
-            }
-        } else if ($buttonsParagraph.length != 0) {
-            dropType = "inside-paragraph";
-        } else {
-            dropType = "inside-block";
-        }
-
-        switch (dropType) {
-            case "inside-block":
-                $buttonWrapper.wrap("<p class=\"rex-buttons-paragraph\"></p>");
-                _endFixingButtonImported($buttonWrapper);
-                Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
-                break;
-            case "inside-paragraph":
-                _endFixingButtonImported($buttonWrapper);
-                Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
-                break;
-            case "inside-row":
-                var ev = jQuery.Event("rexlive:insert_new_text_block");
-                ev.settings = {
-                    data_to_send: {
-                        $buttonWrapper: $buttonWrapper,
-                        $section: $section,
-                        addBlockButton: true,
-                        mousePosition: data.mousePosition,
-                        blockDimensions: {
-                            w: buttonDimensionCalculated.width,
-                            h: buttonDimensionCalculated.height
-                        }
-                    }
-                };
-                Rexbuilder_Util.$document.trigger(ev);
-                break;
-            case "inside-new-row":
-                // @todo
-                    ;
-                break;
-            default:
-                break;
-        }
-    }
-    
-    var _endFixingButtonImported = function($buttonWrapper){
-        var buttonID = $buttonWrapper.attr("data-rex-button-id");
-        var flagButtonFound = false;
-        $buttonWrapper.attr("data-rex-button-number", 1);
-        for (var i = 0; i < buttonsInPage.length; i++) {
-            if (buttonsInPage[i].id == buttonID) {
-                buttonsInPage[i].number += 1;
-                $buttonWrapper.attr("data-rex-button-number", buttonsInPage[i].number);
-                flagButtonFound = true;
-                break;
-            }
-        }
-        if (!flagButtonFound) {
-            _addButtonStyle($buttonWrapper);
-            buttonsInPage.push({
-                id: buttonID,
-                number: 1
-            });
-        }
-        _removeModelData($buttonWrapper);   
-        
-        //removes medium editor placeholder if there
-        var $textWrap = $buttonWrapper.parents(".text-wrap");             
-        if($textWrap.length != 0){
-            TextEditor.removePlaceholder($textWrap.eq(0));
-        }
-    }
-    
-    var _removeModelData = function ($buttonWrapper) {
-        var $buttonData = $buttonWrapper.find(".rex-button-data").eq(0); 
-        $buttonData.removeAttr("data-text-color");
-        $buttonData.removeAttr("data-text-size");
-        $buttonData.removeAttr("data-background-color");
-        $buttonData.removeAttr("data-background-color-hover");
-        $buttonData.removeAttr("data-border-color-hover");
-        $buttonData.removeAttr("data-text-color-hover");
-        $buttonData.removeAttr("data-border-width");
-        $buttonData.removeAttr("data-border-color");
-        $buttonData.removeAttr("data-border-radius");
-        $buttonData.removeAttr("data-button-height");
-        $buttonData.removeAttr("data-margin-top");
-        $buttonData.removeAttr("data-margin-bottom"); 
-        $buttonData.removeAttr("data-margin-left"); 
-        $buttonData.removeAttr("data-margin-right"); 
-        $buttonData.removeAttr("data-padding-top");
-        $buttonData.removeAttr("data-padding-bottom"); 
-        $buttonData.removeAttr("data-padding-left"); 
-        $buttonData.removeAttr("data-padding-right"); 
-        $buttonData.removeAttr("data-button-name");
+    var _getActiveStyleSheet = function () {
+        return styleSheet;
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////
-    // CSS RULES EDITING
-    //////////////////////////////////////////////////////////////////////////////////////////////
-    
     //////////////////////////////////////////////////////////////////////////////////////////////
     // Adding rules
     var _addButtonContainerRule = function (buttonID, property) {
@@ -221,7 +88,7 @@ var Rexbuilder_Rexbutton = (function ($) {
             styleSheet.addRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background{" + property + "}", styleSheet.cssRules.length);
         }
     }
-    
+
     var _addButtonTextRule = function (buttonID, property) {
         if ("insertRule" in styleSheet) {
             styleSheet.insertRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-text{" + property + "}", styleSheet.cssRules.length);
@@ -245,12 +112,12 @@ var Rexbuilder_Rexbutton = (function ($) {
         if ("insertRule" in styleSheet) {
             styleSheet.insertRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container:hover{" + property + "}", styleSheet.cssRules.length);
         }
-        
+
         else if ("addRule" in styleSheet) {
             styleSheet.addRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container:hover{" + property + "}", styleSheet.cssRules.length);
         }
     }
-    
+
     //////////////////////////////////////////////////////////////////////////////////////////////
     // Updating rules
 
@@ -421,12 +288,12 @@ var Rexbuilder_Rexbutton = (function ($) {
                         styleSheet.cssRules[i].style.backgroundColor = value;
                         break;
                     case "border-color":
-                            styleSheet.cssRules[i].style.borderColor = value;
+                        styleSheet.cssRules[i].style.borderColor = value;
 
-                            styleSheet.cssRules[i].style.borderTopColor = value;
-                            styleSheet.cssRules[i].style.borderLeftColor = value;
-                            styleSheet.cssRules[i].style.borderRightColor = value;
-                            styleSheet.cssRules[i].style.borderBottomColor = value;
+                        styleSheet.cssRules[i].style.borderTopColor = value;
+                        styleSheet.cssRules[i].style.borderLeftColor = value;
+                        styleSheet.cssRules[i].style.borderRightColor = value;
+                        styleSheet.cssRules[i].style.borderBottomColor = value;
 
                         break;
                     case "border-style":
@@ -450,11 +317,167 @@ var Rexbuilder_Rexbutton = (function ($) {
             }
         }
     }
-    
+    /////////////////////////////////////////////////////////////////////////////////////////
+    // Removing rules
+
+    var _removeButtonContainerRule = function (buttonID) {
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container") {
+                styleSheet.deleteRule(i);
+                break;
+            }
+        }
+    }
+
+    var _removeButtonBackgroundRule = function (buttonID) {
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background") {
+                styleSheet.deleteRule(i);
+                break;
+            }
+        }
+    }
+
+    var _removeButtonTextRule = function (buttonID, property) {
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-text") {
+                styleSheet.deleteRule(i);
+                break;
+            }
+        }
+    }
+
+    var _removeButtonBackgroundHoverRule = function (buttonID) {
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background:hover") {
+                styleSheet.deleteRule(i);
+                break;
+            }
+        }
+    }
+
+    var _removeButtonContainerHoverRule = function (buttonID, property) {
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container:hover") {
+                styleSheet.deleteRule(i);
+                break;
+            }
+        }
+    }
     //////////////////////////////////////////////////////////////////////////////////////////////
 
-    var _getActiveStyleSheet = function () {
-        return styleSheet;
+    var _fixImportedButton = function (data) {
+        var $buttonWrapper = Rexbuilder_Util.$rexContainer.find(".rex-loading-button .rex-button-wrapper");
+        $buttonWrapper.unwrap();
+
+        var $buttonsParagraph = $buttonWrapper.parents(".rex-buttons-paragraph").eq(0);
+        var $textWrap = $buttonWrapper.parents(".text-wrap").eq(0);
+        var $gridGallery = $buttonWrapper.parents(".grid-stack-row").eq(0);
+        var $section = $buttonWrapper.parents(".rexpansive_section").eq(0);
+        var buttonDimensionCalculated = jQuery.extend(true, {}, data.buttonDimensions);
+
+        var $buttonData = $buttonWrapper.find(".rex-button-data").eq(0);
+        var margins = {
+            top: parseInt($buttonData.attr("data-margin-top").replace("px", "")),
+            bottom: parseInt($buttonData.attr("data-margin-bottom").replace("px", "")),
+            left: parseInt($buttonData.attr("data-margin-left").replace("px", "")),
+            right: parseInt($buttonData.attr("data-margin-right").replace("px", "")),
+        }
+        margins.top = isNaN(margins.top) ? 0 : margins.top;
+        margins.bottom = isNaN(margins.bottom) ? 0 : margins.bottom;
+        margins.left = isNaN(margins.left) ? 0 : margins.left;
+        margins.right = isNaN(margins.right) ? 0 : margins.right;
+
+        var paddings = {
+            top: parseInt($buttonData.attr("data-padding-top").replace("px", "")),
+            bottom: parseInt($buttonData.attr("data-padding-bottom").replace("px", "")),
+            left: parseInt($buttonData.attr("data-padding-left").replace("px", "")),
+            right: parseInt($buttonData.attr("data-padding-right").replace("px", "")),
+        }
+        paddings.top = isNaN(paddings.top) ? 0 : paddings.top;
+        paddings.bottom = isNaN(paddings.bottom) ? 0 : paddings.bottom;
+        paddings.left = isNaN(paddings.left) ? 0 : paddings.left;
+        paddings.right = isNaN(paddings.right) ? 0 : paddings.right;
+
+        buttonDimensionCalculated.height =
+            buttonDimensionCalculated.height + margins.top + margins.bottom + paddings.top + paddings.bottom;
+        buttonDimensionCalculated.width =
+            buttonDimensionCalculated.width + margins.left + margins.right + paddings.left + paddings.right;
+
+        var dropType;
+        if ($textWrap.length == 0) {
+            if ($gridGallery.length != 0) {
+                dropType = "inside-row";
+            } else {
+                dropType = "inside-new-row";
+            }
+        } else if ($buttonsParagraph.length != 0) {
+            dropType = "inside-paragraph";
+        } else {
+            dropType = "inside-block";
+        }
+
+        switch (dropType) {
+            case "inside-block":
+                $buttonWrapper.wrap("<p class=\"rex-buttons-paragraph\"></p>");
+                _endFixingButtonImported($buttonWrapper);
+                Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
+                break;
+            case "inside-paragraph":
+                _endFixingButtonImported($buttonWrapper);
+                Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
+                break;
+            case "inside-row":
+                var ev = jQuery.Event("rexlive:insert_new_text_block");
+                ev.settings = {
+                    data_to_send: {
+                        $buttonWrapper: $buttonWrapper,
+                        $section: $section,
+                        addBlockButton: true,
+                        mousePosition: data.mousePosition,
+                        blockDimensions: {
+                            w: buttonDimensionCalculated.width,
+                            h: buttonDimensionCalculated.height
+                        }
+                    }
+                };
+                Rexbuilder_Util.$document.trigger(ev);
+                break;
+            case "inside-new-row":
+                // @todo
+                ;
+                break;
+            default:
+                break;
+        }
+    }
+
+    var _endFixingButtonImported = function ($buttonWrapper) {
+        var buttonID = $buttonWrapper.attr("data-rex-button-id");
+        var flagButtonFound = false;
+        $buttonWrapper.attr("data-rex-button-number", 1);
+        for (var i = 0; i < buttonsInPage.length; i++) {
+            if (buttonsInPage[i].id == buttonID) {
+                buttonsInPage[i].number += 1;
+                $buttonWrapper.attr("data-rex-button-number", buttonsInPage[i].number);
+                flagButtonFound = true;
+                break;
+            }
+        }
+        if (!flagButtonFound) {
+            _addButtonStyle($buttonWrapper);
+            buttonsInPage.push({
+                id: buttonID,
+                number: 1
+            });
+        }
+        _removeModelData($buttonWrapper);
+
+        //removes medium editor placeholder if there
+        var $textWrap = $buttonWrapper.parents(".text-wrap");
+        if ($textWrap.length != 0) {
+            TextEditor.removePlaceholder($textWrap.eq(0));
+        }
     }
 
     var _addButtonStyle = function ($buttonWrapper) {
@@ -609,28 +632,11 @@ var Rexbuilder_Rexbutton = (function ($) {
     }
 
     var _removeButtonStyle = function (buttonID) {
-        _updateButtonContainerRule(buttonID, "font-size", "");
-        _updateButtonContainerRule(buttonID, "color", "");
-        _updateButtonContainerRule(buttonID, "min-height", "");
-        _updateButtonContainerRule(buttonID, "margin-top", "");
-        _updateButtonContainerRule(buttonID, "margin-bottom", "");
-        _updateButtonContainerRule(buttonID, "margin-right", "");
-        _updateButtonContainerRule(buttonID, "margin-left", "");
-
-        _updateButtonBackgroundRule(buttonID, "border-width", "");
-        _updateButtonBackgroundRule(buttonID, "border-color", "");
-        _updateButtonBackgroundRule(buttonID, "border-radius", "");
-        _updateButtonBackgroundRule(buttonID, "background-color", "");
-
-        _updateButtonTextRule(buttonID, "padding-top", "");
-        _updateButtonTextRule(buttonID, "padding-bottom", "");
-        _updateButtonTextRule(buttonID, "padding-right", "");
-        _updateButtonTextRule(buttonID, "padding-left", "");
-
-        _updateButtonBackgroundHoverRule(buttonID, "background-color", "");
-        _updateButtonBackgroundHoverRule(buttonID, "border-color", "");
-
-        _updateContainerHoverRule(buttonID, "color", "");
+        _removeButtonContainerRule(buttonID);
+        _removeButtonBackgroundRule(buttonID);
+        _removeButtonBackgroundHoverRule(buttonID);
+        _removeButtonTextRule(buttonID);
+        _removeButtonContainerHoverRule(buttonID);
     }
 
     var _removeSeparateButton = function (data) {
@@ -646,7 +652,7 @@ var Rexbuilder_Rexbutton = (function ($) {
         var buttonID = buttonData.buttonTarget.button_id;
         var $buttonWrapper = Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"][data-rex-button-number=\"" + buttonData.buttonTarget.button_number + "\"]");
         $buttonWrapper.addClass("rex-separate-button");
-        $buttonWrapper.attr("data-rex-button-id", newID); 
+        $buttonWrapper.attr("data-rex-button-id", newID);
         $buttonWrapper.attr("data-rex-button-number", 1);
         buttonsInPage.push({
             id: newID,
@@ -654,20 +660,43 @@ var Rexbuilder_Rexbutton = (function ($) {
         });
 
         //if button was last of that model in page, remove it form buttonsInPage array
-        if (Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"]").length == 0){
+        if (Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"]").length == 0) {
             var i;
-            for (i = 0; i < buttonsInPage.length; i++){
-                if (buttonsInPage[i].id == buttonID){
+            for (i = 0; i < buttonsInPage.length; i++) {
+                if (buttonsInPage[i].id == buttonID) {
                     break;
                 }
             }
-            if (i != buttonsInPage.length){
+            if (i != buttonsInPage.length) {
                 buttonsInPage.splice(i, 1);
             }
         }
 
         _addSeparateAttributes($buttonWrapper, buttonData);
         _addButtonStyle($buttonWrapper);
+    }
+
+    var _removeModelData = function ($buttonWrapper) {
+        var $buttonData = $buttonWrapper.find(".rex-button-data").eq(0);
+        $buttonData.removeAttr("data-text-color");
+        $buttonData.removeAttr("data-text-size");
+        $buttonData.removeAttr("data-background-color");
+        $buttonData.removeAttr("data-background-color-hover");
+        $buttonData.removeAttr("data-border-color-hover");
+        $buttonData.removeAttr("data-text-color-hover");
+        $buttonData.removeAttr("data-border-width");
+        $buttonData.removeAttr("data-border-color");
+        $buttonData.removeAttr("data-border-radius");
+        $buttonData.removeAttr("data-button-height");
+        $buttonData.removeAttr("data-margin-top");
+        $buttonData.removeAttr("data-margin-bottom");
+        $buttonData.removeAttr("data-margin-left");
+        $buttonData.removeAttr("data-margin-right");
+        $buttonData.removeAttr("data-padding-top");
+        $buttonData.removeAttr("data-padding-bottom");
+        $buttonData.removeAttr("data-padding-left");
+        $buttonData.removeAttr("data-padding-right");
+        $buttonData.removeAttr("data-button-name");
     }
 
     var _addSeparateAttributes = function ($buttonWrapper, buttonData) {
@@ -694,7 +723,7 @@ var Rexbuilder_Rexbutton = (function ($) {
     }
 
     /**
-     * Generate button data from Dom
+     * Generate button data from RexButton dom Element.
      * If getAllData is true, will get data from dom even if button is a model
      * 
      * The obtained object has 2 fields:
@@ -783,7 +812,7 @@ var Rexbuilder_Rexbutton = (function ($) {
         return data;
     }
 
-    var _lockSynchronize = function(data){
+    var _lockSynchronize = function (data) {
         var buttonID = data.buttonTarget.button_id;
         var $buttonWrapper = Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"][data-rex-button-number=\"" + data.buttonTarget.button_number + "\"]");
         $buttonWrapper.find(".rex-button-data").attr("data-synchronize", true);
@@ -791,7 +820,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 
     var _linkDocumentListeners = function () {
 
-        Rexbuilder_Util.$document.on("rexlive:completeImportButton", function(e){
+        Rexbuilder_Util.$document.on("rexlive:completeImportButton", function (e) {
             var data = e.settings;
             var $newElement = data.$blockAdded;
             var $buttonWrapper = data.$buttonWrapper;
