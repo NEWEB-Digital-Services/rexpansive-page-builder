@@ -159,9 +159,7 @@ var Button_Edit_Modal = (function ($) {
     };
 
     var _closeModal = function () {
-        Rexlive_Modals_Utils.closeModal(
-            button_editor_properties.$self.parent(".rex-modal-wrap")
-        );
+        Rexlive_Modals_Utils.closeModal( button_editor_properties.$self.parent(".rex-modal-wrap") );
     };
 
     var _updateButtonEditorModal = function (data) {
@@ -946,7 +944,7 @@ var Button_Edit_Modal = (function ($) {
                 }
 
                 button_editor_properties.$add_model_button.removeClass("saving-rex-button");
-                _closeModal();
+                // _closeModal();
             },
             error: function (response) { },
             complete: function (response) { }
@@ -1314,11 +1312,11 @@ var Button_Edit_Modal = (function ($) {
          * Applyes changes to button and, if button is model, updates DB
          */
         button_editor_properties.$close_button.on("click", function () {
-            _updateButtonDataFromPanel();
-            _applyData();
-            if (editingModelButton) {
-                _saveButtonOnDB();
-            }
+            // _updateButtonDataFromPanel();
+            // _applyData();
+            // if (editingModelButton) {
+            //     _saveButtonOnDB();
+            // }
             _closeModal();
         });
 
@@ -1326,11 +1324,11 @@ var Button_Edit_Modal = (function ($) {
          * Applyes changes to button and, if button is model, updates DB
          */
         button_editor_properties.$apply_changes_button.on("click", function () {
-            _updateButtonDataFromPanel();
-            _applyData();
-            if (editingModelButton) {
-                _saveButtonOnDB();
-            }
+            // _updateButtonDataFromPanel();
+            // _applyData();
+            // if (editingModelButton) {
+            //     _saveButtonOnDB();
+            // }
             _closeModal();
         });
 
@@ -1341,7 +1339,6 @@ var Button_Edit_Modal = (function ($) {
             if (editingModelButton) {
                 _saveButtonOnDB();
             }
-            _closeModal();
         });
     };
 
