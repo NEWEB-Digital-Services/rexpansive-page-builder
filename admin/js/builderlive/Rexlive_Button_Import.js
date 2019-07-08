@@ -409,6 +409,8 @@ var Button_Import_Modal = (function ($) {
                             .contents()
                             .find(".drop-marker");
 
+                        textData = textData.trim();
+
                         var $divInsert = $(jQuery.parseHTML(textData));
                         $divInsert.addClass("rex-loading-button");
                         $divInsert.insertAfter($insertionPoint[0]);

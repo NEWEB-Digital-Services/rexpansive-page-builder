@@ -1334,9 +1334,14 @@ var Button_Edit_Modal = (function ($) {
             _closeModal();
         });
 
-        // chiusura finestra
+        // closing window by click on the screen
         button_editor_properties.$modal.on('rexlive:this_modal_closed', function() {
-
+            _updateButtonDataFromPanel();
+            _applyData();
+            if (editingModelButton) {
+                _saveButtonOnDB();
+            }
+            _closeModal();
         });
     };
 
