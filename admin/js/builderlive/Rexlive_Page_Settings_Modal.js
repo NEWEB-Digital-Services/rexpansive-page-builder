@@ -22,8 +22,7 @@ var Rexlive_Page_Settings_Modal = (function ($) {
    * @since 2.0.0
    */
   var _closeModal = function() {
-    Rexlive_Modals_Utils.closeModal( page_settings_props.$modal );
-    _saveSettings();
+    Rexlive_Modals_Utils.closeModal( page_settings_props.$modal );    
   };
 
   /**
@@ -34,6 +33,15 @@ var Rexlive_Page_Settings_Modal = (function ($) {
     page_settings_props.$close_button.on('click', function(e) {
       e.preventDefault();
       _closeModal();
+    });
+
+    /**
+     * On modal closing (from button, from keyboard esc, from screen click)
+     * Save the settings
+     *
+     */
+    page_settings_props.$modal.on('rexlive:this_modal_closed', function(e) {
+      _saveSettings();
     });
   };
 

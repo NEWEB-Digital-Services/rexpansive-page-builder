@@ -76,10 +76,14 @@ var Rexlive_Modals_Utils = (function($) {
       }
     }
 
+    // event to the document
     var data = {
       $modal: $target
     };
     Rexlive_Base_Settings.$document.trigger('rexlive:modal_closed', [data]);
+
+    // event directly to the modal
+    $target.trigger('rexlive:this_modal_closed');
 
     var closeEvent = {
       eventName: "rexlive:close_modal",
@@ -121,7 +125,7 @@ var Rexlive_Modals_Utils = (function($) {
       $target.css( "left", "0px" );
       $target.css( "top", "50px" );
     }
-  }
+  };
 
   var _listen_events = function() {
     /**
@@ -159,7 +163,7 @@ var Rexlive_Modals_Utils = (function($) {
         });
       }
     }
-  }
+  };
 
   var init = function() {
     $lean_overlay = $(".lean-overlay");

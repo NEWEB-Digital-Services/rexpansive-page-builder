@@ -46,27 +46,6 @@ var Rexbuilder_App = (function($) {
     // $grids.find(".wrapper-expand-effect").expandEffect();
     if( $grids ) {
       $grids.perfectGridGalleryEditor();
-
-      // little test
-      // if ( Rexbuilder_Util.editorMode )
-      // {
-      //   var pg_instance = $grids.eq(0).data('plugin_perfectGridGalleryEditor');
-      //   var testIndx = new IndexedGrid(12);
-      //   var bs = pg_instance.properties.reverseDataGridDisposition.blocks;
-      //   for(var i=0;i<bs.length; i++) {
-      //     testIndx.setGrid(bs[i].x,bs[i].y,bs[i].w,bs[i].h);
-      //   }
-      //   console.log(testIndx.grid);
-      //   console.log(testIndx.findHoles());
-      //   console.log(testIndx.negativeGrid());
-      //   var negGrid = testIndx.negativeGrid();
-      //   console.log(negGrid[0]);
-      //   if ( negGrid[0] % 12 < 11 )
-      //   {
-      //     console.log(12 - negGrid[0]);
-      //   }
-      //   window.testIndx = testIndx;
-      // }
     }
 
     /** -- Launching plugins only on "real" frontend */

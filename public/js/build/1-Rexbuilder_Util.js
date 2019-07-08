@@ -123,54 +123,61 @@ var Rexbuilder_Util = (function($) {
   };
 
   var _updateSectionsID = function() {
-    var id;
-    var $sec;
-    Rexbuilder_Util.$rexContainer
-      .children(".rexpansive_section")
-      .each(function(i, e) {
-        $sec = $(e);
-        if (
-          typeof $sec.attr("data-rexlive-section-id") === "undefined" ||
-          $sec.attr("data-rexlive-section-id") == ""
-        ) {
+    if ( Rexbuilder_Util.rexContainer ) {
+      var id;
+      var $sec;
+      var sections = [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll( '.rexpansive_section' ) );
+      sections.forEach( function( section ) {
+        var sectionId = section.getAttribute( 'data-rexlive-section-id' );    
+        if ( null === sectionId || '' === sectionId ) {
           id = _createSectionID();
-          $sec.attr("data-rexlive-section-id", id);
-          _fix_tools_ids( $sec, id );          
+          section.setAttribute( 'data-rexlive-section-id', id );
+          _fix_tools_ids( section, id );
         }
       });
+    }
   };
 
   /**
    * Fix tools IDs for a new page section
    * - Width tool
    * - Layout tool
-   * @param {Object} $section jquery object for a section
+   * @param {Node} section dom element of a section
    * @param {string} id unique character id
    */
-  var _fix_tools_ids = function( $section, id ) {
-    var $left_tools = $section.find('.tool-area--side.tool-area--left');
-    $left_tools.find('.edit-row-width').each(function(i,el) {
-      el.setAttribute('id', el.getAttribute('id') + id );
-      el.setAttribute('name', el.getAttribute('name') + id );
-      el.nextElementSibling.setAttribute('for', el.nextElementSibling.getAttribute('for') + id );
-    });
-    $left_tools.find('.edit-row-layout').each(function(i,el) {
-      el.setAttribute('id', el.getAttribute('id') + id );
-      el.setAttribute('name', el.getAttribute('name') + id );
-      el.nextElementSibling.setAttribute('for', el.nextElementSibling.getAttribute('for') + id );
-    });
+  var _fix_tools_ids = function( section, id ) {
+    if ( section ) {
+      var left_tools = [].slice.call( section.querySelectorAll('.tool-area--side.tool-area--left') );
+      var editRowWidth;
+      var editRowLayout;
+
+      left_tools.forEach( function( elTools ) {
+        editRowWidth = [].slice.call( elTools.querySelectorAll('.edit-row-width') );
+        editRowWidth.forEach( function( el ) {
+          el.setAttribute('id', el.getAttribute('id') + id );
+          el.setAttribute('name', el.getAttribute('name') + id );
+          el.nextElementSibling.setAttribute('for', el.nextElementSibling.getAttribute('for') + id );
+        });
+
+        editRowLayout = [].slice.call( elTools.querySelectorAll('.edit-row-layout') );
+        editRowWidth.forEach( function( el ) {
+          el.setAttribute('id', el.getAttribute('id') + id );
+          el.setAttribute('name', el.getAttribute('name') + id );
+          el.nextElementSibling.setAttribute('for', el.nextElementSibling.getAttribute('for') + id );
+        });
+      });
+    }
   }
 
   var _updateSectionsNumber = function() {
     var last = -1;
-    var $sec;
-    Rexbuilder_Util.$rexContainer
-      .children(".rexpansive_section")
-      .each(function(i, sec) {
-        $sec = $(sec);
-        $sec.attr("data-rexlive-section-number", i);
+    if ( Rexbuilder_Util.rexContainer ) {
+      var sections = [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll( '.rexpansive_section' ) );
+      sections.forEach( function( section, i ) {
+        section.setAttribute( 'data-rexlive-section-number', i);
         last = i;
       });
+    }
     Rexbuilder_Util.lastSectionNumber = last;
   };
 
@@ -3763,6 +3770,7 @@ var Rexbuilder_Util = (function($) {
     $usedIDSContainer = $("#sections-ids-used");
     _storeNamesUsed();
     this.$rexContainer = $(".rex-container");
+    this.rexContainer = this.$rexContainer[0];
     this.$loader = $(".rexlive-loader");
     this.backendEdited = false;
     if ( Rexbuilder_Util.$rexContainer.length > 0 && Rexbuilder_Util.$rexContainer.attr("data-backend-edited").toString() == "true" ) {

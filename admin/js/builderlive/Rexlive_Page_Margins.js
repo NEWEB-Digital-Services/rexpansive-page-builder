@@ -2,15 +2,16 @@ var Rexlive_Page_Margins = (function ($) {
   'use strict';
 
   var container_margins_modal_properties;
-  var defaultSeparatos;
+  var defaultSeparators;
+  var actualValues;
 
   // var _resetDistances = function () {
-  //   container_margins_modal_properties.$container_separator_top.val(defaultSeparatos.top);
+  //   container_margins_modal_properties.$container_separator_top.val(defaultSeparators.top);
   // }
 
   // var _updateDistances = function (data) {
   //   var distances = data.containerDistances;
-  //   var top = isNaN(distances.top) ? defaultSeparatos.top : distances.top;
+  //   var top = isNaN(distances.top) ? defaultSeparators.top : distances.top;
 
   //   container_margins_modal_properties.$container_separator_top.val(top);
   // }
@@ -24,7 +25,7 @@ var Rexlive_Page_Margins = (function ($) {
       return {
         context: context,
         vals: {
-          top: isNaN(top) ? defaultSeparatos.top : top,
+          top: isNaN(top) ? defaultSeparators.top : top,
         }
       };
     }
@@ -100,6 +101,22 @@ var Rexlive_Page_Margins = (function ($) {
   }
 
   /**
+   * Check if the data is changed since the user opened the modal
+   *
+   * @since 2.0.0
+   */
+  var _checkChanges = function( newData ) {
+    if ( actualValues.context !== newData.context ) {
+      return true;
+    } else {
+      if ( actualValues.vals.top !== newData.vals.top ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
    * Getting the margin settings from the data retrieve from DB
    * @since 2.0.0
    */
@@ -133,6 +150,8 @@ var Rexlive_Page_Margins = (function ($) {
     }
 
     container_margins_modal_properties.$separatorContext.filter('[value=' + context + ']').prop('checked',true);
+
+    actualValues = _getDistanceValues();
   };
 
   var _updateData = function( data )
@@ -200,7 +219,9 @@ var Rexlive_Page_Margins = (function ($) {
    */
   var _applyData = function () {
     var data_margins = _getDistanceValues();
-    if ( false !== data_margins )
+    var data_is_changed = _checkChanges( data_margins );
+    
+    if ( false !== data_margins && data_is_changed )
     {
       $.ajax({
         type: "POST",
@@ -238,12 +259,14 @@ var Rexlive_Page_Margins = (function ($) {
       selected_margins: ""
     }
 
-    defaultSeparatos = {
+    defaultSeparators = {
       top: 0,
       right: 0,
       bottom: 0,
       left: 0,
     };
+
+    actualValues = _getDistanceValues();
 
     // _resetDistances();
     _linkDistancesListeners();
