@@ -1278,6 +1278,8 @@ var TextEditor = (function ($) {
     },
 
     handleEventKeyUp: function (event, target) {
+      // Check if has to update height always on update height of text-wrap
+
       var nodeToFix = MediumEditor.selection.getSelectionStart(this.base.options.ownerDocument);
       var $node = $(nodeToFix);
 
@@ -1294,13 +1296,13 @@ var TextEditor = (function ($) {
           var $newParagraph = $("<p><br></p>");
           $node.parents(".rex-buttons-paragraph").after($newParagraph);
           this.customMoveCursor($newParagraph[0], 0);
-          Rexbuilder_Util_Editor.updateBlockContainerHeight($(target));
+          //Rexbuilder_Util_Editor.updateBlockContainerHeight($(target));
         } else {
           if (mediumEditorOffsetLeft === 0 && $node.parents(".rex-button-wrapper").eq(0).is(':first-child')) {
             var $newParagraph = $("<p><br></p>");
             $node.parents(".rex-buttons-paragraph").before($newParagraph);
             this.customMoveCursor($newParagraph[0], 0);
-            Rexbuilder_Util_Editor.updateBlockContainerHeight($(target));
+            //Rexbuilder_Util_Editor.updateBlockContainerHeight($(target));
           }
         }
         event.preventDefault();

@@ -475,6 +475,11 @@ var Rexbuilder_Rexbutton = (function ($) {
         if ($textWrap.length != 0) {
             TextEditor.removePlaceholder($textWrap.eq(0));
         }
+
+        // locking grid to prevent errors on focus right text node
+        var $element = $textWrap.parents(".grid-stack-item");
+        var $section = $element.parents(".rexpansive_section");
+        Rexbuilder_Util.getGalleryInstance($section).focusElement($element);
     }
 
     var _addButtonStyle = function ($buttonWrapper) {
