@@ -2386,7 +2386,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		$response['error'] = false;
 		
 		$id_button = $_POST["id_button"];
-		$html_button = $_POST["html_button"];
+		$html_button = trim( $_POST["html_button"] );
 		$css_button = $_POST["css_button"];
 		$jsonRexButtons_buttons = $_POST["jsonRexButtons"];
 
@@ -3966,7 +3966,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 * Add link to livebuilder directly on the post list
 	 * @since 2.0.0
 	 */
-	public function add_builderlive_link( $actions, $post_object ) {	// AGGIUNGE IL LINK A REXPANSIVE TRAMITE LA OVERVIEW DEGLI ARTICOLI
+	public function add_builderlive_link( $actions, $post_object ) {
 		$page_info = get_current_screen();
 
 		if ( $this->builder_active_on_this_post_type_list( $page_info->post_type ) ) {

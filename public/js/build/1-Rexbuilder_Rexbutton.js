@@ -21,14 +21,7 @@ _rex_button_9UEc_css
 
 _rex_button_9UEc_html
 
-<span class=\"rex-button-wrapper\" data-rex-button-id=\"9UEc\">
-    <span class=\"rex-button-data\" style=\"display:none;\" data-text-color=\"rgb(111, 115, 181)\" data-text-size=\"22px\" data-background-color=\"rgb(0, 238, 255)\" data-background-color-hover=\"rgb(165, 0, 146)\" data-border-color-hover=\"rgb(0, 255, 15)\" data-text-color-hover=\"rgb(0, 60, 255)\" data-border-width=\"8px\" data-border-color=\"rgb(165, 0, 255)\" data-border-radius=\"px\" data-button-height=\"px\" data-margin-top=\"px\" data-margin-bottom=\"px\" data-margin-left=\"px\" data-margin-right=\"px\" data-padding-left=\"px\" data-padding-right=\"px\" data-padding-top=\"px\" data-padding-bottom=\"px\" data-link-target=\"#\" data-link-type=\"_blank\" data-button-name=\"Rex Funny v23\"></span>
-    <a href=\"#\" class=\"rex-button-container\" target=\"_blank\">
-        <span class=\"rex-button-background\">
-            <span class=\"rex-button-text\">Learn More</span>
-        </span>
-    </a>
-</span>
+<span class=\"rex-button-wrapper\" data-rex-button-id=\"9UEc\"><span class=\"rex-button-data\" style=\"display:none;\" data-text-color=\"rgb(111, 115, 181)\" data-text-size=\"22px\" data-background-color=\"rgb(0, 238, 255)\" data-background-color-hover=\"rgb(165, 0, 146)\" data-border-color-hover=\"rgb(0, 255, 15)\" data-text-color-hover=\"rgb(0, 60, 255)\" data-border-width=\"8px\" data-border-color=\"rgb(165, 0, 255)\" data-border-radius=\"px\" data-button-height=\"px\" data-margin-top=\"px\" data-margin-bottom=\"px\" data-margin-left=\"px\" data-margin-right=\"px\" data-padding-left=\"px\" data-padding-right=\"px\" data-padding-top=\"px\" data-padding-bottom=\"px\" data-link-target=\"#\" data-link-type=\"_blank\" data-button-name=\"Rex Funny v23\"></span><a href=\"#\" class=\"rex-button-container\" target=\"_blank\"><span class=\"rex-button-background\"><span class=\"rex-button-text\">Learn More</span></span></a></span>
 
 
  */
@@ -571,7 +564,7 @@ var Rexbuilder_Rexbutton = (function ($) {
                         $buttonWrapper.find("a.rex-button-container").eq(0).attr("href", data.newValue);
                         break;
                     case "link_type":
-                        $buttonWrapper.find("a.rex-button-container").eq(0).attr("type", data.newValue);
+                        $buttonWrapper.find("a.rex-button-container").eq(0).attr("target", data.newValue);
                         break;
                     case "button_label":
                         $buttonWrapper.find(".rex-button-text").eq(0).text(data.newValue);
@@ -635,7 +628,7 @@ var Rexbuilder_Rexbutton = (function ($) {
 
         $buttonWrapper.find(".rex-button-text").eq(0).text(buttonProperties.text);
         $buttonWrapper.find("a.rex-button-container").eq(0).attr("href", buttonProperties.link_target);
-        $buttonWrapper.find("a.rex-button-container").eq(0).attr("type", buttonProperties.link_type);
+        $buttonWrapper.find("a.rex-button-container").eq(0).attr("target", buttonProperties.link_type);
         $buttonData.attr("data-link-target", buttonProperties.link_target);
         $buttonData.attr("data-link-type", buttonProperties.link_type);
 

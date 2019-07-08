@@ -1219,6 +1219,7 @@ var Button_Edit_Modal = (function ($) {
         }
 
         buttonHTML = tmpl("tmpl-rex-button", data);
+        buttonHTML = buttonHTML.trim();
         return buttonHTML;
     }
 
@@ -1332,6 +1333,11 @@ var Button_Edit_Modal = (function ($) {
             }
             _closeModal();
         });
+
+        // chiusura finestra
+        button_editor_properties.$modal.on('rexlive:this_modal_closed', function() {
+
+        });
     };
 
     var _init = function () {
@@ -1340,6 +1346,7 @@ var Button_Edit_Modal = (function ($) {
         var $container = $self;
         button_editor_properties = {
             $self: $self,
+            $modal: $container.parent(".rex-modal-wrap"),
             $close_button: $container.find(".rex-cancel-button"),
             $reset_button: $container.find(".rex-reset-button"),
             $create_new_button: $("#rex-add-new-button"),
