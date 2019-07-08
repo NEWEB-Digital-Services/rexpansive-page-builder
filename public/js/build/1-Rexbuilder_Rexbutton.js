@@ -12,16 +12,16 @@ _rex_buttons_ids
 
 _rex_buttons_styles
 
-[{\"rexID\":\"9UEc\",\"buttonName\":\"Rex Funny v23\",\"rules\":{\"element\":{\"text_color\":\"rgb(111, 115, 181)\",\"font_size\":\"22px\",\"background_color\":\"rgb(0, 238, 255)\",\"button_height\":\"px\",\"border_color\":\"rgb(165, 0, 255)\",\"border_width\":\"8px\",\"border_radius\":\"px\",\"margin_top\":\"px\",\"margin_bottom\":\"px\",\"margin_right\":\"px\",\"margin_left\":\"px\",\"padding_top\":\"px\",\"padding_bottom\":\"px\",\"padding_right\":\"px\",\"padding_left\":\"px\"},\"hover\":{\"background_color\":\"rgb(165, 0, 146)\",\"text_color\":\"rgb(0, 60, 255)\",\"border_color\":\"rgb(0, 255, 15)\"}}}]
+[{\"rexID\":\"9UEc\",\"buttonName\":\"Rex Funny v23\",\"rules\":{\"element\":{\"text_color\":\"rgb(111, 115, 181)\",\"font_size\":\"px\",\"background_color\":\"rgb(0, 238, 255)\",\"button_height\":\"px\",\"button_width\":\"\",\"border_color\":\"rgb(165, 0, 255)\",\"border_width\":\"px\",\"border_radius\":\"px\",\"margin_top\":\"px\",\"margin_bottom\":\"px\",\"margin_right\":\"px\",\"margin_left\":\"px\",\"padding_top\":\"px\",\"padding_bottom\":\"px\",\"padding_right\":\"px\",\"padding_left\":\"px\"},\"hover\":{\"background_color\":\"rgb(165, 0, 146)\",\"text_color\":\"rgb(0, 60, 255)\",\"border_color\":\"rgb(0, 255, 15)\"}}}]
 
 
 _rex_button_9UEc_css
 
-.rex-button-wrapper[data-rex-button-id=\"9UEc\"] .rex-button-container{font-size: 22px;color: rgb(111, 115, 181);min-height: 70px;margin-top: 20px;margin-right: 20px;margin-bottom: 20px;margin-left: 20px;}.rex-button-wrapper[data-rex-button-id=\"9UEc\"] .rex-button-text{padding-top: 20px;padding-right: 20px;padding-bottom: 20px;padding-left: 20px;}.rex-button-wrapper[data-rex-button-id=\"9UEc\"] .rex-button-background{background-color: rgb(0, 238, 255);border-width: 8px;border-color: rgb(165, 0, 255);border-radius: 10px;border-style: solid;}.rex-button-wrapper[data-rex-button-id=\"9UEc\"] .rex-button-background:hover{background-color: rgb(165, 0, 146);border-color: rgb(0, 255, 15);}.rex-button-wrapper[data-rex-button-id=\"9UEc\"] .rex-button-container:hover{color: rgb(0, 60, 255);}
+.rex-button-wrapper[data-rex-button-id=\"9UEc\"] .rex-button-container{font-size: 12px;color: rgb(111, 115, 181);min-height: 70px;min-width: 100px;margin-top: 20px;margin-right: 20px;margin-bottom: 20px;margin-left: 20px;}.rex-button-wrapper[data-rex-button-id=\"9UEc\"] .rex-button-text{padding-top: 20px;padding-right: 20px;padding-bottom: 20px;padding-left: 20px;}.rex-button-wrapper[data-rex-button-id=\"9UEc\"] .rex-button-background{background-color: rgb(0, 238, 255);border-color: rgb(165, 0, 255);border-width: 5px;border-radius: 10px;border-style: solid;}.rex-button-wrapper[data-rex-button-id=\"9UEc\"] .rex-button-background:hover{background-color: rgb(165, 0, 146);border-color: rgb(0, 255, 15);}.rex-button-wrapper[data-rex-button-id=\"9UEc\"] .rex-button-container:hover{color: rgb(0, 60, 255);}
 
 _rex_button_9UEc_html
 
-<span class=\"rex-button-wrapper\" data-rex-button-id=\"9UEc\"><span class=\"rex-button-data\" style=\"display:none;\" data-text-color=\"rgb(111, 115, 181)\" data-text-size=\"22px\" data-background-color=\"rgb(0, 238, 255)\" data-background-color-hover=\"rgb(165, 0, 146)\" data-border-color-hover=\"rgb(0, 255, 15)\" data-text-color-hover=\"rgb(0, 60, 255)\" data-border-width=\"8px\" data-border-color=\"rgb(165, 0, 255)\" data-border-radius=\"px\" data-button-height=\"px\" data-margin-top=\"px\" data-margin-bottom=\"px\" data-margin-left=\"px\" data-margin-right=\"px\" data-padding-left=\"px\" data-padding-right=\"px\" data-padding-top=\"px\" data-padding-bottom=\"px\" data-link-target=\"#\" data-link-type=\"_blank\" data-button-name=\"Rex Funny v23\"></span><a href=\"#\" class=\"rex-button-container\" target=\"_blank\"><span class=\"rex-button-background\"><span class=\"rex-button-text\">Learn More</span></span></a></span>
+<span class=\"rex-button-wrapper\" data-rex-button-id=\"9UEc\"><span class=\"rex-button-data\" style=\"display:none;\" data-text-color=\"rgb(111, 115, 181)\" data-text-size=\"px\" data-background-color=\"rgb(0, 238, 255)\" data-background-color-hover=\"rgb(165, 0, 146)\" data-border-color-hover=\"rgb(0, 255, 15)\" data-text-color-hover=\"rgb(0, 60, 255)\" data-border-width=\"px\" data-border-color=\"rgb(165, 0, 255)\" data-border-radius=\"px\" data-button-height=\"px\" data-button-width=\"\" data-margin-top=\"px\" data-margin-bottom=\"px\" data-margin-left=\"px\" data-margin-right=\"px\" data-padding-left=\"px\" data-padding-right=\"px\" data-padding-top=\"px\" data-padding-bottom=\"px\" data-link-target=\"#\" data-link-type=\"_blank\" data-button-name=\"Rex Funny v23\"></span><a href=\"#\" class=\"rex-button-container\" target=\"_blank\"><span class=\"rex-button-background\"><span class=\"rex-button-text\">Learn More</span></span></a></span>
 
 
  */
@@ -133,6 +133,9 @@ var Rexbuilder_Rexbutton = (function ($) {
                         break;
                     case "min-height":
                         styleSheet.cssRules[i].style.minHeight = value;
+                        break;
+                    case "min-width":
+                        styleSheet.cssRules[i].style.minWidth = value;
                         break;
                     case "margin-top":
                         styleSheet.cssRules[i].style.marginTop = value;
@@ -485,15 +488,23 @@ var Rexbuilder_Rexbutton = (function ($) {
     var _addCSSRules = function (buttonID, buttonProperties) {
         var currentMargin = "";
         var currentPadding = "";
-        var currentHeight = "";
-        var currentBorderRadius = "";
+        var currentDimension = "";
+        var currentBorderDimension = "";
+        var currentTextSize = "";
 
         var containerRule = "";
-        containerRule += "font-size: " + buttonProperties.font_size + ";";
         containerRule += "color: " + buttonProperties.text_color + ";";
-        // checking button height, if value is not valid default height will be applied
-        currentHeight = isNaN(parseInt(buttonProperties.button_height.replace("px", ""))) ? defaultButtonValues.height : buttonProperties.button_height;
-        containerRule += "min-height: " + currentHeight + ";";
+
+        // checking font size, if value is not valid default font size will be applied
+        currentTextSize = isNaN(parseInt(buttonProperties.font_size.replace("px", ""))) ? defaultButtonValues.font_size : buttonProperties.font_size;
+        containerRule += "font-size: " + currentTextSize + ";";
+
+        // checking button dimensions, if value is not valid default dimensions will be applied
+        currentDimension = isNaN(parseInt(buttonProperties.button_height.replace("px", ""))) ? defaultButtonValues.dimensions.height : buttonProperties.button_height;
+        containerRule += "min-height: " + currentDimension + ";";
+        currentDimension = isNaN(parseInt(buttonProperties.button_width.replace("px", ""))) ? defaultButtonValues.dimensions.width : buttonProperties.button_width;
+        containerRule += "min-width: " + currentDimension + ";";
+
         // checking margins, if they are not valid default value will be applied
         currentMargin = isNaN(parseInt(buttonProperties.margin_top.replace("px", ""))) ? defaultButtonValues.margins.top : buttonProperties.margin_top;
         containerRule += "margin-top: " + currentMargin + ";";
@@ -507,12 +518,15 @@ var Rexbuilder_Rexbutton = (function ($) {
         _addButtonContainerRule(buttonID, containerRule);
 
         var backgroundRule = "";
-        backgroundRule += "border-width: " + buttonProperties.border_width + ";";
         backgroundRule += "border-color: " + buttonProperties.border_color + ";";
         backgroundRule += "border-style: " + "solid" + ";";
-        // checking border radius, if they are not valid default value will be applied
-        currentBorderRadius = isNaN(parseInt(buttonProperties.border_radius.replace("px", ""))) ? defaultButtonValues.borderRadius : buttonProperties.border_radius;
-        backgroundRule += "border-radius: " + currentBorderRadius + ";";
+
+        // checking border dimensions, if they are not valid default value will be applied
+        currentBorderDimension = isNaN(parseInt(buttonProperties.border_width.replace("px", ""))) ? defaultButtonValues.border.width : buttonProperties.border_width;
+        backgroundRule += "border-width: " + currentBorderDimension + ";";
+        currentBorderDimension = isNaN(parseInt(buttonProperties.border_radius.replace("px", ""))) ? defaultButtonValues.border.radius : buttonProperties.border_radius;
+        backgroundRule += "border-radius: " + currentBorderDimension + ";";
+
         backgroundRule += "background-color: " + buttonProperties.background_color + ";";
         _addButtonBackgroundRule(buttonID, backgroundRule);
 
@@ -586,13 +600,18 @@ var Rexbuilder_Rexbutton = (function ($) {
         var buttonID = buttonProperties.buttonTarget.button_id;
         var currentMargin = "";
         var currentPadding = "";
-        var currentHeight = "";
-        var currentBorderRadius = "";
+        var currentDimension = "";
+        var currentBorderDimension = "";
+        var currentTextSize = "";
+        
+        currentTextSize = isNaN(parseInt(buttonProperties.font_size.replace("px", ""))) ? defaultButtonValues.font_size : buttonProperties.font_size;
+        _updateButtonContainerRule(buttonID, "font-size", currentTextSize);
 
-        _updateButtonContainerRule(buttonID, "font-size", buttonProperties.font_size);
         _updateButtonContainerRule(buttonID, "color", buttonProperties.text_color);
-        currentHeight = isNaN(parseInt(buttonProperties.button_height.replace("px", ""))) ? defaultButtonValues.height : buttonProperties.button_height;
-        _updateButtonContainerRule(buttonID, "min-height", currentHeight);
+        currentDimension = isNaN(parseInt(buttonProperties.button_height.replace("px", ""))) ? defaultButtonValues.dimensions.height : buttonProperties.button_height;
+        _updateButtonContainerRule(buttonID, "min-height", currentDimension);
+        currentDimension = isNaN(parseInt(buttonProperties.button_width.replace("px", ""))) ? defaultButtonValues.dimensions.width : buttonProperties.button_width;
+        _updateButtonContainerRule(buttonID, "min-width", currentDimension);
 
         currentMargin = isNaN(parseInt(buttonProperties.margin_top.replace("px", ""))) ? defaultButtonValues.margins.top : buttonProperties.margin_top;
         _updateButtonContainerRule(buttonID, "margin-top", currentMargin);
@@ -603,10 +622,12 @@ var Rexbuilder_Rexbutton = (function ($) {
         currentMargin = isNaN(parseInt(buttonProperties.margin_left.replace("px", ""))) ? defaultButtonValues.margins.left : buttonProperties.margin_left;
         _updateButtonContainerRule(buttonID, "margin-left", currentMargin);
 
-        _updateButtonBackgroundRule(buttonID, "border-width", buttonProperties.border_width);
         _updateButtonBackgroundRule(buttonID, "border-color", buttonProperties.border_color);
-        currentBorderRadius = isNaN(parseInt(buttonProperties.border_radius.replace("px", ""))) ? defaultButtonValues.borderRadius : buttonProperties.border_radius;
-        _updateButtonBackgroundRule(buttonID, "border-radius", currentBorderRadius);
+        currentBorderDimension = isNaN(parseInt(buttonProperties.border_width.replace("px", ""))) ? defaultButtonValues.border.width : buttonProperties.border_width;
+        _updateButtonBackgroundRule(buttonID, "border-width", currentBorderDimension);
+        currentBorderDimension = isNaN(parseInt(buttonProperties.border_radius.replace("px", ""))) ? defaultButtonValues.border.radius : buttonProperties.border_radius;
+        _updateButtonBackgroundRule(buttonID, "border-radius", currentBorderDimension);
+
         _updateButtonBackgroundRule(buttonID, "background-color", buttonProperties.background_color);
 
         currentPadding = isNaN(parseInt(buttonProperties.padding_top.replace("px", ""))) ? defaultButtonValues.paddings.top : buttonProperties.padding_top;
@@ -696,6 +717,7 @@ var Rexbuilder_Rexbutton = (function ($) {
         $buttonData.removeAttr("data-border-color");
         $buttonData.removeAttr("data-border-radius");
         $buttonData.removeAttr("data-button-height");
+        $buttonData.removeAttr("data-button-width");
         $buttonData.removeAttr("data-margin-top");
         $buttonData.removeAttr("data-margin-bottom");
         $buttonData.removeAttr("data-margin-left");
@@ -719,6 +741,7 @@ var Rexbuilder_Rexbutton = (function ($) {
         $buttonData.attr("data-border-color", buttonData.border_color);
         $buttonData.attr("data-border-radius", buttonData.border_radius);
         $buttonData.attr("data-button-height", buttonData.button_height);
+        $buttonData.attr("data-button-width", buttonData.button_width);
         $buttonData.attr("data-margin-top", buttonData.margin_top);
         $buttonData.attr("data-margin-bottom", buttonData.margin_bottom);
         $buttonData.attr("data-margin-right", buttonData.margin_right);
@@ -752,6 +775,7 @@ var Rexbuilder_Rexbutton = (function ($) {
             font_size: "",
             background_color: "",
             button_height: "",
+            button_width: "",
             hover_color: "",
             hover_border: "",
             hover_text: "",
@@ -785,6 +809,7 @@ var Rexbuilder_Rexbutton = (function ($) {
             buttonProperties.font_size = (buttonDataEl.getAttribute("data-text-size") ? buttonDataEl.getAttribute("data-text-size").toString() : '');
             buttonProperties.text_color = (buttonDataEl.getAttribute("data-text-color") ? buttonDataEl.getAttribute("data-text-color").toString() : '');
             buttonProperties.button_height = (buttonDataEl.getAttribute("data-button-height") ? buttonDataEl.getAttribute("data-button-height").toString() : '');
+            buttonProperties.button_width = (buttonDataEl.getAttribute("data-button-width") ? buttonDataEl.getAttribute("data-button-width").toString() : '');
             buttonProperties.margin_top = (buttonDataEl.getAttribute("data-margin-top") ? buttonDataEl.getAttribute("data-margin-top").toString() : '');
             buttonProperties.margin_bottom = (buttonDataEl.getAttribute("data-margin-bottom") ? buttonDataEl.getAttribute("data-margin-bottom").toString() : '');
             buttonProperties.margin_right = (buttonDataEl.getAttribute("data-margin-right") ? buttonDataEl.getAttribute("data-margin-right").toString() : '');
@@ -888,8 +913,15 @@ var Rexbuilder_Rexbutton = (function ($) {
                 bottom: "20px",
                 left: "20px",
             },
-            height: "70px",
-            borderRadius: "10px",
+            dimensions: {
+                height: "70px",
+                width: "100px",
+            },
+            border: {
+                width: "5px",
+                radius: "10px"
+            },
+            font_size: "12px",
         }
 
         this.$buttonsStyle = $("#rexpansive-builder-rexbutton-style-inline-css");

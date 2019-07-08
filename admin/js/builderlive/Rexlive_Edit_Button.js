@@ -221,6 +221,7 @@ var Button_Edit_Modal = (function ($) {
             font_size: "",
             background_color: "",
             button_height: "",
+            button_width: "",
             hover_color: "",
             hover_text: "",
             hover_border: "",
@@ -265,6 +266,7 @@ var Button_Edit_Modal = (function ($) {
                     buttonData.font_size = typeof rexButtonsJSON[i].rules.element.font_size === "undefined" ? "" : rexButtonsJSON[i].rules.element.font_size;
                     buttonData.background_color = typeof rexButtonsJSON[i].rules.element.background_color === "undefined" ? "" : rexButtonsJSON[i].rules.element.background_color;
                     buttonData.button_height = typeof rexButtonsJSON[i].rules.element.button_height === "undefined" ? "" : rexButtonsJSON[i].rules.element.button_height;
+                    buttonData.button_width = typeof rexButtonsJSON[i].rules.element.button_width === "undefined" ? "" : rexButtonsJSON[i].rules.element.button_width;
                     buttonData.hover_color = typeof rexButtonsJSON[i].rules.hover.background_color === "undefined" ? "" : rexButtonsJSON[i].rules.hover.background_color;
                     buttonData.hover_text = typeof rexButtonsJSON[i].rules.hover.text_color === "undefined" ? "" : rexButtonsJSON[i].rules.hover.text_color;
                     buttonData.hover_border = typeof rexButtonsJSON[i].rules.hover.border_color === "undefined" ? "" : rexButtonsJSON[i].rules.hover.border_color;
@@ -295,6 +297,7 @@ var Button_Edit_Modal = (function ($) {
         button_editor_properties.$button_label_text.val(buttonData.text);
         button_editor_properties.$button_label_text_size.val(buttonData.font_size.replace('px', ''));
         button_editor_properties.$button_height.val(buttonData.button_height.replace('px', ''));
+        button_editor_properties.$button_width.val(buttonData.button_width.replace('px', ''));
         button_editor_properties.$button_border_width.val(buttonData.border_width.replace('px', ''));
         button_editor_properties.$button_border_radius.val(buttonData.border_radius.replace('px', ''));
         button_editor_properties.$button_margin_top.val(buttonData.margin_top.replace('px', ''));
@@ -354,6 +357,7 @@ var Button_Edit_Modal = (function ($) {
     var _updateButtonDataFromPanel = function () {
         buttonData.font_size = button_editor_properties.$button_label_text_size.val() + "px";
         buttonData.button_height = button_editor_properties.$button_height.val() + "px";
+        buttonData.button_width = button_editor_properties.$button_width.val() + "px";
         buttonData.border_width = button_editor_properties.$button_border_width.val() + "px";
         buttonData.border_radius = button_editor_properties.$button_border_radius.val() + "px";
         buttonData.margin_top = button_editor_properties.$button_margin_top.val() + "px";
@@ -396,8 +400,9 @@ var Button_Edit_Modal = (function ($) {
             // button text
             resetData.font_size == buttonData.font_size &&
             resetData.text_color == buttonData.text_color &&
-            // height
+            // dimensions
             resetData.button_height == buttonData.button_height &&
+            resetData.button_width == buttonData.button_width &&
             // background            
             resetData.background_color == buttonData.background_color &&
             // hover
@@ -451,10 +456,11 @@ var Button_Edit_Modal = (function ($) {
         var outputString = "";
         // FONT SIZE
         var _updateFontSizeButton = function (newFontSize) {
+            outputString = isNaN(parseInt(newFontSize)) ? defaultButtonValues.font_size : newFontSize + "px";
             _updateButtonLive({
                 type: "container",
                 name: "font-size",
-                value: newFontSize + "px"
+                value: outputString
             });
         };
         _linkKeyDownListenerInputNumber(button_editor_properties.$button_label_text_size, false);
@@ -462,7 +468,7 @@ var Button_Edit_Modal = (function ($) {
 
         // BUTTON HEIGHT
         var _updateButtonHeight = function (newButtonHeight) {
-            outputString = isNaN(parseInt(newButtonHeight)) ? defaultButtonValues.height : newButtonHeight + "px";
+            outputString = isNaN(parseInt(newButtonHeight)) ? defaultButtonValues.dimensions.height : newButtonHeight + "px";
             _updateButtonLive({
                 type: "container",
                 name: "min-height",
@@ -472,12 +478,25 @@ var Button_Edit_Modal = (function ($) {
         _linkKeyDownListenerInputNumber(button_editor_properties.$button_height, false);
         _linkKeyUpListenerInputNumber(button_editor_properties.$button_height, _updateButtonHeight, false);
 
+        // BUTTON WIDTH
+        var _updateButtonWidth = function (newButtonWidth) {
+            outputString = isNaN(parseInt(newButtonWidth)) ? defaultButtonValues.dimensions.width : newButtonWidth + "px";
+            _updateButtonLive({
+                type: "container",
+                name: "min-width",
+                value: outputString
+            });
+        };
+        _linkKeyDownListenerInputNumber(button_editor_properties.$button_width, false);
+        _linkKeyUpListenerInputNumber(button_editor_properties.$button_width, _updateButtonWidth, false);
+        
         // BORDER WIDTH
         var _updateBorderWidth = function (newBorderWidth) {
+            outputString = isNaN(parseInt(newBorderWidth)) ? defaultButtonValues.border.width : newBorderWidth + "px";
             _updateButtonLive({
                 type: "background",
                 name: "border-width",
-                value: newBorderWidth + "px"
+                value: outputString
             });
         };
         _linkKeyDownListenerInputNumber(button_editor_properties.$button_border_width, false);
@@ -485,7 +504,7 @@ var Button_Edit_Modal = (function ($) {
 
         // BORDER RADIUS
         var _updateBorderRadius = function (newBorderRadius) {
-            outputString = isNaN(parseInt(newBorderRadius)) ? defaultButtonValues.borderRadius : newBorderRadius + "px";
+            outputString = isNaN(parseInt(newBorderRadius)) ? defaultButtonValues.border.radius : newBorderRadius + "px";
             _updateButtonLive({
                 type: "background",
                 name: "border-radius",
@@ -1087,6 +1106,7 @@ var Button_Edit_Modal = (function ($) {
                     font_size: buttonData.font_size,
                     background_color: buttonData.background_color,
                     button_height: buttonData.button_height,
+                    button_width: buttonData.button_width,
                     border_color: buttonData.border_color,
                     border_width: buttonData.border_width,
                     border_radius: buttonData.border_radius,
@@ -1118,16 +1138,24 @@ var Button_Edit_Modal = (function ($) {
         var buttonCSS = "";
         var currentMargin = "";
         var currentPadding = "";
-        var currentHeight = "";
-        var currentBorderRadius = "";
+        var currentDimension = "";
+        var currentBorderDimension = "";
+        var currentTextSize = "";
 
         buttonCSS = ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"]";
         buttonCSS += " .rex-button-container{";
-        buttonCSS += "font-size: " + buttonData.font_size + ";";
+        // checking font size, if value is not valid default font size will be applied
+        currentTextSize = isNaN(parseInt(buttonData.font_size.replace("px", ""))) ? defaultButtonValues.font_size : buttonData.font_size;
+        buttonCSS += "font-size: " + currentTextSize + ";";
+
         buttonCSS += "color: " + buttonData.text_color + ";";
-        // checking button height, if value is not valid default height will be applied
-        currentHeight = isNaN(parseInt(buttonData.button_height.replace("px", ""))) ? defaultButtonValues.height : buttonData.button_height;
-        buttonCSS += "min-height: " + currentHeight + ";";
+
+        // checking button dimensions, if value is not valid default dimensions will be applied
+        currentDimension = isNaN(parseInt(buttonData.button_height.replace("px", ""))) ? defaultButtonValues.dimensions.height : buttonData.button_height;
+        buttonCSS += "min-height: " + currentDimension + ";";
+        currentDimension = isNaN(parseInt(buttonData.button_width.replace("px", ""))) ? defaultButtonValues.dimensions.width : buttonData.button_width;
+        buttonCSS += "min-width: " + currentDimension + ";";
+
         // checking margins, if they are not valid default value will be applied
         currentMargin = isNaN(parseInt(buttonData.margin_top.replace("px", ""))) ? defaultButtonValues.margins.top : buttonData.margin_top;
         buttonCSS += "margin-top: " + currentMargin + ";";
@@ -1157,12 +1185,15 @@ var Button_Edit_Modal = (function ($) {
         buttonCSS += "background-color: " + buttonData.background_color + ";";
         //background-image
         //background-gradient
-        buttonCSS += "border-width: " + buttonData.border_width + ";";
+
+        
         buttonCSS += "border-color: " + buttonData.border_color + ";";
 
-        // checking border radius, if they are not valid default value will be applied
-        currentBorderRadius = isNaN(parseInt(buttonData.border_radius.replace("px", ""))) ? defaultButtonValues.borderRadius : buttonData.border_radius;
-        buttonCSS += "border-radius: " + currentBorderRadius + ";";
+        // checking border dimensions, if they are not valid default value will be applied
+        currentBorderDimension = isNaN(parseInt(buttonData.border_width.replace("px", ""))) ? defaultButtonValues.border.width : buttonData.border_width;
+        buttonCSS += "border-width: " + currentBorderDimension + ";";
+        currentBorderDimension = isNaN(parseInt(buttonData.border_radius.replace("px", ""))) ? defaultButtonValues.border.radius : buttonData.border_radius;
+        buttonCSS += "border-radius: " + currentBorderDimension + ";";
         buttonCSS += "border-style: solid;";
         buttonCSS += "}";
 
@@ -1195,6 +1226,7 @@ var Button_Edit_Modal = (function ($) {
             text: defaults.text,
             font_size: buttonData.font_size,
             button_height: buttonData.button_height,
+            button_width: buttonData.button_width,
             background_color: buttonData.background_color,
             hover_color: buttonData.hover_color,
             hover_text: buttonData.hover_text,
@@ -1367,6 +1399,7 @@ var Button_Edit_Modal = (function ($) {
             $button_background_color_preview: $container.find("#rex-button-background-color-preview-icon"),
 
             $button_height: $container.find("#rex-button-height"),
+            $button_width: $container.find("#rex-button-width"),
 
             $button_preview_background_hover: $container.find("#rex-button-preview-background-hover"),
             $button_background_hover_color_value: $container.find("#rex-button-background-hover-color"),
@@ -1423,16 +1456,23 @@ var Button_Edit_Modal = (function ($) {
                 bottom: "20px",
                 left: "20px",
             },
-            height: "70px",
-            borderRadius: "10px",
+            dimensions: {
+                height: "70px",
+                width: "100px",
+            },
+            border: {
+                width: "5px",
+                radius: "10px"
+            },
+            font_size: "12px",
         }
-
         buttonData = {
             text_color: "",
             text: "",
             font_size: "",
             background_color: "",
             button_height: "",
+            button_width: "",
             hover_color: "",
             hover_text: "",
             hover_border: "",

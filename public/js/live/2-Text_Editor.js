@@ -1294,11 +1294,13 @@ var TextEditor = (function ($) {
           var $newParagraph = $("<p><br></p>");
           $node.parents(".rex-buttons-paragraph").after($newParagraph);
           this.customMoveCursor($newParagraph[0], 0);
+          Rexbuilder_Util_Editor.updateBlockContainerHeight($(target));
         } else {
           if (mediumEditorOffsetLeft === 0 && $node.parents(".rex-button-wrapper").eq(0).is(':first-child')) {
             var $newParagraph = $("<p><br></p>");
             $node.parents(".rex-buttons-paragraph").before($newParagraph);
             this.customMoveCursor($newParagraph[0], 0);
+            Rexbuilder_Util_Editor.updateBlockContainerHeight($(target));
           }
         }
         event.preventDefault();
@@ -1314,14 +1316,25 @@ var TextEditor = (function ($) {
         (window.getSelection().focusOffset == 0 || window.getSelection().focusOffset == 1)) {
         if (//cursor is at the beginning of the element
           mediumEditorOffsetLeft === 0) {
+          var isEmpty = /^(\s+|<br\/?>)?$/i;
           if (this.isElementBefore(nodeToFix, "rex-buttons-paragraph")) {
-            var isEmpty = /^(\s+|<br\/?>)?$/i;
             if (!isEmpty.test(nodeToFix.innerHTML)) {
               event.preventDefault();
             }
           } else {
             if (this.insideRexButton(nodeToFix)){
-              event.preventDefault();
+              var $node = $(nodeToFix);
+              if ($node.parents(".rex-button-wrapper").eq(0).is(':first-child')) {
+                var $buttonsParagraph = $node.parents(".rex-buttons-paragraph").eq(0);
+                var $prevBrother = $buttonsParagraph.prev();
+                if (!isEmpty.test($prevBrother[0].innerHTML)) {
+                  event.preventDefault();
+                  return;
+                }
+              } else {
+                event.preventDefault();
+                return;
+              }
             }
           }
         } else {

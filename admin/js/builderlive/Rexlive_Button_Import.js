@@ -150,20 +150,36 @@ var Button_Import_Modal = (function ($) {
                 bottom: "20px",
                 left: "20px",
             },
-            height: "70px",
-            borderRadius: "10px",
+            dimensions: {
+                height: "70px",
+                width: "100px",
+            },
+            border: {
+                width: "5px",
+                radius: "10px"
+            },
+            font_size: "12px",
         }
+
         var currentMargin = "";
         var currentPadding = "";
-        var currentHeight = "";
-        var currentBorderRadius = "";
+        var currentDimension = "";
+        var currentBorderDimension = "";
+        var currentTextSize = "";
 
         var containerRule = "";
-        containerRule += "font-size: " + buttonProperties.font_size + ";";
-        containerRule += "color: " + buttonProperties.text_color + ";";    
-        // checking button height, if value is not valid default height will be applied
-        currentHeight = isNaN(parseInt(buttonProperties.button_height.replace("px", ""))) ? defaultButtonValues.height : buttonProperties.button_height;
-        containerRule += "min-height: " + currentHeight + ";";
+        containerRule += "color: " + buttonProperties.text_color + ";"; 
+
+        // checking font size, if value is not valid default font size will be applied
+        currentTextSize = isNaN(parseInt(buttonProperties.font_size.replace("px", ""))) ? defaultButtonValues.font_size : buttonProperties.font_size;
+        containerRule += "font-size: " + currentTextSize + ";";
+
+        // checking button dimensions, if value is not valid default dimensions will be applied
+        currentDimension = isNaN(parseInt(buttonProperties.button_height.replace("px", ""))) ? defaultButtonValues.dimensions.height : buttonProperties.button_height;
+        containerRule += "min-height: " + currentDimension + ";";
+        currentDimension = isNaN(parseInt(buttonProperties.button_width.replace("px", ""))) ? defaultButtonValues.dimensions.width : buttonProperties.button_width;
+        containerRule += "min-width: " + currentDimension + ";";
+
         // checking margins, if they are not valid default value will be applied
         currentMargin = isNaN(parseInt(buttonProperties.margin_top.replace("px", ""))) ? defaultButtonValues.margins.top : buttonProperties.margin_top;
         containerRule += "margin-top: " + currentMargin + ";";
@@ -177,12 +193,15 @@ var Button_Import_Modal = (function ($) {
         _addButtonContainerRule(buttonID, containerRule);
 
         var backgroundRule = "";
-        backgroundRule += "border-width: " + buttonProperties.border_width + ";";
         backgroundRule += "border-color: " + buttonProperties.border_color + ";";
         backgroundRule += "border-style: " + "solid" + ";";
-        // checking border radius, if they are not valid default value will be applied
-        currentBorderRadius = isNaN(parseInt(buttonProperties.border_radius.replace("px", ""))) ? defaultButtonValues.borderRadius : buttonProperties.border_radius;
-        backgroundRule += "border-radius: " + currentBorderRadius + ";";
+        
+        // checking border dimensions, if they are not valid default value will be applied
+        currentBorderDimension = isNaN(parseInt(buttonProperties.border_width.replace("px", ""))) ? defaultButtonValues.border.width : buttonProperties.border_width;
+        backgroundRule += "border-width: " + currentBorderDimension + ";";
+        currentBorderDimension = isNaN(parseInt(buttonProperties.border_radius.replace("px", ""))) ? defaultButtonValues.border.radius : buttonProperties.border_radius;
+        backgroundRule += "border-radius: " + currentBorderDimension + ";";
+
         backgroundRule += "background-color: " + buttonProperties.background_color + ";";
         _addButtonBackgroundRule(buttonID, backgroundRule);
 

@@ -1848,7 +1848,7 @@ defined('ABSPATH') or exit;
                         </div>
                         <div class="rexbutton-count-column_4">
                             <div id="rex-button-font-size-wrap">
-                                <input type="text" id="rex-button_text_font_size" name="rex-button_text_font_size" class="rexbutton-upd-textbox tippy" data-tippy-content="<?php _e( 'Font Size', 'rexpansive' ); ?>"/>
+                                <input type="text" id="rex-button_text_font_size" name="rex-button_text_font_size" placeholder="12" class="rexbutton-upd-textbox tippy" data-tippy-content="<?php _e( 'Font Size', 'rexpansive' ); ?>"/>
                             </div>
                         </div>
                         <div class="rexbutton-count-column_5">
@@ -1967,7 +1967,7 @@ defined('ABSPATH') or exit;
                         </div>
                         <div class="rexbutton-count-column_4">
                             <div id="rex-button-border-width-wrap">
-                                <input type="text" id="rex-button-border-width" name="rex-button-border-width" class="rexbutton-upd-textbox tippy" data-tippy-content="<?php _e( 'Border Width', 'rexpansive' ); ?>"/>
+                                <input type="text" id="rex-button-border-width" name="rex-button-border-width" class="rexbutton-upd-textbox tippy" placeholder="5"  data-tippy-content="<?php _e( 'Border Width', 'rexpansive' ); ?>"/>
                             </div>
                         </div>
                         <div class="rexbutton-count-column_5">
