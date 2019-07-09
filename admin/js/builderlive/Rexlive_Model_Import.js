@@ -4,7 +4,7 @@
  * http://mereskin.github.io/dnd/
  */
 
-var Model_Import_Modal = (function($) {
+ var Model_Import_Modal = (function($) {
   "use strict";
   var rexmodel_import_props;
 
@@ -21,15 +21,15 @@ var Model_Import_Modal = (function($) {
         if (response.success) {
           var currentList = [];
           rexmodel_import_props.$self
-            .find(".model__element")
-            .each(function(i, model) {
-              var modelID = $(model).attr("data-rex-model-id");
-              var modelObj = {
-                id: modelID,
-                founded: false
-              };
-              currentList.push(modelObj);
-            });
+          .find(".model__element")
+          .each(function(i, model) {
+            var modelID = $(model).attr("data-rex-model-id");
+            var modelObj = {
+              id: modelID,
+              founded: false
+            };
+            currentList.push(modelObj);
+          });
 
           var updatedList = response.data.updated_list;
 
@@ -58,23 +58,23 @@ var Model_Import_Modal = (function($) {
                   id: updatedList[i].id,
                   name: updatedList[i].name,
                   preview:
-                    updatedList[i].preview_image_url != ""
-                      ? updatedList[i].preview_image_url
-                      : ""
+                  updatedList[i].preview_image_url != ""
+                  ? updatedList[i].preview_image_url
+                  : ""
                 })
-              );
+                );
             }
           }
 
           for (i = 0; i < currentList.length; i++) {
             if (!currentList[i].founded) {
               rexmodel_import_props.$self
-                .find(
-                  '.model__element[data-rex-model-id="' +
-                    currentList[i].id +
-                    '"]'
+              .find(
+                '.model__element[data-rex-model-id="' +
+                currentList[i].id +
+                '"]'
                 )
-                .remove();
+              .remove();
             }
           }
           
@@ -94,16 +94,16 @@ var Model_Import_Modal = (function($) {
 
   var _linkDraggable = function() {
     var currentElement,
-      currentElementChangeFlag,
-      elementRectangle,
-      countdown,
-      dragoverqueue_processtimer;
+    currentElementChangeFlag,
+    elementRectangle,
+    countdown,
+    dragoverqueue_processtimer;
 
     var clientFrameWindow = Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow;
     var $frameContentWindow = $(clientFrameWindow);
     var isIE = /*@cc_on!@*/false || !!document.documentMode;
     var mouseClientX = 0,
-        mouseClientY = 0;
+    mouseClientY = 0;
 
     Rexlive_Base_Settings.$document.on("dragstart", ".model-list li", function( event ) {
       Rexbuilder_Util_Admin_Editor.dragImportType = "rexmodel";
@@ -139,13 +139,13 @@ var Model_Import_Modal = (function($) {
       Rexbuilder_Util_Admin_Editor.setScroll(true);
 
       if (mouseClientY < 150) {
-          Rexbuilder_Util_Admin_Editor.setScroll(false);
-          Rexbuilder_Util_Admin_Editor.scrollFrame(-1);
+        Rexbuilder_Util_Admin_Editor.setScroll(false);
+        Rexbuilder_Util_Admin_Editor.scrollFrame(-1);
       }
 
       if (mouseClientY > $frameContentWindow.height() - 150) {
-          Rexbuilder_Util_Admin_Editor.setScroll(false);
-          Rexbuilder_Util_Admin_Editor.scrollFrame(1);
+        Rexbuilder_Util_Admin_Editor.setScroll(false);
+        Rexbuilder_Util_Admin_Editor.scrollFrame(1);
       }
     });
 
@@ -167,19 +167,19 @@ var Model_Import_Modal = (function($) {
     Rexbuilder_Util_Admin_Editor.$frameBuilder.load(function() {
 
       var $rexContainer = $(clientFrameWindow.document)
-        .find(".rex-container")
-        .eq(0);
+      .find(".rex-container")
+      .eq(0);
 
       var mousePosition = {};
 
       $frameContentWindow.on('dragover', function (event) {
-          if (Rexbuilder_Util_Admin_Editor.dragImportType == "rexmodel") {
-              // mouse position for scrolling
-              event.preventDefault();
-              event.stopPropagation();
-              mouseClientX = event.originalEvent.clientX;
-              mouseClientY = event.originalEvent.clientY;
-          }
+        if (Rexbuilder_Util_Admin_Editor.dragImportType == "rexmodel") {
+          // mouse position for scrolling
+          event.preventDefault();
+          event.stopPropagation();
+          mouseClientX = event.originalEvent.clientX;
+          mouseClientY = event.originalEvent.clientY;
+        }
       });
 
       $rexContainer.on("dragenter", function(event) {
@@ -247,13 +247,13 @@ var Model_Import_Modal = (function($) {
     var DragDropFunctions = {
       dragoverqueue: [],
       GetMouseBearingsPercentage: function ($element, elementRect, mousePos) {
-          if (!elementRect) {
-              elementRect = $element.get(0).getBoundingClientRect();
-          }
-          return {
-              x: ((mousePos.x - elementRect.left) / (elementRect.right - elementRect.left)) * 100,
-              y: ((mousePos.y - elementRect.top) / (elementRect.bottom - elementRect.top)) * 100
-          };
+        if (!elementRect) {
+          elementRect = $element.get(0).getBoundingClientRect();
+        }
+        return {
+          x: ((mousePos.x - elementRect.left) / (elementRect.right - elementRect.left)) * 100,
+          y: ((mousePos.y - elementRect.top) / (elementRect.bottom - elementRect.top)) * 100
+        };
       },
       OrchestrateDragDrop: function($element, elementRect, mousePos) {
         //If no element is hovered or element hovered is the placeholder -> not valid -> return false;
@@ -271,314 +271,314 @@ var Model_Import_Modal = (function($) {
           $element,
           elementRect,
           mousePos
-        );
+          );
         if (
           mousePercents.x > breakPointNumber.x &&
           mousePercents.x < 100 - breakPointNumber.x &&
           (mousePercents.y > breakPointNumber.y &&
             mousePercents.y < 100 - breakPointNumber.y)
-        ) {
-          var $tempElement = $element.clone();
-          $tempElement.find(".drop-marker").remove();
-          if (
-            $tempElement.html() == "" &&
-            !this.checkVoidElement($tempElement)
           ) {
-            if (mousePercents.y < 90) {
-              return this.PlaceInside($element);
-            }
-          } else if ($tempElement.children().length == 0) {
-            this.DecideBeforeAfter($element, mousePercents);
-          } else if ($tempElement.children().length == 1) {
-            this.DecideBeforeAfter(
-              $element
-                .children(":not(.drop-marker,[data-dragcontext-marker])")
-                .first(),
-              mousePercents
-            );
-          } else {
-            var positionAndElement = this.findNearestElement(
-              $element,
-              mousePos.x,
-              mousePos.y
-            );
-            this.DecideBeforeAfter(
-              positionAndElement.el,
-              mousePercents,
-              mousePos
-            );
+          var $tempElement = $element.clone();
+        $tempElement.find(".drop-marker").remove();
+        if (
+          $tempElement.html() == "" &&
+          !this.checkVoidElement($tempElement)
+          ) {
+          if (mousePercents.y < 90) {
+            return this.PlaceInside($element);
           }
-        } else if (
-          mousePercents.x <= breakPointNumber.x ||
-          mousePercents.y <= breakPointNumber.y
-        ) {
-          var validElement = this.FindValidParent($element, "top");
-
-          if (validElement.is("body,html")) {
-            validElement = Rexbuilder_Util_Admin_Editor.$frameBuilder
-              .contents()
-              .find("body")
-              .children(":not(.drop-marker,[data-dragcontext-marker])")
-              .first();
-          }
-          this.DecideBeforeAfter(validElement, mousePercents, mousePos);
-        } else if (
-          mousePercents.x >= 100 - breakPointNumber.x ||
-          mousePercents.y >= 100 - breakPointNumber.y
-        ) {
-          var validElement = this.FindValidParent($element, "bottom");
-
-          if (validElement.is("body,html")) {
-            validElement = Rexbuilder_Util_Admin_Editor.$frameBuilder
-              .contents()
-              .find("body")
-              .children(":not(.drop-marker,[data-dragcontext-marker])")
-              .last();
-          }
-          this.DecideBeforeAfter(validElement, mousePercents, mousePos);
-        }
-      },
-      DecideBeforeAfter: function($targetElement, mousePercents, mousePos) {
-        if (mousePos) {
-          mousePercents = this.GetMouseBearingsPercentage(
-            $targetElement,
-            null,
+        } else if ($tempElement.children().length == 0) {
+          this.DecideBeforeAfter($element, mousePercents);
+        } else if ($tempElement.children().length == 1) {
+          this.DecideBeforeAfter(
+            $element
+            .children(":not(.drop-marker,[data-dragcontext-marker])")
+            .first(),
+            mousePercents
+            );
+        } else {
+          var positionAndElement = this.findNearestElement(
+            $element,
+            mousePos.x,
+            mousePos.y
+            );
+          this.DecideBeforeAfter(
+            positionAndElement.el,
+            mousePercents,
             mousePos
-          );
+            );
         }
+      } else if (
+        mousePercents.x <= breakPointNumber.x ||
+        mousePercents.y <= breakPointNumber.y
+        ) {
+        var validElement = this.FindValidParent($element, "top");
 
-        var $orientation =
-          $targetElement.css("display") == "inline" ||
-          $targetElement.css("display") == "inline-block";
-        if ($targetElement.is("br")) {
-          $orientation = false;
-        }
-
-        if ($orientation) {
-          if (mousePercents.x < 50) {
-            return this.PlaceBefore($targetElement);
-          } else {
-            return this.PlaceAfter($targetElement);
-          }
-        } else {
-          if (mousePercents.y < 50) {
-            return this.PlaceBefore($targetElement);
-          } else {
-            return this.PlaceAfter($targetElement);
-          }
-        }
-      },
-      checkVoidElement: function ($element) {
-        return $element.is(selectorVoidElements);
-      },
-      calculateDistance: function(elementData, mouseX, mouseY) {
-        return Math.sqrt(
-          Math.pow(elementData.x - mouseX, 2) +
-            Math.pow(elementData.y - mouseY, 2)
-        );
-      },
-      FindValidParent: function($element, direction) {
-        switch (direction) {
-          case "left":
-            while (true) {
-              var elementRect = $element.get(0).getBoundingClientRect();
-              var $tempElement = $element.parent();
-              var tempelementRect = $tempElement.get(0).getBoundingClientRect();
-              if ($element.is("body") || $element.hasClass("rex-container")) {
-                return $element;
-              }
-              if (Math.abs(tempelementRect.left - elementRect.left) == 0) {
-                $element = $element.parent();
-              } else {
-                return $element;
-              }
-            }
-            break;
-          case "right":
-            while (true) {
-              var elementRect = $element.get(0).getBoundingClientRect();
-              var $tempElement = $element.parent();
-              var tempelementRect = $tempElement.get(0).getBoundingClientRect();
-              if ($element.is("body") || $element.hasClass("rex-container")) {
-                return $element;
-              }
-              if (Math.abs(tempelementRect.right - elementRect.right) == 0) {
-                $element = $element.parent();
-              } else {
-                return $element;
-              }
-            }
-            break;
-          case "top":
-            while (true) {
-              var elementRect = $element.get(0).getBoundingClientRect();
-              var $tempElement = $element.parent();
-              var tempelementRect = $tempElement.get(0).getBoundingClientRect();
-              if ($element.is("body") || $element.hasClass("rex-container")) {
-                return $element;
-              }
-              if (Math.abs(tempelementRect.top - elementRect.top) == 0) {
-                $element = $element.parent();
-              } else {
-                return $element;
-              }
-            }
-            break;
-          case "bottom":
-            while (true) {
-              var elementRect = $element.get(0).getBoundingClientRect();
-              var $tempElement = $element.parent();
-              var tempelementRect = $tempElement.get(0).getBoundingClientRect();
-              if ($element.is("body") || $element.hasClass("rex-container")) {
-                return $element;
-              }
-              if (Math.abs(tempelementRect.bottom - elementRect.bottom) == 0) {
-                $element = $element.parent();
-              } else {
-                return $element;
-              }
-            }
-            break;
-          default:
-            break;
-        }
-      },
-      addPlaceHolder: function($element, position, placeholder) {
-        if ($element.hasClass("rex-container")) {
-          if (position == "before") {
-            position = "inside-prepend";
-          } else {
-            position = "inside-append";
-          }
-        }
-        if (!placeholder) {
-          placeholder = this.getPlaceHolder();
-        }
-        this.removePlaceholder();
-        switch (position) {
-          case "before":
-            placeholder
-              .find(".message")
-              .html($element.parent().data("sh-dnd-error"));
-            $element.before(placeholder);
-            this.AddContainerContext($element, "sibling");
-            break;
-          case "after":
-            placeholder
-              .find(".message")
-              .html($element.parent().data("sh-dnd-error"));
-            $element.after(placeholder);
-            this.AddContainerContext($element, "sibling");
-            break;
-          case "inside-prepend":
-            placeholder.find(".message").html($element.data("sh-dnd-error"));
-            $element.prepend(placeholder);
-            this.AddContainerContext($element, "inside");
-            break;
-          case "inside-append":
-            placeholder.find(".message").html($element.data("sh-dnd-error"));
-            $element.append(placeholder);
-            this.AddContainerContext($element, "inside");
-            break;
-        }
-      },
-
-      removePlaceholder: function() {
-        Rexbuilder_Util_Admin_Editor.$frameBuilder
+        if (validElement.is("body,html")) {
+          validElement = Rexbuilder_Util_Admin_Editor.$frameBuilder
           .contents()
-          .find(".drop-marker")
-          .remove();
-      },
+          .find("body")
+          .children(":not(.drop-marker,[data-dragcontext-marker])")
+          .first();
+        }
+        this.DecideBeforeAfter(validElement, mousePercents, mousePos);
+      } else if (
+        mousePercents.x >= 100 - breakPointNumber.x ||
+        mousePercents.y >= 100 - breakPointNumber.y
+        ) {
+        var validElement = this.FindValidParent($element, "bottom");
 
-      getPlaceHolder: function() {
-        return $(
-          "<div class='drop-marker drop-marker--view'><div class='drop-marker--ruler'></div></div>"
+        if (validElement.is("body,html")) {
+          validElement = Rexbuilder_Util_Admin_Editor.$frameBuilder
+          .contents()
+          .find("body")
+          .children(":not(.drop-marker,[data-dragcontext-marker])")
+          .last();
+        }
+        this.DecideBeforeAfter(validElement, mousePercents, mousePos);
+      }
+    },
+    DecideBeforeAfter: function($targetElement, mousePercents, mousePos) {
+      if (mousePos) {
+        mousePercents = this.GetMouseBearingsPercentage(
+          $targetElement,
+          null,
+          mousePos
+          );
+      }
+
+      var $orientation =
+      $targetElement.css("display") == "inline" ||
+      $targetElement.css("display") == "inline-block";
+      if ($targetElement.is("br")) {
+        $orientation = false;
+      }
+
+      if ($orientation) {
+        if (mousePercents.x < 50) {
+          return this.PlaceBefore($targetElement);
+        } else {
+          return this.PlaceAfter($targetElement);
+        }
+      } else {
+        if (mousePercents.y < 50) {
+          return this.PlaceBefore($targetElement);
+        } else {
+          return this.PlaceAfter($targetElement);
+        }
+      }
+    },
+    checkVoidElement: function ($element) {
+      return $element.is(selectorVoidElements);
+    },
+    calculateDistance: function(elementData, mouseX, mouseY) {
+      return Math.sqrt(
+        Math.pow(elementData.x - mouseX, 2) +
+        Math.pow(elementData.y - mouseY, 2)
         );
-      },
-
-      PlaceInside: function($element) {
-        var placeholder = this.getPlaceHolder();
+    },
+    FindValidParent: function($element, direction) {
+      switch (direction) {
+        case "left":
+        while (true) {
+          var elementRect = $element.get(0).getBoundingClientRect();
+          var $tempElement = $element.parent();
+          var tempelementRect = $tempElement.get(0).getBoundingClientRect();
+          if ($element.is("body") || $element.hasClass("rex-container")) {
+            return $element;
+          }
+          if (Math.abs(tempelementRect.left - elementRect.left) == 0) {
+            $element = $element.parent();
+          } else {
+            return $element;
+          }
+        }
+        break;
+        case "right":
+        while (true) {
+          var elementRect = $element.get(0).getBoundingClientRect();
+          var $tempElement = $element.parent();
+          var tempelementRect = $tempElement.get(0).getBoundingClientRect();
+          if ($element.is("body") || $element.hasClass("rex-container")) {
+            return $element;
+          }
+          if (Math.abs(tempelementRect.right - elementRect.right) == 0) {
+            $element = $element.parent();
+          } else {
+            return $element;
+          }
+        }
+        break;
+        case "top":
+        while (true) {
+          var elementRect = $element.get(0).getBoundingClientRect();
+          var $tempElement = $element.parent();
+          var tempelementRect = $tempElement.get(0).getBoundingClientRect();
+          if ($element.is("body") || $element.hasClass("rex-container")) {
+            return $element;
+          }
+          if (Math.abs(tempelementRect.top - elementRect.top) == 0) {
+            $element = $element.parent();
+          } else {
+            return $element;
+          }
+        }
+        break;
+        case "bottom":
+        while (true) {
+          var elementRect = $element.get(0).getBoundingClientRect();
+          var $tempElement = $element.parent();
+          var tempelementRect = $tempElement.get(0).getBoundingClientRect();
+          if ($element.is("body") || $element.hasClass("rex-container")) {
+            return $element;
+          }
+          if (Math.abs(tempelementRect.bottom - elementRect.bottom) == 0) {
+            $element = $element.parent();
+          } else {
+            return $element;
+          }
+        }
+        break;
+        default:
+        break;
+      }
+    },
+    addPlaceHolder: function($element, position, placeholder) {
+      if ($element.hasClass("rex-container")) {
+        if (position == "before") {
+          position = "inside-prepend";
+        } else {
+          position = "inside-append";
+        }
+      }
+      if (!placeholder) {
+        placeholder = this.getPlaceHolder();
+      }
+      this.removePlaceholder();
+      switch (position) {
+        case "before":
         placeholder
-          .addClass("horizontal")
-          .css("width", $element.width() + "px");
-        this.addPlaceHolder($element, "inside-append", placeholder);
-      },
+        .find(".message")
+        .html($element.parent().data("sh-dnd-error"));
+        $element.before(placeholder);
+        this.AddContainerContext($element, "sibling");
+        break;
+        case "after":
+        placeholder
+        .find(".message")
+        .html($element.parent().data("sh-dnd-error"));
+        $element.after(placeholder);
+        this.AddContainerContext($element, "sibling");
+        break;
+        case "inside-prepend":
+        placeholder.find(".message").html($element.data("sh-dnd-error"));
+        $element.prepend(placeholder);
+        this.AddContainerContext($element, "inside");
+        break;
+        case "inside-append":
+        placeholder.find(".message").html($element.data("sh-dnd-error"));
+        $element.append(placeholder);
+        this.AddContainerContext($element, "inside");
+        break;
+      }
+    },
 
-      PlaceBefore: function($element) {
-        var placeholder = this.getPlaceHolder();
-        var inlinePlaceholder =
-          $element.css("display") == "inline" ||
-          $element.css("display") == "inline-block";
-        if ($element.is("br")) {
-          inlinePlaceholder = false;
-        } else if ($element.is("td,th")) {
-          placeholder
-            .addClass("horizontal")
-            .css("width", $element.width() + "px");
-          return this.addPlaceHolder($element, "inside-prepend", placeholder);
-        }
-        if (inlinePlaceholder) {
-          placeholder
-            .addClass("vertical")
-            .css("height", $element.innerHeight() + "px");
-        } else {
-          placeholder
-            .addClass("horizontal")
-            .css("width", $element.parent().width() + "px");
-        }
-        this.addPlaceHolder($element, "before", placeholder);
-      },
+    removePlaceholder: function() {
+      Rexbuilder_Util_Admin_Editor.$frameBuilder
+      .contents()
+      .find(".drop-marker")
+      .remove();
+    },
 
-      PlaceAfter: function($element) {
-        var placeholder = this.getPlaceHolder();
-        var inlinePlaceholder =
-          $element.css("display") == "inline" ||
-          $element.css("display") == "inline-block";
-        if ($element.is("br")) {
-          inlinePlaceholder = false;
-        } else if ($element.is("td,th")) {
-          placeholder
-            .addClass("horizontal")
-            .css("width", $element.width() + "px");
-          return this.addPlaceHolder($element, "inside-append", placeholder);
-        }
-        if (inlinePlaceholder) {
-          placeholder
-            .addClass("vertical")
-            .css("height", $element.innerHeight() + "px");
-        } else {
-          placeholder
-            .addClass("horizontal")
-            .css("width", $element.parent().width() + "px");
-        }
-        this.addPlaceHolder($element, "after", placeholder);
-      },
-
-      findNearestElement: function($container, clientX, clientY) {
-        var _this = this;
-        var previousElData = null;
-        var childElement = $container.children(
-          ":not(.drop-marker,[data-dragcontext-marker])"
+    getPlaceHolder: function() {
+      return $(
+        "<div class='drop-marker drop-marker--view'><div class='drop-marker--ruler'></div></div>"
         );
-        if (childElement.length > 0) {
-          childElement.each(function() {
-            if ($(this).is(".drop-marker")) {
-              return;
-            }
+    },
 
-            var offset = $(this)
-              .get(0)
-              .getBoundingClientRect();
-            var distance = 0;
-            var distance1,
-              distance2 = null;
-            var position = "";
-            var xPosition1 = offset.left;
-            var xPosition2 = offset.right;
-            var yPosition1 = offset.top;
-            var yPosition2 = offset.bottom;
-            var corner1 = null;
-            var corner2 = null;
+    PlaceInside: function($element) {
+      var placeholder = this.getPlaceHolder();
+      placeholder
+      .addClass("horizontal")
+      .css("width", $element.width() + "px");
+      this.addPlaceHolder($element, "inside-append", placeholder);
+    },
+
+    PlaceBefore: function($element) {
+      var placeholder = this.getPlaceHolder();
+      var inlinePlaceholder =
+      $element.css("display") == "inline" ||
+      $element.css("display") == "inline-block";
+      if ($element.is("br")) {
+        inlinePlaceholder = false;
+      } else if ($element.is("td,th")) {
+        placeholder
+        .addClass("horizontal")
+        .css("width", $element.width() + "px");
+        return this.addPlaceHolder($element, "inside-prepend", placeholder);
+      }
+      if (inlinePlaceholder) {
+        placeholder
+        .addClass("vertical")
+        .css("height", $element.innerHeight() + "px");
+      } else {
+        placeholder
+        .addClass("horizontal")
+        .css("width", $element.parent().width() + "px");
+      }
+      this.addPlaceHolder($element, "before", placeholder);
+    },
+
+    PlaceAfter: function($element) {
+      var placeholder = this.getPlaceHolder();
+      var inlinePlaceholder =
+      $element.css("display") == "inline" ||
+      $element.css("display") == "inline-block";
+      if ($element.is("br")) {
+        inlinePlaceholder = false;
+      } else if ($element.is("td,th")) {
+        placeholder
+        .addClass("horizontal")
+        .css("width", $element.width() + "px");
+        return this.addPlaceHolder($element, "inside-append", placeholder);
+      }
+      if (inlinePlaceholder) {
+        placeholder
+        .addClass("vertical")
+        .css("height", $element.innerHeight() + "px");
+      } else {
+        placeholder
+        .addClass("horizontal")
+        .css("width", $element.parent().width() + "px");
+      }
+      this.addPlaceHolder($element, "after", placeholder);
+    },
+
+    findNearestElement: function($container, clientX, clientY) {
+      var _this = this;
+      var previousElData = null;
+      var childElement = $container.children(
+        ":not(.drop-marker,[data-dragcontext-marker])"
+        );
+      if (childElement.length > 0) {
+        childElement.each(function() {
+          if ($(this).is(".drop-marker")) {
+            return;
+          }
+
+          var offset = $(this)
+          .get(0)
+          .getBoundingClientRect();
+          var distance = 0;
+          var distance1,
+          distance2 = null;
+          var position = "";
+          var xPosition1 = offset.left;
+          var xPosition2 = offset.right;
+          var yPosition1 = offset.top;
+          var yPosition2 = offset.bottom;
+          var corner1 = null;
+          var corner2 = null;
 
             //Parellel to Yaxis and intersecting with x axis
             if (clientY > yPosition1 && clientY < yPosition2) {
@@ -646,66 +646,66 @@ var Model_Import_Modal = (function($) {
               position: position
             };
           });
-          if (previousElData !== null) {
-            var position = previousElData.position;
-            return { el: $(previousElData.el), position: position };
-          } else {
-            return false;
-          }
+        if (previousElData !== null) {
+          var position = previousElData.position;
+          return { el: $(previousElData.el), position: position };
+        } else {
+          return false;
         }
-      },
-      AddEntryToDragOverQueue: function($element, elementRect, mousePos) {
-        var newEvent = [$element, elementRect, mousePos];
-        this.dragoverqueue.push(newEvent);
-      },
-      ProcessDragOverQueue: function($element, elementRect, mousePos) {
-        var processing = this.dragoverqueue.pop();
-        this.dragoverqueue = [];
-        if (processing && processing.length == 3) {
-          var $el = processing[0];
-          var $elRect = processing[1];
-          var mousePos = processing[2];
-          this.OrchestrateDragDrop($el, $elRect, mousePos);
-        }
-      },
-      GetContextMarker: function() {
-        var $contextMarker = $(
-          "<div data-dragcontext-marker><span data-dragcontext-marker-text></span></div>"
+      }
+    },
+    AddEntryToDragOverQueue: function($element, elementRect, mousePos) {
+      var newEvent = [$element, elementRect, mousePos];
+      this.dragoverqueue.push(newEvent);
+    },
+    ProcessDragOverQueue: function($element, elementRect, mousePos) {
+      var processing = this.dragoverqueue.pop();
+      this.dragoverqueue = [];
+      if (processing && processing.length == 3) {
+        var $el = processing[0];
+        var $elRect = processing[1];
+        var mousePos = processing[2];
+        this.OrchestrateDragDrop($el, $elRect, mousePos);
+      }
+    },
+    GetContextMarker: function() {
+      var $contextMarker = $(
+        "<div data-dragcontext-marker><span data-dragcontext-marker-text></span></div>"
         );
-        return $contextMarker;
-      },
-      AddContainerContext: function($element, position) {
-        var $contextMarker = this.GetContextMarker();
-        this.ClearContainerContext();
-        if ($element.is("html,body")) {
-          position = "inside";
-          $element = Rexbuilder_Util_Admin_Editor.$frameBuilder
-            .contents()
-            .find("body");
-        }
-        switch (position) {
-          case "inside":
-            this.PositionContextMarker($contextMarker, $element);
-            if ($element.hasClass("stackhive-nodrop-zone"))
-              $contextMarker.addClass("invalid");
-            var name = this.getElementName($element);
-            $contextMarker.find("[data-dragcontext-marker-text]").html(name);
-            if (
-              Rexbuilder_Util_Admin_Editor.$frameBuilder
-                .contents()
-                .find("body [data-sh-parent-marker]").length != 0
-            )
-              Rexbuilder_Util_Admin_Editor.$frameBuilder
-                .contents()
-                .find("body [data-sh-parent-marker]")
-                .first()
-                .before($contextMarker);
+      return $contextMarker;
+    },
+    AddContainerContext: function($element, position) {
+      var $contextMarker = this.GetContextMarker();
+      this.ClearContainerContext();
+      if ($element.is("html,body")) {
+        position = "inside";
+        $element = Rexbuilder_Util_Admin_Editor.$frameBuilder
+        .contents()
+        .find("body");
+      }
+      switch (position) {
+        case "inside":
+        this.PositionContextMarker($contextMarker, $element);
+        if ($element.hasClass("stackhive-nodrop-zone"))
+          $contextMarker.addClass("invalid");
+        var name = this.getElementName($element);
+        $contextMarker.find("[data-dragcontext-marker-text]").html(name);
+        if (
+          Rexbuilder_Util_Admin_Editor.$frameBuilder
+          .contents()
+          .find("body [data-sh-parent-marker]").length != 0
+          )
+          Rexbuilder_Util_Admin_Editor.$frameBuilder
+        .contents()
+        .find("body [data-sh-parent-marker]")
+        .first()
+        .before($contextMarker);
             // Rexbuilder_Util_Admin_Editor.$frameBuilder
             //   .contents()
             //   .find("body")
             //   .append($contextMarker);
             else break;
-          case "sibling":
+            case "sibling":
             this.PositionContextMarker($contextMarker, $element.parent());
             if ($element.parent().hasClass("stackhive-nodrop-zone"))
               $contextMarker.addClass("invalid");
@@ -714,79 +714,79 @@ var Model_Import_Modal = (function($) {
             $contextMarker.attr("data-dragcontext-marker", name.toLowerCase());
             if (
               Rexbuilder_Util_Admin_Editor.$frameBuilder
-                .contents()
-                .find("body [data-sh-parent-marker]").length != 0
-            )
+              .contents()
+              .find("body [data-sh-parent-marker]").length != 0
+              )
               Rexbuilder_Util_Admin_Editor.$frameBuilder
-                .contents()
-                .find("body [data-sh-parent-marker]")
-                .first()
-                .before($contextMarker);
+            .contents()
+            .find("body [data-sh-parent-marker]")
+            .first()
+            .before($contextMarker);
             // Rexbuilder_Util_Admin_Editor.$frameBuilder
             //   .contents()
             //   .find("body")
             //   .append($contextMarker);
             else break;
-        }
-      },
+          }
+        },
 
-      PositionContextMarker: function($contextMarker, $element) {
-        var rect = $element.get(0).getBoundingClientRect();
-        $contextMarker.css({
-          height: rect.height + 4 + "px",
-          width: rect.width + 4 + "px",
-          top:
+        PositionContextMarker: function($contextMarker, $element) {
+          var rect = $element.get(0).getBoundingClientRect();
+          $contextMarker.css({
+            height: rect.height + 4 + "px",
+            width: rect.width + 4 + "px",
+            top:
             rect.top +
             $(
               Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow
-            ).scrollTop() -
+              ).scrollTop() -
             2 +
             "px",
-          left:
+            left:
             rect.left +
             $(
               Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow
-            ).scrollLeft() -
+              ).scrollLeft() -
             2 +
             "px"
-        });
-        if (
-          rect.top +
+          });
+          if (
+            rect.top +
             Rexbuilder_Util_Admin_Editor.$frameBuilder
-              .contents()
-              .find("body")
-              .scrollTop() <
-          24
-        )
-          $contextMarker
-            .find("[data-dragcontext-marker-text]")
-            .css("top", "0px");
-      },
+            .contents()
+            .find("body")
+            .scrollTop() <
+            24
+            )
+            $contextMarker
+          .find("[data-dragcontext-marker-text]")
+          .css("top", "0px");
+        },
 
-      ClearContainerContext: function() {
-        Rexbuilder_Util_Admin_Editor.$frameBuilder
+        ClearContainerContext: function() {
+          Rexbuilder_Util_Admin_Editor.$frameBuilder
           .contents()
           .find("[data-dragcontext-marker]")
           .remove();
-      },
+        },
 
-      getElementName: function($element) {
-        return $element.prop("tagName");
-      }
+        getElementName: function($element) {
+          return $element.prop("tagName");
+        }
+      };
     };
-  };
 
-  var initPhotoSwipeFromDOM = function(gallerySelector) {
+    var initPhotoSwipeFromDOM = function(gallerySelector) {
     // parse slide data (url, title, size ...) from DOM elements
     // (children of gallerySelector)
     var parseThumbnailElements = function(el) {
       var thumbElements = el.childNodes,
-        numNodes = thumbElements.length,
-        items = [],
-        figureEl,
-        linkEl,
-        size,
-        item;
+      numNodes = thumbElements.length,
+      items = [],
+      figureEl,
+      linkEl,
+      size,
+      item;
 
       for (var i = 0; i < numNodes; i++) {
         figureEl = thumbElements[i]; // <figure> element
@@ -848,10 +848,10 @@ var Model_Import_Modal = (function($) {
       // find index of clicked item by looping through all child nodes
       // alternatively, you may define index via data- attribute
       var clickedGallery = clickedListItem.parentNode,
-        childNodes = clickedListItem.parentNode.childNodes,
-        numChildNodes = childNodes.length,
-        nodeIndex = 0,
-        index;
+      childNodes = clickedListItem.parentNode.childNodes,
+      numChildNodes = childNodes.length,
+      nodeIndex = 0,
+      index;
 
       for (var i = 0; i < numChildNodes; i++) {
         if (childNodes[i].nodeType !== 1) {
@@ -875,7 +875,7 @@ var Model_Import_Modal = (function($) {
     // parse picture index and gallery index from URL (#&pid=1&gid=2)
     var photoswipeParseHash = function() {
       var hash = window.location.hash.substring(1),
-        params = {};
+      params = {};
 
       if (hash.length < 5) {
         return params;
@@ -905,11 +905,11 @@ var Model_Import_Modal = (function($) {
       galleryElement,
       disableAnimation,
       fromURL
-    ) {
+      ) {
       var pswpElement = document.querySelectorAll(".pswp")[0],
-        gallery,
-        options,
-        items;
+      gallery,
+      options,
+      items;
 
       items = parseThumbnailElements(galleryElement);
 
@@ -963,7 +963,7 @@ var Model_Import_Modal = (function($) {
         PhotoSwipeUI_Default,
         items,
         options
-      );
+        );
       gallery.init();
     };
 
@@ -983,7 +983,7 @@ var Model_Import_Modal = (function($) {
         galleryElements[hashData.gid - 1],
         true,
         true
-      );
+        );
     }
   };
 

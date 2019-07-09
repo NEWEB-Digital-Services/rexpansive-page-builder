@@ -12,7 +12,106 @@ var Button_Import_Modal = (function ($) {
     /////////////////////////////////////////////////////////////////////////////////////////
     // CSS FUNCTIONS
     /////////////////////////////////////////////////////////////////////////////////////////
+    
 
+    /////////////////////////////////////////////////////////////////////////////////////////
+    // Adding rules
+    var _addButtonContainerRule = function (buttonID, property) {
+        if ("insertRule" in styleSheet) {
+            styleSheet.insertRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container{" + property + "}", styleSheet.cssRules.length);
+        }
+        else if ("addRule" in styleSheet) {
+            styleSheet.addRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container{" + property + "}", styleSheet.cssRules.length);
+        }
+    }
+
+    var _addButtonBackgroundRule = function (buttonID, property) {
+        if ("insertRule" in styleSheet) {
+            styleSheet.insertRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background{" + property + "}", styleSheet.cssRules.length);
+        }
+        else if ("addRule" in styleSheet) {
+            styleSheet.addRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background{" + property + "}", styleSheet.cssRules.length);
+        }
+    }
+
+    var _addButtonTextRule = function (buttonID, property) {
+        if ("insertRule" in styleSheet) {
+            styleSheet.insertRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-text{" + property + "}", styleSheet.cssRules.length);
+        }
+
+        else if ("addRule" in styleSheet) {
+            styleSheet.addRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-text{" + property + "}", styleSheet.cssRules.length);
+        }
+    }
+
+    var _addButtonBackgroundHoverRule = function (buttonID, property) {
+        if ("insertRule" in styleSheet) {
+            styleSheet.insertRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background:hover{" + property + "}", styleSheet.cssRules.length);
+        }
+        else if ("addRule" in styleSheet) {
+            styleSheet.addRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background:hover{" + property + "}", styleSheet.cssRules.length);
+        }
+    }
+
+    var _addButtonContainerHoverRule = function (buttonID, property) {
+        if ("insertRule" in styleSheet) {
+            styleSheet.insertRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container:hover{" + property + "}", styleSheet.cssRules.length);
+        }
+
+        else if ("addRule" in styleSheet) {
+            styleSheet.addRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container:hover{" + property + "}", styleSheet.cssRules.length);
+        }
+    }    
+
+    /////////////////////////////////////////////////////////////////////////////////////////
+    // Removing rules
+
+    var _removeButtonContainerRule = function (buttonID) {
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container") {
+                styleSheet.deleteRule(i);
+                break;
+            }
+        }
+    }
+
+    var _removeButtonBackgroundRule = function (buttonID) {
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background") {
+                styleSheet.deleteRule(i);
+                break;
+            }
+        }
+    }
+
+    var _removeButtonTextRule = function (buttonID, property) {
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-text") {
+                styleSheet.deleteRule(i);
+                break;
+            }
+        }
+    }
+
+    var _removeButtonBackgroundHoverRule = function (buttonID) {
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background:hover") {
+                styleSheet.deleteRule(i);
+                break;
+            }
+        }
+    }
+
+    var _removeButtonContainerHoverRule = function (buttonID, property) {
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container:hover") {
+                styleSheet.deleteRule(i);
+                break;
+            }
+        }
+    }    
+
+    /////////////////////////////////////////////////////////////////////////////////////////
     var _fixCustomStyleElement = function () {
         if (Button_Import_Modal.$buttonsStyle.length == 0) {
             var css = "",
@@ -37,86 +136,104 @@ var Button_Import_Modal = (function ($) {
         }
     };
 
-    var _addButtonContainerRule = function (buttonID, property) {
-        if ("insertRule" in styleSheet) {
-            styleSheet.insertRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container{" + property + "}", styleSheet.cssRules.length);
-        }
-        else if ("addRule" in styleSheet) {
-            styleSheet.addRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container{" + property + "}", styleSheet.cssRules.length);
-        }
-    }
-
-    var _addButtonBackgroundRule = function (buttonID, property) {
-        if ("insertRule" in styleSheet) {
-            styleSheet.insertRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background{" + property + "}", styleSheet.cssRules.length);
-        }
-        else if ("addRule" in styleSheet) {
-            styleSheet.addRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background{" + property + "}", styleSheet.cssRules.length);
-        }
-    }
-
-    var _addButtonBackgroundHoverRule = function (buttonID, property) {
-        if ("insertRule" in styleSheet) {
-            styleSheet.insertRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background:hover{" + property + "}", styleSheet.cssRules.length);
-        }
-        else if ("addRule" in styleSheet) {
-            styleSheet.addRule(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background:hover{" + property + "}", styleSheet.cssRules.length);
-        }
-    }
-
     var _addCSSRules = function (buttonID, buttonProperties) {
+        var defaultButtonValues = {
+            margins: {
+                top: "20px",
+                right: "20px",
+                bottom: "20px",
+                left: "20px",
+            },
+            paddings: {
+                top: "20px",
+                right: "20px",
+                bottom: "20px",
+                left: "20px",
+            },
+            dimensions: {
+                height: "70px",
+                width: "100px",
+            },
+            border: {
+                width: "5px",
+                radius: "10px"
+            },
+            font_size: "12px",
+        }
+
+        var currentMargin = "";
+        var currentPadding = "";
+        var currentDimension = "";
+        var currentBorderDimension = "";
+        var currentTextSize = "";
+
         var containerRule = "";
-        containerRule += "font-size: " + buttonProperties.font_size + ";";
-        containerRule += "color: " + buttonProperties.text_color + ";";
-        containerRule += "min-height: " + buttonProperties.button_height + ";";
-        containerRule += "margin-top: " + buttonProperties.margin_top + ";";
-        containerRule += "margin-bottom: " + buttonProperties.margin_bottom + ";";
-        containerRule += "margin-left: " + buttonProperties.margin_left + ";";
-        containerRule += "margin-right: " + buttonProperties.margin_right + ";";
+        containerRule += "color: " + buttonProperties.text_color + ";"; 
+
+        // checking font size, if value is not valid default font size will be applied
+        currentTextSize = isNaN(parseInt(buttonProperties.font_size.replace("px", ""))) ? defaultButtonValues.font_size : buttonProperties.font_size;
+        containerRule += "font-size: " + currentTextSize + ";";
+
+        // checking button dimensions, if value is not valid default dimensions will be applied
+        currentDimension = isNaN(parseInt(buttonProperties.button_height.replace("px", ""))) ? defaultButtonValues.dimensions.height : buttonProperties.button_height;
+        containerRule += "min-height: " + currentDimension + ";";
+        currentDimension = isNaN(parseInt(buttonProperties.button_width.replace("px", ""))) ? defaultButtonValues.dimensions.width : buttonProperties.button_width;
+        containerRule += "min-width: " + currentDimension + ";";
+
+        // checking margins, if they are not valid default value will be applied
+        currentMargin = isNaN(parseInt(buttonProperties.margin_top.replace("px", ""))) ? defaultButtonValues.margins.top : buttonProperties.margin_top;
+        containerRule += "margin-top: " + currentMargin + ";";
+        currentMargin = isNaN(parseInt(buttonProperties.margin_right.replace("px", ""))) ? defaultButtonValues.margins.right : buttonProperties.margin_right;
+        containerRule += "margin-right: " + currentMargin + ";";
+        currentMargin = isNaN(parseInt(buttonProperties.margin_bottom.replace("px", ""))) ? defaultButtonValues.margins.bottom : buttonProperties.margin_bottom;
+        containerRule += "margin-bottom: " + currentMargin + ";";
+        currentMargin = isNaN(parseInt(buttonProperties.margin_left.replace("px", ""))) ? defaultButtonValues.margins.left : buttonProperties.margin_left;
+        containerRule += "margin-left: " + currentMargin + ";";
+
         _addButtonContainerRule(buttonID, containerRule);
 
         var backgroundRule = "";
-        backgroundRule += "border-width: " + buttonProperties.border_width + ";";
         backgroundRule += "border-color: " + buttonProperties.border_color + ";";
         backgroundRule += "border-style: " + "solid" + ";";
-        backgroundRule += "border-radius: " + buttonProperties.border_radius + ";";
+        
+        // checking border dimensions, if they are not valid default value will be applied
+        currentBorderDimension = isNaN(parseInt(buttonProperties.border_width.replace("px", ""))) ? defaultButtonValues.border.width : buttonProperties.border_width;
+        backgroundRule += "border-width: " + currentBorderDimension + ";";
+        currentBorderDimension = isNaN(parseInt(buttonProperties.border_radius.replace("px", ""))) ? defaultButtonValues.border.radius : buttonProperties.border_radius;
+        backgroundRule += "border-radius: " + currentBorderDimension + ";";
+
         backgroundRule += "background-color: " + buttonProperties.background_color + ";";
         _addButtonBackgroundRule(buttonID, backgroundRule);
 
+        var textRule = "";
+
+        // checking paddings, if they are not valid default value will be applied
+        currentPadding = isNaN(parseInt(buttonProperties.padding_top.replace("px", ""))) ? defaultButtonValues.paddings.top : buttonProperties.padding_top;
+        textRule += "padding-top: " + currentPadding + ";";
+        currentPadding = isNaN(parseInt(buttonProperties.padding_right.replace("px", ""))) ? defaultButtonValues.paddings.right : buttonProperties.padding_right;
+        textRule += "padding-right: " + currentPadding + ";";
+        currentPadding = isNaN(parseInt(buttonProperties.padding_bottom.replace("px", ""))) ? defaultButtonValues.paddings.bottom : buttonProperties.padding_bottom;
+        textRule += "padding-bottom: " + currentPadding + ";";
+        currentPadding = isNaN(parseInt(buttonProperties.padding_left.replace("px", ""))) ? defaultButtonValues.paddings.left : buttonProperties.padding_left;
+        textRule += "padding-left: " + currentPadding + ";";
+        _addButtonTextRule(buttonID, textRule);
+
         var backgroundHoverRule = "";
         backgroundHoverRule += "background-color: " + buttonProperties.hover_color + ";";
+        backgroundHoverRule += "border-color: " + buttonProperties.hover_border + ";";
         _addButtonBackgroundHoverRule(buttonID, backgroundHoverRule);
-    }
 
-    var _removeButtonContainerRule = function (buttonID) {
-        for (var i = 0; i < styleSheet.cssRules.length; i++) {
-            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-container") {
-                styleSheet.deleteRule(i);
-                break;
-            }
-        }
-    }
-    var _removeButtonBackgroundRule = function (buttonID) {
-        for (var i = 0; i < styleSheet.cssRules.length; i++) {
-            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background") {
-                styleSheet.deleteRule(i);
-                break;
-            }
-        }
-    }
-    var _removeButtonBackgroundHoverRule = function (buttonID) {
-        for (var i = 0; i < styleSheet.cssRules.length; i++) {
-            if (styleSheet.cssRules[i].selectorText == ".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"] .rex-button-background:hover") {
-                styleSheet.deleteRule(i);
-                break;
-            }
-        }
+        var containerHoverRule = "";
+        containerHoverRule += "color: " + buttonProperties.hover_text + ";";
+        _addButtonContainerHoverRule(buttonID, containerHoverRule);
     }
 
     var _removeCSSRules = function (buttonID) {
         _removeButtonContainerRule(buttonID);
         _removeButtonBackgroundRule(buttonID);
         _removeButtonBackgroundHoverRule(buttonID);
+        _removeButtonTextRule(buttonID);
+        _removeButtonContainerHoverRule(buttonID);
     }
 
     var _getActiveStyleSheet = function () {
@@ -132,9 +249,8 @@ var Button_Import_Modal = (function ($) {
         var buttonHTML = data.html;
         _removeCSSRules(buttonID);
         _addCSSRules(buttonID, buttonData);
-        // chiedere a stefano come far andare height anche qua
 
-        //togliere l'elemento se c'è già e aggiungere quello nuovo
+        //if button was already there, remove it and readd
         var $buttonEL = rexbutton_import_props.$buttonList.find(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"]");
         if ($buttonEL.length == 0) {
             var $liEL = $(document.createElement("li"));
@@ -311,6 +427,8 @@ var Button_Import_Modal = (function ($) {
                         var $insertionPoint = Rexbuilder_Util_Admin_Editor.$frameBuilder
                             .contents()
                             .find(".drop-marker");
+
+                        textData = textData.trim();
 
                         var $divInsert = $(jQuery.parseHTML(textData));
                         $divInsert.addClass("rex-loading-button");
@@ -498,7 +616,6 @@ var Button_Import_Modal = (function ($) {
                             var $tempElement = $element.parent();
                             var tempelementRect = $tempElement.get(0).getBoundingClientRect();
                             if ($element.is("body") || $element.hasClass("grid-stack-row") || $tempElement.hasClass("rex-buttons-paragraph")) {
-                                console.log($element);
                                 return $element;
                             }
                             if (Math.abs(tempelementRect.right - elementRect.right) == 0) {
