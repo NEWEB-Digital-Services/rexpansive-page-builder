@@ -41,7 +41,7 @@
         {removeHiddenElems        : true}, // remove hidden elements
         {removeEmptyText        : true}, // remove empty Text elements
         {removeEmptyContainers      : true}, // remove empty Container elements
-        {removeViewBox          : true}, // remove viewBox attribute when possible
+        {removeViewBox          : false}, // remove viewBox attribute when possible
         {cleanupEnableBackground    : true}, // remove or cleanup enable-background attribute when possible
         {minifyStyles         : false}, // minify <style> elements content with CSSO
         {convertStyleToAttrs      : false}, // convert styles into attributes

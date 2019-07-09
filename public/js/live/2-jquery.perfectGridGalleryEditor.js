@@ -3020,20 +3020,20 @@
       }
 
       var elem = $elem[0];
-      var $blockData = $elem.children(".rexbuilder-block-data");
+      var blockData = elem.querySelector('.rexbuilder-block-data');
       var startH;
       editingBlock = typeof editingBlock !== "undefined" ? editingBlock : false;
       if (this.properties.updatingSection) {
         if (this.settings.galleryLayout == "fixed") {
-          startH = parseInt($blockData.attr("data-block_height_masonry"));
+          startH = parseInt( blockData.getAttribute('data-block_height_masonry') );
         } else {
-          startH = parseInt($blockData.attr("data-block_height_fixed"));
+          startH = parseInt( blockData.getAttribute('data-block_height_fixed') );
         }
         if (isNaN(startH)) {
-          startH = parseInt($elem.attr("data-gs-height"));
+          startH = parseInt( elem.getAttribute('data-gs-height') );
         }
       } else {
-        startH = parseInt($blockData.attr("data-gs_start_h"));
+        startH = parseInt( blockData.getAttribute('data-gs_start_h') );
       }
 
       var newH;
@@ -3048,13 +3048,15 @@
 
       var gutter = this.properties.gutter;
       var $textWrap = $elem.find(".text-wrap");
-      var $itemContent = $elem.find(".grid-item-content");
-      var $imageWrapper = $itemContent.find(".rex-image-wrapper");
-      var w = parseInt($elem.attr("data-gs-width"));
+
+      var itemContent = elem.querySelector('.grid-item-content');
+      var imageWrapper = itemContent.querySelector('.rex-image-wrapper');
+
+      var w = parseInt( elem.getAttribute('data-gs-width'));
       var increasedHeight = 0;
-      if(this.settings.galleryLayout == "masonry"){
-        var parsedHeight = parseInt($blockData.attr("data-element_height_increased"))
-        increasedHeight = isNaN(parsedHeight) ? 0 : parsedHeight;
+      if ( this.settings.galleryLayout == 'masonry' ) {
+        var parsedHeight = parseInt( blockData.getAttribute( 'data-element_height_increased' ) );
+        increasedHeight = isNaN( parsedHeight ) ? 0 : parsedHeight;
       }
       var backgroundHeight = 0;
       var videoHeight = 0;
@@ -3062,23 +3064,26 @@
       var sliderHeight = 0;
       var textHeight;
       var emptyBlockFlag = false;
-      var backImgType = $blockData.attr('data-type_bg_block');
-      // if ($textWrap.length != 0) {
+      var backImgType = blockData.getAttribute('data-type_bg_block');
+      var blockHasSlider = -1 !== elem.className.indexOf('block-has-slider');
+
+      var blockIsEmpty = -1 !== itemContent.className.indexOf('empty-content');
+
+      var blockHasYoutube = -1 !== itemContent.className.indexOf('youtube-player');
+      var blockHasVideo = -1 !== itemContent.className.indexOf('mp4-player');
+      var blockHasVimeo = -1 !== itemContent.className.indexOf('vimeo-player');
 
       // calculate text content height
       textHeight = this.calculateTextWrapHeight($textWrap);
 
-      // } else {
-      //   textHeight = 0;
-      // }
-
       // if the block has a full image background, without text
       // do not calculate a new height
-      if ( 'full' === backImgType && 0 === textHeight ) { return; }
+      // @bugged
+      // if ( 'full' === backImgType && 0 === textHeight ) { return; }
 
       // test purpose
-      if(this.settings.galleryLayout == "masonry"){
-        var parsedHeight = parseInt($blockData.attr("data-element_height_increased"))
+      if ( this.settings.galleryLayout == "masonry" ) {
+        var parsedHeight = parseInt( blockData.getAttribute('data-element_height_increased'));
         // var increasedHeight = isNaN(parsedHeight) ? 0 : parsedHeight;
       }
 
@@ -3087,21 +3092,15 @@
       }
 
       // check for custom type of blocks
-      var trueHeight = ( "undefined" !== typeof $blockData.attr('data-calc_true_height') ? $blockData.attr('data-calc_true_height') : "0" );
-
-      // console.table({calc_true_height: $blockData.attr('data-calc_true_height')});
+      var trueHeight = ( null !== blockData.getAttribute('data-calc_true_height') ? blockData.getAttribute('data-calc_true_height') : "0" );
       
       if (textHeight == 0 || trueHeight == "1")
       {
 
         // calculating background image height
-        if ($imageWrapper.length != 0) {
-          var imageWidth = parseInt(
-            $itemContent.attr("data-background_image_width")
-          );
-          var imageHeight = parseInt(
-            $itemContent.attr("data-background_image_height")
-          );
+        if ( null !== imageWrapper ) {
+          var imageWidth = parseInt( itemContent.getAttribute("data-background_image_width") );
+          var imageHeight = parseInt( itemContent.getAttribute("data-background_image_height") );
           /*
           if ($imageWrapper.hasClass('full-image-background')) {
               backgroundHeight = (imageHeight * w * sw) / imageWidth;
@@ -3117,24 +3116,14 @@
         var defaultRatio = 3 / 4;
 
         // calculate video height
-        if (
-          $itemContent.hasClass("youtube-player") ||
-          $itemContent.hasClass("mp4-player") ||
-          $itemContent.hasClass("vimeo-player")
-        ) {
-          videoHeight = Math.round(w * sw * defaultRatio);
+        if ( blockHasYoutube || blockHasVideo || blockHasVimeo ) {
+          videoHeight = Math.round( w * sw * defaultRatio );
         }
 
         // calculate slider height
-        if (
-          $elem.hasClass("block-has-slider") &&
-          !isNaN(parseFloat($blockData.attr("data-slider_ratio")))
-        ) {
-          var sliderRatio = parseFloat($blockData.attr("data-slider_ratio"));
-          if (
-            this._viewport().width <
-            _plugin_frontend_settings.defaultSettings.collapseWidth
-          ) {
+        var sliderRatio = parseFloat( blockData.getAttribute( 'data-slider_ratio' ) );
+        if ( blockHasSlider && !isNaN( sliderRatio ) ) {
+          if ( this._viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
             sliderHeight = w * sw * defaultRatio;
           } else {
             sliderHeight = w * sw * sliderRatio;
@@ -3143,15 +3132,7 @@
 
         // calculate default height (in case of block without content that pushes)
         // or else update text height
-        if (
-          videoHeight == 0 &&
-          backgroundHeight == 0 &&
-          sliderHeight == 0 &&
-          (Rexbuilder_Util_Editor.updatingSectionLayout ||
-            $itemContent.hasClass("empty-content") ||
-            this.properties.firstStartGrid ||
-            $elem.hasClass("block-has-slider"))
-        ) {
+        if ( videoHeight == 0 && backgroundHeight == 0 && sliderHeight == 0 && ( Rexbuilder_Util_Editor.updatingSectionLayout || blockIsEmpty || this.properties.firstStartGrid || blockHasSlider ) ) {
           if (
             this.properties.editedFromBackend &&
             this.settings.galleryLayout == "masonry"
@@ -3175,7 +3156,7 @@
         textHeight = textHeight + gutter;
       }
 
-      if ( !$elem.hasClass("block-has-slider") && backgroundHeight == 0 && videoHeight == 0 && textHeight == 0 ) {
+      if ( !blockHasSlider && backgroundHeight == 0 && videoHeight == 0 && textHeight == 0 ) {
         emptyBlockFlag = true;
       }
 
@@ -3190,34 +3171,40 @@
       //   test: startH * this.properties.singleHeight
       // });
 
-      if (editingBlock) {
-        startH *= this.properties.singleHeight;
+      // if the block has a full image background, without text
+      // maintain the old height
+      if ( ( ( 'full' === backImgType && 0 === textHeight ) || ( '' === backImgType && 0 === textHeight ) ) && ! this.properties.oneColumModeActive ) {
+        if ( Rexbuilder_Util.editorMode ) {
+          newH = startH * this.properties.oldCellHeight;
+        } else {
+          newH = startH * this.properties.singleHeight;
+        }
       } else {
-        startH = 0;
+        if ( editingBlock ) {
+          startH *= this.properties.singleHeight;
+        } else {
+          startH = 0;
+        }
+
+        newH = Math.max(
+          startH,
+          backgroundHeight,
+          videoHeight,
+          defaultHeight,
+          textHeight,
+          sliderHeight
+          // increasedHeight
+        );
       }
 
-      newH = Math.max(
-        startH,
-        backgroundHeight,
-        videoHeight,
-        defaultHeight,
-        textHeight,
-        sliderHeight
-        // increasedHeight
-      );
-      // console.log(newH);
-
-      if (
-        this.properties.oneColumModeActive &&
-        !Rexbuilder_Util.windowIsResizing
-      ) {
+      if ( this.properties.oneColumModeActive && !Rexbuilder_Util.windowIsResizing ) {
         return {
           height: newH,
           empty: emptyBlockFlag
         };
       }
 
-      if(typeof blockRatio != "undefined" && blockRatio !=0) {
+      if( typeof blockRatio != "undefined" && blockRatio !=0 ) {
         newH = w * sw * blockRatio;
       }
 
@@ -3231,7 +3218,7 @@
         newH = Math.ceil(newH / this.properties.singleHeight);
       }
 
-      this.updateElementDataHeightProperties($blockData[0], newH); 
+      this.updateElementDataHeightProperties( blockData, newH ); 
 
       var gridstack = this.properties.gridstackInstance;
       if (gridstack !== undefined) {
@@ -3272,7 +3259,7 @@
      * @since 2.0.0
      * @todo To be fixed by putting a single return
      */
-    calculateTextWrapHeight: function($textWrap) {
+    calculateTextWrapHeight: function( $textWrap ) {
       if ($textWrap.hasClass("medium-editor-element")) {
         var textHeight = 0;
         var textCalculate = $textWrap.clone(false);
@@ -3424,7 +3411,7 @@
         .each(function(i, el) {
           var $el = $(el);
           var blockHeight = that.updateElementHeight($el);
-          // console.log(blockHeight.height)
+          console.log(blockHeight.height)
           // console.log(that.settings.cellHeightMasonry)
           var height = Math.ceil( blockHeight.height / that.settings.cellHeightMasonry );
           if (!blockHeight.empty) {
@@ -3479,6 +3466,7 @@
       this.$element.children(".grid-stack-item").each(function() {
         $elem = $(this);
         h = that.updateElementHeight($elem);
+        console.log(h);
         $elem.css("height", h + "px");
         var size_text = "12 x " + Math.round(h);
         var size_text_mobile = "12x" + Math.round(h);

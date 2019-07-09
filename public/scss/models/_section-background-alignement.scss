@@ -1,0 +1,31 @@
+/** section background alignement **/
+
+.rexpansive_section {
+  &.background--left-top {
+    background-position: left top;
+  }
+  &.background--left-center {
+    background-position: left center;
+  }
+  &.background--left-bottom {
+    background-position: left bottom;
+  }
+  &.background--center-top {
+    background-position: center top;
+  }
+  &.background--center-center {
+    background-position: center center;
+  }
+  &.background--center-bottom {
+    background-position: center bottom;
+  }
+  &.background--right-top {
+    background-position: right top;
+  }
+  &.background--right-center {
+    background-position: right center;
+  }
+  &.background--right-bottom {
+    background-position: right bottom;
+  }
+}

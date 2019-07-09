@@ -2564,7 +2564,7 @@ var TextEditor = (function ($) {
 
           // go deep until the element has no childs
           while( svg.childElementCount !== 0 ) {
-            svg = svg.children[0];
+            svg = svg.children[svg.childElementCount-1];
           }
 
           // going up until the parent I tag

@@ -67,4 +67,8 @@
 
 .button-list {
   margin: 0;
+  padding: 10px;
+  .rex-button-wrapper {
+    outline: 1px solid #000;
+  }
 }

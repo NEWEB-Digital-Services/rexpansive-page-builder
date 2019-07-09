@@ -2,7 +2,6 @@
  *		PERFECT GRID GALLERY
  ** ===============================================**/
 /* New version */
-@import url("//fonts.googleapis.com/css?family=Wallpoet");
 .perfect-grid-sizer {
   width: 8.33333333%; }
 
@@ -2818,7 +2817,7 @@ http://flickity.metafizzy.co
   background-image: -o-radial-gradient(rgba(139, 245, 165, 0.4), #000000);
   background-image: radial-gradient(rgba(139, 245, 165, 0.4), #000000);
   background-color: black;
-  font-family: "Wallpoet", monospace;
+  font-family: monospace;
   padding: 0 0.2em;
   line-height: 1.1em;
   color: #8bf5a5; }
@@ -3187,6 +3186,26 @@ div.wpcf7 .rxcf7-custom-style p:last-of-type {
   .rexpansive_section.removing_section {
     display: none; }
 
+/** section background alignement **/
+.rexpansive_section.background--left-top {
+  background-position: left top; }
+.rexpansive_section.background--left-center {
+  background-position: left center; }
+.rexpansive_section.background--left-bottom {
+  background-position: left bottom; }
+.rexpansive_section.background--center-top {
+  background-position: center top; }
+.rexpansive_section.background--center-center {
+  background-position: center center; }
+.rexpansive_section.background--center-bottom {
+  background-position: center bottom; }
+.rexpansive_section.background--right-top {
+  background-position: right top; }
+.rexpansive_section.background--right-center {
+  background-position: right center; }
+.rexpansive_section.background--right-bottom {
+  background-position: right bottom; }
+
 /* ----- Grid Flexbox content alignment ----------------*/
 .rex-flexbox {
   display: -webkit-box;
@@ -3420,6 +3439,88 @@ video.rex-video-container {
     -webkit-transform: translateX(-50%) translateY(-50%);
     -ms-transform: translateX(-50%) translateY(-50%);
     transform: translateX(-50%) translateY(-50%); } }
+/**
+ * ----------------------------------------
+ * animation rotate-center
+ * ----------------------------------------
+ */
+@-webkit-keyframes rotate-center {
+  0% {
+    -webkit-transform: rotate(0);
+    transform: rotate(0); }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+@keyframes rotate-center {
+  0% {
+    -webkit-transform: rotate(0);
+    transform: rotate(0); }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg); } }
+.rex-video__controls {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin-right: 30px;
+  margin-bottom: 30px;
+  z-index: 50; }
+  .rex-video__controls .video-tool {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 2px solid #fff;
+    position: relative;
+    display: none;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center; }
+    .rex-video__controls .video-tool.video-tool--view {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex; }
+  .rex-video__controls .loader {
+    border-color: rgba(255, 255, 255, 0.3); }
+    .rex-video__controls .loader:before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      bottom: -2px;
+      right: -2px;
+      border-left: 2px solid #fff;
+      border-top-left-radius: 50%;
+      border-bottom-left-radius: 50%;
+      -webkit-animation: rotate-center 1s linear infinite both;
+      animation: rotate-center 1s linear infinite both; }
+  .rex-video__controls .indicator {
+    position: relative; }
+  .rex-video__controls .pause .indicator {
+    width: 10px;
+    height: 15px; }
+    .rex-video__controls .pause .indicator:before {
+      content: '';
+      position: absolute;
+      width: 2px;
+      height: 100%;
+      left: 0;
+      background-color: #fff; }
+    .rex-video__controls .pause .indicator:after {
+      content: '';
+      position: absolute;
+      width: 2px;
+      height: 100%;
+      right: 0;
+      background-color: #fff; }
+  .rex-video__controls .play .indicator {
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 10px solid #fff; }
+
 .rex-slider-wrap .flickity-page-dots, .rex-box-slider-wrap .flickity-page-dots {
   bottom: 0px; }
   .rex-slider-wrap .flickity-page-dots .dot, .rex-box-slider-wrap .flickity-page-dots .dot {
