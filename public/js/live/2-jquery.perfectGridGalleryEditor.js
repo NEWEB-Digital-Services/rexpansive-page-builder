@@ -71,7 +71,7 @@
       oneColumMode: false,
       oneColumModeActive: false,
       // gridstackBatchMode: false,
-      updatingSection: false,
+      // updatingSection: false,
       oldLayout: "",
       oldCellHeight: 0,
       blocksBottomTop: null,
@@ -2843,7 +2843,8 @@
             }
           });
 
-          if ( !Rexbuilder_Util.windowIsResizing && !this.properties.updatingSection )
+          // if ( !Rexbuilder_Util.windowIsResizing && !this.properties.updatingSection )
+          if ( !Rexbuilder_Util.windowIsResizing )
           {
             this.commitGridstack();
           }
@@ -3015,6 +3016,8 @@
    * @param {Boolean} editingBlock Flag to consider also starting height
    */
     updateElementHeight: function($elem, blockRatio, editingBlock) {
+      editingBlock = typeof editingBlock !== "undefined" ? editingBlock : false;
+      
       if (Rexbuilder_Util.editorMode && !this.properties.oneColumModeActive) {
         Rexbuilder_Util_Editor.elementIsResizing = true;
       }
@@ -3022,19 +3025,18 @@
       var elem = $elem[0];
       var blockData = elem.querySelector('.rexbuilder-block-data');
       var startH;
-      editingBlock = typeof editingBlock !== "undefined" ? editingBlock : false;
-      if (this.properties.updatingSection) {
-        if (this.settings.galleryLayout == "fixed") {
-          startH = parseInt( blockData.getAttribute('data-block_height_masonry') );
-        } else {
-          startH = parseInt( blockData.getAttribute('data-block_height_fixed') );
-        }
-        if (isNaN(startH)) {
-          startH = parseInt( elem.getAttribute('data-gs-height') );
-        }
-      } else {
+      // if (this.properties.updatingSection) {
+      //   if (this.settings.galleryLayout == "fixed") {
+      //     startH = parseInt( blockData.getAttribute('data-block_height_masonry') );
+      //   } else {
+      //     startH = parseInt( blockData.getAttribute('data-block_height_fixed') );
+      //   }
+      //   if (isNaN(startH)) {
+      //     startH = parseInt( elem.getAttribute('data-gs-height') );
+      //   }
+      // } else {
         startH = parseInt( blockData.getAttribute('data-gs_start_h') );
-      }
+      // }
 
       var newH;
       var swGrid = this.properties.singleWidth;
@@ -3160,17 +3162,6 @@
         emptyBlockFlag = true;
       }
 
-      // console.table({
-      //   blockRatio: blockRatio,
-      //   startH: startH,
-      //   backgroundHeight: backgroundHeight,
-      //   videoHeight: videoHeight,
-      //   defaultHeight: defaultHeight,
-      //   textHeight: textHeight,
-      //   sliderHeight: sliderHeight,
-      //   test: startH * this.properties.singleHeight
-      // });
-
       // if the block has a full image background, without text
       // maintain the old height
       if ( ( ( 'full' === backImgType && 0 === textHeight ) || ( '' === backImgType && 0 === textHeight ) ) && ! this.properties.oneColumModeActive ) {
@@ -3185,6 +3176,17 @@
         } else {
           startH = 0;
         }
+
+        // console.table({
+        //   blockRatio: blockRatio,
+        //   startH: startH,
+        //   backgroundHeight: backgroundHeight,
+        //   videoHeight: videoHeight,
+        //   defaultHeight: defaultHeight,
+        //   textHeight: textHeight,
+        //   sliderHeight: sliderHeight,
+        //   test: startH * this.properties.singleHeight
+        // });
 
         newH = Math.max(
           startH,
@@ -3212,11 +3214,13 @@
         if (emptyBlockFlag) {
           newH = Math.round(newH / this.properties.singleHeight);
         } else {
-          newH = Math.ceil(newH / this.properties.singleHeight);
+          newH = Math.floor(newH / this.properties.singleHeight);
         }
       } else {
         newH = Math.ceil(newH / this.properties.singleHeight);
       }
+
+      // console.log(elem.getAttribute('id'), newH);
 
       this.updateElementDataHeightProperties( blockData, newH ); 
 
@@ -3411,7 +3415,7 @@
         .each(function(i, el) {
           var $el = $(el);
           var blockHeight = that.updateElementHeight($el);
-          console.log(blockHeight.height)
+          // console.log(blockHeight.height)
           // console.log(that.settings.cellHeightMasonry)
           var height = Math.ceil( blockHeight.height / that.settings.cellHeightMasonry );
           if (!blockHeight.empty) {

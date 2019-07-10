@@ -21,10 +21,8 @@ var Change_Layout_Modal = (function($) {
 
   var _linkDocumentListeners = function() {
     layout_changing_props.$button.on("click", function(e) {
-      var $button = $(e.target);
-      var optionSelected = $button
-        .parents(".rex-change-layout-option")
-        .attr("data-rex-option");
+      var $button = $(e.currentTarget);
+      var optionSelected = $button.attr("data-rex-option");
 
       switch (optionSelected) {
         case "save":
@@ -81,7 +79,7 @@ var Change_Layout_Modal = (function($) {
     var $container = $self;
     layout_changing_props = {
       $self: $self,
-      $button: $container.find(".rex-button"),
+      $button: $container.find(".rex-change-layout-option"),
       $layout_name_placholder: $container.find(".layout-name")
     };
     _linkDocumentListeners();
