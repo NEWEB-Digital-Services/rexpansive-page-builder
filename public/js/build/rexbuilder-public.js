@@ -624,6 +624,7 @@ var Rexbuilder_App = (function($) {
       });
     }
 
+    // launch rexScrolled
     if( false == _plugin_frontend_settings.user.editing ) {
       $sections.rexScrolled({
         callback: function(el) {
@@ -637,6 +638,7 @@ var Rexbuilder_App = (function($) {
       });
     }
 
+    // launch rexScrollify
     if (typeof _plugin_frontend_settings !== "undefined") {
       if (1 == _plugin_frontend_settings.animations ) {
         if( false == _plugin_frontend_settings.user.editing ) {
@@ -651,14 +653,13 @@ var Rexbuilder_App = (function($) {
       }
     }
 
-    // sticky sections
     if( false == _plugin_frontend_settings.user.editing ) {
+      // sticky sections
       launchStickySections();    
-    }
-    
-    // launch scrollCSSAnimations
-    if( false == _plugin_frontend_settings.user.editing ) {
+      // launch scrollCSSAnimations
       launchScrollCSSAnimations();
+      // launch distance accordions
+      launchDistanceAccordion();
     }
 
     Rexbuilder_Util.galleryPluginActive = true;
@@ -690,6 +691,19 @@ var Rexbuilder_App = (function($) {
           offset: 0.75
         });
       });
+    }
+  }
+
+  /**
+   * Launch eventually distance accordion (accordion on rows)
+   *
+   */
+  var launchDistanceAccordion = function() {
+    if ( 'undefined' !== typeof DistanceAccordion ) {
+      var togglers = document.querySelectorAll('.distance-accordion-toggle');
+      for ( var j=0, tot = togglers.length; j < tot; j++ ) {
+        new DistanceAccordion(togglers[j]);
+      }
     }
   }
 

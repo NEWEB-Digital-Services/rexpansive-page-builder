@@ -957,12 +957,9 @@
     },
 
     updateFullHeight: function(active) {
-      active =
-        typeof active == "undefined" ? true : active.toString() == "true";
-      this.properties.gridBlocksHeight = parseInt(
-        this.$element.attr("data-gs-current-height")
-      );
-
+      active = typeof active == "undefined" ? true : active.toString() == "true";
+      
+      this.properties.gridBlocksHeight = parseInt( this.$element.attr("data-gs-current-height") );
       this.properties.gridBlocksHeight = ( 0 === this.properties.gridBlocksHeight ? 1 : this.properties.gridBlocksHeight );
       
       var cellHeight;
@@ -3017,7 +3014,7 @@
    */
     updateElementHeight: function($elem, blockRatio, editingBlock) {
       editingBlock = typeof editingBlock !== "undefined" ? editingBlock : false;
-      
+
       if (Rexbuilder_Util.editorMode && !this.properties.oneColumModeActive) {
         Rexbuilder_Util_Editor.elementIsResizing = true;
       }

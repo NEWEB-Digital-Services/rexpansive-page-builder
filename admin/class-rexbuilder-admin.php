@@ -458,7 +458,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'rexlive-util-admin', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Util_Admin_Editor.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-update-video-inline', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_UpdateVideoInline.js', array( 'jquery' ), null, true );
 				// Import the Javascript file to manage the ONUNLOADEVENT Popup. -A
-				wp_enqueue_script( 'rexlive-on-before-unload', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_OnBeforeUnload.js', array( 'jquery' ), null, true );
+				// wp_enqueue_script( 'rexlive-on-before-unload', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_OnBeforeUnload.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-gradient-utils', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Gradient_Utils.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-page-margins', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Page_Margins.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-page-settings-modal', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Page_Settings_Modal.js', array( 'jquery' ), null, true );
