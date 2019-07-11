@@ -31,6 +31,9 @@ var Rexbuilder_App = (function($) {
       Rexbuilder_Util_Editor.addDnDEvents();
       TextEditor.init();
       Rexbuilder_Section_Editor.triggerRowDataChange();
+    } else {
+      // fixes for front end only
+      fixRexButtons();
     }
 
     Rex_Navigator.init();
@@ -369,6 +372,25 @@ var Rexbuilder_App = (function($) {
     console.log("init - rexAccordion()"); */
 
   };
+
+  /**
+   * In case of RexButtons inside a block that is a link
+   * we must fix the buttons to re-wrap them with the correct class
+   *
+   */
+  var fixRexButtons = function() {
+    var buttons = [].slice.call( document.querySelectorAll('.rex-button-wrapper') );
+    buttons.forEach(function( btn ) {
+      var container = btn.querySelector( '.rex-button-container' );
+      if ( ! container ) {
+        var newContainer = document.createElement('span');
+        newContainer.className = 'rex-button-container';
+        var toWrap = btn.querySelector('.rex-button-background');
+        toWrap.parentNode.insertBefore( newContainer, toWrap );
+        newContainer.appendChild( toWrap );
+      }
+    });
+  }
 
   var _linkDocumentListeners = function() {
     $(document).on("YTPStart", function(e) {

@@ -18,14 +18,14 @@ $pattern = get_shortcode_regex();
 preg_match_all( "/$pattern/", $content, $content_shortcodes);
 // Check for section titles; if no one has a title, don't display the navigation
 $titles = array();
-foreach( $content_shortcodes[3] as $attrs ) :
+foreach( $content_shortcodes[3] as $attrs ) {
 	$x = shortcode_parse_atts( trim( $attrs ) );
-	if( isset($x['section_name']) && $x['section_name'] != '' ) :
+	if( isset($x['section_name']) && $x['section_name'] != '' ) {
 		$titles[] = $x['section_name'];
-	endif;
-endforeach;
+	}
+}
 
-if( count($titles) > 0 ) :
+if( count($titles) > 0 ) {
 ?>
 <nav class="vertical-nav">
 	<ul>
@@ -51,5 +51,5 @@ if( count($titles) > 0 ) :
 	</ul>
 </nav>
 <?php
-endif;
+}
 ?>

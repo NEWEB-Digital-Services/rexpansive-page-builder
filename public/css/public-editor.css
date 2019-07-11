@@ -3187,6 +3187,8 @@ div.wpcf7 .rxcf7-custom-style p:last-of-type {
     display: none; }
 
 /** section background alignement **/
+.rexpansive_section.background--contain {
+  background-size: contain; }
 .rexpansive_section.background--left-top {
   background-position: left top; }
 .rexpansive_section.background--left-center {

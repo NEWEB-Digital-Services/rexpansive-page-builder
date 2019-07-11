@@ -1,6 +1,9 @@
 /** section background alignement **/
 
 .rexpansive_section {
+  &.background--contain {
+    background-size: contain;
+  }
   &.background--left-top {
     background-position: left top;
   }

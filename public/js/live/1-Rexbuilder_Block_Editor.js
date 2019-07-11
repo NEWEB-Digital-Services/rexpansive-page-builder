@@ -97,6 +97,7 @@ var Rexbuilder_Block_Editor = (function($) {
             typeBGimage: activeImage ? typeBGimage : "",
             photoswipe: activeImage ? activePhotoswipe : "",
             active: activeImage,
+            updateBlockHeight: true,
             tools: tools,        
             sectionTarget: {
               sectionID: sectionID,

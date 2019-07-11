@@ -3219,22 +3219,22 @@
         newH = w * sw * blockRatio;
       }
 
-      console.log(newH / this.properties.singleHeight);
-      console.log(Math.round(newH / this.properties.singleHeight));
-      console.log(Math.ceil(newH / this.properties.singleHeight));
-      console.log(Math.floor(newH / this.properties.singleHeight));
-      console.log('@@@@@@@@@@');
+      // console.log(newH / this.properties.singleHeight);
+      // console.log(Math.round(newH / this.properties.singleHeight));
+      // console.log(Math.ceil(newH / this.properties.singleHeight));
+      // console.log(Math.floor(newH / this.properties.singleHeight));
+      // console.log('@@@@@@@@@@');
 
       if (this.settings.galleryLayout == "fixed") {
         if ( emptyBlockFlag ) {
-          console.log('rounda')
+          // console.log('rounda')
           newH = Math.round(newH / this.properties.singleHeight);
         } else {
-          console.log('cila')
+          // console.log('cila')
           newH = Math.ceil(newH / this.properties.singleHeight);
         }
       } else {
-        console.log('cila 2')
+        // console.log('cila 2')
         newH = Math.ceil(newH / this.properties.singleHeight);
       }
 

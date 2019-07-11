@@ -1301,7 +1301,8 @@
       };
 
       Rexbuilder_Dom_Util.updateImageBG($itemContent, imageOpt);
-      if (galleryEditorInstance.settings.galleryLayout == "masonry") {
+      // if ( galleryEditorInstance.settings.galleryLayout == "masonry" ) {
+      if ( galleryEditorInstance.settings.galleryLayout == "masonry" && true === data.updateBlockHeight ) {
         galleryEditorInstance.updateElementHeight($elem);
       }
 

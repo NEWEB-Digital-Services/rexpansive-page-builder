@@ -120,7 +120,7 @@ var Background_Block_Image_Setting = (function($) {
         ? "true"
         : "false";
 
-    var updateBlockHeight = imageStatus.imageType !== typeBGimage;
+    var updateBlockHeight = ( imageStatus.imageType !== typeBGimage || imageStatus.imageId !== idImage );
 
     var data_image = {
       eventName: "rexlive:apply_background_image_block",
