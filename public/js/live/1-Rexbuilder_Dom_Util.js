@@ -749,7 +749,9 @@ var Rexbuilder_Dom_Util = (function($) {
       Rexbuilder_Util_Editor.updatingCollapsedGrid = false;
       gridInstance._fixImagesDimension();
       gridInstance._createFirstReverseStack();
-      gridInstance._updateElementsSizeViewers();
+      if ( Rexbuilder_Util.editorMode ) {
+        gridInstance._updateElementsSizeViewers();
+      }
     }, 200);
   };
 
@@ -962,8 +964,18 @@ var Rexbuilder_Dom_Util = (function($) {
     }
   };
 
+  /**
+   * Update inline custom style
+   *
+   * @since 2.0.0
+   * @date 11-07-2019 Rewrite for vanilla JS
+   */
   var _updateCustomCSS = function(newCss) {
-    $("#rexpansive-builder-style-inline-css").text(newCss);
+    // $("#rexpansive-builder-style-inline-css").text(newCss);
+    var builderInlineStyleEl = document.getElementById('rexpansive-builder-style-inline-css');
+    if ( builderInlineStyleEl ) {
+      builderInlineStyleEl.textContent = newCss;
+    }
   };
 
   var _updateSectionVideoBackground = function($section, videoOpt) {
@@ -1010,12 +1022,18 @@ var Rexbuilder_Dom_Util = (function($) {
    */
   var _updateSectionBackgroundColor = function($section, bgColor) {
     var $sectionData = $section.children(".section-data");
+    var section = $section[0];
 
-    if( -1 !== $section.css("background").indexOf("linear-gradient") ) {
-      $section.css("background","");
+    // if( -1 !== $section.css("background").indexOf("linear-gradient") ) {
+    //   $section.css("background","");
+    // }
+
+    if( -1 !== getComputedStyle(section)['background'].indexOf('linear-gradient') ) {
+      section.style.background = '';
     }
 
-    $section.css("background-color", bgColor.color);
+    // $section.css("background-color", bgColor.color);
+    section.style.backgroundColor = bgColor.color;
     $sectionData.attr("data-color_bg_section", bgColor.color);
     $sectionData.attr("data-color_bg_section_active", bgColor.active);
 
@@ -1042,17 +1060,22 @@ var Rexbuilder_Dom_Util = (function($) {
 
   var _updateBlockBackgroundColorLive = function(data, color) {
     var $target;
+    var target;
     if (data.modelNumber != "") {
       var section_selector = 'section[data-rexlive-section-id="' +data.sectionID +'"][data-rexlive-model-number="' +data.modelNumber +'"]';
       var block_selector = 'div[data-rexbuilder-block-id="' +data.rexID +'"] .grid-item-content';
       $target = Rexbuilder_Util.$rexContainer
         .find( section_selector )
         .find( block_selector );
-      if( -1 !== $target.css("background").indexOf("linear-gradient") ) {
-        $target.css("background","");
+      // if( -1 !== $target.css("background").indexOf("linear-gradient") ) {
+        // $target.css("background","");
+      // }
+      // $target.css("background-color", color);
+      target = $target[0];
+      if( -1 !== getComputedStyle(target)['background'].indexOf('linear-gradient') ) {
+        target.style.background = '';
       }
-      $target
-        .css("background-color", color);
+      target.style.backgroundColor = color;
     } else {
       $target = Rexbuilder_Util.$rexContainer
         .find('section[data-rexlive-section-id="' + data.sectionID + '"]')
@@ -1061,11 +1084,15 @@ var Rexbuilder_Dom_Util = (function($) {
             data.rexID +
             '"] .grid-item-content'
         );
-      if( -1 !== $target.css("background").indexOf("linear-gradient") ) {
-        $target.css("background","");
+      // if( -1 !== $target.css("background").indexOf("linear-gradient") ) {
+        // $target.css("background","");
+      // }
+      // $target.css("background-color", color);
+      target = $target[0];
+      if( -1 !== getComputedStyle(target)['background'].indexOf('linear-gradient') ) {
+        target.style.background = '';
       }
-      $target
-        .css("background-color", color);
+      target.style.backgroundColor = color;
     }
 
     if( 'undefined' !== typeof Rexbuilder_Block_Editor ) {
@@ -1082,13 +1109,19 @@ var Rexbuilder_Dom_Util = (function($) {
   var _updateBlockBackgroundColor = function(data) {
     var $elem = data.$elem;
     var $itemContent = $elem.find(".grid-item-content");
+    var itemContent = $itemContent[0];
     var $elemData = $elem.children(".rexbuilder-block-data");
 
-    if( -1 !== $itemContent.css("background").indexOf("linear-gradient") ) {
-      $itemContent.css("background","");
+    // if( -1 !== $itemContent.css("background").indexOf("linear-gradient") ) {
+    //   $itemContent.css("background","");
+    // }
+
+    if( -1 !== getComputedStyle(itemContent)['background'].indexOf('linear-gradient') ) {
+      itemContent.style.background = '';
     }
 
-    $itemContent.css("background-color", data.color);
+    // $itemContent.css("background-color", data.color);
+    itemContent.style.backgroundColor = data.color;
     $elemData.attr("data-color_bg_block", data.color);
     $elemData.attr("data-color_bg_elem_active", data.active);
 
@@ -1154,12 +1187,18 @@ var Rexbuilder_Dom_Util = (function($) {
 
   var _updateSectionOverlay = function($section, overlay) {
     var $overlayElem = $section.children(".responsive-overlay");
+    var overlayElem = $overlayElem[0];
     var $sectionData = $section.children(".section-data");
 
-    if( -1 !== $overlayElem.css("background").indexOf("linear-gradient") ) {
-      $overlayElem.css("background","");
+    // if( -1 !== $overlayElem.css("background").indexOf("linear-gradient") ) {
+    //   $overlayElem.css("background","");
+    // }
+    // $overlayElem.css("background-color", overlay.color);
+
+    if( -1 !== getComputedStyle(overlayElem)['background'].indexOf('linear-gradient') ) {
+      overlayElem.style.background = '';
     }
-    $overlayElem.css("background-color", overlay.color);
+    overlayElem.style.backgroundColor = overlay.color;
 
     $sectionData.attr("data-row_overlay_color", overlay.color);
     $sectionData.attr("data-row_overlay_active", overlay.active);
@@ -1181,9 +1220,11 @@ var Rexbuilder_Dom_Util = (function($) {
   var _updateSectionOverlayGradient = function($section, overlay) {
     var $sectionData = $section.children(".section-data");
     var $overlayElem = $section.children(".responsive-overlay");
+    var overlayElem = $overlayElem[0];
 
     var safeGradient = Rexbuilder_Util_Editor.getGradientSafeValue( overlay.color );
-    $overlayElem.css("background", safeGradient);
+    // $overlayElem.css("background", safeGradient);
+    overlayElem.style.background = safeGradient;
 
     $sectionData.attr("data-row_overlay_color", overlay.color);
     $sectionData.attr("data-row_overlay_active", overlay.active);
@@ -1254,12 +1295,17 @@ var Rexbuilder_Dom_Util = (function($) {
     var $elem = data.$elem;
     var $elemData = $elem.children(".rexbuilder-block-data");
     var $elemOverlay = $elem.find(".responsive-block-overlay");
-    var actualOverlay = $elemOverlay.css("background");
+    var elemOverlay = $elemOverlay[0];
+    // var actualOverlay = $elemOverlay.css("background");
 
-    if( -1 !== actualOverlay.indexOf("linear-gradient") ) {
-      $elemOverlay.css("background","");
+    // if( -1 !== actualOverlay.indexOf("linear-gradient") ) {
+    //   $elemOverlay.css("background","");
+    // }
+    // $elemOverlay.css("background-color", color);
+    if( -1 !== getComputedStyle(elemOverlay)['background'].indexOf('linear-gradient') ) {
+      elemOverlay.style.background = '';
     }
-    $elemOverlay.css("background-color", color);
+    elemOverlay.style.backgroundColor = color;
 
     $elemData.attr("data-overlay_block_color", color);
     $elemData.attr("data-overlay_block_color_active", active);

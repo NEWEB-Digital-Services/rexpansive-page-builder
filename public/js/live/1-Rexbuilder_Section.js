@@ -220,26 +220,24 @@ var Rexbuilder_Section = (function($) {
         singleHeight: singleHeight
       };
 
-      galleryEditorInstance.$element.attr(
-        "data-layout",
-        galleryLayout.layout
-      );
-      galleryEditorInstance.$element.attr(
-        "data-full-height",
-        galleryLayout.fullHeight
-      );
+      galleryEditorInstance.element.setAttribute( "data-layout", galleryLayout.layout );
+      galleryEditorInstance.element.setAttribute( "data-full-height", galleryLayout.fullHeight );
 
       galleryEditorInstance.updateGridLayoutCollapse(galleryLayout);
 
       galleryEditorInstance.batchGridstack();
 
+      var section = $section[0];
+      var elem,
+        elemData,
+        props,
+        postionData;
+
       for (var i = 1; i < elemetsDisposition.length; i++) {
-        var $elem = $section.find(
-          'div[data-rexbuilder-block-id="' + elemetsDisposition[i].name + '"]'
-        );
-        var $elemData = $elem.children(".rexbuilder-block-data");
-        var props = elemetsDisposition[i].props;
-        var postionData = {
+        elem = section.querySelector( 'div[data-rexbuilder-block-id="' + elemetsDisposition[i].name + '"]' );
+        elemData = elem.querySelector(".rexbuilder-block-data");
+        props = elemetsDisposition[i].props;
+        postionData = {
           x: props.gs_x,
           y: props.gs_y,
           w: props.gs_width,
@@ -247,11 +245,9 @@ var Rexbuilder_Section = (function($) {
           startH: props.gs_start_h,
           gridstackInstance: gridstackInstance
         };
-        Rexbuilder_Util.updateElementDimensions(
-          $elem,
-          $elemData,
-          postionData
-        );
+        Rexbuilder_Util.updateElementDimensions( elem, elemData, postionData );
+        // update size viewers
+        galleryEditorInstance.updateSizeViewerText( elem, postionData.w, postionData.h );
       }
 
       galleryEditorInstance.commitGridstack();

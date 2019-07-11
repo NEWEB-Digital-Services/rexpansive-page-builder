@@ -1007,7 +1007,6 @@
           "data-gs-width": block["attributes"]["data-width"].value,
           "data-gs-height": block["attributes"]["data-height"].value
         });
-        // G.updateSizeViewerText($block);
       });
     },
 
@@ -1356,9 +1355,11 @@
 
       $newEl.find(".grid-item-content").prepend(tmpl("tmpl-block-drag-handle"));
 
-      this._prepareElement($newEl[0]);
+      var newEl = $newEl[0];
 
-      this.updateSizeViewerText($newEl, w, h);
+      this._prepareElement(newEl);
+
+      this.updateSizeViewerText(newEl, w, h);
 
       return $newEl;
     },
@@ -2263,6 +2264,12 @@
       // $elem.parent().parent().parent().parent().removeClass('focused');
     },
 
+    /**
+     * Update the size viewers for every block of this grid
+     * and check if hide them or not
+     *
+     * @since 2.0.0
+     */
     _updateElementsSizeViewers: function() {
       var gallery = this;
       this.$element.children(".grid-stack-item").each(function() {
@@ -2272,24 +2279,38 @@
       });
     },
 
-    updateSizeViewerText: function($elem, x, y) {
+    /**
+     * Update the live dimensions of a block inside the indicator
+     *
+     * @since 2.0.0
+     * @date 11-07-2019 Rewrite for vanilla JS
+     */
+    updateSizeViewerText: function(elem, x, y) {
       if (x === undefined || y === undefined) {
         var x, y;
-        x = parseInt($elem.attr("data-gs-width"));
-        y = parseInt($elem.attr("data-gs-height"));
+        x = parseInt( elem.getAttribute("data-gs-width") );
+        y = parseInt( elem.getAttribute("data-gs-height") );
         if (this.settings.galleryLayout == "masonry") {
           y = Math.round(y * this.properties.singleHeight);
         }
       }
       var size_text = (x + " x " + y);
       var size_text_mobile = (x + "x" + y);
-      $elem.find(".top-tools .el-size-viewer .el-size-viewer__val").text(size_text);
-      $elem.find(".mobile-tools .el-size-viewer .el-size-viewer__val").text(size_text_mobile);
+      var size_viewer = elem.querySelector('.top-tools .el-size-viewer .el-size-viewer__val');
+      var size_viewer_mobile = elem.querySelector('.mobile-tools .el-size-viewer .el-size-viewer__val');
+
+      if ( size_viewer ) {
+        size_viewer.textContent = size_text;
+      }
+
+      if ( size_viewer_mobile ) {
+        size_viewer_mobile.textContent = size_text_mobile;
+      }
     },
 
     updateSizeViewerSizes: function($block) {
       this.updateSizeViewerText(
-        $block,
+        $block[0],
         Math.round($block.outerWidth() / this.properties.singleWidth),
         this.calculateHeightSizeViewer($block)
       );
@@ -2406,7 +2427,7 @@
                 $imageWrapper.removeClass("small-width");
               }
             }
-            gallery.updateSizeViewerText( $block, Math.round(ui.size.width / gallery.properties.singleWidth), Math.round(ui.size.height / heightFactor) );
+            gallery.updateSizeViewerText( block, Math.round(ui.size.width / gallery.properties.singleWidth), Math.round(ui.size.height / heightFactor) );
             gallery.checkBlockDimension($block);
             // In masonry all images have not to be cut
             if (gallery.settings.galleryLayout == "masonry") {
@@ -2435,11 +2456,11 @@
         })
         .on("gsresizestop", function(event, elem) {
           if (Rexbuilder_Util_Editor.elementIsResizing) {
-            gallery.updateSizeViewerText($block);
+            gallery.updateSizeViewerText(block);
             gallery.checkBlockDimension($block);
             if (gallery.settings.galleryLayout == "masonry") {
 
-              $block.attr( "data-height", Math.round( $block.attr("data-gs-height") / gallery.properties.singleWidth ) );
+              block.setAttribute( "data-height", Math.round( block.getAttribute("data-gs-height") / gallery.properties.singleWidth ) );
               // @date 12-05-2019
               // Remove this proprerty set.
               // TODO Deeply check: is this correct?
@@ -2469,7 +2490,7 @@
               gallery.fixElementTextSize( block, gallery.properties.resizeHandle, null );
             }
 
-            $block.attr("data-gs-max-width", 500);
+            block.setAttribute("data-gs-max-width", 500);
             clearTimeout(gallery.doubleDownTimer);
             Rexbuilder_Util_Editor.elementIsDragging = false;
             Rexbuilder_Util_Editor.elementIsResizing = false;
@@ -2539,9 +2560,6 @@
       this.$element.on("dropped", function(e, previousWidget, newWidget) {
         newWidget.el.removeClass("focused ui-draggable--drag-up");
         gallery._prepareElement(newWidget.el[0]);
-
-        // console.log("passed - linkDropEvents - .on(dropped)");
-        // this.updateSizeViewerText(newWidget.el, w, h);
       });
     },
 
@@ -3011,6 +3029,7 @@
    * @param {Object} $elem Element to update height
    * @param {Number} blockRatio Ratio block has to maintain
    * @param {Boolean} editingBlock Flag to consider also starting height
+   * 
    */
     updateElementHeight: function($elem, blockRatio, editingBlock) {
       editingBlock = typeof editingBlock !== "undefined" ? editingBlock : false;
@@ -3022,6 +3041,8 @@
       var elem = $elem[0];
       var blockData = elem.querySelector('.rexbuilder-block-data');
       var startH;
+      // this.properties.updatingSection seems always false !
+
       // if (this.properties.updatingSection) {
       //   if (this.settings.galleryLayout == "fixed") {
       //     startH = parseInt( blockData.getAttribute('data-block_height_masonry') );
@@ -3046,17 +3067,13 @@
       }
 
       var gutter = this.properties.gutter;
-      var $textWrap = $elem.find(".text-wrap");
+      var $textWrap = $( elem.querySelector('.text-wrap') );
 
       var itemContent = elem.querySelector('.grid-item-content');
       var imageWrapper = itemContent.querySelector('.rex-image-wrapper');
 
       var w = parseInt( elem.getAttribute('data-gs-width'));
-      var increasedHeight = 0;
-      if ( this.settings.galleryLayout == 'masonry' ) {
-        var parsedHeight = parseInt( blockData.getAttribute( 'data-element_height_increased' ) );
-        increasedHeight = isNaN( parsedHeight ) ? 0 : parsedHeight;
-      }
+
       var backgroundHeight = 0;
       var videoHeight = 0;
       var defaultHeight = 0;
@@ -3075,25 +3092,15 @@
       // calculate text content height
       textHeight = this.calculateTextWrapHeight($textWrap);
 
-      // if the block has a full image background, without text
-      // do not calculate a new height
-      // @bugged
-      // if ( 'full' === backImgType && 0 === textHeight ) { return; }
-
-      // test purpose
-      if ( this.settings.galleryLayout == "masonry" ) {
-        var parsedHeight = parseInt( blockData.getAttribute('data-element_height_increased'));
-        // var increasedHeight = isNaN(parsedHeight) ? 0 : parsedHeight;
-      }
-
       if (this.properties.oneColumModeActive) {
         w = 12;
       }
 
       // check for custom type of blocks
-      var trueHeight = ( null !== blockData.getAttribute('data-calc_true_height') ? blockData.getAttribute('data-calc_true_height') : "0" );
+      // seems irrelevant, always 0
+      // var trueHeight = ( null !== blockData.getAttribute('data-calc_true_height') ? blockData.getAttribute('data-calc_true_height') : "0" );
       
-      if (textHeight == 0 || trueHeight == "1")
+      if (textHeight == 0)
       {
 
         // calculating background image height
@@ -3167,23 +3174,17 @@
         } else {
           newH = startH * this.properties.singleHeight;
         }
+
+        // fix
+        if ( 0 === newH ) {
+          newH = backgroundHeight;
+        }
       } else {
         if ( editingBlock ) {
           startH *= this.properties.singleHeight;
         } else {
           startH = 0;
         }
-
-        // console.table({
-        //   blockRatio: blockRatio,
-        //   startH: startH,
-        //   backgroundHeight: backgroundHeight,
-        //   videoHeight: videoHeight,
-        //   defaultHeight: defaultHeight,
-        //   textHeight: textHeight,
-        //   sliderHeight: sliderHeight,
-        //   test: startH * this.properties.singleHeight
-        // });
 
         newH = Math.max(
           startH,
@@ -3192,9 +3193,20 @@
           defaultHeight,
           textHeight,
           sliderHeight
-          // increasedHeight
         );
       }
+
+      // console.table({
+      //   blockRatio: blockRatio,
+      //   startH: startH,
+      //   backgroundHeight: backgroundHeight,
+      //   videoHeight: videoHeight,
+      //   defaultHeight: defaultHeight,
+      //   textHeight: textHeight,
+      //   sliderHeight: sliderHeight,
+      //   test: startH * this.properties.singleHeight,
+      //   newH: newH
+      // });
 
       if ( this.properties.oneColumModeActive && !Rexbuilder_Util.windowIsResizing ) {
         return {
@@ -3207,17 +3219,24 @@
         newH = w * sw * blockRatio;
       }
 
+      console.log(newH / this.properties.singleHeight);
+      console.log(Math.round(newH / this.properties.singleHeight));
+      console.log(Math.ceil(newH / this.properties.singleHeight));
+      console.log(Math.floor(newH / this.properties.singleHeight));
+      console.log('@@@@@@@@@@');
+
       if (this.settings.galleryLayout == "fixed") {
-        if (emptyBlockFlag) {
+        if ( emptyBlockFlag ) {
+          console.log('rounda')
           newH = Math.round(newH / this.properties.singleHeight);
         } else {
-          newH = Math.floor(newH / this.properties.singleHeight);
+          console.log('cila')
+          newH = Math.ceil(newH / this.properties.singleHeight);
         }
       } else {
+        console.log('cila 2')
         newH = Math.ceil(newH / this.properties.singleHeight);
       }
-
-      // console.log(elem.getAttribute('id'), newH);
 
       this.updateElementDataHeightProperties( blockData, newH ); 
 
@@ -3460,6 +3479,10 @@
       }
     },
 
+    /**
+     * Seems useless !?!
+     *
+     */
     fixCollapsedHeights: function() {
       var $elem;
       var h;
@@ -3467,7 +3490,6 @@
       this.$element.children(".grid-stack-item").each(function() {
         $elem = $(this);
         h = that.updateElementHeight($elem);
-        console.log(h);
         $elem.css("height", h + "px");
         var size_text = "12 x " + Math.round(h);
         var size_text_mobile = "12x" + Math.round(h);

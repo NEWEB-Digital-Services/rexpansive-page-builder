@@ -4,6 +4,7 @@ var Background_Block_Image_Setting = (function($) {
   var background_block_image_properties;
   var backgroundImageActive;
   var target;
+  var imageStatus;
 
   var _updateImageModal = function(data) {
     _resetImageModal();
@@ -42,6 +43,9 @@ var Background_Block_Image_Setting = (function($) {
     } else {
       background_block_image_properties.$image_active.prop("checked", false);
     }
+
+    // set status
+    _traceImageStatus();
   };
 
   var _resetImageModal = function() {
@@ -67,6 +71,13 @@ var Background_Block_Image_Setting = (function($) {
     background_block_image_properties.$checkboxPhotoswipe.prop( "checked", false );
     background_block_image_properties.$image_type_typeWrap.removeClass( "selected" );
   };
+
+  var _traceImageStatus = function() {
+    imageStatus.imageActive = background_block_image_properties.$image_active.prop('checked');
+    imageStatus.imageId = background_block_image_properties.$image_url.val();
+    imageStatus.imageType = background_block_image_properties.$image_type_types_wrap.children(".selected").attr("data-rex-type-image");
+    imageStatus.imagePswpActive = true === background_block_image_properties.$checkboxPhotoswipe.prop("checked") ? "true" : "false";
+  }
 
   var _updateImageBackground = function() {
     var status =
@@ -109,6 +120,8 @@ var Background_Block_Image_Setting = (function($) {
         ? "true"
         : "false";
 
+    var updateBlockHeight = imageStatus.imageType !== typeBGimage;
+
     var data_image = {
       eventName: "rexlive:apply_background_image_block",
       data_to_send: {
@@ -119,11 +132,14 @@ var Background_Block_Image_Setting = (function($) {
         typeBGimage: backgroundImageActive ? typeBGimage : "",
         photoswipe: backgroundImageActive ? photoswipe : "",
         active: backgroundImageActive,
+        updateBlockHeight: updateBlockHeight,
         target: target
       }
     };
 
     Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_image);
+    // trace updated status
+    _traceImageStatus();
   };
 
   var _updatePhotoswipe = function(active) {
@@ -229,6 +245,14 @@ var Background_Block_Image_Setting = (function($) {
       // Photoswipe
       $is_photoswipe: $self.find("#bg-set-photoswipe"),
       $checkboxPhotoswipe: $self.find("#background_photoswipe")
+    };
+
+    imageStatus = {
+      imageActive: false,
+      imageId: null,
+      imageType: null,
+      imagePositon: null,
+      imagePswpActive: false
     };
 
     backgroundImageActive = true;

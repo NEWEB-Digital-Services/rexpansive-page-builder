@@ -1417,7 +1417,7 @@ var Rexbuilder_Util = (function($) {
           : targetProps["element_real_fluid"],
         gridstackInstance: gridstackInstance
       };
-      _updateElementDimensions($elem, $itemData, positionData);
+      _updateElementDimensions($elem[0], $itemData[0], positionData);
     }
 
     // Update block video
@@ -2647,7 +2647,13 @@ var Rexbuilder_Util = (function($) {
     Rexbuilder_Section.fixBlockToolsAccordingToSeparator( $section, rowSettings );
   }
 
-  var _updateElementDimensions = function($elem, $elemData, posData) {
+  /**
+   * Update element data dimensions and position
+   *
+   * @since 2.0.0
+   * @date 11-07-2019 Rewrite for vanilla JS
+   */
+  var _updateElementDimensions = function(elem, elemData, posData) {
     var x = parseInt(posData.x);
     var y = parseInt(posData.y);
     var w = parseInt(posData.w);
@@ -2657,20 +2663,19 @@ var Rexbuilder_Util = (function($) {
     var realFluid = parseInt(posData.realFluid);
 
     if (typeof posData.gridstackInstance != "undefined") {
-      posData.gridstackInstance.update($elem[0], x, y, w, h);
+      posData.gridstackInstance.update(elem, x, y, w, h);
     } else {
-      $elem.attr("data-gs-height", h);
-      $elem.attr("data-gs-width", w);
-      $elem.attr("data-gs-y", y);
-      $elem.attr("data-gs-x", x);
+      elem.setAttribute("data-gs-height", h);
+      elem.setAttribute("data-gs-width", w);
+      elem.setAttribute("data-gs-y", y);
+      elem.setAttribute("data-gs-x", x);
     }
-    $elemData.attr("data-gs_start_h", startH);
-    $elemData.attr("data-gs_width", w);
-    $elemData.attr("data-gs_height", h);
-    $elemData.attr("data-gs_y", y);
-    $elemData.attr("data-gs_x", x);
-    // $elemData.attr("data-element_height_increased", increaseHeight);
-    $elemData.attr("data-element_real_fluid", realFluid);
+    elemData.setAttribute("data-gs_start_h", startH);
+    elemData.setAttribute("data-gs_width", w);
+    elemData.setAttribute("data-gs_height", h);
+    elemData.setAttribute("data-gs_y", y);
+    elemData.setAttribute("data-gs_x", x);
+    elemData.setAttribute("data-element_real_fluid", realFluid);
   };
 
   var addPhotoSwipeElement = function($itemContent, url, w, h, t) {
@@ -2680,12 +2685,8 @@ var Rexbuilder_Util = (function($) {
       var $gridstackItemContent = $itemContent.parents(
         ".grid-stack-item-content"
       );
-      //console.log("checking if is already photoswipe");
-      // console.log("have to add photoswipe?");
-      if ($itemContent.parents(".pswp-figure").length == 0) {
-        // console.log("yes?");
 
-        //console.log("not");
+      if ($itemContent.parents(".pswp-figure").length == 0) {
         $itemContent.parent().prepend(
           tmpl("tmpl-photoswipe-block", {
             link: url,
@@ -2701,12 +2702,8 @@ var Rexbuilder_Util = (function($) {
   };
 
   var removePhotoSwipeElement = function($itemContent) {
-    //console.log("removing photoswipe");
-    //console.log($itemContent);
     var $pswpFigure = $itemContent.parents(".pswp-figure");
-    //console.log($pswpFigure);
     if ($pswpFigure.length != 0) {
-      //console.log("removing ps");
       var $pspwParent = $pswpFigure.parent();
       $itemContent.detach().appendTo($pspwParent);
       $pswpFigure.remove();

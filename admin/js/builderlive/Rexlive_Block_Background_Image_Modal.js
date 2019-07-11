@@ -64,10 +64,7 @@ var Background_Block_Image_Modal = (function($) {
     );
     backgroundImageActive = true;
     background_block_image_properties.$image_active.prop("checked", true);
-    background_block_image_properties.$checkboxPhotoswipe.prop(
-      "checked",
-      false
-    );
+    background_block_image_properties.$checkboxPhotoswipe.prop( "checked", false );
     background_block_image_properties.$image_type_typeWrap.removeClass(
       "selected"
     );
