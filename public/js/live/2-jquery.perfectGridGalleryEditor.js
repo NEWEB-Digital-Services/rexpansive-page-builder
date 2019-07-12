@@ -22,6 +22,35 @@
       scrollbarWrapClass: ".rexlive-custom-scrollbar"
     };
 
+  /**
+   * Class manipulation methods
+   */
+  var hasClass, addClass, removeClass, toggleClass;
+
+  if ('classList' in document.documentElement) {
+    hasClass = function (el, className) { return el.classList.contains(className); };
+    addClass = function (el, className) { el.classList.add(className); };
+    removeClass = function (el, className) { el.classList.remove(className); };
+  } else {
+    hasClass = function (el, className) {
+      return new RegExp('\\b' + className + '\\b').test(el.className);
+    };
+    addClass = function (el, className) {
+      if (!hasClass(el, className)) { el.className += ' ' + className; }
+    };
+    removeClass = function (el, className) {
+      el.className = el.className.replace(new RegExp('\\b' + className + '\\b', 'g'), '');
+    };
+  }
+
+  toggleClass = function (el, className) {
+    if (hasClass(el, className)) {
+      removeClass(el, className);
+    } else {
+      addClass(el, className);
+    }
+  }
+
   // The actual plugin constructor
   function perfectGridGalleryEditor(element, options) {
     this.element = element;
@@ -599,14 +628,13 @@
      */
     _countBlocks: function() {
       var number = 0;
-
       var numberBlock = 0;
 
-      this.$element.find(".grid-stack-item").each(function(i, e) {
-        number = i;
-        var $el = $(e);
+      var gsItems = [].slice.call( this.element.querySelectorAll('.grid-stack-item') );
+      gsItems.forEach( function( el, index ) {
+        number = index;
         var regex = /\d+$/gm;
-        var str = $el.attr("id");
+        var str = el.getAttribute("id");
         var m;
         while ((m = regex.exec(str)) !== null) {
           // This is necessary to avoid infinite loops with zero-width matches
@@ -623,6 +651,28 @@
           number = numberBlock;
         }
       });
+
+      // this.$element.find(".grid-stack-item").each(function(i, e) {
+      //   number = i;
+      //   var $el = $(e);
+      //   var regex = /\d+$/gm;
+      //   var str = $el.attr("id");
+      //   var m;
+      //   while ((m = regex.exec(str)) !== null) {
+      //     // This is necessary to avoid infinite loops with zero-width matches
+      //     if (m.index === regex.lastIndex) {
+      //       regex.lastIndex++;
+      //     }
+
+      //     // The result can be accessed through the `m`-variable.
+      //     $.each(m, function(i, match) {
+      //       numberBlock = parseInt(match);
+      //     });
+      //   }
+      //   if (numberBlock > number) {
+      //     number = numberBlock;
+      //   }
+      // });
 
       this.properties.numberBlocksVisibileOnGrid = number;
       this.properties.lastIDBlock = number;
@@ -643,7 +693,7 @@
      */
     _setGridID: function() {
       this.properties.sectionNumber = parseInt( this.section.getAttribute("data-rexlive-section-number") );
-      this.$element.addClass("grid-number-" + this.properties.sectionNumber);
+      addClass( this.element, 'grid-number-' + this.properties.sectionNumber );
     },
 
     /**
@@ -653,17 +703,29 @@
     _updateBlocksRexID: function() {
       var id;
       var $elem;
-      this.$element.find(".grid-stack-item").each(function(i, e) {
-        $elem = $(e);
-        if (
-          e.getAttribute("data-rexbuilder-block-id") === undefined ||
-          e.getAttribute("data-rexbuilder-block-id") == ""
-        ) {
+      var elem;
+      var gsItems = [].slice.call( this.element.querySelectorAll('.grid-stack-item') );
+      gsItems.forEach( function(el) {
+        if ( el.getAttribute("data-rexbuilder-block-id") === undefined || el.getAttribute("data-rexbuilder-block-id") == "" ) {
           id = Rexbuilder_Util.createBlockID();
-          e.setAttribute("data-rexbuilder-block-id", id);
-          $elem.children(".rexbuilder-block-data").attr("data-rexbuilder_block_id", id);
+          el.setAttribute("data-rexbuilder-block-id", id);
+          var elBlockData = el.querySelector('.rexbuilder-block-data');
+          if ( elBlockData ) {
+            elBlockData.setAttribute('data-rexbuilder_block_id', id);
+          }
         }
       });
+      // this.$element.find(".grid-stack-item").each(function(i, e) {
+      //   $elem = $(e);
+      //   if (
+      //     e.getAttribute("data-rexbuilder-block-id") === undefined ||
+      //     e.getAttribute("data-rexbuilder-block-id") == ""
+      //   ) {
+      //     id = Rexbuilder_Util.createBlockID();
+      //     e.setAttribute("data-rexbuilder-block-id", id);
+      //     $elem.children(".rexbuilder-block-data").attr("data-rexbuilder_block_id", id);
+      //   }
+      // });
     },
 
     /**
@@ -1521,17 +1583,12 @@
       // var collapseGrid = this.$section.attr("data-rex-collapse-grid");
       var collapseGrid = this.section.getAttribute("data-rex-collapse-grid");
       if ( collapseGrid ) {
-        if (
-          Rexbuilder_Util.activeLayout == "default" &&
-          this._viewport().width <=
-            _plugin_frontend_settings.defaultSettings.collapseWidth
-        ) {
+        if ( Rexbuilder_Util.activeLayout == "default" && this._viewport().width <= _plugin_frontend_settings.defaultSettings.collapseWidth ) {
           this.properties.oneColumModeActive = true;
         } else {
           this.properties.oneColumModeActive = false;
         }
-      } else if ( collapseGrid && (
-        (Rexbuilder_Util.activeLayout == "default" && this._viewport().width <= _plugin_frontend_settings.defaultSettings.collapseWidth && collapseGrid.toString() == "true") || collapseGrid.toString() == "true" ) ) {
+      } else if ( collapseGrid && ( ( Rexbuilder_Util.activeLayout == "default" && this._viewport().width <= _plugin_frontend_settings.defaultSettings.collapseWidth && collapseGrid.toString() == "true") || collapseGrid.toString() == "true" ) ) {
         this.properties.oneColumModeActive = true;
       } else {
         this.properties.oneColumModeActive = false;
@@ -1547,8 +1604,7 @@
         var newSingleHeight;
         if (this.settings.fullHeight.toString() == "true") {
           this.properties.gridBlocksHeight = this._calculateGridHeight();
-          newSingleHeight =
-            this._viewport().height / this.properties.gridBlocksHeight;
+          newSingleHeight = this._viewport().height / this.properties.gridBlocksHeight;
         } else {
           newSingleHeight = this.properties.singleWidth;
         }
@@ -1564,12 +1620,10 @@
       var heightTot = 0;
       var hTemp;
       var $gridItem;
-      this.$element.children(".grid-stack-item").each(function(i, el) {
-        $gridItem = $(el);
-        if (!$gridItem.hasClass("removing_block")) {
-          hTemp =
-            parseInt($gridItem.attr("data-gs-height")) +
-            parseInt($gridItem.attr("data-gs-y"));
+      var gsItems = [].slice.call( this.element.querySelectorAll('.grid-stack-item') );
+      gsItems.forEach( function( el ) {
+        if ( -1 === el.className.indexOf('removing_block') ) {
+          hTemp = parseInt( el.getAttribute('data-gs-height') ) + parseInt( el.getAttribute('data-gs-y') );
           if (hTemp > heightTot) {
             heightTot = hTemp;
           }
@@ -1844,7 +1898,7 @@
       if (Rexbuilder_Util.editorMode) {
         gallery._updateHandlersPosition($elem);
       }
-      gallery._fixImageSize($elem);
+      gallery._fixImageSize(elem);
     },
 
     updateElementDataHeightProperties: function(blockData, newH) {
@@ -1893,28 +1947,23 @@
 
     _fixImagesDimension: function() {
       var that = this;
-      this.$element.children(".grid-stack-item").each(function(i, el) {
-        that._fixImageSize($(el));
+      var gsItems = [].slice.call(this.element.querySelectorAll('.grid-stack-item'));
+      gsItems.forEach( function( el ) {
+        that._fixImageSize(el);
       });
     },
 
-    _fixImageSize: function($elem) {
-      var $blockContent = $elem.find(".grid-item-content");
-      var $imageDiv = $blockContent.find(".rex-image-wrapper");
-      if (
-        $imageDiv.length != 0 &&
-        $imageDiv.hasClass("natural-image-background")
-      ) {
-        var imageWidth = isNaN(
-          parseInt($blockContent.attr("data-background_image_width"))
-        )
-          ? -1
-          : parseInt($blockContent.attr("data-background_image_width"));
+    _fixImageSize: function(elem) {
+      var blockContent = elem.querySelector(".grid-item-content");
+      var imageDiv = blockContent.querySelector(".rex-image-wrapper");
+
+      if ( null !== imageDiv && hasClass(imageDiv, "natural-image-background") ) {
+        var imageWidth = isNaN( parseInt( blockContent.getAttribute("data-background_image_width") ) ) ? -1 : parseInt(blockContent.getAttribute("data-background_image_width"));
         if (imageWidth != -1) {
-          if ($elem.outerWidth() < imageWidth) {
-            $imageDiv.addClass("small-width");
+          if ( elem.offsetWidth < imageWidth) {
+            addClass(imageDiv, "small-width");
           } else {
-            $imageDiv.removeClass("small-width");
+            removeClass(imageDiv,"small-width");
           }
         }
       }
@@ -2371,7 +2420,7 @@
       var needH;
       var currentWidth;
 
-      var $blockContent;
+      var $blockContent, blockContent;
       var $uiElement;
       var heightFactor;
       var $imageWrapper;
@@ -2391,17 +2440,16 @@
             $block = $(block);
             $elemData = $block.find(".rexbuilder-block-data");
             $blockContent = $block.find(".grid-item-content");
-            imageWidth = isNaN(
-              parseInt($blockContent.attr("data-background_image_width"))
-            )
+            blockContent = block.querySelector('.grid-item-content');
+            imageWidth = isNaN( parseInt( blockContent.getAttribute("data-background_image_width")) )
               ? 0
-              : parseInt($blockContent.attr("data-background_image_width"));
+              : parseInt( blockContent.getAttribute("data-background_image_width"));
             
             imageHeight = isNaN(
-              parseInt($blockContent.attr("data-background_image_height"))
+              parseInt( blockContent.getAttribute("data-background_image_height"))
             )
               ? 0
-              : parseInt($blockContent.attr("data-background_image_height"));
+              : parseInt( blockContent.getAttribute("data-background_image_height"));
 
             $imageWrapper = $blockContent.find(".rex-image-wrapper");
             naturalImage = $imageWrapper.length != 0 && $imageWrapper.hasClass("natural-image-background");
@@ -3196,17 +3244,17 @@
         );
       }
 
-      // console.table({
-      //   blockRatio: blockRatio,
-      //   startH: startH,
-      //   backgroundHeight: backgroundHeight,
-      //   videoHeight: videoHeight,
-      //   defaultHeight: defaultHeight,
-      //   textHeight: textHeight,
-      //   sliderHeight: sliderHeight,
-      //   test: startH * this.properties.singleHeight,
-      //   newH: newH
-      // });
+      console.table({
+        blockRatio: blockRatio,
+        startH: startH,
+        backgroundHeight: backgroundHeight,
+        videoHeight: videoHeight,
+        defaultHeight: defaultHeight,
+        textHeight: textHeight,
+        sliderHeight: sliderHeight,
+        test: startH * this.properties.singleHeight,
+        newH: newH
+      });
 
       if ( this.properties.oneColumModeActive && !Rexbuilder_Util.windowIsResizing ) {
         return {
@@ -3219,11 +3267,11 @@
         newH = w * sw * blockRatio;
       }
 
-      // console.log(newH / this.properties.singleHeight);
-      // console.log(Math.round(newH / this.properties.singleHeight));
-      // console.log(Math.ceil(newH / this.properties.singleHeight));
-      // console.log(Math.floor(newH / this.properties.singleHeight));
-      // console.log('@@@@@@@@@@');
+      console.log(newH / this.properties.singleHeight);
+      console.log(Math.round(newH / this.properties.singleHeight));
+      console.log(Math.ceil(newH / this.properties.singleHeight));
+      console.log(Math.floor(newH / this.properties.singleHeight));
+      console.log('@@@@@@@@@@');
 
       if (this.settings.galleryLayout == "fixed") {
         if ( emptyBlockFlag ) {

@@ -1092,12 +1092,8 @@ var Rexbuilder_App = (function($) {
    * be doing this, we should try to minimize doing that in our own work.
    */
   // Waiting until the ready of the DOM
-  $(function() {
-    Rexbuilder_App.init();
-  });
+  document.addEventListener('DOMContentLoaded', Rexbuilder_App.init );
 
   // Waiting for the complete load of the window
-  $(window).load(function() {
-    Rexbuilder_App.load();
-  });
+  window.addEventListener('load', Rexbuilder_App.load );
 })(jQuery);

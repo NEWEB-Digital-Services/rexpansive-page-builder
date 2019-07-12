@@ -160,7 +160,10 @@ var Rexbuilder_CreateBlocks = (function ($) {
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
   });
 
-
+  /**
+   * Insert block images in a row
+   * @since 2.0.0
+   */
   $(document).on("rexlive:insert_image", function (e) {
     var data = e.settings.data_to_send;
 
@@ -174,6 +177,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
     var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
     var i;
+
+    console.log(data);
 
     var media = data.media;
 
@@ -221,6 +226,8 @@ var Rexbuilder_CreateBlocks = (function ($) {
         typeBGimage: type,
         active: "true"
       };
+
+      console.log(dataImage)
 
       Rexbuilder_Dom_Util.updateImageBG($el.find(".grid-item-content"), dataImage);
 

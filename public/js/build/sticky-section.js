@@ -101,17 +101,24 @@
     // stick section
     if ( topViewport && bottomViewport ) {
       // stick dynamic
+
       var val = windowScrollTop - elScrollTop;
-      // console.log(this.element.id,val,'dynamic');
       stickElement.call( this, val );
+      // console.log(this.element.id,val,'dynamic');
+      // this.stickyElement.style.position = 'fixed';
+      // this.stickyElement.style.top = '0';
     } else {
       if ( beforeViewport ) {
         // console.log(this.element.id,'top');
+
         // stick to top of the parent
+        // this.stickyElement.style.position = 'absolute';
         stickElement.call( this, 0 );
       } else if ( afterViewport ) {
         // stick at the end of the parent
+
         // console.log(this.element.id,'bottom');
+        // this.stickyElement.style.position = 'absolute';
         stickElement.call( this, elHeight - windowInnerHeight );
       }
     }
@@ -164,6 +171,7 @@
    * @param {Integer} bottomVal value in pixel
    */
   function stickElement(topVal, bottomVal) {
+    // console.log(topVal);
     this.stickyElement.style.top = topVal + 'px';
     if ( 'undefined' !== typeof bottomVal ) {
       this.stickyElement.style.bottom = bottomVal + 'px';
@@ -243,7 +251,7 @@
   /**
    * Class manipulation methods
    */
-  var hasClass, addClass, removeClass;
+  var hasClass, addClass, removeClass, toggleClass;
 
   if ('classList' in document.documentElement) {
     hasClass = function (el, className) { return el.classList.contains(className); };
@@ -261,7 +269,7 @@
     };
   }
 
-  var toggleClass = function (el, className) {
+  toggleClass = function (el, className) {
     if (hasClass(el, className)) {
       removeClass(el, className);
     } else {

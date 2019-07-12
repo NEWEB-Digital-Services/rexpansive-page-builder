@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>STICKY FRAME</title>
+	<style>
+		.containz {
+			width: 100%;
+			height: 150vh;
+			outline: 1px dotted blue;
+			position: relative;
+		}
+		.sticko {
+			/*width: 50%;*/
+			width: 100%;
+			background-image: url(test-assets/montagne.jpg);
+			background-repeat: no-repeat;
+			background-position: center;
+			background-size: cover;
+			height: 100vh;
+			margin: 0 auto;
+			position: absolute;
+		}
+	</style>
+</head>
+<body>
+	<div class="containz"></div>
+	<div class="containz">
+		<div class="sticko"></div>
+	</div>
+	<div class="containz"></div>
+	<script>
+( function() {
+	var els = [].slice.call(document.querySelectorAll('.containz'));
+	console.log(this);
+	els.forEach(function(el) {
+		console.log(this);
+	})
+}());
+( function() {
+	var stickEl;
+	var stickElWrap;
+
+	var elScrollTop;
+    var elHeight;
+    var elScrollBottom;
+
+    var windowScrollTop;
+    var windowInnerHeight;
+
+	function prepareEnv() {
+		stickEl = document.querySelector('.sticko');
+		stickElWrap = stickEl.parentNode;
+
+	    windowInnerHeight = document.documentElement.clientHeight;
+
+	    windowScrollTop = scrollDocumentPositionTop();
+
+		elScrollTop = offsetTop(stickElWrap, windowScrollTop);
+	    elHeight = stickElWrap.offsetHeight;
+	    elScrollBottom = elScrollTop + elHeight;
+	}
+
+	function offsetTop(el, scrollTop) {
+	    scrollTop = 'undefined' !== typeof scrollTop ? scrollTop : (window.pageYOffset || document.documentElement.scrollTop);
+	    var rect = el.getBoundingClientRect();
+	    return rect.top + scrollTop;
+	}
+
+	function scrollDocumentPositionTop() {
+    	return window.pageYOffset || document.documentElement.scrollTop;
+  	}
+
+  	function checkElement() {
+  		var windowScrollBottom = windowScrollTop + windowInnerHeight;
+
+  		var topViewport = windowScrollTop >= elScrollTop;
+	    var bottomViewport = windowScrollBottom <= elScrollBottom;
+	    var beforeViewport = windowScrollTop <= elScrollTop;
+	    var afterViewport = windowScrollBottom >= elScrollBottom;
+
+	    if ( topViewport && bottomViewport ) {
+      		// stick dynamic
+	      var val = windowScrollTop - elScrollTop;
+	      console.log('dynamic')
+	      // console.log(this.element.id,val,'dynamic');
+	      stickEl.style.position = '-webkit-sticky';
+	      stickEl.style.position = 'sticky';
+	      stickElement( 0, 0 );
+	      // stickElement(val);
+	    } else {
+	      if ( beforeViewport ) {
+	        // console.log(this.element.id,'top');
+	        // stick to top of the parent
+	        console.log('top')
+	        stickEl.style.position = '';
+	        stickElement( 0, '' );
+	      } else if ( afterViewport ) {
+	        // stick at the end of the parent
+	        // console.log(this.element.id,'bottom');
+	        console.log('bottom', elHeight, windowInnerHeight)
+	        stickEl.style.position = '';
+	        stickElement( elHeight - windowInnerHeight, '' );
+	      }
+	    }
+  	}
+
+  	function stickElement(topVal, bottomVal) {
+	    stickEl.style.top = topVal + 'px';
+	    if ( 'undefined' !== typeof bottomVal ) {
+	      stickEl.style.bottom = bottomVal + 'px';
+	    }
+  	}
+
+  	/**
+	 * Processing the queue, loading the data
+	 */
+	var runSticky = function( ) {
+		var nowWindowScrollTop = scrollDocumentPositionTop();
+		if ( nowWindowScrollTop !== windowScrollTop ) {
+			windowScrollTop = nowWindowScrollTop;
+			checkElement();
+		}
+	}
+
+	function runFrameInterval() {
+		var request;
+		var now;
+		var then = Date.now();
+		var interval = 50;
+
+		/**
+		 * Setting up an interval with request animation frame
+		 */
+		var runInterval = function() {
+			request = requestAnimationFrame(runInterval);
+			runSticky();
+
+			// now = Date.now();
+			// delta = now - then;
+
+			// if (delta > interval) {
+			// 	runSticky();
+			// 	then = now - (delta % interval);
+			// }
+		}
+
+		runInterval();
+	}
+
+	function init() {
+		prepareEnv();
+		checkElement();
+		runFrameInterval();
+	}
+
+	document.addEventListener('DOMContentLoaded', init);
+}());
+	</script>
+</body>
+</html>

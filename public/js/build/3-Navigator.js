@@ -4,6 +4,7 @@ var Rex_Navigator = (function ($) {
   var navigationItems;
   var $sections;
   var $touch_navigation_links;
+  var verticalNav;
 
   var _updateNavigatorDom = function ($navigatorWrap) {
     var $sections = Rexbuilder_Util.$rexContainer.children(".rexpansive_section");
@@ -26,14 +27,20 @@ var Rex_Navigator = (function ($) {
   }
 
   var updateNavigation = function () {
+    var $this;
+    var activeSection;
+    var activeSectionIndex;
     $sections.each(function () {
-      var $this = $(this);
-      if ($this.attr('id') != '') {
-        var activeSection = $(document).find('.vertical-nav a[href="#' + $this.attr('id') + '"]').data('number') - 1;
-        if (($this.offset().top - Rexbuilder_Util.$window.height() / 2 < Rexbuilder_Util.$window.scrollTop()) && ($this.offset().top + $this.height() - Rexbuilder_Util.$window.height() / 2 > Rexbuilder_Util.$window.scrollTop())) {
-          navigationItems.eq(activeSection).addClass('is-selected');
-        } else {
-          navigationItems.eq(activeSection).removeClass('is-selected');
+      $this = $(this);
+      if ( null !== this.getAttribute('id') && this.getAttribute('id') != '') {
+        activeSection = document.querySelector('.vertical-nav a[href="#' + this.getAttribute('id') + '"]');
+        if ( activeSection ) {
+          activeSectionIndex = activeSection.getAttribute('data-number') - 1;
+          if (($this.offset().top - Rexbuilder_Util.$window.height() / 2 < Rexbuilder_Util.$window.scrollTop()) && ($this.offset().top + $this.height() - Rexbuilder_Util.$window.height() / 2 > Rexbuilder_Util.$window.scrollTop())) {
+            navigationItems.eq(activeSection).addClass('is-selected');
+          } else {
+            navigationItems.eq(activeSection).removeClass('is-selected');
+          }
         }
       }
     });
@@ -135,7 +142,9 @@ var Rex_Navigator = (function ($) {
     updateSections();
     updateNavigationItems();
     updateTouchNavigationLinks();
-    updateNavigation();
+    if ( verticalNav ) {
+      updateNavigation();
+    }
   }
 
   var linkDocumentEvents = function () {
@@ -163,9 +172,13 @@ var Rex_Navigator = (function ($) {
       _updateNavigatorDom($navigatorWrap);
     }
 
-    Rexbuilder_Util.$window.on('scroll', function () {
-      updateNavigation();
-    });
+    var verticalNav = document.querySelector('.vertical-nav');
+
+    if ( verticalNav ) {
+      Rexbuilder_Util.$window.on('scroll', function () {
+        updateNavigation();
+      });
+    }
 
     linkDocumentEvents();
     updateNavigator();
