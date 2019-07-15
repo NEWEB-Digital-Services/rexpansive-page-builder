@@ -54,15 +54,17 @@ var Rexlive_MediaUploader = (function($) {
       states: [new insertImage()]
     });
 
-    image_multiple_uploader_frame.on('all', function() {
-      //console.log(e);
-    })
-
-    // image_multiple_uploader_frame.on('selection:toggle', function(e) {
-    //   var selection = image_multiple_uploader_frame
-    //     .state("insert-image")
-    //     .get("selection");
+    // image_multiple_uploader_frame.on('all', function(e) {
+    //   console.log(e);
     // })
+
+    // prevent attachment size strange selections
+    // image_multiple_uploader_frame.on('selection:toggle', function(e) {
+    //   var attachmentSizeEl = document.querySelector( 'select[name="size"]' );
+    //   if ( attachmentSizeEl ) {
+    //     attachmentSizeEl.value = 'full';
+    //   }
+    // });
 
     //reset selection in popup, when open the popup
     image_multiple_uploader_frame.on("open", function() {
@@ -72,7 +74,6 @@ var Rexlive_MediaUploader = (function($) {
 
       //remove all the selection first
       selection.each(function(image) {
-        console.log(image);
         if ("undefined" !== typeof image) {
           var attachment = wp.media.attachment(image.attributes.id);
           attachment.fetch();
@@ -154,7 +155,7 @@ var Rexlive_MediaUploader = (function($) {
       defaults: _.defaults(
         {
           id: "live-image",
-          title: "Insert Image",
+          title: "Edit Image",
           allowLocalEdits: true,
           displaySettings: true,
           displayUserSettings: true,
@@ -175,6 +176,45 @@ var Rexlive_MediaUploader = (function($) {
       button: { text: "Select" },
       state: "live-image",
       states: [new insertImage()]
+    });
+
+    // prevent attachment size strange selections
+    // image_uploader_frame_direct.on('selection:toggle', function(e) {
+    //   var attachmentSizeEl = document.querySelector( 'select[name="size"]' );
+    //   if ( attachmentSizeEl ) {
+    //     attachmentSizeEl.value = 'full';
+    //   }
+    // });
+
+    //reset selection in popup, when open the popup
+    image_uploader_frame_direct.on("open", function() {
+      var attachment;
+      var selection = image_uploader_frame_direct
+        .state("live-image")
+        .get("selection");
+
+      //remove all the selection first
+      selection.each(function(video) {
+        attachment = wp.media.attachment(video.attributes.id);
+        attachment.fetch();
+        selection.remove(attachment ? [attachment] : []);
+      });
+
+      var image_id = image_uploader_frame_direct
+        .state("live-image")
+        .get("selected_image");
+
+      var image_info = image_uploader_frame_direct
+        .state("live-image")
+        .get("data_to_send");
+
+      // Check the already inserted image
+      if (image_id) {
+        attachment = wp.media.attachment(image_id);
+        attachment.fetch();
+
+        selection.add(attachment ? [attachment] : [], { size: 'thumbnail' });
+      }
     });
 
     image_uploader_frame_direct.on("select", function() {
@@ -248,33 +288,6 @@ var Rexlive_MediaUploader = (function($) {
 
     image_uploader_frame_direct.on("close", function() {});
 
-    //reset selection in popup, when open the popup
-    image_uploader_frame_direct.on("open", function() {
-      var attachment;
-      var selection = image_uploader_frame_direct
-        .state("live-image")
-        .get("selection");
-
-      //remove all the selection first
-      selection.each(function(video) {
-        attachment = wp.media.attachment(video.attributes.id);
-        attachment.fetch();
-        selection.remove(attachment ? [attachment] : []);
-      });
-
-      var image_id = image_uploader_frame_direct
-        .state("live-image")
-        .get("selected_image");
-
-      // Check the already inserted image
-      if (image_id) {
-        attachment = wp.media.attachment(image_id);
-        attachment.fetch();
-
-        selection.add(attachment ? [attachment] : []);
-      }
-    });
-
     //now open the popup
     image_uploader_frame_direct.open();
   } // openMediaUploader IMAGE END
@@ -320,6 +333,14 @@ var Rexlive_MediaUploader = (function($) {
       state: "me-image",
       states: [new insertImage()]
     });
+
+    // prevent attachment size strange selections
+    // image_uploader_me_frame.on('selection:toggle', function(e) {
+    //   var attachmentSizeEl = document.querySelector( 'select[name="size"]' );
+    //   if ( attachmentSizeEl ) {
+    //     attachmentSizeEl.value = 'full';
+    //   }
+    // });
 
     image_uploader_me_frame.on("select", function() {
       var state = image_uploader_me_frame.state("me-image");
@@ -369,7 +390,7 @@ var Rexlive_MediaUploader = (function($) {
         } else {
           displayData.previousLink = false;
         }
-        
+
       });
 
       var data = {
@@ -790,6 +811,14 @@ var Rexlive_MediaUploader = (function($) {
       state: "accordion-gallery",
       states: [new uploadAccordionGallery()]
     });
+
+    // prevent attachment size strange selections
+    // accordion_uploader_frame.on('selection:toggle', function(e) {
+    //   var attachmentSizeEl = document.querySelector( 'select[name="size"]' );
+    //   if ( attachmentSizeEl ) {
+    //     attachmentSizeEl.value = 'full';
+    //   }
+    // });
 
     //on close
     accordion_uploader_frame.on("close", function() {

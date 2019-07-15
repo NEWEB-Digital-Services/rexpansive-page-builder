@@ -70,6 +70,7 @@ var Rexbuilder_Block_Editor = (function($) {
         typeof $elemData.attr("data-photoswipe") == "undefined"
           ? ""
           : $elemData.attr("data-photoswipe");
+      var imageSize = typeof $elemData.attr("data-image_size") == "undefined" ? "" : $elemData.attr("data-image_size");
 
       var activeImage = true;
 
@@ -82,6 +83,7 @@ var Rexbuilder_Block_Editor = (function($) {
           height: activeImage ? height : "",
           typeBGimage: activeImage ? typeBGimage : "",
           photoswipe: activeImage ? activePhotoswipe : "",
+          imageSize: activeImage ? imageSize :"",
           active: activeImage,
           sectionTarget: {
             sectionID: sectionID,
@@ -96,6 +98,7 @@ var Rexbuilder_Block_Editor = (function($) {
             height: activeImage ? height : "",
             typeBGimage: activeImage ? typeBGimage : "",
             photoswipe: activeImage ? activePhotoswipe : "",
+            imageSize: activeImage ? imageSize :"",
             active: activeImage,
             updateBlockHeight: true,
             tools: tools,        

@@ -178,8 +178,6 @@ var Rexbuilder_CreateBlocks = (function ($) {
     var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
     var i;
 
-    console.log(data);
-
     var media = data.media;
 
     var gridWidth = galleryInstance.properties.wrapWidth;
@@ -190,6 +188,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
       var $el,
         idImage = media[i].media_info.id,
         urlImage = media[i].display_info.src,
+        sizeImage = media[i].display_info.size,
         w = media[i].display_info.width,
         h = media[i].display_info.height,
         type = "",
@@ -221,13 +220,12 @@ var Rexbuilder_CreateBlocks = (function ($) {
       var dataImage = {
         idImage: idImage,
         urlImage: urlImage,
+        sizeImage: sizeImage,
         width: w,
         height: h,
         typeBGimage: type,
         active: "true"
       };
-
-      console.log(dataImage)
 
       Rexbuilder_Dom_Util.updateImageBG($el.find(".grid-item-content"), dataImage);
 

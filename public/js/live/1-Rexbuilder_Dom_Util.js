@@ -228,7 +228,7 @@ var Rexbuilder_Dom_Util = (function($) {
     $elemData.attr("data-id_image_bg_block", data.idImage);
     $elemData.attr("data-type_bg_block", data.typeBGimage);
     $elemData.attr("data-image_bg_block", data.urlImage);
-    $elemData.attr("data-image_size", "full");
+    $elemData.attr("data-image_size", data.sizeImage);
     $elemData.attr("data-photoswipe", data.photoswipe);
     $elemData.attr("data-image_bg_elem_active", data.active);
 
