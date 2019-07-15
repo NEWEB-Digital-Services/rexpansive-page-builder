@@ -54,6 +54,35 @@ var Rexlive_MediaUploader = (function($) {
       states: [new insertImage()]
     });
 
+    image_multiple_uploader_frame.on('all', function() {
+      //console.log(e);
+    })
+
+    // image_multiple_uploader_frame.on('selection:toggle', function(e) {
+    //   var selection = image_multiple_uploader_frame
+    //     .state("insert-image")
+    //     .get("selection");
+    // })
+
+    //reset selection in popup, when open the popup
+    image_multiple_uploader_frame.on("open", function() {
+      var selection = image_multiple_uploader_frame
+        .state("insert-image")
+        .get("selection");
+
+      //remove all the selection first
+      selection.each(function(image) {
+        console.log(image);
+        if ("undefined" !== typeof image) {
+          var attachment = wp.media.attachment(image.attributes.id);
+          attachment.fetch();
+          selection.remove(attachment ? [attachment] : []);
+        }
+      });
+    });
+
+    image_multiple_uploader_frame.on("close", function() {});
+
     image_multiple_uploader_frame.on("select", function() {
       var state = image_multiple_uploader_frame.state("insert-image");
       var sectionTarget = state.get("liveTarget");
@@ -92,23 +121,6 @@ var Rexlive_MediaUploader = (function($) {
 
       // Launch image insert event to the iframe
       Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
-    });
-
-    image_multiple_uploader_frame.on("close", function() {});
-
-    //reset selection in popup, when open the popup
-    image_multiple_uploader_frame.on("open", function() {
-      var selection = image_multiple_uploader_frame
-        .state("insert-image")
-        .get("selection");
-      //remove all the selection first
-      selection.each(function(image) {
-        if ("undefined" !== typeof image) {
-          var attachment = wp.media.attachment(image.attributes.id);
-          attachment.fetch();
-          selection.remove(attachment ? [attachment] : []);
-        }
-      });
     });
 
     //now open the popup
@@ -352,14 +364,12 @@ var Rexlive_MediaUploader = (function($) {
           imgData.align = imageSettings.align;
         }
 
-        if( 'undefined' === typeof imageSettings.imgInsideLink )
-        {
+        if ( 'undefined' !== typeof imageSettings.imgInsideLink && true === imageSettings.imgInsideLink ) {
+          displayData.previousLink = true;
+        } else {
           displayData.previousLink = false;
         }
-        else
-        {
-          displayData.previousLink = true;
-        }
+        
       });
 
       var data = {
