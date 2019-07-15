@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Debounce SCROLL</title>
+	<style>
+		.containers {
+			min-height: 50vh;
+		}
+	</style>
+</head>
+<body>
+	<div class="containers">
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid accusamus soluta, magni, natus, laboriosam vel aperiam quidem corrupti error, explicabo pariatur neque. Dolorem tenetur neque, quis ex. Quam quod, praesentium!</p>
+	</div>
+	<div class="containers">
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid accusamus soluta, magni, natus, laboriosam vel aperiam quidem corrupti error, explicabo pariatur neque. Dolorem tenetur neque, quis ex. Quam quod, praesentium!</p>
+	</div>
+	<div class="containers">
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid accusamus soluta, magni, natus, laboriosam vel aperiam quidem corrupti error, explicabo pariatur neque. Dolorem tenetur neque, quis ex. Quam quod, praesentium!</p>
+	</div>
+	<div class="containers">
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid accusamus soluta, magni, natus, laboriosam vel aperiam quidem corrupti error, explicabo pariatur neque. Dolorem tenetur neque, quis ex. Quam quod, praesentium!</p>
+	</div>
+	<script>
+;( function() {
+	var ticking;
+
+	function onScroll() {
+		requestTicking();
+	}
+
+	function requestTicking() {
+		if ( !ticking ) {
+			requestAnimationFrame(update);
+		}
+		ticking = true;
+	}
+
+	function update() {
+		ticking = false;
+		console.log('faccio delle cose')
+	}
+
+	function init() {
+		ticking = false;
+		window.addEventListener('scroll', onScroll);
+	}
+
+	document.addEventListener('DOMContentLoaded', init);
+}());
+	</script>
+</body>
+</html>

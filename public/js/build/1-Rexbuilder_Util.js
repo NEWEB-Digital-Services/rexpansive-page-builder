@@ -1010,11 +1010,24 @@ var Rexbuilder_Util = (function($) {
     }
     return jQuery.extend(true, {}, layoutSelectedSections);
   };
+
   /**
    * Checks if viewport width is under collapsing width
    */
   var _isMobile = function(){
     return _viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth;
+  }
+
+  /**
+   * Check if a CSS property and value are supported by the
+   * current browser
+   * @param {String} prop CSS property to check
+   * @param {String} value CSS value to check
+   */
+  var _cssPropertyValueSupported = function(prop, value) {
+    var d = document.createElement('div');
+    d.style[prop] = value;
+    return d.style[prop] === value;
   }
   
   var _edit_dom_layout = function(chosenLayoutName) {
@@ -3900,6 +3913,7 @@ var Rexbuilder_Util = (function($) {
     getCoord: getCoord,
     diffStrings: _diffStrings,
     applyDefaultBlocksDimentions: _applyDefaultBlocksDimentions,
-    isMobile: _isMobile
+    isMobile: _isMobile,
+    cssPropertyValueSupported: _cssPropertyValueSupported,
   };
 })(jQuery);

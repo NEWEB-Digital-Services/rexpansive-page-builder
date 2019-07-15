@@ -41,8 +41,17 @@
             right: 0;
             /* bottom: 0; */
             z-index: 5;
-            backface-visibility: hidden;
-            transform: translate3d(0,0,0);
+            -webkit-backface-visibility:hidden;
+            backface-visibility:hidden;
+            will-change: transform;
+            /*position:-webkit-sticky;
+            position:sticky;*/
+        }
+
+        .section.sticky.sticky-css .video {
+            position:-webkit-sticky;
+            position: sticky;
+            top: 0;
         }
 
         .content {
@@ -315,6 +324,7 @@
         <div class="content">
             <div class="block">
                 <div class="block-content fadeUpTextCSS">
+                <!-- <div class="block-content"> -->
                     <h2>Design completamente rinnovato</h2>
                     <h1>Più che evoluto, trasformato.</h1>
                     <p>Il display più grande mai visto su Apple Watch. Sensore elettrico per il monitoraggio del battito cardiaco. Digital Crown riprogettata con feedback aptico. È tutto un altro Apple Watch, ma ti sarà subito familiare: Apple Watch Series 4 ridefinisce quello che ti aspetti da un orologio.</p>
@@ -330,7 +340,7 @@
     <div id="s3" class="section sticky" data-section-id="3">
         <div class="video">
             <video preload autoplay loop muted playsinline>
-                <source type="video/mp4" src="./test-res/landscape.mp4" />
+                <source type="video/mp4" src="./test-assets/landscape.mp4" />
             </video>
         </div>
         <div class="content">
@@ -371,15 +381,30 @@
 <script src="./public/js/build/scroll-css-animation.js"></script>
 <script>
 ; (function () {
+    function cssPropertyValueSupported(prop, value) {
+      var d = document.createElement('div');
+      d.style[prop] = value;
+      return d.style[prop] === value;
+    }
+
+    function test() {
+        console.log( cssPropertyValueSupported( 'position', 'sticky' ) );
+        console.log( cssPropertyValueSupported( 'position', '-webkit-sticky' ) );
+        console.log( cssPropertyValueSupported( 'dominant-baseline', 'hanging' ) );
+    }
+
+    // document.addEventListener('DOMContentLoaded', test);
+
     function load() {
         var sections = [].slice.call(document.querySelectorAll('.section.sticky'));
         sections.forEach(function (el) {
             var ps = new StickySection(el, {
                 borderAnimation: true,
+                stickyJS: false,
+                // borderAnimation: false,
                 // borderCustomClass: 'customize__sticky-border',
                 stickyElementSelector: '.video'
             });
-            // console.log(ps);
         });
 
         var fadesUps = [].slice.call(document.querySelectorAll('.fadeUpTextCSS'));

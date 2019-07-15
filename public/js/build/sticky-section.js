@@ -3,6 +3,7 @@
     this.element = null;
     this.stickyElement = null;
     this.borderAnimationEl = {};
+    this.ticking = false;
 
     // get element as first argument
     if (arguments[0]) {
@@ -12,8 +13,10 @@
     var defaults = {
       offset: 0,
       stickyElementSelector: '.sticky-element',
+      stickyJS: true,
       borderAnimation: false,
       borderCustomClass: '',
+      requestAnimationFrame: false
     };
 
     // Create options by extending defaults with the passed in arugments
@@ -52,15 +55,34 @@
       }
       
       this.element.insertBefore(this.borderAnimationEl.el, this.element.firstChild);
-      // this.element.insertBefore(this.borderAnimationEl.bl, this.element.firstChild);
-      // this.element.insertBefore(this.borderAnimationEl.bb, this.element.firstChild);
-      // this.element.insertBefore(this.borderAnimationEl.br, this.element.firstChild);
-      // this.element.insertBefore(this.borderAnimationEl.bt, this.element.firstChild);
+    }
+
+    if ( this.options.stickyJS ) {
+      addClass( this.element, 'sticky-js' );
+    } else {
+      var wrapper = document.createElement('div');
+      wrapper.className = 'sticky-element__wrapper';
+      wrapper.style.position = 'absolute';
+      wrapper.style.top = '0';
+      wrapper.style.right = '0';
+      wrapper.style.bottom = '0';
+      wrapper.style.left = '0';
+      wrapper.style.zIndex = '0';
+      addClass( this.element, 'sticky-css' );
+      if ( this.stickyElement ) {
+        wrap( this.stickyElement, wrapper );
+      }
     }
 
     // first load check
     handleSticky.call(this);
-    window.addEventListener('scroll', handleSticky.bind(this));
+    if ( this.options.requestAnimationFrame ) {
+      // debounce method
+      window.addEventListener('scroll', handleScroll.bind(this));
+    } else {
+      // classic method
+      window.addEventListener('scroll', handleSticky.bind(this));
+    }
   }
 
   // private shared vars
@@ -71,10 +93,30 @@
   var totTransform = transformCrossbrowser.length;
 
   /**
+   * Handling the scrolling with the aid of the request animation frame
+   * Performance controversial
+   */
+  function handleScroll(event) {
+    requestTicking.call(this);
+  }
+
+  /**
+   * If not ticketing, request the animation frame to handle the sticky section
+   * Performance controversial
+   */
+  function requestTicking() {
+    if ( !this.ticking ) {
+      requestAnimationFrame( handleSticky.bind(this) );
+    }
+    this.ticking = true;
+  }
+
+  /**
    * Handling the scrolling of the viewport and the parallax logic
    * @param {ScrollEvent} event scroll event, if present
    */
   function handleSticky(event) {
+    this.ticking = false;
     // var windowInnerHeight = document.documentElement.clientHeight;
 
     var windowScrollTop = scrollDocumentPositionTop();
@@ -95,33 +137,30 @@
     var beforeViewport = windowScrollTop <= elScrollTop;
     var afterViewport = windowScrollBottom >= elScrollBottom;
 
-    // console.log('viewport', windowScrollTop,windowScrollBottom);
-    // console.log('element', elScrollTop,elScrollBottom);
+    if ( this.options.stickyJS ) {
+      // stick section
+      if ( topViewport && bottomViewport ) {
+        // stick dynamic
 
-    // stick section
-    if ( topViewport && bottomViewport ) {
-      // stick dynamic
+        var val = windowScrollTop - elScrollTop;
+        // stickElement.call( this, val );
+        stickElementTransform.call( this, val );
 
-      var val = windowScrollTop - elScrollTop;
-      stickElement.call( this, val );
-      // console.log(this.element.id,val,'dynamic');
-      // this.stickyElement.style.position = 'fixed';
-      // this.stickyElement.style.top = '0';
-    } else {
-      if ( beforeViewport ) {
-        // console.log(this.element.id,'top');
-
-        // stick to top of the parent
-        // this.stickyElement.style.position = 'absolute';
-        stickElement.call( this, 0 );
-      } else if ( afterViewport ) {
-        // stick at the end of the parent
-
-        // console.log(this.element.id,'bottom');
-        // this.stickyElement.style.position = 'absolute';
-        stickElement.call( this, elHeight - windowInnerHeight );
-      }
+        addClass(this.element, 'will-change-rule');
+      } else {
+        removeClass( this.element, 'will-change-rule' );
+        if ( beforeViewport ) {
+          // stick to top of the parent
+          // stickElement.call( this, 0 );
+          stickElementTransform.call( this, 0 );
+        } else if ( afterViewport ) {
+          // stick at the end of the parent
+          // stickElement.call( this, elHeight - windowInnerHeight );
+          stickElementTransform.call( this, elHeight - windowInnerHeight );
+        }
+      }      
     }
+
 
     // check if is visible
     var bottomInViewport = elScrollBottom > windowScrollTop;
@@ -175,6 +214,17 @@
     this.stickyElement.style.top = topVal + 'px';
     if ( 'undefined' !== typeof bottomVal ) {
       this.stickyElement.style.bottom = bottomVal + 'px';
+    }
+  }
+
+  /**
+   * Translate the element to stick, so it remains on 
+   * the top viewport
+   * @param {Float} topVale value in pixel
+   */
+  function stickElementTransform( topVal ) {
+    for( var i=0; i < totTransform; i++ ) {
+      this.stickyElement.style[transformCrossbrowser[i]] = 'translate(0px,' + topVal + 'px)';
     }
   }
 
@@ -235,6 +285,16 @@
     scrollTop = 'undefined' !== typeof scrollTop ? scrollTop : (window.pageYOffset || document.documentElement.scrollTop);
     var rect = el.getBoundingClientRect();
     return rect.top + scrollTop;
+  }
+
+  /**
+   * Wrap an element inside another
+   * @param {Node} el element to wrap
+   * @param {Node} wrapper new element that will contain the old one
+   */
+  function wrap(el, wrapper) {
+    el.parentNode.insertBefore(wrapper, el);
+    wrapper.appendChild(el);
   }
 
   // Utility method to extend defaults with user options

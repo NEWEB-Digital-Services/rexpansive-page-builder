@@ -692,11 +692,29 @@ var Rexbuilder_App = (function($) {
    */
   var launchStickySections = function() {
     if ( 'undefined' !== typeof StickySection ) {
-      var stickySections = [].slice.call(document.querySelectorAll('.sticky-section'));
+      var stickyJS = !( Rexbuilder_Util.cssPropertyValueSupported( 'position', 'sticky' ) || Rexbuilder_Util.cssPropertyValueSupported( 'position', '-webkit-sticky' ) );
+      var stickySections = [].slice.call( document.querySelectorAll( '.sticky-section' ) );
       stickySections.forEach(function (el, index) {
+        var stickyElementSelector = '';
+        if ( Rexbuilder_Util.has_class( el, 'mp4-player' ) ) {
+          stickyElementSelector = '.rex-video-wrap';
+        } else if ( '' !== el.style.backgroundImage ) {
+          stickyElementSelector = '.sticky-background-simulator';
+          var adjacent = el.querySelector('.responsive-overlay');
+          adjacent.insertAdjacentHTML('beforebegin', '<div class="sticky-background-simulator"></div>');
+          var backgroundSimulator = el.querySelector('.sticky-background-simulator');
+          backgroundSimulator.style.backgroundImage = el.style.backgroundImage;
+        } else if ( Rexbuilder_Util.has_class( el, 'section-w-image' ) ) {
+          stickyElementSelector = '.sticky-background-simulator';
+          var adjacent = el.querySelector('.responsive-overlay');
+          adjacent.insertAdjacentHTML('beforebegin', '<div class="sticky-background-simulator"></div>');
+          var backgroundSimulator = el.querySelector('.sticky-background-simulator');
+          backgroundSimulator.style.backgroundImage = 'url(' + el.querySelector('.section-data').getAttribute('data-image_bg_section') + ')';
+        }
         var stickySection = new StickySection(el, {
           borderAnimation: true,
-          stickyElementSelector: '.rex-video-wrap'
+          stickyJS: stickyJS,
+          stickyElementSelector: stickyElementSelector
         });
       });
     }
