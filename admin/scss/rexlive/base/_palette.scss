@@ -5,6 +5,21 @@
   padding-top: 10px;
 }
 
+.sp-picker-container {
+  .palette-list {
+    max-width: 200px;
+    flex-wrap: wrap;
+    margin-bottom: -10px;
+  }
+  .palette-item,
+  .palette__add-color {
+    margin-bottom: 10px;
+  }
+  .palette__gradient-default {
+    margin-bottom: 0;
+  }
+}
+
 .palette-item {
   box-sizing: border-box;
   width: 20px;

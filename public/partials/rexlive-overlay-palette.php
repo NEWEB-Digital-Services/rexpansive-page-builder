@@ -14,7 +14,7 @@ $saved_palette = get_option( '_rex_overlay_palette', array() );
 ?>
 <div class="bl_modal-row sp-rex-palette-wrap sp-rex-color-overlay-palette">
     <div class="bl_d-flex bl_jc-sb">
-        <div class="bl_modal__option-wrap bl_d-iflex palette-list">
+        <div class="bl_modal__option-wrap bl_d-iflex bl_ai-c palette-list">
             <?php
             foreach( $saved_palette as $ID => $overlay ) {
                 ?>

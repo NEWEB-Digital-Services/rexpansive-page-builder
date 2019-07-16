@@ -814,16 +814,20 @@ var Rexbuilder_Block_Editor = (function($) {
       showAlpha: true,
       showInput: true,
       showButtons: false,
-      show: function() {
-        flagPickerUsed = false;
-        Rexbuilder_Util_Editor.manageElement = true;
-        $picker.parents('.tool-button-floating').addClass('tool-button-floating--active');
-
+      beforeShow: function() {
         Rexbuilder_Color_Palette.show({
           $target: $picker,
           action: "background",
           object: "block"
         });
+      },
+      show: function() {
+        // fix picker position
+        _fixPickerContainerPosition( $picker );
+
+        flagPickerUsed = false;
+        Rexbuilder_Util_Editor.manageElement = true;
+        $picker.parents('.tool-button-floating').addClass('tool-button-floating--active');
       },
       move: function(color) {
         settings.data_to_send.color = settings.data_to_send.active
@@ -945,15 +949,20 @@ var Rexbuilder_Block_Editor = (function($) {
       showAlpha: true,
       showInput: true,
       showButtons: false,
-      show: function() {
-        flagPickerUsed = false;
-        Rexbuilder_Util_Editor.manageElement = true;
-        $picker.parents('.tool-button-floating').addClass('tool-button-floating--active');
+      beforeShow: function() {
         Rexbuilder_Overlay_Palette.show({
           $target: $picker,
           action: "overlay",
           object: "block"
         });
+      },
+      show: function() {
+        // fix picker position
+        _fixPickerContainerPosition( $picker );
+
+        flagPickerUsed = false;
+        Rexbuilder_Util_Editor.manageElement = true;
+        $picker.parents('.tool-button-floating').addClass('tool-button-floating--active');
       },
       move: function(color) {
         settings.data_to_send.active = true;
@@ -1379,7 +1388,30 @@ var Rexbuilder_Block_Editor = (function($) {
         .parent()
         .addClass('tool-button--hide');
     }
-  }
+  };
+
+  /**
+   * Fix the picker container positon to a correctly view
+   * @since 2.0.0
+   */
+  var _fixPickerContainerPosition = function( $picker ) {
+    var container = $picker.spectrum('container')[0];
+    var containerInfo = container.getBoundingClientRect();
+    var topPosition = containerInfo.top
+    var pickerInfo = $picker[0].parentNode.getBoundingClientRect();
+
+    var leftPosition = parseInt( container.style.left );
+
+    if( topPosition + containerInfo.height == pickerInfo.top ) {
+      container.style.top = ( parseInt( container.style.top ) - 10 ) + 'px';
+    } else if ( topPosition == pickerInfo.top + pickerInfo.height ) {
+      container.style.top = ( parseInt( container.style.top ) + 10 ) + 'px';
+    }
+
+    if ( leftPosition + container.offsetWidth + 15 >= document.body.offsetWidth ) {
+      container.style.left = ( leftPosition - 75 ) + 'px';
+    }
+  };
 
   /**
    * Initing the block toolbar

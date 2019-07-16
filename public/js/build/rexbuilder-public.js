@@ -101,11 +101,7 @@ var Rexbuilder_App = (function($) {
       $linksToSmooth = $linksToSmooth.not(_filterLinksToSmooth);
 
       $linksToSmooth.click(function() {
-        if (
-          location.pathname.replace(/^\//, "") ==
-            this.pathname.replace(/^\//, "") &&
-          location.hostname == this.hostname
-        ) {
+        if ( location.pathname.replace(/^\//, "") == this.pathname.replace(/^\//, "") && location.hostname == this.hostname ) {
           var target = $(this.hash);
           target = target.length
             ? target
@@ -694,6 +690,7 @@ var Rexbuilder_App = (function($) {
     if ( 'undefined' !== typeof StickySection ) {
       var stickyJS = !( Rexbuilder_Util.cssPropertyValueSupported( 'position', 'sticky' ) || Rexbuilder_Util.cssPropertyValueSupported( 'position', '-webkit-sticky' ) );
       var stickySections = [].slice.call( document.querySelectorAll( '.sticky-section' ) );
+
       stickySections.forEach(function (el, index) {
         var stickyElementSelector = '';
         if ( Rexbuilder_Util.has_class( el, 'mp4-player' ) ) {
@@ -711,6 +708,7 @@ var Rexbuilder_App = (function($) {
           var backgroundSimulator = el.querySelector('.sticky-background-simulator');
           backgroundSimulator.style.backgroundImage = 'url(' + el.querySelector('.section-data').getAttribute('data-image_bg_section') + ')';
         }
+
         var stickySection = new StickySection(el, {
           borderAnimation: true,
           stickyJS: stickyJS,

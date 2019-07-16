@@ -39,6 +39,9 @@ var Rexlive_Text_Gradient = (function($) {
         clickoutFiresChange: true,
         preferredFormat: "hex",
         show: function() {
+          var container = $el.spectrum('container')[0];
+          container.style.top = ( parseInt( container.style.top ) + 10 ) + 'px';
+
           this.setAttribute("data-revert", false);
           this.setAttribute("data-color-on-show", $el.spectrum("get").toRgbString());
         },

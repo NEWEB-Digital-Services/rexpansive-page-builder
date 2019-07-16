@@ -69,8 +69,7 @@ var Background_Block_Color_Modal = (function($) {
       showAlpha: true,
       showInput: true,
       showButtons: false,
-      containerClassName:
-        "rexbuilder-materialize-wrap block-background-color-picker",
+      containerClassName: "rexbuilder-materialize-wrap block-background-color-picker",
       show: function() {
         flagPickerUsed = false;
       },

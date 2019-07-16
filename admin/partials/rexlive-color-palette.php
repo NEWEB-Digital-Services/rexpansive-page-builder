@@ -14,7 +14,7 @@ $saved_palette = get_option( '_rex_color_palette', array() );
 ?>
 <div class="sp-rex-palette-wrap sp-rex-color-palette">
     <div class="bl_d-flex bl_jc-sb">
-        <div class="bl_d-iflex palette-list">
+        <div class="bl_d-iflex bl_ai-c palette-list">
             <?php
             foreach( $saved_palette as $ID => $color ) {
                 ?>

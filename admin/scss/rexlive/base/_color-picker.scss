@@ -1,9 +1,5 @@
 :not(.sp-container-default) {
   .sp-container {
-    border: none;
-  }
-
-  .sp-container {
     box-shadow: $tools-area-shadow;
     overflow: visible;
     background-color: #ffffff;

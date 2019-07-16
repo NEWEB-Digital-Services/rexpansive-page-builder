@@ -1437,16 +1437,21 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       showAlpha: true,
       showInput: true,
       showButtons: false,
-      show: function() {
-        bgColorPickerUsed = false;
-        eventSettings.data_to_send.sectionTarget.sectionID = $highlightSectionId.val();
-        eventSettings.data_to_send.sectionTarget.modelNumber = $highlightModelId.val();
-        bgColorActive = JSON.parse( hightlightRowInfo.color_bg_section_active );
+      beforeShow: function() {
         Rexlive_Color_Palette.show({
           $target: $fastRowSetBkgrCol,
           object: "section",
           action: "background"
         });
+      },
+      show: function() {
+        var container = $highlightRowSetBackgroundColor.spectrum('container')[0];
+        container.style.top = ( parseInt( container.style.top ) + 10 ) + 'px';
+        
+        bgColorPickerUsed = false;
+        eventSettings.data_to_send.sectionTarget.sectionID = $highlightSectionId.val();
+        eventSettings.data_to_send.sectionTarget.modelNumber = $highlightModelId.val();
+        bgColorActive = JSON.parse( hightlightRowInfo.color_bg_section_active );
       },
       change: function() {
         //
@@ -1513,16 +1518,21 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       showAlpha: true,
       showInput: true,
       showButtons: false,
-      show: function() {
-        overlayPickerUsed = false;
-        eventSettings.data_to_send.sectionTarget.sectionID = $highlightSectionId.val();
-        eventSettings.data_to_send.sectionTarget.modelNumber = $highlightModelId.val();
-        overlayColorActive = JSON.parse( hightlightRowInfo.row_overlay_active );
+      beforeShow: function() {
         Rexlive_Overlay_Palette.show({
           $target: $fastRowSetOverlay,
           object: "section",
           action: "overlay"
         });
+      },
+      show: function() {
+        var container = $highlightRowSetOverlay.spectrum('container')[0];
+        container.style.top = ( parseInt( container.style.top ) + 10 ) + 'px';
+
+        overlayPickerUsed = false;
+        eventSettings.data_to_send.sectionTarget.sectionID = $highlightSectionId.val();
+        eventSettings.data_to_send.sectionTarget.modelNumber = $highlightModelId.val();
+        overlayColorActive = JSON.parse( hightlightRowInfo.row_overlay_active );
       },
       move: function(color) {
         eventSettings.data_to_send.active = true;
