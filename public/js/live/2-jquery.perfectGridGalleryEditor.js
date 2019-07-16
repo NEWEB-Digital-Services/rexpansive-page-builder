@@ -1955,15 +1955,16 @@
 
     _fixImageSize: function(elem) {
       var blockContent = elem.querySelector(".grid-item-content");
-      var imageDiv = blockContent.querySelector(".rex-image-wrapper");
-
-      if ( null !== imageDiv && hasClass(imageDiv, "natural-image-background") ) {
-        var imageWidth = isNaN( parseInt( blockContent.getAttribute("data-background_image_width") ) ) ? -1 : parseInt(blockContent.getAttribute("data-background_image_width"));
-        if (imageWidth != -1) {
-          if ( elem.offsetWidth < imageWidth) {
-            addClass(imageDiv, "small-width");
-          } else {
-            removeClass(imageDiv,"small-width");
+      if ( null !== blockContent ) {
+        var imageDiv = blockContent.querySelector(".rex-image-wrapper");
+        if ( null !== imageDiv && hasClass(imageDiv, "natural-image-background") ) {
+          var imageWidth = isNaN( parseInt( blockContent.getAttribute("data-background_image_width") ) ) ? -1 : parseInt(blockContent.getAttribute("data-background_image_width"));
+          if (imageWidth != -1) {
+            if ( elem.offsetWidth < imageWidth) {
+              addClass(imageDiv, "small-width");
+            } else {
+              removeClass(imageDiv,"small-width");
+            }
           }
         }
       }
@@ -3117,9 +3118,6 @@
       var gutter = this.properties.gutter;
       var $textWrap = $( elem.querySelector('.text-wrap') );
 
-      var itemContent = elem.querySelector('.grid-item-content');
-      var imageWrapper = itemContent.querySelector('.rex-image-wrapper');
-
       var w = parseInt( elem.getAttribute('data-gs-width'));
 
       var backgroundHeight = 0;
@@ -3129,13 +3127,26 @@
       var textHeight;
       var emptyBlockFlag = false;
       var backImgType = blockData.getAttribute('data-type_bg_block');
-      var blockHasSlider = -1 !== elem.className.indexOf('block-has-slider');
 
-      var blockIsEmpty = -1 !== itemContent.className.indexOf('empty-content');
+      var itemContent = elem.querySelector('.grid-item-content');
+      var imageWrapper = null;
+      var blockHasSlider = false;
+      var blockIsEmpty = false;
+      var blockHasYoutube = false;
+      var blockHasVideo = false;
+      var blockHasVimeo = false;
+      
+      if ( itemContent ) {
+        imageWrapper = itemContent.querySelector('.rex-image-wrapper');
 
-      var blockHasYoutube = -1 !== itemContent.className.indexOf('youtube-player');
-      var blockHasVideo = -1 !== itemContent.className.indexOf('mp4-player');
-      var blockHasVimeo = -1 !== itemContent.className.indexOf('vimeo-player');
+        blockHasSlider = -1 !== elem.className.indexOf('block-has-slider');
+
+        blockIsEmpty = -1 !== itemContent.className.indexOf('empty-content');
+
+        blockHasYoutube = -1 !== itemContent.className.indexOf('youtube-player');
+        blockHasVideo = -1 !== itemContent.className.indexOf('mp4-player');
+        blockHasVimeo = -1 !== itemContent.className.indexOf('vimeo-player');
+      }
 
       // calculate text content height
       textHeight = this.calculateTextWrapHeight($textWrap);
@@ -3244,17 +3255,17 @@
         );
       }
 
-      console.table({
-        blockRatio: blockRatio,
-        startH: startH,
-        backgroundHeight: backgroundHeight,
-        videoHeight: videoHeight,
-        defaultHeight: defaultHeight,
-        textHeight: textHeight,
-        sliderHeight: sliderHeight,
-        test: startH * this.properties.singleHeight,
-        newH: newH
-      });
+      // console.table({
+      //   blockRatio: blockRatio,
+      //   startH: startH,
+      //   backgroundHeight: backgroundHeight,
+      //   videoHeight: videoHeight,
+      //   defaultHeight: defaultHeight,
+      //   textHeight: textHeight,
+      //   sliderHeight: sliderHeight,
+      //   test: startH * this.properties.singleHeight,
+      //   newH: newH
+      // });
 
       if ( this.properties.oneColumModeActive && !Rexbuilder_Util.windowIsResizing ) {
         return {
@@ -3267,11 +3278,11 @@
         newH = w * sw * blockRatio;
       }
 
-      console.log(newH / this.properties.singleHeight);
-      console.log(Math.round(newH / this.properties.singleHeight));
-      console.log(Math.ceil(newH / this.properties.singleHeight));
-      console.log(Math.floor(newH / this.properties.singleHeight));
-      console.log('@@@@@@@@@@');
+      // console.log(newH / this.properties.singleHeight);
+      // console.log(Math.round(newH / this.properties.singleHeight));
+      // console.log(Math.ceil(newH / this.properties.singleHeight));
+      // console.log(Math.floor(newH / this.properties.singleHeight));
+      // console.log('@@@@@@@@@@');
 
       if (this.settings.galleryLayout == "fixed") {
         if ( emptyBlockFlag ) {
