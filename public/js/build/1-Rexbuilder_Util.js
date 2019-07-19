@@ -3803,7 +3803,7 @@ var Rexbuilder_Util = (function($) {
 
     _updateSectionsID();
     Rexbuilder_Dom_Util.fixModelNumbers();
-    Rexbuilder_Dom_Util.fixModelNumbers();
+    // Rexbuilder_Dom_Util.fixModelNumbers();
 
     var l = chooseLayout();
     _edit_dom_layout(l);

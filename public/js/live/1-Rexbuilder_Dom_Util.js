@@ -1000,7 +1000,7 @@ var Rexbuilder_Dom_Util = (function($) {
 
   var _updateSectionBackgroundColorLive = function(data, color) {
     var $target;
-    console.log($target);
+    console.log(data);
 
     if (data.modelNumber != "") {
       $target = Rexbuilder_Util.$rexContainer
@@ -1011,6 +1011,7 @@ var Rexbuilder_Dom_Util = (function($) {
             data.modelNumber +
             '"]'
         );
+      console.log(Rexbuilder_Util.$rexContainer, $target);
       if( -1 !== $target.css("background").indexOf("linear-gradient") ) {
         $target.css("background","");
       }
@@ -1156,6 +1157,7 @@ var Rexbuilder_Dom_Util = (function($) {
 
   var _updateSectionOverlayColorLive = function(data, color) {
     var $target;
+    console.log(data);
     if (data.modelNumber != "") {
       $target = Rexbuilder_Util.$rexContainer
         .find(
@@ -1194,6 +1196,8 @@ var Rexbuilder_Dom_Util = (function($) {
     var $overlayElem = $section.children(".responsive-overlay");
     var overlayElem = $overlayElem[0];
     var $sectionData = $section.children(".section-data");
+
+    console.log($section);
 
     if( -1 !== getComputedStyle(overlayElem)['background'].indexOf('linear-gradient') ) {
       overlayElem.style.background = '';
@@ -1511,30 +1515,53 @@ var Rexbuilder_Dom_Util = (function($) {
     var models = [];
     var i;
     var flagNumbers;
-    Rexbuilder_Util.$rexContainer
-      .children(".rexpansive_section:not(.removing_section)")
-      .each(function(j, sec) {
-        var $section = $(sec);
-        if ($section.hasClass("rex-model-section")) {
-          var modelID = $section.attr("data-rexlive-model-id");
-          flagNumbers = false;
-          for (i = 0; i < models.length; i++) {
-            if (models[i].id == modelID) {
-              models[i].number = models[i].number + 1;
-              $section.attr("data-rexlive-model-number", models[i].number);
-              flagNumbers = true;
-            }
-          }
-          if (!flagNumbers) {
-            var model = {
-              id: modelID,
-              number: 1
-            };
-            models.push(model);
-            $section.attr("data-rexlive-model-number", model.number);
+    var sections = [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section:not(.removing_section)') );
+    sections.forEach( function( sec, j ) {
+      if ( Rexbuilder_Util.has_class( sec, 'rex-model-section' ) ) {
+        var modelID = sec.getAttribute( 'data-rexlive-model-id' );
+        flagNumbers = false;
+        for (i = 0; i < models.length; i++) {
+          if ( models[i].id == modelID ) {
+            models[i].number = models[i].number + 1;
+            sec.setAttribute( 'data-rexlive-model-number', models[i].number );
+            flagNumbers = true;
           }
         }
-      });
+        if ( !flagNumbers ) {
+          var model = {
+            id: modelID,
+            number: 1
+          };
+          models.push(model);
+          sec.setAttribute( 'data-rexlive-model-number', model.number );
+        }
+      }
+    });
+
+    // Rexbuilder_Util.$rexContainer
+    //   .children(".rexpansive_section:not(.removing_section)")
+    //   .each(function(j, sec) {
+    //     var $section = $(sec);
+    //     if ($section.hasClass("rex-model-section")) {
+    //       var modelID = $section.attr("data-rexlive-model-id");
+    //       flagNumbers = false;
+    //       for (i = 0; i < models.length; i++) {
+    //         if (models[i].id == modelID) {
+    //           models[i].number = models[i].number + 1;
+    //           $section.attr("data-rexlive-model-number", models[i].number);
+    //           flagNumbers = true;
+    //         }
+    //       }
+    //       if (!flagNumbers) {
+    //         var model = {
+    //           id: modelID,
+    //           number: 1
+    //         };
+    //         models.push(model);
+    //         $section.attr("data-rexlive-model-number", model.number);
+    //       }
+    //     }
+    //   });
   };
 
   /**
