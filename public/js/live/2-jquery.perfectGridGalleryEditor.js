@@ -2048,13 +2048,15 @@
                   $dragHandle.addClass("drag-up");
                   $elem.addClass("ui-draggable--drag-up");
 
-                  Rexbuilder_Util_Editor.mouseDownEvent.target = dragHandle;
-                  Rexbuilder_Util_Editor.mouseDownEvent.srcElement = dragHandle;
-                  Rexbuilder_Util_Editor.mouseDownEvent.toElement = dragHandle;
+                  if ( Rexbuilder_Util_Editor.mouseDownEvent ) {
+                    Rexbuilder_Util_Editor.mouseDownEvent.target = dragHandle;
+                    Rexbuilder_Util_Editor.mouseDownEvent.srcElement = dragHandle;
+                    Rexbuilder_Util_Editor.mouseDownEvent.toElement = dragHandle;
+                    Rexbuilder_Util_Editor.elementDraggingTriggered = true;
 
-                  Rexbuilder_Util_Editor.elementDraggingTriggered = true;
+                    $elem.trigger(Rexbuilder_Util_Editor.mouseDownEvent);
+                  }
 
-                  $elem.trigger(Rexbuilder_Util_Editor.mouseDownEvent);
                 }, 125);
 
                 /**
@@ -2644,7 +2646,7 @@
        * and blocking the editing on the rows
        * @since 2.0.0
        */
-      gallery.$element.on('dragstart', '.drag-to-section', function(e) {  // AVVIA L'EVENTO CHE GESTISCE IL DRAG
+      gallery.$element.on('dragstart', '.drag-to-section', function(e) {  // start the event that handles the drag
         if (Rexbuilder_Util_Editor.dragAndDropFromParent) {
           return;
         }
@@ -2658,20 +2660,20 @@
 
         e.originalEvent.dataTransfer.effectAllowed = "all";
 
-        var $originalElement = $(this).parents('.grid-stack-item');         // DEFINISCO LA VARIABILE COLLEGANDOLA AL CONT DELLA ROW
+        var $originalElement = $(this).parents('.grid-stack-item');         // get the original element to drag
         $pholder = $originalElement.clone(false);
-        $pholder.find('.rexbuilder-block-data').remove();                   // RIMUOVO LA CLASS
+        $pholder.find('.rexbuilder-block-data').remove();                   // remove the class
         $pholder.find('.ui-resizable-handle').remove();                     // "              "
         $pholder.find('.rexlive-block-toolbox').remove();                   // "              "
         $pholder.find('.grid-stack-item-content').css('height','100%');
-        $('body').append($pholder);                                         // APPENDO AL <body> L'ELEMENTO CREATO/CLONATO
-        $pholder.css('position','fixed');                                   // Position::FIXED, PER POTERLO MUOVERE SENZA LIMITAZIONI
-        $pholder.css('left',e.clientX);                                     // COORDINATE VERTICALI
-        $pholder.css('top',e.clientY);                                      // COORDINATE ORIZZONTALI
-        $pholder.css('width',$originalElement.width());                     // LUNGHEZZA ORIGINALE DELL'ELEMENTO  (verrà ridimensionato)
-        $pholder.css('height',$originalElement.height());                   // ALTEZZA ORIGINALE DELL'ELEMENTO    (verrà ridimensionato)
-        $pholder.css('transform','scale(0.5)');                             // MODIFICO LA SCALA DEL POPUP IN BASE ALLE DIM. ORIGINALI
-        $pholder.css('transformOrigin','top left');                         // MODIFICO IL PUNTO DI ANCORAGGIO DEL POPUP SUL CONTENITORE
+        $('body').append($pholder);                                         // append to body the created element
+        $pholder.css('position','fixed');                                   // position: fixes, i can move it everywhere
+        $pholder.css('left',e.clientX);                                     // vertical coords
+        $pholder.css('top',e.clientY);                                      // horizontal coords
+        $pholder.css('width',$originalElement.width());                     // original element width
+        $pholder.css('height',$originalElement.height());                   // original element height
+        $pholder.css('transform','scale(0.5)');                             // scale the popup
+        $pholder.css('transformOrigin','top left');                         // move the scale origin point
 
         //console.log("$section\n",gallery.$section);
 

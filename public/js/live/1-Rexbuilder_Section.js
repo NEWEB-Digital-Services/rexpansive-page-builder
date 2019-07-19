@@ -121,6 +121,8 @@ var Rexbuilder_Section = (function($) {
     }
 
     tmpl.arg = "block";
+    var contentEl;
+    var dragHanlderHTML = tmpl("tmpl-block-drag-handle")().trim();
 
     // removing scrollbars and text editor
     $gallery.find(".grid-stack-item").each(function(i, el) {
@@ -148,6 +150,12 @@ var Rexbuilder_Section = (function($) {
           // .after(tmpl("tmpl-toolbox-block-bottom", tools_info))
           // .after(tmpl("tmpl-toolbox-block-floating"));
           .after(tmpl("tmpl-toolbox-block-wrap", tools_info));
+      }
+
+      // add dragging element, to drag blocks
+      if ( null === el.querySelector('.rexlive-block-drag-handle') ) {
+        contentEl = el.querySelector('.grid-item-content');
+        contentEl.insertAdjacentHTML( 'beforebegin', dragHanlderHTML );
       }
     });
 
@@ -957,6 +965,11 @@ var Rexbuilder_Section = (function($) {
       }
     });
 
+    /**
+     * Place a correctly imported row model
+     *
+     * @since 2.0.0
+     */
     Rexbuilder_Util.$document.on("rexlive:applyModelSection", function(e) {
       Rexbuilder_Util_Editor.sectionCopying = true;
       Rexbuilder_Util_Editor.insertingModel = true;
@@ -1178,9 +1191,7 @@ var Rexbuilder_Section = (function($) {
         return;
       }
 
-      var $model_to_import = Rexbuilder_Util.$rexContainer.find(
-        ".import-model"
-      );
+      var $model_to_import = Rexbuilder_Util.$rexContainer.find( ".import-model" );
 
       if ($model_to_import.length == 0) {
         return;
@@ -1220,9 +1231,7 @@ var Rexbuilder_Section = (function($) {
 
             var modelNumber = 1;
             Rexbuilder_Util.$rexContainer
-              .children(
-                ".rexpansive_section.rex-model-section:not(.removing_section)"
-              )
+              .children( ".rexpansive_section.rex-model-section:not(.removing_section)" )
               .each(function(i, sec) {
                 var $sec = $(sec);
                 if ($sec.attr("data-rexlive-model-id") == modelData.modelID) {

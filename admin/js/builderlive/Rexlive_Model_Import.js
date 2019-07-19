@@ -150,7 +150,6 @@
     });
 
     Rexlive_Base_Settings.$document.on("dragend", ".model-list li", function( event ) {
-      console.log('vonde');
       Rexbuilder_Util_Admin_Editor.setScroll(true);
       Rexbuilder_Util_Admin_Editor.releaseIframeRows();
       clearInterval(dragoverqueue_processtimer);
@@ -212,7 +211,6 @@
 
       $rexContainer.on("drop", function(event) {
         if (Rexbuilder_Util_Admin_Editor.dragImportType == "rexmodel") {
-          console.log("mole");
           event.preventDefault();
           event.stopPropagation();
           var e;

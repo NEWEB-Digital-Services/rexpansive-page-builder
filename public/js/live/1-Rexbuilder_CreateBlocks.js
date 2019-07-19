@@ -572,7 +572,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     // Rexbuilder_Util_Editor.removeScrollBar($newBlock);
     Rexbuilder_Util_Editor.removeTextEditor($newBlock);
     Rexbuilder_Util_Editor_Utilities.removeColorPicker($newBlock);
-    galleryEditorInstance._prepareElement($newBlock.eq(0));
+    galleryEditorInstance._prepareElement($newBlock[0]);
     galleryEditorInstance.unFocusElementEditing($newBlock);
 
     var reverseData = {
@@ -690,7 +690,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
       // Rexbuilder_Util_Editor.removeScrollBar($newBlock);
       Rexbuilder_Util_Editor.removeTextEditor($newBlock);
       Rexbuilder_Util_Editor_Utilities.removeColorPicker($newBlock);
-      galleryEditorInstance._prepareElement($newBlock.eq(0));
+      galleryEditorInstance._prepareElement($newBlock[0]);
       galleryEditorInstance.unFocusElementEditing($newBlock);
 
       var reverseData = {
@@ -825,7 +825,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     // Rexbuilder_Util_Editor.removeScrollBar($newBlock);
     Rexbuilder_Util_Editor.removeTextEditor($newBlock);
     Rexbuilder_Util_Editor_Utilities.removeColorPicker($newBlock);
-    galleryEditorInstance._prepareElement($newBlock.eq(0));
+    galleryEditorInstance._prepareElement($newBlock[0]);
     galleryEditorInstance.unFocusElementEditing($newBlock);
 
     var reverseData = {

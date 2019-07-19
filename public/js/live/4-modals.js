@@ -2642,6 +2642,11 @@
       return;
     });
 
+    /**
+     * Handling creation/editing of a model
+     *
+     * @since 2.0.0
+     */
     $document.on("click", ".open-model", function(e) {
       Rexbuilder_Util_Editor.openingModel = true;
       var $section = $(e.target).parents(".rexpansive_section");
@@ -2732,6 +2737,11 @@
       Rexbuilder_Util_Editor.openingModel = false;
     });
 
+    /**
+     * Handling update a model
+     *
+     * @since 2.0.0
+     */
     $document.on("click", ".call-update-model-button", function(e) {
       $(this).parents('.rexpansive_section').find(".update-model-button").trigger("click");
     });
