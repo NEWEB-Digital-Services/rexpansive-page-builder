@@ -39,7 +39,6 @@ class Rexbuilder_Model {
 		extract( shortcode_atts( array(
 			'id' => ''
 		), $atts ) );
-
 		
 		if(isset($id) && $id != ""){
 			ob_start();

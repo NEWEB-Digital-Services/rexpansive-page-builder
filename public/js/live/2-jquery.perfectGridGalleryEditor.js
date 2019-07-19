@@ -765,9 +765,12 @@
 
     getElementBottomTop: function() {
       var nodes = [];
-      this.$element.children(".grid-stack-item").each(function(i, e) {
-        if (!$(e).hasClass("removing_block")) {
-          var el = e;
+      var gs_items = [].slice.call( this.element.querySelectorAll('.grid-stack-item') );
+      var el;
+
+      gs_items.forEach( function(e) {
+        if (! hasClass(e, "removing_block") ) {
+          el = e;
           el.x = parseInt(e["attributes"]["data-gs-x"].value);
           el.y = parseInt(e["attributes"]["data-gs-y"].value);
           el.w = parseInt(e["attributes"]["data-gs-width"].value);
@@ -791,9 +794,12 @@
 
     getElementsTopBottom: function() {
       var nodes = [];
-      this.$element.children(".grid-stack-item").each(function(i, e) {
-        if (!$(e).hasClass("removing_block")) {
-          var el = e;
+      var gs_items = [].slice.call( this.element.querySelectorAll('.grid-stack-item') );
+      var el;
+
+      gs_items.forEach( function(e) {
+        if (! hasClass(e, "removing_block") ) {
+          el = e;
           el.x = parseInt(e["attributes"]["data-gs-x"].value);
           el.y = parseInt(e["attributes"]["data-gs-y"].value);
           nodes.push(el);
@@ -825,7 +831,8 @@
 
     fixElementTextSize: function(block, $handler, event) {
       var $block = $(block);
-      if (!$block.hasClass("block-has-slider")) {
+
+      if ( ! hasClass( block, "block-has-slider" ) ) {
         var $rexScrollbar = $block.find(this.settings.scrollbarWrapClass);
         if ($rexScrollbar.length == 0) {
           return;
@@ -850,7 +857,7 @@
         if($handler === null) {
           if ( $block.find("." + Rexbuilder_Util.scrollbarProperties.className).length === 0 ) {
           } else {
-            // successive modifiche dovute al cambiamento del contenuto
+            // subsequent changes due to the change in content
             // var scrollbarInstance = $rexScrollbar.overlayScrollbars();
             if ( !$rexScrollbar.hasClass( Rexbuilder_Util.scrollbarProperties.className ) || $rexScrollbar.hasClass("os-host-scrollbar-vertical-hidden") ) {
               var maxBlockHeight = $rexScrollbar.parents(".grid-item-content").height();

@@ -339,8 +339,6 @@ defined('ABSPATH') or exit;
                             <select id="rex-button-link-type" class="rx__form-input rexbutton-upd-combobox">
                                 <option value="_blank">_blank</option>
                                 <option value="_self">_self</option>
-                                <option value="_parent">_parent</option>
-                                <option value="_top">_top</option>
                             </select>
                             <!--
                             <div class="rx__form-input__select-arrow">

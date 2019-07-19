@@ -1000,6 +1000,7 @@ var Rexbuilder_Dom_Util = (function($) {
 
   var _updateSectionBackgroundColorLive = function(data, color) {
     var $target;
+    console.log($target);
 
     if (data.modelNumber != "") {
       $target = Rexbuilder_Util.$rexContainer

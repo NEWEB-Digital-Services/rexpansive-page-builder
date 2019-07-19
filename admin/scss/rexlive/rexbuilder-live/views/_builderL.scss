@@ -181,14 +181,18 @@
   margin-bottom: 0px;
 }
 
-.builder-edit-slider {
-  display: none;
+.grid-stack-item {
+  .tool-button {
+    &.builder-edit-slider {
+      display: none;
+    }
+  }
+  &.block-has-slider .builder-edit-slider {
+    display: block;
+    left: 50%;
+  }
 }
 
-.block-has-slider .builder-edit-slider {
-  display: block;
-  left: 50%;
-}
 
 .nav-editor-mode-disable {
   display: none;

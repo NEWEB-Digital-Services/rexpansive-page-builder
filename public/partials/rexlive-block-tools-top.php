@@ -19,7 +19,7 @@ defined( 'ABSPATH' ) or exit;
             <div class="tool-button tool-button--inline edit-block-content<?php echo ( "" !== trim( $content ) ? ' tool-button--hide' : '' ); ?> tippy" data-tippy-content="<?php _e('Text','rexpansive'); ?>">
                 <?php Rexbuilder_Utilities::get_icon('#B003-Text'); ?>
             </div>
-            <div class="tool-button tool-button--inline builder-edit-slider<?php echo ( !$block_has_slider ? ' tool-button--hide' : '' ); ?> tippy" data-tippy-content="<?php _e('RexSlider','rexpansive'); ?>">
+            <div class="tool-button tool-button--inline builder-edit-slider tippy" data-tippy-content="<?php _e('RexSlider','rexpansive'); ?>">
                 <?php Rexbuilder_Utilities::get_icon('#Z003-RexSlider'); ?>
             </div><!-- // rexslider -->
         </div>

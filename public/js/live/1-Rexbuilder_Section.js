@@ -1386,6 +1386,11 @@ var Rexbuilder_Section = (function($) {
     });
   };
 
+  /**
+   * Update Models HTML live when something change
+   *
+   * @since 2.0.0
+   */
   var _updateModelsHtmlLive = function(data) {
     Rexbuilder_Util_Editor.sectionCopying = true;
     Rexbuilder_Util_Editor.insertingModel = true;
@@ -1398,10 +1403,7 @@ var Rexbuilder_Section = (function($) {
       .children(".rexpansive_section.rex-model-section:not(.removing_section)")
       .each(function(i, sec) {
         var $section = $(sec);
-        if (
-          $section.attr("data-rexlive-model-id") == idModel &&
-          $section.attr("data-rexlive-model-number") != editedModelNumber
-        ) {
+        if ( sec.getAttribute("data-rexlive-model-id") == idModel && sec.getAttribute("data-rexlive-model-number") != editedModelNumber ) {
           var oldSectionModelSavedNumber = isNaN(
             parseInt($section.attr("data-rexlive-model-number"))
           )
@@ -1449,6 +1451,9 @@ var Rexbuilder_Section = (function($) {
           var $row = $newSection.find(".grid-stack-row");
 
           $row.perfectGridGalleryEditor();
+
+          // Launching and Updating tools
+          Rexbuilder_Util_Editor.updateModelSectionTools( $newSection, $newSectionData );
 
           Rexbuilder_Util.$rexContainer.sortable("refresh");
           Rexbuilder_Dom_Util.updateSectionVisibility($section, false);

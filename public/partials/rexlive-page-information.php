@@ -20,11 +20,11 @@ $sectionsIDsUsed = json_decode($sectionsIDsJSON, true);
 $rexbuilderShortcode = get_post_meta($post->ID, '_rexbuilder_shortcode', true);
 
 if ($rexbuilderShortcode == "") {
-    if( has_shortcode( $post->post_content, "RexpansiveSection" ) ) {
+    if( has_shortcode( $post->post_content, "RexpansiveSection" ) || has_shortcode( $post->post_content, "RexModel" ) ) {
         $rexbuilderShortcode = $post->post_content;
     }
 } else {
-    if( !has_shortcode( $rexbuilderShortcode, "RexpansiveSection" ) ) {
+    if( !has_shortcode( $rexbuilderShortcode, "RexpansiveSection" ) && !has_shortcode( $rexbuilderShortcode, "RexModel" ) ) {
         $rexbuilderShortcode = "";
     }
 }
