@@ -254,7 +254,7 @@ var Rexbuilder_Block_Editor = (function($) {
 
       var event = jQuery.Event("rexlive:apply_background_image_block");
       event.settings = settings;
-      $(document).trigger(event);
+      Rexbuilder_Util.$document.trigger(event);
     });
 
     /**
@@ -295,7 +295,7 @@ var Rexbuilder_Block_Editor = (function($) {
 
       var event = jQuery.Event("rexlive:apply_background_color_block");
       event.settings = settings;
-      $(document).trigger(event);
+      Rexbuilder_Util.$document.trigger(event);
     });
 
     /**
@@ -334,7 +334,7 @@ var Rexbuilder_Block_Editor = (function($) {
 
       var event = jQuery.Event("rexlive:change_block_overlay");
       event.settings = settings;
-      $(document).trigger(event);
+      Rexbuilder_Util.$document.trigger(event);
     });
 
     /**
@@ -376,7 +376,7 @@ var Rexbuilder_Block_Editor = (function($) {
 
       var event = jQuery.Event("rexlive:update_block_background_video");
       event.settings = settings;
-      $(document).trigger(event);
+      Rexbuilder_Util.$document.trigger(event);
     });
 
     /**
@@ -846,7 +846,7 @@ var Rexbuilder_Block_Editor = (function($) {
 
         var event = jQuery.Event("rexlive:change_block_bg_color");
         event.settings = settings;
-        $(document).trigger(event);
+        Rexbuilder_Util.$document.trigger(event);
 
         flagPickerUsed = true;
       },
@@ -869,7 +869,7 @@ var Rexbuilder_Block_Editor = (function($) {
 
         var event = jQuery.Event("rexlive:apply_background_color_block");
         event.settings = settings;
-        $(document).trigger(event);
+        Rexbuilder_Util.$document.trigger(event);
       },
     });
 
@@ -995,7 +995,7 @@ var Rexbuilder_Block_Editor = (function($) {
         }
         
         event.settings = settings;
-        $(document).trigger(event);
+        Rexbuilder_Util.$document.trigger(event);
 
         flagPickerUsed = true;
       },
@@ -1015,7 +1015,7 @@ var Rexbuilder_Block_Editor = (function($) {
 
           var event = jQuery.Event("rexlive:change_block_overlay");
           event.settings = settings;
-          $(document).trigger(event);
+          Rexbuilder_Util.$document.trigger(event);
         }
 
         Rexbuilder_Util_Editor.hideAllTools();

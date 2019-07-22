@@ -56,7 +56,8 @@ define( 'REXPANSIVE_BUILDER_TMPL_FOLDER', 'rexpansive-builder' );
  * This action is documented in includes/class-rexbuilder-activator.php
  */
 function activate_rexbuilder() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-rexbuilder-activator.php';
+	require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-import-xml-content.php';
+	require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-activator.php';
 	Rexbuilder_Activator::activate( 'rexpansive-builder' );
 }
 
@@ -65,7 +66,7 @@ function activate_rexbuilder() {
  * This action is documented in includes/class-rexbuilder-deactivator.php
  */
 function deactivate_rexbuilder() {
-	require_once plugin_dir_path( __FILE__ ) . 'includes/class-rexbuilder-deactivator.php';
+	require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-deactivator.php';
 	Rexbuilder_Deactivator::deactivate();
 }
 
@@ -76,7 +77,7 @@ register_deactivation_hook( __FILE__, 'deactivate_rexbuilder' );
  * The core plugin class that is used to define internationalization,
  * admin-specific hooks, and public-facing site hooks.
  */
-require plugin_dir_path( __FILE__ ) . 'includes/class-rexbuilder.php';
+require REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder.php';
 
 /**
  * Begins execution of the plugin.

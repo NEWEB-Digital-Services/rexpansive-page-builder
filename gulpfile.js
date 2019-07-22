@@ -612,6 +612,7 @@ var live_folder_name = 'rexpansive-builder';
 var live_file_map = [
 	'admin/ace/**/*',
 	'admin/css/**/*',
+	'admin/default-models/**/*',
 	'admin/font-awesome-4.3.0/**/*',
 	'admin/grapick/**/*',
 	'admin/img/**/*.*',

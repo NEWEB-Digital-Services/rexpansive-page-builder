@@ -31,7 +31,7 @@ defined('ABSPATH') or exit;
 <div class="rex-modal-wrap rex-fade">
     <div id="rex-rxcf-editor" class="rexbuilder-materialize-wrap rex-modal rex-modal-draggable z-depth-4">
         <div class="modal-content">
-            <?php include 'rexbuilder-modal-loader.php';?>
+            <?php include 'modals/rexlive-loader-modal.php';?>
             <div class="rex-modal-content__modal-area">
                 <textarea name="rex-rxcf-editor_input" id="rex-rxcf-editor_input" cols="30" rows="10" style="height:200px"></textarea>
             </div>
@@ -951,7 +951,7 @@ defined('ABSPATH') or exit;
     <div id="rex-slider-block" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
         <div class="modal-content">
 
-            <?php include 'rexbuilder-modal-loader.php';?>
+            <?php include 'modals/rexlive-loader-modal.php';?>
 
             <div class="rex-slider__slide-list rex-modal-content__modal-area">
                 <div class="col rex-slider__slide rex-modal-content__modal-area__row" data-slider-slide-id="0" data-block_type="slide">
@@ -1193,7 +1193,7 @@ wp_reset_postdata();
     <div id="rex-model-block" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable z-depth-4">
         <div class="modal-content">
 
-            <?php include 'rexbuilder-modal-loader.php';?>
+            <?php include 'modals/rexlive-loader-modal.php';?>
 
             <div class="rex-model__add-model__wrap rex-modal-content__modal-area--bordered rex-modal-content__modal-area" style="display:flex;">
                 <div id="rex-model__name__wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix" style="width:100%;">

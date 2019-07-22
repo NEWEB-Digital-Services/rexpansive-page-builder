@@ -300,6 +300,12 @@ class Rexbuilder_Utilities {
 		}, $array );
 	}
 
+	/**
+	 * Checks if rexpansive builder is active on a specific post
+	 * 
+	 * @return Boolean
+	 * @since  2.0.0
+	 */
 	public static function public_builder_active_on_this_post_type( ) {
 		$post_to_activate = get_option('rexpansive-builder_options');
         $this_post_type = get_post_type();

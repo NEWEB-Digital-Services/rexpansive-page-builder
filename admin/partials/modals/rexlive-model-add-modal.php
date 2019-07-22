@@ -16,7 +16,7 @@ defined('ABSPATH') or exit;
         </div>
         <div class="modal-content">
 
-            <?php include 'rexbuilder-modal-loader.php';?>
+            <?php include 'rexlive-loader-modal.php';?>
 
             <div class="rex-model__add-model__wrap rex-modal-content__modal-area" style="display:flex;">
                 <div id="rex-model__name__wrap" class="input-field col input-field--small" style="width:100%;">

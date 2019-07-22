@@ -3505,6 +3505,60 @@ var Rexbuilder_Util = (function($) {
       return new RegExp("(^| )" + c + "( |$)", "gi").test(el.className);
     }
   };
+
+  /**
+   * Javascript crossbrowser add class method
+   * @param {Node}
+   * @param {string}
+   * @since  2.0.0
+   */
+  var _add_class = function(el, c) {
+    if (el.classList) {
+      el.classList.add(c);
+    } else {
+      el.className += ' ' + c;
+    }
+  };
+
+  /**
+   * Javascript crossbrowser remove class method
+   * @param  {Node}
+   * @param  {string}
+   */
+  var _remove_class = function(el, cl) {
+    if (el.classList) {
+      el.classList.remove(cl);
+    } else {
+      el.className = el.className.replace(new RegExp('(^|\\b)' + cl.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
+    }
+  }
+
+  /**
+   * Search for parent ancestor element
+   * @param  {Node}
+   * @param  {String}
+   * @return {Node|null}
+   */
+  var _parents = function( el, selector ) {
+    while( el.parentNode ) {
+      if ( _matches( el, selector ) ) {
+        return el;
+      }
+      el = el.parentNode;
+    }
+    return null;
+  }
+
+  /**
+   * Checks if an element matches a selector class
+   * @param  {Node}
+   * @param  {String}
+   * @return {Boolean}
+   */
+  var _matches = function(el, selector) {
+    return (el.matches || el.matchesSelector || el.msMatchesSelector || el.mozMatchesSelector || el.webkitMatchesSelector || el.oMatchesSelector).call(el, selector);
+  };
+
   var _transitionEvent = "";
   var _animationEvent = "";
 
@@ -3803,7 +3857,6 @@ var Rexbuilder_Util = (function($) {
 
     _updateSectionsID();
     Rexbuilder_Dom_Util.fixModelNumbers();
-    // Rexbuilder_Dom_Util.fixModelNumbers();
 
     var l = chooseLayout();
     _edit_dom_layout(l);

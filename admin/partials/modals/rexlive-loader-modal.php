@@ -4,6 +4,7 @@
  *
  * @link       htto://www.neweb.info
  * @since      1.0.10
+ * @version 2.0.0 Moved to a folder with only modals partials 
  *
  * @package    Rexbuilder
  * @subpackage Rexbuilder/admin/partials

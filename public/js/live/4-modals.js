@@ -1967,7 +1967,7 @@
       );
     });
 
-    $(document).on("Buttons: rexlive:update_button_page", function(e) {
+    $document.on("Buttons: rexlive:update_button_page", function(e) {
       var data = e.settings.data_to_send;
       var reverseData = {
         buttonProperties: jQuery.extend(true, {}, data.reverseButtonData)

@@ -13,7 +13,7 @@ defined('ABSPATH') or exit;
     <div id="rex-slider-block" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
         <?php Rexbuilder_Utilities::close_button(); ?>
         <div class="modal-content">
-            <?php include 'rexbuilder-modal-loader.php';?>
+            <?php include 'rexlive-loader-modal.php';?>
             <div class="rex-slider__import--wrap rex-modal-content__modal-area--bordered">
             <?php
             // WP_Query arguments
