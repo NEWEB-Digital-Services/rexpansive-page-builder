@@ -457,6 +457,14 @@ var Rexbuilder_Section_Editor = (function($) {
         flagPickerUsed = false;
         $section.addClass('activeRowTools');
         $picker.parents('.tool-button-floating').addClass('tool-button-floating--active');
+
+        var $this_picker = $(this);
+        var $this_picker_section = $this_picker.parents('.rexpansive_section');
+
+        settings.data_to_send.sectionTarget.sectionID = $this_picker_section.attr("data-rexlive-section-id");
+        settings.data_to_send.sectionTarget.modelNumber = typeof $this_picker_section.attr("data-rexlive-model-number") != "undefined"
+        ? $this_picker_section.attr("data-rexlive-model-number")
+        : "";
       },
       move: function(color) {
         settings.data_to_send.color = bgColorActive
@@ -576,6 +584,14 @@ var Rexbuilder_Section_Editor = (function($) {
         flagPickerUsed = false;
         $section.addClass('activeRowTools');
         $picker.parents('.tool-button-floating').addClass('tool-button-floating--active');
+
+        var $this_picker = $(this);
+        var $this_picker_section = $this_picker.parents('.rexpansive_section');
+
+        changeColorEvent.data_to_send.sectionTarget.sectionID = $this_picker_section.attr("data-rexlive-section-id");
+        changeColorEvent.data_to_send.sectionTarget.modelNumber = typeof $this_picker_section.attr("data-rexlive-model-number") != "undefined"
+        ? $this_picker_section.attr("data-rexlive-model-number")
+        : "";
       },
       move: function(color) {
         changeColorEvent.data_to_send.active = true;

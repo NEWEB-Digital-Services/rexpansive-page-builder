@@ -1454,6 +1454,7 @@ var Rexbuilder_Section = (function($) {
 
           // Launching and Updating tools
           Rexbuilder_Util_Editor.updateModelSectionTools( $newSection, $newSectionData );
+          Rexbuilder_Util_Editor.launchTooltips();
 
           Rexbuilder_Util.$rexContainer.sortable("refresh");
           Rexbuilder_Dom_Util.updateSectionVisibility($section, false);

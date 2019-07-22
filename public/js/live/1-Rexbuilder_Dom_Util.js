@@ -1000,7 +1000,7 @@ var Rexbuilder_Dom_Util = (function($) {
 
   var _updateSectionBackgroundColorLive = function(data, color) {
     var $target;
-    console.log(data);
+    // console.log(data);
 
     if (data.modelNumber != "") {
       $target = Rexbuilder_Util.$rexContainer
@@ -1011,7 +1011,7 @@ var Rexbuilder_Dom_Util = (function($) {
             data.modelNumber +
             '"]'
         );
-      console.log(Rexbuilder_Util.$rexContainer, $target);
+      // console.log(Rexbuilder_Util.$rexContainer, $target);
       if( -1 !== $target.css("background").indexOf("linear-gradient") ) {
         $target.css("background","");
       }
@@ -1157,7 +1157,7 @@ var Rexbuilder_Dom_Util = (function($) {
 
   var _updateSectionOverlayColorLive = function(data, color) {
     var $target;
-    console.log(data);
+    // console.log(data);
     if (data.modelNumber != "") {
       $target = Rexbuilder_Util.$rexContainer
         .find(
@@ -1197,7 +1197,7 @@ var Rexbuilder_Dom_Util = (function($) {
     var overlayElem = $overlayElem[0];
     var $sectionData = $section.children(".section-data");
 
-    console.log($section);
+    // console.log($section);
 
     if( -1 !== getComputedStyle(overlayElem)['background'].indexOf('linear-gradient') ) {
       overlayElem.style.background = '';
