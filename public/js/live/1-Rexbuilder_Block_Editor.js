@@ -828,6 +828,16 @@ var Rexbuilder_Block_Editor = (function($) {
         flagPickerUsed = false;
         Rexbuilder_Util_Editor.manageElement = true;
         $picker.parents('.tool-button-floating').addClass('tool-button-floating--active');
+
+        var $this_picker = $(this);
+        var $this_picker_block = $this_picker.parents('.grid-stack-item');
+        var $this_picker_section = $this_picker_block.parents('.rexpansive_section');
+
+        settings.data_to_send.target.rexID = $this_picker_block.attr("data-rexbuilder-block-id");
+        settings.data_to_send.target.sectionID = $this_picker_section.attr("data-rexlive-section-id");
+        settings.data_to_send.target.modelNumber = typeof $this_picker_section.attr("data-rexlive-model-number") != "undefined"
+        ? $this_picker_section.attr("data-rexlive-model-number")
+        : "";
       },
       move: function(color) {
         settings.data_to_send.color = settings.data_to_send.active
@@ -848,8 +858,8 @@ var Rexbuilder_Block_Editor = (function($) {
         if (flagPickerUsed) {
           colorActive = color.toRgbString();
           if( $btn_container.hasClass('top-tools') ) {
-            $picker.parents('.tool-button--double-icon--wrap').addClass('tool-button--hide');
-            $elem.find('.rexlive-block-toolbox.bottom-tools').find('input[name=edit-block-color-background]').parents('.tool-button--double-icon--wrap').removeClass('tool-button--hide');
+            $(this).parents('.tool-button--double-icon--wrap').addClass('tool-button--hide');
+            $(this).parents('.grid-stack-item').find('.rexlive-block-toolbox.bottom-tools').find('input[name=edit-block-color-background]').parents('.tool-button--double-icon--wrap').removeClass('tool-button--hide');
           }
         }
 
@@ -963,6 +973,16 @@ var Rexbuilder_Block_Editor = (function($) {
         flagPickerUsed = false;
         Rexbuilder_Util_Editor.manageElement = true;
         $picker.parents('.tool-button-floating').addClass('tool-button-floating--active');
+
+        var $this_picker = $(this);
+        var $this_picker_block = $this_picker.parents('.grid-stack-item');
+        var $this_picker_section = $this_picker_block.parents('.rexpansive_section');
+
+        settings.data_to_send.target.rexID = $this_picker_block.attr("data-rexbuilder-block-id");
+        settings.data_to_send.target.sectionID = $this_picker_section.attr("data-rexlive-section-id");
+        settings.data_to_send.target.modelNumber = typeof $this_picker_section.attr("data-rexlive-model-number") != "undefined"
+        ? $this_picker_section.attr("data-rexlive-model-number")
+        : "";
       },
       move: function(color) {
         settings.data_to_send.active = true;
@@ -989,8 +1009,8 @@ var Rexbuilder_Block_Editor = (function($) {
           settings.data_to_send.color = color.toRgbString();
 
           if( $btn_container.hasClass('top-tools') ) {
-            $picker.parents('.tool-button--double-icon--wrap').addClass('tool-button--hide');
-            $elem.find('.rexlive-block-toolbox.bottom-tools').find('input[name=edit-block-overlay-color]').parents('.tool-button--double-icon--wrap').removeClass('tool-button--hide');
+            $(this).parents('.tool-button--double-icon--wrap').addClass('tool-button--hide');
+            $(this).parents('.grid-stack-item').find('.rexlive-block-toolbox.bottom-tools').find('input[name=edit-block-overlay-color]').parents('.tool-button--double-icon--wrap').removeClass('tool-button--hide');
           }
 
           var event = jQuery.Event("rexlive:change_block_overlay");
