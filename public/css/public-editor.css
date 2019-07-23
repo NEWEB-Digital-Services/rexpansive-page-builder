@@ -3171,6 +3171,8 @@ div.wpcf7 .rxcf7-custom-style p:last-of-type {
   position: relative; }
   .rexpansive_section.empty-section {
     min-height: 100px; }
+    .rexpansive_section.empty-section .perfect-grid-gallery {
+      min-height: 100px; }
   .rexpansive_section .full-disposition,
   .rexpansive_section .center-disposition {
     margin: 0 auto;

@@ -6,6 +6,9 @@
 	position: relative;
 	&.empty-section{
 		min-height: 100px;
+		.perfect-grid-gallery {
+			min-height: 100px;
+		}
 	}
 	.full-disposition,
 	.center-disposition {

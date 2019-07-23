@@ -93,6 +93,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     }
     Rexbuilder_Util_Editor.sendParentIframeMessage(data);
   });
+
   /**
     * Listen to insert block event coming from the parent window
     * @since 2.0.0
@@ -143,13 +144,20 @@ var Rexbuilder_CreateBlocks = (function ($) {
         $buttonWrapper: data.$buttonWrapper,
         $blockAdded: $el
       }
+
       var gridstackInstance = galleryInstance.properties.gridstackInstance;
       var mouseCell = gridstackInstance.getCellFromPixel({
         left: data.mousePosition.x,
         top: data.mousePosition.y
       }, true);
 
-      gridstackInstance.move($el[0], Math.max(0, mouseCell.x - Math.round(blockWidth / 2)), Math.max(0, mouseCell.y - Math.round(blockHeight / 2)));
+      // infinity fix
+      var moveX = Math.max(0, mouseCell.x - Math.round(blockWidth / 2));
+      var moveY = Math.max(0, mouseCell.y - Math.round(blockHeight / 2));
+      moveX = ( Infinity !== moveX ? moveX : 0 );
+      moveY = ( Infinity !== moveY ? moveY : 0 );
+
+      gridstackInstance.move($el[0], moveX, moveY);
       Rexbuilder_Util.$document.trigger(ev);
     }
 
