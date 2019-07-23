@@ -15,10 +15,10 @@
   .model-html {
     display: none;
   }
-  .rex-close-button {
+  // .rex-close-button {
     // @include fill-icon(#000);
-    font-size: 13px;
-  }
+    // font-size: 13px;
+  // }
 
   .model__element {
     padding: 10px;
@@ -75,6 +75,9 @@
   position: fixed;
   top: $top-tools-height;
   margin-top: 30px;
+  .tool-button {
+    font-size: 12px;
+  }
   @if ( $panel-side == 'right' ) {
     right: 0;
     transform: translateX(calc(100% + 15px));
@@ -112,7 +115,7 @@
 
 .rex-lateral-panel__content {
   background-color: #fff;
-  // padding: 10px;
+  position: relative;
   box-shadow: -5px 0 5px rgba(0,0,0,.1);
   height: 100%;
 }

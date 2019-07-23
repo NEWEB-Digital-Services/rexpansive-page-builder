@@ -373,6 +373,9 @@ var Rexbuilder_Rexbutton = (function ($) {
         var $section = $buttonWrapper.parents(".rexpansive_section").eq(0);
         var buttonDimensionCalculated = jQuery.extend(true, {}, data.buttonDimensions);
 
+        // fix delete button bring back
+        $gridGallery.find('.button__element--delete').remove();
+
         var $buttonData = $buttonWrapper.find(".rex-button-data").eq(0);
         var margins = {
             top: parseInt($buttonData.attr("data-margin-top").replace("px", "")),

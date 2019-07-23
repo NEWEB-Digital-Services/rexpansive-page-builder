@@ -16,12 +16,13 @@ defined('ABSPATH') or exit;
             <li><a href="#" data-rex-tab-target="rex-models-list" class="active"><?php _e( 'Models', '' ); ?></a></li>
             <li><a href="#" data-rex-tab-target="rex-buttons-list"><?php _e( 'Buttons', '' ); ?></a></li>
         </ul>
-        <div class="tool-button tool-button--black tool-button--close rex-close-button">
+        <div class="tool-button tool-button--black tool-button--close rex-close-button rex-lateral-panel--close">
             <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
         </div>
     </div>
     <div id="rex-lateral-tabs" class="tabgroup">
         <div id="rex-models-list" class="rex-lateral-panel__content">
+            <?php include 'rexlive-loader-modal.php'; ?>
             <div class="models-list-wrapper">
                 <ul class="model-list model-list--pswp" itemscope itemtype="http://schema.org/ImageGallery">
                     <?php
@@ -47,6 +48,9 @@ defined('ABSPATH') or exit;
                             <div class="model-preview bl_d-flex bl_jc-c bl_ai-c<?php echo ( $model_previewUrl != "" ? ' model-preview--active' : '' ); ?>"<?php echo ( $model_previewUrl != "" ? 'style="background-image:url(' . $model_previewUrl . ');"' : '' ); ?> itemprop="contentUrl" data-href="<?php echo ( $model_previewUrl != "" ? esc_url($model_previewUrl) : "https://via.placeholder.com/640x480" ); ?>" data-size="640x480">
                                 <span class="model-preview__placeholder"><?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?></span>
                                 <div class="model-name bl_d-flex bl_jc-c bl_ai-fe"><div><?php echo $model_title;?></div></div>
+                                <div class="tool-button tool-button--black tool-button--close rex-close-button model__element--delete">
+                                    <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+                                </div>
                             </div>
                         </li>
                         <?php
@@ -60,6 +64,7 @@ defined('ABSPATH') or exit;
             </div>
         </div>
         <div id="rex-buttons-list" class="rex-lateral-panel__content">
+            <?php include 'rexlive-loader-modal.php'; ?>
             <div class="buttons-list-wrapper">
                 <ul class="button-list button-list--pswp">
                         <?php 
@@ -73,8 +78,11 @@ defined('ABSPATH') or exit;
                         if($buttonHTML != ""){
                             $buttonHTML = stripslashes($buttonHTML);
                             ?>
-                            <li draggable="true">
+                            <li class="button-list__element" draggable="true">
                                 <div class="rex-container"><?php echo $buttonHTML ?></div>
+                                <div class="tool-button tool-button--black tool-button--close rex-close-button button__element--delete">
+                                    <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+                                </div>
                             </li>
                             <?php
                         }

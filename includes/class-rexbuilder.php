@@ -280,16 +280,19 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_ajax_rex_create_rexslider_admin_markup', $plugin_admin, 'rex_create_rexslider_admin_markup' );
 		$this->loader->add_action( 'wp_ajax_live_refresh_builder', $plugin_admin, 'live_refresh_builder' );
 		
+		// models ajax actions
 		$this->loader->add_action( 'wp_ajax_rex_create_model_from_builder', $plugin_admin, 'rex_create_model_from_builder' );
 		$this->loader->add_action( 'wp_ajax_rex_save_model_customization', $plugin_admin, 'rex_save_model_customization' );
 		$this->loader->add_action( 'wp_ajax_rex_save_model_customization_names', $plugin_admin, 'rex_save_model_customization_names' );
 		$this->loader->add_action( 'wp_ajax_rex_get_model_live', $plugin_admin, 'rex_get_model_live' );
+		$this->loader->add_action( 'wp_ajax_rex_delete_rexmodel', $plugin_admin, 'rex_delete_rexmodel' );
 		$this->loader->add_action( 'wp_ajax_rex_save_custom_layouts', $plugin_admin, 'rex_save_custom_layouts' );
 		$this->loader->add_action( 'wp_ajax_rex_get_model', $plugin_admin, 'rex_get_model' );
 		$this->loader->add_action( 'wp_ajax_rex_get_model_list', $plugin_admin, 'rex_get_model_list' );
 		$this->loader->add_action( 'wp_ajax_rex_update_buttons_ids', $plugin_admin, 'rex_update_buttons_ids' );
 		$this->loader->add_action( 'wp_ajax_rex_update_button', $plugin_admin, 'rex_update_button' );
 		$this->loader->add_action( 'wp_ajax_rex_update_container_margins', $plugin_admin, 'rex_update_container_margins' );
+		$this->loader->add_action( 'wp_ajax_rex_delete_rexbutton', $plugin_admin, 'rex_delete_rexbutton' );
 
 		// COLOR PALETTE APIs
 		$this->loader->add_action( 'wp_ajax_rex_save_palette_color', $plugin_admin, 'rex_save_palette_color' );

@@ -255,11 +255,15 @@ var Button_Import_Modal = (function ($) {
         if ($buttonEL.length == 0) {
             var $liEL = $(document.createElement("li"));
             $liEL.attr("draggable", true);
+            $liEL.addClass('button-list__element');
             var $div = $(document.createElement("div"));
             $div.append($(jQuery.parseHTML(buttonHTML)));
             $div.addClass("rex-container");
             $div.appendTo($liEL);
             $liEL.appendTo(rexbutton_import_props.$buttonList);
+            // add delete button
+            var deleteBtn = tmpl( 'tmpl-rex-button-delete' )();
+            $liEL.append(deleteBtn);
         } else {
             var $buttonParent = $buttonEL.parent();
             $buttonEL.remove();
@@ -292,9 +296,7 @@ var Button_Import_Modal = (function ($) {
 
         var isIE = /*@cc_on!@*/false || !!document.documentMode;
 
-        /*
-        da capire come fare, servirà per il pulsante vicino al mouse durante il drag
-        */
+        // to understand, need for button near the mouse during the drag
         var $imgPreview;
 
         var mouseClientX = 0,
@@ -973,6 +975,64 @@ var Button_Import_Modal = (function ($) {
         };
     };
 
+    var _listenOtherEvents = function() {
+        /**
+         * Handling button delete
+         * @param  {MouseEvent} click
+         * @return {null}
+         * @since  2.0.0
+         */
+        Rexlive_Base_Settings.$document.on('click', '.button__element--delete', function(e) {
+            var button = this.previousElementSibling.children[0];
+            if ( button ) {
+                var button_id = button.getAttribute('data-rex-button-id');
+                var response = confirm( live_editor_obj.labels.rexbuttons.confirm_delete );
+                if ( response ) {
+                    // prepare data to ajax request
+                    var data = {
+                        action: "rex_delete_rexbutton",
+                        nonce_param: live_editor_obj.rexnonce,
+                        button_id: button_id
+                    };
+                    var endcodedData = Rexlive_Base_Settings.encodeData(data);
+
+                    // prepare ajax request
+                    var request = new XMLHttpRequest();
+                    request.open('POST', live_editor_obj.ajaxurl, true);
+                    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+
+                    // handle request response
+                    request.onloadstart = function() {
+                        rexbutton_import_props.$self.addClass('rex-modal--loading');
+                    }
+                    request.onload = function() {
+                        if (request.status >= 200 && request.status < 400) {
+                            button.parentNode.parentNode.style.display = 'none';
+                            Button_Edit_Modal.removeIDButtonSoft( button_id );
+                        }
+                    };
+                    request.onerror = function() {};
+                    request.onloadend = function() {
+                        rexbutton_import_props.$self.removeClass('rex-modal--loading');
+                    };
+
+                    // send request
+                    request.send(endcodedData);
+                }
+            }
+        });
+
+        /**
+         * Disable the links on the button list
+         * @param  {MouseEvent} click on button
+         * @return {null}    
+         * @since 2.0.0
+         */
+        Rexlive_Base_Settings.$document.on('click', '.rex-button-container', function(e) {
+            e.preventDefault();
+        })
+    };
+
     var _init = function () {
         var $self = $("#rex-buttons-list");
         rexbutton_import_props = {
@@ -984,6 +1044,7 @@ var Button_Import_Modal = (function ($) {
         _fixCustomStyleElement();
 
         _linkDraggable();
+        _listenOtherEvents();
     };
 
     return {

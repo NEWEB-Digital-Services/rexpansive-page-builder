@@ -855,21 +855,22 @@ var Rexbuilder_Block_Editor = (function($) {
       },
       hide: function(color) {
         Rexbuilder_Color_Palette.hide();
-        if (flagPickerUsed) {
+        if ( flagPickerUsed ) {
           colorActive = color.toRgbString();
           if( $btn_container.hasClass('top-tools') ) {
             $(this).parents('.tool-button--double-icon--wrap').addClass('tool-button--hide');
             $(this).parents('.grid-stack-item').find('.rexlive-block-toolbox.bottom-tools').find('input[name=edit-block-color-background]').parents('.tool-button--double-icon--wrap').removeClass('tool-button--hide');
           }
+
+          settings.data_to_send.color = colorActive;
+
+          var event = jQuery.Event("rexlive:apply_background_color_block");
+          event.settings = settings;
+          Rexbuilder_Util.$document.trigger(event);
         }
 
         Rexbuilder_Util_Editor.hideAllTools();
-
-        settings.data_to_send.color = colorActive;
-
-        var event = jQuery.Event("rexlive:apply_background_color_block");
-        event.settings = settings;
-        Rexbuilder_Util.$document.trigger(event);
+        flagPickerUsed = false;
       },
     });
 

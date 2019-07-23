@@ -33,6 +33,27 @@ var Rexlive_Base_Settings = (function($) {
     return { width: e[a + "Width"], height: e[a + "Height"] };
   };
 
+  /**
+   * Prepare data for a XHR request encoding it
+   * @param {Object} data data to encode
+   */
+  var _encodeData = function( data ) {
+    var urlEncodedData = "";
+    var urlEncodedDataPairs = [];
+    var name;
+  
+    // Turn the data object into an array of URL-encoded key/value pairs.
+    for(name in data) {
+      urlEncodedDataPairs.push(encodeURIComponent(name) + '=' + encodeURIComponent(data[name]));
+    }
+  
+    // Combine the pairs into a single string and replace all %-encoded spaces to 
+    // the '+' character; matches the behaviour of browser form submissions.
+    urlEncodedData = urlEncodedDataPairs.join('&').replace(/%20/g, '+');
+
+    return urlEncodedData;
+  }
+
   var _init = function() {
     this.$document = $(document);
     this.$window = $(window);
@@ -44,6 +65,7 @@ var Rexlive_Base_Settings = (function($) {
     htmlDecode: htmlDecode,
     htmlEncode: htmlEncode,
     viewport: _viewport,
-    launchTooltips: _tooltips
+    launchTooltips: _tooltips,
+    encodeData: _encodeData
   };
 })(jQuery);

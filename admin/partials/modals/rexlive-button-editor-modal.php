@@ -17,8 +17,9 @@ defined('ABSPATH') or exit;
         </div>
         <!-- General wrap -->
         <div class="modal-content">
-        <!-- ACCORDION 1 -->
-        <div class="rexpansive-accordion close">
+            <?php include 'rexlive-loader-modal.php'; ?>
+            <!-- ACCORDION 1 -->
+            <div class="rexpansive-accordion close">
                 <!-- first row -->
                 <div class="bl_modal-row">
                     <div class="rexbutton-cont_row10">
@@ -349,7 +350,7 @@ defined('ABSPATH') or exit;
                     </div>
                 </div>
             </div>
-            <!-- NONA ROW -->
+            <!-- ninth row -->
             <div class="bl_modal-row">
                 <div class="rexbutton-cont_row77">
                     <div class="rexbutton-count-column_11">

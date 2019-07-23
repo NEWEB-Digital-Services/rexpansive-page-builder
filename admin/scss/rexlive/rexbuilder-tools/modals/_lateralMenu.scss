@@ -67,8 +67,11 @@
 
 .button-list {
   margin: 0;
-  padding: 10px;
-  .rex-button-wrapper {
+  padding: 20px;
+  .button-list__element {
+    position: relative;
+    margin-bottom: 15px;
     outline: 1px solid #000;
+    cursor: grab;
   }
 }

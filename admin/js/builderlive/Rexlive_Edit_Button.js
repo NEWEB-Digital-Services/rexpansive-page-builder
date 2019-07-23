@@ -950,6 +950,9 @@ var Button_Edit_Modal = (function ($) {
                 css_button: css_button,
                 jsonRexButtons: jsonRexButtons,
             },
+            beforeSend: function() {
+                button_editor_properties.$self.addClass('rex-modal--loading');
+            },
             success: function (response) {
 
                 // Updates model list tab
@@ -966,7 +969,9 @@ var Button_Edit_Modal = (function ($) {
                 // _closeModal();
             },
             error: function (response) { },
-            complete: function (response) { }
+            complete: function (response) {
+                button_editor_properties.$self.removeClass('rex-modal--loading');
+            }
         });
     }
 
@@ -996,6 +1001,19 @@ var Button_Edit_Modal = (function ($) {
      */
     var _addIDButton = function (newID) {
         buttonsIDsUsed.push(newID);
+    }
+
+    /**
+     * Update array of ids used for the buttons, without touching the DB
+     * @param  {String} rexID button id
+     * @return {null}
+     * @since 2.0.0
+     */
+    var _removeIDButtonSoft = function(rexID) {
+        var pos = buttonsIDsUsed.indexOf(rexID)
+        if( pos != -1 ){
+            buttonsIDsUsed.splice(pos, 1);
+        }
     }
 
     /**
@@ -1516,6 +1534,7 @@ var Button_Edit_Modal = (function ($) {
     return {
         init: _init,
         openButtonEditorModal: _openButtonEditorModal,
-        removeIDButton: _removeIDButton
+        removeIDButton: _removeIDButton,
+        removeIDButtonSoft: _removeIDButtonSoft
     };
 })(jQuery);
