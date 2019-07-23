@@ -76,7 +76,7 @@
   top: $top-tools-height;
   margin-top: 30px;
   .tool-button {
-    font-size: 12px;
+    font-size: 7px;
   }
   @if ( $panel-side == 'right' ) {
     right: 0;
@@ -113,18 +113,9 @@
   }
 }
 
-.rex-lateral-panel__content {
-  background-color: #fff;
-  position: relative;
-  box-shadow: -5px 0 5px rgba(0,0,0,.1);
-  height: 100%;
-}
-
-.models-list-wrapper {
-  overflow: hidden;
-  overflow-y: auto;
-  height: calc(100% - 70px);
-  padding-bottom: 70px;
+.model-list {
+  margin: 0;
+  padding-top: 20px;
 }
 
 .info-model-name__wrap {

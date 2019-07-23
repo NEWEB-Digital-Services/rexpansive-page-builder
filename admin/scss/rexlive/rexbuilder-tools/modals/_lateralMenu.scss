@@ -60,18 +60,26 @@
 
 .rex-lateral-panel__content {
   background-color: #fff;
-  // padding: 10px;
+  position: relative;
   box-shadow: -5px 0 5px rgba(0,0,0,.1);
   height: 100%;
 }
 
+.rex-lateral-panel__list {
+  overflow: hidden;
+  overflow-y: auto;
+  height: calc(100% - 70px);
+  padding-bottom: 70px;
+}
+
 .button-list {
   margin: 0;
-  padding: 20px;
+  padding: 10px;
+  padding-top: 30px;
   .button-list__element {
     position: relative;
     margin-bottom: 15px;
-    outline: 1px solid #000;
+    outline: 1px solid #D6D6D6;
     cursor: grab;
   }
 }

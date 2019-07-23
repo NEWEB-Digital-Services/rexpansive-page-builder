@@ -23,7 +23,7 @@ defined('ABSPATH') or exit;
     <div id="rex-lateral-tabs" class="tabgroup">
         <div id="rex-models-list" class="rex-lateral-panel__content">
             <?php include 'rexlive-loader-modal.php'; ?>
-            <div class="models-list-wrapper">
+            <div class="models-list-wrapper rex-lateral-panel__list">
                 <ul class="model-list model-list--pswp" itemscope itemtype="http://schema.org/ImageGallery">
                     <?php
                 // WP_Query arguments
@@ -65,7 +65,7 @@ defined('ABSPATH') or exit;
         </div>
         <div id="rex-buttons-list" class="rex-lateral-panel__content">
             <?php include 'rexlive-loader-modal.php'; ?>
-            <div class="buttons-list-wrapper">
+            <div class="buttons-list-wrapper rex-lateral-panel__list">
                 <ul class="button-list button-list--pswp">
                         <?php 
                         // it's possibile to query like '_rex_button_%%_html0'?

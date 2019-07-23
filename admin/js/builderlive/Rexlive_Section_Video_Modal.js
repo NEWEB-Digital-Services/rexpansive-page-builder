@@ -199,7 +199,7 @@ var Section_Video_Background_Modal = (function($) {
         typeVideo: type,
         sectionTarget: sectionTarget
       }
-    }; 
+    };
 
     Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
   };
@@ -246,6 +246,12 @@ var Section_Video_Background_Modal = (function($) {
       }
     });
 
+    /**
+     * Handle close modal
+     * @param  {MouseEvent} Click on close icon
+     * @return {null}
+     * @since  2.0.0
+     */
     video_background_properties.$close_button.on('click', function(e) {
       e.preventDefault();
       _closeSectionVideoBackgroundModal();
