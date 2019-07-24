@@ -100,7 +100,7 @@ var Button_Edit_Modal = (function ($) {
 
     var _linkDocumentPanelChooseListeners = function () {
         rex_edit_model_button_panel_properties.$button.on("click", function (e) {
-            var optionSelected = $(this).parents(".rex-edit-button-model-option").attr("data-rex-option");
+            var optionSelected = this.getAttribute("data-rex-option");
             switch (optionSelected) {
                 case "remove":
                     _separateRexButton();

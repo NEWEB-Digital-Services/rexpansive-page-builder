@@ -68,7 +68,7 @@ defined('ABSPATH') or exit;
   ?>
   <?php echo $default_layouts; ?>
   <?php echo $custom_layouts; ?>
-  <div class="layout-container tool-option tool-button_list--item tool-option__layout-settings tippy" data-tippy-content="<?php esc_attr_e( 'Layouts', 'rexpansive' ); ?>" data-tippy-placement="left">
+  <div class="layout-container tool-option tool-button_list--item tool-option__layout-settings tippy" data-tippy-content="<?php esc_attr_e( 'Ranges', 'rexpansive' ); ?>" data-tippy-placement="left">
     <div class="builder-config-layouts builder-add-custom-layout bl_d-iflex">
       <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
     </div>

@@ -18,14 +18,6 @@ defined('ABSPATH') or exit;
                 <br>
                 <span class="info-model-name__wrap"><span class="info-model-name"></span>&nbsp;<span>?</span></span>
             </div>
-            <!-- <div>
-                <div class="rex-edit-model-option" data-rex-option="edit">
-                    <button class="rex-button edit-model">Edita</button>
-                </div>
-                <div class="rex-edit-model-option" data-rex-option="remove">
-                    <button class="rex-button remove-model">Togli</button>
-                </div>
-            </div> -->
         </div>
         <div class="rex-modal__outside-footer">
             <div class="tool-button--double-icon--wrap tool-button--double-icon--active tool-button--double-icon--big rex-button edit-model rex-edit-option tippy" data-tippy-content="<?php esc_attr_e( 'Edit synchronized model', 'rexpansive' ); ?>" data-rex-option="edit">

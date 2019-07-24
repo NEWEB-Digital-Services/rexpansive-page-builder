@@ -19,13 +19,19 @@ defined('ABSPATH') or exit;
                 <br>
                 <span class="info-model-name__wrap"><span class="info-model-name"></span>&nbsp;</span>
             </div>
-            <div>
-                <div class="rex-edit-button-model-option" data-rex-option="edit">
-                    <button class="rex-button edit-button-model"><?php _e( 'Maintain', 'rexpansive' ); ?></button>
+        </div>
+        <div class="rex-modal__outside-footer">
+            <div class="tool-button--double-icon--wrap tool-button--double-icon--active tool-button--double-icon--big rex-button remove-button-model tippy" data-tippy-content="<?php esc_attr_e( 'Maintain', 'rexpansive' ); ?>" data-rex-option="edit">
+                <div class="tool-button tool-button--inline tool-button--blue tool-button--modal">
+                    <?php Rexbuilder_Utilities::get_icon('#B015-UnClosed'); ?>
                 </div>
-                <div class="rex-edit-button-model-option" data-rex-option="remove">
-                    <button class="rex-button remove-button-model"><?php _e( 'Separate', 'rexpansive' ); ?></button>
+                <div class="tool-button tool-button--inline tool-button--black tool-button--double-icon">
+                    <?php Rexbuilder_Utilities::get_icon('#Z008-Edit'); ?>
                 </div>
+            </div>
+
+            <div class="tool-button tool-button--inline tool-button--modal tool-button--blue rex-button edit-button-model tippy" data-tippy-content="<?php esc_attr_e( 'Separate', 'rexpansive' ); ?>" data-rex-option="remove">
+                <?php Rexbuilder_Utilities::get_icon('#Z008-Edit'); ?>
             </div>
         </div>
     </div>
