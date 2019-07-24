@@ -81,10 +81,10 @@ defined( 'ABSPATH' ) or exit;
         <div class="modal-content-wrap">
             <div class="modal-editor-header">
                 <div class="rexeditor-modal__header__buttons-wrap">
-                    <button id="content-position-open-modal" class="btn-floating waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e( 'Text Position', 'rexspansive' ); ?>">
+                    <button id="content-position-open-modal" class="btn-floating waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php // _e( 'Text Position', 'rexpansive-builder' ); ?>">
                         <i class="material-icons rex-icon">E</i>
                     </button>
-                    <button id="content-padding-open-modal" class="btn-floating waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e( 'Padding', 'rexspansive' ); ?>">
+                    <button id="content-padding-open-modal" class="btn-floating waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php // _e( 'Padding', 'rexpansive-builder' ); ?>">
                         <i class="material-icons rex-icon">D</i>
                     </button>
                 </div>
@@ -365,7 +365,7 @@ defined( 'ABSPATH' ) or exit;
             <div id="block-set-video-wrap-2" class="row valign-wrapper">
                 <div class="col rex-check-icon">
                     <input type="radio" class="rex-block-choose-video with-gap" name="rex-block-choose-video" value="vimeo" id="rex-block-choose-vimeo">
-                    <label for="rex-block-choose-vimeo" data-tooltip="<?php _e( 'Vimeo', 'rexpansive' ); ?>">
+                    <label for="rex-block-choose-vimeo" data-tooltip="<?php _e( 'Vimeo', 'rexpansive-builder' ); ?>">
                         <i class="material-icons rex-icon">Z</i>
                         <span class="rex-ripple"></span>
                     </label>
@@ -471,21 +471,21 @@ defined( 'ABSPATH' ) or exit;
                 <div class="col">
                     <div id="bg-set-block-overlay" class="col rex-check-icon">
                         <input type="checkbox" id="block-has-overlay-small" class="block-has-overlay" name="block-has-overlay-small" value="small">
-                        <label for="block-has-overlay-small" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Overlay Mobile', 'rexpansive' ); ?>">
+                        <label for="block-has-overlay-small" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Overlay Mobile', 'rexpansive-builder' ); ?>">
                             <i class="rex-icon">r</i>
                             <span class="rex-ripple"></span>
                         </label>
                     </div>
                     <div class="col rex-check-icon">
                         <input type="checkbox" id="block-has-overlay-medium" class="block-has-overlay" name="block-has-overlay-medium" value="medium">
-                        <label for="block-has-overlay-medium" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Overlay Tablet', 'rexpansive' ); ?>">
+                        <label for="block-has-overlay-medium" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Overlay Tablet', 'rexpansive-builder' ); ?>">
                             <i class="rex-icon">y</i>
                             <span class="rex-ripple"></span>
                         </label>
                     </div>
                     <div class="col rex-check-icon">
                         <input type="checkbox" id="block-has-overlay-large" class="block-has-overlay" name="block-has-overlay-large" value="large">
-                        <label for="block-has-overlay-large" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Overlay Desktop', 'rexpansive' ); ?>">
+                        <label for="block-has-overlay-large" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Overlay Desktop', 'rexpansive-builder' ); ?>">
                             <i class="rex-icon">x</i>
                             <span class="rex-ripple"></span>
                         </label>
@@ -572,14 +572,14 @@ defined( 'ABSPATH' ) or exit;
                     <div class="rex-edit-layout-wrap">
                         <div>
                             <input type="radio" id="section-fixed" name="section-layout" class="builder-edit-row-layout with-gap" value="fixed" checked title="Grid Layout" />
-                            <label for="section-fixed"  class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Grid Layout', 'rexspansive' ); ?>">
+                            <label for="section-fixed"  class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Grid Layout', 'rexpansive-builder' ); ?>">
                                 <i class="material-icons">&#xE8F1;</i>
                                 <span class="rex-ripple"></span>
                             </label>
                         </div>
                         <div>
                             <input type="radio" id="section-masonry" name="section-layout" class="builder-edit-row-layout with-gap" value="masonry" title="Masonry Layout" />
-                            <label for="section-masonry"  class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Masonry Layout', 'rexspansive' ); ?>">
+                            <label for="section-masonry"  class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Masonry Layout', 'rexpansive-builder' ); ?>">
                                 <i class="material-icons">&#xE871;</i>
                                 <span class="rex-ripple"></span>
                             </label>
@@ -608,7 +608,7 @@ defined( 'ABSPATH' ) or exit;
 
                 <div class="col row valign-wrapper">
                     <div id="section-set-dimension" class="input-field rex-input-prefixed col">
-                        <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Boxed Width', 'rexpansive' ); ?>">t</i>
+                        <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Boxed Width', 'rexpansive-builder' ); ?>">t</i>
                         <input type="text" id="" class="section-set-boxed-width" name="section-set-boxed-width" value="0000" placeholder="" size="23">
                         <span class="rex-material-bar"></span>
                     </div>
@@ -616,14 +616,14 @@ defined( 'ABSPATH' ) or exit;
                         <div class="rex-check-text">
                             <input id="block-width-percentage" type="radio" class="section-width-type with-gap" name="section-width-type" value="percentage" checked />
                             <label for="block-width-percentage">
-                                <?php _e( '%', 'rexpansive' ); ?>
+                                <?php _e( '%', 'rexpansive-builder' ); ?>
                                 <span class="rex-ripple"></span>
                             </label>
                         </div>
                         <div class="rex-check-text">
                             <input id="block-width-pixel" type="radio" class="section-width-type with-gap" name="section-width-type" value="pixel" />
                             <label for="block-width-pixel">
-                                <?php _e( 'PX', 'rexpansive' ); ?>
+                                <?php _e( 'PX', 'rexpansive-builder' ); ?>
                                 <span class="rex-ripple"></span>
                             </label>
                         </div>
@@ -650,7 +650,7 @@ defined( 'ABSPATH' ) or exit;
                             </div>
                             <div class="block-padding-wrap">
                                 <input type="text" id="" class="section-set-block-gutter block-padding-values" name="section-set-block-gutter" value="" placeholder="" size="15">
-                                <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Block Distance', 'rexpansive' ); ?>">S</i>
+                                <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Block Distance', 'rexpansive-builder' ); ?>">S</i>
                                 <span class="block-padding-label">PX</span>
                                 <span class="rex-material-bar"></span>
                             </div>
@@ -703,7 +703,7 @@ defined( 'ABSPATH' ) or exit;
                     <div class="b-row justify-content-center">
                         <div id="bg-set-full-section" class="rex-check-icon col">
                             <input type="checkbox" id="section-is-full" name="section-is-full" value="full-height">
-                            <label for="section-is-full" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Full Height', 'rexpansive' ); ?>">
+                            <label for="section-is-full" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Full Height', 'rexpansive-builder' ); ?>">
                                 <i class="rex-icon">s</i>
                                 <span class="rex-ripple"></span>
                             </label>
@@ -715,8 +715,8 @@ defined( 'ABSPATH' ) or exit;
                 </div>
 
                 <div id="bg-set-photoswipe" class="b-col b--border-right rex-check-icon">
-                    <input type="checkbox" id="section-active-photoswipe" name="section-active-photoswipe" title="<?php _e( 'All Images Zoom', 'rexpansive' ); ?>">
-                    <label for="section-active-photoswipe" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'All Images Zoom', 'rexpansive' ); ?>">
+                    <input type="checkbox" id="section-active-photoswipe" name="section-active-photoswipe" title="<?php _e( 'All Images Zoom', 'rexpansive-builder' ); ?>">
+                    <label for="section-active-photoswipe" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'All Images Zoom', 'rexpansive-builder' ); ?>">
                         <i class="rex-icon">R</i>
                         <span class="rex-ripple"></span>
                     </label>
@@ -725,7 +725,7 @@ defined( 'ABSPATH' ) or exit;
                 <div id="rx-set-hold-grid" class="b-col">
                     <div id="rx-hold-grid__wrap" class="rex-check-icon col">
                         <input type="checkbox" id="rx-hold-grid" name="rx-hold-grid" value="full-height">
-                        <label for="rx-hold-grid" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Grid On Mobile', 'rexpansive' ); ?>">
+                        <label for="rx-hold-grid" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Grid On Mobile', 'rexpansive-builder' ); ?>">
                             <i class="rex-icon">V</i>
                             <span class="rex-ripple"></span>
                         </label>
@@ -736,15 +736,15 @@ defined( 'ABSPATH' ) or exit;
 
             <div class="row valign-wrapper id-class-row-wrap">
                 <div id="rex-config-id" class="input-field col rex-input-prefixed">
-                    <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Section Name', 'rexpansive' ); ?>">B</i>
+                    <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Section Name', 'rexpansive-builder' ); ?>">B</i>
                     <input type="text" id="sectionid-container" name="sectionid-container">
                     <span class="rex-material-bar"></span>
                 </div>
                 <div id="section-set-class-wrap" class="input-field col rex-input-prefixed">
-                    <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Custom Class', 'rexpansive' ); ?>">e</i>
+                    <i class="material-icons rex-icon prefix tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Custom Class', 'rexpansive-builder' ); ?>">e</i>
                     <input type="text" id="section-set-custom-class" name="section-set-custom-class" value="" size="10">
                     <label for="section-set-custom-class">
-                        <?php _e( 'Classes', 'rexpansive'); ?>
+                        <?php _e( 'Classes', 'rexpansive-builder'); ?>
                     </label>
                     <span class="rex-material-bar"></span>
                 </div>

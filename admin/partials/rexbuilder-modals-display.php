@@ -106,10 +106,10 @@ defined('ABSPATH') or exit;
         <div class="modal-content-wrap">
             <div class="modal-editor-header">
                 <div class="rexeditor-modal__header__buttons-wrap">
-                    <button id="content-position-open-modal" class="btn-floating waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e('Text Position', 'rexspansive');?>">
+                    <button id="content-position-open-modal" class="btn-floating waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e('Text Position', 'rexpansive-builder');?>">
                         <i class="material-icons rex-icon">E</i>
                     </button>
-                    <button id="content-padding-open-modal" class="btn-floating waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e('Padding', 'rexspansive');?>">
+                    <button id="content-padding-open-modal" class="btn-floating waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e('Padding', 'rexpansive-builder');?>">
                         <i class="material-icons rex-icon">D</i>
                     </button>
                 </div>
@@ -593,14 +593,14 @@ defined('ABSPATH') or exit;
                     <div class="rex-edit-layout-wrap">
                         <div class="rexlive-layout-type" data-rex-layout="fixed">
                             <input type="radio" id="section-fixed" name="section-layout" class="builder-edit-row-layout with-gap" value="fixed" checked title="Grid Layout" />
-                            <label for="section-fixed"  class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Grid Layout', 'rexspansive');?>">
+                            <label for="section-fixed"  class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Grid Layout', 'rexpansive-builder');?>">
                                 <i class="material-icons">&#xE8F1;</i>
                                 <span class="rex-ripple"></span>
                             </label>
                         </div>
                         <div class="rexlive-layout-type" data-rex-layout="masonry">
                             <input type="radio" id="section-masonry" name="section-layout" class="builder-edit-row-layout with-gap" value="masonry" title="Masonry Layout" />
-                            <label for="section-masonry"  class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Masonry Layout', 'rexspansive');?>">
+                            <label for="section-masonry"  class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Masonry Layout', 'rexpansive-builder');?>">
                                 <i class="material-icons">&#xE871;</i>
                                 <span class="rex-ripple"></span>
                             </label>

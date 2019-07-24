@@ -20,16 +20,16 @@ defined( 'ABSPATH' ) or exit;
     <button class = "builder-custom-layout" style="position:absolute;bottom:0px;right:0%;">+</button>
     <?php
     /*
-    <div class="tool-button btn-flat builder-mobile-layout tooltipped" data-tooltip="<?php _e('Mobile layout', 'rexpansive'); ?>">
+    <div class="tool-button btn-flat builder-mobile-layout tooltipped" data-tooltip="<?php _e('Mobile layout', 'rexpansive-builder'); ?>">
 		<i class="material-icons grey-text text-darken-2">&#xE8D5;</i>
     </div>
-    <div class="tool-button btn-flat builder-tablet-layout tooltipped" data-tooltip="<?php _e('Tablet layout', 'rexpansive'); ?>">
+    <div class="tool-button btn-flat builder-tablet-layout tooltipped" data-tooltip="<?php _e('Tablet layout', 'rexpansive-builder'); ?>">
 		<i class="material-icons grey-text text-darken-2">&#xE8D5;</i>
     </div>
-    <div class="tool-button btn-flat builder-desktop-layout tooltipped" data-tooltip="<?php _e('Desktop layout', 'rexpansive'); ?>">
+    <div class="tool-button btn-flat builder-desktop-layout tooltipped" data-tooltip="<?php _e('Desktop layout', 'rexpansive-builder'); ?>">
 		<i class="material-icons grey-text text-darken-2">&#xE8D5;</i>
     </div>
-    <div class="tool-button btn-flat builder-custom-layout tooltipped" data-tooltip="<?php _e('Custom layout', 'rexpansive'); ?>">
+    <div class="tool-button btn-flat builder-custom-layout tooltipped" data-tooltip="<?php _e('Custom layout', 'rexpansive-builder'); ?>">
 		<i class="material-icons grey-text text-darken-2">&#xE8D5;</i>
     </div>
     */

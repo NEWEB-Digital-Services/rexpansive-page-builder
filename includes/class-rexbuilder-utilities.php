@@ -99,7 +99,7 @@ class Rexbuilder_Utilities {
 	public static function close_button( $tooltip = "Close" ) {
 		ob_start();
 ?>
-<div class="tool-button tool-button--black tool-button--close rex-modal__close-button tippy" data-tippy-content="<?php _e( $tooltip, 'rexspansive');?>">
+<div class="tool-button tool-button--black tool-button--close rex-modal__close-button tippy" data-tippy-content="<?php _e( $tooltip, 'rexpansive-builder');?>">
 <?php self::get_icon('#Z003-Close'); ?>
 </div>
 <?php
@@ -318,7 +318,7 @@ class Rexbuilder_Utilities {
 
 	/**
 	 * Install the icons, copying the packed default sprites to the upload folder
-	 * @return null
+	 * @return bool 	operation has succeeded
 	 * @since  2.0.0
 	 */
 	public static function install_icons() {
@@ -327,12 +327,14 @@ class Rexbuilder_Utilities {
 
 		$list_path = '/assets/sprite-list.json';
 		if ( file_exists( REXPANSIVE_BUILDER_PATH . '/shared' . $list_path ) ) {
-			copy( REXPANSIVE_BUILDER_PATH . '/shared' . $list_path, $uploads_dirname . $list_path );
+			$list_response = copy( REXPANSIVE_BUILDER_PATH . '/shared' . $list_path, $uploads_dirname . $list_path );
 		}
 
 		$sprite_path = '/assets/symbol/sprite.symbol.svg';
 		if ( file_exists( REXPANSIVE_BUILDER_PATH . '/shared' . $sprite_path ) ) {
-			copy( REXPANSIVE_BUILDER_PATH . '/shared' . $sprite_path, $uploads_dirname . $sprite_path );
+			$path_response = copy( REXPANSIVE_BUILDER_PATH . '/shared' . $sprite_path, $uploads_dirname . $sprite_path );
 		}
+
+		return $list_response * $path_response;
 	}
 }

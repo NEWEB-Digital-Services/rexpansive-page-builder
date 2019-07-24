@@ -877,7 +877,7 @@ defined('ABSPATH') or exit;
 
 <div class="rex-modal-wrap">
     <div id="rex-slider__links-editor" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
-        <div class="tool-button tool-button--black rex-cancel-button tool-button--close tippy" data-tippy-content="<?php _e( 'Cancel', 'rexspansive');?>" value="">
+        <div class="tool-button tool-button--black rex-cancel-button tool-button--close tippy" data-tippy-content="<?php _e( 'Cancel', 'rexpansive-builder');?>" value="">
             <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
         </div>
         <div class="modal-content">
@@ -963,16 +963,16 @@ defined('ABSPATH') or exit;
 
 <div class="rex-modal-wrap">
     <div id="rexeditor-modal" class="rexbuilder-materialize-wrap outside-content-modal rex-modal-draggable rex-modal">
-        <div id="editor-cancel" class="tool-button tool-button--black rex-cancel-button tool-button--close tippy" data-tippy-content="<?php _e( 'Cancel', 'rexspansive');?>">
+        <div id="editor-cancel" class="tool-button tool-button--black rex-cancel-button tool-button--close tippy" data-tippy-content="<?php _e( 'Cancel', 'rexpansive-builder');?>">
             <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
         </div>
         <div class="modal-content-wrap">
             <div class="modal-editor-header">
                 <div class="rexeditor-modal__header__buttons-wrap">
-                    <button id="content-position-open-modal" class="btn-floating waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e('Text Position', 'rexspansive');?>">
+                    <button id="content-position-open-modal" class="btn-floating waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e('Text Position', 'rexpansive-builder');?>">
                         <i class="material-icons rex-icon">E</i>
                     </button>
-                    <button id="content-padding-open-modal" class="btn-floating waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e('Padding', 'rexspansive');?>">
+                    <button id="content-padding-open-modal" class="btn-floating waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e('Padding', 'rexpansive-builder');?>">
                         <i class="material-icons rex-icon">D</i>
                     </button>
                 </div>
@@ -1010,7 +1010,7 @@ defined('ABSPATH') or exit;
 
 <div class="rex-modal-wrap">
     <div id="rexlive-onbeforeunload" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">
-        <div class="tool-button tool-button--black rex-change-layout-option tool-button--close tippy" data-position="bottom" data-tippy-content="<?php _e( 'Cancel', 'rexspansive');?>" data-rex-option="hide">
+        <div class="tool-button tool-button--black rex-change-layout-option tool-button--close tippy" data-position="bottom" data-tippy-content="<?php _e( 'Cancel', 'rexpansive-builder');?>" data-rex-option="hide">
             <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
         </div>
         <div class="modal-content modal-content--text">

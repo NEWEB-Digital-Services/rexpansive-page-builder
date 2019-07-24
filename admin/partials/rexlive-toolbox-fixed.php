@@ -14,13 +14,13 @@ global $layoutsAvaiable;
 $small_tools = true;
 ?>
 <div class="rexlive-toolbox__toggle-wrap"> 
-  <div class="tool-option close-toolbox tippy" data-tippy-content="<?php esc_attr_e( 'Hide', 'rexpansive' ); ?>" data-tippy-placement="right">
+  <div class="tool-option close-toolbox tippy" data-tippy-content="<?php esc_attr_e( 'Hide', 'rexpansive-builder' ); ?>" data-tippy-placement="right">
     <span class="close-toolbox__logo-wrap"><?php Rexbuilder_Utilities::get_icon('#Z010-Logo'); ?></span>
     <!-- <img class="rexlive-logo" src="<?php // echo REXPANSIVE_BUILDER_URL; ?>admin/img/ico-rexpansive.png" alt="Rexpansive" width="20"> -->
     <span class="close-toolbox__icon-wrap"><?php Rexbuilder_Utilities::get_icon('#A007-Close'); ?></span>
   </div>
   <div class="rexlive-toolbox__toggle-wrap-submenu">
-    <div class="rexlive-toolbox__item open-distancer-tool tippy" data-tippy-content="<?php esc_attr_e( 'Page Settings', 'rexpansive' ); ?>" data-tippy-placement="right">
+    <div class="rexlive-toolbox__item open-distancer-tool tippy" data-tippy-content="<?php esc_attr_e( 'Page Settings', 'rexpansive-builder' ); ?>" data-tippy-placement="right">
       <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
     </div>
   </div>
@@ -34,16 +34,16 @@ $small_tools = true;
           <?php Rexbuilder_Utilities::get_icon('#A007-Close'); ?>
         </div>
 
-        <div class="tool-option btn-save tool-option--full-filled tippy" data-tippy-content="<?php esc_attr_e( 'Save', 'rexpansive' ); ?>">
+        <div class="tool-option btn-save tool-option--full-filled tippy" data-tippy-content="<?php esc_attr_e( 'Save', 'rexpansive-builder' ); ?>">
           <span class="btn-save--icon"><?php Rexbuilder_Utilities::get_icon('#A006-Save-Clear'); ?></span>
           <!-- <span>
             <span class="btn-save--edited"><?php // Rexbuilder_Utilities::get_icon('#A006-Save-Clear'); ?></span>
             <span class="btn-save--saved"><?php // Rexbuilder_Utilities::get_icon('#A006-Save-Clear'); ?></span>
           </span> -->
-          <span class="btn-save__label"><?php _e('Save','rexpansive'); ?></span>
+          <span class="btn-save__label"><?php _e('Save','rexpansive-builder'); ?></span>
         </div>
 
-        <div class="tool-option tool-option--full btn-models tippy" data-tippy-content="<?php esc_attr_e( 'Models', 'rexpansive' ); ?>">
+        <div class="tool-option tool-option--full btn-models tippy" data-tippy-content="<?php esc_attr_e( 'Models', 'rexpansive-builder' ); ?>">
           <?php Rexbuilder_Utilities::get_icon('#A012-Models-List'); ?>
         </div>
       </div>

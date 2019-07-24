@@ -194,7 +194,7 @@ $this->settings = apply_filters( 'rexbuilder_metabox_settings', array(
 <div class="builder-row clearfix z-depth-1" data-count="" data-gridcontent='' data-gridproperties='<?php echo htmlspecialchars( $defaultsectionproperties ); ?>' data-griddimension='full' data-layout='fixed' data-sectionid='' data-section-overlay-color='' data-backresponsive='<?php echo htmlspecialchars( $defaultsectionconfigs ); ?>' data-row-separator-top="" data-row-separator-bottom="" data-row-separator-right="" data-row-separator-left="" data-section-active-photoswipe="">
 	<div class="builder-row-contents">
 		<div class="builder-edit-row-header">
-			<button class="btn-floating builder-delete-row waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexspansive'); ?>">
+			<button class="btn-floating builder-delete-row waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexpansive-builder'); ?>">
 				<i class="material-icons white-text">&#xE5CD;</i>
 			</button>
 		</div>
@@ -206,7 +206,7 @@ $this->settings = apply_filters( 'rexbuilder_metabox_settings', array(
 						name="section-dimension-data.index" 
 						class="builder-edit-row-dimension with-gap" 
 						value="full" checked title="Full" />
-					<label for="section-full-data.index" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Full', 'rexspansive' ); ?>">
+					<label for="section-full-data.index" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Full', 'rexpansive-builder' ); ?>">
 						<i class="material-icons rex-icon">v<span class="rex-ripple"></span></i>
 					</label>
 				</div>
@@ -216,7 +216,7 @@ $this->settings = apply_filters( 'rexbuilder_metabox_settings', array(
 						name="section-dimension-data.index" 
 						class="builder-edit-row-dimension with-gap" 
 						value="boxed" title="Boxed" />
-					<label for="section-boxed-data.index" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Boxed', 'rexspansive' ); ?>">
+					<label for="section-boxed-data.index" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Boxed', 'rexpansive-builder' ); ?>">
 						<i class="material-icons rex-icon">t<span class="rex-ripple"></span></i>
 					</label>
 				</div>
@@ -226,7 +226,7 @@ $this->settings = apply_filters( 'rexbuilder_metabox_settings', array(
 						name="section-layout-data.index" 
 						class="builder-edit-row-layout with-gap" 
 						value="fixed" checked title="Fixed" />
-					<label for="section-fixed-data.index"  class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Grid Layout', 'rexspansive' ); ?>">
+					<label for="section-fixed-data.index"  class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Grid Layout', 'rexpansive-builder' ); ?>">
 						<i class="material-icons">&#xE8F1;<span class="rex-ripple"></span></i>
 					</label>
 					<input type="radio" 
@@ -234,17 +234,17 @@ $this->settings = apply_filters( 'rexbuilder_metabox_settings', array(
 						name="section-layout-data.index" 
 						class="builder-edit-row-layout with-gap" 
 						value="masonry" title="Masonry" />
-					<label for="section-masonry-data.index"  class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Masonry Layout', 'rexspansive' ); ?>">
+					<label for="section-masonry-data.index"  class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Masonry Layout', 'rexpansive-builder' ); ?>">
 						<i class="material-icons">&#xE871;<span class="rex-ripple"></span></i>
 					</label>
 				</div>
 			</div>
 			
 			<div class="builder-buttons col s4 center-align">
-				<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e( 'Image', 'rexspansive' ); ?>">
+				<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e( 'Image', 'rexpansive-builder' ); ?>">
 					<i class="material-icons rex-icon">p</i>
 				</button>
-				<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="text" data-position="bottom" data-tooltip="<?php _e( 'Text', 'rexspansive' ); ?>">
+				<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="text" data-position="bottom" data-tooltip="<?php _e( 'Text', 'rexpansive-builder' ); ?>">
 					<i class="material-icons rex-icon">u</i>
 				</button>
 				<div class="builder-fab-row-widgets fixed-action-btn horizontal">
@@ -258,7 +258,7 @@ $this->settings = apply_filters( 'rexbuilder_metabox_settings', array(
 							</button>
 						</li>
 						<li>
-							<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="empty" data-position="bottom" data-tooltip="<?php _e( 'Block space', 'rexspansive' ); ?>">
+							<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="empty" data-position="bottom" data-tooltip="<?php _e( 'Block space', 'rexpansive-builder' ); ?>">
 								<i class="material-icons rex-icon">H</i>
 							</button>
 						</li>
@@ -279,8 +279,8 @@ $this->settings = apply_filters( 'rexbuilder_metabox_settings', array(
 			</div>
 			
 			<div class="col s4 right-align builder-setting-buttons">
-				<div class="background_section_preview btn-floating tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Row background', 'rexspansive' ); ?>"></div>
-				<button class="btn-floating builder-section-config tooltipped" data-position="bottom" data-tooltip="<?php _e('Row settings', 'rexspansive'); ?>">
+				<div class="background_section_preview btn-floating tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Row background', 'rexpansive-builder' ); ?>"></div>
+				<button class="btn-floating builder-section-config tooltipped" data-position="bottom" data-tooltip="<?php _e('Row settings', 'rexpansive-builder'); ?>">
 					<i class="material-icons">&#xE8B8;</i>
 				</button>
 				<div class="btn-flat builder-copy-row tooltipped fixed-action-btn relative-action-btn top" data-position="bottom" data-tooltip="<?php _e('Copy row', 'rexpansive'); ?>">
@@ -293,7 +293,7 @@ $this->settings = apply_filters( 'rexbuilder_metabox_settings', array(
 						</li>
 					</ul>
 				</div>
-				<div class="btn-flat builder-move-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Move row', 'rexspansive'); ?>">
+				<div class="btn-flat builder-move-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Move row', 'rexpansive-builder'); ?>">
 					<i class="material-icons grey-text text-darken-2">&#xE8D5;</i>
 				</div>
 			</div>

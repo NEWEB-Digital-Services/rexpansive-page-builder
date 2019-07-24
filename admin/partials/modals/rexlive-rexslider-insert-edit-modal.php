@@ -27,20 +27,20 @@ defined('ABSPATH') or exit;
             ?>
                 <div class="bl_d-flex bl_ai-c bl_jc-sb bl_rex-slider__list-wrap">
                     <div class="bl_rex-slider__list-icon">
-                        <div class="tool-button tool-button--inline tool-button--flat" data-tippy-content="<?php esc_attr_e( 'Models', 'rexpansive' ); ?>">
+                        <div class="tool-button tool-button--inline tool-button--flat" data-tippy-content="<?php esc_attr_e( 'Models', 'rexpansive-builder' ); ?>">
                             <?php Rexbuilder_Utilities::get_icon('#A012-Models-List'); ?>
                         </div>
                     </div>
                     <div class="rx__select-wrap">
                         <select id="rex-slider__import" class="rx__form-input">
-                            <option value="0"><?php _e('Copy from sliders', 'rexpansive-classic');?></option>
+                            <option value="0"><?php _e('Copy from sliders', 'rexpansive-builder');?></option>
                             <?php
                             // Printing all sliders avaiable
                             if ($query->have_posts()) {
                                 while ($query->have_posts()) {
                                     $query->the_post();
                                     ?>
-                            <option value="<?php the_ID();?>" data-rex-slider-title="<?php the_title(); ?>"><?php _e('Copy from ','rexpansive'); ?>"<?php the_title();?>"</option>
+                            <option value="<?php the_ID();?>" data-rex-slider-title="<?php the_title(); ?>"><?php _e('Copy from ','rexpansive-builder'); ?>"<?php the_title();?>"</option>
                             <?php
                                 }
                             } else {
@@ -60,7 +60,7 @@ defined('ABSPATH') or exit;
             </div>
             <div class="rex-slider__import--wrap rex-modal-content__modal-area rex-modal-content__modal-area--bordered">
                 <div class="input-field input-field--small bl_d-flex bl_ai-c">
-                    <input class="title-slider" type="text" value="<?php _e('New Slider','rexpansive'); ?>" disabled>
+                    <input class="title-slider" type="text" value="<?php _e('New Slider','rexpansive-builder'); ?>" disabled>
                     <div class="rex_edit_title_slider">
                         <span id="edit_slider_title_live_btn"><?php Rexbuilder_Utilities::get_icon('#Z008-Edit'); ?></span>
                     </div>
@@ -82,30 +82,30 @@ defined('ABSPATH') or exit;
                     <div class="valign-wrapper space-between-wrapper">
                         <button class="rex-slider__slide-index btn-circle btn-small btn-bordered grey-border border-darken-2 waves-effect waves-light white grey-text text-darken-2">1</button>
                         <div class="rex-button-with-plus">
-                            <button class="rex-slider__slide-edit rex-slider__slide__image-preview btn-floating waves-effect waves-light tippy grey darken-2" value="edit-slide" data-position="bottom" data-tippy-content="<?php _e('Slide', 'rexpansive-classic');?>">
+                            <button class="rex-slider__slide-edit rex-slider__slide__image-preview btn-floating waves-effect waves-light tippy grey darken-2" value="edit-slide" data-position="bottom" data-tippy-content="<?php _e('Slide', 'rexpansive-builder');?>">
                                 <i class="material-icons rex-icon">p</i>
                             </button>
-                            <button class="rex-slider__slide-edit rex-plus-button btn-floating light-blue darken-1 tippy" value="add-slide" data-position="bottom" data-tippy-content="<?php _e('Select Image', 'rexpansive-classic');?>">
+                            <button class="rex-slider__slide-edit rex-plus-button btn-floating light-blue darken-1 tippy" value="add-slide" data-position="bottom" data-tippy-content="<?php _e('Select Image', 'rexpansive-builder');?>">
                                 <i class="material-icons">&#xE145;</i>
                             </button>
                         </div>
-                        <button class="rex-slider__slide-edit btn-floating waves-effect waves-light tippy grey darken-2" value="text" data-position="bottom" data-tippy-content="<?php _e('Text', 'rexpansive-classic');?>">
+                        <button class="rex-slider__slide-edit btn-floating waves-effect waves-light tippy grey darken-2" value="text" data-position="bottom" data-tippy-content="<?php _e('Text', 'rexpansive-builder');?>">
                             <i class="material-icons rex-icon">u</i>
                         </button>
-                        <button class="rex-slider__slide-edit btn-floating waves-effect waves-light tippy grey darken-2" value="video" data-position="bottom" data-tippy-content="<?php _e('Video', 'rexpansive-classic');?>">
+                        <button class="rex-slider__slide-edit btn-floating waves-effect waves-light tippy grey darken-2" value="video" data-position="bottom" data-tippy-content="<?php _e('Video', 'rexpansive-builder');?>">
                             <i class="material-icons">play_arrow</i>
                         </button>
-                        <button class="rex-slider__slide-edit btn-floating waves-effect waves-light tippy grey darken-2" value="url" data-position="bottom" data-tippy-content="<?php _e('Link', 'rexpansive-classic');?>">
+                        <button class="rex-slider__slide-edit btn-floating waves-effect waves-light tippy grey darken-2" value="url" data-position="bottom" data-tippy-content="<?php _e('Link', 'rexpansive-builder');?>">
                             <i class="material-icons rex-icon">l</i>
                         </button>
                         <div>
-                            <button class="rex-slider__slide-edit btn-flat tippy" data-position="bottom" value="copy" data-tippy-content="<?php _e('Copy slide', 'rexpansive-classic');?>">
+                            <button class="rex-slider__slide-edit btn-flat tippy" data-position="bottom" value="copy" data-tippy-content="<?php _e('Copy slide', 'rexpansive-builder');?>">
                                 <i class="material-icons grey-text text-darken-2">&#xE14D;</i>
                             </button>
-                            <div class="rex-slider__slide-edit btn-flat tippy" data-position="bottom" value="move" data-tippy-content="<?php _e('Move slide', 'rexpansive-classic');?>">
+                            <div class="rex-slider__slide-edit btn-flat tippy" data-position="bottom" value="move" data-tippy-content="<?php _e('Move slide', 'rexpansive-builder');?>">
                                 <i class="material-icons grey-text text-darken-2">&#xE8D5;</i>
                             </div>
-                            <button class="rex-slider__slide-edit btn-flat tippy" value="delete" data-position="bottom" data-tippy-content="<?php _e('Delete slide', 'rexpansive-classic');?>">
+                            <button class="rex-slider__slide-edit btn-flat tippy" value="delete" data-position="bottom" data-tippy-content="<?php _e('Delete slide', 'rexpansive-builder');?>">
                                 <i class="material-icons grey-text text-darken-2">&#xE5CD;</i>
                             </button>
                         </div>
@@ -122,7 +122,7 @@ defined('ABSPATH') or exit;
                 <!-- Here goes other slides -->
             </div>
             <div class="rex-slider__add-slide__wrap rex-modal-content__modal-area--bordered">
-                <button id="rex-slider__add-new-slide" class="builder-button btn-floating btn light-blue darken-1 waves-effect waves-light tippy" data-position="bottom" data-tippy-content="<?php _e('Add slide', 'rexpansive-classic')?>">
+                <button id="rex-slider__add-new-slide" class="builder-button btn-floating btn light-blue darken-1 waves-effect waves-light tippy" data-position="bottom" data-tippy-content="<?php _e('Add slide', 'rexpansive-builder')?>">
                     <i class="material-icons text-white">&#xE145;</i>
                 </button>
             </div>
@@ -131,22 +131,22 @@ defined('ABSPATH') or exit;
                 <div class="col">
                     <div class="valign-wrapper space-between-wrapper">
                         <div class="rex-check-icon">
-                            <input type="checkbox" id="rex-slider__autostart" name="rex-slider__autostart" title="<?php _e('Autostart', 'rexpansive-classic');?>">
-                            <label for="rex-slider__autostart" class="tippy" data-position="bottom" data-tippy-content="<?php _e('Autostart', 'rexpansive-classic');?>">
+                            <input type="checkbox" id="rex-slider__autostart" name="rex-slider__autostart" title="<?php _e('Autostart', 'rexpansive-builder');?>">
+                            <label for="rex-slider__autostart" class="tippy" data-position="bottom" data-tippy-content="<?php _e('Autostart', 'rexpansive-builder');?>">
                                 <i class="rex-icon">J</i>
                                 <span class="rex-ripple"></span>
                             </label>
                         </div>
                         <div class="rex-check-icon">
-                            <input type="checkbox" id="rex-slider__prev-next" name="rex-slider__prev-next" title="<?php _e('Prev Next', 'rexpansive-classic');?>">
-                            <label for="rex-slider__prev-next" class="tippy" data-position="bottom" data-tippy-content="<?php _e('Prev Next', 'rexpansive-classic');?>">
+                            <input type="checkbox" id="rex-slider__prev-next" name="rex-slider__prev-next" title="<?php _e('Prev Next', 'rexpansive-builder');?>">
+                            <label for="rex-slider__prev-next" class="tippy" data-position="bottom" data-tippy-content="<?php _e('Prev Next', 'rexpansive-builder');?>">
                                 <i class="rex-icon">K</i>
                                 <span class="rex-ripple"></span>
                             </label>
                         </div>
                         <div class="rex-check-icon">
-                            <input type="checkbox" id="rex-slider__dots" name="rex-slider__dots" title="<?php _e('Dots', 'rexpansive-classic');?>">
-                            <label for="rex-slider__dots" class="tippy" data-position="bottom" data-tippy-content="<?php _e('Dots', 'rexpansive-classic');?>">
+                            <input type="checkbox" id="rex-slider__dots" name="rex-slider__dots" title="<?php _e('Dots', 'rexpansive-builder');?>">
+                            <label for="rex-slider__dots" class="tippy" data-position="bottom" data-tippy-content="<?php _e('Dots', 'rexpansive-builder');?>">
                                 <i class="rex-icon">Y</i>
                                 <span class="rex-ripple"></span>
                             </label>
@@ -164,13 +164,13 @@ defined('ABSPATH') or exit;
             </button>
         </div> -->
         <div class="rex-modal__outside-footer">
-            <div id="rex-insert-video-block-save" class="tool-button tool-button--inline tool-button--save rex-save-button tippy" data-tippy-content="<?php esc_attr_e( 'Save Slider', 'rexpansive' ); ?>">
+            <div id="rex-insert-video-block-save" class="tool-button tool-button--inline tool-button--save rex-save-button tippy" data-tippy-content="<?php esc_attr_e( 'Save Slider', 'rexpansive-builder' ); ?>">
                 <div class="btn-save--wrap">
                     <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
                     <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
                 </div>
             </div>
-            <div class="tool-button tool-button--inline tool-button--cancel tool-button--modal rex-undo-button tippy" data-tippy-content="<?php esc_attr_e( 'Undo', 'rexpansive' ); ?>" data-slider-to-edit="">
+            <div class="tool-button tool-button--inline tool-button--cancel tool-button--modal rex-undo-button tippy" data-tippy-content="<?php esc_attr_e( 'Undo', 'rexpansive-builder' ); ?>" data-slider-to-edit="">
                 <?php Rexbuilder_Utilities::get_icon('#A003-Undo'); ?>
             </div>
         </div>

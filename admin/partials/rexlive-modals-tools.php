@@ -16,7 +16,7 @@ $layout_list_type = "dropdown";
 ?>
 <div class="rex-modal-wrap">
   <div id="rexlive-custom-layout-modal" class="rexbuilder-materialize-wrap rex-modal rex-modal-draggable" data-layout-list-type="<?php echo $layout_list_type; ?>">
-    <div class="tool-button tool-button--inline tool-button--black tool-button--close rex-cancel-button tippy" data-rex-option="continue" data-tippy-content="<?php _e( 'Close', 'rexpansive' ); ?>">
+    <div class="tool-button tool-button--inline tool-button--black tool-button--close rex-cancel-button tippy" data-rex-option="continue" data-tippy-content="<?php _e( 'Close', 'rexpansive-builder' ); ?>">
       <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
     </div>
     <div class="modal-content">
@@ -55,11 +55,11 @@ $layout_list_type = "dropdown";
                     <span class="layout-value"><?php echo $layout['label']; ?></span>
                   </div>
                   <div class="layout__setting">
-                    <input class="layout-min-input" type="hidden" name="rexlive-layout-min" data-editable-field="true" value="<?php echo esc_attr( $layout['min'] ); ?>" placeholder="<?php _e( 'From', 'rexpansive' ); ?>">
+                    <input class="layout-min-input" type="hidden" name="rexlive-layout-min" data-editable-field="true" value="<?php echo esc_attr( $layout['min'] ); ?>" placeholder="<?php _e( 'From', 'rexpansive-builder' ); ?>">
                     <span class="layout-value"><?php echo $layout['min']; ?>px</span>
                   </div>
                   <div class="layout__setting">
-                    <input class="layout-max-input" type="hidden" name="rexlive-layout-max" data-editable-field="true" value="<?php echo esc_attr( $layout['max'] ); ?>" placeholder="<?php _e( 'To', 'rexpansive' ); ?>">
+                    <input class="layout-max-input" type="hidden" name="rexlive-layout-max" data-editable-field="true" value="<?php echo esc_attr( $layout['max'] ); ?>" placeholder="<?php _e( 'To', 'rexpansive-builder' ); ?>">
                     <span class="layout-value"><?php echo ( "" != $layout['max'] ? $layout['max'] . 'px' : '&infin;' ); ?></span>
                   </div>
                   <div class="layout__setting">
@@ -74,7 +74,7 @@ $layout_list_type = "dropdown";
                     <div class="input-field">
                       <input type="hidden" name="rexlive-layout-id" value="<?php echo esc_attr( $layout['id'] ); ?>">
                       <input id="rexlive-layout-label-<?php echo $layout['id']; ?>" class="layout-label-input" type="text" name="rexlive-layout-label" data-editable-field="true" value="<?php echo esc_attr( $layout['label'] ); ?>">
-                      <label for="rexlive-layout-label-<?php echo $layout['id']; ?>" class="<?php echo ( "" != $layout['label'] ? 'active' : '' ); ?>"><?php _e('Label','rexpansive'); ?></label>
+                      <label for="rexlive-layout-label-<?php echo $layout['id']; ?>" class="<?php echo ( "" != $layout['label'] ? 'active' : '' ); ?>"><?php _e('Label','rexpansive-builder'); ?></label>
                       <span class="rex-material-bar"></span>
                       <span class="layout-value layout-value--hide"><?php echo $layout['label']; ?></span>
                     </div>
@@ -82,7 +82,7 @@ $layout_list_type = "dropdown";
                   <div class="layout__setting">
                     <div class="input-field">
                       <input id="rexlive-layout-min-<?php echo $layout['id']; ?>" class="layout-min-input" type="<?php echo ( 'standard' == $layout['type'] ? 'hidden' : 'text'); ?>" name="rexlive-layout-min" data-editable-field="true" value="<?php echo esc_attr( $layout['min'] ); ?>">
-                      <label for="rexlive-layout-min-<?php echo $layout['id']; ?>" class="<?php echo ( "" != $layout['min'] ? 'active' : '' ); ?>"><?php _e( 'From', 'rexpansive' ); ?></label>
+                      <label for="rexlive-layout-min-<?php echo $layout['id']; ?>" class="<?php echo ( "" != $layout['min'] ? 'active' : '' ); ?>"><?php _e( 'From', 'rexpansive-builder' ); ?></label>
                       <span class="rex-material-bar"></span>
                     </div>
                     <span class="layout-value layout-value--hide"><?php echo $layout['min']; ?>px</span>
@@ -90,7 +90,7 @@ $layout_list_type = "dropdown";
                   <div class="layout__setting">
                     <div class="input-field">
                       <input id="rexlive-layout-max-<?php echo $layout['id']; ?>" class="layout-max-input" type="<?php echo ( 'standard' == $layout['type'] ? 'hidden' : 'text'); ?>" name="rexlive-layout-max" data-editable-field="true" value="<?php echo ( "" != $layout['max'] ? esc_attr( $layout['max'] ) : '&infin;' ); ?>">
-                      <label for="rexlive-layout-max-<?php echo $layout['id']; ?>" class="<?php echo ( "" != $layout['max'] ? 'active' : '' ); ?>"><?php _e( 'To', 'rexpansive' ); ?></label>
+                      <label for="rexlive-layout-max-<?php echo $layout['id']; ?>" class="<?php echo ( "" != $layout['max'] ? 'active' : '' ); ?>"><?php _e( 'To', 'rexpansive-builder' ); ?></label>
                       <span class="rex-material-bar"></span>
                     </div>
                     <span class="layout-value layout-value--hide"><?php echo ( "" != $layout['max'] ? $layout['max'] . 'px' : '&infin;' ); ?></span>
@@ -124,7 +124,7 @@ $layout_list_type = "dropdown";
         <!-- </div>
       </div> -->
       <div class="add-custom-layout__wrap">
-        <div id="rexlive-add-custom-layout" class="tool-button tool-button--inline tool-button--flat tool-button--add-mdm tippy" data-tippy-content="<?php _e( 'Add Layout', 'rexpansive' ); ?>">
+        <div id="rexlive-add-custom-layout" class="tool-button tool-button--inline tool-button--flat tool-button--add-mdm tippy" data-tippy-content="<?php _e( 'Add Layout', 'rexpansive-builder' ); ?>">
           <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
         </div>
       </div>

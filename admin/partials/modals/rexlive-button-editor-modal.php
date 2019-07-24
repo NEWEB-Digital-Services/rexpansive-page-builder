@@ -44,7 +44,7 @@ defined('ABSPATH') or exit;
                         </div>
                         <div class="rexbutton-count-column_4">
                             <div id="rex-button-font-size-wrap">
-                                <input type="text" id="rex-button_text_font_size" name="rex-button_text_font_size" placeholder="12" class="rexbutton-upd-textbox tippy" data-tippy-content="<?php _e( 'Font Size', 'rexpansive' ); ?>"/>
+                                <input type="text" id="rex-button_text_font_size" name="rex-button_text_font_size" placeholder="12" class="rexbutton-upd-textbox tippy" data-tippy-content="<?php _e( 'Font Size', 'rexpansive-builder' ); ?>"/>
                             </div>
                         </div>
                         <div class="rexbutton-count-column_5">
@@ -163,7 +163,7 @@ defined('ABSPATH') or exit;
                         </div>
                         <div class="rexbutton-count-column_4">
                             <div id="rex-button-border-width-wrap">
-                                <input type="text" id="rex-button-border-width" name="rex-button-border-width" class="rexbutton-upd-textbox tippy" placeholder="5" data-tippy-content="<?php _e( 'Border Width', 'rexpansive' ); ?>"/>
+                                <input type="text" id="rex-button-border-width" name="rex-button-border-width" class="rexbutton-upd-textbox tippy" placeholder="5" data-tippy-content="<?php _e( 'Border Width', 'rexpansive-builder' ); ?>"/>
                             </div>
                         </div>
                         <div class="rexbutton-count-column_5">
@@ -206,21 +206,21 @@ defined('ABSPATH') or exit;
 
                     <div class="rex-live__row-margin-padding block-padding-wrap">
                         <div class="bl_d-flex bl_jc-c">
-                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Top', 'rexpansive' ); ?>">
+                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Top', 'rexpansive-builder' ); ?>">
                                 <input type="text" id="rex-button-margin-top-radius" name="rex-button-margin-top-radius" class="block-padding-values" placeholder="20"/>
                                 <span class="bl_input-indicator">px</span>
                             </div><!-- // row margin top -->
                         </div>
                         <div class="bl_d-flex bl_ai-c bl_jc-sb">
                             <div>
-                                <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Left', 'rexpansive' ); ?>">
+                                <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Left', 'rexpansive-builder' ); ?>">
                                 <input type="text" id="rex-button-margin-left-radius" name="rex-button-margin-left-radius" class="block-padding-values" placeholder="20"/>
                                     <span class="bl_input-indicator">px</span>
                                 </div><!-- // row margin left -->
                             </div>
                             <div class="rex-live__row-padding-wrap">
                                 <div class="bl_d-flex bl_jc-c">
-                                    <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Top', 'rexpansive' ); ?>">
+                                    <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Top', 'rexpansive-builder' ); ?>">
                                     <input type="text" id="rex-button-padding-top-radius" name="rex-button-padding-top-radius" class="block-padding-values" placeholder="20"/>
                                         <span class="bl_input-indicator">px</span>
                                     </div><!-- // row padding top -->
@@ -228,7 +228,7 @@ defined('ABSPATH') or exit;
                                 <div class="bl_d-flex bl_ai-c bl_jc-sb">
                                     <div class="zl_cfd_a">BUTTON</div>
                                         <div>
-                                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Left', 'rexpansive' ); ?>">
+                                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Left', 'rexpansive-builder' ); ?>">
                                             <input type="text" id="rex-button-padding-left-radius" name="rex-button-padding-left-radius" class="block-padding-values" placeholder="20"/>
                                                 <span class="bl_input-indicator">px</span>
                                             </div><!-- // row padding left -->
@@ -237,28 +237,28 @@ defined('ABSPATH') or exit;
                                         </div>
                                         <div>
                                         
-                                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Right', 'rexpansive' ); ?>">
+                                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Right', 'rexpansive-builder' ); ?>">
                                             <input type="text" id="rex-button-padding-right-radius" name="rex-button-padding-right-radius" class="block-padding-values" placeholder="20"/>
                                                 <span class="bl_input-indicator">px</span>
                                             </div><!-- // row padding right -->
                                         </div>
                                     </div>
                                     <div class="bl_d-flex bl_jc-c">
-                                        <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Bottom', 'rexpansive' ); ?>">
+                                        <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Bottom', 'rexpansive-builder' ); ?>">
                                             <input type="text" id="rex-button-padding-bottom-radius" name="rex-button-padding-bottom-radius" class="block-padding-values" placeholder="20"/>
                                             <span class="bl_input-indicator">px</span>
                                         </div><!-- // row paddig bottom -->
                                     </div>
                                 </div>
                             <div>
-                                <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Right', 'rexpansive' ); ?>">
+                                <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Right', 'rexpansive-builder' ); ?>">
                                     <input type="text" id="rex-button-margin-right-radius" name="rex-button-margin-right-radius" class="block-padding-values" placeholder="20"/>
                                     <span class="bl_input-indicator">px</span>
                                 </div><!-- //row margin right -->
                             </div>
                         </div>
                         <div class="bl_d-flex bl_jc-c">
-                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Bottom', 'rexpansive' ); ?>">
+                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Bottom', 'rexpansive-builder' ); ?>">
                                 <input type="text" id="rex-button-margin-bottom-radius" name="rex-button-margin-bottom-radius" class="block-padding-values" placeholder="20"/>
                                 <span class="bl_input-indicator">px</span>
                             </div><!-- //row margin bottom -->
@@ -270,7 +270,7 @@ defined('ABSPATH') or exit;
                             <div class="subRow7_1">
                                 <?php Rexbuilder_Utilities::get_icon('#D001-Radius'); ?>    
                             </div>
-                            <div class="subRow7_2 tippy" data-tippy-content="<?php _e( 'Border Radius', 'rexpansive' ); ?>">
+                            <div class="subRow7_2 tippy" data-tippy-content="<?php _e( 'Border Radius', 'rexpansive-builder' ); ?>">
                                 <input type="text" id="rex-button-border-radius" name="rex-button-border-radius" placeholder="10" class="rexbutton-upd-textbox"/>
                             </div>  
                             <div class="subRow7_3">PX</div>
@@ -281,7 +281,7 @@ defined('ABSPATH') or exit;
                             <div class="subRow7_1">
                                 <?php Rexbuilder_Utilities::get_icon('#B007-Move'); ?>
                             </div>
-                            <div class="subRow7_2 tippy" data-tippy-content="<?php _e( 'Button Height', 'rexpansive' ); ?>">
+                            <div class="subRow7_2 tippy" data-tippy-content="<?php _e( 'Button Height', 'rexpansive-builder' ); ?>">
                                 <input type="text" id="rex-button-height" name="rex-button-height" placeholder="70" class="rexbutton-upd-textbox"/>
                             </div>  
                             <div class="subRow7_3">PX</div>
@@ -292,7 +292,7 @@ defined('ABSPATH') or exit;
                             <div class="subRow7_1 rotate">
                                 <?php Rexbuilder_Utilities::get_icon('#B007-Move'); ?>
                             </div>
-                            <div class="subRow7_2 tippy" data-tippy-content="<?php _e( 'Button Width', 'rexpansive' ); ?>">
+                            <div class="subRow7_2 tippy" data-tippy-content="<?php _e( 'Button Width', 'rexpansive-builder' ); ?>">
                             <input type="text" id="rex-button-width" name="rex-button-width" placeholder="100" class="rexbutton-upd-textbox"/>
                             </div>  
                             <div class="subRow7_3">PX</div>
@@ -331,7 +331,7 @@ defined('ABSPATH') or exit;
                         <div id="rex-button-link-target-wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix">
                             <span class="prefix"></span>
                             <input type="text" id="rex-button-link-target" name="rex-button-link-target" class="rexbutton-upd-textbox_resize">
-                            <label for="rex-button-link-target" id="rex-button-link-target-label" class="rexbutton-upd-textbox_resize"><?php _e('https://...', 'rexpansive');?></label>
+                            <label for="rex-button-link-target" id="rex-button-link-target-label" class="rexbutton-upd-textbox_resize"><?php _e('https://...', 'rexpansive-builder');?></label>
                             <span class="rex-material-bar"></span>
                         </div>
                     </div>
@@ -357,12 +357,12 @@ defined('ABSPATH') or exit;
                         <div id="rex-button-name-wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix">
                             <span class="prefix"></span>
                             <input type="text" id="rex-button__name" name="rex-button__name" class="rexbutton-upd-actiontextbox">
-                            <label for="rex-button__name" id="rex-button__name-label" class=""><?php _e('Title name model button', 'rexpansive');?></label>
+                            <label for="rex-button__name" id="rex-button__name-label" class=""><?php _e('Title name model button', 'rexpansive-builder');?></label>
                             <span class="rex-material-bar"></span>
                         </div>
                     </div>
                     <div class="rexbutton-count-column_12">                        
-                            <div id="rex-button-add-model-wrap" class="add-rex-button-model tippy" data-tippy-content="<?php _e('create new model','rexpansive'); ?>">
+                            <div id="rex-button-add-model-wrap" class="add-rex-button-model tippy" data-tippy-content="<?php _e('create new model','rexpansive-builder'); ?>">
                                 <div class="add-label">+</div>
                             </div>                                   
                     </div>             
@@ -371,10 +371,10 @@ defined('ABSPATH') or exit;
         </div>
         <!-- FOOTER -->
         <div class="rex-modal__outside-footer">
-            <div class="tool-button tool-button--inline tool-button--save rex-apply-button tippy" data-tippy-content="<?php _e('save','rexpansive'); ?>" data-rex-option="save">
+            <div class="tool-button tool-button--inline tool-button--save rex-apply-button tippy" data-tippy-content="<?php _e('save','rexpansive-builder'); ?>" data-rex-option="save">
                 <span class="rex-button save-page btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
             </div>
-            <div class="tool-button tool-button--inline tool-button--cancel rex-reset-button tippy" data-rex-option="continue" data-tippy-content="<?php _e('reset','rexpansive'); ?>">
+            <div class="tool-button tool-button--inline tool-button--cancel rex-reset-button tippy" data-rex-option="continue" data-tippy-content="<?php _e('reset','rexpansive-builder'); ?>">
                 <span class="rex-button continue btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
             </div>
         </div>

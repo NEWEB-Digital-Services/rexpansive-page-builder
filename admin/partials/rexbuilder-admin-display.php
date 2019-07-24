@@ -146,10 +146,13 @@
 			<tr>
 				<th>
 					<?php wp_nonce_field( 'install-contents-nonce', 'installContentsNonce' ); ?>
-					<button id="install-contents-btn" class="button button-primary"><?php _e( 'Reinstall Contents', 'rexpansive' ); ?></button>
+					<button id="install-contents-btn" class="button button-primary"><?php _e( 'Reinstall Contents', 'rexpansive-builder' ); ?></button>
+					<div id="installSpinner" class="spinner"></div>
 				</th>
 				<td>
-					<p><?php _e( 'If you want to reinstall the RexModels, the RexButtons and the icons, press the button.', 'rexpansive' ); ?></p>
+					<p><?php _e( 'If you want to reinstall the RexModels, the RexButtons and the icons, press the button.', 'rexpansive-builder' ); ?></p>
+					<p><strong><?php _e( 'WARNING:', 'rexpansive-builder' ); ?></strong>&nbsp;<?php _e( 'This will override the actual models and icons!', 'rexpansive-builder' ); ?></p>
+					<div id="installContentsMsg"></div>
 				</td>
 			</tr>
 		</table>

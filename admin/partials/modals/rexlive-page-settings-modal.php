@@ -11,13 +11,13 @@ defined('ABSPATH') or exit;
 ?>
 <div class="rex-modal-wrap rex-modal-resize-min">
     <div id="rex-page-settings-modal" class="rex-modal rex-modal--small rexbuilder-materialize-wrap rex-modal-draggable setting-edited">
-        <div class="tool-button tool-button--black rex-cancel-button rex-modal__close-button tool-button--close tippy" data-tippy-content="<?php _e( 'Close', 'rexpansive' ); ?>" tabindex="0">
+        <div class="tool-button tool-button--black rex-cancel-button rex-modal__close-button tool-button--close tippy" data-tippy-content="<?php _e( 'Close', 'rexpansive-builder' ); ?>" tabindex="0">
             <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
         </div>
         <div class="modal-content">
             <div class="bl_modal-row bl_modal-row--no-padding">
                 <div class="bl_modal__option-wrap bl_modal__option-wrap--fluid">
-                    <div class="tippy" data-tippy-content="<?php _e( 'Top Distance', 'rexpansive' ); ?>">
+                    <div class="tippy" data-tippy-content="<?php _e( 'Top Distance', 'rexpansive-builder' ); ?>">
                         <?php Rexbuilder_Utilities::get_icon('#Z012-HeightBars', 'l-svg-icons--big'); ?>
                     </div>
                 </div>
@@ -25,7 +25,7 @@ defined('ABSPATH') or exit;
                     <div style="width:100%;">
                         <div class="bl_modal-row">
                             <div class="bl_modal__option-wrap bl_modal__option-wrap--fluid">
-                                <div class="rex-check rex-check-icon tippy" data-tippy-content="<?php _e( 'All pages', 'rexpansive' ); ?>">
+                                <div class="rex-check rex-check-icon tippy" data-tippy-content="<?php _e( 'All pages', 'rexpansive-builder' ); ?>">
                                     <label>
                                         <input type="radio" name="container-distancer" value="global" class="with-gap">
                                         <span>
@@ -43,7 +43,7 @@ defined('ABSPATH') or exit;
                         </div>
                         <div class="bl_modal-row">
                             <div class="bl_modal__option-wrap bl_modal__option-wrap--fluid">
-                                <div class="rex-check rex-check-icon tippy" data-tippy-content="<?php _e( 'This page', 'rexpansive' ); ?>">
+                                <div class="rex-check rex-check-icon tippy" data-tippy-content="<?php _e( 'This page', 'rexpansive-builder' ); ?>">
                                     <label>
                                         <input type="radio" name="container-distancer" value="custom" class="with-gap">
                                         <span>
@@ -66,7 +66,7 @@ defined('ABSPATH') or exit;
             <!-- <div class="toolbox-distancer-aligner">
                 <div class="toolbox-distancer-container">
                     <div class="toolbox-distancer-column1">
-                        <?php Rexbuilder_Utilities::get_icon('#Z012-HeightBars'); ?>
+                        <?php // Rexbuilder_Utilities::get_icon('#Z012-HeightBars'); ?>
                     </div>
                     <div class="toolbox-distancer-column2">
                         <input id="bb" type="radio" name="select-page-or-global" value="percentage" checked="checked">
@@ -76,10 +76,10 @@ defined('ABSPATH') or exit;
                     </div>
                     <div class="toolbox-distancer-column3">
                         <div class="toolbox-distancer-row">
-                            <input type="text" id="abc" name="abc" placeholder="10" class="distancer-textbox tippy" data-tippy-content="<?php _e('page height bar','rexpansive'); ?>">
+                            <input type="text" id="abc" name="abc" placeholder="10" class="distancer-textbox tippy" data-tippy-content="<?php // _e('page height bar','rexpansive-builder'); ?>">
                         </div>                    
                         <div class="toolbox-distancer-row">
-                            <input type="text" id="def" name="def" placeholder="20" class="distancer-textbox tippy" data-tippy-content="<?php _e('global height bar','rexpansive'); ?>">
+                            <input type="text" id="def" name="def" placeholder="20" class="distancer-textbox tippy" data-tippy-content="<?php // _e('global height bar','rexpansive-builder'); ?>">
                         </div>
                 </div>
             </div> -->
@@ -87,11 +87,11 @@ defined('ABSPATH') or exit;
         </div>
         <!-- FOOTER
         <div class="rex-modal__outside-footer">
-            <div class="tool-button tool-button--inline tool-button--save rex-apply-button tippy" data-tippy-content="<?php _e('save','rexpansive'); ?>" data-rex-option="save">
-                <span class="rex-button save-page btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+            <div class="tool-button tool-button--inline tool-button--save rex-apply-button tippy" data-tippy-content="<?php // _e('save','rexpansive-builder'); ?>" data-rex-option="save">
+                <span class="rex-button save-page btn-save--wrap"><?php // Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
             </div>
-                <div class="tool-button tool-button--inline tool-button--cancel rex-reset-button tippy" data-rex-option="continue" data-tippy-content="<?php _e('reset','rexpansive'); ?>">
-                <span class="rex-button continue btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
+                <div class="tool-button tool-button--inline tool-button--cancel rex-reset-button tippy" data-rex-option="continue" data-tippy-content="<?php // _e('reset','rexpansive-builder'); ?>">
+                <span class="rex-button continue btn-save--wrap"><?php // Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
             </div>
         </div> -->
     </div>

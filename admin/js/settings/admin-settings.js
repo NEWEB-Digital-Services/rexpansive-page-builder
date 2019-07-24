@@ -8,8 +8,11 @@
   var iconsNum;
   var uploadIconsMsgs;
   var iconsSpinner;
+
   var installContents;
   var installContentsNonce;
+  var installSpinner;
+  var installContentsMsg;
 
   // SVGO optimizire intance
   var svgoInstance;
@@ -93,14 +96,22 @@
     iconsSpinner = document.getElementById('iconsSpinner');
     installContents = document.getElementById('install-contents-btn');
     installContentsNonce = document.getElementById('installContentsNonce');
+    installSpinner = document.getElementById('installSpinner');
+    installContentsMsg = document.getElementById('installContentsMsg');
 
     totalSprites = 0;
     spritesObj = [];
   }
 
-
+  /**
+   * Ajax call to reinstall the builder contents
+   * @param  {ClickEvent} ev click on button
+   * @return {null}
+   */
   function handleInstallContents(ev) {
     ev.preventDefault();
+
+    startLoading( installSpinner );
 
     var data = {
       action: "rexpansive_install_contents",
@@ -119,6 +130,14 @@
       if (request.status >= 200 && request.status < 400) {
         // Success!
         var response = JSON.parse(request.responseText);
+
+        if ( response.install_icons ) {
+          writeMessage( installContentsMsg, '' );
+        }
+
+        setTimeout(function() {
+          location.reload();
+        }, 1000);
       }
     }
     // handling error
@@ -129,7 +148,7 @@
 
     // request end
     request.onloadend = function() {
-      
+      stopLoading( iconsSpinner );
     }
     // send request
     request.send(encodedData);
@@ -158,7 +177,7 @@
     ev.preventDefault();
     var previewsSelected = [].slice.call( iconsPreview.querySelectorAll('.preview-wrap.selected') );
     if ( 0 !== previewsSelected.length ) {
-      startLoading();
+      startLoading( iconsSpinner );
 
       var deleteList = [];
       previewsSelected.forEach( function(el) {
@@ -193,24 +212,24 @@
           });
           
           // successful removed
-          writeMessage( response.data.deleteList.length + ' ' + admin_settings_vars.labels.remove_succesfull )
+          writeMessage( uploadIconsMsgs, response.data.deleteList.length + ' ' + admin_settings_vars.labels.remove_succesfull )
         }
       }
       // handling error
       request.onerror = function() {
         // There was a connection error of some sort
-        writeMessage( admin_settings_vars.labels.remove_error );
+        writeMessage( uploadIconsMsgs, admin_settings_vars.labels.remove_error );
       };
 
       // request end
       request.onloadend = function() {
-        stopLoading();
+        stopLoading( iconsSpinner );
       }
       // send request
       request.send(encodedData);
     }
     else {
-      writeMessage( admin_settings_vars.labels.no_selection );
+      writeMessage( uploadIconsMsgs, admin_settings_vars.labels.no_selection );
     }
   }
 
@@ -222,7 +241,7 @@
   function handleSubmitIcons(ev) {
     ev.preventDefault();
 
-    startLoading();
+    startLoading( iconsSpinner );
 
     // start timeout to check optimization complete
     checkOptimizationComplete();
@@ -247,7 +266,7 @@
         reader.readAsText(files[i]);
       } else {
         // already existing sprite
-        writeMessage( spriteId + ' ' + admin_settings_vars.labels.existing_sprite );
+        writeMessage( uploadIconsMsgs, spriteId + ' ' + admin_settings_vars.labels.existing_sprite );
       }
     }
   };
@@ -297,7 +316,7 @@
       symbolWrapper.appendChild(symbol);
 
       // succesfull message
-      writeMessage( temp.id + ' ' + admin_settings_vars.labels.optimize_correct );
+      writeMessage( uploadIconsMsgs, temp.id + ' ' + admin_settings_vars.labels.optimize_correct );
 
       temp.data = symbolWrapper.innerHTML;
       spritesObj.push(temp);
@@ -380,25 +399,25 @@
           var response = JSON.parse(request.responseText);
           
           // successful uploaded
-          writeMessage( admin_settings_vars.labels.upload_succesfull );
+          writeMessage( uploadIconsMsgs, admin_settings_vars.labels.upload_succesfull );
         }
       }
       // handling error
       request.onerror = function() {
         // There was a connection error of some sort
-        writeMessage( admin_settings_vars.labels.upload_error );
+        writeMessage( uploadIconsMsgs, admin_settings_vars.labels.upload_error );
       };
 
       // end request
       request.onloadend = function() {
-        stopLoading();
+        stopLoading( iconsSpinner );
       }
       // send request
       request.send(encodedData);
     }
     else
     {
-      stopLoading();
+      stopLoading( iconsSpinner );
     }
   }
 
@@ -448,18 +467,18 @@
    * Helper function to write messages to the user
    *
    */
-  function writeMessage( msg ) {
+  function writeMessage( el, msg ) {
     var msgEl = document.createElement('p');
     msgEl.innerText = msg;
-    uploadIconsMsgs.appendChild( msgEl );
+    el.appendChild( msgEl );
   }
 
-  function startLoading() {
-    iconsSpinner.style.visibility = 'visible';
+  function startLoading( el ) {
+    el.style.visibility = 'visible';
   }
 
-  function stopLoading() {
-    iconsSpinner.style.visibility = ''; 
+  function stopLoading( el ) {
+    el.style.visibility = ''; 
   }
 
   /**

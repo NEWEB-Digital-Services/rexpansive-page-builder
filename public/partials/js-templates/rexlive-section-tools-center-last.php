@@ -14,7 +14,7 @@ defined('ABSPATH') or exit;
 ?>
 
 <div class="bl_d-flex bl_ai-c tools-area tool-area--center">
-    <div class="tool-button tool-button--flat tool-button--inline tool-button__image--flat add-new-block-image tippy" data-tippy-content="<?php _e('Insert Image','rexpansive'); ?>">
+    <div class="tool-button tool-button--flat tool-button--inline tool-button__image--flat add-new-block-image tippy" data-tippy-content="<?php _e('Insert Image','rexpansive-builder'); ?>">
         <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
     </div>
 
@@ -32,11 +32,11 @@ defined('ABSPATH') or exit;
         </div>
 
         <div class="tool-button_list">        
-            <div class="tool-button add-new-block-slider tool-button_list--item tippy" data-tippy-content="<?php _e('Slider','rexpansive'); ?>">
+            <div class="tool-button add-new-block-slider tool-button_list--item tippy" data-tippy-content="<?php _e('Slider','rexpansive-builder'); ?>">
                 <?php Rexbuilder_Utilities::get_icon('#Z003-RexSlider'); ?>
             </div>
 
-            <div class="tool-button tippy add-new-section tool-button_list--item" data-tippy-content="<?php _e('Insert Row','rexpansive'); ?>" data-new-row-position="after">
+            <div class="tool-button tippy add-new-section tool-button_list--item" data-tippy-content="<?php _e('Insert Row','rexpansive-builder'); ?>" data-new-row-position="after">
                 <?php Rexbuilder_Utilities::get_icon('#B016-New-Adjacent-Row'); ?>
             </div>
         </div>

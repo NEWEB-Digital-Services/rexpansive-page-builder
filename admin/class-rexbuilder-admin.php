@@ -500,7 +500,8 @@ class Rexbuilder_Admin {
 					'upload_error' => __( 'Uploaded error', 'rexpansive-builder' ),
 					'no_selection' => __( 'No icons selected', 'rexpansive-builder' ),
 					'remove_succesfull' => __( 'Icons correctly removed', 'rexpansive-builder' ),
-					'remove_error' => __( 'Remove error', 'rexpansive-builder' )
+					'remove_error' => __( 'Remove error', 'rexpansive-builder' ),
+					'install_icons_succesfull' => __( 'Icons correctly installed', 'rexpansive-builder' )
 				)
 			) );
 		}
@@ -519,17 +520,17 @@ class Rexbuilder_Admin {
 			'rexnonce'	=>	wp_create_nonce( 'rex-ajax-call-nonce' ),
 			'labels'	=>  array(
 				'slider' => array(
-					'new_slider' => __('New Slider','rexpansive'),
-					'copy_slider' => __('Copy-','rexpansive'),
-					'list_title_prefix' => __('Copy from "', 'rexpansive'),
-					'list_title_suffix' => __('"', 'rexpansive')
+					'new_slider' => __('New Slider','rexpansive-builder'),
+					'copy_slider' => __('Copy-','rexpansive-builder'),
+					'list_title_prefix' => __('Copy from "', 'rexpansive-builder'),
+					'list_title_suffix' => __('"', 'rexpansive-builder')
 				),
 				'models' => array(
-					'name_error' => __( 'Name already exists!', 'rexpansive' ),
-					'confirm_delete' => __( 'Are you sure you want to delete this model?', 'rexpansive' ),
+					'name_error' => __( 'Name already exists!', 'rexpansive-builder' ),
+					'confirm_delete' => __( 'Are you sure you want to delete this model?', 'rexpansive-builder' ),
 				),
 				'rexbuttons' => array(
-					'confirm_delete' => __( 'Are you sure you want to delete this button?', 'rexpansive' ),
+					'confirm_delete' => __( 'Are you sure you want to delete this button?', 'rexpansive-builder' ),
 				)
 			)
 		);
@@ -864,7 +865,7 @@ class Rexbuilder_Admin {
 		</div>
 		<div class="live-info-wrap <?php echo ( isset( $savedFromBackend ) && $savedFromBackend == "false" ? ' live-saved' : '' ); ?>">
 			<div class="go-live-advice">
-				<a id="go-live-client-button" href="<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>" class="cool-btn cool-bnt--primary go-live<?php echo ( 'auto-draft' == get_post_status(get_the_id()) ? ' draft' : '' ); ?>" target="_blank"><?php _e( 'Live', 'rexpansive' ); ?></a>
+				<a id="go-live-client-button" href="<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>" class="cool-btn cool-bnt--primary go-live<?php echo ( 'auto-draft' == get_post_status(get_the_id()) ? ' draft' : '' ); ?>" target="_blank"><?php _e( 'Live', 'rexpansive-builder' ); ?></a>
 				<input type="hidden" name="force_live" value="">
 				<script>
 					;(function ($) {
@@ -1034,7 +1035,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			wp_send_json_error( $response );
 		}
 
-		Rexbuilder_Utilities::install_icons();
+		$response['install_icons'] = Rexbuilder_Utilities::install_icons();
 
 		wp_send_json_success( $response );
 	}
@@ -1623,36 +1624,36 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		<button class="rex-slider__slide-index btn-circle btn-small btn-bordered grey-border border-darken-2 waves-effect waves-light white grey-text text-darken-2"><?php echo esc_attr( $j + 1 ); ?></button>
 
 		<div class="rex-button-with-plus">
-			<button class="rex-slider__slide-edit rex-slider__slide__image-preview btn-floating waves-effect waves-light tooltipped grey darken-2<?php echo ( isset( $slide['_rex_banner_gallery_image']['url'] ) ? ' rex-slider__slide__image-preview--active' : '' ); ?>" value="edit-slide" data-position="bottom" data-tooltip="<?php _e( 'Slide', 'rexpansive' ); ?>" <?php echo ( isset( $slide['_rex_banner_gallery_image']['url'] ) ? 'style="background-image:url(' . $slide['_rex_banner_gallery_image']['url'] . ');"' : '' ); ?>>
+			<button class="rex-slider__slide-edit rex-slider__slide__image-preview btn-floating waves-effect waves-light tooltipped grey darken-2<?php echo ( isset( $slide['_rex_banner_gallery_image']['url'] ) ? ' rex-slider__slide__image-preview--active' : '' ); ?>" value="edit-slide" data-position="bottom" data-tooltip="<?php _e( 'Slide', 'rexpansive-builder' ); ?>" <?php echo ( isset( $slide['_rex_banner_gallery_image']['url'] ) ? 'style="background-image:url(' . $slide['_rex_banner_gallery_image']['url'] . ');"' : '' ); ?>>
 				<i class="material-icons rex-icon">p</i>
 			</button>
-			<button class="rex-slider__slide-edit rex-plus-button btn-floating light-blue darken-1 tooltipped" value="add-slide" data-position="bottom" data-tooltip="<?php _e( 'Select Image', 'rexpansive' ); ?>">
+			<button class="rex-slider__slide-edit rex-plus-button btn-floating light-blue darken-1 tooltipped" value="add-slide" data-position="bottom" data-tooltip="<?php _e( 'Select Image', 'rexpansive-builder' ); ?>">
 				<i class="material-icons">&#xE145;</i>
 			</button>
 		</div>
 
-		<button class="rex-slider__slide-edit btn-floating waves-effect waves-light tooltipped grey darken-2<?php echo ( !empty( $slide_content ) ? ' rex-slider__slide-edit__field-active-notice' : '' ); ?>" value="text" data-position="bottom" data-tooltip="<?php _e( 'Text', 'rexpansive' ); ?>">
+		<button class="rex-slider__slide-edit btn-floating waves-effect waves-light tooltipped grey darken-2<?php echo ( !empty( $slide_content ) ? ' rex-slider__slide-edit__field-active-notice' : '' ); ?>" value="text" data-position="bottom" data-tooltip="<?php _e( 'Text', 'rexpansive-builder' ); ?>">
 			<i class="material-icons rex-icon">u</i>
 		</button>
 
-		<button class="rex-slider__slide-edit btn-floating waves-effect waves-light tooltipped grey darken-2<?php echo ( !empty( $video_info_data ) ? ' rex-slider__slide-edit__field-active-notice' : '' ); ?>" value="video" data-position="bottom" data-tooltip="<?php _e( 'Video', 'rexpansive' ); ?>">
+		<button class="rex-slider__slide-edit btn-floating waves-effect waves-light tooltipped grey darken-2<?php echo ( !empty( $video_info_data ) ? ' rex-slider__slide-edit__field-active-notice' : '' ); ?>" value="video" data-position="bottom" data-tooltip="<?php _e( 'Video', 'rexpansive-builder' ); ?>">
 			<i class="material-icons">play_arrow</i>
 		</button>
 
-		<button class="rex-slider__slide-edit btn-floating waves-effect waves-light tooltipped grey darken-2<?php echo ( !empty( $slide['_rex_banner_gallery_url'] ) ? ' rex-slider__slide-edit__field-active-notice' : '' ); ?>" value="url" data-position="bottom" data-tooltip="<?php _e( 'Link', 'rexpansive' ); ?>">
+		<button class="rex-slider__slide-edit btn-floating waves-effect waves-light tooltipped grey darken-2<?php echo ( !empty( $slide['_rex_banner_gallery_url'] ) ? ' rex-slider__slide-edit__field-active-notice' : '' ); ?>" value="url" data-position="bottom" data-tooltip="<?php _e( 'Link', 'rexpansive-builder' ); ?>">
 			<i class="material-icons rex-icon">l</i>
 		</button>
 
 		<div>
-			<button class="rex-slider__slide-edit btn-flat tooltipped" data-position="bottom" value="copy" data-tooltip="<?php _e('Copy slide', 'rexpansive'); ?>">
+			<button class="rex-slider__slide-edit btn-flat tooltipped" data-position="bottom" value="copy" data-tooltip="<?php _e('Copy slide', 'rexpansive-builder'); ?>">
 				<i class="material-icons grey-text text-darken-2">&#xE14D;</i>
 			</button>
 
-			<div class="rex-slider__slide-edit btn-flat tooltipped" data-position="bottom" value="move" data-tooltip="<?php _e('Move slide', 'rexpansive'); ?>">
+			<div class="rex-slider__slide-edit btn-flat tooltipped" data-position="bottom" value="move" data-tooltip="<?php _e('Move slide', 'rexpansive-builder'); ?>">
 				<i class="material-icons grey-text text-darken-2">&#xE8D5;</i>
 			</div>
 
-			<button class="rex-slider__slide-edit btn-flat tooltipped" value="delete" data-position="bottom" data-tooltip="<?php _e('Delete slide', 'rexpansive'); ?>">
+			<button class="rex-slider__slide-edit btn-flat tooltipped" value="delete" data-position="bottom" data-tooltip="<?php _e('Delete slide', 'rexpansive-builder'); ?>">
 				<i class="material-icons grey-text text-darken-2">&#xE5CD;</i>
 			</button>
 		</div>
@@ -1905,25 +1906,25 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 */
 	public function rexpansive_slider_definition() {
 		$labels = array(
-			'name'                => _x( 'RexSliders', 'Post Type General Name', 'rexpansive' ),
-			'singular_name'       => _x( 'RexSlider', 'Post Type Singular Name', 'rexpansive' ),
-			'menu_name'           => __( 'RexSlider', 'rexpansive' ),
-			'name_admin_bar'      => __( 'RexSlider', 'rexpansive' ),
-			'parent_item_colon'   => __( 'Parent RexSlider:', 'rexpansive' ),
-			'all_items'           => __( 'All RexSliders', 'rexpansive' ),
-			'add_new_item'        => __( 'Add New RexSlider', 'rexpansive' ),
-			'add_new'             => __( 'Add New', 'rexpansive' ),
-			'new_item'            => __( 'New RexSlider', 'rexpansive' ),
-			'edit_item'           => __( 'Edit RexSlider', 'rexpansive' ),
-			'update_item'         => __( 'Update RexSlider', 'rexpansive' ),
-			'view_item'           => __( 'View RexSlider', 'rexpansive' ),
-			'search_items'        => __( 'Search RexSlider', 'rexpansive' ),
-			'not_found'           => __( 'RexSlider not found', 'rexpansive' ),
-			'not_found_in_trash'  => __( 'RexSlider not found in Trash', 'rexpansive' ),
+			'name'                => _x( 'RexSliders', 'Post Type General Name', 'rexpansive-builder' ),
+			'singular_name'       => _x( 'RexSlider', 'Post Type Singular Name', 'rexpansive-builder' ),
+			'menu_name'           => __( 'RexSlider', 'rexpansive-builder' ),
+			'name_admin_bar'      => __( 'RexSlider', 'rexpansive-builder' ),
+			'parent_item_colon'   => __( 'Parent RexSlider:', 'rexpansive-builder' ),
+			'all_items'           => __( 'All RexSliders', 'rexpansive-builder' ),
+			'add_new_item'        => __( 'Add New RexSlider', 'rexpansive-builder' ),
+			'add_new'             => __( 'Add New', 'rexpansive-builder' ),
+			'new_item'            => __( 'New RexSlider', 'rexpansive-builder' ),
+			'edit_item'           => __( 'Edit RexSlider', 'rexpansive-builder' ),
+			'update_item'         => __( 'Update RexSlider', 'rexpansive-builder' ),
+			'view_item'           => __( 'View RexSlider', 'rexpansive-builder' ),
+			'search_items'        => __( 'Search RexSlider', 'rexpansive-builder' ),
+			'not_found'           => __( 'RexSlider not found', 'rexpansive-builder' ),
+			'not_found_in_trash'  => __( 'RexSlider not found in Trash', 'rexpansive-builder' ),
 		);
 		$args = array(
-			'label'               => __( 'rex_slider', 'rexpansive' ),
-			'description'         => __( 'RexSlider', 'rexpansive' ),
+			'label'               => __( 'rex_slider', 'rexpansive-builder' ),
+			'description'         => __( 'RexSlider', 'rexpansive-builder' ),
 			'labels'              => $labels,
 			'supports'            => array( 'title', 'page-attributes' ),
 			'taxonomies'          => array( 'rex_slider_taxonomy' ),
@@ -1987,37 +1988,37 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 */
 	public function rexpansive_models_defintion() {
 		$labels = array(
-			'name'                  => _x( 'RexModels', 'Post Type General Name', 'rexpansive' ),
-			'singular_name'         => _x( 'RexModel', 'Post Type Singular Name', 'rexpansive' ),
-			'menu_name'             => __( 'RexModel', 'rexpansive' ),
-			'name_admin_bar'        => __( 'RexModel', 'rexpansive' ),
-			'archives'              => __( 'RexModel Archives', 'rexpansive' ),
-			'attributes'            => __( 'RexModel Attributes', 'rexpansive' ),
-			'parent_item_colon'     => __( 'Parent RexModel:', 'rexpansive' ),
-			'all_items'             => __( 'All RexModels', 'rexpansive' ),
-			'add_new_item'          => __( 'Add New RexModel', 'rexpansive' ),
-			'add_new'               => __( 'Add New', 'rexpansive' ),
-			'new_item'              => __( 'New RexModel', 'rexpansive' ),
-			'edit_item'             => __( 'Edit RexModel', 'rexpansive' ),
-			'update_item'           => __( 'Update RexModel', 'rexpansive' ),
-			'view_item'             => __( 'View RexModel', 'rexpansive' ),
-			'view_items'            => __( 'View RexModels', 'rexpansive' ),
-			'search_items'          => __( 'Search RexModel', 'rexpansive' ),
-			'not_found'             => __( 'RexModel Not found', 'rexpansive' ),
-			'not_found_in_trash'    => __( 'RexModel Not found in Trash', 'rexpansive' ),
-			'featured_image'        => __( 'Featured Image', 'rexpansive' ),
-			'set_featured_image'    => __( 'Set featured image', 'rexpansive' ),
-			'remove_featured_image' => __( 'Remove featured image', 'rexpansive' ),
-			'use_featured_image'    => __( 'Use as featured image', 'rexpansive' ),
-			'insert_into_item'      => __( 'Insert into item', 'rexpansive' ),
-			'uploaded_to_this_item' => __( 'Uploaded to this item', 'rexpansive' ),
-			'items_list'            => __( 'RexModels list', 'rexpansive' ),
-			'items_list_navigation' => __( 'RexModels list navigation', 'rexpansive' ),
-			'filter_items_list'     => __( 'Filter items list', 'rexpansive' ),
+			'name'                  => _x( 'RexModels', 'Post Type General Name', 'rexpansive-builder' ),
+			'singular_name'         => _x( 'RexModel', 'Post Type Singular Name', 'rexpansive-builder' ),
+			'menu_name'             => __( 'RexModel', 'rexpansive-builder' ),
+			'name_admin_bar'        => __( 'RexModel', 'rexpansive-builder' ),
+			'archives'              => __( 'RexModel Archives', 'rexpansive-builder' ),
+			'attributes'            => __( 'RexModel Attributes', 'rexpansive-builder' ),
+			'parent_item_colon'     => __( 'Parent RexModel:', 'rexpansive-builder' ),
+			'all_items'             => __( 'All RexModels', 'rexpansive-builder' ),
+			'add_new_item'          => __( 'Add New RexModel', 'rexpansive-builder' ),
+			'add_new'               => __( 'Add New', 'rexpansive-builder' ),
+			'new_item'              => __( 'New RexModel', 'rexpansive-builder' ),
+			'edit_item'             => __( 'Edit RexModel', 'rexpansive-builder' ),
+			'update_item'           => __( 'Update RexModel', 'rexpansive-builder' ),
+			'view_item'             => __( 'View RexModel', 'rexpansive-builder' ),
+			'view_items'            => __( 'View RexModels', 'rexpansive-builder' ),
+			'search_items'          => __( 'Search RexModel', 'rexpansive-builder' ),
+			'not_found'             => __( 'RexModel Not found', 'rexpansive-builder' ),
+			'not_found_in_trash'    => __( 'RexModel Not found in Trash', 'rexpansive-builder' ),
+			'featured_image'        => __( 'Featured Image', 'rexpansive-builder' ),
+			'set_featured_image'    => __( 'Set featured image', 'rexpansive-builder' ),
+			'remove_featured_image' => __( 'Remove featured image', 'rexpansive-builder' ),
+			'use_featured_image'    => __( 'Use as featured image', 'rexpansive-builder' ),
+			'insert_into_item'      => __( 'Insert into item', 'rexpansive-builder' ),
+			'uploaded_to_this_item' => __( 'Uploaded to this item', 'rexpansive-builder' ),
+			'items_list'            => __( 'RexModels list', 'rexpansive-builder' ),
+			'items_list_navigation' => __( 'RexModels list navigation', 'rexpansive-builder' ),
+			'filter_items_list'     => __( 'Filter items list', 'rexpansive-builder' ),
 		);
 		$args = array(
-			'label'                 => __( 'RexModel', 'rexpansive' ),
-			'description'           => __( 'RexModel', 'rexpansive' ),
+			'label'                 => __( 'RexModel', 'rexpansive-builder' ),
+			'description'           => __( 'RexModel', 'rexpansive-builder' ),
 			'labels'                => $labels,
 			'supports'              => array( 'title', 'editor', 'revisions', 'thumbnail'),
 			'taxonomies'            => array( 'rex_model_taxonomy' ),
@@ -2994,36 +2995,36 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 												<i class="material-icons">add</i>
 												</button>
 												<ul>
-												<li class="edit_handler text-handler btn-floating waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Text', 'rexpansive'); ?>">
+												<li class="edit_handler text-handler btn-floating waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Text', 'rexpansive-builder'); ?>">
 													<i class="material-icons rex-icon">u</i>
 												</li>
-												<li class="edit_handler rex-slider-handler btn-floating waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Rex Slider', 'rexpansive'); ?>">
+												<li class="edit_handler rex-slider-handler btn-floating waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Rex Slider', 'rexpansive-builder'); ?>">
 													<i class="material-icons rex-icon">X</i>
 												</li>
-												<li class="background_handler btn-floating waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Block settings', 'rexpansive'); ?>">
+												<li class="background_handler btn-floating waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Block settings', 'rexpansive-builder'); ?>">
 													<i class="material-icons">&#xE8B8;</i>
 												</li>
-												<li class="copy-handler btn-floating grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy block', 'rexpansive'); ?>">
+												<li class="copy-handler btn-floating grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy block', 'rexpansive-builder'); ?>">
 													<i class="material-icons white-text">&#xE14D;</i>
 												</li>
 												</ul>
 											</div>
 											<div class="actions-center-icons">
-												<div class="edit_handler text-handler btn-floating waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Text', 'rexpansive'); ?>">
+												<div class="edit_handler text-handler btn-floating waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Text', 'rexpansive-builder'); ?>">
 												<i class="material-icons rex-icon">u</i>
 												</div>
-												<div class="edit_handler rex-slider-handler btn-floating waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Rex Slider', 'rexpansive'); ?>">
+												<div class="edit_handler rex-slider-handler btn-floating waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Rex Slider', 'rexpansive-builder'); ?>">
 												<i class="material-icons rex-icon">X</i>
 												</div>
-												<div class="background_handler btn-floating waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Block settings', 'rexpansive'); ?>">
+												<div class="background_handler btn-floating waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Block settings', 'rexpansive-builder'); ?>">
 												<i class="material-icons">&#xE8B8;</i>
 												</div>
 												<br>
-												<div class="copy-handler btn-floating grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy block', 'rexpansive'); ?>">
+												<div class="copy-handler btn-floating grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy block', 'rexpansive-builder'); ?>">
 												<i class="material-icons white-text">&#xE14D;</i>
 												</div>
 											</div>
-											<div class="delete_handler btn-floating waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete block', 'rexpansive'); ?>">
+											<div class="delete_handler btn-floating waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete block', 'rexpansive-builder'); ?>">
 												<i class="material-icons white-text">&#xE5CD;</i>
 											</div>
 										</div>

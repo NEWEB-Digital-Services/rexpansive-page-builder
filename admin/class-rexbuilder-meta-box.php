@@ -707,7 +707,7 @@ class Rexbuilder_Meta_Box {
                 </button>
               </li>
               <li>
-                <button class="btn-floating builder-add waves-effect waves-light tooltipped" value="rexslider" data-position="bottom" data-tooltip="<?php _e( 'RexSlider', 'rexpansive' ); ?>">
+                <button class="btn-floating builder-add waves-effect waves-light tooltipped" value="rexslider" data-position="bottom" data-tooltip="<?php _e( 'RexSlider', 'rexpansive-builder' ); ?>">
                   <i class="material-icons rex-icon">X</i>
                 </button>
               </li>

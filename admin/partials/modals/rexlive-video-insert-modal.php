@@ -15,7 +15,7 @@ defined('ABSPATH') or exit;
         <div class="modal-content">
             <div id="insert-video-block-wrap-1" class="bl_modal-row youtube-insert-wrap video-insert-wrap">
                 <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
-                    <div class="rex-check rex-check-icon rex-video-type-select tippy" data-tippy-content="<?php _e('Insert YouTube','rexpansive'); ?>">
+                    <div class="rex-check rex-check-icon rex-video-type-select tippy" data-tippy-content="<?php _e('Insert YouTube','rexpansive-builder'); ?>">
                         <input type="radio" class="rex-choose-video bl_radio-big-icon bl_radio bl_radio-bottom-indicator" name="rex-choose-video" value="youtube" id="rex-choose-youtube-video">
                         <label for="rex-choose-youtube-video">
                             <span class="bl_radio-indicator"></span>
@@ -32,7 +32,7 @@ defined('ABSPATH') or exit;
                     </div>
                 </div>
                 <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
-                    <div class="set-video-audio-btn tippy" data-tippy-content="<?php _e('Audio ON/OFF','rexpansive'); ?>">
+                    <div class="set-video-audio-btn tippy" data-tippy-content="<?php _e('Audio ON/OFF','rexpansive-builder'); ?>">
                         <input class="video-audio-checkbox bl_checkbox bl_checkbox-bottom-indicator" type="checkbox" id="rex-new-block-video-youtube-audio" name="block-youtube-audio" title="Audio ON/OFF">
                         <label for="rex-new-block-video-youtube-audio" class="tooltipped" data-position="bottom" data-tooltip="Audio ON/OFF">
                             <span class="bl_check-indicator--wrap"><span class="bl_check-indicator"></span></span>
@@ -47,7 +47,7 @@ defined('ABSPATH') or exit;
             </div>
             <div id="insert-video-block-wrap-2" class="bl_modal-row vimeo-insert-wrap video-insert-wrap">
                 <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
-                    <div class="rex-check rex-check-icon rex-video-type-select tippy" data-tippy-content="<?php _e('Insert Vimeo','rexpansive'); ?>">
+                    <div class="rex-check rex-check-icon rex-video-type-select tippy" data-tippy-content="<?php _e('Insert Vimeo','rexpansive-builder'); ?>">
                         <input type="radio" class="rex-choose-video bl_radio-big-icon bl_radio bl_radio-bottom-indicator" name="rex-choose-video" value="vimeo" id="rex-choose-vimeo-video">
                         <label for="rex-choose-vimeo-video">
                             <span class="bl_radio-indicator"></span>
@@ -64,7 +64,7 @@ defined('ABSPATH') or exit;
                     </div>
                 </div>
                 <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
-                    <div class="set-video-audio-btn tippy" data-tippy-content="<?php _e('Audio ON/OFF','rexpansive'); ?>">
+                    <div class="set-video-audio-btn tippy" data-tippy-content="<?php _e('Audio ON/OFF','rexpansive-builder'); ?>">
                         <input class="video-audio-checkbox bl_checkbox bl_checkbox-bottom-indicator" type="checkbox" id="rex-new-block-video-vimeo-audio" name="block-vimeo-audio" title="Audio ON/OFF">
                         <label for="rex-new-block-video-vimeo-audio" class="tooltipped" data-position="bottom" data-tooltip="Audio ON/OFF">
                         <span class="bl_check-indicator--wrap"><span class="bl_check-indicator"></span></span>
@@ -79,7 +79,7 @@ defined('ABSPATH') or exit;
             </div>
             <div id="insert-video-block-wrap-3" class="bl_modal-row mp4-insert-wrap video-insert-wrap">
                 <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
-                    <div class="rex-check rex-check-icon bl_modal__option-fixed-width rex-video-type-select tippy" data-tippy-content="<?php _e('Insert Mp4','rexpansive'); ?>">
+                    <div class="rex-check rex-check-icon bl_modal__option-fixed-width rex-video-type-select tippy" data-tippy-content="<?php _e('Insert Mp4','rexpansive-builder'); ?>">
                         <input type="radio" class="rex-choose-video bl_radio bl_radio-bottom-indicator" name="rex-choose-video" value="mp4" id="rex-choose-mp4-video">
                         <label id="rex-upload-mp4-video" for="rex-choose-mp4">
                             <span class="bl_radio-indicator"></span>
@@ -96,7 +96,7 @@ defined('ABSPATH') or exit;
                     </div>
                 </div>
                 <div class="bl_modal__option-wrap bl_modal__option-wrap--no-border bl_modal__option-wrap--fluid">
-                    <div class="set-video-audio-btn tippy" data-tippy-content="<?php _e('Audio ON/OFF','rexpansive'); ?>">
+                    <div class="set-video-audio-btn tippy" data-tippy-content="<?php _e('Audio ON/OFF','rexpansive-builder'); ?>">
                         <input class="video-audio-checkbox bl_checkbox bl_checkbox-bottom-indicator" type="checkbox" id="rex-new-block-video-mp4-audio" name="block-mp4-audio" title="Audio ON/OFF">
                         <label for="rex-new-block-video-mp4-audio" class="tooltipped" data-position="bottom" data-tooltip="Audio ON/OFF">
                         <span class="bl_check-indicator--wrap"><span class="bl_check-indicator"></span></span>
@@ -119,7 +119,7 @@ defined('ABSPATH') or exit;
             </button> -->
         <!-- </div> -->
         <div class="rex-modal__outside-footer">
-            <div id="rex-insert-video-block-save" class="tool-button tool-button--inline tool-button--save rex-save-button tippy" data-tippy-content="<?php esc_attr_e( 'Insert Video', 'rexpansive' ); ?>">
+            <div id="rex-insert-video-block-save" class="tool-button tool-button--inline tool-button--save rex-save-button tippy" data-tippy-content="<?php esc_attr_e( 'Insert Video', 'rexpansive-builder' ); ?>">
                 <div class="btn-save--wrap">
                     <span class="btn-save--edited"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
                     <span class="btn-save--saved"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
