@@ -652,10 +652,13 @@ class Rexbuilder_Admin {
      * @since 2.0.0
      */
     public function include_custom_sprites() {
-        if ( file_exists( REXPANSIVE_BUILDER_PATH . 'shared/assets/symbol/sprite.symbol.svg' ) ) 
+    	$upload_dir = wp_upload_dir();
+		$uploads_dirname = $upload_dir['basedir'] . '/' . REXPANSIVE_BUILDER_UPLOADS_FOLDER;
+
+        if ( file_exists( $uploads_dirname . '/assets/symbol/sprite.symbol.svg' ) ) 
         {
         ?>
-        <div style="display:none"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><?php include_once( REXPANSIVE_BUILDER_PATH . 'shared/assets/symbol/sprite.symbol.svg' ); ?></svg></div>
+        <div style="display:none"><svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><?php include_once( $uploads_dirname . '/assets/symbol/sprite.symbol.svg' ); ?></svg></div>
         <?php
         }
     }
