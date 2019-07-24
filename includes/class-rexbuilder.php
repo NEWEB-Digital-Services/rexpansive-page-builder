@@ -226,7 +226,7 @@ class Rexbuilder {
 		
 		// attaching some filters and actions only if there is a livebuilder page
 		if( isset( $_GET['rexlive'] ) && 'true' == $_GET['rexlive'] ) {
-			$this->loader->add_filter( 'admin_body_class', $plugin_admin, 'rexlive_body_fix' );
+			$this->loader->add_filter( 'admin_body_class', $plugin_admin, 'rexlive_body_class' );
 			$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'print_rex_buttons_style_backend' );
 			$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_sprites_live' );
 			$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_custom_sprites' );
@@ -269,6 +269,7 @@ class Rexbuilder {
 		
 		// Ajax functions
 		// settings
+		$this->loader->add_action( 'wp_ajax_rexpansive_install_contents', $plugin_admin, 'rexpansive_install_contents' );
 		$this->loader->add_action( 'wp_ajax_rexpansive_upload_sprite_icons', $plugin_admin, 'rexpansive_upload_sprite_icons' );
 		$this->loader->add_action( 'wp_ajax_rexpansive_remove_sprite_icons', $plugin_admin, 'rexpansive_remove_sprite_icons' );
 
@@ -354,11 +355,8 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_vertical_dots' );
 		
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_post_id' );
-
-		//$this->loader->add_action( 'wp_footer', $plugin_public, 'create_builder_modals' );
 		
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'include_js_template' );
-		// $this->loader->add_action( 'wp_footer', $plugin_public, 'include_sprites' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'include_sprites_live' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'include_custom_sprites' );
 
@@ -395,7 +393,6 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_ajax_rexlive_save_buttons_in_page', $plugin_public, 'rexlive_save_buttons_in_page' );
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_buttons_in_page', $plugin_public, 'rexlive_save_buttons_in_page' );
 
-		// $this->loader->add_action( 'wpcf7_contact_form', $plugin_public, 'cf7_custom_script_guard' );
 		$this->loader->add_action( 'shortcode_atts_wpcf7', $plugin_public, 'cf7_custom_style', 10, 4 );
 		$this->loader->add_filter( "the_content", $plugin_public, "generate_builder_content");
 	}

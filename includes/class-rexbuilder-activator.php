@@ -44,6 +44,9 @@ class Rexbuilder_Activator {
 	 *								of the options
 	 */
 	private static function check_options( $n ) {
+		// create uploads folder
+		self::create_icons_folder();
+
 		// Defaults values
 		$defaults = array(
 			'post_types'	=>	array(
@@ -65,12 +68,46 @@ class Rexbuilder_Activator {
 		if( !get_option( 'rexpansive-builder-content-installed' ) ) {
 			self::import_buttons();
 			self::import_models();
+			self::import_icons();
 
 			update_option( 'rexpansive-builder-content-installed', true );
 		}
 
 		// Reset check update option
 		update_option( 'rexpansive-builder-premium-notifier-last-updated', null );
+	}
+
+	/**
+	 * Create custom uploads folder, to save custom information
+	 * 
+	 * The folder tree would be
+	 * \-rexpansive-builder
+	 * \--assets
+	 * \---symbol
+	 * 
+	 * @return null
+	 * @since  2.0.0
+	 */
+	private static function create_icons_folder() {
+		$upload_dir = wp_upload_dir();
+
+		// main folder
+		$uploads_dirname = $upload_dir['basedir'] . '/' . REXPANSIVE_BUILDER_UPLOADS_FOLDER;
+		if( ! file_exists( $uploads_dirname ) ) {
+			wp_mkdir_p( $uploads_dirname );
+		}
+
+		// assets folder
+		$assets_dirname = $uploads_dirname . '/assets';
+		if( ! file_exists( $assets_dirname ) ) {
+			wp_mkdir_p( $assets_dirname );
+		}
+
+		// synbol folder
+		$symbol_dirname = $assets_dirname . '/symbol';
+		if( ! file_exists( $symbol_dirname ) ) {
+			wp_mkdir_p( $symbol_dirname );
+		}
 	}
 
 	/**
@@ -124,6 +161,15 @@ class Rexbuilder_Activator {
 		// _rex_model_customization_names
 		// _rex_model_customization_default
 		// _thumbnail_id
+	}
+
+	/**
+	 * Import default SVG Icons
+	 * @return null
+	 * @since  2.0.0
+	 */
+	private static function import_icons() {
+		Rexbuilder_Utilities::install_icons();
 	}
 
 }

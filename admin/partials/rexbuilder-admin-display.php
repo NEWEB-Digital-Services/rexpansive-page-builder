@@ -143,6 +143,15 @@
 				?>
 				</td>
 			</tr>
+			<tr>
+				<th>
+					<?php wp_nonce_field( 'install-contents-nonce', 'installContentsNonce' ); ?>
+					<button id="install-contents-btn" class="button button-primary"><?php _e( 'Reinstall Contents', 'rexpansive' ); ?></button>
+				</th>
+				<td>
+					<p><?php _e( 'If you want to reinstall the RexModels, the RexButtons and the icons, press the button.', 'rexpansive' ); ?></p>
+				</td>
+			</tr>
 		</table>
 	<?php do_action('rexpansive_builder_after_settings'); ?>
 	<?php submit_button( 'Save', 'primary', 'submit', TRUE ); ?>

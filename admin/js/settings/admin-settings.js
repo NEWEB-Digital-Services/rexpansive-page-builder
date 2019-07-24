@@ -8,6 +8,8 @@
   var iconsNum;
   var uploadIconsMsgs;
   var iconsSpinner;
+  var installContents;
+  var installContentsNonce;
 
   // SVGO optimizire intance
   var svgoInstance;
@@ -89,10 +91,49 @@
     iconsNum = document.getElementById('icons-num');
     uploadIconsMsgs = document.getElementById('uploadIconsMsgs');
     iconsSpinner = document.getElementById('iconsSpinner');
+    installContents = document.getElementById('install-contents-btn');
+    installContentsNonce = document.getElementById('installContentsNonce');
 
     totalSprites = 0;
     spritesObj = [];
   }
+
+
+  function handleInstallContents(ev) {
+    ev.preventDefault();
+
+    var data = {
+      action: "rexpansive_install_contents",
+      nonce_param: installContentsNonce.value,
+    };
+
+    // encode data to send request
+    var encodedData = encodeData(data);
+
+    var request = new XMLHttpRequest();
+    request.open('POST', ajaxurl, true);
+
+    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+    // handling correct load
+    request.onload = function() {
+      if (request.status >= 200 && request.status < 400) {
+        // Success!
+        var response = JSON.parse(request.responseText);
+      }
+    }
+    // handling error
+    request.onerror = function() {
+      // There was a connection error of some sort
+      
+    };
+
+    // request end
+    request.onloadend = function() {
+      
+    }
+    // send request
+    request.send(encodedData);
+  };
 
   /**
    * handle upload icons from os file window
@@ -278,6 +319,8 @@
     previews.forEach( function(el) {
       el.addEventListener('click', handlePreviewSelect);
     });
+
+    installContents.addEventListener('click', handleInstallContents);
   }
 
   /**

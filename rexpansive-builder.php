@@ -52,11 +52,18 @@ define( 'REXPANSIVE_BUILDER_URL', plugin_dir_url( __FILE__ ) );
 define( 'REXPANSIVE_BUILDER_TMPL_FOLDER', 'rexpansive-builder' );
 
 /**
+ * Name of the folder in which save the custom sprite icons
+ * that a user can upload
+ */
+define( 'REXPANSIVE_BUILDER_UPLOADS_FOLDER', 'rexpansive-builder' );
+
+/**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-rexbuilder-activator.php
  */
 function activate_rexbuilder() {
 	require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-import-xml-content.php';
+	require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-utilities.php';
 	require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-activator.php';
 	Rexbuilder_Activator::activate( 'rexpansive-builder' );
 }

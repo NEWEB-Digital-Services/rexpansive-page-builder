@@ -223,14 +223,17 @@ class Rexbuilder_Utilities {
 	 */
 	public static function get_icon_list()
 	{
+		$upload_dir = wp_upload_dir();
+		$uploads_dirname = $upload_dir['basedir'] . '/' . REXPANSIVE_BUILDER_UPLOADS_FOLDER;
+
 		$sprite_list = '[]';
 		if ( file_exists( get_stylesheet_directory() . '/assets/sprites/sprite-list.json' ) )
 		{
 			$sprite_list = file_get_contents( get_stylesheet_directory() . '/assets/sprites/sprite-list.json' );
 		}
-		else if ( file_exists( REXPANSIVE_BUILDER_PATH . 'shared/assets/sprite-list.json' ) )
+		else if ( file_exists( $uploads_dirname . '/assets/sprite-list.json' ) )
 		{
-			$sprite_list = file_get_contents( REXPANSIVE_BUILDER_PATH . 'shared/assets/sprite-list.json' );
+			$sprite_list = file_get_contents( $uploads_dirname . '/assets/sprite-list.json' );
 		}
 		$sprite_a = json_decode( $sprite_list, true );
 		return $sprite_a;
@@ -311,5 +314,25 @@ class Rexbuilder_Utilities {
         $this_post_type = get_post_type();
 
         return (apply_filters('rexbuilder_post_type_active', isset($post_to_activate) && $this_post_type && array_key_exists($this_post_type, $post_to_activate)));
+	}
+
+	/**
+	 * Install the icons, copying the packed default sprites to the upload folder
+	 * @return null
+	 * @since  2.0.0
+	 */
+	public static function install_icons() {
+		$upload_dir = wp_upload_dir();
+		$uploads_dirname = $upload_dir['basedir'] . '/' . REXPANSIVE_BUILDER_UPLOADS_FOLDER;
+
+		$list_path = '/assets/sprite-list.json';
+		if ( file_exists( REXPANSIVE_BUILDER_PATH . '/shared' . $list_path ) ) {
+			copy( REXPANSIVE_BUILDER_PATH . '/shared' . $list_path, $uploads_dirname . $list_path );
+		}
+
+		$sprite_path = '/assets/symbol/sprite.symbol.svg';
+		if ( file_exists( REXPANSIVE_BUILDER_PATH . '/shared' . $sprite_path ) ) {
+			copy( REXPANSIVE_BUILDER_PATH . '/shared' . $sprite_path, $uploads_dirname . $sprite_path );
+		}
 	}
 }

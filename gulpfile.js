@@ -618,7 +618,7 @@ var live_file_map = [
 	'admin/img/**/*.*',
 	'admin/js/**/*',
 	'admin/lib/**/*',
-	'admin/models/**/*',
+	// 'admin/models/**/*',
 	'admin/partials/**/*',
 	'admin/required-plugins/**/*',
 	'admin/rexpansive-font/**/*.*',

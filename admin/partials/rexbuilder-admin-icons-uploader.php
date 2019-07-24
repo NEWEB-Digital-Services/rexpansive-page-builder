@@ -22,17 +22,17 @@ defined('ABSPATH') or exit;
 					<div id="uploadIconsMsgs">
 					</div>
 				</th>
-				<!-- <td> -->
-					<?php // submit_button( __( 'Add Icons', 'rexpansive-builder' ), 'primary', 'submitIcons', true, array( 'id' => 'submitIcons' ) ); ?>
-				<!-- </td> -->
 				<td>
 					<input id="removeIcons" class="button" type="button" value="<?php _e( 'Remove selected', 'rexpansive-builder' ); ?>">
 					<div id="iconsSpinner" class="spinner"></div>
 					<div id="iconsPreview">
 					<?php
-					if ( file_exists( REXPANSIVE_BUILDER_PATH . 'shared/assets/sprite-list.json' ) )
+					$upload_dir = wp_upload_dir();
+					$uploads_dirname = $upload_dir['basedir'] . '/' . REXPANSIVE_BUILDER_UPLOADS_FOLDER;
+
+					if ( file_exists( $uploads_dirname . '/assets/sprite-list.json' ) )
 					{
-						$sprite_list = file_get_contents( REXPANSIVE_BUILDER_PATH . 'shared/assets/sprite-list.json' );
+						$sprite_list = file_get_contents( $uploads_dirname . '/assets/sprite-list.json' );
 						$sprite_a = json_decode( $sprite_list, true );
 						foreach( $sprite_a['l-svg-icons'] as $spriteId )
 						{
@@ -56,10 +56,12 @@ defined('ABSPATH') or exit;
 
 <div id="spritesContainer">
 <?php
-if ( file_exists( REXPANSIVE_BUILDER_PATH . 'shared/assets/symbol/sprite.symbol.svg' ) )
+$upload_dir = wp_upload_dir();
+$uploads_dirname = $upload_dir['basedir'] . '/' . REXPANSIVE_BUILDER_UPLOADS_FOLDER;
+if ( file_exists( $uploads_dirname . '/assets/symbol/sprite.symbol.svg' ) )
 {
 ?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><?php include_once( REXPANSIVE_BUILDER_PATH . 'shared/assets/symbol/sprite.symbol.svg' ); ?></svg>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"><?php include_once( $uploads_dirname . '/assets/symbol/sprite.symbol.svg' ); ?></svg>
 <?php
 }
 ?>

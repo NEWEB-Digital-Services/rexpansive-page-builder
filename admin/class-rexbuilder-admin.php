@@ -286,8 +286,11 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'ace-mode-html-scripts', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/mode-html.js', array('jquery'),  null, true );
 				// wp_enqueue_script( 'ace-ext-beautify', REXPANSIVE_BUILDER_URL . 'admin/ace/src-min-noconflict/ext-beautify.js', array('jquery'),  null, true );
 
+				global $post;
+				$source = get_permalink( $post->ID );
+
 				wp_enqueue_script( 'rexlive-start', REXPANSIVE_BUILDER_URL . 'admin/js/live-admin.js', array( 'jquery' ), null, true );
-				wp_localize_script( 'rexlive-start', 'live_editor_obj', $this->get_plugin_admin_settings() );
+				wp_localize_script( 'rexlive-start', 'live_editor_obj', $this->get_plugin_admin_settings( $source ) );
 			} else {
 				global $post;
 
@@ -451,7 +454,7 @@ class Rexbuilder_Admin {
 				$source = get_permalink($post->ID);
 				
 				wp_enqueue_script( 'rexlive-start', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexbuilder_Starting.js', array( 'jquery' ), null, true );
-				wp_localize_script( 'rexlive-start', 'live_editor_obj', $this->get_plugin_admin_settings() );
+				wp_localize_script( 'rexlive-start', 'live_editor_obj', $this->get_plugin_admin_settings( $source ) );
 			} else {
 				global $post;
 
@@ -505,10 +508,11 @@ class Rexbuilder_Admin {
 
 	/**
 	 * Generate LiveBuilder admin JS settings
+	 * @param String $source post permalink
 	 * @return Array settings
 	 * @since  2.0.0
 	 */
-	private function get_plugin_admin_settings() {
+	private function get_plugin_admin_settings( $source ) {
 		return array(
 			'source_url' => $source,
 			'ajaxurl'	=>	admin_url( 'admin-ajax.php' ),
@@ -654,6 +658,43 @@ class Rexbuilder_Admin {
         <?php
         }
     }
+
+    /**
+	 * Add the admin tools for the builder live mode
+	 * @return null
+	 * @since  2.0.0
+	 */
+   	public function include_live_editing() {
+		include_once( 'partials/rexbuilder-live-editing.php' );
+    }
+
+    /**
+     * Add RexLive class on admin body when editing a page in live mode
+     * @param  Array $classes array of admin body classes
+     * @return Array          array update
+     * @since  2.0.0
+     */
+    public function rexlive_body_class( $classes ) {
+	   $classes .= ' rexpansive-editor ';
+	   return $classes;
+	}
+
+	/**
+	 * Add link to livebuilder directly on the post list
+	 * @param Array $actions     array of actions performable by post list
+	 * @param WP_Post $post_object WP_Post object for a post
+	 * @return Array $actions
+	 * @since  2.0.0
+	 */
+	public function add_builderlive_link( $actions, $post_object ) {
+		$page_info = get_current_screen();
+
+		if ( $this->builder_active_on_this_post_type_list( $page_info->post_type ) ) {
+			$actions['rexbuilder'] = '<b><a target="_blank" href="' . admin_url( 'post.php?post=' . $post_object->ID . '&action=edit&rexlive=true' ) . '">REXPANSIVE</a></b>';
+		}
+
+		return $actions;
+	}
 
 	/**
 	 *	Validate the plugin settings
@@ -976,6 +1017,29 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	}
 
 	/**
+	 * Install the default contents of the builder
+	 * @return JSON response
+	 * @since  2.0.0
+	 */
+	public function rexpansive_install_contents() {
+		$nonce = $_POST['nonce_param'];
+		$response = array(
+			'error' => false,
+			'msg' => '',
+		);
+
+		if ( ! wp_verify_nonce( $nonce, 'install-contents-nonce' ) ) {
+			$response['error'] = true;
+			$response['msg'] = 'Error!';
+			wp_send_json_error( $response );
+		}
+
+		Rexbuilder_Utilities::install_icons();
+
+		wp_send_json_success( $response );
+	}
+
+	/**
 	 * Saving custom sprites to reuse with live builder
 	 *
 	 * @since 2.0.0
@@ -1000,8 +1064,11 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
             $spritesStripped = stripslashes( $sprites );
             $spritesData = json_decode( $spritesStripped, true );
 
-            $response['path'] = REXPANSIVE_BUILDER_PATH . 'shared/assets/symbol/sprite.symbol.svg';
-            $response['path_ids'] = REXPANSIVE_BUILDER_PATH . 'shared/assets/sprite-list.json';
+            $upload_dir = wp_upload_dir();
+			$uploads_dirname = $upload_dir['basedir'] . '/' . REXPANSIVE_BUILDER_UPLOADS_FOLDER;
+
+            $response['path'] = $uploads_dirname . '/assets/symbol/sprite.symbol.svg';
+            $response['path_ids'] = $uploads_dirname . '/assets/sprite-list.json';
 
             // get sprite ids JSON
             if ( file_exists( $response['path_ids'] ) )
@@ -1067,8 +1134,11 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
             $deleteListStripped = stripslashes( $deleteList );
             $deleteListData = json_decode( $deleteListStripped, true );
 
-            $response['path'] = REXPANSIVE_BUILDER_PATH . 'shared/assets/symbol/sprite.symbol.svg';
-            $response['path_ids'] = REXPANSIVE_BUILDER_PATH . 'shared/assets/sprite-list.json';
+            $upload_dir = wp_upload_dir();
+			$uploads_dirname = $upload_dir['basedir'] . '/' . REXPANSIVE_BUILDER_UPLOADS_FOLDER;
+
+            $response['path'] = $uploads_dirname . '/assets/symbol/sprite.symbol.svg';
+            $response['path_ids'] = $uploads_dirname . '/assets/sprite-list.json';
 
             // get sprite ids JSON
             if ( file_exists( $response['path_ids'] ) && file_exists( $response['path'] ) )
@@ -4069,28 +4139,5 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 				?><p><?php _e( 'CF7 Models already imported', 'rexpansive-builder' ); ?></p><?php
 			}
 		}
-	   }
-	   	   
-   	public function include_live_editing() {
-		include_once( 'partials/rexbuilder-live-editing.php' );
-    }
-
-    public function rexlive_body_fix( $classes ) {
-	   $classes .= ' rexpansive-editor ';
-	   return $classes;
-	}
-
-	/**
-	 * Add link to livebuilder directly on the post list
-	 * @since 2.0.0
-	 */
-	public function add_builderlive_link( $actions, $post_object ) {
-		$page_info = get_current_screen();
-
-		if ( $this->builder_active_on_this_post_type_list( $page_info->post_type ) ) {
-			$actions['rexbuilder'] = '<b><a target="_blank" href="' . admin_url( 'post.php?post=' . $post_object->ID . '&action=edit&rexlive=true' ) . '">REXPANSIVE</a></b>';
-		}
-
-		return $actions;
 	}
 }
