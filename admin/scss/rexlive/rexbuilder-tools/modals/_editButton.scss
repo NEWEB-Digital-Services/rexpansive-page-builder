@@ -1,7 +1,14 @@
-#rex-button-editor .add-rex-button-model {
-    background-color:rgb(0, 190, 0);
-    &.saving-rex-button{
+#rex-button-editor {
+    &.editing-model {
+        .add-rex-button-model__wrap {
+            display: none;
+        }
+    }
+    .add-rex-button-model {
         background-color:rgb(0, 190, 0);
+        &.saving-rex-button{
+            background-color:rgb(0, 190, 0);
+        }
     }
 }
 .add-rex-button-model.editing-model{

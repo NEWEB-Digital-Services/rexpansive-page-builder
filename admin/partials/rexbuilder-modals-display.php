@@ -960,36 +960,36 @@ defined('ABSPATH') or exit;
                         <button class="rex-slider__slide-index btn-circle btn-small btn-bordered grey-border border-darken-2 waves-effect waves-light white grey-text text-darken-2">1</button>
 
                         <div class="rex-button-with-plus">
-                            <button class="rex-slider__slide-edit rex-slider__slide__image-preview btn-floating waves-effect waves-light tooltipped grey darken-2" value="edit-slide" data-position="bottom" data-tooltip="<?php _e('Slide', 'rexpansive-classic');?>">
+                            <button class="rex-slider__slide-edit rex-slider__slide__image-preview btn-floating waves-effect waves-light tooltipped grey darken-2" value="edit-slide" data-position="bottom" data-tooltip="<?php _e('Slide', 'rexpansive-builder');?>">
                                 <i class="material-icons rex-icon">p</i>
                             </button>
-                            <button class="rex-slider__slide-edit rex-plus-button btn-floating light-blue darken-1 tooltipped" value="add-slide" data-position="bottom" data-tooltip="<?php _e('Select Image', 'rexpansive-classic');?>">
+                            <button class="rex-slider__slide-edit rex-plus-button btn-floating light-blue darken-1 tooltipped" value="add-slide" data-position="bottom" data-tooltip="<?php _e('Select Image', 'rexpansive-builder');?>">
                                 <i class="material-icons">&#xE145;</i>
                             </button>
                         </div>
 
-                        <button class="rex-slider__slide-edit btn-floating waves-effect waves-light tooltipped grey darken-2" value="text" data-position="bottom" data-tooltip="<?php _e('Text', 'rexpansive-classic');?>">
+                        <button class="rex-slider__slide-edit btn-floating waves-effect waves-light tooltipped grey darken-2" value="text" data-position="bottom" data-tooltip="<?php _e('Text', 'rexpansive-builder');?>">
                             <i class="material-icons rex-icon">u</i>
                         </button>
 
-                        <button class="rex-slider__slide-edit btn-floating waves-effect waves-light tooltipped grey darken-2" value="video" data-position="bottom" data-tooltip="<?php _e('Video', 'rexpansive-classic');?>">
+                        <button class="rex-slider__slide-edit btn-floating waves-effect waves-light tooltipped grey darken-2" value="video" data-position="bottom" data-tooltip="<?php _e('Video', 'rexpansive-builder');?>">
                             <i class="material-icons">play_arrow</i>
                         </button>
 
-                        <button class="rex-slider__slide-edit btn-floating waves-effect waves-light tooltipped grey darken-2" value="url" data-position="bottom" data-tooltip="<?php _e('Link', 'rexpansive-classic');?>">
+                        <button class="rex-slider__slide-edit btn-floating waves-effect waves-light tooltipped grey darken-2" value="url" data-position="bottom" data-tooltip="<?php _e('Link', 'rexpansive-builder');?>">
                             <i class="material-icons rex-icon">l</i>
                         </button>
 
                         <div>
-                            <button class="rex-slider__slide-edit btn-flat tooltipped" data-position="bottom" value="copy" data-tooltip="<?php _e('Copy slide', 'rexpansive-classic');?>">
+                            <button class="rex-slider__slide-edit btn-flat tooltipped" data-position="bottom" value="copy" data-tooltip="<?php _e('Copy slide', 'rexpansive-builder');?>">
                                 <i class="material-icons grey-text text-darken-2">&#xE14D;</i>
                             </button>
 
-                            <div class="rex-slider__slide-edit btn-flat tooltipped" data-position="bottom" value="move" data-tooltip="<?php _e('Move slide', 'rexpansive-classic');?>">
+                            <div class="rex-slider__slide-edit btn-flat tooltipped" data-position="bottom" value="move" data-tooltip="<?php _e('Move slide', 'rexpansive-builder');?>">
                                 <i class="material-icons grey-text text-darken-2">&#xE8D5;</i>
                             </div>
 
-                            <button class="rex-slider__slide-edit btn-flat tooltipped" value="delete" data-position="bottom" data-tooltip="<?php _e('Delete slide', 'rexpansive-classic');?>">
+                            <button class="rex-slider__slide-edit btn-flat tooltipped" value="delete" data-position="bottom" data-tooltip="<?php _e('Delete slide', 'rexpansive-builder');?>">
                                 <i class="material-icons grey-text text-darken-2">&#xE5CD;</i>
                             </button>
                         </div>
@@ -1011,7 +1011,7 @@ defined('ABSPATH') or exit;
             </div>
 
             <div class="rex-slider__add-slide__wrap rex-modal-content__modal-area--bordered">
-                <button id="rex-slider__add-new-slide" class="builder-button btn-floating btn light-blue darken-1 waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Add slide', 'rexpansive-classic')?>">
+                <button id="rex-slider__add-new-slide" class="builder-button btn-floating btn light-blue darken-1 waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Add slide', 'rexpansive-builder')?>">
                     <i class="material-icons text-white">&#xE145;</i>
                 </button>
             </div><!-- // .rex-slider__add-slide__wrap -->
@@ -1020,24 +1020,24 @@ defined('ABSPATH') or exit;
                 <div class="col">
                     <div class="valign-wrapper space-between-wrapper">
                         <div class="rex-check-icon">
-                            <input type="checkbox" id="rex-slider__autostart" name="rex-slider__autostart" title="<?php _e('Autostart', 'rexpansive-classic');?>">
-                            <label for="rex-slider__autostart" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Autostart', 'rexpansive-classic');?>">
+                            <input type="checkbox" id="rex-slider__autostart" name="rex-slider__autostart" title="<?php _e('Autostart', 'rexpansive-builder');?>">
+                            <label for="rex-slider__autostart" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Autostart', 'rexpansive-builder');?>">
                                 <i class="rex-icon">J</i>
                                 <span class="rex-ripple"></span>
                             </label>
                         </div>
 
                         <div class="rex-check-icon">
-                            <input type="checkbox" id="rex-slider__prev-next" name="rex-slider__prev-next" title="<?php _e('Prev Next', 'rexpansive-classic');?>">
-                            <label for="rex-slider__prev-next" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Prev Next', 'rexpansive-classic');?>">
+                            <input type="checkbox" id="rex-slider__prev-next" name="rex-slider__prev-next" title="<?php _e('Prev Next', 'rexpansive-builder');?>">
+                            <label for="rex-slider__prev-next" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Prev Next', 'rexpansive-builder');?>">
                                 <i class="rex-icon">K</i>
                                 <span class="rex-ripple"></span>
                             </label>
                         </div>
 
                         <div class="rex-check-icon">
-                            <input type="checkbox" id="rex-slider__dots" name="rex-slider__dots" title="<?php _e('Dots', 'rexpansive-classic');?>">
-                            <label for="rex-slider__dots" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Dots', 'rexpansive-classic');?>">
+                            <input type="checkbox" id="rex-slider__dots" name="rex-slider__dots" title="<?php _e('Dots', 'rexpansive-builder');?>">
+                            <label for="rex-slider__dots" class="tooltipped" data-position="bottom" data-tooltip="<?php _e('Dots', 'rexpansive-builder');?>">
                                 <i class="rex-icon">Y</i>
                                 <span class="rex-ripple"></span>
                             </label>
@@ -1063,7 +1063,7 @@ $query = new WP_Query($args);
                 <div class="rx__select-wrap">
                     <input class="title-slider" type="text">
                     <select id="rex-slider__import" class="rx__form-input">
-                        <option value="0"><?php _e('New Slider', 'rexpansive-classic');?></option>
+                        <option value="0"><?php _e('New Slider', 'rexpansive-builder');?></option>
                         <?php
 // Printing all sliders avaiable
 if ($query->have_posts()) {
@@ -1151,7 +1151,7 @@ wp_reset_postdata();
                 <div class="valign-wrapper rex-modal-content__modal-area__row">
                     <div class="col rex-check-icon">
                         <input type="radio" class="rex-slide-choose-video with-gap" name="rex-slide-choose-video" value="vimeo" id="rex-slide-choose-vimeo">
-                        <label for="rex-slide-choose-vimeo" data-tooltip="<?php _e('Vimeo', 'rexpansive-classic');?>">
+                        <label for="rex-slide-choose-vimeo" data-tooltip="<?php _e('Vimeo', 'rexpansive-builder');?>">
                             <i class="material-icons rex-icon rex-vimeo__icon">Z</i>
                             <span class="rex-ripple"></span>
                         </label>
@@ -1202,7 +1202,7 @@ wp_reset_postdata();
                     <label for="rex-model__name" class=""><?php _e('Model name', 'rexpansive');?></label>
                     <span class="rex-material-bar"></span>
                 </div>
-                <button id="rex-model__add-new-model" class="builder-button btn-floating btn-no-shadow btn-bordered btn-bordered--inactive tooltipped" data-position="bottom" data-tooltip="<?php _e('Add model', 'rexpansive-classic')?>">
+                <button id="rex-model__add-new-model" class="builder-button btn-floating btn-no-shadow btn-bordered btn-bordered--inactive tooltipped" data-position="bottom" data-tooltip="<?php _e('Add model', 'rexpansive-builder')?>">
                     <i class="material-icons">&#xE145;</i>
                 </button>
             </div><!-- // .rex-model__add-model__wrap -->
@@ -1221,7 +1221,7 @@ $args = array(
 $query = new WP_Query($args);
 
 ?><div class="rx__select-wrap">
-                <select id="rex-model__import" class="rx__form-input"><option value="0"><?php _e('New Model', 'rexpansive-classic');?></option><?php
+                <select id="rex-model__import" class="rx__form-input"><option value="0"><?php _e('New Model', 'rexpansive-builder');?></option><?php
 // The Loop
 if ($query->have_posts()) {
     while ($query->have_posts()) {
@@ -1280,27 +1280,27 @@ wp_reset_postdata();
     <div id="rexeditor-expand-modal" class="rex-modal-draggable z-depth-4">
         <div class="modal-wrap">
             <header class="rexeditor-header clearfix">
-                <h2><?php _e('Insert content', 'rexpansive-classic');?></h2>
+                <h2><?php _e('Insert content', 'rexpansive-builder');?></h2>
                 <div id="rexeditor-expand-close"><span class="dashicons dashicons-no-alt"></span></div>
             </header>
 
             <div class="expand-editor-fieldwrap">
                 <div class="expand-editor-topfields">
-                    <label for="expand-background"><?php _e('Background Image', 'rexpansive-classic');?></label>
+                    <label for="expand-background"><?php _e('Background Image', 'rexpansive-builder');?></label>
                     <input type="text" name="expand-background" class="exp-back-holder" data-image_id=''>
-                    <button class="button button-primary button-large exp-back-upload"><?php _e('Select Background', 'rexpansive-classic');?></button><br><br>
-                    <label for="expand-side"><?php _e('Choose Expand Side', 'rexpansive-classic');?></label>
-                    <input type="radio" class="exp-side-holder" name="expand-side" value="left" checked><?php _e('Left', 'rexpansive-classic');?>
-                    <input type="radio" class="exp-side-holder" name="expand-side" value="right"><?php _e('Right', 'rexpansive-classic');?><br><br>
-                    <label for="expand-title"><?php _e('Title', 'rexpansive-classic');?></label>
+                    <button class="button button-primary button-large exp-back-upload"><?php _e('Select Background', 'rexpansive-builder');?></button><br><br>
+                    <label for="expand-side"><?php _e('Choose Expand Side', 'rexpansive-builder');?></label>
+                    <input type="radio" class="exp-side-holder" name="expand-side" value="left" checked><?php _e('Left', 'rexpansive-builder');?>
+                    <input type="radio" class="exp-side-holder" name="expand-side" value="right"><?php _e('Right', 'rexpansive-builder');?><br><br>
+                    <label for="expand-title"><?php _e('Title', 'rexpansive-builder');?></label>
                     <input type="text" name="expand-title" class="exp-title-holder"/>
                     <input type="text" name="expand-icon" class="exp-icon-holder" data-icon_id=''/>
-                    <button class="button button-primary button-large exp-icon-upload"><?php _e('Select Icon', 'rexpansive-classic');?></button>
+                    <button class="button button-primary button-large exp-icon-upload"><?php _e('Select Icon', 'rexpansive-builder');?></button>
                     <br><br>
-                    <label for="expand-foreground"><?php _e('Foreground Image', 'rexpansive-classic');?>
+                    <label for="expand-foreground"><?php _e('Foreground Image', 'rexpansive-builder');?>
                         <input type="text" name="expand-foreground" class="zak-foreground-holder" data-foreground-id=''/>
                     </label>
-                    <button class="button button-primary button-large zak-foreground-upload"><?php _e('Select Foreground', 'rexpansive-classic');?></button>
+                    <button class="button button-primary button-large zak-foreground-upload"><?php _e('Select Foreground', 'rexpansive-builder');?></button>
                 </div>
 
                 <div class="modal-editor-editorarea">
@@ -1313,8 +1313,8 @@ wp_reset_postdata();
             </div>
 
             <div class="rexeditor_bottom">
-                <button id="expand-editor-cancel" class="button button-large" value="image"><?php _e('Cancel', 'rexpansive-classic');?></button>
-                <button id="expand-editor-save" class="button button-primary button-large" value=""><?php _e('Save', 'rexpansive-classic');?></button>
+                <button id="expand-editor-cancel" class="button button-large" value="image"><?php _e('Cancel', 'rexpansive-builder');?></button>
+                <button id="expand-editor-save" class="button button-primary button-large" value=""><?php _e('Save', 'rexpansive-builder');?></button>
             </div>
         </div>
     </div><!-- ZAK Editor -->

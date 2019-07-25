@@ -107,7 +107,7 @@ var Button_Edit_Modal = (function ($) {
                     break;
                 case "edit":
                     editingModelButton = true;
-                    button_editor_properties.$add_model_button.addClass("editing-model");
+                    button_editor_properties.$self.addClass("editing-model");
                     Rexlive_Modals_Utils.openModal(
                         button_editor_properties.$self.parent(".rex-modal-wrap")
                     );
@@ -346,11 +346,11 @@ var Button_Edit_Modal = (function ($) {
         button_editor_properties.$button_border_color_value.spectrum("set", buttonData.border_color);
 
         if (editingModelButton) {
-            if (!button_editor_properties.$add_model_button.hasClass("editing-model")) {
-                button_editor_properties.$add_model_button.addClass("editing-model");
-            }
+            // if (!button_editor_properties.$add_model_button.hasClass("editing-model")) {
+                button_editor_properties.$self.addClass("editing-model");
+            // }
         } else {
-            button_editor_properties.$add_model_button.removeClass("editing-model");
+            button_editor_properties.$self.removeClass("editing-model");
         }
     };
 

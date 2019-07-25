@@ -916,7 +916,7 @@ defined('ABSPATH') or exit;
                 <div class="valign-wrapper rex-modal-content__modal-area__row">
                     <div class="col rex-check-icon">
                         <input type="radio" class="rex-slide-choose-video with-gap" name="rex-slide-choose-video" value="vimeo" id="rex-slide-choose-vimeo">
-                        <label for="rex-slide-choose-vimeo" data-tooltip="<?php _e('Vimeo', 'rexpansive-classic');?>">
+                        <label for="rex-slide-choose-vimeo" data-tooltip="<?php _e('Vimeo', 'rexpansive-builder');?>">
                             <i class="material-icons rex-icon rex-vimeo__icon">Z</i>
                             <span class="rex-ripple"></span>
                         </label>
@@ -1101,7 +1101,7 @@ defined('ABSPATH') or exit;
             </div>
             <div class="bl_modal-row">
                 <div class="media-gallery__add-item__wrap rex-modal-content__modal-area--bordered">
-                    <button id="media-gallery__add-new-item" class="builder-button btn-floating btn light-blue darken-1 waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Add item', 'rexpansive-classic' ) ?>">
+                    <button id="media-gallery__add-new-item" class="builder-button btn-floating btn light-blue darken-1 waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Add item', 'rexpansive-builder' ) ?>">
                         <i class="material-icons text-white">&#xE145;</i>
                     </button>
                 </div><!-- // .rex-slider__add-slide__wrap -->

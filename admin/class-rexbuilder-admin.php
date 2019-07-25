@@ -3394,7 +3394,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	
 							<div class="builder-row-contents">
 								<div class="builder-edit-row-header">
-									<button class="btn-floating builder-delete-row waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexpansive-classic'); ?>">
+									<button class="btn-floating builder-delete-row waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexpansive-builder'); ?>">
 										<i class="material-icons white-text">&#xE5CD;</i>
 									</button>
 								</div>
@@ -3409,7 +3409,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 											<?php
 											checked( $section_attr['dimension'], 'full', 1 );
 											?> />
-											<label for="section-full-<?php echo esc_attr( $checkbox_index ); ?>" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Full', 'rexpansive-classic' ); ?>">
+											<label for="section-full-<?php echo esc_attr( $checkbox_index ); ?>" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Full', 'rexpansive-builder' ); ?>">
 												<i class="material-icons rex-icon">v<span class="rex-ripple"></span></i>
 											</label>
 										</div>
@@ -3420,7 +3420,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 											<?php
 											checked( $section_attr['dimension'], 'boxed', 1 );
 											?> />
-											<label for="section-boxed-<?php echo esc_attr( $checkbox_index ); ?>" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Boxed', 'rexpansive-classic' ); ?>">
+											<label for="section-boxed-<?php echo esc_attr( $checkbox_index ); ?>" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Boxed', 'rexpansive-builder' ); ?>">
 												<i class="material-icons rex-icon">t<span class="rex-ripple"></span></i>
 											</label>
 										</div>
@@ -3431,7 +3431,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 											<?php
 											checked( $section_attr['layout'], 'fixed', 1 );
 											?> />
-											<label for="section-fixed-<?php echo esc_attr( $checkbox_index ); ?>" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Grid Layout', 'rexpansive-classic' ); ?>">
+											<label for="section-fixed-<?php echo esc_attr( $checkbox_index ); ?>" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Grid Layout', 'rexpansive-builder' ); ?>">
 												<i class="material-icons">&#xE8F1;<span class="rex-ripple"></span></i>
 											</label>
 											<input id="section-masonry-<?php echo esc_attr( $checkbox_index ); ?>" type="radio" 
@@ -3440,7 +3440,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 											<?php
 											checked( $section_attr['layout'], 'masonry', 1 );
 											?> />
-											<label for="section-masonry-<?php echo esc_attr( $checkbox_index ); ?>" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Masonry Layout', 'rexpansive-classic' ); ?>">
+											<label for="section-masonry-<?php echo esc_attr( $checkbox_index ); ?>" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Masonry Layout', 'rexpansive-builder' ); ?>">
 												<i class="material-icons">&#xE871;<span class="rex-ripple"></span></i>
 											</label>
 										</div>
@@ -3448,10 +3448,10 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 									</div>
 	
 									<div class="builder-buttons col s4 center-align">
-										<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e( 'Image', 'rexpansive-classic' ); ?>">
+										<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e( 'Image', 'rexpansive-builder' ); ?>">
 											<i class="material-icons rex-icon">p</i>
 										</button>
-										<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="text" data-position="bottom" data-tooltip="<?php _e( 'Text', 'rexpansive-classic' ); ?>">
+										<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="text" data-position="bottom" data-tooltip="<?php _e( 'Text', 'rexpansive-builder' ); ?>">
 											<i class="material-icons rex-icon">u</i>
 										</button>
 										<div class="builder-fab-row-widgets fixed-action-btn horizontal">
@@ -3460,7 +3460,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 											</button>
 											<ul>
 												<li>
-													<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="video" data-position="bottom" data-tooltip="<?php _e( 'Video', 'rexpansive-classic' ); ?>">
+													<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="video" data-position="bottom" data-tooltip="<?php _e( 'Video', 'rexpansive-builder' ); ?>">
 														<i class="material-icons">play_arrow</i>
 													</button>
 												</li>
@@ -3470,7 +3470,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 													</button>
 												</li>
 												<li>
-													<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="empty" data-position="bottom" data-tooltip="<?php _e( 'Block space', 'rexpansive-classic' ); ?>">
+													<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="empty" data-position="bottom" data-tooltip="<?php _e( 'Block space', 'rexpansive-builder' ); ?>">
 														<i class="material-icons rex-icon">H</i>
 													</button>
 												</li>
@@ -3487,14 +3487,14 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 									
 									<!-- Icon button -->
 									<div class="col s4 right-align builder-setting-buttons">
-										<div class="background_section_preview btn-floating tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Row background', 'rexpansive-classic' ); ?>"<?php echo $section_bg_button_preview_style; ?>></div>
-										<button class="btn-floating builder-section-config tooltipped waves-effect waves-light" data-position="bottom" data-tooltip="<?php _e('Row settings', 'rexpansive-classic'); ?>">
+										<div class="background_section_preview btn-floating tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Row background', 'rexpansive-builder' ); ?>"<?php echo $section_bg_button_preview_style; ?>></div>
+										<button class="btn-floating builder-section-config tooltipped waves-effect waves-light" data-position="bottom" data-tooltip="<?php _e('Row settings', 'rexpansive-builder'); ?>">
 											<i class="material-icons">&#xE8B8;</i>
 										</button>
-										<div class="btn-flat builder-copy-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy row', 'rexpansive-classic'); ?>">
+										<div class="btn-flat builder-copy-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy row', 'rexpansive-builder'); ?>">
 											<i class="material-icons grey-text text-darken-2">&#xE14D;</i>
 										</div>
-										<div class="btn-flat builder-move-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Move row', 'rexpansive-classic'); ?>">
+										<div class="btn-flat builder-move-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Move row', 'rexpansive-builder'); ?>">
 											<i class="material-icons grey-text text-darken-2">&#xE8D5;</i>
 										</div>
 									</div>
@@ -3727,38 +3727,38 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 																				<i class="material-icons">add</i>
 																			</button>
 																			<ul>
-																				<li class="edit_handler btn-floating waves-effect waves-light tooltipped<?php if( $block_attr['type_bg_block'] == 'natural') : echo ' hide-edit-handler'; endif; ?>" data-position="bottom" data-tooltip="<?php _e('Text', 'rexpansive-classic'); ?>"
+																				<li class="edit_handler btn-floating waves-effect waves-light tooltipped<?php if( $block_attr['type_bg_block'] == 'natural') : echo ' hide-edit-handler'; endif; ?>" data-position="bottom" data-tooltip="<?php _e('Text', 'rexpansive-builder'); ?>"
 																				<?php
 																					if( $block_attr['type_bg_block'] == 'natural') :
 																						echo ' style="display:none;"';
 																					endif;
 																				?>><i class="material-icons rex-icon">u</i>
 																				</li>
-																				<li class="background_handler btn-floating waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Block settings', 'rexpansive-classic'); ?>">
+																				<li class="background_handler btn-floating waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Block settings', 'rexpansive-builder'); ?>">
 																					<i class="material-icons">&#xE8B8;</i>
 																				</li>
-																				<li class="copy-handler btn-floating grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy block', 'rexpansive-classic'); ?>">
+																				<li class="copy-handler btn-floating grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy block', 'rexpansive-builder'); ?>">
 																					<i class="material-icons white-text">&#xE14D;</i>
 																				</li>
 																			</ul>
 																		</div>
 																		<div class="actions-center-icons">
-																			<div class="edit_handler btn-floating waves-effect waves-light tooltipped<?php if( $block_attr['type_bg_block'] == 'natural') : echo ' hide-edit-handler'; endif; ?>" data-position="bottom" data-tooltip="<?php _e('Text', 'rexpansive-classic'); ?>"
+																			<div class="edit_handler btn-floating waves-effect waves-light tooltipped<?php if( $block_attr['type_bg_block'] == 'natural') : echo ' hide-edit-handler'; endif; ?>" data-position="bottom" data-tooltip="<?php _e('Text', 'rexpansive-builder'); ?>"
 																			<?php
 																				if( $block_attr['type_bg_block'] == 'natural') :
 																					echo ' style="display:none;"';
 																				endif;
 																			?>
 																			><i class="material-icons rex-icon">u</i></div>
-																			<div class="background_handler btn-floating waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Block settings', 'rexpansive-classic'); ?>">
+																			<div class="background_handler btn-floating waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e('Block settings', 'rexpansive-builder'); ?>">
 																				<i class="material-icons">&#xE8B8;</i>
 																			</div>
 																			<br>
-																			<div class="copy-handler btn-floating grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy block', 'rexpansive-classic'); ?>">
+																			<div class="copy-handler btn-floating grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy block', 'rexpansive-builder'); ?>">
 																				<i class="material-icons white-text">&#xE14D;</i>
 																			</div>
 																		</div>
-																		<div class="delete_handler btn-floating waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete block', 'rexpansive-classic'); ?>">
+																		<div class="delete_handler btn-floating waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete block', 'rexpansive-builder'); ?>">
 																			<i class="material-icons white-text">&#xE5CD;</i>
 																		</div>
 																	</div>
@@ -3921,7 +3921,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 				<div class="builder-row builder-new-row clearfix z-depth-1" data-count="0" data-gridcontent="" data-gridproperties="<?php echo htmlspecialchars( $defaultsectionproperties ); ?>" data-griddimension="full" data-layout="fixed" data-sectionid="" data-section-overlay-color="" data-backresponsive="<?php echo htmlspecialchars( $defaultsectionconfigs ); ?>">
 					<div class="builder-row-contents">
 						<div class="builder-edit-row-header">
-							<button class="btn-floating builder-delete-row waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexpansive-classic'); ?>">
+							<button class="btn-floating builder-delete-row waves-effect waves-light grey darken-2 tooltipped" data-position="bottom" data-tooltip="<?php _e('Delete row', 'rexpansive-builder'); ?>">
 								<i class="material-icons white-text">&#xE5CD;</i>
 							</button>
 						</div>
@@ -3931,14 +3931,14 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 									<input id="section-full-0" type="radio" 
 										name="section-dimension-0" 
 										class="builder-edit-row-dimension with-gap" value="full" checked title="Full" />
-									<label for="section-full-0" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Full', 'rexpansive-classic' ); ?>">
+									<label for="section-full-0" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Full', 'rexpansive-builder' ); ?>">
 										<!--<i class="material-icons">&#xE30B;</i>-->
 										<i class="material-icons rex-icon">v<span class="rex-ripple"></i>
 									</label>
 									<input id="section-boxed-0" type="radio" 
 										name="section-dimension-0" 
 										class="builder-edit-row-dimension with-gap" value="boxed" title="Boxed" />
-									<label for="section-boxed-0" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Boxed', 'rexpansive-classic' ); ?>">
+									<label for="section-boxed-0" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Boxed', 'rexpansive-builder' ); ?>">
 										<!--<i class="material-icons">&#xE30C;</i>-->
 										<i class="material-icons rex-icon">t<span class="rex-ripple"></i>
 									</label>
@@ -3947,23 +3947,23 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 									<input id="section-fixed-0" type="radio" 
 										name="section-layout-0" 
 										class="builder-edit-row-layout with-gap" value="fixed" checked title="Grid Layout" />
-									<label for="section-fixed-0" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Grid Layout', 'rexpansive-classic' ); ?>">
+									<label for="section-fixed-0" class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Grid Layout', 'rexpansive-builder' ); ?>">
 										<i class="material-icons">&#xE8F1;<span class="rex-ripple"></span></i>
 									</label>
 									<input id="section-masonry-0" type="radio" 
 										name="section-layout-0" 
 										class="builder-edit-row-layout with-gap" value="masonry" title="Masonry Layout" />
-									<label for="section-masonry-0"  class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Masonry Layout', 'rexpansive-classic' ); ?>">
+									<label for="section-masonry-0"  class="tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Masonry Layout', 'rexpansive-builder' ); ?>">
 										<i class="material-icons">&#xE871;<span class="rex-ripple"></span></i>
 									</label>
 								</div>
 							</div>
 							
 							<div class="builder-buttons col s4 center-align">
-								<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e( 'Image', 'rexpansive-classic' ); ?>">
+								<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e( 'Image', 'rexpansive-builder' ); ?>">
 									<i class="material-icons rex-icon">p</i>
 								</button>
-								<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="text" data-position="bottom" data-tooltip="<?php _e( 'Text', 'rexpansive-classic' ); ?>">
+								<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="text" data-position="bottom" data-tooltip="<?php _e( 'Text', 'rexpansive-builder' ); ?>">
 									<i class="material-icons rex-icon">u</i>
 								</button>
 								<div class="builder-fab-row-widgets fixed-action-btn horizontal">
@@ -3972,7 +3972,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 									</button>
 									<ul>
 										<li>
-											<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="video" data-position="bottom" data-tooltip="<?php _e( 'Video', 'rexpansive-classic' ); ?>">
+											<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="video" data-position="bottom" data-tooltip="<?php _e( 'Video', 'rexpansive-builder' ); ?>">
 												<i class="material-icons">play_arrow</i>
 											</button>
 										</li>
@@ -3982,7 +3982,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 											</button>
 										</li>
 										<li>
-											<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="empty" data-position="bottom" data-tooltip="<?php _e( 'Block space', 'rexpansive-classic' ); ?>">
+											<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="empty" data-position="bottom" data-tooltip="<?php _e( 'Block space', 'rexpansive-builder' ); ?>">
 												<i class="material-icons rex-icon">H</i>
 											</button>
 										</li>
@@ -3998,14 +3998,14 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 							</div>
 							
 							<div class="col s4 right-align builder-setting-buttons">
-								<div class="background_section_preview btn-floating tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Row background', 'rexpansive-classic' ); ?>"></div>
-								<button class="btn-floating builder-section-config tooltipped" data-position="bottom" data-tooltip="<?php _e('Row settings', 'rexpansive-classic'); ?>">
+								<div class="background_section_preview btn-floating tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Row background', 'rexpansive-builder' ); ?>"></div>
+								<button class="btn-floating builder-section-config tooltipped" data-position="bottom" data-tooltip="<?php _e('Row settings', 'rexpansive-builder'); ?>">
 									<i class="material-icons white-text">&#xE8B8;</i>
 								</button>
-								<div class="btn-flat builder-copy-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy row', 'rexpansive-classic'); ?>">
+								<div class="btn-flat builder-copy-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Copy row', 'rexpansive-builder'); ?>">
 									<i class="material-icons grey-text text-darken-2">&#xE14D;</i>
 								</div>
-								<div class="btn-flat builder-move-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Move row', 'rexpansive-classic'); ?>">
+								<div class="btn-flat builder-move-row tooltipped" data-position="bottom" data-tooltip="<?php _e('Move row', 'rexpansive-builder'); ?>">
 									<i class="material-icons grey-text text-darken-2">&#xE8D5;</i>
 								</div>
 							</div>
@@ -4013,10 +4013,10 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 						<div class="builder-row-edit">
 							<div class="builder-buttons-new-row col s3">
 								<div>
-									<button class="btn light-blue darken-1 builder-add waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e('Image', 'rexpansive-classic'); ?>">
+									<button class="btn light-blue darken-1 builder-add waves-effect waves-light tooltipped" value="image" data-position="bottom" data-tooltip="<?php _e('Image', 'rexpansive-builder'); ?>">
 										<i class="material-icons rex-icon white-text">p</i>
 									</button>
-									<button class="btn light-blue darken-1 builder-add waves-effect waves-light tooltipped" value="text" data-position="bottom" data-tooltip="<?php _e('Text', 'rexpansive-classic'); ?>">
+									<button class="btn light-blue darken-1 builder-add waves-effect waves-light tooltipped" value="text" data-position="bottom" data-tooltip="<?php _e('Text', 'rexpansive-builder'); ?>">
 										<i class="material-icons rex-icon white-text">u</i>
 									</button>
 									<br>
@@ -4026,17 +4026,17 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 										</button>
 										<ul>
 											<li>
-												<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="video" data-position="bottom" data-tooltip="<?php _e( 'Video', 'rexpansive-classic' ); ?>">
+												<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="video" data-position="bottom" data-tooltip="<?php _e( 'Video', 'rexpansive-builder' ); ?>">
 													<i class="material-icons">play_arrow</i>
 												</button>
 											</li>
 											<li>
-												<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="rexslider" data-position="bottom" data-tooltip="<?php _e( 'RexSlider', 'rexpansive-classic' ); ?>">
+												<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="rexslider" data-position="bottom" data-tooltip="<?php _e( 'RexSlider', 'rexpansive-builder' ); ?>">
 													<i class="material-icons rex-icon">X</i>
 												</button>
 											</li>
 											<li>
-												<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="empty" data-position="bottom" data-tooltip="<?php _e( 'Block space', 'rexpansive-classic' ); ?>">
+												<button class="btn-floating builder-add waves-effect waves-light tooltipped" value="empty" data-position="bottom" data-tooltip="<?php _e( 'Block space', 'rexpansive-builder' ); ?>">
 													<i class="material-icons rex-icon">z</i>
 												</button>
 											</li>

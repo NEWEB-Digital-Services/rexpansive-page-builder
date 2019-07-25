@@ -80,7 +80,7 @@ class Rexbuilder_Accordion {
             'open' => 'false',
             'background' => '#000',
             'color' => '#FFF',
-            'label' => __( 'CONTINUE', 'rexpansive-classic' )
+            'label' => __( 'CONTINUE', 'rexpansive-builder' )
         ), $atts ) );
 
         $toggle = '';

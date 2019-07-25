@@ -986,7 +986,7 @@ class Rexbuilder_Meta_Box {
     <i class="material-icons grey-text text-darken-2">&#xE14D;</i>
     <ul>
       <li>
-        <div class="btn-floating btn-medium builder-model tooltipped waves-effect waves-light" data-position="bottom" data-tooltip="<?php _e('Model', 'rexpansive-classic'); ?>">
+        <div class="btn-floating btn-medium builder-model tooltipped waves-effect waves-light" data-position="bottom" data-tooltip="<?php _e('Model', 'rexpansive-builder'); ?>">
           <i class="material-icons rex-icon">0</i>
         </div>
       </li>

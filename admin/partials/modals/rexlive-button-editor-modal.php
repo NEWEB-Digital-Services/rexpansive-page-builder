@@ -357,14 +357,14 @@ defined('ABSPATH') or exit;
                         <div id="rex-button-name-wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix">
                             <span class="prefix"></span>
                             <input type="text" id="rex-button__name" name="rex-button__name" class="rexbutton-upd-actiontextbox">
-                            <label for="rex-button__name" id="rex-button__name-label" class=""><?php _e('Title name model button', 'rexpansive-builder');?></label>
+                            <label for="rex-button__name" id="rex-button__name-label" class=""><?php _e('Button model name', 'rexpansive-builder');?></label>
                             <span class="rex-material-bar"></span>
                         </div>
                     </div>
-                    <div class="rexbutton-count-column_12">                        
-                            <div id="rex-button-add-model-wrap" class="add-rex-button-model tippy" data-tippy-content="<?php _e('create new model','rexpansive-builder'); ?>">
-                                <div class="add-label">+</div>
-                            </div>                                   
+                    <div class="rexbutton-count-column_12 add-rex-button-model__wrap">                        
+                        <div id="rex-button-add-model-wrap" class="add-rex-button-model tippy" data-tippy-content="<?php _e('Create new model','rexpansive-builder'); ?>">
+                            <div class="add-label">+</div>
+                        </div>                                
                     </div>             
                 </div>
             </div>

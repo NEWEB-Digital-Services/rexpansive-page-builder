@@ -287,7 +287,7 @@ $this->settings = apply_filters( 'rexbuilder_metabox_settings', array(
 					<i class="material-icons grey-text text-darken-2">&#xE14D;</i>
 					<ul>
 						<li>
-							<div class="btn-floating btn-medium builder-model tooltipped waves-effect waves-light" data-position="bottom" data-tooltip="<?php _e('Model', 'rexpansive-classic'); ?>">
+							<div class="btn-floating btn-medium builder-model tooltipped waves-effect waves-light" data-position="bottom" data-tooltip="<?php _e('Model', 'rexpansive-builder'); ?>">
 							<i class="material-icons rex-icon">0</i>
 							</div>
 						</li>
@@ -315,7 +315,7 @@ $this->settings = apply_filters( 'rexbuilder_metabox_settings', array(
 <tr>
 	<td colspan="" rowspan="" headers="">
 		<div class="builder-add-row-wrap">
-			<button id="builder-add-row" class="builder-button btn-floating btn light-blue darken-1 waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Add row', 'rexpansive-classic' ) ?>">
+			<button id="builder-add-row" class="builder-button btn-floating btn light-blue darken-1 waves-effect waves-light tooltipped" data-position="bottom" data-tooltip="<?php _e( 'Add row', 'rexpansive-builder' ) ?>">
 				<i class="material-icons text-white">&#xE145;</i>
 			</button>
 		</div>

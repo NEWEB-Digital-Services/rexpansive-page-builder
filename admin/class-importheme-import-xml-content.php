@@ -752,14 +752,14 @@ if ( ! class_exists( 'Rexpansive_Classic_Import_Xml_Content' ) ) {
 
 			if ( is_wp_error( $response ) ) {
 				@unlink( $upload['file'] );
-				return new WP_Error( 'import_file_error', __('Remote server did not respond', 'rexpansive-classic') );
+				return new WP_Error( 'import_file_error', __('Remote server did not respond', 'rexpansive-builder') );
 			}
 
 			$code = (int) wp_remote_retrieve_response_code( $response );
 
 			if ( $code !== 200 ) {
 				@unlink( $upload['file'] );
-				return new WP_Error( 'import_file_error', sprintf(__('Remote server returned %1$d %2$s for %3$s', 'rexpansive-classic'),$code,get_status_header_desc( $code ),$url));
+				return new WP_Error( 'import_file_error', sprintf(__('Remote server returned %1$d %2$s for %3$s', 'rexpansive-builder'),$code,get_status_header_desc( $code ),$url));
 			}
 
 			// If error storing permanently, unlink

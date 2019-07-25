@@ -3,7 +3,7 @@
  * Class that wraps the hooks to define slider shortcode
  *
  * @since  1.0.21 
- * @package rexpansive-classic
+ * @package rexpansive-builder
  * @deprecated
  */
 class Rexbuilder_Slider_Shortcode {

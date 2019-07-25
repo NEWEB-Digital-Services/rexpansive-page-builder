@@ -303,6 +303,9 @@
   width:339px;
   height:42px;
   float:left;
+  .editing-model & {
+    width: 100%;
+  }
 }
 .bl_modal-row .rexbutton-cont_row77 .rexbutton-count-column_12{
   width:30px;
