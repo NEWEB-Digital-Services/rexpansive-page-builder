@@ -57,7 +57,6 @@ $buttonsIDsJSON = get_option('_rex_buttons_ids', $defaultButtonsIDs);
 $buttonsIDsJSON = stripslashes($buttonsIDsJSON);
 $buttonsIDsUsed = json_decode($buttonsIDsJSON, true);
 ?>
-<?php // include_once "rexlive-debug-info.php"; ?>
 <div id="rexpansive-builder-backend-wrapper" class="top-fast-tools--hide" data-rex-edited-backend="<?php echo $backendEditing;?>">
 	<div>
 		<div id="rex-buttons-json-css" style="display: none;"><?php
@@ -79,14 +78,13 @@ $buttonsIDsUsed = json_decode($buttonsIDsJSON, true);
 		<div class = "available-layouts"><?php echo json_encode($layoutsAvaiable);?></div>
 	</div>
 	<?php include_once "rexlive-page-settings.php"; ?>
-	<?php include_once "rexlive-toolbox-fixed.php"; ?>
+	<?php include_once "toolbox/rexlive-toolbox-fixed.php"; ?>
 	<div class="rexpansive-live-frame-container">
 		<iframe id="rexpansive-live-frame" src="<?php echo $source; ?>" allowfullscreen="1" style="width:100%;height:100%;border: 0px;" onload="Rexbuilder_Util_Admin_Editor.forceTriggerLoad()"></iframe>
 	</div>
 </div>
 <?php
 include_once("rexlive-js-templates.php");
-include_once("rexlive-modals-tools.php");
 include_once("rexlive-color-palette.php");
 include_once("rexlive-overlay-palette.php");
-// include Rexbuilder_Utilities::get_plugin_templates_path('rexbuilder-photoswipe-template.php');
+

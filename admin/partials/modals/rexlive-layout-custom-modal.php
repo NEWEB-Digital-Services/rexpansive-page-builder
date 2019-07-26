@@ -1,12 +1,12 @@
 <?php
 /**
- * Print the markup of the modals for the toolbox
+ * Print the modal for the custom layout handling
  *
  * @link       htto://www.neweb.info
- * @since      1.0.10
+ * @since      2.0.0
  *
  * @package    Rexbuilder
- * @subpackage Rexbuilder/admin/partials
+ * @subpackage Rexbuilder/admin/partials/modals
  */
 
 defined( 'ABSPATH' ) or exit;

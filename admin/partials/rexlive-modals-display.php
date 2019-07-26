@@ -21,6 +21,8 @@ defined('ABSPATH') or exit;
 </div>
 <!-- // #builder-loading-overlay -->
 
+<?php include_once( 'modals/rexlive-layout-custom-modal.php' ); ?>
+
 <?php include_once( 'modals/rexlive-css-editor-modal.php' ); ?>
 <?php include_once( 'modals/rexlive-html-editor-modal.php' ); ?>
 
