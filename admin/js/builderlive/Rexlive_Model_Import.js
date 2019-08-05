@@ -133,6 +133,58 @@ var Model_Import_Modal = (function($) {
     }
   }
 
+/**
+   * Write on console "ciao Roberto"
+   * @param  {null}
+   * @return {null}
+   * @since  2.0.0
+   */
+  var _writeOnConsole = function() {
+    // scrivo in console
+    console.log("Ciao Roberto");
+
+    // var model_id = model.getAttribute('data-rex-model-id');
+
+    // if ( model_id ) {
+    //   var response = confirm( live_editor_obj.labels.models.confirm_delete );
+    //   if ( response ) {
+
+        
+
+    //     // prepare data to ajax request
+    //     var data = {
+    //       action: "rex_delete_rexmodel",
+    //       nonce_param: live_editor_obj.rexnonce,
+    //       model_id: model_id
+    //     };
+
+    //     var endcodedData = Rexlive_Base_Settings.encodeData(data);
+
+    //     // prepare ajax request
+    //     var request = new XMLHttpRequest();
+    //     request.open('POST', live_editor_obj.ajaxurl, true);
+    //     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+
+    //     // handle request response
+    //     request.onloadstart = function() {
+    //       rexmodel_import_props.$self.addClass('rex-modal--loading');
+    //     }
+    //     request.onload = function() {
+    //       if (request.status >= 200 && request.status < 400) {
+    //         model.style.display = 'none';
+    //       }
+    //     };
+    //     request.onerror = function() {};
+    //     request.onloadend = function() {
+    //       rexmodel_import_props.$self.removeClass('rex-modal--loading');
+    //     };
+
+    //     // send request
+    //     request.send(endcodedData);
+    //   }
+    // }
+  }
+
   var _linkDocumentListeners = function() {
   };
 
@@ -1044,6 +1096,7 @@ var Model_Import_Modal = (function($) {
   return {
     init: _init,
     updateModelList: _updateModelList,
+    writeOnConsole: _writeOnConsole,
     deleteModel: _deleteModel
   };
 })(jQuery);

@@ -129,6 +129,7 @@ class Rexbuilder_Admin {
 	 * @param Array $obj
 	 * @return void
 	 * @since 2.0.0
+	 * 
 	 */
 	public function wpml_translation_update_fix ( $obj ) {
 		// Insert fix

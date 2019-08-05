@@ -48,6 +48,10 @@ defined('ABSPATH') or exit;
                             <div class="model-preview bl_d-flex bl_jc-c bl_ai-c<?php echo ( $model_previewUrl != "" ? ' model-preview--active' : '' ); ?>"<?php echo ( $model_previewUrl != "" ? 'style="background-image:url(' . $model_previewUrl . ');"' : '' ); ?> itemprop="contentUrl" data-href="<?php echo ( $model_previewUrl != "" ? esc_url($model_previewUrl) : "https://via.placeholder.com/640x480" ); ?>" data-size="640x480">
                                 <span class="model-preview__placeholder"><?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?></span>
                                 <div class="model-name bl_d-flex bl_jc-c bl_ai-fe"><div><?php echo $model_title;?></div></div>
+                                <div class="tool-button tool-button--black tool-button--close rex-close-button edit-model-image" style="position:absolute;top:0;right:20px;">
+                                    <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
+                                </div>
+                                <!--  model__element--edit -->
                                 <div class="tool-button tool-button--black tool-button--close rex-close-button model__element--delete">
                                     <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                                 </div>
