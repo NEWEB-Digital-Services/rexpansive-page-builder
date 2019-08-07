@@ -9,22 +9,25 @@ var Model_Import_Modal = (function($) {
   var rexmodel_import_props;
   var image_uploader_frame_direct;  //used for the media library opener
 
-  var _updateModelImage = function() {
+  var _saveModelThumbnail = function(model_selected, selected_image_id) {
+    // console.log("model_selected " + model_selected);
     $.ajax({
       type: "GET",
       dataType: "json",
       url: live_editor_obj.ajaxurl,
       data: {
-        action: "rex_save_model_image",
-        nonce_param: live_editor_obj.rexnonce
+        action: "rex_save_model_thumbnail",
+        nonce_param: live_editor_obj.rexnonce,
+        model_target: model_selected,
+        image_selected: selected_image_id,
+        set_post_thumbnail_result: null
       },
       success: function(response) {
-        if (response.success) {
-          
-        }
-      }
+        if (response.success) {}
+      },
+      error: function(response) {}
     });
-  }
+  };
 
   var _updateModelList = function() {
     $.ajax({
@@ -168,13 +171,14 @@ var Model_Import_Modal = (function($) {
    * @return media library
    * @since  2.0.0
    */
-  var _editModelImage = function(model_id) {
+  var _editModelThumbnail = function(model_id, thumbnail_id) {
      // If the frame is already opened, return it
       if (image_uploader_frame_direct) {
         image_uploader_frame_direct
           .state("live-image-model")
           .set("liveTarget", "")
-          .set("selected_image", model_id)
+          .set("selected_image", thumbnail_id)
+          .set("selected_model", model_id)
           .set("eventName", "")
           .set("data_to_send", "")
         image_uploader_frame_direct.open();
@@ -196,7 +200,8 @@ var Model_Import_Modal = (function($) {
             liveTarget: "",
             eventName: "",
             data_to_send: "",
-            selected_image: model_id,
+            selected_image: thumbnail_id,
+            selected_model: model_id,
             type: "image" //audio, video, application/pdf, ... etc
           },
           wp.media.controller.Library.prototype.defaults
@@ -273,6 +278,7 @@ var Model_Import_Modal = (function($) {
         //org code from /wp-includes/js/media-editor.js, arround `line 603 -- send: { ... attachment: function( props, attachment ) { ... `
         var display;
         var obj_attachment;
+        var model_selected = image_uploader_frame_direct.state("live-image-model").get("selected_model");
         selection.each(function(attachment) {
           display = state.display(attachment).toJSON();
           obj_attachment = attachment.toJSON();
@@ -287,10 +293,8 @@ var Model_Import_Modal = (function($) {
           data.data_to_send.urlImage = display.src;
         });
 
-        var selected_model = image_uploader_frame_direct.state("live-image-model").get("selected_image");
-
-        var elemento = $('.model__element[data-rex-model-id="' + selected_model + '"]');
-        elemento.children(".model-preview").css('background-image', 'url("' + display.src + '")');
+        _updateModelThumbnail(display, obj_attachment);
+        _saveModelThumbnail(model_selected, obj_attachment.id);
 
         data.data_to_send.tools = data_to_send.tools;
       });
@@ -300,6 +304,18 @@ var Model_Import_Modal = (function($) {
       //now open the popup
       image_uploader_frame_direct.open();
   };
+  /**
+   * updates the model with the new thumbnail selected
+   * @param display
+   * @return {null}
+   */
+  var _updateModelThumbnail = function(display, obj_attachment) {
+    var model_selected = image_uploader_frame_direct.state("live-image-model").get("selected_model");
+    var element = $('.model__element[data-rex-model-id="' + model_selected + '"]');
+
+    element.attr("data-rex-model-thumbnail-id", obj_attachment.id);
+    element.children(".model-preview").css('background-image', 'url("' + display.src + '")');
+  }
 
   var _linkDocumentListeners = function() {
   };
@@ -1211,10 +1227,11 @@ var Model_Import_Modal = (function($) {
 
   return {
     init: _init,
-    updateModelImage: _updateModelImage,
+    saveModelThumbnail: _saveModelThumbnail,
+    updateModelThumbnail: _updateModelThumbnail,
     updateModelList: _updateModelList,
     writeOnConsole: _writeOnConsole,
-    editModelImage: _editModelImage,
+    editModelThumbnail: _editModelThumbnail,
     deleteModel: _deleteModel
   };
 })(jQuery);

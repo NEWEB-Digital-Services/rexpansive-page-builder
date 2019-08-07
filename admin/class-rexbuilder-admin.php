@@ -2262,12 +2262,16 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 * @return model with new image
 	 * @since  2.0.0
 	 */
-	public function rex_save_model_image(){
+	public function rex_save_model_thumbnail(){
 		$nonce = $_GET['nonce_param'];
+		$model_target = $_GET['model_target'];
+		$image_selected = $_GET['image_selected'];
 
         $response = array(
             'error' => false,
             'msg' => '',
+            'model target' => $model_target,
+            'selected image' => $image_selected
         );
 
         if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
@@ -2278,7 +2282,9 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 
 		$response['error'] = false;
 
-		cnosole.log("Fino a qui tutto bene");
+		$response['set_post_thumbnail_result'] = set_post_thumbnail($model_target, $image_selected);
+
+		wp_send_json_success($response);
 	}
 
 	/**
@@ -2310,8 +2316,8 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		);
 
 		$modelList = array();
+
 		// The Query
-		
 		$query = new WP_Query( $args );
 
 		if ( $query->have_posts() ) {
