@@ -7,6 +7,24 @@
 var Model_Import_Modal = (function($) {
   "use strict";
   var rexmodel_import_props;
+  var image_uploader_frame_direct;  //used for the media library opener
+
+  var _updateModelImage = function() {
+    $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: live_editor_obj.ajaxurl,
+      data: {
+        action: "rex_save_model_image",
+        nonce_param: live_editor_obj.rexnonce
+      },
+      success: function(response) {
+        if (response.success) {
+          
+        }
+      }
+    });
+  }
 
   var _updateModelList = function() {
     $.ajax({
@@ -133,57 +151,155 @@ var Model_Import_Modal = (function($) {
     }
   }
 
-/**
+  /**
    * Write on console "ciao Roberto"
    * @param  {null}
    * @return {null}
    * @since  2.0.0
    */
   var _writeOnConsole = function() {
-    // scrivo in console
+    // writing on console
     console.log("Ciao Roberto");
-
-    // var model_id = model.getAttribute('data-rex-model-id');
-
-    // if ( model_id ) {
-    //   var response = confirm( live_editor_obj.labels.models.confirm_delete );
-    //   if ( response ) {
-
-        
-
-    //     // prepare data to ajax request
-    //     var data = {
-    //       action: "rex_delete_rexmodel",
-    //       nonce_param: live_editor_obj.rexnonce,
-    //       model_id: model_id
-    //     };
-
-    //     var endcodedData = Rexlive_Base_Settings.encodeData(data);
-
-    //     // prepare ajax request
-    //     var request = new XMLHttpRequest();
-    //     request.open('POST', live_editor_obj.ajaxurl, true);
-    //     request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
-
-    //     // handle request response
-    //     request.onloadstart = function() {
-    //       rexmodel_import_props.$self.addClass('rex-modal--loading');
-    //     }
-    //     request.onload = function() {
-    //       if (request.status >= 200 && request.status < 400) {
-    //         model.style.display = 'none';
-    //       }
-    //     };
-    //     request.onerror = function() {};
-    //     request.onloadend = function() {
-    //       rexmodel_import_props.$self.removeClass('rex-modal--loading');
-    //     };
-
-    //     // send request
-    //     request.send(endcodedData);
-    //   }
-    // }
   }
+
+  /**
+   * Open media library
+   * @param model_id parent id
+   * @return media library
+   * @since  2.0.0
+   */
+  var _editModelImage = function(model_id) {
+     // If the frame is already opened, return it
+      if (image_uploader_frame_direct) {
+        image_uploader_frame_direct
+          .state("live-image-model")
+          .set("liveTarget", "")
+          .set("selected_image", model_id)
+          .set("eventName", "")
+          .set("data_to_send", "")
+        image_uploader_frame_direct.open();
+        return;
+      }
+
+      //create a new Library, base on defaults
+      //you can put your attributes in
+      var insertImage = wp.media.controller.Library.extend({
+        defaults: _.defaults(
+          {
+            id: "live-image-model",
+            title: "Edit Model Thumbnail",
+            allowLocalEdits: true,
+            displaySettings: true,
+            displayUserSettings: true,
+            multiple: false,
+            library: wp.media.query({ type: "image" }),
+            liveTarget: "",
+            eventName: "",
+            data_to_send: "",
+            selected_image: model_id,
+            type: "image" //audio, video, application/pdf, ... etc
+          },
+          wp.media.controller.Library.prototype.defaults
+        )
+      }); 
+
+      //Setup media frame
+      image_uploader_frame_direct = wp.media({
+        button: { text: "Select" },
+        state: "live-image-model",
+        states: [new insertImage()]
+      });
+
+      // prevent attachment size strange selections
+      /*image_uploader_frame_direct.on('selection:toggle', function(e) {
+        var attachmentSizeEl = document.querySelector( 'select[name="size"]' );
+        if ( attachmentSizeEl ) {
+          attachmentSizeEl.value = 'full';
+        }
+      });*/
+
+      //reset selection in popup, when open the popup
+      image_uploader_frame_direct.on("open", function() {
+        var attachment;
+        var selection = image_uploader_frame_direct
+          .state("live-image-model")
+          .get("selection");
+
+        //remove all the selection first
+        selection.each(function(video) {
+          attachment = wp.media.attachment(video.attributes.id);
+          attachment.fetch();
+          selection.remove(attachment ? [attachment] : []);
+        });
+
+        var image_id = image_uploader_frame_direct
+          .state("live-image-model")
+          .get("selected_image");
+
+        var image_info = image_uploader_frame_direct
+          .state("live-image-model")
+          .get("data_to_send");
+
+        // Check the already inserted image
+        if (image_id) {
+          attachment = wp.media.attachment(image_id);
+          attachment.fetch();
+
+          selection.add(attachment ? [attachment] : [], { size: 'thumbnail' });
+        }
+      });
+
+      image_uploader_frame_direct.on("select", function() {
+        var state = image_uploader_frame_direct.state("live-image-model");
+        var sectionTarget = state.get("liveTarget");
+        var eventName = state.get("eventName");
+        var data_to_send = state.get("data_to_send");
+
+        var selection = state.get("selection");
+        var data = {
+          eventName: eventName,
+          data_to_send: {
+            // info: info,
+            // media: [],
+            sectionTarget: sectionTarget,
+            target: sectionTarget
+          }
+          // data_to_send: data_to_send
+        };
+
+        if (!selection) return;
+
+        //to get right side attachment UI info, such as: size and alignments
+        //org code from /wp-includes/js/media-editor.js, arround `line 603 -- send: { ... attachment: function( props, attachment ) { ... `
+        var display;
+        var obj_attachment;
+        selection.each(function(attachment) {
+          display = state.display(attachment).toJSON();
+          obj_attachment = attachment.toJSON();
+
+          // If captions are disabled, clear the caption.
+          if (!wp.media.view.settings.captions) delete obj_attachment.caption;
+
+          display = wp.media.string.props(display, obj_attachment);
+
+          // data.data_to_send.media.push(to_send);
+          data.data_to_send.idImage = obj_attachment.id;
+          data.data_to_send.urlImage = display.src;
+        });
+
+        var selected_model = image_uploader_frame_direct.state("live-image-model").get("selected_image");
+
+        var elemento = $('.model__element[data-rex-model-id="' + selected_model + '"]');
+        elemento.children(".model-preview").css('background-image', 'url("' + display.src + '")');
+
+        data.data_to_send.tools = data_to_send.tools;
+      });
+
+      image_uploader_frame_direct.on("close", function() {});
+
+      //now open the popup
+      image_uploader_frame_direct.open();
+  };
 
   var _linkDocumentListeners = function() {
   };
@@ -1095,8 +1211,10 @@ var Model_Import_Modal = (function($) {
 
   return {
     init: _init,
+    updateModelImage: _updateModelImage,
     updateModelList: _updateModelList,
     writeOnConsole: _writeOnConsole,
+    editModelImage: _editModelImage,
     deleteModel: _deleteModel
   };
 })(jQuery);

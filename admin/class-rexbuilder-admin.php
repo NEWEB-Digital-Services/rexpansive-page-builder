@@ -2258,6 +2258,30 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	}
 	
 	/**
+	 * Save the model image
+	 * @return model with new image
+	 * @since  2.0.0
+	 */
+	public function rex_save_model_image(){
+		$nonce = $_GET['nonce_param'];
+
+        $response = array(
+            'error' => false,
+            'msg' => '',
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+		$response['error'] = false;
+
+		cnosole.log("Fino a qui tutto bene");
+	}
+
+	/**
 	 * Get RexModels list to display on lateral menu, ready to drag on page
 	 * @return JSON updated list
 	 * @since  2.0.0
