@@ -17,90 +17,84 @@ var gulp = require('gulp'),
 	concat = require('gulp-concat'),
 	gulpUtil = require('gulp-util'),
 	svgSprite = require('gulp-svg-sprite');
-
-	config = {
-		shape: {
-		// dimension		: {			// Set maximum dimensions
-		//   maxWidth	: 32,
-		//   maxHeight	: 32
-		// },
-		// spacing			: {			// Add padding
-		//   padding		: 10
-		// },
-		dest: "out/intermediate-svg" // Keep the intermediate files
-	},
-	mode: {
-		view: {
-		// Activate the «view» mode
-		bust: false,
-		render: {
-			scss: true // Activate Sass output (with default options)
-		}
-	},
-		symbol: true // Activate the «symbol» mode
-	},
-	svg: {
-		xmlDeclaration: false
+  
+config = {
+shape: {
+	// dimension		: {			// Set maximum dimensions
+	//   maxWidth	: 32,
+	//   maxHeight	: 32
+	// },
+	// spacing			: {			// Add padding
+	//   padding		: 10
+	// },
+	dest: "out/intermediate-svg" // Keep the intermediate files
+},
+mode: {
+	view: {
+	// Activate the «view» mode
+	bust: false,
+	render: {
+		scss: true // Activate Sass output (with default options)
 	}
+	},
+	symbol: true // Activate the «symbol» mode
+},
+svg: {
+	xmlDeclaration: false
+}
 };
 
 gulp.task("live-sprites", function() {
-	gulp
+gulp
 	.src("./admin/ICO_Live/**/*.svg")
 	.pipe(svgSprite(config))
 	.pipe(gulp.dest("./admin/sprites_live"));
 });
 
 gulp.task("live-new-sprites", function() {
-	gulp
+gulp
 	.src("./admin/ICO_Live-new/**/*.svg")
 	.pipe(svgSprite(config))
 	.pipe(gulp.dest("./admin/sprites_live_new"));
 });
 
 gulp.task("ico-test", function() {
-	gulp
+gulp
 	.src("./admin/ICO-test/**/*.svg")
 	.pipe(svgSprite(config))
 	.pipe(gulp.dest("./admin/sprites_test"));
 });
 
-gulp.task('sprites', function() {
-	gulp.src('./admin/ICO/**/*.svg')
-	.pipe(svgSprite(config))
-	.pipe(gulp.dest('./admin/sprites'));
-});
-
 var banner = ['/**',
-' * <%= pkg.name %> v<%= pkg.version %>',
-' * <%= pkg.description %>',
-' * <%= pkg.author %> <<%= pkg.author.email %>>',
-' */',
-''].join('\n');
+	' * <%= pkg.name %> v<%= pkg.version %>',
+	' * <%= pkg.description %>',
+	' * <%= pkg.author %> <<%= pkg.author.email %>>',
+	' */',
+	''].join('\n');
 
 gulp.task('minify-css', function() {
 	gulp.src('./admin/css/main.css')
-	.pipe(minifyCSS({compatibility: 'ie8'}))
-	.pipe(header(banner, {pkg: pkg}))
-	.pipe(rename({suffix: '.min'}))
-	.pipe(gulp.dest('./admin/css/'));
+		.pipe(minifyCSS({compatibility: 'ie8'}))
+		.pipe(header(banner, {pkg: pkg}))
+		.pipe(rename({suffix: '.min'}))
+		.pipe(gulp.dest('./admin/css/'));
 });
 
 gulp.task('jshint', function() {
 	var path = './public/js/**/*.js';
 	return gulp.src(path)
-	.pipe(jshint())
-	.pipe(jshint.reporter('jshint-stylish'));
+		.pipe(jshint())
+		.pipe(jshint.reporter('jshint-stylish'));
 });
 
 gulp.task('builder-front', function() {
 	sass('public/scss/rexbuilder-public.scss',{
-		style:'compressed'
-	})
+			style:'compressed'
+		})
 	.pipe(plumber())
 	.pipe(autoprefixer({
 		browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
-	}))
+		}))
 	.pipe(plumber.stop())
 	.pipe(size({title: 'Front CSS'}))
 	.pipe(gulp.dest('public/css/'));
@@ -111,8 +105,8 @@ gulp.task('default', ['builder-front', 'watch:scss']);
 /* --- BUILD ADMIN SCRIPTS AND STYLES ------ */
 gulp.task('admin-builder', function() {
 	return gulp.src('admin/scss/builder.scss')
-	.pipe(sass({outputStyle:'expanded'}).on('error', sass.logError))
-	.pipe(gulp.dest('admin/scss'))
+		.pipe(sass({outputStyle:'expanded'}).on('error', sass.logError))
+		.pipe(gulp.dest('admin/scss'))
 });
 
 gulp.task('admin-css-build', function() {
@@ -120,12 +114,12 @@ gulp.task('admin-css-build', function() {
 		style:'compressed'
 	})
 	.pipe(plumber())
-	.pipe(autoprefixer({
-		browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
-	}))
-	.pipe(plumber.stop())
+    .pipe(autoprefixer({
+      browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
+  	}))
+    .pipe(plumber.stop())
 	.pipe(size({title: 'Admin CSS'}))
-	.pipe(gulp.dest('admin/css'));
+    .pipe(gulp.dest('admin/css'));
 });
 
 /** LIVE BUILDER */
@@ -182,10 +176,10 @@ var live_admin_js_src = [
 
 gulp.task('live-admin-scripts-build', function() {
 	return gulp.src(live_admin_js_src)
-	.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
-	.pipe(concat('live-admin.js'))
-	.pipe(size({title:'Admin JS'}))
-	.pipe(gulp.dest('admin/js'))
+		.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
+		.pipe(concat('live-admin.js'))
+		.pipe(size({title:'Admin JS'}))
+		.pipe(gulp.dest('admin/js'))
 });
 
 gulp.task('live-builder-style', function() {
@@ -194,12 +188,12 @@ gulp.task('live-builder-style', function() {
 		style:'compressed'
 	})
 	.pipe(plumber())
-	.pipe(autoprefixer({
-		browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
-	}))
-	.pipe(plumber.stop())
+    .pipe(autoprefixer({
+      browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
+  	}))
+    .pipe(plumber.stop())
 	.pipe(size({title: 'LiveBuilder CSS'}))
-	.pipe(gulp.dest('admin/css'));
+    .pipe(gulp.dest('admin/css'));
 });
 
 gulp.task('admin-builder-style', function() {
@@ -208,12 +202,12 @@ gulp.task('admin-builder-style', function() {
 		style:'compressed'
 	})
 	.pipe(plumber())
-	.pipe(autoprefixer({
-		browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
-	}))
-	.pipe(plumber.stop())
+    .pipe(autoprefixer({
+      browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
+  	}))
+    .pipe(plumber.stop())
 	.pipe(size({title: 'LiveBuilder Admin CSS'}))
-	.pipe(gulp.dest('admin/css'));
+    .pipe(gulp.dest('admin/css'));
 });
 
 gulp.task('peter', ['live-builder-style','admin-builder-style'] ,function() {
@@ -245,10 +239,41 @@ var admin_js_src = [
 
 gulp.task('admin-plugins-build', function() {
 	return gulp.src(admin_js_src)
-	.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
-	.pipe(concat('plugins.js'))
-	.pipe(size({title:'Admin JS'}))
-	.pipe(gulp.dest('admin/js'))
+		.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
+		.pipe(concat('plugins.js'))
+		.pipe(size({title:'Admin JS'}))
+		.pipe(gulp.dest('admin/js'))
+});
+
+config	= {
+	shape				: {
+	  // dimension		: {			// Set maximum dimensions 
+	  //   maxWidth	: 32,
+	  //   maxHeight	: 32
+	  // },
+	  // spacing			: {			// Add padding 
+	  //   padding		: 10
+	  // },
+	  dest			: 'out/intermediate-svg'	// Keep the intermediate files 
+	},
+	mode				: {
+	  view			: {			// Activate the «view» mode 
+		bust		: false,
+		render		: {
+		  scss	: true		// Activate Sass output (with default options) 
+		}
+	  },
+	  symbol			: true		// Activate the «symbol» mode 
+	},
+	svg : {
+	  xmlDeclaration		: false,
+	}
+  };
+  
+gulp.task('sprites', function() {
+	gulp.src('./admin/ICO/**/*.svg')
+		.pipe(svgSprite(config))
+		.pipe(gulp.dest('./admin/sprites'));
 });
 
 /**
@@ -256,15 +281,15 @@ gulp.task('admin-plugins-build', function() {
  * @since 2.0.0
  */
 
- var builderlive_public_editor = [
- 'public/js/vendor/tippy.all.min.js',
- 'public/js/vendor/rangy-1.3.0/rangy-core.js',
- 'public/js/vendor/rangy-1.3.0/rangy-classapplier.js',
- 'public/js/vendor/rangy-1.3.0/rangy-selectionsaverestore.js',
- 'public/js/vendor/rangy-1.3.0/rangy-textrange.js',
- 'public/js/vendor/spectrum.js',
- 'public/js/vendor/medium-editor.js',
- 'public/js/vendor/medium-editor-toolbar-states.min.js',
+var builderlive_public_editor = [
+	'public/js/vendor/tippy.all.min.js',
+	'public/js/vendor/rangy-1.3.0/rangy-core.js',
+	'public/js/vendor/rangy-1.3.0/rangy-classapplier.js',
+	'public/js/vendor/rangy-1.3.0/rangy-selectionsaverestore.js',
+	'public/js/vendor/rangy-1.3.0/rangy-textrange.js',
+	'public/js/vendor/spectrum.js',
+	'public/js/vendor/medium-editor.js',
+	'public/js/vendor/medium-editor-toolbar-states.min.js',
 	// 'public/js/vendor/handlebars.runtime.js',
 	// 'public/js/vendor/jquery.fileupload.js',
 	// 'public/js/vendor/jquery.cycle2.min.js',
@@ -359,47 +384,47 @@ var public_editor_res = builderlive_public_editor_style;
 
 gulp.task('public-editor-css', function() {
 	sass('public/public-editor.scss',{
-	//style:'compressed'
-})
+		//style:'compressed'
+	})
 	.pipe(plumber())
-	.pipe(autoprefixer({
-		browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
-	}))
-	.pipe(plumber.stop())
+    .pipe(autoprefixer({
+      browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
+  	}))
+    .pipe(plumber.stop())
 	.pipe(size({title: 'Public CSS'}))
-	.pipe(gulp.dest('public/css'));
+    .pipe(gulp.dest('public/css'));
 });
 
 gulp.task('builderlive-editor', function() {
 	return gulp.src(public_res)
-	.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
-	.pipe(concat('builderlive-editor.js'))
-	.pipe(size({title:'Builderlive Editor'}))
-	.pipe(gulp.dest('public/js'))
+		.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
+		.pipe(concat('builderlive-editor.js'))
+		.pipe(size({title:'Builderlive Editor'}))
+		.pipe(gulp.dest('public/js'))
 });
 
 gulp.task('builderlive', function() {
 	return gulp.src(builderlive_public)
-	.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
-	.pipe(concat('builderlive.js'))
-	.pipe(size({title:'Builderlive'}))
-	.pipe(gulp.dest('public/js'))
+		.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
+		.pipe(concat('builderlive.js'))
+		.pipe(size({title:'Builderlive'}))
+		.pipe(gulp.dest('public/js'))
 });
 
 gulp.task('builderlive-editor-style', function() {
 	return gulp.src(public_editor_res)
-	.pipe(concat('builderlive-editor.css'))
-	.pipe(uglifyCSS({preserveComments: 'license'}).on('error', gulpUtil.log))
-	.pipe(size({title:'Builderlive Editor Style'}))
-	.pipe(gulp.dest('admin/css'))
+		.pipe(concat('builderlive-editor.css'))
+		.pipe(uglifyCSS({preserveComments: 'license'}).on('error', gulpUtil.log))
+		.pipe(size({title:'Builderlive Editor Style'}))
+		.pipe(gulp.dest('admin/css'))
 });
 
 gulp.task('builderlive-style', function() {
 	return gulp.src(builderlive_public_style)
-	.pipe(concat('builderlive.css'))
-	.pipe(uglifyCSS({preserveComments: 'license'}).on('error', gulpUtil.log))
-	.pipe(size({title:'Builderlive Style'}))
-	.pipe(gulp.dest('public/css'))
+		.pipe(concat('builderlive.css'))
+		.pipe(uglifyCSS({preserveComments: 'license'}).on('error', gulpUtil.log))
+		.pipe(size({title:'Builderlive Style'}))
+		.pipe(gulp.dest('public/css'))
 });
 
 gulp.task('live-production', ['builderlive-editor','builderlive','builderlive-editor-style','builderlive-style']);
@@ -416,12 +441,12 @@ gulp.task('public-css-build', function() {
 		style:'compressed'
 	})
 	.pipe(plumber())
-	.pipe(autoprefixer({
-		browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
-	}))
-	.pipe(plumber.stop())
+    .pipe(autoprefixer({
+      browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
+  	}))
+    .pipe(plumber.stop())
 	.pipe(size({title: 'Public CSS'}))
-	.pipe(gulp.dest('public/css'));
+    .pipe(gulp.dest('public/css'));
 });
 
 var public_js_src = [
@@ -458,23 +483,23 @@ var public_js_logic_src = [
 
 gulp.task('public-plugins-build', function() {
 	return gulp.src(public_js_src)
-	.pipe(uglify({preserveComments: 'license'}).on('error', function(e){
-		console.log(e);
-	}))
-	.pipe(concat('plugins.js'))
-	.pipe(size({title:'Public JS Plugins'}))
-	.pipe(gulp.dest('public/js'))
+		.pipe(uglify({preserveComments: 'license'}).on('error', function(e){
+            console.log(e);
+         }))
+		.pipe(concat('plugins.js'))
+		.pipe(size({title:'Public JS Plugins'}))
+		.pipe(gulp.dest('public/js'))
 });
 
 gulp.task('public-js-build', function() {
 	return gulp.src(public_js_logic_src)
-	.pipe(uglify({preserveComments: 'license'}).on('error', function(e){
-		console.log(e);
-	}))		
-	//.pipe(uglify({preserveComments: 'all'}))	
-	.pipe(concat('public.js'))
-	.pipe(size({title:'Public JS'}))
-	.pipe(gulp.dest('public/js'))
+		.pipe(uglify({preserveComments: 'license'}).on('error', function(e){
+            console.log(e);
+         }))		
+		//.pipe(uglify({preserveComments: 'all'}))	
+		.pipe(concat('public.js'))
+		.pipe(size({title:'Public JS'}))
+		.pipe(gulp.dest('public/js'))
 });
 
 /* ----- BUILD PLUGIN ------- */
@@ -490,6 +515,95 @@ gulp.task('dev', ['admin-plugins-build', 'admin-css-build', 'public-css-build', 
 gulp.task('dev-live', ['live-builder-style'] ,function() {
 	gulp.watch('admin/scss/builder-live/**/*.scss', ['live-builder-style']);
 });
+
+
+/* ---- BUIL CLEAN PLUGIN VERSION ----- */
+var premium_plugin_zip_name = 'Premium-113-Rexpansive-Builder.zip';
+var code_premium_plugin_zip_name = 'codecanyon-113-rexpansive-builder-wordpress-plugin';
+var premium_plugin_folder_name = 'rexpansive-builder';
+
+var plugin_premium_file_map = [
+	'admin/ace/src-min-noconflict/*.*',
+	'admin/css/admin.css',
+	'admin/font-awesome-4.3.0/**/*.*',
+	'admin/img/**/*.*',
+	'admin/js/embed-video.js',
+	'admin/js/plugins.js',
+	'admin/js/rexbuilder-admin.js',
+	'admin/js/textfill-button.js',
+	'admin/lib/**/*.*',
+	'admin/models/**/*',
+	'admin/partials/**/*.*',
+	'admin/required-plugins/**/*',
+	'admin/rexpansive-font/**/*.*',
+	'admin/sprites/symbol/svg/sprite.symbol.svg',
+	'admin/class-importheme-import-utilities.php',
+	'admin/class-importheme-import-xml-content.php',
+	'admin/class-rexbuilder-admin.php',
+	'admin/class-rexbuilder-meta-box.php',
+	'admin/index.php',
+	'admin/sprite-list.json',
+	'includes/**/*',
+	'languages/**/*',
+	'Licensing/**/*',
+	'public/css/public.css',
+	'public/img/**/*',
+	'public/js/plugins.js',
+	'public/js/public.js',
+	'public/partials/**/*',
+	'public/templates/**/*',
+	'public/Photoswipe/**/*',
+	'public/jquery.mb.YTPlayer/**/*',
+	'public/class-rexbuilder-public.php',
+	'public/index.php',
+	'shortcodes/**/*',
+	'index.php',
+	'LICENSE.txt',
+	'README.txt',
+	'rexpansive-builder.php',
+	'uninstall.php',
+];
+
+gulp.task('create-temp-folder', function(cb) {
+	return gulp.src(plugin_premium_file_map, { base: './' })
+		.pipe(gulp.dest(premium_plugin_folder_name + '/'));
+	cb(err);
+});
+
+gulp.task('remove-temp-folder', ['create-temp-folder','mac-zip'], function(cb) {
+	return gulp.src(premium_plugin_folder_name, {read: false})
+		.pipe(clean());
+	cb(err);
+});
+
+gulp.task('create-zip', ['create-temp-folder'], function(cb) {
+	return gulp.src(premium_plugin_folder_name + '/**/*', { base: './'})
+		.pipe(zip(premium_plugin_zip_name))
+		.pipe(gulp.dest(''));
+	cb(err);
+});
+
+gulp.task('build', ['create-temp-folder', 'create-zip', 'remove-temp-folder']);
+
+var exec = require('child_process').exec;
+
+gulp.task('mac-zip', ['create-temp-folder'], function (cb) {
+  exec('zip -r ' + premium_plugin_zip_name + ' ' + premium_plugin_folder_name + ' -x "*.DS_Store"', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    cb(err);
+  });
+});
+
+gulp.task('code-mac-zip', ['create-temp-folder'], function (cb) {
+  exec('zip -r ' + code_premium_plugin_zip_name + ' ' + premium_plugin_folder_name + ' -x "*.DS_Store"', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    cb(err);
+  });
+});
+
+gulp.task('build-mac', ['create-temp-folder', 'mac-zip', 'remove-temp-folder']);
 
 /* ---- BUILD LIVE PLUGIN VERSION ----- */
 var live_zip_name = 'Premium-200-Rexpansive-Builder.zip';
@@ -546,20 +660,20 @@ var live_file_map = [
 
 gulp.task('create-temp-live-folder', function(cb) {
 	return gulp.src(live_file_map, { base: './' })
-	.pipe(gulp.dest(live_folder_name + '/'));
+		.pipe(gulp.dest(live_folder_name + '/'));
 	cb(err);
 });
 
 gulp.task('remove-temp-live-folder', ['create-temp-live-folder','mac-live-zip'], function(cb) {
 	return gulp.src(live_folder_name, {read: false})
-	.pipe(clean());
+		.pipe(clean());
 	cb(err);
 });
 
 gulp.task('create-live-zip', ['create-temp-live-folder'], function(cb) {
 	return gulp.src(live_folder_name + '/**/*', { base: './'})
-	.pipe(zip(live_zip_name))
-	.pipe(gulp.dest(''));
+		.pipe(zip(live_zip_name))
+		.pipe(gulp.dest(''));
 	cb(err);
 });
 
@@ -568,11 +682,11 @@ gulp.task('build', ['create-temp-live-folder', 'create-live-zip', 'remove-temp-l
 var exec = require('child_process').exec;
 
 gulp.task('mac-live-zip', ['create-temp-live-folder'], function (cb) {
-	exec('zip -r ' + live_zip_name + ' ' + live_folder_name + ' -x "*.DS_Store"', function (err, stdout, stderr) {
-		console.log(stdout);
-		console.log(stderr);
-		cb(err);
-	});
+  exec('zip -r ' + live_zip_name + ' ' + live_folder_name + ' -x "*.DS_Store"', function (err, stdout, stderr) {
+    console.log(stdout);
+    console.log(stderr);
+    cb(err);
+  });
 });
 
 gulp.task('build-live-mac', ['create-temp-live-folder', 'mac-live-zip', 'remove-temp-live-folder']);

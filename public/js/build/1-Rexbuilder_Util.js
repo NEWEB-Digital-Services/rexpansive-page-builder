@@ -3096,6 +3096,12 @@ var Rexbuilder_Util = (function($) {
     Rexbuilder_Util.firstResize = true;
     var timeout;
     
+    /**
+     * Listen to browser screen resize
+     * @param  {ResizeEvent}
+     * @return {null}
+     * @since  2.0.0
+     */
     Rexbuilder_Util.$window.on("resize", function(event) {
       if (!Rexbuilder_Util_Editor.elementIsResizing) {
         // event.preventDefault();
@@ -3249,8 +3255,7 @@ var Rexbuilder_Util = (function($) {
       .find(".grid-stack-row")
       .each(function(index, row) {
         var $row = $(row);
-        var galleryEditorInstance = $row.data()
-          .plugin_perfectGridGalleryEditor;
+        var galleryEditorInstance = $row.data().plugin_perfectGridGalleryEditor;
         if (galleryEditorInstance !== undefined) {
           galleryEditorInstance.batchGridstack();
           galleryEditorInstance._defineDynamicPrivateProperties();

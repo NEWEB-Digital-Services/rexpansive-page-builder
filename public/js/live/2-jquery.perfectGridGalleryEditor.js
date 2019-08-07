@@ -1044,6 +1044,12 @@
       this.$element.attr("data-full-height", active);
     },
 
+    /**
+     * Launching gridstack methods to update the generated css rules
+     * to define blocks dimensions
+     * @param  {int} newH new grid height
+     * @return {null}
+     */
     updateGridstackStyles: function(newH) {
       if (newH !== undefined) {
         this.properties.singleHeight = newH;
@@ -1878,6 +1884,7 @@
           el.setAttribute('data-gs-y', parseInt( el.getAttribute('data-row') ) - 1);
           el.setAttribute('data-gs-width', el.getAttribute('data-width'));
           el.setAttribute('data-gs-height', el.getAttribute('data-height'));
+          // el.setAttribute('data-gs-min-height', el.getAttribute('data-height'));
         });
       }
 
@@ -2638,12 +2645,12 @@
       var scroll = function(step) {
         var scrollY = $(document).scrollTop();
 
-        //console.log(scrollY);   // MOSTRA LE COORDINATE DI SCROLLING PER OGNI SINGOLO MOVIMENTO.
+        //console.log(scrollY);   // view the scroll coordinates during drag.
 
         $(document).scrollTop( scrollY + step );
         if (!stop) {
           setTimeout(function() {
-            scroll(step);         // GLI STEP SONO LA POSITIVITA' O LA NEGATIVITA' DELL'AZIONE (su/giu).
+            scroll(step);         // steps are the direction of dragging (up or down)
           }, 20);
         }
       };
@@ -2867,35 +2874,43 @@
       }
     },
 
+    /**
+     * Check which element has to update the height
+     * @return {null}
+     */
     updateBlocksHeight: function () {
       var gallery = this;
       var $elem;
-      var $elemData;
+      var elemData;
       var gridstack = this.properties.gridstackInstance;
       if (typeof gridstack !== "null") {
         this.properties.blocksBottomTop = this.getElementBottomTop();
         if ( !this.properties.updatingSectionSameGrid || Rexbuilder_Util.windowIsResizing ) {
           this.batchGridstack();
-          $(this.properties.blocksBottomTop).each(function (i, e) {
+          [].slice.call( this.properties.blocksBottomTop ).forEach( function( e, i ) {
             $elem = $(e);
-            $elemData = $elem.children(".rexbuilder-block-data");
+            elemData = e.querySelector('.rexbuilder-block-data');
+
+            // ??
+            if ( !Rexbuilder_Util_Editor.updatingCollapsedGrid && ! Rexbuilder_Util.editorMode && "1" !== elemData.getAttribute('data-element_real_fluid') ) {
+              gridstack.minHeight(e, e.getAttribute('data-gs-height'));
+            }
+
             if ( gallery.settings.galleryLayout == "masonry" ) {
-              var elementEdited = typeof $elemData.attr("data-block_dimensions_live_edited") != "undefined" && $elemData.attr("data-block_dimensions_live_edited").toString() == "true";
+              var elementEdited = typeof elemData.getAttribute("data-block_dimensions_live_edited") != "undefined" && elemData.getAttribute("data-block_dimensions_live_edited").toString() == "true";
               
               if ( elementEdited ) {
-                // Rexbuilder_Util.chosenLayoutData.min) === Rexbuilder_Util.$window[0].innerWidth \\ if they are the same we are at the start of the layout customization;
                 var blockTextHeight = gallery.calculateTextWrapHeight($elem.find('.text-wrap'));
-                var blockRatio = parseFloat($elemData.attr("data-block_ratio"));
-                blockRatio = isNaN(blockRatio) ? 1 : blockRatio;
 
                 if (0 !== blockTextHeight) {
                   var blockActualHeight = e.getAttribute('data-gs-height') * gallery.properties.singleHeight;
-                  if (1 == parseInt($elemData[0].getAttribute('data-element_real_fluid'))
+                  if (1 == parseInt( elemData.getAttribute('data-element_real_fluid') )
                   || (blockActualHeight - (blockTextHeight + gallery.properties.gutter)) < 0) {
                     gallery.updateElementHeight($elem);
                   }
                 } else {
-                  // console.log('call here');
+                  var blockRatio = parseFloat( elemData.getAttribute("data-block_ratio") );
+                  blockRatio = isNaN(blockRatio) ? 1 : blockRatio;
                   gallery.updateElementHeight($elem, blockRatio);
                 }
               } else{
@@ -2908,7 +2923,7 @@
             }
             else 
             {
-              if (Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout || Rexbuilder_Util_Editor.updatingCollapsedGrid) {
+              if ( Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout || Rexbuilder_Util_Editor.updatingCollapsedGrid ) {
                 if (!($elem.hasClass("rex-hide-element") || $elem.hasClass("removing_block"))) {
                   gallery.updateElementHeight($elem);
                 }
@@ -3083,12 +3098,12 @@
         */
     },
 
-  /**
-   * @param {Object} $elem Element to update height
-   * @param {Number} blockRatio Ratio block has to maintain
-   * @param {Boolean} editingBlock Flag to consider also starting height
-   * 
-   */
+    /**
+     * @param {Object} $elem Element to update height
+     * @param {Number} blockRatio Ratio block has to maintain
+     * @param {Boolean} editingBlock Flag to consider also starting height
+     * 
+     */
     updateElementHeight: function($elem, blockRatio, editingBlock) {
       editingBlock = typeof editingBlock !== "undefined" ? editingBlock : false;
 
@@ -3499,10 +3514,8 @@
         .each(function(i, el) {
           var $el = $(el);
           var blockHeight = that.updateElementHeight($el);
-          // console.log(blockHeight.height)
-          // console.log(that.settings.cellHeightMasonry)
-          var height = Math.ceil( blockHeight.height / that.settings.cellHeightMasonry );
           if (!blockHeight.empty) {
+            var height = Math.ceil( blockHeight.height / that.settings.cellHeightMasonry );
             that.properties.gridstackInstance.resize($el[0], 12, height);
           } else {
             that.properties.gridstackInstance.resize($el[0], 12, 0);
@@ -3935,10 +3948,7 @@
       this.each(function() {
         var instance = $.data(this, "plugin_" + pluginName);
 
-        if (
-          instance instanceof perfectGridGalleryEditor &&
-          typeof instance[options] === "function"
-        ) {
+        if ( instance instanceof perfectGridGalleryEditor && typeof instance[options] === "function" ) {
           returns = instance[options].apply(
             instance,
             Array.prototype.slice.call(args, 1)
