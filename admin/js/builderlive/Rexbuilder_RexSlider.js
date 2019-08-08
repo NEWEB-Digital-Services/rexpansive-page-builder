@@ -1156,9 +1156,6 @@ var Rexbuilder_RexSlider = (function($) {
             .removeClass("rex-slider__slide-edit__field-active-notice");
         }
       }
-
-      console.log('fermi tutti');
-
       rexslider_modal_properties.$modal.removeClass("push-down-modal");
       Rexlive_Modals_Utils.closeModal(rexslider_modal_links_editor.$modal_wrap, true);
     });

@@ -9,8 +9,7 @@ var Model_Import_Modal = (function($) {
   var rexmodel_import_props;
   var image_uploader_frame_direct;  //used for the media library opener
 
-  var _saveModelThumbnail = function(model_selected, selected_image_id) {
-    // console.log("model_selected " + model_selected);
+  var _saveModelThumbnail = function(model_selected, selected_image_id, selected_image_size) {
     $.ajax({
       type: "GET",
       dataType: "json",
@@ -20,7 +19,9 @@ var Model_Import_Modal = (function($) {
         nonce_param: live_editor_obj.rexnonce,
         model_target: model_selected,
         image_selected: selected_image_id,
-        set_post_thumbnail_result: null
+        image_size: selected_image_size,
+        set_post_thumbnail_result: null,
+        set_post_thumbnail_url_result: null
       },
       success: function(response) {
         if (response.success) {}
@@ -155,32 +156,23 @@ var Model_Import_Modal = (function($) {
   }
 
   /**
-   * Write on console "ciao Roberto"
-   * @param  {null}
-   * @return {null}
-   * @since  2.0.0
-   */
-  var _writeOnConsole = function() {
-    // writing on console
-    console.log("Ciao Roberto");
-  }
-
-  /**
-   * Open media library
-   * @param model_id parent id
+   * Edit the model thumbnail
+   * @param model_id
+   * @param thumbnail_id
    * @return media library
    * @since  2.0.0
    */
-  var _editModelThumbnail = function(model_id, thumbnail_id) {
+  var _editModelThumbnail = function(model_id, thumbnail_id, thumbnail_size) {
+    // sets default image size
+    setUserSetting('imgsize', 'medium');
+
      // If the frame is already opened, return it
       if (image_uploader_frame_direct) {
         image_uploader_frame_direct
           .state("live-image-model")
-          .set("liveTarget", "")
+          .set("selected_image_size", thumbnail_size)
           .set("selected_image", thumbnail_id)
-          .set("selected_model", model_id)
-          .set("eventName", "")
-          .set("data_to_send", "")
+          .set("selected_model", model_id);
         image_uploader_frame_direct.open();
         return;
       }
@@ -197,16 +189,14 @@ var Model_Import_Modal = (function($) {
             displayUserSettings: true,
             multiple: false,
             library: wp.media.query({ type: "image" }),
-            liveTarget: "",
-            eventName: "",
-            data_to_send: "",
+            selected_image_size: thumbnail_size,
             selected_image: thumbnail_id,
             selected_model: model_id,
             type: "image" //audio, video, application/pdf, ... etc
           },
           wp.media.controller.Library.prototype.defaults
         )
-      }); 
+      });
 
       //Setup media frame
       image_uploader_frame_direct = wp.media({
@@ -241,16 +231,16 @@ var Model_Import_Modal = (function($) {
           .state("live-image-model")
           .get("selected_image");
 
-        var image_info = image_uploader_frame_direct
+        var old_size = image_uploader_frame_direct
           .state("live-image-model")
-          .get("data_to_send");
+          .get("selected_image_size");
 
         // Check the already inserted image
         if (image_id) {
           attachment = wp.media.attachment(image_id);
           attachment.fetch();
 
-          selection.add(attachment ? [attachment] : [], { size: 'thumbnail' });
+          selection.add(attachment ? [attachment] : [], { 'size': 'thumbnail' });
         }
       });
 
@@ -293,28 +283,31 @@ var Model_Import_Modal = (function($) {
           data.data_to_send.urlImage = display.src;
         });
 
-        _updateModelThumbnail(display, obj_attachment);
-        _saveModelThumbnail(model_selected, obj_attachment.id);
-
-        data.data_to_send.tools = data_to_send.tools;
+        _updateModelThumbnail(display.src, display.size, obj_attachment.id);
+        _saveModelThumbnail(model_selected, obj_attachment.id, display.size);
       });
 
-      image_uploader_frame_direct.on("close", function() {});
+      image_uploader_frame_direct.on("close", function() {
+        // resets the option for the image size
+        setUserSetting('imgsize', "");
+      });
 
       //now open the popup
       image_uploader_frame_direct.open();
   };
+
   /**
    * updates the model with the new thumbnail selected
    * @param display
    * @return {null}
    */
-  var _updateModelThumbnail = function(display, obj_attachment) {
+  var _updateModelThumbnail = function(display_src, display_size, obj_attachment_id) {
     var model_selected = image_uploader_frame_direct.state("live-image-model").get("selected_model");
     var element = $('.model__element[data-rex-model-id="' + model_selected + '"]');
 
-    element.attr("data-rex-model-thumbnail-id", obj_attachment.id);
-    element.children(".model-preview").css('background-image', 'url("' + display.src + '")');
+    element.attr("data-rex-model-thumbnail-id", obj_attachment_id);
+    element.attr("data-rex-model-thumbnail-size", display_size);
+    element.children(".model-preview").css('background-image', 'url("' + display_src + '")');
   }
 
   var _linkDocumentListeners = function() {
@@ -1230,7 +1223,6 @@ var Model_Import_Modal = (function($) {
     saveModelThumbnail: _saveModelThumbnail,
     updateModelThumbnail: _updateModelThumbnail,
     updateModelList: _updateModelList,
-    writeOnConsole: _writeOnConsole,
     editModelThumbnail: _editModelThumbnail,
     deleteModel: _deleteModel
   };

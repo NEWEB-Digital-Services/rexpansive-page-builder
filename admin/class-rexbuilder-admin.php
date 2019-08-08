@@ -2266,12 +2266,13 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		$nonce = $_GET['nonce_param'];
 		$model_target = $_GET['model_target'];
 		$image_selected = $_GET['image_selected'];
+		$image_size = $_GET['image_size'];
 
         $response = array(
             'error' => false,
             'msg' => '',
-            'model target' => $model_target,
-            'selected image' => $image_selected
+            'model_target' => $model_target,
+            'selected_image' => $image_selected
         );
 
         if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
@@ -2283,6 +2284,11 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		$response['error'] = false;
 
 		$response['set_post_thumbnail_result'] = set_post_thumbnail($model_target, $image_selected);
+		$response['set_post_thumbnail_url_result'] = update_post_meta(
+			$model_target, 
+			'selected_image_size', 
+			$image_size
+		);
 
 		wp_send_json_success($response);
 	}
