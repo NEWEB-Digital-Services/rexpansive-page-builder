@@ -193,6 +193,8 @@ class Rexbuilder {
 		// Gutenberg
 		$this->loader->add_filter( 'use_block_editor_for_post', $plugin_admin, 'disable_gutenberg_on_live' );
 		
+		
+
 		// Slider custom post type
 		$this->loader->add_action( 'init', $plugin_admin, 'rexpansive_slider_definition' );
 		$this->loader->add_action( 'init', $plugin_admin, 'rexpansive_models_defintion' );
@@ -468,5 +470,4 @@ class Rexbuilder {
 	public function get_version() {
 		return $this->version;
 	}
-
 }
