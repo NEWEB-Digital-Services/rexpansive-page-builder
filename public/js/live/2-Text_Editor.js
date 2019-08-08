@@ -2628,9 +2628,9 @@ var TextEditor = (function ($) {
   var _addEditableInputEvents = function () {
     editorInstance.subscribe("editableInput", function (e, elem) {
       var $elem = $(elem).parents(".grid-stack-item");
-      var galleryInstance = $elem.parent().data()
-        .plugin_perfectGridGalleryEditor;
-      galleryInstance.fixElementTextSize($elem[0], null, null);
+      // var galleryInstance = $elem.parent().data()
+      //   .plugin_perfectGridGalleryEditor;
+      // galleryInstance.fixElementTextSize($elem[0], null, null);
 
       var data = {
         eventName: "rexlive:edited",

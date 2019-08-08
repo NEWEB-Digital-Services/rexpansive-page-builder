@@ -593,8 +593,11 @@
       this._setGridPadding();
 
       var that = this;
-      this.$element.find(".grid-stack-item").each(function(i, el) {
-        var $el = $(el);
+      var $el;
+      var items = [].slice.call(this.element.querySelectorAll('.grid-stack-item'));
+      // this.$element.find(".grid-stack-item").each(function(i, el) {
+      items.forEach(function(el) {
+        $el = $(el);
         that._updateElementPadding($el.find(".grid-stack-item-content"));
         if (Rexbuilder_Util.editorMode) {
           that._updateHandlersPosition($el);
@@ -729,7 +732,7 @@
     },
 
     /**
-     * Funzione chiamata per il salvataggio della griglia
+     * Function called for saving the grid
      * @deprecated
      */
     saveGrid: function() {
@@ -829,6 +832,10 @@
         });
     },
 
+    /**
+     * Fix block text size
+     * @deprecated  08/08/2019: scrollbars no longer present on builder
+     */
     fixElementTextSize: function(block, $handler, event) {
       var $block = $(block);
 
@@ -2551,9 +2558,9 @@
             }
 
             gallery.updateAllElementsProperties();
-            if ( !$block.hasClass("block-has-slider") && !$blockContent.hasClass("block-has-slider") && !$blockContent.hasClass("youtube-player") ) {
-              gallery.fixElementTextSize( block, gallery.properties.resizeHandle, null );
-            }
+            // if ( !$block.hasClass("block-has-slider") && !$blockContent.hasClass("block-has-slider") && !$blockContent.hasClass("youtube-player") ) {
+            //   gallery.fixElementTextSize( block, gallery.properties.resizeHandle, null );
+            // }
 
             block.setAttribute("data-gs-max-width", 500);
             clearTimeout(gallery.doubleDownTimer);
@@ -2892,44 +2899,35 @@
             elemData = e.querySelector('.rexbuilder-block-data');
 
             // ??
-            if ( !Rexbuilder_Util_Editor.updatingCollapsedGrid && ! Rexbuilder_Util.editorMode && "1" !== elemData.getAttribute('data-element_real_fluid') ) {
+            if ( ( !Rexbuilder_Util_Editor.updatingCollapsedGrid && ! Rexbuilder_Util.editorMode && "1" !== elemData.getAttribute('data-element_real_fluid') ) || Rexbuilder_Util.changedFrontLayout ) {
               gridstack.minHeight(e, e.getAttribute('data-gs-height'));
             }
 
-            if ( gallery.settings.galleryLayout == "masonry" ) {
-              var elementEdited = typeof elemData.getAttribute("data-block_dimensions_live_edited") != "undefined" && elemData.getAttribute("data-block_dimensions_live_edited").toString() == "true";
-              
-              if ( elementEdited ) {
-                var blockTextHeight = gallery.calculateTextWrapHeight($elem.find('.text-wrap'));
+            var elementEdited = typeof elemData.getAttribute("data-block_dimensions_live_edited") != "undefined" && elemData.getAttribute("data-block_dimensions_live_edited").toString() == "true";
+            
+            if ( elementEdited ) {
+              var blockTextHeight = gallery.calculateTextWrapHeight($elem.find('.text-wrap'));
 
-                if (0 !== blockTextHeight) {
-                  var blockActualHeight = e.getAttribute('data-gs-height') * gallery.properties.singleHeight;
-                  if (1 == parseInt( elemData.getAttribute('data-element_real_fluid') )
-                  || (blockActualHeight - (blockTextHeight + gallery.properties.gutter)) < 0) {
-                    gallery.updateElementHeight($elem);
-                  }
-                } else {
-                  var blockRatio = parseFloat( elemData.getAttribute("data-block_ratio") );
-                  blockRatio = isNaN(blockRatio) ? 1 : blockRatio;
-                  gallery.updateElementHeight($elem, blockRatio);
+              if (0 !== blockTextHeight) {
+                var blockActualHeight = e.getAttribute('data-gs-height') * gallery.properties.singleHeight;
+                if (1 == parseInt( elemData.getAttribute('data-element_real_fluid') )
+                || (blockActualHeight - (blockTextHeight + gallery.properties.gutter)) < 0) {
+                  gallery.updateElementHeight($elem);
                 }
-              } else{
-                if (Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout || Rexbuilder_Util_Editor.updatingCollapsedGrid) {
-                  if (!($elem.hasClass("rex-hide-element") || $elem.hasClass("removing_block"))) {
-                    gallery.updateElementHeight($elem);
-                  }
-                }  
+              } else {
+                var blockRatio = parseFloat( elemData.getAttribute("data-block_ratio") );
+                blockRatio = isNaN(blockRatio) ? 1 : blockRatio;
+                gallery.updateElementHeight($elem, blockRatio);
               }
-            }
-            else 
-            {
-              if ( Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout || Rexbuilder_Util_Editor.updatingCollapsedGrid ) {
+            } else{
+              if (Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout || Rexbuilder_Util_Editor.updatingCollapsedGrid || gallery.properties.firstStartGrid) {
                 if (!($elem.hasClass("rex-hide-element") || $elem.hasClass("removing_block"))) {
                   gallery.updateElementHeight($elem);
                 }
-              }
+              }  
             }
           });
+          // end foreach of boxes
 
           // if ( !Rexbuilder_Util.windowIsResizing && !this.properties.updatingSection )
           if ( !Rexbuilder_Util.windowIsResizing )
@@ -2942,7 +2940,6 @@
 
     /**
      *  Launching MediumEditor inside the blocks that can have it
-     *
      */
     _launchTextEditor: function() {
       var editors = [].slice.call( this.element.querySelectorAll('.rex-text-editable') );
@@ -3102,7 +3099,7 @@
      * @param {Object} $elem Element to update height
      * @param {Number} blockRatio Ratio block has to maintain
      * @param {Boolean} editingBlock Flag to consider also starting height
-     * 
+     * @since 2.0.0
      */
     updateElementHeight: function($elem, blockRatio, editingBlock) {
       editingBlock = typeof editingBlock !== "undefined" ? editingBlock : false;
@@ -3302,54 +3299,53 @@
         newH = w * sw * blockRatio;
       }
 
-      // console.log(newH / this.properties.singleHeight);
-      // console.log(Math.round(newH / this.properties.singleHeight));
-      // console.log(Math.ceil(newH / this.properties.singleHeight));
-      // console.log(Math.floor(newH / this.properties.singleHeight));
-      // console.log('@@@@@@@@@@');
-
       if (this.settings.galleryLayout == "fixed") {
         if ( emptyBlockFlag ) {
-          // console.log('rounda')
           newH = Math.round(newH / this.properties.singleHeight);
         } else {
-          // console.log('cila')
           newH = Math.ceil(newH / this.properties.singleHeight);
         }
       } else {
-        // console.log('cila 2')
         newH = Math.ceil(newH / this.properties.singleHeight);
       }
 
-      this.updateElementDataHeightProperties( blockData, newH ); 
+      this.updateElementDataHeightProperties( blockData, newH );
 
-      var gridstack = this.properties.gridstackInstance;
-      if (gridstack !== undefined) {
-        if (
-          this.properties.oldCellHeight != 0 &&
-          this.properties.oldCellHeight != this.properties.singleHeight &&
-          this.properties.oldLayout == "masonry"
-        ) {
-          var x, y, w, h;
-          var elDim;
-          elDim = store.get(
-            elem["attributes"]["data-rexbuilder-block-id"].value
-          );
-          x = elDim.properties[0].x;
-          y = Math.round(
-            (parseInt(elDim.properties[1].y) * this.properties.oldCellHeight) /
-              this.properties.singleHeight
-          );
-          w = w;
-          h = newH;
-          gridstack.update(elem, x, y, w, h);
-        } else {
-          gridstack.resize(elem, w, newH);
-        }
-        if (Rexbuilder_Util_Editor.updatingPaddingBlock) {
-          this.fixElementTextSize(elem, null, null);
+      console.log(elem.getAttribute('data-gs-height'));
+
+      // strange height, fix
+      // usually, occurs when a section is hidden (like for an accordion)
+      if( ! isNaN( newH ) ) {
+        var gridstack = this.properties.gridstackInstance;
+        if (gridstack !== undefined) {
+          if (
+            this.properties.oldCellHeight != 0 &&
+            this.properties.oldCellHeight != this.properties.singleHeight &&
+            this.properties.oldLayout == "masonry"
+          ) {
+            var x, y, w, h;
+            var elDim;
+            elDim = store.get(
+              elem["attributes"]["data-rexbuilder-block-id"].value
+            );
+            x = elDim.properties[0].x;
+            y = Math.round(
+              (parseInt(elDim.properties[1].y) * this.properties.oldCellHeight) /
+                this.properties.singleHeight
+            );
+            w = w;
+            h = newH;
+            gridstack.update(elem, x, y, w, h);
+          } else {
+            gridstack.resize(elem, w, newH);
+          }
+
+          // if (Rexbuilder_Util_Editor.updatingPaddingBlock) {
+          //   this.fixElementTextSize(elem, null, null);
+          // }
         }
       }
+
       if (Rexbuilder_Util.editorMode) {
         Rexbuilder_Util_Editor.elementIsResizing = false;
       }

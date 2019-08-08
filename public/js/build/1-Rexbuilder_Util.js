@@ -18,7 +18,7 @@ var Rexbuilder_Util = (function($) {
   var sectionIDSused;
   var frontAvailableLayouts;
   var startFrontLayout;
-  var changedFrontLayout;
+  // var changedFrontLayout;
 
   var loadWidth;
 
@@ -3166,12 +3166,12 @@ var Rexbuilder_Util = (function($) {
     } else {    // Front end resize logic
       var actualLayout = _findFrontLayout();
       if(startFrontLayout != actualLayout) {
-        changedFrontLayout = true;
+        this.changedFrontLayout = true;
         startFrontLayout = actualLayout;
         Rexbuilder_Util_Editor.startLoading();
       }
 
-      if(changedFrontLayout) {
+      if(this.changedFrontLayout) {
         var choosedLayout = chooseLayout();
         _set_initial_grids_state( choosedLayout );
 
@@ -3179,7 +3179,7 @@ var Rexbuilder_Util = (function($) {
           var resize_info = _edit_dom_layout(choosedLayout);
           _updateGridsHeights();
   
-          if(changedFrontLayout) {
+          if(this.changedFrontLayout) {
             if( 0 == resize_info.collapse_needed ) {
               Rexbuilder_Util_Editor.endLoading();
             } else {
@@ -3189,7 +3189,7 @@ var Rexbuilder_Util = (function($) {
             }
           }
 
-          changedFrontLayout = false;
+          this.changedFrontLayout = false;
         }, 300);
       } else {
         var l = chooseLayout();
@@ -3250,29 +3250,35 @@ var Rexbuilder_Util = (function($) {
     });
   };
 
+  /**
+   * Updating the height of the boxes inside all the sections.
+   * At the end, launches an event to the document
+   * @return {null}
+   * @since  2.0.0
+   */
   var _updateGridsHeights = function() {
-    Rexbuilder_Util.$rexContainer
-      .find(".grid-stack-row")
-      .each(function(index, row) {
-        var $row = $(row);
-        var galleryEditorInstance = $row.data().plugin_perfectGridGalleryEditor;
-        if (galleryEditorInstance !== undefined) {
-          galleryEditorInstance.batchGridstack();
-          galleryEditorInstance._defineDynamicPrivateProperties();
-          galleryEditorInstance.updateGridstackStyles();
-          galleryEditorInstance.updateBlocksHeight();
-          galleryEditorInstance.commitGridstack();
-          //waiting for gridstack commit
-          // setTimeout(galleryEditorInstance.createScrollbars(), 200);
-        }
+    var rows = [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll('.grid-stack-row') );
+    var $row, galleryEditorInstance;
+    rows.forEach(function(row) {
+      $row = $(row);
+      galleryEditorInstance = $row.data().plugin_perfectGridGalleryEditor;
+      if ( galleryEditorInstance !== undefined ) {
+        galleryEditorInstance.batchGridstack();
+        galleryEditorInstance._defineDynamicPrivateProperties();
+        galleryEditorInstance.updateGridstackStyles();
+        galleryEditorInstance.updateBlocksHeight();
+        galleryEditorInstance.commitGridstack();
+        // waiting for gridstack commit
+        // setTimeout(galleryEditorInstance.createScrollbars(), 200);
+      }
 
-        // Triggering event after a row resize
-        var ev = jQuery.Event("rexlive:updateGridsHeights");
-        ev.settings = {
-          $row: $row,
-        };
-        Rexbuilder_Util.$document.trigger(ev);
-      });
+      // Triggering event after a row resize
+      var ev = jQuery.Event("rexlive:updateGridsHeights");
+      ev.settings = {
+        $row: $row,
+      };
+      Rexbuilder_Util.$document.trigger(ev);
+    });
   };
 
   var _stopBlockVideos = function($elem) {
@@ -3820,7 +3826,7 @@ var Rexbuilder_Util = (function($) {
       this.editorMode = true;
     } else {
       this.editorMode = false;
-      changedFrontLayout = false;
+      this.changedFrontLayout = false;
       var $availableDims = $("#layout-avaiable-dimensions");
       frontAvailableLayouts = ( $availableDims.length > 0 ? JSON.parse( $availableDims.text() ) : [] );
       startFrontLayout = _findFrontLayout();
