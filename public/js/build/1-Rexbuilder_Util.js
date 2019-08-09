@@ -3211,7 +3211,9 @@ var Rexbuilder_Util = (function($) {
    */
   var _set_initial_grids_state = function( layout ) {
     layout = "undefined" !== typeof layout ? layout : "default";
-    Rexbuilder_Util.$rexContainer.find(".rexpansive_section").each(function(index, row) {
+    var rows = [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section') );
+    rows.forEach(function( row, index ) {
+    // Rexbuilder_Util.$rexContainer.find(".rexpansive_section").each(function(index, row) {
       var $row = $(row);
       var $grid = $row.find('.grid-stack-row');
       var galleryEditorInstance = $grid.data().plugin_perfectGridGalleryEditor;

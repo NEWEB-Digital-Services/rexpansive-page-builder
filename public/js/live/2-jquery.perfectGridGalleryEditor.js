@@ -2900,6 +2900,8 @@
       var gallery = this;
       var $elem;
       var elemData;
+      var elementRealFluid;
+      var elementEdited;
       var gridstack = this.properties.gridstackInstance;
       if (typeof gridstack !== "null") {
         this.properties.blocksBottomTop = this.getElementBottomTop();
@@ -2908,21 +2910,21 @@
           [].slice.call( this.properties.blocksBottomTop ).forEach( function( e, i ) {
             $elem = $(e);
             elemData = e.querySelector('.rexbuilder-block-data');
+            elementRealFluid = parseInt( elemData.getAttribute('data-element_real_fluid') );
 
             // ??
-            if ( ( !Rexbuilder_Util_Editor.updatingCollapsedGrid && ! Rexbuilder_Util.editorMode && "1" !== elemData.getAttribute('data-element_real_fluid') ) || Rexbuilder_Util.changedFrontLayout ) {
+            if ( ( !Rexbuilder_Util_Editor.updatingCollapsedGrid && ! Rexbuilder_Util.editorMode && 1 !== elementRealFluid ) || Rexbuilder_Util.changedFrontLayout ) {
               gridstack.minHeight(e, e.getAttribute('data-gs-height'));
             }
 
-            var elementEdited = typeof elemData.getAttribute("data-block_dimensions_live_edited") != "undefined" && elemData.getAttribute("data-block_dimensions_live_edited").toString() == "true";
+            elementEdited = typeof elemData.getAttribute("data-block_dimensions_live_edited") != "undefined" && elemData.getAttribute("data-block_dimensions_live_edited").toString() == "true";
             
             if ( elementEdited ) {
               var blockTextHeight = gallery.calculateTextWrapHeight($elem.find('.text-wrap'));
 
               if (0 !== blockTextHeight) {
                 var blockActualHeight = e.getAttribute('data-gs-height') * gallery.properties.singleHeight;
-                if (1 == parseInt( elemData.getAttribute('data-element_real_fluid') )
-                || (blockActualHeight - (blockTextHeight + gallery.properties.gutter)) < 0) {
+                if (1 == elementRealFluid || (blockActualHeight - (blockTextHeight + gallery.properties.gutter)) < 0) {
                   gallery.updateElementHeight($elem);
                 }
               } else {
@@ -2931,11 +2933,11 @@
                 gallery.updateElementHeight($elem, blockRatio);
               }
             } else{
-              if (Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout || Rexbuilder_Util_Editor.updatingCollapsedGrid || gallery.properties.firstStartGrid) {
+              if (Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout || Rexbuilder_Util_Editor.updatingCollapsedGrid || (gallery.properties.firstStartGrid && 1 === elementRealFluid)) {
                 if (!($elem.hasClass("rex-hide-element") || $elem.hasClass("removing_block"))) {
                   gallery.updateElementHeight($elem);
                 }
-              }  
+              }
             }
           });
           // end foreach of boxes
@@ -3390,14 +3392,14 @@
     },
 
     collapseElementsProperties: function() {
-      this.$section.attr("data-rex-collapse-grid", true);
+      this.section.setAttribute("data-rex-collapse-grid", true);
       //adding class to button for collapse
       this.$section.find(".collapse-grid").addClass("grid-collapsed");
       this.properties.oneColumModeActive = true;
     },
 
     removeCollapseElementsProperties: function() {
-      this.$section.attr("data-rex-collapse-grid", false);
+      this.section.setAttribute("data-rex-collapse-grid", false);
       //removing class to button for collapse
       this.$section.find(".collapse-grid").removeClass("grid-collapsed");
       this.properties.oneColumModeActive = false;
@@ -3407,8 +3409,8 @@
       this.settings.galleryLayout = layoutData.layout;
       this.settings.fullHeight = layoutData.fullHeight;
       this.properties.singleHeight = layoutData.singleHeight;
-      this.$element.attr("data-full-height", layoutData.fullHeight); 
-      this.$element.attr("data-layout", layoutData.layout);
+      this.element.setAttribute("data-full-height", layoutData.fullHeight); 
+      this.element.setAttribute("data-layout", layoutData.layout);
       this.batchGridstack();
       this.updateGridstackStyles();
       this.updateFloatingElementsGridstack();
@@ -3423,8 +3425,8 @@
       this.updateGridstackStyles();
       this.updateFloatingElementsGridstack();
       this.commitGridstack();
-      this.$element.attr("data-layout", "masonry");
-      this.$element.attr("data-full-height", "false");
+      this.element.setAttribute('data-layout', 'masonry');
+      this.element.setAttribute('data-full-height', 'false');
     },
     /**
      * When commit event is added, have to change timeouts with listeners
@@ -3545,10 +3547,14 @@
         rexIDS.push(block);
       }
 
-      this.$element.children(".grid-stack-item").each(function() {
-        var elemObj = {
-          rexID: $(this).attr("data-rexbuilder-block-id"),
-          element: $(this).detach()
+      var items = [].slice.call(this.element.querySelectorAll('.grid-stack-item'));
+      var elemObj;
+
+      // this.$element.children(".grid-stack-item").each(function() {
+      items.forEach(function(el,i) {
+        elemObj = {
+          rexID: el.getAttribute("data-rexbuilder-block-id"),
+          element: $(el).detach()
         };
         nodes.push(elemObj);
       });
@@ -3566,8 +3572,7 @@
     },
 
     /**
-     * Seems useless !?!
-     *
+     * seems @deprecated 09/08/2019
      */
     fixCollapsedHeights: function() {
       var $elem;
@@ -3586,12 +3591,13 @@
 
     /**
      * Reposition the grid elements, after the insertion of certain node
+     * seems @deprecated 09/08/2019
      */
     repositionElements: function(newNode) {
       var markGrid = new IndexedGrid(this.settings.numberCol);
       markGrid.setGrid(newNode.x, newNode.y, newNode.width, newNode.height);
       
-      console.log('insert', newNode.el.getAttribute('id'), '[' + newNode.x + ',' + newNode.y + ']', newNode.width + 'x' + newNode.height );
+      // console.log('insert', newNode.el.getAttribute('id'), '[' + newNode.x + ',' + newNode.y + ']', newNode.width + 'x' + newNode.height );
 
       // generate ordered grid nodes list
       // based on DOM order
@@ -3613,7 +3619,7 @@
         var newPosition = {};
         // Find elements to move
         if( ( orderedGridNodes[i].x + ( this.properties.gridstackInstance.grid.width * orderedGridNodes[i].y ) ) >= ( newNode.x + ( this.properties.gridstackInstance.grid.width * newNode.y ) ) && newNode.el !== orderedGridNodes[i].el[0] ) {
-          console.log('check', orderedGridNodes[i].el.attr('id'));
+          // console.log('check', orderedGridNodes[i].el.attr('id'));
           var linearCoord = markGrid.willFit(orderedGridNodes[i].width,orderedGridNodes[i].height);
           var newCoords = this._getCoord(linearCoord,12);          
           newPosition.x = newCoords.x;
@@ -3828,13 +3834,21 @@
       this.properties.initialStateGrid = this.properties.gridstackInstance.grid.nodes;
     },
 
+    /**
+     * Fix natural image with a proper class to style correctly the image in background
+     * as a natural image with IMG tag
+     * @return {null}
+     * @since 2.0.0
+     */
     fix_natural_image_blocks: function() {
-      this.$element.find(".rex-image-wrapper").each(function(i, el) {
-        var $el = $(el);
-        if ($el.hasClass("natural-image-background")) {
+      var imageWrappers = [].slice.call( this.element.querySelectorAll('.rex-image-wrapper') );
+      var $el;
+      imageWrappers.forEach(function(el,i) {
+        $el = $(el);
+        if ( hasClass( el, 'natural-image-background' ) ) {
           var width = parseInt( $el.parents(".grid-item-content").attr("data-background_image_width") );
           if (width > $el.outerWidth()) {
-            $el.addClass("small-width");
+            addClass( el, 'small-width' );
           }
         }
       });
@@ -3897,7 +3911,8 @@
      * @since 2.0.0
      */
     _log_block_infos: function() {
-      this.$element.find('.grid-stack-item').each(function(i,el) {
+      var items = [].slice.call( this.element.querySelectorAll('.grid-stack-item') );
+      items.forEach(function(el,i) {
         console.table({
           id: el.getAttribute('id'),
           x: el.getAttribute('data-gs-x'),
@@ -3914,7 +3929,8 @@
      */
     _get_block_infos: function() {
       var nodes = [];
-      this.$element.find('.grid-stack-item').each(function(i,el) {
+      var items = [].slice.call( this.element.querySelectorAll('.grid-stack-item') );
+      items.forEach(function(el,i) {
         nodes.push({
           id: el.getAttribute('id'),
           rexId: el.getAttribute('data-rexbuilder-block-id'),

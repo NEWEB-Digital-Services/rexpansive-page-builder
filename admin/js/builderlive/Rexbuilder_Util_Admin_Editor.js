@@ -1599,7 +1599,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
    * @param {Object} attr attribute name
    */
   var _highlightRowSetData = function( data ) {
-    if( "" !== data && "undefined" !== typeof data ) {
+    if( "undefined" !== typeof hightlightRowInfo && "" !== data && "undefined" !== typeof data ) {
       for( var attr in data ) {
         hightlightRowInfo[attr] = data[attr];
       }
