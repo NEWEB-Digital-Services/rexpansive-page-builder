@@ -46,7 +46,7 @@ defined('ABSPATH') or exit;
                         $model_previewUrl = get_the_post_thumbnail_url($model_id, $image_size);
                         $image_id = get_post_thumbnail_id();
                         ?>
-                        <li class="model__element bl_d-flex bl_ai-c" draggable="true" data-rex-model-id="<?php echo $model_id;?>" data-rex-model-thumbnail-id="<?php echo $image_id;?>" data-rex-model-thumbnail-size="<?php echo $image_size;?>">
+                        <li class="model__element bl_d-flex bl_ai-c" draggable="true" data-rex-model-id="<?php echo $model_id;?>" data-rex-model-thumbnail-id="<?php echo $image_id;?>">
                             <div class="model-preview bl_d-flex bl_jc-c bl_ai-c<?php echo ( $model_previewUrl != "" ? ' model-preview--active' : '' ); ?>"<?php echo ( $model_previewUrl != "" ? 'style="background-image:url(' . $model_previewUrl . ');"' : '' ); ?> itemprop="contentUrl" data-href="<?php echo ( $model_previewUrl != "" ? esc_url($model_previewUrl) : "https://via.placeholder.com/640x480" ); ?>" data-size="640x480">
                                 <span class="model-preview__placeholder"><?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?></span>
                                 <div class="model-name bl_d-flex bl_jc-c bl_ai-fe"><div><?php echo $model_title;?></div></div>

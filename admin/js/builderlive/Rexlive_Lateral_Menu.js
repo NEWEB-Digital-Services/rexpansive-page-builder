@@ -76,8 +76,7 @@ var Model_Lateral_Menu = (function ($) {
 
       Model_Import_Modal.editModelThumbnail(
         $model.attr("data-rex-model-id"),
-        $model.attr("data-rex-model-thumbnail-id"),
-        $model.attr("data-rex-model-thumbnail-size")
+        $model.attr("data-rex-model-thumbnail-id")
       );
     });
   }

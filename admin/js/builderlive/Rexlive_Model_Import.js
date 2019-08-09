@@ -162,15 +162,14 @@ var Model_Import_Modal = (function($) {
    * @return media library
    * @since  2.0.0
    */
-  var _editModelThumbnail = function(model_id, thumbnail_id, thumbnail_size) {
-    // sets default image size
-    setUserSetting('imgsize', 'medium');
+  var _editModelThumbnail = function(model_id, thumbnail_id) {
+      // sets default image size
+      setUserSetting('imgsize', 'medium');
 
      // If the frame is already opened, return it
       if (image_uploader_frame_direct) {
         image_uploader_frame_direct
           .state("live-image-model")
-          .set("selected_image_size", thumbnail_size)
           .set("selected_image", thumbnail_id)
           .set("selected_model", model_id);
         image_uploader_frame_direct.open();
@@ -189,7 +188,6 @@ var Model_Import_Modal = (function($) {
             displayUserSettings: true,
             multiple: false,
             library: wp.media.query({ type: "image" }),
-            selected_image_size: thumbnail_size,
             selected_image: thumbnail_id,
             selected_model: model_id,
             type: "image" //audio, video, application/pdf, ... etc
@@ -230,10 +228,6 @@ var Model_Import_Modal = (function($) {
         var image_id = image_uploader_frame_direct
           .state("live-image-model")
           .get("selected_image");
-
-        var old_size = image_uploader_frame_direct
-          .state("live-image-model")
-          .get("selected_image_size");
 
         // Check the already inserted image
         if (image_id) {
