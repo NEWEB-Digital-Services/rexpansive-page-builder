@@ -302,6 +302,7 @@ var Model_Import_Modal = (function($) {
     element.attr("data-rex-model-thumbnail-id", obj_attachment_id);
     element.attr("data-rex-model-thumbnail-size", display_size);
     element.children(".model-preview").css('background-image', 'url("' + display_src + '")');
+    element.children(".tool-button--image-preview").css('background-image', 'url("' + display_src + '")');
   }
 
   var _linkDocumentListeners = function() {

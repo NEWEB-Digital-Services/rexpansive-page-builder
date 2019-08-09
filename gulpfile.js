@@ -1,6 +1,7 @@
 var gulp = require('gulp'),
-	// sass = require('gulp-sass'),
-	sass = require('gulp-ruby-sass'),
+	sass = require('gulp-sass'),
+	// sass = require('gulp-ruby-sass'),
+	// sass2 = require('gulp-sass'),
 	watch = require('gulp-watch'),
 	minifyCSS = require('gulp-minify-css'),
 	autoprefixer = require('gulp-autoprefixer'),
@@ -183,7 +184,7 @@ gulp.task('live-admin-scripts-build', function() {
 });
 
 gulp.task('live-builder-style', function() {
-	sass('admin/scss/rexlive/live-def.scss',{
+	sass2('admin/scss/rexlive/live-def.scss',{
 		sourcemap: false,
 		style:'compressed'
 	})
@@ -197,7 +198,7 @@ gulp.task('live-builder-style', function() {
 });
 
 gulp.task('admin-builder-style', function() {
-	sass('admin/scss/rexlive/tools-def.scss',{
+	sass2('admin/scss/rexlive/tools-def.scss',{
 		sourcemap: false,
 		style:'compressed'
 	})
