@@ -3591,31 +3591,32 @@ var Rexbuilder_Util = (function($) {
   };
 
   var removeCollapsedGrids = function() {
-    Rexbuilder_Util.$rexContainer
-      .children(".rexpansive_section")
-      .each(function() {
-        if (Rexbuilder_Util.galleryPluginActive) {
-          var galleryInstance = _getGalleryInstance($(this));
-          Rexbuilder_Dom_Util.collapseGrid(
-            galleryInstance,
-            false,
-            galleryInstance.properties.dispositionBeforeCollapsing,
-            galleryInstance.properties.layoutBeforeCollapsing
-          );
-        }
-      });
+    var rows = [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section') );
+    rows.forEach(function(el) {
+      if (Rexbuilder_Util.galleryPluginActive) {
+        var galleryInstance = _getGalleryInstance($(el));
+        Rexbuilder_Dom_Util.collapseGrid(
+          galleryInstance,
+          false,
+          galleryInstance.properties.dispositionBeforeCollapsing,
+          galleryInstance.properties.layoutBeforeCollapsing
+        );
+      }
+    });
   };
 
   var collapseAllGrids = function() {
-    Rexbuilder_Util.$rexContainer
-      .children(".rexpansive_section")
-      .each(function(i) {
-        if (Rexbuilder_Util.galleryPluginActive) {
-          var galleryInstance = _getGalleryInstance($(this));
-          galleryInstance._defineDynamicPrivateProperties();
-          galleryInstance.collapseElements();
-        }
-      });
+    var rows = [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section') );
+    rows.forEach(function(el) {
+    // Rexbuilder_Util.$rexContainer
+    //   .children(".rexpansive_section")
+    //   .each(function(i) {
+      if (Rexbuilder_Util.galleryPluginActive) {
+        var galleryInstance = _getGalleryInstance($(el));
+        galleryInstance._defineDynamicPrivateProperties();
+        galleryInstance.collapseElements();
+      }
+    });
   };
 
   var _startVideoPlugin = function($target) {

@@ -1061,10 +1061,14 @@
       if (newH !== undefined) {
         this.properties.singleHeight = newH;
       }
-      var gridstack = this.properties.gridstackInstance;
-      gridstack.cellHeight(this.properties.singleHeight);
-      gridstack._initStyles();
-      gridstack._updateStyles(this.properties.singleHeight);
+
+      // prevent hide sections bugs
+      if ( 0 !== this.properties.singleHeight && null !== this.element.offsetParent ) {
+        var gridstack = this.properties.gridstackInstance;
+        gridstack.cellHeight(this.properties.singleHeight);
+        gridstack._initStyles();
+        gridstack._updateStyles(this.properties.singleHeight);
+      }
     },
 
     updateGridstackGridSizes: function(newCellWidth, newCellHeight) {
@@ -1456,27 +1460,32 @@
       this.properties.editedFromBackend = false;
       this.properties.startingLayout = this.settings.galleryLayout;
       var $elem;
+      var items = [].slice.call( this.element.querySelectorAll('.grid-stack-item:not(.grid-stack-placeholder)') );
       if (this.properties.updatingSectionSameGrid) {
         this.properties.updatingSectionSameGrid = false;
-        this.$element
-          .children(".grid-stack-item:not(.grid-stack-placeholder)")
-          .each(function() {
-            $elem = $(this);
-            gallery.updateElementAllProperties(this);
-            if (
-              typeof store.get(
-                $elem.attr("data-rexbuilder-block-id") + "_noEdits"
-              ) !== "undefined"
-            ) {
-              store.remove($elem.attr("data-rexbuilder-block-id") + "_noEdits");
-            }
-          });
-      }
-      this.$element
-        .children(".grid-stack-item:not(.grid-stack-placeholder)")
-        .each(function() {
-          gallery.updateElementAllProperties(this);
+        items.forEach(function(el) {
+        // this.$element
+        //   .children(".grid-stack-item:not(.grid-stack-placeholder)")
+        //   .each(function() {
+          // $elem = $(this);
+          // gallery.updateElementAllProperties(this);
+          // if ( typeof store.get( $elem.attr("data-rexbuilder-block-id") + "_noEdits" ) !== "undefined" ) {
+          //   store.remove($elem.attr("data-rexbuilder-block-id") + "_noEdits");
+          // }
+          gallery.updateElementAllProperties(el);
+          if ( typeof store.get( el.getAttribute("data-rexbuilder-block-id") + "_noEdits" ) !== "undefined" ) {
+            store.remove( el.getAttribute("data-rexbuilder-block-id") + "_noEdits" );
+          }
         });
+      }
+      // this.$element
+      //   .children(".grid-stack-item:not(.grid-stack-placeholder)")
+      //   .each(function() {
+      //     gallery.updateElementAllProperties(this);
+      //   });
+      items.forEach(function(el) {
+        gallery.updateElementAllProperties(el);
+      });
     },
 
     updateElementAllProperties: function(elem) {
@@ -2345,8 +2354,10 @@
      */
     _updateElementsSizeViewers: function() {
       var gallery = this;
-      this.$element.children(".grid-stack-item").each(function() {
-        var $block = $(this);
+      var items = [].slice.call( this.element.querySelectorAll('.grid-stack-item') );
+      var $block;
+      items.forEach(function(el) {
+        $block = $(el);
         gallery.updateSizeViewerSizes($block);
         gallery.checkBlockDimension($block);
       });
@@ -3310,8 +3321,6 @@
       }
 
       this.updateElementDataHeightProperties( blockData, newH );
-
-      console.log(elem.getAttribute('data-gs-height'));
 
       // strange height, fix
       // usually, occurs when a section is hidden (like for an accordion)

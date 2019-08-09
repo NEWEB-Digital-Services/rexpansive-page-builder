@@ -27,7 +27,7 @@
       wrapperClassName: 'da-wrapper',
       wrapperCustomClass: '',
       scrollTo: false
-    }
+    };
 
     // Create options by extending defaults with the passed in arugments
     if (arguments[1] && typeof arguments[1] === "object") {
