@@ -279,6 +279,7 @@ var Model_Import_Modal = (function($) {
 
         _updateModelThumbnail(display.src, display.size, obj_attachment.id);
         _saveModelThumbnail(model_selected, obj_attachment.id, display.size);
+
       });
 
       image_uploader_frame_direct.on("close", function() {
