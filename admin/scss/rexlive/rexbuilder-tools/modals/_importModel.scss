@@ -27,6 +27,15 @@
       border-bottom: 1px solid #D6D6D6;
     // }
   }
+
+  .model__element2 {
+    padding: 10px;
+    margin-bottom: 0;
+    // &:not(:last-child) {
+      border-bottom: 1px solid #D6D6D6;
+    // }
+  }
+
   .model-thumbnail {
     max-height: 50px;
   }

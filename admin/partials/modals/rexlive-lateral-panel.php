@@ -50,17 +50,13 @@ defined('ABSPATH') or exit;
                             <div class="model-preview bl_d-flex bl_jc-c bl_ai-c<?php echo ( $model_previewUrl != "" ? ' model-preview--active' : '' ); ?>"<?php echo ( $model_previewUrl != "" ? 'style="background-image:url(' . $model_previewUrl . ');"' : '' ); ?> itemprop="contentUrl" data-href="<?php echo ( $model_previewUrl != "" ? esc_url($model_previewUrl) : "https://via.placeholder.com/640x480" ); ?>" data-size="640x480">
                                 <span class="model-preview__placeholder"><?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?></span>
                                 <div class="model-name bl_d-flex bl_jc-c bl_ai-fe"><div><?php echo $model_title;?></div></div>
-                                <!-- <div class="tool-button tool-button--black tool-button--close rex-close-button model__element--edit" style="position:absolute;top:0;right:20px;">
-                                    <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
-                                </div> -->
-
-                                <div class="tool-button--double-icon--wrap tippy" data-tippy-content="<?php _e('Model Thumbnail','rexpansive-builder'); ?>" style="position:absolute;top:0;right:25px;">
-                                    <div class="tool-button tool-button--black tool-button--close rex-close-button model__element--edit tool-button--image-preview" style="background-image:url(' . $model_previewUrl . ')">
+                                <div class="tool-button--double-icon--wrap tool-button--edit-thumbnail tippy" data-tippy-content="<?php _e('Model Thumbnail','rexpansive-builder'); ?>" style="position: absolute;top: 0;right: 35px;transform: translate(50%,-50%);">
+                                    <div class="tool-button tool-button--black tool-button--close model__element--edit-thumbnail <?php echo ( $model_previewUrl != "" ? 'tool-button--image-preview' : '' ); ?>" <?php echo ( $model_previewUrl != "" ? 'style="background-image:url(' . $model_previewUrl . ');"' : '' ); ?>>
                                         <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
                                     </div>
-                                    <!-- <div class="tool-button tool-button--black tool-button--close rex-close-button" style="position:absolute;top:-10px;right:15px;">
+                                    <div class="tool-button tool-button--black tool-button--close  tool-button--reset-thumbnail model__element--reset-thumbnail" style="position:absolute;top:-10px;right:-10px;transform: translate(50%,-50%);">
                                         <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
-                                    </div> -->
+                                    </div>
                                 </div>
 
                                 <div class="tool-button tool-button--black tool-button--close rex-close-button model__element--delete" >

@@ -30,6 +30,25 @@ var Model_Import_Modal = (function($) {
     });
   };
 
+  var _deleteModelThumbnail = function(model_selected) {
+    $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: live_editor_obj.ajaxurl,
+      data: {
+        action: "rex_delete_model_thumbnail",
+        nonce_param: live_editor_obj.rexnonce,
+        model_target: model_selected,
+        delete_post_thumbnail_result: null,
+        delete_post_thumbnail_url_result: null
+      },
+      success: function(response) {
+        if (response.success) {}
+      },
+      error: function(response) {}
+    });
+  };
+
   var _updateModelList = function() {
     $.ajax({
       type: "GET",
@@ -303,8 +322,24 @@ var Model_Import_Modal = (function($) {
     element.attr("data-rex-model-thumbnail-id", obj_attachment_id);
     element.attr("data-rex-model-thumbnail-size", display_size);
     element.children(".model-preview").css('background-image', 'url("' + display_src + '")');
-    element.children(".tool-button--image-preview").css('background-image', 'url("' + display_src + '")');
-  }
+    element.find('.tool-button--image-preview').css('background-image', 'url("' + display_src + '")');
+  };
+
+  /**
+   * Delete the model thumbnail
+   * @param model_id
+   * @return media library
+   * @since  2.0.0
+   */
+  var _resetModelThumbnail = function(model_id) {
+    var element = $('.model__element[data-rex-model-id="' + model_id + '"]');
+
+    element.attr("data-rex-model-thumbnail-id", "");
+    element.attr("data-rex-model-thumbnail-size", "");
+    element.children(".model-preview").css('background-image', 'url("")');
+    element.children(".model-preview").attr("data-href", "https://via.placeholder.com/640x480");
+    _deleteModelThumbnail(model_id);
+  };
 
   var _linkDocumentListeners = function() {
   };
@@ -1220,6 +1255,7 @@ var Model_Import_Modal = (function($) {
     updateModelThumbnail: _updateModelThumbnail,
     updateModelList: _updateModelList,
     editModelThumbnail: _editModelThumbnail,
+    resetModelThumbnail: _resetModelThumbnail,
     deleteModel: _deleteModel
   };
 })(jQuery);

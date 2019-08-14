@@ -71,13 +71,26 @@ var Model_Lateral_Menu = (function ($) {
      * @param  {MouseEvent} e) Click event
      * @return {null}
      */
-    Rexlive_Base_Settings.$document.on('click', '.model__element--edit', function (e) {
+    Rexlive_Base_Settings.$document.on('click', '.model__element--edit-thumbnail', function (e) {
       var $model = $(this).parents('.model__element');
 
       Model_Import_Modal.editModelThumbnail(
         $model.attr("data-rex-model-id"),
-        $model.attr("data-rex-model-thumbnail-id"),
-        );
+        $model.attr("data-rex-model-thumbnail-id")
+      );
+    });
+
+    /**
+     * Deletes model thumbnail
+     * @param  {MouseEvent} e) Click event
+     * @return {null}
+     */
+    Rexlive_Base_Settings.$document.on('click', '.model__element--reset-thumbnail', function (e) {
+      var $model = $(this).parents('.model__element');
+
+      Model_Import_Modal.resetModelThumbnail(
+        $model.attr("data-rex-model-id")
+      );
     });
   }
 

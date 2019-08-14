@@ -2294,6 +2294,39 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	}
 
 	/**
+	 * Delete the model image
+	 * @return model with no image
+	 * @since  2.0.0
+	 */
+	public function rex_delete_model_thumbnail(){
+		$nonce = $_GET['nonce_param'];
+		$model_target = $_GET['model_target'];
+
+        $response = array(
+            'error' => false,
+            'msg' => '',
+            'model_target' => $model_target
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+		$response['error'] = false;
+
+		$response['delete_post_thumbnail_result'] = delete_post_thumbnail($model_target);
+		$response['delete_post_thumbnail_url_result'] = update_post_meta(
+			$model_target, 
+			'selected_image_size', 
+			""
+		);
+
+		wp_send_json_success($response);
+	}
+
+	/**
 	 * Get RexModels list to display on lateral menu, ready to drag on page
 	 * @return JSON updated list
 	 * @since  2.0.0
