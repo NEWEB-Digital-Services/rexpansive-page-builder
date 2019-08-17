@@ -1989,6 +1989,10 @@ var TextEditor = (function ($) {
         this.placeEditImgToolbar();
       }
 
+      if ($el.hasClass("me-image-zoom")) {
+        console.log("Zoom");
+      }
+
       if ($el.hasClass("me-image-replace")) {
         var align = "";
         if (this.traceImg.classList.contains("alignleft")) {
