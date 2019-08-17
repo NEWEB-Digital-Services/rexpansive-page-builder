@@ -281,7 +281,6 @@ var Model_Import_Modal = (function($) {
         //org code from /wp-includes/js/media-editor.js, arround `line 603 -- send: { ... attachment: function( props, attachment ) { ... `
         var display;
         var obj_attachment;
-        var model_selected = image_uploader_frame_direct.state("live-image-model").get("selected_model");
         selection.each(function(attachment) {
           display = state.display(attachment).toJSON();
           obj_attachment = attachment.toJSON();
@@ -297,7 +296,7 @@ var Model_Import_Modal = (function($) {
         });
 
         _updateModelThumbnail(display.src, display.size, obj_attachment.id);
-        _saveModelThumbnail(model_selected, obj_attachment.id, display.size);
+        
 
       });
 
@@ -311,8 +310,10 @@ var Model_Import_Modal = (function($) {
   };
 
   /**
-   * updates the model with the new thumbnail selected
-   * @param display
+   * Updates the model with the new thumbnail selected
+   * @param display_src
+   * @param display_size
+   * @param obj_attachment_id
    * @return {null}
    */
   var _updateModelThumbnail = function(display_src, display_size, obj_attachment_id) {
@@ -321,12 +322,17 @@ var Model_Import_Modal = (function($) {
 
     element.attr("data-rex-model-thumbnail-id", obj_attachment_id);
     element.attr("data-rex-model-thumbnail-size", display_size);
-    element.children(".model-preview").css('background-image', 'url("' + display_src + '")');
-    element.find('.tool-button--image-preview').css('background-image', 'url("' + display_src + '")');
+    // sets the background of the model
+    element.find(".model-preview").addClass("model-preview--active").css('background-image', 'url("' + display_src + '")');
+    // sets the background of the edit model thumbnail button
+    element.find('.model__element--edit-thumbnail').addClass("tool-button--image-preview").css('background-image', 'url("' + display_src + '")');
+
+    // saves the changes
+    _saveModelThumbnail(model_selected, obj_attachment_id, display_size);
   };
 
   /**
-   * Delete the model thumbnail
+   * Deletes the model thumbnail
    * @param model_id
    * @return media library
    * @since  2.0.0
@@ -336,8 +342,12 @@ var Model_Import_Modal = (function($) {
 
     element.attr("data-rex-model-thumbnail-id", "");
     element.attr("data-rex-model-thumbnail-size", "");
-    element.children(".model-preview").css('background-image', 'url("")');
-    element.children(".model-preview").attr("data-href", "https://via.placeholder.com/640x480");
+    // removes the background of the model
+    element.find(".model-preview").css('background-image', 'url("")').removeClass("model-preview--active");
+    // removes the background of the edit model thumbnail button
+    element.find(".tool-button--image-preview").css('background-image', 'url("")').removeClass("tool-button--image-preview");
+
+    // saves the changes
     _deleteModelThumbnail(model_id);
   };
 

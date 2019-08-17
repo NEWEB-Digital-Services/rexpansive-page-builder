@@ -58,7 +58,6 @@ defined('ABSPATH') or exit;
                                         <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                                     </div>
                                 </div>
-
                                 <div class="tool-button tool-button--black tool-button--close rex-close-button model__element--delete" >
                                     <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                                 </div>
