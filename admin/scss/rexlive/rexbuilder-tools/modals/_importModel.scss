@@ -58,6 +58,12 @@
       .model-preview__placeholder {
         visibility: hidden;
       }
+
+      .tool-button {
+        &.tool-button--reset-thumbnail{
+          display: block;
+        }
+      }
     }
   }
 

@@ -183,10 +183,11 @@ gulp.task('live-admin-scripts-build', function() {
 });
 
 gulp.task('live-builder-style', function() {
-	sass('admin/scss/rexlive/live-def.scss',{
+	return gulp.src('admin/scss/rexlive/live-def.scss')
+	.pipe(sass({
 		sourcemap: false,
 		style:'compressed'
-	})
+	}))
 	.pipe(plumber())
     .pipe(autoprefixer({
       browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
@@ -197,10 +198,11 @@ gulp.task('live-builder-style', function() {
 });
 
 gulp.task('admin-builder-style', function() {
-	sass('admin/scss/rexlive/tools-def.scss',{
+	return gulp.src('admin/scss/rexlive/tools-def.scss')
+	.pipe(sass({
 		sourcemap: false,
 		style:'compressed'
-	})
+	}))
 	.pipe(plumber())
     .pipe(autoprefixer({
       browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
