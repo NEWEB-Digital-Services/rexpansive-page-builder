@@ -134,21 +134,15 @@ class Rexbuilder_Public
                 wp_enqueue_style('medium-editor-insert-frontend-style', REXPANSIVE_BUILDER_URL . $folder . 'css/medium-editor-insert-plugin-frontend.css', array(), $ver, 'all');
             }
 
-            // wp_enqueue_style('jquery-dumb-accordion', REXPANSIVE_BUILDER_URL . $folder . 'css/jquery.accordion.css', array(), $ver, 'all');
-
             wp_enqueue_style('photoswipe-skin', REXPANSIVE_BUILDER_URL . $folder . 'Photoswipe/default-skin/default-skin.css', array(), $ver, 'all');
 
             wp_enqueue_style('jquery.mb.YTPlayer-style', REXPANSIVE_BUILDER_URL . $folder . 'jquery.mb.YTPlayer/css/jquery.mb.YTPlayer.min.css', array(), $ver, 'all');
-
-            // wp_enqueue_style('overlay-scrollbar-style', REXPANSIVE_BUILDER_URL . $folder . 'css/OverlayScrollbars.min.css', array(), $ver, 'all');
 
             wp_enqueue_style('animate-css', REXPANSIVE_BUILDER_URL . $folder . 'css/animate.css', array(), $ver, 'all');
             wp_enqueue_style('textfill-style', REXPANSIVE_BUILDER_URL . $folder . 'css/textFill.css', array(), $ver, 'all');
 
             wp_enqueue_style('jquery-ui-style', REXPANSIVE_BUILDER_URL . $folder . 'css/jquery-ui.min.css', array(), $ver, 'all');
             wp_enqueue_style('gridstack-style', REXPANSIVE_BUILDER_URL . $folder . 'css/gridstack.css', array(), $ver, 'all');
-
-            // wp_enqueue_style('input-spinner', REXPANSIVE_BUILDER_URL . $folder . 'css/input-spinner.css', array(), $ver, 'all');
 
             wp_enqueue_style('rexpansive-builder-rexbutton-style', REXPANSIVE_BUILDER_URL . $folder . 'css/rex_buttons.css', array(), $ver, 'all');
             if( Rexbuilder_Utilities::isBuilderLive() ) 
@@ -172,15 +166,16 @@ class Rexbuilder_Public
     public function enqueue_styles_production()
     {
         if ($this->builder_active_on_this_post_type()) {
+            wp_enqueue_style('rexpansive-builder-rexbutton-style', REXPANSIVE_BUILDER_URL . 'public/css/rex_buttons.css', array(), REXPANSIVE_BUILDER_VERSION, 'all');
 
             if( Rexbuilder_Utilities::isBuilderLive() ) {
                 wp_enqueue_style( 'rexbuilder-live-google-fonts', 'https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i', false );
                 wp_enqueue_style('material-design-icons', 'https://fonts.googleapis.com/icon?family=Material+Icons', array(), false, 'all');
                 wp_enqueue_style('font-awesome', REXPANSIVE_BUILDER_URL . 'admin/font-awesome-4.3.0/css/font-awesome.min.css', array(), false, 'all');
 
-                wp_enqueue_style($this->plugin_name . '-style', REXPANSIVE_BUILDER_URL . 'admin/css/builderlive-editor.css', array(), null, 'all');
+                wp_enqueue_style($this->plugin_name . '-style', REXPANSIVE_BUILDER_URL . 'admin/css/builderlive-editor.css', array(), REXPANSIVE_BUILDER_VERSION, 'all');
             } else {
-                wp_enqueue_style($this->plugin_name . '-style', REXPANSIVE_BUILDER_URL . 'public/css/builderlive-public.css', array(), null, 'all');
+                wp_enqueue_style($this->plugin_name . '-style', REXPANSIVE_BUILDER_URL . 'public/css/builderlive-public.css', array(), REXPANSIVE_BUILDER_VERSION, 'all');
             }
         }
     }
@@ -367,10 +362,7 @@ class Rexbuilder_Public
             if( Rexbuilder_Utilities::isBuilderLive() ) {
                 wp_enqueue_script( $this->plugin_name, REXPANSIVE_BUILDER_URL . 'public/js/builderlive-editor.js', array( 'jquery' ), null, true );
             } else {
-                // if ( false !== strpos( $rexbuilderShortcode, 'rex-video-vimeo-wrap-' ) ) {
-                //     wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), '20120206', true);
-                // }
-                wp_enqueue_script( $this->plugin_name, REXPANSIVE_BUILDER_URL . 'public/js/builderlive.js', array( 'jquery' ), null, true );
+                wp_enqueue_script( $this->plugin_name, REXPANSIVE_BUILDER_URL . 'public/js/builderlive-public.js', array( 'jquery' ), null, true );
             }
 
             wp_localize_script( $this->plugin_name, '_plugin_frontend_settings', apply_filters('rexbuilder_js_settings', $this->get_plugin_frontend_settings() ) );

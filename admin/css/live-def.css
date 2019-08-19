@@ -3752,29 +3752,10 @@ ul {
       border-color: #00ACFF; }
     .tool-button.tool-button--add-small .l-svg-icons {
       font-size: 16px; }
-  .tool-button.tool-button--reset-thumbnail {
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    font-size: 10px !important;
-    padding: 3px;
-    -webkit-transform: translate(50%, -50%);
-        -ms-transform: translate(50%, -50%);
-            transform: translate(50%, -50%);
-    display: none; }
   .tool-button.tool-button--close {
     position: absolute;
     top: 0;
     right: 0;
-    -webkit-transform: translate(50%, -50%);
-        -ms-transform: translate(50%, -50%);
-            transform: translate(50%, -50%); }
-  .tool-button.tool-button--close2 {
-    position: absolute;
-    top: 0;
-    right: 0;
-    font-size: 10px !important;
-    padding: 5px;
     -webkit-transform: translate(50%, -50%);
         -ms-transform: translate(50%, -50%);
             transform: translate(50%, -50%); }
@@ -3859,17 +3840,11 @@ ul {
     .tool-button--double-icon--wrap.tool-button--double-icon--big .tool-button--double-icon .l-svg-icons {
       font-size: 10px; }
   .tool-button--double-icon--wrap.tool-button--edit-thumbnail {
-    position: absolute;
-    top: 0;
-    right: 35px;
-    -webkit-transform: translate(50%, -50%);
-        -ms-transform: translate(50%, -50%);
-            transform: translate(50%, -50%); }
+    margin-right: 15px; }
     .tool-button--double-icon--wrap.tool-button--edit-thumbnail .model__element--edit-thumbnail {
-      border: 1px solid #424242;
-      border-radius: 50%; }
-      .tool-button--double-icon--wrap.tool-button--edit-thumbnail .model__element--edit-thumbnail.tool-button--image-preview {
-        border-color: #fff; }
+      width: 20px;
+      height: 20px;
+      font-size: 10px; }
 
 .tool-button_list {
   position: absolute;

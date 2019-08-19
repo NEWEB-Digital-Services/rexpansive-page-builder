@@ -183,7 +183,7 @@ var Model_Import_Modal = (function($) {
    */
   var _editModelThumbnail = function(model_id, thumbnail_id) {
       // sets default image size
-      setUserSetting('imgsize', 'medium');
+      // setUserSetting('imgsize', 'medium');
 
      // If the frame is already opened, return it
       if (image_uploader_frame_direct) {
@@ -192,6 +192,7 @@ var Model_Import_Modal = (function($) {
           .set("selected_image", thumbnail_id)
           .set("selected_model", model_id);
         image_uploader_frame_direct.open();
+
         return;
       }
 
@@ -253,7 +254,7 @@ var Model_Import_Modal = (function($) {
           attachment = wp.media.attachment(image_id);
           attachment.fetch();
 
-          selection.add(attachment ? [attachment] : [], { 'size': 'thumbnail' });
+          selection.add(attachment ? [attachment] : [], { 'imgsize': '' });
         }
       });
 
@@ -296,13 +297,11 @@ var Model_Import_Modal = (function($) {
         });
 
         _updateModelThumbnail(display.src, display.size, obj_attachment.id);
-        
-
       });
 
       image_uploader_frame_direct.on("close", function() {
         // resets the option for the image size
-        setUserSetting('imgsize', "");
+        // setUserSetting('imgsize', "full");
       });
 
       //now open the popup

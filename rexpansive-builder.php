@@ -58,6 +58,12 @@ define( 'REXPANSIVE_BUILDER_TMPL_FOLDER', 'rexpansive-builder' );
 define( 'REXPANSIVE_BUILDER_UPLOADS_FOLDER', 'rexpansive-builder' );
 
 /**
+ * Global variable to set the state of the release
+ */
+define( 'REXPANSIVE_BUILDER_PRODUCTION_STYLES', false );
+define( 'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS', false );
+
+/**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-rexbuilder-activator.php
  */

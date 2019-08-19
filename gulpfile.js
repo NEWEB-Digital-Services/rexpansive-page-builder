@@ -286,6 +286,7 @@ gulp.task('admin-plugins-build', function() {
 
 var builderlive_public = [
 	'public/js/live/0-Rexbuilder_Array_Utilities.js',
+	'public/js/vendor/intersection-observer.js',
 	'public/js/vendor/jquery.requestanimationframe.min.js',
 	'public/js/vendor/tmpl.min.js',
 	'public/Photoswipe/photoswipe.min.js',
@@ -314,8 +315,11 @@ var builderlive_public = [
 	'public/js/vendor/6-jquery.rexIndicator.js',
 	'public/js/vendor/pixi.min.js',
 	'public/js/vendor/odometer.min.js',
-	'public/js/vendor/6-jquery.rexSlideshow.js',
 	'public/js/vendor/jquery.rexEffect.js',
+	'public/js/vendor/6-jquery.rexSlideshow.js',
+	'public/js/build/sticky-section.js',
+	'public/js/build/scroll-css-animation.js',
+	'public/js/build/distance-accordion.js',
 	'public/js/vendor/utilities.js',
 	// 'public/js/vendor/spectrum.js',
 	// 'public/js/vendor/jquery.overlayScrollbars.min.js',
@@ -324,6 +328,7 @@ var builderlive_public = [
 	'public/js/vendor/3-velocity.ui.min.js',
 	'public/js/vendor/4-jquery.rexScrollify.js',
 	'public/js/build/rexbuilder-public.js',
+	'public/js/build/fast-load.js',
 ];
 
 var builderlive_public_editor_style = [
@@ -383,7 +388,7 @@ gulp.task('builderlive-editor', function() {
 gulp.task('builderlive', function() {
 	return gulp.src(builderlive_public)
 	.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
-	.pipe(concat('builderlive.js'))
+	.pipe(concat('builderlive-public.js'))
 	.pipe(size({title:'Builderlive'}))
 	.pipe(gulp.dest('public/js'))
 });
@@ -522,17 +527,26 @@ var live_file_map = [
 	'includes/**/*',
 	'languages/**/*',
 	'Licensing/**/*',
-	'public/css/**/*',
+	'public/css/animate.css',
+	'public/css/builderlive-public.css',
+	'public/css/gridstack.css',
+	'public/css/jquery-ui.min.css',
+	'public/css/medium-editor.css',
+	'public/css/medium-editor-insert-plugin-frontend.css',
+	'public/css/public.css',
+	'public/css/public-editor.css',
+	'public/css/rex_buttons.css',
+	'public/css/spectrum.css',
+	'public/css/textFill.css',
 	'public/img/**/*',
 	'public/jquery.mb.YTPlayer/**/*',
 	'public/js/build/**/*',
 	'public/js/live/**/*',
 	'public/js/vendor/**/*',
 	'public/js/builderlive-editor.js',
-	'public/js/builderlive.js',
+	'public/js/builderlive-public.js',
 	'public/partials/**/*',
 	'public/Photoswipe/**/*',
-	// 'public/rangy-1.3.0/**/*',
 	'public/templates/**/*',
 	'public/class-rexbuilder-public.php',
 	'public/index.php',

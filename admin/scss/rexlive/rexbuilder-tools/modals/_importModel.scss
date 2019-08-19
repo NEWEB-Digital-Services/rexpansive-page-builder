@@ -21,7 +21,7 @@
   // }
 
   .model__element {
-    padding: 10px;
+    padding: 20px 15px;
     margin-bottom: 0;
     // &:not(:last-child) {
       border-bottom: 1px solid #D6D6D6;
@@ -54,16 +54,29 @@
     &:active {
       cursor: grabbing;
     }
+    .tool-button {
+      &.tool-button--reset-thumbnail {
+        display: none;
+      }
+    }
     &.model-preview--active {
       .model-preview__placeholder {
         visibility: hidden;
       }
 
       .tool-button {
-        &.tool-button--reset-thumbnail{
+        &.tool-button--reset-thumbnail {
           display: block;
         }
       }
+    }
+    .model-tools {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+      display: flex;
+      align-items: center;
+      font-size: 0;
     }
   }
 
@@ -91,7 +104,8 @@
   top: $top-tools-height;
   margin-top: 30px;
   .tool-button {
-    font-size: 7px;
+    font-size: 10px;
+    line-height: 0;
   }
   @if ( $panel-side == 'right' ) {
     right: 0;
@@ -130,7 +144,7 @@
 
 .model-list {
   margin: 0;
-  padding-top: 20px;
+  padding-top: 10px;
 }
 
 .info-model-name__wrap {

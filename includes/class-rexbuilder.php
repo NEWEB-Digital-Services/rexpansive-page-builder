@@ -330,7 +330,6 @@ class Rexbuilder {
 	 * @access   private
 	 */
 	private function define_public_hooks() {
-		$production = false;
 		$plugin_public = new Rexbuilder_Public( $this->get_plugin_name(), $this->get_version() );
 		
 		$this->loader->add_action( 'after_setup_theme', $plugin_public, 'remove_shortcodes_from_live' );
@@ -339,11 +338,15 @@ class Rexbuilder {
 
 		$this->loader->add_filter( 'body_class', $plugin_public, 'rexlive_body_class', 10, 1 );
 
-		if( true === $production ) {
+		if( REXPANSIVE_BUILDER_PRODUCTION_STYLES ) {
 			$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles_production' );
-			$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts_production' );
 		} else {
 			$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles' );
+		}
+
+		if( REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS ) {
+			$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts_production' );
+		} else {
 			$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts' );
 		}
 

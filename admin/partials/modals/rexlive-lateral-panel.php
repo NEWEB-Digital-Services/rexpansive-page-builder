@@ -50,16 +50,18 @@ defined('ABSPATH') or exit;
                             <div class="model-preview bl_d-flex bl_jc-c bl_ai-c<?php echo ( $model_previewUrl != "" ? ' model-preview--active' : '' ); ?>"<?php echo ( $model_previewUrl != "" ? 'style="background-image:url(' . $model_previewUrl . ');"' : '' ); ?> itemprop="contentUrl" data-href="<?php echo ( $model_previewUrl != "" ? esc_url($model_previewUrl) : "https://via.placeholder.com/640x480" ); ?>" data-size="640x480">
                                 <span class="model-preview__placeholder"><?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?></span>
                                 <div class="model-name bl_d-flex bl_jc-c bl_ai-fe"><div><?php echo $model_title;?></div></div>
-                                <div class="tool-button--double-icon--wrap tool-button--edit-thumbnail tippy" data-tippy-content="<?php _e('Thumbnail','rexpansive-builder'); ?>">
-                                    <div class="tool-button tool-button--black model__element--edit-thumbnail <?php echo ( $model_previewUrl != "" ? 'tool-button--image-preview' : '' ); ?>" <?php echo ( $model_previewUrl != "" ? 'style="background-image:url(' . $model_previewUrl . ');"' : '' ); ?>>
-                                        <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
+                                <div class="model-tools">
+                                    <div class="tool-button--double-icon--wrap tool-button--edit-thumbnail tippy" data-tippy-content="<?php _e('Thumbnail','rexpansive-builder'); ?>">
+                                        <div class="tool-button tool-button--inline tool-button--black model__element--edit-thumbnail <?php echo ( $model_previewUrl != "" ? 'tool-button--image-preview' : '' ); ?>" <?php echo ( $model_previewUrl != "" ? 'style="background-image:url(' . $model_previewUrl . ');"' : '' ); ?>>
+                                            <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
+                                        </div>
+                                        <div class="tool-button tool-button--inline tool-button--double-icon tool-button--deactivate tool-button--reset-thumbnail model__element--reset-thumbnail">
+                                            <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+                                        </div>
                                     </div>
-                                    <div class="tool-button tool-button--black tool-button--reset-thumbnail model__element--reset-thumbnail">
+                                    <div class="tool-button tool-button--black rex-close-button model__element--delete" >
                                         <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                                     </div>
-                                </div>
-                                <div class="tool-button tool-button--black tool-button--close2 rex-close-button model__element--delete" >
-                                    <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                                 </div>
                             </div>
                         </li>
@@ -90,8 +92,10 @@ defined('ABSPATH') or exit;
                             ?>
                             <li class="button-list__element" draggable="true">
                                 <div class="rex-container"><?php echo $buttonHTML ?></div>
-                                <div class="tool-button tool-button--black tool-button--close2 rex-close-button button__element--delete">
-                                    <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+                                <div class="button-list__element__tools">
+                                    <div class="tool-button tool-button--black rex-close-button button__element--delete">
+                                        <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+                                    </div>
                                 </div>
                             </li>
                             <?php

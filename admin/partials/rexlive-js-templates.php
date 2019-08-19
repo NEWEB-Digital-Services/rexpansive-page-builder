@@ -86,16 +86,18 @@ defined('ABSPATH') or exit;
     <div class="model-preview bl_d-flex bl_jc-c bl_ai-c {% if ({%=model.preview%}) { %}{% } else { %} model-preview--active {% } %}" itemprop="contentUrl">
         <span class="model-preview__placeholder"><?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?></span>
         <div class="model-name bl_d-flex bl_jc-c bl_ai-fe"><div>{%=model.name%}</div></div>
-        <div class="tool-button--double-icon--wrap tool-button--edit-thumbnail tippy" data-tippy-content="<?php _e('Thumbnail','rexpansive-builder'); ?>">
-            <div class="tool-button tool-button--black model__element--edit-thumbnail {% if ({%=model.preview%}) { %}{% } else { %} 'tool-button--image-preview' {% } %}" {% if ({%=model.preview%}) { %}{% } else { %} 'style="background-image:url({%=model.preview%});"' {% } %}>
-                <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
+        <div class="model-tools">
+            <div class="tool-button--double-icon--wrap tool-button--edit-thumbnail tippy" data-tippy-content="<?php _e('Thumbnail','rexpansive-builder'); ?>">
+                <div class="tool-button tool-button--inline tool-button--black model__element--edit-thumbnail {% if ({%=model.preview%}) { %}{% } else { %} 'tool-button--image-preview' {% } %}" {% if ({%=model.preview%}) { %}{% } else { %} 'style="background-image:url({%=model.preview%});"' {% } %}>
+                    <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
+                </div>
+                <div class="tool-button tool-button--inline tool-button--double-icon tool-button--deactivate tool-button--reset-thumbnail model__element--reset-thumbnail">
+                    <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+                </div>
             </div>
-            <div class="tool-button tool-button--black tool-button--reset-thumbnail model__element--reset-thumbnail">
+            <div class="tool-button tool-button--black rex-close-button model__element--delete">
                 <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
             </div>
-        </div>
-        <div class="tool-button tool-button--black tool-button--close2 rex-close-button model__element--delete">
-            <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
         </div>
     </div>
 </li>
@@ -180,8 +182,10 @@ defined('ABSPATH') or exit;
 </script>
 
 <script type="text/x-tmpl" id="tmpl-rex-button-delete">
-<div class="tool-button tool-button--black tool-button--close rex-close-button button__element--delete">
-    <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+<div class="button-list__element__tools">
+    <div class="tool-button tool-button--black tool-button--close rex-close-button button__element--delete">
+        <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+    </div>
 </div>
 </script>
 

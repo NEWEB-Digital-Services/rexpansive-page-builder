@@ -74,12 +74,17 @@
 
 .button-list {
   margin: 0;
-  padding: 10px;
+  padding: 10px 15px;
   padding-top: 30px;
   .button-list__element {
     position: relative;
     margin-bottom: 15px;
     outline: 1px solid #D6D6D6;
     cursor: grab;
+  }
+  .button-list__element__tools {
+    position: absolute;
+    top: -10px;
+    right: -10px;
   }
 }
