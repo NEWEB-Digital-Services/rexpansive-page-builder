@@ -1,7 +1,7 @@
-(function($) {
+;(function() {
   "use strict";
 
-  $(document).ready(function() {
+  var start = function() {
     // base setting: tooltips and $document caching
     Rexlive_Base_Settings.init();
 
@@ -15,7 +15,6 @@
     // Rexpansive_Builder_Admin_Config.init();
 
     // modal utilities: open, close
-    // Change_OnBeforeUnload_Modal.init();
     Change_UpdateVideoInline_Modal.init();
     Rexlive_Modals_Utils.init();
     
@@ -29,19 +28,18 @@
 
     // slider modal
     Rexbuilder_RexSlider.init();
+  }
 
-    var verify_saving;
-    verify_saving = function(e){        
-      if(Rexbuilder_Util_Admin_Editor.pageSaved == false){        
-        //Change_OnBeforeUnload_Modal.openModal();        
-        e.preventDefault();
-        var message = "\o/";    
-        (e || window.event).returnValue = message;
-        console.log("WARNING: Before closing the page verify that you have saved the changes.");
-        return message;
-      }
-    }    
-    window.addEventListener("beforeunload", verify_saving);
+  var verify_saving = function(e){        
+    if(Rexbuilder_Util_Admin_Editor.pageSaved == false){        
+      e.preventDefault();
+      var message = "\o/";    
+      (e || window.event).returnValue = message;
+      console.log("WARNING: Before closing the page verify that you have saved the changes.");
+      return message;
+    }
+  }
 
-  });
-})(jQuery);
+  document.addEventListener('DOMContentLoaded', start);
+  window.addEventListener("beforeunload", verify_saving);
+})();

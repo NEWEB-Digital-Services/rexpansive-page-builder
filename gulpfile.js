@@ -8,7 +8,6 @@ var gulp = require('gulp'),
 	rename = require('gulp-rename'),
 	header = require('gulp-header'),
 	pkg = require('./package.json'),
-	jshint = require('gulp-jshint'),
 	uglify = require('gulp-uglify'),
 	uglifyCSS = require('gulp-uglifycss'),
 	clean = require('gulp-clean'),
@@ -18,7 +17,7 @@ var gulp = require('gulp'),
 	gulpUtil = require('gulp-util'),
 	svgSprite = require('gulp-svg-sprite');
 
-	config = {
+var	config = {
 		shape: {
 		// dimension		: {			// Set maximum dimensions
 		//   maxWidth	: 32,
@@ -44,18 +43,20 @@ var gulp = require('gulp'),
 	}
 };
 
+var banner = ['/**',
+' * <%= pkg.name %> v<%= pkg.version %>',
+' * <%= pkg.description %>',
+' * <%= pkg.author %> <<%= pkg.author.email %>>',
+' */',
+''].join('\n');
+
+/** SPRITES TASKS */
+
 gulp.task("live-new-sprites", function() {
 	gulp
 	.src("./admin/ICO_Live-new/**/*.svg")
 	.pipe(svgSprite(config))
 	.pipe(gulp.dest("./admin/sprites-live"));
-});
-
-gulp.task("ico-test", function() {
-	gulp
-	.src("./admin/ICO-test/**/*.svg")
-	.pipe(svgSprite(config))
-	.pipe(gulp.dest("./admin/sprites_test"));
 });
 
 gulp.task('sprites', function() {
@@ -64,12 +65,7 @@ gulp.task('sprites', function() {
 	.pipe(gulp.dest('./admin/sprites'));
 });
 
-var banner = ['/**',
-' * <%= pkg.name %> v<%= pkg.version %>',
-' * <%= pkg.description %>',
-' * <%= pkg.author %> <<%= pkg.author.email %>>',
-' */',
-''].join('\n');
+/** end SPRITES TASKS */
 
 gulp.task('minify-css', function() {
 	gulp.src('./admin/css/main.css')
@@ -77,13 +73,6 @@ gulp.task('minify-css', function() {
 	.pipe(header(banner, {pkg: pkg}))
 	.pipe(rename({suffix: '.min'}))
 	.pipe(gulp.dest('./admin/css/'));
-});
-
-gulp.task('jshint', function() {
-	var path = './public/js/**/*.js';
-	return gulp.src(path)
-	.pipe(jshint())
-	.pipe(jshint.reporter('jshint-stylish'));
 });
 
 gulp.task('builder-front', function() {
@@ -125,7 +114,6 @@ gulp.task('admin-css-build', function() {
 
 var live_admin_js_src = [ 
 	'admin/js/builderlive/Rexlive_MediaUploader.js',
-	'admin/js/3-Rexpansive_Builder_Admin_TextEditor.js',
 	'admin/js/builderlive/Rexlive_Modals_Utils.js',
 	'admin/js/builderlive/Rexlive_Insert_Video_Modal.js',
 	'admin/js/builderlive/Rexlive_LayoutGrid_Modal.js',
@@ -496,7 +484,7 @@ var live_zip_name = 'Premium-200-Rexpansive-Builder.zip';
 var live_folder_name = 'rexpansive-builder';
 
 var live_file_map = [
-	'admin/ace/**/*',
+	'admin/ace/src-min-noconflict/**/*',
 	'admin/css/**/*',
 	'admin/default-models/**/*',
 	'admin/font-awesome-4.3.0/**/*',
