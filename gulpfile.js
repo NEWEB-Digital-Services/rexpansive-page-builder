@@ -44,18 +44,11 @@ var gulp = require('gulp'),
 	}
 };
 
-gulp.task("live-sprites", function() {
-	gulp
-	.src("./admin/ICO_Live/**/*.svg")
-	.pipe(svgSprite(config))
-	.pipe(gulp.dest("./admin/sprites_live"));
-});
-
 gulp.task("live-new-sprites", function() {
 	gulp
 	.src("./admin/ICO_Live-new/**/*.svg")
 	.pipe(svgSprite(config))
-	.pipe(gulp.dest("./admin/sprites_live_new"));
+	.pipe(gulp.dest("./admin/sprites-live"));
 });
 
 gulp.task("ico-test", function() {
@@ -517,7 +510,7 @@ var live_file_map = [
 	'admin/rexpansive-font/**/*.*',
 	'admin/spectrum/**/*',
 	'admin/sprites/symbol/svg/sprite.symbol.svg',
-	'admin/sprites_live_new/symbol/svg/sprite.symbol.svg',
+	'admin/sprites-live/symbol/svg/sprite.symbol.svg',
 	'admin/class-importheme-import-utilities.php',
 	'admin/class-importheme-import-xml-content.php',
 	'admin/class-rexbuilder-admin.php',

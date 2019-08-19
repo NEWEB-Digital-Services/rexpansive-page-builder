@@ -225,11 +225,6 @@ class Rexbuilder_Public
                 // MEDIUM EDITOR
                 wp_enqueue_script('medium-editor', REXPANSIVE_BUILDER_URL . 'public/js/vendor/medium-editor.js', array('jquery'), $ver, true);
                 wp_enqueue_script('mediumEditorToolbarStates', REXPANSIVE_BUILDER_URL . 'public/js/vendor/medium-editor-toolbar-states.min.js', array('jquery'), $ver, true);
-                // wp_enqueue_script('handlebars-runtime', REXPANSIVE_BUILDER_URL . 'public/js/vendor/handlebars.runtime.js', array('jquery'), $ver, true);
-                // wp_enqueue_script('jquery-fileupload', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.fileupload.js', array('jquery'), $ver, true);
-                // wp_enqueue_script('jquery-cycle2', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.cycle2.min.js', array('jquery'), $ver, true);
-                // wp_enqueue_script('cycle2-center', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.cycle2.center.min.js', array('jquery'), $ver, true);
-                // wp_enqueue_script('medium-editor-insert', REXPANSIVE_BUILDER_URL . 'public/js/vendor/medium-editor-insert-plugin.js', array('jquery'), $ver, true);
 
                 // Rexbuilder
                 wp_enqueue_script('1-RexUtilEditorUtilities', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Util_Editor_Utilities.js', array('jquery'), $ver, true);
@@ -444,7 +439,7 @@ class Rexbuilder_Public
      * @since 2.0.0
      */
     public function include_sprites_live() {
-		?><div style="display:none"><?php include_once( REXPANSIVE_BUILDER_PATH .  'admin/sprites_live_new/symbol/svg/sprite.symbol.svg' ); ?></div><?php
+		?><div style="display:none"><?php include_once( REXPANSIVE_BUILDER_PATH .  'admin/sprites-live/symbol/svg/sprite.symbol.svg' ); ?></div><?php
     }
 
     /**

@@ -643,7 +643,7 @@ class Rexbuilder_Admin {
 	 * @since 2.0.0
 	 */
 	public function include_sprites_live() {
-		?><div style="display:none"><?php include_once( REXPANSIVE_BUILDER_PATH .  'admin/sprites_live_new/symbol/svg/sprite.symbol.svg' ); ?></div><?php
+		?><div style="display:none"><?php include_once( REXPANSIVE_BUILDER_PATH .  'admin/sprites-live/symbol/svg/sprite.symbol.svg' ); ?></div><?php
 	}
 
 	/**
