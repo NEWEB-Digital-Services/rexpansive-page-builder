@@ -387,11 +387,6 @@ $tool_button_classes = 'tool-button';
       </button>
     </li>
     <li>
-      <button class="medium-editor-action me-image-zoom">
-        <?php Rexbuilder_Utilities::get_icon('#Z007-Zoom'); ?>
-      </button>
-    </li>
-    <li>
       <button class="medium-editor-action me-image-replace">
         <i class="fa fa-pencil"></i>
       </button>

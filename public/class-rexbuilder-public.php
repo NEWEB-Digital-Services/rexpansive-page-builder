@@ -131,7 +131,6 @@ class Rexbuilder_Public
 
                 wp_enqueue_style('spectrum-style', REXPANSIVE_BUILDER_URL . $folder . 'css/spectrum.css', array(), $ver, 'all');
                 wp_enqueue_style('medium-editor-style', REXPANSIVE_BUILDER_URL . $folder . 'css/medium-editor.css', array(), $ver, 'all');
-                wp_enqueue_style('medium-editor-insert-frontend-style', REXPANSIVE_BUILDER_URL . $folder . 'css/medium-editor-insert-plugin-frontend.css', array(), $ver, 'all');
             }
 
             wp_enqueue_style('photoswipe-skin', REXPANSIVE_BUILDER_URL . $folder . 'Photoswipe/default-skin/default-skin.css', array(), $ver, 'all');
@@ -142,7 +141,7 @@ class Rexbuilder_Public
             wp_enqueue_style('textfill-style', REXPANSIVE_BUILDER_URL . $folder . 'css/textFill.css', array(), $ver, 'all');
 
             wp_enqueue_style('jquery-ui-style', REXPANSIVE_BUILDER_URL . $folder . 'css/jquery-ui.min.css', array(), $ver, 'all');
-            wp_enqueue_style('gridstack-style', REXPANSIVE_BUILDER_URL . $folder . 'css/gridstack.css', array(), $ver, 'all');
+            wp_enqueue_style('gridstack-style', REXPANSIVE_BUILDER_URL . $folder . 'gridstack/dist/gridstack.css', array(), $ver, 'all');
 
             wp_enqueue_style('rexpansive-builder-rexbutton-style', REXPANSIVE_BUILDER_URL . $folder . 'css/rex_buttons.css', array(), $ver, 'all');
             if( Rexbuilder_Utilities::isBuilderLive() ) 
@@ -282,8 +281,8 @@ class Rexbuilder_Public
             wp_enqueue_script('jquery-ui', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery-ui.min.js', array('jquery'), $ver, true);
             wp_enqueue_script('touchPunch', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.ui.touch-punch.js', array('jquery'), $ver, true);
             wp_enqueue_script('lodash-live', REXPANSIVE_BUILDER_URL . 'public/js/vendor/lodash.js', array('jquery'), $ver, true);
-            wp_enqueue_script('gridstack', REXPANSIVE_BUILDER_URL . 'public/js/vendor/gridstack.js-0.4.0/src/gridstack.js', array('jquery'), $ver, true);
-            wp_enqueue_script('gridstackUI', REXPANSIVE_BUILDER_URL . 'public/js/vendor/gridstack.js-0.4.0/src/gridstack.jQueryUI.js', array('jquery'), $ver, true);
+            wp_enqueue_script('gridstack', REXPANSIVE_BUILDER_URL . 'public/gridstack/dist/gridstack.js', array('jquery'), $ver, true);
+            wp_enqueue_script('gridstackUI', REXPANSIVE_BUILDER_URL . 'public/gridstack/dist/gridstack.jQueryUI.js', array('jquery'), $ver, true);
 
             // Scripts
             wp_enqueue_script('3-Navigator', REXPANSIVE_BUILDER_URL . 'public/js/build/3-Navigator.js', array('jquery'), $ver, true);
@@ -294,7 +293,6 @@ class Rexbuilder_Public
             wp_enqueue_script('scrolled', REXPANSIVE_BUILDER_URL . 'public/js/vendor/4-jquery.rexScrolled.js', array('jquery'), $ver, true);
             wp_enqueue_script('rex-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexAccordion.js', array('jquery'), $ver, true);
             wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.js', array('jquery'), $ver, true);
-
             
             if( !Rexbuilder_Utilities::isBuilderLive() ) {
                 if ( false !== strpos( $rexbuilderShortcode, 'rex-effect-' ) ) {

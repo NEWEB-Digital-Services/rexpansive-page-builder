@@ -1990,7 +1990,7 @@ var TextEditor = (function ($) {
       }
 
       if ($el.hasClass("me-image-zoom")) {
-        console.log("Zoom");
+        // console.log("Zoom");
       }
 
       if ($el.hasClass("me-image-replace")) {

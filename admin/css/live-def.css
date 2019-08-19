@@ -5830,6 +5830,22 @@ input.me-insert-embed__value[type=text] {
 .el-size-settingButton.focused {
   visibility: visible; }
 
+.alignleft {
+  display: inline;
+  float: left;
+  margin-right: 1.5em; }
+
+.alignright {
+  display: inline;
+  float: right;
+  margin-left: 1.5em; }
+
+.aligncenter {
+  clear: both;
+  display: block;
+  margin-left: auto;
+  margin-right: auto; }
+
 .grid-stack .grid-stack-placeholder > .placeholder-content {
   border: none;
   background-color: rgba(0, 0, 0, 0.1); }
