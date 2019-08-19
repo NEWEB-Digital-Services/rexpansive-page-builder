@@ -52,7 +52,6 @@ var Rexlive_Ajax_Calls = (function($) {
         }
       },
       error: function(response) {
-        console.log(response);
         if( "undefined" !== typeof callbacks && "function" === typeof callbacks.error.callback ) {
           callbacks.error.callback.call(this,callbacks.error.args);
         }
@@ -75,11 +74,11 @@ var Rexlive_Ajax_Calls = (function($) {
       },
       success: function(response) {
         if (response.success) {
-          console.log(response);
+          // console.log(response);
         }
       },
       error: function(response) {
-        console.log(response);
+        // console.log(response);
       }
     });
   };
@@ -107,7 +106,6 @@ var Rexlive_Ajax_Calls = (function($) {
         }
       },
       error: function(response) {
-        console.log(response);
         if( "undefined" !== typeof callbacks && "function" === typeof callbacks.error.callback ) {
           callbacks.error.callback.call(this,callbacks.error.args);
         }
@@ -144,7 +142,7 @@ var Rexlive_Ajax_Calls = (function($) {
         }
       },
       error: function(response) {
-        console.log(response);
+        // console.log(response);
       }
     });
   };
@@ -170,8 +168,7 @@ var Rexlive_Ajax_Calls = (function($) {
         }
       },
       error: function(response) {
-        console.log(response);
-        
+        // console.log(response);        
       }
     });
   };
@@ -205,7 +202,7 @@ var Rexlive_Ajax_Calls = (function($) {
         }
       },
       error: function(response) {
-        console.log(response);
+        // console.log(response);
       }
     });
   };
@@ -231,7 +228,7 @@ var Rexlive_Ajax_Calls = (function($) {
         }
       },
       error: function(response) {
-        console.log(response);
+        // console.log(response);
       }
     });
   };

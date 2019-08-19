@@ -396,7 +396,7 @@ gulp.task('builderlive-editor-style', function() {
 
 gulp.task('builderlive-style', function() {
 	return gulp.src(builderlive_public_style)
-	.pipe(concat('builderlive.css'))
+	.pipe(concat('builderlive-public.css'))
 	.pipe(uglifyCSS({preserveComments: 'license'}).on('error', gulpUtil.log))
 	.pipe(size({title:'Builderlive Style'}))
 	.pipe(gulp.dest('public/css'))

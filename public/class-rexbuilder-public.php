@@ -180,7 +180,7 @@ class Rexbuilder_Public
 
                 wp_enqueue_style($this->plugin_name . '-style', REXPANSIVE_BUILDER_URL . 'admin/css/builderlive-editor.css', array(), null, 'all');
             } else {
-                wp_enqueue_style($this->plugin_name . '-style', REXPANSIVE_BUILDER_URL . 'public/css/builderlive.css', array(), null, 'all');
+                wp_enqueue_style($this->plugin_name . '-style', REXPANSIVE_BUILDER_URL . 'public/css/builderlive-public.css', array(), null, 'all');
             }
         }
     }
@@ -253,17 +253,10 @@ class Rexbuilder_Public
             }
             else
             {
-                // if ( false !== strpos( $rexbuilderShortcode, 'rex-video-vimeo-wrap-' ) ) {
-                //     wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), '20120206', true);
-                // }
                 wp_enqueue_script('0-Rexbuilder_Array_Utilities', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Array_Utilities.js', array('jquery'), $ver, true);
                 wp_enqueue_script('intersection-observer', REXPANSIVE_BUILDER_URL . 'public/js/vendor/intersection-observer.js', array(), $ver, true);
             }
 
-            // wp_enqueue_script('jquery-dumb-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.accordion.js', array('jquery'), $ver, true);
-
-            // imagesloaded
-            // wp_enqueue_script('imagesloaded', REXPANSIVE_BUILDER_URL . 'public/js/vendor/imagesloaded.pkgd.min.js', array('jquery'), $ver, true);
             // requestanimationframe
             wp_enqueue_script('jquery-requestanimationframe', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.requestanimationframe.min.js', array('jquery'), $ver, true);
             // JS TMPL
@@ -304,12 +297,10 @@ class Rexbuilder_Public
 
             // Scripts
             wp_enqueue_script('3-Navigator', REXPANSIVE_BUILDER_URL . 'public/js/build/3-Navigator.js', array('jquery'), $ver, true);
-            // wp_enqueue_script('5-FormFixes', REXPANSIVE_BUILDER_URL . 'public/js/build/5-Rexbuilder_FormFixes.js', array('jquery'), $ver, true);
             wp_enqueue_script('5-flickity', REXPANSIVE_BUILDER_URL . 'public/js/vendor/flickity.pkgd.min.js', array('jquery'), $ver, true);
             wp_enqueue_script('2-RexSlider', REXPANSIVE_BUILDER_URL . 'public/js/build/2-RexSlider.js', array('jquery'), $ver, true);
             wp_enqueue_script( 'textfill', REXPANSIVE_BUILDER_URL  . 'public/js/vendor/2-jquery.textFill.js', array( 'jquery' ), $ver, true );
             wp_enqueue_script('8-VimeoVideo', REXPANSIVE_BUILDER_URL . 'public/js/build/8-VimeoVideo.js', array('jquery'), $ver, true);
-            //wp_enqueue_script( 'text-resize', REXPANSIVE_BUILDER_URL  . jpublic/s/__TextResize.js', array( 'jquery' ), $ver, true );
             wp_enqueue_script('scrolled', REXPANSIVE_BUILDER_URL . 'public/js/vendor/4-jquery.rexScrolled.js', array('jquery'), $ver, true);
             wp_enqueue_script('rex-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexAccordion.js', array('jquery'), $ver, true);
             wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.js', array('jquery'), $ver, true);
@@ -335,7 +326,6 @@ class Rexbuilder_Public
             wp_enqueue_script('distance-accordion', REXPANSIVE_BUILDER_URL . 'public/js/build/distance-accordion.js', array(), $ver, true);
 
             wp_enqueue_script('utilities', REXPANSIVE_BUILDER_URL . 'public/js/vendor/utilities.js', array('jquery'), $ver, true);
-            // wp_enqueue_script('overlay-scrollbar', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.overlayScrollbars.min.js', array('jquery'), $ver, true);
             wp_enqueue_script('2-jqueryEditor', REXPANSIVE_BUILDER_URL . 'public/js/live/2-jquery.perfectGridGalleryEditor.js', array('jquery'), null, true);
 
             wp_enqueue_script('3-velocity', REXPANSIVE_BUILDER_URL . 'public/js/vendor/3-velocity.min.js', array('jquery'), $ver, true);

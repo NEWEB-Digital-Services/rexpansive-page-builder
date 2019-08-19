@@ -328,10 +328,6 @@ class Rexbuilder {
 	private function define_public_hooks() {
 		$production = false;
 		$plugin_public = new Rexbuilder_Public( $this->get_plugin_name(), $this->get_version() );
-
-		//for the release
-//		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_styles_production' );
-//		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'enqueue_scripts_production' );
 		
 		$this->loader->add_action( 'after_setup_theme', $plugin_public, 'remove_shortcodes_from_live' );
 

@@ -91,7 +91,6 @@ var Background_Section_Color_Modal = (function($) {
         if (flagPickerUsed) {
           colorActive = color.toRgbString();
         }
-        console.log(colorActive);
         background_section_color_properties.$color_runtime_value.val(
           colorActive
         );

@@ -46,14 +46,12 @@ var CustomLayouts_Modal = (function($) {
         custom_layouts: updatedLayouts
       },
       success: function(response) {
-        console.log(response);
         if (response.success) {
-          console.log("custom layouts aggiornati");
+          // console.log("custom layouts updated");
         }
-        console.log("chiama effettuata con successo");
       },
       error: function(response) {
-        console.log("errore chiama ajax");
+        // console.log("error");
       }
     });
   };
