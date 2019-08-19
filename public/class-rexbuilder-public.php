@@ -290,7 +290,9 @@ class Rexbuilder_Public
             wp_enqueue_script('2-RexSlider', REXPANSIVE_BUILDER_URL . 'public/js/build/2-RexSlider.js', array('jquery'), $ver, true);
             wp_enqueue_script( 'textfill', REXPANSIVE_BUILDER_URL  . 'public/js/vendor/2-jquery.textFill.js', array( 'jquery' ), $ver, true );
             wp_enqueue_script('8-VimeoVideo', REXPANSIVE_BUILDER_URL . 'public/js/build/8-VimeoVideo.js', array('jquery'), $ver, true);
-            wp_enqueue_script('scrolled', REXPANSIVE_BUILDER_URL . 'public/js/vendor/4-jquery.rexScrolled.js', array('jquery'), $ver, true);
+            if( !Rexbuilder_Utilities::isBuilderLive() ) {
+                wp_enqueue_script('scrolled', REXPANSIVE_BUILDER_URL . 'public/js/vendor/4-jquery.rexScrolled.js', array('jquery'), $ver, true);
+            }
             wp_enqueue_script('rex-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexAccordion.js', array('jquery'), $ver, true);
             wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.js', array('jquery'), $ver, true);
             
@@ -307,18 +309,21 @@ class Rexbuilder_Public
                 if ( false !== strpos( $rexbuilderShortcode, 'rex-slideshow' ) ) {
                     wp_enqueue_script('rex-slideshow', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexSlideshow.js', array('jquery'), $ver, true);
                 }
+
+                wp_enqueue_script('sticky-section', REXPANSIVE_BUILDER_URL . 'public/js/build/sticky-section.js', array(), $ver, true);
+                wp_enqueue_script('scroll-css-animation', REXPANSIVE_BUILDER_URL . 'public/js/build/scroll-css-animation.js', array(), $ver, true);
+                wp_enqueue_script('distance-accordion', REXPANSIVE_BUILDER_URL . 'public/js/build/distance-accordion.js', array(), $ver, true);
             }
 
-            wp_enqueue_script('sticky-section', REXPANSIVE_BUILDER_URL . 'public/js/build/sticky-section.js', array(), $ver, true);
-            wp_enqueue_script('scroll-css-animation', REXPANSIVE_BUILDER_URL . 'public/js/build/scroll-css-animation.js', array(), $ver, true);
-            wp_enqueue_script('distance-accordion', REXPANSIVE_BUILDER_URL . 'public/js/build/distance-accordion.js', array(), $ver, true);
 
             wp_enqueue_script('utilities', REXPANSIVE_BUILDER_URL . 'public/js/vendor/utilities.js', array('jquery'), $ver, true);
             wp_enqueue_script('2-jqueryEditor', REXPANSIVE_BUILDER_URL . 'public/js/live/2-jquery.perfectGridGalleryEditor.js', array('jquery'), null, true);
 
             wp_enqueue_script('3-velocity', REXPANSIVE_BUILDER_URL . 'public/js/vendor/3-velocity.min.js', array('jquery'), $ver, true);
             wp_enqueue_script('3-velocityui', REXPANSIVE_BUILDER_URL . 'public/js/vendor/3-velocity.ui.min.js', array('jquery'), $ver, true);
-            wp_enqueue_script('4-jqueryScrollify', REXPANSIVE_BUILDER_URL . 'public/js/vendor/4-jquery.rexScrollify.js', array('jquery'), $ver, true);
+            if( !Rexbuilder_Utilities::isBuilderLive() ) {
+                wp_enqueue_script('4-jqueryScrollify', REXPANSIVE_BUILDER_URL . 'public/js/vendor/4-jquery.rexScrollify.js', array('jquery'), $ver, true);
+            }
             
             wp_enqueue_script('rexbuilder', REXPANSIVE_BUILDER_URL . 'public/js/build/rexbuilder-public.js', array('jquery'), $ver, true);
 
