@@ -193,6 +193,8 @@ class Rexbuilder {
 		// Gutenberg
 		$this->loader->add_filter( 'use_block_editor_for_post', $plugin_admin, 'disable_gutenberg_on_live' );
 		
+		
+
 		// Slider custom post type
 		$this->loader->add_action( 'init', $plugin_admin, 'rexpansive_slider_definition' );
 		$this->loader->add_action( 'init', $plugin_admin, 'rexpansive_models_defintion' );
@@ -290,6 +292,8 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_ajax_rex_save_custom_layouts', $plugin_admin, 'rex_save_custom_layouts' );
 		$this->loader->add_action( 'wp_ajax_rex_get_model', $plugin_admin, 'rex_get_model' );
 		$this->loader->add_action( 'wp_ajax_rex_get_model_list', $plugin_admin, 'rex_get_model_list' );
+		$this->loader->add_action( 'wp_ajax_rex_save_model_thumbnail', $plugin_admin, 'rex_save_model_thumbnail' );
+		$this->loader->add_action( 'wp_ajax_rex_delete_model_thumbnail', $plugin_admin, 'rex_delete_model_thumbnail' );
 		$this->loader->add_action( 'wp_ajax_rex_update_buttons_ids', $plugin_admin, 'rex_update_buttons_ids' );
 		$this->loader->add_action( 'wp_ajax_rex_update_button', $plugin_admin, 'rex_update_button' );
 		$this->loader->add_action( 'wp_ajax_rex_update_container_margins', $plugin_admin, 'rex_update_container_margins' );
@@ -463,5 +467,4 @@ class Rexbuilder {
 	public function get_version() {
 		return $this->version;
 	}
-
 }

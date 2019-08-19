@@ -7,6 +7,47 @@
 var Model_Import_Modal = (function($) {
   "use strict";
   var rexmodel_import_props;
+  var image_uploader_frame_direct;  //used for the media library opener
+
+  var _saveModelThumbnail = function(model_selected, selected_image_id, selected_image_size) {
+    $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: live_editor_obj.ajaxurl,
+      data: {
+        action: "rex_save_model_thumbnail",
+        nonce_param: live_editor_obj.rexnonce,
+        model_target: model_selected,
+        image_selected: selected_image_id,
+        image_size: selected_image_size,
+        set_post_thumbnail_result: null,
+        set_post_thumbnail_url_result: null
+      },
+      success: function(response) {
+        if (response.success) {}
+      },
+      error: function(response) {}
+    });
+  };
+
+  var _deleteModelThumbnail = function(model_selected) {
+    $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: live_editor_obj.ajaxurl,
+      data: {
+        action: "rex_delete_model_thumbnail",
+        nonce_param: live_editor_obj.rexnonce,
+        model_target: model_selected,
+        delete_post_thumbnail_result: null,
+        delete_post_thumbnail_url_result: null
+      },
+      success: function(response) {
+        if (response.success) {}
+      },
+      error: function(response) {}
+    });
+  };
 
   var _updateModelList = function() {
     $.ajax({
@@ -132,6 +173,183 @@ var Model_Import_Modal = (function($) {
       }
     }
   }
+
+  /**
+   * Edit the model thumbnail
+   * @param model_id
+   * @param thumbnail_id
+   * @return media library
+   * @since  2.0.0
+   */
+  var _editModelThumbnail = function(model_id, thumbnail_id) {
+      // sets default image size
+      setUserSetting('imgsize', 'medium');
+
+     // If the frame is already opened, return it
+      if (image_uploader_frame_direct) {
+        image_uploader_frame_direct
+          .state("live-image-model")
+          .set("selected_image", thumbnail_id)
+          .set("selected_model", model_id);
+        image_uploader_frame_direct.open();
+        return;
+      }
+
+      //create a new Library, base on defaults
+      //you can put your attributes in
+      var insertImage = wp.media.controller.Library.extend({
+        defaults: _.defaults(
+          {
+            id: "live-image-model",
+            title: "Edit Model Thumbnail",
+            allowLocalEdits: true,
+            displaySettings: true,
+            displayUserSettings: true,
+            multiple: false,
+            library: wp.media.query({ type: "image" }),
+            selected_image: thumbnail_id,
+            selected_model: model_id,
+            type: "image" //audio, video, application/pdf, ... etc
+          },
+          wp.media.controller.Library.prototype.defaults
+        )
+      });
+
+      //Setup media frame
+      image_uploader_frame_direct = wp.media({
+        button: { text: "Select" },
+        state: "live-image-model",
+        states: [new insertImage()]
+      });
+
+      // prevent attachment size strange selections
+      /*image_uploader_frame_direct.on('selection:toggle', function(e) {
+        var attachmentSizeEl = document.querySelector( 'select[name="size"]' );
+        if ( attachmentSizeEl ) {
+          attachmentSizeEl.value = 'full';
+        }
+      });*/
+
+      //reset selection in popup, when open the popup
+      image_uploader_frame_direct.on("open", function() {
+        var attachment;
+        var selection = image_uploader_frame_direct
+          .state("live-image-model")
+          .get("selection");
+
+        //remove all the selection first
+        selection.each(function(video) {
+          attachment = wp.media.attachment(video.attributes.id);
+          attachment.fetch();
+          selection.remove(attachment ? [attachment] : []);
+        });
+
+        var image_id = image_uploader_frame_direct
+          .state("live-image-model")
+          .get("selected_image");
+
+        // Check the already inserted image
+        if (image_id) {
+          attachment = wp.media.attachment(image_id);
+          attachment.fetch();
+
+          selection.add(attachment ? [attachment] : [], { 'size': 'thumbnail' });
+        }
+      });
+
+      image_uploader_frame_direct.on("select", function() {
+        var state = image_uploader_frame_direct.state("live-image-model");
+        var sectionTarget = state.get("liveTarget");
+        var eventName = state.get("eventName");
+        var data_to_send = state.get("data_to_send");
+
+        var selection = state.get("selection");
+        var data = {
+          eventName: eventName,
+          data_to_send: {
+            // info: info,
+            // media: [],
+            sectionTarget: sectionTarget,
+            target: sectionTarget
+          }
+          // data_to_send: data_to_send
+        };
+
+        if (!selection) return;
+
+        //to get right side attachment UI info, such as: size and alignments
+        //org code from /wp-includes/js/media-editor.js, arround `line 603 -- send: { ... attachment: function( props, attachment ) { ... `
+        var display;
+        var obj_attachment;
+        selection.each(function(attachment) {
+          display = state.display(attachment).toJSON();
+          obj_attachment = attachment.toJSON();
+
+          // If captions are disabled, clear the caption.
+          if (!wp.media.view.settings.captions) delete obj_attachment.caption;
+
+          display = wp.media.string.props(display, obj_attachment);
+
+          // data.data_to_send.media.push(to_send);
+          data.data_to_send.idImage = obj_attachment.id;
+          data.data_to_send.urlImage = display.src;
+        });
+
+        _updateModelThumbnail(display.src, display.size, obj_attachment.id);
+        
+
+      });
+
+      image_uploader_frame_direct.on("close", function() {
+        // resets the option for the image size
+        setUserSetting('imgsize', "");
+      });
+
+      //now open the popup
+      image_uploader_frame_direct.open();
+  };
+
+  /**
+   * Updates the model with the new thumbnail selected
+   * @param display_src
+   * @param display_size
+   * @param obj_attachment_id
+   * @return {null}
+   */
+  var _updateModelThumbnail = function(display_src, display_size, obj_attachment_id) {
+    var model_selected = image_uploader_frame_direct.state("live-image-model").get("selected_model");
+    var element = $('.model__element[data-rex-model-id="' + model_selected + '"]');
+
+    element.attr("data-rex-model-thumbnail-id", obj_attachment_id);
+    element.attr("data-rex-model-thumbnail-size", display_size);
+    // sets the background of the model
+    element.find(".model-preview").addClass("model-preview--active").css('background-image', 'url("' + display_src + '")');
+    // sets the background of the edit model thumbnail button
+    element.find('.model__element--edit-thumbnail').addClass("tool-button--image-preview").css('background-image', 'url("' + display_src + '")');
+
+    // saves the changes
+    _saveModelThumbnail(model_selected, obj_attachment_id, display_size);
+  };
+
+  /**
+   * Deletes the model thumbnail
+   * @param model_id
+   * @return media library
+   * @since  2.0.0
+   */
+  var _resetModelThumbnail = function(model_id) {
+    var element = $('.model__element[data-rex-model-id="' + model_id + '"]');
+
+    element.attr("data-rex-model-thumbnail-id", "");
+    element.attr("data-rex-model-thumbnail-size", "");
+    // removes the background of the model
+    element.find(".model-preview").css('background-image', 'url("")').removeClass("model-preview--active");
+    // removes the background of the edit model thumbnail button
+    element.find(".tool-button--image-preview").css('background-image', 'url("")').removeClass("tool-button--image-preview");
+
+    // saves the changes
+    _deleteModelThumbnail(model_id);
+  };
 
   var _linkDocumentListeners = function() {
   };
@@ -1043,7 +1261,11 @@ var Model_Import_Modal = (function($) {
 
   return {
     init: _init,
+    saveModelThumbnail: _saveModelThumbnail,
+    updateModelThumbnail: _updateModelThumbnail,
     updateModelList: _updateModelList,
+    editModelThumbnail: _editModelThumbnail,
+    resetModelThumbnail: _resetModelThumbnail,
     deleteModel: _deleteModel
   };
 })(jQuery);

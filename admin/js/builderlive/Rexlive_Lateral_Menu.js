@@ -5,6 +5,8 @@
 var Model_Lateral_Menu = (function ($) {
   "use strict";
   var rexmodel_lateral_menu;
+  var image_uploader_frame_direct;  //used for the media library opener
+
   var _linkDocumentListeners = function () {
     rexmodel_lateral_menu.$close_button.click(function (e) {
       e.preventDefault();
@@ -63,7 +65,34 @@ var Model_Lateral_Menu = (function ($) {
       var model = this.parentNode.parentNode;
       Model_Import_Modal.deleteModel( model );
     });
-  };
+
+    /**
+     * Opens media library
+     * @param  {MouseEvent} e) Click event
+     * @return {null}
+     */
+    Rexlive_Base_Settings.$document.on('click', '.model__element--edit-thumbnail', function (e) {
+      var $model = $(this).parents('.model__element');
+
+      Model_Import_Modal.editModelThumbnail(
+        $model.attr("data-rex-model-id"),
+        $model.attr("data-rex-model-thumbnail-id")
+      );
+    });
+
+    /**
+     * Deletes model thumbnail
+     * @param  {MouseEvent} e) Click event
+     * @return {null}
+     */
+    Rexlive_Base_Settings.$document.on('click', '.model__element--reset-thumbnail', function (e) {
+      var $model = $(this).parents('.model__element');
+
+      Model_Import_Modal.resetModelThumbnail(
+        $model.attr("data-rex-model-id")
+      );
+    });
+  }
 
   var _init = function () {
     var $self = $("#rexbuilder-lateral-panel");
