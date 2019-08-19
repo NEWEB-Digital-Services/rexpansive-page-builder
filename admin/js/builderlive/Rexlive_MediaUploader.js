@@ -137,6 +137,8 @@ var Rexlive_MediaUploader = (function($) {
    * @param {Object}  info
    */
   function _openImageLiveMediaUploader(info) {
+    setUserSetting('imgsize', 'full');
+
     // If the frame is already opened, return it
     if (image_uploader_frame_direct) {
       image_uploader_frame_direct
@@ -286,7 +288,9 @@ var Rexlive_MediaUploader = (function($) {
       Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
     });
 
-    image_uploader_frame_direct.on("close", function() {});
+    image_uploader_frame_direct.on("close", function() {
+      setUserSetting('imgsize', 'full');
+    });
 
     //now open the popup
     image_uploader_frame_direct.open();

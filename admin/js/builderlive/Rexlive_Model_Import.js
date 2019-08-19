@@ -183,7 +183,7 @@ var Model_Import_Modal = (function($) {
    */
   var _editModelThumbnail = function(model_id, thumbnail_id) {
       // sets default image size
-      // setUserSetting('imgsize', 'medium');
+      setUserSetting('imgsize', 'medium');
 
      // If the frame is already opened, return it
       if (image_uploader_frame_direct) {
@@ -301,7 +301,8 @@ var Model_Import_Modal = (function($) {
 
       image_uploader_frame_direct.on("close", function() {
         // resets the option for the image size
-        // setUserSetting('imgsize', "full");
+        setUserSetting('imgsize', 'medium');
+
       });
 
       //now open the popup
