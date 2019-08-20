@@ -68,6 +68,7 @@ define( 'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS', true );
  * This action is documented in includes/class-rexbuilder-activator.php
  */
 function activate_rexbuilder() {
+	require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-import-utilities.php';
 	require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-import-xml-content.php';
 	require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-utilities.php';
 	require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-activator.php';
