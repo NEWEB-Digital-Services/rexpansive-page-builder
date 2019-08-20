@@ -1,3 +1,8 @@
+/**
+ * Stick a the content of a section to the top of the screen
+ * 
+ * @version 1.0.0
+ */
 ; (function () {
   this.StickySection = function () { 
     this.element = null;

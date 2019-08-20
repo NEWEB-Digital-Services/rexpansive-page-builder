@@ -208,7 +208,7 @@ class Rexbuilder {
 		$this->loader->add_filter( 'page_row_actions', $plugin_admin, 'add_builderlive_link', 10, 2 );
 
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_styles_production' );
-		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts_production' );
+		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		// $this->loader->add_action( 'admin_print_scripts', $plugin_admin, 'dequeue_scripts', 99 );
 
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_plugin_options_menu' );
@@ -373,6 +373,9 @@ class Rexbuilder {
 		
 		$this->loader->add_action( 'wp_ajax_rexlive_save_custom_css', $plugin_public, 'rexlive_save_custom_css' );
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_custom_css', $plugin_public, 'rexlive_save_custom_css' );
+
+		$this->loader->add_action( 'wp_ajax_rexlive_save_custom_effects', $plugin_public, 'rexlive_save_custom_effects' );
+		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_custom_effects', $plugin_public, 'rexlive_save_custom_effects' );
 
 		$this->loader->add_action( 'wp_ajax_rexlive_save_customization_model', $plugin_public, 'rexlive_save_customization_model' );
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_customization_model', $plugin_public, 'rexlive_save_customization_model' );

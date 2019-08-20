@@ -1,3 +1,7 @@
+/**
+ * Activate animation on scroll and reveal of an element
+ * @version 1.0.0
+ */
 ; (function () {
   this.ScrollCSSAnimation = function () {
     this.element = null;

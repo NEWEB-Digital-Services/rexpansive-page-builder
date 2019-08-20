@@ -3713,7 +3713,9 @@ var Rexbuilder_Util = (function($) {
       }
     } else if ($target.hasClass("vimeo-player")) {
       var vimeoPlugin = VimeoVideo.findVideo($target.find("iframe")[0]);
-      vimeoPlugin.play();
+      if( vimeoPlugin ) {
+        vimeoPlugin.play();
+      }
     } else if ($target.hasClass("youtube-player")) {
       if ($target.children(".rex-youtube-wrap").length != 0) {
         if (
@@ -3981,6 +3983,6 @@ var Rexbuilder_Util = (function($) {
     diffStrings: _diffStrings,
     applyDefaultBlocksDimentions: _applyDefaultBlocksDimentions,
     isMobile: _isMobile,
-    cssPropertyValueSupported: _cssPropertyValueSupported,
+    cssPropertyValueSupported: _cssPropertyValueSupported
   };
 })(jQuery);

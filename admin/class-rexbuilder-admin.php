@@ -243,7 +243,7 @@ class Rexbuilder_Admin {
 	 *
 	 * @since    1.0.0
 	 */
-	public function enqueue_scripts( $hook ) {
+	public function enqueue_scripts_production( $hook ) {
 
 		/**
 		 * This function is provided for demonstration purposes only.
@@ -338,7 +338,7 @@ class Rexbuilder_Admin {
 	 * @version 2.0.0	Adding the builderlive scripts. Handling Gutenberg integration
 	 * @edit 06-03-2019
 	 */
-	public function enqueue_scripts_production( $hook ) {
+	public function enqueue_scripts( $hook ) {
 		$page_info = get_current_screen();
 
 		if( $this->builder_active_on_this_post_type( $page_info ) ) {

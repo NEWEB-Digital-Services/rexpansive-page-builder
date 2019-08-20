@@ -199,10 +199,12 @@ class Rexbuilder_Public
          * class.
          */
 
-        if ($this->builder_active_on_this_post_type()) {
+        if ( $this->builder_active_on_this_post_type() ) {
             $ver = null;
             global $post;
-            $rexbuilderShortcode = get_post_meta( $post->ID, '_rexbuilder_shortcode', true );
+            $customEffects = get_post_meta( $post->ID, '_rexbuilder_custom_effects', true );
+
+            $fast_load = ( isset( $this->plugin_options['fast_load'] ) ? $this->plugin_options['fast_load'] : 0 );
 
             wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), '20120206', true);
             if( Rexbuilder_Utilities::isBuilderLive() ) {
@@ -294,25 +296,36 @@ class Rexbuilder_Public
                 wp_enqueue_script('scrolled', REXPANSIVE_BUILDER_URL . 'public/js/vendor/4-jquery.rexScrolled.js', array('jquery'), $ver, true);
             }
             wp_enqueue_script('rex-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexAccordion.js', array('jquery'), $ver, true);
-            wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.js', array('jquery'), $ver, true);
+            
+            if ( false !== strpos( $customEffects, 'rex-indicator__placeholder' ) ) {
+                wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.js', array('jquery'), $ver, true);
+            }
             
             if( !Rexbuilder_Utilities::isBuilderLive() ) {
-                if ( false !== strpos( $rexbuilderShortcode, 'rex-effect-' ) ) {
+                if ( false !== strpos( $customEffects, 'rex-effect-' ) ) {
                     wp_enqueue_script('pixi', REXPANSIVE_BUILDER_URL . 'public/js/vendor/pixi.min.js', array('jquery'), $ver, true);
                     wp_enqueue_script('effect', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.rexEffect.js', array('jquery'), $ver, true);
                 }
 
-                if ( false !== strpos( $rexbuilderShortcode, 'rex-num-spin' ) ) {
+                if ( false !== strpos( $customEffects, 'rex-num-spin' ) ) {
                     wp_enqueue_script('odometer', REXPANSIVE_BUILDER_URL . 'public/js/vendor/odometer.min.js', array('jquery'), $ver, true);
                 }
                 
-                if ( false !== strpos( $rexbuilderShortcode, 'rex-slideshow' ) ) {
+                if ( false !== strpos( $customEffects, 'rex-slideshow' ) ) {
                     wp_enqueue_script('rex-slideshow', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexSlideshow.js', array('jquery'), $ver, true);
                 }
 
-                wp_enqueue_script('sticky-section', REXPANSIVE_BUILDER_URL . 'public/js/build/sticky-section.js', array(), $ver, true);
-                wp_enqueue_script('scroll-css-animation', REXPANSIVE_BUILDER_URL . 'public/js/build/scroll-css-animation.js', array(), $ver, true);
-                wp_enqueue_script('distance-accordion', REXPANSIVE_BUILDER_URL . 'public/js/build/distance-accordion.js', array(), $ver, true);
+                if ( false !== strpos( $customEffects, 'sticky-section' ) ) {
+                    wp_enqueue_script('sticky-section', REXPANSIVE_BUILDER_URL . 'public/js/vendor/sticky-section.js', array(), $ver, true);
+                }
+
+                if ( false !== strpos( $customEffects, 'fadeUpTextCSS' ) ) {
+                    wp_enqueue_script('scroll-css-animation', REXPANSIVE_BUILDER_URL . 'public/js/vendor/scroll-css-animation.js', array(), $ver, true);
+                }
+
+                if ( false !== strpos( $customEffects, 'distance-accordion-toggle' ) ) {
+                    wp_enqueue_script('distance-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/distance-accordion.js', array(), $ver, true);
+                }
             }
 
 
@@ -327,7 +340,7 @@ class Rexbuilder_Public
             
             wp_enqueue_script('rexbuilder', REXPANSIVE_BUILDER_URL . 'public/js/build/rexbuilder-public.js', array('jquery'), $ver, true);
 
-            if( !Rexbuilder_Utilities::isBuilderLive() ) {
+            if( !Rexbuilder_Utilities::isBuilderLive() && 1 == $fast_load ) {
                 wp_enqueue_script('fast-load', REXPANSIVE_BUILDER_URL . 'public/js/build/fast-load.js', array('intersection-observer'), $ver, true);
             }
 
@@ -354,13 +367,50 @@ class Rexbuilder_Public
          * class.
          */
 
-        if ($this->builder_active_on_this_post_type()) {          
+        if ($this->builder_active_on_this_post_type()) {
+            global $post;
+            $customEffects = get_post_meta( $post->ID, '_rexbuilder_custom_effects', true );
+            $fast_load = ( isset( $this->plugin_options['fast_load'] ) ? $this->plugin_options['fast_load'] : 0 );
             
             wp_enqueue_script('vimeo-player', 'https://player.vimeo.com/api/player.js', array('jquery'), '20120206', true);
+
             if( Rexbuilder_Utilities::isBuilderLive() ) {
-                wp_enqueue_script( $this->plugin_name, REXPANSIVE_BUILDER_URL . 'public/js/builderlive-editor.js', array( 'jquery' ), null, true );
+                if ( false !== strpos( $customEffects, 'rex-indicator__placeholder' ) ) {
+                    wp_enqueue_script('indicator', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexIndicator.js', array('jquery'), false, true);
+                }
+                wp_enqueue_script( $this->plugin_name, REXPANSIVE_BUILDER_URL . 'public/js/builderlive-editor.js', array( 'jquery' ), REXPANSIVE_BUILDER_VERSION, true );
+
             } else {
-                wp_enqueue_script( $this->plugin_name, REXPANSIVE_BUILDER_URL . 'public/js/builderlive-public.js', array( 'jquery' ), null, true );
+                if ( false !== strpos( $customEffects, 'rex-effect-' ) ) {
+                    wp_enqueue_script('pixi', REXPANSIVE_BUILDER_URL . 'public/js/vendor/pixi.min.js', array('jquery'), false, true);
+                    wp_enqueue_script('effect', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.rexEffect.min.js', array('jquery'), false, true);
+                }
+
+                if ( false !== strpos( $customEffects, 'rex-num-spin' ) ) {
+                    wp_enqueue_script('odometer', REXPANSIVE_BUILDER_URL . 'public/js/vendor/odometer.min.js', array('jquery'), false, true);
+                }
+                
+                if ( false !== strpos( $customEffects, 'rex-slideshow' ) ) {
+                    wp_enqueue_script('rex-slideshow', REXPANSIVE_BUILDER_URL . 'public/js/vendor/6-jquery.rexSlideshow.min.js', array('jquery'), false, true);
+                }
+
+                if ( false !== strpos( $customEffects, 'sticky-section' ) ) {
+                    wp_enqueue_script('sticky-section', REXPANSIVE_BUILDER_URL . 'public/js/vendor/sticky-section.min.js', array(), false, true);
+                }
+
+                if ( false !== strpos( $customEffects, 'fadeUpTextCSS' ) ) {
+                    wp_enqueue_script('scroll-css-animation', REXPANSIVE_BUILDER_URL . 'public/js/vendor/scroll-css-animation.min.js', array(), false, true);
+                }
+
+                if ( false !== strpos( $customEffects, 'distance-accordion-toggle' ) ) {
+                    wp_enqueue_script('distance-accordion', REXPANSIVE_BUILDER_URL . 'public/js/vendor/distance-accordion.min.js', array(), false, true);
+                }
+
+                wp_enqueue_script( $this->plugin_name, REXPANSIVE_BUILDER_URL . 'public/js/builderlive-public.js', array( 'jquery' ), REXPANSIVE_BUILDER_VERSION, true );
+
+                if( !Rexbuilder_Utilities::isBuilderLive() && 1 == $fast_load ) {
+                    wp_enqueue_script('fast-load', REXPANSIVE_BUILDER_URL . 'public/js/build/fast-load.js', array( $this->plugin_name ), false, true);
+                }
             }
 
             wp_localize_script( $this->plugin_name, '_plugin_frontend_settings', apply_filters('rexbuilder_js_settings', $this->get_plugin_frontend_settings() ) );
@@ -497,6 +547,12 @@ class Rexbuilder_Public
         wp_send_json_success($response);
     }
 
+    /**
+     * Saving custom CSS on a single page
+     * 
+     * @return JSON saving response
+     * @since  2.0.0
+     */
     public function rexlive_save_custom_css()
     {
         $nonce = $_POST['nonce_param'];
@@ -523,6 +579,52 @@ class Rexbuilder_Public
         wp_send_json_success($response);
     }
 
+    /**
+     * Tracing custom effects present on a page
+     * to load js resources in an optimized way
+     * 
+     * @return JSON saving response
+     * @since  2.0.0
+     */
+    public function rexlive_save_custom_effects()
+    {
+        $nonce = $_POST['nonce_param'];
+
+        $response = array(
+            'error' => false,
+            'msg' => '',
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+        $response['error'] = false;
+
+        $post_id_to_update = intval($_POST['post_id_to_update']);
+
+        $custom_effects = $_POST['custom_effects'];
+        $custom_effects_active = array();
+
+        foreach ( $custom_effects as $key => $effect ) {
+            if ( 'true' == $effect['active'] ) {
+                array_push( $custom_effects_active, $effect['condition'] );
+            }    
+        }
+
+        update_post_meta( $post_id_to_update, '_rexbuilder_custom_effects', join( $custom_effects_active, ',' ) );
+
+        wp_send_json_success($response);
+    }
+
+    /**
+     * Saving available layouts names on a single page
+     * 
+     * @return JSON saving response
+     * @since  2.0.0
+     */
     public function rexlive_save_avaiable_layouts()
     {
         $nonce = $_POST['nonce_param'];

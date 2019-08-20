@@ -113,7 +113,23 @@ gulp.task('admin-css-build', function() {
 /** LIVE BUILDER */
 
 var live_admin_js_src = [ 
+	'admin/js/builderlive/nprogress.js',
+	'admin/spectrum/spectrum.js',
+	'admin/grapick/grapick.min.js',
+	'admin/js/builderlive/jquery.actual.min.js',
+	'admin/js/builderlive/Photoswipe/photoswipe.min.js',
+	'admin/js/builderlive/Photoswipe/photoswipe-ui-default.min.js',
+	'admin/js/builderlive/tippy.all.min.js',
+	'public/js/vendor/6-jquery.rexAccordion.js',
+	'public/js/vendor/tmpl.min.js',
+	'admin/ace/src-min-noconflict/ace.js',
+	'admin/ace/src-min-noconflict/mode-css.js',
+	'admin/ace/src-min-noconflict/mode-html.js',
 	'admin/js/builderlive/Rexlive_MediaUploader.js',
+	'admin/js/builderlive/Rexlive_RexSlider_TextEditor.js',
+	'admin/js/builderlive/Rexlive_Ajax_Calls.js',
+	'admin/js/builderlive/Rexlive_Color_Palette.js',
+	'admin/js/builderlive/Rexlive_Overlay_Palette.js',
 	'admin/js/builderlive/Rexlive_Modals_Utils.js',
 	'admin/js/builderlive/Rexlive_Insert_Video_Modal.js',
 	'admin/js/builderlive/Rexlive_LayoutGrid_Modal.js',
@@ -130,6 +146,8 @@ var live_admin_js_src = [
 	'admin/js/builderlive/Rexlive_Overlay_Color_Section_Modal.js',
 	'admin/js/builderlive/Rexlive_Section_Background_Image_Modal.js',
 	'admin/js/builderlive/Rexlive_Section_Video_Modal.js',
+	'admin/js/builderlive/Rexlive_Section_Background_Gradient.js',
+	'admin/js/builderlive/Rexlive_Section_Overlay_Gradient.js',
 	'admin/js/builderlive/Rexlive_Section_Background_Modal.js',
 	'admin/js/builderlive/Rexlive_CSS_Editor_Modal.js',
 	'admin/js/builderlive/Rexlive_Html_Editor_Modal.js',
@@ -145,6 +163,11 @@ var live_admin_js_src = [
 	'admin/js/builderlive/Rexlive_Block_Paddings_Modal.js',
 	'admin/js/builderlive/Rexlive_Block_Custom_Classes_Modal.js',
 	'admin/js/builderlive/Rexlive_Block_Image_Editor_Modal.js',
+	'admin/js/builderlive/Rexlive_Block_Accordion.js',
+	'admin/js/builderlive/Rexlive_Block_Slideshow.js',
+	'admin/js/builderlive/Rexlive_Block_Background_Gradient.js',
+	'admin/js/builderlive/Rexlive_Text_Gradient.js',
+	'admin/js/builderlive/Rexlive_Block_Overlay_Gradient.js',
 	'admin/js/builderlive/Rexlive_Block_Url_Modal.js',
 	'admin/js/builderlive/Rexlive_Block_Options_Modal.js',
 	'admin/js/builderlive/Rexlive_Model_Modal.js',
@@ -153,12 +176,22 @@ var live_admin_js_src = [
 	'admin/js/builderlive/Rexlive_Model_Edit_Modal.js',
 	'admin/js/builderlive/Rexbuilder_RexSlider.js',
 	'admin/js/builderlive/Rexlive_ChangeLayout_Modal.js',
+	'admin/js/builderlive/Rexlive_Inline_SVG.js',
+	'admin/js/builderlive/Rexlive_PostEdit.js',
+	'admin/js/builderlive/Rexlive_PostEdit_MediaList.js',
 	'admin/js/builderlive/Rexlive_LockedOption_Mask.js',
 	'admin/js/builderlive/Rexlive_Model_Import.js',
+	'admin/js/builderlive/Rexlive_Button_Import.js',
+	'admin/js/builderlive/Rexlive_Edit_Button.js',
+	'admin/js/builderlive/Rexlive_Lateral_Menu.js',
 	'admin/js/builderlive/Rexlive_Modals.js',
 	'admin/js/builderlive/Rexlive_Base_Settings.js',
 	'admin/js/builderlive/Rexbuilder_Util_Admin_Editor.js',
-	'admin/js/builderlive/Rexbuilder_Starting.js'
+	'admin/js/builderlive/Rexlive_UpdateVideoInline.js',
+	'admin/js/builderlive/Rexlive_Gradient_Utils.js',
+	'admin/js/builderlive/Rexlive_Page_Margins.js',
+	'admin/js/builderlive/Rexlive_Page_Settings_Modal.js',
+	'admin/js/builderlive/Rexbuilder_Starting.js',
 ];
 
 gulp.task('live-admin-scripts-build', function() {
@@ -199,10 +232,29 @@ gulp.task('admin-builder-style', function() {
 	.pipe(gulp.dest('admin/css'));
 });
 
-gulp.task('peter', ['live-builder-style','admin-builder-style'] ,function() {
+gulp.task('peter', ['live-builder-style','admin-builder-style', 'prepare-effects'] ,function() {
 	gulp.watch('admin/scss/rexlive/**/*.scss', ['live-builder-style']);
 	gulp.watch('admin/scss/rexlive/**/*.scss', ['admin-builder-style']);
 });
+
+var effects_js_src = [
+	'public/js/vendor/jquery.rexEffect.js',
+	'public/js/vendor/6-jquery.rexSlideshow.js',
+	'public/js/vendor/sticky-section.js',
+	'public/js/vendor/scroll-css-animation.js',
+	'public/js/vendor/distance-accordion.js'
+];
+
+gulp.task('prepare-effects', function() {
+	effects_js_src.forEach( function( effect_src ) {
+		return gulp.src(effect_src)
+			.pipe(uglify({preserveComments: 'license'}).on('error', gulpUtil.log))
+			.pipe(rename({suffix: '.min'}))
+			.pipe(gulp.dest('public/js/vendor'))
+	})
+});
+
+/** -------- */
 
 var admin_js_src = [ 
 	'admin/js/jquery.gridster.js', 
@@ -240,14 +292,14 @@ gulp.task('admin-plugins-build', function() {
  */
 
  var builderlive_public_editor = [
- 'public/js/vendor/tippy.all.min.js',
- 'public/js/vendor/rangy-1.3.0/rangy-core.js',
- 'public/js/vendor/rangy-1.3.0/rangy-classapplier.js',
- 'public/js/vendor/rangy-1.3.0/rangy-selectionsaverestore.js',
- 'public/js/vendor/rangy-1.3.0/rangy-textrange.js',
- 'public/js/vendor/spectrum.js',
- 'public/js/vendor/medium-editor.js',
- 'public/js/vendor/medium-editor-toolbar-states.min.js',
+	'public/js/vendor/tippy.all.min.js',
+	'public/js/vendor/rangy-1.3.0/rangy-core.js',
+	'public/js/vendor/rangy-1.3.0/rangy-classapplier.js',
+	'public/js/vendor/rangy-1.3.0/rangy-selectionsaverestore.js',
+	'public/js/vendor/rangy-1.3.0/rangy-textrange.js',
+	'public/js/vendor/spectrum.js',
+	'public/js/vendor/medium-editor.js',
+	'public/js/vendor/medium-editor-toolbar-states.min.js',
 	// 'public/js/vendor/handlebars.runtime.js',
 	// 'public/js/vendor/jquery.fileupload.js',
 	// 'public/js/vendor/jquery.cycle2.min.js',
@@ -263,6 +315,38 @@ gulp.task('admin-plugins-build', function() {
 	'public/js/live/1-Rexbuilder_Block.js',
 	'public/js/live/1-Rexbuilder_Block_Editor.js',
 	'public/js/live/4-modals.js',
+
+	'public/js/live/4-Rexbuilder_Live_Post_Edit.js',
+	'public/js/vendor/jquery.requestanimationframe.min.js',
+	'public/js/vendor/tmpl.min.js',
+	'public/Photoswipe/photoswipe.min.js',
+	'public/Photoswipe/photoswipe-ui-default.min.js',
+	'public/js/vendor/jquery.mb.YTPlayer.min.js',
+	'public/js/vendor/store.legacy.min.js',
+	'public/js/build/1-Rexbuilder_Util.js',
+	'public/js/live/1-Rexbuilder_Util_Editor.js',
+	'public/js/live/1-Rexbuilder_CreateBlocks.js',
+	'public/js/live/1-Rexbuilder_Dom_Util.js',
+	'public/js/live/1-Rexbuilder_Color_Palette.js',
+	'public/js/build/1-Rexbuilder_Rexbutton.js',
+	'public/js/live/1-Rexbuilder_Overlay_Palette.js',
+	'public/js/live/2-Rex_Save_Listeners.js',
+	'public/js/vendor/jquery-ui.min.js',
+	'public/js/vendor/jquery.ui.touch-punch.js',
+	'public/js/vendor/lodash.js',
+	'public/gridstack/dist/gridstack.js',
+	'public/gridstack/dist/gridstack.jQueryUI.js',
+	'public/js/build/3-Navigator.js',
+	'public/js/vendor/flickity.pkgd.min.js',
+	'public/js/build/2-RexSlider.js',
+	'public/js/vendor/2-jquery.textFill.js',
+	'public/js/build/8-VimeoVideo.js',
+	'public/js/vendor/6-jquery.rexAccordion.js',
+	'public/js/vendor/utilities.js',
+	'public/js/live/2-jquery.perfectGridGalleryEditor.js',
+	'public/js/vendor/3-velocity.min.js',
+	'public/js/vendor/3-velocity.ui.min.js',
+	'public/js/build/rexbuilder-public.js'
 ];
 
 var builderlive_public = [
@@ -283,8 +367,8 @@ var builderlive_public = [
 	'public/js/vendor/jquery-ui.min.js',
 	'public/js/vendor/jquery.ui.touch-punch.js',
 	'public/js/vendor/lodash.js',
-	'public/js/vendor/gridstack.js-0.4.0/src/gridstack.js',
-	'public/js/vendor/gridstack.js-0.4.0/src/gridstack.jQueryUI.js',
+	'public/gridstack/dist/gridstack.js',
+	'public/gridstack/dist/gridstack.jQueryUI.js',
 	'public/js/build/3-Navigator.js',
 	// 'public/js/build/5-Rexbuilder_FormFixes.js',
 	'public/js/vendor/flickity.pkgd.min.js',
@@ -294,13 +378,13 @@ var builderlive_public = [
 	'public/js/vendor/4-jquery.rexScrolled.js',
 	'public/js/vendor/6-jquery.rexAccordion.js',
 	'public/js/vendor/6-jquery.rexIndicator.js',
-	'public/js/vendor/pixi.min.js',
-	'public/js/vendor/odometer.min.js',
-	'public/js/vendor/jquery.rexEffect.js',
-	'public/js/vendor/6-jquery.rexSlideshow.js',
-	'public/js/build/sticky-section.js',
-	'public/js/build/scroll-css-animation.js',
-	'public/js/build/distance-accordion.js',
+	// 'public/js/vendor/pixi.min.js',
+	// 'public/js/vendor/jquery.rexEffect.js',
+	// 'public/js/vendor/odometer.min.js',
+	// 'public/js/vendor/6-jquery.rexSlideshow.js',
+	// 'public/js/build/sticky-section.js',
+	// 'public/js/build/scroll-css-animation.js',
+	// 'public/js/build/distance-accordion.js',
 	'public/js/vendor/utilities.js',
 	// 'public/js/vendor/spectrum.js',
 	// 'public/js/vendor/jquery.overlayScrollbars.min.js',
@@ -309,7 +393,7 @@ var builderlive_public = [
 	'public/js/vendor/3-velocity.ui.min.js',
 	'public/js/vendor/4-jquery.rexScrollify.js',
 	'public/js/build/rexbuilder-public.js',
-	'public/js/build/fast-load.js',
+	// 'public/js/build/fast-load.js',
 ];
 
 var builderlive_public_editor_style = [
@@ -342,13 +426,14 @@ var builderlive_public_style = [
 	'admin/css/live-def.css'
 ];
 
-var public_res = builderlive_public_editor.concat(builderlive_public);
+// var public_res = builderlive_public_editor.concat(builderlive_public);
+var public_res = builderlive_public_editor;
 var public_editor_res = builderlive_public_editor_style;
 
 gulp.task('public-editor-css', function() {
 	sass('public/public-editor.scss',{
-	//style:'compressed'
-})
+		style:'compressed'
+	})
 	.pipe(plumber())
 	.pipe(autoprefixer({
 		browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
@@ -390,7 +475,7 @@ gulp.task('builderlive-style', function() {
 	.pipe(gulp.dest('public/css'))
 });
 
-gulp.task('live-production', ['builderlive-editor','builderlive','builderlive-editor-style','builderlive-style']);
+gulp.task('live-production', ['prepare-effects','builderlive-editor','builderlive','builderlive-editor-style','builderlive-style']);
 
 gulp.task('watch-live-production', ['builderlive-editor','builderlive'] ,function() {
 	gulp.watch(['public/js/build/**/*.js','public/js/live/**/*.js','public/js/vendor/**/*.js'], ['builderlive-editor']);

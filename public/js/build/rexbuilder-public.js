@@ -573,7 +573,9 @@ var Rexbuilder_App = (function($) {
     //$grids.textResize();
 
     if( $grids ) {
-      $grids.find(".rex-indicator__placeholder").rexIndicator();
+      if ( 'undefined' !== typeof rexIndicator ) {
+        $grids.find(".rex-indicator__placeholder").rexIndicator();
+      }
     }
 
     if( false == _plugin_frontend_settings.user.editing ) {

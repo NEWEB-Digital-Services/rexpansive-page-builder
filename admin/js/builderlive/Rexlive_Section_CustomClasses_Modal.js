@@ -50,7 +50,7 @@ var Section_CustomClasses_Modal = (function ($) {
         newClassesString = newClassesString.trim();
         var classList = newClassesString.split(/\s+/);
 
-        console.log("passed || applyCustomClasses()");
+        // console.log("passed || applyCustomClasses()");
 
         Rexbuilder_Util_Admin_Editor.highlightRowSetData({
             'custom_classes': classList,

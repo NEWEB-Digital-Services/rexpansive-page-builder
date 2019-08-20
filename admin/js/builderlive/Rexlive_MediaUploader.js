@@ -258,6 +258,7 @@ var Rexlive_MediaUploader = (function($) {
         data.data_to_send.urlImage = display.src;
         data.data_to_send.width = display.width;
         data.data_to_send.height = display.height;
+        data.data_to_send.imageSize = display.size;
 
         if( 'undefined' !== typeof data_to_send.photoswipe ) {
           data.data_to_send.photoswipe = data_to_send.photoswipe;

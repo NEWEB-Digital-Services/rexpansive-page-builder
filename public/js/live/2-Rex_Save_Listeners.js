@@ -15,6 +15,9 @@ var Rex_Save_Listeners = (function($) {
         .text()
         .trim();
 
+      // getting custom effects report
+      var effects = _checkSpecialEffects();
+
       //creating customization of page
       Rexbuilder_Dom_Util.fixModelNumbers();
       var newCustomization = createCustomization(activeLayoutName);
@@ -68,7 +71,7 @@ var Rex_Save_Listeners = (function($) {
           },
           success: function(response) {
             if (response.success) {
-              // console.log("rex buttons ids nella pagina aggiornati!");
+              // console.log("rex buttons ids on the page updated!");
             }
           },
           error: function(response) {}
@@ -89,7 +92,7 @@ var Rex_Save_Listeners = (function($) {
           },
           success: function(response) {
             if (response.success) {
-              // console.log("nomi layout aggiornati!");
+              // console.log("layout names updated!");
             }
           },
           error: function(response) {}
@@ -110,7 +113,28 @@ var Rex_Save_Listeners = (function($) {
           },
           success: function(response) {
             if (response.success) {
-              // console.log("custom css aggiornato!");
+              // console.log("custom css updated!");
+            }
+          },
+          error: function(response) {}
+        })
+      );
+
+      // custom effects
+      ajaxCalls.push(
+        $.ajax({
+          type: "POST",
+          dataType: "json",
+          url: _plugin_frontend_settings.rexajax.ajaxurl,
+          data: {
+            action: "rexlive_save_custom_effects",
+            nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+            post_id_to_update: idPost,
+            custom_effects: effects
+          },
+          success: function(response) {
+            if (response.success) {
+              // console.log("custom css updated!");
             }
           },
           error: function(response) {}
@@ -258,7 +282,7 @@ var Rex_Save_Listeners = (function($) {
               success: function(response) {
                 if (response.success) {
                   // console.log(
-                  //   "layout " + response.data.layoutName + " aggiornato!"
+                  //   "layout " + response.data.layoutName + " updated!"
                   // );
                 }
               },
@@ -282,7 +306,7 @@ var Rex_Save_Listeners = (function($) {
             },
             success: function(response) {
               if (response.success) {
-                // console.log("shortcode pagina aggiornato!");
+                // console.log("shortcode updated!");
                 Rexbuilder_Util.$rexContainer.removeClass("backend-edited");
                 Rexbuilder_Util.backendEdited = false;
               }
@@ -306,7 +330,7 @@ var Rex_Save_Listeners = (function($) {
             },
             success: function(response) {
               if (response.success) {
-                // console.log("nomi delle section utilizzati salvati!");
+                // console.log("section names updated!");
               }
             },
             error: function(response) {}
@@ -329,7 +353,7 @@ var Rex_Save_Listeners = (function($) {
             success: function(response) {
               if (response.success) {
                 // console.log(
-                //   "layout " + response.data.layoutName + " aggiornato!"
+                //   "layout " + response.data.layoutName + " updated!"
                 // );
                 // console.log(newCustomization.sections);
               }
@@ -436,7 +460,7 @@ var Rex_Save_Listeners = (function($) {
           },
           success: function(response) {
             if (response.success) {
-              // console.log("nomi layout modello aggiornati!");
+              // console.log("model names updated!");
             }
           },
           error: function(response) {}
@@ -469,7 +493,7 @@ var Rex_Save_Listeners = (function($) {
                 },
                 success: function(response) {
                   if (response.success) {
-                    // console.log("layout custom modello aggiornato!");
+                    // console.log("custom models updated!");
                   }
                 },
                 error: function(response) {}
@@ -505,7 +529,7 @@ var Rex_Save_Listeners = (function($) {
             },
             success: function(response) {
               if (response.success) {
-                // console.log("shortcode modello aggiornato!");
+                // console.log("model shortcode updated!");
                 dataModel.html = response.data.model_html;
                 Rexbuilder_Section.updateModelsHtmlLive(dataModel);
               }
@@ -536,7 +560,7 @@ var Rex_Save_Listeners = (function($) {
               success: function(response) {
                 if (response.success) {
                   // console.log(
-                  //   "layout " + response.data.layoutName + " aggiornato!"
+                  //   "layout " + response.data.layoutName + " updated!"
                   // );
                 }
               },
@@ -566,7 +590,7 @@ var Rex_Save_Listeners = (function($) {
                 : ""
           };
           Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-          // console.log("salvataggio modello finito!");
+          // console.log("saving model end!");
         })
         .fail(function() {
           // Probably want to catch failure
@@ -1706,12 +1730,130 @@ var Rex_Save_Listeners = (function($) {
     return models;
   };
 
+  /**
+   * Checking if are present some special effects inside the page
+   * Checking all customizations for:
+   * - section classes
+   * - block classes
+   * - block content
+   * 
+   * @return {Object} list of effects and their state in the page
+   * @since  2.0.0
+   */
+  var _checkSpecialEffects = function() {
+    var blocks;
+    var text, blockData, blockCustomClass, sectionData, sectionCustomClass, sectionRexID, sectionTargets, sectionDef;
+    var i,len,z,l;
+    var sections = [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section:not(.removing_section)') );
+    var layoutData = document.getElementById('rexbuilder-layout-data');
+    // effects to check
+    var effects = [
+      {
+        condition: 'rex-effect',
+        active: false
+      },
+      {
+        condition: 'rex-num-spin',
+        active: false
+      },
+      {
+        condition: 'rex-slideshow',
+        active: false
+      },
+      {
+        condition: 'sticky-section',
+        active: false
+      },
+      {
+        condition: 'fadeUpTextCSS',
+        active: false
+      },
+      {
+        condition: 'distance-accordion-toggle',
+        active: false
+      },
+      {
+        condition: 'rex-indicator__',
+        active: false
+      }
+    ];
+
+    sections.forEach( function( section ) {
+      // check all customizations
+      sectionRexID = section.getAttribute( 'data-rexlive-section-id' );
+      if ( sectionRexID ) {
+        sectionTargets = [].slice.call( layoutData.querySelectorAll('[data-section-rex-id="' + sectionRexID + '"]') );
+        sectionTargets.forEach( function( target ) {
+          if ( '' !== target.innerText ) {
+            sectionDef = JSON.parse( target.innerText );
+            for( i = 0, len = sectionDef.length; i < len; i++ ) {
+              for( z=0,l = effects.length; z < l; z++ ) {
+                if ( 'undefined' !== typeof sectionDef[i].props.custom_classes ) {
+                  if( -1 !== sectionDef[i].props.custom_classes.indexOf( effects[z].condition ) ) {
+                    effects[z].active = true;
+                  }
+                }
+                if ( 'undefined' !== typeof sectionDef[i].props.block_custom_class ) {
+                  if( -1 !== sectionDef[i].props.block_custom_class.indexOf( effects[z].condition ) ) {
+                    effects[z].active = true;
+                  }
+                }
+              }              
+            }
+          }
+        });
+      }
+
+      // check section class
+      sectionData = section.querySelector( '.section-data' );
+      if ( sectionData ) {
+        sectionCustomClass = sectionData.getAttribute( 'data-custom_classes' );
+        if ( sectionCustomClass ) {
+          for( z=0,l = effects.length; z < l; z++ ) {
+            if( -1 !== sectionCustomClass.indexOf( effects[z].condition ) ) {
+              effects[z].active = true;
+            }
+          }
+        }
+      }
+
+      blocks = [].slice.call( section.querySelectorAll('.grid-stack-item:not(.removing_block)') );
+      blocks.forEach( function( block ) {
+        // check block classes
+        blockData = block.querySelector( '.rexbuilder-block-data' );
+        if ( blockData ) {
+          blockCustomClass = blockData.getAttribute( 'data-block_custom_class' );
+          if ( blockCustomClass ) {
+            for( z=0,l = effects.length; z < l; z++ ) {
+              if( -1 !== blockCustomClass.indexOf( effects[z].condition ) ) {
+                effects[z].active = true;
+              }
+            }
+          }
+        }
+
+        // check block content
+        text = block.querySelector( '.text-wrap' );
+        if ( text ) {
+          for( z=0,l = effects.length; z < l; z++ ) {
+            if( -1 !== text.innerHTML.indexOf( effects[z].condition ) ) {
+              effects[z].active = true;
+            }
+          }
+        }
+      });
+    });
+
+    return effects;
+  }
+
   return {
     createSectionProperties: createSectionProperties,
     createTargets: createTargets,
     createBlockProperties: createBlockProperties,
     clearPropsElem: clearPropsElem,
     createCustomization: createCustomization,
-    updateModel: updateModel
+    updateModel: updateModel,
+    _checkSpecialEffects: _checkSpecialEffects
   };
 })(jQuery);
