@@ -367,7 +367,7 @@ var public_editor_res = builderlive_public_editor_style;
 gulp.task('public-editor-css', function() {
 	sass('public/public-editor.scss',{
 	//style:'compressed'
-})
+	})
 	.pipe(plumber())
 	.pipe(autoprefixer({
 		browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]

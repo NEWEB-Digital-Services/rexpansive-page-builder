@@ -15,6 +15,7 @@ var Rexlive_MediaUploader = (function($) {
   var accordion_uploader_frame;
 
   function _openInsertImageBlocksMediaUploader(info) {
+    setUserSetting('imgsize', 'full');
     // If the frame is already opened, return it
     if (image_multiple_uploader_frame) {
       image_multiple_uploader_frame
@@ -82,7 +83,9 @@ var Rexlive_MediaUploader = (function($) {
       });
     });
 
-    image_multiple_uploader_frame.on("close", function() {});
+    image_multiple_uploader_frame.on("close", function() {
+      setUserSetting('imgsize', 'full');
+    });
 
     image_multiple_uploader_frame.on("select", function() {
       var state = image_multiple_uploader_frame.state("insert-image");
@@ -137,8 +140,8 @@ var Rexlive_MediaUploader = (function($) {
    * @param {Object}  info
    */
   function _openImageLiveMediaUploader(info) {
-    setUserSetting('imgsize', 'full');
-
+    setUserSetting('imgsize', info.imageSize);
+    
     // If the frame is already opened, return it
     if (image_uploader_frame_direct) {
       image_uploader_frame_direct
@@ -215,7 +218,7 @@ var Rexlive_MediaUploader = (function($) {
         attachment = wp.media.attachment(image_id);
         attachment.fetch();
 
-        selection.add(attachment ? [attachment] : [], { size: 'thumbnail' });
+        selection.add(attachment ? [attachment] : []);
       }
     });
 
@@ -303,6 +306,7 @@ var Rexlive_MediaUploader = (function($) {
    * @param {Object}  img_data
    */
   function _openImageMEMediaUploader(img_data) {
+      setUserSetting('imgsize', 'full');
     // If the frame is already opened, return it
     if (image_uploader_me_frame) {
       image_uploader_me_frame
@@ -405,11 +409,13 @@ var Rexlive_MediaUploader = (function($) {
         }
       };
 
-      // // Launch image insert event to the iframe
+      // Launch image insert event to the iframe
       Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data);
     });
 
-    image_uploader_me_frame.on("close", function() {});
+    image_uploader_me_frame.on("close", function() {
+      setUserSetting('imgsize', 'full');
+    });
 
     //reset selection in popup, when open the popup
     image_uploader_me_frame.on("open", function() {
@@ -426,6 +432,7 @@ var Rexlive_MediaUploader = (function($) {
       });
 
       var imageSettings = image_uploader_me_frame.state("me-image").get("inlineImgData");
+
       var image_id = null;
       if( "undefined" !== typeof imageSettings ) {
         image_id = ( "undefined" !== typeof imageSettings.image_id ? imageSettings.image_id : null );
@@ -452,6 +459,8 @@ var Rexlive_MediaUploader = (function($) {
    * @param {int} image_id image id
    */
   function _openEditImageMediaUploader($data, $preview, image_id) {
+    setUserSetting('imgsize', 'full');
+
     image_id = typeof image_id !== "undefined" ? image_id : null;
 
     if (image_uploader_frame) {
@@ -494,6 +503,8 @@ var Rexlive_MediaUploader = (function($) {
 
     //on close, if there is no select files, remove all the files already selected in your main frame
     image_uploader_frame.on("close", function() {
+      setUserSetting('imgsize', 'full');
+
       var selection = image_uploader_frame
         .state("upload-image-bg")
         .get("selection");

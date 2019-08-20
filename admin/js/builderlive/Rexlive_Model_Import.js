@@ -302,7 +302,6 @@ var Model_Import_Modal = (function($) {
       image_uploader_frame_direct.on("close", function() {
         // resets the option for the image size
         setUserSetting('imgsize', 'medium');
-
       });
 
       //now open the popup
