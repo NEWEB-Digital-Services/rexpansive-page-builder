@@ -1990,7 +1990,11 @@ var TextEditor = (function ($) {
       }
 
       if ($el.hasClass("me-image-zoom")) {
-        console.log("Zoom");
+        var block = $(this.traceImg).parents(".grid-stack-item");
+
+        console.log(this.traceImg);
+
+        block.find(".rexbuilder-block-data").attr("data-photoswipe", true);
       }
 
       if ($el.hasClass("me-image-replace")) {

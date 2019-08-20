@@ -459,6 +459,7 @@
       };
       
       if (data.photoswipe.toString() == "true") {   // add photoswipe to all blocks
+        console.log(data);
         Rexbuilder_Dom_Util.enablePhotoswipeAllBlocksSection($section);
       }
       else if ( data.photoswipe.toString() == "false" )   // remove photoswipe from all blocks

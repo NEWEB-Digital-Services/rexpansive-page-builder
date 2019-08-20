@@ -1654,6 +1654,8 @@ var Rexbuilder_Util = (function($) {
           break;
         case "photoswipe":
           if (!Rexbuilder_Util.editorMode) {
+            console.log($itemContent);
+            console.log(targetProps);
             if (targetProps["photoswipe"] == "true") {
               addPhotoSwipeElement(
                 $itemContent,
@@ -2692,6 +2694,7 @@ var Rexbuilder_Util = (function($) {
   };
 
   var addPhotoSwipeElement = function($itemContent, url, w, h, t) {
+    console.log("Ci siamo");
     if ( !$itemContent.parents('.grid-stack-item').hasClass('block-has-slider') )
     {
       tmpl.arg = "image";
