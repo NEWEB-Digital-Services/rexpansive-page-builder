@@ -428,7 +428,7 @@ class Rexbuilder_Public
     {
         return array(
             'animations' => apply_filters('rexbuilder_animation_enabled', $this->plugin_options['animation']),
-            'fast_load' => $this->plugin_options['fast_load'],
+            'fast_load' => ( isset( $this->plugin_options['fast_load'] ) ? $this->plugin_options['fast_load'] : 0 ),
             'textFill' => array(
                 'font_family' => 'sans-serif',
                 'font_weight' => 'bold',
