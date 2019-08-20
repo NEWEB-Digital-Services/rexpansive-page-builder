@@ -364,13 +364,6 @@ if ( ! class_exists( 'Rexbuilder_Import_Xml_Content' ) ) {
 				'slug'			=>	(string) $term_info->term_slug,
 			);
 
-			if( function_exists( 'rexpansive_write_log' ) ) {
-				rexpansive_write_log('Insert Term Parameters');
-				rexpansive_write_log($term_name);
-				rexpansive_write_log($term_taxonomy);
-				rexpansive_write_log($args);
-			}
-
 			$term_result = wp_insert_term( $term_name , $term_taxonomy, $args );
 			$this->import_response['terms'][] = $term_result;
 
@@ -481,10 +474,6 @@ if ( ! class_exists( 'Rexbuilder_Import_Xml_Content' ) ) {
 			$this->run_import_all_categories();
 			$this->run_import_all_taxonomies();
 			// $this->run_check_all_taxonomies_parents();
-
-			if( function_exists( 'rexpansive_write_log' ) ) {
-				rexpansive_write_log( $this->import_response['terms'] );
-			}
 
 			// regenerate hierarchy
 			foreach ( get_taxonomies() as $tax ) {
@@ -601,15 +590,6 @@ if ( ! class_exists( 'Rexbuilder_Import_Xml_Content' ) ) {
 
 					$term_update_result = wp_update_term( $term_actual_info['term_id'], $term_taxonomy, $args );
 
-					if( function_exists( 'rexpansive_write_log' ) ) {
-						rexpansive_write_log('Update Term Parameters');
-						rexpansive_write_log($term_actual_info['term_id']);
-						rexpansive_write_log($term_taxonomy);
-						rexpansive_write_log($args);
-						rexpansive_write_log('Update Term Result');
-						rexpansive_write_log($term_update_result);
-					}
-
 					if( !is_wp_error( $term_update_result ) ) { }
 
 				}
@@ -631,9 +611,6 @@ if ( ! class_exists( 'Rexbuilder_Import_Xml_Content' ) ) {
                 $term_meta_value = (string) $term_meta_info->meta_value;
 
 				$result = update_term_meta( (int)$term_id, $term_meta_key, $term_meta_value );
-				if( function_exists( 'rexpansive_write_log' ) ) {
-					rexpansive_write_log($result);
-				}
             }
 		}
 

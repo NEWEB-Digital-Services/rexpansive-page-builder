@@ -75,7 +75,7 @@ class Rexbuilder_Admin {
 			$post_to_activate = $this->plugin_options['post_types'];
 
 			// Call the construction of the metabox
-			require_once REXPANSIVE_BUILDER_PATH . 'admin/class-rexbuilder-meta-box.php';
+			require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-meta-box.php';
 
 			foreach( $post_to_activate as $key => $value ) :
 
@@ -481,10 +481,12 @@ class Rexbuilder_Admin {
 					'rexnonce'	=>	wp_create_nonce( 'rex-ajax-call-nonce' ),
 				) );
 
-				if( $wp_isFive && empty( $classicEditor_Active ) && 'product' !== $post->post_type ) {
-					wp_enqueue_script( 'rexbuilder-admin-gutenfix', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin-gutenfix.js', array( 'jquery' ), null, true );
-				} else {
-					wp_enqueue_script( 'rexbuilder-admin', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin.js', array( 'jquery' ), null, true );
+				if ( isset( $post ) ) {
+					if( $wp_isFive && empty( $classicEditor_Active ) && 'product' !== $post->post_type ) {
+						wp_enqueue_script( 'rexbuilder-admin-gutenfix', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin-gutenfix.js', array( 'jquery' ), null, true );
+					} else {
+						wp_enqueue_script( 'rexbuilder-admin', REXPANSIVE_BUILDER_URL . 'admin/js/rexbuilder-admin.js', array( 'jquery' ), null, true );
+					}
 				}
 			}
 		}
@@ -573,7 +575,7 @@ class Rexbuilder_Admin {
 	 *  @version 1.1.3 Adding submenus correctly
 	 */
 	public function add_plugin_options_menu() {
-		add_menu_page( 'Rexpansive Builder', 'Rexpansive Builder', 'manage_options', $this->plugin_name, array( $this, 'display_plugin_options_page' ), plugin_dir_url( __FILE__ ) . 'img/favicon.ico', '80.5' );
+		add_menu_page( 'Rexpansive Builder', 'Rexpansive Builder', 'manage_options', $this->plugin_name, array( $this, 'display_plugin_options_page' ), REXPANSIVE_BUILDER_URL . 'admin/img/favicon.ico', '80.5' );
 		add_submenu_page( $this->plugin_name, 'Settings', 'Settings', 'manage_options', $this->plugin_name );
 		add_submenu_page( $this->plugin_name, 'Contact Forms', 'Contact Forms', 'manage_options', 'rxcf7-list', array($this,'display_contact_form_list') );
 		add_submenu_page( $this->plugin_name, 'RexSlider', 'RexSlider', 'manage_options', 'edit.php?post_type=rex_slider' );
@@ -602,7 +604,7 @@ class Rexbuilder_Admin {
 		
 		$wp_admin_bar->add_menu( array(
 				'id'	=>	'rexpansive-builder-top',
-				'title'	=>	__( '<img src="'. plugin_dir_url( __FILE__ ) . 'img/favicon.ico" style="vertical-align:middle;margin-right:5px" alt="Rexpansive Builder" title="Rexpansive Builder" />Rexpansive Builder' ),
+				'title'	=>	__( '<img src="'. REXPANSIVE_BUILDER_URL . 'admin/img/favicon.ico" style="vertical-align:middle;margin-right:5px" alt="Rexpansive Builder" title="Rexpansive Builder" />Rexpansive Builder' ),
 				'href'	=>	admin_url( 'options-general.php?page=' . $this->plugin_name )
 			)
 		);
@@ -857,7 +859,7 @@ class Rexbuilder_Admin {
 					}
 		?>
 		<div class="builder-heading rexpansive-builder rexbuilder-materialize-wrap">
-			<img src="<?php echo plugin_dir_url( __FILE__ ); ?>img/rexpansive-builder.png" alt="logo" width="260" />
+			<img src="<?php echo REXPANSIVE_BUILDER_URL; ?>admin/img/rexpansive-builder.png" alt="logo" width="260" />
 			<div class="builder-switch-wrap">
 				<div class="switch">
 					<label>
@@ -1481,9 +1483,9 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 * @since    1.0.0
 	 */
 	public function rexbuilder_add_tinymce_plugin( $plugin_array ) {
-		$plugin_array['rexbuilder_textfill_button'] = plugin_dir_url( __FILE__ ) . 'js/textfill-button.js';
-		//$plugin_array['rexbuilder_animation_button'] = plugin_dir_url( __FILE__ ) . 'js/animation-button.js';
-		$plugin_array['rexbuilder_embed_video_button'] = plugin_dir_url( __FILE__ ) . 'js/embed-video.js';
+		$plugin_array['rexbuilder_textfill_button'] = REXPANSIVE_BUILDER_URL . 'admin/js/textfill-button.js';
+		//$plugin_array['rexbuilder_animation_button'] = REXPANSIVE_BUILDER_URL . 'admin/js/animation-button.js';
+		$plugin_array['rexbuilder_embed_video_button'] = REXPANSIVE_BUILDER_URL . 'admin/js/embed-video.js';
 		return $plugin_array;
 	}
 
@@ -4182,15 +4184,15 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		if(isset( $_GET['builder-import-models'] ) && 'true' == $_GET['builder-import-models'] && is_admin()) {
 			$imported = get_option( 'rexbuilder_models_imported' );
 			if( "1" != $imported ) {
-				require_once REXPANSIVE_BUILDER_PATH . 'admin/class-importheme-import-utilities.php';
-				require_once REXPANSIVE_BUILDER_PATH . 'admin/class-importheme-import-xml-content.php';
+				require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-import-utilities.php';
+				require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-import-xml-content.php';
 
 				$forms_url = 'http://demo.neweb.info/wp-content/uploads/rexpansive-builder-uploads/contact-forms.xml';
-				$xml_file = Rexpansive_Classic_Import_Utilities::upload_media_file( $forms_url, 'xml' );
+				$xml_file = Rexbuilder_Import_Utilities::upload_media_file( $forms_url, 'xml' );
 
 				if( file_exists( $xml_file['file'] ) ) {
 		
-					$Xml = new Rexpansive_Classic_Import_Xml_Content( $xml_file['file'] );
+					$Xml = new Rexbuilder_Import_Xml_Content( $xml_file['file'] );
 			
 					wp_defer_term_counting( true );
 					wp_defer_comment_counting( true );
@@ -4205,7 +4207,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 					wp_defer_comment_counting( false );
 					
 					update_option( 'rexbuilder_models_imported', '1' );
-					Rexpansive_Classic_Import_Utilities::remove_media_file( $xml_file['file'] );
+					Rexbuilder_Import_Utilities::remove_media_file( $xml_file['file'] );
 
 					?><p><?php _e( 'CF7 Models correctly imported', 'rexpansive-builder' ); ?></p><?php
 				}

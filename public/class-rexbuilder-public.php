@@ -693,7 +693,6 @@ class Rexbuilder_Public
 
                             // handling particular field types
                             $update_value;
-                            // Rexbuilder_Utilities::write_log( $field );
                             switch( $field['type'] ) {
                                 case 'media_list':
                                     $old_value = get_post_meta( $postID, $info['field'], true );

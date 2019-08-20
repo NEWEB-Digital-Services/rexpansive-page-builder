@@ -1,10 +1,21 @@
 <?php
 /**
- *	Classes required to aggregation
+ * @link       htto://www.neweb.info
+ * @since      2.0.0
+ *
+ * @package    Rexbuilder
+ * @subpackage Rexbuilder/includes
+ */
+/**
+ * Class with some utilities the import of an XML file
+ *
+ * @package    Rexbuilder
+ * @subpackage Rexbuilder/includes
+ * @author     Neweb <info@neweb.info>
  */
 
-if ( ! class_exists( 'Rexpansive_Classic_Import_Utilities' ) ) {
-	class Rexpansive_Classic_Import_Utilities {
+if ( ! class_exists( 'Rexbuilder_Import_Utilities' ) ) {
+	class Rexbuilder_Import_Utilities {
 		/**
 		 *	Function to handle the upload of the XML/JSON files to the import process
 		 */
@@ -53,7 +64,7 @@ if ( ! class_exists( 'Rexpansive_Classic_Import_Utilities' ) ) {
 			}
 
 			// do the validation and storage stuff
-			$file_info = wp_upload_bits( $file_array['name'], null, Rexpansive_Classic_Import_Utilities::read_file_content( $file_array['tmp_name'] ) );
+			$file_info = wp_upload_bits( $file_array['name'], null, self::read_file_content( $file_array['tmp_name'] ) );
 
 			// If error storing permanently, unlink
 			if ( $file_info['error'] ) {
@@ -80,7 +91,7 @@ if ( ! class_exists( 'Rexpansive_Classic_Import_Utilities' ) ) {
 
 				if( $args['post_type'] == 'attachment' && $args['post_status'] != 'trash') {
 
-					$result = Rexpansive_Classic_Import_Utilities::upload_media_file( $args['guid'], 'image' );
+					$result = self::upload_media_file( $args['guid'], 'image' );
 
 					$attachment_mime_type = wp_check_filetype( $result['file'] );
 
