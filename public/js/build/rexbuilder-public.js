@@ -48,7 +48,9 @@ var Rexbuilder_App = (function($) {
     /* -- Launching the grid -- */
     // $grids.find(".wrapper-expand-effect").expandEffect();
     if( $grids ) {
-      $grids.perfectGridGalleryEditor();
+      $grids.perfectGridGalleryEditor({
+        editorMode: Rexbuilder_Util.editorMode
+      });
     }
 
     /** -- Launching plugins only on "real" frontend */
