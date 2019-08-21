@@ -85,8 +85,11 @@ defined('ABSPATH') or exit;
 <li class="model__element bl_d-flex bl_ai-c" draggable="true" data-rex-model-id="{%=model.id%}">
     <div class="model-preview bl_d-flex bl_jc-c bl_ai-c {% if ({%=model.preview%}) { %}{% } else { %} model-preview--active {% } %}" itemprop="contentUrl">
         <span class="model-preview__placeholder"><?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?></span>
-        <div class="model-name bl_d-flex bl_jc-c bl_ai-fe"><div>{%=model.name%}</div></div>
+        <div class="model-name bl_d-flex bl_jc-c bl_ai-fe"><div>{%#model.name%}</div></div>
         <div class="model-tools">
+            <div class="tool-button tool-button--black model__element--title-edit tippy" style="margin-right:15px;" data-tippy-content="<?php _e('Edit Title','rexpansive-builder'); ?>">
+                <?php Rexbuilder_Utilities::get_icon('#Z008-Edit'); ?>
+            </div>
             <div class="tool-button--double-icon--wrap tool-button--edit-thumbnail tippy" data-tippy-content="<?php _e('Thumbnail','rexpansive-builder'); ?>">
                 <div class="tool-button tool-button--inline tool-button--black model__element--edit-thumbnail {% if ({%=model.preview%}) { %}{% } else { %} 'tool-button--image-preview' {% } %}" {% if ({%=model.preview%}) { %}{% } else { %} 'style="background-image:url({%=model.preview%});"' {% } %}>
                     <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
@@ -95,7 +98,7 @@ defined('ABSPATH') or exit;
                     <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                 </div>
             </div>
-            <div class="tool-button tool-button--black rex-close-button model__element--delete">
+            <div class="tool-button tool-button--black rex-close-button model__element--delete tippy" data-tippy-content="<?php _e('Delete','rexpansive-builder'); ?>">
                 <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
             </div>
         </div>
@@ -183,7 +186,7 @@ defined('ABSPATH') or exit;
 
 <script type="text/x-tmpl" id="tmpl-rex-button-delete">
 <div class="button-list__element__tools">
-    <div class="tool-button tool-button--black tool-button--close rex-close-button button__element--delete">
+    <div class="tool-button tool-button--black tool-button--close rex-close-button button__element--delete tippy" data-tippy-content="<?php _e('Delete','rexpansive-builder'); ?>">
         <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
     </div>
 </div>

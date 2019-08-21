@@ -57,6 +57,9 @@ var Rexlive_Modals = (function ($) {
         // models edit
         Model_Edit_Modal.init();
 
+        // models edit title
+        Rexlive_Model_Edit_Name_Modal.init();
+
         // models open warning
         Open_Models_Warning.init();
 

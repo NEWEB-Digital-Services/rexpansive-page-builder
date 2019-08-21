@@ -49,6 +49,34 @@ var Model_Import_Modal = (function($) {
     });
   };
 
+  /**
+   * Editing a model name
+   * @param  {Object} modelData model to edit info
+   * @return {null} 
+   * @since  2.0.0
+   */
+  var _editModelName = function( modelData ) {
+    $.ajax({
+      type: "GET",
+      dataType: "json",
+      url: live_editor_obj.ajaxurl,
+      data: {
+        action: "rex_edit_model_name",
+        nonce_param: live_editor_obj.rexnonce,
+        modelData: modelData,
+      },
+      success: function(response) {
+        if (response.success) {
+          if ( response.data.update !== 0 && response.data.update === parseInt( response.data.modelData.id ) ) {
+            rexmodel_import_props.self.querySelector('[data-rex-model-id="' + response.data.modelData.id + '"] .model-name').innerHTML = '<div>' + response.data.modelData.name + '</div>';
+            _sortModelList();
+          }
+        }
+      },
+      error: function(response) {}
+    });
+  }
+
   var _updateModelList = function() {
     $.ajax({
       type: "GET",
@@ -61,16 +89,17 @@ var Model_Import_Modal = (function($) {
       success: function(response) {
         if (response.success) {
           var currentList = [];
+          var listChanged = false;
           rexmodel_import_props.$self
-          .find(".model__element")
-          .each(function(i, model) {
-            var modelID = $(model).attr("data-rex-model-id");
-            var modelObj = {
-              id: modelID,
-              founded: false
-            };
-            currentList.push(modelObj);
-          });
+            .find(".model__element")
+            .each(function(i, model) {
+              var modelID = $(model).attr("data-rex-model-id");
+              var modelObj = {
+                id: modelID,
+                founded: false
+              };
+              currentList.push(modelObj);
+            });
 
           var updatedList = response.data.updated_list;
 
@@ -94,21 +123,23 @@ var Model_Import_Modal = (function($) {
 
           for (i = 0; i < updatedList.length; i++) {
             if (!updatedList[i].founded) {
-              rexmodel_import_props.$self.find(".model-list").prepend(
-                tmpl("rexlive-tmpl-model-item-list", {
+              listChanged = true;
+              var modelPreview = tmpl("rexlive-tmpl-model-item-list", {
                   id: updatedList[i].id,
                   name: updatedList[i].name,
                   preview:
                   updatedList[i].preview_image_url != ""
                   ? updatedList[i].preview_image_url
                   : ""
-                })
-                );
+                });
+              rexmodel_import_props.$self.find(".model-list").prepend( modelPreview );
             }
           }
 
+          // remove useless models
           for (i = 0; i < currentList.length; i++) {
             if (!currentList[i].founded) {
+              listChanged = true;
               rexmodel_import_props.$self
               .find(
                 '.model__element[data-rex-model-id="' +
@@ -117,6 +148,11 @@ var Model_Import_Modal = (function($) {
                 )
               .remove();
             }
+          }
+
+          // order models
+          if ( listChanged ) {
+            _sortModelList();
           }
           
           var event = jQuery.Event("rexlive:lateralMenuReady");
@@ -129,6 +165,33 @@ var Model_Import_Modal = (function($) {
       }
     });
   };
+
+  /**
+   * Sorting the model list by model name
+   * @return {null} [description]
+   * @since  2.0.0
+   */
+  var _sortModelList = function() {
+    var modelWrap = rexmodel_import_props.$self.find(".model-list")[0]
+    var models = [].slice.call( modelWrap.querySelectorAll('.model__element') );
+    models.sort(function(a, b) {
+      var a_title = a.querySelector('.model-name').textContent.toUpperCase();
+      var b_title = b.querySelector('.model-name').textContent.toUpperCase();
+
+      if (a_title < b_title) {
+        return -1;
+      }
+      if (a_title > b_title) {
+        return 1;
+      }
+
+      return 0;
+    });
+    modelWrap.innerHTML = '';
+    models.forEach(function(model) {
+      modelWrap.appendChild( model );
+    });
+  }
 
   /**
    * Send a POST request to delete a model
@@ -1250,6 +1313,7 @@ var Model_Import_Modal = (function($) {
     var self = document.getElementById('rex-models-list');
     var $self = $(self);
     rexmodel_import_props = {
+      self: self,
       $self: $self,
     };
     _linkDocumentListeners();
@@ -1265,6 +1329,7 @@ var Model_Import_Modal = (function($) {
     updateModelList: _updateModelList,
     editModelThumbnail: _editModelThumbnail,
     resetModelThumbnail: _resetModelThumbnail,
-    deleteModel: _deleteModel
+    deleteModel: _deleteModel,
+    editModelName: _editModelName
   };
 })(jQuery);

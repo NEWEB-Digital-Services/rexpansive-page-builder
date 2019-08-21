@@ -16,7 +16,7 @@ defined('ABSPATH') or exit;
             <li><a href="#" data-rex-tab-target="rex-models-list" class="active"><?php _e( 'Models', '' ); ?></a></li>
             <li><a href="#" data-rex-tab-target="rex-buttons-list"><?php _e( 'Buttons', '' ); ?></a></li>
         </ul>
-        <div class="tool-button tool-button--black tool-button--close rex-close-button rex-lateral-panel--close">
+        <div class="tool-button tool-button--black tool-button--close rex-close-button rex-lateral-panel--close tippy" data-tippy-content="<?php _e('Close','rexpansive-builder'); ?>">
             <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
         </div>
     </div>
@@ -31,6 +31,8 @@ defined('ABSPATH') or exit;
                     'post_type' => array('rex_model'),
                     'post_status' => array('publish', 'private'),
                     'posts_per_page' => '-1',
+                    'orderby' => 'title',
+                    'order' => 'ASC'
                 );
 
                 // The Query
@@ -51,6 +53,9 @@ defined('ABSPATH') or exit;
                                 <span class="model-preview__placeholder"><?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?></span>
                                 <div class="model-name bl_d-flex bl_jc-c bl_ai-fe"><div><?php echo $model_title;?></div></div>
                                 <div class="model-tools">
+                                    <div class="tool-button tool-button--black model__element--title-edit tippy" style="margin-right:15px;" data-tippy-content="<?php _e('Edit Title','rexpansive-builder'); ?>">
+                                        <?php Rexbuilder_Utilities::get_icon('#Z008-Edit'); ?>
+                                    </div>
                                     <div class="tool-button--double-icon--wrap tool-button--edit-thumbnail tippy" data-tippy-content="<?php _e('Thumbnail','rexpansive-builder'); ?>">
                                         <div class="tool-button tool-button--inline tool-button--black model__element--edit-thumbnail <?php echo ( $model_previewUrl != "" ? 'tool-button--image-preview' : '' ); ?>" <?php echo ( $model_previewUrl != "" ? 'style="background-image:url(' . $model_previewUrl . ');"' : '' ); ?>>
                                             <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
@@ -59,7 +64,7 @@ defined('ABSPATH') or exit;
                                             <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                                         </div>
                                     </div>
-                                    <div class="tool-button tool-button--black rex-close-button model__element--delete" >
+                                    <div class="tool-button tool-button--black rex-close-button model__element--delete tippy" data-tippy-content="<?php _e('Delete','rexpansive-builder'); ?>">
                                         <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                                     </div>
                                 </div>
@@ -93,7 +98,7 @@ defined('ABSPATH') or exit;
                             <li class="button-list__element" draggable="true">
                                 <div class="rex-container"><?php echo $buttonHTML ?></div>
                                 <div class="button-list__element__tools">
-                                    <div class="tool-button tool-button--black rex-close-button button__element--delete">
+                                    <div class="tool-button tool-button--black rex-close-button button__element--delete tippy" data-tippy-content="<?php _e('Delete','rexpansive-builder'); ?>">
                                         <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
                                     </div>
                                 </div>

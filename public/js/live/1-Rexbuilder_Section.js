@@ -568,7 +568,7 @@ var Rexbuilder_Section = (function($) {
       var $row = $newSection.find(".grid-stack-row");
 
       // launch the grid on the new section
-      $row.perfectGridGalleryEditor();
+      $row.perfectGridGalleryEditor({editorMode: true});
 
       // relaunch sortable
       Rexbuilder_Util.$rexContainer.sortable("refresh");
@@ -777,7 +777,7 @@ var Rexbuilder_Section = (function($) {
         "data-rexlive-section-number",
         Rexbuilder_Util.lastSectionNumber
       );
-      $newSection.find(".grid-stack-row").perfectGridGalleryEditor();
+      $newSection.find(".grid-stack-row").perfectGridGalleryEditor({editorMode:true});
 
       Rexbuilder_Util.$rexContainer.sortable("refresh");
 
@@ -908,7 +908,7 @@ var Rexbuilder_Section = (function($) {
         "data-rexlive-section-number",
         Rexbuilder_Util.lastSectionNumber
       );
-      $newSection.find(".grid-stack-row").perfectGridGalleryEditor();
+      $newSection.find(".grid-stack-row").perfectGridGalleryEditor({editorMode:true});
 
       Rexbuilder_Util.$rexContainer.sortable("refresh");
 
@@ -1058,7 +1058,7 @@ var Rexbuilder_Section = (function($) {
 
       var $row = $newSection.find(".grid-stack-row");
 
-      $row.perfectGridGalleryEditor();
+      $row.perfectGridGalleryEditor({editorMode:true});
 
       // Launching and Updating tools
       Rexbuilder_Util_Editor.updateModelSectionTools( $newSection, $newSectionData );
@@ -1275,7 +1275,7 @@ var Rexbuilder_Section = (function($) {
 
             var $row = $newSection.find(".grid-stack-row");
 
-            $row.perfectGridGalleryEditor();
+            $row.perfectGridGalleryEditor({editorMode:true});
 
             // Launching and Updating tools
             Rexbuilder_Util_Editor.updateModelSectionTools( $newSection, $newSectionData );
@@ -1450,7 +1450,7 @@ var Rexbuilder_Section = (function($) {
 
           var $row = $newSection.find(".grid-stack-row");
 
-          $row.perfectGridGalleryEditor();
+          $row.perfectGridGalleryEditor({editorMode:true});
 
           // Launching and Updating tools
           Rexbuilder_Util_Editor.updateModelSectionTools( $newSection, $newSectionData );

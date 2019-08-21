@@ -57,13 +57,17 @@ var Model_Lateral_Menu = (function ($) {
     });
 
     /**
-     * Handling Model delete
+     * Opens modal to edit the RexModel name
      * @param  {MouseEvent} e) Click event
      * @return {null}
      */
-    Rexlive_Base_Settings.$document.on('click', '.model__element--delete', function (e) {
+    Rexlive_Base_Settings.$document.on('click', '.model__element--title-edit', function (e) {
       var model = this.parentNode.parentNode.parentNode;
-      Model_Import_Modal.deleteModel( model );
+      var modelData = {
+        id: model.getAttribute('data-rex-model-id'),
+        name: model.querySelector('.model-name').textContent
+      };
+      Rexlive_Model_Edit_Name_Modal.openModal(modelData);
     });
 
     /**
@@ -78,6 +82,16 @@ var Model_Lateral_Menu = (function ($) {
         $model.attr("data-rex-model-id"),
         $model.attr("data-rex-model-thumbnail-id")
       );
+    });
+
+    /**
+     * Handling Model delete
+     * @param  {MouseEvent} e) Click event
+     * @return {null}
+     */
+    Rexlive_Base_Settings.$document.on('click', '.model__element--delete', function (e) {
+      var model = this.parentNode.parentNode.parentNode;
+      Model_Import_Modal.deleteModel( model );
     });
 
     /**

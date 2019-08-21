@@ -429,6 +429,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'rexlive-block-link-url', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Block_Url_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-block-options', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Block_Options_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-model-options', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Model_Modal.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'rexlive-model-edit-name', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Model_Edit_Name_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-open-models-warning', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Open_Models_Warning.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-custom-layouts-options', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_CustomLayout_Modal.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-edit-modals', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Model_Edit_Modal.js', array( 'jquery' ), null, true );
@@ -2329,6 +2330,39 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	}
 
 	/**
+	 * Edit the model name
+	 * @return JSON response
+	 * @since  2.0.0
+	 */
+	public function rex_edit_model_name(){
+		$nonce = $_GET['nonce_param'];
+		$modelData = $_GET['modelData'];
+
+        $response = array(
+            'error' => false,
+            'msg' => '',
+            'modelData' => $modelData
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+		$response['error'] = false;
+
+		if ( isset( $modelData ) ) {
+			$response['update'] = wp_update_post( array(
+				'ID' => $modelData['id'],
+				'post_title' => $modelData['name']
+			) );
+		}
+
+		wp_send_json_success($response);
+	}
+
+	/**
 	 * Get RexModels list to display on lateral menu, ready to drag on page
 	 * @return JSON updated list
 	 * @since  2.0.0
@@ -2354,6 +2388,8 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			'post_type'              => array( 'rex_model' ),
 			'post_status'            => array( 'publish', 'private' ),
 			'posts_per_page'         => '-1',
+			'orderby' => 'title',
+            'order' => 'ASC'
 		);
 
 		$modelList = array();

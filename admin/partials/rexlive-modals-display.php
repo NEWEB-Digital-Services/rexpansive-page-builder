@@ -1006,6 +1006,7 @@ defined('ABSPATH') or exit;
 
 <?php include_once( 'modals/rexlive-model-add-modal.php' ); ?>
 <?php include_once( 'modals/rexlive-model-edit-modal.php' ); ?>
+<?php include_once( 'modals/rexlive-model-edit-name-modal.php' ); ?>
 <?php include_once( 'modals/rexlive-model-save-modal.php' ); ?>
 
 <?php include_once( 'modals/rexlive-change-layout-modal.php' ); ?>

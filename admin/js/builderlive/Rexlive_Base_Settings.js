@@ -5,6 +5,32 @@
 var Rexlive_Base_Settings = (function($) {
   "use strict";
 
+  var hasClass, addClass, removeClass, toggleClass;
+
+  if ('classList' in document.documentElement) {
+    hasClass = function (el, className) { return el.classList.contains(className); };
+    addClass = function (el, className) { el.classList.add(className); };
+    removeClass = function (el, className) { el.classList.remove(className); };
+  } else {
+    hasClass = function (el, className) {
+      return new RegExp('\\b' + className + '\\b').test(el.className);
+    };
+    addClass = function (el, className) {
+      if (!hasClass(el, className)) { el.className += ' ' + className; }
+    };
+    removeClass = function (el, className) {
+      el.className = el.className.replace(new RegExp('\\b' + className + '\\b', 'g'), '');
+    };
+  }
+
+  toggleClass = function (el, className) {
+    if (hasClass(el, className)) {
+      removeClass(el, className);
+    } else {
+      addClass(el, className);
+    }
+  }
+
   var _tooltips = function() {
     tippy(".tippy", {
       arrow: true,
@@ -66,6 +92,10 @@ var Rexlive_Base_Settings = (function($) {
     htmlEncode: htmlEncode,
     viewport: _viewport,
     launchTooltips: _tooltips,
-    encodeData: _encodeData
+    encodeData: _encodeData,
+    addClass: addClass,
+    removeClass: removeClass,
+    hasClass: hasClass,
+    toggleClass: toggleClass
   };
 })(jQuery);

@@ -341,9 +341,7 @@ var Model_Modal = (function($) {
                       customizationsNames: layoutsNames
                     }
                   };
-                  Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(
-                    modelData
-                  );
+                  Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage( modelData );
 
                   Rexbuilder_Util_Admin_Editor.highlightRowSetData({
                     rexlive_model_id: modelID,
@@ -353,9 +351,8 @@ var Model_Modal = (function($) {
                   Rexbuilder_Util_Admin_Editor.updateModelState();
 
                   model_created = true;
-                  rexmodel_modal_props.$model_insert_success_wrap.text(
-                    "Modello Inserito"
-                  );
+                  rexmodel_modal_props.$model_insert_success_wrap.text( "Model inserted" );
+                  Model_Import_Modal.updateModelList();
                   setTimeout(function() {
                     _closeModal();
                     rexmodel_modal_props.$self.removeClass('setting-saving');
