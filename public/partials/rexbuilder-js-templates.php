@@ -453,6 +453,14 @@ $tool_button_classes = 'tool-button';
     </figure>
 </script>
 
+<script type="text/x-tmpl" id="tmpl-block-overlay">
+    <div class="responsive-block-overlay">
+        <div class="rex-custom-scrollbar rex-custom-position">
+            <div class="text-wrap rex-content-resizable" style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px;"></div>
+        </div>
+    </div>
+</script>
+
 <script type="text/x-tmpl" id="tmpl-link-block">
     <a class="element-link hovered" href="{%=link.url%}" title="{%=link.url%}">
     </a>

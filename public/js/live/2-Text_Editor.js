@@ -1993,8 +1993,8 @@ var TextEditor = (function ($) {
         Rexbuilder_Util.addPhotoSwipeElementFromInline(
           this.traceImg,
           this.traceImg.src,
-          this.traceImg.height,
           this.traceImg.width,
+          this.traceImg.height,
           this.traceImg.type        
         )
       }

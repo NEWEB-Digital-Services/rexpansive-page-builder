@@ -2697,10 +2697,8 @@ var Rexbuilder_Util = (function($) {
       tmpl.arg = "image";
       var $gridstackItemContent = $itemContent.parents(".grid-stack-item-content");
 
-      console.log($itemContent.parents(".pswp-figure").length);
-
       if ($itemContent.parents(".pswp-figure").length == 0) {
-        console.log("abcdef");
+        console.log("dentro if");
         $itemContent.parent().prepend(
           tmpl("tmpl-photoswipe-block", {
             link: url,
@@ -2717,40 +2715,31 @@ var Rexbuilder_Util = (function($) {
   };
 
   var _addPhotoSwipeElementFromInline = function($img, url, w, h, t) {
-    // var block = $(this.traceImg).parents(".text-wrap");
-    var block = this.traceImg;
     // var div = document.createElement("div");
-    // div.classList.add("rex-custom-scrollbar")
-    // div.classList.add("rex-custom-position");
+    // div.classList.add("responsive-block-overlay");
+    // var div2 = document.createElement("div");
+    // div.appendChild(div2);
+    // div2.classList.add("rex-custom-scrollbar");
+    // div2.classList.add("rex-custom-position");
+    // var div3 = document.createElement("div");
+    // 
+    var div = "<div class=\"responsive-block-overlay\"><div class=\"rex-custom-scrollbar rex-custom-position\"> <div class=\"text-wrap rex-content-resizable\" style=\"padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px;\"></div></div></div>";
 
     tmpl.arg = "image";
     
-    block.prepend(tmpl("tmpl-photoswipe-block", {
+    $img.parentElement.innerHTML += tmpl("tmpl-photoswipe-block", {
         link: url,
         width: w,
         height: h,
         type: t
-      })
-    );
-
-    // block.innerHTML += tmpl("tmpl-photoswipe-block", {
-    //     link: this.traceImg.src,
-    //     width: this.traceImg.width,
-    //     height: this.traceImg.height,
-    //     type: this.traceImg.type
-    //   });
-    // block.innerHTML += "<div class=\"rex-custom-scrollbar\"></div>";
-    
-    // var $gridstackItemContent = $(block).parents(".grid-stack-item-content");
-    // var $pspwItem = $gridstackItemContent.find(".pswp-item");
-    // $(block).detach().appendTo($pspwItem);
-
-    // block.append(div);
-
-    // block.find(".rexbuilder-block-data").attr("data-photoswipe", true);
+      });
+    $($img).parents(".text-wrap").find(".pswp-figure").append(div);
+    // $($img).parents(".grid-item-content").innerHTML += tmpl("tmpl-block-overlay");
   };
 
   var removePhotoSwipeElement = function($itemContent) {
+    console.log("rimuovo");
+    
     var $pswpFigure = $itemContent.parents(".pswp-figure");
     if ($pswpFigure.length != 0) {
       var $pspwParent = $pswpFigure.parent();
@@ -2764,7 +2753,6 @@ var Rexbuilder_Util = (function($) {
     // (children of gallerySelector)
     var parseThumbnailElements = function(el) {
       //var thumbElements = el.childNodes,
-
       var thumbElements = $(el)
           .find(".pswp-figure")
           .get(),
