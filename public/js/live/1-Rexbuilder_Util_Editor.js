@@ -1626,19 +1626,24 @@ var Rexbuilder_Util_Editor = (function($) {
     undoStackArray = [];
     redoStackArray = [];
 
+    this.$styleElement = $("#rexpansive-builder-style-inline-css");
+    // _synchGradient();
+  };
+
+  var load = function() {
     _tooltips();
     _checkVisibleRow();
     _checkNewEmptyPage();
 
-    this.$styleElement = $("#rexpansive-builder-style-inline-css");
     _fixCustomStyleElement();
-    // _synchGradient();
   };
+
   _generateElementNewIDs;
   _fixCopiedElementSlider;
 
   return {
     init: init,
+    load: load,
     // removeScrollBar: _removeScrollBar,
     removeTextEditor: _removeTextEditor,
     removeHandles: _removeHandles,

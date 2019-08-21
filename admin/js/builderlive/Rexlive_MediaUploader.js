@@ -140,7 +140,7 @@ var Rexlive_MediaUploader = (function($) {
    * @param {Object}  info
    */
   function _openImageLiveMediaUploader(info) {
-    setUserSetting('imgsize', info.imageSize);
+    setUserSetting('imgsize', 'undefined' !== typeof info.imageSize ? info.imageSize : 'full' );
     
     // If the frame is already opened, return it
     if (image_uploader_frame_direct) {

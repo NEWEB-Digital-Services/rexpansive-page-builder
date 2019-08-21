@@ -80,7 +80,26 @@ $buttonsIDsUsed = json_decode($buttonsIDsJSON, true);
 	<?php include_once "rexlive-page-settings.php"; ?>
 	<?php include_once "toolbox/rexlive-toolbox-fixed.php"; ?>
 	<div class="rexpansive-live-frame-container">
-		<iframe id="rexpansive-live-frame" src="<?php echo $source; ?>" allowfullscreen="1" style="width:100%;height:100%;border: 0px;"></iframe>
+		<iframe id="rexpansive-live-frame" src="" data-src-iframe="<?php echo $source; ?>" allowfullscreen="1" style="width:100%;height:100%;border: 0px;"></iframe>
+		<script>
+;(function() {
+	/**
+	 * Loading the iframe only when the parent page has complete to load
+	 * to prevent un-synch communication between them
+	 * 
+	 * @return {null}
+	 * @since  2.0.0
+	 */
+	var handleWindowLoad = function() {
+		var iframeEl = document.getElementById('rexpansive-live-frame');
+		var iframeSrc = iframeEl.getAttribute('data-src-iframe');
+		if ( iframeSrc ) {
+			iframeEl.src = iframeSrc;
+		}
+	};
+	window.addEventListener('load', handleWindowLoad);
+}());
+	</script>
 	</div>
 </div>
 <?php

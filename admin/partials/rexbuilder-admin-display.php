@@ -62,7 +62,7 @@
 					</p>
 				</td>
 			</tr>
-			<tr>
+			<tr class="hide-all">
 				<th><?php _e( 'Fast Load', $this->plugin_name ); ?></th>
 				<td>
 					<label for="rex-enable-fast_load">
@@ -143,7 +143,7 @@
 				?>
 				</td>
 			</tr>
-			<tr>
+			<tr class="hide-all">
 				<th>
 					<?php wp_nonce_field( 'install-contents-nonce', 'installContentsNonce' ); ?>
 					<button id="install-contents-btn" class="button button-primary"><?php _e( 'Reinstall Contents', 'rexpansive-builder' ); ?></button>

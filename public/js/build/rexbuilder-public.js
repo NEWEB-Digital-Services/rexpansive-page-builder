@@ -552,6 +552,9 @@ var Rexbuilder_App = (function($) {
   };
 
   var load = function() {
+    if (Rexbuilder_Util.editorMode) {
+      Rexbuilder_Util_Editor.load();
+    }
     /* -- Launching the textfill -- */
     var $textFillContainer = $(".text-fill-container-canvas");
     if ($textFillContainer.length > 0) {
