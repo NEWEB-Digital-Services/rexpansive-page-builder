@@ -1990,11 +1990,13 @@ var TextEditor = (function ($) {
       }
 
       if ($el.hasClass("me-image-zoom")) {
-        var block = $(this.traceImg).parents(".grid-stack-item");
-
-        console.log(this.traceImg);
-
-        block.find(".rexbuilder-block-data").attr("data-photoswipe", true);
+        Rexbuilder_Util.addPhotoSwipeElementFromInline(
+          this.traceImg,
+          this.traceImg.src,
+          this.traceImg.height,
+          this.traceImg.width,
+          this.traceImg.type        
+        )
       }
 
       if ($el.hasClass("me-image-replace")) {

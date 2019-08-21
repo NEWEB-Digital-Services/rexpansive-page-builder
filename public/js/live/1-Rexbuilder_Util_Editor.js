@@ -1111,7 +1111,6 @@ var Rexbuilder_Util_Editor = (function($) {
       modelNumber: ( null !== Rexbuilder_Util_Editor.visibleRow ? ( typeof Rexbuilder_Util_Editor.visibleRow.getAttribute("data-rexlive-model-number") != "undefined" ? Rexbuilder_Util_Editor.visibleRow.getAttribute("data-rexlive-model-number") : "" ) : null ),
       modelEditing: ( null !== Rexbuilder_Util_Editor.visibleRow ? ( typeof Rexbuilder_Util_Editor.visibleRow.getAttribute("data-rexlive-model-editing") != "undefined" ? Rexbuilder_Util_Editor.visibleRow.getAttribute("data-rexlive-model-editing") : "" ) : null ),
     };
-
     var data = {
       eventName: "rexlive:traceVisibleRow",
       sectionTarget: Rexbuilder_Util_Editor.visibleRowInfo,
@@ -1626,19 +1625,24 @@ var Rexbuilder_Util_Editor = (function($) {
     undoStackArray = [];
     redoStackArray = [];
 
+    this.$styleElement = $("#rexpansive-builder-style-inline-css");
+    // _synchGradient();
+  };
+
+  var load = function(){
     _tooltips();
     _checkVisibleRow();
     _checkNewEmptyPage();
 
-    this.$styleElement = $("#rexpansive-builder-style-inline-css");
     _fixCustomStyleElement();
-    // _synchGradient();
-  };
+  }
+
   _generateElementNewIDs;
   _fixCopiedElementSlider;
 
   return {
     init: init,
+    load: load,
     // removeScrollBar: _removeScrollBar,
     removeTextEditor: _removeTextEditor,
     removeHandles: _removeHandles,

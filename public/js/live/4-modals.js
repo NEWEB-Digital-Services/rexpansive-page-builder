@@ -1200,7 +1200,7 @@
       );
     });
 
-    $document.on("rexlive:apply_background_image_block", function(e) {  
+    $document.on("rexlive:apply_background_image_block", function(e) {
       var data = e.settings.data_to_send;
       Rexbuilder_Util_Editor.updatingImageBg = true;
       var target = data.target;

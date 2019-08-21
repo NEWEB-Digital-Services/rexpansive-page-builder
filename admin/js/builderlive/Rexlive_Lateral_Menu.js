@@ -62,7 +62,7 @@ var Model_Lateral_Menu = (function ($) {
      * @return {null}
      */
     Rexlive_Base_Settings.$document.on('click', '.model__element--delete', function (e) {
-      var model = this.parentNode.parentNode;
+      var model = this.parentNode.parentNode.parentNode;
       Model_Import_Modal.deleteModel( model );
     });
 

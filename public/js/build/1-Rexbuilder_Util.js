@@ -1654,8 +1654,6 @@ var Rexbuilder_Util = (function($) {
           break;
         case "photoswipe":
           if (!Rexbuilder_Util.editorMode) {
-            console.log($itemContent);
-            console.log(targetProps);
             if (targetProps["photoswipe"] == "true") {
               addPhotoSwipeElement(
                 $itemContent,
@@ -2694,15 +2692,15 @@ var Rexbuilder_Util = (function($) {
   };
 
   var addPhotoSwipeElement = function($itemContent, url, w, h, t) {
-    console.log("Ci siamo");
     if ( !$itemContent.parents('.grid-stack-item').hasClass('block-has-slider') )
     {
       tmpl.arg = "image";
-      var $gridstackItemContent = $itemContent.parents(
-        ".grid-stack-item-content"
-      );
+      var $gridstackItemContent = $itemContent.parents(".grid-stack-item-content");
+
+      console.log($itemContent.parents(".pswp-figure").length);
 
       if ($itemContent.parents(".pswp-figure").length == 0) {
+        console.log("abcdef");
         $itemContent.parent().prepend(
           tmpl("tmpl-photoswipe-block", {
             link: url,
@@ -2714,7 +2712,42 @@ var Rexbuilder_Util = (function($) {
         var $pspwItem = $gridstackItemContent.find(".pswp-item");
         $itemContent.detach().appendTo($pspwItem);
       }
+      console.log("dopo if detach");
     }
+  };
+
+  var _addPhotoSwipeElementFromInline = function($img, url, w, h, t) {
+    // var block = $(this.traceImg).parents(".text-wrap");
+    var block = this.traceImg;
+    // var div = document.createElement("div");
+    // div.classList.add("rex-custom-scrollbar")
+    // div.classList.add("rex-custom-position");
+
+    tmpl.arg = "image";
+    
+    block.prepend(tmpl("tmpl-photoswipe-block", {
+        link: url,
+        width: w,
+        height: h,
+        type: t
+      })
+    );
+
+    // block.innerHTML += tmpl("tmpl-photoswipe-block", {
+    //     link: this.traceImg.src,
+    //     width: this.traceImg.width,
+    //     height: this.traceImg.height,
+    //     type: this.traceImg.type
+    //   });
+    // block.innerHTML += "<div class=\"rex-custom-scrollbar\"></div>";
+    
+    // var $gridstackItemContent = $(block).parents(".grid-stack-item-content");
+    // var $pspwItem = $gridstackItemContent.find(".pswp-item");
+    // $(block).detach().appendTo($pspwItem);
+
+    // block.append(div);
+
+    // block.find(".rexbuilder-block-data").attr("data-photoswipe", true);
   };
 
   var removePhotoSwipeElement = function($itemContent) {
@@ -3899,6 +3932,7 @@ var Rexbuilder_Util = (function($) {
 
   return {
     init: init,
+    addPhotoSwipeElementFromInline: _addPhotoSwipeElementFromInline,
     viewport: _viewport,
     getYoutubeID: getYoutubeID,
     transitionEvent: _transitionEvent,
