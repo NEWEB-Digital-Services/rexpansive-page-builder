@@ -2,5 +2,6 @@
 /node_modules/
 /rexpansive-builder/
 package-lock.json
+/test-assets/
 *.log
 *.zip
