@@ -1989,14 +1989,43 @@ var TextEditor = (function ($) {
         this.placeEditImgToolbar();
       }
 
-      if ($el.hasClass("me-image-zoom")) {
-        Rexbuilder_Util.addPhotoSwipeElementFromInline(
-          this.traceImg,
-          this.traceImg.src,
-          this.traceImg.width,
-          this.traceImg.height,
-          this.traceImg.type        
-        )
+      if ($el.hasClass("me-image-inline-photoswipe")) {
+        var $traceImg = $(this.traceImg);
+
+        if("undefined" === typeof $traceImg.attr("inline-photoswipe")) {
+          $traceImg.attr("inline-photoswipe", true);
+        } else {
+          $traceImg.attr("inline-photoswipe", 
+            $traceImg.attr("inline-photoswipe") == "true" ? false : true
+            );
+        }
+
+        if ($traceImg.attr("inline-photoswipe") == "true") {
+          /*Setting photoswipe*/
+
+          var $traceImgParent = $traceImg.parent();
+
+          tmpl.arg = "image";
+          $traceImgParent.append(tmpl("tmpl-photoswipe-block-inline", {
+              link: this.traceImg.src,
+              width: this.traceImg.width,
+              height: this.traceImg.height,
+              type: this.traceImg.type
+            })
+          );
+          var $pswpItem = $($traceImgParent).find(".pswp-item");
+          $traceImg.detach().appendTo($pswpItem);
+        } else {
+          /*Removing photoswipe*/
+          
+          var $pswpFigure = $traceImg.parents(".pswp-figure");
+          var $pspwParent = $pswpFigure.parent();
+
+          $traceImg.detach().appendTo($pspwParent);
+
+          $pswpFigure.remove();
+        }
+        this.placeEditImgToolbar();
       }
 
       if ($el.hasClass("me-image-replace")) {

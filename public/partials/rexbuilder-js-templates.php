@@ -387,7 +387,7 @@ $tool_button_classes = 'tool-button';
       </button>
     </li>
     <li>
-      <button class="medium-editor-action me-image-zoom">
+      <button class="medium-editor-action me-image-inline-photoswipe">
         <?php Rexbuilder_Utilities::get_icon('#Z007-Zoom'); ?>
       </button>
     </li>
@@ -445,20 +445,23 @@ $tool_button_classes = 'tool-button';
 <!-- No Editor templates -->
 
 <script type="text/x-tmpl" id="tmpl-photoswipe-block">
-    <figure class="pswp-figure" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
-        <a class="pswp-item" href="{%=image.link%}" itemprop="contentUrl" data-size="{%=image.width%}x{%=image.height%}">
-            <div class="pswp-item-thumb" data-thumb-image-type="{%=image.type%}" data-thumburl="{%=image.link%}" itemprop="thumbnail"></div>
-        </a>
-        <figcaption class="pswp-item-caption" itemprop="caption description"></figcaption>
-    </figure>
+<figure class="pswp-figure" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject">
+    <a class="pswp-item" href="{%=image.link%}" itemprop="contentUrl" data-size="{%=image.width%}x{%=image.height%}">
+        <div class="pswp-item-thumb" data-thumb-image-type="{%=image.type%}" data-thumburl="{%=image.link%}" itemprop="thumbnail"></div>
+    </a>
+    <figcaption class="pswp-item-caption" itemprop="caption description"></figcaption>
+</figure>
 </script>
 
-<script type="text/x-tmpl" id="tmpl-block-overlay">
-    <div class="responsive-block-overlay">
-        <div class="rex-custom-scrollbar rex-custom-position">
-            <div class="text-wrap rex-content-resizable" style="padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px;"></div>
-        </div>
-    </div>
+<script type="text/x-tmpl" id="tmpl-photoswipe-block-inline">
+<figure class="pswp-figure" itemprop="associatedMedia" itemscope itemtype="http://schema.org/ImageObject" style="width: {%=image.width%}px; height:{%=image.height%}px">
+    <a class="pswp-item" href="{%=image.link%}" itemprop="contentUrl" data-size="{%=image.width%}x{%=image.height%}" style="width: {%=image.width%}px; height={%=image.height%}px">
+        <div class="pswp-item-thumb" data-thumb-image-type="{%=image.type%}" data-thumburl="{%=image.link%}" itemprop="thumbnail"></div>
+        <div class="full-image-background" style="background-image:url('{%=image.link%}');"></div>
+        <div class="rex-custom-scrollbar rex-custom-position"></div>
+    </a>
+    <figcaption class="pswp-item-caption" itemprop="caption description"></figcaption>
+</figure>
 </script>
 
 <script type="text/x-tmpl" id="tmpl-link-block">

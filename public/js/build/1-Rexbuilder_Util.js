@@ -2696,7 +2696,6 @@ var Rexbuilder_Util = (function($) {
     {
       tmpl.arg = "image";
       var $gridstackItemContent = $itemContent.parents(".grid-stack-item-content");
-
       if ($itemContent.parents(".pswp-figure").length == 0) {
         console.log("dentro if");
         $itemContent.parent().prepend(
@@ -2712,29 +2711,6 @@ var Rexbuilder_Util = (function($) {
       }
       console.log("dopo if detach");
     }
-  };
-
-  var _addPhotoSwipeElementFromInline = function($img, url, w, h, t) {
-    // var div = document.createElement("div");
-    // div.classList.add("responsive-block-overlay");
-    // var div2 = document.createElement("div");
-    // div.appendChild(div2);
-    // div2.classList.add("rex-custom-scrollbar");
-    // div2.classList.add("rex-custom-position");
-    // var div3 = document.createElement("div");
-    // 
-    var div = "<div class=\"responsive-block-overlay\"><div class=\"rex-custom-scrollbar rex-custom-position\"> <div class=\"text-wrap rex-content-resizable\" style=\"padding-top:5px;padding-right:5px;padding-bottom:5px;padding-left:5px;\"></div></div></div>";
-
-    tmpl.arg = "image";
-    
-    $img.parentElement.innerHTML += tmpl("tmpl-photoswipe-block", {
-        link: url,
-        width: w,
-        height: h,
-        type: t
-      });
-    $($img).parents(".text-wrap").find(".pswp-figure").append(div);
-    // $($img).parents(".grid-item-content").innerHTML += tmpl("tmpl-block-overlay");
   };
 
   var removePhotoSwipeElement = function($itemContent) {
@@ -3920,7 +3896,6 @@ var Rexbuilder_Util = (function($) {
 
   return {
     init: init,
-    addPhotoSwipeElementFromInline: _addPhotoSwipeElementFromInline,
     viewport: _viewport,
     getYoutubeID: getYoutubeID,
     transitionEvent: _transitionEvent,
