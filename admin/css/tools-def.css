@@ -16854,7 +16854,7 @@ input:disabled + .rex_edit_title_slider {
 
 .tool-option.toolbox-collapse-grid {
   font-size: 13px;
-  padding-right: 20px; }
+  margin-right: 10px; }
 
 .close-toolbox {
   text-align: center;

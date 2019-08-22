@@ -166,7 +166,7 @@
   &.toolbox-collapse-grid {
     @if( $small-tools == true ) {
       font-size: 13px;
-      padding-right: 20px;
+      margin-right: 10px;
     }
   }
 }

@@ -2918,7 +2918,7 @@
               gridstack.minHeight(e, e.getAttribute('data-gs-height'));
             }
 
-            elementEdited = typeof elemData.getAttribute("data-block_dimensions_live_edited") != "undefined" && elemData.getAttribute("data-block_dimensions_live_edited").toString() == "true";
+            elementEdited = elemData.getAttribute("data-block_dimensions_live_edited") && elemData.getAttribute("data-block_dimensions_live_edited").toString() == "true";
             
             if ( elementEdited ) {
               var blockTextHeight = gallery.calculateTextWrapHeight($elem.find('.text-wrap'));

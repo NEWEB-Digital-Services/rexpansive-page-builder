@@ -156,29 +156,6 @@ class Rexbuilder_Activator {
 			
 			Rexbuilder_Import_Utilities::remove_media_file( $xml_file['file'] );
 		}
-
-		// $model_args = array(
-		// 	'post_content' => '',	// @todo
-		// 	'post_title' => '',		// @todo
-		// 	'post_status' => 'private',
-		// 	'comment_status' => 'closed',
-		// 	'ping_status' => 'closed',
-		// 	'post_name' => '',		// @todo
-		// 	'post_type' => 'rex_model'
-		// );
-
-		// insert model
-		// $model_ID = wp_insert_post( $model_args );
-
-		// import thumbnail
-		// to import on media folder and create relative media post
-
-		// insert model postadata
-		// _rexbuilder_active
-		// _save_from_backend
-		// _rex_model_customization_names
-		// _rex_model_customization_default
-		// _thumbnail_id
 	}
 
 	/**
