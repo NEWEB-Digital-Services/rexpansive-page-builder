@@ -1,114 +1,252 @@
-=== Plugin Name ===
-Contributors: (this should be a list of wordpress.org userid's)
-Donate link: htto://www.neweb.info/
-Tags: comments, spam
-Requires at least: 3.0.1
-Tested up to: 3.4
-Stable tag: 4.3
+=== Rexpansive Builder ===
+Contributors: neweb_agency
+Donate link: http://www.neweb.info/
+Tags: builder, composer, content builder, custom, drag and drop, editor, page builder, page composer, responsive, theme
+Requires at least: 4.2
+Tested up to: 5.2.2
+Stable tag: 2.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
-Here is a short description of the plugin.  This should be no more than 150 characters.  No markup here.
+The new and awesome plugin to build a page in 1 minute! Expand your mind!
 
 == Description ==
 
-This is the long description.  No limit, and you can use Markdown (as well as in the following sections).
+### REXPANSIVE - The Page Builder with the maximum fluidity.
 
-For backwards compatibility, if this section is missing, the full length of the short description will be used, and
-Markdown parsed.
+Thanks to the evolved smoothness you can move and resize on the fly blocks with photos, texts, videos and much more, on an advanced matrix. The system will also help you to correct alignments and placements, guaranteeing a balance between creativity and design, avoiding annoying attempts to make adjustments.
 
-A few notes about the sections above:
+### Real-time update directly on the public part, allowing you to save time.
 
-*   "Contributors" is a comma separated list of wp.org/wp-plugins.org usernames
-*   "Tags" is a comma separated list of tags that apply to the plugin
-*   "Requires at least" is the lowest version that the plugin will work on
-*   "Tested up to" is the highest version that you've *successfully used to test the plugin*. Note that it might work on
-higher versions... this is just the highest one you've verified.
-*   Stable tag should indicate the Subversion "tag" of the latest stable version, or "trunk," if you use `/trunk/` for
-stable.
+We know that it is frustrating to move from the reserved to the public part in order to understand the effective changes. Now you will see them immediately, with numerous features at your fingertips.
 
-    Note that the `readme.txt` of the stable tag is the one that is considered the defining one for the plugin, so
-if the `/trunk/readme.txt` file says that the stable tag is `4.3`, then it is `/tags/4.3/readme.txt` that'll be used
-for displaying information about the plugin.  In this situation, the only thing considered from the trunk `readme.txt`
-is the stable tag pointer.  Thus, if you develop in trunk, you can update the trunk `readme.txt` to reflect changes in
-your in-development version, without having that information incorrectly disclosed about the current stable version
-that lacks those changes -- as long as the trunk's `readme.txt` points to the correct stable tag.
+### Add or change your models  & Buttons.
 
-    If no stable tag is provided, it is assumed that trunk is stable, but you should specify "trunk" if that's where
-you put the stable version, in order to eliminate any doubt.
+You can choose your models, update them, create them, delete them and even synchronise them!
+
+### Synchronise your sections or make them independent.
+
+You can finally decide to make a synchronised section on all the other pages, or you can decide to insert it and make it independent.
+
+### An advanced responsive. 
+
+In this way, each device will have photos, videos, texts and the layout it deserves.
+On certain devices, such as the mobile phone, photos or layouts, they have much more impact if set vertically rather than in landscape mode, definitely making them better suited to the desktop.
+
+### Changing the text will be child’s play!
+
+You can edit and draft your text, apply a colour, set the type of font, align it, modify the html, insert images and much more!
+
+### Flexible or ordered, layouts made just for you. 
+
+The idea is to allow two modes of display, ordered or flexible: you can create an ordered display grid, known as “grid”, in which it is the system itself that keeps the elements organized and aligned, or a flexible display, known as “masonry”, with which your photos will maintain their original proportions, so they will always be totally accurate in every respect and Rexpansive will manage the rest.
+
+### Feel free  to change thanks to cancellation.
+
+Thanks to the “Cancel” function you can decide to change your current version, returning to the previous changes and viewing the changes in real time.
+
+### Upload your SVG icons and modify them to your liking.
+
+Once you have uploaded your icons in SVG format, you can decide whether to resize and colour them with thousands of colours. That way, there will be no limit to your creativity.
+
+### Rexslider. The quick & easy slider!
+
+You can create your sliders quickly by inserting them directly into the blocks. You can benefit from the use of the Rexpansive Builder expansion to customise the size swiftly and rapidly !o)
+
+### Collapse! One over the other, in a click!
+
+You can decide to “collapse” all your content, such as photos, texts, videos and much more, with a simple click, placing them one after the other thanks to the “collapse! function.
+
+### Instant. Create faster than the speed of light.
+
+We have eliminated a significant number of tools; everything is now lighter, and performance is better thanks to expansion. You can now create and view the result in an instant.
+
+### Compatible with any theme.
+
+Rexpansive Builder is designed on a massive scale in order to be compatible with your theme. Furthermore, the system is compatible with the most recent browsers and also with older ones, so that you can feel comfortable even on the public side. Obviously, the Rexpansive Builder plugin works perfectly with all themes when a third-party Page Builder is not active.
+
+### More control. More freedom.
+
+You will be able to customize the CSS of every single page. In this way, customisation will be unlimited and will guarantee that you can always do whatever you want.
+
+### Clean interface. The functions will appear only when needed, to offer you a truly relaxing experience.
+
+Our dedication to design has allowed us to create a simple and functional user experience. In fact, the interface will prove to be clean right from the start. In this way, when you modify an element, the functions will appear near to you, optimising the closeness between elements and functions, making it extraordinary and pleasant to update your content.
+
+### So many features. So many possibilities.
+
+### Responsive
+
+Rest assured that every pixel will be responsive!
+
+### Compatible
+
+Compatible with IE9, IE10, IE11, Firefox, Safari, Opera, Chrome.
+
+### Fast
+
+We worked hard to create a fast and fluid page builder like never before.
+
+### Tips
+
+Send us your suggestions or report corrections through the support function.
+
+### Powerful panel
+
+Modify the look and style of your website, thanks to a wide range of options.
+
+### Unlimited Colours
+
+Unlimited colours available for the texts and boxes on your page.
+
+### WPML support
+
+Full integration with the WPML plugin allows you to make use of its various functions.
+
+### Free updates
+
+We believe that showing you our improvements is a gift you truly deserve.
+
+### Grid&Masonry
+
+Flexible or ordered, each section can be set up as desired.
+
+### Ordered
+
+Everything in its place! Organize photos, videos, entire sections.
+
+### Clone
+
+Increase productivity. Copy photos, texts, videos, sections of any size.
+
+### Space
+
+Distribute your content any way you want it. Your creativity will have no limits.
+
+### One page
+
+No loading! Create sections within the page and link them whichever way you wish.
+
+### WooCommerce
+
+Compatible with WooCommerce – you can create more layouts, allowing you to sell more.
+
+### Build
+
+Customise the width and height of each module on any page. It’s simple and intuitive!
+
+### SEO-friendly
+
+Rexpansive uses the best methods to optimize the code and improve SEO.
+
+### Video
+
+Upload videos (Vimeo, YouTube to Mp4), expand and move them. Enjoy the show.
+
+### Overlay
+
+Titles and texts on the images will finally be more visible and vivid.
+
+### Image Options
+
+Stunning commands for photos with PhotoSwipe: galleries, fullscreen, zoom and sharing.
+
+### User friendly
+
+You’ll see how easy it is right away, thanks to the intuitive design created for all.
+
+### Alignments
+
+Texts and photos in their own place: you can put everything wherever you want it.
+
+### Live Editor
+
+The page builder will allow you to edit directly on the public part.
+
+### Links
+
+Each block can be linked to everything, so you can decide what to link.
+
+### Custom Code
+
+For the more experienced among us: you can insert CSS anywhere.
+
+[youtube https://www.youtube.com/watch?v=xlrW_cETz0o]
 
 == Installation ==
 
-This section describes how to install the plugin and get it working.
-
-e.g.
-
-1. Upload `rexbuilder.php` to the `/wp-content/plugins/` directory
+1. Upload `rexpansive-builder-test.php` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Place `<?php do_action('rexbuilder_hook'); ?>` in your templates
 
-== Frequently Asked Questions ==
+= Website =
+[https://www.neweb.info/](https://www.neweb.info/)
 
-= A question that someone might have =
-
-An answer to that question.
-
-= What about foo bar? =
-
-Answer to foo bar dilemma.
+== Bug Submission and Forum Support ==
+[https://neweb.freshdesk.com/support/tickets/new](https://neweb.freshdesk.com/support/tickets/new)
 
 == Screenshots ==
 
-1. This screen shot description corresponds to screenshot-1.(png|jpg|jpeg|gif). Note that the screenshot is taken from
-the /assets directory or the directory that contains the stable readme.txt (tags or trunk). Screenshots in the /assets
-directory take precedence. For example, `/assets/screenshot-1.png` would win over `/tags/4.3/screenshot-1.png`
-(or jpg, jpeg, gif).
-2. This is the second screen shot
+1. Photos & Texts
+2. Models
+3. Synchronize models
+4. Advanced responsive
+5. Inline text edit
+6. Undo/Redo & Custom Icons
+7. Rexslider & Collapse
+8. Fast
+9. Compatible
+10. Custom CSS
+11. Clean interface
 
 == Changelog ==
 
-= 1.0 =
-* A change since the previous version.
-* Another change.
+= 2.0.0 - August 23, 2019 =
+* Update: LIVE Page Builder available!!
 
-= 0.5 =
-* List versions from most recent at top to oldest at bottom.
+= 1.0.10 - June 29, 2017 =
+* Added: Draggable windows on Rexpansive Builder
+* Fixed: TextFill
+* Fixed: Chrome problem with the builder
+
+= 1.0.9 – March 18, 2017 =
+* Fixed: Update notification bug
+
+= 1.0.8 – February 27, 2017 =
+* Fixed: Calculation of blocks height on grid
+
+= 1.0.7 – February 24, 2017 =
+* Fixed: General grid updates and fixes
+* Fixed: TextFill
+* Fixed: Content alignment tool
+* Fixed: Improved scroll animation
+
+= 1.0.6 – January 17, 2017 =
+* Added: Now you can see the dimensions of the blocks in the backend area
+* Changed: Now when you change the behaviour of the row between masonry and grid, the type of the images remains the original
+
+= 1.0.5 – July 20, 2016 =
+* Changed: Default unit measure of the block internal padding; now it’s in pixels
+* Fixed: When you insert an image you can choose correctly its size, using the Media Upload panel
+
+= 1.0.4 – May 10, 2016 =
+* Added: Possibility to modify text on a block after the insertion
+* Fixed: Further fixes on TextResize
+* Fixed: Plugin activation when the premium version is active
+
+= 1.0.3 - May 3, 2016 =
+* Added: Smooth scroll on internal links
+* Fixed: TextFill
+* Fixed: TextResize
+
+= 1.0.2 - April 18, 2016 =
+* Fixed: Tooltip problem on the page builder
+
+= 1.0.1 - March 22, 2016 =
+* Fixed: TexFill
+
+= 1.0.0 - February 23, 2016 =
+* Rexpansive Builder Test
 
 == Upgrade Notice ==
 
-= 1.0 =
-Upgrade notices describe the reason a user should upgrade.  No more than 300 characters.
-
-= 0.5 =
-This version fixes a security related bug.  Upgrade immediately.
-
-== Arbitrary section ==
-
-You may provide arbitrary sections, in the same format as the ones above.  This may be of use for extremely complicated
-plugins where more information needs to be conveyed that doesn't fit into the categories of "description" or
-"installation."  Arbitrary sections will be shown below the built-in sections outlined above.
-
-== A brief Markdown Example ==
-
-Ordered list:
-
-1. Some feature
-1. Another feature
-1. Something else about the plugin
-
-Unordered list:
-
-* something
-* something else
-* third thing
-
-Here's a link to [WordPress](http://wordpress.org/ "Your favorite software") and one to [Markdown's Syntax Documentation][markdown syntax].
-Titles are optional, naturally.
-
-[markdown syntax]: http://daringfireball.net/projects/markdown/syntax
-            "Markdown is what the parser uses to process much of the readme file"
-
-Markdown uses email style notation for blockquotes and I've been told:
-> Asterisks for *emphasis*. Double it up  for **strong**.
-
-`<?php code(); // goes in backticks ?>`
+* None
