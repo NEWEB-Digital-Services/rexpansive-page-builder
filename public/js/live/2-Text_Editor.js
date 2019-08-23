@@ -1997,33 +1997,13 @@ var TextEditor = (function ($) {
         } else {
           $traceImg.attr("inline-photoswipe", 
             $traceImg.attr("inline-photoswipe") == "true" ? false : true
-            );
+          );
         }
 
-        if ($traceImg.attr("inline-photoswipe") == "true") {
-          /*Setting photoswipe*/
-
-          var $traceImgParent = $traceImg.parent();
-
-          tmpl.arg = "image";
-          $traceImgParent.append(tmpl("tmpl-photoswipe-block-inline", {
-              link: this.traceImg.src,
-              width: this.traceImg.width,
-              height: this.traceImg.height,
-              type: this.traceImg.type
-            })
-          );
-          var $pswpItem = $($traceImgParent).find(".pswp-item");
-          $traceImg.detach().appendTo($pswpItem);
+        if (this.mirrorResize.classList.contains("ui-resizable") && this.mirrorResize.parentElement.classList.contains("ui-wrapper")) {
+          this.placeMirrorImg(this.mirrorResize.parentElement);
         } else {
-          /*Removing photoswipe*/
-          
-          var $pswpFigure = $traceImg.parents(".pswp-figure");
-          var $pspwParent = $pswpFigure.parent();
-
-          $traceImg.detach().appendTo($pspwParent);
-
-          $pswpFigure.remove();
+          this.placeMirrorImg(this.mirrorResize);
         }
         this.placeEditImgToolbar();
       }
@@ -2064,7 +2044,13 @@ var TextEditor = (function ($) {
       }
 
       if ($el.hasClass("me-image-delete")) {
-        $(this.traceImg).remove();
+        var $traceImg = $(this.traceImg);
+
+        if ($traceImg.attr("inline-photoswipe") == "true") {
+          $traceImg.parents(".pswp-figure").remove();
+        } else {
+          $traceImg.remove();
+        }
         this.hideEditImgToolbar();
       }
     },
