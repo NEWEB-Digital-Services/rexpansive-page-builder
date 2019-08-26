@@ -2044,13 +2044,7 @@ var TextEditor = (function ($) {
       }
 
       if ($el.hasClass("me-image-delete")) {
-        var $traceImg = $(this.traceImg);
-
-        if ($traceImg.attr("inline-photoswipe") == "true") {
-          $traceImg.parents(".pswp-figure").remove();
-        } else {
-          $traceImg.remove();
-        }
+        this.traceImg.remove();
         this.hideEditImgToolbar();
       }
     },

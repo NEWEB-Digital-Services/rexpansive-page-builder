@@ -21,19 +21,17 @@ var Rexbuilder_Photoswipe = (function($){
 	};
 
 	var _addElementFromInline = function($img) {
-		console.log($img);
 	    if ($img.attr("inline-photoswipe") == "true") {
           /*Setting photoswipe*/
 
-          // tmpl.arg = "image";
-          // var temp = tmpl("tmpl-dai-funziona");
-          // $img.before(tmpl("tmpl-photoswipe-block-inline", {
-          //     link: $img.attr("src"),
-          //     width: $img.css("width"),
-          //     height: $img.css("height"),
-          //     type: "full"
-          //   })
-          // );
+          tmpl.arg = "image";
+          $img.before(tmpl("tmpl-photoswipe-block", {
+              link: $img.attr("src"),
+              width: $img.css("width"),
+              height: $img.css("height"),
+              type: "full"
+            })
+          );
 
           // var $pswpItems = $img.parents(".text-wrap").find(".pswp-item");
           // var $pswpItemWithoutImage = $pswpItems.filter(function(index){
