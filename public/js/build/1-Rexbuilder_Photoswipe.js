@@ -21,29 +21,23 @@ var Rexbuilder_Photoswipe = (function($){
 	};
 
 	var _addElementFromInline = function($img) {
-	    if ($img.attr("inline-photoswipe") == "true") {
-          /*Setting photoswipe*/
+		/*Setting photoswipe*/
 
-          tmpl.arg = "image";
-          $img.before(tmpl("tmpl-photoswipe-block", {
-              link: $img.attr("src"),
-              width: $img.css("width"),
-              height: $img.css("height"),
-              type: "full"
-            })
-          );
+		tmpl.arg = "image";
+		$img.before(tmpl("tmpl-photoswipe-block-inline", {
+			  link: $img.attr("src"),
+			  width: $img.css("width"),
+			  height: $img.css("height"),
+			  type: "full"
+			})
+		);
 
-          // var $pswpItems = $img.parents(".text-wrap").find(".pswp-item");
-          // var $pswpItemWithoutImage = $pswpItems.filter(function(index){
-          //   return $(this).children().length == 3
-          // });
-          // don't know why it doesn't work
-          // var $pswpItemWithoutImage = $pswpItems.filter(function(index){
-          //   return $(this).children("img")
-          // });
-          
-          // $img.detach().appendTo($pswpItemWithoutImage);
-        }
+		var $pswpItems = $img.parents(".text-wrap").find(".pswp-item");
+		var $pswpItemWithoutImage = $pswpItems.filter(function(index){
+			return $(this).children().length == 3;
+		});
+
+		$img.detach().appendTo($pswpItemWithoutImage);
 	};
 
 	var _removeElement = function($itemContent) {
@@ -87,7 +81,7 @@ var Rexbuilder_Photoswipe = (function($){
 
 		    linkEl = figureEl.children[0]; // <a> element
 
-		    size = linkEl.getAttribute("data-size").split("x");
+		    size = linkEl.getAttribute("data-size").replace("px", "").split("x");
 
 		    // create slide object
 		    item = {

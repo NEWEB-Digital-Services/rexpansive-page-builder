@@ -435,6 +435,8 @@ class Rexbuilder_Public
         }
         if ( Rexbuilder_Utilities::isBuilderLive() ) {
             include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexbuilder-js-templates.php";
+        } else {
+            include_once REXPANSIVE_BUILDER_PATH . "public/partials/rexbuilder-photoswipe-template-public.php";
         }
     }
 

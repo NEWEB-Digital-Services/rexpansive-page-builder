@@ -343,6 +343,10 @@
         padding: 9px 10px;
       }
     }
+
+    button:focus {
+      background-color: #000;
+    }
   }
 }
 

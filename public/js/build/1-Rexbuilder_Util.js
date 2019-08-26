@@ -1237,16 +1237,6 @@ var Rexbuilder_Util = (function($) {
     Rexbuilder_Util.domUpdaiting = false;
 
     if (!Rexbuilder_Util.editorMode) {
-      // $textWraps = $(document).find(".text-wrap");
-
-      // $textWraps.each(function(){
-      //   $img = $textWraps.find("img");
-
-        // $img.each(function(){
-        //   Rexbuilder_Photoswipe.addElementFromInline($img);
-        // })
-      // })
-
       Rexbuilder_Photoswipe.init(".photoswipe-gallery");
     }
 
@@ -1302,13 +1292,15 @@ var Rexbuilder_Util = (function($) {
         var $itemContent = $elem.find(".grid-item-content");
 
         if( $elem.length>0 ) {
-          // $imgInline = $itemContent.find("img");
+          if(!Rexbuilder_Util.editorMode && $elem.find("img").length != 0){
+            var $imgInline = $elem.find("img");
 
-          $itemContent.find("img").each(function(){
-            Rexbuilder_Photoswipe.addElementFromInline($(this));
-          })
-          // console.log($itemContent.find("img"));
-
+            for (var j = 0; j < $imgInline.length; j++) {
+              if ($($imgInline[j]).attr("inline-photoswipe") == "true") {
+                Rexbuilder_Photoswipe.addElementFromInline($($imgInline[j]));
+              }
+            }
+          }
           _updateDOMSingleElement($elem,targetProps,$itemData,$itemContent,gridstackInstance,{positionAndSize:true});
         }
       } else {

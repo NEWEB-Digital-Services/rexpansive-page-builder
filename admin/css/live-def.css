@@ -4994,6 +4994,9 @@ span.rex-theme-button,
   .medium-editor-toolbar li > .medium-editor-action.medium-editor-action--color-picker, .medium-editor-toolbar li > .medium-editor-action.me-svg-color {
     padding: 9px 10px; }
 
+.medium-editor-toolbar li button:focus {
+  background-color: #000; }
+
 .medium-editor-action-list {
   position: relative; }
   .medium-editor-action-list .medium-editor-action {

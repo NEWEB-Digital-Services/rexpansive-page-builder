@@ -390,6 +390,7 @@ var TextEditor = (function ($) {
         case 'h6':
         case 'p':
           this.action_active = 'append-' + node.nodeName.toLowerCase();
+          this.setActionListState();
           return true;
         default:
           return false;
@@ -802,6 +803,7 @@ var TextEditor = (function ($) {
             this.list_active_action.innerHTML = "<i class='fa fa-align-justify'></i>";
             break;
           default:
+
             this.list_active_action.innerHTML = "<i class='fa fa-align-left'></i>";
             break;
         }
@@ -1513,7 +1515,7 @@ var TextEditor = (function ($) {
 
   /**
    * Custom MediumEditor extension to handle Wordpress Media Library insert
-   * and oembed iframes
+   * and embed iframes
    * 
    * Insert Media from Library, 4 dev methods
    * 1) Insert HTML command form Medium Editor
@@ -1941,6 +1943,7 @@ var TextEditor = (function ($) {
         } else {
           this.placeMirrorImg(this.mirrorResize);
         }
+        this.viewEditImgToolbar(this.traceImg);
         this.placeEditImgToolbar();
       }
 
@@ -1956,6 +1959,7 @@ var TextEditor = (function ($) {
         } else {
           this.placeMirrorImg(this.mirrorResize);
         }
+        this.viewEditImgToolbar(this.traceImg);
         this.placeEditImgToolbar();
       }
 
@@ -1971,6 +1975,7 @@ var TextEditor = (function ($) {
         } else {
           this.placeMirrorImg(this.mirrorResize);
         }
+        this.viewEditImgToolbar(this.traceImg);
         this.placeEditImgToolbar();
       }
 
@@ -1986,17 +1991,16 @@ var TextEditor = (function ($) {
         } else {
           this.placeMirrorImg(this.mirrorResize);
         }
+        this.viewEditImgToolbar(this.traceImg);
         this.placeEditImgToolbar();
       }
 
       if ($el.hasClass("me-image-inline-photoswipe")) {
-        var $traceImg = $(this.traceImg);
-
-        if("undefined" === typeof $traceImg.attr("inline-photoswipe")) {
-          $traceImg.attr("inline-photoswipe", true);
+        if("undefined" === typeof this.traceImg.getAttribute("inline-photoswipe")) {
+          this.traceImg.setAttribute("inline-photoswipe", true);
         } else {
-          $traceImg.attr("inline-photoswipe", 
-            $traceImg.attr("inline-photoswipe") == "true" ? false : true
+          this.traceImg.setAttribute("inline-photoswipe", 
+            this.traceImg.getAttribute("inline-photoswipe") == "true" ? false : true
           );
         }
 
@@ -2005,6 +2009,8 @@ var TextEditor = (function ($) {
         } else {
           this.placeMirrorImg(this.mirrorResize);
         }
+
+        this.viewEditImgToolbar(this.traceImg);
         this.placeEditImgToolbar();
       }
 
@@ -2098,10 +2104,55 @@ var TextEditor = (function ($) {
 
     viewEditImgToolbar: function(target) {
       this.traceImg = target;
+      var $el = $(this.imageEditToolbar).find("button");
+
       // var editor = this.base.getFocusedElement();
       // editor.append(this.imageEditToolbar);
-      this.placeEditImgToolbar();
+      
       this.imageEditToolbar.classList.add("medium-editor-toolbar-active");
+
+      $el.each(function(){
+        if($(this).hasClass("me-image-align-left")) {
+          if ($(target).hasClass("alignleft")) {
+            this.classList.add("medium-editor-button-active");
+          } else {
+            this.classList.remove("medium-editor-button-active");
+          }
+        }
+
+        if($(this).hasClass("me-image-align-center")) {
+          if ($(target).hasClass("aligncenter")) {
+            this.classList.add("medium-editor-button-active");
+          } else {
+            this.classList.remove("medium-editor-button-active");
+          }
+        }
+
+        if($(this).hasClass("me-image-align-right")) {
+
+          if ($(target).hasClass("alignright")) {
+            this.classList.add("medium-editor-button-active");
+          } else {
+            this.classList.remove("medium-editor-button-active");
+          }
+        }
+
+        if($(this).hasClass("me-image-align-none")) {
+          if ($(target).hasClass("alignnone")) {
+            this.classList.add("medium-editor-button-active");
+          } else {
+            this.classList.remove("medium-editor-button-active");
+          }
+        }
+
+        if($(this).hasClass("me-image-inline-photoswipe") && "undefined" !== typeof target.getAttribute("inline-photoswipe") && target.getAttribute("inline-photoswipe") == "true") {
+          this.classList.add("medium-editor-button-active");
+        } else {
+          this.classList.remove("medium-editor-button-active");
+        }
+      })
+
+      this.placeEditImgToolbar();
     },
 
     viewEditVideoToolbar: function(target) {
