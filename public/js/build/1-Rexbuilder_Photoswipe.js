@@ -23,12 +23,16 @@ var Rexbuilder_Photoswipe = (function($){
 	var _addElementFromInline = function($img) {
 		/*Setting photoswipe*/
 
+		// selects the alignment of the image
+		var align = $img.attr("class").split(' ')[1];
+
 		tmpl.arg = "image";
 		$img.before(tmpl("tmpl-photoswipe-block-inline", {
 			  link: $img.attr("src"),
 			  width: $img.css("width"),
 			  height: $img.css("height"),
-			  type: "full"
+			  type: "natural",
+			  align: align
 			})
 		);
 

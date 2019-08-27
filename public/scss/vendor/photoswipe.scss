@@ -24,6 +24,28 @@
   .pswp img {
     max-width: none; }
 
+// .pswp__button--close:hover, 
+// .pswp__button--share:hover, 
+// .pswp__button--fs:hover,
+// .pswp__button--zoom:hover,
+// .pswp--zoomed-in:hover {
+//   background: url(default-skin.png) 0 0 no-repeat;
+//   background-color: #007acc;
+// }
+
+// .pswp__button--close:hover {
+//   background-position: 0 -44px; }
+
+// .pswp__button--share:hover {
+// background-position: -44px -44px; }
+
+// .pswp--fs .pswp__button--fs:hover {
+//   background-position: -44px 0; }
+
+// .pswp__button--zoom:hover {
+//   display: none;
+//   background-position: -88px 0; }
+
 /* style is added when JS option showHideOpacity is set to true */
 .pswp--animate_opacity {
   /* 0.001, because opacity:0 doesn't trigger Paint action, which causes lag at start of transition */

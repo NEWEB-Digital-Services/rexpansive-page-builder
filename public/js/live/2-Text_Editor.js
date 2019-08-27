@@ -1575,12 +1575,12 @@ var TextEditor = (function ($) {
       initPicker( $(this.inlineSVGEditToolbar).find('.me-svg-color')[0], this.applySVGColor );
 
       // Creation of the Inline Video Management Toolbar
-      //this.videoEditToolbar = document.createElement("div");
-      //this.videoEditToolbar.id = "me-edit-inline-image-toolbar";
-      //this.videoEditToolbar.classList.add("medium-editor-toolbar");
-      //this.videoEditToolbar.classList.add("medium-toolbar-arrow-under");
-      //this.videoEditToolbar.innerHTML = tmpl("tmpl-me-image-edit",{});
-      //document.getElementsByTagName("body")[0].append(this.videoEditToolbar);
+      this.videoEditToolbar = document.createElement("div");
+      this.videoEditToolbar.id = "me-edit-inline-image-toolbar";
+      this.videoEditToolbar.classList.add("medium-editor-toolbar");
+      this.videoEditToolbar.classList.add("medium-toolbar-arrow-under");
+      this.videoEditToolbar.innerHTML = tmpl("tmpl-me-image-edit",{});
+      document.getElementsByTagName("body")[0].append(this.videoEditToolbar);
 
       // Create insert media button, that stays at bottom-right of a text content
       // Append it to the body, to reuse it instead of multiple create id
@@ -1640,6 +1640,7 @@ var TextEditor = (function ($) {
       if( $(event.target).parents("#me-edit-inline-image-toolbar").length == 0 && $(event.target).parents("#me-edit-inline-svg-toolbar").length == 0 && !$(event.target).is(".me-insert-embed__value") && 0 == $(event.target).parents(".me-insert-embed").length ) {
         this.mediaBtn.style.display = "none";
         this.mediaBtn.classList.remove("embed-value-visibile");
+
         this.hideAllToolbars();
       }
     },
@@ -1720,12 +1721,20 @@ var TextEditor = (function ($) {
       if( "click" == event.type ) {
         // Check if the clicked object is an <img>.
         if( "IMG" == event.target.nodeName ) {
+          // if a mirror already exists but doesn't have handles, destroy it
+          if($(this.mirrorResize).find(".ui-resizable-handle").length != 0) {
+            $(this.mirrorResize).resizable("destroy");
+          }
           this.viewEditImgToolbar(event.target);
           this.imageResizableEnable();
 
           this.hideEditVideoToolbar();
           this.hideEditInlineSVGToolbar();
         } else if( "SPAN" == event.target.nodeName && "overlay-status-for-video-inline" == event.target.className) { // Check if the clicked object is an <span> with the class "overlay-status-set-active". -A
+          // if a mirror already exists but doesn't have handles, destroy it
+          if($(this.mirrorVideoResize).find(".ui-resizable-handle").length != 0) {
+            $(this.mirrorVideoResize).resizable("destroy");
+          }
           this.viewEditVideoToolbar(event.target);
           this.videoResizableEnable();
 
@@ -1741,6 +1750,11 @@ var TextEditor = (function ($) {
           {
             target = event.target;
           }
+          // if a mirror already exists but doesn't have handles, destroy it
+          if($(this.mirrorSVGResize).find(".ui-resizable-handle").length != 0) {
+            $(this.mirrorSVGResize).resizable("destroy");
+          }
+
           this.viewEditInlineSVGToolbar(target);
           this.inlineSVGResizableEnable();
 
@@ -1938,13 +1952,13 @@ var TextEditor = (function ($) {
         this.traceImg.classList.remove("alignnone");
 
         this.traceImg.classList.add("alignleft");
+
         if (this.mirrorResize.classList.contains("ui-resizable") && this.mirrorResize.parentElement.classList.contains("ui-wrapper")) {
           this.placeMirrorImg(this.mirrorResize.parentElement);
         } else {
           this.placeMirrorImg(this.mirrorResize);
         }
         this.viewEditImgToolbar(this.traceImg);
-        this.placeEditImgToolbar();
       }
 
       if ($el.hasClass("me-image-align-center")) {
@@ -1954,13 +1968,13 @@ var TextEditor = (function ($) {
         this.traceImg.classList.remove("alignnone");
 
         this.traceImg.classList.add("aligncenter");
+
         if (this.mirrorResize.classList.contains("ui-resizable") && this.mirrorResize.parentElement.classList.contains("ui-wrapper")) {
           this.placeMirrorImg(this.mirrorResize.parentElement);
         } else {
           this.placeMirrorImg(this.mirrorResize);
         }
         this.viewEditImgToolbar(this.traceImg);
-        this.placeEditImgToolbar();
       }
 
       if ($el.hasClass("me-image-align-right")) {
@@ -1970,13 +1984,13 @@ var TextEditor = (function ($) {
         this.traceImg.classList.remove("alignnone");
 
         this.traceImg.classList.add("alignright");
+
         if (this.mirrorResize.classList.contains("ui-resizable") && this.mirrorResize.parentElement.classList.contains("ui-wrapper")) {
           this.placeMirrorImg(this.mirrorResize.parentElement);
         } else {
           this.placeMirrorImg(this.mirrorResize);
         }
         this.viewEditImgToolbar(this.traceImg);
-        this.placeEditImgToolbar();
       }
 
       if ($el.hasClass("me-image-align-none")) {
@@ -1991,8 +2005,8 @@ var TextEditor = (function ($) {
         } else {
           this.placeMirrorImg(this.mirrorResize);
         }
+
         this.viewEditImgToolbar(this.traceImg);
-        this.placeEditImgToolbar();
       }
 
       if ($el.hasClass("me-image-inline-photoswipe")) {
@@ -2004,14 +2018,7 @@ var TextEditor = (function ($) {
           );
         }
 
-        if (this.mirrorResize.classList.contains("ui-resizable") && this.mirrorResize.parentElement.classList.contains("ui-wrapper")) {
-          this.placeMirrorImg(this.mirrorResize.parentElement);
-        } else {
-          this.placeMirrorImg(this.mirrorResize);
-        }
-
         this.viewEditImgToolbar(this.traceImg);
-        this.placeEditImgToolbar();
       }
 
       if ($el.hasClass("me-image-replace")) {
@@ -2053,6 +2060,54 @@ var TextEditor = (function ($) {
         this.traceImg.remove();
         this.hideEditImgToolbar();
       }
+    },
+
+    setActiveButtonsImgEditToolbar: function(imageTarget) {
+      var $el = $(this.imageEditToolbar).find("button");
+
+      $el.each(function(){
+        if($(this).hasClass("me-image-align-left")) {
+          if ($(imageTarget).hasClass("alignleft")) {
+            this.classList.add("medium-editor-button-active");
+          } else {
+            this.classList.remove("medium-editor-button-active");
+          }
+        }
+
+        if($(this).hasClass("me-image-align-center")) {
+          if ($(imageTarget).hasClass("aligncenter")) {
+            this.classList.add("medium-editor-button-active");
+          } else {
+            this.classList.remove("medium-editor-button-active");
+          }
+        }
+
+        if($(this).hasClass("me-image-align-right")) {
+
+          if ($(imageTarget).hasClass("alignright")) {
+            this.classList.add("medium-editor-button-active");
+          } else {
+            this.classList.remove("medium-editor-button-active");
+          }
+        }
+
+        if($(this).hasClass("me-image-align-none")) {
+          if ($(imageTarget).hasClass("alignnone")) {
+            this.classList.add("medium-editor-button-active");
+          } else {
+            this.classList.remove("medium-editor-button-active");
+          }
+        }
+
+        if($(this).hasClass("me-image-inline-photoswipe")) {
+          if("undefined" !== typeof imageTarget.getAttribute("inline-photoswipe") && imageTarget.getAttribute("inline-photoswipe") == "true") {
+            this.classList.add("medium-editor-button-active");
+          } else {
+            this.classList.remove("medium-editor-button-active");
+          }
+        }
+      })
+
     },
 
     /**
@@ -2104,55 +2159,13 @@ var TextEditor = (function ($) {
 
     viewEditImgToolbar: function(target) {
       this.traceImg = target;
-      var $el = $(this.imageEditToolbar).find("button");
 
       // var editor = this.base.getFocusedElement();
       // editor.append(this.imageEditToolbar);
       
-      this.imageEditToolbar.classList.add("medium-editor-toolbar-active");
-
-      $el.each(function(){
-        if($(this).hasClass("me-image-align-left")) {
-          if ($(target).hasClass("alignleft")) {
-            this.classList.add("medium-editor-button-active");
-          } else {
-            this.classList.remove("medium-editor-button-active");
-          }
-        }
-
-        if($(this).hasClass("me-image-align-center")) {
-          if ($(target).hasClass("aligncenter")) {
-            this.classList.add("medium-editor-button-active");
-          } else {
-            this.classList.remove("medium-editor-button-active");
-          }
-        }
-
-        if($(this).hasClass("me-image-align-right")) {
-
-          if ($(target).hasClass("alignright")) {
-            this.classList.add("medium-editor-button-active");
-          } else {
-            this.classList.remove("medium-editor-button-active");
-          }
-        }
-
-        if($(this).hasClass("me-image-align-none")) {
-          if ($(target).hasClass("alignnone")) {
-            this.classList.add("medium-editor-button-active");
-          } else {
-            this.classList.remove("medium-editor-button-active");
-          }
-        }
-
-        if($(this).hasClass("me-image-inline-photoswipe") && "undefined" !== typeof target.getAttribute("inline-photoswipe") && target.getAttribute("inline-photoswipe") == "true") {
-          this.classList.add("medium-editor-button-active");
-        } else {
-          this.classList.remove("medium-editor-button-active");
-        }
-      })
-
+      this.setActiveButtonsImgEditToolbar(this.traceImg);
       this.placeEditImgToolbar();
+      this.imageEditToolbar.classList.add("medium-editor-toolbar-active");
     },
 
     viewEditVideoToolbar: function(target) {
@@ -2163,8 +2176,7 @@ var TextEditor = (function ($) {
       //this.videoEditToolbar.classList.add("medium-editor-toolbar-active");
     },
 
-    viewEditInlineSVGToolbar: function( target )
-    {
+    viewEditInlineSVGToolbar: function( target ) {
       this.traceSVG = target;
       this.placeEditInlineSVGToolbar();
       this.inlineSVGEditToolbar.classList.add("medium-editor-toolbar-active");
@@ -2324,6 +2336,7 @@ var TextEditor = (function ($) {
 
     placeMirrorImg: function(el) {
       var imageCoords = this.traceImg.getBoundingClientRect();
+
       el.style.top = imageCoords.top + window.scrollY + "px";
       el.style.left = imageCoords.left + window.scrollX + "px";
       // console.log(el.style.top,"\n",el.style.left)
