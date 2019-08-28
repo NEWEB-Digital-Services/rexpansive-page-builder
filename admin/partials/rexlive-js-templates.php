@@ -103,6 +103,28 @@ defined('ABSPATH') or exit;
 </li>
 </script>
 
+<script type="text/x-tmpl" id="rexlive-tmpl-element-item-list">
+<li class="element-list__element bl_d-flex bl_ai-c" draggable="true" data-rex-element-id="{%=element.id%}">
+    <div class="element-list-preview bl_d-flex bl_jc-c bl_ai-c {% if ({%=element.preview%}) { %}{% } else { %} element-list-preview--active {% } %}" itemprop="contentUrl">
+        <span class="element-list-preview__placeholder"><?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?></span>
+        <div class="element-name bl_d-flex bl_jc-c bl_ai-fe"><div>{%=element.name%}</div></div>
+        <div class="element-tools">
+            <div class="tool-button--double-icon--wrap tool-button--edit-thumbnail tippy" data-tippy-content="<?php _e('Thumbnail','rexpansive-builder'); ?>">
+                <div class="tool-button tool-button--inline tool-button--black element-list__element--edit-thumbnail {% if ({%=element.preview%}) { %}{% } else { %} 'tool-button--image-preview' {% } %}" {% if ({%=element.preview%}) { %}{% } else { %} 'style="background-image:url({%=element.preview%});"' {% } %}>
+                    <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
+                </div>
+                <div class="tool-button tool-button--inline tool-button--double-icon tool-button--deactivate tool-button--reset-thumbnail element-list__element--reset-thumbnail">
+                    <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+                </div>
+            </div>
+            <div class="tool-button tool-button--black rex-close-button element-list__element--delete" >
+                <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+            </div>
+        </div>
+    </div>
+</li>
+</script>
+
 <script type="text/x-tmpl" id="rexlive-tmpl-insert-model-loader">
 <div class="import-model" data-rex-model-id="{%=o.model_id%}">
     <div class="rexlive-loader active">

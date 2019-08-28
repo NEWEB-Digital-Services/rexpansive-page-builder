@@ -440,6 +440,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'Rexlive-LockedOption-Mask', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_LockedOption_Mask.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Model-Import', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Model_Import.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Button-Import', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Button_Import.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'Rexlive-Element-Import', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Element_Import.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Button-Edit', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Edit_Button.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Lateral-Menu', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Lateral_Menu.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-modals', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Modals.js', array( 'jquery' ), null, true );
@@ -2258,7 +2259,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	}
 	
 	/**
-	 * Save the model image
+	 * Saves the model thumbnail
 	 * @return model with new image
 	 * @since  2.0.0
 	 */
@@ -2294,7 +2295,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	}
 
 	/**
-	 * Delete the model image
+	 * Deletes the model thumbnail
 	 * @return model with no image
 	 * @since  2.0.0
 	 */
@@ -2558,6 +2559,160 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
         $response['delete_result'] = wp_delete_post( $_POST['model_id'] );
 
         wp_send_json_success( $response );
+	}
+
+	/**
+	 * Get elements list to display on lateral menu, ready to drag on page
+	 * @return JSON updated list
+	 * @since  2.0.0
+	 */
+	public function rex_get_element_list(){
+		$nonce = $_GET['nonce_param'];
+
+        $response = array(
+            'error' => false,
+            'msg' => '',
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+		$response['error'] = false;
+		
+		// WP_Query arguments
+		$args = array(
+			'post_type'              => array( 'wpcf7_contact_form' )
+		);
+
+		$elementList = array();
+
+		// The Query
+		$query = new WP_Query( $args );
+
+		if ( $query->have_posts() ) {
+			while ( $query->have_posts() ) {
+				$query->the_post();
+				
+				$elementData = array();
+				
+				$elementData["id"] = get_the_ID();
+				$elementData["name"] = get_the_title();
+				$elementData["preview_image_url"] = get_the_post_thumbnail_url();
+
+				array_push($elementList, $elementData);
+			}
+		} else {
+			// No forms found
+		}
+
+		// Restore original Post Data
+		wp_reset_postdata();
+
+		$response["updated_list"] = $elementList;
+		$response["args"] = $args;
+
+        wp_send_json_success($response);
+	}
+
+	/**
+	 * Delete an element, knowing the id
+	 * @return JSON delete operation response
+	 * @since  2.0.0
+	 */
+	public function rex_delete_element() {
+		$nonce = $_POST['nonce_param'];
+		
+        $response = array(
+			'error' => false,
+            'msg' => '',
+        );
+		
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')) {
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        }
+
+        if ( !isset( $_POST['element_id'] ) ) {
+        	$response['msg'] = 'ID Error!';
+			wp_send_json_error($response);
+        }
+
+        $response['delete_result'] = wp_delete_post( $_POST['element_id'] );
+
+        wp_send_json_success( $response );
+	}
+
+	/**
+	 * Save the element thumbnail
+	 * @return model with new image
+	 * @since  2.0.0
+	 */
+	public function rex_save_element_thumbnail(){
+		$nonce = $_GET['nonce_param'];
+		$element_target = $_GET['element_target'];
+		$image_selected = $_GET['image_selected'];
+		$image_size = $_GET['image_size'];
+
+        $response = array(
+            'error' => false,
+            'msg' => '',
+            'element_target' => $element_target,
+            'selected_image' => $image_selected
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+		$response['error'] = false;
+
+		$response['set_post_thumbnail_result'] = set_post_thumbnail($element_target, $image_selected);
+		$response['set_post_thumbnail_url_result'] = update_post_meta(
+			$element_target, 
+			'selected_image_size', 
+			$image_size
+		);
+
+		wp_send_json_success($response);
+	}
+
+	/**
+	 * Delete the model image
+	 * @return model with no image
+	 * @since  2.0.0
+	 */
+	public function rex_delete_element_thumbnail(){
+		$nonce = $_GET['nonce_param'];
+		$element_target = $_GET['element_target'];
+
+        $response = array(
+            'error' => false,
+            'msg' => '',
+            'element_target' => $element_target
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+		$response['error'] = false;
+
+		$response['delete_post_thumbnail_result'] = delete_post_thumbnail($element_target);
+		$response['delete_post_thumbnail_url_result'] = update_post_meta(
+			$element_target, 
+			'selected_image_size', 
+			""
+		);
+
+		wp_send_json_success($response);
 	}
 
 	/**

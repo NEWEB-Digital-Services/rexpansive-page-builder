@@ -3841,7 +3841,8 @@ ul {
       font-size: 10px; }
   .tool-button--double-icon--wrap.tool-button--edit-thumbnail {
     margin-right: 15px; }
-    .tool-button--double-icon--wrap.tool-button--edit-thumbnail .model__element--edit-thumbnail {
+    .tool-button--double-icon--wrap.tool-button--edit-thumbnail .model__element--edit-thumbnail,
+    .tool-button--double-icon--wrap.tool-button--edit-thumbnail .element-list__element--edit-thumbnail {
       width: 20px;
       height: 20px;
       font-size: 10px; }
