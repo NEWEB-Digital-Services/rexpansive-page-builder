@@ -9,6 +9,14 @@ var Model_Import_Modal = (function($) {
   var rexmodel_import_props;
   var image_uploader_frame_direct;  //used for the media library opener
 
+  /**
+  * Saves the model thumbnail in the db using an AJAX call.
+  * @param model_selected
+  * @param selected_image_id Wordpress id of the new thumbnail image
+  * @param selected_image_size
+  * @return {null} 
+  * @since  x.x.x
+  */
   var _saveModelThumbnail = function(model_selected, selected_image_id, selected_image_size) {
     $.ajax({
       type: "GET",
@@ -30,7 +38,13 @@ var Model_Import_Modal = (function($) {
     });
   };
 
-  var _deleteModelThumbnail = function(model_selected) {
+  /**
+  * Deletes the model thumbnail from the db using an AJAX call.
+  * @param model_to_delete
+  * @return {null} 
+  * @since  x.x.x
+  */
+  var _deleteModelThumbnail = function(model_to_delete) {
     $.ajax({
       type: "GET",
       dataType: "json",
@@ -38,7 +52,7 @@ var Model_Import_Modal = (function($) {
       data: {
         action: "rex_delete_model_thumbnail",
         nonce_param: live_editor_obj.rexnonce,
-        model_target: model_selected,
+        model_target: model_to_delete,
         delete_post_thumbnail_result: null,
         delete_post_thumbnail_url_result: null
       },
@@ -225,6 +239,11 @@ var Model_Import_Modal = (function($) {
     _deleteModelThumbnail(model_id);
   };
 
+  /**
+  * Updates the model list using an AJAX call.
+  * @return {null} 
+  * @since  x.x.x
+  */
   var _updateModelList = function() {
     $.ajax({
       type: "GET",

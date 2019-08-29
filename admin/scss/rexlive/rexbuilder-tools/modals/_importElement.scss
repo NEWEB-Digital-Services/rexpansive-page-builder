@@ -41,7 +41,7 @@
         display: none;
       }
     }
-    &.element--list-preview--active {
+    &.element-list-preview--active {
       .element-list-preview__placeholder {
         visibility: hidden;
       }
@@ -76,6 +76,10 @@
     text-transform: uppercase;
     color: #fff;
     background-color: rgba(0, 0, 0, 0.4);
+  }
+
+  .element-shortcode {
+    display: none;
   }
 }
 

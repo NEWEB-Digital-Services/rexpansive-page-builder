@@ -581,6 +581,10 @@ var Rexbuilder_Util_Editor = (function($) {
       var eventData = e.settings.data_to_send;
       $('.rexpansive_section[data-rexlive-section-id=' + eventData.sectionTarget.sectionID + ']').find('.open-model').trigger('click');
     });
+
+    Rexbuilder_Util.$document.on("rexlive:importElement", function (e) {
+      Rexbuilder_Rexelement.fixImportedElement(e.settings.data_to_send);
+    });
     
     Rexbuilder_Util.$document.on("rexlive:importButton", function (e) {
       Rexbuilder_Rexbutton.fixImportedButton(e.settings.data_to_send);

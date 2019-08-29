@@ -271,7 +271,32 @@ var Rexbuilder_Util = (function($) {
     );
   };
 
+  //VEDERE BENE COS'È E SE SERVE. SE SERVE, COPIARLA PER GLI ELEMENTI (aggiungerla in fondo, se serve)
   var _updateDivModelCustomizationsNames = function(
+    updatedModelCustomizationsNames
+  ) {
+    var $modelsAvaiableNamesDiv = $(
+      "#rexbuilder-model-data .available-models-customizations-names"
+    );
+    var names = JSON.parse($modelsAvaiableNamesDiv.text());
+    var newNamesData = [];
+    var i;
+    var tot_names;
+
+    for (i = 0, tot_names = names.length; i < tot_names; i++) {
+      var namesData = names[i];
+      if (namesData.id != updatedModelCustomizationsNames.id) {
+        newNamesData.push(namesData);
+      }
+    }
+
+    newNamesData.push(updatedModelCustomizationsNames);
+    $modelsAvaiableNamesDiv.text(JSON.stringify(newNamesData));
+  };
+
+  //ELIMINARE?
+  //VEDERE BENE COS'È E SE SERVE (aggiungerla in fondo, se serve)
+  var _updateDivElementCustomizationsNames = function(
     updatedModelCustomizationsNames
   ) {
     var $modelsAvaiableNamesDiv = $(

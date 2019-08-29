@@ -279,6 +279,7 @@ class Rexbuilder_Public
                 wp_enqueue_script('1-RexColorPalette', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Color_Palette.js', array('jquery'), $ver, true);
             }
             wp_enqueue_script('1-Rexbutton', REXPANSIVE_BUILDER_URL . 'public/js/build/1-Rexbuilder_Rexbutton.js', array('jquery'), $ver, true);
+            wp_enqueue_script('1-Rexelement', REXPANSIVE_BUILDER_URL . 'public/js/build/1-Rexbuilder_Rexelement.js', array('jquery'), $ver, true);
             if( Rexbuilder_Utilities::isBuilderLive() ) {
                 wp_enqueue_script('1-RexOverlayPalette', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Overlay_Palette.js', array('jquery'), $ver, true);
                 wp_enqueue_script('2-RexSaveListeners', REXPANSIVE_BUILDER_URL . 'public/js/live/2-Rex_Save_Listeners.js', array('jquery'), $ver, true);

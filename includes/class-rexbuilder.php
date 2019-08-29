@@ -299,6 +299,11 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_ajax_rex_update_container_margins', $plugin_admin, 'rex_update_container_margins' );
 		$this->loader->add_action( 'wp_ajax_rex_delete_rexbutton', $plugin_admin, 'rex_delete_rexbutton' );
 
+		// ELEMENTS AJAX ACTIONS
+		$this->loader->add_action( 'wp_ajax_rex_get_element_list', $plugin_admin, 'rex_get_element_list' );
+		$this->loader->add_action( 'wp_ajax_rex_save_element_thumbnail', $plugin_admin, 'rex_save_element_thumbnail' );
+		$this->loader->add_action( 'wp_ajax_rex_delete_element_thumbnail', $plugin_admin, 'rex_delete_element_thumbnail' );
+
 		// COLOR PALETTE APIs
 		$this->loader->add_action( 'wp_ajax_rex_save_palette_color', $plugin_admin, 'rex_save_palette_color' );
 		$this->loader->add_action( 'wp_ajax_rex_delete_palette_color', $plugin_admin, 'rex_delete_palette_color' );

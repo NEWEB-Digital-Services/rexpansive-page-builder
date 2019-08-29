@@ -365,6 +365,9 @@ var Rexbuilder_Rexbutton = (function ($) {
 
     var _fixImportedButton = function (data) {
         var $buttonWrapper = Rexbuilder_Util.$rexContainer.find(".rex-loading-button .rex-button-wrapper");
+
+        console.log($buttonWrapper);
+
         $buttonWrapper.unwrap();
 
         var $buttonsParagraph = $buttonWrapper.parents(".rex-buttons-paragraph").eq(0);
@@ -860,7 +863,6 @@ var Rexbuilder_Rexbutton = (function ($) {
     }
 
     var _linkDocumentListeners = function () {
-
         Rexbuilder_Util.$document.on("rexlive:completeImportButton", function (e) {
             var data = e.settings;
             var $newElement = data.$blockAdded;

@@ -16272,9 +16272,9 @@ body.rexpansive-editor .lean-overlay {
     cursor: grabbing; }
   #rex-elements-list .element-list-preview .tool-button.tool-button--reset-thumbnail {
     display: none; }
-  #rex-elements-list .element-list-preview.element--list-preview--active .element-list-preview__placeholder {
+  #rex-elements-list .element-list-preview.element-list-preview--active .element-list-preview__placeholder {
     visibility: hidden; }
-  #rex-elements-list .element-list-preview.element--list-preview--active .tool-button.tool-button--reset-thumbnail {
+  #rex-elements-list .element-list-preview.element-list-preview--active .tool-button.tool-button--reset-thumbnail {
     display: block; }
   #rex-elements-list .element-list-preview .element-tools {
     position: absolute;
@@ -16302,6 +16302,9 @@ body.rexpansive-editor .lean-overlay {
   text-transform: uppercase;
   color: #fff;
   background-color: rgba(0, 0, 0, 0.4); }
+
+#rex-elements-list .element-shortcode {
+  display: none; }
 
 .element-list {
   margin: 0;

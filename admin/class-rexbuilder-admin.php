@@ -2584,8 +2584,8 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		
 		// WP_Query arguments
 		$args = array(
-			'post_type'              => array( 'wpcf7_contact_form' )
-		);
+            'post_type' => array('wpcf7_contact_form')
+        );
 
 		$elementList = array();
 

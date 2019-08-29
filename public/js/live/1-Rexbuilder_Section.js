@@ -1384,7 +1384,6 @@ var Rexbuilder_Section = (function($) {
       });
       //$model_to_import.children().remove();
     });
-  };
 
   /**
    * Update Models HTML live when something change
