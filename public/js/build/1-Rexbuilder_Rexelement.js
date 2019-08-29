@@ -2,7 +2,7 @@ var Rexbuilder_Rexelement = (function ($) {
 	"use strict";
 
 	var _fixImportedElement = function (data) {
-        var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".element-shortcode");
+        var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-loading-button .element-shortcode");
         
         console.log($elementWrapper);
 
@@ -74,12 +74,13 @@ var Rexbuilder_Rexelement = (function ($) {
                 Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
                 break;
             case "inside-row":
+            	console.log("inside row");
                 var ev = jQuery.Event("rexlive:insert_new_text_block");
                 ev.settings = {
                     data_to_send: {
                         $elementWrapper: $elementWrapper,
                         $section: $section,
-                        addBlockButton: true,
+                        addBlockElement: true,
                         mousePosition: data.mousePosition,
                         blockDimensions: {
                             w: elementDimensionCalculated.width,
@@ -99,21 +100,23 @@ var Rexbuilder_Rexelement = (function ($) {
     }
 
     var _linkDocumentListeners = function () {
-
-        Rexbuilder_Util.$document.on("rexlive:completeImportElement", function (e) {
-            var data = e.settings;
-            var $newElement = data.$blockAdded;
-            var $elements = data.$elements;
-            $buttonWrapper.detach().prependTo($newElement.find(".text-wrap").eq(0));
-            $buttonWrapper.wrap("<p class=\"rex-elements-paragraph\"></p>");
-            _endFixingButtonImported($buttonWrapper);
-        });
+	    Rexbuilder_Util.$document.on("rexlive:completeImportElement", function (e) {
+	        var data = e.settings;
+	        console.log(data);
+	        var $newElement = data.$blockAdded;
+	        var $elements = data.$elements;
+	        $buttonWrapper.detach().prependTo($newElement.find(".text-wrap").eq(0));
+	        $buttonWrapper.wrap("<p class=\"rex-elements-paragraph\"></p>");
+	        _endFixingButtonImported($buttonWrapper);
+	    });
     }
 
-	var _init = function() {}
+	var init = function() {
+		_linkDocumentListeners();
+	}
 
 	return {
-		init: _init,
+		init: init,
 		fixImportedElement: _fixImportedElement
 	}
 })(jQuery);

@@ -435,6 +435,7 @@ var Button_Import_Modal = (function ($) {
                         var $divInsert = $(jQuery.parseHTML(textData));
                         $divInsert.addClass("rex-loading-button");
                         $divInsert.insertAfter($insertionPoint[0]);
+                        console.log($insertionPoint[0]);
                         $insertionPoint.remove();
                         var dataEndDrop = {
                             eventName: "rexlive:importButton",
