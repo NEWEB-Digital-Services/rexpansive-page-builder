@@ -1515,28 +1515,30 @@ var Rexbuilder_Dom_Util = (function($) {
     var models = [];
     var i;
     var flagNumbers;
-    var sections = [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section:not(.removing_section)') );
-    sections.forEach( function( sec, j ) {
-      if ( Rexbuilder_Util.has_class( sec, 'rex-model-section' ) ) {
-        var modelID = sec.getAttribute( 'data-rexlive-model-id' );
-        flagNumbers = false;
-        for (i = 0; i < models.length; i++) {
-          if ( models[i].id == modelID ) {
-            models[i].number = models[i].number + 1;
-            sec.setAttribute( 'data-rexlive-model-number', models[i].number );
-            flagNumbers = true;
+    if ( Rexbuilder_Util.rexContainer ) {
+      var sections = [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section:not(.removing_section)') );
+      sections.forEach( function( sec, j ) {
+        if ( Rexbuilder_Util.has_class( sec, 'rex-model-section' ) ) {
+          var modelID = sec.getAttribute( 'data-rexlive-model-id' );
+          flagNumbers = false;
+          for (i = 0; i < models.length; i++) {
+            if ( models[i].id == modelID ) {
+              models[i].number = models[i].number + 1;
+              sec.setAttribute( 'data-rexlive-model-number', models[i].number );
+              flagNumbers = true;
+            }
+          }
+          if ( !flagNumbers ) {
+            var model = {
+              id: modelID,
+              number: 1
+            };
+            models.push(model);
+            sec.setAttribute( 'data-rexlive-model-number', model.number );
           }
         }
-        if ( !flagNumbers ) {
-          var model = {
-            id: modelID,
-            number: 1
-          };
-          models.push(model);
-          sec.setAttribute( 'data-rexlive-model-number', model.number );
-        }
-      }
-    });
+      });
+    }
 
     // Rexbuilder_Util.$rexContainer
     //   .children(".rexpansive_section:not(.removing_section)")
