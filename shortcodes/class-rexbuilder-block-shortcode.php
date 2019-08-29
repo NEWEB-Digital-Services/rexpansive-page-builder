@@ -207,6 +207,14 @@ class Rexbuilder_Block
         if (has_shortcode($content, 'RexSlider')) {
             $block_has_slider = true;
             $content = Rexbuilder_Utilities::remove_shortcode_wrap_paragraphs($content, 'RexSlider');
+
+            // pass the overlay parameter to slider if present
+            if ( '' !== $overlay_block_color ) {
+                Rexbuilder_Utilities::add_attribute_to_shortcode( $content, array(
+                    'shortcode' => 'RexSlider',
+                    'attribute' => 'overlay="' . $overlay_block_color . '"',
+                ) );
+            }
         }
 
         if (has_shortcode($content, 'RexSliderDefintion')) {

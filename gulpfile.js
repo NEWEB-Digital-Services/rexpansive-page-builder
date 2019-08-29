@@ -76,9 +76,8 @@ gulp.task('minify-css', function() {
 });
 
 gulp.task('builder-front', function() {
-	sass('public/scss/rexbuilder-public.scss',{
-		style:'compressed'
-	})
+	return gulp.src('public/scss/rexbuilder-public.scss')
+	.pipe(sass({outputStyle:'compressed'}))
 	.pipe(plumber())
 	.pipe(autoprefixer({
 		browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]
@@ -475,7 +474,7 @@ gulp.task('builderlive-style', function() {
 	.pipe(gulp.dest('public/css'))
 });
 
-gulp.task('live-production', ['prepare-effects','builderlive-editor','builderlive','builderlive-editor-style','builderlive-style']);
+gulp.task('live-production', ['prepare-effects','public-css-build','builderlive-editor','builderlive','builderlive-editor-style','builderlive-style']);
 
 gulp.task('watch-live-production', ['builderlive-editor','builderlive'] ,function() {
 	gulp.watch(['public/js/build/**/*.js','public/js/live/**/*.js','public/js/vendor/**/*.js'], ['builderlive-editor']);
@@ -485,9 +484,8 @@ gulp.task('watch-live-production', ['builderlive-editor','builderlive'] ,functio
 /* --- BUILD PUBLIC SCRIPTS AND STYLES ------ */
 
 gulp.task('public-css-build', function() {
-	sass('public/public.scss',{
-		style:'compressed'
-	})
+	return gulp.src('public/public.scss')
+	.pipe(sass({style:'compressed'}))
 	.pipe(plumber())
 	.pipe(autoprefixer({
 		browsers: ["last 3 versions", "ie >= 9", "and_chr >= 2.3"]

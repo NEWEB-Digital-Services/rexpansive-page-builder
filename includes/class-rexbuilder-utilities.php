@@ -337,4 +337,20 @@ class Rexbuilder_Utilities {
 
 		return $list_response * $path_response;
 	}
+
+	/**
+	 * Add a string of attribute=value to a shortcode
+	 * The string can contain more than one attribute
+	 * 
+	 * @param String &$shortcode The string of the original shortcode, passed by reference
+	 * @param array  $atts      Array of options
+	 * @version 2.0.0
+	 */
+	public static function add_attribute_to_shortcode( &$shortcode, $atts = array() ) {
+		if ( ! empty( $atts ) ) {
+			$shortcode_pattern = "\[(\[?)({$atts['shortcode']})(?![\w-])([^\]\/]*(?:\/(?!\])[^\]\/]*)*?)(?:(\/)\]|\](?:([^\[]*+(?:\[(?!\/\2\])[^\[]*+)*+)\[\/\2\])?)(\]?)";
+			preg_match_all( "/$shortcode_pattern/", $shortcode, $result_shortcode );
+			$shortcode = '[' . $result_shortcode[2][0] . $result_shortcode[3][0] . ' ' . $atts['attribute'] . ']' . ( $result_shortcode[5][0] ? $result_shortcode[5][0] . '[\\' . $result_shortcode[2][0] . ']' : '' );
+		}
+	}
 }

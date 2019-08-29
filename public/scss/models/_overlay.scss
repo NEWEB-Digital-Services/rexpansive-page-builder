@@ -56,3 +56,16 @@
 		}
 	}
 }
+
+.slider-overlay {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	visibility: hidden;
+	z-index: 5;
+	.rex-active-overlay & {
+		visibility: visible;
+	}
+}

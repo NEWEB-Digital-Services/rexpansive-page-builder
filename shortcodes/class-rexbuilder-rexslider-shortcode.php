@@ -41,7 +41,8 @@ class Rexbuilder_RexSlider {
 		extract( shortcode_atts( array(
 			'slider_id' => '',
 			'class' => '',
-			'photoswipe' => ''		// handling photoswipe on slider
+			'photoswipe' => '',		// handling photoswipe on slider
+			'overlay' => ''			// handling overlay on slides
 		), $atts ) );
 
 		ob_start();
@@ -67,6 +68,12 @@ class Rexbuilder_RexSlider {
 			?>
 			<div data-slider-id="<?php echo $slider_id;?>" class="rex-slider-wrap<?php echo ( 1 == $nav_previewed ? ' rex-slider--bottom-interface' . ( 1 !== $num_slides ? ' rex-slider--bottom-interface--active' : '' ) : '' ); ?><?php echo ' rex-slider--' . $num_slides . '-slides'; ?>" data-rex-slider-animation="<?php echo ( is_array( $slider_animation ) ? 'true': ( "0" == $slider_animation ? 'true' : 'false' ) ); ?>" data-rex-slider-prev-next="<?php echo ( is_array( $slider_prev_next ) ? '1': ( "0" == $slider_prev_next ? 'true' : 'false' ) ); ?>" data-rex-slider-dots="<?php echo ( is_array( $slider_dots ) ? '1': ( "0" == $slider_dots ? 'true' : 'false' ) ); ?>" data-set-gallery-size="<?php echo esc_attr( ( 1 == $nav_previewed || 1 == $set_gallery_size ) ? 'true' : 'false' ); ?>"<?php echo ( '' !== $wrap_around ? ' data-wrap-around="' . $wrap_around . '"' : '' ); ?>>
 			<?php
+
+			// creating overlay element
+			$overlay_el = '';
+			if ( !empty( $overlay ) ) {
+				$overlay_el = '<div class="slider-overlay" style="background-color:' . $overlay . '"></div>';
+			}
 
 			foreach( $slider_gallery as $key => $slide ) :
 				$slider_el_style = '';
@@ -176,6 +183,9 @@ class Rexbuilder_RexSlider {
 					</figure>
 					<?php
 				}
+
+				// eventually overlay
+				echo $overlay_el;
 				?>
 					</div>
 				<?php	
