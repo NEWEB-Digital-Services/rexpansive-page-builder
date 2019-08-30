@@ -122,7 +122,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     }
 
     var galleryInstance = Rexbuilder_Util.getGalleryInstance($section);
-    if (addBlockButton) {
+    if (addBlockButton || addBlockElement) {
       blockWidth = 4;
       blockHeight = 100;
       blockHeight = Math.ceil(blockHeight / galleryInstance.properties.singleHeight);
@@ -163,12 +163,10 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
       gridstackInstance.move($el[0], moveX, moveY);
       Rexbuilder_Util.$document.trigger(ev);
-    }
-
-    if (addBlockElement) {
+    } else if (addBlockElement) {
       var ev = jQuery.Event("rexlive:completeImportElement");
       ev.settings = {
-        $elementWrapper: data.$elementWrapper,
+        $elementListData: data.$elementListData,
         $elementAdded: $el
       }
 

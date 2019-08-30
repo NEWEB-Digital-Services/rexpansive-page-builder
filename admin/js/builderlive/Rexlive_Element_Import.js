@@ -86,9 +86,7 @@ var Element_Import_Modal = (function ($) {
 			  $(document).trigger(event);
 			}
 		  },
-		  error: function(response) {
-		  	console.log(response);
-		  },
+		  error: function(response) {},
 		  complete: function(response) {
 		    element_import_props.$self.removeClass("rex-modal--loading");
 		  }
@@ -109,7 +107,7 @@ var Element_Import_Modal = (function ($) {
 		  dataType: "json",
 		  url: live_editor_obj.ajaxurl,
 		  data: {
-		    action: "rex_save_element_thumbnail",//da fare
+		    action: "rex_save_element_thumbnail",
 		    nonce_param: live_editor_obj.rexnonce,
 		    element_target: element_selected,
 		    image_selected: selected_image_id,
@@ -118,13 +116,9 @@ var Element_Import_Modal = (function ($) {
 		    set_post_thumbnail_url_result: null
 		  },
 		  success: function(response) {
-		    if (response.success) {
-		    	console.log(response);
-		    }
+		    if (response.success) {}
 		  },
-		  error: function(response) {
-		  	console.log(response);
-		  }
+		  error: function(response) {}
 		});
 	};
 
@@ -140,7 +134,7 @@ var Element_Import_Modal = (function ($) {
 		  dataType: "json",
 		  url: live_editor_obj.ajaxurl,
 		  data: {
-		    action: "rex_delete_element_thumbnail",//da fare
+		    action: "rex_delete_element_thumbnail",
 		    nonce_param: live_editor_obj.rexnonce,
 		    element_target: element_to_delete,
 		    delete_post_thumbnail_result: null,
@@ -462,7 +456,7 @@ var Element_Import_Modal = (function ($) {
 
             DragDropFunctions.removePlaceholder();
             DragDropFunctions.ClearContainerContext();
-            Rexbuilder_Util_Admin_Editor.removeClassToLiveFrameRexContainer("rex-dragging-element");//ok
+            Rexbuilder_Util_Admin_Editor.removeClassToLiveFrameRexContainer("rex-dragging-element");
             Rexbuilder_Util_Admin_Editor.dragImportType = "";
             var dataDnDend = {
                 eventName: "rexlive:drag_drop_ended",
@@ -541,7 +535,7 @@ var Element_Import_Modal = (function ($) {
 
                         var $divInsert = $(jQuery.parseHTML(textData));
                         $divInsert.addClass("rex-loading-button");
-                        $divInsert.insertAfter($insertionPoint[0]);//insertion point undefined
+                        $divInsert.insertAfter($insertionPoint[0]);
                         $insertionPoint.remove();
                         var dataEndDrop = {
                             eventName: "rexlive:importElement",
@@ -589,72 +583,73 @@ var Element_Import_Modal = (function ($) {
                 mousePercents = this.GetMouseBearingsPercentage($element, elementRect, mousePos);
 
                 // se devo entrare dentro l'elemento
-                // if ($element.hasClass("rex-button-wrapper") || $element.parents(".rex-button-wrapper").length != 0) {
-                //     $element = $element.hasClass("rex-button-wrapper") ? $element : $element.parents(".rex-button-wrapper").eq(0);
-                //     customBreakPoints = jQuery.extend(true, {}, breakPointNumber);
-                //     fixedBreakPoints = true;
-                //     breakPointNumber.x = 50;
-                //     breakPointNumber.y = 50;
-                // }
-                // if ((mousePercents.x > breakPointNumber.x && mousePercents.x < 100 - breakPointNumber.x)
-                //     && (mousePercents.y > breakPointNumber.y && mousePercents.y < 100 - breakPointNumber.y)) {
-                //     //Case 1 -
-                //     var $tempelement = $element.clone();
-                //     $tempelement.find(".drop-marker").remove();
-                //     if ($tempelement.html() == "" && !this.checkVoidElement($tempelement)) {
-                //         if (mousePercents.y < 90) {
-                //             return this.PlaceInside($element);
-                //         }
-                //     } else if ($tempelement.children().length == 0) {
-                //         //text element detected
-                //         this.DecideBeforeAfter($element, mousePercents);
-                //     } else if ($tempelement.children().length == 1) {
-                //         //only 1 child element detected
-                //         if ($tempelement.hasClass("rex-buttons-paragraph")) {
-                //             var positionAndElement = this.findNearestElement($element, mousePos.x, mousePos.y);
-                //             this.DecideBeforeAfter(positionAndElement.el, mousePercents, mousePos);
-                //         } else {
-                //             this.DecideBeforeAfter($element.children(":not(.drop-marker,[data-dragcontext-marker])").first(), mousePercents);
-                //         }
-                //     } else {
-                //         var positionAndElement = this.findNearestElement($element, mousePos.x, mousePos.y);
-                //         this.DecideBeforeAfter(positionAndElement.el, mousePercents, mousePos);
-                //     }
-                // } else if ((mousePercents.x <= breakPointNumber.x) || (mousePercents.y <= breakPointNumber.y)) {
-                //     if (mousePercents.y <= mousePercents.x) {
-                //         validElement = this.FindValidParent($element, 'top');
-                //     } else {
-                //         validElement = this.FindValidParent($element, 'left');
-                //     }
+                if ($element.hasClass("element-list__data") || $element.parents(".element-list__data").length != 0) {
+                    $element = $element.hasClass("element-list__data") ? $element : $element.parents(".element-list__data").eq(0);
+                    customBreakPoints = jQuery.extend(true, {}, breakPointNumber);
+                    fixedBreakPoints = true;
+                    breakPointNumber.x = 50;
+                    breakPointNumber.y = 50;
+                }
+                if ((mousePercents.x > breakPointNumber.x && mousePercents.x < 100 - breakPointNumber.x)
+                    && (mousePercents.y > breakPointNumber.y && mousePercents.y < 100 - breakPointNumber.y)) {
+                    //Case 1 -
+                    var $tempelement = $element.clone();
+                    $tempelement.find(".drop-marker").remove();
+                    if ($tempelement.html() == "" && !this.checkVoidElement($tempelement)) {
+                        if (mousePercents.y < 90) {
+                            return this.PlaceInside($element);
+                        }
+                    } else if ($tempelement.children().length == 0) {
+                        //text element detected
+                        this.DecideBeforeAfter($element, mousePercents);
+                    } else if ($tempelement.children().length == 1) {
+                        //only 1 child element detected
+                        if ($tempelement.hasClass("rex-buttons-paragraph")) {
+                            var positionAndElement = this.findNearestElement($element, mousePos.x, mousePos.y);
+                            this.DecideBeforeAfter(positionAndElement.el, mousePercents, mousePos);
+                        } else {
+                            this.DecideBeforeAfter($element.children(":not(.drop-marker,[data-dragcontext-marker])").first(), mousePercents);
+                        }
+                    } else {
+                        var positionAndElement = this.findNearestElement($element, mousePos.x, mousePos.y);
+                        this.DecideBeforeAfter(positionAndElement.el, mousePercents, mousePos);
+                    }
+                } else if ((mousePercents.x <= breakPointNumber.x) || (mousePercents.y <= breakPointNumber.y)) {
+                    if (mousePercents.y <= mousePercents.x) {
+                        validElement = this.FindValidParent($element, 'top');
+                    } else {
+                        validElement = this.FindValidParent($element, 'left');
+                    }
 
-                //     if (validElement.is("body,html")) {
-                //         validElement = Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find("body").children(":not(.drop-marker,[data-dragcontext-marker])").first();
-                //     }
-                //     this.DecideBeforeAfter(validElement, mousePercents, mousePos);
-                // } else if ((mousePercents.x >= 100 - breakPointNumber.x) || (mousePercents.y >= 100 - breakPointNumber.y)) {
-                //     var validElement = null;
-                //     if (mousePercents.y >= mousePercents.x) {
-                //         validElement = this.FindValidParent($element, 'bottom');
-                //     } else {
-                //         validElement = this.FindValidParent($element, 'right');
-                //     }
+                    if (validElement.is("body,html")) {
+                        validElement = Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find("body").children(":not(.drop-marker,[data-dragcontext-marker])").first();
+                    }
+                    this.DecideBeforeAfter(validElement, mousePercents, mousePos);
+                } else if ((mousePercents.x >= 100 - breakPointNumber.x) || (mousePercents.y >= 100 - breakPointNumber.y)) {
+                    var validElement = null;
+                    if (mousePercents.y >= mousePercents.x) {
+                        validElement = this.FindValidParent($element, 'bottom');
+                    } else {
+                        validElement = this.FindValidParent($element, 'right');
+                    }
 
-                //     if (validElement.is("body,html")) {
-                //         validElement = Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find("body").children(":not(.drop-marker,[data-dragcontext-marker])").last();
-                //     }
-                //     this.DecideBeforeAfter(validElement, mousePercents, mousePos);
-                // }
-                // if (fixedBreakPoints) {
-                //     breakPointNumber.x = customBreakPoints.x;
-                //     breakPointNumber.y = customBreakPoints.y;
-                //     fixedBreakPoints = false;
-                // }
+                    if (validElement.is("body,html")) {
+                        validElement = Rexbuilder_Util_Admin_Editor.$frameBuilder.contents().find("body").children(":not(.drop-marker,[data-dragcontext-marker])").last();
+                    }
+                    this.DecideBeforeAfter(validElement, mousePercents, mousePos);
+                }
+                if (fixedBreakPoints) {
+                    breakPointNumber.x = customBreakPoints.x;
+                    breakPointNumber.y = customBreakPoints.y;
+                    fixedBreakPoints = false;
+                }
 
                 /**
                  * Checks if current element, where placeholder is, is a valid element. If not checks if has a grid-stack-item as parent. If has moves placeholder in right position
                  */
-                if (!$element.hasClass("rex-buttons-paragraph") && !$element.hasClass("text-wrap") && !$element.hasClass("rex-button-wrapper")) {
+                if (!$element.hasClass("rex-elements-paragraph") && !$element.hasClass("text-wrap") && !$element.hasClass(".element-list__data")) {
                     var $gridItem = $element.parents(".grid-stack-item");
+                    console.log("ci entro?");
                     if ($gridItem.length != 0) {
                         this.removePlaceholder();
                         $gridItem.find(".text-wrap").eq(0).append(this.getPlaceHolder());

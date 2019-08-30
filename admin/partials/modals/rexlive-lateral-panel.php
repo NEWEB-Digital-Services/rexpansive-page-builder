@@ -122,6 +122,7 @@ defined('ABSPATH') or exit;
                         // The Loop
                         if ($query->have_posts()) {
                             while ($query->have_posts()) {
+                                // In this loop elements are CF7 forms
                                 $query->the_post();
                                 $element_id = get_the_ID();
                                 $element_title =  get_the_title();
@@ -130,17 +131,15 @@ defined('ABSPATH') or exit;
                                 $element_thumbnail_url = get_the_post_thumbnail_url($element_id, $image_size);
 
                                 $shortcodeCF7 = "[contact-form-7 id=\"".$element_id."\" title=\"".$element_title."\"]";
-                                $shortcodeCF7HTML = do_shortcode($shortcode);
                                 ?>
 
-                                <li class="element-list__element bl_d-flex bl_ai-c" draggable="true" data-rex-element-id="<?php echo $element_id;?>" data-rex-element-thumbnail-id="<?php echo $image_id;?>" data-rex-element-thumbnail-size="<?php echo $image_size;?>">
-                                    
+                                <li class="element-list__element bl_d-flex bl_ai-c" draggable="true" data-rex-element-id="<?php echo $element_id;?>"data-rex-element-thumbnail-id="<?php echo $image_id;?>" data-rex-element-thumbnail-size="<?php echo $image_size;?>">
                                         <div class="element-list-preview bl_d-flex bl_jc-c bl_ai-c<?php echo ( $element_thumbnail_url != "" ? ' element-list-preview--active' : '' ); ?>"<?php echo ( $element_thumbnail_url != "" ? 'style="background-image:url(' . $element_thumbnail_url . ');"' : '' ); ?> itemprop="contentUrl" data-href="<?php echo ( $element_thumbnail_url != "" ? esc_url($element_thumbnail_url) : "https://via.placeholder.com/640x480" ); ?>" data-size="640x480">
                                             <span class="element-list-preview__placeholder"><?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?></span>
                                             <div class="element-name bl_d-flex bl_jc-c bl_ai-fe"><div><?php echo $element_title;?></div></div>
                                             <div class="rex-container">
-                                                <div class="element-shortcode"><?php echo $shortcodeCF7 ?>
-                                            </div>
+                                                <!-- Vedere se cambiargli nome... (element-list__html?) -->
+                                                <div class="element-list__data" data-rex-element-id="<?php echo $element_id;?>"></div>
                                             </div>
                                             <div class="element-tools">
                                                 <div class="tool-button--double-icon--wrap tool-button--edit-thumbnail tippy" data-tippy-content="<?php _e('Thumbnail','rexpansive-builder'); ?>">

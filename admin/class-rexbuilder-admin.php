@@ -2564,7 +2564,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	/**
 	 * Get elements list to display on lateral menu, ready to drag on page
 	 * @return JSON updated list
-	 * @since  2.0.0
+	 * @since  x.x.x
 	 */
 	public function rex_get_element_list(){
 		$nonce = $_GET['nonce_param'];
@@ -2620,7 +2620,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	/**
 	 * Delete an element, knowing the id
 	 * @return JSON delete operation response
-	 * @since  2.0.0
+	 * @since  x.x.x
 	 */
 	public function rex_delete_element() {
 		$nonce = $_POST['nonce_param'];
@@ -2649,7 +2649,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	/**
 	 * Save the element thumbnail
 	 * @return model with new image
-	 * @since  2.0.0
+	 * @since  x.x.x
 	 */
 	public function rex_save_element_thumbnail(){
 		$nonce = $_GET['nonce_param'];
@@ -2683,9 +2683,9 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	}
 
 	/**
-	 * Delete the model image
+	 * Deletes the model image
 	 * @return model with no image
-	 * @since  2.0.0
+	 * @since  x.x.x
 	 */
 	public function rex_delete_element_thumbnail(){
 		$nonce = $_GET['nonce_param'];

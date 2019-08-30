@@ -470,6 +470,37 @@ class Rexbuilder_Public
     }
 
     /**
+     * Transforms shortcode to html
+     * @return model with no image
+     * @since  x.x.x
+     */
+    public function rex_transform_shortcode(){
+        $nonce = $_POST['nonce_param'];
+        $elementID = $_POST['elementID'];
+
+        $response = array(
+            'error' => false,
+            'msg' => ''
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+        $response['error'] = false;
+
+        $elementTitle = get_the_title($elementID);
+
+        $shortcode = "[contact-form-7 id=\"".$elementID."\" title=\"".$elementTitle."\"]";
+
+        $response['shortcode_transformed'] = do_shortcode($shortcode);
+
+        wp_send_json_success($response);
+    }
+
+    /**
      * Save section rexids
      *
      * @since 2.0.0

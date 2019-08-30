@@ -16303,7 +16303,7 @@ body.rexpansive-editor .lean-overlay {
   color: #fff;
   background-color: rgba(0, 0, 0, 0.4); }
 
-#rex-elements-list .element-shortcode {
+#rex-elements-list .element-list__data {
   display: none; }
 
 .element-list {

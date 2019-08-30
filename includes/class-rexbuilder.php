@@ -372,6 +372,8 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_ajax_rexlive_save_shortcode', $plugin_public, 'rexlive_save_shortcode' );
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_shortcode', $plugin_public, 'rexlive_save_shortcode' );
 
+		$this->loader->add_action( 'wp_ajax_rex_transform_shortcode', $plugin_public, 'rex_transform_shortcode' );
+
 		$this->loader->add_action( 'wp_ajax_rexlive_save_avaiable_layouts', $plugin_public, 'rexlive_save_avaiable_layouts' );
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_avaiable_layouts', $plugin_public, 'rexlive_save_avaiable_layouts' );
 
