@@ -70,6 +70,15 @@ var TextEditor = (function ($) {
 
   /**
    * //Color picker extension
+   * Sets the color of the current text selection
+   */
+  var setCurrentTextColor = function (color) {
+    $(editorInstance.getSelectedParentElement()).css("color", color);
+  };
+
+
+  /**
+   * //Color picker extension
    * Gets the color of the current text selection
    */
   var getCurrentTextColor = function () {
@@ -166,7 +175,7 @@ var TextEditor = (function ($) {
       change: function(color) {
         // setColor(color.toRgbString());
         setFunction.call(this, color.toRgbString());
-        $picker_preview.css('background-color',color.toRgbString());
+        $picker_preview.css('background-color', color.toRgbString());
       },
       move: function(color) {
         // setColor(color.toRgbString());
@@ -261,6 +270,38 @@ var TextEditor = (function ($) {
         $(this.button).find('.meditor-color-picker--preview').css('background-color', '');
       }
     }
+  });
+
+  /**
+   * Handling the text editing
+   * @since x.x.x
+   */
+  var TextEditingExtension = MediumEditor.Extension.extend({
+    name: 'textEditing',
+
+    init: function () {
+      this.keyCode = MediumEditor.util.keyCode;
+      this.subscribe("editableKeyup", this.handleEventKeyUp.bind(this));
+    },
+
+    handleEventKeyUp: function (event, target) {
+      // If text is pasted need to update block height
+      if (MediumEditor.util.isKey(event, this.keyCode.V) && MediumEditor.util.isMetaCtrlKey(event)) {
+        var nodeToFix = MediumEditor.selection.getSelectionStart(this.base.options.ownerDocument);
+        var $node = $(nodeToFix);
+
+        Rexbuilder_Util_Editor.updateBlockContainerHeight($(target));
+
+        // if ($node[0].tagName.toLowerCase() == "p") {
+          
+          // console.log(getCurrentTextColor());
+          // console.log(editorInstance.getSelectedParentElement());
+          var prevNodeColor = $node.prev().css("color");
+          setCurrentTextColor(prevNodeColor);
+
+        // }
+      }
+    },
   });
 
   /**
@@ -451,6 +492,7 @@ var TextEditor = (function ($) {
         editorInstance.execAction(action);
       }
     }
+    
   });
 
   /**
@@ -1313,6 +1355,7 @@ var TextEditor = (function ($) {
 
     handleEventKeyDown: function (event, target) {
       var nodeToFix = MediumEditor.selection.getSelectionStart(this.base.options.ownerDocument);
+      var $node = $(nodeToFix);
       var mediumEditorOffsetLeft = MediumEditor.selection.getCaretOffsets(nodeToFix).left;
       var mediumEditorOffsetRight = MediumEditor.selection.getCaretOffsets(nodeToFix).right;
 
@@ -2316,21 +2359,21 @@ var TextEditor = (function ($) {
 
       this.hideAllToolbars();
       
-  /*  var baseElementsOneInnerHTML = this.base.elements[1].innerHTML;
-      var baseElementsOneInnerTEXT = this.base.elements[1].innerText;    
-      console.log(this.base.elements[1].innerHTML);
-      console.log(this.base.elements[1].innerText);
-      if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.BACKSPACE) || MediumEditor.util.isKey(event, MediumEditor.util.keyCode.DELETE)) {
-        // MediumEditor.util.isKey == 8, 446
-        if(baseElementsOneInnerTEXT != "" && baseElementsOneInnerHTML != "<p><br></p>") {
-          this.hideEditImgToolbar();
-          this.hideEditVideoToolbar();
-          if(baseElementsOneInnerHTML != "<p><br></p>") {
-            this.hideEditImgToolbar();
-            this.hideEditVideoToolbar();
-          }
-        }
-      }   */
+    // var baseElementsOneInnerHTML = this.base.elements[1].innerHTML;
+    //   var baseElementsOneInnerTEXT = this.base.elements[1].innerText;    
+    //   console.log(this.base.elements[1].innerHTML);
+    //   console.log(this.base.elements[1].innerText);
+    //   if (MediumEditor.util.isKey(event, MediumEditor.util.keyCode.BACKSPACE) || MediumEditor.util.isKey(event, MediumEditor.util.keyCode.DELETE)) {
+    //     // MediumEditor.util.isKey == 8, 446
+    //     if(baseElementsOneInnerTEXT != "" && baseElementsOneInnerHTML != "<p><br></p>") {
+    //       this.hideEditImgToolbar();
+    //       this.hideEditVideoToolbar();
+    //       if(baseElementsOneInnerHTML != "<p><br></p>") {
+    //         this.hideEditImgToolbar();
+    //         this.hideEditVideoToolbar();
+    //       }
+    //     }
+    //   }   
 
     },
 
@@ -2799,6 +2842,7 @@ var TextEditor = (function ($) {
         'hide-row-tools-on-editing': new HideRowToolsOnEditing(),
         'rexbutton-input': new RexButtonExtension(),
         onlySVGFixExtension : new OnlySVGFixExtension(),
+        textEditing: new TextEditingExtension(),
       },
       placeholder: {
         text: "Type here your text",
