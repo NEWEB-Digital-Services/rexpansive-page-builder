@@ -649,7 +649,6 @@ var Element_Import_Modal = (function ($) {
                  */
                 if (!$element.hasClass("rex-elements-paragraph") && !$element.hasClass("text-wrap") && !$element.hasClass(".element-list__data")) {
                     var $gridItem = $element.parents(".grid-stack-item");
-                    console.log("ci entro?");
                     if ($gridItem.length != 0) {
                         this.removePlaceholder();
                         $gridItem.find(".text-wrap").eq(0).append(this.getPlaceHolder());

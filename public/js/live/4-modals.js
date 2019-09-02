@@ -135,7 +135,7 @@
         //   var layout = ( e.target.checked ? 'fixed' : 'masonry' );
         //   $section.find('.edit-row-layout-checkbox').prop('checked',layout);
         // }
-        
+
       Rexbuilder_Dom_Util.updateGridLayoutDomProperties($gallery, data.layout);
       galleryInstance.updateGridLayout(data.layout, reverseData);
     });
@@ -459,7 +459,6 @@
       };
       
       if (data.photoswipe.toString() == "true") {   // add photoswipe to all blocks
-        console.log(data);
         Rexbuilder_Dom_Util.enablePhotoswipeAllBlocksSection($section);
       }
       else if ( data.photoswipe.toString() == "false" )   // remove photoswipe from all blocks

@@ -405,6 +405,7 @@ var Rexbuilder_Rexbutton = (function ($) {
         buttonDimensionCalculated.width =
             buttonDimensionCalculated.width + margins.left + margins.right + paddings.left + paddings.right;
 
+
         var dropType;
         if ($textWrap.length == 0) {
             if ($gridGallery.length != 0) {

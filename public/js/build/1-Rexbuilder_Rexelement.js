@@ -12,17 +12,15 @@ var Rexbuilder_Rexelement = (function ($) {
      */
 	var _fixImportedElement = function (data) {
         var $elementListData = Rexbuilder_Util.$rexContainer.find(".rex-loading-button .element-list__data");
-
-        $elementListData.unwrap();
-
         var elementID = $elementListData.attr("data-rex-element-id");
         var $elementsParagraph = $elementListData.parents(".rex-elements-paragraph").eq(0);
         var $textWrap = $elementListData.parents(".text-wrap").eq(0);
         var $gridGallery = $elementListData.parents(".grid-stack-row").eq(0);
         var $section = $elementListData.parents(".rexpansive_section").eq(0);
-        var elementDimensionCalculated = jQuery.extend(true, {}, data.elementDimensions);
+        var elementDimensionCalculated = jQuery.extend(true, {}, data.elementDimensions);//servono?
 
-        // fix delete element bring back
+        // Removing element unnecessary data
+        $elementListData.detach().appendTo($textWrap);
         // $gridGallery.find('.tool-button--edit-thumbnail').remove();
         // $gridGallery.find('.element-list__element--delete').remove();
         $gridGallery.find('.element-list-preview').remove();
@@ -123,9 +121,7 @@ var Rexbuilder_Rexelement = (function ($) {
                 }
             }
           },
-          error: function(response) {
-            // console.log(response);
-          }
+          error: function(response) {}
         });
     }
 
@@ -149,6 +145,13 @@ var Rexbuilder_Rexelement = (function ($) {
         //     });
         // }
         // _removeModelData($buttonWrapper);//non dovrebbe servire
+        
+        // Setting the block height
+        var $gridGallery = $elementListData.parents(".grid-stack-row").eq(0);
+		var galleryData = $gridGallery.data();
+        var galleryEditorInstance = galleryData.plugin_perfectGridGalleryEditor;
+        var $block = $elementListData.parents(".grid-stack-item");
+        galleryEditorInstance.updateElementHeight($block);
 
         //removes medium editor placeholder if there
         var $textWrap = $elementListData.parents(".text-wrap");
