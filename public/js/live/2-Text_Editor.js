@@ -281,26 +281,39 @@ var TextEditor = (function ($) {
 
     init: function () {
       this.keyCode = MediumEditor.util.keyCode;
-      this.subscribe("editableKeyup", this.handleEventKeyUp.bind(this));
+      // this.subscribe("editableKeyup", this.handleEventKeyUp.bind(this));
+      this.subscribe("editableInput", this.handleEditableInput.bind(this));
     },
 
-    handleEventKeyUp: function (event, target) {
-      // If text is pasted need to update block height
-      if (MediumEditor.util.isKey(event, this.keyCode.V) && MediumEditor.util.isMetaCtrlKey(event)) {
+    handleEditableInput: function (event, target) {
+      // Not using keyup event.
+      // Pros of keyup: it's called less times than input event.
+      // Cons:  when pasting on a p, the text stays black for less than a second,
+      //        but the user can see it.
+      //        When pressing CTRL+V and releasing CTRL before, the if condition
+      //        results false.
+      // if (MediumEditor.util.isKey(event, this.keyCode.V) && MediumEditor.util.isMetaCtrlKey(event)) {
         var nodeToFix = MediumEditor.selection.getSelectionStart(this.base.options.ownerDocument);
         var $node = $(nodeToFix);
 
+
         Rexbuilder_Util_Editor.updateBlockContainerHeight($(target));
 
-        // if ($node[0].tagName.toLowerCase() == "p") {
-          
-          // console.log(getCurrentTextColor());
-          // console.log(editorInstance.getSelectedParentElement());
-          var prevNodeColor = $node.prev().css("color");
-          setCurrentTextColor(prevNodeColor);
-
-        // }
-      }
+        if ($node[0].tagName.toLowerCase() == "span" || $node[0].tagName.toLowerCase() == "p") {
+          if ($node.parent()[0].tagName.toLowerCase() != "h1" && 
+            $node.parent()[0].tagName.toLowerCase() != "h2" &&
+            $node.parent()[0].tagName.toLowerCase() != "h3" &&
+            $node.parent()[0].tagName.toLowerCase() != "h4" &&
+            $node.parent()[0].tagName.toLowerCase() != "h5" &&
+            $node.parent()[0].tagName.toLowerCase() != "h6") {
+            var prevNodeColor = $node.prev().css("color");
+            setCurrentTextColor(prevNodeColor);
+          }
+        } else {
+          var lastChildNodeColor = $node.children().last().css("color");
+          setCurrentTextColor(lastChildNodeColor);
+        }
+      // }
     },
   });
 
