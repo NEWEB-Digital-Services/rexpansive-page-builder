@@ -771,7 +771,7 @@ var Rexbuilder_Rexbutton = (function ($) {
      * 
      * separateButton - true if button is separate, false if it is a model
      * 
-     * buttonInfo - properties of button
+     * buttonInfo - properties of the button
      * 
      * @param {*} $buttonContainer dom button container (with class "rex-button-wrapper")
      * @param {Boolean} getAllData flag to generate all data
@@ -854,7 +854,6 @@ var Rexbuilder_Rexbutton = (function ($) {
         }
         return data;
     }
-
     var _lockSynchronize = function (data) {
         var buttonID = data.buttonTarget.button_id;
         var $buttonWrapper = Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper[data-rex-button-id=\"" + buttonID + "\"][data-rex-button-number=\"" + data.buttonTarget.button_number + "\"]");
@@ -893,6 +892,7 @@ var Rexbuilder_Rexbutton = (function ($) {
                     number: buttonNumber
                 });
                 if ($buttonWrapper.hasClass("rex-separate-button")) {
+                    // We are not editing a button model, but a separate button
                     _addButtonStyle($buttonWrapper);
                 }
             }

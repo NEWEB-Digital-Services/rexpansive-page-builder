@@ -15214,6 +15214,11 @@ span.rex-theme-button,
       .rex-slider-wrap .rex-slider-element-title .rex-theme-button ~ .rex-theme-button {
         margin-top: 1em; } }
 
+.string-shortcode {
+  display: none;
+  width: 0px;
+  height: 0px; }
+
 .b-svg-icons {
   display: inline-block;
   width: 1em;
@@ -16303,7 +16308,7 @@ body.rexpansive-editor .lean-overlay {
   color: #fff;
   background-color: rgba(0, 0, 0, 0.4); }
 
-#rex-elements-list .element-list__data {
+#rex-elements-list .rex-element-wrapper {
   display: none; }
 
 .element-list {

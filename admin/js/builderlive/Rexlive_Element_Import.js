@@ -423,7 +423,7 @@ var Element_Import_Modal = (function ($) {
             } else {
                 event.originalEvent.dataTransfer.setData("text/plain", insertingHTML);
             }
-            Rexbuilder_Util_Admin_Editor.addClassToLiveFrameRexContainer("rex-dragging-element");//ok
+            Rexbuilder_Util_Admin_Editor.addClassToLiveFrameRexContainer("rex-dragging-element");
 
             var dataDnDstart = {
                 eventName: "rexlive:drag_drop_starded",
@@ -504,7 +504,7 @@ var Element_Import_Modal = (function ($) {
                     mousePosition.x = event.originalEvent.clientX;
                     mousePosition.y = event.originalEvent.clientY;
 
-                    mousePositionToIFrame.x = event.originalEvent.pageX
+                    mousePositionToIFrame.x = event.originalEvent.pageX;
                     mousePositionToIFrame.y = event.originalEvent.pageY;
                     DragDropFunctions.AddEntryToDragOverQueue(currentElement, elementRectangle, mousePosition);
                 }
@@ -582,9 +582,9 @@ var Element_Import_Modal = (function ($) {
 
                 mousePercents = this.GetMouseBearingsPercentage($element, elementRect, mousePos);
 
-                // se devo entrare dentro l'elemento
-                if ($element.hasClass("element-list__data") || $element.parents(".element-list__data").length != 0) {
-                    $element = $element.hasClass("element-list__data") ? $element : $element.parents(".element-list__data").eq(0);
+                // If I have to go inside the element
+                if ($element.hasClass("rex-element-wrapper") || $element.parents(".rex-element-wrapper").length != 0) {
+                    $element = $element.hasClass("rex-element-wrapper") ? $element : $element.parents(".rex-element-wrapper").eq(0);
                     customBreakPoints = jQuery.extend(true, {}, breakPointNumber);
                     fixedBreakPoints = true;
                     breakPointNumber.x = 50;
@@ -647,7 +647,7 @@ var Element_Import_Modal = (function ($) {
                 /**
                  * Checks if current element, where placeholder is, is a valid element. If not checks if has a grid-stack-item as parent. If has moves placeholder in right position
                  */
-                if (!$element.hasClass("rex-elements-paragraph") && !$element.hasClass("text-wrap") && !$element.hasClass(".element-list__data")) {
+                if (!$element.hasClass("rex-elements-paragraph") && !$element.hasClass("text-wrap") && !$element.hasClass(".rex-element-wrapper")) {
                     var $gridItem = $element.parents(".grid-stack-item");
                     if ($gridItem.length != 0) {
                         this.removePlaceholder();
@@ -916,7 +916,7 @@ var Element_Import_Modal = (function ($) {
                             else if (clientY > yPosition1 && clientY > yPosition2) {
                                 // console.log('I m on the bottom of the element');
                                 corner1 = { x: xPosition1, y: yPosition2, 'position': 'before' }; //Left bottom
-                                corner2 = { x: xPosition2, y: yPosition2, 'position': 'after' } //Right Bottom
+                                corner2 = { x: xPosition2, y: yPosition2, 'position': 'after' }; //Right Bottom
                             }
                         }
 
@@ -1087,12 +1087,12 @@ var Element_Import_Modal = (function ($) {
 
 	return {
 	    init: _init,
-	    // FUNCTIONS THAT USE AJAX CALLS
+	    // Functions that use Ajax calls
 	    saveElementThumbnail: _saveElementThumbnail,
 	    deleteElementThumbnail: _deleteElementThumbnail,
 	    updateElementList: _updateElementList,
 
-	 	//ELEMENT FUNCTIONS
+	 	//Element functions
 	    deleteElement: _deleteElement,
 	    editElementThumbnail: _editElementThumbnail,
 	    updateElementThumbnail: _updateElementThumbnail,

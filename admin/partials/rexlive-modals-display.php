@@ -1065,6 +1065,8 @@ defined('ABSPATH') or exit;
 <?php include_once( 'modals/rexlive-lateral-panel.php' ); ?>
 <?php include_once( 'modals/rexlive-button-editor-modal.php' ); ?>
 <?php include_once( 'modals/rexlive-button-edit-model-modal.php' ); ?>
+<?php include_once( 'modals/rexlive-element-editor-modal.php' ); ?>
+<?php include_once( 'modals/rexlive-element-edit-model-modal.php' ); ?>
 
 <div class="rex-modal-wrap">
     <div id="rex-add-button-name-modal" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable">

@@ -4178,6 +4178,11 @@ span.rex-theme-button,
       .rex-slider-wrap .rex-slider-element-title .rex-theme-button ~ .rex-theme-button {
         margin-top: 1em; } }
 
+.string-shortcode {
+  display: none;
+  width: 0px;
+  height: 0px; }
+
 .section-toolBox {
   overflow: visible;
   right: -2px;

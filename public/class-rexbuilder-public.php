@@ -492,9 +492,9 @@ class Rexbuilder_Public
         $response['error'] = false;
 
         $elementTitle = get_the_title($elementID);
-
         $shortcode = "[contact-form-7 id=\"".$elementID."\" title=\"".$elementTitle."\"]";
 
+        $response['shortcode'] = $shortcode;
         $response['shortcode_transformed'] = do_shortcode($shortcode);
 
         wp_send_json_success($response);

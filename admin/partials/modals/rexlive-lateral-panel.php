@@ -138,8 +138,7 @@ defined('ABSPATH') or exit;
                                             <span class="element-list-preview__placeholder"><?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?></span>
                                             <div class="element-name bl_d-flex bl_jc-c bl_ai-fe"><div><?php echo $element_title;?></div></div>
                                             <div class="rex-container">
-                                                <!-- Vedere se cambiargli nome... (element-list__html?) -->
-                                                <div class="element-list__data" data-rex-element-id="<?php echo $element_id;?>"></div>
+                                                <div class="rex-element-wrapper" data-rex-element-id="<?php echo $element_id;?>"></div>
                                             </div>
                                             <div class="element-tools">
                                                 <div class="tool-button--double-icon--wrap tool-button--edit-thumbnail tippy" data-tippy-content="<?php _e('Thumbnail','rexpansive-builder'); ?>">

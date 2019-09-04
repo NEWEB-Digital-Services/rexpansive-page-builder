@@ -56,6 +56,16 @@ $defaultButtonsIDs = '[]';
 $buttonsIDsJSON = get_option('_rex_buttons_ids', $defaultButtonsIDs);
 $buttonsIDsJSON = stripslashes($buttonsIDsJSON);
 $buttonsIDsUsed = json_decode($buttonsIDsJSON, true);
+
+$defaultElementsStyles = '[]';
+$elementsStylesJSON = get_option('_rex_elements_styles', $defaultElementsStyles);
+$elementsStylesJSON = stripslashes($elementsStylesJSON);
+$elementsStylesArray = json_decode($elementsStylesJSON, true);
+
+$defaultElementsIDs = '[]';
+$elementsIDsJSON = get_option('_rex_elements_ids', $defaultElementsIDs);
+$elementsIDsJSON = stripslashes($elementsIDsJSON);
+$elementsIDsUsed = json_decode($elementsIDsJSON, true);
 ?>
 <div id="rexpansive-builder-backend-wrapper" class="top-fast-tools--hide" data-rex-edited-backend="<?php echo $backendEditing;?>">
 	<div>
@@ -71,6 +81,20 @@ $buttonsIDsUsed = json_decode($buttonsIDsJSON, true);
                 echo "[]";
             } else {
                 echo json_encode($buttonsIDsUsed);
+            }
+		?></div>
+		<div id="rex-elements-json-css" style="display: none;"><?php
+			if ($elementsStylesArray == null) {
+                echo "[]";
+            } else {
+                echo json_encode($elementsStylesArray);
+            }
+		?></div>
+		<div id="rex-elements-ids-used" style="display: none;"><?php 
+		    if ($buttonsIDsUsed == null) {
+                echo "[]";
+            } else {
+                echo json_encode($elementsIDsUsed);
             }
 		?></div>
 	</div>

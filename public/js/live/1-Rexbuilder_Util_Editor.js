@@ -585,6 +585,10 @@ var Rexbuilder_Util_Editor = (function($) {
     Rexbuilder_Util.$document.on("rexlive:importElement", function (e) {
       Rexbuilder_Rexelement.fixImportedElement(e.settings.data_to_send);
     });
+
+    // Rexbuilder_Util.$document.on("rexlive:lock_synchronize_on_element", function (e) {
+    //   Rexbuilder_Rexelement.lockSynchronize(e.settings.data_to_send);
+    // });
     
     Rexbuilder_Util.$document.on("rexlive:importButton", function (e) {
       Rexbuilder_Rexbutton.fixImportedButton(e.settings.data_to_send);
