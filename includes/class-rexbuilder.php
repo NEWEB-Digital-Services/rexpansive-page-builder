@@ -294,6 +294,8 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_ajax_rex_get_model_list', $plugin_admin, 'rex_get_model_list' );
 		$this->loader->add_action( 'wp_ajax_rex_save_model_thumbnail', $plugin_admin, 'rex_save_model_thumbnail' );
 		$this->loader->add_action( 'wp_ajax_rex_delete_model_thumbnail', $plugin_admin, 'rex_delete_model_thumbnail' );
+
+		// BUTTONS AJAX ACTIONS
 		$this->loader->add_action( 'wp_ajax_rex_update_buttons_ids', $plugin_admin, 'rex_update_buttons_ids' );
 		$this->loader->add_action( 'wp_ajax_rex_update_button', $plugin_admin, 'rex_update_button' );
 		$this->loader->add_action( 'wp_ajax_rex_update_container_margins', $plugin_admin, 'rex_update_container_margins' );
@@ -303,6 +305,8 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_ajax_rex_get_element_list', $plugin_admin, 'rex_get_element_list' );
 		$this->loader->add_action( 'wp_ajax_rex_save_element_thumbnail', $plugin_admin, 'rex_save_element_thumbnail' );
 		$this->loader->add_action( 'wp_ajax_rex_delete_element_thumbnail', $plugin_admin, 'rex_delete_element_thumbnail' );
+		$this->loader->add_action( 'wp_ajax_rex_delete_rexelement', $plugin_admin, 'rex_delete_rexelement' );
+		$this->loader->add_action( 'wp_ajax_rex_update_elements_ids', $plugin_admin, 'rex_update_elements_ids' );
 
 		// COLOR PALETTE APIs
 		$this->loader->add_action( 'wp_ajax_rex_save_palette_color', $plugin_admin, 'rex_save_palette_color' );

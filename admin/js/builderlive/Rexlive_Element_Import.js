@@ -23,67 +23,67 @@ var Element_Import_Modal = (function ($) {
 		  },
 		  success: function(response) {
 			if (response.success) {
-			  var currentList = [];
-			  element_import_props.$self
-			  .find(".element-list__element")
-			  .each(function(i, element) {
-			    var elementID = $(element).attr("data-rex-element-id");
-			    var elementObj = {
-			      id: elementID,
-			      founded: false
-			    };
-			    currentList.push(elementObj);
-			  });
+		    	var currentList = [];
+				element_import_props.$self
+				.find(".element-list__element")
+				.each(function(i, element) {
+				var elementID = $(element).attr("data-rex-element-id");
+				var elementObj = {
+				  id: elementID,
+				  founded: false
+				};
+				currentList.push(elementObj);
+				});
 
-			  var updatedList = response.data.updated_list;
+				var updatedList = response.data.updated_list;
 
-			  var i, j;
+				var i, j;
 
-			  for (i = 0; i < updatedList.length; i++) {
-			    updatedList[i].founded = false;
-			  }
+				for (i = 0; i < updatedList.length; i++) {
+				updatedList[i].founded = false;
+				}
 
-			  for (i = 0; i < updatedList.length; i++) {
-			    for (j = 0; j < currentList.length; j++) {
-			      if (updatedList[i].id == currentList[j].id) {
-			        updatedList[i].founded = true;
-			        currentList[j].founded = true;
-			        break;
-			      }
-			    }
-			  }
+				for (i = 0; i < updatedList.length; i++) {
+				for (j = 0; j < currentList.length; j++) {
+				  if (updatedList[i].id == currentList[j].id) {
+				    updatedList[i].founded = true;
+				    currentList[j].founded = true;
+				    break;
+				  }
+				}
+				}
 
-			  tmpl.arg = "element";
+				tmpl.arg = "element";
 
-			  for (i = 0; i < updatedList.length; i++) {
-			    if (!updatedList[i].founded) {
-			      element_import_props.$self.find(".element-list").prepend(
-			        tmpl("rexlive-tmpl-element-item-list", {
-			          id: updatedList[i].id,
-			          name: updatedList[i].name,
-			          preview:
-			          updatedList[i].preview_image_url != ""
-			          ? updatedList[i].preview_image_url
-			          : ""
-			        })
-			        );
-			    }
-			  }
+				for (i = 0; i < updatedList.length; i++) {
+				if (!updatedList[i].founded) {
+				  element_import_props.$self.find(".element-list").prepend(
+				    tmpl("rexlive-tmpl-element-item-list", {
+				      id: updatedList[i].id,
+				      name: updatedList[i].name,
+				      preview:
+				      updatedList[i].preview_image_url != ""
+				      ? updatedList[i].preview_image_url
+				      : ""
+				    })
+				    );
+				}
+				}
 
-			  for (i = 0; i < currentList.length; i++) {
-			    if (!currentList[i].founded) {
-			      element_import_props.$self
-			      .find(
-			        '.element-list__element[data-rex-element-id="' +
-			        currentList[i].id +
-			        '"]'
-			        )
-			      .remove();
-			    }
-			  }
-			  
-			  var event = jQuery.Event("rexlive:lateralMenuReady");
-			  $(document).trigger(event);
+				for (i = 0; i < currentList.length; i++) {
+				if (!currentList[i].founded) {
+				  element_import_props.$self
+				  .find(
+				    '.element-list__element[data-rex-element-id="' +
+				    currentList[i].id +
+				    '"]'
+				    )
+				  .remove();
+				}
+				}
+
+				var event = jQuery.Event("rexlive:lateralMenuReady");
+				$(document).trigger(event);
 			}
 		  },
 		  error: function(response) {},
@@ -160,38 +160,38 @@ var Element_Import_Modal = (function ($) {
 	var _deleteElement = function( element ) {
 		var element_id = element.getAttribute('data-rex-element-id');
 		if ( element_id ) {
-		  var response = confirm( live_editor_obj.labels.elements.confirm_delete );
-		  if ( response ) {
-		    // prepare data to ajax request
-		    var data = {
-		      action: "rex_delete_element",
-		      nonce_param: live_editor_obj.rexnonce,
-		      element_id: element_id
-		    };
-		    var endcodedData = Rexlive_Base_Settings.encodeData(data);
+			var response = confirm( live_editor_obj.labels.rexelements.confirm_delete );
+			if ( response ) {
+			// prepare data to ajax request
+			var data = {
+			  action: "rex_delete_rexelement",
+			  nonce_param: live_editor_obj.rexnonce,
+			  element_id: element_id
+			};
+			var endcodedData = Rexlive_Base_Settings.encodeData(data);
 
-		    // prepare ajax request
-		    var request = new XMLHttpRequest();
-		    request.open('POST', live_editor_obj.ajaxurl, true);
-		    request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
+			// prepare ajax request
+			var request = new XMLHttpRequest();
+			request.open('POST', live_editor_obj.ajaxurl, true);
+			request.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
 
-		    // handle request response
-		    request.onloadstart = function() {
-		      element_import_props.$self.addClass('rex-modal--loading');
-		    }
-		    request.onload = function() {
-		      if (request.status >= 200 && request.status < 400) {
-		        element.style.display = 'none';
-		      }
-		    };
-		    request.onerror = function() {};
-		    request.onloadend = function() {
-		      element_import_props.$self.removeClass('rex-modal--loading');
-		    };
+			// handle request response
+			request.onloadstart = function() {
+			  element_import_props.$self.addClass('rex-modal--loading');
+			}
+			request.onload = function() {
+			  if (request.status >= 200 && request.status < 400) {
+			    element.style.display = 'none';
+			  }
+			};
+			request.onerror = function() {};
+			request.onloadend = function() {
+			  element_import_props.$self.removeClass('rex-modal--loading');
+			};
 
-		    // send request
-		    request.send(endcodedData);
-		  }
+			// send request
+			request.send(endcodedData);
+			}
 		}
 	}
 

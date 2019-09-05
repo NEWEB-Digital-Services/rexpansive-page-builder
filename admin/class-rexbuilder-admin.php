@@ -534,6 +534,9 @@ class Rexbuilder_Admin {
 				),
 				'rexbuttons' => array(
 					'confirm_delete' => __( 'Are you sure you want to delete this button?', 'rexpansive-builder' ),
+				),
+				'rexelements' => array(
+					'confirm_delete' => __( 'Are you sure you want to delete this element?', 'rexpansive-builder' ),
 				)
 			)
 		);
@@ -2623,7 +2626,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	 * @return JSON delete operation response
 	 * @since  x.x.x
 	 */
-	public function rex_delete_element() {
+	public function rex_delete_rexelement() {
 		$nonce = $_POST['nonce_param'];
 		
         $response = array(
@@ -2714,6 +2717,32 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		);
 
 		wp_send_json_success($response);
+	}
+
+	/**
+	 * Update RexElement ids list
+	 * @return JSON update response
+	 * @since  2.0.0
+	 */
+	public function	rex_update_elements_ids(){
+		$nonce = $_POST['nonce_param'];
+		
+        $response = array(
+			'error' => false,
+            'msg' => '',
+        );
+		
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+		
+		$response['error'] = false;
+		$elements_ids = $_POST["ids_used"];
+		update_option( '_rex_elements_ids', $elements_ids );
+		$response['backIDS'] = $elements_ids;
+		wp_send_json_success( $response );
 	}
 
 	/**

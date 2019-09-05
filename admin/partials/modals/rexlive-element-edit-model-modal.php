@@ -20,7 +20,6 @@ defined('ABSPATH') or exit;
                 <span class="info-model-name__wrap"><span class="info-model-name"></span>&nbsp;</span>
             </div>
         </div>
-
         <div class="rex-modal__outside-footer">
             <div class="tool-button--double-icon--wrap tool-button--double-icon--active tool-button--double-icon--big rex-button remove-element-model  tippy" data-tippy-content="<?php esc_attr_e( 'Maintain', 'rexpansive-builder' ); ?>" data-rex-option="edit">
                 <div class="tool-button tool-button--inline tool-button--blue tool-button--modal">
@@ -36,4 +35,4 @@ defined('ABSPATH') or exit;
             </div>
         </div>
     </div>
-</div><!-- Edit element Model  -->
+</div><!-- Edit element model  -->

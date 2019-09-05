@@ -41,6 +41,7 @@
      * 33) Model : rexlive:modelBecameSection
      * 34) Buttons: rexlive:update_button_page
      * 35) Custom CSS : rexlive:getCustomCss
+     * 36)
      */
 
     $document.on("rexlive:set_row_fullHeight", function(e) {
@@ -1980,6 +1981,24 @@
       Rexbuilder_Util_Editor.pushAction(
         "document",
         "updateRexButton",
+        actionData,
+        reverseData
+      );
+    });
+
+    $document.on("Elements: rexlive:update_element_page", function(e) {
+      var data = e.settings.data_to_send;
+      var reverseData = {
+        elementProperties: jQuery.extend(true, {}, data.reverseElementData)
+      };
+      var actionData = {
+        elementProperties: jQuery.extend(true, {}, data.actionElementData)
+      }
+      Rexbuilder_Rexelement.updateElement(actionData);
+
+      Rexbuilder_Util_Editor.pushAction(
+        "document",
+        "updateRexElement",
         actionData,
         reverseData
       );

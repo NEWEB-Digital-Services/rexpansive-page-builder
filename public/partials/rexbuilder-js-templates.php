@@ -490,10 +490,21 @@ $tool_button_classes = 'tool-button';
             <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
         </div>
     </div>
+</script> -->
+
+<script type="text/x-tmpl" id="tmpl-rexelement-tools">
+    <div class="rex-element-tools-container">        
+        <div class="tool-button tool-button_list--item rex-edit-element tippy" data-tippy-content="<?php _e('Config', 'rexpansive'); ?>">
+            <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
+        </div>
+        <div class="tool-button rex-delete-element tippy" data-tippy-content="<?php _e('Delete', 'rexpansive'); ?>">
+            <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+        </div>
+    </div>
 </script>
 
 
-    BACKUP - ORIGINAL BLOCK CREATED BY PETER
+   <!--  BACKUP - ORIGINAL BLOCK CREATED BY PETER
 <script type="text/x-tmpl" id="tmpl-rexbutton-tools">
     <div class="rex-delete-button">X</div>
     <div class="rex-edit-button">E</div>

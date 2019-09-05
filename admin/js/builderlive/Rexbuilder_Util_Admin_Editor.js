@@ -303,6 +303,10 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       if (event.data.eventName == "rexlive:openRexButtonEditor") {
         Button_Edit_Modal.openButtonEditorModal(event.data.buttonData);
       }
+
+      if (event.data.eventName == "rexlive:openRexElementEditor") {
+        Element_Edit_Modal.openElementEditorModal(event.data.elementData);
+      }
       
       if (event.data.eventName == "rexlive:editRemoveModal") {
         Model_Edit_Modal.openModal(event.data.modelData);
@@ -1804,7 +1808,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
         }
       }
     );
-    
+
     this.$frameBuilder.load(function () {
       Rexbuilder_Util_Admin_Editor.$liveFrameRexContainer = $(Rexbuilder_Util_Admin_Editor.$frameBuilder.get(0).contentWindow.document).find(".rex-container").eq(0);
     });

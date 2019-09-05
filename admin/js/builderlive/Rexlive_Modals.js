@@ -90,7 +90,7 @@ var Rexlive_Modals = (function ($) {
         Element_Import_Modal.init();
         
         // Element editor
-        // Element_Edit_Modal.init();
+        Element_Edit_Modal.init();
 
         // live media list
         Rexlive_PostEdit_MediaList.init();

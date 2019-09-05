@@ -5137,7 +5137,10 @@ input.me-insert-embed__value[type=text] {
   z-index: 200;
   display: block; }
 
-.medium-editor-toolbar.medium-toolbar-hover-rexbutton .hide-tool-rexbutton {
+.medium-editor-toolbar.medium-toolbar-hover-rexbutton .hide-tool-rexbutton,
+.medium-editor-toolbar.medium-toolbar-hover-rexbutton .hide-tool-rexelement,
+.medium-editor-toolbar.medium-toolbar-hover-rexelement .hide-tool-rexbutton,
+.medium-editor-toolbar.medium-toolbar-hover-rexelement .hide-tool-rexelement {
   display: none; }
 
 .rexlive-loader {
@@ -5337,6 +5340,27 @@ input.me-insert-embed__value[type=text] {
 
 .rexbutton-tools .rex-button-tools-container .rex-delete-button .l-svg-icons > svg {
   fill: #ffffff; }
+
+.rexelement-tools {
+  position: absolute;
+  z-index: 10;
+  cursor: pointer; }
+  .rexelement-tools .rex-element-tools-container {
+    width: 100%;
+    height: 22px;
+    font-size: 10px; }
+    .rexelement-tools .rex-element-tools-container .rex-edit-element {
+      position: absolute;
+      top: 0px;
+      right: 50%;
+      margin: 0px -10px 0px 0px; }
+    .rexelement-tools .rex-element-tools-container .rex-delete-element {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      background-color: #424242; }
+      .rexelement-tools .rex-element-tools-container .rex-delete-element .l-svg-icons > svg {
+        fill: #ffffff; }
 
 @media screen and (max-width: 1024px) {
   body {

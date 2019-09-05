@@ -80,16 +80,16 @@ defined('ABSPATH') or exit;
             <?php include 'rexlive-loader-modal.php'; ?>
             <div class="buttons-list-wrapper rex-lateral-panel__list">
                 <ul class="button-list button-list--pswp">
-                        <?php 
+                    <?php 
                         // it's possibile to query like '_rex_button_%%_html0'?
-                    $defaultButtonsIDs = '[]';
-                    $buttonsIDsJSON = get_option('_rex_buttons_ids', $defaultButtonsIDs);
-                    $buttonsIDsJSON = stripslashes($buttonsIDsJSON);
-                    $buttonsIDsUsed = json_decode($buttonsIDsJSON, true);
-                    foreach ($buttonsIDsUsed as $index => $id_button) {
-                        $buttonHTML = get_option('_rex_button_'.$id_button.'_html', "");
-                        if($buttonHTML != ""){
-                            $buttonHTML = stripslashes($buttonHTML);
+                        $defaultButtonsIDs = '[]';
+                        $buttonsIDsJSON = get_option('_rex_buttons_ids', $defaultButtonsIDs);
+                        $buttonsIDsJSON = stripslashes($buttonsIDsJSON);
+                        $buttonsIDsUsed = json_decode($buttonsIDsJSON, true);
+                        foreach ($buttonsIDsUsed as $index => $id_button) {
+                            $buttonHTML = get_option('_rex_button_'.$id_button.'_html', "");
+                            if($buttonHTML != ""){
+                                $buttonHTML = stripslashes($buttonHTML);
                             ?>
                             <li class="button-list__element" draggable="true">
                                 <div class="rex-container"><?php echo $buttonHTML ?></div>
@@ -100,8 +100,8 @@ defined('ABSPATH') or exit;
                                 </div>
                             </li>
                             <?php
+                            }
                         }
-                    }
                     ?>
                 </ul>
             </div>
@@ -132,13 +132,14 @@ defined('ABSPATH') or exit;
 
                                 $shortcodeCF7 = "[contact-form-7 id=\"".$element_id."\" title=\"".$element_title."\"]";
                                 ?>
-
                                 <li class="element-list__element bl_d-flex bl_ai-c" draggable="true" data-rex-element-id="<?php echo $element_id;?>"data-rex-element-thumbnail-id="<?php echo $image_id;?>" data-rex-element-thumbnail-size="<?php echo $image_size;?>">
                                         <div class="element-list-preview bl_d-flex bl_jc-c bl_ai-c<?php echo ( $element_thumbnail_url != "" ? ' element-list-preview--active' : '' ); ?>"<?php echo ( $element_thumbnail_url != "" ? 'style="background-image:url(' . $element_thumbnail_url . ');"' : '' ); ?> itemprop="contentUrl" data-href="<?php echo ( $element_thumbnail_url != "" ? esc_url($element_thumbnail_url) : "https://via.placeholder.com/640x480" ); ?>" data-size="640x480">
                                             <span class="element-list-preview__placeholder"><?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?></span>
                                             <div class="element-name bl_d-flex bl_jc-c bl_ai-fe"><div><?php echo $element_title;?></div></div>
                                             <div class="rex-container">
-                                                <div class="rex-element-wrapper" data-rex-element-id="<?php echo $element_id;?>"></div>
+                                                <div class="rex-element-wrapper" data-rex-element-id="<?php echo $element_id;?>">
+                                                    <span class="rex-element-data"></span>
+                                                </div>
                                             </div>
                                             <div class="element-tools">
                                                 <div class="tool-button--double-icon--wrap tool-button--edit-thumbnail tippy" data-tippy-content="<?php _e('Thumbnail','rexpansive-builder'); ?>">
@@ -159,7 +160,8 @@ defined('ABSPATH') or exit;
                             }
                         } else {
                             // No forms
-                        }?>
+                        }
+                    ?>
                 </ul>
             </div>
         </div>
