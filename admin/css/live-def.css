@@ -649,6 +649,12 @@
           transform: rotate(45deg);
   cursor: pointer; }
 
+#rex-element-editor .rexelement-cont_row10 .l-svg-icons > svg {
+  -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
+  cursor: pointer; }
+
 .l-icon--white .l-svg-icons > svg {
   fill: #fff; }
 
@@ -3590,6 +3596,9 @@ ul {
   display: flex; }
 
 .rexbutton-count-column_6 .bl_d-flex {
+  position: relative; }
+
+.rexelement-count-column_6 .bl_d-flex {
   position: relative; }
 
 .bl_d-iflex {

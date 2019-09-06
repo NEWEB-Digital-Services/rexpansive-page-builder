@@ -666,6 +666,7 @@ var Rexbuilder_Rexbutton = (function ($) {
         if ($buttonWrapper.hasClass("rex-separate-button")) {
             _addSeparateAttributes($buttonWrapper, buttonProperties);
         } else {
+            console.log("rimuovi dentro updatelement");
             _removeModelData($buttonWrapper);
         }
     }

@@ -295,6 +295,7 @@ var Button_Edit_Modal = (function ($) {
 
     // @tostudy È lei che modifica gli stili?
     var _updatePanel = function () {
+        console.log("_updatePanel edit button");
         button_editor_properties.$button_label_text.val(buttonData.text);
         button_editor_properties.$button_label_text_size.val(buttonData.font_size.replace('px', ''));
         button_editor_properties.$button_height.val(buttonData.button_height.replace('px', ''));
@@ -418,9 +419,9 @@ var Button_Edit_Modal = (function ($) {
         return false;
     };
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////
     // Linking panel tools
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////
 
     var _linkTextInputs = function () {
         // LABEL
@@ -955,7 +956,6 @@ var Button_Edit_Modal = (function ($) {
                 button_editor_properties.$self.addClass('rex-modal--loading');
             },
             success: function (response) {
-
                 // Updates model list tab
                 Button_Import_Modal.updateButtonList({
                     html: html_button,
@@ -1336,9 +1336,9 @@ var Button_Edit_Modal = (function ($) {
         };
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(buttonDataToIframe);
     }
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////
     //  DOCUMENT LISTENERS
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////
 
     var _linkDocumentListeners = function () {
         /**

@@ -2605,6 +2605,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 				$elementData["id"] = get_the_ID();
 				$elementData["name"] = get_the_title();
 				$elementData["preview_image_url"] = get_the_post_thumbnail_url();
+				$elementData["element_css"] = get_post_meta($elementData["id"], "_rex_element_css");
 
 				array_push($elementList, $elementData);
 			}
@@ -2720,6 +2721,40 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	}
 
 	/**
+	 * Updating an element definition
+	 * @return JSON operation result
+	 * @since  2.0.0
+	 */
+	public function rex_update_element() {
+		$nonce = $_POST['nonce_param'];
+		
+        $response = array(
+			'error' => false,
+            'msg' => '',
+        );
+		
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+		
+		$response['error'] = false;
+		
+		$element_id = $_POST["element_id"];
+		$element_data_html = trim( $_POST["element_data_html"] );
+		// $css_element = $_POST["css_element"];
+		// $jsonRexButtons_buttons = $_POST["jsonRexButtons"];
+
+		// update_post_meta($element_id, '_rex_buttons_styles', $jsonRexButtons_buttons );
+		// update_post_meta($element_id, '_rex_element_css', $css_element );
+		update_post_meta($element_id, '_rex_element_data_html', $element_data_html );
+		// update_post_meta($element_id, '_rex_button_'.$element_id.'_html', $html_button );
+		$response['elementId'] = $$element_id;
+		wp_send_json_success( $response );
+	}
+
+	/**
 	 * Update RexElement ids list
 	 * @return JSON update response
 	 * @since  2.0.0
@@ -2739,6 +2774,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
         endif;
 		
 		$response['error'] = false;
+		
 		$elements_ids = $_POST["ids_used"];
 		update_option( '_rex_elements_ids', $elements_ids );
 		$response['backIDS'] = $elements_ids;

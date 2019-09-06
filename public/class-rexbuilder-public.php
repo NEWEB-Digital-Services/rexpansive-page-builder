@@ -496,6 +496,7 @@ class Rexbuilder_Public
 
         $response['shortcode'] = $shortcode;
         $response['shortcode_transformed'] = do_shortcode($shortcode);
+        $response['element_data_html'] = get_post_meta($elementID, "_rex_element_data_html");
 
         wp_send_json_success($response);
     }

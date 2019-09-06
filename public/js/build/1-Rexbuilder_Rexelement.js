@@ -9,8 +9,7 @@ var Rexbuilder_Rexelement = (function ($) {
     /// CSS RULES EDITING
     /////////////////////////////////////////////////////////////////////
     
-    // da capire bene a cosa serva, forse per il salvataggio nel db?
-    // ok per Rexelement
+    // Necessario data la gestione diversa del salvataggio?
     var _fixCustomStyleElement = function () {
         if (Rexbuilder_Rexelement.$rexelementsStyle.length == 0) {
             var css = "",
@@ -41,38 +40,27 @@ var Rexbuilder_Rexelement = (function ($) {
 
     //////////////////////////////////////////////////////////////////////////////////////////////
     // Adding rules
-    
-    // Cosa applico al container?
-    var _addElementContainerRule = function (elementID, property) {
+
+    var _addElementBackgroundRule = function (elementID, property) {
         if ("insertRule" in styleSheet) {
             styleSheet.insertRule(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"] .rex-element-container{" + property + "}", styleSheet.cssRules.length);
+            //rex-element-container cambiarlo?
         }
         else if ("addRule" in styleSheet) {
             styleSheet.addRule(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"] .rex-element-container{" + property + "}", styleSheet.cssRules.length);
         }
     }
 
-    // Serve l'hover?
-    var _addElementContainerHoverRule = function (elementID, property) {
-        if ("insertRule" in styleSheet) {
-            styleSheet.insertRule(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"] .rex-element-container:hover{" + property + "}", styleSheet.cssRules.length);
-        }
-
-        else if ("addRule" in styleSheet) {
-            styleSheet.addRule(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"] .rex-element-container:hover{" + property + "}", styleSheet.cssRules.length);
-        }
-    }
-
-    // //////////////////////////////////////////////////////////////////////////////////////////////
-    // // Updating rules
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    // Updating rules
     
     var _updateElementBackgroundRule = function (elementID, rule, value) {
         for (var i = 0; i < styleSheet.cssRules.length; i++) {
             if (
                 //chrome firefox
-                styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"] .rex-element-background" ||
+                styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"] .rex-element-container" ||
                 // edge
-                styleSheet.cssRules[i].selectorText == "[data-rex-button-id='" + elementID + "'].rex-element-wrapper .rex-element-background"
+                styleSheet.cssRules[i].selectorText == "[data-rex-element-id='" + elementID + "'].rex-element-wrapper .rex-element-container"
             ) {
                 switch (rule) {
                     case "border-width":
@@ -135,88 +123,12 @@ var Rexbuilder_Rexelement = (function ($) {
         }
     }
 
-
-    // Cosa applico al container?
-    var _updateElementContainerRule = function (elementID, rule, value) {
-        for (var i = 0; i < styleSheet.cssRules.length; i++) {
-            if (
-                //chrome firefox
-                styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"] .rex-element-container" ||
-                // edge
-                styleSheet.cssRules[i].selectorText == "[data-rex-element-id='" + elementID + "'].rex-element-wrapper .rex-element-container"
-            ) {
-
-                switch (rule) {
-                    case "font-size":
-                        styleSheet.cssRules[i].style.fontSize = value;
-                        break;
-                    case "color":
-                        styleSheet.cssRules[i].style.color = value;
-                        break;
-                    case "min-height":
-                        styleSheet.cssRules[i].style.minHeight = value;
-                        break;
-                    case "min-width":
-                        styleSheet.cssRules[i].style.minWidth = value;
-                        break;
-                    case "margin-top":
-                        styleSheet.cssRules[i].style.marginTop = value;
-                        break;
-                    case "margin-bottom":
-                        styleSheet.cssRules[i].style.marginBottom = value;
-                        break;
-                    case "margin-left":
-                        styleSheet.cssRules[i].style.marginLeft = value;
-                        break;
-                    case "margin-right":
-                        styleSheet.cssRules[i].style.marginRight = value;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            }
-        }
-    }
-
-    // Serve l'hover?
-    var _updateElementContainerHoverRule = function (elementID, rule, value) {
-        for (var i = 0; i < styleSheet.cssRules.length; i++) {
-            if (
-                //chrome firefox
-                styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"] .rex-element-container:hover" ||
-                // edge
-                styleSheet.cssRules[i].selectorText == "[data-rex-element-id='" + elementID + "'].rex-element-wrapper .rex-element-container:hover"
-            ) {
-                switch (rule) {
-                    case "color":
-                        styleSheet.cssRules[i].style.color = value;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            }
-        }
-    }
-
     /////////////////////////////////////////////////////////////////////////////////////////
     // Removing rules
-
-    // Cosa applico al container?
-    var _removeElementContainerRule = function (elementID) {
+    
+    var _removeElementBackgroundRule = function (elementID) {
         for (var i = 0; i < styleSheet.cssRules.length; i++) {
             if (styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"] .rex-element-container") {
-                styleSheet.deleteRule(i);
-                break;
-            }
-        }
-    }
-
-    // Serve l'hover?
-    var _removeElementContainerHoverRule = function (elementID, property) {
-        for (var i = 0; i < styleSheet.cssRules.length; i++) {
-            if (styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"] .rex-element-container:hover") {
                 styleSheet.deleteRule(i);
                 break;
             }
@@ -233,16 +145,16 @@ var Rexbuilder_Rexelement = (function ($) {
      * @since x.x.x
      */
 	var _fixImportedElement = function (data) {
-        var $elementListContainer = Rexbuilder_Util.$rexContainer.find(".rex-loading-button .rex-element-wrapper");
-        var elementID = $elementListContainer.attr("data-rex-element-id");
-        var $elementsParagraph = $elementListContainer.parents(".rex-elements-paragraph").eq(0);
-        var $textWrap = $elementListContainer.parents(".text-wrap").eq(0);
-        var $gridGallery = $elementListContainer.parents(".grid-stack-row").eq(0);
-        var $section = $elementListContainer.parents(".rexpansive_section").eq(0);
+        var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-loading-button .rex-element-wrapper");
+        var elementID = $elementWrapper.attr("data-rex-element-id");
+        var $elementsParagraph = $elementWrapper.parents(".rex-elements-paragraph").eq(0);
+        var $textWrap = $elementWrapper.parents(".text-wrap").eq(0);
+        var $gridGallery = $elementWrapper.parents(".grid-stack-row").eq(0);
+        var $section = $elementWrapper.parents(".rexpansive_section").eq(0);
         var elementDimensionCalculated = jQuery.extend(true, {}, data.elementDimensions);//servono?
 
         // Removing element unnecessary data
-        $elementListContainer.detach().appendTo($textWrap);
+        $elementWrapper.detach().appendTo($textWrap);
         // $gridGallery.find('.tool-button--edit-thumbnail').remove();
         // $gridGallery.find('.element-list__element--delete').remove();
         $gridGallery.find('.element-list-preview').remove();
@@ -276,7 +188,7 @@ var Rexbuilder_Rexelement = (function ($) {
                 var $shortcodeTransformed = $.parseHTML(response.data.shortcode_transformed);
                 var $divContainer = $(document.createElement("div"));
                 $divContainer.addClass("rex-element-container");
-                $elementListContainer.append($divContainer);
+                $elementWrapper.append($divContainer);
                 $divContainer.append($shortcodeTransformed);
 
                 // Get the shortcode and insert it in a new block inside $elementListHTML
@@ -284,23 +196,28 @@ var Rexbuilder_Rexelement = (function ($) {
                 var $divShortcode = $(document.createElement("div"));
                 $divShortcode.addClass("string-shortcode");
                 $divShortcode.attr("shortcode", shortcode);
-                $elementListContainer.prepend($divShortcode);
+                $elementWrapper.prepend($divShortcode);
+
+                var $elementData = $elementWrapper.find(".rex-element-data").eq(0);
+                $elementData.remove();
+                $elementData = $.parseHTML(response.data.element_data_html[0]);
+                $elementWrapper.prepend($elementData);
 
                 switch (dropType) {
                     case "inside-block":
-                        $elementListContainer.wrap("<p class=\"rex-elements-paragraph\"></p>");
-                        _endFixingElementImported($elementListContainer);
+                        $elementWrapper.wrap("<p class=\"rex-elements-paragraph\"></p>");
+                        _endFixingElementImported($elementWrapper);
                         Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
                         break;
                     case "inside-paragraph":
-                        _endFixingElementImported($elementListContainer);
+                        _endFixingElementImported($elementWrapper);
                         Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
                         break;
                     case "inside-row":
                         var ev = jQuery.Event("rexlive:insert_new_text_block");
                         ev.settings = {
                             data_to_send: {
-                                $elementListContainer: $elementListContainer,
+                                $elementWrapper: $elementWrapper,
                                 $section: $section,
                                 addBlockElement: true,
                                 mousePosition: data.mousePosition
@@ -333,14 +250,13 @@ var Rexbuilder_Rexelement = (function ($) {
             }
         }
         if (!flagElementFound) {
-            // _addElementStyle($elementWrapper);
+            _addElementStyle($elementWrapper);
             elementsInPage.push({
                 id: elementID,
                 number: 1
             });
         }
-        // Vedere se e quando serve
-        // _removeModelData($buttonWrapper);
+        // _removeModelData($elementWrapper);
 
         // Setting the block height
         var $gridGallery = $elementWrapper.parents(".grid-stack-row").eq(0);
@@ -381,10 +297,10 @@ var Rexbuilder_Rexelement = (function ($) {
                     id: elementID,
                     number: elementNumber
                 });
-                if ($elementWrapper.hasClass("rex-separate-element")) {
+                // if ($elementWrapper.hasClass("rex-separate-element")) {
                     // We are not editing an element model, but a separate element
-                    // _addElementStyle($elementWrapper);
-                }
+                    _addElementStyle($elementWrapper);
+                // }
             }
             if (elementsInPage[j].number < elementNumber) {
                 elementsInPage[j].number = elementNumber;
@@ -394,14 +310,6 @@ var Rexbuilder_Rexelement = (function ($) {
 
     var _getElementsInPage = function () {
         return elementsInPage;
-    }
-
-    var _addElementStyle = function ($elementWrapper) {
-        if ($elementWrapper.find(".rex-button-data").eq(0).length != 0) {
-            var elementProperties = _generateElementData($elementWrapper, true);
-            var elementID = elementProperties.elementInfo.elementTarget.element_id;
-            _addCSSRules(elementID, elementProperties.elementInfo);
-        }
     }
 
     var _separateRexElement = function (data) {
@@ -455,7 +363,7 @@ var Rexbuilder_Rexelement = (function ($) {
         // $elementData.attr("data-padding-bottom", elementData.padding_bottom);
         // $elementData.attr("data-padding-right", elementData.padding_right);
         // $elementData.attr("data-padding-left", elementData.padding_left);
-        $elementData.attr("data-button-name", elementData.elementTarget.element_name);
+        // $elementData.attr("data-button-name", elementData.elementTarget.element_name);
     }
 
     /**
@@ -513,31 +421,31 @@ var Rexbuilder_Rexelement = (function ($) {
 
         // Da aggiornare quando si sapranno le proprietà
 
+        // elementProperties.font_size = (elementDataEl.getAttribute("data-text-size") ? elementDataEl.getAttribute("data-text-size").toString() : '');
+        // elementProperties.text_color = (elementDataEl.getAttribute("data-text-color") ? elementDataEl.getAttribute("data-text-color").toString() : '');
+        // elementProperties.button_height = (elementDataEl.getAttribute("data-button-height") ? elementDataEl.getAttribute("data-button-height").toString() : '');
+        // elementProperties.button_width = (elementDataEl.getAttribute("data-button-width") ? elementDataEl.getAttribute("data-button-width").toString() : '');
+        // elementProperties.margin_top = (elementDataEl.getAttribute("data-margin-top") ? elementDataEl.getAttribute("data-margin-top").toString() : '');
+        // elementProperties.margin_bottom = (elementDataEl.getAttribute("data-margin-bottom") ? elementDataEl.getAttribute("data-margin-bottom").toString() : '');
+        // elementProperties.margin_right = (elementDataEl.getAttribute("data-margin-right") ? elementDataEl.getAttribute("data-margin-right").toString() : '');
+        // elementProperties.margin_left = (elementDataEl.getAttribute("data-margin-left") ? elementDataEl.getAttribute("data-margin-left").toString() : '');
+
+        // elementProperties.border_color = (elementDataEl.getAttribute("data-border-color") ? elementDataEl.getAttribute("data-border-color").toString() : '');
+        // elementProperties.border_width = (elementDataEl.getAttribute("data-border-width") ? elementDataEl.getAttribute("data-border-width").toString() : '');
+        // elementProperties.border_radius = (elementDataEl.getAttribute("data-border-radius") ? elementDataEl.getAttribute("data-border-radius").toString() : '');
+        elementProperties.background_color = (elementDataEl.getAttribute("data-background-color") ? elementDataEl.getAttribute("data-background-color").toString() : '');
+
+        // elementProperties.padding_top = (elementDataEl.getAttribute("data-padding-top") ? elementDataEl.getAttribute("data-padding-top").toString() : '');
+        // elementProperties.padding_bottom = (elementDataEl.getAttribute("data-padding-bottom") ? elementDataEl.getAttribute("data-padding-bottom").toString() : '');
+        // elementProperties.padding_right = (elementDataEl.getAttribute("data-padding-right") ? elementDataEl.getAttribute("data-padding-right").toString() : '');
+        // elementProperties.padding_left = (elementDataEl.getAttribute("data-padding-left") ? elementDataEl.getAttribute("data-padding-left").toString() : '');
+
+        // elementProperties.hover_color = (elementDataEl.getAttribute("data-background-color-hover") ? elementDataEl.getAttribute("data-background-color-hover").toString() : '');
+        // elementProperties.hover_border = (elementDataEl.getAttribute("data-border-color-hover") ? elementDataEl.getAttribute("data-border-color-hover").toString() : '');
+        // elementProperties.hover_text = (elementDataEl.getAttribute("data-text-color-hover") ? elementDataEl.getAttribute("data-text-color-hover").toString() : '');
+
+        // elementProperties.buttonTarget.button_name = (elementDataEl.getAttribute("data-button-name") ? elementDataEl.getAttribute("data-button-name").toString() : '');
         if ($elementContainer.hasClass("rex-separate-element") || getAllData) {
-            // elementProperties.font_size = (elementDataEl.getAttribute("data-text-size") ? elementDataEl.getAttribute("data-text-size").toString() : '');
-            // elementProperties.text_color = (elementDataEl.getAttribute("data-text-color") ? elementDataEl.getAttribute("data-text-color").toString() : '');
-            // elementProperties.button_height = (elementDataEl.getAttribute("data-button-height") ? elementDataEl.getAttribute("data-button-height").toString() : '');
-            // elementProperties.button_width = (elementDataEl.getAttribute("data-button-width") ? elementDataEl.getAttribute("data-button-width").toString() : '');
-            // elementProperties.margin_top = (elementDataEl.getAttribute("data-margin-top") ? elementDataEl.getAttribute("data-margin-top").toString() : '');
-            // elementProperties.margin_bottom = (elementDataEl.getAttribute("data-margin-bottom") ? elementDataEl.getAttribute("data-margin-bottom").toString() : '');
-            // elementProperties.margin_right = (elementDataEl.getAttribute("data-margin-right") ? elementDataEl.getAttribute("data-margin-right").toString() : '');
-            // elementProperties.margin_left = (elementDataEl.getAttribute("data-margin-left") ? elementDataEl.getAttribute("data-margin-left").toString() : '');
-
-            // elementProperties.border_color = (elementDataEl.getAttribute("data-border-color") ? elementDataEl.getAttribute("data-border-color").toString() : '');
-            // elementProperties.border_width = (elementDataEl.getAttribute("data-border-width") ? elementDataEl.getAttribute("data-border-width").toString() : '');
-            // elementProperties.border_radius = (elementDataEl.getAttribute("data-border-radius") ? elementDataEl.getAttribute("data-border-radius").toString() : '');
-            elementProperties.background_color = (elementDataEl.getAttribute("data-background-color") ? elementDataEl.getAttribute("data-background-color").toString() : '');
-
-            // elementProperties.padding_top = (elementDataEl.getAttribute("data-padding-top") ? elementDataEl.getAttribute("data-padding-top").toString() : '');
-            // elementProperties.padding_bottom = (elementDataEl.getAttribute("data-padding-bottom") ? elementDataEl.getAttribute("data-padding-bottom").toString() : '');
-            // elementProperties.padding_right = (elementDataEl.getAttribute("data-padding-right") ? elementDataEl.getAttribute("data-padding-right").toString() : '');
-            // elementProperties.padding_left = (elementDataEl.getAttribute("data-padding-left") ? elementDataEl.getAttribute("data-padding-left").toString() : '');
-
-            // elementProperties.hover_color = (elementDataEl.getAttribute("data-background-color-hover") ? elementDataEl.getAttribute("data-background-color-hover").toString() : '');
-            // elementProperties.hover_border = (elementDataEl.getAttribute("data-border-color-hover") ? elementDataEl.getAttribute("data-border-color-hover").toString() : '');
-            // elementProperties.hover_text = (elementDataEl.getAttribute("data-text-color-hover") ? elementDataEl.getAttribute("data-text-color-hover").toString() : '');
-
-            // elementProperties.buttonTarget.button_name = (elementDataEl.getAttribute("data-button-name") ? elementDataEl.getAttribute("data-button-name").toString() : '');
             separate = true;
         } else {
             elementProperties.synchronize = typeof $elementData.attr("data-synchronize") == "undefined" ? false : $elementData.attr("data-synchronize").toString();
@@ -550,7 +458,40 @@ var Rexbuilder_Rexelement = (function ($) {
             separateElement: separate,
             elementInfo: elementProperties
         }
+
         return data;
+    }
+
+    var _removeModelData = function ($elementWrapper) {
+        var $elementData = $elementWrapper.find(".rex-element-data").eq(0);
+        // $elementData.removeAttr("data-text-color");
+        // $elementData.removeAttr("data-text-size");
+        $elementData.removeAttr("data-background-color");
+        // $elementData.removeAttr("data-background-color-hover");
+        // $elementData.removeAttr("data-border-color-hover");
+        // $elementData.removeAttr("data-text-color-hover");
+        // $elementData.removeAttr("data-border-width");
+        // $elementData.removeAttr("data-border-color");
+        // $elementData.removeAttr("data-border-radius");
+        // $elementData.removeAttr("data-button-height");
+        // $elementData.removeAttr("data-button-width");
+        // $elementData.removeAttr("data-margin-top");
+        // $elementData.removeAttr("data-margin-bottom");
+        // $elementData.removeAttr("data-margin-left");
+        // $elementData.removeAttr("data-margin-right");
+        // $elementData.removeAttr("data-padding-top");
+        // $elementData.removeAttr("data-padding-bottom");
+        // $elementData.removeAttr("data-padding-left");
+        // $elementData.removeAttr("data-padding-right");
+        // $elementData.removeAttr("data-button-name");
+    }
+
+    var _addElementStyle = function ($elementWrapper) {
+        if ($elementWrapper.find(".rex-element-data").eq(0).length != 0) {
+            var elementProperties = _generateElementData($elementWrapper, true);
+            var elementID = elementProperties.elementInfo.elementTarget.element_id;
+            _addCSSRules(elementID, elementProperties.elementInfo);
+        }
     }
 
     // Da aggiornare quando si sapranno le proprietà
@@ -597,8 +538,8 @@ var Rexbuilder_Rexelement = (function ($) {
         // backgroundRule += "border-radius: " + currentBorderDimension + ";";
 
         backgroundRule += "background-color: " + elementProperties.background_color + ";";
-        _addElementContainerRule(elementID, backgroundRule);
-        // _addElementBackgroundRule(elementID, backgroundRule);
+        // _addElementContainerRule(elementID, backgroundRule);
+        _addElementBackgroundRule(elementID, backgroundRule);
 
         var textRule = "";
 
@@ -673,28 +614,77 @@ var Rexbuilder_Rexelement = (function ($) {
         // _updateContainerHoverRule(buttonID, "color", buttonProperties.hover_text);
 
         var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"][data-rex-element-number=\"" + elementProperties.elementTarget.element_number + "\"]");
-        // var $buttonData = $buttonWrapper.find(".rex-button-data").eq(0);
+        // var $elementData = $elementWrapper.find(".rex-button-data").eq(0);
 
-        // $buttonWrapper.find(".rex-button-text").eq(0).text(buttonProperties.text);
-        // $buttonWrapper.find("a.rex-button-container").eq(0).attr("href", buttonProperties.link_target);
-        // $buttonWrapper.find("a.rex-button-container").eq(0).attr("target", buttonProperties.link_type);
-        // $buttonData.attr("data-link-target", buttonProperties.link_target);
-        // $buttonData.attr("data-link-type", buttonProperties.link_type);
+        // $elementWrapper.find(".rex-button-text").eq(0).text(buttonProperties.text);
+        // $elementWrapper.find("a.rex-button-container").eq(0).attr("href", buttonProperties.link_target);
+        // $elementWrapper.find("a.rex-button-container").eq(0).attr("target", buttonProperties.link_type);
+        // $elementData.attr("data-link-target", buttonProperties.link_target);
+        // $elementData.attr("data-link-type", buttonProperties.link_type);
 
-        if ($elementWrapper.hasClass("rex-separate-element")) {
+        // if ($elementWrapper.hasClass("rex-separate-element")) {
             _addSeparateAttributes($elementWrapper, elementProperties);
-        } else {
-            console.log("_removeModelData()");
+        // } else {
             // _removeModelData($elementWrapper);
+        // }
+    }
+
+    var _updateElementLive = function (data) {
+        switch (data.propertyType) {
+            // case "text":
+            //     _updateButtonTextRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
+            //     break;
+            // case "container":
+            //     _updateButtonContainerRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
+            //     break;
+            case "background":
+                _updateElementBackgroundRule(data.elementTarget.element_id, data.propertyName, data.newValue);
+                break;
+            // case "backgroundHover":
+            // case "borderHover":
+            //     _updateButtonBackgroundHoverRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
+            //     break;
+            // case "textHover":
+            //     _updateContainerHoverRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
+            //     break;
+            // case "button":
+            //     var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper[data-rex-button-id=\"" + data.buttonTarget.button_id + "\"][data-rex-button-number=\"" + data.buttonTarget.button_number + "\"]");
+            //     switch (data.propertyName) {
+            //         case "link_target":
+            //             $elementWrapper.find("a.rex-button-container").eq(0).attr("href", data.newValue);
+            //             break;
+            //         case "link_type":
+            //             $elementWrapper.find("a.rex-button-container").eq(0).attr("target", data.newValue);
+            //             break;
+            //         case "button_label":
+            //             $elementWrapper.find(".rex-button-text").eq(0).text(data.newValue);
+            //             break;
+            //         case "button_name":
+            //             $elementWrapper.find(".rex-button-data").eq(0).attr("data-button-name", data.newValue);
+            //             break;
+            //         default:
+            //             break;
+            //     }
+            //     break;
+            default:
+                break;
         }
     }
 
     var _removeElementStyle = function (elementID) {
         // _removeElementContainerRule(elementID);
-        // _removeElementBackgroundRule(elementID);
+        _removeElementBackgroundRule(elementID);
         // _removeElementBackgroundHoverRule(elementID);
         // _removeElementTextRule(elementID);
         // _removeElementContainerHoverRule(elementID);
+    }
+
+    var _removeSeparateElement = function (data) {
+        console.log("_removeSeparateElement");
+        var elementID = data.elementTarget.element_id;
+        var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"]");
+        $elementWrapper.removeClass("rex-separate-element");
+        _removeModelData($elementWrapper);
     }
 
     var _lockSynchronize = function (data) {
@@ -707,10 +697,10 @@ var Rexbuilder_Rexelement = (function ($) {
 	    Rexbuilder_Util.$document.on("rexlive:completeImportElement", function (e) {
 	        var data = e.settings;
 	        var $newDOMElement = data.$elementAdded;
-	        var $elementListContainer = data.$elementListContainer;
-	        $elementListContainer.detach().prependTo($newDOMElement.find(".text-wrap").eq(0));
-	        $elementListContainer.wrap("<p class=\"rex-elements-paragraph\"></p>");
-	        _endFixingElementImported($elementListContainer);
+	        var $elementWrapper = data.$elementWrapper;
+	        $elementWrapper.detach().prependTo($newDOMElement.find(".text-wrap").eq(0));
+	        $elementWrapper.wrap("<p class=\"rex-elements-paragraph\"></p>");
+	        _endFixingElementImported($elementWrapper);
 	    });
     }
 
@@ -722,7 +712,7 @@ var Rexbuilder_Rexelement = (function ($) {
             // Prova
             input: {
                 text: {
-                    background_color: "#c935bd",
+                    background_color: "",
                 }
             }
         };
@@ -742,10 +732,11 @@ var Rexbuilder_Rexelement = (function ($) {
         lockSynchronize: _lockSynchronize,
         separateRexElement: _separateRexElement,
         updateElement: _updateElement,
+        updateElementLive: _updateElementLive,
 
         // CSS Rules Editing
         generateElementData: _generateElementData,
-        updateElementContainerRule: _updateElementContainerRule,
-        updateElementContainerHoverRule: _updateElementContainerHoverRule
+        // updateElementContainerRule: _updateElementContainerRule,
+        // updateElementContainerHoverRule: _updateElementContainerHoverRule
 	}
 })(jQuery);

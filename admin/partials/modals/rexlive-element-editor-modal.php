@@ -27,7 +27,7 @@ defined('ABSPATH') or exit;
                     <div class="rexelement-cont_row10">
                         <div class="rexelement-count-colum_accord">
                             <span class="rex-accordion--toggle">                                
-                                <div class="rexbutton-upd-accord_button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></div>
+                                <div class="rexelement-upd-accord_button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></div>
                             </span>
                         </div>
                         <div class="rexelement-count-column_1">
@@ -46,7 +46,7 @@ defined('ABSPATH') or exit;
                             <i class="fas fa-arrows-alt-v"></i>
                         </div>
                         <div class="rexelement-count-column_4">
-                            <!--<input type="text" id="rex-button-height" name="rex-button-height" class="rexbutton-upd-textbox"/>-->
+                            <!--<input type="text" id="rex-element-height" name="rex-element-height" class="rexelement-upd-textbox"/>-->
                         </div>
                         <div class="rexelement-count-column_5">
                             <!--<div class="label-px">h</div>-->
@@ -56,25 +56,25 @@ defined('ABSPATH') or exit;
                 <div class="rex-accordion--content" style="display:none;" data-item-status="close">
                     <!-- fourth row -->
                     <div class="bl_modal-row">
-                        <div class="rexbutton-cont_row10">
-                            <div class="rexbutton-count-colum_accord">
-                                <div class="rexbutton-count-colum_accord"></div>
+                        <div class="rexelement-cont_row10">
+                            <div class="rexelement-count-colum_accord">
+                                <div class="rexelement-count-colum_accord"></div>
                             </div>
-                            <div class="rexbutton-count-column_1">
+                            <div class="rexelement-count-column_1">
                                 <div class="rex-relative-col tippy" data-tippy-content="Background Hover Color" tabindex="0">
-                                    <input type="hidden" id="rex-button-background-hover-color-runtime" name="rex-button-background-hover-color-runtime" value="" />
-                                    <input id="rex-button-background-hover-color" type="text" name="rex-button-background-hover-color" value="" size="10" />
-                                    <div id="rex-button-background-hover-color-preview-icon" class="preview-color-icon"></div>
+                                    <input type="hidden" id="rex-element-background-hover-color-runtime" name="rex-element-background-hover-color-runtime" value="" />
+                                    <input id="rex-element-background-hover-color" type="text" name="rex-element-background-hover-color" value="" size="10" />
+                                    <div id="rex-element-background-hover-color-preview-icon" class="preview-color-icon"></div>
                                 </div>
                             </div>
-                            <div class="rexbutton-count-column_2">
-                                <div id="rex-button-background-hover-preview-wrap">
-                                    <div id="rex-button-preview-background-hover"></div>
+                            <div class="rexelement-count-column_2">
+                                <div id="rex-element-background-hover-preview-wrap">
+                                    <div id="rex-element-preview-background-hover"></div>
                                 </div>
                             </div>
-                            <div class="rexbutton-count-column_3"><!-- space for icons --></div>
-                            <div class="rexbutton-count-column_4"><!-- space for dimensions --></div>
-                            <div class="rexbutton-count-column_5"><!-- space for unit measurement --></div>
+                            <div class="rexelement-count-column_3"><!-- space for icons --></div>
+                            <div class="rexelement-count-column_4"><!-- space for dimensions --></div>
+                            <div class="rexelement-count-column_5"><!-- space for unit measurement --></div>
                         </div>
                     </div>
                 </div>
@@ -82,7 +82,25 @@ defined('ABSPATH') or exit;
             <!-- ACCORDION 3 -->
             <div class="rexpansive-accordion close"></div>
         </div>
-        <!-- Footer -->
+        <div class="bl_modal-row">
+            <div class="rexelement-cont_row77">
+                <div class="rexelement-count-column_11"></div>
+                <div class="rexelement-count-column_12 add-rex-element-model__wrap">      
+                    <div id="rex-rexelement-add-model-wrap" class="add-rex-element-model tippy" data-tippy-content="<?php _e('Create new model','rexpansive-builder'); ?>">
+                        <div class="add-label">+</div>
+                    </div>                                
+                </div>
+            </div>
+        </div>
+        <!-- FOOTER -->
+        <div class="rex-modal__outside-footer">
+            <div class="tool-button tool-button--inline tool-button--save rex-apply-button tippy" data-tippy-content="<?php _e('save','rexpansive-builder'); ?>" data-rex-option="save">
+                <span class="rex-button save-page btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
+            </div>
+            <div class="tool-button tool-button--inline tool-button--cancel rex-reset-button tippy" data-rex-option="continue" data-tippy-content="<?php _e('reset','rexpansive-builder'); ?>">
+                <span class="rex-button continue btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
+            </div>
+        </div>
     </div>
 </div>
 <!-- Edit Element -->

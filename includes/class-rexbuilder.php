@@ -306,6 +306,7 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_ajax_rex_save_element_thumbnail', $plugin_admin, 'rex_save_element_thumbnail' );
 		$this->loader->add_action( 'wp_ajax_rex_delete_element_thumbnail', $plugin_admin, 'rex_delete_element_thumbnail' );
 		$this->loader->add_action( 'wp_ajax_rex_delete_rexelement', $plugin_admin, 'rex_delete_rexelement' );
+		$this->loader->add_action( 'wp_ajax_rex_update_element', $plugin_admin, 'rex_update_element' );
 		$this->loader->add_action( 'wp_ajax_rex_update_elements_ids', $plugin_admin, 'rex_update_elements_ids' );
 
 		// COLOR PALETTE APIs

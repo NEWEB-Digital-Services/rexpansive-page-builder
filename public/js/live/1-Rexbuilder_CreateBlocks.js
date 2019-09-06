@@ -166,7 +166,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     } else if (addBlockElement) {
       var ev = jQuery.Event("rexlive:completeImportElement");
       ev.settings = {
-        $elementListContainer: data.$elementListContainer,
+        $elementWrapper: data.$elementWrapper,
         $elementAdded: $el
       }
 

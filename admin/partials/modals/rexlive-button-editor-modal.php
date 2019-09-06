@@ -61,10 +61,10 @@ defined('ABSPATH') or exit;
                             <div class="rexbutton-count-colum_accord"></div>
                             <div class="rexbutton-count-column_1">
                                 <div class="rex-relative-col tippy" data-tippy-content="Text Hover Color" tabindex="0">
-                                <input type="hidden" id="rex-button-text-hover-color-runtime" name="rex-button-text-hover-color-runtime" value="" />
-                                <input id="rex-button-text-hover-color" type="text" name="rex-button-text-hover-color" value="" size="10" />
-                                <div id="rex-button-text-hover-color-preview-icon" class="preview-color-icon"></div>
-                            <!-- </div> -->
+                                    <input type="hidden" id="rex-button-text-hover-color-runtime" name="rex-button-text-hover-color-runtime" value="" />
+                                    <input id="rex-button-text-hover-color" type="text" name="rex-button-text-hover-color" value="" size="10" />
+                                    <div id="rex-button-text-hover-color-preview-icon" class="preview-color-icon"></div>
+                                </div>
                             </div>
                             <div class="rexbutton-count-column_2">
                                 <div id="rex-button-text-hover-preview-wrap">
@@ -74,7 +74,6 @@ defined('ABSPATH') or exit;
                             <div class="rexbutton-count-column_3"><!-- space for icons --></div>
                             <div class="rexbutton-count-column_4"><!-- space for dimensions --></div>
                             <div class="rexbutton-count-column_5"><!-- space for unit measurement --></div>
-                            </div>
                         </div>
                     </div>
                 </div>
