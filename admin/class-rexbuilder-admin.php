@@ -2721,6 +2721,34 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 	}
 
 	/**
+	 * Adding a new element
+	 * @return JSON operation result
+	 * @since  2.0.0
+	 */
+	public function rex_clone_element() {
+		$nonce = $_POST['nonce_param'];
+		
+        $response = array(
+			'error' => false,
+            'msg' => '',
+        );
+		
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+		
+		$response['error'] = false;
+		
+		$oldID = $_POST['old_id'];
+		$newID = Rexbuilder_Utilities::duplicate($oldID);
+		$response['new_id'] = $newID;
+
+		wp_send_json_success( $response );
+	}
+
+	/**
 	 * Updating an element definition
 	 * @return JSON operation result
 	 * @since  2.0.0

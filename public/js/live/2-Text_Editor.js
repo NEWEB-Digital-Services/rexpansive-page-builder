@@ -918,7 +918,37 @@ var TextEditor = (function ($) {
             rexbuttonToolbox.placeRexbuttonToolbox();
           }
           event.preventDefault();
-        } else {
+        } /*else if (toolbarActiveOnRexelement) {
+          this.action_active = action;
+          this.clearListElements();//@todo
+          this.activateListElements();//@todo
+          var element = editorInstance.getSelectedParentElement();
+          var $paragraphContainer = $(element).parents("p.rex-elements-paragraph");
+          switch (action) {
+            case "justifyRight":
+              $paragraphContainer.css("text-align", "right");
+              break;
+            case "justifyCenter":
+              $paragraphContainer.css("text-align", "center");
+              break;
+            case "justifyLeft":
+              $paragraphContainer.css("text-align", "left");
+              break;
+            default:
+              break;
+          }
+          //updating toolbar and toolbox positions
+          var toolbar = this.base.getExtensionByName('toolbar');
+          var rexelementToolbox = this.base.getExtensionByName('rexelement-input');
+
+          if (toolbar) {
+            toolbar.setToolbarPosition();
+          }
+          if (rexbuttonToolbox) {
+            rexbuttonToolbox.placeRexelementToolbox();
+          }
+          event.preventDefault();
+        }*/ else {
           editorInstance.execAction(action);
         }
       }
@@ -1669,7 +1699,6 @@ var TextEditor = (function ($) {
         var toolbar = this.base.getExtensionByName('toolbar');
         var $toolbar = $(toolbar.toolbar);
         this.restoreElementClasses($toolbar);
-        // console.log("al posto di restoreElementClasses");
         toolbarActiveOnRexelement = false;
       }
     },
@@ -1753,6 +1782,8 @@ var TextEditor = (function ($) {
     handleEventInput: function (eventObj, target) {
       //console.log("handleEventInput()");
     },
+
+
 
     replaceClasses: function ($wrapper, previousClass, newClass) {
       $wrapper.find("." + previousClass).removeClass(previousClass).addClass(newClass);
@@ -3200,6 +3231,7 @@ var TextEditor = (function ($) {
   var init = function () {
     toolbarActiveOnRexbutton = false;
     rangy.init();
+
     _createToolbarContainer();
     _createEditor();
     _linkDocumentListeners();

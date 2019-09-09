@@ -9,7 +9,6 @@ var Rexbuilder_Rexelement = (function ($) {
     /// CSS RULES EDITING
     /////////////////////////////////////////////////////////////////////
     
-    // Necessario data la gestione diversa del salvataggio?
     var _fixCustomStyleElement = function () {
         if (Rexbuilder_Rexelement.$rexelementsStyle.length == 0) {
             var css = "",
@@ -193,10 +192,10 @@ var Rexbuilder_Rexelement = (function ($) {
 
                 // Get the shortcode and insert it in a new block inside $elementListHTML
                 var shortcode = response.data.shortcode;
-                var $divShortcode = $(document.createElement("div"));
-                $divShortcode.addClass("string-shortcode");
-                $divShortcode.attr("shortcode", shortcode);
-                $elementWrapper.prepend($divShortcode);
+                var $spanShortcode = $(document.createElement("span"));
+                $spanShortcode.addClass("string-shortcode");
+                $spanShortcode.attr("shortcode", shortcode);
+                $elementWrapper.prepend($spanShortcode);
 
                 var $elementData = $elementWrapper.find(".rex-element-data").eq(0);
                 $elementData.remove();
@@ -205,7 +204,7 @@ var Rexbuilder_Rexelement = (function ($) {
 
                 switch (dropType) {
                     case "inside-block":
-                        $elementWrapper.wrap("<p class=\"rex-elements-paragraph\"></p>");
+                        $elementWrapper.wrap("<span class=\"rex-elements-paragraph\"></span>");
                         _endFixingElementImported($elementWrapper);
                         Rexbuilder_Util_Editor.updateBlockContainerHeight($textWrap);
                         break;
@@ -274,7 +273,7 @@ var Rexbuilder_Rexelement = (function ($) {
         // locking grid to prevent errors on focus right text node
         var $element = $textWrap.parents(".grid-stack-item");
         var $section = $element.parents(".rexpansive_section");
-        Rexbuilder_Util.getGalleryInstance($section).focusElement($element);
+        // Rexbuilder_Util.getGalleryInstance($section).focusElement($element);
     }
 
     var _updateElementListInPage = function () {
@@ -297,10 +296,20 @@ var Rexbuilder_Rexelement = (function ($) {
                     id: elementID,
                     number: elementNumber
                 });
-                // if ($elementWrapper.hasClass("rex-separate-element")) {
+
+                
+                if ($elementWrapper.hasClass("rex-separate-element")) {
                     // We are not editing an element model, but a separate element
                     _addElementStyle($elementWrapper);
-                // }
+                } else {
+                    // We are editing an element model. Add the style only if there's
+                    // no existing style
+                    if (i !== 0 && elementsInPage[i].id == elementsInPage[i-1].id) {
+                        // Do nothing
+                    } else {
+                        _addElementStyle($elementWrapper);
+                    }
+                }
             }
             if (elementsInPage[j].number < elementNumber) {
                 elementsInPage[j].number = elementNumber;
@@ -338,8 +347,21 @@ var Rexbuilder_Rexelement = (function ($) {
             }
         }
 
-        _addSeparateAttributes($elementWrapper, elementData);
+        _updateElementsData($elementWrapper, elementData);
         _addElementStyle($elementWrapper);
+    }
+
+    /**
+     * Updates multiple elements data.
+     * @param  {jQuery} $elementWrappers
+     * @param  {Array} elementData Data to update
+     * @return {null}
+     */
+    var _updateElementsData = function ($elementWrappers, elementData) {
+        $elementWrappers.each(function() {
+            var $elementData = $(this).find(".rex-element-data").eq(0);
+            $elementData.attr("data-background-color", elementData.background_color);
+        })
     }
 
     var _addSeparateAttributes = function ($elementWrapper, elementData) {
@@ -420,31 +442,8 @@ var Rexbuilder_Rexelement = (function ($) {
         var separate = false;
 
         // Da aggiornare quando si sapranno le proprietà
-
-        // elementProperties.font_size = (elementDataEl.getAttribute("data-text-size") ? elementDataEl.getAttribute("data-text-size").toString() : '');
-        // elementProperties.text_color = (elementDataEl.getAttribute("data-text-color") ? elementDataEl.getAttribute("data-text-color").toString() : '');
-        // elementProperties.button_height = (elementDataEl.getAttribute("data-button-height") ? elementDataEl.getAttribute("data-button-height").toString() : '');
-        // elementProperties.button_width = (elementDataEl.getAttribute("data-button-width") ? elementDataEl.getAttribute("data-button-width").toString() : '');
-        // elementProperties.margin_top = (elementDataEl.getAttribute("data-margin-top") ? elementDataEl.getAttribute("data-margin-top").toString() : '');
-        // elementProperties.margin_bottom = (elementDataEl.getAttribute("data-margin-bottom") ? elementDataEl.getAttribute("data-margin-bottom").toString() : '');
-        // elementProperties.margin_right = (elementDataEl.getAttribute("data-margin-right") ? elementDataEl.getAttribute("data-margin-right").toString() : '');
-        // elementProperties.margin_left = (elementDataEl.getAttribute("data-margin-left") ? elementDataEl.getAttribute("data-margin-left").toString() : '');
-
-        // elementProperties.border_color = (elementDataEl.getAttribute("data-border-color") ? elementDataEl.getAttribute("data-border-color").toString() : '');
-        // elementProperties.border_width = (elementDataEl.getAttribute("data-border-width") ? elementDataEl.getAttribute("data-border-width").toString() : '');
-        // elementProperties.border_radius = (elementDataEl.getAttribute("data-border-radius") ? elementDataEl.getAttribute("data-border-radius").toString() : '');
         elementProperties.background_color = (elementDataEl.getAttribute("data-background-color") ? elementDataEl.getAttribute("data-background-color").toString() : '');
 
-        // elementProperties.padding_top = (elementDataEl.getAttribute("data-padding-top") ? elementDataEl.getAttribute("data-padding-top").toString() : '');
-        // elementProperties.padding_bottom = (elementDataEl.getAttribute("data-padding-bottom") ? elementDataEl.getAttribute("data-padding-bottom").toString() : '');
-        // elementProperties.padding_right = (elementDataEl.getAttribute("data-padding-right") ? elementDataEl.getAttribute("data-padding-right").toString() : '');
-        // elementProperties.padding_left = (elementDataEl.getAttribute("data-padding-left") ? elementDataEl.getAttribute("data-padding-left").toString() : '');
-
-        // elementProperties.hover_color = (elementDataEl.getAttribute("data-background-color-hover") ? elementDataEl.getAttribute("data-background-color-hover").toString() : '');
-        // elementProperties.hover_border = (elementDataEl.getAttribute("data-border-color-hover") ? elementDataEl.getAttribute("data-border-color-hover").toString() : '');
-        // elementProperties.hover_text = (elementDataEl.getAttribute("data-text-color-hover") ? elementDataEl.getAttribute("data-text-color-hover").toString() : '');
-
-        // elementProperties.buttonTarget.button_name = (elementDataEl.getAttribute("data-button-name") ? elementDataEl.getAttribute("data-button-name").toString() : '');
         if ($elementContainer.hasClass("rex-separate-element") || getAllData) {
             separate = true;
         } else {
@@ -572,61 +571,14 @@ var Rexbuilder_Rexelement = (function ($) {
         var currentDimension = "";
         var currentBorderDimension = "";
         var currentTextSize = "";
-        
-        // currentTextSize = isNaN(parseInt(buttonProperties.font_size.replace("px", ""))) ? defaultButtonValues.font_size : buttonProperties.font_size;
-        // _updateButtonContainerRule(buttonID, "font-size", currentTextSize);
-
-        // _updateButtonContainerRule(buttonID, "color", buttonProperties.text_color);
-        // currentDimension = isNaN(parseInt(buttonProperties.button_height.replace("px", ""))) ? defaultButtonValues.dimensions.height : buttonProperties.button_height;
-        // _updateButtonContainerRule(buttonID, "min-height", currentDimension);
-        // currentDimension = isNaN(parseInt(buttonProperties.button_width.replace("px", ""))) ? defaultButtonValues.dimensions.width : buttonProperties.button_width;
-        // _updateButtonContainerRule(buttonID, "min-width", currentDimension);
-
-        // currentMargin = isNaN(parseInt(buttonProperties.margin_top.replace("px", ""))) ? defaultButtonValues.margins.top : buttonProperties.margin_top;
-        // _updateButtonContainerRule(buttonID, "margin-top", currentMargin);
-        // currentMargin = isNaN(parseInt(buttonProperties.margin_right.replace("px", ""))) ? defaultButtonValues.margins.right : buttonProperties.margin_right;
-        // _updateButtonContainerRule(buttonID, "margin-right", currentMargin);
-        // currentMargin = isNaN(parseInt(buttonProperties.margin_bottom.replace("px", ""))) ? defaultButtonValues.margins.bottom : buttonProperties.margin_bottom;
-        // _updateButtonContainerRule(buttonID, "margin-bottom", currentMargin);
-        // currentMargin = isNaN(parseInt(buttonProperties.margin_left.replace("px", ""))) ? defaultButtonValues.margins.left : buttonProperties.margin_left;
-        // _updateButtonContainerRule(buttonID, "margin-left", currentMargin);
-
-        // _updateButtonBackgroundRule(buttonID, "border-color", buttonProperties.border_color);
-        // currentBorderDimension = isNaN(parseInt(buttonProperties.border_width.replace("px", ""))) ? defaultButtonValues.border.width : buttonProperties.border_width;
-        // _updateButtonBackgroundRule(buttonID, "border-width", currentBorderDimension);
-        // currentBorderDimension = isNaN(parseInt(buttonProperties.border_radius.replace("px", ""))) ? defaultButtonValues.border.radius : buttonProperties.border_radius;
-        // _updateButtonBackgroundRule(buttonID, "border-radius", currentBorderDimension);
 
         _updateElementBackgroundRule(elementID, "background-color", elementProperties.background_color);
 
-        // currentPadding = isNaN(parseInt(buttonProperties.padding_top.replace("px", ""))) ? defaultButtonValues.paddings.top : buttonProperties.padding_top;
-        // _updateButtonTextRule(buttonID, "padding-top", currentPadding);
-        // currentPadding = isNaN(parseInt(buttonProperties.padding_right.replace("px", ""))) ? defaultButtonValues.paddings.right : buttonProperties.padding_right;
-        // _updateButtonTextRule(buttonID, "padding-right", currentPadding);
-        // currentPadding = isNaN(parseInt(buttonProperties.padding_bottom.replace("px", ""))) ? defaultButtonValues.paddings.bottom : buttonProperties.padding_bottom;
-        // _updateButtonTextRule(buttonID, "padding-bottom", currentPadding);
-        // currentPadding = isNaN(parseInt(buttonProperties.padding_left.replace("px", ""))) ? defaultButtonValues.paddings.left : buttonProperties.padding_left;
-        // _updateButtonTextRule(buttonID, "padding-left", currentPadding);
-
-        // _updateButtonBackgroundHoverRule(buttonID, "background-color", buttonProperties.hover_color);
-        // _updateButtonBackgroundHoverRule(buttonID, "border-color", buttonProperties.hover_border);
-
-        // _updateContainerHoverRule(buttonID, "color", buttonProperties.hover_text);
-
-        var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"][data-rex-element-number=\"" + elementProperties.elementTarget.element_number + "\"]");
-        // var $elementData = $elementWrapper.find(".rex-button-data").eq(0);
-
-        // $elementWrapper.find(".rex-button-text").eq(0).text(buttonProperties.text);
-        // $elementWrapper.find("a.rex-button-container").eq(0).attr("href", buttonProperties.link_target);
-        // $elementWrapper.find("a.rex-button-container").eq(0).attr("target", buttonProperties.link_type);
-        // $elementData.attr("data-link-target", buttonProperties.link_target);
-        // $elementData.attr("data-link-type", buttonProperties.link_type);
-
-        // if ($elementWrapper.hasClass("rex-separate-element")) {
-            _addSeparateAttributes($elementWrapper, elementProperties);
-        // } else {
-            // _removeModelData($elementWrapper);
-        // }
+        // If editing a separate element, will always be length = 1
+        // If editing a model element, will be length >= 1
+        var $elementWrappers = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"]");
+        _updateElementsData($elementWrappers, elementProperties);
+       
     }
 
     var _updateElementLive = function (data) {
@@ -680,7 +632,6 @@ var Rexbuilder_Rexelement = (function ($) {
     }
 
     var _removeSeparateElement = function (data) {
-        console.log("_removeSeparateElement");
         var elementID = data.elementTarget.element_id;
         var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"]");
         $elementWrapper.removeClass("rex-separate-element");
@@ -699,7 +650,7 @@ var Rexbuilder_Rexelement = (function ($) {
 	        var $newDOMElement = data.$elementAdded;
 	        var $elementWrapper = data.$elementWrapper;
 	        $elementWrapper.detach().prependTo($newDOMElement.find(".text-wrap").eq(0));
-	        $elementWrapper.wrap("<p class=\"rex-elements-paragraph\"></p>");
+	        $elementWrapper.wrap("<span class=\"rex-elements-paragraph\"></span>");
 	        _endFixingElementImported($elementWrapper);
 	    });
     }
@@ -733,6 +684,7 @@ var Rexbuilder_Rexelement = (function ($) {
         separateRexElement: _separateRexElement,
         updateElement: _updateElement,
         updateElementLive: _updateElementLive,
+        removeSeparateElement: _removeSeparateElement,
 
         // CSS Rules Editing
         generateElementData: _generateElementData,

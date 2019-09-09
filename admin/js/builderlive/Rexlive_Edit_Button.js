@@ -293,9 +293,7 @@ var Button_Edit_Modal = (function ($) {
         resetData = jQuery.extend(true, {}, buttonData);
     };
 
-    // @tostudy È lei che modifica gli stili?
     var _updatePanel = function () {
-        console.log("_updatePanel edit button");
         button_editor_properties.$button_label_text.val(buttonData.text);
         button_editor_properties.$button_label_text_size.val(buttonData.font_size.replace('px', ''));
         button_editor_properties.$button_height.val(buttonData.button_height.replace('px', ''));
@@ -1034,7 +1032,6 @@ var Button_Edit_Modal = (function ($) {
      * @param {string} rexID new id of rexbutton
      */
     var _endButtonSeparation = function (rexID) {
-
         _separateButton(rexID);
         // the button will be the first with the new ID
         _updateTarget({

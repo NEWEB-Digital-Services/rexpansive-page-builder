@@ -666,7 +666,6 @@ var Rexbuilder_Rexbutton = (function ($) {
         if ($buttonWrapper.hasClass("rex-separate-button")) {
             _addSeparateAttributes($buttonWrapper, buttonProperties);
         } else {
-            console.log("rimuovi dentro updatelement");
             _removeModelData($buttonWrapper);
         }
     }
@@ -892,6 +891,7 @@ var Rexbuilder_Rexbutton = (function ($) {
                     id: buttonID,
                     number: buttonNumber
                 });
+
                 if ($buttonWrapper.hasClass("rex-separate-button")) {
                     // We are not editing a button model, but a separate button
                     _addButtonStyle($buttonWrapper);

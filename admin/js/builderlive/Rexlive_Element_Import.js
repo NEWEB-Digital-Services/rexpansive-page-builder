@@ -415,9 +415,6 @@ var Element_Import_Modal = (function ($) {
 
             
             var insertingHTML = $(this).html();
-            // var $buttonBackground = $(this).find(".rex-button-background").eq(0);
-            // buttonDimensions.width = $buttonBackground.outerWidth();
-            // buttonDimensions.height = $buttonBackground.outerHeight();
             if(isIE){
                 event.originalEvent.dataTransfer.setData("text", insertingHTML);
             } else {
@@ -604,7 +601,7 @@ var Element_Import_Modal = (function ($) {
                         this.DecideBeforeAfter($element, mousePercents);
                     } else if ($tempelement.children().length == 1) {
                         //only 1 child element detected
-                        if ($tempelement.hasClass("rex-buttons-paragraph")) {
+                        if ($tempelement.hasClass("rex-elements-paragraph")) {
                             var positionAndElement = this.findNearestElement($element, mousePos.x, mousePos.y);
                             this.DecideBeforeAfter(positionAndElement.el, mousePercents, mousePos);
                         } else {
@@ -700,14 +697,14 @@ var Element_Import_Modal = (function ($) {
                             var elementRect = $element.get(0).getBoundingClientRect();
                             var $tempElement = $element.parent();
                             var tempelementRect = $tempElement.get(0).getBoundingClientRect();
-                            if ($element.is("body") || $element.hasClass("grid-stack-row") || $tempElement.hasClass("rex-buttons-paragraph")) {
+                            if ($element.is("body") || $element.hasClass("grid-stack-row") || $tempElement.hasClass("rex-elements-paragraph")) {
                                 return $element;
                             }
                             if (Math.abs(tempelementRect.left - elementRect.left) == 0) {
                                 $element = $element.parent();
                             } else {
-                                if ($element.parents(".rex-button-wrapper").length != 0) {
-                                    return $element.parents(".rex-button-wrapper").eq(0);
+                                if ($element.parents(".rex-element-wrapper").length != 0) {
+                                    return $element.parents(".rex-element-wrapper").eq(0);
                                 }
                                 return $element;
                             }
@@ -718,14 +715,14 @@ var Element_Import_Modal = (function ($) {
                             var elementRect = $element.get(0).getBoundingClientRect();
                             var $tempElement = $element.parent();
                             var tempelementRect = $tempElement.get(0).getBoundingClientRect();
-                            if ($element.is("body") || $element.hasClass("grid-stack-row") || $tempElement.hasClass("rex-buttons-paragraph")) {
+                            if ($element.is("body") || $element.hasClass("grid-stack-row") || $tempElement.hasClass("rex-elements-paragraph")) {
                                 return $element;
                             }
                             if (Math.abs(tempelementRect.right - elementRect.right) == 0) {
                                 $element = $element.parent();
                             } else {
-                                if ($element.parents(".rex-button-wrapper").length != 0) {
-                                    return $element.parents(".rex-button-wrapper").eq(0);
+                                if ($element.parents(".rex-element-wrapper").length != 0) {
+                                    return $element.parents(".rex-element-wrapper").eq(0);
                                 }
                                 return $element;
                             }
@@ -736,14 +733,14 @@ var Element_Import_Modal = (function ($) {
                             var elementRect = $element.get(0).getBoundingClientRect();
                             var $tempElement = $element.parent();
                             var tempelementRect = $tempElement.get(0).getBoundingClientRect();
-                            if ($element.is("body") || $element.hasClass("grid-stack-row") || $tempElement.hasClass("rex-buttons-paragraph")) {
+                            if ($element.is("body") || $element.hasClass("grid-stack-row") || $tempElement.hasClass("rex-elements-paragraph")) {
                                 return $element;
                             }
                             if (Math.abs(tempelementRect.top - elementRect.top) == 0) {
                                 $element = $element.parent();
                             } else {
-                                if ($element.parents(".rex-button-wrapper").length != 0) {
-                                    return $element.parents(".rex-button-wrapper").eq(0);
+                                if ($element.parents(".rex-element-wrapper").length != 0) {
+                                    return $element.parents(".rex-element-wrapper").eq(0);
                                 }
                                 return $element;
                             }
@@ -754,13 +751,13 @@ var Element_Import_Modal = (function ($) {
                             var elementRect = $element.get(0).getBoundingClientRect();
                             var $tempElement = $element.parent();
                             var tempelementRect = $tempElement.get(0).getBoundingClientRect();
-                            if ($element.is("body") || $element.hasClass("grid-stack-row") || $tempElement.hasClass("rex-buttons-paragraph"))
+                            if ($element.is("body") || $element.hasClass("grid-stack-row") || $tempElement.hasClass("rex-elements-paragraph"))
                                 return $element;
                             if (Math.abs(tempelementRect.bottom - elementRect.bottom) == 0) {
                                 $element = $element.parent();
                             } else {
-                                if ($element.parents(".rex-button-wrapper").length != 0) {
-                                    return $element.parents(".rex-button-wrapper").eq(0);
+                                if ($element.parents(".rex-element-wrapper").length != 0) {
+                                    return $element.parents(".rex-element-wrapper").eq(0);
                                 }
                                 return $element;
                             }

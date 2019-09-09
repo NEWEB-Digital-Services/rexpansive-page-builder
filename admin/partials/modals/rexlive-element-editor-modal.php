@@ -84,7 +84,14 @@ defined('ABSPATH') or exit;
         </div>
         <div class="bl_modal-row">
             <div class="rexelement-cont_row77">
-                <div class="rexelement-count-column_11"></div>
+                <div class="rexelement-count-column_11">
+                    <div id="rex-element-name-wrap" class="input-field col rex-input-prefixed rex-input-prefixed--no-prefix">
+                        <span class="prefix"></span>
+                        <input type="text" id="rex-element__name" name="rex-element__name" class="rexbutton-upd-actiontextbox">
+                        <label for="rex-element__name" id="rex-element__name-label" class=""><?php _e('Element model name', 'rexpansive-builder');?></label>
+                        <span class="rex-material-bar"></span>
+                    </div>
+                </div>
                 <div class="rexelement-count-column_12 add-rex-element-model__wrap">      
                     <div id="rex-rexelement-add-model-wrap" class="add-rex-element-model tippy" data-tippy-content="<?php _e('Create new model','rexpansive-builder'); ?>">
                         <div class="add-label">+</div>

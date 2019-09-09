@@ -1146,6 +1146,17 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     return text;
   };
 
+  var _createRandomNumericID = function(n) {
+    var number = "";
+    var possible = "0123456789";
+
+    for (var i = 0; i < n; i++) {
+      number += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+
+    return parseInt(number);
+  };
+
   var _getActiveLayout = function() {
     return activeLayoutPage;
   };
@@ -1821,6 +1832,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
     init: init,
     pageSaved: pageSaved,
     createRandomID: _createRandomID,
+    createRandomNumericID: _createRandomNumericID,
     sendIframeBuilderMessage: _sendIframeBuilderMessage,
     updateLayoutPage: _updateLayoutPage,
     getActiveLayout: _getActiveLayout,
