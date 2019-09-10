@@ -482,9 +482,9 @@ var Rexbuilder_Rexbutton = (function ($) {
         }
 
         // locking grid to prevent errors on focus right text node
-        var $element = $textWrap.parents(".grid-stack-item");
-        var $section = $element.parents(".rexpansive_section");
-        Rexbuilder_Util.getGalleryInstance($section).focusElement($element);
+        // var $element = $textWrap.parents(".grid-stack-item");
+        // var $section = $element.parents(".rexpansive_section");
+        // Rexbuilder_Util.getGalleryInstance($section).focusElement($element);
     }
 
     var _addButtonStyle = function ($buttonWrapper) {

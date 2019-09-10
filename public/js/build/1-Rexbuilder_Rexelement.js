@@ -150,12 +150,9 @@ var Rexbuilder_Rexelement = (function ($) {
         var $textWrap = $elementWrapper.parents(".text-wrap").eq(0);
         var $gridGallery = $elementWrapper.parents(".grid-stack-row").eq(0);
         var $section = $elementWrapper.parents(".rexpansive_section").eq(0);
-        var elementDimensionCalculated = jQuery.extend(true, {}, data.elementDimensions);//servono?
 
         // Removing element unnecessary data
         $elementWrapper.detach().appendTo($textWrap);
-        // $gridGallery.find('.tool-button--edit-thumbnail').remove();
-        // $gridGallery.find('.element-list__element--delete').remove();
         $gridGallery.find('.element-list-preview').remove();
 
         var dropType;
@@ -255,7 +252,6 @@ var Rexbuilder_Rexelement = (function ($) {
                 number: 1
             });
         }
-        // _removeModelData($elementWrapper);
 
         // Setting the block height
         var $gridGallery = $elementWrapper.parents(".grid-stack-row").eq(0);
@@ -271,8 +267,8 @@ var Rexbuilder_Rexelement = (function ($) {
         }
 
         // locking grid to prevent errors on focus right text node
-        var $element = $textWrap.parents(".grid-stack-item");
-        var $section = $element.parents(".rexpansive_section");
+        // var $element = $textWrap.parents(".grid-stack-item");
+        // var $section = $element.parents(".rexpansive_section");
         // Rexbuilder_Util.getGalleryInstance($section).focusElement($element);
     }
 
@@ -293,10 +289,9 @@ var Rexbuilder_Rexelement = (function ($) {
             flagElementFound = false;
             if (!flagElementFound) {
                 elementsInPage.push({
-                    id: elementID,
+                    id: parseInt(elementID),
                     number: elementNumber
                 });
-
                 
                 if ($elementWrapper.hasClass("rex-separate-element")) {
                     // We are not editing an element model, but a separate element
@@ -334,6 +329,18 @@ var Rexbuilder_Rexelement = (function ($) {
             number: 1
         });
 
+        console.log(elementsInPage);
+
+        _updateElementsData($elementWrapper, elementData);
+        
+        // Removes the element style if no other element is present in page
+        for (i = 0; i < elementsInPage.length; i++) {
+            if(!elementsInPage[i].id == elementID){
+                console.log("sdgdfgb");
+                _removeElementStyle(elementID);
+            }
+        }
+
         //if element was last of that model in page, remove it form elementsInPage array
         if (Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"]").length == 0) {
             var i;
@@ -347,8 +354,60 @@ var Rexbuilder_Rexelement = (function ($) {
             }
         }
 
-        _updateElementsData($elementWrapper, elementData);
         _addElementStyle($elementWrapper);
+    }
+
+    /**
+     * Refreshes the element from the shortcode. This happens
+     * when we are separating an element.
+     * @param  data
+     * @return {null}
+     */
+    var _refreshRexElement = function (data) {
+        var elementID = data.elementID.toString();
+        var oldElementModelID = data.oldElementModelID.toString();
+        var elementData = data.elementData;
+        var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"]");
+        var $elementData = $elementWrapper.find(".rex-element-data");
+        var $elementShortcode = $elementWrapper.find(".string-shortcode");
+        var elementShortcode = $elementShortcode.attr("shortcode").toString();
+
+        var newElementShortcode = elementShortcode.replace(oldElementModelID, elementID);
+        $elementShortcode.attr("shortcode", newElementShortcode);
+
+        // Deleting the old element
+        var $elementContainer = $elementWrapper.find(".rex-element-container");
+        $elementContainer.empty();
+
+        // Deleting the style
+        // _removeElementStyle(elementID);
+
+        // Ajax call to get the html of the element
+        $.ajax({
+          type: "POST",
+          dataType: "json",
+          url: _plugin_frontend_settings.rexajax.ajaxurl,
+          data: {
+            action: "rex_transform_shortcode",
+            nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+            elementID: elementID
+          },
+          success: function(response) {
+            if (response.success) {
+                // If success get the element HTML and append it to the right div
+                var $shortcodeTransformed = $.parseHTML(response.data.shortcode_transformed);
+                $elementContainer.append($shortcodeTransformed);
+
+                // Updating element data
+                $elementData.remove();
+                $elementData = $.parseHTML(response.data.element_data_html[0]);
+                $elementWrapper.prepend($elementData);
+
+                _lockSynchronize(elementData);
+            }
+          },
+          error: function(response) {}
+        });
     }
 
     /**
@@ -444,14 +503,11 @@ var Rexbuilder_Rexelement = (function ($) {
         // Da aggiornare quando si sapranno le proprietà
         elementProperties.background_color = (elementDataEl.getAttribute("data-background-color") ? elementDataEl.getAttribute("data-background-color").toString() : '');
 
+        elementProperties.synchronize = typeof $elementData.attr("data-synchronize") == "undefined" ? false : $elementData.attr("data-synchronize").toString();
+
         if ($elementContainer.hasClass("rex-separate-element") || getAllData) {
             separate = true;
-        } else {
-            elementProperties.synchronize = typeof $elementData.attr("data-synchronize") == "undefined" ? false : $elementData.attr("data-synchronize").toString();
         }
-        // elementProperties.text = $buttonContainer.find(".rex-button-text").eq(0).text();
-        // elementProperties.link_target = $elementData.attr("data-link-target");
-        // elementProperties.link_type = $elementData.attr("data-link-type");
 
         var data = {
             separateElement: separate,
@@ -682,13 +738,12 @@ var Rexbuilder_Rexelement = (function ($) {
         getElementsInPage: _getElementsInPage,
         lockSynchronize: _lockSynchronize,
         separateRexElement: _separateRexElement,
+        refreshRexElement: _refreshRexElement,
         updateElement: _updateElement,
         updateElementLive: _updateElementLive,
         removeSeparateElement: _removeSeparateElement,
 
         // CSS Rules Editing
-        generateElementData: _generateElementData,
-        // updateElementContainerRule: _updateElementContainerRule,
-        // updateElementContainerHoverRule: _updateElementContainerHoverRule
+        generateElementData: _generateElementData
 	}
 })(jQuery);

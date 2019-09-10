@@ -623,6 +623,10 @@ var Rexbuilder_Util_Editor = (function($) {
     Rexbuilder_Util.$document.on("rexlive:separate_rex_element", function (e) {
       Rexbuilder_Rexelement.separateRexElement(e.settings.data_to_send);
     });
+
+    Rexbuilder_Util.$document.on("rexlive:refresh_rex_element", function (e) {
+      Rexbuilder_Rexelement.refreshRexElement(e.settings.data_to_send);
+    });
     
     // DRAG & DROP
     Rexbuilder_Util.$document.on("rexlive:drag_drop_starded", function (e) {

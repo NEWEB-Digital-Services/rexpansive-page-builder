@@ -26,27 +26,16 @@ var Element_Edit_Modal = (function ($) {
         rex_edit_model_element_panel_properties.$button.on("click", function (e) {
             var optionSelected = this.getAttribute("data-rex-option");
             switch (optionSelected) {
-                case "remove":
-                	// Need to create a new model based on the current element
-                	
-                	oldModelID = elementData.elementTarget.element_id;
-                	// var newID = _createNewElementID();
-                    // _separateRexElement();
+                case "remove": // Need to create a new model based on the current element
+                	oldElementModelID = elementData.elementTarget.element_id;
 
                     // Saving the new model in the DB
-                    var newID = _saveNewElementOnDB();
-                    _endElementSeparation(newID);
+                    _saveNewElementOnDB();
                     
-                    // editingModelElement = true;
-                    // element_editor_properties.$self.addClass("editing-model");
-                    // Rexlive_Modals_Utils.openModal(
-                    //     element_editor_properties.$self.parent(".rex-modal-wrap")
-                    // );
-                    // _staySynchronized();
+                    element_editor_properties.$self.addClass("editing-model");
                     break;
-                case "edit":
-                	// Editing an existing model element
-                    editingModelElement = true;
+                case "edit": // Editing an existing model element
+
                     element_editor_properties.$self.addClass("editing-model");
                     Rexlive_Modals_Utils.openModal(
                         element_editor_properties.$self.parent(".rex-modal-wrap")
@@ -79,18 +68,17 @@ var Element_Edit_Modal = (function ($) {
 
     var element_editor_properties;
     var elementData;
-    var elementssIDsUsed;
     var reverseData;
     var resetData;
-    var editingModelElement;
     var alreadyChooseToSynchronize;
     var defaultElementValues;
-    var oldModelID;
+    var oldElementModelID;
+    var newID;
     
     var _openElementEditorModal = function (data) {
         alreadyChooseToSynchronize = false;
         _updateElementEditorModal(data);
-        if (!editingModelElement || alreadyChooseToSynchronize) {
+        if (alreadyChooseToSynchronize) {
             Rexlive_Modals_Utils.openModal(
                 element_editor_properties.$self.parent(".rex-modal-wrap")
             );
@@ -104,11 +92,9 @@ var Element_Edit_Modal = (function ($) {
     };
 
     var _updateElementEditorModal = function (data) {
-        editingModelElement = false;
         _clearElementData();
         _updateElementData(data);
         _updatePanel();
-        // _verifyTextBoxEffectsOnOpenModal();
     };
 
     var _clearElementData = function () {
@@ -145,16 +131,9 @@ var Element_Edit_Modal = (function ($) {
 
     var _updateElementData = function (data) {
     	elementData = jQuery.extend(true, {}, data.elementInfo);
-        if (data.separateElement.toString() == "true") {
-        	// Separate element
-            editingModelElement = false;
-        } else {
-        	// Model element
-            editingModelElement = true;
-            if (typeof data.elementInfo.synchronize != "undefined") {
-                alreadyChooseToSynchronize = data.elementInfo.synchronize.toString() == "true";
-            }
-        }
+		if (typeof data.elementInfo.synchronize != "undefined") {
+		    alreadyChooseToSynchronize = data.elementInfo.synchronize.toString() == "true";
+		}
         reverseData = jQuery.extend(true, {}, elementData);
         resetData = jQuery.extend(true, {}, elementData);
     };
@@ -210,13 +189,7 @@ var Element_Edit_Modal = (function ($) {
         // element_editor_properties.$element_border_color_preview.hide();
         // element_editor_properties.$element_border_color_value.spectrum("set", elementData.border_color);
 
-        if (editingModelElement) {
-            // if (!element_editor_properties.$add_model_button.hasClass("editing-model")) {
-                element_editor_properties.$self.addClass("editing-model");
-            // }
-        } else {
-            element_editor_properties.$self.removeClass("editing-model");
-        }
+        element_editor_properties.$self.addClass("editing-model");
     };
 
     var _updateElementDataFromPanel = function () {
@@ -300,9 +273,7 @@ var Element_Edit_Modal = (function ($) {
     ///////////////////////////////////////////////////////////////////////////////////////////////
     
     var _saveElementUpdatesOnDB = function () {
-
         var element_data_html = _createElementDataHTML();
-        // var css_element = _createCSSElement();
         var elementID = elementData.elementTarget.element_id;
 
         element_editor_properties.$add_model_button.addClass("saving-rex-element");
@@ -314,22 +285,13 @@ var Element_Edit_Modal = (function ($) {
                 action: "rex_update_element",
                 nonce_param: live_editor_obj.rexnonce,
                 element_id: elementID,
-                element_data_html: element_data_html,
-                // css_element: css_element,
+                element_data_html: element_data_html
             },
             beforeSend: function() {
                 element_editor_properties.$self.addClass('rex-modal--loading');
             },
             success: function (response) {
-                // Updates elements list tab
-                // Element_Import_Modal.updateElementList({});
-                
-                // If not editing a model element, it means we are creating a new model, so we need to update the element separate as a model
-                if (!editingModelElement) {
-                    _removeSeparateElement();
-                }
-
-                element_editor_properties.$add_model_button.removeClass("saving-rex-element");
+            	element_editor_properties.$add_model_button.removeClass("saving-rex-element");
                 // _closeModal();
             },
             error: function () {},
@@ -348,15 +310,16 @@ var Element_Edit_Modal = (function ($) {
             data: {
                 action: "rex_clone_element",
                 nonce_param: live_editor_obj.rexnonce,
-                old_id: oldModelID
+                old_id: oldElementModelID
             },
             beforeSend: function() {
                 element_editor_properties.$self.addClass('rex-modal--loading');
             },
             success: function (response) {
-            	element_editor_properties.$add_model_button.removeClass("saving-rex-element");
+            	newID = response.data.new_id;
+            	_endElementSeparation(newID);
 
-                return response.new_id;
+            	element_editor_properties.$add_model_button.removeClass("saving-rex-element");
             },
             error: function () {},
             complete: function (response) {
@@ -386,7 +349,7 @@ var Element_Edit_Modal = (function ($) {
             id: rexID, 
             number: 1
         });
-        // editingModelElement = false;
+        _refreshElement(rexID);
         _updatePanel();
         Rexlive_Modals_Utils.openModal(
             element_editor_properties.$self.parent(".rex-modal-wrap")
@@ -426,35 +389,6 @@ var Element_Edit_Modal = (function ($) {
     var _updateTarget = function (data) {
         elementData.elementTarget.element_id = data.id;
         elementData.elementTarget.element_number = data.number;
-    }
-
-    /**
-     * Creates a new ID, adds to used IDs and updates on DB the used ids
-     */
-    var _separateRexElement = function () {
-        var newID = _createNewElementID();
-        _addIDElement(newID);//@todelete
-        _updateElementsIDsUsed({//@todelete
-            rexID: newID,
-            separate: true
-        });
-    }
-
-    var _createNewElementID = function () {
-        var newID = "";
-        var flag;
-        var i;
-        do {
-            flag = true;
-            newID = Rexbuilder_Util_Admin_Editor.createRandomNumericID(4);
-            for (i = 0; i < elementsIDsUsed.length; i++) {
-                if (newID == elementsIDsUsed[i]) {
-                    flag = false;
-                    break;
-                }
-            }
-        } while (!flag);
-        return newID;
     }
 
     var _createElementDataHTML = function () {
@@ -633,6 +567,18 @@ var Element_Edit_Modal = (function ($) {
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(elementDataToIframe);
     }
 
+    var _refreshElement = function(rexID) {
+    	var elementDataToIframe = {
+    		eventName: "rexlive:refresh_rex_element",
+    		data_to_send: {
+    			elementID: rexID,
+    			oldElementModelID: oldElementModelID,
+    			elementData: elementData
+    		}
+    	};
+    	Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(elementDataToIframe);
+    }
+
     var _removeSeparateElement = function () {
         var elementDataToIframe = {
             eventName: "rexlive:remove_separate_element",
@@ -667,11 +613,9 @@ var Element_Edit_Modal = (function ($) {
          * Applyes changes to element and, if element is model, updates DB
          */
         element_editor_properties.$close_button.on("click", function () {
-            // _updateElementDataFromPanel();
-            // _applyData();
-            // if (editingModelElement) {
-            //     _saveElementOnDB();
-            // }
+        	elementData = jQuery.extend(true, {}, resetData);
+            _updatePanel();
+            _applyData();
             _closeModal();
         });
 
@@ -679,20 +623,13 @@ var Element_Edit_Modal = (function ($) {
          * Applyes changes to element and, if element is model, updates DB
          */
         element_editor_properties.$apply_changes_button.on("click", function () {
-            // _updateElementDataFromPanel();
-            // _applyData();
-            // if (editingModelElement) {
-            //     _saveElementOnDB();
-            // }
             _closeModal();
         });
 
         element_editor_properties.$modal.on('rexlive:this_modal_closed', function() {
             _updateElementDataFromPanel();
             _applyData();
-            if (editingModelElement) {
-                _saveElementUpdatesOnDB();
-            }
+            _saveElementUpdatesOnDB();
         });
     };
 

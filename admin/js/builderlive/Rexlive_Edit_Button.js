@@ -1364,6 +1364,9 @@ var Button_Edit_Modal = (function ($) {
             // if (editingModelButton) {
             //     _saveButtonOnDB();
             // }
+            buttonData = jQuery.extend(true, {}, resetData);
+            _updatePanel();
+            _applyData();
             _closeModal();
         });
 

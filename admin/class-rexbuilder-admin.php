@@ -2605,7 +2605,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 				$elementData["id"] = get_the_ID();
 				$elementData["name"] = get_the_title();
 				$elementData["preview_image_url"] = get_the_post_thumbnail_url();
-				$elementData["element_css"] = get_post_meta($elementData["id"], "_rex_element_css");
+				$elementData["element_data_html"] = get_post_meta(get_the_ID(), "_rex_element_data_html");
 
 				array_push($elementList, $elementData);
 			}

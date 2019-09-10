@@ -66,7 +66,7 @@ var Element_Import_Modal = (function ($) {
 					      ? updatedList[i].preview_image_url
 					      : ""
 					    })
-					    );
+					    ).find(".rex-element-wrapper").prepend(updatedList[i].element_data_html[0]);
 					}
 				}
 
