@@ -126,3 +126,17 @@
 #rex-rexelement-add-model-wrap:hover{
     cursor: pointer;
 }
+
+#rex-wpcf7-content-adder {
+    &.editing-model {
+        .add-rex-element-model__wrap {
+            display: none;
+        }
+    }
+    .add-rex-element-model {
+        background-color:rgb(0, 190, 0);
+        &.saving-rex-element{
+            background-color:rgb(0, 190, 0);
+        }
+    }
+}

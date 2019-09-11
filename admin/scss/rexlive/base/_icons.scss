@@ -25,6 +25,11 @@
   cursor:pointer;
 }
 
+#rex-wpcf7-content-adder .rexelement-cont_row10 .l-svg-icons > svg {
+  transform: rotate(45deg);
+  cursor:pointer;
+}
+
 .l-icon--white {
   @include fill-icon(#fff);
 }

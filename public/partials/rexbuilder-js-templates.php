@@ -331,6 +331,10 @@ $tool_button_classes = 'tool-button';
 </div>
 </script>
 
+<script type="text/x-tmpl" id="tmpl-wpcf7-add-new-row">
+
+</script>
+
 <script type="text/x-tmpl" id="tmpl-me-insert-media-button">
 <input type="text" class="me-insert-embed__value">
 <div class="tool-button-floating">
@@ -361,6 +365,30 @@ $tool_button_classes = 'tool-button';
     <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
     </div>
 </div>
+</script>
+
+<script type="text/x-tmpl" id="tmpl-wpcf7-select-columns">
+<ul id="" class="medium-editor-toolbar-actions">
+    <li>
+      <button class="medium-editor-action select-1-column">
+        <i>■</i>
+      </button>
+    </li>
+    <li>
+      <button class="medium-editor-action select-2-columns">
+        <i>■ ■</i>
+      </button>
+    </li>
+    <li>
+      <button class="medium-editor-action select-3-columns">
+        <i>■ ■ ■</i>
+      </button>
+    </li>
+      <button class="medium-editor-action select-4-columns">
+        <i>■ ■ ■ ■</i>
+      </button>
+    </li>
+</ul>
 </script>
 
 <!-- <div id="" class="medium-editor-toolbar medium-editor-stalker-toolbar medium-editor-toolbar-active medium-toolbar-arrow-under"> -->
@@ -493,12 +521,15 @@ $tool_button_classes = 'tool-button';
 </script> -->
 
 <script type="text/x-tmpl" id="tmpl-rexelement-tools">
-    <div class="rex-element-tools-container">        
+    <div class="rex-element-tools-container">
         <div class="tool-button tool-button_list--item rex-edit-element tippy" data-tippy-content="<?php _e('Config', 'rexpansive'); ?>">
             <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
         </div>
         <div class="tool-button rex-delete-element tippy" data-tippy-content="<?php _e('Delete', 'rexpansive'); ?>">
             <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
+        </div>
+        <div class="tool-button tool-button--inline wpcf7-add-new-row tippy" data-tippy-content="<?php _e('Add row', 'rexpansive'); ?>">
+            <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
         </div>
     </div>
 </script>
@@ -510,3 +541,9 @@ $tool_button_classes = 'tool-button';
     <div class="rex-edit-button">E</div>
 </script>
 -->
+
+<script type="text/x-tmpl" id="tmpl-plus-button-inside-form-row">
+    <div class="tool-button tool-button--inline wpcf7-add-new-form-content">
+        <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
+    </div>
+</script>

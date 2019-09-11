@@ -307,6 +307,10 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       if (event.data.eventName == "rexlive:openRexElementEditor") {
         Element_Edit_Modal.openElementEditorModal(event.data.elementData);
       }
+
+      if (event.data.eventName == "rexlive:openRexWpcf7AddContent") {
+        Wpcf7_Add_Content_Modal.openContentAdder(event.data.insertionPoint);
+      }
       
       if (event.data.eventName == "rexlive:editRemoveModal") {
         Model_Edit_Modal.openModal(event.data.modelData);

@@ -11691,6 +11691,12 @@ select.rx__form-input {
           transform: rotate(45deg);
   cursor: pointer; }
 
+#rex-wpcf7-content-adder .rexelement-cont_row10 .l-svg-icons > svg {
+  -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
+  cursor: pointer; }
+
 .l-icon--white .l-svg-icons > svg {
   fill: #fff; }
 
@@ -17222,6 +17228,14 @@ input:disabled + .rex_edit_title_slider {
 
 #rex-rexelement-add-model-wrap:hover {
   cursor: pointer; }
+
+#rex-wpcf7-content-adder.editing-model .add-rex-element-model__wrap {
+  display: none; }
+
+#rex-wpcf7-content-adder .add-rex-element-model {
+  background-color: #00be00; }
+  #rex-wpcf7-content-adder .add-rex-element-model.saving-rex-element {
+    background-color: #00be00; }
 
 .rexlive-toolbox__wrap {
   width: 100%;

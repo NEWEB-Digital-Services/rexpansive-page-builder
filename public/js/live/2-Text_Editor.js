@@ -1614,10 +1614,9 @@ var TextEditor = (function ($) {
     init: function () {
       toolbarActiveOnRexelement = false;
 
-      // this.keyCode = MediumEditor.util.keyCode;
-      // this.arrowKeys = [37, 38, 39, 40];
+      this.columnsSelected;
 
-      this.traceBTN = null;
+      this.traceELMNT = null;
       this.traceEditor = null;
 
       // this.subscribe("editableInput", this.handleEventInput.bind(this));
@@ -1628,6 +1627,7 @@ var TextEditor = (function ($) {
       this.subscribe("positionToolbar", this.handlePositionToolbar.bind(this));
       this.subscribe("hideToolbar", this.handleHideToolbar.bind(this));
 
+      // Create the tools displayed on an element
       this.rexelementTools = document.createElement("div");
       this.rexelementTools.contentEditable = false;
       this.rexelementTools.classList.add("rexelement-tools");
@@ -1635,8 +1635,19 @@ var TextEditor = (function ($) {
       this.rexelementTools.innerHTML = tmpl("tmpl-rexelement-tools", {});
       $(document.getElementsByTagName("body")[0]).append(this.rexelementTools);
 
+      // Create the columns selection toolbar
+      this.wpcf7SelectColumnsToolbar = document.createElement("div");
+      this.wpcf7SelectColumnsToolbar.id = "wpcf7-select-columns-number";
+      this.wpcf7SelectColumnsToolbar.classList.add("medium-editor-toolbar");
+      this.wpcf7SelectColumnsToolbar.classList.add("medium-toolbar-arrow-over");
+      this.wpcf7SelectColumnsToolbar.innerHTML = tmpl("tmpl-wpcf7-select-columns", {});
+      $(document.getElementsByTagName("body")[0]).append(this.wpcf7SelectColumnsToolbar);
+
       this.deleteRexelementBtn = $(this.rexelementTools).find(".rex-delete-element")[0];
       this.editRexelementBtn = $(this.rexelementTools).find(".rex-edit-element")[0];
+      this.addRowBtn = $(this.rexelementTools).find(".wpcf7-add-new-row")[0];
+      this.addFormContentBtns = $(this.traceELMNT).find(".wpcf7-add-new-form-content");
+
 
       // Hiding anchor preview of text editor when mouse is over a rexelement
       // Timeout is needed because anchor will stay under element for about 500-600 ms
@@ -1650,11 +1661,10 @@ var TextEditor = (function ($) {
         }
       });
 
-      Rexbuilder_Util.$document.on("mouseleave", ".rex-button-element", function (e) {
+      Rexbuilder_Util.$document.on("mouseleave", ".rex-element-wrapper", function (e) {
         showAnchorTimeout = setTimeout(extensionIstance.showAnchorPreview, 1000);
       });
 
-      // View/Hide the Media Insert button
       this.subscribe("blur", this.handleBlur.bind(this));
 
       // Trace the cursor position
@@ -1663,6 +1673,12 @@ var TextEditor = (function ($) {
       // Link click listeners
       this.on(this.deleteRexelementBtn, "click", this.handleClickDeleteRexelement.bind(this));
       this.on(this.editRexelementBtn, "click", this.handleClickEditRexelement.bind(this));
+      this.on(this.addRowBtn, "click", this.handleClickAddRow.bind(this));
+      this.on(this.wpcf7SelectColumnsToolbar, "click", this.handleSelectColumns.bind(this));
+
+      if("undefined" != typeof this.addFormContentBtns) {
+        this.on(this.addFormContentBtns, "click", this.handleClickAddFormContent.bind(this));
+      }
     },
 
     hideAnchorPreview: function (event) {
@@ -1722,10 +1738,12 @@ var TextEditor = (function ($) {
      * Place rexelement tools on top of rexelement
      */
     placeRexelementToolbox: function () {
-      var targetCoords = this.traceBTN.getBoundingClientRect();
+      var targetCoords = this.traceELMNT.getBoundingClientRect();
+      // this.rexelementTools.style.height = targetCoords.height + "px";
       this.rexelementTools.style.width = targetCoords.width + "px";
       this.rexelementTools.style.left = (targetCoords.left + ((targetCoords.width - this.rexelementTools.offsetWidth) / 2)) + "px";
       this.rexelementTools.style.top = (window.scrollY + targetCoords.top - this.rexelementTools.offsetHeight) + "px";
+      // console.log(window.scrollY, "+", targetCoords.top, "-", this.rexelementTools.offsetHeight);
       //this.rexelementTools.style.top = (window.scrollY + targetCoords.top - this.rexelementTools.offsetHeight + 8) + "px";
       //this.rexelementTools.style.top = (window.scrollY + targetCoords.top - this.rexelementTools.offsetHeight - 8) + "px";
     },
@@ -1733,6 +1751,7 @@ var TextEditor = (function ($) {
     hideRexelementToolbox: function (event) {
       this.rexelementTools.style.display = "none";
       //console.log("hideRexelementToolbox()");
+      this.hideSelectColumnsToolbar();
     },
 
     traceInputRexElement: function (event) {
@@ -1740,11 +1759,8 @@ var TextEditor = (function ($) {
         //console.log("traceInputRexButton()");
         // Check if cursor is inside rexelement
         var nodeToFix = MediumEditor.selection.getSelectionStart(this.base.options.ownerDocument);
-        /*if ($(event.target).hasClass("rex-button-text")) {
-          this.traceBTN = $(event.target).parents(".rex-button-container")[0];
-          this.viewRexbuttonToolbox();
-        } else*/ if ($(nodeToFix).parents(".rex-element-container").length != 0) {
-          this.traceBTN = $(nodeToFix).parents(".rex-element-container")[0];
+        if ($(nodeToFix).parents(".rex-element-container").length != 0) {
+          this.traceELMNT = $(nodeToFix).parents(".rex-element-container")[0];
           this.viewRexelementToolbox();
         } else {
           this.handleBlur(event);
@@ -1755,12 +1771,13 @@ var TextEditor = (function ($) {
     handleBlur: function (event) {
       if ($(event.target).parents(".rex-element-wrapper").length == 0 && $(event.target).parents(".rexelement-tools").length == 0) {
         this.hideRexelementToolbox();
+        // this.hideSelectColumnsToolbar();
       }
     },
 
     handleClickDeleteRexelement: function (e) {
       this.hideRexelementToolbox();
-      var $elementContainer = $(this.traceBTN).parents(".rex-element-wrapper");
+      var $elementContainer = $(this.traceELMNT).parents(".rex-element-wrapper");
       var $paragraphContainer = $elementContainer.parents("p.rex-elements-paragraph");
       $elementContainer.remove();
       if ($paragraphContainer.find(".rex-element-wrapper").length == 0) {
@@ -1770,7 +1787,7 @@ var TextEditor = (function ($) {
 
     handleClickEditRexelement: function (e) {
       this.hideRexelementToolbox();
-      var $elementWrapper = $(this.traceBTN).parents(".rex-element-wrapper");
+      var $elementWrapper = $(this.traceELMNT).parents(".rex-element-wrapper");
       var data = {
         eventName: "rexlive:openRexElementEditor",
         elementData: Rexbuilder_Rexelement.generateElementData($elementWrapper)
@@ -1779,11 +1796,131 @@ var TextEditor = (function ($) {
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     },
 
+    /**
+     * Adds a new row of the form
+     * @param e
+     */
+    handleClickAddRow: function (e) {
+      // Using the medium editor to select columns number
+      this.viewSelectColumnsToolbar();
+    },
+
+    /**
+     * Add new content in the form
+     * @param e
+     */
+    handleClickAddFormContent: function (e) {
+      this.hideRexelementToolbox();
+      var $elementWrapper = $(this.traceELMNT).parents(".rex-element-wrapper");
+      var eventPath = e.path;
+      var row_number;
+      var column_number;
+
+      // Molto brutto, ma per ora...
+      for (var i = 0; i < eventPath.length - 2; i++) {
+        if(eventPath[i].classList.contains("wpcf7-row")) {
+          row_number = eventPath[i].classList.item(1).replace("row-", "");
+          break;
+        }
+      }
+
+      // Molto brutto, ma per ora...
+      for (var i = 0; i < eventPath.length - 2; i++) {
+        if(eventPath[i].classList.contains("wpcf7-column")) {
+          column_number = eventPath[i].classList.item(1).replace("column-", "");
+          break;
+        }
+      }
+
+      var data = {
+        eventName: "rexlive:openRexWpcf7AddContent",
+        insertionPoint: {
+          row_number: row_number,
+          column_number: column_number
+        }
+      };
+      $elementWrapper.parents(".text-wrap").blur();
+      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+    },
+
+    viewSelectColumnsToolbar: function(target) {
+      this.placeSelectColumnsToolbar();
+      this.wpcf7SelectColumnsToolbar.classList.add("medium-editor-toolbar-active");
+    },
+
+    placeSelectColumnsToolbar: function() {
+      var targetCoords = this.addRowBtn.getBoundingClientRect();
+      this.wpcf7SelectColumnsToolbar.style.left = (targetCoords.left + ((targetCoords.width - this.wpcf7SelectColumnsToolbar.offsetWidth) / 2)) + "px";
+      this.wpcf7SelectColumnsToolbar.style.top = (window.scrollY + targetCoords.top - this.wpcf7SelectColumnsToolbar.offsetHeight - 8) + "px";
+    },
+
+    hideSelectColumnsToolbar: function() {
+      this.wpcf7SelectColumnsToolbar.classList.remove("medium-editor-toolbar-active");
+    },
+
+    handleSelectColumns: function (event) {
+      var $el = $(event.target);
+      if (!$el.hasClass("medium-editor-action")) {
+        $el = $el.parents(".medium-editor-action");
+      }
+
+      if ($el.hasClass("select-1-column")) {
+        this.columnsSelected = 1;
+      } else if ($el.hasClass("select-2-columns")) {
+        this.columnsSelected = 2;
+      } else if ($el.hasClass("select-3-columns")) {
+        this.columnsSelected = 3;
+      } else if ($el.hasClass("select-4-columns")) {
+        this.columnsSelected = 4;
+      }
+      this.hideRexelementToolbox();
+      // this.hideSelectColumnsToolbar();
+
+      var $elementContainer = $(this.traceELMNT);
+      var $newRow = $(document.createElement("div"));
+      var newRowNumber = $elementContainer.find(".wpcf7-row").length + 1;
+
+      $newRow.addClass("wpcf7-row row-" + newRowNumber);
+
+      switch (this.columnsSelected) {
+        case 1:
+          $newRow.addClass("wpcf7-row__1-column");
+          break;
+        case 2:
+          $newRow.addClass("wpcf7-row__2-columns");
+          break;
+        case 3:
+          $newRow.addClass("wpcf7-row__3-columns");
+          break;
+        case 4:
+          $newRow.addClass("wpcf7-row__4-columns");
+          break;
+      }
+
+      var $columnsToInsert = [];
+
+      for(var i = 0; i < this.columnsSelected; i++) {
+        $columnsToInsert[i] = $(document.createElement("div"));
+        $columnsToInsert[i].addClass("wpcf7-column column-" + (i + 1));
+        
+        // Creating the + buttons for adding content
+        var plusButton = tmpl("tmpl-plus-button-inside-form-row", {});
+        var plus = "+";
+        $columnsToInsert[i].append(plusButton);
+        
+        $newRow.append($columnsToInsert[i]);
+      }
+
+      var $lastRow = $elementContainer.find(".wpcf7-row").last();
+      $newRow.insertAfter($lastRow);
+
+      this.addFormContentBtns = $(this.traceELMNT).find(".wpcf7-add-new-form-content");
+      this.on(this.addFormContentBtns, "click", this.handleClickAddFormContent.bind(this));
+    },
+
     handleEventInput: function (eventObj, target) {
       //console.log("handleEventInput()");
     },
-
-
 
     replaceClasses: function ($wrapper, previousClass, newClass) {
       $wrapper.find("." + previousClass).removeClass(previousClass).addClass(newClass);

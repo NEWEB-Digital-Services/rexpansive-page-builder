@@ -92,6 +92,9 @@ var Rexlive_Modals = (function ($) {
         // Element editor
         Element_Edit_Modal.init();
 
+        // Wpcf7 Content Adder
+        Wpcf7_Add_Content_Modal.init();
+
         // live media list
         Rexlive_PostEdit_MediaList.init();
     }

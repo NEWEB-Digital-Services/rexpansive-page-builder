@@ -655,6 +655,12 @@
           transform: rotate(45deg);
   cursor: pointer; }
 
+#rex-wpcf7-content-adder .rexelement-cont_row10 .l-svg-icons > svg {
+  -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
+  cursor: pointer; }
+
 .l-icon--white .l-svg-icons > svg {
   fill: #fff; }
 
@@ -5370,6 +5376,35 @@ input.me-insert-embed__value[type=text] {
       background-color: #424242; }
       .rexelement-tools .rex-element-tools-container .rex-delete-element .l-svg-icons > svg {
         fill: #ffffff; }
+    .rexelement-tools .rex-element-tools-container .wpcf7-add-new-row {
+      position: absolute;
+      bottom: 0px; }
+
+.wpcf7-row__1-column .wpcf7-column,
+.wpcf7-row__2-columns .wpcf7-column,
+.wpcf7-row__3-columns .wpcf7-column,
+.wpcf7-row__4-columns .wpcf7-column {
+  -ms-flex-line-pack: center;
+      align-content: center;
+  display: -webkit-inline-box;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  background-color: white;
+  border-width: 10px;
+  padding: 10px; }
+
+.wpcf7-row__1-column .wpcf7-column {
+  width: 100%; }
+
+.wpcf7-row__2-columns .wpcf7-column {
+  max-width: 50% !important;
+  width: 50%; }
+
+.wpcf7-row__3-columns .wpcf7-column {
+  width: 33%; }
+
+.wpcf7-row__4-columns .wpcf7-column {
+  width: 25%; }
 
 @media screen and (max-width: 1024px) {
   body {

@@ -610,7 +610,7 @@ var Element_Edit_Modal = (function ($) {
         });
 
         /**
-         * Applyes changes to element and, if element is model, updates DB
+         * Resets changes to element and closes the modal
          */
         element_editor_properties.$close_button.on("click", function () {
         	elementData = jQuery.extend(true, {}, resetData);

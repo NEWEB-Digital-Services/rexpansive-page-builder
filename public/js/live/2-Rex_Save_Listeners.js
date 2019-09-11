@@ -1112,6 +1112,11 @@ var Rex_Save_Listeners = (function($) {
             content = "";
           }
         } else {
+          $savingBlock.find(".rex-element-container").each(function (i, elementContainer) {
+            $(elementContainer).empty();
+            var elementShortcode = $(elementContainer).siblings(".string-shortcode").attr("shortcode");
+            $(elementContainer).append(elementShortcode);
+          });
           content = $savingBlock.html().trim();
           $savingBlock.find(".rex-button-data").each(function (i, buttonData) {
             $(buttonData).removeAttr("data-synchronize");
