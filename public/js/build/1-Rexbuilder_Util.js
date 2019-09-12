@@ -34,6 +34,17 @@ var Rexbuilder_Util = (function($) {
     return text;
   };
 
+  var _createRandomNumericID = function(n) {
+    var number = "";
+    var possible = "0123456789";
+
+    for (var i = 0; i < n; i++) {
+      number += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+
+    return parseInt(number);
+  };
+
   var _storeNamesUsed = function() {
     sectionIDSused = ( $usedIDSContainer.length > 0 ? JSON.parse($usedIDSContainer.text()) : [] );
   };
@@ -3712,6 +3723,7 @@ var Rexbuilder_Util = (function($) {
     addSectionID: _addSectionID,
     removeSectionID: _removeSectionID,
     createRandomID: createRandomID,
+    createRandomNumericID: _createRandomNumericID,
     updateDOMSingleElement: _updateDOMSingleElement,
     getDefaultBlockMeasure: _getDefaultBlockMeasure,
     doneResizing: doneResizing,

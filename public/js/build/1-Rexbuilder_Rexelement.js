@@ -5,9 +5,83 @@ var Rexbuilder_Rexelement = (function ($) {
     var elementsInPage;
     var defaultElementValues;
 
-    /////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// WPCF7 FUNCTIONS
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    /**
+     * Add the new field shortcode in the DOM. At the end, it calls the
+     * saveChanges function to update DB and DOM
+     * @param data
+     */
+    var _addField = function(data) {
+        var insertionPoint = data.insertionPoint;
+        var formID = insertionPoint.formID;
+        var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]");
+
+        var $insertionPoint = $elementWrapper.find(".wpcf7-row.row-" + insertionPoint.row_number).find(".wpcf7-column.column-" + insertionPoint.column_number);
+
+        var fieldType = data.fieldType;
+        var fieldShortcode;
+
+        // Selecting the field
+        switch(fieldType) {
+            case "text":
+                fieldShortcode = "[text text-" + Rexbuilder_Util.createRandomNumericID(3) + "]";
+                break;
+            case "menu":
+                fieldShortcode = "[select menu-" + Rexbuilder_Util.createRandomNumericID(3) + " include_blank 'Field 1' 'Field 2']";
+                break;
+            case "checkboxes":
+                fieldShortcode = "[checkbox checkbox-" + Rexbuilder_Util.createRandomNumericID(3) + " \"Option 1\" \"Option 2\"]";
+                break;
+            case "radiobuttons":
+                fieldShortcode = "[radio radio-" + Rexbuilder_Util.createRandomNumericID(3) + "  default:1 \"Option 1\" \"Option 2\"]";
+                break;
+            case "file":
+                fieldShortcode = "[file file-" + Rexbuilder_Util.createRandomNumericID(3) + "]";
+                break;
+            case "submit":
+                fieldShortcode = "[submit]";
+                break;
+        }
+
+        $insertionPoint.empty();
+        $insertionPoint.append(fieldShortcode);
+
+        var $rowToAdd = $insertionPoint.parent();
+
+        // _saveWPCF7ChangesOnDB($rowToAdd, formID);
+    }
+
+    /**
+     * Saves element changes in the DB and calls 
+     * the function to update DOM
+     * @param  {Array} elementsChanged Elements that will be updated
+     */
+    var _saveWPCF7ChangesOnDB = function ($rowToAdd, formID) {
+        var rowToAddString = $rowToAdd[0].outerHTML;
+
+        $.ajax({
+          type: "POST",
+          dataType: "json",
+          url: _plugin_frontend_settings.rexajax.ajaxurl,
+          data: {
+            action: "rex_wpcf7_save_new_row",
+            nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+            form_id: formID,
+            row_to_add_string: rowToAddString
+          },
+          success: function(response) {
+            if (response.success) {}
+          },
+          error: function(response) {}
+        });
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
     /// CSS RULES EDITING
-    /////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
     
     var _fixCustomStyleElement = function () {
         if (Rexbuilder_Rexelement.$rexelementsStyle.length == 0) {
@@ -37,7 +111,7 @@ var Rexbuilder_Rexelement = (function ($) {
         return styleSheet;
     };
 
-    //////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
     // Adding rules
 
     var _addElementBackgroundRule = function (elementID, property) {
@@ -50,7 +124,7 @@ var Rexbuilder_Rexelement = (function ($) {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
     // Updating rules
     
     var _updateElementBackgroundRule = function (elementID, rule, value) {
@@ -122,7 +196,7 @@ var Rexbuilder_Rexelement = (function ($) {
         }
     }
 
-    /////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
     // Removing rules
     
     var _removeElementBackgroundRule = function (elementID) {
@@ -134,9 +208,9 @@ var Rexbuilder_Rexelement = (function ($) {
         }
     }
 
-    /////////////////////////////////////////////////////////////////////
-    /// REXELEMENT FUNCTIONS
-    /////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    /// REXELEMENT GENERIC FUNCTIONS
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /**
      * Fixes the dragged element in the DOM.
@@ -174,7 +248,7 @@ var Rexbuilder_Rexelement = (function ($) {
           dataType: "json",
           url: _plugin_frontend_settings.rexajax.ajaxurl,
           data: {
-            action: "rex_transform_shortcode",
+            action: "rex_transform_element_shortcode",
             nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
             elementID: elementID
           },
@@ -329,14 +403,11 @@ var Rexbuilder_Rexelement = (function ($) {
             number: 1
         });
 
-        console.log(elementsInPage);
-
         _updateElementsData($elementWrapper, elementData);
         
         // Removes the element style if no other element is present in page
         for (i = 0; i < elementsInPage.length; i++) {
             if(!elementsInPage[i].id == elementID){
-                console.log("sdgdfgb");
                 _removeElementStyle(elementID);
             }
         }
@@ -388,7 +459,7 @@ var Rexbuilder_Rexelement = (function ($) {
           dataType: "json",
           url: _plugin_frontend_settings.rexajax.ajaxurl,
           data: {
-            action: "rex_transform_shortcode",
+            action: "rex_transform_element_shortcode",
             nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
             elementID: elementID
           },
@@ -733,6 +804,12 @@ var Rexbuilder_Rexelement = (function ($) {
 	return {
 		init: init,
 
+        //Wpcf7 functions
+        addField: _addField,
+
+        // CSS Rules Editing
+        generateElementData: _generateElementData,
+
         // Rexelement functions
 		fixImportedElement: _fixImportedElement,
         getElementsInPage: _getElementsInPage,
@@ -741,9 +818,6 @@ var Rexbuilder_Rexelement = (function ($) {
         refreshRexElement: _refreshRexElement,
         updateElement: _updateElement,
         updateElementLive: _updateElementLive,
-        removeSeparateElement: _removeSeparateElement,
-
-        // CSS Rules Editing
-        generateElementData: _generateElementData
+        removeSeparateElement: _removeSeparateElement
 	}
 })(jQuery);

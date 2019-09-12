@@ -627,6 +627,10 @@ var Rexbuilder_Util_Editor = (function($) {
     Rexbuilder_Util.$document.on("rexlive:refresh_rex_element", function (e) {
       Rexbuilder_Rexelement.refreshRexElement(e.settings.data_to_send);
     });
+
+    Rexbuilder_Util.$document.on("rexlive:wpcf7_add_field", function (e) {
+      Rexbuilder_Rexelement.addField(e.settings.data_to_send);
+    });
     
     // DRAG & DROP
     Rexbuilder_Util.$document.on("rexlive:drag_drop_starded", function (e) {

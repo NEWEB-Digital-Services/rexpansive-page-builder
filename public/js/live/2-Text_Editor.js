@@ -1648,7 +1648,6 @@ var TextEditor = (function ($) {
       this.addRowBtn = $(this.rexelementTools).find(".wpcf7-add-new-row")[0];
       this.addFormContentBtns = $(this.traceELMNT).find(".wpcf7-add-new-form-content");
 
-
       // Hiding anchor preview of text editor when mouse is over a rexelement
       // Timeout is needed because anchor will stay under element for about 500-600 ms
       var showAnchorTimeout = null;
@@ -1835,6 +1834,7 @@ var TextEditor = (function ($) {
       var data = {
         eventName: "rexlive:openRexWpcf7AddContent",
         insertionPoint: {
+          formID: $elementWrapper.attr("data-rex-element-id"),
           row_number: row_number,
           column_number: column_number
         }
@@ -1914,8 +1914,32 @@ var TextEditor = (function ($) {
       var $lastRow = $elementContainer.find(".wpcf7-row").last();
       $newRow.insertAfter($lastRow);
 
+      //Qua ci va il salvataggio della nuova row nel DB
+      var formID = $elementContainer.attr("data-rex-element-id");
+      this.saveNewRowOnDB($newRow, );
+
       this.addFormContentBtns = $(this.traceELMNT).find(".wpcf7-add-new-form-content");
       this.on(this.addFormContentBtns, "click", this.handleClickAddFormContent.bind(this));
+    },
+
+    saveNewRowOnDB: function ($rowToAdd, formID){
+      var rowToAddString = $rowToAdd[0].outerHTML;
+
+      $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: _plugin_frontend_settings.rexajax.ajaxurl,
+        data: {
+          action: "rex_wpcf7_save_new_row",
+          nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+          form_id: formID,
+          row_to_add_string: rowToAddString
+        },
+        success: function(response) {
+          if (response.success) {}
+        },
+        error: function(response) {}
+      });
     },
 
     handleEventInput: function (eventObj, target) {

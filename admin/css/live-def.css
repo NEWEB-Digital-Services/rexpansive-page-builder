@@ -655,10 +655,7 @@
           transform: rotate(45deg);
   cursor: pointer; }
 
-#rex-wpcf7-content-adder .rexelement-cont_row10 .l-svg-icons > svg {
-  -webkit-transform: rotate(45deg);
-      -ms-transform: rotate(45deg);
-          transform: rotate(45deg);
+#rex-wpcf7-content-adder .rexwpcf7-cont_row .l-svg-icons > svg {
   cursor: pointer; }
 
 .l-icon--white .l-svg-icons > svg {
@@ -5397,7 +5394,7 @@ input.me-insert-embed__value[type=text] {
   width: 100%; }
 
 .wpcf7-row__2-columns .wpcf7-column {
-  max-width: 50% !important;
+  max-width: 50%;
   width: 50%; }
 
 .wpcf7-row__3-columns .wpcf7-column {

@@ -470,11 +470,75 @@ class Rexbuilder_Public
     }
 
     /**
-     * Transforms shortcode to html
+     * Saves new and updated fields in a wpcf7
      * @return model with no image
      * @since  x.x.x
      */
-    public function rex_transform_shortcode(){
+    public function rex_wpcf7_save_new_row(){
+        $nonce = $_POST['nonce_param'];
+        $elementID = $_POST['elementID'];
+
+        $response = array(
+            'error' => false,
+            'msg' => ''
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+        $response['error'] = false;
+        
+        $formID = $_POST['form_id'];
+        $newRowString = $_POST['row_to_add_string'];
+
+        $formHTML = get_post_meta($formID, "_form");
+        $formHTML = implode($formHTML);         // Converting in string type
+        $formHTML = $formHTML.$newRowString;    // Union of the strings
+        update_post_meta($formID, "_form", $formHTML);
+        $response['form_html'] = $formHTML;
+
+        wp_send_json_success($response);
+    }
+
+    /**
+     * Saves new and updated fields in a wpcf7
+     * @return model with no image
+     * @since  x.x.x
+     */
+    public function rex_wpcf7_get_form(){
+        $nonce = $_POST['nonce_param'];
+        $elementID = $_POST['elementID'];
+
+        $response = array(
+            'error' => false,
+            'msg' => ''
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+        $response['error'] = false;
+
+        //Idea: qua gli arriva un array di elementi HTML(le columns, dato che si potrà aggiornare colonna per colonna). Io li cerco nel DB e li sostituisco. Se non ci sono, vuol dire che è roba nuova e aggiungo tutto in fondo
+        
+        $formID = $_POST['form_id'];
+        $response['html_post'] = get_post_meta($formID, "_form");
+
+        wp_send_json_success($response);
+    }
+
+    /**
+     * Transforms element shortcode to html
+     * @return model with no image
+     * @since  x.x.x
+     */
+    public function rex_transform_element_shortcode(){
         $nonce = $_POST['nonce_param'];
         $elementID = $_POST['elementID'];
 
