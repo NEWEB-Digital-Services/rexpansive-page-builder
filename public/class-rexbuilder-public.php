@@ -470,7 +470,37 @@ class Rexbuilder_Public
     }
 
     /**
-     * Saves new and updated fields in a wpcf7
+     * Saves new form row in the DB
+     * @return model with no image
+     * @since  x.x.x
+     */
+    public function rex_wpcf7_save_changes(){
+        $nonce = $_POST['nonce_param'];
+        $elementID = $_POST['elementID'];
+
+        $response = array(
+            'error' => false,
+            'msg' => ''
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+        $response['error'] = false;
+        
+        $formID = $_POST['form_id'];
+        $newFormString = $_POST['new_form_string'];
+
+        update_post_meta($formID, "_form", $newFormString);
+
+        wp_send_json_success($response);
+    }
+
+    /**
+     * Saves new form row in the DB
      * @return model with no image
      * @since  x.x.x
      */
@@ -503,11 +533,6 @@ class Rexbuilder_Public
         wp_send_json_success($response);
     }
 
-    /**
-     * Saves new and updated fields in a wpcf7
-     * @return model with no image
-     * @since  x.x.x
-     */
     public function rex_wpcf7_get_form(){
         $nonce = $_POST['nonce_param'];
         $elementID = $_POST['elementID'];
@@ -524,11 +549,9 @@ class Rexbuilder_Public
         endif;
 
         $response['error'] = false;
-
-        //Idea: qua gli arriva un array di elementi HTML(le columns, dato che si potrà aggiornare colonna per colonna). Io li cerco nel DB e li sostituisco. Se non ci sono, vuol dire che è roba nuova e aggiungo tutto in fondo
         
         $formID = $_POST['form_id'];
-        $response['html_post'] = get_post_meta($formID, "_form");
+        $response['html_form'] = get_post_meta($formID, "_form");
 
         wp_send_json_success($response);
     }

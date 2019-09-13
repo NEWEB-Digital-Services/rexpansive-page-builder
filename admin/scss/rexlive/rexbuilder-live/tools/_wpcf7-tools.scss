@@ -1,0 +1,125 @@
+.rexwpcf7-tools {
+  position: absolute;
+  z-index: 10;
+  cursor: pointer;
+
+  .rex-wpcf7-tools-container {
+    width: 100%;
+    height: 22px;
+    font-size: 10px;
+
+    .wpcf7-add-new-row {
+      position: absolute;
+      top: 0px;
+      right: 50%;
+      margin: 0px -10px 0px 0px;
+    }
+  }
+}
+
+.rexwpcf7-row-tools {
+  position: absolute;
+  z-index: 10;
+  cursor: pointer;
+
+  .rex-wpcf7-row-tools-container {
+    width: 100%;
+    height: 22px;
+    font-size: 10px;
+
+    .rex-wpcf7-row-clone {
+      position: absolute;
+      top: 0px;
+      right: 30px;
+      margin: 0px -10px 0px 0px;
+    }
+
+    .rex-wpcf7-row-delete {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      background-color: #424242;
+
+      .l-svg-icons > svg {
+        fill: #ffffff;
+      }
+    }
+  }
+}
+
+.rexwpcf7-column-tools {
+  position: absolute;
+  z-index: 10;
+  cursor: pointer;
+
+  .rex-wpcf7-column-tools-container {
+    width: 100%;
+    height: 22px;
+    font-size: 10px;
+
+    .rex-wpcf7-column-settings {
+      position: absolute;
+      top: 0px;
+      right: 60px;
+      margin: 0px -10px 0px 0px;
+    }
+
+    .rex-wpcf7-column-clone {
+      position: absolute;
+      top: 0px;
+      right: 30px;
+      margin: 0px -10px 0px 0px;
+    }
+
+    .rex-wpcf7-column-delete {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      background-color: #424242;
+
+      .l-svg-icons > svg {
+        fill: #ffffff;
+      }
+    }
+  }
+}
+
+// Common CSS
+.wpcf7-row__1-column,
+.wpcf7-row__2-columns,
+.wpcf7-row__3-columns,
+.wpcf7-row__4-columns {
+  .wpcf7-column {
+    align-content: center;
+    display: inline-flex;
+    background-color: white;
+    border-width: 10px;
+    padding: 10px;
+  }
+}
+
+// Different CSS
+.wpcf7-row__1-column {
+  .wpcf7-column {
+    width: 100%;
+  }
+}
+
+.wpcf7-row__2-columns {
+  .wpcf7-column {
+    max-width: 50%;
+    width: 50%;//con 50% non va
+  }
+}
+
+.wpcf7-row__3-columns {
+  .wpcf7-column {
+    width: 33%;
+  }
+}
+
+.wpcf7-row__4-columns {
+  .wpcf7-column {
+    width: 25%;
+  }
+}

@@ -10,8 +10,7 @@ var Rexbuilder_Rexelement = (function ($) {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     
     /**
-     * Add the new field shortcode in the DOM. At the end, it calls the
-     * saveChanges function to update DB and DOM
+     * Add the new field shortcode in the DOM
      * @param data
      */
     var _addField = function(data) {
@@ -19,7 +18,7 @@ var Rexbuilder_Rexelement = (function ($) {
         var formID = insertionPoint.formID;
         var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]");
 
-        var $insertionPoint = $elementWrapper.find(".wpcf7-row.row-" + insertionPoint.row_number).find(".wpcf7-column.column-" + insertionPoint.column_number);
+        var $insertionPoint = $elementWrapper.find(".wpcf7-row[wpcf7-row-number=\"" + insertionPoint.row_number + "\"]").find(".wpcf7-column[wpcf7-column-number=\"" + insertionPoint.column_number + "\"]");
 
         var fieldType = data.fieldType;
         var fieldShortcode;
@@ -48,40 +47,11 @@ var Rexbuilder_Rexelement = (function ($) {
 
         $insertionPoint.empty();
         $insertionPoint.append(fieldShortcode);
-
-        var $rowToAdd = $insertionPoint.parent();
-
-        // _saveWPCF7ChangesOnDB($rowToAdd, formID);
     }
 
-    /**
-     * Saves element changes in the DB and calls 
-     * the function to update DOM
-     * @param  {Array} elementsChanged Elements that will be updated
-     */
-    var _saveWPCF7ChangesOnDB = function ($rowToAdd, formID) {
-        var rowToAddString = $rowToAdd[0].outerHTML;
-
-        $.ajax({
-          type: "POST",
-          dataType: "json",
-          url: _plugin_frontend_settings.rexajax.ajaxurl,
-          data: {
-            action: "rex_wpcf7_save_new_row",
-            nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-            form_id: formID,
-            row_to_add_string: rowToAddString
-          },
-          success: function(response) {
-            if (response.success) {}
-          },
-          error: function(response) {}
-        });
-    }
-
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////
     /// CSS RULES EDITING
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////
     
     var _fixCustomStyleElement = function () {
         if (Rexbuilder_Rexelement.$rexelementsStyle.length == 0) {
@@ -429,8 +399,7 @@ var Rexbuilder_Rexelement = (function ($) {
     }
 
     /**
-     * Refreshes the element from the shortcode. This happens
-     * when we are separating an element.
+     * Refreshes the element from the shortcode
      * @param  data
      * @return {null}
      */

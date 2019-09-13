@@ -5373,9 +5373,67 @@ input.me-insert-embed__value[type=text] {
       background-color: #424242; }
       .rexelement-tools .rex-element-tools-container .rex-delete-element .l-svg-icons > svg {
         fill: #ffffff; }
-    .rexelement-tools .rex-element-tools-container .wpcf7-add-new-row {
+
+.rexwpcf7-tools {
+  position: absolute;
+  z-index: 10;
+  cursor: pointer; }
+  .rexwpcf7-tools .rex-wpcf7-tools-container {
+    width: 100%;
+    height: 22px;
+    font-size: 10px; }
+    .rexwpcf7-tools .rex-wpcf7-tools-container .wpcf7-add-new-row {
       position: absolute;
-      bottom: 0px; }
+      top: 0px;
+      right: 50%;
+      margin: 0px -10px 0px 0px; }
+
+.rexwpcf7-row-tools {
+  position: absolute;
+  z-index: 10;
+  cursor: pointer; }
+  .rexwpcf7-row-tools .rex-wpcf7-row-tools-container {
+    width: 100%;
+    height: 22px;
+    font-size: 10px; }
+    .rexwpcf7-row-tools .rex-wpcf7-row-tools-container .rex-wpcf7-row-clone {
+      position: absolute;
+      top: 0px;
+      right: 30px;
+      margin: 0px -10px 0px 0px; }
+    .rexwpcf7-row-tools .rex-wpcf7-row-tools-container .rex-wpcf7-row-delete {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      background-color: #424242; }
+      .rexwpcf7-row-tools .rex-wpcf7-row-tools-container .rex-wpcf7-row-delete .l-svg-icons > svg {
+        fill: #ffffff; }
+
+.rexwpcf7-column-tools {
+  position: absolute;
+  z-index: 10;
+  cursor: pointer; }
+  .rexwpcf7-column-tools .rex-wpcf7-column-tools-container {
+    width: 100%;
+    height: 22px;
+    font-size: 10px; }
+    .rexwpcf7-column-tools .rex-wpcf7-column-tools-container .rex-wpcf7-column-settings {
+      position: absolute;
+      top: 0px;
+      right: 60px;
+      margin: 0px -10px 0px 0px; }
+    .rexwpcf7-column-tools .rex-wpcf7-column-tools-container .rex-wpcf7-column-clone {
+      position: absolute;
+      top: 0px;
+      right: 30px;
+      margin: 0px -10px 0px 0px; }
+    .rexwpcf7-column-tools .rex-wpcf7-column-tools-container .rex-wpcf7-column-delete {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      background-color: #424242; }
+      .rexwpcf7-column-tools .rex-wpcf7-column-tools-container .rex-wpcf7-column-delete .l-svg-icons > svg {
+        fill: #ffffff; }
 
 .wpcf7-row__1-column .wpcf7-column,
 .wpcf7-row__2-columns .wpcf7-column,

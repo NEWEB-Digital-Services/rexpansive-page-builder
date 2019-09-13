@@ -18,59 +18,13 @@
 
     .rex-delete-element {
       position: absolute;
-      top:0px;
-      right:0px;
+      top: 0px;
+      right: 0px;
       background-color: #424242;
 
       .l-svg-icons > svg {
         fill: #ffffff;
       }
     }
-
-    .wpcf7-add-new-row {
-      position: absolute;
-      bottom: 0px;
-    }
-  }
-}
-
-
-// Common CSS
-.wpcf7-row__1-column,
-.wpcf7-row__2-columns,
-.wpcf7-row__3-columns,
-.wpcf7-row__4-columns {
-  .wpcf7-column {
-    align-content: center;
-    display: inline-flex;
-    background-color: white;
-    border-width: 10px;
-    padding: 10px;
-  }
-}
-
-// Different CSS
-.wpcf7-row__1-column {
-  .wpcf7-column {
-    width: 100%;
-  }
-}
-
-.wpcf7-row__2-columns {
-  .wpcf7-column {
-    max-width: 50%;
-    width: 50%;//con 50% non va
-  }
-}
-
-.wpcf7-row__3-columns {
-  .wpcf7-column {
-    width: 33%;
-  }
-}
-
-.wpcf7-row__4-columns {
-  .wpcf7-column {
-    width: 25%;
   }
 }
