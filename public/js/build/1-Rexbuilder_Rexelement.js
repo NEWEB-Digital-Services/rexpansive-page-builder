@@ -28,17 +28,23 @@ var Rexbuilder_Rexelement = (function ($) {
             case "text":
                 fieldShortcode = "[text text-" + Rexbuilder_Util.createRandomNumericID(3) + "]";
                 break;
+            case "textarea":
+                fieldShortcode = "[texarea textarea-" + Rexbuilder_Util.createRandomNumericID(3) + "]";
+                break;
             case "menu":
                 fieldShortcode = "[select menu-" + Rexbuilder_Util.createRandomNumericID(3) + " include_blank 'Field 1' 'Field 2']";
-                break;
-            case "checkboxes":
-                fieldShortcode = "[checkbox checkbox-" + Rexbuilder_Util.createRandomNumericID(3) + " \"Option 1\" \"Option 2\"]";
                 break;
             case "radiobuttons":
                 fieldShortcode = "[radio radio-" + Rexbuilder_Util.createRandomNumericID(3) + "  default:1 \"Option 1\" \"Option 2\"]";
                 break;
-            case "file":
-                fieldShortcode = "[file file-" + Rexbuilder_Util.createRandomNumericID(3) + "]";
+            case "date":
+                fieldShortcode = "[date date-" + Rexbuilder_Util.createRandomNumericID(3) + "]";
+                break;
+            case "checkboxes":
+                fieldShortcode = "[checkbox checkbox-" + Rexbuilder_Util.createRandomNumericID(3) + " \"Option 1\" \"Option 2\"]";
+                break;
+            case "acceptance":
+                fieldShortcode = "[acceptance acceptance-" + Rexbuilder_Util.createRandomNumericID(3) + " optional] Acceptance text [/acceptance]";
                 break;
             case "submit":
                 fieldShortcode = "[submit]";
@@ -47,6 +53,72 @@ var Rexbuilder_Rexelement = (function ($) {
 
         $insertionPoint.empty();
         $insertionPoint.append(fieldShortcode);
+
+        var $formToSave = $elementWrapper.find(".wpcf7-form");
+        
+        _saveChanges($formToSave, insertionPoint.row_number, insertionPoint.column_number);
+    }
+
+    var _saveChanges = function($formToSave, rowToSave, columnToSave) {
+        var formID = $formToSave.parents(".rex-element-wrapper").attr("data-rex-element-id");
+        var toSave = $formToSave.find(".wpcf7-row[wpcf7-row-number='" + rowToSave + "']").find(".wpcf7-column[wpcf7-column-number='" + columnToSave + "']");
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: _plugin_frontend_settings.rexajax.ajaxurl,
+            data: {
+              action: "rex_wpcf7_get_form",
+              nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+              form_id: formID
+            },
+            success: function(response) {
+              if (response.success) {
+                var $formRowsInDB = $(response.data.html_form.toString());
+
+                // Clearing the linefeeds
+                $formRowsInDB = $formRowsInDB.filter(function (){
+                  return !("undefined" == typeof this.outerHTML);
+                });
+
+                $formRowsInDB.each(function() {
+                    if($(this).attr("wpcf7-row-number") == rowToSave) {
+                        $(this).find(".wpcf7-column[wpcf7-column-number='" + columnToSave + "']").replaceWith(toSave);
+                    }
+                });
+
+                _saveDBChanges($formRowsInDB, formID);
+              }
+            },
+            error: function(response) {}
+        });
+    }
+
+    var _saveDBChanges = function ($formRowsToSave, formID) {
+      var formRowsToSaveString = "";
+
+      $formRowsToSave.each(function(){
+        formRowsToSaveString += this.outerHTML;
+      });
+
+      $.ajax({
+        type: "POST",
+        dataType: "json",
+        url: _plugin_frontend_settings.rexajax.ajaxurl,
+        data: {
+          action: "rex_wpcf7_save_changes",
+          nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+          form_id: formID,
+          new_form_string: formRowsToSaveString
+        },
+        success: function(response) {
+          if (response.success) {
+            formRowsToSaveString = "";
+            _refreshRexElement(formID);
+          }
+        },
+        error: function(response) {}
+      });
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -400,10 +472,44 @@ var Rexbuilder_Rexelement = (function ($) {
 
     /**
      * Refreshes the element from the shortcode
+     * @param  elementID
+     * @return {null}
+     */
+    var _refreshRexElement = function (elementID) {
+        var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"]");
+
+        // Ajax call to get the html of the element
+        $.ajax({
+          type: "POST",
+          dataType: "json",
+          url: _plugin_frontend_settings.rexajax.ajaxurl,
+          data: {
+            action: "rex_transform_element_shortcode",
+            nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+            elementID: elementID
+          },
+          success: function(response) {
+            if (response.success) {
+                // Deleting the old element
+                var $elementContainer = $elementWrapper.find(".rex-element-container");
+                $elementContainer.empty();
+
+                // If success get the element HTML and append it to the right div
+                var $shortcodeTransformed = $.parseHTML(response.data.shortcode_transformed);
+                $elementContainer.append($shortcodeTransformed);
+            }
+          },
+          error: function(response) {}
+        });
+    }
+
+    /**
+     * Refreshes the element from the shortcode. This happens when we 
+     * have a separate element
      * @param  data
      * @return {null}
      */
-    var _refreshRexElement = function (data) {
+    var _refreshSeparatedRexElement = function (data) {
         var elementID = data.elementID.toString();
         var oldElementModelID = data.oldElementModelID.toString();
         var elementData = data.elementData;
@@ -414,10 +520,6 @@ var Rexbuilder_Rexelement = (function ($) {
 
         var newElementShortcode = elementShortcode.replace(oldElementModelID, elementID);
         $elementShortcode.attr("shortcode", newElementShortcode);
-
-        // Deleting the old element
-        var $elementContainer = $elementWrapper.find(".rex-element-container");
-        $elementContainer.empty();
 
         // Deleting the style
         // _removeElementStyle(elementID);
@@ -434,6 +536,10 @@ var Rexbuilder_Rexelement = (function ($) {
           },
           success: function(response) {
             if (response.success) {
+                // Deleting the old element
+                var $elementContainer = $elementWrapper.find(".rex-element-container");
+                $elementContainer.empty();
+
                 // If success get the element HTML and append it to the right div
                 var $shortcodeTransformed = $.parseHTML(response.data.shortcode_transformed);
                 $elementContainer.append($shortcodeTransformed);
@@ -785,6 +891,7 @@ var Rexbuilder_Rexelement = (function ($) {
         lockSynchronize: _lockSynchronize,
         separateRexElement: _separateRexElement,
         refreshRexElement: _refreshRexElement,
+        refreshSeparatedRexElement: _refreshSeparatedRexElement,
         updateElement: _updateElement,
         updateElementLive: _updateElementLive,
         removeSeparateElement: _removeSeparateElement

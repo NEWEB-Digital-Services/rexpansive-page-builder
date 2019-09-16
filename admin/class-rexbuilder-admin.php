@@ -444,6 +444,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'Rexlive-Button-Edit', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Edit_Button.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Element-Edit', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Edit_Element.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Wpcf7-Add-Content', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Wpcf7_Add_Content.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'Rexlive-Wpcf7-Edit-Content', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Wpcf7_Edit_Content.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Lateral-Menu', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Lateral_Menu.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-modals', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Modals.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-base-settings', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Base_Settings.js', array( 'jquery' ), null, true );

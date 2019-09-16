@@ -12,7 +12,7 @@ defined('ABSPATH') or exit;
 <div class="rex-modal-wrap">
 	<div id="rex-wpcf7-content-adder" class="rex-modal rexbuilder-materialize-wrap rex-modal-draggable setting-edited">
 		<!-- Closing button -->
-        <div class="tool-button tool-button--black rex-cancel-button tool-button--close tippy" data-tippy-content="<?php esc_attr_e( 'Cancel', 'rexpansive-builder' ); ?>" value="" tabindex="0">
+        <div class="tool-button tool-button--black rex-cancel-button tool-button--close tippy" data-tippy-content="<?php esc_attr_e( 'Close', 'rexpansive-builder' ); ?>" value="" tabindex="0">
             <span class="rex-button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></span>
         </div>
         <!-- General wrap -->
@@ -33,7 +33,22 @@ defined('ABSPATH') or exit;
                     </div>
         		</div>
             </div>
-            <!-- Add menu field (to finish)-->
+            <!-- Add textarea field -->
+            <div class="bl_modal-row">
+                <div class="rexwpcf7-cont_row">
+                    <div class="rexwpcf7-count-colum_accord">
+                        <span class="rex-accordion--toggle">                                
+                            <div class="rexwpcf7-upd-add_button rex-add-textarea-field tippy" data-tippy-content="<?php esc_attr_e( 'Add textarea', 'rexpansive-builder' ); ?>"><?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?></div>
+                        </span>
+                    </div>
+                    <div class="rexwpcf7-count-column_1"></div>
+                    <div class="rexwpcf7-count-column_2">
+                        <!-- Menu field -->
+                        <input type="textarea">
+                    </div>
+                </div>
+            </div>
+            <!-- Add menu field -->
             <div class="bl_modal-row">
                 <div class="rexwpcf7-cont_row">
                     <div class="rexwpcf7-count-colum_accord">
@@ -51,23 +66,7 @@ defined('ABSPATH') or exit;
                     </div>
                 </div>
             </div>
-            <!-- Add checkboxes (to finish)-->
-            <div class="bl_modal-row">
-                <div class="rexwpcf7-cont_row">
-                    <div class="rexwpcf7-count-colum_accord">
-                        <span class="rex-accordion--toggle">                                
-                            <div class="rexwpcf7-upd-add_button rex-add-checkboxes-field tippy" data-tippy-content="<?php esc_attr_e( 'Add checkboxes', 'rexpansive-builder' ); ?>"><?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?></div>
-                        </span>
-                    </div>
-                    <div class="rexwpcf7-count-column_1"></div>
-                    <div class="rexwpcf7-count-column_2">
-                        <!-- Checkboxes -->
-                        <input type="checkbox" value="Checkbox 1">
-                        <input type="checkbox" value="Checkbox 2">
-                    </div>
-                </div>
-            </div>
-            <!-- Add radiobuttons (to finish)-->
+            <!-- Add radiobuttons -->
             <div class="bl_modal-row">
                 <div class="rexwpcf7-cont_row">
                     <div class="rexwpcf7-count-colum_accord">
@@ -83,22 +82,53 @@ defined('ABSPATH') or exit;
                     </div>
                 </div>
             </div>
-            <!-- Add file field (to finish)-->
+            <!-- Add date field -->
             <div class="bl_modal-row">
                 <div class="rexwpcf7-cont_row">
                     <div class="rexwpcf7-count-colum_accord">
                         <span class="rex-accordion--toggle">                                
-                            <div class="rexwpcf7-upd-add_button rex-add-file-field tippy" data-tippy-content="<?php esc_attr_e( 'Add file', 'rexpansive-builder' ); ?>"><?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?></div>
+                            <div class="rexwpcf7-upd-add_button rex-add-date-field tippy" data-tippy-content="<?php esc_attr_e( 'Add date', 'rexpansive-builder' ); ?>"><?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?></div>
                         </span>
                     </div>
                     <div class="rexwpcf7-count-column_1"></div>
                     <div class="rexwpcf7-count-column_2">
-                        <!-- File field -->
-                        <input type="file">
+                        <!-- Menu field -->
+                        <input type="date">
                     </div>
                 </div>
             </div>
-            <!-- Add submit button (to finish)-->
+            <!-- Add checkboxes -->
+            <div class="bl_modal-row">
+                <div class="rexwpcf7-cont_row">
+                    <div class="rexwpcf7-count-colum_accord">
+                        <span class="rex-accordion--toggle">                                
+                            <div class="rexwpcf7-upd-add_button rex-add-checkboxes-field tippy" data-tippy-content="<?php esc_attr_e( 'Add checkboxes', 'rexpansive-builder' ); ?>"><?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?></div>
+                        </span>
+                    </div>
+                    <div class="rexwpcf7-count-column_1"></div>
+                    <div class="rexwpcf7-count-column_2">
+                        <!-- Checkboxes -->
+                        <input type="checkbox" value="Standard check with text description 1">
+                        <input type="checkbox" value="Standard check with text description 2">
+                    </div>
+                </div>
+            </div>
+            <!-- Add acceptance -->
+            <div class="bl_modal-row">
+                <div class="rexwpcf7-cont_row">
+                    <div class="rexwpcf7-count-colum_accord">
+                        <span class="rex-accordion--toggle">                                
+                            <div class="rexwpcf7-upd-add_button rex-add-acceptance-field tippy" data-tippy-content="<?php esc_attr_e( 'Add acceptance', 'rexpansive-builder' ); ?>"><?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?></div>
+                        </span>
+                    </div>
+                    <div class="rexwpcf7-count-column_1"></div>
+                    <div class="rexwpcf7-count-column_2">
+                        <!-- Acceptance -->
+                        <input type="checkbox" value="Privacy check with text description">
+                    </div>
+                </div>
+            </div>
+            <!-- Add submit button -->
             <div class="bl_modal-row">
                 <div class="rexwpcf7-cont_row">
                     <div class="rexwpcf7-count-colum_accord">

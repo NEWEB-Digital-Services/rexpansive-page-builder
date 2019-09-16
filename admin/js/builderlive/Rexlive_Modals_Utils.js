@@ -29,6 +29,8 @@ var Rexlive_Modals_Utils = (function($) {
       duration: 300
     });
 
+    console.log(additional_class);
+
     if (additional_class.length) {
       for (var i = 0; i < additional_class.length; i++) {
         $target.find(".rex-modal").addClass(additional_class[i]);

@@ -1,0 +1,70 @@
+#rex-wpcf7-content-adder {
+  .bl_modal-row .rexwpcf7-cont_row{
+    width:381px;
+    margin:12px auto;
+    
+    .rexwpcf7-count-colum_accord{
+      width:30px;
+      height:42px;
+      margin-right:12px;
+      float:left;
+      position:relative;
+
+      .rexwpcf7-upd-add_button{
+        width:30px;
+        height:42px;
+        position:absolute;
+        top:0;
+        left:0;
+        text-align:center;
+        font-size:34px;
+        padding:7px 0px 0px 2px;
+        color:#979797;
+
+        &:hover {
+          color:#00ACFF;
+          transition:1s;
+        }
+      }
+    }
+
+    .rexwpcf7-count-column_1{
+      width:42px;
+      height:42px;
+      margin-right:12px;
+      float:left;
+    }
+
+    .rexwpcf7-count-column_2{
+      width:181px;
+      height:42px;
+      margin-right:12px;
+      float:left;
+    }
+
+    .rexwpcf7-count-column_3{
+      width:20px;
+      height:42px;
+      margin-right:6px;
+      float:left;
+    }
+
+    .rexwpcf7-count-column_4{
+      width:40px;
+      height:42px;
+      margin-right:2px;
+      float:left;
+      padding:11px 0px 10px 0px;
+    }
+
+    .rexwpcf7-count-column_5{
+      width:20px;
+      height:42px;
+      float:left;
+      padding:13px 0px 0px 0px;
+      box-sizing:border-box;
+      font-size: 10px;
+      text-transform: uppercase;
+    }
+  }
+}

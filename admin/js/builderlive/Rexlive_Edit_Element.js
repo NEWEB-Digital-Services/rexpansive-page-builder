@@ -569,7 +569,7 @@ var Element_Edit_Modal = (function ($) {
 
     var _refreshElement = function(rexID) {
     	var elementDataToIframe = {
-    		eventName: "rexlive:refresh_rex_element",
+    		eventName: "rexlive:refresh_separated_rex_element",
     		data_to_send: {
     			elementID: rexID,
     			oldElementModelID: oldElementModelID,

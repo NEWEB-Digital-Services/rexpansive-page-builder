@@ -99,7 +99,7 @@ defined('ABSPATH') or exit;
                 </div>
             </div>
         </div>
-        <!-- FOOTER -->
+        <!-- Footer -->
         <div class="rex-modal__outside-footer">
             <div class="tool-button tool-button--inline tool-button--save rex-apply-button tippy" data-tippy-content="<?php _e('save','rexpansive-builder'); ?>" data-rex-option="save">
                 <span class="rex-button save-page btn-save--wrap"><?php Rexbuilder_Utilities::get_icon('#A006-Save'); ?></span>
