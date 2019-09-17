@@ -5,122 +5,6 @@ var Rexbuilder_Rexelement = (function ($) {
     var elementsInPage;
     var defaultElementValues;
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    /// WPCF7 FUNCTIONS
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
-    
-    /**
-     * Add the new field shortcode in the DOM
-     * @param data
-     */
-    var _addField = function(data) {
-        var insertionPoint = data.insertionPoint;
-        var formID = insertionPoint.formID;
-        var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]");
-
-        var $insertionPoint = $elementWrapper.find(".wpcf7-row[wpcf7-row-number=\"" + insertionPoint.row_number + "\"]").find(".wpcf7-column[wpcf7-column-number=\"" + insertionPoint.column_number + "\"]");
-
-        var fieldType = data.fieldType;
-        var fieldShortcode;
-
-        // Selecting the field
-        switch(fieldType) {
-            case "text":
-                fieldShortcode = "[text text-" + Rexbuilder_Util.createRandomNumericID(3) + "]";
-                break;
-            case "textarea":
-                fieldShortcode = "[texarea textarea-" + Rexbuilder_Util.createRandomNumericID(3) + "]";
-                break;
-            case "menu":
-                fieldShortcode = "[select menu-" + Rexbuilder_Util.createRandomNumericID(3) + " include_blank 'Field 1' 'Field 2']";
-                break;
-            case "radiobuttons":
-                fieldShortcode = "[radio radio-" + Rexbuilder_Util.createRandomNumericID(3) + "  default:1 \"Option 1\" \"Option 2\"]";
-                break;
-            case "date":
-                fieldShortcode = "[date date-" + Rexbuilder_Util.createRandomNumericID(3) + "]";
-                break;
-            case "checkboxes":
-                fieldShortcode = "[checkbox checkbox-" + Rexbuilder_Util.createRandomNumericID(3) + " \"Option 1\" \"Option 2\"]";
-                break;
-            case "acceptance":
-                fieldShortcode = "[acceptance acceptance-" + Rexbuilder_Util.createRandomNumericID(3) + " optional] Acceptance text [/acceptance]";
-                break;
-            case "submit":
-                fieldShortcode = "[submit]";
-                break;
-        }
-
-        $insertionPoint.empty();
-        $insertionPoint.append(fieldShortcode);
-
-        var $formToSave = $elementWrapper.find(".wpcf7-form");
-        
-        _saveChanges($formToSave, insertionPoint.row_number, insertionPoint.column_number);
-    }
-
-    var _saveChanges = function($formToSave, rowToSave, columnToSave) {
-        var formID = $formToSave.parents(".rex-element-wrapper").attr("data-rex-element-id");
-        var toSave = $formToSave.find(".wpcf7-row[wpcf7-row-number='" + rowToSave + "']").find(".wpcf7-column[wpcf7-column-number='" + columnToSave + "']");
-
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            url: _plugin_frontend_settings.rexajax.ajaxurl,
-            data: {
-              action: "rex_wpcf7_get_form",
-              nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-              form_id: formID
-            },
-            success: function(response) {
-              if (response.success) {
-                var $formRowsInDB = $(response.data.html_form.toString());
-
-                // Clearing the linefeeds
-                $formRowsInDB = $formRowsInDB.filter(function (){
-                  return !("undefined" == typeof this.outerHTML);
-                });
-
-                $formRowsInDB.each(function() {
-                    if($(this).attr("wpcf7-row-number") == rowToSave) {
-                        $(this).find(".wpcf7-column[wpcf7-column-number='" + columnToSave + "']").replaceWith(toSave);
-                    }
-                });
-
-                _saveDBChanges($formRowsInDB, formID);
-              }
-            },
-            error: function(response) {}
-        });
-    }
-
-    var _saveDBChanges = function ($formRowsToSave, formID) {
-      var formRowsToSaveString = "";
-
-      $formRowsToSave.each(function(){
-        formRowsToSaveString += this.outerHTML;
-      });
-
-      $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: _plugin_frontend_settings.rexajax.ajaxurl,
-        data: {
-          action: "rex_wpcf7_save_changes",
-          nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-          form_id: formID,
-          new_form_string: formRowsToSaveString
-        },
-        success: function(response) {
-          if (response.success) {
-            formRowsToSaveString = "";
-            _refreshRexElement(formID);
-          }
-        },
-        error: function(response) {}
-      });
-    }
-
     /////////////////////////////////////////////////////////////////////////////////////////////////
     /// CSS RULES EDITING
     /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -693,6 +577,9 @@ var Rexbuilder_Rexelement = (function ($) {
             var elementID = elementProperties.elementInfo.elementTarget.element_id;
             _addCSSRules(elementID, elementProperties.elementInfo);
         }
+        $elementWrapper.find(".wpcf7-column").each(function(){
+            Rexbuilder_Rexwpcf7.addColumnContentStyle($(this));
+        })
     }
 
     // Da aggiornare quando si sapranno le proprietà
@@ -780,7 +667,6 @@ var Rexbuilder_Rexelement = (function ($) {
         // If editing a model element, will be length >= 1
         var $elementWrappers = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"]");
         _updateElementsData($elementWrappers, elementProperties);
-       
     }
 
     var _updateElementLive = function (data) {
@@ -878,9 +764,6 @@ var Rexbuilder_Rexelement = (function ($) {
 
 	return {
 		init: init,
-
-        //Wpcf7 functions
-        addField: _addField,
 
         // CSS Rules Editing
         generateElementData: _generateElementData,

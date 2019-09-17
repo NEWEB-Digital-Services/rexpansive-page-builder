@@ -17118,7 +17118,7 @@ input:disabled + .rex_edit_title_slider {
 #rex-element-preview-background {
   width: 181px;
   height: 42px;
-  background-color: blue;
+  background-color: black;
   border-radius: 20px; }
 
 #rex-element-preview-text-hover {
@@ -17135,7 +17135,7 @@ input:disabled + .rex_edit_title_slider {
 #rex-element-preview-background-hover {
   width: 181px;
   height: 42px;
-  background-color: blue;
+  background-color: black;
   border-radius: 20px; }
 
 #rex-element-border-preview {

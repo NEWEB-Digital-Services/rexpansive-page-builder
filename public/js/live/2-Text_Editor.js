@@ -1610,7 +1610,7 @@ var TextEditor = (function ($) {
       toolbarActiveOnRexelement = false;
 
       this.traceELMNT = null;
-      this.traceEditor = null;
+      // this.traceEditor = null;
 
       // this.subscribe("editableInput", this.handleEventInput.bind(this));
       // this.subscribe("editableKeydown", this.handleEventKeyDown.bind(this));
@@ -1934,10 +1934,8 @@ var TextEditor = (function ($) {
       this.formSelectColumnsToolbar.innerHTML = tmpl("tmpl-wpcf7-select-columns", {});
       $(document.getElementsByTagName("body")[0]).append(this.formSelectColumnsToolbar);
 
-      // Buttons
-      // this.addFormContentBtns = $(this.traceForm).find(".wpcf7-add-new-form-content");
-
       this.addRowBtn = $(this.formTools).find(".wpcf7-add-new-row")[0];
+      this.formSettingsBtn = $(this.formTools).find(".wpcf7-settings")[0];
 
       this.cloneFormRowBtn = $(this.formRowTools).find(".rex-wpcf7-row-clone")[0];
       this.deleteFormRowBtn = $(this.formRowTools).find(".rex-wpcf7-row-delete")[0];
@@ -1946,12 +1944,8 @@ var TextEditor = (function ($) {
       this.cloneFormColumnBtn = $(this.formColumnTools).find(".rex-wpcf7-column-clone")[0];
       this.deleteFormColumnBtn = $(this.formColumnTools).find(".rex-wpcf7-column-delete")[0];
 
-      // Events listeners
-      // if(this.addFormContentBtns.length != 0) {
-      //   this.on(this.addFormContentBtns, "click", this.handleClickAddFormContent.bind(this));
-      // }
-
       this.on(this.addRowBtn, "click", this.handleClickAddRow.bind(this));
+      this.on(this.formSettingsBtn, "click", this.handleClickFormSettings.bind(this));
 
       this.on(this.formSelectColumnsToolbar, "click", this.handleSelectColumns.bind(this));
 
@@ -2013,6 +2007,10 @@ var TextEditor = (function ($) {
 
       this.hideRowToolbox();
       this.hideColumnToolbox();
+    },
+
+    handleClickFormSettings: function (event) {
+      
     },
 
     handleSelectColumns: function (event) {
@@ -2102,10 +2100,6 @@ var TextEditor = (function ($) {
       var $thisRow = $(this.traceFormRow);
       var eventPath = event.path;
       var fieldType;
-      var formID = $elementWrapper.attr("data-rex-element-id");
-
-      var row_number = $thisRow.attr("wpcf7-row-number");
-      var column_number = $thisColumn.attr("wpcf7-column-number");
 
       var possibleFieldTypes = [
         "text",
@@ -2132,14 +2126,13 @@ var TextEditor = (function ($) {
         }
       }
 
+      var spanDataExists = $thisColumn.find(".rex-wpcf7-column-content-data").length != 0 ? true : false;
+
       var data = {
         eventName: "rexlive:openRexWpcf7EditContent",
         fieldType: fieldType,
-        editPoint: {
-          formID: formID,
-          row_number: row_number,
-          column_number: column_number
-        }
+        columnContentData: Rexbuilder_Rexwpcf7.generateColumnContentData($thisColumn, spanDataExists),
+        spanDataExists: spanDataExists
       };
       $elementWrapper.parents(".text-wrap").blur();
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
@@ -2215,7 +2208,7 @@ var TextEditor = (function ($) {
       var rowNumberToSave = $(this.traceFormRow).attr("wpcf7-row-number");
       var columnNumberToSave = $(this.traceFormColumn).attr("wpcf7-column-number");
       var formID = $formToSave.parents(".rex-element-wrapper").attr("data-rex-element-id");
-      var toSave = $formToSave.find(".wpcf7-row[wpcf7-row-number='" + rowNumberToSave + "']").find(".wpcf7-column[wpcf7-column-number='" + columnNumberToSave + "']").clone();
+      var $toSave = $formToSave.find(".wpcf7-row[wpcf7-row-number='" + rowNumberToSave + "']").find(".wpcf7-column[wpcf7-column-number='" + columnNumberToSave + "']").clone();
       var that = this;
 
       $.ajax({
@@ -2238,7 +2231,7 @@ var TextEditor = (function ($) {
 
             $formRowsInDB.each(function() {
               if($(this).attr("wpcf7-row-number") == rowNumberToSave) {
-                $(this).find(".wpcf7-column[wpcf7-column-number='" + columnNumberToSave + "']").replaceWith(toSave);
+                $(this).find(".wpcf7-column[wpcf7-column-number='" + columnNumberToSave + "']").replaceWith($toSave);
               }
             });
 
@@ -2400,7 +2393,7 @@ var TextEditor = (function ($) {
     placeSelectColumnsToolbar: function() {
       var targetCoords = this.addRowBtn.getBoundingClientRect();
       this.formSelectColumnsToolbar.style.left = (targetCoords.left + ((targetCoords.width - this.formSelectColumnsToolbar.offsetWidth) / 2)) + "px";
-      this.formSelectColumnsToolbar.style.top = (window.scrollY + targetCoords.top - this.formSelectColumnsToolbar.offsetHeight - 8) + "px";
+      this.formSelectColumnsToolbar.style.top = (window.scrollY + targetCoords.top - this.formSelectColumnsToolbar.offsetHeight + 75) + "px";
     },
 
     hideSelectColumnsToolbar: function() {

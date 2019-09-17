@@ -1106,12 +1106,23 @@ var Rex_Save_Listeners = (function($) {
         // retrieve the block content
         // if there is some, or there is an img, an iframe or an icon inline
         if ($savingBlock.text().trim() == "") {
-          if( $savingBlock.find("iframe").length > 0 || $savingBlock.find("img").length > 0 || $savingBlock.find("i").length > 0 ){
+          if( $savingBlock.find("iframe").length > 0 || $savingBlock.find("img").length > 0 || $savingBlock.find("i").length > 0 || $savingBlock.find("form").length > 0 ){
+
+            // Saves element shortcode so it remains updated
+            if($savingBlock.find("form").length > 0) {
+              $savingBlock.find(".rex-element-container").each(function (i, elementContainer) {
+              $(elementContainer).empty();
+              var elementShortcode = $(elementContainer).siblings(".string-shortcode").attr("shortcode");
+              $(elementContainer).append(elementShortcode);
+            });
+            }
+
             content = $savingBlock.html().trim();
           } else {
             content = "";
           }
         } else {
+          // Saves element shortcode so it remains updated
           $savingBlock.find(".rex-element-container").each(function (i, elementContainer) {
             $(elementContainer).empty();
             var elementShortcode = $(elementContainer).siblings(".string-shortcode").attr("shortcode");

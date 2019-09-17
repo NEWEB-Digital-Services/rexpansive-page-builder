@@ -632,8 +632,20 @@ var Rexbuilder_Util_Editor = (function($) {
       Rexbuilder_Rexelement.refreshRexElement(e.settings.data_to_send);
     });
 
+    // WPCF7
     Rexbuilder_Util.$document.on("rexlive:wpcf7_add_field", function (e) {
-      Rexbuilder_Rexelement.addField(e.settings.data_to_send);
+      Rexbuilder_Rexwpcf7.addField(e.settings.data_to_send);
+    });
+    Rexbuilder_Util.$document.on("rexlive:wpcf7_create_column_content_span_data", function (e) {
+      Rexbuilder_Rexwpcf7.createSpanData(e.settings.data_to_send);
+    });
+
+    Rexbuilder_Util.$document.on("rexlive:wpcf7_remove_column_content_span_data", function (e) {
+      Rexbuilder_Rexwpcf7.removeSpanData(e.settings.data_to_send);
+    });
+
+    Rexbuilder_Util.$document.on("rexlive:updateColumnContentLive", function(e){
+      Rexbuilder_Rexwpcf7.updateColumnContentLive(e.settings.data_to_send);
     });
     
     // DRAG & DROP
