@@ -636,8 +636,25 @@ var Rexbuilder_Util_Editor = (function($) {
     Rexbuilder_Util.$document.on("rexlive:wpcf7_add_field", function (e) {
       Rexbuilder_Rexwpcf7.addField(e.settings.data_to_send);
     });
+
+    Rexbuilder_Util.$document.on("rexlive:wpcf7_create_form_span_data", function (e) {
+      Rexbuilder_Rexwpcf7.createFormSpanData(e.settings.data_to_send);
+    });
+
+    Rexbuilder_Util.$document.on("rexlive:wpcf7_remove_form_span_data", function (e) {
+      Rexbuilder_Rexwpcf7.removeFormSpanData(e.settings.data_to_send);
+    });
+
+    Rexbuilder_Util.$document.on("rexlive:updateFormLive", function(e){
+      Rexbuilder_Rexwpcf7.updateFormLive(e.settings.data_to_send);
+    });
+
+    Rexbuilder_Util.$document.on("rexlive:updateFormInputsLive", function(e){
+      Rexbuilder_Rexwpcf7.updateFormInputsLive(e.settings.data_to_send);
+    });
+
     Rexbuilder_Util.$document.on("rexlive:wpcf7_create_column_content_span_data", function (e) {
-      Rexbuilder_Rexwpcf7.createSpanData(e.settings.data_to_send);
+      Rexbuilder_Rexwpcf7.createColumnContentSpanData(e.settings.data_to_send);
     });
 
     Rexbuilder_Util.$document.on("rexlive:wpcf7_remove_column_content_span_data", function (e) {

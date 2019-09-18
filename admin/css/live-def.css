@@ -651,7 +651,8 @@
   cursor: pointer; }
 
 #rex-wpcf7-content-adder .rexwpcf7-cont_row .l-svg-icons > svg,
-#rex-wpcf7-content-editor .rexwpcf7-cont_row .l-svg-icons > svg {
+#rex-wpcf7-content-editor .rexwpcf7-cont_row .l-svg-icons > svg,
+#rex-wpcf7-form-editor .rexwpcf7-cont_row .l-svg-icons > svg {
   cursor: pointer; }
 
 .l-icon--white .l-svg-icons > svg {
@@ -5437,12 +5438,9 @@ input.me-insert-embed__value[type=text] {
 .wpcf7-row__2-columns .wpcf7-column,
 .wpcf7-row__3-columns .wpcf7-column,
 .wpcf7-row__4-columns .wpcf7-column {
-  -ms-flex-line-pack: center;
-      align-content: center;
   display: -webkit-inline-box;
   display: -ms-inline-flexbox;
   display: inline-flex;
-  background-color: white;
   border-width: 10px;
   padding: 10px; }
 

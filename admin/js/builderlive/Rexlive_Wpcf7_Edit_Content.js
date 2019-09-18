@@ -9,7 +9,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 	var columnContentData;
 	var reverseData;
 	var resetData;
-	var needToRemoveSpanData = true; // Needs to be set false the first time an edit is made
+	var needToRemoveSpanData = true; // Needs to be set false the first time an edit happens
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     /// MODAL FUNCTIONS
@@ -47,7 +47,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
     var _applyChanges = function () {
     	var columnContentDataToIframe = {
-            eventName: "rexlive:update_wcpf7_page",
+            eventName: "rexlive:update_wcpf7_column_content_page",
             data_to_send: {
                 reverseColumnContentData: jQuery.extend(true, {}, reverseData),
                 actionColumnContentData: jQuery.extend(true, {}, columnContentData)
@@ -264,9 +264,9 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
          * Closes the modal
          */
         wpcf7_content_editor_properties.$close_button.on("click", function () {
-        	if (needToRemoveSpanData){
-        		_removeSpanData();
-        	}
+            if (needToRemoveSpanData){
+                _removeSpanData();
+            }
             _closeModal();
         });
 
@@ -274,12 +274,20 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
          * Applies changes
          */
         wpcf7_content_editor_properties.$apply_changes_button.on("click", function () {
-        	if (needToRemoveSpanData){
-        		_removeSpanData();
-        	}
-        	_applyChanges();
+            if (needToRemoveSpanData){
+                _removeSpanData();
+            }
+            _applyChanges();
             _closeModal();
         });
+
+        // wpcf7_form_editor_properties.$modal.on('rexlive:this_modal_closed', function() {
+        //     // _updateColumnContentFromPanel();
+        //     // if (needToRemoveSpanData){
+        //     //     _removeSpanData();
+        //     // }
+        //     // _applyChanges();
+        // })
 	}
 
 	var _init = function() {

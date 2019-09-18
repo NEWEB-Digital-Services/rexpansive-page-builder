@@ -292,6 +292,10 @@ var Rexbuilder_Rexelement = (function ($) {
                     id: parseInt(elementID),
                     number: elementNumber
                 });
+                if ($elementWrapper.find(".wpcf7").length != 0) {
+                    var $formToAddData = $elementWrapper.find(".wpcf7");
+                    _addFormData($formToAddData);
+                }
                 
                 if ($elementWrapper.hasClass("rex-separate-element")) {
                     // We are not editing an element model, but a separate element
@@ -314,6 +318,38 @@ var Rexbuilder_Rexelement = (function ($) {
 
     var _getElementsInPage = function () {
         return elementsInPage;
+    }
+
+    var _addFormData = function ($formToAddData) {
+        var formID = $formToAddData.parents(".rex-element-wrapper").attr("data-rex-element-id");
+        console.log(formID);
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: _plugin_frontend_settings.rexajax.ajaxurl,
+            data: {
+            action: "rex_wpcf7_get_form_data",
+            nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+            form_id: formID
+            },
+            success: function(response) {
+            if (response.success) {
+                var wpcf7Data = response.data.wpcf7_data_html;
+
+                if("undefined" == typeof wpcf7Data[0]) {
+                    var $formData = $(document.createElement("span"));
+                    $formData.addClass("rex-wpcf7-form-data");
+                    $formToAddData.prepend($formData);
+                } else {
+                    var $wpcf7Data = $.parseHTML(wpcf7Data[0]);
+                    $formToAddData.prepend($wpcf7Data);
+                }
+                Rexbuilder_Rexwpcf7.addFormStyle($formToAddData);
+            }
+            },
+            error: function(response) {}
+        });
     }
 
     var _separateRexElement = function (data) {
@@ -381,6 +417,11 @@ var Rexbuilder_Rexelement = (function ($) {
                 // If success get the element HTML and append it to the right div
                 var $shortcodeTransformed = $.parseHTML(response.data.shortcode_transformed);
                 $elementContainer.append($shortcodeTransformed);
+
+                if ($elementWrapper.find(".wpcf7").length != 0) {
+                    var $formToAddData = $elementWrapper.find(".wpcf7");
+                    _addFormData($formToAddData);
+                }
             }
           },
           error: function(response) {}

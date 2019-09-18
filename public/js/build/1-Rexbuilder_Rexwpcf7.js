@@ -4,6 +4,10 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 	var styleSheet;
 	var defaultFormValues;
 
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+    /// REXWPCF7 GENERIC FUNCTIONS
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+    
     /**
      * Add the new field shortcode in the DOM
      * @param data
@@ -51,10 +55,10 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         var $formToSave = $elementWrapper.find(".wpcf7-form");
         
-        _saveChanges($formToSave, insertionPoint.row_number, insertionPoint.column_number, true);
+        _saveColumnContentChanges($formToSave, insertionPoint.row_number, insertionPoint.column_number, true);
     }
 
-    var _saveChanges = function($formToSave, rowToSave, columnToSave, needToRefresh) {
+    var _saveColumnContentChanges = function($formToSave, rowToSave, columnToSave, needToRefresh) {
         var formID = $formToSave.parents(".rex-element-wrapper").attr("data-rex-element-id");
         var $toSave = $formToSave.find(".wpcf7-row[wpcf7-row-number='" + rowToSave + "']").find(".wpcf7-column[wpcf7-column-number='" + columnToSave + "']").clone();
 
@@ -72,9 +76,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 var $formRowsInDB = $(response.data.html_form.toString());
 
                 // Clearing the linefeeds
-                // $formRowsInDB = $formRowsInDB.filter(function (){
-                //   return !("undefined" == typeof this.outerHTML);
-                // });
+                $formRowsInDB = $formRowsInDB.filter(function (){
+                  return !("undefined" == typeof this.outerHTML);
+                });
 
                 $formRowsInDB.each(function() {
                     if($(this).attr("wpcf7-row-number") == rowToSave) {
@@ -122,6 +126,13 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 	/// CSS FUNCTIONS
 	/////////////////////////////////////////////////////////////////////////////////////////////////
+	
+	var formContentTypes = [
+		"input",
+		"textarea",
+		"select",
+		"range"
+	];
 
 	var _fixCustomStyleForm = function () {
         if (Rexbuilder_Rexwpcf7.$rexformsStyle.length == 0) {
@@ -153,9 +164,30 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     // Adding rules
+    
+    var _addFormRule = function (formID, property) {
+        if ("insertRule" in styleSheet) {
+            styleSheet.insertRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-form" + "{" + property + "}", styleSheet.cssRules.length);
+        }
+        else if ("addRule" in styleSheet) {
+            styleSheet.addRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-form" + "{" + property + "}", styleSheet.cssRules.length);
+        }
+    }
 
-    // Background is changed to the column content, not to the whole column
-    var _addColumnContentBackgroundRule = function (formID, row, column, contentType, property) {
+    var _addFormInputsRule = function (formID, property) {
+        var contentType;
+    	for (contentType of formContentTypes) {
+    		if ("insertRule" in styleSheet) {
+	            styleSheet.insertRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-form " + contentType + "{" + property + "}", styleSheet.cssRules.length);
+	        }
+	        else if ("addRule" in styleSheet) {
+	            styleSheet.addRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-form " + contentType + "{" + property + "}", styleSheet.cssRules.length);
+	        }
+    	}
+    }
+
+    // Style is changed to the column content, not to the whole column
+    var _addColumnContentRule = function (formID, row, column, contentType, property) {
         if ("insertRule" in styleSheet) {
             styleSheet.insertRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] " + contentType + "{" + property + "}", styleSheet.cssRules.length);
         }
@@ -164,10 +196,152 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
     // Updating rules
     
-    var _updateColumnContentBackgroundRule = function (formID, row, column, contentType, rule, value) {
+    var _updateFormRule = function (formID, rule, value) {
+		for (var i = 0; i < styleSheet.cssRules.length; i++) {
+            if (
+                //chrome firefox
+                styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-form" ||
+                // edge
+                styleSheet.cssRules[i].selectorText == "[data-rex-element-id=\"" + formID + "\"].rex-element-wrapper .wpcf7-form"
+            ) {
+                switch (rule) {
+                    case "border-width":
+                        styleSheet.cssRules[i].style.borderWidth = value;
+
+                        styleSheet.cssRules[i].style.borderTopWidth = value;
+                        styleSheet.cssRules[i].style.borderLeftWidth = value;
+                        styleSheet.cssRules[i].style.borderRightWidth = value;
+                        styleSheet.cssRules[i].style.borderBottomWidth = value;
+
+                        styleSheet.cssRules[i].style.borderTop = value + " " + styleSheet.cssRules[i].style.borderTopStyle + " " + styleSheet.cssRules[i].style.borderTopColor;
+                        styleSheet.cssRules[i].style.borderLeft = value + " " + styleSheet.cssRules[i].style.borderLeftStyle + " " + styleSheet.cssRules[i].style.borderLeftColor;
+                        styleSheet.cssRules[i].style.borderRight = value + " " + styleSheet.cssRules[i].style.borderRightStyle + " " + styleSheet.cssRules[i].style.borderRightColor;
+                        styleSheet.cssRules[i].style.borderBottom = value + " " + styleSheet.cssRules[i].style.borderBottomStyle + " " + styleSheet.cssRules[i].style.borderBottomColor;
+                        break;
+                    case "border-color":
+                        styleSheet.cssRules[i].style.borderColor = value;
+
+                        styleSheet.cssRules[i].style.borderTopColor = value;
+                        styleSheet.cssRules[i].style.borderLeftColor = value;
+                        styleSheet.cssRules[i].style.borderRightColor = value;
+                        styleSheet.cssRules[i].style.borderBottomColor = value;
+
+                        break;
+                    case "border-style":
+                        styleSheet.cssRules[i].style.borderStyle = value;
+
+                        styleSheet.cssRules[i].style.borderTopStyle = value;
+                        styleSheet.cssRules[i].style.borderLeftStyle = value;
+                        styleSheet.cssRules[i].style.borderRightStyle = value;
+                        styleSheet.cssRules[i].style.borderBottomStyle = value;
+
+                        styleSheet.cssRules[i].style.borderTop = styleSheet.cssRules[i].style.borderTopWidth + " " + value + " " + styleSheet.cssRules[i].style.borderTopColor;
+                        styleSheet.cssRules[i].style.borderLeft = styleSheet.cssRules[i].style.borderLeftWidth + " " + value + " " + styleSheet.cssRules[i].style.borderLeftColor;
+                        styleSheet.cssRules[i].style.borderRight = styleSheet.cssRules[i].style.borderRightWidth + " " + value + " " + styleSheet.cssRules[i].style.borderRightColor;
+                        styleSheet.cssRules[i].style.borderBottom = styleSheet.cssRules[i].style.borderBottomWidth + " " + value + " " + styleSheet.cssRules[i].style.borderBottomColor;
+                        break;
+                    case "border-radius":
+                        styleSheet.cssRules[i].style.borderRadius = value;
+
+                        styleSheet.cssRules[i].style.borderTopLeftRadius = value;
+                        styleSheet.cssRules[i].style.borderTopRightRadius = value;
+                        styleSheet.cssRules[i].style.borderBottomLeftRadius = value;
+                        styleSheet.cssRules[i].style.borderBottomRightRadius = value;
+                        styleSheet.cssRules[i].style.webkitBorderRadius = value;
+
+                        styleSheet.cssRules[i].style.webkitBorderTopLeftRadius = value;
+                        styleSheet.cssRules[i].style.webkitBorderTopRightRadius = value;
+                        styleSheet.cssRules[i].style.webkitBorderBottomLeftRadius = value;
+                        styleSheet.cssRules[i].style.webkitBorderBottomRightRadius = value;
+                        break;
+                    case "background-color":
+                        styleSheet.cssRules[i].style.backgroundColor = value;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            }
+        }
+    }
+
+    var _updateFormInputsRule = function (formID, rule, value) {
+        var contentType;
+        for (contentType of formContentTypes) {
+            for (var i = 0; i < styleSheet.cssRules.length; i++) {
+                if (
+                    //chrome firefox
+                    styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-form " + contentType ||
+                    // edge
+                    styleSheet.cssRules[i].selectorText == "[data-rex-element-id=\"" + formID + "\"].rex-element-wrapper .wpcf7-form " + contentType
+                ) {
+                    switch (rule) {
+                        case "border-width":
+                            styleSheet.cssRules[i].style.borderWidth = value;
+
+                            styleSheet.cssRules[i].style.borderTopWidth = value;
+                            styleSheet.cssRules[i].style.borderLeftWidth = value;
+                            styleSheet.cssRules[i].style.borderRightWidth = value;
+                            styleSheet.cssRules[i].style.borderBottomWidth = value;
+
+                            styleSheet.cssRules[i].style.borderTop = value + " " + styleSheet.cssRules[i].style.borderTopStyle + " " + styleSheet.cssRules[i].style.borderTopColor;
+                            styleSheet.cssRules[i].style.borderLeft = value + " " + styleSheet.cssRules[i].style.borderLeftStyle + " " + styleSheet.cssRules[i].style.borderLeftColor;
+                            styleSheet.cssRules[i].style.borderRight = value + " " + styleSheet.cssRules[i].style.borderRightStyle + " " + styleSheet.cssRules[i].style.borderRightColor;
+                            styleSheet.cssRules[i].style.borderBottom = value + " " + styleSheet.cssRules[i].style.borderBottomStyle + " " + styleSheet.cssRules[i].style.borderBottomColor;
+                            break;
+                        case "border-color":
+                            styleSheet.cssRules[i].style.borderColor = value;
+
+                            styleSheet.cssRules[i].style.borderTopColor = value;
+                            styleSheet.cssRules[i].style.borderLeftColor = value;
+                            styleSheet.cssRules[i].style.borderRightColor = value;
+                            styleSheet.cssRules[i].style.borderBottomColor = value;
+
+                            break;
+                        case "border-style":
+                            styleSheet.cssRules[i].style.borderStyle = value;
+
+                            styleSheet.cssRules[i].style.borderTopStyle = value;
+                            styleSheet.cssRules[i].style.borderLeftStyle = value;
+                            styleSheet.cssRules[i].style.borderRightStyle = value;
+                            styleSheet.cssRules[i].style.borderBottomStyle = value;
+
+                            styleSheet.cssRules[i].style.borderTop = styleSheet.cssRules[i].style.borderTopWidth + " " + value + " " + styleSheet.cssRules[i].style.borderTopColor;
+                            styleSheet.cssRules[i].style.borderLeft = styleSheet.cssRules[i].style.borderLeftWidth + " " + value + " " + styleSheet.cssRules[i].style.borderLeftColor;
+                            styleSheet.cssRules[i].style.borderRight = styleSheet.cssRules[i].style.borderRightWidth + " " + value + " " + styleSheet.cssRules[i].style.borderRightColor;
+                            styleSheet.cssRules[i].style.borderBottom = styleSheet.cssRules[i].style.borderBottomWidth + " " + value + " " + styleSheet.cssRules[i].style.borderBottomColor;
+                            break;
+                        case "border-radius":
+                            styleSheet.cssRules[i].style.borderRadius = value;
+
+                            styleSheet.cssRules[i].style.borderTopLeftRadius = value;
+                            styleSheet.cssRules[i].style.borderTopRightRadius = value;
+                            styleSheet.cssRules[i].style.borderBottomLeftRadius = value;
+                            styleSheet.cssRules[i].style.borderBottomRightRadius = value;
+                            styleSheet.cssRules[i].style.webkitBorderRadius = value;
+
+                            styleSheet.cssRules[i].style.webkitBorderTopLeftRadius = value;
+                            styleSheet.cssRules[i].style.webkitBorderTopRightRadius = value;
+                            styleSheet.cssRules[i].style.webkitBorderBottomLeftRadius = value;
+                            styleSheet.cssRules[i].style.webkitBorderBottomRightRadius = value;
+                            break;
+                        case "background-color":
+                            styleSheet.cssRules[i].style.backgroundColor = value;
+                            break;
+                        default:
+                            break;
+                    }
+                    break;
+                }
+            }
+        }
+    }
+
+    // Style is changed to the column content, not to the whole column
+    var _updateColumnContentRule = function (formID, row, column, contentType, rule, value) {
         for (var i = 0; i < styleSheet.cssRules.length; i++) {
             if (
                 //chrome firefox
@@ -236,10 +410,34 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
     // Removing rules
     
-    var _removeColumnContentBackgroundRule = function (formID, row, column, contentType) {
+    var _removeFormRule = function (formID) {
+        var contentType;
+    	for (contentType of formContentTypes) {
+    		for (var i = 0; i < styleSheet.cssRules.length; i++) {
+	            if (styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-form") {
+	                styleSheet.deleteRule(i);
+	                break;
+	            }
+	        }
+    	}
+    }
+
+    var _removeFormInputsRule = function (formID) {
+        var contentType;
+        for (contentType of formContentTypes) {
+            for (var i = 0; i < styleSheet.cssRules.length; i++) {
+                if (styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-form " + contentType) {
+                    styleSheet.deleteRule(i);
+                    break;
+                }
+            }
+        }
+    }
+
+    var _removeColumnContentRule = function (formID, row, column, contentType) {
         for (var i = 0; i < styleSheet.cssRules.length; i++) {
             if (styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] " + contentType) {
                 styleSheet.deleteRule(i);
@@ -248,7 +446,373 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         }
     }
 
-    var _createSpanData = function (data) {
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    // Form functions
+
+    var _addFormStyle = function ($form) {
+        if ($form.find(".rex-wpcf7-form-data").eq(0).length != 0) {
+            var formData = _generateFormData($form);
+            var formID = formData.target.form_id;
+            _addFormCSSRules(formID, formData);
+            _addFormInputsCSSRules(formID, formData);
+        }
+    }
+
+    // If there will be more rules, they will have to be removed here
+    var _removeFormStyle = function (formID) {
+        _removeFormRule(formID);
+        _removeFormInputsRule(formID);
+    }
+
+    // Da aggiornare quando si sapranno le proprietà
+    var _addFormCSSRules = function (formID, formData) {
+        var currentMargin = "";
+        var currentPadding = "";
+        var currentDimension = "";
+        var currentBorderDimension = "";
+        var currentTextSize = "";
+        var containerRule = "";
+
+        // containerRule += "color: " + columnContentProperties.text_color + ";";
+
+        // checking font size, if value is not valid default font size will be applied
+        // currentTextSize = isNaN(parseInt(columnContentProperties.font_size.replace("px", ""))) ? defaultButtonValues.font_size : columnContentProperties.font_size;
+        // containerRule += "font-size: " + currentTextSize + ";";
+
+        // checking button dimensions, if value is not valid default dimensions will be applied
+        // currentDimension = isNaN(parseInt(columnContentProperties.button_height.replace("px", ""))) ? defaultButtonValues.dimensions.height : columnContentProperties.button_height;
+        // containerRule += "min-height: " + currentDimension + ";";
+        // currentDimension = isNaN(parseInt(columnContentProperties.button_width.replace("px", ""))) ? defaultButtonValues.dimensions.width : columnContentProperties.button_width;
+        // containerRule += "min-width: " + currentDimension + ";";
+
+        // checking margins, if they are not valid default value will be applied
+        // currentMargin = isNaN(parseInt(columnContentProperties.margin_top.replace("px", ""))) ? defaultButtonValues.margins.top : columnContentProperties.margin_top;
+        // containerRule += "margin-top: " + currentMargin + ";";
+        // currentMargin = isNaN(parseInt(columnContentProperties.margin_right.replace("px", ""))) ? defaultButtonValues.margins.right : columnContentProperties.margin_right;
+        // containerRule += "margin-right: " + currentMargin + ";";
+        // currentMargin = isNaN(parseInt(columnContentProperties.margin_bottom.replace("px", ""))) ? defaultButtonValues.margins.bottom : columnContentProperties.margin_bottom;
+        // containerRule += "margin-bottom: " + currentMargin + ";";
+        // currentMargin = isNaN(parseInt(columnContentProperties.margin_left.replace("px", ""))) ? defaultButtonValues.margins.left : columnContentProperties.margin_left;
+        // containerRule += "margin-left: " + currentMargin + ";";
+
+        // _addElementContainerRule(elementID, containerRule);
+
+        var backgroundRule = "";
+        // backgroundRule += "border-color: " + columnContentProperties.border_color + ";";
+        // backgroundRule += "border-style: " + "solid" + ";";
+
+        // checking border dimensions, if they are not valid default value will be applied
+        // currentBorderDimension = isNaN(parseInt(columnContentProperties.border_width.replace("px", ""))) ? defaultButtonValues.border.width : columnContentProperties.border_width;
+        // backgroundRule += "border-width: " + currentBorderDimension + ";";
+        // currentBorderDimension = isNaN(parseInt(columnContentProperties.border_radius.replace("px", ""))) ? defaultButtonValues.border.radius : columnContentProperties.border_radius;
+        // backgroundRule += "border-radius: " + currentBorderDimension + ";";
+
+        backgroundRule += "background-color: " + formData.background_color + ";";
+        // _addElementContainerRule(elementID, backgroundRule);
+        _addFormRule(formID, backgroundRule);
+
+        var textRule = "";
+        // checking paddings, if they are not valid default value will be applied
+        // currentPadding = isNaN(parseInt(columnContentProperties.padding_top.replace("px", ""))) ? defaultButtonValues.paddings.top : columnContentProperties.padding_top;
+        // textRule += "padding-top: " + currentPadding + ";";
+        // currentPadding = isNaN(parseInt(columnContentProperties.padding_right.replace("px", ""))) ? defaultButtonValues.paddings.right : columnContentProperties.padding_right;
+        // textRule += "padding-right: " + currentPadding + ";";
+        // currentPadding = isNaN(parseInt(columnContentProperties.padding_bottom.replace("px", ""))) ? defaultButtonValues.paddings.bottom : columnContentProperties.padding_bottom;
+        // textRule += "padding-bottom: " + currentPadding + ";";
+        // currentPadding = isNaN(parseInt(columnContentProperties.padding_left.replace("px", ""))) ? defaultButtonValues.paddings.left : columnContentProperties.padding_left;
+        // textRule += "padding-left: " + currentPadding + ";";
+        // _addElementTextRule(elementID, textRule);
+
+        var backgroundHoverRule = "";
+        // backgroundHoverRule += "background-color: " + columnContentProperties.hover_color + ";";
+        // backgroundHoverRule += "border-color: " + columnContentProperties.hover_border + ";";
+        // _addElementBackgroundHoverRule(elementID, backgroundHoverRule);
+
+        var containerHoverRule = "";
+        // containerHoverRule += "color: " + columnContentProperties.hover_text + ";";
+        // _addElementContainerHoverRule(elementID, containerHoverRule);
+    }
+
+    var _updateFormLive = function (data) {
+        var formID = data.target.form_id;
+        var propertyType = data.propertyType;
+        var propertyName = data.propertyName;
+        var newValue = data.newValue;
+
+        switch (propertyType) {
+            // case "text":
+            //     _updateButtonTextRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
+            //     break;
+            // case "container":
+            //     _updateButtonContainerRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
+            //     break;
+            case "background":
+                _updateFormRule(formID, propertyName, newValue);
+                break;
+            // case "backgroundHover":
+            // case "borderHover":
+            //     _updateButtonBackgroundHoverRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
+            //     break;
+            // case "textHover":
+            //     _updateContainerHoverRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
+            //     break;
+            // case "button":
+            //     var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper[data-rex-button-id=\"" + data.buttonTarget.button_id + "\"][data-rex-button-number=\"" + data.buttonTarget.button_number + "\"]");
+            //     switch (data.propertyName) {
+            //         case "link_target":
+            //             $elementWrapper.find("a.rex-button-container").eq(0).attr("href", data.newValue);
+            //             break;
+            //         case "link_type":
+            //             $elementWrapper.find("a.rex-button-container").eq(0).attr("target", data.newValue);
+            //             break;
+            //         case "button_label":
+            //             $elementWrapper.find(".rex-button-text").eq(0).text(data.newValue);
+            //             break;
+            //         case "button_name":
+            //             $elementWrapper.find(".rex-button-data").eq(0).attr("data-button-name", data.newValue);
+            //             break;
+            //         default:
+            //             break;
+            //     }
+            //     break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * Generate form data form span element in the DOM.
+     * 
+     * @returns {Object} formData Properties of the form
+     */
+    var _generateFormData = function ($form) {
+        var formData = {
+            // Da aggiornare
+            
+            // text_color: "",
+            // text: "",
+            // font_size: "",
+            background_color: "",
+            // button_height: "",
+            // button_width: "",
+            // hover_color: "",
+            // hover_border: "",
+            // hover_text: "",
+            // border_color: "",
+            // border_width: "",
+            // border_radius: "",
+            // margin_top: "",
+            // margin_bottom: "",
+            // margin_right: "",
+            // margin_left: "",
+            // padding_top: "",
+            // padding_bottom: "",
+            // padding_right: "",
+            // padding_left: "",
+            // link_target: "",
+            // link_type: "",
+            content: {
+                // text_color: "",
+                // text: "",
+                // font_size: "",
+                background_color: "",
+                // button_height: "",
+                // button_width: "",
+                // hover_color: "",
+                // hover_border: "",
+                // hover_text: "",
+                // border_color: "",
+                // border_width: "",
+                // border_radius: "",
+                // margin_top: "",
+                // margin_bottom: "",
+                // margin_right: "",
+                // margin_left: "",
+                // padding_top: "",
+                // padding_bottom: "",
+                // padding_right: "",
+                // padding_left: "",
+                // link_target: "",
+                // link_type: "",
+            },
+            target: {
+                form_id: "",
+            },
+        };
+
+        formData.target.form_id = $form.parents(".rex-element-wrapper").attr("data-rex-element-id");
+
+        var $formData = $form.find(".rex-wpcf7-form-data").eq(0);
+        var formDataEl = $formData[0];
+
+        // Da aggiornare quando si sapranno le proprietà
+        // Whole form
+        formData.background_color = (formDataEl.getAttribute("data-form-background-color") ? formDataEl.getAttribute("data-form-background-color").toString() : '');
+
+        // Only content (inputs, selects, ecc...)
+        formData.content.background_color = (formDataEl.getAttribute("data-content-background-color") ? formDataEl.getAttribute("data-content-background-color").toString() : '');
+
+        return formData;
+    }
+
+    var _updateForm = function (data) {
+        var formData = data.formData;
+        var formID = formData.target.form_id;
+        var currentMargin = "";
+        var currentPadding = "";
+        var currentDimension = "";
+        var currentBorderDimension = "";
+        var currentTextSize = "";
+
+        _updateFormRule(formID, "background-color", formData.background_color);
+        _updateFormInputsRule(formID, "background-color", formData.content.background_color);
+
+        // If editing a separate element, will always be length = 1
+        // If editing a model element, will be length >= 1
+        var $elementWrappers = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]");
+        _updateFormsData($elementWrappers, formData);
+    }
+
+    /**
+     * Updates multiple forms data.
+     * @param  {jQuery} $elementWrappers
+     * @param  {Array} formData Data to update
+     * @return {null}
+     */
+    var _updateFormsData = function ($elementWrappers, formData) {
+        $elementWrappers.each(function() {
+            var $formData = $(this).find(".wpcf7").find(".rex-wpcf7-form-data").eq(0);
+
+            $formData.attr("data-form-background-color", formData.background_color);
+            $formData.attr("data-content-background-color", formData.content.background_color);
+
+            var formID = $(this).attr("data-rex-element-id");
+        })
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    // Form inputs functions
+
+    // Da aggiornare quando si sapranno le proprietà
+    var _addFormInputsCSSRules = function (formID, formData) {
+        var currentMargin = "";
+        var currentPadding = "";
+        var currentDimension = "";
+        var currentBorderDimension = "";
+        var currentTextSize = "";
+        var containerRule = "";
+
+        // containerRule += "color: " + columnContentProperties.text_color + ";";
+
+        // checking font size, if value is not valid default font size will be applied
+        // currentTextSize = isNaN(parseInt(columnContentProperties.font_size.replace("px", ""))) ? defaultButtonValues.font_size : columnContentProperties.font_size;
+        // containerRule += "font-size: " + currentTextSize + ";";
+
+        // checking button dimensions, if value is not valid default dimensions will be applied
+        // currentDimension = isNaN(parseInt(columnContentProperties.button_height.replace("px", ""))) ? defaultButtonValues.dimensions.height : columnContentProperties.button_height;
+        // containerRule += "min-height: " + currentDimension + ";";
+        // currentDimension = isNaN(parseInt(columnContentProperties.button_width.replace("px", ""))) ? defaultButtonValues.dimensions.width : columnContentProperties.button_width;
+        // containerRule += "min-width: " + currentDimension + ";";
+
+        // checking margins, if they are not valid default value will be applied
+        // currentMargin = isNaN(parseInt(columnContentProperties.margin_top.replace("px", ""))) ? defaultButtonValues.margins.top : columnContentProperties.margin_top;
+        // containerRule += "margin-top: " + currentMargin + ";";
+        // currentMargin = isNaN(parseInt(columnContentProperties.margin_right.replace("px", ""))) ? defaultButtonValues.margins.right : columnContentProperties.margin_right;
+        // containerRule += "margin-right: " + currentMargin + ";";
+        // currentMargin = isNaN(parseInt(columnContentProperties.margin_bottom.replace("px", ""))) ? defaultButtonValues.margins.bottom : columnContentProperties.margin_bottom;
+        // containerRule += "margin-bottom: " + currentMargin + ";";
+        // currentMargin = isNaN(parseInt(columnContentProperties.margin_left.replace("px", ""))) ? defaultButtonValues.margins.left : columnContentProperties.margin_left;
+        // containerRule += "margin-left: " + currentMargin + ";";
+
+        // _addElementContainerRule(elementID, containerRule);
+
+        var backgroundRule = "";
+        // backgroundRule += "border-color: " + columnContentProperties.border_color + ";";
+        // backgroundRule += "border-style: " + "solid" + ";";
+
+        // checking border dimensions, if they are not valid default value will be applied
+        // currentBorderDimension = isNaN(parseInt(columnContentProperties.border_width.replace("px", ""))) ? defaultButtonValues.border.width : columnContentProperties.border_width;
+        // backgroundRule += "border-width: " + currentBorderDimension + ";";
+        // currentBorderDimension = isNaN(parseInt(columnContentProperties.border_radius.replace("px", ""))) ? defaultButtonValues.border.radius : columnContentProperties.border_radius;
+        // backgroundRule += "border-radius: " + currentBorderDimension + ";";
+
+        backgroundRule += "background-color: " + formData.content.background_color + ";";
+        // _addElementContainerRule(elementID, backgroundRule);
+        _addFormInputsRule(formID, backgroundRule);
+
+        var textRule = "";
+        // checking paddings, if they are not valid default value will be applied
+        // currentPadding = isNaN(parseInt(columnContentProperties.padding_top.replace("px", ""))) ? defaultButtonValues.paddings.top : columnContentProperties.padding_top;
+        // textRule += "padding-top: " + currentPadding + ";";
+        // currentPadding = isNaN(parseInt(columnContentProperties.padding_right.replace("px", ""))) ? defaultButtonValues.paddings.right : columnContentProperties.padding_right;
+        // textRule += "padding-right: " + currentPadding + ";";
+        // currentPadding = isNaN(parseInt(columnContentProperties.padding_bottom.replace("px", ""))) ? defaultButtonValues.paddings.bottom : columnContentProperties.padding_bottom;
+        // textRule += "padding-bottom: " + currentPadding + ";";
+        // currentPadding = isNaN(parseInt(columnContentProperties.padding_left.replace("px", ""))) ? defaultButtonValues.paddings.left : columnContentProperties.padding_left;
+        // textRule += "padding-left: " + currentPadding + ";";
+        // _addElementTextRule(elementID, textRule);
+
+        var backgroundHoverRule = "";
+        // backgroundHoverRule += "background-color: " + columnContentProperties.hover_color + ";";
+        // backgroundHoverRule += "border-color: " + columnContentProperties.hover_border + ";";
+        // _addElementBackgroundHoverRule(elementID, backgroundHoverRule);
+
+        var containerHoverRule = "";
+        // containerHoverRule += "color: " + columnContentProperties.hover_text + ";";
+        // _addElementContainerHoverRule(elementID, containerHoverRule);
+    }
+
+    var _updateFormInputsLive = function (data) {
+    	var formID = data.target.form_id;
+        var propertyType = data.propertyType;
+    	var propertyName = data.propertyName;
+    	var newValue = data.newValue;
+
+        switch (propertyType) {
+            // case "text":
+            //     _updateButtonTextRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
+            //     break;
+            // case "container":
+            //     _updateButtonContainerRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
+            //     break;
+            case "background":
+                _updateFormInputsRule(formID, propertyName, newValue);
+                break;
+            // case "backgroundHover":
+            // case "borderHover":
+            //     _updateButtonBackgroundHoverRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
+            //     break;
+            // case "textHover":
+            //     _updateContainerHoverRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
+            //     break;
+            // case "button":
+            //     var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper[data-rex-button-id=\"" + data.buttonTarget.button_id + "\"][data-rex-button-number=\"" + data.buttonTarget.button_number + "\"]");
+            //     switch (data.propertyName) {
+            //         case "link_target":
+            //             $elementWrapper.find("a.rex-button-container").eq(0).attr("href", data.newValue);
+            //             break;
+            //         case "link_type":
+            //             $elementWrapper.find("a.rex-button-container").eq(0).attr("target", data.newValue);
+            //             break;
+            //         case "button_label":
+            //             $elementWrapper.find(".rex-button-text").eq(0).text(data.newValue);
+            //             break;
+            //         case "button_name":
+            //             $elementWrapper.find(".rex-button-data").eq(0).attr("data-button-name", data.newValue);
+            //             break;
+            //         default:
+            //             break;
+            //     }
+            //     break;
+            default:
+                break;
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    /// Column content functions
+
+    var _createColumnContentSpanData = function (data) {
     	var editPoint = data.editPoint;
     	var formID = editPoint.element_id;
     	var row_number = editPoint.row_number;
@@ -264,7 +828,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     	_addColumnContentStyle($formColumn);
     }
 
-    var _removeSpanData = function (data) {
+    var _removeColumnContentSpanData = function (data) {
     	var editPoint = data.editPoint;
     	var formID = editPoint.element_id;
     	var row_number = editPoint.row_number;
@@ -281,13 +845,13 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         if ($formColumn.find(".rex-wpcf7-column-content-data").eq(0).length != 0) {
             var columnContentProperties = _generateColumnContentData($formColumn, true);
             var formID = columnContentProperties.target.element_id;
-            _addCSSRules(formID, columnContentProperties);
+            _addColumnContentCSSRules(formID, columnContentProperties);
         }
     }
 
     var _removeColumnContentStyle = function (formID, row_number, column_number) {
         // _removeColumnContentContainerRule(formID, row_number, column_number);
-        _removeColumnContentBackgroundRule(formID, row_number, column_number);
+        _removeColumnContentRule(formID, row_number, column_number);
         // _removeColumnContentBackgroundHoverRule(formID, row_number, column_number);
         // _removeColumnContentTextRule(formID, row_number, column_number);
         // _removeColumnContentContainerHoverRule(formID, row_number, column_number);
@@ -307,7 +871,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             //     _updateButtonContainerRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
             //     break;
             case "background":
-                _updateColumnContentBackgroundRule(formID, row, column, contentType, data.propertyName, data.newValue);
+                _updateColumnContentRule(formID, row, column, contentType, data.propertyName, data.newValue);
                 break;
             // case "backgroundHover":
             // case "borderHover":
@@ -403,7 +967,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     // Da aggiornare quando si sapranno le proprietà
-    var _addCSSRules = function (formID, columnContentProperties) {
+    var _addColumnContentCSSRules = function (formID, columnContentProperties) {
         var currentMargin = "";
         var currentPadding = "";
         var currentDimension = "";
@@ -452,7 +1016,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         backgroundRule += "background-color: " + columnContentProperties.background_color + ";";
         // _addElementContainerRule(elementID, backgroundRule);
-        _addColumnContentBackgroundRule(formID, row, column, contentType, backgroundRule);
+        _addColumnContentRule(formID, row, column, contentType, backgroundRule);
 
         var textRule = "";
         // checking paddings, if they are not valid default value will be applied
@@ -488,21 +1052,21 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var currentBorderDimension = "";
         var currentTextSize = "";
 
-        _updateColumnContentBackgroundRule(formID, row, column, contentType, "background-color", columnContentProperties.background_color);
+        _updateColumnContentRule(formID, row, column, contentType, "background-color", columnContentProperties.background_color);
 
         // If editing a separate element, will always be length = 1
         // If editing a model element, will be length >= 1
         var $elementWrappers = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]");
-        _updateElementsData($elementWrappers, columnContentProperties);
+        _updateColumnContentsData($elementWrappers, columnContentProperties);
     }
 
     /**
-     * Updates multiple elements data.
+     * Updates multiple column content data.
      * @param  {jQuery} $elementWrappers
      * @param  {Array} columnContentProperties Data to update
      * @return {null}
      */
-    var _updateElementsData = function ($elementWrappers, columnContentProperties) {
+    var _updateColumnContentsData = function ($elementWrappers, columnContentProperties) {
     	var row = columnContentProperties.target.row_number;
         var column = columnContentProperties.target.column_number;
 
@@ -511,14 +1075,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             $columnData.attr("data-background-color", columnContentProperties.background_color);
 
             var $formToSave = $(this).find(".wpcf7-form");
-            _saveChanges($formToSave, row, column, false);
+            _saveColumnContentChanges($formToSave, row, column, false);
         })
     }
-
-
-    /////////////////////////////////////////////////////////////////////////////////////////////////
-    /// REXWPCF7 GENERIC FUNCTIONS
-    /////////////////////////////////////////////////////////////////////////////////////////////////
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////
@@ -542,14 +1101,22 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 	return {
 		init: _init,
 
+        // Rexwpcf7 generic functions
 		addField: _addField,
 
-		// CSS functions
+		/* CSS functions */
+		addFormStyle: _addFormStyle,
 		addColumnContentStyle: _addColumnContentStyle,
 
-		// Rexwpcf7 generic functions
-		createSpanData: _createSpanData,
-		removeSpanData: _removeSpanData,
+		// Form functions
+		generateFormData: _generateFormData,
+        updateFormLive: _updateFormLive,
+		updateFormInputsLive: _updateFormInputsLive,
+        updateForm: _updateForm,
+
+		// Column content functions
+		createColumnContentSpanData: _createColumnContentSpanData,
+		removeColumnContentSpanData: _removeColumnContentSpanData,
 		generateColumnContentData: _generateColumnContentData,
 		updateColumnContentLive: _updateColumnContentLive,
 		updateColumnContent: _updateColumnContent,

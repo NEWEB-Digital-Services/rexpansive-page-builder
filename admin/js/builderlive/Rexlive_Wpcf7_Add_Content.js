@@ -101,7 +101,6 @@ var Wpcf7_Add_Content_Modal = (function ($) {
             _addField("acceptance");
         });
 
-
         /**
          * Adds a submit button
          */

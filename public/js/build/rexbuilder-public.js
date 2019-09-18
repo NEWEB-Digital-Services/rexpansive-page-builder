@@ -19,8 +19,9 @@ var Rexbuilder_App = (function($) {
     Rexbuilder_Rexbutton.init();
     
     /* The order between these 2 is very important! */
-    Rexbuilder_Rexwpcf7.init();
-    Rexbuilder_Rexelement.init();
+    Rexbuilder_Rexwpcf7.init();     // 1st
+    Rexbuilder_Rexelement.init();   // 2nd
+
     
     if (Rexbuilder_Util.editorMode) {
       Rexbuilder_Util_Editor.init();

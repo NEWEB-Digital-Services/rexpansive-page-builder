@@ -79,7 +79,7 @@ var TextEditor = (function ($) {
 
 
   /**
-   * //Color picker extension
+   * Color picker extension
    * Gets the color of the current text selection
    */
   var getCurrentTextColor = function () {
@@ -2010,7 +2010,16 @@ var TextEditor = (function ($) {
     },
 
     handleClickFormSettings: function (event) {
-      
+      this.hideAllToolbars();
+      var $elementWrapper = $(this.traceForm).parents(".rex-element-wrapper");
+      var $form = $elementWrapper.find(".wpcf7");
+
+      var data = {
+        eventName: "rexlive:openRexWpcf7EditForm",
+        formData: Rexbuilder_Rexwpcf7.generateFormData($form),
+      };
+      $elementWrapper.parents(".text-wrap").blur();
+      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     },
 
     handleSelectColumns: function (event) {
@@ -2078,7 +2087,9 @@ var TextEditor = (function ($) {
       this.on(this.addFormContentBtns, "click", this.handleClickAddFormContent.bind(this));
     },
 
-    handleClickCloneFormRow: function (event) {},
+    handleClickCloneFormRow: function (event) {
+      console.log("Clone row!");
+    },
 
     handleClickDeleteFormRow: function (event) {
       this.hideColumnToolbox();
@@ -2098,7 +2109,6 @@ var TextEditor = (function ($) {
       var $elementWrapper = $(this.traceForm).parents(".rex-element-wrapper");
       var $thisColumn = $(this.traceFormColumn);
       var $thisRow = $(this.traceFormRow);
-      var eventPath = event.path;
       var fieldType;
 
       var possibleFieldTypes = [
@@ -2138,7 +2148,9 @@ var TextEditor = (function ($) {
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     },
 
-    handleClickCloneFormColumn: function (event) {},
+    handleClickCloneFormColumn: function (event) {
+      console.log("Clone column!");
+    },
 
     handleClickDeleteFormColumn: function (event) {
       this.hideColumnToolbox();
@@ -2648,13 +2660,20 @@ var TextEditor = (function ($) {
           {
             target = event.target;
           }
+
           // if a mirror already exists but doesn't have handles, destroy it
           if($(this.mirrorSVGResize).find(".ui-resizable-handle").length != 0) {
             $(this.mirrorSVGResize).resizable("destroy");
           }
 
-          this.viewEditInlineSVGToolbar(target);
+          // If the SVG clicked is the form button for adding new content
+          if($(target).parents(".wpcf7-add-new-form-content").length != 0) {
+            target = "";
+            this.hideAllToolbars();
+          } else {
+            this.viewEditInlineSVGToolbar(target);
           this.inlineSVGResizableEnable();
+          }
 
           this.hideEditVideoToolbar();
           this.hideEditImgToolbar();

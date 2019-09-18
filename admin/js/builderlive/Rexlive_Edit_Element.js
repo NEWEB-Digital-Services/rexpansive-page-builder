@@ -235,16 +235,16 @@ var Element_Edit_Modal = (function ($) {
                 colorTEXT = color.toRgbString();
                 element_editor_properties.$element_background_color_preview.hide();
                 element_editor_properties.$element_preview_background.css("background-color", colorTEXT);
-                _updateElementLive({
-                    type: "background",
-                    name: "background-color",
-                    value: colorTEXT
-                });
+                // _updateElementLive({
+                //     type: "background",
+                //     name: "background-color",
+                //     value: colorTEXT
+                // });
             },
             change: function (color) {
             },
             hide: function (color) {
-                elementData.background_color = color.toRgbString();
+                // elementData.background_color = color.toRgbString();
             },
             cancelText: "",
             chooseText: ""
@@ -424,7 +424,7 @@ var Element_Edit_Modal = (function ($) {
             // id: buttonData.buttonTarget.button_id,
         }
 
-        elementHTML = tmpl("tmpl-rex-element", data);
+        elementHTML = tmpl("tmpl-rex-element-data", data);
         elementHTML = elementHTML.trim();
         return elementHTML;
     }

@@ -2003,7 +2003,7 @@
       );
     });
 
-    $document.on("rexlive:update_wcpf7_page", function(e) {
+    $document.on("rexlive:update_wcpf7_column_content_page", function(e) {
       var data = e.settings.data_to_send;
       var reverseData = {
         columnContentProperties: jQuery.extend(true, {}, data.reverseColumnContentData)
@@ -2012,6 +2012,24 @@
         columnContentProperties: jQuery.extend(true, {}, data.actionColumnContentData)
       }
       Rexbuilder_Rexwpcf7.updateColumnContent(actionData);
+
+      Rexbuilder_Util_Editor.pushAction(
+        "document",
+        "updateRexWpcf7ColumnContent",
+        actionData,
+        reverseData
+      );
+    });
+
+    $document.on("rexlive:update_wcpf7_page", function(e) {
+      var data = e.settings.data_to_send;
+      var reverseData = {
+        formData: jQuery.extend(true, {}, data.reverseFormData)
+      };
+      var actionData = {
+        formData: jQuery.extend(true, {}, data.actionFormData)
+      }
+      Rexbuilder_Rexwpcf7.updateForm(actionData);
 
       Rexbuilder_Util_Editor.pushAction(
         "document",

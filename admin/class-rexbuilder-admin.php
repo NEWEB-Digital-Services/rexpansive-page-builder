@@ -445,6 +445,7 @@ class Rexbuilder_Admin {
 				wp_enqueue_script( 'Rexlive-Element-Edit', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Edit_Element.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Wpcf7-Add-Content', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Wpcf7_Add_Content.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Wpcf7-Edit-Content', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Wpcf7_Edit_Content.js', array( 'jquery' ), null, true );
+				wp_enqueue_script( 'Rexlive-Wpcf7-Edit-Form', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Wpcf7_Edit_Form.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'Rexlive-Lateral-Menu', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Lateral_Menu.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-modals', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Modals.js', array( 'jquery' ), null, true );
 				wp_enqueue_script( 'rexlive-base-settings', REXPANSIVE_BUILDER_URL . 'admin/js/builderlive/Rexlive_Base_Settings.js', array( 'jquery' ), null, true );
@@ -2773,14 +2774,9 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		
 		$element_id = $_POST["element_id"];
 		$element_data_html = trim( $_POST["element_data_html"] );
-		// $css_element = $_POST["css_element"];
-		// $jsonRexButtons_buttons = $_POST["jsonRexButtons"];
-
-		// update_post_meta($element_id, '_rex_buttons_styles', $jsonRexButtons_buttons );
-		// update_post_meta($element_id, '_rex_element_css', $css_element );
 		update_post_meta($element_id, '_rex_element_data_html', $element_data_html );
-		// update_post_meta($element_id, '_rex_button_'.$element_id.'_html', $html_button );
-		$response['elementId'] = $$element_id;
+		$response['elementId'] = $element_id;
+
 		wp_send_json_success( $response );
 	}
 
