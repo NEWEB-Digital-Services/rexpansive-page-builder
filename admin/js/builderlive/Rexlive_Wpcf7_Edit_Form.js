@@ -14,8 +14,6 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 
 	var _openFormEditorModal = function (data) {
 		formData = jQuery.extend(true, {}, data.formData);
-		console.log("data", data);
-		
 		_updateFormEditorModal(formData);
 
 		Rexlive_Modals_Utils.openModal(
@@ -220,6 +218,11 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
             show: function () {
             },
             move: function (color) {
+            	// if() {
+            	// 	// la prima volta che modifico, cancello gli span delle colonne.
+            	// 	// Poi non so come ripristinarli però...
+            	// }
+
         		colorTEXT = color.toRgbString();
                 wpcf7_form_editor_properties.$form_background_color_preview.hide();
                 wpcf7_form_editor_properties.$form_preview_background.css("background-color", colorTEXT);
@@ -315,8 +318,6 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
     var _saveFormDataOnDB = function () {
         var form_data_html = _createFormDataHTML();
         var formID = formData.target.form_id;
-
-        console.log("save", form_data_html, formID);
 
         $.ajax({
             type: "POST",

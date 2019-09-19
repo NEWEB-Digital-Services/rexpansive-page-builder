@@ -2100,8 +2100,8 @@ var TextEditor = (function ($) {
       $formRowToDelete.remove();
 
       this.placeFormToolbox();
-      this.fixRowNumbers();
       this.deleteRowFromDB(rowNumberToDelete);
+      this.fixRowNumbers($(this.traceForm));
     },
 
     handleClickSettingsFormColumn: function (event) {
@@ -2157,11 +2157,11 @@ var TextEditor = (function ($) {
 
       var $formColumnToDelete = $(this.traceFormColumn);
       $formColumnToDelete.empty();
-      var plusButton = tmpl("tmpl-plus-button-inside-wpcf7-row", {});
-      $formColumnToDelete.append(plusButton);
+      var $plusButton = tmpl("tmpl-plus-button-inside-wpcf7-row", {});
+      $formColumnToDelete.append($plusButton);
 
       this.placeFormToolbox();
-      this.saveChanges();
+      this.saveColumnContentChanges();
     },
 
     handleBlur: function (event) {
@@ -2177,11 +2177,15 @@ var TextEditor = (function ($) {
     /**
      * Fixes row numbers so there are no holes. If the form is empty,
      * it's deleted
+     * param $form Form with the rows to fix
      * @return {null}
      */
-    fixRowNumbers: function () {
-      var $rows = $(this.traceForm).find(".wpcf7-row");
-      var rowsNumber = $rows.length;
+    fixRowNumbers: function ($form) {
+      if ($form.find(".wpcf7-row").length != 0){
+        var $rows = $form.find(".wpcf7-row");
+      } else {
+        var $rows = $form;
+      }
 
       $rows.each(function(index){
         $(this).attr("wpcf7-row-number", index + 1);
@@ -2215,7 +2219,7 @@ var TextEditor = (function ($) {
       }
     },
 
-    saveChanges: function () {
+    saveColumnContentChanges: function () {
       var $formToSave = $(this.traceForm);
       var rowNumberToSave = $(this.traceFormRow).attr("wpcf7-row-number");
       var columnNumberToSave = $(this.traceFormColumn).attr("wpcf7-column-number");
@@ -2305,6 +2309,7 @@ var TextEditor = (function ($) {
               return !(actualRowNumber == rowNumberToDelete);
             });
 
+            that.fixRowNumbers($formRowsInDB);
             that.saveDBChanges($formRowsInDB);
           }
         },
@@ -2315,6 +2320,7 @@ var TextEditor = (function ($) {
     saveDBChanges: function ($formRowsToSave) {
       var formID = $(this.traceForm).parents(".rex-element-wrapper").attr("data-rex-element-id");
       var formRowsToSaveString = "";
+      var that = this;
 
       $formRowsToSave.each(function(){
         formRowsToSaveString += this.outerHTML;

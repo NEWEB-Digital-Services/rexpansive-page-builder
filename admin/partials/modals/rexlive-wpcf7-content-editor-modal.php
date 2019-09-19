@@ -56,7 +56,7 @@ defined('ABSPATH') or exit;
                 <div class="rexwpcf7-cont_row">
                     <div class="rexwpcf7-count-column_2">
                         <span class="">Default value</span>
-                        <input type="text" class="">
+                        <input type="text" id="wpcf7-default-value">
                     </div>
                     <!-- <div class="rexwpcf7-count-column_2">
                         <input type="checkbox" class="">

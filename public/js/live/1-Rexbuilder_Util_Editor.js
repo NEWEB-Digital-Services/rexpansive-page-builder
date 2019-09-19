@@ -658,7 +658,7 @@ var Rexbuilder_Util_Editor = (function($) {
     });
 
     Rexbuilder_Util.$document.on("rexlive:wpcf7_remove_column_content_span_data", function (e) {
-      Rexbuilder_Rexwpcf7.removeSpanData(e.settings.data_to_send);
+      Rexbuilder_Rexwpcf7.removeColumnContentSpanData(e.settings.data_to_send);
     });
 
     Rexbuilder_Util.$document.on("rexlive:updateColumnContentLive", function(e){

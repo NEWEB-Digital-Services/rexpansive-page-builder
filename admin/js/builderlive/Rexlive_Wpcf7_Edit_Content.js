@@ -19,7 +19,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 		columnContentData = jQuery.extend(true, {}, data.columnContentData);
 		editPoint = data.columnContentData.target;
 		fieldType = data.fieldType;
-		var spanDataExists = data.spanDataExists; 
+		var spanDataExists = data.spanDataExists;
+        needToRemoveSpanData = !spanDataExists; // If the data already exists, we don't have to remove it
 		var modalClass = ["wpcf7-editing-" + fieldType]; // openModal requires an array of classes
 
 		if (!spanDataExists) {
@@ -46,6 +47,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
     };
 
     var _applyChanges = function () {
+        columnContentData.wpcf7_default_value = wpcf7_content_editor_properties.$content_default_value.val();
+
     	var columnContentDataToIframe = {
             eventName: "rexlive:update_wcpf7_column_content_page",
             data_to_send: {
@@ -68,6 +71,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         columnContentData = {
             // Da aggiornare
             
+            wpcf7_default_value: "",
+            type: "",
             // text_color: "",
             // text: "",
             // font_size: "",
@@ -94,9 +99,6 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
                 element_id: "",
                 row_number: "",
                 column_number: "",
-            },
-            content: {
-            	type: "",
             }
         };
     }
@@ -189,7 +191,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             eventName: "rexlive:updateColumnContentLive",
             data_to_send: {
                 target: columnContentData.target,
-                content: columnContentData.content,
+                content: columnContentData,
                 propertyType: data.type,
                 propertyName: data.name,
                 newValue: data.value
@@ -281,13 +283,13 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             _closeModal();
         });
 
-        // wpcf7_form_editor_properties.$modal.on('rexlive:this_modal_closed', function() {
-        //     // _updateColumnContentFromPanel();
-        //     // if (needToRemoveSpanData){
-        //     //     _removeSpanData();
-        //     // }
-        //     // _applyChanges();
-        // })
+        wpcf7_content_editor_properties.$modal.on('rexlive:this_modal_closed', function() {
+            // _updateColumnContentFromPanel();
+            if (needToRemoveSpanData){
+                _removeSpanData();
+            }
+            // _applyChanges();
+        })
 	}
 
 	var _init = function() {
@@ -306,11 +308,14 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             $content_background_color_runtime: $container.find("#rex-element-background-color-runtime"),
             $content_background_color_preview: $container.find("#rex-element-background-color-preview-icon"),
 
+            $content_default_value: $container.find("#wpcf7-default-value"),
 		};
 
 		columnContentData = {
             // Da aggiornare
             
+            wpcf7_default_value: "",
+            type: "",
             // text_color: "",
             // text: "",
             // font_size: "",
@@ -337,9 +342,6 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
                 element_id: "",
                 row_number: "",
                 column_number: "",
-            },
-            content: {
-            	type: "",
             }
         };
 

@@ -534,7 +534,7 @@ class Rexbuilder_Public
         wp_send_json_success($response);
     }
 
-    public function rex_wpcf7_get_form(){
+    public function rex_wpcf7_get_forms(){
         $nonce = $_POST['nonce_param'];
         $elementID = $_POST['elementID'];
 
@@ -550,9 +550,13 @@ class Rexbuilder_Public
         endif;
 
         $response['error'] = false;
+
+        $formIDs = $_POST['form_id'];
         
-        $formID = $_POST['form_id'];
-        $response['html_form'] = get_post_meta($formID, "_form");
+        for ($i = 0; $i < count($formIDs); $i++) {
+            $formsHTML[$i] = get_post_meta($formIDs[$i], "_form");
+        }
+        $response['html_forms'] = $formsHTML;
 
         wp_send_json_success($response);
     }

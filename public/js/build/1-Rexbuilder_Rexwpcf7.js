@@ -14,10 +14,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
      */
     var _addField = function(data) {
         var insertionPoint = data.insertionPoint;
-        var formID = insertionPoint.formID;
+        var formID = data.insertionPoint.formID;
         var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]");
-
-        var $insertionPoint = $elementWrapper.find(".wpcf7-row[wpcf7-row-number=\"" + insertionPoint.row_number + "\"]").find(".wpcf7-column[wpcf7-column-number=\"" + insertionPoint.column_number + "\"]");
 
         var fieldType = data.fieldType;
         var fieldShortcode;
@@ -49,18 +47,95 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 fieldShortcode = "[submit]";
                 break;
         }
-
-        $insertionPoint.empty();
-        $insertionPoint.append(fieldShortcode);
-
-        var $formToSave = $elementWrapper.find(".wpcf7-form");
         
-        _saveColumnContentChanges($formToSave, insertionPoint.row_number, insertionPoint.column_number, true);
+        _saveNewField(insertionPoint, fieldShortcode);
     }
 
-    var _saveColumnContentChanges = function($formToSave, rowToSave, columnToSave, needToRefresh) {
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+    /// SAVING FUNCTIONS
+    ///////////////////////////////////////////////////////////////////////////////////////////////// 
+
+    var _saveNewField = function (insertionPoint, fieldShortcode) {
+        var formID = insertionPoint.formID;
+        var row = insertionPoint.row_number;
+        var column = insertionPoint.column_number;
+
+        var $columnToUpdate = $formsInPage[formID].find(".wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"]");
+
+        $columnToUpdate.empty();
+        $columnToUpdate.append(fieldShortcode);
+
+        _updateFormInDB(formID);
+    }
+
+    var _updateFormInDB = function (formID) {
+        var formToUpdateString = $formsInPage[formID][0].outerHTML;
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: _plugin_frontend_settings.rexajax.ajaxurl,
+            data: {
+              action: "rex_wpcf7_save_changes",
+              nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+              form_id: formID,
+              new_form_string: formToUpdateString
+            },
+            success: function(response) {
+              if (response.success) {
+                formToUpdateString = "";
+                Rexbuilder_Rexelement.refreshRexElement(formID);
+              }
+            },
+            error: function(response) {}
+        });
+    }
+
+    var _saveColumnContentChanges = function ($formToSave, rowToSave, columnToSave, needToRefresh) {
         var formID = $formToSave.parents(".rex-element-wrapper").attr("data-rex-element-id");
-        var $toSave = $formToSave.find(".wpcf7-row[wpcf7-row-number='" + rowToSave + "']").find(".wpcf7-column[wpcf7-column-number='" + columnToSave + "']").clone();
+        var $toSave = $formToSave.find(".wpcf7-row[wpcf7-row-number='" + rowToSave + "']").find(".wpcf7-column[wpcf7-column-number='" + columnToSave + "']").find(".rex-wpcf7-column-content-data").eq(0).clone();
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: _plugin_frontend_settings.rexajax.ajaxurl,
+            data: {
+              action: "rex_wpcf7_get_form",
+              nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+              form_id: formID
+            },
+            success: function(response) {
+              if (response.success) {
+                var $formRowsInDB = $(response.data.html_form.toString());
+
+                // Clearing the linefeeds
+                $formRowsInDB = $formRowsInDB.filter(function (){
+                    return !("undefined" == typeof this.outerHTML);
+                });
+
+
+                $formRowsInDB.each(function() {
+                    if($(this).attr("wpcf7-row-number") == rowToSave) {
+                        var $thisColumn = $(this).find(".wpcf7-column[wpcf7-column-number='" + columnToSave + "']");
+
+                        $thisColumn.prepend($toSave);
+                        return false;
+                    }
+                });
+
+                _saveDBChanges($formRowsInDB, formID, needToRefresh);
+              }
+            },
+            error: function(response) {}
+        });
+    }
+
+    var _updateColumnContentShortcode = function (formID, row, column, property, propertyValue) {
+        var newShortcodeField;
+        switch(property) {
+            case "default-value":
+                newShortcodeField = "\"" + propertyValue + "\"";
+                break;
+        }
 
         $.ajax({
             type: "POST",
@@ -81,13 +156,18 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 });
 
                 $formRowsInDB.each(function() {
-                    if($(this).attr("wpcf7-row-number") == rowToSave) {
-                        $(this).find(".wpcf7-column[wpcf7-column-number='" + columnToSave + "']").replaceWith($toSave);
+                    if($(this).attr("wpcf7-row-number") == row) {
+                        var currentShortcode = $(this).find(".wpcf7-column[wpcf7-column-number='" + column + "']").text();
+
+                        var newShortcode = currentShortcode.replace("]", " " + newShortcodeField + "]");
+
+                        $(this).find(".wpcf7-column[wpcf7-column-number='" + column + "']").text(newShortcode);
+
                         return false;
                     }
                 });
 
-                _saveDBChanges($formRowsInDB, formID, needToRefresh);
+                _saveDBChanges($formRowsInDB, formID, true);
               }
             },
             error: function(response) {}
@@ -685,8 +765,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
             $formData.attr("data-form-background-color", formData.background_color);
             $formData.attr("data-content-background-color", formData.content.background_color);
-
-            var formID = $(this).attr("data-rex-element-id");
         })
     }
 
@@ -916,6 +994,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var columnContentProperties = {
             // Da aggiornare
             
+            wpcf7_default_value: "",
+            type: "",
             // text_color: "",
             // text: "",
             // font_size: "",
@@ -942,20 +1022,20 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 element_id: "",
                 row_number: "",
                 column_number: "",
-            },
-            content: {
-            	type: "",
             }
         };
 
         columnContentProperties.target.element_id = $formColumn.parents(".rex-element-wrapper").attr("data-rex-element-id");
         columnContentProperties.target.row_number = $formColumn.parents(".wpcf7-row").attr("wpcf7-row-number");
         columnContentProperties.target.column_number = $formColumn.attr("wpcf7-column-number");
-        columnContentProperties.content.type = $formColumn.find(".wpcf7-form-control").prop("nodeName").toLowerCase();
+        columnContentProperties.type = $formColumn.find(".wpcf7-form-control").prop("nodeName").toLowerCase();
 
         if (spanDataExists) {
         	var $columnContentData = $formColumn.find(".rex-wpcf7-column-content-data").eq(0);
         	var columnContentDataEl = $columnContentData[0];
+
+            // Wpcf7 Properties
+            columnContentProperties.wpcf7_default_value = (columnContentDataEl.getAttribute("data-wpcf7-placeholder") ? columnContentDataEl.getAttribute("data-wpcf7-placeholder").toString() : '');
 
         	// Da aggiornare quando si sapranno le proprietà
         	columnContentProperties.background_color = (columnContentDataEl.getAttribute("data-background-color") ? columnContentDataEl.getAttribute("data-background-color").toString() : '');
@@ -978,7 +1058,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         var row = columnContentProperties.target.row_number;
         var column = columnContentProperties.target.column_number;
-        var contentType = columnContentProperties.content.type;
+        var contentType = columnContentProperties.type;
 
         // containerRule += "color: " + columnContentProperties.text_color + ";";
 
@@ -1045,14 +1125,12 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var formID = columnContentProperties.target.element_id;
         var row = columnContentProperties.target.row_number;
         var column = columnContentProperties.target.column_number;
-        var contentType = columnContentProperties.content.type;
-        var currentMargin = "";
-        var currentPadding = "";
-        var currentDimension = "";
-        var currentBorderDimension = "";
-        var currentTextSize = "";
+        var contentType = columnContentProperties.type;
+        var defaultValue = columnContentProperties.wpcf7_default_value;
 
         _updateColumnContentRule(formID, row, column, contentType, "background-color", columnContentProperties.background_color);
+
+        _updateColumnContentShortcode(formID, row, column, "default-value" , defaultValue);
 
         // If editing a separate element, will always be length = 1
         // If editing a model element, will be length >= 1
@@ -1073,6 +1151,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         $elementWrappers.each(function() {
             var $columnData = $(this).find(".wpcf7-row[wpcf7-row-number=\"" + row + "\"]").find(".wpcf7-column[wpcf7-column-number=\"" + column + "\"]").find(".rex-wpcf7-column-content-data").eq(0);
             $columnData.attr("data-background-color", columnContentProperties.background_color);
+            $columnData.attr("data-wpcf7-placeholder", columnContentProperties.wpcf7_default_value);
 
             var $formToSave = $(this).find(".wpcf7-form");
             _saveColumnContentChanges($formToSave, row, column, false);
@@ -1081,21 +1160,49 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////
+    
+    // JQuery Array of DB side of forms in page
+    var $formsInPage;
+
+    var _getDBFormsInPage = function () {
+        var $elementWrappers = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper");
+
+        var idsInPage = [];
+        $elementWrappers.each(function(){
+            idsInPage.push($(this).attr("data-rex-element-id"));
+        })
+        idsInPage = Array.from(new Set(idsInPage));
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: _plugin_frontend_settings.rexajax.ajaxurl,
+            data: {
+              action: "rex_wpcf7_get_forms",
+              nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+              form_id: idsInPage
+            },
+            success: function(response) {
+              if (response.success) {
+                var id, i = 0;
+                for (id of idsInPage) {
+                    $formsInPage[id] = $(response.data.html_forms[i].toString().trim());
+
+                    i++;
+                }
+              }
+            },
+            error: function(response) {}
+        });
+    }
 
 	var _init = function () {
 		styleSheet = null;
-		// Qua ci andranno i valori di default degli stili che verranno scelti
-        defaultFormValues = {
-            // Prova
-            input: {
-                text: {
-                    background_color: "",
-                }
-            }
-        };
+        $formsInPage = {};
         this.$rexformsStyle = $("#rexpansive-builder-rexwpcf7-style-inline-css");
 
         _fixCustomStyleForm();
+        _getDBFormsInPage();
 	}
 
 	return {

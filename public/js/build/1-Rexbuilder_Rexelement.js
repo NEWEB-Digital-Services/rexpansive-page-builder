@@ -322,7 +322,6 @@ var Rexbuilder_Rexelement = (function ($) {
 
     var _addFormData = function ($formToAddData) {
         var formID = $formToAddData.parents(".rex-element-wrapper").attr("data-rex-element-id");
-        console.log(formID);
 
         $.ajax({
             type: "POST",
