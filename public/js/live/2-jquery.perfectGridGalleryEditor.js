@@ -3522,7 +3522,7 @@
         .each(function(i, el) {
           var $el = $(el);
           var blockHeight = that.updateElementHeight($el);
-          if (!blockHeight.empty) {
+          if ('undefined' !== typeof blockHeight && !blockHeight.empty) {
             var height = Math.ceil( blockHeight.height / that.settings.cellHeightMasonry );
             that.properties.gridstackInstance.resize($el[0], 12, height);
           } else {

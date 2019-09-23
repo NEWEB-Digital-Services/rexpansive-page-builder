@@ -260,8 +260,6 @@ var Rexbuilder_Section = (function($) {
 
       galleryEditorInstance.commitGridstack();
 
-      // console.log('nnnananando')
-
       galleryEditorInstance.removeCollapseElementsProperties();
 
       if (galleryLayout.layout == "masonry") {

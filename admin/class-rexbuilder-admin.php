@@ -133,7 +133,7 @@ class Rexbuilder_Admin {
 	 */
 	public function wpml_translation_update_fix ( $obj ) {
 		// Insert fix
-		if ( 'insert' === $obj['type'] && 'post' === $obj['context'] ) 
+		if ( isset($obj['type']) && isset($obj['context']) && 'insert' === $obj['type'] && 'post' === $obj['context'] ) 
 		{
 			// getting the code details of the translation
 			$post_type_info = explode( '_', $obj['element_type'] );
