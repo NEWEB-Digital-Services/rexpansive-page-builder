@@ -1969,6 +1969,7 @@ var TextEditor = (function ($) {
     handleClickAddFormContent: function (event) {
       this.hideAllToolbars();
       var $elementWrapper = $(this.traceForm).parents(".rex-element-wrapper");
+      var formID = $elementWrapper.attr("data-rex-element-id");
       var eventPath = event.path;
       var row_number;
       var column_number;
@@ -1987,8 +1988,6 @@ var TextEditor = (function ($) {
         }
       }
 
-      var formID = $elementWrapper.attr("data-rex-element-id");
-
       var data = {
         eventName: "rexlive:openRexWpcf7AddContent",
         insertionPoint: {
@@ -2002,7 +2001,6 @@ var TextEditor = (function ($) {
     },
 
     handleClickAddRow: function (event) {
-      // Using the medium editor to select columns number
       this.viewSelectColumnsToolbar();
 
       this.hideRowToolbox();
@@ -2023,8 +2021,11 @@ var TextEditor = (function ($) {
     },
 
     handleSelectColumns: function (event) {
+      this.hideSelectColumnsToolbar();
       this.hideRowToolbox();
       this.hideColumnToolbox();
+
+      var formID = $(this.traceForm).parents(".rex-element-wrapper").attr("data-rex-element-id");
 
       var $el = $(event.target);
       if (!$el.hasClass("medium-editor-action")) {
@@ -2040,49 +2041,10 @@ var TextEditor = (function ($) {
       } else if ($el.hasClass("select-4-columns")) {
         this.columnsSelected = 4;
       }
+
+      Rexbuilder_Rexwpcf7.addNewRow(formID, this.columnsSelected);
+      // this.placeFormToolbox();
       this.hideFormToolbox();
-      this.hideSelectColumnsToolbar();
-
-      var $elementContainer = $(this.traceForm).parents(".rex-element-container");
-      var $newRow = $(document.createElement("div"));
-      var newRowNumber = $elementContainer.find(".wpcf7-row").length + 1;
-
-      switch (this.columnsSelected) {
-        case 1:
-          $newRow.addClass("wpcf7-row wpcf7-row__1-column");
-          break;
-        case 2:
-          $newRow.addClass("wpcf7-row wpcf7-row__2-columns");
-          break;
-        case 3:
-          $newRow.addClass("wpcf7-row wpcf7-row__3-columns");
-          break;
-        case 4:
-          $newRow.addClass("wpcf7-row wpcf7-row__4-columns");
-          break;
-      }
-
-      $newRow.attr("wpcf7-row-number", newRowNumber);
-
-      var $columnsToInsert = [];
-
-      for(var i = 0; i < this.columnsSelected; i++) {
-        $columnsToInsert[i] = $(document.createElement("div"));
-        $columnsToInsert[i].addClass("wpcf7-column");
-        $columnsToInsert[i].attr("wpcf7-column-number", (i+1));
-        
-        // Creating the + buttons for adding content
-        var plusButton = tmpl("tmpl-plus-button-inside-wpcf7-row", {});
-        $columnsToInsert[i].append(plusButton);
-        
-        $newRow.append($columnsToInsert[i]);
-      }
-
-      var $lastRow = $elementContainer.find(".wpcf7-row").last();
-      $newRow.insertAfter($lastRow);
-
-      this.saveNewRowOnDB($newRow);
-
       this.addFormContentBtns = $(this.traceForm).find(".wpcf7-add-new-form-content");
       this.on(this.addFormContentBtns, "click", this.handleClickAddFormContent.bind(this));
     },
@@ -2095,12 +2057,12 @@ var TextEditor = (function ($) {
       this.hideColumnToolbox();
       this.hideRowToolbox();
 
-      var $formRowToDelete = $(this.traceFormRow);
-      var rowNumberToDelete = $formRowToDelete.attr("wpcf7-row-number");
-      $formRowToDelete.remove();
+      var formID = $(this.traceForm).parents(".rex-element-wrapper").attr("data-rex-element-id");
+      var $rowToDelete = $(this.traceFormRow);
 
       this.placeFormToolbox();
-      this.deleteRowFromDB(rowNumberToDelete);
+      // this.deleteRowFromDB(rowNumberToDelete);
+      Rexbuilder_Rexwpcf7.deleteRow(formID, $rowToDelete);
       this.fixRowNumbers($(this.traceForm));
     },
 
@@ -2175,8 +2137,7 @@ var TextEditor = (function ($) {
     /////////////////////
 
     /**
-     * Fixes row numbers so there are no holes. If the form is empty,
-     * it's deleted
+     * Fixes row numbers so there are no holes
      * param $form Form with the rows to fix
      * @return {null}
      */
@@ -2253,27 +2214,6 @@ var TextEditor = (function ($) {
 
             that.saveDBChanges($formRowsInDB);
           }
-        },
-        error: function(response) {}
-      });
-    },
-
-    saveNewRowOnDB: function ($rowToAdd){
-      var formID = $(this.traceForm).parents(".rex-element-wrapper").attr("data-rex-element-id");
-      var rowToAddString = $rowToAdd[0].outerHTML;
-
-      $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: _plugin_frontend_settings.rexajax.ajaxurl,
-        data: {
-          action: "rex_wpcf7_save_new_row",
-          nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-          form_id: formID,
-          row_to_add_string: rowToAddString
-        },
-        success: function(response) {
-          if (response.success) {}
         },
         error: function(response) {}
       });

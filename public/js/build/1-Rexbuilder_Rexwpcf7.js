@@ -51,6 +51,56 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         _saveNewField(insertionPoint, fieldShortcode);
     }
 
+    var _addNewRow = function (formID, columnsSelected) {
+        var $elementContainer = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]").find(".rex-element-container");
+
+        var $newRow = $(document.createElement("div"));
+        var newRowNumber = $elementContainer.find(".wpcf7-row").length + 1;
+
+        switch (columnsSelected) {
+            case 1:
+                $newRow.addClass("wpcf7-row wpcf7-row__1-column");
+                break;
+            case 2:
+                $newRow.addClass("wpcf7-row wpcf7-row__2-columns");
+                break;
+            case 3:
+                $newRow.addClass("wpcf7-row wpcf7-row__3-columns");
+                break;
+            case 4:
+                $newRow.addClass("wpcf7-row wpcf7-row__4-columns");
+                break;
+        }
+
+        $newRow.attr("wpcf7-row-number", newRowNumber);
+
+        var $columnsToInsert = [];
+
+        for(var i = 0; i < columnsSelected; i++) {
+            $columnsToInsert[i] = $(document.createElement("div"));
+            $columnsToInsert[i].addClass("wpcf7-column");
+            $columnsToInsert[i].attr("wpcf7-column-number", (i+1));
+
+            // Creating the + buttons for adding content
+            var plusButton = tmpl("tmpl-plus-button-inside-wpcf7-row", {});
+            $columnsToInsert[i].append(plusButton);
+
+            $newRow.append($columnsToInsert[i]);
+        }
+
+        var $lastRow = $elementContainer.find(".wpcf7-row").last();
+        $newRow.insertAfter($lastRow);
+
+        _saveNewRow(formID, $newRow);
+    }
+
+    var _deleteRow = function (formID, $rowToDelete) {
+        var rowNumberToDelete = $rowToDelete.attr("wpcf7-row-number");
+        $rowToDelete.remove();
+
+        _saveDeletingRow(formID, rowNumberToDelete);
+    }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////
     /// SAVING FUNCTIONS
     ///////////////////////////////////////////////////////////////////////////////////////////////// 
@@ -68,8 +118,26 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         _updateFormInDB(formID);
     }
 
+    var _saveNewRow = function (formID, $newRow) {
+        var $formToAddRow = $formsInPage[formID];
+        var $lastRow = $formToAddRow.find(".wpcf7-row").last();
+
+        $newRow.insertAfter($lastRow);
+
+        _updateFormInDB(formID);
+    }
+
+    var _saveDeletingRow = function (formID, rowNumberToDelete) {
+        var $formToDeleteRow = $formsInPage[formID];
+        var $rowToDelete = $formToDeleteRow.find(".wpcf7-row[wpcf7-row-number=\"" + rowNumberToDelete + "\"]");
+
+        $rowToDelete.remove();
+
+        _updateFormInDB(formID);
+    }
+
     var _updateFormInDB = function (formID) {
-        var formToUpdateString = $formsInPage[formID][0].outerHTML;
+        var formToUpdateString = $formsInPage[formID][0].outerHTML; // Don't need to get the form in db before, already have it
         $.ajax({
             type: "POST",
             dataType: "json",
@@ -747,8 +815,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         _updateFormRule(formID, "background-color", formData.background_color);
         _updateFormInputsRule(formID, "background-color", formData.content.background_color);
 
-        // If editing a separate element, will always be length = 1
-        // If editing a model element, will be length >= 1
+        // If editing a separate element, will always be length = 1,
+        // if editing a model element, will be length >= 1
         var $elementWrappers = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]");
         _updateFormsData($elementWrappers, formData);
     }
@@ -1210,6 +1278,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         // Rexwpcf7 generic functions
 		addField: _addField,
+        addNewRow: _addNewRow,
+        deleteRow: _deleteRow,
 
 		/* CSS functions */
 		addFormStyle: _addFormStyle,
