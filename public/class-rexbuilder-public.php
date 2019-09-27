@@ -1266,18 +1266,21 @@ class Rexbuilder_Public
     public function filter_yoast_seo_description( $description ) {
         global $post;
         if ( $this->builder_active_on_this_post_type() ) {
-            $content = get_post_meta( $post->ID, '_rexbuilder_shortcode', true );
-            $stripped_content = preg_replace('#\[[^\]]+\]#', '', $content);
-            $stripped_content = strip_tags($stripped_content);
-            
-            $stripped_content_lenght = strlen( $stripped_content );
-            if ( 0 === $stripped_content_lenght ) {
-                $stripped_content = get_the_title();
-            } else if ( $stripped_content_lenght > 340 ) {
-                $stripped_content = substr( $stripped_content, 0, 340 );
-            }
+            $yoast_metadesc = get_post_meta( $post->ID, '_yoast_wpseo_metadesc', true );
+            if ( '' == $yoast_metadesc ) {
+                $content = get_post_meta( $post->ID, '_rexbuilder_shortcode', true );
+                $stripped_content = preg_replace('#\[[^\]]+\]#', '', $content);
+                $stripped_content = strip_tags($stripped_content);
+                
+                $stripped_content_lenght = strlen( $stripped_content );
+                if ( 0 === $stripped_content_lenght ) {
+                    $stripped_content = get_the_title();
+                } else if ( $stripped_content_lenght > 340 ) {
+                    $stripped_content = substr( $stripped_content, 0, 340 );
+                }
 
-            return $stripped_content;
+                return $stripped_content;
+            }
         }
 
         return $description;
