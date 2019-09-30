@@ -96,9 +96,29 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
     var _deleteRow = function (formID, $rowToDelete) {
         var rowNumberToDelete = $rowToDelete.attr("wpcf7-row-number");
+        var $formToFix = $rowToDelete.parents(".wpcf7-form");
+
         $rowToDelete.remove();
 
+        _fixRowNumbers($formToFix);
         _saveDeletingRow(formID, rowNumberToDelete);
+    }
+
+    var _fixRowNumbers = function ($form) {
+        $form.find(".wpcf7-row").each(function(index){
+            $(this).attr("wpcf7-row-number", index + 1);
+        });
+    }
+
+    var _deleteColumnContent = function (formID, $columnToDelete) {
+        var rowNumberToDelete = $columnToDelete.parents(".wpcf7-row").attr("wpcf7-row-number");
+        var columnNumberToDelete = $columnToDelete.attr("wpcf7-column-number");
+
+        $columnToDelete.empty();
+        var $plusButton = tmpl("tmpl-plus-button-inside-wpcf7-row", {});
+        $columnToDelete.append($plusButton);
+
+        _saveDeletingColumnContent(formID, rowNumberToDelete, columnNumberToDelete);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -132,6 +152,18 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var $rowToDelete = $formToDeleteRow.find(".wpcf7-row[wpcf7-row-number=\"" + rowNumberToDelete + "\"]");
 
         $rowToDelete.remove();
+
+        _fixRowNumbers($formToDeleteRow);
+        _updateFormInDB(formID);
+    }
+
+    var _saveDeletingColumnContent = function (formID, rowNumberToDelete, columnNumberToDelete) {
+        var $formToDeleteColumn = $formsInPage[formID];
+        var $columnToDelete = $formToDeleteColumn.find(".wpcf7-row[wpcf7-row-number=\"" + rowNumberToDelete + "\"]").find(".wpcf7-column[wpcf7-column-number=\"" + columnNumberToDelete + "\"]");
+
+        $columnToDelete.empty();
+        var $plusButton = tmpl("tmpl-plus-button-inside-wpcf7-row", {});
+        $columnToDelete.append($plusButton);
 
         _updateFormInDB(formID);
     }
@@ -1280,6 +1312,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 		addField: _addField,
         addNewRow: _addNewRow,
         deleteRow: _deleteRow,
+        deleteColumnContent: _deleteColumnContent,
 
 		/* CSS functions */
 		addFormStyle: _addFormStyle,

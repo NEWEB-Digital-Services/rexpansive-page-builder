@@ -292,23 +292,26 @@ var Rexbuilder_Rexelement = (function ($) {
                     id: parseInt(elementID),
                     number: elementNumber
                 });
-                if ($elementWrapper.find(".wpcf7").length != 0) {
-                    var $formToAddData = $elementWrapper.find(".wpcf7");
-                    _addFormData($formToAddData);
-                }
+
+                // Adding form span data
+                // if ($elementWrapper.find(".wpcf7").length != 0) {
+                //     var $formToAddData = $elementWrapper.find(".wpcf7");
+                //     _addFormData($formToAddData);
+                // }
                 
-                if ($elementWrapper.hasClass("rex-separate-element")) {
-                    // We are not editing an element model, but a separate element
-                    _addElementStyle($elementWrapper);
-                } else {
-                    // We are editing an element model. Add the style only if there's
-                    // no existing style
-                    if (i !== 0 && elementsInPage[i].id == elementsInPage[i-1].id) {
-                        // Do nothing
-                    } else {
-                        _addElementStyle($elementWrapper);
-                    }
-                }
+                
+                // if ($elementWrapper.hasClass("rex-separate-element")) {
+                //     // We are not editing an element model, but a separate element
+                //     _addElementStyle($elementWrapper);
+                // } else {
+                //     // We are editing an element model. Add the style only if there's
+                //     // no existing style
+                //     if (i !== 0 && elementsInPage[i].id == elementsInPage[i-1].id) {
+                //         // Do nothing
+                //     } else {
+                //         _addElementStyle($elementWrapper);
+                //     }
+                // }
             }
             if (elementsInPage[j].number < elementNumber) {
                 elementsInPage[j].number = elementNumber;
@@ -318,6 +321,31 @@ var Rexbuilder_Rexelement = (function ($) {
 
     var _getElementsInPage = function () {
         return elementsInPage;
+    }
+
+    var _addStyles = function () {
+        Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper").each(function (i, element) {
+            var $elementWrapper = $(element);
+            var elementID = $elementWrapper.attr("data-rex-element-id");
+            // Adding form span data
+            if ($elementWrapper.find(".wpcf7").length != 0) {
+                var $formToAddData = $elementWrapper.find(".wpcf7");
+                _addFormData($formToAddData);
+            }
+            
+            if ($elementWrapper.hasClass("rex-separate-element")) {
+                // We are not editing an element model, but a separate element
+                _addElementStyle($elementWrapper);
+            } else {
+                // We are editing an element model. Add the style only if there's
+                // no existing style
+                if (i !== 0 && elementsInPage[i].id == elementsInPage[i-1].id) {
+                    // Do nothing
+                } else {
+                    _addElementStyle($elementWrapper);
+                }
+            }
+        });
     }
 
     var _addFormData = function ($formToAddData) {
@@ -333,19 +361,22 @@ var Rexbuilder_Rexelement = (function ($) {
             form_id: formID
             },
             success: function(response) {
-            if (response.success) {
-                var wpcf7Data = response.data.wpcf7_data_html;
+                if (response.success) {
+                    var wpcf7Data = response.data.wpcf7_data_html;
 
-                if("undefined" == typeof wpcf7Data[0]) {
-                    var $formData = $(document.createElement("span"));
-                    $formData.addClass("rex-wpcf7-form-data");
-                    $formToAddData.prepend($formData);
-                } else {
-                    var $wpcf7Data = $.parseHTML(wpcf7Data[0]);
-                    $formToAddData.prepend($wpcf7Data);
+                    if("undefined" == typeof wpcf7Data[0]) {
+                        // If there's not a span element, create it
+                        var $formData = $(document.createElement("span"));
+                        $formData.addClass("rex-wpcf7-form-data");
+                        $formToAddData.prepend($formData);
+                    } else {
+                        // If there is a span element, add it in the DOM
+                        var $wpcf7Data = $.parseHTML(wpcf7Data[0]);
+                        $formToAddData.prepend($wpcf7Data);
+                    }
+
+                    Rexbuilder_Rexwpcf7.addFormStyle($formToAddData);
                 }
-                Rexbuilder_Rexwpcf7.addFormStyle($formToAddData);
-            }
             },
             error: function(response) {}
         });
@@ -799,6 +830,7 @@ var Rexbuilder_Rexelement = (function ($) {
 
         _fixCustomStyleElement();
         _updateElementListInPage();
+        _addStyles();
 		_linkDocumentListeners();
 	}
 

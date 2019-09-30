@@ -2061,9 +2061,7 @@ var TextEditor = (function ($) {
       var $rowToDelete = $(this.traceFormRow);
 
       this.placeFormToolbox();
-      // this.deleteRowFromDB(rowNumberToDelete);
       Rexbuilder_Rexwpcf7.deleteRow(formID, $rowToDelete);
-      this.fixRowNumbers($(this.traceForm));
     },
 
     handleClickSettingsFormColumn: function (event) {
@@ -2117,13 +2115,17 @@ var TextEditor = (function ($) {
     handleClickDeleteFormColumn: function (event) {
       this.hideColumnToolbox();
 
-      var $formColumnToDelete = $(this.traceFormColumn);
-      $formColumnToDelete.empty();
-      var $plusButton = tmpl("tmpl-plus-button-inside-wpcf7-row", {});
-      $formColumnToDelete.append($plusButton);
+      // var $formColumnToDelete = $(this.traceFormColumn);
+      // $formColumnToDelete.empty();
+      // var $plusButton = tmpl("tmpl-plus-button-inside-wpcf7-row", {});
+      // $formColumnToDelete.append($plusButton);
+
+      var formID = $(this.traceForm).parents(".rex-element-wrapper").attr("data-rex-element-id");
+      var $columnToDelete = $(this.traceFormColumn);
+      Rexbuilder_Rexwpcf7.deleteColumnContent(formID, $columnToDelete);
 
       this.placeFormToolbox();
-      this.saveColumnContentChanges();
+      // this.saveColumnContentChanges();
     },
 
     handleBlur: function (event) {
@@ -2135,23 +2137,6 @@ var TextEditor = (function ($) {
     /////////////////////
     /* OTHER FUNCTIONS */
     /////////////////////
-
-    /**
-     * Fixes row numbers so there are no holes
-     * param $form Form with the rows to fix
-     * @return {null}
-     */
-    fixRowNumbers: function ($form) {
-      if ($form.find(".wpcf7-row").length != 0){
-        var $rows = $form.find(".wpcf7-row");
-      } else {
-        var $rows = $form;
-      }
-
-      $rows.each(function(index){
-        $(this).attr("wpcf7-row-number", index + 1);
-      });
-    },
 
     traceInputForm: function (event) {
       if ("click" == event.type) {
@@ -2212,44 +2197,6 @@ var TextEditor = (function ($) {
               }
             });
 
-            that.saveDBChanges($formRowsInDB);
-          }
-        },
-        error: function(response) {}
-      });
-    },
-
-    deleteRowFromDB: function (rowNumberToDelete) {
-      var formID = $(this.traceForm).parents(".rex-element-wrapper").attr("data-rex-element-id");
-      var that = this;
-
-      $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: _plugin_frontend_settings.rexajax.ajaxurl,
-        data: {
-          action: "rex_wpcf7_get_form",
-          nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-          form_id: formID
-        },
-        success: function(response) {
-          if (response.success) {
-            var $formRowsInDB = $(response.data.html_form.toString());
-
-            // Clearing the linefeeds
-            $formRowsInDB = $formRowsInDB.filter(function (){
-              return !("undefined" == typeof this.outerHTML);
-            });
-
-            // Deleting the row
-            $formRowsInDB = $formRowsInDB.filter(function (){
-              var actualRowNumber = parseInt($(this).attr("wpcf7-row-number"));
-              rowNumberToDelete = parseInt(rowNumberToDelete);
-
-              return !(actualRowNumber == rowNumberToDelete);
-            });
-
-            that.fixRowNumbers($formRowsInDB);
             that.saveDBChanges($formRowsInDB);
           }
         },
