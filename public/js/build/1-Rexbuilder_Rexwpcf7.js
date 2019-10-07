@@ -123,7 +123,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
     /// SAVING FUNCTIONS
-    ///////////////////////////////////////////////////////////////////////////////////////////////// 
+    //////////////////////////////////////////////////////////////////////////////////////////////// 
 
     var _saveNewField = function (insertionPoint, fieldShortcode) {
         var formID = insertionPoint.formID;
@@ -230,48 +230,33 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     var _updateColumnContentShortcode = function (formID, row, column, property, propertyValue) {
+        var $elementContainer = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]").find(".rex-element-container");
+        var $formToUpdateColumnDOM = $elementContainer.find(".wpcf7-form");
+        var $columnToUpdateDOM = $formToUpdateColumnDOM.find(".wpcf7-row[wpcf7-row-number=\"" + row + "\"]").find(".wpcf7-column[wpcf7-column-number=\"" + column + "\"]");
+        
+        var $formToUpdateColumnDB = $formsInPage[formID];
+        var $columnToUpdateDB = $formToUpdateColumnDB.find(".wpcf7-row[wpcf7-row-number=\"" + row + "\"]").find(".wpcf7-column[wpcf7-column-number=\"" + column + "\"]");
+
+        var currentShortcode = $columnToUpdateDB.text();
         var newShortcodeField;
+
+        console.log(currentShortcode);
+
         switch(property) {
             case "default-value":
                 newShortcodeField = "\"" + propertyValue + "\"";
                 break;
         }
 
-        $.ajax({
-            type: "POST",
-            dataType: "json",
-            url: _plugin_frontend_settings.rexajax.ajaxurl,
-            data: {
-              action: "rex_wpcf7_get_form",
-              nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-              form_id: formID
-            },
-            success: function(response) {
-              if (response.success) {
-                var $formRowsInDB = $(response.data.html_form.toString());
+        var newShortcode = currentShortcode.replace("]", " " + newShortcodeField + "]");
 
-                // Clearing the linefeeds
-                $formRowsInDB = $formRowsInDB.filter(function (){
-                  return !("undefined" == typeof this.outerHTML);
-                });
+        console.log(newShortcode);
 
-                $formRowsInDB.each(function() {
-                    if($(this).attr("wpcf7-row-number") == row) {
-                        var currentShortcode = $(this).find(".wpcf7-column[wpcf7-column-number='" + column + "']").text();
+        $columnToUpdateDB.text(newShortcode);
 
-                        var newShortcode = currentShortcode.replace("]", " " + newShortcodeField + "]");
+        console.log($formToUpdateColumnDB[0]);
 
-                        $(this).find(".wpcf7-column[wpcf7-column-number='" + column + "']").text(newShortcode);
-
-                        return false;
-                    }
-                });
-
-                _saveDBChanges($formRowsInDB, formID, true);
-              }
-            },
-            error: function(response) {}
-        });
+        _updateFormInDB(formID);
     }
 
     var _saveDBChanges = function ($formRowsToSave, formID, needToRefresh) {
@@ -1222,6 +1207,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
     var _updateColumnContent = function (data) {
         var columnContentProperties = data.columnContentProperties;
+        console.log(data);
         var formID = columnContentProperties.target.element_id;
         var row = columnContentProperties.target.row_number;
         var column = columnContentProperties.target.column_number;

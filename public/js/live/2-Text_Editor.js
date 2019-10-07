@@ -1958,6 +1958,7 @@ var TextEditor = (function ($) {
 
       // Trace the cursor position
       this.subscribe("editableClick", this.traceInputForm.bind(this));
+      // this.on(this.formRowTools, "mouseenter", this.handleMouseOver.bind(this));
 
       this.subscribe("blur", this.handleBlur.bind(this));
     },
@@ -1965,6 +1966,37 @@ var TextEditor = (function ($) {
     ///////////////
     /* HANDLERS */
     ///////////////
+    
+    handleMouseOver: function (event) {
+      console.log("Sono sopra a qualcosa");
+    },
+
+    traceInputForm: function (event) {
+      if ("click" == event.type) {
+        // Check if cursor is inside a form
+        var nodeToFix = MediumEditor.selection.getSelectionStart(this.base.options.ownerDocument);
+        if ($(nodeToFix).parents(".wpcf7-form").length != 0) {
+          this.traceForm = $(nodeToFix).parents(".wpcf7-form")[0];
+          this.addFormContentBtns = $(this.traceForm).find(".wpcf7-add-new-form-content");
+          this.on(this.addFormContentBtns, "click", this.handleClickAddFormContent.bind(this));
+          this.viewFormToolbox();
+
+          if ($(nodeToFix).parents(".wpcf7-row").length != 0) {
+            // The cursor is inside a form row
+            this.traceFormRow = $(nodeToFix).parents(".wpcf7-row")[0];
+            this.viewRowToolbox();
+
+            if ($(nodeToFix).parents(".wpcf7-column").length != 0) {
+              // The cursor is inside a form column (and obviously row)
+              this.traceFormColumn = $(nodeToFix).parents(".wpcf7-column")[0];
+              this.viewColumnToolbox();
+            }
+          }
+        } else {
+          this.handleBlur(event);
+        }
+      }
+    },
 
     handleClickAddFormContent: function (event) {
       this.hideAllToolbars();
@@ -2115,121 +2147,17 @@ var TextEditor = (function ($) {
     handleClickDeleteFormColumn: function (event) {
       this.hideColumnToolbox();
 
-      // var $formColumnToDelete = $(this.traceFormColumn);
-      // $formColumnToDelete.empty();
-      // var $plusButton = tmpl("tmpl-plus-button-inside-wpcf7-row", {});
-      // $formColumnToDelete.append($plusButton);
-
       var formID = $(this.traceForm).parents(".rex-element-wrapper").attr("data-rex-element-id");
       var $columnToDelete = $(this.traceFormColumn);
       Rexbuilder_Rexwpcf7.deleteColumnContent(formID, $columnToDelete);
 
       this.placeFormToolbox();
-      // this.saveColumnContentChanges();
     },
 
     handleBlur: function (event) {
       if ($(event.target).parents(".wpcf7").length == 0 && $(event.target).parents(".rexwpcf7-tools").length == 0 && $(event.target).parents(".rexwpcf7-row-tools").length == 0 && $(event.target).parents(".rexwpcf7-column-tools").length == 0) {
         this.hideAllToolbars();
       }
-    },
-
-    /////////////////////
-    /* OTHER FUNCTIONS */
-    /////////////////////
-
-    traceInputForm: function (event) {
-      if ("click" == event.type) {
-        // Check if cursor is inside a form
-        var nodeToFix = MediumEditor.selection.getSelectionStart(this.base.options.ownerDocument);
-        if ($(nodeToFix).parents(".wpcf7-form").length != 0) {
-          this.traceForm = $(nodeToFix).parents(".wpcf7-form")[0];
-          this.addFormContentBtns = $(this.traceForm).find(".wpcf7-add-new-form-content");
-          this.on(this.addFormContentBtns, "click", this.handleClickAddFormContent.bind(this));
-          this.viewFormToolbox();
-
-          if ($(nodeToFix).parents(".wpcf7-row").length != 0) {
-            // The cursor is inside a form row
-            this.traceFormRow = $(nodeToFix).parents(".wpcf7-row")[0];
-            this.viewRowToolbox();
-
-            if ($(nodeToFix).parents(".wpcf7-row").length != 0) {
-              // The cursor is inside a form column (and obviously row)
-              this.traceFormColumn = $(nodeToFix).parents(".wpcf7-column")[0];
-              this.viewColumnToolbox();
-            }
-          }
-        } else {
-          this.handleBlur(event);
-        }
-      }
-    },
-
-    saveColumnContentChanges: function () {
-      var $formToSave = $(this.traceForm);
-      var rowNumberToSave = $(this.traceFormRow).attr("wpcf7-row-number");
-      var columnNumberToSave = $(this.traceFormColumn).attr("wpcf7-column-number");
-      var formID = $formToSave.parents(".rex-element-wrapper").attr("data-rex-element-id");
-      var $toSave = $formToSave.find(".wpcf7-row[wpcf7-row-number='" + rowNumberToSave + "']").find(".wpcf7-column[wpcf7-column-number='" + columnNumberToSave + "']").clone();
-      var that = this;
-
-      $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: _plugin_frontend_settings.rexajax.ajaxurl,
-        data: {
-          action: "rex_wpcf7_get_form",
-          nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-          form_id: formID
-        },
-        success: function(response) {
-          if (response.success) {
-            var $formRowsInDB = $(response.data.html_form.toString());
-
-            // Clearing the linefeeds
-            $formRowsInDB = $formRowsInDB.filter(function (){
-              return !("undefined" == typeof this.outerHTML);
-            });
-
-            $formRowsInDB.each(function() {
-              if($(this).attr("wpcf7-row-number") == rowNumberToSave) {
-                $(this).find(".wpcf7-column[wpcf7-column-number='" + columnNumberToSave + "']").replaceWith($toSave);
-              }
-            });
-
-            that.saveDBChanges($formRowsInDB);
-          }
-        },
-        error: function(response) {}
-      });
-    },
-
-    saveDBChanges: function ($formRowsToSave) {
-      var formID = $(this.traceForm).parents(".rex-element-wrapper").attr("data-rex-element-id");
-      var formRowsToSaveString = "";
-      var that = this;
-
-      $formRowsToSave.each(function(){
-        formRowsToSaveString += this.outerHTML;
-      });
-
-      $.ajax({
-        type: "POST",
-        dataType: "json",
-        url: _plugin_frontend_settings.rexajax.ajaxurl,
-        data: {
-          action: "rex_wpcf7_save_changes",
-          nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
-          form_id: formID,
-          new_form_string: formRowsToSaveString
-        },
-        success: function(response) {
-          if (response.success) {
-            formRowsToSaveString = "";
-          }
-        },
-        error: function(response) {}
-      });
     },
 
     //////////////////////////

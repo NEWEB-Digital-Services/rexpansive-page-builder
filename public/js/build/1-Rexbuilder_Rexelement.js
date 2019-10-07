@@ -350,6 +350,8 @@ var Rexbuilder_Rexelement = (function ($) {
 
     var _addFormData = function ($formToAddData) {
         var formID = $formToAddData.parents(".rex-element-wrapper").attr("data-rex-element-id");
+        // var $elementWrapper = $formToAddData.parents(".rex-element-wrapper");
+        var $elementWrappers = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper");
 
         $.ajax({
             type: "POST",
@@ -375,7 +377,10 @@ var Rexbuilder_Rexelement = (function ($) {
                         $formToAddData.prepend($wpcf7Data);
                     }
 
-                    Rexbuilder_Rexwpcf7.addFormStyle($formToAddData);
+                    if ($elementWrappers.find(".rex-wpcf7-form-data").length == 1) {
+                    	// Adds form style only the first time a span data element is inserted
+                    	Rexbuilder_Rexwpcf7.addFormStyle($formToAddData);
+                    }
                 }
             },
             error: function(response) {}
