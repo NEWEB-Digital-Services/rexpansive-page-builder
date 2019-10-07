@@ -572,7 +572,7 @@ var Rexbuilder_App = (function($) {
     }
 
     // autoplay sliders
-    RexSlider.startAutoPlay();
+    RexSlider.startAutoPlay();    
 
     /* -- Launching TextResize ------ */
     //$grids.textResize();

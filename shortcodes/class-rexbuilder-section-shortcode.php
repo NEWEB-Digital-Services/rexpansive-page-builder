@@ -162,6 +162,10 @@ class Rexbuilder_Section
         $bg_video_toggle_audio_markup = "";
 
         if ( false !== $video_has_audio ) {
+            $bg_video_toggle_audio_markup .= '<div class="rex-video-toggle-play-pause">';
+            $bg_video_toggle_audio_markup .= '<div class="rex-video-toggle-play"></div>';
+            $bg_video_toggle_audio_markup .= '<div class="rex-video-toggle-pause"></div>';
+            $bg_video_toggle_audio_markup .= '</div>';
             $bg_video_toggle_audio_markup .= '<div class="rex-video-toggle-audio">';
             $bg_video_toggle_audio_markup .= '<div class="rex-video-toggle-audio-shadow"></div>';
             $bg_video_toggle_audio_markup .= '</div>';
