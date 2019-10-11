@@ -1143,10 +1143,7 @@ var Rexbuilder_Util = (function($) {
       defaultLayoutSections,
       chosenLayoutName
     );
-    /*         
-                console.log("defaultLayoutSections", jQuery.extend(true, [], defaultLayoutSections));
-                console.log("layoutSelectedSections", jQuery.extend(true, [], layoutSelectedSections));
-         */
+
     //fixing models numbers
     var modelsNumbers = [];
     var flagModel;
@@ -3123,6 +3120,8 @@ var Rexbuilder_Util = (function($) {
           Rexbuilder_Util.firstResize = false;
         }
 
+        liveDebugger();
+
         if( loadWidth !== Rexbuilder_Util.viewport().width ) {
           clearTimeout(timeout);
           timeout = setTimeout(Rexbuilder_Util.doneResizing, 1000);
@@ -3175,6 +3174,7 @@ var Rexbuilder_Util = (function($) {
 
       if(this.changedFrontLayout) {
         var choosedLayout = chooseLayout();
+        console.log(choosedLayout);
         _set_initial_grids_state( choosedLayout );
 
         setTimeout(function() {
@@ -3192,6 +3192,8 @@ var Rexbuilder_Util = (function($) {
           }
 
           this.changedFrontLayout = false;
+
+          liveDebugger();
         }, 300);
       } else {
         var l = chooseLayout();
@@ -3202,7 +3204,18 @@ var Rexbuilder_Util = (function($) {
 
     Rexbuilder_Util.windowIsResizing = false;
     Rexbuilder_Util.firstResize = true;
-    loadWidth =  Rexbuilder_Util.viewport().width;
+    loadWidth =  Rexbuilder_Util.viewport().width;    
+  }
+
+  window.liveDebugger = function() {
+    [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section') ).forEach(function(section) {
+      console.log(section.querySelector('.section-data' ).getAttribute('data-layout'));
+      console.log(section.querySelector('.perfect-grid-gallery' ).getAttribute('data-layout'));
+      [].slice.call( section.querySelectorAll('.perfect-grid-item') ).forEach(function(block) {
+        console.log("\t" + block.getAttribute('data-gs-width') + ' x ' + block.getAttribute('data-gs-height'));
+      })
+      console.log('----');
+    })
   }
 
   /**
@@ -3216,7 +3229,6 @@ var Rexbuilder_Util = (function($) {
     if( Rexbuilder_Util.rexContainer ) {
       var rows = [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section') );
       rows.forEach(function( row, index ) {
-      // Rexbuilder_Util.$rexContainer.find(".rexpansive_section").each(function(index, row) {
         var $row = $(row);
         var $grid = $row.find('.grid-stack-row');
         var galleryEditorInstance = $grid.data().plugin_perfectGridGalleryEditor;
@@ -3251,6 +3263,7 @@ var Rexbuilder_Util = (function($) {
             state.push(temp);
           }
         }
+
         galleryEditorInstance.set_grid_initial_state(state);
       });
     }

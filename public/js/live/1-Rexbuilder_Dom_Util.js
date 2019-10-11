@@ -158,9 +158,10 @@ var Rexbuilder_Dom_Util = (function($) {
     $galleryElement.attr("data-row-separator-left", separatorLeft);
     $galleryElement.attr("data-layout", layout);
     $galleryElement.attr("data-full-height", fullHeight);
-
+    console.log('going from here',layout)
     $sectionData.attr("data-section_width", sectionWidth);
     $sectionData.attr("data-dimension", widthType);
+    // $sectionData.attr("data-layout", layout);
     $sectionData.attr("data-responsive_collapse", collapseElements);
 
     $section.attr("data-rex-collapse-grid", collapseElements);
@@ -173,7 +174,7 @@ var Rexbuilder_Dom_Util = (function($) {
       }
     }
 
-    // update row tools: dimension, layout and collapse
+    // update row tools: layout, layout and collapse
     if ( Rexbuilder_Util.editorMode )
     {
       Rexbuilder_Section_Editor.updateSectionDimensionTool( $section, rowSettings );

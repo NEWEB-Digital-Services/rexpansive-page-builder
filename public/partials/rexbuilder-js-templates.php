@@ -407,7 +407,7 @@ $tool_button_classes = 'tool-button';
             <span class="meditor-color-picker--preview"></span>
         </button>
     </li>
-    <li style="display:none;">
+    <li>
       <button class="medium-editor-action me-svg-replace">
         <i class="fa fa-pencil"></i>
       </button>

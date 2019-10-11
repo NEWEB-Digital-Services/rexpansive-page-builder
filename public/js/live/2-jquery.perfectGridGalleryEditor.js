@@ -378,7 +378,7 @@
     updateGridSettingsChangeLayout: function(newSettings) {
       //Presuppongo che gridstack sia in batchmode
       //console.log("updating grid " + this.properties.sectionNumber);
-      //console.log(newSettings);
+      console.log(newSettings);
       this.properties.firstStartGrid = true;
 
       this.$element.removeClass("grid-number-" + this.properties.sectionNumber);

@@ -182,6 +182,7 @@ var TextEditor = (function ($) {
           $picker_preview.css('background-color',to_set);
         }
         Rexbuilder_Color_Palette.hide();
+        editorInstance.getExtensionByName('insert-media').hideAllToolbars();
       },
     });
 
@@ -1610,7 +1611,7 @@ var TextEditor = (function ($) {
       this.subscribe("rexlive:mediumEditor:inlineVideoEditor:Transfer", this.getEmbedCode.bind(this));
 
       // insert the SVG html tag
-      this.subscribe("rexlive:mediumEditor:inlineSVG:transfer", this.handleInlineSVGInsert.bind(this));
+      this.subscribe("rexlive:mediumEditor:inlineSVG:transfer", this.handleInlineSVGInsertReplace.bind(this));
 
       // Function that verifies the deletion of images and inline videos. -A
       this.subscribe("editableKeydown", this.handleRemoveInlineElement.bind(this));
@@ -2479,8 +2480,7 @@ var TextEditor = (function ($) {
      * @since 2.0.0
      * @date 27-02-2019
      */
-    handleInlineSVGInsert: function(event)
-    {
+    handleInlineSVGInsertReplace: function(event) {
       // Get the icon HTML
       // var icon_html = tmpl('tmpl-insert-inline-svg',{
       //   class: event.svg_class,
@@ -2498,18 +2498,19 @@ var TextEditor = (function ($) {
 
       var replacing = false;
       if( this.traceSVG ) {
-        var restoreRange = rangy.createRange();
-        restoreRange.selectNode(this.traceSVG);
-        range = restoreRange;
+        this.traceSVG.setAttribute('xlink:href', '#' + event.svg_ID);
+        // var restoreRange = rangy.createRange();
+        // restoreRange.selectNode(this.traceSVG);
+        // range = restoreRange;
         replacing = true;
-        rangy.dom.removeNode(this.traceSVG);
+        // rangy.dom.removeNode(this.traceSVG);
       }
 
       // If valid range retrieved
       if( range ) {
         if ( replacing )
         {
-          range.pasteHtml(icon_html);
+          // range.pasteHtml(icon_html);
         }
         else
         {
@@ -2543,6 +2544,9 @@ var TextEditor = (function ($) {
           }
         }
       }
+
+      this.hideAllToolbars();
+      this.mediaBtn.style.display = "none";
     }
   });
 
