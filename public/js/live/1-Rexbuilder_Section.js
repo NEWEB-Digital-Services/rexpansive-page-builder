@@ -868,7 +868,7 @@ var Rexbuilder_Section = (function($) {
         rowSeparatorRight: 20,
         rowSeparatorLeft: 20
       };
-      console.log(new_row_defaults);
+      
       var newSection = tmpl("tmpl-new-section", new_row_defaults);
 
       var $newSection = $(newSection);

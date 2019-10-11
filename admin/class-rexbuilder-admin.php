@@ -157,15 +157,17 @@ class Rexbuilder_Admin {
 				ARRAY_A
 			);
 
-			// save from baackend original status
-			$original_savedFromBackend = get_post_meta( $result['element_id'], '_save_from_backend', true );
-			update_post_meta( $obj['element_id'], '_save_from_backend', $original_savedFromBackend );
-			// original shortcode
-			$original_shortcode = get_post_meta( $result['element_id'], '_rexbuilder_shortcode', true );
-			update_post_meta( $obj['element_id'], '_rexbuilder_shortcode', $original_shortcode );
-			// original CSS
-			$original_customCSS = get_post_meta( $result['element_id'], '_rexbuilder_custom_css', true );
-			update_post_meta( $obj['element_id'], '_rexbuilder_custom_css', $original_customCSS );
+			if ( !empty( $result ) ) {
+				// save from baackend original status
+				$original_savedFromBackend = get_post_meta( $result['element_id'], '_save_from_backend', true );
+				update_post_meta( $obj['element_id'], '_save_from_backend', $original_savedFromBackend );
+				// original shortcode
+				$original_shortcode = get_post_meta( $result['element_id'], '_rexbuilder_shortcode', true );
+				update_post_meta( $obj['element_id'], '_rexbuilder_shortcode', $original_shortcode );
+				// original CSS
+				$original_customCSS = get_post_meta( $result['element_id'], '_rexbuilder_custom_css', true );
+				update_post_meta( $obj['element_id'], '_rexbuilder_custom_css', $original_customCSS );
+			}
 		}
 	}
 
