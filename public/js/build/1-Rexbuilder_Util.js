@@ -18,7 +18,7 @@ var Rexbuilder_Util = (function($) {
   var sectionIDSused;
   var frontAvailableLayouts;
   var startFrontLayout;
-  // var changedFrontLayout;
+  var changedFrontLayout;
 
   var loadWidth;
 
@@ -1123,13 +1123,8 @@ var Rexbuilder_Util = (function($) {
     var layoutDataModels = _getModelsCustomizations();
     var defaultLayoutSections;
 
-    if (
-      $defaultLayoutState.attr("data-empty-default-customization") == "true"
-    ) {
-      defaultLayoutSections = _getDefaultPageLayout(
-        layoutDataPage,
-        layoutDataModels
-      );
+    if ( $defaultLayoutState.attr("data-empty-default-customization") == "true" ) {
+      defaultLayoutSections = _getDefaultPageLayout( layoutDataPage, layoutDataModels );
       _createDefaultLayoutState(defaultLayoutSections);
     } else {
       _updateDefaultLayoutState({
@@ -1177,17 +1172,9 @@ var Rexbuilder_Util = (function($) {
       layoutSelectedSections,
       defaultLayoutSections
     );
-    // console.log($.extend(true, {}, mergedEdits));
+
     // removing collapsed from grid
     Rexbuilder_Util.removeCollapsedGrids();
-    /* 
-      console.log("layoutDataPage", layoutDataPage);
-      console.log("layoutDataModels", layoutDataModels);
-      console.log("sectionsPage", sectionsPage);
-      console.log("layoutSelectedSections", layoutSelectedSections);
-      console.log("defaultLayoutSections", defaultLayoutSections);
-    */
-    // console.log("mergedEdits", mergedEdits);
 
     Rexbuilder_Util.domUpdaiting = true;
     var forceCollapseElementsGrid = false;
@@ -1229,7 +1216,7 @@ var Rexbuilder_Util = (function($) {
         }
       }
     });
-    // console.log("dom applied order", jQuery.extend(true, [], sectionDomOrder));
+    
     Rexbuilder_Dom_Util.fixSectionDomOrder(sectionDomOrder, true);
 
     Rexbuilder_Util.domUpdaiting = false;
@@ -1278,6 +1265,7 @@ var Rexbuilder_Util = (function($) {
         galleryEditorInstance.batchGridstack();
       }
     }
+
     for (var i = 1, tot_targets = targets.length; i < tot_targets; i++) {
       if (!targets[i].notDisplay || Rexbuilder_Util.activeLayout == "default") {
         var targetName = targets[i].name;
@@ -1296,16 +1284,12 @@ var Rexbuilder_Util = (function($) {
         var $el = $gallery.children(
           'div[data-rexbuilder-block-id="' + targetName + '"]'
         );
-        if ($el.length != 0) {
-          // console.log("che me ne facico di lui");
-          //                    $el.remove();
-        }
+        if ($el.length != 0) {}
       }
     }
 
     updateSection( $section, $gallery, targets[0].props, forceCollapseElementsGrid );
-    if( Rexbuilder_Util.editorMode )
-    {
+    if( Rexbuilder_Util.editorMode ) {
       updateSectionTools( $section, $gallery, targets[0].props, forceCollapseElementsGrid );
     }
     var collapse =
@@ -1314,10 +1298,9 @@ var Rexbuilder_Util = (function($) {
         : targets[0].props.collapse_grid.toString() == "true" ||
           forceCollapseElementsGrid;
 
-    if (galleryData !== undefined) {
-      var galleryEditorInstance = $gallery.data()
-        .plugin_perfectGridGalleryEditor;
-      if (galleryEditorInstance !== undefined) {
+    if ( galleryData !== undefined ) {
+      var galleryEditorInstance = $gallery.data().plugin_perfectGridGalleryEditor;
+      if ( galleryEditorInstance !== undefined ) {
         Rexbuilder_Util.domUpdaiting = true;
 
         galleryEditorInstance.properties.gridstackInstance.commit();
@@ -1356,7 +1339,9 @@ var Rexbuilder_Util = (function($) {
                 // if (Rexbuilder_Util.editorMode) {
                   // galleryEditorInstance.createScrollbars();
                 // }
-                galleryEditorInstance._updateElementsSizeViewers();
+                if ( Rexbuilder_Util.editorMode ) {
+                  galleryEditorInstance._updateElementsSizeViewers();
+                }
                 Rexbuilder_Util.playAllVideos();
                 setTimeout(
                   function() {
@@ -3120,8 +3105,6 @@ var Rexbuilder_Util = (function($) {
           Rexbuilder_Util.firstResize = false;
         }
 
-        liveDebugger();
-
         if( loadWidth !== Rexbuilder_Util.viewport().width ) {
           clearTimeout(timeout);
           timeout = setTimeout(Rexbuilder_Util.doneResizing, 1000);
@@ -3167,21 +3150,20 @@ var Rexbuilder_Util = (function($) {
     } else {    // Front end resize logic
       var actualLayout = _findFrontLayout();
       if(startFrontLayout != actualLayout) {
-        this.changedFrontLayout = true;
+        Rexbuilder_Util.changedFrontLayout = true;
         startFrontLayout = actualLayout;
         Rexbuilder_Util_Editor.startLoading();
       }
 
-      if(this.changedFrontLayout) {
+      if(Rexbuilder_Util.changedFrontLayout) {
         var choosedLayout = chooseLayout();
-        console.log(choosedLayout);
         _set_initial_grids_state( choosedLayout );
 
         setTimeout(function() {
           var resize_info = _edit_dom_layout(choosedLayout);
           _updateGridsHeights();
   
-          if(this.changedFrontLayout) {
+          if(Rexbuilder_Util.changedFrontLayout) {
             if( 0 == resize_info.collapse_needed ) {
               Rexbuilder_Util_Editor.endLoading();
             } else {
@@ -3191,9 +3173,7 @@ var Rexbuilder_Util = (function($) {
             }
           }
 
-          this.changedFrontLayout = false;
-
-          liveDebugger();
+          Rexbuilder_Util.changedFrontLayout = false;
         }, 300);
       } else {
         var l = chooseLayout();
@@ -3205,17 +3185,6 @@ var Rexbuilder_Util = (function($) {
     Rexbuilder_Util.windowIsResizing = false;
     Rexbuilder_Util.firstResize = true;
     loadWidth =  Rexbuilder_Util.viewport().width;    
-  }
-
-  window.liveDebugger = function() {
-    [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section') ).forEach(function(section) {
-      console.log(section.querySelector('.section-data' ).getAttribute('data-layout'));
-      console.log(section.querySelector('.perfect-grid-gallery' ).getAttribute('data-layout'));
-      [].slice.call( section.querySelectorAll('.perfect-grid-item') ).forEach(function(block) {
-        console.log("\t" + block.getAttribute('data-gs-width') + ' x ' + block.getAttribute('data-gs-height'));
-      })
-      console.log('----');
-    })
   }
 
   /**
@@ -3288,8 +3257,6 @@ var Rexbuilder_Util = (function($) {
           galleryEditorInstance.updateGridstackStyles();
           galleryEditorInstance.updateBlocksHeight();
           galleryEditorInstance.commitGridstack();
-          // waiting for gridstack commit
-          // setTimeout(galleryEditorInstance.createScrollbars(), 200);
         }
 
         // Triggering event after a row resize
@@ -3854,7 +3821,7 @@ var Rexbuilder_Util = (function($) {
       this.editorMode = true;
     } else {
       this.editorMode = false;
-      this.changedFrontLayout = false;
+      Rexbuilder_Util.changedFrontLayout = false;
       var $availableDims = $("#layout-avaiable-dimensions");
       frontAvailableLayouts = ( $availableDims.length > 0 ? JSON.parse( $availableDims.text() ) : [] );
       startFrontLayout = _findFrontLayout();
@@ -3915,6 +3882,7 @@ var Rexbuilder_Util = (function($) {
     };
     this.galleryPluginActive = false;
     this.firstStart = false;
+    Rexbuilder_Util.changedFrontLayout = false;
 
     loadWidth = Rexbuilder_Util.viewport().width;
   };
@@ -4006,6 +3974,7 @@ var Rexbuilder_Util = (function($) {
     diffStrings: _diffStrings,
     applyDefaultBlocksDimentions: _applyDefaultBlocksDimentions,
     isMobile: _isMobile,
-    cssPropertyValueSupported: _cssPropertyValueSupported
+    cssPropertyValueSupported: _cssPropertyValueSupported,
+    changedFrontLayout: changedFrontLayout
   };
 })(jQuery);
