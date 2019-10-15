@@ -2972,15 +2972,31 @@
     calculateBlockHeight: function(el) {
       var elData = el.querySelector('.rexbuilder-block-data');
       var textWrap = el.querySelector('.text-wrap');
+      var imgWrap = el.querySelector('.rex-image-wrapper');
+      var itemContent = el.querySelector('.grid-item-content');
+
       var hasText = false;
+      var hasImage = false;
+      var resizeNeeded = false;
+
+      var elRealFluid = parseInt( elData.getAttribute('data-element_real_fluid') );
+
       var spaceNeeded = 0;
       var originalW = parseInt( el.getAttribute('data-gs-width') );
       var originalH = parseInt( el.getAttribute('data-gs-height'));
-      var elRealFluid = parseInt( elData.getAttribute('data-element_real_fluid') );
       var spaceAvailable = originalH * this.properties.singleHeight;
       var newH = originalH;
+
+      var swGrid = this.properties.singleWidth;
+      var sw;
+
+      if ( this.properties.oneColumModeActive ) {
+        sw = this.element.offsetWidth * this.settings.gridItemWidth;
+      } else {
+        sw = swGrid;
+      }
+
       var gridstack = this.properties.gridstackInstance;
-      var resizeNeeded = false;
 
       if ( textWrap ) {
         if ( textWrap.innerText.trim().length > 0 && textWrap.childElementCount > 0 ) {
@@ -2989,22 +3005,21 @@
         }
       }
 
-      console.group('newH');
-      console.log(elRealFluid);
-      console.log(spaceNeeded > spaceAvailable);
-      console.log(1 == elRealFluid);
-      console.log("masonry" === this.settings.galleryLayout);
-      console.groupEnd('newH');
+      if ( imgWrap ) {
+        var imgWidth = parseInt( itemContent.getAttribute("data-background_image_width") );
+        var imgHeight = parseInt( itemContent.getAttribute("data-background_image_height") );
+        if ( el.offsetWidth < imgWidth ) {
+          spaceNeeded = ( imgHeight * originalW * sw ) / imgWidth;
+        } else {
+          spaceNeeded = imgHeight + this.properties.gutter;
+        }
+      }
 
-      // if ( hasText ) {
-      //   if ( ( spaceNeeded > spaceAvailable ) || ( 1 == elRealFluid && "masonry" === this.settings.galleryLayout ) ) {
-      //     newH = Math.ceil( spaceNeeded / this.properties.singleHeight );
-      //     resizeNeeded = true;
-      //   } 
-      // }
-
-      if ( spaceNeeded > spaceAvailable ) {
-        newH = Math.ceil( spaceNeeded / this.properties.singleHeight );
+      if ( spaceNeeded > spaceAvailable || ( 1 == elRealFluid && "masonry" === this.settings.galleryLayout ) ) {
+        console.log( el.offsetWidth, imgWidth );
+        // el.style.backgroundColor = 
+        // newH = the space needed founded, plus the gutter, divided the single height of the actual grid
+        newH = Math.ceil( ( spaceNeeded + this.properties.gutter ) / this.properties.singleHeight );
         resizeNeeded = true;
       }
 
