@@ -21,8 +21,12 @@ var TextEditor = (function ($) {
 
   var toolbarActiveOnRexbutton;
 
-  var _addElementToTextEditor = function ($textWrap) {
-    editorInstance.addElements($textWrap);
+  /**
+   * Add element to text editor instance
+   * @param {Node} textWrap element that becomes editable
+   */
+  var _addElementToTextEditor = function ( textWrap ) {
+    editorInstance.addElements( textWrap );
     // _addMediumInsertToElement($textWrap);
   };
 
@@ -186,8 +190,8 @@ var TextEditor = (function ($) {
       },
     });
 
-    Rexbuilder_Util_Editor_Utilities.addSpectrumCustomSaveButton($picker);
-    Rexbuilder_Util_Editor_Utilities.addSpectrumCustomCloseButton($picker);
+    Rexbuilder_Live_Utilities.addSpectrumCustomSaveButton($picker);
+    Rexbuilder_Live_Utilities.addSpectrumCustomCloseButton($picker);
 
     $picker.spectrum("container").draggable();
   };
@@ -1312,8 +1316,13 @@ var TextEditor = (function ($) {
 
     handleEventKeyDown: function (event, target) {
       var nodeToFix = MediumEditor.selection.getSelectionStart(this.base.options.ownerDocument);
-      var mediumEditorOffsetLeft = MediumEditor.selection.getCaretOffsets(nodeToFix).left;
-      var mediumEditorOffsetRight = MediumEditor.selection.getCaretOffsets(nodeToFix).right;
+      var mediumEditorOffsetLeft = null;
+      var mediumEditorOffsetRight
+
+      if ( nodeToFix ) {
+        mediumEditorOffsetLeft = MediumEditor.selection.getCaretOffsets(nodeToFix).left;
+        mediumEditorOffsetRight = MediumEditor.selection.getCaretOffsets(nodeToFix).right;
+      }
 
       if (MediumEditor.util.isKey(event, this.keyCode.BACKSPACE) &&
         (window.getSelection().focusOffset == 0 || window.getSelection().focusOffset == 1)) {
@@ -2427,17 +2436,17 @@ var TextEditor = (function ($) {
                   //wrapSetAsActive.className = "overlay-status-set-active";
                   //wrapElement.appendChild(wrapSetAsActive);
                   that.wrap( videoNode, wrapElement);
-                    var $elem = $(elem).parents(".grid-stack-item");  
-                    // var galleryInstance = $elem.parent().data()
-                    //  .plugin_perfectGridGalleryEditor;
-                    // galleryInstance.fixElementTextSize($elem[0], null, null);             
-                    var data = {
-                      eventName: "rexlive:edited",
-                      modelEdited: $elem
-                        .parents(".rexpansive_section")
-                        .hasClass("rex-model-section")
-                    };
-                    Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+                  var $elem = $(elem).parents(".grid-stack-item");  
+                  // var galleryInstance = $elem.parent().data()
+                  //  .plugin_perfectGridGalleryEditor;
+                  // galleryInstance.fixElementTextSize($elem[0], null, null);        
+                  var data = {
+                    eventName: "rexlive:edited",
+                    modelEdited: $elem
+                      .parents(".rexpansive_section")
+                      .hasClass("rex-model-section")
+                  };
+                  Rexbuilder_Util_Editor.sendParentIframeMessage(data);
                           
                 }
               }

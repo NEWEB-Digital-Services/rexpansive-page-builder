@@ -1490,102 +1490,58 @@
     },
 
     updateElementAllProperties: function(elem) {
-      this._updateElementSize(elem, "x");
-      this._updateElementSize(elem, "y");
-      this._updateElementSize(elem, "w");
-      this._updateElementSize(elem, "h");
-    },
-
-    _updateElementSize: function(elem, $case) {
       var block = elem;
-      var $block = $(elem);
       var width = this.properties.singleWidth;
-      var size;
-      var $dataBlock = $block.children(".rexbuilder-block-data");
-      switch ($case) {
-        case "x": {
-          size = parseInt(block["attributes"]["data-gs-x"].value);
+      var x_size;
+      var y_size;
+      var dataBlock = block.querySelector( '.rexbuilder-block-data' );
+      
+      // col
+      x_size = parseInt( block.getAttribute('data-gs-x') );
 
-          // gridster works 1 to n not 0 to n-1
-          size = size + 1;
+      // gridster works 1 to n not 0 to n-1
+      x_size = x_size + 1;
 
-          block["attributes"]["data-col"].value = size;
-          $dataBlock.attr({
-            "data-col": size
-          });
-          break;
-        }
-        case "y": {
-          if (this.settings.galleryLayout == "masonry") {
-            //var oldSize = block['attributes']['data-row'].value - 1;
-            size = Math.floor(
-              (parseInt(block["attributes"]["data-gs-y"].value) *
-                this.properties.singleHeight) /
-                width
-            );
-          } else {
-            size = parseInt(block["attributes"]["data-gs-y"].value);
-          }
-
-          // gridster works 1 to n not 0 to n-1
-          size = size + 1;
-          block["attributes"]["data-row"].value = size;
-          $dataBlock.attr({
-            "data-row": size
-          });
-          break;
-        }
-        case "w": {
-          var w = parseInt(block["attributes"]["data-gs-width"].value);
-          var oldW = block["attributes"]["data-width"].value;
-          block["attributes"]["data-width"].value = w;
-          // updating element class
-          $block.removeClass("w" + oldW);
-          $block.addClass("w" + w);
-          $dataBlock.attr({
-            "data-size_x": w
-          });
-          break;
-        }
-        case "h": {
-          var h;
-          var oldH = block["attributes"]["data-height"].value;
-          if (this.settings.galleryLayout == "masonry") {
-            h = Math.round(
-              (parseInt(block["attributes"]["data-gs-height"].value) *
-                this.properties.singleHeight) /
-                width
-            );
-          } else {
-            h = parseInt(block["attributes"]["data-gs-height"].value);
-          }
-          block["attributes"]["data-height"].value = h;
-
-          this.updateElementDataHeightProperties(
-            $dataBlock[0],
-            parseInt(block["attributes"]["data-gs-height"].value)
-          );
-          // updating element class
-          $block.removeClass("h" + oldH);
-          $block.addClass("h" + h);
-          $dataBlock.attr({
-            "data-size_y": h
-          });
-          if (
-            $block
-              .find("." + Rexbuilder_Util.scrollbarProperties.className)
-              .hasClass("os-host-overflow-y")
-          ) {
-            $dataBlock.attr("data-block_has_scrollbar", "true");
-          } else {
-            $dataBlock.attr("data-block_has_scrollbar", "false");
-          }
-          break;
-        }
-        default: {
-          break;
-        }
+      block.setAttribute( 'data-col', x_size );
+      dataBlock.setAttribute( 'data-col', x_size );
+        
+      if (this.settings.galleryLayout == "masonry") {
+        //var oldSize = block['attributes']['data-row'].value - 1;
+        y_size = Math.floor( ( parseInt( block.getAttribute('data-gs-y') ) * this.properties.singleHeight) / width );
+      } else {
+        y_size = parseInt( block.getAttribute('data-gs-y') );
       }
+
+      // row
+      // gridster works 1 to n not 0 to n-1
+      y_size = y_size + 1;
+      block.setAttribute( 'data-row', y_size );
+      dataBlock.setAttribute( 'data-row', y_size );          
+      
+      // width
+      var w = parseInt( block.getAttribute('data-gs-width') );
+      var oldW = block.getAttribute( 'data-width' );
+      block.setAttribute( 'data-width', w );
+      // updating element class
+      removeClass( block, 'w' + oldW );
+      addClass( block, 'w' + w );
+      dataBlock.setAttribute( 'data-size_x', w );
+      
+      // height
+      var h;
+      var oldH = block.getAttribute( 'data-height' );
+      if (this.settings.galleryLayout == "masonry") {
+        h = Math.round( ( parseInt( block.getAttribute('data-gs-height') ) * this.properties.singleHeight ) / width );
+      } else {
+        h = parseInt( block.getAttribute('data-gs-height') );
+      }
+      block.setAttribute( 'data-height', h );
+
+      this.updateElementDataHeightProperties( dataBlock, parseInt( block.getAttribute('data-gs-height') ) );
+      // updating element class
+      removeClass( block, 'h' + oldH );
+      addClass( block, 'h' + h );
+      dataBlock.setAttribute( 'data-size_y', h );
     },
 
     // Override options set by the jquery call with the html data
@@ -2360,7 +2316,7 @@
       items.forEach(function(el) {
         $block = $(el);
         gallery.updateSizeViewerSizes($block);
-        gallery.checkBlockDimension($block);
+        gallery.checkBlockDimension( el );
       });
     },
 
@@ -2418,36 +2374,33 @@
      * @since 2.0.0
      * @date 11-04-2019
      */
-    checkBlockDimension: function($block)
+    checkBlockDimension: function( block, block_width)
     {
       // checking block dimension to correctly display the tools
-      var block_width = $block[0].offsetWidth;
+      block_width = 'undefined' !== typeof w ? w : block.offsetWidth;
 
       if ( block_width < 190 ) 
       {
-        $block.addClass('ui-tools--view-mobile');
+        addClass( block, 'ui-tools--view-mobile' );
       }
       else
       {
-        $block.removeClass('ui-tools--view-mobile');
+        removeClass( block, 'ui-tools--view-mobile' );
       }
 
       if ( block_width < 100 )
       {
-        $block.addClass('ui-hide-mobile-size-viewer');
+        addClass( block, 'ui-hide-mobile-size-viewer' );
       }
       else
       {
-        $block.removeClass('ui-hide-mobile-size-viewer');
+        removeClass( block, 'ui-hide-mobile-size-viewer' );
       }
     },
 
     _linkResizeEvents: function() {
       var gallery = this;
       var block, xStart, wStart, xView, yView;
-      var startingElementHeight;
-      var startingElementWidth;
-      var $block;
       var imageWidth;
       var imageHeight;
 
@@ -2456,27 +2409,23 @@
       var needH;
       var currentWidth;
 
-      var $blockContent, blockContent;
-      var $uiElement;
+      var blockContent;
       var heightFactor;
-      var $imageWrapper;
+      var imageWrapper;
       var naturalImage;
-      var $elemData;
+      
       gallery.$element
         .on("resizestart", function(event, ui) {
-          $uiElement = $(ui.element);
-          if (!$uiElement.is("span")) {
+          // node element: event.target
+          // jquery element: ui.element
+
+          if (!ui.element.is("span")) {
             if (Rexbuilder_Util_Editor.editingElement) {
               Rexbuilder_Util_Editor.endEditingElement();
             }
             gallery.properties.resizeHandle = $(event.toElement).attr( "data-axis" );
             block = event.target;
-            startingElementHeight = ui.size.height;
-            startingElementWidth = Math.round( ui.size.width / gallery.properties.singleWidth );
-            $block = $(block);
-            $elemData = $block.find(".rexbuilder-block-data");
-            $blockContent = $block.find(".grid-item-content");
-            blockContent = block.querySelector('.grid-item-content');
+            blockContent = event.target.querySelector('.grid-item-content');
             imageWidth = isNaN( parseInt( blockContent.getAttribute("data-background_image_width")) )
               ? 0
               : parseInt( blockContent.getAttribute("data-background_image_width"));
@@ -2487,15 +2436,15 @@
               ? 0
               : parseInt( blockContent.getAttribute("data-background_image_height"));
 
-            $imageWrapper = $blockContent.find(".rex-image-wrapper");
-            naturalImage = $imageWrapper.length != 0 && $imageWrapper.hasClass("natural-image-background");
+            imageWrapper = blockContent.querySelector(".rex-image-wrapper");
+            naturalImage = null !== imageWrapper && hasClass( imageWrapper, "natural-image-background" );
             Rexbuilder_Util_Editor.elementIsResizing = true;
-            xStart = parseInt($block.attr("data-gs-x"));
+            xStart = parseInt(event.target.getAttribute("data-gs-x"));
             if ( gallery.properties.resizeHandle == "e" || gallery.properties.resizeHandle == "se" ) {
-              $block.attr( "data-gs-max-width", gallery.settings.numberCol - xStart );
+              event.target.setAttribute( "data-gs-max-width", gallery.settings.numberCol - xStart );
             } else if ( gallery.properties.resizeHandle == "w" || gallery.properties.resizeHandle == "sw"
             ) {
-              wStart = parseInt($block.attr("data-gs-width"));
+              wStart = parseInt(event.target.getAttribute("data-gs-width"));
             }
             textWrapHeightNeed = 0;
             imageHeightNeed = 0;
@@ -2503,20 +2452,22 @@
           }
         })
         .on("resize", function (event, ui) {
-          if (!$uiElement.is("span")) {
+          if (!ui.element.is("span")) {
             if (naturalImage) {
               if (ui.size.width < imageWidth) {
-                $imageWrapper.addClass("small-width");
+                addClass( imageWrapper, "small-width" );
               } else {
-                $imageWrapper.removeClass("small-width");
+                removeClass( imageWrapper, "small-width" );
               }
             }
-            gallery.updateSizeViewerText( block, Math.round(ui.size.width / gallery.properties.singleWidth), Math.round(ui.size.height / heightFactor) );
-            gallery.checkBlockDimension($block);
+            gallery.updateSizeViewerText( event.target, Math.round(ui.size.width / gallery.properties.singleWidth), Math.round(ui.size.height / heightFactor) );
+            if ( ui.originalSize.width !== ui.size.width ) {
+              gallery.checkBlockDimension(event.target, ui.size.width);
+            }
             // In masonry all images have not to be cut
             if (gallery.settings.galleryLayout == "masonry") {
               if(naturalImage){
-                currentWidth = $block.outerWidth();
+                currentWidth = event.target.offsetWidth;
                 if (currentWidth < imageWidth) {
                   imageHeightNeed = (imageHeight * ( currentWidth - gallery.properties.gutter ) ) / imageWidth;
                 } else {
@@ -2528,23 +2479,23 @@
               }
             }
             
-            textWrapHeightNeed = gallery.calculateTextWrapHeight($block.find(".text-wrap"));
+            textWrapHeightNeed = gallery.calculateTextWrapHeight(ui.element.find(".text-wrap"));
             needH = Math.max(textWrapHeightNeed, imageHeightNeed);
 
             if (gallery.settings.galleryLayout == "masonry") {
-              gallery.properties.gridstackInstance.minHeight(block, Math.round((needH + gallery.properties.gutter) / gallery.properties.singleHeight));
+              gallery.properties.gridstackInstance.minHeight(event.target, Math.round((needH + gallery.properties.gutter) / gallery.properties.singleHeight));
             } else {
-              gallery.properties.gridstackInstance.minHeight(block, Math.ceil((needH + gallery.properties.gutter) / gallery.properties.singleWidth));
+              gallery.properties.gridstackInstance.minHeight(event.target, Math.ceil((needH + gallery.properties.gutter) / gallery.properties.singleWidth));
             }
           }
         })
         .on("gsresizestop", function(event, elem) {
-          if (Rexbuilder_Util_Editor.elementIsResizing) {
-            gallery.updateSizeViewerText(block);
-            gallery.checkBlockDimension($block);
+          if (Rexbuilder_Util_Editor.elementIsResizing) {          
+            gallery.updateSizeViewerText(elem);
+            gallery.checkBlockDimension(elem);
             if (gallery.settings.galleryLayout == "masonry") {
 
-              block.setAttribute( "data-height", Math.round( block.getAttribute("data-gs-height") / gallery.properties.singleWidth ) );
+              elem.setAttribute( "data-height", Math.round( elem.getAttribute("data-gs-height") / gallery.properties.singleWidth ) );
               // @date 12-05-2019
               // Remove this proprerty set.
               // TODO Deeply check: is this correct?
@@ -2565,16 +2516,16 @@
               //     break;
               //   default: break;
               // }
-
-              $elemData.attr("data-element_real_fluid", ( block.getAttribute('data-gs-min-height') == block.getAttribute('data-gs-height') ? 1 : 0 ) );
+              elem.querySelector('.rexbuilder-block-data').setAttribute("data-element_real_fluid", ( elem.getAttribute('data-gs-min-height') == elem.getAttribute('data-gs-height') ? 1 : 0 ));
+              // $elemData.attr("data-element_real_fluid", ( elem.getAttribute('data-gs-min-height') == elem.getAttribute('data-gs-height') ? 1 : 0 ) );
             }
 
             gallery.updateAllElementsProperties();
             // if ( !$block.hasClass("block-has-slider") && !$blockContent.hasClass("block-has-slider") && !$blockContent.hasClass("youtube-player") ) {
-            //   gallery.fixElementTextSize( block, gallery.properties.resizeHandle, null );
+            //   gallery.fixElementTextSize( elem, gallery.properties.resizeHandle, null );
             // }
 
-            block.setAttribute("data-gs-max-width", 500);
+            elem.setAttribute("data-gs-max-width", 500);
             clearTimeout(gallery.doubleDownTimer);
             Rexbuilder_Util_Editor.elementIsDragging = false;
             Rexbuilder_Util_Editor.elementIsResizing = false;
@@ -2585,9 +2536,9 @@
 
             // if gs-min-height and gs-height are the same the user wants a real fluid masonry
             // I can trace this information
-            // console.log(block.getAttribute('data-gs-min-height'), block.getAttribute('data-gs-height'), block.getAttribute('data-gs-min-height') == block.getAttribute('data-gs-height'));
+            // console.log(elem.getAttribute('data-gs-min-height'), elem.getAttribute('data-gs-height'), elem.getAttribute('data-gs-min-height') == elem.getAttribute('data-gs-height'));
 
-            gallery.properties.gridstackInstance.minHeight( block, 1 );
+            gallery.properties.gridstackInstance.minHeight( elem, 1 );
 
             gallery.properties.gridstackInstance.batchUpdate();
             gallery.properties.gridstackInstance.commit();
@@ -3371,19 +3322,20 @@
      * @todo To be fixed by putting a single return
      */
     calculateTextWrapHeight: function( $textWrap ) {
-      if ($textWrap.hasClass("medium-editor-element")) {
+      var textWrap = $textWrap[0];
+      if ( hasClass( textWrap, "medium-editor-element" ) ) {
         var textHeight = 0;
         var $textWrapClone = $textWrap.clone(false);
         $textWrapClone.children(".medium-insert-buttons").remove();
-        if ($textWrapClone.text().trim().length != 0 || 0 !== $textWrapClone.find('img,iframe,i').length ) {
-          if ( ($textWrap.hasClass("medium-editor-element") && (!$textWrap.hasClass("medium-editor-placeholder") || $textWrap[0].childElementCount > 1)) || $textWrap.parents(".pswp-item").length != 0 ) {
+        if ( $textWrapClone.text().trim().length != 0 || 0 !== $textWrapClone.find('img,iframe,i').length ) {
+          if ( ( $textWrap.hasClass("medium-editor-element") && ( ! hasClass( textWrap, "medium-editor-placeholder" ) || textWrap.childElementCount > 1) ) || $textWrap.parents(".pswp-item").length != 0 ) {
             var gicwStyles = window.getComputedStyle( $textWrap.parents('.grid-item-content-wrap')[0] );
             textHeight = $textWrap.innerHeight() + Math.ceil(parseFloat(gicwStyles['padding-top'])) + Math.ceil(parseFloat(gicwStyles['padding-bottom']));
           }
         }
         return textHeight;
       } else {
-        if ( !$textWrap.parents('.perfect-grid-item').hasClass('block-has-slider') && ( $textWrap.text().trim().length != 0 || 0 !== $textWrap.find('img,iframe,i').length ) ) {
+        if ( !$textWrap.parents('.perfect-grid-item').hasClass('block-has-slider') && ( textWrap.textContent.trim().length != 0 || 0 !== $textWrap.find('img,iframe,i').length ) ) {
           var gicwStyles = window.getComputedStyle( $textWrap.parents('.grid-item-content-wrap')[0] );
           return $textWrap.innerHeight() + Math.ceil(parseFloat(gicwStyles['padding-top'])) + Math.ceil(parseFloat(gicwStyles['padding-bottom']));
         } else {

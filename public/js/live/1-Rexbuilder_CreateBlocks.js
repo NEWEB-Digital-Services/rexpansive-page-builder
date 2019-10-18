@@ -74,7 +74,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
     // if( Rexbuilder_Util_Editor.scrollbarsActive ) {
     //     galleryInstance.addScrollbar($el);
     // }
-    TextEditor.addElementToTextEditor($el.find(".text-wrap"));
+    TextEditor.addElementToTextEditor($el[0].querySelector(".text-wrap"));
 
     Rexbuilder_Block_Editor.updateBlockTools($el);
     Rexbuilder_Util_Editor.launchTooltips();
@@ -579,7 +579,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
     // Rexbuilder_Util_Editor.removeScrollBar($newBlock);
     Rexbuilder_Util_Editor.removeTextEditor($newBlock);
-    Rexbuilder_Util_Editor_Utilities.removeColorPicker($newBlock);
+    Rexbuilder_Live_Utilities.removeColorPicker($newBlock);
     galleryEditorInstance._prepareElement($newBlock[0]);
     galleryEditorInstance.unFocusElementEditing($newBlock);
 
@@ -697,7 +697,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
       // Rexbuilder_Util_Editor.removeScrollBar($newBlock);
       Rexbuilder_Util_Editor.removeTextEditor($newBlock);
-      Rexbuilder_Util_Editor_Utilities.removeColorPicker($newBlock);
+      Rexbuilder_Live_Utilities.removeColorPicker($newBlock);
       galleryEditorInstance._prepareElement($newBlock[0]);
       galleryEditorInstance.unFocusElementEditing($newBlock);
 
@@ -832,7 +832,7 @@ var Rexbuilder_CreateBlocks = (function ($) {
 
     // Rexbuilder_Util_Editor.removeScrollBar($newBlock);
     Rexbuilder_Util_Editor.removeTextEditor($newBlock);
-    Rexbuilder_Util_Editor_Utilities.removeColorPicker($newBlock);
+    Rexbuilder_Live_Utilities.removeColorPicker($newBlock);
     galleryEditorInstance._prepareElement($newBlock[0]);
     galleryEditorInstance.unFocusElementEditing($newBlock);
 

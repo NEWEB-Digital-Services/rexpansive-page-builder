@@ -469,6 +469,12 @@ var Rexbuilder_Section = (function($) {
         });
       }
 
+      // if the page remains empty
+      // make sure that the "add row" button is visible
+      if( 0 === Rexbuilder_Util.rexContainer.querySelectorAll(".rexpansive_section:not(.removing_section)").length ) {
+        Rexbuilder_Live_Utilities.activeAddSection();
+      }
+
       var actionData = {
         show: false,
         layoutsOrder:
@@ -555,7 +561,7 @@ var Rexbuilder_Section = (function($) {
         Rexbuilder_Dom_Util.updateLockEditModel($buttonModel, true);
       }
 
-      Rexbuilder_Util_Editor_Utilities.removeColorPicker($newSection);
+      Rexbuilder_Live_Utilities.removeColorPicker($newSection);
 
       // insert the copyed row
       $newSection.insertAfter($section);
