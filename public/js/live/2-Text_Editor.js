@@ -2435,11 +2435,12 @@ var TextEditor = (function ($) {
                   //var wrapSetAsActive = document.createElement("span");
                   //wrapSetAsActive.className = "overlay-status-set-active";
                   //wrapElement.appendChild(wrapSetAsActive);
-                  that.wrap( videoNode, wrapElement);
-                  var $elem = $(elem).parents(".grid-stack-item");  
-                  // var galleryInstance = $elem.parent().data()
-                  //  .plugin_perfectGridGalleryEditor;
-                  // galleryInstance.fixElementTextSize($elem[0], null, null);        
+                  that.wrap( videoNode, wrapElement );
+                  var $elem = $(that.traceEditor).parents(".grid-stack-item");
+
+                  var galleryInstance = $elem.parent().data().plugin_perfectGridGalleryEditor;
+                  galleryInstance.updateElementHeight( $elem );
+
                   var data = {
                     eventName: "rexlive:edited",
                     modelEdited: $elem
@@ -2447,7 +2448,6 @@ var TextEditor = (function ($) {
                       .hasClass("rex-model-section")
                   };
                   Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-                          
                 }
               }
             },

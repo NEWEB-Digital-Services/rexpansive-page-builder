@@ -18,7 +18,10 @@ SAFARI SLOW
 
 updateAllElementsProperties				X
 checkBlockDimension						X
+_updateDefaultLayoutStateSection		X~
+_pushAction								X
+createActionDataMoveBlocksGrid			X
 
-_updateDefaultLayoutStateSection
-_pushAction
-createActionDataMoveBlocksGrid
+
+calculateTextWrapHeight	[object Object]	6	25.212068974999056	0.008586763066705316		
+updateSizeViewerText	[object Object]	1	25.124948421000227	0.0013519867333444482		

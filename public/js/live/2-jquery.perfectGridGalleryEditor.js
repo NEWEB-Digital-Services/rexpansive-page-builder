@@ -307,30 +307,26 @@
       var blocksDimensions = [];
       var rexID;
 
-      this.$element
-        .children(
-          ".grid-stack-item:not(.grid-stack-placeholder, .removing_block)"
-        )
-        .each(function() {
-          var $elem = $(this);
-          rexID = $elem.attr("data-rexbuilder-block-id");
-          var x, y, w, h;
+      [].slice.call( this.element.querySelectorAll( '.grid-stack-item:not(.grid-stack-placeholder), .grid-stack-item:not(.removing_block)' ) ).forEach( function(el) {
+        rexID = el.getAttribute("data-rexbuilder-block-id");
+        var x, y, w, h;
 
-          x = parseInt($elem.attr("data-gs-x"));
-          y = parseInt($elem.attr("data-gs-y"));
-          w = parseInt($elem.attr("data-gs-width"));
-          h = parseInt($elem.attr("data-gs-height"));
-          var blockObj = {
-            rexID: rexID,
-            elem: this,
-            x: x,
-            y: y,
-            w: w,
-            h: h
-          };
-          // console.log(blockObj);
-          blocksDimensions.push(blockObj);
-        });
+        x = parseInt( el.getAttribute("data-gs-x") );
+        y = parseInt( el.getAttribute("data-gs-y") );
+        w = parseInt( el.getAttribute("data-gs-width") );
+        h = parseInt( el.getAttribute("data-gs-height") );
+        var blockObj = {
+          rexID: rexID,
+          elem: el,
+          x: x,
+          y: y,
+          w: w,
+          h: h
+        };
+        // console.log(blockObj);
+        blocksDimensions.push(blockObj);
+      });
+
       var actionData = {
         gridstackInstance: this.properties.gridstackInstance,
         blocks: blocksDimensions,
@@ -378,7 +374,6 @@
     updateGridSettingsChangeLayout: function(newSettings) {
       //Presuppongo che gridstack sia in batchmode
       //console.log("updating grid " + this.properties.sectionNumber);
-      console.log(newSettings);
       this.properties.firstStartGrid = true;
 
       this.$element.removeClass("grid-number-" + this.properties.sectionNumber);
@@ -804,8 +799,8 @@
       gs_items.forEach( function(e) {
         if (! hasClass(e, "removing_block") ) {
           el = e;
-          el.x = parseInt(e["attributes"]["data-gs-x"].value);
-          el.y = parseInt(e["attributes"]["data-gs-y"].value);
+          el.x = parseInt( e.getAttribute('data-gs-x') );
+          el.y = parseInt( e.getAttribute('data-gs-y') );
           nodes.push(el);
         }
       });
@@ -898,7 +893,7 @@
                 if (!Rexbuilder_Util_Editor.updatingPaddingBlock) {
                   var gridstack = this.properties.gridstackInstance;
                   gridstack.update(block, null, null, w, h);
-                  this.updateSizeViewerSizes($block);
+                  this.updateSizeViewerSizes(block);
                   this.properties.elementStartingH = h;
                 }
               }
@@ -2315,7 +2310,7 @@
       var $block;
       items.forEach(function(el) {
         $block = $(el);
-        gallery.updateSizeViewerSizes($block);
+        gallery.updateSizeViewerSizes(el);
         gallery.checkBlockDimension( el );
       });
     },
@@ -2326,7 +2321,9 @@
      * @since 2.0.0
      * @date 11-07-2019 Rewrite for vanilla JS
      */
-    updateSizeViewerText: function(elem, x, y) {
+    updateSizeViewerText: function(elem, x, y, size_viewer, size_viewer_mobile) {
+      size_viewer = 'undefined' !== typeof size_viewer ? size_viewer : elem.querySelector('.top-tools .el-size-viewer .el-size-viewer__val');
+      size_viewer_mobile = 'undefined' !== typeof size_viewer_mobile ? size_viewer_mobile : elem.querySelector('.mobile-tools .el-size-viewer .el-size-viewer__val');
       if (x === undefined || y === undefined) {
         var x, y;
         x = parseInt( elem.getAttribute("data-gs-width") );
@@ -2337,8 +2334,6 @@
       }
       var size_text = (x + " x " + y);
       var size_text_mobile = (x + "x" + y);
-      var size_viewer = elem.querySelector('.top-tools .el-size-viewer .el-size-viewer__val');
-      var size_viewer_mobile = elem.querySelector('.mobile-tools .el-size-viewer .el-size-viewer__val');
 
       if ( size_viewer ) {
         size_viewer.textContent = size_text;
@@ -2349,19 +2344,19 @@
       }
     },
 
-    updateSizeViewerSizes: function($block) {
+    updateSizeViewerSizes: function(block) {
       this.updateSizeViewerText(
-        $block[0],
-        Math.round($block.outerWidth() / this.properties.singleWidth),
-        this.calculateHeightSizeViewer($block)
+        block,
+        Math.round( block.offsetWidth / this.properties.singleWidth ),
+        this.calculateHeightSizeViewer(block)
       );
     },
 
-    calculateHeightSizeViewer: function($block) {
+    calculateHeightSizeViewer: function(block) {
       if (this.settings.galleryLayout == "masonry") {
-        return $block.outerHeight();
+        return block.offsetHeight;
       } else {
-        return Math.round($block.outerHeight() / this.properties.singleHeight);
+        return Math.round( block.offsetHeight / this.properties.singleHeight );
       }
     },
 
@@ -2374,26 +2369,22 @@
      * @since 2.0.0
      * @date 11-04-2019
      */
-    checkBlockDimension: function( block, block_width)
+    checkBlockDimension: function( block, block_width )
     {
       // checking block dimension to correctly display the tools
-      block_width = 'undefined' !== typeof w ? w : block.offsetWidth;
+      block_width = 'undefined' !== typeof block_width ? block_width : block.offsetWidth;
 
-      if ( block_width < 190 ) 
-      {
+      if ( block_width < 190 ) {
         addClass( block, 'ui-tools--view-mobile' );
       }
-      else
-      {
+      else {
         removeClass( block, 'ui-tools--view-mobile' );
       }
 
-      if ( block_width < 100 )
-      {
+      if ( block_width < 100 ) {
         addClass( block, 'ui-hide-mobile-size-viewer' );
       }
-      else
-      {
+      else {
         removeClass( block, 'ui-hide-mobile-size-viewer' );
       }
     },
@@ -2408,11 +2399,20 @@
       var textWrapHeightNeed;
       var needH;
       var currentWidth;
-
-      var blockContent;
       var heightFactor;
+
+      var textWrap;
+      var $textWrap;
+      var blockContent;
+      var blockContentWrap;
       var imageWrapper;
       var naturalImage;
+
+      var size_viewer;
+      var size_viewer_mobile;
+
+      var blockHasPSWP;
+      var blockHasSlider;
       
       gallery.$element
         .on("resizestart", function(event, ui) {
@@ -2426,15 +2426,18 @@
             gallery.properties.resizeHandle = $(event.toElement).attr( "data-axis" );
             block = event.target;
             blockContent = event.target.querySelector('.grid-item-content');
-            imageWidth = isNaN( parseInt( blockContent.getAttribute("data-background_image_width")) )
-              ? 0
-              : parseInt( blockContent.getAttribute("data-background_image_width"));
+            blockContentWrap = event.target.querySelector('.grid-item-content-wrap');
+            textWrap = event.target.querySelector('.text-wrap');
+            $textWrap = $(textWrap);
+            size_viewer = event.target.querySelector('.top-tools .el-size-viewer .el-size-viewer__val');
+            size_viewer_mobile = event.target.querySelector('.mobile-tools .el-size-viewer .el-size-viewer__val');
+
+            blockHasPSWP = event.target.querySelectorAll('.pswp-item').length > 0 ? true : false;
+            blockHasSlider = hasClass( event.target, 'block-has-slider' );
+
+            imageWidth = isNaN( parseInt( blockContent.getAttribute("data-background_image_width")) ) ? 0 : parseInt( blockContent.getAttribute("data-background_image_width"));
             
-            imageHeight = isNaN(
-              parseInt( blockContent.getAttribute("data-background_image_height"))
-            )
-              ? 0
-              : parseInt( blockContent.getAttribute("data-background_image_height"));
+            imageHeight = isNaN( parseInt( blockContent.getAttribute("data-background_image_height")) ) ? 0 : parseInt( blockContent.getAttribute("data-background_image_height"));
 
             imageWrapper = blockContent.querySelector(".rex-image-wrapper");
             naturalImage = null !== imageWrapper && hasClass( imageWrapper, "natural-image-background" );
@@ -2451,7 +2454,7 @@
             heightFactor = gallery.settings.galleryLayout == "masonry" ? 1 : gallery.properties.singleWidth;
           }
         })
-        .on("resize", function (event, ui) {
+        .on('resize', function (event, ui) {
           if (!ui.element.is("span")) {
             if (naturalImage) {
               if (ui.size.width < imageWidth) {
@@ -2460,13 +2463,15 @@
                 removeClass( imageWrapper, "small-width" );
               }
             }
-            gallery.updateSizeViewerText( event.target, Math.round(ui.size.width / gallery.properties.singleWidth), Math.round(ui.size.height / heightFactor) );
+            gallery.updateSizeViewerText( event.target, Math.round(ui.size.width / gallery.properties.singleWidth), Math.round(ui.size.height / heightFactor), size_viewer, size_viewer_mobile );
+            // removed due to slowing paint/repaint on safari
             if ( ui.originalSize.width !== ui.size.width ) {
               gallery.checkBlockDimension(event.target, ui.size.width);
             }
+
             // In masonry all images have not to be cut
-            if (gallery.settings.galleryLayout == "masonry") {
-              if(naturalImage){
+            if ( gallery.settings.galleryLayout == "masonry" ) {
+              if( naturalImage ){
                 currentWidth = event.target.offsetWidth;
                 if (currentWidth < imageWidth) {
                   imageHeightNeed = (imageHeight * ( currentWidth - gallery.properties.gutter ) ) / imageWidth;
@@ -2479,7 +2484,9 @@
               }
             }
             
-            textWrapHeightNeed = gallery.calculateTextWrapHeight(ui.element.find(".text-wrap"));
+            // textWrapHeightNeed = gallery.calculateTextWrapHeightVAN(textWrap, blockContentWrap, blockHasPSWP, blockHasSlider);
+            textWrapHeightNeed = gallery.calculateTextWrapHeight( $textWrap );
+
             needH = Math.max(textWrapHeightNeed, imageHeightNeed);
 
             if (gallery.settings.galleryLayout == "masonry") {
@@ -2490,8 +2497,8 @@
           }
         })
         .on("gsresizestop", function(event, elem) {
-          if (Rexbuilder_Util_Editor.elementIsResizing) {          
-            gallery.updateSizeViewerText(elem);
+          if (Rexbuilder_Util_Editor.elementIsResizing) {
+            gallery.updateSizeViewerText(elem, undefined, undefined, size_viewer, size_viewer_mobile);
             gallery.checkBlockDimension(elem);
             if (gallery.settings.galleryLayout == "masonry") {
 
@@ -2542,6 +2549,13 @@
 
             gallery.properties.gridstackInstance.batchUpdate();
             gallery.properties.gridstackInstance.commit();
+
+            // release resources
+            textWrap = null;
+            blockContent = null;
+            blockContentWrap = null;
+            size_viewer = null;
+            size_viewer_mobile = null;
 
             //waiting for transition end
             setTimeout(
@@ -3344,6 +3358,32 @@
       }
     },
 
+    calculateTextWrapHeightVAN: function( textWrap, blockContentWrap, blockHasPSWP, blockHasSlider ) {
+      blockHasPSWP = 'undefined' !== typeof blockHasPSWP ? blockHasPSWP : false;
+      blockHasSlider = 'undefined' !== typeof blockHasSlider ? blockHasSlider : false;
+      var textHeight = 0;
+      if ( hasClass( textWrap, "medium-editor-element" ) ) {
+        var textWrapClone = textWrap.cloneNode(true);
+        var tmpMIB = textWrapClone.querySelector('.medium-insert-buttons');
+        if ( tmpMIB ) { tmpMIB.parentNode.removeChild(tmpMIB); }
+        if ( 0 !== textWrapClone.textContent.trim().length || 0 !== textWrapClone.querySelectorAll('img,iframe,i').length ) {
+          if ( ( ! hasClass( textWrap, "medium-editor-placeholder" ) || textWrap.childElementCount > 1 ) || blockHasPSWP ) {
+            var bcwStyles = window.getComputedStyle( blockContentWrap );
+            var twStyles = window.getComputedStyle( textWrap );
+            textHeight = parseFloat(getComputedStyle(textWrap, null).height.replace("px", "")) + parseFloat(twStyles.paddingTop) + parseFloat(twStyles.paddingBottom) + Math.ceil(parseFloat(bcwStyles['padding-top'])) + Math.ceil(parseFloat(bcwStyles['padding-bottom']));
+          }
+        }
+        return textHeight;
+      } else {
+        if ( ! blockHasSlider && ( 0 !== textWrap.textContent.trim().length || 0 !== $textWrap.find('img,iframe,i').length ) ) {
+          var bcwStyles = window.getComputedStyle( blockContentWrap );
+          var twStyles = window.getComputedStyle( textWrap );
+           textHeight = parseFloat(getComputedStyle(textWrap, null).height.replace("px", "")) + parseFloat(twStyles.paddingTop) + parseFloat(twStyles.paddingBottom) + Math.ceil(parseFloat(bcwStyles['padding-top'])) + Math.ceil(parseFloat(bcwStyles['padding-bottom']));
+        }
+      }
+      return textHeight;
+    },
+
     collapseElementsProperties: function() {
       this.section.setAttribute("data-rex-collapse-grid", true);
       //adding class to button for collapse
@@ -3588,7 +3628,7 @@
 
       for(var j=0, tot_newPositions = newPositions.length; j<tot_newPositions; j++) {
         if( newPositions[j].hasOwnProperty('x') && newPositions[j].hasOwnProperty('y') && newPositions[j].hasOwnProperty('el') ) {
-          console.log('move', newPositions[j].el.el.attr('id'), '[' + newPositions[j].x + ',' + newPositions[j].y + ']', newPositions[j].el.width + 'x' + newPositions[j].el.height );
+          // console.log('move', newPositions[j].el.el.attr('id'), '[' + newPositions[j].x + ',' + newPositions[j].y + ']', newPositions[j].el.width + 'x' + newPositions[j].el.height );
           this.properties.gridstackInstance.move( newPositions[j].el.el, newPositions[j].x, newPositions[j].y );
         }
       }

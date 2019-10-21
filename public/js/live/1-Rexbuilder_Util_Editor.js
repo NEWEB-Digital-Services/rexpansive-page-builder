@@ -7,6 +7,7 @@ var Rexbuilder_Util_Editor = (function($) {
 
   var undoStackArray;
   var redoStackArray;
+  var tippyCollection;
 
   /**
    * @param {jQuery} $textWrap Text-wrap whose container block height has to be update
@@ -1060,7 +1061,7 @@ var Rexbuilder_Util_Editor = (function($) {
   }
 
   var _tooltips = function() {
-    var collection = tippy(".tippy", {
+    tippyCollection = tippy(".tippy", {
       arrow: true,
       arrowType: "round",
       size: "small",
@@ -1689,6 +1690,6 @@ var Rexbuilder_Util_Editor = (function($) {
     getPrefixedValues: _getPrefixedValues,
     synchGradient: _synchGradient,
     updateBlockContainerHeight: _updateBlockContainerHeight,
-    updateContainerMargins: _updateContainerMargins,
+    updateContainerMargins: _updateContainerMargins
   };
 })(jQuery);

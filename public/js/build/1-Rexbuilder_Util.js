@@ -4056,6 +4056,10 @@ var Rexbuilder_Util = (function($) {
     diffStrings: _diffStrings,
     applyDefaultBlocksDimentions: _applyDefaultBlocksDimentions,
     isMobile: _isMobile,
-    cssPropertyValueSupported: _cssPropertyValueSupported
+    cssPropertyValueSupported: _cssPropertyValueSupported,
+    hasClass: hasClass,
+    addClass: addClass,
+    removeClass: removeClass,
+    toggleClass: toggleClass
   };
 })(jQuery);
