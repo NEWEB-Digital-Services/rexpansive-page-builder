@@ -17,8 +17,8 @@ add-new-section--hide
 SAFARI SLOW
 
 updateAllElementsProperties				X
+checkBlockDimension						X
 
-checkBlockDimension
 _updateDefaultLayoutStateSection
 _pushAction
 createActionDataMoveBlocksGrid
