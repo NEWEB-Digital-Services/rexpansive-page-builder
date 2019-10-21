@@ -2082,7 +2082,16 @@ var TextEditor = (function ($) {
     },
 
     handleClickCloneFormRow: function (event) {
-      console.log("Clone row!");
+      this.hideSelectColumnsToolbar();
+      this.hideRowToolbox();
+      this.hideColumnToolbox();
+
+      var formID = $(this.traceForm).parents(".rex-element-wrapper").attr("data-rex-element-id");
+      var $rowToClone = $(this.traceFormRow).clone();
+      var numberRowBefore = parseInt($rowToClone.attr("wpcf7-row-number"));
+
+      Rexbuilder_Rexwpcf7.addRow(formID, $rowToClone, numberRowBefore);
+      this.placeFormToolbox();
     },
 
     handleClickDeleteFormRow: function (event) {
@@ -2090,10 +2099,10 @@ var TextEditor = (function ($) {
       this.hideRowToolbox();
 
       var formID = $(this.traceForm).parents(".rex-element-wrapper").attr("data-rex-element-id");
-      var $rowToDelete = $(this.traceFormRow);
+      var rowNumberToDelete = $(this.traceFormRow).attr("wpcf7-row-number");
 
       this.placeFormToolbox();
-      Rexbuilder_Rexwpcf7.deleteRow(formID, $rowToDelete);
+      Rexbuilder_Rexwpcf7.deleteRow(formID, rowNumberToDelete);
     },
 
     handleClickSettingsFormColumn: function (event) {
@@ -2141,7 +2150,16 @@ var TextEditor = (function ($) {
     },
 
     handleClickCloneFormColumn: function (event) {
-      console.log("Clone column!");
+      this.hideSelectColumnsToolbar();
+      this.hideRowToolbox();
+      this.hideColumnToolbox();
+
+      var formID = $(this.traceForm).parents(".rex-element-wrapper").attr("data-rex-element-id");
+      var clonedColumnNumber = $(this.traceFormColumn).attr("wpcf7-column-number");
+      var numberRowBefore = parseInt($(this.traceFormRow).attr("wpcf7-row-number"));
+
+      Rexbuilder_Rexwpcf7.addClonedColumnRow(formID, clonedColumnNumber, numberRowBefore);
+      this.placeFormToolbox();
     },
 
     handleClickDeleteFormColumn: function (event) {
@@ -2149,7 +2167,9 @@ var TextEditor = (function ($) {
 
       var formID = $(this.traceForm).parents(".rex-element-wrapper").attr("data-rex-element-id");
       var $columnToDelete = $(this.traceFormColumn);
-      Rexbuilder_Rexwpcf7.deleteColumnContent(formID, $columnToDelete);
+      var rowNumberToDelete = $(this.traceFormRow).attr("wpcf7-row-number");
+      var columnNumberToDelete = $(this.traceFormColumn).attr("wpcf7-column-number");
+      Rexbuilder_Rexwpcf7.deleteColumnContent(formID, rowNumberToDelete, columnNumberToDelete);
 
       this.placeFormToolbox();
     },

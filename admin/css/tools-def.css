@@ -17246,13 +17246,13 @@ input:disabled + .rex_edit_title_slider {
 #rex-wpcf7-content-editor .bl_modal-row .rexwpcf7-cont_row {
   width: 381px;
   margin: 12px auto; }
-  #rex-wpcf7-content-editor .bl_modal-row .rexwpcf7-cont_row .rexwpcf7-count-colum_accord {
+  #rex-wpcf7-content-editor .bl_modal-row .rexwpcf7-cont_row .rexwpcf7-count-column_accord {
     width: 30px;
     height: 42px;
     margin-right: 12px;
     float: left;
     position: relative; }
-    #rex-wpcf7-content-editor .bl_modal-row .rexwpcf7-cont_row .rexwpcf7-count-colum_accord .rexwpcf7-upd-add_button {
+    #rex-wpcf7-content-editor .bl_modal-row .rexwpcf7-cont_row .rexwpcf7-count-column_accord .rexwpcf7-upd-add_button {
       width: 30px;
       height: 42px;
       position: absolute;
@@ -17262,7 +17262,7 @@ input:disabled + .rex_edit_title_slider {
       font-size: 34px;
       padding: 7px 0px 0px 2px;
       color: #979797; }
-      #rex-wpcf7-content-editor .bl_modal-row .rexwpcf7-cont_row .rexwpcf7-count-colum_accord .rexwpcf7-upd-add_button:hover {
+      #rex-wpcf7-content-editor .bl_modal-row .rexwpcf7-cont_row .rexwpcf7-count-column_accord .rexwpcf7-upd-add_button:hover {
         color: #00ACFF;
         -webkit-transition: 1s;
         -o-transition: 1s;

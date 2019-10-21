@@ -2011,6 +2011,7 @@
       var actionData = {
         columnContentProperties: jQuery.extend(true, {}, data.actionColumnContentData)
       }
+      
       Rexbuilder_Rexwpcf7.updateColumnContent(actionData);
 
       Rexbuilder_Util_Editor.pushAction(

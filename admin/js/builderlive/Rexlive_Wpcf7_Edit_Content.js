@@ -29,6 +29,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 		
 		_updateColumnContentEditorModal(columnContentData);
 
+        /* Serve nascondere le varie parti del modal quando si apre il modal */
+
 		Rexlive_Modals_Utils.openModal(
             wpcf7_content_editor_properties.$self.parent(".rex-modal-wrap"),
             false,
