@@ -51,4 +51,4 @@
 
 /*.glaCC-overlay-grey{background-color:#505050;}*/
 .cool-btn.cool-bnt--primary.glaCC-true{background-color:#ff0055;}
-.cool-btn.cool-bnt--primary.glaCC-false{background-color:#404040;}
+.cool-btn.cool-bnt--primary.glaCC-false{background-color:#404040;cursor:default;}
