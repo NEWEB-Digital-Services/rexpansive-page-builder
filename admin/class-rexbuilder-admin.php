@@ -139,23 +139,26 @@ class Rexbuilder_Admin {
 			$post_type_info = explode( '_', $obj['element_type'] );
 			$args = array('element_id' => $obj['element_id'], 'element_type' => $post_type_info[1] );
 			$language_code_details = apply_filters( 'wpml_element_language_details', null, $args );
+			$result = '';
 
-			// query the database to find the original source of the translation
-			global $wpdb;
-			$result = $wpdb->get_row(
-				$wpdb->prepare( 
-					"
-					SELECT * 
-					FROM {$wpdb->prefix}icl_translations 
-					WHERE element_type LIKE %s
-					AND trid = %d
-					AND language_code = %s
-					LIMIT 1
-					",
-					$obj['element_type'], $obj['trid'], $language_code_details->source_language_code
-				),
-				ARRAY_A
-			);
+			if ( isset( $language_code_details ) ) {
+				// query the database to find the original source of the translation
+				global $wpdb;
+				$result = $wpdb->get_row(
+					$wpdb->prepare( 
+						"
+						SELECT * 
+						FROM {$wpdb->prefix}icl_translations 
+						WHERE element_type LIKE %s
+						AND trid = %d
+						AND language_code = %s
+						LIMIT 1
+						",
+						$obj['element_type'], $obj['trid'], $language_code_details->source_language_code
+					),
+					ARRAY_A
+				);
+			}
 
 			if ( !empty( $result ) ) {
 				// save from baackend original status

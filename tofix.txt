@@ -1,14 +1,6 @@
-GUTENBERG
-
-- bozza non possibile per builderlive
-- pulsante diventa rosso prima che il post sia salvato
-
 NEWS
 
-- problemi con safari (TERMOEL)
-- se elimino row, sono fregato
-- iframe youtube (TERMOEL)
-- 
+- problemi con safari (TERMOEL) 
 
 Rexbuilder_Live_Utilities.activeAddSection( $section );
 add-new-section--hide
