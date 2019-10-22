@@ -4,6 +4,9 @@
  */
 ;(function($) {
 
+  var $goLiveAdviceOverlayStatus;
+  var $goLiveClientButton;
+
   $(function() {
     var $rexbuilder_active = $("#_rexbuilder_active");
     var $builder_switch_wrap = $(".builder-heading");
@@ -41,6 +44,9 @@
         $(window).resize();
       }
     });
+
+    $goLiveAdviceOverlayStatus = $(".go-live-advice-overlay-status");
+    $goLiveClientButton = $("#go-live-client-button");    
   });
 
 
@@ -48,16 +54,13 @@
   $(window).load(function () {
 
     // Updates the status of the "LIVE" button when the page loads.
-    var pageName_LoadPage = $("#post-title-0").val();
-    var pageName_LoadPage_Trim = pageName_LoadPage.trim();
-    if( pageName_LoadPage_Trim == "" ){
-      //console.log('pageName_LoadPage_Trim == ""');
-      $(".go-live-advice-overlay-status").css("display","block");
-      $("#go-live-client-button").addClass("glaCC-false").removeClass("glaCC-true");
+    // if( ! wp.data.select('core/editor').isCurrentPostPublished() ){
+    if ( 'auto-draft' === wp.data.select('core/editor').getCurrentPostAttribute('status') ) {
+      $goLiveAdviceOverlayStatus.css("display","block");
+      $goLiveClientButton.addClass("glaCC-false").removeClass("glaCC-true");
     } else {
-      //console.log('pageName_LoadPage_Trim != "'+pageName_LoadPage+'"');
-      $(".go-live-advice-overlay-status").css("display","none");
-      $("#go-live-client-button").addClass("glaCC-true").removeClass("glaCC-false");
+      $goLiveAdviceOverlayStatus.css("display","none");
+      $goLiveClientButton.addClass("glaCC-true").removeClass("glaCC-false");
     }
 
     $(window).trigger('resize');
@@ -69,7 +72,7 @@
      */
     var editPost = wp.data.select( 'core/edit-post' ),
       lastSidebarState = editPost.isEditorSidebarOpened();
-      wp.data.subscribe( function() {
+    wp.data.subscribe( function() {
       var sidebarState = editPost.isEditorSidebarOpened();
       if ( sidebarState !== lastSidebarState ) {
         lastSidebarState = sidebarState;
@@ -97,37 +100,47 @@
     });
 
     // Changes the status of the "LIVE" button according to the WordPress NamePage Textbox value.
-    var $go_live_button = $("#go-live-client-button");
+    var lastSavingMetaboxes = editPost.isSavingMetaBoxes();
+
     wp.data.subscribe( function() {
-      var postTitle = editorCore.getEditedPostAttribute("title");
-      if( postTitle !== lastPostTitle ) {
-        var pageName_KeyPress = $("#post-title-0").val();
-        var pageName_KeyPress_Trim = pageName_KeyPress.trim();
-        if ( pageName_KeyPress_Trim !== "" && !$go_live_button.hasClass('draft') )
-        {
-          $(".go-live-advice-overlay-status").css("display","none");
-          $go_live_button.addClass("glaCC-true").removeClass("glaCC-false");
-        }
-        else
-        {
-          $(".go-live-advice-overlay-status").css("display","block");
-          $go_live_button.addClass("glaCC-false").removeClass("glaCC-true");
-        }
-        
-        // if( pageName_KeyPress_Trim == "" ) {
-        //   $(".go-live-advice-overlay-status").css("display","block");
-        //   $go_live_button.addClass("glaCC-false").removeClass("glaCC-true");
-        // } else {
-        //   console.log(!$go_live_button.hasClass('draft'));
-        //   if ( !$go_live_button.hasClass('draft') )
-        //   {
-        //     $(".go-live-advice-overlay-status").css("display","none");
-        //     $go_live_button.addClass("glaCC-true").removeClass("glaCC-false");
-        //   }
-        // }
+      var savingMetaboxes = editPost.isSavingMetaBoxes();
+      if( lastSavingMetaboxes !== savingMetaboxes && lastSavingMetaboxes == true ) {
+        $goLiveAdviceOverlayStatus.css("display","none");
+        $goLiveClientButton.addClass("glaCC-true").removeClass("glaCC-false");
       }
-      lastPostTitle = postTitle;
+      lastSavingMetaboxes = savingMetaboxes;
     });
+
+    // wp.data.subscribe( function() {
+    //   var postTitle = editorCore.getEditedPostAttribute("title");
+    //   if( postTitle !== lastPostTitle ) {
+    //     var pageName_KeyPress = $("#post-title-0").val();
+    //     var pageName_KeyPress_Trim = pageName_KeyPress.trim();
+    //     if ( pageName_KeyPress_Trim !== "" && !$goLiveClientButton.hasClass('draft') )
+    //     {
+    //       $goLiveAdviceOverlayStatus.css("display","none");
+    //       $goLiveClientButton.addClass("glaCC-true").removeClass("glaCC-false");
+    //     }
+    //     else
+    //     {
+    //       $goLiveAdviceOverlayStatus.css("display","block");
+    //       $goLiveClientButton.addClass("glaCC-false").removeClass("glaCC-true");
+    //     }
+        
+    //     // if( pageName_KeyPress_Trim == "" ) {
+    //     //   $goLiveAdviceOverlayStatus.css("display","block");
+    //     //   $goLiveClientButton.addClass("glaCC-false").removeClass("glaCC-true");
+    //     // } else {
+    //     //   console.log(!$goLiveClientButton.hasClass('draft'));
+    //     //   if ( !$goLiveClientButton.hasClass('draft') )
+    //     //   {
+    //     //     $goLiveAdviceOverlayStatus.css("display","none");
+    //     //     $goLiveClientButton.addClass("glaCC-true").removeClass("glaCC-false");
+    //     //   }
+    //     // }
+    //   }
+    //   lastPostTitle = postTitle;
+    // });
 
     /**
      * Triggering save event on Publish button click
@@ -136,7 +149,8 @@
 
     $(document).on("click", '.editor-post-publish-button', function() {
       $(document).trigger("rexbuilder:save_content");
-      $go_live_button.removeClass('draft').addClass("glaCC-true").removeClass("glaCC-false");
+      // $goLiveClientButton.removeClass('draft').addClass("glaCC-true").removeClass("glaCC-false");
+      // $goLiveClientButton.removeClass('draft');
       // console.log("WordPress- launch- rexbuilder:save_content");
     });
 

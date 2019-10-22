@@ -716,26 +716,27 @@ var Rex_Save_Listeners = (function($) {
   /*
     data-rexlive-section-edited="true"
     */
-  var checkEditsSection = function($section) {
-    return $section.attr("data-rexlive-section-edited") == "true";
+  var checkEditsSection = function(section) {
+    return section.getAttribute("data-rexlive-section-edited") == "true";
   };
 
   /*
     data-rexlive-layout-changed="true"
     */
-  var checkEditsLayoutGrid = function($gallery) {
-    return $gallery.attr("data-rexlive-layout-changed") == "true";
+  var checkEditsLayoutGrid = function(gallery) {
+    return gallery.getAttribute("data-rexlive-layout-changed") == "true";
   };
 
   /*
     data-rexlive-element-edited="true"
     */
-  var checkEditsElement = function($elem) {
+  var checkEditsElement = function(elem) {
     // console.log($elem.attr("data-rexlive-element-edited"));
-    return $elem.attr("data-rexlive-element-edited") == "true";
+    return elem.getAttribute("data-rexlive-element-edited") == "true";
   };
 
   var createTargets = function($section, layoutName) {
+    var section = $section[0];
     var targets = [];
 
     var section_props = {
@@ -743,18 +744,15 @@ var Rex_Save_Listeners = (function($) {
       props: {}
     };
 
-    var $gridGallery = $section.find(".grid-stack-row");
-    var saveBlockDisposition = checkEditsLayoutGrid($gridGallery);
+    var gridGallery = section.querySelector(".grid-stack-row");
+    var $gridGallery = $(gridGallery);
+    var saveBlockDisposition = checkEditsLayoutGrid(gridGallery);
 
-    if (layoutName == "default" || checkEditsSection($section)) {
-      section_props.props = createSectionProperties(
-        $section,
-        "customLayout",
-        null
-        );
+    if (layoutName == "default" || checkEditsSection(section)) {
+      section_props.props = createSectionProperties( $section, "customLayout", null );
     }
 
-    if ($section.attr("data-rex-collapse-grid") == "true") {
+    if ( section.getAttribute("data-rex-collapse-grid") == "true") {
       section_props.props.collapse_grid = true;
       if(!saveBlockDisposition && Rexbuilder_Util.isMobile()){
         section_props.props.pickDefaultSizeCollapse = true;
@@ -766,8 +764,8 @@ var Rex_Save_Listeners = (function($) {
 
     if (saveBlockDisposition) {
       section_props.props.gridEdited = true;
-      section_props.props.full_height = $gridGallery.attr("data-full-height");
-      section_props.props.layout = $gridGallery.attr("data-layout");
+      section_props.props.full_height = gridGallery.getAttribute("data-full-height");
+      section_props.props.layout = gridGallery.getAttribute("data-layout");
     } else {
       section_props.props.gridEdited = false;
     }
@@ -781,23 +779,15 @@ var Rex_Save_Listeners = (function($) {
     $(elementsOrdered).each(function(i, el) {
       var $elem = $(el);
       if (!$elem.hasClass("removing_block")) {
-        var blockRexID = $elem.attr("data-rexbuilder-block-id");
+        var blockRexID = el.getAttribute("data-rexbuilder-block-id");
         var block_props = {
           name: blockRexID,
           props: {}
         };
-        var check_edit = checkEditsElement($elem);
+        var check_edit = checkEditsElement(el);
 
-        if (
-          layoutName == "default" ||
-          saveBlockDisposition ||
-          check_edit
-        ) {
-          block_props.props = createBlockProperties(
-            $elem,
-            "customLayout",
-            $gridGallery
-          );
+        if ( layoutName == "default" || saveBlockDisposition || check_edit ) {
+          block_props.props = createBlockProperties( el, "customLayout", gridGallery );
         }
 
         if (
@@ -875,8 +865,8 @@ var Rex_Save_Listeners = (function($) {
    * @param {string} mode customLayout|shortcode
    * @param {jQuery Object} $gridGallery parent gallery of the element
    */
-  var createBlockProperties = function($elem, mode, $gridGallery) {
-    $gridGallery = "undefined" !== typeof $gridGallery ? $gridGallery : $elem.parent('.grid-stack-row');
+  var createBlockProperties = function(elem, mode, gridGallery) {
+    gridGallery = "undefined" !== typeof gridGallery ? gridGallery : elem.parentNode();
     var id = "",
       rex_id = "",
       type = "text",
@@ -926,228 +916,152 @@ var Rex_Save_Listeners = (function($) {
       element_real_fluid = 0;
 
     var content = "";
-    var $textWrap;
-    var $itemContent = $elem.find(".grid-item-content");
-    var $itemData = $elem.children(".rexbuilder-block-data");
+    var textWrap;
+    var itemContent = elem.querySelector('.grid-item-content');
+    var itemData = elem.querySelector('.rexbuilder-block-data');
 
-    id = $elem.attr("id") === undefined ? "" : $elem.attr("id");
-    rex_id = $elem.attr("data-rexbuilder-block-id");
+    id = elem.id;
+    rex_id = elem.getAttribute("data-rexbuilder-block-id");
     // type = $itemData.attr('data-type') == "" ? "empty" : $itemData.attr('data-type');
-    type =
-      $itemData.attr("data-type") == "" ? "text" : $itemData.attr("data-type");
-    size_x = $elem.attr("data-width");
-    size_y = $elem.attr("data-height");
-    row = $elem.attr("data-row");
-    col = $elem.attr("data-col");
-    gs_start_h = $elem.attr("data-gs-height");
-    gs_width = $elem.attr("data-gs-width");
-    gs_height = $elem.attr("data-gs-height");
-    gs_y = $elem.attr("data-gs-y");
-    gs_x = $elem.attr("data-gs-x");
+    type = itemData.getAttribute("data-type") == "" ? "text" : itemData.getAttribute("data-type");
+    size_x = elem.getAttribute("data-width");
+    size_y = elem.getAttribute("data-height");
+    row = elem.getAttribute("data-row");
+    col = elem.getAttribute("data-col");
+    gs_start_h = elem.getAttribute("data-gs-height");
+    gs_width = elem.getAttribute("data-gs-width");
+    gs_height = elem.getAttribute("data-gs-height");
+    gs_y = elem.getAttribute("data-gs-y");
+    gs_x = elem.getAttribute("data-gs-x");
 
-    color_bg_block =
-      typeof $itemData.attr("data-color_bg_block") == "undefined"
-        ? ""
-        : $itemData.attr("data-color_bg_block");
-    color_bg_block_active =
-      typeof $itemData.attr("data-color_bg_elem_active") != "undefined"
-        ? $itemData.attr("data-color_bg_elem_active")
-        : true;
+    color_bg_block = itemData.getAttribute("data-color_bg_block") == null ? "" : itemData.getAttribute("data-color_bg_block");
+    color_bg_block_active = itemData.getAttribute("data-color_bg_elem_active") != null ? itemData.getAttribute("data-color_bg_elem_active") : true;
 
-    id_image_bg_block =
-      $itemData.attr("data-id_image_bg_block") === undefined
-        ? ""
-        : $itemData.attr("data-id_image_bg_block");
-    image_bg_block =
-      $itemData.attr("data-image_bg_block") === undefined
-        ? ""
-        : $itemData.attr("data-image_bg_block");
-    image_width =
-      $itemContent.attr("data-background_image_width") === undefined
-        ? ""
-        : isNaN(parseInt($itemContent.attr("data-background_image_width")))
-        ? ""
-        : parseInt($itemContent.attr("data-background_image_width"));
-    image_height =
-      $itemContent.attr("data-background_image_height") === undefined
-        ? ""
-        : isNaN(parseInt($itemContent.attr("data-background_image_height")))
-        ? ""
-        : parseInt($itemContent.attr("data-background_image_height"));
-    var defaultTypeImage =
-      $elem.parents(".grid-stack-row").attr("data-layout") == "fixed"
-        ? "full"
-        : "natural";
-    type_bg_block =
-      typeof $itemData.attr("data-type_bg_block") == "undefined"
-        ? defaultTypeImage
-        : $itemData.attr("data-type_bg_block");
-    image_size =
-      typeof $itemData.attr("data-image_size") == "undefined"
-        ? "full"
-        : $itemData.attr("data-image_size");
-    photoswipe =
-      $itemData.attr("data-photoswipe") === undefined
-        ? ""
-        : $itemData.attr("data-photoswipe");
-    image_bg_elem_active =
-      typeof $itemData.attr("data-image_bg_elem_active") != "undefined"
-        ? $itemData.attr("data-image_bg_elem_active")
-        : true;
+    id_image_bg_block = itemData.getAttribute("data-id_image_bg_block") === null ? "" : itemData.getAttribute("data-id_image_bg_block");
+    image_bg_block = itemData.getAttribute("data-image_bg_block") === null ? "" : itemData.getAttribute("data-image_bg_block");
+    image_width = isNaN( parseInt( itemContent.getAttribute("data-background_image_width") ) ) ? "" : parseInt( itemContent.getAttribute("data-background_image_width") );
+    image_height = isNaN( parseInt( itemContent.getAttribute("data-background_image_height") ) ) ? "" : parseInt( itemContent.getAttribute("data-background_image_height"));
+    var defaultTypeImage = gridGallery.getAttribute("data-layout") == "fixed" ? "full" : "natural";
+    type_bg_block = itemData.getAttribute("data-type_bg_block") == null ? defaultTypeImage : itemData.getAttribute("data-type_bg_block");
+    image_size = itemData.getAttribute("data-image_size") == null ? "full" : itemData.getAttribute("data-image_size");
+    photoswipe = itemData.getAttribute("data-photoswipe") === null ? "" : itemData.getAttribute("data-photoswipe");
+    image_bg_elem_active = itemData.getAttribute("data-image_bg_elem_active") != null ? itemData.getAttribute("data-image_bg_elem_active") : true;
 
-    video_bg_id =
-      $itemData.attr("data-video_bg_id") === undefined
-        ? ""
-        : $itemData.attr("data-video_bg_id");
-    video_mp4_url =
-      $itemData.attr("data-video_mp4_url") === undefined
-        ? ""
-        : $itemData.attr("data-video_mp4_url");
-    video_bg_url =
-      $itemData.attr("data-video_bg_url") === undefined
-        ? ""
-        : $itemData.attr("data-video_bg_url");
-    video_bg_url_vimeo =
-      $itemData.attr("data-video_bg_url_vimeo") === undefined
-        ? ""
-        : $itemData.attr("data-video_bg_url_vimeo");
-    video_has_audio =
-      $itemData.attr("data-video_has_audio") === undefined
-        ? false
-        : $itemData.attr("data-video_has_audio");
+    video_bg_id = itemData.getAttribute("data-video_bg_id") === null ? "" : itemData.getAttribute("data-video_bg_id");
+    video_mp4_url = itemData.getAttribute("data-video_mp4_url") === null ? "" : itemData.getAttribute("data-video_mp4_url");
+    video_bg_url = itemData.getAttribute("data-video_bg_url") === null ? "" : itemData.getAttribute("data-video_bg_url");
+    video_bg_url_vimeo = itemData.getAttribute("data-video_bg_url_vimeo") === null ? "" : itemData.getAttribute("data-video_bg_url_vimeo");
+    video_has_audio = itemData.getAttribute("data-video_has_audio") === null ? false : itemData.getAttribute("data-video_has_audio");
 
-    linkurl =
-      $itemData.attr("data-linkurl") === undefined
-        ? ""
-        : $itemData.attr("data-linkurl");
+    linkurl = itemData.getAttribute("data-linkurl") === null ? "" : itemData.getAttribute("data-linkurl");
 
-    block_custom_class =
-      $itemData.attr("data-block_custom_class") === undefined
-        ? ""
-        : $itemData.attr("data-block_custom_class");
+    block_custom_class = itemData.getAttribute("data-block_custom_class") === null ? "" : itemData.getAttribute("data-block_custom_class");
 
-    block_padding =
-      $itemData.attr("data-block_padding") === undefined
-        ? ""
-        : $itemData.attr("data-block_padding");
+    block_padding = itemData.getAttribute("data-block_padding") === null ? "" : itemData.getAttribute("data-block_padding");
 
-    overlay_block_color =
-      typeof $itemData.attr("data-overlay_block_color") == "undefined"
-        ? ""
-        : $itemData.attr("data-overlay_block_color");
-    overlay_block_color_active =
-      typeof $itemData.attr("data-overlay_block_color_active") != "undefined"
-        ? $itemData.attr("data-overlay_block_color_active")
-        : false;
+    overlay_block_color = itemData.getAttribute("data-overlay_block_color") == null ? "" : itemData.getAttribute("data-overlay_block_color");
+    overlay_block_color_active = itemData.getAttribute("data-overlay_block_color_active") != null ? itemData.getAttribute("data-overlay_block_color_active") : false;
 
-    zak_background =
-      $itemData.attr("data-zak_background") === undefined
-        ? ""
-        : $itemData.attr("data-zak_background");
-    zak_side =
-      $itemData.attr("data-zak_side") === undefined
-        ? ""
-        : $itemData.attr("data-zak_side");
-    zak_title =
-      $itemData.attr("data-zak_title") === undefined
-        ? ""
-        : $itemData.attr("data-zak_title");
-    zak_icon =
-      $itemData.attr("data-zak_icon") === undefined
-        ? ""
-        : $itemData.attr("data-zak_icon");
-    zak_foreground =
-      $itemData.attr("data-zak_foreground") === undefined
-        ? ""
-        : $itemData.attr("data-zak_foreground");
-    block_animation =
-      $itemData.attr("data-block_animation") === undefined
-        ? "fadeInUpBig"
-        : $itemData.attr("data-block_animation");
+    zak_background = itemData.getAttribute("data-zak_background") === null ? "" : itemData.getAttribute("data-zak_background");
+    zak_side = itemData.getAttribute("data-zak_side") === null ? "" : itemData.getAttribute("data-zak_side");
+    zak_title = itemData.getAttribute("data-zak_title") === null ? "" : itemData.getAttribute("data-zak_title");
+    zak_icon = itemData.getAttribute("data-zak_icon") === null ? "" : itemData.getAttribute("data-zak_icon");
+    zak_foreground = itemData.getAttribute("data-zak_foreground") === null ? "" : itemData.getAttribute("data-zak_foreground");
+    block_animation = itemData.getAttribute("data-block_animation") === null ? "fadeInUpBig" : itemData.getAttribute("data-block_animation");
 
-    block_has_scrollbar =
-      $itemData.attr("data-block_has_scrollbar") === undefined
-        ? "false"
-        : $itemData.attr("data-block_has_scrollbar");
+    block_has_scrollbar = itemData.getAttribute("data-block_has_scrollbar") === null ? "false" : itemData.getAttribute("data-block_has_scrollbar");
 
-    if ($gridGallery.attr("data-layout") == "masonry") {
-      block_dimensions_live_edited =
-        typeof $itemData.attr("data-block_dimensions_live_edited") ===
-        "undefined"
-          ? ""
-          : $itemData.attr("data-block_dimensions_live_edited");
+    if ( gridGallery.getAttribute("data-layout") == "masonry" ) {
+      block_dimensions_live_edited = itemData.getAttribute("data-block_dimensions_live_edited") === null ? "" : itemData.getAttribute("data-block_dimensions_live_edited");
     } else {
       block_dimensions_live_edited = "";
     } 
 
-    block_flex_position =
-      typeof $itemData.attr("data-block_flex_position") == "undefined"
-        ? ""
-        : $itemData.attr("data-block_flex_position");
+    block_flex_position = itemData.getAttribute("data-block_flex_position") == null ? "" : itemData.getAttribute("data-block_flex_position");
 
-    block_flex_img_position =
-      typeof $itemData.attr("data-block_flex_img_position") == "undefined"
-        ? ""
-        : $itemData.attr("data-block_flex_img_position");
+    block_flex_img_position = itemData.getAttribute("data-block_flex_img_position") == null ? "" : itemData.getAttribute("data-block_flex_img_position");
 
-    if ($elem.hasClass("block-has-slider")) {
-      $itemData.attr(
-        "data-slider_ratio",
-        ($elem.outerHeight() / $elem.outerWidth()).toFixed(3)
-      );
+    block_ratio = ( elem.offsetHeight / elem.offsetWidth ).toFixed(3);
+
+    if ( Rexbuilder_Util.hasClass( elem, "block-has-slider") ) {
+      slider_dimension_ratio = block_ratio;
+      // $itemData.attr( "data-slider_ratio", ($elem.outerHeight() / $elem.outerWidth()).toFixed(3) );
     } else {
-      $itemData.attr("data-slider_ratio", "");
+      slider_dimension_ratio = '';
     }
+    itemData.setAttribute("data-slider_ratio", slider_dimension_ratio);
 
-    slider_dimension_ratio =
-      typeof $itemData.attr("data-slider_ratio") == "undefined"
-        ? ""
-        : $itemData.attr("data-slider_ratio");
-
-    block_ratio = ($elem.outerHeight() / $elem.outerWidth()).toFixed(3)
-
-    hide_block = $elem.hasClass("rex-hide-element");
+    hide_block = Rexbuilder_Util.hasClass(elem, "rex-hide-element");
 
     // var parsedHeightIncreased = parseInt($itemData.attr("data-element_height_increased"));
     // element_height_increased = isNaN(parsedHeightIncreased) ? 0 : parsedHeightIncreased;
     
-    var parsedElementRealFluid = parseInt( $itemData.attr("data-element_real_fluid") );
+    var parsedElementRealFluid = parseInt( itemData.getAttribute("data-element_real_fluid") );
     element_real_fluid = ( isNaN( parsedElementRealFluid ) ? 0 : parsedElementRealFluid );
 
     if (mode == "shortcode") {
-      $textWrap = $itemContent.find(".text-wrap");
-      if (!$elem.hasClass("block-has-slider")) {
-        var $savingBlock = $textWrap.clone(false);
-        $savingBlock.find(".medium-insert-buttons").remove();
-        $savingBlock.find(".text-editor-span-fix").remove();
-        $savingBlock.find(".ui-sortable").removeClass("ui-sortable");
-        $savingBlock
-          .find(".ui-sortable-handle")
-          .removeClass("ui-sortable-handle");
-        $savingBlock.find("figure").removeAttr("style");
-        $savingBlock.find("figure").removeAttr("class");
+      textWrap = itemContent.querySelector('.text-wrap');
+      if ( ! Rexbuilder_Util.hasClass( elem, "block-has-slider" ) ) {
+        // var $savingBlock = $textWrap.clone(false);
+        // $savingBlock.find(".medium-insert-buttons").remove();
+        // $savingBlock.find(".text-editor-span-fix").remove();
+        // $savingBlock.find(".ui-sortable").removeClass("ui-sortable");
+        // $savingBlock.find(".ui-sortable-handle").removeClass("ui-sortable-handle");
+        // $savingBlock.find("figure").removeAttr("style");
+        // $savingBlock.find("figure").removeAttr("class");
+
+        var savingBlock = textWrap.cloneNode(true);
+        var tmpMIB = savingBlock.querySelector('.medium-insert-buttons');
+        var tmpTESF = savingBlock.querySelector('.text-editor-span-fix');
+        var tmpUS = savingBlock.querySelector('.ui-sortable');
+        var tmpUSH = savingBlock.querySelector('.ui-sortable-handle');
+        var tmpFIG = savingBlock.querySelector('figure');
+
+        if ( tmpMIB ) { tmpMIB.parentNode.removeChild(tmpMIB); }
+        if ( tmpTESF ) { tmpTESF.parentNode.removeChild(tmpTESF); }
+        if ( tmpUS ) { Rexbuilder_Util.removeClass( tmpUS, 'ui-sortable' ); }
+        if ( tmpUSH ) { Rexbuilder_Util.removeClass( tmpUS, 'ui-sortable-handle' ); }
+        if ( tmpFIG ) {
+          tmpFIG.removeAttribute('style');
+          tmpFIG.removeAttribute('class');
+        }
 
         // retrieve the block content
         // if there is some, or there is an img, an iframe or an icon inline
-        if ($savingBlock.text().trim() == "") {
-          if( $savingBlock.find("iframe").length > 0 || $savingBlock.find("img").length > 0 || $savingBlock.find("i").length > 0 ){
-            content = $savingBlock.html().trim();
+        if ( savingBlock.textContent.trim() == '' ) {
+          if ( savingBlock.querySelectorAll('iframe').length > 0 || savingBlock.querySelectorAll('img').length > 0 || savingBlock.querySelectorAll('i').length > 0 ) {
+            content = savingBlock.innerHTML.trim();
           } else {
-            content = "";
+            content = '';
           }
         } else {
-          content = $savingBlock.html().trim();
-          $savingBlock.find(".rex-button-data").each(function (i, buttonData) {
-            $(buttonData).removeAttr("data-synchronize");
+          content = savingBlock.innerHTML.trim();
+          // why do this after the retrieving of the HTML?
+          [].slice.call( savingBlock.querySelectorAll('.rex-button-data') ).forEach( function(el) {
+            el.removeAttribute('data-synchronize');
           });
         }
 
-      } else {
-        var $sliderToSave = $textWrap.children('.rex-slider-wrap[data-rex-slider-active="true"]');
+        // retrieve the block content
+        // if there is some, or there is an img, an iframe or an icon inline
+        // if ($savingBlock.text().trim() == "") {
+        //   if( $savingBlock.find("iframe").length > 0 || $savingBlock.find("img").length > 0 || $savingBlock.find("i").length > 0 ){
+        //     content = $savingBlock.html().trim();
+        //   } else {
+        //     content = "";
+        //   }
+        // } else {
+        //   content = $savingBlock.html().trim();
+        //   $savingBlock.find(".rex-button-data").each(function (i, buttonData) {
+        //     $(buttonData).removeAttr("data-synchronize");
+        //   });
+        // }
 
-        if ( $sliderToSave.length > 0 )
-        {
-          var sliderID = parseInt($sliderToSave.attr("data-slider-id"));
+      } else {
+        var sliderToSave = textWrap.querySelector('.rex-slider-wrap[data-rex-slider-active="true"]');
+
+        if ( sliderToSave ) {
+          var sliderID = parseInt( sliderToSave.getAttribute("data-slider-id") );
           // var sliderData = Rexbuilder_Util_Editor.createSliderData($sliderToSave);
           // if (!Rexbuilder_Util_Editor.openingModel) {
           //   Rexbuilder_Util_Editor.saveSliderOnDB(sliderData, false);
@@ -1345,104 +1259,54 @@ var Rex_Save_Listeners = (function($) {
       grid_cell_width = 1;
 
     var output = "";
+    var section = $section[0];
     var $gridGallery = $section.find(".grid-stack-row");
-    var $sectionData = $section.children(".section-data");
+    var gridGallery = $gridGallery[0];
+    var sectionData = section.querySelector('.section-data');
 
     var galleryIstance = $gridGallery.data().plugin_perfectGridGalleryEditor;
 
-    section_name = $section.attr("data-rexlive-section-name");
+    section_name = section.getAttribute("data-rexlive-section-name");
 
-    type =
-      $sectionData.attr("data-type") === undefined
-        ? "perfect-grid"
-        : $sectionData.attr("data-type");
+    type = sectionData.getAttribute("data-type") === null ? "perfect-grid" : sectionData.getAttribute("data-type");
 
-    color_bg_section =
-      typeof $sectionData.attr("data-color_bg_section") == "undefined"
-        ? ""
-        : $sectionData.attr("data-color_bg_section");
-    color_bg_section_active =
-      typeof $sectionData.attr("data-color_bg_section_active") == "undefined"
-        ? true
-        : $sectionData.attr("data-color_bg_section_active");
+    color_bg_section = sectionData.getAttribute("data-color_bg_section") == null ? "" : sectionData.getAttribute("data-color_bg_section");
+    color_bg_section_active = sectionData.getAttribute("data-color_bg_section_active") == null ? true : sectionData.getAttribute("data-color_bg_section_active");
 
-    margin =
-      $sectionData.attr("data-margin") === undefined
-        ? ""
-        : $sectionData.attr("data-margin");
+    margin = sectionData.getAttribute("data-margin") === null ? "" : sectionData.getAttribute("data-margin");
 
-    image_bg_section =
-      $sectionData.attr("data-image_bg_section") === undefined
+    image_bg_section = sectionData.getAttribute("data-image_bg_section") === null ? "" : sectionData.getAttribute("data-image_bg_section");
+    image_width = section.getAttribute("data-background_image_width") === null
         ? ""
-        : $sectionData.attr("data-image_bg_section");
-    image_width =
-      $section.attr("data-background_image_width") === undefined
+        : isNaN(parseInt(section.getAttribute("data-background_image_width")))
         ? ""
-        : isNaN(parseInt($section.attr("data-background_image_width")))
-        ? ""
-        : parseInt($section.attr("data-background_image_width"));
+        : parseInt(section.getAttribute("data-background_image_width"));
     image_height =
-      $section.attr("data-background_image_height") === undefined
+      section.getAttribute("data-background_image_height") === null
         ? ""
-        : isNaN(parseInt($section.attr("data-background_image_height")))
+        : isNaN(parseInt(section.getAttribute("data-background_image_height")))
         ? ""
-        : parseInt($section.attr("data-background_image_height"));
-    id_image_bg_section =
-      $sectionData.attr("data-id_image_bg_section") === undefined
-        ? ""
-        : $sectionData.attr("data-id_image_bg_section");
-    image_bg_section_active =
-      typeof $sectionData.attr("data-image_bg_section_active") == "undefined"
-        ? true
-        : $sectionData.attr("data-image_bg_section_active");
+        : parseInt(section.getAttribute("data-background_image_height"));
+    id_image_bg_section = sectionData.getAttribute("data-id_image_bg_section") === null ? "" : sectionData.getAttribute("data-id_image_bg_section");
+    image_bg_section_active = sectionData.getAttribute("data-image_bg_section_active") == null ? true : sectionData.getAttribute("data-image_bg_section_active");
 
-    video_mp4_url =
-      $sectionData.attr("data-video_mp4_url") === undefined
-        ? ""
-        : $sectionData.attr("data-video_mp4_url");
-    video_bg_url_section =
-      $sectionData.attr("data-video_bg_url_section") === undefined
-        ? ""
-        : $sectionData.attr("data-video_bg_url_section");
-    video_bg_id_section =
-      $sectionData.attr("data-video_bg_id_section") === undefined
-        ? ""
-        : $sectionData.attr("data-video_bg_id_section");
-    video_bg_url_vimeo_section =
-      $sectionData.attr("data-video_bg_url_vimeo_section") === undefined
-        ? ""
-        : $sectionData.attr("data-video_bg_url_vimeo_section");
+    video_mp4_url = sectionData.getAttribute("data-video_mp4_url") === null ? "" : sectionData.getAttribute("data-video_mp4_url");
+    video_bg_url_section = sectionData.getAttribute("data-video_bg_url_section") === null ? "" : sectionData.getAttribute("data-video_bg_url_section");
+    video_bg_id_section = sectionData.getAttribute("data-video_bg_id_section") === null ? "" : sectionData.getAttribute("data-video_bg_id_section");
+    video_bg_url_vimeo_section = sectionData.getAttribute("data-video_bg_url_vimeo_section") === null ? "" : sectionData.getAttribute("data-video_bg_url_vimeo_section");
 
-    full_height =
-      $gridGallery.attr("data-full-height") === undefined
-        ? ""
-        : $gridGallery.attr("data-full-height");
-    layout =
-      $gridGallery.attr("data-layout") === undefined
-        ? ""
-        : $gridGallery.attr("data-layout");
-    custom_classes =
-      $sectionData.attr("data-custom_classes") === undefined
-        ? ""
-        : $sectionData.attr("data-custom_classes");
+    full_height = gridGallery.getAttribute("data-full-height") === null ? "" : gridGallery.getAttribute("data-full-height");
+    layout = gridGallery.getAttribute("data-layout") === null ? "" : gridGallery.getAttribute("data-layout");
+    custom_classes = sectionData.getAttribute("data-custom_classes") === null ? "" : sectionData.getAttribute("data-custom_classes");
 
     section_width = $gridGallery.parent().css("max-width");
-    dimension =
-      section_width === "100%" || section_width == "none" ? "full" : "boxed";
+    dimension = section_width === "100%" || section_width == "none" ? "full" : "boxed";
 
-    var grid_gutter = parseInt($gridGallery.attr("data-separator"));
-    var grid_separator_top = parseInt(
-      $gridGallery.attr("data-row-separator-top")
-    );
-    var grid_separator_right = parseInt(
-      $gridGallery.attr("data-row-separator-right")
-    );
-    var grid_separator_bottom = parseInt(
-      $gridGallery.attr("data-row-separator-bottom")
-    );
-    var grid_separator_left = parseInt(
-      $gridGallery.attr("data-row-separator-left")
-    );
+    var grid_gutter = parseInt( gridGallery.getAttribute("data-separator") );
+    var grid_separator_top = parseInt( gridGallery.getAttribute("data-row-separator-top") );
+    var grid_separator_right = parseInt( gridGallery.getAttribute("data-row-separator-right") );
+    var grid_separator_bottom = parseInt( gridGallery.getAttribute("data-row-separator-bottom") );
+    var grid_separator_left = parseInt( gridGallery.getAttribute("data-row-separator-left") );
 
     var row_distances = {
       gutter: isNaN(grid_gutter) ? "" : grid_gutter,
@@ -1458,18 +1322,12 @@ var Rex_Save_Listeners = (function($) {
     row_separator_bottom = row_distances.bottom;
     row_separator_left = row_distances.left;
 
-    var section_margin_top = parseInt(
-      $section.css("margin-top").split("px")[0]
-    );
-    var section_margin_right = parseInt(
-      $section.css("margin-right").split("px")[0]
-    );
-    var section_margin_bottom = parseInt(
-      $section.css("margin-bottom").split("px")[0]
-    );
-    var section_margin_left = parseInt(
-      $section.css("margin-left").split("px")[0]
-    );
+    var sectionComputedStyle = getComputedStyle(section);
+
+    var section_margin_top = parseInt( sectionComputedStyle["margin-top"].replace("px", "") );
+    var section_margin_right = parseInt( sectionComputedStyle["margin-right"].replace("px", "") );
+    var section_margin_bottom = parseInt( sectionComputedStyle["margin-bottom"].replace("px", "") );
+    var section_margin_left = parseInt( sectionComputedStyle["margin-left"].replace("px", "") );
 
     var rowMargins = {
       top: isNaN(section_margin_top) ? "" : section_margin_top,
@@ -1483,51 +1341,26 @@ var Rex_Save_Listeners = (function($) {
     row_margin_bottom = rowMargins.bottom;
     row_margin_left = rowMargins.left;
 
-    row_active_photoswipe =
-      typeof $sectionData.attr("data-row_active_photoswipe") == "undefined"
-        ? "0"
-        : $sectionData.attr("data-row_active_photoswipe");
+    row_active_photoswipe = sectionData.getAttribute("data-row_active_photoswipe") == null ? "0" : sectionData.getAttribute("data-row_active_photoswipe");
 
-    responsive_background =
-      $sectionData.attr("data-responsive_background") === undefined
-        ? ""
-        : $sectionData.attr("data-responsive_background");
-    row_overlay_color =
-      typeof $sectionData.attr("data-row_overlay_color") == "undefined"
-        ? ""
-        : $sectionData.attr("data-row_overlay_color");
+    responsive_background = sectionData.getAttribute("data-responsive_background") === null ? "" : sectionData.getAttribute("data-responsive_background");
+    row_overlay_color = sectionData.getAttribute("data-row_overlay_color") == null ? "" : sectionData.getAttribute("data-row_overlay_color");
     if (row_overlay_color == "") {
       row_overlay_color = responsive_background;
     }
-    row_overlay_active =
-      typeof $sectionData.attr("data-row_overlay_active") == "undefined"
-        ? false
-        : $sectionData.attr("data-row_overlay_active");
+    row_overlay_active = sectionData.getAttribute("data-row_overlay_active") == null ? false : sectionData.getAttribute("data-row_overlay_active");
 
     if (typeof newID == "undefined" || newID === null) {
-      rexlive_section_id =
-        typeof $section.attr("data-rexlive-section-id") == "undefined"
-          ? ""
-          : $section.attr("data-rexlive-section-id");
+      rexlive_section_id = section.getAttribute("data-rexlive-section-id") == null ? "" : section.getAttribute("data-rexlive-section-id");
     } else {
       rexlive_section_id = newID;
     }
 
-    collapse_grid =
-      typeof $section.attr("data-rex-collapse-grid") == "undefined"
-        ? false
-        : $section.attr("data-rex-collapse-grid").toString() == "true";
+    collapse_grid = section.getAttribute("data-rex-collapse-grid") == null ? false : section.getAttribute("data-rex-collapse-grid").toString() == "true";
 
-    rexlive_model_id =
-      typeof $section.attr("data-rexlive-model-id") == "undefined"
-        ? ""
-        : $section.attr("data-rexlive-model-id");
-    rexlive_model_name =
-      typeof $section.attr("data-rexlive-model-name") == "undefined"
-        ? ""
-        : $section.attr("data-rexlive-model-name");
-    grid_cell_width = Rexbuilder_Util.getGalleryInstance($section).properties
-      .singleWidth;
+    rexlive_model_id = section.getAttribute("data-rexlive-model-id") == null ? "" : section.getAttribute("data-rexlive-model-id");
+    rexlive_model_name = section.getAttribute("data-rexlive-model-name") == null ? "" : section.getAttribute("data-rexlive-model-name");
+    grid_cell_width = Rexbuilder_Util.getGalleryInstance( $section ).properties.singleWidth;
 
     if (mode == "shortcode") {
       output =
@@ -1603,10 +1436,9 @@ var Rex_Save_Listeners = (function($) {
       var elementsOrdered = galleryIstance.getElementsTopBottom();
 
       // create elements shortcode
-      $(elementsOrdered).each(function() {
-        var $elem = $(this);
-        if (!$elem.hasClass("removing_block")) {
-          output += createBlockProperties($elem, "shortcode", $gridGallery);
+      elementsOrdered.forEach(function(el) {
+        if ( ! Rexbuilder_Util.hasClass( el, 'removing_block' ) ) {
+          output += createBlockProperties(el, "shortcode", gridGallery);
         }
       });
 

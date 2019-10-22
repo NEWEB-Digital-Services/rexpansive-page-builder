@@ -877,7 +877,7 @@ class Rexbuilder_Admin {
 		</div>
 		<div class="live-info-wrap <?php echo ( isset( $savedFromBackend ) && $savedFromBackend == "false" ? ' live-saved' : '' ); ?>">
 			<div class="go-live-advice">
-				<a id="go-live-client-button" href="<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>" class="cool-btn cool-bnt--primary go-live<?php echo ( 'auto-draft' == get_post_status(get_the_id()) ? ' draft' : '' ); ?>" target="_blank"><?php _e( 'Live', 'rexpansive-builder' ); ?></a>
+				<a id="go-live-client-button" href="<?php echo admin_url( 'post.php?post=' . get_the_id() . '&action=edit&rexlive=true' ); ?>" class="cool-btn cool-bnt--primary go-live<?php echo ( 'auto-draft' == get_post_status(get_the_id()) ? ' ' : '' ); ?>" target="_blank"><?php _e( 'Live', 'rexpansive-builder' ); ?></a>
 				<input type="hidden" name="force_live" value="">
 				<script>
 					;(function ($) {

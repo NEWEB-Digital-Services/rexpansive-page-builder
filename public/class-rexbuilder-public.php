@@ -79,9 +79,14 @@ class Rexbuilder_Public
      */
     public function rexlive_body_class( $classes ) {
         if( Rexbuilder_Utilities::isBuilderLive() ) {
-            // array_push( $classes, 'rexbuilder-live-active' );
+            // live builder main body class
             $classes[] = 'rexbuilder-live-active';
-            // $ex_tools = array( 'accordion', 'slideshow' );
+
+            // post status class
+            global $post;
+            $classes[] = 'rexbuilder-live--' . $post->post_status;
+            
+            // live builder extra tools classes
             $ex_tools = array();
             $experimental_tools = apply_filters( 'rexbuilder_live_experimental_tools', $ex_tools );
             foreach( $experimental_tools as $tool )
@@ -228,7 +233,7 @@ class Rexbuilder_Public
                 wp_enqueue_script('mediumEditorToolbarStates', REXPANSIVE_BUILDER_URL . 'public/js/vendor/medium-editor-toolbar-states.min.js', array('jquery'), $ver, true);
 
                 // Rexbuilder
-                wp_enqueue_script('1-RexUtilEditorUtilities', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Util_Editor_Utilities.js', array('jquery'), $ver, true);
+                wp_enqueue_script('1-RexUtilEditorUtilities', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Live_Utilities.js', array('jquery'), $ver, true);
                 wp_enqueue_script('0-Rexbuilder_Array_Utilities', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Array_Utilities.js', array('jquery'), $ver, true);
                 wp_enqueue_script('1-RexColorPalette', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Color_Palette.js', array('jquery'), $ver, true);
                 wp_enqueue_script('1-RexOverlayPalette', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Overlay_Palette.js', array('jquery'), $ver, true);
@@ -244,6 +249,7 @@ class Rexbuilder_Public
             }
             else
             {
+                wp_enqueue_script('1-RexUtilEditorUtilities', REXPANSIVE_BUILDER_URL . 'public/js/live/1-Rexbuilder_Live_Utilities.js', array('jquery'), $ver, true);
                 wp_enqueue_script('0-Rexbuilder_Array_Utilities', REXPANSIVE_BUILDER_URL . 'public/js/live/0-Rexbuilder_Array_Utilities.js', array('jquery'), $ver, true);
                 wp_enqueue_script('intersection-observer', REXPANSIVE_BUILDER_URL . 'public/js/vendor/intersection-observer.js', array(), $ver, true);
             }
@@ -302,7 +308,7 @@ class Rexbuilder_Public
             }
             
             if( !Rexbuilder_Utilities::isBuilderLive() ) {
-                if ( false !== strpos( $customEffects, 'rex-effect-' ) ) {
+                if ( false !== strpos( $customEffects, 'rex-effect' ) ) {
                     wp_enqueue_script('pixi', REXPANSIVE_BUILDER_URL . 'public/js/vendor/pixi.min.js', array('jquery'), $ver, true);
                     wp_enqueue_script('effect', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.rexEffect.js', array('jquery'), $ver, true);
                 }
@@ -381,7 +387,7 @@ class Rexbuilder_Public
                 wp_enqueue_script( $this->plugin_name, REXPANSIVE_BUILDER_URL . 'public/js/builderlive-editor.js', array( 'jquery' ), REXPANSIVE_BUILDER_VERSION, true );
 
             } else {
-                if ( false !== strpos( $customEffects, 'rex-effect-' ) ) {
+                if ( false !== strpos( $customEffects, 'rex-effect' ) ) {
                     wp_enqueue_script('pixi', REXPANSIVE_BUILDER_URL . 'public/js/vendor/pixi.min.js', array('jquery'), false, true);
                     wp_enqueue_script('effect', REXPANSIVE_BUILDER_URL . 'public/js/vendor/jquery.rexEffect.min.js', array('jquery'), false, true);
                 }
@@ -1052,15 +1058,13 @@ class Rexbuilder_Public
     public function generate_builder_content( $content ) {
         global $post;      
 
-        if ( isset ( $post ) )
-        {
+        if ( isset ( $post ) ) {
             $builder_active = apply_filters('rexbuilder_post_active', get_post_meta($post->ID, '_rexbuilder_active', true));
             
-            if ('true' == $builder_active) 
-            {
+            if ( 'true' == $builder_active ) {
                 ob_start();
 
-                if( Rexbuilder_Utilities::isBuilderLive() ){
+                if( Rexbuilder_Utilities::isBuilderLive() ) {
                     $editor = $_GET['editor'];
                 } else{
                     $editor = false;
@@ -1072,7 +1076,7 @@ class Rexbuilder_Public
                 $buttonsIDsUsed = json_decode($stripped, true);
 
                 $rexContainerMargins = "";
-                if($editor){
+                if ( $editor ) {
                     $fixTopMargins = false;
                     $globalMargins = get_option("_rex_global_margins_container", "");
                     $pageMargins = get_post_meta($post->ID, '_margins_container', true);
@@ -1081,14 +1085,14 @@ class Rexbuilder_Public
                     $pageMarginsStripped = stripslashes( $pageMargins );
                     $pageMarginsDecoded = json_decode($pageMarginsStripped, true);
                     
-                    if($pageMarginsDecoded !== null){
+                    if ( $pageMarginsDecoded !== null ) {
                         $rexContainerMargins = "margin-top: ".$pageMarginsDecoded["top"]."px";
                         if($pageMarginsDecoded["top"] > 0){
                             $fixTopMargins = true;
                         }
-                    } else if($globalMarginsDecoded !== null){
+                    } else if ( $globalMarginsDecoded !== null ) {
                         $rexContainerMargins = "margin-top: ".$globalMarginsDecoded["top"]."px";
-                        if($globalMarginsDecoded["top"] > 0){
+                        if( $globalMarginsDecoded["top"] > 0 ) {
                             $fixTopMargins = true;
                         }
                     }
@@ -1100,9 +1104,7 @@ class Rexbuilder_Public
                     {
                         $fixTopMargins = true;
                         $custom_style = ' style="margin-top:' . $custom_settings['container_distancer']['top'] . 'px;"';
-                    }
-                    else if ( isset( $global_settings['container_distancer']['top'] ) && '' !== $global_settings['container_distancer']['top'] )
-                    {
+                    } else if ( isset( $global_settings['container_distancer']['top'] ) && '' !== $global_settings['container_distancer']['top'] ) {
                         $fixTopMargins = true;
                         $custom_style = ' style="margin-top:' . $global_settings['container_distancer']['top'] . 'px;"';
                     }
@@ -1111,18 +1113,19 @@ class Rexbuilder_Public
 ?>
     <div class="rexbuilder-live-content<?php echo ($editor ? ' rexbuilder-live-content--editing add-new-section--hide'.($fixTopMargins ? ' fix-tools-first-row' : '') : ''); ?>"<?php echo ( $editor && $fixTopMargins ? $custom_style : ''); ?>>
         <?php
-        require REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-page-information.php";
-
         $backendEditing = "true";
-        if(get_post_meta($post->ID, '_save_from_backend', true) == "false"){
+        if( get_post_meta( $post->ID, '_save_from_backend', true ) == "false" ) {
             $backendEditing = "false";
         }
+        
+        require REXPANSIVE_BUILDER_PATH . "public/partials/rexlive-page-information.php";
+
         ?>
         <div class="rex-container" data-rex-layout-selected="" data-backend-edited="<?php echo $backendEditing;?>">
         <?php echo do_shortcode( $rexbuilderShortcode ); ?>
         </div>
         <?php 
-        if (isset($editor) && $editor == "true") {
+        if ( isset( $editor ) && $editor == "true" ) {
 ?>
             <div class="bl_d-flex bl_jc-c add-new-section__wrap">
                 <div class="tool-button tool-button--inline tool-button--flat tool-button--add-big add-new-section tippy" data-new-row-position="bottom" data-tippy-content="<?php _e('Add Row','rexpansive-builder'); ?>">

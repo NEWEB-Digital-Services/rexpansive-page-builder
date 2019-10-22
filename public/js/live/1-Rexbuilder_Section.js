@@ -469,6 +469,12 @@ var Rexbuilder_Section = (function($) {
         });
       }
 
+      // if the page remains empty
+      // make sure that the "add row" button is visible
+      if( 0 === Rexbuilder_Util.rexContainer.querySelectorAll(".rexpansive_section:not(.removing_section)").length ) {
+        Rexbuilder_Live_Utilities.activeAddSection();
+      }
+
       var actionData = {
         show: false,
         layoutsOrder:
@@ -555,7 +561,7 @@ var Rexbuilder_Section = (function($) {
         Rexbuilder_Dom_Util.updateLockEditModel($buttonModel, true);
       }
 
-      Rexbuilder_Util_Editor_Utilities.removeColorPicker($newSection);
+      Rexbuilder_Live_Utilities.removeColorPicker($newSection);
 
       // insert the copyed row
       $newSection.insertAfter($section);
@@ -746,10 +752,8 @@ var Rexbuilder_Section = (function($) {
       var $newSection = $(newSection);
       var $newSectionData = $newSection.children(".section-data");
 
-      $newSectionData.after(
-        tmpl("tmpl-toolbox-section", new_row_defaults)
-      );
-      //per ora viene aggiunta dopo l'ultima section
+      $newSectionData.after( tmpl("tmpl-toolbox-section", new_row_defaults) );
+      // add after the last row
       switch( newRowPosition ) {
         case 'bottom':
           var $prevRow = Rexbuilder_Util.$rexContainer.children("section:last");
@@ -771,10 +775,7 @@ var Rexbuilder_Section = (function($) {
 
       Rexbuilder_Util.lastSectionNumber = Rexbuilder_Util.lastSectionNumber + 1;
 
-      $newSection.attr(
-        "data-rexlive-section-number",
-        Rexbuilder_Util.lastSectionNumber
-      );
+      $newSection.attr( "data-rexlive-section-number", Rexbuilder_Util.lastSectionNumber );
       $newSection.find(".grid-stack-row").perfectGridGalleryEditor({editorMode:true});
 
       Rexbuilder_Util.$rexContainer.sortable("refresh");

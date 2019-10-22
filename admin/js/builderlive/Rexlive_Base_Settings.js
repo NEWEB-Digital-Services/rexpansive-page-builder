@@ -32,7 +32,7 @@ var Rexlive_Base_Settings = (function($) {
   }
 
   var _tooltips = function() {
-    tippy(".tippy", {
+    var tmp = tippy(".tippy", {
       arrow: true,
       arrowType: "round",
       size: "small",

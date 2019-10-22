@@ -2,7 +2,7 @@
  * Utilities functions on RexLive
  * @since 2.0.0
  */
-var Rexbuilder_Util_Editor_Utilities = (function($) {
+var Rexbuilder_Live_Utilities = (function($) {
   "use strict";
   
   var _removeColorPicker = function($elem) {
@@ -35,6 +35,19 @@ var Rexbuilder_Util_Editor_Utilities = (function($) {
     });
   };
 
+  /**
+   * Make visibile the plus button under the container
+   * @param  {Object} $s section
+   * @return {void}
+   */
+  var _activeAddSection = function( $s ) {
+    $s = 'undefined' !== typeof $s ? $s : null;
+    Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
+    if ( $s ) {
+      $s.removeClass("activeRowTools");
+    }
+  }
+
   var init = function() {
     
   };
@@ -43,6 +56,7 @@ var Rexbuilder_Util_Editor_Utilities = (function($) {
     init: init,
     removeColorPicker: _removeColorPicker,
     addSpectrumCustomSaveButton: _addSpectrumCustomSaveButton,
-    addSpectrumCustomCloseButton: _addSpectrumCustomCloseButton
+    addSpectrumCustomCloseButton: _addSpectrumCustomCloseButton,
+    activeAddSection: _activeAddSection
   };
 })(jQuery);

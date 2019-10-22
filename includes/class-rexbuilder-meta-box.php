@@ -788,8 +788,7 @@ if ( ! class_exists( 'Rexbuilder_Meta_Box' ) ) {
      * @version 2.0.0 Handling live and old builder
      */
     public function save_builder_meta( $post_id ) {
-      if( !isset( $_POST[ 'rexbuilder_meta_nonce' ] ) || 
-        !wp_verify_nonce( $_POST[ 'rexbuilder_meta_nonce' ], basename( __FILE__ ) ) ) {
+      if( !isset( $_POST[ 'rexbuilder_meta_nonce' ] ) || !wp_verify_nonce( $_POST[ 'rexbuilder_meta_nonce' ], basename( __FILE__ ) ) ) {
         return $post_id;
       }
       
@@ -806,11 +805,11 @@ if ( ! class_exists( 'Rexbuilder_Meta_Box' ) ) {
         }
       }
       
-      foreach ( $this->fields as $field ) :
+      foreach ( $this->fields as $field ) {
         
-        if('rexpansive_plugin' == $field["type"] ){
-          $savedFromBackend = get_post_meta( get_the_id(), '_save_from_backend', true);
-          if(isset($savedFromBackend) && $savedFromBackend == "false"){
+        if( 'rexpansive_plugin' == $field["type"] ){
+          $savedFromBackend = get_post_meta( get_the_id(), '_save_from_backend', true );
+          if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
             return $post_id;
           }
         }
@@ -825,11 +824,11 @@ if ( ! class_exists( 'Rexbuilder_Meta_Box' ) ) {
           delete_post_meta( $post_id, $field[ 'id' ], $old );
         }
 
-        if('rexpansive_plugin' == $field["type"] ){
+        if( 'rexpansive_plugin' == $field["type"] ) {
           update_post_meta( $post_id, '_save_from_backend', "true" );
         }
 
-      endforeach;
+      }
     }
 
     /**

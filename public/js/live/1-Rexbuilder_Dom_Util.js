@@ -220,8 +220,7 @@ var Rexbuilder_Dom_Util = (function($) {
     $sectionData.attr("data-image_bg_section", data.urlImage);
     $sectionData.attr("data-image_bg_section_active", data.active);
 
-    Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
-    $section.removeClass("activeRowTools");
+    Rexbuilder_Live_Utilities.activeAddSection( $section );
   };
 
   var _updateImageBlock = function($itemContent, $elemData, data) {
@@ -689,8 +688,7 @@ var Rexbuilder_Dom_Util = (function($) {
       if( 'undefined' !== typeof Rexbuilder_Section_Editor ) {
         Rexbuilder_Section_Editor.updateRowBackgroundVideo( $target, videoOptions );
       }
-      Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
-      $target.removeClass("activeRowTools");
+      Rexbuilder_Live_Utilities.activeAddSection( $target );
     } else if (targetType == "block") {
       $elemData.attr("data-video_bg_id", videoOptions.mp4Data.idMp4);
       $elemData.attr("data-video_mp4_url", videoOptions.mp4Data.linkMp4);
@@ -787,8 +785,9 @@ var Rexbuilder_Dom_Util = (function($) {
     if (galleryEditorInstance.properties.numberBlocksVisibileOnGrid == 0) {
       $elem.parents(".rexpansive_section").addClass("empty-section");
     } else {
-      $elem.parents(".rexpansive_section").removeClass("empty-section").removeClass("activeRowTools");
-      Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
+      var $section = $elem.parents(".rexpansive_section");
+      $section.removeClass("empty-section");
+      Rexbuilder_Live_Utilities.activeAddSection($section);
     }
   };
 
@@ -1053,8 +1052,7 @@ var Rexbuilder_Dom_Util = (function($) {
     if( 'undefined' !== typeof Rexbuilder_Section_Editor ) {
       Rexbuilder_Section_Editor.updateRowBackgroundColorTool( $section, bgColor.color );
     }
-    Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
-    $section.removeClass("activeRowTools");
+    Rexbuilder_Live_Utilities.activeAddSection( $section );
   };
 
   var _updateSectionBackgroundGradient = function($section, bgColor) {
@@ -1069,8 +1067,7 @@ var Rexbuilder_Dom_Util = (function($) {
     if( 'undefined' !== typeof Rexbuilder_Section_Editor ) {
       Rexbuilder_Section_Editor.updateRowBackgroundGradientTool( $section, safeGradient );
     }
-    Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
-    $section.removeClass("activeRowTools");
+    Rexbuilder_Live_Utilities.activeAddSection( $section );
   };
 
   var _updateBlockBackgroundColorLive = function(data, color) {
@@ -1107,8 +1104,7 @@ var Rexbuilder_Dom_Util = (function($) {
     if( 'undefined' !== typeof Rexbuilder_Block_Editor ) {
       Rexbuilder_Block_Editor.updateBlockBackgroundColorToolLive( $target, color );
     }
-    Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
-    $target.removeClass("activeRowTools");
+    Rexbuilder_Live_Utilities.activeAddSection( $target );
   };
 
   /**
@@ -1188,8 +1184,7 @@ var Rexbuilder_Dom_Util = (function($) {
     if( 'undefined' !== typeof Rexbuilder_Section_Editor ) {
       Rexbuilder_Section_Editor.updateRowOverlayColorToolLive( $target, color );
     }
-    Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
-    $target.removeClass("activeRowTools");
+    Rexbuilder_Live_Utilities.activeAddSection( $target );
   };
 
   var _updateSectionOverlay = function($section, overlay) {
@@ -1217,8 +1212,7 @@ var Rexbuilder_Dom_Util = (function($) {
     if( 'undefined' !== typeof Rexbuilder_Section_Editor ) {
       Rexbuilder_Section_Editor.updateRowOverlayColorTool( $section, overlay );
     }
-    Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
-    $section.removeClass("activeRowTools");
+    Rexbuilder_Live_Utilities.activeAddSection( $section );
   };
 
   var _updateSectionOverlayGradient = function($section, overlay) {
@@ -1245,8 +1239,7 @@ var Rexbuilder_Dom_Util = (function($) {
         color: safeGradient
       } );
     }
-    Rexbuilder_Util.$rexContainer.parent().removeClass('add-new-section--hide');
-    $section.removeClass("activeRowTools");
+    Rexbuilder_Live_Utilities.activeAddSection( $section );
   };
 
   /**
@@ -1359,12 +1352,7 @@ var Rexbuilder_Dom_Util = (function($) {
     _updateImageBG($section, data);
   };
 
-  var _updateSectionVisibility = function(
-    $section,
-    show,
-    layoutsOrder,
-    defaultStateSections
-  ) {
+  var _updateSectionVisibility = function( $section, show, layoutsOrder, defaultStateSections ) {
     if (show) {
       if (Rexbuilder_Util.activeLayout == "default") {
         $section.removeClass("removing_section");
