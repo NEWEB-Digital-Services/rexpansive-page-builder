@@ -49,7 +49,28 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
     };
 
     var _applyChanges = function () {
-        columnContentData.wpcf7_default_value = wpcf7_content_editor_properties.$content_default_value.val();
+        columnContentData.wpcf7_required_field = "undefined" != typeof wpcf7_content_editor_properties.$content_required_field.attr("checked");
+        columnContentData.wpcf7_only_numbers = "undefined" != typeof wpcf7_content_editor_properties.$content_only_numbers.attr("checked");
+        columnContentData.wpcf7_placeholder = wpcf7_content_editor_properties.$content_placeholder.val();
+        columnContentData.input_width = wpcf7_content_editor_properties.$content_input_width.val();
+        columnContentData.input_height = wpcf7_content_editor_properties.$content_input_height.val();
+        var widthType = wpcf7_content_editor_properties.$content_input_width_type.filter(':checked').val();
+        var heightType = wpcf7_content_editor_properties.$content_input_height_type.filter(':checked').val();
+        switch(widthType) {
+            case "percentage":
+                columnContentData.input_width = columnContentData.input_width + "%";
+                break;
+            case "pixel":
+                columnContentData.input_width = columnContentData.input_width + "px";
+        }
+
+        switch(heightType) {
+            case "percentage":
+                columnContentData.input_height = columnContentData.input_height + "%";
+                break;
+            case "pixel":
+                columnContentData.input_height = columnContentData.input_height + "px";
+        }
 
     	var columnContentDataToIframe = {
             eventName: "rexlive:update_wcpf7_column_content_page",
@@ -62,7 +83,6 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(columnContentDataToIframe);
     };
 
-    // data = columnContentData
     var _updateColumnContentEditorModal = function (data) {
         _clearColumnContentData();
         _updateColumnContentData(data);
@@ -71,32 +91,15 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
     var _clearColumnContentData = function () {
         columnContentData = {
-            // Da aggiornare
-            
-            wpcf7_default_value: "",
+            wpcf7_placeholder: "",
+            wpcf7_only_numbers: "",
+            wpcf7_required_field: "",
+            input_width: "",
+            input_height: "",
             type: "",
-            // text_color: "",
-            // text: "",
-            // font_size: "",
+            input_type: "",
             background_color: "",
-            // button_height: "",
-            // button_width: "",
-            // hover_color: "",
-            // hover_border: "",
-            // hover_text: "",
-            // border_color: "",
-            // border_width: "",
-            // border_radius: "",
-            // margin_top: "",
-            // margin_bottom: "",
-            // margin_right: "",
-            // margin_left: "",
-            // padding_top: "",
-            // padding_bottom: "",
-            // padding_right: "",
-            // padding_left: "",
-            // link_target: "",
-            // link_type: "",
+            text_color: "",
             target: {
                 element_id: "",
                 row_number: "",
@@ -153,10 +156,16 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         // wpcf7_content_editor_properties.$element_border_hover_color_value.val(columnContentData.hover_border);
         // wpcf7_content_editor_properties.$element_border_hover_color_value.spectrum("set", columnContentData.hover_border);
         // wpcf7_content_editor_properties.$element_border_hover_color_preview.hide();
-        wpcf7_content_editor_properties.$content_preview_background.css("background-color", columnContentData.background_color);
-        wpcf7_content_editor_properties.$content_background_color_value.val(columnContentData.background_color);
-        wpcf7_content_editor_properties.$content_background_color_preview.hide();
-        wpcf7_content_editor_properties.$content_background_color_value.spectrum("set", columnContentData.background_color);
+        
+        // wpcf7_content_editor_properties.$content_preview_background.css("background-color", columnContentData.background_color);
+        // wpcf7_content_editor_properties.$content_background_color_value.val(columnContentData.background_color);
+        // wpcf7_content_editor_properties.$content_background_color_preview.hide();
+        // wpcf7_content_editor_properties.$content_background_color_value.spectrum("set", columnContentData.background_color);
+
+        wpcf7_content_editor_properties.$content_preview_text.css("background-color", columnContentData.text_color);
+        wpcf7_content_editor_properties.$content_text_color_value.val(columnContentData.text_color);
+        wpcf7_content_editor_properties.$content_text_color_preview.hide();
+        wpcf7_content_editor_properties.$content_text_color_value.spectrum("set", columnContentData.text_color);
 
         // wpcf7_content_editor_properties.$element_preview_border.css("border-color", columnContentData.border_color);
         // wpcf7_content_editor_properties.$element_border_color_value.val(columnContentData.border_color);
@@ -260,6 +269,60 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         );
     }
 
+    var _linkTextColorEditor = function () {
+        var colorTEXT;
+        wpcf7_content_editor_properties.$content_text_color_value.spectrum({
+            replacerClassName: "btn-floating",
+            preferredFormat: "hex",
+            showPalette: false,
+            showAlpha: true,
+            showInput: true,
+            showButtons: false,
+            containerClassName:
+                "rexbuilder-materialize-wrap block-background-color-picker",
+            show: function () {
+            },
+            move: function (color) {
+                if(needToRemoveSpanData) {
+                    needToRemoveSpanData = false;
+                }
+
+                colorTEXT = color.toRgbString();
+                wpcf7_content_editor_properties.$content_text_color_preview.hide();
+                wpcf7_content_editor_properties.$content_preview_text.css("background-color", colorTEXT);
+                _updateColumnContentLive({
+                    type: "text",
+                    name: "text-color",
+                    value: colorTEXT
+                });
+            },
+            change: function (color) {
+            },
+            hide: function (color) {
+                columnContentData.text_color = color.toRgbString();
+            },
+            cancelText: "",
+            chooseText: ""
+        });
+
+        var close = tmpl('tmpl-tool-close', {});
+        var $close = $(close);
+        wpcf7_content_editor_properties.$content_text_color_value.spectrum('container').append($close);
+
+        $close.on('click', function (e) {
+            e.preventDefault();
+            wpcf7_content_editor_properties.$content_text_color_value.spectrum('hide');
+        });
+
+        wpcf7_content_editor_properties.$content_text_color_preview.on(
+            "click",
+            function () {
+                wpcf7_content_editor_properties.$content_text_color_value.spectrum("show");
+                return false;
+            }
+        );
+    }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////
    	/////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -291,7 +354,19 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
                 _removeSpanData();
             }
             // _applyChanges();
-        })
+        });
+
+        wpcf7_content_editor_properties.$content_input_width_type.on("click", function () {
+            var width_type = $(this).val();
+            /* The attribute does not set in DOM */
+            // wpcf7_content_editor_properties.$content_input_width_type.filter('[value="' + width_type + '"]').prop('checked', true);
+            // console.log(wpcf7_content_editor_properties.$content_input_width_type.filter(':checked')[0]);
+        });
+
+        wpcf7_content_editor_properties.$content_input_height_type.on("click", function () {
+            var height_type = $(this).val();
+            // console.log(height_type);
+        });
 	}
 
 	var _init = function() {
@@ -305,41 +380,34 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             $apply_changes_button: $container.find(".rex-apply-button"),
             // $wpcf7_add_text_field: $container.find(".rex-add-text-field"),
             
-            $content_preview_background: $container.find("#rex-element-preview-background"),
-            $content_background_color_value: $container.find("#rex-element-background-color"),
-            $content_background_color_runtime: $container.find("#rex-element-background-color-runtime"),
-            $content_background_color_preview: $container.find("#rex-element-background-color-preview-icon"),
+            // $content_preview_background: $container.find("#rex-element-preview-background"),
+            // $content_background_color_value: $container.find("#rex-element-background-color"),
+            // $content_background_color_runtime: $container.find("#rex-element-background-color-runtime"),
+            // $content_background_color_preview: $container.find("#rex-element-background-color-preview-icon"),
+            $content_preview_text: $container.find("#rex-element-preview-background"),
+            $content_text_color_value: $container.find("#rex-element-background-color"),
+            $content_text_color_runtime: $container.find("#rex-element-background-color-runtime"),
+            $content_text_color_preview: $container.find("#rex-element-background-color-preview-icon"),
 
-            $content_default_value: $container.find("#wpcf7-default-value"),
+            $content_required_field: $container.find("#wpcf7-required-field"),
+            $content_only_numbers: $container.find("#wpcf7-only-numbers"),
+            $content_placeholder: $container.find("#wpcf7-placeholder"),
+            $content_input_width: $container.find("#wpcf7-input-width"),
+            $content_input_width_type: $container.find(".wpcf7-input-width-type"),
+            $content_input_height: $container.find("#wpcf7-input-height"),
+            $content_input_height_type: $container.find(".wpcf7-input-height-type"),
 		};
 
 		columnContentData = {
-            // Da aggiornare
-            
-            wpcf7_default_value: "",
+            wpcf7_required_field: "",
+            wpcf7_only_numbers: "",
+            wpcf7_placeholder: "",
+            input_width: "",
+            input_height: "",
             type: "",
-            // text_color: "",
-            // text: "",
-            // font_size: "",
+            input_type: "",
             background_color: "",
-            // button_height: "",
-            // button_width: "",
-            // hover_color: "",
-            // hover_border: "",
-            // hover_text: "",
-            // border_color: "",
-            // border_width: "",
-            // border_radius: "",
-            // margin_top: "",
-            // margin_bottom: "",
-            // margin_right: "",
-            // margin_left: "",
-            // padding_top: "",
-            // padding_bottom: "",
-            // padding_right: "",
-            // padding_left: "",
-            // link_target: "",
-            // link_type: "",
+            text_color: "",
             target: {
                 element_id: "",
                 row_number: "",
@@ -348,7 +416,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         };
 
 		_linkDocumentListeners();
-		_linkBackgroundColorEditor();
+		_linkTextColorEditor();
 	}
 
 	return {

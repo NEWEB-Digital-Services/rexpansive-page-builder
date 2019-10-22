@@ -492,6 +492,15 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 styleSheet.cssRules[i].selectorText == "[data-rex-element-id=\"" + formID + "\"].rex-element-wrapper [wpcf7-row-number=\"" + row + "\"].wpcf7-row [wpcf7-column-number=\"" + column + "\"].wpcf7-column" + contentType
             ) {
                 switch (rule) {
+                    case "width":
+                        styleSheet.cssRules[i].style.width = value;
+                        break;
+                    case "height":
+                        styleSheet.cssRules[i].style.height = value;
+                        break;
+                    case "text-color":
+                        styleSheet.cssRules[i].style.color = value;
+                        break;
                     case "border-width":
                         styleSheet.cssRules[i].style.borderWidth = value;
 
@@ -615,38 +624,38 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var currentTextSize = "";
         var containerRule = "";
 
-        // containerRule += "color: " + columnContentProperties.text_color + ";";
+        // containerRule += "color: " + columnContentData.text_color + ";";
 
         // checking font size, if value is not valid default font size will be applied
-        // currentTextSize = isNaN(parseInt(columnContentProperties.font_size.replace("px", ""))) ? defaultButtonValues.font_size : columnContentProperties.font_size;
+        // currentTextSize = isNaN(parseInt(columnContentData.font_size.replace("px", ""))) ? defaultButtonValues.font_size : columnContentData.font_size;
         // containerRule += "font-size: " + currentTextSize + ";";
 
         // checking button dimensions, if value is not valid default dimensions will be applied
-        // currentDimension = isNaN(parseInt(columnContentProperties.button_height.replace("px", ""))) ? defaultButtonValues.dimensions.height : columnContentProperties.button_height;
+        // currentDimension = isNaN(parseInt(columnContentData.button_height.replace("px", ""))) ? defaultButtonValues.dimensions.height : columnContentData.button_height;
         // containerRule += "min-height: " + currentDimension + ";";
-        // currentDimension = isNaN(parseInt(columnContentProperties.button_width.replace("px", ""))) ? defaultButtonValues.dimensions.width : columnContentProperties.button_width;
+        // currentDimension = isNaN(parseInt(columnContentData.button_width.replace("px", ""))) ? defaultButtonValues.dimensions.width : columnContentData.button_width;
         // containerRule += "min-width: " + currentDimension + ";";
 
         // checking margins, if they are not valid default value will be applied
-        // currentMargin = isNaN(parseInt(columnContentProperties.margin_top.replace("px", ""))) ? defaultButtonValues.margins.top : columnContentProperties.margin_top;
+        // currentMargin = isNaN(parseInt(columnContentData.margin_top.replace("px", ""))) ? defaultButtonValues.margins.top : columnContentData.margin_top;
         // containerRule += "margin-top: " + currentMargin + ";";
-        // currentMargin = isNaN(parseInt(columnContentProperties.margin_right.replace("px", ""))) ? defaultButtonValues.margins.right : columnContentProperties.margin_right;
+        // currentMargin = isNaN(parseInt(columnContentData.margin_right.replace("px", ""))) ? defaultButtonValues.margins.right : columnContentData.margin_right;
         // containerRule += "margin-right: " + currentMargin + ";";
-        // currentMargin = isNaN(parseInt(columnContentProperties.margin_bottom.replace("px", ""))) ? defaultButtonValues.margins.bottom : columnContentProperties.margin_bottom;
+        // currentMargin = isNaN(parseInt(columnContentData.margin_bottom.replace("px", ""))) ? defaultButtonValues.margins.bottom : columnContentData.margin_bottom;
         // containerRule += "margin-bottom: " + currentMargin + ";";
-        // currentMargin = isNaN(parseInt(columnContentProperties.margin_left.replace("px", ""))) ? defaultButtonValues.margins.left : columnContentProperties.margin_left;
+        // currentMargin = isNaN(parseInt(columnContentData.margin_left.replace("px", ""))) ? defaultButtonValues.margins.left : columnContentData.margin_left;
         // containerRule += "margin-left: " + currentMargin + ";";
 
         // _addElementContainerRule(elementID, containerRule);
 
         var backgroundRule = "";
-        // backgroundRule += "border-color: " + columnContentProperties.border_color + ";";
+        // backgroundRule += "border-color: " + columnContentData.border_color + ";";
         // backgroundRule += "border-style: " + "solid" + ";";
 
         // checking border dimensions, if they are not valid default value will be applied
-        // currentBorderDimension = isNaN(parseInt(columnContentProperties.border_width.replace("px", ""))) ? defaultButtonValues.border.width : columnContentProperties.border_width;
+        // currentBorderDimension = isNaN(parseInt(columnContentData.border_width.replace("px", ""))) ? defaultButtonValues.border.width : columnContentData.border_width;
         // backgroundRule += "border-width: " + currentBorderDimension + ";";
-        // currentBorderDimension = isNaN(parseInt(columnContentProperties.border_radius.replace("px", ""))) ? defaultButtonValues.border.radius : columnContentProperties.border_radius;
+        // currentBorderDimension = isNaN(parseInt(columnContentData.border_radius.replace("px", ""))) ? defaultButtonValues.border.radius : columnContentData.border_radius;
         // backgroundRule += "border-radius: " + currentBorderDimension + ";";
 
         backgroundRule += "background-color: " + formData.background_color + ";";
@@ -655,23 +664,23 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         var textRule = "";
         // checking paddings, if they are not valid default value will be applied
-        // currentPadding = isNaN(parseInt(columnContentProperties.padding_top.replace("px", ""))) ? defaultButtonValues.paddings.top : columnContentProperties.padding_top;
+        // currentPadding = isNaN(parseInt(columnContentData.padding_top.replace("px", ""))) ? defaultButtonValues.paddings.top : columnContentData.padding_top;
         // textRule += "padding-top: " + currentPadding + ";";
-        // currentPadding = isNaN(parseInt(columnContentProperties.padding_right.replace("px", ""))) ? defaultButtonValues.paddings.right : columnContentProperties.padding_right;
+        // currentPadding = isNaN(parseInt(columnContentData.padding_right.replace("px", ""))) ? defaultButtonValues.paddings.right : columnContentData.padding_right;
         // textRule += "padding-right: " + currentPadding + ";";
-        // currentPadding = isNaN(parseInt(columnContentProperties.padding_bottom.replace("px", ""))) ? defaultButtonValues.paddings.bottom : columnContentProperties.padding_bottom;
+        // currentPadding = isNaN(parseInt(columnContentData.padding_bottom.replace("px", ""))) ? defaultButtonValues.paddings.bottom : columnContentData.padding_bottom;
         // textRule += "padding-bottom: " + currentPadding + ";";
-        // currentPadding = isNaN(parseInt(columnContentProperties.padding_left.replace("px", ""))) ? defaultButtonValues.paddings.left : columnContentProperties.padding_left;
+        // currentPadding = isNaN(parseInt(columnContentData.padding_left.replace("px", ""))) ? defaultButtonValues.paddings.left : columnContentData.padding_left;
         // textRule += "padding-left: " + currentPadding + ";";
         // _addElementTextRule(elementID, textRule);
 
         var backgroundHoverRule = "";
-        // backgroundHoverRule += "background-color: " + columnContentProperties.hover_color + ";";
-        // backgroundHoverRule += "border-color: " + columnContentProperties.hover_border + ";";
+        // backgroundHoverRule += "background-color: " + columnContentData.hover_color + ";";
+        // backgroundHoverRule += "border-color: " + columnContentData.hover_border + ";";
         // _addElementBackgroundHoverRule(elementID, backgroundHoverRule);
 
         var containerHoverRule = "";
-        // containerHoverRule += "color: " + columnContentProperties.hover_text + ";";
+        // containerHoverRule += "color: " + columnContentData.hover_text + ";";
         // _addElementContainerHoverRule(elementID, containerHoverRule);
     }
 
@@ -842,38 +851,38 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var currentTextSize = "";
         var containerRule = "";
 
-        // containerRule += "color: " + columnContentProperties.text_color + ";";
+        // containerRule += "color: " + columnContentData.text_color + ";";
 
         // checking font size, if value is not valid default font size will be applied
-        // currentTextSize = isNaN(parseInt(columnContentProperties.font_size.replace("px", ""))) ? defaultButtonValues.font_size : columnContentProperties.font_size;
+        // currentTextSize = isNaN(parseInt(columnContentData.font_size.replace("px", ""))) ? defaultButtonValues.font_size : columnContentData.font_size;
         // containerRule += "font-size: " + currentTextSize + ";";
 
         // checking button dimensions, if value is not valid default dimensions will be applied
-        // currentDimension = isNaN(parseInt(columnContentProperties.button_height.replace("px", ""))) ? defaultButtonValues.dimensions.height : columnContentProperties.button_height;
+        // currentDimension = isNaN(parseInt(columnContentData.button_height.replace("px", ""))) ? defaultButtonValues.dimensions.height : columnContentData.button_height;
         // containerRule += "min-height: " + currentDimension + ";";
-        // currentDimension = isNaN(parseInt(columnContentProperties.button_width.replace("px", ""))) ? defaultButtonValues.dimensions.width : columnContentProperties.button_width;
+        // currentDimension = isNaN(parseInt(columnContentData.button_width.replace("px", ""))) ? defaultButtonValues.dimensions.width : columnContentData.button_width;
         // containerRule += "min-width: " + currentDimension + ";";
 
         // checking margins, if they are not valid default value will be applied
-        // currentMargin = isNaN(parseInt(columnContentProperties.margin_top.replace("px", ""))) ? defaultButtonValues.margins.top : columnContentProperties.margin_top;
+        // currentMargin = isNaN(parseInt(columnContentData.margin_top.replace("px", ""))) ? defaultButtonValues.margins.top : columnContentData.margin_top;
         // containerRule += "margin-top: " + currentMargin + ";";
-        // currentMargin = isNaN(parseInt(columnContentProperties.margin_right.replace("px", ""))) ? defaultButtonValues.margins.right : columnContentProperties.margin_right;
+        // currentMargin = isNaN(parseInt(columnContentData.margin_right.replace("px", ""))) ? defaultButtonValues.margins.right : columnContentData.margin_right;
         // containerRule += "margin-right: " + currentMargin + ";";
-        // currentMargin = isNaN(parseInt(columnContentProperties.margin_bottom.replace("px", ""))) ? defaultButtonValues.margins.bottom : columnContentProperties.margin_bottom;
+        // currentMargin = isNaN(parseInt(columnContentData.margin_bottom.replace("px", ""))) ? defaultButtonValues.margins.bottom : columnContentData.margin_bottom;
         // containerRule += "margin-bottom: " + currentMargin + ";";
-        // currentMargin = isNaN(parseInt(columnContentProperties.margin_left.replace("px", ""))) ? defaultButtonValues.margins.left : columnContentProperties.margin_left;
+        // currentMargin = isNaN(parseInt(columnContentData.margin_left.replace("px", ""))) ? defaultButtonValues.margins.left : columnContentData.margin_left;
         // containerRule += "margin-left: " + currentMargin + ";";
 
         // _addElementContainerRule(elementID, containerRule);
 
         var backgroundRule = "";
-        // backgroundRule += "border-color: " + columnContentProperties.border_color + ";";
+        // backgroundRule += "border-color: " + columnContentData.border_color + ";";
         // backgroundRule += "border-style: " + "solid" + ";";
 
         // checking border dimensions, if they are not valid default value will be applied
-        // currentBorderDimension = isNaN(parseInt(columnContentProperties.border_width.replace("px", ""))) ? defaultButtonValues.border.width : columnContentProperties.border_width;
+        // currentBorderDimension = isNaN(parseInt(columnContentData.border_width.replace("px", ""))) ? defaultButtonValues.border.width : columnContentData.border_width;
         // backgroundRule += "border-width: " + currentBorderDimension + ";";
-        // currentBorderDimension = isNaN(parseInt(columnContentProperties.border_radius.replace("px", ""))) ? defaultButtonValues.border.radius : columnContentProperties.border_radius;
+        // currentBorderDimension = isNaN(parseInt(columnContentData.border_radius.replace("px", ""))) ? defaultButtonValues.border.radius : columnContentData.border_radius;
         // backgroundRule += "border-radius: " + currentBorderDimension + ";";
 
         backgroundRule += "background-color: " + formData.content.background_color + ";";
@@ -882,23 +891,23 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         var textRule = "";
         // checking paddings, if they are not valid default value will be applied
-        // currentPadding = isNaN(parseInt(columnContentProperties.padding_top.replace("px", ""))) ? defaultButtonValues.paddings.top : columnContentProperties.padding_top;
+        // currentPadding = isNaN(parseInt(columnContentData.padding_top.replace("px", ""))) ? defaultButtonValues.paddings.top : columnContentData.padding_top;
         // textRule += "padding-top: " + currentPadding + ";";
-        // currentPadding = isNaN(parseInt(columnContentProperties.padding_right.replace("px", ""))) ? defaultButtonValues.paddings.right : columnContentProperties.padding_right;
+        // currentPadding = isNaN(parseInt(columnContentData.padding_right.replace("px", ""))) ? defaultButtonValues.paddings.right : columnContentData.padding_right;
         // textRule += "padding-right: " + currentPadding + ";";
-        // currentPadding = isNaN(parseInt(columnContentProperties.padding_bottom.replace("px", ""))) ? defaultButtonValues.paddings.bottom : columnContentProperties.padding_bottom;
+        // currentPadding = isNaN(parseInt(columnContentData.padding_bottom.replace("px", ""))) ? defaultButtonValues.paddings.bottom : columnContentData.padding_bottom;
         // textRule += "padding-bottom: " + currentPadding + ";";
-        // currentPadding = isNaN(parseInt(columnContentProperties.padding_left.replace("px", ""))) ? defaultButtonValues.paddings.left : columnContentProperties.padding_left;
+        // currentPadding = isNaN(parseInt(columnContentData.padding_left.replace("px", ""))) ? defaultButtonValues.paddings.left : columnContentData.padding_left;
         // textRule += "padding-left: " + currentPadding + ";";
         // _addElementTextRule(elementID, textRule);
 
         var backgroundHoverRule = "";
-        // backgroundHoverRule += "background-color: " + columnContentProperties.hover_color + ";";
-        // backgroundHoverRule += "border-color: " + columnContentProperties.hover_border + ";";
+        // backgroundHoverRule += "background-color: " + columnContentData.hover_color + ";";
+        // backgroundHoverRule += "border-color: " + columnContentData.hover_border + ";";
         // _addElementBackgroundHoverRule(elementID, backgroundHoverRule);
 
         var containerHoverRule = "";
-        // containerHoverRule += "color: " + columnContentProperties.hover_text + ";";
+        // containerHoverRule += "color: " + columnContentData.hover_text + ";";
         // _addElementContainerHoverRule(elementID, containerHoverRule);
     }
 
@@ -972,11 +981,12 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var shortcode = $formColumnInDB.text();
         $formColumnInDB.empty();
         var $span = $(document.createElement("span"));
+        $span.addClass("wpcf7-column-content-shortcode");
         $span.append(shortcode);
         $formColumnInDB.append($span);
         $formColumnInDB.prepend($spanDataInDB);
-        _updateFormInDB(formID);
 
+        _updateFormInDB(formID);
     	_addColumnContentStyle($formColumn);
     }
 
@@ -998,18 +1008,14 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
     var _addColumnContentStyle = function ($formColumn) {
         if ($formColumn.find(".rex-wpcf7-column-content-data").eq(0).length != 0) {
-            var columnContentProperties = _generateColumnContentData($formColumn, true);
-            var formID = columnContentProperties.target.element_id;
-            _addColumnContentCSSRules(formID, columnContentProperties);
+            var columnContentData = _generateColumnContentData($formColumn, true);
+            var formID = columnContentData.target.element_id;
+            _addColumnContentCSSRules(formID, columnContentData);
         }
     }
 
     var _removeColumnContentStyle = function (formID, row_number, column_number) {
-        // _removeColumnContentContainerRule(formID, row_number, column_number);
         _removeColumnContentRule(formID, row_number, column_number);
-        // _removeColumnContentBackgroundHoverRule(formID, row_number, column_number);
-        // _removeColumnContentTextRule(formID, row_number, column_number);
-        // _removeColumnContentContainerHoverRule(formID, row_number, column_number);
     }
 
     var _updateColumnContentLive = function (data) {
@@ -1017,84 +1023,29 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     	var row = data.target.row_number;
     	var column = data.target.column_number;
     	var contentType = data.content.type;
-
-        switch (data.propertyType) {
-            // case "text":
-            //     _updateButtonTextRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
-            //     break;
-            // case "container":
-            //     _updateButtonContainerRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
-            //     break;
-            case "background":
-                _updateColumnContentRule(formID, row, column, contentType, data.propertyName, data.newValue);
-                break;
-            // case "backgroundHover":
-            // case "borderHover":
-            //     _updateButtonBackgroundHoverRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
-            //     break;
-            // case "textHover":
-            //     _updateContainerHoverRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
-            //     break;
-            // case "button":
-            //     var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper[data-rex-button-id=\"" + data.buttonTarget.button_id + "\"][data-rex-button-number=\"" + data.buttonTarget.button_number + "\"]");
-            //     switch (data.propertyName) {
-            //         case "link_target":
-            //             $elementWrapper.find("a.rex-button-container").eq(0).attr("href", data.newValue);
-            //             break;
-            //         case "link_type":
-            //             $elementWrapper.find("a.rex-button-container").eq(0).attr("target", data.newValue);
-            //             break;
-            //         case "button_label":
-            //             $elementWrapper.find(".rex-button-text").eq(0).text(data.newValue);
-            //             break;
-            //         case "button_name":
-            //             $elementWrapper.find(".rex-button-data").eq(0).attr("data-button-name", data.newValue);
-            //             break;
-            //         default:
-            //             break;
-            //     }
-            //     break;
-            default:
-                break;
-        }
+        
+        _updateColumnContentRule(formID, row, column, contentType, data.propertyName, data.newValue);
     }
 
     /**
      * Generate column content data form span element in the DOM.
      * 
      * The obtained object has 1 field:
-     * columnContentProperties - properties of the column content
+     * columnContentData - properties of the column content
      * 
      * @returns {Object} data
      */
     var _generateColumnContentData = function ($formColumn, spanDataExists) {
-        var columnContentProperties = {
-            // Da aggiornare
-            
-            wpcf7_default_value: "",
+        var columnContentData = {
+            wpcf7_required_field: "",
+            wpcf7_only_numbers: "",
+            wpcf7_placeholder: "",
+            input_width: "",
+            input_height: "",
             type: "",
-            // text_color: "",
-            // text: "",
-            // font_size: "",
+            input_type: "",
             background_color: "",
-            // button_height: "",
-            // button_width: "",
-            // hover_color: "",
-            // hover_border: "",
-            // hover_text: "",
-            // border_color: "",
-            // border_width: "",
-            // border_radius: "",
-            // margin_top: "",
-            // margin_bottom: "",
-            // margin_right: "",
-            // margin_left: "",
-            // padding_top: "",
-            // padding_bottom: "",
-            // padding_right: "",
-            // padding_left: "",
-            // link_target: "",
-            // link_type: "",
+            text_color: "",
             target: {
                 element_id: "",
                 row_number: "",
@@ -1102,137 +1053,145 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             }
         };
 
-        columnContentProperties.target.element_id = $formColumn.parents(".rex-element-wrapper").attr("data-rex-element-id");
-        columnContentProperties.target.row_number = $formColumn.parents(".wpcf7-row").attr("wpcf7-row-number");
-        columnContentProperties.target.column_number = $formColumn.attr("wpcf7-column-number");
-        columnContentProperties.type = $formColumn.find(".wpcf7-form-control").prop("nodeName").toLowerCase();
+        columnContentData.target.element_id = $formColumn.parents(".rex-element-wrapper").attr("data-rex-element-id");
+        columnContentData.target.row_number = $formColumn.parents(".wpcf7-row").attr("wpcf7-row-number");
+        columnContentData.target.column_number = $formColumn.attr("wpcf7-column-number");
+        columnContentData.type = $formColumn.find(".wpcf7-form-control").prop("nodeName").toLowerCase();
+        columnContentData.input_type = $formColumn.find(".wpcf7-form-control").attr("type");
 
         if (spanDataExists) {
         	var $columnContentData = $formColumn.find(".rex-wpcf7-column-content-data").eq(0);
         	var columnContentDataEl = $columnContentData[0];
 
             // Wpcf7 Properties
-            columnContentProperties.wpcf7_default_value = (columnContentDataEl.getAttribute("data-wpcf7-placeholder") ? columnContentDataEl.getAttribute("data-wpcf7-placeholder").toString() : '');
+            columnContentData.wpcf7_required_field = (columnContentDataEl.getAttribute("data-wpcf7-required-field") ? columnContentDataEl.getAttribute("data-wpcf7-required-field").toString() : '');
+            columnContentData.wpcf7_only_numbers = (columnContentDataEl.getAttribute("data-wpcf7-only-numbers") ? columnContentDataEl.getAttribute("data-wpcf7-only-numbers").toString() : '');
+            columnContentData.wpcf7_placeholder = (columnContentDataEl.getAttribute("data-wpcf7-placeholder") ? columnContentDataEl.getAttribute("data-wpcf7-placeholder").toString() : '');
+            columnContentData.input_width = (columnContentDataEl.getAttribute("data-wpcf7-input-width") ? columnContentDataEl.getAttribute("data-wpcf7-input-width").toString() : '');
+            columnContentData.input_height = (columnContentDataEl.getAttribute("data-wpcf7-input-height") ? columnContentDataEl.getAttribute("data-wpcf7-input-height").toString() : '');
 
-        	// Da aggiornare quando si sapranno le proprietà
-        	columnContentProperties.background_color = (columnContentDataEl.getAttribute("data-background-color") ? columnContentDataEl.getAttribute("data-background-color").toString() : '');
+        	// Style properties
+        	columnContentData.background_color = (columnContentDataEl.getAttribute("data-background-color") ? columnContentDataEl.getAttribute("data-background-color").toString() : '');
+            columnContentData.text_color = (columnContentDataEl.getAttribute("data-text-color") ? columnContentDataEl.getAttribute("data-text-color").toString() : '');
         }
 
-        var data = columnContentProperties;
+        var data = columnContentData;
 
         return data;
     }
 
     // Da aggiornare quando si sapranno le proprietà
-    var _addColumnContentCSSRules = function (formID, columnContentProperties) {
-        var currentMargin = "";
-        var currentPadding = "";
-        var currentDimension = "";
-        var currentBorderDimension = "";
-        var currentTextSize = "";
+    var _addColumnContentCSSRules = function (formID, columnContentData) {
+        // var currentMargin = "";
+        // var currentPadding = "";
+        // var currentDimension = "";
+        // var currentBorderDimension = "";
+        // var currentTextSize = "";
 
-        var containerRule = "";
+        var row = columnContentData.target.row_number;
+        var column = columnContentData.target.column_number;
+        var contentType = columnContentData.type;
+        var columnContentRule = "";
 
-        var row = columnContentProperties.target.row_number;
-        var column = columnContentProperties.target.column_number;
-        var contentType = columnContentProperties.type;
-
-        // containerRule += "color: " + columnContentProperties.text_color + ";";
-
-        // checking font size, if value is not valid default font size will be applied
-        // currentTextSize = isNaN(parseInt(columnContentProperties.font_size.replace("px", ""))) ? defaultButtonValues.font_size : columnContentProperties.font_size;
-        // containerRule += "font-size: " + currentTextSize + ";";
-
-        // checking button dimensions, if value is not valid default dimensions will be applied
-        // currentDimension = isNaN(parseInt(columnContentProperties.button_height.replace("px", ""))) ? defaultButtonValues.dimensions.height : columnContentProperties.button_height;
-        // containerRule += "min-height: " + currentDimension + ";";
-        // currentDimension = isNaN(parseInt(columnContentProperties.button_width.replace("px", ""))) ? defaultButtonValues.dimensions.width : columnContentProperties.button_width;
-        // containerRule += "min-width: " + currentDimension + ";";
-
-        // checking margins, if they are not valid default value will be applied
-        // currentMargin = isNaN(parseInt(columnContentProperties.margin_top.replace("px", ""))) ? defaultButtonValues.margins.top : columnContentProperties.margin_top;
-        // containerRule += "margin-top: " + currentMargin + ";";
-        // currentMargin = isNaN(parseInt(columnContentProperties.margin_right.replace("px", ""))) ? defaultButtonValues.margins.right : columnContentProperties.margin_right;
-        // containerRule += "margin-right: " + currentMargin + ";";
-        // currentMargin = isNaN(parseInt(columnContentProperties.margin_bottom.replace("px", ""))) ? defaultButtonValues.margins.bottom : columnContentProperties.margin_bottom;
-        // containerRule += "margin-bottom: " + currentMargin + ";";
-        // currentMargin = isNaN(parseInt(columnContentProperties.margin_left.replace("px", ""))) ? defaultButtonValues.margins.left : columnContentProperties.margin_left;
-        // containerRule += "margin-left: " + currentMargin + ";";
-
-        // _addElementContainerRule(elementID, containerRule);
-
-        var backgroundRule = "";
-        // backgroundRule += "border-color: " + columnContentProperties.border_color + ";";
-        // backgroundRule += "border-style: " + "solid" + ";";
-
-        // checking border dimensions, if they are not valid default value will be applied
-        // currentBorderDimension = isNaN(parseInt(columnContentProperties.border_width.replace("px", ""))) ? defaultButtonValues.border.width : columnContentProperties.border_width;
-        // backgroundRule += "border-width: " + currentBorderDimension + ";";
-        // currentBorderDimension = isNaN(parseInt(columnContentProperties.border_radius.replace("px", ""))) ? defaultButtonValues.border.radius : columnContentProperties.border_radius;
-        // backgroundRule += "border-radius: " + currentBorderDimension + ";";
-
-        backgroundRule += "background-color: " + columnContentProperties.background_color + ";";
-        // _addElementContainerRule(elementID, backgroundRule);
-        _addColumnContentRule(formID, row, column, contentType, backgroundRule);
-
-        var textRule = "";
-        // checking paddings, if they are not valid default value will be applied
-        // currentPadding = isNaN(parseInt(columnContentProperties.padding_top.replace("px", ""))) ? defaultButtonValues.paddings.top : columnContentProperties.padding_top;
-        // textRule += "padding-top: " + currentPadding + ";";
-        // currentPadding = isNaN(parseInt(columnContentProperties.padding_right.replace("px", ""))) ? defaultButtonValues.paddings.right : columnContentProperties.padding_right;
-        // textRule += "padding-right: " + currentPadding + ";";
-        // currentPadding = isNaN(parseInt(columnContentProperties.padding_bottom.replace("px", ""))) ? defaultButtonValues.paddings.bottom : columnContentProperties.padding_bottom;
-        // textRule += "padding-bottom: " + currentPadding + ";";
-        // currentPadding = isNaN(parseInt(columnContentProperties.padding_left.replace("px", ""))) ? defaultButtonValues.paddings.left : columnContentProperties.padding_left;
-        // textRule += "padding-left: " + currentPadding + ";";
-        // _addElementTextRule(elementID, textRule);
-
-        var backgroundHoverRule = "";
-        // backgroundHoverRule += "background-color: " + columnContentProperties.hover_color + ";";
-        // backgroundHoverRule += "border-color: " + columnContentProperties.hover_border + ";";
-        // _addElementBackgroundHoverRule(elementID, backgroundHoverRule);
-
-        var containerHoverRule = "";
-        // containerHoverRule += "color: " + columnContentProperties.hover_text + ";";
-        // _addElementContainerHoverRule(elementID, containerHoverRule);
+        columnContentRule += "width: " + columnContentData.input_width + ";";
+        columnContentRule += "height: " + columnContentData.input_height + ";";
+        columnContentRule += "background-color: " + columnContentData.background_color + ";";
+        columnContentRule += "color: " + columnContentData.text_color + ";";
+        _addColumnContentRule(formID, row, column, contentType, columnContentRule);
     }
 
     var _updateColumnContent = function (data) {
-        var columnContentProperties = data.columnContentProperties;
-        var formID = columnContentProperties.target.element_id;
-        var row = columnContentProperties.target.row_number;
-        var column = columnContentProperties.target.column_number;
-        var contentType = columnContentProperties.type;
-        var defaultValue = columnContentProperties.wpcf7_default_value;
+        var columnContentData = data.columnContentData;
+        var formID = columnContentData.target.element_id;
+        var row = columnContentData.target.row_number;
+        var column = columnContentData.target.column_number;
+        var contentType = columnContentData.type;
+        var inputType = columnContentData.input_type;
 
-        _updateColumnContentRule(formID, row, column, contentType, "background-color", columnContentProperties.background_color);
+        _updateColumnContentRule(formID, row, column, contentType, "text-color", columnContentData.text_color);
+        _updateColumnContentRule(formID, row, column, contentType, "width", columnContentData.input_width);
+        _updateColumnContentRule(formID, row, column, contentType, "height", columnContentData.input_height);
 
-        _updateColumnContentShortcode(formID, row, column, "default-value" , defaultValue);
+        _updateColumnContentShortcode(formID, row, column, inputType, columnContentData);
 
-        _updateSpanData(formID, columnContentProperties);
+        _updateSpanData(formID, columnContentData);
 
         _updateFormInDB(formID);
     }
 
-    var _updateColumnContentShortcode = function (formID, row, column, property, propertyValue) {
+    var _updateColumnContentShortcode = function (formID, row, column, inputType, columnContentData) {
         var $formToUpdateDB = $formsInPage[formID];
-        var $columnToUpdateDB = $formToUpdateDB.find(".wpcf7-row[wpcf7-row-number=\"" + row + "\"]").find(".wpcf7-column[wpcf7-column-number=\"" + column + "\"]");
-        var currentShortcode = $columnToUpdateDB.text();
-        var newShortcodeField;
+        var $columnToUpdateDB = $formToUpdateDB.find(".wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"]");
+        var shortcode = $columnToUpdateDB.text();
+        var requiredField = columnContentData.wpcf7_required_field;
+        var onlyNumbers = columnContentData.wpcf7_only_numbers;
+        var placeholder = columnContentData.wpcf7_placeholder;
 
-        console.log($columnToUpdateDB[0]);
-
-        switch(property) {
-            case "default-value":
-                newShortcodeField = "\"" + propertyValue + "\"";
-                break;
+        if(inputType == "text") {   // Required field
+            // Puts the * after [(type)
+            if(requiredField) {
+                shortcode = shortcode.replace(/\[[a-z]+/, /\[[a-z]+/.exec(shortcode)[0] + "*");
+            } else {
+                shortcode = shortcode.replace(/\[[a-z]+\*/, /\[[a-z]+/.exec(shortcode)[0]);
+            }
         }
 
-        // var newShortcode = currentShortcode.replace("]", " " + newShortcodeField + "]");
+        if(inputType == "text") {   // Only number
+            // Changes the shortcode in [number number-xxx ...] or vice versa
+            if(onlyNumbers) {
+                shortcode = shortcode.replace(/\[[a-z]+ [a-z]+/, "[number number");
+            } else {
+                shortcode = shortcode.replace(/\[[a-z]+ [a-z]+/, "[text text");
+            }
+        }
 
-        console.log(newShortcode);
+        if(inputType == "text") {   // Placeholder
+            /* Puts the "placeholder" string and the placeholder value at the end 
+            of the shortcode orremoves it */
+            var valueIsEmpty = placeholder === "";
+            var thereIsPlaceholder = /placeholder/.test(shortcode);
+            if(valueIsEmpty) {
+                shortcode = shortcode.replace(/placeholder ".+"/, "");
+            } else {
+                if(!thereIsPlaceholder) {
+                    shortcode = shortcode.replace(/\]/, "placeholder \"" + placeholder + "\"]");
+                } else {
+                    shortcode = shortcode.replace(/placeholder ".+"/, "placeholder \"" + placeholder + "\"");
+                }
+            }
+        }
 
-        // $columnToUpdateDB.text
+        // switch(property) {
+        //     case "required-field":
+        //         if(inputType == "text") {
+        //             var start = /\[[a-z]+/;
+        //             if(propertyValue) {
+        //                 shortcode = shortcode.replace(/\[[a-z]+/, start.exec(shortcode)[0] + "*");
+        //             } else {
+        //                 shortcode = shortcode.replace(/\[[a-z]+\*/, start.exec(shortcode)[0]);
+        //             }
+        //         }
+        //         break;
+        //     case "placeholder":
+        //         if(inputType == "text") {
+        //             var valueIsEmpty = propertyValue === "";
+        //             var thereIsPlaceholder = /placeholder/.test(shortcode);
+        //             if(valueIsEmpty) {
+        //                 shortcode = shortcode.replace(/placeholder ".+"/, "");
+        //             } else {
+        //                 if(!thereIsPlaceholder) {
+        //                     shortcode = shortcode.replace(/\]/, "placeholder \"" + propertyValue + "\"]");
+        //                 } else {
+        //                     shortcode = shortcode.replace(/placeholder ".+"/, "placeholder \"" + propertyValue + "\"");
+        //                 }
+        //             }
+        //         }
+        //         break;
+        // }
+
+        // var $columnShortcode = $columnToUpdateDB.find(".wpcf7-column-content-shortcode");
+        // $columnShortcode.empty();
+        // $columnShortcode.append(shortcode);
 
         // _updateFormInDB(formID);
     }
@@ -1240,36 +1199,43 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     /**
      * Updates multiple column content data.
      * @param  {jQuery} $elementWrappers
-     * @param  {Array} columnContentProperties Data to update
+     * @param  {Array} columnContentData Data to update
      * @return {null}
      */
-    var _updateSpanData = function (formID, columnContentProperties) {
+    var _updateSpanData = function (formID, columnContentData) {
         // If editing a separate element, will always be length = 1
         // If editing a model element, will be length >= 1
         var $formToUpdate = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]").find(".wpcf7-form");
-    	var row = columnContentProperties.target.row_number;
-        var column = columnContentProperties.target.column_number;
+    	var row = columnContentData.target.row_number;
+        var column = columnContentData.target.column_number;
 
         $formToUpdate.each(function() {
             var $columnData = $(this).find(".wpcf7-row[wpcf7-row-number=\"" + row + "\"]").find(".wpcf7-column[wpcf7-column-number=\"" + column + "\"]").find(".rex-wpcf7-column-content-data");
-            $columnData.attr("data-background-color", columnContentProperties.background_color);
-            $columnData.attr("data-wpcf7-placeholder", columnContentProperties.wpcf7_default_value);
-
-            var $formToSave = $(this);
-            // _saveColumnContentChanges($formToSave, row, column, false);
+            $columnData.attr("data-background-color", columnContentData.background_color);
+            $columnData.attr("data-text-color", columnContentData.text_color);
+            $columnData.attr("data-wpcf7-placeholder", columnContentData.wpcf7_placeholder);
+            $columnData.attr("data-wpcf7-only-numbers", columnContentData.wpcf7_only_numbers);
+            $columnData.attr("data-wpcf7-required-field", columnContentData.wpcf7_required_field);
+            $columnData.attr("data-wpcf7-input-width", columnContentData.input_width);
+            $columnData.attr("data-wpcf7-input-height", columnContentData.input_height);
         })
 
-        _updateSpanDataInDB(formID, columnContentProperties);
+        _updateSpanDataInDB(formID, columnContentData);
     }
 
-    var _updateSpanDataInDB = function (formID, columnContentProperties) {
+    var _updateSpanDataInDB = function (formID, columnContentData) {
         var $formInDB = $formsInPage[formID];
-        var row = columnContentProperties.target.row_number;
-        var column = columnContentProperties.target.column_number;
+        var row = columnContentData.target.row_number;
+        var column = columnContentData.target.column_number;
         var $columnDataInDB = $formInDB.find(".wpcf7-row[wpcf7-row-number=\"" + row + "\"]").find(".wpcf7-column[wpcf7-column-number=\"" + column + "\"]").find(".rex-wpcf7-column-content-data");
 
-        $columnDataInDB.attr("data-background-color", columnContentProperties.background_color);
-        $columnDataInDB.attr("data-wpcf7-placeholder", columnContentProperties.wpcf7_default_value);
+        $columnDataInDB.attr("data-background-color", columnContentData.background_color);
+        $columnDataInDB.attr("data-text-color", columnContentData.text_color);
+        $columnDataInDB.attr("data-wpcf7-placeholder", columnContentData.wpcf7_placeholder);
+        $columnDataInDB.attr("data-wpcf7-only-numbers", columnContentData.wpcf7_only_numbers);
+        $columnDataInDB.attr("data-wpcf7-required-field", columnContentData.wpcf7_required_field);
+        $columnDataInDB.attr("data-wpcf7-input-width", columnContentData.input_width);
+        $columnDataInDB.attr("data-wpcf7-input-height", columnContentData.input_height);
 
         // _updateFormInDB(formID);
     }

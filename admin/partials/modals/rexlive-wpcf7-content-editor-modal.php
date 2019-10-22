@@ -32,7 +32,11 @@ defined('ABSPATH') or exit;
         		<div class="rexwpcf7-cont_row">
                     <div class="rexwpcf7-count-column_accord"></div>
         			<div class="rexwpcf7-count-column_1">
-                        <input type="checkbox" id="required_field" class="tippy" data-tippy-content="<?php esc_attr_e( 'Required', 'rexpansive-builder' ); ?>">
+                        <div id="bg-set-full-section" class="rex-check-icon bl_modal__single-option--vertical tippy" data-tippy-content="<?php _e( 'Full Height', 'rexpansive-builder' ); ?>">
+                            <!-- <input type="checkbox" id="section-is-full" name="section-is-full" value="full-height"> -->
+                            <input type="checkbox" id="wpcf7-required-field" name="wpcf7-required-field" class="tippy" data-tippy-content="<?php esc_attr_e( 'Required', 'rexpansive-builder' ); ?>" value="required" >
+                            <span></span>
+                        </div>
                     </div>
                     <div class="rexwpcf7-count-column_2">
                         <span class="">Required field?</span>
@@ -43,17 +47,10 @@ defined('ABSPATH') or exit;
                 <div class="rexwpcf7-cont_row">
                     <div class="rexwpcf7-count-column_accord"></div>
                     <div class="rexwpcf7-count-column_1">
-                        <div>
-                          <input type="radio" id="password" name="pw_or_number" value="password"
-                                 checked>
-                        </div>
-                        <div>
-                          <input type="radio" id="number" name="pw_or_number" value="number">
-                        </div>
+                        <input type="checkbox" id="wpcf7-only-numbers" class="tippy" data-tippy-content="<?php esc_attr_e( 'Only numbers', 'rexpansive-builder' ); ?>" value="Only Numbers" >
                     </div>
                     <div class="rexwpcf7-count-column_2">
-                        <label for="password">Password</label>
-                        <label for="number">Only number</label>
+                        <span class="">Only numbers</span>
                     </div>
                 </div>
             </div>
@@ -68,52 +65,52 @@ defined('ABSPATH') or exit;
                 </div>
             </div>
             <div class="bl_modal-row">
-                <div class="bl_modal__option-wrap bl_modal__col-4">
-                    <div id="section-set-dimension" class="input-field rex-input-prefixed bl_modal__input-prefixed--small tippy" data-tippy-content="<?php _e('Boxed Width', 'rexpansive-builder');?>">
-                        <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#B002-Boxed'); ?></span>
-                        <input type="text" id="" class="section-set-boxed-width" name="section-set-boxed-width" value="0000" placeholder="" size="23">
+                <div class="bl_modal__option-wrap bl_modal__col-4"><!-- 1 -->
+                    <div id="section-set-dimension" class="input-field rex-input-prefixed bl_modal__input-prefixed--small tippy" data-tippy-content="<?php _e('Width', 'rexpansive-builder');?>">
+                        <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#B001-Full'); ?></span>
+                        <input type="text" id="wpcf7-input-width" class="set-width-input" name="" value="0000" placeholder="" size="23">
                         <span class="rex-material-bar"></span>
                     </div>
-                    <div class="section-set-boxed-width-wrap">
+                    <div class="">
                         <div class="rex-check-text percentage-width boxed-width-type-wrap" data-rex-section-width-type="%">
-                            <input id="block-width-percentage" type="radio" class="section-width-type with-gap" name="section-width-type" value="percentage" checked />
-                            <label for="block-width-percentage">
+                            <input id="wpcf7-input-width-percentage" type="radio" class="wpcf7-input-width-type with-gap" name="wpcf7-input-width-type" value="percentage" checked />
+                            <label for="wpcf7-input-width-percentage">
                                 <?php _e('%', 'rexpansive-builder');?>
                                 <span class="rex-ripple"></span>
                             </label>
                         </div>
                         <div class="rex-check-text pixel-width boxed-width-type-wrap" data-rex-section-width-type="px">
-                            <input id="block-width-pixel" type="radio" class="section-width-type with-gap" name="section-width-type" value="pixel" />
-                            <label for="block-width-pixel">
+                            <input id="wpcf7-input-width-pixel" type="radio" class="wpcf7-input-width-type with-gap" name="wpcf7-input-width-type" value="pixel" />
+                            <label for="wpcf7-input-width-pixel">
                                 <?php _e('PX', 'rexpansive-builder');?>
                                 <span class="rex-ripple"></span>
                             </label>
                         </div>
                     </div>
-                </div> <!-- 1 -->
-                <div class="bl_modal__option-wrap bl_modal__col-4">
-                    <div id="section-set-dimension" class="input-field rex-input-prefixed bl_modal__input-prefixed--small tippy" data-tippy-content="<?php _e('Boxed Width', 'rexpansive-builder');?>">
-                        <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#B002-Boxed'); ?></span>
-                        <input type="text" id="" class="section-set-boxed-width" name="section-set-boxed-width" value="0000" placeholder="" size="23">
+                </div> 
+                <div class="bl_modal__option-wrap bl_modal__col-4"><!-- 2 -->
+                    <div id="section-set-dimension" class="input-field rex-input-prefixed bl_modal__input-prefixed--small tippy" data-tippy-content="<?php _e('Height', 'rexpansive-builder');?>">
+                        <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#B012-Full-Height'); ?></span>
+                        <input type="text" id="wpcf7-input-height" class="set-height-input" name="" value="0000" placeholder="" size="23">
                         <span class="rex-material-bar"></span>
                     </div>
-                    <div class="section-set-boxed-width-wrap">
-                        <div class="rex-check-text percentage-width boxed-width-type-wrap" data-rex-section-width-type="%">
-                            <input id="block-width-percentage" type="radio" class="section-width-type with-gap" name="section-width-type" value="percentage" checked />
-                            <label for="block-width-percentage">
+                    <div class="">
+                        <div class="" data-rex-section-width-type="%"> <!-- class=rex-check-text percentage-width boxed-width-type-wrap -->
+                            <input id="wpcf7-input-height-percentage" type="radio" class="wpcf7-input-height-type with-gap" name="wpcf7-input-height-type" value="percentage" checked />
+                            <label for="wpcf7-input-height-percentage">
                                 <?php _e('%', 'rexpansive-builder');?>
                                 <span class="rex-ripple"></span>
                             </label>
                         </div>
-                        <div class="rex-check-text pixel-width boxed-width-type-wrap" data-rex-section-width-type="px">
-                            <input id="block-width-pixel" type="radio" class="section-width-type with-gap" name="section-width-type" value="pixel" />
-                            <label for="block-width-pixel">
+                        <div class="" data-rex-section-width-type="px">
+                            <input id="wpcf7-input-height-pixel" type="radio" class="wpcf7-input-height-type with-gap" name="wpcf7-input-height-type" value="pixel" />
+                            <label for="wpcf7-input-height-pixel">
                                 <?php _e('PX', 'rexpansive-builder');?>
                                 <span class="rex-ripple"></span>
                             </label>
                         </div>
                     </div>
-                </div><!-- 2 -->
+                </div>
             </div>
             <!-- <div class="bl_modal-row">
                 <div class="rexwpcf7-cont_row">
@@ -137,7 +134,7 @@ defined('ABSPATH') or exit;
                 <div class="rexwpcf7-cont_row">
                     <div class="rexwpcf7-count-column_2">
                         <span class="">Default value</span>
-                        <input type="text" id="wpcf7-default-value">
+                        <input type="text">
                     </div>
                     <!-- <div class="rexwpcf7-count-column_2">
                         <input type="checkbox" class="">
@@ -146,6 +143,20 @@ defined('ABSPATH') or exit;
                 </div>
             </div>
             <div class="bl_modal-row">
+                <div class="rexelement-count-column_1">
+                    <div class="rex-relative-col tippy" data-tippy-content="Text Color" tabindex="0">
+                        <input type="hidden" id="rex-element-background-color-runtime" name="rex-element-background-color-runtime" value="" />
+                        <input id="rex-element-background-color" type="text" name="rex-element-background-color" value="" size="10" />
+                        <div id="rex-element-background-color-preview-icon" class="preview-color-icon"></div>
+                    </div>
+                </div>
+                <div class="rexelement-count-column_2">
+                    <div id="rex-element-background-preview-wrap">
+                        <div id="rex-element-preview-background"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="bl_modal-row row-hidden">
                 <div class="rexelement-count-column_1">
                     <div class="rex-relative-col tippy" data-tippy-content="Background Color" tabindex="0">
                         <input type="hidden" id="rex-element-background-color-runtime" name="rex-element-background-color-runtime" value="" />

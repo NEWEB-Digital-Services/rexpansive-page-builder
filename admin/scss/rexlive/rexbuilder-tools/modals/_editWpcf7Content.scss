@@ -68,13 +68,18 @@
 
     .rexwpcf7-count-column_5{
       // background-color: yellow;
-      width:20px;
-      height:42px;
-      float:left;
-      padding:13px 0px 0px 0px;
-      box-sizing:border-box;
+      width: 20px;
+      height: 42px;
+      float: left;
+      padding: 13px 0px 0px 0px;
+      box-sizing: border-box;
       font-size: 10px;
       text-transform: uppercase;
     }
   }
+}
+
+.set-width-input,
+.set-height-input {
+  width: 100%!important;
 }

@@ -17298,6 +17298,10 @@ input:disabled + .rex_edit_title_slider {
     font-size: 10px;
     text-transform: uppercase; }
 
+.set-width-input,
+.set-height-input {
+  width: 100% !important; }
+
 #rex-wpcf7-content-adder .bl_modal-row .rexwpcf7-cont_row {
   width: 381px;
   margin: 12px auto; }

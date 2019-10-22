@@ -2006,10 +2006,10 @@
     $document.on("rexlive:update_wcpf7_column_content_page", function(e) {
       var data = e.settings.data_to_send;
       var reverseData = {
-        columnContentProperties: jQuery.extend(true, {}, data.reverseColumnContentData)
+        columnContentData: jQuery.extend(true, {}, data.reverseColumnContentData)
       };
       var actionData = {
-        columnContentProperties: jQuery.extend(true, {}, data.actionColumnContentData)
+        columnContentData: jQuery.extend(true, {}, data.actionColumnContentData)
       }
       
       Rexbuilder_Rexwpcf7.updateColumnContent(actionData);
