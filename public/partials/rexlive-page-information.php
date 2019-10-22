@@ -10,16 +10,21 @@ $tablet = array("id" => "tablet", "label" => "Tablet", "min" => "768", "max" => 
 $default = array("id" => "default", "label" => "My Desktop", "min" => "1025", "max" => "", "type" => "standard");
 $defaultLayoutsAvaiable = array($mobile, $tablet, $default);
 
-$layoutsAvaiable = get_option('_rex_responsive_layouts', $defaultLayoutsAvaiable);
+$layoutsAvaiable = get_option( '_rex_responsive_layouts', $defaultLayoutsAvaiable );
 
 $defaultIDs = null;
-$sectionsIDsJSON = get_option('_rex_section_ids_used', $defaultIDs);
+$sectionsIDsJSON = get_option( '_rex_section_ids_used', $defaultIDs );
 
-$sectionsIDsUsed = json_decode($sectionsIDsJSON, true);
+$sectionsIDsUsed = json_decode( $sectionsIDsJSON, true );
 
-$rexbuilderShortcode = get_post_meta($post->ID, '_rexbuilder_shortcode', true);
+$rexbuilderShortcode = get_post_meta( $post->ID, '_rexbuilder_shortcode', true );
 
-if ($rexbuilderShortcode == "") {
+// prepare default content for a draft just created
+if ( empty( $rexbuilderShortcode ) && 'draft' === $post->post_status && 'true' === $backendEditing ) {
+    $rexbuilderShortcode = '[RexpansiveSection section_name="" type="perfect-grid" color_bg_section="" color_bg_section_active="true" dimension="full" image_bg_section_active="true" image_bg_section="" id_image_bg_section="" video_bg_url_section="" video_bg_id_section="" video_bg_url_vimeo_section="" full_height="false" block_distance="20" layout="fixed" responsive_background="" custom_classes="" section_width="none" row_separator_top="20" row_separator_bottom="20" row_separator_right="20" row_separator_left="20" margin="" row_margin_top="0" row_margin_bottom="0" row_margin_right="0" row_margin_left="0" row_active_photoswipe="0" row_overlay_color="" row_overlay_active="false" rexlive_section_id="" rexlive_model_id="" rexlive_model_name="" row_edited_live="false"][/RexpansiveSection]';
+}
+
+if ( $rexbuilderShortcode == "" ) {
     if( has_shortcode( $post->post_content, "RexpansiveSection" ) || has_shortcode( $post->post_content, "RexModel" ) ) {
         $rexbuilderShortcode = $post->post_content;
     }
