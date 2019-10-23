@@ -15,7 +15,7 @@
       float:left;
       position:relative;
 
-      .rexwpcf7-upd-add_button{
+      .rexwpcf7-upd-accord_button{
         width:30px;
         height:42px;
         position:absolute;
@@ -79,7 +79,66 @@
   }
 }
 
-.set-width-input,
-.set-height-input {
+#rex-wpcf7-preview-background,
+#rex-wpcf7-preview-inputs-background {
+    width: 181px;
+    height: 42px;
+    background-color: black;
+    border-radius: 20px;
+}
+
+#rex-wpcf7-preview-background-hover{
+    width: 181px;
+    height: 42px;
+    background-color: black;
+    border-radius: 20px;
+}
+
+#rex-wpcf7-preview-focus,
+#rex-wpcf7-preview-inputs-focus {
+    width: 181px;
+    height: 42px;
+    background-color: black;
+    border-radius: 20px;
+}
+
+#rex-wpcf7-preview-focus-hover{
+    width: 181px;
+    height: 42px;
+    background-color: black;
+    border-radius: 20px;
+}
+
+.rexwpcf7-set-width-input,
+.rexwpcf7-set-height-input {
   width: 100%!important;
+}
+
+.rexwpcf7-set-font-size {
+  background-color: transparent;
+  /*background-color: lime;*/
+  border: none;
+  border-bottom: 1px solid #9e9e9e;
+  height: 15px;
+  width: 100%;
+  font-size: 15px;
+  line-height: 1;
+  text-align:center;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box;
+  /*box-sizing:border-box;*/
+  margin-bottom: 0;
+}
+
+#rex-wpcf7-content-editor .rexpansive-accordion.open{
+  .rex-accordion--toggle .l-svg-icons > svg{
+    transform: rotate(90deg);
+    width:20px !important;
+    height:20px !important;
+  }
+}
+
+#rex-wpcf7-content-editor .rexwpcf7-cont_row .l-svg-icons > svg {
+  transform: rotate(45deg);
+  cursor:pointer;
 }

@@ -3,6 +3,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
 	var styleSheet;
 	var defaultFormValues;
+    var defaultColumnContentValues;
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
     /// REXWPCF7 GENERIC FUNCTIONS
@@ -338,6 +339,16 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         }
     }
 
+    // Style is changed to the column content, not to the whole column
+    var _addColumnContentFocusRule = function (formID, row, column, contentType, property) {
+        if ("insertRule" in styleSheet) {
+            styleSheet.insertRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] " + contentType + ":focus{" + property + "}", styleSheet.cssRules.length);
+        }
+        else if ("addRule" in styleSheet) {
+            styleSheet.addRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] " + contentType + ":focus{" + property + "}", styleSheet.cssRules.length);
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////////////
     // Updating rules
     
@@ -501,6 +512,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                     case "text-color":
                         styleSheet.cssRules[i].style.color = value;
                         break;
+                    case "font-size":
+                        styleSheet.cssRules[i].style.fontSize = value;
+                        break;
                     case "border-width":
                         styleSheet.cssRules[i].style.borderWidth = value;
 
@@ -552,6 +566,27 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                         break;
                     case "background-color":
                         styleSheet.cssRules[i].style.backgroundColor = value;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            }
+        }
+    }
+
+    // Style is changed to the column content, not to the whole column
+    var _updateColumnContentFocusRule = function (formID, row, column, contentType, rule, value) {
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+            if (
+                //chrome firefox
+                styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] " + contentType + ":focus" ||
+                // edge
+                styleSheet.cssRules[i].selectorText == "[data-rex-element-id=\"" + formID + "\"].rex-element-wrapper [wpcf7-row-number=\"" + row + "\"].wpcf7-row [wpcf7-column-number=\"" + column + "\"].wpcf7-column" + contentType + ":focus"
+            ) {
+                switch (rule) {
+                    case "text-color":
+                        styleSheet.cssRules[i].style.color = value;
                         break;
                     default:
                         break;
@@ -738,53 +773,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
      */
     var _generateFormData = function ($form) {
         var formData = {
-            // Da aggiornare
-            
-            // text_color: "",
-            // text: "",
-            // font_size: "",
             background_color: "",
-            // button_height: "",
-            // button_width: "",
-            // hover_color: "",
-            // hover_border: "",
-            // hover_text: "",
-            // border_color: "",
-            // border_width: "",
-            // border_radius: "",
-            // margin_top: "",
-            // margin_bottom: "",
-            // margin_right: "",
-            // margin_left: "",
-            // padding_top: "",
-            // padding_bottom: "",
-            // padding_right: "",
-            // padding_left: "",
-            // link_target: "",
-            // link_type: "",
             content: {
-                // text_color: "",
-                // text: "",
-                // font_size: "",
                 background_color: "",
-                // button_height: "",
-                // button_width: "",
-                // hover_color: "",
-                // hover_border: "",
-                // hover_text: "",
-                // border_color: "",
-                // border_width: "",
-                // border_radius: "",
-                // margin_top: "",
-                // margin_bottom: "",
-                // margin_right: "",
-                // margin_left: "",
-                // padding_top: "",
-                // padding_bottom: "",
-                // padding_right: "",
-                // padding_left: "",
-                // link_target: "",
-                // link_type: "",
             },
             target: {
                 form_id: "",
@@ -1023,8 +1014,23 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     	var row = data.target.row_number;
     	var column = data.target.column_number;
     	var contentType = data.content.type;
-        
-        _updateColumnContentRule(formID, row, column, contentType, data.propertyName, data.newValue);
+        var propertyName = data.propertyName;
+        var newValue = data.newValue;
+
+        switch (data.propertyType) {
+            case "background-color":
+            case "width":
+            case "height":
+            case "font-size":
+            case "text":
+                _updateColumnContentRule(formID, row, column, contentType, propertyName, newValue);
+                break;
+            case "text-focus":
+                _updateColumnContentFocusRule(formID, row, column, contentType, propertyName, newValue);
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -1042,10 +1048,12 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             wpcf7_placeholder: "",
             input_width: "",
             input_height: "",
+            font_size: "",
             type: "",
             input_type: "",
             background_color: "",
             text_color: "",
+            text_color_focus: "",
             target: {
                 element_id: "",
                 row_number: "",
@@ -1064,15 +1072,17 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         	var columnContentDataEl = $columnContentData[0];
 
             // Wpcf7 Properties
-            columnContentData.wpcf7_required_field = (columnContentDataEl.getAttribute("data-wpcf7-required-field") ? columnContentDataEl.getAttribute("data-wpcf7-required-field").toString() : '');
-            columnContentData.wpcf7_only_numbers = (columnContentDataEl.getAttribute("data-wpcf7-only-numbers") ? columnContentDataEl.getAttribute("data-wpcf7-only-numbers").toString() : '');
             columnContentData.wpcf7_placeholder = (columnContentDataEl.getAttribute("data-wpcf7-placeholder") ? columnContentDataEl.getAttribute("data-wpcf7-placeholder").toString() : '');
-            columnContentData.input_width = (columnContentDataEl.getAttribute("data-wpcf7-input-width") ? columnContentDataEl.getAttribute("data-wpcf7-input-width").toString() : '');
-            columnContentData.input_height = (columnContentDataEl.getAttribute("data-wpcf7-input-height") ? columnContentDataEl.getAttribute("data-wpcf7-input-height").toString() : '');
+            columnContentData.wpcf7_only_numbers = (columnContentDataEl.getAttribute("data-wpcf7-only-numbers") ? columnContentDataEl.getAttribute("data-wpcf7-only-numbers").toString() : '');
+            columnContentData.wpcf7_required_field = (columnContentDataEl.getAttribute("data-wpcf7-required-field") ? columnContentDataEl.getAttribute("data-wpcf7-required-field").toString() : '');
+            columnContentData.input_width = (columnContentDataEl.getAttribute("data-wpcf7-input-width") ? columnContentDataEl.getAttribute("data-wpcf7-input-width").toString() : defaultColumnContentValues.input_width);
+            columnContentData.input_height = (columnContentDataEl.getAttribute("data-wpcf7-input-height") ? columnContentDataEl.getAttribute("data-wpcf7-input-height").toString() : defaultColumnContentValues.input_height);
+            columnContentData.font_size = (columnContentDataEl.getAttribute("data-wpcf7-font-size") ? columnContentDataEl.getAttribute("data-wpcf7-font-size").toString() : defaultColumnContentValues.font_size);
 
         	// Style properties
         	columnContentData.background_color = (columnContentDataEl.getAttribute("data-background-color") ? columnContentDataEl.getAttribute("data-background-color").toString() : '');
             columnContentData.text_color = (columnContentDataEl.getAttribute("data-text-color") ? columnContentDataEl.getAttribute("data-text-color").toString() : '');
+            columnContentData.text_color_focus = (columnContentDataEl.getAttribute("data-text-color-focus") ? columnContentDataEl.getAttribute("data-text-color-focus").toString() : '');
         }
 
         var data = columnContentData;
@@ -1080,8 +1090,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         return data;
     }
 
-    // Da aggiornare quando si sapranno le proprietà
     var _addColumnContentCSSRules = function (formID, columnContentData) {
+        // @todo
         // var currentMargin = "";
         // var currentPadding = "";
         // var currentDimension = "";
@@ -1095,9 +1105,14 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         columnContentRule += "width: " + columnContentData.input_width + ";";
         columnContentRule += "height: " + columnContentData.input_height + ";";
-        columnContentRule += "background-color: " + columnContentData.background_color + ";";
         columnContentRule += "color: " + columnContentData.text_color + ";";
+        columnContentRule += "font-size: " + columnContentData.font_size + ";";
         _addColumnContentRule(formID, row, column, contentType, columnContentRule);
+
+        var columnContentFocusRule = "";
+
+        columnContentFocusRule += "color: " + columnContentData.text_color_focus + ";";
+        _addColumnContentFocusRule(formID, row, column, contentType, columnContentFocusRule);
     }
 
     var _updateColumnContent = function (data) {
@@ -1111,11 +1126,12 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         _updateColumnContentRule(formID, row, column, contentType, "text-color", columnContentData.text_color);
         _updateColumnContentRule(formID, row, column, contentType, "width", columnContentData.input_width);
         _updateColumnContentRule(formID, row, column, contentType, "height", columnContentData.input_height);
+        _updateColumnContentRule(formID, row, column, contentType, "font-size", columnContentData.font_size);
+
+        _updateColumnContentFocusRule(formID, row, column, contentType, "text-color", columnContentData.text_color_focus);
 
         _updateColumnContentShortcode(formID, row, column, inputType, columnContentData);
-
         _updateSpanData(formID, columnContentData);
-
         _updateFormInDB(formID);
     }
 
@@ -1123,20 +1139,30 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var $formToUpdateDB = $formsInPage[formID];
         var $columnToUpdateDB = $formToUpdateDB.find(".wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"]");
         var shortcode = $columnToUpdateDB.text();
-        var requiredField = columnContentData.wpcf7_required_field;
+        var isSetRequiredField = columnContentData.wpcf7_required_field;
         var onlyNumbers = columnContentData.wpcf7_only_numbers;
         var placeholder = columnContentData.wpcf7_placeholder;
 
         if(inputType == "text") {   // Required field
-            // Puts the * after [(type)
-            if(requiredField) {
-                shortcode = shortcode.replace(/\[[a-z]+/, /\[[a-z]+/.exec(shortcode)[0] + "*");
+            // Puts (or removes) the * after [(type)
+            var isAlreadyRequiredField = /\[[a-z]+\*/.test(shortcode);
+            if(isAlreadyRequiredField) {
+                if(!isSetRequiredField) {
+                    shortcode = shortcode.replace(/\[[a-z]+\*/, /\[[a-z]+/.exec(shortcode)[0]);
+                }
             } else {
-                shortcode = shortcode.replace(/\[[a-z]+\*/, /\[[a-z]+/.exec(shortcode)[0]);
+                if(isSetRequiredField) {
+                    shortcode = shortcode.replace(/\[[a-z]+/, /\[[a-z]+/.exec(shortcode)[0] + "*");
+                }
             }
+            // if(requiredField) {
+            //     shortcode = shortcode.replace(/\[[a-z]+/, /\[[a-z]+/.exec(shortcode)[0] + "*");
+            // } else {
+            //     shortcode = shortcode.replace(/\[[a-z]+\*/, /\[[a-z]+/.exec(shortcode)[0]);
+            // }
         }
 
-        if(inputType == "text") {   // Only number
+        if(inputType == "text" || inputType == "number") {   // Only number
             // Changes the shortcode in [number number-xxx ...] or vice versa
             if(onlyNumbers) {
                 shortcode = shortcode.replace(/\[[a-z]+ [a-z]+/, "[number number");
@@ -1161,37 +1187,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             }
         }
 
-        // switch(property) {
-        //     case "required-field":
-        //         if(inputType == "text") {
-        //             var start = /\[[a-z]+/;
-        //             if(propertyValue) {
-        //                 shortcode = shortcode.replace(/\[[a-z]+/, start.exec(shortcode)[0] + "*");
-        //             } else {
-        //                 shortcode = shortcode.replace(/\[[a-z]+\*/, start.exec(shortcode)[0]);
-        //             }
-        //         }
-        //         break;
-        //     case "placeholder":
-        //         if(inputType == "text") {
-        //             var valueIsEmpty = propertyValue === "";
-        //             var thereIsPlaceholder = /placeholder/.test(shortcode);
-        //             if(valueIsEmpty) {
-        //                 shortcode = shortcode.replace(/placeholder ".+"/, "");
-        //             } else {
-        //                 if(!thereIsPlaceholder) {
-        //                     shortcode = shortcode.replace(/\]/, "placeholder \"" + propertyValue + "\"]");
-        //                 } else {
-        //                     shortcode = shortcode.replace(/placeholder ".+"/, "placeholder \"" + propertyValue + "\"");
-        //                 }
-        //             }
-        //         }
-        //         break;
-        // }
-
-        // var $columnShortcode = $columnToUpdateDB.find(".wpcf7-column-content-shortcode");
-        // $columnShortcode.empty();
-        // $columnShortcode.append(shortcode);
+        var $columnShortcode = $columnToUpdateDB.find(".wpcf7-column-content-shortcode");
+        $columnShortcode.empty();
+        $columnShortcode.append(shortcode);
 
         // _updateFormInDB(formID);
     }
@@ -1218,6 +1216,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             $columnData.attr("data-wpcf7-required-field", columnContentData.wpcf7_required_field);
             $columnData.attr("data-wpcf7-input-width", columnContentData.input_width);
             $columnData.attr("data-wpcf7-input-height", columnContentData.input_height);
+            $columnData.attr("data-wpcf7-font-size", columnContentData.font_size);
+            $columnData.attr("data-text-color-focus", columnContentData.text_color_focus);
         })
 
         _updateSpanDataInDB(formID, columnContentData);
@@ -1236,6 +1236,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         $columnDataInDB.attr("data-wpcf7-required-field", columnContentData.wpcf7_required_field);
         $columnDataInDB.attr("data-wpcf7-input-width", columnContentData.input_width);
         $columnDataInDB.attr("data-wpcf7-input-height", columnContentData.input_height);
+        $columnDataInDB.attr("data-wpcf7-font-size", columnContentData.font_size);
+        $columnDataInDB.attr("data-text-color-focus", columnContentData.text_color_focus);
 
         // _updateFormInDB(formID);
     }
@@ -1281,6 +1283,13 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 	var _init = function () {
 		styleSheet = null;
         $formsInPage = {};
+
+        defaultColumnContentValues = {
+                input_width: "150px",
+                input_height: "50px",
+                font_size: "15px",
+        }
+
         this.$rexformsStyle = $("#rexpansive-builder-rexwpcf7-style-inline-css");
 
         _fixCustomStyleForm();
