@@ -1151,8 +1151,8 @@ var Rex_Save_Listeners = (function($) {
         (video_has_audio.toString() == "true" ? "1" : "0") +
         '" block_has_scrollbar="' +
         block_has_scrollbar +
-        '" block_dimensions_live_edited="' +
-        block_dimensions_live_edited +
+        // '" block_dimensions_live_edited="' +
+        // block_dimensions_live_edited +
         '" block_flex_position="' +
         block_flex_position +
         '" block_flex_img_position="' +
@@ -1210,7 +1210,7 @@ var Rex_Save_Listeners = (function($) {
       props["block_animation"] = block_animation;
       props["video_has_audio"] = video_has_audio;
       props["block_has_scrollbar"] = block_has_scrollbar;
-      props["block_dimensions_live_edited"] = block_dimensions_live_edited;
+      // props["block_dimensions_live_edited"] = block_dimensions_live_edited;
       props["block_flex_position"] = block_flex_position;
       props["block_flex_img_position"] = block_flex_img_position;
       props["slider_dimension_ratio"] = slider_dimension_ratio;

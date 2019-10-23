@@ -2883,7 +2883,7 @@
             // gallery.calculateBlockHeight(elem);
 
             // return;
-            console.log('aqka')
+            // console.log('aqka')
 
             $elem = $(elem);
             elemData = elem.querySelector('.rexbuilder-block-data');
@@ -2896,28 +2896,29 @@
             //   gridstack.minHeight(elem, elem.getAttribute('data-gs-height'));
             // }
 
-            elementEdited = elemData.getAttribute("data-block_dimensions_live_edited") && elemData.getAttribute("data-block_dimensions_live_edited").toString() == "true";
-            if ( elementEdited ) {
-              // var blockTextHeight = gallery.calculateTextWrapHeight( $elem.find('.text-wrap') );
-              var blockTextHeight = gallery.calculateTextWrapHeightNew( $elem.find('.text-wrap') );
+            // element edited seems useless
+            // elementEdited = elemData.getAttribute("data-block_dimensions_live_edited") && elemData.getAttribute("data-block_dimensions_live_edited").toString() == "true";
+            
+            // if ( elementEdited ) {
+            //   var blockTextHeight = gallery.calculateTextWrapHeightNew( $elem.find('.text-wrap') );
 
-              if (0 !== blockTextHeight) {
-                var blockActualHeight = elem.getAttribute('data-gs-height') * gallery.properties.singleHeight;
-                if (1 == elementRealFluid || (blockActualHeight - (blockTextHeight + gallery.properties.gutter)) < 0) {
-                  gallery.updateElementHeight($elem);
-                }
-              } else {
-                var blockRatio = parseFloat( elemData.getAttribute("data-block_ratio") );
-                blockRatio = isNaN(blockRatio) ? 1 : blockRatio;
-                gallery.updateElementHeight($elem, blockRatio);
-              }
-            } else{
+            //   if ( 0 !== blockTextHeight ) {
+            //     var blockActualHeight = elem.getAttribute('data-gs-height') * gallery.properties.singleHeight;
+            //     if ( 1 == elementRealFluid || ( blockActualHeight - ( blockTextHeight + gallery.properties.gutter ) ) < 0 ) {
+            //       gallery.updateElementHeight($elem);
+            //     }
+            //   } else {
+            //     var blockRatio = parseFloat( elemData.getAttribute("data-block_ratio") );
+            //     blockRatio = isNaN(blockRatio) ? 1 : blockRatio;
+            //     gallery.updateElementHeight($elem, blockRatio);
+            //   }
+            // } else{
               if (Rexbuilder_Util.backendEdited || Rexbuilder_Util_Editor.updatingSectionLayout || Rexbuilder_Util_Editor.updatingCollapsedGrid || (gallery.properties.firstStartGrid && 1 === elementRealFluid)) {
                 if (!( hasClass(elem, "rex-hide-element") || hasClass(elem, "removing_block"))) {
                   gallery.updateElementHeight($elem);
                 }
               }
-            }
+            // }
           });
           // end foreach of boxes
 
@@ -3226,7 +3227,7 @@
         newH = Math.ceil(newH / this.properties.singleHeight);
       }
 
-      console.log(newH);
+      // console.log(newH);
 
       this.updateElementDataHeightProperties( blockData, newH );
 
@@ -3594,6 +3595,7 @@
     },
 
     updateCollapsedBlocksHeight: function() {
+      var that = this;
       var items = [].slice.call( this.element.querySelectorAll('.grid-stack-item') );
       items.reverse().forEach(function(el,i) {
         var $el = $(el);

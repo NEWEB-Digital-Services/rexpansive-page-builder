@@ -1640,7 +1640,7 @@ var Rexbuilder_Util = (function($) {
         : targetProps["element_edited"].toString() == "true"
           ? true
           : false;
-    $elem.attr("data-rexlive-element-edited", elementEdited);
+    // $elem.attr("data-rexlive-element-edited", elementEdited);
 
     for (var propName in targetProps) {
       switch (propName) {
