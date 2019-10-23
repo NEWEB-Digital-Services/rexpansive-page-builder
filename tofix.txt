@@ -17,3 +17,8 @@ createActionDataMoveBlocksGrid			X
 
 calculateTextWrapHeight	[object Object]	6	25.212068974999056	0.008586763066705316		
 updateSizeViewerText	[object Object]	1	25.124948421000227	0.0013519867333444482		
+
+al primo caricamento devo fare un check generale delle altezze: potrei aver ristretto le schermo, facendo in modo che qualcosa venga tagliato
+successivamente quando devo ricalcolare le altezze, devo sfruttare la vecchia altezza delle celle. (quanto vale sul front?)(potrei aver cambiato layout della griglia ad un resize)
+
+passo da layout fixed a masonry -> cambia la single height; le altezze vengono aggiornate;

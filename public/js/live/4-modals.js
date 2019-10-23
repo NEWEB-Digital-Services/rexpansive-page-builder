@@ -89,7 +89,7 @@
     });
 
     $document.on("rexlive:set_gallery_layout", function(e) {
-      // se simone cambia idea e vuole che tornando a schiacciare su fixed senza aver fatto modifiche si torni nella configurazione con i buchi, triggerare undo
+      // if we want to go back with the empty space configuration, trigger undo
 
       var data = e.settings.data_to_send;
       var $section;

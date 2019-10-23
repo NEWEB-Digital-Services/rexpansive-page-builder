@@ -60,7 +60,7 @@ var TextEditor = (function ($) {
             replace: {
               label: '<span class="fa fa-pencil"></span>',
               clicked: function ($el) {
-                console.log($el);
+                // console.log($el);
               }
             },
           },
