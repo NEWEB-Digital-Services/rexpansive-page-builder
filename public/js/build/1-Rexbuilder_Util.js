@@ -3199,13 +3199,13 @@ var Rexbuilder_Util = (function($) {
       }
     } else {    // Front end resize logic
       var actualLayout = _findFrontLayout();
-      if(startFrontLayout != actualLayout) {
+      if( startFrontLayout != actualLayout ) {
         Rexbuilder_Util.changedFrontLayout = true;
         startFrontLayout = actualLayout;
         Rexbuilder_Util_Editor.startLoading();
       }
 
-      if(Rexbuilder_Util.changedFrontLayout) {
+      if( Rexbuilder_Util.changedFrontLayout ) {
         var choosedLayout = chooseLayout();
         _set_initial_grids_state( choosedLayout );
 
