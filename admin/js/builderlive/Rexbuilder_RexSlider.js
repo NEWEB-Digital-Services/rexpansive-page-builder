@@ -835,7 +835,7 @@ var Rexbuilder_RexSlider = (function($) {
             var slide_text = $slide_text_wrap.text();
             var slide_selector =
               ".rex-slider__slide[data-slider-slide-id=" + slide_id + "]";
-
+            
             // rexslider_modal_properties.$modal.addClass('push-down-modal');
             Rexlive_RexSlider_TextEditor.openTextEditor(slide_selector, slide_text, true, ["hide-padding-position"]);
             break;

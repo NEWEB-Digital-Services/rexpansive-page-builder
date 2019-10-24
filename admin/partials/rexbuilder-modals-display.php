@@ -116,7 +116,7 @@ defined('ABSPATH') or exit;
             </div>
             <div class="modal-content">
                 <div class="modal-editor-editorarea">
-                <?php wp_editor('', 'rexbuilder_editor', array('textarea_rows' => 20, 'wpautop' => false, 'editor_height' => 250));?>
+                <?php wp_editor('', 'wpcf7_text_editor', array('textarea_rows' => 10, 'wpautop' => false, 'editor_height' => 50));?>
                 </div>
             </div>
             <div class="rexeditor_bottom rex-modal-footer clearfix">

@@ -19,6 +19,16 @@ defined('ABSPATH') or exit;
         <div class="modal-content">
         	<?php include 'rexlive-loader-modal.php'; ?>
             <!-- Common options -->
+            <!-- <div class="bl_modal-row">
+                <div class="rexwpcf7-cont_row">
+                    <div class="rexwpcf7-count-column_accord"></div>
+                    <div class="rexwpcf7-count-column_1"></div>
+                    <div class="rexwpcf7-count-column_2"></div>
+                    <div class="rexwpcf7-count-column_3"></div>
+                    <div class="rexwpcf7-count-column_4"></div>
+                    <div class="rexwpcf7-count-column_5"></div>
+                </div>
+            </div> -->
             <div class="bl_modal-row">
                 <div class="rexwpcf7-cont_row">
                     <div class="rexwpcf7-count-column_accord"></div>
@@ -57,6 +67,22 @@ defined('ABSPATH') or exit;
                     </div>
                     <div class="rexwpcf7-count-column_2">
                         <span class="">Only numbers</span>
+                    </div>
+                </div>
+            </div>
+            <div class="bl_modal-row">
+                <div class="rexwpcf7-cont_row">
+                    <div class="rexwpcf7-count-column_accord"></div>
+                    <div class="rexwpcf7-count-column_1">
+                        <div class="tippy" data-tippy-content="<?php _e( 'Default Check', 'rexpansive-builder' ); ?>">
+                            <label>
+                                <input type="checkbox" id="wpcf7-default-check" name="wpcf7-default-check" value="default-check">
+                                <span></span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="rexwpcf7-count-column_2">
+                        <span class="">Default check</span>
                     </div>
                 </div>
             </div>
@@ -118,24 +144,6 @@ defined('ABSPATH') or exit;
                     </div>
                 </div>
             </div>
-            <!-- <div class="bl_modal-row">
-                <div class="rexwpcf7-cont_row">
-                    <div class="rexwpcf7-count-column_accord"></div>
-                    <div class="rexwpcf7-count-column_1"></div>
-                    <div class="rexwpcf7-count-column_2"></div>
-                    <div class="rexwpcf7-count-column_3"></div>
-                    <div class="rexwpcf7-count-column_4"></div>
-                    <div class="rexwpcf7-count-column_5"></div>
-                </div>
-            </div> -->
-            <div class="bl_modal-row row-hidden">
-                <div class="rexwpcf7-cont_row">
-                    <div class="rexwpcf7-count-column_2">
-                        <span class="">Field name</span>
-                        <input type="text" class="">
-                    </div>
-                </div>
-            </div>
             <div class="rexpansive-accordion close">
                 <div class="bl_modal-row">
                     <div class="rexwpcf7-cont_row">
@@ -158,7 +166,7 @@ defined('ABSPATH') or exit;
                         </div>
                         <div class="rexwpcf7-count-column_3"></div>
                         <div class="rexwpcf7-count-column_4">
-                            <input type="text" id="rexwpcf7-set-font-size" name="" placeholder="10" class="rexwpcf7-set-font-size">
+                            <input type="text" id="wpcf7-set-font-size" name="" placeholder="10" class="rexwpcf7-set-font-size">
                         </div>
                         <div class="rexwpcf7-count-column_5">
                             <div class="label-px">px</div>
@@ -188,7 +196,7 @@ defined('ABSPATH') or exit;
                     </div>
                 </div>
             </div>
-            <div class="bl_modal-row row-hidden">
+            <div class="bl_modal-row">
                 <div class="rexelement-count-column_1">
                     <div class="rex-relative-col tippy" data-tippy-content="Background Color" tabindex="0">
                         <input type="hidden" id="rex-element-background-color-runtime" name="rex-element-background-color-runtime" value="" />
@@ -200,6 +208,11 @@ defined('ABSPATH') or exit;
                     <div id="rex-element-background-preview-wrap">
                         <div id="rex-element-preview-background"></div>
                     </div>
+                </div>
+            </div>
+            <div class="bl_modal-row">
+                <div id="wpcf7-text-editor" class="modal-editor-editorarea">
+                    <?php wp_editor('', 'rexbuilder_editor', array('textarea_rows' => 10, 'wpautop' => false, 'editor_height' => 100, 'media_buttons' => false));?>
                 </div>
             </div>
         </div>

@@ -88,17 +88,17 @@ var Wpcf7_Add_Content_Modal = (function ($) {
         });
 
         /**
-         * Adds a checkboxes field
+         * Adds a checkbox field
          */
-        wpcf7_content_adder_properties.$wpcf7_add_checkboxes_field.on("click", function () {
-            _addField("checkboxes");
+        wpcf7_content_adder_properties.$wpcf7_add_checkbox_field.on("click", function () {
+            _addField("checkbox");
         });
 
         /**
          * Adds an acceptance field
          */
-        wpcf7_content_adder_properties.$wpcf7_add_acceptance_field.on("click", function () {
-            _addField("acceptance");
+        wpcf7_content_adder_properties.$wpcf7_add_file_field.on("click", function () {
+            _addField("file");
         });
 
         /**
@@ -125,27 +125,12 @@ var Wpcf7_Add_Content_Modal = (function ($) {
             $wpcf7_add_date_field: $container.find(".rex-add-date-field"),
             $wpcf7_add_textarea_field: $container.find(".rex-add-textarea-field"),
             $wpcf7_add_menu_field: $container.find(".rex-add-menu-field"),
-            $wpcf7_add_checkboxes_field: $container.find(".rex-add-checkboxes-field"),
+            $wpcf7_add_checkbox_field: $container.find(".rex-add-checkbox-field"),
+            $wpcf7_add_file_field: $container.find(".rex-add-file-field"),
             $wpcf7_add_radio_buttons_field: $container.find(".rex-add-radiobuttons-field"),
             $wpcf7_add_acceptance_field: $container.find(".rex-add-acceptance-field"),
             $wpcf7_add_quiz_field: "",
-            $wpcf7_add_file_field:"",
-            $wpcf7_add_submit_button: $container.find(".rex-add-submit-button"),
-            /*text (text)
-            email (text)
-            URL (text)
-            tel (text)
-            number (text)
-            number (slider) (può essere sempre messo come text, all'inizio)
-            date (text)
-            text area (text)
-            drop-down menu (menu)
-            checkboxes (checkbox)
-            radio buttons (radio)
-            acceptance (checkbox?)
-            quiz (text)
-            file (file)
-            submit (submit)*/
+            $wpcf7_add_submit_button: $container.find(".rex-add-submit-button")
 		}
 
 		_linkDocumentListeners();

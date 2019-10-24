@@ -2109,40 +2109,13 @@ var TextEditor = (function ($) {
       this.hideAllToolbars();
       var $elementWrapper = $(this.traceForm).parents(".rex-element-wrapper");
       var $thisColumn = $(this.traceFormColumn);
-      var $thisRow = $(this.traceFormRow);
-      var fieldType;
-
-      var possibleFieldTypes = [
-        "text",
-        "email",
-        "url",
-        "tel",
-        "number",
-        "range",
-        "date",
-        "textarea",
-        "select",
-        "checkbox",
-        "radio",
-        "acceptance",
-        "quiz",
-        "file",
-        "submit"
-      ];
-
-      for (var i = 0; i < possibleFieldTypes.length; i++) {
-        if ($thisColumn.find(".wpcf7-" + possibleFieldTypes[i]).length != 0) {
-          fieldType = possibleFieldTypes[i];
-          break;
-        }
-      }
-
       var spanDataExists = $thisColumn.find(".rex-wpcf7-column-content-data").length != 0 ? true : false;
+      var fieldType;
 
       var data = {
         eventName: "rexlive:openRexWpcf7EditContent",
-        fieldType: fieldType,
         columnContentData: Rexbuilder_Rexwpcf7.generateColumnContentData($thisColumn, spanDataExists),
+        fieldType: fieldType,
         spanDataExists: spanDataExists
       };
       $elementWrapper.parents(".text-wrap").blur();

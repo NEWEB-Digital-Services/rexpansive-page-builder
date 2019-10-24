@@ -5,7 +5,6 @@
 var Wpcf7_Edit_Content_Modal = (function ($) {
 	var wpcf7_content_editor_properties;
 	var editPoint;
-	var fieldType;
 	var columnContentData;
 	var reverseData;
 	var resetData;
@@ -92,10 +91,9 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 	var _openColumnContentEditorModal = function (data) {
 		columnContentData = jQuery.extend(true, {}, data.columnContentData);
 		editPoint = data.columnContentData.target;
-		fieldType = data.fieldType;
 		var spanDataExists = data.spanDataExists;
-        needToRemoveSpanData = !spanDataExists; // If the data already exists, we don't have to remove it
-		var modalClass = ["wpcf7-editing-" + fieldType]; // openModal requires an array of classes
+        needToRemoveSpanData = !spanDataExists; // If the span data already exists, we don't have to remove it
+        var inputType = columnContentData.input_type;
 
 		if (!spanDataExists) {
 			_createSpanData();
@@ -103,53 +101,90 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 		
 		_updateColumnContentEditorModal(columnContentData);
 
-        /* Serve nascondere le varie parti del modal quando si apre il modal */
+        wpcf7_content_editor_properties.$self.find(".bl_modal-row").not(".row-hidden").addClass("row-hidden");  // Hiding all modal rows
+        switch(inputType) {
+            case "text":
+                wpcf7_content_editor_properties.$content_required_field.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_only_numbers.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_placeholder.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_width.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_width_type.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_height.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_height_type.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_font_size.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_text_color_value.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_text_color_focus_value.parents(".bl_modal-row").removeClass("row-hidden");
+                break;
+            case "textarea":
+                wpcf7_content_editor_properties.$content_required_field.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_placeholder.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_width.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_width_type.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_height.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_height_type.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_font_size.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_text_color_value.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_text_color_focus_value.parents(".bl_modal-row").removeClass("row-hidden");
+                break;
+            case "menu":
+                wpcf7_content_editor_properties.$content_required_field.parents(".bl_modal-row").removeClass("row-hidden");
+                // wpcf7_content_editor_properties.$content_placeholder.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_width.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_width_type.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_height.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_height_type.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_font_size.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_text_color_value.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_text_color_focus_value.parents(".bl_modal-row").removeClass("row-hidden");
+                break;
+            case "radio":
+                wpcf7_content_editor_properties.$content_required_field.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_width.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_width_type.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_height.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_height_type.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_font_size.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_text_color_value.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_text_color_focus_value.parents(".bl_modal-row").removeClass("row-hidden");
+                break;
+            case "checkbox":
+                wpcf7_content_editor_properties.$content_required_field.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_default_check.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_width.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_width_type.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_height.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_height_type.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_text_color_value.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_text_color_focus_value.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_input_text_editor.parents(".bl_modal-row").removeClass("row-hidden");
+                break;
+            case "file":
+                wpcf7_content_editor_properties.$content_required_field.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_text_color_value.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_text_color_focus_value.parents(".bl_modal-row").removeClass("row-hidden");
+                break;
+            case "submit":
+                wpcf7_content_editor_properties.$content_text_color_value.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_text_color_focus_value.parents(".bl_modal-row").removeClass("row-hidden");
+                break;
+        }
 
 		Rexlive_Modals_Utils.openModal(
             wpcf7_content_editor_properties.$self.parent(".rex-modal-wrap"),
             false,
-            modalClass
+            ["wpcf7-editing-content"]
         );
 	}
 
 	var _closeModal = function () {
-		var modalClass = ["wpcf7-editing-" + fieldType]; // closeModal requires an array of classes
-
         Rexlive_Modals_Utils.closeModal(
         	wpcf7_content_editor_properties.$self.parent(".rex-modal-wrap"),
         	false,
-        	modalClass
+        	["wpcf7-editing-content"]
         );
     };
 
     var _applyData = function () {
-        // columnContentData.wpcf7_required_field = "undefined" != typeof wpcf7_content_editor_properties.$content_required_field.attr("checked");
-        // columnContentData.wpcf7_only_numbers = "undefined" != typeof wpcf7_content_editor_properties.$content_only_numbers.attr("checked");
-        // columnContentData.wpcf7_placeholder = wpcf7_content_editor_properties.$content_placeholder.val();
-        // columnContentData.input_width = wpcf7_content_editor_properties.$content_input_width.val();
-        // columnContentData.input_height = wpcf7_content_editor_properties.$content_input_height.val();
-        // columnContentData.font_size = wpcf7_content_editor_properties.$content_input_font_size.val() + "px";
-        // var widthType = wpcf7_content_editor_properties.$content_input_width_type.filter(':checked').val();
-        // var heightType = wpcf7_content_editor_properties.$content_input_height_type.filter(':checked').val();
-
-        // switch(widthType) {
-        //     case "percentage":
-        //         columnContentData.input_width = columnContentData.input_width + "%";
-        //         break;
-        //     case "pixel":
-        //         columnContentData.input_width = columnContentData.input_width + "px";
-        //         break;
-        // }
-
-        // switch(heightType) {
-        //     case "percentage":
-        //         columnContentData.input_height = columnContentData.input_height + "%";
-        //         break;
-        //     case "pixel":
-        //         columnContentData.input_height = columnContentData.input_height + "px";
-        //         break;
-        // }
-
     	var columnContentDataToIframe = {
             eventName: "rexlive:update_wcpf7_column_content_page",
             data_to_send: {
@@ -169,13 +204,15 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
     var _clearColumnContentData = function () {
         columnContentData = {
-            wpcf7_placeholder: "",
-            wpcf7_only_numbers: "",
             wpcf7_required_field: "",
+            wpcf7_only_numbers: "",
+            wpcf7_default_check: "",
+            wpcf7_placeholder: "",
             input_width: "",
             input_height: "",
             font_size: "",
             type: "",
+            field_class: "",
             input_type: "",
             background_color: "",
             text_color: "",
@@ -185,7 +222,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
                 row_number: "",
                 column_number: "",
             }
-        };
+        }
     }
 
     // data = columnContentData
@@ -198,21 +235,21 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
     var _updatePanel = function () {
         wpcf7_content_editor_properties.$content_required_field.prop("checked", "true" == columnContentData.wpcf7_required_field);
         wpcf7_content_editor_properties.$content_only_numbers.prop("checked", "true" == columnContentData.wpcf7_only_numbers);
+        wpcf7_content_editor_properties.$content_input_default_check.prop("checked", "true" == columnContentData.wpcf7_default_check);
         wpcf7_content_editor_properties.$content_placeholder.val(columnContentData.wpcf7_placeholder);
         wpcf7_content_editor_properties.$content_input_width.val(/[0-9]+/.exec(columnContentData.input_width));
-        var widthType = /[a-z]{2}|\%/.exec(columnContentData.input_width)[0];
+        var widthType = (null != /[a-z]{2}|\%/.exec(columnContentData.input_width)) ? /[a-z]{2}|\%/.exec(columnContentData.input_width)[0] : "%";
         switch(widthType) {
-            case "%":
-               wpcf7_content_editor_properties.$content_input_width_type.filter('[value=percentage]').prop("checked", true);
-               break;
             case "px":
                 wpcf7_content_editor_properties.$content_input_width_type.filter('[value=pixel]').prop("checked", true);
                break;
+            case "%":
             default:
-                break;
+                wpcf7_content_editor_properties.$content_input_width_type.filter('[value=percentage]').prop("checked", true);
+               break;
         }
         wpcf7_content_editor_properties.$content_input_height.val(/[0-9]+/.exec(columnContentData.input_height));
-        var heightType = /[a-z]{2}|\%/.exec(columnContentData.input_height)[0];
+        var heightType = (null != /[a-z]{2}|\%/.exec(columnContentData.input_height)) ? /[a-z]{2}|\%/.exec(columnContentData.input_height)[0] : "%";
         switch(heightType) {
             case "%":
                wpcf7_content_editor_properties.$content_input_height_type.filter('[value=percentage]').prop("checked", true);
@@ -239,6 +276,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
     var _updateColumnContentFromPanel = function () {
         columnContentData.wpcf7_required_field = "undefined" != typeof wpcf7_content_editor_properties.$content_required_field.attr("checked");
         columnContentData.wpcf7_only_numbers = "undefined" != typeof wpcf7_content_editor_properties.$content_only_numbers.attr("checked");
+        columnContentData.wpcf7_default_check = "undefined" != typeof wpcf7_content_editor_properties.$content_input_default_check.attr("checked");
         columnContentData.wpcf7_placeholder = wpcf7_content_editor_properties.$content_placeholder.val();
         columnContentData.input_width = wpcf7_content_editor_properties.$content_input_width.val();
         columnContentData.input_height = wpcf7_content_editor_properties.$content_input_height.val();
@@ -645,17 +683,21 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             $content_input_width_type: $container.find(".wpcf7-input-width-type"),
             $content_input_height: $container.find("#wpcf7-input-height"),
             $content_input_height_type: $container.find(".wpcf7-input-height-type"),
-            $content_input_font_size: $container.find("#rexwpcf7-set-font-size"),
+            $content_input_font_size: $container.find("#wpcf7-set-font-size"),
+            $content_input_default_check: $container.find("#wpcf7-default-check"),
+            $content_input_text_editor: $container.find("#wpcf7-text-editor"),
 		};
 
 		columnContentData = {
             wpcf7_required_field: "",
             wpcf7_only_numbers: "",
+            wpcf7_default_check: "",
             wpcf7_placeholder: "",
             input_width: "",
             input_height: "",
             font_size: "",
             type: "",
+            field_class: "",
             input_type: "",
             background_color: "",
             text_color: "",
