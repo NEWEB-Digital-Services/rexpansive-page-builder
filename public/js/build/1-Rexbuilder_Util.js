@@ -154,7 +154,7 @@ var Rexbuilder_Util = (function($) {
       var id;
       var $sec;
       if ( Rexbuilder_Util.rexContainer ) {
-        var sections = [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll( '.rexpansive_section' ) );
+        var sections = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName( 'rexpansive_section' ) );
         sections.forEach( function( section ) {
           var sectionId = section.getAttribute( 'data-rexlive-section-id' );    
           if ( null === sectionId || '' === sectionId ) {
@@ -176,19 +176,19 @@ var Rexbuilder_Util = (function($) {
    */
   var _fix_tools_ids = function( section, id ) {
     if ( section ) {
-      var left_tools = [].slice.call( section.querySelectorAll('.tool-area--side.tool-area--left') );
+      var left_tools = [].slice.call( section.getElementsByClassName('tool-area--side tool-area--left') );
       var editRowWidth;
       var editRowLayout;
 
       left_tools.forEach( function( elTools ) {
-        editRowWidth = [].slice.call( elTools.querySelectorAll('.edit-row-width') );
+        editRowWidth = [].slice.call( elTools.getElementsByClassName('edit-row-width') );
         editRowWidth.forEach( function( el ) {
           el.setAttribute('id', el.getAttribute('id') + id );
           el.setAttribute('name', el.getAttribute('name') + id );
           el.nextElementSibling.setAttribute('for', el.nextElementSibling.getAttribute('for') + id );
         });
 
-        editRowLayout = [].slice.call( elTools.querySelectorAll('.edit-row-layout') );
+        editRowLayout = [].slice.call( elTools.getElementsByClassName('edit-row-layout') );
         editRowWidth.forEach( function( el ) {
           el.setAttribute('id', el.getAttribute('id') + id );
           el.setAttribute('name', el.getAttribute('name') + id );
@@ -201,7 +201,7 @@ var Rexbuilder_Util = (function($) {
   var _updateSectionsNumber = function() {
     var last = -1;
     if ( Rexbuilder_Util.rexContainer ) {
-      var sections = [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll( '.rexpansive_section' ) );
+      var sections = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName( 'rexpansive_section' ) );
       sections.forEach( function( section, i ) {
         section.setAttribute( 'data-rexlive-section-number', i);
         last = i;
@@ -2054,7 +2054,7 @@ var Rexbuilder_Util = (function($) {
     if ( hasClass( section, 'rex-model-section' ) ) {
       var modelID = section.getAttribute('data-rexlive-model-id');
       var modelNumber = section.getAttribute('data-rexlive-section-number');
-      [].slice.call( $defaultLayoutState[0].querySelectorAll( '.section-targets' ) ).forEach( function(el) {
+      [].slice.call( $defaultLayoutState[0].getElementsByClassName( 'section-targets' ) ).forEach( function(el) {
         if ( modelID == el.getAttribute( 'data-model-id' ) ) {
           el.textContent = JSON.stringify( layoutData );
           if ( modelNumber == el.getAttribute( 'data-model-number' ) ) {
@@ -2074,7 +2074,7 @@ var Rexbuilder_Util = (function($) {
       // });
     } else {
       var rexID = section.getAttribute( 'data-rexlive-section-id' );
-      [].slice.call( $defaultLayoutState[0].querySelectorAll( '.section-targets' ) ).forEach( function(el) {
+      [].slice.call( $defaultLayoutState[0].getElementsByClassName( 'section-targets' ) ).forEach( function(el) {
         if ( rexID == el.getAttribute( 'data-section-rex-id' ) ) {
           el.textContent = JSON.stringify( layoutData );
           sectionAdded = true;
@@ -3246,7 +3246,7 @@ var Rexbuilder_Util = (function($) {
   var _set_initial_grids_state = function( layout ) {
     layout = "undefined" !== typeof layout ? layout : "default";
     if( Rexbuilder_Util.rexContainer ) {
-      var rows = [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section') );
+      var rows = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName('rexpansive_section') );
       rows.forEach(function( row, index ) {
         var $row = $(row);
         var $grid = $row.find('.grid-stack-row');
@@ -3296,7 +3296,7 @@ var Rexbuilder_Util = (function($) {
    */
   var _updateGridsHeights = function() {
     if ( Rexbuilder_Util.rexContainer ) {
-      var rows = [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll('.grid-stack-row') );
+      var rows = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName('grid-stack-row') );
       var $row, galleryEditorInstance;
       rows.forEach(function(row) {
         $row = $(row);
@@ -3630,7 +3630,7 @@ var Rexbuilder_Util = (function($) {
 
   var removeCollapsedGrids = function() {
     if ( Rexbuilder_Util.rexContainer ) {
-      var rows = [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section') );
+      var rows = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName('rexpansive_section') );
       rows.forEach(function(el) {
         if (Rexbuilder_Util.galleryPluginActive) {
           var galleryInstance = _getGalleryInstance($(el));
@@ -3647,7 +3647,7 @@ var Rexbuilder_Util = (function($) {
 
   var collapseAllGrids = function() {
     if ( Rexbuilder_Util.rexContainer ) {
-      var rows = [].slice.call( Rexbuilder_Util.rexContainer.querySelectorAll('.rexpansive_section') );
+      var rows = [].slice.call( Rexbuilder_Util.rexContainer.getElementsByClassName('rexpansive_section') );
       rows.forEach(function(el) {
       // Rexbuilder_Util.$rexContainer
       //   .children(".rexpansive_section")

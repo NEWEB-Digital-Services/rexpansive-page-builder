@@ -1029,7 +1029,7 @@ var Rex_Save_Listeners = (function($) {
         // retrieve the block content
         // if there is some, or there is an img, an iframe or an icon inline
         if ( savingBlock.textContent.trim() == '' ) {
-          if ( savingBlock.querySelectorAll('iframe').length > 0 || savingBlock.querySelectorAll('img').length > 0 || savingBlock.querySelectorAll('i').length > 0 ) {
+          if ( savingBlock.getElementsByTagName('iframe').length > 0 || savingBlock.getElementsByTagName('img').length > 0 || savingBlock.getElementsByTagName('i').length > 0 ) {
             content = savingBlock.innerHTML.trim();
           } else {
             content = '';
@@ -1037,7 +1037,7 @@ var Rex_Save_Listeners = (function($) {
         } else {
           content = savingBlock.innerHTML.trim();
           // why do this after the retrieving of the HTML?
-          [].slice.call( savingBlock.querySelectorAll('.rex-button-data') ).forEach( function(el) {
+          [].slice.call( savingBlock.getElementsByClassName('rex-button-data') ).forEach( function(el) {
             el.removeAttribute('data-synchronize');
           });
         }

@@ -339,7 +339,7 @@
 
     clearStateGrid: function() {
       var rexID;
-      var items = [].slice.call(this.element.querySelectorAll('.grid-stack-item'));
+      var items = [].slice.call(this.element.getElementsByClassName('grid-stack-item'));
       items.forEach(function(el) {
         rexID = el.getAttribute('data-rexbuilder-block-id');
         store.remove(rexID);
@@ -592,7 +592,7 @@
 
       var that = this;
       var $el;
-      var items = [].slice.call(this.element.querySelectorAll('.grid-stack-item'));
+      var items = [].slice.call(this.element.getElementsByClassName('grid-stack-item'));
       // this.$element.find(".grid-stack-item").each(function(i, el) {
       items.forEach(function(el) {
         $el = $(el);
@@ -631,7 +631,7 @@
       var number = 0;
       var numberBlock = 0;
 
-      var gsItems = [].slice.call( this.element.querySelectorAll('.grid-stack-item') );
+      var gsItems = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
       gsItems.forEach( function( el, index ) {
         number = index;
         var regex = /\d+$/gm;
@@ -705,7 +705,7 @@
       var id;
       var $elem;
       var elem;
-      var gsItems = [].slice.call( this.element.querySelectorAll('.grid-stack-item') );
+      var gsItems = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
       gsItems.forEach( function(el) {
         if ( el.getAttribute("data-rexbuilder-block-id") === undefined || el.getAttribute("data-rexbuilder-block-id") == "" ) {
           id = Rexbuilder_Util.createBlockID();
@@ -766,7 +766,7 @@
 
     getElementBottomTop: function() {
       var nodes = [];
-      var gs_items = [].slice.call( this.element.querySelectorAll('.grid-stack-item') );
+      var gs_items = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
       var el;
 
       gs_items.forEach( function(e) {
@@ -795,7 +795,7 @@
 
     getElementsTopBottom: function() {
       var nodes = [];
-      var gs_items = [].slice.call( this.element.querySelectorAll('.grid-stack-item') );
+      var gs_items = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
       var el;
 
       gs_items.forEach( function(e) {
@@ -1846,7 +1846,7 @@
 
     _prepareElements: function() {
       var gallery = this;
-      var items = [].slice.call( gallery.element.querySelectorAll('.grid-stack-item') );
+      var items = [].slice.call( gallery.element.getElementsByClassName('grid-stack-item') );
 
       if (this.properties.editedFromBackend && ('undefined' === typeof Rexbuilder_Util_Editor.sectionCopying || false === Rexbuilder_Util_Editor.sectionCopying ) ) {
         items.forEach( function(el) {
@@ -1933,7 +1933,7 @@
 
     _fixImagesDimension: function() {
       var that = this;
-      var gsItems = [].slice.call(this.element.querySelectorAll('.grid-stack-item'));
+      var gsItems = [].slice.call(this.element.getElementsByClassName('grid-stack-item'));
       gsItems.forEach( function( el ) {
         that._fixImageSize(el);
       });
@@ -2310,7 +2310,7 @@
      */
     _updateElementsSizeViewers: function() {
       var gallery = this;
-      var items = [].slice.call( this.element.querySelectorAll('.grid-stack-item') );
+      var items = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
       var $block;
       items.forEach(function(el) {
         $block = $(el);
@@ -2436,7 +2436,7 @@
             size_viewer = event.target.querySelector('.top-tools .el-size-viewer .el-size-viewer__val');
             size_viewer_mobile = event.target.querySelector('.mobile-tools .el-size-viewer .el-size-viewer__val');
 
-            blockHasPSWP = event.target.querySelectorAll('.pswp-item').length > 0 ? true : false;
+            blockHasPSWP = event.target.getElementsByClassName('pswp-item').length > 0 ? true : false;
             blockHasSlider = hasClass( event.target, 'block-has-slider' );
 
             imageWidth = isNaN( parseInt( blockContent.getAttribute("data-background_image_width")) ) ? 0 : parseInt( blockContent.getAttribute("data-background_image_width"));
@@ -2803,7 +2803,7 @@
 
       // Remove elements to hide
       var gridstack = this.properties.gridstackInstance;
-      var items = [].slice.call( this.element.querySelectorAll('.grid-stack-item') );
+      var items = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
       items.forEach( function(el) {
         if ( -1 !== el.className.indexOf('rex-hide-element') ) {
           gridstack.removeWidget(el, false);
@@ -2904,7 +2904,7 @@
         this.properties.blocksBottomTop = this.getElementBottomTop();
         if ( !this.properties.updatingSectionSameGrid || Rexbuilder_Util.windowIsResizing ) {
           this.batchGridstack();
-          
+
           [].slice.call( this.properties.blocksBottomTop ).forEach( function( elem, i ) {
             $elem = $(elem);
             // elemData = elem.querySelector('.rexbuilder-block-data');
@@ -3092,8 +3092,6 @@
     updateElementHeight: function($elem, blockRatio, editingBlock) {
       editingBlock = typeof editingBlock !== "undefined" ? editingBlock : false;
 
-      // console.trace();
-
       if (this.settings.editorMode && !this.properties.oneColumModeActive) {
         Rexbuilder_Util_Editor.elementIsResizing = true;
       }
@@ -3187,11 +3185,11 @@
         // calculate video height
         // @todo check me to prevent video auto ratio-resize 
         if ( blockHasYoutube || blockHasVideo || blockHasVimeo ) {
-          videoHeight = Math.round( w * sw * defaultRatio );
-          // if ( this.settings.editorMode ) {
-          //   videoHeight = startH * this.properties.oldCellHeight;
+          // videoHeight = Math.round( w * sw * defaultRatio );
+          // if ( this._viewport().width < _plugin_frontend_settings.defaultSettings.collapseWidth ) {
+          //   videoHeight = Math.round( w * sw * defaultRatio );
           // } else {
-          //   videoHeight = startH * this.properties.singleHeight;
+            videoHeight = originalH * this.properties.singleHeight;
           // }
         }
 
@@ -3210,8 +3208,8 @@
         if ( videoHeight == 0 && backgroundHeight == 0 && sliderHeight == 0 && ( Rexbuilder_Util_Editor.updatingSectionLayout || blockIsEmpty || this.properties.firstStartGrid || blockHasSlider ) ) {
           if ( this.properties.editedFromBackend && this.settings.galleryLayout == "masonry" ) {
             defaultHeight = Math.round(sw * startH);
-          } else if ( this.properties.oldCellHeight != 0 && this.properties.oldCellHeight != this.properties.singleHeight ) {
-            defaultHeight = startH * this.properties.oldCellHeight;
+          // } else if ( this.properties.oldCellHeight != 0 && this.properties.oldCellHeight != this.properties.singleHeight ) {
+          //   defaultHeight = startH * this.properties.oldCellHeight;
           } else if ( this.properties.oneColumModeActive && this.properties.beforeCollapseWasFixed ) {
             defaultHeight = startH * this.properties.singleWidth;
           } else {
@@ -3229,16 +3227,16 @@
       // if the block has a full image background, without text
       // maintain the old height
       if ( !blockHasSlider && !blockHasYoutube && !blockHasVimeo && !blockHasVideo && ( ( ( 'full' === backImgType && 0 === textHeight ) || ( '' === backImgType && 0 === textHeight ) ) && ! this.properties.oneColumModeActive ) ) {
-        if ( this.settings.editorMode ) {
-          newH = startH * this.properties.oldCellHeight;
-        } else {
+        // if ( this.settings.editorMode ) {
+        //   newH = startH * this.properties.oldCellHeight;
+        // } else {
           newH = startH * this.properties.singleHeight;
-        }
+        // }
 
         // fix
-        if ( 0 === newH ) {
-          newH = backgroundHeight;
-        }
+        // if ( 0 === newH ) {
+        //   newH = backgroundHeight;
+        // }
       } else {
         if ( editingBlock ) {
           startH *= this.properties.singleHeight;
@@ -3256,11 +3254,38 @@
         );
       }
 
-      // console.log({ newH,emptyBlockFlag })
+      console.table({
+        startH,
+        blockRatio,
+        backImgType,
+        backgroundHeight,
+        videoHeight,
+        defaultHeight,
+        textHeight,
+        sliderHeight,
+        originalH,
+        originalStartH,
+        singleHeight: this.properties.singleHeight,
+        spaceAvailable,
+        newH,
+        gutter
+      });
 
       if ( this.properties.oneColumModeActive && ! Rexbuilder_Util.windowIsResizing ) {
+        var collapsedHeight = newH;
+
+        // if (this.settings.galleryLayout == "fixed") {
+        //   if ( emptyBlockFlag || blockHasYoutube || blockHasVideo || blockHasVimeo ) {
+        //     collapsedHeight = Math.round(newH / this.properties.singleHeight);
+        //   } else {
+        //     collapsedHeight = Math.ceil(newH / this.properties.singleHeight);
+        //   }
+        // } else {
+        //   collapsedHeight = Math.ceil(newH / this.properties.singleHeight);
+        // }
+
         return {
-          height: newH,
+          height: collapsedHeight,
           empty: emptyBlockFlag
         };
       }
@@ -3268,33 +3293,6 @@
       if( typeof blockRatio != "undefined" && blockRatio !=0 ) {
         newH = w * sw * blockRatio;
       }
-
-      if (this.settings.galleryLayout == "fixed") {
-        if ( emptyBlockFlag ) {
-          newH = Math.round(newH / this.properties.singleHeight);
-        } else {
-          newH = Math.ceil(newH / this.properties.singleHeight);
-        }
-      } else {
-        newH = Math.ceil(newH / this.properties.singleHeight);
-      }
-
-      // console.table({
-      //   startH,
-      //   blockRatio,
-      //   backImgType,
-      //   backgroundHeight,
-      //   videoHeight,
-      //   defaultHeight,
-      //   textHeight,
-      //   sliderHeight,
-      //   originalH,
-      //   originalStartH,
-      //   singleHeight: this.properties.singleHeight,
-      //   spaceAvailable,
-      //   newH,
-      //   gutter
-      // });
 
       var resizeNotNeeded = false;
 
@@ -3327,6 +3325,16 @@
         return;
       }
 
+      if (this.settings.galleryLayout == "fixed") {
+        if ( emptyBlockFlag || blockHasYoutube || blockHasVideo || blockHasVimeo ) {
+          newH = Math.round(newH / this.properties.singleHeight);
+        } else {
+          newH = Math.ceil(newH / this.properties.singleHeight);
+        }
+      } else {
+        newH = Math.ceil(newH / this.properties.singleHeight);
+      }
+
       this.updateElementDataHeightProperties( blockData, newH );
 
       this.resizeBlock( elem, w, newH );
@@ -3357,8 +3365,10 @@
             y = Math.round( ( parseInt( elDim.properties[1].y ) * this.properties.oldCellHeight ) / this.properties.singleHeight );
             w = width;
             h = height;
+            console.log({w,h})
             gridstack.update(el, x, y, w, h);
           } else {
+            console.log({width,height})
             gridstack.resize(el, width, height);
           }
         }
@@ -3418,11 +3428,11 @@
      *  Launching MediumEditor inside the blocks that can have it
      */
     _launchTextEditor: function() {
-      var editors = [].slice.call( this.element.querySelectorAll('.rex-text-editable') );
+      var editors = [].slice.call( this.element.getElementsByClassName('rex-text-editable') );
       var hasPswp, hasSlider, textWrap;
       editors.forEach( function(el) {
-        hasPswp = el.querySelectorAll('.pswp-figure');
-        hasSlider = el.querySelectorAll('.rex-slider-wrap');
+        hasPswp = el.getElementsByClassName('pswp-figure');
+        hasSlider = el.getElementsByClassName('rex-slider-wrap');
         if ( 0 === hasPswp.length && 0 === hasSlider.length ) {
           textWrap = el.querySelector('.text-wrap');
           TextEditor.addElementToTextEditor( textWrap );
@@ -3695,10 +3705,11 @@
 
     updateCollapsedBlocksHeight: function() {
       var that = this;
-      var items = [].slice.call( this.element.querySelectorAll('.grid-stack-item') );
+      var items = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
       items.reverse().forEach(function(el,i) {
         var $el = $(el);
         var blockHeight = that.updateElementHeight($el);
+        console.log(blockHeight)
         if ('undefined' !== typeof blockHeight && !blockHeight.empty) {
           var height = Math.ceil( blockHeight.height / that.settings.cellHeightMasonry );
           that.properties.gridstackInstance.resize(el, 12, height);
@@ -3740,7 +3751,7 @@
         rexIDS.push(block);
       }
 
-      var items = [].slice.call(this.element.querySelectorAll('.grid-stack-item'));
+      var items = [].slice.call(this.element.getElementsByClassName('grid-stack-item'));
       var elemObj;
 
       // this.$element.children(".grid-stack-item").each(function() {
@@ -4033,7 +4044,7 @@
      * @since 2.0.0
      */
     fix_natural_image_blocks: function() {
-      var imageWrappers = [].slice.call( this.element.querySelectorAll('.rex-image-wrapper') );
+      var imageWrappers = [].slice.call( this.element.getElementsByClassName('rex-image-wrapper') );
       var $el;
       imageWrappers.forEach(function(el,i) {
         $el = $(el);
@@ -4103,7 +4114,7 @@
      * @since 2.0.0
      */
     _log_block_infos: function() {
-      var items = [].slice.call( this.element.querySelectorAll('.grid-stack-item') );
+      var items = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
       items.forEach(function(el,i) {
         console.table({
           id: el.getAttribute('id'),
@@ -4121,7 +4132,7 @@
      */
     _get_block_infos: function() {
       var nodes = [];
-      var items = [].slice.call( this.element.querySelectorAll('.grid-stack-item') );
+      var items = [].slice.call( this.element.getElementsByClassName('grid-stack-item') );
       items.forEach(function(el,i) {
         nodes.push({
           id: el.getAttribute('id'),

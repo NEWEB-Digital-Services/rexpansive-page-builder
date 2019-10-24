@@ -372,7 +372,7 @@ var TextEditor = (function ($) {
 
       this.list_element.innerHTML = "<div class='medium-editor-action' data-tag-action='append-h1'>h1</div><div class='medium-editor-action' data-tag-action='append-h2'>h2</div><div class='medium-editor-action' data-tag-action='append-h3'>h3</div><div class='medium-editor-action' data-tag-action='append-h4'>h4</div><div class='medium-editor-action' data-tag-action='append-h5'>h5</div><div class='medium-editor-action' data-tag-action='append-h6'>h6</div><div class='medium-editor-action' data-tag-action='append-p'>p</div>";
 
-      this.list_actions = this.list_element.querySelectorAll('.medium-editor-action');
+      this.list_actions = this.list_element.getElementsByClassName('medium-editor-action');
 
       $(this.button).append(this.list_parent);
       $(this.button).append(this.list_element);
@@ -487,7 +487,7 @@ var TextEditor = (function ($) {
 
       this.list_element.innerHTML = "<div class='medium-editor-action' data-tag-action='bold'><i class='fa fa-bold'></i></div><div class='medium-editor-action' data-tag-action='italic'><i class='fa fa-italic'></i></div><div class='medium-editor-action' data-tag-action='underline'><i class='fa fa-underline'></i></div>";
 
-      this.list_actions = this.list_element.querySelectorAll('.medium-editor-action');
+      this.list_actions = this.list_element.getElementsByClassName('medium-editor-action');
 
       $(this.button).append(this.list_parent);
       $(this.button).append(this.list_element);
@@ -600,7 +600,7 @@ var TextEditor = (function ($) {
 
       this.list_element.innerHTML = "<div class='medium-editor-action' data-tag-action='insertorderedlist'><i class='fa fa-list-ol'></i></div><div class='medium-editor-action' data-tag-action='insertunorderedlist'><i class='fa fa-list-ul'></i></div>";
 
-      this.list_actions = this.list_element.querySelectorAll('.medium-editor-action');
+      this.list_actions = this.list_element.getElementsByClassName('medium-editor-action');
 
       $(this.button).append(this.list_parent);
       $(this.button).append(this.list_element);
@@ -748,7 +748,7 @@ var TextEditor = (function ($) {
 
       this.list_element.innerHTML = "<div class='medium-editor-action' data-tag-action='justifyLeft'><i class='fa fa-align-left'></i></div><div class='medium-editor-action' data-tag-action='justifyCenter'><i class='fa fa-align-center'></i></div><div class='medium-editor-action' data-tag-action='justifyRight'><i class='fa fa-align-right'></i></div><div class='medium-editor-action hide-tool-rexbutton' data-tag-action='justifyFull'><i class='fa fa-align-justify'></i></div>";
 
-      this.list_actions = this.list_element.querySelectorAll('.medium-editor-action');
+      this.list_actions = this.list_element.getElementsByClassName('medium-editor-action');
 
       this.action_active = '';
       this.all_actions = ['justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull'];
@@ -2611,7 +2611,7 @@ var TextEditor = (function ($) {
     },
 
     checkOnlyIcons: function( el ) {
-      var svgs = el.querySelectorAll('svg');
+      var svgs = el.getElementsByTagName('svg');
       return ( svgs.length !== 0 && el.innerText == "" );
     }
   });

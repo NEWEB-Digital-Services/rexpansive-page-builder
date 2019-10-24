@@ -377,7 +377,7 @@ var Rexbuilder_App = (function($) {
    *
    */
   var fixRexButtons = function() {
-    var buttons = [].slice.call( document.querySelectorAll('.rex-button-wrapper') );
+    var buttons = [].slice.call( document.getElementsByClassName('rex-button-wrapper') );
     buttons.forEach(function( btn ) {
       var container = btn.querySelector( '.rex-button-container' );
       if ( ! container ) {
@@ -696,7 +696,7 @@ var Rexbuilder_App = (function($) {
   var launchStickySections = function() {
     if ( 'undefined' !== typeof StickySection ) {
       var stickyJS = !( Rexbuilder_Util.cssPropertyValueSupported( 'position', 'sticky' ) || Rexbuilder_Util.cssPropertyValueSupported( 'position', '-webkit-sticky' ) );
-      var stickySections = [].slice.call( document.querySelectorAll( '.sticky-section' ) );
+      var stickySections = [].slice.call( document.getElementsByClassName( 'sticky-section' ) );
 
       stickySections.forEach(function (el, index) {
         var stickyElementSelector = '';
@@ -730,7 +730,7 @@ var Rexbuilder_App = (function($) {
    */
   var launchScrollCSSAnimations = function() {
     if ( 'undefined' !== typeof ScrollCSSAnimation ) {
-      var fadesUps = [].slice.call(document.querySelectorAll('.fadeUpTextCSS'));
+      var fadesUps = [].slice.call(document.getElementsByClassName('fadeUpTextCSS'));
       fadesUps.forEach(function(el) {
         var fu = new ScrollCSSAnimation(el,{
           offset: 0.75
@@ -745,7 +745,7 @@ var Rexbuilder_App = (function($) {
    */
   var launchDistanceAccordion = function() {
     if ( 'undefined' !== typeof DistanceAccordion ) {
-      var togglers = document.querySelectorAll('.distance-accordion-toggle');
+      var togglers = document.getElementsByClassName('distance-accordion-toggle');
       for ( var j=0, tot = togglers.length; j < tot; j++ ) {
         new DistanceAccordion(togglers[j]);
       }

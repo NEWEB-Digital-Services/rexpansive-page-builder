@@ -65,7 +65,7 @@
    * Getting all the live editable fields
    */
   var findFields = function() {
-    fieldsEditable = [].slice.call(document.querySelectorAll('.builderlive-editable-field'));
+    fieldsEditable = [].slice.call(document.getElementsByClassName('builderlive-editable-field'));
   };
 
   /**

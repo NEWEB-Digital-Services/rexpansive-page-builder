@@ -102,7 +102,7 @@ var Rexbuilder_Section = (function($) {
       sectionData.setAttribute('data-rexlive_section_id',newSectionId);
 
       // fix sectiom width tool
-      var sectionWidthTools = [].slice.call( $section[0].querySelectorAll('.edit-row-width') );
+      var sectionWidthTools = [].slice.call( $section[0].getElementsByClassName('edit-row-width') );
       sectionWidthTools.forEach( function(el,i) {
         var fieldId = 'row-dimension-' + el.getAttribute('data-section_width') + '-' + newSectionId;
         el.setAttribute('name', 'row-dimension-' + newSectionId);
@@ -111,7 +111,7 @@ var Rexbuilder_Section = (function($) {
       });
 
       // fix section layout tool
-      var sectionLayoutTools = [].slice.call( $section[0].querySelectorAll('.edit-row-layout') );
+      var sectionLayoutTools = [].slice.call( $section[0].getElementsByClassName('edit-row-layout') );
       sectionLayoutTools.forEach( function(el,i) {
         var fieldId = 'row-layout-' + el.getAttribute('data-section_layout') + '-' + newSectionId;
         el.setAttribute('name', 'row-layout-' + newSectionId);

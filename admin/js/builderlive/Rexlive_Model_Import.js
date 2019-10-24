@@ -173,7 +173,7 @@ var Model_Import_Modal = (function($) {
    */
   var _sortModelList = function() {
     var modelWrap = rexmodel_import_props.$self.find(".model-list")[0]
-    var models = [].slice.call( modelWrap.querySelectorAll('.model__element') );
+    var models = [].slice.call( modelWrap.getElementsByClassName('model__element') );
     models.sort(function(a, b) {
       var a_title = a.querySelector('.model-name').textContent.toUpperCase();
       var b_title = b.querySelector('.model-name').textContent.toUpperCase();
