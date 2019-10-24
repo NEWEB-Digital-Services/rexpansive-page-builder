@@ -22,3 +22,4 @@ al primo caricamento devo fare un check generale delle altezze: potrei aver rist
 successivamente quando devo ricalcolare le altezze, devo sfruttare la vecchia altezza delle celle. (quanto vale sul front?)(potrei aver cambiato layout della griglia ad un resize)
 
 passo da layout fixed a masonry -> cambia la single height; le altezze vengono aggiornate;
+
