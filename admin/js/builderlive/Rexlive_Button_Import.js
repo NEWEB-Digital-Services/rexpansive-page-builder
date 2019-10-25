@@ -983,7 +983,7 @@ var Button_Import_Modal = (function ($) {
          * @since  2.0.0
          */
         Rexlive_Base_Settings.$document.on('click', '.button__element--delete', function(e) {
-            var button = this.previousElementSibling.children[0];
+            var button = $(this).parents('.button-list__element').find('.rex-button-wrapper')[0];
             if ( button ) {
                 var button_id = button.getAttribute('data-rex-button-id');
                 var response = confirm( live_editor_obj.labels.rexbuttons.confirm_delete );

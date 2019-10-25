@@ -66,12 +66,8 @@ class Rexbuilder_Activator {
 
 		// Insert some button models on plugin activation
 		// before, check if there isn't alreday
-		if( !get_option( 'rexpansive-builder-content-installed' ) ) {
-			self::import_buttons();
-			self::import_models();
-			self::import_icons();
-
-			update_option( 'rexpansive-builder-content-installed', true );
+		if( !get_option( REXPANSIVE_BUILDER_INSTALL_OPTION ) ) {
+			update_option( REXPANSIVE_BUILDER_INSTALL_OPTION, false );
 		}
 
 		// Reset check update option
@@ -109,62 +105,6 @@ class Rexbuilder_Activator {
 		if( ! file_exists( $symbol_dirname ) ) {
 			wp_mkdir_p( $symbol_dirname );
 		}
-	}
-
-	/**
-	 * Import default button models
-	 *
-	 * @since 2.0.0
-	 */
-	private static function import_buttons() {
-		$buttons_definition_file = REXPANSIVE_BUILDER_PATH . 'admin/default-models/rexbuttons.json';
-		$buttons_definition_list = file_get_contents( $buttons_definition_file );
-		$buttons_definition_array = json_decode( $buttons_definition_list, true );
-
-		foreach ($buttons_definition_array as $option => $value) {
-			add_option( $option, $value );
-		}
-	}
-
-	/**
-	 * Import default models
-	 *
-	 * @since 2.0.0
-	 */
-	private static function import_models() {
-		// import eventually media from the model
-		// beware of the ids
-
-		$models_definition_url = 'http://demo.neweb.info/wp-content/uploads/rexpansive-builder-uploads/rex-models.xml';
-		$xml_file = Rexbuilder_Import_Utilities::upload_media_file( $models_definition_url, 'xml' );
-
-		if( file_exists( $xml_file['file'] ) ) {
-
-			$Xml = new Rexbuilder_Import_Xml_Content( $xml_file['file'] );
-	
-			wp_defer_term_counting( true );
-			wp_defer_comment_counting( true );
-	
-			wp_suspend_cache_invalidation( true );
-	
-			$Xml->run_import_all();
-	
-			wp_suspend_cache_invalidation( false );
-	
-			wp_defer_term_counting( false );
-			wp_defer_comment_counting( false );
-			
-			Rexbuilder_Import_Utilities::remove_media_file( $xml_file['file'] );
-		}
-	}
-
-	/**
-	 * Import default SVG Icons
-	 * @return null
-	 * @since  2.0.0
-	 */
-	private static function import_icons() {
-		Rexbuilder_Utilities::install_icons();
 	}
 
 }

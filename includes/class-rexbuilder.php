@@ -131,6 +131,11 @@ class Rexbuilder {
 		require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-i18n.php';
 
 		/**
+		 * The classes responsible for the installation handler
+		 */
+		require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-installation-handler.php';
+
+		/**
 		 * The class responsible for defining all actions that occur in the admin area.
 		 */
 		require_once REXPANSIVE_BUILDER_PATH . 'admin/class-rexbuilder-admin.php';
@@ -196,6 +201,8 @@ class Rexbuilder {
 		// Slider custom post type
 		$this->loader->add_action( 'init', $plugin_admin, 'rexpansive_slider_definition' );
 		$this->loader->add_action( 'init', $plugin_admin, 'rexpansive_models_defintion' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'plugin_options_update' );
+		$this->loader->add_action( 'admin_init', $plugin_admin, 'instantiate_installer' );
 		
 		$this->loader->add_filter( 'manage_rex_slider_posts_columns', $plugin_admin, 'rexpansive_slider_columns_head_add_column' );
 		$this->loader->add_filter( 'manage_rex_slider_posts_columns', $plugin_admin, 'rexpansive_slider_columns_reorder' );
@@ -211,6 +218,8 @@ class Rexbuilder {
 		$this->loader->add_action( 'admin_enqueue_scripts', $plugin_admin, 'enqueue_scripts' );
 		// $this->loader->add_action( 'admin_print_scripts', $plugin_admin, 'dequeue_scripts', 99 );
 
+		$this->loader->add_action( 'admin_head', $plugin_admin, 'print_install_launcher' );
+
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'add_plugin_options_menu' );
 		$this->loader->add_action( 'admin_menu', $plugin_admin, 'update_notifier_menu' );
 		
@@ -218,8 +227,6 @@ class Rexbuilder {
 		
 		$plugin_basename = plugin_basename( plugin_dir_path( __DIR__ ) . $this->plugin_name . '.php' );
 		$this->loader->add_filter( 'plugin_action_links_' . $plugin_basename, $plugin_admin, 'add_action_links' );
-		
-		$this->loader->add_action( 'admin_init', $plugin_admin, 'plugin_options_update' );
 		
 		// live builder		
 		$this->loader->add_filter( 'content_save_pre', $plugin_admin, 'rex_fix_post_content' );
@@ -236,8 +243,6 @@ class Rexbuilder {
 		$this->loader->add_action( 'admin_footer', $plugin_admin, 'create_builder_modals' );
 		$this->loader->add_action( 'admin_footer', $plugin_admin, 'create_builder_templates' );
 		$this->loader->add_action( 'admin_footer', $plugin_admin, 'include_sprites' );
-		
-		$this->loader->add_action( 'admin_head', $plugin_admin, 'rexbuilder_add_custom_buttons' );
 		
 		// The if is here to prevent conflicts between versions and Gutenberg
 		if( Rexbuilder_Utilities::is_version( '>=', '5.0' ) && ! Rexbuilder_Utilities::check_plugin_active( 'classic-editor/classic-editor.php' ) )

@@ -49,7 +49,19 @@ class Rexbuilder_Admin {
 	 */
 	private $plugin_options;
 
+	/**
+	 * Plugin general settings to share around
+	 * @var array
+	 * @since  2.0.0
+	 */
 	private $settings;
+
+	/**
+	 * Plugin Installer handler
+	 * @var Rexbuilder_Installation_Handler
+	 * @since  2.0.1
+	 */
+	private $Installer;
 
 	/**
 	 * Initialize the class and set its properties.
@@ -71,15 +83,15 @@ class Rexbuilder_Admin {
 			)
 		) );
 
-		if( isset( $this->plugin_options['post_types'] ) ) :
+		if( isset( $this->plugin_options['post_types'] ) ) {
 			$post_to_activate = $this->plugin_options['post_types'];
 
 			// Call the construction of the metabox
 			require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-meta-box.php';
 
-			foreach( $post_to_activate as $key => $value ) :
+			foreach( $post_to_activate as $key => $value ) {
 
-				if( 1 == $value ) :
+				if( 1 == $value ) {
 
 					$page_builder = new Rexbuilder_Meta_Box( 
 						$this->plugin_name,
@@ -115,12 +127,11 @@ class Rexbuilder_Admin {
 							'type'	=>	'rexpansive_plugin',
 						),
 					) );
+				}
+			}
+		}
 
-				endif;
-
-			endforeach;
-
-		endif;
+		$this->Installer = null;
 	}
 
 	/**
@@ -575,6 +586,43 @@ class Rexbuilder_Admin {
 	}
 
 	/**
+	 * Print the code that launches the installation process
+	 * @return void
+	 * @since  2.0.1
+	 */
+	public function print_install_launcher() {
+		$content_installed = get_option( REXPANSIVE_BUILDER_INSTALL_OPTION );
+		if ( false === $content_installed ) {
+			update_option( REXPANSIVE_BUILDER_INSTALL_OPTION, true );
+			?>
+<script type='text/javascript'>
+/* <![CDATA[ */
+;(function($) {
+	function dispatch_install() {
+		$.ajax({
+			type: "POST", 
+			url: ajaxurl, 
+			data: {
+				'action': 'rexpansive_install_contents',
+				'nonce_param': '<?php echo wp_create_nonce( 'install-contents-nonce' ); ?>',
+				'data': {
+					'request': 'Run install process'
+				}
+			},
+			success: function(data) { 
+				console.log(data); 
+			}
+		});
+	}
+	document.addEventListener('DOMContentLoaded', dispatch_install);
+}(jQuery));
+/* ]]> */
+</script>
+			<?php
+		}
+	}
+
+	/**
 	 *	Register the administration menu for the plugin.
 	 *
 	 * 	@since    1.0.0
@@ -736,6 +784,15 @@ class Rexbuilder_Admin {
 	public function plugin_options_update() {
 		//register_setting( $this->plugin_name, $this->plugin_name, array( $this, 'plugin_options_validate' ) );
 		register_setting( $this->plugin_name . '_options', $this->plugin_name . '_options', array( $this, 'plugin_options_validate' ) );
+	}
+
+	/**
+	 * Instantiate the installer to use during the installation process
+	 * @return void
+	 * @since  2.0.1
+	 */
+	public function instantiate_installer() {
+		$this->Installer = new Rexbuilder_Installation_Handler();
 	}
 
 	/**
@@ -1047,7 +1104,19 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 			wp_send_json_error( $response );
 		}
 
-		$response['install_icons'] = Rexbuilder_Utilities::install_icons();
+		$response['request'] = $_POST['data']['request'];
+
+		// If there is data to send to the installer, from here
+		// $this->Installer->data( $response['request'] );
+
+		$this->Installer->push_to_queue( 'import_buttons' );
+		$this->Installer->push_to_queue( 'import_icons' );
+		$this->Installer->push_to_queue( 'import_models' );
+
+		// dispatch the installation process
+		$this->Installer->save()->dispatch();
+
+		$response['result'] = 'dispatched';
 
 		wp_send_json_success( $response );
 	}

@@ -317,28 +317,6 @@ class Rexbuilder_Utilities {
 	}
 
 	/**
-	 * Install the icons, copying the packed default sprites to the upload folder
-	 * @return bool 	operation has succeeded
-	 * @since  2.0.0
-	 */
-	public static function install_icons() {
-		$upload_dir = wp_upload_dir();
-		$uploads_dirname = $upload_dir['basedir'] . '/' . REXPANSIVE_BUILDER_UPLOADS_FOLDER;
-
-		$list_path = '/assets/sprite-list.json';
-		if ( file_exists( REXPANSIVE_BUILDER_PATH . '/shared' . $list_path ) ) {
-			$list_response = copy( REXPANSIVE_BUILDER_PATH . '/shared' . $list_path, $uploads_dirname . $list_path );
-		}
-
-		$sprite_path = '/assets/symbol/sprite.symbol.svg';
-		if ( file_exists( REXPANSIVE_BUILDER_PATH . '/shared' . $sprite_path ) ) {
-			$path_response = copy( REXPANSIVE_BUILDER_PATH . '/shared' . $sprite_path, $uploads_dirname . $sprite_path );
-		}
-
-		return $list_response * $path_response;
-	}
-
-	/**
 	 * Add a string of attribute=value to a shortcode
 	 * The string can contain more than one attribute
 	 * 

@@ -3123,7 +3123,7 @@
 
       // calculate text content height
       // textHeight = this.calculateTextWrapHeight($textWrap);
-      textHeight = this.calculateTextWrapHeightNew($textWrap);
+      textHeight = this.calculateTextWrapHeightNew( $textWrap );
 
       if (this.properties.oneColumModeActive) {
         w = 12;
@@ -3377,22 +3377,24 @@
     },
 
     calculateTextWrapHeightNew: function( $textWrap ) {
-      var textWrap = $textWrap[0];
       var textHeight = 0;
-      var blockHasSlider = $textWrap.parents('.perfect-grid-item').hasClass('block-has-slider');
-      if ( this.settings.editorMode ) {
-        var textWrapClone = textWrap.cloneNode(true);
-        var meSpanFix = textWrapClone.querySelector('.text-editor-span-fix');
-        if ( meSpanFix ) { meSpanFix.parentNode.removeChild( meSpanFix ); }
+      if ( 0 !== $textWrap.length ) {
+        var textWrap = $textWrap[0];
+        var blockHasSlider = $textWrap.parents('.perfect-grid-item').hasClass('block-has-slider');
+        if ( this.settings.editorMode ) {
+          var textWrapClone = textWrap.cloneNode(true);
+          var meSpanFix = textWrapClone.querySelector('.text-editor-span-fix');
+          if ( meSpanFix ) { meSpanFix.parentNode.removeChild( meSpanFix ); }
 
-        if ( ! blockHasSlider && ( 0 !== textWrapClone.textContent.trim().length || 0 !== textWrapClone.childElementCount ) ) {
-          if ( ( ! hasClass( textWrap, "medium-editor-placeholder" ) || textWrapClone.childElementCount > 0 ) || $textWrap.parents(".pswp-item").length != 0 ) {
+          if ( ! blockHasSlider && ( 0 !== textWrapClone.textContent.trim().length || 0 !== textWrapClone.childElementCount ) ) {
+            if ( ( ! hasClass( textWrap, "medium-editor-placeholder" ) || textWrapClone.childElementCount > 0 ) || $textWrap.parents(".pswp-item").length != 0 ) {
+              textHeight = textWrap.offsetHeight;
+            }
+          }
+        } else {
+          if ( ! blockHasSlider && ( textWrap.textContent.trim().length != 0 || 0 !== textWrap.childElementCount ) ) {
             textHeight = textWrap.offsetHeight;
           }
-        }
-      } else {
-        if ( ! blockHasSlider && ( textWrap.textContent.trim().length != 0 || 0 !== textWrap.childElementCount ) ) {
-          textHeight = textWrap.offsetHeight;
         }
       }
       return textHeight;

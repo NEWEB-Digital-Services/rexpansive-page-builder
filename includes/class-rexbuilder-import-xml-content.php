@@ -147,18 +147,32 @@ if ( ! class_exists( 'Rexbuilder_Import_Xml_Content' ) ) {
 			// if( !post_exists( $args['post_title'], '', $args['post_date'] ) ) {
 			if( false === get_post_status( $args['import_id'] ) ) {
 
-				if( $args['post_type'] == 'attachment' && $args['post_status'] != 'trash') {
+				if( $args['post_type'] == 'attachment' && $args['post_status'] != 'trash' ) {
 					$result = $this->upload_media_file( $args['guid'], 'image' );
 
-					$attachment_mime_type = wp_check_filetype( $result['file'] );
+					if ( true === WP_DEBUG ) {
+						if ( is_array( $result ) || is_object( $result ) ) {
+							error_log( print_r( $result, true ) );
+						} else {
+							error_log( $result );
+						}
+					}
 
-					$args['guid'] = $result['url'];
-					$args['post_mime_type'] = $attachment_mime_type['type'];
+					if ( ! is_wp_error( $result ) ) {
+						$attachment_mime_type = wp_check_filetype( $result['file'] );
 
-					$post_id = wp_insert_attachment( $args, $result['file'] );
-					$data = wp_generate_attachment_metadata( $post_id, $result['file'] );
-					wp_update_attachment_metadata( $post_id, $data );
+						$args['guid'] = $result['url'];
+						$args['post_mime_type'] = $attachment_mime_type['type'];
 
+						$post_id = wp_insert_attachment( $args, $result['file'] );
+						$data = wp_generate_attachment_metadata( $post_id, $result['file'] );
+						wp_update_attachment_metadata( $post_id, $data );
+					} else {
+						// log error
+						if ( true === WP_DEBUG ) {
+							error_log( print_r( $result, true ) );
+						}
+					}
 				} else {
 					$post_id = wp_insert_post( $args );
 				}
@@ -663,6 +677,7 @@ if ( ! class_exists( 'Rexbuilder_Import_Xml_Content' ) ) {
 			$tmp = download_url( $url );
 			if( is_wp_error( $tmp ) ){
 				// download failed, handle error
+				return new WP_Error( 'import_file_error', __('Download failed. Remote server did not respond.', 'rexpansive-builder') );
 			}
 
 			$post_id = ( isset( $post_id ) ? $post_id : 1 );
@@ -672,11 +687,12 @@ if ( ! class_exists( 'Rexbuilder_Import_Xml_Content' ) ) {
 			// fix file filename for query strings
 			switch($media_type) {
 				case 'image':
-					preg_match('/[^\?]+\.(jpg|jpe|jpeg|gif|png)/i', $url, $matches);
+					preg_match('/[^\?]+\.(jpg|jpe|jpeg|gif|png|mp4)/i', $url, $matches);
+
 					$file_array['name'] = basename($matches[0]);
 					$file_array['tmp_name'] = $tmp;
 
-					$desc = preg_replace('/\.(jpg|jpe|jpeg|gif|png)/i', '', $file_array['name']);
+					$desc = preg_replace('/\.(jpg|jpe|jpeg|gif|png|mp4)/i', '', $file_array['name']);
 					break;
 				case 'json':
 					preg_match('/[^\?]+\.json/i', $url, $matches);

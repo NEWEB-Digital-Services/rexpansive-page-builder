@@ -570,7 +570,7 @@ var live_folder_name = 'rexpansive-builder';
 var live_file_map = [
 	'admin/ace/src-min-noconflict/**/*',
 	'admin/css/**/*',
-	'admin/default-models/rexbuttons.json',
+	// 'admin/default-models/rexbuttons.json',
 	'admin/font-awesome-4.3.0/**/*',
 	'admin/grapick/**/*',
 	'admin/img/**/*.*',

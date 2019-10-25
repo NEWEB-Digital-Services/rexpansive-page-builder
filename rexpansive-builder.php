@@ -46,6 +46,12 @@ define( 'REXPANSIVE_BUILDER_PATH', plugin_dir_path( __FILE__ ) );
 define( 'REXPANSIVE_BUILDER_URL', plugin_dir_url( __FILE__ ) );
 
 /**
+ * Constant with the name of the option that hold information about
+ * installation process
+ */
+define( 'REXPANSIVE_BUILDER_INSTALL_OPTION', 'rexpansive-builder-content-installed' );
+
+/**
  * Constant with the name of the template folder to search
  * in a WP THEME to customize the visualization
  */
@@ -68,9 +74,6 @@ define( 'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS', true );
  * This action is documented in includes/class-rexbuilder-activator.php
  */
 function activate_rexbuilder() {
-	require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-import-utilities.php';
-	require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-import-xml-content.php';
-	require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-utilities.php';
 	require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-activator.php';
 	Rexbuilder_Activator::activate( 'rexpansive-builder' );
 }
