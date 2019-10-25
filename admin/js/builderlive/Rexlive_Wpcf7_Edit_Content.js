@@ -9,6 +9,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 	var reverseData;
 	var resetData;
 	var needToRemoveSpanData = true; // Needs to be set false the first time an edit happens
+    var tinyMCE_editor;
 
     ///////////////////////////////////////////////////////////////////////////////////////////////
     /**
@@ -136,6 +137,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
                 wpcf7_content_editor_properties.$content_input_font_size.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_text_color_value.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_text_color_focus_value.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_select_fields.parents(".bl_modal-row").removeClass("row-hidden");
                 break;
             case "radio":
                 wpcf7_content_editor_properties.$content_required_field.parents(".bl_modal-row").removeClass("row-hidden");
@@ -147,7 +149,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
                 wpcf7_content_editor_properties.$content_text_color_value.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_text_color_focus_value.parents(".bl_modal-row").removeClass("row-hidden");
                 break;
-            case "checkbox":
+            case "acceptance":
                 wpcf7_content_editor_properties.$content_required_field.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_input_default_check.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_input_width.parents(".bl_modal-row").removeClass("row-hidden");
@@ -211,12 +213,13 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             input_width: "",
             input_height: "",
             font_size: "",
-            type: "",
-            field_class: "",
-            input_type: "",
             background_color: "",
             text_color: "",
             text_color_focus: "",
+            text: "",
+            type: "",
+            field_class: "",
+            input_type: "",
             target: {
                 element_id: "",
                 row_number: "",
@@ -261,6 +264,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
                 break;
         }
         wpcf7_content_editor_properties.$content_input_font_size.val(/[0-9]+/.exec(columnContentData.font_size));
+        tinyMCE_editor = tinyMCE.get('wpcf7_text_editor');
+        tinyMCE_editor.setContent(columnContentData.text);
 
         wpcf7_content_editor_properties.$content_preview_text.css("background-color", columnContentData.text_color);
         wpcf7_content_editor_properties.$content_text_color_value.val(columnContentData.text_color);
@@ -273,7 +278,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         wpcf7_content_editor_properties.$content_text_color_focus_value.spectrum("set", columnContentData.text_color_focus);
     };
 
-    var _updateColumnContentFromPanel = function () {
+    var _updateColumnContentDataFromPanel = function () {
         columnContentData.wpcf7_required_field = "undefined" != typeof wpcf7_content_editor_properties.$content_required_field.attr("checked");
         columnContentData.wpcf7_only_numbers = "undefined" != typeof wpcf7_content_editor_properties.$content_only_numbers.attr("checked");
         columnContentData.wpcf7_default_check = "undefined" != typeof wpcf7_content_editor_properties.$content_input_default_check.attr("checked");
@@ -281,6 +286,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         columnContentData.input_width = wpcf7_content_editor_properties.$content_input_width.val();
         columnContentData.input_height = wpcf7_content_editor_properties.$content_input_height.val();
         columnContentData.font_size = wpcf7_content_editor_properties.$content_input_font_size.val() + "px";
+        columnContentData.text = tinyMCE_editor.getContent();
+
         var widthType = wpcf7_content_editor_properties.$content_input_width_type.filter(':checked').val();
         var heightType = wpcf7_content_editor_properties.$content_input_height_type.filter(':checked').val();
 
@@ -606,7 +613,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         });
 
         wpcf7_content_editor_properties.$modal.on('rexlive:this_modal_closed', function() {
-            _updateColumnContentFromPanel();
+            _updateColumnContentDataFromPanel();
             _applyData();
             if (needToRemoveSpanData){
                 _removeSpanData();
@@ -686,6 +693,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             $content_input_font_size: $container.find("#wpcf7-set-font-size"),
             $content_input_default_check: $container.find("#wpcf7-default-check"),
             $content_input_text_editor: $container.find("#wpcf7-text-editor"),
+            $content_select_fields: $container.find(".wpcf7-select-field"),
 		};
 
 		columnContentData = {
@@ -696,12 +704,13 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             input_width: "",
             input_height: "",
             font_size: "",
-            type: "",
-            field_class: "",
-            input_type: "",
             background_color: "",
             text_color: "",
             text_color_focus: "",
+            text: "",
+            type: "",
+            field_class: "",
+            input_type: "",
             target: {
                 element_id: "",
                 row_number: "",
@@ -710,11 +719,11 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         }
 
         defaultColumnContentValues = {
-                input_width: "150px",
-                input_height: "50px",
+                input_width: "100%",
+                input_height: "100%",
                 font_size: "15px",
         }
-
+        
         $accordions.rexAccordion({open:{},close:{},});
         _linkNumberInputs();
 		_linkDocumentListeners();

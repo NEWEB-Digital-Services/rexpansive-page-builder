@@ -100,7 +100,7 @@ defined('ABSPATH') or exit;
                 <div class="bl_modal__option-wrap bl_modal__col-4"><!-- 1 -->
                     <div id="section-set-dimension" class="input-field rex-input-prefixed bl_modal__input-prefixed--small tippy" data-tippy-content="<?php _e('Width', 'rexpansive-builder');?>">
                         <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#B001-Full'); ?></span>
-                        <input type="text" id="wpcf7-input-width" class="rexwpcf7-set-width-input" name="" value="0000" placeholder="" size="23">
+                        <input type="text" id="wpcf7-input-width" class="rexwpcf7-set-width-input" name="" placeholder="100" size="23">
                         <span class="rex-material-bar"></span>
                     </div>
                     <div class="">
@@ -149,11 +149,11 @@ defined('ABSPATH') or exit;
                     <div class="rexwpcf7-cont_row">
                         <div class="rexwpcf7-count-column_accord">
                             <span class="rex-accordion--toggle">                                
-                                <div class="rexwpcf7-upd-accord_button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></div>
+                                <div class="rexwpcf7-upd-accord_button cross-icon"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></div>
                             </span>
                         </div>
                         <div class="rexwpcf7-count-column_1">
-                            <div class="rex-relative-col tippy" data-tippy-content="Text Color" tabindex="0">
+                            <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Text Color', 'rexpansive-builder');?>" tabindex="0">
                                 <input type="hidden" id="rex-wpcf7-background-color-runtime" name="rex-wpcf7-background-color-runtime" value="" />
                                 <input id="rex-wpcf7-background-color" type="text" name="rex-wpcf7-background-color" value="" size="10" />
                                 <div id="rex-wpcf7-background-color-preview-icon" class="preview-color-icon"></div>
@@ -178,7 +178,7 @@ defined('ABSPATH') or exit;
                         <div class="rexwpcf7-cont_row">
                             <div class="rexwpcf7-count-column_accord"></div>
                             <div class="rexwpcf7-count-column_1">
-                                <div class="rex-relative-col tippy" data-tippy-content="Focus Color" tabindex="0">
+                                <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Focus Color', 'rexpansive-builder');?>" tabindex="0">
                                     <input type="hidden" id="rex-wpcf7-focus-color-runtime" name="rex-wpcf7-focus-color-runtime" value="" />
                                     <input id="rex-wpcf7-focus-color" type="text" name="rex-wpcf7-focus-color" value="" size="10" />
                                     <div id="rex-wpcf7-focus-color-preview-icon" class="preview-color-icon"></div>
@@ -196,7 +196,7 @@ defined('ABSPATH') or exit;
                     </div>
                 </div>
             </div>
-            <div class="bl_modal-row">
+            <!-- <div class="bl_modal-row">
                 <div class="rexelement-count-column_1">
                     <div class="rex-relative-col tippy" data-tippy-content="Background Color" tabindex="0">
                         <input type="hidden" id="rex-element-background-color-runtime" name="rex-element-background-color-runtime" value="" />
@@ -209,10 +209,48 @@ defined('ABSPATH') or exit;
                         <div id="rex-element-preview-background"></div>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div class="bl_modal-row">
                 <div id="wpcf7-text-editor" class="modal-editor-editorarea">
-                    <?php wp_editor('', 'rexbuilder_editor', array('textarea_rows' => 10, 'wpautop' => false, 'editor_height' => 100, 'media_buttons' => false));?>
+                    <?php wp_editor(
+                        '', 
+                        'wpcf7_text_editor', 
+                        array('textarea_rows' => 10, 
+                        'wpautop' => false, 
+                        'editor_height' => 100, 
+                        'media_buttons' => false,
+                        'teeny' => false,
+                        'tinymce' => array(
+                            // 'toolbar1' => 'bold',
+                            'block_formats' => 'Paragraph=p;'
+                        ),
+                    ));?>
+                </div>
+            </div>
+            <div class="bl_modal-row">
+                <div class="rexwpcf7-cont_row">
+                    <div class="rexwpcf7-count-column_accord"></div>
+                    <div class="rexwpcf7-count-column_1">●</div>
+                    <div class="rexwpcf7-count-column_2"><input type="text" class="wpcf7-select-field field-1"></div>
+                    <div class="rexwpcf7-count-column_3">
+                        <div class="rexwpcf7-upd-accord_button tippy" data-tippy-content="<?php _e('Delete', 'rexpansive-builder');?>"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></div>
+                    </div>
+                    <div class="rexwpcf7-count-new_line"></div>
+                
+                    <div class="rexwpcf7-count-column_accord"></div>
+                    <div class="rexwpcf7-count-column_1">●</div>
+                    <div class="rexwpcf7-count-column_2"><input type="text" class="wpcf7-select-field field-2"></div>
+                    <div class="rexwpcf7-count-new_line"></div>
+                
+                    <div class="rexwpcf7-count-column_accord"></div>
+                    <div class="rexwpcf7-count-column_1">●</div>
+                    <div class="rexwpcf7-count-column_2"><input type="text" class="wpcf7-select-field field-3"></div>
+                    <div class="rexwpcf7-count-new_line"></div>
+
+                    <div class="rexwpcf7-count-whole_row"></div>
+                
+                    <div class="rexwpcf7-count-whole_row">+</div>
+                    <div class="rexwpcf7-count-new_line"></div>
                 </div>
             </div>
         </div>

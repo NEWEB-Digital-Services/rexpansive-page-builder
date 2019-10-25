@@ -91,7 +91,7 @@ var Wpcf7_Add_Content_Modal = (function ($) {
          * Adds a checkbox field
          */
         wpcf7_content_adder_properties.$wpcf7_add_checkbox_field.on("click", function () {
-            _addField("checkbox");
+            _addField("acceptance");
         });
 
         /**

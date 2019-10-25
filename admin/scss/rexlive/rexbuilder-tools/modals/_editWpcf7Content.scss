@@ -33,6 +33,18 @@
       }
     }
 
+    .rexwpcf7-count-new_line{
+      width:381px;
+      height: 0.5px;
+      float: left;
+    }
+
+    .rexwpcf7-count-whole_row{
+      width: 334px;
+      height: 42px;
+      float: left;
+    }
+
     .rexwpcf7-count-column_1{
       // background-color: green;
       width:42px;
@@ -139,6 +151,11 @@
 }
 
 #rex-wpcf7-content-editor .rexwpcf7-cont_row .l-svg-icons > svg {
+  transform: rotate(45deg);
+  cursor:pointer;
+}
+
+.cross-icon {
   transform: rotate(45deg);
   cursor:pointer;
 }

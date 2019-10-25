@@ -17266,6 +17266,14 @@ input:disabled + .rex_edit_title_slider {
         -webkit-transition: 1s;
         -o-transition: 1s;
         transition: 1s; }
+  #rex-wpcf7-content-editor .bl_modal-row .rexwpcf7-cont_row .rexwpcf7-count-new_line {
+    width: 381px;
+    height: 0.5px;
+    float: left; }
+  #rex-wpcf7-content-editor .bl_modal-row .rexwpcf7-cont_row .rexwpcf7-count-whole_row {
+    width: 334px;
+    height: 42px;
+    float: left; }
   #rex-wpcf7-content-editor .bl_modal-row .rexwpcf7-cont_row .rexwpcf7-count-column_1 {
     width: 42px;
     height: 42px;
@@ -17350,6 +17358,12 @@ input:disabled + .rex_edit_title_slider {
   height: 20px !important; }
 
 #rex-wpcf7-content-editor .rexwpcf7-cont_row .l-svg-icons > svg {
+  -webkit-transform: rotate(45deg);
+      -ms-transform: rotate(45deg);
+          transform: rotate(45deg);
+  cursor: pointer; }
+
+.cross-icon {
   -webkit-transform: rotate(45deg);
       -ms-transform: rotate(45deg);
           transform: rotate(45deg);

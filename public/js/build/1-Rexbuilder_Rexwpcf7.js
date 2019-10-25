@@ -37,7 +37,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 fieldShortcode = "[checkbox checkbox-" + fieldNumber + " class:checkbox-" + fieldNumber + " \"Checkbox text\"]";
                 break;
             case "acceptance":
-                fieldShortcode = "[acceptance acceptance-" + fieldNumber + " optional class:acceptance-" + fieldNumber + "] Your text [/acceptance]";
+                fieldShortcode = "[acceptance acceptance-" + fieldNumber + " optional] Your text [/acceptance]";
                 break;
             case "file":
                 fieldShortcode = "[file file-" + fieldNumber + " class:file-" + fieldNumber + "]";
@@ -512,6 +512,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 styleSheet.cssRules[i].selectorText == "[data-rex-element-id=\"" + formID + "\"].rex-element-wrapper ." + contentType
             ) {
                 switch (rule) {
+                    case "float":
+                        styleSheet.cssRules[i].style.float = value;
+                        break;
                     case "width":
                         styleSheet.cssRules[i].style.width = value;
                         break;
@@ -1050,7 +1053,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     /**
-     * Generate column content data form span element in the DOM.
+     * Generate column content data from the DOM and from the span
+     * element in the DOM.
      * 
      * The obtained object has 1 field:
      * columnContentData - properties of the column content
@@ -1066,12 +1070,13 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             input_width: "",
             input_height: "",
             font_size: "",
-            type: "",
-            field_class: "",
-            input_type: "",
             background_color: "",
             text_color: "",
             text_color_focus: "",
+            text: "",
+            type: "",
+            field_class: "",
+            input_type: "",
             target: {
                 element_id: "",
                 row_number: "",
@@ -1083,8 +1088,17 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         columnContentData.target.row_number = $formColumn.parents(".wpcf7-row").attr("wpcf7-row-number");
         columnContentData.target.column_number = $formColumn.attr("wpcf7-column-number");
         columnContentData.type = $formColumn.find(".wpcf7-form-control").prop("nodeName").toLowerCase();
-        columnContentData.field_class = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control")[0].classList)[0];
+        columnContentData.field_class = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control")[0].classList);
+        if(null == columnContentData.field_class) {
+            columnContentData.field_class = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control-wrap")[0].classList)[0];
+        } else {
+            columnContentData.field_class = columnContentData.field_class[0];
+        }
+        
         columnContentData.input_type = /[a-z]+/.exec(columnContentData.field_class)[0];
+        if (columnContentData.input_type == "acceptance"){
+            columnContentData.text = $formColumn.find(".wpcf7-list-item-label")[0].innerHTML;
+        }
 
         if (spanDataExists) {
         	var $columnContentData = $formColumn.find(".rex-wpcf7-column-content-data").eq(0);
@@ -1150,6 +1164,12 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         _updateColumnContentRule(formID, row, column, fieldClass, "height", columnContentData.input_height);
         _updateColumnContentRule(formID, row, column, fieldClass, "font-size", columnContentData.font_size);
 
+        console.log(inputType);
+
+        if(inputType == "acceptance" || inputType == "radio") {
+            _updateColumnContentRule(formID, row, column, fieldClass, "float", "left");
+        }
+
         _updateColumnContentFocusRule(formID, row, column, fieldClass, "text-color", columnContentData.text_color_focus);
 
         _updateColumnContentShortcode(formID, row, column, inputType, columnContentData);
@@ -1165,8 +1185,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var onlyNumbers = columnContentData.wpcf7_only_numbers;
         var isSetDefaultCheck = columnContentData.wpcf7_default_check;
         var placeholder = columnContentData.wpcf7_placeholder;
+        var fieldText = columnContentData.text;
 
-        if(inputType == "text" || inputType == "checkbox") {   // Required field
+        if(inputType == "text") {   // Required field
             // Puts (or removes) the * after [(type)
             var isAlreadyRequiredField = /\[[a-z]+\*/.test(shortcode);
             if(isAlreadyRequiredField) {
@@ -1180,20 +1201,20 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             }
         }
 
-        // if(inputType == "checkbox") {   // Required field (acceptance)
-        //     // Puts (or removes) "optional" string
-        //     var isAlreadyRequiredField = !/optional/.test(shortcode);
-        //     if(isAlreadyRequiredField) {
-        //         if(!isSetRequiredField) {
-        //             shortcode = shortcode.replace(/\]/, " optional]");
-        //         }
-        //     } else {
-        //         if(isSetRequiredField) {
-        //             shortcode = shortcode.replace(" optional", "");
+        if(inputType == "acceptance") {   // Required field (acceptance)
+            // Puts (or removes) "optional" string
+            var isAlreadyRequiredField = !/optional/.test(shortcode);
+            if(isAlreadyRequiredField) {
+                if(!isSetRequiredField) {
+                    shortcode = shortcode.replace(/\]/, " optional]");
+                }
+            } else {
+                if(isSetRequiredField) {
+                    shortcode = shortcode.replace(" optional", "");
                     
-        //         }
-        //     }
-        // }
+                }
+            }
+        }
 
         if(inputType == "text" || inputType == "number") {   // Only number
             // Changes the shortcode in [number number-xxx ...] or vice versa
@@ -1204,16 +1225,16 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             }
         }
 
-        if(inputType == "checkbox") {   // Default check
-            /* Puts (or removes) the "default:1" string */
-            var isAlreadyDefaultCheck = /default\:1/.test(shortcode);
+        if(inputType == "acceptance") {   // Default check
+            // Puts (or removes) the "default:on" string
+            var isAlreadyDefaultCheck = /default\:on/.test(shortcode);
             if(isAlreadyDefaultCheck) {
                 if(!isSetDefaultCheck) {
-                    shortcode = shortcode.replace(/default\:1/, "");
+                    shortcode = shortcode.replace(/default\:on/, "");
                 }
             } else {
                 if(isSetDefaultCheck) {
-                    shortcode = shortcode.replace(/\[[a-z]+ [a-z]+\-[0-9]+ [a-z]+\:[\w]+\-[\w]+ /, /\[[a-z]+ [a-z]+\-[0-9]+ [a-z]+\:[\w]+\-[\w]+ /.exec(shortcode) + "default:1 ");
+                    shortcode = shortcode.replace(/\[[a-z]+ [a-z]+\-[0-9]+ [a-z]+\:[\w]+\-[\w]+ /, /\[[a-z]+ [a-z]+\-[0-9]+ [a-z]+\:[\w]+\-[\w]+ /.exec(shortcode) + "default:on ");
                 }
             }
         }
@@ -1232,6 +1253,11 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                     shortcode = shortcode.replace(/placeholder ".+"/, "placeholder \"" + placeholder + "\"");
                 }
             }
+        }
+
+        if(inputType == "acceptance") {    // Checkbox text
+            shortcode = shortcode.replace(/\][\s\S]+\[/, ']' + fieldText + '[');
+            shortcode = shortcode.replace(/<p>\s<\/p>/g, "");
         }
 
         var $columnShortcode = $columnToUpdateDB.find(".wpcf7-column-content");
@@ -1334,8 +1360,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         $formsInPage = {};
 
         defaultColumnContentValues = {
-                input_width: "150px",
-                input_height: "50px",
+                input_width: "100%",
+                input_height: "100%",
                 font_size: "15px",
         }
 
