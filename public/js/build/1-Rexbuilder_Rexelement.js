@@ -293,6 +293,20 @@ var Rexbuilder_Rexelement = (function ($) {
                     number: elementNumber
                 });
 
+                console.log("all'avvio");
+
+                // var $menuInForm = $(element).find(".wpcf7").find(".wpcf7-select");
+                // $menuInForm.each(function () {
+                //     if ($(this).find("option").eq(0).val() == "") {
+                //         var $option = $(this).find("option").eq(0);
+                //         $option.attr("disabled", "");
+                //         $option.attr("selected", "");
+
+                //         var placeholder = $option.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-wpcf7-placeholder");
+                //         $option.text(placeholder);
+                //     }
+                // });
+
                 // Adding form span data
                 // if ($elementWrapper.find(".wpcf7").length != 0) {
                 //     var $formToAddData = $elementWrapper.find(".wpcf7");
@@ -345,6 +359,25 @@ var Rexbuilder_Rexelement = (function ($) {
                     _addElementStyle($elementWrapper);
                 }
             }
+        });
+    }
+
+    /**
+     * Adding what wpcf7 can't do: set the menu placeholder
+    */
+    var _addWpcf7MenuPlaceholders = function () {
+        Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper").each(function (i, element) {
+            var $menuInForm = $(element).find(".wpcf7").find(".wpcf7-select");
+            $menuInForm.each(function () {
+                if ($(this).find("option").eq(0).val() == "") {
+                    var $option = $(this).find("option").eq(0);
+                    $option.attr("disabled", "");
+                    $option.attr("selected", "");
+
+                    var placeholder = $option.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-wpcf7-placeholder");
+                    $option.text(placeholder);
+                }
+            });
         });
     }
 
@@ -456,6 +489,18 @@ var Rexbuilder_Rexelement = (function ($) {
                 if ($elementWrapper.find(".wpcf7").length != 0) {
                     var $formToAddData = $elementWrapper.find(".wpcf7");
                     _addFormData($formToAddData);
+
+                    var $menuInForm = $(element).find(".wpcf7").find(".wpcf7-select");
+                    $menuInForm.each(function () {
+                        if ($(this).find("option").eq(0).val() == "") {
+                            var $option = $(this).find("option").eq(0);
+                            $option.attr("disabled", "");
+                            $option.attr("selected", "");
+
+                            var placeholder = $option.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-wpcf7-placeholder");
+                            $option.text(placeholder);
+                        }
+                    });
                 }
             }
           },
@@ -836,6 +881,7 @@ var Rexbuilder_Rexelement = (function ($) {
         _fixCustomStyleElement();
         _updateElementListInPage();
         _addStyles();
+        _addWpcf7MenuPlaceholders();
 		_linkDocumentListeners();
 	}
 

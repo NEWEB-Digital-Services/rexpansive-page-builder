@@ -1067,6 +1067,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             wpcf7_only_numbers: "",
             wpcf7_default_check: "",
             wpcf7_placeholder: "",
+            wpcf7_list_fields: [],
             input_width: "",
             input_height: "",
             font_size: "",
@@ -1084,10 +1085,19 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             }
         }
 
+        // Element ID
         columnContentData.target.element_id = $formColumn.parents(".rex-element-wrapper").attr("data-rex-element-id");
+
+        //Row number
         columnContentData.target.row_number = $formColumn.parents(".wpcf7-row").attr("wpcf7-row-number");
+
+        // Column number
         columnContentData.target.column_number = $formColumn.attr("wpcf7-column-number");
+
+        // Type
         columnContentData.type = $formColumn.find(".wpcf7-form-control").prop("nodeName").toLowerCase();
+
+        // Field class
         columnContentData.field_class = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control")[0].classList);
         if(null == columnContentData.field_class) {
             columnContentData.field_class = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control-wrap")[0].classList)[0];
@@ -1095,25 +1105,41 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             columnContentData.field_class = columnContentData.field_class[0];
         }
         
+        // Input type
         columnContentData.input_type = /[a-z]+/.exec(columnContentData.field_class)[0];
         if (columnContentData.input_type == "acceptance"){
             columnContentData.text = $formColumn.find(".wpcf7-list-item-label")[0].innerHTML;
         }
 
+        // Menu fields
+        var listFields = $formColumn.find(".wpcf7-select").eq(0).find("option");
+        for(var field of listFields) {
+            if($(field).val() != "") {
+                columnContentData.wpcf7_list_fields.push($(field).text());
+            } 
+        }
+
         if (spanDataExists) {
+            // Extracting data from span in the DOM
         	var $columnContentData = $formColumn.find(".rex-wpcf7-column-content-data").eq(0);
         	var columnContentDataEl = $columnContentData[0];
 
-            // Wpcf7 Properties
+            // Required field
             columnContentData.wpcf7_required_field = (columnContentDataEl.getAttribute("data-wpcf7-required-field") ? columnContentDataEl.getAttribute("data-wpcf7-required-field").toString() : '');
+
+            // Only numbers
             columnContentData.wpcf7_only_numbers = (columnContentDataEl.getAttribute("data-wpcf7-only-numbers") ? columnContentDataEl.getAttribute("data-wpcf7-only-numbers").toString() : '');
+
+            // Default check
             columnContentData.wpcf7_default_check = (columnContentDataEl.getAttribute("data-wpcf7-default-check") ? columnContentDataEl.getAttribute("data-wpcf7-default-check").toString() : '');
+
+            // Placeholder
             columnContentData.wpcf7_placeholder = (columnContentDataEl.getAttribute("data-wpcf7-placeholder") ? columnContentDataEl.getAttribute("data-wpcf7-placeholder").toString() : '');
+
+        	// Style properties
             columnContentData.input_width = (columnContentDataEl.getAttribute("data-wpcf7-input-width") ? columnContentDataEl.getAttribute("data-wpcf7-input-width").toString() : defaultColumnContentValues.input_width);
             columnContentData.input_height = (columnContentDataEl.getAttribute("data-wpcf7-input-height") ? columnContentDataEl.getAttribute("data-wpcf7-input-height").toString() : defaultColumnContentValues.input_height);
             columnContentData.font_size = (columnContentDataEl.getAttribute("data-wpcf7-font-size") ? columnContentDataEl.getAttribute("data-wpcf7-font-size").toString() : defaultColumnContentValues.font_size);
-
-        	// Style properties
         	columnContentData.background_color = (columnContentDataEl.getAttribute("data-background-color") ? columnContentDataEl.getAttribute("data-background-color").toString() : '');
             columnContentData.text_color = (columnContentDataEl.getAttribute("data-text-color") ? columnContentDataEl.getAttribute("data-text-color").toString() : '');
             columnContentData.text_color_focus = (columnContentDataEl.getAttribute("data-text-color-focus") ? columnContentDataEl.getAttribute("data-text-color-focus").toString() : '');
@@ -1164,8 +1190,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         _updateColumnContentRule(formID, row, column, fieldClass, "height", columnContentData.input_height);
         _updateColumnContentRule(formID, row, column, fieldClass, "font-size", columnContentData.font_size);
 
-        console.log(inputType);
-
         if(inputType == "acceptance" || inputType == "radio") {
             _updateColumnContentRule(formID, row, column, fieldClass, "float", "left");
         }
@@ -1186,8 +1210,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var isSetDefaultCheck = columnContentData.wpcf7_default_check;
         var placeholder = columnContentData.wpcf7_placeholder;
         var fieldText = columnContentData.text;
+        var listFields = columnContentData.wpcf7_list_fields;
 
-        if(inputType == "text") {   // Required field
+        if(inputType == "text" || inputType == "menu") {   // Required field
             // Puts (or removes) the * after [(type)
             var isAlreadyRequiredField = /\[[a-z]+\*/.test(shortcode);
             if(isAlreadyRequiredField) {
@@ -1255,9 +1280,20 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             }
         }
 
+        if (inputType == "menu") {  // Menu placeholder
+
+        }
+
         if(inputType == "acceptance") {    // Checkbox text
             shortcode = shortcode.replace(/\][\s\S]+\[/, ']' + fieldText + '[');
             shortcode = shortcode.replace(/<p>\s<\/p>/g, "");
+        }
+
+        if (inputType == "menu") {
+            shortcode = shortcode.replace(/\s[\"\'][\s\S]+[\"\']/, "");
+            for (let field of listFields) {
+                shortcode = shortcode.replace("]", " '" + field + "']");
+            }
         }
 
         var $columnShortcode = $columnToUpdateDB.find(".wpcf7-column-content");

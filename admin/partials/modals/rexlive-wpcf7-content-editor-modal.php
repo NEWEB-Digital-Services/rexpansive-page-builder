@@ -149,7 +149,7 @@ defined('ABSPATH') or exit;
                     <div class="rexwpcf7-cont_row">
                         <div class="rexwpcf7-count-column_accord">
                             <span class="rex-accordion--toggle">                                
-                                <div class="rexwpcf7-upd-accord_button cross-icon"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></div>
+                                <div class="rexwpcf7-upd-accord_button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></div>
                             </span>
                         </div>
                         <div class="rexwpcf7-count-column_1">
@@ -221,36 +221,23 @@ defined('ABSPATH') or exit;
                         'media_buttons' => false,
                         'teeny' => false,
                         'tinymce' => array(
-                            // 'toolbar1' => 'bold',
+                            // 'toolbar1' => 'bold',    // Toolbar fields
                             'block_formats' => 'Paragraph=p;'
                         ),
                     ));?>
                 </div>
             </div>
+            <div class="bl_modal-row wpcf7-list-fields ui-sortable"></div>
             <div class="bl_modal-row">
                 <div class="rexwpcf7-cont_row">
                     <div class="rexwpcf7-count-column_accord"></div>
-                    <div class="rexwpcf7-count-column_1">●</div>
-                    <div class="rexwpcf7-count-column_2"><input type="text" class="wpcf7-select-field field-1"></div>
+                    <div class="rexwpcf7-count-column_1"></div>
+                    <div class="rexwpcf7-count-column_2"></div>
                     <div class="rexwpcf7-count-column_3">
-                        <div class="rexwpcf7-upd-accord_button tippy" data-tippy-content="<?php _e('Delete', 'rexpansive-builder');?>"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></div>
+                        <button id="rex-wpcf7-add-list-field" class="builder-button btn-floating btn light-blue darken-1 waves-effect waves-light tippy" data-position="bottom" data-tippy-content="<?php _e('Add field', 'rexpansive-builder')?>">
+                            <i class="material-icons text-white">&#xE145;</i>
+                        </button>
                     </div>
-                    <div class="rexwpcf7-count-new_line"></div>
-                
-                    <div class="rexwpcf7-count-column_accord"></div>
-                    <div class="rexwpcf7-count-column_1">●</div>
-                    <div class="rexwpcf7-count-column_2"><input type="text" class="wpcf7-select-field field-2"></div>
-                    <div class="rexwpcf7-count-new_line"></div>
-                
-                    <div class="rexwpcf7-count-column_accord"></div>
-                    <div class="rexwpcf7-count-column_1">●</div>
-                    <div class="rexwpcf7-count-column_2"><input type="text" class="wpcf7-select-field field-3"></div>
-                    <div class="rexwpcf7-count-new_line"></div>
-
-                    <div class="rexwpcf7-count-whole_row"></div>
-                
-                    <div class="rexwpcf7-count-whole_row">+</div>
-                    <div class="rexwpcf7-count-new_line"></div>
                 </div>
             </div>
         </div>

@@ -215,6 +215,22 @@ defined('ABSPATH') or exit;
 <span class="rex-wpcf7-form-data" style="display:none;"  data-form-background-color="{%=form.background_color%}" data-content-background-color="{%=form.content.background_color%}"></span>
 </script>
 
+<script type="text/x-tmpl" id="tmpl-rex-wpcf7-edit-content-list">
+    <div class="rexwpcf7-cont_row">
+        <div class="rexwpcf7-count-column_accord"></div>
+        <div class="rexwpcf7-count-column_1">●</div>
+        <div class="rexwpcf7-count-column_2">
+            <input type="text" class="wpcf7-select-field field-{%=o.number%}">
+        </div>
+        <div class="rexwpcf7-count-column_3 rexwpcf7-sort">
+            <i class="material-icons grey-text text-darken-2">&#xE8D5;</i>
+        </div>
+        <div class="rexwpcf7-count-column_3">
+            <div class="rexwpcf7-upd-accord_button cross-icon rex-wpcf7-delete-list-field tippy" data-tippy-content="<?php _e('Delete', 'rexpansive-builder');?>"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></div>
+        </div>
+    </div>
+</script>
+
 <script type="text/x-tmpl" id="tmpl-rex-button-delete">
 <div class="button-list__element__tools">
     <div class="tool-button tool-button--black tool-button--close rex-close-button button__element--delete">

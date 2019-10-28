@@ -2110,12 +2110,10 @@ var TextEditor = (function ($) {
       var $elementWrapper = $(this.traceForm).parents(".rex-element-wrapper");
       var $thisColumn = $(this.traceFormColumn);
       var spanDataExists = $thisColumn.find(".rex-wpcf7-column-content-data").length != 0 ? true : false;
-      var fieldType;
 
       var data = {
         eventName: "rexlive:openRexWpcf7EditContent",
         columnContentData: Rexbuilder_Rexwpcf7.generateColumnContentData($thisColumn, spanDataExists),
-        fieldType: fieldType,
         spanDataExists: spanDataExists
       };
       $elementWrapper.parents(".text-wrap").blur();
