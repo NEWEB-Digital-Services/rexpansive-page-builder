@@ -3044,10 +3044,8 @@
         }
       }
 
-      // if we need space, change the height
-      if ( spaceNeeded > spaceAvailable ) {
-        newH = Math.round( spaceNeeded / this.properties.singleHeight );
-      }
+      // on collapse the height need to reflect the contents height
+      newH = Math.round( spaceNeeded / this.properties.singleHeight );
 
       return {
         width: width,
@@ -3231,20 +3229,20 @@
       }
 
       // console.table({
-      //   startH,
-      //   blockRatio,
-      //   backImgType,
-      //   backgroundHeight,
-      //   videoHeight,
-      //   defaultHeight,
-      //   textHeight,
-      //   sliderHeight,
-      //   originalH,
-      //   originalStartH,
+      //   startH: startH,
+      //   blockRatio: blockRatio,
+      //   backImgType: backImgType,
+      //   backgroundHeight:backgroundHeight,
+      //   videoHeight:videoHeight,
+      //   defaultHeight:defaultHeight,
+      //   textHeight:textHeight,
+      //   sliderHeight:sliderHeight,
+      //   originalH:originalH,
+      //   originalStartH:originalStartH,
       //   singleHeight: this.properties.singleHeight,
-      //   spaceAvailable,
-      //   newH,
-      //   gutter
+      //   spaceAvailable:spaceAvailable,
+      //   newH:newH,
+      //   gutter:gutter
       // });
 
       if ( this.properties.oneColumModeActive && ! Rexbuilder_Util.windowIsResizing ) {

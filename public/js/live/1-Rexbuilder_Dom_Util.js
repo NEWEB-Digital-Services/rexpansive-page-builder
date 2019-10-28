@@ -1814,7 +1814,7 @@ var Rexbuilder_Dom_Util = (function($) {
         if (galleryEditorInstance !== undefined) {
           if (galleryEditorInstance.settings.galleryLayout == "masonry") {
             galleryEditorInstance.updateElementHeight(
-              dataToUse.$itemContent.parents(".grid-stack-item")
+              dataToUse.$itemContent.parents(".grid-stack-item")[0]
             );
           }
         }
@@ -1825,7 +1825,7 @@ var Rexbuilder_Dom_Util = (function($) {
         _updateBlockPaddings(dataToUse.$elem, dataToUse.dataPadding);
         if (galleryEditorInstance !== undefined) {
           if (galleryEditorInstance.settings.galleryLayout == "masonry") {
-            galleryEditorInstance.updateElementHeight(dataToUse.$elem, 0, true);
+            galleryEditorInstance.updateElementHeight(dataToUse.$elem[0], 0, true);
           }
         }
         Rexbuilder_Util_Editor.updatingPaddingBlock = false;

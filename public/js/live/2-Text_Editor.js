@@ -2439,7 +2439,7 @@ var TextEditor = (function ($) {
                   var $elem = $(that.traceEditor).parents(".grid-stack-item");
 
                   var galleryInstance = $elem.parent().data().plugin_perfectGridGalleryEditor;
-                  galleryInstance.updateElementHeight( $elem );
+                  galleryInstance.updateElementHeight( $elem[0] );
 
                   var data = {
                     eventName: "rexlive:edited",
