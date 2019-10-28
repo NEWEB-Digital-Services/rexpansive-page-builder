@@ -1109,9 +1109,30 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		// If there is data to send to the installer, from here
 		// $this->Installer->data( $response['request'] );
 
-		$this->Installer->push_to_queue( 'import_buttons' );
-		$this->Installer->push_to_queue( 'import_icons' );
-		$this->Installer->push_to_queue( 'import_models' );
+		// create installation queue
+		require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-installation.php';
+		$post_count = Rexbuilder_Installation::import_models_resources();
+		$index = 0;
+
+		$this->Installer->push_to_queue( array( 'task' => 'import_buttons' ) );
+		$this->Installer->push_to_queue( array( 'task' => 'import_icons' ) );
+		
+		if ( 0 !== $post_count ) {
+			$this->Installer->push_to_queue( array( 'task' => 'import_models_start' ) );
+
+			while ( $index < $post_count ) {
+				$this->Installer->push_to_queue( array( 
+					'task' => 'import_models_interval', 
+					'args' => array( 
+						'start' => $index, 
+						'end' => $index + 10 
+					) 
+				) );
+				$index = $index + 10;
+			}
+
+			$this->Installer->push_to_queue( array( 'task' => 'impost_models_end' ) );
+		}
 
 		// dispatch the installation process
 		$this->Installer->save()->dispatch();

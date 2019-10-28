@@ -115,13 +115,13 @@ if ( ! class_exists( 'Rexbuilder_Import_Xml_Content' ) ) {
 			$temp_category = $item->category;
 			$temp_comments = $temp_wp_namespace->comment;
 
-			foreach( $temp_wp_namespace->postmeta as $postmeta ) :
-				if(is_serialized((string)$postmeta->meta_value)) {
+			foreach( $temp_wp_namespace->postmeta as $postmeta ) {
+				if( is_serialized( (string)$postmeta->meta_value ) ) {
 					$meta_input[(string) $postmeta->meta_key] = maybe_unserialize((string)$postmeta->meta_value);				
 				} else {
 					$meta_input[(string) $postmeta->meta_key] = (string)$postmeta->meta_value;
 				}
-			endforeach;
+			}
 
 			$args = array(
 				//'ID'				=>	(int)$temp_wp_namespace->post_id,
@@ -149,14 +149,6 @@ if ( ! class_exists( 'Rexbuilder_Import_Xml_Content' ) ) {
 
 				if( $args['post_type'] == 'attachment' && $args['post_status'] != 'trash' ) {
 					$result = $this->upload_media_file( $args['guid'], 'image' );
-
-					if ( true === WP_DEBUG ) {
-						if ( is_array( $result ) || is_object( $result ) ) {
-							error_log( print_r( $result, true ) );
-						} else {
-							error_log( $result );
-						}
-					}
 
 					if ( ! is_wp_error( $result ) ) {
 						$attachment_mime_type = wp_check_filetype( $result['file'] );
@@ -399,7 +391,7 @@ if ( ! class_exists( 'Rexbuilder_Import_Xml_Content' ) ) {
 			wp_defer_term_counting( true );
 			wp_defer_comment_counting( true );
 
-			do_action( 'rexpansive_importheme_start' );
+			// do_action( 'rexpansive_importheme_start' );
 			$this->check_woocommerce_taxonomies();
 
 			wp_suspend_cache_invalidation( true );

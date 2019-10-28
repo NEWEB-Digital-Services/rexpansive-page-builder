@@ -80,6 +80,12 @@ class Rexbuilder_Utilities {
 		endif;
 	}
 
+	/**
+	 * Write information to wp-debug log
+	 * @param  mixed $log information to log
+	 * @return void
+	 * @version  2.0.1
+	 */
 	public static function write_log ( $log )  {
 		if ( true === WP_DEBUG ) {
 			if ( is_array( $log ) || is_object( $log ) ) {

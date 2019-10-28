@@ -26,7 +26,6 @@ if ( ! class_exists( 'Rexbuilder_Installation' ) ) {
 
 	require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-import-utilities.php';
 	require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-import-xml-content.php';
-	require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-utilities.php';
 
 	class Rexbuilder_Installation {
 
@@ -38,16 +37,18 @@ if ( ! class_exists( 'Rexbuilder_Installation' ) ) {
 			self::import_buttons();
 			self::import_icons();
 			self::import_models();
-
-			if ( true === WP_DEBUG ) {
-				error_log( 'Installation content complete' );
-			}
 		}
 
-		public static function run( $action ) {
+		/**
+		 * Run a task by its name
+		 * @param  string $action task to run
+		 * @return void
+		 * @since  2.0.1
+		 */
+		public static function run( $action, $args = array() ) {
 			$task = 'Rexbuilder_Installation::' . $action;
 			if ( is_callable( $task ) ) {
-				call_user_func( $task );
+				call_user_func( $task, $args );
 			}
 		}
 
@@ -67,6 +68,92 @@ if ( ! class_exists( 'Rexbuilder_Installation' ) ) {
 					foreach ($buttons_definition_array as $option => $value) {
 						update_option( $option, $value );
 					}
+				}
+			}
+		}
+
+		/**
+		 * Set models resources
+		 * @return int number of models recources to import
+		 * @since  2.0.1
+		 */
+		public static function import_models_resources() {
+			$models_definition_url = 'http://demo.neweb.info/wp-content/uploads/rexpansive-builder-uploads/rex-models.xml';
+			$xml_file = Rexbuilder_Import_Utilities::upload_media_file( $models_definition_url, 'xml' );
+
+			$post_count = 0;
+
+			if( file_exists( $xml_file['file'] ) ) {
+				set_transient( 'rexpansive_models_xml', $xml_file, MINUTE_IN_SECONDS * 5 );
+
+				// get xml basic information: number of posts
+				$xml = simplexml_load_file( $xml_file['file'], 'SimpleXMLElement', LIBXML_NOCDATA );
+
+				$posts = $xml->xpath('//item');
+				$post_count = count( $posts );
+			}
+
+			return $post_count;
+		}
+
+		/**
+		 * Start importing posts operation
+		 * Pause defering term and comment counting
+		 * Pause cache invalidation
+		 * @return void
+		 * @since  2.0.1
+		 */
+		private static function import_models_start() {
+			wp_defer_term_counting( true );
+			wp_defer_comment_counting( true );
+	
+			wp_suspend_cache_invalidation( true );
+		}
+
+		/**
+		 * End importing posts operation
+		 * Restart cache invalidation and defering terms and comments
+		 * Remove the xml file
+		 * @return void
+		 * @since  2.0.1
+		 */
+		private static function impost_models_end() {
+			$xml_file = get_transient( 'rexpansive_models_xml' );
+
+			wp_suspend_cache_invalidation( false );
+		
+			wp_defer_term_counting( false );
+			wp_defer_comment_counting( false );
+			
+			if( file_exists( $xml_file['file'] ) ) {
+				Rexbuilder_Import_Utilities::remove_media_file( $xml_file['file'] );
+			}
+
+			// delete transient if already exists
+			delete_transient( 'rexpansive_models_xml' );
+		}
+
+		/**
+		 * Import posts by an interval
+		 * @param  array $args start and end of interval
+		 * @return void
+		 * @since  2.0.1
+		 */
+		private static function import_models_interval( $args ) {
+			$xml_file = get_transient( 'rexpansive_models_xml' );
+
+			if( file_exists( $xml_file['file'] ) ) {
+				$xml = simplexml_load_file( $xml_file['file'], 'SimpleXMLElement', LIBXML_NOCDATA );
+				$namespaces = $xml->getNamespaces(true);
+				$posts = $xml->xpath('//item');
+				$index = $args['start'];
+
+				while ( $index < $args['end'] ) {
+					if ( ! isset( $posts[$index] ) ) {
+						break;
+					}
+					Rexbuilder_Import_Utilities::import_post( $posts[$index], $namespaces );
+					$index++;
 				}
 			}
 		}

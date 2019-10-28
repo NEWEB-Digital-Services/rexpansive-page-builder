@@ -49,8 +49,7 @@ if ( ! class_exists( 'Rexbuilder_Installation_Handler' ) ) {
 		protected function task( $item ) {
 			// Actions to perform
 			require_once REXPANSIVE_BUILDER_PATH . 'includes/class-rexbuilder-installation.php';
-			error_log( "Performing {$item}" );
-			Rexbuilder_Installation::run( $item );
+			Rexbuilder_Installation::run( $item['task'], ( isset( $item['args'] ) ? $item['args'] : null ) );
 			return false;
 		}
 
