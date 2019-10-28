@@ -4,13 +4,15 @@ Donate link: http://www.neweb.info/
 Tags: builder, composer, content builder, custom, drag and drop, editor, page builder, page composer, responsive, theme
 Requires at least: 4.2
 Tested up to: 5.2.2
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 The new and awesome plugin to build a page in 1 minute! Expand your mind!
 
 == Description ==
+
+[youtube https://www.youtube.com/watch?v=xlrW_cETz0o]
 
 ### REXPANSIVE - The Page Builder with the maximum fluidity.
 
@@ -171,11 +173,9 @@ Each block can be linked to everything, so you can decide what to link.
 
 For the more experienced among us: you can insert CSS anywhere.
 
-[youtube https://www.youtube.com/watch?v=xlrW_cETz0o]
-
 == Installation ==
 
-1. Upload `rexpansive-builder-test.php` to the `/wp-content/plugins/` directory
+1. Upload `rexpansive-builder` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
 
 = Website =
@@ -199,6 +199,17 @@ For the more experienced among us: you can insert CSS anywhere.
 11. Clean interface
 
 == Changelog ==
+
+= 2.0.1 - October 28, 2019 =
+* Fixed: Install default contents (models, buttons, icons)
+* Fixed: Block heights calculation
+* Fixed: Draft editing
+* Fixed: WPML compatibility
+* Fixed: Yoast meta description
+* Fixed: Overlay on slider blocks
+* Fixed: Video inside slider on iOS
+* Fixed: Inline YouTube video
+* Added: Replace an inserted icon
 
 = 2.0.0 - August 23, 2019 =
 * Update: LIVE Page Builder available!!
