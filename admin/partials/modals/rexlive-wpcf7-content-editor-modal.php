@@ -18,7 +18,6 @@ defined('ABSPATH') or exit;
         <!-- General wrap -->
         <div class="modal-content">
         	<?php include 'rexlive-loader-modal.php'; ?>
-            <!-- Common options -->
             <!-- <div class="bl_modal-row">
                 <div class="rexwpcf7-cont_row">
                     <div class="rexwpcf7-count-column_accord"></div>
@@ -30,15 +29,17 @@ defined('ABSPATH') or exit;
                 </div>
             </div> -->
             <div class="bl_modal-row">
+                <!-- MODAL TITLE -->
                 <div class="rexwpcf7-cont_row">
                     <div class="rexwpcf7-count-column_accord"></div>
                     <div class="rexwpcf7-count-column_1"></div>
                     <div class="rexwpcf7-count-column_2">
-                        <span class="">TEXT FIELD</span>
+                        <span class="wpcf7-modal-title">TEXT FIELD</span>
                     </div>
                 </div>
             </div>
             <div class="bl_modal-row">
+                <!-- REQUIRED FIELD -->
         		<div class="rexwpcf7-cont_row">
                     <div class="rexwpcf7-count-column_accord"></div>
         			<div class="rexwpcf7-count-column_1">
@@ -55,6 +56,7 @@ defined('ABSPATH') or exit;
         		</div>
             </div>
             <div class="bl_modal-row">
+                <!-- ONLY NUMBERS -->
                 <div class="rexwpcf7-cont_row">
                     <div class="rexwpcf7-count-column_accord"></div>
                     <div class="rexwpcf7-count-column_1">
@@ -71,6 +73,7 @@ defined('ABSPATH') or exit;
                 </div>
             </div>
             <div class="bl_modal-row">
+                <!-- DEFAULT CHECK -->
                 <div class="rexwpcf7-cont_row">
                     <div class="rexwpcf7-count-column_accord"></div>
                     <div class="rexwpcf7-count-column_1">
@@ -87,6 +90,7 @@ defined('ABSPATH') or exit;
                 </div>
             </div>
             <div class="bl_modal-row">
+                <!-- PLACEHOLDER -->
                 <div class="rexwpcf7-cont_row">
                     <div class="rexwpcf7-count-column_2">
                         <input type="text" id="wpcf7-placeholder">
@@ -97,10 +101,11 @@ defined('ABSPATH') or exit;
                 </div>
             </div>
             <div class="bl_modal-row">
-                <div class="bl_modal__option-wrap bl_modal__col-4"><!-- 1 -->
+                <!-- WIDTH & HEIGHT -->
+                <div class="bl_modal__option-wrap bl_modal__col-4">
                     <div id="section-set-dimension" class="input-field rex-input-prefixed bl_modal__input-prefixed--small tippy" data-tippy-content="<?php _e('Width', 'rexpansive-builder');?>">
                         <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#B001-Full'); ?></span>
-                        <input type="text" id="wpcf7-input-width" class="rexwpcf7-set-width-input" name="" placeholder="100" size="23">
+                        <input type="text" id="wpcf7-input-width" class="rexwpcf7-set-width-input" name="" size="23">
                         <span class="rex-material-bar"></span>
                     </div>
                     <div class="">
@@ -120,10 +125,10 @@ defined('ABSPATH') or exit;
                         </div>
                     </div>
                 </div> 
-                <div class="bl_modal__option-wrap bl_modal__col-4"><!-- 2 -->
+                <div class="bl_modal__option-wrap bl_modal__col-4">
                     <div id="section-set-dimension" class="input-field rex-input-prefixed bl_modal__input-prefixed--small tippy" data-tippy-content="<?php _e('Height', 'rexpansive-builder');?>">
                         <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#B012-Full-Height'); ?></span>
-                        <input type="text" id="wpcf7-input-height" class="rexwpcf7-set-height-input" name="" placeholder="100" size="23">
+                        <input type="text" id="wpcf7-input-height" class="rexwpcf7-set-height-input" name="" size="23">
                         <span class="rex-material-bar"></span>
                     </div>
                     <div class="">
@@ -146,6 +151,7 @@ defined('ABSPATH') or exit;
             </div>
             <div class="rexpansive-accordion close">
                 <div class="bl_modal-row">
+                    <!-- TEXT COLOR -->
                     <div class="rexwpcf7-cont_row">
                         <div class="rexwpcf7-count-column_accord">
                             <span class="rex-accordion--toggle">                                
@@ -166,7 +172,7 @@ defined('ABSPATH') or exit;
                         </div>
                         <div class="rexwpcf7-count-column_3"></div>
                         <div class="rexwpcf7-count-column_4">
-                            <input type="text" id="wpcf7-set-font-size" name="" placeholder="10" class="rexwpcf7-set-font-size">
+                            <input type="text" id="wpcf7-set-font-size" name="" class="rexwpcf7-set-font-size">
                         </div>
                         <div class="rexwpcf7-count-column_5">
                             <div class="label-px">px</div>
@@ -175,6 +181,7 @@ defined('ABSPATH') or exit;
                 </div>
                 <div class="rex-accordion--content" style="display:none;" data-item-status="close">
                     <div class="bl_modal-row">
+                        <!-- TEXT FOCUS COLOR -->
                         <div class="rexwpcf7-cont_row">
                             <div class="rexwpcf7-count-column_accord"></div>
                             <div class="rexwpcf7-count-column_1">
@@ -196,8 +203,9 @@ defined('ABSPATH') or exit;
                     </div>
                 </div>
             </div>
-            <!-- <div class="bl_modal-row">
-                <div class="rexelement-count-column_1">
+            <!-- <div class="bl_modal-row"> -->
+                <!-- BACKGROUND COLOR -->
+                <!-- <div class="rexelement-count-column_1">
                     <div class="rex-relative-col tippy" data-tippy-content="Background Color" tabindex="0">
                         <input type="hidden" id="rex-element-background-color-runtime" name="rex-element-background-color-runtime" value="" />
                         <input id="rex-element-background-color" type="text" name="rex-element-background-color" value="" size="10" />
@@ -211,6 +219,7 @@ defined('ABSPATH') or exit;
                 </div>
             </div> -->
             <div class="bl_modal-row">
+                <!-- TEXT EDITOR -->
                 <div id="wpcf7-text-editor" class="modal-editor-editorarea">
                     <?php wp_editor(
                         '', 
@@ -227,8 +236,28 @@ defined('ABSPATH') or exit;
                     ));?>
                 </div>
             </div>
-            <div class="bl_modal-row wpcf7-list-fields ui-sortable"></div>
             <div class="bl_modal-row">
+                <!-- FILE MAX DIMENSIONS -->
+                <div class="rexwpcf7-cont_row">
+                    <div class="rexwpcf7-count-column_accord"></div>
+                    <div class="rexwpcf7-count-column_1">Max file size</div>
+                    <div class="rexwpcf7-count-column_4">
+                        <input type="text" name="wpcf7-file-max-dimensions" id="wpcf7-file-max-dimensions">
+                    </div>
+                    <div class="rexwpcf7-count-column_2">
+                        <select name="wpcf7-file-max-dimensions-unit" id="wpcf7-file-max-dimensions-unit">
+                            <option value="kb">KB</option>
+                            <option value="mb">MB</option>
+                            <option value="gb">GB</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="bl_modal-row wpcf7-list-fields ui-sortable">
+                <!-- LIST -->
+            </div>
+            <div class="bl_modal-row">
+                <!-- ADD FIELD IN LIST -->
                 <div class="rexwpcf7-cont_row">
                     <div class="rexwpcf7-count-column_accord"></div>
                     <div class="rexwpcf7-count-column_1"></div>

@@ -40,7 +40,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 fieldShortcode = "[acceptance acceptance-" + fieldNumber + " optional] Your text [/acceptance]";
                 break;
             case "file":
-                fieldShortcode = "[file file-" + fieldNumber + " class:file-" + fieldNumber + "]";
+                fieldShortcode = "[file file-" + fieldNumber + " class:file-" + fieldNumber + " filetypes: limit:]<div class='wpcf7-file-caption'></div>";
                 break;
             case "submit":
                 fieldShortcode = "[submit class:submit-" + fieldNumber + "]";
@@ -173,10 +173,11 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var row = insertionPoint.row_number;
         var column = insertionPoint.column_number;
 
-        var $columnToUpdate = $formsInPage[formID].find(".wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"]");
+        var $columnToUpdateDB = $formsInPage[formID].find(".wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"]");
 
-        $columnToUpdate.empty();
-        $columnToUpdate.append(fieldShortcode);
+        $columnToUpdateDB.empty();
+        $columnToUpdateDB.append(fieldShortcode);
+        console.log($columnToUpdateDB[0]);
 
         _updateFormInDB(formID);
     }
@@ -246,6 +247,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     var _updateFormInDB = function (formID) {
+
         var formToUpdateString = $formsInPage[formID][0].outerHTML; // Don't need to get the form in db before, already have it
         $.ajax({
             type: "POST",
@@ -1068,6 +1070,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             wpcf7_default_check: "",
             wpcf7_placeholder: "",
             wpcf7_list_fields: [],
+            wpcf7_file_max_dimensions: "",
             input_width: "",
             input_height: "",
             font_size: "",
@@ -1107,20 +1110,30 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         
         // Input type
         columnContentData.input_type = /[a-z]+/.exec(columnContentData.field_class)[0];
-        if (columnContentData.input_type == "acceptance"){
+        if (columnContentData.input_type == "acceptance") {
             columnContentData.text = $formColumn.find(".wpcf7-list-item-label")[0].innerHTML;
         }
 
         // Menu fields
-        var listFields = $formColumn.find(".wpcf7-select").eq(0).find("option");
-        for(var field of listFields) {
-            if($(field).val() != "") {
+        var $listFields = $formColumn.find(".wpcf7-select").eq(0).find("option");
+        if ($listFields.length != 0) {
+            for (var field of $listFields) {
+                if($(field).val() != "") {
+                    columnContentData.wpcf7_list_fields.push($(field).text());
+                } 
+            }
+        }
+        
+        // Radio fields
+        var $listFields2 = $formColumn.find(".wpcf7-radio").eq(0).find(".wpcf7-list-item-label");
+        if ($listFields2.length != 0) {
+            for (var field of $listFields2) {
                 columnContentData.wpcf7_list_fields.push($(field).text());
-            } 
+            }
         }
 
         if (spanDataExists) {
-            // Extracting data from span in the DOM
+            /* Extracting data from span in the DOM */
         	var $columnContentData = $formColumn.find(".rex-wpcf7-column-content-data").eq(0);
         	var columnContentDataEl = $columnContentData[0];
 
@@ -1136,13 +1149,49 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             // Placeholder
             columnContentData.wpcf7_placeholder = (columnContentDataEl.getAttribute("data-wpcf7-placeholder") ? columnContentDataEl.getAttribute("data-wpcf7-placeholder").toString() : '');
 
-        	// Style properties
+            // File max dimensions
+            columnContentData.wpcf7_file_max_dimensions = (columnContentDataEl.getAttribute("data-wpcf7-file-max-dimensions") ? columnContentDataEl.getAttribute("data-wpcf7-file-max-dimensions").toString() : '');
+
+            // File types
+            if (columnContentData.input_type == "file") {
+                columnContentData.wpcf7_list_fields = (columnContentDataEl.getAttribute("data-wpcf7-file-types") ? columnContentDataEl.getAttribute("data-wpcf7-file-types").toString().split(",") : '');
+            }
+
+        	// Width & height
             columnContentData.input_width = (columnContentDataEl.getAttribute("data-wpcf7-input-width") ? columnContentDataEl.getAttribute("data-wpcf7-input-width").toString() : defaultColumnContentValues.input_width);
             columnContentData.input_height = (columnContentDataEl.getAttribute("data-wpcf7-input-height") ? columnContentDataEl.getAttribute("data-wpcf7-input-height").toString() : defaultColumnContentValues.input_height);
+
+            // Font size
             columnContentData.font_size = (columnContentDataEl.getAttribute("data-wpcf7-font-size") ? columnContentDataEl.getAttribute("data-wpcf7-font-size").toString() : defaultColumnContentValues.font_size);
+
+            // Background color
         	columnContentData.background_color = (columnContentDataEl.getAttribute("data-background-color") ? columnContentDataEl.getAttribute("data-background-color").toString() : '');
+
+            // Text color
             columnContentData.text_color = (columnContentDataEl.getAttribute("data-text-color") ? columnContentDataEl.getAttribute("data-text-color").toString() : '');
+
+            // Text focus color
             columnContentData.text_color_focus = (columnContentDataEl.getAttribute("data-text-color-focus") ? columnContentDataEl.getAttribute("data-text-color-focus").toString() : '');
+        } else {
+            /* Extracting data from the element in the DOM */
+            var $field = $formColumn.find("[name='" + columnContentData.field_class + "']");
+
+            if (columnContentData.input_type == "radio" || columnContentData.input_type == "acceptance") {
+                $field = $field.parents(".wpcf7-form-control");
+            }
+
+            // Widh & height
+            columnContentData.input_width = $field.css("width");
+            columnContentData.input_height = $field.css("height");
+
+            // Font size
+            columnContentData.font_size = $field.css("font-size");
+
+            // Text color
+            columnContentData.text_color = $field.css("color");
+
+            // Text focus color
+            // columnContentData.text_color_focus = field.css("")
         }
 
         var data = columnContentData;
@@ -1151,7 +1200,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     var _addColumnContentCSSRules = function (formID, columnContentData) {
-        // @todo
+        // @todo Minimum size
         // var currentMargin = "";
         // var currentPadding = "";
         // var currentDimension = "";
@@ -1162,7 +1211,12 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var column = columnContentData.target.column_number;
         var contentType = columnContentData.type;
         var fieldClass = columnContentData.field_class;
+        var inputType = columnContentData.input_type;
         var columnContentRule = "";
+
+        if(inputType == "acceptance" || inputType == "radio") {
+            columnContentRule += "float: left;";
+        }
 
         columnContentRule += "width: " + columnContentData.input_width + ";";
         columnContentRule += "height: " + columnContentData.input_height + ";";
@@ -1211,6 +1265,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var placeholder = columnContentData.wpcf7_placeholder;
         var fieldText = columnContentData.text;
         var listFields = columnContentData.wpcf7_list_fields;
+        var fileMaxDim = columnContentData.wpcf7_file_max_dimensions;
 
         if(inputType == "text" || inputType == "menu") {   // Required field
             // Puts (or removes) the * after [(type)
@@ -1280,20 +1335,39 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             }
         }
 
-        if (inputType == "menu") {  // Menu placeholder
-
-        }
-
         if(inputType == "acceptance") {    // Checkbox text
             shortcode = shortcode.replace(/\][\s\S]+\[/, ']' + fieldText + '[');
             shortcode = shortcode.replace(/<p>\s<\/p>/g, "");
         }
 
-        if (inputType == "menu") {
+        if (inputType == "menu" || inputType == "radio") {  // Lists
             shortcode = shortcode.replace(/\s[\"\'][\s\S]+[\"\']/, "");
-            for (let field of listFields) {
+            for (var field of listFields) {
                 shortcode = shortcode.replace("]", " '" + field + "']");
             }
+        }
+
+        if (inputType == "file") {  // File max dimensions
+            shortcode = shortcode.replace(/limit\:[\w]*/, "limit:" + fileMaxDim);
+            console.log(shortcode);
+        }
+
+        if (inputType == "file") {  // File types
+            var filesString = "filetypes:";
+            for (var i = 0; i < listFields.length; i++) {
+                listFields[i] = listFields[i].toLowerCase();
+                filesString += listFields[i];
+
+                if (i != (listFields.length - 1)) {
+                    filesString += "|";
+                }
+            }
+            shortcode = shortcode.replace(/filetypes\:[\S]*/, filesString);
+        }
+
+        if (inputType == "file") {  // File caption
+            console.log($columnToUpdateDB.find(".wpcf7-file-caption"));
+            // shortcode += fieldText;
         }
 
         var $columnShortcode = $columnToUpdateDB.find(".wpcf7-column-content");
@@ -1323,6 +1397,12 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             $columnData.attr("data-wpcf7-only-numbers", columnContentData.wpcf7_only_numbers);
             $columnData.attr("data-wpcf7-default-check", columnContentData.wpcf7_default_check);
             $columnData.attr("data-wpcf7-placeholder", columnContentData.wpcf7_placeholder);
+            $columnData.attr("data-wpcf7-file-max-dimensions", columnContentData.wpcf7_file_max_dimensions);
+
+            if (columnContentData.input_type == "file") {
+                $columnData.attr("data-wpcf7-file-types", columnContentData.wpcf7_list_fields);
+            }
+
             $columnData.attr("data-wpcf7-input-width", columnContentData.input_width);
             $columnData.attr("data-wpcf7-input-height", columnContentData.input_height);
             $columnData.attr("data-wpcf7-font-size", columnContentData.font_size);
@@ -1344,6 +1424,12 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         $columnDataInDB.attr("data-wpcf7-only-numbers", columnContentData.wpcf7_only_numbers);
         $columnDataInDB.attr("data-wpcf7-default-check", columnContentData.wpcf7_default_check);
         $columnDataInDB.attr("data-wpcf7-placeholder", columnContentData.wpcf7_placeholder);
+        $columnDataInDB.attr("data-wpcf7-file-max-dimensions", columnContentData.wpcf7_file_max_dimensions);
+
+        if (columnContentData.input_type == "file") {
+            $columnDataInDB.attr("data-wpcf7-file-types", columnContentData.wpcf7_list_fields);
+        }
+
         $columnDataInDB.attr("data-wpcf7-input-width", columnContentData.input_width);
         $columnDataInDB.attr("data-wpcf7-input-height", columnContentData.input_height);
         $columnDataInDB.attr("data-wpcf7-font-size", columnContentData.font_size);

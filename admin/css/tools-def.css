@@ -17304,6 +17304,8 @@ input:disabled + .rex_edit_title_slider {
             box-sizing: border-box;
     font-size: 10px;
     text-transform: uppercase; }
+  #rex-wpcf7-content-editor .bl_modal-row .rexwpcf7-cont_row select {
+    display: block; }
 
 #rex-wpcf7-preview-background,
 #rex-wpcf7-preview-inputs-background {
@@ -17423,6 +17425,8 @@ input:disabled + .rex_edit_title_slider {
             box-sizing: border-box;
     font-size: 10px;
     text-transform: uppercase; }
+  #rex-wpcf7-content-adder .bl_modal-row .rexwpcf7-cont_row select {
+    display: block; }
 
 #rex-wpcf7-form-editor .row-hidden {
   display: none; }
