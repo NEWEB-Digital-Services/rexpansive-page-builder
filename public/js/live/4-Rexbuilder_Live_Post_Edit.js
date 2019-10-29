@@ -57,7 +57,8 @@
       edit.addEventListener('click', handleMediaTools.bind(wrapper));
     }
 
-    toWrap.parentNode.appendChild(wrapper);
+    // toWrap.parentNode.appendChild(wrapper);
+    toWrap.parentNode.insertBefore(wrapper, toWrap.parentNode.firstChild);
     return wrapper.appendChild(toWrap);
   }
 

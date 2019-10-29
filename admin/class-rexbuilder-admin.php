@@ -750,7 +750,7 @@ class Rexbuilder_Admin {
 	public function add_builderlive_link( $actions, $post_object ) {
 		$page_info = get_current_screen();
 
-		if ( $this->builder_active_on_this_post_type_list( $page_info->post_type ) ) {
+		if ( isset( $page_info ) && $this->builder_active_on_this_post_type_list( $page_info->post_type ) ) {
 			$actions['rexbuilder'] = '<b><a target="_blank" href="' . admin_url( 'post.php?post=' . $post_object->ID . '&action=edit&rexlive=true' ) . '">REXPANSIVE</a></b>';
 		}
 
@@ -871,6 +871,7 @@ class Rexbuilder_Admin {
 				curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 				curl_setopt($ch, CURLOPT_HEADER, 0);
 				curl_setopt($ch, CURLOPT_TIMEOUT, 10);
+				curl_setopt($ch,CURLOPT_USERAGENT,'Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.1.13) Gecko/20080311 Firefox/2.0.0.13');
 				$cache = curl_exec($ch);
 				curl_close($ch);
 			} else {
