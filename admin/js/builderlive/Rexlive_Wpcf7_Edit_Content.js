@@ -174,7 +174,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
                 wpcf7_content_editor_properties.$content_file_max_dimensions_unit.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$field_list.removeClass("row-hidden");
                 wpcf7_content_editor_properties.$add_list_field.parents(".bl_modal-row").removeClass("row-hidden");
-                wpcf7_content_editor_properties.$content_input_text_editor.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$self.find(".no12dx").removeClass("row-hidden");
                 break;
             case "submit":
                 wpcf7_content_editor_properties.$content_text_color_value.parents(".bl_modal-row").removeClass("row-hidden");
@@ -803,6 +803,19 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             $content_input_text_editor: $container.find("#wpcf7-text-editor"),
             $content_file_max_dimensions: $container.find("#wpcf7-file-max-dimensions"),
             $content_file_max_dimensions_unit: $container.find("#wpcf7-file-max-dimensions-unit"),
+            
+            $content_button_border_width: $container.find("#wpcf7-button-border-width"),
+            $content_button_border_radius: $container.find("#wpcf7-button-border-radius"),
+
+            $content_button_margin_top: $container.find("#wpcf7-button-margin-top-radius"),
+            $content_button_margin_right: $container.find("#wpcf7-button-margin-right-radius"),
+            $content_button_margin_bottom: $container.find("#wpcf7-button-margin-bottom-radius"),
+            $content_button_margin_left: $container.find("#wpcf7-button-margin-left-radius"),
+
+            $content_button_padding_top: $container.find("#wpcf7-button-padding-top-radius"),
+            $content_button_padding_right: $container.find("#wpcf7-button-padding-right-radius"),
+            $content_button_padding_bottom: $container.find("#wpcf7-button-padding-bottom-radius"),
+            $content_button_padding_left: $container.find("#wpcf7-button-padding-left-radius"),
 		};
 
         wpcf7_content_editor_properties.$field_list.sortable({

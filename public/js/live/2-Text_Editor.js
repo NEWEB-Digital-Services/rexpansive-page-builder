@@ -2110,11 +2110,13 @@ var TextEditor = (function ($) {
       var $elementWrapper = $(this.traceForm).parents(".rex-element-wrapper");
       var $thisColumn = $(this.traceFormColumn);
       var spanDataExists = $thisColumn.find(".rex-wpcf7-column-content-data").length != 0 ? true : false;
+      var fileCaptionExists = $thisColumn.find(".rex-wpcf7-file-caption").length != 0 ? true : false;
 
       var data = {
         eventName: "rexlive:openRexWpcf7EditContent",
         columnContentData: Rexbuilder_Rexwpcf7.generateColumnContentData($thisColumn, spanDataExists),
-        spanDataExists: spanDataExists
+        spanDataExists: spanDataExists,
+        fileCaptionExists: fileCaptionExists
       };
       $elementWrapper.parents(".text-wrap").blur();
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);

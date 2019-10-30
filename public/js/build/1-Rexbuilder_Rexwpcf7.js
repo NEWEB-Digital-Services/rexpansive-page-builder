@@ -5,6 +5,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 	var defaultFormValues;
     var defaultColumnContentValues;
 
+    var $fileCaption;
+
     /////////////////////////////////////////////////////////////////////////////////////////////////
     /// REXWPCF7 GENERIC FUNCTIONS
     /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -40,7 +42,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 fieldShortcode = "[acceptance acceptance-" + fieldNumber + " optional] Your text [/acceptance]";
                 break;
             case "file":
-                fieldShortcode = "[file file-" + fieldNumber + " class:file-" + fieldNumber + " filetypes: limit:]<div class='wpcf7-file-caption'></div>";
+                fieldShortcode = "[file file-" + fieldNumber + " filetypes: limit:]<div class='wpcf7-file-caption'>Your text here</div>";
                 break;
             case "submit":
                 fieldShortcode = "[submit class:submit-" + fieldNumber + "]";
@@ -177,7 +179,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         $columnToUpdateDB.empty();
         $columnToUpdateDB.append(fieldShortcode);
-        console.log($columnToUpdateDB[0]);
 
         _updateFormInDB(formID);
     }
@@ -247,8 +248,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     var _updateFormInDB = function (formID) {
-
         var formToUpdateString = $formsInPage[formID][0].outerHTML; // Don't need to get the form in db before, already have it
+        
         $.ajax({
             type: "POST",
             dataType: "json",
@@ -969,7 +970,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////
     /// Column content functions
 
     var _createColumnContentSpanData = function (data) {
@@ -989,7 +990,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
     	$formColumn.prepend($spanData);
 
-        var shortcode = $formColumnInDB.text();
+        var shortcode = $formColumnInDB.html();
         $formColumnInDB.empty();
         var $span = $(document.createElement("span"));
         $span.addClass("wpcf7-column-content");
@@ -997,7 +998,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         $formColumnInDB.append($span);
         $formColumnInDB.prepend($spanDataInDB);
 
-        _updateFormInDB(formID);
+        // _updateFormInDB(formID);
     	_addColumnContentStyle($formColumn);
     }
 
@@ -1110,8 +1111,15 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         
         // Input type
         columnContentData.input_type = /[a-z]+/.exec(columnContentData.field_class)[0];
+        
+        // Checkbox text editor
         if (columnContentData.input_type == "acceptance") {
-            columnContentData.text = $formColumn.find(".wpcf7-list-item-label")[0].innerHTML;
+            columnContentData.text = $formColumn.find(".wpcf7-list-item-label").html();
+        }
+
+        // File text editor
+        if (columnContentData.input_type == "file") {
+            columnContentData.text = $formColumn.find(".wpcf7-file-caption").html();
         }
 
         // Menu fields
@@ -1214,7 +1222,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var inputType = columnContentData.input_type;
         var columnContentRule = "";
 
-        if(inputType == "acceptance" || inputType == "radio") {
+        if(inputType == "acceptance" || inputType == "radio" || inputType == "file") {
             columnContentRule += "float: left;";
         }
 
@@ -1258,7 +1266,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     var _updateColumnContentShortcode = function (formID, row, column, inputType, columnContentData) {
         var $formToUpdateDB = $formsInPage[formID];
         var $columnToUpdateDB = $formToUpdateDB.find(".wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"]");
-        var shortcode = $columnToUpdateDB.text();
+        var shortcode = $columnToUpdateDB.find(".wpcf7-column-content").html()
         var isSetRequiredField = columnContentData.wpcf7_required_field;
         var onlyNumbers = columnContentData.wpcf7_only_numbers;
         var isSetDefaultCheck = columnContentData.wpcf7_default_check;
@@ -1267,7 +1275,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var listFields = columnContentData.wpcf7_list_fields;
         var fileMaxDim = columnContentData.wpcf7_file_max_dimensions;
 
-        if(inputType == "text" || inputType == "menu") {   // Required field
+        if(inputType == "text" || inputType == "menu" || inputType == "file") {   // Required field
             // Puts (or removes) the * after [(type)
             var isAlreadyRequiredField = /\[[a-z]+\*/.test(shortcode);
             if(isAlreadyRequiredField) {
@@ -1333,6 +1341,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                     shortcode = shortcode.replace(/placeholder ".+"/, "placeholder \"" + placeholder + "\"");
                 }
             }
+
+            console.log(placeholder);
         }
 
         if(inputType == "acceptance") {    // Checkbox text
@@ -1349,25 +1359,26 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         if (inputType == "file") {  // File max dimensions
             shortcode = shortcode.replace(/limit\:[\w]*/, "limit:" + fileMaxDim);
-            console.log(shortcode);
         }
 
         if (inputType == "file") {  // File types
-            var filesString = "filetypes:";
+            var fileTypesString = "filetypes:";
             for (var i = 0; i < listFields.length; i++) {
                 listFields[i] = listFields[i].toLowerCase();
-                filesString += listFields[i];
+                fileTypesString += listFields[i];
 
                 if (i != (listFields.length - 1)) {
-                    filesString += "|";
+                    fileTypesString += "|";
                 }
             }
-            shortcode = shortcode.replace(/filetypes\:[\S]*/, filesString);
+            shortcode = shortcode.replace(/filetypes\:[\S]*/, fileTypesString);
         }
 
         if (inputType == "file") {  // File caption
-            console.log($columnToUpdateDB.find(".wpcf7-file-caption"));
-            // shortcode += fieldText;
+            var $fileCaption = $($.parseHTML(shortcode)[1]);
+            $fileCaption.empty();
+            $fileCaption.append(fieldText);
+            shortcode = shortcode.replace(/\][\s\S]*/, "]" + $fileCaption[0].outerHTML);
         }
 
         var $columnShortcode = $columnToUpdateDB.find(".wpcf7-column-content");
@@ -1379,7 +1390,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
     /**
      * Updates multiple column content data.
-     * @param  {jQuery} $elementWrappers
+     * @param  {string/int} formID
      * @param  {Array} columnContentData Data to update
      * @return {null}
      */

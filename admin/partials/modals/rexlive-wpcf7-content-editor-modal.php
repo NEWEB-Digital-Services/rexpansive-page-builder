@@ -225,15 +225,16 @@ defined('ABSPATH') or exit;
                         '', 
                         'wpcf7_text_editor', 
                         array('textarea_rows' => 10, 
-                        'wpautop' => false, 
-                        'editor_height' => 100, 
-                        'media_buttons' => false,
-                        'teeny' => false,
-                        'tinymce' => array(
-                            // 'toolbar1' => 'bold',    // Toolbar fields
-                            'block_formats' => 'Paragraph=p;'
-                        ),
-                    ));?>
+                            'wpautop' => false,
+                            'editor_height' => 100, 
+                            'media_buttons' => false,
+                            'teeny' => false,
+                            'tinymce' => array(
+                                // 'toolbar1' => 'bold',    // Toolbar fields
+                                'block_formats' => 'Paragraph=p;'
+                            ),
+                        )
+                    );?>
                 </div>
             </div>
             <div class="bl_modal-row">
@@ -266,6 +267,107 @@ defined('ABSPATH') or exit;
                         <button id="rex-wpcf7-add-list-field" class="builder-button btn-floating btn light-blue darken-1 waves-effect waves-light tippy" data-position="bottom" data-tippy-content="<?php _e('Add field', 'rexpansive-builder')?>">
                             <i class="material-icons text-white">&#xE145;</i>
                         </button>
+                    </div>
+                </div>
+            </div>
+            <div class="bl_modal-row no12dx">
+                <!-- BUTTON -->
+                <div class="rexbutton-cont_row23">
+                    <div class="rexbutton-count-column_6">
+
+                    <div class="rex-live__row-margin-padding block-padding-wrap">
+                        <div class="bl_d-flex bl_jc-c">
+                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Top', 'rexpansive-builder' ); ?>">
+                                <input type="text" id="wpcf7-button-margin-top-radius" name="wpcf7-button-margin-top-radius" class="block-padding-values" placeholder="20"/>
+                                <span class="bl_input-indicator">px</span>
+                            </div><!-- // row margin top -->
+                        </div>
+                        <div class="bl_d-flex bl_ai-c bl_jc-sb">
+                            <div>
+                                <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Left', 'rexpansive-builder' ); ?>">
+                                <input type="text" id="rex-button-margin-left-radius" name="wpcf7-button-margin-left-radius" class="block-padding-values" placeholder="20"/>
+                                    <span class="bl_input-indicator">px</span>
+                                </div><!-- // row margin left -->
+                            </div>
+                            <div class="rex-live__row-padding-wrap">
+                                <div class="bl_d-flex bl_jc-c">
+                                    <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Top', 'rexpansive-builder' ); ?>">
+                                    <input type="text" id="wpcf7-button-padding-top-radius" name="wpcf7-button-padding-top-radius" class="block-padding-values" placeholder="20"/>
+                                        <span class="bl_input-indicator">px</span>
+                                    </div><!-- // row padding top -->
+                                </div>
+                                <div class="bl_d-flex bl_ai-c bl_jc-sb">
+                                    <div class="zl_cfd_a">BUTTON</div>
+                                        <div>
+                                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Left', 'rexpansive-builder' ); ?>">
+                                            <input type="text" id="wpcf7-button-padding-left-radius" name="wpcf7-button-padding-left-radius" class="block-padding-values" placeholder="20"/>
+                                                <span class="bl_input-indicator">px</span>
+                                            </div><!-- // row padding left -->
+                                        </div>
+                                        <div class="rex-live__row-gutter-wrap bl_d-flex bl_jc-c bl_ai-c">
+                                        </div>
+                                        <div>
+                                        
+                                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Right', 'rexpansive-builder' ); ?>">
+                                            <input type="text" id="wpcf7-button-padding-right-radius" name="wpcf7-button-padding-right-radius" class="block-padding-values" placeholder="20"/>
+                                                <span class="bl_input-indicator">px</span>
+                                            </div><!-- // row padding right -->
+                                        </div>
+                                    </div>
+                                    <div class="bl_d-flex bl_jc-c">
+                                        <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Bottom', 'rexpansive-builder' ); ?>">
+                                            <input type="text" id="wpcf7-button-padding-bottom-radius" name="wpcf7-button-padding-bottom-radius" class="block-padding-values" placeholder="20"/>
+                                            <span class="bl_input-indicator">px</span>
+                                        </div><!-- // row paddig bottom -->
+                                    </div>
+                                </div>
+                            <div>
+                                <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Right', 'rexpansive-builder' ); ?>">
+                                    <input type="text" id="wpcf7-button-margin-right-radius" name="wpcf7-button-margin-right-radius" class="block-padding-values" placeholder="20"/>
+                                    <span class="bl_input-indicator">px</span>
+                                </div><!-- //row margin right -->
+                            </div>
+                        </div>
+                        <div class="bl_d-flex bl_jc-c">
+                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Bottom', 'rexpansive-builder' ); ?>">
+                                <input type="text" id="wpcf7-button-margin-bottom-radius" name="wpcf7-button-margin-bottom-radius" class="block-padding-values" placeholder="20"/>
+                                <span class="bl_input-indicator">px</span>
+                            </div><!-- //row margin bottom -->
+                        </div>
+                    </div><!-- // row padding, gutter, margin new -->
+                    </div>
+                    <div class="rexbutton-count-column_7 nobord"><!-- BORDER RADIUS -->
+                        <div class="rexbutton-count-column_container">
+                            <div class="subRow7_1">
+                                <?php Rexbuilder_Utilities::get_icon('#D001-Radius'); ?>    
+                            </div>
+                            <div class="subRow7_2 tippy" data-tippy-content="<?php _e( 'Border Radius', 'rexpansive-builder' ); ?>">
+                                <input type="text" id="wpcf7-button-border-radius" name="wpcf7-button-border-radius" placeholder="10" class="rexbutton-upd-textbox"/>
+                            </div>  
+                            <div class="subRow7_3">PX</div>
+                        </div>                     
+                    </div>
+                    <div class="rexbutton-count-column_7"><!-- HEIGHT -->
+                        <div class="rexbutton-count-column_container">
+                            <div class="subRow7_1">
+                                <?php Rexbuilder_Utilities::get_icon('#B007-Move'); ?>
+                            </div>
+                            <div class="subRow7_2 tippy" data-tippy-content="<?php _e( 'Button Height', 'rexpansive-builder' ); ?>">
+                                <input type="text" id="wpcf7-button-height" name="wpcf7-button-height" placeholder="70" class="rexbutton-upd-textbox"/>
+                            </div>  
+                            <div class="subRow7_3">PX</div>
+                        </div>                     
+                    </div>
+                    <div class="rexbutton-count-column_7"><!-- WIDTH -->
+                        <div class="rexbutton-count-column_container">
+                            <div class="subRow7_1 rotate">
+                                <?php Rexbuilder_Utilities::get_icon('#B007-Move'); ?>
+                            </div>
+                            <div class="subRow7_2 tippy" data-tippy-content="<?php _e( 'Button Width', 'rexpansive-builder' ); ?>">
+                            <input type="text" id="wpcf7-button-width" name="wpcf7-button-width" placeholder="100" class="rexbutton-upd-textbox"/>
+                            </div>  
+                            <div class="subRow7_3">PX</div>
+                        </div>                
                     </div>
                 </div>
             </div>

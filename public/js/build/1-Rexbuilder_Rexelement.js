@@ -363,12 +363,13 @@ var Rexbuilder_Rexelement = (function ($) {
     var _fixWpcf7 = function () {
         _addWpcf7MenuPlaceholders();
         _fixWpcf7RadioButtons();
-        
+        _fixWpcf7Files();
     }
 
     /**
      * Adding what wpcf7 can't do: set the menu placeholder
-    */
+     * @return {null}
+     */
     var _addWpcf7MenuPlaceholders = function () {
         Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper").each(function (i, element) {
             var $menuInForm = $(element).find(".wpcf7").find(".wpcf7-select");
@@ -385,7 +386,13 @@ var Rexbuilder_Rexelement = (function ($) {
         });
     }
 
+    /**
+     * Fixing radio buttons to make them clickable
+     * @return {null}
+     */
     var _fixWpcf7RadioButtons = function () {
+        // @toedit Provvisorio. Lo span contenente il testo dovrebbe essere eliminato ma
+        // così facendo elimino i before e after che mostrano il radio. Come fare?
         Rexbuilder_Util.$rexContainer.find(".wpcf7 input[type='radio']").each(function (i, element) {
             var $element = $(element);
 
@@ -399,6 +406,24 @@ var Rexbuilder_Rexelement = (function ($) {
             $label.text(text);
             $label.insertAfter($element.siblings(".wpcf7-list-item-label"));
             $element.siblings("span.wpcf7-list-item-label").removeClass("wpcf7-list-item-label");
+        });
+    }
+
+    var _fixWpcf7Files = function () {
+        Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper").each(function (i, element) {
+            var $filesInForm = $(element).find(".wpcf7 .wpcf7-form-control-wrap").has(" .wpcf7-file");
+            $filesInForm.each(function (i) {
+                if ($(this).find(".wpcf7-file-caption").length == 0) {
+                    $(this).siblings(".wpcf7-file-caption").detach().appendTo($(this));
+                }
+
+                var $element = $(this).find("input[type='file']");
+                $element.attr("id", "wpcf7-file-" + (i + 1));
+                var $fileLabel = $(document.createElement("label"));
+                $fileLabel.attr("for",  $element.attr("id"));
+                $fileLabel.text("Choose a file");
+                $fileLabel.insertAfter($element);
+            });
         });
     }
 
