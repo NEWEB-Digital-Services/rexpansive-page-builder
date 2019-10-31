@@ -421,8 +421,14 @@ var Rexbuilder_Rexelement = (function ($) {
                 $element.attr("id", "wpcf7-file-" + (i + 1));
                 var $fileLabel = $(document.createElement("label"));
                 $fileLabel.attr("for",  $element.attr("id"));
-                $fileLabel.text("Choose a file");
                 $fileLabel.insertAfter($element);
+
+                if ($(this).parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").length != 0) {
+                    var buttonText = $(this).parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-button-text");
+                    $fileLabel.text(buttonText);
+                } else {
+                    $fileLabel.text("Choose a file");
+                }
             });
         });
     }

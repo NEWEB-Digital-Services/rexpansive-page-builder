@@ -96,33 +96,27 @@
 }
 
 #rex-wpcf7-preview-background,
-#rex-wpcf7-preview-inputs-background {
-    width: 181px;
-    height: 42px;
-    background-color: black;
-    border-radius: 20px;
-}
-
-#rex-wpcf7-preview-background-hover{
-    width: 181px;
-    height: 42px;
-    background-color: black;
-    border-radius: 20px;
-}
-
+#rex-wpcf7-preview-inputs-background,
+#rex-wpcf7-preview-button-background-color,
+#rex-wpcf7-preview-background-hover,
 #rex-wpcf7-preview-focus,
-#rex-wpcf7-preview-inputs-focus {
-    width: 181px;
-    height: 42px;
-    background-color: black;
-    border-radius: 20px;
+#rex-wpcf7-preview-inputs-focus,
+#rex-wpcf7-preview-focus-hover,
+#rex-wpcf7-preview-button-text-color-hover,
+#rex-wpcf7-preview-button-background-color-hover {
+  width: 181px;
+  height: 42px;
+  background-color: black;
+  border-radius: 20px;
 }
 
-#rex-wpcf7-preview-focus-hover{
-    width: 181px;
-    height: 42px;
-    background-color: black;
-    border-radius: 20px;
+#rex-wpcf7-preview-button-border-color,
+#rex-wpcf7-preview-button-border-color-hover {
+  width: 181px;
+  height: 42px;
+  background-color: white;
+  border-radius: 20px;
+  border-style: solid;
 }
 
 .rexwpcf7-set-width-input,

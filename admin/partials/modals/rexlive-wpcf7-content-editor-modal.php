@@ -270,29 +270,188 @@ defined('ABSPATH') or exit;
                     </div>
                 </div>
             </div>
+            <div class="rexpansive-accordion close">
+                <div class="bl_modal-row">
+                    <!-- BUTTON TEXT COLOR -->
+                    <div class="rexwpcf7-cont_row">
+                        <div class="rexwpcf7-count-column_accord">
+                            <span class="rex-accordion--toggle">                                
+                                <div class="rexwpcf7-upd-accord_button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></div>
+                            </span>
+                        </div>
+                        <div class="rexwpcf7-count-column_1">
+                            <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Button Text Color', 'rexpansive-builder');?>" tabindex="0">
+                                <input type="hidden" id="rex-wpcf7-button-text-color-runtime" name="rex-wpcf7-button-text-color-runtime" value="" />
+                                <input id="rex-wpcf7-button-text-color" type="text" name="rex-wpcf7-button-text-color" value="" size="10" />
+                                <div id="rex-wpcf7-button-text-color-preview-icon" class="preview-color-icon"></div>
+                            </div>
+                        </div>
+                        <div class="rexwpcf7-count-column_2">
+                            <div id="rex-button-label-wrap">
+                                <input type="text" id="rex-wpcf7-button-text-label" name="rex-wpcf7-button-text-label" class="rexbutton-upd-textbox">
+                            </div>
+                        </div>
+                        <div class="rexwpcf7-count-column_3"></div>
+                        <div class="rexwpcf7-count-column_4">
+                            <input type="text" id="wpcf7-button-text-font-size" name="" class="rexwpcf7-button-text-font-size">
+                        </div>
+                        <div class="rexwpcf7-count-column_5">
+                            <div class="label-px">px</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rex-accordion--content" style="display:none;" data-item-status="close">
+                    <div class="bl_modal-row">
+                        <!-- BUTTON TEXT COLOR HOVER -->
+                        <div class="rexwpcf7-cont_row">
+                            <div class="rexwpcf7-count-column_accord"></div>
+                            <div class="rexwpcf7-count-column_1">
+                                <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Button Text Hover Color', 'rexpansive-builder');?>" tabindex="0">
+                                    <input type="hidden" id="rex-wpcf7-button-text-color-hover-runtime" name="rex-wpcf7-button-text-color-hover-runtime" value="" />
+                                    <input id="rex-wpcf7-button-text-color-hover" type="text" name="rex-wpcf7-button-text-color-hover" value="" size="10" />
+                                    <div id="rex-wpcf7-button-text-color-hover-preview-icon" class="preview-color-icon"></div>
+                                </div>
+                            </div>
+                            <div class="rexwpcf7-count-column_2">
+                                <div id="rex-wpcf7-button-text-color-preview-wrap">
+                                    <div id="rex-wpcf7-preview-button-text-color-hover"></div>
+                                </div>
+                            </div>
+                            <div class="rexwpcf7-count-column_3"><!-- space for icons --></div>
+                            <div class="rexwpcf7-count-column_4"><!-- space for dimensions --></div>
+                            <div class="rexwpcf7-count-column_5"><!-- space for unit measurement --></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="rexpansive-accordion close">
+                <div class="bl_modal-row">
+                    <!-- BUTTON BACKGROUND COLOR -->
+                    <div class="rexwpcf7-cont_row">
+                        <div class="rexwpcf7-count-column_accord">
+                            <span class="rex-accordion--toggle">                                
+                                <div class="rexwpcf7-upd-accord_button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></div>
+                            </span>
+                        </div>
+                        <div class="rexwpcf7-count-column_1">
+                            <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Button Background Color', 'rexpansive-builder');?>" tabindex="0">
+                                <input type="hidden" id="rex-wpcf7-button-background-color-runtime" name="rex-wpcf7-button-background-color-runtime" value="" />
+                                <input id="rex-wpcf7-button-background-color" type="text" name="rex-wpcf7-button-background-color" value="" size="10" />
+                                <div id="rex-wpcf7-button-background-color-preview-icon" class="preview-color-icon"></div>
+                            </div>
+                        </div>
+                        <div class="rexwpcf7-count-column_2">
+                            <div id="rex-wpcf7-button-background-preview-wrap">
+                                <div id="rex-wpcf7-preview-button-background-color"></div>
+                            </div>
+                        </div>
+                        <div class="rexwpcf7-count-column_3"></div>
+                        <div class="rexwpcf7-count-column_4"></div>
+                        <div class="rexwpcf7-count-column_5"></div>
+                    </div>
+                </div>
+                <div class="rex-accordion--content" style="display:none;" data-item-status="close">
+                    <div class="bl_modal-row">
+                        <!-- BUTTON BACKGROUND COLOR HOVER -->
+                        <div class="rexwpcf7-cont_row">
+                            <div class="rexwpcf7-count-column_accord"></div>
+                            <div class="rexwpcf7-count-column_1">
+                                <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Button Background Hover Color', 'rexpansive-builder');?>" tabindex="0">
+                                    <input type="hidden" id="rex-wpcf7-button-background-color-hover-runtime" name="rex-wpcf7-button-background-color-hover-runtime" value="" />
+                                    <input id="rex-wpcf7-button-background-color-hover" type="text" name="rex-wpcf7-button-background-color-hover" value="" size="10" />
+                                    <div id="rex-wpcf7-button-background-color-hover-preview-icon" class="preview-color-icon"></div>
+                                </div>
+                            </div>
+                            <div class="rexwpcf7-count-column_2">
+                                <div id="rex-wpcf7-button-background-color-hover-preview-wrap">
+                                    <div id="rex-wpcf7-preview-button-background-color-hover"></div>
+                                </div>
+                            </div>
+                            <div class="rexwpcf7-count-column_3"><!-- space for icons --></div>
+                            <div class="rexwpcf7-count-column_4"><!-- space for dimensions --></div>
+                            <div class="rexwpcf7-count-column_5"><!-- space for unit measurement --></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="rexpansive-accordion close">
+                <div class="bl_modal-row">
+                    <!-- BUTTON BORDER COLOR -->
+                    <div class="rexwpcf7-cont_row">
+                        <div class="rexwpcf7-count-column_accord">
+                            <span class="rex-accordion--toggle">                                
+                                <div class="rexwpcf7-upd-accord_button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></div>
+                            </span>
+                        </div>
+                        <div class="rexwpcf7-count-column_1">
+                            <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Button Border Color', 'rexpansive-builder');?>" tabindex="0">
+                                <input type="hidden" id="rex-wpcf7-button-border-color-runtime" name="rex-wpcf7-button-border-color-runtime" value="" />
+                                <input id="rex-wpcf7-button-border-color" type="text" name="rex-wpcf7-button-border-color" value="" size="10" />
+                                <div id="rex-wpcf7-button-border-color-preview-icon" class="preview-color-icon"></div>
+                            </div>
+                        </div>
+                        <div class="rexwpcf7-count-column_2">
+                            <div id="rex-wpcf7-button-border-color-preview-wrap">
+                                <div id="rex-wpcf7-preview-button-border-color"></div>
+                            </div>
+                        </div>
+                        <div class="rexwpcf7-count-column_3"></div>
+                        <div class="rexwpcf7-count-column_4">
+                            <div id="rex-button-border-width-wrap">
+                                <input type="text" id="wpcf7-button-border-width" name="wpcf7-button-border-width" class="rexbutton-upd-textbox tippy" placeholder="5" data-tippy-content="<?php _e( 'Button Border Width', 'rexpansive-builder' ); ?>"/>
+                            </div>
+                        </div>
+                        <div class="rexwpcf7-count-column_5">
+                            <div class="label-px">px</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rex-accordion--content" style="display:none;" data-item-status="close">
+                    <div class="bl_modal-row">
+                        <!-- BUTTON BORDER COLOR HOVER -->
+                        <div class="rexwpcf7-cont_row">
+                            <div class="rexwpcf7-count-column_accord"></div>
+                            <div class="rexwpcf7-count-column_1">
+                                <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Button Border Hover Color', 'rexpansive-builder');?>" tabindex="0">
+                                    <input type="hidden" id="rex-wpcf7-focus-color-runtime" name="rex-wpcf7-button-border-color-hover-runtime" value="" />
+                                    <input id="rex-wpcf7-button-border-color-hover" type="text" name="rex-wpcf7-button-border-color-hover" value="" size="10" />
+                                    <div id="rex-wpcf7-button-border-color-hover-preview-icon" class="preview-color-icon"></div>
+                                </div>
+                            </div>
+                            <div class="rexwpcf7-count-column_2">
+                                <div id="rex-wpcf7-button-border-color-hover-preview-wrap">
+                                    <div id="rex-wpcf7-preview-button-border-color-hover"></div>
+                                </div>
+                            </div>
+                            <div class="rexwpcf7-count-column_3"><!-- space for icons --></div>
+                            <div class="rexwpcf7-count-column_4"><!-- space for dimensions --></div>
+                            <div class="rexwpcf7-count-column_5"><!-- space for unit measurement --></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class="bl_modal-row no12dx">
                 <!-- BUTTON -->
                 <div class="rexbutton-cont_row23">
                     <div class="rexbutton-count-column_6">
-
                     <div class="rex-live__row-margin-padding block-padding-wrap">
                         <div class="bl_d-flex bl_jc-c">
                             <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Top', 'rexpansive-builder' ); ?>">
-                                <input type="text" id="wpcf7-button-margin-top-radius" name="wpcf7-button-margin-top-radius" class="block-padding-values" placeholder="20"/>
+                                <input type="text" id="wpcf7-button-margin-top" name="wpcf7-button-margin-top" class="block-padding-values" placeholder="20"/>
                                 <span class="bl_input-indicator">px</span>
                             </div><!-- // row margin top -->
                         </div>
                         <div class="bl_d-flex bl_ai-c bl_jc-sb">
                             <div>
                                 <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Left', 'rexpansive-builder' ); ?>">
-                                <input type="text" id="rex-button-margin-left-radius" name="wpcf7-button-margin-left-radius" class="block-padding-values" placeholder="20"/>
+                                <input type="text" id="wpcf7-button-margin-left" name="wpcf7-button-margin-left" class="block-padding-values" placeholder="20"/>
                                     <span class="bl_input-indicator">px</span>
                                 </div><!-- // row margin left -->
                             </div>
                             <div class="rex-live__row-padding-wrap">
                                 <div class="bl_d-flex bl_jc-c">
                                     <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Top', 'rexpansive-builder' ); ?>">
-                                    <input type="text" id="wpcf7-button-padding-top-radius" name="wpcf7-button-padding-top-radius" class="block-padding-values" placeholder="20"/>
+                                    <input type="text" id="wpcf7-button-padding-top" name="wpcf7-button-padding-top" class="block-padding-values" placeholder="20"/>
                                         <span class="bl_input-indicator">px</span>
                                     </div><!-- // row padding top -->
                                 </div>
@@ -300,7 +459,7 @@ defined('ABSPATH') or exit;
                                     <div class="zl_cfd_a">BUTTON</div>
                                         <div>
                                             <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Left', 'rexpansive-builder' ); ?>">
-                                            <input type="text" id="wpcf7-button-padding-left-radius" name="wpcf7-button-padding-left-radius" class="block-padding-values" placeholder="20"/>
+                                            <input type="text" id="wpcf7-button-padding-left" name="wpcf7-button-padding-left" class="block-padding-values" placeholder="20"/>
                                                 <span class="bl_input-indicator">px</span>
                                             </div><!-- // row padding left -->
                                         </div>
@@ -309,28 +468,28 @@ defined('ABSPATH') or exit;
                                         <div>
                                         
                                             <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Right', 'rexpansive-builder' ); ?>">
-                                            <input type="text" id="wpcf7-button-padding-right-radius" name="wpcf7-button-padding-right-radius" class="block-padding-values" placeholder="20"/>
+                                            <input type="text" id="wpcf7-button-padding-right" name="wpcf7-button-padding-right" class="block-padding-values" placeholder="20"/>
                                                 <span class="bl_input-indicator">px</span>
                                             </div><!-- // row padding right -->
                                         </div>
                                     </div>
                                     <div class="bl_d-flex bl_jc-c">
                                         <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Bottom', 'rexpansive-builder' ); ?>">
-                                            <input type="text" id="wpcf7-button-padding-bottom-radius" name="wpcf7-button-padding-bottom-radius" class="block-padding-values" placeholder="20"/>
+                                            <input type="text" id="wpcf7-button-padding-bottom" name="wpcf7-button-padding-bottom" class="block-padding-values" placeholder="20"/>
                                             <span class="bl_input-indicator">px</span>
                                         </div><!-- // row paddig bottom -->
                                     </div>
                                 </div>
                             <div>
                                 <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Right', 'rexpansive-builder' ); ?>">
-                                    <input type="text" id="wpcf7-button-margin-right-radius" name="wpcf7-button-margin-right-radius" class="block-padding-values" placeholder="20"/>
+                                    <input type="text" id="wpcf7-button-margin-right" name="wpcf7-button-margin-right" class="block-padding-values" placeholder="20"/>
                                     <span class="bl_input-indicator">px</span>
                                 </div><!-- //row margin right -->
                             </div>
                         </div>
                         <div class="bl_d-flex bl_jc-c">
                             <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Bottom', 'rexpansive-builder' ); ?>">
-                                <input type="text" id="wpcf7-button-margin-bottom-radius" name="wpcf7-button-margin-bottom-radius" class="block-padding-values" placeholder="20"/>
+                                <input type="text" id="wpcf7-button-margin-bottom" name="wpcf7-button-margin-bottom" class="block-padding-values" placeholder="20"/>
                                 <span class="bl_input-indicator">px</span>
                             </div><!-- //row margin bottom -->
                         </div>

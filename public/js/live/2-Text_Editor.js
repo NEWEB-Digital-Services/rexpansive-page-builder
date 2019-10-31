@@ -1957,8 +1957,8 @@ var TextEditor = (function ($) {
       this.on(this.deleteFormColumnBtn, "click", this.handleClickDeleteFormColumn.bind(this));
 
       // Trace the cursor position
-      this.subscribe("editableClick", this.traceInputForm.bind(this));
-      // this.on(this.formRowTools, "mouseenter", this.handleMouseOver.bind(this));
+      // this.subscribe("editableClick", this.traceInputForm.bind(this));
+      this.subscribe("editableMouseover", this.handleMouseOver.bind(this));
 
       this.subscribe("blur", this.handleBlur.bind(this));
     },
@@ -1968,7 +1968,30 @@ var TextEditor = (function ($) {
     ///////////////
     
     handleMouseOver: function (event) {
-      console.log("Sono sopra a qualcosa");
+      // console.log("Sono sopra a qualcosa", event.target);
+      var $target = $(event.target);
+      if ($target.parents(".wpcf7-form").length != 0) {
+          this.traceForm = $target.parents(".wpcf7-form")[0];
+          this.addFormContentBtns = $(this.traceForm).find(".wpcf7-add-new-form-content");
+          this.on(this.addFormContentBtns, "click", this.handleClickAddFormContent.bind(this));
+          this.viewFormToolbox();
+
+          if ($target.parents(".wpcf7-row").length != 0) {
+            // The cursor is inside a form row
+            this.traceFormRow = $target.parents(".wpcf7-row")[0];
+            this.viewRowToolbox();
+
+            if ($target.parents(".wpcf7-column").length != 0) {
+              // The cursor is inside a form column (and obviously row)
+              this.traceFormColumn = $target.parents(".wpcf7-column")[0];
+              this.viewColumnToolbox();
+            } else if ($target.has(".wpcf7-column")) {
+              // The cursor is inside a form column (and obviously row)
+              this.traceFormColumn = $target[0];
+              this.viewColumnToolbox();
+            }
+          }
+        }
     },
 
     traceInputForm: function (event) {
@@ -1989,6 +2012,10 @@ var TextEditor = (function ($) {
             if ($(nodeToFix).parents(".wpcf7-column").length != 0) {
               // The cursor is inside a form column (and obviously row)
               this.traceFormColumn = $(nodeToFix).parents(".wpcf7-column")[0];
+              this.viewColumnToolbox();
+            } else if ($(nodeToFix).has(".wpcf7-column")) {
+              // The cursor is inside a form column (and obviously row)
+              this.traceFormColumn = $(nodeToFix)[0];
               this.viewColumnToolbox();
             }
           }
