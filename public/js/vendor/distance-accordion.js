@@ -6,8 +6,9 @@
     this.element = null;
     this.$element = null;
     this.hashTarget = '';
-    this.target = null;
-    this.$target = null;
+    this.classTarget = '';
+    this.targets = [];
+    this.$targets = null;
     this.open = true;
     this.close = false;
     this.wrapper = null;
@@ -39,14 +40,22 @@
     // get eventually data attributes
     this.options.wrapObjects = ( this.element.getAttribute('data-wrap-objects' ) ? Boolean( this.element.getAttribute('data-wrap-objects' ) ) : this.options.wrapObjects );
     this.options.wrapperCustomClass = ( this.element.getAttribute('data-wrapper-cc' ) ? this.element.getAttribute('data-wrapper-cc' ) : this.options.wrapperCustomClass );
-    this.options.scrollTo = ( this.element.getAttribute('data-scroll-to' ) ? ( 'true' === this.element.getAttribute('data-scroll-to' ) ) : this.options.wrapperCustomClass );
+    this.options.scrollTo = ( this.element.getAttribute('data-scroll-to' ) ? ( 'true' === this.element.getAttribute('data-scroll-to' ) ) : false );
 
     if ( this.element )
     {
       this.hashTarget = this.element.hash.substr(1);
-      this.target = document.getElementById( this.hashTarget );
+      if ( '' !== this.hashTarget ) {
+        var target = document.getElementById( this.hashTarget );
+        if ( target ) {
+          this.targets.push( target );
+        }
+      } else {
+        this.classTarget = this.element.getAttribute('data-target');
+        this.targets = [].slice.call( document.getElementsByClassName(this.classTarget) );
+      }
 
-      if ( this.target ) {
+      if ( this.targets.length > 0 ) {
         // set the wrap, if true
         if ( this.options.wrapObjects ) {
           // find toggler wrap
@@ -58,7 +67,7 @@
           }
         }
 
-        this.$target = $(this.target);
+        this.$targets = $(this.targets);
         // set accordion initial state
         if ( -1 !== this.element.className.indexOf(this.options.openClassName ) ) {
           this.open = true;
@@ -72,7 +81,9 @@
 
         // if close, hide target
         if ( this.close ) {
-          this.target.style.display = 'none';
+          this.targets.forEach(function( el ) {
+            el.style.display = 'none';
+          });
         }
 
         // if there is a big toggler, listen to its click and remove the other
@@ -88,7 +99,7 @@
   function handleClick(event) {
     event.preventDefault();
     if ( this.open ) {
-      this.$target.slideUp();
+      this.$targets.slideUp();
       this.$element.addClass('close').removeClass('open');
       if ( this.$wrapToggler.length > 0 ) {
         this.$wrapToggler.addClass('close').removeClass('open');
@@ -97,18 +108,18 @@
       this.close = true;
     } else {
       if ( this.options.scrollTo ) {
-        var scrollVal = this.$target.offset().top;
+        var scrollVal = this.$targets.eq(0).offset().top;
         var that = this;
 
         $('html, body').animate({ 
             scrollTop: scrollVal
-          }, 
+          },
           function() {
-            that.$target.slideDown();    
+            that.$targets.slideDown();    
           } 
         );
       } else {
-        this.$target.slideDown();
+        this.$targets.slideDown();
       }
       this.$element.addClass('open').removeClass('close');
       if ( this.$wrapToggler.length > 0 ) {

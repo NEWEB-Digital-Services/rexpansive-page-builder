@@ -60,7 +60,7 @@
         // on case of loading error, repush the image on the visibile queue
         // so the next interval can be reprocessed
         tempImg.onerror = function() {
-          console.log('errure')
+          console.log('error')
           imgVisibleQueue.push( el );
         };
       }

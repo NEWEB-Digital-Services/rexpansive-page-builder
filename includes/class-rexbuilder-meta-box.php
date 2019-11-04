@@ -806,8 +806,7 @@ if ( ! class_exists( 'Rexbuilder_Meta_Box' ) ) {
       }
       
       foreach ( $this->fields as $field ) {
-        
-        if( 'rexpansive_plugin' == $field["type"] ){
+        if( 'rexpansive_plugin' == $field["type"] ) {
           $savedFromBackend = get_post_meta( get_the_id(), '_save_from_backend', true );
           if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
             return $post_id;

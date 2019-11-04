@@ -160,7 +160,7 @@ class Rexbuilder_Block
         $alt_tag = '';
         if ("" != $id_image_bg_block) {
             // $backgroundImagePos = "";
-/*                 if(('natural' == $type_bg_block)){
+            /* if(('natural' == $type_bg_block)) {
                 if($flex_positioned){
                     $posX = $flex_position[1] == "middle" ? "center" : $flex_position[1] ;
                     $posY = $flex_position[0];
@@ -168,6 +168,7 @@ class Rexbuilder_Block
                 }
             } */
             $img_attrs = wp_get_attachment_image_src($id_image_bg_block, $image_size);
+
             $alt_value = get_post_meta($id_image_bg_block, '_wp_attachment_image_alt', true);
             if ( 1 == $fast_load && ! $editor ) {
                 $background_img_style = ' data-src="' . $img_attrs[0] . '"';
