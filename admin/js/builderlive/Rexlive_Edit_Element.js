@@ -11,9 +11,7 @@ var Element_Edit_Modal = (function ($) {
     var rex_edit_model_element_panel_properties;
 
     var _openChooseElementEdit = function () {
-        Rexlive_Modals_Utils.openModal(
-            rex_edit_model_element_panel_properties.$self.parent(".rex-modal-wrap")
-        );
+        Rexlive_Modals_Utils.openModal(rex_edit_model_element_panel_properties.$self.parent(".rex-modal-wrap"));
     };
 
     var _closeChooseElementEdit = function () {
@@ -27,7 +25,7 @@ var Element_Edit_Modal = (function ($) {
             var optionSelected = this.getAttribute("data-rex-option");
             switch (optionSelected) {
                 case "remove": // Need to create a new model based on the current element
-                	oldElementModelID = elementData.elementTarget.element_id;
+                	oldElementModelID = elementData.element_target.element_id;
 
                     // Saving the new model in the DB
                     _saveNewElementOnDB();
@@ -37,9 +35,11 @@ var Element_Edit_Modal = (function ($) {
                 case "edit": // Editing an existing model element
 
                     element_editor_properties.$self.addClass("editing-model");
-                    Rexlive_Modals_Utils.openModal(
-                        element_editor_properties.$self.parent(".rex-modal-wrap")
-                    );
+                    // Rexlive_Modals_Utils.openModal(
+                    //     element_editor_properties.$self.parent(".rex-modal-wrap")
+                    // );
+
+                    Wpcf7_Edit_Form_Modal.openFormEditorModal(elementData);
                     _staySynchronized();
                     break;
                 default:
@@ -76,19 +76,19 @@ var Element_Edit_Modal = (function ($) {
     var newID;
     
     var _openElementEditorModal = function (data) {
+        elementData = jQuery.extend(true, {}, data.elementInfo);
         alreadyChooseToSynchronize = false;
         _updateElementEditorModal(data);
         if (alreadyChooseToSynchronize) {
-            Rexlive_Modals_Utils.openModal(
-                element_editor_properties.$self.parent(".rex-modal-wrap")
-            );
+            // Rexlive_Modals_Utils.openModal(element_editor_properties.$self.parent(".rex-modal-wrap"));
+            Wpcf7_Edit_Form_Modal.openFormEditorModal(data);
         } else {
             _openChooseElementEdit();
         }
     };
 
     var _closeModal = function () {
-        Rexlive_Modals_Utils.closeModal( element_editor_properties.$self.parent(".rex-modal-wrap") );
+        Rexlive_Modals_Utils.closeModal(element_editor_properties.$self.parent(".rex-modal-wrap"));
     };
 
     var _updateElementEditorModal = function (data) {
@@ -99,32 +99,16 @@ var Element_Edit_Modal = (function ($) {
 
     var _clearElementData = function () {
         elementData = {
-            // text_color: "",
-            // text: "",
-            // font_size: "",
-            background_color: "",
-            // element_height: "",
-            // element_width: "",
-            // hover_color: "",
-            // hover_text: "",
-            // hover_border: "",
-            // border_color: "",
-            // border_width: "",
-            // border_radius: "",
-            // margin_top: "",
-            // margin_bottom: "",
-            // margin_right: "",
-            // margin_left: "",
-            // padding_top: "",
-            // padding_bottom: "",
-            // padding_right: "",
-            // padding_left: "",
-            // link_target: "",
-            // link_type: "",
-            elementTarget: {
-                element_name: "",
+            synchronize: "",
+            wpcf7_data: {
+                background_color: "",
+                content: {
+                    background_color: "",
+                }
+            },
+            element_target: {
                 element_id: "",
-                element_number: 0,
+                element_number: "",
             }
         };
     }
@@ -139,55 +123,10 @@ var Element_Edit_Modal = (function ($) {
     };
 
     var _updatePanel = function () {
-        // element_editor_properties.$element_label_text.val(elementData.text);
-        // element_editor_properties.$element_label_text_size.val(elementData.font_size.replace('px', ''));
-        // element_editor_properties.$element_height.val(elementData.element_height.replace('px', ''));
-        // element_editor_properties.$element_width.val(elementData.element_width.replace('px', ''));
-        // element_editor_properties.$element_border_width.val(elementData.border_width.replace('px', ''));
-        // element_editor_properties.$element_border_radius.val(elementData.border_radius.replace('px', ''));
-        // element_editor_properties.$element_margin_top.val(elementData.margin_top.replace('px', ''));
-        // element_editor_properties.$element_margin_right.val(elementData.margin_right.replace('px', ''));
-        // element_editor_properties.$element_margin_left.val(elementData.margin_left.replace('px', ''));
-        // element_editor_properties.$element_margin_bottom.val(elementData.margin_bottom.replace('px', ''));
-        // element_editor_properties.$element_padding_top.val(elementData.padding_top.replace('px', ''));
-        // element_editor_properties.$element_padding_right.val(elementData.padding_right.replace('px', ''));
-        // element_editor_properties.$element_padding_left.val(elementData.padding_left.replace('px', ''));
-        // element_editor_properties.$element_padding_bottom.val(elementData.padding_bottom.replace('px', '')); 
-
-        // element_editor_properties.$element_link_target.val(elementData.link_target);
-        // element_editor_properties.$element_link_type.val(elementData.link_type);
-        // element_editor_properties.$element_name.val(elementData.elementTarget.element_name);
-
-        // element_editor_properties.$element_preview_border.css("border-width", elementData.border_width);
-
-        // element_editor_properties.$element_label_text.css("color", elementData.text_color);
-        // element_editor_properties.$element_label_text_color_value.val(elementData.text_color);
-        // element_editor_properties.$element_label_text_color_preview.hide();
-        // element_editor_properties.$element_label_text_color_value.spectrum("set", elementData.text_color);
-
-        // element_editor_properties.$element_preview_background_hover.css("background-color", elementData.hover_color);
-        // element_editor_properties.$element_background_hover_color_value.val(elementData.hover_color);
-        // element_editor_properties.$element_background_hover_color_value.spectrum("set", elementData.hover_color);
-        // element_editor_properties.$element_background_hover_color_preview.hide();
-
-        // element_editor_properties.$element_preview_text_hover.css("background-color", elementData.hover_text);
-        // element_editor_properties.$element_text_hover_color_value.val(elementData.hover_text);
-        // element_editor_properties.$element_text_hover_color_value.spectrum("set", elementData.hover_text);
-        // element_editor_properties.$element_text_hover_color_preview.hide();
-
-        // element_editor_properties.$element_preview_border_hover.css("background-color", elementData.hover_border);
-        // element_editor_properties.$element_border_hover_color_value.val(elementData.hover_border);
-        // element_editor_properties.$element_border_hover_color_value.spectrum("set", elementData.hover_border);
-        // element_editor_properties.$element_border_hover_color_preview.hide();
         element_editor_properties.$element_preview_background.css("background-color", elementData.background_color);
         element_editor_properties.$element_background_color_value.val(elementData.background_color);
         element_editor_properties.$element_background_color_preview.hide();
         element_editor_properties.$element_background_color_value.spectrum("set", elementData.background_color);
-
-        // element_editor_properties.$element_preview_border.css("border-color", elementData.border_color);
-        // element_editor_properties.$element_border_color_value.val(elementData.border_color);
-        // element_editor_properties.$element_border_color_preview.hide();
-        // element_editor_properties.$element_border_color_value.spectrum("set", elementData.border_color);
 
         element_editor_properties.$self.addClass("editing-model");
     };
@@ -211,7 +150,6 @@ var Element_Edit_Modal = (function ($) {
         // elementData.link_target = button_editor_properties.$button_link_target.val();
         // elementData.link_type = button_editor_properties.$button_link_type.val();
         
-        //colors data are already updated
     };
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -274,7 +212,7 @@ var Element_Edit_Modal = (function ($) {
     
     var _saveElementUpdatesOnDB = function () {
         var element_data_html = _createElementDataHTML();
-        var elementID = elementData.elementTarget.element_id;
+        var elementID = elementData.element_target.element_id;
 
         element_editor_properties.$add_model_button.addClass("saving-rex-element");
         $.ajax({
@@ -292,7 +230,6 @@ var Element_Edit_Modal = (function ($) {
             },
             success: function (response) {
             	element_editor_properties.$add_model_button.removeClass("saving-rex-element");
-                // _closeModal();
             },
             error: function () {},
             complete: function (response) {
@@ -387,8 +324,8 @@ var Element_Edit_Modal = (function ($) {
      * @param {Object} data data of target to update{id, number}
      */
     var _updateTarget = function (data) {
-        elementData.elementTarget.element_id = data.id;
-        elementData.elementTarget.element_number = data.number;
+        elementData.element_target.element_id = data.id;
+        elementData.element_target.element_number = data.number;
     }
 
     var _createElementDataHTML = function () {
@@ -398,30 +335,12 @@ var Element_Edit_Modal = (function ($) {
         var defaults = {}
 
         var data = {
-            // text_color: buttonData.text_color,
-            // text: defaults.text,
-            // font_size: buttonData.font_size,
-            // button_height: buttonData.button_height,
-            // button_width: buttonData.button_width,
-            background_color: elementData.background_color,
-            // hover_color: buttonData.hover_color,
-            // hover_text: buttonData.hover_text,
-            // hover_border: buttonData.hover_border,
-            // border_color: buttonData.border_color,
-            // border_width: buttonData.border_width,
-            // border_radius: buttonData.border_radius,
-            // margin_top: buttonData.margin_top,
-            // margin_bottom: buttonData.margin_bottom,
-            // margin_right: buttonData.margin_right,
-            // margin_left: buttonData.margin_left,
-            // padding_top: buttonData.padding_top,
-            // padding_bottom: buttonData.padding_bottom,
-            // padding_right: buttonData.padding_right,
-            // padding_left: buttonData.padding_left,
-            // link_target: defaults.link_target,
-            // link_type: defaults.link_type,
-            // button_name: buttonData.buttonTarget.button_name,
-            // id: buttonData.buttonTarget.button_id,
+            wpcf7_data: {
+                background_color: elementData.wpcf7_data.background_color,
+                content: {
+                    background_color: elementData.wpcf7_data.content.background_color,
+                }
+            }
         }
 
         elementHTML = tmpl("tmpl-rex-element-data", data);
@@ -437,7 +356,7 @@ var Element_Edit_Modal = (function ($) {
         var elementDataToIframe = {
             eventName: "rexlive:lock_synchronize_on_element",
             data_to_send: {
-                elementTarget: elementData.elementTarget
+                element_target: elementData.element_target
             }
         };
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(elementDataToIframe);
@@ -465,7 +384,7 @@ var Element_Edit_Modal = (function ($) {
         var elementDataToIframe = {
             eventName: "rexlive:updateElementLive",
             data_to_send: {
-                elementTarget: elementData.elementTarget,
+                element_target: elementData.element_target,
                 propertyType: data.type,
                 propertyName: data.name,
                 newValue: data.value
@@ -501,7 +420,7 @@ var Element_Edit_Modal = (function ($) {
         var elementDataToIframe = {
             eventName: "rexlive:remove_separate_element",
             data_to_send: {
-                elementTarget: elementData.elementTarget
+                element_target: elementData.element_target
             }
         };
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(elementDataToIframe);
@@ -630,34 +549,18 @@ var Element_Edit_Modal = (function ($) {
             }
         };
 		elementData = {
-			// text_color: "",
-			// text: "",
-			// font_size: "",
-			background_color: "",
-            // button_height: "",
-            // button_width: "",
-            // hover_color: "",
-            // hover_text: "",
-            // hover_border: "",
-            // border_color: "",
-            // border_width: "",
-            // border_radius: "",
-            // margin_top: "",
-            // margin_bottom: "",
-            // margin_left: "",
-            // margin_right: "",
-            // padding_top: "",
-            // padding_bottom: "",
-            // padding_left: "",
-            // padding_right: "",
-            // link_target: "",
-            // link_type: "",
-            elementTarget: {
-                element_name: "",
+            synchronize: "",
+            wpcf7_data: {
+                background_color: "",
+                content: {
+                    background_color: "",
+                }
+            },
+            element_target: {
                 element_id: "",
-                element_number: 0,
+                element_number: "",
             }
-		};
+        };
 
 		// _linkTextInputs();
         // _linkNumberInputs();

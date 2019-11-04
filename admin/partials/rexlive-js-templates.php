@@ -208,7 +208,7 @@ defined('ABSPATH') or exit;
 </script>
 
 <script type="text/x-tmpl" id="tmpl-rex-element-data">
-<span class="rex-element-data" style="display:none;"  data-background-color="{%=element.background_color%}"></span>
+<span class="rex-element-data" style="display:none;"  data-wpcf7-background-color="{%=element.wpcf7_data.background_color%}" data-wpcf7-content-background-color="{%=element.wpcf7_data.content.background_color%}"></span>
 </script>
 
 <script type="text/x-tmpl" id="tmpl-rex-wpcf7-form-data">

@@ -8,25 +8,20 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 	var reverseData;
 	var resetData;
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////
     /// MODAL FUNCTIONS
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////
 
 	var _openFormEditorModal = function (data) {
-		formData = jQuery.extend(true, {}, data.formData);
+        formData = jQuery.extend(true, {}, data.wpcf7_data);
+        formData.element_target = jQuery.extend(true, {}, data.element_target);
 		_updateFormEditorModal(formData);
 
-		Rexlive_Modals_Utils.openModal(
-            wpcf7_form_editor_properties.$self.parent(".rex-modal-wrap"),
-            false
-        );
+		Rexlive_Modals_Utils.openModal(wpcf7_form_editor_properties.$self.parent(".rex-modal-wrap"),false);
 	}
 
 	var _closeModal = function () {
-        Rexlive_Modals_Utils.closeModal(
-        	wpcf7_form_editor_properties.$self.parent(".rex-modal-wrap"),
-        	false
-        );
+        Rexlive_Modals_Utils.closeModal(wpcf7_form_editor_properties.$self.parent(".rex-modal-wrap"),false);
     };
 
     var _applyChanges = function () {
@@ -51,56 +46,13 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 
     var _clearFormData = function () {
         formData = {
-            // Da aggiornare
-            
-            // text_color: "",
-            // text: "",
-            // font_size: "",
             background_color: "",
-            // button_height: "",
-            // button_width: "",
-            // hover_color: "",
-            // hover_border: "",
-            // hover_text: "",
-            // border_color: "",
-            // border_width: "",
-            // border_radius: "",
-            // margin_top: "",
-            // margin_bottom: "",
-            // margin_right: "",
-            // margin_left: "",
-            // padding_top: "",
-            // padding_bottom: "",
-            // padding_right: "",
-            // padding_left: "",
-            // link_target: "",
-            // link_type: "",
             content: {
-            	// text_color: "",
-	            // text: "",
-	            // font_size: "",
 	            background_color: "",
-	            // button_height: "",
-	            // button_width: "",
-	            // hover_color: "",
-	            // hover_border: "",
-	            // hover_text: "",
-	            // border_color: "",
-	            // border_width: "",
-	            // border_radius: "",
-	            // margin_top: "",
-	            // margin_bottom: "",
-	            // margin_right: "",
-	            // margin_left: "",
-	            // padding_top: "",
-	            // padding_bottom: "",
-	            // padding_right: "",
-	            // padding_left: "",
-	            // link_target: "",
-	            // link_type: "",
             },
-            target: {
-                form_id: "",
+            element_target: {
+                element_id: "",
+                element_name: ""
             },
         };
     }
@@ -113,46 +65,6 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
     };
 
     var _updatePanel = function () {
-        // wpcf7_form_editor_properties.$element_label_text.val(formData.text);
-        // wpcf7_form_editor_properties.$element_label_text_size.val(formData.font_size.replace('px', ''));
-        // wpcf7_form_editor_properties.$element_height.val(formData.element_height.replace('px', ''));
-        // wpcf7_form_editor_properties.$element_width.val(formData.element_width.replace('px', ''));
-        // wpcf7_form_editor_properties.$element_border_width.val(formData.border_width.replace('px', ''));
-        // wpcf7_form_editor_properties.$element_border_radius.val(formData.border_radius.replace('px', ''));
-        // wpcf7_form_editor_properties.$element_margin_top.val(formData.margin_top.replace('px', ''));
-        // wpcf7_form_editor_properties.$element_margin_right.val(formData.margin_right.replace('px', ''));
-        // wpcf7_form_editor_properties.$element_margin_left.val(formData.margin_left.replace('px', ''));
-        // wpcf7_form_editor_properties.$element_margin_bottom.val(formData.margin_bottom.replace('px', ''));
-        // wpcf7_form_editor_properties.$element_padding_top.val(formData.padding_top.replace('px', ''));
-        // wpcf7_form_editor_properties.$element_padding_right.val(formData.padding_right.replace('px', ''));
-        // wpcf7_form_editor_properties.$element_padding_left.val(formData.padding_left.replace('px', ''));
-        // wpcf7_form_editor_properties.$element_padding_bottom.val(formData.padding_bottom.replace('px', '')); 
-
-        // wpcf7_form_editor_properties.$element_link_target.val(formData.link_target);
-        // wpcf7_form_editor_properties.$element_link_type.val(formData.link_type);
-        // wpcf7_form_editor_properties.$element_name.val(formData.elementTarget.element_name);
-
-        // wpcf7_form_editor_properties.$element_preview_border.css("border-width", formData.border_width);
-
-        // wpcf7_form_editor_properties.$element_label_text.css("color", formData.text_color);
-        // wpcf7_form_editor_properties.$element_label_text_color_value.val(formData.text_color);
-        // wpcf7_form_editor_properties.$element_label_text_color_preview.hide();
-        // wpcf7_form_editor_properties.$element_label_text_color_value.spectrum("set", formData.text_color);
-
-        // wpcf7_form_editor_properties.$element_preview_background_hover.css("background-color", formData.hover_color);
-        // wpcf7_form_editor_properties.$element_background_hover_color_value.val(formData.hover_color);
-        // wpcf7_form_editor_properties.$element_background_hover_color_value.spectrum("set", formData.hover_color);
-        // wpcf7_form_editor_properties.$element_background_hover_color_preview.hide();
-
-        // wpcf7_form_editor_properties.$element_preview_text_hover.css("background-color", formData.hover_text);
-        // wpcf7_form_editor_properties.$element_text_hover_color_value.val(formData.hover_text);
-        // wpcf7_form_editor_properties.$element_text_hover_color_value.spectrum("set", formData.hover_text);
-        // wpcf7_form_editor_properties.$element_text_hover_color_preview.hide();
-
-        // wpcf7_form_editor_properties.$element_preview_border_hover.css("background-color", formData.hover_border);
-        // wpcf7_form_editor_properties.$element_border_hover_color_value.val(formData.hover_border);
-        // wpcf7_form_editor_properties.$element_border_hover_color_value.spectrum("set", formData.hover_border);
-        // wpcf7_form_editor_properties.$element_border_hover_color_preview.hide();
         wpcf7_form_editor_properties.$form_preview_background.css("background-color", formData.background_color);
         wpcf7_form_editor_properties.$form_background_color_value.val(formData.background_color);
         wpcf7_form_editor_properties.$form_background_color_preview.hide();
@@ -162,23 +74,18 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         wpcf7_form_editor_properties.$form_inputs_background_color_value.val(formData.content.background_color);
         wpcf7_form_editor_properties.$form_inputs_background_color_preview.hide();
         wpcf7_form_editor_properties.$form_inputs_background_color_value.spectrum("set", formData.content.background_color);
-
-        // wpcf7_form_editor_properties.$element_preview_border.css("border-color", formData.border_color);
-        // wpcf7_form_editor_properties.$element_border_color_value.val(formData.border_color);
-        // wpcf7_form_editor_properties.$element_border_color_preview.hide();
-        // wpcf7_form_editor_properties.$element_border_color_value.spectrum("set", formData.border_color);
     };
 
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////
     /// FUNCTIONS THAT TELL THE IFRAME WHAT TO DO
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////
 
     var _updateFormLive = function (data) {
         var formDataToIframe = {
             eventName: "rexlive:updateFormLive",
             data_to_send: {
-                target: formData.target,
+                target: formData.element_target,
             	propertyType: data.type,
                 propertyName: data.name,
                 newValue: data.value
@@ -191,7 +98,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         var formDataToIframe = {
             eventName: "rexlive:updateFormInputsLive",
             data_to_send: {
-                target: formData.target,
+                target: formData.element_target,
             	propertyType: data.type,
                 propertyName: data.name,
                 newValue: data.value
@@ -200,9 +107,9 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(formDataToIframe);
     }
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////
+	//////////////////////////////////////////////////////////////////////////////////////////////////
     /// LINKING PANEL TOOLS
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////
 
     var _linkBackgroundColorEditor = function () {
         var colorTEXT;
@@ -315,9 +222,10 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
     /// SAVING FUNCTIONS
     ///////////////////////////////////////////////////////////////////////////////////////////////
     
+    // Necessario? Penso di no
     var _saveFormDataOnDB = function () {
         var form_data_html = _createFormDataHTML();
-        var formID = formData.target.form_id;
+        var formID = formData.element_target.element_id;
 
         $.ajax({
             type: "POST",
@@ -351,51 +259,9 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         var defaults = {}
 
         var data = {
-            // text_color: buttonData.text_color,
-            // text: defaults.text,
-            // font_size: buttonData.font_size,
-            // button_height: buttonData.button_height,
-            // button_width: buttonData.button_width,
             background_color: formData.background_color,
-            // hover_color: buttonData.hover_color,
-            // hover_text: buttonData.hover_text,
-            // hover_border: buttonData.hover_border,
-            // border_color: buttonData.border_color,
-            // border_width: buttonData.border_width,
-            // border_radius: buttonData.border_radius,
-            // margin_top: buttonData.margin_top,
-            // margin_bottom: buttonData.margin_bottom,
-            // margin_right: buttonData.margin_right,
-            // margin_left: buttonData.margin_left,
-            // padding_top: buttonData.padding_top,
-            // padding_bottom: buttonData.padding_bottom,
-            // padding_right: buttonData.padding_right,
-            // padding_left: buttonData.padding_left,
-            // link_target: defaults.link_target,
-            // link_type: defaults.link_type,
-            // button_name: buttonData.buttonTarget.button_name,
-            // id: buttonData.buttonTarget.button_id,
             content: {
-            	// text_color: buttonData.text_color,
-	            // text: defaults.text,
-	            // font_size: buttonData.font_size,
-	            // button_height: buttonData.button_height,
-	            // button_width: buttonData.button_width,
 	            background_color: formData.content.background_color,
-	            // hover_color: buttonData.hover_color,
-	            // hover_text: buttonData.hover_text,
-	            // hover_border: buttonData.hover_border,
-	            // border_color: buttonData.border_color,
-	            // border_width: buttonData.border_width,
-	            // border_radius: buttonData.border_radius,
-	            // margin_top: buttonData.margin_top,
-	            // margin_bottom: buttonData.margin_bottom,
-	            // margin_right: buttonData.margin_right,
-	            // margin_left: buttonData.margin_left,
-	            // padding_top: buttonData.padding_top,
-	            // padding_bottom: buttonData.padding_bottom,
-	            // padding_right: buttonData.padding_right,
-	            // padding_left: buttonData.padding_left,
             }
         }
 
@@ -428,7 +294,9 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         wpcf7_form_editor_properties.$modal.on('rexlive:this_modal_closed', function() {
             // _updateFormDataFromPanel();
             _applyChanges();
-            _saveFormDataOnDB();
+            // _saveData();
+            console.log("new form data", formData);
+            // _saveFormDataOnDB();
         });
 	}
 
@@ -441,7 +309,6 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 			$modal: $container.parent(".rex-modal-wrap"),
             $close_button: $container.find(".rex-cancel-button"),
             $apply_changes_button: $container.find(".rex-apply-button"),
-            // $wpcf7_add_text_field: $container.find(".rex-add-text-field"),
             
             $form_preview_background: $container.find("#rex-element-preview-background"),
             $form_background_color_value: $container.find("#rex-element-background-color"),
@@ -455,56 +322,13 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 		};
 
 		formData = {
-            // Da aggiornare
-            
-            // text_color: "",
-            // text: "",
-            // font_size: "",
             background_color: "",
-            // button_height: "",
-            // button_width: "",
-            // hover_color: "",
-            // hover_border: "",
-            // hover_text: "",
-            // border_color: "",
-            // border_width: "",
-            // border_radius: "",
-            // margin_top: "",
-            // margin_bottom: "",
-            // margin_right: "",
-            // margin_left: "",
-            // padding_top: "",
-            // padding_bottom: "",
-            // padding_right: "",
-            // padding_left: "",
-            // link_target: "",
-            // link_type: "",
             content: {
-            	// text_color: "",
-	            // text: "",
-	            // font_size: "",
-	            background_color: "",
-	            // button_height: "",
-	            // button_width: "",
-	            // hover_color: "",
-	            // hover_border: "",
-	            // hover_text: "",
-	            // border_color: "",
-	            // border_width: "",
-	            // border_radius: "",
-	            // margin_top: "",
-	            // margin_bottom: "",
-	            // margin_right: "",
-	            // margin_left: "",
-	            // padding_top: "",
-	            // padding_bottom: "",
-	            // padding_right: "",
-	            // padding_left: "",
-	            // link_target: "",
-	            // link_type: "",
+                background_color: "",
             },
-            target: {
-                form_id: "",
+            element_target: {
+                element_id: "",
+                element_name: ""
             },
         };
 

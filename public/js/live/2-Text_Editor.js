@@ -16,6 +16,7 @@ var TextEditor = (function ($) {
   var listExtensionInstance;
   var insertMediaExtensionInstance;
   // var dropDownListExtensionInstance;
+  var rexWpcf7ExtensionInstance;
 
   var currentTextSelection;
 
@@ -1610,12 +1611,6 @@ var TextEditor = (function ($) {
       toolbarActiveOnRexelement = false;
 
       this.traceELMNT = null;
-      // this.traceEditor = null;
-
-      // this.subscribe("editableInput", this.handleEventInput.bind(this));
-      // this.subscribe("editableKeydown", this.handleEventKeyDown.bind(this));
-      // this.subscribe("editableKeyup", this.handleEventKeyUp.bind(this));
-      // this.subscribe("keyup", this.handleEventKeyUp.bind(this));
 
       this.subscribe("positionToolbar", this.handlePositionToolbar.bind(this));
       this.subscribe("hideToolbar", this.handleHideToolbar.bind(this));
@@ -1634,7 +1629,8 @@ var TextEditor = (function ($) {
       this.subscribe("blur", this.handleBlur.bind(this));
 
       // Trace the cursor position
-      this.subscribe("editableClick", this.traceInputRexElement.bind(this));
+      // this.subscribe("editableClick", this.traceInputRexElement.bind(this));
+      this.subscribe("editableMouseover", this.handleMouseOver.bind(this));
 
       // Link click listeners
       this.on(this.deleteRexelementBtn, "click", this.handleClickDeleteRexelement.bind(this));
@@ -1644,17 +1640,76 @@ var TextEditor = (function ($) {
       // Timeout is needed because anchor will stay under element for about 500-600 ms
       var showAnchorTimeout = null;
       var extensionIstance = this;
-      Rexbuilder_Util.$document.on("mouseenter", ".rex-element-wrapper", function (e) {
-        extensionIstance.hideAnchorPreview();
-        if (showAnchorTimeout !== null) {
-          clearTimeout(showAnchorTimeout);
-          showAnchorTimeout = null;
-        }
-      });
+      // Rexbuilder_Util.$document.on("mouseenter", ".rex-element-wrapper", function (e) {
+      //   extensionIstance.hideAnchorPreview();
+      //   if (showAnchorTimeout !== null) {
+      //     clearTimeout(showAnchorTimeout);
+      //     showAnchorTimeout = null;
+      //   }
+      // });
 
-      Rexbuilder_Util.$document.on("mouseleave", ".rex-element-wrapper", function (e) {
-        showAnchorTimeout = setTimeout(extensionIstance.showAnchorPreview, 1000);
-      });
+      // Rexbuilder_Util.$document.on("mouseleave", ".rex-element-wrapper", function (e) {
+      //   showAnchorTimeout = setTimeout(extensionIstance.showAnchorPreview, 1000);
+      // });
+    },
+
+    handleMouseOver: function (event) {
+      var $target = $(event.target);
+      if ($target.parents(".rex-element-container").length != 0) {
+        this.traceELMNT = $target.parents(".rex-element-container")[0];
+        this.viewRexelementToolbox();
+      } else {
+        this.hideRexelementToolbox();
+      }
+    },
+
+    traceInputRexElement: function (event) {
+      if ("click" == event.type) {
+        // Check if cursor is inside rexelement
+        var nodeToFix = MediumEditor.selection.getSelectionStart(this.base.options.ownerDocument);
+        if ($(nodeToFix).parents(".rex-element-container").length != 0) {
+          this.traceELMNT = $(nodeToFix).parents(".rex-element-container")[0];
+          this.viewRexelementToolbox();
+        } else {
+          this.handleBlur(event);
+        }
+      }
+    },
+
+    handleClickDeleteRexelement: function (e) {
+      this.hideRexelementToolbox();
+      var $elementContainer = $(this.traceELMNT).parents(".rex-element-wrapper");
+      var $paragraphContainer = $elementContainer.parents("p.rex-elements-paragraph");
+      $elementContainer.remove();
+      if ($paragraphContainer.find(".rex-element-wrapper").length == 0) {
+        $paragraphContainer.remove();
+      }
+    },
+
+    handleClickEditRexelement: function (e) {
+      this.hideRexelementToolbox();
+      var $elementWrapper = $(this.traceELMNT).parents(".rex-element-wrapper");
+
+      var elementContainsWpcf7 = $elementWrapper.find(".wpcf7").length != 0;
+
+      // if (elementContainsWpcf7) {
+        // rexWpcf7ExtensionInstance.hideAllToolbars();
+        // var $form = $elementWrapper.find(".wpcf7");
+
+        // var data = {
+        //   eventName: "rexlive:openRexWpcf7EditForm",
+        //   formData: Rexbuilder_Rexwpcf7.generateFormData($form),
+        // };
+        // $elementWrapper.parents(".text-wrap").blur();
+        // Rexbuilder_Util_Editor.sendParentIframeMessage(data);
+      // }
+
+      var data = {
+        eventName: "rexlive:openRexElementEditor",
+        elementData: Rexbuilder_Rexelement.generateElementData($elementWrapper)
+      };
+      $elementWrapper.parents(".text-wrap").blur();
+      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
     },
 
     hideAnchorPreview: function (event) {
@@ -1669,6 +1724,26 @@ var TextEditor = (function ($) {
       for (var i = 0; i < anchorLinkPreview.length; i++) {
         anchorLinkPreview[i].style.display = "block";
       }
+    },
+
+    /**
+     * Place rexelement tools on top of rexelement
+     */
+    placeRexelementToolbox: function () {
+      var targetCoords = this.traceELMNT.getBoundingClientRect();
+      // this.rexelementTools.style.height = targetCoords.height + "px";
+      this.rexelementTools.style.width = targetCoords.width + "px";
+      this.rexelementTools.style.left = (targetCoords.left + ((targetCoords.width - this.rexelementTools.offsetWidth) / 2)) + "px";
+      this.rexelementTools.style.top = (window.scrollY + targetCoords.top - this.rexelementTools.offsetHeight) - 20 + "px";
+    },
+
+    hideRexelementToolbox: function (event) {
+      this.rexelementTools.style.display = "none";
+    },
+
+    viewRexelementToolbox: function (event) {
+      this.rexelementTools.style.display = "block";
+      this.placeRexelementToolbox();
     },
 
     handlePositionToolbar: function (event) {
@@ -1697,44 +1772,11 @@ var TextEditor = (function ($) {
 
     restoreElementClasses: function ($toolbar) {
       $toolbar.removeClass("medium-toolbar-hover-rexelement");
-      $toolbar.find("button.medium-editor-action:not(.hide-tool-rexbutton)").first().removeClass("medium-editor-button-first");
+      $toolbar.find("button.medium-editor-action:not(.hide-tool-rexelement)").first().removeClass("medium-editor-button-first");
       $toolbar.find("button.medium-editor-action:not(.hide-tool-rexelement)").last().removeClass("medium-editor-button-last");
 
       $toolbar.find("button.medium-editor-action").first().addClass("medium-editor-button-first");
       $toolbar.find("button.medium-editor-action").last().addClass("medium-editor-button-last");
-    },
-
-    viewRexelementToolbox: function (event) {
-      this.rexelementTools.style.display = "block";
-      this.placeRexelementToolbox();
-    },
-
-    /**
-     * Place rexelement tools on top of rexelement
-     */
-    placeRexelementToolbox: function () {
-      var targetCoords = this.traceELMNT.getBoundingClientRect();
-      // this.rexelementTools.style.height = targetCoords.height + "px";
-      this.rexelementTools.style.width = targetCoords.width + "px";
-      this.rexelementTools.style.left = (targetCoords.left + ((targetCoords.width - this.rexelementTools.offsetWidth) / 2)) + "px";
-      this.rexelementTools.style.top = (window.scrollY + targetCoords.top - this.rexelementTools.offsetHeight) + "px";
-    },
-
-    hideRexelementToolbox: function (event) {
-      this.rexelementTools.style.display = "none";
-    },
-
-    traceInputRexElement: function (event) {
-      if ("click" == event.type) {
-        // Check if cursor is inside rexelement
-        var nodeToFix = MediumEditor.selection.getSelectionStart(this.base.options.ownerDocument);
-        if ($(nodeToFix).parents(".rex-element-container").length != 0) {
-          this.traceELMNT = $(nodeToFix).parents(".rex-element-container")[0];
-          this.viewRexelementToolbox();
-        } else {
-          this.handleBlur(event);
-        }
-      }
     },
 
     handleBlur: function (event) {
@@ -1742,29 +1784,6 @@ var TextEditor = (function ($) {
         this.hideRexelementToolbox();
       }
     },
-
-    handleClickDeleteRexelement: function (e) {
-      this.hideRexelementToolbox();
-      var $elementContainer = $(this.traceELMNT).parents(".rex-element-wrapper");
-      var $paragraphContainer = $elementContainer.parents("p.rex-elements-paragraph");
-      $elementContainer.remove();
-      if ($paragraphContainer.find(".rex-element-wrapper").length == 0) {
-        $paragraphContainer.remove();
-      }
-    },
-
-    handleClickEditRexelement: function (e) {
-      this.hideRexelementToolbox();
-      var $elementWrapper = $(this.traceELMNT).parents(".rex-element-wrapper");
-      var data = {
-        eventName: "rexlive:openRexElementEditor",
-        elementData: Rexbuilder_Rexelement.generateElementData($elementWrapper)
-      };
-      $elementWrapper.parents(".text-wrap").blur();
-      Rexbuilder_Util_Editor.sendParentIframeMessage(data);
-    },
-
-    handleEventInput: function (eventObj, target) {},
 
     replaceClasses: function ($wrapper, previousClass, newClass) {
       $wrapper.find("." + previousClass).removeClass(previousClass).addClass(newClass);
@@ -1945,7 +1964,7 @@ var TextEditor = (function ($) {
       this.deleteFormColumnBtn = $(this.formColumnTools).find(".rex-wpcf7-column-delete")[0];
 
       this.on(this.addRowBtn, "click", this.handleClickAddRow.bind(this));
-      this.on(this.formSettingsBtn, "click", this.handleClickFormSettings.bind(this));
+      // this.on(this.formSettingsBtn, "click", this.handleClickFormSettings.bind(this));
 
       this.on(this.formSelectColumnsToolbar, "click", this.handleSelectColumns.bind(this));
 
@@ -1968,7 +1987,6 @@ var TextEditor = (function ($) {
     ///////////////
     
     handleMouseOver: function (event) {
-      // console.log("Sono sopra a qualcosa", event.target);
       var $target = $(event.target);
       if ($target.parents(".wpcf7-form").length != 0) {
           this.traceForm = $target.parents(".wpcf7-form")[0];
@@ -1991,6 +2009,8 @@ var TextEditor = (function ($) {
               this.viewColumnToolbox();
             }
           }
+        } else {
+          this.hideAllToolbars();
         }
     },
 
@@ -3514,6 +3534,7 @@ var TextEditor = (function ($) {
     justifyExtensionIntance = new JustifyExtension();
     listExtensionInstance = new ListExtension();
     insertMediaExtensionInstance = new InsertMediaExtension();
+    rexWpcf7ExtensionInstance = new RexWpcf7Extension();
 
     editorInstance = new MediumEditor(".editable", {
       toolbar: {
@@ -3557,7 +3578,7 @@ var TextEditor = (function ($) {
         'hide-row-tools-on-editing': new HideRowToolsOnEditing(),
         'rexbutton-input': new RexButtonExtension(),
         'rexelement-input': new RexElementExtension(),
-        'rexwpcf7-input' : new RexWpcf7Extension(),
+        'rexwpcf7-input' : rexWpcf7ExtensionInstance,
         onlySVGFixExtension : new OnlySVGFixExtension(),
         textEditing: new TextEditingExtension(),
       },

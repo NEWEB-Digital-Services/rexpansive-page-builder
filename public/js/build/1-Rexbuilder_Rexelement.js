@@ -475,8 +475,8 @@ var Rexbuilder_Rexelement = (function ($) {
     var _separateRexElement = function (data) {
         var elementData = data.elementData;
         var newID = data.newID;
-        var elementID = elementData.elementTarget.element_id;
-        var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"][data-rex-element-number=\"" + elementData.elementTarget.element_number + "\"]");
+        var elementID = elementData.element_target.element_id;
+        var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"][data-rex-element-number=\"" + elementData.element_target.element_number + "\"]");
         $elementWrapper.addClass("rex-separate-element");
         $elementWrapper.attr("data-rex-element-id", newID);
         $elementWrapper.attr("data-rex-element-number", 1);
@@ -638,7 +638,7 @@ var Rexbuilder_Rexelement = (function ($) {
         // $elementData.attr("data-padding-bottom", elementData.padding_bottom);
         // $elementData.attr("data-padding-right", elementData.padding_right);
         // $elementData.attr("data-padding-left", elementData.padding_left);
-        // $elementData.attr("data-button-name", elementData.elementTarget.element_name);
+        // $elementData.attr("data-button-name", elementData.element_target.element_name);
     }
 
     /**
@@ -651,61 +651,50 @@ var Rexbuilder_Rexelement = (function ($) {
      * 
      * elementInfo - properties of the element
      * 
-     * @param {*} $elementContainer dom element container (with class "rex-element-wrapper")
+     * @param {*} $elementWrapper DOM element wrapper
      * @param {Boolean} getAllData flag to generate all data
      * @returns {Object} data
      */
-    var _generateElementData = function ($elementContainer, getAllData) {
+    var _generateElementData = function ($elementWrapper, getAllData) {
         getAllData = typeof getAllData === "undefined" ? false : getAllData.toString() == "true";
-        var elementProperties = {
-            // Da aggiornare
-            // text_color: "",
-            // text: "",
-            // font_size: "",
-            background_color: "",
-            // button_height: "",
-            // button_width: "",
-            // hover_color: "",
-            // hover_border: "",
-            // hover_text: "",
-            // border_color: "",
-            // border_width: "",
-            // border_radius: "",
-            // margin_top: "",
-            // margin_bottom: "",
-            // margin_right: "",
-            // margin_left: "",
-            // padding_top: "",
-            // padding_bottom: "",
-            // padding_right: "",
-            // padding_left: "",
-            // link_target: "",
-            // link_type: "",
-            elementTarget: {
-                element_name: "",
+        var elementData = {
+            synchronize: "",
+            wpcf7_data: {
+                background_color: "",
+                content: {
+                    background_color: "",
+                }
+            },
+            element_target: {
                 element_id: "",
                 element_number: "",
             }
         };
 
-        var $elementData = $elementContainer.find(".rex-element-data").eq(0);
-        elementProperties.elementTarget.element_id = $elementContainer.attr("data-rex-element-id");
-        elementProperties.elementTarget.element_number = parseInt($elementContainer.attr("data-rex-element-number"));
+        var $elementData = $elementWrapper.find(".rex-element-data").eq(0);
         var elementDataEl = $elementData[0];
+
+        /* ELEMENT GENERAL DATA */
+        elementData.element_target.element_id = $elementWrapper.attr("data-rex-element-id");
+        elementData.element_target.element_number = parseInt($elementWrapper.attr("data-rex-element-number"));
+
+        elementData.synchronize = typeof $elementData.attr("data-synchronize") == "undefined" ? false : $elementData.attr("data-synchronize").toString();
+
         var separate = false;
-
-        // Da aggiornare quando si sapranno le proprietà
-        elementProperties.background_color = (elementDataEl.getAttribute("data-background-color") ? elementDataEl.getAttribute("data-background-color").toString() : '');
-
-        elementProperties.synchronize = typeof $elementData.attr("data-synchronize") == "undefined" ? false : $elementData.attr("data-synchronize").toString();
-
-        if ($elementContainer.hasClass("rex-separate-element") || getAllData) {
+        if ($elementWrapper.hasClass("rex-separate-element") || getAllData) {
             separate = true;
         }
 
+        /* WPCF7 */
+        // Whole form
+        elementData.wpcf7_data.background_color = (elementDataEl.getAttribute("data-wpcf7-background-color") ? elementDataEl.getAttribute("data-wpcf7-background-color").toString() : '');
+
+        // Only content (inputs, selects, ecc...)
+        elementData.wpcf7_data.content.background_color = (elementDataEl.getAttribute("data-wpcf7-content-background-color") ? elementDataEl.getAttribute("data-wpcf7-content-background-color").toString() : '');
+
         var data = {
-            separateElement: separate,
-            elementInfo: elementProperties
+            elementInfo: elementData,
+            separateElement: separate
         }
 
         return data;
@@ -737,9 +726,9 @@ var Rexbuilder_Rexelement = (function ($) {
 
     var _addElementStyle = function ($elementWrapper) {
         if ($elementWrapper.find(".rex-element-data").eq(0).length != 0) {
-            var elementProperties = _generateElementData($elementWrapper, true);
-            var elementID = elementProperties.elementInfo.elementTarget.element_id;
-            _addCSSRules(elementID, elementProperties.elementInfo);
+            var elementData = _generateElementData($elementWrapper, true);
+            var elementID = elementData.elementInfo.element_target.element_id;
+            _addCSSRules(elementID, elementData.elementInfo);
         }
         $elementWrapper.find(".wpcf7-column").each(function(){
             Rexbuilder_Rexwpcf7.addColumnContentStyle($(this));
@@ -747,78 +736,21 @@ var Rexbuilder_Rexelement = (function ($) {
     }
 
     // Da aggiornare quando si sapranno le proprietà
-    var _addCSSRules = function (elementID, elementProperties) {
+    var _addCSSRules = function (elementID, elementData) {
         var currentMargin = "";
         var currentPadding = "";
         var currentDimension = "";
         var currentBorderDimension = "";
         var currentTextSize = "";
 
-        var containerRule = "";
-        // containerRule += "color: " + elementProperties.text_color + ";";
-
-        // checking font size, if value is not valid default font size will be applied
-        // currentTextSize = isNaN(parseInt(elementProperties.font_size.replace("px", ""))) ? defaultButtonValues.font_size : elementProperties.font_size;
-        // containerRule += "font-size: " + currentTextSize + ";";
-
-        // checking button dimensions, if value is not valid default dimensions will be applied
-        // currentDimension = isNaN(parseInt(elementProperties.button_height.replace("px", ""))) ? defaultButtonValues.dimensions.height : elementProperties.button_height;
-        // containerRule += "min-height: " + currentDimension + ";";
-        // currentDimension = isNaN(parseInt(elementProperties.button_width.replace("px", ""))) ? defaultButtonValues.dimensions.width : elementProperties.button_width;
-        // containerRule += "min-width: " + currentDimension + ";";
-
-        // checking margins, if they are not valid default value will be applied
-        // currentMargin = isNaN(parseInt(elementProperties.margin_top.replace("px", ""))) ? defaultButtonValues.margins.top : elementProperties.margin_top;
-        // containerRule += "margin-top: " + currentMargin + ";";
-        // currentMargin = isNaN(parseInt(elementProperties.margin_right.replace("px", ""))) ? defaultButtonValues.margins.right : elementProperties.margin_right;
-        // containerRule += "margin-right: " + currentMargin + ";";
-        // currentMargin = isNaN(parseInt(elementProperties.margin_bottom.replace("px", ""))) ? defaultButtonValues.margins.bottom : elementProperties.margin_bottom;
-        // containerRule += "margin-bottom: " + currentMargin + ";";
-        // currentMargin = isNaN(parseInt(elementProperties.margin_left.replace("px", ""))) ? defaultButtonValues.margins.left : elementProperties.margin_left;
-        // containerRule += "margin-left: " + currentMargin + ";";
-
-        // _addElementContainerRule(elementID, containerRule);
-
         var backgroundRule = "";
-        // backgroundRule += "border-color: " + elementProperties.border_color + ";";
-        // backgroundRule += "border-style: " + "solid" + ";";
-
-        // checking border dimensions, if they are not valid default value will be applied
-        // currentBorderDimension = isNaN(parseInt(elementProperties.border_width.replace("px", ""))) ? defaultButtonValues.border.width : elementProperties.border_width;
-        // backgroundRule += "border-width: " + currentBorderDimension + ";";
-        // currentBorderDimension = isNaN(parseInt(elementProperties.border_radius.replace("px", ""))) ? defaultButtonValues.border.radius : elementProperties.border_radius;
-        // backgroundRule += "border-radius: " + currentBorderDimension + ";";
-
-        backgroundRule += "background-color: " + elementProperties.background_color + ";";
-        // _addElementContainerRule(elementID, backgroundRule);
+        backgroundRule += "background-color: " + elementData.background_color + ";";
         _addElementBackgroundRule(elementID, backgroundRule);
-
-        var textRule = "";
-
-        // checking paddings, if they are not valid default value will be applied
-        // currentPadding = isNaN(parseInt(elementProperties.padding_top.replace("px", ""))) ? defaultButtonValues.paddings.top : elementProperties.padding_top;
-        // textRule += "padding-top: " + currentPadding + ";";
-        // currentPadding = isNaN(parseInt(elementProperties.padding_right.replace("px", ""))) ? defaultButtonValues.paddings.right : elementProperties.padding_right;
-        // textRule += "padding-right: " + currentPadding + ";";
-        // currentPadding = isNaN(parseInt(elementProperties.padding_bottom.replace("px", ""))) ? defaultButtonValues.paddings.bottom : elementProperties.padding_bottom;
-        // textRule += "padding-bottom: " + currentPadding + ";";
-        // currentPadding = isNaN(parseInt(elementProperties.padding_left.replace("px", ""))) ? defaultButtonValues.paddings.left : elementProperties.padding_left;
-        // textRule += "padding-left: " + currentPadding + ";";
-        // _addElementTextRule(elementID, textRule);
-
-        var backgroundHoverRule = "";
-        // backgroundHoverRule += "background-color: " + elementProperties.hover_color + ";";
-        // backgroundHoverRule += "border-color: " + elementProperties.hover_border + ";";
-        // _addElementBackgroundHoverRule(elementID, backgroundHoverRule);
-
-        var containerHoverRule = "";
-        // containerHoverRule += "color: " + elementProperties.hover_text + ";";
-        // _addElementContainerHoverRule(elementID, containerHoverRule);
     }
 
     var _updateElement = function (data) {
         var elementProperties = data.elementProperties;
-        var elementID = elementProperties.elementTarget.element_id;
+        var elementID = elementProperties.element_target.element_id;
         var currentMargin = "";
         var currentPadding = "";
         var currentDimension = "";
@@ -842,7 +774,7 @@ var Rexbuilder_Rexelement = (function ($) {
             //     _updateButtonContainerRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
             //     break;
             case "background":
-                _updateElementBackgroundRule(data.elementTarget.element_id, data.propertyName, data.newValue);
+                _updateElementBackgroundRule(data.element_target.element_id, data.propertyName, data.newValue);
                 break;
             // case "backgroundHover":
             // case "borderHover":
@@ -884,15 +816,15 @@ var Rexbuilder_Rexelement = (function ($) {
     }
 
     var _removeSeparateElement = function (data) {
-        var elementID = data.elementTarget.element_id;
+        var elementID = data.element_target.element_id;
         var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"]");
         $elementWrapper.removeClass("rex-separate-element");
         _removeModelData($elementWrapper);
     }
 
     var _lockSynchronize = function (data) {
-        var elementID = data.elementTarget.element_id;
-        var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"][data-rex-element-number=\"" + data.elementTarget.element_number + "\"]");
+        var elementID = data.element_target.element_id;
+        var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"][data-rex-element-number=\"" + data.element_target.element_number + "\"]");
         $elementWrapper.find(".rex-element-data").attr("data-synchronize", true);
     }
 
