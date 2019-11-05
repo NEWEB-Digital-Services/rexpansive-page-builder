@@ -382,6 +382,7 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_ajax_rex_wpcf7_get_forms', $plugin_public, 'rex_wpcf7_get_forms' );
 		$this->loader->add_action( 'wp_ajax_rex_wpcf7_get_form_data', $plugin_public, 'rex_wpcf7_get_form_data' );
 		$this->loader->add_action( 'wp_ajax_rex_wpcf7_save_form_data', $plugin_public, 'rex_wpcf7_save_form_data' );
+		$this->loader->add_action( 'wp_ajax_rex_element_get_span_data', $plugin_public, 'rex_element_get_span_data' );
 
 		$this->loader->add_action( 'wp_ajax_rex_transform_element_shortcode', $plugin_public, 'rex_transform_element_shortcode' );
 

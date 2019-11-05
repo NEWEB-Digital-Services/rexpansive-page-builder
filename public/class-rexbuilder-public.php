@@ -598,6 +598,34 @@ class Rexbuilder_Public
      * @return model with no image
      * @since  x.x.x
      */
+    public function rex_element_get_span_data () {
+        $nonce = $_POST['nonce_param'];
+
+        $response = array(
+            'error' => false,
+            'msg' => ''
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+        $response['error'] = false;
+
+        $elementID = $_POST['element_id'];
+
+        $response['element_data_html'] = get_post_meta($elementID, "_rex_element_data_html");
+
+        wp_send_json_success($response);
+    }
+
+    /**
+     * Saves wpcf7 data
+     * @return model with no image
+     * @since  x.x.x
+     */
     public function rex_wpcf7_get_form_data(){
         $nonce = $_POST['nonce_param'];
 

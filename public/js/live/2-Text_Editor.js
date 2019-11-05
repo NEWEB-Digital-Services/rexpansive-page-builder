@@ -1976,8 +1976,8 @@ var TextEditor = (function ($) {
       this.on(this.deleteFormColumnBtn, "click", this.handleClickDeleteFormColumn.bind(this));
 
       // Trace the cursor position
-      // this.subscribe("editableClick", this.traceInputForm.bind(this));
-      this.subscribe("editableMouseover", this.handleMouseOver.bind(this));
+      this.subscribe("editableClick", this.traceInputForm.bind(this));
+      // this.subscribe("editableMouseover", this.handleMouseOver.bind(this));
 
       this.subscribe("blur", this.handleBlur.bind(this));
     },
@@ -1988,6 +1988,7 @@ var TextEditor = (function ($) {
     
     handleMouseOver: function (event) {
       var $target = $(event.target);
+      console.log(event.target);
       if ($target.parents(".wpcf7-form").length != 0) {
           this.traceForm = $target.parents(".wpcf7-form")[0];
           this.addFormContentBtns = $(this.traceForm).find(".wpcf7-add-new-form-content");
@@ -2010,7 +2011,7 @@ var TextEditor = (function ($) {
             }
           }
         } else {
-          this.hideAllToolbars();
+          this.handleBlur(event);
         }
     },
 
@@ -2195,7 +2196,7 @@ var TextEditor = (function ($) {
     },
 
     handleBlur: function (event) {
-      if ($(event.target).parents(".wpcf7").length == 0 && $(event.target).parents(".rexwpcf7-tools").length == 0 && $(event.target).parents(".rexwpcf7-row-tools").length == 0 && $(event.target).parents(".rexwpcf7-column-tools").length == 0) {
+      if ($(event.target).parents(".wpcf7").length == 0 && $(event.target).parents(".rexwpcf7-tools").length == 0 && $(event.target).parents(".rexwpcf7-row-tools").length == 0 && $(event.target).parents(".rexwpcf7-column-tools").length == 0 && $(event.target).parents(".wpcf7-select-columns-number").length == 0) {
         this.hideAllToolbars();
       }
     },

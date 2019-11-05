@@ -321,6 +321,15 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         }
     }
 
+    var _addFormColumnsRule = function (formID, property) {
+        if ("insertRule" in styleSheet) {
+            styleSheet.insertRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-form .wpcf7-column" + "{" + property + "}", styleSheet.cssRules.length);
+        }
+        else if ("addRule" in styleSheet) {
+            styleSheet.addRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-form .wpcf7-column" + "{" + property + "}", styleSheet.cssRules.length);
+        }
+    }
+
     var _addFormInputsRule = function (formID, property) {
         var contentType;
     	for (contentType of formContentTypes) {
@@ -377,6 +386,18 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 styleSheet.cssRules[i].selectorText == "[data-rex-element-id=\"" + formID + "\"].rex-element-wrapper .wpcf7-form"
             ) {
                 switch (rule) {
+                    case "margin-top":
+                        styleSheet.cssRules[i].style.marginTop = value;
+                        break;
+                    case "margin-bottom":
+                        styleSheet.cssRules[i].style.marginBottom = value;
+                        break;
+                    case "margin-left":
+                        styleSheet.cssRules[i].style.marginLeft = value;
+                        break;
+                    case "margin-right":
+                        styleSheet.cssRules[i].style.marginRight = value;
+                        break;
                     case "border-width":
                         styleSheet.cssRules[i].style.borderWidth = value;
 
@@ -428,6 +449,35 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                         break;
                     case "background-color":
                         styleSheet.cssRules[i].style.backgroundColor = value;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            }
+        }
+    }
+
+    var _updateFormColumnsRule = function (formID, rule, value) {
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+            if (
+                //chrome firefox
+                styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-form .wpcf7-column" ||
+                // edge
+                styleSheet.cssRules[i].selectorText == "[data-rex-element-id=\"" + formID + "\"].rex-element-wrapper .wpcf7-form .wpcf7-column"
+            ) {
+                switch (rule) {
+                    case "padding-top":
+                        styleSheet.cssRules[i].style.paddingTop = value;
+                        break;
+                    case "padding-left":
+                        styleSheet.cssRules[i].style.paddingLeft = value;
+                        break;
+                    case "padding-right":
+                        styleSheet.cssRules[i].style.paddingRight = value;
+                        break;
+                    case "padding-bottom":
+                        styleSheet.cssRules[i].style.paddingBottom = value;
                         break;
                     default:
                         break;
@@ -726,13 +776,15 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////
     // Form functions
 
     var _addFormStyle = function ($form) {
-        if ($form.find(".rex-wpcf7-form-data").eq(0).length != 0) {
-            var formData = _generateFormData($form);
-            var formID = formData.target.form_id;
+        var $elementWrapper = $form.parents(".rex-element-wrapper");
+        if ($elementWrapper.find(".rex-element-data").eq(0).length != 0) {
+            var formData = Rexbuilder_Rexelement.generateElementData($elementWrapper);
+            var formID = formData.elementInfo.element_target.element_id;
+            formData = formData.elementInfo.wpcf7_data;
             _addFormCSSRules(formID, formData);
             _addFormInputsCSSRules(formID, formData);
         }
@@ -753,22 +805,43 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var currentTextSize = "";
         var containerRule = "";
 
-        var backgroundRule = "";
+        var formRule = "";
 
-        backgroundRule += "background-color: " + formData.background_color + ";";
-        // _addElementContainerRule(elementID, backgroundRule);
-        _addFormRule(formID, backgroundRule);
+        formRule += "background-color: " + formData.background_color + ";";
+        formRule += "border-style: solid;";
+        formRule += "border-color: " + formData.border_color + ";";
+        formRule += "border-width: " + formData.border_width + ";";
+        formRule += "margin-top: " + formData.margin_top + ";";
+        formRule += "margin-left: " + formData.margin_left + ";";
+        formRule += "margin-right: " + formData.margin_right + ";";
+        formRule += "margin-bottom: " + formData.margin_bottom + ";";
+        _addFormRule(formID, formRule);
+
+        var formColumnsRule = "";
+
+        formColumnsRule += "padding-top: " + formData.columns.padding_top + ";";
+        formColumnsRule += "padding-left: " + formData.columns.padding_left + ";";
+        formColumnsRule += "padding-right: " + formData.columns.padding_right + ";";
+        formColumnsRule += "padding-bottom: " + formData.columns.padding_bottom + ";";
+
+        _addFormColumnsRule(formID, formColumnsRule);
     }
 
     var _updateFormLive = function (data) {
-        var formID = data.target.form_id;
+        var formID = data.element_target.element_id;
         var propertyType = data.propertyType;
         var propertyName = data.propertyName;
         var newValue = data.newValue;
 
         switch (propertyType) {
             case "background":
+            case "border":
+            case "border-width":
+            case "margin":
                 _updateFormRule(formID, propertyName, newValue);
+                break;
+            case "columns-padding":
+                _updateFormColumnsRule(formID, propertyName, newValue);
                 break;
             default:
                 break;
@@ -807,8 +880,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     var _updateForm = function (data) {
-        var formData = data.formData;
-        var formID = formData.element_target.element_id;
+        var formData = data.elementData.wpcf7_data;
+        var formID = data.elementData.element_target.element_id;
         var currentMargin = "";
         var currentPadding = "";
         var currentDimension = "";
@@ -816,10 +889,19 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var currentTextSize = "";
 
         _updateFormRule(formID, "background-color", formData.background_color);
-        _updateFormInputsRule(formID, "background-color", formData.content.background_color);
+        _updateFormRule(formID, "border-color", formData.border_color);
+        _updateFormRule(formID, "border-width", formData.border_width);
+        _updateFormRule(formID, "margin-top", formData.margin_top);
+        _updateFormRule(formID, "margin-left", formData.margin_left);
+        _updateFormRule(formID, "margin-right", formData.margin_right);
+        _updateFormRule(formID, "margin-bottom", formData.margin_bottom);
 
-        // If editing a separate element, will always be length = 1,
-        // if editing a model element, will be length >= 1
+        _updateFormColumnsRule(formID, "padding-top", formData.columns.padding_top);
+        _updateFormColumnsRule(formID, "padding-left", formData.columns.padding_left);
+        _updateFormColumnsRule(formID, "padding-right", formData.columns.padding_right);
+        _updateFormColumnsRule(formID, "padding-bottom", formData.columns.padding_bottom);
+        // _updateFormInputsRule(formID, "background-color", formData.content.background_color);
+
         var $elementWrappers = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]");
         _updateFormsData($elementWrappers, formData);
     }
@@ -832,10 +914,20 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
      */
     var _updateFormsData = function ($elementWrappers, formData) {
         $elementWrappers.each(function() {
-            var $formData = $(this).find(".wpcf7").find(".rex-wpcf7-form-data").eq(0);
+            var $formData = $(this).find(".rex-element-data").eq(0);
 
-            $formData.attr("data-form-background-color", formData.background_color);
-            $formData.attr("data-content-background-color", formData.content.background_color);
+            $formData.attr("data-wpcf7-background-color", formData.background_color);
+            $formData.attr("data-wpcf7-border-color", formData.border_color);
+            $formData.attr("data-wpcf7-border-width", formData.border_width);
+            $formData.attr("data-wpcf7-margin-top", formData.margin_top);
+            $formData.attr("data-wpcf7-margin-left", formData.margin_left);
+            $formData.attr("data-wpcf7-margin-right", formData.margin_right);
+            $formData.attr("data-wpcf7-margin-bottom", formData.margin_bottom);
+            $formData.attr("data-wpcf7-columns-padding-top", formData.columns.padding_top);
+            $formData.attr("data-wpcf7-columns-padding-left", formData.columns.padding_left);
+            $formData.attr("data-wpcf7-columns-padding-right", formData.columns.padding_right);
+            $formData.attr("data-wpcf7-columns-padding-bottom", formData.columns.padding_bottom);
+            $formData.attr("data-wpcf7-content-background-color", formData.content.background_color);
         })
     }
 

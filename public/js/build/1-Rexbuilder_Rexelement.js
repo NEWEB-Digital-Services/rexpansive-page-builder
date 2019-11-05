@@ -50,7 +50,7 @@ var Rexbuilder_Rexelement = (function ($) {
         }
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////////////////////////////////////////////////////
     // Updating rules
     
     var _updateElementBackgroundRule = function (elementID, rule, value) {
@@ -340,10 +340,11 @@ var Rexbuilder_Rexelement = (function ($) {
             var $elementWrapper = $(element);
             var elementID = $elementWrapper.attr("data-rex-element-id");
             // Adding form span data
-            if ($elementWrapper.find(".wpcf7").length != 0) {
-                var $formToAddData = $elementWrapper.find(".wpcf7");
-                _addFormData($formToAddData);
-            }
+            // if ($elementWrapper.find(".wpcf7").length != 0) {
+                // var $formToAddData = $elementWrapper.find(".wpcf7");
+                // _addFormData($formToAddData);
+            // }
+            // _addElementData($elementWrapper, i);
             
             if ($elementWrapper.hasClass("rex-separate-element")) {
                 // We are not editing an element model, but a separate element
@@ -430,6 +431,45 @@ var Rexbuilder_Rexelement = (function ($) {
                     $fileLabel.text("Choose a file");
                 }
             });
+        });
+    }
+
+    var _addElementData = function ($elementToAddData, index) {
+        var elementID = $elementToAddData.attr("data-rex-element-id");
+        // var $elementWrapper = $formToAddData.parents(".rex-element-wrapper");
+        var $elementWrappers = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper");
+
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: _plugin_frontend_settings.rexajax.ajaxurl,
+            data: {
+                action: "rex_element_get_span_data",
+                nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+                element_id: elementID
+            },
+            success: function(response) {
+                if (response.success) {
+                    var elementData = response.data.element_data_html;
+
+                    if ($elementToAddData.find(".rex-element-data").length != 0) {
+                        $elementToAddData.find(".rex-element-data").remove();
+                    }
+
+                    if ("undefined" == typeof elementData[0]) {
+                        // If there's not a span element, create it
+                        var $elementData = $(document.createElement("span"));
+                        $elementData.addClass("rex-wpcf7-form-data");
+                        $elementToAddData.prepend($elementData);
+
+                    } else {
+                        // If there is a span element, add it in the DOM
+                        var $elementData = $.parseHTML(elementData[0]);
+                        $elementToAddData.prepend($elementData);
+                    }
+                }
+            },
+            error: function(response) {}
         });
     }
 
@@ -661,6 +701,18 @@ var Rexbuilder_Rexelement = (function ($) {
             synchronize: "",
             wpcf7_data: {
                 background_color: "",
+                border_color: "",
+                border_width: "",
+                margin_top: "",
+                margin_left: "",
+                margin_right: "",
+                margin_bottom: "",
+                columns: {
+                    padding_top: "",
+                    padding_left: "",
+                    padding_right: "",
+                    padding_bottom: "",
+                },
                 content: {
                     background_color: "",
                 }
@@ -686,10 +738,28 @@ var Rexbuilder_Rexelement = (function ($) {
         }
 
         /* WPCF7 */
-        // Whole form
+        // Background color
         elementData.wpcf7_data.background_color = (elementDataEl.getAttribute("data-wpcf7-background-color") ? elementDataEl.getAttribute("data-wpcf7-background-color").toString() : '');
 
-        // Only content (inputs, selects, ecc...)
+        // Border color
+        elementData.wpcf7_data.border_color = (elementDataEl.getAttribute("data-wpcf7-border-color") ? elementDataEl.getAttribute("data-wpcf7-border-color").toString() : '');
+
+        // Border width
+        elementData.wpcf7_data.border_width = (elementDataEl.getAttribute("data-wpcf7-border-width") ? elementDataEl.getAttribute("data-wpcf7-border-width").toString() : '');
+
+        // Margins
+        elementData.wpcf7_data.margin_top = (elementDataEl.getAttribute("data-wpcf7-margin-top") ? elementDataEl.getAttribute("data-wpcf7-margin-top").toString() : '');
+        elementData.wpcf7_data.margin_left = (elementDataEl.getAttribute("data-wpcf7-margin-left") ? elementDataEl.getAttribute("data-wpcf7-margin-left").toString() : '');
+        elementData.wpcf7_data.margin_right = (elementDataEl.getAttribute("data-wpcf7-margin-right") ? elementDataEl.getAttribute("data-wpcf7-margin-right").toString() : '');
+        elementData.wpcf7_data.margin_bottom = (elementDataEl.getAttribute("data-wpcf7-margin-bottom") ? elementDataEl.getAttribute("data-wpcf7-margin-bottom").toString() : '');
+
+        // Columns padding
+        elementData.wpcf7_data.columns.padding_top = (elementDataEl.getAttribute("data-wpcf7-columns-padding-top") ? elementDataEl.getAttribute("data-wpcf7-columns-padding-top").toString() : '');
+        elementData.wpcf7_data.columns.padding_left = (elementDataEl.getAttribute("data-wpcf7-columns-padding-left") ? elementDataEl.getAttribute("data-wpcf7-columns-padding-left").toString() : '');
+        elementData.wpcf7_data.columns.padding_right = (elementDataEl.getAttribute("data-wpcf7-columns-padding-right") ? elementDataEl.getAttribute("data-wpcf7-columns-padding-right").toString() : '');
+        elementData.wpcf7_data.columns.padding_bottom = (elementDataEl.getAttribute("data-wpcf7-columns-padding-bottom") ? elementDataEl.getAttribute("data-wpcf7-columns-padding-bottom").toString() : '');
+
+        /* WPCF7 CONTENT */
         elementData.wpcf7_data.content.background_color = (elementDataEl.getAttribute("data-wpcf7-content-background-color") ? elementDataEl.getAttribute("data-wpcf7-content-background-color").toString() : '');
 
         var data = {
@@ -728,14 +798,14 @@ var Rexbuilder_Rexelement = (function ($) {
         if ($elementWrapper.find(".rex-element-data").eq(0).length != 0) {
             var elementData = _generateElementData($elementWrapper, true);
             var elementID = elementData.elementInfo.element_target.element_id;
-            _addCSSRules(elementID, elementData.elementInfo);
+            // _addCSSRules(elementID, elementData.elementInfo);
+            Rexbuilder_Rexwpcf7.addFormStyle($elementWrapper.find(".wpcf7-form"));
         }
         $elementWrapper.find(".wpcf7-column").each(function(){
             Rexbuilder_Rexwpcf7.addColumnContentStyle($(this));
         })
     }
 
-    // Da aggiornare quando si sapranno le proprietà
     var _addCSSRules = function (elementID, elementData) {
         var currentMargin = "";
         var currentPadding = "";
@@ -767,41 +837,9 @@ var Rexbuilder_Rexelement = (function ($) {
 
     var _updateElementLive = function (data) {
         switch (data.propertyType) {
-            // case "text":
-            //     _updateButtonTextRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
-            //     break;
-            // case "container":
-            //     _updateButtonContainerRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
-            //     break;
             case "background":
                 _updateElementBackgroundRule(data.element_target.element_id, data.propertyName, data.newValue);
                 break;
-            // case "backgroundHover":
-            // case "borderHover":
-            //     _updateButtonBackgroundHoverRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
-            //     break;
-            // case "textHover":
-            //     _updateContainerHoverRule(data.buttonTarget.button_id, data.propertyName, data.newValue);
-            //     break;
-            // case "button":
-            //     var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-button-wrapper[data-rex-button-id=\"" + data.buttonTarget.button_id + "\"][data-rex-button-number=\"" + data.buttonTarget.button_number + "\"]");
-            //     switch (data.propertyName) {
-            //         case "link_target":
-            //             $elementWrapper.find("a.rex-button-container").eq(0).attr("href", data.newValue);
-            //             break;
-            //         case "link_type":
-            //             $elementWrapper.find("a.rex-button-container").eq(0).attr("target", data.newValue);
-            //             break;
-            //         case "button_label":
-            //             $elementWrapper.find(".rex-button-text").eq(0).text(data.newValue);
-            //             break;
-            //         case "button_name":
-            //             $elementWrapper.find(".rex-button-data").eq(0).attr("data-button-name", data.newValue);
-            //             break;
-            //         default:
-            //             break;
-            //     }
-            //     break;
             default:
                 break;
         }

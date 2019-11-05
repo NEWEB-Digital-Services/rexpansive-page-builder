@@ -5459,13 +5459,15 @@ input.me-insert-embed__value[type=text] {
       .rexwpcf7-column-tools .rex-wpcf7-column-tools-container .rex-wpcf7-column-delete .l-svg-icons > svg {
         fill: #ffffff; }
 
+.wpcf7-form {
+  display: inline-block; }
+
 .wpcf7-row__1-column .wpcf7-column,
 .wpcf7-row__2-columns .wpcf7-column,
 .wpcf7-row__3-columns .wpcf7-column,
 .wpcf7-row__4-columns .wpcf7-column {
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
-  display: inline-flex;
+  display: inline-block;
+  float: left;
   border-width: 10px;
   padding: 10px; }
 

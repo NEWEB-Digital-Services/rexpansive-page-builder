@@ -35,10 +35,8 @@ var Element_Edit_Modal = (function ($) {
                 case "edit": // Editing an existing model element
 
                     element_editor_properties.$self.addClass("editing-model");
-                    // Rexlive_Modals_Utils.openModal(
-                    //     element_editor_properties.$self.parent(".rex-modal-wrap")
-                    // );
-
+                    
+                    // Selezionare il modal in base al tipo di elemento che abbiamo
                     Wpcf7_Edit_Form_Modal.openFormEditorModal(elementData);
                     _staySynchronized();
                     break;
@@ -76,12 +74,11 @@ var Element_Edit_Modal = (function ($) {
     var newID;
     
     var _openElementEditorModal = function (data) {
-        elementData = jQuery.extend(true, {}, data.elementInfo);
         alreadyChooseToSynchronize = false;
         _updateElementEditorModal(data);
         if (alreadyChooseToSynchronize) {
             // Rexlive_Modals_Utils.openModal(element_editor_properties.$self.parent(".rex-modal-wrap"));
-            Wpcf7_Edit_Form_Modal.openFormEditorModal(data);
+            Wpcf7_Edit_Form_Modal.openFormEditorModal(elementData);
         } else {
             _openChooseElementEdit();
         }
@@ -115,8 +112,8 @@ var Element_Edit_Modal = (function ($) {
 
     var _updateElementData = function (data) {
     	elementData = jQuery.extend(true, {}, data.elementInfo);
-		if (typeof data.elementInfo.synchronize != "undefined") {
-		    alreadyChooseToSynchronize = data.elementInfo.synchronize.toString() == "true";
+		if (typeof elementData.synchronize != "undefined") {
+		    alreadyChooseToSynchronize = elementData.synchronize.toString() == "true";
 		}
         reverseData = jQuery.extend(true, {}, elementData);
         resetData = jQuery.extend(true, {}, elementData);
@@ -149,11 +146,10 @@ var Element_Edit_Modal = (function ($) {
         // elementData.text = button_editor_properties.$button_label_text.val();
         // elementData.link_target = button_editor_properties.$button_link_target.val();
         // elementData.link_type = button_editor_properties.$button_link_type.val();
-        
     };
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
-    // LINKING PANEL TOOLS
+    /// LINKING PANEL TOOLS
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
     var _linkBackgroundColorEditor = function () {
@@ -443,7 +439,7 @@ var Element_Edit_Modal = (function ($) {
          */
         element_editor_properties.$add_model_button.on("click", function () {
             _updateElementDataFromPanel();
-            _saveElementOnDB();
+            // _saveElementOnDB();
         });
 
         /**
@@ -582,6 +578,8 @@ var Element_Edit_Modal = (function ($) {
 	return {
 		init: _init,
         openElementEditorModal: _openElementEditorModal,
+        updateElementData: _updateElementData,
+        saveElementUpdatesOnDB: _saveElementUpdatesOnDB,
         // removeIDElement: _removeIDElement,
         // removeIDElementSoft: _removeIDElementSoft
 	}

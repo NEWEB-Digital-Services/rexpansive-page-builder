@@ -2025,10 +2025,10 @@
     $document.on("rexlive:update_wcpf7_page", function(e) {
       var data = e.settings.data_to_send;
       var reverseData = {
-        formData: jQuery.extend(true, {}, data.reverseFormData)
+        elementData: jQuery.extend(true, {}, data.reverseFormData)
       };
       var actionData = {
-        formData: jQuery.extend(true, {}, data.actionFormData)
+        elementData: jQuery.extend(true, {}, data.actionFormData)
       }
       Rexbuilder_Rexwpcf7.updateForm(actionData);
 

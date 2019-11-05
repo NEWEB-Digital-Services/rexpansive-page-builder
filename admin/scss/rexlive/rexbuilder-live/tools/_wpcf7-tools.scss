@@ -85,12 +85,18 @@
 }
 
 // Common CSS
+
+.wpcf7-form {
+  display: inline-block;
+}
+
 .wpcf7-row__1-column,
 .wpcf7-row__2-columns,
 .wpcf7-row__3-columns,
 .wpcf7-row__4-columns {
   .wpcf7-column {
-    display: inline-flex;
+    display: inline-block;
+    float: left;
     border-width: 10px;
     padding: 10px;
 
@@ -110,15 +116,13 @@
 
 .wpcf7-row__2-columns {
   .wpcf7-column {
-    // float: left;
     max-width: 50%;
-    width: 50%;//con 50% non va
+    width: 50%;
   }
 }
 
 .wpcf7-row__3-columns {
   .wpcf7-column {
-    // float: left;
     width: 33.3333%;
   }
 }
