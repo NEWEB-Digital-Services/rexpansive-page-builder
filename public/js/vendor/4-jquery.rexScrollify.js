@@ -114,9 +114,7 @@
         this.properties.launched = true;
 
       } else {
-        var that = this;
-
-        if (!that.properties.launched) {
+        if (!this.properties.launched) {
 
           var win_height = windowInnerHeight,
             win_height_padded_bottom,
@@ -136,30 +134,34 @@
             win_height_padded_top = win_height + this.settings.offset;
           }
 
-          if (((blockPosition - win_height_padded_bottom < scrolled) && ((blockPosition + blockHeight) - win_height_padded_top > scrolled)) || that.settings.force_launch) {
+          if (((blockPosition - win_height_padded_bottom < scrolled) && ((blockPosition + blockHeight) - win_height_padded_top > scrolled)) || this.settings.force_launch) {
 
             // Fix to prevent loop animation on delay
-            if (that.settings.delay) {
-              that.launched = true;
+            if (this.settings.delay) {
+              this.properties.launched = true;
             }
 
-            this.$element.velocity(
-              that.settings.animation,
-              {
-                duration: that.settings.duration,
-                delay: that.settings.delay,
-                stagger: that.settings.stagger,
-                begin: function (elements) {
-                  that.properties.launched = true;
-                },
-                complete: function (elements) {
-                  that.$element.trigger('rs-animation-complete');
-                }
-              }
-            );
+            this.launchAnimation();
           }
         }
       }
+    },
+    launchAnimation: function() {
+      var that = this;
+      this.$element.velocity(
+        that.settings.animation,
+        {
+          duration: that.settings.duration,
+          delay: that.settings.delay,
+          stagger: that.settings.stagger,
+          begin: function (elements) {
+            that.properties.launched = true;
+          },
+          complete: function (elements) {
+            that.$element.trigger('rs-animation-complete');
+          }
+        }
+      );
     },
     _viewport: function () {
       var e = window, a = 'inner';

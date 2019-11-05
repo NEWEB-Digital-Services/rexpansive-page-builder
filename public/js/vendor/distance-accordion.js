@@ -27,6 +27,7 @@
       wrapObjects: false,
       wrapperClassName: 'da-wrapper',
       wrapperCustomClass: '',
+      accordionElementClassName: 'da-element',
       scrollTo: false
     };
 
@@ -79,6 +80,9 @@
           this.element.className += this.options.openClassName;
         }
 
+        // add class to identify accordion items
+        this.$targets.addClass( this.options.accordionElementClassName );
+
         // if close, hide target
         if ( this.close ) {
           this.targets.forEach(function( el ) {
@@ -119,7 +123,11 @@
           } 
         );
       } else {
-        this.$targets.slideDown();
+        this.$targets.slideDown({
+          complete:function() {
+            $(this).trigger('da:open_complete');
+          }
+        });
       }
       this.$element.addClass('open').removeClass('close');
       if ( this.$wrapToggler.length > 0 ) {

@@ -48,7 +48,7 @@
         var tempImg = new Image();
         tempImg.src = el.getAttribute('data-src');
         tempImg.onload = function() {
-          el.style.backgroundImage = 'url(' + el.getAttribute('data-src') + ')';
+          el.style.backgroundImage = 'url(' + this.src + ')';
           el.removeAttribute('data-src');
           // if ( observable.getAttribute('data-rexbuilder-block-id') ) {
 
