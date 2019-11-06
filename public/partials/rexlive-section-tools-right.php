@@ -12,6 +12,9 @@
  */
 
 defined('ABSPATH') or exit;
+
+$id_image_bg_section = ( isset( $atts['id_image_bg_section'] ) && ! empty( $atts['id_image_bg_section'] ) ? $atts['id_image_bg_section'] : '' );
+$image_bg_section = ( isset( $atts['image_bg_section'] ) && ! empty( $atts['image_bg_section'] ) ? $atts['image_bg_section'] : '' );
 ?>
 
 <div class="bl_d-flex bl_ai-c bl_jc-fe tools-area tool-area--side">
@@ -23,7 +26,7 @@ defined('ABSPATH') or exit;
         </div>
 
         <div class="tool-button--double-icon--wrap tool-button--distance-fix tool-button--hide tool-button--model-hide tippy" data-tippy-content="<?php _e('Background Image','rexpansive-builder'); ?>">
-            <div class="<?php echo $tool_button_classes; ?> tool-button--inline edit-row-image-background<?php echo ( "" != $atts['id_image_bg_section'] ? ' tool-button--image-preview' : '' ); ?>" value="<?php echo esc_attr( $atts['id_image_bg_section'] ); ?>"<?php echo ( "" != $atts['id_image_bg_section'] ? ' style="background-image:url(' . $atts['image_bg_section'] . ');"' : '' ); ?>>
+            <div class="<?php echo $tool_button_classes; ?> tool-button--inline edit-row-image-background<?php echo ( "" != $id_image_bg_section ? ' tool-button--image-preview' : '' ); ?>" value="<?php echo esc_attr( $id_image_bg_section ); ?>"<?php echo ( "" != $id_image_bg_section ? ' style="background-image:url(' . $image_bg_section . ');"' : '' ); ?>>
                 <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
             </div>
             <div class="tool-button tool-button--inline tool-button--deactivate tool-button--double-icon deactivate-row-image-background">
@@ -82,7 +85,7 @@ defined('ABSPATH') or exit;
                     <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
                 </div>
 
-                <div class="tool-button tool-button_list--item tool-button--full edit-row-image-background tippy <?php echo ( "" != $atts['id_image_bg_section'] ? ' tool-button--hide' : '' ); ?>" data-tippy-content="<?php _e('Background Image','rexpansive-builder'); ?>">
+                <div class="tool-button tool-button_list--item tool-button--full edit-row-image-background tippy <?php echo ( "" != $id_image_bg_section ? ' tool-button--hide' : '' ); ?>" data-tippy-content="<?php _e('Background Image','rexpansive-builder'); ?>">
                     <?php Rexbuilder_Utilities::get_icon('#Z002-Image-Full'); ?>
                 </div>
 

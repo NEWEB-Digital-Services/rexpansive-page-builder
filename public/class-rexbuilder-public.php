@@ -457,7 +457,8 @@ class Rexbuilder_Public
             'odometer' => array(
                 'theme' => 'digital',
                 'format' => '(.ddd),dd'
-            )
+            ),
+            'old_builder' => Rexbuilder_Utilities::postSavedFromBackend()
         );
     }
 
