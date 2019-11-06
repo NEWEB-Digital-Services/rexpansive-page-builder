@@ -157,17 +157,106 @@ defined('ABSPATH') or exit;
                     </div>
                 </div>
             </div>
-            <div class="bl_modal-row row-hidden">
-                <div class="rexwpcf7-count-column_1">
-                    <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Inputs Color', 'rexpansive-builder');?>" tabindex="0">
-                        <input type="hidden" id="rex-wpcf7-inputs-background-color-runtime" name="rex-wpcf7-inputs-background-color-runtime" value="" />
-                        <input id="rex-wpcf7-inputs-background-color" type="text" name="rex-wpcf7-inputs-background-color" value="" size="10" />
-                        <div id="rex-wpcf7-inputs-background-color-preview-icon" class="rex-wpcf7-inputs-background-color-preview-icon"></div>
+            <div class="bl_modal-row">
+                <!-- WIDTH & HEIGHT -->
+                <div class="bl_modal__option-wrap bl_modal__col-4">
+                    <div id="section-set-dimension" class="input-field rex-input-prefixed bl_modal__input-prefixed--small tippy" data-tippy-content="<?php _e('Width', 'rexpansive-builder');?>">
+                        <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#B001-Full'); ?></span>
+                        <input type="text" id="rex-wpcf7-content-width" class="rex-wpcf7-content-width rexwpcf7-set-width-input" name="" size="23">
+                        <span class="rex-material-bar"></span>
+                    </div>
+                    <div class="">
+                        <div class="rex-check-text percentage-width boxed-width-type-wrap" data-rex-section-width-type="%">
+                            <input id="rex-wpcf7-content-width-percentage" type="radio" class="rex-wpcf7-content-width-type with-gap" name="rex-wpcf7-content-width-type" value="percentage" checked />
+                            <label for="rex-wpcf7-content-width-percentage">
+                                <?php _e('%', 'rexpansive-builder');?>
+                                <span class="rex-ripple"></span>
+                            </label>
+                        </div>
+                        <div class="rex-check-text pixel-width boxed-width-type-wrap" data-rex-section-width-type="px">
+                            <input id="rex-wpcf7-content-width-pixel" type="radio" class="rex-wpcf7-content-width-type with-gap" name="rex-wpcf7-content-width-type" value="pixel" />
+                            <label for="rex-wpcf7-content-width-pixel">
+                                <?php _e('PX', 'rexpansive-builder');?>
+                                <span class="rex-ripple"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div> 
+                <div class="bl_modal__option-wrap bl_modal__col-4">
+                    <div id="section-set-dimension" class="input-field rex-input-prefixed bl_modal__input-prefixed--small tippy" data-tippy-content="<?php _e('Height', 'rexpansive-builder');?>">
+                        <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#B012-Full-Height'); ?></span>
+                        <input type="text" id="rex-wpcf7-content-height" class="rex-wpcf7-content-height rexwpcf7-set-height-input" name="" size="23">
+                        <span class="rex-material-bar"></span>
+                    </div>
+                    <div class="">
+                        <div class="" data-rex-section-width-type="%"> <!-- class=rex-check-text percentage-width boxed-width-type-wrap -->
+                            <input id="rex-wpcf7-content-height-percentage" type="radio" class="rex-wpcf7-content-height-type with-gap" name="rex-wpcf7-content-height-type" value="percentage" checked />
+                            <label for="rex-wpcf7-content-height-percentage">
+                                <?php _e('%', 'rexpansive-builder');?>
+                                <span class="rex-ripple"></span>
+                            </label>
+                        </div>
+                        <div class="" data-rex-section-width-type="px">
+                            <input id="rex-wpcf7-content-height-pixel" type="radio" class="rex-wpcf7-content-height-type with-gap" name="rex-wpcf7-content-height-type" value="pixel" />
+                            <label for="rex-wpcf7-content-height-pixel">
+                                <?php _e('PX', 'rexpansive-builder');?>
+                                <span class="rex-ripple"></span>
+                            </label>
+                        </div>
                     </div>
                 </div>
-                <div class="rexwpcf7-count-column_2">
-                    <div id="rex-wpcf7-inputs-background-preview-wrap">
-                        <div id="rex-wpcf7-preview-inputs-background"></div>
+            </div>
+            <div class="rexpansive-accordion close">
+                <div class="bl_modal-row">
+                    <!-- CONTENT BACKGROUND COLOR -->
+                    <div class="rexwpcf7-cont_row">
+                        <div class="rexwpcf7-count-column_accord">
+                            <span class="rex-accordion--toggle">                                
+                                <div class="rexwpcf7-upd-accord_button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></div>
+                            </span>
+                        </div>
+                        <div class="rexwpcf7-count-column_1">
+                            <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Background Color', 'rexpansive-builder');?>" tabindex="0">
+                                <input type="hidden" id="rex-wpcf7-content-background-color-runtime" name="rex-wpcf7-content-background-color-runtime" value="" />
+                                <input id="rex-wpcf7-content-background-color" type="text" name="rex-wpcf7-content-background-color" value="" size="10" />
+                                <div id="rex-wpcf7-content-background-color-preview-icon" class="preview-color-icon"></div>
+                            </div>
+                        </div>
+                        <div class="rexwpcf7-count-column_2">
+                            <div id="rex-wpcf7-content-background-preview-wrap">
+                                <div id="rex-wpcf7-content-preview-background-color"></div>
+                            </div>
+                        </div>
+                        <div class="rexwpcf7-count-column_3"></div>
+                        <div class="rexwpcf7-count-column_4">
+                            <input type="text" id="rex-wpcf7-set-content-font-size" name="" class="rex-wpcf7-set-content-font-size">
+                        </div>
+                        <div class="rexwpcf7-count-column_5">
+                            <div class="label-px">px</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rex-accordion--content" style="display:none;" data-item-status="close">
+                    <div class="bl_modal-row">
+                        <!-- CONTENT BACKGROUND COLOR HOVER -->
+                        <div class="rexwpcf7-cont_row">
+                            <div class="rexwpcf7-count-column_accord"></div>
+                            <div class="rexwpcf7-count-column_1">
+                                <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Focus Color', 'rexpansive-builder');?>" tabindex="0">
+                                    <input type="hidden" id="rex-wpcf7-content-background-color-runtime" name="rex-wpcf7-content-background-color-runtime" value="" />
+                                    <input id="rex-wpcf7-content-background-color" type="text" name="rex-wpcf7-content-background-color" value="" size="10" />
+                                    <div id="rex-wpcf7-content-background-color-preview-icon" class="preview-color-icon"></div>
+                                </div>
+                            </div>
+                            <div class="rexwpcf7-count-column_2">
+                                <div id="rex-wpcf7-content-background-preview-wrap">
+                                    <div id="rex-wpcf7-preview-content-background-color"></div>
+                                </div>
+                            </div>
+                            <div class="rexwpcf7-count-column_3"><!-- space for icons --></div>
+                            <div class="rexwpcf7-count-column_4"><!-- space for dimensions --></div>
+                            <div class="rexwpcf7-count-column_5"><!-- space for unit measurement --></div>
+                        </div>
                     </div>
                 </div>
             </div>

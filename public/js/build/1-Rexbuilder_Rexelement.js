@@ -715,6 +715,16 @@ var Rexbuilder_Rexelement = (function ($) {
                 },
                 content: {
                     background_color: "",
+                    background_color_hover: "",
+                    text_color: "",
+                    text_color_hover: "",
+                    border_color: "",
+                    border_color_hover: "",
+                    width: "",
+                    height: "",
+                    font_size: "",
+                    border_width: "",
+                    border_radius: "",
                 }
             },
             element_target: {
@@ -760,6 +770,11 @@ var Rexbuilder_Rexelement = (function ($) {
         elementData.wpcf7_data.columns.padding_bottom = (elementDataEl.getAttribute("data-wpcf7-columns-padding-bottom") ? elementDataEl.getAttribute("data-wpcf7-columns-padding-bottom").toString() : '');
 
         /* WPCF7 CONTENT */
+        // Width & height
+        elementData.wpcf7_data.content.width = (elementDataEl.getAttribute("data-wpcf7-content-width") ? elementDataEl.getAttribute("data-wpcf7-content-width").toString() : "");
+        elementData.wpcf7_data.content.height = (elementDataEl.getAttribute("data-wpcf7-content-height") ? elementDataEl.getAttribute("data-wpcf7-content-height").toString() : "");
+
+        // Background color
         elementData.wpcf7_data.content.background_color = (elementDataEl.getAttribute("data-wpcf7-content-background-color") ? elementDataEl.getAttribute("data-wpcf7-content-background-color").toString() : '');
 
         var data = {

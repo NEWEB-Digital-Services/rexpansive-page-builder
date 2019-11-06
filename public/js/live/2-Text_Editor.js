@@ -1629,8 +1629,8 @@ var TextEditor = (function ($) {
       this.subscribe("blur", this.handleBlur.bind(this));
 
       // Trace the cursor position
-      // this.subscribe("editableClick", this.traceInputRexElement.bind(this));
-      this.subscribe("editableMouseover", this.handleMouseOver.bind(this));
+      this.subscribe("editableClick", this.traceInputRexElement.bind(this));
+      // this.subscribe("editableMouseover", this.handleMouseOver.bind(this));
 
       // Link click listeners
       this.on(this.deleteRexelementBtn, "click", this.handleClickDeleteRexelement.bind(this));
@@ -1659,7 +1659,7 @@ var TextEditor = (function ($) {
         this.traceELMNT = $target.parents(".rex-element-container")[0];
         this.viewRexelementToolbox();
       } else {
-        this.hideRexelementToolbox();
+        this.handleBlur();
       }
     },
 

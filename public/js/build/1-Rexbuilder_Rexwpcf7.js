@@ -160,7 +160,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
     var _fixRowNumbers = function ($forms) {
         $forms.each(function() {
-            $(this).find(".wpcf7-row").each(function(index){
+            $(this).find(".wpcf7-row").each( function(index) {
                 $(this).attr("wpcf7-row-number", index + 1);
             });
         })
@@ -786,7 +786,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             var formID = formData.elementInfo.element_target.element_id;
             formData = formData.elementInfo.wpcf7_data;
             _addFormCSSRules(formID, formData);
-            _addFormInputsCSSRules(formID, formData);
+            // _addFormInputsCSSRules(formID, formData);
         }
     }
 
@@ -901,6 +901,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         _updateFormColumnsRule(formID, "padding-right", formData.columns.padding_right);
         _updateFormColumnsRule(formID, "padding-bottom", formData.columns.padding_bottom);
         // _updateFormInputsRule(formID, "background-color", formData.content.background_color);
+        
+        _updateFormContent(data.elementData);
 
         var $elementWrappers = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]");
         _updateFormsData($elementWrappers, formData);
@@ -928,10 +930,55 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             $formData.attr("data-wpcf7-columns-padding-right", formData.columns.padding_right);
             $formData.attr("data-wpcf7-columns-padding-bottom", formData.columns.padding_bottom);
             $formData.attr("data-wpcf7-content-background-color", formData.content.background_color);
+            $formData.attr("data-wpcf7-content-width", formData.content.width);
+            $formData.attr("data-wpcf7-content-height", formData.content.height);
         })
     }
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////
+    // Form content functions
+    
+    var _updateFormContentLive = function (data) {
+        var elementID = data.element_target.element_id;
+        Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"] .wpcf7-column").each( function () {
+            var $currentColumn = $(this);
+            if ($currentColumn.find(".wpcf7-add-new-form-content").length == 0) {
+                var spanDataExists = $currentColumn.find(".rex-wpcf7-column-content-data").length != 0 ? true : false;
+                var currentColumnData = _generateColumnContentData($currentColumn, spanDataExists);
+                var updateData = {
+                    target: currentColumnData.target,
+                    content: currentColumnData,
+                    propertyType: data.propertyType,
+                    propertyName: data.propertyName,
+                    newValue: data.newValue
+                }
+                _updateColumnContentLive(updateData);
+            }
+        })
+    }
+    
+    var _updateFormContent = function (data) {
+        var formData = data;
+        var elementID = data.element_target.element_id;
+        Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"] .wpcf7-column").each( function () {
+            var $currentColumn = $(this);
+            if ($currentColumn.find(".wpcf7-add-new-form-content").length == 0) {
+                var spanDataExists = $currentColumn.find(".rex-wpcf7-column-content-data").length != 0 ? true : false;
+                var currentColumnData = _generateColumnContentData($currentColumn, spanDataExists);
+                
+                currentColumnData.input_width = formData.wpcf7_data.content.width;
+                currentColumnData.input_height = formData.wpcf7_data.content.height;
+                currentColumnData.background_color = formData.wpcf7_data.content.background_color;
+
+                var updateData = {
+                    columnContentData: currentColumnData
+                }
+                _updateColumnContent(updateData);
+            }
+        })
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////
     // Form inputs functions
 
     // Da aggiornare quando si sapranno le proprietà
@@ -1029,13 +1076,14 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     	var formID = data.target.element_id;
     	var row = data.target.row_number;
     	var column = data.target.column_number;
-    	var contentType = data.content.type;
+    	// var contentType = data.content.type;
         var fieldClass = data.content.field_class;
         var inputType = data.content.input_type;
         var propertyName = data.propertyName;
+        var propertyType = data.propertyType;
         var newValue = data.newValue;
 
-        switch (data.propertyType) {
+        switch (propertyType) {
             case "background-color":
             case "width":
             case "height":
@@ -1088,7 +1136,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
      * 
      * The obtained object has 1 field:
      * columnContentData - properties of the column content
-     * 
+     *
+     * @param {jQuery} $formColumn Column of the form we are editing
+     * @param {boolean} spanDataExists Does the span containing the data exist? 
      * @returns {Object} data
      */
     var _generateColumnContentData = function ($formColumn, spanDataExists) {
@@ -1148,7 +1198,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         columnContentData.target.column_number = $formColumn.attr("wpcf7-column-number");
 
         // Type
-        columnContentData.type = $formColumn.find(".wpcf7-form-control").prop("nodeName").toLowerCase();
+        // columnContentData.type = $formColumn.find(".wpcf7-form-control").prop("nodeName").toLowerCase();
 
         // Field class
         columnContentData.field_class = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control")[0].classList);
@@ -1195,62 +1245,232 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         	var columnContentDataEl = $columnContentData[0];
 
             // Required field
-            columnContentData.wpcf7_required_field = (columnContentDataEl.getAttribute("data-wpcf7-required-field") ? columnContentDataEl.getAttribute("data-wpcf7-required-field").toString() : '');
+            columnContentData.wpcf7_required_field = (columnContentDataEl.getAttribute("data-wpcf7-required-field") ? columnContentDataEl.getAttribute("data-wpcf7-required-field").toString() : defaultColumnContentValues.wpcf7_required_field);
 
             // Only numbers
-            columnContentData.wpcf7_only_numbers = (columnContentDataEl.getAttribute("data-wpcf7-only-numbers") ? columnContentDataEl.getAttribute("data-wpcf7-only-numbers").toString() : '');
+            columnContentData.wpcf7_only_numbers = (columnContentDataEl.getAttribute("data-wpcf7-only-numbers") ? columnContentDataEl.getAttribute("data-wpcf7-only-numbers").toString() : defaultColumnContentValues.wpcf7_only_numbers);
 
             // Default check
-            columnContentData.wpcf7_default_check = (columnContentDataEl.getAttribute("data-wpcf7-default-check") ? columnContentDataEl.getAttribute("data-wpcf7-default-check").toString() : '');
+            columnContentData.wpcf7_default_check = (columnContentDataEl.getAttribute("data-wpcf7-default-check") ? columnContentDataEl.getAttribute("data-wpcf7-default-check").toString() : defaultColumnContentValues.wpcf7_default_check);
 
             // Placeholder
-            columnContentData.wpcf7_placeholder = (columnContentDataEl.getAttribute("data-wpcf7-placeholder") ? columnContentDataEl.getAttribute("data-wpcf7-placeholder").toString() : '');
+            columnContentData.wpcf7_placeholder = (columnContentDataEl.getAttribute("data-wpcf7-placeholder") ? columnContentDataEl.getAttribute("data-wpcf7-placeholder").toString() : defaultColumnContentValues.wpcf7_placeholder);
 
             // File max dimensions
-            columnContentData.wpcf7_file_max_dimensions = (columnContentDataEl.getAttribute("data-wpcf7-file-max-dimensions") ? columnContentDataEl.getAttribute("data-wpcf7-file-max-dimensions").toString() : '');
+            columnContentData.wpcf7_file_max_dimensions = (columnContentDataEl.getAttribute("data-wpcf7-file-max-dimensions") ? columnContentDataEl.getAttribute("data-wpcf7-file-max-dimensions").toString() : defaultColumnContentValues.wpcf7_file_max_dimensions);
 
             // File types
             if (columnContentData.input_type == "file") {
-                columnContentData.wpcf7_list_fields = (columnContentDataEl.getAttribute("data-wpcf7-file-types") ? columnContentDataEl.getAttribute("data-wpcf7-file-types").toString().split(",") : '');
+                columnContentData.wpcf7_list_fields = (columnContentDataEl.getAttribute("data-wpcf7-file-types") ? columnContentDataEl.getAttribute("data-wpcf7-file-types").toString().split(",") : ["png", "jpg", "jpeg", "pdf"]);
             }
 
         	// Width & height
-            columnContentData.input_width = (columnContentDataEl.getAttribute("data-wpcf7-input-width") ? columnContentDataEl.getAttribute("data-wpcf7-input-width").toString() : defaultColumnContentValues.input_width);
-            columnContentData.input_height = (columnContentDataEl.getAttribute("data-wpcf7-input-height") ? columnContentDataEl.getAttribute("data-wpcf7-input-height").toString() : defaultColumnContentValues.input_height);
+            columnContentData.input_width = (columnContentDataEl.getAttribute("data-wpcf7-input-width") ? columnContentDataEl.getAttribute("data-wpcf7-input-width").toString() : $formColumn.find("." + columnContentData.field_class).eq(0).css("width"));    // @toedit Non del tutto corretto
+
+            columnContentData.input_height = (columnContentDataEl.getAttribute("data-wpcf7-input-height") ? columnContentDataEl.getAttribute("data-wpcf7-input-height").toString() : $formColumn.find("." + columnContentData.field_class).eq(0).css("height"));    // @toedit Non del tutto corretto
 
             // Font size
             columnContentData.font_size = (columnContentDataEl.getAttribute("data-wpcf7-font-size") ? columnContentDataEl.getAttribute("data-wpcf7-font-size").toString() : defaultColumnContentValues.font_size);
 
             // Background color
-        	columnContentData.background_color = (columnContentDataEl.getAttribute("data-background-color") ? columnContentDataEl.getAttribute("data-background-color").toString() : '');
+        	columnContentData.background_color = (columnContentDataEl.getAttribute("data-background-color") ? columnContentDataEl.getAttribute("data-background-color").toString() : $formColumn.find("." + columnContentData.field_class).eq(0).css("background-color"));
 
             // Text color
-            columnContentData.text_color = (columnContentDataEl.getAttribute("data-text-color") ? columnContentDataEl.getAttribute("data-text-color").toString() : '');
+            columnContentData.text_color = (columnContentDataEl.getAttribute("data-text-color") ? columnContentDataEl.getAttribute("data-text-color").toString() : $formColumn.find("." + columnContentData.field_class).eq(0).css("color"));
 
             // Text focus color
-            columnContentData.text_color_focus = (columnContentDataEl.getAttribute("data-text-color-focus") ? columnContentDataEl.getAttribute("data-text-color-focus").toString() : '');
+            columnContentData.text_color_focus = (columnContentDataEl.getAttribute("data-text-color-focus") ? columnContentDataEl.getAttribute("data-text-color-focus").toString() : defaultColumnContentValues.text_color_focus);
 
-            // Button
-            columnContentData.wpcf7_button.text = (columnContentDataEl.getAttribute("data-button-text") ? columnContentDataEl.getAttribute("data-button-text").toString() : '');
-            columnContentData.wpcf7_button.font_size = (columnContentDataEl.getAttribute("data-button-text-font-size") ? columnContentDataEl.getAttribute("data-button-text-font-size").toString() : '');
-            columnContentData.wpcf7_button.height = (columnContentDataEl.getAttribute("data-button-height") ? columnContentDataEl.getAttribute("data-button-height").toString() : '');
-            columnContentData.wpcf7_button.width = (columnContentDataEl.getAttribute("data-button-width") ? columnContentDataEl.getAttribute("data-button-width").toString() : '');
-            columnContentData.wpcf7_button.border_width = (columnContentDataEl.getAttribute("data-button-border-width") ? columnContentDataEl.getAttribute("data-button-border-width").toString() : '');
-            columnContentData.wpcf7_button.border_radius = (columnContentDataEl.getAttribute("data-button-border-radius") ? columnContentDataEl.getAttribute("data-button-border-radius").toString() : '');
-            columnContentData.wpcf7_button.margin_top = (columnContentDataEl.getAttribute("data-button-margin-top") ? columnContentDataEl.getAttribute("data-button-margin-top").toString() : '');
-            columnContentData.wpcf7_button.margin_right = (columnContentDataEl.getAttribute("data-button-margin-right") ? columnContentDataEl.getAttribute("data-button-margin-right").toString() : '');
-            columnContentData.wpcf7_button.margin_bottom = (columnContentDataEl.getAttribute("data-button-margin-bottom") ? columnContentDataEl.getAttribute("data-button-margin-bottom").toString() : '');
-            columnContentData.wpcf7_button.margin_left = (columnContentDataEl.getAttribute("data-button-margin-left") ? columnContentDataEl.getAttribute("data-button-margin-left").toString() : '');
-            columnContentData.wpcf7_button.padding_top = (columnContentDataEl.getAttribute("data-button-padding-top") ? columnContentDataEl.getAttribute("data-button-padding-top").toString() : '');
-            columnContentData.wpcf7_button.padding_right = (columnContentDataEl.getAttribute("data-button-padding-right") ? columnContentDataEl.getAttribute("data-button-padding-right").toString() : '');
-            columnContentData.wpcf7_button.padding_bottom = (columnContentDataEl.getAttribute("data-button-padding-bottom") ? columnContentDataEl.getAttribute("data-button-padding-bottom").toString() : '');
-            columnContentData.wpcf7_button.padding_left = (columnContentDataEl.getAttribute("data-button-padding-left") ? columnContentDataEl.getAttribute("data-button-padding-left").toString() : '');
-            columnContentData.wpcf7_button.text_color = (columnContentDataEl.getAttribute("data-button-text-color") ? columnContentDataEl.getAttribute("data-button-text-color").toString() : '');
-            columnContentData.wpcf7_button.text_color_hover = (columnContentDataEl.getAttribute("data-button-text-color-hover") ? columnContentDataEl.getAttribute("data-button-text-color-hover").toString() : '');
-            columnContentData.wpcf7_button.background_color = (columnContentDataEl.getAttribute("data-button-background-color") ? columnContentDataEl.getAttribute("data-button-background-color").toString() : '');
-            columnContentData.wpcf7_button.background_color_hover = (columnContentDataEl.getAttribute("data-button-background-color-hover") ? columnContentDataEl.getAttribute("data-button-background-color-hover").toString() : '');
-            columnContentData.wpcf7_button.border_color = (columnContentDataEl.getAttribute("data-button-border-color") ? columnContentDataEl.getAttribute("data-button-border-color").toString() : '');
-            columnContentData.wpcf7_button.border_color_hover = (columnContentDataEl.getAttribute("data-button-border-color-hover") ? columnContentDataEl.getAttribute("data-button-border-color-hover").toString() : '');
+            /* BUTTON */
+            // Button Text
+            if (columnContentDataEl.getAttribute("data-button-text")) {
+                columnContentData.wpcf7_button.text = columnContentDataEl.getAttribute("data-button-text").toString()
+            } else {
+                if (columnContentData.input_type == "file") {
+                    columnContentData.wpcf7_button.text = "Choose a file";
+                } else if (columnContentData.input_type == "submit") {
+                    columnContentData.wpcf7_button.text = "Send";
+                }
+            }
+
+            // Button font size
+            if (columnContentDataEl.getAttribute("data-button-text-font-size")) {
+                columnContentData.wpcf7_button.font_size = columnContentDataEl.getAttribute("data-button-text-font-size").toString();
+            } else {
+                if (columnContentData.input_type == "file") {
+                    columnContentData.wpcf7_button.font_size = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("font-size");
+                } else if (columnContentData.input_type == "submit") {
+                    columnContentData.wpcf7_button.font_size = $formColumn.find("." + columnContentData.field_class).eq(0).css("font-size");
+                }
+            }
+
+            // Button height
+            if (columnContentDataEl.getAttribute("data-button-height")) {
+                columnContentData.wpcf7_button.height = columnContentDataEl.getAttribute("data-button-height").toString();
+            } else {
+                if (columnContentData.input_type == "file") {
+                    columnContentData.wpcf7_button.height = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("height");
+                } else if (columnContentData.input_type == "submit") {
+                    columnContentData.wpcf7_button.height = $formColumn.find("." + columnContentData.field_class).eq(0).css("height");
+                }
+            }
+
+            // Button width
+            if (columnContentDataEl.getAttribute("data-button-width")) {
+                columnContentData.wpcf7_button.width = columnContentDataEl.getAttribute("data-button-width").toString();
+            } else {
+                if (columnContentData.input_type == "file") {
+                    columnContentData.wpcf7_button.width = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("width");
+                } else if (columnContentData.input_type == "submit") {
+                    columnContentData.wpcf7_button.width = $formColumn.find("." + columnContentData.field_class).eq(0).css("width");
+                }
+            }
+
+            // Button border width
+            if (columnContentDataEl.getAttribute("data-button-border-width")) {
+                columnContentData.wpcf7_button.border_width = columnContentDataEl.getAttribute("data-button-border-width").toString();
+            } else {
+                if (columnContentData.input_type == "file") {
+                    columnContentData.wpcf7_button.border_width = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("border-width");
+                } else if (columnContentData.input_type == "submit") {
+                    columnContentData.wpcf7_button.border_width = $formColumn.find("." + columnContentData.field_class).eq(0).css("border-width");
+                }
+            }
+
+            // Button border radius
+            if (columnContentDataEl.getAttribute("data-button-border-radius")) {
+                columnContentData.wpcf7_button.border_radius = columnContentDataEl.getAttribute("data-button-border-radius").toString();
+            } else {
+                if (columnContentData.input_type == "file") {
+                    columnContentData.wpcf7_button.border_radius = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("border-radius");
+                } else if (columnContentData.input_type == "submit") {
+                    columnContentData.wpcf7_button.border_radius = $formColumn.find("." + columnContentData.field_class).eq(0).css("border-radius");
+                }
+            }
+
+            // Button margin
+            if (columnContentDataEl.getAttribute("data-button-margin-top")) {
+                columnContentData.wpcf7_button.margin_top = columnContentDataEl.getAttribute("data-button-margin-top").toString();
+            } else {
+                if (columnContentData.input_type == "file") {
+                    columnContentData.wpcf7_button.margin_top = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("margin-top");
+                } else if (columnContentData.input_type == "submit") {
+                    columnContentData.wpcf7_button.margin_top = $formColumn.find("." + columnContentData.field_class).eq(0).css("margin-top");
+                }
+            }
+
+            if (columnContentDataEl.getAttribute("data-button-margin-right")) {
+                columnContentData.wpcf7_button.margin_right = columnContentDataEl.getAttribute("data-button-margin-right").toString();
+            } else {
+                if (columnContentData.input_type == "file") {
+                    columnContentData.wpcf7_button.margin_right = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("margin-right");
+                } else if (columnContentData.input_type == "submit") {
+                    columnContentData.wpcf7_button.margin_right = $formColumn.find("." + columnContentData.field_class).eq(0).css("margin-right");
+                }
+            }
+            
+            if (columnContentDataEl.getAttribute("data-button-margin-bottom")) {
+                columnContentData.wpcf7_button.margin_bottom = columnContentDataEl.getAttribute("data-button-margin-bottom").toString();
+            } else {
+                if (columnContentData.input_type == "file") {
+                    columnContentData.wpcf7_button.margin_bottom = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("margin-bottom");
+                } else if (columnContentData.input_type == "submit") {
+                    columnContentData.wpcf7_button.margin_bottom = $formColumn.find("." + columnContentData.field_class).eq(0).css("margin-bottom");
+                }
+            }
+
+            if (columnContentDataEl.getAttribute("data-button-margin-left")) {
+                columnContentData.wpcf7_button.margin_left = columnContentDataEl.getAttribute("data-button-margin-left").toString();
+            } else {
+                if (columnContentData.input_type == "file") {
+                    columnContentData.wpcf7_button.margin_left = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("margin-left");
+                } else if (columnContentData.input_type == "submit") {
+                    columnContentData.wpcf7_button.margin_left = $formColumn.find("." + columnContentData.field_class).eq(0).css("margin-left");
+                }
+            }
+
+            // Button padding
+            if (columnContentDataEl.getAttribute("data-button-padding-top")) {
+                columnContentData.wpcf7_button.padding_top = columnContentDataEl.getAttribute("data-button-padding-top").toString();
+            } else {
+                if (columnContentData.input_type == "file") {
+                    columnContentData.wpcf7_button.padding_top = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("padding-top");
+                } else if (columnContentData.input_type == "submit") {
+                    columnContentData.wpcf7_button.padding_top = $formColumn.find("." + columnContentData.field_class).eq(0).css("padding-top");
+                }
+            }
+
+            if (columnContentDataEl.getAttribute("data-button-padding-right")) {
+                columnContentData.wpcf7_button.padding_right = columnContentDataEl.getAttribute("data-button-padding-right").toString();
+            } else {
+                if (columnContentData.input_type == "file") {
+                    columnContentData.wpcf7_button.padding_right = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("padding-right");
+                } else if (columnContentData.input_type == "submit") {
+                    columnContentData.wpcf7_button.padding_right = $formColumn.find("." + columnContentData.field_class).eq(0).css("padding-right");
+                }
+            }
+
+            if (columnContentDataEl.getAttribute("data-button-padding-bottom")) {
+                columnContentData.wpcf7_button.padding_bottom = columnContentDataEl.getAttribute("data-button-padding-bottom").toString();
+            } else {
+                if (columnContentData.input_type == "file") {
+                    columnContentData.wpcf7_button.padding_bottom = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("padding-bottom");
+                } else if (columnContentData.input_type == "submit") {
+                    columnContentData.wpcf7_button.padding_bottom = $formColumn.find("." + columnContentData.field_class).eq(0).css("padding-bottom");
+                }
+            }
+
+            if (columnContentDataEl.getAttribute("data-button-padding-left")) {
+                columnContentData.wpcf7_button.padding_left = columnContentDataEl.getAttribute("data-button-padding-left").toString();
+            } else {
+                if (columnContentData.input_type == "file") {
+                    columnContentData.wpcf7_button.padding_left = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("padding-left");
+                } else if (columnContentData.input_type == "submit") {
+                    columnContentData.wpcf7_button.padding_left = $formColumn.find("." + columnContentData.field_class).eq(0).css("padding-left");
+                }
+            }
+
+            // Button text color
+            if (columnContentDataEl.getAttribute("data-button-text-color")) {
+                columnContentData.wpcf7_button.text_color = columnContentDataEl.getAttribute("data-button-text-color").toString();
+            } else {
+                if (columnContentData.input_type == "file") {
+                    columnContentData.wpcf7_button.text_color = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("color");
+                } else if (columnContentData.input_type == "submit") {
+                    columnContentData.wpcf7_button.text_color = $formColumn.find("." + columnContentData.field_class).eq(0).css("color");
+                }
+            }
+
+            // Button text color hover
+            columnContentData.wpcf7_button.text_color_hover = (columnContentDataEl.getAttribute("data-button-text-color-hover") ? columnContentDataEl.getAttribute("data-button-text-color-hover").toString() : defaultColumnContentValues.wpcf7_button.text_color_hover);
+
+            // Button background color
+            if (columnContentDataEl.getAttribute("data-button-background-color")) {
+                columnContentData.wpcf7_button.background_color = columnContentDataEl.getAttribute("data-button-background-color").toString();
+            } else {
+                if (columnContentData.input_type == "file") {
+                    columnContentData.wpcf7_button.background_color = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("background-color");
+                } else if (columnContentData.input_type == "submit") {
+                    columnContentData.wpcf7_button.background_color = $formColumn.find("." + columnContentData.field_class).eq(0).css("background-color");
+                }
+            }
+
+            // Button background color hover
+            columnContentData.wpcf7_button.background_color_hover = (columnContentDataEl.getAttribute("data-button-background-color-hover") ? columnContentDataEl.getAttribute("data-button-background-color-hover").toString() : defaultColumnContentValues.wpcf7_button.background_color_hover);
+
+            // Button border color
+            if (columnContentDataEl.getAttribute("data-button-border-color")) {
+                columnContentData.wpcf7_button.border_color = columnContentDataEl.getAttribute("data-button-border-color").toString();
+            } else {
+                if (columnContentData.input_type == "file") {
+                    columnContentData.wpcf7_button.border_color = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("border-color");
+                } else if (columnContentData.input_type == "submit") {
+                    columnContentData.wpcf7_button.border_color = $formColumn.find("." + columnContentData.field_class).eq(0).css("border-color");
+                }
+            }
+
+            // Button border color hover
+            columnContentData.wpcf7_button.border_color_hover = (columnContentDataEl.getAttribute("data-button-border-color-hover") ? columnContentDataEl.getAttribute("data-button-border-color-hover").toString() : defaultColumnContentValues.wpcf7_button.border_color_hover);
             
         } else {
             /* Extracting data from the element in the DOM */
@@ -1260,18 +1480,166 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 $field = $field.parents(".wpcf7-form-control");
             }
 
+            ///////
+            
+            // Required field
+            columnContentData.wpcf7_required_field = defaultColumnContentValues.wpcf7_required_field;
+
+            // Only numbers
+            columnContentData.wpcf7_only_numbers = defaultColumnContentValues.wpcf7_only_numbers;
+
+            // Default check
+            columnContentData.wpcf7_default_check = defaultColumnContentValues.wpcf7_default_check;
+
+            // Placeholder
+            columnContentData.wpcf7_placeholder = defaultColumnContentValues.wpcf7_placeholder;
+
+            // File max dimensions
+            columnContentData.wpcf7_file_max_dimensions = defaultColumnContentValues.wpcf7_file_max_dimensions;
+
+            // File types
+            if (columnContentData.input_type == "file") {
+                columnContentData.wpcf7_list_fields = ["png", "jpg", "jpeg", "pdf"];
+            }
+
             // Width & height
-            columnContentData.input_width = $field.css("width");
-            columnContentData.input_height = $field.css("height");
+            columnContentData.input_width = $formColumn.find("." + columnContentData.field_class).eq(0).css("width");   // @toedit Non del tutto corretto
+            columnContentData.input_height = $formColumn.find("." + columnContentData.field_class).eq(0).css("height"); // @toedit Non del tutto corretto
 
             // Font size
-            columnContentData.font_size = $field.css("font-size");
+            columnContentData.font_size = defaultColumnContentValues.font_size;
+
+            // Background color
+            columnContentData.background_color = $formColumn.find("." + columnContentData.field_class).eq(0).css("background-color");
 
             // Text color
-            columnContentData.text_color = $field.css("color");
+            columnContentData.text_color = $formColumn.find("." + columnContentData.field_class).eq(0).css("color");
 
-            // Text focus color
-            // columnContentData.text_color_focus = field.css("")
+            // Text color focus
+            columnContentData.text_color_focus = defaultColumnContentValues.text_color_focus;
+            
+            /* BUTTON */
+            // Button text
+            if (columnContentData.input_type == "file") {
+                columnContentData.wpcf7_button.text = "Choose a file";
+            } else if (columnContentData.input_type == "submit") {
+                columnContentData.wpcf7_button.text = "Send";
+            }
+
+            // Button font size
+            if (columnContentData.input_type == "file") {
+                columnContentData.wpcf7_button.font_size = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("font-size");
+            } else if (columnContentData.input_type == "submit") {
+                columnContentData.wpcf7_button.font_size = $formColumn.find("." + columnContentData.field_class).eq(0).css("font-size");
+            }
+
+            // Button height
+            if (columnContentData.input_type == "file") {
+                columnContentData.wpcf7_button.height = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("height");
+            } else if (columnContentData.input_type == "submit") {
+                columnContentData.wpcf7_button.height = $formColumn.find("." + columnContentData.field_class).eq(0).css("height");
+            }
+
+            // Button width
+            if (columnContentData.input_type == "file") {
+                columnContentData.wpcf7_button.width = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("width");
+            } else if (columnContentData.input_type == "submit") {
+                columnContentData.wpcf7_button.width = $formColumn.find("." + columnContentData.field_class).eq(0).css("width");
+            }
+
+            // Button border width
+            if (columnContentData.input_type == "file") {
+                columnContentData.wpcf7_button.border_width = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("border-width");
+            } else if (columnContentData.input_type == "submit") {
+                columnContentData.wpcf7_button.border_width = $formColumn.find("." + columnContentData.field_class).eq(0).css("border-width");
+            }
+
+            // Button border radius
+            if (columnContentData.input_type == "file") {
+                columnContentData.wpcf7_button.border_radius = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("border-radius");
+            } else if (columnContentData.input_type == "submit") {
+                columnContentData.wpcf7_button.border_radius = $formColumn.find("." + columnContentData.field_class).eq(0).css("border-radius");
+            }
+
+            // Button margin
+            if (columnContentData.input_type == "file") {
+                columnContentData.wpcf7_button.margin_top = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("margin-top");
+            } else if (columnContentData.input_type == "submit") {
+                columnContentData.wpcf7_button.margin_top = $formColumn.find("." + columnContentData.field_class).eq(0).css("margin-top");
+            }
+
+            if (columnContentData.input_type == "file") {
+                columnContentData.wpcf7_button.margin_right = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("margin-right");
+            } else if (columnContentData.input_type == "submit") {
+                columnContentData.wpcf7_button.margin_right = $formColumn.find("." + columnContentData.field_class).eq(0).css("margin-right");
+            }
+
+            if (columnContentData.input_type == "file") {
+                columnContentData.wpcf7_button.margin_bottom = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("margin-bottom");
+            } else if (columnContentData.input_type == "submit") {
+                columnContentData.wpcf7_button.margin_bottom = $formColumn.find("." + columnContentData.field_class).eq(0).css("margin-bottom");
+            }
+
+            if (columnContentData.input_type == "file") {
+                columnContentData.wpcf7_button.margin_left = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("margin-left");
+            } else if (columnContentData.input_type == "submit") {
+                columnContentData.wpcf7_button.margin_left = $formColumn.find("." + columnContentData.field_class).eq(0).css("margin-left");
+            }
+
+            // Button padding
+            if (columnContentData.input_type == "file") {
+                columnContentData.wpcf7_button.padding_top = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("padding-top");
+            } else if (columnContentData.input_type == "submit") {
+                columnContentData.wpcf7_button.padding_top = $formColumn.find("." + columnContentData.field_class).eq(0).css("padding-top");
+            }
+
+            if (columnContentData.input_type == "file") {
+                columnContentData.wpcf7_button.padding_right = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("padding-right");
+            } else if (columnContentData.input_type == "submit") {
+                columnContentData.wpcf7_button.padding_right = $formColumn.find("." + columnContentData.field_class).eq(0).css("padding-right");
+            }
+
+            if (columnContentData.input_type == "file") {
+                columnContentData.wpcf7_button.padding_bottom = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("padding-bottom");
+            } else if (columnContentData.input_type == "submit") {
+                columnContentData.wpcf7_button.padding_bottom = $formColumn.find("." + columnContentData.field_class).eq(0).css("padding-bottom");
+            }
+
+            if (columnContentData.input_type == "file") {
+                columnContentData.wpcf7_button.padding_left = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("padding-left");
+            } else if (columnContentData.input_type == "submit") {
+                columnContentData.wpcf7_button.padding_left = $formColumn.find("." + columnContentData.field_class).eq(0).css("padding-left");
+            }
+
+            // Button text color
+            if (columnContentData.input_type == "file") {
+                columnContentData.wpcf7_button.text_color = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("color");
+            } else if (columnContentData.input_type == "submit") {
+                columnContentData.wpcf7_button.text_color = $formColumn.find("." + columnContentData.field_class).eq(0).css("color");
+            }
+
+            // Button text color hover
+            columnContentData.wpcf7_button.text_color_hover = defaultColumnContentValues.wpcf7_button.text_color_hover;
+
+            // Button background color
+            if (columnContentData.input_type == "file") {
+                columnContentData.wpcf7_button.background_color = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("background-color");
+            } else if (columnContentData.input_type == "submit") {
+                columnContentData.wpcf7_button.background_color = $formColumn.find("." + columnContentData.field_class).eq(0).css("background-color");
+            }
+
+            // Button background color hover
+            columnContentData.wpcf7_button.background_color_hover = defaultColumnContentValues.wpcf7_button.background_color_hover;
+
+            // Button border color
+            if (columnContentData.input_type == "file") {
+                columnContentData.wpcf7_button.border_color = $formColumn.find("." + columnContentData.field_class + " label").eq(0).css("border-color");
+            } else if (columnContentData.input_type == "submit") {
+                columnContentData.wpcf7_button.border_color = $formColumn.find("." + columnContentData.field_class).eq(0).css("border-color");
+            }
+            
+            // Button border color hover
+            columnContentData.wpcf7_button.border_color_hover = defaultColumnContentValues.wpcf7_button.border_color_hover;
         }
 
         var data = columnContentData;
@@ -1289,7 +1657,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         var row = columnContentData.target.row_number;
         var column = columnContentData.target.column_number;
-        var contentType = columnContentData.type;
+        // var contentType = columnContentData.type;
         var fieldClass = columnContentData.field_class;
         var inputType = columnContentData.input_type;
         var columnContentFocusRule = "";
@@ -1364,6 +1732,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 columnContentRule += "float: left;";
             }
 
+            columnContentRule += "background-color: " + columnContentData.background_color + ";";
             columnContentRule += "width: " + columnContentData.input_width + ";";
             columnContentRule += "height: " + columnContentData.input_height + ";";
             columnContentRule += "color: " + columnContentData.text_color + ";";
@@ -1377,7 +1746,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var formID = columnContentData.target.element_id;
         var row = columnContentData.target.row_number;
         var column = columnContentData.target.column_number;
-        var contentType = columnContentData.type;
+        // var contentType = columnContentData.type;
         var inputType = columnContentData.input_type;
         var fieldClass = columnContentData.field_class;
 
@@ -1512,9 +1881,12 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         if(inputType == "text" || inputType == "number") {   // Only number
             // Changes the shortcode in [number number-xxx ...] or vice versa
+            onlyNumbers = ("true" == onlyNumbers) ? true : false;
             if (onlyNumbers) {
+                console.log("if true");
                 shortcode = shortcode.replace(/\[[a-z]+\*? [a-z]+/, "[number" + (isSetRequiredField? "*": "") + " number");
             } else {
+                console.log("if false");
                 shortcode = shortcode.replace(/\[[a-z]+\*? [a-z]+/, "[text" + (isSetRequiredField? "*": "") + " text");
             }
         }
@@ -1703,8 +2075,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 	/////////////////////////////////////////////////////////////////////////////////////////////////
 	/////////////////////////////////////////////////////////////////////////////////////////////////
     
-    // JQuery Array of DB side of forms in page
-    var $formsInPage;
+    var $formsInPage;   // JQuery Array of DB side of forms in page
 
     var _getDBFormsInPage = function () {
         var $elementWrappers = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper");
@@ -1743,9 +2114,42 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         $formsInPage = {};
 
         defaultColumnContentValues = {
-                input_width: "100%",
-                input_height: "100%",
-                font_size: "15px",
+            wpcf7_required_field: "false",
+            wpcf7_only_numbers: "false",
+            wpcf7_default_check: "false",
+            wpcf7_placeholder: "Write here...",
+            // wpcf7_list_fields: [],
+            wpcf7_file_max_dimensions: "25mb",
+            wpcf7_button: {
+                // text: "",
+                // font_size: "18px",
+                // height: "50px",
+                // width: "200px",
+                // border_width: "2px",
+                // border_radius: "10px",
+                // margin_top: "0px",
+                // margin_right: "0px",
+                // margin_bottom: "0px",
+                // margin_left: "0px",
+                // padding_top: "5px",
+                // padding_right: "15px",
+                // padding_bottom: "5px",
+                // padding_left: "15px",
+                // text_color: "rgb(86, 86, 86)",
+                text_color_hover: "rgb(255, 255, 255)",
+                // background_color: "rgb(255, 255, 255)",
+                background_color_hover: "rgb(86, 86, 86)",
+                // border_color: "rgb(86, 86, 86)",
+                border_color_hover: "rgb(255, 255, 255)",
+            },
+            // input_width: "",
+            // input_height: "",
+            // font_size: "",
+            // background_color: "",
+            // text_color: "", 
+            text_color_focus: "rgb(0, 0, 0)",
+            // text: "",
+            // type: "",
         }
 
         this.$rexformsStyle = $("#rexpansive-builder-rexwpcf7-style-inline-css");
@@ -1780,6 +2184,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 		removeColumnContentSpanData: _removeColumnContentSpanData,
 		generateColumnContentData: _generateColumnContentData,
 		updateColumnContentLive: _updateColumnContentLive,
+        updateFormContentLive: _updateFormContentLive,
 		updateColumnContent: _updateColumnContent,
 	}
 })(jQuery);

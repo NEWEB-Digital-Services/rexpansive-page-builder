@@ -653,6 +653,10 @@ var Rexbuilder_Util_Editor = (function($) {
       Rexbuilder_Rexwpcf7.updateFormInputsLive(e.settings.data_to_send);
     });
 
+    Rexbuilder_Util.$document.on("rexlive:updateFormContentLive", function(e){
+      Rexbuilder_Rexwpcf7.updateFormContentLive(e.settings.data_to_send);
+    });
+
     Rexbuilder_Util.$document.on("rexlive:wpcf7_create_column_content_span_data", function (e) {
       Rexbuilder_Rexwpcf7.createColumnContentSpanData(e.settings.data_to_send);
     });

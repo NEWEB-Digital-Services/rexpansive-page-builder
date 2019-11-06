@@ -148,6 +148,16 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                 },
                 content: {
                     background_color: "",
+                    background_color_hover: "",
+                    text_color: "",
+                    text_color_hover: "",
+                    border_color: "",
+                    border_color_hover: "",
+                    width: "",
+                    height: "",
+                    font_size: "",
+                    border_width: "",
+                    border_radius: "",
                 }
             },
             element_target: {
@@ -170,6 +180,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
     };
 
     var _updatePanel = function () {
+        /* WHOLE FORM OPTIONS */
         // Background color
         wpcf7_form_editor_properties.$form_preview_background.css("background-color", elementData.wpcf7_data.background_color);
         wpcf7_form_editor_properties.$form_background_color_value.val(elementData.wpcf7_data.background_color);
@@ -197,14 +208,42 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         wpcf7_form_editor_properties.$form_columns_padding_right.val(/[0-9]+/.exec(elementData.wpcf7_data.columns.padding_tright));
         wpcf7_form_editor_properties.$form_columns_padding_bottom.val(/[0-9]+/.exec(elementData.wpcf7_data.columns.padding_bottom));
 
-        // Inputs color
-        wpcf7_form_editor_properties.$form_preview_inputs_background.css("background-color", elementData.wpcf7_data.content.background_color);
-        wpcf7_form_editor_properties.$form_inputs_background_color_value.val(elementData.wpcf7_data.content.background_color);
-        wpcf7_form_editor_properties.$form_inputs_background_color_preview.hide();
-        wpcf7_form_editor_properties.$form_inputs_background_color_value.spectrum("set", elementData.wpcf7_data.content.background_color);
+        /* CONTENT OPTIONS*/
+        // Content width
+        wpcf7_form_editor_properties.$content_width.val(/[0-9]+/.exec(elementData.wpcf7_data.content.width));
+        var widthType = (null != /[a-z]{2}|\%/.exec(elementData.wpcf7_data.content.width)) ? /[a-z]{2}|\%/.exec(elementData.wpcf7_data.content.width)[0] : "%";
+        switch (widthType) {
+            case "px":
+                wpcf7_form_editor_properties.$content_width.filter('[value=pixel]').prop("checked", true);
+               break;
+            case "%":
+            default:
+                wpcf7_form_editor_properties.$content_width.filter('[value=percentage]').prop("checked", true);
+               break;
+        }
+
+        // Content height
+        wpcf7_form_editor_properties.$content_height.val(/[0-9]+/.exec(elementData.wpcf7_data.content.height));
+        var heightType = (null != /[a-z]{2}|\%/.exec(elementData.wpcf7_data.content.height)) ? /[a-z]{2}|\%/.exec(elementData.wpcf7_data.content.height)[0] : "%";
+        switch (heightType) {
+            case "px":
+                wpcf7_form_editor_properties.$content_height.filter('[value=pixel]').prop("checked", true);
+               break;
+            case "%":
+            default:
+                wpcf7_form_editor_properties.$content_height.filter('[value=percentage]').prop("checked", true);
+               break;
+        }
+
+        // Content background color
+        wpcf7_form_editor_properties.$content_preview_background_color.css("background-color", elementData.wpcf7_data.content.background_color);
+        wpcf7_form_editor_properties.$content_background_color_value.val(elementData.wpcf7_data.content.background_color);
+        wpcf7_form_editor_properties.$content_background_color_preview.hide();
+        wpcf7_form_editor_properties.$content_background_color_value.spectrum("set", elementData.wpcf7_data.content.background_color);
     };
 
     var _updateFormDataFromPanel = function () {
+        /* WHOLE FORM */
         // Border width
         elementData.wpcf7_data.border_width = wpcf7_form_editor_properties.$form_border_width.val() + "px";
 
@@ -219,6 +258,32 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         elementData.wpcf7_data.columns.padding_left = wpcf7_form_editor_properties.$form_columns_padding_left.val() + "px";
         elementData.wpcf7_data.columns.padding_right = wpcf7_form_editor_properties.$form_columns_padding_right.val() + "px";
         elementData.wpcf7_data.columns.padding_bottom = wpcf7_form_editor_properties.$form_columns_padding_bottom.val() + "px";
+
+        /* CONTENT */
+        // Width & height
+        elementData.wpcf7_data.content.width = wpcf7_form_editor_properties.$content_width.val();
+        var widthType = wpcf7_form_editor_properties.$content_width_type.filter(':checked').val();
+
+        switch(widthType) {
+            case "percentage":
+                elementData.wpcf7_data.content.width = elementData.wpcf7_data.content.width + "%";
+                break;
+            case "pixel":
+                elementData.wpcf7_data.content.width = elementData.wpcf7_data.content.width + "px";
+                break;
+        }
+
+        elementData.wpcf7_data.content.height = wpcf7_form_editor_properties.$content_height.val();
+        var heightType = wpcf7_form_editor_properties.$content_height_type.filter(':checked').val();
+
+        switch(widthType) {
+            case "percentage":
+                elementData.wpcf7_data.content.height = elementData.wpcf7_data.content.height + "%";
+                break;
+            case "pixel":
+                elementData.wpcf7_data.content.height = elementData.wpcf7_data.content.height + "px";
+                break;
+        }
         
     }
 
@@ -239,12 +304,25 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(formDataToIframe);
     }
 
-    var _updateFormInputsLive = function (data) {
+    // var _updateFormInputsLive = function (data) {
+    //     var formDataToIframe = {
+    //         eventName: "rexlive:updateFormInputsLive",
+    //         data_to_send: {
+    //             target: formData.element_target,
+    //         	propertyType: data.type,
+    //             propertyName: data.name,
+    //             newValue: data.value
+    //         }
+    //     };
+    //     Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(formDataToIframe);
+    // }
+
+    var _updateFormContentLive = function (data) {
         var formDataToIframe = {
-            eventName: "rexlive:updateFormInputsLive",
+            eventName: "rexlive:updateFormContentLive",
             data_to_send: {
-                target: formData.element_target,
-            	propertyType: data.type,
+                element_target: elementData.element_target,
+                propertyType: data.type,
                 propertyName: data.name,
                 newValue: data.value
             }
@@ -375,6 +453,52 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         };
         _linkKeyDownListenerInputNumber(wpcf7_form_editor_properties.$form_columns_padding_bottom, false);
         _linkKeyUpListenerInputNumber(wpcf7_form_editor_properties.$form_columns_padding_bottom, _updateColumnsPaddingBottom, false);
+
+        // CONTENT WIDTH
+        var _updateContentWidth = function (newContentWidth) {
+            // outputString = isNaN(parseInt(newFontSize)) ? defaultColumnContentValues.font_size : newFontSize + "px";
+            var widthType = wpcf7_form_editor_properties.$content_width_type.filter(':checked').val();
+
+            switch(widthType) {
+                case "percentage":
+                    outputString = newContentWidth + "%";
+                    break;
+                case "pixel":
+                    outputString = newContentWidth + "px";
+                    break;
+            }
+
+            _updateFormContentLive({
+                type: "width",
+                name: "width",
+                value: outputString
+            });
+        };
+        _linkKeyDownListenerInputNumber(wpcf7_form_editor_properties.$content_width, false);
+        _linkKeyUpListenerInputNumber(wpcf7_form_editor_properties.$content_width, _updateContentWidth, false);
+
+        // CONTENT HEIGHT
+        var _updateContentHeight = function (newContentHeight) {
+            // outputString = isNaN(parseInt(newFontSize)) ? defaultColumnContentValues.font_size : newFontSize + "px";
+            var heightType = wpcf7_form_editor_properties.$content_height_type.filter(':checked').val();
+
+            switch(heightType) {
+                case "percentage":
+                    outputString = newContentHeight + "%";
+                    break;
+                case "pixel":
+                    outputString = newContentHeight + "px";
+                    break;
+            }
+
+            _updateFormContentLive({
+                type: "height",
+                name: "height",
+                value: outputString
+            });
+        };
+        _linkKeyDownListenerInputNumber(wpcf7_form_editor_properties.$content_height, false);
+        _linkKeyUpListenerInputNumber(wpcf7_form_editor_properties.$content_height, _updateContentHeight, false);
     }
 
     var _linkBackgroundColorEditor = function () {
@@ -427,9 +551,9 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         );
     }
 
-    var _linkInputsBackgroundColorEditor = function () {
+    var _linkContentBackgroundColorEditor = function () {
         var colorTEXT;
-        wpcf7_form_editor_properties.$form_inputs_background_color_value.spectrum({
+        wpcf7_form_editor_properties.$content_background_color_value.spectrum({
             replacerClassName: "btn-floating",
             preferredFormat: "hex",
             showPalette: false,
@@ -437,15 +561,15 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
             showInput: true,
             showButtons: false,
             containerClassName:
-                "rexbuilder-materialize-wrap block-inputs-background-color-picker",
+                "rexbuilder-materialize-wrap block-content-background-color-picker",
             show: function () {},
             move: function (color) {
         		colorTEXT = color.toRgbString();
-                wpcf7_form_editor_properties.$form_inputs_background_color_preview.hide();
-                wpcf7_form_editor_properties.$form_preview_inputs_background.css("background-color", colorTEXT);
+                wpcf7_form_editor_properties.$content_background_color_preview.hide();
+                wpcf7_form_editor_properties.$content_preview_background_color.css("background-color", colorTEXT);
 
-                _updateFormInputsLive({
-                    type: "background",
+                _updateFormContentLive({
+                    type: "background-color",
                     name: "background-color",
                     value: colorTEXT
                 });
@@ -460,17 +584,17 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 
         var close = tmpl('tmpl-tool-close', {});
         var $close = $(close);
-        wpcf7_form_editor_properties.$form_inputs_background_color_value.spectrum('container').append($close);
+        wpcf7_form_editor_properties.$content_background_color_value.spectrum('container').append($close);
 
         $close.on('click', function (e) {
             e.preventDefault();
-            wpcf7_form_editor_properties.$form_inputs_background_color_value.spectrum('hide');
+            wpcf7_form_editor_properties.$content_background_color_value.spectrum('hide');
         });
 
-        wpcf7_form_editor_properties.$form_inputs_background_color_preview.on(
+        wpcf7_form_editor_properties.$content_background_color_preview.on(
             "click",
             function () {
-                wpcf7_form_editor_properties.$form_inputs_background_color_value.spectrum("show");
+                wpcf7_form_editor_properties.$content_background_color_value.spectrum("show");
                 return false;
             }
         );
@@ -654,10 +778,51 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
             _saveElementSpanDataOnDB();
             _applyChanges();
         });
+
+        wpcf7_form_editor_properties.$content_width_type.on("click", function () {
+            var widthValue = wpcf7_form_editor_properties.$content_width.val();
+            var widthType = $(this).val();
+
+            switch(widthType) {
+                case "percentage":
+                    widthValue = widthValue + "%";
+                    break;
+                case "pixel":
+                    widthValue = widthValue + "px";
+                    break;
+            }
+
+            _updateFormContentLive({
+                type: "width",
+                name: "width",
+                value: widthValue
+            });
+        });
+
+        wpcf7_form_editor_properties.$content_height_type.on("click", function () {
+            var heightValue = wpcf7_form_editor_properties.$content_height.val();
+            var heightType = $(this).val();
+
+            switch(heightType) {
+                case "percentage":
+                    heightValue = heightValue + "%";
+                    break;
+                case "pixel":
+                    heightValue = heightValue + "px";
+                    break;
+            }
+
+            _updateFormContentLive({
+                type: "height",
+                name: "height",
+                value: heightValue
+            });
+        });
 	}
 
 	var _init = function () {
 		var $self = $("#rex-wpcf7-form-editor");
+        var $accordions = $self.find('.rexpansive-accordion');
 		var $container = $self;
 
 		wpcf7_form_editor_properties = {
@@ -688,10 +853,15 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
             $form_columns_padding_right: $container.find("#rex-wpcf7-columns-padding-right"),
             $form_columns_padding_bottom: $container.find("#rex-wpcf7-columns-padding-bottom"),
 
-            $form_preview_inputs_background: $container.find("#rex-wpcf7-preview-inputs-background"),
-            $form_inputs_background_color_value: $container.find("#rex-wpcf7-inputs-background-color"),
-            $form_inputs_background_color_runtime: $container.find("#rex-wpcf7-inputs-background-color-runtime"),
-            $form_inputs_background_color_preview: $container.find("#rex-wpcf7-inputs-background-color-preview-icon"),
+            $content_width: $container.find("#rex-wpcf7-content-width"),
+            $content_width_type: $container.find(".rex-wpcf7-content-width-type"),
+            $content_height: $container.find("#rex-wpcf7-content-height"),
+            $content_height_type: $container.find(".rex-wpcf7-content-height-type"),
+
+            $content_preview_background_color: $container.find("#rex-wpcf7-content-preview-background-color"),
+            $content_background_color_value: $container.find("#rex-wpcf7-content-background-color"),
+            $content_background_color_runtime: $container.find("#rex-wpcf7-content-background-color-runtime"),
+            $content_background_color_preview: $container.find("#rex-wpcf7-content-background-color-preview-icon"),
 		};
 
 		elementData = {
@@ -712,6 +882,16 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                 },
                 content: {
                     background_color: "",
+                    background_color_hover: "",
+                    text_color: "",
+                    text_color_hover: "",
+                    border_color: "",
+                    border_color_hover: "",
+                    width: "",
+                    height: "",
+                    font_size: "",
+                    border_width: "",
+                    border_radius: "",
                 }
             },
             element_target: {
@@ -720,11 +900,12 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
             }
         };
 
+        $accordions.rexAccordion({open:{},close:{},});
 		_linkDocumentListeners();
         _linkNumberInputs();
 		_linkBackgroundColorEditor();
         _linkBorderColorEditor();
-		_linkInputsBackgroundColorEditor();
+		_linkContentBackgroundColorEditor();
 	}
 
 	return {

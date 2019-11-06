@@ -87,7 +87,24 @@
 // Common CSS
 
 .wpcf7-form {
-  display: inline-block;
+  display: flex;
+  // display: inline-block;
+}
+
+// .wpcf7-rows,
+.wpcf7-row {
+  width: 100%;
+  display: flex;
+  // display: inline-block;
+}
+
+.wpcf7-column {
+  display: flex;
+  // display: inline-block;
+}
+
+.wpcf7-column-content {
+    width:100%;
 }
 
 .wpcf7-row__1-column,
@@ -95,9 +112,7 @@
 .wpcf7-row__3-columns,
 .wpcf7-row__4-columns {
   .wpcf7-column {
-    display: inline-block;
     float: left;
-    border-width: 10px;
     padding: 10px;
 
     .wpcf7-add-new-form-content {
@@ -123,6 +138,7 @@
 
 .wpcf7-row__3-columns {
   .wpcf7-column {
+    // max-width: 33.3333%;
     width: 33.3333%;
   }
 }
@@ -130,6 +146,7 @@
 .wpcf7-row__4-columns {
   .wpcf7-column {
     width: 25%;
+    // max-width: 25%;
   }
 }
 

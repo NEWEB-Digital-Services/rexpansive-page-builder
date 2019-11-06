@@ -5460,15 +5460,29 @@ input.me-insert-embed__value[type=text] {
         fill: #ffffff; }
 
 .wpcf7-form {
-  display: inline-block; }
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.wpcf7-row {
+  width: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.wpcf7-column {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex; }
+
+.wpcf7-column-content {
+  width: 100%; }
 
 .wpcf7-row__1-column .wpcf7-column,
 .wpcf7-row__2-columns .wpcf7-column,
 .wpcf7-row__3-columns .wpcf7-column,
 .wpcf7-row__4-columns .wpcf7-column {
-  display: inline-block;
   float: left;
-  border-width: 10px;
   padding: 10px; }
 
 .wpcf7-row__1-column .wpcf7-column {
