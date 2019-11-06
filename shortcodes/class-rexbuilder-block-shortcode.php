@@ -93,7 +93,7 @@ class Rexbuilder_Block
 
         global $section_layout;
 
-        $options = get_option($this->plugin_name . '_options');
+        $options = get_option( $this->plugin_name . '_options' );
         $animation = apply_filters('rexbuilder_animation_enabled', $options['animation']);
         $fast_load = ( isset( $options['fast_load'] ) ? $options['fast_load'] : 0 );
 
