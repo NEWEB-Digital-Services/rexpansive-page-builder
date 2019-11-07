@@ -5598,13 +5598,6 @@ input.me-insert-embed__value[type=text] {
   min-height: auto;
   min-width: auto; }
 
-.rex-youtube-wrap iframe,
-.rex-video-vimeo-wrap iframe {
-  margin-top: 0px !important;
-  margin-right: 0px !important;
-  margin-bottom: 0px !important;
-  margin-left: 0px !important; }
-
 .grid-stack-item.rex-hide-element {
   display: none; }
 

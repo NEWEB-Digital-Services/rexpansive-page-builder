@@ -3837,9 +3837,13 @@
             opacity: 1
           }, {
             duration: 200,
+            begin: function(el) {
+              el[0].style.display = '';
+            }
           });
         } else {
           el.style.opacity = 1;
+          el.style.display = '';
         }
       });
 
@@ -3852,9 +3856,13 @@
             opacity: 0
           }, {
             duration: 200,
+            complete: function(el) {
+              el[0].style.display = 'none';
+            }
           });
         } else {
           el.style.opacity = 0;
+          el.style.display = 'none';
         }
       });
 
