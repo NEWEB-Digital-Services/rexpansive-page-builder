@@ -5464,6 +5464,10 @@ input.me-insert-embed__value[type=text] {
   display: -ms-flexbox;
   display: flex; }
 
+.wpcf7-rows {
+  width: 100%;
+  display: block; }
+
 .wpcf7-row {
   width: 100%;
   display: -webkit-box;

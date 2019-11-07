@@ -17508,6 +17508,17 @@ input:disabled + .rex_edit_title_slider {
     font-size: 10px;
     text-transform: uppercase; }
 
+#rex-wpcf7-content-preview-text-color,
+#rex-wpcf7-content-preview-text-color-hover,
+#rex-wpcf7-content-preview-background-color,
+#rex-wpcf7-content-preview-background-color-hover,
+#rex-wpcf7-content-preview-border-color,
+#rex-wpcf7-content-preview-border-color-hover {
+  width: 181px;
+  height: 42px;
+  background-color: black;
+  border-radius: 20px; }
+
 .rexlive-toolbox__wrap {
   width: 100%;
   position: absolute;

@@ -19,6 +19,14 @@ defined('ABSPATH') or exit;
         <div class="modal-content">
         	<?php include 'rexlive-loader-modal.php'; ?>
             <div class="bl_modal-row">
+                <div class="rexwpcf7-cont_row">
+                    <div class="rexwpcf7-count-column_2">
+                        <input type="text" id="rex-wpcf7-mail-to" name="" class="rex-wpcf7-mail-to">
+                    </div>
+                    <div class="rexwpcf7-count-column_3">Your Mail</div>
+                </div>
+            </div>
+            <div class="bl_modal-row">
                 <!-- BACKGROUND COLOR -->
                 <div class="rexwpcf7-cont_row">
                     <div class="rexwpcf7-count-column_1">
@@ -208,6 +216,60 @@ defined('ABSPATH') or exit;
             </div>
             <div class="rexpansive-accordion close">
                 <div class="bl_modal-row">
+                    <!-- CONTENT TEXT COLOR -->
+                    <div class="rexwpcf7-cont_row">
+                        <div class="rexwpcf7-count-column_accord">
+                            <span class="rex-accordion--toggle">                                
+                                <div class="rexwpcf7-upd-accord_button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></div>
+                            </span>
+                        </div>
+                        <div class="rexwpcf7-count-column_1">
+                            <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Text Color', 'rexpansive-builder');?>" tabindex="0">
+                                <input type="hidden" id="rex-wpcf7-content-text-color-runtime" name="rex-wpcf7-content-text-color-runtime" value="" />
+                                <input id="rex-wpcf7-content-text-color" type="text" name="rex-wpcf7-content-text-color" value="" size="10" />
+                                <div id="rex-wpcf7-content-text-color-preview-icon" class="preview-color-icon"></div>
+                            </div>
+                        </div>
+                        <div class="rexwpcf7-count-column_2">
+                            <div id="rex-wpcf7-content-text-preview-wrap">
+                                <div id="rex-wpcf7-content-preview-text-color"></div>
+                            </div>
+                        </div>
+                        <div class="rexwpcf7-count-column_3"></div>
+                        <div class="rexwpcf7-count-column_4">
+                            <input type="text" id="rex-wpcf7-set-content-font-size" name="" class="rex-wpcf7-set-content-font-size">
+                        </div>
+                        <div class="rexwpcf7-count-column_5">
+                            <div class="label-px">px</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rex-accordion--content" style="display:none;" data-item-status="close">
+                    <div class="bl_modal-row">
+                        <!-- CONTENT TEXT COLOR HOVER -->
+                        <div class="rexwpcf7-cont_row">
+                            <div class="rexwpcf7-count-column_accord"></div>
+                            <div class="rexwpcf7-count-column_1">
+                                <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Text Color Hover', 'rexpansive-builder');?>" tabindex="0">
+                                    <input type="hidden" id="rex-wpcf7-content-text-color-hover-runtime" name="rex-wpcf7-content-text-color-hover-runtime" value="" />
+                                    <input id="rex-wpcf7-content-text-color-hover" type="text" name="rex-wpcf7-content-text-color-hover" value="" size="10" />
+                                    <div id="rex-wpcf7-content-text-color-hover-preview-icon" class="preview-color-icon"></div>
+                                </div>
+                            </div>
+                            <div class="rexwpcf7-count-column_2">
+                                <div id="rex-wpcf7-content-text-preview-wrap">
+                                    <div id="rex-wpcf7-content-preview-text-color-hover"></div>
+                                </div>
+                            </div>
+                            <div class="rexwpcf7-count-column_3"><!-- space for icons --></div>
+                            <div class="rexwpcf7-count-column_4"><!-- space for dimensions --></div>
+                            <div class="rexwpcf7-count-column_5"><!-- space for unit measurement --></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="rexpansive-accordion close">
+                <div class="bl_modal-row">
                     <!-- CONTENT BACKGROUND COLOR -->
                     <div class="rexwpcf7-cont_row">
                         <div class="rexwpcf7-count-column_accord">
@@ -228,12 +290,8 @@ defined('ABSPATH') or exit;
                             </div>
                         </div>
                         <div class="rexwpcf7-count-column_3"></div>
-                        <div class="rexwpcf7-count-column_4">
-                            <input type="text" id="rex-wpcf7-set-content-font-size" name="" class="rex-wpcf7-set-content-font-size">
-                        </div>
-                        <div class="rexwpcf7-count-column_5">
-                            <div class="label-px">px</div>
-                        </div>
+                        <div class="rexwpcf7-count-column_4"></div>
+                        <div class="rexwpcf7-count-column_5"></div>
                     </div>
                 </div>
                 <div class="rex-accordion--content" style="display:none;" data-item-status="close">
@@ -242,21 +300,129 @@ defined('ABSPATH') or exit;
                         <div class="rexwpcf7-cont_row">
                             <div class="rexwpcf7-count-column_accord"></div>
                             <div class="rexwpcf7-count-column_1">
-                                <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Focus Color', 'rexpansive-builder');?>" tabindex="0">
-                                    <input type="hidden" id="rex-wpcf7-content-background-color-runtime" name="rex-wpcf7-content-background-color-runtime" value="" />
-                                    <input id="rex-wpcf7-content-background-color" type="text" name="rex-wpcf7-content-background-color" value="" size="10" />
-                                    <div id="rex-wpcf7-content-background-color-preview-icon" class="preview-color-icon"></div>
+                                <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Background Color Hover', 'rexpansive-builder');?>" tabindex="0">
+                                    <input type="hidden" id="rex-wpcf7-content-background-color-hover-runtime" name="rex-wpcf7-content-background-color-hover-runtime" value="" />
+                                    <input id="rex-wpcf7-content-background-color-hover" type="text" name="rex-wpcf7-content-background-color-hover" value="" size="10" />
+                                    <div id="rex-wpcf7-content-background-color-hover-preview-icon" class="preview-color-hover-icon"></div>
                                 </div>
                             </div>
                             <div class="rexwpcf7-count-column_2">
                                 <div id="rex-wpcf7-content-background-preview-wrap">
-                                    <div id="rex-wpcf7-preview-content-background-color"></div>
+                                    <div id="rex-wpcf7-content-preview-background-color-hover"></div>
                                 </div>
                             </div>
                             <div class="rexwpcf7-count-column_3"><!-- space for icons --></div>
                             <div class="rexwpcf7-count-column_4"><!-- space for dimensions --></div>
                             <div class="rexwpcf7-count-column_5"><!-- space for unit measurement --></div>
                         </div>
+                    </div>
+                </div>
+            </div>
+            <div class="rexpansive-accordion close">
+                <div class="bl_modal-row">
+                    <!-- CONTENT BORDER COLOR -->
+                    <div class="rexwpcf7-cont_row">
+                        <div class="rexwpcf7-count-column_accord">
+                            <span class="rex-accordion--toggle">                                
+                                <div class="rexwpcf7-upd-accord_button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></div>
+                            </span>
+                        </div>
+                        <div class="rexwpcf7-count-column_1">
+                            <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Border Color', 'rexpansive-builder');?>" tabindex="0">
+                                <input type="hidden" id="rex-wpcf7-content-border-color-runtime" name="rex-wpcf7-content-border-color-runtime" value="" />
+                                <input id="rex-wpcf7-content-border-color" type="text" name="rex-wpcf7-content-border-color" value="" size="10" />
+                                <div id="rex-wpcf7-content-border-color-preview-icon" class="preview-color-icon"></div>
+                            </div>
+                        </div>
+                        <div class="rexwpcf7-count-column_2">
+                            <div id="rex-wpcf7-content-border-preview-wrap">
+                                <div id="rex-wpcf7-content-preview-border-color"></div>
+                            </div>
+                        </div>
+                        <div class="rexwpcf7-count-column_3"></div>
+                        <div class="rexwpcf7-count-column_4">
+                            <input type="text" id="rex-wpcf7-set-content-border-width" name="" class="rex-wpcf7-set-content-border-width">
+                        </div>
+                        <div class="rexwpcf7-count-column_5">
+                            <div class="label-px">px</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="rex-accordion--content" style="display:none;" data-item-status="close">
+                    <div class="bl_modal-row">
+                        <!-- CONTENT BORDER COLOR HOVER -->
+                        <div class="rexwpcf7-cont_row">
+                            <div class="rexwpcf7-count-column_accord"></div>
+                            <div class="rexwpcf7-count-column_1">
+                                <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Border Color Hover', 'rexpansive-builder');?>" tabindex="0">
+                                    <input type="hidden" id="rex-wpcf7-content-border-color-hover-runtime" name="rex-wpcf7-content-border-color-hover-runtime" value="" />
+                                    <input id="rex-wpcf7-content-border-color-hover" type="text" name="rex-wpcf7-content-border-color-hover" value="" size="10" />
+                                    <div id="rex-wpcf7-content-border-color-hover-preview-icon" class="preview-color-icon"></div>
+                                </div>
+                            </div>
+                            <div class="rexwpcf7-count-column_2">
+                                <div id="rex-wpcf7-content-border-preview-wrap">
+                                    <div id="rex-wpcf7-content-preview-border-color-hover"></div>
+                                </div>
+                            </div>
+                            <div class="rexwpcf7-count-column_3"><!-- space for icons --></div>
+                            <div class="rexwpcf7-count-column_4"><!-- space for dimensions --></div>
+                            <div class="rexwpcf7-count-column_5"><!-- space for unit measurement --></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bl_modal-row">
+                <!-- ERROR MESSAGE -->
+                <div class="rexwpcf7-cont_row">
+                    <div class="rexwpcf7-count-column_1">
+                        <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Color', 'rexpansive-builder');?>" tabindex="0">
+                            <input type="hidden" id="rex-wpcf7-error-message-color-runtime" name="rex-wpcf7-error-message-color-runtime" value="" />
+                            <input id="rex-wpcf7-error-message-color" type="text" name="rex-wpcf7-error-message-color" value="" size="10" />
+                            <div id="rex-wpcf7-error-message-color-preview-icon" class="rex-wpcf7-error-message-color-preview-icon"></div>
+                        </div>
+                    </div>
+                    <!-- <div class="rexwpcf7-count-column_2">
+                        <div id="rex-wpcf7-border-preview-wrap">
+                            <div id="rex-wpcf7-preview-border"></div>
+                        </div>
+                    </div> -->
+                    <div class="rexwpcf7-count-column_2">
+                        <input type="text" id="rex-wpcf7-error-message" name="" class="rex-wpcf7-error-message" placeholder="Error Message">
+                    </div>
+                    <!-- ERROR MESSAGE FONT SIZE -->
+                    <div class="rexwpcf7-count-column_4">
+                        <input type="text" id="rex-wpcf7-set-error-message-font-size" name="" class="rex-wpcf7-set-error-message-font-size">
+                    </div>
+                    <div class="rexwpcf7-count-column_5">
+                        <div class="label-px">px</div>
+                    </div>
+                </div>
+            </div>
+            <div class="bl_modal-row">
+                <!-- SEND MESSAGE -->
+                <div class="rexwpcf7-cont_row">
+                    <div class="rexwpcf7-count-column_1">
+                        <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Color', 'rexpansive-builder');?>" tabindex="0">
+                            <input type="hidden" id="rex-wpcf7-send-message-color-runtime" name="rex-wpcf7-send-message-color-runtime" value="" />
+                            <input id="rex-wpcf7-send-message-color" type="text" name="rex-wpcf7-send-message-color" value="" size="10" />
+                            <div id="rex-wpcf7-send-message-color-preview-icon" class="rex-wpcf7-send-message-color-preview-icon"></div>
+                        </div>
+                    </div>
+                    <!-- <div class="rexwpcf7-count-column_2">
+                        <div id="rex-wpcf7-border-preview-wrap">
+                            <div id="rex-wpcf7-preview-border"></div>
+                        </div>
+                    </div> -->
+                    <div class="rexwpcf7-count-column_2">
+                        <input type="text" id="rex-wpcf7-send-message" name="" class="rex-wpcf7-send-message" placeholder="Send Message">
+                    </div>
+                    <!-- SEND MESSAGE FONT SIZE -->
+                    <div class="rexwpcf7-count-column_4">
+                        <input type="text" id="rex-wpcf7-set-error-message-font-size" name="" class="rex-wpcf7-set-error-message-font-size">
+                    </div>
+                    <div class="rexwpcf7-count-column_5">
+                        <div class="label-px">px</div>
                     </div>
                 </div>
             </div>

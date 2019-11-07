@@ -536,7 +536,6 @@ class Rexbuilder_Public
 
     public function rex_wpcf7_get_forms(){
         $nonce = $_POST['nonce_param'];
-        $elementID = $_POST['elementID'];
 
         $response = array(
             'error' => false,
@@ -557,6 +556,56 @@ class Rexbuilder_Public
             $formsHTML[$i] = get_post_meta($formIDs[$i], "_form");
         }
         $response['html_forms'] = $formsHTML;
+
+        wp_send_json_success($response);
+    }
+
+    public function rex_wpcf7_get_mail_settings(){
+        $nonce = $_POST['nonce_param'];
+
+        $response = array(
+            'error' => false,
+            'msg' => ''
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+        $response['error'] = false;
+
+        $formID = $_POST['form_id'];
+        $response['mail_settings'] = get_post_meta($formID, "_mail");
+        $response['messages'] = get_post_meta($formID, "_messages");
+
+        wp_send_json_success($response);
+    }
+
+    public function rex_wpcf7_save_mail_settings(){
+        $nonce = $_POST['nonce_param'];
+
+        $response = array(
+            'error' => false,
+            'msg' => ''
+        );
+
+        if (!wp_verify_nonce($nonce, 'rex-ajax-call-nonce')):
+            $response['error'] = true;
+            $response['msg'] = 'Nonce Error!';
+            wp_send_json_error($response);
+        endif;
+
+        $response['error'] = false;
+
+        $formID = $_POST['form_id'];
+
+        $newMailSettings = $_POST['new_mail_settings'];
+        $response['result'] = update_post_meta($formID, "_mail", $newMailSettings);
+
+        $newMessages = $_POST['new_messages'];
+        $response['result2'] = update_post_meta($formID, "_messages", $newMessages);
 
         wp_send_json_success($response);
     }

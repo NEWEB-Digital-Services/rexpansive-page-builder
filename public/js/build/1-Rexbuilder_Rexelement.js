@@ -367,6 +367,30 @@ var Rexbuilder_Rexelement = (function ($) {
         _fixWpcf7Files();
     }
 
+    var _addColumnContentSpanDatas = function () {
+        Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper").each(function (i, element) {
+            var $columnsInForm = $(element).find(".wpcf7 .wpcf7-column");
+            $columnsInForm.each(function () {
+                var $column = $(this);
+                if ($column.children(".rex-wpcf7-column-content-data").length == 0) {
+                    var formID = $column.parents(".rex-element-wrapper").attr("data-rex-element-id");
+                    var row = $column.parents(".wpcf7-row").attr("wpcf7-row-number");
+                    var column = $column.attr("wpcf7-column-number");
+
+                    var data = {
+                        editPoint: {
+                            element_id: formID,
+                            row_number: row,
+                            column_number: column
+                        }
+                    }
+
+                    Rexbuilder_Rexwpcf7.createColumnContentSpanData(data);
+                }
+            });
+        });
+    }
+
     /**
      * Adding what wpcf7 can't do: set the menu placeholder
      * @return {null}
@@ -582,6 +606,7 @@ var Rexbuilder_Rexelement = (function ($) {
                     var $formToAddData = $elementWrapper.find(".wpcf7");
                     _addFormData($formToAddData);
                     _fixWpcf7();
+                    _addColumnContentSpanDatas();
                 }
 
                 console.log("Refresh ok");
@@ -770,12 +795,35 @@ var Rexbuilder_Rexelement = (function ($) {
         elementData.wpcf7_data.columns.padding_bottom = (elementDataEl.getAttribute("data-wpcf7-columns-padding-bottom") ? elementDataEl.getAttribute("data-wpcf7-columns-padding-bottom").toString() : '');
 
         /* WPCF7 CONTENT */
-        // Width & height
+        // Content width
         elementData.wpcf7_data.content.width = (elementDataEl.getAttribute("data-wpcf7-content-width") ? elementDataEl.getAttribute("data-wpcf7-content-width").toString() : "");
+
+        // Content height
         elementData.wpcf7_data.content.height = (elementDataEl.getAttribute("data-wpcf7-content-height") ? elementDataEl.getAttribute("data-wpcf7-content-height").toString() : "");
 
-        // Background color
+        // Content font size
+        elementData.wpcf7_data.content.font_size = (elementDataEl.getAttribute("data-wpcf7-content-font-size") ? elementDataEl.getAttribute("data-wpcf7-content-font-size").toString() : "");
+
+        // Content border width
+        elementData.wpcf7_data.content.border_width = (elementDataEl.getAttribute("data-wpcf7-content-border-width") ? elementDataEl.getAttribute("data-wpcf7-content-border-width").toString() : "");
+
+        // Content text color
+        elementData.wpcf7_data.content.text_color = (elementDataEl.getAttribute("data-wpcf7-content-text-color") ? elementDataEl.getAttribute("data-wpcf7-content-text-color").toString() : '');
+
+        // Content background color
         elementData.wpcf7_data.content.background_color = (elementDataEl.getAttribute("data-wpcf7-content-background-color") ? elementDataEl.getAttribute("data-wpcf7-content-background-color").toString() : '');
+
+        // Content border color
+        elementData.wpcf7_data.content.border_color = (elementDataEl.getAttribute("data-wpcf7-content-border-color") ? elementDataEl.getAttribute("data-wpcf7-content-border-color").toString() : '');
+
+        // Content text color hover
+        elementData.wpcf7_data.content.text_color_hover = (elementDataEl.getAttribute("data-wpcf7-content-text-color-hover") ? elementDataEl.getAttribute("data-wpcf7-content-text-color-hover").toString() : '');
+
+        // Content background color hover
+        elementData.wpcf7_data.content.background_color_hover = (elementDataEl.getAttribute("data-wpcf7-content-background-color-hover") ? elementDataEl.getAttribute("data-wpcf7-content-background-color-hover").toString() : '');
+
+        // Content border color hover
+        elementData.wpcf7_data.content.border_color_hover = (elementDataEl.getAttribute("data-wpcf7-content-border-color-hover") ? elementDataEl.getAttribute("data-wpcf7-content-border-color-hover").toString() : '');
 
         var data = {
             elementInfo: elementData,
