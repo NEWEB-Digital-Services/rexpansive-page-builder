@@ -177,7 +177,10 @@ class Rexbuilder_Section
         if ('' != $video_bg_id_section && 'undefined' != $video_bg_id_section) {
             $videoTypeActive = 'mp4-player';
             $video_mp4_url = wp_get_attachment_url($video_bg_id_section);
-            $bg_video_markup .= '<div class="rex-video-wrap">';
+            $videoMP4Data = wp_get_attachment_metadata($video_bg_id_section);
+            $videoMp4Width = $videoMP4Data["width"];
+            $videoMp4Height = $videoMP4Data["height"];
+            $bg_video_markup .= '<div class="rex-video-wrap" data-rex-video-width="'.$videoMp4Width.'" data-rex-video-height="'.$videoMp4Height.'">';
             $bg_video_markup .= '<video class="rex-video-container"' . ( 1 == $fast_load ? ' preload="none"' : ' preload autoplay' ) . ' loop muted playsinline>';
             if ( 1 == $fast_load && !$editor ) {
                 $bg_video_markup .= '<source type="video/mp4" data-src="' . $video_mp4_url . '" />';

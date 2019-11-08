@@ -2356,6 +2356,7 @@
           : "";
       var $elemData = $elem.children(".rexbuilder-block-data");
       var $itemContent = $elem.find(".grid-item-content");
+      var $textcontent = $elem.find('.text-wrap');
 
       var color = $elemData.attr("data-color_bg_block");
       var colorActive =
@@ -2475,6 +2476,10 @@
         $elem.parents(".grid-stack-row").attr("data-layout") == "fixed"
           ? "full"
           : "natural";
+      if ( '' !== $textcontent.text().trim() ) {
+        defaultTypeImage = 'full';
+      }
+      
       var typeBGimage =
         typeof $elemData.attr("data-type_bg_block") == "undefined"
           ? defaultTypeImage

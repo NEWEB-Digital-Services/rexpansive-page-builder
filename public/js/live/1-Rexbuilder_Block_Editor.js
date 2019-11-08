@@ -29,6 +29,7 @@ var Rexbuilder_Block_Editor = (function($) {
           : "";
       var $elemData = $elem.children(".rexbuilder-block-data");
       var $itemContent = $elem.find(".grid-item-content");
+      var $textcontent = $elem.find('.text-wrap');
 
       var tools = '';
       var $btn_container = $btn.parents('.rexlive-block-toolbox');
@@ -58,10 +59,11 @@ var Rexbuilder_Block_Editor = (function($) {
         typeof $elemData.attr("data-image_bg_elem_active") != "undefined"
           ? $elemData.attr("data-image_bg_elem_active")
           : true;
-      var defaultTypeImage =
-        $elem.parents(".grid-stack-row").attr("data-layout") == "fixed"
-          ? "full"
-          : "natural";
+      var defaultTypeImage = $elem.parents(".grid-stack-row").attr("data-layout") == "fixed" ? "full" : "natural";
+      if ( '' !== $textcontent.text().trim() ) {
+        defaultTypeImage = 'full';
+      }
+
       var typeBGimage =
         ( typeof $elemData.attr("data-type_bg_block") == "undefined" || "" == $elemData.attr("data-type_bg_block") )
           ? defaultTypeImage
