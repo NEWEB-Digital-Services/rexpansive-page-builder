@@ -1045,6 +1045,20 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
     	var $spanData = $(document.createElement("span"));
     	$spanData.addClass("rex-wpcf7-column-content-data");
+
+        // Taking data form Rexelement span data
+        var $rexelementSpanData = $formColumn.parents(".rex-element-wrapper").find(".rex-element-data");
+        $spanData.attr("data-background-color", $rexelementSpanData.attr("data-wpcf7-content-background-color"));
+        $spanData.attr("data-wpcf7-input-width", $rexelementSpanData.attr("data-wpcf7-content-width"));
+        $spanData.attr("data-wpcf7-input-height", $rexelementSpanData.attr("data-wpcf7-content-height"));
+        $spanData.attr("data-text-color", $rexelementSpanData.attr("data-wpcf7-content-text-color"));
+        $spanData.attr("data-border-color", $rexelementSpanData.attr("data-wpcf7-content-border-color"));
+        $spanData.attr("data-wpcf7-font-size", $rexelementSpanData.attr("data-wpcf7-content-font-size"));
+        $spanData.attr("data-wpcf7-border-width", $rexelementSpanData.attr("data-wpcf7-content-border-width"));
+        $spanData.attr("data-text-color-hover", $rexelementSpanData.attr("data-wpcf7-content-text-color-hover"));
+        $spanData.attr("data-background-color-hover", $rexelementSpanData.attr("data-wpcf7-content-background-color-hover"));
+        $spanData.attr("data-border-color-hover", $rexelementSpanData.attr("data-wpcf7-content-border-color-hover"));
+
         var $spanDataInDB = $spanData.clone();
 
     	$formColumn.prepend($spanData);
@@ -2264,6 +2278,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         updateFormLive: _updateFormLive,
 		updateFormInputsLive: _updateFormInputsLive,
         updateForm: _updateForm,
+        updateFormInDB: _updateFormInDB,
 
 		// Column content functions
 		createColumnContentSpanData: _createColumnContentSpanData,

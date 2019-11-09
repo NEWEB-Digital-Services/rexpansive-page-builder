@@ -372,7 +372,7 @@ var Rexbuilder_Rexelement = (function ($) {
             var $columnsInForm = $(element).find(".wpcf7 .wpcf7-column");
             $columnsInForm.each(function () {
                 var $column = $(this);
-                if ($column.children(".rex-wpcf7-column-content-data").length == 0) {
+                if ($column.children(".wpcf7-add-new-form-content").length == 0 && $column.children(".rex-wpcf7-column-content-data").length == 0) {
                     var formID = $column.parents(".rex-element-wrapper").attr("data-rex-element-id");
                     var row = $column.parents(".wpcf7-row").attr("wpcf7-row-number");
                     var column = $column.attr("wpcf7-column-number");
@@ -386,6 +386,7 @@ var Rexbuilder_Rexelement = (function ($) {
                     }
 
                     Rexbuilder_Rexwpcf7.createColumnContentSpanData(data);
+                    Rexbuilder_Rexwpcf7.updateFormInDB(formID);
                 }
             });
         });
