@@ -550,7 +550,7 @@ $tool_button_classes = 'tool-button';
 </script>
 
 <script type="text/x-tmpl" id="tmpl-plus-button-inside-wpcf7-row">
-    <div class="tool-button tool-button--inline wpcf7-add-new-form-content">
+    <div class="tool-button tool-button--inline tool-button--flat tool-button--add-big-pink wpcf7-add-new-form-content">
         <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
     </div>
 </script>

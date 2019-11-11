@@ -14807,6 +14807,15 @@ ul {
       fill: #00ACFF; }
     .tool-button.tool-button--add-big:hover .l-svg-icons > svg {
       fill: #00ACFF; }
+  .tool-button.tool-button--add-big-pink {
+    padding: 10px;
+    background-color: transparent;
+    border: 2px solid #FF0055;
+    font-size: 16px; }
+    .tool-button.tool-button--add-big-pink .l-svg-icons > svg {
+      fill: #FF0055; }
+    .tool-button.tool-button--add-big-pink:hover .l-svg-icons > svg {
+      fill: #FF0055; }
   .tool-button.tool-button--add-mdm {
     padding: 5px;
     background-color: transparent;

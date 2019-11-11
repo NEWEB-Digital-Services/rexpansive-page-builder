@@ -1252,6 +1252,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         
         // Input type
         columnContentData.input_type = /[a-z]+/.exec(columnContentData.field_class)[0];
+        columnContentData.input_type = (columnContentData.input_type == "menu") ? "select" : columnContentData.input_type;
         
         // Checkbox text editor
         if (columnContentData.input_type == "acceptance") {
@@ -1719,17 +1720,48 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         // var contentType = columnContentData.type;
         var fieldClass = columnContentData.field_class;
         var inputType = columnContentData.input_type;
+        var cssSelector;
         var columnContentHoverRule = "";
+
+        switch (inputType) {
+            case "text":
+                if (columnContentData.wpcf7_only_numbers) {
+                    cssSelector = "wpcf7-number";
+                } else {
+                    cssSelector = "wpcf7-text";
+                }
+                break;
+            case "textarea":
+            // case "number":
+            case "submit":
+            case "select":
+                cssSelector = "wpcf7-" + inputType;
+                break;
+            case "radio":
+            case "acceptance":
+                cssSelector = fieldClass;
+                break;
+            case "file":
+                cssSelector = fieldClass + " label";
+                break;
+            default:
+              break;
+        }
+
+        console.log("fieldclass", fieldClass);
+        console.log("cssselector", cssSelector);
 
         columnContentHoverRule += "color: " + columnContentData.text_color_hover + ";";
         columnContentHoverRule += "background-color: " + columnContentData.background_color_hover + ";";
         columnContentHoverRule += "border-color: " + columnContentData.border_color_hover + ";";
-        _addColumnContentHoverRule(formID, row, column, fieldClass, columnContentHoverRule);
+        _addColumnContentHoverRule(formID, row, column, cssSelector, columnContentHoverRule);
+        // _addColumnContentHoverRule(formID, row, column, fieldClass, columnContentHoverRule);
 
         var columnContentFocusRule = "";
 
         columnContentFocusRule += "color: " + columnContentData.text_color_focus + ";";
-        _addColumnContentFocusRule(formID, row, column, fieldClass, columnContentFocusRule);
+        _addColumnContentFocusRule(formID, row, column, cssSelector, columnContentFocusRule);
+        // _addColumnContentFocusRule(formID, row, column, fieldClass, columnContentFocusRule);
 
         if (inputType == "file") {
             var columnContentFileButtonRule = "";
@@ -1758,8 +1790,10 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             columnContentFileButtonHoverRule += "background-color: " + columnContentData.wpcf7_button.background_color_hover + ";";
             columnContentFileButtonHoverRule += "border-color: " + columnContentData.wpcf7_button.border_color_hover + ";";
 
-            _addColumnContentRule(formID, row, column, fieldClass + " label", columnContentFileButtonRule);
-            _addColumnContentHoverRule(formID, row, column, fieldClass + " label", columnContentFileButtonHoverRule);
+            _addColumnContentRule(formID, row, column, cssSelector, columnContentFileButtonRule);
+            // _addColumnContentRule(formID, row, column, fieldClass + " label", columnContentFileButtonRule);
+            _addColumnContentHoverRule(formID, row, column, cssSelector, columnContentFileButtonHoverRule);
+            // _addColumnContentHoverRule(formID, row, column, fieldClass + " label", columnContentFileButtonHoverRule);
         }
 
         if (inputType == "submit") {
@@ -1789,8 +1823,10 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             columnContentButtonHoverRule += "background-color: " + columnContentData.wpcf7_button.background_color_hover + ";";
             columnContentButtonHoverRule += "border-color: " + columnContentData.wpcf7_button.border_color_hover + ";";
 
-            _addColumnContentRule(formID, row, column, fieldClass, columnContentButtonRule);
-            _addColumnContentHoverRule(formID, row, column, fieldClass, columnContentButtonHoverRule);
+            _addColumnContentRule(formID, row, column, cssSelector, columnContentButtonRule);
+            // _addColumnContentRule(formID, row, column, fieldClass, columnContentButtonRule);
+            _addColumnContentHoverRule(formID, row, column, cssSelector, columnContentButtonHoverRule);
+            // _addColumnContentHoverRule(formID, row, column, fieldClass, columnContentButtonHoverRule);
         } else {
             var columnContentRule = "";
 
@@ -1806,7 +1842,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             columnContentRule += "font-size: " + columnContentData.font_size + ";";
             columnContentRule += "border-style: solid;";
             columnContentRule += "border-width: " + columnContentData.border_width + ";";
-            _addColumnContentRule(formID, row, column, fieldClass, columnContentRule);
+            _addColumnContentRule(formID, row, column, cssSelector, columnContentRule);
+            // _addColumnContentRule(formID, row, column, fieldClass, columnContentRule);
         }
     }
 

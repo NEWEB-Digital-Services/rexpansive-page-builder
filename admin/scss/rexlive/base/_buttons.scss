@@ -129,6 +129,13 @@
     // }
   }
 
+  &.tool-button--add-big-pink {
+    @include bl-btn--add-big-pink();
+    font-size: 16px;
+    // #{$icon-class} {
+    // }
+  }
+
   &.tool-button--add-mdm {
     @include bl-btn--add-mdm();
     #{$icon-class} {
