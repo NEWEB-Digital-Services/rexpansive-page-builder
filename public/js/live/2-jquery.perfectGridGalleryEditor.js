@@ -205,6 +205,10 @@
             );
             that.properties.reverseDataGridDisposition = actionData;
           }
+
+          if ( Rexbuilder_Util_Editor.addingNewBlocks || Rexbuilder_Util_Editor.updatingSectionLayout || that.properties.collapsingElements || Rexbuilder_Util_Editor.blockCopying ) {
+            that.fixVideoProportion();
+          }
         });
 
         // this._linkSectionEvents();
@@ -2535,6 +2539,8 @@
             //   gallery.fixElementTextSize( elem, gallery.properties.resizeHandle, null );
             // }
 
+            gallery.fixVideoProportionSingleElement(elem);
+
             elem.setAttribute("data-gs-max-width", 500);
             clearTimeout(gallery.doubleDownTimer);
             Rexbuilder_Util_Editor.elementIsDragging = false;
@@ -2826,6 +2832,8 @@
         var blockData = el.querySelector('.rexbuilder-block-data');
         gallery.updateElementDataHeightProperties( blockData, parseInt( el.getAttribute('data-gs-height') ) );
       });
+
+      this.fixVideoProportion();
 
       /*
       this.$element.children(".grid-stack-item").each(function(i, el) {
@@ -3692,6 +3700,64 @@
         //   that.properties.gridstackInstance.resize(el, 12, 0);
         // }
       });
+    },
+
+    /**
+     * Fix the mp4 video proportion, set them at maximum width,
+     * to avoid zooms or cuts
+     * @return {void}
+     * @since  2.0.2
+     */
+    fixVideoProportion: function() {
+      var videos = [].slice.call( this.section.getElementsByClassName('rex-video-wrap') );
+      var rules = [];
+
+      // first, find max width rules, based on video and container dimension
+      videos.forEach(function(el) {
+        rules.push( this.findVideoMaxWidth(el) );
+      }.bind(this));
+
+      // apply the founded rules
+      // much fast this way
+      videos.forEach(function(el, index) {
+        el.children[0].style.maxWidth = rules[index];
+      });
+    },
+
+    /**
+     * Find max width video proprtion
+     * @param  {Node} el video element
+     * @return {String}    max width value in percentage
+     * @since  2.0.2
+     */
+    findVideoMaxWidth: function(el) {
+      var c_w, c_h, v_w, v_h;    
+      v_w = el.getAttribute('data-rex-video-width');
+      v_h = el.getAttribute('data-rex-video-height');
+      var maxWidth = '100%';
+
+      c_w = el.offsetWidth;
+      c_h = el.offsetHeight;
+
+      if ( ( v_w / v_h ) > ( c_w / c_h ) ) {
+        maxWidth =  ( ( ( c_h * v_w ) / v_h ) * 100 ) / c_w;
+        maxWidth = maxWidth + '%';
+      }
+
+      return maxWidth;
+    },
+
+    /**
+     * Fix video proprtion of a single element
+     * @param  {Node} el block element
+     * @return {void}
+     * @since  2.0.2
+     */
+    fixVideoProportionSingleElement: function(el) {    
+      var video = el.getElementsByClassName('rex-video-wrap');
+      if( video.length > 0 ) {
+        video[0].children[0].style.maxWidth = this.findVideoMaxWidth(video[0]);
+      }
     },
 
     fixBlockDomOrder: function() {

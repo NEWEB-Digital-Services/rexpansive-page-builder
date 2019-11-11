@@ -947,6 +947,7 @@
       };
 
       Rexbuilder_Dom_Util.updateVideos($section, videoOptions);
+      Rexbuilder_Dom_Util.fixVideoProportion($section[0]);
 
       var actionData = {
         mp4Data: {

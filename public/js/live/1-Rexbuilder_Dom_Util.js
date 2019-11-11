@@ -509,6 +509,30 @@ var Rexbuilder_Dom_Util = (function($) {
     }
   };
 
+  var fixVideoProportion = function(el) {
+    var video = el.getElementsByClassName('rex-video-wrap');
+    if( video.length > 0 ) {
+      video[0].children[0].style.maxWidth = _findVideoMaxWidth(video[0]);
+    }
+  }
+
+  var _findVideoMaxWidth = function(el) {
+    var c_w, c_h, v_w, v_h;    
+    v_w = el.getAttribute('data-rex-video-width');
+    v_h = el.getAttribute('data-rex-video-height');
+    var maxWidth = '100%';
+
+    c_w = el.offsetWidth;
+    c_h = el.offsetHeight;
+
+    if ( ( v_w / v_h ) > ( c_w / c_h ) ) {
+      maxWidth =  ( ( ( c_h * v_w ) / v_h ) * 100 ) / c_w;
+      maxWidth = maxWidth + '%';
+    }
+
+    return maxWidth;
+  };
+
   var _addYoutubeVideo = function($target, urlYoutube, hasAudio) {
     var $ytpWrapper = $target.children(".rex-youtube-wrap");
     var $toggleAudio = $target.children(".rex-video-toggle-audio");
@@ -712,7 +736,7 @@ var Rexbuilder_Dom_Util = (function($) {
     }
   };
 
-  var _updateBlocksLayout = function(dataToUse) {
+  var _updateBlocksLayout = function( dataToUse ) {
     var blocksDimensions = dataToUse.blocks;
     var i;
     var x, y, w, h;
@@ -745,12 +769,7 @@ var Rexbuilder_Dom_Util = (function($) {
     }
   };
 
-  var _collapseGrid = function(
-    gridInstance,
-    collapse,
-    blockDisposition,
-    layout
-  ) {
+  var _collapseGrid = function( gridInstance, collapse, blockDisposition, layout ) {
     Rexbuilder_Util_Editor.updatingCollapsedGrid = true;
     if (collapse) {
       gridInstance.collapseElementsProperties();
@@ -1906,6 +1925,7 @@ var Rexbuilder_Dom_Util = (function($) {
     removeVimeoVideo: _removeVimeoVideo,
     addMp4Video: _addMp4Video,
     removeMp4Video: _removeMp4Video,
+    fixVideoProportion: fixVideoProportion,
     updateSlider: _updateSlider,
     updateSliderStack: _updateSliderStack,
     updateSectionName: _updateSectionName,
