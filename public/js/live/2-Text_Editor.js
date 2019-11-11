@@ -1734,7 +1734,7 @@ var TextEditor = (function ($) {
       // this.rexelementTools.style.height = targetCoords.height + "px";
       this.rexelementTools.style.width = targetCoords.width + "px";
       this.rexelementTools.style.left = (targetCoords.left + ((targetCoords.width - this.rexelementTools.offsetWidth) / 2)) + "px";
-      this.rexelementTools.style.top = (window.scrollY + targetCoords.top - this.rexelementTools.offsetHeight) - 20 + "px";
+      this.rexelementTools.style.top = (window.scrollY + targetCoords.top - this.rexelementTools.offsetHeight / 2) + "px";
     },
 
     hideRexelementToolbox: function (event) {
@@ -1918,6 +1918,7 @@ var TextEditor = (function ($) {
       this.traceForm = null;
       this.traceFormRow = null,
       this.traceFormColumn = null;
+      this.traceColumnContent = null;
 
       this.columnsSelected;
 
@@ -1988,61 +1989,145 @@ var TextEditor = (function ($) {
     
     handleMouseOver: function (event) {
       var $target = $(event.target);
-      console.log(event.target);
-      if ($target.parents(".wpcf7-form").length != 0) {
-          this.traceForm = $target.parents(".wpcf7-form")[0];
-          this.addFormContentBtns = $(this.traceForm).find(".wpcf7-add-new-form-content");
-          this.on(this.addFormContentBtns, "click", this.handleClickAddFormContent.bind(this));
-          this.viewFormToolbox();
+      console.log($target);
+      // if ($target.parents(".wpcf7-form").length != 0) {
+      //   this.traceForm = $target.parents(".wpcf7-form")[0];
+      //   this.addFormContentBtns = $(this.traceForm).find(".wpcf7-add-new-form-content");
+      //   this.on(this.addFormContentBtns, "click", this.handleClickAddFormContent.bind(this));
+      //   this.viewFormToolbox();
 
-          if ($target.parents(".wpcf7-row").length != 0) {
-            // The cursor is inside a form row
-            this.traceFormRow = $target.parents(".wpcf7-row")[0];
-            this.viewRowToolbox();
+      //   if ($target.parents(".wpcf7-row").length != 0) {
+      //     // The cursor is inside a form row
+      //     this.traceFormRow = $target.parents(".wpcf7-row")[0];
+      //     this.viewRowToolbox();
 
-            if ($target.parents(".wpcf7-column").length != 0) {
-              // The cursor is inside a form column (and obviously row)
-              this.traceFormColumn = $target.parents(".wpcf7-column")[0];
-              this.viewColumnToolbox();
-            } else if ($target.has(".wpcf7-column")) {
-              // The cursor is inside a form column (and obviously row)
-              this.traceFormColumn = $target[0];
-              this.viewColumnToolbox();
-            }
-          }
-        } else {
-          this.handleBlur(event);
-        }
+      //     if ($target.parents(".wpcf7-column").length != 0) {
+      //       // The cursor is inside a form column (and obviously row)
+      //       this.traceFormColumn = $target.parents(".wpcf7-column")[0];
+      //       this.viewColumnToolbox();
+      //     } else if ($target.has(".wpcf7-column")) {
+      //       // The cursor is inside a form column (and obviously row)
+      //       this.traceFormColumn = $target[0];
+      //       this.viewColumnToolbox();
+      //     }
+      //   }
+      // } else {
+      //   this.handleBlur(event);
+      // }
+      
     },
 
     traceInputForm: function (event) {
       if ("click" == event.type) {
         // Check if cursor is inside a form
         var nodeToFix = MediumEditor.selection.getSelectionStart(this.base.options.ownerDocument);
-        if ($(nodeToFix).parents(".wpcf7-form").length != 0) {
-          this.traceForm = $(nodeToFix).parents(".wpcf7-form")[0];
+        var $nodeToFix = $(nodeToFix);
+
+        if ($nodeToFix.parents(".wpcf7-form").length != 0) {
+          this.traceForm = $nodeToFix.parents(".wpcf7-form")[0];
           this.addFormContentBtns = $(this.traceForm).find(".wpcf7-add-new-form-content");
           this.on(this.addFormContentBtns, "click", this.handleClickAddFormContent.bind(this));
+
           this.viewFormToolbox();
+          this.hideColumnToolbox();
+          this.clearOutlines("form");
+          this.clearOutlines("columns");
+          this.setOutline($(this.traceForm), "#00ACFF");
 
-          if ($(nodeToFix).parents(".wpcf7-row").length != 0) {
+          if ($nodeToFix.parents(".wpcf7-row").length != 0) {
             // The cursor is inside a form row
-            this.traceFormRow = $(nodeToFix).parents(".wpcf7-row")[0];
+            this.traceFormRow = $nodeToFix.parents(".wpcf7-row")[0];
             this.viewRowToolbox();
+            
+            if ($nodeToFix.parents(".wpcf7-column").length != 0 && !$nodeToFix.hasClass("wpcf7-add-new-form-content")) {
+              // The cursor is inside a form column (and obviously row)
+              this.traceFormColumn = $nodeToFix.parents(".wpcf7-column")[0];
+              this.traceColumnContent = this.findElementToOutline(this.traceFormColumn);
+              
+              this.viewColumnToolbox();
+              this.setOutline($(this.traceColumnContent), "#FF0055");
+            } else if ($nodeToFix.has(".wpcf7-column") && !$nodeToFix.hasClass("wpcf7-add-new-form-content")) {
+              // The cursor is inside a form column (and obviously row)
+              this.traceFormColumn = $nodeToFix[0];
+              this.traceColumnContent = this.findElementToOutline(this.traceFormColumn);
 
-            if ($(nodeToFix).parents(".wpcf7-column").length != 0) {
-              // The cursor is inside a form column (and obviously row)
-              this.traceFormColumn = $(nodeToFix).parents(".wpcf7-column")[0];
               this.viewColumnToolbox();
-            } else if ($(nodeToFix).has(".wpcf7-column")) {
-              // The cursor is inside a form column (and obviously row)
-              this.traceFormColumn = $(nodeToFix)[0];
-              this.viewColumnToolbox();
+              this.setOutline($(this.traceColumnContent), "#FF0055");
             }
           }
         } else {
           this.handleBlur(event);
         }
+      }
+    },
+
+    /**
+     * Sets the outline of a DOM element
+     * @param {DOM Element} element
+     * @param {String} color The color of the outline
+     */
+    setOutline: function ($element, color) {
+      $element.css("outline", "2px solid " + color);
+      $element.css("outline-offset", "-1px");
+    },
+
+    /**
+     * @param  {String} element Can be "form" or "columns"
+     */
+    clearOutlines: function (element) {
+      switch (element) {
+        case "form":
+          $(this.traceForm)
+            .css("outline", "")
+            .css("outline-offset", "");
+          break;
+        case "columns":
+          var that = this;
+          $(this.traceForm).find(".wpcf7-column").each(function () {
+            if ($(this).find(".wpcf7-add-new-form-content").length == 0) {
+              $(that.findElementToOutline(this))
+              .css("outline", "")
+              .css("outline-offset", "");
+            }
+          });
+          break;
+        default:
+          break;
+      }
+    },
+
+    findElementToOutline: function (formColumn) {
+      var $formColumn = $(formColumn);
+      var elementToOutlineClass;
+
+      elementToOutlineClass = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control")[0].classList);
+      if(null == elementToOutlineClass) {
+        elementToOutlineClass = /[a-z]+\-[0-9]+/.exec($formColumn.find(".wpcf7-form-control-wrap")[0].classList)[0];
+      } else {
+         elementToOutlineClass = elementToOutlineClass[0];
+      }
+
+      var elementToOutlineType = /[a-z]+/.exec(elementToOutlineClass)[0];
+      elementToOutlineType = (elementToOutlineType == "menu") ? "select" : elementToOutlineType;
+
+      switch (elementToOutlineType) {
+        case "text":
+          elementToOutlineType = $formColumn.find(".wpcf7-text").length == 0 ? "number" : "text";
+          return $formColumn.find(".wpcf7-" + elementToOutlineType)[0];
+          break;
+        case "textarea":
+        // case "number":
+        case "submit":
+        case "select":
+          return $formColumn.find(".wpcf7-" + elementToOutlineType)[0];
+          break;
+        case "radio":
+        case "acceptance":
+        case "file":
+          return $formColumn.find("." + elementToOutlineClass).eq(0)[0];
+          break;
+        default:
+          break;
       }
     },
 
@@ -2196,6 +2281,9 @@ var TextEditor = (function ($) {
     },
 
     handleBlur: function (event) {
+      this.clearOutlines("form");
+      this.clearOutlines("columns");
+
       if ($(event.target).parents(".wpcf7").length == 0 && $(event.target).parents(".rexwpcf7-tools").length == 0 && $(event.target).parents(".rexwpcf7-row-tools").length == 0 && $(event.target).parents(".rexwpcf7-column-tools").length == 0 && $(event.target).parents(".wpcf7-select-columns-number").length == 0) {
         this.hideAllToolbars();
       }
@@ -2248,11 +2336,11 @@ var TextEditor = (function ($) {
     },
 
     placeColumnToolbox: function () {
-      var targetCoords = this.traceFormColumn.getBoundingClientRect();
+      var targetCoords = this.traceColumnContent.getBoundingClientRect();
       // this.formColumnTools.style.height = targetCoords.height + "px";
       this.formColumnTools.style.width = targetCoords.width + "px";
       this.formColumnTools.style.left = (targetCoords.left + ((targetCoords.width - this.formColumnTools.offsetWidth) / 2)) + "px";
-      this.formColumnTools.style.top = (window.scrollY + targetCoords.top - this.formColumnTools.offsetHeight) + "px";
+      this.formColumnTools.style.top = (window.scrollY + targetCoords.top - this.formColumnTools.offsetHeight / 2) + "px";
     },
 
     hideColumnToolbox: function (event) {

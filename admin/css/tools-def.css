@@ -14755,6 +14755,11 @@ ul {
     color: #fff; }
     .tool-button.tool-button--blue .l-svg-icons > svg {
       fill: #fff; }
+  .tool-button.tool-button--pink {
+    background-color: #FF0055;
+    color: #fff; }
+    .tool-button.tool-button--pink .l-svg-icons > svg {
+      fill: #fff; }
   .tool-button.tool-button--flat {
     -webkit-box-shadow: none;
             box-shadow: none;

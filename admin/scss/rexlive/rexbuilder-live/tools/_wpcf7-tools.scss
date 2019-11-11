@@ -60,31 +60,24 @@
     .rex-wpcf7-column-settings {
       position: absolute;
       top: 0px;
-      right: 60px;
-      margin: 0px -10px 0px 0px;
+      left: calc(50% - 10px);
     }
 
     .rex-wpcf7-column-clone {
       position: absolute;
       top: 0px;
-      right: 30px;
-      margin: 0px -10px 0px 0px;
+      right: 35px;
     }
 
     .rex-wpcf7-column-delete {
       position: absolute;
       top: 0px;
-      right: 0px;
-      background-color: #424242;
-
-      .l-svg-icons > svg {
-        fill: #ffffff;
-      }
+      right: -10px;
     }
   }
 }
 
-// Common CSS
+/* Common CSS */
 
 .wpcf7-form {
   display: flex;

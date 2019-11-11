@@ -6,25 +6,18 @@
   .rex-element-tools-container {
     width: 100%;
     height: 22px;
-    // height: 100%;
     font-size: 10px;
 
     .rex-edit-element {
       position: absolute;
       top: 0px;
-      right: 50%;
-      margin: 0px -10px 0px 0px;
+      left: calc(50% - 10px);
     }
 
     .rex-delete-element {
       position: absolute;
       top: 0px;
-      right: 0px;
-      background-color: #424242;
-
-      .l-svg-icons > svg {
-        fill: #ffffff;
-      }
+      right: -10px;
     }
   }
 }

@@ -521,11 +521,11 @@ $tool_button_classes = 'tool-button';
 </script> -->
 
 <script type="text/x-tmpl" id="tmpl-rexelement-tools">
-    <div class="rex-element-tools-container">
-        <div class="tool-button rex-edit-element tippy" data-tippy-content="<?php _e('Config', 'rexpansive'); ?>">
+    <div class="rex-element-tools-container tools-area tool-area--side">
+        <div class="tool-button tool-button--blue rex-edit-element tippy" data-tippy-content="<?php _e('Config', 'rexpansive'); ?>">
             <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
         </div>
-        <div class="tool-button rex-delete-element tippy" data-tippy-content="<?php _e('Delete', 'rexpansive'); ?>">
+        <div class="tool-button tool-button--black rex-delete-element tippy" data-tippy-content="<?php _e('Delete', 'rexpansive'); ?>">
             <?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?>
         </div>
     </div>
@@ -568,7 +568,7 @@ $tool_button_classes = 'tool-button';
 
 <script type="text/x-tmpl" id="tmpl-rexwpcf7-column-tools">
     <div class="rex-wpcf7-column-tools-container">
-        <div class="tool-button rex-wpcf7-column-settings tippy" data-tippy-content="<?php _e('Settings', 'rexpansive'); ?>">
+        <div class="tool-button tool-button--pink rex-wpcf7-column-settings tippy" data-tippy-content="<?php _e('Settings', 'rexpansive'); ?>">
             <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
         </div>
         <!-- Cosa fa di preciso? -->

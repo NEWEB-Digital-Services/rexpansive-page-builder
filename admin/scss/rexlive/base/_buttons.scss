@@ -53,6 +53,10 @@
     @include bl-btn--blue;
   }
 
+  &.tool-button--pink {
+    @include bl-btn--pink;
+  }
+
   &.tool-button--flat {
     box-shadow: none;
     padding: 0 5px;

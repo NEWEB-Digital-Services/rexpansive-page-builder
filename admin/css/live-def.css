@@ -3719,6 +3719,11 @@ ul {
     color: #fff; }
     .tool-button.tool-button--blue .l-svg-icons > svg {
       fill: #fff; }
+  .tool-button.tool-button--pink {
+    background-color: #FF0055;
+    color: #fff; }
+    .tool-button.tool-button--pink .l-svg-icons > svg {
+      fill: #fff; }
   .tool-button.tool-button--flat {
     -webkit-box-shadow: none;
             box-shadow: none;
@@ -5386,15 +5391,11 @@ input.me-insert-embed__value[type=text] {
     .rexelement-tools .rex-element-tools-container .rex-edit-element {
       position: absolute;
       top: 0px;
-      right: 50%;
-      margin: 0px -10px 0px 0px; }
+      left: calc(50% - 10px); }
     .rexelement-tools .rex-element-tools-container .rex-delete-element {
       position: absolute;
       top: 0px;
-      right: 0px;
-      background-color: #424242; }
-      .rexelement-tools .rex-element-tools-container .rex-delete-element .l-svg-icons > svg {
-        fill: #ffffff; }
+      right: -10px; }
 
 .rexwpcf7-tools {
   position: absolute;
@@ -5444,21 +5445,17 @@ input.me-insert-embed__value[type=text] {
     .rexwpcf7-column-tools .rex-wpcf7-column-tools-container .rex-wpcf7-column-settings {
       position: absolute;
       top: 0px;
-      right: 60px;
-      margin: 0px -10px 0px 0px; }
+      left: calc(50% - 10px); }
     .rexwpcf7-column-tools .rex-wpcf7-column-tools-container .rex-wpcf7-column-clone {
       position: absolute;
       top: 0px;
-      right: 30px;
-      margin: 0px -10px 0px 0px; }
+      right: 35px; }
     .rexwpcf7-column-tools .rex-wpcf7-column-tools-container .rex-wpcf7-column-delete {
       position: absolute;
       top: 0px;
-      right: 0px;
-      background-color: #424242; }
-      .rexwpcf7-column-tools .rex-wpcf7-column-tools-container .rex-wpcf7-column-delete .l-svg-icons > svg {
-        fill: #ffffff; }
+      right: -10px; }
 
+/* Common CSS */
 .wpcf7-form {
   display: -webkit-box;
   display: -ms-flexbox;

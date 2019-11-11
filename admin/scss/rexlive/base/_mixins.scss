@@ -85,6 +85,13 @@
   @include fill-icon(#fff);
 }
 
+@mixin bl-btn--pink {
+  background-color: $palette-color-3;
+  color: #fff;
+
+  @include fill-icon(#fff);
+}
+
 @mixin bl-btn--hover-shadow {
   box-shadow: $shadow-1;
   transition: box-shadow 300ms;
