@@ -796,6 +796,352 @@ class Rexbuilder_Admin {
 	}
 
 	/**
+	 * Customize the acf url setting to fix incorrect asset URLs.
+	 * @param  string $url acf url
+	 * @return string
+	 * @since  2.0.2
+	 */
+	public function acf_settings_url( $url ) {
+	    return REXPANSIVE_BUILDER_ACF_URL;
+	}
+
+	/**
+	 * Hide the ACF admin menu item.
+	 * @param  bool $show_admin condition
+	 * @return bool
+	 * @since  2.0.2
+	 */
+	public function acf_settings_show_admin( $show_admin ) {
+	    return false;
+	}
+
+	/**
+	 * Define ACF custom fields
+	 * @return void
+	 * @since  2.0.2
+	 */
+	public function define_acf_fields() {
+		if( function_exists("register_field_group") ) {
+		    register_field_group(array (
+		        'id' => 'acf_rexpansive-slider',
+		        'title' => 'Rexpansive Slider',
+		        'fields' => array (
+		            array (
+		                'key' => 'field_564f2373722c3',
+		                'label' => 'Slides',
+		                'name' => '_rex_banner_gallery',
+		                'type' => 'repeater',
+		                'sub_fields' => array (
+		                    array (
+		                        'key' => 'field_5675394f2fa0f',
+		                        'label' => 'Image',
+		                        'name' => '_rex_banner_gallery_image',
+		                        'type' => 'image',
+		                        'column_width' => '',
+		                        'save_format' => 'object',
+		                        'preview_size' => 'thumbnail',
+		                        'library' => 'all',
+		                    ),
+		                    array (
+		                        'key' => 'field_567539852fa11',
+		                        'label' => 'Title',
+		                        'name' => '_rex_banner_gallery_image_title',
+		                        'type' => 'wysiwyg',
+		                        'column_width' => '',
+		                        'default_value' => '',
+		                        'toolbar' => 'full',
+		                        'media_upload' => 'no',
+		                    ),
+		                    array (
+		                        'key' => 'field_580e08d79f9db',
+		                        'label' => 'Video',
+		                        'name' => '_rex_banner_gallery_video',
+		                        'type' => 'text',
+		                        'column_width' => '',
+		                        'default_value' => '',
+		                        'placeholder' => '',
+		                        'prepend' => '',
+		                        'append' => '',
+		                        'formatting' => 'html',
+		                        'maxlength' => '',
+		                    ),
+		                    array (
+		                        'key' => 'field_5948ca17a1bb8',
+		                        'label' => 'Mp4',
+		                        'name' => '_rex_banner_gallery_video_mp4',
+		                        'type' => 'file',
+		                        'column_width' => '',
+		                        'save_format' => 'object',
+		                        'library' => 'all',
+		                    ),
+		                    array (
+		                        'key' => 'field_5948eb01358e1',
+		                        'label' => 'Audio',
+		                        'name' => '_rex_banner_gallery_video_audio',
+		                        'type' => 'checkbox',
+		                        'column_width' => '',
+		                        'choices' => array (
+		                            'yes' => 'Enable',
+		                        ),
+		                        'default_value' => '',
+		                        'layout' => 'vertical',
+		                    ),
+		                    array (
+		                        'key' => 'field_594a186edc532',
+		                        'label' => 'Url',
+		                        'name' => '_rex_banner_gallery_url',
+		                        'type' => 'text',
+		                        'column_width' => '',
+		                        'default_value' => '',
+		                        'placeholder' => '',
+		                        'prepend' => '',
+		                        'append' => '',
+		                        'formatting' => 'html',
+		                        'maxlength' => '',
+		                    ),
+		                ),
+		                'row_min' => '',
+		                'row_limit' => '',
+		                'layout' => 'row',
+		                'button_label' => 'Add Slide',
+		            ),
+		            array (
+		                'key' => 'field_564f1f0c050bc',
+		                'label' => 'Enable Animation',
+		                'name' => '_rex_enable_banner_animation',
+		                'type' => 'checkbox',
+		                'instructions' => 'If check, enables animation on banner images',
+		                'choices' => array (
+		                    'yes' => 'Enable',
+		                ),
+		                'default_value' => 'yes',
+		                'layout' => 'horizontal',
+		            ),
+		            array (
+		                'key' => 'field_5948caf770b0e',
+		                'label' => 'View Prev Next Arrows',
+		                'name' => '_rex_enable_banner_prev_next',
+		                'type' => 'checkbox',
+		                'choices' => array (
+		                    'yes' => 'Enable',
+		                ),
+		                'default_value' => 'yes',
+		                'layout' => 'horizontal',
+		            ),
+		            array (
+		                'key' => 'field_5948cb2270b0f',
+		                'label' => 'View Dots',
+		                'name' => '_rex_enable_banner_dots',
+		                'type' => 'checkbox',
+		                'choices' => array (
+		                    'yes' => 'Enable',
+		                ),
+		                'default_value' => 'yes',
+		                'layout' => 'horizontal',
+		            ),
+		        ),
+		        'location' => array (
+		            array (
+		                array (
+		                    'param' => 'post_type',
+		                    'operator' => '==',
+		                    'value' => 'rex_slider',
+		                    'order_no' => 0,
+		                    'group_no' => 0,
+		                ),
+		            ),
+		        ),
+		        'options' => array (
+		            'position' => 'normal',
+		            'layout' => 'default',
+		            'hide_on_screen' => array (
+		            ),
+		        ),
+		        'menu_order' => 0,
+		    ));
+		}
+
+		$navigation_choices = array(
+			'none'			=>	'None',
+			// 'horizontal_points' => 'Horizontal Points',
+			// 'horizontal_text' => 'Horizontal Text',
+			'vertical_points' => 'Vertical Points',
+		);
+
+		// if( Rexpansive_Classic_Utilities::is_horizontal_dot_points_active() ) {
+		// 	$navigation_choices['horizontal_points'] = 'Horizontal Points';
+		// }
+
+		if(function_exists("register_field_group"))
+		{
+			register_field_group(array (
+				'id' => 'acf_internal-navigation',
+				'title' => 'Internal Navigation',
+				'fields' => array (
+					array (
+						'key' => 'field_56cb20b3f2432',
+						'label' => 'Navigation Type',
+						'name' => '_rex_navigation_type',
+						'type' => 'select',
+						'conditional_logic' => array (
+							'status' => 1,
+							'rules' => array (
+								array (
+									'field' => 'null',
+									'operator' => '==',
+								),
+							),
+							'allorany' => 'all',
+						),
+						'choices' => $navigation_choices,
+						'default_value' => 'horizontal_points',
+						'allow_null' => 0,
+						'multiple' => 0,
+					),
+				),
+				'location' => array (
+					array (
+						array (
+							'param' => 'rexpansive_builder',
+							'operator' => '==',
+							'value' => 1,
+							'order_no' => 0,
+							'group_no' => 0,
+						),
+					),
+				),
+				'options' => array (
+					'position' => 'normal',
+					'layout' => 'default',
+					'hide_on_screen' => array (
+					),
+				),
+				'menu_order' => 0,
+			));
+		}
+	}
+
+	/**
+	 * Function to pack ACF in the plugin
+	 * @param  string $path acf path
+	 * @return string
+	 * @since 1.0.15
+	 * @deprecated 2.0.2 New bundle method
+	 */
+	public function acf_settings_path( $path ) {
+		// update path
+		$path = plugin_dir_url( __FILE__ ) . 'lib/acf/advanced-custom-fields/';
+		
+		// return
+		return $path;
+	}
+
+	/**
+	 * @param  string $dir acf directory
+	 * @return  string
+	 * @since 1.0.15
+	 * @deprecated 2.0.2 New bundle method
+	 */
+	public function acf_settings_dir( $dir ) {
+		// update path
+		$dir = plugin_dir_url( __FILE__ ) . 'lib/acf/advanced-custom-fields/';
+		
+		// return
+		return $dir;
+	}
+
+	/**
+	 * @param  bool $show_admin
+	 * @return bool
+	 * @since 1.0.15
+	 * @deprecated 2.0.2 New bundle method
+	 */
+	public function acf_hide_menu( $show_admin ) {
+		return false;
+	}
+
+	/**
+	 * ACF Rule Type: Rexpansive Builder
+	 *
+	 * @param array $choices, all of the available rule types
+	 * @return array
+	 * @since 1.1.0
+	 */
+	public function acf_rule_type_rexpansive_builder( $choices ) {
+		$choices['Basic']['rexpansive_builder'] = 'Rexpansive Builder';
+		return $choices;
+	}
+	
+	/**
+	 * ACF Rule Values: Rexpansive Builder
+	 *
+	 * @param array $choices, available rule values for this type
+	 * @return array
+	 * @since 1.1.0
+	 */
+	public function acf_rule_values_rexpansive_builder( $choices ) {
+		// Copied from acf/core/controllers/field_group.php
+		// @see http://bit.ly/1Xnx44g
+
+		$args = array(
+			'posts_per_page' => -1,
+			'post_type' => $this->plugin_options['post_types'],
+			'meta_query' => array(
+				array(
+					'key' => '_rexbuilder_active',
+					'value' => 'true',
+					'compare' => 'LIKE'
+				)
+			)
+		);
+
+		$query = new WP_Query( $args );
+
+		if( $query->have_posts() ) {
+			while( $query->have_posts() ) {
+				$query->the_post();
+
+				$title = apply_filters( 'the_title', $query->post->post_title, $query->post->ID );
+				
+				$choices[ $query->post->ID ] = $title;
+			}
+		}
+
+		return $choices;
+	}
+	
+	/**
+	 * ACF Rule Match: Rexpansive Builder
+	 *
+	 * @param boolean $match, whether the rule matches (true/false)
+	 * @param array $rule, the current rule you're matching. Includes 'param', 'operator' and 'value' parameters
+	 * @param array $options, data about the current edit screen (post_id, page_template...)
+	 * @return boolean $match
+	 * @since 1.1.0
+	 */
+	public function acf_rule_match_rexpansive_builder( $match, $rule, $options ) {
+			
+		if ( !isset( $options['post_id'] ) || ! $options['post_id'] ) {
+			return false;
+		}
+		
+		$builder_active = get_post_meta( $options['post_id'], '_rexbuilder_active', true );
+		$has_builder = false;
+		if( 'true' == $builder_active ) {
+			$has_builder = true;
+		}
+
+		if ( '==' == $rule['operator'] ) { 
+			$match = $has_builder;
+		
+		} elseif ( '!=' == $rule['operator'] ) {
+			$match = ! $has_builder;
+		}
+		
+		return $match;
+	}
+
+	/**
 	 *	Add notifier update page
 	 *
 	 *	@since	1.0.3
@@ -1115,6 +1461,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		$post_count = Rexbuilder_Installation::import_models_resources();
 		$index = 0;
 
+		$this->Installer->push_to_queue( array( 'task' => 'create_icons_folder' ) );
 		$this->Installer->push_to_queue( array( 'task' => 'import_buttons' ) );
 		$this->Installer->push_to_queue( array( 'task' => 'import_icons' ) );
 		
@@ -1132,7 +1479,7 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 				$index = $index + 10;
 			}
 
-			$this->Installer->push_to_queue( array( 'task' => 'impost_models_end' ) );
+			$this->Installer->push_to_queue( array( 'task' => 'import_models_end' ) );
 		}
 
 		// dispatch the installation process
@@ -3377,112 +3724,6 @@ if( isset( $savedFromBackend ) && $savedFromBackend == "false" ) {
 		$response['args'] = $args;
 
 		wp_send_json_success( $response );
-	}
-
-	/**
-	 * Function to pack ACF in the plugin
-	 *
-	 *	@since 1.0.15
-	 */
-	public function acf_settings_path( $path ) {
-		// update path
-		$path = plugin_dir_url( __FILE__ ) . 'lib/acf/advanced-custom-fields/';
-		
-		// return
-		return $path;
-	}
-
-	public function acf_settings_dir( $dir ) {
-		// update path
-		$dir = plugin_dir_url( __FILE__ ) . 'lib/acf/advanced-custom-fields/';
-		
-		// return
-		return $dir;
-	}
-
-	public function acf_hide_menu( $show_admin ) {
-		return false;
-	}
-
-	/**
-	 * ACF Rule Type: Rexpansive Builder
-	 *
-	 * @param array $choices, all of the available rule types
-	 * @return array
-	 * @since 1.1.0
-	 */
-	public function acf_rule_type_rexpansive_builder( $choices ) {
-		$choices['Basic']['rexpansive_builder'] = 'Rexpansive Builder';
-		return $choices;
-	}
-	
-	/**
-	 * ACF Rule Values: Rexpansive Builder
-	 *
-	 * @param array $choices, available rule values for this type
-	 * @return array
-	 * @since 1.1.0
-	 */
-	public function acf_rule_values_rexpansive_builder( $choices ) {
-		// Copied from acf/core/controllers/field_group.php
-		// @see http://bit.ly/1Xnx44g
-
-		$args = array(
-			'posts_per_page' => -1,
-			'post_type' => $this->plugin_options['post_types'],
-			'meta_query' => array(
-				array(
-					'key' => '_rexbuilder_active',
-					'value' => 'true',
-					'compare' => 'LIKE'
-				)
-			)
-		);
-
-		$query = new WP_Query( $args );
-
-		if( $query->have_posts() ) {
-			while( $query->have_posts() ) {
-				$query->the_post();
-
-				$title = apply_filters( 'the_title', $query->post->post_title, $query->post->ID );
-				
-				$choices[ $query->post->ID ] = $title;
-			}
-		}
-
-		return $choices;
-	}
-	
-	/**
-	 * ACF Rule Match: Rexpansive Builder
-	 *
-	 * @param boolean $match, whether the rule matches (true/false)
-	 * @param array $rule, the current rule you're matching. Includes 'param', 'operator' and 'value' parameters
-	 * @param array $options, data about the current edit screen (post_id, page_template...)
-	 * @return boolean $match
-	 * @since 1.1.0
-	 */
-	public function acf_rule_match_rexpansive_builder( $match, $rule, $options ) {
-			
-		if ( !isset( $options['post_id'] ) || ! $options['post_id'] ) {
-			return false;
-		}
-		
-		$builder_active = get_post_meta( $options['post_id'], '_rexbuilder_active', true );
-		$has_builder = false;
-		if( 'true' == $builder_active ) {
-			$has_builder = true;
-		}
-
-		if ( '==' == $rule['operator'] ) { 
-			$match = $has_builder;
-		
-		} elseif ( '!=' == $rule['operator'] ) {
-			$match = ! $has_builder;
-		}
-		
-		return $match;
 	}
 
 	/**

@@ -106,7 +106,8 @@ class Rexbuilder {
 		/**
 		 * Pack ACF inside the plugin
 		 */
-		require_once REXPANSIVE_BUILDER_PATH . 'admin/lib/acf/rexbuilder-include-acf.php';
+		include_once( REXPANSIVE_BUILDER_ACF_PATH . 'acf.php' );
+		include_once( REXPANSIVE_BUILDER_PATH . 'admin/lib/acf/acf-repeater/acf-repeater.php');
 
 		/**
 		 * The class that helds some usefull utilties
@@ -198,11 +199,22 @@ class Rexbuilder {
 		// Gutenberg
 		$this->loader->add_filter( 'use_block_editor_for_post', $plugin_admin, 'disable_gutenberg_on_live' );
 
-		// Slider custom post type
+		// Slider and models custom post type
 		$this->loader->add_action( 'init', $plugin_admin, 'rexpansive_slider_definition' );
 		$this->loader->add_action( 'init', $plugin_admin, 'rexpansive_models_defintion' );
+
+		// admin init
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'plugin_options_update' );
 		$this->loader->add_action( 'admin_init', $plugin_admin, 'instantiate_installer' );
+
+		// bundle ACF
+		$this->loader->add_filter( 'acf/settings/url', $plugin_admin, 'acf_settings_url' );
+		$this->loader->add_filter( 'acf/settings/show_admin', $plugin_admin, 'acf_settings_show_admin' );
+		$this->loader->add_action( 'acf/init', $plugin_admin, 'define_acf_fields' );
+		
+		$this->loader->add_filter( 'acf/location/rule_types', $plugin_admin, 'acf_rule_type_rexpansive_builder' );
+		$this->loader->add_filter( 'acf/location/rule_values/rexpansive_builder', $plugin_admin, 'acf_rule_values_rexpansive_builder' );
+		$this->loader->add_filter( 'acf/location/rule_match/rexpansive_builder', $plugin_admin, 'acf_rule_match_rexpansive_builder', 10, 3 );
 		
 		$this->loader->add_filter( 'manage_rex_slider_posts_columns', $plugin_admin, 'rexpansive_slider_columns_head_add_column' );
 		$this->loader->add_filter( 'manage_rex_slider_posts_columns', $plugin_admin, 'rexpansive_slider_columns_reorder' );
@@ -315,15 +327,6 @@ class Rexbuilder {
 
 		$this->loader->add_action( 'wp_ajax_rex_get_rxcf', $plugin_admin, 'rex_get_rxcf' );
 		$this->loader->add_action( 'wp_ajax_rex_save_rxcf', $plugin_admin, 'rex_save_rxcf' );
-		
-		// bundle ACF
-		$this->loader->add_filter( 'acf/settings/path', $plugin_admin, 'acf_settings_path' );
-		$this->loader->add_filter( 'acf/settings/dir', $plugin_admin, 'acf_settings_dir' );
-		$this->loader->add_filter( 'acf/settings/show_admin', $plugin_admin, 'acf_hide_menu' );
-		
-		$this->loader->add_filter( 'acf/location/rule_types', $plugin_admin, 'acf_rule_type_rexpansive_builder' );
-		$this->loader->add_filter( 'acf/location/rule_values/rexpansive_builder', $plugin_admin, 'acf_rule_values_rexpansive_builder' );
-		$this->loader->add_filter( 'acf/location/rule_match/rexpansive_builder', $plugin_admin, 'acf_rule_match_rexpansive_builder', 10, 3 );
 	}
 	
 	/**

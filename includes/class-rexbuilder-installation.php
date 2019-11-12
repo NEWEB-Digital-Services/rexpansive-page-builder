@@ -53,6 +53,41 @@ if ( ! class_exists( 'Rexbuilder_Installation' ) ) {
 		}
 
 		/**
+		 * Create custom uploads folder, to save custom information
+		 * Add to installation methods, to prevent bugs when user only updates the plugin
+		 * and not installs it from scratch
+		 * 
+		 * The folder tree would be
+		 * \-rexpansive-builder
+		 * \--assets
+		 * \---symbol
+		 * 
+		 * @return null
+		 * @since  2.0.2
+		 */
+		private static function create_icons_folder() {
+			$upload_dir = wp_upload_dir();
+
+			// main folder
+			$uploads_dirname = $upload_dir['basedir'] . '/' . REXPANSIVE_BUILDER_UPLOADS_FOLDER;
+			if( ! file_exists( $uploads_dirname ) ) {
+				wp_mkdir_p( $uploads_dirname );
+			}
+
+			// assets folder
+			$assets_dirname = $uploads_dirname . '/assets';
+			if( ! file_exists( $assets_dirname ) ) {
+				wp_mkdir_p( $assets_dirname );
+			}
+
+			// synbol folder
+			$symbol_dirname = $assets_dirname . '/symbol';
+			if( ! file_exists( $symbol_dirname ) ) {
+				wp_mkdir_p( $symbol_dirname );
+			}
+		}
+
+		/**
 		 * Import default button models
 		 *
 		 * @since 2.0.0
@@ -117,7 +152,7 @@ if ( ! class_exists( 'Rexbuilder_Installation' ) ) {
 		 * @return void
 		 * @since  2.0.1
 		 */
-		private static function impost_models_end() {
+		private static function import_models_end() {
 			$xml_file = get_transient( 'rexpansive_models_xml' );
 
 			wp_suspend_cache_invalidation( false );
@@ -201,14 +236,19 @@ if ( ! class_exists( 'Rexbuilder_Installation' ) ) {
 			$upload_dir = wp_upload_dir();
 			$uploads_dirname = $upload_dir['basedir'] . '/' . REXPANSIVE_BUILDER_UPLOADS_FOLDER;
 
-			$list_path = '/assets/sprite-list.json';
-			if ( file_exists( REXPANSIVE_BUILDER_PATH . '/shared' . $list_path ) ) {
-				$list_response = copy( REXPANSIVE_BUILDER_PATH . '/shared' . $list_path, $uploads_dirname . $list_path );
-			}
+			$list_response = false;
+			$path_response = false;
 
-			$sprite_path = '/assets/symbol/sprite.symbol.svg';
-			if ( file_exists( REXPANSIVE_BUILDER_PATH . '/shared' . $sprite_path ) ) {
-				$path_response = copy( REXPANSIVE_BUILDER_PATH . '/shared' . $sprite_path, $uploads_dirname . $sprite_path );
+			if ( file_exists( $uploads_dirname ) ) {
+				$list_path = '/assets/sprite-list.json';
+				if ( file_exists( REXPANSIVE_BUILDER_PATH . '/shared' . $list_path ) ) {
+					$list_response = copy( REXPANSIVE_BUILDER_PATH . '/shared' . $list_path, $uploads_dirname . $list_path );
+				}
+
+				$sprite_path = '/assets/symbol/sprite.symbol.svg';
+				if ( file_exists( REXPANSIVE_BUILDER_PATH . '/shared' . $sprite_path ) ) {
+					$path_response = copy( REXPANSIVE_BUILDER_PATH . '/shared' . $sprite_path, $uploads_dirname . $sprite_path );
+				}
 			}
 
 			return $list_response * $path_response;

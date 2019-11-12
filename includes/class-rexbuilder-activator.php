@@ -106,5 +106,4 @@ class Rexbuilder_Activator {
 			wp_mkdir_p( $symbol_dirname );
 		}
 	}
-
 }

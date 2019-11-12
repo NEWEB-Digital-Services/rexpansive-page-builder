@@ -25,7 +25,7 @@
 				$post_to_activate = $options['post_types'];
 			endif;
 			$animation = $options['animation'];
-			$fast_load = $options['fast_load'];
+			$fast_load = ( isset( $options['fast_load'] ) ? $options['fast_load'] : 0 );
 
 			settings_fields( $this->plugin_name . '_options' );
 			do_settings_sections( $this->plugin_name . '_options' );

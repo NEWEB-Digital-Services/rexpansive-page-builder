@@ -1,5 +1,7 @@
 <?php
 
+if( ! class_exists('acf_field_repeater') ) :
+
 class acf_field_repeater extends acf_field
 {
 
@@ -1118,5 +1120,7 @@ $conditional_logic_rule = array(
 }
 
 new acf_field_repeater();
+
+endif; // class_exists check
 
 ?>

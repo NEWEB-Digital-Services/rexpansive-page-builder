@@ -70,6 +70,19 @@ define( 'REXPANSIVE_BUILDER_PRODUCTION_STYLES', true );
 define( 'REXPANSIVE_BUILDER_PRODUCTION_SCRIPTS', true );
 
 /**
+ * ACF inclusion definitions
+ */
+if( !defined( 'ACF_LITE' ) ) {
+    define( 'ACF_LITE', true );
+}
+
+/**
+ * Define path and URL to the ACF plugin.
+ */
+define( 'REXPANSIVE_BUILDER_ACF_PATH', REXPANSIVE_BUILDER_PATH . 'admin/lib/acf/advanced-custom-fields/' );
+define( 'REXPANSIVE_BUILDER_ACF_URL', REXPANSIVE_BUILDER_URL . 'admin/lib/acf/advanced-custom-fields/' );
+
+/**
  * The code that runs during plugin activation.
  * This action is documented in includes/class-rexbuilder-activator.php
  */
