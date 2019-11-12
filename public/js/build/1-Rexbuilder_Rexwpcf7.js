@@ -2352,6 +2352,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         })
         idsInPage = Array.from(new Set(idsInPage));
 
+        _setRowsSortable(idsInPage);
+
         $.ajax({
             type: "POST",
             dataType: "json",
@@ -2372,6 +2374,24 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
               }
             },
             error: function(response) {}
+        });
+    }
+
+    var _setRowsSortable = function (idsInPage) {
+        var $elementWrappers = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper");
+
+        console.log($elementWrappers.find(".wpcf7-rows"));
+        if (!$elementWrappers.find(".wpcf7-rows").hasClass("ui-sortable")) {
+            $elementWrappers.find(".wpcf7-rows").addClass("ui-sortable");
+        }
+        
+        $elementWrappers.find(".wpcf7-rows").sortable({
+            revert: true,
+            handle: ".rexwpcf7-sort",
+            cursor: "pointer",
+            // update: function(e, ui) {
+            //   _update_slide_list_index(e, ui);
+            // }
         });
     }
 

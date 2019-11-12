@@ -614,7 +614,6 @@ var Rexbuilder_Rexelement = (function ($) {
           error: function(response) {},
           complete: function (response) {
             Rexbuilder_Util_Editor.endLoading();
-            console.log("Refresh ok");
           }
         });
     }

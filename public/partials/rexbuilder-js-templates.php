@@ -550,13 +550,16 @@ $tool_button_classes = 'tool-button';
 </script>
 
 <script type="text/x-tmpl" id="tmpl-plus-button-inside-wpcf7-row">
-    <div class="tool-button tool-button--inline tool-button--flat tool-button--add-big-pink wpcf7-add-new-form-content">
+    <div class="tool-button tool-button--flat tool-button--add-big-pink wpcf7-add-new-form-content">
         <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
     </div>
 </script>
 
 <script type="text/x-tmpl" id="tmpl-rexwpcf7-row-tools">
     <div class="rex-wpcf7-row-tools-container">
+        <div class="tool-button rex-wpcf7-row-drag tippy" data-tippy-content="<?php _e('Drag', 'rexpansive'); ?>">
+            <?php Rexbuilder_Utilities::get_icon('#B007-Move'); ?>
+        </div>
         <div class="tool-button rex-wpcf7-row-clone tippy" data-tippy-content="<?php _e('Clone', 'rexpansive'); ?>">
             <?php Rexbuilder_Utilities::get_icon('#Z004-Copy'); ?>
         </div>

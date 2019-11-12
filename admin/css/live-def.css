@@ -5394,8 +5394,8 @@ input.me-insert-embed__value[type=text] {
   z-index: 10;
   cursor: pointer; }
   .rexelement-tools .rex-element-tools-container {
-    width: 100%;
-    height: 22px;
+    width: 0px;
+    height: 0px;
     font-size: 10px; }
     .rexelement-tools .rex-element-tools-container .rex-edit-element {
       position: absolute;
@@ -5427,9 +5427,13 @@ input.me-insert-embed__value[type=text] {
   z-index: 10;
   cursor: pointer; }
   .rexwpcf7-row-tools .rex-wpcf7-row-tools-container {
-    width: 100%;
-    height: 22px;
+    width: 0px;
+    height: 0px;
     font-size: 10px; }
+    .rexwpcf7-row-tools .rex-wpcf7-row-tools-container .rex-wpcf7-row-drag {
+      position: absolute;
+      top: 0px;
+      right: 60px; }
     .rexwpcf7-row-tools .rex-wpcf7-row-tools-container .rex-wpcf7-row-clone {
       position: absolute;
       top: 0px;
@@ -5447,8 +5451,8 @@ input.me-insert-embed__value[type=text] {
   z-index: 10;
   cursor: pointer; }
   .rexwpcf7-column-tools .rex-wpcf7-column-tools-container {
-    width: 100%;
-    height: 22px;
+    width: 0px;
+    height: 0px;
     font-size: 10px; }
     .rexwpcf7-column-tools .rex-wpcf7-column-tools-container .rex-wpcf7-column-settings {
       position: absolute;
@@ -5464,6 +5468,7 @@ input.me-insert-embed__value[type=text] {
       right: -10px; }
 
 .wpcf7-form {
+  cursor: default;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex; }
@@ -5474,6 +5479,7 @@ input.me-insert-embed__value[type=text] {
 
 .wpcf7-row {
   width: 100%;
+  min-height: 72px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex; }
@@ -5510,6 +5516,9 @@ input.me-insert-embed__value[type=text] {
   width: 25%; }
 
 .rex-wpcf7-column-content-data {
+  display: none; }
+
+.wpcf7-add-new-form-content {
   display: none; }
 
 @media screen and (max-width: 1024px) {

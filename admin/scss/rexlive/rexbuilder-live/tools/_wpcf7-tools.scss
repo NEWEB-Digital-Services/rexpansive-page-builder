@@ -23,9 +23,17 @@
   cursor: pointer;
 
   .rex-wpcf7-row-tools-container {
-    width: 100%;
-    height: 22px;
+    // width: 100%;
+    width: 0px;
+    // height: 22px;
+    height: 0px;
     font-size: 10px;
+
+    .rex-wpcf7-row-drag {
+      position: absolute;
+      top: 0px;
+      right: 60px;
+    }
 
     .rex-wpcf7-row-clone {
       position: absolute;
@@ -52,8 +60,10 @@
   cursor: pointer;
 
   .rex-wpcf7-column-tools-container {
-    width: 100%;
-    height: 22px;
+    // width: 100%;
+    width: 0px;
+    // height: 22px;
+    height: 0px;
     font-size: 10px;
 
     .rex-wpcf7-column-settings {
@@ -77,6 +87,7 @@
 }
 
 .wpcf7-form {
+  cursor: default;
   display: flex;
 }
 
@@ -87,6 +98,7 @@
 
 .wpcf7-row {
   width: 100%;
+  min-height: 72px;
   display: flex;
 }
 
@@ -137,5 +149,9 @@
 }
 
 .rex-wpcf7-column-content-data {
+  display: none;
+}
+
+.wpcf7-add-new-form-content {
   display: none;
 }
