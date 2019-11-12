@@ -1978,7 +1978,7 @@ var TextEditor = (function ($) {
 
       // Trace the cursor position
       this.subscribe("editableClick", this.traceInputForm.bind(this));
-      // this.subscribe("editableMouseover", this.handleMouseOver.bind(this));
+      this.subscribe("editableMouseover", this.handleMouseOver.bind(this));
 
       this.subscribe("blur", this.handleBlur.bind(this));
     },
@@ -1989,7 +1989,6 @@ var TextEditor = (function ($) {
     
     handleMouseOver: function (event) {
       var $target = $(event.target);
-      console.log($target);
       // if ($target.parents(".wpcf7-form").length != 0) {
       //   this.traceForm = $target.parents(".wpcf7-form")[0];
       //   this.addFormContentBtns = $(this.traceForm).find(".wpcf7-add-new-form-content");
@@ -2014,6 +2013,49 @@ var TextEditor = (function ($) {
       // } else {
       //   this.handleBlur(event);
       // }
+      // 
+
+      if ($target.parents(".wpcf7-form").length != 0) {
+        this.traceForm = $target.parents(".wpcf7-form")[0];
+        this.addFormContentBtns = $(this.traceForm).find(".wpcf7-add-new-form-content");
+        this.on(this.addFormContentBtns, "click", this.handleClickAddFormContent.bind(this));
+
+        // this.viewFormToolbox();
+        this.hideColumnToolbox();
+        this.clearOutlines("form");
+        this.clearOutlines("rows");
+        this.clearOutlines("columns");
+        this.setOutline($(this.traceForm), "#00ACFF");
+
+        if ($target.parents(".wpcf7-row").length != 0) {
+          // The pointer is inside a form row
+          this.traceFormRow = $target.parents(".wpcf7-row")[0];
+          this.viewRowToolbox();
+          this.setOutline($(this.traceFormRow), "#00ACFF");
+          
+          if ($target.parents(".wpcf7-column").length != 0 && $target.parents(".wpcf7-column").find(".wpcf7-add-new-form-content").length == 0) {
+            // The pointer is inside a form column (and obviously row)
+            this.traceFormColumn = $target.parents(".wpcf7-column")[0];
+            this.traceColumnContent = this.findElementToOutline(this.traceFormColumn);
+
+            console.log($target[0] == this.traceColumnContent || $target.parents().filter(this.traceColumnContent).length != 0);
+
+            if ($target[0] == this.traceColumnContent || $target.parents().filter(this.traceColumnContent).length != 0) {
+              
+              this.viewColumnToolbox();
+              this.setOutline($(this.traceColumnContent), "#FF0055");
+            }
+          } else if ($target.hasClass("wpcf7-column") && $target.find(".wpcf7-add-new-form-content").length == 0) {
+            // The pointer is inside a form column (and obviously row)
+            this.traceFormColumn = $target[0];
+            this.traceColumnContent = this.findElementToOutline(this.traceFormColumn);
+            // this.viewColumnToolbox();
+            // this.setOutline($(this.traceColumnContent), "#FF0055");
+          }
+        }
+      } else {
+        this.handleBlur(event);
+      }
       
     },
 
@@ -2031,6 +2073,7 @@ var TextEditor = (function ($) {
           this.viewFormToolbox();
           this.hideColumnToolbox();
           this.clearOutlines("form");
+          this.clearOutlines("rows");
           this.clearOutlines("columns");
           this.setOutline($(this.traceForm), "#00ACFF");
 
@@ -2038,12 +2081,13 @@ var TextEditor = (function ($) {
             // The cursor is inside a form row
             this.traceFormRow = $nodeToFix.parents(".wpcf7-row")[0];
             this.viewRowToolbox();
+            this.setOutline($(this.traceFormRow), "#00ACFF");
             
             if ($nodeToFix.parents(".wpcf7-column").length != 0 && !$nodeToFix.hasClass("wpcf7-add-new-form-content")) {
               // The cursor is inside a form column (and obviously row)
               this.traceFormColumn = $nodeToFix.parents(".wpcf7-column")[0];
               this.traceColumnContent = this.findElementToOutline(this.traceFormColumn);
-              
+
               this.viewColumnToolbox();
               this.setOutline($(this.traceColumnContent), "#FF0055");
             } else if ($nodeToFix.has(".wpcf7-column") && !$nodeToFix.hasClass("wpcf7-add-new-form-content")) {
@@ -2081,6 +2125,11 @@ var TextEditor = (function ($) {
             .css("outline", "")
             .css("outline-offset", "");
           break;
+        case "rows":
+          $(this.traceForm).find(".wpcf7-row")
+            .css("outline", "")
+            .css("outline-offset", "");
+          break;
         case "columns":
           var that = this;
           $(this.traceForm).find(".wpcf7-column").each(function () {
@@ -2113,17 +2162,20 @@ var TextEditor = (function ($) {
       switch (elementToOutlineType) {
         case "text":
           elementToOutlineType = $formColumn.find(".wpcf7-text").length == 0 ? "number" : "text";
+          // console.log("classe finale", ".wpcf7-" + elementToOutlineType);
           return $formColumn.find(".wpcf7-" + elementToOutlineType)[0];
           break;
         case "textarea":
         // case "number":
         case "submit":
         case "select":
+        // console.log("classe finale", ".wpcf7-" + elementToOutlineType);
           return $formColumn.find(".wpcf7-" + elementToOutlineType)[0];
           break;
         case "radio":
         case "acceptance":
         case "file":
+        // console.log("classe finale", "." + elementToOutlineClass);
           return $formColumn.find("." + elementToOutlineClass).eq(0)[0];
           break;
         default:
@@ -2282,6 +2334,7 @@ var TextEditor = (function ($) {
 
     handleBlur: function (event) {
       this.clearOutlines("form");
+      this.clearOutlines("rows");
       this.clearOutlines("columns");
 
       if ($(event.target).parents(".wpcf7").length == 0 && $(event.target).parents(".rexwpcf7-tools").length == 0 && $(event.target).parents(".rexwpcf7-row-tools").length == 0 && $(event.target).parents(".rexwpcf7-column-tools").length == 0 && $(event.target).parents(".wpcf7-select-columns-number").length == 0) {
@@ -2318,7 +2371,7 @@ var TextEditor = (function ($) {
       var targetCoords = this.traceFormRow.getBoundingClientRect();
       this.formRowTools.style.width = targetCoords.width + "px";
       this.formRowTools.style.left = (targetCoords.left + ((targetCoords.width - this.formRowTools.offsetWidth) / 2)) + "px";
-      this.formRowTools.style.top = (window.scrollY + targetCoords.top - this.formRowTools.offsetHeight) + "px";
+      this.formRowTools.style.top = (window.scrollY + targetCoords.top - this.formRowTools.offsetHeight / 2) + "px";
     },
 
     hideRowToolbox: function (event) {

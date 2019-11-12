@@ -127,7 +127,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
                 wpcf7_content_editor_properties.$content_text_color_value.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_text_color_focus_value.parents(".bl_modal-row").removeClass("row-hidden");
                 break;
-            case "menu":
+            case "select":
                 wpcf7_content_editor_properties.$content_required_field.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_placeholder.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_input_width.parents(".bl_modal-row").removeClass("row-hidden");
@@ -1063,8 +1063,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             showButtons: false,
             containerClassName:
                 "rexbuilder-materialize-wrap block-background-color-picker",
-            show: function () {
-            },
+            show: function () {},
             move: function (color) {
                 if(needToRemoveSpanData) {
                     needToRemoveSpanData = false;

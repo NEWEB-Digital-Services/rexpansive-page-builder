@@ -571,7 +571,6 @@ $tool_button_classes = 'tool-button';
         <div class="tool-button tool-button--pink rex-wpcf7-column-settings tippy" data-tippy-content="<?php _e('Settings', 'rexpansive'); ?>">
             <?php Rexbuilder_Utilities::get_icon('#Z005-Setting'); ?>
         </div>
-        <!-- Cosa fa di preciso? -->
         <div class="tool-button rex-wpcf7-column-clone tippy" data-tippy-content="<?php _e('Clone', 'rexpansive'); ?>">
             <?php Rexbuilder_Utilities::get_icon('#Z004-Copy'); ?>
         </div>

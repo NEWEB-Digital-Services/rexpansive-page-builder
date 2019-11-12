@@ -582,7 +582,7 @@ var Rexbuilder_Rexelement = (function ($) {
      */
     var _refreshRexElement = function (elementID) {
         var $elementWrapper = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + elementID + "\"]");
-
+        Rexbuilder_Util_Editor.startLoading();
         // Ajax call to get the html of the element
         $.ajax({
           type: "POST",
@@ -609,11 +609,13 @@ var Rexbuilder_Rexelement = (function ($) {
                     _fixWpcf7();
                     _addColumnContentSpanDatas();
                 }
-
-                console.log("Refresh ok");
             }
           },
-          error: function(response) {}
+          error: function(response) {},
+          complete: function (response) {
+            Rexbuilder_Util_Editor.endLoading();
+            console.log("Refresh ok");
+          }
         });
     }
 

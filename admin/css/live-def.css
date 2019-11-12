@@ -5433,12 +5433,11 @@ input.me-insert-embed__value[type=text] {
     .rexwpcf7-row-tools .rex-wpcf7-row-tools-container .rex-wpcf7-row-clone {
       position: absolute;
       top: 0px;
-      right: 30px;
-      margin: 0px -10px 0px 0px; }
+      right: 25px; }
     .rexwpcf7-row-tools .rex-wpcf7-row-tools-container .rex-wpcf7-row-delete {
       position: absolute;
       top: 0px;
-      right: 0px;
+      right: -10px;
       background-color: #424242; }
       .rexwpcf7-row-tools .rex-wpcf7-row-tools-container .rex-wpcf7-row-delete .l-svg-icons > svg {
         fill: #ffffff; }
@@ -5458,7 +5457,7 @@ input.me-insert-embed__value[type=text] {
     .rexwpcf7-column-tools .rex-wpcf7-column-tools-container .rex-wpcf7-column-clone {
       position: absolute;
       top: 0px;
-      right: 35px; }
+      right: 25px; }
     .rexwpcf7-column-tools .rex-wpcf7-column-tools-container .rex-wpcf7-column-delete {
       position: absolute;
       top: 0px;

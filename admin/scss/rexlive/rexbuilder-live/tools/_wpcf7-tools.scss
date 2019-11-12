@@ -30,14 +30,13 @@
     .rex-wpcf7-row-clone {
       position: absolute;
       top: 0px;
-      right: 30px;
-      margin: 0px -10px 0px 0px;
+      right: 25px;
     }
 
     .rex-wpcf7-row-delete {
       position: absolute;
       top: 0px;
-      right: 0px;
+      right: -10px;
       background-color: #424242;
 
       .l-svg-icons > svg {
@@ -66,7 +65,7 @@
     .rex-wpcf7-column-clone {
       position: absolute;
       top: 0px;
-      right: 35px;
+      right: 25px;
     }
 
     .rex-wpcf7-column-delete {

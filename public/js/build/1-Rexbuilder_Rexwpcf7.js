@@ -258,7 +258,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
     var _updateFormInDB = function (formID) {
         var formToUpdateString = $formsInPage[formID][0].outerHTML; // Don't need to get the form in db before, already have it
-
+        
         $.ajax({
             type: "POST",
             dataType: "json",
@@ -355,31 +355,31 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     var _addColumnContentRule = function (formID, row, column, fieldClass, property) {
         if ("insertRule" in styleSheet) {
             // styleSheet.insertRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] " + contentType + "{" + property + "}", styleSheet.cssRules.length);
-            styleSheet.insertRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] ." + fieldClass + "{" + property + "}", styleSheet.cssRules.length);
+            styleSheet.insertRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] ." + fieldClass + "{" + property + "}", styleSheet.cssRules.length);
         }
         else if ("addRule" in styleSheet) {
             // styleSheet.addRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] " + contentType + "{" + property + "}", styleSheet.cssRules.length);
-            styleSheet.addRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] " + fieldClass + "{" + property + "}", styleSheet.cssRules.length);
+            styleSheet.addRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] ." + fieldClass + "{" + property + "}", styleSheet.cssRules.length);
         }
     }
 
     // Style is changed to the column content, not to the whole column
     var _addColumnContentFocusRule = function (formID, row, column, fieldClass, property) {
         if ("insertRule" in styleSheet) {
-            styleSheet.insertRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] ." + fieldClass + ":focus{" + property + "}", styleSheet.cssRules.length);
+            styleSheet.insertRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] ." + fieldClass + ":focus{" + property + "}", styleSheet.cssRules.length);
         }
         else if ("addRule" in styleSheet) {
-            styleSheet.addRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] ." + fieldClass + ":focus{" + property + "}", styleSheet.cssRules.length);
+            styleSheet.addRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] ." + fieldClass + ":focus{" + property + "}", styleSheet.cssRules.length);
         }
     }
 
     // Style is changed to the column content, not to the whole column
     var _addColumnContentHoverRule = function (formID, row, column, fieldClass, property) {
         if ("insertRule" in styleSheet) {
-            styleSheet.insertRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] ." + fieldClass + ":hover{" + property + "}", styleSheet.cssRules.length);
+            styleSheet.insertRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] ." + fieldClass + ":hover{" + property + "}", styleSheet.cssRules.length);
         }
         else if ("addRule" in styleSheet) {
-            styleSheet.addRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] ." + fieldClass + ":hover{" + property + "}", styleSheet.cssRules.length);
+            styleSheet.addRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] ." + fieldClass + ":hover{" + property + "}", styleSheet.cssRules.length);
         }
     }
 
@@ -569,7 +569,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     // Style is changed to the column content, not to the whole column
-    var _updateColumnContentRule = function (formID, row, column, fieldClass, rule, value) {
+    var _updateColumnContentRule = function (formID, row, column, selector, rule, value) {
+
         for (var i = 0; i < styleSheet.cssRules.length; i++) {
             // if (
             //     //chrome firefox
@@ -579,9 +580,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             // ) {
             if (
                 //chrome firefox
-                styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] ." + fieldClass ||
+                styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] ." + selector ||
                 // edge
-                styleSheet.cssRules[i].selectorText == "[data-rex-element-id=\"" + formID + "\"].rex-element-wrapper ." + fieldClass
+                styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] ." + selector
             ) {
                 switch (rule) {
                     case "float":
@@ -684,19 +685,46 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
     }
 
     // Style is changed to the column content, not to the whole column
-    var _updateColumnContentHoverRule = function (formID, row, column, contentType, rule, value) {
+    var _updateColumnContentFocusRule = function (formID, row, column, selector, rule, value) {
         for (var i = 0; i < styleSheet.cssRules.length; i++) {
             // if (
             //     //chrome firefox
-            //     styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] " + contentType + ":focus" ||
+            //     styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] " + selector + ":focus" ||
             //     // edge
-            //     styleSheet.cssRules[i].selectorText == "[data-rex-element-id=\"" + formID + "\"].rex-element-wrapper [wpcf7-row-number=\"" + row + "\"].wpcf7-row [wpcf7-column-number=\"" + column + "\"].wpcf7-column" + contentType + ":focus"
+            //     styleSheet.cssRules[i].selectorText == "[data-rex-element-id=\"" + formID + "\"].rex-element-wrapper [wpcf7-row-number=\"" + row + "\"].wpcf7-row [wpcf7-column-number=\"" + column + "\"].wpcf7-column" + selector + ":focus"
             // ) {
             if (
                 // chrome firefox
-                styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] ." + contentType + ":hover" ||
+                styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] ." + selector + ":focus" ||
                 // edge
-                styleSheet.cssRules[i].selectorText == "[data-rex-element-id=\"" + formID + "\"].rex-element-wrapper ." + contentType + ":hover"
+                styleSheet.cssRules[i].selectorText == "[data-rex-element-id=\"" + formID + "\"].rex-element-wrapper ." + selector + ":focus"
+            ) {
+                switch (rule) {
+                    case "text-color":
+                        styleSheet.cssRules[i].style.color = value;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            }
+        }
+    }
+
+    // Style is changed to the column content, not to the whole column
+    var _updateColumnContentHoverRule = function (formID, row, column, selector, rule, value) {
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+            // if (
+            //     //chrome firefox
+            //     styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] " + selector + ":focus" ||
+            //     // edge
+            //     styleSheet.cssRules[i].selectorText == "[data-rex-element-id=\"" + formID + "\"].rex-element-wrapper [wpcf7-row-number=\"" + row + "\"].wpcf7-row [wpcf7-column-number=\"" + column + "\"].wpcf7-column" + selector + ":focus"
+            // ) {
+            if (
+                // chrome firefox
+                styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] ." + selector + ":hover" ||
+                // edge
+                styleSheet.cssRules[i].selectorText == "[data-rex-element-id=\"" + formID + "\"].rex-element-wrapper ." + selector + ":hover"
             ) {
                 switch (rule) {
                     case "text-color":
@@ -716,34 +744,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         }
     }
 
-    // Style is changed to the column content, not to the whole column
-    var _updateColumnContentFocusRule = function (formID, row, column, contentType, rule, value) {
-        for (var i = 0; i < styleSheet.cssRules.length; i++) {
-            // if (
-            //     //chrome firefox
-            //     styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] " + contentType + ":focus" ||
-            //     // edge
-            //     styleSheet.cssRules[i].selectorText == "[data-rex-element-id=\"" + formID + "\"].rex-element-wrapper [wpcf7-row-number=\"" + row + "\"].wpcf7-row [wpcf7-column-number=\"" + column + "\"].wpcf7-column" + contentType + ":focus"
-            // ) {
-            if (
-                // chrome firefox
-                styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] ." + contentType + ":focus" ||
-                // edge
-                styleSheet.cssRules[i].selectorText == "[data-rex-element-id=\"" + formID + "\"].rex-element-wrapper ." + contentType + ":focus"
-            ) {
-                switch (rule) {
-                    case "text-color":
-                        styleSheet.cssRules[i].style.color = value;
-                        break;
-                    default:
-                        break;
-                }
-                break;
-            }
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////
     // Removing rules
     
     var _removeFormRule = function (formID) {
@@ -1114,6 +1115,33 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var propertyType = data.propertyType;
         var newValue = data.newValue;
 
+        var cssSelector;
+        switch (inputType) {
+            case "text":
+                if (data.content.wpcf7_only_numbers == "true") {
+                    cssSelector = "wpcf7-number";
+                } else {
+                    cssSelector = "wpcf7-text";
+                }
+                break;
+            case "textarea":
+            // case "number":
+            
+            case "select":
+                cssSelector = "wpcf7-" + inputType;
+                break;
+            case "acceptance":
+            case "submit":
+            case "file":
+                cssSelector = fieldClass;
+                break;
+            case "radio":
+                cssSelector =  "wpcf7-form-control-wrap."+ fieldClass;
+                break;
+            default:
+              break;
+        }
+
         switch (propertyType) {
             case "background-color":
             case "width":
@@ -1122,7 +1150,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             case "border-width":
             case "text-color":
             case "border-color":
-                _updateColumnContentRule(formID, row, column, fieldClass, propertyName, newValue);
+                _updateColumnContentRule(formID, row, column, cssSelector, propertyName, newValue);
+                // _updateColumnContentRule(formID, row, column, fieldClass, propertyName, newValue);
                 break;
             case "button-width":
             case "button-height":
@@ -1141,25 +1170,31 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             case "button-background-color":
             case "button-border-color":
                 if (inputType == "file") {
-                    _updateColumnContentRule(formID, row, column, fieldClass + " label", propertyName, newValue);
+                    _updateColumnContentRule(formID, row, column, cssSelector + " label", propertyName, newValue);
+                    // _updateColumnContentRule(formID, row, column, fieldClass + " label", propertyName, newValue);
                 } else {
-                    _updateColumnContentRule(formID, row, column, fieldClass, propertyName, newValue);
+                    _updateColumnContentRule(formID, row, column, cssSelector, propertyName, newValue);
+                    // _updateColumnContentRule(formID, row, column, fieldClass, propertyName, newValue);
                 }
                 break;
             case "text-color-hover":
             case "background-color-hover":
             case "border-color-hover":
-                _updateColumnContentHoverRule(formID, row, column, fieldClass, propertyName, newValue);
+                _updateColumnContentHoverRule(formID, row, column, cssSelector, propertyName, newValue);
+                // _updateColumnContentHoverRule(formID, row, column, fieldClass, propertyName, newValue);
             case "text-focus":
-                _updateColumnContentFocusRule(formID, row, column, fieldClass, propertyName, newValue);
+                _updateColumnContentFocusRule(formID, row, column, cssSelector, propertyName, newValue);
+                // _updateColumnContentFocusRule(formID, row, column, fieldClass, propertyName, newValue);
                 break;
             case "button-text-color-hover":
             case "button-background-color-hover":
             case "button-border-color-hover":
                 if (inputType == "file") {
-                   _updateColumnContentHoverRule(formID, row, column, fieldClass + " label", propertyName, newValue);
+                   _updateColumnContentHoverRule(formID, row, column, cssSelector + " label", propertyName, newValue);
+                   // _updateColumnContentHoverRule(formID, row, column, fieldClass + " label", propertyName, newValue);
                 } else {
-                    _updateColumnContentHoverRule(formID, row, column, fieldClass, propertyName, newValue);
+                    _updateColumnContentHoverRule(formID, row, column, cssSelector, propertyName, newValue);
+                    // _updateColumnContentHoverRule(formID, row, column, fieldClass, propertyName, newValue);
                 }
                 break;
             default:
@@ -1725,7 +1760,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         switch (inputType) {
             case "text":
-                if (columnContentData.wpcf7_only_numbers) {
+                if (columnContentData.wpcf7_only_numbers == "true") {
                     cssSelector = "wpcf7-number";
                 } else {
                     cssSelector = "wpcf7-text";
@@ -1733,29 +1768,21 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 break;
             case "textarea":
             // case "number":
-            case "submit":
+            
             case "select":
                 cssSelector = "wpcf7-" + inputType;
                 break;
-            case "radio":
             case "acceptance":
+            case "submit":
+            case "file":
                 cssSelector = fieldClass;
                 break;
-            case "file":
-                cssSelector = fieldClass + " label";
+            case "radio":
+                cssSelector =  "wpcf7-form-control-wrap."+ fieldClass;
                 break;
             default:
               break;
         }
-
-        console.log("fieldclass", fieldClass);
-        console.log("cssselector", cssSelector);
-
-        columnContentHoverRule += "color: " + columnContentData.text_color_hover + ";";
-        columnContentHoverRule += "background-color: " + columnContentData.background_color_hover + ";";
-        columnContentHoverRule += "border-color: " + columnContentData.border_color_hover + ";";
-        _addColumnContentHoverRule(formID, row, column, cssSelector, columnContentHoverRule);
-        // _addColumnContentHoverRule(formID, row, column, fieldClass, columnContentHoverRule);
 
         var columnContentFocusRule = "";
 
@@ -1790,9 +1817,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             columnContentFileButtonHoverRule += "background-color: " + columnContentData.wpcf7_button.background_color_hover + ";";
             columnContentFileButtonHoverRule += "border-color: " + columnContentData.wpcf7_button.border_color_hover + ";";
 
-            _addColumnContentRule(formID, row, column, cssSelector, columnContentFileButtonRule);
+            _addColumnContentRule(formID, row, column, cssSelector   + " label", columnContentFileButtonRule);
             // _addColumnContentRule(formID, row, column, fieldClass + " label", columnContentFileButtonRule);
-            _addColumnContentHoverRule(formID, row, column, cssSelector, columnContentFileButtonHoverRule);
+            _addColumnContentHoverRule(formID, row, column, cssSelector  + " label", columnContentFileButtonHoverRule);
             // _addColumnContentHoverRule(formID, row, column, fieldClass + " label", columnContentFileButtonHoverRule);
         }
 
@@ -1827,7 +1854,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             // _addColumnContentRule(formID, row, column, fieldClass, columnContentButtonRule);
             _addColumnContentHoverRule(formID, row, column, cssSelector, columnContentButtonHoverRule);
             // _addColumnContentHoverRule(formID, row, column, fieldClass, columnContentButtonHoverRule);
-        } else {
+        } else { // Other fields
             var columnContentRule = "";
 
             if (inputType == "acceptance" || inputType == "radio" || inputType == "file") {
@@ -1844,6 +1871,12 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             columnContentRule += "border-width: " + columnContentData.border_width + ";";
             _addColumnContentRule(formID, row, column, cssSelector, columnContentRule);
             // _addColumnContentRule(formID, row, column, fieldClass, columnContentRule);
+            
+            columnContentHoverRule += "color: " + columnContentData.text_color_hover + ";";
+            columnContentHoverRule += "background-color: " + columnContentData.background_color_hover + ";";
+            columnContentHoverRule += "border-color: " + columnContentData.border_color_hover + ";";
+            _addColumnContentHoverRule(formID, row, column, cssSelector, columnContentHoverRule);
+            // _addColumnContentHoverRule(formID, row, column, fieldClass, columnContentHoverRule);
         }
     }
 
@@ -1884,69 +1917,165 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var buttonBorderColor = columnContentData.wpcf7_button.border_color;
         var buttonBorderColorHover = columnContentData.wpcf7_button.border_color_hover;
 
+        var cssSelector;
+        switch (inputType) {
+            case "text":
+                if (columnContentData.wpcf7_only_numbers == "true") {
+                    cssSelector = "wpcf7-number";
+                } else {
+                    cssSelector = "wpcf7-text";
+                }
+                break;
+            case "textarea":
+            // case "number":
+            
+            case "select":
+                cssSelector = "wpcf7-" + inputType;
+                break;
+            case "acceptance":
+            case "submit":
+            case "file":
+                cssSelector = fieldClass;
+                break;
+            case "radio":
+                cssSelector =  "wpcf7-form-control-wrap."+ fieldClass;
+                break;
+            default:
+              break;
+        }
+
         if (inputType == "acceptance" || inputType == "radio") {
-            _updateColumnContentRule(formID, row, column, fieldClass, "float", "left");
+            _updateColumnContentRule(formID, row, column, cssSelector, "float", "left");
+            // _updateColumnContentRule(formID, row, column, fieldClass, "float", "left");
         }
 
         if (inputType != "submit") {
-            _updateColumnContentRule(formID, row, column, fieldClass, "width", columnContentData.input_width);
-            _updateColumnContentRule(formID, row, column, fieldClass, "height", columnContentData.input_height);
-            _updateColumnContentRule(formID, row, column, fieldClass, "font-size", columnContentData.font_size);
-            _updateColumnContentRule(formID, row, column, fieldClass, "border-width", columnContentData.border_width);
-            _updateColumnContentRule(formID, row, column, fieldClass, "text-color", textColor);
-            _updateColumnContentRule(formID, row, column, fieldClass, "background-color",backgroundColor);
-            _updateColumnContentRule(formID, row, column, fieldClass, "border-color", borderColor);
+            // _updateColumnContentHoverRule(formID, row, column, fieldClass, "text-color", textColorHover);
+            // _updateColumnContentHoverRule(formID, row, column, fieldClass, "background-color", backgroundColorHover);
+            // _updateColumnContentHoverRule(formID, row, column, fieldClass, "border-color", borderColorHover);
+
+            // _updateColumnContentFocusRule(formID, row, column, fieldClass, "text-color", textColorFocus);
+
+
+
+            _updateColumnContentHoverRule(formID, row, column, cssSelector, "text-color", textColorHover);
+            _updateColumnContentHoverRule(formID, row, column, cssSelector, "background-color", backgroundColorHover);
+            _updateColumnContentHoverRule(formID, row, column, cssSelector, "border-color", borderColorHover);
+
+
+
+
+            // _updateColumnContentRule(formID, row, column, fieldClass, "width", columnContentData.input_width);
+            // _updateColumnContentRule(formID, row, column, fieldClass, "height", columnContentData.input_height);
+            // _updateColumnContentRule(formID, row, column, fieldClass, "font-size", columnContentData.font_size);
+            // _updateColumnContentRule(formID, row, column, fieldClass, "border-width", columnContentData.border_width);
+            // _updateColumnContentRule(formID, row, column, fieldClass, "text-color", textColor);
+            // _updateColumnContentRule(formID, row, column, fieldClass, "background-color",backgroundColor);
+            // _updateColumnContentRule(formID, row, column, fieldClass, "border-color", borderColor);
+
+
+
+            _updateColumnContentRule(formID, row, column, cssSelector, "width", columnContentData.input_width);
+            _updateColumnContentRule(formID, row, column, cssSelector, "height", columnContentData.input_height);
+            _updateColumnContentRule(formID, row, column, cssSelector, "font-size", columnContentData.font_size);
+            _updateColumnContentRule(formID, row, column, cssSelector, "border-width", columnContentData.border_width);
+            _updateColumnContentRule(formID, row, column, cssSelector, "text-color", textColor);
+            _updateColumnContentRule(formID, row, column, cssSelector, "background-color",backgroundColor);
+            _updateColumnContentRule(formID, row, column, cssSelector, "border-color", borderColor);
 
             if (inputType == "file") {
-                _updateColumnContentRule(formID, row, column, fieldClass + " label", "height", buttonHeight);
-                _updateColumnContentRule(formID, row, column, fieldClass + " label", "width", buttonWidth);
-                _updateColumnContentRule(formID, row, column, fieldClass + " label", "border-width", buttonBorderWidth);
-                _updateColumnContentRule(formID, row, column, fieldClass + " label", "border-radius", buttonBorderRadius);
-                _updateColumnContentRule(formID, row, column, fieldClass + " label", "margin-top", buttonMarginTop);
-                _updateColumnContentRule(formID, row, column, fieldClass + " label", "margin-right", buttonMarginRight);
-                _updateColumnContentRule(formID, row, column, fieldClass + " label", "margin-bottom", buttonMarginBottom);
-                _updateColumnContentRule(formID, row, column, fieldClass + " label", "margin-left", buttonMarginLeft);
-                _updateColumnContentRule(formID, row, column, fieldClass + " label", "padding-top", buttonPaddingTop);
-                _updateColumnContentRule(formID, row, column, fieldClass + " label", "padding-right", buttonPaddingRight);
-                _updateColumnContentRule(formID, row, column, fieldClass + " label", "padding-bottom", buttonPaddingBottom);
-                _updateColumnContentRule(formID, row, column, fieldClass + " label", "padding-left", buttonPaddingLeft);
-                _updateColumnContentRule(formID, row, column, fieldClass + " label", "font-size", buttonFontSize);
-                _updateColumnContentRule(formID, row, column, fieldClass + " label", "text-color", buttonTextColor);
-                _updateColumnContentRule(formID, row, column, fieldClass + " label", "background-color", buttonBackgroundColor);
-                _updateColumnContentRule(formID, row, column, fieldClass + " label", "border-color", buttonBorderColor);
+                // _updateColumnContentRule(formID, row, column, fieldClass + " label", "height", buttonHeight);
+                // _updateColumnContentRule(formID, row, column, fieldClass + " label", "width", buttonWidth);
+                // _updateColumnContentRule(formID, row, column, fieldClass + " label", "border-width", buttonBorderWidth);
+                // _updateColumnContentRule(formID, row, column, fieldClass + " label", "border-radius", buttonBorderRadius);
+                // _updateColumnContentRule(formID, row, column, fieldClass + " label", "margin-top", buttonMarginTop);
+                // _updateColumnContentRule(formID, row, column, fieldClass + " label", "margin-right", buttonMarginRight);
+                // _updateColumnContentRule(formID, row, column, fieldClass + " label", "margin-bottom", buttonMarginBottom);
+                // _updateColumnContentRule(formID, row, column, fieldClass + " label", "margin-left", buttonMarginLeft);
+                // _updateColumnContentRule(formID, row, column, fieldClass + " label", "padding-top", buttonPaddingTop);
+                // _updateColumnContentRule(formID, row, column, fieldClass + " label", "padding-right", buttonPaddingRight);
+                // _updateColumnContentRule(formID, row, column, fieldClass + " label", "padding-bottom", buttonPaddingBottom);
+                // _updateColumnContentRule(formID, row, column, fieldClass + " label", "padding-left", buttonPaddingLeft);
+                // _updateColumnContentRule(formID, row, column, fieldClass + " label", "font-size", buttonFontSize);
+                // _updateColumnContentRule(formID, row, column, fieldClass + " label", "text-color", buttonTextColor);
+                // _updateColumnContentRule(formID, row, column, fieldClass + " label", "background-color", buttonBackgroundColor);
+                // _updateColumnContentRule(formID, row, column, fieldClass + " label", "border-color", buttonBorderColor);
 
-                _updateColumnContentHoverRule(formID, row, column, fieldClass + " label", "text-color", buttonTextColorHover);
-                _updateColumnContentHoverRule(formID, row, column, fieldClass + " label", "background-color", buttonBackgroundColorHover);
-                _updateColumnContentHoverRule(formID, row, column, fieldClass + " label", "border-color", buttonBorderColorHover);
+                // _updateColumnContentHoverRule(formID, row, column, fieldClass + " label", "text-color", buttonTextColorHover);
+                // _updateColumnContentHoverRule(formID, row, column, fieldClass + " label", "background-color", buttonBackgroundColorHover);
+                // _updateColumnContentHoverRule(formID, row, column, fieldClass + " label", "border-color", buttonBorderColorHover);
+
+
+                _updateColumnContentRule(formID, row, column, cssSelector + " label", "height", buttonHeight);
+                _updateColumnContentRule(formID, row, column, cssSelector + " label", "width", buttonWidth);
+                _updateColumnContentRule(formID, row, column, cssSelector + " label", "border-width", buttonBorderWidth);
+                _updateColumnContentRule(formID, row, column, cssSelector + " label", "border-radius", buttonBorderRadius);
+                _updateColumnContentRule(formID, row, column, cssSelector + " label", "margin-top", buttonMarginTop);
+                _updateColumnContentRule(formID, row, column, cssSelector + " label", "margin-right", buttonMarginRight);
+                _updateColumnContentRule(formID, row, column, cssSelector + " label", "margin-bottom", buttonMarginBottom);
+                _updateColumnContentRule(formID, row, column, cssSelector + " label", "margin-left", buttonMarginLeft);
+                _updateColumnContentRule(formID, row, column, cssSelector + " label", "padding-top", buttonPaddingTop);
+                _updateColumnContentRule(formID, row, column, cssSelector + " label", "padding-right", buttonPaddingRight);
+                _updateColumnContentRule(formID, row, column, cssSelector + " label", "padding-bottom", buttonPaddingBottom);
+                _updateColumnContentRule(formID, row, column, cssSelector + " label", "padding-left", buttonPaddingLeft);
+                _updateColumnContentRule(formID, row, column, cssSelector + " label", "font-size", buttonFontSize);
+                _updateColumnContentRule(formID, row, column, cssSelector + " label", "text-color", buttonTextColor);
+                _updateColumnContentRule(formID, row, column, cssSelector + " label", "background-color", buttonBackgroundColor);
+                _updateColumnContentRule(formID, row, column, cssSelector + " label", "border-color", buttonBorderColor);
+
+                _updateColumnContentHoverRule(formID, row, column, cssSelector + " label", "text-color", buttonTextColorHover);
+                _updateColumnContentHoverRule(formID, row, column, cssSelector + " label", "background-color", buttonBackgroundColorHover);
+                _updateColumnContentHoverRule(formID, row, column, cssSelector + " label", "border-color", buttonBorderColorHover);
             }
-        } else {
-            _updateColumnContentRule(formID, row, column, fieldClass, "height", buttonHeight);
-            _updateColumnContentRule(formID, row, column, fieldClass, "width", buttonWidth);
-            _updateColumnContentRule(formID, row, column, fieldClass, "border-width", buttonBorderWidth);
-            _updateColumnContentRule(formID, row, column, fieldClass, "border-radius", buttonBorderRadius);
-            _updateColumnContentRule(formID, row, column, fieldClass, "margin-top", buttonMarginTop);
-            _updateColumnContentRule(formID, row, column, fieldClass, "margin-right", buttonMarginRight);
-            _updateColumnContentRule(formID, row, column, fieldClass, "margin-bottom", buttonMarginBottom);
-            _updateColumnContentRule(formID, row, column, fieldClass, "margin-left", buttonMarginLeft);
-            _updateColumnContentRule(formID, row, column, fieldClass, "padding-top", buttonPaddingTop);
-            _updateColumnContentRule(formID, row, column, fieldClass, "padding-right", buttonPaddingRight);
-            _updateColumnContentRule(formID, row, column, fieldClass, "padding-bottom", buttonPaddingBottom);
-            _updateColumnContentRule(formID, row, column, fieldClass, "padding-left", buttonPaddingLeft);
-            _updateColumnContentRule(formID, row, column, fieldClass, "font-size", buttonFontSize);
-            _updateColumnContentRule(formID, row, column, fieldClass, "text-color", buttonTextColor);
-            _updateColumnContentRule(formID, row, column, fieldClass, "background-color", buttonBackgroundColor);
-            _updateColumnContentRule(formID, row, column, fieldClass, "border-color", buttonBorderColor);
+        } else {    // Field is submit
+            // _updateColumnContentRule(formID, row, column, fieldClass, "height", buttonHeight);
+            // _updateColumnContentRule(formID, row, column, fieldClass, "width", buttonWidth);
+            // _updateColumnContentRule(formID, row, column, fieldClass, "border-width", buttonBorderWidth);
+            // _updateColumnContentRule(formID, row, column, fieldClass, "border-radius", buttonBorderRadius);
+            // _updateColumnContentRule(formID, row, column, fieldClass, "margin-top", buttonMarginTop);
+            // _updateColumnContentRule(formID, row, column, fieldClass, "margin-right", buttonMarginRight);
+            // _updateColumnContentRule(formID, row, column, fieldClass, "margin-bottom", buttonMarginBottom);
+            // _updateColumnContentRule(formID, row, column, fieldClass, "margin-left", buttonMarginLeft);
+            // _updateColumnContentRule(formID, row, column, fieldClass, "padding-top", buttonPaddingTop);
+            // _updateColumnContentRule(formID, row, column, fieldClass, "padding-right", buttonPaddingRight);
+            // _updateColumnContentRule(formID, row, column, fieldClass, "padding-bottom", buttonPaddingBottom);
+            // _updateColumnContentRule(formID, row, column, fieldClass, "padding-left", buttonPaddingLeft);
+            // _updateColumnContentRule(formID, row, column, fieldClass, "font-size", buttonFontSize);
+            // _updateColumnContentRule(formID, row, column, fieldClass, "text-color", buttonTextColor);
+            // _updateColumnContentRule(formID, row, column, fieldClass, "background-color", buttonBackgroundColor);
+            // _updateColumnContentRule(formID, row, column, fieldClass, "border-color", buttonBorderColor);
 
-            _updateColumnContentHoverRule(formID, row, column, fieldClass, "text-color", buttonTextColorHover);
-            _updateColumnContentHoverRule(formID, row, column, fieldClass, "background-color", buttonBackgroundColorHover);
-            _updateColumnContentHoverRule(formID, row, column, fieldClass, "border-color", buttonBorderColorHover);
+            // _updateColumnContentHoverRule(formID, row, column, fieldClass, "text-color", buttonTextColorHover);
+            // _updateColumnContentHoverRule(formID, row, column, fieldClass, "background-color", buttonBackgroundColorHover);
+            // _updateColumnContentHoverRule(formID, row, column, fieldClass, "border-color", buttonBorderColorHover);
+
+
+
+            _updateColumnContentRule(formID, row, column, cssSelector, "height", buttonHeight);
+            _updateColumnContentRule(formID, row, column, cssSelector, "width", buttonWidth);
+            _updateColumnContentRule(formID, row, column, cssSelector, "border-width", buttonBorderWidth);
+            _updateColumnContentRule(formID, row, column, cssSelector, "border-radius", buttonBorderRadius);
+            _updateColumnContentRule(formID, row, column, cssSelector, "margin-top", buttonMarginTop);
+            _updateColumnContentRule(formID, row, column, cssSelector, "margin-right", buttonMarginRight);
+            _updateColumnContentRule(formID, row, column, cssSelector, "margin-bottom", buttonMarginBottom);
+            _updateColumnContentRule(formID, row, column, cssSelector, "margin-left", buttonMarginLeft);
+            _updateColumnContentRule(formID, row, column, cssSelector, "padding-top", buttonPaddingTop);
+            _updateColumnContentRule(formID, row, column, cssSelector, "padding-right", buttonPaddingRight);
+            _updateColumnContentRule(formID, row, column, cssSelector, "padding-bottom", buttonPaddingBottom);
+            _updateColumnContentRule(formID, row, column, cssSelector, "padding-left", buttonPaddingLeft);
+            _updateColumnContentRule(formID, row, column, cssSelector, "font-size", buttonFontSize);
+            _updateColumnContentRule(formID, row, column, cssSelector, "text-color", buttonTextColor);
+            _updateColumnContentRule(formID, row, column, cssSelector, "background-color", buttonBackgroundColor);
+            _updateColumnContentRule(formID, row, column, cssSelector, "border-color", buttonBorderColor);
+
+            _updateColumnContentHoverRule(formID, row, column, cssSelector, "text-color", buttonTextColorHover);
+            _updateColumnContentHoverRule(formID, row, column, cssSelector, "background-color", buttonBackgroundColorHover);
+            _updateColumnContentHoverRule(formID, row, column, cssSelector, "border-color", buttonBorderColorHover);
         }
 
-        _updateColumnContentHoverRule(formID, row, column, fieldClass, "text-color", textColorHover);
-        _updateColumnContentHoverRule(formID, row, column, fieldClass, "background-color", backgroundColorHover);
-        _updateColumnContentHoverRule(formID, row, column, fieldClass, "border-color", borderColorHover);
+        
 
-        _updateColumnContentFocusRule(formID, row, column, fieldClass, "text-color", textColorFocus);
+        _updateColumnContentFocusRule(formID, row, column, cssSelector, "text-color", textColorFocus);
 
         _updateColumnContentShortcode(formID, row, column, inputType, columnContentData);
         _updateSpanData(formID, columnContentData);
