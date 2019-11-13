@@ -5433,7 +5433,8 @@ input.me-insert-embed__value[type=text] {
     .rexwpcf7-row-tools .rex-wpcf7-row-tools-container .rex-wpcf7-row-drag {
       position: absolute;
       top: 0px;
-      right: 60px; }
+      right: 60px;
+      display: none; }
     .rexwpcf7-row-tools .rex-wpcf7-row-tools-container .rex-wpcf7-row-clone {
       position: absolute;
       top: 0px;

@@ -362,6 +362,7 @@ var Rexbuilder_Rexelement = (function ($) {
     }
 
     var _fixWpcf7 = function () {
+        Rexbuilder_Rexwpcf7.setRowsSortable();
         _addWpcf7MenuPlaceholders();
         _fixWpcf7RadioButtons();
         _fixWpcf7Files();
@@ -968,6 +969,7 @@ var Rexbuilder_Rexelement = (function ($) {
 
         // CSS Rules Editing
         generateElementData: _generateElementData,
+        addStyles: _addStyles,
 
         // Rexelement functions
 		fixImportedElement: _fixImportedElement,

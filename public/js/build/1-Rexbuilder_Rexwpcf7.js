@@ -187,7 +187,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 row_number: row
             }
         }
-        // _createColumnContentSpanData(data);
 
         _updateFormInDB(formID);
     }
@@ -273,6 +272,28 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
               if (response.success) {
                 formToUpdateString = "";
                 Rexbuilder_Rexelement.refreshRexElement(formID);
+              }
+            },
+            error: function(response) {}
+        });
+    }
+
+    var _updateFormInDBNoRefresh = function (formID) {
+        var formToUpdateString = $formsInPage[formID][0].outerHTML; // Don't need to get the form in db before, already have it
+        
+        $.ajax({
+            type: "POST",
+            dataType: "json",
+            url: _plugin_frontend_settings.rexajax.ajaxurl,
+            data: {
+              action: "rex_wpcf7_save_changes",
+              nonce_param: _plugin_frontend_settings.rexajax.rexnonce,
+              form_id: formID,
+              new_form_string: formToUpdateString
+            },
+            success: function(response) {
+              if (response.success) {
+                formToUpdateString = "";
               }
             },
             error: function(response) {}
@@ -2352,8 +2373,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         })
         idsInPage = Array.from(new Set(idsInPage));
 
-        _setRowsSortable(idsInPage);
-
         $.ajax({
             type: "POST",
             dataType: "json",
@@ -2377,22 +2396,57 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         });
     }
 
-    var _setRowsSortable = function (idsInPage) {
+    var _setRowsSortable = function () {
         var $elementWrappers = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper");
 
-        console.log($elementWrappers.find(".wpcf7-rows"));
         if (!$elementWrappers.find(".wpcf7-rows").hasClass("ui-sortable")) {
             $elementWrappers.find(".wpcf7-rows").addClass("ui-sortable");
         }
-        
+
         $elementWrappers.find(".wpcf7-rows").sortable({
             revert: true,
-            handle: ".rexwpcf7-sort",
+            handle: ".rex-wpcf7-row-drag",
             cursor: "pointer",
-            // update: function(e, ui) {
-            //   _update_slide_list_index(e, ui);
-            // }
+            update: function(e, ui) {
+                var formID = ui.item.parents(".rex-element-wrapper").attr("data-rex-element-id");
+                
+                var startPosition = ui.item.attr("wpcf7-row-number");
+                _fixRowNumbers($elementWrappers.find(".wpcf7-form"));
+                var endPosition = ui.item.attr("wpcf7-row-number");
+
+                var $rowInDBMoved = $formsInPage[formID].find(".wpcf7-row[wpcf7-row-number='" + startPosition +"']");
+                var $rowInDBAfter = $formsInPage[formID].find(".wpcf7-row[wpcf7-row-number='" + endPosition +"']");
+
+                $rowInDBMoved.insertAfter($rowInDBAfter);
+                _fixRowNumbers($formsInPage[formID]);
+
+                startPosition = parseInt(startPosition);
+                endPosition = parseInt(endPosition);
+
+                if (parseInt(startPosition) < parseInt(endPosition)) {
+                    for (var i = startPosition; i <= endPosition; i++) {
+                        $elementWrappers.find(".wpcf7-form").eq(0).find(".wpcf7-row[wpcf7-row-number='" + i + "']").find(".wpcf7-column").each(function () {
+                            _addColumnContentStyle($(this));
+                        })
+                        
+                    }
+                } else if (parseInt(startPosition) > parseInt(endPosition)) {
+                    
+                }
+
+                _updateFormInDBNoRefresh(formID);
+            }
         });
+    }
+
+    var _fixColumnContentClasses = function (formID) {
+        // Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]").each(function () {
+
+        // });
+        // Rexbuilder_Rexelement.addStyles();
+        // $elementWrapper.find(".wpcf7-column").each(function(){
+        //     Rexbuilder_Rexwpcf7.addColumnContentStyle($(this));
+        // })
     }
 
 	var _init = function () {
@@ -2465,6 +2519,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 		updateFormInputsLive: _updateFormInputsLive,
         updateForm: _updateForm,
         updateFormInDB: _updateFormInDB,
+
+        // Rows function
+        setRowsSortable: _setRowsSortable,
 
 		// Column content functions
 		createColumnContentSpanData: _createColumnContentSpanData,

@@ -1455,10 +1455,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         wpcf7_content_editor_properties.$field_list.sortable({
           revert: true,
           handle: ".rexwpcf7-sort",
-          cursor: "pointer",
-          // update: function(e, ui) {
-          //   _update_slide_list_index(e, ui);
-          // }
+          cursor: "pointer"
         });
 
 		columnContentData = {
@@ -1519,8 +1516,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         }
         
         $accordions.rexAccordion({open:{},close:{},});
+        _linkDocumentListeners();
         _linkNumberInputs();
-		_linkDocumentListeners();
 		_linkTextColorEditor();
         _linkTextFocusColorEditor();
         _linkButtonTextColorEditor();

@@ -21,6 +21,7 @@
   position: absolute;
   z-index: 10;
   cursor: pointer;
+  // z-index: 4000;
 
   .rex-wpcf7-row-tools-container {
     // width: 100%;
@@ -33,6 +34,7 @@
       position: absolute;
       top: 0px;
       right: 60px;
+      display: none;
     }
 
     .rex-wpcf7-row-clone {
