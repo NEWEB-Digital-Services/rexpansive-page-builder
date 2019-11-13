@@ -1055,6 +1055,8 @@ class Rexbuilder_Public
     /**
      * Filtering post_content to add builder live information
      * @since 2.0.0
+     * @version  2.0.2 Fix the return of the content for the builder to return only "the content" without
+     *                 "doing" the shortcode
      */
     public function generate_builder_content( $content ) {
         global $post;      
@@ -1123,7 +1125,7 @@ class Rexbuilder_Public
 
         ?>
         <div class="rex-container" data-rex-layout-selected="" data-backend-edited="<?php echo $backendEditing;?>">
-        <?php echo do_shortcode( $rexbuilderShortcode ); ?>
+        <?php echo $rexbuilderShortcode; ?>
         </div>
         <?php 
         if ( isset( $editor ) && $editor == "true" ) {
@@ -1143,7 +1145,7 @@ class Rexbuilder_Public
     <?php
                 return ob_get_clean();
             }
-        } 
+        }
         
         return $content;
     }

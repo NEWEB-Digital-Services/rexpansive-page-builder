@@ -26,7 +26,7 @@ $saved_palette = get_option( '_rex_overlay_palette', array() );
                 <?php
             }
             ?>
-            <div class="palette__add-color" class="tool-button">
+            <div class="palette__add-color">
                 <?php Rexbuilder_Utilities::get_icon('#Z001-Plus'); ?>
             </div>
         </div>

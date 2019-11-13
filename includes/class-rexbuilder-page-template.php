@@ -4,6 +4,7 @@
  *
  * @link       htto://www.neweb.info
  * @since      1.0.0
+ * @deprecated 2.0.0
  *
  * @package    Rexbuilder
  * @subpackage Rexbuilder/includes

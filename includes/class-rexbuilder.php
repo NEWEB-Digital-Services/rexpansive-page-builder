@@ -360,17 +360,19 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'print_post_custom_styles' );
 		$this->loader->add_action( 'wp_enqueue_scripts', $plugin_public, 'print_rex_buttons_style' );
 
-		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_photoswipe_template' );
-		
+		$this->loader->add_action( 'shortcode_atts_wpcf7', $plugin_public, 'cf7_custom_style', 10, 4 );
+		$this->loader->add_filter( 'the_content', $plugin_public, "generate_builder_content");
+
+		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_photoswipe_template' );		
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_vertical_dots' );
-		
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'print_post_id' );
-		
+
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'include_js_template' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'include_sprites_live' );
 		$this->loader->add_action( 'wp_footer', $plugin_public, 'include_custom_sprites' );
 
 		// ajax logic
+		// for live builder
 		$this->loader->add_action( 'wp_ajax_rexlive_save_shortcode', $plugin_public, 'rexlive_save_shortcode' );
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_shortcode', $plugin_public, 'rexlive_save_shortcode' );
 
@@ -405,9 +407,6 @@ class Rexbuilder {
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_get_embed_code', $plugin_public, 'rexlive_get_embed_code' );
 		$this->loader->add_action( 'wp_ajax_rexlive_save_buttons_in_page', $plugin_public, 'rexlive_save_buttons_in_page' );
 		$this->loader->add_action( 'wp_ajax_nopriv_rexlive_save_buttons_in_page', $plugin_public, 'rexlive_save_buttons_in_page' );
-
-		$this->loader->add_action( 'shortcode_atts_wpcf7', $plugin_public, 'cf7_custom_style', 10, 4 );
-		$this->loader->add_filter( "the_content", $plugin_public, "generate_builder_content");
 	}
 
 	/**

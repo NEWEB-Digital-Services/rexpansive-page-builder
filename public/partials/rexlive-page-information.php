@@ -114,8 +114,7 @@ if ($sectionsIDsUsed == null) {
     <div class="models-customizations" <?php
     if (!$flag_models) {
         echo 'data-empty-models-customizations="true">';
-    } else { ?>>
-        <?php
+    } else {
         foreach ($models_customizations as $model) {
             $idModel = $model['id'];
             echo '<div class="model-customizations-container" data-model-id="'. $idModel .'">';

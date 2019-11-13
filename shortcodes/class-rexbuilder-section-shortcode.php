@@ -308,9 +308,7 @@ class Rexbuilder_Section
         echo $bg_video_toggle_audio_markup;
         
         echo '<div class="responsive-overlay"';
-        if ("" != $responsive_background) {
-            echo $section_responsive_style;
-        }
+        echo $section_responsive_style;
         echo '>';
 
         if ('boxed' == $dimension) {
@@ -327,13 +325,13 @@ class Rexbuilder_Section
 
         echo '<div class="perfect-grid-gallery grid-stack grid-stack-row' . ( !empty( $grid_custom_classes ) ? ' ' . $grid_custom_classes : '' ) . '" data-separator="' . $block_distance . '" data-layout="' . $layout . '" data-full-height="' . (('true' == $full_height) ? 'true' : 'false') . '"' . $row_separators . '>';
         echo '<div class="perfect-grid-sizer"></div>';
-        echo do_shortcode($content);
+        echo do_shortcode( $content );
         echo '</div>';
         echo '</div>';
 
-        if ("" != $responsive_background) {
-            echo '</div>';
-        }
+        // if ("" != $responsive_background) {
+        echo '</div>';
+        // }
 
         echo '</section>';
         return ob_get_clean();
