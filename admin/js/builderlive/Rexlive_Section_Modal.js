@@ -25,6 +25,7 @@ var Section_Modal = (function($) {
     GridSeparators_Modal.resetDistances();
     SectionMargins_Modal.resetMargins();
     PhotoSwipe_Modal.resetPhotoswipe();
+    Hold_Grid_Modal.reset();
     FullHeight_Modal.resetFullHeight();
     SectionName_Modal.resetSectionName();
     Section_CustomClasses_Modal.resetCustomClasses();
@@ -36,6 +37,7 @@ var Section_Modal = (function($) {
     GridSeparators_Modal.updateDistances(data);
     SectionMargins_Modal.updateMargins(data);
     PhotoSwipe_Modal.updatePhotoswipe(data);
+    Hold_Grid_Modal.update(data);
     FullHeight_Modal.updateFullHeight(data);
     SectionName_Modal.updateSectionName(data);
     Section_CustomClasses_Modal.updateCustomClasses(data);
@@ -64,6 +66,7 @@ var Section_Modal = (function($) {
     GridSeparators_Modal.init($sectionConfigModal);
     SectionMargins_Modal.init($sectionConfigModal);
     PhotoSwipe_Modal.init($sectionConfigModal);
+    Hold_Grid_Modal.init($sectionConfigModal);
     FullHeight_Modal.init($sectionConfigModal);
     SectionName_Modal.init($sectionConfigModal);
     Section_CustomClasses_Modal.init($sectionConfigModal);

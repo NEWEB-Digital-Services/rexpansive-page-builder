@@ -126,7 +126,7 @@ class Rexbuilder_Section
 
         $custom_classes = trim($custom_classes);
 
-        if (strpos($custom_classes, "rex-block-grid") !== false) {
+        if ( strpos( $custom_classes, "rex-block-grid" ) !== false ) {
             $custom_classes = str_replace("rex-block-grid", "", $custom_classes);
             $custom_classes = trim($custom_classes);
             $atts['custom_classes'] = $custom_classes;
@@ -328,10 +328,7 @@ class Rexbuilder_Section
         echo do_shortcode( $content );
         echo '</div>';
         echo '</div>';
-
-        // if ("" != $responsive_background) {
         echo '</div>';
-        // }
 
         echo '</section>';
         return ob_get_clean();

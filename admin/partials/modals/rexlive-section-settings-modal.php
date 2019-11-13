@@ -175,6 +175,14 @@ defined('ABSPATH') or exit;
                                 </span>
                             </label>
                         </div>
+                        <div id="rx-hold-grid__wrap" class="rex-check-icon bl_modal__single-option--vertical tippy" data-tippy-content="<?php _e('Grid On Mobile', 'rexpansive-builder'); ?>">
+                            <label>
+                                <input type="checkbox" id="rx-hold-grid" name="rx-hold-grid" value="full-height" title="<?php _e('Grid On Mobile', 'rexpansive-builder'); ?>">
+                                <span>
+                                    <?php Rexbuilder_Utilities::get_icon('#B018-Mobile-Grid'); ?>
+                                </span>
+                            </label>
+                        </div>
                     </div>
                 </div>
             </div>
