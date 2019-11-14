@@ -2203,11 +2203,11 @@ var TextEditor = (function ($) {
 
       switch (elementToOutlineType) {
         case "text":
-          elementToOutlineType = $formColumn.find(".wpcf7-text").length == 0 ? "number" : "text";
-          return $formColumn.find(".wpcf7-" + elementToOutlineType)[0];
-          break;
+          // elementToOutlineType = $formColumn.find(".wpcf7-text").length == 0 ? "number" : "text";
+          // return $formColumn.find(".wpcf7-" + elementToOutlineType)[0];
+          // break;
         case "textarea":
-        // case "number":
+        case "number":
         case "submit":
         case "select":
           return $formColumn.find(".wpcf7-" + elementToOutlineType)[0];
