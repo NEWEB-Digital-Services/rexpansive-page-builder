@@ -213,6 +213,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         }
 
         _updateFormInDB(formID);
+        // _updateFormInDBNoRefresh(formID);
     }
 
     var _saveNewRow = function (formID, $newRow) {
@@ -221,7 +222,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         $newRow.insertAfter($lastRow);
 
-        _updateFormInDB(formID);
+        _updateFormInDBNoRefresh(formID);
     }
 
     var _saveAddedRow = function (formID, rowNumber) {
@@ -231,7 +232,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         $rowToAdd.insertAfter($rowBefore);
         _fixRowNumbers($formToAddRow);
-        _updateFormInDB(formID);
+        _updateFormInDBNoRefresh(formID);
     }
 
     var _saveClonedColumnRow = function (formID, clonedColumnNumber, numberRowBefore) {
@@ -255,7 +256,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             }
         });
 
-        _updateFormInDB(formID);
+        _updateFormInDBNoRefresh(formID);
     }
 
     var _saveDeletingRow = function (formID, rowNumberToDelete) {
@@ -265,7 +266,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         $rowToDelete.remove();
 
         _fixRowNumbers($formToDeleteRow);
-        _updateFormInDB(formID);
+        _updateFormInDBNoRefresh(formID);
     }
 
     var _saveDeletingColumnContent = function (formID, rowNumberToDelete, columnNumberToDelete) {
@@ -276,7 +277,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var $plusButton = tmpl("tmpl-plus-button-inside-wpcf7-row", {});
         $columnToDelete.append($plusButton);
 
-        _updateFormInDB(formID);
+        _updateFormInDBNoRefresh(formID);
     }
 
     var _updateFormInDB = function (formID) {
@@ -1412,23 +1413,82 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 // It is not possible to change it live, beacuse this data is processed by CF7.
                 break;
             case "wpcf7-list":
+                var formID = $formColumns.parents(".rex-element-wrapper").eq(0).attr("data-rex-element-id");
+                var numberOfFormsInPage = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id='" + formID + "']").length;
                 switch (inputType) {
                     case "select":
-                        // console.log($formColumns.find(".wpcf7-select option").not("[value='']"));
-                        // console.log(newValue.length);
-                        // ($formColumns.find(".wpcf7-select option").not("[value='']").length) / newValue.length;
-
-                        var formID = $formColumns.parents(".rex-element-wrapper").eq(0).attr("data-rex-element-id");
-                        var numberOfFormsInPage = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id='" + formID + "']").length;
-
                         for (var i = 0; i < numberOfFormsInPage; i++) {
-                            for (var j = 0; j < newValue.length; j++) {}
+                            for (var j = 0; j < newValue.length; j++) {
+                                $formColumns.find(".wpcf7-select option").not("[disabled='disabled']").eq(j).text(newValue[j]);
+                                $formColumns.find(".wpcf7-select option").not("[disabled='disabled']").eq(j).val(newValue[j]);
+                            }
                         }
-                        
+                        break;
+                    case "radio":
+                        for (var i = 0; i < numberOfFormsInPage; i++) {
+                            for (var j = 0; j < newValue.length; j++) {
+                                $formColumns.find(".wpcf7-radio .wpcf7-list-item").removeClass("first");
+                                $formColumns.find(".wpcf7-radio .wpcf7-list-item").removeClass("last");
+                                $formColumns.find(".wpcf7-radio .wpcf7-list-item").eq(j).find("input").val(newValue[j]);
+                                $formColumns.find(".wpcf7-radio .wpcf7-list-item").eq(j).find(".wpcf7-list-item-label").text(newValue[j]);
+                            }
+                        }
+                        // $formColumns.find(".wpcf7-radio .wpcf7-list-item").eq(0).addClass("first");
+                        // $formColumns.find(".wpcf7-radio .wpcf7-list-item").eq(newValue.length - 1).addClass("last");
+                        break;
+                    case "file":
+                        for (var i = 0; i < newValue.length; i++) {
+                            newValue[i] = "." + newValue[i];
+                        }
+                        $formColumns.find(".wpcf7-file").attr("accept", newValue);
                         break;
                     default:
                         break;
                 }
+                break;
+            case "wpcf7-list-add":
+                switch (inputType) {
+                    case "select":
+                        var $newOption = $(document.createElement("option"));
+                        $newOption.attr("value", "");
+                        $formColumns.find(".wpcf7-select").append($newOption);
+                        break;
+                    case "radio":
+                        var numberOfRadios = $formColumns.find(".wpcf7-radio").eq(0).find(".wpcf7-list-item").length;
+                        var $newRadio = $formColumns.find(".wpcf7-radio .wpcf7-list-item.last").eq(0).clone();
+
+                        $formColumns.find(".wpcf7-radio .wpcf7-list-item.last").removeClass("last");
+                        $newRadio.find("[type='radio']").attr("id", "wpcf7-radio-" + (numberOfRadios + 1));
+                        $newRadio.find(".wpcf7-list-item-label").attr("for", "wpcf7-radio-" + (numberOfRadios + 1));
+                        $newRadio.find(".wpcf7-list-item-label").text("");
+                        $newRadio.find("[type='radio']").val("");
+                        $formColumns.find(".wpcf7-radio").append($newRadio);
+                        break;
+                    case "file":
+                        $formColumns.find(".wpcf7-file").attr("accept", $formColumns.find(".wpcf7-file").attr("accept") + ",");
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            case "wpcf7-list-remove":
+                var numberOfSelects = $formColumns.find(".wpcf7-select").length;
+                newValue = parseInt(newValue);
+                switch (inputType) {
+                    case "select":
+                    console.log(newValue);
+                        for (var i = 0; i < numberOfSelects; i++) {
+                            $formColumns.find(".wpcf7-select").eq(i).find("option").eq(newValue).remove();
+                        }
+                        break;
+                    case "radio":
+                        break;
+                    case "file":
+                        break;
+                    default:
+                        break;
+                }
+                break;
             default:
                 break;
         }
@@ -2220,7 +2280,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         _updateColumnContentShortcode(formID, row, column, inputType, columnContentData);
         _updateSpanData(formID, columnContentData);
-        _updateFormInDB(formID);
+        _updateFormInDBNoRefresh(formID);
     }
 
     var _updateColumnContentShortcode = function (formID, row, column, inputType, columnContentData) {

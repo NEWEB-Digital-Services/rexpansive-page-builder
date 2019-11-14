@@ -1432,14 +1432,15 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             });
         });
 
-        
-
         wpcf7_content_editor_properties.$add_list_field.on("click", function () {
             var newRowNumber = parseInt(wpcf7_content_editor_properties.$field_list.find(".wpcf7-select-field").length) + 1;
             wpcf7_content_editor_properties.$field_list.append(tmpl('tmpl-rex-wpcf7-edit-content-list', {
                 number: newRowNumber,
             }));
 
+            _updateColumnContentLive({
+                type: "wpcf7-list-add"
+            });
             _linkListListeners();
             _updateDeleteFieldListener();
         });
@@ -1452,7 +1453,13 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
     var _handleClickDeleteRow = function (event) {
         var $target = $(event.target).parents(".rexwpcf7-cont_row");
+        var rowNumber = /[0-9]+/.exec(/field-[0-9]+/.exec($target.find("[type='text']")[0].classList))[0];
         $target.remove();
+
+        _updateColumnContentLive({
+            type: "wpcf7-list-remove",
+            value: rowNumber
+        });
     }
 
     var _linkTextEditorListeners = function () {
