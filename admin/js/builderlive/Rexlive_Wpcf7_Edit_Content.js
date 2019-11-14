@@ -1448,13 +1448,22 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
     var _updateDeleteFieldListener = function () {
         wpcf7_content_editor_properties.$delete_list_field = wpcf7_content_editor_properties.$self.find(".rex-wpcf7-delete-list-field");
-        wpcf7_content_editor_properties.$delete_list_field.on("click", _handleClickDeleteRow);  // Adding the listener to the delete buttons
+        wpcf7_content_editor_properties.$delete_list_field.off("click");  // Removing the listeners to the delete buttons
+        wpcf7_content_editor_properties.$delete_list_field.on("click", _handleClickDeleteRow);  // Adding the listeners to the delete buttons
     }
 
     var _handleClickDeleteRow = function (event) {
         var $target = $(event.target).parents(".rexwpcf7-cont_row");
         var rowNumber = /[0-9]+/.exec(/field-[0-9]+/.exec($target.find("[type='text']")[0].classList))[0];
         $target.remove();
+
+        var $listFields = wpcf7_content_editor_properties.$field_list.find(".wpcf7-select-field");
+
+        for (var i = 0; i < $listFields.length; i++) {
+        	var classToRemove = /field\-[0-9]+/.exec($listFields[i].classList)[0];
+        	$($listFields[i]).removeClass(classToRemove);
+        	$($listFields[i]).addClass("field-" + (i + 1));
+        }
 
         _updateColumnContentLive({
             type: "wpcf7-list-remove",
@@ -1567,6 +1576,13 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             cursor: "pointer",
             update: function () {
                 var $listFields = wpcf7_content_editor_properties.$field_list.find(".wpcf7-select-field");
+
+                for (var i = 0; i < $listFields.length; i++) {
+                	var classToRemove = /field\-[0-9]+/.exec($listFields[i].classList)[0];
+                	$($listFields[i]).removeClass(classToRemove);
+                	$($listFields[i]).addClass("field-" + (i + 1));
+                }
+
                 var listFieldsArray = [];
 
                 for (var field of $listFields) {

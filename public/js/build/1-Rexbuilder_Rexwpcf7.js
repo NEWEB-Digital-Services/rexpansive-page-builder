@@ -1410,7 +1410,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 }
                 break;
             case "wpcf7-file-dimensions":
-                // It is not possible to change it live, beacuse this data is processed by CF7.
+                // It's not possible to change it live, beacuse this data is processed by CF7.
                 break;
             case "wpcf7-list":
                 var formID = $formColumns.parents(".rex-element-wrapper").eq(0).attr("data-rex-element-id");
@@ -1476,7 +1476,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 newValue = parseInt(newValue);
                 switch (inputType) {
                     case "select":
-                    console.log(newValue);
                         for (var i = 0; i < numberOfSelects; i++) {
                             $formColumns.find(".wpcf7-select").eq(i).find("option").eq(newValue).remove();
                         }
@@ -1595,7 +1594,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var $listFields = $formColumn.find(".wpcf7-select").eq(0).find("option");
         if ($listFields.length != 0) {
             for (var field of $listFields) {
-                if($(field).val() != "") {
+                if($(field).val() != "" && !$(field).attr("disabled")) {
                     columnContentData.wpcf7_list_fields.push($(field).text());
                 } 
             }
