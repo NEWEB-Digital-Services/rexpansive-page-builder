@@ -1,68 +1,72 @@
 var Hold_Grid_Modal = (function ($) {
-    'use strict';
+	'use strict';
 
-    var props;
-    var defaultValue;
-    var sectionTarget;
+	var props;
+	var defaultValue;
+	var sectionTarget;
 
-    var _reset = function () {
-        props.$element.attr("checked", defaultValue);
-    }
+	var _reset = function () {
+		props.$element.attr("checked", defaultValue);
+	}
 
-    var _update = function (data) {
-        sectionTarget = data.sectionTarget;
-        props.$element.attr("checked", data.photoswipe)
-    }
+	var _update = function (data) {
+		sectionTarget = data.sectionTarget;
+		var checked = false;
+		if ( -1 !== data.customClasses.indexOf('rex-block-grid') ) {
+			checked = true;
+		}
+		props.$element.attr("checked", checked);
+	}
 
-    var _getData = function () {
-        return props.$element.prop('checked');
-    }
+	var _getData = function () {
+		return props.$element.prop('checked');
+	}
 
-    var _applySetting = function () {
-        var active = _getData();
-        if ( active ) {
-            Section_CustomClasses_Modal.updateCustomClasses({
-                sectionTarget: sectionTarget,
-                customClasses: 'rex-block-grid',
-            });
+	var _apply = function () {
+		var checked = _getData();
+		var cls = Section_CustomClasses_Modal.getData();
+		var payload = {
+			sectionTarget: sectionTarget,
+			customClasses: ''
+		}
+
+		if ( checked ) {
+            // set the custom class to hold the grid
+            payload.customClasses = cls + ' rex-block-grid';
+        } else {
+        	cls = cls.replace( /\s*rex-block-grid/, '' );
+
+            // remove the custom class to hold the grid
+            payload.customClasses = cls;
         }
 
-        // Rexbuilder_Util_Admin_Editor.highlightRowSetData({
-        //     'row_active_photoswipe': photoswipe,
-        // });
+        payload.customClasses = payload.customClasses.trim();
 
-        // var data_hold_grid = {
-        //     eventName: "rexlive:set_row_photoswipe",
-        //     data_to_send: {
-        //         sectionTarget: sectionTarget,
-        //         photoswipe: photoswipe
-        //     }
-        // }
+        Section_CustomClasses_Modal.update(payload);
 
-        // Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(data_hold_grid);
+        // apply the class change
+        Section_CustomClasses_Modal.apply();
     }
 
     var _linkDocumentListeners = function () {
-        props.$element.click(function (e) {
-            _applySetting();
-        })
+    	props.$element.click(_apply);
     }
 
     var _init = function ($container) {
-        props = {
-            $element: $container.find('#rx-hold-grid')
-        }
+    	props = {
+    		$element: $container.find('#rx-hold-grid')
+    	}
 
-        defaultValue = false;
-        _reset();
-        _linkDocumentListeners();
+    	defaultValue = false;
+    	_reset();
+    	_linkDocumentListeners();
     }
 
     return {
-        init: _init,
-        update: _update,
-        reset: _reset,
-        getData: _getData
+        init: _init,        // C
+        getData: _getData,  // R
+        update: _update,    // U
+        reset: _reset,      // D
     };
 
 })(jQuery);

@@ -15958,6 +15958,11 @@ body.rexpansive-editor .lean-overlay {
 .modal-info--highlight {
   text-transform: uppercase; }
 
+#rx-hold-grid[type="checkbox"] + span:not(.lever) {
+  padding-left: 22px; }
+  #rx-hold-grid[type="checkbox"] + span:not(.lever) .l-svg-icons {
+    font-size: 30px; }
+
 .rex-modal .input-field .prefix .l-svg-icons > svg {
   fill: #424242; }
 

@@ -195,10 +195,14 @@ var Rexbuilder_Section = (function($) {
       collapse: gridCollapsed
     };
 
-    // console.log(reverseData);
-
     // if the section is NOT collapsed
     if (!gridCollapsed) {
+      // here: remove hold grid from everywhere
+      // remove the hold grid option
+      $section.removeClass('rex-block-grid');
+      var cls = $section.children('.section-data').attr('data-custom_classes');
+      $section.children('.section-data').attr('data-custom_classes', cls.replace( /\s*rex-block-grid/, '' ));
+      
       galleryEditorInstance.collapseElementsProperties();
       galleryEditorInstance.collapseElements(reverseData);
     } else {
@@ -875,7 +879,6 @@ var Rexbuilder_Section = (function($) {
       var $newSection = $(newSection);
       var $newSectionData = $newSection.children(".section-data");
 
-      console.log(new_row_defaults);
       $newSectionData.after(
         tmpl("tmpl-toolbox-section", new_row_defaults)
       );

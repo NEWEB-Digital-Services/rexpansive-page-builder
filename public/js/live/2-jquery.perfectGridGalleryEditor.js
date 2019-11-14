@@ -1571,13 +1571,15 @@
 
       // var collapseGrid = this.$section.attr("data-rex-collapse-grid");
       var collapseGrid = this.section.getAttribute("data-rex-collapse-grid");
-      if ( collapseGrid ) {
-        if ( Rexbuilder_Util.activeLayout == "default" && this._viewport().width <= _plugin_frontend_settings.defaultSettings.collapseWidth ) {
-          this.properties.oneColumModeActive = true;
-        } else {
-          this.properties.oneColumModeActive = false;
-        }
-      } else if ( collapseGrid && ( ( Rexbuilder_Util.activeLayout == "default" && this._viewport().width <= _plugin_frontend_settings.defaultSettings.collapseWidth && collapseGrid.toString() == "true") || collapseGrid.toString() == "true" ) ) {
+
+      // if ( collapseGrid ) {
+      //   if ( Rexbuilder_Util.activeLayout == "default" && this._viewport().width <= _plugin_frontend_settings.defaultSettings.collapseWidth ) {
+      //     this.properties.oneColumModeActive = true;
+      //   } else {
+      //     this.properties.oneColumModeActive = false;
+      //   }
+      // } else 
+      if ( collapseGrid && ( ( Rexbuilder_Util.activeLayout == "default" && this._viewport().width <= _plugin_frontend_settings.defaultSettings.collapseWidth && collapseGrid.toString() == "true") || collapseGrid.toString() == "true" ) ) {
         this.properties.oneColumModeActive = true;
       } else {
         this.properties.oneColumModeActive = false;
@@ -2490,6 +2492,9 @@
                 imageHeightNeed = isNaN(imageHeightNeed) ? 0 : imageHeightNeed;
               }
             }
+
+            console.log(imageWidth, imageHeight, currentWidth, gallery.properties.gutter);
+            console.log(imageHeightNeed);
             
             textWrapHeightNeed = gallery.calculateTextWrapHeightNew( $textWrap );
             // textWrapHeightNeed = gallery.calculateTextWrapHeight( $textWrap );
@@ -2916,6 +2921,8 @@
               if (!( hasClass(elem, "rex-hide-element") || hasClass(elem, "removing_block"))) {
                 gallery.updateElementHeight( elem );
               }
+            } else if ( ! gallery.properties.collapsingElements ) {
+              gallery.updateElementHeight( elem );
             }
           });
           // end foreach of boxes
@@ -3028,7 +3035,7 @@
         var imgWidth = parseInt( itemContent.getAttribute("data-background_image_width") );
         var imgHeight = parseInt( itemContent.getAttribute("data-background_image_height") );
         if ( elem.offsetWidth < imgWidth ) {
-          spaceNeeded = ( imgHeight * width * this.properties.singleWidth ) / imgWidth;
+          spaceNeeded = ( imgHeight * ( ( width * this.properties.singleWidth ) - this.properties.gutter ) ) / imgWidth;
           addClass( imgWrap, "small-width" );
         } else {
           spaceNeeded = imgHeight + this.properties.gutter;
@@ -3151,10 +3158,13 @@
           } else if ($imageWrapper.hasClass('natural-image-background')) {
           }*/
           if ( elem.offsetWidth < imageWidth ) {
-            backgroundHeight = ( imageHeight * w * sw ) / imageWidth;
+            backgroundHeight = ( imageHeight * ( ( w * sw ) - gutter ) ) / imageWidth;
           } else {
             backgroundHeight = imageHeight + gutter;
           }
+
+          console.log(imageWidth, imageHeight, w * sw, gutter);
+          console.log(backgroundHeight);
         }
 
         var defaultRatio = 3 / 4;
@@ -3309,12 +3319,12 @@
 
       if (this.settings.galleryLayout == "fixed") {
         if ( emptyBlockFlag || blockHasYoutube || blockHasVideo || blockHasVimeo ) {
-          newH = Math.round(newH / this.properties.singleHeight);
+          newH = Math.round((newH+gutter) / this.properties.singleHeight);
         } else {
-          newH = Math.ceil(newH / this.properties.singleHeight);
+          newH = Math.ceil((newH+gutter) / this.properties.singleHeight);
         }
       } else {
-        newH = Math.ceil(newH / this.properties.singleHeight);
+        newH = Math.ceil((newH+gutter) / this.properties.singleHeight);
       }
 
       this.updateElementDataHeightProperties( blockData, newH );

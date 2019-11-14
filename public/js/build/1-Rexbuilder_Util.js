@@ -1067,10 +1067,7 @@ var Rexbuilder_Util = (function($) {
     // No change layout, simple resize
     if (chosenLayoutName == Rexbuilder_Util.activeLayout) {
       if (chosenLayoutName == "default") {
-        if (
-          _viewport().width >=
-          _plugin_frontend_settings.defaultSettings.collapseWidth
-        ) {
+        if ( _viewport().width >= _plugin_frontend_settings.defaultSettings.collapseWidth ) {
           Rexbuilder_Util.removeCollapsedGrids();
         } else {
           if (!Rexbuilder_Util.blockGridUnder768) {
@@ -1319,6 +1316,11 @@ var Rexbuilder_Util = (function($) {
     if( Rexbuilder_Util.editorMode ) {
       updateSectionTools( $section, $gallery, targets[0].props, forceCollapseElementsGrid );
     }
+
+    // if ( -1 !== targets[0].props.custom_classes.indexOf('rex-block-grid') ) {
+    //   targets[0].props.collapse_grid = false;
+    // }
+
     var collapse =
       typeof targets[0].props.collapse_grid == "undefined"
         ? false
@@ -2323,6 +2325,10 @@ var Rexbuilder_Util = (function($) {
       });
     }
 
+    // if ( -1 !== targets[0].props['custom_classes'].indexOf('rex-block-grid') ) {
+    //   targets[0].props['collapse_grid'] = false;
+    // }
+
     gridLayout.layout = targets[0].props["layout"];
     gridLayout.fullHeight = targets[0].props["full_height"];
     gridLayout.collapsed = targets[0].props["collapse_grid"];
@@ -2596,6 +2602,11 @@ var Rexbuilder_Util = (function($) {
 
     Rexbuilder_Dom_Util.updateSectionMarginsData($section, margins);
 
+    if ( -1 !== targetProps['custom_classes'].indexOf('rex-block-grid') ) {
+      targetProps['collapse_grid'] = false;
+      targetProps['layout'] = $sectionData.attr('data-layout');
+    }
+
     var rowSettings = {
       gutter: targetProps["block_distance"],
       top: targetProps["row_separator_top"],
@@ -2609,11 +2620,7 @@ var Rexbuilder_Util = (function($) {
       section_width: targetProps["section_width"],
       dimension: targetProps["dimension"],
 
-      collapse_grid:
-        typeof targetProps["collapse_grid"] == "undefined"
-          ? false
-          : targetProps["collapse_grid"].toString() == "true" ||
-            forceCollapseElementsGrid
+      collapse_grid: typeof targetProps["collapse_grid"] == "undefined" ? false : targetProps["collapse_grid"].toString() == "true" || forceCollapseElementsGrid
     };
 
     Rexbuilder_Dom_Util.updateRow( $section, $sectionData, $gallery, rowSettings );
@@ -2670,6 +2677,10 @@ var Rexbuilder_Util = (function($) {
     };
 
     Rexbuilder_Section.fixSectionToolbox($section, margins);
+
+    if ( -1 !== targetProps['custom_classes'].indexOf('rex-block-grid') ) {
+      targetProps['collapse_grid'] = false;
+    }
 
     var rowSettings = {
       gutter: targetProps["block_distance"],

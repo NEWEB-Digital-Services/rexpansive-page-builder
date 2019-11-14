@@ -6,14 +6,16 @@ var Section_CustomClasses_Modal = (function ($) {
     var hiddenClasses;
     var sectionTarget;
     
-    var _resetCustomClasses = function () {
+    var _reset = function () {
         //custom_classes_modal_properties.$classes.val(defaultClasses);
     }
 
-    var _updateCustomClasses = function (data) {
+    var _update = function (data) {
         sectionTarget = data.sectionTarget;
         var newClasses = data.customClasses;
         hiddenClasses = "";
+
+        // hide classes that enabling functionallities
         if (newClasses.indexOf("active-large-overlay") !== -1) {
             hiddenClasses += " active-large-overlay";
             newClasses = newClasses.replace("active-large-overlay", "");
@@ -26,8 +28,12 @@ var Section_CustomClasses_Modal = (function ($) {
             hiddenClasses += " active-small-overlay";
             newClasses = newClasses.replace("active-small-overlay", "");
         }
+        if (newClasses.indexOf("rex-block-grid") !== -1) {
+            hiddenClasses += " rex-block-grid";
+            newClasses = newClasses.replace("rex-block-grid", "");
+        }
 
-        if(data.customClasses == ""){
+        if(newClasses == ""){
             custom_classes_modal_properties.$classes
                 .siblings("label, .prefix")
                 .removeClass("active");
@@ -45,12 +51,10 @@ var Section_CustomClasses_Modal = (function ($) {
         
     }
 
-    var _applyCustomClasses = function () {
+    var _apply = function () {
         var newClassesString = _getData();
         newClassesString = newClassesString.trim();
         var classList = newClassesString.split(/\s+/);
-
-        // console.log("passed || applyCustomClasses()");
 
         Rexbuilder_Util_Admin_Editor.highlightRowSetData({
             'custom_classes': classList,
@@ -74,9 +78,7 @@ var Section_CustomClasses_Modal = (function ($) {
     }
 
     var _linkDocumentListeners = function () {
-        custom_classes_modal_properties.$classes.blur(function (e) {
-            _applyCustomClasses();
-        })
+        custom_classes_modal_properties.$classes.blur(_apply);
     }
 
     var _init = function ($container) {
@@ -87,15 +89,16 @@ var Section_CustomClasses_Modal = (function ($) {
 
         defaultClasses = "";
 
-        _resetCustomClasses();
+        _reset();
         _linkDocumentListeners();
     }
 
     return {
-        init: _init,
-        updateCustomClasses: _updateCustomClasses,
-        resetCustomClasses: _resetCustomClasses,
-        getData: _getData
+        init: _init,        // C
+        getData: _getData,  // R
+        update: _update,    // U
+        reset: _reset,      // D
+        apply: _apply
     };
 
 })(jQuery);

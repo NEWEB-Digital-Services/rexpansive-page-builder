@@ -69,12 +69,6 @@
   background-color:#454545;
 }
 
-
-
-
-
-
-
 /* BUTTON EDITOR - CSS Row 1-2-3-4-5-6 */
 .bl_modal-row .rexbutton-cont_row10{
   width:381px;
@@ -533,4 +527,13 @@ body.rexpansive-editor {
 
 .modal-info--highlight {
   text-transform: uppercase;
+}
+
+#rx-hold-grid {
+  &[type="checkbox"] + span:not(.lever) {
+    padding-left: 22px;
+    .l-svg-icons {
+      font-size: 30px;
+    }
+  }
 }

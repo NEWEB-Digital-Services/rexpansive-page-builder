@@ -28,7 +28,7 @@ var Section_Modal = (function($) {
     Hold_Grid_Modal.reset();
     FullHeight_Modal.resetFullHeight();
     SectionName_Modal.resetSectionName();
-    Section_CustomClasses_Modal.resetCustomClasses();
+    Section_CustomClasses_Modal.reset();
   };
 
   var _updateSectionModal = function(data) {
@@ -40,7 +40,7 @@ var Section_Modal = (function($) {
     Hold_Grid_Modal.update(data);
     FullHeight_Modal.updateFullHeight(data);
     SectionName_Modal.updateSectionName(data);
-    Section_CustomClasses_Modal.updateCustomClasses(data);
+    Section_CustomClasses_Modal.update(data);
   };
 
   var _linkDocumentListenersSectionPropertiesModal = function() {
