@@ -305,7 +305,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       }
 
       if (event.data.eventName == "rexlive:openRexElementEditor") {
-        Element_Edit_Modal.openElementEditorModal(event.data.elementData);
+        Element_Edit_Modal.openElementEditorModal(event.data);
       }
 
       if (event.data.eventName == "rexlive:openRexWpcf7AddContent") {
@@ -1141,6 +1141,7 @@ var Rexbuilder_Util_Admin_Editor = (function($) {
       rexliveEvent: true
     };
     jQuery.extend(infos, data);
+    
     // console.log(infos);
     //console.log("sending message to iframe");
     frameBuilderWindow.postMessage(infos, "*");

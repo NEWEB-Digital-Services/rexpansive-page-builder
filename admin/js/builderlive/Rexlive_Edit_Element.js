@@ -72,13 +72,18 @@ var Element_Edit_Modal = (function ($) {
     var defaultElementValues;
     var oldElementModelID;
     var newID;
+    var blockID;
     
     var _openElementEditorModal = function (data) {
         alreadyChooseToSynchronize = false;
-        _updateElementEditorModal(data);
+        blockID = data.blockID;
+        _updateElementEditorModal(data.elementData);
         if (alreadyChooseToSynchronize) {
             // Rexlive_Modals_Utils.openModal(element_editor_properties.$self.parent(".rex-modal-wrap"));
-            Wpcf7_Edit_Form_Modal.openFormEditorModal(elementData);
+            Wpcf7_Edit_Form_Modal.openFormEditorModal({
+                elementData: elementData,
+                blockID: blockID
+            });
         } else {
             _openChooseElementEdit();
         }

@@ -89,12 +89,15 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
     /// MODAL FUNCTIONS
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
+    var blockID;
+
 	var _openColumnContentEditorModal = function (data) {
 		columnContentData = jQuery.extend(true, {}, data.columnContentData);
 		editPoint = data.columnContentData.target;
 		var spanDataExists = data.spanDataExists;
         needToRemoveSpanData = !spanDataExists; // If the span data already exists, we don't have to remove it
         var inputType = columnContentData.input_type;
+        blockID = data.blockID;
 
 		if (!spanDataExists) {
 			_createSpanData();
@@ -217,7 +220,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         Rexlive_Modals_Utils.closeModal(
         	wpcf7_content_editor_properties.$self.parent(".rex-modal-wrap"),
         	false,
-        	["wpcf7-editing-content"]
+        	["wpcf7-editing-content"],
+            blockID
         );
     };
 
@@ -485,14 +489,11 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
 
         // File max dimensions
         columnContentData.wpcf7_file_max_dimensions = wpcf7_content_editor_properties.$content_file_max_dimensions.val();
-
         var dimensionsUnit = wpcf7_content_editor_properties.$content_file_max_dimensions_unit.val();
-
         columnContentData.wpcf7_file_max_dimensions += dimensionsUnit;
 
         // List fields
         var $listFields = wpcf7_content_editor_properties.$field_list.find(".wpcf7-select-field");
-
         columnContentData.wpcf7_list_fields = [];
         for (var field of $listFields) {
             columnContentData.wpcf7_list_fields.push($(field).val());
@@ -1478,7 +1479,6 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         tinyMCE_editor.on("redo", _handleTextEditorEvents);
         tinyMCE_editor.on("cut", _handleTextEditorEvents);
         tinyMCE_editor.on("paste", _handleTextEditorEvents);
-        tinyMCE_editor.on("setContent", _handleTextEditorEvents);
     }
 
     var _handleTextEditorEvents = function () {

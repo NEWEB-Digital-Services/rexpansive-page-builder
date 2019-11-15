@@ -142,8 +142,11 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
     /// MODAL FUNCTIONS
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
+    var blockID;
+
 	var _openFormEditorModal = function (data) {
-        elementData = data;
+        elementData = data.elementData;
+        blockID = data.blockID;
 		_updateFormEditorModal(elementData);
 
         var formID = elementData.element_target.element_id;
@@ -157,7 +160,12 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 	}
 
 	var _closeModal = function () {
-        Rexlive_Modals_Utils.closeModal(wpcf7_form_editor_properties.$self.parent(".rex-modal-wrap"),false);
+        Rexlive_Modals_Utils.closeModal(
+            wpcf7_form_editor_properties.$self.parent(".rex-modal-wrap"),
+            false,
+            [],
+            blockID
+        );
     };
 
     var _applyChanges = function () {

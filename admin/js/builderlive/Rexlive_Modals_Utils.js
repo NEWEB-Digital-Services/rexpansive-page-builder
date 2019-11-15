@@ -47,7 +47,7 @@ var Rexlive_Modals_Utils = (function($) {
    *
    * @param {jQuery Object} $target modal to close
    */
-  var _closeModal = function($target, target_only, additional_class) {
+  var _closeModal = function($target, target_only, additional_class, blockID) {
     target_only = typeof target_only !== "undefined" ? target_only : false;
     additional_class =
       typeof additional_class !== "undefined" ? additional_class : [];
@@ -84,6 +84,7 @@ var Rexlive_Modals_Utils = (function($) {
 
     var closeEvent = {
       eventName: "rexlive:close_modal",
+      blockID: blockID
     };
     Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(closeEvent);
 

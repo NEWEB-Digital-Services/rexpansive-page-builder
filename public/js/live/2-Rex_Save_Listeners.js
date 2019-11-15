@@ -10,6 +10,11 @@ var Rex_Save_Listeners = (function($) {
       var idPost = parseInt($("#id-post").attr("data-post-id"));
       var activeLayoutName = Rexbuilder_Util.activeLayout;
 
+      var formIDsInPage = Rexbuilder_Rexwpcf7.getIDsInPage();
+      for (var id of formIDsInPage) {
+        Rexbuilder_Rexwpcf7.updateFormInDBNoRefresh(id);
+      }
+
       //getting custom css set in page
       var customCSS = $("#rexpansive-builder-style-inline-css")
         .text()

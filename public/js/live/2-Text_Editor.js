@@ -1706,9 +1706,12 @@ var TextEditor = (function ($) {
         // Rexbuilder_Util_Editor.sendParentIframeMessage(data);
       // }
 
+      var blockID = $(this.traceELMNT).parents(".grid-stack-item").attr("id");
+
       var data = {
         eventName: "rexlive:openRexElementEditor",
-        elementData: Rexbuilder_Rexelement.generateElementData($elementWrapper)
+        elementData: Rexbuilder_Rexelement.generateElementData($elementWrapper),
+        blockID: blockID
       };
       $elementWrapper.parents(".text-wrap").blur();
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
@@ -2340,17 +2343,20 @@ var TextEditor = (function ($) {
     },
 
     handleClickSettingsFormColumn: function (event) {
+      this.setOutline($(this.traceColumnContent), "#FF0055");
       this.hideAllToolbars();
       var $elementWrapper = $(this.traceForm).parents(".rex-element-wrapper");
       var $thisColumn = $(this.traceFormColumn);
       var spanDataExists = $thisColumn.find(".rex-wpcf7-column-content-data").length != 0 ? true : false;
       var fileCaptionExists = $thisColumn.find(".rex-wpcf7-file-caption").length != 0 ? true : false;
+      var blockID = $(this.traceForm).parents(".grid-stack-item").attr("id");
 
       var data = {
         eventName: "rexlive:openRexWpcf7EditContent",
         columnContentData: Rexbuilder_Rexwpcf7.generateColumnContentData($thisColumn, spanDataExists),
         spanDataExists: spanDataExists,
-        fileCaptionExists: fileCaptionExists
+        fileCaptionExists: fileCaptionExists,
+        blockID: blockID
       };
       $elementWrapper.parents(".text-wrap").blur();
       Rexbuilder_Util_Editor.sendParentIframeMessage(data);
@@ -2451,7 +2457,6 @@ var TextEditor = (function ($) {
     placeRowToolboxInsideRow: function () {
       var $formRowToolsInsideRow = $(this.traceFormRow).find(".rexwpcf7-row-tools");
       var rowCoords = this.traceFormRow.getBoundingClientRect();
-      // console.log($(this.traceForm).parents());
       var blockCoords = $(this.traceForm).parents(".grid-stack-item").find(".ui-focused-element-highlight")[0].getBoundingClientRect();
 
       var offsetFirstRow = (parseInt($(this.traceFormRow).attr("wpcf7-row-number")) == 1) ? 20 : 0;

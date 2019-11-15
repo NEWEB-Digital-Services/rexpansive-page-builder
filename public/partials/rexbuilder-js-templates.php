@@ -582,3 +582,11 @@ $tool_button_classes = 'tool-button';
         </div>
     </div>
 </script>
+
+<script type="text/x-tmpl" id="tmpl-rexwpcf7-new-radio-field">
+    <span class="wpcf7-list-item first last">
+        <input type="radio" name="radio-313" value="" checked="checked" class="with-gap" id="wpcf7-radio-1">
+        <span class=""></span>
+        <label class="wpcf7-list-item-label" for="wpcf7-radio-1"></label>
+    </span>
+</script>

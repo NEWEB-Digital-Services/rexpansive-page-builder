@@ -575,6 +575,16 @@ var Rexbuilder_Util_Editor = (function($) {
 
     Rexbuilder_Util.$document.on("rexlive:close_modal", function(e) {
       _hideAllTools();
+
+      var blockIDToFocusAfterClose = e.settings.blockID;
+      if ("undefined" != typeof blockIDToFocusAfterClose) {
+        var dbClickEvent = new MouseEvent('dblclick', {
+          'view': window,
+          'bubbles': true,
+          'cancelable': true
+        });
+        document.getElementById(e.settings.blockID).dispatchEvent(dbClickEvent);
+      }
     });
 
     Rexbuilder_Util.$document.on("rexlive:openCreateModelModal", function(e) {
