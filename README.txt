@@ -3,8 +3,8 @@ Contributors: neweb_agency
 Donate link: http://www.neweb.info/
 Tags: builder, composer, content builder, custom, drag and drop, editor, page builder, page composer, responsive, theme
 Requires at least: 4.2
-Tested up to: 5.2.2
-Stable tag: 2.0.1
+Tested up to: 5.2.4
+Stable tag: 2.0.2
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -199,6 +199,12 @@ For the more experienced among us: you can insert CSS anywhere.
 11. Clean interface
 
 == Changelog ==
+
+= 2.0.2 - November 15, 2019 =
+* Added: Hold grid button (prevents collapse on mobile)
+* Update: Background image on block with text remains full when added
+* Fixed: Mp4 video size
+* Fixed: YouTube video position
 
 = 2.0.1 - October 28, 2019 =
 * Fixed: Install default contents (models, buttons, icons)

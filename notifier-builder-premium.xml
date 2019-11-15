@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <notifier>
-	<latest>2.0.1</latest>
+	<latest>2.0.2</latest>
 	<changelog>
 		<![CDATA[
+			<h4><strong>v2.0.2</strong> – November 15, 2019</h4>
+			<p><strong>Added</strong>: Hold grid button (prevents collapse on mobile)</p>
+			<p><strong>Update</strong>: Background image on block with text remains full when added</p>
+			<p><strong>Fixed</strong>: Mp4 video size</p>
+			<p><strong>Fixed</strong>: YouTube video position</p>
 			<h4><strong>v2.0.1</strong> – October 28, 2019</h4>
 			<p><strong>Fixed</strong>: Install default contents (models, buttons, icons)</p>
 			<p><strong>Fixed</strong>: Block heights calculation</p>

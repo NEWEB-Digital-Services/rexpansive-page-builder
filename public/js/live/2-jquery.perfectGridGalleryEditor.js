@@ -327,7 +327,6 @@
           w: w,
           h: h
         };
-        // console.log(blockObj);
         blocksDimensions.push(blockObj);
       });
 
@@ -377,7 +376,6 @@
 
     updateGridSettingsChangeLayout: function(newSettings) {
       //i suppose gridstack in batchmode
-      //console.log("updating grid " + this.properties.sectionNumber);
       this.properties.firstStartGrid = true;
 
       this.$element.removeClass("grid-number-" + this.properties.sectionNumber);
@@ -894,7 +892,6 @@
                     isNaN( parseInt($dataBlock.attr("data-block_height_calculated")) ) ? 0 : parseInt( $dataBlock.attr("data-block_height_calculated") )
                   );
                 }
-                //console.log("new block fixed h: " + h);
               }
 
               if (this.properties.elementStartingH != h) {
@@ -928,7 +925,6 @@
             .find(this.settings.scrollbarWrapClass)
             .overlayScrollbars();
           if (scrollbarInstance !== undefined) {
-            //console.log("sleeping " + $block.data("rexbuilder-block-id"));
             scrollbarInstance.sleep();
           }
         }
@@ -946,7 +942,6 @@
             .find(this.settings.scrollbarWrapClass)
             .overlayScrollbars();
           if (scrollbarInstance !== undefined) {
-            //console.log("waking " + $block.data("rexbuilder-block-id"));
             scrollbarInstance.update();
           }
         }
@@ -972,7 +967,6 @@
             .find(gallery.settings.scrollbarWrapClass)
             .overlayScrollbars();
           if (scrollbarInstance !== undefined) {
-            // //console.log("destroy " + $elem.data("rexbuilder-block-id"));
             scrollbarInstance.destroy();
           }
         }
@@ -983,7 +977,6 @@
      * @deprecated
      */
     createScrollbars: function() {
-      //console.log("lancio scrollbar grid: " + this.properties.sectionNumber);
       var $elem;
       var gallery = this;
       this.$element.children(".grid-stack-item").each(function() {
@@ -1104,7 +1097,6 @@
      * Function called for destroying gridstack-istance
      */
     destroyGridstack: function() {
-      //console.log("destroy gridstack");
       if (this.properties.gridstackInstance !== null) {
         var gridstack = this.properties.gridstackInstance;
         var $elem;
@@ -1125,7 +1117,6 @@
           this.$element.removeClass("grid-stack-one-column-mode");
         }
         this.properties.gridstackInstance = null;
-        //console.log("gridstack destroyed");
       }
     },
 
@@ -1624,7 +1615,6 @@
     },
 
     _defineHalfSeparatorProperties: function() {
-      //  //console.log('defininfg private properties');
       if (this.isEven(this.properties.gutter)) {
         this.properties.halfSeparatorTop = this.properties.gutter / 2;
         this.properties.halfSeparatorRight = this.properties.gutter / 2;
@@ -1763,12 +1753,10 @@
       this.$element.children(".grid-stack-item").each(function() {
         $elem = $(this);
         rexID = $elem.attr("data-rexbuilder-block-id");
-        //console.log("saving: " + rexID);
         x = parseInt($elem.attr("data-gs-x"));
         y = parseInt($elem.attr("data-gs-y"));
         w = parseInt($elem.attr("data-gs-width"));
         h = parseInt($elem.attr("data-gs-height"));
-        //console.log(x, y, w, h);
         store.set(rexID, {
           properties: [{ x: x }, { y: y }, { w: w }, { h: h }]
         });
@@ -2271,12 +2259,10 @@
     },
 
     disableDragHandle: function($elem) {
-      //console.log("disabling " + $elem.data("rexbuilder-block-id") + " drag handle");
       //$elem.children(".rexlive-block-drag-handle").addClass("hide-drag");
     },
 
     enableDragHandle: function($elem) {
-      //console.log("enabling " + $elem.data("rexbuilder-block-id") + " drag handle");
       //$elem.children(".rexlive-block-drag-handle").removeClass("hide-drag");
     },
 
@@ -2492,9 +2478,6 @@
                 imageHeightNeed = isNaN(imageHeightNeed) ? 0 : imageHeightNeed;
               }
             }
-
-            console.log(imageWidth, imageHeight, currentWidth, gallery.properties.gutter);
-            console.log(imageHeightNeed);
             
             textWrapHeightNeed = gallery.calculateTextWrapHeightNew( $textWrap );
             // textWrapHeightNeed = gallery.calculateTextWrapHeight( $textWrap );
@@ -2510,8 +2493,6 @@
         })
         .on("gsresizestop", function(event, elem) {
           if (Rexbuilder_Util_Editor.elementIsResizing) {
-            gallery.updateSizeViewerText(elem, undefined, undefined, size_viewer, size_viewer_mobile);
-            gallery.checkBlockDimension(elem);
             if (gallery.settings.galleryLayout == "masonry") {
 
               elem.setAttribute( "data-height", Math.round( elem.getAttribute("data-gs-height") / gallery.properties.singleWidth ) );
@@ -2545,6 +2526,9 @@
             // }
 
             gallery.fixVideoProportionSingleElement(elem);
+
+            gallery.updateSizeViewerText(elem, undefined, undefined, size_viewer, size_viewer_mobile);
+            gallery.checkBlockDimension(elem);
 
             elem.setAttribute("data-gs-max-width", 500);
             clearTimeout(gallery.doubleDownTimer);
@@ -3160,11 +3144,8 @@
           if ( elem.offsetWidth < imageWidth ) {
             backgroundHeight = ( imageHeight * ( ( w * sw ) - gutter ) ) / imageWidth;
           } else {
-            backgroundHeight = imageHeight + gutter;
+            backgroundHeight = imageHeight;
           }
-
-          console.log(imageWidth, imageHeight, w * sw, gutter);
-          console.log(backgroundHeight);
         }
 
         var defaultRatio = 3 / 4;
@@ -3209,7 +3190,7 @@
           }
         }
       } else {
-        textHeight = textHeight + gutter;
+        textHeight = textHeight;
       }
 
       if ( !blockHasSlider && backgroundHeight == 0 && videoHeight == 0 && textHeight == 0 ) {
@@ -3701,7 +3682,6 @@
 
         // var $el = $(el);
         // var blockHeight = that.updateElementHeight($el);
-        // console.log(blockHeight)
 
         // if ('undefined' !== typeof blockHeight && !blockHeight.empty) {
         //   var height = Math.ceil( blockHeight.height / that.settings.cellHeightMasonry );
@@ -3836,8 +3816,6 @@
     repositionElements: function(newNode) {
       var markGrid = new IndexedGrid(this.settings.numberCol);
       markGrid.setGrid(newNode.x, newNode.y, newNode.width, newNode.height);
-      
-      // console.log('insert', newNode.el.getAttribute('id'), '[' + newNode.x + ',' + newNode.y + ']', newNode.width + 'x' + newNode.height );
 
       // generate ordered grid nodes list
       // based on DOM order
@@ -3859,7 +3837,6 @@
         var newPosition = {};
         // Find elements to move
         if( ( orderedGridNodes[i].x + ( this.properties.gridstackInstance.grid.width * orderedGridNodes[i].y ) ) >= ( newNode.x + ( this.properties.gridstackInstance.grid.width * newNode.y ) ) && newNode.el !== orderedGridNodes[i].el[0] ) {
-          // console.log('check', orderedGridNodes[i].el.attr('id'));
           var linearCoord = markGrid.willFit(orderedGridNodes[i].width,orderedGridNodes[i].height);
           var newCoords = this._getCoord(linearCoord,12);          
           newPosition.x = newCoords.x;
