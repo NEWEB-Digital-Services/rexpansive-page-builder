@@ -373,6 +373,14 @@ defined('ABSPATH') or exit;
                 </div>
             </div>
             <div class="bl_modal-row">
+                <div class="rexwpcf7-count-column_4 tippy" data-tippy-content="<?php _e('Border Radius', 'rexpansive-builder');?>">
+                    <input type="text" id="rex-wpcf7-set-content-border-radius" name="" class="rex-wpcf7-set-content-border-radius">
+                </div>
+                <div class="rexwpcf7-count-column_5">
+                    <div class="label-px">px</div>
+                </div>
+            </div>
+            <div class="bl_modal-row">
                 <!-- ERROR MESSAGE -->
                 <div class="rexwpcf7-cont_row">
                     <div class="rexwpcf7-count-column_1">

@@ -277,6 +277,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             input_height: "",
             font_size: "",
             border_width: "",
+            border_radius: "",
             background_color: "",
             background_color_hover: "",
             border_color: "",
@@ -1342,10 +1343,6 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
          * Applies changes
          */
         wpcf7_content_editor_properties.$apply_changes_button.on("click", function () {
-            // if (needToRemoveSpanData){
-            //     _removeSpanData();
-            // }
-            // _applyData();
             _closeModal();
         });
 
@@ -1361,9 +1358,6 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         wpcf7_content_editor_properties.$modal.on('rexlive:this_modal_closed', function() {
             _updateColumnContentDataFromPanel();
             _applyData();
-            // if (needToRemoveSpanData){
-            //     _removeSpanData();
-            // }
         });
 
         wpcf7_content_editor_properties.$content_required_field.on("click", function () {
@@ -1629,6 +1623,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             input_height: "",
             font_size: "",
             border_width: "",
+            border_radius: "",
             background_color: "",
             background_color_hover: "",
             border_color: "",

@@ -311,6 +311,9 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         // Content border width
         wpcf7_form_editor_properties.$content_set_border_width.val(/[0-9]+/.exec(elementData.wpcf7_data.content.border_width));
 
+        // Content border radius
+        wpcf7_form_editor_properties.$content_set_border_radius.val(/[0-9]+/.exec(elementData.wpcf7_data.content.border_radius));
+
         // Content text color
         wpcf7_form_editor_properties.$content_preview_text_color.css("background-color", elementData.wpcf7_data.content.text_color);
         wpcf7_form_editor_properties.$content_text_color_value.val(elementData.wpcf7_data.content.text_color);
@@ -397,6 +400,9 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 
         // Content border width
         elementData.wpcf7_data.content.border_width = wpcf7_form_editor_properties.$content_set_border_width.val() + "px";
+
+        // Content border width
+        elementData.wpcf7_data.content.border_radius = wpcf7_form_editor_properties.$content_set_border_radius.val() + "px";
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////////////
@@ -637,6 +643,19 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         };
         _linkKeyDownListenerInputNumber(wpcf7_form_editor_properties.$content_set_border_width, false);
         _linkKeyUpListenerInputNumber(wpcf7_form_editor_properties.$content_set_border_width, _updateContentBorderWidth, false);
+
+        // CONTENT BORDER RADIUS
+        var _updateContentBorderRadius = function (newContentBorderRadius) {
+            // outputString = isNaN(parseInt(newFontSize)) ? defaultColumnContentValues.font_size : newFontSize + "px";
+            outputString = newContentBorderRadius + "px";
+            _updateFormContentLive ({
+                type: "border-radius",
+                name: "border-radius",
+                value: outputString
+            });
+        };
+        _linkKeyDownListenerInputNumber(wpcf7_form_editor_properties.$content_set_border_radius, false);
+        _linkKeyUpListenerInputNumber(wpcf7_form_editor_properties.$content_set_border_radius, _updateContentBorderRadius, false);
     }
 
     var _linkBackgroundColorEditor = function () {
@@ -1242,6 +1261,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 
             $content_set_font_size: $container.find("#rex-wpcf7-set-content-font-size"),
             $content_set_border_width: $container.find("#rex-wpcf7-set-content-border-width"),
+            $content_set_border_radius: $container.find("#rex-wpcf7-set-content-border-radius"),
 
             $content_preview_text_color: $container.find("#rex-wpcf7-content-preview-text-color"),
             $content_text_color_value: $container.find("#rex-wpcf7-content-text-color"),

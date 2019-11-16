@@ -1045,6 +1045,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 currentColumnData.input_height = formData.wpcf7_data.content.height;
                 currentColumnData.font_size = formData.wpcf7_data.content.font_size;
                 currentColumnData.border_width = formData.wpcf7_data.content.border_width;
+                currentColumnData.border_radius = formData.wpcf7_data.content.border_radius;
                 currentColumnData.text_color = formData.wpcf7_data.content.text_color;
                 currentColumnData.text_color_hover = formData.wpcf7_data.content.text_color_hover;
                 currentColumnData.background_color = formData.wpcf7_data.content.background_color;
@@ -1252,6 +1253,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             case "height":
             case "font-size":
             case "border-width":
+            case "border-radius":
             case "text-color":
             case "border-color":
                 _updateColumnContentRule(formID, row, column, cssSelector, propertyName, newValue);
@@ -1579,6 +1581,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             input_height: "",
             font_size: "",
             border_width: "",
+            border_radius: "",
             background_color: "",
             background_color_hover: "",
             border_color: "",
@@ -1695,6 +1698,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             
             // Border width
             columnContentData.border_width = (columnContentDataEl.getAttribute("data-wpcf7-border-width") ? columnContentDataEl.getAttribute("data-wpcf7-border-width").toString() : defaultColumnContentValues.border_width);
+
+            // Border radius
+            columnContentData.border_radius = (columnContentDataEl.getAttribute("data-wpcf7-border-radius") ? columnContentDataEl.getAttribute("data-wpcf7-border-radius").toString() : defaultColumnContentValues.border_radius);
 
             // Background color hover
             columnContentData.background_color_hover = (columnContentDataEl.getAttribute("data-background-color-hover") ? columnContentDataEl.getAttribute("data-background-color-hover").toString() : "");
@@ -2189,6 +2195,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             columnContentRule += "font-size: " + columnContentData.font_size + ";";
             columnContentRule += "border-style: solid;";
             columnContentRule += "border-width: " + columnContentData.border_width + ";";
+            columnContentRule += "border-radius: " + columnContentData.border_radius + ";";
             _addColumnContentRule(formID, row, column, cssSelector, columnContentRule);
             
             columnContentHoverRule += "color: " + columnContentData.text_color_hover + ";";
@@ -2268,6 +2275,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             _updateColumnContentRule(formID, row, column, cssSelector, "height", columnContentData.input_height);
             _updateColumnContentRule(formID, row, column, cssSelector, "font-size", columnContentData.font_size);
             _updateColumnContentRule(formID, row, column, cssSelector, "border-width", columnContentData.border_width);
+            _updateColumnContentRule(formID, row, column, cssSelector, "border-radius", columnContentData.border_radius);
             _updateColumnContentRule(formID, row, column, cssSelector, "text-color", textColor);
             _updateColumnContentRule(formID, row, column, cssSelector, "background-color",backgroundColor);
             _updateColumnContentRule(formID, row, column, cssSelector, "border-color", borderColor);
@@ -2490,6 +2498,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             $columnData.attr("data-wpcf7-input-height", columnContentData.input_height);
             $columnData.attr("data-wpcf7-font-size", columnContentData.font_size);
             $columnData.attr("data-wpcf7-border-width", columnContentData.border_width);
+            $columnData.attr("data-wpcf7-border-radius", columnContentData.border_radius);
             $columnData.attr("data-background-color", columnContentData.background_color);
             $columnData.attr("data-background-color-hover", columnContentData.background_color_hover);
             $columnData.attr("data-text-color", columnContentData.text_color);
@@ -2543,6 +2552,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         $columnDataInDB.attr("data-wpcf7-input-height", columnContentData.input_height);
         $columnDataInDB.attr("data-wpcf7-font-size", columnContentData.font_size);
         $columnDataInDB.attr("data-wpcf7-border-width", columnContentData.border_width);
+        $columnDataInDB.attr("data-wpcf7-border-radius", columnContentData.border_radius);
         $columnDataInDB.attr("data-background-color", columnContentData.background_color);
         $columnDataInDB.attr("data-background-color-hover", columnContentData.background_color_hover);
         $columnDataInDB.attr("data-text-color", columnContentData.text_color);

@@ -577,13 +577,14 @@ var Rexbuilder_Util_Editor = (function($) {
       _hideAllTools();
 
       var blockIDToFocusAfterClose = e.settings.blockID;
+      console.log(blockIDToFocusAfterClose);
       if ("undefined" != typeof blockIDToFocusAfterClose) {
         var dbClickEvent = new MouseEvent('dblclick', {
           'view': window,
           'bubbles': true,
           'cancelable': true
         });
-        document.getElementById(e.settings.blockID).dispatchEvent(dbClickEvent);
+        document.getElementById(blockIDToFocusAfterClose).dispatchEvent(dbClickEvent);
       }
     });
 
