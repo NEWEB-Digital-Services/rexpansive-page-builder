@@ -118,6 +118,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
                 wpcf7_content_editor_properties.$content_input_font_size.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_text_color_value.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_text_color_focus_value.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_placeholder_color_value.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_placeholder_hover_color_value.parents(".bl_modal-row").removeClass("row-hidden");
                 break;
             case "number":
                 wpcf7_content_editor_properties.$content_required_field.parents(".bl_modal-row").removeClass("row-hidden");
@@ -130,6 +132,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
                 wpcf7_content_editor_properties.$content_input_font_size.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_text_color_value.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_text_color_focus_value.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_placeholder_color_value.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_placeholder_hover_color_value.parents(".bl_modal-row").removeClass("row-hidden");
                 break;
             case "textarea":
                 wpcf7_content_editor_properties.$content_required_field.parents(".bl_modal-row").removeClass("row-hidden");
@@ -141,6 +145,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
                 wpcf7_content_editor_properties.$content_input_font_size.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_text_color_value.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_text_color_focus_value.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_placeholder_color_value.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_placeholder_hover_color_value.parents(".bl_modal-row").removeClass("row-hidden");
                 break;
             case "select":
                 wpcf7_content_editor_properties.$content_required_field.parents(".bl_modal-row").removeClass("row-hidden");
@@ -282,6 +288,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             background_color_hover: "",
             border_color: "",
             border_color_hover: "",
+            placecholder_color: "",
+            placecholder_hover_color: "",
             text_color: "",
             text_color_hover: "",
             text_color_focus: "",
@@ -391,6 +399,18 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         wpcf7_content_editor_properties.$content_text_color_focus_value.val(columnContentData.text_color_focus);
         wpcf7_content_editor_properties.$content_text_color_focus_preview.hide();
         wpcf7_content_editor_properties.$content_text_color_focus_value.spectrum("set", columnContentData.text_color_focus);
+
+        // Placeholder color
+        wpcf7_content_editor_properties.$content_preview_placeholder.css("background-color", columnContentData.placeholder_color);
+        wpcf7_content_editor_properties.$content_placeholder_color_value.val(columnContentData.placeholder_color);
+        wpcf7_content_editor_properties.$content_placeholder_color_preview.hide();
+        wpcf7_content_editor_properties.$content_placeholder_color_value.spectrum("set", columnContentData.placeholder_color);
+
+        // Placeholder hover color
+        wpcf7_content_editor_properties.$content_preview_placeholder_hover.css("background-color", columnContentData.placeholder_hover_color);
+        wpcf7_content_editor_properties.$content_placeholder_hover_color_value.val(columnContentData.placeholder_hover_color);
+        wpcf7_content_editor_properties.$content_placeholder_hover_color_preview.hide();
+        wpcf7_content_editor_properties.$content_placeholder_hover_color_value.spectrum("set", columnContentData.placeholder_hover_color);
 
         // Button
         wpcf7_content_editor_properties.$content_button_text.val(columnContentData.wpcf7_button.text);
@@ -1003,6 +1023,111 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         );
     }
 
+    var _linkPlaceholderColorEditor = function () {
+        var colorTEXT;
+        wpcf7_content_editor_properties.$content_placeholder_color_value.spectrum({
+            replacerClassName: "btn-floating",
+            preferredFormat: "hex",
+            showPalette: false,
+            showAlpha: true,
+            showInput: true,
+            showButtons: false,
+            containerClassName:
+                "rexbuilder-materialize-wrap block-placeholder-color-picker",
+            show: function () {
+            },
+            move: function (color) {
+                if(needToRemoveSpanData) {
+                    needToRemoveSpanData = false;
+                }
+
+                colorTEXT = color.toRgbString();
+                wpcf7_content_editor_properties.$content_placeholder_color_preview.hide();
+                wpcf7_content_editor_properties.$content_preview_placeholder.css("background-color", colorTEXT);
+                _updateColumnContentLive({
+                    type: "placeholder-color",
+                    name: "text-color",
+                    value: colorTEXT
+                });
+            },
+            change: function (color) {},
+            hide: function (color) {
+                columnContentData.placeholder_color = color.toRgbString();
+            },
+            cancelText: "",
+            chooseText: ""
+        });
+
+        var close = tmpl('tmpl-tool-close', {});
+        var $close = $(close);
+        wpcf7_content_editor_properties.$content_placeholder_color_value.spectrum('container').append($close);
+
+        $close.on('click', function (e) {
+            e.preventDefault();
+            wpcf7_content_editor_properties.$content_placeholder_color_value.spectrum('hide');
+        });
+
+        wpcf7_content_editor_properties.$content_placeholder_color_preview.on(
+            "click",
+            function () {
+                wpcf7_content_editor_properties.$content_placeholder_color_value.spectrum("show");
+                return false;
+            }
+        );
+    }
+
+    var _linkPlaceholderHoverColorEditor = function () {
+        var colorTEXT;
+        wpcf7_content_editor_properties.$content_placeholder_hover_color_value.spectrum({
+            replacerClassName: "btn-floating",
+            preferredFormat: "hex",
+            showPalette: false,
+            showAlpha: true,
+            showInput: true,
+            showButtons: false,
+            containerClassName:
+                "rexbuilder-materialize-wrap block-placeholder-color-picker",
+            show: function () {},
+            move: function (color) {
+                if(needToRemoveSpanData) {
+                    needToRemoveSpanData = false;
+                }
+
+                colorTEXT = color.toRgbString();
+                wpcf7_content_editor_properties.$content_placeholder_hover_color_preview.hide();
+                wpcf7_content_editor_properties.$content_preview_placeholder_hover.css("background-color", colorTEXT);
+                _updateColumnContentLive({
+                    type: "placeholder-color-hover",
+                    name: "text-color",
+                    value: colorTEXT
+                });
+            },
+            change: function (color) {},
+            hide: function (color) {
+                columnContentData.placeholder_hover_color = color.toRgbString();
+            },
+            cancelText: "",
+            chooseText: ""
+        });
+
+        var close = tmpl('tmpl-tool-close', {});
+        var $close = $(close);
+        wpcf7_content_editor_properties.$content_placeholder_hover_color_value.spectrum('container').append($close);
+
+        $close.on('click', function (e) {
+            e.preventDefault();
+            wpcf7_content_editor_properties.$content_placeholder_hover_color_value.spectrum('hide');
+        });
+
+        wpcf7_content_editor_properties.$content_placeholder_hover_color_preview.on(
+            "click",
+            function () {
+                wpcf7_content_editor_properties.$content_placeholder_hover_color_value.spectrum("show");
+                return false;
+            }
+        );
+    }
+
     var _linkButtonTextColorEditor = function () {
         var colorTEXT;
         wpcf7_content_editor_properties.$content_button_text_color_value.spectrum({
@@ -1520,6 +1645,16 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             $content_text_color_focus_value: $container.find("#rex-wpcf7-focus-color"),
             $content_text_color_focus_runtime: $container.find("#rex-wpcf7-focus-color-runtime"),
             $content_text_color_focus_preview: $container.find("#rex-wpcf7-focus-color-preview-icon"),
+
+            $content_preview_placeholder: $container.find("#rex-wpcf7-preview-placeholder"),
+            $content_placeholder_color_value: $container.find("#rex-wpcf7-placeholder-color"),
+            $content_placeholder_color_runtime: $container.find("#rex-wpcf7-placeholder-color-runtime"),
+            $content_placeholder_color_preview: $container.find("#rex-wpcf7-placeholder-color-preview-icon"),
+
+            $content_preview_placeholder_hover: $container.find("#rex-wpcf7-preview-placeholder-hover"),
+            $content_placeholder_hover_color_value: $container.find("#rex-wpcf7-placeholder-hover-color"),
+            $content_placeholder_hover_color_runtime: $container.find("#rex-wpcf7-placeholder-hover-color-runtime"),
+            $content_placeholder_hover_color_preview: $container.find("#rex-wpcf7-placeholder-hover-color-preview-icon"),
             
             $content_button_text: $container.find("#rex-wpcf7-button-text-label"),
             $content_button_text_font_size: $container.find("#wpcf7-button-text-font-size"),
@@ -1628,6 +1763,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             background_color_hover: "",
             border_color: "",
             border_color_hover: "",
+            placecholder_color: "",
+            placecholder_hover_color: "",
             text_color: "",
             text_color_hover: "",
             text_color_focus: "",
@@ -1654,6 +1791,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         _linkNumberInputs();
 		_linkTextColorEditor();
         _linkTextFocusColorEditor();
+        _linkPlaceholderColorEditor();
+        _linkPlaceholderHoverColorEditor();
         _linkButtonTextColorEditor();
         _linkButtonTextColorHoverEditor();
         _linkButtonBackgroundColorEditor();

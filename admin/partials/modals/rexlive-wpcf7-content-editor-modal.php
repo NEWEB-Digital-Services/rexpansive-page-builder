@@ -203,21 +203,56 @@ defined('ABSPATH') or exit;
                     </div>
                 </div>
             </div>
-            <!-- <div class="bl_modal-row"> -->
-                <!-- BACKGROUND COLOR -->
-                <!-- <div class="rexelement-count-column_1">
-                    <div class="rex-relative-col tippy" data-tippy-content="Background Color" tabindex="0">
-                        <input type="hidden" id="rex-element-background-color-runtime" name="rex-element-background-color-runtime" value="" />
-                        <input id="rex-element-background-color" type="text" name="rex-element-background-color" value="" size="10" />
-                        <div id="rex-element-background-color-preview-icon" class="preview-color-icon"></div>
+            <div class="rexpansive-accordion close">
+                <div class="bl_modal-row">
+                    <!-- PLACEHOLDER COLOR -->
+                    <div class="rexwpcf7-cont_row">
+                        <div class="rexwpcf7-count-column_accord">
+                            <span class="rex-accordion--toggle">                                
+                                <div class="rexwpcf7-upd-accord_button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></div>
+                            </span>
+                        </div>
+                        <div class="rexwpcf7-count-column_1">
+                            <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Placeholder Color', 'rexpansive-builder');?>" tabindex="0">
+                                <input type="hidden" id="rex-wpcf7-placeholder-color-runtime" name="rex-wpcf7-placeholder-color-runtime" value="" />
+                                <input id="rex-wpcf7-placeholder-color" type="text" name="rex-wpcf7-placeholder-color" value="" size="10" />
+                                <div id="rex-wpcf7-placeholder-color-preview-icon" class="preview-color-icon"></div>
+                            </div>
+                        </div>
+                        <div class="rexwpcf7-count-column_2">
+                            <div id="rex-wpcf7-placeholder-preview-wrap">
+                                <div id="rex-wpcf7-preview-placeholder"></div>
+                            </div>
+                        </div>
+                        <div class="rexwpcf7-count-column_3"></div>
+                        <div class="rexwpcf7-count-column_4"></div>
+                        <div class="rexwpcf7-count-column_5"></div>
                     </div>
                 </div>
-                <div class="rexelement-count-column_2">
-                    <div id="rex-element-background-preview-wrap">
-                        <div id="rex-element-preview-background"></div>
+                <div class="rex-accordion--content" style="display:none;" data-item-status="close">
+                    <div class="bl_modal-row">
+                        <!-- PLACEHOLDER HOVER COLOR -->
+                        <div class="rexwpcf7-cont_row">
+                            <div class="rexwpcf7-count-column_accord"></div>
+                            <div class="rexwpcf7-count-column_1">
+                                <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Placeholder Hover Color', 'rexpansive-builder');?>" tabindex="0">
+                                    <input type="hidden" id="rex-wpcf7-placeholder-hover-color-runtime" name="rex-wpcf7-placeholder-hover-color-runtime" value="" />
+                                    <input id="rex-wpcf7-placeholder-hover-color" type="text" name="rex-wpcf7-placeholder-hover-color" value="" size="10" />
+                                    <div id="rex-wpcf7-placeholder-hover-color-preview-icon" class="preview-color-icon"></div>
+                                </div>
+                            </div>
+                            <div class="rexwpcf7-count-column_2">
+                                <div id="rex-wpcf7-placeholder-hover-preview-wrap">
+                                    <div id="rex-wpcf7-preview-placeholder-hover"></div>
+                                </div>
+                            </div>
+                            <div class="rexwpcf7-count-column_3"><!-- space for icons --></div>
+                            <div class="rexwpcf7-count-column_4"><!-- space for dimensions --></div>
+                            <div class="rexwpcf7-count-column_5"><!-- space for unit measurement --></div>
+                        </div>
                     </div>
                 </div>
-            </div> -->
+            </div>
             <div class="bl_modal-row">
                 <!-- TEXT EDITOR -->
                 <div id="wpcf7-text-editor" class="modal-editor-editorarea">

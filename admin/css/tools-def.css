@@ -17348,9 +17348,11 @@ input:disabled + .rex_edit_title_slider {
     display: block; }
 
 #rex-wpcf7-preview-background,
+#rex-wpcf7-preview-placeholder,
 #rex-wpcf7-preview-inputs-background,
 #rex-wpcf7-preview-button-background-color,
 #rex-wpcf7-preview-background-hover,
+#rex-wpcf7-preview-placeholder-hover,
 #rex-wpcf7-preview-focus,
 #rex-wpcf7-preview-inputs-focus,
 #rex-wpcf7-preview-focus-hover,

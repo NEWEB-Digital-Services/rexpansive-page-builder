@@ -429,6 +429,16 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         }
     }
 
+    // Style is changed to the column content, not to the whole column
+    var _addColumnContentPlaceholderHoverRule = function (formID, row, column, fieldClass, property) {
+        if ("insertRule" in styleSheet) {
+            styleSheet.insertRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] ." + fieldClass + ":hover::placeholder{" + property + "}", styleSheet.cssRules.length);
+        }
+        else if ("addRule" in styleSheet) {
+            styleSheet.addRule(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] ." + fieldClass + ":hover::placeholder{" + property + "}", styleSheet.cssRules.length);
+        }
+    }
+
     /////////////////////////////////////////////////////////////////////////////////////////////////
     // Updating rules
     
@@ -616,7 +626,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
     // Style is changed to the column content, not to the whole column
     var _updateColumnContentRule = function (formID, row, column, selector, rule, value) {
-
         for (var i = 0; i < styleSheet.cssRules.length; i++) {
             // if (
             //     //chrome firefox
@@ -771,6 +780,39 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] ." + selector + ":hover" ||
                 // edge
                 styleSheet.cssRules[i].selectorText == "[data-rex-element-id=\"" + formID + "\"].rex-element-wrapper ." + selector + ":hover"
+            ) {
+                switch (rule) {
+                    case "text-color":
+                        styleSheet.cssRules[i].style.color = value;
+                        break;
+                    case "background-color":
+                        styleSheet.cssRules[i].style.backgroundColor = value;
+                        break;
+                    case "border-color":
+                        styleSheet.cssRules[i].style.borderColor = value;
+                        break;
+                    default:
+                        break;
+                }
+                break;
+            }
+        }
+    }
+
+    // Style is changed to the column content, not to the whole column
+    var _updateColumnContentPlaceholderHoverRule = function (formID, row, column, selector, rule, value) {
+        for (var i = 0; i < styleSheet.cssRules.length; i++) {
+            // if (
+            //     //chrome firefox
+            //     styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] " + selector + ":focus" ||
+            //     // edge
+            //     styleSheet.cssRules[i].selectorText == "[data-rex-element-id=\"" + formID + "\"].rex-element-wrapper [wpcf7-row-number=\"" + row + "\"].wpcf7-row [wpcf7-column-number=\"" + column + "\"].wpcf7-column" + selector + ":focus"
+            // ) {
+            if (
+                // chrome firefox
+                styleSheet.cssRules[i].selectorText == ".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"] .wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"] ." + selector + ":hover::placeholder" ||
+                // edge
+                styleSheet.cssRules[i].selectorText == "[data-rex-element-id=\"" + formID + "\"].rex-element-wrapper ." + selector + ":hover::placeholder"
             ) {
                 switch (rule) {
                     case "text-color":
@@ -1258,6 +1300,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             case "border-color":
                 _updateColumnContentRule(formID, row, column, cssSelector, propertyName, newValue);
                 break;
+            case "placeholder-color":
+                _updateColumnContentRule(formID, row, column, cssSelector + "::placeholder", propertyName, newValue);
+                break;
             case "button-width":
             case "button-height":
             case "button-border-width":
@@ -1284,6 +1329,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             case "background-color-hover":
             case "border-color-hover":
                 _updateColumnContentHoverRule(formID, row, column, cssSelector, propertyName, newValue);
+                break;
+            case "placeholder-color-hover":
+                _updateColumnContentPlaceholderHoverRule(formID, row, column, cssSelector, propertyName, newValue);
             case "text-focus":
                 _updateColumnContentFocusRule(formID, row, column, cssSelector, propertyName, newValue);
                 break;
@@ -1586,6 +1634,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             background_color_hover: "",
             border_color: "",
             border_color_hover: "",
+            placecholder_color: "",
+            placecholder_hover_color: "",
             text_color: "",
             text_color_hover: "",
             text_color_focus: "",
@@ -1693,6 +1743,12 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
             // Text color focus
             columnContentData.text_color_focus = (columnContentDataEl.getAttribute("data-text-color-focus") ? columnContentDataEl.getAttribute("data-text-color-focus").toString() : defaultColumnContentValues.text_color_focus);
+
+            // Placeholder color
+            columnContentData.placeholder_color = (columnContentDataEl.getAttribute("data-placeholder-color") ? columnContentDataEl.getAttribute("data-placeholder-color").toString() : defaultColumnContentValues.placeholder_color);
+
+            // Placeholder hover color
+            columnContentData.placeholder_hover_color = (columnContentDataEl.getAttribute("data-placeholder-hover-color") ? columnContentDataEl.getAttribute("data-placeholder-hover-color").toString() : defaultColumnContentValues.placeholder_hover_color);
 
             // ONLY GENERAL MODAL OPTIONS
             
@@ -2181,6 +2237,14 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             _addColumnContentRule(formID, row, column, cssSelector, columnContentButtonRule);
             _addColumnContentHoverRule(formID, row, column, cssSelector, columnContentButtonHoverRule);
         } else { // Other fields
+            var columnContentPlaceholderRule = "";
+
+            if (inputType == "text" || inputType == "number" || inputType == "textarea") {
+                columnContentPlaceholderRule += "color:" + columnContentData.placeholder_color + ";";
+            }
+
+            _addColumnContentRule(formID, row, column, cssSelector + "::placeholder", columnContentPlaceholderRule);
+
             var columnContentRule = "";
 
             if (inputType == "acceptance" || inputType == "radio" || inputType == "file") {
@@ -2202,6 +2266,14 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             columnContentHoverRule += "background-color: " + columnContentData.background_color_hover + ";";
             columnContentHoverRule += "border-color: " + columnContentData.border_color_hover + ";";
             _addColumnContentHoverRule(formID, row, column, cssSelector, columnContentHoverRule);
+
+            var columnContentPlaceholderHoverRule = "";
+
+            if (inputType == "text" || inputType == "number" || inputType == "textarea") {
+                columnContentPlaceholderHoverRule += "color:" + columnContentData.placeholder_hover_color + ";";
+            }
+            
+            _addColumnContentPlaceholderHoverRule(formID, row, column, cssSelector, columnContentPlaceholderHoverRule);
         }
     }
 
@@ -2233,6 +2305,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var textColor = columnContentData.text_color;
         var textColorHover = columnContentData.text_color_hover;
         var textColorFocus = columnContentData.text_color_focus;
+        var placeholderColor = columnContentData.palceholder_color;
+        var placeholderColorHover = columnContentData.palceholder_color_hover;
         var borderColor = columnContentData.border_color;
         var borderColorHover = columnContentData.border_color_hover;
         var buttonTextColor = columnContentData.wpcf7_button.text_color;
@@ -2264,6 +2338,11 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         if (inputType == "acceptance" || inputType == "radio") {
             _updateColumnContentRule(formID, row, column, cssSelector, "float", "left");
+        }
+
+        if (inputType == "text" || inputType == "number" || inputType == "textarea") {
+            _updateColumnContentRule(formID, row, column, cssSelector + "::placeholder", "text-color", placeholderColor);
+            _updateColumnContentPlaceholderHoverRule(formID, row, column, cssSelector, "text-color", placeholderColorHover);
         }
 
         if (inputType != "submit") {
@@ -2328,7 +2407,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         _updateColumnContentShortcode(formID, row, column, inputType, columnContentData);
         _updateSpanData(formID, columnContentData);
-        // _updateFormInDBNoRefresh(formID);
     }
 
     var _updateColumnContentShortcode = function (formID, row, column, inputType, columnContentData) {
@@ -2504,6 +2582,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             $columnData.attr("data-text-color", columnContentData.text_color);
             $columnData.attr("data-text-color-hover", columnContentData.text_color_hover);
             $columnData.attr("data-text-color-focus", columnContentData.text_color_focus);
+            $columnData.attr("data-placeholder-color", columnContentData.placeholder_color);
+            $columnData.attr("data-placeholder-hover-color", columnContentData.placeholder_hover_color);
             $columnData.attr("data-border-color", columnContentData.border_color);
             $columnData.attr("data-border-color-hover", columnContentData.border_color_hover);
 
@@ -2558,6 +2638,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         $columnDataInDB.attr("data-text-color", columnContentData.text_color);
         $columnDataInDB.attr("data-text-color-hover", columnContentData.text_color_hover);
         $columnDataInDB.attr("data-text-color-focus", columnContentData.text_color_focus);
+        $columnDataInDB.attr("data-placeholder-color", columnContentData.placeholder_color);
+        $columnDataInDB.attr("data-placeholder-hover-color", columnContentData.placeholder_hover_color);
         $columnDataInDB.attr("data-border-color", columnContentData.border_color);
         $columnDataInDB.attr("data-border-color-hover", columnContentData.border_color_hover);
 
