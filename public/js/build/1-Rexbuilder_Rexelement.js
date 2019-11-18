@@ -199,6 +199,8 @@ var Rexbuilder_Rexelement = (function ($) {
                 $elementData = $.parseHTML(response.data.element_data_html[0]);
                 $elementWrapper.prepend($elementData);
 
+                console.log()
+
                 switch (dropType) {
                     case "inside-block":
                         $elementWrapper.wrap("<span class=\"rex-elements-paragraph\"></span>");
@@ -260,10 +262,33 @@ var Rexbuilder_Rexelement = (function ($) {
         var $block = $elementWrapper.parents(".grid-stack-item");
         galleryEditorInstance.updateElementHeight($block);
 
-        //removes medium editor placeholder if there
+        // Removing medium editor placeholder if there
         var $textWrap = $elementWrapper.parents(".text-wrap");
         if ($textWrap.length != 0) {
             TextEditor.removePlaceholder($textWrap.eq(0));
+        }
+
+        // Adding form rows if element is wpcf7
+        if ($elementWrapper.find(".wpcf7").length != 0) {
+            var $form = $elementWrapper.find(".wpcf7-form");
+            var $firstElement = $form.children().first().detach();
+            var $fields = $form.find(".wpcf7-form-control-wrap").detach();
+            var $submits = $form.find("input[type=submit]").detach();
+            $fields = $fields.add($submits);
+            $form.empty();
+            var $rows = $(document.createElement("div")).addClass("wpcf7-rows ui-sortable");
+            $form.append($rows);
+            $fields.each(function (i) {
+                var $newRow = $(document.createElement("div"))
+                    .addClass("wpcf7-row wpcf7-row__1-column")
+                    .attr("wpcf7-row-number", (i + 1));
+                var $newColumn = $(document.createElement("div"))
+                    .addClass("wpcf7-column")
+                    .attr("wpcf7-column-number", "1")
+                    .append(this);
+                $newRow.append($newColumn);
+                $rows.append($newRow);
+            });
         }
 
         // locking grid to prevent errors on focus right text node
