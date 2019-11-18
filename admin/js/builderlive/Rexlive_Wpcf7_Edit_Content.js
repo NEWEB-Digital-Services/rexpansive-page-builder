@@ -156,8 +156,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
                 wpcf7_content_editor_properties.$content_input_height.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_input_height_type.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$content_input_font_size.parents(".bl_modal-row").removeClass("row-hidden");
-                wpcf7_content_editor_properties.$content_text_color_value.parents(".bl_modal-row").removeClass("row-hidden");
-                wpcf7_content_editor_properties.$content_text_color_focus_value.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_select_color_value.parents(".bl_modal-row").removeClass("row-hidden");
+                wpcf7_content_editor_properties.$content_select_color_after_selection_value.parents(".bl_modal-row").removeClass("row-hidden");
                 wpcf7_content_editor_properties.$field_list.removeClass("row-hidden");
                 wpcf7_content_editor_properties.$add_list_field.parents(".bl_modal-row").removeClass("row-hidden");
                 break;
@@ -290,6 +290,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             border_color_hover: "",
             placecholder_color: "",
             placecholder_hover_color: "",
+            select_color_after_selection: "",
             text_color: "",
             text_color_hover: "",
             text_color_focus: "",
@@ -399,6 +400,18 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         wpcf7_content_editor_properties.$content_text_color_focus_value.val(columnContentData.text_color_focus);
         wpcf7_content_editor_properties.$content_text_color_focus_preview.hide();
         wpcf7_content_editor_properties.$content_text_color_focus_value.spectrum("set", columnContentData.text_color_focus);
+
+        // Select text color
+        wpcf7_content_editor_properties.$content_preview_select.css("background-color", columnContentData.text_color);
+        wpcf7_content_editor_properties.$content_select_color_value.val(columnContentData.text_color);
+        wpcf7_content_editor_properties.$content_select_color_preview.hide();
+        wpcf7_content_editor_properties.$content_select_color_value.spectrum("set", columnContentData.text_color);
+
+        // Select text color after selection
+        wpcf7_content_editor_properties.$content_preview_select_after_selection.css("background-color", columnContentData.select_color_after_selection);
+        wpcf7_content_editor_properties.$content_select_color_after_selection_value.val(columnContentData.select_color_after_selection);
+        wpcf7_content_editor_properties.$content_select_color_after_selection_preview.hide();
+        wpcf7_content_editor_properties.$content_select_color_after_selection_value.spectrum("set", columnContentData.select_color_after_selection);
 
         // Placeholder color
         wpcf7_content_editor_properties.$content_preview_placeholder.css("background-color", columnContentData.placeholder_color);
@@ -1023,6 +1036,114 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         );
     }
 
+    var _linkSelectTextColorEditor = function () {
+        var colorTEXT;
+        wpcf7_content_editor_properties.$content_select_color_value.spectrum({
+            replacerClassName: "btn-floating",
+            preferredFormat: "hex",
+            showPalette: false,
+            showAlpha: true,
+            showInput: true,
+            showButtons: false,
+            containerClassName:
+                "rexbuilder-materialize-wrap block-background-color-picker",
+            show: function () {
+            },
+            move: function (color) {
+                if(needToRemoveSpanData) {
+                    needToRemoveSpanData = false;
+                }
+
+                colorTEXT = color.toRgbString();
+                wpcf7_content_editor_properties.$content_select_color_preview.hide();
+                wpcf7_content_editor_properties.$content_preview_select.css("background-color", colorTEXT);
+                _updateColumnContentLive({
+                    type: "text-color",
+                    name: "text-color",
+                    value: colorTEXT
+                });
+            },
+            change: function (color) {
+            },
+            hide: function (color) {
+                columnContentData.text_color = color.toRgbString();
+            },
+            cancelText: "",
+            chooseText: ""
+        });
+
+        var close = tmpl('tmpl-tool-close', {});
+        var $close = $(close);
+        wpcf7_content_editor_properties.$content_select_color_value.spectrum('container').append($close);
+
+        $close.on('click', function (e) {
+            e.preventDefault();
+            wpcf7_content_editor_properties.$content_select_color_value.spectrum('hide');
+        });
+
+        wpcf7_content_editor_properties.$content_select_color_preview.on(
+            "click",
+            function () {
+                wpcf7_content_editor_properties.$content_select_color_value.spectrum("show");
+                return false;
+            }
+        );
+    }
+
+    var _linkSelectTextColorAfterSelectionEditor = function () {
+        var colorTEXT;
+        wpcf7_content_editor_properties.$content_select_color_after_selection_value.spectrum({
+            replacerClassName: "btn-floating",
+            preferredFormat: "hex",
+            showPalette: false,
+            showAlpha: true,
+            showInput: true,
+            showButtons: false,
+            containerClassName:
+                "rexbuilder-materialize-wrap block-background-color-picker",
+            show: function () {
+            },
+            move: function (color) {
+                if(needToRemoveSpanData) {
+                    needToRemoveSpanData = false;
+                }
+
+                colorTEXT = color.toRgbString();
+                wpcf7_content_editor_properties.$content_select_color_after_selection_preview.hide();
+                wpcf7_content_editor_properties.$content_preview_select_after_selection.css("background-color", colorTEXT);
+                _updateColumnContentLive({
+                    type: "select-color",
+                    name: "text-color",
+                    value: colorTEXT
+                });
+            },
+            change: function (color) {
+            },
+            hide: function (color) {
+                columnContentData.select_color_after_selection = color.toRgbString();
+            },
+            cancelText: "",
+            chooseText: ""
+        });
+
+        var close = tmpl('tmpl-tool-close', {});
+        var $close = $(close);
+        wpcf7_content_editor_properties.$content_select_color_after_selection_value.spectrum('container').append($close);
+
+        $close.on('click', function (e) {
+            e.preventDefault();
+            wpcf7_content_editor_properties.$content_select_color_after_selection_value.spectrum('hide');
+        });
+
+        wpcf7_content_editor_properties.$content_select_color_after_selection_preview.on(
+            "click",
+            function () {
+                wpcf7_content_editor_properties.$content_select_color_after_selection_value.spectrum("show");
+                return false;
+            }
+        );
+    }
+
     var _linkPlaceholderColorEditor = function () {
         var colorTEXT;
         wpcf7_content_editor_properties.$content_placeholder_color_value.spectrum({
@@ -1034,8 +1155,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             showButtons: false,
             containerClassName:
                 "rexbuilder-materialize-wrap block-placeholder-color-picker",
-            show: function () {
-            },
+            show: function () {},
             move: function (color) {
                 if(needToRemoveSpanData) {
                     needToRemoveSpanData = false;
@@ -1646,6 +1766,16 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             $content_text_color_focus_runtime: $container.find("#rex-wpcf7-focus-color-runtime"),
             $content_text_color_focus_preview: $container.find("#rex-wpcf7-focus-color-preview-icon"),
 
+            $content_preview_select: $container.find("#rex-wpcf7-preview-select-text"),
+            $content_select_color_value: $container.find("#rex-wpcf7-select-text-color"),
+            $content_select_color_runtime: $container.find("#rex-wpcf7-select-text-color-runtime"),
+            $content_select_color_preview: $container.find("#rex-wpcf7-select-text-color-preview-icon"),
+
+            $content_preview_select_after_selection: $container.find("#rex-wpcf7-preview-select-text-after-selection"),
+            $content_select_color_after_selection_value: $container.find("#rex-wpcf7-select-text-color-after-selection"),
+            $content_select_color_after_selection_runtime: $container.find("#rex-wpcf7-select-text-color-after-selection-runtime"),
+            $content_select_color_after_selection_preview: $container.find("#rex-wpcf7-select-text-color-after-selection-preview-icon"),
+
             $content_preview_placeholder: $container.find("#rex-wpcf7-preview-placeholder"),
             $content_placeholder_color_value: $container.find("#rex-wpcf7-placeholder-color"),
             $content_placeholder_color_runtime: $container.find("#rex-wpcf7-placeholder-color-runtime"),
@@ -1765,6 +1895,7 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
             border_color_hover: "",
             placecholder_color: "",
             placecholder_hover_color: "",
+            select_color_after_selection: "",
             text_color: "",
             text_color_hover: "",
             text_color_focus: "",
@@ -1791,6 +1922,8 @@ var Wpcf7_Edit_Content_Modal = (function ($) {
         _linkNumberInputs();
 		_linkTextColorEditor();
         _linkTextFocusColorEditor();
+        _linkSelectTextColorEditor();
+        _linkSelectTextColorAfterSelectionEditor();
         _linkPlaceholderColorEditor();
         _linkPlaceholderHoverColorEditor();
         _linkButtonTextColorEditor();

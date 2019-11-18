@@ -409,6 +409,11 @@ var Rexbuilder_Rexelement = (function ($) {
                     var placeholder = $option.parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-wpcf7-placeholder");
                     $option.text(placeholder);
                 }
+
+                $(this).on("change", function () {
+                    var color = $(this).parents(".wpcf7-column").find(".rex-wpcf7-column-content-data").attr("data-select-color-after-selection");
+                    $(this).css("color", color);
+                })
             });
         });
     }

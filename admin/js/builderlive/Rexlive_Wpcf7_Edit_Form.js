@@ -152,11 +152,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         var formID = elementData.element_target.element_id;
         _getFormSettings(formID);
 
-        var delayInMilliseconds = 0;
-
-        setTimeout(function() {
-          Rexlive_Modals_Utils.openModal(wpcf7_form_editor_properties.$self.parent(".rex-modal-wrap"),false);
-        }, delayInMilliseconds);
+        Rexlive_Modals_Utils.openModal(wpcf7_form_editor_properties.$self.parent(".rex-modal-wrap"),false);
 	}
 
 	var _closeModal = function () {

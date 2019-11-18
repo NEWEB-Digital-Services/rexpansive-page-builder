@@ -1976,7 +1976,7 @@ var TextEditor = (function ($) {
 
       this.on(this.formSelectColumnsToolbar, "click", this.handleSelectColumns.bind(this));
 
-      this.on(this.dragFormRowBtn, "mousedown", this.handleClickDragFormRow.bind(this));
+      // this.on(this.dragFormRowBtn, "mousedown", this.handleClickDragFormRow.bind(this));
       this.on(this.cloneFormRowBtn, "click", this.handleClickCloneFormRow.bind(this));
       this.on(this.deleteFormRowBtn, "click", this.handleClickDeleteFormRow.bind(this));
 
@@ -2337,9 +2337,10 @@ var TextEditor = (function ($) {
 
       var formID = $(this.traceForm).parents(".rex-element-wrapper").attr("data-rex-element-id");
       var rowNumberToDelete = $(this.traceFormRow).attr("wpcf7-row-number");
+      var blockIDToFocusAfterDelete = $(this.traceForm).parents(".grid-stack-item").attr("id");
 
       this.placeFormToolbox();
-      Rexbuilder_Rexwpcf7.deleteRow(formID, rowNumberToDelete);
+      Rexbuilder_Rexwpcf7.deleteRow(formID, rowNumberToDelete, blockIDToFocusAfterDelete);
     },
 
     handleClickSettingsFormColumn: function (event) {

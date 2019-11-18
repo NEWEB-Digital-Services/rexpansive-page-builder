@@ -37,7 +37,10 @@ var Element_Edit_Modal = (function ($) {
                     element_editor_properties.$self.addClass("editing-model");
                     
                     // Selezionare il modal in base al tipo di elemento che abbiamo
-                    Wpcf7_Edit_Form_Modal.openFormEditorModal(elementData);
+                    Wpcf7_Edit_Form_Modal.openFormEditorModal({
+                        elementData: elementData,
+                        blockID: blockID
+                    });
                     _staySynchronized();
                     break;
                 default:

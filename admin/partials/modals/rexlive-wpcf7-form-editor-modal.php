@@ -20,10 +20,10 @@ defined('ABSPATH') or exit;
         	<?php include 'rexlive-loader-modal.php'; ?>
             <div class="bl_modal-row">
                 <div class="rexwpcf7-cont_row">
-                    <div class="rexwpcf7-count-column_2">
+                    <div class="rexwpcf7-count-column_54"></div>
+                    <div class="rexwpcf7-count-column_327">
                         <input type="text" id="rex-wpcf7-mail-to" name="" class="rex-wpcf7-mail-to">
                     </div>
-                    <div class="rexwpcf7-count-column_3">Your Mail</div>
                 </div>
             </div>
             <div class="bl_modal-row">
@@ -446,3 +446,4 @@ defined('ABSPATH') or exit;
         </div>
 	</div>
 </div>
+<!-- Wpcf7 Form Editor -->

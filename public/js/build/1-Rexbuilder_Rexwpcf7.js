@@ -17,37 +17,60 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
      */
     var _addField = function(data) {
         var insertionPoint = data.insertionPoint;
+        var formID = insertionPoint.formID;
         var fieldType = data.fieldType;
         var fieldShortcode;
         var fieldNumber = Rexbuilder_Util.createRandomNumericID(3);
+        var row = insertionPoint.row_number;
+        var column = insertionPoint.column_number;
+        var $columnToAddField = Rexbuilder_Util.$rexContainer.find(".wpcf7-row[wpcf7-row-number=\"" + row + "\"] .wpcf7-column[wpcf7-column-number=\"" + column + "\"]");
+
+        $columnToAddField.empty();
 
         // Selecting the field
-        switch(fieldType) {
+        switch (fieldType) {
             case "text":
                 fieldShortcode = "[text text-" + fieldNumber + " class:text-" + fieldNumber + "]";
+                $columnToAddField.prepend("<input type=\"text\" name=\"text-" + fieldNumber + "\" value=\"\" size=\"40\" class=\"wpcf7-form-control wpcf7-text text-" + fieldNumber + "\" aria-invalid=\"false\" style=\"\">");
                 break;
             case "textarea":
                 fieldShortcode = "[textarea textarea-" + fieldNumber + " class:textarea-" + fieldNumber + "]";
+                $columnToAddField.prepend("<textarea name=\"textarea-" + fieldNumber + "\" cols=\"40\" rows=\"10\" class=\"wpcf7-form-control wpcf7-textarea textarea-" + fieldNumber + "\" aria-invalid=\"false\" style=\"\"></textarea>");
                 break;
             case "menu":
                 fieldShortcode = "[select menu-" + fieldNumber + " include_blank class:menu-" + fieldNumber + " 'Field 1' 'Field 2']";
+                $columnToAddField.prepend("<select name=\"menu-" + fieldNumber + "\" class=\"wpcf7-form-control wpcf7-select menu-" + fieldNumber + "\" aria-invalid=\"false\" style=\"\"><option value=\"\" disabled=\"disabled\" selected=\"selected\">---</option><option value=\"Field 1\">Field 1</option><option value=\"Field 2\">Field 2</option></select>");
                 break;
             case "radiobuttons":
                 fieldShortcode = "[radio radio-" + fieldNumber + " default:1 class:radio-" + fieldNumber + " \"Option 1\" \"Option 2\" ]";
+                $columnToAddField.prepend("<span class=\"wpcf7-form-control-wrap radio-" + fieldNumber + "\" style=\"\"><span class=\"wpcf7-form-control wpcf7-radio radio-" + fieldNumber + "\"><span class=\"wpcf7-list-item first\"><input type=\"radio\" name=\"radio-" + fieldNumber + "\" value=\"Option 1\" checked=\"checked\" class=\"with-gap\" id=\"wpcf7-radio-3\"><span class=\"\"></span><label class=\"wpcf7-list-item-label\" for=\"wpcf7-radio-3\">Option 1</label></span><span class=\"wpcf7-list-item last\"><input type=\"radio\" name=\"radio-" + fieldNumber + "\" value=\"Option 2\" class=\"with-gap\" id=\"wpcf7-radio-4\"><span class=\"\"></span><label class=\"wpcf7-list-item-label\" for=\"wpcf7-radio-4\">Option 2</label></span></span></span>");
                 break;
             case "checkbox":
                 fieldShortcode = "[checkbox checkbox-" + fieldNumber + " class:checkbox-" + fieldNumber + " \"Checkbox text\"]";
                 break;
             case "acceptance":
                 fieldShortcode = "[acceptance acceptance-" + fieldNumber + " optional] Your text [/acceptance]";
+                $columnToAddField.prepend("<span class=\"wpcf7-form-control-wrap acceptance-" + fieldNumber + "\" style=\"\"><span class=\"wpcf7-form-control wpcf7-acceptance optional\"><span class=\"wpcf7-list-item\"><label><input type=\"checkbox\" name=\"acceptance-" + fieldNumber + "\" value=\"1\" aria-invalid=\"false\"><span class=\"wpcf7-list-item-label\">Your text</span></label></span></span></span>");
                 break;
             case "file":
                 fieldShortcode = "[file file-" + fieldNumber + " filetypes: limit:]<div class='wpcf7-file-caption'>Your text here</div>";
+                $columnToAddField.prepend("<span class=\"wpcf7-form-control-wrap file-" + fieldNumber + "\" style=\"\"><input type=\"file\" name=\"file-" + fieldNumber + "\" size=\"40\" class=\"wpcf7-form-control wpcf7-file\" accept=\".jpg,.jpeg,.png,.gif,.pdf,.doc,.docx,.ppt,.pptx,.odt,.avi,.ogg,.m4a,.mov,.mp3,.mp4,.mpg,.wav,.wmv\" aria-invalid=\"false\" id=\"wpcf7-file-2\"><label for=\"wpcf7-file-2\"></label><div class=\"wpcf7-file-caption\">Your text here</div></span>");
                 break;
             case "submit":
                 fieldShortcode = "[submit class:submit-" + fieldNumber + " 'Send']";
+                $columnToAddField.prepend("<input type=\"submit\" value=\"Send\" class=\"wpcf7-form-control wpcf7-submit submit-" + fieldNumber + "\" style=\"\">");
                 break;
         }
+
+        _createColumnContentSpanData({
+            editPoint: {
+                element_id: formID,
+                row_number: row,
+                column_number: column,
+            }
+        });
+
+        _addColumnContentStyle($columnToAddField);
         
         _saveNewField(insertionPoint, fieldShortcode);
     }
@@ -117,8 +140,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var $rowBefore = $formToAddRow.find(".wpcf7-row[wpcf7-row-number=\"" + numberRowBefore + "\"]");
         var $rowToAdd = $($rowBefore[0]).clone();
         
-        $rowToAdd.insertAfter($rowBefore);  // Inserting the new row in the form
-        _fixRowNumbersAndClasses($formToAddRow);      // After this function row numbers are now correct
+        $rowToAdd.insertAfter($rowBefore);          // Inserting the new row in the form
+        _fixRowNumbersAndClasses($formToAddRow);    // After this function row numbers are now correct
 
         var newRowNumber = numberRowBefore + 1;
         var $rowAdded = $formToAddRow.find(".wpcf7-row[wpcf7-row-number=\"" + newRowNumber + "\"]"); // Need to declare this after _fixRowNumbers
@@ -137,11 +160,21 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         _saveClonedColumnRow(formID, clonedColumnNumber, numberRowBefore);
     }
 
-    var _deleteRow = function (formID, rowNumberToDelete) {
+    var _deleteRow = function (formID, rowNumberToDelete, blockIDToFocusAfterDelete) {
         var $formToDeleteRow = Rexbuilder_Util.$rexContainer.find(".rex-element-wrapper[data-rex-element-id=\"" + formID + "\"]").find(".wpcf7-form"); // There may be more than 1 form
         var $rowToDelete = $formToDeleteRow.find(".wpcf7-row[wpcf7-row-number=\"" + rowNumberToDelete + "\"]");
 
         $rowToDelete.remove();
+
+        // console.log(blockIDToFocusAfterDelete);
+        if ("undefined" != typeof blockIDToFocusAfterDelete) {
+            var dbClickEvent = new MouseEvent('dblclick', {
+              'view': window,
+              'bubbles': true,
+              'cancelable': true
+            });
+            document.getElementById(blockIDToFocusAfterDelete).dispatchEvent(dbClickEvent);
+        }
 
         _fixRowNumbersAndClasses($formToDeleteRow);
         _saveDeletingRow(formID, rowNumberToDelete);
@@ -212,7 +245,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             }
         }
 
-        _updateFormInDB(formID);
+        // _updateFormInDB(formID);
         // _updateFormInDBNoRefresh(formID);
     }
 
@@ -1303,6 +1336,12 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             case "placeholder-color":
                 _updateColumnContentRule(formID, row, column, cssSelector + "::placeholder", propertyName, newValue);
                 break;
+            case "select-color":
+                if (/color\:/.test($formColumns.find(".wpcf7-select").attr("style"))) {
+                    $formColumns.find(".wpcf7-select").css("color", newValue);
+                }
+                // console.log(/color\:/.test($formColumns.find(".wpcf7-select").attr("style")));
+                break;
             case "button-width":
             case "button-height":
             case "button-border-width":
@@ -1332,6 +1371,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
                 break;
             case "placeholder-color-hover":
                 _updateColumnContentPlaceholderHoverRule(formID, row, column, cssSelector, propertyName, newValue);
+                break;
             case "text-focus":
                 _updateColumnContentFocusRule(formID, row, column, cssSelector, propertyName, newValue);
                 break;
@@ -1636,6 +1676,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             border_color_hover: "",
             placecholder_color: "",
             placecholder_hover_color: "",
+            select_color_after_selection: "",
             text_color: "",
             text_color_hover: "",
             text_color_focus: "",
@@ -1743,6 +1784,9 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
             // Text color focus
             columnContentData.text_color_focus = (columnContentDataEl.getAttribute("data-text-color-focus") ? columnContentDataEl.getAttribute("data-text-color-focus").toString() : defaultColumnContentValues.text_color_focus);
+
+            // Select color after selection
+            columnContentData.select_color_after_selection = (columnContentDataEl.getAttribute("data-select-color-after-selection") ? columnContentDataEl.getAttribute("data-select-color-after-selection").toString() : "");
 
             // Placeholder color
             columnContentData.placeholder_color = (columnContentDataEl.getAttribute("data-placeholder-color") ? columnContentDataEl.getAttribute("data-placeholder-color").toString() : defaultColumnContentValues.placeholder_color);
@@ -2150,7 +2194,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         var fieldClass = columnContentData.field_class;
         var inputType = columnContentData.input_type;
         var cssSelector;
-        var columnContentHoverRule = "";
 
         switch (inputType) {
             case "text":
@@ -2173,8 +2216,10 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
 
         var columnContentFocusRule = "";
 
-        columnContentFocusRule += "color: " + columnContentData.text_color_focus + ";";
-        _addColumnContentFocusRule(formID, row, column, cssSelector, columnContentFocusRule);
+        if (!inputType == "select") {
+            columnContentFocusRule += "color: " + columnContentData.text_color_focus + ";";
+            _addColumnContentFocusRule(formID, row, column, cssSelector, columnContentFocusRule);
+        }
 
         if (inputType == "file") {
             var columnContentFileButtonRule = "";
@@ -2261,6 +2306,8 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             columnContentRule += "border-width: " + columnContentData.border_width + ";";
             columnContentRule += "border-radius: " + columnContentData.border_radius + ";";
             _addColumnContentRule(formID, row, column, cssSelector, columnContentRule);
+
+            var columnContentHoverRule = "";
             
             columnContentHoverRule += "color: " + columnContentData.text_color_hover + ";";
             columnContentHoverRule += "background-color: " + columnContentData.background_color_hover + ";";
@@ -2346,7 +2393,6 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         }
 
         if (inputType != "submit") {
-            _updateColumnContentHoverRule(formID, row, column, cssSelector, "text-color", textColorHover);
             _updateColumnContentHoverRule(formID, row, column, cssSelector, "background-color", backgroundColorHover);
             _updateColumnContentHoverRule(formID, row, column, cssSelector, "border-color", borderColorHover);
 
@@ -2355,6 +2401,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             _updateColumnContentRule(formID, row, column, cssSelector, "font-size", columnContentData.font_size);
             _updateColumnContentRule(formID, row, column, cssSelector, "border-width", columnContentData.border_width);
             _updateColumnContentRule(formID, row, column, cssSelector, "border-radius", columnContentData.border_radius);
+
             _updateColumnContentRule(formID, row, column, cssSelector, "text-color", textColor);
             _updateColumnContentRule(formID, row, column, cssSelector, "background-color",backgroundColor);
             _updateColumnContentRule(formID, row, column, cssSelector, "border-color", borderColor);
@@ -2403,6 +2450,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             _updateColumnContentHoverRule(formID, row, column, cssSelector, "background-color", buttonBackgroundColorHover);
             _updateColumnContentHoverRule(formID, row, column, cssSelector, "border-color", buttonBorderColorHover);
         }
+
         _updateColumnContentFocusRule(formID, row, column, cssSelector, "text-color", textColorFocus);
 
         _updateColumnContentShortcode(formID, row, column, inputType, columnContentData);
@@ -2582,6 +2630,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
             $columnData.attr("data-text-color", columnContentData.text_color);
             $columnData.attr("data-text-color-hover", columnContentData.text_color_hover);
             $columnData.attr("data-text-color-focus", columnContentData.text_color_focus);
+            $columnData.attr("data-select-color-after-selection", columnContentData.select_color_after_selection);
             $columnData.attr("data-placeholder-color", columnContentData.placeholder_color);
             $columnData.attr("data-placeholder-hover-color", columnContentData.placeholder_hover_color);
             $columnData.attr("data-border-color", columnContentData.border_color);
@@ -2638,6 +2687,7 @@ var Rexbuilder_Rexwpcf7 = (function ($) {
         $columnDataInDB.attr("data-text-color", columnContentData.text_color);
         $columnDataInDB.attr("data-text-color-hover", columnContentData.text_color_hover);
         $columnDataInDB.attr("data-text-color-focus", columnContentData.text_color_focus);
+        $columnDataInDB.attr("data-select-color-after-selection", columnContentData.select_color_after_selection);
         $columnDataInDB.attr("data-placeholder-color", columnContentData.placeholder_color);
         $columnDataInDB.attr("data-placeholder-hover-color", columnContentData.placeholder_hover_color);
         $columnDataInDB.attr("data-border-color", columnContentData.border_color);

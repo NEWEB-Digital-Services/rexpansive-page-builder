@@ -7,14 +7,40 @@
     width:381px;
     margin:12px auto;
     
-    .rexwpcf7-count-colum_accord{
+    // .rexwpcf7-count-colum_accord{
+    //   width:30px;
+    //   height:42px;
+    //   margin-right:12px;
+    //   float:left;
+    //   position:relative;
+
+    //   .rexwpcf7-upd-add_button{
+    //     width:30px;
+    //     height:42px;
+    //     position:absolute;
+    //     top:0;
+    //     left:0;
+    //     text-align:center;
+    //     font-size:34px;
+    //     padding:7px 0px 0px 2px;
+    //     color:#979797;
+
+    //     &:hover {
+    //       color:#00ACFF;
+    //       transition:1s;
+    //     }
+    //   }
+    // }
+
+    .rexwpcf7-count-column_accord{
+      // background-color: black;
       width:30px;
       height:42px;
       margin-right:12px;
       float:left;
       position:relative;
 
-      .rexwpcf7-upd-add_button{
+      .rexwpcf7-upd-accord_button{
         width:30px;
         height:42px;
         position:absolute;
@@ -32,10 +58,17 @@
       }
     }
 
-    .rexwpcf7-count-column_1{
-      width:42px;
-      height:42px;
-      margin-right:12px;
+    .rexwpcf7-count-column_54{
+      width: 42px;
+      height: 42px;
+      margin-right: 12px;
+      float:left;
+    }
+
+    .rexwpcf7-count-column_327{
+      width: 327px;
+      height: 42px;
+      // margin: 0;
       float:left;
     }
 
