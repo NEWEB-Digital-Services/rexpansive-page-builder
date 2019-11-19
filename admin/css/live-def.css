@@ -3644,6 +3644,10 @@ ul {
       -ms-flex-pack: justify;
           justify-content: space-between; }
 
+.bl_jc-sa {
+  -ms-flex-pack: distribute;
+      justify-content: space-around; }
+
 .bl_jc-fe {
   -webkit-box-pack: end;
       -ms-flex-pack: end;

@@ -3,11 +3,12 @@
  * @since x.x.x
  */
 var Wpcf7_Edit_Form_Modal = (function ($) {
-	var wpcf7_form_editor_properties;
+    "use strict";
+    var wpcf7_form_editor_properties;
     var elementData;
-	var formData;
-	var reverseData;
-	var resetData;
+    var formData;
+    var reverseData;
+    var resetData;
     var formMailSettings;
     var formMessages;
 
@@ -23,6 +24,9 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
               nonce_param: live_editor_obj.rexnonce,
               form_id: formID
             },
+            beforeSend: function() {
+                wpcf7_form_editor_properties.$self.addClass('rex-modal--loading');
+            },
             success: function(response) {
               if (response.success) {
                 formMailSettings = response.data.mail_settings[0];
@@ -31,9 +35,14 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                 wpcf7_form_editor_properties.$form_mail_to.val(formMailSettings.recipient);
                 wpcf7_form_editor_properties.$form_error_message.val(formMessages.mail_sent_ng);
                 wpcf7_form_editor_properties.$form_send_message.val(formMessages.mail_sent_ok);
+
+                _updatePanel();
               }
             },
-            error: function(response) {}
+            error: function(response) {},
+            complete: function (response) {
+                wpcf7_form_editor_properties.$self.removeClass('rex-modal--loading');
+            }
         });
     }
 
@@ -144,18 +153,22 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 
     var blockID;
 
-	var _openFormEditorModal = function (data) {
+    var _openFormEditorModal = function (data) {
         elementData = data.elementData;
         blockID = data.blockID;
-		_updateFormEditorModal(elementData);
+        _updateFormEditorModal(elementData);
 
         var formID = elementData.element_target.element_id;
         _getFormSettings(formID);
 
-        Rexlive_Modals_Utils.openModal(wpcf7_form_editor_properties.$self.parent(".rex-modal-wrap"),false);
-	}
+        var delayInMilliseconds = 0;
 
-	var _closeModal = function () {
+        setTimeout(function() {
+          Rexlive_Modals_Utils.openModal(wpcf7_form_editor_properties.$self.parent(".rex-modal-wrap"), false);
+        }, delayInMilliseconds);
+    }
+
+    var _closeModal = function () {
         Rexlive_Modals_Utils.closeModal(
             wpcf7_form_editor_properties.$self.parent(".rex-modal-wrap"),
             false,
@@ -165,7 +178,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
     };
 
     var _applyChanges = function () {
-    	var formDataToIframe = {
+        var formDataToIframe = {
             eventName: "rexlive:update_wcpf7_page",
             data_to_send: {
                 reverseFormData: jQuery.extend(true, {}, reverseData),
@@ -186,7 +199,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
     //     formData = {
     //         background_color: "",
     //         content: {
-	   //          background_color: "",
+       //          background_color: "",
     //         },
     //         element_target: {
     //             element_id: "",
@@ -234,7 +247,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
     }
 
     // var _updateFormData = function (data) {
-    // 	formData = jQuery.extend(true, {}, data);
+    //  formData = jQuery.extend(true, {}, data);
     //     reverseData = jQuery.extend(true, {}, formData);
     //     resetData = jQuery.extend(true, {}, formData);
     // };
@@ -247,6 +260,13 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
 
     var _updatePanel = function () {
         /* WHOLE FORM OPTIONS */
+        // E-Mail
+        if (wpcf7_form_editor_properties.$form_mail_to.val() != "") {
+            wpcf7_form_editor_properties.$form_mail_to
+                .siblings("label, .prefix")
+                .addClass('active');
+        }
+
         // Background color
         wpcf7_form_editor_properties.$form_preview_background.css("background-color", elementData.wpcf7_data.background_color);
         wpcf7_form_editor_properties.$form_background_color_value.val(elementData.wpcf7_data.background_color);
@@ -271,7 +291,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         // Columns padding
         wpcf7_form_editor_properties.$form_columns_padding_top.val(/[0-9]+/.exec(elementData.wpcf7_data.columns.padding_top));
         wpcf7_form_editor_properties.$form_columns_padding_left.val(/[0-9]+/.exec(elementData.wpcf7_data.columns.padding_left));
-        wpcf7_form_editor_properties.$form_columns_padding_right.val(/[0-9]+/.exec(elementData.wpcf7_data.columns.padding_tright));
+        wpcf7_form_editor_properties.$form_columns_padding_right.val(/[0-9]+/.exec(elementData.wpcf7_data.columns.padding_right));
         wpcf7_form_editor_properties.$form_columns_padding_bottom.val(/[0-9]+/.exec(elementData.wpcf7_data.columns.padding_bottom));
 
         /* CONTENT OPTIONS*/
@@ -287,6 +307,11 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                 wpcf7_form_editor_properties.$content_width.filter('[value=percentage]').prop("checked", true);
                break;
         }
+        if (wpcf7_form_editor_properties.$content_width.val() != "") {
+            wpcf7_form_editor_properties.$content_width
+                .siblings("label, .prefix")
+                .addClass('active');
+        }
 
         // Content height
         wpcf7_form_editor_properties.$content_height.val(/[0-9]+/.exec(elementData.wpcf7_data.content.height));
@@ -299,6 +324,11 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
             default:
                 wpcf7_form_editor_properties.$content_height.filter('[value=percentage]').prop("checked", true);
                break;
+        }
+        if (wpcf7_form_editor_properties.$content_height.val() != "") {
+            wpcf7_form_editor_properties.$content_height
+                .siblings("label, .prefix")
+                .addClass('active');
         }
 
         // Content font size
@@ -410,7 +440,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
             eventName: "rexlive:updateFormLive",
             data_to_send: {
                 element_target: elementData.element_target,
-            	propertyType: data.type,
+                propertyType: data.type,
                 propertyName: data.name,
                 newValue: data.value
             }
@@ -423,7 +453,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
     //         eventName: "rexlive:updateFormInputsLive",
     //         data_to_send: {
     //             target: formData.element_target,
-    //         	propertyType: data.type,
+    //          propertyType: data.type,
     //             propertyName: data.name,
     //             newValue: data.value
     //         }
@@ -444,7 +474,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         Rexbuilder_Util_Admin_Editor.sendIframeBuilderMessage(formDataToIframe);
     }
 
-	/////////////////////////////////////////////////////////////////////////////////////////////////
+    /////////////////////////////////////////////////////////////////////////////////////////////////
     /// LINKING PANEL TOOLS
     /////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -668,7 +698,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
             show: function () {},
             move: function (color) {
 
-        		colorTEXT = color.toRgbString();
+                colorTEXT = color.toRgbString();
                 wpcf7_form_editor_properties.$form_background_color_preview.hide();
                 wpcf7_form_editor_properties.$form_preview_background.css("background-color", colorTEXT);
 
@@ -1141,7 +1171,7 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         var data = {
             background_color: elementData.wpcf7_data.background_color,
             content: {
-	            background_color: elementData.wpcf7_data.content.background_color,
+                background_color: elementData.wpcf7_data.content.background_color,
             }
         }
 
@@ -1154,9 +1184,9 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
     ///////////////////////////////////////////////////////////////////////////////////////////////
     ///////////////////////////////////////////////////////////////////////////////////////////////
     
-	var _linkDocumentListeners = function () {
+    var _linkDocumentListeners = function () {
         wpcf7_form_editor_properties.$close_button.on("click", function () {
-        	elementData = jQuery.extend(true, {}, resetData);
+            elementData = jQuery.extend(true, {}, resetData);
             _updatePanel();
             _closeModal();
         });
@@ -1211,16 +1241,16 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
                 value: heightValue
             });
         });
-	}
+    }
 
-	var _init = function () {
-		var $self = $("#rex-wpcf7-form-editor");
+    var _init = function () {
+        var $self = $("#rex-wpcf7-form-editor");
         var $accordions = $self.find('.rexpansive-accordion');
-		var $container = $self;
+        var $container = $self;
 
-		wpcf7_form_editor_properties = {
-			$self: $self,
-			$modal: $container.parent(".rex-modal-wrap"),
+        wpcf7_form_editor_properties = {
+            $self: $self,
+            $modal: $container.parent(".rex-modal-wrap"),
             $close_button: $container.find(".rex-cancel-button"),
             $apply_changes_button: $container.find(".rex-apply-button"),
 
@@ -1259,12 +1289,12 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
             $content_set_border_width: $container.find("#rex-wpcf7-set-content-border-width"),
             $content_set_border_radius: $container.find("#rex-wpcf7-set-content-border-radius"),
 
-            $content_preview_text_color: $container.find("#rex-wpcf7-content-preview-text-color"),
+            // $content_preview_text_color: $container.find("#rex-wpcf7-content-preview-text-color"),
             $content_text_color_value: $container.find("#rex-wpcf7-content-text-color"),
             $content_text_color_runtime: $container.find("#rex-wpcf7-content-text-color-runtime"),
             $content_text_color_preview: $container.find("#rex-wpcf7-content-text-color-preview-icon"),
 
-            $content_preview_text_color_hover: $container.find("#rex-wpcf7-content-preview-text-color-hover"),
+            // $content_preview_text_color_hover: $container.find("#rex-wpcf7-content-preview-text-color-hover"),
             $content_text_color_hover_value: $container.find("#rex-wpcf7-content-text-color-hover"),
             $content_text_color_hover_runtime: $container.find("#rex-wpcf7-content-text-color-hover-runtime"),
             $content_text_color_hover_preview: $container.find("#rex-wpcf7-content-text-color-hover-preview-icon"),
@@ -1288,9 +1318,9 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
             $content_border_color_hover_value: $container.find("#rex-wpcf7-content-border-color-hover"),
             $content_border_color_hover_runtime: $container.find("#rex-wpcf7-content-border-color-hover-runtime"),
             $content_border_color_hover_preview: $container.find("#rex-wpcf7-content-border-color-hover-preview-icon"),
-		};
+        };
 
-		elementData = {
+        elementData = {
             synchronize: "",
             wpcf7_data: {
                 background_color: "",
@@ -1327,22 +1357,22 @@ var Wpcf7_Edit_Form_Modal = (function ($) {
         };
 
         $accordions.rexAccordion({open:{},close:{},});
-		_linkDocumentListeners();
+        _linkDocumentListeners();
         _linkNumberInputs();
-		_linkBackgroundColorEditor();
+        _linkBackgroundColorEditor();
         _linkBorderColorEditor();
         _linkContentTextColorEditor();
         _linkContentTextColorHoverEditor();
         _linkContentBackgroundColorEditor();
         _linkContentBackgroundColorHoverEditor();
         _linkContentBorderColorEditor();
-		_linkContentBorderColorHoverEditor();
-	}
+        _linkContentBorderColorHoverEditor();
+    }
 
-	return {
-		init: _init,
+    return {
+        init: _init,
 
-		// Modal functions
-		openFormEditorModal: _openFormEditorModal,
-	}
-})(jQuery);	
+        // Modal functions
+        openFormEditorModal: _openFormEditorModal,
+    }
+})(jQuery); 

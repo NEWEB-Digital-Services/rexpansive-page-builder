@@ -18,163 +18,129 @@ defined('ABSPATH') or exit;
         <!-- General wrap -->
         <div class="modal-content">
         	<?php include 'rexlive-loader-modal.php'; ?>
-            <div class="bl_modal-row">
+            <div class="bl_modal-row"><!-- // E-Mail -->
                 <div class="rexwpcf7-cont_row">
-                    <div class="rexwpcf7-count-column_54"></div>
-                    <div class="rexwpcf7-count-column_327">
-                        <input type="text" id="rex-wpcf7-mail-to" name="" class="rex-wpcf7-mail-to">
+                    <div class="rexwpcf7-count-column_whole input-field rex-input-prefixed tippy" data-tippy-content="<?php _e('E-Mail', 'rexpansive-builder');?>">
+                        <span class="prefix">
+                            <?php Rexbuilder_Utilities::get_icon('#B018-Mail'); ?>
+                        </span>
+                        <input type="text" id="rex-wpcf7-mail-to" name="rex-wpcf7-mail-to" class="">
+                        <label for="rex-wpcf7-mail-to">
+                            <?php _e('E-Mail', 'rexpansive-builder');?>
+                        </label>
                     </div>
                 </div>
             </div>
-            <div class="bl_modal-row">
-                <!-- BACKGROUND COLOR -->
-                <div class="rexwpcf7-cont_row">
-                    <div class="rexwpcf7-count-column_1">
-                        <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Background Color', 'rexpansive-builder');?>" tabindex="0">
+            <div class="bl_modal-row"> <!-- // Form Margins, Columns Padding -->
+                <div class="bl_modal__option-wrap bl_jc-c no_pad_lr">
+                    <div>
+                        <div class="bl_d-flex bl_jc-c riga-1">
+                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Top', 'rexpansive-builder' ); ?>">
+                                <input type="text" id="rex-wpcf7-margin-top" class="form-margin-values" name="rex-wpcf7-margin-top" placeholder="0"/>
+                                <span class="bl_input-indicator">px</span>
+                            </div> <!-- // Form margin top -->
+                        </div>
+                        <div class="bl_d-flex bl_ai-c bl_jc-sb riga-2">
+                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Left', 'rexpansive-builder' ); ?>">
+                                <input type="text" id="rex-wpcf7-margin-left" class="form-margin-values" name="rex-wpcf7-margin-left" placeholder="0"/>
+                                <span class="bl_input-indicator">px</span>
+                            </div> <!-- // Form margin left -->
+                            <div class="rex-live__row-padding-wrap valign-wrapper modal-form-wrapper">
+                                <div class="modal-form-column-wrapper lateral bl_d-flex"></div>
+                                <div class="rex-live__row-column-wrap bl_d-flex bl_jc-c bl_ai-c modal-form-column-wrapper">
+                                    <div class="modal-form-column">
+                                        <div class="bl_d-flex bl_jc-c">
+                                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Top', 'rexpansive-builder' ); ?>">
+                                                <input type="text" id="rex-wpcf7-columns-padding-top" class="columns-padding-values" name="rex-wpcf7-columns-padding-top" placeholder="0"/>
+                                                <span class="bl_input-indicator">px</span>
+                                            </div> <!-- // Columns padding top -->
+                                        </div>
+                                        <div class="bl_d-flex bl_ai-c bl_jc-sb">
+                                            <div>
+                                                <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Left', 'rexpansive-builder' ); ?>">
+                                                    <input type="text" id="rex-wpcf7-columns-padding-left" class="columns-padding-values" name="rex-wpcf7-columns-padding-left" placeholder="0"/>
+                                                    <span class="bl_input-indicator">px</span>
+                                                </div> <!-- // Columns padding left -->
+                                            </div>
+                                            <div class="modal-form-column-content">column</div>
+                                            <div>
+                                                <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Right', 'rexpansive-builder' ); ?>">
+                                                    <input type="text" id="rex-wpcf7-columns-padding-right" class="columns-padding-values" name="rex-wpcf7-columns-padding-right" placeholder="0"/>
+                                                    <span class="bl_input-indicator">px</span>
+                                                </div> <!-- // Columns padding right -->
+                                            </div>
+                                        </div>
+                                        <div class="bl_d-flex bl_jc-c">
+                                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Bottom', 'rexpansive-builder' ); ?>">
+                                                <input type="text" id="rex-wpcf7-columns-padding-bottom" class="columns-padding-values" name="rex-wpcf7-columns-padding-bottom" placeholder="0"/>
+                                                    <span class="bl_input-indicator">px</span>
+                                            </div> <!-- // Columns padding bottom -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-form-column-wrapper lateral bl_d-flex"></div>
+                            </div>
+                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Right', 'rexpansive-builder' ); ?>">
+                                <input type="text" id="rex-wpcf7-margin-right" class="form-margin-values" name="rex-wpcf7-margin-right" placeholder="0"/>
+                                <span class="bl_input-indicator">px</span>
+                            </div> <!-- // Form margin right -->
+                        </div>
+                        <div class="bl_d-flex bl_jc-c riga-3">
+                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Bottom', 'rexpansive-builder' ); ?>">
+                                <input type="text" id="rex-wpcf7-margin-bottom" class="form-margin-values" name="rex-wpcf7-margin-bottom" placeholder="0"/>
+                                <span class="bl_input-indicator">px</span>
+                            </div> <!-- // Form margin bottom -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bl_modal-row"> <!-- // Form Background Color, Form Border Color -->
+                <div class="bl_modal__option-wrap bl_jc-c">
+                    <div id="" class="bl_modal__single-option valign-wrapper tippy" data-tippy-content="<?php _e('Background Color', 'rexpansive-builder');?>">
+                        <div class="pr12">
+                            <?php Rexbuilder_Utilities::get_icon('#B021-Form-Background'); ?>
+                        </div>
+                        <div class="bl_d-iblock"  tabindex="0">
                             <input type="hidden" id="rex-wpcf7-background-color-runtime" name="rex-wpcf7-background-color-runtime" value="" />
                             <input id="rex-wpcf7-background-color" type="text" name="rex-wpcf7-background-color" value="" size="10" />
                             <div id="rex-wpcf7-background-color-preview-icon" class="rex-wpcf7-background-color-preview-icon"></div>
                         </div>
                     </div>
-                    <!-- <div class="rexwpcf7-count-column_2">
-                        <div id="rex-wpcf7-background-preview-wrap">
-                            <div id="rex-wpcf7-preview-background"></div>
-                        </div>
-                    </div> -->
-                    <div class="rexwpcf7-count-column_2">Form Background Color</div>
                 </div>
-            </div>
-            <div class="bl_modal-row">
-                <!-- BORDER COLOR -->
-                <div class="rexwpcf7-cont_row">
-                    <div class="rexwpcf7-count-column_1">
-                        <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Border Color', 'rexpansive-builder');?>" tabindex="0">
-                            <input type="hidden" id="rex-wpcf7-border-color-runtime" name="rex-wpcf7-border-color-runtime" value="" />
-                            <input id="rex-wpcf7-border-color" type="text" name="rex-wpcf7-border-color" value="" size="10" />
-                            <div id="rex-wpcf7-border-color-preview-icon" class="rex-wpcf7-border-color-preview-icon"></div>
-                        </div>
-                    </div>
-                    <!-- <div class="rexwpcf7-count-column_2">
-                        <div id="rex-wpcf7-border-preview-wrap">
-                            <div id="rex-wpcf7-preview-border"></div>
-                        </div>
-                    </div> -->
-                    <div class="rexwpcf7-count-column_2">Form Border Color</div>
-                    <!-- BORDER WIDTH -->
-                    <div class="rexwpcf7-count-column_4">
-                        <input type="text" id="rex-wpcf7-set-border-width" name="" class="rex-wpcf7-set-border-width">
-                    </div>
-                    <div class="rexwpcf7-count-column_5">
-                        <div class="label-px">px</div>
+                <div class="bl_modal__option-wrap bl_jc-c">
+                    <div id="" class="bl_modal__single-option valign-wrapper">
+                        <span class="tippy" data-tippy-content="<?php _e('Border Color', 'rexpansive-builder');?>">
+                            <div class="bl_d-iblock pr12">
+                                <?php Rexbuilder_Utilities::get_icon('#B022-Form-Border'); ?>
+                            </div>
+                            <div class="bl_d-iblock pr12"  tabindex="0">
+                                <input type="hidden" id="rex-wpcf7-border-color-runtime" name="rex-wpcf7-border-color-runtime" value="" />
+                                <input id="rex-wpcf7-border-color" type="text" name="rex-wpcf7-border-color" value="" size="10" />
+                                <div id="rex-wpcf7-border-color-preview-icon" class="rex-wpcf7-border-color-preview-icon"></div>
+                            </div>
+                        </span>
+                        <span class="tippy" data-tippy-content="<?php _e('Border Width', 'rexpansive-builder');?>">
+                            <div class="bl_d-iblock pr12 with-text">
+                                <input type="text" id="rex-wpcf7-set-border-width" name="rex-wpcf7-set-border-width" class="">
+                            </div>
+                            <div class="bl_d-iblock">
+                                <div class="label-px">px</div>
+                            </div>
+                        </span>
                     </div>
                 </div>
             </div>
-            <div class="bl_modal-row no12dx">
-                <!-- FORM MARGINS -->
-                <div class="rexbutton-cont_row23">
-                    <div class="rexbutton-count-column_6">
-                    <div class="rex-live__row-margin-padding block-padding-wrap">
-                        <div class="bl_d-flex bl_jc-c">
-                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Top', 'rexpansive-builder' ); ?>">
-                                <input type="text" id="rex-wpcf7-margin-top" name="rex-wpcf7-margin-top" class="block-padding-values"/>
-                                <span class="bl_input-indicator">px</span>
-                            </div><!-- // form margin top -->
-                        </div>
-                        <div class="bl_d-flex bl_ai-c bl_jc-sb">
-                            <div>
-                                <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Left', 'rexpansive-builder' ); ?>">
-                                <input type="text" id="rex-wpcf7-margin-left" name="rex-wpcf7-margin-left" class="block-padding-values"/>
-                                    <span class="bl_input-indicator">px</span>
-                                </div><!-- // row margin left -->
-                            </div>
-                            <div class="rex-live__row-padding-wrap">
-                                <div class="bl_d-flex bl_jc-c">
-                                </div>
-                                <div class="bl_d-flex bl_ai-c bl_jc-sb">
-                                    <div class="zl_cfd_a">FORM</div>
-                                        <div class="rex-live__row-gutter-wrap bl_d-flex bl_jc-c bl_ai-c">
-                                        </div>
-                                    </div>
-                                    <div class="bl_d-flex bl_jc-c">
-                                    </div>
-                                </div>
-                            <div>
-                                <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Right', 'rexpansive-builder' ); ?>">
-                                    <input type="text" id="rex-wpcf7-margin-right" name="rex-wpcf7-margin-right" class="block-padding-values"/>
-                                    <span class="bl_input-indicator">px</span>
-                                </div><!-- //form margin right -->
-                            </div>
-                        </div>
-                        <div class="bl_d-flex bl_jc-c">
-                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Margin Bottom', 'rexpansive-builder' ); ?>">
-                                <input type="text" id="rex-wpcf7-margin-bottom" name="rex-wpcf7-margin-bottom" class="block-padding-values"/>
-                                <span class="bl_input-indicator">px</span>
-                            </div><!-- //form margin bottom -->
-                        </div>
-                    </div><!-- // form margin new -->
-                    </div>
-                </div>
-            </div>
-            <div class="bl_modal-row no12dx">
-                <!-- COLUMN PADDING -->
-                <div class="rexbutton-cont_row23">
-                    <div class="rexbutton-count-column_6">
-                    <div class="rex-live__row-margin-padding block-padding-wrap">
-                        <div class="bl_d-flex bl_jc-c">
-                        </div>
-                        <div class="bl_d-flex bl_ai-c bl_jc-sb">
-                            <div>
-                            </div>
-                            <div class="rex-live__row-padding-wrap">
-                                <div class="bl_d-flex bl_jc-c">
-                                    <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Top', 'rexpansive-builder' ); ?>">
-                                    <input type="text" id="rex-wpcf7-columns-padding-top" name="rex-wpcf7-columns-padding-top" class="block-padding-values"/>
-                                        <span class="bl_input-indicator">px</span>
-                                    </div><!-- // column padding top -->
-                                </div>
-                                <div class="bl_d-flex bl_ai-c bl_jc-sb">
-                                    <div class="zl_cfd_a">COLUMN</div>
-                                        <div>
-                                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Left', 'rexpansive-builder' ); ?>">
-                                            <input type="text" id="rex-wpcf7-columns-padding-left" name="rex-wpcf7-columns-padding-left" class="block-padding-values"/>
-                                                <span class="bl_input-indicator">px</span>
-                                            </div><!-- // column padding left -->
-                                        </div>
-                                        <div class="rex-live__row-gutter-wrap bl_d-flex bl_jc-c bl_ai-c">
-                                        </div>
-                                        <div>
-                                            <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Right', 'rexpansive-builder' ); ?>">
-                                            <input type="text" id="rex-wpcf7-columns-padding-right" name="rex-wpcf7-columns-padding-right" class="block-padding-values"/>
-                                                <span class="bl_input-indicator">px</span>
-                                            </div><!-- // column padding right -->
-                                        </div>
-                                    </div>
-                                    <div class="bl_d-flex bl_jc-c">
-                                        <div class="val-wrap bl_d-iflex bl_ai-c tippy" data-tippy-content="<?php _e( 'Padding Bottom', 'rexpansive-builder' ); ?>">
-                                            <input type="text" id="rex-wpcf7-columns-padding-bottom" name="rex-wpcf7-columns-padding-bottom" class="block-padding-values"/>
-                                            <span class="bl_input-indicator">px</span>
-                                        </div><!-- // column paddig bottom -->
-                                    </div>
-                                </div>
-                            <div>
-                            </div>
-                        </div>
-                        <div class="bl_d-flex bl_jc-c">
-                        </div>
-                    </div><!-- // column padding -->
-                    </div>
-                </div>
-            </div>
-            <div class="bl_modal-row">
-                <!-- WIDTH & HEIGHT -->
-                <div class="bl_modal__option-wrap bl_modal__col-4">
-                    <div id="section-set-dimension" class="input-field rex-input-prefixed bl_modal__input-prefixed--small tippy" data-tippy-content="<?php _e('Width', 'rexpansive-builder');?>">
-                        <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#B001-Full'); ?></span>
-                        <input type="text" id="rex-wpcf7-content-width" class="rex-wpcf7-content-width rexwpcf7-set-width-input" name="" size="23">
+            <div class="bl_modal-row"> <!-- // Columns Width, Columns Height -->
+                <div class="bl_modal__option-wrap bl_jc-c">
+                    <div class="rex-input-prefixed with-text pr12 tippy" data-tippy-content="<?php _e('Columns Width', 'rexpansive-builder');?>">
+                        <span class="prefix pr12">
+                            <?php Rexbuilder_Utilities::get_icon('#B001-Full'); ?>
+                        </span>
+                        <input type="text" id="rex-wpcf7-content-width" class="rex-wpcf7-content-width" name="">
                         <span class="rex-material-bar"></span>
                     </div>
-                    <div class="">
-                        <div class="rex-check-text percentage-width boxed-width-type-wrap" data-rex-section-width-type="%">
+                    <div>
+                        <div class="rex-check-text percentage-width boxed-width-type-wrap">
                             <input id="rex-wpcf7-content-width-percentage" type="radio" class="rex-wpcf7-content-width-type with-gap" name="rex-wpcf7-content-width-type" value="percentage" checked />
                             <label for="rex-wpcf7-content-width-percentage">
                                 <?php _e('%', 'rexpansive-builder');?>
@@ -190,14 +156,16 @@ defined('ABSPATH') or exit;
                         </div>
                     </div>
                 </div> 
-                <div class="bl_modal__option-wrap bl_modal__col-4">
-                    <div id="section-set-dimension" class="input-field rex-input-prefixed bl_modal__input-prefixed--small tippy" data-tippy-content="<?php _e('Height', 'rexpansive-builder');?>">
-                        <span class="prefix"><?php Rexbuilder_Utilities::get_icon('#B012-Full-Height'); ?></span>
-                        <input type="text" id="rex-wpcf7-content-height" class="rex-wpcf7-content-height rexwpcf7-set-height-input" name="" size="23">
+                <div class="bl_modal__option-wrap bl_jc-c">
+                    <div class="rex-input-prefixed with-text pr12 tippy" data-tippy-content="<?php _e('Columns Height', 'rexpansive-builder');?>">
+                        <span class="prefix pr12">
+                            <?php Rexbuilder_Utilities::get_icon('#B012-Full-Height'); ?>  
+                        </span>
+                        <input type="text" id="rex-wpcf7-content-height" class="rex-wpcf7-content-height" name="" size="23">
                         <span class="rex-material-bar"></span>
                     </div>
-                    <div class="">
-                        <div class="" data-rex-section-width-type="%"> <!-- class=rex-check-text percentage-width boxed-width-type-wrap -->
+                    <div>
+                        <div>
                             <input id="rex-wpcf7-content-height-percentage" type="radio" class="rex-wpcf7-content-height-type with-gap" name="rex-wpcf7-content-height-type" value="percentage" checked />
                             <label for="rex-wpcf7-content-height-percentage">
                                 <?php _e('%', 'rexpansive-builder');?>
@@ -214,51 +182,39 @@ defined('ABSPATH') or exit;
                     </div>
                 </div>
             </div>
-            <div class="rexpansive-accordion close">
+            <div class="rexpansive-accordion close"> <!-- Content Text Color -->
                 <div class="bl_modal-row">
-                    <!-- CONTENT TEXT COLOR -->
-                    <div class="rexwpcf7-cont_row">
-                        <div class="rexwpcf7-count-column_accord">
-                            <span class="rex-accordion--toggle">                                
+                    <div class="rexwpcf7-cont_row bl_ai-c">
+                        <div class="bl_d-iblock">
+                            <span class="rex-accordion--toggle">
                                 <div class="rexwpcf7-upd-accord_button"><?php Rexbuilder_Utilities::get_icon('#Z003-Close'); ?></div>
                             </span>
                         </div>
-                        <div class="rexwpcf7-count-column_1">
-                            <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Text Color', 'rexpansive-builder');?>" tabindex="0">
-                                <input type="hidden" id="rex-wpcf7-content-text-color-runtime" name="rex-wpcf7-content-text-color-runtime" value="" />
-                                <input id="rex-wpcf7-content-text-color" type="text" name="rex-wpcf7-content-text-color" value="" size="10" />
-                                <div id="rex-wpcf7-content-text-color-preview-icon" class="preview-color-icon"></div>
-                            </div>
+                        <div class="bl_d-iblock">
+                            <div class=""><?php Rexbuilder_Utilities::get_icon('#B023-Input-Text'); ?></div>
                         </div>
-                        <div class="rexwpcf7-count-column_2">
-                            <div id="rex-wpcf7-content-text-preview-wrap">
-                                <div id="rex-wpcf7-content-preview-text-color"></div>
-                            </div>
+                        <div class="bl_d-iblock" tabindex="0">
+                            <input type="hidden" id="rex-wpcf7-content-text-color-runtime" name="rex-wpcf7-content-text-color-runtime" value="" />
+                            <input id="rex-wpcf7-content-text-color" type="text" name="rex-wpcf7-content-text-color" value="" size="10" />
+                            <div id="rex-wpcf7-content-text-color-preview-icon" class="preview-color-icon"></div>
                         </div>
-                        <div class="rexwpcf7-count-column_3"></div>
-                        <div class="rexwpcf7-count-column_4">
+                        <div class="bl_d-iblock">
                             <input type="text" id="rex-wpcf7-set-content-font-size" name="" class="rex-wpcf7-set-content-font-size">
                         </div>
-                        <div class="rexwpcf7-count-column_5">
+                        <div class="bl_d-iblock">
                             <div class="label-px">px</div>
                         </div>
                     </div>
                 </div>
-                <div class="rex-accordion--content" style="display:none;" data-item-status="close">
+                <div class="rex-accordion--content" style="display:none;" data-item-status="close"> <!-- Content Text Color Hover -->
                     <div class="bl_modal-row">
-                        <!-- CONTENT TEXT COLOR HOVER -->
                         <div class="rexwpcf7-cont_row">
                             <div class="rexwpcf7-count-column_accord"></div>
-                            <div class="rexwpcf7-count-column_1">
+                            <div class="">
                                 <div class="rex-relative-col tippy" data-tippy-content="<?php _e('Text Color Hover', 'rexpansive-builder');?>" tabindex="0">
                                     <input type="hidden" id="rex-wpcf7-content-text-color-hover-runtime" name="rex-wpcf7-content-text-color-hover-runtime" value="" />
                                     <input id="rex-wpcf7-content-text-color-hover" type="text" name="rex-wpcf7-content-text-color-hover" value="" size="10" />
                                     <div id="rex-wpcf7-content-text-color-hover-preview-icon" class="preview-color-icon"></div>
-                                </div>
-                            </div>
-                            <div class="rexwpcf7-count-column_2">
-                                <div id="rex-wpcf7-content-text-preview-wrap">
-                                    <div id="rex-wpcf7-content-preview-text-color-hover"></div>
                                 </div>
                             </div>
                             <div class="rexwpcf7-count-column_3"><!-- space for icons --></div>
